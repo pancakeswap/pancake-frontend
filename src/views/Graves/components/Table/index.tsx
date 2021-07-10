@@ -32,6 +32,7 @@ interface TableData {
   pid: number,
   result : any,
   poolInfo: any,
+  userInfo: any,
   pendingZombie: any,
   totalGraveAmount: any,
   pcsVersion: any,
@@ -45,10 +46,9 @@ interface TableProps {
   updateAllowance: any,
   updateResult: any,
   zombieUsdPrice: number,
-  zombieAllowance: number,
 }
 
-const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice, zombieAllowance }: TableProps) => {
+const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const openInDetails = (data) => {
     setIsOpen(data);
@@ -71,7 +71,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAl
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
                 <FrankEarned pid={details.pid} pendingZombie={details.pendingZombie}/>
-                <StartFarming updateResult={updateResult} zombieUsdPrice={zombieUsdPrice} zombieAllowance={zombieAllowance} updateAllowance={updateAllowance} details={details} isAllowance={isAllowance}  />
+                <StartFarming updateResult={updateResult} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} details={details} isAllowance={isAllowance}  />
                 <BuyFrank details={details} />
               </div>
               <RugInDetails bnbInBusd={bnbInBusd} details={details} zombieUsdPrice={zombieUsdPrice} />

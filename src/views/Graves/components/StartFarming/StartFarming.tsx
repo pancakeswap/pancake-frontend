@@ -18,6 +18,7 @@ import StakeZombieModal from '../StakeZombieModal';
 import WithdrawZombieModal from '../WithdrawZombieModal';
 import useAuth from '../../../../hooks/useAuth'
 import { getZombieContract } from '../../../../utils/contractHelpers'
+import { zombieAllowance } from '../../../../redux/get'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -52,16 +53,16 @@ interface StartFarmingProps {
     stakingToken: any,
     result: Result,
     poolInfo: any,
+    userInfo: any,
     pcsVersion: string,
   },
   isAllowance: boolean,
   updateAllowance: any,
   updateResult: any,
   zombieUsdPrice: number,
-  zombieAllowance: number,
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result },zombieAllowance, zombieUsdPrice, isAllowance, updateAllowance, updateResult }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, userInfo }, zombieUsdPrice, isAllowance, updateAllowance, updateResult }) => {
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
 
   const [rugTokenAmount, setRugTokenAmount] = useState(0);
@@ -92,6 +93,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
       zombieBalance={zombieBalance}
       zombieUsdPrice={zombieUsdPrice}
       poolInfo={poolInfo}
+      userInfo={userInfo}
       updateResult={updateResult}
     />
   )
@@ -164,13 +166,13 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
     return <div className="space-between">
       {account ?
         !paidUnlockFee ?
-        zombieAllowance > 0 ?
+        zombieAllowance().gt(0) ?
           <button onClick={handleUnlock} className="btn btn-disabled w-100" type="button">Unlock Grave</button> :
           <button onClick={handleApprove} className="btn btn-disabled w-100" type="button">Approve ZMBE</button>
         :
         <div>
           <DisplayFlex>
-            <span style={{ paddingRight: '50px' }} className="total-earned text-shadow">{getFullDisplayBalance(new BigNumber(result.amount), tokens.zmbe.decimals, 4)}</span>
+            <span style={{ paddingRight: '50px' }} className="total-earned text-shadow">{getFullDisplayBalance(new BigNumber(userInfo.amount), tokens.zmbe.decimals, 4)}</span>
             <button onClick={onPresentWithdrawStake} style={{ marginRight: '10px' }} className="btn w-100" type="button">-</button>
             <button onClick={onPresentZombieStake} className="btn w-100" type="button">+</button>
           </DisplayFlex>

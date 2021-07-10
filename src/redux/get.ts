@@ -5,6 +5,10 @@ export const account = (): string => {
   return store.getState().account
 }
 
+export const zombieAllowance = (): BigNumber => {
+  return store.getState().zombie.allowance
+}
+
 export const zombiePriceBnb = (): BigNumber => {
   return store.getState().zombie.priceBnb
 }
@@ -29,6 +33,13 @@ export const zmbeBnbTomb = (): any => {
   return store.getState().tombs[0]
 }
 
+export const graveByPid = (pid: number): any => {
+  return store.getState().graves.find(g => g.pid === pid)
+}
+
+export const graves = (): any => {
+  return store.getState().graves
+}
 
 // store lpreserves
 

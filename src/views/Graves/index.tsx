@@ -15,22 +15,23 @@ import './Graves.Styles.css'
 import tableData from './data'
 import { getBep20Contract, getZombieContract } from '../../utils/contractHelpers'
 import { BIG_ZERO } from '../../utils/bigNumber'
-import { zombiePriceUsd } from '../../redux/get'
+import { zombieAllowance, zombiePriceUsd, graves } from '../../redux/get'
+import { grave, initialGraveData } from '../../redux/fetch'
 
 let accountAddress
 
 const Graves: React.FC = () => {
   const { account } = useWeb3React()
+  initialGraveData()
   const [isAllowance, setIsAllowance] = useState(false)
   const [farmData, setFarmData] = useState(tableData)
 
   accountAddress = account
   const drFrankenstein = useDrFrankenstein()
   const zmbeContract = useERC20(getAddress(tokens.zmbe.address))
-  const allowance = useIfoAllowance(zmbeContract, getDrFrankensteinAddress())
   const [bnbInBusd, setBnbInBusd] = useState(0)
   const [zombieGraveBalance, setZombieGraveBalance] = useState(BIG_ZERO)
-  const [zombieAllowance, setZombieAllowance] = useState(0)
+  const [allowance, setAllowance] = useState(zombieAllowance())
 
   useEffect(() => {
     if(account){
@@ -38,7 +39,7 @@ const Graves: React.FC = () => {
         .then(res => {
           console.log("here")
           console.log(res.toString())
-          setZombieAllowance(res)
+          setAllowance(res)
         })
     }
     // eslint-disable-next-line eqeqeq
@@ -84,21 +85,9 @@ const Graves: React.FC = () => {
   const updateResult = (pid) => {
     getZombieContract().methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
       .then(res => {
-        console.log("here")
-        console.log(res.toString())
-        setZombieAllowance(res)
+        setAllowance(res)
       })
-    drFrankenstein.methods.userInfo(pid, accountAddress).call()
-      .then(res => {
-        const newFarmData = farmData.map((data) => {
-          if (data.pid === pid) {
-            data.result = res
-          }
-          return data
-        })
-
-        setFarmData(newFarmData)
-      })
+    grave(pid)
   }
 
     const updateAllowance = (tokenContact, pid) => {
@@ -113,6 +102,8 @@ const Graves: React.FC = () => {
         })
     }
 
+    console.log(graves())
+
   return (
     <Page className='innnerContainer'>
       <PageHeader background='none'>
@@ -124,10 +115,10 @@ const Graves: React.FC = () => {
         </Heading>
       </PageHeader>
       <div>
-        {farmData.map((data) => {
+        {graves().map((gravePayload) => {
           return <Table zombieUsdPrice={zombiePriceUsd()}
-                        updateResult={updateResult} updateAllowance={updateAllowance} zombieAllowance={zombieAllowance} bnbInBusd={bnbInBusd}
-                        isAllowance={isAllowance} details={data} key={data.id} />
+                        updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
+                        isAllowance={isAllowance} details={gravePayload} key={gravePayload.id} />
         })}
       </div>
     </Page>

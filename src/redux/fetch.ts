@@ -13,15 +13,21 @@ import {
   updateAccount,
   updateZombieTotalSupply,
   updateZombieBalance,
-  updateZombiePriceBnb, updateBnbPriceUsd, updateDrFrankensteinZombieBalance, updateTomb,
+  updateZombiePriceBnb,
+  updateBnbPriceUsd,
+  updateDrFrankensteinZombieBalance,
+  updateTomb,
+  updateGravePoolInfo, updateGraveUserInfo,
 } from './actions'
 import { getAddress, getDrFrankensteinAddress } from '../utils/addressHelpers'
 import tombs from './tombs'
+import { account, graveByPid } from './get'
+import graves from './graves'
 
 
 // eslint-disable-next-line import/prefer-default-export
-export const initialData = (account: string) => {
-  store.dispatch(updateAccount(account))
+export const initialData = (accountAddress: string) => {
+  store.dispatch(updateAccount(accountAddress))
   const zombie = getZombieContract()
 
   zombie.methods.totalSupply().call()
@@ -40,13 +46,13 @@ export const initialData = (account: string) => {
 
   tomb(tombs[0].pid)
 
-  if (account) {
-    zombie.methods.allowance(account, getDrFrankensteinAddress()).call()
+  if (accountAddress) {
+    zombie.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
       .then(res => {
         store.dispatch(updateZombieAllowance(res))
       })
 
-    zombie.methods.balanceOf(account).call()
+    zombie.methods.balanceOf(accountAddress).call()
       .then(res => {
         store.dispatch(updateZombieBalance(res))
       })
@@ -70,13 +76,51 @@ export const tomb = (pid: number) => {
                       withdrawalCooldown: poolInfoRes.tokenWithdrawalDate,
                       totalStaked: balanceRes,
                       totalSupply: totalSupplyRes,
-                      reserves: [reservesRes._reserve0, reservesRes._reserve1]
+                      reserves: [reservesRes._reserve0, reservesRes._reserve1],
                     },
                   ))
                 })
             })
         })
     })
+}
+
+export const grave = (pid: number) => {
+  getDrFrankensteinContract().methods.poolInfo(pid).call()
+    .then(poolInfoRes => {
+      const graveStakingTokenContract = getBep20Contract((graveByPid(pid).stakingToken.address))
+      graveStakingTokenContract.methods.totalSupply().call()
+        .then(stakingTokenSupplyRes => {
+          store.dispatch(updateGravePoolInfo(
+            pid,
+            {
+              allocPoint: poolInfoRes.allocPoint,
+              tokenWithdrawalCooldown: poolInfoRes.tokenWithdrawalTime,
+              nftRevivalTime: poolInfoRes.nftRevivalTime,
+              totalStakingTokenStaked: stakingTokenSupplyRes,
+            },
+          ))
+          if (account()) {
+            getDrFrankensteinContract().methods.userInfo(account())
+              .then(userInfo => {
+                store.dispatch(updateGraveUserInfo(
+                  pid,
+                  {
+                    amount: userInfo.amount,
+                    tokenWithdrawal: userInfo.tokenWithdrawalDate,
+                    nftRevivalTime: userInfo.nftRevivalDate,
+                  },
+                ))
+              })
+          }
+        })
+    })
+}
+
+export const initialGraveData = () => {
+  graves.forEach(g => {
+    grave(g.pid)
+  })
 }
 
 const zombiePriceBnb = () => {
@@ -89,6 +133,6 @@ const zombiePriceBnb = () => {
 const bnbPriceUsd = () => {
   axios.get('https://api.binance.com/api/v3/avgPrice?symbol=BNBBUSD')
     .then(res => {
-    store.dispatch(updateBnbPriceUsd(res.data.price))
-  })
+      store.dispatch(updateBnbPriceUsd(res.data.price))
+    })
 }

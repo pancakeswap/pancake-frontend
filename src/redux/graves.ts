@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 import tokens from '../config/constants/tokens'
 import artists from '../config/constants/artists'
+import { BIG_ZERO } from '../utils/bigNumber'
 
 const graves = [
   {
@@ -17,7 +18,7 @@ const graves = [
     stakingToken: '',
     pcsVersion: 'v2',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -41,7 +42,7 @@ const graves = [
     stakingToken: '0x909e59fFFcF1481Df184831eEea6680Cd437A340',
     pcsVersion: 'v1',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -65,7 +66,7 @@ const graves = [
     stakingToken: '0xD4Ced04fB7129CDB43ffef1cf3DE3Ac701c6cE33',
     pcsVersion: 'v1',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -89,7 +90,7 @@ const graves = [
     stakingToken: '0x8fab22cB7C58b193Fd498ed0EF3B574d70E4f759',
     pcsVersion: 'none',
     liquidityDetails: 'None! This grave is exclusive for victims of the flash loan attack on autoshark.',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -113,7 +114,7 @@ const graves = [
     stakingToken: '0xfB33d25b41F1b0fa95AEa52486C3F05f2aDEE396',
     pcsVersion: 'v1',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -137,7 +138,7 @@ const graves = [
     pcsVersion: 'v2',
     stakingToken: '0xD1e00C08E938B808F2d65dd108aE50948a9Ca1b4',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -162,7 +163,7 @@ const graves = [
     stakingToken: '0x26dF9e0fbd5624941767516BbF218554CfA3A110',
     pcsVersion: 'v1',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -186,7 +187,7 @@ const graves = [
     pcsVersion: 'v1',
     stakingToken: '0x645ad805c464133Eba5c4152Ce14547a01F821f7',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -210,7 +211,7 @@ const graves = [
     pcsVersion: 'v1',
     stakingToken: '0x02F6DE73919aE9d43A1E0520dBCBF81bCda5B514',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -234,7 +235,7 @@ const graves = [
     pcsVersion: 'v1',
     stakingToken: '0x9EbD27Bd3957F13f8E7fef988E96B8EE1998bc80',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -258,7 +259,7 @@ const graves = [
     pcsVersion: 'v1',
     stakingToken: '0x634A554d2FF1609d50740240140B452dF60D035c',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
       tokenWithdrawalDate: '0',
@@ -282,11 +283,11 @@ const graves = [
     pcsVersion: 'v1',
     stakingToken: '0xFceB2967AB8EcC29589E9232f78f8441832d2aD6',
     liquidityDetails: '',
-    result: {
+    userInfo: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: '0',
-      amount: '0',
+      tokenWithdrawalDate: 0,
+      amount: BIG_ZERO,
     },
     poolInfo: {},
     pendingZombie: '0',
