@@ -35,7 +35,8 @@ interface TableData {
   pendingZombie: any,
   totalGraveAmount: any,
   pcsVersion: any,
-  liquidityDetails: any
+  liquidityDetails: any,
+  isNew: boolean
 }
 
 interface TableProps {

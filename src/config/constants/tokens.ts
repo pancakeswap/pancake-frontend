@@ -57,6 +57,15 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://fairmoon.org/',
   },
+  u92: {
+    symbol: 'U92',
+    address: {
+      56: '0x670De9f45561a2D02f283248F65cbd26EAd861C8',
+      97: '',
+    },
+    decimals: 9,
+    projectLink: 'https://fairmoon.org/',
+  },
   dragon: {
     symbol: 'DRAGON',
     address: {

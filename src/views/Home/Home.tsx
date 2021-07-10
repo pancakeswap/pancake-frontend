@@ -11,6 +11,7 @@ import GraveStakingCard from './components/GraveStakingCard'
 import * as fetch from '../../redux/fetch'
 import store from '../../redux/store'
 import { zombiePriceUsd } from '../../redux/get'
+import WhatsNewCard from './components/WhatsNewCard'
 
 const Hero = styled.div`
   align-items: center;
@@ -82,6 +83,7 @@ const Home: React.FC = () => {
         <Cards>
           <ZmbeStats />
           <TotalValueLockedCard/>
+          <WhatsNewCard/>
         </Cards>
       </div>
     </Page>

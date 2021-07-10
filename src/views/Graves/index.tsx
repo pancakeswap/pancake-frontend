@@ -36,8 +36,6 @@ const Graves: React.FC = () => {
     if(account){
       getZombieContract().methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
         .then(res => {
-          console.log("here")
-          console.log(res.toString())
           setZombieAllowance(res)
         })
     }

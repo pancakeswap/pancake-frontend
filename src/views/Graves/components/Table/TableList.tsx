@@ -57,6 +57,7 @@ interface TableListProps {
     rug: any,
     artist?: any,
     stakingToken: any,
+    isNew: boolean,
     pid: number,
     result: Result,
     poolInfo: any,
@@ -66,7 +67,7 @@ interface TableListProps {
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
-  const { details: { pid, name, path, rug, poolInfo, pendingZombie, totalGraveAmount }, zombieUsdPrice, handler } = props;
+  const { details: { pid, name, isNew, path, rug, poolInfo, pendingZombie, totalGraveAmount }, zombieUsdPrice, handler } = props;
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
      allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -108,6 +109,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                     <div className="small-lable">
                       <div className="con-info">{poolWeight.toString()}X</div>
                       <div className="small-titel">ZMBE</div>
+                      {isNew ? <div className='con-info' style={{marginLeft: "4px"}}>NEW!</div> : null}
                     </div>
                   </div>
                 </div>
