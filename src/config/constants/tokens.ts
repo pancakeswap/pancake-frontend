@@ -63,8 +63,8 @@ const tokens = {
       56: '0x670De9f45561a2D02f283248F65cbd26EAd861C8',
       97: '',
     },
-    decimals: 9,
-    projectLink: 'https://fairmoon.org/',
+    decimals: 18,
+    projectLink: '',
   },
   dragon: {
     symbol: 'DRAGON',
