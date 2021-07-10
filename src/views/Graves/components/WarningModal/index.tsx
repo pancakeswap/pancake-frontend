@@ -7,7 +7,7 @@ import styled from 'styled-components'
 const WarningModal: React.FC<{ url, onDismiss?: () => void }> = ({ url, onDismiss }) => {
 
   return (
-    <Modal title="WarningModalWarning" onDismiss={onDismiss}>
+    <Modal title="Warning: Be Careful!" onDismiss={onDismiss}>
       <TicketsList>
       We do not recommend buying known scammed tokens, 
         <br />

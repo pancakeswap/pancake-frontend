@@ -12,7 +12,7 @@ const WarningDepositRugModal: React.FC<{ onDismiss?: () => void, onClick: any }>
   }
 
   return (
-    <Modal title="WarningModalWarning" onDismiss={onDismiss}>
+    <Modal title="You don't get token this back!" onDismiss={onDismiss}>
       <TicketsList>
         Warning: this rugged token is used for verification only.
         <br />
