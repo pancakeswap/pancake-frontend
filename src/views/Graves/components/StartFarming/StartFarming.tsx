@@ -39,6 +39,7 @@ interface StartFarmingProps {
 
 const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, isAllowance, updateAllowance, updateResult }) => {
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
+  const [isZombieAllowance, setZombieAllowance] = useState(!get.zombieAllowance().isZero());
   const [zombieBalance, setZombieBalance] = useState(get.zombieAllowance());
 
   const [grave, setGrave] = useState(get.grave(pid))
@@ -111,7 +112,8 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, isAllo
     // if(account) {
       zmbeContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
         .send({ from: get.account() }).then(() => {
-        updateAllowance(zmbeContract, pid);
+          console.log("approved zmbe")
+          setZombieAllowance(true)
       })
     // }
   }
@@ -131,7 +133,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, isAllo
     return <div className="space-between">
       {get.account() ?
         !userInfo.paidUnlockFee ?
-        get.zombieAllowance().gt(0) ?
+          isZombieAllowance ?
           <button onClick={handleUnlock} className="btn btn-disabled w-100" type="button">Unlock Grave</button> :
           <button onClick={handleApprove} className="btn btn-disabled w-100" type="button">Approve ZMBE</button>
         :

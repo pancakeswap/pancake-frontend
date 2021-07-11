@@ -106,7 +106,6 @@ export const grave = (pid: number, setUserInfoState?, setPoolInfoState?) => {
                   minimumStake: new BigNumber(poolInfoRes.minimumStake),
                 }))
               if (setPoolInfoState) {
-                console.log(get.grave(pid))
                 setPoolInfoState(get.grave(pid))
               }
             }
@@ -134,7 +133,6 @@ export const grave = (pid: number, setUserInfoState?, setPoolInfoState?) => {
               minimumStake: new BigNumber(poolInfoRes.minimumStake),
             }))
           if (setPoolInfoState) {
-            console.log(get.grave(pid))
             setPoolInfoState(get.grave(pid))
           }
         }

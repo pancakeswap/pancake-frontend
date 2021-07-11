@@ -15,10 +15,6 @@ import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import Graves from './views/Graves'
-import tombs from './views/Tombs/data'
-import { getAddress } from './utils/addressHelpers'
-import { BIG_ZERO } from './utils/bigNumber'
-import store from './redux/store'
 import * as fetch from './redux/fetch'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
