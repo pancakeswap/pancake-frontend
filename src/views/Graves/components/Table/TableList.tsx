@@ -7,6 +7,8 @@ import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils
 import tokens from 'config/constants/tokens';
 import numeral from 'numeral';
 import { getGraveTombApr } from '../../../../utils/apr'
+import { Grave } from '../../../../redux/types'
+import { grave } from '../../../../redux/get'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -39,34 +41,15 @@ const ArrowIcon = styled(BaseLayout)`
   margin-right: 0.3em;
 `
 
-interface Result {
-  paidUnlockFee: boolean,
-  rugDeposited: number
-}
-
 interface TableListProps {
   handler: any
   zombieUsdPrice: number,
-  details: {
-    id: number,
-    name: string,
-    path: string,
-    type: string,
-    withdrawalCooldown: string,
-    nftRevivalTime: string,
-    rug: any,
-    artist?: any,
-    stakingToken: any,
-    pid: number,
-    result: Result,
-    poolInfo: any,
-    pendingZombie: any,
-    totalGraveAmount: any
-  }
+  pid: number
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
-  const { details: { pid, name, path, rug, poolInfo, pendingZombie, totalGraveAmount }, zombieUsdPrice, handler } = props;
+  const { pid, zombieUsdPrice, handler } = props
+  const { name, rug, poolInfo, userInfo: { pendingZombie } } = grave(pid);
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
      allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -75,9 +58,8 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const poolWeight = allocPoint ? allocPoint.div(100) : null
 
   const [isOpen, setIsOpen] = useState(false);
-
   const bigZombiePrice = getDecimalAmount(new BigNumber(zombieUsdPrice))
-  const apr = getGraveTombApr(poolWeight, bigZombiePrice, new BigNumber(totalGraveAmount).times(zombieUsdPrice))
+  const apr = getGraveTombApr(poolWeight, bigZombiePrice, poolInfo.totalStakingTokenStaked.times(zombieUsdPrice))
   const dailyApr = apr / 365
   const displayApr = apr > 10 ? numeral(apr).format('(0.00 a)') : numeral(apr).format('(0.0000 a)')
   const displayDailyApr = dailyApr > 100 ? numeral(dailyApr).format('(0.00 a)') : numeral(dailyApr).format('(0.00000 a)')
@@ -95,7 +77,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="into-two-td">
                 <div className="info-1">
                   <div className="info-icon">
-                    {rug !== '' ?
+                    {typeof rug !== "undefined" ?
                       <>
                         <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
                         <img src={`images/tokens/${rug.symbol}.png`} alt="rugicon" className="icon" />
@@ -134,7 +116,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           </td>
           <td className="td-width-25">
             <DisplayFlex>
-              <span className="total-earned">{numeral(getBalanceAmount(totalGraveAmount).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
+              <span className="total-earned">{numeral(getBalanceAmount(poolInfo.totalStakingTokenStaked).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
               <div className="earned">TVL</div>
             </DisplayFlex>
           </td>

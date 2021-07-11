@@ -12,9 +12,9 @@ const tableData = [
     type: 'image',
     withdrawalCooldown: '3 days',
     nftRevivalTime: '30 days',
-    rug: '',
+    rug: undefined,
     artist: artists.RugZombie,
-    stakingToken: '',
+    stakingToken: undefined,
     pcsVersion: 'v2',
     liquidityDetails: '',
     result: {

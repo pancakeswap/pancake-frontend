@@ -9,32 +9,13 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
 import { BIG_TEN, BIG_ZERO } from '../../../../utils/bigNumber'
-
-interface Result {
-    paidUnlockFee: boolean,
-    rugDeposited: number,
-    tokenWithdrawalDate: any,
-    amount: any
-}
+import { Grave } from '../../../../redux/types'
+import { grave } from '../../../../redux/get'
 
 interface WithdrawZombieModalProps {
-    details: {
-        id: number,
-        pid: number,
-        name: string,
-        path?: string,
-        type?: string,
-        withdrawalCooldown: string,
-        nftRevivalTime?: string,
-        rug?: any,
-        artist?: any,
-        stakingToken: any,
-        result: Result
-    },
+    pid: number,
     zombieBalance: BigNumber,
     zombieUsdPrice: number,
-    poolInfo: any,
-    userInfo: any,
     updateResult: any,
     onDismiss?: () => void
 }
@@ -43,7 +24,8 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pid }, userInfo, poolInfo, zombieUsdPrice, updateResult, onDismiss }) => {
+const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ pid, zombieUsdPrice, updateResult, onDismiss }) => {
+    const {userInfo, poolInfo} = grave(pid)
     const currentDate = Math.floor(Date.now() / 1000);
 
     const drFrankenstein = useDrFrankenstein();
@@ -196,7 +178,7 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
                 MAX
         </StyledButton>
         </Flex>
-        {currentDate >= parseInt(userInfo.tokenWithdrawalDate) ?
+        {currentDate >= userInfo.tokenWithdrawalDate ?
             <Button mt="8px" as="a" onClick={handleWithDraw} disabled={isDisabled} variant="secondary">
                 Withdraw ZMBE
             </Button> :

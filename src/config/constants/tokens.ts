@@ -669,6 +669,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://cosmos.network/',
   },
+  none: {
+    symbol: '',
+    address: {
+      56: '',
+      97: '',
+    },
+    decimals: 0,
+    projectLink: '',
+  },
 }
 
 export default tokens

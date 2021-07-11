@@ -54,17 +54,17 @@ export default function reducer(state = defaultState, action) {
     case types.UPDATE_TOMB:
       return {
         ...state,
-        tombs: tombs.map(tomb => tomb.pid === action.payload.pid ? { ...tomb, result: { ...tomb.result, ...action.payload.tombResult } } : tomb),
+        tombs: state.tombs.map(tomb => tomb.pid === action.payload.pid ? { ...tomb, result: { ...tomb.result, ...action.payload.tombResult } } : tomb),
       }
     case types.UPDATE_GRAVE_POOL_INFO:
       return {
         ...state,
-        graves: graves.map(grave => grave.pid === action.payload.pid ? { ...grave, poolInfo: { ...grave.poolInfo, ...action.payload.poolInfo } } : grave),
+        graves: state.graves.map(grave => grave.pid === action.payload.pid ? { ...grave, poolInfo: { ...grave.poolInfo, ...action.payload.poolInfo } } : grave),
       }
     case types.UPDATE_GRAVE_USER_INFO:
       return {
         ...state,
-        graves: graves.map(grave => grave.pid === action.payload.pid ? { ...grave, userInfo: { ...grave.userInfo, ...action.payload.userInfo } } : grave),
+        graves: state.graves.map(grave => grave.pid === action.payload.pid ? { ...grave, userInfo: { ...grave.userInfo, ...action.payload.userInfo } } : grave),
       }
     case types.UPDATE_DR_FRANKENSTEIN_ZOMBIE_BALANCE:
       return {

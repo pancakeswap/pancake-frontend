@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BaseLayout } from '@rug-zombie-libs/uikit'
-import { BigNumber } from 'bignumber.js'
 import FrankEarned from '../FrankEarned/FrankEarned'
 import StartFarming from '../StartFarming/StartFarming'
 import BuyFrank from '../BuyFrank/BuyFrank'
 import RugInDetails from '../RugInDetails'
 import TableList from './TableList'
+import { grave } from '../../../../redux/get'
 
 const TableCards = styled(BaseLayout)`
   align-items: stretch;
@@ -18,29 +18,8 @@ const TableCards = styled(BaseLayout)`
   }
 `
 
-interface TableData {
-  id: number,
-  name: string,
-  subtitle: string,
-  path: string,
-  type: string,
-  withdrawalCooldown: string,
-  nftRevivalTime: string,
-  rug: any,
-  artist?: any,
-  stakingToken: any,
-  pid: number,
-  result : any,
-  poolInfo: any,
-  userInfo: any,
-  pendingZombie: any,
-  totalGraveAmount: any,
-  pcsVersion: any,
-  liquidityDetails: any
-}
-
 interface TableProps {
-  details: TableData,
+  pid: number,
   isAllowance: boolean,
   bnbInBusd: number,
   updateAllowance: any,
@@ -48,16 +27,15 @@ interface TableProps {
   zombieUsdPrice: number,
 }
 
-const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
+const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const openInDetails = (data) => {
     setIsOpen(data);
   }
-
   const TableListProps = {
     "handler": openInDetails,
     zombieUsdPrice,
-    details,
+    pid,
   }
 
   return (
@@ -70,11 +48,11 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAl
           <div className="table-bottom">
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
-                <FrankEarned pid={details.pid} pendingZombie={details.pendingZombie}/>
-                <StartFarming updateResult={updateResult} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} details={details} isAllowance={isAllowance}  />
-                <BuyFrank details={details} />
+                <FrankEarned pid={pid}/>
+                <StartFarming updateResult={updateResult} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} pid={pid} isAllowance={isAllowance}  />
+                <BuyFrank pid={pid} />
               </div>
-              <RugInDetails bnbInBusd={bnbInBusd} details={details} zombieUsdPrice={zombieUsdPrice} />
+              <RugInDetails bnbInBusd={bnbInBusd} pid={pid} zombieUsdPrice={zombieUsdPrice} />
             </div>
           </div>
         ) : null}

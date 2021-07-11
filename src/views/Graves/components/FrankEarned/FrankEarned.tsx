@@ -4,13 +4,15 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import tokens from 'config/constants/tokens';
 import { useDrFrankenstein } from 'hooks/useContract';
 import { useWeb3React } from '@web3-react/core';
+import { grave } from '../../../../redux/get'
+import { BIG_ZERO } from '../../../../utils/bigNumber'
 
 interface FrankEarnedProps {
-  pid: number,
-  pendingZombie: any
+  pid: number
 }
 
-const FrankEarned: React.FC<FrankEarnedProps> = ({ pendingZombie, pid }) => {
+const FrankEarned: React.FC<FrankEarnedProps> = ({ pid }) => {
+  const { userInfo: { pendingZombie } } = grave(pid)
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
 
@@ -34,7 +36,7 @@ const FrankEarned: React.FC<FrankEarnedProps> = ({ pendingZombie, pid }) => {
         <div className="frank-earned">
           <span className="text-shadow">{getFullDisplayBalance(new BigNumber(pendingZombie), tokens.zmbe.decimals, 4)}</span>
         </div>
-        <button disabled={pendingZombie === "0"} onClick={handleHarvest} className={`btn w-auto harvest ${pendingZombie === "0" ? 'btn-disabled':''}`} type="button">Harvest</button>
+        <button disabled={pendingZombie.eq(BIG_ZERO)} onClick={handleHarvest} className={`btn w-auto harvest ${pendingZombie.eq(BIG_ZERO) ? 'btn-disabled':''}`} type="button">Harvest</button>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js'
 import * as actions from './actionTypes'
-import { UPDATE_DR_FRANKENSTEIN_ZOMBIE_BALANCE } from './actionTypes'
+import { PoolInfo, UserInfo } from './types'
 
 export const updateAccount = (account: string) => ({
   type: actions.UPDATE_ACCOUNT,
@@ -59,15 +59,15 @@ export const updateTomb = (pid: number, tombResult) => ({ // todo add tomb resul
   },
 })
 
-export const updateGravePoolInfo = (pid: number, poolInfo) => ({
-  type: actions.UPDATE_GRAVE_POOL_INFO,
+export const updateGravePoolInfo = (pid: number, poolInfo: PoolInfo) => {
+  return {type: actions.UPDATE_GRAVE_POOL_INFO,
   payload: {
     pid,
     poolInfo
-  },
-})
+  },}
+}
 
-export const updateGraveUserInfo = (pid: number, userInfo) => ({
+export const updateGraveUserInfo = (pid: number, userInfo: UserInfo) => ({
   type: actions.UPDATE_GRAVE_USER_INFO,
   payload: {
     pid,

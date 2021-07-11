@@ -8,32 +8,20 @@ import BigNumber from 'bignumber.js';
 import numeral from 'numeral';
 import { Token } from '../../../../config/constants/types'
 import { BASE_V1_EXCHANGE_URL } from '../../../../config'
+import { Grave } from '../../../../redux/types'
+import { grave } from '../../../../redux/get'
 
 
 interface RugInDetailsProps {
-  details: {
-    id: number,
-    pid: number,
-    subtitle: string,
-    path: string,
-    type: string,
-    withdrawalCooldown: string,
-    nftRevivalTime: string,
-    rug: Token,
-    artist?: any,
-    stakingToken: any,
-    poolInfo: any,
-    totalGraveAmount: any,
-    pcsVersion: any,
-    liquidityDetails: string
-  },
+  pid: number,
   bnbInBusd: number,
   zombieUsdPrice: number
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
-  details: { id, subtitle, rug, pcsVersion, liquidityDetails,pid, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist, totalGraveAmount }, zombieUsdPrice, bnbInBusd,
+  pid , zombieUsdPrice, bnbInBusd,
 }) => {
+  const { id, subtitle, rug, pcsVersion, liquidityDetails, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist } = grave(pid)
   const drFrankenstein = useDrFrankenstein();
 
   const [unlockFee, setUnlockFee] = useState(0);
@@ -80,7 +68,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         </span>
         <span className="indetails-title">
           Grave TVL:
-          <span className="indetails-value">{numeral(getBalanceAmount(totalGraveAmount).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
+          <span className="indetails-value">{numeral(getBalanceAmount(poolInfo.totalStakingTokenStaked).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
         </span>
         <span className="indetails-title">
           <LinkExternal bold={false} small href={artist.twitter}>
@@ -88,7 +76,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         </LinkExternal>
         </span>
         <br/>
-        <span className="indetails-type">{rug.symbol}</span>
+        <span className="indetails-type">{pid === 0 ? tokens.zmbe.symbol : rug.symbol}</span>
         <span className="indetails-title">
           Liquidity:
           <span className="indetails-value">{liquidity}</span>

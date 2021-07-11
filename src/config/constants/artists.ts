@@ -14,7 +14,10 @@ const artists = {
   deadtunnelrat: {
     name: 'TUNNEL RAT',
     twitter: 'https://twitter.com/deadtunnelrat'
-
+  },
+  none: {
+    name: '',
+    twitter: '/'
   }
 }
 
