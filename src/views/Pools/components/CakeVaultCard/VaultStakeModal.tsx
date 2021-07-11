@@ -31,7 +31,7 @@ const StyledButton = styled(Button)`
 `
 
 const callOptions = {
-  gasLimit: 285000,
+  gasLimit: 380000,
 }
 
 const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isRemovingStake = false, onDismiss }) => {
