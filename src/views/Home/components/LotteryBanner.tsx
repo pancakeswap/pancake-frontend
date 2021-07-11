@@ -113,7 +113,16 @@ const LotteryBanner: React.FC<{ currentLotteryPrize: string }> = ({ currentLotte
                   <Skeleton height={40} width={120} mb="10px" mt="10px" mr="8px" />
                 </>
               ) : (
-                <Balance fontSize="40px" color="#ffffff" bold prefix="$" mr="8px" decimals={0} value={prizeTotal} />
+                <Balance
+                  fontSize="40px"
+                  color="#ffffff"
+                  bold
+                  prefix="$"
+                  mr="8px"
+                  decimals={0}
+                  value={prizeTotal}
+                  fixedWidth
+                />
               )}
             </>
             <Text fontSize="40px" color="#ffffff" bold>

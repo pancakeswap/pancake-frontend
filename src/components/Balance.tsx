@@ -9,6 +9,7 @@ interface BalanceProps extends TextProps {
   isDisabled?: boolean
   prefix?: string
   onClick?: (event: React.MouseEvent<HTMLElement>) => void
+  fixedWidth?: boolean
 }
 
 const Balance: React.FC<BalanceProps> = ({
@@ -19,19 +20,48 @@ const Balance: React.FC<BalanceProps> = ({
   unit,
   prefix,
   onClick,
+  fixedWidth,
   ...props
 }) => {
   const previousValue = useRef(0)
+  const containerStyles = () => {
+    if (fixedWidth) {
+      return {
+        marginRight: '0px',
+        marginLeft: '0px',
+        paddingRight: '0px',
+        paddingLeft: '0px',
+      }
+    }
+    return {}
+  }
+  const replaceDigitsWithWider = () => {
+    const valueString = value.toLocaleString(undefined, { maximumFractionDigits: decimals })
+    return valueString.replaceAll('1', '9')
+  }
 
   useEffect(() => {
     previousValue.current = value
   }, [value])
 
   return (
-    <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
-      {prefix && <span>{prefix}</span>}
-      <CountUp start={previousValue.current} end={value} decimals={decimals} duration={1} separator="," />
-      {unit && <span>{unit}</span>}
+    <Text style={containerStyles()} color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
+      {fixedWidth && (
+        <Text style={{ visibility: 'hidden', height: '0px' }} {...props}>
+          {prefix && <span>{prefix}</span>}
+          {replaceDigitsWithWider()}
+          {unit && <span>{unit}</span>}
+        </Text>
+      )}
+      <CountUp
+        start={previousValue.current}
+        end={value}
+        prefix={prefix}
+        suffix={unit}
+        decimals={decimals}
+        duration={1}
+        separator=","
+      />
     </Text>
   )
 }
