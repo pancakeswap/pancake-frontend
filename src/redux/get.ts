@@ -1,8 +1,17 @@
 import { BigNumber } from 'bignumber.js'
 import store from './store'
+import { Grave, PoolInfo, UserInfo } from './types'
 
 export const account = (): string => {
   return store.getState().account
+}
+
+export const zombieAllowance = (): BigNumber => {
+  return store.getState().zombie.allowance
+}
+
+export const zombieTotalSupply = (): BigNumber => {
+  return store.getState().zombie.totalSupply
 }
 
 export const zombiePriceBnb = (): BigNumber => {
@@ -29,6 +38,21 @@ export const zmbeBnbTomb = (): any => {
   return store.getState().tombs[0]
 }
 
+export const graveByPid = (pid: number): any => {
+  return store.getState().graves.find(g => g.pid === pid)
+}
+
+export const graves = (): Grave[] => {
+  return store.getState().graves
+}
+
+export const graveUserInfo = (pid: number): UserInfo => {
+  return store.getState().graves[pid].userInfo
+}
+
+export const grave = (pid: number): Grave => {
+  return store.getState().graves.find(g => g.pid === pid)
+}
 
 // store lpreserves
 

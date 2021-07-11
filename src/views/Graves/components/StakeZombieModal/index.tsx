@@ -10,30 +10,13 @@ import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
-
-interface Result {
-  paidUnlockFee: boolean,
-  rugDeposited: number,
-  amount: BigNumber
-}
+import { Grave } from '../../../../redux/types'
+import { grave } from '../../../../redux/get'
 
 interface StakeZombieModalProps {
-  details: {
-    id: number,
-    pid: number,
-    name: string,
-    path?: string,
-    type?: string,
-    withdrawalCooldown: string,
-    nftRevivalTime?: string,
-    rug?: any,
-    artist?: any,
-    stakingToken: any,
-    result: Result,
-  },
+  pid: number,
   zombieBalance: BigNumber,
   zombieUsdPrice: number,
-  poolInfo: any,
   updateResult: any,
   onDismiss?: () => void
 }
@@ -42,8 +25,8 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid, result: { amount } }, zombieUsdPrice, zombieBalance, poolInfo, updateResult, onDismiss }) => {
-
+const StakeZombieModal: React.FC<StakeZombieModalProps> = ({pid, zombieUsdPrice, zombieBalance, updateResult, onDismiss }) => {
+  const {userInfo: {amount}, poolInfo} = grave(pid)
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
 

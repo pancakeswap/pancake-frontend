@@ -1,31 +1,22 @@
 import React, { useState } from 'react'
 import { useModal } from '@rug-zombie-libs/uikit';
 import ModalInput from 'components/ModalInput/ModalInput';
+import { BigNumber } from 'bignumber.js'
 import { formatDuration } from '../../../../utils/timerHelpers'
+import { Grave } from '../../../../redux/types'
+import { BIG_ZERO } from '../../../../utils/bigNumber'
+import { grave } from '../../../../redux/get'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 
-interface Details {
-  id: number,
-  name: string,
-  path: string,
-  type: string,
-  withdrawalCooldown: string,
-  nftRevivalTime: string,
-  rug: any,
-  artist?: any,
-  stakingToken: any,
-  pid: number,
-  result: any,
-  poolInfo: any,
-  pendingZombie: any
-}
+
 
 interface BuyFrankProps {
-  details: Details
+  pid: number
 }
 
-const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } }, details }) => {
+const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
+  const { userInfo: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } } = grave(pid)
   const currentDate = Math.floor(Date.now() / 1000);
   let nftRevivalDateFixed = nftRevivalDate
   if(nftRevivalDate < 0) {
@@ -35,15 +26,13 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
   if(tokenWithdrawalDate < 0) {
     withdrawCooldownTimeFixed = currentDate
   }
-  const initialNftTime = parseInt(nftRevivalDateFixed) - currentDate;
+  const initialNftTime = nftRevivalDateFixed - currentDate;
 
-  const initialWithdrawCooldownTime = parseInt(withdrawCooldownTimeFixed) - currentDate;
-
-  const [onPresent1] = useModal(<ModalInput inputTitle="Stake $ZMBE" />);
+  const initialWithdrawCooldownTime = withdrawCooldownTimeFixed - currentDate;
   return (
     // eslint-disable-next-line no-nested-ternary
     paidUnlockFee ?
-      amount === '0' ?
+      amount.eq(BIG_ZERO) ?
         <div className="frank-card">
         <span className="total-earned text-shadow">
                 Unlocked
@@ -51,7 +40,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
         </div> :
       <div className="frank-card">
         <div className="space-between">
-          {currentDate >= parseInt(nftRevivalDate) ?
+          {currentDate >= nftRevivalDate ?
             <span className="total-earned text-shadow">NFT is Ready</span> :
             <div>
               <div className="small-text">
@@ -59,7 +48,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
               </div>
               <span className="total-earned text-shadow">{formatDuration(initialNftTime)}</span>
             </div>}
-          {currentDate >= parseInt(tokenWithdrawalDate) ?
+          {currentDate >= tokenWithdrawalDate ?
             <span className="total-earned text-shadow">No Withdraw Fees</span> :
             <div>
               <div className="small-text">

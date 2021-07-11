@@ -13,13 +13,15 @@ const artists = {
   },
   deadtunnelrat: {
     name: 'TUNNEL RAT',
-    twitter: 'https://twitter.com/deadtunnelrat'
+    twitter: 'https://twitter.com/deadtunnelrat',
   },
   jussjoshinduh: {
     name: 'Jussjoshinduh',
-    twitter: 'https://twitter.com/jussjoshinduh'
-
-  }
+    twitter: 'https://twitter.com/jussjoshinduh',
+    none: {
+      name: '',
+      twitter: '/',
+    },
+  },
 }
-
 export default artists

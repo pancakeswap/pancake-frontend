@@ -13,27 +13,11 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import WarningModal from '../WarningModal'
 import WarningDepositRugModal from '../WarningDepositRugModal'
-
-interface Result {
-  paidUnlockFee: boolean,
-  rugDeposited: number
-}
+import { Grave } from '../../../../redux/types'
+import { grave } from '../../../../redux/get'
 
 interface StakeModalProps {
-  details: {
-    id: number,
-    pid: number,
-    name: string,
-    path?: string,
-    type?: string,
-    withdrawalCooldown: string,
-    nftRevivalTime?: string,
-    rug?: any,
-    artist?: any,
-    stakingToken: any,
-    pcsVersion: string,
-    result: Result
-  },
+  pid: number,
   updateResult: any,
   onDismiss?: () => void,
   updateAllowance: any,
@@ -43,7 +27,8 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid, pcsVersion }, updateResult, onDismiss }) => {
+const StakeModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismiss }) => {
+  const { rug, pcsVersion } = grave(pid)
   let rugTokenBalance = BIG_ZERO;
 
   if (pid !== 0) {
@@ -54,7 +39,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid, p
   const { account } = useWeb3React();
 
   const { theme } = useTheme();
-  const [stakeAmount, setStakeAmount] = useState('');
+  const [stakeAmount, setStakeAmount] = useState('0');
   const [percent, setPercent] = useState(0)
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,8 +78,9 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid, p
   />
   )
 
+  console.log(rugTokenBalance.toString())
 
-  return <Modal  onDismiss={onDismiss} title={details.rug === '' ? "Stake $Zmbe" : `Stake ${rug.symbol}`} headerBackground={theme.colors.gradients.cardHeader}>
+  return <Modal  onDismiss={onDismiss} title={typeof rug === "undefined" ? "Stake ZMBE" : `Stake ${rug.symbol}`} headerBackground={theme.colors.gradients.cardHeader}>
     <Flex alignItems="center" justifyContent="space-between" mb="8px">
       <Text bold>Stake</Text>
       <Flex alignItems="center" minWidth="70px">

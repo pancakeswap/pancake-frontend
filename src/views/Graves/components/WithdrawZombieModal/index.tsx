@@ -9,31 +9,13 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
 import { BIG_TEN, BIG_ZERO } from '../../../../utils/bigNumber'
-
-interface Result {
-    paidUnlockFee: boolean,
-    rugDeposited: number,
-    tokenWithdrawalDate: any,
-    amount: any
-}
+import { Grave } from '../../../../redux/types'
+import { grave } from '../../../../redux/get'
 
 interface WithdrawZombieModalProps {
-    details: {
-        id: number,
-        pid: number,
-        name: string,
-        path?: string,
-        type?: string,
-        withdrawalCooldown: string,
-        nftRevivalTime?: string,
-        rug?: any,
-        artist?: any,
-        stakingToken: any,
-        result: Result
-    },
+    pid: number,
     zombieBalance: BigNumber,
     zombieUsdPrice: number,
-    poolInfo: any,
     updateResult: any,
     onDismiss?: () => void
 }
@@ -42,13 +24,14 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pid, result }, poolInfo, zombieUsdPrice, updateResult, onDismiss }) => {
+const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ pid, zombieUsdPrice, updateResult, onDismiss }) => {
+    const {userInfo, poolInfo} = grave(pid)
     const currentDate = Math.floor(Date.now() / 1000);
 
     const drFrankenstein = useDrFrankenstein();
     const { account } = useWeb3React();
 
-    const zombieStaked = new BigNumber(result.amount);
+    const zombieStaked = new BigNumber(userInfo.amount);
 
     const { theme } = useTheme();
     const [stakeAmount, setStakeAmount] = useState(BIG_ZERO);
@@ -56,22 +39,22 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
 
     let withdrawalDetails = <div />
     let isDisabled = false
-    const remainingAmount = new BigNumber(result.amount).minus(stakeAmount)
-    const maxPartialAmount = new BigNumber(result.amount).minus(poolInfo.minimumStake)
+    const remainingAmount = new BigNumber(userInfo.amount).minus(stakeAmount)
+    const maxPartialAmount = new BigNumber(userInfo.amount).minus(poolInfo.minimumStake)
 
     const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const ether = BIG_TEN.pow(18)
         const inputValue = event.target.value || '0'
         let bigInputValue = getDecimalAmount(new BigNumber(inputValue))
         const distanceFromPartialMax = Math.abs(maxPartialAmount.minus(bigInputValue).toNumber())
-        const distanceFromMax = Math.abs(bigInputValue.minus(result.amount).toNumber())
+        const distanceFromMax = Math.abs(bigInputValue.minus(userInfo.amount).toNumber())
 
         if(distanceFromPartialMax  < ether.toNumber()) {
             bigInputValue = maxPartialAmount
         }
 
         if(distanceFromMax  < ether.toNumber()) {
-          bigInputValue = new BigNumber(result.amount)
+          bigInputValue = new BigNumber(userInfo.amount)
         }
         setStakeAmount(bigInputValue);
     }
@@ -136,7 +119,7 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
         }
     }
 
-    if(stakeAmount.gt(result.amount)) {
+    if(stakeAmount.gt(userInfo.amount)) {
         isDisabled = true
         withdrawalDetails = <Text mt="8px" ml="auto" color="tertiary" fontSize="12px" mb="8px">
             Invalid Withdrawal: Insufficient ZMBE Staked
@@ -195,7 +178,7 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
                 MAX
         </StyledButton>
         </Flex>
-        {currentDate >= parseInt(result.tokenWithdrawalDate) ?
+        {currentDate >= userInfo.tokenWithdrawalDate ?
             <Button mt="8px" as="a" onClick={handleWithDraw} disabled={isDisabled} variant="secondary">
                 Withdraw ZMBE
             </Button> :

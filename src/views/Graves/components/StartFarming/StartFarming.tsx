@@ -2,7 +2,6 @@
 /* eslint-disable no-nested-ternary */
 import { useModal, BaseLayout } from '@rug-zombie-libs/uikit';
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core';
 import tokens from 'config/constants/tokens';
 import { ethers } from 'ethers';
 import { useIfoAllowance } from 'hooks/useAllowance';
@@ -11,13 +10,13 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import React, { useEffect, useState, useRef } from 'react';
 import BigNumber from 'bignumber.js'
 import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
-import { BIG_ZERO } from 'utils/bigNumber';
 import { useDrFrankenstein, useERC20 } from '../../../../hooks/useContract';
 import StakeModal from '../StakeModal';
 import StakeZombieModal from '../StakeZombieModal';
 import WithdrawZombieModal from '../WithdrawZombieModal';
-import useAuth from '../../../../hooks/useAuth'
-import { getZombieContract } from '../../../../utils/contractHelpers'
+import * as get from '../../../../redux/get'
+import * as fetch from '../../../../redux/fetch'
+
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -30,75 +29,54 @@ const DisplayFlex = styled(BaseLayout)`
   grid-gap: 0px;
 }`
 
-
-interface Result {
-  paidUnlockFee: boolean,
-  rugDeposited: number,
-  tokenWithdrawalDate: any,
-  amount: BigNumber,
-}
-
 interface StartFarmingProps {
-  details: {
-    id: number,
-    pid: number,
-    name: string,
-    path: string,
-    type: string,
-    withdrawalCooldown: string,
-    nftRevivalTime: string,
-    rug: any,
-    artist?: any,
-    stakingToken: any,
-    result: Result,
-    poolInfo: any,
-    pcsVersion: string,
-  },
+  pid: number,
   isAllowance: boolean,
   updateAllowance: any,
   updateResult: any,
   zombieUsdPrice: number,
-  zombieAllowance: number,
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result },zombieAllowance, zombieUsdPrice, isAllowance, updateAllowance, updateResult }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, isAllowance, updateAllowance, updateResult }) => {
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
+  const [zombieBalance, setZombieBalance] = useState(get.zombieAllowance());
 
-  const [rugTokenAmount, setRugTokenAmount] = useState(0);
+  const [grave, setGrave] = useState(get.grave(pid))
+  const { rug, userInfo } = grave
 
-  const [zombieBalance, setZombieBalance] = useState(BIG_ZERO);
+  const onUpdate = () => {
+    fetch.grave(pid, setGrave)
+  }
 
   const [onPresentStake] = useModal(
     <StakeModal
-      details={details}
-      updateResult={updateResult}
+      pid={pid}
+      updateResult={onUpdate}
       updateAllowance={updateAllowance}
     />,
   );
 
+
   const [onPresentZombieStake] = useModal(
     <StakeZombieModal
-      details={details}
+      pid={pid}
       zombieBalance={zombieBalance}
       zombieUsdPrice={zombieUsdPrice}
-      poolInfo={poolInfo}
-      updateResult={updateResult}
+      updateResult={onUpdate}
     />,
   )
 
   const [onPresentWithdrawStake] = useModal(
     <WithdrawZombieModal
-      details={details}
+      pid={pid}
       zombieBalance={zombieBalance}
       zombieUsdPrice={zombieUsdPrice}
-      poolInfo={poolInfo}
-      updateResult={updateResult}
+      updateResult={onUpdate}
     />
   )
 
 
   const zmbeContract = useERC20(getAddress(tokens.zmbe.address));
-  const { account } = useWeb3React();
   const drFrankenstein = useDrFrankenstein();
 
   let allowance;
@@ -123,8 +101,8 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
   const handleUnlock = () => {
     drFrankenstein.methods.unlockFeeInBnb(pid).call().then((res) => {
       drFrankenstein.methods.unlock(pid)
-        .send({ from: account, value: res }).then(() => {
-          updateResult(pid);
+        .send({ from: get.account(), value: res }).then(() => {
+          onUpdate();
         })
     });
   }
@@ -132,27 +110,15 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
   const handleApprove = () => {
     // if(account) {
       zmbeContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
-        .send({ from: account }).then((res) => {
+        .send({ from: get.account() }).then(() => {
         updateAllowance(zmbeContract, pid);
       })
     // }
   }
 
-
-  const handleDepositRug = () => {
-    drFrankenstein.methods.depositRug(pid, rugTokenAmount)
-      .send({ from: account });
-  }
-
-  const handleModal = () => {
-    console.log("stake zombie")
-    // todo : open modal then on submit call handleDepositRug
-    // handleDepositRug()
-  }
-
   const handleApproveRug = () => {
     rugContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
-      .send({ from: account }).then((res) => {
+      .send({ from: get.account() }).then((res) => {
         if (parseInt(res.toString()) !== 0) {
           setIsAllowanceForRugToken(true);
         } else {
@@ -160,17 +126,18 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
         }
       })
   }
+
   const renderButtonsForGrave = () => {
     return <div className="space-between">
-      {account ?
-        !paidUnlockFee ?
-        zombieAllowance > 0 ?
+      {get.account() ?
+        !userInfo.paidUnlockFee ?
+        get.zombieAllowance().gt(0) ?
           <button onClick={handleUnlock} className="btn btn-disabled w-100" type="button">Unlock Grave</button> :
           <button onClick={handleApprove} className="btn btn-disabled w-100" type="button">Approve ZMBE</button>
         :
         <div>
           <DisplayFlex>
-            <span style={{ paddingRight: '50px' }} className="total-earned text-shadow">{getFullDisplayBalance(new BigNumber(result.amount), tokens.zmbe.decimals, 4)}</span>
+            <span style={{ paddingRight: '50px' }} className="total-earned text-shadow">{getFullDisplayBalance(new BigNumber(userInfo.amount), tokens.zmbe.decimals, 4)}</span>
             <button onClick={onPresentWithdrawStake} style={{ marginRight: '10px' }} className="btn w-100" type="button">-</button>
             <button onClick={onPresentZombieStake} className="btn w-100" type="button">+</button>
           </DisplayFlex>
@@ -181,9 +148,9 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
 
   const renderButtonsForTraditionalGraves = () => {
     return <div className="space-between">
-      {account ?
+      {get.account() ?
         isAllowanceForRugToken ?
-        rugDeposited.toString() === '0' ?
+        userInfo.rugDeposited.toString() === '0' ?
           <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Deposit {rug.symbol}</button> :
           renderButtonsForGrave()
         : <button onClick={handleApproveRug} className="btn btn-disabled w-100" type="button">Approve {rug.symbol}</button>
