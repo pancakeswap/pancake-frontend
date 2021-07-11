@@ -86,7 +86,7 @@ export const tomb = (pid: number) => {
     })
 }
 
-export const grave = (pid: number, setUserInfoState?) => {
+export const grave = (pid: number, setUserInfoState?, setPoolInfoState?) => {
   getDrFrankensteinContract().methods.poolInfo(pid).call()
     .then(poolInfoRes => {
       if (pid !== 0) {
@@ -105,9 +105,12 @@ export const grave = (pid: number, setUserInfoState?) => {
                   unlockFee: new BigNumber(poolInfoRes.unlockFee),
                   minimumStake: new BigNumber(poolInfoRes.minimumStake),
                 }))
+              if (setPoolInfoState) {
+                console.log(get.grave(pid))
+                setPoolInfoState(get.grave(pid))
+              }
             }
           })
-
       } else {
         let traditionalGraveTotalStaked = BIG_ZERO
         get.graves().forEach(g => {
@@ -118,7 +121,7 @@ export const grave = (pid: number, setUserInfoState?) => {
         })
         let totalStaked = get.drFrankensteinZombieBalance().minus(traditionalGraveTotalStaked)
         totalStaked = totalStaked.isZero() || totalStaked.isNegative() ? get.grave(pid).poolInfo.totalStakingTokenStaked : totalStaked
-        if(poolInfoRes.allocPoint !== 0) {
+        if (poolInfoRes.allocPoint !== 0) {
           store.dispatch(updateGravePoolInfo(
             pid,
             {
@@ -130,6 +133,10 @@ export const grave = (pid: number, setUserInfoState?) => {
               unlockFee: new BigNumber(poolInfoRes.unlockFee),
               minimumStake: new BigNumber(poolInfoRes.minimumStake),
             }))
+          if (setPoolInfoState) {
+            console.log(get.grave(pid))
+            setPoolInfoState(get.grave(pid))
+          }
         }
       }
     })
@@ -157,9 +164,9 @@ export const grave = (pid: number, setUserInfoState?) => {
   }
 }
 
-export const initialGraveData = () => {
+export const initialGraveData = (setUserState?, setPoolState?) => {
   get.graves().forEach(g => {
-    grave(g.pid)
+    grave(g.pid, setUserState, setPoolState)
   })
 }
 

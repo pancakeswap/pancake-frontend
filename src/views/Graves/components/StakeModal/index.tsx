@@ -78,8 +78,6 @@ const StakeModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismiss })
   />
   )
 
-  console.log(rugTokenBalance.toString())
-
   return <Modal  onDismiss={onDismiss} title={typeof rug === "undefined" ? "Stake ZMBE" : `Stake ${rug.symbol}`} headerBackground={theme.colors.gradients.cardHeader}>
     <Flex alignItems="center" justifyContent="space-between" mb="8px">
       <Text bold>Stake</Text>

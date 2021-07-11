@@ -14,14 +14,15 @@ let accountAddress
 
 const Graves: React.FC = () => {
   const { account } = useWeb3React()
-  initialGraveData()
   const [isAllowance, setIsAllowance] = useState(false)
   const [farmData, setFarmData] = useState(graves())
+  useEffect(() => {
+    initialGraveData(undefined, setFarmData)
+  }, [])
 
   accountAddress = account
   const [bnbInBusd, setBnbInBusd] = useState(0)
 
-console.log('reloaded index')
   const updateResult = (pid) => {
     // getZombieContract().methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
     //   .then(res => {
@@ -30,6 +31,7 @@ console.log('reloaded index')
     grave(pid)
     // setFarmData(graves())
   }
+
 
     const updateAllowance = (tokenContact, pid) => {
       tokenContact.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()

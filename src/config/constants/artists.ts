@@ -18,10 +18,10 @@ const artists = {
   jussjoshinduh: {
     name: 'Jussjoshinduh',
     twitter: 'https://twitter.com/jussjoshinduh',
-    none: {
-      name: '',
-      twitter: '/',
-    },
+  },
+  none: {
+    name: '',
+    twitter: '/',
   },
 }
 export default artists

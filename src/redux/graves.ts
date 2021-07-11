@@ -19,6 +19,7 @@ const graves: Grave[] = [
     stakingToken: '',
     pcsVersion: 'v2',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -51,6 +52,7 @@ const graves: Grave[] = [
     stakingToken: '0x909e59fFFcF1481Df184831eEea6680Cd437A340',
     pcsVersion: 'v1',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -83,6 +85,7 @@ const graves: Grave[] = [
     stakingToken: '0xD4Ced04fB7129CDB43ffef1cf3DE3Ac701c6cE33',
     pcsVersion: 'v1',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -115,6 +118,40 @@ const graves: Grave[] = [
     stakingToken: '0x8fab22cB7C58b193Fd498ed0EF3B574d70E4f759',
     pcsVersion: 'none',
     liquidityDetails: 'None! This grave is exclusive for victims of the flash loan attack on autoshark.',
+    isNew: false,
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      rugDeposited: BIG_ZERO,
+      amount: BIG_ZERO,
+      pendingZombie: BIG_ZERO,
+    },
+    poolInfo: {
+      lpToken: undefined,
+      unlockFee: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalStakingTokenStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+      allocPoint: 0
+    },
+  },
+  {
+    id: 5,
+    pid: 13,
+    name: 'The US Dollar Rare',
+    subtitle: 'DeadDollar',
+    path: 'images/rugZombie/DeadDollar.png',
+    type: 'image',
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '30 days',
+    rug: tokens.busd,
+    artist: artists.TheLeap3d,
+    stakingToken: '0xB95B670b9Cd0Da6D9C65dab68c41c394633410b4',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: true,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -147,6 +184,7 @@ const graves: Grave[] = [
     stakingToken: '0xfB33d25b41F1b0fa95AEa52486C3F05f2aDEE396',
     pcsVersion: 'v1',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -179,6 +217,7 @@ const graves: Grave[] = [
     pcsVersion: 'v2',
     stakingToken: '0xD1e00C08E938B808F2d65dd108aE50948a9Ca1b4',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -211,6 +250,40 @@ const graves: Grave[] = [
     stakingToken: '0x26dF9e0fbd5624941767516BbF218554CfA3A110',
     pcsVersion: 'v1',
     liquidityDetails: '',
+    isNew: false,
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      rugDeposited: BIG_ZERO,
+      amount: BIG_ZERO,
+      pendingZombie: BIG_ZERO,
+    },
+    poolInfo: {
+      lpToken: undefined,
+      unlockFee: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalStakingTokenStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+      allocPoint: 0
+    },
+  },
+  {
+    id: 9,
+    pid: 14,
+    name: 'Uranium Finance Uncommon',
+    subtitle: 'The Rad Chad',
+    path: 'images/rugZombie/The Rad Chad.png',
+    type: 'image',
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '14 days',
+    rug: tokens.u92,
+    artist: artists.jussjoshinduh,
+    pcsVersion: 'v2',
+    stakingToken: '0xB0CEA8C1AaA7a62de12BC5c15f0de1694ED9fab7',
+    liquidityDetails: '',
+    isNew: true,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -243,6 +316,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     stakingToken: '0x645ad805c464133Eba5c4152Ce14547a01F821f7',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -275,6 +349,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     stakingToken: '0x02F6DE73919aE9d43A1E0520dBCBF81bCda5B514',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -307,6 +382,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     stakingToken: '0x9EbD27Bd3957F13f8E7fef988E96B8EE1998bc80',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -339,6 +415,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     stakingToken: '0x634A554d2FF1609d50740240140B452dF60D035c',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -371,6 +448,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     stakingToken: '0xFceB2967AB8EcC29589E9232f78f8441832d2aD6',
     liquidityDetails: '',
+    isNew: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,

@@ -34,6 +34,7 @@ export interface Grave {
   type: string,
   withdrawalCooldown: string,
   nftRevivalTime: string,
+  isNew: boolean,
   rug: Token,
   artist: Artist,
   pcsVersion: string,

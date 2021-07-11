@@ -49,7 +49,7 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { pid, zombieUsdPrice, handler } = props
-  const { name, rug, poolInfo, userInfo: { pendingZombie } } = grave(pid);
+  const { name, rug, poolInfo, isNew, userInfo: { pendingZombie } } = grave(pid);
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
      allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -77,7 +77,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="into-two-td">
                 <div className="info-1">
                   <div className="info-icon">
-                    {typeof rug !== "undefined" ?
+                    { rug !== tokens.none ?
                       <>
                         <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
                         <img src={`images/tokens/${rug.symbol}.png`} alt="rugicon" className="icon" />
