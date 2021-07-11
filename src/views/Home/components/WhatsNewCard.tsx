@@ -32,16 +32,19 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>Two new graves? Checkout the Graves tab.</Text>
+            <Text fontSize='14px'>1. Two new graves? Checkout the Graves tab.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>Spawning pools are ready, just awaiting artwork to be completed.</Text>
+            <Text fontSize='14px'>2. Auctions releasing soon!</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>Auctions will be releasing sooner than we expected.</Text>
+            <Text fontSize='14px'>3. Spawning pools ready, just awaiting artwork to be completed (Expecting end of week).</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>App Optimizations (done) - Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
+            <Text fontSize='14px'>4. Releasing referral program along with some bigger news (1-2 weeks).</Text>
+          </Row>
+          <Row>
+            <Text fontSize='14px'>5. Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
           </Row>
         </>
 
