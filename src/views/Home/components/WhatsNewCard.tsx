@@ -41,7 +41,7 @@ const TotalValueLockedCard: React.FC = () => {
             <Text fontSize='14px'>Auctions will be releasing sooner than we expected.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>Application optimizations (2/3) - Adding Redux layer to Graves page.</Text>
+            <Text fontSize='14px'>App Optimizations (done) - Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
           </Row>
         </>
 
