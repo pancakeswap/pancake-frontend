@@ -1662,5 +1662,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xe898EDc43920F357A93083F1d4460437dE6dAeC2.png"
+  },
+  {
+    "name": "Tranchess",
+    "symbol": "CHESS",
+    "address": "0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6.png"
   }
 ]

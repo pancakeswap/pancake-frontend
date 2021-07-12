@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-07-09T08:02:06.456Z",
+  "timestamp": "2021-07-12T03:06:33.828Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 7
+    "patch": 8
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -411,6 +411,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x1613957159e9b0ac6c80e824f7eea748a32a0ae2.png"
+    },
+    {
+      "name": "Tranchess",
+      "symbol": "CHESS",
+      "address": "0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6.png"
     },
     {
       "name": "Chromia",
