@@ -37,7 +37,7 @@ interface StartFarmingProps {
   zombieUsdPrice: number,
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, isAllowance, updateAllowance, updateResult }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, updateAllowance, updateResult }) => {
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
   const [isZombieAllowance, setZombieAllowance] = useState(!get.zombieAllowance().isZero());
   const [zombieBalance, setZombieBalance] = useState(get.zombieAllowance());
@@ -46,7 +46,10 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, isAllo
   const { rug, userInfo } = grave
 
   const onUpdate = () => {
-    fetch.grave(pid, setGrave)
+    fetch.grave(pid, data => {
+      setGrave(data)
+
+    })
   }
 
   const [onPresentStake] = useModal(

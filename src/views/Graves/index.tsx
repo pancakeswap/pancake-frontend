@@ -7,7 +7,7 @@ import { getDrFrankensteinAddress } from 'utils/addressHelpers'
 import Page from '../../components/layout/Page'
 import Table from './components/Table'
 import './Graves.Styles.css'
-import { grave, initialGraveData } from '../../redux/fetch'
+import { grave, initialData, initialGraveData } from '../../redux/fetch'
 import { graves, zombiePriceUsd } from '../../redux/get'
 
 let accountAddress
@@ -16,9 +16,11 @@ const Graves: React.FC = () => {
   const { account } = useWeb3React()
   const [isAllowance, setIsAllowance] = useState(false)
   const [farmData, setFarmData] = useState(graves())
+  // const [userData, setUserData] = useState(graves())
   useEffect(() => {
+    initialData(account)
     initialGraveData(undefined, setFarmData)
-  }, [])
+  }, [account])
 
   accountAddress = account
   const [bnbInBusd, setBnbInBusd] = useState(0)

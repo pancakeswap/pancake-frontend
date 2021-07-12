@@ -29,6 +29,7 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [graveData, setGraveData] = useState(grave(pid))
   const openInDetails = (data) => {
     setIsOpen(data);
   }
@@ -49,7 +50,7 @@ const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateAllowa
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
                 <FrankEarned pid={pid}/>
-                <StartFarming updateResult={updateResult} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} pid={pid} isAllowance={isAllowance}  />
+                <StartFarming updateResult={setGraveData} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} pid={pid} isAllowance={isAllowance}  />
                 <BuyFrank pid={pid} />
               </div>
               <RugInDetails bnbInBusd={bnbInBusd} pid={pid} zombieUsdPrice={zombieUsdPrice} />
