@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  chess: {
+    symbol: 'CHESS',
+    address: {
+      56: '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://tranchess.com/',
+  },
   titan: {
     symbol: 'TITAN',
     address: {

@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 429,
+    lpSymbol: 'CHESS-USDC LP',
+    lpAddresses: {
+      97: '',
+      56: '0x1472976e0b97f5b2fc93f1fff14e2b5c4447b64f',
+    },
+    token: tokens.chess,
+    quoteToken: tokens.usdc,
+  },
+  {
     pid: 428,
     lpSymbol: 'TITAN-BUSD LP',
     lpAddresses: {
