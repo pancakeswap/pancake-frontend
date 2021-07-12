@@ -43,7 +43,12 @@ import { parseBigNumberObj } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
-import { fetchCurrentLotteryId, fetchCurrentLottery, fetchUserTicketsAndLotteries, fetchPastLotteries } from './lottery'
+import {
+  fetchCurrentLotteryId,
+  fetchCurrentLottery,
+  fetchUserTicketsAndLotteries,
+  fetchPublicLotteries,
+} from './lottery'
 import { useProcessLotteryResponse } from './lottery/helpers'
 
 export const usePollFarmsData = (includeArchive = false) => {
@@ -571,14 +576,15 @@ export const useFetchLottery = () => {
   const currentLotteryId = useGetCurrentLotteryId()
 
   useEffect(() => {
-    // get current lottery ID, max tickets and historical lottery subgraph data
+    // get current lottery ID & max ticket buy
     dispatch(fetchCurrentLotteryId())
-    dispatch(fetchPastLotteries())
   }, [dispatch])
 
   useEffect(() => {
-    // get public data for current lottery
     if (currentLotteryId) {
+      // Get historical lottery data from nodes + subgraph
+      dispatch(fetchPublicLotteries({ currentLotteryId }))
+      // get public data for current lottery
       dispatch(fetchCurrentLottery({ currentLotteryId }))
     }
   }, [dispatch, currentLotteryId, fastRefresh])
@@ -586,7 +592,7 @@ export const useFetchLottery = () => {
   useEffect(() => {
     // get user tickets for current lottery, and user lottery subgraph data
     if (account && currentLotteryId) {
-      dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId }))
+      dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
     }
   }, [dispatch, currentLotteryId, account])
 }

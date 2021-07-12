@@ -1,85 +1,105 @@
 import BigNumber from 'bignumber.js'
-import { request, gql } from 'graphql-request'
 import { ethers } from 'ethers'
-import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
 import { LotteryStatus, LotteryTicket } from 'config/constants/types'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import {
-  LotteryUserGraphEntity,
-  LotteryRoundGraphEntity,
-  LotteryRound,
-  UserTicketsResponse,
-  UserRound,
-  LotteryRoundUserTickets,
-  LotteryResponse,
-} from 'state/types'
+import { LotteryRound, UserTicketsResponse, LotteryRoundUserTickets, LotteryResponse } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 import { useMemo } from 'react'
 import { ethersToSerializedBigNumber } from 'utils/bigNumber'
 
 const lotteryContract = getLotteryV2Contract()
+// Variable used to determine how many past rounds should be populated by node data rather than subgraph
+export const NUM_ROUNDS_TO_FETCH_FROM_NODES = 4
+
+const processViewLotterySuccessResponse = (response, lotteryId: string): LotteryResponse => {
+  const {
+    status,
+    startTime,
+    endTime,
+    priceTicketInCake,
+    discountDivisor,
+    treasuryFee,
+    firstTicketId,
+    lastTicketId,
+    amountCollectedInCake,
+    finalNumber,
+    cakePerBracket,
+    countWinnersPerBracket,
+    rewardsBreakdown,
+  } = response
+
+  const statusKey = Object.keys(LotteryStatus)[status]
+  const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => ethersToSerializedBigNumber(cakeInBracket))
+  const serializedCountWinnersPerBracket = countWinnersPerBracket.map((winnersInBracket) =>
+    ethersToSerializedBigNumber(winnersInBracket),
+  )
+  const serializedRewardsBreakdown = rewardsBreakdown.map((reward) => ethersToSerializedBigNumber(reward))
+
+  return {
+    isLoading: false,
+    lotteryId,
+    status: LotteryStatus[statusKey],
+    startTime: startTime?.toString(),
+    endTime: endTime?.toString(),
+    priceTicketInCake: ethersToSerializedBigNumber(priceTicketInCake),
+    discountDivisor: discountDivisor?.toString(),
+    treasuryFee: treasuryFee?.toString(),
+    firstTicketId: firstTicketId?.toString(),
+    lastTicketId: lastTicketId?.toString(),
+    amountCollectedInCake: ethersToSerializedBigNumber(amountCollectedInCake),
+    finalNumber,
+    cakePerBracket: serializedCakePerBracket,
+    countWinnersPerBracket: serializedCountWinnersPerBracket,
+    rewardsBreakdown: serializedRewardsBreakdown,
+  }
+}
+
+const processViewLotteryErrorResponse = (lotteryId: string) => {
+  return {
+    isLoading: true,
+    lotteryId,
+    status: LotteryStatus.PENDING,
+    startTime: '',
+    endTime: '',
+    priceTicketInCake: '',
+    discountDivisor: '',
+    treasuryFee: '',
+    firstTicketId: '',
+    lastTicketId: '',
+    amountCollectedInCake: '',
+    finalNumber: null,
+    cakePerBracket: [],
+    countWinnersPerBracket: [],
+    rewardsBreakdown: [],
+  }
+}
 
 export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> => {
   try {
     const lotteryData = await lotteryContract.viewLottery(lotteryId)
-    const {
-      status,
-      startTime,
-      endTime,
-      priceTicketInCake,
-      discountDivisor,
-      treasuryFee,
-      firstTicketId,
-      lastTicketId,
-      amountCollectedInCake,
-      finalNumber,
-      cakePerBracket,
-      countWinnersPerBracket,
-      rewardsBreakdown,
-    } = lotteryData
-
-    const statusKey = Object.keys(LotteryStatus)[status]
-    const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => ethersToSerializedBigNumber(cakeInBracket))
-    const serializedCountWinnersPerBracket = countWinnersPerBracket.map((winnersInBracket) =>
-      ethersToSerializedBigNumber(winnersInBracket),
-    )
-    const serializedRewardsBreakdown = rewardsBreakdown.map((reward) => ethersToSerializedBigNumber(reward))
-
-    return {
-      isLoading: false,
-      status: LotteryStatus[statusKey],
-      startTime: startTime?.toString(),
-      endTime: endTime?.toString(),
-      priceTicketInCake: ethersToSerializedBigNumber(priceTicketInCake),
-      discountDivisor: discountDivisor?.toString(),
-      treasuryFee: treasuryFee?.toString(),
-      firstTicketId: firstTicketId?.toString(),
-      lastTicketId: lastTicketId?.toString(),
-      amountCollectedInCake: ethersToSerializedBigNumber(amountCollectedInCake),
-      finalNumber,
-      cakePerBracket: serializedCakePerBracket,
-      countWinnersPerBracket: serializedCountWinnersPerBracket,
-      rewardsBreakdown: serializedRewardsBreakdown,
-    }
+    return processViewLotterySuccessResponse(lotteryData, lotteryId)
   } catch (error) {
-    return {
-      isLoading: true,
-      status: LotteryStatus.PENDING,
-      startTime: '',
-      endTime: '',
-      priceTicketInCake: '',
-      discountDivisor: '',
-      treasuryFee: '',
-      firstTicketId: '',
-      lastTicketId: '',
-      amountCollectedInCake: '',
-      finalNumber: null,
-      cakePerBracket: [],
-      countWinnersPerBracket: [],
-      rewardsBreakdown: [],
-    }
+    return processViewLotteryErrorResponse(lotteryId)
+  }
+}
+
+export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<LotteryResponse[]> => {
+  const calls = lotteryIds.map((id) => ({
+    name: 'viewLottery',
+    address: getLotteryV2Address(),
+    params: [id],
+  }))
+  try {
+    const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
+    const processedResponses = multicallRes.map((res, index) =>
+      processViewLotterySuccessResponse(res[0], lotteryIds[index]),
+    )
+    return processedResponses
+  } catch (error) {
+    console.error(error)
+    return calls.map((call, index) => processViewLotteryErrorResponse(lotteryIds[index]))
   }
 }
 
@@ -152,10 +172,10 @@ export const mergeViewUserTicketInfoMulticallResponse = (response) => {
 export const fetchTickets = async (
   account: string,
   lotteryId: string,
-  userRoundData?: UserRound,
+  userTotalTickets?: string,
 ): Promise<LotteryTicket[]> => {
   // If the subgraph is returning user totalTickets data for the round - use those totalTickets, if not - batch request up to 5000
-  const totalTicketsToRequest = userRoundData ? parseInt(userRoundData?.totalTickets, 10) : 5000
+  const totalTicketsToRequest = userTotalTickets ? parseInt(userTotalTickets, 10) : 5000
   const calls = getViewUserTicketInfoCalls(totalTicketsToRequest, account, lotteryId)
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
@@ -170,86 +190,14 @@ export const fetchTickets = async (
   }
 }
 
-export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
-  const response = await request(
-    GRAPH_API_LOTTERY,
-    gql`
-      query getLotteries {
-        lotteries(first: 100, orderDirection: desc, orderBy: block) {
-          id
-          totalUsers
-          totalTickets
-          status
-          finalNumber
-          winningTickets
-          startTime
-          endTime
-          ticketPrice
-          firstTicket
-          lastTicket
-        }
-      }
-    `,
-  )
-
-  const { lotteries } = response
-  return lotteries
-}
-
-export const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
-  const response = await request(
-    GRAPH_API_LOTTERY,
-    gql`
-      query getUserLotteryData($account: ID!) {
-        user(id: $account) {
-          id
-          totalTickets
-          totalCake
-          rounds(first: 100, orderDirection: desc, orderBy: block) {
-            id
-            lottery {
-              id
-              endTime
-              status
-            }
-            claimed
-            totalTickets
-          }
-        }
-      }
-    `,
-    { account: account.toLowerCase() },
-  )
-  const { user } = response
-
-  // If no subgraph response - return blank user
-  if (!response || !user) {
-    const blankUser = {
-      account,
-      totalCake: '',
-      totalTickets: '',
-      rounds: [],
-    }
-
-    return blankUser
+export const getRoundIdsArray = (currentLotteryId: string): string[] => {
+  // TODO: This returns a number, but the currentId being typed as a string is deep in the logic and needs untangling
+  const currentIdAsInt = parseInt(currentLotteryId, 10)
+  const roundIds = []
+  for (let i = 0; i < NUM_ROUNDS_TO_FETCH_FROM_NODES; i++) {
+    roundIds.push(currentIdAsInt - i)
   }
-
-  const formattedUser = user && {
-    account: user.id,
-    totalCake: user.totalCake,
-    totalTickets: user.totalTickets,
-    rounds: user.rounds.map((round) => {
-      return {
-        lotteryId: round?.lottery?.id,
-        endTime: round?.lottery?.endTime,
-        claimed: round?.claimed,
-        totalTickets: round?.totalTickets,
-        status: round?.lottery?.status,
-      }
-    }),
-  }
-
-  return formattedUser
+  return roundIds
 }
 
 export const useProcessLotteryResponse = (
@@ -275,6 +223,7 @@ export const useProcessLotteryResponse = (
 
   return {
     isLoading: lotteryData.isLoading,
+    lotteryId: lotteryData.lotteryId,
     userTickets: lotteryData.userTickets,
     status: lotteryData.status,
     startTime: lotteryData.startTime,
@@ -290,4 +239,9 @@ export const useProcessLotteryResponse = (
     countWinnersPerBracket: lotteryData.countWinnersPerBracket,
     rewardsBreakdown: lotteryData.rewardsBreakdown,
   }
+}
+
+export const hasRoundBeenClaimed = (tickets: LotteryTicket[]): boolean => {
+  const claimedTickets = tickets.filter((ticket) => ticket.status)
+  return claimedTickets.length > 0
 }

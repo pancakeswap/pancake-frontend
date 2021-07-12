@@ -398,6 +398,7 @@ export interface LotteryRoundUserTickets {
 
 interface LotteryRoundGenerics {
   isLoading?: boolean
+  lotteryId: string
   status: LotteryStatus
   startTime: string
   endTime: string
@@ -439,14 +440,12 @@ export interface LotteryRoundGraphEntity {
   id: string
   totalUsers: string
   totalTickets: string
+  winningTickets: string
   status: LotteryStatus
   finalNumber: string
-  winningTickets: string
   startTime: string
   endTime: string
   ticketPrice: SerializedBigNumber
-  firstTicket: string
-  lastTicket: string
 }
 
 export interface LotteryUserGraphEntity {
@@ -459,9 +458,9 @@ export interface LotteryUserGraphEntity {
 export interface UserRound {
   claimed: boolean
   lotteryId: string
-  totalTickets: string
   status: LotteryStatus
   endTime: string
+  totalTickets: string
   tickets?: LotteryTicket[]
 }
 

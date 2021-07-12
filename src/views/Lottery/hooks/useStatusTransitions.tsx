@@ -4,7 +4,7 @@ import usePreviousValue from 'hooks/usePreviousValue'
 import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { useLottery } from 'state/hooks'
-import { fetchPastLotteries, fetchCurrentLotteryId, fetchUserLotteries } from 'state/lottery'
+import { fetchPublicLotteries, fetchCurrentLotteryId, fetchUserLotteries } from 'state/lottery'
 
 const useStatusTransitions = () => {
   const {
@@ -19,19 +19,19 @@ const useStatusTransitions = () => {
 
   useEffect(() => {
     // Only run if there is a status state change
-    if (previousStatus !== status) {
+    if (previousStatus !== status && currentLotteryId) {
       // Current lottery transitions from CLOSE > CLAIMABLE
       if (previousStatus === LotteryStatus.CLOSE && status === LotteryStatus.CLAIMABLE) {
-        dispatch(fetchPastLotteries())
+        dispatch(fetchPublicLotteries({ currentLotteryId }))
         if (account) {
-          dispatch(fetchUserLotteries({ account }))
+          dispatch(fetchUserLotteries({ account, currentLotteryId }))
         }
       }
       // Previous lottery to new lottery. From CLAIMABLE (previous round) > OPEN (new round)
       if (previousStatus === LotteryStatus.CLAIMABLE && status === LotteryStatus.OPEN) {
-        dispatch(fetchPastLotteries())
+        dispatch(fetchPublicLotteries({ currentLotteryId }))
         if (account) {
-          dispatch(fetchUserLotteries({ account }))
+          dispatch(fetchUserLotteries({ account, currentLotteryId }))
         }
       }
     }
@@ -42,15 +42,15 @@ const useStatusTransitions = () => {
     // The isTransitioning condition will no longer be true when fetchCurrentLotteryId returns the next lottery ID
     if (previousStatus === LotteryStatus.CLAIMABLE && status === LotteryStatus.CLAIMABLE && isTransitioning) {
       dispatch(fetchCurrentLotteryId())
-      dispatch(fetchPastLotteries())
+      dispatch(fetchPublicLotteries({ currentLotteryId }))
       const interval = setInterval(async () => {
         dispatch(fetchCurrentLotteryId())
-        dispatch(fetchPastLotteries())
+        dispatch(fetchPublicLotteries({ currentLotteryId }))
       }, 10000)
       return () => clearInterval(interval)
     }
     return () => null
-  }, [status, previousStatus, isTransitioning, dispatch])
+  }, [status, previousStatus, isTransitioning, currentLotteryId, dispatch])
 }
 
 export default useStatusTransitions

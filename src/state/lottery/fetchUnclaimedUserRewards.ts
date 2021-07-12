@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
-import { LotteryUserGraphEntity, LotteryRoundGraphEntity, UserRound } from 'state/types'
+import { LotteryUserGraphEntity, LotteryRoundGraphEntity } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
@@ -105,7 +105,10 @@ const getWinningNumbersForRound = (targetRoundId: string, lotteriesData: Lottery
   return targetRound?.finalNumber
 }
 
-export const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound[], account: string) => {
+export const fetchUserTicketsForMultipleRounds = async (
+  roundsToCheck: { totalTickets: string; lotteryId: string }[],
+  account: string,
+) => {
   // Build calls with data to help with merging multicall responses
   const callsWithRoundData = roundsToCheck.map((round) => {
     const totalTickets = parseInt(round.totalTickets, 10)
@@ -118,14 +121,15 @@ export const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound
 
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, multicalls, { requireSuccess: false })
-
     // Use callsWithRoundData to slice multicall responses by round
     const multicallResPerRound = []
     let resCount = 0
     for (let i = 0; i < callsWithRoundData.length; i += 1) {
       const callOptions = callsWithRoundData[i]
 
-      multicallResPerRound.push(multicallRes.slice(resCount, resCount + callOptions.count))
+      const singleRoundResponse = multicallRes.slice(resCount, resCount + callOptions.count)
+      // Don't push null responses values - can happen when the check is using fallback behaviour because it has no subgraph past rounds
+      multicallResPerRound.push(singleRoundResponse.filter((res) => res))
       resCount += callOptions.count
     }
     const mergedMulticallResponse = multicallResPerRound.map((res) => mergeViewUserTicketInfoMulticallResponse(res))

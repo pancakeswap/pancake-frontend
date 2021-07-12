@@ -7,6 +7,7 @@ import { delay } from 'lodash'
 import confetti from 'canvas-confetti'
 import { LotteryTicketClaimData } from 'config/constants/types'
 import { useAppDispatch } from 'state'
+import { useLottery } from 'state/hooks'
 import { fetchUserLotteries } from 'state/lottery'
 import ClaimPrizesInner from './ClaimPrizesInner'
 
@@ -55,6 +56,7 @@ interface ClaimPrizesModalModalProps {
 const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, roundsToClaim }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const { currentLotteryId } = useLottery()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -75,7 +77,7 @@ const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, rou
       <ModalBody p="24px">
         <ClaimPrizesInner
           onSuccess={() => {
-            dispatch(fetchUserLotteries({ account }))
+            dispatch(fetchUserLotteries({ account, currentLotteryId }))
             onDismiss()
           }}
           roundsToClaim={roundsToClaim}
