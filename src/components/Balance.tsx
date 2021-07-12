@@ -27,17 +27,11 @@ const Balance: React.FC<BalanceProps> = ({
   const containerStyles = () => {
     if (fixedWidth) {
       return {
-        marginRight: '0px',
-        marginLeft: '0px',
-        paddingRight: '0px',
-        paddingLeft: '0px',
+        fontVariantNumeric: 'tabular-nums',
+        fontFamily: 'sans-serif',
       }
     }
     return {}
-  }
-  const replaceDigitsWithWider = () => {
-    const valueString = value.toLocaleString(undefined, { maximumFractionDigits: decimals })
-    return valueString.replaceAll('1', '9')
   }
 
   useEffect(() => {
@@ -45,14 +39,7 @@ const Balance: React.FC<BalanceProps> = ({
   }, [value])
 
   return (
-    <Text style={containerStyles()} color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
-      {fixedWidth && (
-        <Text style={{ visibility: 'hidden', height: '0px' }} {...props}>
-          {prefix && <span>{prefix}</span>}
-          {replaceDigitsWithWider()}
-          {unit && <span>{unit}</span>}
-        </Text>
-      )}
+    <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
       <CountUp
         start={previousValue.current}
         end={value}
@@ -61,7 +48,10 @@ const Balance: React.FC<BalanceProps> = ({
         decimals={decimals}
         duration={1}
         separator=","
-      />
+        delay={0}
+      >
+        {({ countUpRef }) => <span style={containerStyles()} ref={countUpRef} />}
+      </CountUp>
     </Text>
   )
 }
