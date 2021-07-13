@@ -8,8 +8,6 @@ import { useGetCollectibles } from 'state/hooks'
 import NftCard from './NftCard'
 import NftGrid from './NftGrid'
 import EasterNftCard from './NftCard/EasterNftCard'
-import BunnySpecialCakeVaultCard from './NftCard/BunnySpecialCakeVaultCard'
-import BunnySpecialPredictionCard from './NftCard/BunnySpeciaPredictionCard'
 
 /**
  * A map of bunnyIds to special campaigns (NFT distribution)
@@ -20,8 +18,6 @@ const nftComponents = {
   'easter-storm': EasterNftCard,
   'easter-flipper': EasterNftCard,
   'easter-caker': EasterNftCard,
-  'syrup-soak': BunnySpecialCakeVaultCard,
-  claire: BunnySpecialPredictionCard,
 }
 
 const NftList = () => {
