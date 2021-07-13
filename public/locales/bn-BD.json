@@ -889,7 +889,6 @@
   "%total% Votes": "%total% ভোট",
   "Cast Vote": "ভোট দিন",
   "See All": "সবগুলো দেখুন",
-  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "সেফপল ব্যবহারকারীরা সাময়িকভাবে ভোট দিতে অক্ষম হতে পারেন: অনুগ্রহ করে এর পরিবর্তে সরাসরি ওয়াললেটকানেক্ট এর মাধ্যমে সংযোগ করুন। ",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "আপনার ভোটদান ক্ষমতা নিচে বিশদে বর্ণিত ব্লকে আপনি যে পরিমাণ কেক রেখেছেন সেটা দ্বারা নির্ধারিত হয়। অন্য স্থানে রাখা কেক আপনার ভোটদানের ক্ষমতায় অবদান রাখে না।",
   "Your Cake Held Now": "আপনার বর্তমানে ধরে রাখা কেক",
   "Wallet": "ওয়ালেট",
