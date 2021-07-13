@@ -34,7 +34,7 @@
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
     "@pancakeswap/sdk": "^2.3.2",
-    "@pancakeswap/uikit": "^0.39.4",
+    "@pancakeswap/uikit": "^0.40.2",
     "@reduxjs/toolkit": "^1.5.0",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.4",
