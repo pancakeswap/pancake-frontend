@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react'
 import { Language } from '@pancakeswap/uikit'
-import { EN, languages } from 'config/localization/languages'
+import { EN, FA, languages } from 'config/localization/languages'
 import translations from 'config/localization/translations.json'
 import { ContextApi, ContextData, ProviderState } from './types'
 import { LS_KEY, fetchLocale, getLanguageCodeFromLS } from './helpers'
@@ -28,9 +28,18 @@ export const LanguageProvider: React.FC = ({ children }) => {
   const { currentLanguage } = state
 
   useEffect(() => {
+    const html = document.getElementsByTagName("html").item(0);
+    if(currentLanguage.locale === FA.locale)
+      html.setAttribute('dir', 'rtl')
+    else
+      html.setAttribute('dir', 'ltr')
+
+    html.setAttribute('lang', currentLanguage.code)
+  }, [currentLanguage]);
+
+  useEffect(() => {
     const fetchInitialLocales = async () => {
       const codeFromStorage = getLanguageCodeFromLS()
-
       if (codeFromStorage !== EN.locale) {
         const enLocale = languageMap.get(EN.locale)
         const currentLocale = await fetchLocale(codeFromStorage)

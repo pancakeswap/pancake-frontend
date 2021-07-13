@@ -33,7 +33,8 @@ const Body = styled.div`
   flex: 1;
   flex-direction: column;
   padding: 24px;
-
+  direction: ltr;
+  
   ${({ theme }) => theme.mediaQueries.md} {
     align-items: center;
     flex-direction: row;

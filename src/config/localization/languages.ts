@@ -6,6 +6,7 @@ export const EN: Language = { locale: 'en-US', language: 'English', code: 'en' }
 export const DE: Language = { locale: 'de-DE', language: 'Deutsch', code: 'de' }
 export const EL: Language = { locale: 'el-GR', language: 'Ελληνικά', code: 'el' }
 export const ESES: Language = { locale: 'es-ES', language: 'Español', code: 'es-ES' }
+export const FA: Language = { locale: 'fa-IR', language: 'فارسی', code: 'fa' }
 export const FI: Language = { locale: 'fi-FI', language: 'Suomalainen', code: 'fi' }
 export const FIL: Language = { locale: 'fil-PH', language: 'Filipino', code: 'fil' }
 export const FR: Language = { locale: 'fr-FR', language: 'Français', code: 'fr' }
@@ -36,6 +37,7 @@ export const languages = {
   'de-DE': DE,
   'el-GR': EL,
   'es-ES': ESES,
+  'fa-IR': FA,
   'fi-FI': FI,
   'fil-PH': FIL,
   'fr-FR': FR,

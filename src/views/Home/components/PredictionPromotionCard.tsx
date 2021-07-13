@@ -14,6 +14,7 @@ const StyledPredictionCard = styled(Card)`
   background-position: bottom right;
   background-size: 50%;
   min-height: 376px;
+  direction: ltr;
   ${({ theme }) => theme.mediaQueries.sm} {
     background-size: 45%;
   }

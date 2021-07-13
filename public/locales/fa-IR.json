@@ -1,0 +1,1025 @@
+{
+  "Farm": "مزرعه",
+  "Staking": "سهام گذاری",
+  "Syrup Pool": "استخر شربت",
+  "Exchange": "صرافی",
+  "Docs": "اسناد",
+  "Voting": "رای گیری",
+  "Lottery": "قرعه کشی (لاتاری)",
+  "Unlock Wallet": "اتصال به کیف پول",
+  "Your %asset% Balance": "موجودی %asset% شما",
+  "Total %asset% Supply": "ارزش کل %asset%",
+  "Locked": "قفل شده",
+  "Pending harvest": "محصول در حالت انتظار",
+  "New rewards per block": "جایزه جدید به ازای هر بلاک",
+  "Total CAKE burned since launch": "مجموع توکن های سوخته شده CAKE از شروع",
+  "See the Kitchen": "مشاهده آشپزخانه",
+  "Telegram": "تلگرام",
+  "Blog": "وبلاگ",
+  "Github": "Github",
+  "Twitter": "توییتر",
+  "Deposit": "شارژ",
+  "Earn": "کسب",
+  "Stake LP tokens to stack CAKE": "سهام توکن(Token) LP را سرمایه گذاری کنید تا توکن CAKE به درست آورید",
+  "You can swap back anytime": "شما می توانید هر زمانی برگردانید",
+  "%asset% Earned": "%asset% سود",
+  "Tokens Staked": "توکن های استیک شده",
+  "Every time you stake and unstake CAKE tokens, the contract will automagically harvest CAKE rewards for you!": "هر بار که توکن های CAKE خود را سرمایه گذاری و برداشت می کنید ، قرارداد هوشمند به صورت اتوماتیک CAKE های پاداش را به حساب شما واریز می کند",
+  "XVS Tokens Earned": "توکن های XVS کسب شد",
+  "Rewards will be calculated per block and total rewards will be distributed automatically at the end of each project’s farming period.": "پاداش ها به ازای هر بلاک محاسبه می شود و مجموع پاداش ها به صورت اتوماتیک در انتهای هر پروژه کٍشت سود توزیع می شود.",
+  "Pool": "استخر",
+  "Coming Soon": "به زودی",
+  "APY": "سود سالانه (APY)",
+  "Total Liquidity": "مجموع نقدینگی",
+  "View on BscScan": "نمایش در BscScan",
+  "Cake price": "قیمت توکن Cake",
+  "%asset% Tokens Earned": "%asset% توکن های به دست آمده",
+  "%num% blocks until farming ends": "%num% بلاک تا پایان کٍشت",
+  "Coming Soon...": "به زودی...",
+  "Your Stake": "سهام شما",
+  "Farming starts in %num% Blocks": "کٍشت در %num% بلاک (Block) شروع می شود",
+  "Finished": "تمام شده",
+  "Farming ends in %num% Blocks": "کٍشت در %num% بلاک (Block) تمام می شود",
+  "Project site": "محل پروژه",
+  "See Token Info": "نمایش اطلاعات توکن",
+  "You can unstake at any time.": "شما می توانید در هر زمان سهام خود را بیرون بکشید.",
+  "Rewards are calculated per block.": "جایزه ها به ازای هر بلاک (Block) محسابه شده.",
+  "Total": "مجموع",
+  "End": "پایان",
+  "View Project Site": "نمایش سایت پروژه",
+  "Your Project? 👀": "پروژه شما؟ 👀",
+  "Create a pool for your token": "ایجاد یک استخر برای توکن شما",
+  "Apply now": "همین حالا درخواست بده",
+  "Round 1: BUYING": "مرحله 1: خرید",
+  "%num% CAKE": "%num% CAKE",
+  "Spend CAKE to buy tickets, contributing to the lottery pot. Ticket purchases end approx. 30 minutes before lottery. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their positions! Good luck!": "توکن های CAKE را جهت خرید بلیط ها خرج کنید ، کمک به سبد قرعه کشی . خرید بلیط های قرعه کشی 30 دقیقه قبل از قرعه کشی پایان می یابد. در صورتی که شماره های 2 ، 3 یا 4 بلیط شما با شماره ها و جایگاه شماره های برنده یکسان باشد باشد جایزه دریافت خواهید کرد. ",
+  "Your total tickets for this round": "تعداد بلیط های شما برای هر دور",
+  "Buy ticket": "خرید بلیط",
+  "View your tickets": "نمایش بلیط ها",
+  "Approx. time left to buy tickets": "زمان تقریبی مانده تا خرید بلیط",
+  "My Tickets (Total: %TICKETS%)": "بلیط های من (مجموع : %TICKETS%)",
+  "Close": "بستن",
+  "Latest Winning Numbers": "آخرین تعداد برندگان",
+  "Ticket": "بلیط",
+  "Tickets matching 4 numbers:": "بلیط های 4 عدد یکسان:",
+  "Tickets matching 3 numbers:": "بلیط های 3 عدد یکسان:",
+  "Tickets matching 2 numbers:": "بلیط های 2 عدد یکسان:",
+  "Export recent winning numbers": "صدور تعداد برندگان اخیر",
+  "Enter amount of tickets to buy": "تعداد بلیط ها را برای خرید وارد نمایید",
+  "Max": "حداکثر",
+  "%num% CAKE Available": "%num% عدد CAKE در دسترس",
+  "%num% %symbol% Available": "%num% %symbol% در دسترس",
+  "Your amount must be a multiple of 10 CAKE": "مقدار باید ضریبی از 10 CAKE باشد",
+  "1 Ticket = %lotteryPrice% CAKE": "1 بلیط = %lotteryPrice% CAKE",
+  "Until ticket sale:": "زمان باقی مانده تا فروش بلیط ها:",
+  "You will spend: %num% CAKE": "شما تعداد %num% CAKE خرج میکنید",
+  "Cancel": "لفو",
+  "Confirm": "تایید",
+  "Warning": "اخطار",
+  "Lottery ticket purchases are final.": "خرید بلیط های قرعه کشی نهایی است.",
+  "Your CAKE will not be returned to you after you spend it to buy tickets.": "توکن های CAKE شما در صورتی که خرج شود به شما جهت خرید بلیط بازگشت داده نخواهد شد",
+  "Tickets are only valid for one lottery draw, and will be burned after the draw.": "بلیط ها فقط برای یک قرعه کشی قابل استفاده است، و بعد از قرعه کشی سوزانده می شود.",
+  "Buying tickets does not guarantee you will win anything. Please only participate once you understand the risks.": "خرید بلیط ها هیچ تضمینی برای برد شما ندارد. لطفا در صورتی که از ریسک آن اطلاع دارید شرکت کنید.",
+  "I understand": "میدانم",
+  "Ticket purchases are final. Your CAKE cannot be returned to you after buying tickets.": "خرید بلیط ها نهایی است. توکن های CAKE شما بعد از خرید بلیط به شما بازگشت داده نمی شود.",
+  "Claim prizes": "مطالبه جوایز",
+  "CAKE prizes to be claimed": "CAKE های قابل مطالبه",
+  "Round 2: CLAIMING": "مرحله 2: مطالبه",
+  "Pending Confirmation": "در انتظار تایید",
+  "Approx. time before next lottery start": "زمان تقریبی شروع قرعه کشی بعدی",
+  "Approve CAKE": "CAKE تقریبی",
+  "IFO: Initial Farm Offerings": "IFO: عرضه اولیه مزرعه ها",
+  "Buy new tokens with a brand new token sale model.": "توکن های جدید را با یک مدل کاملا جدید فروش توکن خریداری کنید.",
+  "You’ll pay for the new tokens using CAKE-BNB LP tokens, which means you need to stake equal amounts of CAKE and BNB in a liquidity pool to take part.": "شما برای توکن های جدید از توکن های CAKE-BNB LP استفاده خواهید کرد، این به آن معنا است که مقدار یکسانی از CAKE و BNB را در استخر نقدینگی سرمایه گذاری می کنید که بخشی از آن را دریافت نمایید.",
+  "Get CAKE-BNB LP >": "دریافت CAKE-BNB LP >",
+  "The project gets the BNB, PancakeSwap burns the CAKE.": "پروژه BNB دریافت می کند، پنکیک سواپ توکن CAKE را می سوزاند.",
+  "You get the tokens.": "شما توکن های خود را دریافت کردید.",
+  "Want to launch your own IFO?": "آیا میخواهید عرضه اولیه مزرعه (IFO) خود را راه اندازی کنید؟",
+  "Launch your project with PancakeSwap, Binance Smart Chain’s most-used AMM project and liquidity provider, to bring your token directly to the most active and rapidly growing community on BSC.": "پروژه خود را با پنکیک سواپ شروع کنید ، محبوب ترین پروژه AMM و تامین کننده استخر نقدینگی در شبکه Binance Smart Chain جهت ارائه مستقیم توکن (Token) های شما به یک اجتماع در حال رشد بر روی BSC. ",
+  "Apply to launch": "جهت اجرا تایید کنید",
+  "Community": "اجتماع",
+  "Core": "هسته",
+  "Available": "در دسترس",
+  "My Wallet": "کیف پول من",
+  "Sign out": "خروج از حساب",
+  "Harvest all (%count%)": "تمام محصول (%count%)",
+  "Cake Stats": "آمار Cake",
+  "Total CAKE Supply": "مجموع عرضه توکن(ارز) CAKE",
+  "Total CAKE Burned": "مجموع سوخته شده توکن(ارز) CAKE",
+  "New CAKE/block": "CAKE/block جدید",
+  "Farms & Staking": "مزرعه و سرمایه گذاری",
+  "CAKE to Harvest": "CAKE به محصول",
+  "CAKE in Wallet": "CAKE در کیف پول",
+  "Collecting CAKE": "جمع آوری CAKE",
+  "Your Lottery Winnings": "تعداد برد شما در لاتاری (قرعه کشی)",
+  "CAKE to Collect": "CAKE برای جمع آوری",
+  "Total jackpot this round": "مجموع برنده های این دور",
+  "Collect Winnings": "جمع آوری برد ها",
+  "Buy Tickets": "خرید بلیط",
+  "Harvest": "محصول",
+  "Approve": "تایید",
+  "Select": "انتخاب",
+  "Winning Numbers This Round": "تعداد برندگان این دور",
+  "Winning numbers": "تعداد برندگان",
+  "Total prizes": "مجموع جوایز",
+  "Round #%num%": "دور #%num%",
+  "Total Pot:": "Total Pot:",
+  "Staking Pool": "استخر نقدینگی",
+  "PancakeSwap": "پنکیک سواپ",
+  "The #1 AMM and yield farm on Binance Smart Chain.": "رتبه اول بازار ساز اتوماتیک و مزرعه سودآوری در شبکه Binance Smart Chain.",
+  "Stake CAKE to earn new tokens.": "توکن (ارز) CAKE را سرمایه گذاری کنید تا توکن های جدید به دست آورید",
+  "Launch Time": "زمان اجرا",
+  "For Sale": "برای فروش",
+  "CAKE to burn (USD)": "مقدار توکن CAKE برای سوزاندن (دلار)",
+  "CAKE to burn:": "مقدار CAKE برای سوزاندن:",
+  "Unstake": "برداشت سهام",
+  "⭐️ Every time you stake and unstake LP tokens, the contract will automagically harvest CAKE rewards for you!": "⭐️هر بار که توکن های CAKE خود را سرمایه گذاری و برداشت می کنید ، قرارداد هوشمند به صورت اتوماتیک CAKE های پاداش را به حساب شما واریز می کند",
+  "How to take part": "نحوه شرکت",
+  "Before Sale": "قبل از فروش",
+  "Buy CAKE and BNB tokens": "توکن های CAKE و BNB را خریداری کنید",
+  "Get CAKE-BNB LP tokens by adding CAKE and BNB liquidity": "توکن های CAKE-BNB را با استفاده از اضافه کردن نقدینگی CAKE و BNB دریافت کنید",
+  "During Sale": "در حال فروش",
+  "While the sale is live, commit your CAKE-LP tokens to buy the IFO tokens": "در زمانی که فروش در حال انجام است ، توکن های CAKE-LP خود را جهت خرید توکن های IFO پرداخت کنید.",
+  "After Sale": "بعد از فروش",
+  "Claim the tokens you bought, along with any unspent funds.": "توکن های خریداری شده را همراه با سرمایه پرداخت نشده مطالبه کنید.",
+  "Done!": "انجام شد!",
+  "Read more": "بیشتر بخوانید",
+  "Connect": "اتصال",
+  "Trade in for CAKE, or keep for your collection!": "معامله جهت دریافت CAKE ، یا نگهداری جهت کلکسیون!",
+  "Register your interest in winning an NFT below.": "انگیزه خود را از خرید یک NFT در زیر وارد کنید.",
+  "Register for a chance to win": "ثبت نام برای یک شانس برای برد",
+  "Learn more": "بیشتر بدانید",
+  "Trade in NFT": "تجارت NFT",
+  "Trade in": "تجارت",
+  "You will receive": "شما دریافت خواهید کرد",
+  "When you trade in this NFT to receive CAKE, you will lose access to it forever!": "زمانی که این NFT را معامله می کنید که CAKE دریافت کنید ، دسترسی آن را برای همیشه از دست خواهید داد.",
+  "Claim NFT": "مطالبه NFT",
+  "How it works": "چگونه کار می کند",
+  "Winners will be able to claim an NFT on this page once the claiming period starts.": "برندگان می توانند یک NFT را زمانی که چرخه مطالبه شروع می شود در این صفحه دریافت کنند.",
+  "If you’re not selected, you won’t be able to claim. Better luck next time!": "اگر شما انتخاب نشده اید، نمی توانید مطالبه ای انجام دهید. دفعه بعد شانس بهتری دارید!",
+  "Winners can trade in their NFTs for a CAKE value until the expiry date written below. If you don't trade in your NFT by then, don’t worry: you’ll still keep it in your wallet!": "برندگان می توانند NFT های خود را با CAKE معامله کنند تا زمانی که در زیر ذکر می شود. اگر NFT خود را در آن زمان معامله نکردید اشکالی ندارد : شما همچنان NFT خود را در کیف پول خود دارید.",
+  "How are winners selected?": "برندگان چگونه انتخاب می شوند؟",
+  "Winners are selected at random! Good luck!": "برندگان به صورت شانسی انتخاب شدند! موفق باشید!",
+  "Value if traded in": "ارزش در صورت معامله در",
+  "Number minted": "تعداد ضرب شده",
+  "Number burned": "تعداد سوزانده شده",
+  "Claim this NFT": "این NFT را مطالبه کن",
+  "Trade in for CAKE": "معامله برای CAKE",
+  "Loading…": "…درحال بارگذاری",
+  "Details": "جزئیات",
+  "You won!": "شما برنده شدید!",
+  "Claim an NFT from the options below!": "یک NFT را از مورد های زیر مطالبه کنید!",
+  "Can be traded until": "می تواند معامله شود تا",
+  "Wallet Disconnected": "کیف پول قطع شد",
+  "Connect to see if you have won an NFT!": "اتصال کیف پول ، برای دیدن اینکه برنده یک NFT شده اید یا نه!",
+  "Home": "خانه",
+  "Trade": "خرید و فروش",
+  "Farms": "مزرعه ها",
+  "Pools": "استخر ها",
+  "NFT": "NFT",
+  "Info": "اطلاعات",
+  "IFO": "عرضه اولیه(IFO)",
+  "More": "بیشتر",
+  "Liquidity": "نقدینگی",
+  "Overview": "نگاه کلی",
+  "Token": "Token",
+  "Pairs": "جفت ارز ها",
+  "Accounts": "حساب ها",
+  "Stake LP tokens to earn CAKE": "توکن ها LP را قفل کنید تا توکن CAKE به دست آورید",
+  "Active": "فعال",
+  "Inactive": "غیر فعال",
+  "Dual": "دوگانه",
+  "Compound": "مرکب",
+  "Unstake %asset%": "سهام %asset%",
+  "The CAKE Lottery": "لاتاری CAKE",
+  "Buy tickets with CAKE": "بلیط ها را با توکن CAKE بخرید",
+  "Win if 2, 3 or 4 of your ticket numbers match!": "اگر 2 یا 3 یا 4 عدد از بلیط های شما مطابق باشد برنده خواهید شد",
+  "%time% Until lottery draw": "%time% تا قرعه کشی",
+  "Next draw": "قرعه کشی بعدی",
+  "Past draws": "قرعه کشی قبلی",
+  "Round %num%": "دور %num%",
+  "Total Pot": "Total Pot",
+  "Your tickets for this round": "بلیط های شما برای این دور",
+  "Sorry, no prizes to collect": "متاسفیم ، هیچ جایزه ای برای برداشت ندارید",
+  "In Wallet": "داخل کیف پول",
+  "Loading...": "در حال پردازش...",
+  "Next IFO": "Next IFO",
+  "Past IFOs": "Past IFOs",
+  "APR": "نرخ سالانه (APR)",
+  "APR (incl. LP rewards)": "APR (incl. LP rewards)",
+  "Select lottery number:": "عدد قرعه کشی (لاتاری) را انتخاب کنید",
+  "Search": "جستجو",
+  "History": "تاریخچه",
+  "Pool Size": "اندازه استخر",
+  "Burned": "سوخته شده",
+  "To burn": "برای سوختن",
+  "Show Last": "نمایش آخری",
+  "Prize Pot": "گلدان جایزه",
+  "Winners": "برنده ها",
+  "No. Matched": "هیچ موردی یافت نشد",
+  "Approve Contract": "تایید قرارداد",
+  "%asset% staked": "%asset% سهام گذاری شده",
+  "Total Value Locked": "ارزش کلی سهام قفل شده",
+  "Across all LPs and Syrup Pools": "میان تمام استخر های LP و Syrup ",
+  "Your wallet": "کیف پول شما",
+  "Logout": "خروج از حساب",
+  "Profile Setup": "تنظیم حساب کاربری",
+  "Show off your stats and collectibles with your unique profile.": "با مشخصات منحصر به فرد خود ، آمار و مجموعه های خود را به نمایش بگذارید.",
+  "Total cost: 10 CAKE": "قیمت کل : 10CAKE",
+  "Get Starter Collectible": "دریافت کلکسیون مبتدی",
+  "Set Profile Picture": "تنظیم عکس شما",
+  "Join Team": "پیوستن به تیم",
+  "Set Name": "تنظیم نام",
+  "Step 1": "مرحله 1",
+  "Every profile starts by making a \"starter\" collectible (NFT).": "حساب کاربری شما با جمع آوری کلکسیون \"Starter\" شروع می شود (NFT).",
+  "This starter will also become your first profile picture.": "این Starter همچنین به تصویر پروفایل شما تبدیل می شود.",
+  "You can change your profile pic later if you get another approved Pancake Collectible,": "شما میتوانید تصویر پروفایل خود را با دریافت یک کلکسیون پنکیک دیگر تغییر دهید ,",
+  "Choose your Starter!": "تصویر Starter خود را انتخاب کنید!",
+  "Choose wisely: you can only ever make one starter collectible!": "با دقت انتخاب کنید: شما فقط می توانید یک کلکسیون Starter انتخاب کنید!",
+  "Cost: 5 CAKE": "قیمت: 5 CAKE",
+  "Next Step": "مرحله بعد",
+  "Approving": "درحال تایید",
+  "Confirming": "در حال تایید",
+  "Approved": "تایید شد",
+  "Confirmed": "تایید شد",
+  "Insufficient CAKE balance": "مقدار توکن CAKE شما کافی نیست",
+  "Step 2": "مرحله 2",
+  "Choose collectible": "کلکسیون را انتخاب کنید",
+  "Choose a profile picture from the eligible collectibles (NFT) in your wallet, shown below.": "یک تصویر پروفایل از کلکسیون واجد شرایط (NFT) که در زیر نشان داده شده است انتخاب کنید.",
+  "Only approved Pancake Collectibles can be used.": "فقط کلکسیون تایید شده پنکیک قابل استفاده است.",
+  "Allow collectible to be locked": "اجازه کلکسیون برای قفل شدن",
+  "The collectible you've chosen will be locked in a smart contract while it's being used as your profile picture. ": "کلکسیون انتخاب شده توسط شما در یک قرارداد هوشمند قفل می شود در حالی که به عنوان تصویر پروفایل شما استفاده می شود. ",
+  "Don't worry - you'll be able to get it back at any time.": "نگران نباشید - شما می توانید هر موقع که دوست داشتید آن را پس بگیرید.",
+  "Step 3": "مرحله 3",
+  "Join a Team": "به یک تیم بپیوندید",
+  "It won't be possible to undo the choice you make for the foreseeable future!": "شما نمی توانید تصمیم خود را در آینده بازگردانید",
+  "There's currently no big difference between teams, and no benefit of joining one team over another for now.": "در حال حاضر هیچ تفاوتی بین تیم ها وجود ندارد، و هیچ مزایایی یک تیم نسبت به تیم دیگر ندارد.",
+  "So pick whichever you like!": "پس هر کدام را که دوست دارید انتخاب نمایید!",
+  "%count% Members": "%count% اعضا",
+  "Step 4": "مرحله 4",
+  "This name will be shown in team leaderboards and search results as long as your profile is active.": "این نام در تابلو امتیازات و نتایج جستجو تا زمانی که حساب کاربری شما فعال است نشان داده می شود.",
+  "Your name must be at least 3 and at most 15 standards letters and numbers long.": "نام شما باید بین 3 تا 15 کارکتر لاتین و اعداد باشد.",
+  "Complete Profile": "تکمیل حساب کاربری",
+  "Maximum length: 15 characters": "حداکثر : 15 کارکتر",
+  "Minimum length: 3 characters": "حداقل : 3 کارکتر",
+  "No spaces or special characters": "هیچ فاصله یا کارکتر غیر لاتین نباید باشد",
+  "Submitting NFT to contract and confirming User Name and Team": "در حال ارسال NFT به قرارداد هوشمند و تایید نام کاربری و گروه",
+  "Oops!": "اوپس!",
+  "We couldn't find any Pancake Collectibles in your wallet.": "هیچ کلکسیون پنکیکی در کیف پول شما یافت نشد.",
+  "You need a Pancake Collectible to finish setting up your profile. If you sold or transferred your starter collectible to another wallet, you'll need to get it back or acquire a new one somehow. You can't make a new starter with this wallet address.": "شما به یک کلکسیون پنکیک جهت تکمیل پروفایل خود نیازمندید. اگر کلکسیون مبتدی (Starter) خود را به کیف پول دیگری انتقال داده اید باید آن را به کیف پول فعلی بازگردانید یا یک کلکسیون جدید بخرید. شما نمی توانید Starter خود را با آدرس این کیف پول بسازید.",
+  "ROI": "بازگشت سرمایه (ROI)",
+  "Timeframe": "بازه زمانی",
+  "CAKE per $1000": "CAKE به ازای 1000$",
+  "Calculated based on current rates.": "محسابه شده بر اساس نرخ فعلی",
+  "Compounding %freq%x daily.": "مرکب %freq%x روزانه",
+  "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "تمام ارقام برآوردی است که فقط برای راحتی شما ارائه شده است و به هیچ وجه بازده تضمینی را نشان نمی دهد.",
+  "You can't change this once you click Confirm.": "پس از کلیک بر روی تایید شما نمی توانید آنرا عوض کنید.",
+  "Until ticket sale": "تا فروش بلیط",
+  "To burn:": "برای سوزاندن:",
+  "On sale soon": "به زودی برای فروش",
+  "On sale": "برای فروش",
+  "Teams Overview": "نگاه کلی تیم ها",
+  "Teams": "تیم ها",
+  "See More": "مشاهده بیشتر",
+  "Team Achievements": "دستاورد های تیم",
+  "Team Points": "امتیازات تیم",
+  "Active Members": "اعضای فعال",
+  "Set up now": "هم اکنون تنظیم کنید",
+  "You haven’t set up your profile yet!": "شما هنوز پروفایل خود را تنظیم نکرده اید!",
+  "You can do this at any time by clicking on your profile picture in the menu": "شما می توانید هر زمان که خواستید با کلیک بر روی تصویر پروفایل خود این کار را انجام دهید",
+  "Collect": "جمع آوری",
+  "Compounding": "مرکب سازی",
+  "Harvesting": "برداشت",
+  "Buy CAKE": "خرید CAKE",
+  "Get LP tokens": "دریافت توکن های LP",
+  "Show": "نمایش",
+  "Hide": "مخفی",
+  "Stake LP tokens": "سرمایه گذاری توکن های LP",
+  "Stake": "سرمایه گذاری",
+  "Earned": "سودآوری",
+  "Staked": "سرمایه گذاری شده",
+  "The lottery number you provided does not exist": "شماره قرعه کشی که شما تهیه کرده اید موجود نیست",
+  "Error fetching data": "خطا در دریافت اطلاعات",
+  "Unlock wallet to access lottery": "کیف پول خود را برای دسترسی به قرعه کشی (لاتاری) متصل کنید",
+  "Teams & Profiles": "تیم ها و حساب های کاربری",
+  "Earn more points for completing larger quests!": "برای تکمیل ماموریت های بزرگتر امتیاز بیشتری کسب کنید",
+  "Collecting points for these tasks makes them available again.": "جمع آوری امتیازات برای این وظایف (Task) آن ها را مجددا قابل دسترس میکند.",
+  "Earn points by completing regular tasks!": "کسب امتیازات با استفاده از تکمیل وظایف (Task ها) منظم!",
+  "Task Center": "مدیریت وظایف (Tasks)",
+  "Achievements": "دست آورد ها",
+  "Enter your name...": "نام خود را وارد نمایید...",
+  "I understand that people can view my wallet if they know my username": "من تایید می کنم که سایر کاربران میتوانند آدرس کیف پول من را ببینند در صورتی که نام کاربری من را بدانند.",
+  "A minimum of %num% CAKE is required": "حداقل %num%CAKE مورد نیاز است.",
+  "Only reuse a name from other social media if you're OK with people viewing your wallet. You can't change your name once you click Confirm.": "فقط در صورتی که با دیده شدن کیف پولتان توسط سایر کاربران مشکلی ندارید از نام کاربری آن در شبکه های اجتماعی استفاده کنید. پس از کلیک روی تایید شما نمی توانید نام خود را تغییر دهید.",
+  "Please connect your wallet to continue": "لطفا برای ادامه کیف پول خود را متصل نمایید",
+  "Public Profile": "حساب کاربری عمومی",
+  "Show off your stats and collectibles with your unique profile. Team features will be revealed soon!": "با مشخصات منحصر به فرد خود ، آمار و مجموعه های خود را به نمایش بگذارید. ویژگی های تیم به زودی مشخص خواهد شد!",
+  "Points": "امتیاز ها",
+  "Set Your Name": "اسم خود را وارد نمایید",
+  "Step %num%": "مرحله %num%",
+  "See the list >": "نمایش لیست >",
+  "Staked only": "فقط سرمایه گذاری شده",
+  "Get %symbol%": "دریافت %symbol%",
+  "Balance": "موجودی",
+  "Oops, page not found.": "خطا، این صفحه یافت نشد",
+  "Back Home": "بازگشت به خانه",
+  "Unstake LP tokens": "برداشت سهام توکن های LP",
+  "Live": "زنده",
+  "Start": "شروع",
+  "Finish": "اتمام",
+  "Connect wallet to view": "کیف پول خود را جهت نمایش متصل کنید",
+  "Sorry, you needed to register during the “entry” period!": "با عرض پوزش ، شما نیاز به ثبت نام در دوره \"ورود\" داشتید!",
+  "Check your Rank": "بررسی رتبه شما",
+  "You’re not participating this time.": "شما این بار شرکت نمی کنید.",
+  "Rank in team": "رتبه در تیم",
+  "Your volume": "حجم معاملات شما",
+  "Since start": "از زمان شروع",
+  "Your Score": "امتیاز شما",
+  "Enable": "فعال سازی",
+  "Enabling": "در حال فعال سازی",
+  "%amount% CAKE": "%amount% CAKE",
+  "IFO Shopper: %title%": "خریدار IFO: %title%",
+  "%num% of total": "%num% از کل",
+  "All estimated rates take into account this pool’s %fee%% performance fee": "تمام نرخ های برآورد شده",
+  "Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.": "متاسفیم، شما به اندازه کافی توکن LP مشارکت نکرده اید. شما هیچ چیزی در این فروش نخریدید، اما هنوز می توانید توکن ها LP خود را مطالبه نمایید.",
+  "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "فقط بعد از 3 روز سهام گذاری اعمال می شود. برداشت سهام پس از 3 روز هیچ کارمزدی ندارد. تایمر (Timer) هر زمان که شما CAKE جدیدی به استخر اضافه می کنید ریست می شود.",
+  "Unstaking Fee": "برداشت سهام کارمزد",
+  "unstaking fee until": "برداشت سهام کارمزد تا",
+  "unstaking fee if withdrawn within 72h": "سهام کارمزد دریافت می شود در صورتی که قبل از 72 ساعت برداشت شود.",
+  "Unstaking fee: %fee%%": "کارمزد برداشت سهام: %fee%%",
+  "Performance Fee": "کارمزد اجرا",
+  "Compound: collect and restake CAKE into pool.": "مرکب: CAKE را برداشت کنید و مجددا در استخر سرمایه گذاری کنید.",
+  "Harvest: collect CAKE and send to wallet": "دریافت محصول: جمع آوری CAKE و ارسال به کیف پول",
+  "%position% Entered": "%position% جایگاه وارد شد",
+  "Sort by": "مرتب سازی بر اساس",
+  "Expired": "منقضی شد",
+  "Calculating": "در حال محاسبه",
+  "Next": "بعدی",
+  "Later": "بعدا",
+  "Up": "بالا",
+  "Down": "پایین",
+  "%multiplier% Payout": "%multiplier% پرداخت",
+  "Enter %direction%": "ورود به سمت %direction%",
+  "Prize Pool:": "استخر پاداش:",
+  "Charts": "نمودار ها",
+  "Your history": "تاریخچه شما:",
+  "All": "همه",
+  "Collected": "دریافت شده",
+  "Uncollected": "دریافت نشده",
+  "Round": "دور",
+  "Rounds": "دور ها",
+  "PNL": "سود و زیان(PNL)",
+  "Your Result": "نتیجه شما",
+  "Your direction": "جهت شما",
+  "Your position": "موقعیت شما",
+  "Lose": "باخت",
+  "Entry starts": "ورودی شروع می شود",
+  "Locked Price": "قیمت قفل شده",
+  "Last Price": "آخرین قیمت",
+  "Closed Price": "قیمت بسته شده",
+  "Win": "برد",
+  "Opening Block": "باز کردن بلوک",
+  "Closing Block": "بستن بلوک",
+  "Total Value Locked (TVL)": "مجموع ارز قفل شده (TVL):",
+  "Automatic restaking": "سرمایه گذاری مجدد اتوماتیک",
+  "Manual CAKE": "CAKE غیر اتوماتیک",
+  "Auto CAKE": "CAKE اتوماتیک",
+  "Auto CAKE Bounty": "پاداش اتوماتیک CAKE",
+  "Claim": "مطالبه",
+  "Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.": "هر سرمایه ای که در این استخر سرمایه گذاری می کنید سود آن مجددا جهت کسب سود مرکب سرمایه گذاری می شود.",
+  "Total staked": "مجموع سرمایه",
+  "Just stake some tokens to earn.": "فقط چند توکن را سرمایه گذاری کنید تا سود بگیرید.",
+  "High APR, low risk.": "سود سالیانه(APY) بالا ، ریسک کم",
+  "Stake LP tokens to earn.": "توکن های LP را جهت سودآوری ، سرمایه گذاری کنید.",
+  "Basic Sale": "فروش پایه",
+  "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "هر شخص می تواند مقدار محدودی را بسپارد، اما انتظار می رود که احتمال بازگشت بیشتر به ازای توکن سپرده شود.",
+  "Unlimited Sale": "فروش نامحدود",
+  "No limits on the amount you can commit. Additional fee applies when claiming.": "محدودیتی در مبلغی که می توانید بسپارید وجود ندارد. کارمزد اضافی هنگام مطالبه اعمال می شود.",
+  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "هر شخص می تواند مقدار محدودی را بسپارد، اما انتظار می رود که احتمال بازگشت بیشتر به ازای توکن سپرده شود.",
+  "You didn’t participate in this sale!": "شما در این فروش مشارکت نکرده اید!",
+  "Max. LP token entry": "حداکثر ورودی توکن LP",
+  "How to Take Part": "چگونه میتوان شرکت کرد",
+  "Activate your Profile": "حساب کاربری خود را فعال کنید",
+  "You’ll need an active PancakeSwap Profile to take part in an IFO!": "شما برای شرکت کردن باید یک حساب کاربری فعال در پنکیک سواپ داشته باشید!",
+  "Profile Active!": "حساب کاربری فعال!",
+  "Get CAKE-BNB LP Tokens": "توکن های CAKE-BNB LP دریافت کنید",
+  "Stake CAKE and BNB in the liquidity pool to get LP tokens.": "جهت دریافت توکن های LP توکن های CAKE و BNB را در استخر نقدینگی سرمایه گذاری کنید.",
+  "You’ll spend them to buy IFO sale tokens.": "شما آنها را برای خرید عرضه اولیه توکن ها (IFO) پرداخت می کنید.",
+  "Commit LP Tokens": "سپردن توکن های LP",
+  "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "در زمانی که عرضه اولیه (IFO) در حال انجام است می توانید توکن های LP را جهت خرید توکن های در حال فروش پرداخت (سپردن) کنید.",
+  "We recommend committing to the Basic Sale first, but you can do both if you like.": "ما پیشنهاد می کنیم که در ابتدا در فروش پایه شرکت کنید، اما اگر دوست دارید می توانید در هر دو شرکت کنید.",
+  "Claim your tokens and achievement": "مطالبه توکن ها و دستاورد ها",
+  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "بعد از فروش عرضه اولیه (IFO) می توانید توکن های IFO خود را که خریداری کرده اید مطالبه کنید، و هر توکن CAKE-BNB LP که باقی مانده باشد به کیف پول شما بازگشت داده می شود.",
+  "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.": "این دور در حال بستن تراکنش هایی که به بلاکچین ارسال شده است، و در انتظار تاییدیه است.",
+  "No prediction history available": "هیچ تاریخچه پیشبینی وجود ندارد",
+  "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "اگر مطمئن هستید که باید تاریخچه ای برای شما نمایش داده شود، لطفا از اتصال کیف پول صحیح اطمینان حاصل کنید و مجددا تلاش فرمایید.",
+  "Last price from Chainlink Oracle": "آخرین قیمت ها از اوراکل های Chainlink",
+  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "نمودارها فقط برای مرجع ارائه شده اند و نتیجه نهایی دورها را منعکس نمی کنند.",
+  "Please refer to the prices shown on the cards for the final outcome.": "لطفا برای نتیجه نهایی به قیمت های نشان داده شده در کارت ها مراجعه کنید.",
+  "%num% Points to Collect": "%num% امتیاز برای جمع آوری",
+  "Net results": "نتایج خالص",
+  "Average return / round": "میانگین بازگشت / دور",
+  "Average position entered / round": "میانگین جایگاه وارد شده / دور",
+  "Won": "برنده",
+  "Lost": "باخت",
+  "Entered": "وارد شد",
+  "Connect your wallet to view your prediction history": "جهت مشاهده تاریخچه لطفا کیف پول خود را متصل کنید",
+  "Best round: %roundId%": "بهترین دور : %roundId%",
+  "You’ve already staked the maximum amount you can stake in this pool!": "شما نهایت مقداری که می توانستید در این استخر سرمایه گذاری کنید را کرده اید!",
+  "Markets Paused": "بازار ها متوقف شد",
+  "Prediction markets have been paused due to an error.": "بازار های پیش بینی به دلیل یک خطا متوقف شد.",
+  "All open positions have been canceled.": "همه جایگاه های باز، لغو شد.",
+  "You can reclaim any funds entered into existing positions via the History tab on this page.": "شما سرمایه های وارد شده در جایگاه های موجود را می توانید در قسمت تاریخچه این صفحه مطالبه کنید.",
+  "Show History": "نمایش تاریخچه",
+  "Welcome!": "خوش آمدید!",
+  "This product is still in beta (testing) phase.": "این محصول هنوز در مرحله بتا (آزمایشی) است.",
+  "Before you use this product, make sure you fully understand the risks involved.": "قبل از استفاده از این محصول لطفا مطمئن شوید که تمام ریسک ها و خطرات این کار را می دانید.",
+  "Once you enter a position, you cannot cancel or adjust it.": "بعد از اینکه وارد یک جایگاه شدید نمی توانید آن را لغو کنید یا تغییر دهید.",
+  "All losses are final.": "تمام ضرر ها قطعی است.",
+  "I understand that I am using this product at my own risk. Any loss incurred due to my actions are my own responsibility.": "من آگاه هستم که به خواست خودم و ریسک خودم از این محصول استفاده می کنم و هر گونه از دست دادن سرمایه ای به عهده خودم می باشد.",
+  "Stake CAKE and BNB in the liquidity pool to get LP tokens. You'll spend them to buy IFO sale tokens.": "توکن CAKE و BNB را جهت دریافت توکن های LP سرمایه گذاری کنید. شما آنها را برای خرید توکن های عرضه اولیه (IFO) خرج خواهید کرد.",
+  "You'll need an active PancakeSwap Profile to take part in an IFO!": "شما برای شرکت در عرضه اولیه (IFO) نیاز به یک حساب فعال پنکیک سواپ دارید.",
+  "Your LP tokens committed": "توکن های LP شما ارسال شد",
+  "Max. Committed": "بیشترین ارسال",
+  "Total committed:": "مجموع ارسال شده:",
+  "Additional fee:": "کارمزد اضافی:",
+  "Learn more about %symbol%": "در مورد %symbol% بیشتر بدانید",
+  "Earned since your last action": "کسب شده از آخرین حرکت شما",
+  "Commit ~%amount% LP in total to earn!": "مقدار حدودی %amount% توکن LP برای کسب !",
+  "Learn more about %title%": "در مورد %title% بیشتر بدانید",
+  "365d (APY)": "بازدهی(سود) سالانه (APY)",
+  "%num%d": "%num%روز",
+  "d": "روز",
+  "h": "ساعت",
+  "m": "دقیقه",
+  "Hide or show expandable content": "مشاهده یا مخفی کردن محتوا",
+  "No tokens to stake": "هیچ توکنی برای سرمایه گذاری وجود ندارد",
+  "Successfully claimed!": "با موفقیت مطالبه شد!",
+  "Unable to claim NFT": "ناتوان در مطالبه NFT",
+  "Unable to claim NFT, please try again.": "ناتوان در مطالبه NFT، لطفا مجددا تلاش فرمایید.",
+  "Error": "خطا",
+  "1x %nftName% Collectible": "کلکسیون 1 برابر %nftName%",
+  "1x %nftName% NFT": "یک برابر %nftName% NFT",
+  "NFT successfully transferred!": "NFT با موفقیت انتقال داده شده",
+  "View Contract": "نمایش قرارداد",
+  "See Pair Info": "نمایش اطلاعات جفت ارز",
+  "Stake LP": "سرمایه گذاری LP",
+  "Multiplier": "ضریب",
+  "Start Farming": "شروع کٍشت سود",
+  "Farming": "کٍشت سود",
+  "Enable Farm": "فعال سازی مزرعه",
+  "Search Farms": "جستجوی مزرعه",
+  "To Top": "برو بالا",
+  "Total value of the funds in this farm’s liquidity pool": "ارزش کلی سرمایه های موجود استخر نقدینگی این مزرعه",
+  "The multiplier represents the amount of CAKE rewards each farm gets.": "ضریب نشان گر مقدار CAKE جایزه است که هر مزرعه دریافت می کند.",
+  "For example, if a 1x farm was getting 1 CAKE per block, a 40x farm would be getting 40 CAKE per block.": "به طور مثال، اگر یک مزرعه با ضریب 1x مقدار 1 CAKE به ازای هر بلاک دریافت می کند، یک مزرعه با ضریب 40x مقدار 40 CAKE به ازای هر بلاک (بلوک) دریافت می کند.",
+  "Hot": "جذاب",
+  "Success!": "موفق!",
+  "You have successfully claimed your rewards.": "شما جوایز خود را با موفقیت دریافت کردید.",
+  "Commit": "سپردن",
+  "If you don’t commit enough LP tokens, you may not receive any IFO tokens at all and will only receive a full refund of your LP tokens.": "اگر به اندازه کافی از توکن های LP را نسپارید، ممکن است هیچ توکن عرضه اولیه (IFO) ای دریافت نکنید و سرمایه های توکن LP شما فقط بازگشت داده می شود.",
+  "LP Tokens required": "توکن های LP مورد نیاز است",
+  "Get LP tokens, or make sure your tokens aren’t staked somewhere else.": "لطفا توکن های LP تهیه کنید و یا مطمئن شوید که توکن های LP در جای دیگری سرمایه گذاری نشده است.",
+  "Funds to raise:": "بودجه برای جمع آوری:",
+  "Price per %symbol%:": "قیمت به ازای %symbol%:",
+  "You need an active PancakeSwap Profile to take part in an IFO!": "شما برای شرکت در عرضه اولیه (IFO) نیاز به فعال کردن حساب پنکیک سواپ خود دارید.",
+  "Achievement": "دستاورد ها",
+  "Commit ~%minLp% LP in total to earn!": "حداقل حدود %minLp% توکن LP برای کسب بسپارید!",
+  "What’s the difference between a Basic Sale and Unlimited Sale?": "تفاوت فروش پایه و فروش نامحدود در چیست؟",
+  "In the Basic Sale, every user can commit a maximum of about 100 USD worth of CAKE-BNB LP Tokens. We calculate the maximum LP amount about 30 minutes before each IFO. The Basic Sale has no participation fee.": "در فروش پایه، هر کاربر می تواند حداکثر حدود 100 دلار آمریکا با توکن CAKE-BNB LP بسپارد. ما 30 دقیقه قبل از شروع هر عرضه اولیه (IFO) حداکثر مقدار توکن LP را محاسبه می کنیم. فروش پایه هیچ کارمزد مشارکتی ندارد.",
+  "In the Unlimited Sale, there’s no limit to the amount of CAKE-BNB LP Tokens you can commit. However, there’s a fee for participation: see below.": "در فروش نامحدود هیچ محدودیتی برای مقدار CAKE-BNB LP وجود ندارد، هرچند که کارمزد مشارکت دارد که می توانید در زیر ببینید.",
+  "Which sale should I commit to? Can I do both?": "در کدام نوع فروش باید سپرده بگذارم؟ می توانم در هر دو شرکت کنم؟",
+  "You can choose one or both at the same time! If you’re only committing a small amount, we recommend the Basic Sale first. Just remember you need a PancakeSwap Profile in order to participate.": "شما می توانید یک یا هر دو را در یک زمان انتخاب کنید در صورتی که شما مبلغ کمی را سپرده می کنید، ما فروش پایه را پیشنهاد می کنیم. اما فقط یادتان باشد که جهت مشارکت شما به حساب پنکیک سواپ نیاز دارد.",
+  "How much is the participation fee?": "کارمزد مشارکت چه مقدار است؟",
+  "There’s only a participation fee for the Unlimited Sale: there’s no fee for the Basic Sale.": "کارمزد مشارکت فقط برای فروش نامحدود است: برای فروش پایه هیچ کارمزدی در نظر گرفته نشده است.",
+  "The fee will start at 1%.": "کارمزد از 1 درصد شروع می شود.",
+  "The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Unlimited” portion of the sale.": "هزینه مشارکت 1٪ در صخره ها کاهش می یابد ، براساس درصد سرریز از بخش \"نامحدود\" فروش.",
+  "Where does the participation fee go?": "کارمزد مشارکت کجا می رود؟",
+  "We burn it. The CAKE-BNB LP tokens from the participation fee will be decomposed. We will then use the BNB portion to market buy the CAKE equivalent, and finally throw all of the CAKE into the weekly token burn.": "ما آن را می سوزانیم. توکن های CAKE-BNB LP از هزینه شرکت تجزیه می شود. سپس ما از بخش BNB برای خرید معادل کیک در بازار استفاده خواهیم کرد و در آخر همه CAKE ها را به توکن سوزی هفتگی خواهیم انداخت.",
+  "How can I get an achievement for participating in the IFO?": "چگونه می توانم برای شرکت در عرضه اولیه(IFO) دستاوردی کسب کنم؟",
+  "You need to contribute a minimum of about 10 USD worth of CAKE-BNB LP Tokens to either sale.": "شما باید حداقل در حدود 10 دلار از توکن CAKE-BNB LP برای فروش استفاده کنید.",
+  "You can contribute to one or both, it doesn’t matter. Only your overall contribution is counted for the achievement.": "شما می توانید به یکی یا هر دو کمک کنید ، مهم نیست. فقط سهم کلی شما برای این موفقیت محاسبه می شود.",
+  "The Lottery Is Changing!": "قرعه کشی در حال تغییر است!",
+  "Come back soon!": "به زودی بر می گردیم!",
+  "Staked (compounding)": "سرمایه گذاری شده (مرکب)",
+  "Contract Enabled": "قرارداد فعال شد",
+  "You can now stake in the %symbol% vault!": "شما هم اکنون می توانید در خزانه %symbol% سرمایه گذاری کنید!",
+  "You can now stake in the %symbol% pool!": "شما هم اکنون می توانید در استخر %symbol% سرمایه گذاری کنید!",
+  "Please try again. Confirm the transaction and make sure you are paying enough gas!": "لطفا دوباره تلاش کنید. تراکنش را تأیید کنید و مطمئن شوید که به اندازه کافی Gas (کارمزد شبکه) پرداخت می کنید!",
+  "Start earning": "شروع کاسبی",
+  "Recent CAKE profit": "سود اخیر CAKE",
+  "Unstaked!": "برداشت سهام!",
+  "Unstaked": "برداشت سهام",
+  "Staked!": "سرمایه گذاری شد!",
+  "Your funds have been staked in the pool": "سرمایه شما در استخر مورد نظر سرمایه گذاری شد",
+  "Your earnings have also been harvested to your wallet": "درآمد شما نیز در کیف پول شما جمع شده است",
+  "%error% - Please try again.": "%error% - لطفا مجددا تلاش فرمایید",
+  "Stake in Pool": "سرمایه گذاری در استخر",
+  "Balance: %balance%": "%balance% موجودی",
+  "%day%d : %hour%h : %minute%m": "%day%روز : %hour%ساعت : %minute%دقیقه",
+  "%day%d %hour%h %minute%m": "%day%روز %hour%ساعت %minute%دقیقه",
+  "Subtracted automatically from each yield harvest and burned.": "به طور خودکار از هر محصول سود کم شده و سوزانده می شود.",
+  "Blocks": "بلوک",
+  "Add to Metamask": "اضافه کردن به کیف پول متامسک(Metamask)",
+  "Compounded": "مرکب شده",
+  "Canceled": "لغو شده",
+  "Please try again and confirm the transaction.": "لطفا مجددا جهت تایید تراکنش تلاش فرمایید",
+  "Harvested": "برداشت شده",
+  "Close Window": "بستن پنجره",
+  "Insufficient %symbol% balance": "مقدار %symbol% ناکافی",
+  "You’ll need %symbol% to stake in this pool!": "شما به توکن %symbol% جهت سرمایه گذاری در این استخر نیاز دارید!",
+  "Buy some %symbol%, or make sure your %symbol% isn’t in another pool or LP.": "مقداری %symbol% بخرید یا مطمئن شوید که %symbol% شما در یک استخر یا LP دیگر نیست.",
+  "Buy": "خرید",
+  "Locate Assets": "یافتن دارایی ها",
+  "%symbol% required": "%symbol% مورد نیاز است",
+  "Your %symbol% earnings have also been harvested to your wallet!": "توکن %symbol% همچنین به کیف پول شما واریز شد!",
+  "Your %symbol% funds have been staked in the pool!": "سرمایه %symbol% شما در استخر سرمایه گذاری شد!",
+  "Max stake for this pool: %amount% %token%": "حداکثر سرمایه در این استخر: %amount% %token%",
+  "Maximum total stake: %amount% %token%": "مجموع حداکثر سرمایه: %amount% %token%",
+  "APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.": "درصد سود سالانه (APY) شامل مرکب می شود، درصد نرخ سالانه (APR) نمی شود. این استخر CAKE ها را به صورت اتوماتیک مرکب می کند، پس ما درصد سود سالانه را به شما نمایش می دهیم.",
+  "This pool’s rewards aren’t compounded automatically, so we show APR": "سود این استخر به صورت اتوماتیک مرکب نمی شود، پس ما نرخ سالانه (APR) را به شما نمایش می دهیم.",
+  "Auto": "خودکار",
+  "Manual": "غیر خودکار",
+  "Earn CAKE, stake CAKE": "توکن CAKE کسب کنید، و CAKE سرمایه گذاری کنید",
+  "This bounty is given as a reward for providing a service to other users.": "این پاداش در عوض ایجاد کردن نقدینگی برای کاربران دیگر به شما داده می شود",
+  "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto CAKE Pool’s compounding function for everyone.": "زمانی که شما جایزه خود را دریافت می کنید، همچنین به استخر CAKE اتوماتیک کمک می کنید که سود مرکب را برای همه فعال کند.",
+  "Auto-Compound Bounty: %fee%% of all Auto CAKE pool users pending yield": "پاداش مرکب سازی خودکار: %fee%% از سود معلق تمام کاربران استخر CAKE خودکار",
+  "Bounty collected!": "پاداش دریافت شد!",
+  "CAKE bounty has been sent to your wallet.": "پاداش CAKE به کیف پول شما انتقال یافت.",
+  "Could not be collected": "غیر قابل برداشت",
+  "There may be an issue with your transaction, or another user claimed the bounty first.": "ممکن است مشکلی در تراکنش خود داشته باشید، یا یک کاربر دیگر پاداش را قبل از شما دریافت کرده باشد.",
+  "Claim Bounty": "برداشت پاداش",
+  "You’ll claim": "شما برمیدارید",
+  "Pool total pending yield": "مجموع سود معلق استخر",
+  "Bounty": "پاداش (انعام)",
+  "What’s this?": "این چیه؟",
+  "Help": "کمک",
+  "Syrup Pools": "استخر های Syrup",
+  "Best round: #%roundId%": "بهترین دور : #%roundId%",
+  "View Reclaimed & Won": "نمایش پس گرفته شده و برنده شده",
+  "This round was automatically canceled due to an error. If you entered a position, please reclaim your funds below.": "این دور به صورت اتوماتیک به دلیل رخ دادن یک خطا لفو شد. در صورتی که در این دور شرکت کرده بودید سرمایه خود را مطالبه کنید (پس بگیرید).",
+  "Round History": "تاریخچه دور",
+  "Your History": "تاریخچه شما",
+  "Filter": "فیلتر",
+  "Starting Soon": "به زودی شروع می شود",
+  "Live Now": "زنده",
+  "Reclaim": "پس گرفتن",
+  "This page can’t be displayed right now due to an error. Please check back soon.": "این صفحه به دلیل رخ دادن یک خطا قابل نمایش نیست ، لطفا به زودی مجددا تلاش فرمایید.",
+  "Round Canceled": "دور لغو شد",
+  "Learn More": "بیشتر بدانید",
+  "Payout": "پرداخت",
+  "%position% position entered": "%position% جایگاه وارد شد",
+  "Enter UP": "ورود به سمت بالا",
+  "Enter DOWN": "ورود به سمت پایین",
+  "An error occurred, unable to enter your position": "یک خطای نامشخص رخ داد، نتوانستیم جایگاه شما را وارد کنیم",
+  "Set Position": "تنظیم جایگاه",
+  "Insufficient BNB balance": "مقدار BNB کافی نیست",
+  "A minimum amount of %num% %token% is required": "حداقل مقدار %num% %token% مورد نیاز است",
+  "Enter an amount": "مقدار را وارد نمایید",
+  "You won’t be able to remove or change your position once you enter it.": "بعد از ورود به جایگاه شما نمی توانید جایگاه خود را تغییر دهید",
+  "Prize Pool": "استخر پاداش",
+  "Winnings collected!": "پاداش دریافت شد!",
+  "Your prizes have been sent to your wallet": "پاداش شما به کیف پول شما انتقال یافت.",
+  "Collecting": "در حال دریافت",
+  "Closing": "در حال خروج",
+  "Position reclaimed!": "جایگاه پس گرفته شد!",
+  "Reclaim Position": "پس گرفتن جایگاه",
+  "This Product is in beta.": "این محصول در نسخه بتا (Beta) است.",
+  "I understand that I am using this product at my own risk. Any losses incurred due to my actions are my own responsibility.": "من به ریسک استفاده از این محصول آگاه هستم. هرگونه باختن سرمایه با مسولیت خودم خواهد بود.",
+  "I understand that this product is still in beta. I am participating at my own risk": "من میدانم این محصول هنوز در نسخه بتا (آزمایشی) است. و با ریسک خودم شرکت می کنم.",
+  "Continue": "ادامه",
+  "Points Collected!": "امتیاز دریافت شد!",
+  "%num% points": "%num% امتیاز",
+  "Cost to update:": "قیمت بروزرسانی:",
+  "Cost to reactivate:": "قیمت فعال سازی مجدد:",
+  "Profile Updated!": "حساب کاربری بروزرسانی شد!",
+  "Choose a new Collectible to use as your profile pic.": "یک عکس قابل جمع آوری (کلکسیون) را انتخاب کنید.",
+  "Sorry! You don’t have any eligible Collectibles in your wallet to use!": "متاسفیم! شما هیچ کلکسیون واجد شرایط در کیف پول خود ندارید که از آن استفاده نمایید!",
+  "Make sure you have a Pancake Collectible in your wallet and try again!": "ابتدا مطمئن شوید که یک کلکسیون در کیف پول خود دارید و سپس تلاش نمایید.",
+  "Edit Profile": "ویرایش حساب کاربری",
+  "Change Profile Pic": "تعویض عکس حساب",
+  "Remove Profile Pic": "حذف عکس حساب",
+  "Profile Paused!": "حساب متوقف شد!",
+  "This will suspend your profile and send your Collectible back to your wallet": "این حساب شما را مسدود می کند و کلکسیون را به کیف پول شما باز می گرداند",
+  "While your profile is suspended, you won't be able to earn points, but your achievements and points will stay associated with your profile": "اگر حساب شما مسدود باشد، شما نمی توانید امتیازی کسب کنید ، اما دستاورد ها و امتیاز های قبلی در حساب شما همچنان باقی می ماند.",
+  "Cost to reactivate in the future: %cost% CAKE": "قیمت فعال سازی مجدد در آینده : %cost% CAKE",
+  "%minimum% CAKE required to change profile pic": "حداقل %minimum% CAKE برای تغییر عکس پروفایل خود نیاز دارید.",
+  "Reactivate Profile": "فعالسازی مجدد حساب",
+  "No achievements yet!": "هیچ دستاوردی هنوز وجود ندارد!",
+  "Claim your Gift!": "هدیه خود را دریافت کنید!",
+  "Thank you for being a day-one user of Pancake Profiles!": "از اینکه یک روز در پنکیک حساب دارید متشکریم!",
+  "If you haven't already noticed, we made a mistake and the starter bunny you chose got mixed up and changed into another bunny. Oops!": "ما یک خطا مرتکب شدیم و به اشتباه خرگوش مبتدی را با یک خرگوش دیگر عوض کردیم. شرمنده!",
+  "To make it up to you, we’ll refund you the full 4 CAKE it cost to make your bunny.": "جهت خدمت به شما ، ما 4CAKE جهت ساخت خرگوش به شما بازپرداخت خواهیم کرد.",
+  "We’re also preparing an all-new collectible for you to claim (for free!) in the near future.": "ما همچنین در حال آماده سازی کلکسیون جدیدی برای شما در آینده نزدیک هستیم (رایگان!).",
+  "Once you claim the refund, you can make another account with another wallet, mint a new bunny, and send it to your main account via the NFT page.": "زمانی که شما بازپرداخت خود را دریافت کردید، میتوانید یک حساب جدید با یک کیف پول دیگر بسازید ، خرگوش جدید را ایجاد کنید و آن را از طریق صفحه NFT به اکانت(حساب) اصلی خود بفرستید.",
+  "Claim Your CAKE": "دریافت CAKE",
+  "Pancake Collectibles": "کلکسیون پنکیک",
+  "Pancake Collectibles are special ERC-721 NFTs that can be used on the PancakeSwap platform.": "کلکسیون پنکیک ، NFT های ERC-721 هستند که می توانند در پلتفرم (نرم افزار) پنکیک سواپ مورد استفاده قرار گیرند.",
+  "NFTs in this user’s wallet that aren’t approved Pancake Collectibles won’t be shown here.": "تمام NFT های کیف پول این کاربر که به عنوان کلکسیون پنکیک تایید نشده اند ، اینجا نمایش داده نمی شوند.",
+  "No NFTs Found": "هیچ NFT یافت نشد",
+  "See all approved Pancake Collectibles": "مشاهده تمام کلکسیون های تایید شده پنکیک",
+  "Coming Soon!": "به زودی!",
+  "Profile created!": "حساب کاربری ایجاد شد!",
+  "Submitting NFT to contract and confirming User Name and Team.": "در حال ارسال NFT به قرارداد هوشمند و تاییدیه نام کاربری و گروه.",
+  "Cost": "قیمت",
+  "Your Profile": "حساب کاربری شما",
+  "Check your stats and collect achievements": "آمار خود را بررسی کنید و دستاورد های خود را برداشت کنید",
+  "You’ve got a gift to claim!": "شما یک جایزه دارید که می توانید آنرا برداشت کنید!",
+  "Show off your stats and collectibles with your unique profile": "نمایش آمار ، کلکسیون و حساب کاربری منحصر به فرد شما.",
+  "Total cost: 1.5 CAKE": "قیمت کل : 1.5 CAKE",
+  "Cost: %num% CAKE": "قیمت : %num% CAKE",
+  "You can change your profile pic later if you get another approved Pancake Collectible.": "شما می توانید بعدا تصویر پروفایل خود را عوض کنید در صورتی که یک کلکسیون پنکیک دیگر دریافت کنید.",
+  "Every profile starts by making a “starter” collectible (NFT).": "هر حساب کاربری با یک کلکسیون \"مبتدی\" شروع می شود (NFT).",
+  "We couldn’t find any Pancake Collectibles in your wallet.": "هیچ کلکسیون پنکیکی در کیف پول شما یافت نشد.",
+  "You need a Pancake Collectible to finish setting up your profile. If you sold or transferred your starter collectible to another wallet, you’ll need to get it back or acquire a new one somehow. You can’t make a new starter with this wallet address.": "شما به یک کلکسیون پنکیک جهت اتمام تنظیم حساب کاربری خود نیاز دارید. در صورتی که کلکسیون مبتدی خود را فروخته اید یا به کیف پول دیگری واگذار کرده اید باید آن را به کیف پول فعلی بازگردانید یا یک کلکسیون مبتدی جدید بخرید. شما نمی توانید یک \"مبتدی\" جدید با آدرس این کیف پول ایجاد کنید.",
+  "The collectible you've chosen will be locked in a smart contract while it’s being used as your profile picture. Don't worry - you'll be able to get it back at any time.": "کلکسیون انتخاب شده توسط شما به عنوان تصویر پروفایل شما استفاده می شود و همیشه در یک قرارداد هوشمند ذخیره می شود. نگران نباشید شما می توانید آنرا در هر زمانی پس بگیرید.",
+  "It won’t be possible to undo the choice you make for the foreseeable future!": "امکان بازگردانی انتخابی که الان می کنید در آینده وجود ندارد!",
+  "There’s currently no big difference between teams, and no benefit of joining one team over another for now. So pick whichever one you like!": "در حال حاضر هیچ تفاوت بزرگی بین تیم ها نیست و هیچ تیمی مزیتی نسبت به دیگری ندارد، پس می توانید هر کدام را که دوست دارید انتخاب کنید!",
+  "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "نام شما باید بین 3 تا 15 کارکتر لاتین و اعداد باشد. پس از کلیک کردن بر روی دکمه تایید نمی توانید نام را تغییر دهید.",
+  "Unable to verify username": "خطا در احراز نام کاربری",
+  "Created %dateCreated% ago": "ایجاد شده در %dateCreated% پیش",
+  "Paused": "متوقف شد",
+  "April": "آپریل",
+  "Easter Battle": "نبرد Easter",
+  "$200,000 in Prizes!": "$200,000 جایزه",
+  "Compete with other teams to win CAKE, collectible NFTs, achievements & more!": "با سایر تیم ها جهت برد CAKE , NFT ها و ... رقابت کنید!",
+  "Now Live!": "زنده!",
+  "Calculating prizes": "در حال محاسبه جوایز",
+  "I want to Battle!": "می خواهم مبارزه کنم!",
+  "Trade Now": "معامله",
+  "Claim period over": "دوره مطالبه تمام شد",
+  "Prizes Claimed!": "جوایز داده شد!",
+  "Nothing to claim": "هیچ چیز برای برداشتن نیست",
+  "Registered!": "ثبت شد!",
+  "Congratulations! You won": "تبریک می گوییم! شما برنده شدید",
+  "Collectible NFT": "کلکسیون NFT",
+  "All prizes will be sent directly to your wallet and user account.": "تمام جوایز مستقیما به کیف پول شما و حساب کاربران ارسال می شود.",
+  "How Can I Join?": "چگونه می توانم عضو شوم؟",
+  "Set up your": "تنظیم کنید",
+  "Pancake Profile": "حساب کاربری پنکیک",
+  "then register for the competition by clicking “I WANT TO BATTLE” button above.": "و سپس درخواست رقابت خود را با کلیک بر روی \"میخواهم مبارزه کنم\" ثبت کنید.",
+  "Battle Time": "زمان مبارزه",
+  "Trade BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB during the battle period to raise both your and your team’s score. See the Rules section below for more.": "جفت ارز های BNB/BUSD ، ETH/BNB و BTCB/BNB را جهت افزایش امتیاز خودتان و تیم تان معامله کنید. جهت اطلاعات بیشتر قسمت قوانین را مشاهده نمایید.",
+  "Prize Claim": "مطالبه جایزه",
+  "Teams and traders will be ranked in the order of trading volume. Collect your prizes and celebrate!": "تیم ها و معامله گران بر اساس حجم معاملات رتبه بندی می شوند. جوایز خود را دریافت کنید و جشن بگیرید!",
+  "Registration starting April 5": "ثبت نام در 5 آپریل شروع می شود",
+  "Tier": "مقام",
+  "CAKE Prizes (Split)": "جوایز CAKE (جداشده)",
+  "Gold": "طلا",
+  "Silver": "نقره",
+  "Bronze": "برنز",
+  "Purple": "بنفش",
+  "Teal": "Teal",
+  "#%team% Team": "#%team% تیم",
+  "Prizes by Team": "جوایز تیم ها",
+  "Higher trading volume = higher rank!": "حجم معاملات بیشتر = امتیاز بیشتر!",
+  "Prizes to be distributed in CAKE and shared by all members of a tier. CAKE price in USD to be determined on the day of distribution. Details below.": "جوایز با ارز CAKE بین تمام اعضای یک مقام توزیع و پخش می شود. در روز توزیع جوایز قیمت CAKE بر اساس USD ( دلار آمریکا ) محاسبه می شود. جزئیات بیشتر در پایین.",
+  "Every eligible participant will win prizes at the end of the competition.": "هر کدام از شرکت کننده های واجد شرایط در پایان رقابت جوایز خود را دریافت می کند.",
+  "The better your team performs, the better prizes you will get!": "هر چقدر تیم شما بهتر عمل کند شما جوایز بهتری میگیرید!",
+  "The final winning team will be the team with the highest total combined volume of their top 500 members at the end of the competition period.": "تیم نهایی برنده تیمی خواهد بود که مجموع معاملات 500 عضو برتر آنها بیشترین حجم را در پایان رقابت داشته باشد.",
+  "Make a profile!": "ایجاد یک حساب کاربری!",
+  "It looks like you’ve disabled your account by removing your Pancake Collectible (NFT) profile picture.": "به نظر می رسد شما حساب خود را به دلیل حذف تصویر پروفایل کلکسیون پنکیک (NFT) غیر فعال کرده اید.",
+  "Reactivate your profile!": "فعال سازی مجدد حساب کاربری شما!",
+  "You need to reactivate your profile by replacing your profile picture in order to join the competition.": "جهت ورود به رقابت شما ابتدا باید تصویر پروفایل خود را جایگزین کنید.",
+  "Go to my profile": "برو به حساب کاربری من",
+  "You have registered for the competition!": "شما در این رقابت ثبت نام کردید!",
+  "Registering for the competition will make your wallet address publicly visible on the leaderboard.": "ثبت نام در رقابت باعث می شود آدرس کیف پول شما به صورت عمومی بر روی تابلو امتیازات نمایش داده شود.",
+  "This decision cannot be reversed.": "تصمیم گرفته شده قابل تغییر نیست.",
+  "I understand that my address may be displayed publicly throughout the competition.": "من قبول می کنم که آدرس کیف پول من به صورت عمومی روی تابلو امتیازات قابل نمایش باشد.",
+  "Eligible trading pairs": "جفت ارز های قابل معامله",
+  "Only trades on BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB pairs will be included in volume calculations.": "تنها جفت ارز های BNB/BUSD, ETH/BNB و BTCB/BNB در حجم معاملات لحاظ می شود.",
+  "Calculating team ranks and winners": "محاسبه رتبه تیم ها و برندگان",
+  "Team ranks are calculated by the total combined volume of the top 500 members of each respective team.": "رتبه تیم ها بر اساس حجم معاملات 500 عضو برتر هر تیم محاسبه می شود",
+  "Prize distribution": "توزیع جوایز",
+  "Prizes to be distributed in CAKE and shared by all members of each respective tier as per the Prizes section above.": "جوایز با توکن CAKE بین تمام اعضای هر مقام به عنوان جوایز قسمت بالا توزیع می شود.",
+  "CAKE prizes will be distributed as per the CAKE/BUSD price on the day of distribution. Every eligible participant will win prizes at the end of the competition.": "جوایز CAKE به ازای CAKE/BUSD در روز توزیع ، پخش خواهد شد. هر کدام از مشارکت کنندگان جوایز را در انتهای رقابت برنده خواهد شد.",
+  "Every participant will win at least one prize at the end of the competition": "هر کدام از شرکت کننده ها بیش از یک جایزه در پایان رقابت دریافت خواهد کرد.",
+  "Fine print": "بازرسی",
+  "In the event of a disagreement concerning the final winning team or rank, PancakeSwap will have the final say.": "در صورت اختلاف نظر در مورد تیم برنده یا رتبه ها ، پنکیک سواب تصمیم نهایی را خواهد گرفت.",
+  "PancakeSwap can and will disqualify any team or specific members that are proven to have taken malicious action or attempt to “cheat” in any way.": "پنکیک سواپ می تواند هر تیم یا عضوی که ثابت شود به هر نحوی اقدام به تقلب کرده است را رد صلاحیت کند.",
+  "Can I join the battle after it starts?": "آیا می توانم پس از شروع رقابت به آن بپیوندم؟",
+  "Sorry, no. You need to register during the registration period, before the start of the event.": "متاسفانه نه! شما باید قبل از شروع یک رویداد در مرحله ثبت نام وارد شوید.",
+  "How do I know if I successfully registered?": "چگونه بدانم که با موفقیت ثبت نام کرده ام؟",
+  "At the top of the page, the text in the button “I Want to Battle” will change to “Registered”.": "در صورتی که ثبت نام کرده باشید در بالای این صفحه متن دکمه \"میخواهم مبارزه کنم\" به \"ثبت شد\" تغییر خواهد کرد.",
+  "How can I see my current rank?": "چگونه می توانم رتبه فعلی خودم را ببینم؟",
+  "Check Your Score section on the event page. You’ll need to connect your wallet, of course.": "بخش امتیازات را در صفحه (Page) رویداد بررسی کنید. البته باید کیف پول خود را متصل کرده باشید.",
+  "How do I claim my prize(s)?": "چگونه می توانم جوایزم را برداشت کنم؟",
+  "After the battle ends, visit the event page and click the “Claim Prizes” button in the top section or in “Your Score” section. Once you claim your prizes successfully, the button text will change to “Prizes Claimed”.": "پس از پایان مبارزه ، به صفحه رویداد ها بروید و بر روی دکمه \"برداشت جوایز\" در قسمت بالا یا در قسمت \"امتیاز شما\" کلیک کنید. زمانی که شما جوایز خود را با موفقیت دریافت کردید متن دکمه به \"جوایز داده شد\" تغییر خواهد کرد.",
+  "Trade to increase your rank": "برای افزایش رتبه معامله کنید",
+  "Eligible pairs: BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB": "جفت ارز های قابل استفاده : BNB/BUSD, CAKE/BNB, ETH/BNB و BTCB/BNB",
+  "Play as a team": "به عنوان یک تیم بازی کنید",
+  "The higher your team’s rank, the better your prizes": "رتبه بیشتر برای تیم شما برابر با جوایز بهتر برای شماست",
+  "Top Traders": "بهترین معامله گران",
+  "Since start of the competition": "از زمان شروع رقابت",
+  "Show More": "مشاهده بیشتر",
+  "Share Score": "اشتراک گذاری امتیاز",
+  "Your tier: gold": "مقام شما : طلا",
+  "Love, The Chefs x": "با عشق، آشپزهای x",
+  "HECK YEAH!": "آررره!",
+  "Next tier": "مقام بعدی",
+  "to become #%rank% in team": "برای رتبه #%rank% شدن در تیم",
+  "#%global% Overall": "#%global% سراسری",
+  "CAKE Prizes": "جوایز CAKE",
+  "Share Your Score": "امتیاز خود را به اشتراک بگذارید",
+  "Brag to your friends and annoy your rivals with your custom scorecard!": "پیش دوستاتون چسی بیایید و حرص رقبا تون رو با کارت های امتیازی سفارشی در بیارید!",
+  "Download Image": "دانلود عکس",
+  "Screenshot or press & hold the image to share!": "اسکرین شات بگیرید یا روی عکس ضربه بزنید و نگه دارید تا عکس را به اشتراک بگذارید!",
+  "Block %num%": "بلاک %num%",
+  "%max% %symbol% Available": "%max% %symbol% در دسترس",
+  "Profile Pic": "عکس پروفایل",
+  "Transfer": "انتقال",
+  "Congratulations!": "مبارکه !",
+  "You won a collectible!": "شما یک کلکسیون بردید !",
+  "Claim now": "دریافت کن",
+  "NFT in wallet": "ان اف تی (NFT) در کیف پول",
+  "Trade in your NFT for CAKE, or just keep it for your collection.": "ان اف تی (NFT) خود را در ازای CAKE معامله کنید یا آن را جهت کلکسیون نگه دارید.",
+  "No NFTs to claim": "هیچ NFT برای دریافت نیست",
+  "You have no NFTs to claim at this time, but you can still see the NFTs in this series below.": "این بار هیچ NFT برای برداشت نیست، اما هنوز می توانید NFT ها را در این سری ببینید.",
+  "Please wait...": "لطفا صبر کنید",
+  "The claiming period hasn’t started yet. Check back soon.": "دوره (بازه) برداشت هنوز شروع نشده. به زودی دوباره بررسی کنید.",
+  "Please enter a valid wallet address": "لطفا آدرس یک کیف پول معتبر را وارد نمایید",
+  "Unable to transfer NFT": "نمی توانیم NFT را انتقال دهیم",
+  "Transfer NFT": "انتقال NFT",
+  "Transferring": "در حال انتقال",
+  "Receiving address": "آدرس دریافت کننده",
+  "Paste address": "جایگذاری آدرس",
+  "Could not retrieve CAKE costs for profile": "نتوانستیم قیمت های CAKE را برای حساب کاربری در بیاوریم",
+  "An error occurred approving transaction": "یک خطا در تایید تراکنش رخ داد",
+  "Provider Error": "Provider Error",
+  "No provider was found": "No provider was found",
+  "Authorization Error": "Authorization Error",
+  "Please authorize to access your account": "برای دسترسی به حساب خود لطفا وارد شوید",
+  "Unable to find connector": "خطا در یافتن متصل کننده (connector)",
+  "The connector config is wrong": "The connector config is wrong",
+  "You have contributed %amount% CAKE-BNB LP tokens to this IFO!": "شما در این عرضه اولیه مزرعه (IFO) مقدار %amount% توکن CAKE-BNB LP مشارکت کردید.",
+  "You’ll need CAKE-BNB LP tokens to participate in the IFO!": "شما به توکن های CAKE-BNB برای مشارکت در عرضه اولیه مزرعه (IFO) نیاز دارید.",
+  "Your %symbol% committed": "توکن %symbol% شما ارائه شد",
+  "Your %symbol% RECLAIMED": "توکن %symbol% شما باز پس گرفته شد",
+  "Your %symbol% TO RECLAIM": "توکن %symbol% شما برای پس گرفتن",
+  "%symbol% received": "%symbol% دریافت شد",
+  "%symbol% to receive": "%symbol% برای دریافت",
+  "Stories were told, and songs were sung about Chef Mixie’s pancakes and her big Syrup gun.": "الهی تب کنم شاید پرستارم تو باشی",
+  "Eggscellent! Celebrating Syrup Storm winning the Easter Battle!": "ما توی چیزمون عروسیه، خودمونم نمی دونیم چرا!",
+  "Melting Easter eggs and melting hearts!": "پشما رو میریزونه و قلب ها رو ذوب می کنه",
+  "Watch out for Flipsie’s spatula smash!": "کاکو Flipsie با کفگیرش پشماتون رو از ته میزنه",
+  "Do you like chocolate with your syrup? Go long!": "شکلات رو با شربت دوس داری ؟ برو عامو خز!",
+  "Happy Niu Year! This bunny’s excited for the year of the bull (market!)": "سال نو مبارک! این خرگوش تو کو...ش عروسیه واسه سال جدید که قرار بازار گاوی باشه |:",
+  "Oopsie daisy! Hiccup's had a bit of an accident. Poor little fella.": "ای یارو خرگوشه دست و پا چلفتی پنکیکش رو انداخت",
+  "Aww, looks like eating pancakes all day is not easy. Sweet dreams!": "اینقدر پنکیک بخور که تا یه هفته پنکیک بر...نی!",
+  "Sunny is always cheerful when there are pancakes around. Smile!": "سانی دلش خوشه وقتی که یه مشت پنکیک داره",
+  "Don't let that dopey smile deceive you... Churro's a master CAKE chef!": "Don't let that dopey smile deceive you... Churro's a master CAKE chef!",
+  "Nommm... Oh hi, I'm just meditating on the meaning of CAKE.": "Nommm... Oh hi, I'm just meditating on the meaning of CAKE.",
+  "Three guesses what's put that twinkle in those eyes! (Hint: it's CAKE)": "Three guesses what's put that twinkle in those eyes! (Hint: it's CAKE)",
+  "These bunnies love nothing more than swapping pancakes. Especially on BSC.": "These bunnies love nothing more than swapping pancakes. Especially on BSC.",
+  "It's raining syrup on this bunny, but he doesn't seem to mind. Can you blame him?": "It's raining syrup on this bunny, but he doesn't seem to mind. Can you blame him?",
+  "These bunnies like their pancakes with blueberries. What's your favorite topping?": "These bunnies like their pancakes with blueberries. What's your favorite topping?",
+  "Love makes the world go 'round... but so do pancakes. And these bunnies know it.": "Love makes the world go 'round... but so do pancakes. And these bunnies know it.",
+  "It’s sparkling syrup, pancakes, and even lottery tickets! This bunny really loves it.": "It’s sparkling syrup, pancakes, and even lottery tickets! This bunny really loves it.",
+  "The storm's a-comin! Watch out! These bulls are stampeding in a syrupy surge!": "The storm's a-comin! Watch out! These bulls are stampeding in a syrupy surge!",
+  "The flippening is coming. Don't get in these bunnies' way, or you'll get flipped, too!": "The flippening is coming. Don't get in these bunnies' way, or you'll get flipped, too!",
+  "Can you stand the heat? Stay out of the kitchen or you might get burned to a crisp!": "Can you stand the heat? Stay out of the kitchen or you might get burned to a crisp!",
+  "%ratio%% of total sale": "%ratio%% فروش کل",
+  "Your %symbol% earnings have been sent to your wallet!": "سود %symbol% شما به کیف پولتان ارسال شد!",
+  "Your %symbol% earnings have been re-invested into the pool!": "سود %symbol% شما مجددا در استخر سودآوری سرمایه گذاری شد!",
+  "Stake %symbol%": "سرمایه گذاری %symbol%",
+  "You must harvest and compound your earnings from this pool manually.": "شما باید سود های خودتان را به صورت دستی در این استخر بکارید (پس از دریافت سود آنرا دوباره در این استخر بکارید).",
+  "Register": "ثبت نام",
+  "Contribute %symbol%": "مشارکت در %symbol%",
+  "Volume": "حجم معاملات",
+  "%symbol% per $1,000": "%symbol% per $1,000",
+  "Prediction (BETA)": "پیش بینی(بتا)",
+  "Collectibles": "کلکسیون",
+  "Team Battle": "مبارزه گروهی",
+  "Teams & Profile": "گروه ها و حساب کاربری",
+  "Leaderboard": "تابلو امتیازات",
+  "Tokens": "توکن ها",
+  "Contact": "تماس با ما",
+  "Merch": "Merch",
+  "LP Migration": "LP Migration",
+  "V1 Liquidity (Old)": "نقدینگی نسخه 1 (قدیمی)",
+  "Claim Collectible": "مطالبه کلکسیون",
+  "The higher your team’s rank, the better your prizes!": "رتبه بیشتر برای تیم شما، جوایز بهتر برای شما",
+  "Get Ready": "آماده شو",
+  "Earn up to %highestApr% APR in Farms": "تا %highestApr% سود سالانه (APR) در مزرعه ها",
+  "Earn %assets% in Pools": "در استخر ها %assets% کسب کنید",
+  "Activate PancakeSwap Profile to take part in next IFO‘s!": "حساب کاربری پنکیک سواپ خود را فعال کنید تا در IFO بعدی نقش داشته باشید!",
+  "Trading Battle": "بتل (مبارزه) معامله",
+  "Prediction": "پیش بینی",
+  "Initial Farm Offering": "عرضه اولیه مزرعه (IFO)",
+  "An error occurred confirming transaction": "خطا در تایید تراکنش",
+  "Successfully Enabled!": "با موفقیت فعال شد!",
+  "You can now participate in the %symbol% IFO.": "شما می توانید در IFO توکن %symbol% هم اکنون مشارکت کنید.",
+  "Team Ranks": "رتبه تیم ها",
+  "Prizes": "جوایز",
+  "Rules": "قوانین",
+  "Entry": "ورودی",
+  "Enable pool": "فعال سازی استخر",
+  "Start staking": "شروع سرمایه گذاری",
+  "Search Pools": "جستجو استخر ها",
+  "Ends in": "اتمام",
+  "Starts in": "شروع",
+  "Total amount of %symbol% staked in this pool": "مقدار %symbol% سرمایه گذاری شده در این استخر",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "این استخر دیگر هیچ پاداشی توزیع نمی کند . توکن های خود را از این استخر بیرون بکشید.",
+  "Max. stake per user": "بیشترین مقدار سهام به ازای کاربر",
+  "You have claimed your rewards!": "شما پاداش خود را دریافت کردید!",
+  "Already Collected": "برداشت شده",
+  "Predictions Now Live": "پیش بینی های زنده",
+  "Beta Version": "نسخه بتا (آزمایشی)",
+  "Over %amount% in BNB won so far": "بیش از %amount% تا کنون برنده شده است BNB",
+  "Try Now": "همین حالا امتحان کن",
+  "New": "جدید",
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "پاداش LP : 0.17% کارمزد معامله، به طور متناسب بین دارندگان توکن LP توزیع می شود.",
+  "CAKE + Fees": "CAKE + تراکنش",
+  "Prediction Markets": "بازار های پیش بینی",
+  "Now Live": "در حال انجام(زنده)",
+  "in Beta": "نسخه بتا (آزمایشی)",
+  "Ended %date%": "تمام شد در %date%",
+  "Starts %date%": "شروع می شود در %date%",
+  "Ends %date%": "تمام می شود در %date%",
+  "Closed": "بسته شد",
+  "Vote Now": "رای دهید",
+  "Soon": "به زودی",
+  "No proposals found": "پیشنهادی یافت نشد",
+  "Creator": "خالق",
+  "Proposals": "پیشنهادات",
+  "Make a Proposal": "یک پیشنهاد ایجاد کنید",
+  "Have your say in the future of the PancakeSwap Ecosystem": "در آینده سیستم پنکیک سواپ نظر بدهید",
+  "Got a suggestion?": "سوالی دارید؟",
+  "Community proposals are a great way to see how the community feels about your ideas.": "پیشنهادات اجتماعی یک راه خوب برای فهمیدن اینکه اجتماع چه احساسی راجع به ایده های شما دارند.",
+  "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals.": "ایده ها الزاما پیاده سازی و اجرا نمی شوند در صورتی که اجتماع با آن موافقت کند، اما ممکن است پیشنهادهایی با پشتیبانی زیاد جامعه در پیشنهادهای اصلی ارائه شود.",
+  "%field% is required": "%field% الزامی است",
+  "Please create a minimum of %num% choices": "لطفا حداقل %num% مورد را انتخاب نمایید.",
+  "Choices must not be empty": "انتخاب ها باید خالی باشند",
+  "Please select a valid date": "لطفا یک تاریخ معتبر را انتخاب نمایید",
+  "Please select a valid time": "لطفا یک زمان معتبر را انتخاب نمایید",
+  "End date must be after the start date": "تاریخ پایان باید بعد از تاریخ شروع باشد",
+  "Invalid snapshot": "snapshot غیر معتبر",
+  "Proposal created!": "پیشنهاد ایجاد شد",
+  "Voted": "رای داده شده",
+  "Time": "زمان",
+  "Input choice text": "ورودی متن انتخاب",
+  "Start Time": "زمان شروع",
+  "Back to Vote Overview": "بازگشت به نگاه اجمالی رای",
+  "Voting For": "رای برای",
+  "Your Voting Power": "قدرت رای شما",
+  "Confirm Vote": "تایید رای",
+  "Add Choice": "اضافه کردن انتخاب",
+  "Title": "عنوان",
+  "Content": "محتوا",
+  "End Date": "تاریخ پایان",
+  "Start Date": "تاریخ شروع",
+  "Actions": "عملکرد ها",
+  "End Time": "تاریخ پایان",
+  "Publish": "انتشار",
+  "No votes found": "هیچ رای یافت نشد",
+  "Vote Weight": "وزن رای",
+  "Decision": "تصمیم",
+  "Voter": "رای دهنده",
+  "Votes (%count%)": "رای ها (%count%)",
+  "Snapshot": "اسنپ شات",
+  "Choices": "انتخاب ها",
+  "Unable to sign payload": "Unable to sign payload",
+  "Identifier": "هویت",
+  "Current Results": "نتایج فعلی",
+  "Vote cast!": "رای دادن!",
+  "Are you sure you want to vote for the above choice? This action cannot be undone.": "آیا مطمعنید که می خواهید برای تصمیم بالا رای دهید؟ این تصمیم قابل برگشت نیست.",
+  "Tip: write in Markdown!": "نکته: در Markdown بنویسید!",
+  "Cast your vote": "رای خود را بدهید",
+  "Preview": "پیش نمایش",
+  "%total% Votes": "%total% رای",
+  "Cast Vote": "رای دادن",
+  "See All": "مشاهده همه",
+  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "کاربران SafePal ممکن است به صورت موقت نتوانند رای دهند: لطفا به جای آن مستقیما از WalletConnect استفاده کنید.",
+  "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "قدر رای شما به مقدار توکن CAKE که طبق جزئیات زیر نگه داشته اید بستگی دارد. نگه داری توکن CAKE در جای دیگر و کیف پول دیگر در قدرت رای شما تاثیری ندارد.",
+  "Your Cake Held Now": "مقدار فعلی CAKE هولد (نگه داری) شده شما",
+  "Wallet": "کیف پول",
+  "Manual CAKE Pool": "استخر CAKE غیر اتوماتیک",
+  "Auto CAKE Pool": "استخر CAKE اتوماتیک",
+  "CAKE BNB LP": "CAKE BNB LP (استخر نقدینگی)",
+  "Other Syrup Pools": "استخر های Syrup دیگر",
+  "Voting Power": "قدرت رای",
+  "You need at least %count% voting power to publish a proposal.": "برای انتشار یک پیشنهاد شما نیاز به داشتن حداقل %count% قدرت رای دارید.",
+  "Check voting power": "بررسی قدرت رای",
+  "Amount to collect": "مقدار برای جمع آوری",
+  "Your winnings": "برد های شما",
+  "Includes your original position and your winnings, minus the %fee% fee.": "شامل جایگاه اصلی و برد های شما می شود، منهای %fee% کارمزد.",
+  "Your funds have been staked in the farm": "سرمایه شما در مزرعه کٍشت سود سرمایه گذاری شد",
+  "Base APR (yield only)": "نرخ سالانه پایه (فقط بازدهی)",
+  "View/Edit Numbers": "مشاهده/ویرایش اعداد",
+  "Edit Numbers": "ویرایش اعداد",
+  "Total cost": "قیمت کل",
+  "Numbers are randomized, with no duplicates among your tickets. Tap a number to edit it. Available digits: 0-9": "اعداد به صورت شانسی هستند، با هیچ کپی از بلیط های شما. روی یک عدد جهت ویرایش کلیک کنید. کارکتر های قابل استفاده 0 تا 9",
+  "Randomize": "شانسی",
+  "Confirm and buy": "تایید و خرید",
+  "Go back": "بازگشت",
+  "Duplicate": "کپی کردن",
+  "Get your tickets now!": "بلیط های خود را همین حالا بگیرید",
+  "Finished Rounds": "دور های تمام شده",
+  "Only showing data for Lottery V2": "فقط داده های قرعه کشی V2 در حال نمایش است",
+  "Connect your wallet": "کیف پول خود را متصل نمایید",
+  "to check if you've won": "چک کردن برنده بودن شما",
+  "No prizes to collect": "هیچ جایزه ای برای دریافت وجود ندارد",
+  "Better luck next time!": "دفعه بعدی خوش شانس تر خواهید بود!",
+  "Why not play again": "چرا دوباره بازی نکنی",
+  "Are you a winner?": "آیا شما برنده هستید؟",
+  "Checking": "در حال بررسی",
+  "Check Now": "بررسی کن",
+  "On sale soon!": "به زودی برای فروش",
+  "Date": "تاریخ",
+  "Your Tickets": "بلیط های شما",
+  "in prizes!": "جایزه!",
+  "Tickets on sale soon": "بلیط ها به زودی برای فروش در دسترس است",
+  "The PancakeSwap Lottery": "قرعه کشی پنکیک سواپ",
+  "All History": "تمام تاریخچه",
+  "Winning Number": "تعداد برد ها",
+  "You had": "شما داشته اید",
+  "tickets": "بلیط",
+  "this round": "این مرحله",
+  "Prize pot": "گلدان جایزه",
+  "Total players this round": "مجموع بازیکن های این مرحله",
+  "Draw": "قرعه کشی",
+  "Next Draw": "قرعه کشی بعدی",
+  "Your tickets": "بلیط های شما",
+  "You have": "شما دارید",
+  "Match the winning number in the same order to share prizes.": "برای بردن جایزه باید تعداد اعداد روی بلیط یکسان باشد.",
+  "Current prizes up for grabs:": "تعداد جایزه ها برای برداشت:",
+  "Burn": "سوخته شده",
+  "Match all %numberMatch%": "همه %numberMatch% عدد یکسان",
+  "Match first %numberMatch%": "%numberMatch% عدد یکسان",
+  "Matched first": "اولین تطبیق",
+  "Drawn": "قرعه کشی شده",
+  "Connect your wallet to check your history": "جهت مشاهده تاریخچه کیف پول خود را متصل کنید",
+  "Buy tickets for the next round!": "سوزاندن بلیط ها برای دور بعد!",
+  "No lottery history found": "هیچ تاریخچه قرعه کشی یافت نشد",
+  "Contract approved - you can now purchase tickets": "قرارداد تایید شد - شما هم اکنون می توانید بلیط ها را بخرید",
+  "Lottery tickets purchased!": "بلیط های قرعه کشی خریداری شد!",
+  "The maximum number of tickets you can buy in one transaction is %maxTickets%": "بیشترین تعداد بلیط های قابل خریداری توسط شما در یک تراکنش %maxTickets% عدد هست",
+  "Bulk discount": "تخفیف عمده",
+  "Buy Instantly": "خرید فوری",
+  "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "گزینه \"خرید فوری\" اعداد شانسی را انتخاب می کند، بدون تداخل با بلیط های شما. قیمت ها قبل از شروع دور تعیین می شوند و مساوری 5 دلار (USD) در آن زمان است. خرید ها نهایی هستند.",
+  "Prizes Collected!": "جوایز داده شد!",
+  "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "جوایز شما برای دور %lotteryId% به کیف پول شما ارسال شد",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "مطالبه %claimNum% از %claimTotal% برای دور %lotteryId% موفقیت آمیز بود. لطفا تراکنش بعدی را تایید نمایید.",
+  "Claiming": "در حال مطالبه",
+  "Tickets must match the winning number in the exact same order, starting from the first digit.": "بلیط ها باید با شماره های برنده دقیقا با اولویت یکسان باشد، از عدد اول شروع می شود.",
+  "If the winning number is “123456”:": "اگر شماره برنده \"123456\" باشد:",
+  "“120000” matches the first 2 digits.": "عدد \"120000\" با دو عدد اول یکسان است.",
+  "“000006” matches the last digit, but since the first five digits are wrong, it doesn’t win any prizes.": "عدد \"000006\" با آخرین عدد یکسان است، اما تا زمانی که پنج عدد اول آن یکسان نباشد هیچ جایزه ای برنده نمی شود.",
+  "Winning number": "شماره برنده",
+  "Total tickets": "تعداد کل بلیط ها",
+  "Winning tickets": "بلیط های برنده",
+  "until the draw": " تا قرعه کشی ",
+  "Winners announced in": "اعلام برندگان در",
+  "Tickets on sale in": "بلیط های فروشی در",
+  "to check if you've won!": "بررسی برنده بودن شما!",
+  "Why didn't I win?": "چرا من برنده نشدم؟",
+  "How to Play": "چگونه بازی کنم",
+  "If the digits on your tickets match the winning numbers in the correct order, you win a portion of the prize pool.": "اگر اعداد روی بلیط شما با اعداد برنده یکسان باشد (با اولویت یکسان) ، شما یک سهم از استخر پاداش را برنده می شوید.",
+  "Simple!": "راحت!",
+  "Prices are set when the round starts, equal to 5 USD in CAKE per ticket.": "قیمت ها در زمان شروع دور تنظیم می شوند، و برابر با 5 دلار CAKE به ازای هر بلیط است.",
+  "Wait for the Draw": "برای قرعه کشی منتظر بمانید",
+  "There are two draws every day: one every 12 hours.": "دو قرعه کشی در روز اتفاق می افتد: هر 12 ساعت یک بار.",
+  "Check for Prizes": "بررسی برای جوایز",
+  "Once the round’s over, come back to the page and check to see if you’ve won!": "وقتی که دور تمام شد، به این صفحه برگردید که ببینید برنده شده اید یا نه!",
+  "Step %number%": "%number% قدم",
+  "Winning Criteria": "شاخص برد",
+  "The digits on your ticket must match in the correct order to win.": "اعداد روی بلیط شما باید با اعداد برنده با اولویت یکسان برابر باشد تا شما برنده شوید.",
+  "Here’s an example lottery draw, with two tickets, A and B.": "یک مثال ساده قرعه کشی، با دو بلیط الف و ب",
+  "Ticket A: The first 3 digits and the last 2 digits match, but the 4th digit is wrong, so this ticket only wins a “Match first 3” prize.": "بلیط الف : سه عدد اول و دو عدد آخر این بلیط با اعداد برد یکسان است اما عدد چهارم اشتباه است. این بلیط فقط یک جایزه \"3 عدد اول یکسان\" برنده می شود.",
+  "A": "الف",
+  "Ticket B: Even though the last 5 digits match, the first digit is wrong, so this ticket doesn’t win a prize.": "بلیط ب: اگر چه حتی 5 عدد آخر یکسان است، اما اولین عدد اشتباه است، پس این بلیط هیچ جایزه ای نمی برد.",
+  "B": "ب",
+  "Prize Funds": "سرمایه جوایز",
+  "The prizes for each lottery round come from three sources:": "جوایز برای هر قرعه کشی از سه منبع می آید:",
+  "Ticket Purchases": "خرید بلیط ها",
+  "100% of the CAKE paid by people buying tickets that round goes back into the prize pools.": "صد در صد از CAKE ها توسط مردمی که بلیط ها را خریده اند به استخر های پاداش در هر دور بر می گردد.",
+  "Rollover Prizes": "جوایز بازگشتی",
+  "After every round, if nobody wins in one of the prize brackets, the unclaimed CAKE for that bracket rolls over into the next round and are redistributed among the prize pools.": "اگر بعد از هر دور هیچ کس برنده نشود CAKE ها به استخر پاداش بعدی منتقل می شود و بین کاربران دور جدید توزیع می شود.",
+  "CAKE Injections": "تزریق CAKE",
+  "10,000 CAKE from the treasury is added to a lottery round every other day. This CAKE is of course also included in rollovers! Read more in our guide to ": "تعداد 10,000CAKE از خزانه به دور قرعه کشی روز بعد اضافه می شود. البته که این CAKE ها شامل جوایز برگشتی نیز می شود! در قسمت راهنمایی بیشتر در این باره بخوانید ",
+  "CAKE Tokenomics": "CAKE Tokenomics",
+  "Digits matched": "اعداد یکسان است",
+  "Prize pool allocation": "استخر پاداش تخصیص داده شد",
+  "Matches first %digits%": "%digits% عدد اول یکسان است",
+  "Matches all 6": "همه 6 عدد یکسان است",
+  "Burn Pool": "استخر سوخت",
+  "Still got questions?": "هنوز سوال دارید؟",
+  "Check our in-depth guide on": "راهنمایی خوب ما را بررسی کنید در",
+  "how to play the PancakeSwap lottery!": "چگونه در قرعه کشی پنکیک سواپ شرکت کنم!",
+  "Prize brackets don’t ‘stack’: if you match the first 3 digits in order, you’ll only win prizes from the ‘Match 3’ bracket, and not from ‘Match 1’ and ‘Match 2’.": "قلاب های جوایز سهام گذاری (stake) نمی کنند: اگر 3 عدد اول بلیط شما یکسان باشد (به ترتیب)، شما فقط جوایز قلاب '3عدد یکسان' را برنده می شوید و نه '1 عدد یکسان' و '2 عدد یکسان'.",
+  "Coming soon!": "به زودی!",
+  "Tickets": "بلیط ها",
+  "Edit numbers": "ویرایش شماره ها",
+  "each": "هر کدام",
+  "Collect Prizes": "دریافت جوایز",
+  "You won": "شما بردید",
+  "Calculating rewards": "در حال محاسبه جوایز",
+  "Buying multiple tickets in a single transaction gives a discount. The discount increases in a linear way, up to the maximum of 100 tickets:": "در صورت خرید چندین بلیط در یک تراکنش به شما تخفیف داده می شود. تخفیف به صورت خطی تا حداکثر 100 بلیط تخفیف دارد:",
+  "2 tickets: 0.05%": "2 بلیط : 0.05%",
+  "50 tickets: 2.45%": "50 بلیط: 2.45%",
+  "100 tickets: 4.95%": "100 بلیط: 4.95%",
+  "You pay": "شما پرداخت می کنید",
+  "Lottery Now Live": "قرعه کشی (لاتاری) در حال برگزاری است",
+  "Play Now": "الان بازی کن",
+  "Over %amount% in Prizes!": "بیش از %amount% جایزه!"
+}
