@@ -22,11 +22,11 @@ const usePollPredictions = () => {
       clearInterval(timer.current)
     }
 
-    if (status === PredictionStatus.LIVE) {
+    if (status !== PredictionStatus.INITIAL) {
       timer.current = setInterval(async () => {
-        const liveAndCurrent = [currentEpoch, currentEpoch - 1]
+        const liveCurrentAndRecent = [currentEpoch, currentEpoch - 1, currentEpoch - 2]
 
-        dispatch(fetchRounds(liveAndCurrent))
+        dispatch(fetchRounds(liveCurrentAndRecent))
         dispatch(fetchMarketData())
 
         if (account) {

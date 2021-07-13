@@ -3,7 +3,7 @@ import { useAppDispatch } from 'state'
 import { setLastOraclePrice } from 'state/predictions'
 import useGetLatestOraclePrice from './useGetLatestOraclePrice'
 
-const usePollOraclePrice = (seconds = 30) => {
+const usePollOraclePrice = (seconds = 10) => {
   const { price, refresh } = useGetLatestOraclePrice()
   const dispatch = useAppDispatch()
 
