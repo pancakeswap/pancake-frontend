@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.5](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.17.4...@pancakeswap/token-lists@2.17.5) (2021-07-13)
+
+**Note:** Version bump only for package @pancakeswap/token-lists
+
+
+
+
+
 ## [2.17.4](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.17.3...@pancakeswap/token-lists@2.17.4) (2021-07-09)
 
 **Note:** Version bump only for package @pancakeswap/token-lists
