@@ -9,21 +9,21 @@ import {
   shortenAddress,
   calculateGasMargin,
   basisPointsToPercent,
-} from '.'
+} from 'utils'
 
 describe('utils', () => {
   describe('#getBscScanLink', () => {
     it('correct for tx', () => {
-      expect(getBscScanLink(ChainId.MAINNET, 'abc', 'transaction')).toEqual('https://bscscan.com/tx/abc')
+      expect(getBscScanLink('abc', 'transaction', ChainId.MAINNET)).toEqual('https://bscscan.com/tx/abc')
     })
     it('correct for token', () => {
-      expect(getBscScanLink(ChainId.MAINNET, 'abc', 'token')).toEqual('https://bscscan.com/token/abc')
+      expect(getBscScanLink('abc', 'token', ChainId.MAINNET)).toEqual('https://bscscan.com/token/abc')
     })
     it('correct for address', () => {
-      expect(getBscScanLink(ChainId.MAINNET, 'abc', 'address')).toEqual('https://bscscan.com/address/abc')
+      expect(getBscScanLink('abc', 'address', ChainId.MAINNET)).toEqual('https://bscscan.com/address/abc')
     })
     it('enum', () => {
-      expect(getBscScanLink(ChainId.TESTNET, 'abc', 'address')).toEqual('https://testnet.bscscan.com/address/abc')
+      expect(getBscScanLink('abc', 'address', ChainId.TESTNET)).toEqual('https://testnet.bscscan.com/address/abc')
     })
   })
 

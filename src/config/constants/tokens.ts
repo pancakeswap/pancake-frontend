@@ -53,7 +53,7 @@ export const ETH = new Token(
 )
 export const USDC = new Token(
   ChainId.MAINNET,
-  '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+  '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
   18,
   'USDC',
   'Binance-Peg USD Coin',

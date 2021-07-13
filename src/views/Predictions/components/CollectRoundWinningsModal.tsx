@@ -17,7 +17,7 @@ import {
   ModalCloseButton,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { getBscScanTransactionUrl } from 'utils/bscscan'
+import { getBscScanLink } from 'utils'
 import { useAppDispatch } from 'state'
 import { usePriceBnbBusd } from 'state/hooks'
 import { fetchClaimableStatuses } from 'state/predictions'
@@ -83,7 +83,9 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
             {t('Your prizes have been sent to your wallet')}
           </Text>
           {receipt.transactionHash && (
-            <LinkExternal href={getBscScanTransactionUrl(receipt.transactionHash)}>{t('View on BscScan')}</LinkExternal>
+            <LinkExternal href={getBscScanLink(receipt.transactionHash, 'transaction')}>
+              {t('View on BscScan')}
+            </LinkExternal>
           )}
         </Box>,
       )

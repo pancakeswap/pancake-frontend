@@ -22,7 +22,7 @@ import { useInitialBlock } from 'state/hooks'
 import { SnapshotCommand } from 'state/types'
 import useToast from 'hooks/useToast'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
-import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
+import { getBscScanLink } from 'utils'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { signMessage } from 'utils/web3React'
 import { useTranslation } from 'contexts/Localization'
@@ -259,14 +259,16 @@ const CreateProposal = () => {
                     <Text color="textSubtle" mr="16px">
                       {t('Creator')}
                     </Text>
-                    <LinkExternal href={getBscScanAddressUrl(account)}>{truncateWalletAddress(account)}</LinkExternal>
+                    <LinkExternal href={getBscScanLink(account, 'address')}>
+                      {truncateWalletAddress(account)}
+                    </LinkExternal>
                   </Flex>
                 )}
                 <Flex alignItems="center" mb="16px">
                   <Text color="textSubtle" mr="16px">
                     {t('Snapshot')}
                   </Text>
-                  <LinkExternal href={getBscScanBlockNumberUrl(snapshot)}>{snapshot}</LinkExternal>
+                  <LinkExternal href={getBscScanLink(snapshot, 'block')}>{snapshot}</LinkExternal>
                 </Flex>
                 {account ? (
                   <>

@@ -13,8 +13,8 @@ import {
   TimerIcon,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
-import { getBscScanBlockCountdownUrl } from 'utils/bscscan'
+import { BASE_BSC_SCAN_URL } from 'config'
+import { getBscScanLink } from 'utils'
 import { useBlock, useCakeVault } from 'state/hooks'
 import BigNumber from 'bignumber.js'
 import { Pool } from 'state/types'
@@ -132,7 +132,6 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
 
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
-  const imageSrc = `${BASE_URL}/images/tokens/${tokenAddress}.png`
 
   const {
     totalCakeInVault,
@@ -186,7 +185,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       <Flex mb="8px" justifyContent="space-between">
         <Text>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
         <Flex>
-          <Link external href={getBscScanBlockCountdownUrl(hasPoolStarted ? endBlock : startBlock)}>
+          <Link external href={getBscScanLink(hasPoolStarted ? endBlock : startBlock, 'countdown')}>
             <Balance fontSize="16px" value={blocksToDisplay} decimals={0} color="primary" />
             <Text ml="4px" color="primary" textTransform="lowercase">
               {t('Blocks')}
@@ -258,7 +257,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
               variant="text"
               p="0"
               height="auto"
-              onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals, imageSrc)}
+              onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals)}
             >
               <Text color="primary">{t('Add to Metamask')}</Text>
               <MetamaskIcon ml="4px" />

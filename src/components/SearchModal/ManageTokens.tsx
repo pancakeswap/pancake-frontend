@@ -73,7 +73,7 @@ export default function ManageTokens({
         <RowBetween key={token.address} width="100%">
           <RowFixed>
             <CurrencyLogo currency={token} size="20px" />
-            <Link external href={getBscScanLink(chainId, token.address, 'address')} color="textSubtle" ml="10px">
+            <Link external href={getBscScanLink(token.address, 'address', chainId)} color="textSubtle" ml="10px">
               {token.symbol}
             </Link>
           </RowFixed>
@@ -81,7 +81,7 @@ export default function ManageTokens({
             <IconButton variant="text" onClick={() => removeToken(chainId, token.address)}>
               <CloseIcon />
             </IconButton>
-            <LinkExternal href={getBscScanLink(chainId, token.address, 'address')} />
+            <LinkExternal href={getBscScanLink(token.address, 'address', chainId)} />
           </RowFixed>
         </RowBetween>
       ))
