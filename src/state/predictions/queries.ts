@@ -34,22 +34,29 @@ export interface HistoricalBetResponse {
 export interface RoundResponse {
   id: string
   epoch: string
+  position: string
   failed: boolean
-  startBlock: string
   startAt: string
+  startBlock: string
+  startHash: string
   lockAt: string
   lockBlock: string
+  lockHash: string
   lockPrice: string
+  lockRoundId: string
+  endAt: string
   endBlock: string
+  endHash: string
   closePrice: string
+  closeRoundId: string
   totalBets: string
   totalAmount: string
-  bearBets: string
+  totalAmountTreasury: string
   bullBets: string
-  bearAmount: string
   bullAmount: string
-  position: string
-  bets: BetResponse[]
+  bearBets: string
+  bearAmount: string
+  bets?: BetResponse[]
 }
 
 export interface TotalWonMarketResponse {
@@ -67,22 +74,28 @@ export interface TotalWonRoundResponse {
 export const getRoundBaseFields = () => `
   id
   epoch
+  position
   failed
   startAt
   startBlock
+  startHash
   lockAt
   lockBlock
+  lockHash
   lockPrice
+  lockRoundId
   endAt
   endBlock
+  endHash
   closePrice
+  closeRoundId
   totalBets
   totalAmount
+  totalAmountTreasury
   bullBets
   bullAmount
   bearBets
   bearAmount
-  position
 `
 
 export const getBetBaseFields = () => `
