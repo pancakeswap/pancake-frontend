@@ -51,6 +51,13 @@ export const ETH = new Token(
   'ETH',
   'Binance-Peg Ethereum Token',
 )
+export const USDC = new Token(
+  ChainId.MAINNET,
+  '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+  18,
+  'USDC',
+  'Binance-Peg USD Coin',
+)
 
 const tokens = {
   bnb: {
