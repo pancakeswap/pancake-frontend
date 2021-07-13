@@ -16,12 +16,12 @@ import {
   Link,
   HelpIcon,
 } from '@pancakeswap/uikit'
-import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
+import { BASE_BSC_SCAN_URL } from 'config'
 import { useBlock, useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
 import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
-import { getBscScanBlockCountdownUrl } from 'utils/bscscan'
+import { getBscScanLink } from 'utils'
 import Balance from 'components/Balance'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 
@@ -60,7 +60,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const poolContractAddress = getAddress(contractAddress)
   const cakeVaultContractAddress = getCakeVaultAddress()
-  const imageSrc = `${BASE_URL}/images/tokens/${tokenAddress}.png`
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
   const isManualCakePool = sousId === 0
 
@@ -120,7 +119,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           <Text small>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
           {blocksRemaining || blocksUntilStart ? (
             <Flex alignItems="center">
-              <Link external href={getBscScanBlockCountdownUrl(hasPoolStarted ? endBlock : startBlock)}>
+              <Link external href={getBscScanLink(hasPoolStarted ? endBlock : startBlock, 'countdown')}>
                 <Balance small value={blocksToDisplay} decimals={0} color="primary" />
                 <Text small ml="4px" color="primary" textTransform="lowercase">
                   {t('Blocks')}
@@ -173,7 +172,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
             variant="text"
             p="0"
             height="auto"
-            onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals, imageSrc)}
+            onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals)}
           >
             <Text color="primary" fontSize="14px">
               {t('Add to Metamask')}

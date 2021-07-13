@@ -34,7 +34,7 @@ export default function Transaction({ tx }: { tx: TransactionDetails }) {
 
   return (
     <TransactionState pending={pending} success={success}>
-      <LinkExternal href={getBscScanLink(chainId, tx.hash, 'transaction')}>{summary ?? tx.hash}</LinkExternal>
+      <LinkExternal href={getBscScanLink(tx.hash, 'transaction', chainId)}>{summary ?? tx.hash}</LinkExternal>
       <IconWrapper pending={pending} success={success}>
         {pending ? <CircleLoader /> : success ? <CheckmarkIcon color="success" /> : <CloseIcon color="failure" />}
       </IconWrapper>

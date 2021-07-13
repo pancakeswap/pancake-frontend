@@ -1,4 +1,4 @@
-import uriToHttp from './uriToHttp'
+import uriToHttp from 'utils/uriToHttp'
 
 describe('uriToHttp', () => {
   it('returns .eth.link for ens names', () => {
