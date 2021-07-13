@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
-import TokenPairImage from 'components/TokenPairImage'
+import { TokenPairImage } from 'components/TokenImage'
 import CakeVaultTokenPairImage from '../../CakeVaultCard/CakeVaultTokenPairImage'
 import BaseCell, { CellContent } from './BaseCell'
 

@@ -2,6 +2,8 @@ import React from 'react'
 import {
   TokenPairImage as UIKitTokenPairImage,
   TokenPairImageProps as UIKitTokenPairImageProps,
+  TokenImage as UIKitTokenImage,
+  ImageProps,
 } from '@pancakeswap/uikit'
 import tokens from 'config/constants/tokens'
 import { Token } from 'config/constants/types'
@@ -17,7 +19,7 @@ const getImageUrlFromToken = (token: Token) => {
   return `/images/tokens/${address}.svg`
 }
 
-const TokenPairImage: React.FC<TokenPairImageProps> = ({ primaryToken, secondaryToken, ...props }) => {
+export const TokenPairImage: React.FC<TokenPairImageProps> = ({ primaryToken, secondaryToken, ...props }) => {
   return (
     <UIKitTokenPairImage
       primarySrc={getImageUrlFromToken(primaryToken)}
@@ -27,4 +29,10 @@ const TokenPairImage: React.FC<TokenPairImageProps> = ({ primaryToken, secondary
   )
 }
 
-export default TokenPairImage
+interface TokenImageProps extends ImageProps {
+  token: Token
+}
+
+export const TokenImage: React.FC<TokenImageProps> = ({ token, ...props }) => {
+  return <UIKitTokenImage src={getImageUrlFromToken(token)} {...props} />
+}
