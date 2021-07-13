@@ -12,9 +12,8 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
-import { useGetIntervalBlocks } from 'state/predictions/hooks'
-import { useBlock } from 'state/block/hooks'
-import { BLOCK_PADDING, fetchLedgerData } from 'state/predictions'
+import { fetchLedgerData } from 'state/predictions'
+import { ROUND_BUFFER } from 'state/predictions/config'
 import useToast from 'hooks/useToast'
 import useTheme from 'hooks/useTheme'
 import CardFlip from '../CardFlip'
@@ -52,24 +51,18 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   })
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const interval = useGetIntervalBlocks()
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
-  const { currentBlock } = useBlock()
   const { isSettingPosition, position } = state
-  const isBufferPhase = currentBlock >= round.startBlock + (interval + BLOCK_PADDING)
+  const isBufferPhase = Date.now() > (round.lockTimestamp + ROUND_BUFFER) * 1000
   const positionDisplay = position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount)} BNB`}</div>,
     { placement: 'top' },
   )
 
-  // Bettable rounds do not have an lockBlock set so we approximate it by adding the block interval
-  // to the start block
-  const estimatedLockBlock = round.startBlock + (interval + BLOCK_PADDING)
-
-  const getCanEnterPosition = () => {
+  const getHasEnteredPosition = () => {
     if (hasEnteredUp || hasEnteredDown) {
       return false
     }
@@ -81,7 +74,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     return true
   }
 
-  const canEnterPosition = getCanEnterPosition()
+  const canEnterPosition = getHasEnteredPosition()
 
   const handleBack = () =>
     setState((prevState) => ({
@@ -127,7 +120,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
         <CardHeader
           status="next"
           epoch={round.epoch}
-          blockNumber={estimatedLockBlock}
           icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
           title={t('Next')}
         />
@@ -180,6 +172,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
         onSuccess={handleSuccess}
         position={position}
         togglePosition={togglePosition}
+        epoch={round.epoch}
       />
     </CardFlip>
   )

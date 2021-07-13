@@ -257,32 +257,36 @@ export interface NodeLedger {
 
 export interface ReduxNodeRound {
   epoch: number
-  startBlock: number
-  lockBlock: number | null
-  endBlock: number | null
+  startTimestamp: number | null
+  lockTimestamp: number | null
+  closeTimestamp: number | null
   lockPrice: BigNumberToJson | null
   closePrice: BigNumberToJson | null
+  freezedLockOracleRoundId: string | null
+  freezedCloseOracleRoundId: string | null
   totalAmount: BigNumberToJson
   bullAmount: BigNumberToJson
   bearAmount: BigNumberToJson
   rewardBaseCalAmount: BigNumberToJson
   rewardAmount: BigNumberToJson
-  oracleCalled: boolean
+  priceResolved: boolean
 }
 
 export interface NodeRound {
   epoch: number
-  startBlock: number
-  lockBlock: number
-  endBlock: number
-  lockPrice: ethers.BigNumber
-  closePrice: ethers.BigNumber
+  startTimestamp: number | null
+  lockTimestamp: number | null
+  closeTimestamp: number | null
+  lockPrice: ethers.BigNumber | null
+  closePrice: ethers.BigNumber | null
+  freezedLockOracleRoundId: ethers.BigNumber | null
+  freezedCloseOracleRoundId: ethers.BigNumber | null
   totalAmount: ethers.BigNumber
   bullAmount: ethers.BigNumber
   bearAmount: ethers.BigNumber
   rewardBaseCalAmount: ethers.BigNumber
   rewardAmount: ethers.BigNumber
-  oracleCalled: boolean
+  priceResolved: boolean
 }
 
 export interface PredictionsState {
@@ -293,11 +297,9 @@ export interface PredictionsState {
   isFetchingHistory: boolean
   historyFilter: HistoryFilter
   currentEpoch: number
-  currentRoundStartBlockNumber: number
-  intervalBlocks: number
-  bufferBlocks: number
+  intervalSeconds: number
   minBetAmount: string
-  rewardRate: number
+  roundBufferSeconds: number
   lastOraclePrice: string
   history: HistoryData
   rounds?: RoundData
