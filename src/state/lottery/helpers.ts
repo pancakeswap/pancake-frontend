@@ -179,6 +179,7 @@ export const fetchTickets = async (
   const calls = getViewUserTicketInfoCalls(totalTicketsToRequest, account, lotteryId)
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
+    console.log('fetchTickets - called')
     // When using a static totalTicketsToRequest value - null responses may be returned
     const filteredForNullResponses = multicallRes.filter((res) => res)
     const mergedMulticallResponse = mergeViewUserTicketInfoMulticallResponse(filteredForNullResponses)

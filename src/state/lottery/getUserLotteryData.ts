@@ -19,7 +19,7 @@ const applyNodeDataToUserGraphResponse = (
         status: nodeRound.status,
         lotteryId: nodeRound.lotteryId.toString(),
         claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
-        totalTickets: `${ticketDataForRound.userTickets.length}`,
+        totalTickets: `${ticketDataForRound.userTickets.length.toString()}`,
       }
     })
   }

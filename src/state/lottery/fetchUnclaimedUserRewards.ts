@@ -31,16 +31,23 @@ const fetchCakeRewardsForTickets = async (
       params: [roundId, id, rewardBracket],
     }
   })
-  const cakeRewards = await multicallv2(lotteryV2Abi, calls)
 
-  const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: ethers.BigNumber[]) => {
-    return accum.plus(new BigNumber(cakeReward[0].toString()))
-  }, BIG_ZERO)
+  try {
+    const cakeRewards = await multicallv2(lotteryV2Abi, calls)
+    console.log('fetchCakeRewardsForTickets - called')
 
-  const ticketsWithUnclaimedRewards = winningTickets.map((winningTicket, index) => {
-    return { ...winningTicket, cakeReward: cakeRewards[index] }
-  })
-  return { ticketsWithUnclaimedRewards, cakeTotal }
+    const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: ethers.BigNumber[]) => {
+      return accum.plus(new BigNumber(cakeReward[0].toString()))
+    }, BIG_ZERO)
+
+    const ticketsWithUnclaimedRewards = winningTickets.map((winningTicket, index) => {
+      return { ...winningTicket, cakeReward: cakeRewards[index] }
+    })
+    return { ticketsWithUnclaimedRewards, cakeTotal }
+  } catch (error) {
+    console.error(error)
+    return { ticketsWithUnclaimedRewards: null, cakeTotal: null }
+  }
 }
 
 const getRewardBracketByNumber = (ticketNumber: string, finalNumber: string): number => {
@@ -121,6 +128,7 @@ export const fetchUserTicketsForMultipleRounds = async (
 
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, multicalls, { requireSuccess: false })
+    console.log('fetchUserTicketsForMultipleRounds - success')
     // Use callsWithRoundData to slice multicall responses by round
     const multicallResPerRound = []
     let resCount = 0
@@ -136,6 +144,7 @@ export const fetchUserTicketsForMultipleRounds = async (
 
     return mergedMulticallResponse
   } catch (error) {
+    console.log('fetchUserTicketsForMultipleRounds - error')
     console.error(error)
     return []
   }
