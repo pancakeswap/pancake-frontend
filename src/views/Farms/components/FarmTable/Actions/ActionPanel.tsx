@@ -5,7 +5,7 @@ import { LinkExternal, Text } from '@pancakeswap/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
-import { getBscScanAddressUrl } from 'utils/bscscan'
+import { getBscScanLink } from 'utils'
 import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
 
 import HarvestAction from './HarvestAction'
@@ -149,7 +149,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     tokenAddress: token.address,
   })
   const lpAddress = getAddress(farm.lpAddresses)
-  const bsc = getBscScanAddressUrl(lpAddress)
+  const bsc = getBscScanLink(lpAddress, 'address')
   const info = `https://pancakeswap.info/pool/${lpAddress}`
 
   return (

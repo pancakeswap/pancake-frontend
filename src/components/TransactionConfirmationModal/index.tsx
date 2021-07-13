@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react'
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { ChainId, Currency, Token } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 import {
   Button,
   Text,
   ErrorIcon,
-  CheckmarkCircleIcon,
   ArrowUpIcon,
   MetamaskIcon,
   Flex,
@@ -15,9 +14,10 @@ import {
   Modal,
   InjectedModalProps,
 } from '@pancakeswap/uikit'
-import useAddTokenToMetamask from 'hooks/useAddTokenToMetamask'
+import { registerToken } from 'utils/wallet'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { RowFixed } from '../Layout/Row'
 import { AutoColumn, ColumnCenter } from '../Layout/Column'
 import { getBscScanLink } from '../../utils'
@@ -70,7 +70,7 @@ function TransactionSubmittedContent({
 
   const { t } = useTranslation()
 
-  const { addToken, success } = useAddTokenToMetamask(currencyToAdd)
+  const token: Token | undefined = wrappedCurrency(currencyToAdd, chainId)
 
   return (
     <Wrapper>
@@ -81,23 +81,21 @@ function TransactionSubmittedContent({
         <AutoColumn gap="12px" justify="center">
           <Text fontSize="20px">{t('Transaction Submitted')}</Text>
           {chainId && hash && (
-            <Link external small href={getBscScanLink(chainId, hash, 'transaction')}>
+            <Link external small href={getBscScanLink(hash, 'transaction', chainId)}>
               {t('View on BscScan')}
             </Link>
           )}
           {currencyToAdd && library?.provider?.isMetaMask && (
-            <Button variant="tertiary" mt="12px" width="fit-content" onClick={addToken}>
-              {!success ? (
-                <RowFixed>
-                  {t('Add %asset% to Metamask', { asset: currencyToAdd.symbol })}
-                  <MetamaskIcon width="16px" ml="6px" />
-                </RowFixed>
-              ) : (
-                <RowFixed>
-                  {t('Added %asset%', { asset: currencyToAdd.symbol })}{' '}
-                  <CheckmarkCircleIcon width="16px" color="success" ml="6px" />
-                </RowFixed>
-              )}
+            <Button
+              variant="tertiary"
+              mt="12px"
+              width="fit-content"
+              onClick={() => registerToken(token.address, token.symbol, token.decimals)}
+            >
+              <RowFixed>
+                {t('Add %asset% to Metamask', { asset: currencyToAdd.symbol })}
+                <MetamaskIcon width="16px" ml="6px" />
+              </RowFixed>
             </Button>
           )}
           <Button onClick={onDismiss} mt="20px">
