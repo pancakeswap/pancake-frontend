@@ -7,7 +7,7 @@ import { useGetPredictionsStatus, useInitialBlock, useIsChartPaneOpen } from 'st
 import { initializePredictions } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
 import usePersistState from 'hooks/usePersistState'
-import PageLoader from 'components/PageLoader'
+import PageLoader from 'components/Loader/PageLoader'
 import usePollOraclePrice from './hooks/usePollOraclePrice'
 import usePollPredictions from './hooks/usePollPredictions'
 import Container from './components/Container'

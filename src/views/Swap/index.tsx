@@ -37,7 +37,7 @@ import {
 import { useExpertModeManager, useUserSlippageTolerance, useUserSingleHopOnly } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
-import Loader from '../../components/Loader'
+import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
 
 const Label = styled(Text)`
@@ -381,7 +381,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 >
                   {approval === ApprovalState.PENDING ? (
                     <AutoRow gap="6px" justify="center">
-                      {t('Approving')} <Loader stroke="white" />
+                      {t('Approving')} <CircleLoader stroke="white" />
                     </AutoRow>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                     t('Approved')

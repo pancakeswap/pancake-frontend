@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Spinner } from '@pancakeswap/uikit'
-import Page from './Layout/Page'
+import Page from '../Layout/Page'
 
 const Wrapper = styled(Page)`
   display: flex;
