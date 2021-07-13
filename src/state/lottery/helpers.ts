@@ -186,7 +186,7 @@ export const fetchTickets = async (
     return completeTicketData
   } catch (error) {
     console.error(error)
-    return error
+    return null
   }
 }
 
