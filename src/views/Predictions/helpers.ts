@@ -25,12 +25,18 @@ export const formatRoundTime = (secondsBetweenBlocks: number) => {
   return minutesSeconds
 }
 
-export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
-  if (!round.endBlock) {
-    return false
+/**
+ * @see https://github.com/pancakeswap/pancake-contracts/blob/prediction-v2/projects/predictions/contracts/BnbPricePrediction.sol#L428-L435
+ */
+export const getHasRoundFailed = (round: NodeRound, buffer: number) => {
+  const closeTimestampMs = (round.closeTimestamp + buffer) * 1000
+  const now = Date.now()
+
+  if (closeTimestampMs !== null && now > closeTimestampMs && !round.priceResolved) {
+    return true
   }
 
-  return blockNumber > round.endBlock && round.oracleCalled === false
+  return false
 }
 
 export const getMultiplierv2 = (total: ethers.BigNumber, amount: ethers.BigNumber) => {

@@ -1,10 +1,11 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
-import { useGetRewardRate, usePriceBnbBusd } from 'state/hooks'
-import styled from 'styled-components'
+import { usePriceBnbBusd } from 'state/hooks'
+import { REWARD_RATE } from 'state/predictions/config'
 import { Bet, BetPosition } from 'state/types'
 import { fetchLedgerData, markBetHistoryAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
@@ -38,7 +39,6 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const { isRefundable } = useIsRefundable(bet.round.epoch)
   const bnbBusdPrice = usePriceBnbBusd()
   const canClaim = !bet.claimed && bet.position === bet.round.position
-  const rewardRate = useGetRewardRate()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
     { placement: 'auto' },
@@ -47,7 +47,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const isWinner = result === Result.WIN
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
-  const payout = isWinner ? getNetPayout(bet, rewardRate) : bet.amount
+  const payout = isWinner ? getNetPayout(bet, REWARD_RATE) : bet.amount
   const returned = payout + bet.amount
 
   const getHeaderColor = () => {
