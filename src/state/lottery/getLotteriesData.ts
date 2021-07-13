@@ -39,8 +39,8 @@ const applyNodeDataToLotteriesGraphResponse = (
           id: graphRound.id,
           ticketPrice: graphRound.ticketPrice,
           totalTickets: graphRound.totalTickets,
-          totalUsers: graphRound.totalTickets,
-          winningTickets: graphRound.totalTickets,
+          totalUsers: graphRound.totalUsers,
+          winningTickets: graphRound.winningTickets,
         }
       }
       return graphRound
