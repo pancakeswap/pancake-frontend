@@ -5,26 +5,23 @@ import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { usePollCoreFarmData, useFetchProfile, usePollBlockNumber } from 'state/hooks'
 import { DatePickerPortal } from 'components/DatePicker'
-import AddLiquidity from './views/AddLiquidity'
+import GlobalStyle from './style/Global'
+import Menu from './components/Menu'
+import SuspenseWithChunkError from './components/SuspenseWithChunkError'
+import { ToastListener } from './contexts/ToastsContext'
+import PageLoader from './components/Loader/PageLoader'
+import EasterEgg from './components/EasterEgg'
+import history from './routerHistory'
+// Views included in the main bundle
+import Pools from './views/Pools'
+import Swap from './views/Swap'
 import {
   RedirectDuplicateTokenIds,
   RedirectOldAddLiquidityPathStructure,
   RedirectToAddLiquidity,
 } from './views/AddLiquidity/redirects'
-import Pool from './views/Pool'
-import PoolFinder from './views/PoolFinder'
-import RemoveLiquidity from './views/RemoveLiquidity'
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
-import Swap from './views/Swap'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
-import GlobalStyle from './style/Global'
-import Menu from './components/Menu'
-import SuspenseWithChunkError from './components/SuspenseWithChunkError'
-import { ToastListener } from './contexts/ToastsContext'
-import PageLoader from './components/PageLoader'
-import EasterEgg from './components/EasterEgg'
-import Pools from './views/Pools'
-import history from './routerHistory'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -43,6 +40,10 @@ const Predictions = lazy(() => import('./views/Predictions'))
 const Voting = lazy(() => import('./views/Voting'))
 const Proposal = lazy(() => import('./views/Voting/Proposal'))
 const CreateProposal = lazy(() => import('./views/Voting/CreateProposal'))
+const AddLiquidity = lazy(() => import('./views/AddLiquidity'))
+const Pool = lazy(() => import('./views/Pool'))
+const PoolFinder = lazy(() => import('./views/PoolFinder'))
+const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 
 // This config is required for number formatting
 BigNumber.config({
@@ -109,6 +110,7 @@ const App: React.FC = () => {
               <Proposal />
             </Route>
 
+            {/* Using this format because these components use routes injected props. We need to rework them with hooks */}
             <Route exact strict path="/swap" component={Swap} />
             <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
             <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
