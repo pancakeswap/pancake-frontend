@@ -34,7 +34,6 @@ const fetchCakeRewardsForTickets = async (
 
   try {
     const cakeRewards = await multicallv2(lotteryV2Abi, calls)
-    console.log('fetchCakeRewardsForTickets - called')
 
     const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: ethers.BigNumber[]) => {
       return accum.plus(new BigNumber(cakeReward[0].toString()))
@@ -125,10 +124,8 @@ export const fetchUserTicketsForMultipleRounds = async (
 
   // Batch all calls across all rounds
   const multicalls = [].concat(...callsWithRoundData.map((callWithRoundData) => callWithRoundData.calls))
-
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, multicalls, { requireSuccess: false })
-    console.log('fetchUserTicketsForMultipleRounds - success')
     // Use callsWithRoundData to slice multicall responses by round
     const multicallResPerRound = []
     let resCount = 0
@@ -144,7 +141,6 @@ export const fetchUserTicketsForMultipleRounds = async (
 
     return mergedMulticallResponse
   } catch (error) {
-    console.log('fetchUserTicketsForMultipleRounds - error')
     console.error(error)
     return []
   }

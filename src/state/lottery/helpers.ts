@@ -11,7 +11,7 @@ import { ethersToSerializedBigNumber } from 'utils/bigNumber'
 
 const lotteryContract = getLotteryV2Contract()
 // Variable used to determine how many past rounds should be populated by node data rather than subgraph
-export const NUM_ROUNDS_TO_FETCH_FROM_NODES = 4
+export const NUM_ROUNDS_TO_FETCH_FROM_NODES = 2
 
 const processViewLotterySuccessResponse = (response, lotteryId: string): LotteryResponse => {
   const {
@@ -143,7 +143,7 @@ export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse):
 
 export const getViewUserTicketInfoCalls = (totalTicketsToRequest: number, account: string, lotteryId: string) => {
   let cursor = 0
-  const perRequestLimit = 1000
+  const perRequestLimit = 100
   const calls = []
 
   for (let i = 0; i < totalTicketsToRequest; i += perRequestLimit) {
@@ -174,12 +174,11 @@ export const fetchTickets = async (
   lotteryId: string,
   userTotalTickets?: string,
 ): Promise<LotteryTicket[]> => {
-  // If the subgraph is returning user totalTickets data for the round - use those totalTickets, if not - batch request up to 5000
-  const totalTicketsToRequest = userTotalTickets ? parseInt(userTotalTickets, 10) : 5000
+  // If the subgraph is returning user totalTickets data for the round - use those totalTickets, if not - batch request up to 4000
+  const totalTicketsToRequest = userTotalTickets ? parseInt(userTotalTickets, 10) : 4000
   const calls = getViewUserTicketInfoCalls(totalTicketsToRequest, account, lotteryId)
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
-    console.log('fetchTickets - called')
     // When using a static totalTicketsToRequest value - null responses may be returned
     const filteredForNullResponses = multicallRes.filter((res) => res)
     const mergedMulticallResponse = mergeViewUserTicketInfoMulticallResponse(filteredForNullResponses)
@@ -187,7 +186,7 @@ export const fetchTickets = async (
     return completeTicketData
   } catch (error) {
     console.error(error)
-    return null
+    return error
   }
 }
 
