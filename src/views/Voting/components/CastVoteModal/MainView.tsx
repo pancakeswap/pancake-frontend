@@ -1,14 +1,5 @@
 import React from 'react'
-import {
-  Box,
-  IconButton,
-  Text,
-  Skeleton,
-  Button,
-  Message as UIKitMessage,
-  AutoRenewIcon,
-  ChevronRightIcon,
-} from '@pancakeswap/uikit'
+import { IconButton, Text, Skeleton, Button, AutoRenewIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import TextEllipsis from '../TextEllipsis'
@@ -80,13 +71,6 @@ const MainView: React.FC<MainViewProps> = ({
       <Button variant="secondary" width="100%" onClick={onDismiss}>
         {t('Cancel')}
       </Button>
-      <Box mt="24px" maxWidth="320px">
-        <UIKitMessage variant="warning">
-          <Text as="p">
-            {t('SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.')}
-          </Text>
-        </UIKitMessage>
-      </Box>
     </>
   )
 }
