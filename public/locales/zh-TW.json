@@ -889,7 +889,6 @@
   "%total% Votes": "%total% 張票",
   "Cast Vote": "投票",
   "See All": "檢查全部",
-  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "SafePal 使用者可能暫時無法投票：請透過 WalletConnect 直接連線。",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "您的投票權取決於您在下方詳述的區塊中所持有的 CAKE 數量。在其他地方持有的 CAKE 無法提高您的投票權。",
   "Your Cake Held Now": "您現在持有的 CAKE",
   "Wallet": "錢包",

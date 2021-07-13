@@ -889,7 +889,6 @@
   "%total% Votes": "%total% szavazat",
   "Cast Vote": "Szavazat leadása",
   "See All": "Az összes megtekintése",
-  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "Előfordulhat, hogy a SafePal felhasználók átmenetileg nem tudnak szavazni: Kérjük, helyette közvetlenül a WalletConnect-en keresztül csatlakozzon.",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Az Ön szavazati erejét az határozza meg, hogy mennyi CAKE van az Ön birtokában az alább részletezett blokkban. A máshol tartott CAKE nem járul hozzá az Ön szavazati erejéhez.",
   "Your Cake Held Now": "Az Ön által birtokolt Cake",
   "Wallet": "Tárca",

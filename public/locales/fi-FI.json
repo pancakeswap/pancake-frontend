@@ -889,7 +889,6 @@
   "%total% Votes": "%total% ääntä",
   "Cast Vote": "Anna ääni",
   "See All": "Katso kaikki",
-  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "SafePalin käyttäjät eivät välttämättä voi tilapäisesti äänestää: yhdistä sen sijaan suoraan WalletConnectin kautta.",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Äänestysvaltasi määrittää CAKEn määrä, joka sinulla oli alla kuvatussa lohkossa. Muissa paikoissa pidetty CAKE ei vaikuta äänestysvaltaasi.",
   "Your Cake Held Now": "Hallussapitämäsi Cake nyt",
   "Wallet": "Lompakko",

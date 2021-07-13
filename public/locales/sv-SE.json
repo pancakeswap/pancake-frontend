@@ -889,7 +889,6 @@
   "%total% Votes": "%total% röster",
   "Cast Vote": "Lägg röst",
   "See All": "Visa alla",
-  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "SafePal-användaren kanske inte kan rösta för tillfället: Anslut direkt via WalletConnect istället.",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Din rösträtt avgörs av ditt CAKE-belopp som du har på blocket som anges nedan. Om du har CAKE på andra ställen bidrar det inte till din rösträtt.",
   "Your Cake Held Now": "Din aktuella Cake",
   "Wallet": "Plånbok",

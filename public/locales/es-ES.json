@@ -889,7 +889,6 @@
   "%total% Votes": "%total% votos",
   "Cast Vote": "Emitir el voto",
   "See All": "Ver todo",
-  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "Es posible que los usuarios de SafePal no puedan votar temporalmente: Deben iniciar sesión directamente a través de WalletConnect.",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Tu derecho a votar está determinado por la cantidad de CAKE que tienes en el bloque que se detalla a continuación. Los CAKE almacenados en otros lugares no contribuyen a tu derecho de votar.",
   "Your Cake Held Now": "Los Cake que tienes actualmente",
   "Wallet": "Monedero",

@@ -889,7 +889,6 @@
   "%total% Votes": "Toplam %total% Oy",
   "Cast Vote": "Oy Verin",
   "See All": "Tümünü Görüntüle",
-  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "SafePal kullanıcıları geçici olarak oy kullanamayabilir: Lütfen bunun yerine doğrudan WalletConnect aracılığıyla bağlanın.",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Oy gücünüz aşağıda ayrıntıları verilen blokta sahip olduğunuz CAKE miktarına göre belirlenir. Başka yerlerde tutulan CAKE oylama gücünüze katkı sağlamaz.",
   "Your Cake Held Now": "Mevcut CAKE Miktarınız",
   "Wallet": "Cüzdan",
