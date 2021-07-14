@@ -48,7 +48,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { account } = useWeb3React()
-  const { epoch, lockPrice, closePrice } = round
+  const { epoch, lockPrice, closePrice, closeTimestamp } = round
 
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const ledger = useGetBetByEpoch(account, epoch)
