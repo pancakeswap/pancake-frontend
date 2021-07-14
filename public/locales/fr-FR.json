@@ -1053,7 +1053,7 @@
   "FAQs": "FAQs",
   "Auction duration": "Durée de l'enchère",
   "Terms & Conditions": "Termes & Conditions",
-    "in Prizes!": "in Prizes!",
+  "in Prizes!": "in Prizes!",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Supplying %amountA% %symbolA% and %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Removing %amountA% %symbolA% and %amountB% %symbolB%",
