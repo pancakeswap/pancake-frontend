@@ -93,6 +93,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   }
 
   const handleSuccess = async () => {
+    // @ts-ignore
     await dispatch(fetchBet({ account, id: bet.id }))
   }
 

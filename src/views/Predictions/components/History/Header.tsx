@@ -47,6 +47,7 @@ const Header = () => {
 
   const handleChange = (newFilter: HistoryFilter) => async () => {
     if (newFilter !== historyFilter) {
+      // @ts-ignore
       await dispatch(fetchHistory({ account, claimed: getClaimParam(newFilter) }))
       dispatch(setHistoryFilter(newFilter))
     }

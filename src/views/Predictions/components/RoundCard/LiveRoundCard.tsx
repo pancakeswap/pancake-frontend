@@ -76,23 +76,22 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
         <CardHeader
           status="live"
           icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
-          title={t('Live')}
+          title={t('Leader')}
           epoch={round.epoch}
           blockNumber={estimatedEndBlock}
         />
         <BlockProgress variant="flat" scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlock} />
         <CardBody p="16px">
-          <MultiplierArrow amount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} isActive={isBull} />
           <RoundResultBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
             <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
-              {t('Last Price')}
+              {t('Highest Bid')}
             </Text>
             <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
               {stream && (
                 <>
                   <div ref={targetRef}>
                     <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
-                      {formatUsd(stream.lastPrice)}
+                      {formatUsd(stream.lastPrice)} BT
                     </Text>
                   </div>
                   <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
@@ -104,13 +103,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
             {lockPrice && <LockPriceRow lockPrice={lockPrice} />}
             <PrizePoolRow totalAmount={totalAmount} />
           </RoundResultBox>
-          <MultiplierArrow
-            amount={betAmount}
-            multiplier={bearMultiplier}
-            betPosition={BetPosition.BEAR}
-            hasEntered={hasEnteredDown}
-            isActive={!isBull}
-          />
+
         </CardBody>
       </GradientCard>
       {tooltipVisible && tooltip}

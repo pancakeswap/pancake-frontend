@@ -50,26 +50,13 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
       <CardHeader
         status="expired"
         icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
-        title={t('Expired')}
+        title={t('Outbid')}
         blockNumber={endBlock}
         epoch={round.epoch}
       />
       <CardBody p="16px" style={{ position: 'relative' }}>
         <CollectWinningsOverlay roundId={id} hasEntered={hasEntered} isBottom={hasEnteredDown} />
-        <MultiplierArrow
-          amount={betAmount}
-          multiplier={bullMultiplier}
-          isActive={betPosition === BetPosition.BULL}
-          hasEntered={hasEnteredUp}
-        />
         <RoundResult round={round} />
-        <MultiplierArrow
-          amount={betAmount}
-          multiplier={bearMultiplier}
-          betPosition={BetPosition.BEAR}
-          isActive={betPosition === BetPosition.BEAR}
-          hasEntered={hasEnteredDown}
-        />
       </CardBody>
     </StyledExpiredRoundCard>
   )

@@ -27,21 +27,19 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
       <CardHeader
         status="soon"
         icon={<WaitIcon mr="4px" width="21px" />}
-        title={t('Later')}
+        title={t('TBA')}
         epoch={round.epoch}
         blockNumber={estimatedEndBlock}
       />
       <CardBody p="16px">
-        <MultiplierArrow isDisabled />
         <RoundResultBox>
           <Text textAlign="center">
-            <Text bold>{t('Entry starts')}</Text>
+            <Text bold>{t('Auction End')}</Text>
             <Text fontSize="24px" bold>
               {`~${countdown}`}
             </Text>
           </Text>
         </RoundResultBox>
-        <MultiplierArrow betPosition={BetPosition.BEAR} isDisabled />
       </CardBody>
     </Card>
   )

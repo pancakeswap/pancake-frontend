@@ -22,8 +22,8 @@ export const PrizePoolRow: React.FC<PrizePoolRowProps> = ({ totalAmount, ...prop
   const { t } = useTranslation()
 
   return (
-    <Flex alignItems="center" justifyContent="space-between" {...props}>
-      <Text bold>{t('Prize Pool')}:</Text>
+    <Flex alignItems='center' justifyContent='space-between' {...props}>
+      <Text bold>{t('Bid Value')}:</Text>
       <Text bold>{`${getPrizePoolAmount(totalAmount)} BNB`}</Text>
     </Flex>
   )
@@ -38,10 +38,16 @@ export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props 
   const { t } = useTranslation()
 
   return (
-    <Flex alignItems="center" justifyContent="space-between" {...props}>
-      <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsd(lockPrice)}</Text>
-    </Flex>
+    <>
+      <Flex alignItems='center' justifyContent='space-between' {...props}>
+        <Text fontSize='14px'>{t('ZMBE Burned')}:</Text>
+        <Text fontSize='14px'>{formatUsd(lockPrice)}</Text>
+      </Flex>
+      <Flex alignItems='center' justifyContent='space-between' {...props}>
+        <Text fontSize='14px'>{t('LP Locked')}:</Text>
+        <Text fontSize='14px'>1250 BT</Text>
+      </Flex>
+    </>
   )
 }
 
@@ -54,12 +60,12 @@ interface RoundResultBoxProps {
 }
 
 const getBackgroundColor = ({
-  theme,
-  betPosition,
-  isNext,
-  isLive,
-  hasEntered,
-}: RoundResultBoxProps & { theme: DefaultTheme }) => {
+                              theme,
+                              betPosition,
+                              isNext,
+                              isLive,
+                              hasEntered,
+                            }: RoundResultBoxProps & { theme: DefaultTheme }) => {
   if (isNext) {
     return 'linear-gradient(180deg, #53DEE9 0%, #7645D9 100%)'
   }
@@ -92,12 +98,12 @@ const StyledRoundResultBox = styled.div`
 `
 
 export const RoundResultBox: React.FC<RoundResultBoxProps> = ({
-  isNext = false,
-  hasEntered = false,
-  isLive = false,
-  children,
-  ...props
-}) => {
+                                                                isNext = false,
+                                                                hasEntered = false,
+                                                                isLive = false,
+                                                                children,
+                                                                ...props
+                                                              }) => {
   return (
     <Background isNext={isNext} hasEntered={hasEntered} isLive={isLive} {...props}>
       <StyledRoundResultBox>{children}</StyledRoundResultBox>

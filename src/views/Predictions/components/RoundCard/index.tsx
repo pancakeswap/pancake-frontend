@@ -29,6 +29,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   // Perform a one-time check to see if the user has placed a bet
   useEffect(() => {
     if (account) {
+      // @ts-ignore
       dispatch(fetchRoundBet({ account, roundId: id }))
     }
   }, [account, id, dispatch])

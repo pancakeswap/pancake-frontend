@@ -3,11 +3,12 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import {
   CardBody,
+  LinkExternal,
   PlayCircleOutlineIcon,
   Button,
   useTooltip,
   ArrowUpIcon,
-  ArrowDownIcon,
+  ArrowDownIcon, Text, Flex,
 } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
@@ -16,7 +17,7 @@ import { useBlock, useGetIntervalBlocks } from 'state/hooks'
 import { markPositionAsEntered } from 'state/predictions'
 import useToast from 'hooks/useToast'
 import CardFlip from '../CardFlip'
-import { formatBnb, getBnbAmount } from '../../helpers'
+import { formatBnb, formatUsd, getBnbAmount } from '../../helpers'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
@@ -141,7 +142,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
           title={t('Next')}
         />
         <CardBody p="16px">
-          <MultiplierArrow amount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
           <RoundResultBox isNext={canEnterPosition} isLive={!canEnterPosition}>
             {canEnterPosition ? (
               <>
@@ -153,7 +153,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                   mb="4px"
                   disabled={!canEnterPosition || isBufferPhase}
                 >
-                  {t('Enter UP')}
+                  {t('Increase BID')}
                 </Button>
                 <Button
                   variant="danger"
@@ -161,8 +161,11 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                   onClick={() => handleSetPosition(BetPosition.BEAR)}
                   disabled={!canEnterPosition || isBufferPhase}
                 >
-                  {t('Enter DOWN')}
+                  {t('Decrease BID')}
                 </Button>
+                <Flex alignItems='center' justifyContent='center' className="indetails-title" paddingTop="10px">
+                  <LinkExternal onClick={() => handleSetPosition(BetPosition.BULL)} fontSize='14px'>{t('Enter custom bid')}</LinkExternal>
+                </Flex>
               </>
             ) : (
               <>
@@ -176,12 +179,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
               </>
             )}
           </RoundResultBox>
-          <MultiplierArrow
-            amount={betAmount}
-            multiplier={bearMultiplier}
-            betPosition={BetPosition.BEAR}
-            hasEntered={hasEnteredDown}
-          />
         </CardBody>
       </Card>
       <SetPositionCard

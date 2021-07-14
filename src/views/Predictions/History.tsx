@@ -54,6 +54,7 @@ const History = () => {
 
   useEffect(() => {
     if (account && isHistoryPaneOpen) {
+      // @ts-ignore
       dispatch(fetchHistory({ account }))
     }
   }, [account, currentEpoch, isHistoryPaneOpen, dispatch])
