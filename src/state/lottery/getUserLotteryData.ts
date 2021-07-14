@@ -20,6 +20,7 @@ const applyNodeDataToUserGraphResponse = (
         lotteryId: nodeRound.lotteryId.toString(),
         claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
         totalTickets: `${ticketDataForRound.userTickets.length.toString()}`,
+        tickets: ticketDataForRound.userTickets,
       }
     })
   }
@@ -38,6 +39,7 @@ const applyNodeDataToUserGraphResponse = (
           lotteryId: nodeRound.lotteryId.toString(),
           claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
           totalTickets: graphRound.totalTickets,
+          tickets: ticketDataForRound.userTickets,
         }
       }
       return graphRound
