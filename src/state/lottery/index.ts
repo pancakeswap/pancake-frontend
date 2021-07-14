@@ -2,9 +2,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LotteryTicket, LotteryStatus } from 'config/constants/types'
 import { LotteryState, LotteryRoundGraphEntity, LotteryUserGraphEntity, LotteryResponse } from 'state/types'
-import { fetchLottery, fetchCurrentLotteryIdAndMaxBuy, fetchTickets } from './helpers'
+import { fetchLottery, fetchCurrentLotteryIdAndMaxBuy } from './helpers'
 import getLotteriesData from './getLotteriesData'
 import getUserLotteryData from './getUserLotteryData'
+import { getUserInfoForLotteryId } from './getUserInfoForLotteryId'
 
 interface PublicLotteryData {
   currentLotteryId: string
@@ -63,9 +64,9 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
   const totalTickets = userParticipationInCurrentRound?.totalTickets || '0'
   // Get user tickets for current round
   // TODO: This can come from the getUserLotteryData function instead
-  const userTickets = await fetchTickets(account, currentLotteryId, totalTickets)
+  const userTickets = await getUserInfoForLotteryId(account, currentLotteryId)
 
-  // user has not bought tickets for the current lottery
+  // User has not bought tickets for the current lottery, or there has been an error
   if (!userTickets || userTickets.length === 0) {
     return { userTickets: null, userLotteries: userLotteriesRes }
   }

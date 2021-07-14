@@ -6,11 +6,8 @@ import { multicallv2 } from 'utils/multicall'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import {
-  getViewUserTicketInfoCalls,
-  mergeViewUserTicketInfoMulticallResponse,
-  processRawTicketsResponse,
-} from './helpers'
+import { getViewUserTicketInfoCalls, mergeViewUserTicketInfoMulticallResponse } from './helpers'
+import { processRawTicketsResponse } from './getUserInfoForLotteryId'
 
 interface RoundDataAndUserTickets {
   roundId: string
