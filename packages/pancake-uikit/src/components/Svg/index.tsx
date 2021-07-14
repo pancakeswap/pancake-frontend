@@ -67,6 +67,7 @@ export { default as TimerIcon } from "./Icons/Timer";
 export { default as TrophyGoldIcon } from "./Icons/TrophyGold";
 export { default as TuneIcon } from "./Icons/Tune";
 export { default as SearchIcon } from "./Icons/Search";
+export { default as SmallDotIcon } from "./Icons/SmallDot";
 export { default as StarFillIcon } from "./Icons/StarFill";
 export { default as StarLineIcon } from "./Icons/StarLine";
 export { default as SwapVertIcon } from "./Icons/SwapVert";
