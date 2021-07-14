@@ -73,11 +73,12 @@ const RightWrapper = styled.div`
 `
 
 const PrizeFlex = styled(Flex)`
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
   margin-bottom: 8px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+    flex-wrap: wrap;
     max-width: 640px;
   }
 `
