@@ -10,6 +10,7 @@ const Table = styled.table`
 
   td,
   th {
+    color: ${({ theme }) => theme.colors.text};
     padding: 8px;
   }
 `
