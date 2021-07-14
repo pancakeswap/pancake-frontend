@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { CardBody, PlayCircleOutlineIcon, Button, useTooltip, ArrowUpIcon, ArrowDownIcon } from '@pancakeswap/uikit'
+import { CardBody, Button, useTooltip, ArrowUpIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
 import { fetchLedgerData } from 'state/predictions'
 import { ROUND_BUFFER } from 'state/predictions/config'
+import { useGetIntervalSeconds } from 'state/hooks'
 import useToast from 'hooks/useToast'
 import CardFlip from '../CardFlip'
 import { formatBnbv2 } from '../../helpers'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
-import CardHeader from './CardHeader'
+import { OpenRoundCardHeader } from './CardHeader'
 import SetPositionCard from './SetPositionCard'
 
 interface OpenRoundCardProps {
@@ -45,6 +46,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
+  const secondsInterval = useGetIntervalSeconds()
   const { isSettingPosition, position } = state
   const isBufferPhase = Date.now() > (round.lockTimestamp + ROUND_BUFFER) * 1000
   const positionDisplay = position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()
@@ -108,12 +110,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   return (
     <CardFlip isFlipped={isSettingPosition} height="404px">
       <Card>
-        <CardHeader
-          status="next"
-          epoch={round.epoch}
-          icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
-          title={t('Next')}
-        />
+        <OpenRoundCardHeader epoch={round.epoch} timestamp={round.startTimestamp + secondsInterval + ROUND_BUFFER} />
         <CardBody p="16px">
           <MultiplierArrow betAmount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
           <RoundResultBox isNext={canEnterPosition} isLive={!canEnterPosition}>

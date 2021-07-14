@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardBody, Text, WaitIcon } from '@pancakeswap/uikit'
+import { CardBody, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
 import { useGetIntervalSeconds } from 'state/hooks'
@@ -9,7 +9,7 @@ import useCountdown from '../../hooks/useCountdown'
 import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
-import CardHeader from './CardHeader'
+import { SoonRoundCardHeader } from './CardHeader'
 
 interface SoonRoundCardProps {
   round: NodeRound
@@ -23,7 +23,7 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
 
   return (
     <Card>
-      <CardHeader status="soon" icon={<WaitIcon mr="4px" width="21px" />} title={t('Later')} epoch={round.epoch} />
+      <SoonRoundCardHeader epoch={round.epoch} />
       <CardBody p="16px">
         <MultiplierArrow isDisabled />
         <RoundResultBox>
