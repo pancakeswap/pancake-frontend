@@ -74,3 +74,11 @@ export const updateGraveUserInfo = (pid: number, userInfo: UserInfo) => ({
     userInfo
   },
 })
+
+export const updateNftTotalSupply = (id: number, totalSupply: BigNumber) => ({
+  type: actions.UPDATE_NFT_TOTAL_SUPPLY,
+  payload: {
+    id,
+    totalSupply
+  },
+})

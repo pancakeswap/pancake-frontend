@@ -1,6 +1,7 @@
 import { BigNumber } from 'bignumber.js'
 import store from './store'
 import { Grave, PoolInfo, UserInfo } from './types'
+import { BIG_ZERO } from '../utils/bigNumber'
 
 export const account = (): string => {
   return store.getState().account
@@ -52,6 +53,18 @@ export const graveUserInfo = (pid: number): UserInfo => {
 
 export const grave = (pid: number): Grave => {
   return store.getState().graves.find(g => g.pid === pid)
+}
+
+export const nfts = () => {
+  return store.getState().nfts
+}
+
+export const nftTotalSupply = (): BigNumber => {
+  let totalSupply = BIG_ZERO
+  nfts().forEach(nft => {
+    totalSupply = totalSupply.plus(nft.totalSupply)
+  })
+  return totalSupply
 }
 
 // store lpreserves

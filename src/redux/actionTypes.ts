@@ -8,4 +8,5 @@ export const UPDATE_TOMB = "updateTomb"
 export const UPDATE_GRAVE_POOL_INFO = "updateGravePoolInfo"
 export const UPDATE_GRAVE_USER_INFO = "updateGraveUserInfo"
 export const UPDATE_DR_FRANKENSTEIN_ZOMBIE_BALANCE = "updateDrFrankensteinZombieBalance"
+export const UPDATE_NFT_TOTAL_SUPPLY = "updateNftTotalSupply"
 

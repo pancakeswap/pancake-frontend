@@ -2,7 +2,7 @@ import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
 import {
   getBep20Contract,
-  getDrFrankensteinContract,
+  getDrFrankensteinContract, getErc721Contract,
   getPancakePair,
   getZombieContract,
 } from '../utils/contractHelpers'
@@ -16,7 +16,7 @@ import {
   updateBnbPriceUsd,
   updateDrFrankensteinZombieBalance,
   updateTomb,
-  updateGravePoolInfo, updateGraveUserInfo,
+  updateGravePoolInfo, updateGraveUserInfo, updateNftTotalSupply,
 } from './actions'
 import { getAddress, getDrFrankensteinAddress } from '../utils/addressHelpers'
 import tombs from './tombs'
@@ -44,6 +44,8 @@ export const initialData = (accountAddress: string) => {
   zombiePriceBnb()
 
   tomb(tombs[0].pid)
+
+  nfts()
 
   if (accountAddress) {
     zombie.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
@@ -180,4 +182,14 @@ const bnbPriceUsd = () => {
     .then(res => {
       store.dispatch(updateBnbPriceUsd(res.data.price))
     })
+}
+
+const nfts = () => {
+  get.nfts().forEach(nft => {
+    getErc721Contract(nft.address).methods.totalSupply().call()
+      .then(res => {
+        console.log(res)
+        store.dispatch(updateNftTotalSupply(nft.id, new BigNumber(res)))
+      })
+  })
 }

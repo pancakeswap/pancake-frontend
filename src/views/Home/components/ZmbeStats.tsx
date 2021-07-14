@@ -6,6 +6,7 @@ import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import { getCakeAddress, getZombieAddress } from 'utils/addressHelpers'
 import CardValue from './CardValue'
+import { nfts, nftTotalSupply } from '../../../redux/get'
 
 const StyledCakeStats = styled(Card)`
   margin-left: auto;
@@ -46,7 +47,7 @@ const ZmbeStats = () => {
         </Row>
         <Row>
           <Text fontSize="14px">{t('Total NFT\'s Minted')}</Text>
-          <CardValue fontSize="14px" decimals={0} value={0} />
+          <CardValue fontSize="14px" decimals={0} value={nftTotalSupply().toNumber()} />
         </Row>
       </CardBody>
     </StyledCakeStats>

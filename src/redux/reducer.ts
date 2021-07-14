@@ -2,11 +2,13 @@ import { BIG_ZERO } from '../utils/bigNumber'
 import * as types from './actionTypes'
 import tombs from './tombs'
 import graves from './graves'
+import nfts from './nfts'
 
 const defaultState = {
   account: '',
   tombs,
   graves,
+  nfts,
   bnbPriceUsd: 0,
   zombie: {
     allowance: BIG_ZERO,
@@ -70,6 +72,11 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         drFrankenstein: { ...state.drFrankenstein, zombieBalance: action.payload.zombieBalance },
+      }
+    case types.UPDATE_NFT_TOTAL_SUPPLY:
+      return {
+        ...state,
+        nfts: state.nfts.map(nft => nft.id === action.payload.id ? { ...nft, totalSupply: action.payload.totalSupply } : nft)
       }
     default:
       return state
