@@ -1,16 +1,9 @@
-import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import { LotteryStatus, LotteryTicket } from 'config/constants/types'
-import lotteryV2Abi from 'config/abi/lotteryV2.json'
-import { getLotteryV2Address } from 'utils/addressHelpers'
-import { multicallv2 } from 'utils/multicall'
-import { LotteryRound, UserTicketsResponse, LotteryRoundUserTickets, LotteryResponse } from 'state/types'
+import { LotteryTicket } from 'config/constants/types'
+import { UserTicketsResponse } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
-import { useMemo } from 'react'
-import { ethersToSerializedBigNumber } from 'utils/bigNumber'
 
 const lotteryContract = getLotteryV2Contract()
-export const TICKET_LIMIT_PER_REQUEST = 2500
+const TICKET_LIMIT_PER_REQUEST = 2500
 
 export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse): LotteryTicket[] => {
   const [ticketIds, ticketNumbers, ticketStatuses] = ticketsResponse
@@ -32,7 +25,7 @@ export const viewUserInfoForLotteryId = async (
   lotteryId: string,
   cursor: number,
   perRequestLimit: number,
-) => {
+): Promise<LotteryTicket[]> => {
   try {
     const data = await lotteryContract.viewUserInfoForLotteryId(account, lotteryId, cursor, perRequestLimit)
     return processRawTicketsResponse(data)
@@ -44,7 +37,7 @@ export const viewUserInfoForLotteryId = async (
 
 export const getUserInfoForLotteryId = async (account: string, lotteryId: string): Promise<LotteryTicket[]> => {
   let cursor = 0
-  let numReturned = 2500
+  let numReturned = TICKET_LIMIT_PER_REQUEST
   const ticketData = []
 
   while (numReturned === TICKET_LIMIT_PER_REQUEST) {
@@ -56,4 +49,21 @@ export const getUserInfoForLotteryId = async (account: string, lotteryId: string
   }
 
   return ticketData
+}
+
+export const fetchUserTicketsForMultipleRounds = async (
+  idsToCheck: string[],
+  account: string,
+): Promise<{ roundId: string; userTickets: LotteryTicket[] }[]> => {
+  const ticketsForMultipleRounds = []
+  for (let i = 0; i < idsToCheck.length; i += 1) {
+    const roundId = idsToCheck[i]
+    // eslint-disable-next-line no-await-in-loop
+    const ticketsForRound = await getUserInfoForLotteryId(account, roundId)
+    ticketsForMultipleRounds.push({
+      roundId,
+      userTickets: ticketsForRound,
+    })
+  }
+  return ticketsForMultipleRounds
 }

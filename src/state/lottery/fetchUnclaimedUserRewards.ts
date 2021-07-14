@@ -6,8 +6,7 @@ import { multicallv2 } from 'utils/multicall'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getViewUserTicketInfoCalls, mergeViewUserTicketInfoMulticallResponse } from './helpers'
-import { processRawTicketsResponse } from './getUserInfoForLotteryId'
+import { fetchUserTicketsForMultipleRounds } from './getUserTicketsData'
 
 interface RoundDataAndUserTickets {
   roundId: string
@@ -108,41 +107,6 @@ const getWinningNumbersForRound = (targetRoundId: string, lotteriesData: Lottery
   return targetRound?.finalNumber
 }
 
-export const fetchUserTicketsForMultipleRounds = async (
-  roundsToCheck: { totalTickets: string; lotteryId: string }[],
-  account: string,
-) => {
-  // Build calls with data to help with merging multicall responses
-  const callsWithRoundData = roundsToCheck.map((round) => {
-    const totalTickets = parseInt(round.totalTickets, 10)
-    const calls = getViewUserTicketInfoCalls(totalTickets, account, round.lotteryId)
-    return { calls, lotteryId: round.lotteryId, count: calls.length }
-  })
-
-  // Batch all calls across all rounds
-  const multicalls = [].concat(...callsWithRoundData.map((callWithRoundData) => callWithRoundData.calls))
-  try {
-    const multicallRes = await multicallv2(lotteryV2Abi, multicalls, { requireSuccess: false })
-    // Use callsWithRoundData to slice multicall responses by round
-    const multicallResPerRound = []
-    let resCount = 0
-    for (let i = 0; i < callsWithRoundData.length; i += 1) {
-      const callOptions = callsWithRoundData[i]
-
-      const singleRoundResponse = multicallRes.slice(resCount, resCount + callOptions.count)
-      // Don't push null responses values - can happen when the check is using fallback behaviour because it has no subgraph past rounds
-      multicallResPerRound.push(singleRoundResponse.filter((res) => res))
-      resCount += callOptions.count
-    }
-    const mergedMulticallResponse = multicallResPerRound.map((res) => mergeViewUserTicketInfoMulticallResponse(res))
-
-    return mergedMulticallResponse
-  } catch (error) {
-    console.error(error)
-    return []
-  }
-}
-
 const fetchUnclaimedUserRewards = async (
   account: string,
   userLotteryData: LotteryUserGraphEntity,
@@ -171,24 +135,21 @@ const fetchUnclaimedUserRewards = async (
   })
 
   if (roundsToCheck.length > 0) {
-    const rawUserTicketData = await fetchUserTicketsForMultipleRounds(roundsToCheck, account)
+    const idsToCheck = roundsToCheck.map((round) => round.lotteryId)
+    const userTicketData = await fetchUserTicketsForMultipleRounds(idsToCheck, account)
 
-    if (rawUserTicketData.length === 0) {
-      // In case of error with ticket calls, return empty array
-      return []
-    }
+    // Filter no-ticket rounds
+    //   if (rawUserTicketData.length === 0) {
+    // In case of error with ticket calls, return empty array
+    // return []
+    // }
 
-    const roundIds = roundsToCheck.map((round) => round.lotteryId)
-    const roundDataAndUserTickets = rawUserTicketData.map((rawRoundTicketData, index) => {
-      return {
-        roundId: roundIds[index],
-        userTickets: processRawTicketsResponse(rawRoundTicketData),
-        finalNumber: getWinningNumbersForRound(roundIds[index], lotteriesData),
-      }
+    const roundDataAndWinningTickets = userTicketData.map((roundData) => {
+      return { ...roundData, finalNumber: getWinningNumbersForRound(roundData.roundId, lotteriesData) }
     })
 
     const winningTicketsForPastRounds = await Promise.all(
-      roundDataAndUserTickets.map((roundData) => getWinningTickets(roundData)),
+      roundDataAndWinningTickets.map((roundData) => getWinningTickets(roundData)),
     )
 
     // Filter out null values (returned when no winning tickets found for past round)
