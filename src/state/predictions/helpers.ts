@@ -196,7 +196,7 @@ export const getBetHistory = async (
     GRAPH_API_PREDICTION,
     gql`
       query getBetHistory($first: Int!, $skip: Int!, $where: Bet_filter) {
-        bets(first: $first, skip: $skip, where: $where) {
+        bets(first: $first, skip: $skip, where: $where, order: createdAt, orderDirection: desc) {
           ${getBetBaseFields()}
           round {
             ${getRoundBaseFields()}
