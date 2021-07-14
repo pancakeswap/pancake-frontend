@@ -66,7 +66,7 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
   const userTickets = await fetchTickets(account, currentLotteryId, totalTickets)
 
   // user has not bought tickets for the current lottery
-  if (userTickets.length === 0) {
+  if (!userTickets || userTickets.length === 0) {
     return { userTickets: null, userLotteries: userLotteriesRes }
   }
 
