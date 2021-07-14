@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { ChainId } from '@pancakeswap/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers'
 import { simpleRpcProvider } from 'utils/providers'
@@ -10,7 +11,7 @@ import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
  * Recreate web3 instance only if the provider change
  */
 const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
-  const { library, ...web3React } = useWeb3React()
+  const { library, chainId, ...web3React } = useWeb3React()
   const refEth = useRef(library)
   const [provider, setprovider] = useState(library || simpleRpcProvider)
 
@@ -21,7 +22,7 @@ const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
     }
   }, [library])
 
-  return { library: provider, ...web3React }
+  return { library: provider, chainId: chainId ?? ChainId.MAINNET, ...web3React }
 }
 
 export default useActiveWeb3React
