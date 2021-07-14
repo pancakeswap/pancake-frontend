@@ -4,6 +4,7 @@ import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/con
 import { LotteryUserGraphEntity, LotteryRoundGraphEntity } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
+import { NUM_ROUNDS_TO_CHECK_FOR_REWARDS } from 'config/constants/lottery'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { fetchUserTicketsForMultipleRounds } from './getUserTicketsData'
@@ -129,22 +130,20 @@ const fetchUnclaimedUserRewards = async (
     return round.status.toLowerCase() === LotteryStatus.CLAIMABLE
   })
 
-  // If there are any rounds tickets haven't been claimed for, OR a user has over 100 tickets in a round - check user tickets for those rounds
-  const roundsToCheck = claimableRounds.filter((round) => {
+  // Rounds with no tickets claimed OR rounds where a user has over 100 tickets, could have prizes
+  const roundsWithPossibleWinnings = claimableRounds.filter((round) => {
     return !round.claimed || parseInt(round.totalTickets, 10) > 100
   })
+
+  // Check the X  most recent rounds, where X is NUM_ROUNDS_TO_CHECK_FOR_REWARDS
+  const roundsToCheck = roundsWithPossibleWinnings.slice(0, NUM_ROUNDS_TO_CHECK_FOR_REWARDS)
 
   if (roundsToCheck.length > 0) {
     const idsToCheck = roundsToCheck.map((round) => round.lotteryId)
     const userTicketData = await fetchUserTicketsForMultipleRounds(idsToCheck, account)
+    const roundsWithTickets = userTicketData.filter((roundData) => roundData?.userTickets?.length > 0)
 
-    // Filter no-ticket rounds
-    //   if (rawUserTicketData.length === 0) {
-    // In case of error with ticket calls, return empty array
-    // return []
-    // }
-
-    const roundDataAndWinningTickets = userTicketData.map((roundData) => {
+    const roundDataAndWinningTickets = roundsWithTickets.map((roundData) => {
       return { ...roundData, finalNumber: getWinningNumbersForRound(roundData.roundId, lotteriesData) }
     })
 

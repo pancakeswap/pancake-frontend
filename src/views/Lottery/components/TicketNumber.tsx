@@ -50,8 +50,11 @@ const TicketNumber: React.FC<TicketNumberProps> = ({ localId, id, number, reward
       </Flex>
       <StyledNumberWrapper>
         {rewardBracket >= 0 && <RewardHighlighter numberMatches={numberMatches} />}
-        {numberAsArray.map((digit) => (
-          <Text fontSize="16px">{digit}</Text>
+        {numberAsArray.map((digit, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Text key={`${localId || id}${digit}${index}`} fontSize="16px">
+            {digit}
+          </Text>
         ))}
       </StyledNumberWrapper>
     </Flex>

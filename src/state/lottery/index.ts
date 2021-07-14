@@ -5,7 +5,6 @@ import { LotteryState, LotteryRoundGraphEntity, LotteryUserGraphEntity, LotteryR
 import { fetchLottery, fetchCurrentLotteryIdAndMaxBuy } from './helpers'
 import getLotteriesData from './getLotteriesData'
 import getUserLotteryData from './getUserLotteryData'
-import { getUserInfoForLotteryId } from './getUserTicketsData'
 
 interface PublicLotteryData {
   currentLotteryId: string

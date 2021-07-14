@@ -25,6 +25,11 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const { toastSuccess, toastError } = useToast()
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
   const [pendingTx, setPendingTx] = useState(false)
+  const [pendingBatchClaims, setPendingBatchClaims] = useState(
+    Math.ceil(
+      roundsToClaim[activeClaimIndex].ticketsWithUnclaimedRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber(),
+    ),
+  )
   const lotteryContract = useLotteryV2Contract()
   const activeClaimData = roundsToClaim[activeClaimIndex]
 
@@ -50,11 +55,6 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   )
 
   const shouldBatchRequest = maxNumberTicketsPerBuyOrClaim.lt(claimTicketsCallData.ticketIds.length)
-
-  const totalNumClaimsForRound = () =>
-    Math.ceil(
-      roundsToClaim[activeClaimIndex].ticketsWithUnclaimedRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber(),
-    )
 
   const handleProgressToNextClaim = () => {
     if (roundsToClaim.length > activeClaimIndex + 1) {
@@ -120,6 +120,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
         if (receipt.status) {
           // One transaction within batch has succeeded
           receipts.push(receipt)
+          setPendingBatchClaims(transactionsToFire - receipts.length)
 
           // More transactions are to be done within the batch. Issue toast to give user feedback.
           if (receipts.length !== transactionsToFire) {
@@ -138,7 +139,9 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
         }
       } catch (error) {
         console.error(error)
+        setPendingTx(false)
         toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
+        break
       }
     }
 
@@ -199,7 +202,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           width="100%"
           onClick={() => (shouldBatchRequest ? handleBatchClaim() : handleClaim())}
         >
-          {pendingTx ? t('Claiming') : t('Claim')} {totalNumClaimsForRound() > 1 ? `(${totalNumClaimsForRound()})` : ''}
+          {pendingTx ? t('Claiming') : t('Claim')} {pendingBatchClaims > 1 ? `(${pendingBatchClaims})` : ''}
         </Button>
       </Flex>
     </>
