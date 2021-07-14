@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardBody, Text, Flex, BlockIcon, LinkExternal } from '@pancakeswap/uikit'
+import { CardBody, Text, Flex, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
 import ReclaimPositionButton from '../ReclaimPositionButton'
@@ -7,7 +7,7 @@ import useIsRefundable from '../../hooks/useIsRefundable'
 import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
-import CardHeader from './CardHeader'
+import { CanceledRoundCardHeader } from './CardHeader'
 
 interface CanceledRoundCardProps {
   round: NodeRound
@@ -24,12 +24,7 @@ const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ round }) => {
 
   return (
     <Card>
-      <CardHeader
-        status="canceled"
-        icon={<BlockIcon mr="4px" width="21px" />}
-        title={t('Canceled')}
-        epoch={round.epoch}
-      />
+      <CanceledRoundCardHeader epoch={epoch} />
       <CardBody p="16px">
         <MultiplierArrow isDisabled />
         <RoundResultBox>

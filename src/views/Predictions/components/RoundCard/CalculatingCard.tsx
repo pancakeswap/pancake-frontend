@@ -1,11 +1,11 @@
 import React from 'react'
-import { CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@pancakeswap/uikit'
+import { CardBody, Flex, Spinner, TooltipText, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
 import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
-import CardHeader from './CardHeader'
+import { CalculatingRoundCardHeader } from './CardHeader'
 
 interface CalculatingCardProps {
   round: NodeRound
@@ -21,12 +21,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
   return (
     <>
       <Card>
-        <CardHeader
-          status="calculating"
-          icon={<WaitIcon mr="4px" width="21px" />}
-          title={t('Calculating')}
-          epoch={round.epoch}
-        />
+        <CalculatingRoundCardHeader epoch={round.epoch} />
         <CardBody p="16px">
           <MultiplierArrow isDisabled />
           <RoundResultBox>

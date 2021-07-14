@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useCountUp } from 'react-countup'
-import { CardBody, Flex, PlayCircleOutlineIcon, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { CardBody, Flex, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { ROUND_BUFFER } from 'state/predictions/config'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
@@ -12,7 +13,7 @@ import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
-import CardHeader from './CardHeader'
+import { LiveRoundCardHeader } from './CardHeader'
 import CanceledRoundCard from './CanceledRoundCard'
 
 interface LiveRoundCardProps {
@@ -77,12 +78,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   return (
     <GradientBorder>
       <GradientCard>
-        <CardHeader
-          status="live"
-          icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
-          title={t('Live')}
-          epoch={round.epoch}
-        />
+        <LiveRoundCardHeader epoch={round.epoch} timestamp={closeTimestamp + ROUND_BUFFER} />
         <RoundProgress variant="flat" scale="sm" lockTimestamp={lockTimestamp} closeTimestamp={closeTimestamp} />
         <CardBody p="16px">
           <MultiplierArrow
