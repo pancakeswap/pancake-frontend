@@ -278,17 +278,17 @@ export const getClaimStatuses = async (
 
 export type MarketData = Pick<
   PredictionsState,
-  'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate'
+  'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'roundBufferSeconds'
 >
 export const getPredictionData = async (): Promise<MarketData> => {
   const address = getPredictionsAddress()
-  const staticCalls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks', 'rewardRate'].map(
+  const staticCalls = ['currentEpoch', 'intervalSeconds', 'minBetAmount', 'paused', 'roundBufferSeconds'].map(
     (method) => ({
       address,
       name: method,
     }),
   )
-  const [[currentEpoch], [intervalBlocks], [minBetAmount], [paused], [bufferBlocks], [rewardRate]] = await multicallv2(
+  const [[currentEpoch], [intervalSeconds], [minBetAmount], [paused], [roundBufferSeconds]] = await multicallv2(
     predictionsAbi,
     staticCalls,
   )
@@ -296,10 +296,9 @@ export const getPredictionData = async (): Promise<MarketData> => {
   return {
     status: paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
     currentEpoch: currentEpoch.toNumber(),
-    intervalBlocks: intervalBlocks.toNumber(),
-    bufferBlocks: bufferBlocks.toNumber(),
+    intervalSeconds: intervalSeconds.toNumber(),
     minBetAmount: minBetAmount.toString(),
-    rewardRate: rewardRate.toNumber(),
+    roundBufferSeconds: roundBufferSeconds.toNumber(),
   }
 }
 
@@ -314,20 +313,22 @@ export const getRoundsData = async (epochs: number[]): Promise<PredictionsRounds
   return response
 }
 
-export const makeFutureRoundResponse = (epoch: number, startBlock: number): ReduxNodeRound => {
+export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): ReduxNodeRound => {
   return {
     epoch,
-    startBlock,
-    lockBlock: null,
-    endBlock: null,
+    startTimestamp,
+    lockTimestamp: null,
+    closeTimestamp: null,
     lockPrice: null,
     closePrice: null,
+    freezedLockOracleRoundId: null,
+    freezedCloseOracleRoundId: null,
     totalAmount: ethers.BigNumber.from(0).toJSON(),
     bullAmount: ethers.BigNumber.from(0).toJSON(),
     bearAmount: ethers.BigNumber.from(0).toJSON(),
     rewardBaseCalAmount: ethers.BigNumber.from(0).toJSON(),
     rewardAmount: ethers.BigNumber.from(0).toJSON(),
-    oracleCalled: false,
+    priceResolved: false,
   }
 }
 
@@ -375,32 +376,36 @@ export const makeLedgerData = (account: string, ledgers: PredictionsLedgerRespon
 export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse): ReduxNodeRound => {
   const {
     epoch,
-    startBlock,
-    lockBlock,
-    endBlock,
+    startTimestamp,
+    lockTimestamp,
+    closeTimestamp,
     lockPrice,
     closePrice,
+    freezedLockOracleRoundId,
+    freezedCloseOracleRoundId,
     totalAmount,
     bullAmount,
     bearAmount,
-    rewardAmount,
     rewardBaseCalAmount,
-    oracleCalled,
+    rewardAmount,
+    priceResolved,
   } = response
 
   return {
     epoch: epoch.toNumber(),
-    startBlock: startBlock.toNumber(),
-    lockBlock: lockBlock.toNumber(),
-    endBlock: endBlock.toNumber(),
+    startTimestamp: startTimestamp.eq(0) ? null : startTimestamp.toNumber(),
+    lockTimestamp: lockTimestamp.eq(0) ? null : lockTimestamp.toNumber(),
+    closeTimestamp: closeTimestamp.eq(0) ? null : closeTimestamp.toNumber(),
     lockPrice: lockPrice.eq(0) ? null : lockPrice.toJSON(),
     closePrice: closePrice.eq(0) ? null : closePrice.toJSON(),
+    freezedLockOracleRoundId: freezedLockOracleRoundId.eq(0) ? null : freezedLockOracleRoundId.toString(),
+    freezedCloseOracleRoundId: freezedCloseOracleRoundId.eq(0) ? null : freezedCloseOracleRoundId.toString(),
     totalAmount: totalAmount.toJSON(),
     bullAmount: bullAmount.toJSON(),
     bearAmount: bearAmount.toJSON(),
-    rewardAmount: rewardAmount.toJSON(),
     rewardBaseCalAmount: rewardBaseCalAmount.toJSON(),
-    oracleCalled,
+    rewardAmount: rewardAmount.toJSON(),
+    priceResolved,
   }
 }
 

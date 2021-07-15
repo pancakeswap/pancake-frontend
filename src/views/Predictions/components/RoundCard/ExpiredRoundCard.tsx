@@ -1,19 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { Box, CardBody } from '@pancakeswap/uikit'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
-import { useGetBetByEpoch } from 'state/hooks'
-import { useBlock } from 'state/block/hooks'
+import { useGetBetByEpoch, useGetRoundBufferSeconds } from 'state/hooks'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { getHasRoundFailed, getNetPayoutv2 } from '../../helpers'
 import { RoundResult } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
-import CardHeader from './CardHeader'
+import { ExpiredRoundCardHeader } from './CardHeader'
 import CollectWinningsOverlay from './CollectWinningsOverlay'
 import CanceledRoundCard from './CanceledRoundCard'
+import CalculatingCard from './CalculatingCard'
 
 interface ExpiredRoundCardProps {
   round: NodeRound
@@ -41,31 +40,28 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   bullMultiplier,
   bearMultiplier,
 }) => {
-  const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { initialBlock } = useBlock()
-  const { epoch, endBlock, lockPrice, closePrice } = round
+  const { epoch, lockPrice, closePrice, closeTimestamp } = round
 
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const ledger = useGetBetByEpoch(account, epoch)
+  const roundBufferSeconds = useGetRoundBufferSeconds()
   const payout = getNetPayoutv2(ledger, round)
   const formattedPayout = payout.toUnsafeFloat().toFixed(4)
-  const hasRoundFailed = getHasRoundFailed(round, initialBlock)
+  const hasRoundFailed = getHasRoundFailed(round, roundBufferSeconds)
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
   }
 
+  if (!closePrice) {
+    return <CalculatingCard round={round} />
+  }
+
   return (
     <Box position="relative">
       <StyledExpiredRoundCard>
-        <CardHeader
-          status="expired"
-          icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
-          title={t('Expired')}
-          blockNumber={endBlock}
-          epoch={round.epoch}
-        />
+        <ExpiredRoundCardHeader epoch={epoch} timestamp={closeTimestamp} />
         <CardBody p="16px" style={{ position: 'relative' }}>
           <MultiplierArrow
             betAmount={betAmount}
