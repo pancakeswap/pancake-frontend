@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.40.3](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.40.2...@pancakeswap/uikit@0.40.3) (2021-07-15)
+
+
+### Bug Fixes
+
+* Increase ifo stepper connector height in mobile ([#195](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/195)) ([5408d1c](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/5408d1ca6099154d5385b0aaecf5015fdf8b4d20))
+
+
+
+
+
 ## [0.40.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.40.1...@pancakeswap/uikit@0.40.2) (2021-07-09)
 
 **Note:** Version bump only for package @pancakeswap/uikit

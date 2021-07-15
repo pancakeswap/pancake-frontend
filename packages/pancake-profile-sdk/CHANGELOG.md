@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-profile-sdk/compare/@pancakeswap/profile-sdk@0.2.0...@pancakeswap/profile-sdk@0.3.0) (2021-07-15)
+
+
+### Features
+
+* Cast BigNumber to Number ([#192](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-profile-sdk/issues/192)) ([04824d5](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-profile-sdk/commit/04824d55691ef226ebefaebb9dff21151ffc5cea))
+
+
+
+
+
 # [0.2.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-profile-sdk/compare/@pancakeswap/profile-sdk@0.1.0...@pancakeswap/profile-sdk@0.2.0) (2021-07-13)
 
 
