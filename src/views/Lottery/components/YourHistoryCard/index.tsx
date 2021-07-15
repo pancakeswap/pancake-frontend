@@ -12,6 +12,7 @@ import {
   Heading,
   Skeleton,
   Box,
+  CardRibbon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'

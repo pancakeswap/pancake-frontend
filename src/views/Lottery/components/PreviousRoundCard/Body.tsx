@@ -1,28 +1,51 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CardBody, Heading, Flex, Skeleton, Text, Box, Button, useModal } from '@pancakeswap/uikit'
+import { CardBody, Heading, Flex, Skeleton, Text, Box, Button, useModal, CardRibbon } from '@pancakeswap/uikit'
 import { LotteryRound } from 'state/types'
-import { useGetUserLotteriesGraphData } from 'state/lottery/hooks'
+import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
+import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import WinningNumbers from '../WinningNumbers'
 import ViewTicketsModal from '../ViewTicketsModal'
+
+const StyledCardBody = styled(CardBody)`
+  overflow: hidden;
+`
+
+const StyedCardRibbon = styled(CardRibbon)`
+  right: -40px;
+  top: -40px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    right: -20px;
+    top: -20px;
+  }
+`
 
 const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
   lotteryData,
   lotteryId,
 }) => {
   const { t } = useTranslation()
+  const {
+    currentLotteryId,
+    currentRound: { status },
+  } = useLottery()
+  const currentLotteryIdAsInt = parseInt(currentLotteryId)
+  const mostRecentFinishedRoundId =
+    status === LotteryStatus.CLAIMABLE ? currentLotteryIdAsInt : currentLotteryIdAsInt - 1
+  const isLatestRound = mostRecentFinishedRoundId.toString() === lotteryId
   const [onPresentViewTicketsModal] = useModal(
     <ViewTicketsModal roundId={lotteryId} roundStatus={lotteryData?.status} />,
   )
   const userLotteryData = useGetUserLotteriesGraphData()
   const userDataForRound = userLotteryData.rounds.find((userLotteryRound) => userLotteryRound.lotteryId === lotteryId)
 
-  console.log(userDataForRound)
-
   return (
-    <CardBody>
-      <Flex flexDirection="column" alignItems="center" justifyContent="center">
+    <StyledCardBody>
+      <Flex position="relative" flexDirection="column" alignItems="center" justifyContent="center">
+        {isLatestRound && <StyedCardRibbon text={t('Latest')} />}
+
         <Heading mb="24px">{t('Winning Number')}</Heading>
         {lotteryData ? (
           <WinningNumbers number={lotteryData?.finalNumber.toString()} />
@@ -52,7 +75,7 @@ const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: st
           </>
         )}
       </Flex>
-    </CardBody>
+    </StyledCardBody>
   )
 }
 

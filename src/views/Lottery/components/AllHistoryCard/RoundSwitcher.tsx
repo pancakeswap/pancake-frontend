@@ -59,7 +59,7 @@ const RoundSwitcher: React.FC<RoundSwitcherProps> = ({
       </Flex>
       <Flex alignItems="center">
         <StyledIconButton
-          disabled={selectedRoundIdAsInt <= 1}
+          disabled={!selectedRoundIdAsInt || selectedRoundIdAsInt <= 1}
           onClick={() => handleArrowButonPress(selectedRoundIdAsInt - 1)}
           variant="text"
           scale="sm"

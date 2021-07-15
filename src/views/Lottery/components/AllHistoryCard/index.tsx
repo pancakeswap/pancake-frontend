@@ -19,6 +19,7 @@ const StyledCard = styled(Card)`
 `
 
 const StyledCardHeader = styled(CardHeader)`
+  z-index: 2;
   background: none;
   border-bottom: 1px ${({ theme }) => theme.colors.cardBorder} solid;
 `
@@ -29,12 +30,12 @@ const YourHistoryCard = () => {
     currentLotteryId,
     currentRound: { status, isLoading },
   } = useLottery()
-  const timer = useRef(null)
   const currentLotteryIdAsInt = parseInt(currentLotteryId)
   const mostRecentFinishedRoundId =
     status === LotteryStatus.CLAIMABLE ? currentLotteryIdAsInt : currentLotteryIdAsInt - 1
   const [selectedRoundId, setSelectedRoundId] = useState(mostRecentFinishedRoundId.toString())
   const [selectedLotteryInfo, setSelectedLotteryInfo] = useState(null)
+  const timer = useRef(null)
 
   useEffect(() => {
     setSelectedLotteryInfo(null)
@@ -46,7 +47,9 @@ const YourHistoryCard = () => {
     }
 
     timer.current = setInterval(() => {
-      fetchLotteryData()
+      if (selectedRoundId) {
+        fetchLotteryData()
+      }
       clearInterval(timer.current)
     }, 1000)
 
@@ -71,7 +74,12 @@ const YourHistoryCard = () => {
   }
 
   const handleArrowButonPress = (targetRound) => {
-    setSelectedRoundId(targetRound.toString())
+    if (targetRound) {
+      setSelectedRoundId(targetRound.toString())
+    } else {
+      // targetRound is NaN when the input is empty, the only button press that will trigger this func is 'forward one'
+      setSelectedRoundId('1')
+    }
   }
 
   return (
@@ -94,16 +102,8 @@ const YourHistoryCard = () => {
           )}
         </Box>
       </StyledCardHeader>
-      {/* <>
-        {selectedLotteryInfo && !loadingTimeoutActive ? ( */}
       <PreviousRoundCardBody lotteryData={selectedLotteryInfo} lotteryId={selectedRoundId} />
-      {/* ) : (
-          <Flex p="40px" alignItems="center" justifyContent="center">
-            <Spinner />
-          </Flex>
-        )}
-      </> */}
-      {selectedLotteryInfo && <PreviousRoundCardFooter lotteryData={selectedLotteryInfo} lotteryId={selectedRoundId} />}
+      <PreviousRoundCardFooter lotteryData={selectedLotteryInfo} lotteryId={selectedRoundId} />
     </StyledCard>
   )
 }
