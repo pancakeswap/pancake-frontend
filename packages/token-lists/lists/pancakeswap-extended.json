@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-07-12T03:06:33.828Z",
+  "timestamp": "2021-07-15T09:03:19.888Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 8
+    "patch": 9
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -275,14 +275,6 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x4131b87f74415190425ccd873048c708f8005823.png"
-    },
-    {
-      "name": "Bondly",
-      "symbol": "BONDLY",
-      "address": "0x96058f8C3e16576D9BD68766f3836d9A33158f89",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x96058f8c3e16576d9bd68766f3836d9a33158f89.png"
     },
     {
       "name": "OPEN Governance Token",

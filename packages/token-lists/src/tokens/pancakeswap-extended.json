@@ -1120,14 +1120,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x37dfACfaeDA801437Ff648A1559d73f4C40aAcb7.png"
   },
   {
-    "name": "Bondly",
-    "symbol": "BONDLY",
-    "address": "0x96058f8C3e16576D9BD68766f3836d9A33158f89",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x96058f8c3e16576d9bd68766f3836d9a33158f89.png"
-  },
-  {
     "name": "Itam",
     "symbol": "ITAM",
     "address": "0x04C747b40Be4D535fC83D09939fb0f626F32800B",
