@@ -15,7 +15,7 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import { Vote, VotingStateLoadingStatus } from 'state/types'
-import { useGetVotingStateLoadingStatus } from 'state/hooks'
+import { useGetVotingStateLoadingStatus } from 'state/voting/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { calculateVoteResults, getTotalFromVotes } from '../helpers'
 import TextEllipsis from '../components/TextEllipsis'

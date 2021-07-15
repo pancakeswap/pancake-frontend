@@ -4,7 +4,12 @@ import { useWeb3React } from '@web3-react/core'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch } from 'state'
 import { ProposalState, VotingStateLoadingStatus } from 'state/types'
-import { useGetProposal, useGetVotingStateLoadingStatus, useGetVotes, useGetProposalLoadingStatus } from 'state/hooks'
+import {
+  useGetProposal,
+  useGetVotingStateLoadingStatus,
+  useGetVotes,
+  useGetProposalLoadingStatus,
+} from 'state/voting/hooks'
 import { fetchProposal, fetchVotes, verifyVotes } from 'state/voting'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
