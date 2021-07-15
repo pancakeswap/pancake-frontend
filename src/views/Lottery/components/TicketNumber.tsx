@@ -3,6 +3,7 @@ import { LotteryTicket } from 'config/constants/types'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
+import _uniqueId from 'lodash/uniqueId'
 import { parseRetreivedNumber } from '../helpers'
 
 const StyledNumberWrapper = styled(Flex)`
@@ -50,9 +51,8 @@ const TicketNumber: React.FC<TicketNumberProps> = ({ localId, id, number, reward
       </Flex>
       <StyledNumberWrapper>
         {rewardBracket >= 0 && <RewardHighlighter numberMatches={numberMatches} />}
-        {numberAsArray.map((digit, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <Text key={`${localId || id}${digit}${index}`} fontSize="16px">
+        {numberAsArray.map((digit) => (
+          <Text key={`${localId || id}-${digit}-${_uniqueId}`} fontSize="16px">
             {digit}
           </Text>
         ))}
