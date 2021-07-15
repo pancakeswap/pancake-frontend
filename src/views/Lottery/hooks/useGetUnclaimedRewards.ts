@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useGetLotteriesGraphData, useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
+import { useGetLotteriesGraphData, useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
 
 export enum FetchStatus {

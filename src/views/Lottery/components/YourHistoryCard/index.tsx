@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
-import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
+import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
 import { fetchLottery } from 'state/lottery/helpers'
 import { LotteryRound } from 'state/types'
 import UnlockButton from 'components/UnlockButton'

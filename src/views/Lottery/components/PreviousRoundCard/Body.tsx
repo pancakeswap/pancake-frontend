@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardBody, Heading, Flex, Skeleton, Text, Box, Button, useModal } from '@pancakeswap/uikit'
 import { LotteryRound } from 'state/types'
-import { useGetUserLotteriesGraphData } from 'state/hooks'
+import { useGetUserLotteriesGraphData } from 'state/lottery/hooks'
 import { useTranslation } from 'contexts/Localization'
 import WinningNumbers from '../WinningNumbers'
 import ViewTicketsModal from '../ViewTicketsModal'
