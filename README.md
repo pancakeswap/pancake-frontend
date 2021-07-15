@@ -6,6 +6,8 @@ This repository is a monorepo manage with [yarn workspaces](https://classic.yarn
 
 - [pancake-uikit](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit) : React components used to build the Pancake UI
 - [eslint-config-pancake](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/eslint-config-pancake) : An ESLint config for pancake, with Typescript and Prettier support
+- [pancake-profile-sdk](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-profile-sdk) : Handy functions to retrieve data for Pancakeswap Profile system
+- [token-lists](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/token-lists) : Main PancakeSwap token list and tools to validate it
 
 ## How to use
 
