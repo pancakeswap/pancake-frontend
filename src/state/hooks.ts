@@ -6,25 +6,10 @@ import { ethers } from 'ethers'
 import { minBy, orderBy } from 'lodash'
 import { useAppDispatch } from 'state'
 import Nfts from 'config/constants/nfts'
-import { simpleRpcProvider } from 'utils/providers'
-import { setBlock } from './actions'
 import { State, NodeRound, ReduxNodeLedger, NodeLedger, ReduxNodeRound } from './types'
 import { fetchWalletNfts } from './collectibles'
 import { parseBigNumberObj } from './predictions/helpers'
 import { useFarmFromPid } from './farms/hooks'
-
-export const usePollBlockNumber = () => {
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      const blockNumber = await simpleRpcProvider.getBlockNumber()
-      dispatch(setBlock(blockNumber))
-    }, 6000)
-
-    return () => clearInterval(interval)
-  }, [dispatch])
-}
 
 export const usePriceBnbBusd = (): BigNumber => {
   const bnbBusdFarm = useFarmFromPid(252)
@@ -34,15 +19,6 @@ export const usePriceBnbBusd = (): BigNumber => {
 export const usePriceCakeBusd = (): BigNumber => {
   const cakeBnbFarm = useFarmFromPid(251)
   return new BigNumber(cakeBnbFarm.token.busdPrice)
-}
-
-// Block
-export const useBlock = () => {
-  return useSelector((state: State) => state.block)
-}
-
-export const useInitialBlock = () => {
-  return useSelector((state: State) => state.block.initialBlock)
 }
 
 // Predictions

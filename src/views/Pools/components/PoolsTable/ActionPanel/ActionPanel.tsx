@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { getBscScanLink } from 'utils'
-import { useBlock } from 'state/hooks'
+import { useBlock } from 'state/block/hooks'
 import { useCakeVault } from 'state/pools/hooks'
 import BigNumber from 'bignumber.js'
 import { Pool } from 'state/types'
