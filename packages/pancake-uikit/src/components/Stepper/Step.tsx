@@ -23,7 +23,7 @@ const StyledStep = styled(Flex)`
 const Connector = styled.div<StatusProps>`
   position: absolute;
   width: 4px;
-  height: 100%;
+  height: 110%;
   top: 50%;
   left: calc(50% - 2px);
   background-color: ${({ theme, status }) => theme.colors[status === "past" ? "success" : "textDisabled"]};
