@@ -29,7 +29,7 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
         isFinished={isFinished && sousId !== 0}
       />
       <CardBody>
-        <AprRow pool={pool} />
+        <AprRow pool={pool} stakedBalance={stakedBalance} />
         <Flex mt="24px" flexDirection="column">
           {account ? (
             <CardActions pool={pool} stakedBalance={stakedBalance} />

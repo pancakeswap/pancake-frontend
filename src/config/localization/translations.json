@@ -266,7 +266,7 @@
   "Oops!": "Oops!",
   "We couldn't find any Pancake Collectibles in your wallet.": "We couldn't find any Pancake Collectibles in your wallet.",
   "You need a Pancake Collectible to finish setting up your profile. If you sold or transferred your starter collectible to another wallet, you'll need to get it back or acquire a new one somehow. You can't make a new starter with this wallet address.": "You need a Pancake Collectible to finish setting up your profile. If you sold or transferred your starter collectible to another wallet, you'll need to get it back or acquire a new one somehow. You can't make a new starter with this wallet address.",
-  "ROI": "ROI",
+  "ROI Calculator": "ROI Calculator",
   "Timeframe": "Timeframe",
   "CAKE per $1000": "CAKE per $1000",
   "Calculated based on current rates.": "Calculated based on current rates.",
@@ -1049,7 +1049,6 @@
   "Auction duration": "Auction duration",
   "Terms & Conditions": "Terms & Conditions",
   "in Prizes!": "in Prizes!",
-
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Supplying %amountA% %symbolA% and %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Removing %amountA% %symbolA% and %amountB% %symbolB%",
@@ -1323,5 +1322,20 @@
   "Swaps & Liquidity": "Swaps & Liquidity",
   "Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.": "Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.",
   "Bypasses confirmation modals and allows high slippage trades. Use at your own risk.": "Bypasses confirmation modals and allows high slippage trades. Use at your own risk.",
-  "Fun sounds to make a truly immersive pancake-flipping trading experience": "Fun sounds to make a truly immersive pancake-flipping trading experience"
+  "Fun sounds to make a truly immersive pancake-flipping trading experience": "Fun sounds to make a truly immersive pancake-flipping trading experience",
+  "ROI at current rates": "ROI at current rates",
+  "Farm Multiplier": "Farm Multiplier",
+  "“My Balance” here includes both LP Tokens in your wallet, and LP Tokens already staked in this farm.": "“My Balance” here includes both LP Tokens in your wallet, and LP Tokens already staked in this farm.",
+  "“My Balance” here includes both %assetSymbol% in your wallet, and %assetSymbol% already staked in this pool.": "“My Balance” here includes both %assetSymbol% in your wallet, and %assetSymbol% already staked in this pool.",
+  "APY (%compoundTimes%x daily compound)": "APY (%compoundTimes%x daily compound)",
+  "My Balance": "My Balance",
+  "Staked for": "Staked for",
+  "Compounding every": "Compounding every",
+  "1D": "1D",
+  "7D": "7D",
+  "14D": "14D",
+  "30D": "30D",
+  "1Y": "1Y",
+  "5Y": "5Y",
+  "Annual ROI at current rates": "Annual ROI at current rates"
 }

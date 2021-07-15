@@ -40,6 +40,7 @@ const StyledInput = styled(Input)`
   width: 60px;
   margin: 0 8px;
   padding: 0 8px;
+  border: none;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     width: 80px;

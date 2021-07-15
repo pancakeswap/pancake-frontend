@@ -11,6 +11,7 @@ interface VaultStakeActionsProps {
   pool: Pool
   stakingTokenBalance: BigNumber
   accountHasSharesStaked: boolean
+  performanceFee: number
   isLoading?: boolean
 }
 
@@ -18,16 +19,19 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   pool,
   stakingTokenBalance,
   accountHasSharesStaked,
+  performanceFee,
   isLoading = false,
 }) => {
   const { stakingToken } = pool
   const { t } = useTranslation()
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
-  const [onPresentStake] = useModal(<VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} />)
+  const [onPresentStake] = useModal(
+    <VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} performanceFee={performanceFee} />,
+  )
 
   const renderStakeAction = () => {
     return accountHasSharesStaked ? (
-      <HasSharesActions pool={pool} stakingTokenBalance={stakingTokenBalance} />
+      <HasSharesActions pool={pool} stakingTokenBalance={stakingTokenBalance} performanceFee={performanceFee} />
     ) : (
       <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>{t('Stake')}</Button>
     )

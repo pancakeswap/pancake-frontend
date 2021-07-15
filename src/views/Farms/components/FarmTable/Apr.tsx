@@ -10,7 +10,9 @@ import { Skeleton } from '@pancakeswap/uikit'
 export interface AprProps {
   value: string
   multiplier: string
+  pid: number
   lpLabel: string
+  lpSymbol: string
   tokenAddress?: Address
   quoteTokenAddress?: Address
   cakePrice: BigNumber
@@ -42,7 +44,10 @@ const AprWrapper = styled.div`
 
 const Apr: React.FC<AprProps> = ({
   value,
+  pid,
   lpLabel,
+  lpSymbol,
+  multiplier,
   tokenAddress,
   quoteTokenAddress,
   cakePrice,
@@ -55,18 +60,17 @@ const Apr: React.FC<AprProps> = ({
   return originalValue !== 0 ? (
     <Container>
       {originalValue ? (
-        <>
-          <AprWrapper>{value}%</AprWrapper>
-          {!hideButton && (
-            <ApyButton
-              lpLabel={lpLabel}
-              cakePrice={cakePrice}
-              apr={originalValue}
-              displayApr={value}
-              addLiquidityUrl={addLiquidityUrl}
-            />
-          )}
-        </>
+        <ApyButton
+          variant={hideButton ? 'text' : 'text-and-button'}
+          pid={pid}
+          lpSymbol={lpSymbol}
+          lpLabel={lpLabel}
+          multiplier={multiplier}
+          cakePrice={cakePrice}
+          apr={originalValue}
+          displayApr={value}
+          addLiquidityUrl={addLiquidityUrl}
+        />
       ) : (
         <AprWrapper>
           <Skeleton width={60} />
