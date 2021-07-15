@@ -10,7 +10,7 @@ const StyledInput = styled(Input)`
 `
 
 const StyledIconButton = styled(IconButton)`
-  width: 24px;
+  width: 32px;
 
   :disabled {
     background: none;
@@ -72,6 +72,7 @@ const RoundSwitcher: React.FC<RoundSwitcherProps> = ({
           onClick={() => handleArrowButonPress(selectedRoundIdAsInt + 1)}
           variant="text"
           scale="sm"
+          mr="4px"
         >
           <ArrowForwardIcon />
         </StyledIconButton>
