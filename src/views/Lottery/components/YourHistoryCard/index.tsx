@@ -12,7 +12,6 @@ import {
   Heading,
   Skeleton,
   Box,
-  CardRibbon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
@@ -24,7 +23,7 @@ import FinishedRoundTable from './FinishedRoundTable'
 import { WhiteBunny } from '../../svgs'
 import BuyTicketsButton from '../BuyTicketsButton'
 import PreviousRoundCardBody from '../PreviousRoundCard/Body'
-import { dateTimeOptions, processLotteryResponse, getDrawnDate } from '../../helpers'
+import { processLotteryResponse, getDrawnDate } from '../../helpers'
 import PreviousRoundCardFooter from '../PreviousRoundCard/Footer'
 
 const StyledCard = styled(Card)`

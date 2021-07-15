@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Svg, SvgProps, Text, Box } from '@pancakeswap/uikit'
+import { Svg, SvgProps, Text, Flex } from '@pancakeswap/uikit'
 
 export const PinkBall: React.FC<SvgProps> = (props) => {
   return (
@@ -249,18 +249,20 @@ export const BallTextWrapper = styled.div`
   position: absolute;
 `
 
-export const BallText = styled(Text)`
+export const BallText = styled(Text)<{ rotationTransform?: number }>`
   color: #000000;
   text-shadow: -0.75px -0.75px 0 white, 0.75px -0.75px 0 white, -0.75px 0.75px 0 white, 0.75px 0.75px 0 white;
+  transform: rotate(${({ rotationTransform }) => rotationTransform || 0}deg);
 `
 
-type BallColor = 'pink' | 'lilac' | 'teal' | 'aqua' | 'green' | 'yellow'
+export type BallColor = 'pink' | 'lilac' | 'teal' | 'aqua' | 'green' | 'yellow'
 
 interface BallWithNumberProps {
   color: BallColor
   number: string
   size?: string
   fontSize?: string
+  rotationTransform?: number
 }
 
 const ballsMap = {
@@ -272,16 +274,16 @@ const ballsMap = {
   yellow: YellowBall,
 }
 
-export const BallWithNumber: React.FC<BallWithNumberProps> = ({ color, number, size, fontSize }) => {
+export const BallWithNumber: React.FC<BallWithNumberProps> = ({ color, number, size, fontSize, rotationTransform }) => {
   const BallComponent = ballsMap[color]
   return (
-    <Box position="relative" mr="4px">
+    <Flex alignItems="center" justifyContent="center" position="relative" mx="2px">
       <BallComponent width={size ?? '32px'} height={size ?? '32px'} />
       <BallTextWrapper>
-        <BallText bold fontSize={fontSize ?? '16px'}>
+        <BallText rotationTransform={rotationTransform} bold fontSize={fontSize ?? '16px'}>
           {number}
         </BallText>
       </BallTextWrapper>
-    </Box>
+    </Flex>
   )
 }

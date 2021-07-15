@@ -11,17 +11,16 @@ interface PreviousRoundCardFooterProps {
 }
 
 const PreviousRoundCardFooter: React.FC<PreviousRoundCardFooterProps> = ({ lotteryData, lotteryId }) => {
+  const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
-
   const previousLotteryId = usePreviousValue(lotteryId)
 
   useEffect(() => {
+    // Close when changing lottery rounds
     if (lotteryId !== previousLotteryId) {
       setIsExpanded(false)
     }
   }, [lotteryId, previousLotteryId])
-
-  const { t } = useTranslation()
 
   return (
     <CardFooter p="0">
