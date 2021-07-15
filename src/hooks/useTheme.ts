@@ -1,11 +1,11 @@
 import { useContext } from 'react'
 import { ThemeContext as StyledThemeContext } from 'styled-components'
-import { ThemeContext } from 'contexts/ThemeContext'
+import { useThemeManager } from 'state/user/hooks'
 
 const useTheme = () => {
-  const { isDark, toggleTheme } = useContext(ThemeContext)
+  const [isDark, toggleTheme] = useThemeManager()
   const theme = useContext(StyledThemeContext)
-  return { isDark, toggleTheme, theme }
+  return { isDark, theme, toggleTheme }
 }
 
 export default useTheme
