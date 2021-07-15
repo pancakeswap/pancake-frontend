@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { existingAddress1 } from "../../mocks/mockAddresses";
 
 const getProfileContract = jest.fn(() => {
@@ -25,8 +26,8 @@ const getProfileContract = jest.fn(() => {
       if (teamId === 2) {
         return Promise.resolve({
           0: "Fearsome Flippers",
-          2: 77000,
-          3: 341500,
+          2: ethers.BigNumber.from(77000),
+          3: ethers.BigNumber.from(341500),
           4: true,
         });
       }

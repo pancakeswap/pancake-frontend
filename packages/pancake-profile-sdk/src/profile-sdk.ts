@@ -104,7 +104,13 @@ class PancakeProfileSdk {
       } = await this.profileContract.getTeamProfile(teamId);
       const staticTeamInfo = teamsList.find((staticTeam) => staticTeam.id === teamId);
 
-      return { ...staticTeamInfo, isJoinable, name: teamName, users: numberUsers, points: numberPoints };
+      return {
+        ...staticTeamInfo,
+        isJoinable,
+        name: teamName,
+        users: numberUsers.toNumber(),
+        points: numberPoints.toNumber(),
+      };
     } catch (error) {
       console.error("getTeam error:", error);
       return null;
