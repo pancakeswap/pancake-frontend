@@ -17,7 +17,7 @@ import { useWeb3React } from '@web3-react/core'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { fetchLottery } from 'state/lottery/helpers'
 import { getWinningTickets } from 'state/lottery/fetchUnclaimedUserRewards'
-import { getUserInfoForLotteryId } from 'state/lottery/getUserTicketsData'
+import { fetchUserTicketsForOneRound } from 'state/lottery/getUserTicketsData'
 import { LotteryRound } from 'state/types'
 import { useGetUserLotteryGraphRoundById } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
@@ -109,7 +109,7 @@ const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) =
     }
 
     const fetchData = async () => {
-      const userTickets = await getUserInfoForLotteryId(account, roundId)
+      const userTickets = await fetchUserTicketsForOneRound(account, roundId)
       const lotteryData = await fetchLottery(roundId)
       const processedLotteryData = processLotteryResponse(lotteryData)
       const winningTickets = await getWinningTickets({
