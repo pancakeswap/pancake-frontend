@@ -3,7 +3,7 @@ import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from 
 import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { useAppDispatch } from 'state'
-import { useProfile } from 'state/hooks'
+import { useProfile } from 'state/profile/hooks'
 import { fetchProfile } from 'state/profile'
 import useToast from 'hooks/useToast'
 import { getBalanceNumber } from 'utils/formatBalance'

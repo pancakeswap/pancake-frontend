@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
-import { useProfile } from 'state/hooks'
+import { useProfile } from 'state/profile/hooks'
 import { useEasterNftContract } from 'hooks/useContract'
 import NftCard, { NftCardProps } from './index'
 

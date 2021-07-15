@@ -3,7 +3,7 @@ import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakes
 import { useTranslation } from 'contexts/Localization'
 import { useCake } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
-import { useProfile } from 'state/hooks'
+import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'

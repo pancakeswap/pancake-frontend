@@ -5,24 +5,11 @@ import { useSelector } from 'react-redux'
 import { ethers } from 'ethers'
 import { minBy, orderBy } from 'lodash'
 import { useAppDispatch } from 'state'
-import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { simpleRpcProvider } from 'utils/providers'
 import useRefresh from 'hooks/useRefresh'
 import { setBlock } from './actions'
-import {
-  State,
-  ProfileState,
-  TeamsState,
-  AchievementState,
-  NodeRound,
-  ReduxNodeLedger,
-  NodeLedger,
-  ReduxNodeRound,
-} from './types'
-import { fetchProfile } from './profile'
-import { fetchTeam, fetchTeams } from './teams'
-import { fetchAchievements } from './achievements'
+import { State, NodeRound, ReduxNodeLedger, NodeLedger, ReduxNodeRound } from './types'
 import { fetchWalletNfts } from './collectibles'
 import { parseBigNumberObj } from './predictions/helpers'
 import {
@@ -45,64 +32,6 @@ export const usePollBlockNumber = () => {
 
     return () => clearInterval(interval)
   }, [dispatch])
-}
-
-// Profile
-
-export const useFetchProfile = () => {
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(fetchProfile(account))
-  }, [account, dispatch])
-}
-
-export const useProfile = () => {
-  const { isInitialized, isLoading, data, hasRegistered }: ProfileState = useSelector((state: State) => state.profile)
-  return { profile: data, hasProfile: isInitialized && hasRegistered, isInitialized, isLoading }
-}
-
-// Teams
-
-export const useTeam = (id: number) => {
-  const team: Team = useSelector((state: State) => state.teams.data[id])
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(fetchTeam(id))
-  }, [id, dispatch])
-
-  return team
-}
-
-export const useTeams = () => {
-  const { isInitialized, isLoading, data }: TeamsState = useSelector((state: State) => state.teams)
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(fetchTeams())
-  }, [dispatch])
-
-  return { teams: data, isInitialized, isLoading }
-}
-
-// Achievements
-
-export const useFetchAchievements = () => {
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchAchievements(account))
-    }
-  }, [account, dispatch])
-}
-
-export const useAchievements = () => {
-  const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)
-  return achievements
 }
 
 export const usePriceBnbBusd = (): BigNumber => {

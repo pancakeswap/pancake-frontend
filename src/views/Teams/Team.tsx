@@ -5,7 +5,7 @@ import { ChevronLeftIcon, Flex, Text } from '@pancakeswap/uikit'
 import PageLoader from 'components/Loader/PageLoader'
 import teams from 'config/constants/teams'
 import { useTranslation } from 'contexts/Localization'
-import { useTeam } from 'state/hooks'
+import { useTeam } from 'state/teams/hooks'
 import TeamCard from './components/TeamCard'
 import TeamHeader from './components/TeamHeader'
 

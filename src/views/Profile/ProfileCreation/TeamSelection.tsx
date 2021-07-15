@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap/uikit'
 import shuffle from 'lodash/shuffle'
-import { useTeams } from 'state/hooks'
+import { useTeams } from 'state/teams/hooks'
 import { useTranslation } from 'contexts/Localization'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'

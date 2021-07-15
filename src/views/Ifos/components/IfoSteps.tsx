@@ -8,7 +8,7 @@ import { WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
-import { useProfile } from 'state/hooks'
+import { useProfile } from 'state/profile/hooks'
 import { getAddress } from 'utils/addressHelpers'
 
 interface Props {
