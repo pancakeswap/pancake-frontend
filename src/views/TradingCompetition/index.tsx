@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
-import { useProfile } from 'state/hooks'
+import { useProfile } from 'state/profile/hooks'
 import { Flex, Box, Image } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContract } from 'hooks/useContract'

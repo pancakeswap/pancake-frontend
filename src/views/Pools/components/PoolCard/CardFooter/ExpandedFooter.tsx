@@ -17,7 +17,8 @@ import {
   HelpIcon,
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
-import { useBlock, useCakeVault } from 'state/hooks'
+import { useBlock } from 'state/block/hooks'
+import { useCakeVault } from 'state/pools/hooks'
 import { Pool } from 'state/types'
 import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'

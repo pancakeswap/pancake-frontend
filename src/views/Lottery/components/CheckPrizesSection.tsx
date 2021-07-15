@@ -4,7 +4,7 @@ import { Button, Heading, Flex, useModal, AutoRenewIcon } from '@pancakeswap/uik
 import { useWeb3React } from '@web3-react/core'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
-import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
+import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
 import UnlockButton from 'components/UnlockButton'
 import ClaimPrizesModal from './ClaimPrizesModal'
 import useGetUnclaimedRewards, { FetchStatus } from '../hooks/useGetUnclaimedRewards'

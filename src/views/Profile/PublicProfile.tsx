@@ -17,7 +17,7 @@ import {
   VisibilityOff,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useProfile } from 'state/hooks'
+import { useProfile } from 'state/profile/hooks'
 import usePersistState from 'hooks/usePersistState'
 import { getBscScanLink } from 'utils'
 import Menu from './components/Menu'

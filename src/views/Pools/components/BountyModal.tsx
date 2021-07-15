@@ -10,7 +10,8 @@ import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import UnlockButton from 'components/UnlockButton'
 import Balance from 'components/Balance'
-import { useCakeVault, usePriceCakeBusd } from 'state/hooks'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { useCakeVault } from 'state/pools/hooks'
 
 interface BountyModalProps {
   onDismiss?: () => void

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Flex, Heading, useModal, PresentWonIcon } from '@pancakeswap/uikit'
-import { useProfile } from 'state/hooks'
+import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
 import ClaimNftAndCakeModal, { useCanClaim } from './ClaimGiftModal'
 import HeaderWrapper from './HeaderWrapper'

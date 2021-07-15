@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useFarmUser } from 'state/hooks'
+import { useFarmUser } from 'state/farms/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'

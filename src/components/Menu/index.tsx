@@ -5,7 +5,8 @@ import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import useAuth from 'hooks/useAuth'
-import { usePriceCakeBusd, useProfile } from 'state/hooks'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { useProfile } from 'state/profile/hooks'
 import config from './config'
 
 const Menu = (props) => {

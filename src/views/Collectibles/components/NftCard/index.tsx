@@ -13,7 +13,7 @@ import {
   CardFooter,
   useModal,
 } from '@pancakeswap/uikit'
-import { useProfile } from 'state/hooks'
+import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { Nft } from 'config/constants/types'
 import InfoRow from '../InfoRow'

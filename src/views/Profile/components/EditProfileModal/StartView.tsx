@@ -9,7 +9,7 @@ import { useCake } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
-import { useProfile } from 'state/hooks'
+import { useProfile } from 'state/profile/hooks'
 import { UseEditProfileResponse } from './reducer'
 import ProfileAvatar from '../ProfileAvatar'
 
