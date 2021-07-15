@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { CardBody, Heading, Flex, Skeleton, Text, Box, Button, useModal } from '@pancakeswap/uikit'
 import { LotteryRound } from 'state/types'
 import { useGetUserLotteriesGraphData } from 'state/lottery/hooks'
@@ -16,6 +17,8 @@ const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: st
   )
   const userLotteryData = useGetUserLotteriesGraphData()
   const userDataForRound = userLotteryData.rounds.find((userLotteryRound) => userLotteryRound.lotteryId === lotteryId)
+
+  console.log(userDataForRound)
 
   return (
     <CardBody>
