@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import { NavLink } from 'react-router-dom'
 import Balance from 'components/Balance'
-import { usePriceCakeBusd } from 'state/hooks'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const NowLive = styled(Text)`

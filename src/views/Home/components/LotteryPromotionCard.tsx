@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton, Text } from '@pancakeswap/uikit'
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
-import { usePriceCakeBusd } from 'state/hooks'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 

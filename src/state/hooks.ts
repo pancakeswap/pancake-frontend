@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
 import { ethers } from 'ethers'
@@ -9,17 +8,9 @@ import Nfts from 'config/constants/nfts'
 import { State, NodeRound, ReduxNodeLedger, NodeLedger, ReduxNodeRound } from './types'
 import { fetchWalletNfts } from './collectibles'
 import { parseBigNumberObj } from './predictions/helpers'
-import { useFarmFromPid } from './farms/hooks'
 
-export const usePriceBnbBusd = (): BigNumber => {
-  const bnbBusdFarm = useFarmFromPid(252)
-  return new BigNumber(bnbBusdFarm.quoteToken.busdPrice)
-}
-
-export const usePriceCakeBusd = (): BigNumber => {
-  const cakeBnbFarm = useFarmFromPid(251)
-  return new BigNumber(cakeBnbFarm.token.busdPrice)
-}
+// /!\
+// Don't add anything here. These hooks will be moved the the predictions folder
 
 // Predictions
 export const useGetRounds = () => {

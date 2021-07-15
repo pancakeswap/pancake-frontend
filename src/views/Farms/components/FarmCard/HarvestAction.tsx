@@ -8,7 +8,7 @@ import useToast from 'hooks/useToast'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useWeb3React } from '@web3-react/core'
-import { usePriceCakeBusd } from 'state/hooks'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import Balance from 'components/Balance'
 import useHarvestFarm from '../../hooks/useHarvestFarm'
 

@@ -19,7 +19,7 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import { getBscScanLink } from 'utils'
 import { useAppDispatch } from 'state'
-import { usePriceBnbBusd } from 'state/hooks'
+import { usePriceBnbBusd } from 'state/farms/hooks'
 import { fetchClaimableStatuses } from 'state/predictions'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
