@@ -17,6 +17,7 @@ import {
   updateUserSingleHopOnly,
   muteAudio,
   unmuteAudio,
+  toggleTheme as toggleThemeAction,
 } from '../actions'
 import { serializeToken, deserializeToken } from './helpers'
 
@@ -48,6 +49,17 @@ export function useExpertModeManager(): [boolean, () => void] {
   }, [expertMode, dispatch])
 
   return [expertMode, toggleSetExpertMode]
+}
+
+export function useThemeManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const isDark = useSelector<AppState, AppState['user']['isDark']>((state) => state.user.isDark)
+
+  const toggleTheme = useCallback(() => {
+    dispatch(toggleThemeAction())
+  }, [dispatch])
+
+  return [isDark, toggleTheme]
 }
 
 export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {
