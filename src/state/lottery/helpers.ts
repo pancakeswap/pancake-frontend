@@ -4,14 +4,14 @@ import { LotteryStatus, LotteryTicket } from 'config/constants/types'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import { LotteryRound, UserTicketsResponse, LotteryRoundUserTickets, LotteryResponse } from 'state/types'
+import { LotteryRound, LotteryRoundUserTickets, LotteryResponse } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 import { useMemo } from 'react'
 import { ethersToSerializedBigNumber } from 'utils/bigNumber'
+import { NUM_ROUNDS_TO_FETCH_FROM_NODES } from 'config/constants/lottery'
 
 const lotteryContract = getLotteryV2Contract()
 // Variable used to determine how many past rounds should be populated by node data rather than subgraph
-export const NUM_ROUNDS_TO_FETCH_FROM_NODES = 2
 
 const processViewLotterySuccessResponse = (response, lotteryId: string): LotteryResponse => {
   const {
@@ -56,7 +56,7 @@ const processViewLotterySuccessResponse = (response, lotteryId: string): Lottery
   }
 }
 
-const processViewLotteryErrorResponse = (lotteryId: string) => {
+const processViewLotteryErrorResponse = (lotteryId: string): LotteryResponse => {
   return {
     isLoading: true,
     lotteryId,
@@ -126,78 +126,13 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
   }
 }
 
-export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse): LotteryTicket[] => {
-  const [ticketIds, ticketNumbers, ticketStatuses] = ticketsResponse
-
-  if (ticketIds?.length > 0) {
-    return ticketIds.map((ticketId, index) => {
-      return {
-        id: ticketId.toString(),
-        number: ticketNumbers[index].toString(),
-        status: ticketStatuses[index],
-      }
-    })
-  }
-  return []
-}
-
-export const getViewUserTicketInfoCalls = (totalTicketsToRequest: number, account: string, lotteryId: string) => {
-  let cursor = 0
-  const perRequestLimit = 100
-  const calls = []
-
-  for (let i = 0; i < totalTicketsToRequest; i += perRequestLimit) {
-    cursor = i
-    calls.push({
-      name: 'viewUserInfoForLotteryId',
-      address: getLotteryV2Address(),
-      params: [account, lotteryId, cursor, perRequestLimit],
-    })
-  }
-  return calls
-}
-
-export const mergeViewUserTicketInfoMulticallResponse = (response) => {
-  const mergedMulticallResponse: UserTicketsResponse = [[], [], []]
-
-  response.forEach((ticketResponse) => {
-    mergedMulticallResponse[0].push(...ticketResponse[0])
-    mergedMulticallResponse[1].push(...ticketResponse[1])
-    mergedMulticallResponse[2].push(...ticketResponse[2])
-  })
-
-  return mergedMulticallResponse
-}
-
-export const fetchTickets = async (
-  account: string,
-  lotteryId: string,
-  userTotalTickets?: string,
-): Promise<LotteryTicket[]> => {
-  // If the subgraph is returning user totalTickets data for the round - use those totalTickets, if not - batch request up to 4000
-  const totalTicketsToRequest = userTotalTickets ? parseInt(userTotalTickets, 10) : 4000
-  const calls = getViewUserTicketInfoCalls(totalTicketsToRequest, account, lotteryId)
-  try {
-    const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
-    // When using a static totalTicketsToRequest value - null responses may be returned
-    const filteredForNullResponses = multicallRes.filter((res) => res)
-    const mergedMulticallResponse = mergeViewUserTicketInfoMulticallResponse(filteredForNullResponses)
-    const completeTicketData = processRawTicketsResponse(mergedMulticallResponse)
-    return completeTicketData
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-}
-
 export const getRoundIdsArray = (currentLotteryId: string): string[] => {
-  // TODO: This returns a number, but the currentId being typed as a string is deep in the logic and needs untangling
   const currentIdAsInt = parseInt(currentLotteryId, 10)
   const roundIds = []
   for (let i = 0; i < NUM_ROUNDS_TO_FETCH_FROM_NODES; i++) {
     roundIds.push(currentIdAsInt - i)
   }
-  return roundIds
+  return roundIds.map((roundId) => roundId.toString())
 }
 
 export const useProcessLotteryResponse = (
