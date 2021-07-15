@@ -1,4 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { save, load } from 'redux-localstorage-simple'
 import { useDispatch } from 'react-redux'
 import farmsReducer from './farms'
 import poolsReducer from './pools'
@@ -10,7 +11,6 @@ import blockReducer from './block'
 import collectiblesReducer from './collectibles'
 import votingReducer from './voting'
 import lotteryReducer from './lottery'
-
 import application from './application/reducer'
 import { updateVersion } from './global/actions'
 import user from './user/reducer'
@@ -20,6 +20,8 @@ import mint from './mint/reducer'
 import lists from './lists/reducer'
 import burn from './burn/reducer'
 import multicall from './multicall/reducer'
+
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
 const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -45,6 +47,8 @@ const store = configureStore({
     multicall,
     lists,
   },
+  middleware: [...getDefaultMiddleware({ thunk: true }), save({ states: PERSISTED_KEYS })],
+  preloadedState: load({ states: PERSISTED_KEYS }),
 })
 
 store.dispatch(updateVersion())
@@ -54,6 +58,6 @@ store.dispatch(updateVersion())
  */
 export type AppDispatch = typeof store.dispatch
 export type AppState = ReturnType<typeof store.getState>
-export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useAppDispatch = () => useDispatch()
 
 export default store
