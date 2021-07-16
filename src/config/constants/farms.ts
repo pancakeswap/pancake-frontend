@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 368,
+    lpSymbol: 'TRX-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3cd338c3bb249b6b3c55799f85a589febbbff9dd',
+    },
+    token: tokens.trx,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 429,
     lpSymbol: 'CHESS-USDC LP',
     lpAddresses: {
@@ -726,16 +736,6 @@ const farms: FarmConfig[] = [
       56: '0x894bd57afd8efc93d9171cb585d11d0977557425',
     },
     token: tokens.win,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 368,
-    lpSymbol: 'TRX-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x3cd338c3bb249b6b3c55799f85a589febbbff9dd',
-    },
-    token: tokens.trx,
     quoteToken: tokens.wbnb,
   },
   {
