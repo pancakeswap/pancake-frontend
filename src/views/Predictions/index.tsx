@@ -17,15 +17,12 @@ import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
 import RiskDisclaimer from './components/RiskDisclaimer'
-import ChartDisclaimer from './components/ChartDisclaimer'
+import ChartDisclaimer, { CHART_LOCAL_STORAGE_KEY } from './components/ChartDisclaimer'
 
 const Predictions = () => {
   const { isXl } = useMatchBreakpoints()
   const [hasAcceptedRisk, setHasAcceptedRisk] = usePersistState(false, {
-    localStorageKey: 'pancake_predictions_accepted_risk',
-  })
-  const [hasAcceptedChart, setHasAcceptedChart] = usePersistState(false, {
-    localStorageKey: 'pancake_predictions_chart',
+    localStorageKey: 'pancake_predictions_accepted_risk-2',
   })
   const { account } = useWeb3React()
   const status = useGetPredictionsStatus()
@@ -34,9 +31,8 @@ const Predictions = () => {
   const initialBlock = useInitialBlock()
   const isDesktop = isXl
   const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
-  const handleAcceptChart = () => setHasAcceptedChart(true)
   const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
-  const [onPresentChartDisclaimer] = useModal(<ChartDisclaimer onSuccess={handleAcceptChart} />, false)
+  const [onPresentChartDisclaimer] = useModal(<ChartDisclaimer />, false)
 
   // TODO: memoize modal's handlers
   const onPresentRiskDisclaimerRef = useRef(onPresentRiskDisclaimer)
@@ -51,10 +47,14 @@ const Predictions = () => {
 
   // Chart Disclaimer
   useEffect(() => {
-    if (!hasAcceptedChart && isChartPaneOpen) {
-      onPresentChartDisclaimerRef.current()
+    if (isChartPaneOpen) {
+      const showChartDisclaimer = Boolean(localStorage.getItem(CHART_LOCAL_STORAGE_KEY))
+
+      if (showChartDisclaimer !== true) {
+        onPresentChartDisclaimerRef.current()
+      }
     }
-  }, [onPresentChartDisclaimerRef, hasAcceptedChart, isChartPaneOpen])
+  }, [onPresentChartDisclaimerRef, isChartPaneOpen])
 
   useEffect(() => {
     if (initialBlock > 0) {
