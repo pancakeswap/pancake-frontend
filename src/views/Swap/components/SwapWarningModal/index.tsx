@@ -4,7 +4,7 @@ import { ModalContainer, ModalHeader, Heading, ErrorIcon, ModalBody } from '@pan
 import { getAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'contexts/Localization'
 import { WrappedTokenInfo } from 'state/lists/hooks'
-import SwapWarningTokens from 'config/constants/swapWarningTokens'
+import SwapWarningTokensConfig from 'config/constants/swapWarningTokens'
 import SafemoonWarning from './SafemoonWarning'
 import BondlyWarning from './BondlyWarning'
 
@@ -43,18 +43,18 @@ const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDis
   const { t } = useTranslation()
   usePreventModalOverlayClick()
 
-  const WARNING_DATA = {
-    [getAddress(SwapWarningTokens.safemoon.address)]: {
-      symbol: SwapWarningTokens.safemoon.symbol,
+  const TOKEN_WARNINGS = {
+    [getAddress(SwapWarningTokensConfig.safemoon.address)]: {
+      symbol: SwapWarningTokensConfig.safemoon.symbol,
       component: <SafemoonWarning onDismiss={onDismiss} />,
     },
-    [getAddress(SwapWarningTokens.bondly.address)]: {
-      symbol: SwapWarningTokens.bondly.symbol,
+    [getAddress(SwapWarningTokensConfig.bondly.address)]: {
+      symbol: SwapWarningTokensConfig.bondly.symbol,
       component: <BondlyWarning onDismiss={onDismiss} />,
     },
   }
 
-  const SWAP_WARNING = WARNING_DATA[swapCurrency.address]
+  const SWAP_WARNING = TOKEN_WARNINGS[swapCurrency.address]
 
   return (
     <StyledModalContainer minWidth="320px">
