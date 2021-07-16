@@ -15,6 +15,7 @@ const StyledFarmStakingCard = styled(Card)`
   background-repeat: no-repeat;
   background-position: top right;
   min-height: 376px;
+  box-shadow: rgb(204 246 108) 0px 0px 20px;
 `
 
 const Block = styled.div`
@@ -67,7 +68,7 @@ const GraveStakingCard = () => {
     <StyledFarmStakingCard>
       <CardBody>
         <Heading size="xl" mb="24px">
-          {t('Stake for NFT Rewards')}
+          {t('For new comers')}
         </Heading>
 
 

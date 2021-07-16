@@ -11,6 +11,7 @@ import { nfts, nftTotalSupply } from '../../../redux/get'
 const StyledCakeStats = styled(Card)`
   margin-left: auto;
   margin-right: auto;
+  box-shadow: rgb(204 246 108) 0px 0px 20px;
 `
 
 const Row = styled.div`

@@ -12,6 +12,9 @@ import * as fetch from '../../redux/fetch'
 import store from '../../redux/store'
 import { zombiePriceUsd } from '../../redux/get'
 import WhatsNewCard from './components/WhatsNewCard'
+import NFTBanner from './components/NFTBanner'
+import Title from './components/Title'
+import GraveyardCard from './components/GraveyardCard'
 
 const Hero = styled.div`
   align-items: center;
@@ -74,6 +77,9 @@ const CTACards = styled(BaseLayout)`
 
 const Home: React.FC = () => {
   return (
+    <>
+    <NFTBanner/>
+    <Title/>
     <Page>
       <div>
         <Cards>
@@ -81,12 +87,14 @@ const Home: React.FC = () => {
           <AnnouncementCard />
         </Cards>
         <Cards>
-          <ZmbeStats />
+          <GraveyardCard/>
           <TotalValueLockedCard/>
+          <ZmbeStats />
           <WhatsNewCard/>
         </Cards>
       </div>
     </Page>
+    </>
   )
 }
 

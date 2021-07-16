@@ -13,6 +13,7 @@ const StyledTotalValueLockedCard = styled(Card)`
   align-items: center;
   display: flex;
   flex: 1;
+  box-shadow: rgb(204 246 108) 0px 0px 20px;
 `
 const Row = styled.div`
   align-items: center;

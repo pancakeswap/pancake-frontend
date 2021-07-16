@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Button } from '@rug-zombie-libs/uikit'
+import { Heading, Card, CardBody, Button,Text } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Tweet } from 'react-twitter-widgets'
 
@@ -30,6 +30,7 @@ const StyledAnnouncementCard = styled(Card)`
   background-repeat: no-repeat;
   background-position: top right;
   min-height: 376px;
+  box-shadow: rgb(204 246 108) 0px 0px 20px;
 `
 
 const AnnouncementCard = () => {
@@ -41,6 +42,9 @@ const AnnouncementCard = () => {
         <Heading size='xl' mb='24px'>
           {t('Announcements')}
         </Heading>
+        <Text>
+          {t('Get your zSHARK NFT while you still can')}
+        </Text>
         <TwitterContainer />
       </CardBody>
     </StyledAnnouncementCard>
