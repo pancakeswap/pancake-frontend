@@ -11,16 +11,15 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface SoonRoundCardProps {
-  round: Round
+  bid: any
 }
 
-const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
+const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ bid }) => {
   const { t } = useTranslation()
   const interval = useGetTotalIntervalBlocks()
   const currentEpoch = useGetCurrentEpoch()
-  const estimatedEndBlock = round.startBlock + interval
-  const seconds = useRoundCountdown(round.epoch - currentEpoch + 1)
-  const countdown = formatRoundTime(seconds)
+  // const seconds = useRoundCountdown(round.epoch - currentEpoch + 1)
+  // const countdown = formatRoundTime(seconds)
 
   return (
     <Card>
@@ -28,15 +27,14 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
         status="soon"
         icon={<WaitIcon mr="4px" width="21px" />}
         title={t('TBA')}
-        epoch={round.epoch}
-        blockNumber={estimatedEndBlock}
+        bid={bid}
       />
       <CardBody p="16px">
         <RoundResultBox>
           <Text textAlign="center">
             <Text bold>{t('Auction End')}</Text>
             <Text fontSize="24px" bold>
-              {`~${countdown}`}
+              {/* {`~${countdown}`} */}
             </Text>
           </Text>
         </RoundResultBox>

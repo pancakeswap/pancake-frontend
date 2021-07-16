@@ -4,10 +4,13 @@ import { Box, Flex, FlexProps, Text } from '@rug-zombie-libs/uikit'
 import { formatBnb, formatUsd } from 'views/Predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition, Round } from 'state/types'
+import { zmbeBnbLpPriceBnb } from '../../../../redux/get'
+import { formatNumber } from '../../../../utils/formatBalance'
 
 // PrizePoolRow
 interface PrizePoolRowProps extends FlexProps {
-  totalAmount: Round['totalAmount']
+  totalAmount: Round['totalAmount'],
+  bt?: boolean
 }
 
 const getPrizePoolAmount = (totalAmount: PrizePoolRowProps['totalAmount']) => {
@@ -18,34 +21,34 @@ const getPrizePoolAmount = (totalAmount: PrizePoolRowProps['totalAmount']) => {
   return formatBnb(totalAmount)
 }
 
-export const PrizePoolRow: React.FC<PrizePoolRowProps> = ({ totalAmount, ...props }) => {
+export const PrizePoolRow: React.FC<PrizePoolRowProps> = ({ totalAmount,bt, ...props }) => {
   const { t } = useTranslation()
 
   return (
     <Flex alignItems='center' justifyContent='space-between' {...props}>
       <Text bold>{t('Bid Value')}:</Text>
-      <Text bold>{`${getPrizePoolAmount(totalAmount)} BNB`}</Text>
+      <Text bold>{`${getPrizePoolAmount(totalAmount)} ${bt ? "BT" : "BNB"}`}</Text>
     </Flex>
   )
 }
 
 // LockPriceRow
 interface LockPriceRowProps extends FlexProps {
-  lockPrice: Round['lockPrice']
+  bid: any
 }
 
-export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props }) => {
+export const LockPriceRow: React.FC<LockPriceRowProps> = ({ bid, ...props }) => {
   const { t } = useTranslation()
-
+  const quarterBid = bid.amount / 4
   return (
     <>
       <Flex alignItems='center' justifyContent='space-between' {...props}>
         <Text fontSize='14px'>{t('ZMBE Burned')}:</Text>
-        <Text fontSize='14px'>{formatUsd(lockPrice)}</Text>
+        <Text fontSize='14px'>{formatNumber(zmbeBnbLpPriceBnb().times(quarterBid * 3).toNumber())}</Text>
       </Flex>
       <Flex alignItems='center' justifyContent='space-between' {...props}>
         <Text fontSize='14px'>{t('LP Locked')}:</Text>
-        <Text fontSize='14px'>1250 BT</Text>
+        <Text fontSize='14px'>{quarterBid} BT</Text>
       </Flex>
     </>
   )

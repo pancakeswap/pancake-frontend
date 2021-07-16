@@ -5,37 +5,30 @@ import { useTranslation } from 'contexts/Localization'
 import { formatUsd } from '../../helpers'
 import PositionTag from '../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from './styles'
+import { zmbeBnbLpPriceBnb } from '../../../../redux/get'
 
 interface RoundResultProps extends BoxProps {
-  round: Round
+  bid: any
 }
 
-const RoundResult: React.FC<RoundResultProps> = ({ round, ...props }) => {
-  const { lockPrice, closePrice, totalAmount } = round
-  const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
-  const isPositionUp = betPosition === BetPosition.BULL
-  const { t } = useTranslation()
-  const priceDifference = closePrice - lockPrice
-
+const RoundResult: React.FC<RoundResultProps> = ({ bid }) => {
+  const bidder = bid.bidder
+  const bidderLength = bid.bidder.length
+  const displayBidder = `${bidder.slice(0,6)}...${bidder.slice(bidderLength - 4, bidderLength)}`
   return (
-    <RoundResultBox betPosition={betPosition} {...props}>
+    <RoundResultBox betPosition={bid.amount}>
       <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
-        {t('Closed Price')}
+        {`Bid by ${displayBidder}`}
       </Text>
-      {round.failed ? (
-        <Text bold textTransform="uppercase" color="textDisabled" mb="16px" fontSize="24px">
-          {t('Canceled')}
-        </Text>
-      ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
-          <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
-            {formatUsd(closePrice)}
-          </Text>
-          <PositionTag betPosition={betPosition}>{formatUsd(priceDifference)}</PositionTag>
+           <Text color="success" bold fontSize="24px">
+            {bid.amount.toString()}
+           </Text>
+           <PositionTag betPosition={bid.amount}>{bid.amount - bid.lastBidAmount} BT</PositionTag>
         </Flex>
-      )}
-      {lockPrice && <LockPriceRow lockPrice={lockPrice} />}
-      <PrizePoolRow totalAmount={totalAmount} />
+
+        <LockPriceRow bid={bid} />
+       <PrizePoolRow totalAmount={zmbeBnbLpPriceBnb().times(bid.amount).toNumber()} />
     </RoundResultBox>
   )
 }

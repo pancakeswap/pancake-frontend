@@ -11,12 +11,7 @@ import CollectWinningsOverlay from './CollectWinningsOverlay'
 import CanceledRoundCard from './CanceledRoundCard'
 
 interface ExpiredRoundCardProps {
-  round: Round
-  betAmount?: number
-  hasEnteredUp: boolean
-  hasEnteredDown: boolean
-  bullMultiplier: number
-  bearMultiplier: number
+  bid: any
 }
 
 const StyledExpiredRoundCard = styled(Card)`
@@ -28,38 +23,25 @@ const StyledExpiredRoundCard = styled(Card)`
   }
 `
 
-const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
-  round,
-  betAmount,
-  hasEnteredUp,
-  hasEnteredDown,
-  bullMultiplier,
-  bearMultiplier,
+const OutbidRoundCard: React.FC<ExpiredRoundCardProps> = ({
+  bid
 }) => {
   const { t } = useTranslation()
-  const { id, endBlock, lockPrice, closePrice } = round
-  const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
-  const hasEntered = hasEnteredUp || hasEnteredDown
 
-  if (round.failed) {
-    return <CanceledRoundCard round={round} />
-  }
 
   return (
     <StyledExpiredRoundCard>
       <CardHeader
-        status="expired"
+        status="outbid"
         icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
         title={t('Outbid')}
-        blockNumber={endBlock}
-        epoch={round.epoch}
+        bid={bid}
       />
       <CardBody p="16px" style={{ position: 'relative' }}>
-        <CollectWinningsOverlay roundId={id} hasEntered={hasEntered} isBottom={hasEnteredDown} />
-        <RoundResult round={round} />
+        <RoundResult bid={bid} />
       </CardBody>
     </StyledExpiredRoundCard>
   )
 }
 
-export default ExpiredRoundCard
+export default OutbidRoundCard

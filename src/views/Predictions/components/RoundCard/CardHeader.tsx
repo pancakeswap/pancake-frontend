@@ -2,13 +2,12 @@ import React, { ReactElement } from 'react'
 import { Flex, Text } from '@rug-zombie-libs/uikit'
 import styled, { DefaultTheme } from 'styled-components'
 
-type Status = 'expired' | 'live' | 'next' | 'soon' | 'canceled' | 'calculating'
+type Status = 'outbid' | 'live' | 'next' | 'soon' | 'canceled' | 'calculating'
 
 interface CardHeaderProps {
   status: Status
   title: string
-  epoch: number
-  blockNumber: number
+  bid: any
   icon?: ReactElement
 }
 
@@ -22,7 +21,7 @@ const getBackgroundColor = (theme: DefaultTheme, status: Status) => {
       return theme.colors.warning
     case 'next':
       return theme.colors.secondary
-    case 'expired':
+    case 'outbid':
     case 'soon':
     default:
       return theme.colors.borderColor
@@ -34,7 +33,7 @@ type FallbackColor = 'text' | 'textSubtle'
 
 const getTextColorByStatus = (status: Status, fallback: FallbackColor): TextColor => {
   switch (status) {
-    case 'expired':
+    case 'outbid':
       return 'textDisabled'
     case 'next':
       return 'white'
@@ -61,7 +60,7 @@ const Round = styled.div`
   justify-self: center;
 `
 
-const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, icon }) => {
+const CardHeader: React.FC<CardHeaderProps> = ({ status, title, icon, bid }) => {
   const textColor = getTextColorByStatus(status, 'text')
   const isLive = status === 'live'
 
@@ -75,7 +74,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, icon }) =
       </Flex>
       <Round>
         <Text fontSize={isLive ? '14px' : '12px'} color={getTextColorByStatus(status, 'textSubtle')} textAlign="center">
-          {`#${epoch}`}
+           {`#${bid.id}`}
         </Text>
       </Round>
     </StyledCardHeader>

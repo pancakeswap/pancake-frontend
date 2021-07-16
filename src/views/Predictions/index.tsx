@@ -1,106 +1,82 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useMatchBreakpoints, useModal } from '@rug-zombie-libs/uikit'
-import { useAppDispatch } from 'state'
-import { useGetPredictionsStatus, useInitialBlock } from 'state/hooks'
-import {
-  getMarketData,
-  getStaticPredictionsData,
-  makeFutureRoundResponse,
-  makeRoundData,
-  transformRoundResponse,
-} from 'state/predictions/helpers'
-import { initialize, setPredictionStatus } from 'state/predictions'
-import { HistoryFilter, PredictionsState, PredictionStatus } from 'state/types'
-import usePersistState from 'hooks/usePersistState'
-import PageLoader from 'components/PageLoader'
-import usePollRoundData from './hooks/usePollRoundData'
+import { useWeb3React } from '@web3-react/core'
+import { BigNumber } from 'bignumber.js'
 import Container from './components/Container'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
-import RiskDisclaimer from './components/RiskDisclaimer'
-
-const FUTURE_ROUND_COUNT = 2 // the number of rounds in the future to show
+import { getMausoleumContract } from '../../utils/contractHelpers'
+import { initialData } from '../../redux/fetch'
 
 const Predictions = () => {
   const { isLg, isXl } = useMatchBreakpoints()
-  const [hasAcceptedRisk, setHasAcceptedRisk] = usePersistState(false, 'pancake_predictions_accepted_risk')
-  const status = useGetPredictionsStatus()
-  const dispatch = useAppDispatch()
-  const initialBlock = useInitialBlock()
   const isDesktop = isLg || isXl
-  const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
-  const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
+  const [bids, setBids] = useState([])
+  const [lastBidId, setLastBidId] = useState(0)
+  const [userInfo, setUserInfo] = useState({})
+  const { account } = useWeb3React()
 
-  // TODO: memoize modal's handlers
-  const onPresentRiskDisclaimerRef = useRef(onPresentRiskDisclaimer)
+  initialData(account)
+
+  const aid = 0
 
   useEffect(() => {
-    if (!hasAcceptedRisk) {
-      onPresentRiskDisclaimerRef.current()
+    if(account) {
+      getMausoleumContract().methods.userInfo(aid, account).call()
+        .then(userInfoRes => {
+          setUserInfo({
+            lastBidDate: parseInt(userInfoRes.lastBidDate),
+            bid: new BigNumber(userInfoRes.bid),
+            paidUnlockFee: userInfoRes.paidUnlockFee
+          })
+        })
     }
-  }, [hasAcceptedRisk, onPresentRiskDisclaimerRef])
+  }, [account])
 
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      const [staticPredictionsData, marketData] = await Promise.all([getStaticPredictionsData(), getMarketData()])
-      const { currentEpoch, intervalBlocks, bufferBlocks } = staticPredictionsData
-      const latestRound = marketData.rounds.find((round) => round.epoch === currentEpoch)
 
-      if (marketData.market.paused) {
-        dispatch(setPredictionStatus(PredictionStatus.PAUSED))
-      } else if (latestRound && latestRound.epoch === currentEpoch) {
-        const currentRoundStartBlock = Number(latestRound.startBlock)
-        const futureRounds = []
-        const halfInterval = (intervalBlocks + bufferBlocks) / 2
 
-        for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-          futureRounds.push(makeFutureRoundResponse(currentEpoch + i, (currentRoundStartBlock + halfInterval) * i))
-        }
-
-        const roundData = makeRoundData([...marketData.rounds, ...futureRounds.map(transformRoundResponse)])
-
-        dispatch(
-          initialize({
-            ...(staticPredictionsData as Omit<PredictionsState, 'rounds'>),
-            historyFilter: HistoryFilter.ALL,
-            currentRoundStartBlockNumber: currentRoundStartBlock,
-            rounds: roundData,
-            history: {},
-            bets: {},
-          }),
-        )
-      } else {
-        // If the latest epoch from the API does not match the latest epoch from the contract we have an unrecoverable error
-        dispatch(setPredictionStatus(PredictionStatus.ERROR))
+  getMausoleumContract().methods.bidsLength(aid).call()
+    .then(bidsLengthRes => {
+      for(let x = 0; x < bidsLengthRes; x++) {
+        getMausoleumContract().methods.bidInfo(aid, x).call()
+          .then(bidInfoRes => {
+            console.log(x > 0 ? bids[x - 1] : "yuh")
+            bids[x] = {
+              id: x,
+              amount: bidInfoRes.amount,
+              bidder: bidInfoRes.bidder,
+              lastBidAmount: bids[x - 1] ? bids[x - 1].amount : 0,
+            }
+            bids[bidsLengthRes] = {
+              id: parseInt(bidsLengthRes),
+              amount: 0,
+              bidder: ""
+            }
+            bids[parseInt(bidsLengthRes) + 1] = {
+              id: parseInt(bidsLengthRes) + 1,
+              amount: 0,
+              bidder: ""
+            }
+            setBids(bids)
+            setLastBidId(parseInt(bidsLengthRes))
+          })
       }
-    }
-
-    // Do not start initialization until the first block has been retrieved
-    if (initialBlock > 0) {
-      fetchInitialData()
-    }
-  }, [initialBlock, dispatch])
-
-  usePollRoundData()
-
-  if (status === PredictionStatus.INITIAL) {
-    return <PageLoader />
-  }
+    })
 
   return (
     <>
-      <Helmet>
+       <Helmet>
         <script src="https://s3.tradingview.com/tv.js" type="text/javascript" id="tradingViewWidget" />
-      </Helmet>
-      <SwiperProvider>
-        <Container>
-          {isDesktop ? <Desktop /> : <Mobile />}
-          <CollectWinningsPopup />
-        </Container>
-      </SwiperProvider>
+       </Helmet>
+       <SwiperProvider>
+        <Container >
+           {isDesktop ? <Desktop bids={bids} lastBidId={lastBidId}/> : <Mobile bids={bids} lastBidId={lastBidId}/>}
+           <CollectWinningsPopup />
+         </Container>
+       </SwiperProvider>
     </>
   )
 }

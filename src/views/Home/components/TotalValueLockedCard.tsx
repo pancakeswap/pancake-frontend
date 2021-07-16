@@ -41,7 +41,6 @@ const TotalValueLockedCard: React.FC = () => {
     }
   }, [bnbTombTvl, newTvl, tvl, zombieBalance])
 
-  console.count('rendered')
   return (
     <StyledTotalValueLockedCard>
       <CardBody>

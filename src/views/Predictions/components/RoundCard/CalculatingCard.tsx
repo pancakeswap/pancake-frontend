@@ -9,13 +9,12 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface CalculatingCardProps {
-  round: Round
+  bid: any
 }
 
-const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
+const CalculatingCard: React.FC<CalculatingCardProps> = ({ bid }) => {
   const { t } = useTranslation()
   const interval = useGetTotalIntervalBlocks()
-  const estimatedEndBlock = round.startBlock + interval
 
   return (
     <Card>
@@ -23,8 +22,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
         status="calculating"
         icon={<WaitIcon mr="4px" width="21px" />}
         title={t('Calculating')}
-        epoch={round.epoch}
-        blockNumber={estimatedEndBlock}
+        bid={bid}
       />
       <CardBody p="16px">
         <MultiplierArrow isDisabled />

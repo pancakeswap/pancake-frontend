@@ -30,6 +30,7 @@ import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
 import Card from './Card'
+import { getMausoleumContract } from '../../../../utils/contractHelpers'
 
 interface SetPositionCardProps {
   position: BetPosition
@@ -127,8 +128,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
     const decimalValue = getDecimalAmount(valueAsBn)
 
-    predictionsContract.methods[betMethod]()
-      .send({ from: account, value: decimalValue })
+    getMausoleumContract().methods.increaseBid(0, decimalValue)
+      .send({ from: account })
       .once('sending', () => {
         setIsTxPending(true)
       })

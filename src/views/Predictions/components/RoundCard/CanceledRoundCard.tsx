@@ -11,18 +11,18 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface CanceledRoundCardProps {
-  round: Round
+  bid: any
 }
 
-const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ round }) => {
+const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ bid }) => {
   const { t } = useTranslation()
   const interval = useGetTotalIntervalBlocks()
-  const { isRefundable, setIsRefundable } = useIsRefundable(round.epoch)
-  const { epoch, startBlock } = round
-  const estimatedEndBlock = startBlock + interval
+  // const { isRefundable, setIsRefundable } = useIsRefundable(round.epoch)
+  // const { epoch, startBlock } = round
+  // const estimatedEndBlock = startBlock + interval
 
   const handleSuccess = async () => {
-    setIsRefundable(false)
+    // setIsRefundable(false)
   }
 
   return (
@@ -31,17 +31,16 @@ const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ round }) => {
         status="canceled"
         icon={<BlockIcon mr="4px" width="21px" />}
         title={t('Canceled')}
-        epoch={round.epoch}
-        blockNumber={estimatedEndBlock}
+        bid={bid}
       />
       <CardBody p="16px">
         <MultiplierArrow isDisabled />
         <RoundResultBox>
           <Flex flexDirection="column" alignItems="center">
-            <Text bold color={isRefundable ? 'text' : 'textDisabled'}>
-              {t('Round Canceled')}
-            </Text>
-            {isRefundable && <ReclaimPositionButton epoch={epoch} onSuccess={handleSuccess} width="100%" my="8px" />}
+            {/* <Text bold color={isRefundable ? 'text' : 'textDisabled'}> */}
+            {/*  {t('Round Canceled')} */}
+            {/* </Text> */}
+            {/* {isRefundable && <ReclaimPositionButton epoch={epoch} onSuccess={handleSuccess} width="100%" my="8px" />} */}
             <LinkExternal href="https://docs.pancakeswap.finance/products/prediction" external>
               {t('Learn More')}
             </LinkExternal>

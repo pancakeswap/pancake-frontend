@@ -78,11 +78,11 @@ const History = () => {
           </SpinnerWrapper>
         )}
 
-        {results && results.length > 0 ? (
-          orderBy(results, ['round.epoch'], ['desc']).map((bet) => {
-            return <HistoricalBet key={bet.id} bet={bet} />
-          })
-        ) : (
+        {/* {results && results.length > 0 ? ( */}
+        {/*  orderBy(results, ['round.epoch'], ['desc']).map((bet) => { */}
+        {/*    return <HistoricalBet key={bet.id} bet={bet} /> */}
+        {/*  }) */}
+        {/* ) : ( */}
           <Box p="24px">
             <Heading size="lg" textAlign="center" mb="8px">
               {t('No predictions history available')}
@@ -93,7 +93,7 @@ const History = () => {
               )}
             </Text>
           </Box>
-        )}
+        {/* )} */}
       </BetWrapper>
     </StyledHistory>
   )

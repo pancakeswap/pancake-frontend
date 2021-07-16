@@ -1,6 +1,7 @@
 import { BigNumber } from 'bignumber.js'
 import store from './store'
 import { Grave, PoolInfo, UserInfo } from './types'
+import { getBalanceAmount } from '../utils/formatBalance'
 
 export const account = (): string => {
   return store.getState().account
@@ -54,6 +55,14 @@ export const grave = (pid: number): Grave => {
   return store.getState().graves.find(g => g.pid === pid)
 }
 
-// store lpreserves
+export const zmbeBnbLpPriceBnb = () => {
+  const reserves = zmbeBnbTomb().result.reserves
+  const lpTotalSupply = zmbeBnbTomb().result.totalSupply
+  const reservesBnb = [new BigNumber(reserves[0]).times(zombiePriceBnb()), getBalanceAmount(reserves[1])]
+  const bnbLpTokenPrice = reservesBnb[0].plus(reservesBnb[1]).div(lpTotalSupply)
+  return bnbLpTokenPrice
+}
 
-// have func where u pass bnb pool and it returns price
+export const zmbePerZmbeBnbLp = () => {
+  return new BigNumber(zmbeBnbTomb().result.reserves[0]).div(zmbeBnbTomb().result.totalSupply)
+}

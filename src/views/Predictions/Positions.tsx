@@ -22,7 +22,13 @@ const StyledSwiper = styled.div`
     width: 320px;
   }
 `
-const Positions: React.FC = () => {
+
+interface PositionsProps {
+  bids: any[]
+  lastBidId: number
+}
+
+const Positions: React.FC<PositionsProps> = ({ bids, lastBidId }) => {
   const { setSwiper } = useSwiper()
   const rounds = useGetSortedRounds()
   const initialIndex = Math.floor(rounds.length / 2)
@@ -30,9 +36,9 @@ const Positions: React.FC = () => {
   useOnNextRound()
 
   return (
-    <Box overflowX="hidden" overflowY="auto">
+    <Box overflowX="hidden" overflowY="auto" style={{width: "100%"}}>
       <Menu />
-      <StyledSwiper>
+      <StyledSwiper style={{width: "100%"}}>
         <Swiper
           initialSlide={initialIndex}
           onSwiper={setSwiper}
@@ -45,9 +51,9 @@ const Positions: React.FC = () => {
           keyboard
           resizeObserver
         >
-          {rounds.map((round) => (
-            <SwiperSlide key={round.id}>
-              <RoundCard round={round} />
+          {bids.map((bid) => (
+            <SwiperSlide key={bid.id}>
+              <RoundCard bid={bid} lastBidId={lastBidId}/>
             </SwiperSlide>
           ))}
         </Swiper>

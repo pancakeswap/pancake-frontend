@@ -47,7 +47,12 @@ const getView = (isHistoryPaneOpen: boolean, isChartPaneOpen: boolean): PageView
   return PageView.POSITIONS
 }
 
-const Mobile: React.FC = () => {
+interface MobileProps {
+  bids: any[],
+  lastBidId: number
+}
+
+const Mobile: React.FC<MobileProps> = ({bids, lastBidId}) => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const view = getView(isHistoryPaneOpen, isChartPaneOpen)
@@ -60,7 +65,7 @@ const Mobile: React.FC = () => {
           <Flex alignItems="center" height="100%">
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && <Positions />}
+            {status === PredictionStatus.LIVE && <Positions bids={bids} lastBidId={lastBidId} />}
           </Flex>
         </View>
         <View isVisible={view === PageView.CHART}>

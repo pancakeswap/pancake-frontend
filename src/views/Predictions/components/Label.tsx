@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BnbUsdtPairTokenIcon, Box, Card, PocketWatchIcon, Text } from '@rug-zombie-libs/uikit'
+import { BnbUsdtPairTokenIcon, Box, Card, Image, PocketWatchIcon, Text } from '@rug-zombie-libs/uikit'
 import { useBnbUsdtTicker } from 'hooks/ticker'
 import { useTranslation } from 'contexts/Localization'
 import { formatRoundTime } from '../helpers'
 import useRoundCountdown from '../hooks/useRoundCountdown'
+import tokens from '../../../config/constants/tokens'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -76,17 +77,19 @@ export const PricePairLabel: React.FC = () => {
 
   return (
     <Box pl="24px" position="relative" display="inline-block">
-      <Token left={0}>
-        <BnbUsdtPairTokenIcon />
+      <Token style={{position: "relative", top: "43px", right: "10px"}}>
+        <Image src='/images/rugZombie/BasicZombie.png'  width={50} height={50} alt='ZMBE' />
       </Token>
+
       <Label dir="left">
+
         <Title bold textTransform="uppercase">
-          BNBUSDT
+          MAUSOLEUM
         </Title>
-        <Price fontSize="12px">
-          {lastPrice &&
-            `$${lastPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-        </Price>
+        {/* <Price fontSize="12px"> */}
+        {/*  {lastPrice && */}
+        {/*    `$${lastPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} */}
+        {/* </Price> */}
       </Label>
     </Box>
   )

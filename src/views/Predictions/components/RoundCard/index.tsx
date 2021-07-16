@@ -5,77 +5,46 @@ import { BetPosition, Round } from 'state/types'
 import { fetchRoundBet } from 'state/predictions'
 import { useAppDispatch } from 'state'
 import { getMultiplier } from '../../helpers'
-import ExpiredRoundCard from './ExpiredRoundCard'
-import LiveRoundCard from './LiveRoundCard'
-import OpenRoundCard from './OpenRoundCard'
+import OutbidRoundCard from './OutbidRoundCard'
+import LeaederRoundCard from './LeaederRoundCard'
+import IncreaseBidCard from './IncreaseBidCard'
 import SoonRoundCard from './SoonRoundCard'
 
 interface RoundCardProps {
-  round: Round
+  bid: any,
+  lastBidId: number
 }
 
-const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
-  const { id, epoch, lockPrice, closePrice, totalAmount, bullAmount, bearAmount } = round
-  const currentEpoch = useGetCurrentEpoch()
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
-  const bet = useGetBetByRoundId(account, id)
-  const hasEntered = bet !== null
-  const hasEnteredUp = hasEntered && bet.position === BetPosition.BULL
-  const hasEnteredDown = hasEntered && bet.position === BetPosition.BEAR
-  const bullMultiplier = getMultiplier(totalAmount, bullAmount)
-  const bearMultiplier = getMultiplier(totalAmount, bearAmount)
-
-  // Perform a one-time check to see if the user has placed a bet
-  useEffect(() => {
-    if (account) {
-      // @ts-ignore
-      dispatch(fetchRoundBet({ account, roundId: id }))
-    }
-  }, [account, id, dispatch])
-
+const RoundCard: React.FC<RoundCardProps> = ({ bid, lastBidId }) => {
   // Next (open) round
-  if (epoch === currentEpoch && lockPrice === null) {
+  if (bid.id === lastBidId) {
     return (
-      <OpenRoundCard
-        round={round}
-        hasEnteredDown={hasEnteredDown}
-        hasEnteredUp={hasEnteredUp}
-        betAmount={bet?.amount}
-        bullMultiplier={bullMultiplier}
-        bearMultiplier={bearMultiplier}
+      <IncreaseBidCard
+        bid={bid}
       />
     )
   }
 
   // Live round
-  if (closePrice === null && epoch === currentEpoch - 1) {
+  if (bid.id === lastBidId - 1) {
     return (
-      <LiveRoundCard
-        betAmount={bet?.amount}
-        hasEnteredDown={hasEnteredDown}
-        hasEnteredUp={hasEnteredUp}
-        round={round}
-        bullMultiplier={bullMultiplier}
-        bearMultiplier={bearMultiplier}
+      <LeaederRoundCard
+
+        bid={bid}
       />
     )
   }
 
   // Fake future rounds
-  if (epoch > currentEpoch) {
-    return <SoonRoundCard round={round} />
+
+  if (bid.id === lastBidId + 1) {
+    return <SoonRoundCard bid={bid} />
   }
 
   // Past rounds
   return (
-    <ExpiredRoundCard
-      round={round}
-      hasEnteredDown={hasEnteredDown}
-      hasEnteredUp={hasEnteredUp}
-      betAmount={bet?.amount}
-      bullMultiplier={bullMultiplier}
-      bearMultiplier={bearMultiplier}
+    <OutbidRoundCard
+      bid={bid}
     />
   )
 }

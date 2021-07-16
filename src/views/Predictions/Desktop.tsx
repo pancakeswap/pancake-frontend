@@ -4,9 +4,9 @@ import { useAppDispatch } from 'state'
 import { ArrowDownIcon, Button, ChartIcon } from '@rug-zombie-libs/uikit'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState } from 'state/predictions'
-import { PredictionStatus } from 'state/types'
+import { PredictionStatus, Round } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import TradingView from './components/TradingView'
+import PrizeTab from './components/PrizeTab'
 import { ErrorNotification, PauseNotification } from './components/Notification'
 import History from './History'
 import Positions from './Positions'
@@ -70,7 +70,12 @@ const StyledDesktop = styled.div`
   }
 `
 
-const Desktop: React.FC = () => {
+interface DesktopProps {
+  bids: any[],
+  lastBidId: number
+}
+
+const Desktop: React.FC<DesktopProps> = ({ bids, lastBidId }) => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
@@ -84,12 +89,9 @@ const Desktop: React.FC = () => {
   return (
     <StyledDesktop>
       <ContentWrapper>
-        {status === PredictionStatus.ERROR && <ErrorNotification />}
-        {status === PredictionStatus.PAUSED && <PauseNotification />}
-        {status === PredictionStatus.LIVE && (
           <>
             <PositionsPane>
-              <Positions />
+              <Positions bids={bids} lastBidId={lastBidId}/>
             </PositionsPane>
             <ChartPane isChartPaneOpen={isChartPaneOpen}>
               <ExpandChartButton
@@ -98,12 +100,11 @@ const Desktop: React.FC = () => {
                 startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
                 onClick={toggleChartPane}
               >
-                {isChartPaneOpen ? t('Close') : t('Charts')}
+                {isChartPaneOpen ? t('Close') : t('Auction details')}
               </ExpandChartButton>
-              <TradingView />
+              <PrizeTab />
             </ChartPane>
           </>
-        )}
       </ContentWrapper>
       <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>
         <History />

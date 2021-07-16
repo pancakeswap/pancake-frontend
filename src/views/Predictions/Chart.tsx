@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@rug-zombie-libs/uikit'
 import Menu from './components/Menu'
-import TradingView from './components/TradingView'
+import PrizeTab from './components/PrizeTab'
 
 const MenuWrapper = styled.div`
   flex: none;
@@ -20,7 +20,7 @@ const Chart = () => {
         <Menu />
       </MenuWrapper>
       <ChartWrapper>
-        <TradingView />
+        <PrizeTab />
       </ChartWrapper>
     </Flex>
   )
