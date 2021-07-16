@@ -1180,5 +1180,6 @@
   "Recipient": "Címzett",
   "Waiting For Confirmation": "Visszaigazolásra vár",
   "Confirm this transaction in your wallet": "Erősítse meg ezt a tranzakciót a tárcájában",
-  "Dismiss": "Elutasítás"
+  "Dismiss": "Elutasítás",
+  "Latest": "Latest"
 }
