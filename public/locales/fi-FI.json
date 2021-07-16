@@ -1180,5 +1180,6 @@
   "Recipient": "Vastaanottaja",
   "Waiting For Confirmation": "Odotetaan vahvistusta",
   "Confirm this transaction in your wallet": "Vahvista tämä transaktio lompakossasi",
-  "Dismiss": "Hylkää"
+  "Dismiss": "Hylkää",
+  "Latest": "Latest"
 }
