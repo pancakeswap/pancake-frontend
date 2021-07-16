@@ -48,7 +48,7 @@ const Predictions = () => {
   // Chart Disclaimer
   useEffect(() => {
     if (isChartPaneOpen) {
-      const showChartDisclaimer = Boolean(localStorage.getItem(CHART_LOCAL_STORAGE_KEY))
+      const showChartDisclaimer = JSON.parse(localStorage.getItem(CHART_LOCAL_STORAGE_KEY))
 
       if (showChartDisclaimer !== true) {
         onPresentChartDisclaimerRef.current()
