@@ -4,10 +4,11 @@ import {Heading,Text} from "@rug-zombie-libs/uikit"
 import styled from "styled-components"
 
 const StyledHeading = styled(Heading)`
-    font-size: 70px;
+    font-size: 40px;
+    font-weight: 600;
 `
 const StyledText = styled(Text)`
-    font-size : 60px;
+    font-size : 16px;
 `
 const Container = styled.div`
     display: flex;

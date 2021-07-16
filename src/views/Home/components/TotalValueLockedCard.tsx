@@ -13,6 +13,7 @@ const StyledTotalValueLockedCard = styled(Card)`
   align-items: center;
   display: flex;
   flex: 1;
+  box-shadow: rgb(204 246 108) 0px 0px 20px;
 `
 const Row = styled.div`
   align-items: center;
@@ -25,7 +26,7 @@ const Row = styled.div`
 const TotalValueLockedCard: React.FC = () => {
   const zombiePrice = zombiePriceUsd()
 
-  const reserves = zmbeBnbTomb().result.reserves
+  const {reserves} = zmbeBnbTomb().result
   const lpTotalSupply = zmbeBnbTomb().result.totalSupply
   const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePrice), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
   const bnbLpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)

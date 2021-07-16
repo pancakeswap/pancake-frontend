@@ -11,6 +11,7 @@ const StyledGraveyardCard = styled(Card)`
   background-repeat: no-repeat;
   background-position: top right;
   min-height: 70px;
+  box-shadow: rgb(204 246 108) 0px 0px 20px;
 `
 
 const GraveyardCard: React.FC = () => {
