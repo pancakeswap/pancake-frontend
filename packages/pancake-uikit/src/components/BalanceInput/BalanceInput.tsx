@@ -9,6 +9,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   onUserInput,
   currencyValue,
   inputProps,
+  innerRef,
   isWarning = false,
   decimals = 18,
   ...props
@@ -28,6 +29,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
         value={value}
         onChange={handleOnChange}
         placeholder={placeholder}
+        ref={innerRef}
         {...inputProps}
       />
       {currencyValue && (

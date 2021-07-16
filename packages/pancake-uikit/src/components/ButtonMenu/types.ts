@@ -10,5 +10,6 @@ export interface ButtonMenuProps extends SpaceProps {
   activeIndex?: number;
   onItemClick?: (index: number) => void;
   scale?: Scale;
+  disabled?: boolean;
   children: React.ReactElement[];
 }
