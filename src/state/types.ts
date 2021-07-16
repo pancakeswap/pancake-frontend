@@ -184,17 +184,24 @@ export interface Round {
   failed?: boolean
   startBlock: number
   startAt: number
+  startHash: string
   lockAt: number
   lockBlock: number
   lockPrice: number
-  endBlock: number
+  lockHash: string
+  lockRoundId: string
+  closeRoundId: string
+  closeHash: string
+  closeAt: number
   closePrice: number
+  closeBlock: number
   totalBets: number
   totalAmount: number
   bullBets: number
   bearBets: number
   bearAmount: number
   bullAmount: number
+  totalAmountTreasury: number
   position: BetPosition
   bets?: Bet[]
 }
@@ -210,9 +217,15 @@ export interface Bet {
   amount: number
   position: BetPosition
   claimed: boolean
+  claimedAt: number
   claimedHash: string
+  claimedBNB: number
+  claimedNetBNB: number
+  createdAt: number
+  updatedAt: number
+  block: number
   user?: PredictionUser
-  round: Round
+  round?: Round
 }
 
 export interface PredictionUser {

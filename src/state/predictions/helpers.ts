@@ -71,25 +71,58 @@ export const transformUserResponse = (userResponse: UserResponse): PredictionUse
     totalBets: numberOrNull(totalBets),
     totalBetsBear: numberOrNull(totalBetsBear),
     totalBetsBull: numberOrNull(totalBetsBull),
-    totalBNBBear: parseFloat(totalBNBBear),
-    totalBNBBull: parseFloat(totalBNBBull),
+    totalBNBBear: totalBNBBear ? parseFloat(totalBNBBear) : 0,
+    totalBNBBull: totalBNBBull ? parseFloat(totalBNBBull) : 0,
     totalBetsClaimed: numberOrNull(totalBetsClaimed),
-    totalBNBClaimed: parseFloat(totalBNBClaimed),
-    winRate: numberOrNull(winRate),
-    averageBNB: parseFloat(averageBNB),
-    netBNB: parseFloat(netBNB),
-    totalBNB: parseFloat(totalBNB),
+    totalBNBClaimed: totalBNBClaimed ? parseFloat(totalBNBClaimed) : 0,
+    winRate: winRate ? parseFloat(winRate) : 0,
+    averageBNB: averageBNB ? parseFloat(averageBNB) : 0,
+    netBNB: netBNB ? parseFloat(netBNB) : 0,
+    totalBNB: totalBNB ? parseFloat(totalBNB) : 0,
   }
 }
 
+const getRoundPosition = (positionResponse: string) => {
+  if (positionResponse === 'Bull') {
+    return BetPosition.BULL
+  }
+
+  if (positionResponse === 'Bear') {
+    return BetPosition.BEAR
+  }
+
+  return null
+}
+
 export const transformBetResponse = (betResponse: BetResponse): Bet => {
+  const {
+    id,
+    hash,
+    amount,
+    position,
+    claimed,
+    claimedAt,
+    claimedHash,
+    claimedBNB,
+    claimedNetBNB,
+    createdAt,
+    updatedAt,
+    block,
+  } = betResponse
+
   const bet = {
-    id: betResponse.id,
-    hash: betResponse.hash,
-    amount: betResponse.amount ? parseFloat(betResponse.amount) : 0,
-    position: betResponse.position === 'Bull' ? BetPosition.BULL : BetPosition.BEAR,
-    claimed: betResponse.claimed,
-    claimedHash: betResponse.claimedHash,
+    id,
+    hash,
+    claimed,
+    claimedHash,
+    amount: amount ? parseFloat(amount) : 0,
+    claimedAt: numberOrNull(claimedAt),
+    claimedBNB: claimedBNB ? parseFloat(claimedBNB) : 0,
+    claimedNetBNB: claimedNetBNB ? parseFloat(claimedNetBNB) : 0,
+    createdAt: numberOrNull(createdAt),
+    updatedAt: numberOrNull(updatedAt),
+    block: numberOrNull(block),
+    position: getRoundPosition(position),
   } as Bet
 
   if (betResponse.round) {
@@ -110,11 +143,17 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     failed,
     startBlock,
     startAt,
+    startHash,
     lockAt,
     lockBlock,
     lockPrice,
-    endBlock,
+    lockHash,
+    lockRoundId,
+    closeAt,
     closePrice,
+    closeBlock,
+    closeRoundId,
+    closeHash,
     totalBets,
     totalAmount,
     bullBets,
@@ -122,34 +161,30 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     bearAmount,
     bullAmount,
     position,
+    totalAmountTreasury,
     bets = [],
   } = roundResponse
-
-  const getRoundPosition = (positionResponse: string) => {
-    if (positionResponse === 'Bull') {
-      return BetPosition.BULL
-    }
-
-    if (positionResponse === 'Bear') {
-      return BetPosition.BEAR
-    }
-
-    return null
-  }
 
   return {
     id,
     failed,
+    closeRoundId,
+    closeHash,
+    lockHash,
+    lockRoundId,
+    startHash,
     epoch: numberOrNull(epoch),
     startBlock: numberOrNull(startBlock),
     startAt: numberOrNull(startAt),
     lockAt: numberOrNull(lockAt),
     lockBlock: numberOrNull(lockBlock),
     lockPrice: lockPrice ? parseFloat(lockPrice) : null,
-    endBlock: numberOrNull(endBlock),
+    closeAt: numberOrNull(closeAt),
     closePrice: closePrice ? parseFloat(closePrice) : null,
+    closeBlock: numberOrNull(closeBlock),
     totalBets: numberOrNull(totalBets),
     totalAmount: totalAmount ? parseFloat(totalAmount) : 0,
+    totalAmountTreasury: totalAmountTreasury ? parseFloat(totalAmountTreasury) : 0,
     bullBets: numberOrNull(bullBets),
     bearBets: numberOrNull(bearBets),
     bearAmount: numberOrNull(bearAmount),
