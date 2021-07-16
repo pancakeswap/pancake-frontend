@@ -217,10 +217,20 @@ export interface Bet {
 
 export interface PredictionUser {
   id: string
-  address: string
+  createdAt: number
+  updatedAt: number
   block: number
   totalBets: number
+  totalBetsBull: number
+  totalBetsBear: number
   totalBNB: number
+  totalBNBBull: number
+  totalBNBBear: number
+  totalBetsClaimed: number
+  totalBNBClaimed: number
+  winRate: number
+  averageBNB: number
+  netBNB: number
 }
 
 export interface HistoryData {

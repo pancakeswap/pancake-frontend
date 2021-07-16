@@ -1,9 +1,19 @@
 export interface UserResponse {
   id: string
-  address: string
+  createdAt: string
+  updatedAt: string
   block: string
   totalBets: string
+  totalBetsBull: string
+  totalBetsBear: string
   totalBNB: string
+  totalBNBBull: string
+  totalBNBBear: string
+  totalBetsClaimed: string
+  totalBNBClaimed: string
+  winRate: string
+  averageBNB: string
+  netBNB: string
   bets?: BetResponse[]
 }
 
@@ -67,22 +77,26 @@ export interface TotalWonRoundResponse {
 export const getRoundBaseFields = () => `
   id
   epoch
+  position
   failed
   startAt
   startBlock
+  startHash
   lockAt
-  lockBlock
   lockPrice
-  endAt
-  endBlock
+  lockRoundId
+  closeAt
+  closeBlock
+  closeHash
   closePrice
+  closeRoundId
   totalBets
   totalAmount
+  totalAmountTreasury
   bullBets
   bullAmount
   bearBets
   bearAmount
-  position
 `
 
 export const getBetBaseFields = () => `
@@ -96,8 +110,17 @@ export const getBetBaseFields = () => `
 
 export const getUserBaseFields = () => `
   id
-  address
+  createdAt
+  updatedAt
   block
   totalBets
+  totalBetsBull
+  totalBetsBear
   totalBNB
+  totalBNBBull
+  totalBNBBear
+  totalBetsClaimed
+  winRate
+  averageBNB
+  netBNB
 `
