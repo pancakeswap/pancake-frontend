@@ -74,7 +74,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
             }
           }}
         >
-          {pendingTx ? t('Pending Confirmation') : t('Confirm')}
+          {pendingTx ? t('Confirming') : t('Confirm')}
         </Button>
       </ModalActions>
       <LinkExternal href={addLiquidityUrl} style={{ alignSelf: 'center' }}>
