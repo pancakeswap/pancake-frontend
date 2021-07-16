@@ -23,7 +23,13 @@ export interface BetResponse {
   amount: string
   position: string
   claimed: boolean
+  claimedAt: string
   claimedHash: string
+  claimedBNB: string
+  claimedNetBNB: string
+  createdAt: string
+  updatedAt: string
+  block: string
   user?: UserResponse
   round?: RoundResponse
 }
@@ -47,11 +53,17 @@ export interface RoundResponse {
   failed: boolean
   startBlock: string
   startAt: string
+  startHash: string
   lockAt: string
   lockBlock: string
   lockPrice: string
-  endBlock: string
+  lockHash: string
+  lockRoundId: string
+  closeRoundId: string
+  closeHash: string
+  closeAt: string
   closePrice: string
+  closeBlock: string
   totalBets: string
   totalAmount: string
   bearBets: string
@@ -59,7 +71,8 @@ export interface RoundResponse {
   bearAmount: string
   bullAmount: string
   position: string
-  bets: BetResponse[]
+  totalAmountTreasury: string
+  bets?: BetResponse[]
 }
 
 export interface TotalWonMarketResponse {
