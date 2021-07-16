@@ -45,7 +45,10 @@ const AnnouncementCard = () => {
         <Text>
           {t('Get your zSHARK NFT while you still can')}
         </Text>
-        <TwitterContainer />
+        <br/>
+        <image width="100%" >
+          <img src="images/rugZombie/chompers.gif" alt="chompers"/>
+        </image>
       </CardBody>
     </StyledAnnouncementCard>
   )

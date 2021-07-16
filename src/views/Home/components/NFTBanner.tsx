@@ -23,7 +23,7 @@ const NFTBanner: React.FC = () => {
                 {t('1st NFT Auction Starting Soon')}
             </Heading>
             <div>
-                <a href="/" target="_blank">
+                <a href="https://rugzombie.medium.com/new-feature-alert-introducing-the-mausoleum-4867bb4bdcbb" target="_blank" rel="noreferrer">
                     {t('Learn More')}
                 </a>
             </div>

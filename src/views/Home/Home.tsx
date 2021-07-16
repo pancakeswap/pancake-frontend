@@ -15,6 +15,7 @@ import WhatsNewCard from './components/WhatsNewCard'
 import NFTBanner from './components/NFTBanner'
 import Title from './components/Title'
 import GraveyardCard from './components/GraveyardCard'
+import EnterGravesCard from './components/EnterGravesCard'
 
 const Hero = styled.div`
   align-items: center;
@@ -87,7 +88,7 @@ const Home: React.FC = () => {
           <AnnouncementCard />
         </Cards>
         <Cards>
-          <GraveyardCard/>
+          <EnterGravesCard/>
           <TotalValueLockedCard/>
           <ZmbeStats />
           <WhatsNewCard/>
