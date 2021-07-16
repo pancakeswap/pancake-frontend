@@ -49,8 +49,8 @@ const BetDetails: React.FC<BetDetailsProps> = ({ bet, result }) => {
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text>{t('Closing Block')}</Text>
-        <Link href={getBscScanLink(bet.round.endBlock, 'block')} external>
-          {bet.round.endBlock}
+        <Link href={getBscScanLink(bet.round.closeBlock, 'block')} external>
+          {bet.round.closeBlock}
         </Link>
       </Flex>
     </StyledBetDetails>
