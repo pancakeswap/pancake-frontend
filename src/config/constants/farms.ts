@@ -53,7 +53,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'AXS-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0xc2d00de94795e60fb76bc37d899170996cbda436',
     },
     token: tokens.axs,
     quoteToken: tokens.wbnb,
