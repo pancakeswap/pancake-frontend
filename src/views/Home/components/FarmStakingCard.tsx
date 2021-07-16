@@ -39,7 +39,7 @@ const FarmedStakingCard = () => {
   const [pendingTx, setPendingTx] = useState(false)
   const { account } = useWeb3React()
   const { t } = useTranslation()
-  const { toastError } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const farmsWithBalance = useFarmsWithBalance()
   const masterChefContract = useMasterchef()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.gt(0))
@@ -51,12 +51,16 @@ const FarmedStakingCard = () => {
       try {
         // eslint-disable-next-line no-await-in-loop
         await harvestFarm(masterChefContract, farmWithBalance.pid)
+        toastSuccess(
+          `${t('Harvested')}!`,
+          t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
+        )
       } catch (error) {
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
     }
     setPendingTx(false)
-  }, [balancesWithValue, masterChefContract, toastError, t])
+  }, [balancesWithValue, masterChefContract, toastSuccess, toastError, t])
 
   return (
     <StyledFarmStakingCard>
