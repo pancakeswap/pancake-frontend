@@ -11,6 +11,7 @@ import {
   ReduxNodeRound,
   Round,
   RoundData,
+  PredictionUser,
 } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import predictionsAbi from 'config/abi/predictions.json'
@@ -24,6 +25,7 @@ import {
   RoundResponse,
   TotalWonMarketResponse,
   TotalWonRoundResponse,
+  UserResponse,
 } from './queries'
 
 export enum Result {
@@ -42,6 +44,44 @@ export const numberOrNull = (value: string) => {
   return Number.isNaN(valueNum) ? null : valueNum
 }
 
+export const transformUserResponse = (userResponse: UserResponse): PredictionUser => {
+  const {
+    id,
+    createdAt,
+    updatedAt,
+    block,
+    totalBets,
+    totalBetsBear,
+    totalBetsBull,
+    totalBNBBear,
+    totalBNBBull,
+    totalBetsClaimed,
+    totalBNBClaimed,
+    winRate,
+    averageBNB,
+    netBNB,
+    totalBNB,
+  } = userResponse
+
+  return {
+    id,
+    createdAt: numberOrNull(createdAt),
+    updatedAt: numberOrNull(updatedAt),
+    block: numberOrNull(block),
+    totalBets: numberOrNull(totalBets),
+    totalBetsBear: numberOrNull(totalBetsBear),
+    totalBetsBull: numberOrNull(totalBetsBull),
+    totalBNBBear: parseFloat(totalBNBBear),
+    totalBNBBull: parseFloat(totalBNBBull),
+    totalBetsClaimed: numberOrNull(totalBetsClaimed),
+    totalBNBClaimed: parseFloat(totalBNBClaimed),
+    winRate: numberOrNull(winRate),
+    averageBNB: parseFloat(averageBNB),
+    netBNB: parseFloat(netBNB),
+    totalBNB: parseFloat(totalBNB),
+  }
+}
+
 export const transformBetResponse = (betResponse: BetResponse): Bet => {
   const bet = {
     id: betResponse.id,
@@ -50,17 +90,14 @@ export const transformBetResponse = (betResponse: BetResponse): Bet => {
     position: betResponse.position === 'Bull' ? BetPosition.BULL : BetPosition.BEAR,
     claimed: betResponse.claimed,
     claimedHash: betResponse.claimedHash,
-    user: {
-      id: betResponse.user.id,
-      address: betResponse.user.address,
-      block: numberOrNull(betResponse.user.block),
-      totalBets: numberOrNull(betResponse.user.totalBets),
-      totalBNB: numberOrNull(betResponse.user.totalBNB),
-    },
   } as Bet
 
   if (betResponse.round) {
     bet.round = transformRoundResponse(betResponse.round)
+  }
+
+  if (betResponse.user) {
+    bet.user = transformUserResponse(betResponse.user)
   }
 
   return bet
