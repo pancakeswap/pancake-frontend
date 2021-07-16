@@ -22,12 +22,12 @@ const pools: PoolConfig[] = [
     earningToken: tokens.cake,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0xfd932a25616f82d26226e135965662823180d0c5',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
     sortOrder: 999,
-    tokenPerBlock: '',
+    tokenPerBlock: '0.03968',
   },
   {
     sousId: 198,
