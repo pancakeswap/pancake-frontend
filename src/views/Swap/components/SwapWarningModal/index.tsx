@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { ModalContainer, ModalHeader, Heading, ErrorIcon, ModalBody } from '@pancakeswap/uikit'
+import { getAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'contexts/Localization'
 import { WrappedTokenInfo } from 'state/lists/hooks'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
@@ -41,14 +42,13 @@ const usePreventModalOverlayClick = () => {
 const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDismiss }) => {
   const { t } = useTranslation()
   usePreventModalOverlayClick()
-  const chainId = process.env.REACT_APP_CHAIN_ID
 
   const WARNING_DATA = {
-    [SwapWarningTokens.safemoon.address[chainId]]: {
+    [getAddress(SwapWarningTokens.safemoon.address)]: {
       symbol: SwapWarningTokens.safemoon.symbol,
       component: <SafemoonWarning onDismiss={onDismiss} />,
     },
-    [SwapWarningTokens.bondly.address[chainId]]: {
+    [getAddress(SwapWarningTokens.bondly.address)]: {
       symbol: SwapWarningTokens.bondly.symbol,
       component: <BondlyWarning onDismiss={onDismiss} />,
     },
