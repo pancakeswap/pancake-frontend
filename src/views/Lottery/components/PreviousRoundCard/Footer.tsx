@@ -1,82 +1,38 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Flex, ExpandableLabel, CardFooter, Skeleton, Heading, Box, Text } from '@pancakeswap/uikit'
+import React, { useState, useEffect } from 'react'
+import { Flex, ExpandableLabel, CardFooter, Skeleton } from '@pancakeswap/uikit'
+import usePreviousValue from 'hooks/usePreviousValue'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryRound } from 'state/types'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
-import { formatNumber, getBalanceNumber } from 'utils/formatBalance'
-import Balance from 'components/Balance'
-import RewardBrackets from '../RewardBrackets'
+import FooterExpanded from './FooterExpanded'
 
-const NextDrawWrapper = styled(Flex)`
-  background: ${({ theme }) => theme.colors.background};
-  padding: 24px;
-  flex-direction: column;
+interface PreviousRoundCardFooterProps {
+  lotteryData: LotteryRound
+  lotteryId: string
+}
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-  }
-`
-
-const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
-  lotteryData,
-  lotteryId,
-}) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+const PreviousRoundCardFooter: React.FC<PreviousRoundCardFooterProps> = ({ lotteryData, lotteryId }) => {
   const { t } = useTranslation()
-  const { amountCollectedInCake } = lotteryData
-  const lotteryGraphData = useGetLotteryGraphDataById(lotteryId)
-  const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const previousLotteryId = usePreviousValue(lotteryId)
 
-  const getPrizeBalances = () => {
-    return (
-      <>
-        {prizeInBusd.isNaN() ? (
-          <Skeleton my="7px" height={40} width={160} />
-        ) : (
-          <Heading scale="xl" lineHeight="1" color="secondary">
-            ~${formatNumber(getBalanceNumber(prizeInBusd), 0, 0)}
-          </Heading>
-        )}
-        {prizeInBusd.isNaN() ? (
-          <Skeleton my="2px" height={14} width={90} />
-        ) : (
-          <Balance
-            fontSize="14px"
-            color="textSubtle"
-            unit=" CAKE"
-            value={getBalanceNumber(amountCollectedInCake)}
-            decimals={0}
-          />
-        )}
-      </>
-    )
-  }
+  useEffect(() => {
+    // Close when changing lottery rounds
+    if (lotteryId !== previousLotteryId) {
+      setIsExpanded(false)
+    }
+  }, [lotteryId, previousLotteryId])
 
   return (
     <CardFooter p="0">
-      {isExpanded && (
-        <NextDrawWrapper>
-          <Flex mr="24px" flexDirection="column" justifyContent="space-between">
-            <Box>
-              <Heading>{t('Prize pot')}</Heading>
-              {getPrizeBalances()}
-            </Box>
-            <Box mb="24px">
-              <Text fontSize="14px">
-                {t('Total players this round')}: {lotteryGraphData.totalUsers?.toLocaleString()}
-              </Text>
-            </Box>
-          </Flex>
-          <RewardBrackets lotteryData={lotteryData} isHistoricRound />
-        </NextDrawWrapper>
-      )}
+      {isExpanded && lotteryData && <FooterExpanded lotteryData={lotteryData} lotteryId={lotteryId} />}
       <Flex p="8px 24px" alignItems="center" justifyContent="center">
-        <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
-          {isExpanded ? t('Hide') : t('Details')}
-        </ExpandableLabel>
+        {lotteryData ? (
+          <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
+            {isExpanded ? t('Hide') : t('Details')}
+          </ExpandableLabel>
+        ) : (
+          <Skeleton height="24px" width="83px" my="12px" />
+        )}
       </Flex>
     </CardFooter>
   )

@@ -23,7 +23,7 @@ import FinishedRoundTable from './FinishedRoundTable'
 import { WhiteBunny } from '../../svgs'
 import BuyTicketsButton from '../BuyTicketsButton'
 import PreviousRoundCardBody from '../PreviousRoundCard/Body'
-import { dateTimeOptions, processLotteryResponse } from '../../helpers'
+import { processLotteryResponse, getDrawnDate } from '../../helpers'
 import PreviousRoundCardFooter from '../PreviousRoundCard/Footer'
 
 const StyledCard = styled(Card)`
@@ -68,12 +68,6 @@ const YourHistoryCard = () => {
     setShouldShowRoundDetail(false)
     setSelectedLotteryInfo(null)
     setSelectedLotteryId(null)
-  }
-
-  const getDrawnDate = (endTime: string) => {
-    const endTimeInMs = parseInt(endTime, 10) * 1000
-    const endTimeAsDate = new Date(endTimeInMs)
-    return endTimeAsDate.toLocaleDateString(undefined, dateTimeOptions)
   }
 
   const getHeader = () => {

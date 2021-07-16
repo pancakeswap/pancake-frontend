@@ -11,6 +11,12 @@ export const parseRetreivedNumber = (number: string): string => {
   return numberAsArray.join('')
 }
 
+export const getDrawnDate = (endTime: string) => {
+  const endTimeInMs = parseInt(endTime, 10) * 1000
+  const endTimeAsDate = new Date(endTimeInMs)
+  return endTimeAsDate.toLocaleDateString(undefined, dateTimeOptions)
+}
+
 export const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'short',

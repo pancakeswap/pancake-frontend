@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, ChevronRightIcon, Box, BlockIcon, PrizeIcon } from '@pancakeswap/uikit'
+import { Text, Flex, ChevronRightIcon, Box, SmallDotIcon, PrizeIcon } from '@pancakeswap/uikit'
 import { dateOptions, timeOptions } from '../../helpers'
 
 interface FinishedRoundRowProps {
@@ -16,6 +16,12 @@ const Grid = styled(Box)`
   grid-template-columns: repeat(3, 1fr) auto;
   margin-bottom: 8px;
   cursor: pointer;
+`
+
+const StyledSmallDotIcon = styled(SmallDotIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.textDisabled};
+  }
 `
 
 const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
@@ -50,7 +56,7 @@ const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
       </Flex>
       <Flex mx="6px" alignItems="center" justifyContent="space-between">
         <Text>{numberTickets}</Text>
-        {hasWon ? <PrizeIcon color="warning" /> : <BlockIcon color="disabled" />}
+        {hasWon ? <PrizeIcon color="warning" /> : <StyledSmallDotIcon />}
       </Flex>
       <Flex alignItems="center" justifyContent="center">
         <ChevronRightIcon color="primary" />
