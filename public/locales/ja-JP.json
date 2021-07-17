@@ -1143,7 +1143,7 @@
   "Balance: %amount%": "残高: %amount%",
   "LP tokens in your wallet": "ウォレットのLPトークン",
   "Pooled %asset%": "プールされた%asset%",
-  "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.": "流動性を追加することで、プールのシェアに比例して、このペアのすべてのトレードの0.17%を獲得します。手数料はプールに追加され、リアルタイムで計上され、流動性を引き出すことで請求できます。",
+  "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.": "流動性を追加することで、プールのシェアに比例して、このペアのすべてのトレードの0.17%を獲得します。手数料はプールに追加されてリアルタイムで計上され、流動性を引き出すことで請求できます。",
   "Common bases": "共通ベース",
   "These tokens are commonly paired with other tokens.": "これらのトークンは、一般的にほかのトークンとペアリングされます。",
   "Expanded results from inactive Token Lists": "非アクティブなトークンリストの展開された結果",
