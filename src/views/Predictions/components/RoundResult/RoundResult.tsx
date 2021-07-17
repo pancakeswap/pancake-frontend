@@ -1,11 +1,10 @@
 import React from 'react'
 import { BoxProps, Flex, Text } from '@rug-zombie-libs/uikit'
-import { BetPosition, Round } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
-import { formatUsd } from '../../helpers'
+import { BigNumber } from 'bignumber.js'
 import PositionTag from '../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from './styles'
 import { zmbeBnbLpPriceBnb } from '../../../../redux/get'
+import { getBalanceAmount } from '../../../../utils/formatBalance'
 
 interface RoundResultProps extends BoxProps {
   bid: any
@@ -22,13 +21,13 @@ const RoundResult: React.FC<RoundResultProps> = ({ bid }) => {
       </Text>
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
            <Text color="success" bold fontSize="24px">
-            {bid.amount.toString()}
+            {getBalanceAmount(bid.amount).toString()}
            </Text>
-           <PositionTag betPosition={bid.amount}>{bid.amount - bid.lastBidAmount} BT</PositionTag>
+           <PositionTag betPosition={bid.amount}>{getBalanceAmount(new BigNumber(bid.amount - bid.lastBidAmount)).toNumber()} BT</PositionTag>
         </Flex>
 
         <LockPriceRow bid={bid} />
-       <PrizePoolRow totalAmount={zmbeBnbLpPriceBnb().times(bid.amount).toNumber()} />
+       <PrizePoolRow totalAmount={getBalanceAmount(zmbeBnbLpPriceBnb().times(bid.amount)).toNumber()} />
     </RoundResultBox>
   )
 }

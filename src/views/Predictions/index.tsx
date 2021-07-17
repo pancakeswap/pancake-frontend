@@ -21,7 +21,7 @@ const Predictions = () => {
 
   initialData(account)
 
-  const aid = 0
+  const aid = 1
 
   useEffect(() => {
     if(account) {
@@ -36,14 +36,11 @@ const Predictions = () => {
     }
   }, [account])
 
-
-
   getMausoleumContract().methods.bidsLength(aid).call()
     .then(bidsLengthRes => {
       for(let x = 0; x < bidsLengthRes; x++) {
         getMausoleumContract().methods.bidInfo(aid, x).call()
           .then(bidInfoRes => {
-            console.log(x > 0 ? bids[x - 1] : "yuh")
             bids[x] = {
               id: x,
               amount: bidInfoRes.amount,
@@ -53,12 +50,15 @@ const Predictions = () => {
             bids[bidsLengthRes] = {
               id: parseInt(bidsLengthRes),
               amount: 0,
-              bidder: ""
+              bidder: "",
+              lastBidAmount: bids[parseInt(bidsLengthRes) - 1] ? bids[parseInt(bidsLengthRes) - 1].amount : 0
             }
             bids[parseInt(bidsLengthRes) + 1] = {
               id: parseInt(bidsLengthRes) + 1,
               amount: 0,
-              bidder: ""
+              bidder: "",
+              lastBidAmount: bids[parseInt(bidsLengthRes)] ? bids[parseInt(bidsLengthRes)].amount : 0
+
             }
             setBids(bids)
             setLastBidId(parseInt(bidsLengthRes))

@@ -181,7 +181,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
       <CardBody py="16px">
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
           <Text textAlign="right" color="textSubtle">
-            {t('Commit')}:
+            {t('Bid')}:
           </Text>
           <Flex alignItems="center">
             <BinanceIcon mr="4px  " />
@@ -254,7 +254,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           )}
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">
-          {t("You won't be able to remove or change your position once you enter it.")}
+          {t("You can withdraw your full bid if you're outbid.")}
         </Text>
       </CardBody>
     </Card>

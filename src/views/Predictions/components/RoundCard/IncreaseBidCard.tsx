@@ -19,7 +19,7 @@ import CardHeader from './CardHeader'
 import SetPositionCard from './SetPositionCard'
 import { getMausoleumContract } from '../../../../utils/contractHelpers'
 import useWeb3 from '../../../../hooks/useWeb3'
-import { BIG_TEN } from '../../../../utils/bigNumber'
+import { BIG_TEN, BIG_ZERO } from '../../../../utils/bigNumber'
 import { getBalanceAmount } from '../../../../utils/formatBalance'
 
 // PrizePoolRow
@@ -81,15 +81,17 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ bid }) => {
     setAmount(amount.plus(BIG_TEN.pow(19)))
   }
 
+  const decreaseBid = () => {
+    let result = amount.minus(BIG_TEN.pow(19))
+    result = result.lt(BIG_ZERO) ? BIG_ZERO : result
+    setAmount(result)
+  }
+
+  const isDisabled = amount.lt(bid.lastBidAmount) || amount.eq(bid.lastBidAmount)
+
   const submitBid = () => {
     getMausoleumContract(web3).methods.increaseBid(0, amount)
       .send({from: get.account() })
-  }
-
-  const decreaseBid = () => {
-    let result = amount.minus(BIG_TEN.pow(19))
-    result = result.lt(bid.amount) ? bid.amount : result
-    setAmount(result)
   }
 
   return (
@@ -126,6 +128,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ bid }) => {
                 <Button
                   variant='secondary'
                   onClick={submitBid}
+                  disabled={isDisabled}
                   style={{
                     width: '50%',
                     justifyContent: 'center',
