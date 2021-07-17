@@ -21,9 +21,9 @@ const RoundResult: React.FC<RoundResultProps> = ({ bid }) => {
       </Text>
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
            <Text color="success" bold fontSize="24px">
-            {getBalanceAmount(bid.amount).toString()}
+            {Math.round(getBalanceAmount(bid.amount).toNumber() * 100) / 100}
            </Text>
-           <PositionTag betPosition={bid.amount}>{getBalanceAmount(new BigNumber(bid.amount - bid.lastBidAmount)).toNumber()} BT</PositionTag>
+           <PositionTag betPosition={bid.amount}>{Math.round(getBalanceAmount(new BigNumber(bid.amount - bid.lastBidAmount)).toNumber() * 100) / 100} BT</PositionTag>
         </Flex>
 
         <LockPriceRow bid={bid} />

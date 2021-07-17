@@ -72,15 +72,16 @@ const StyledDesktop = styled.div`
 
 interface DesktopProps {
   bids: any[],
-  lastBidId: number
+  lastBidId: number,
+  userInfo: any,
+  aid: number
 }
 
-const Desktop: React.FC<DesktopProps> = ({ bids, lastBidId }) => {
+const Desktop: React.FC<DesktopProps> = ({ bids, lastBidId, userInfo, aid }) => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const status = useGetPredictionsStatus()
 
   const toggleChartPane = () => {
     dispatch(setChartPaneState(!isChartPaneOpen))
@@ -91,7 +92,7 @@ const Desktop: React.FC<DesktopProps> = ({ bids, lastBidId }) => {
       <ContentWrapper>
           <>
             <PositionsPane>
-              <Positions bids={bids} lastBidId={lastBidId}/>
+              <Positions bids={bids} userInfo={userInfo} lastBidId={lastBidId} aid={aid}/>
             </PositionsPane>
             <ChartPane isChartPaneOpen={isChartPaneOpen}>
               <ExpandChartButton

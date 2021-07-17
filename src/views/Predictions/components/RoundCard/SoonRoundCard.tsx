@@ -11,10 +11,10 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface SoonRoundCardProps {
-  bid: any
+  lastBidId: number
 }
 
-const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ bid }) => {
+const SoonRoundCard: React.FC<SoonRoundCardProps> = ({lastBidId}) => {
   const { t } = useTranslation()
   const interval = useGetTotalIntervalBlocks()
   const currentEpoch = useGetCurrentEpoch()
@@ -27,14 +27,14 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ bid }) => {
         status="soon"
         icon={<WaitIcon mr="4px" width="21px" />}
         title={t('TBA')}
-        bid={bid}
+        bid={{ id: lastBidId+1 }}
       />
       <CardBody p="16px">
         <RoundResultBox>
           <Text textAlign="center">
             <Text bold>{t('Auction End')}</Text>
-            <Text fontSize="24px" bold>
-              {/* {`~${countdown}`} */}
+            <Text fontSize="10px" bold>
+               July 23, 2021. Midnight EST
             </Text>
           </Text>
         </RoundResultBox>

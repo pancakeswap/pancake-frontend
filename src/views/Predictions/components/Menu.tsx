@@ -41,8 +41,11 @@ const HistoryButtonWrapper = styled.div`
     display: initial;
   }
 `
+interface MenuProps {
+  userInfo: any
+}
 
-const Menu = () => {
+const Menu: React.FC<MenuProps> = ({userInfo}) => {
   return (
     <FlexRow alignItems="center" p="16px">
       <SetCol>
@@ -54,22 +57,8 @@ const Menu = () => {
       <SetCol>
         <Flex alignItems="center" justifyContent="flex-end">
           <TimerLabelWrapper>
-            <TimerLabel interval="5m" />
+            <TimerLabel userInfo={userInfo} />
           </TimerLabelWrapper>
-          <HelpButtonWrapper>
-            <IconButton
-              variant="subtle"
-              as="a"
-              href="https://docs.pancakeswap.finance/products/prediction"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <HelpIcon width="24px" color="white" />
-            </IconButton>
-          </HelpButtonWrapper>
-          <HistoryButtonWrapper>
-            <HistoryButton />
-          </HistoryButtonWrapper>
         </Flex>
       </SetCol>
     </FlexRow>

@@ -19,7 +19,7 @@ const StyledEnteredTag = styled(Tag).attrs({
 const EnteredTag: React.FC<EnteredTagProps> = ({ amount }) => {
   const { t } = useTranslation()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(amount)} BNB`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(amount)} BT`}</div>,
     { placement: 'bottom' },
   )
 

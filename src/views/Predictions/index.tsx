@@ -10,6 +10,7 @@ import Desktop from './Desktop'
 import Mobile from './Mobile'
 import { getMausoleumContract } from '../../utils/contractHelpers'
 import { initialData } from '../../redux/fetch'
+import auctions from '../../redux/auctions'
 
 const Predictions = () => {
   const { isLg, isXl } = useMatchBreakpoints()
@@ -21,7 +22,7 @@ const Predictions = () => {
 
   initialData(account)
 
-  const aid = 1
+  const aid = auctions[0].aid
 
   useEffect(() => {
     if(account) {
@@ -34,38 +35,34 @@ const Predictions = () => {
           })
         })
     }
-  }, [account])
+  }, [account, aid])
 
-  getMausoleumContract().methods.bidsLength(aid).call()
-    .then(bidsLengthRes => {
-      for(let x = 0; x < bidsLengthRes; x++) {
-        getMausoleumContract().methods.bidInfo(aid, x).call()
-          .then(bidInfoRes => {
-            bids[x] = {
-              id: x,
-              amount: bidInfoRes.amount,
-              bidder: bidInfoRes.bidder,
-              lastBidAmount: bids[x - 1] ? bids[x - 1].amount : 0,
-            }
-            bids[bidsLengthRes] = {
-              id: parseInt(bidsLengthRes),
-              amount: 0,
-              bidder: "",
-              lastBidAmount: bids[parseInt(bidsLengthRes) - 1] ? bids[parseInt(bidsLengthRes) - 1].amount : 0
-            }
-            bids[parseInt(bidsLengthRes) + 1] = {
-              id: parseInt(bidsLengthRes) + 1,
-              amount: 0,
-              bidder: "",
-              lastBidAmount: bids[parseInt(bidsLengthRes)] ? bids[parseInt(bidsLengthRes)].amount : 0
+  // const fetchBids = () => {
+  // useEffect(() => {
+    getMausoleumContract().methods.bidsLength(aid).call()
+      .then(bidsLengthRes => {
+        const start = parseInt(bidsLengthRes) - 5 < 0 ? 0 : parseInt(bidsLengthRes) - 5
 
-            }
-            setBids(bids)
-            setLastBidId(parseInt(bidsLengthRes))
-          })
-      }
-    })
+        for(let x = start; x < parseInt(bidsLengthRes); x++) {
+          getMausoleumContract().methods.bidInfo(aid, x).call()
+            .then(bidInfoRes => {
+              console.log(bidInfoRes)
+              bids[x] = {
+                id: x,
+                amount: bidInfoRes.amount,
+                bidder: bidInfoRes.bidder,
+                lastBidAmount: bids[x - 1] ? bids[x - 1].amount : 0,
+              }
+            })
+          if(parseInt(bidsLengthRes) === 0 || lastBidId === 0) {
+          setBids(bids)
+          setLastBidId(parseInt(bidsLengthRes))
+          }
+        }
+      })
 
+
+  // setInterval(() => fetchBids(), 5000);
   return (
     <>
        <Helmet>
@@ -73,7 +70,7 @@ const Predictions = () => {
        </Helmet>
        <SwiperProvider>
         <Container >
-           {isDesktop ? <Desktop bids={bids} lastBidId={lastBidId}/> : <Mobile bids={bids} lastBidId={lastBidId}/>}
+           {isDesktop ? <Desktop bids={bids} lastBidId={lastBidId} userInfo={userInfo} aid={aid}/> : <Mobile bids={bids} lastBidId={lastBidId} userInfo={userInfo} aid={aid}/>}
            <CollectWinningsPopup />
          </Container>
        </SwiperProvider>

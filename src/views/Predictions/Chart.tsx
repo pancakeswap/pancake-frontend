@@ -12,12 +12,15 @@ const ChartWrapper = styled.div`
   flex: 1;
   height: 100%;
 `
+interface ChartProps {
+  userInfo: any
+}
 
-const Chart = () => {
+const Chart: React.FC<ChartProps> = ({userInfo}) => {
   return (
     <Flex flexDirection="column" height="100%">
       <MenuWrapper>
-        <Menu />
+        <Menu userInfo={userInfo} />
       </MenuWrapper>
       <ChartWrapper>
         <PrizeTab />

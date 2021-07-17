@@ -2,36 +2,18 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box, CardBody, Flex, LinkExternal, PlayCircleOutlineIcon, Text, useTooltip } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Round, BetPosition } from 'state/types'
-import { useBlock, useGetIntervalBlocks } from 'state/hooks'
-import { useBnbUsdtTicker } from 'hooks/ticker'
-import BlockProgress from 'components/BlockProgress'
-import { formatUsd, getBubbleGumBackground } from '../../helpers'
-import PositionTag from '../PositionTag'
-import { RoundResultBox, LockPriceRow, PrizePoolRow, RoundResult } from '../RoundResult'
-import MultiplierArrow from './MultiplierArrow'
+import { RoundResult } from '../RoundResult'
 import Card from './Card'
 import CardHeader from './CardHeader'
-import CanceledRoundCard from './CanceledRoundCard'
-import CalculatingCard from './CalculatingCard'
 
 interface LiveRoundCardProps {
   bid: any
 }
 
-const GradientCard = styled(Card)`
-  background: ${({ theme }) => getBubbleGumBackground(theme)};
-`
-
-const LeaederRoundCard: React.FC<LiveRoundCardProps> = ({
+const LeaderRoundCard: React.FC<LiveRoundCardProps> = ({
   bid
 }) => {
   const { t } = useTranslation()
-  // const { lockPrice, lockBlock, totalAmount } = round
-  const { stream } = useBnbUsdtTicker()
-  const { currentBlock } = useBlock()
-  const totalInterval = useGetIntervalBlocks()
-
   const StyledExpiredRoundCard = styled(Card)`
   opacity: 0.7;
   transition: opacity 300ms;
@@ -65,4 +47,4 @@ const LeaederRoundCard: React.FC<LiveRoundCardProps> = ({
   )
 }
 
-export default LeaederRoundCard
+export default LeaderRoundCard

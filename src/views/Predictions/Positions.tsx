@@ -9,6 +9,8 @@ import RoundCard from './components/RoundCard'
 import Menu from './components/Menu'
 import useSwiper from './hooks/useSwiper'
 import useOnNextRound from './hooks/useOnNextRound'
+import SoonRoundCard from './components/RoundCard/SoonRoundCard'
+import IncreaseBidCard from './components/RoundCard/IncreaseBidCard'
 
 SwiperCore.use([Keyboard, Mousewheel])
 
@@ -25,10 +27,12 @@ const StyledSwiper = styled.div`
 
 interface PositionsProps {
   bids: any[]
-  lastBidId: number
+  lastBidId: number,
+  userInfo: any,
+  aid: number
 }
 
-const Positions: React.FC<PositionsProps> = ({ bids, lastBidId }) => {
+const Positions: React.FC<PositionsProps> = ({ bids, lastBidId, userInfo, aid }) => {
   const { setSwiper } = useSwiper()
   const rounds = useGetSortedRounds()
   const initialIndex = Math.floor(rounds.length / 2)
@@ -37,7 +41,7 @@ const Positions: React.FC<PositionsProps> = ({ bids, lastBidId }) => {
 
   return (
     <Box overflowX="hidden" overflowY="auto" style={{width: "100%"}}>
-      <Menu />
+      <Menu userInfo={userInfo} />
       <StyledSwiper style={{width: "100%"}}>
         <Swiper
           initialSlide={initialIndex}
@@ -51,11 +55,35 @@ const Positions: React.FC<PositionsProps> = ({ bids, lastBidId }) => {
           keyboard
           resizeObserver
         >
-          {bids.map((bid) => (
-            <SwiperSlide key={bid.id}>
-              <RoundCard bid={bid} lastBidId={lastBidId}/>
-            </SwiperSlide>
-          ))}
+          {bids[lastBidId - 3] ?
+            <SwiperSlide>
+              <RoundCard bid={bids[lastBidId - 3]} userInfo={userInfo} lastBidId={lastBidId} aid={aid}/>
+            </SwiperSlide> : null
+          }
+          {bids[lastBidId - 2] ?
+            <SwiperSlide>
+              <RoundCard bid={bids[lastBidId - 2]} userInfo={userInfo} lastBidId={lastBidId} aid={aid}/>
+            </SwiperSlide> : null
+          }
+          {bids[lastBidId - 1] ?
+            <SwiperSlide>
+              <RoundCard bid={bids[lastBidId - 1]} userInfo={userInfo} lastBidId={lastBidId} aid={aid}/>
+            </SwiperSlide> : null
+          }
+          <SwiperSlide>
+            { bids.length > 0 ?
+              <IncreaseBidCard
+              lastBid={bids[bids.length - 1]}
+              userInfo={userInfo}
+              aid={aid}
+            /> :
+              null
+            }
+
+          </SwiperSlide>
+          <SwiperSlide>
+            <SoonRoundCard lastBidId={lastBidId} />
+          </SwiperSlide>
         </Swiper>
       </StyledSwiper>
     </Box>

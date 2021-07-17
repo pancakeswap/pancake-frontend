@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BnbUsdtPairTokenIcon, Box, Card, Image, PocketWatchIcon, Text } from '@rug-zombie-libs/uikit'
-import { useBnbUsdtTicker } from 'hooks/ticker'
+import { Box, Button, Card, Flex, Image, LinkExternal, PocketWatchIcon, Text } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatRoundTime } from '../helpers'
 import useRoundCountdown from '../hooks/useRoundCountdown'
 import tokens from '../../../config/constants/tokens'
+import { getBalanceAmount } from '../../../utils/formatBalance'
+import { BASE_EXCHANGE_URL } from '../../../config'
+import auctions from '../../../redux/auctions'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -38,16 +40,6 @@ const Title = styled(Text)`
   }
 `
 
-const Price = styled(Text)`
-  height: 18px;
-  justify-self: start;
-  width: 60px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    text-align: center;
-  }
-`
-
 const Interval = styled(Text)`
   ${({ theme }) => theme.mediaQueries.lg} {
     text-align: center;
@@ -72,49 +64,47 @@ const Label = styled(Card)<{ dir: 'left' | 'right' }>`
 `
 
 export const PricePairLabel: React.FC = () => {
-  const { stream } = useBnbUsdtTicker()
-  const { lastPrice } = stream ?? {}
-
   return (
-    <Box pl="24px" position="relative" display="inline-block">
-      <Token style={{position: "relative", top: "43px", right: "10px"}}>
-        <Image src='/images/rugZombie/BasicZombie.png'  width={50} height={50} alt='ZMBE' />
+    <Box pl='24px' position='relative' display='inline-block'>
+      <Token style={{ position: 'relative', top: '43px', right: '10px' }}>
+        <Image src='/images/rugZombie/BasicZombie.png' width={50} height={50} alt='ZMBE' />
       </Token>
 
-      <Label dir="left">
-
-        <Title bold textTransform="uppercase">
-          MAUSOLEUM
+      <Label dir='left'>
+        <Title bold textTransform='uppercase'>
+          MAUSOLEUM (BETA)
         </Title>
-        {/* <Price fontSize="12px"> */}
-        {/*  {lastPrice && */}
-        {/*    `$${lastPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} */}
-        {/* </Price> */}
       </Label>
     </Box>
   )
 }
 
 interface TimerLabelProps {
-  interval: string
+  userInfo: any
 }
 
-export const TimerLabel: React.FC<TimerLabelProps> = ({ interval }) => {
-  const seconds = useRoundCountdown()
-  const countdown = formatRoundTime(seconds)
-  const { t } = useTranslation()
-
+export const TimerLabel: React.FC<TimerLabelProps> = ({ userInfo }) => {
   return (
-    <Box pr="24px" position="relative">
-      <Label dir="right">
-        <Title bold color="secondary">
-          {seconds === 0 ? t('Closing') : countdown}
-        </Title>
-        <Interval fontSize="12px">{interval}</Interval>
-      </Label>
-      <Token right={0}>
-        <PocketWatchIcon />
-      </Token>
+    <Box pr='100px' position='relative'>
+      <Flex alignItems='center' justifyContent='center'>
+          <LinkExternal
+            href={`${BASE_EXCHANGE_URL}/#/add/${auctions[0].token0}/${auctions[0].token1}`}
+            style={{
+              width: '100px',
+              justifyContent: 'center',
+              position: 'relative',
+              right: '10px',
+            }}
+          >
+            Get BT
+          </LinkExternal>
+        <Label dir='right'>
+          <Title bold color='secondary'>
+            Current Bid
+          </Title>
+          <Interval fontSize='12px'>{Math.round(getBalanceAmount(userInfo.bid).toNumber() * 100) / 100}</Interval>
+        </Label>
+      </Flex>
     </Box>
   )
 }

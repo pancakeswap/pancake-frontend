@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
 import {
   CardBody,
   LinkExternal,
@@ -10,17 +9,20 @@ import {
 } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition } from 'state/types'
+import { ethers } from 'ethers'
 import CardFlip from '../CardFlip'
-import { formatBnb } from '../../helpers'
 import { RoundResultBox } from '../RoundResult'
 import * as get from '../../../../redux/get'
 import Card from './Card'
 import CardHeader from './CardHeader'
 import SetPositionCard from './SetPositionCard'
-import { getMausoleumContract } from '../../../../utils/contractHelpers'
+import { getBep20Contract, getMausoleumContract } from '../../../../utils/contractHelpers'
 import useWeb3 from '../../../../hooks/useWeb3'
 import { BIG_TEN, BIG_ZERO } from '../../../../utils/bigNumber'
 import { getBalanceAmount } from '../../../../utils/formatBalance'
+import { account } from '../../../../redux/get'
+import auctions from '../../../../redux/auctions'
+import { getMausoleumAddress } from '../../../../utils/addressHelpers'
 
 // PrizePoolRow
 interface CurrentBidProps extends FlexProps {
@@ -40,10 +42,12 @@ export const CurrentBid: React.FC<CurrentBidProps> = ({ totalAmount, ...props })
 }
 
 interface OpenRoundCardProps {
-  bid: any
+  lastBid: any,
+  userInfo: any,
+  aid: number
 }
 
-const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ bid }) => {
+const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid }) => {
   const [state, setState] = useState({
     isSettingPosition: false,
     position: BetPosition.BULL,
@@ -74,8 +78,13 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ bid }) => {
     }))
   }
 
+  const [allowance, setAllowance] = useState(BIG_ZERO)
+  const [amount, setAmount] = useState(lastBid.amount ? new BigNumber(lastBid.amount) : BIG_ZERO)
+  const [paidUnlockFee, setPaidUnlockFee] = useState(userInfo.paidUnlockFee)
 
-  const [amount, setAmount] = useState(new BigNumber(bid.amount))
+  if(!amount.eq(userInfo.bid) && amount.eq(BIG_ZERO)) {
+    setAmount(new BigNumber(userInfo.bid))
+  }
 
   const increaseBid = () => {
     setAmount(amount.plus(BIG_TEN.pow(19)))
@@ -87,13 +96,52 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ bid }) => {
     setAmount(result)
   }
 
-  const isDisabled = amount.lt(bid.lastBidAmount) || amount.eq(bid.lastBidAmount)
+  const isDisabled = amount.lt(lastBid.amount) || amount.eq(lastBid.amount)
 
   const submitBid = () => {
-    getMausoleumContract(web3).methods.increaseBid(0, amount)
-      .send({from: get.account() })
+    getMausoleumContract(web3).methods.increaseBid(aid, amount)
+      .send({from: account() })
   }
 
+  const withdrawBid = () => {
+    getMausoleumContract(web3).methods.withdrawBid(aid)
+      .send({from: account()})
+  }
+
+  const handleUnlock = () => {
+    getMausoleumContract(web3).methods.unlockFeeInBnb(aid).call()
+      .then(res => {
+        getMausoleumContract(web3).methods.unlock(aid)
+          .send({from: account(), value: res})
+          .then(() => {
+            setPaidUnlockFee(true)
+          })
+      })
+  }
+
+  const handleApprove = () => {
+    getBep20Contract(auctions[0].bidToken, web3).methods.approve(getMausoleumAddress(), ethers.constants.MaxUint256)
+      .send({from: account()})
+      .then(() => {
+        setAllowance(new BigNumber(ethers.constants.MaxUint256.toString()))
+      })
+  }
+  const accountAddress = account()
+
+  if(paidUnlockFee !== userInfo.paidUnlockFee) {
+    setPaidUnlockFee(userInfo.paidUnlockFee)
+  }
+
+  useEffect(() => {
+    if(accountAddress) {
+      getBep20Contract(auctions[0].bidToken).methods.allowance(accountAddress, getMausoleumAddress()).call()
+        .then(res => {
+          setAllowance(new BigNumber(res))
+        })
+    }
+  }, [accountAddress])
+
+  console.log(amount)
   return (
     <CardFlip isFlipped={isSettingPosition} height='404px'>
       <Card>
@@ -101,11 +149,12 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ bid }) => {
           status='next'
           icon={<PlayCircleOutlineIcon color='white' mr='4px' width='21px' />}
           title={t('Bid')}
-          bid={bid}
+          bid={lastBid}
         />
         <CardBody p='16px'>
           <RoundResultBox>
-
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {paidUnlockFee ? allowance.gt(BIG_ZERO) ?
             <>
               <CurrentBid totalAmount={amount} mb='8px' />
               <Button
@@ -125,24 +174,58 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ bid }) => {
                 {t('Decrease BID')}
               </Button>
               <Flex alignItems='center' justifyContent='center'>
-                <Button
-                  variant='secondary'
-                  onClick={submitBid}
-                  disabled={isDisabled}
-                  style={{
-                    width: '50%',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {t('SUBMIT')}
-                </Button>
+                { !isDisabled ?
+                  <Button
+                    variant='secondary'
+                    onClick={submitBid}
+                    style={{
+                      width: '50%',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {t('SUBMIT')}
+                  </Button> :
+                  <Button
+                    variant='secondary'
+                    onClick={withdrawBid}
+                    style={{
+                      width: '50%',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {t('WITHDRAW BID')}
+                  </Button>
+                }
               </Flex>
               <Flex alignItems='center' justifyContent='center' className='indetails-title' paddingTop='10px'>
                 <LinkExternal onClick={() => handleSetPosition(BetPosition.BULL)}
                               fontSize='14px'>{t('Enter custom bid')}</LinkExternal>
               </Flex>
-            </>
-
+            </> :
+              <Flex alignItems='center' justifyContent='center'>
+                <Button
+                  variant='secondary'
+                  onClick={handleApprove}
+                  style={{
+                    width: '50%',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {t('Approve BT')}
+                </Button>
+              </Flex> :
+              <Flex alignItems='center' justifyContent='center'>
+                <Button
+                  variant='secondary'
+                  onClick={handleUnlock}
+                  style={{
+                    width: '50%',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {t('Unlock to start')}
+                </Button>
+              </Flex>}
           </RoundResultBox>
         </CardBody>
       </Card>

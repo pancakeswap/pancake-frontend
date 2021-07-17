@@ -23,14 +23,17 @@ import { usePredictionsContract } from 'hooks/useContract'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
 import { BetPosition } from 'state/types'
-import { getDecimalAmount } from 'utils/formatBalance'
+import { getBalanceAmount, getDecimalAmount } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import PositionTag from '../PositionTag'
 import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
 import Card from './Card'
-import { getMausoleumContract } from '../../../../utils/contractHelpers'
+import { getBep20Contract, getErc721Contract, getMausoleumContract } from '../../../../utils/contractHelpers'
+import { BIG_ZERO } from '../../../../utils/bigNumber'
+import auctions from '../../../../redux/auctions'
+import useWeb3 from '../../../../hooks/useWeb3'
 
 interface SetPositionCardProps {
   position: BetPosition
@@ -60,7 +63,7 @@ const getPercentDisplay = (percentage: number) => {
 
 const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBalance: number) => {
   if (bnbBalance.eq(0)) {
-    return { id: 999, fallback: 'Insufficient BNB balance', disabled: true }
+    return { id: 999, fallback: 'Insufficient BT balance', disabled: true }
   }
 
   if (value.eq(0) || value.isNaN()) {
@@ -79,16 +82,24 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const predictionsContract = usePredictionsContract()
 
-  const balanceDisplay = getBnbAmount(bnbBalance).toNumber()
-  const maxBalance = getBnbAmount(bnbBalance.minus(dust)).toNumber()
+  const [maxBalance, setMaxBalance] = useState(0)
   const valueAsBn = new BigNumber(value)
 
   const percentageOfMaxBalance = valueAsBn.div(maxBalance).times(100).toNumber()
   const percentageDisplay = getPercentDisplay(percentageOfMaxBalance)
   const showFieldWarning = account && valueAsBn.gt(0) && errorMessage !== null
   const minBetAmountBalance = getBnbAmount(minBetAmount).toNumber()
+
+  const bidToken = auctions[0].bidToken
+  useEffect(() => {
+    if(account) {
+      getBep20Contract(bidToken).methods.balanceOf(account).call()
+        .then(res => {
+          setMaxBalance(parseInt(res))
+        })
+    }
+  })
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const newValue = evt.target.value
@@ -102,6 +113,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const setMax = () => {
     setValue(maxBalance.toString())
   }
+
+
 
   // Clear value
   const handleGoBack = () => {
@@ -123,12 +136,12 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   }
 
   const { fallback, disabled } = getButtonProps(valueAsBn, bnbBalance, minBetAmountBalance)
-
+  const web3 = useWeb3()
   const handleEnterPosition = () => {
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
     const decimalValue = getDecimalAmount(valueAsBn)
 
-    getMausoleumContract().methods.increaseBid(0, decimalValue)
+    getMausoleumContract(web3).methods.increaseBid(0, decimalValue)
       .send({ from: account })
       .once('sending', () => {
         setIsTxPending(true)
@@ -152,11 +165,11 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const hasSufficientBalance = bnValue.gt(0) && bnValue.lte(maxBalance)
 
     if (!hasSufficientBalance) {
-      setErrorMessage({ id: 999, fallback: 'Insufficient BNB balance' })
+      setErrorMessage({ id: 999, fallback: 'Insufficient BT balance' })
     } else if (bnValue.gt(0) && bnValue.lt(minBetAmountBalance)) {
       setErrorMessage({
         fallback: 'A minimum amount of %num% %token% is required',
-        data: { num: minBetAmountBalance, token: 'BNB' },
+        data: { num: minBetAmountBalance, token: 'BT' },
       })
     } else {
       setErrorMessage(null)
@@ -171,11 +184,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
             <ArrowBackIcon width="24px" />
           </IconButton>
           <FlexRow>
-            <Heading size="md">{t('Set Position')}</Heading>
+            <Heading size="md">{t('Set Bid')}</Heading>
           </FlexRow>
-          <PositionTag betPosition={position} onClick={togglePosition}>
-            {position === BetPosition.BULL ? t('Up') : t('Down')}
-          </PositionTag>
         </Flex>
       </CardHeader>
       <CardBody py="16px">
@@ -184,9 +194,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
             {t('Bid')}:
           </Text>
           <Flex alignItems="center">
-            <BinanceIcon mr="4px  " />
             <Text bold textTransform="uppercase">
-              BNB
+              BT
             </Text>
           </Flex>
         </Flex>
@@ -202,15 +211,14 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           </Text>
         )}
         <Text textAlign="right" mb="16px" color="textSubtle" fontSize="12px" style={{ height: '18px' }}>
-          {account && t(`Balance: ${balanceDisplay}`, { num: balanceDisplay })}
+          {account && t(`Balance: ${getBalanceAmount(new BigNumber(maxBalance))}`)}
         </Text>
         <Slider
           name="balance"
           min={0}
-          max={maxBalance}
+          max={getBalanceAmount(new BigNumber(maxBalance)).toNumber()}
           value={valueAsBn.lte(maxBalance) ? valueAsBn.toNumber() : 0}
           onValueChanged={handleSliderChange}
-          step={0.000000000000001}
           valueLabel={account ? percentageDisplay : ''}
           disabled={!account || isTxPending}
           mb="4px"

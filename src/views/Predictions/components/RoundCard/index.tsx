@@ -1,44 +1,25 @@
 import React, { useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { useGetBetByRoundId, useGetCurrentEpoch } from 'state/hooks'
-import { BetPosition, Round } from 'state/types'
-import { fetchRoundBet } from 'state/predictions'
-import { useAppDispatch } from 'state'
-import { getMultiplier } from '../../helpers'
 import OutbidRoundCard from './OutbidRoundCard'
-import LeaederRoundCard from './LeaederRoundCard'
+import LeaderRoundCard from './LeaederRoundCard'
 import IncreaseBidCard from './IncreaseBidCard'
 import SoonRoundCard from './SoonRoundCard'
 
 interface RoundCardProps {
   bid: any,
-  lastBidId: number
+  lastBidId: number,
+  userInfo: any,
+  aid: number
 }
 
-const RoundCard: React.FC<RoundCardProps> = ({ bid, lastBidId }) => {
-  // Next (open) round
-  if (bid.id === lastBidId) {
-    return (
-      <IncreaseBidCard
-        bid={bid}
-      />
-    )
-  }
+const RoundCard: React.FC<RoundCardProps> = ({ bid, lastBidId, userInfo, aid }) => {
 
   // Live round
   if (bid.id === lastBidId - 1) {
     return (
-      <LeaederRoundCard
-
+      <LeaderRoundCard
         bid={bid}
       />
     )
-  }
-
-  // Fake future rounds
-
-  if (bid.id === lastBidId + 1) {
-    return <SoonRoundCard bid={bid} />
   }
 
   // Past rounds

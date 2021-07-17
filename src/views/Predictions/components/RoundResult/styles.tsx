@@ -49,7 +49,7 @@ export const LockPriceRow: React.FC<LockPriceRowProps> = ({ bid, ...props }) => 
       </Flex>
       <Flex alignItems='center' justifyContent='space-between' {...props}>
         <Text fontSize='14px'>{t('LP Locked')}:</Text>
-        <Text fontSize='14px'>{getBalanceAmount(new BigNumber(quarterBid)).toString()} BT</Text>
+        <Text fontSize='14px'>{Math.round(getBalanceAmount(new BigNumber(quarterBid)).toNumber() * 100) / 100} BT</Text>
       </Flex>
     </>
   )
