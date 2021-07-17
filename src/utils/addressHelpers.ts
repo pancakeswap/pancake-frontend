@@ -16,19 +16,14 @@ export const getCakeAddress = () => {
 export const getZombieAddress = () => {
   return getAddress(tokens.zmbe.address)
 }
-
-export const getTombLpAddress = (pid) => {
-  return getAddress(tombs[pid].lpAddresses)
-}
-
 export const getMasterChefAddress = () => {
   return getAddress(addresses.masterChef)
 }
 export const getDrFrankensteinAddress = () => {
   return getAddress(addresses.drFrankenstein)
 }
-export const getRestorationChefAddress = () => {
-  return getAddress(addresses.restorationChef)
+export const getMausoleumAddress = () => {
+  return getAddress(addresses.mausoleum)
 }
 export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)

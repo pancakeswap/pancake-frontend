@@ -17,6 +17,14 @@ export interface BetResponse {
   round?: RoundResponse
 }
 
+export interface MarketResponse {
+  id: string
+  paused: boolean
+  epoch: {
+    epoch: string
+  }
+}
+
 export interface HistoricalBetResponse {
   id: string
   hash: string
@@ -49,14 +57,6 @@ export interface RoundResponse {
   bullAmount: string
   position: string
   bets: BetResponse[]
-}
-
-export interface MarketResponse {
-  id: string
-  paused: boolean
-  epoch: {
-    epoch: string
-  }
 }
 
 /**

@@ -52,7 +52,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
       <div className="direction-column imageColumn">
         <div className="sc-iwajpm dcRUtg">
           {type === 'image' ? (
-            <img src={path} alt="CAKE" className="sc-cxNHIi bjMxQn" />
+            <img src={path} alt="NFT" className="sc-cxNHIi bjMxQn" />
           ) : (
               <video width="100%" autoPlay>
                 <source src={path} type="video/mp4" />

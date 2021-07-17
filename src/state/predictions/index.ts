@@ -41,7 +41,7 @@ export const fetchBet = createAsyncThunk<{ account: string; bet: Bet }, { accoun
 export const fetchRoundBet = createAsyncThunk<
   { account: string; roundId: string; bet: Bet },
   { account: string; roundId: string }
->('predictions/fetchRoundBet', async ({ account, roundId }) => {
+  >('predictions/fetchRoundBet', async ({ account, roundId }) => {
   const betResponses = await getBetHistory({
     user: account.toLowerCase(),
     round: roundId,

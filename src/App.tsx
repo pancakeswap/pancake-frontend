@@ -16,6 +16,7 @@ import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import Graves from './views/Graves'
 import * as fetch from './redux/fetch'
+import Predictions from './views/Predictions'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Landing = lazy(() => import('./components/Landing'));
@@ -63,6 +64,7 @@ const App: React.FC = () => {
             <Route exact path={routes.HOME}><Home/></Route>
             <Route exact path={routes.GRAVES}><Graves/></Route>
             <Route exact path={routes.TOMBS}><Tombs/></Route>
+            <Route exact path={routes.MAUSOLEUM}><Predictions/></Route>
           </Menu>
         </Switch>
       </SuspenseWithChunkError>
