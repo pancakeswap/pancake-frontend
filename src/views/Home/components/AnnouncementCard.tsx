@@ -47,7 +47,7 @@ const AnnouncementCard = () => {
         </Text>
         <br/>
         <image width="100%" >
-          <img src="images/rugZombie/chompers.gif" alt="chompers"/>
+          <img src="https://storage.googleapis.com/rug-zombie/chompers.gif" alt="chompers"/>
         </image>
       </CardBody>
     </StyledAnnouncementCard>
