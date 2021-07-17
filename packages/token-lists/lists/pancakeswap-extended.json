@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-07-15T09:03:19.888Z",
+  "timestamp": "2021-07-16T16:42:38.383Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 9
+    "patch": 10
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -147,6 +147,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xa184088a740c695e156f91f5cc086a06bb78b827.png"
+    },
+    {
+      "name": "Axie Infinity Shard",
+      "symbol": "AXS",
+      "address": "0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0.png"
     },
     {
       "name": "Bakery Token",

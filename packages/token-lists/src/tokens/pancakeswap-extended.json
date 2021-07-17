@@ -1662,5 +1662,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6.png"
+  },
+  {
+    "name": "Axie Infinity Shard",
+    "symbol": "AXS",
+    "address": "0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0.png"
   }
 ]
