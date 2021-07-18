@@ -44,10 +44,11 @@ export const CurrentBid: React.FC<CurrentBidProps> = ({ totalAmount, ...props })
 interface OpenRoundCardProps {
   lastBid: any,
   userInfo: any,
-  aid: number
+  aid: number,
+  id: number
 }
 
-const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid }) => {
+const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid, id }) => {
   const [state, setState] = useState({
     isSettingPosition: false,
     position: BetPosition.BULL,
@@ -154,6 +155,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid 
           icon={<PlayCircleOutlineIcon color='white' mr='4px' width='21px' />}
           title={t('Bid')}
           bid={lastBid}
+          id={id}
         />
         <CardBody p='16px'>
           <RoundResultBox>

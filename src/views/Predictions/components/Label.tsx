@@ -65,7 +65,7 @@ const Label = styled(Card)<{ dir: 'left' | 'right' }>`
 
 export const PricePairLabel: React.FC = () => {
   return (
-    <Box pl='24px' position='relative' display='inline-block'>
+    <Box pl='28px' position='relative' display='inline-block'>
       <Token style={{ position: 'relative', top: '43px', right: '10px' }}>
         <Image src='/images/rugZombie/BasicZombie.png' width={50} height={50} alt='ZMBE' />
       </Token>
@@ -100,7 +100,7 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ userInfo }) => {
           </LinkExternal>
         <Label dir='right'>
           <Title bold color='secondary'>
-            Current Bid
+            Your Bid
           </Title>
           <Interval fontSize='12px'>{Math.round(getBalanceAmount(userInfo.bid).toNumber() * 100) / 100}</Interval>
         </Label>

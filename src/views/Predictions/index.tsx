@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useMatchBreakpoints, useModal } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'bignumber.js'
+import { MultiCall } from '@indexed-finance/multicall'
+import mausoleumAbi from 'config/abi/mausoleum.json'
 import Container from './components/Container'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import SwiperProvider from './context/SwiperProvider'
@@ -11,6 +13,8 @@ import Mobile from './Mobile'
 import { getMausoleumContract } from '../../utils/contractHelpers'
 import { initialData } from '../../redux/fetch'
 import auctions from '../../redux/auctions'
+import { getMausoleumAddress } from '../../utils/addressHelpers'
+import useWeb3 from '../../hooks/useWeb3'
 
 const Predictions = () => {
   const { isLg, isXl } = useMatchBreakpoints()
@@ -18,7 +22,9 @@ const Predictions = () => {
   const [bids, setBids] = useState([])
   const [lastBidId, setLastBidId] = useState(0)
   const [userInfo, setUserInfo] = useState({})
+  const [lastUpdate, setLastUpdate] = useState(Date.now())
   const { account } = useWeb3React()
+  const web3 = useWeb3()
 
   initialData(account)
 
@@ -36,32 +42,30 @@ const Predictions = () => {
         })
     }
   }, [account, aid])
-
-  // const fetchBids = () => {
-  // useEffect(() => {
+  useEffect(() => {
     getMausoleumContract().methods.bidsLength(aid).call()
       .then(bidsLengthRes => {
-        const start = parseInt(bidsLengthRes) - 5 < 0 ? 0 : parseInt(bidsLengthRes) - 5
-
-        for(let x = start; x < parseInt(bidsLengthRes); x++) {
-          getMausoleumContract().methods.bidInfo(aid, x).call()
-            .then(bidInfoRes => {
-              bids[x] = {
-                id: x,
-                amount: bidInfoRes.amount,
-                bidder: bidInfoRes.bidder,
-                lastBidAmount: bids[x - 1] ? bids[x - 1].amount : 0,
-              }
-            })
-          if(parseInt(bidsLengthRes) === 0 || lastBidId === 0) {
-          setBids(bids)
-          setLastBidId(parseInt(bidsLengthRes))
-          }
+        const multi = new MultiCall(web3);
+        const inputs = [];
+        for (let x = 0; x < parseInt(bidsLengthRes); x++) {
+          inputs.push({ target: getMausoleumAddress(), function: 'bidInfo', args: [aid, x] });
         }
+
+          multi.multiCall(mausoleumAbi, inputs)
+            .then(res => {
+              setLastUpdate(Date.now())
+              setBids(res[1])
+              setLastBidId(parseInt(bidsLengthRes))
+            })
+            .catch(() => {
+              console.log("multicall failed")
+            })
+
       })
+    // setInterval(() => fetchBids(), 5000);
+  // }
+  },[aid, web3])
 
-
-  // setInterval(() => fetchBids(), 5000);
   return (
     <>
        <Helmet>

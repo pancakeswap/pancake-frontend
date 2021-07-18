@@ -7,11 +7,13 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface LiveRoundCardProps {
-  bid: any
+  bid: any,
+  id: number
 }
 
 const LeaderRoundCard: React.FC<LiveRoundCardProps> = ({
-  bid
+  bid,
+  id
 }) => {
   const { t } = useTranslation()
   const StyledExpiredRoundCard = styled(Card)`
@@ -36,6 +38,7 @@ const LeaderRoundCard: React.FC<LiveRoundCardProps> = ({
           icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
           title={t('Leader')}
           bid={bid}
+          id={id}
         />
         <CardBody p="16px" style={{ position: 'relative' }}>
           <RoundResult bid={bid} />

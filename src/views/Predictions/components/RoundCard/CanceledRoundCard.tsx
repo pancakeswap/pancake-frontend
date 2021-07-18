@@ -11,10 +11,11 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface CanceledRoundCardProps {
-  bid: any
+  bid: any,
+  id: number
 }
 
-const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ bid }) => {
+const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ bid, id }) => {
   const { t } = useTranslation()
   const interval = useGetTotalIntervalBlocks()
   // const { isRefundable, setIsRefundable } = useIsRefundable(round.epoch)
@@ -32,6 +33,7 @@ const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ bid }) => {
         icon={<BlockIcon mr="4px" width="21px" />}
         title={t('Canceled')}
         bid={bid}
+        id={id}
       />
       <CardBody p="16px">
         <MultiplierArrow isDisabled />

@@ -9,10 +9,11 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface CalculatingCardProps {
-  bid: any
+  bid: any,
+  id: number
 }
 
-const CalculatingCard: React.FC<CalculatingCardProps> = ({ bid }) => {
+const CalculatingCard: React.FC<CalculatingCardProps> = ({ bid, id }) => {
   const { t } = useTranslation()
   const interval = useGetTotalIntervalBlocks()
 
@@ -23,6 +24,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ bid }) => {
         icon={<WaitIcon mr="4px" width="21px" />}
         title={t('Calculating')}
         bid={bid}
+        id={id}
       />
       <CardBody p="16px">
         <MultiplierArrow isDisabled />

@@ -34,6 +34,7 @@
     "@binance-chain/bsc-connector": "^1.0.0",
     "@crowdin/crowdin-api-client": "^1.10.4",
     "@ethersproject/abi": "^5.0.7",
+    "@indexed-finance/multicall": "^2.0.0",
     "@pancakeswap-libs/eslint-config-pancake": "^1.0.1",
     "@reduxjs/toolkit": "^1.5.0",
     "@rug-zombie-libs/uikit": "https://github.com/Rug-Zombie/rug-zombie-uikit.git",

@@ -7,7 +7,8 @@ type Status = 'outbid' | 'live' | 'next' | 'soon' | 'canceled' | 'calculating'
 interface CardHeaderProps {
   status: Status
   title: string
-  bid: any
+  bid: any,
+  id: number,
   icon?: ReactElement
 }
 
@@ -60,7 +61,7 @@ const Round = styled.div`
   justify-self: center;
 `
 
-const CardHeader: React.FC<CardHeaderProps> = ({ status, title, icon, bid }) => {
+const CardHeader: React.FC<CardHeaderProps> = ({ status, title, icon, id }) => {
   const textColor = getTextColorByStatus(status, 'text')
   const isLive = status === 'live'
 
@@ -74,7 +75,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({ status, title, icon, bid }) => 
       </Flex>
       <Round>
         <Text fontSize={isLive ? '14px' : '12px'} color={getTextColorByStatus(status, 'textSubtle')} textAlign="center">
-           {`#${bid.id}`}
+           {`#${id}`}
         </Text>
       </Round>
     </StyledCardHeader>

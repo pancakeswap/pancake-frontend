@@ -188,7 +188,6 @@ const nfts = () => {
   get.nfts().forEach(nft => {
     getErc721Contract(nft.address).methods.totalSupply().call()
       .then(res => {
-        console.log(res)
         store.dispatch(updateNftTotalSupply(nft.id, new BigNumber(res)))
       })
   })
