@@ -111,6 +111,8 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid 
   const handleUnlock = () => {
     getMausoleumContract(web3).methods.unlockFeeInBnb(aid).call()
       .then(res => {
+        console.log(res.toString())
+
         getMausoleumContract(web3).methods.unlock(aid)
           .send({from: account(), value: res})
           .then(() => {

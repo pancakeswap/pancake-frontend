@@ -46,7 +46,6 @@ const Predictions = () => {
         for(let x = start; x < parseInt(bidsLengthRes); x++) {
           getMausoleumContract().methods.bidInfo(aid, x).call()
             .then(bidInfoRes => {
-              console.log(bidInfoRes)
               bids[x] = {
                 id: x,
                 amount: bidInfoRes.amount,

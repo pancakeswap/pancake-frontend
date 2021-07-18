@@ -8,6 +8,7 @@ import History from './History'
 import Positions from './Positions'
 import Chart from './Chart'
 import { ErrorNotification, PauseNotification } from './components/Notification'
+import MobileCard from './components/MobileCard/MobileCard'
 
 enum PageView {
   POSITIONS = 'positions',
@@ -55,31 +56,9 @@ interface MobileProps {
 }
 
 const Mobile: React.FC<MobileProps> = ({bids, lastBidId, userInfo, aid}) => {
-  const isHistoryPaneOpen = useIsHistoryPaneOpen()
-  const isChartPaneOpen = useIsChartPaneOpen()
-  const view = getView(isHistoryPaneOpen, isChartPaneOpen)
-  const status = useGetPredictionsStatus()
 
-  return (
-    <StyledMobile>
-      <Box height="100%" overflow="hidden" position="relative">
-        <View isVisible={view === PageView.POSITIONS}>
-          <Flex alignItems="center" height="100%">
-            {status === PredictionStatus.ERROR && <ErrorNotification />}
-            {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && <Positions bids={bids} userInfo={userInfo} lastBidId={lastBidId} aid={aid}/>}
-          </Flex>
-        </View>
-        <View isVisible={view === PageView.CHART}>
-          <Chart userInfo={userInfo}/>
-        </View>
-        <View isVisible={view === PageView.HISTORY}>
-          <History />
-        </View>
-      </Box>
-      <MobileMenu />
-    </StyledMobile>
-  )
+  return <MobileCard />
+
 }
 
 export default Mobile
