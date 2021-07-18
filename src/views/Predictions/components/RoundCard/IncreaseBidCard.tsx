@@ -80,9 +80,10 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid 
 
   const [allowance, setAllowance] = useState(BIG_ZERO)
   const [amount, setAmount] = useState(lastBid.amount ? new BigNumber(lastBid.amount) : BIG_ZERO)
-  const [paidUnlockFee, setPaidUnlockFee] = useState(userInfo.paidUnlockFee)
+  const [latestUserInfo, setLatestUserInfo] = useState(userInfo)
+  const [paidUnlockFee, setPaidUnlockFee] = useState(latestUserInfo.paidUnlockFee)
 
-  if(!amount.eq(userInfo.bid) && amount.eq(BIG_ZERO)) {
+  if(!amount.eq(latestUserInfo.bid) && amount.eq(BIG_ZERO)) {
     setAmount(new BigNumber(userInfo.bid))
   }
 
@@ -111,12 +112,14 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid 
   const handleUnlock = () => {
     getMausoleumContract(web3).methods.unlockFeeInBnb(aid).call()
       .then(res => {
-        console.log(res.toString())
-
         getMausoleumContract(web3).methods.unlock(aid)
           .send({from: account(), value: res})
           .then(() => {
-            setPaidUnlockFee(true)
+            getMausoleumContract(web3).methods.userInfo(aid, account()).call()
+              .then(userInfoRes => {
+                setLatestUserInfo(userInfoRes)
+                setPaidUnlockFee(true)
+              })
           })
       })
   }
@@ -130,8 +133,8 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid 
   }
   const accountAddress = account()
 
-  if(paidUnlockFee !== userInfo.paidUnlockFee) {
-    setPaidUnlockFee(userInfo.paidUnlockFee)
+  if(paidUnlockFee !== latestUserInfo.paidUnlockFee) {
+    setPaidUnlockFee(latestUserInfo.paidUnlockFee)
   }
 
   useEffect(() => {
@@ -143,7 +146,6 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid 
     }
   }, [accountAddress])
 
-  console.log(amount)
   return (
     <CardFlip isFlipped={isSettingPosition} height='404px'>
       <Card>
