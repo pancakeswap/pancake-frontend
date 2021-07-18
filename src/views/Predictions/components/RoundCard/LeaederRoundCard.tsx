@@ -26,9 +26,6 @@ const LeaderRoundCard: React.FC<LiveRoundCardProps> = ({
   const tooltipContent = (
     <Box width="256px">
       {t('The final price at the end of a round may be different from the price shown on the live feed.')}
-      <LinkExternal href="https://docs.pancakeswap.finance/products/prediction" mt="8px">
-        {t('Learn More')}
-      </LinkExternal>
     </Box>
   )
 
