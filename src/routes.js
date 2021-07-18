@@ -5,5 +5,5 @@ export const routes = {
     FARMS:'/farms/',
     TOMBS:'/tombs/',
     GRAVES:'/graves/',
-    MAUSOLEUM:'/mausoleumm/'
+    MAUSOLEUM:'/mausoleum/'
 }
