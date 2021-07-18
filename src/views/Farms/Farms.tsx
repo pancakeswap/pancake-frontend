@@ -120,6 +120,7 @@ const Farms: React.FC = () => {
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' })
   const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
+  const chosenFarmsLength = useRef(0)
 
   const isArchived = pathname.includes('archived')
   const isInactive = pathname.includes('history')
@@ -186,8 +187,8 @@ const Farms: React.FC = () => {
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const [observerIsSet, setObserverIsSet] = useState(false)
 
-  const farmsStakedMemoized = useMemo(() => {
-    let farmsStaked = []
+  const chosenFarmsMemoized = useMemo(() => {
+    let chosenFarms = []
 
     const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
       switch (sortOption) {
@@ -213,16 +214,16 @@ const Farms: React.FC = () => {
     }
 
     if (isActive) {
-      farmsStaked = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
+      chosenFarms = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
     }
     if (isInactive) {
-      farmsStaked = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
+      chosenFarms = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
     }
     if (isArchived) {
-      farmsStaked = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
+      chosenFarms = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
     }
 
-    return sortFarms(farmsStaked).slice(0, numberOfFarmsVisible)
+    return sortFarms(chosenFarms).slice(0, numberOfFarmsVisible)
   }, [
     sortOption,
     activeFarms,
@@ -239,11 +240,18 @@ const Farms: React.FC = () => {
     numberOfFarmsVisible,
   ])
 
+  chosenFarmsLength.current = chosenFarmsMemoized.length
+
   useEffect(() => {
     const showMoreFarms = (entries) => {
       const [entry] = entries
       if (entry.isIntersecting) {
-        setNumberOfFarmsVisible((farmsCurrentlyVisible) => farmsCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE)
+        setNumberOfFarmsVisible((farmsCurrentlyVisible) => {
+          if (farmsCurrentlyVisible <= chosenFarmsLength.current) {
+            return farmsCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE
+          }
+          return farmsCurrentlyVisible
+        })
       }
     }
 
@@ -255,9 +263,9 @@ const Farms: React.FC = () => {
       loadMoreObserver.observe(loadMoreRef.current)
       setObserverIsSet(true)
     }
-  }, [farmsStakedMemoized, observerIsSet])
+  }, [chosenFarmsMemoized, observerIsSet])
 
-  const rowData = farmsStakedMemoized.map((farm) => {
+  const rowData = chosenFarmsMemoized.map((farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
@@ -329,7 +337,7 @@ const Farms: React.FC = () => {
       <div>
         <FlexLayout>
           <Route exact path={`${path}`}>
-            {farmsStakedMemoized.map((farm) => (
+            {chosenFarmsMemoized.map((farm) => (
               <FarmCard
                 key={farm.pid}
                 farm={farm}
@@ -341,7 +349,7 @@ const Farms: React.FC = () => {
             ))}
           </Route>
           <Route exact path={`${path}/history`}>
-            {farmsStakedMemoized.map((farm) => (
+            {chosenFarmsMemoized.map((farm) => (
               <FarmCard
                 key={farm.pid}
                 farm={farm}
@@ -353,7 +361,7 @@ const Farms: React.FC = () => {
             ))}
           </Route>
           <Route exact path={`${path}/archived`}>
-            {farmsStakedMemoized.map((farm) => (
+            {chosenFarmsMemoized.map((farm) => (
               <FarmCard
                 key={farm.pid}
                 farm={farm}
