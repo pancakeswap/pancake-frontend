@@ -4,23 +4,23 @@ const config: MenuEntry[] = [
   {
     label: 'Home',
     icon: 'HomeIcon',
-    href: '/home/',
+    href: '/home',
   },
   {
     label: 'Graves',
     icon: 'PoolIcon',
-    href: '/graves/',
+    href: '/graves',
   },
   {
     label: 'Tombs',
     icon: 'FarmIcon',
-    href: '/tombs/',
+    href: '/tombs',
   },
-  {
-    label: 'Mausoleum (BETA)',
-    icon: 'PredictionsIcon',
-    href: '/mausoleum/',
-  },
+  // {
+  //   label: 'Mausoleum (BETA)',
+  //   icon: 'PredictionsIcon',
+  //   href: '/mausoleum/',
+  // },
   {
     label: 'Spawning Pools',
     icon: 'PoolIcon',
