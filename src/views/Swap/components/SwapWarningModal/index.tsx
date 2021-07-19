@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { ModalBody, ModalContainer, Message, ModalHeader, Box, ErrorIcon, Flex, Heading } from '@pancakeswap/uikit'
+import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { getAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'contexts/Localization'
@@ -12,6 +12,11 @@ import Acknowledgement from './Acknowledgement'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
+`
+
+const MessageContainer = styled(Message)`
+  align-items: flex-start;
+  justify-content: flex-start;
 `
 
 interface SwapWarningModalProps {
@@ -64,9 +69,9 @@ const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDis
         <Heading p="12px 24px">{t('Notice for trading %symbol%', { symbol: SWAP_WARNING.symbol })}</Heading>
       </ModalHeader>
       <ModalBody p="24px">
-        <Message variant="warning" mb="24px">
+        <MessageContainer variant="warning" mb="24px">
           <Box>{SWAP_WARNING.component}</Box>
-        </Message>
+        </MessageContainer>
         <Acknowledgement handleContinueClick={onDismiss} />
       </ModalBody>
     </StyledModalContainer>
