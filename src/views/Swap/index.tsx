@@ -6,6 +6,8 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
+import SwapWarningTokens from 'config/constants/swapWarningTokens'
+import { getAddress } from 'utils/addressHelpers'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Layout/Column'
@@ -16,7 +18,7 @@ import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdow
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import { ArrowWrapper, SwapCallbackError, Wrapper } from './components/styleds'
 import TradePrice from './components/TradePrice'
-import TokenWarningModal from './components/TokenWarningModal'
+import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 import ProgressSteps from './components/ProgressSteps'
 import { AppHeader, AppBody } from '../../components/App'
 import UnlockButton from '../../components/UnlockButton'
@@ -39,6 +41,7 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
+import SwapWarningModal from './components/SwapWarningModal'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -214,10 +217,36 @@ export default function Swap({ history }: RouteComponentProps) {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
   }, [attemptingTxn, swapErrorMessage, trade, txHash])
 
+  // swap warning state
+  const [swapWarningCurrency, setSwapWarningCurrency] = useState(null)
+  const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />)
+
+  const shouldShowSwapWarning = (swapCurrency) => {
+    const isWarningToken = Object.entries(SwapWarningTokens).find((warningTokenConfig) => {
+      const warningTokenData = warningTokenConfig[1]
+      const warningTokenAddress = getAddress(warningTokenData.address)
+      return swapCurrency.address === warningTokenAddress
+    })
+    return Boolean(isWarningToken)
+  }
+
+  useEffect(() => {
+    if (swapWarningCurrency) {
+      onPresentSwapWarningModal()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [swapWarningCurrency])
+
   const handleInputSelect = useCallback(
     (inputCurrency) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)
+      const showSwapWarning = shouldShowSwapWarning(inputCurrency)
+      if (showSwapWarning) {
+        setSwapWarningCurrency(inputCurrency)
+      } else {
+        setSwapWarningCurrency(null)
+      }
     },
     [onCurrencySelection],
   )
@@ -229,19 +258,28 @@ export default function Swap({ history }: RouteComponentProps) {
   }, [maxAmountInput, onUserInput])
 
   const handleOutputSelect = useCallback(
-    (outputCurrency) => onCurrencySelection(Field.OUTPUT, outputCurrency),
+    (outputCurrency) => {
+      onCurrencySelection(Field.OUTPUT, outputCurrency)
+      const showSwapWarning = shouldShowSwapWarning(outputCurrency)
+      if (showSwapWarning) {
+        setSwapWarningCurrency(outputCurrency)
+      } else {
+        setSwapWarningCurrency(null)
+      }
+    },
+
     [onCurrencySelection],
   )
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
-  const [onPresentTokenWarningModal] = useModal(
-    <TokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap/')} />,
+  const [onPresentImportTokenWarningModal] = useModal(
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap/')} />,
   )
 
   useEffect(() => {
     if (importTokensNotInDefault.length > 0) {
-      onPresentTokenWarningModal()
+      onPresentImportTokenWarningModal()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [importTokensNotInDefault.length])

@@ -54,8 +54,8 @@ export default function CurrencySearchModal({
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
-      onCurrencySelect(currency)
       onDismiss()
+      onCurrencySelect(currency)
     },
     [onDismiss, onCurrencySelect],
   )

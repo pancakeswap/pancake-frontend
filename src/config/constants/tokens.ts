@@ -1756,6 +1756,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://decentral.games/',
   },
+  safemoon: {
+    symbol: 'SAFEMOON',
+    address: {
+      56: '0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3',
+      97: '',
+    },
+    decimals: 9,
+    projectLink: 'https://safemoon.net/',
+  },
 }
 
 export default tokens
