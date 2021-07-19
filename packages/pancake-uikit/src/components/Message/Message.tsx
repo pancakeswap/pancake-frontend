@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { variant as systemVariant, space } from "styled-system";
 import { WarningIcon, ErrorIcon } from "../Svg";
+import { Box } from "../Box";
 import { MessageProps } from "./types";
 import variants from "./theme";
 
@@ -17,10 +18,6 @@ const MessageContainer = styled.div<MessageProps>`
   border-radius: 16px;
   border: solid 1px;
 
-  svg {
-    align-self: flex-start;
-  }
-
   ${space}
   ${systemVariant({
     variants,
@@ -31,7 +28,9 @@ const Message: React.FC<MessageProps> = ({ children, variant, ...props }) => {
   const Icon = Icons[variant];
   return (
     <MessageContainer variant={variant} {...props}>
-      <Icon color={variants[variant].borderColor} width="24px" mr="12px" style={{ alignSelf: "center" }} />
+      <Box>
+        <Icon color={variants[variant].borderColor} width="24px" mr="12px" />
+      </Box>
       {children}
     </MessageContainer>
   );
