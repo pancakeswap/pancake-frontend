@@ -1181,5 +1181,13 @@
   "Waiting For Confirmation": "Waiting For Confirmation",
   "Confirm this transaction in your wallet": "Confirm this transaction in your wallet",
   "Dismiss": "Dismiss",
-  "Latest": "Latest"
+  "Latest": "Latest",
+  "Notice for trading %symbol%": "Notice for trading %symbol%",
+  "To trade SAFEMOON, you must:": "To trade SAFEMOON, you must:",
+  "Click on the settings icon": "Click on the settings icon",
+  "Set your slippage tolerance to 12%+": "Set your slippage tolerance to 12%+",
+  "This is because SafeMoon taxes a 10% fee on each transaction:": "This is because SafeMoon taxes a 10% fee on each transaction:",
+  "5% fee = redistributed to all existing holders": "5% fee = redistributed to all existing holders",
+  "5% fee = used to add liquidity": "5% fee = used to add liquidity",
+  "Warning: BONDLY has been compromised. Please remove liqudity until further notice.": "Warning: BONDLY has been compromised. Please remove liqudity until further notice."
 }
