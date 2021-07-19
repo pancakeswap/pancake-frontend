@@ -36,7 +36,7 @@ interface PositionsProps {
 
 const Positions: React.FC<PositionsProps> = ({ bids, lastBidId, userInfo, aid }) => {
   const { setSwiper } = useSwiper()
-  const initialIndex = Math.floor(4)
+  const initialIndex = Math.floor(1)
 
   // useOnNextRound()
 
