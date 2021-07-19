@@ -60,7 +60,7 @@ const Mobile: React.FC = () => {
           <Flex alignItems="center" height="100%">
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && <Positions />}
+            {status === PredictionStatus.LIVE && <Positions view={view} />}
           </Flex>
         </View>
         <View isVisible={view === PageView.CHART}>
