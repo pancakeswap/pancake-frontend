@@ -1,14 +1,14 @@
 import React from 'react'
 import { Text } from '@pancakeswap/uikit'
-import Acknowledgement from './Acknowledgement'
+import { useTranslation } from 'contexts/Localization'
 import { DefaultWarningProps } from './types'
 
-const BondlyWarning: React.FC<DefaultWarningProps> = ({ onDismiss }) => {
+const BondlyWarning: React.FC<DefaultWarningProps> = () => {
+  const { t } = useTranslation()
+
   return (
     <>
-      <Text mb="24px">A cluster of stuff about Bondly</Text>
-      <Text mb="24px">Text TBC</Text>
-      <Acknowledgement handleContinueClick={onDismiss} />
+      <Text>{t('Warning: BONDLY has been compromised. Please remove liqudity until further notice.')}</Text>
     </>
   )
 }
