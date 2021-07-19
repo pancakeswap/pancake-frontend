@@ -82,5 +82,7 @@ export { default as VolumeUpIcon } from "./Icons/VolumeUp";
 export { default as VoteIcon } from "./Icons/Vote";
 export { default as WarningIcon } from "./Icons/Warning";
 export { default as RefreshIcon } from "./Icons/Refresh";
+export { default as WalletIcon } from "./Icons/Wallet";
+export { default as WalletFilledIcon } from "./Icons/WalletFilled";
 export { default as Svg } from "./Svg";
 export type { SvgProps } from "./types";
