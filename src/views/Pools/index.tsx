@@ -63,6 +63,7 @@ const Pools: React.FC = () => {
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' })
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
+  const chosenPoolsLength = useRef(0)
   const {
     userData: { cakeAtLastUserAction, userShares },
     fees: { performanceFee },
@@ -110,7 +111,12 @@ const Pools: React.FC = () => {
     const showMorePools = (entries) => {
       const [entry] = entries
       if (entry.isIntersecting) {
-        setNumberOfPoolsVisible((poolsCurrentlyVisible) => poolsCurrentlyVisible + NUMBER_OF_POOLS_VISIBLE)
+        setNumberOfPoolsVisible((poolsCurrentlyVisible) => {
+          if (poolsCurrentlyVisible <= chosenPoolsLength.current) {
+            return poolsCurrentlyVisible + NUMBER_OF_POOLS_VISIBLE
+          }
+          return poolsCurrentlyVisible
+        })
       }
     }
 
@@ -173,27 +179,26 @@ const Pools: React.FC = () => {
     }
   }
 
-  const poolsToShow = () => {
-    let chosenPools = []
-    if (showFinishedPools) {
-      chosenPools = stakedOnly ? stakedOnlyFinishedPools : finishedPools
-    } else {
-      chosenPools = stakedOnly ? stakedOnlyOpenPools : openPools
-    }
-
-    if (searchQuery) {
-      const lowercaseQuery = latinise(searchQuery.toLowerCase())
-      chosenPools = chosenPools.filter((pool) =>
-        latinise(pool.earningToken.symbol.toLowerCase()).includes(lowercaseQuery),
-      )
-    }
-
-    return sortPools(chosenPools).slice(0, numberOfPoolsVisible)
+  let chosenPools
+  if (showFinishedPools) {
+    chosenPools = stakedOnly ? stakedOnlyFinishedPools : finishedPools
+  } else {
+    chosenPools = stakedOnly ? stakedOnlyOpenPools : openPools
   }
+
+  if (searchQuery) {
+    const lowercaseQuery = latinise(searchQuery.toLowerCase())
+    chosenPools = chosenPools.filter((pool) =>
+      latinise(pool.earningToken.symbol.toLowerCase()).includes(lowercaseQuery),
+    )
+  }
+
+  chosenPools = sortPools(chosenPools).slice(0, numberOfPoolsVisible)
+  chosenPoolsLength.current = chosenPools.length
 
   const cardLayout = (
     <CardLayout>
-      {poolsToShow().map((pool) =>
+      {chosenPools.map((pool) =>
         pool.isAutoVault ? (
           <CakeVaultCard key="auto-cake" pool={pool} showStakedOnly={stakedOnly} />
         ) : (
@@ -203,7 +208,7 @@ const Pools: React.FC = () => {
     </CardLayout>
   )
 
-  const tableLayout = <PoolsTable pools={poolsToShow()} account={account} userDataLoaded={userDataLoaded} />
+  const tableLayout = <PoolsTable pools={chosenPools} account={account} userDataLoaded={userDataLoaded} />
 
   return (
     <>
