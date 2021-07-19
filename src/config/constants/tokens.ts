@@ -30,6 +30,15 @@ const tokens = {
     decimals: 9,
     projectLink: '/',
   },
+  burger: {
+    symbol: 'BURGER',
+    address: {
+      56: '0xae9269f27437f0fcbc232d39ec814844a51d6b8f',
+      97: '0xae9269f27437f0fcbc232d39ec814844a51d6b8f',
+    },
+    decimals: 18,
+    projectLink: '/',
+  },
   zshark: {
     symbol: 'ZSHARK',
     address: {
