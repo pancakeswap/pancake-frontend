@@ -20,8 +20,6 @@ export interface PredictionsRoundsResponse {
   closeTimestamp: ethers.BigNumber
   lockPrice: ethers.BigNumber
   closePrice: ethers.BigNumber
-  freezedLockOracleRoundId: ethers.BigNumber
-  freezedCloseOracleRoundId: ethers.BigNumber
   totalAmount: ethers.BigNumber
   bullAmount: ethers.BigNumber
   bearAmount: ethers.BigNumber

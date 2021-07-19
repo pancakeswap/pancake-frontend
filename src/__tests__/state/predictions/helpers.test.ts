@@ -26,8 +26,6 @@ describe('makeFutureRoundResponse', () => {
       closeTimestamp: null,
       lockPrice: null,
       closePrice: null,
-      freezedLockOracleRoundId: null,
-      freezedCloseOracleRoundId: null,
       totalAmount: { hex: '0x00', type: 'BigNumber' },
       bullAmount: { hex: '0x00', type: 'BigNumber' },
       bearAmount: { hex: '0x00', type: 'BigNumber' },

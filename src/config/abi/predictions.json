@@ -203,6 +203,13 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "epoch", "type": "uint256" }],
+    "name": "claimableTimestamp",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "currentEpoch",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -234,6 +241,13 @@
     "type": "function"
   },
   { "inputs": [], "name": "genesisStartRound", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+  {
+    "inputs": [],
+    "name": "getMaxRoundDuration",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
   {
     "inputs": [
       { "internalType": "address", "name": "user", "type": "address" },
@@ -340,6 +354,18 @@
   },
   {
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "roundOracles",
+    "outputs": [
+      { "internalType": "uint256", "name": "freezedLockRoundId", "type": "uint256" },
+      { "internalType": "uint256", "name": "freezedCloseRoundId", "type": "uint256" },
+      { "internalType": "uint256", "name": "resolvedLockRoundId", "type": "uint256" },
+      { "internalType": "uint256", "name": "resolvedCloseRoundId", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "name": "rounds",
     "outputs": [
       { "internalType": "uint256", "name": "epoch", "type": "uint256" },
@@ -348,8 +374,6 @@
       { "internalType": "uint256", "name": "closeTimestamp", "type": "uint256" },
       { "internalType": "int256", "name": "lockPrice", "type": "int256" },
       { "internalType": "int256", "name": "closePrice", "type": "int256" },
-      { "internalType": "uint256", "name": "freezedLockOracleRoundId", "type": "uint256" },
-      { "internalType": "uint256", "name": "freezedCloseOracleRoundId", "type": "uint256" },
       { "internalType": "uint256", "name": "totalAmount", "type": "uint256" },
       { "internalType": "uint256", "name": "bullAmount", "type": "uint256" },
       { "internalType": "uint256", "name": "bearAmount", "type": "uint256" },
