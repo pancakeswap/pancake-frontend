@@ -285,8 +285,6 @@ export interface ReduxNodeRound {
   closeTimestamp: number | null
   lockPrice: BigNumberToJson | null
   closePrice: BigNumberToJson | null
-  freezedLockOracleRoundId: string | null
-  freezedCloseOracleRoundId: string | null
   totalAmount: BigNumberToJson
   bullAmount: BigNumberToJson
   bearAmount: BigNumberToJson
@@ -302,8 +300,6 @@ export interface NodeRound {
   closeTimestamp: number | null
   lockPrice: ethers.BigNumber | null
   closePrice: ethers.BigNumber | null
-  freezedLockOracleRoundId: ethers.BigNumber | null
-  freezedCloseOracleRoundId: ethers.BigNumber | null
   totalAmount: ethers.BigNumber
   bullAmount: ethers.BigNumber
   bearAmount: ethers.BigNumber
