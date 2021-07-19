@@ -9,7 +9,7 @@ import numeral from 'numeral';
 import { Token } from '../../../../config/constants/types'
 import { BASE_V1_EXCHANGE_URL } from '../../../../config'
 import { Grave } from '../../../../redux/types'
-import { grave } from '../../../../redux/get'
+import { bnbPriceUsd, grave } from '../../../../redux/get'
 
 
 interface RugInDetailsProps {
@@ -84,7 +84,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
       </div>
       <div className="direction-column">
         <span className="indetails-type">Unlock Fees: {unlockFee} BNB
-        ({(unlockFee * bnbInBusd).toFixed(2)} in USD)</span>
+        ({(unlockFee * bnbPriceUsd()).toFixed(2)} in USD)</span>
         <span className="indetails-title">
           Early Withdrawal Fee:
           <span className="indetails-value">5%</span>
