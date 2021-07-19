@@ -57,11 +57,11 @@ const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDis
   const TOKEN_WARNINGS = {
     [getAddress(SwapWarningTokensConfig.safemoon.address)]: {
       symbol: SwapWarningTokensConfig.safemoon.symbol,
-      component: <SafemoonWarning onDismiss={onDismiss} />,
+      component: <SafemoonWarning />,
     },
     [getAddress(SwapWarningTokensConfig.bondly.address)]: {
       symbol: SwapWarningTokensConfig.bondly.symbol,
-      component: <BondlyWarning onDismiss={onDismiss} />,
+      component: <BondlyWarning />,
     },
   }
 

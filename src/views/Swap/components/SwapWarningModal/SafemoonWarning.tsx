@@ -1,9 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { Text } from '@pancakeswap/uikit'
-import { DefaultWarningProps } from './types'
 
-const SafemoonWarning: React.FC<DefaultWarningProps> = () => {
+const SafemoonWarning = () => {
   const { t } = useTranslation()
 
   return (
