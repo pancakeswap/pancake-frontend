@@ -56,7 +56,10 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
   async (account = null) => {
     // Static values
     const marketData = await getPredictionData()
-    const epochs = range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
+    const epochs =
+      marketData.currentEpoch > PAST_ROUND_COUNT
+        ? range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
+        : [marketData.currentEpoch]
 
     // Round data
     const roundsResponse = await getRoundsData(epochs)
