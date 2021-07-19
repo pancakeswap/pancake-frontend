@@ -52,7 +52,7 @@ export default {
     97: '',
   },
   predictions: {
-    56: '0x2637c95693AEA2246e7d2bFF39f136734fA8eb61',
+    56: '0x104680B8A7Fa3b5A0AAe6B4742738E21bAcCd457',
     97: '',
   },
   chainlinkOracle: {
