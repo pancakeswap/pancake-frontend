@@ -26,7 +26,8 @@ const StyledSwiper = styled.div`
 const Positions: React.FC<{ view?: string }> = ({ view }) => {
   const { setSwiper } = useSwiper()
   const rounds = useGetSortedRounds()
-  const liveEpoch = useGetCurrentEpoch() - 1 || 0
+  const currentEpoch = useGetCurrentEpoch()
+  const liveEpoch = currentEpoch > 0 ? currentEpoch - 1 : currentEpoch
   const liveRound = rounds.find((round) => round.epoch === liveEpoch)
   const liveSwiperIndex = rounds.indexOf(liveRound)
 
