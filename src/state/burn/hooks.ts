@@ -1,7 +1,7 @@
 import { Currency, CurrencyAmount, JSBI, Pair, Percent, TokenAmount } from '@pancakeswap/sdk'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useWeb3React } from '@web3-react/core'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -28,7 +28,7 @@ export function useDerivedBurnInfo(
   }
   error?: string
 } {
-  const { account, chainId } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   const { independentField, typedValue } = useBurnState()
 
