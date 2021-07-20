@@ -392,7 +392,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 {t('Unsupported Asset')}
               </Button>
             ) : !account ? (
-              <UnlockButton />
+              <UnlockButton width="100%" />
             ) : showWrap ? (
               <Button width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??
