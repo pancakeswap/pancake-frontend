@@ -5,7 +5,7 @@ import { formatBnb, formatUsd } from 'views/Predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition, Round } from 'state/types'
 import { BigNumber } from 'bignumber.js'
-import { zmbeBnbLpPriceBnb, zmbePerZmbeBnbLp } from '../../../../redux/get'
+import { zmbePerZmbeBnbLp } from '../../../../redux/get'
 import { formatNumber, getBalanceAmount } from '../../../../utils/formatBalance'
 
 // PrizePoolRow

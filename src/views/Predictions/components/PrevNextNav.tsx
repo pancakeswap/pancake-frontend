@@ -50,7 +50,9 @@ const PrevNextNav = () => {
         <ArrowBackIcon color="primary" width="24px" />
       </IconButton>
       <Icon onClick={handleSlideToLive}>
-        <BunnyCardsIcon width="64px" />
+         {/* <BunnyCardsIcon width="64px" /> */}
+         <img src="/images/rugZombie/ZombieCards-2.svg" alt="cards" width="64px" />
+
       </Icon>
       <IconButton variant="text" scale="sm" onClick={handleNextSlide}>
         <ArrowForwardIcon color="primary" width="24px" />
