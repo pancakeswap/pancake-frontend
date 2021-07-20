@@ -10,6 +10,7 @@ import Menu from './components/Menu'
 import useSwiper from './hooks/useSwiper'
 import useOnNextRound from './hooks/useOnNextRound'
 import useOnViewChange from './hooks/useOnViewChange'
+import { PageView } from './types'
 
 SwiperCore.use([Keyboard, Mousewheel])
 
@@ -23,23 +24,23 @@ const StyledSwiper = styled.div`
     width: 320px;
   }
 `
-const Positions: React.FC<{ view?: string }> = ({ view }) => {
+const Positions: React.FC<{ view?: PageView }> = ({ view }) => {
   const { setSwiper } = useSwiper()
   const rounds = useGetSortedRounds()
   const currentEpoch = useGetCurrentEpoch()
-  const liveEpoch = currentEpoch > 0 ? currentEpoch - 1 : currentEpoch
-  const liveRound = rounds.find((round) => round.epoch === liveEpoch)
-  const liveSwiperIndex = rounds.indexOf(liveRound)
+  const previousEpoch = currentEpoch > 0 ? currentEpoch - 1 : currentEpoch
+  const previousRound = rounds.find((round) => round.epoch === previousEpoch)
+  const swiperIndex = rounds.indexOf(previousRound)
 
   useOnNextRound()
-  useOnViewChange(liveSwiperIndex, view)
+  useOnViewChange(swiperIndex, view)
 
   return (
     <Box overflow="hidden">
       <Menu />
       <StyledSwiper>
         <Swiper
-          initialSlide={liveSwiperIndex}
+          initialSlide={swiperIndex}
           onSwiper={setSwiper}
           spaceBetween={16}
           slidesPerView="auto"

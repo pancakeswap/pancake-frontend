@@ -8,12 +8,7 @@ import History from './History'
 import Positions from './Positions'
 import Chart from './Chart'
 import { ErrorNotification, PauseNotification } from './components/Notification'
-
-enum PageView {
-  POSITIONS = 'positions',
-  HISTORY = 'history',
-  CHART = 'chart',
-}
+import { PageView } from './types'
 
 const StyledMobile = styled.div`
   display: flex;
