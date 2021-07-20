@@ -69,7 +69,7 @@ const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBal
   if (value.eq(0) || value.isNaN()) {
     return { id: 999, fallback: 'Enter an amount', disabled: true }
   }
-  return { id: 464, fallback: 'Confirm', disabled: value.lt(minBetAmountBalance) }
+  return { id: 464, fallback: 'SUBMIT', disabled: value.lt(minBetAmountBalance) }
 }
 
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, onBack, onSuccess }) => {
@@ -78,12 +78,12 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const [errorMessage, setErrorMessage] = useState(null)
   const { account } = useWeb3React()
   const { swiper } = useSwiper()
-  const { balance: bnbBalance } = useGetBnbBalance()
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
   const { toastError } = useToast()
 
   const [maxBalance, setMaxBalance] = useState(0)
+  const [bnMaxBalance, setBnMaxBalance] = useState(BIG_ZERO)
   const valueAsBn = new BigNumber(value)
 
   const percentageOfMaxBalance = valueAsBn.div(maxBalance).times(100).toNumber()
@@ -96,7 +96,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     if(account) {
       getBep20Contract(bidToken).methods.balanceOf(account).call()
         .then(res => {
-          setMaxBalance(parseInt(res))
+          setMaxBalance(new BigNumber(res).toNumber())
+          setBnMaxBalance(new BigNumber(res))
         })
     }
   })
@@ -111,9 +112,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   }
 
   const setMax = () => {
-    setValue(maxBalance.toString())
+    setValue(getBalanceAmount(bnMaxBalance).toString())
   }
-
 
 
   // Clear value
@@ -135,13 +135,16 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     swiper.attachEvents()
   }
 
-  const { fallback, disabled } = getButtonProps(valueAsBn, bnbBalance, minBetAmountBalance)
+  const { fallback, disabled } = getButtonProps(valueAsBn, new BigNumber(maxBalance), minBetAmountBalance)
   const web3 = useWeb3()
   const handleEnterPosition = () => {
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
-    const decimalValue = getDecimalAmount(valueAsBn)
+    let decimalValue = getDecimalAmount(valueAsBn)
+    decimalValue = decimalValue.gt(maxBalance) ? new BigNumber(maxBalance) : decimalValue
 
-    getMausoleumContract(web3).methods.increaseBid(0, decimalValue)
+    console.log(decimalValue.toString())
+    console.log(new BigNumber(maxBalance).toString())
+    getMausoleumContract(web3).methods.increaseBid(auctions[0].aid, decimalValue)
       .send({ from: account })
       .once('sending', () => {
         setIsTxPending(true)
@@ -191,7 +194,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
       <CardBody py="16px">
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
           <Text textAlign="right" color="textSubtle">
-            {t('Bid')}:
+            {t('Increase Bid by')}:
           </Text>
           <Flex alignItems="center">
             <Text bold textTransform="uppercase">
@@ -226,7 +229,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           {percentShortcuts.map((percent) => {
             const handleClick = () => {
-              setValue(((percent / 100) * maxBalance).toString())
+              setValue(getBalanceAmount(new BigNumber(maxBalance)).times(percent / 100).toString())
             }
 
             return (

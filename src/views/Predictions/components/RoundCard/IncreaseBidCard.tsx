@@ -98,10 +98,10 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid,
     setAmount(result)
   }
 
-  const isDisabled = amount.lt(lastBid.amount) || amount.eq(lastBid.amount)
+  const isDisabled = amount.lte(lastBid.amount)
 
   const submitBid = () => {
-    getMausoleumContract(web3).methods.increaseBid(aid, amount)
+    getMausoleumContract(web3).methods.increaseBid(aid, amount.minus(lastBid.amount))
       .send({from: account() })
   }
 
@@ -180,6 +180,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid,
                 {t('Decrease BID')}
               </Button>
               <Flex alignItems='center' justifyContent='center'>
+                {/* eslint-disable-next-line no-nested-ternary */}
                 { !isDisabled ?
                   <Button
                     variant='secondary'
@@ -191,16 +192,30 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid,
                   >
                     {t('SUBMIT')}
                   </Button> :
-                  <Button
-                    variant='secondary'
-                    onClick={withdrawBid}
-                    style={{
-                      width: '50%',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {t('WITHDRAW BID')}
-                  </Button>
+                    lastBid.bidder === account() ?
+                      <Button
+                        variant='secondary'
+                        disabled
+                        onClick={withdrawBid}
+                        style={{
+                          width: '75%',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {t("YOU'RE BID LEADER")}
+                      </Button> :
+                      <Button
+                        variant='secondary'
+                        onClick={withdrawBid}
+                        style={{
+                          width: '50%',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {t('WITHDRAW BID')}
+                      </Button>
+
+
                 }
               </Flex>
               <Flex alignItems='center' justifyContent='center' className='indetails-title' paddingTop='10px'>

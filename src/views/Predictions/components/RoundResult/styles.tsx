@@ -5,7 +5,7 @@ import { formatBnb, formatUsd } from 'views/Predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition, Round } from 'state/types'
 import { BigNumber } from 'bignumber.js'
-import { zmbeBnbLpPriceBnb } from '../../../../redux/get'
+import { zmbeBnbLpPriceBnb, zmbePerZmbeBnbLp } from '../../../../redux/get'
 import { formatNumber, getBalanceAmount } from '../../../../utils/formatBalance'
 
 // PrizePoolRow
@@ -45,7 +45,7 @@ export const LockPriceRow: React.FC<LockPriceRowProps> = ({ bid, ...props }) => 
     <>
       <Flex alignItems='center' justifyContent='space-between' {...props}>
         <Text fontSize='14px'>{t('ZMBE Burned')}:</Text>
-        <Text fontSize='14px'>{formatNumber(getBalanceAmount(zmbeBnbLpPriceBnb().times(quarterBid * 3)).toNumber())}</Text>
+        <Text fontSize='14px'>{formatNumber(getBalanceAmount(zmbePerZmbeBnbLp().times(quarterBid * 3)).toNumber())}</Text>
       </Flex>
       <Flex alignItems='center' justifyContent='space-between' {...props}>
         <Text fontSize='14px'>{t('LP Locked')}:</Text>

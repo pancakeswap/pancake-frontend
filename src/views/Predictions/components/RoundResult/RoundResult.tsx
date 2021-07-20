@@ -14,7 +14,6 @@ const RoundResult: React.FC<RoundResultProps> = ({ bid }) => {
   const bidder = bid.bidder
   const bidderLength = bid.bidder.length
   const displayBidder = `${bidder.slice(0,6)}...${bidder.slice(bidderLength - 4, bidderLength)}`
-  console.log(bid)
   return (
     <RoundResultBox betPosition={bid.amount}>
       <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
@@ -24,7 +23,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ bid }) => {
            <Text color="success" bold fontSize="24px">
             {Math.round(getBalanceAmount(bid.amount).toNumber() * 100) / 100}
            </Text>
-           <PositionTag betPosition={bid.amount}>{Math.round(getBalanceAmount(new BigNumber(bid.amount - bid.lastBidAmount)).toNumber() * 100) / 100} BT</PositionTag>
+           <PositionTag betPosition={bid.amount}>{Math.round(getBalanceAmount(new BigNumber(bid.amount - bid.previousBidAmount)).toNumber() * 100) / 100} BT</PositionTag>
         </Flex>
 
         <LockPriceRow bid={bid} />

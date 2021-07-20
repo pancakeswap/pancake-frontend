@@ -1,19 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BaseLayout, Box, LinkExternal } from '@rug-zombie-libs/uikit'
 import styled, { DefaultTheme, useTheme } from 'styled-components'
-import FrankEarned from '../../Graves/components/FrankEarned/FrankEarned'
-import StartFarming from '../../Graves/components/StartFarming/StartFarming'
-import BuyFrank from '../../Graves/components/BuyFrank/BuyFrank'
-import RugInDetails from '../../Graves/components/RugInDetails'
+import { BigNumber } from 'bignumber.js'
+import auctions from '../../../redux/auctions'
+import { getMausoleumContract } from '../../../utils/contractHelpers'
+import { BIG_ZERO } from '../../../utils/bigNumber'
 import { getBalanceAmount } from '../../../utils/formatBalance'
-import tokens from '../../../config/constants/tokens'
-import artists from '../../../config/constants/artists'
-
-/**
- * When the script tag is injected the TradingView object is not immediately
- * available on the window. So we listen for when it gets set
- */
-
+import { bnbPriceUsd } from '../../../redux/get'
 
 const TableCards = styled(BaseLayout)`
   align-items: stretch;
@@ -26,6 +19,15 @@ const TableCards = styled(BaseLayout)`
 `
 
 const PrizeTab = () => {
+  const auction = auctions[0]
+  const [unlockFeeInBnb, setUnlockFeeInBnb] = useState(BIG_ZERO)
+
+  useEffect(() => {
+    getMausoleumContract().methods.unlockFeeInBnb(auction.aid).call()
+      .then(res => {
+        setUnlockFeeInBnb(new BigNumber(res))
+      })
+  }, [auction.aid])
 
   const type = 'image'
   return (
@@ -52,20 +54,20 @@ const PrizeTab = () => {
                   <span className='indetails-title'>
                     Prize Details:
                   <span className='indetails-value'>
-                    Not much is known about the origin of the first humans gone zombie. We do know this one loved tacos.
+                    {auction.prizeDescription}
                   </span>
                   </span>
                   <br />
                   <span className='indetails-title'>
-                    <LinkExternal bold={false} small href={artists.jussjoshinduh.twitter}>
+                    <LinkExternal bold={false} small href={auction.artist.twitter}>
                       View NFT Artist
                     </LinkExternal>
                   </span>
 
                 </div>
                 <div className='direction-column'>
-                   <span className="indetails-type">Unlock Fees: 0 BNB
-                    (0 in USD)
+                   <span className="indetails-type">Unlock Fees: {getBalanceAmount(unlockFeeInBnb).toString()} BNB
+                    ({Math.round(getBalanceAmount(unlockFeeInBnb).times(bnbPriceUsd()).toNumber() * 100) / 100} in USD)
                    </span>
                 </div>
               </div>

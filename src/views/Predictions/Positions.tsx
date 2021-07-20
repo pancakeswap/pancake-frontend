@@ -40,11 +40,13 @@ const Positions: React.FC<PositionsProps> = ({ bids, lastBidId, userInfo, aid })
 
   // useOnNextRound()
 
-  const formattedBids = bids.map((bid, i) => ({
-    amount: new BigNumber(bid.amount.toString()),
-    bidder: bid.bidder,
-    lastBidAmount: bid[i - 1] && bid[i - 1].amount ? new BigNumber(bid[i - 1].amount.toString()) : BIG_ZERO
-  }))
+  const formattedBids = bids.map((bid, i) => {
+    return {
+      amount: new BigNumber(bid.amount.toString()),
+      bidder: bid.bidder,
+      previousBidAmount: bids[i - 1] && bids[i - 1].amount ? new BigNumber(bids[i - 1].amount.toString()) : BIG_ZERO,
+    }
+  })
 
   return (
     <Box overflowX='hidden' overflowY='auto' style={{ width: '100%' }}>

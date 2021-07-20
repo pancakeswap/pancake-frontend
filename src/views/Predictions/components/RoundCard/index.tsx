@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import { BigNumber } from 'bignumber.js'
 import OutbidRoundCard from './OutbidRoundCard'
-import LeaderRoundCard from './LeaederRoundCard'
-import IncreaseBidCard from './IncreaseBidCard'
-import SoonRoundCard from './SoonRoundCard'
+import LeaderRoundCard from './LeaderRoundCard'
 
 interface RoundCardProps {
   bid: any,
