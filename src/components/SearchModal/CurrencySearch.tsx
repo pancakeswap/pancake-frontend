@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState } from 'react'
+import React, { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { Currency, ETHER, Token } from '@pancakeswap/sdk'
 import { Text, Input, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -84,6 +84,11 @@ function CurrencySearch({
 
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
+
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [])
+
   const handleInput = useCallback((event) => {
     const input = event.target.value
     const checksummedInput = isAddress(input)
