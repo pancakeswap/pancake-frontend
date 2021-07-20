@@ -40,7 +40,7 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
   return (
     <Flex flexDirection="column">
       {isLoading ? (
-        <Skeleton my="4px" height={16} width={80} />
+        <Skeleton mb="4px" mt="8px" height={16} width={80} />
       ) : (
         <Text bold color={isBurn ? 'failure' : 'secondary'}>
           {getRewardText()}
@@ -48,12 +48,14 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
       )}
       <>
         {isLoading || cakeAmount.isNaN() ? (
-          <Skeleton my="4px" height={20} width={100} />
+          <Skeleton my="4px" mr="10px" height={20} width={110} />
         ) : (
           <Balance fontSize="20px" bold unit=" CAKE" value={getBalanceNumber(cakeAmount)} decimals={0} />
         )}
         {isLoading || cakeAmount.isNaN() ? (
-          <Skeleton my="2px" height={12} width={70} />
+          <>
+            <Skeleton mt="4px" mb="16px" height={12} width={70} />
+          </>
         ) : (
           <Balance
             fontSize="12px"
@@ -65,22 +67,14 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
         )}
         {isHistoricRound && cakeAmount && (
           <>
-            {isLoading ? (
-              <Skeleton my="2px" height={12} width={50} />
-            ) : (
-              numberWinners !== '0' && (
-                <Text fontSize="12px" color="textSubtle">
-                  {getFullDisplayBalance(cakeAmount.div(parseInt(numberWinners, 10)), 18, 2)} CAKE {t('each')}
-                </Text>
-              )
-            )}
-            {isLoading ? (
-              <Skeleton my="2px" height={12} width={40} />
-            ) : (
+            {numberWinners !== '0' && (
               <Text fontSize="12px" color="textSubtle">
-                {numberWinners} {t('Winners')}
+                {getFullDisplayBalance(cakeAmount.div(parseInt(numberWinners, 10)), 18, 2)} CAKE {t('each')}
               </Text>
             )}
+            <Text fontSize="12px" color="textSubtle">
+              {numberWinners} {t('Winners')}
+            </Text>
           </>
         )}
       </>

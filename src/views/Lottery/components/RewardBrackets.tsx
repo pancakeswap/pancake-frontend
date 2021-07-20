@@ -96,7 +96,7 @@ const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricR
             isLoading={isLoading}
           />
         ))}
-        <RewardBracketDetail rewardBracket={0} cakeAmount={cakeToBurn} isBurn />
+        <RewardBracketDetail rewardBracket={0} cakeAmount={cakeToBurn} isBurn isLoading={isLoading} />
       </RewardsInner>
     </Wrapper>
   )

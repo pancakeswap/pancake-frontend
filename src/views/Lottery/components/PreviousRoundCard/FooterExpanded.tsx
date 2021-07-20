@@ -38,7 +38,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
     return (
       <>
         {prizeInBusd.isNaN() ? (
-          <Skeleton my="7px" height={40} width={160} />
+          <Skeleton my="7px" height={40} width={200} />
         ) : (
           <Heading scale="xl" lineHeight="1" color="secondary">
             ~${formatNumber(getBalanceNumber(prizeInBusd), 0, 0)}
@@ -67,13 +67,16 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
           {getPrizeBalances()}
         </Box>
         <Box mb="24px">
-          {lotteryGraphData.totalUsers ? (
-            <Text fontSize="14px">
-              {t('Total players this round')}: {lotteryGraphData.totalUsers.toLocaleString()}
+          <Flex>
+            <Text fontSize="14px" display="inline">
+              {t('Total players this round')}:{' '}
+              {lotteryData && lotteryGraphData.totalUsers ? (
+                lotteryGraphData.totalUsers.toLocaleString()
+              ) : (
+                <Skeleton height={14} width={31} />
+              )}
             </Text>
-          ) : (
-            <Skeleton height={14} width={40} />
-          )}
+          </Flex>
         </Box>
       </Flex>
       <RewardBrackets lotteryData={lotteryData} isHistoricRound />
