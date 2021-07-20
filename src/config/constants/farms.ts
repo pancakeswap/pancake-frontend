@@ -629,16 +629,6 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 379,
-    lpSymbol: 'PMON-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xcdb0016d97fd0e7ec2c3b78aa4786cbd8e19c14c',
-    },
-    token: tokens.pmon,
-    quoteToken: tokens.busd,
-  },
-  {
     pid: 378,
     lpSymbol: 'ONE-BUSD LP',
     lpAddresses: {
