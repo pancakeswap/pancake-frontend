@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useDispatch } from 'react-redux'
 import { Modal, ModalBody, Text, Button, Flex, InjectedModalProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -26,7 +26,7 @@ function renderTransactions(transactions: TransactionDetails[]) {
 }
 
 const TransactionsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
-  const { account, chainId } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const allTransactions = useAllTransactions()
 
