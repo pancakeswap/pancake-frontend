@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import { Flex, Skeleton, Heading, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryRound } from 'state/types'
@@ -24,10 +25,14 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
   lotteryId,
 }) => {
   const { t } = useTranslation()
-  const { amountCollectedInCake } = lotteryData
   const lotteryGraphData = useGetLotteryGraphDataById(lotteryId)
   const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+
+  let prizeInBusd = new BigNumber(NaN)
+  if (lotteryData) {
+    const { amountCollectedInCake } = lotteryData
+    prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+  }
 
   const getPrizeBalances = () => {
     return (
@@ -46,7 +51,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
             fontSize="14px"
             color="textSubtle"
             unit=" CAKE"
-            value={getBalanceNumber(amountCollectedInCake)}
+            value={getBalanceNumber(lotteryData?.amountCollectedInCake)}
             decimals={0}
           />
         )}
@@ -62,9 +67,13 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
           {getPrizeBalances()}
         </Box>
         <Box mb="24px">
-          <Text fontSize="14px">
-            {t('Total players this round')}: {lotteryGraphData.totalUsers?.toLocaleString()}
-          </Text>
+          {lotteryGraphData.totalUsers ? (
+            <Text fontSize="14px">
+              {t('Total players this round')}: {lotteryGraphData.totalUsers.toLocaleString()}
+            </Text>
+          ) : (
+            <Skeleton height={14} width={40} />
+          )}
         </Box>
       </Flex>
       <RewardBrackets lotteryData={lotteryData} isHistoricRound />
