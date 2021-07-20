@@ -9,9 +9,11 @@ import CardHeader, { getBorderBackground } from './CardHeader'
 
 interface CalculatingCardProps {
   round: NodeRound
+  hasEnteredUp: boolean
+  hasEnteredDown: boolean
 }
 
-const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
+const CalculatingCard: React.FC<CalculatingCardProps> = ({ round, hasEnteredUp, hasEnteredDown }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -29,7 +31,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
           epoch={round.epoch}
         />
         <CardBody p="16px">
-          <MultiplierArrow isDisabled />
+          <MultiplierArrow isDisabled hasEntered={hasEnteredUp} />
           <RoundResultBox>
             <Flex alignItems="center" justifyContent="center" flexDirection="column">
               <Spinner size={96} />
@@ -39,7 +41,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
               </Flex>
             </Flex>
           </RoundResultBox>
-          <MultiplierArrow betPosition={BetPosition.BEAR} isDisabled />
+          <MultiplierArrow betPosition={BetPosition.BEAR} isDisabled hasEntered={hasEnteredDown} />
         </CardBody>
       </Card>
       {tooltipVisible && tooltip}

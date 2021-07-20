@@ -62,7 +62,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   }
 
   if (!closePrice) {
-    return <CalculatingCard round={round} />
+    return <CalculatingCard round={round} hasEnteredDown={hasEnteredDown} hasEnteredUp={hasEnteredUp} />
   }
 
   return (
