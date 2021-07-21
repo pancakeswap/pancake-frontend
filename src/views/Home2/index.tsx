@@ -14,7 +14,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <PageSection
+      {/* <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background={HERO_TOP_BG}
         p="24px 0"
@@ -33,7 +33,7 @@ const Home: React.FC = () => {
         curvePosition="bottom"
       >
         <Hero />
-      </PageSection>
+      </PageSection> */}
     </>
   )
 }

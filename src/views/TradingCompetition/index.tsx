@@ -238,8 +238,7 @@ const TradingCompetition = () => {
       <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
         concaveDivider
-        concaveBackgroundLight={MIDBLUEFILL}
-        concaveBackgroundDark={MIDBLUEFILL_DARK}
+        clipFill={{ light: MIDBLUEFILL, dark: MIDBLUEFILL_DARK }}
         curvePosition="top"
         background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
         index={2}
@@ -287,8 +286,7 @@ const TradingCompetition = () => {
         containerProps={{ style: { marginTop: '-30px' } }}
         index={3}
         concaveDivider
-        concaveBackgroundLight={theme.colors.background}
-        concaveBackgroundDark={MIDBLUEFILL_DARK}
+        clipFill={{ light: theme.colors.background, dark: MIDBLUEFILL_DARK }}
         curvePosition="top"
         dividerComponent={
           <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
@@ -313,8 +311,7 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
         concaveDivider
-        concaveBackgroundLight={LIGHTBLUEFILL}
-        concaveBackgroundDark={LIGHTBLUEFILL_DARK}
+        clipFill={{ light: LIGHTBLUEFILL, dark: LIGHTBLUEFILL_DARK }}
         curvePosition="top"
         background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
         index={4}
@@ -327,9 +324,7 @@ const TradingCompetition = () => {
         containerProps={{ style: { marginTop: '-1px' } }}
         index={5}
         curvePosition="top"
-        concaveBackgroundLight="#F3EFFF"
-        concaveBackgroundDark={LIGHTBLUEFILL_DARK}
-        curveFillLight="#FAF9FA"
+        clipFill={{ light: '#F3EFFF', dark: LIGHTBLUEFILL_DARK }}
         dividerComponent={
           <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
             {t('Rules')}
@@ -344,7 +339,7 @@ const TradingCompetition = () => {
         // containerProps={{ style: { marginTop: '-1px' } }}
         index={6}
         curvePosition="top"
-        concaveBackgroundLight={DARKFILL}
+        clipFill={{ light: DARKFILL }}
         background={DARKBG}
       >
         <Flex alignItems="center">
