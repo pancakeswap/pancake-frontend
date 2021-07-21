@@ -16,18 +16,7 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/easterPhases'
 import PageSection from 'components/PageSection'
-import {
-  DARKBG,
-  DARKFILL,
-  MIDBLUEBG,
-  MIDBLUEBG_DARK,
-  MIDBLUEFILL,
-  MIDBLUEFILL_DARK,
-  LIGHTBLUEBG,
-  LIGHTBLUEBG_DARK,
-  LIGHTBLUEFILL,
-  LIGHTBLUEFILL_DARK,
-} from './pageSectionStyles'
+import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
 import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
 import Countdown from './components/Countdown'
 import YourScore from './components/YourScore'
@@ -61,20 +50,6 @@ const BattleBannerSection = styled(PageSection)`
   margin-top: -32px;
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-top: -64px;
-  }
-`
-
-const YourScoreSection = styled(PageSection)`
-  margin-top: -32px;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: -64px;
-  }
-`
-
-const PrizesSection = styled(PageSection)`
-  margin: -32px 0;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin: -64px 0;
   }
 `
 
@@ -237,10 +212,10 @@ const TradingCompetition = () => {
       </BattleBannerSection>
       <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
-        concaveDivider
-        clipFill={{ light: MIDBLUEFILL, dark: MIDBLUEFILL_DARK }}
-        dividerPosition="top"
         background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
+        concaveDivider
+        clipFill={{ light: '#CCD8F0', dark: '#434575' }}
+        dividerPosition="top"
         index={2}
         dividerComponent={
           shouldHideCta ? null : (
@@ -261,7 +236,7 @@ const TradingCompetition = () => {
           )
         }
       >
-        <Box mt={shouldHideCta ? '0px' : ['94px', null, '36px']} mb={['24px', null, '48px']}>
+        <Box mt={shouldHideCta ? '0px' : ['94px', null, '36px']} mb="64px">
           {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
           {currentPhase.state === REGISTRATION ? (
             <HowToJoin />
@@ -286,7 +261,7 @@ const TradingCompetition = () => {
         containerProps={{ style: { marginTop: '-30px' } }}
         index={3}
         concaveDivider
-        clipFill={{ light: theme.colors.background, dark: MIDBLUEFILL_DARK }}
+        clipFill={{ light: theme.colors.background }}
         dividerPosition="top"
         dividerComponent={
           <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
@@ -294,7 +269,7 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
       >
-        <Box mt="54px">
+        <Box my="64px">
           <TeamRanks
             team1LeaderboardInformation={team1LeaderboardInformation}
             team2LeaderboardInformation={team2LeaderboardInformation}
@@ -311,7 +286,7 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
         concaveDivider
-        clipFill={{ light: LIGHTBLUEFILL, dark: LIGHTBLUEFILL_DARK }}
+        clipFill={{ light: '#E5FDFF', dark: '#313D5C' }}
         dividerPosition="top"
         background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
         index={4}
@@ -324,22 +299,22 @@ const TradingCompetition = () => {
         containerProps={{ style: { marginTop: '-1px' } }}
         index={5}
         dividerPosition="top"
-        clipFill={{ light: '#F3EFFF', dark: LIGHTBLUEFILL_DARK }}
+        clipFill={{ light: LIGHTBLUEBG, dark: LIGHTBLUEBG_DARK }}
         dividerComponent={
           <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
             {t('Rules')}
           </RibbonWithImage>
         }
       >
-        <Box mt="32px">
+        <Box mt="64px">
           <Rules />
         </Box>
       </PageSection>
       <PageSection
-        // containerProps={{ style: { marginTop: '-1px' } }}
         index={6}
         dividerPosition="top"
-        clipFill={{ light: DARKFILL }}
+        dividerFill={{ light: '#191326' }}
+        clipFill={{ light: theme.colors.background }}
         background={DARKBG}
       >
         <Flex alignItems="center">
