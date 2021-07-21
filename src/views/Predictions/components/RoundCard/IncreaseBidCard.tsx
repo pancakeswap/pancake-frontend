@@ -101,7 +101,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid,
   const isDisabled = amount.lte(lastBid.amount)
 
   const submitBid = () => {
-    getMausoleumContract(web3).methods.increaseBid(aid, amount.minus(lastBid.amount))
+    getMausoleumContract(web3).methods.increaseBid(aid, amount.minus(userInfo.bid).toString())
       .send({from: account() })
   }
 
@@ -111,12 +111,12 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid,
   }
 
   const handleUnlock = () => {
-    getMausoleumContract(web3).methods.unlockFeeInBnb(aid).call()
+    getMausoleumContract().methods.unlockFeeInBnb(aid).call()
       .then(res => {
         getMausoleumContract(web3).methods.unlock(aid)
-          .send({from: account(), value: res})
+          .send({from: account(), value: res.toString()})
           .then(() => {
-            getMausoleumContract(web3).methods.userInfo(aid, account()).call()
+            getMausoleumContract().methods.userInfo(aid, account()).call()
               .then(userInfoRes => {
                 setLatestUserInfo(userInfoRes)
                 setPaidUnlockFee(true)

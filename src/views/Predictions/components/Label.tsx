@@ -90,15 +90,15 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ userInfo }) => {
           <LinkExternal
             href={`${BASE_EXCHANGE_URL}/#/add/${auctions[0].token0}/${auctions[0].token1}`}
             style={{
-              width: '100px',
+              width: '200px',
               justifyContent: 'center',
               position: 'relative',
               right: '10px',
             }}
           >
-            Get BT
+            Get BT (Bid Tokens)
           </LinkExternal>
-        <Label dir='right'>
+        <Label dir='right' style={{width: "170px"}}>
           <Title bold color='secondary'>
             Your Bid
           </Title>

@@ -2,7 +2,7 @@ import artists from '../config/constants/artists'
 
 const auctions = [
   {
-    aid: 8,
+    aid: 2,
     name: "Patient Zero",
     bidToken: "0x9c96a44113927dD2870beb4dcBd82a149B467a51",
     prizeDescription: 'Not much is known about the origin of the first humans gone zombie. We do know this one loved tacos.',
