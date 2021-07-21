@@ -239,7 +239,7 @@ const TradingCompetition = () => {
         containerProps={{ style: { marginTop: '-30px' } }}
         concaveDivider
         clipFill={{ light: MIDBLUEFILL, dark: MIDBLUEFILL_DARK }}
-        curvePosition="top"
+        dividerPosition="top"
         background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
         index={2}
         dividerComponent={
@@ -287,7 +287,7 @@ const TradingCompetition = () => {
         index={3}
         concaveDivider
         clipFill={{ light: theme.colors.background, dark: MIDBLUEFILL_DARK }}
-        curvePosition="top"
+        dividerPosition="top"
         dividerComponent={
           <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
             {t('Team Ranks')}
@@ -312,7 +312,7 @@ const TradingCompetition = () => {
         }
         concaveDivider
         clipFill={{ light: LIGHTBLUEFILL, dark: LIGHTBLUEFILL_DARK }}
-        curvePosition="top"
+        dividerPosition="top"
         background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
         index={4}
       >
@@ -323,7 +323,7 @@ const TradingCompetition = () => {
       <PageSection
         containerProps={{ style: { marginTop: '-1px' } }}
         index={5}
-        curvePosition="top"
+        dividerPosition="top"
         clipFill={{ light: '#F3EFFF', dark: LIGHTBLUEFILL_DARK }}
         dividerComponent={
           <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
@@ -338,7 +338,7 @@ const TradingCompetition = () => {
       <PageSection
         // containerProps={{ style: { marginTop: '-1px' } }}
         index={6}
-        curvePosition="top"
+        dividerPosition="top"
         clipFill={{ light: DARKFILL }}
         background={DARKBG}
       >

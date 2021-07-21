@@ -30,7 +30,7 @@ const Home: React.FC = () => {
         index={2}
         concaveDivider
         concaveBackgroundLight={HERO_SVG_BOTTOM}
-        curvePosition="bottom"
+        dividerPosition="bottom"
       >
         <Hero />
       </PageSection> */}
