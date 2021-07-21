@@ -1765,6 +1765,15 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://safemoon.net/',
   },
+  clucoin: {
+    symbol: 'CLU',
+    address: {
+      56: '0x1162e2efce13f99ed259ffc24d99108aaa0ce935',
+      97: '',
+    },
+    decimals: 9,
+    projectLink: 'https://clucoin.com/',
+  },  
 }
 
 export default tokens
