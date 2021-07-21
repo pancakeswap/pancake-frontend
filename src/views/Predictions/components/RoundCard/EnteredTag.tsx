@@ -1,7 +1,7 @@
 import React from 'react'
 import { ethers } from 'ethers'
 import styled from 'styled-components'
-import { CheckmarkCircleIcon, Tag, useTooltip } from '@pancakeswap/uikit'
+import { CheckmarkCircleIcon, CheckmarkCircleFillIcon, Tag, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatBnbv2 } from '../../helpers'
 
@@ -26,8 +26,9 @@ const EnteredTag: React.FC<EnteredTagProps> = ({ amount, hasClaimed = false }) =
     <>
       <span ref={targetRef}>
         <StyledEnteredTag
-          variant={hasClaimed ? 'success' : 'secondary'}
-          startIcon={<CheckmarkCircleIcon width="18px" />}
+          variant="secondary"
+          outline={!hasClaimed}
+          startIcon={hasClaimed ? <CheckmarkCircleFillIcon width="18px" /> : <CheckmarkCircleIcon width="18px" />}
         >
           {hasClaimed ? t('Claimed') : t('Entered')}
         </StyledEnteredTag>{' '}
