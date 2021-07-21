@@ -20,6 +20,9 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   const hasEntered = ledger ? ledger.amount.gt(0) : false
   const hasEnteredUp = hasEntered && ledger.position === BetPosition.BULL
   const hasEnteredDown = hasEntered && ledger.position === BetPosition.BEAR
+  const hasClaimedUp = hasEntered && ledger.claimed && ledger.position === BetPosition.BULL
+  const hasClaimedDown = hasEntered && ledger.claimed && ledger.position === BetPosition.BEAR
+
   const bullMultiplier = getMultiplierv2(totalAmount, bullAmount)
   const bearMultiplier = getMultiplierv2(totalAmount, bearAmount)
 
@@ -65,6 +68,8 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
       round={round}
       hasEnteredDown={hasEnteredDown}
       hasEnteredUp={hasEnteredUp}
+      hasClaimedDown={hasClaimedDown}
+      hasClaimedUp={hasClaimedUp}
       betAmount={ledger?.amount}
       bullMultiplier={formattedBullMultiplier}
       bearMultiplier={formattedbearMultiplier}

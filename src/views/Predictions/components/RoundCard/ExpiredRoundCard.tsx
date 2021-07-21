@@ -20,6 +20,8 @@ interface ExpiredRoundCardProps {
   betAmount?: NodeLedger['amount']
   hasEnteredUp: boolean
   hasEnteredDown: boolean
+  hasClaimedUp: boolean
+  hasClaimedDown: boolean
   bullMultiplier: string
   bearMultiplier: string
 }
@@ -38,6 +40,8 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   betAmount,
   hasEnteredUp,
   hasEnteredDown,
+  hasClaimedUp,
+  hasClaimedDown,
   bullMultiplier,
   bearMultiplier,
 }) => {
@@ -72,6 +76,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
             multiplier={bullMultiplier}
             isActive={betPosition === BetPosition.BULL}
             hasEntered={hasEnteredUp}
+            hasClaimed={hasClaimedUp}
           />
           <RoundResult round={round} hasFailed={hasRoundFailed} />
           <MultiplierArrow
@@ -80,6 +85,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
             betPosition={BetPosition.BEAR}
             isActive={betPosition === BetPosition.BEAR}
             hasEntered={hasEnteredDown}
+            hasClaimed={hasClaimedDown}
           />
         </CardBody>
       </StyledExpiredRoundCard>

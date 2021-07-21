@@ -7,17 +7,15 @@ import { formatBnbv2 } from '../../helpers'
 
 interface EnteredTagProps {
   amount?: ethers.BigNumber
+  hasClaimed?: boolean
 }
 
-const StyledEnteredTag = styled(Tag).attrs({
-  variant: 'secondary',
-  startIcon: <CheckmarkCircleIcon width="18px" />,
-})`
+const StyledEnteredTag = styled(Tag)`
   font-weight: bold;
   text-transform: uppercase;
 `
 
-const EnteredTag: React.FC<EnteredTagProps> = ({ amount }) => {
+const EnteredTag: React.FC<EnteredTagProps> = ({ amount, hasClaimed = false }) => {
   const { t } = useTranslation()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(amount)} BNB`}</div>,
@@ -27,7 +25,12 @@ const EnteredTag: React.FC<EnteredTagProps> = ({ amount }) => {
   return (
     <>
       <span ref={targetRef}>
-        <StyledEnteredTag>{t('Entered')}</StyledEnteredTag>{' '}
+        <StyledEnteredTag
+          variant={hasClaimed ? 'success' : 'secondary'}
+          startIcon={<CheckmarkCircleIcon width="18px" />}
+        >
+          {hasClaimed ? t('Claimed') : t('Entered')}
+        </StyledEnteredTag>{' '}
       </span>{' '}
       {tooltipVisible && tooltip}
     </>
