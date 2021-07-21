@@ -271,7 +271,7 @@
   "Timeframe": "期間",
   "CAKE per $1000": "$1000当たりのCAKE",
   "Calculated based on current rates.": "現在のレートで計算されています。",
-  "Compounding %freq%x daily.": "複利計算は1日%freq%x回。",
+  "Compounding %freq%x daily.": "複利計算は1日%freq%回。",
   "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "すべての数値は便宜的に推定されており、利益を保証するものではありません。",
   "You can't change this once you click Confirm.": "確定をクリックすると、以降で変更することはできません。",
   "Until ticket sale": "宝くじ券販売開始までの時間",
