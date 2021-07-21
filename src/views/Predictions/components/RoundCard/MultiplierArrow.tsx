@@ -92,7 +92,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
 
   if (betPosition === BetPosition.BEAR) {
     return (
-      <Box position="relative">
+      <Box mt="-1px" position="relative">
         <ArrowWrapper>
           <RoundMultiplierDownArrow isActive={isActive} />
           {getEnteredTag({ bottom: 0, right: 0 })}
@@ -108,7 +108,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   }
 
   return (
-    <Box position="relative">
+    <Box mb="-1px" position="relative">
       <ArrowWrapper>
         <RoundMultiplierUpArrow isActive={isActive} />
         {getEnteredTag({ top: 0, left: 0 })}

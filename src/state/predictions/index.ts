@@ -279,13 +279,11 @@ export const predictionsSlice = createSlice({
     })
     builder.addCase(fetchHistory.rejected, (state) => {
       state.isFetchingHistory = false
-      state.isHistoryPaneOpen = true
     })
     builder.addCase(fetchHistory.fulfilled, (state, action) => {
       const { account, bets } = action.payload
 
       state.isFetchingHistory = false
-      state.isHistoryPaneOpen = true
       state.history[account] = bets
     })
   },
