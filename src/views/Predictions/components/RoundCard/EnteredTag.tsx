@@ -13,6 +13,7 @@ interface EnteredTagProps {
 const StyledEnteredTag = styled(Tag)`
   font-weight: bold;
   text-transform: uppercase;
+  background: ${({ theme }) => theme.colors.background};
 `
 
 const EnteredTag: React.FC<EnteredTagProps> = ({ amount, hasClaimed = false }) => {
