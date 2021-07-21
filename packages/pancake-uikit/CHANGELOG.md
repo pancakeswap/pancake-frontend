@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.41.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.40.4...@pancakeswap/uikit@0.41.0) (2021-07-21)
+
+
+### Features
+
+* **uikit:** Wallet icons ([#206](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/206)) ([7bff4b5](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/7bff4b57a92ba6363187af429b26ef2dd2658830))
+
+
+
+
+
 ## [0.40.4](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.40.3...@pancakeswap/uikit@0.40.4) (2021-07-16)
 
 **Note:** Version bump only for package @pancakeswap/uikit
