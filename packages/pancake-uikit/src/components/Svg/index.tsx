@@ -20,6 +20,7 @@ export { default as CircleOutlineIcon } from "./Icons/CircleOutline";
 export { default as ChartIcon } from "./Icons/Chart";
 export { default as CheckmarkIcon } from "./Icons/Checkmark";
 export { default as CheckmarkCircleIcon } from "./Icons/CheckmarkCircle";
+export { default as CheckmarkCircleFillIcon } from "./Icons/CheckmarkCircleFill";
 export { default as ChevronDownIcon } from "./Icons/ChevronDown";
 export { default as ChevronLeftIcon } from "./Icons/ChevronLeft";
 export { default as ChevronRightIcon } from "./Icons/ChevronRight";
