@@ -10,6 +10,7 @@ import { HERO_BOTTOM_BG, HERO_SVG_BOTTOM, HERO_TOP_BG } from './pageSectionStyle
 import Hero from './Components/Hero'
 import { swapSectionData, earnSectionData, cakeSectionData } from './Components/SalesSection/data'
 import SalesSection from './Components/SalesSection'
+import WinSection from './Components/WinSection'
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
@@ -33,6 +34,14 @@ const Home: React.FC = () => {
         hasCurvedDivider={false}
       >
         <SalesSection {...earnSectionData} />
+      </PageSection>
+      <PageSection
+        innerProps={{ style: { margin: '0', width: '100%' } }}
+        background="linear-gradient(180deg, #6FB6F1 0%, #EAF2F6 100%)"
+        index={2}
+        hasCurvedDivider={false}
+      >
+        <WinSection />
       </PageSection>
       <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}

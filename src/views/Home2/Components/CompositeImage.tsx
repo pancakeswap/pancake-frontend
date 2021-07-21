@@ -32,6 +32,11 @@ const Wrapper = styled(Box)`
     animation: ${floatingAnim('6px', '5px')} 3s ease-in-out infinite;
     animation-delay: 0.33s;
   }
+
+  & :nth-child(5) {
+    animation: ${floatingAnim('4px', '12px')} 3s ease-in-out infinite;
+    animation-delay: 0s;
+  }
 `
 
 const DummyImg = styled.img`
