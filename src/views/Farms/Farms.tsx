@@ -335,46 +335,44 @@ const Farms: React.FC = () => {
     }
 
     return (
-      <div>
-        <FlexLayout>
-          <Route exact path={`${path}`}>
-            {chosenFarmsMemoized.map((farm) => (
-              <FarmCard
-                key={farm.pid}
-                farm={farm}
-                displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
-                cakePrice={cakePrice}
-                account={account}
-                removed={false}
-              />
-            ))}
-          </Route>
-          <Route exact path={`${path}/history`}>
-            {chosenFarmsMemoized.map((farm) => (
-              <FarmCard
-                key={farm.pid}
-                farm={farm}
-                displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
-                cakePrice={cakePrice}
-                account={account}
-                removed
-              />
-            ))}
-          </Route>
-          <Route exact path={`${path}/archived`}>
-            {chosenFarmsMemoized.map((farm) => (
-              <FarmCard
-                key={farm.pid}
-                farm={farm}
-                displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
-                cakePrice={cakePrice}
-                account={account}
-                removed
-              />
-            ))}
-          </Route>
-        </FlexLayout>
-      </div>
+      <FlexLayout>
+        <Route exact path={`${path}`}>
+          {chosenFarmsMemoized.map((farm) => (
+            <FarmCard
+              key={farm.pid}
+              farm={farm}
+              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+              cakePrice={cakePrice}
+              account={account}
+              removed={false}
+            />
+          ))}
+        </Route>
+        <Route exact path={`${path}/history`}>
+          {chosenFarmsMemoized.map((farm) => (
+            <FarmCard
+              key={farm.pid}
+              farm={farm}
+              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+              cakePrice={cakePrice}
+              account={account}
+              removed
+            />
+          ))}
+        </Route>
+        <Route exact path={`${path}/archived`}>
+          {chosenFarmsMemoized.map((farm) => (
+            <FarmCard
+              key={farm.pid}
+              farm={farm}
+              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+              cakePrice={cakePrice}
+              account={account}
+              removed
+            />
+          ))}
+        </Route>
+      </FlexLayout>
     )
   }
 
