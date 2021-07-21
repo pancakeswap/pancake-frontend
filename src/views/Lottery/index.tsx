@@ -42,7 +42,7 @@ const Lottery = () => {
 
   return (
     <LotteryPage>
-      <PageSection background={TITLE_BG} svgFill={theme.colors.overlay} index={1} hasCurvedDivider={false}>
+      <PageSection background={TITLE_BG} index={1} hasCurvedDivider={false}>
         <Hero />
       </PageSection>
       <PageSection

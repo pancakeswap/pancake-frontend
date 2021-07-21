@@ -94,7 +94,7 @@ const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
-  const { isDark } = useTheme()
+  const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContract()
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.LIVE)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
@@ -229,10 +229,20 @@ const TradingCompetition = () => {
 
   return (
     <CompetitionPage>
-      <BattleBannerSection
-        background={DARKBG}
-        svgFill={DARKFILL}
-        index={5}
+      <BattleBannerSection background={DARKBG} hasCurvedDivider={false} index={1}>
+        <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
+          <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
+          <BattleBanner />
+        </BannerFlex>
+      </BattleBannerSection>
+      <PageSection
+        containerProps={{ style: { marginTop: '-30px' } }}
+        concaveDivider
+        concaveBackgroundLight={MIDBLUEFILL}
+        concaveBackgroundDark={MIDBLUEFILL_DARK}
+        curvePosition="top"
+        background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
+        index={2}
         dividerComponent={
           shouldHideCta ? null : (
             <BattleCta
@@ -252,22 +262,7 @@ const TradingCompetition = () => {
           )
         }
       >
-        <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
-          <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
-          <BattleBanner />
-        </BannerFlex>
-      </BattleBannerSection>
-      <YourScoreSection
-        background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
-        svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
-        index={4}
-        dividerComponent={
-          <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
-            {t('Team Ranks')}
-          </RibbonWithImage>
-        }
-      >
-        <Box mt={shouldHideCta ? '0px' : ['94px', null, '36px']} mb={['24px', null, '0']}>
+        <Box mt={shouldHideCta ? '0px' : ['94px', null, '36px']} mb={['24px', null, '48px']}>
           {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
           {currentPhase.state === REGISTRATION ? (
             <HowToJoin />
@@ -287,12 +282,17 @@ const TradingCompetition = () => {
             />
           )}
         </Box>
-      </YourScoreSection>
+      </PageSection>
       <PageSection
+        containerProps={{ style: { marginTop: '-30px' } }}
         index={3}
+        concaveDivider
+        concaveBackgroundLight={theme.colors.background}
+        concaveBackgroundDark={MIDBLUEFILL_DARK}
+        curvePosition="top"
         dividerComponent={
-          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-            {t('Prizes')}
+          <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
+            {t('Team Ranks')}
           </RibbonWithImage>
         }
       >
@@ -305,19 +305,31 @@ const TradingCompetition = () => {
           />
         </Box>
       </PageSection>
-      <PrizesSection
+      <PageSection
+        containerProps={{ style: { marginTop: '-30px' } }}
+        dividerComponent={
+          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
+            {t('Prizes')}
+          </RibbonWithImage>
+        }
+        concaveDivider
+        concaveBackgroundLight={LIGHTBLUEFILL}
+        concaveBackgroundDark={LIGHTBLUEFILL_DARK}
+        curvePosition="top"
         background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
-        svgFill={isDark ? LIGHTBLUEFILL_DARK : LIGHTBLUEFILL}
-        index={2}
-        hasCurvedDivider={false}
+        index={4}
       >
         <Box my="64px">
           <PrizesInfo />
         </Box>
-      </PrizesSection>
+      </PageSection>
       <PageSection
-        index={3}
+        containerProps={{ style: { marginTop: '-1px' } }}
+        index={5}
         curvePosition="top"
+        concaveBackgroundLight="#F3EFFF"
+        concaveBackgroundDark={LIGHTBLUEFILL_DARK}
+        curveFillLight="#FAF9FA"
         dividerComponent={
           <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
             {t('Rules')}
@@ -328,7 +340,13 @@ const TradingCompetition = () => {
           <Rules />
         </Box>
       </PageSection>
-      <PageSection background={DARKBG} svgFill={DARKFILL} index={4} curvePosition="top">
+      <PageSection
+        // containerProps={{ style: { marginTop: '-1px' } }}
+        index={6}
+        curvePosition="top"
+        concaveBackgroundLight={DARKFILL}
+        background={DARKBG}
+      >
         <Flex alignItems="center">
           {shouldHideCta ? null : (
             <Flex height="fit-content">

@@ -55,6 +55,8 @@ const PageSection: React.FC<PageSectionProps> = ({
   concaveDivider = false,
   concaveBackgroundDark,
   concaveBackgroundLight,
+  curveFillLight,
+  curveFillDark,
   containerProps,
   innerProps,
   ...props
@@ -88,6 +90,8 @@ const PageSection: React.FC<PageSectionProps> = ({
           dividerComponent={dividerComponent}
           concaveBackgroundDark={concaveBackgroundDark}
           concaveBackgroundLight={concaveBackgroundLight}
+          curveFillLight={curveFillLight}
+          curveFillDark={curveFillDark}
         />
       )}
       <BackgroundColor background={background} index={index} p={getPadding()} {...props}>
@@ -102,6 +106,8 @@ const PageSection: React.FC<PageSectionProps> = ({
           dividerComponent={dividerComponent}
           concaveBackgroundDark={concaveBackgroundDark}
           concaveBackgroundLight={concaveBackgroundLight}
+          curveFillLight={curveFillLight}
+          curveFillDark={curveFillDark}
         />
       )}
     </Box>
