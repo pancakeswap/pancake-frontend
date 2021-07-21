@@ -271,7 +271,7 @@
   "Timeframe": "Часові рамки",
   "CAKE per $1000": "CAKE на $1000",
   "Calculated based on current rates.": "Обчислено на основі поточних ставок.",
-  "Compounding %freq%x daily.": "Домішування %freq%x щодня.",
+  "Compounding %freq%x daily.": "Домішування стільки разів щодня: %freq%.",
   "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "Усі числа – це приблизні значення, надані заради вашої зручності. Вони не відображають гарантовані суми.",
   "You can't change this once you click Confirm.": "Якщо натиснути кнопку \"Підтвердити\", це значення вже не можна буде змінити.",
   "Until ticket sale": "до продажу квитка",
