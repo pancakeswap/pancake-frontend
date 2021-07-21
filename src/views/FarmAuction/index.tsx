@@ -92,7 +92,6 @@ const FarmAuction = () => {
           p="24px 0"
           index={2}
           concaveDivider
-          clipFill={{ light: theme.colors.background }}
           dividerPosition="top"
         >
           <AuctionDetail />
