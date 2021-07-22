@@ -286,7 +286,10 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
         concaveDivider
-        clipFill={{ light: '#E5FDFF', dark: '#313D5C' }}
+        clipFill={{
+          light: 'linear-gradient(139.73deg, #e5fcfe 0%, #ecf6ff 100%)',
+          dark: 'linear-gradient(139.73deg, #303d5b 0%, #363457 100%)',
+        }}
         dividerPosition="top"
         background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
         index={4}
@@ -299,7 +302,10 @@ const TradingCompetition = () => {
         containerProps={{ style: { marginTop: '-1px' } }}
         index={5}
         dividerPosition="top"
-        clipFill={{ light: LIGHTBLUEBG, dark: LIGHTBLUEBG_DARK }}
+        clipFill={{
+          light: 'linear-gradient(139.73deg, #ecf5ff 0%, #f2effe 100%)',
+          dark: 'linear-gradient(139.73deg, #383357 0%, #3d2b53 100%)',
+        }}
         dividerComponent={
           <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
             {t('Rules')}
