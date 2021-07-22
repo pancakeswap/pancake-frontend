@@ -43,7 +43,7 @@ export const ConvexTop: React.FC<CurveProps> = ({ clipFill }) => (
     <svg width="0" height="0">
       <defs>
         <clipPath id="topConvexCurve" clipPathUnits="objectBoundingBox">
-          <path d="M 0,1 L 0,0 L 1,0 L 1,1 C 0.75 0, 0.25 0.1, 0 1 Z" />
+          <path d="M 0,1 L 0,0 L 1,0 L 1,1 C 0.75 0, .25 0, 0 1 Z" />
         </clipPath>
       </defs>
     </svg>
