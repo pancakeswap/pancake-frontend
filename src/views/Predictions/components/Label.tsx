@@ -102,7 +102,7 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ userInfo }) => {
           <Title bold color='secondary'>
             Your Bid
           </Title>
-          <Interval fontSize='12px'>{Math.round(getBalanceAmount(userInfo.bid).toNumber() * 100) / 100}</Interval>
+          <Interval paddingLeft="3px" fontSize='12px'>{Math.round(getBalanceAmount(userInfo.bid).toNumber() * 100) / 100} BT</Interval>
         </Label>
       </Flex>
     </Box>

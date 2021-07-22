@@ -23,6 +23,7 @@ import { getBalanceAmount } from '../../../../utils/formatBalance'
 import { account } from '../../../../redux/get'
 import auctions from '../../../../redux/auctions'
 import { getMausoleumAddress } from '../../../../utils/addressHelpers'
+import { useERC20, useMausoleum } from '../../../../hooks/useContract'
 
 // PrizePoolRow
 interface CurrentBidProps extends FlexProps {
@@ -42,10 +43,10 @@ export const CurrentBid: React.FC<CurrentBidProps> = ({ totalAmount, ...props })
 }
 
 interface OpenRoundCardProps {
-  lastBid: any,
-  userInfo: any,
-  aid: number,
-  id: number,
+  lastBid: any
+  userInfo: any
+  aid: number
+  id: number
   setRefresh: any
   refresh: boolean
 }
@@ -57,8 +58,8 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
   })
   const { t } = useTranslation()
   const { isSettingPosition, position } = state
-  const web3 = useWeb3()
-
+  const mausoleum = useMausoleum()
+  const bidToken = useERC20(auctions[0].bidToken)
 
   const handleBack = () =>
     setState((prevState) => ({
@@ -103,23 +104,23 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
   const isDisabled = amount.lte(lastBid.amount)
 
   const submitBid = () => {
-    getMausoleumContract(web3).methods.increaseBid(aid, amount.minus(userInfo.bid).toString())
+    mausoleum.methods.increaseBid(aid, amount.minus(userInfo.bid).toString())
       .send({from: account() })
       .then(()=>{setRefresh(!refresh)})
   }
 
   const withdrawBid = () => {
-    getMausoleumContract(web3).methods.withdrawBid(aid)
+    mausoleum.methods.withdrawBid(aid)
       .send({from: account()})
   }
 
   const handleUnlock = () => {
-    getMausoleumContract().methods.unlockFeeInBnb(aid).call()
+    mausoleum.methods.unlockFeeInBnb(aid).call()
       .then(res => {
-        getMausoleumContract(web3).methods.unlock(aid)
+        mausoleum.methods.unlock(aid)
           .send({from: account(), value: res.toString()})
           .then(() => {
-            getMausoleumContract().methods.userInfo(aid, account()).call()
+            mausoleum.methods.userInfo(aid, account()).call()
               .then(userInfoRes => {
                 setLatestUserInfo(userInfoRes)
                 setPaidUnlockFee(true)
@@ -129,7 +130,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
   }
 
   const handleApprove = () => {
-    getBep20Contract(auctions[0].bidToken, web3).methods.approve(getMausoleumAddress(), ethers.constants.MaxUint256)
+    bidToken.methods.approve(getMausoleumAddress(), ethers.constants.MaxUint256)
       .send({from: account()})
       .then(() => {
         setAllowance(new BigNumber(ethers.constants.MaxUint256.toString()))

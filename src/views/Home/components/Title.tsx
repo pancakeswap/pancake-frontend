@@ -20,7 +20,7 @@ const Title = () => {
     const {t} = useTranslation()
     return (
         <>
-        <Container>
+        <Container style={{paddingTop: "10px"}}>
                 <StyledHeading>{t('Rug Zombie')}</StyledHeading>
         </Container>
         <Container>

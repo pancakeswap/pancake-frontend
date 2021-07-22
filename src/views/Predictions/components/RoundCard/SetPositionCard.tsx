@@ -19,7 +19,7 @@ import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useWeb3React } from '@web3-react/core'
 import { useGetMinBetAmount } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { usePredictionsContract } from 'hooks/useContract'
+import { useMausoleum, usePredictionsContract } from 'hooks/useContract'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
 import { BetPosition } from 'state/types'
@@ -81,6 +81,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
   const { toastError } = useToast()
+  const mausoleum = useMausoleum()
 
   const [maxBalance, setMaxBalance] = useState(0)
   const [bnMaxBalance, setBnMaxBalance] = useState(BIG_ZERO)
@@ -135,16 +136,13 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     swiper.attachEvents()
   }
 
+
   const { fallback, disabled } = getButtonProps(valueAsBn, new BigNumber(maxBalance), minBetAmountBalance)
-  const web3 = useWeb3()
   const handleEnterPosition = () => {
-    const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
     let decimalValue = getDecimalAmount(valueAsBn)
     decimalValue = decimalValue.gt(maxBalance) ? new BigNumber(maxBalance) : decimalValue
 
-    console.log(decimalValue.toString())
-    console.log(new BigNumber(maxBalance).toString())
-    getMausoleumContract(web3).methods.increaseBid(auctions[0].aid, decimalValue)
+    mausoleum.methods.increaseBid(auctions[0].aid, decimalValue)
       .send({ from: account })
       .once('sending', () => {
         setIsTxPending(true)

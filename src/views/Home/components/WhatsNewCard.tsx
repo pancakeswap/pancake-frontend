@@ -33,7 +33,7 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. Win the one of a kind NFT prize in the Mausoleum! (BSC is slow today, refresh page if you have any issues)</Text>
+            <Text fontSize='14px'>1. Enter the mausoleum.</Text>
           </Row>
           <Row>
             <Text fontSize='14px'>2. Burger Swap and RUGBIDEN Graves are out!</Text>
