@@ -8,6 +8,8 @@ import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
+import { useTranslation } from 'contexts/Localization'
+import useToast from 'hooks/useToast'
 import { BIG_TEN, BIG_ZERO } from '../../../../utils/bigNumber'
 import { Grave } from '../../../../redux/types'
 import { grave } from '../../../../redux/get'
@@ -27,7 +29,10 @@ const StyledButton = styled(Button)`
 const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ pid, zombieUsdPrice, updateResult, onDismiss }) => {
     const {userInfo, poolInfo} = grave(pid)
     const currentDate = Math.floor(Date.now() / 1000);
-
+    
+    const { toastSuccess } = useToast()
+    const { t } = useTranslation()
+    
     const drFrankenstein = useDrFrankenstein();
     const { account } = useWeb3React();
 
@@ -86,12 +91,14 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ pid, zombieUs
             drFrankenstein.methods.leaveStakingEarly(formattedAmount)
                 .send({ from: account }).then(() => {
                     updateResult(pid);
+                    toastSuccess(t('Withdrew ZMBE'))
                     onDismiss()
                 })
         } else {
             drFrankenstein.methods.withdrawEarly(pid, formattedAmount)
                 .send({ from: account }).then(() => {
                     updateResult(pid);
+                    toastSuccess(t('Withdrew ZMBE'))
                     onDismiss()
                 })
         }
@@ -108,12 +115,14 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ pid, zombieUs
             drFrankenstein.methods.leaveStaking(formattedAmount)
                 .send({ from: account }).then(() => {
                     updateResult(pid);
+                    toastSuccess(t('Withdrew ZMBE'))
                     onDismiss()
                 })
         } else {
             drFrankenstein.methods.withdraw(pid, formattedAmount)
                 .send({ from: account }).then(() => {
                     updateResult(pid);
+                    toastSuccess(t('Withdrew ZMBE'))
                     onDismiss()
                 })
         }
