@@ -1765,6 +1765,15 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://safemoon.net/',
   },
+  axs: {
+    symbol: 'AXS',
+    address: {
+      56: '0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://axieinfinity.com/',
+  },
 }
 
 export default tokens

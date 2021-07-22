@@ -59,6 +59,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 430,
+    lpSymbol: 'AXS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xC2d00De94795e60FB76Bc37d899170996cBdA436',
+    },
+    token: tokens.axs,
+    quoteToken: tokens.bnb,
+  },
+  {
     pid: 429,
     lpSymbol: 'CHESS-USDC LP',
     lpAddresses: {
