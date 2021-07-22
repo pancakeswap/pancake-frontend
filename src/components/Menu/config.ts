@@ -16,11 +16,11 @@ const config: MenuEntry[] = [
     icon: 'FarmIcon',
     href: '/tombs',
   },
-  // {
-  //   label: 'Mausoleum (BETA)',
-  //   icon: 'PredictionsIcon',
-  //   href: '/mausoleum/',
-  // },
+  {
+    label: 'Mausoleum (BETA)',
+    icon: 'PredictionsIcon',
+    href: '/mausoleum',
+  },
   {
     label: 'Spawning Pools',
     icon: 'PoolIcon',

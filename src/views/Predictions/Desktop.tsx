@@ -74,10 +74,12 @@ interface DesktopProps {
   bids: any[],
   lastBidId: number,
   userInfo: any,
-  aid: number
+  aid: number,
+  setRefresh: any,
+  refresh: boolean
 }
 
-const Desktop: React.FC<DesktopProps> = ({ bids, lastBidId, userInfo, aid }) => {
+const Desktop: React.FC<DesktopProps> = ({ bids, refresh, lastBidId, setRefresh, userInfo, aid }) => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
@@ -92,7 +94,7 @@ const Desktop: React.FC<DesktopProps> = ({ bids, lastBidId, userInfo, aid }) => 
       <ContentWrapper>
           <>
             <PositionsPane>
-              <Positions bids={bids} userInfo={userInfo} lastBidId={lastBidId} aid={aid}/>
+              <Positions bids={bids} refresh={refresh} setRefresh={setRefresh} userInfo={userInfo} lastBidId={lastBidId} aid={aid}/>
             </PositionsPane>
             <ChartPane isChartPaneOpen={isChartPaneOpen}>
               <ExpandChartButton

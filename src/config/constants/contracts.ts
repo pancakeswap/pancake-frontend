@@ -9,7 +9,7 @@ export default {
   },
   mausoleum: {
     97: '',
-    56: '0x1f400848b6a9233F69E57cB353cc27f20842726f',
+    56: '0x1E05b159db5F56cfEcf7b0fCAB5fba7E9A8b46Bb',
   },
   pancakeFactory: {
     97: '',

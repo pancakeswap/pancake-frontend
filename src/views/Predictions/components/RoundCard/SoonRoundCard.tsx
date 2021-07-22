@@ -36,7 +36,7 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({lastBidId, id}) => {
           <Text textAlign="center">
             <Text bold>{t('Auction End')}</Text>
             <Text fontSize="10px" bold>
-               July 23, 2021. Midnight EST
+               July 25, 2021. Midnight EST
             </Text>
           </Text>
         </RoundResultBox>

@@ -31,10 +31,12 @@ interface PositionsProps {
   bids: any[]
   lastBidId: number,
   userInfo: any,
-  aid: number
+  aid: number,
+  setRefresh: any,
+  refresh: boolean
 }
 
-const Positions: React.FC<PositionsProps> = ({ bids, lastBidId, userInfo, aid }) => {
+const Positions: React.FC<PositionsProps> = ({ bids, setRefresh,refresh, lastBidId, userInfo, aid }) => {
   const { setSwiper } = useSwiper()
   const initialIndex = Math.floor(1)
 
@@ -89,6 +91,8 @@ const Positions: React.FC<PositionsProps> = ({ bids, lastBidId, userInfo, aid })
                 userInfo={userInfo}
                 aid={aid}
                 id={lastBidId}
+                setRefresh={setRefresh}
+                refresh={refresh}
               /> :
               null
             }

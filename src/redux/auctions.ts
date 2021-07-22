@@ -1,14 +1,15 @@
 import artists from '../config/constants/artists'
+import { getZombieAddress } from '../utils/addressHelpers'
 
 const auctions = [
   {
-    aid: 2,
+    aid: 0,
     name: "Patient Zero",
-    bidToken: "0x9c96a44113927dD2870beb4dcBd82a149B467a51",
+    bidToken: "0x4dbaf6479f0afa9f03c2a7d611151fa5b53ecdc8",
     prizeDescription: 'Not much is known about the origin of the first humans gone zombie. We do know this one loved tacos.',
     artist: artists.jussjoshinduh,
-    token0: "0x6C786361c9502184f8788e7f0fe0Fe44d2567412",
-    token1: "0x70D9eFf50377a504f8e02f77Bb712C00F4C78698"
+    token0: "BNB",
+    token1: getZombieAddress()
   }
 ]
 

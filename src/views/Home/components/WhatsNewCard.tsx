@@ -33,16 +33,19 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. New Burger Swap & Rugbiden Graves? Checkout the Graves tab.</Text>
+            <Text fontSize='14px'>1. Win the one of a kind NFT prize in the Mausoleum! (BSC is slow today, refresh page if you have any issues)</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>2. Auctions and Spawning Pools delayed. The team decided to spend time polishing these features instead releasing them over the past weekend.</Text>
+            <Text fontSize='14px'>2. Burger Swap and RUGBIDEN Graves are out!</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>3. Releasing referral program along with some bigger news (1-2 weeks).</Text>
+            <Text fontSize='14px'>3. Spawning Pools are still coming.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>4. Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
+            <Text fontSize='14px'>4. Releasing referral program along with some bigger news (1-2 weeks).</Text>
+          </Row>
+          <Row>
+            <Text fontSize='14px'>5. Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
           </Row>
         </>
 

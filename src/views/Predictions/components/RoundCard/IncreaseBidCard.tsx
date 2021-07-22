@@ -45,10 +45,12 @@ interface OpenRoundCardProps {
   lastBid: any,
   userInfo: any,
   aid: number,
-  id: number
+  id: number,
+  setRefresh: any
+  refresh: boolean
 }
 
-const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid, id }) => {
+const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refresh, setRefresh, aid, id }) => {
   const [state, setState] = useState({
     isSettingPosition: false,
     position: BetPosition.BULL,
@@ -103,6 +105,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, aid,
   const submitBid = () => {
     getMausoleumContract(web3).methods.increaseBid(aid, amount.minus(userInfo.bid).toString())
       .send({from: account() })
+      .then(()=>{setRefresh(!refresh)})
   }
 
   const withdrawBid = () => {

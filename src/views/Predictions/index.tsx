@@ -23,8 +23,10 @@ const Predictions = () => {
   const [lastBidId, setLastBidId] = useState(0)
   const [userInfo, setUserInfo] = useState({})
   const [lastUpdate, setLastUpdate] = useState(Date.now())
+  const [refresh, setRefresh] = useState(false)
   const { account } = useWeb3React()
   const web3 = useWeb3()
+
 
   initialData(account)
 
@@ -43,6 +45,7 @@ const Predictions = () => {
     }
   }, [account, aid])
   useEffect(() => {
+    console.log(refresh)
     getMausoleumContract().methods.bidsLength(aid).call()
       .then(bidsLengthRes => {
         const multi = new MultiCall(web3);
@@ -64,7 +67,7 @@ const Predictions = () => {
       })
     // setInterval(() => fetchBids(), 5000);
   // }
-  },[aid, web3])
+  },[aid, refresh, web3])
 
   return (
     <>
@@ -73,7 +76,7 @@ const Predictions = () => {
        </Helmet>
        <SwiperProvider>
         <Container >
-           {isDesktop ? <Desktop bids={bids} lastBidId={lastBidId} userInfo={userInfo} aid={aid}/> : <Mobile bids={bids} lastBidId={lastBidId} userInfo={userInfo} aid={aid}/>}
+           {isDesktop ? <Desktop refresh={refresh} bids={bids} lastBidId={lastBidId} setRefresh={setRefresh} userInfo={userInfo} aid={aid}/> : <Mobile bids={bids} lastBidId={lastBidId} userInfo={userInfo} aid={aid}/>}
            <CollectWinningsPopup />
          </Container>
        </SwiperProvider>
