@@ -23,8 +23,8 @@ const NFTBanner: React.FC = () => {
                 {t('1st NFT Auction Starting Soon')}
             </Heading>
             <div>
-                <a href="/mausoleum" >
-                    {t('Enter the Mausoleum')}
+                <a href="/" >
+                    {t('Coming today (technical difficulties)')}
                 </a>
             </div>
             </CardBody>
