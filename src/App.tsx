@@ -3,6 +3,7 @@ import { Router, Route, Switch } from 'react-router-dom'
 import { ResetCSS } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
+import ToastListener from 'components/ToastListener'
 import { fetchLpReserves, fetchZmbeBnbAddress, getBnbPriceinBusd } from 'state/hooks'
 import { routes } from 'routes'
 import Menu from 'components/Menu'
@@ -68,6 +69,7 @@ const App: React.FC = () => {
           </Menu>
         </Switch>
       </SuspenseWithChunkError>
+      <ToastListener/>
     </Router>
   )
 }

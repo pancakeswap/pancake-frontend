@@ -4,19 +4,21 @@ import { useModal, BaseLayout } from '@rug-zombie-libs/uikit';
 import styled from 'styled-components'
 import tokens from 'config/constants/tokens';
 import { ethers } from 'ethers';
+import { useTranslation } from 'contexts/Localization'
 import { useIfoAllowance } from 'hooks/useAllowance';
 import useTokenBalance from 'hooks/useTokenBalance';
+import useToast from 'hooks/useToast'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import React, { useEffect, useState, useRef } from 'react';
 import BigNumber from 'bignumber.js'
 import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
+import { Token } from 'config/constants/types';
 import { useDrFrankenstein, useERC20 } from '../../../../hooks/useContract';
 import StakeModal from '../StakeModal';
 import StakeZombieModal from '../StakeZombieModal';
 import WithdrawZombieModal from '../WithdrawZombieModal';
 import * as get from '../../../../redux/get'
 import * as fetch from '../../../../redux/fetch'
-
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -41,7 +43,8 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
   const [isZombieAllowance, setZombieAllowance] = useState(!get.zombieAllowance().isZero());
   const [zombieBalance, setZombieBalance] = useState(get.zombieAllowance());
-
+  const { toastSuccess } = useToast()
+  const { t } = useTranslation()
   const [grave, setGrave] = useState(get.grave(pid))
   const { rug, userInfo } = grave
 
@@ -106,6 +109,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
     drFrankenstein.methods.unlockFeeInBnb(pid).call().then((res) => {
       drFrankenstein.methods.unlock(pid)
         .send({ from: get.account(), value: res }).then(() => {
+          toastSuccess(t('Grave unlocked'))
           onUpdate();
         })
     });
@@ -116,15 +120,17 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
       zmbeContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
         .send({ from: get.account() }).then(() => {
           console.log("approved zmbe")
+          toastSuccess(t('Approved ZMBE'))
           setZombieAllowance(true)
       })
     // }
   }
 
-  const handleApproveRug = () => {
+  const handleApproveRug = (token:Token) => {
     rugContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
       .send({ from: get.account() }).then((res) => {
         if (parseInt(res.toString()) !== 0) {
+          toastSuccess(t(`Approved ${token.symbol}`))
           setIsAllowanceForRugToken(true);
         } else {
           setIsAllowanceForRugToken(false);
@@ -158,7 +164,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
         userInfo.rugDeposited.toString() === '0' ?
           <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Deposit {rug.symbol}</button> :
           renderButtonsForGrave()
-        : <button onClick={handleApproveRug} className="btn btn-disabled w-100" type="button">Approve {rug.symbol}</button>
+        : <button onClick={() => {handleApproveRug(rug)}} className="btn btn-disabled w-100" type="button">Approve {rug.symbol}</button>
       :  <span className="total-earned text-shadow">Connect Wallet</span>}</div>
   }
 
