@@ -2,19 +2,16 @@ import React from 'react'
 import styled from 'styled-components'
 import { Heading, Text, BaseLayout } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import Page from 'components/Layout/Page'
-import useFetchLotteryForPromos from 'views/Home/hooks/useFetchLotteryForPromos'
 import PageSection from 'components/PageSection'
 import useTheme from 'hooks/useTheme'
 import { HERO_BOTTOM_BG, HERO_SVG_BOTTOM, HERO_TOP_BG } from './pageSectionStyles'
-import Hero from './Components/Hero'
-import { swapSectionData, earnSectionData, cakeSectionData } from './Components/SalesSection/data'
-import SalesSection from './Components/SalesSection'
-import WinSection from './Components/WinSection'
+import Hero from './components/Hero'
+import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
+import SalesSection from './components/SalesSection'
+import WinSection from './components/WinSection'
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
-  const { currentLotteryPrize } = useFetchLotteryForPromos()
   const { theme } = useTheme()
 
   return (
