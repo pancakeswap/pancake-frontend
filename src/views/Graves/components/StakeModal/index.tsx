@@ -11,6 +11,8 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import useToast from 'hooks/useToast'
+import { useTranslation } from 'contexts/Localization'
 import WarningModal from '../WarningModal'
 import WarningDepositRugModal from '../WarningDepositRugModal'
 import { Grave } from '../../../../redux/types'
@@ -30,6 +32,8 @@ const StyledButton = styled(Button)`
 const StakeModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismiss }) => {
   const { rug, pcsVersion } = grave(pid)
   let rugTokenBalance = BIG_ZERO;
+  const { toastSuccess } = useToast()
+  const { t } = useTranslation()
 
   if (pid !== 0) {
     rugTokenBalance = useTokenBalance(getAddress(rug.address));
@@ -68,6 +72,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismiss })
     drFrankenstein.methods.depositRug(pid, convertedStakeAmount)
       .send({ from: account }).then(()=>{
         updateResult(pid);
+        toastSuccess(t(`Deposited ${rug.symbol}`))
         onDismiss();
       })
   }
