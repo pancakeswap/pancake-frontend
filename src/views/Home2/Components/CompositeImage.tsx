@@ -49,13 +49,36 @@ const ImageWrapper = styled(Box)`
   left: 0;
 `
 
-const CompositeImage = ({ images }) => {
+enum Resolution {
+  MD = '1.5x',
+  LG = '2x',
+}
+interface ImageAttributes {
+  src: string
+  alt: string
+}
+
+export interface CompositeImageProps {
+  path: string
+  attributes: ImageAttributes[]
+}
+
+const CompositeImage: React.FC<CompositeImageProps> = ({ path, attributes }) => {
+  const getImageUrl = (base: string, imageSrc: string, resolution?: Resolution): string =>
+    `${base}${imageSrc}${resolution ? `@${resolution}.png` : '.png'}`
+
+  const getSrcSet = (base: string, imageSrc: string) => {
+    return `${getImageUrl(base, imageSrc)} 512w, 
+    ${getImageUrl(base, imageSrc, Resolution.MD)} 768w, 
+    ${getImageUrl(base, imageSrc, Resolution.LG)} 1024w,`
+  }
+
   return (
-    <Wrapper position="relative" maxHeight="500px">
-      <DummyImg src={images[0].src} />
-      {images.map((image) => (
+    <Wrapper position="relative" maxHeight="512px">
+      <DummyImg src={getImageUrl(path, attributes[0].src)} />
+      {attributes.map((image) => (
         <ImageWrapper>
-          <img src={image.src} alt={image.alt} />
+          <img src={getImageUrl(path, image.src)} srcSet={getSrcSet(path, image.src)} alt={image.alt} />
         </ImageWrapper>
       ))}
     </Wrapper>

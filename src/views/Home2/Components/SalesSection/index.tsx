@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Text, Button, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import CompositeImage from '../CompositeImage'
+import CompositeImage, { CompositeImageProps } from '../CompositeImage'
 import PurpleWordHeading from '../PurpleWordHeading'
 
 interface SalesSectionButton {
@@ -10,18 +10,13 @@ interface SalesSectionButton {
   external: boolean
 }
 
-interface SalesSectionImage {
-  src: string
-  alt: string
-}
-
 export interface SalesSectionProps {
   headingText: string
   bodyText: string
   reverse: boolean
   primaryButton: SalesSectionButton
   secondaryButton: SalesSectionButton
-  images: SalesSectionImage[]
+  images: CompositeImageProps
 }
 
 const SalesSection: React.FC<SalesSectionProps> = (props) => {
@@ -54,7 +49,7 @@ const SalesSection: React.FC<SalesSectionProps> = (props) => {
           </Flex>
         </Flex>
         <Flex flexDirection="column" flex="1">
-          <CompositeImage images={images} />
+          <CompositeImage {...images} />
         </Flex>
       </Flex>
     </Flex>

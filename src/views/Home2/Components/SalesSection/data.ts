@@ -14,11 +14,14 @@ export const swapSectionData: SalesSectionProps = {
     text: 'Learn',
     external: true,
   },
-  images: [
-    { src: '/images/home/trade/BNB.png', alt: 'BNB token' },
-    { src: '/images/home/trade/BTC.png', alt: 'BTC token' },
-    { src: '/images/home/trade/CAKE.png', alt: 'CAKE token' },
-  ],
+  images: {
+    path: '/images/home/trade/',
+    attributes: [
+      { src: 'BNB', alt: 'BNB token' },
+      { src: 'BTC', alt: 'BTC token' },
+      { src: 'CAKE', alt: 'CAKE token' },
+    ],
+  },
 }
 
 export const earnSectionData: SalesSectionProps = {
@@ -35,11 +38,14 @@ export const earnSectionData: SalesSectionProps = {
     text: 'Learn',
     external: true,
   },
-  images: [
-    { src: '/images/home/earn/pie.png', alt: 'Pie chart' },
-    { src: '/images/home/earn/stonks.png', alt: 'Stocks chart' },
-    { src: '/images/home/earn/folder.png', alt: 'Folder with cake token' },
-  ],
+  images: {
+    path: '/images/home/earn/',
+    attributes: [
+      { src: 'pie', alt: 'Pie chart' },
+      { src: 'stonks', alt: 'Stocks chart' },
+      { src: 'folder', alt: 'Folder with cake token' },
+    ],
+  },
 }
 
 export const cakeSectionData: SalesSectionProps = {
@@ -57,10 +63,14 @@ export const cakeSectionData: SalesSectionProps = {
     text: 'Learn',
     external: true,
   },
-  images: [
-    { src: '/images/home/cake/bottom-right.png', alt: 'Small 3d pancake' },
-    { src: '/images/home/cake/top-right.png', alt: 'Small 3d pancake' },
-    { src: '/images/home/cake/coin.png', alt: 'CAKE token' },
-    { src: '/images/home/cake/top-left.png', alt: 'Small 3d pancake' },
-  ],
+
+  images: {
+    path: '/images/home/cake/',
+    attributes: [
+      { src: 'bottom-right', alt: 'Small 3d pancake' },
+      { src: 'top-right', alt: 'Small 3d pancake' },
+      { src: 'coin', alt: 'CAKE token' },
+      { src: 'top-left', alt: 'Small 3d pancake' },
+    ],
+  },
 }
