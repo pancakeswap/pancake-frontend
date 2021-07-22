@@ -129,6 +129,7 @@ const useApproveConfirmTransaction = ({
           onSuccess(state)
         }
       } catch (error) {
+        console.error(error)
         dispatch({ type: 'confirm_error' })
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
