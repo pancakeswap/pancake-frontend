@@ -9,6 +9,7 @@ import Hero from './components/Hero'
 import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
 import SalesSection from './components/SalesSection'
 import WinSection from './components/WinSection'
+import Footer from './components/Footer'
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
@@ -47,6 +48,14 @@ const Home: React.FC = () => {
         hasCurvedDivider={false}
       >
         <SalesSection {...cakeSectionData} />
+      </PageSection>
+      <PageSection
+        innerProps={{ style: { margin: '0', width: '100%' } }}
+        background="linear-gradient(180deg, #7645D9 0%, #5121B1 100%)"
+        index={2}
+        hasCurvedDivider={false}
+      >
+        <Footer />
       </PageSection>
     </>
   )

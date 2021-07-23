@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import { Box } from '@pancakeswap/uikit'
 
 const floatingAnim = (x: string, y: string) => keyframes`
@@ -14,39 +14,52 @@ const floatingAnim = (x: string, y: string) => keyframes`
   }  
 `
 
-const Wrapper = styled(Box)`
+const Wrapper = styled(Box)<{ animate: boolean; maxHeight: string }>`
   position: relative;
-  max-height: 500px;
+  max-height: ${({ maxHeight }) => maxHeight};
 
-  & :nth-child(2) {
-    animation: ${floatingAnim('3px', '15px')} 3s ease-in-out infinite;
-    animation-delay: 1s;
-  }
+  /* TODO: Remove animate prop is it ends up not being used */
+  ${({ animate }) =>
+    animate
+      ? css`
+          & :nth-child(2) {
+            animation: ${floatingAnim('3px', '15px')} 3s ease-in-out infinite;
+            animation-delay: 1s;
+          }
 
-  & :nth-child(3) {
-    animation: ${floatingAnim('5px', '10px')} 3s ease-in-out infinite;
-    animation-delay: 0.66s;
-  }
+          & :nth-child(3) {
+            animation: ${floatingAnim('5px', '10px')} 3s ease-in-out infinite;
+            animation-delay: 0.66s;
+          }
 
-  & :nth-child(4) {
-    animation: ${floatingAnim('6px', '5px')} 3s ease-in-out infinite;
-    animation-delay: 0.33s;
-  }
+          & :nth-child(4) {
+            animation: ${floatingAnim('6px', '5px')} 3s ease-in-out infinite;
+            animation-delay: 0.33s;
+          }
 
-  & :nth-child(5) {
-    animation: ${floatingAnim('4px', '12px')} 3s ease-in-out infinite;
-    animation-delay: 0s;
-  }
+          & :nth-child(5) {
+            animation: ${floatingAnim('4px', '12px')} 3s ease-in-out infinite;
+            animation-delay: 0s;
+          }
+        `
+      : ''}
 `
 
-const DummyImg = styled.img`
+const DummyImg = styled.img<{ maxHeight: string }>`
+  max-height: ${({ maxHeight }) => maxHeight};
   visibility: hidden;
 `
 
 const ImageWrapper = styled(Box)`
+  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
+
+  img {
+    max-height: 100%;
+    width: auto;
+  }
 `
 
 enum Resolution {
@@ -63,7 +76,12 @@ export interface CompositeImageProps {
   attributes: ImageAttributes[]
 }
 
-const CompositeImage: React.FC<CompositeImageProps> = ({ path, attributes }) => {
+interface ComponentProps extends CompositeImageProps {
+  animate?: boolean
+  maxHeight?: string
+}
+
+const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, animate = true, maxHeight = '512px' }) => {
   const getImageUrl = (base: string, imageSrc: string, resolution?: Resolution): string =>
     `${base}${imageSrc}${resolution ? `@${resolution}.png` : '.png'}`
 
@@ -74,8 +92,8 @@ const CompositeImage: React.FC<CompositeImageProps> = ({ path, attributes }) => 
   }
 
   return (
-    <Wrapper position="relative" maxHeight="512px">
-      <DummyImg src={getImageUrl(path, attributes[0].src)} />
+    <Wrapper animate={animate} maxHeight={maxHeight}>
+      <DummyImg src={getImageUrl(path, attributes[0].src)} maxHeight={maxHeight} />
       {attributes.map((image) => (
         <ImageWrapper>
           <img src={getImageUrl(path, image.src)} srcSet={getSrcSet(path, image.src)} alt={image.alt} />
