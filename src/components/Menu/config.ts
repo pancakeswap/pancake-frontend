@@ -32,6 +32,26 @@ const config: MenuEntry[] = [
     ],
   },
   {
+    label: 'Graveyard',
+    icon: 'NftIcon',
+    items: [
+      {
+        label: '(NFT Viewer) Coming Soon!',
+        href: '/',
+      },
+    ],
+  },
+  {
+    label: 'Referral Program',
+    icon: 'TeamBattleIcon',
+    items: [
+      {
+        label: 'In development',
+        href: '/',
+      },
+    ],
+  },
+  {
     label: 'More',
     icon: 'MoreIcon',
     items: [

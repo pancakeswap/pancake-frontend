@@ -22,7 +22,7 @@ const EarnAPRCard = () => {
             NFTS
           </CardMidContent>
           <Flex justifyContent="space-between" style={{width: "100%"}}>
-            <Heading >
+            <Heading>
               in the Graves
             </Heading>
             <ArrowForwardIcon mt={30} color="primary" style={{float: "left"}}/>

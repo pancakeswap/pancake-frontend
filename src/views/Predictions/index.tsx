@@ -45,7 +45,6 @@ const Predictions = () => {
     }
   }, [account, aid])
   useEffect(() => {
-    console.log(refresh)
     getMausoleumContract().methods.bidsLength(aid).call()
       .then(bidsLengthRes => {
         const multi = new MultiCall(web3);

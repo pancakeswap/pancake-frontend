@@ -104,29 +104,35 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
   const isDisabled = amount.lte(lastBid.amount)
 
   const submitBid = () => {
-    mausoleum.methods.increaseBid(aid, amount.minus(userInfo.bid).toString())
-      .send({from: account() })
-      .then(()=>{setRefresh(!refresh)})
+    if(account()) {
+      mausoleum.methods.increaseBid(aid, amount.minus(userInfo.bid).toString())
+        .send({from: account() })
+        .then(()=>{setRefresh(!refresh)})
+    }
   }
 
   const withdrawBid = () => {
-    mausoleum.methods.withdrawBid(aid)
-      .send({from: account()})
+    if(account()) {
+      mausoleum.methods.withdrawBid(aid)
+        .send({from: account()})
+    }
   }
 
   const handleUnlock = () => {
-    mausoleum.methods.unlockFeeInBnb(aid).call()
-      .then(res => {
-        mausoleum.methods.unlock(aid)
-          .send({from: account(), value: res.toString()})
-          .then(() => {
-            mausoleum.methods.userInfo(aid, account()).call()
-              .then(userInfoRes => {
-                setLatestUserInfo(userInfoRes)
-                setPaidUnlockFee(true)
-              })
-          })
-      })
+    if(account()) {
+      mausoleum.methods.unlockFeeInBnb(aid).call()
+        .then(res => {
+          mausoleum.methods.unlock(aid)
+            .send({from: account(), value: res.toString()})
+            .then(() => {
+              mausoleum.methods.userInfo(aid, account()).call()
+                .then(userInfoRes => {
+                  setLatestUserInfo(userInfoRes)
+                  setPaidUnlockFee(true)
+                })
+            })
+        })
+    }
   }
 
   const handleApprove = () => {

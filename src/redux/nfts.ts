@@ -21,6 +21,20 @@ const nfts = [
     symbol: 'DRAGON-COMMON',
     address: '0x983608174E9ae08D938433119aD5C4b1f8B29A03',
     totalSupply: BIG_ZERO
+  },
+  {
+    id: 3,
+    name: 'Fairmoon Common',
+    symbol: 'FAIRMOON-COMMON',
+    address: '0x47367847B67b5D4fe905d18D2Cc4e0D149008C41',
+    totalSupply: BIG_ZERO
+  },
+  {
+    id: 4,
+    name: 'Zombie on the Moon',
+    symbol: 'Z-MOON',
+    address: '0x0b0dEa27fD22009A8ee2d0222025Eb9a81a9B26E',
+    totalSupply: BIG_ZERO
   }
 ]
 
