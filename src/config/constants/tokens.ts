@@ -1774,6 +1774,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://axieinfinity.com/',
   },
+  c98: {
+    symbol: 'c98',
+    address: {
+      56: '0xaec945e04baf28b135fa7c640f624f8d90f1c3a6',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://coin98.com/',
+  },
 }
 
 export default tokens
