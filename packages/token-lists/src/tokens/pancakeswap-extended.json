@@ -1670,5 +1670,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0.png"
+  },
+    {
+    "name": "Coin98",
+    "symbol": "C98",
+    "address": "0xaEC945e04baF28b135Fa7c640f624f8D90F1C3a6",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xaEC945e04baF28b135Fa7c640f624f8D90F1C3a6.png"
   }
 ]

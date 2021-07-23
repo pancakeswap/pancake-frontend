@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-07-16T16:42:38.383Z",
+  "timestamp": "2021-07-23T13:03:01.365Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 10
+    "patch": 11
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -395,6 +395,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x211ffbe424b90e25a15531ca322adf1559779e45.png"
+    },
+    {
+      "name": "Coin98",
+      "symbol": "C98",
+      "address": "0xaEC945e04baF28b135Fa7c640f624f8D90F1C3a6",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xaEC945e04baF28b135Fa7c640f624f8D90F1C3a6.png"
     },
     {
       "name": "CanYaCoin",
