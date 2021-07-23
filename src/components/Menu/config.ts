@@ -27,7 +27,7 @@ const config: MenuEntry[] = [
     items: [
       {
         label: 'Coming This Week!',
-        href: '/',
+        href: 'https://rugzombie.medium.com/first-spawn-gorilla-fi-g-fi-f16a234047f7',
       },
     ],
   },
