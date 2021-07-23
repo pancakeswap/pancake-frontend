@@ -33,7 +33,7 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. Enter the mausoleum.</Text>
+            <Text fontSize='14px'>1. Enter the mausoleum (Desktop only, mobile version is development).</Text>
           </Row>
           <Row>
             <Text fontSize='14px'>2. Burger Swap and RUGBIDEN Graves are out!</Text>
