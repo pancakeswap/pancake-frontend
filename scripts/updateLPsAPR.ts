@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
-import { ChainId } from '@pancakeswap-libs/sdk'
+import { ChainId } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
 import farmsConfig from '../src/config/constants/farms'
