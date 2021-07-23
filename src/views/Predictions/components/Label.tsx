@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Button, Card, Flex, Image, LinkExternal, PocketWatchIcon, Text } from '@rug-zombie-libs/uikit'
+import { Box, Button, Card, Flex, HelpIcon, Image, LinkExternal, IconButton, Text } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatRoundTime } from '../helpers'
 import useRoundCountdown from '../hooks/useRoundCountdown'
@@ -104,6 +104,15 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ userInfo }) => {
           </Title>
           <Interval paddingLeft="3px" fontSize='12px'>{Math.round(getBalanceAmount(userInfo.bid).toNumber() * 100) / 100} BT</Interval>
         </Label>
+        <IconButton
+          variant="subtle"
+          as="a"
+          href="https://rugzombie.medium.com/new-feature-alert-introducing-the-mausoleum-4867bb4bdcbb"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+        <HelpIcon paddingLeft="5px" width="35px" />
+        </IconButton>
       </Flex>
     </Box>
   )
