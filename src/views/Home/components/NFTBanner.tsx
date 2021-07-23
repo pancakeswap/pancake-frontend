@@ -1,5 +1,14 @@
 import React from 'react'
-import { Text, Card, CardBody, Heading, Flex, ArrowForwardIcon, Button } from '@rug-zombie-libs/uikit'
+import {
+  Text,
+  Card,
+  CardBody,
+  Heading,
+  Flex,
+  ArrowForwardIcon,
+  Button,
+  useMatchBreakpoints,
+} from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
@@ -99,23 +108,36 @@ const StyledNFTBanner = styled(Card)`
 `
 const NFTBanner: React.FC = () => {
   const { t } = useTranslation()
+  const { isLg, isXl } = useMatchBreakpoints()
+  const isDesktop = isLg || isXl
   return (
     <Wrapper style={{width: "100%"}}>
       <Inner style={{width: "100%"}}>
         <LeftWrapper width="100%">
           <NowLive>{t('Mausoleum Is Live')}</NowLive>
-
-          <Flex >
-            <Over fontSize='40px' bold mr='8px'>
+          { isDesktop ? <Flex>
+            <Over fontSize='40px' bold mr='8px' style={{ whiteSpace: 'nowrap' }}>
               {t('Earn a')}
             </Over>
-            <Over fontSize='40px' color='primary' bold mr='8px'>
+            <Over fontSize='40px' color='primary' bold mr='8px' style={{ whiteSpace: 'nowrap' }}>
               One of a Kind
             </Over>
             <Over fontSize='40px' bold mr='8px'>
               NFT in our first Auction
             </Over>
-          </Flex>
+          </Flex> :
+            <>
+              <Over fontSize='40px' bold mr='8px'>
+                {t('Earn a')}
+              </Over>
+              <Over fontSize='40px' color='primary' bold mr='8px'>
+                One of a Kind
+              </Over>
+              <Over fontSize='40px' bold mr='8px'>
+                NFT in our first Auction
+              </Over>
+            </>
+          }
           <NavLink exact activeClassName='active' to='/mausoleum' id='lottery-pot-banner' style={{paddingTop: "8px"}}>
             <Button>
               <Text color='white' bold fontSize='16px' mr='4px'>

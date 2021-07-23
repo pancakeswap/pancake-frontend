@@ -11,7 +11,6 @@ const CardMidContent = styled(Heading).attrs({ scale: 'xl' })`
   line-height: 44px;
 `
 const EarnAPRCard = () => {
-
   return (
     <StyledTotalValueLockedCard>
       <NavLink exact activeClassName="active" to="/graves" id="farm-apr-cta">
