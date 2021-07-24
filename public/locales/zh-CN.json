@@ -1187,7 +1187,7 @@
   "Click on the settings icon": "Click on the settings icon",
   "Set your slippage tolerance to 12%+": "Set your slippage tolerance to 12%+",
   "This is because SafeMoon taxes a 10% fee on each transaction:": "This is because SafeMoon taxes a 10% fee on each transaction:",
-  "5% fee = redistributed to all existing holders": "5% fee = redistributed to all existing holders",
-  "5% fee = used to add liquidity": "5% fee = used to add liquidity",
-  "Warning: BONDLY has been compromised. Please remove liqudity until further notice.": "Warning: BONDLY has been compromised. Please remove liqudity until further notice."
+  "5% fee = redistributed to all existing holders": "5% 费用 = 分配给所有持有者",
+  "5% fee = used to add liquidity": "5% 费用 = 用于添加流动性",
+  "Warning: BONDLY has been compromised. Please remove liqudity until further notice.": "警告：BONDLY 已被攻击，在得到进一步通知之前，请移除流动性"
 }
