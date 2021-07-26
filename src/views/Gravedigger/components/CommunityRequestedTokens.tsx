@@ -12,7 +12,7 @@ const CommunityRequestedTokens:React.FC = () => {
     const {toastError} = useToast()
     useEffect(() => {
         const headers = new Headers();
-        headers.append("Authorization", "Bearer 3gmTankXad4Kg4nLQea8LRf7cqeURrCAEAU2YHN8X8Hj")
+        headers.append("Authorization", `Bearer ${process.env.TYPEFORM_TOKEN}`)
         const requestOptions = {
             method: 'GET',
             headers
