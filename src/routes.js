@@ -2,6 +2,7 @@
 export const routes = { 
     HOME : '/home/',
     LANDING: '/',
+    GRAVEDIGGER:'/gravedigger',
     FARMS:'/farms/',
     TOMBS:'/tombs/',
     GRAVES:'/graves/',
