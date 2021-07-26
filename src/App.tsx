@@ -10,6 +10,7 @@ import Menu from 'components/Menu'
 import Loader from 'components/Loader'
 import Home from 'views/Home/Home';
 import Tombs from 'views/Tombs/Tombs'
+import Gravedigger from 'views/Gravedigger/'
 import { useWeb3React } from '@web3-react/core'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 // import Graves from './views/Graves'
@@ -61,6 +62,7 @@ const App: React.FC = () => {
       <SuspenseWithChunkError fallback={<Loader />}>
         <Switch>
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
+          <Route exact path={routes.GRAVEDIGGER}><Gravedigger/></Route>
           <Menu>
             <Route exact path={routes.HOME}><Home/></Route>
             <Route exact path={routes.GRAVES}><Graves/></Route>
