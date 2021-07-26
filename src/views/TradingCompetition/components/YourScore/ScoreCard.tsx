@@ -13,7 +13,7 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import { CLAIM, OVER } from 'config/constants/trading-competition/easterPhases'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import UserPrizeGrid from './UserPrizeGrid'
 import ClaimModal from '../ClaimModal'
@@ -106,7 +106,7 @@ const ScoreCard: React.FC<YourScoreProps> = ({
             )}
             {!account && (
               <Flex mt="24px" justifyContent="center">
-                <UnlockButton />
+                <ConnectWalletButton />
               </Flex>
             )}
           </>

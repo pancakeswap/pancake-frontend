@@ -8,7 +8,7 @@ import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCakeVault } from 'state/pools/hooks'
@@ -117,7 +117,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
           {pendingTx ? t('Confirming') : t('Confirm')}
         </Button>
       ) : (
-        <UnlockButton mb="28px" />
+        <ConnectWalletButton mb="28px" />
       )}
       <Flex justifyContent="center" alignItems="center">
         <Text fontSize="16px" bold color="textSubtle" mr="4px">

@@ -28,7 +28,7 @@ import { signMessage } from 'utils/web3React'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import { DatePicker, TimePicker } from 'components/DatePicker'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import ReactMarkdown from 'components/ReactMarkdown'
 import BreadcrumbLink from '../components/BreadcrumbLink'
 import { sendSnaphotData, Message, generateMetaData, generatePayloadData } from '../helpers'
@@ -290,7 +290,7 @@ const CreateProposal = () => {
                     </Button>
                   </>
                 ) : (
-                  <UnlockButton width="100%" type="button" />
+                  <ConnectWalletButton width="100%" type="button" />
                 )}
               </CardBody>
             </Card>

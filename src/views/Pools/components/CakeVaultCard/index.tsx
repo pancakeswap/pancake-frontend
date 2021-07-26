@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Box, CardBody, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import tokens from 'config/constants/tokens'
 import { useCakeVault } from 'state/pools/hooks'
 import { Pool } from 'state/types'
@@ -66,7 +66,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
                 <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
                   {t('Start earning')}
                 </Text>
-                <UnlockButton />
+                <ConnectWalletButton />
               </>
             )}
           </Flex>

@@ -21,7 +21,7 @@ import TradePrice from './components/TradePrice'
 import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 import ProgressSteps from './components/ProgressSteps'
 import { AppHeader, AppBody } from '../../components/App'
-import UnlockButton from '../../components/UnlockButton'
+import ConnectWalletButton from '../../components/ConnectWalletButton'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
@@ -392,7 +392,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 {t('Unsupported Asset')}
               </Button>
             ) : !account ? (
-              <UnlockButton width="100%" />
+              <ConnectWalletButton width="100%" />
             ) : showWrap ? (
               <Button width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??
@@ -419,12 +419,12 @@ export default function Swap({ history }: RouteComponentProps) {
                 >
                   {approval === ApprovalState.PENDING ? (
                     <AutoRow gap="6px" justify="center">
-                      {t('Approving')} <CircleLoader stroke="white" />
+                      {t('Enabling')} <CircleLoader stroke="white" />
                     </AutoRow>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                    t('Approved')
+                    t('Enabled')
                   ) : (
-                    t('Approve %asset%', { asset: currencies[Field.INPUT]?.symbol ?? '' })
+                    t('Enable %asset%', { asset: currencies[Field.INPUT]?.symbol ?? '' })
                   )}
                 </Button>
                 <Button

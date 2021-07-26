@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, Text } from '@pancakeswap/uikit'
 import { useLocation } from 'react-router-dom'
 import { BigNumber } from 'bignumber.js'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import Balance from 'components/Balance'
 import { useWeb3React } from '@web3-react/core'
 import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
@@ -106,7 +106,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           </Text>
         </ActionTitles>
         <ActionContent>
-          <UnlockButton width="100%" />
+          <ConnectWalletButton width="100%" />
         </ActionContent>
       </ActionContainer>
     )

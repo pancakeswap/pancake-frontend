@@ -14,7 +14,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import { AppHeader, AppBody } from '../../components/App'
 import { RowBetween, RowFixed } from '../../components/Layout/Row'
-import UnlockButton from '../../components/UnlockButton'
+import ConnectWalletButton from '../../components/ConnectWalletButton'
 import { LightGreyCard } from '../../components/Card'
 
 import { CurrencyLogo, DoubleCurrencyLogo } from '../../components/Logo'
@@ -625,7 +625,7 @@ export default function RemoveLiquidity({
           )}
           <Box position="relative" mt="16px">
             {!account ? (
-              <UnlockButton />
+              <ConnectWalletButton />
             ) : (
               <RowBetween>
                 <Button
@@ -636,11 +636,11 @@ export default function RemoveLiquidity({
                   mr="0.5rem"
                 >
                   {approval === ApprovalState.PENDING ? (
-                    <Dots>{t('Approving')}</Dots>
+                    <Dots>{t('Enabling')}</Dots>
                   ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
-                    t('Approved')
+                    t('Enabled')
                   ) : (
-                    t('Approve')
+                    t('Enable')
                   )}
                 </Button>
                 <Button

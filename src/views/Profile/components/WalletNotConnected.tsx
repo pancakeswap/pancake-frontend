@@ -1,7 +1,7 @@
 import React from 'react'
 import { Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 
 const WalletNotConnected = () => {
   const { t } = useTranslation()
@@ -14,7 +14,7 @@ const WalletNotConnected = () => {
       <Text as="p" mb="16px">
         {t('Please connect your wallet to continue')}
       </Text>
-      <UnlockButton />
+      <ConnectWalletButton />
     </div>
   )
 }

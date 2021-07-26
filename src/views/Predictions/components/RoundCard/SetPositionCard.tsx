@@ -24,7 +24,7 @@ import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
 import { BetPosition } from 'state/types'
 import { formatBigNumber, formatFixedNumber } from 'utils/formatBalance'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import PositionTag from '../PositionTag'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
@@ -275,7 +275,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
               {t(key)}
             </Button>
           ) : (
-            <UnlockButton width="100%" />
+            <ConnectWalletButton width="100%" />
           )}
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">
