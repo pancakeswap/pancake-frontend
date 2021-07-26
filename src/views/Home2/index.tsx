@@ -23,6 +23,14 @@ const Home: React.FC = () => {
     <>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
+        background="linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)"
+        index={2}
+        hasCurvedDivider={false}
+      >
+        <Hero />
+      </PageSection>
+      <PageSection
+        innerProps={{ style: HomeSectionContainerStyles }}
         background="linear-gradient(180deg, #FFFFFF 22%, #D7CAEC 100%)"
         index={2}
         hasCurvedDivider={false}

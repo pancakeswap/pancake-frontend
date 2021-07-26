@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Flex, Text, Skeleton, Link, Button, ArrowForwardIcon } from '@pancakeswap/uikit'
+import { Flex, Text, Skeleton, Link, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useRefresh from 'hooks/useRefresh'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
@@ -7,6 +7,7 @@ import { getTotalWon } from 'state/predictions/helpers'
 import { usePriceBnbBusd } from 'state/farms/hooks'
 import Balance from 'components/Balance'
 import styled from 'styled-components'
+import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
 
 const StyledLink = styled(Link)`
   width: 100%;
@@ -20,6 +21,10 @@ const PredictionCardContent = () => {
   const bnbBusdPrice = usePriceBnbBusd()
   const [bnbWon, setBnbWon] = useState(0)
   const [bnbWonInUsd, setBnbWonInUsd] = useState(0)
+
+  const localisedBnbUsdString = formatLocalisedCompactNumber(bnbWonInUsd)
+  const bnbWonText = t('$%bnbWonInUsd% in BNB won so far', { bnbWonInUsd: localisedBnbUsdString })
+  const [pretext, wonSoFar] = bnbWonText.split(localisedBnbUsdString)
 
   useEffect(() => {
     if (isIntersecting) {
@@ -52,7 +57,10 @@ const PredictionCardContent = () => {
           {t('Prediction')}
         </Text>
         {bnbWonInUsd ? (
-          <Balance fontSize="40px" bold prefix="$" decimals={0} value={bnbWonInUsd} />
+          <Heading scale="xl" bold>
+            {pretext}
+            {localisedBnbUsdString}
+          </Heading>
         ) : (
           <>
             <Skeleton width={230} height={40} my="8px" />
@@ -60,7 +68,7 @@ const PredictionCardContent = () => {
           </>
         )}
         <Text mb="24px" bold fontSize="16px">
-          {t('in BNB won so far')}
+          {wonSoFar}
         </Text>
         <Text mb="40px">{t('Will BNB price rise or fall? guess correctly to win!')}</Text>
       </Flex>

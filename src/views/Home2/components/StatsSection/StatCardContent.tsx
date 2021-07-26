@@ -1,13 +1,11 @@
 import React from 'react'
 import { Heading, Flex, Text } from '@pancakeswap/uikit'
-import useTheme from 'hooks/useTheme'
 
 const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlightColor: string }> = ({
   headingText,
   bodyText,
   highlightColor,
 }) => {
-  const { theme } = useTheme()
   const split = headingText.split(' ')
   const lastWord = split.pop()
   const remainingWords = split.slice(0, split.length).join(' ')

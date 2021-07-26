@@ -18,7 +18,7 @@ const Wrapper = styled(Box)<{ animate: boolean; maxHeight: string }>`
   position: relative;
   max-height: ${({ maxHeight }) => maxHeight};
 
-  /* TODO: Remove animate prop is it ends up not being used */
+  /* TODO: Remove animate prop if it ends up not being used */
   ${({ animate }) =>
     animate
       ? css`
@@ -81,21 +81,21 @@ interface ComponentProps extends CompositeImageProps {
   maxHeight?: string
 }
 
+export const getImageUrl = (base: string, imageSrc: string, resolution?: Resolution): string =>
+  `${base}${imageSrc}${resolution ? `@${resolution}.png` : '.png'}`
+
+export const getSrcSet = (base: string, imageSrc: string) => {
+  return `${getImageUrl(base, imageSrc)} 512w, 
+  ${getImageUrl(base, imageSrc, Resolution.MD)} 768w, 
+  ${getImageUrl(base, imageSrc, Resolution.LG)} 1024w,`
+}
+
 const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, animate = true, maxHeight = '512px' }) => {
-  const getImageUrl = (base: string, imageSrc: string, resolution?: Resolution): string =>
-    `${base}${imageSrc}${resolution ? `@${resolution}.png` : '.png'}`
-
-  const getSrcSet = (base: string, imageSrc: string) => {
-    return `${getImageUrl(base, imageSrc)} 512w, 
-    ${getImageUrl(base, imageSrc, Resolution.MD)} 768w, 
-    ${getImageUrl(base, imageSrc, Resolution.LG)} 1024w,`
-  }
-
   return (
     <Wrapper animate={animate} maxHeight={maxHeight}>
       <DummyImg src={getImageUrl(path, attributes[0].src)} maxHeight={maxHeight} />
       {attributes.map((image) => (
-        <ImageWrapper>
+        <ImageWrapper key={image.src}>
           <img src={getImageUrl(path, image.src)} srcSet={getSrcSet(path, image.src)} alt={image.alt} />
         </ImageWrapper>
       ))}

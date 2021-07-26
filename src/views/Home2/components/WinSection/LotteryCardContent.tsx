@@ -29,6 +29,9 @@ const LotteryCardContent = () => {
   const [currentLotteryPrize, setCurrentLotteryPrize] = useState<BigNumber>(null)
   const cakePriceBusdAsString = usePriceCakeBusd().toString()
 
+  const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePriceBusdAsString })
+  const [pretext, prizesThisRound] = cakePrizesText.split(cakePriceBusdAsString)
+
   const cakePriceBusd = useMemo(() => {
     return new BigNumber(cakePriceBusdAsString)
   }, [cakePriceBusdAsString])
@@ -71,7 +74,12 @@ const LotteryCardContent = () => {
         <Text color="white" bold fontSize="16px">
           {t('Lottery')}
         </Text>
-        {currentLotteryPrize ? (
+        {pretext && (
+          <Text color="white" mt="12px" bold fontSize="16px">
+            {pretext}
+          </Text>
+        )}
+        {currentLotteryPrize && currentLotteryPrize.gt(0) ? (
           <StyledBalance
             fontSize="40px"
             bold
@@ -86,7 +94,7 @@ const LotteryCardContent = () => {
           </>
         )}
         <Text color="white" mb="24px" bold fontSize="16px">
-          {t('in CAKE prizes this round')}
+          {prizesThisRound}
         </Text>
         <Text color="white" mb="40px">
           {t('Buy tickets with CAKE, win CAKE if your numbers match')}
