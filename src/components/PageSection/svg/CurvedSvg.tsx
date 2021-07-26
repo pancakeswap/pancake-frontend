@@ -20,7 +20,7 @@ const sharedStyles = (theme: DefaultTheme, clipPath: string, clipFill?: ClipFill
     if (theme.isDark) {
       return clipFill?.dark || clipFill?.light || theme.colors.background
     }
-    return clipFill?.light || clipFill?.dark || theme.colors.background
+    return clipFill?.light || theme.colors.background
   }};
 
   & svg {
