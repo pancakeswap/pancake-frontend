@@ -31,17 +31,40 @@ const CardLayout = styled(FlexLayout)`
   justify-content: center;
 `
 
-const PoolControls = styled(Flex)`
+const PoolControls = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  position: relative;
+
+  justify-content: space-between;
   flex-direction: column;
-  margin-bottom: 24px;
-  ${({ theme }) => theme.mediaQueries.md} {
+  margin-bottom: 32px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
+    flex-wrap: wrap;
+    padding: 16px 32px;
+    margin-bottom: 0;
   }
 `
 
-const SearchSortContainer = styled(Flex)`
-  gap: 10px;
-  justify-content: space-between;
+const FilterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: auto;
+    padding: 0;
+  }
+`
+
+const LabelWrapper = styled.div`
+  > ${Text} {
+    font-size: 12px;
+  }
 `
 
 const ControlStretch = styled(Flex)`
@@ -233,7 +256,7 @@ const Pools: React.FC = () => {
         </Flex>
       </PageHeader>
       <Page>
-        <PoolControls justifyContent="space-between">
+        <PoolControls>
           <PoolTabButtons
             stakedOnly={stakedOnly}
             setStakedOnly={setStakedOnly}
@@ -241,8 +264,8 @@ const Pools: React.FC = () => {
             viewMode={viewMode}
             setViewMode={setViewMode}
           />
-          <SearchSortContainer>
-            <Flex flexDirection="column" width="50%">
+          <FilterContainer>
+            <LabelWrapper>
               <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
                 {t('Sort by')}
               </Text>
@@ -269,16 +292,14 @@ const Pools: React.FC = () => {
                   onChange={handleSortOptionChange}
                 />
               </ControlStretch>
-            </Flex>
-            <Flex flexDirection="column" width="50%">
+            </LabelWrapper>
+            <LabelWrapper style={{ marginLeft: 16 }}>
               <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
                 {t('Search')}
               </Text>
-              <ControlStretch>
-                <SearchInput onChange={handleChangeSearchQuery} placeholder="Search Pools" />
-              </ControlStretch>
-            </Flex>
-          </SearchSortContainer>
+              <SearchInput onChange={handleChangeSearchQuery} placeholder="Search Pools" />
+            </LabelWrapper>
+          </FilterContainer>
         </PoolControls>
         {showFinishedPools && (
           <Text fontSize="20px" color="failure" pb="32px">
