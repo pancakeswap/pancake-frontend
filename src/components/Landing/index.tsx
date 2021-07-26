@@ -7,6 +7,7 @@ import Footer from './Footer';
 import { BASE_EXCHANGE_URL } from '../../config'
 import tokens from '../../config/constants/tokens'
 import { getAddress } from '../../utils/addressHelpers'
+import { routes } from "../../routes"
 
 interface LandingProps {
   handleAuthentication: any
@@ -38,6 +39,11 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
       <div className="_40_percent_block">
         <a href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(tokens.zmbe.address)}`} className="button-2 w-button">
           Buy on Pancakeswap
+        </a>
+      </div>
+      <div className="_40_percent_block">
+        <a href={routes.GRAVEDIGGER} className="button-2 w-button">
+          Dig a grave
         </a>
       </div>
       <div className="_40_percent_block-copy">
