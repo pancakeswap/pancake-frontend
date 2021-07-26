@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Flex, Heading, Text, Link, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
 import { useWeb3React } from '@web3-react/core'
 import Star from './Star'
@@ -119,7 +119,7 @@ const Footer = () => {
         <Link external href="https://docs.pancakeswap.finance/">
           {t('Learn how to start')}
         </Link>
-        {!account && <UnlockButton mt="24px" />}
+        {!account && <ConnectWalletButton mt="24px" />}
       </Wrapper>
     </>
   )
