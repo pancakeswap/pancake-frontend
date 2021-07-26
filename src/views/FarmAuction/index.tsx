@@ -92,8 +92,7 @@ const FarmAuction = () => {
           p="24px 0"
           index={2}
           concaveDivider
-          concaveBackgroundLight={theme.colors.background}
-          curvePosition="top"
+          dividerPosition="top"
         >
           <AuctionDetail />
         </PageSection>

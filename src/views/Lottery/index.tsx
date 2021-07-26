@@ -42,15 +42,15 @@ const Lottery = () => {
 
   return (
     <LotteryPage>
-      <PageSection background={TITLE_BG} svgFill={theme.colors.overlay} index={1} hasCurvedDivider={false}>
+      <PageSection background={TITLE_BG} index={1} hasCurvedDivider={false}>
         <Hero />
       </PageSection>
       <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
         background={GET_TICKETS_BG}
         concaveDivider
-        concaveBackgroundLight="#7645D9"
-        curvePosition="top"
+        clipFill={{ light: '#7645D9' }}
+        dividerPosition="top"
         index={2}
       >
         <Flex alignItems="center" justifyContent="center" flexDirection="column" pt="24px">
@@ -79,7 +79,7 @@ const Lottery = () => {
       <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background={isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG}
-        concaveDivider
+        hasCurvedDivider={false}
         index={2}
       >
         <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center">
@@ -95,8 +95,12 @@ const Lottery = () => {
           {historyTabMenuIndex === 0 ? <AllHistoryCard /> : <YourHistoryCard />}
         </Flex>
       </PageSection>
-
-      <PageSection hasCurvedDivider={false} index={2} containerProps={{ style: { marginTop: '-32px' } }}>
+      <PageSection
+        dividerPosition="top"
+        dividerFill={{ light: theme.colors.background }}
+        clipFill={{ light: '#9A9FD0', dark: '#66578D' }}
+        index={2}
+      >
         <HowToPlay />
       </PageSection>
     </LotteryPage>

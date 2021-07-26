@@ -3,16 +3,18 @@ import styled from 'styled-components'
 import { BoxProps, Box, Flex, FlexProps } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import CurvedDivider from './CurvedDivider'
-import { ConcaveProps } from './svg/CurvedSvg'
+import { ClipFill, DividerFill } from './types'
 
-interface PageSectionProps extends BackgroundColorProps, ConcaveProps {
+interface PageSectionProps extends BackgroundColorProps {
   svgFill?: string
   dividerComponent?: React.ReactNode
   hasCurvedDivider?: boolean
-  curvePosition?: 'top' | 'bottom'
+  dividerPosition?: 'top' | 'bottom'
   concaveDivider?: boolean
   containerProps?: BoxProps
   innerProps?: BoxProps
+  clipFill?: ClipFill
+  dividerFill?: DividerFill
 }
 
 interface BackgroundColorProps extends FlexProps {
@@ -50,11 +52,11 @@ const PageSection: React.FC<PageSectionProps> = ({
   svgFill,
   index = 1,
   dividerComponent,
-  curvePosition = 'bottom',
+  dividerPosition = 'bottom',
   hasCurvedDivider = true,
   concaveDivider = false,
-  concaveBackgroundDark,
-  concaveBackgroundLight,
+  clipFill,
+  dividerFill,
   containerProps,
   innerProps,
   ...props
@@ -66,12 +68,12 @@ const PageSection: React.FC<PageSectionProps> = ({
     }
     // Bottom curved divider
     // Less bottom padding, as the divider is present there
-    if (curvePosition === 'bottom') {
+    if (dividerPosition === 'bottom') {
       return '48px 0 14px'
     }
     // Top curved divider
     // Less top padding, as the divider is present there
-    if (curvePosition === 'top') {
+    if (dividerPosition === 'top') {
       return '14px 0 48px'
     }
     return '48px 0'
@@ -79,29 +81,29 @@ const PageSection: React.FC<PageSectionProps> = ({
 
   return (
     <Box {...containerProps}>
-      {hasCurvedDivider && curvePosition === 'top' && (
+      {hasCurvedDivider && dividerPosition === 'top' && (
         <CurvedDivider
           svgFill={svgFill}
           index={index}
           concave={concaveDivider}
-          curvePosition={curvePosition}
+          dividerPosition={dividerPosition}
           dividerComponent={dividerComponent}
-          concaveBackgroundDark={concaveBackgroundDark}
-          concaveBackgroundLight={concaveBackgroundLight}
+          clipFill={clipFill}
+          dividerFill={dividerFill}
         />
       )}
       <BackgroundColor background={background} index={index} p={getPadding()} {...props}>
         <ChildrenWrapper {...innerProps}>{children}</ChildrenWrapper>
       </BackgroundColor>
-      {hasCurvedDivider && curvePosition === 'bottom' && (
+      {hasCurvedDivider && dividerPosition === 'bottom' && (
         <CurvedDivider
           svgFill={svgFill}
           index={index}
           concave={concaveDivider}
-          curvePosition={curvePosition}
+          dividerPosition={dividerPosition}
           dividerComponent={dividerComponent}
-          concaveBackgroundDark={concaveBackgroundDark}
-          concaveBackgroundLight={concaveBackgroundLight}
+          clipFill={clipFill}
+          dividerFill={dividerFill}
         />
       )}
     </Box>

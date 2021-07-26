@@ -1,18 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CurvedSvgTop, CurvedSvgBottom, ConcaveTop, ConcaveBottom, ConcaveProps } from './svg/CurvedSvg'
+import { ConcaveTop, ConcaveBottom, ConvexTop, ConvexBottom } from './svg/CurvedSvg'
+import { DividerFill, ClipFill } from './types'
 
-interface CurvedDividerProps extends WrapperProps, ConcaveProps {
+interface CurvedDividerProps extends WrapperProps {
   svgFill?: string
   dividerComponent?: React.ReactNode
-  curvePosition?: 'top' | 'bottom'
+  dividerPosition?: 'top' | 'bottom'
   concave?: boolean
+  clipFill?: ClipFill
 }
 interface WrapperProps {
   index: number
+  dividerFill?: DividerFill
 }
 
 const Wrapper = styled.div<WrapperProps>`
+  background: ${({ theme, dividerFill }) => {
+    if (theme.isDark) {
+      return dividerFill?.dark || dividerFill?.light || 'none'
+    }
+    return dividerFill?.light || dividerFill?.dark || 'none'
+  }};
   z-index: ${({ index }) => index};
   position: relative;
   display: flex;
@@ -29,29 +38,41 @@ const ComponentWrapper = styled.div<WrapperProps>`
 `
 
 const CurvedDivider: React.FC<CurvedDividerProps> = ({
-  svgFill,
   index,
-  curvePosition,
+  dividerPosition,
   dividerComponent,
   concave,
-  concaveBackgroundDark,
-  concaveBackgroundLight,
+  clipFill,
+  dividerFill,
 }) => {
-  const showTopDivider = curvePosition === 'top' && !concave
-  const showBottomDivider = curvePosition === 'bottom' && !concave
-  const showConcaveTopDivider = curvePosition === 'top' && concave
-  const showConcaveBottomDivider = curvePosition === 'bottom' && concave
+  const showConvexTop = dividerPosition === 'top' && !concave
+  const showConvexBottom = dividerPosition === 'bottom' && !concave
+  const showConcaveTop = dividerPosition === 'top' && concave
+  const showConcaveBottom = dividerPosition === 'bottom' && concave
+
+  const getconcaveDivider = () => {
+    return (
+      <>
+        {showConcaveTop && <ConcaveTop clipFill={clipFill} />}
+        {showConcaveBottom && <ConcaveBottom clipFill={clipFill} />}
+      </>
+    )
+  }
+
+  const getConvexDivider = () => {
+    return (
+      <>
+        {showConvexTop && <ConvexTop clipFill={clipFill} />}
+        {showConvexBottom && <ConvexBottom clipFill={clipFill} />}
+      </>
+    )
+  }
+
   return (
-    <Wrapper index={index}>
+    <Wrapper index={index} dividerFill={dividerFill}>
       {dividerComponent && <ComponentWrapper index={index}>{dividerComponent}</ComponentWrapper>}
-      {showConcaveTopDivider && (
-        <ConcaveTop concaveBackgroundDark={concaveBackgroundDark} concaveBackgroundLight={concaveBackgroundLight} />
-      )}
-      {showConcaveBottomDivider && (
-        <ConcaveBottom concaveBackgroundDark={concaveBackgroundDark} concaveBackgroundLight={concaveBackgroundLight} />
-      )}
-      {showTopDivider && <CurvedSvgTop svgFill={svgFill} width="100%" />}
-      {showBottomDivider && <CurvedSvgBottom svgFill={svgFill} width="100%" />}
+      {getconcaveDivider()}
+      {getConvexDivider()}
     </Wrapper>
   )
 }
