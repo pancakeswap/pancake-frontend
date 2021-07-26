@@ -152,7 +152,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
 
       <AutoColumn gap="sm">
         <RowFixed>
-          <Text fontSize="14px">Transaction deadline</Text>
+          <Text fontSize="14px">{t('Transaction deadline')}</Text>
           <QuestionHelper text={t('Your transaction will revert if it is pending for more than this long.')} ml="4px" />
         </RowFixed>
         <RowFixed>
