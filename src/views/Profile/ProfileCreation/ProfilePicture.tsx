@@ -123,7 +123,7 @@ const ProfilePicture: React.FC = () => {
             endIcon={isApproving ? <AutoRenewIcon spin color="currentColor" /> : undefined}
             id="approveStarterCollectible"
           >
-            {t('Approve')}
+            {t('Enable')}
           </Button>
         </CardBody>
       </Card>

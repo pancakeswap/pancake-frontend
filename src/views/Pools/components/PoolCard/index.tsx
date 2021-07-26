@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React from 'react'
 import { CardBody, Flex, Text, CardRibbon } from '@pancakeswap/uikit'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { Pool } from 'state/types'
@@ -39,7 +39,7 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
                 <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
                   {t('Start earning')}
                 </Text>
-                <UnlockButton />
+                <ConnectWalletButton />
               </>
             )}
           </Flex>

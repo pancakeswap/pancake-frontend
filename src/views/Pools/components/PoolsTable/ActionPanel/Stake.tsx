@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, useTooltip, Flex, Text } from '@pancakeswap/uikit'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useWeb3React } from '@web3-react/core'
 import { useCakeVault } from 'state/pools/hooks'
 import { Pool } from 'state/types'
@@ -140,7 +140,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
           </Text>
         </ActionTitles>
         <ActionContent>
-          <UnlockButton width="100%" />
+          <ConnectWalletButton width="100%" />
         </ActionContent>
       </ActionContainer>
     )

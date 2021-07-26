@@ -18,7 +18,7 @@ import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
 import { fetchLottery } from 'state/lottery/helpers'
 import { LotteryRound } from 'state/types'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import FinishedRoundTable from './FinishedRoundTable'
 import { WhiteBunny } from '../../svgs'
 import BuyTicketsButton from '../BuyTicketsButton'
@@ -109,7 +109,7 @@ const YourHistoryCard = () => {
           <Text textAlign="center" color="textSubtle" mb="16px">
             {t('Connect your wallet to check your history')}
           </Text>
-          <UnlockButton />
+          <ConnectWalletButton />
         </StyledCardBody>
       )
     }

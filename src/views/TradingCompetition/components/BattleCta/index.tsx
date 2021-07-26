@@ -105,7 +105,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
   const getButtonText = () => {
     // No wallet connected
     if (!account) {
-      return t('Unlock Wallet')
+      return t('Connect Wallet')
     }
     // User not registered
     if (!hasRegistered) {

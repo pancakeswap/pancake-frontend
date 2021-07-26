@@ -7,7 +7,7 @@ import { Proposal } from 'state/types'
 import { fetchVotes } from 'state/voting'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import CastVoteModal from '../components/CastVoteModal'
 
 interface VoteProps extends CardProps {
@@ -90,7 +90,7 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
             {t('Cast Vote')}
           </Button>
         ) : (
-          <UnlockButton />
+          <ConnectWalletButton />
         )}
       </CardBody>
     </Card>

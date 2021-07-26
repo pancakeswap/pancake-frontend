@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Link } from 'react-router-dom'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import ContributeButton from './ContributeButton'
 import ClaimButton from './ClaimButton'
 import { SkeletonCardActions } from './Skeletons'
@@ -29,7 +29,7 @@ const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfo
   }
 
   if (!account) {
-    return <UnlockButton width="100%" />
+    return <ConnectWalletButton width="100%" />
   }
 
   if (!hasProfile) {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Flex, Spinner, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import { fetchHistory } from 'state/predictions'
 import { getUnclaimedWinningBets } from 'state/predictions/helpers'
@@ -83,7 +83,7 @@ const History = () => {
   if (!account) {
     activeTabComponent = (
       <Flex justifyContent="center" alignItems="center" flexDirection="column" mt="32px">
-        <UnlockButton />
+        <ConnectWalletButton />
         <Text mt="8px">{t('Connect your wallet to view your prediction history')}</Text>
       </Flex>
     )

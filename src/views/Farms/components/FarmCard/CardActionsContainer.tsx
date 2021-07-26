@@ -8,7 +8,7 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { Farm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import StakeAction from './StakeAction'
 import HarvestAction from './HarvestAction'
 import useApproveFarm from '../../hooks/useApproveFarm'
@@ -70,7 +70,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
       />
     ) : (
       <Button mt="8px" width="100%" disabled={requestedApproval} onClick={handleApprove}>
-        {t('Approve Contract')}
+        {t('Enable Contract')}
       </Button>
     )
   }
@@ -94,7 +94,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
           {t('Staked')}
         </Text>
       </Flex>
-      {!account ? <UnlockButton mt="8px" width="100%" /> : renderApprovalOrStakeButton()}
+      {!account ? <ConnectWalletButton mt="8px" width="100%" /> : renderApprovalOrStakeButton()}
     </Action>
   )
 }

@@ -16,7 +16,7 @@ import { DoubleCurrencyLogo } from '../../components/Logo'
 import { AppHeader, AppBody } from '../../components/App'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowBetween } from '../../components/Layout/Row'
-import UnlockButton from '../../components/UnlockButton'
+import ConnectWalletButton from '../../components/ConnectWalletButton'
 
 import { ROUTER_ADDRESS } from '../../config/constants'
 import { PairState } from '../../hooks/usePairs'
@@ -380,7 +380,7 @@ export default function AddLiquidity({
                 {t('Unsupported Asset')}
               </Button>
             ) : !account ? (
-              <UnlockButton />
+              <ConnectWalletButton />
             ) : (
               <AutoColumn gap="md">
                 {(approvalA === ApprovalState.NOT_APPROVED ||
@@ -396,9 +396,9 @@ export default function AddLiquidity({
                           width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
                         >
                           {approvalA === ApprovalState.PENDING ? (
-                            <Dots>{t('Approving %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
+                            <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
                           ) : (
-                            t('Approve %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })
+                            t('Enable %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })
                           )}
                         </Button>
                       )}
@@ -409,9 +409,9 @@ export default function AddLiquidity({
                           width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
                         >
                           {approvalB === ApprovalState.PENDING ? (
-                            <Dots>{t('Approving %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
+                            <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
                           ) : (
-                            t('Approve %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })
+                            t('Enable %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })
                           )}
                         </Button>
                       )}

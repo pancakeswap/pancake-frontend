@@ -7,7 +7,7 @@ import { useTranslation } from 'contexts/Localization'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import { useMasterchef } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import CakeHarvestBalance from './CakeHarvestBalance'
 import CakeWalletBalance from './CakeWalletBalance'
 
@@ -92,7 +92,7 @@ const FarmedStakingCard = () => {
                   })}
             </Button>
           ) : (
-            <UnlockButton width="100%" />
+            <ConnectWalletButton width="100%" />
           )}
         </Actions>
       </CardBody>

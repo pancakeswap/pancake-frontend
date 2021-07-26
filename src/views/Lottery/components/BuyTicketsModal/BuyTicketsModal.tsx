@@ -28,7 +28,7 @@ import useTokenBalance, { FetchStatus } from 'hooks/useTokenBalance'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useLotteryV2Contract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
-import UnlockButton from 'components/UnlockButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
 import NumTicketsToBuyButton from './NumTicketsToBuyButton'
 import EditNumbersModal from './EditNumbersModal'
@@ -250,7 +250,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         return cakeContract.approve(lotteryContract.address, ethers.constants.MaxUint256)
       },
       onApproveSuccess: async () => {
-        toastSuccess(t('Contract approved - you can now purchase tickets'))
+        toastSuccess(t('Contract enabled - you can now purchase tickets'))
       },
       onConfirm: () => {
         const ticketsForPurchase = getTicketsForPurchase()
@@ -440,7 +440,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             )}
           </>
         ) : (
-          <UnlockButton />
+          <ConnectWalletButton />
         )}
 
         <Text mt="24px" fontSize="12px" color="textSubtle">

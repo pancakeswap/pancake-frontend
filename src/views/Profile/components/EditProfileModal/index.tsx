@@ -13,7 +13,7 @@ const viewTitle = {
   [Views.START]: 'Edit Profile',
   [Views.CHANGE]: 'Change Profile Pic',
   [Views.REMOVE]: 'Remove Profile Pic',
-  [Views.APPROVE]: 'Approve CAKE',
+  [Views.APPROVE]: 'Enable CAKE',
 }
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({ onDismiss }) => {
