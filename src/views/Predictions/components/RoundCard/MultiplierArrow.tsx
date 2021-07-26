@@ -11,6 +11,7 @@ interface MultiplierArrowProps {
   betAmount?: ethers.BigNumber
   multiplier?: string
   hasEntered?: boolean
+  hasClaimed?: boolean
   betPosition?: BetPosition
   isDisabled?: boolean
   isActive?: boolean
@@ -57,6 +58,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   betAmount,
   multiplier,
   hasEntered = false,
+  hasClaimed = false,
   betPosition = BetPosition.BULL,
   isDisabled = false,
   isActive = false,
@@ -85,7 +87,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
 
     return (
       <EnteredTagWrapper style={position}>
-        <EnteredTag amount={betAmount} />
+        <EnteredTag amount={betAmount} hasClaimed={hasClaimed} />
       </EnteredTagWrapper>
     )
   }
