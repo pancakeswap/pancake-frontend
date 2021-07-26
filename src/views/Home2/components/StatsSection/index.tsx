@@ -4,6 +4,7 @@ import { Heading, Flex, LogoIcon, Text, Skeleton, ChartIcon, Box } from '@pancak
 import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
+import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
 import IconCard, { IconCardData } from '../IconCard'
 import StatCardContent from './StatCardContent'
 
@@ -23,10 +24,9 @@ const Stats = () => {
   const data = useGetStats()
   const { theme } = useTheme()
 
-  const tvlString = data
-    ? data.tvl.toLocaleString('en-US', { maximumSignificantDigits: 2, maximumFractionDigits: 0 })
-    : '-'
-  const tvlText = t('And those users are now entrusting the platform with over %tvl% in funds.', { tvl: tvlString })
+  const tvlString = data ? formatLocalisedCompactNumber(data.tvl) : '-'
+
+  const tvlText = t('And those users are now entrusting the platform with over $%tvl% in funds.', { tvl: tvlString })
   const [entrusting, inFunds] = tvlText.split(tvlString)
 
   const UsersCardData: IconCardData = {
@@ -63,8 +63,8 @@ const Stats = () => {
         </Text>
         <>
           {data ? (
-            <Text textAlign="center" color="textSubtle" mb="20px" mx="4px">
-              ${tvlString}
+            <Text textAlign="center" color="textSubtle" mb="20px" mr="4px">
+              {tvlString}
             </Text>
           ) : (
             <Skeleton height={14} width={106} m="4px" />
@@ -89,7 +89,11 @@ const Stats = () => {
         </IconCard>
         <Box mr="24px" /> */}
         <IconCard {...StakedCardData}>
-          <StatCardContent headingText={t('$%tvl% staked', { tvl: tvlString })} bodyText={t('Total Value Locked')} />
+          <StatCardContent
+            headingText={t('$%tvl% staked', { tvl: tvlString })}
+            bodyText={t('Total Value Locked')}
+            highlightColor="#ED4B9E"
+          />
         </IconCard>
       </Flex>
     </Flex>
