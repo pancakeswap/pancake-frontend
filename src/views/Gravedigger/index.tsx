@@ -1,17 +1,24 @@
-import React from "react"
+import React,{ useEffect } from "react"
 import Header from "components/Landing/Header"
 import styled from "styled-components"
 import { Flex,Text } from "@rug-zombie-libs/uikit"
 import { useTranslation } from "contexts/Localization"
+import { createWidget } from '@typeform/embed'
+import Page from '../../components/layout/Page'
+import '@typeform/embed/build/css/widget.css'
 import GraveListings from "./components/GraveListings"
 
 const Wrapper = styled.div`
   margin-top:100px;
+  max-height: max-content;
   ${({ theme }) => theme.mediaQueries.md} {
     max-height: 256px;
   }
 `
-
+const FormContainer = styled.div`
+  margin: 20px;
+  height: 700px;
+`
 const StyledFlex = styled(Flex)`
   justify-content: center;
 `
@@ -25,6 +32,9 @@ const Col = styled.div`
 `
 const Gravedigger:React.FC = () => {
     const { t } = useTranslation()
+    useEffect(() => {
+        createWidget("LKwVHkPz",{container: document.querySelector("#form")})
+    })
     return(
         <>
         <Header />
@@ -44,6 +54,7 @@ const Gravedigger:React.FC = () => {
                     <GraveListings/>
                 </Col>
             </Row>
+            <FormContainer id="form" />
         </Wrapper>
         </>
     )
