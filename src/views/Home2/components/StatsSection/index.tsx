@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Flex, LogoIcon, Text, Skeleton } from '@pancakeswap/uikit'
+import { Heading, Flex, LogoIcon, Text, Skeleton, ChartIcon, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
-import Balance from 'components/Balance'
+import useTheme from 'hooks/useTheme'
+import IconCard, { IconCardData } from '../IconCard'
+import StatCardContent from './StatCardContent'
 
 const StyledLogoIcon = styled(LogoIcon)`
   path {
@@ -19,11 +21,31 @@ const StyledLogoIcon = styled(LogoIcon)`
 const Stats = () => {
   const { t } = useTranslation()
   const data = useGetStats()
+  const { theme } = useTheme()
+
   const tvlString = data
-    ? data.tvl.toLocaleString('en-US', { maximumSignificantDigits: 1, maximumFractionDigits: 0 })
+    ? data.tvl.toLocaleString('en-US', { maximumSignificantDigits: 2, maximumFractionDigits: 0 })
     : '-'
   const tvlText = t('And those users are now entrusting the platform with over %tvl% in funds.', { tvl: tvlString })
   const [entrusting, inFunds] = tvlText.split(tvlString)
+
+  const UsersCardData: IconCardData = {
+    icon: <ChartIcon color="#7645D9" width="36px" />,
+    background: theme.colors.background,
+    borderColor: theme.colors.cardBorder,
+  }
+
+  const TradesCardData: IconCardData = {
+    icon: <ChartIcon color="#1FC7D4" width="36px" />,
+    background: theme.colors.background,
+    borderColor: theme.colors.cardBorder,
+  }
+
+  const StakedCardData: IconCardData = {
+    icon: <ChartIcon color="#ED4B9E" width="36px" />,
+    background: theme.colors.background,
+    borderColor: theme.colors.cardBorder,
+  }
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
@@ -53,9 +75,23 @@ const Stats = () => {
         </Text>
       </Flex>
 
-      <Text textAlign="center" color="textSubtle" bold>
+      <Text textAlign="center" color="textSubtle" bold mb="32px">
         {t('Will you join them?')}
       </Text>
+
+      <Flex m="0 auto">
+        {/* <IconCard {...UsersCardData}>
+          <span>sss</span>
+        </IconCard>
+        <Box mr="24px" />
+        <IconCard {...TradesCardData}>
+          <span>sss</span>
+        </IconCard>
+        <Box mr="24px" /> */}
+        <IconCard {...StakedCardData}>
+          <StatCardContent headingText={t('$%tvl% staked', { tvl: tvlString })} bodyText={t('Total Value Locked')} />
+        </IconCard>
+      </Flex>
     </Flex>
   )
 }

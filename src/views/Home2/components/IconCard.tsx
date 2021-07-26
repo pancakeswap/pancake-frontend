@@ -27,7 +27,7 @@ export interface IconCardData {
   icon: ReactNode
   background: string
   borderColor: string
-  rotation: string
+  rotation?: string
 }
 
 const IconCard: React.FC<IconCardProps> = ({ icon, background, borderColor, rotation, children }) => {

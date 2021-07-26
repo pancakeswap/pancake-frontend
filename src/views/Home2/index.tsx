@@ -8,10 +8,10 @@ import { useGetStats } from 'hooks/api'
 import { HERO_BOTTOM_BG, HERO_SVG_BOTTOM, HERO_TOP_BG } from './pageSectionStyles'
 import Hero from './components/Hero'
 import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
+import StatsSection from './components/StatsSection'
 import SalesSection from './components/SalesSection'
 import WinSection from './components/WinSection'
 import Footer from './components/Footer'
-import Stats from './components/Stats'
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
@@ -27,7 +27,7 @@ const Home: React.FC = () => {
         index={2}
         hasCurvedDivider={false}
       >
-        <Stats />
+        <StatsSection />
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
