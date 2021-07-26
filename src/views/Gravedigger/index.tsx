@@ -7,6 +7,7 @@ import { createWidget } from '@typeform/embed'
 import Page from '../../components/layout/Page'
 import '@typeform/embed/build/css/widget.css'
 import GraveListings from "./components/GraveListings"
+import CommunityRequestedTokens from "./components/CommunityRequestedTokens"
 
 const Wrapper = styled.div`
   margin-top:100px;
@@ -51,7 +52,7 @@ const Gravedigger:React.FC = () => {
                     <GraveListings/>
                 </Col>
                 <Col>
-                    <GraveListings/>
+                    <CommunityRequestedTokens/>
                 </Col>
             </Row>
             <FormContainer id="form" />
