@@ -92,7 +92,7 @@ const Lottery = () => {
               setActiveIndex={(index) => setHistoryTabMenuIndex(index)}
             />
           </Box>
-          {historyTabMenuIndex === 0 ? <YourHistoryCard /> : <AllHistoryCard />}
+          {historyTabMenuIndex === 0 ? <AllHistoryCard /> : <YourHistoryCard />}
         </Flex>
       </PageSection>
 

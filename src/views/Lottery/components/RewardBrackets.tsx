@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryRound } from 'state/types'
 import RewardBracketDetail from './RewardBracketDetail'
@@ -26,18 +27,57 @@ interface RewardMatchesProps {
   isHistoricRound?: boolean
 }
 
+interface RewardsState {
+  isLoading: boolean
+  cakeToBurn: BigNumber
+  rewardsLessTreasuryFee: BigNumber
+  rewardsBreakdown: string[]
+  countWinnersPerBracket: string[]
+}
+
 const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricRound }) => {
   const { t } = useTranslation()
-  const { treasuryFee, amountCollectedInCake, rewardsBreakdown, countWinnersPerBracket } = lotteryData
+  const [state, setState] = useState<RewardsState>({
+    isLoading: true,
+    cakeToBurn: BIG_ZERO,
+    rewardsLessTreasuryFee: BIG_ZERO,
+    rewardsBreakdown: null,
+    countWinnersPerBracket: null,
+  })
 
-  const feeAsPercentage = new BigNumber(treasuryFee).div(100)
-  const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCake))
-  const amountLessTreasuryFee = new BigNumber(amountCollectedInCake).minus(cakeToBurn)
+  useEffect(() => {
+    if (lotteryData) {
+      const { treasuryFee, amountCollectedInCake, rewardsBreakdown, countWinnersPerBracket } = lotteryData
+
+      const feeAsPercentage = new BigNumber(treasuryFee).div(100)
+      const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCake))
+      const amountLessTreasuryFee = new BigNumber(amountCollectedInCake).minus(cakeToBurn)
+      setState({
+        isLoading: false,
+        cakeToBurn,
+        rewardsLessTreasuryFee: amountLessTreasuryFee,
+        rewardsBreakdown,
+        countWinnersPerBracket,
+      })
+    } else {
+      setState({
+        isLoading: true,
+        cakeToBurn: BIG_ZERO,
+        rewardsLessTreasuryFee: BIG_ZERO,
+        rewardsBreakdown: null,
+        countWinnersPerBracket: null,
+      })
+    }
+  }, [lotteryData])
 
   const getCakeRewards = (bracket: number) => {
-    const shareAsPercentage = new BigNumber(rewardsBreakdown[bracket]).div(100)
-    return amountLessTreasuryFee.div(100).times(shareAsPercentage)
+    const shareAsPercentage = new BigNumber(state.rewardsBreakdown[bracket]).div(100)
+    return state.rewardsLessTreasuryFee.div(100).times(shareAsPercentage)
   }
+
+  const { isLoading, countWinnersPerBracket, cakeToBurn } = state
+
+  const rewardBrackets = [0, 1, 2, 3, 4, 5]
 
   return (
     <Wrapper>
@@ -46,43 +86,17 @@ const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricR
         {!isHistoricRound && t('Current prizes up for grabs:')}
       </Text>
       <RewardsInner>
-        <RewardBracketDetail
-          rewardBracket={5}
-          cakeAmount={getCakeRewards(5)}
-          numberWinners={countWinnersPerBracket[5]}
-          isHistoricRound={isHistoricRound}
-        />
-        <RewardBracketDetail
-          rewardBracket={4}
-          cakeAmount={getCakeRewards(4)}
-          numberWinners={countWinnersPerBracket[4]}
-          isHistoricRound={isHistoricRound}
-        />
-        <RewardBracketDetail
-          rewardBracket={3}
-          cakeAmount={getCakeRewards(3)}
-          numberWinners={countWinnersPerBracket[3]}
-          isHistoricRound={isHistoricRound}
-        />
-        <RewardBracketDetail
-          rewardBracket={2}
-          cakeAmount={getCakeRewards(2)}
-          numberWinners={countWinnersPerBracket[2]}
-          isHistoricRound={isHistoricRound}
-        />
-        <RewardBracketDetail
-          rewardBracket={1}
-          cakeAmount={getCakeRewards(1)}
-          numberWinners={countWinnersPerBracket[1]}
-          isHistoricRound={isHistoricRound}
-        />
-        <RewardBracketDetail
-          rewardBracket={0}
-          cakeAmount={getCakeRewards(0)}
-          numberWinners={countWinnersPerBracket[0]}
-          isHistoricRound={isHistoricRound}
-        />
-        <RewardBracketDetail rewardBracket={0} cakeAmount={cakeToBurn} isBurn />
+        {rewardBrackets.map((bracketIndex) => (
+          <RewardBracketDetail
+            key={bracketIndex}
+            rewardBracket={bracketIndex}
+            cakeAmount={!isLoading && getCakeRewards(bracketIndex)}
+            numberWinners={!isLoading && countWinnersPerBracket[bracketIndex]}
+            isHistoricRound={isHistoricRound}
+            isLoading={isLoading}
+          />
+        ))}
+        <RewardBracketDetail rewardBracket={0} cakeAmount={cakeToBurn} isBurn isLoading={isLoading} />
       </RewardsInner>
     </Wrapper>
   )

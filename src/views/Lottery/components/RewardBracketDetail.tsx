@@ -12,6 +12,7 @@ interface RewardBracketDetailProps {
   numberWinners?: string
   isBurn?: boolean
   isHistoricRound?: boolean
+  isLoading?: boolean
 }
 
 const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
@@ -20,10 +21,10 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
   numberWinners,
   isHistoricRound,
   isBurn,
+  isLoading,
 }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = cakeAmount.times(cakePriceBusd)
 
   const getRewardText = () => {
     const numberMatch = rewardBracket + 1
@@ -38,19 +39,31 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
 
   return (
     <Flex flexDirection="column">
-      <Text bold color={isBurn ? 'failure' : 'secondary'}>
-        {getRewardText()}
-      </Text>
+      {isLoading ? (
+        <Skeleton mb="4px" mt="8px" height={16} width={80} />
+      ) : (
+        <Text bold color={isBurn ? 'failure' : 'secondary'}>
+          {getRewardText()}
+        </Text>
+      )}
       <>
-        {prizeInBusd.isNaN() ? (
-          <Skeleton my="2px" height={12} width={90} />
+        {isLoading || cakeAmount.isNaN() ? (
+          <Skeleton my="4px" mr="10px" height={20} width={110} />
         ) : (
           <Balance fontSize="20px" bold unit=" CAKE" value={getBalanceNumber(cakeAmount)} decimals={0} />
         )}
-        {prizeInBusd.isNaN() ? (
-          <Skeleton my="2px" height={12} width={70} />
+        {isLoading || cakeAmount.isNaN() ? (
+          <>
+            <Skeleton mt="4px" mb="16px" height={12} width={70} />
+          </>
         ) : (
-          <Balance fontSize="12px" color="textSubtle" prefix="~$" value={getBalanceNumber(prizeInBusd)} decimals={0} />
+          <Balance
+            fontSize="12px"
+            color="textSubtle"
+            prefix="~$"
+            value={getBalanceNumber(cakeAmount.times(cakePriceBusd))}
+            decimals={0}
+          />
         )}
         {isHistoricRound && cakeAmount && (
           <>
