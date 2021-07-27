@@ -13,9 +13,16 @@ import SalesSection from './components/SalesSection'
 import WinSection from './components/WinSection'
 import Footer from './components/Footer'
 import CakeDataRow from './components/CakeDataRow'
+import {
+  WedgeTopLeft,
+  InnerWedgeWrapper,
+  OuterWedgeWrapper,
+  WedgeTopRight,
+  WedgeBottomRight,
+  WedgeBottomLeft,
+} from './components/WedgeSvgs'
 
 const Home: React.FC = () => {
-  const { t } = useTranslation()
   const { theme } = useTheme()
 
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
@@ -52,6 +59,11 @@ const Home: React.FC = () => {
         index={2}
         hasCurvedDivider={false}
       >
+        <OuterWedgeWrapper>
+          <InnerWedgeWrapper top fill={theme.isDark ? '#201335' : '#D8CBED'}>
+            <WedgeTopLeft />
+          </InnerWedgeWrapper>
+        </OuterWedgeWrapper>
         <SalesSection {...swapSectionData} />
       </PageSection>
       <PageSection
@@ -60,6 +72,11 @@ const Home: React.FC = () => {
         index={2}
         hasCurvedDivider={false}
       >
+        <OuterWedgeWrapper>
+          <InnerWedgeWrapper width="150%" top fill={theme.colors.background}>
+            <WedgeTopRight />
+          </InnerWedgeWrapper>
+        </OuterWedgeWrapper>
         <SalesSection {...earnSectionData} />
       </PageSection>
       <PageSection
