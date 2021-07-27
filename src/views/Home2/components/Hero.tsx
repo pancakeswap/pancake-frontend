@@ -95,7 +95,11 @@ const Hero = () => {
       <BgWrapper>
         <InnerWrapper>{theme.isDark ? <SlideSvgDark width="100%" /> : <SlideSvgLight width="100%" />}</InnerWrapper>
       </BgWrapper>
-      <Flex alignItems="center" justifyContent="center">
+      <Flex
+        flexDirection={['column-reverse', null, null, 'row']}
+        alignItems={['flex-end', null, null, 'center']}
+        justifyContent="center"
+      >
         <Flex flex="1" flexDirection="column">
           <Heading scale="xxl" color="secondary" mb="24px">
             {t('The moon is made of pancakes.')}
@@ -110,7 +114,13 @@ const Hero = () => {
             </Link>
           </Flex>
         </Flex>
-        <Flex flex="1" position="relative">
+        <Flex
+          height={['192px', null, null, '100%']}
+          width={['192px', null, null, '100%']}
+          flex={[null, null, null, '1']}
+          mb={['24px', null, null, '0']}
+          position="relative"
+        >
           <BunnyWrapper>
             <img src={`${imagePath}${imageSrc}.png`} srcSet={getSrcSet(imagePath, imageSrc)} alt={t('Lunar bunny')} />
           </BunnyWrapper>

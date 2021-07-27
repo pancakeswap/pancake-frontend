@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Heading, Flex, LogoIcon, Text, Skeleton, ChartIcon, Box } from '@pancakeswap/uikit'
+import { Heading, Flex, LogoIcon, Text, Skeleton, ChartIcon, Box, CommunityIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
@@ -45,7 +45,7 @@ const Stats = () => {
   const [entrusting, inFunds] = tvlText.split(tvlString)
 
   const UsersCardData: IconCardData = {
-    icon: <ChartIcon color="secondary" width="36px" />,
+    icon: <CommunityIcon color="secondary" width="36px" />,
     background: theme.colors.background,
     borderColor: theme.colors.cardBorder,
   }
