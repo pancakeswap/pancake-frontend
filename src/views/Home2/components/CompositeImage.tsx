@@ -14,35 +14,29 @@ const floatingAnim = (x: string, y: string) => keyframes`
   }  
 `
 
-const Wrapper = styled(Box)<{ animate: boolean; maxHeight: string }>`
+const Wrapper = styled(Box)<{ maxHeight: string }>`
   position: relative;
   max-height: ${({ maxHeight }) => maxHeight};
 
-  /* TODO: Remove animate prop if it ends up not being used */
-  ${({ animate }) =>
-    animate
-      ? css`
-          & :nth-child(2) {
-            animation: ${floatingAnim('3px', '15px')} 3s ease-in-out infinite;
-            animation-delay: 1s;
-          }
+  & :nth-child(2) {
+    animation: ${floatingAnim('3px', '15px')} 3s ease-in-out infinite;
+    animation-delay: 1s;
+  }
 
-          & :nth-child(3) {
-            animation: ${floatingAnim('5px', '10px')} 3s ease-in-out infinite;
-            animation-delay: 0.66s;
-          }
+  & :nth-child(3) {
+    animation: ${floatingAnim('5px', '10px')} 3s ease-in-out infinite;
+    animation-delay: 0.66s;
+  }
 
-          & :nth-child(4) {
-            animation: ${floatingAnim('6px', '5px')} 3s ease-in-out infinite;
-            animation-delay: 0.33s;
-          }
+  & :nth-child(4) {
+    animation: ${floatingAnim('6px', '5px')} 3s ease-in-out infinite;
+    animation-delay: 0.33s;
+  }
 
-          & :nth-child(5) {
-            animation: ${floatingAnim('4px', '12px')} 3s ease-in-out infinite;
-            animation-delay: 0s;
-          }
-        `
-      : ''}
+  & :nth-child(5) {
+    animation: ${floatingAnim('4px', '12px')} 3s ease-in-out infinite;
+    animation-delay: 0s;
+  }
 `
 
 const DummyImg = styled.img<{ maxHeight: string }>`
@@ -90,9 +84,9 @@ export const getSrcSet = (base: string, imageSrc: string) => {
   ${getImageUrl(base, imageSrc, Resolution.LG)} 1024w,`
 }
 
-const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, animate = true, maxHeight = '512px' }) => {
+const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, maxHeight = '512px' }) => {
   return (
-    <Wrapper animate={animate} maxHeight={maxHeight}>
+    <Wrapper maxHeight={maxHeight}>
       <DummyImg src={getImageUrl(path, attributes[0].src)} maxHeight={maxHeight} />
       {attributes.map((image) => (
         <ImageWrapper key={image.src}>

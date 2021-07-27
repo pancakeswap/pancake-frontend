@@ -1,12 +1,12 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Flex, Heading, Link, Button } from '@pancakeswap/uikit'
+import { Flex, Heading, Link, Button, Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useTheme from 'hooks/useTheme'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
-import { getSrcSet } from './CompositeImage'
+import CompositeImage, { getSrcSet, CompositeImageProps } from './CompositeImage'
 
 const flyingAnim = () => keyframes`
   from {
@@ -17,6 +17,18 @@ const flyingAnim = () => keyframes`
   }
   to {
     transform: translate(0, 0px);
+  }  
+`
+
+const fading = () => keyframes`
+  from {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 0.9;
   }  
 `
 
@@ -36,17 +48,47 @@ const InnerWrapper = styled.div`
   bottom: -3px;
 `
 
-const ImageWrapper = styled.div`
+const BunnyWrapper = styled.div`
   width: 100%;
   animation: ${flyingAnim} 2.5s ease-in-out infinite;
+`
+
+const StarsWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  & :nth-child(2) {
+    animation: ${fading} 2s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+
+  & :nth-child(3) {
+    animation: ${fading} 5s ease-in-out infinite;
+    animation-delay: 0.66s;
+  }
+
+  & :nth-child(4) {
+    animation: ${fading} 2.5s ease-in-out infinite;
+    animation-delay: 0.33s;
+  }
 `
 
 const Hero = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { theme } = useTheme()
-  const imagePath = '/images/home/'
-  const imageSrc = 'lunar-bunny'
+  const imagePath = '/images/home/lunar-bunny/'
+  const imageSrc = 'bunny'
+
+  const starsImage: CompositeImageProps = {
+    path: '/images/home/lunar-bunny/',
+    attributes: [
+      { src: 'star-l', alt: '3D Star' },
+      { src: 'star-r', alt: '3D Star' },
+      { src: 'star-top-r', alt: '3D Star' },
+    ],
+  }
 
   return (
     <>
@@ -68,10 +110,13 @@ const Hero = () => {
             </Link>
           </Flex>
         </Flex>
-        <Flex flex="1">
-          <ImageWrapper>
+        <Flex flex="1" position="relative">
+          <BunnyWrapper>
             <img src={`${imagePath}${imageSrc}.png`} srcSet={getSrcSet(imagePath, imageSrc)} alt={t('Lunar bunny')} />
-          </ImageWrapper>
+          </BunnyWrapper>
+          <StarsWrapper>
+            <CompositeImage {...starsImage} />
+          </StarsWrapper>
         </Flex>
       </Flex>
     </>
