@@ -46,6 +46,11 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
           Dig a grave
         </a>
       </div>
+      <div className="_40_percent_block">
+        <a href={routes.SPAWNWITHUS} className="button-2 w-button">
+          Spawning Pool Application
+        </a>
+      </div>
       <div className="_40_percent_block-copy">
         <a href="https://dex.guru/token/0x50ba8bf9e34f0f83f96a340387d1d3888ba4b3b5-bsc" rel="noreferrer" target="_blank" className="button-3 w-button">
           View Chart
