@@ -96,13 +96,16 @@ const WinSection = () => {
             {t(' Win big with PancakeSwap.')}
           </Text>
           <Flex m="0 auto" maxWidth="600px">
-            <IconCard {...PredictionCardData}>
-              <PredictionCardContent />
-            </IconCard>
-            <Box mr="24px" />
-            <IconCard {...LotteryCardData}>
-              <LotteryCardContent />
-            </IconCard>
+            <Flex flex="1" mr="24px">
+              <IconCard {...PredictionCardData}>
+                <PredictionCardContent />
+              </IconCard>
+            </Flex>
+            <Flex flex="1">
+              <IconCard {...LotteryCardData}>
+                <LotteryCardContent />
+              </IconCard>
+            </Flex>
           </Flex>
         </Flex>
       </TransparentFrame>

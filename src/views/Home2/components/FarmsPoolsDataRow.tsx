@@ -21,7 +21,6 @@ const FarmsPoolsDataRow = () => {
   const dispatch = useAppDispatch()
   const { observerRef, isIntersecting } = useIntersectionObserver()
 
-  // Fetch farm data once to get the max APR
   useEffect(() => {
     const fetchFarmData = async () => {
       try {

@@ -4,7 +4,6 @@ import { Card, CardBody, Box, CardProps } from '@pancakeswap/uikit'
 
 const StyledCard = styled(Card)<{ background: string; borderColor: string; rotation?: string }>`
   height: fit-content;
-  flex: 1;
   background: ${({ background }) => background};
   border: 2px solid ${({ borderColor }) => borderColor};
   box-sizing: border-box;
