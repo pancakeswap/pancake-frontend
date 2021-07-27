@@ -65,8 +65,10 @@ const Stats = () => {
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
       <StyledLogoIcon height="48px" width="48px" mb="24px" />
-      <Heading scale="xl"> {t('Used by millions.')}</Heading>
-      <Heading scale="xl" mb="32px">
+      <Heading textAlign="center" scale="xl">
+        {t('Used by millions.')}
+      </Heading>
+      <Heading textAlign="center" scale="xl" mb="32px">
         {t('Trusted with billions.')}
       </Heading>
       <Text textAlign="center" color="textSubtle">
@@ -94,15 +96,15 @@ const Stats = () => {
         {t('Will you join them?')}
       </Text>
 
-      <Flex>
-        <IconCard {...UsersCardData} mr="16px">
+      <Flex flexDirection={['column', null, null, 'row']}>
+        <IconCard {...UsersCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}>
           <StatCardContent
             headingText={t('%users% users', { users })}
             bodyText={t('in the last 30 days')}
             highlightColor={theme.colors.secondary}
           />
         </IconCard>
-        <IconCard {...TradesCardData} mr="16px">
+        <IconCard {...TradesCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}>
           <StatCardContent
             headingText={t('%trades% trades', { trades })}
             bodyText={t('made in the last 30 days')}

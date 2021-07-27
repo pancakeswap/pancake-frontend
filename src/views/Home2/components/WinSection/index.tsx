@@ -31,12 +31,23 @@ const BottomLeftImgWrapper = styled(Flex)`
   position: absolute;
   left: 0;
   bottom: -64px;
+  max-width: 192px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    max-width: 100%;
+  }
 `
 
 const TopRightImgWrapper = styled(Flex)`
   position: absolute;
   right: 0;
   top: -64px;
+
+  max-width: 192px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    max-width: 100%;
+  }
 `
 
 const WinSection = () => {
@@ -90,18 +101,18 @@ const WinSection = () => {
       </BgWrapper>
       <TransparentFrame isDark={theme.isDark}>
         <Flex flexDirection="column" alignItems="center" justifyContent="center">
-          <PurpleWordHeading text={t('Win millions in prizes')} />
+          <PurpleWordHeading textAlign="center" text={t('Win millions in prizes')} />
           <Text color="textSubtle">{t('Provably fair, on-chain games.')}</Text>
           <Text mb="40px" color="textSubtle">
             {t(' Win big with PancakeSwap.')}
           </Text>
-          <Flex m="0 auto" maxWidth="600px">
-            <Flex flex="1" mr="24px">
+          <Flex m="0 auto" flexDirection={['column', null, null, 'row']} maxWidth="600px">
+            <Flex flex="1" maxWidth="275px" mr={[null, null, null, '24px']} mb={['32px', null, null, '0']}>
               <IconCard {...PredictionCardData}>
                 <PredictionCardContent />
               </IconCard>
             </Flex>
-            <Flex flex="1">
+            <Flex flex="1" maxWidth="275px">
               <IconCard {...LotteryCardData}>
                 <LotteryCardContent />
               </IconCard>

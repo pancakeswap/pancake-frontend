@@ -54,6 +54,11 @@ const FloatingPancakesWrapper = styled(Container)`
   top: 0;
   left: 50%;
   transform: translateX(-50%);
+  visibility: hidden;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    visibility: visible;
+  }
 `
 
 const TopLeftImgWrapper = styled(Flex)`

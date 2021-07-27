@@ -12,12 +12,12 @@ const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlig
 
   return (
     <Flex
-      minHeight="168px"
+      minHeight={[null, null, null, '168px']}
       minWidth="232px"
       width="fit-content"
       flexDirection="column"
       justifyContent="flex-end"
-      mt="64px"
+      mt={[null, null, null, '64px']}
     >
       <Heading scale="xl">{remainingWords}</Heading>
       <Heading color={highlightColor} scale="xl" mb="24px">

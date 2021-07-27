@@ -9,10 +9,33 @@ import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
 
-const StyledColumn = styled(Flex)`
+const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean }>`
   flex-direction: column;
-  padding: 0 16px;
-  border-left: 1px ${({ theme }) => theme.colors.inputSecondary} solid;
+  ${({ noMobileBorder, theme }) =>
+    noMobileBorder
+      ? ''
+      : `border-left: 1px ${theme.colors.inputSecondary} solid;
+         padding: 0 8px;
+         ${theme.mediaQueries.sm} {
+           padding: 0 16px;
+         }
+        `}
+`
+
+const Grid = styled.div`
+  display: grid;
+  grid-gap: 8px;
+  margin-top: 24px;
+  grid-template-columns: repeat(2, auto);
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    grid-gap: 16px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-gap: 32px;
+    grid-template-columns: repeat(4, auto);
+  }
 `
 
 const CakeDataRow = () => {
@@ -26,8 +49,8 @@ const CakeDataRow = () => {
   const emissionsPerBlock = 19
 
   return (
-    <Flex mt="24px" justifyContent="space-between">
-      <Flex flexDirection="column" pr="16px">
+    <Grid>
+      <Flex flexDirection="column">
         <Text color="textSubtle">{t('Total supply')}</Text>
         {cakeSupply ? (
           <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
@@ -43,7 +66,7 @@ const CakeDataRow = () => {
           <Skeleton height={24} width={126} my="4px" />
         )}
       </StyledColumn>
-      <StyledColumn>
+      <StyledColumn noMobileBorder>
         <Text color="textSubtle">{t('Market cap')}</Text>
         {mcap?.gt(0) && mcapString ? (
           <Heading scale="lg">{t('$%marketCap%', { marketCap: mcapString })}</Heading>
@@ -56,7 +79,7 @@ const CakeDataRow = () => {
 
         <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: emissionsPerBlock })}</Heading>
       </StyledColumn>
-    </Flex>
+    </Grid>
   )
 }
 
