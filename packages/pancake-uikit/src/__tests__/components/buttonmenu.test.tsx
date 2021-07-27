@@ -22,6 +22,15 @@ it("renders correctly", () => {
       display: -ms-inline-flexbox;
       display: inline-flex;
       border: 1px solid #E9EAEB;
+      width: auto;
+    }
+
+    .c0 > button,
+    .c0 > a {
+      margin-left: 2px;
+      -webkit-flex: auto;
+      -ms-flex: auto;
+      flex: auto;
     }
 
     .c0 > button + button,

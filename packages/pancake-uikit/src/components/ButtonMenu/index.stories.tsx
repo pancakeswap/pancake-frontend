@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 /* eslint-disable import/no-unresolved */
 import { Meta } from "@storybook/react/types-6-0";
+import Box from "../Box/Box";
 import ButtonMenu from "./ButtonMenu";
 import ButtonMenuItem from "./ButtonMenuItem";
 
@@ -123,5 +124,33 @@ export const DisabledMenu: React.FC = () => {
         </ButtonMenu>
       </Row>
     </>
+  );
+};
+
+export const FullWidthMenu: React.FC = () => {
+  const [index, setIndex] = useState(0);
+
+  const handleClick = (newIndex: number) => setIndex(newIndex);
+
+  return (
+    <Box width="840px">
+      <ButtonMenu activeIndex={index} onItemClick={handleClick} fullWidth mb="24px">
+        <ButtonMenuItem>Button 1</ButtonMenuItem>
+        <ButtonMenuItem>Button 2</ButtonMenuItem>
+        <ButtonMenuItem>Button 3</ButtonMenuItem>
+        <ButtonMenuItem>Button 4</ButtonMenuItem>
+      </ButtonMenu>
+      <ButtonMenu activeIndex={index} fullWidth scale="sm" variant="subtle">
+        <ButtonMenuItem as="a" href="https://pancakeswap.finance">
+          Link 1
+        </ButtonMenuItem>
+        <ButtonMenuItem as="a" href="https://pancakeswap.finance">
+          Link 2
+        </ButtonMenuItem>
+        <ButtonMenuItem as="a" href="https://pancakeswap.finance">
+          Link 3
+        </ButtonMenuItem>
+      </ButtonMenu>
+    </Box>
   );
 };

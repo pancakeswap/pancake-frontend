@@ -19,8 +19,15 @@ const getBorderColor = ({ theme, variant }: StyledButtonMenuProps) => {
 const StyledButtonMenu = styled.div<StyledButtonMenuProps>`
   background-color: ${getBackgroundColor};
   border-radius: 16px;
-  display: inline-flex;
+  display: ${({ fullWidth }) => (fullWidth ? "flex" : "inline-flex")};
   border: 1px solid ${getBorderColor};
+  width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
+
+  & > button,
+  & > a {
+    margin-left: ${({ fullWidth }) => (fullWidth ? "0px" : "2px")}; // To avoid focus shadow overlap
+    flex: ${({ fullWidth }) => (fullWidth ? 1 : "auto")};
+  }
 
   & > button + button,
   & > a + a {
@@ -55,10 +62,11 @@ const ButtonMenu: React.FC<ButtonMenuProps> = ({
   onItemClick,
   disabled,
   children,
+  fullWidth = false,
   ...props
 }) => {
   return (
-    <StyledButtonMenu disabled={disabled} variant={variant} {...props}>
+    <StyledButtonMenu disabled={disabled} variant={variant} fullWidth={fullWidth} {...props}>
       {Children.map(children, (child: ReactElement, index) => {
         return cloneElement(child, {
           isActive: activeIndex === index,
