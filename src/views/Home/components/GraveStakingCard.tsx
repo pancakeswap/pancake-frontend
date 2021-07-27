@@ -68,7 +68,7 @@ const GraveStakingCard = () => {
     <StyledFarmStakingCard>
       <CardBody>
         <Heading size="xl" mb="24px">
-          {t('For new comers')}
+          {t('For Newcomers')}
         </Heading>
 
 
