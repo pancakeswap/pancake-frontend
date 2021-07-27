@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-07-23T13:03:01.365Z",
+  "timestamp": "2021-07-27T04:46:30.966Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 11
+    "patch": 12
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1291,6 +1291,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xe4ae305ebe1abe663f261bc00534067c80ad677c.png"
+    },
+    {
+      "name": "Splintershards",
+      "symbol": "SPS",
+      "address": "0x1633b7157e7638C4d6593436111Bf125Ee74703F",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x1633b7157e7638C4d6593436111Bf125Ee74703F.png"
     },
     {
       "name": "StableXSwap",

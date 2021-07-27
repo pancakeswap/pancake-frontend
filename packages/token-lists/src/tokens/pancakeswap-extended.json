@@ -1678,5 +1678,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xaEC945e04baF28b135Fa7c640f624f8D90F1C3a6.png"
+  },
+  {
+    "name": "Splintershards",
+    "symbol": "SPS",
+    "address": "0x1633b7157e7638C4d6593436111Bf125Ee74703F",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x1633b7157e7638C4d6593436111Bf125Ee74703F.png"
   }
 ]
