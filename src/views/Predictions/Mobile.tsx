@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Box, Flex } from '@rug-zombie-libs/uikit'
+import { ArrowDownIcon, Box, Button, ChartIcon, Flex } from '@rug-zombie-libs/uikit'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { PredictionStatus } from 'state/types'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
@@ -20,6 +20,9 @@ import IncreaseBidCard from './components/RoundCard/IncreaseBidCard'
 import RoundCard from './components/RoundCard'
 import Menu from './components/Menu'
 import MobileTopMenu from './components/MobileTopMenu'
+import PrizeTab from './components/PrizeTab'
+import { setChartPaneState } from '../../state/predictions'
+import { useAppDispatch } from '../../state'
 
 enum PageView {
   POSITIONS = 'positions',
@@ -82,6 +85,33 @@ const StyledSwiper = styled.div`
   }
 `
 
+
+const ChartPane = styled.div<{ isChartPaneOpen: boolean }>`
+  height: ${({ isChartPaneOpen }) => (isChartPaneOpen ? '100%' : 0)};
+  position: relative;
+`
+
+const ExpandChartButton = styled(Button)`
+  background-color: ${({ theme }) => theme.card.background};
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  color: ${({ theme }) => theme.colors.text};
+  display: none;
+  left: 32px;
+  position: absolute;
+  top: -32px;
+  z-index: 50;
+
+  &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    background-color: ${({ theme }) => theme.card.background};
+    opacity: 1;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: inline-flex;
+  }
+`
+
 interface MobileProps {
   bids: any[],
   lastBidId: number,
@@ -92,8 +122,18 @@ interface MobileProps {
 }
 
 const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, userInfo, aid }) => {
-
   const { setSwiper } = useSwiper()
+  const isChartPaneOpen = useIsChartPaneOpen()
+  const dispatch = useAppDispatch()
+  const [refreshMob, setRefreshMob] = useState(false)
+  const toggleChartPane = () => {
+    dispatch(setChartPaneState(!isChartPaneOpen))
+  }
+
+  const refreshMobile = () => {
+    console.log(isChartPaneOpen)
+    setRefreshMob(!refreshMob)
+  }
 
   const formattedBids = bids.map((bid, i) => {
     return {
@@ -164,7 +204,18 @@ const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, u
         left: "0",
         width: "100%"
       }}>
-        <MobileMenu userInfo={userInfo} />
+        <MobileMenu userInfo={userInfo} refreshMobile={refreshMobile} />
+        <ChartPane isChartPaneOpen={isChartPaneOpen}>
+          <ExpandChartButton
+            variant='tertiary'
+            scale='sm'
+            startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
+            onClick={toggleChartPane}
+          >
+            {isChartPaneOpen ? 'Close' : 'Auction details'}
+          </ExpandChartButton>
+          <PrizeTab />
+        </ChartPane>
       </div>
     </>
   )

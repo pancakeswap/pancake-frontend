@@ -225,8 +225,6 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
                       >
                         {t('WITHDRAW BID')}
                       </Button>
-
-
                 }
               </Flex>
               <Flex alignItems='center' justifyContent='center' className='indetails-title' paddingTop='10px'>

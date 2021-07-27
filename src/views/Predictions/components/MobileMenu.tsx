@@ -17,6 +17,8 @@ import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } fro
 import { setChartPaneState, setHistoryPaneState } from 'state/predictions'
 import useSwiper from '../hooks/useSwiper'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
+import { BASE_EXCHANGE_URL } from '../../../config'
+import auctions from '../../../redux/auctions'
 
 const ButtonNav = styled.div`
   flex: none;
@@ -53,32 +55,23 @@ const getActiveIndex = (isHistoryOpen: boolean, isChartOpen: boolean) => {
 
 interface MobileMenuProps {
   userInfo: any;
+  refreshMobile: any;
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({ userInfo }) => {
+const MobileMenu: React.FC<MobileMenuProps> = ({ userInfo, refreshMobile }) => {
   const { swiper } = useSwiper()
   const isHistoryOpen = useIsHistoryPaneOpen()
   const isChartOpen = useIsChartPaneOpen()
   const status = useGetPredictionsStatus()
   const activeIndex = getActiveIndex(isHistoryOpen, isChartOpen)
   const dispatch = useAppDispatch()
-  const { account } = useWeb3React()
+  const isChartPaneOpen = useIsChartPaneOpen()
 
-  const handleItemClick = (index: number) => {
-    switch (index) {
-      case 2:
-        dispatch(setHistoryPaneState(true))
-        break
-      case 1:
-        dispatch(setChartPaneState(true))
-        dispatch(setHistoryPaneState(false))
-        break
-      case 0:
-      default:
-        dispatch(setHistoryPaneState(false))
-        dispatch(setChartPaneState(false))
-    }
+  const handleItemClick = () => {
+    dispatch(setChartPaneState(!isChartPaneOpen))
+    refreshMobile()
   }
+
 
   return (
     <StyledMobileMenu>
@@ -96,9 +89,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ userInfo }) => {
         </ButtonMenu>
       </TabNav>
       <ButtonNav>
+        <a href={`${BASE_EXCHANGE_URL}/#/add/${auctions[0].token0}/${auctions[0].token1}`} target="_blank" rel="noreferrer">
+
         <Button variant="text">
           Get BT (Bid Tokens):
         </Button>
+        </a>
       </ButtonNav>
     </StyledMobileMenu>
   )

@@ -92,22 +92,23 @@ const Desktop: React.FC<DesktopProps> = ({ bids, refresh, lastBidId, setRefresh,
   return (
     <StyledDesktop>
       <ContentWrapper>
-          <>
-            <PositionsPane>
-              <Positions bids={bids} refresh={refresh} setRefresh={setRefresh} userInfo={userInfo} lastBidId={lastBidId} aid={aid}/>
-            </PositionsPane>
-            <ChartPane isChartPaneOpen={isChartPaneOpen}>
-              <ExpandChartButton
-                variant="tertiary"
-                scale="sm"
-                startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
-                onClick={toggleChartPane}
-              >
-                {isChartPaneOpen ? t('Close') : t('Auction details')}
-              </ExpandChartButton>
-              <PrizeTab />
-            </ChartPane>
-          </>
+        <>
+          <PositionsPane>
+            <Positions bids={bids} refresh={refresh} setRefresh={setRefresh} userInfo={userInfo} lastBidId={lastBidId}
+                       aid={aid} />
+          </PositionsPane>
+          <ChartPane isChartPaneOpen={isChartPaneOpen}>
+            <ExpandChartButton
+              variant='tertiary'
+              scale='sm'
+              startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
+              onClick={toggleChartPane}
+            >
+              {isChartPaneOpen ? t('Close') : t('Auction details')}
+            </ExpandChartButton>
+            <PrizeTab />
+          </ChartPane>
+        </>
       </ContentWrapper>
       <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>
         <History />
