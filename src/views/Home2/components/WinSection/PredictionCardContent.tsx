@@ -5,7 +5,6 @@ import useRefresh from 'hooks/useRefresh'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { getTotalWon } from 'state/predictions/helpers'
 import { usePriceBnbBusd } from 'state/farms/hooks'
-import Balance from 'components/Balance'
 import styled from 'styled-components'
 import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
 

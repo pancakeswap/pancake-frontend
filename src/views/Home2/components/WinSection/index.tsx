@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Box, ChartIcon } from '@pancakeswap/uikit'
+import { Flex, Text, ChartIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import PurpleWordHeading from '../PurpleWordHeading'
@@ -107,12 +107,17 @@ const WinSection = () => {
             {t(' Win big with PancakeSwap.')}
           </Text>
           <Flex m="0 auto" flexDirection={['column', null, null, 'row']} maxWidth="600px">
-            <Flex flex="1" maxWidth="275px" mr={[null, null, null, '24px']} mb={['32px', null, null, '0']}>
+            <Flex
+              flex="1"
+              maxWidth={['275px', null, null, '100%']}
+              mr={[null, null, null, '24px']}
+              mb={['32px', null, null, '0']}
+            >
               <IconCard {...PredictionCardData}>
                 <PredictionCardContent />
               </IconCard>
             </Flex>
-            <Flex flex="1" maxWidth="275px">
+            <Flex flex="1" maxWidth={['275px', null, null, '100%']}>
               <IconCard {...LotteryCardData}>
                 <LotteryCardContent />
               </IconCard>

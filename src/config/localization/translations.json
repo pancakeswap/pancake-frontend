@@ -1225,5 +1225,11 @@
   "$%tvl% staked": "$%tvl% staked",
   "The moon is made of pancakes.": "The moon is made of pancakes.",
   "Trade, earn, and win crypto on the most popular decentralized platform in the galaxy.": "Trade, earn, and win crypto on the most popular decentralized platform in the galaxy.",
-  "Lunar bunny": "Lunar bunny"
+  "Lunar bunny": "Lunar bunny",
+  "Total supply": "Total supply",
+  "Burned to date": "Burned to date",
+  "Market cap": "Market cap",
+  "Current emissions": "Current emissions",
+  "$%marketCap%": "$%marketCap%",
+  "%cakeEmissions%/block": "%cakeEmissions%/block"
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Heading, Flex, LogoIcon, Text, Skeleton, ChartIcon, Box, CommunityIcon } from '@pancakeswap/uikit'
+import { Heading, Flex, LogoIcon, Text, Skeleton, ChartIcon, CommunityIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
