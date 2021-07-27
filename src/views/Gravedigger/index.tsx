@@ -1,7 +1,7 @@
 import React,{ useEffect } from "react"
 import Header from "components/Landing/Header"
 import styled from "styled-components"
-import { Flex,Text } from "@rug-zombie-libs/uikit"
+import { Button, Flex, Text } from '@rug-zombie-libs/uikit'
 import { useTranslation } from "contexts/Localization"
 import { createWidget } from '@typeform/embed'
 import Page from '../../components/layout/Page'
@@ -42,19 +42,22 @@ const Gravedigger:React.FC = () => {
         <Wrapper>
             <StyledFlex>
                 <a href="https://euler.tools/" target="_blank" rel="noreferrer">
-                <Text color='white' bold fontSize='50px' mr='4px'>
-                    {t('Explore on Euler Tools')}
-                </Text>
+                <Button variant="text" color='white' >
+                    <Text bold  fontSize='30px'>
+                        {t('Explore on Euler Tools')}
+                    </Text>
+                </Button>
                 </a>
             </StyledFlex>
-            <Row>
+            <Page>       <Row>
                 <Col>
                     <GraveListings/>
                 </Col>
                 <Col>
                     <CommunityRequestedTokens/>
                 </Col>
-            </Row>
+            </Row></Page>
+
             <FormContainer id="form" />
         </Wrapper>
         </>

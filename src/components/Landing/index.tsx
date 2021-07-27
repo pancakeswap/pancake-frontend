@@ -43,7 +43,7 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
       </div>
       <div className="_40_percent_block">
         <a href={routes.GRAVEDIGGER} className="button-2 w-button">
-          Dig a grave
+          Suggest a grave
         </a>
       </div>
       <div className="_40_percent_block">

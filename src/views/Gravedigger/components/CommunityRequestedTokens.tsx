@@ -28,12 +28,12 @@ const CommunityRequestedTokens:React.FC = () => {
     const {t} = useTranslation()
     return (
         <Container>
+            <Heading size='xl' mb='24px' textAlign="center" paddingTop="20px">
+                {t('Community Requested Tokens')}
+            </Heading>
         <Heading>
-                <Text fontSize="60px" textAlign="center">
-                    {t('Community Requested Tokens')}
-                </Text>
                 <Text textAlign="center" color="red">
-                    {t('community requests are reviewed by our team and do not imply the named projects were scams')}
+                    {t('Community requests are reviewed by our team and do not imply the named projects were scams')}
                 </Text>
         </Heading>
         {
