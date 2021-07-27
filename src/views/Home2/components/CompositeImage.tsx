@@ -10,7 +10,7 @@ const floatingAnim = (x: string, y: string) => keyframes`
     transform: translate(${x}, ${y});
   }
   to {
-    transform: translate(0, -0px);
+    transform: translate(0, 0px);
   }  
 `
 

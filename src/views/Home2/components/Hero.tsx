@@ -1,11 +1,24 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Flex, Heading, Link, Button } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { SlideSvgLight } from './SlideSvg'
+import useTheme from 'hooks/useTheme'
+import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
 import { getSrcSet } from './CompositeImage'
+
+const flyingAnim = () => keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(-10px, -15px);
+  }
+  to {
+    transform: translate(0, 0px);
+  }  
+`
 
 const BgWrapper = styled.div`
   z-index: -1;
@@ -20,25 +33,25 @@ const BgWrapper = styled.div`
 const InnerWrapper = styled.div`
   position: absolute;
   width: 100%;
-  bottom: -2px;
+  bottom: -3px;
 `
 
 const ImageWrapper = styled.div`
   width: 100%;
+  animation: ${flyingAnim} 2.5s ease-in-out infinite;
 `
 
 const Hero = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const { theme } = useTheme()
   const imagePath = '/images/home/'
   const imageSrc = 'lunar-bunny'
 
   return (
     <>
       <BgWrapper>
-        <InnerWrapper>
-          <SlideSvgLight width="100%" />
-        </InnerWrapper>
+        <InnerWrapper>{theme.isDark ? <SlideSvgDark width="100%" /> : <SlideSvgLight width="100%" />}</InnerWrapper>
       </BgWrapper>
       <Flex alignItems="center" justifyContent="center">
         <Flex flex="1" flexDirection="column">

@@ -2,14 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box, ChartIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import useTheme from 'hooks/useTheme'
 import PurpleWordHeading from '../PurpleWordHeading'
 import IconCard, { IconCardData } from '../IconCard'
 import PredictionCardContent from './PredictionCardContent'
 import LotteryCardContent from './LotteryCardContent'
 import CompositeImage from '../CompositeImage'
 
-const TransparentFrame = styled.div`
-  background: rgba(255, 255, 255, 0.6);
+const TransparentFrame = styled.div<{ isDark: boolean }>`
+  background: ${({ theme }) => (theme.isDark ? 'rgba(8, 6, 11, 0.6)' : ' rgba(255, 255, 255, 0.6)')};
   padding: 40px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   box-sizing: border-box;
@@ -40,9 +41,10 @@ const TopRightImgWrapper = styled(Flex)`
 
 const WinSection = () => {
   const { t } = useTranslation()
+  const { theme } = useTheme()
 
   const PredictionCardData: IconCardData = {
-    icon: <ChartIcon width="36px" />,
+    icon: <ChartIcon width="36px" color="inverseContrast" />,
     background: 'linear-gradient(180deg, #ffb237 0%, #ffcd51 51.17%, #ffe76a 100%);',
     borderColor: '#ffb237',
     rotation: '-2.36deg',
@@ -86,7 +88,7 @@ const WinSection = () => {
           <CompositeImage {...topRightImage} />
         </TopRightImgWrapper>
       </BgWrapper>
-      <TransparentFrame>
+      <TransparentFrame isDark={theme.isDark}>
         <Flex flexDirection="column" alignItems="center" justifyContent="center">
           <PurpleWordHeading text={t('Win millions in prizes')} />
           <Text color="textSubtle">{t('Provably fair, on-chain games.')}</Text>

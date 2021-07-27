@@ -53,11 +53,11 @@ const PredictionCardContent = () => {
     <>
       <Flex flexDirection="column" mt="48px">
         <div ref={observerRef} />
-        <Text bold fontSize="16px">
+        <Text color="#280D5F" bold fontSize="16px">
           {t('Prediction')}
         </Text>
         {bnbWonInUsd ? (
-          <Heading scale="xl" bold>
+          <Heading color="#280D5F" my="8px" scale="xl" bold>
             {pretext}
             {localisedBnbUsdString}
           </Heading>
@@ -67,16 +67,20 @@ const PredictionCardContent = () => {
             <div ref={observerRef} />
           </>
         )}
-        <Text mb="24px" bold fontSize="16px">
+        <Text color="#280D5F" mb="24px" bold fontSize="16px">
           {wonSoFar}
         </Text>
-        <Text mb="40px">{t('Will BNB price rise or fall? guess correctly to win!')}</Text>
+        <Text color="#280D5F" mb="40px">
+          {t('Will BNB price rise or fall? guess correctly to win!')}
+        </Text>
       </Flex>
       <Flex alignItems="center" justifyContent="center">
         <StyledLink href="/prediction" id="homepage-prediction-cta">
           <Button width="100%">
-            {t('Play')}
-            <ArrowForwardIcon ml="4px" color="white" />
+            <Text bold color="invertedContrast">
+              {t('Play')}
+            </Text>
+            <ArrowForwardIcon ml="4px" color="invertedContrast" />
           </Button>
         </StyledLink>
       </Flex>
