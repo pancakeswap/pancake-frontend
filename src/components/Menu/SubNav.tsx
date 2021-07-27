@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 
 const StyledNav = styled.nav`
   margin-bottom: 40px;
@@ -23,14 +24,15 @@ const getActiveIndex = (pathname: string): number => {
 
 const Nav = () => {
   const location = useLocation()
+  const { t } = useTranslation()
   return (
     <StyledNav>
       <ButtonMenu activeIndex={getActiveIndex(location.pathname)} scale="sm" variant="subtle">
         <ButtonMenuItem id="swap-nav-link" to="/swap" as={Link}>
-          Swap
+          {t('Swap')}
         </ButtonMenuItem>
         <ButtonMenuItem id="pool-nav-link" to="/pool" as={Link}>
-          Liquidity
+          {t('Liquidity')}
         </ButtonMenuItem>
       </ButtonMenu>
     </StyledNav>

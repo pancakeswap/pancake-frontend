@@ -62,7 +62,7 @@ export default function Pool() {
     if (v2IsLoading) {
       return (
         <Text color="textSubtle" textAlign="center">
-          <Dots>Loading</Dots>
+          <Dots>{t('Loading')}</Dots>
         </Text>
       )
     }
@@ -85,7 +85,7 @@ export default function Pool() {
   return (
     <Page>
       <AppBody>
-        <AppHeader title="Your Liquidity" subtitle="Remove liquidity to receive tokens back" />
+        <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />
         <Body>
           {renderBody()}
           {account && !v2IsLoading && (

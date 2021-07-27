@@ -8,6 +8,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
+import { useTranslation } from 'contexts/Localization'
 import { isAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/prices'
 import { AppDispatch, AppState } from '../index'
@@ -112,6 +113,7 @@ export function useDerivedSwapInfo(): {
   inputError?: string
 } {
   const { account } = useActiveWeb3React()
+  const { t } = useTranslation()
 
   const {
     independentField,
@@ -151,26 +153,26 @@ export function useDerivedSwapInfo(): {
 
   let inputError: string | undefined
   if (!account) {
-    inputError = 'Connect Wallet'
+    inputError = t('Connect Wallet')
   }
 
   if (!parsedAmount) {
-    inputError = inputError ?? 'Enter an amount'
+    inputError = inputError ?? t('Enter an amount')
   }
 
   if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? 'Select a token'
+    inputError = inputError ?? t('Select a token')
   }
 
   const formattedTo = isAddress(to)
   if (!to || !formattedTo) {
-    inputError = inputError ?? 'Enter a recipient'
+    inputError = inputError ?? t('Enter a recipient')
   } else if (
     BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
     (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
     (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
   ) {
-    inputError = inputError ?? 'Invalid recipient'
+    inputError = inputError ?? t('Invalid recipient')
   }
 
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -184,7 +186,7 @@ export function useDerivedSwapInfo(): {
   ]
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = `Insufficient ${amountIn.currency.symbol} balance`
+    inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
   }
 
   return {

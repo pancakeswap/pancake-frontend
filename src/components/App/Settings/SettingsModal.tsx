@@ -62,7 +62,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   }
 
   return (
-    <Modal title="Settings" headerBackground="gradients.cardHeader" onDismiss={onDismiss}>
+    <Modal title={t('Settings')} headerBackground="gradients.cardHeader" onDismiss={onDismiss}>
       <ModalBody>
         <AutoColumn gap="md" style={{ padding: '1rem' }}>
           <Text bold fontSize="20px">
