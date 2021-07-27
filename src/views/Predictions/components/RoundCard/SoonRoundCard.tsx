@@ -23,7 +23,7 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({lastBidId, id}) => {
   // const countdown = formatRoundTime(seconds)
 
   return (
-    <Card>
+    <Card className="mbCardStyle">
       <CardHeader
         status="soon"
         icon={<WaitIcon mr="4px" width="21px" />}

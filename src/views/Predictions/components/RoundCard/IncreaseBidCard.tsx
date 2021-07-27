@@ -24,6 +24,7 @@ import { account } from '../../../../redux/get'
 import auctions from '../../../../redux/auctions'
 import { getMausoleumAddress } from '../../../../utils/addressHelpers'
 import { useERC20, useMausoleum } from '../../../../hooks/useContract'
+import '../MobileCard/cardStyles.css';
 
 // PrizePoolRow
 interface CurrentBidProps extends FlexProps {
@@ -159,7 +160,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
 
   return (
     <CardFlip isFlipped={isSettingPosition} height='404px'>
-      <Card>
+      <Card className="mbCardStyle">
         <CardHeader
           status='next'
           icon={<PlayCircleOutlineIcon color='white' mr='4px' width='21px' />}

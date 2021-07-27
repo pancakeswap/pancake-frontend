@@ -3,19 +3,20 @@ import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import {
   ArrowBackIcon,
-  ArrowForwardIcon,
+  ArrowForwardIcon, Button,
   ButtonMenu,
   ButtonMenuItem,
   Cards,
-  ChartIcon,
+  ChartIcon, Flex,
   HistoryIcon,
-  IconButton,
+  IconButton, LinkExternal,
 } from '@rug-zombie-libs/uikit'
 import { useAppDispatch } from 'state'
 import { PredictionStatus } from 'state/types'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState, setHistoryPaneState } from 'state/predictions'
 import useSwiper from '../hooks/useSwiper'
+import { getFullDisplayBalance } from '../../../utils/formatBalance'
 
 const ButtonNav = styled.div`
   flex: none;
@@ -30,7 +31,7 @@ const StyledMobileMenu = styled.div`
   align-items: center;
   background-color: ${({ theme }) => theme.card.background};
   display: flex;
-  flex: none;
+  justify-content: center;
   height: 64px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -50,7 +51,11 @@ const getActiveIndex = (isHistoryOpen: boolean, isChartOpen: boolean) => {
   return 0
 }
 
-const MobileMenu = () => {
+interface MobileMenuProps {
+  userInfo: any;
+}
+
+const MobileMenu: React.FC<MobileMenuProps> = ({ userInfo }) => {
   const { swiper } = useSwiper()
   const isHistoryOpen = useIsHistoryPaneOpen()
   const isChartOpen = useIsChartPaneOpen()
@@ -77,28 +82,23 @@ const MobileMenu = () => {
 
   return (
     <StyledMobileMenu>
-      <ButtonNav>
-        <IconButton variant="text" onClick={() => swiper.slidePrev()} disabled={status !== PredictionStatus.LIVE}>
-          <ArrowBackIcon width="24px" color="primary" />
-        </IconButton>
+      <ButtonNav style={{marginLeft: "20px"}}>
+        <Button>
+          Your Bid: {userInfo.bid ? getFullDisplayBalance(userInfo.bid) : null}
+        </Button>
       </ButtonNav>
-      <TabNav>
+      <TabNav style={{marginLeft: "40px"}}>
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle" onItemClick={handleItemClick}>
           <ButtonMenuItem>
-            <Cards color="currentColor" />
+            <Cards color="primary" />
           </ButtonMenuItem>
-          <ButtonMenuItem>
-            <ChartIcon color="currentColor" />
-          </ButtonMenuItem>
-          <ButtonMenuItem disabled={!account}>
-            <HistoryIcon color="currentColor" />
-          </ButtonMenuItem>
+          <div/>
         </ButtonMenu>
       </TabNav>
       <ButtonNav>
-        <IconButton variant="text" onClick={() => swiper.slideNext()} disabled={status !== PredictionStatus.LIVE}>
-          <ArrowForwardIcon width="24px" color="primary" />
-        </IconButton>
+        <Button variant="text">
+          Get BT (Bid Tokens):
+        </Button>
       </ButtonNav>
     </StyledMobileMenu>
   )
