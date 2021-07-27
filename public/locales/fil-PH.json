@@ -1194,8 +1194,8 @@
   "Need help ?": "Kailangan ng tulong?",
   "Select a token": "Pumili ng token",
   "Enter a recipient": "Ilagay ang Tatanggap",
-  "Invalid recipient": "Invalid recipient",
+  "Invalid recipient": "Invalid na recipient",
   "Supply": "Supply",
-  "Your Liquidity": "Your Liquidity",
-  "Remove liquidity to receive tokens back": "Remove liquidity to receive tokens back"
+  "Your Liquidity": "Ang iyong Liquidity",
+  "Remove liquidity to receive tokens back": "Alisin ang liquidity upang makatanggap muli ng mga token"
 }
