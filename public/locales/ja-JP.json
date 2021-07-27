@@ -1193,9 +1193,9 @@
   "Convert ERC-20 to BEP-20": "ERC-20をBEP-20に変換する",
   "Need help ?": "ヘルプが必要ですか?",
   "Select a token": "トークンを選択",
-  "Enter a recipient": "Enter a recipient",
-  "Invalid recipient": "Invalid recipient",
-  "Supply": "Supply",
-  "Your Liquidity": "Your Liquidity",
-  "Remove liquidity to receive tokens back": "Remove liquidity to receive tokens back"
+  "Enter a recipient": "宛先を入力",
+  "Invalid recipient": "宛先が正しくありません",
+  "Supply": "供給",
+  "Your Liquidity": "あなたの流動性",
+  "Remove liquidity to receive tokens back": "流動性を削除して、トークンを取り戻す"
 }
