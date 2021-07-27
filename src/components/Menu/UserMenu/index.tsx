@@ -23,6 +23,7 @@ const UserMenu = () => {
   const { isInitialized, isLoading, profile } = useProfile()
   const [onPresentWalletModal] = useModal(<WalletModal initialView={initialView} />, true, true, 'wallet_modal')
   const hasProfile = isInitialized && !!profile
+  const avatarSrc = profile ? `/images/nfts/${profile.nft.images.sm}` : undefined
 
   const handlePresentWalletModalWallet = () => {
     setInitialView(WalletView.WALLET_INFO)
@@ -39,7 +40,7 @@ const UserMenu = () => {
   }
 
   return (
-    <UIKitUserMenu account={account}>
+    <UIKitUserMenu account={account} avatarSrc={avatarSrc}>
       <UserMenuItem as="button" onClick={handlePresentWalletModalWallet}>
         {t('Wallet')}
       </UserMenuItem>
