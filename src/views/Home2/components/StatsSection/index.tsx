@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Heading, Flex, LogoIcon, Text, Skeleton, ChartIcon, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -7,6 +7,7 @@ import useTheme from 'hooks/useTheme'
 import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
 import IconCard, { IconCardData } from '../IconCard'
 import StatCardContent from './StatCardContent'
+import { getUsersAndTrades } from './helpers'
 
 const StyledLogoIcon = styled(LogoIcon)`
   path {
@@ -23,26 +24,40 @@ const Stats = () => {
   const { t } = useTranslation()
   const data = useGetStats()
   const { theme } = useTheme()
+  const [users, setUsers] = useState('-')
+  const [trades, setTrades] = useState('-')
 
   const tvlString = data ? formatLocalisedCompactNumber(data.tvl) : '-'
+
+  useEffect(() => {
+    const fetchTradeData = async () => {
+      const { addressCount, txCount } = await getUsersAndTrades()
+      const txCountString = txCount ? formatLocalisedCompactNumber(txCount) : '-'
+      const addressCountString = addressCount ? formatLocalisedCompactNumber(addressCount) : '-'
+      setTrades(txCountString)
+      setUsers(addressCountString)
+    }
+
+    fetchTradeData()
+  }, [])
 
   const tvlText = t('And those users are now entrusting the platform with over $%tvl% in funds.', { tvl: tvlString })
   const [entrusting, inFunds] = tvlText.split(tvlString)
 
   const UsersCardData: IconCardData = {
-    icon: <ChartIcon color="#7645D9" width="36px" />,
+    icon: <ChartIcon color="secondary" width="36px" />,
     background: theme.colors.background,
     borderColor: theme.colors.cardBorder,
   }
 
   const TradesCardData: IconCardData = {
-    icon: <ChartIcon color="#1FC7D4" width="36px" />,
+    icon: <ChartIcon color="primary" width="36px" />,
     background: theme.colors.background,
     borderColor: theme.colors.cardBorder,
   }
 
   const StakedCardData: IconCardData = {
-    icon: <ChartIcon color="#ED4B9E" width="36px" />,
+    icon: <ChartIcon color="failure" width="36px" />,
     background: theme.colors.background,
     borderColor: theme.colors.cardBorder,
   }
@@ -79,20 +94,26 @@ const Stats = () => {
         {t('Will you join them?')}
       </Text>
 
-      <Flex m="0 auto">
-        {/* <IconCard {...UsersCardData}>
-          <span>sss</span>
+      <Flex>
+        <IconCard {...UsersCardData} mr="16px">
+          <StatCardContent
+            headingText={t('%users% users', { users })}
+            bodyText={t('in the last 30 days')}
+            highlightColor={theme.colors.secondary}
+          />
         </IconCard>
-        <Box mr="24px" />
-        <IconCard {...TradesCardData}>
-          <span>sss</span>
+        <IconCard {...TradesCardData} mr="16px">
+          <StatCardContent
+            headingText={t('%trades% trades', { trades })}
+            bodyText={t('made in the last 30 days')}
+            highlightColor={theme.colors.primary}
+          />
         </IconCard>
-        <Box mr="24px" /> */}
         <IconCard {...StakedCardData}>
           <StatCardContent
             headingText={t('$%tvl% staked', { tvl: tvlString })}
             bodyText={t('Total Value Locked')}
-            highlightColor="#ED4B9E"
+            highlightColor={theme.colors.failure}
           />
         </IconCard>
       </Flex>

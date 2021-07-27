@@ -12,6 +12,7 @@ import StatsSection from './components/StatsSection'
 import SalesSection from './components/SalesSection'
 import WinSection from './components/WinSection'
 import Footer from './components/Footer'
+import CakeDataRow from './components/CakeDataRow'
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
@@ -34,7 +35,7 @@ const Home: React.FC = () => {
         <Hero />
       </PageSection>
       <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
+        innerProps={{ style: { margin: '0', width: '100%' } }}
         background={
           theme.isDark
             ? 'linear-gradient(180deg, #09070C 22%, #201335 100%)'
@@ -80,6 +81,7 @@ const Home: React.FC = () => {
         hasCurvedDivider={false}
       >
         <SalesSection {...cakeSectionData} />
+        <CakeDataRow />
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}

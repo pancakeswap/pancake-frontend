@@ -11,7 +11,7 @@ const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlig
   const remainingWords = split.slice(0, split.length).join(' ')
 
   return (
-    <Flex minHeight="140px" minWidth="230px" flexDirection="column" justifyContent="flex-end" mt="64px">
+    <Flex minHeight="168px" minWidth="232px" flexDirection="column" justifyContent="flex-end" mt="64px">
       <Heading scale="xl">{remainingWords}</Heading>
       <Heading color={highlightColor} scale="xl" mb="24px">
         {lastWord}
