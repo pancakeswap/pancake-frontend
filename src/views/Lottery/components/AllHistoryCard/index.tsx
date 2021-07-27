@@ -24,18 +24,26 @@ const StyledCardHeader = styled(CardHeader)`
   border-bottom: 1px ${({ theme }) => theme.colors.cardBorder} solid;
 `
 
-const YourHistoryCard = () => {
+const AllHistoryCard = () => {
   const { t } = useTranslation()
   const {
     currentLotteryId,
     currentRound: { status, isLoading },
   } = useLottery()
-  const currentLotteryIdAsInt = parseInt(currentLotteryId)
-  const mostRecentFinishedRoundId =
-    status === LotteryStatus.CLAIMABLE ? currentLotteryIdAsInt : currentLotteryIdAsInt - 1
-  const [selectedRoundId, setSelectedRoundId] = useState(mostRecentFinishedRoundId.toString())
+  const [latestRoundId, setLatestRoundId] = useState(null)
+  const [selectedRoundId, setSelectedRoundId] = useState('')
   const [selectedLotteryInfo, setSelectedLotteryInfo] = useState(null)
   const timer = useRef(null)
+
+  useEffect(() => {
+    if (currentLotteryId) {
+      const currentLotteryIdAsInt = currentLotteryId ? parseInt(currentLotteryId) : null
+      const mostRecentFinishedRoundId =
+        status === LotteryStatus.CLAIMABLE ? currentLotteryIdAsInt : currentLotteryIdAsInt - 1
+      setLatestRoundId(mostRecentFinishedRoundId)
+      setSelectedRoundId(mostRecentFinishedRoundId.toString())
+    }
+  }, [currentLotteryId, status])
 
   useEffect(() => {
     setSelectedLotteryInfo(null)
@@ -65,8 +73,8 @@ const YourHistoryCard = () => {
       if (parseInt(value, 10) <= 0) {
         setSelectedRoundId('')
       }
-      if (parseInt(value, 10) >= mostRecentFinishedRoundId) {
-        setSelectedRoundId(mostRecentFinishedRoundId.toString())
+      if (parseInt(value, 10) >= latestRoundId) {
+        setSelectedRoundId(latestRoundId.toString())
       }
     } else {
       setSelectedRoundId('')
@@ -88,7 +96,7 @@ const YourHistoryCard = () => {
         <RoundSwitcher
           isLoading={isLoading}
           selectedRoundId={selectedRoundId}
-          mostRecentRound={mostRecentFinishedRoundId}
+          mostRecentRound={latestRoundId}
           handleInputChange={handleInputChange}
           handleArrowButonPress={handleArrowButonPress}
         />
@@ -108,4 +116,4 @@ const YourHistoryCard = () => {
   )
 }
 
-export default YourHistoryCard
+export default AllHistoryCard
