@@ -10,20 +10,24 @@ import {
 } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
 import { useProfile } from 'state/profile/hooks'
+import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import UnlockButton from 'components/UnlockButton'
-import WalletModal, { WalletView } from './WalletModal'
+import WalletModal, { WalletView, LOW_BNB_BALANCE } from './WalletModal'
 import ProfileUserMenuItem from './ProfileUserMenutItem'
+import WalletUserMenuItem from './WalletUserMenuItem'
 
 const UserMenu = () => {
   const [initialView, setInitialView] = useState(WalletView.WALLET_INFO)
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { logout } = useAuth()
+  const { balance } = useGetBnbBalance()
   const { isInitialized, isLoading, profile } = useProfile()
   const [onPresentWalletModal] = useModal(<WalletModal initialView={initialView} />, true, true, 'wallet_modal')
   const hasProfile = isInitialized && !!profile
   const avatarSrc = profile ? `/images/nfts/${profile.nft.images.sm}` : undefined
+  const hasLowBnbBalance = balance.lte(LOW_BNB_BALANCE)
 
   const handlePresentWalletModalWallet = () => {
     setInitialView(WalletView.WALLET_INFO)
@@ -41,9 +45,7 @@ const UserMenu = () => {
 
   return (
     <UIKitUserMenu account={account} avatarSrc={avatarSrc}>
-      <UserMenuItem as="button" onClick={handlePresentWalletModalWallet}>
-        {t('Wallet')}
-      </UserMenuItem>
+      <WalletUserMenuItem hasLowBnbBalance={hasLowBnbBalance} onPresentWalletModal={handlePresentWalletModalWallet} />
       <UserMenuItem as="button" onClick={handlePresentWalletModalTransactions}>
         {t('Transactions')}
       </UserMenuItem>
