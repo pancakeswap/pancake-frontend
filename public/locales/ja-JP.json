@@ -1193,7 +1193,7 @@
   "Convert ERC-20 to BEP-20": "ERC-20をBEP-20に変換する",
   "Need help ?": "ヘルプが必要ですか?",
   "Select a token": "トークンを選択",
-  "Enter a recipient": "宛先を入力",
+  "Enter a recipient": "宛先を入力してください",
   "Invalid recipient": "宛先が正しくありません",
   "Supply": "供給",
   "Your Liquidity": "あなたの流動性",
