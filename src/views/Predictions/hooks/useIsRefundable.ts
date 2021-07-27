@@ -9,11 +9,12 @@ const useIsRefundable = (epoch: number) => {
   useEffect(() => {
     const fetchRefundableStatus = async () => {
       const predictionsContract = getPredictionsContract()
-      const canClaim = await predictionsContract.claimable(epoch, account)
+      const refundable = await predictionsContract.refundable(epoch, account)
 
-      if (canClaim) {
-        const refundable = await predictionsContract.refundable(epoch, account)
-        setIsRefundable(refundable)
+      if (refundable) {
+        // Double check they have not already claimed
+        const ledger = await predictionsContract.ledger(epoch, account)
+        setIsRefundable(ledger.claimed === false)
       } else {
         setIsRefundable(false)
       }
