@@ -52,12 +52,14 @@ interface MobileProps {
   bids: any[],
   lastBidId: number,
   userInfo: any,
-  aid: number
+  aid: number,
+  setRefresh: any,
+  refresh: boolean
 }
 
-const Mobile: React.FC<MobileProps> = ({bids, lastBidId, userInfo, aid}) => {
+const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, userInfo, aid }) => {
 
-  return <MobileCard />
+  return <MobileCard  refresh={refresh} bids={bids} lastBidId={lastBidId} setRefresh={setRefresh} userInfo={userInfo} aid={aid}/>
 
 }
 
