@@ -73,6 +73,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  sps: {
+    symbol: 'SPS',
+    address: {
+      56: '0x1633b7157e7638C4d6593436111Bf125Ee74703F',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://splinterlands.com',
+  },
   chess: {
     symbol: 'CHESS',
     address: {
