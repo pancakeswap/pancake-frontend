@@ -1686,5 +1686,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x1633b7157e7638C4d6593436111Bf125Ee74703F.png"
+  },
+  {
+    "name": "Impossible Finance",
+    "symbol": "IF",
+    "address": "0xB0e1fc65C1a741b4662B813eB787d369b8614Af1",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xB0e1fc65C1a741b4662B813eB787d369b8614Af1.png"
   }
 ]

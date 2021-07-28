@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-07-27T04:46:30.966Z",
+  "timestamp": "2021-07-28T07:18:41.522Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 12
+    "patch": 13
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -771,6 +771,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xC0eFf7749b125444953ef89682201Fb8c6A917CD.png"
+    },
+    {
+      "name": "Impossible Finance",
+      "symbol": "IF",
+      "address": "0xB0e1fc65C1a741b4662B813eB787d369b8614Af1",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xB0e1fc65C1a741b4662B813eB787d369b8614Af1.png"
     },
     {
       "name": "Injective Protocol",
