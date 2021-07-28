@@ -40,13 +40,13 @@ const farms: FarmConfig[] = [
    */
   {
     pid: 433,
-    lpSymbol: 'IF-BNB LP',
+    lpSymbol: 'IF-BUSD LP',
     lpAddresses: {
       97: '',
       56: '0x7b4682D2B3f8670b125aF6AEA8d7eD2Daa43Bdc1',
     },
     token: tokens.if,
-    quoteToken: tokens.wbnb,
+    quoteToken: tokens.busd,
   },
   {
     pid: 432,
