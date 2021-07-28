@@ -73,6 +73,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  if: {
+    symbol: 'IF',
+    address: {
+      56: '0xB0e1fc65C1a741b4662B813eB787d369b8614Af1',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://impossible.finance/',
+  },
   sps: {
     symbol: 'SPS',
     address: {
