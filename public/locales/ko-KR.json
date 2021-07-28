@@ -1191,11 +1191,11 @@
   "Settings": "설정",
   "Transaction deadline": "트랜잭션 기한",
   "Convert ERC-20 to BEP-20": "ERC-20을 BEP-20으로 전환",
-  "Need help ?": "Need help ?",
-  "Select a token": "Select a token",
-  "Enter a recipient": "Enter a recipient",
-  "Invalid recipient": "Invalid recipient",
-  "Supply": "Supply",
-  "Your Liquidity": "Your Liquidity",
-  "Remove liquidity to receive tokens back": "Remove liquidity to receive tokens back"
+  "Need help ?": "도움이 필요하신가요?",
+  "Select a token": "토큰 선택",
+  "Enter a recipient": "수령인 입력",
+  "Invalid recipient": "잘못된 수령인",
+  "Supply": "공급",
+  "Your Liquidity": "내 유동성",
+  "Remove liquidity to receive tokens back": "토큰을 다시 받으려면 유동성 제거"
 }
