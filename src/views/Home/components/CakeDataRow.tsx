@@ -2,12 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import { getCakeAddress } from 'utils/addressHelpers'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, formatLocalisedCompactNumber } from 'utils/formatBalance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { Flex, Text, Heading, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
-import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean }>`
   flex-direction: column;
@@ -42,6 +41,8 @@ const Grid = styled.div`
   }
 `
 
+const emissionsPerBlock = 19
+
 const CakeDataRow = () => {
   const { t } = useTranslation()
   const totalSupply = useTotalSupply()
@@ -50,7 +51,6 @@ const CakeDataRow = () => {
   const cakePriceBusd = usePriceCakeBusd()
   const mcap = cakePriceBusd.times(cakeSupply)
   const mcapString = formatLocalisedCompactNumber(mcap.toNumber())
-  const emissionsPerBlock = 19
 
   return (
     <Grid>

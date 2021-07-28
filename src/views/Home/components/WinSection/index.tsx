@@ -55,44 +55,44 @@ const TopRightImgWrapper = styled(Flex)`
   }
 `
 
+const PredictionCardData: IconCardData = {
+  icon: <PredictionsIcon width="36px" color="inverseContrast" />,
+  background: 'linear-gradient(180deg, #ffb237 0%, #ffcd51 51.17%, #ffe76a 100%);',
+  borderColor: '#ffb237',
+  rotation: '-2.36deg',
+}
+
+const LotteryCardData: IconCardData = {
+  icon: <TicketFillIcon color="white" width="36px" />,
+  background: ' linear-gradient(180deg, #7645D9 0%, #5121B1 100%);',
+  borderColor: '#3C1786',
+  rotation: '1.43deg',
+}
+
+const bottomLeftImage = {
+  path: '/images/home/prediction-cards/',
+  attributes: [
+    { src: 'bottom-left', alt: 'CAKE card' },
+    { src: 'green', alt: 'Green CAKE card with up arrow' },
+    { src: 'red', alt: 'Red Cake card with down arrow' },
+    { src: 'top-right', alt: 'CAKE card' },
+  ],
+}
+
+const topRightImage = {
+  path: '/images/home/lottery-balls/',
+  attributes: [
+    { src: '2', alt: 'Lottery ball number 2' },
+    { src: '4', alt: 'Lottery ball number 4' },
+    { src: '6', alt: 'Lottery ball number 6' },
+    { src: '7', alt: 'Lottery ball number 7' },
+    { src: '9', alt: 'Lottery ball number 9' },
+  ],
+}
+
 const WinSection = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-
-  const PredictionCardData: IconCardData = {
-    icon: <PredictionsIcon width="36px" color="inverseContrast" />,
-    background: 'linear-gradient(180deg, #ffb237 0%, #ffcd51 51.17%, #ffe76a 100%);',
-    borderColor: '#ffb237',
-    rotation: '-2.36deg',
-  }
-
-  const LotteryCardData: IconCardData = {
-    icon: <TicketFillIcon color="white" width="36px" />,
-    background: ' linear-gradient(180deg, #7645D9 0%, #5121B1 100%);',
-    borderColor: '#3C1786',
-    rotation: '1.43deg',
-  }
-
-  const bottomLeftImage = {
-    path: '/images/home/prediction-cards/',
-    attributes: [
-      { src: 'bottom-left', alt: 'CAKE card' },
-      { src: 'green', alt: 'Green CAKE card with up arrow' },
-      { src: 'red', alt: 'Red Cake card with down arrow' },
-      { src: 'top-right', alt: 'CAKE card' },
-    ],
-  }
-
-  const topRightImage = {
-    path: '/images/home/lottery-balls/',
-    attributes: [
-      { src: '2', alt: 'Lottery ball number 2' },
-      { src: '4', alt: 'Lottery ball number 4' },
-      { src: '6', alt: 'Lottery ball number 6' },
-      { src: '7', alt: 'Lottery ball number 7' },
-      { src: '9', alt: 'Lottery ball number 9' },
-    ],
-  }
 
   return (
     <>

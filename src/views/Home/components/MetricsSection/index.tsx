@@ -1,35 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Heading, Flex, Text, Skeleton, ChartIcon, CommunityIcon, SwapIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
-import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
+import { formatLocalisedCompactNumber } from 'utils/formatBalance'
 import IconCard, { IconCardData } from '../IconCard'
 import StatCardContent from './StatCardContent'
 import GradientLogo from '../GradientLogoSvg'
+
+// Values fetched from bitQuery effective 28/7/21
+const txCount = 30673865
+const addressCount = 1966700
 
 const Stats = () => {
   const { t } = useTranslation()
   const data = useGetStats()
   const { theme } = useTheme()
-  const [users, setUsers] = useState('-')
-  const [trades, setTrades] = useState('-')
 
   const tvlString = data ? formatLocalisedCompactNumber(data.tvl) : '-'
-
-  useEffect(() => {
-    const fetchTradeData = async () => {
-      // Values fetched from bitQuery effective 28/7/21
-      const txCount = 30673865
-      const addressCount = 1966700
-      const txCountString = formatLocalisedCompactNumber(txCount)
-      const addressCountString = formatLocalisedCompactNumber(addressCount)
-      setTrades(txCountString)
-      setUsers(addressCountString)
-    }
-
-    fetchTradeData()
-  }, [])
+  const trades = formatLocalisedCompactNumber(txCount)
+  const users = formatLocalisedCompactNumber(addressCount)
 
   const tvlText = t('And those users are now entrusting the platform with over $%tvl% in funds.', { tvl: tvlString })
   const [entrusting, inFunds] = tvlText.split(tvlString)

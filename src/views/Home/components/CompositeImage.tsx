@@ -87,7 +87,11 @@ export const getSrcSet = (base: string, imageSrc: string) => {
 const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, maxHeight = '512px' }) => {
   return (
     <Wrapper maxHeight={maxHeight}>
-      <DummyImg src={getImageUrl(path, attributes[0].src)} maxHeight={maxHeight} />
+      <DummyImg
+        src={getImageUrl(path, attributes[0].src)}
+        maxHeight={maxHeight}
+        srcSet={getSrcSet(path, attributes[0].src)}
+      />
       {attributes.map((image) => (
         <ImageWrapper key={image.src}>
           <img src={getImageUrl(path, image.src)} srcSet={getSrcSet(path, image.src)} alt={image.alt} />

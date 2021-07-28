@@ -63,27 +63,27 @@ const BottomRightImgWrapper = styled(Flex)`
   bottom: 0;
 `
 
+const topLeftImage = {
+  path: '/images/home/flying-pancakes/',
+  attributes: [
+    { src: '1-bottom', alt: 'Pancake flying on the bottom' },
+    { src: '1-left', alt: 'Pancake flying on the left' },
+    { src: '1-top', alt: 'Pancake flying on the top' },
+  ],
+}
+
+const bottomRightImage = {
+  path: '/images/home/flying-pancakes/',
+  attributes: [
+    { src: '2-bottom', alt: 'Pancake flying on the bottom' },
+    { src: '2-top', alt: 'Pancake flying on the top' },
+    { src: '2-right', alt: 'Pancake flying on the right' },
+  ],
+}
+
 const Footer = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-
-  const topLeftImage = {
-    path: '/images/home/flying-pancakes/',
-    attributes: [
-      { src: '1-bottom', alt: 'Pancake flying on the bottom' },
-      { src: '1-left', alt: 'Pancake flying on the left' },
-      { src: '1-top', alt: 'Pancake flying on the top' },
-    ],
-  }
-
-  const bottomRightImage = {
-    path: '/images/home/flying-pancakes/',
-    attributes: [
-      { src: '2-bottom', alt: 'Pancake flying on the bottom' },
-      { src: '2-top', alt: 'Pancake flying on the top' },
-      { src: '2-right', alt: 'Pancake flying on the right' },
-    ],
-  }
 
   return (
     <>

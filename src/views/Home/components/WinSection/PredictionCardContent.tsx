@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
 import { Flex, Text, Skeleton, Link, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { formatLocalisedCompactNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { getTotalWon } from 'state/predictions/helpers'
 import { usePriceBnbBusd } from 'state/farms/hooks'
-import styled from 'styled-components'
-import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
 
 const StyledLink = styled(Link)`
   width: 100%;
