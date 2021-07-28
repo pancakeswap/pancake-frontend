@@ -14,6 +14,14 @@ import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
 import UserBanner from './components/UserBanner'
 
+const StyledHeroSection = styled(PageSection)`
+  padding-top: 16px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-top: 48px;
+  }
+`
+
 const UserBannerWrapper = styled(Container)`
   z-index: 1;
   position: absolute;
@@ -38,7 +46,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <PageSection
+      <StyledHeroSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background={
           theme.isDark
@@ -54,7 +62,7 @@ const Home: React.FC = () => {
           </UserBannerWrapper>
         )}
         <Hero />
-      </PageSection>
+      </StyledHeroSection>
       <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background={

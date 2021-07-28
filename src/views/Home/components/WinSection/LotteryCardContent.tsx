@@ -103,8 +103,10 @@ const LotteryCardContent = () => {
       <Flex alignItems="center" justifyContent="center">
         <StyledLink href="/lottery" id="homepage-prediction-cta">
           <Button width="100%">
-            {t('Buy Tickets')}
-            <ArrowForwardIcon ml="4px" color="white" />
+            <Text bold color="invertedContrast">
+              {t('Buy Tickets')}
+            </Text>
+            <ArrowForwardIcon ml="4px" color="invertedContrast" />
           </Button>
         </StyledLink>
       </Flex>
