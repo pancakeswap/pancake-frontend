@@ -1187,5 +1187,15 @@
   "5% fee = redistributed to all existing holders": "5% fee = redistributed to all existing holders",
   "5% fee = used to add liquidity": "5% fee = used to add liquidity",
   "Warning: BONDLY has been compromised. Please remove liqudity until further notice.": "Warning: BONDLY has been compromised. Please remove liqudity until further notice.",
-  "Claimed": "Claimed"
+  "Claimed": "Claimed",
+  "Settings": "Ρυθμίσεις",
+  "Transaction deadline": "Προθεσμία συναλλαγής",
+  "Convert ERC-20 to BEP-20": "Convert ERC-20 to BEP-20",
+  "Need help ?": "Need help ?",
+  "Select a token": "Select a token",
+  "Enter a recipient": "Enter a recipient",
+  "Invalid recipient": "Invalid recipient",
+  "Supply": "Supply",
+  "Your Liquidity": "Your Liquidity",
+  "Remove liquidity to receive tokens back": "Remove liquidity to receive tokens back"
 }

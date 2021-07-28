@@ -1187,5 +1187,15 @@
   "5% fee = redistributed to all existing holders": "5% 费用 = 分配给所有持有者",
   "5% fee = used to add liquidity": "5% 费用 = 用于添加流动性",
   "Warning: BONDLY has been compromised. Please remove liqudity until further notice.": "警告：BONDLY 已被攻击，在得到进一步通知之前，请移除流动性",
-  "Claimed": "已领取"
+  "Claimed": "已领取",
+  "Settings": "设置",
+  "Transaction deadline": "交易截止期",
+  "Convert ERC-20 to BEP-20": "将 ERC-20 转换为 BEP-20",
+  "Need help ?": "需要帮助？",
+  "Select a token": "选择代币",
+  "Enter a recipient": "输入接收人",
+  "Invalid recipient": "接收人无效",
+  "Supply": "供应",
+  "Your Liquidity": "您的流动性",
+  "Remove liquidity to receive tokens back": "移除流动性以收回代币"
 }
