@@ -1,7 +1,7 @@
 import React from 'react'
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const Star: React.FC<SvgProps> = (props) => {
+const SunburstSvg: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 1956 1956" {...props}>
       <g filter="url(#filter0_f)">
@@ -42,4 +42,4 @@ const Star: React.FC<SvgProps> = (props) => {
   )
 }
 
-export default Star
+export default SunburstSvg

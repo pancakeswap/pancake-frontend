@@ -12,6 +12,7 @@ export interface FarmWithBalance extends FarmConfig {
   balance: BigNumber
 }
 
+// TODO: Move to new home page when deleting old Home view
 const useFarmsWithBalance = () => {
   const [farmsWithBalances, setFarmsWithBalances] = useState<FarmWithBalance[]>([])
   const { account } = useWeb3React()

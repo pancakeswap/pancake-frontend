@@ -1231,5 +1231,7 @@
   "Market cap": "Market cap",
   "Current emissions": "Current emissions",
   "$%marketCap%": "$%marketCap%",
-  "%cakeEmissions%/block": "%cakeEmissions%/block"
+  "%cakeEmissions%/block": "%cakeEmissions%/block",
+  "%earningsBusd% to collect from %count% %farms%": "%earningsBusd% to collect from %count% %farms%",
+  "Harvest all": "Harvest all"
 }

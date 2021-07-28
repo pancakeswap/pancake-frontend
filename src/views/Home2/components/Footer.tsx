@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
 import { useWeb3React } from '@web3-react/core'
-import Star from './Star'
+import SunburstSvg from './SunburstSvg'
 import CompositeImage from './CompositeImage'
 
 const BgWrapper = styled.div`
@@ -17,7 +17,7 @@ const BgWrapper = styled.div`
   left: 0px;
 `
 
-const StyledStar = styled(Star)`
+const StyledSunburst = styled(SunburstSvg)`
   height: 350%;
   width: 350%;
 
@@ -89,7 +89,7 @@ const Footer = () => {
     <>
       <BgWrapper>
         <Flex alignItems="center" justifyContent="center" width="100%" height="100%">
-          <StyledStar />
+          <StyledSunburst />
         </Flex>
       </BgWrapper>
       <FloatingPancakesWrapper>
