@@ -6,7 +6,7 @@ import useTheme from 'hooks/useTheme'
 import Container from 'components/Layout/Container'
 import Hero from './components/Hero'
 import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
-import StatsSection from './components/StatsSection'
+import MetricsSection from './components/MetricsSection'
 import SalesSection from './components/SalesSection'
 import WinSection from './components/WinSection'
 import Footer from './components/Footer'
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
         index={2}
         hasCurvedDivider={false}
       >
-        <StatsSection />
+        <MetricsSection />
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}

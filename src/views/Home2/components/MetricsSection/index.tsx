@@ -6,7 +6,6 @@ import useTheme from 'hooks/useTheme'
 import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
 import IconCard, { IconCardData } from '../IconCard'
 import StatCardContent from './StatCardContent'
-import { getUsersAndTrades } from './helpers'
 import GradientLogo from '../GradientLogoSvg'
 
 const Stats = () => {
@@ -20,9 +19,11 @@ const Stats = () => {
 
   useEffect(() => {
     const fetchTradeData = async () => {
-      const { addressCount, txCount } = await getUsersAndTrades()
-      const txCountString = txCount ? formatLocalisedCompactNumber(txCount) : '-'
-      const addressCountString = addressCount ? formatLocalisedCompactNumber(addressCount) : '-'
+      // Values fetched from bitQuery effective 28/7/21
+      const txCount = 30673865
+      const addressCount = 1966700
+      const txCountString = formatLocalisedCompactNumber(txCount)
+      const addressCountString = formatLocalisedCompactNumber(addressCount)
       setTrades(txCountString)
       setUsers(addressCountString)
     }

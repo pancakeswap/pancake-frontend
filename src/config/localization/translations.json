@@ -1233,5 +1233,20 @@
   "$%marketCap%": "$%marketCap%",
   "%cakeEmissions%/block": "%cakeEmissions%/block",
   "%earningsBusd% to collect from %count% %farms%": "%earningsBusd% to collect from %count% %farms%",
-  "Harvest all": "Harvest all"
+  "Harvest all": "Harvest all",
+  "Start in seconds.": "Start in seconds.",
+  "Used by millions.": "Used by millions.",
+  "Hi, %userName%!": "Hi, %userName%!",
+  "Play": "Play",
+  "Connected with %address%": "Connected with %address%",
+  "Win millions in prizes": "Win millions in prizes",
+  "%users% users": "%users% users",
+  "Connect your crypto wallet to start using the app in seconds.": "Connect your crypto wallet to start using the app in seconds.",
+  "in the last 30 days": "in the last 30 days",
+  "No registration needed.": "No registration needed.",
+  "Learn how to start": "Learn how to start",
+  "%trades% trades": "%trades% trades",
+  "Provably fair, on-chain games.": "Provably fair, on-chain games.",
+  "made in the last 30 days": "made in the last 30 days",
+  "Win big with PancakeSwap.": "Win big with PancakeSwap."
 }
