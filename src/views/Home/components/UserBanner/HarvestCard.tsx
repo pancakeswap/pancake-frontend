@@ -2,14 +2,13 @@ import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Card, CardBody, Flex, Skeleton, Text, Link, ArrowForwardIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import useToast from 'hooks/useToast'
 import { useMasterchef } from 'hooks/useContract'
 import { harvestFarm } from 'utils/calls'
-import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import Balance from 'components/Balance'
+import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -20,19 +19,11 @@ const HarvestCard = () => {
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
-  const farmsWithBalance = useFarmsWithBalance()
+  const { farmsWithStakedBalance, earningsSum } = useFarmsWithBalance()
   const masterChefContract = useMasterchef()
-  const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.gt(0))
-  const earningsSum = farmsWithBalance.reduce((accum, earning) => {
-    const earningNumber = new BigNumber(earning.balance)
-    if (earningNumber.eq(0)) {
-      return accum
-    }
-    return accum + earningNumber.div(DEFAULT_TOKEN_DECIMAL).toNumber()
-  }, 0)
   const cakePriceBusd = usePriceCakeBusd()
   const earningsBusd = new BigNumber(earningsSum).multipliedBy(cakePriceBusd)
-  const numFarmsToCollect = balancesWithValue.length
+  const numFarmsToCollect = farmsWithStakedBalance.length
 
   const earningsText = t('%earningsBusd% to collect from %count% %farms%', {
     earningsBusd: earningsBusd.toString(),
@@ -44,7 +35,7 @@ const HarvestCard = () => {
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
     // eslint-disable-next-line no-restricted-syntax
-    for (const farmWithBalance of balancesWithValue) {
+    for (const farmWithBalance of farmsWithStakedBalance) {
       try {
         // eslint-disable-next-line no-await-in-loop
         await harvestFarm(masterChefContract, farmWithBalance.pid)
@@ -57,7 +48,7 @@ const HarvestCard = () => {
       }
     }
     setPendingTx(false)
-  }, [balancesWithValue, masterChefContract, toastSuccess, toastError, t])
+  }, [farmsWithStakedBalance, masterChefContract, toastSuccess, toastError, t])
 
   return (
     <StyledCard>
