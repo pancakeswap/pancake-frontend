@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { Heading, Flex, LogoIcon, Text, Skeleton, ChartIcon, CommunityIcon } from '@pancakeswap/uikit'
+import { Heading, Flex, Text, Skeleton, ChartIcon, CommunityIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
@@ -8,17 +7,7 @@ import formatLocalisedCompactNumber from 'utils/formatLocalisedCompactNumber'
 import IconCard, { IconCardData } from '../IconCard'
 import StatCardContent from './StatCardContent'
 import { getUsersAndTrades } from './helpers'
-
-const StyledLogoIcon = styled(LogoIcon)`
-  path {
-    fill: ${({ theme }) => theme.colors.secondary};
-
-    &.left-eye,
-    &.right-eye {
-      fill: ${({ theme }) => theme.colors.background};
-    }
-  }
-`
+import GradientLogo from '../GradientLogoSvg'
 
 const Stats = () => {
   const { t } = useTranslation()
@@ -64,7 +53,7 @@ const Stats = () => {
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
-      <StyledLogoIcon height="48px" width="48px" mb="24px" />
+      <GradientLogo height="48px" width="48px" mb="24px" />
       <Heading textAlign="center" scale="xl">
         {t('Used by millions.')}
       </Heading>
@@ -75,19 +64,9 @@ const Stats = () => {
         {t('PancakeSwap has the most users of any decentralized platform, ever.')}
       </Text>
       <Flex flexWrap="wrap">
-        <Text textAlign="center" color="textSubtle" mb="20px">
+        <Text display="inline" textAlign="center" color="textSubtle" mb="20px">
           {entrusting}
-        </Text>
-        <>
-          {data ? (
-            <Text textAlign="center" color="textSubtle" mb="20px" mr="4px">
-              {tvlString}
-            </Text>
-          ) : (
-            <Skeleton height={14} width={106} m="4px" />
-          )}
-        </>
-        <Text textAlign="center" color="textSubtle" mb="20px">
+          <>{data ? <>{tvlString}</> : <Skeleton display="inline-block" height={16} width={70} mt="2px" />}</>
           {inFunds}
         </Text>
       </Flex>
