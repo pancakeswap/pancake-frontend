@@ -13,7 +13,7 @@ const flyingAnim = () => keyframes`
     transform: translate(0,  0px);
   }
   50% {
-    transform: translate(-10px, -15px);
+    transform: translate(-5px, -5px);
   }
   to {
     transform: translate(0, 0px);
@@ -50,7 +50,7 @@ const InnerWrapper = styled.div`
 
 const BunnyWrapper = styled.div`
   width: 100%;
-  animation: ${flyingAnim} 2.5s ease-in-out infinite;
+  animation: ${flyingAnim} 3.5s ease-in-out infinite;
 `
 
 const StarsWrapper = styled.div`

@@ -8,14 +8,20 @@ const StyledCard = styled(Card)<{ background: string; borderColor: string; rotat
   border: 2px solid ${({ borderColor }) => borderColor};
   box-sizing: border-box;
   box-shadow: 0px 4px 0px ${({ borderColor }) => borderColor};
-  ${({ rotation }) => (rotation ? `transform: rotate(${rotation});` : '')}
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    ${({ rotation }) => (rotation ? `transform: rotate(${rotation});` : '')}
+  }
 `
 
 const IconWrapper = styled(Box)<{ rotation?: string }>`
   position: absolute;
   top: 24px;
   right: 24px;
-  ${({ rotation }) => (rotation ? `transform: rotate(${rotation});` : '')}
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    ${({ rotation }) => (rotation ? `transform: rotate(${rotation});` : '')}
+  }
 `
 
 interface IconCardProps extends IconCardData, CardProps {

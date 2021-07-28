@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { Flex, Heading, Text, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -7,15 +7,6 @@ import Container from 'components/Layout/Container'
 import { useWeb3React } from '@web3-react/core'
 import Star from './Star'
 import CompositeImage from './CompositeImage'
-
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`
 
 const BgWrapper = styled.div`
   overflow: hidden;
@@ -29,7 +20,6 @@ const BgWrapper = styled.div`
 const StyledStar = styled(Star)`
   height: 350%;
   width: 350%;
-  animation: 60s ${rotate} linear infinite;
 
   ${({ theme }) => theme.mediaQueries.xl} {
     height: 400%;
