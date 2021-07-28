@@ -7,97 +7,58 @@ it("renders ConnectModal correctly", () => {
   const { asFragment } = renderWithTheme(<ConnectModal login={noop} />);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c5 {
+      .c0 {
+      min-width: 320px;
+    }
+
+    .c10 {
+      width: 320px;
+    }
+
+    .c12 {
+      max-height: 453px;
+      overflow-y: auto;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+
+    .c20 {
+      padding: 24px;
+    }
+
+    .c14 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .c5 {
       color: #280D5F;
       font-size: 16px;
       font-weight: 600;
       line-height: 1.5;
     }
 
-    .c13 {
-      color: #1FC7D4;
-      font-size: 16px;
-      font-weight: 600;
+    .c18 {
+      color: #280D5F;
+      font-size: 14px;
+      font-weight: 400;
       line-height: 1.5;
-      margin-right: 16px;
+      font-size: 14px;
     }
 
-    .c16 {
-      color: #1FC7D4;
+    .c21 {
+      color: #7A6EAA;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 400;
       line-height: 1.5;
-    }
-
-    .c17 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      width: -webkit-fit-content;
-      width: -moz-fit-content;
-      width: fit-content;
-    }
-
-    .c17:hover {
-      -webkit-text-decoration: underline;
-      text-decoration: underline;
-    }
-
-    .c9 {
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
-      align-self: center;
-      fill: #1FC7D4;
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-      flex-shrink: 0;
-    }
-
-    .c14 {
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
-      align-self: center;
-      fill: #280D5F;
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-      flex-shrink: 0;
-    }
-
-    .c19 {
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
-      align-self: center;
-      fill: #1FC7D4;
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-      flex-shrink: 0;
-      margin-right: 6px;
+      margin-bottom: 16px;
+      text-align: center;
     }
 
     .c6 {
       font-size: 20px;
       font-weight: 600;
       line-height: 1.1;
-    }
-
-    .c0 {
-      min-width: 320px;
-    }
-
-    .c10 {
-      padding: 24px;
-    }
-
-    .c3 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
     }
 
     .c7 {
@@ -157,65 +118,6 @@ it("renders ConnectModal correctly", () => {
       cursor: not-allowed;
     }
 
-    .c12 {
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      border: 0;
-      border-radius: 16px;
-      box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
-      cursor: pointer;
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: -ms-inline-flexbox;
-      display: inline-flex;
-      font-family: inherit;
-      font-size: 16px;
-      font-weight: 600;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-      -ms-flex-pack: center;
-      justify-content: center;
-      -webkit-letter-spacing: 0.03em;
-      -moz-letter-spacing: 0.03em;
-      -ms-letter-spacing: 0.03em;
-      letter-spacing: 0.03em;
-      line-height: 1;
-      opacity: 1;
-      outline: 0;
-      -webkit-transition: background-color 0.2s,opacity 0.2s;
-      transition: background-color 0.2s,opacity 0.2s;
-      height: 48px;
-      padding: 0 24px;
-      background-color: #EFF4F5;
-      box-shadow: none;
-      color: #1FC7D4;
-      width: 100%;
-      margin-bottom: 8px;
-    }
-
-    .c12:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-      opacity: 0.65;
-    }
-
-    .c12:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-      opacity: 0.85;
-      -webkit-transform: translateY(1px);
-      -ms-transform: translateY(1px);
-      transform: translateY(1px);
-      box-shadow: none;
-    }
-
-    .c12:disabled,
-    .c12.pancake-button--disabled {
-      background-color: #E9EAEB;
-      border-color: #E9EAEB;
-      box-shadow: none;
-      color: #BDC2C4;
-      cursor: not-allowed;
-    }
-
     .c15 {
       -webkit-align-items: center;
       -webkit-box-align: center;
@@ -247,11 +149,12 @@ it("renders ConnectModal correctly", () => {
       transition: background-color 0.2s,opacity 0.2s;
       height: 48px;
       padding: 0 24px;
-      background-color: #EFF4F5;
-      box-shadow: none;
+      background-color: transparent;
       color: #1FC7D4;
+      box-shadow: none;
       width: 100%;
-      margin-bottom: 0;
+      padding-top: 16px;
+      padding-bottom: 16px;
     }
 
     .c15:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
@@ -275,9 +178,105 @@ it("renders ConnectModal correctly", () => {
       cursor: not-allowed;
     }
 
+    .c22 {
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      border: 0;
+      border-radius: 16px;
+      box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+      cursor: pointer;
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-letter-spacing: 0.03em;
+      -moz-letter-spacing: 0.03em;
+      -ms-letter-spacing: 0.03em;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      opacity: 1;
+      outline: 0;
+      -webkit-transition: background-color 0.2s,opacity 0.2s;
+      transition: background-color 0.2s,opacity 0.2s;
+      height: 48px;
+      padding: 0 24px;
+      background-color: #7A6EAA;
+      color: #FFFFFF;
+      width: 100%;
+    }
+
+    .c22:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+      opacity: 0.65;
+    }
+
+    .c22:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+      opacity: 0.85;
+      -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    .c22:disabled,
+    .c22.pancake-button--disabled {
+      background-color: #E9EAEB;
+      border-color: #E9EAEB;
+      box-shadow: none;
+      color: #BDC2C4;
+      cursor: not-allowed;
+    }
+
     .c8 {
       padding: 0;
       width: 48px;
+    }
+
+    .c9 {
+      -webkit-align-self: center;
+      -ms-flex-item-align: center;
+      align-self: center;
+      fill: #1FC7D4;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    .c17 {
+      -webkit-align-self: center;
+      -ms-flex-item-align: center;
+      align-self: center;
+      fill: #280D5F;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      margin-bottom: 8px;
+    }
+
+    .c19 {
+      -webkit-align-self: center;
+      -ms-flex-item-align: center;
+      align-self: center;
+      fill: #7A6EAA;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      margin-bottom: 8px;
+    }
+
+    .c3 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
     }
 
     .c2 {
@@ -285,7 +284,7 @@ it("renders ConnectModal correctly", () => {
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
-      background: transparent;
+      background: linear-gradient(139.73deg,#E5FDFF 0%,#F3EFFF 100%);
       border-bottom: 1px solid #E7E3EB;
       display: -webkit-box;
       display: -webkit-flex;
@@ -323,19 +322,39 @@ it("renders ConnectModal correctly", () => {
       z-index: 100;
     }
 
-    .c18 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
-      align-self: center;
+    .c16 {
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
-      margin-top: 24px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      height: auto;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .c13 {
+      border-bottom: 1px solid #E7E3EB;
+    }
+
+    @media screen and (min-width:370px) {
+
+    }
+
+    @media screen and (min-width:576px) {
+      .c10 {
+        width: 340px;
+      }
     }
 
     @media screen and (min-width:968px) {
@@ -365,7 +384,7 @@ it("renders ConnectModal correctly", () => {
               class="c5 c6"
               color="text"
             >
-              Connect to a wallet
+              Connect Wallet
             </h2>
           </div>
           <button
@@ -388,493 +407,263 @@ it("renders ConnectModal correctly", () => {
         </div>
         <div
           class="c10 c3 c11"
+          width="320px,,340px"
         >
-          <button
-            class="c12"
-            id="wallet-connect-metamask"
-            scale="md"
-            style="justify-content: space-between;"
-            width="100%"
+          <div
+            class="c12 c13"
           >
             <div
-              class="c13"
-              color="primary"
-            >
-              Metamask
-            </div>
-            <svg
               class="c14"
-              color="text"
-              viewBox="0 0 96 96"
-              width="32px"
-              xmlns="http://www.w3.org/2000/svg"
             >
-              <circle
-                cx="48"
-                cy="48"
-                fill="white"
-                r="48"
-              />
-              <path
-                d="M77.7602 16.9155L51.9419 36.0497L56.7382 24.7733L77.7602 16.9155Z"
-                fill="#E17726"
-              />
-              <path
-                d="M18.2656 16.9155L43.8288 36.2283L39.2622 24.7733L18.2656 16.9155Z"
-                fill="#E27625"
-              />
-              <path
-                d="M68.4736 61.2808L61.6108 71.7918L76.3059 75.8482L80.4899 61.5104L68.4736 61.2808Z"
-                fill="#E27625"
-              />
-              <path
-                d="M15.5356 61.5104L19.6941 75.8482L34.3892 71.7918L27.5519 61.2808L15.5356 61.5104Z"
-                fill="#E27625"
-              />
-              <path
-                d="M33.5984 43.5251L29.491 49.699L44.0584 50.3624L43.5482 34.6724L33.5984 43.5251Z"
-                fill="#E27625"
-              />
-              <path
-                d="M62.4274 43.525L52.2991 34.4937L51.9419 50.3622L66.5094 49.6989L62.4274 43.525Z"
-                fill="#E27625"
-              />
-              <path
-                d="M34.3892 71.7922L43.1654 67.5316L35.6137 61.6128L34.3892 71.7922Z"
-                fill="#E27625"
-              />
-              <path
-                d="M52.8345 67.5316L61.6107 71.7922L60.3861 61.6128L52.8345 67.5316Z"
-                fill="#E27625"
-              />
-              <path
-                d="M61.6107 71.7923L52.8345 67.5317L53.5233 73.2465L53.4468 75.6446L61.6107 71.7923Z"
-                fill="#D5BFB2"
-              />
-              <path
-                d="M34.3892 71.7923L42.5531 75.6446L42.502 73.2465L43.1654 67.5317L34.3892 71.7923Z"
-                fill="#D5BFB2"
-              />
-              <path
-                d="M42.7062 57.8369L35.4097 55.6939L40.5631 53.3213L42.7062 57.8369Z"
-                fill="#233447"
-              />
-              <path
-                d="M53.2937 57.8369L55.4367 53.3213L60.6412 55.6939L53.2937 57.8369Z"
-                fill="#233447"
-              />
-              <path
-                d="M34.3893 71.7918L35.6649 61.2808L27.552 61.5104L34.3893 71.7918Z"
-                fill="#CC6228"
-              />
-              <path
-                d="M60.3352 61.2808L61.6108 71.7918L68.4736 61.5104L60.3352 61.2808Z"
-                fill="#CC6228"
-              />
-              <path
-                d="M66.5094 49.6987L51.9419 50.362L53.294 57.8371L55.4371 53.3215L60.6416 55.6941L66.5094 49.6987Z"
-                fill="#CC6228"
-              />
-              <path
-                d="M35.4098 55.6941L40.5633 53.3215L42.7063 57.8371L44.0584 50.362L29.491 49.6987L35.4098 55.6941Z"
-                fill="#CC6228"
-              />
-              <path
-                d="M29.491 49.6987L35.6139 61.6129L35.4098 55.6941L29.491 49.6987Z"
-                fill="#E27525"
-              />
-              <path
-                d="M60.6414 55.6941L60.3862 61.6129L66.5092 49.6987L60.6414 55.6941Z"
-                fill="#E27525"
-              />
-              <path
-                d="M44.0584 50.3618L42.7063 57.8369L44.4156 66.6641L44.7728 55.0305L44.0584 50.3618Z"
-                fill="#E27525"
-              />
-              <path
-                d="M51.9415 50.3618L51.2527 55.005L51.5843 66.6641L53.2937 57.8369L51.9415 50.3618Z"
-                fill="#E27525"
-              />
-              <path
-                d="M53.2938 57.8374L51.5845 66.6646L52.8346 67.532L60.3862 61.6132L60.6413 55.6943L53.2938 57.8374Z"
-                fill="#F5841F"
-              />
-              <path
-                d="M35.4097 55.6943L35.6138 61.6132L43.1654 67.532L44.4155 66.6646L42.7062 57.8374L35.4097 55.6943Z"
-                fill="#F5841F"
-              />
-              <path
-                d="M53.4468 75.6443L53.5233 73.2462L52.8855 72.6849H43.1143L42.502 73.2462L42.5531 75.6443L34.3892 71.792L37.2465 74.1391L43.0378 78.1445H52.962L58.7533 74.1391L61.6107 71.792L53.4468 75.6443Z"
-                fill="#C0AC9D"
-              />
-              <path
-                d="M52.8346 67.5315L51.5845 66.6641H44.4156L43.1655 67.5315L42.5022 73.2462L43.1145 72.6849H52.8857L53.5235 73.2462L52.8346 67.5315Z"
-                fill="#161616"
-              />
-              <path
-                d="M78.8314 37.2998L80.9999 26.7377L77.7599 16.9155L52.8345 35.4119L62.4271 43.5247L75.9485 47.4791L78.9335 43.984L77.6323 43.04L79.7243 41.1521L78.1426 39.902L80.2091 38.3458L78.8314 37.2998Z"
-                fill="#763E1A"
-              />
-              <path
-                d="M15 26.7377L17.194 37.2998L15.7909 38.3458L17.8574 39.902L16.2756 41.1521L18.3676 43.04L17.0665 43.984L20.0514 47.4791L33.5984 43.5247L43.1655 35.4119L18.2656 16.9155L15 26.7377Z"
-                fill="#763E1A"
-              />
-              <path
-                d="M75.9487 47.4793L62.4272 43.5249L66.5092 49.6989L60.3862 61.613L68.4736 61.511H80.4898L75.9487 47.4793Z"
-                fill="#F5841F"
-              />
-              <path
-                d="M33.5983 43.5249L20.0513 47.4793L15.5356 61.511H27.5519L35.6137 61.613L29.4908 49.6989L33.5983 43.5249Z"
-                fill="#F5841F"
-              />
-              <path
-                d="M51.9415 50.3617L52.8344 35.4115L56.7378 24.7729H39.262L43.1653 35.4115L44.0583 50.3617L44.3899 55.0559L44.4154 66.664H51.5843L51.6099 55.0559L51.9415 50.3617Z"
-                fill="#F5841F"
-              />
-            </svg>
-          </button>
-          <button
-            class="c12"
-            id="wallet-connect-trustwallet"
-            scale="md"
-            style="justify-content: space-between;"
-            width="100%"
-          >
-            <div
-              class="c13"
-              color="primary"
-            >
-              TrustWallet
-            </div>
-            <svg
-              class="c14"
-              color="text"
-              viewBox="0 0 96 96"
-              width="32px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g
-                clip-path="url(#svg1)"
+              <div
+                class=""
               >
-                <path
-                  d="M48.0048 96.0097C74.5172 96.0097 96.0097 74.5172 96.0097 48.0048C96.0097 21.4925 74.5172 0 48.0048 0C21.4925 0 0 21.4925 0 48.0048C0 74.5172 21.4925 96.0097 48.0048 96.0097Z"
-                  fill="#3375BB"
-                />
-                <path
-                  d="M48.0048 22.8922L49.3179 21.1833C48.9399 20.8928 48.4766 20.7354 48 20.7354C47.5233 20.7354 47.06 20.8928 46.682 21.1833L48.0048 22.8922ZM70.5783 29.5252H72.7313C72.7352 29.2396 72.6824 28.9561 72.576 28.6909C72.4696 28.4258 72.3118 28.1844 72.1116 27.9806C71.9114 27.7769 71.6729 27.6148 71.4097 27.5037C71.1465 27.3926 70.8639 27.3348 70.5783 27.3335V29.5252ZM48.0048 75.6377L46.8076 77.4335C47.1604 77.6697 47.5754 77.7958 48 77.7958C48.4245 77.7958 48.8395 77.6697 49.1924 77.4335L48.0048 75.6377ZM25.4506 29.5252V27.3625C25.165 27.3638 24.8824 27.4216 24.6192 27.5327C24.356 27.6437 24.1175 27.8058 23.9173 28.0096C23.7171 28.2134 23.5593 28.4548 23.4529 28.7199C23.3465 28.985 23.2937 29.2686 23.2976 29.5542L25.4506 29.5252ZM46.6917 24.5915C56.4626 32.1611 67.6528 31.6783 70.5879 31.6783V27.3625C67.5466 27.3625 57.8047 27.7487 49.3468 21.1833L46.6917 24.5915ZM68.4348 29.4866C68.2707 39.4892 67.8459 46.5471 67.0349 51.7704C66.2238 56.9938 65.1039 60.0448 63.6266 62.2268C62.1494 64.4089 60.257 65.8282 57.486 67.4792C54.715 69.1302 51.1716 70.9646 46.8076 73.8515L49.2406 77.4335C53.373 74.6818 56.8102 72.9246 59.7357 71.1771C62.6835 69.5717 65.2416 67.3367 67.228 64.6309C69.159 61.7344 70.4817 57.8724 71.3314 52.427C72.181 46.9815 72.6155 39.6534 72.7796 29.5542L68.4348 29.4866ZM49.2406 73.8515C44.9055 70.955 41.3718 69.1592 38.6201 67.4888C35.8684 65.8185 33.976 64.4861 32.4892 62.2268C31.0023 59.9676 29.7954 56.9648 28.9651 51.7704C28.1347 46.576 27.7678 39.4892 27.6037 29.4866L23.2976 29.5542C23.4617 39.6534 23.9058 47.0009 24.7458 52.427C25.5858 57.8531 26.8699 61.7151 28.8395 64.6309C30.8164 67.3382 33.3686 69.5739 36.3125 71.1771C39.2091 72.9246 42.6752 74.6818 46.8076 77.4335L49.2406 73.8515ZM25.4506 31.6783C28.3471 31.6783 39.547 32.1611 49.3179 24.5915L46.682 21.1833C38.2049 27.7487 28.463 27.3625 25.441 27.3625L25.4506 31.6783Z"
-                  fill="white"
-                />
-              </g>
-              <defs>
-                <clippath
-                  id="svg1"
+                <button
+                  class="c15 c16"
+                  id="wallet-connect-metamask"
+                  scale="md"
+                  width="100%"
                 >
-                  <rect
-                    fill="white"
-                    height="96"
-                    width="96"
-                  />
-                </clippath>
-              </defs>
-            </svg>
-          </button>
-          <button
-            class="c12"
-            id="wallet-connect-mathwallet"
-            scale="md"
-            style="justify-content: space-between;"
-            width="100%"
-          >
-            <div
-              class="c13"
-              color="primary"
-            >
-              MathWallet
-            </div>
-            <svg
-              class="c14"
-              color="text"
-              viewBox="0 0 96 96"
-              width="32px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle
-                cx="48"
-                cy="48"
-                fill="white"
-                r="48"
-              />
-              <path
-                clip-rule="evenodd"
-                d="M66.4573 43.7107C64.8919 42.1452 64.8919 39.6071 66.4573 38.0416C68.0228 36.4762 70.5609 36.4762 72.1264 38.0416C73.6918 39.6071 73.6918 42.1452 72.1264 43.7107C70.5609 45.2762 68.0228 45.2762 66.4573 43.7107ZM52.9933 57.1747C51.8192 56.0006 51.8192 54.097 52.9933 52.9229C54.1674 51.7488 56.071 51.7488 57.2451 52.9229C58.4192 54.097 58.4192 56.0006 57.2451 57.1747C56.071 58.3488 54.1674 58.3488 52.9933 57.1747ZM74.2523 50.0884C73.0782 48.9143 73.0782 47.0107 74.2523 45.8366C75.4263 44.6625 77.3299 44.6625 78.504 45.8366C79.6781 47.0107 79.6781 48.9143 78.504 50.0884C77.3299 51.2625 75.4263 51.2625 74.2523 50.0884ZM67.166 57.1747C65.9919 56.0006 65.9919 54.097 67.166 52.9229C68.34 51.7488 70.2436 51.7488 71.4177 52.9229C72.5918 54.097 72.5918 56.0006 71.4177 57.1747C70.2436 58.3488 68.34 58.3488 67.166 57.1747ZM82.0472 56.466C81.2645 55.6833 81.2645 54.4142 82.0472 53.6315C82.8299 52.8488 84.099 52.8488 84.8817 53.6315C85.6644 54.4142 85.6644 55.6833 84.8817 56.466C84.099 57.2488 82.8299 57.2488 82.0472 56.466ZM74.9609 63.5523C74.1782 62.7696 74.1782 61.5005 74.9609 60.7178C75.7436 59.9351 77.0127 59.9351 77.7954 60.7178C78.5781 61.5005 78.5781 62.7696 77.7954 63.5523C77.0127 64.3351 75.7436 64.3351 74.9609 63.5523ZM59.371 50.797C57.8056 49.2315 57.8056 46.6934 59.371 45.1279C60.9365 43.5625 63.4746 43.5625 65.0401 45.1279C66.6055 46.6934 66.6055 49.2315 65.0401 50.797C63.4746 52.3625 60.9365 52.3625 59.371 50.797ZM59.371 36.6244C57.8056 35.0589 57.8056 32.5208 59.371 30.9553C60.9365 29.3899 63.4746 29.3899 65.0401 30.9553C66.6055 32.5208 66.6055 35.0589 65.0401 36.6244C63.4746 38.1898 60.9365 38.1898 59.371 36.6244ZM52.2847 43.7107C50.7193 42.1452 50.7193 39.6071 52.2847 38.0416C53.8502 36.4762 56.3883 36.4762 57.9538 38.0416C59.5192 39.6071 59.5192 42.1452 57.9538 43.7107C56.3883 45.2762 53.8502 45.2762 52.2847 43.7107ZM38.0462 43.7107C36.4808 42.1452 36.4808 39.6071 38.0462 38.0416C39.6117 36.4762 42.1498 36.4762 43.7153 38.0416C45.2807 39.6071 45.2807 42.1452 43.7153 43.7107C42.1498 45.2762 39.6117 45.2762 38.0462 43.7107ZM24.5823 57.1747C23.4082 56.0006 23.4082 54.097 24.5823 52.9229C25.7564 51.7488 27.66 51.7488 28.8341 52.9229C30.0081 54.097 30.0081 56.0006 28.8341 57.1747C27.66 58.3488 25.7564 58.3488 24.5823 57.1747ZM45.8412 50.0884C44.6671 48.9143 44.6671 47.0107 45.8412 45.8366C47.0153 44.6625 48.9189 44.6625 50.093 45.8366C51.2671 47.0107 51.2671 48.9143 50.093 50.0884C48.9189 51.2625 47.0153 51.2625 45.8412 50.0884ZM38.7549 57.1747C37.5808 56.0006 37.5808 54.097 38.7549 52.9229C39.929 51.7488 41.8326 51.7488 43.0067 52.9229C44.1807 54.097 44.1807 56.0006 43.0067 57.1747C41.8326 58.3488 39.929 58.3488 38.7549 57.1747ZM11.1183 56.466C10.3356 55.6833 10.3356 54.4142 11.1183 53.6315C11.901 52.8488 13.1701 52.8488 13.9528 53.6315C14.7356 54.4142 14.7356 55.6833 13.9528 56.466C13.1701 57.2488 11.901 57.2488 11.1183 56.466ZM18.2046 63.5523C17.4219 62.7696 17.4219 61.5005 18.2046 60.7178C18.9873 59.9351 20.2564 59.9351 21.0391 60.7178C21.8219 61.5005 21.8219 62.7696 21.0391 63.5523C20.2564 64.3351 18.9873 64.3351 18.2046 63.5523ZM46.5498 63.5523C45.7671 62.7696 45.7671 61.5005 46.5498 60.7178C47.3325 59.9351 48.6016 59.9351 49.3843 60.7178C50.1671 61.5005 50.1671 62.7696 49.3843 63.5523C48.6016 64.3351 47.3325 64.3351 46.5498 63.5523ZM17.496 50.0884C16.3219 48.9143 16.3219 47.0107 17.496 45.8366C18.6701 44.6625 20.5737 44.6625 21.7478 45.8366C22.9218 47.0107 22.9218 48.9143 21.7478 50.0884C20.5737 51.2625 18.6701 51.2625 17.496 50.0884ZM30.9599 50.797C29.3945 49.2315 29.3945 46.6934 30.9599 45.1279C32.5254 43.5625 35.0635 43.5625 36.629 45.1279C38.1944 46.6934 38.1944 49.2315 36.629 50.797C35.0635 52.3625 32.5254 52.3625 30.9599 50.797ZM30.9599 36.6244C29.3945 35.0589 29.3945 32.5208 30.9599 30.9553C32.5254 29.3899 35.0635 29.3899 36.629 30.9553C38.1944 32.5208 38.1944 35.0589 36.629 36.6244C35.0635 38.1898 32.5254 38.1898 30.9599 36.6244ZM23.8736 43.7107C22.3082 42.1452 22.3082 39.6071 23.8736 38.0416C25.4391 36.4762 27.9772 36.4762 29.5427 38.0416C31.1081 39.6071 31.1081 42.1452 29.5427 43.7107C27.9772 45.2762 25.4391 45.2762 23.8736 43.7107Z"
-                fill="#1D222A"
-                fill-rule="evenodd"
-              />
-            </svg>
-          </button>
-          <button
-            class="c12"
-            id="wallet-connect-tokenpocket"
-            scale="md"
-            style="justify-content: space-between;"
-            width="100%"
-          >
-            <div
-              class="c13"
-              color="primary"
-            >
-              TokenPocket
-            </div>
-            <svg
-              class="c14"
-              color="text"
-              viewBox="0 0 96 96"
-              width="32px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle
-                cx="48"
-                cy="48"
-                fill="white"
-                r="48"
-              />
-              <path
-                d="M44.3288 35.3546V21.7134H19.0926C18.581 21.7134 18.24 22.0544 18.24 22.566V41.8342C18.24 42.3457 18.581 42.6867 19.0926 42.6867H28.8119V77.8129C28.8119 78.3244 29.153 78.6654 29.6645 78.6654H45.5224C46.0339 78.6654 46.375 78.3244 46.375 77.8129V35.3546H44.3288Z"
-                fill="#29AEFF"
-              />
-              <path
-                d="M61.8919 17.2798H55.7534H39.2134C38.7019 17.2798 38.3608 17.6208 38.3608 18.1324V73.3792C38.3608 73.8908 38.7019 74.2318 39.2134 74.2318H55.0713C55.5829 74.2318 55.9239 73.8908 55.9239 73.3792V59.397H62.0624C73.6575 59.397 83.0358 50.0187 83.0358 38.4237C83.0358 26.6581 73.487 17.2798 61.8919 17.2798Z"
-                fill="#2761E7"
-              />
-            </svg>
-          </button>
-          <button
-            class="c12"
-            id="wallet-connect-walletconnect"
-            scale="md"
-            style="justify-content: space-between;"
-            width="100%"
-          >
-            <div
-              class="c13"
-              color="primary"
-            >
-              WalletConnect
-            </div>
-            <svg
-              class="c14"
-              color="text"
-              viewBox="0 0 96 96"
-              width="32px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M96 48C96 21.4903 74.5097 0 48 0C21.4903 0 0 21.4903 0 48C0 74.5097 21.4903 96 48 96C74.5097 96 96 74.5097 96 48Z"
-                fill="#3389FB"
-              />
-              <path
-                d="M29.6927 35.4245C39.8036 25.5252 56.1965 25.5252 66.3074 35.4245L67.5242 36.6159C68.0298 37.1109 68.0298 37.9134 67.5242 38.4084L63.3616 42.4839C63.1088 42.7314 62.699 42.7314 62.4462 42.4839L60.7717 40.8444C53.7181 33.9384 42.282 33.9384 35.2284 40.8444L33.4351 42.6002C33.1823 42.8477 32.7725 42.8477 32.5197 42.6002L28.3571 38.5247C27.8515 38.0297 27.8515 37.2272 28.3571 36.7322L29.6927 35.4245ZM74.9161 43.8532L78.6208 47.4805C79.1264 47.9755 79.1264 48.778 78.6208 49.2729L61.9159 65.6288C61.4103 66.1237 60.5907 66.1237 60.0851 65.6288C60.0851 65.6288 60.0851 65.6288 60.0851 65.6288L48.229 54.0206C48.1026 53.8968 47.8977 53.8968 47.7713 54.0206C47.7713 54.0206 47.7713 54.0206 47.7713 54.0206L35.9153 65.6288C35.4098 66.1237 34.5902 66.1237 34.0846 65.6288C34.0846 65.6288 34.0846 65.6288 34.0846 65.6288L17.3792 49.2727C16.8736 48.7778 16.8736 47.9753 17.3792 47.4803L21.0839 43.853C21.5895 43.3581 22.4091 43.3581 22.9146 43.853L34.771 55.4614C34.8974 55.5851 35.1023 55.5851 35.2287 55.4614C35.2287 55.4614 35.2287 55.4614 35.2287 55.4614L47.0844 43.853C47.59 43.358 48.4096 43.358 48.9152 43.853C48.9152 43.853 48.9152 43.853 48.9152 43.853L60.7715 55.4614C60.8979 55.5851 61.1028 55.5851 61.2292 55.4614L73.0854 43.8532C73.5909 43.3583 74.4105 43.3583 74.9161 43.8532Z"
-                fill="white"
-              />
-            </svg>
-          </button>
-          <button
-            class="c12"
-            id="wallet-connect-binance chain wallet"
-            scale="md"
-            style="justify-content: space-between;"
-            width="100%"
-          >
-            <div
-              class="c13"
-              color="primary"
-            >
-              Binance Chain Wallet
-            </div>
-            <svg
-              class="c14"
-              color="text"
-              viewBox="0 0 32 32"
-              width="32px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M24 0H8C3.58172 0 0 3.58172 0 8V24C0 28.4183 3.58172 32 8 32H24C28.4183 32 32 28.4183 32 24V8C32 3.58172 28.4183 0 24 0Z"
-                fill="#1E2026"
-              />
-              <path
-                d="M16.2857 4L9.97035 7.6761L12.2922 9.03415L16.2857 6.7161L20.2792 9.03415L22.6011 7.6761L16.2857 4Z"
-                fill="#F0B90B"
-              />
-              <path
-                d="M20.2792 10.9541L22.6011 12.3122V15.0283L18.6075 17.3463V21.9824L16.2857 23.3405L13.9639 21.9824V17.3463L9.97035 15.0283V12.3122L12.2922 10.9541L16.2857 13.2722L20.2792 10.9541Z"
-                fill="#F0B90B"
-              />
-              <path
-                d="M22.6011 16.9483V19.6644L20.2792 21.0224V18.3063L22.6011 16.9483Z"
-                fill="#F0B90B"
-              />
-              <path
-                d="M20.2561 22.9424L24.2496 20.6244V15.9883L26.5714 14.6302V21.9824L20.2561 25.6585V22.9424Z"
-                fill="#F0B90B"
-              />
-              <path
-                d="M24.2496 11.3522L21.9278 9.99414L24.2496 8.63609L26.5714 9.99414V12.7102L24.2496 14.0683V11.3522Z"
-                fill="#F0B90B"
-              />
-              <path
-                d="M13.9639 26.642V23.9259L16.2857 25.2839L18.6075 23.9259V26.642L16.2857 28L13.9639 26.642Z"
-                fill="#F0B90B"
-              />
-              <path
-                d="M12.2922 21.0224L9.97035 19.6644V16.9483L12.2922 18.3063V21.0224Z"
-                fill="#F0B90B"
-              />
-              <path
-                d="M16.2857 11.3522L13.9639 9.99414L16.2857 8.63609L18.6075 9.99414L16.2857 11.3522Z"
-                fill="#F0B90B"
-              />
-              <path
-                d="M10.6437 9.99414L8.32183 11.3522V14.0683L6 12.7102V9.99414L8.32183 8.63609L10.6437 9.99414Z"
-                fill="#F0B90B"
-              />
-              <path
-                d="M6 14.6302L8.32183 15.9883V20.6244L12.3154 22.9424V25.6585L6 21.9824V14.6302Z"
-                fill="#F0B90B"
-              />
-            </svg>
-          </button>
-          <button
-            class="c12"
-            id="wallet-connect-safepal wallet"
-            scale="md"
-            style="justify-content: space-between;"
-            width="100%"
-          >
-            <div
-              class="c13"
-              color="primary"
-            >
-              SafePal Wallet
-            </div>
-            <svg
-              class="c14"
-              color="text"
-              viewBox="0 0 96 96"
-              width="32px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle
-                cx="48"
-                cy="48"
-                fill="#F5F5F5"
-                r="48"
-              />
-              <path
-                d="M56.5504425,41.9387033 L56.5504425,50.4659601 L47.3948342,50.4659601 L47.3948342,85.5971142 L45.0078131,84.7075452 C43.8992633,84.2955753 42.1136272,83.5937969 39.9052997,82.5918134 L38.8675775,82.1177881 L38.8675775,14.6817622 L47.9569067,11.8769231 L56.5504425,14.5267861 L56.5504425,23.7259307 L47.9569067,21.0669705 L47.3948342,21.2411155 L47.3948342,41.9387033 L56.5504425,41.9387033 Z M16,50.4659926 L16,21.7739797 L36.1702794,15.548296 L36.1702794,24.7052039 L24.526282,28.3200122 L24.526282,41.9387358 L36.1702794,41.9387358 L36.1702794,81.3806284 L33.591244,80.0543973 C25.5662786,75.923652 16,68.9585019 16,59.2339983 L16,54.6496962 L24.526282,54.6496962 L24.526282,59.2339983 C24.526282,61.2460878 25.5734263,63.3605199 27.6426978,65.5373324 L27.6426978,50.4659926 L16,50.4659926 Z M59.1389325,15.3302574 L79.8040306,21.7261873 L79.8040306,50.4659601 L67.6710627,50.4659601 L67.6710627,62.9111544 C67.6710627,62.9111544 64.9581695,66.4674811 59.1464051,69.4451657 C59.1464051,67.0682164 59.1389325,15.3302574 59.1389325,15.3302574 Z M71.2780734,41.9387033 L71.2780734,28.2783928 L67.6710627,27.1649695 L67.6710627,41.9387033 L71.2780734,41.9387033 Z M71.2780734,59.8661186 L71.2780734,54.6495662 L79.8040306,54.6495662 L79.8040306,59.8661186 C79.8040306,74.3588162 58.7760221,82.7005566 52.330058,84.9127828 L49.9859233,85.7230769 L49.9859233,76.7068496 L51.1311866,76.2744112 C61.1591444,72.5004032 71.2780734,65.962818 71.2780734,59.8661186 Z"
-                fill="#000000"
-              />
-            </svg>
-          </button>
-          <button
-            class="c15"
-            id="wallet-connect-coin98 wallet"
-            scale="md"
-            style="justify-content: space-between;"
-            width="100%"
-          >
-            <div
-              class="c13"
-              color="primary"
-            >
-              Coin98 Wallet
-            </div>
-            <svg
-              class="c14"
-              color="text"
-              viewBox="0 0 1000 1000"
-              width="32px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <lineargradient
-                  gradientUnits="userSpaceOnUse"
-                  id="prefix__a"
-                  x1="48.733"
-                  x2="942.955"
-                  y1="944.09"
-                  y2="64.09"
+                  <svg
+                    class="c17"
+                    color="text"
+                    viewBox="0 0 40 40"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M36.0112 3.33337L22.1207 13.6277L24.7012 7.56091L36.0112 3.33337Z"
+                      fill="#E17726"
+                    />
+                    <path
+                      d="M4.00261 3.33337L17.7558 13.7238L15.2989 7.56091L4.00261 3.33337Z"
+                      fill="#E27625"
+                    />
+                    <path
+                      d="M31.0149 27.2023L27.3227 32.8573L35.2287 35.0397L37.4797 27.3258L31.0149 27.2023Z"
+                      fill="#E27625"
+                    />
+                    <path
+                      d="M2.53386 27.3258L4.77116 35.0397L12.6772 32.8573L8.9987 27.2023L2.53386 27.3258Z"
+                      fill="#E27625"
+                    />
+                    <path
+                      d="M12.2518 17.6496L10.0419 20.9712L17.8793 21.3281L17.6048 12.8867L12.2518 17.6496Z"
+                      fill="#E27625"
+                    />
+                    <path
+                      d="M27.762 17.6494L22.3129 12.7905L22.1207 21.3279L29.9581 20.9711L27.762 17.6494Z"
+                      fill="#E27625"
+                    />
+                    <path
+                      d="M12.6772 32.8574L17.3989 30.5652L13.336 27.3809L12.6772 32.8574Z"
+                      fill="#E27625"
+                    />
+                    <path
+                      d="M22.6009 30.5652L27.3226 32.8574L26.6637 27.3809L22.6009 30.5652Z"
+                      fill="#E27625"
+                    />
+                    <path
+                      d="M27.3226 32.8575L22.6009 30.5653L22.9715 33.6399L22.9303 34.9301L27.3226 32.8575Z"
+                      fill="#D5BFB2"
+                    />
+                    <path
+                      d="M12.6772 32.8575L17.0694 34.9301L17.042 33.6399L17.3989 30.5653L12.6772 32.8575Z"
+                      fill="#D5BFB2"
+                    />
+                    <path
+                      d="M17.1518 25.3495L13.2262 24.1965L15.9988 22.92L17.1518 25.3495Z"
+                      fill="#233447"
+                    />
+                    <path
+                      d="M22.848 25.3495L24.001 22.92L26.801 24.1965L22.848 25.3495Z"
+                      fill="#233447"
+                    />
+                    <path
+                      d="M12.6773 32.8573L13.3635 27.2023L8.99876 27.3258L12.6773 32.8573Z"
+                      fill="#CC6228"
+                    />
+                    <path
+                      d="M26.6364 27.2023L27.3227 32.8573L31.0149 27.3258L26.6364 27.2023Z"
+                      fill="#CC6228"
+                    />
+                    <path
+                      d="M29.9581 20.9709L22.1207 21.3278L22.8482 25.3495L24.0011 22.92L26.8012 24.1965L29.9581 20.9709Z"
+                      fill="#CC6228"
+                    />
+                    <path
+                      d="M13.2263 24.1965L15.9989 22.92L17.1519 25.3495L17.8793 21.3278L10.0419 20.9709L13.2263 24.1965Z"
+                      fill="#CC6228"
+                    />
+                    <path
+                      d="M10.0419 20.9709L13.3361 27.3809L13.2263 24.1965L10.0419 20.9709Z"
+                      fill="#E27525"
+                    />
+                    <path
+                      d="M26.8011 24.1965L26.6638 27.3809L29.958 20.9709L26.8011 24.1965Z"
+                      fill="#E27525"
+                    />
+                    <path
+                      d="M17.8793 21.3278L17.1519 25.3494L18.0715 30.0985L18.2637 23.8396L17.8793 21.3278Z"
+                      fill="#E27525"
+                    />
+                    <path
+                      d="M22.1205 21.3278L21.7499 23.8258L21.9283 30.0985L22.848 25.3494L22.1205 21.3278Z"
+                      fill="#E27525"
+                    />
+                    <path
+                      d="M22.848 25.3496L21.9284 30.0987L22.601 30.5654L26.6638 27.381L26.8011 24.1967L22.848 25.3496Z"
+                      fill="#F5841F"
+                    />
+                    <path
+                      d="M13.2262 24.1967L13.336 27.381L17.3989 30.5654L18.0714 30.0987L17.1518 25.3496L13.2262 24.1967Z"
+                      fill="#F5841F"
+                    />
+                    <path
+                      d="M22.9303 34.93L22.9715 33.6398L22.6284 33.3378H17.3714L17.042 33.6398L17.0694 34.93L12.6772 32.8574L14.2145 34.1202L17.3302 36.2751H22.6696L25.7853 34.1202L27.3226 32.8574L22.9303 34.93Z"
+                      fill="#C0AC9D"
+                    />
+                    <path
+                      d="M22.601 30.5653L21.9284 30.0986H18.0715L17.3989 30.5653L17.0421 33.6399L17.3715 33.3379H22.6285L22.9716 33.6399L22.601 30.5653Z"
+                      fill="#161616"
+                    />
+                    <path
+                      d="M36.5875 14.3003L37.7542 8.61779L36.011 3.33337L22.6009 13.2846L27.7618 17.6493L35.0365 19.7768L36.6424 17.8964L35.9424 17.3886L37.0679 16.3728L36.2169 15.7003L37.3287 14.863L36.5875 14.3003Z"
+                      fill="#763E1A"
+                    />
+                    <path
+                      d="M2.24573 8.61779L3.42615 14.3003L2.67123 14.863L3.78302 15.7003L2.93202 16.3728L4.05753 17.3886L3.35752 17.8964L4.96343 19.7768L12.2518 17.6493L17.399 13.2846L4.00263 3.33337L2.24573 8.61779Z"
+                      fill="#763E1A"
+                    />
+                    <path
+                      d="M35.0365 19.777L27.7619 17.6495L29.958 20.9712L26.6638 27.3811L31.0149 27.3262H37.4797L35.0365 19.777Z"
+                      fill="#F5841F"
+                    />
+                    <path
+                      d="M12.2517 17.6495L4.96332 19.777L2.53386 27.3262H8.99869L13.336 27.3811L10.0419 20.9712L12.2517 17.6495Z"
+                      fill="#F5841F"
+                    />
+                    <path
+                      d="M22.1205 21.3276L22.6009 13.2843L24.701 7.56067H15.2988L17.3988 13.2843L17.8792 21.3276L18.0577 23.8531L18.0714 30.0984H21.9283L21.9421 23.8531L22.1205 21.3276Z"
+                      fill="#F5841F"
+                    />
+                  </svg>
+                  <div
+                    class="c18"
+                    color="text"
+                    font-size="14px"
+                  >
+                    Metamask
+                  </div>
+                </button>
+              </div>
+              <div
+                class=""
+              >
+                <button
+                  class="c15 c16"
+                  id="wallet-connect-walletconnect"
+                  scale="md"
+                  width="100%"
                 >
-                  <stop
-                    offset="0"
-                    stop-color="#151515"
-                  />
-                  <stop
-                    offset="0.994"
-                    stop-color="#252525"
-                  />
-                </lineargradient>
-                <lineargradient
-                  gradientUnits="userSpaceOnUse"
-                  id="prefix__b"
-                  x1="761.394"
-                  x2="275.02"
-                  y1="238.668"
-                  y2="725.043"
+                  <svg
+                    class="c17"
+                    color="text"
+                    viewBox="0 0 40 40"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.68096 12.4756C14.9323 6.39698 25.0677 6.39698 31.3191 12.4756L32.0714 13.2071C32.384 13.511 32.384 14.0038 32.0714 14.3077L29.4978 16.8103C29.3415 16.9622 29.0881 16.9622 28.9318 16.8103L27.8965 15.8036C23.5354 11.563 16.4647 11.563 12.1036 15.8036L10.9948 16.8817C10.8385 17.0336 10.5851 17.0336 10.4288 16.8817L7.85517 14.3791C7.54261 14.0752 7.54261 13.5824 7.85517 13.2785L8.68096 12.4756ZM36.6417 17.6511L38.9322 19.8783C39.2448 20.1823 39.2448 20.675 38.9322 20.979L28.6039 31.022C28.2913 31.3259 27.7846 31.3259 27.472 31.022C27.472 31.022 27.472 31.022 27.472 31.022L20.1416 23.8942C20.0634 23.8182 19.9367 23.8182 19.8586 23.8942C19.8586 23.8942 19.8586 23.8942 19.8586 23.8942L12.5283 31.022C12.2157 31.3259 11.709 31.3259 11.3964 31.022C11.3964 31.022 11.3964 31.022 11.3964 31.022L1.06775 20.9788C0.755186 20.6749 0.755186 20.1821 1.06775 19.8782L3.35833 17.6509C3.6709 17.347 4.17767 17.347 4.49024 17.6509L11.8208 24.7789C11.8989 24.8549 12.0256 24.8549 12.1038 24.7789C12.1038 24.7789 12.1038 24.7789 12.1038 24.7789L19.4339 17.6509C19.7465 17.347 20.2533 17.347 20.5658 17.6509C20.5658 17.6509 20.5658 17.6509 20.5658 17.6509L27.8964 24.7789C27.9745 24.8549 28.1012 24.8549 28.1794 24.7789L35.5098 17.6511C35.8223 17.3471 36.3291 17.3471 36.6417 17.6511Z"
+                      fill="#3389FB"
+                    />
+                  </svg>
+                  <div
+                    class="c18"
+                    color="text"
+                    font-size="14px"
+                  >
+                    WalletConnect
+                  </div>
+                </button>
+              </div>
+              <div
+                class=""
+              >
+                <button
+                  class="c15 c16"
+                  id="wallet-connect-trust wallet"
+                  scale="md"
+                  width="100%"
                 >
-                  <stop
-                    offset="0"
-                    stop-color="#fdea6a"
+                  <svg
+                    class="c17"
+                    color="text"
+                    viewBox="0 0 40 40"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19.9959 4.8377L20.7771 3.82105C20.5523 3.64825 20.2766 3.55457 19.9931 3.55457C19.7095 3.55457 19.4339 3.64825 19.209 3.82105L19.9959 4.8377ZM33.425 8.7837H34.7059C34.7081 8.61378 34.6767 8.44509 34.6134 8.28737C34.5502 8.12965 34.4563 7.98603 34.3372 7.8648C34.2181 7.74358 34.0762 7.64714 33.9196 7.58107C33.763 7.515 33.5949 7.4806 33.425 7.47985V8.7837ZM19.9959 36.2161L19.2837 37.2845C19.4936 37.425 19.7405 37.5 19.9931 37.5C20.2457 37.5 20.4925 37.425 20.7024 37.2845L19.9959 36.2161ZM6.57841 8.7837V7.49709C6.40847 7.49783 6.24036 7.53223 6.0838 7.5983C5.92723 7.66437 5.7853 7.76081 5.66621 7.88204C5.54712 8.00326 5.45322 8.14688 5.38995 8.3046C5.32667 8.46232 5.29526 8.63101 5.29754 8.80093L6.57841 8.7837ZM19.2148 5.84861C25.0275 10.3518 31.6846 10.0646 33.4307 10.0646V7.49709C31.6214 7.49709 25.8259 7.72684 20.7943 3.82105L19.2148 5.84861ZM32.1499 8.76073C32.0522 14.7113 31.7995 18.91 31.317 22.0174C30.8345 25.1248 30.1682 26.9399 29.2894 28.238C28.4106 29.5361 27.2848 30.3804 25.6364 31.3626C23.9879 32.3448 21.8799 33.4361 19.2837 35.1535L20.7312 37.2845C23.1895 35.6475 25.2343 34.6021 26.9747 33.5625C28.7284 32.6075 30.2502 31.2779 31.4319 29.6682C32.5806 27.9451 33.3675 25.6475 33.873 22.408C34.3785 19.1685 34.6369 14.809 34.7346 8.80093L32.1499 8.76073ZM20.7312 35.1535C18.1522 33.4304 16.05 32.362 14.413 31.3684C12.776 30.3747 11.6502 29.582 10.7656 28.238C9.8811 26.8939 9.16312 25.1076 8.66915 22.0174C8.17519 18.9273 7.95692 14.7113 7.85928 8.76073L5.29754 8.80093C5.39518 14.809 5.6594 19.18 6.15911 22.408C6.65882 25.636 7.42275 27.9336 8.59448 29.6682C9.77051 31.2788 11.2888 32.6088 13.0402 33.5625C14.7633 34.6021 16.8254 35.6475 19.2837 37.2845L20.7312 35.1535ZM6.57841 10.0646C8.30155 10.0646 14.9644 10.3518 20.7771 5.84861L19.209 3.82105C14.166 7.72684 8.37048 7.49709 6.57266 7.49709L6.57841 10.0646Z"
+                      fill="#3688EB"
+                      opacity="0.9"
+                    />
+                  </svg>
+                  <div
+                    class="c18"
+                    color="text"
+                    font-size="14px"
+                  >
+                    Trust Wallet
+                  </div>
+                </button>
+              </div>
+              <button
+                class="c15 c16"
+                scale="md"
+                width="100%"
+              >
+                <svg
+                  class="c19"
+                  color="textSubtle"
+                  viewBox="0 0 24 24"
+                  width="40px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6 10C4.9 10 4 10.9 4 12C4 13.1 4.9 14 6 14C7.1 14 8 13.1 8 12C8 10.9 7.1 10 6 10ZM18 10C16.9 10 16 10.9 16 12C16 13.1 16.9 14 18 14C19.1 14 20 13.1 20 12C20 10.9 19.1 10 18 10ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z"
                   />
-                  <stop
-                    offset="0.129"
-                    stop-color="#f6df65"
-                  />
-                  <stop
-                    offset="0.709"
-                    stop-color="#d8b14e"
-                  />
-                  <stop
-                    offset="1"
-                    stop-color="#cc9f45"
-                  />
-                </lineargradient>
-              </defs>
-              <title>
-                Wallet
-              </title>
-              <rect
-                fill="url(#prefix__a)"
-                height="1000"
-                rx="182.477"
-                width="1000"
-              />
-              <path
-                d="M470.273 616.333a133.712 133.712 0 01-133.635 133.835c-73.577 0-133.838-59.857-133.838-133.835h64.237c0 38.381 31.218 69.8 69.6 69.8s69.6-31.42 69.6-69.8zm22.668-210.2c0 86.107-70.2 156.107-156.3 156.107-86.307 0-156.307-70-156.307-156.107s70-156.3 156.307-156.3c86.101-.001 156.3 70.198 156.3 156.304zm-64.033 0a92.272 92.272 0 00-184.544 0c0 50.71 41.564 92.272 92.274 92.272a92.467 92.467 0 0092.27-92.268zm-81.535-26.448v-23.264H325.9v23.268a31.9 31.9 0 00-21.678 30.226 32.315 32.315 0 1064.63 0 31.719 31.719 0 00-21.479-30.226zm472.3 214.372c0 86.107-70 156.107-156.1 156.107s-156.507-70-156.507-156.107c0-86.5 70.4-156.5 156.507-156.5s156.096 70 156.096 156.504zm-63.834 0a92.27 92.27 0 10-184.539 0c0 50.71 41.36 91.874 92.27 91.874s92.265-41.16 92.265-91.87zM663.57 562.24a32.548 32.548 0 00-32.417 32.414 31.709 31.709 0 0021.677 30.425v23.466h21.479v-23.462a32.05 32.05 0 0021.474-30.425 32.506 32.506 0 00-32.217-32.414zm0-312.412c-73.777 0-133.834 59.857-133.834 133.635a132.935 132.935 0 0016.5 64.033 177.809 177.809 0 0156.081-31.022 68.405 68.405 0 01-8.351-33.011 69.6 69.6 0 01139.2 0 70.726 70.726 0 01-8.355 33.011 177.761 177.761 0 0156.08 31.022 132.7 132.7 0 0016.309-64.029c0-73.778-60.057-133.635-133.634-133.635z"
-                fill="url(#prefix__b)"
-              />
-            </svg>
-          </button>
-          <a
-            class="c16 c17 c18"
-            color="primary"
-            href="https://docs.pancakeswap.finance/get-started/connection-guide"
-            rel="noreferrer noopener"
-            target="_blank"
+                </svg>
+                <div
+                  class="c18"
+                  color="text"
+                  font-size="14px"
+                >
+                  More
+                </div>
+              </button>
+            </div>
+          </div>
+          <div
+            class="c20"
           >
-            <svg
-              class="c19"
-              color="primary"
-              viewBox="0 0 24 24"
-              width="20px"
-              xmlns="http://www.w3.org/2000/svg"
+            <p
+              class="c21"
+              color="textSubtle"
             >
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM11 16H13V18H11V16ZM12.61 6.04C10.55 5.74 8.73 7.01 8.18 8.83C8 9.41 8.44 10 9.05 10H9.25C9.66 10 9.99 9.71 10.13 9.33C10.45 8.44 11.4 7.83 12.43 8.05C13.38 8.25 14.08 9.18 14 10.15C13.9 11.49 12.38 11.78 11.55 13.03C11.55 13.04 11.54 13.04 11.54 13.05C11.53 13.07 11.52 13.08 11.51 13.1C11.42 13.25 11.33 13.42 11.26 13.6C11.25 13.63 11.23 13.65 11.22 13.68C11.21 13.7 11.21 13.72 11.2 13.75C11.08 14.09 11 14.5 11 15H13C13 14.58 13.11 14.23 13.28 13.93C13.3 13.9 13.31 13.87 13.33 13.84C13.41 13.7 13.51 13.57 13.61 13.45C13.62 13.44 13.63 13.42 13.64 13.41C13.74 13.29 13.85 13.18 13.97 13.07C14.93 12.16 16.23 11.42 15.96 9.51C15.72 7.77 14.35 6.3 12.61 6.04Z"
-              />
-            </svg>
-            Learn how to connect
-          </a>
+              Haven't got a crypto wallet yet?
+            </p>
+            <a
+              class="c22"
+              href="https://docs.pancakeswap.finance/get-started/connection-guide"
+              rel="noreferrer noopener"
+              scale="md"
+              target="_blank"
+              width="100%"
+            >
+              Learn How to Connect
+            </a>
+          </div>
         </div>
       </div>
     </DocumentFragment>
