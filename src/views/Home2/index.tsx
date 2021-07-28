@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   return (
     <>
       <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
+        innerProps={{ style: { margin: '0', width: '100%' } }}
         background={
           theme.isDark
             ? 'radial-gradient(103.12% 50% at 50% 50%, #21193A 0%, #191326 100%)'
