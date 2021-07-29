@@ -10,9 +10,9 @@ import {
 } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
 import { useProfile } from 'state/profile/hooks'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
-import UnlockButton from 'components/UnlockButton'
 import WalletModal, { WalletView, LOW_BNB_BALANCE } from './WalletModal'
 import ProfileUserMenuItem from './ProfileUserMenutItem'
 import WalletUserMenuItem from './WalletUserMenuItem'
@@ -30,7 +30,7 @@ const UserMenu = () => {
   const hasLowBnbBalance = !isFetching && balance.lte(LOW_BNB_BALANCE)
 
   if (!account) {
-    return <UnlockButton scale="sm" />
+    return <ConnectWalletButton scale="sm" />
   }
 
   return (
