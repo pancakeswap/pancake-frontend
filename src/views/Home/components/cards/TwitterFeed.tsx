@@ -17,6 +17,9 @@ const CardWrapper = styled.div`
    background-color: ${variables.primary};
    padding: 24px;
    border-radius: ${variables.radius};
+   .feed{
+       text-align: center;
+   }
 `
 
 const FarmsStackingCards: React.FC = () => {

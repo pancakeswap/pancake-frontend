@@ -9,12 +9,17 @@ import HighestAPR from './components/cards/HighestAPR'
 import AcrossPoolsFarms from './components/cards/AcrossPoolsFarms'
 
 const CardsContainer = styled.div`{
-  display: grid;
-  grid-template-columns: repeat( 2, minmax(210px, 1fr) );
-  grid-column-gap: 50px;
-  grid-row-gap: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-top: 50px;
-  padding: 10px 80px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  > div {
+    max-width: 430px;
+    width: 100%;
+    margin: 15px 30px;
+  }
 }`
 const Home: React.FC = () => {
   const { t } = useTranslation()
@@ -29,6 +34,7 @@ const Home: React.FC = () => {
           <FarmsStackingCards />
           <TwitterFeed />
           <HighestAPR />
+          <AcrossPoolsFarms />
         </CardsContainer>
       </Page>
     </>
