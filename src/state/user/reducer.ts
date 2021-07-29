@@ -15,6 +15,8 @@ import {
   muteAudio,
   unmuteAudio,
   toggleTheme,
+  updateUserFarmStakedOnly,
+  FarmStakedOnly,
 } from './actions'
 
 const currentTimestamp = () => new Date().getTime()
@@ -50,6 +52,7 @@ export interface UserState {
   timestamp: number
   audioPlay: boolean
   isDark: boolean
+  userFarmStakedOnly: FarmStakedOnly
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -66,6 +69,7 @@ export const initialState: UserState = {
   timestamp: currentTimestamp(),
   audioPlay: true,
   isDark: false,
+  userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
 }
 
 export default createReducer(initialState, (builder) =>
@@ -143,5 +147,8 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(toggleTheme, (state) => {
       state.isDark = !state.isDark
+    })
+    .addCase(updateUserFarmStakedOnly, (state, { payload: { userFarmStakedOnly } }) => {
+      state.userFarmStakedOnly = userFarmStakedOnly
     }),
 )
