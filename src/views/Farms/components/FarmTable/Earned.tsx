@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Skeleton } from '@pancakeswap/uikit'
+import { Skeleton } from '@ricefarm/uikitv2'
 
 export interface EarnedProps {
   earnings: number

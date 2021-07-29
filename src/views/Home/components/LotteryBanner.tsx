@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Button, ArrowForwardIcon, Skeleton } from '@pancakeswap/uikit'
+import { Text, Flex, Button, ArrowForwardIcon, Skeleton } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import { NavLink } from 'react-router-dom'

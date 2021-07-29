@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@pancakeswap/uikit'
+import { Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@ricefarm/uikitv2'
 import ApyCalculatorModal from 'components/ApyCalculatorModal'
 import Balance from 'components/Balance'
 import { Pool } from 'state/types'

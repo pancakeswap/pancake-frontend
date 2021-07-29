@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
-import { Box, Flex, FlexProps, Text } from '@pancakeswap/uikit'
+import { Box, Flex, FlexProps, Text } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition, NodeRound, Round } from 'state/types'
 import { formatUsdv2, formatBnbv2 } from '../../helpers'

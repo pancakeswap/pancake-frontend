@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, CardBody, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, CardBody, Flex, Text, useMatchBreakpoints } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'

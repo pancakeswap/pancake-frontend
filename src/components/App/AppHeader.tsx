@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Heading, IconButton, ArrowBackIcon } from '@pancakeswap/uikit'
+import { Text, Flex, Heading, IconButton, ArrowBackIcon } from '@ricefarm/uikitv2'
 import { Link } from 'react-router-dom'
 import Settings from './Settings'
 import Transactions from './Transactions'

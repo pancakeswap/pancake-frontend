@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, ArrowForwardIcon, Link, Button, Text, Skeleton, Flex } from '@pancakeswap/uikit'
+import { Card, CardBody, ArrowForwardIcon, Link, Button, Text, Skeleton, Flex } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import { getTotalWon } from 'state/predictions/helpers'
 import { usePriceBnbBusd } from 'state/farms/hooks'

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@pancakeswap/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@ricefarm/uikitv2'
 import { ChainId } from '@pancakeswap/sdk'
 import max from 'lodash/max'
 import { NavLink } from 'react-router-dom'

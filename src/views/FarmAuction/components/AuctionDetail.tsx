@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@pancakeswap/uikit'
+import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 
 const LeftCard = styled(Card)`

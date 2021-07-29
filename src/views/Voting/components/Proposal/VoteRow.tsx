@@ -1,6 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { Flex, LinkExternal, Text, Tag, CheckmarkCircleIcon } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Text, Tag, CheckmarkCircleIcon } from '@ricefarm/uikitv2'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Button } from '@pancakeswap/uikit'
+import { Heading, Card, CardBody, Button } from '@ricefarm/uikitv2'
 import { harvestFarm } from 'utils/calls'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'

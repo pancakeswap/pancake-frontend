@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton, Text } from '@pancakeswap/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton, Text } from '@ricefarm/uikitv2'
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'

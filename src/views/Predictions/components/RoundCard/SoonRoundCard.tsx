@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardBody, Text, WaitIcon } from '@pancakeswap/uikit'
+import { CardBody, Text, WaitIcon } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
 import { useGetCurrentEpoch, useGetTotalIntervalBlocks } from 'state/hooks'
