@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Flex, Text } from '@pancakeswap/uikit'
+import { Heading, Flex, Text } from '@ricefarm/uikitv2'
 
 const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlightColor: string }> = ({
   headingText,

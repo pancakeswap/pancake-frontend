@@ -1,5 +1,5 @@
 import React from 'react'
-import { TagProps } from '@pancakeswap/uikit'
+import { TagProps } from '@ricefarm/uikitv2'
 import { ClosedTag, CommunityTag, CoreTag, SoonTag, VoteNowTag } from 'components/Tags'
 import { ProposalState } from 'state/types'
 

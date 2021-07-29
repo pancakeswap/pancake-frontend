@@ -1,5 +1,5 @@
 import React from 'react'
-import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text } from '@ricefarm/uikitv2'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'

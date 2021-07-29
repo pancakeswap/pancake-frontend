@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, CardFooter, ExpandableLabel } from '@pancakeswap/uikit'
+import { Text, Flex, Box, CardFooter, ExpandableLabel } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import { FarmSchedule } from './AuctionSchedule'

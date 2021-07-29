@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Skeleton } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton } from '@ricefarm/uikitv2'
 import styled from 'styled-components'
 import times from 'lodash/times'
 import { PROPOSALS_TO_SHOW } from '../../config'

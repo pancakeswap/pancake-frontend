@@ -15,7 +15,7 @@ import {
   BlockIcon,
   VisibilityOn,
   VisibilityOff,
-} from '@pancakeswap/uikit'
+} from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import { useProfile } from 'state/profile/hooks'
 import usePersistState from 'hooks/usePersistState'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, TextProps } from '@pancakeswap/uikit'
+import { Heading, TextProps } from '@ricefarm/uikitv2'
 import useTheme from 'hooks/useTheme'
 
 interface HeadingProps extends TextProps {
