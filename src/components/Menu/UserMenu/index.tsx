@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import {
   Flex,
@@ -18,26 +18,16 @@ import ProfileUserMenuItem from './ProfileUserMenutItem'
 import WalletUserMenuItem from './WalletUserMenuItem'
 
 const UserMenu = () => {
-  const [initialView, setInitialView] = useState(WalletView.WALLET_INFO)
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { logout } = useAuth()
-  const { balance } = useGetBnbBalance()
+  const { balance, isFetching } = useGetBnbBalance()
   const { isInitialized, isLoading, profile } = useProfile()
-  const [onPresentWalletModal] = useModal(<WalletModal initialView={initialView} />, true, true, 'wallet_modal')
+  const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
+  const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const hasProfile = isInitialized && !!profile
   const avatarSrc = profile ? `/images/nfts/${profile.nft.images.sm}` : undefined
-  const hasLowBnbBalance = balance.lte(LOW_BNB_BALANCE)
-
-  const handlePresentWalletModalWallet = () => {
-    setInitialView(WalletView.WALLET_INFO)
-    onPresentWalletModal()
-  }
-
-  const handlePresentWalletModalTransactions = () => {
-    setInitialView(WalletView.TRANSACTIONS)
-    onPresentWalletModal()
-  }
+  const hasLowBnbBalance = !isFetching && balance.lte(LOW_BNB_BALANCE)
 
   if (!account) {
     return <UnlockButton scale="sm" />
@@ -45,8 +35,8 @@ const UserMenu = () => {
 
   return (
     <UIKitUserMenu account={account} avatarSrc={avatarSrc}>
-      <WalletUserMenuItem hasLowBnbBalance={hasLowBnbBalance} onPresentWalletModal={handlePresentWalletModalWallet} />
-      <UserMenuItem as="button" onClick={handlePresentWalletModalTransactions}>
+      <WalletUserMenuItem hasLowBnbBalance={hasLowBnbBalance} onPresentWalletModal={onPresentWalletModal} />
+      <UserMenuItem as="button" onClick={onPresentTransactionModal}>
         {t('Transactions')}
       </UserMenuItem>
       <UserMenuDivider />

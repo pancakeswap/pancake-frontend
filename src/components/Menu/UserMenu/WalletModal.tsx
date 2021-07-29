@@ -42,8 +42,8 @@ const Tabs = styled.div`
 const WalletModal: React.FC<WalletModalProps> = ({ initialView = WalletView.WALLET_INFO, onDismiss }) => {
   const [view, setView] = useState(initialView)
   const { t } = useTranslation()
-  const { balance } = useGetBnbBalance()
-  const hasLowBnbBalance = balance.lte(LOW_BNB_BALANCE)
+  const { balance, isFetching } = useGetBnbBalance()
+  const hasLowBnbBalance = !isFetching && balance.lte(LOW_BNB_BALANCE)
 
   const handleClick = (newIndex: number) => {
     setView(newIndex)
