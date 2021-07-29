@@ -1248,5 +1248,16 @@
   "%trades% trades": "%trades% trades",
   "Provably fair, on-chain games.": "Provably fair, on-chain games.",
   "made in the last 30 days": "made in the last 30 days",
-  "Win big with PancakeSwap.": "Win big with PancakeSwap."
+  "Win big with PancakeSwap.": "Win big with PancakeSwap.",
+  "Copied": "Copied",
+  "Make a Profile": "Make a Profile",
+  "Your Address": "Your Address",
+  "Your Wallet": "Your Wallet",
+  "Transactions": "Transactions",
+  "BNB Balance Low": "BNB Balance Low",
+  "BNB Balance": "BNB Balance",
+  "CAKE Balance": "CAKE Balance",
+  "You need BNB for transaction fees.": "You need BNB for transaction fees.",
+  "Disconnect": "Disconnect",
+  "Disconnect Wallet": "Disconnect Wallet"
 }
