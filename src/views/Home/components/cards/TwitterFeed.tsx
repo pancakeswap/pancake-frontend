@@ -22,7 +22,7 @@ const CardWrapper = styled.div`
    }
 `
 
-const FarmsStackingCards: React.FC = () => {
+const TwitterFeed: React.FC = () => {
     const { t } = useTranslation()
     return(
         <CardWrapper>
@@ -39,4 +39,4 @@ const FarmsStackingCards: React.FC = () => {
     )
 }
 
-export default FarmsStackingCards;
+export default TwitterFeed;
