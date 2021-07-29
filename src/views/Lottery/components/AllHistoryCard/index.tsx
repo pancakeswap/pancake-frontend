@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { Card, Text, Skeleton, CardHeader, Box } from '@pancakeswap/uikit'
+import { Card, Text, Skeleton, CardHeader, Box } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import { useLottery } from 'state/lottery/hooks'
 import { fetchLottery } from 'state/lottery/helpers'

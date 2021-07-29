@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowForwardIcon, Box, IconButton, Flex, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, IconButton, Flex, Text } from '@ricefarm/uikitv2'
 import styled from 'styled-components'
 import { Proposal } from 'state/types'
 import { isCoreProposal } from '../../helpers'

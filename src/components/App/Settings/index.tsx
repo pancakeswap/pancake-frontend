@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, TuneIcon, NotificationDot, useModal } from '@pancakeswap/uikit'
+import { Button, TuneIcon, NotificationDot, useModal } from '@ricefarm/uikitv2'
 import { useExpertModeManager } from 'state/user/hooks'
 import SettingsModal from './SettingsModal'
 

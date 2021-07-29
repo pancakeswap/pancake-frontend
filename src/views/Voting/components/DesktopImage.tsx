@@ -1,4 +1,4 @@
-import { Image } from '@pancakeswap/uikit'
+import { Image } from '@ricefarm/uikitv2'
 import styled from 'styled-components'
 
 const DesktopImage = styled(Image)`

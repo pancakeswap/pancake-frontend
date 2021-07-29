@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonProps, useModal } from '@pancakeswap/uikit'
+import { Button, ButtonProps, useModal } from '@ricefarm/uikitv2'
 import CollectRoundWinningsModal from './CollectRoundWinningsModal'
 
 interface CollectWinningsButtonProps extends ButtonProps {

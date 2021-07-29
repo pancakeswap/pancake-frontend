@@ -15,7 +15,7 @@ import {
   Box,
   LinkExternal,
   ModalCloseButton,
-} from '@pancakeswap/uikit'
+} from '@ricefarm/uikitv2'
 import { useWeb3React } from '@web3-react/core'
 import { getBscScanLink } from 'utils'
 import { useAppDispatch } from 'state'

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading } from '@pancakeswap/uikit'
+import { Heading } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import NftList from './components/NftList'

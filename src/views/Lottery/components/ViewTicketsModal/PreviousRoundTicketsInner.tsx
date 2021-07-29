@@ -11,7 +11,7 @@ import {
   InfoIcon,
   useTooltip,
   useModal,
-} from '@pancakeswap/uikit'
+} from '@ricefarm/uikitv2'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'

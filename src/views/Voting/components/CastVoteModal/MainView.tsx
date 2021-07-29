@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconButton, Text, Skeleton, Button, AutoRenewIcon, ChevronRightIcon } from '@pancakeswap/uikit'
+import { IconButton, Text, Skeleton, Button, AutoRenewIcon, ChevronRightIcon } from '@ricefarm/uikitv2'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import TextEllipsis from '../TextEllipsis'

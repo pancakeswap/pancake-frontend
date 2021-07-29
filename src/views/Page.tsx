@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex } from '@ricefarm/uikitv2'
 import Footer from 'components/Menu/Footer'
 import SubNav from 'components/Menu/SubNav'
 

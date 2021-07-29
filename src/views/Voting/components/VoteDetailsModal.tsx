@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Flex, InjectedModalProps, Modal, Button, Spinner } from '@pancakeswap/uikit'
+import { Box, Flex, InjectedModalProps, Modal, Button, Spinner } from '@ricefarm/uikitv2'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import useGetVotingPower from '../hooks/useGetVotingPower'

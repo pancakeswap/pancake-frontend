@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Text } from '@pancakeswap/uikit'
+import { Heading, Text } from '@ricefarm/uikitv2'
 import { NormalComponents, SpecialComponents } from 'react-markdown/src/ast-to-react'
 import styled from 'styled-components'
 

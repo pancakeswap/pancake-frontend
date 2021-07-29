@@ -12,7 +12,7 @@ import {
   BlockIcon,
   Button,
   useModal,
-} from '@pancakeswap/uikit'
+} from '@ricefarm/uikitv2'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { LIVE } from 'config/constants/trading-competition/easterPhases'
