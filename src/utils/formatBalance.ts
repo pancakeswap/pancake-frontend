@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
+import { getLanguageCodeFromLS } from 'contexts/Localization/helpers'
 import { BIG_TEN } from './bigNumber'
 
 /**
@@ -60,3 +61,14 @@ export const formatFixedNumber = (number: ethers.FixedNumber, displayDecimals = 
   const [leftSide] = number.toString().split('.')
   return formatBigNumber(ethers.BigNumber.from(leftSide), displayDecimals, decimals)
 }
+
+export const formatLocalisedCompactNumber = (number: number): string => {
+  const codeFromStorage = getLanguageCodeFromLS()
+  return new Intl.NumberFormat(codeFromStorage, {
+    notation: 'compact',
+    compactDisplay: 'long',
+    maximumSignificantDigits: 2,
+  }).format(number)
+}
+
+export default formatLocalisedCompactNumber
