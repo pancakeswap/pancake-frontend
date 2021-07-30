@@ -73,6 +73,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  skill: {
+    symbol: 'SKILL',
+    address: {
+      56: '0x154A9F9cbd3449AD22FDaE23044319D6eF2a1Fab',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.cryptoblades.io/',
+  },
   if: {
     symbol: 'IF',
     address: {
