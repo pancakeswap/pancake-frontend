@@ -19,8 +19,9 @@ import {
   getEasterNftContract,
   getErc721Contract,
   getCakeVaultContract,
-  getPredictionsContract, getZombieContract, getDrFrankensteinContract, getMausoleumContract,
+  getPredictionsContract, getZombieContract, getDrFrankensteinContract, getMausoleumContract, getSpawningPoolContract,
 } from 'utils/contractHelpers'
+import { MultiCall } from '@indexed-finance/multicall'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
@@ -97,6 +98,16 @@ export const useMasterchef = () => {
 export const useDrFrankenstein = () => {
   const web3 = useWeb3()
   return useMemo(() => getDrFrankensteinContract(web3), [web3])
+}
+
+export const useSpawningPool = (id: number) => {
+  const web3 = useWeb3()
+  return useMemo(() => getSpawningPoolContract(id, web3), [id, web3])
+}
+
+export const useMultiCall = () => {
+  const web3 = useWeb3()
+  return useMemo(() => new MultiCall(web3), [web3])
 }
 
 export const useSousChef = (id) => {

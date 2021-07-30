@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react'
 import PageHeader from 'components/PageHeader'
-import { Heading } from '@rug-zombie-libs/uikit'
+import { Flex, Heading } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getDrFrankensteinAddress } from 'utils/addressHelpers'
 import Page from '../../components/layout/Page'
@@ -48,15 +48,20 @@ const Graves: React.FC = () => {
     }
 
   return (
-    <Page className='innnerContainer'>
-      <PageHeader background='none'>
-        <Heading color='secondary' mb='24px'>
-          Graves
-        </Heading>
-        <Heading color='text'>
-          Stake $ZMBE to Earn NFTs
-        </Heading>
-      </PageHeader>
+    <>
+    <PageHeader background="#101820">
+      <Flex justifyContent='space-between' flexDirection={['column', null, 'row']}>
+        <Flex flexDirection='column' mr={['8px', 0]}>
+          <Heading as='h1' size='xxl' color='secondary' mb='24px'>
+            Graves
+          </Heading>
+          <Heading size='md' color='text'>
+            Stake $ZMBE to Earn NFTs
+          </Heading>
+        </Flex>
+      </Flex>
+    </PageHeader>
+    <Page >
       <div>
         {graves().map((g) => {
           return <Table zombieUsdPrice={zombiePriceUsd()}
@@ -65,6 +70,7 @@ const Graves: React.FC = () => {
         })}
       </div>
     </Page>
+    </>
   )
 }
 

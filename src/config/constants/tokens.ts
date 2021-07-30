@@ -16,7 +16,7 @@ const tokens = {
     symbol: 'ZMBE',
     address: {
       56: '0x50ba8BF9E34f0F83F96a340387d1d3888BA4B3b5',
-      97: '0x85537ef782bab72e65704aa59e5C71131561D422',
+      97: '0x2eC0Ab80Ce0Cb3758964Fd18189bC5AC61A830A5',
     },
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
@@ -47,6 +47,15 @@ const tokens = {
     },
     decimals: 18,
     projectLink: ''
+  },
+  gfi: {
+    symbol: 'G-Fi',
+    address: {
+      56: '0xc82C80E03E491B252Cae745575ea2d1c2fDDe25A',
+      97: '0xc82C80E03E491B252Cae745575ea2d1c2fDDe25A',
+    },
+    decimals: 8,
+    projectLink: 'https://www.gorillafi.com/'
   },
   merl: {
     symbol: 'MERL',

@@ -40,7 +40,7 @@ const PrizeTab = () => {
                 <div className='direction-column imageColumn'>
                   <div className='sc-iwajpm dcRUtg'>
                     {type === 'image' ? (
-                      <img src='/images/rugZombie/Patient Zero.jpg' alt='CAKE' className='sc-cxNHIi bjMxQn' />
+                      <img src='/images/rugZombie/Patient Zero.jpg' alt='PRIZE' className='sc-cxNHIi bjMxQn' />
                     ) : (
                       <video width='100%' autoPlay>
                         <source src='' type='video/mp4' />

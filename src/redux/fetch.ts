@@ -1,11 +1,14 @@
 import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
+import { MultiCall } from '@indexed-finance/multicall'
+import Web3 from 'web3'
 import {
   getBep20Contract,
   getDrFrankensteinContract, getErc721Contract,
-  getPancakePair,
+  getPancakePair, getSpawningPoolContract,
   getZombieContract,
 } from '../utils/contractHelpers'
+
 import store from './store'
 import {
   updateZombieAllowance,
@@ -16,13 +19,15 @@ import {
   updateBnbPriceUsd,
   updateDrFrankensteinZombieBalance,
   updateTomb,
-  updateGravePoolInfo, updateGraveUserInfo, updateNftTotalSupply,
+  updateGravePoolInfo, updateGraveUserInfo, updateNftTotalSupply, updateSpawningPoolInfo, updateSpawningPoolUserInfo,
 } from './actions'
-import { getAddress, getDrFrankensteinAddress } from '../utils/addressHelpers'
+import { getAddress, getDrFrankensteinAddress, getSpawningPoolAddress, getZombieAddress } from '../utils/addressHelpers'
 import tombs from './tombs'
 import * as get from './get'
-import graves from './graves'
+import spawningPoolAbi from '../config/abi/spawningPool.json'
 import { BIG_ZERO } from '../utils/bigNumber'
+import { account, spawningPools } from './get'
+import { useMultiCall } from '../hooks/useContract'
 
 // eslint-disable-next-line import/prefer-default-export
 export const initialData = (accountAddress: string) => {
@@ -168,6 +173,75 @@ export const initialGraveData = (setUserState?, setPoolState?) => {
   get.graves().forEach(g => {
     grave(g.pid, setUserState, setPoolState)
   })
+}
+
+export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: any, setUserData?: any) => {
+  const address = getSpawningPoolAddress(id)
+  let inputs = [
+    { target: address, function: 'rewardPerBlock', args: [] },
+    { target: address, function: 'unlockFeeInBnb', args: [] },
+    { target: address, function: 'minimumStake', args: [] },
+    { target: address, function: 'minimumStakingTime', args: [] },
+    { target: address, function: 'nftRevivalTime', args: [] },
+  ]
+  multi.multiCall(spawningPoolAbi, inputs)
+    .then(poolInfoRes => {
+      const res = poolInfoRes[1]
+      zombie.methods.balanceOf(getSpawningPoolAddress(id)).call()
+        .then(balanceRes => {
+          store.dispatch(updateSpawningPoolInfo(
+            id,
+            {
+              rewardPerBlock: new BigNumber(res[0].toString()),
+              unlockFee: new BigNumber(res[1].toString()),
+              minimumStake: new BigNumber(res[2].toString()),
+              totalZombieStaked: new BigNumber(balanceRes.toString()),
+              withdrawCooldown: res[4],
+              nftRevivalTime: res[5],
+            },
+          ))
+          if(setPoolData) {
+            setPoolData(get.spawningPool(id).poolInfo)
+          }
+        })
+    })
+    .catch((res) => {
+      console.log('multicall failed')
+    })
+  if(account()) {
+    inputs = [
+      { target: address, function: 'userInfo', args: [account()] },
+      { target: address, function: 'pendingReward', args: [account()] },
+    ]
+
+    multi.multiCall(spawningPoolAbi, inputs)
+      .then(userInfoRes => {
+        const res = userInfoRes[1]
+        getZombieContract().methods.allowance(get.account(), address).call()
+          .then(balanceRes => {
+            store.dispatch(updateSpawningPoolUserInfo(
+              id,
+              {
+                paidUnlockFee: res[0].paidUnlockFee,
+                tokenWithdrawalDate: res[0].tokenWithdrawalDate.toNumber(),
+                nftRevivalDate: res[0].nftRevivalDate.toNumber(),
+                amount: new BigNumber(res[0].amount.toString()),
+                pendingReward: new BigNumber(res[1].toString()),
+                zombieAllowance: new BigNumber(balanceRes.toString())
+              }
+            ))
+            if(setUserData) {
+              setUserData(get.spawningPool(id))
+            }
+          })
+          .catch((err) => {
+            console.log('allowance failed')
+          })
+      })
+      .catch(() => {
+        console.count('userinfo multicall failed')
+      })
+  }
 }
 
 const zombiePriceBnb = () => {

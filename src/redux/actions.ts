@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js'
 import * as actions from './actionTypes'
-import { PoolInfo, UserInfo } from './types'
+import { PoolInfo, SpawningPoolInfo, SpawningUserInfo, UserInfo } from './types'
 
 export const updateAccount = (account: string) => ({
   type: actions.UPDATE_ACCOUNT,
@@ -40,14 +40,14 @@ export const updateZombieBalance = (balance: BigNumber) => ({
 export const updateZombiePriceBnb = (zombiePriceBnb: BigNumber) => ({
   type: actions.UPDATE_ZOMBIE_PRICE_BNB,
   payload: {
-    zombiePriceBnb
+    zombiePriceBnb,
   },
 })
 
 export const updateBnbPriceUsd = (bnbPriceUsd: number) => ({
   type: actions.UPDATE_BNB_PRICE_USD,
   payload: {
-    bnbPriceUsd
+    bnbPriceUsd,
   },
 })
 
@@ -55,23 +55,25 @@ export const updateTomb = (pid: number, tombResult) => ({ // todo add tomb resul
   type: actions.UPDATE_TOMB,
   payload: {
     pid,
-    tombResult
+    tombResult,
   },
 })
 
 export const updateGravePoolInfo = (pid: number, poolInfo: PoolInfo) => {
-  return {type: actions.UPDATE_GRAVE_POOL_INFO,
-  payload: {
-    pid,
-    poolInfo
-  },}
+  return {
+    type: actions.UPDATE_GRAVE_POOL_INFO,
+    payload: {
+      pid,
+      poolInfo,
+    },
+  }
 }
 
 export const updateGraveUserInfo = (pid: number, userInfo: UserInfo) => ({
   type: actions.UPDATE_GRAVE_USER_INFO,
   payload: {
     pid,
-    userInfo
+    userInfo,
   },
 })
 
@@ -79,6 +81,22 @@ export const updateNftTotalSupply = (id: number, totalSupply: BigNumber) => ({
   type: actions.UPDATE_NFT_TOTAL_SUPPLY,
   payload: {
     id,
-    totalSupply
+    totalSupply,
+  },
+})
+
+export const updateSpawningPoolInfo = (id: number, poolInfo: SpawningPoolInfo) => ({
+  type: actions.UPDATE_SPAWNING_POOL_INFO,
+  payload: {
+    id,
+    poolInfo,
+  },
+})
+
+export const updateSpawningPoolUserInfo = (id: number, userInfo: SpawningUserInfo) => ({
+  type: actions.UPDATE_SPAWNING_POOL_USER_INFO,
+  payload: {
+    id,
+    userInfo,
   },
 })

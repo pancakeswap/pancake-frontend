@@ -20,7 +20,7 @@ import {
   getTradingCompetitionAddress,
   getEasterNftAddress,
   getCakeVaultAddress,
-  getPredictionsAddress, getZombieAddress, getDrFrankensteinAddress, getMausoleumAddress,
+  getPredictionsAddress, getZombieAddress, getDrFrankensteinAddress, getMausoleumAddress, getSpawningPoolAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -48,6 +48,7 @@ import predictionsAbi from 'config/abi/predictions.json'
 import pancakePairAbi from 'config/abi/pancakePairAbi.json'
 import drFrankensteinAbi from 'config/abi/drFrankenstein.json'
 import mausoleumAbi from 'config/abi/mausoleum.json'
+import spawningPoolAbi from 'config/abi/spawningPool.json'
 
 export const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? web3NoAccount
@@ -114,6 +115,9 @@ export const getDrFrankensteinContract = (web3?: Web3) => {
 }
 export const getMausoleumContract = (web3?: Web3) => {
   return getContract(mausoleumAbi, getMausoleumAddress(), web3)
+}
+export const getSpawningPoolContract = (id: number, web3?: Web3) => {
+  return getContract(spawningPoolAbi, getSpawningPoolAddress(id), web3)
 }
 export const getClaimRefundContract = (web3?: Web3) => {
   return getContract(claimRefundAbi, getClaimRefundAddress(), web3)

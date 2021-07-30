@@ -1,6 +1,7 @@
 import { BigNumber } from 'bignumber.js'
+import axios from 'axios'
 import store from './store'
-import { Grave, PoolInfo, UserInfo } from './types'
+import { Grave, PoolInfo, SpawningPool, UserInfo } from './types'
 import { BIG_ZERO } from '../utils/bigNumber'
 import { getBalanceAmount } from '../utils/formatBalance'
 
@@ -36,6 +37,10 @@ export const tombByPid = (pid: number): any => {
   return store.getState().tombs.find(t => t.pid === pid)
 }
 
+export const coingeckoPrice = (id: string) => {
+  return axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`)
+}
+
 export const zmbeBnbTomb = (): any => {
   return store.getState().tombs[0]
 }
@@ -50,6 +55,14 @@ export const graves = (): Grave[] => {
 
 export const graveUserInfo = (pid: number): UserInfo => {
   return store.getState().graves[pid].userInfo
+}
+
+export const spawningPools = (): SpawningPool[] => {
+  return store.getState().spawningPools
+}
+
+export const spawningPool = (id: number): SpawningPool => {
+  return store.getState().spawningPools.find(p => p.id === id)
 }
 
 export const grave = (pid: number): Grave => {

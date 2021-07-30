@@ -21,16 +21,11 @@ const config: MenuEntry[] = [
     icon: 'PredictionsIcon',
     href: '/mausoleum',
   },
-  {
-    label: 'Spawning Pools',
-    icon: 'PoolIcon',
-    items: [
-      {
-        label: 'Coming This Week!',
-        href: 'https://rugzombie.medium.com/first-spawn-gorilla-fi-g-fi-f16a234047f7',
-      },
-    ],
-  },
+  // {
+  //   label: 'Spawning Pools',
+  //   icon: 'PoolIcon',
+  //   href: '/spawning_pools'
+  // },
   {
     label: 'Graveyard',
     icon: 'NftIcon',

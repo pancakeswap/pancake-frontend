@@ -20,6 +20,7 @@ import GlobalStyle from './style/Global'
 import Graves from './views/Graves'
 import * as fetch from './redux/fetch'
 import Predictions from './views/Predictions'
+import SpawningPools from './views/SpawningPools'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Landing = lazy(() => import('./components/Landing'));
@@ -69,6 +70,7 @@ const App: React.FC = () => {
             <Route exact path={routes.HOME}><Home/></Route>
             <Route exact path={routes.GRAVES}><Graves/></Route>
             <Route exact path={routes.TOMBS}><Tombs/></Route>
+            <Route exact path={routes.SPAWNING_POOLS}><SpawningPools/></Route>
             <Route exact path={routes.MAUSOLEUM}><Predictions/></Route>
           </Menu>
         </Switch>

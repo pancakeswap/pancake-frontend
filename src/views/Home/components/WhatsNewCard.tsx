@@ -33,13 +33,13 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. Enter the mausoleum (Desktop only, mobile version is development).</Text>
+            <Text fontSize='14px'>1. Spawning Pools arrive today!</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>2. Burger Swap and RUGBIDEN Graves are out!</Text>
+            <Text fontSize='14px'>2. First auction was a huge success, thanks for participating & congrats to the winner.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>3. Spawning Pools are still coming.</Text>
+            <Text fontSize='14px'>3. Burger Swap and RUGBIDEN Graves are out!</Text>
           </Row>
           <Row>
             <Text fontSize='14px'>4. Releasing referral program along with some bigger news (1-2 weeks).</Text>

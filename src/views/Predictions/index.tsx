@@ -27,7 +27,6 @@ const Predictions = () => {
   const { account } = useWeb3React()
   const web3 = useWeb3()
 
-
   initialData(account)
 
   const aid = auctions[0].aid

@@ -114,16 +114,16 @@ const NFTBanner: React.FC = () => {
     <Wrapper style={{width: "100%"}}>
       <Inner style={{width: "100%"}}>
         <LeftWrapper width="100%">
-          <NowLive>{t('Mausoleum Is Live')}</NowLive>
+          <NowLive>{t('Mausoleum has Ended')}</NowLive>
           { isDesktop ? <Flex>
             <Over fontSize='40px' bold mr='8px' style={{ whiteSpace: 'nowrap' }}>
-              {t('Earn a')}
+              {t('The First')}
             </Over>
             <Over fontSize='40px' color='primary' bold mr='8px' style={{ whiteSpace: 'nowrap' }}>
               One of a Kind
             </Over>
             <Over fontSize='40px' bold mr='8px'>
-              NFT in our first Auction
+              NFT was minted in the Mausoleum
             </Over>
           </Flex> :
             <>
@@ -141,7 +141,7 @@ const NFTBanner: React.FC = () => {
           <NavLink exact activeClassName='active' to='/mausoleum' id='lottery-pot-banner' style={{paddingTop: "8px"}}>
             <Button>
               <Text color='white' bold fontSize='16px' mr='4px'>
-                {t('Enter the Mausoleum')}
+                {t('Remember to withdraw your bids')}
               </Text>
               <ArrowForwardIcon color='white' />
             </Button>

@@ -3,12 +3,14 @@ import * as types from './actionTypes'
 import tombs from './tombs'
 import graves from './graves'
 import nfts from './nfts'
+import spawningPools from './spawningPools'
 
 const defaultState = {
   account: '',
   tombs,
   graves,
   nfts,
+  spawningPools,
   bnbPriceUsd: 0,
   zombie: {
     allowance: BIG_ZERO,
@@ -67,6 +69,16 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         graves: state.graves.map(grave => grave.pid === action.payload.pid ? { ...grave, userInfo: { ...grave.userInfo, ...action.payload.userInfo } } : grave),
+      }
+    case types.UPDATE_SPAWNING_POOL_INFO:
+      return {
+        ...state,
+        spawningPools: state.spawningPools.map(spawningPool => spawningPool.id === action.payload.id ? { ...spawningPool, poolInfo: { ...spawningPool.poolInfo, ...action.payload.poolInfo } } : spawningPool),
+      }
+    case types.UPDATE_SPAWNING_POOL_USER_INFO:
+      return {
+        ...state,
+        spawningPools: state.spawningPools.map(spawningPool => spawningPool.id === action.payload.id ? { ...spawningPool, userInfo: { ...spawningPool.userInfo, ...action.payload.userInfo } } : spawningPool),
       }
     case types.UPDATE_DR_FRANKENSTEIN_ZOMBIE_BALANCE:
       return {

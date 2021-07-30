@@ -204,7 +204,6 @@ const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, u
         left: "0",
         width: "100%"
       }}>
-        <MobileMenu userInfo={userInfo} refreshMobile={refreshMobile} />
         <ChartPane isChartPaneOpen={isChartPaneOpen}>
           <ExpandChartButton
             variant='tertiary'
@@ -216,6 +215,7 @@ const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, u
           </ExpandChartButton>
           <PrizeTab />
         </ChartPane>
+        <MobileMenu userInfo={userInfo} refreshMobile={refreshMobile} />
       </div>
     </>
   )

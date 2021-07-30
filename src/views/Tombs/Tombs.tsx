@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import PageHeader from 'components/PageHeader'
 import { getBnbPriceinBusd } from 'state/hooks'
-import { Heading } from '@rug-zombie-libs/uikit'
+import { Flex, Heading } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useDrFrankenstein } from 'hooks/useContract'
 import { getDrFrankensteinAddress } from 'utils/addressHelpers'
@@ -81,15 +81,20 @@ const Tombs: React.FC = ( ) => {
   }
 
   return (
-    <Page className='innnerContainer'>
-      <PageHeader background='none'>
-        <Heading color='secondary' mb='24px'>
-          Tombs
-        </Heading>
-        <Heading color='text'>
-          Stake LP tokens to earn.
-        </Heading>
-      </PageHeader>
+    <>
+    <PageHeader background="#101820">
+      <Flex justifyContent='space-between' flexDirection={['column', null, 'row']}>
+        <Flex flexDirection='column' mr={['8px', 0]}>
+          <Heading as='h1' size='xxl' color='secondary' mb='24px'>
+            Tombs
+          </Heading>
+          <Heading size='md' color='text'>
+            Stake LP tokens to earn
+          </Heading>
+        </Flex>
+      </Flex>
+    </PageHeader>
+    <Page >
       <div>
         {tombsData.map((data) => {
           return <Table updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
@@ -97,6 +102,7 @@ const Tombs: React.FC = ( ) => {
         })}
       </div>
     </Page>
+    </>
   )
 }
 
