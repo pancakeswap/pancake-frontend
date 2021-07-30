@@ -17,15 +17,15 @@ const config: MenuEntry[] = [
     href: '/tombs',
   },
   {
+    label: 'Spawning Pools',
+    icon: 'PoolIcon',
+    href: '/spawning_pools'
+  },
+  {
     label: 'Mausoleum (BETA)',
     icon: 'PredictionsIcon',
     href: '/mausoleum',
   },
-  // {
-  //   label: 'Spawning Pools',
-  //   icon: 'PoolIcon',
-  //   href: '/spawning_pools'
-  // },
   {
     label: 'Graveyard',
     icon: 'NftIcon',

@@ -33,7 +33,7 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. Spawning Pools arrive today!</Text>
+            <Text fontSize='14px'>1. Gorilla Fi Spawning Pool is live!</Text>
           </Row>
           <Row>
             <Text fontSize='14px'>2. First auction was a huge success, thanks for participating & congrats to the winner.</Text>

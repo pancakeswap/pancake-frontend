@@ -7,6 +7,6 @@ export const routes = {
     FARMS:'/farms/',
     TOMBS:'/tombs/',
     GRAVES:'/graves/',
-    SPAWNING_POOLS:'/spawning_poolss/',
+    SPAWNING_POOLS:'/spawning_pools/',
     MAUSOLEUM:'/mausoleum/'
 }

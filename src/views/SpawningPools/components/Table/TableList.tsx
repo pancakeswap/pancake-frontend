@@ -64,7 +64,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
     })
   }, [rewardTokenId])
 
-  const apr = getPoolApr(zombieUsdPrice, rewardTokenPrice, getBalanceAmount(poolInfo.totalZombieStaked).toNumber(), getBalanceAmount(poolInfo.rewardPerBlock).toNumber())
+  const apr = getPoolApr(zombieUsdPrice, rewardTokenPrice, getBalanceAmount(poolInfo.totalZombieStaked).toNumber(), getBalanceAmount(poolInfo.rewardPerBlock, rewardToken.decimals).toNumber())
   const dailyApr = apr / 365
   const displayApr = apr > 10 ? numeral(apr).format('(0.00 a)') : numeral(apr).format('(0.0000 a)')
   const displayDailyApr = dailyApr > 100 ? numeral(dailyApr).format('(0.00 a)') : numeral(dailyApr).format('(0.00000 a)')
@@ -104,7 +104,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           </td>
           <td className="td-width-25">
             <DisplayFlex>
-              <span className="total-earned">{getFullDisplayBalance(pendingReward, rewardToken.decimals, 4)}</span>
+              <span className="total-earned">{getFullDisplayBalance(pendingReward.times(0.89), rewardToken.decimals, 4)}</span>
               <div className="earned">Earned</div>
             </DisplayFlex>
           </td>

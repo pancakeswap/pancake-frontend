@@ -21,7 +21,7 @@ interface RugInDetailsProps {
 const RugInDetails: React.FC<RugInDetailsProps> = ({
   id , zombieUsdPrice, bnbInBusd,
 }) => {
-  const { subtitle, rewardToken, pcsVersion, liquidityDetails, project, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist } = spawningPool(id)
+  const { subtitle, rewardToken, pcsVersion, liquidityDetails, project, path, type, withdrawalCooldown, nftRevivalTime, endBlock, artist } = spawningPool(id)
   const { link,  } = project
   const spawningPoolContract = useSpawningPool(id);
 
@@ -98,6 +98,11 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         <span className="indetails-title">
           NFT Minting Time:
           <span className="indetails-value">{nftRevivalTime}</span>
+        </span>
+        <span className="indetails-title">
+          <LinkExternal href={`https://bscscan.com/block/countdown/${endBlock}`}>
+            Rewards End Block
+          </LinkExternal>
         </span>
       </div>
       {/* <div className="direction-column">
