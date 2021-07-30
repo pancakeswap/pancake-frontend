@@ -14,7 +14,7 @@ import {
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
-import { useGetBnbBalance } from 'hooks/useTokenBalance'
+import { FetchStatus, useGetBnbBalance } from 'hooks/useTokenBalance'
 import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
 
@@ -42,8 +42,8 @@ const Tabs = styled.div`
 const WalletModal: React.FC<WalletModalProps> = ({ initialView = WalletView.WALLET_INFO, onDismiss }) => {
   const [view, setView] = useState(initialView)
   const { t } = useTranslation()
-  const { balance, isFetching } = useGetBnbBalance()
-  const hasLowBnbBalance = !isFetching && balance.lte(LOW_BNB_BALANCE)
+  const { balance, fetchStatus } = useGetBnbBalance()
+  const hasLowBnbBalance = fetchStatus === FetchStatus.SUCCESS && balance.lte(LOW_BNB_BALANCE)
 
   const handleClick = (newIndex: number) => {
     setView(newIndex)
