@@ -1208,7 +1208,7 @@
   "PancakeSwap makes it easy to make your crypto work for you.": "Ginagawang madali ng PancakeSwap na paganahin ang iyong crypto para sa iyo.",
   "Explore": "Siyasatin",
   "Pie chart": "Chart na pie",
-  "Stocks chart": "Chart ng stocks",
+  "Stocks chart": "Chart ng mga stock",
   "Folder with cake token": "Folder na may token ng cake",
   "CAKE makes our world go round.": "Pinapaikot ng CAKE ang ating daigdig.",
   "CAKE token is at the heart of the PancakeSwap ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!": "Ang token ng CAKE ay ang pinaka-puso ng PancakeSwap ecosystem. Bilhin ito, mapanalunan ito, i-farm ito, gamitin ito, i-stake ito... kahit anupaman, maaari ka ring bumoto gamit ito!",
@@ -1217,7 +1217,7 @@
   "Buy tickets with CAKE, win CAKE if your numbers match": "Bumili ng mga ticket gamit ang CAKE, manalo ng CAKE kung tutugma ang iyong mga numero",
   "$%bnbWonInUsd% in BNB won so far": "$%bnbWonInUsd% na napalanunan sa BNB sa ngayon",
   "Will BNB price rise or fall? guess correctly to win!": "Tataas ba o bababa ang presyo ng BNB? hulaan nang tama upang manalo!",
-  "And those users are now entrusting the platform with over $%tvl% in funds.": "At ang mga user na iyong ngayon ay pinagkakatiwala ang platform na higit sa $%tvl% sa mga pondo.",
+  "And those users are now entrusting the platform with over $%tvl% in funds.": "At ang mga user na iyon ngayon ay pinagkakatiwala ang platform na higit sa $%tvl% sa mga pondo.",
   "Trusted with billions.": "Pinagkakatiwalaan ng bilyon-bilyon.",
   "PancakeSwap has the most users of any decentralized platform, ever.": "Ang PancakeSwap ay may pinakamaraming mga user ng anumang desentralisadong platform, kailanman.",
   "Will you join them?": "Sasali ka ba sa kanila?",
@@ -1243,9 +1243,9 @@
   "Connect your crypto wallet to start using the app in seconds.": "Ikonekta ang iyong crypto wallet upang simulang gamitin ang app sa ilang segundo.",
   "in the last 30 days": "sa nakaraang 30 araw",
   "No registration needed.": "Walang kailangang rehistro.",
-  "Learn how to start": "Learn how to start",
-  "%trades% trades": "%trades% trades",
-  "Provably fair, on-chain games.": "Provably fair, on-chain games.",
-  "made in the last 30 days": "made in the last 30 days",
-  "Win big with PancakeSwap.": "Win big with PancakeSwap."
+  "Learn how to start": "Alamin kung paano magsimula",
+  "%trades% trades": "%trades% mga pag-trade",
+  "Provably fair, on-chain games.": "Marahil na mainam, na mga on-chain game.",
+  "made in the last 30 days": "ginawa ng nakaraang 30 araw",
+  "Win big with PancakeSwap.": "Manalo ng malaki sa PancakeSwap."
 }
