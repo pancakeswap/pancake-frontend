@@ -1208,8 +1208,8 @@
   "PancakeSwap makes it easy to make your crypto work for you.": "Με το PancakeSwap τα κρυπτονομίσματά σας δουλεύουν για εσάς.",
   "Explore": "Εξερευνήστε",
   "Pie chart": "Γράφημα πίτας",
-  "Stocks chart": "Stocks chart",
-  "Folder with cake token": "Folder with cake token",
+  "Stocks chart": "Γράφημα μετοχής",
+  "Folder with cake token": "Φάκελος με νόμισμα cake",
   "CAKE makes our world go round.": "Το CAKE κάνει τον κόσμο να κινείται.",
   "CAKE token is at the heart of the PancakeSwap ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!": "Το CAKE βρίσκεται στην καρδιά του οικοσυστήματος PancakeSwap. Αγοράστε, κερδίστε, κάντε farm, ξοδέψτε, κάντε το stake,... μπορείτε ακόμη και να ψηφίσετε με αυτό!",
   "Small 3d pancake": "Μικρό τρισδιάστατο pancake",
@@ -1231,7 +1231,7 @@
   "Current emissions": "Ρυθμός δημιουργίας",
   "$%marketCap%": "$%marketCap%",
   "%cakeEmissions%/block": "%cakeEmissions%/μπλοκ",
-  "%earningsBusd% to collect from %count% %farms%": "%earningsBusd% to collect from %count% %farms%",
+  "%earningsBusd% to collect from %count% %farms%": "%earningsBusd% για συλλογή από %count% %farms%",
   "Harvest all": "Συγκομιδή όλων",
   "Start in seconds.": "Ξεκινήστε σε δευτερόλεπτα.",
   "Used by millions.": "Το χρησιμοποιούν εκατομμύρια.",
@@ -1244,8 +1244,8 @@
   "in the last 30 days": "τις τελευταίες 30 ημέρες",
   "No registration needed.": "Δεν χρειάζεται εγγραφή.",
   "Learn how to start": "Μάθετε πώς να ξεκινήσετε",
-  "%trades% trades": "%trades% ανταλλαγές",
+  "%trades% trades": "%trades% συναλλαγές",
   "Provably fair, on-chain games.": "Αποδεδειγμένα δίκαια παιχνίδια on-chain.",
   "made in the last 30 days": "ολοκληρώθηκαν τις τελευταίες 30 ημέρες",
-  "Win big with PancakeSwap.": "Win big with PancakeSwap."
+  "Win big with PancakeSwap.": "PancakeSwap για μεγάλα κέρδη."
 }
