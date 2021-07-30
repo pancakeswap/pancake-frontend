@@ -49,6 +49,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 434,
+    lpSymbol: 'SKILL-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xc19dfd34d3ba5816df9cbdaa02d32a9f8dc6f6fc',
+    },
+    token: tokens.skill,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 433,
     lpSymbol: 'IF-BUSD LP',
     lpAddresses: {
