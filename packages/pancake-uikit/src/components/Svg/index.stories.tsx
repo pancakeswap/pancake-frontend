@@ -46,6 +46,7 @@ export const Icons: React.FC = () => {
             flexDirection="column"
             alignItems="center"
             width="128px"
+            height="96px"
             style={{ border: "1px solid #eee" }}
             justifyContent="center"
             py="8px"

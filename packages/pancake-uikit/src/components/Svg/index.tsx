@@ -33,6 +33,7 @@ export { default as CommunityIcon } from "./Icons/Community";
 export { default as CopyIcon } from "./Icons/Copy";
 export { default as CrownIcon } from "./Icons/Crown";
 export { default as ErrorIcon } from "./Icons/Error";
+export { default as EllipsisIcon } from "./Icons/Ellipsis";
 export { default as HelpIcon } from "./Icons/Help";
 export { default as HistoryIcon } from "./Icons/History";
 export { default as InfoIcon } from "./Icons/Info";
