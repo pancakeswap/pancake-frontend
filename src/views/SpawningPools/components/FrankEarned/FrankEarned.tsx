@@ -36,7 +36,7 @@ const FrankEarned: React.FC<FrankEarnedProps> = ({ id }) => {
       <div className='space-between'>
         <div className='frank-earned'>
           <span
-            className='text-shadow'>{getFullDisplayBalance(pendingReward, tokens.zmbe.decimals, 4)}</span>
+            className='text-shadow'>{getFullDisplayBalance(pendingReward, rewardToken.decimals, 4)}</span>
         </div>
         <button disabled={pendingReward.eq(BIG_ZERO)} onClick={handleHarvest}
                 className={`btn w-auto harvest ${pendingReward.eq(BIG_ZERO) ? 'btn-disabled' : ''}`}
