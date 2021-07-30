@@ -104,7 +104,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           </td>
           <td className="td-width-25">
             <DisplayFlex>
-              <span className="total-earned">{getFullDisplayBalance(pendingReward, tokens.zmbe.decimals, 4)}</span>
+              <span className="total-earned">{getFullDisplayBalance(pendingReward, rewardToken.decimals, 4)}</span>
               <div className="earned">Earned</div>
             </DisplayFlex>
           </td>
