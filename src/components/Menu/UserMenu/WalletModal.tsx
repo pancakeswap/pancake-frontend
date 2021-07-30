@@ -19,8 +19,8 @@ import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
 
 export enum WalletView {
-  WALLET_INFO = 0,
-  TRANSACTIONS = 1,
+  WALLET_INFO,
+  TRANSACTIONS,
 }
 
 interface WalletModalProps extends InjectedModalProps {
