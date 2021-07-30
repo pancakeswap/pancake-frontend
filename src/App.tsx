@@ -7,6 +7,11 @@ import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
 import { DatePickerPortal } from 'components/DatePicker'
+import styled from 'styled-components';
+import variables from 'style/variables'
+import { useTranslation } from 'contexts/Localization'
+
+
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
@@ -45,26 +50,70 @@ const CreateProposal = lazy(() => import('./views/Voting/CreateProposal'))
 const AddLiquidity = lazy(() => import('./views/AddLiquidity'))
 const Liquidity = lazy(() => import('./views/Pool'))
 const PoolFinder = lazy(() => import('./views/PoolFinder'))
-const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
+const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'));
 
 // This config is required for number formatting
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
   DECIMAL_PLACES: 80,
-})
+});
+const AppContainer = styled.div`
+
+`;
+const AppBody = styled.div`
+margin-left:259px;
+margin-top:80px;
+`;
+const AppHeader = styled.div`
+height:80px;
+background-color: ${variables.primary};
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:100;
+
+
+div{
+  width:240px;
+  height:100%;
+  color:#FFF;
+display:flex;
+justify-content:center;
+align-items: center;
+font-size:3rem;
+h1{
+  font-weight:400;
+}
+
+}
+`;
+
 
 const App: React.FC = () => {
   usePollBlockNumber()
   useEagerConnect()
   useFetchProfile()
   usePollCoreFarmData()
+  const { t } = useTranslation()
 
   return (
-    <Router history={history}>
+    <>
+    <AppHeader>
+      <div>
+        <img src={`${process.env.PUBLIC_URL}/images/header/cornicon.svg`} alt='corn'/>
+        <h1>{t('Corn')}</h1>
+
+      </div>
+      
+    </AppHeader>
+    <AppContainer>
+          <Router history={history}>
       <ResetCSS />
       <GlobalStyle />
-      <Menu>
-        <SuspenseWithChunkError fallback={<PageLoader />}>
+      <Menu />
+      <AppBody>
+          <SuspenseWithChunkError fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>
               <Home />
@@ -146,11 +195,15 @@ const App: React.FC = () => {
             <Route component={NotFound} />
           </Switch>
         </SuspenseWithChunkError>
-      </Menu>
+        </AppBody>
+      {/* </Menu> */}
       <EasterEgg iterations={2} />
       <ToastListener />
       <DatePickerPortal />
     </Router>
+    </AppContainer>
+    </>
+   
   )
 }
 

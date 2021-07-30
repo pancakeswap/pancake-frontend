@@ -1,7 +1,22 @@
 import React from 'react'
-import { Button, useWalletModal } from '@pancakeswap/uikit'
+import { useWalletModal } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
+import styled from 'styled-components'
+import variables from 'style/variables';
+
+const Button = styled.button`
+
+        background-color: ${variables.secondary};
+        padding: 10px 0;
+        border-radius: ${variables.radius};
+        border: none;
+        font-size: 16px;
+        font-weight: 600;
+        width: 100%;
+        margin-top: 40px;
+    
+`;
 
 const ConnectWalletButton = (props) => {
   const { t } = useTranslation()
@@ -10,7 +25,7 @@ const ConnectWalletButton = (props) => {
 
   return (
     <Button onClick={onPresentConnectModal} {...props}>
-      {t('Connect Wallet')}
+      {t('Approve Contract')}
     </Button>
   )
 }

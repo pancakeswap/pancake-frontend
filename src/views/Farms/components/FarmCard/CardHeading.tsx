@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Tag, Flex, Heading } from '@pancakeswap/uikit'
+import { Flex} from '@pancakeswap/uikit'
+import variables from 'style/variables'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import { Token } from 'config/constants/types'
 import { TokenPairImage } from 'components/TokenImage'
@@ -17,22 +18,35 @@ const Wrapper = styled(Flex)`
   svg {
     margin-right: 4px;
   }
+  
 `
+const Heading = styled.p`
+color:#fff;
+font-size:2rem;
+`;
 
-const MultiplierTag = styled(Tag)`
+const MultiplierTag = styled("button")`
   margin-left: 4px;
+  margin-bottom:10px;
+  background-color: #FEDD40;
+  padding: 4px 30px;
+  border-radius: ${variables.radius};
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+        
+  
 `
 
 const CardHeading: React.FC<ExpandableSectionProps> = ({ lpLabel, multiplier, isCommunityFarm, token, quoteToken }) => {
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
-      <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
+      <img src="/images/farms/farmsCardLogo.svg"  alt="" />
       <Flex flexDirection="column" alignItems="flex-end">
-        <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading>
         <Flex justifyContent="center">
-          {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-          <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+          <MultiplierTag> {multiplier} </MultiplierTag>
         </Flex>
+        <Heading> {lpLabel.split(' ')[0]} </Heading>
       </Flex>
     </Wrapper>
   )

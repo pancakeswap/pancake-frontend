@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
-import { Flex, Text, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Skeleton } from '@pancakeswap/uikit'
+import variables from 'style/variables';
 import { Farm } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'
@@ -47,9 +48,10 @@ const StyledCardAccent = styled.div`
 
 const FCard = styled.div<{ isPromotedFarm: boolean }>`
   align-self: baseline;
-  background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme, isPromotedFarm }) => (isPromotedFarm ? '31px' : theme.radii.card)};
-  box-shadow: 0px 1px 4px rgba(25, 19, 38, 0.15);
+  background: ${variables.primary};
+  color:${variables.secondary};
+  border-radius: ${variables.radius};
+  /* box-shadow: 0px 1px 4px rgba(25, 19, 38, 0.15); */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -57,7 +59,9 @@ const FCard = styled.div<{ isPromotedFarm: boolean }>`
   position: relative;
   text-align: center;
 `
-
+const Text = styled.div`
+color: ${variables.secondary};
+`;
 const Divider = styled.div`
   background-color: ${({ theme }) => theme.colors.cardBorder};
   height: 1px;
@@ -101,7 +105,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
 
   return (
     <FCard isPromotedFarm={isPromotedFarm}>
-      {isPromotedFarm && <StyledCardAccent />}
+      {/* {isPromotedFarm && <StyledCardAccent />} */}
       <CardHeading
         lpLabel={lpLabel}
         multiplier={farm.multiplier}
@@ -109,19 +113,13 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
         token={farm.token}
         quoteToken={farm.quoteToken}
       />
+      <br/>
       {!removed && (
         <Flex justifyContent="space-between" alignItems="center">
           <Text>{t('APR')}:</Text>
-          <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+          <Text style={{ display: 'flex', alignItems: 'center' }}>
             {farm.apr ? (
               <>
-                <ApyButton
-                  lpLabel={lpLabel}
-                  addLiquidityUrl={addLiquidityUrl}
-                  cakePrice={cakePrice}
-                  apr={farm.apr}
-                  displayApr={displayApr}
-                />
                 {displayApr}%
               </>
             ) : (
@@ -130,10 +128,14 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
           </Text>
         </Flex>
       )}
+      <br />
       <Flex justifyContent="space-between">
         <Text>{t('Earn')}:</Text>
-        <Text bold>{earnLabel}</Text>
+        {/* <Text>{earnLabel}</Text> */}
+        <Text>TOKEN</Text>
       </Flex>
+      <Divider />
+
       <CardActionsContainer farm={farm} account={account} addLiquidityUrl={addLiquidityUrl} />
       <Divider />
       <ExpandableSectionButton

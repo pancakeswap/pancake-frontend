@@ -18,6 +18,8 @@ import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import { Pool } from 'state/types'
 import Loading from 'components/Loading'
+import variables from 'style/variables';
+
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
@@ -26,6 +28,7 @@ import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { ViewMode } from './components/ToggleView/ToggleView'
 import { getAprData, getCakeVaultEarnings } from './helpers'
+
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -237,26 +240,26 @@ const Pools: React.FC = () => {
   return (
     <>
       <PageHeader>
-        <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
-          <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('Syrup Pools')}
+        {/* <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}> */}
+          {/* <Flex flex="1" flexDirection="column" mr={['8px', 0]}> */}
+            <Heading as="h1" scale="xxl" color={variables.primary} mb="24px">
+              {t('Pools')}
             </Heading>
-            <Heading scale="md" color="text">
+            {/* <Heading scale="md" color="text">
               {t('Just stake some tokens to earn.')}
             </Heading>
             <Heading scale="md" color="text">
               {t('High APR, low risk.')}
-            </Heading>
-          </Flex>
-          <Flex flex="1" height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
+            </Heading> */}
+          {/* </Flex> */}
+          {/* <Flex flex="1" height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
             <HelpButton />
             <BountyCard />
-          </Flex>
-        </Flex>
+          </Flex> */}
+        {/* </Flex> */}
       </PageHeader>
       <Page>
-        <PoolControls>
+        {/* <PoolControls>
           <PoolTabButtons
             stakedOnly={stakedOnly}
             setStakedOnly={setStakedOnly}
@@ -300,7 +303,7 @@ const Pools: React.FC = () => {
               <SearchInput onChange={handleChangeSearchQuery} placeholder="Search Pools" />
             </LabelWrapper>
           </FilterContainer>
-        </PoolControls>
+        </PoolControls> */}
         {showFinishedPools && (
           <Text fontSize="20px" color="failure" pb="32px">
             {t('These pools are no longer distributing rewards. Please unstake your tokens.')}

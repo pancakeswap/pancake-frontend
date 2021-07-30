@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from 'react'
+
 import styled from 'styled-components'
+import variables from 'style/variables'
 import BigNumber from 'bignumber.js'
-import { Button, Flex, Text } from '@pancakeswap/uikit'
+import { Button, Flex, Heading} from '@pancakeswap/uikit'
 import { getAddress } from 'utils/addressHelpers'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
@@ -9,6 +11,7 @@ import { Farm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import Balance from 'components/Balance'
 import StakeAction from './StakeAction'
 import HarvestAction from './HarvestAction'
 import useApproveFarm from '../../hooks/useApproveFarm'
@@ -16,6 +19,10 @@ import useApproveFarm from '../../hooks/useApproveFarm'
 const Action = styled.div`
   padding-top: 16px;
 `
+const Text = styled.div`
+color: ${variables.secondary};
+
+`;
 export interface FarmWithStakedValue extends Farm {
   apr?: number
 }
@@ -78,21 +85,21 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
   return (
     <Action>
       <Flex>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-          CAKE
-        </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Earned')}
-        </Text>
+        <Text>
+          SHOPX {t('Earned')}
+        </Text> 
       </Flex>
       <HarvestAction earnings={earnings} pid={pid} />
       <Flex>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
+        <Text>
           {farm.lpSymbol}
         </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+        <Text>
           {t('Staked')}
         </Text>
+      </Flex>
+      <Flex flexDirection="column" alignItems="flex-start">
+        <Heading style={{color:"#BDC2C4", marginTop: "10px"}}>0</Heading>
       </Flex>
       {!account ? <ConnectWalletButton mt="8px" width="100%" /> : renderApprovalOrStakeButton()}
     </Action>
