@@ -39,16 +39,6 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
-    pid: 369,
-    lpSymbol: 'WIN-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x894bd57afd8efc93d9171cb585d11d0977557425',
-    },
-    token: tokens.win,
-    quoteToken: tokens.wbnb,
-  },
-  {
     pid: 434,
     lpSymbol: 'SKILL-BNB LP',
     lpAddresses: {
@@ -56,6 +46,16 @@ const farms: FarmConfig[] = [
       56: '0xc19dfd34d3ba5816df9cbdaa02d32a9f8dc6f6fc',
     },
     token: tokens.skill,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 369,
+    lpSymbol: 'WIN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x894bd57afd8efc93d9171cb585d11d0977557425',
+    },
+    token: tokens.win,
     quoteToken: tokens.wbnb,
   },
   {
