@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import { useModal } from '@rug-zombie-libs/uikit';
 import ModalInput from 'components/ModalInput/ModalInput';
 import { BigNumber } from 'bignumber.js'
@@ -6,6 +6,7 @@ import { formatDuration } from '../../../../utils/timerHelpers'
 import { Grave } from '../../../../redux/types'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
 import { grave } from '../../../../redux/get'
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 
@@ -27,7 +28,12 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
     withdrawCooldownTimeFixed = currentDate
   }
   const initialNftTime = nftRevivalDateFixed - currentDate;
-
+  const [nftTime,setNftTime] = useState(initialNftTime)
+  useEffect(() => {
+    setInterval(() => {
+      setNftTime(nftTime - 60)
+    },60000)
+  },[nftTime])
   const initialWithdrawCooldownTime = withdrawCooldownTimeFixed - currentDate;
   return (
     // eslint-disable-next-line no-nested-ternary
@@ -46,7 +52,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
               <div className="small-text">
                 <span className="white-color">NFT Timer</span>
               </div>
-              <span className="total-earned text-shadow">{formatDuration(initialNftTime)}</span>
+              <span className="total-earned text-shadow">{formatDuration(nftTime)}</span>
             </div>}
           {currentDate >= tokenWithdrawalDate ?
             <span className="total-earned text-shadow">No Withdraw Fees</span> :
