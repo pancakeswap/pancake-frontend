@@ -13,6 +13,7 @@ import Tombs from 'views/Tombs/Tombs'
 import Gravedigger from 'views/Gravedigger/'
 import { useWeb3React } from '@web3-react/core'
 import SpawnWithUs from 'views/SpawnWithUs'
+import Catacombs from 'views/Catacombs'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 // import Graves from './views/Graves'
 import history from './routerHistory'
@@ -70,6 +71,7 @@ const App: React.FC = () => {
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
           <Route exact path={routes.GRAVEDIGGER}><Gravedigger/></Route>
           <Route exact path={routes.SPAWNWITHUS}><SpawnWithUs /></Route>
+          <Route exact path={routes.CATACOMBS}><Catacombs/></Route>
           <Menu>
             <Route exact path={routes.HOME}><Home/></Route>
             <Route exact path={routes.GRAVES}><Graves/></Route>
