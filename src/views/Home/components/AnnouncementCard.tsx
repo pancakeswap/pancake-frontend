@@ -43,7 +43,7 @@ const AnnouncementCard = () => {
           {t('Announcements')}
         </Heading>
         <Text>
-          {t('Get your Autoshark NFT while you still can! The zSHARK token is rare youll have to ask around their telegram is willing to find some.')}
+          {t('Get your Autoshark NFT while you still can! The zSHARK token is scarce & youll have to ask around their telegram to find some.')}
         </Text>
         <br/>
         <image width="100%" >
