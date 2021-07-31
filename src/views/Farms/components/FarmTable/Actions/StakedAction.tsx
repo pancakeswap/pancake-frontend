@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, Text } from '@pancakeswap/uikit'
+import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, Text, Heading } from '@pancakeswap/uikit'
 import { useLocation } from 'react-router-dom'
 import { BigNumber } from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -21,7 +21,7 @@ import DepositModal from '../../DepositModal'
 import WithdrawModal from '../../WithdrawModal'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useApproveFarm from '../../../hooks/useApproveFarm'
-import { ActionContainer, ActionTitles, ActionContent, Earned } from './styles'
+import { ActionContainer, ActionTitles, ActionContent } from './styles'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -129,7 +129,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           </ActionTitles>
           <ActionContent>
             <div>
-              <Earned>{displayBalance()}</Earned>
+              <Heading>{displayBalance()}</Heading>
               {stakedBalance.gt(0) && lpPrice.gt(0) && (
                 <Balance
                   fontSize="12px"

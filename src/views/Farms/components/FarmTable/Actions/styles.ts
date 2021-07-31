@@ -32,8 +32,3 @@ export const ActionContent = styled.div`
   justify-content: space-between;
   align-items: center;
 `
-export const Earned = styled.div`
-  font-weight: 600;
-  font-size: 20px;
-  color: ${({ theme }) => theme.colors.text};
-`
