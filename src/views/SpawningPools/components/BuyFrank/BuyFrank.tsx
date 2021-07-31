@@ -46,7 +46,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ id }) => {
               <div className="small-text">
                 <span className="white-color">NFT Timer</span>
               </div>
-              <span className="total-earned text-shadow">{formatDuration(initialNftTime)}</span>
+              <span className="total-earned text-shadow" style={{fontSize: "20px"}}>{formatDuration(initialNftTime)}</span>
             </div>}
           {currentDate >= tokenWithdrawalDate ?
             <span className="total-earned text-shadow">No Withdraw Fees</span> :
@@ -54,7 +54,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ id }) => {
               <div className="small-text">
                 <span className="white-color">5% Withdraw fee is active:</span>
               </div>
-              <span className="total-earned text-shadow">
+              <span className="total-earned text-shadow" style={{fontSize: "20px"}}>
                 {formatDuration(initialWithdrawCooldownTime)}</span>
             </div>}
         </div>

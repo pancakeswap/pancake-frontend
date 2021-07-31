@@ -13,7 +13,7 @@ export const formatDuration = (duration: number): string => {
   if(duration < SECONDS_PER_MINUTE) {
     return `${duration}s`
   }
-  return `${displayInteger(days)}:${displayInteger(hours)}:${displayInteger(minutes)}`
+  return `${days}d ${hours}h ${minutes}m`
 }
 
 const displayInteger = (int: number): string => {
