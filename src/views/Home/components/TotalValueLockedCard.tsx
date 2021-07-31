@@ -7,7 +7,10 @@ import { getBalanceAmount } from '../../../utils/formatBalance'
 import { bnbPriceUsd, drFrankensteinZombieBalance, zmbeBnbTomb, zombiePriceUsd } from '../../../redux/get'
 import store from '../../../redux/store'
 import tombs from '../../../redux/tombs'
-import { tomb } from '../../../redux/fetch'
+import { spawningPool, tomb } from '../../../redux/fetch'
+import { useMultiCall, useZombie } from '../../../hooks/useContract'
+import * as get from '../../../redux/get'
+import { BIG_ZERO } from '../../../utils/bigNumber'
 
 const StyledTotalValueLockedCard = styled(Card)`
   align-items: center;
@@ -24,23 +27,33 @@ const Row = styled.div`
 `
 
 const TotalValueLockedCard: React.FC = () => {
-  const zombiePrice = zombiePriceUsd()
+  const multi = useMultiCall()
+  const zombie = useZombie()
+  const [poolInfo, setPoolInfo] = useState(get.spawningPool(0).poolInfo)
+  useEffect(() => {
+    spawningPool(0, multi, zombie, (data) => {
+      if(data.totalZombieStaked) {
+        setPoolInfo(data)
+      }
+    })
+  }, [multi, zombie])
 
+
+  const zombiePrice = zombiePriceUsd()
   const {reserves} = zmbeBnbTomb().result
   const lpTotalSupply = zmbeBnbTomb().result.totalSupply
   const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePrice), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
   const bnbLpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
   const bnbTombTvl = new BigNumber(zmbeBnbTomb().result.totalStaked).times(bnbLpTokenPrice)
   const zombieBalance = getBalanceAmount(drFrankensteinZombieBalance()).times(zombiePrice)
-
-  const [tvl, setTvl] = useState(bnbTombTvl.plus(zombieBalance))
-
-  const newTvl = bnbTombTvl.plus(zombieBalance)
+  const spawningPoolTvl = getBalanceAmount(poolInfo.totalZombieStaked).times(zombiePrice)
+  const [tvl, setTvl] = useState(bnbTombTvl.plus(zombieBalance).plus(spawningPoolTvl))
+  const newTvl = bnbTombTvl.plus(zombieBalance).plus(spawningPoolTvl)
   useEffect(() => {
     if (!tvl.eq(newTvl) || tvl.isNaN() ) {
-      setTvl(bnbTombTvl.plus(zombieBalance))
+      setTvl(newTvl)
     }
-  }, [bnbTombTvl, newTvl, tvl, zombieBalance])
+  }, [newTvl, tvl])
 
   return (
     <StyledTotalValueLockedCard>
