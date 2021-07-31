@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Heading, Text, BaseLayout, useMatchBreakpoints } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -16,6 +16,7 @@ import NFTBanner from './components/NFTBanner'
 import Title from './components/Title'
 import GraveyardCard from './components/GraveyardCard'
 import EnterGravesCard from './components/EnterGravesCard'
+import useEagerConnect from '../../hooks/useEagerConnect'
 
 const Hero = styled.div`
   align-items: center;
@@ -77,6 +78,13 @@ const CTACards = styled(BaseLayout)`
 `
 
 const Home: React.FC = () => {
+  useEagerConnect()
+
+  const {account} = useWeb3React()
+  useEffect(() => {
+    fetch.initialData(account)
+  }, [account])
+
   return (
     <>
     <NFTBanner/>

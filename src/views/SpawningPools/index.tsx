@@ -41,7 +41,6 @@ const SpawningPools: React.FC = () => {
 
     // setFarmData(graves())
   }
-
     const updateAllowance = (tokenContact, pid) => {
       tokenContact.methods.allowance(accountAddress, getSpawningPoolAddress(id)).call()
         .then(res => {

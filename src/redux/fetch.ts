@@ -2,6 +2,7 @@ import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
 import { MultiCall } from '@indexed-finance/multicall'
 import Web3 from 'web3'
+import { useEffect } from 'react'
 import {
   getBep20Contract,
   getDrFrankensteinContract, getErc721Contract,
@@ -27,10 +28,9 @@ import * as get from './get'
 import spawningPoolAbi from '../config/abi/spawningPool.json'
 import { BIG_ZERO } from '../utils/bigNumber'
 import { account, spawningPools } from './get'
-import { useMultiCall } from '../hooks/useContract'
 
 // eslint-disable-next-line import/prefer-default-export
-export const initialData = (accountAddress: string) => {
+export const initialData = (accountAddress: string, setZombiePrice?: any) => {
   store.dispatch(updateAccount(accountAddress))
   const zombie = getZombieContract()
 
@@ -46,7 +46,7 @@ export const initialData = (accountAddress: string) => {
 
   bnbPriceUsd()
 
-  zombiePriceBnb()
+  zombiePriceBnb(setZombiePrice)
 
   tomb(tombs[0].pid)
 
@@ -200,7 +200,7 @@ export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: 
               nftRevivalTime: res[5],
             },
           ))
-          if(setPoolData) {
+          if (setPoolData) {
             setPoolData(get.spawningPool(id).poolInfo)
           }
         })
@@ -208,7 +208,7 @@ export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: 
     .catch((res) => {
       console.log('multicall failed')
     })
-  if(account()) {
+  if (account()) {
     inputs = [
       { target: address, function: 'userInfo', args: [account()] },
       { target: address, function: 'pendingReward', args: [account()] },
@@ -227,10 +227,10 @@ export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: 
                 nftRevivalDate: res[0].nftRevivalDate.toNumber(),
                 amount: new BigNumber(res[0].amount.toString()),
                 pendingReward: new BigNumber(res[1].toString()),
-                zombieAllowance: new BigNumber(balanceRes.toString())
-              }
+                zombieAllowance: new BigNumber(balanceRes.toString()),
+              },
             ))
-            if(setUserData) {
+            if (setUserData) {
               setUserData(get.spawningPool(id))
             }
           })
@@ -244,10 +244,14 @@ export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: 
   }
 }
 
-const zombiePriceBnb = () => {
+const zombiePriceBnb = (setZombiePrice?: any) => {
   getPancakePair(getAddress(tombs[0].lpAddresses)).methods.getReserves().call()
     .then(res => {
-      store.dispatch(updateZombiePriceBnb(new BigNumber(res._reserve1).div(res._reserve0)))
+      const price = new BigNumber(res._reserve1).div(res._reserve0)
+      store.dispatch(updateZombiePriceBnb(price))
+      if (setZombiePrice) {
+        setZombiePrice(price)
+      }
     })
 }
 

@@ -21,6 +21,7 @@ import Graves from './views/Graves'
 import * as fetch from './redux/fetch'
 import Predictions from './views/Predictions'
 import SpawningPools from './views/SpawningPools'
+import { BIG_ZERO } from './utils/bigNumber'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Landing = lazy(() => import('./components/Landing'));
@@ -38,6 +39,7 @@ const App: React.FC = () => {
   }, [])
 
   const [isAuthenticated, setAuthenticated] = useState(false);
+  const [zombiePrice, setZombiePrice] = useState(0);
 
   useEffect(() => {
     document.title = 'RugZombie'
@@ -46,7 +48,9 @@ const App: React.FC = () => {
   useEagerConnect()
 
   const {account} = useWeb3React()
-  fetch.initialData(account)
+  useEffect(() => {
+    fetch.initialData(account, setZombiePrice)
+  }, [account])
 
   const handleAuthentication = () => {
     setAuthenticated(!isAuthenticated);
