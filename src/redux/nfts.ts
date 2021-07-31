@@ -35,6 +35,13 @@ const nfts = [
     symbol: 'Z-MOON',
     address: '0x0b0dEa27fD22009A8ee2d0222025Eb9a81a9B26E',
     totalSupply: BIG_ZERO
+  },
+  {
+    id: 5,
+    name: 'Patiend Zero Alpha',
+    symbol: 'PATIENT-ZERO',
+    address: '0xFEf72C8d941F4F2D308E2Ae892AEDc084b280bB0',
+    totalSupply: BIG_ZERO
   }
 ]
 

@@ -49,7 +49,7 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { pid, zombieUsdPrice, handler } = props
-  const { name, rug, poolInfo, isNew, userInfo: { pendingZombie } } = grave(pid);
+  const { name, rug, poolInfo, isNew, isClosing, userInfo: { pendingZombie } } = grave(pid);
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
      allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -91,6 +91,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                       <div className="con-info">{poolWeight.toString()}X</div>
                       <div className="small-titel">ZMBE</div>
                       {isNew ? <div className='con-info' style={{marginLeft: "4px"}}>NEW!</div> : null}
+                      {isClosing ? <div className='closing-info' style={{marginLeft: "4px"}}>RESTRICTING ACCESS</div> : null}
                     </div>
                   </div>
                 </div>

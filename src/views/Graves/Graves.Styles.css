@@ -124,6 +124,15 @@ table td {
   font-size: 14px;
   color: rgb(204, 246, 108);
 }
+.closing-info {
+  border: 2px solid #b4bd00;
+  border-radius: 1em;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  color: #b4bd00;
+}
 .small-titel {
   border: 2px solid rgb(92, 109, 120);
   border-radius: 1em;

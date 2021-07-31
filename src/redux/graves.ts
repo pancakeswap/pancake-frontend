@@ -20,6 +20,7 @@ const graves: Grave[] = [
     pcsVersion: 'v2',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -53,6 +54,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -86,6 +88,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -119,6 +122,7 @@ const graves: Grave[] = [
     pcsVersion: 'none',
     liquidityDetails: 'None! This grave is exclusive for victims of the flash loan attack on autoshark.',
     isNew: false,
+    isClosing: true,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -152,6 +156,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     liquidityDetails: '',
     isNew: true,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -185,6 +190,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     liquidityDetails: '',
     isNew: true,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -218,6 +224,7 @@ const graves: Grave[] = [
     pcsVersion: 'v2',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -251,6 +258,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -284,6 +292,7 @@ const graves: Grave[] = [
     stakingToken: '0xD1e00C08E938B808F2d65dd108aE50948a9Ca1b4',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -317,6 +326,7 @@ const graves: Grave[] = [
     pcsVersion: 'v1',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -350,6 +360,7 @@ const graves: Grave[] = [
     stakingToken: '0xB0CEA8C1AaA7a62de12BC5c15f0de1694ED9fab7',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -383,6 +394,7 @@ const graves: Grave[] = [
     stakingToken: '0x645ad805c464133Eba5c4152Ce14547a01F821f7',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -416,6 +428,7 @@ const graves: Grave[] = [
     stakingToken: '0x02F6DE73919aE9d43A1E0520dBCBF81bCda5B514',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -449,6 +462,7 @@ const graves: Grave[] = [
     stakingToken: '0x9EbD27Bd3957F13f8E7fef988E96B8EE1998bc80',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -482,6 +496,7 @@ const graves: Grave[] = [
     stakingToken: '0x634A554d2FF1609d50740240140B452dF60D035c',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -515,6 +530,7 @@ const graves: Grave[] = [
     stakingToken: '0xFceB2967AB8EcC29589E9232f78f8441832d2aD6',
     liquidityDetails: '',
     isNew: false,
+    isClosing: false,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
