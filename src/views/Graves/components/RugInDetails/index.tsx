@@ -21,7 +21,7 @@ interface RugInDetailsProps {
 const RugInDetails: React.FC<RugInDetailsProps> = ({
   pid , zombieUsdPrice, bnbInBusd,
 }) => {
-  const { id, subtitle, rug, pcsVersion, liquidityDetails, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist } = grave(pid)
+  const { id, subtitle, rug, pcsVersion, liquidityDetails, path, type, endDate, latestEntryDate, isClosing, withdrawalCooldown, nftRevivalTime, poolInfo, artist } = grave(pid)
   const drFrankenstein = useDrFrankenstein();
 
   const [unlockFee, setUnlockFee] = useState(0);
@@ -97,6 +97,18 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           NFT Minting Time:
           <span className="indetails-value">{nftRevivalTime}</span>
         </span>
+        <br />
+        {isClosing ? <>
+          <span className='indetails-title'>
+          Latest entry date:
+          <span className='indetails-value'>{latestEntryDate}</span>
+        </span>
+          <span className='indetails-title'>
+          Rewards end on:
+          <span className='indetails-value'>{endDate}</span>
+        </span>
+        </> : null}
+
       </div>
       {/* <div className="direction-column">
           <a href="/" target="_blank" className="indetails-link">Tutorials goes to gitbook</a>

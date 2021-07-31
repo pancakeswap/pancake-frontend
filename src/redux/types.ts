@@ -54,6 +54,8 @@ export interface Grave {
   nftRevivalTime: string,
   isNew: boolean,
   isClosing: boolean,
+  endDate?: string,
+  latestEntryDate?: string,
   rug: Token,
   artist: Artist,
   pcsVersion: string,
