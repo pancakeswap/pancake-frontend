@@ -1247,5 +1247,16 @@
   "%trades% trades": "%trades% டிரேடுகள்",
   "Provably fair, on-chain games.": "மெய்ப்பிக்கத்தக்க நியாயமான, ஆன்-செயின் கேம்கள்.",
   "made in the last 30 days": "கடந்த 30 நாட்களில் செய்தது",
-  "Win big with PancakeSwap.": "PancakeSwap மூலம் பெரியதை வெல்லுங்கள்."
+  "Win big with PancakeSwap.": "PancakeSwap மூலம் பெரியதை வெல்லுங்கள்.",
+  "Copied": "Copied",
+  "Make a Profile": "Make a Profile",
+  "Your Address": "Your Address",
+  "Your Wallet": "Your Wallet",
+  "Transactions": "Transactions",
+  "BNB Balance Low": "BNB Balance Low",
+  "BNB Balance": "BNB Balance",
+  "CAKE Balance": "CAKE Balance",
+  "You need BNB for transaction fees.": "You need BNB for transaction fees.",
+  "Disconnect": "Disconnect",
+  "Disconnect Wallet": "Disconnect Wallet"
 }
