@@ -54,11 +54,7 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
   )
 
   let auctionTable = selectedAuction ? (
-    <AuctionLeaderboardTable
-      auction={selectedAuction.auction}
-      bidders={selectedAuction.bidders}
-      noBidsText="No bids were placed in this auction"
-    />
+    <AuctionLeaderboardTable bidders={selectedAuction.bidders} noBidsText="No bids were placed in this auction" />
   ) : (
     <Flex justifyContent="center" alignItems="center" p="24px" height="250px">
       <Spinner />

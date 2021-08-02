@@ -9,7 +9,6 @@ import {
   BunnyPlaceholderIcon,
   Skeleton,
   Button,
-  useTooltip,
   useMatchBreakpoints,
   useModal,
 } from '@pancakeswap/uikit'
@@ -18,7 +17,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import EllipsisMenu, { OptionProps } from 'components/EllipsisMenu/EllipsisMenu'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { Auction, Bidder } from 'config/constants/types'
+import { Bidder } from 'config/constants/types'
 import WhitelistedBiddersModal from '../WhitelistedBiddersModal'
 
 const LeaderboardContainer = styled.div`
@@ -121,11 +120,7 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, 
   )
 }
 
-const AuctionLeaderboardTable: React.FC<{ auction: Auction; bidders: Bidder[]; noBidsText: string }> = ({
-  auction,
-  bidders,
-  noBidsText,
-}) => {
+const AuctionLeaderboardTable: React.FC<{ bidders: Bidder[]; noBidsText: string }> = ({ bidders, noBidsText }) => {
   const [visibleBidders, setVisibleBidders] = useState(10)
   const cakePriceBusd = usePriceCakeBusd()
   const { t } = useTranslation()
