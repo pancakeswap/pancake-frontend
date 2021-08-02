@@ -221,7 +221,7 @@ export interface BidderAuction {
 }
 
 export interface Bidder extends FarmAuctionBidderConfig {
-  position: number | null
+  position?: number
   isTopPosition: boolean
   samePositionAsAbove: boolean
   amount: BigNumber
