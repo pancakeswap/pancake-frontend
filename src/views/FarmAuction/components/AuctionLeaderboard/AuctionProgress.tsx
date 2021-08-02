@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import { Progress } from '@pancakeswap/uikit'
 import { differenceInSeconds } from 'date-fns'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
-
-const ProgressContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.input};
-`
-
-const ProgressBar = styled.div<{ progress: number }>`
-  width: ${({ progress }) => `${progress}%`};
-  height: 16px;
-  background-color: ${({ theme }) => theme.colors.secondary};
-`
 
 const AuctionProgress: React.FC<{ auction: Auction }> = ({ auction }) => {
   const [progress, setProgress] = useState<number>(0)
@@ -31,11 +21,7 @@ const AuctionProgress: React.FC<{ auction: Auction }> = ({ auction }) => {
     }
   }, [slowRefresh, auction])
 
-  return (
-    <ProgressContainer>
-      <ProgressBar progress={progress} />
-    </ProgressContainer>
-  )
+  return <Progress variant="flat" primaryStep={progress} />
 }
 
 export default AuctionProgress
