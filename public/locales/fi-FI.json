@@ -1203,7 +1203,7 @@
   "CAKE token": "CAKE-poletti",
   "BTC token": "BTC-poletti",
   "Earn passive income with crypto.": "Ansaitse passiivista tuloa kryptolla.",
-  "PancakeSwap makes it easy to make your crypto work for you.": "PancakeSwapin saat helposti kryptosi tekemään töitä puolestasi.",
+  "PancakeSwap makes it easy to make your crypto work for you.": "PancakeSwapilla saat helposti kryptosi tekemään töitä puolestasi.",
   "Explore": "Tutustu",
   "Pie chart": "Ympyräkaavio",
   "Stocks chart": "Osakekaavio",
@@ -1219,7 +1219,7 @@
   "Trusted with billions.": "Luotettu miljardien edestä.",
   "PancakeSwap has the most users of any decentralized platform, ever.": "PancakeSwap on desentralisoitu alusta, jolla on kaikkien aikojen suurin määrä käyttäjiä.",
   "Will you join them?": "Liitytkö heidän joukkoonsa?",
-  "$%tvl% staked": "$%tvl% panostettu",
+  "$%tvl% staked": "%tvl% $ panostettu",
   "The moon is made of pancakes.": "Kuu on tehty pannukakuista.",
   "Trade, earn, and win crypto on the most popular decentralized platform in the galaxy.": "Treidaa, ansaitse ja voita kryptoa galaksin suosituimmalla desentralisoidulla alustalla.",
   "Lunar bunny": "Kuupupu",
@@ -1309,5 +1309,9 @@
   "Search address or token": "Hae osoitetta tai polettia",
   "This page is for projects to bid for farms.": "Tämä sivu on tarkoitettu projekteille, jotka tekevät tarjouksia viljelmistä.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Jos et ole hyväksytty projekti, et voi osallistua, mutta voit kuitenkin nähdä mitä on meneillään!",
-  "through community auctions so far!": "yhteisön huutokauppojen kautta tähän mennessä!"
+  "through community auctions so far!": "yhteisön huutokauppojen kautta tähän mennessä!",
+  "5 Winners": "5 Winners",
+  "20 Contenders...": "20 Contenders...",
+  "Farm Auctions": "Farm Auctions",
+  "auction bunny": "auction bunny"
 }
