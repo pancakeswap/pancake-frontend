@@ -69,31 +69,20 @@ const BidderEllipsisMenu: React.FC<{ bidder: Bidder }> = ({ bidder }) => {
 }
 
 interface LeaderboardRowProps {
-  topLeaderboard: number
   bidder: Bidder
   cakePriceBusd: BigNumber
   isMobile: boolean
 }
 
-const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ topLeaderboard, bidder, cakePriceBusd, isMobile }) => {
-  const { t } = useTranslation()
-  const { tooltip, targetRef, tooltipVisible } = useTooltip(
-    <Text>
-      {t('Top %num% bidders at the end of the auction will successfully create a community farm.', {
-        num: topLeaderboard,
-      })}
-    </Text>,
-    { placement: 'bottom' },
-  )
+const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, isMobile }) => {
   const { isTopPosition, position, samePositionAsAbove, farmName, tokenName, amount } = bidder
   return (
     <>
       <GridCell isTopPosition={isTopPosition} pl={['12px', '24px']}>
-        <Flex ref={targetRef}>
+        <Flex>
           <Text bold={isTopPosition} color={samePositionAsAbove ? 'textDisabled' : 'text'} textTransform="uppercase">
             #{position}
           </Text>
-          {tooltipVisible && isTopPosition && tooltip}
         </Flex>
       </GridCell>
       <GridCell isTopPosition={isTopPosition}>
@@ -178,13 +167,7 @@ const AuctionLeaderboardTable: React.FC<{ auction: Auction; bidders: Bidder[]; n
         <Box />
         {/* Rows */}
         {bidders.slice(0, visibleBidders).map((bidder) => (
-          <LeaderboardRow
-            key={bidder.account}
-            bidder={bidder}
-            topLeaderboard={auction.topLeaderboard}
-            cakePriceBusd={cakePriceBusd}
-            isMobile={isXs || isSm}
-          />
+          <LeaderboardRow key={bidder.account} bidder={bidder} cakePriceBusd={cakePriceBusd} isMobile={isXs || isSm} />
         ))}
       </LeaderboardContainer>
       <Flex mt="16px" flexDirection="column" justifyContent="center" alignItems="center">
