@@ -21,7 +21,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   {
     account: '0x58092273a044D6e1d23B5095AE873F6E24E906ed',
-    farmName: 'RUSD-BUSD',
+    farmName: 'rUSD-BUSD',
     tokenName: 'RAMP DEFI',
     projectSite: 'https://www.rampdefi.com/',
   },
