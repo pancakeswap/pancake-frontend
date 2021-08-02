@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.43.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.42.1...@pancakeswap/uikit@0.43.0) (2021-08-02)
+
+
+### Features
+
+* Add medal colors ([#217](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/217)) ([92d80f2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/92d80f2ae1e8e9aa02d1a56542566205553ce9d2))
+* SubMenu component ([#219](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/219)) ([e3d6747](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/e3d6747987243640eedabc407d19142d2230de34))
+
+
+
+
+
 ## [0.42.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.42.0...@pancakeswap/uikit@0.42.1) (2021-07-29)
 
 **Note:** Version bump only for package @pancakeswap/uikit
