@@ -116,10 +116,10 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     projectSite: 'https://mydefipet.com/',
   },
   {
-    account: '0xf1dD352EF3a94F60b3047B607C2Bd976401F538c',
-    farmName: 'GNT-BNB',
-    tokenName: 'GreetTrust ',
-    projectSite: 'https://www.greentrusttoken.com/',
+    account: '0x8aC06b55C9812e3E574CF5A5F3b49619dF33099C',
+    farmName: 'NMX-BNB',
+    tokenName: 'Nominex',
+    projectSite: 'https://nominex.io/',
   },
 ]
 
