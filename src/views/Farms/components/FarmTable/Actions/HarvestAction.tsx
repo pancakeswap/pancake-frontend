@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Skeleton, Text } from '@pancakeswap/uikit'
+import { Button, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
@@ -13,7 +13,7 @@ import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 
-import { ActionContainer, ActionTitles, ActionContent, Earned } from './styles'
+import { ActionContainer, ActionTitles, ActionContent } from './styles'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -52,7 +52,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
       </ActionTitles>
       <ActionContent>
         <div>
-          <Earned>{displayBalance}</Earned>
+          <Heading>{displayBalance}</Heading>
           {earningsBusd > 0 && (
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
