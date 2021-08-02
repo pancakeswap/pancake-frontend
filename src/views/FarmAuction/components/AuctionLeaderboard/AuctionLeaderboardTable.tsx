@@ -5,16 +5,18 @@ import {
   Text,
   Flex,
   Box,
-  OpenNewIcon,
   BunnyPlaceholderIcon,
   Skeleton,
   Button,
   useMatchBreakpoints,
   useModal,
+  SubMenu,
+  SubMenuItem,
+  EllipsisIcon,
+  LinkExternal,
 } from '@pancakeswap/uikit'
 import { getBscScanLink } from 'utils'
 import { getBalanceNumber } from 'utils/formatBalance'
-import EllipsisMenu, { OptionProps } from 'components/EllipsisMenu/EllipsisMenu'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { Bidder } from 'config/constants/types'
@@ -28,44 +30,13 @@ const LeaderboardContainer = styled.div`
   }
 `
 
-const GridCell = styled(Flex)<{ isTopPosition }>`
+const GridCell = styled(Flex)<{ isTopPosition: boolean }>`
   height: 65px;
   align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 
   ${({ theme, isTopPosition }) => isTopPosition && `background-color: ${theme.colors.warning}2D;`}
 `
-
-const BidderEllipsisMenu: React.FC<{ bidder: Bidder }> = ({ bidder }) => {
-  const { t } = useTranslation()
-  const handleSortOptionChange = (option: OptionProps) => {
-    window.open(option.value, '_blank').focus()
-  }
-
-  const { projectSite, lpAddress, account } = bidder
-
-  const options = []
-  if (projectSite) {
-    options.push({
-      label: t('Project Site'),
-      value: projectSite,
-      icon: <OpenNewIcon />,
-    })
-  }
-  if (lpAddress) {
-    options.push({
-      label: t('LP Info'),
-      value: `http://pancakeswap.info/pool/${lpAddress}`,
-      icon: <OpenNewIcon />,
-    })
-  }
-  options.push({
-    label: t('Bidder Address'),
-    value: getBscScanLink(account, 'address'),
-    icon: <OpenNewIcon />,
-  })
-  return <EllipsisMenu options={options} onChange={handleSortOptionChange} />
-}
 
 interface LeaderboardRowProps {
   bidder: Bidder
@@ -74,7 +45,9 @@ interface LeaderboardRowProps {
 }
 
 const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, isMobile }) => {
-  const { isTopPosition, position, samePositionAsAbove, farmName, tokenName, amount } = bidder
+  const { t } = useTranslation()
+  const { isTopPosition, position, samePositionAsAbove, farmName, tokenName, amount, projectSite, lpAddress, account } =
+    bidder
   return (
     <>
       <GridCell isTopPosition={isTopPosition} pl={['12px', '24px']}>
@@ -114,7 +87,23 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, 
         </Flex>
       </GridCell>
       <GridCell isTopPosition={isTopPosition}>
-        <BidderEllipsisMenu bidder={bidder} />
+        <SubMenu component={<EllipsisIcon height="16px" width="16px" />}>
+          {projectSite && (
+            <SubMenuItem as={LinkExternal} href={projectSite} bold={false} color="text">
+              {t('Project Site')}
+            </SubMenuItem>
+          )}
+          {lpAddress && (
+            <SubMenuItem as={LinkExternal} href={`http://pancakeswap.info/pool/${lpAddress}`} bold={false} color="text">
+              {t('LP Info')}
+            </SubMenuItem>
+          )}
+          {lpAddress && (
+            <SubMenuItem as={LinkExternal} href={getBscScanLink(account, 'address')} bold={false} color="text">
+              {t('Bidder Address')}
+            </SubMenuItem>
+          )}
+        </SubMenu>
       </GridCell>
     </>
   )
