@@ -169,11 +169,7 @@ const Desktop: React.FC = () => {
           <PositionPane>
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && (
-              <div>
-                <Positions />
-              </div>
-            )}
+            {status === PredictionStatus.LIVE && <Positions />}
           </PositionPane>
           <Gutter ref={gutterRef} />
           <ChartPane ref={chartRef}>
