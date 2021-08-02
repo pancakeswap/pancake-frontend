@@ -9,7 +9,6 @@ import { useTranslation } from 'contexts/Localization'
 const AuctionCountDown = styled(Flex)`
   align-items: flex-end;
   margin: 0 16px 0 16px;
-  border-bottom: 1px dashed ${({ theme }) => theme.colors.textSubtle};
 `
 
 const AuctionTimer: React.FC<{ auction: Auction }> = ({ auction }) => {
