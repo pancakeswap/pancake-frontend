@@ -1247,5 +1247,16 @@
   "%trades% trades": "%trades% ügylet",
   "Provably fair, on-chain games.": "Bizonyíthatóan tisztességes, láncon belüli játékok.",
   "made in the last 30 days": "az elmúlt 30 napban készült",
-  "Win big with PancakeSwap.": "Nyerjen sokat a PancakeSwap alkalmazással."
+  "Win big with PancakeSwap.": "Nyerjen sokat a PancakeSwap alkalmazással.",
+  "Copied": "Copied",
+  "Make a Profile": "Make a Profile",
+  "Your Address": "Your Address",
+  "Your Wallet": "Your Wallet",
+  "Transactions": "Transactions",
+  "BNB Balance Low": "BNB Balance Low",
+  "BNB Balance": "BNB Balance",
+  "CAKE Balance": "CAKE Balance",
+  "You need BNB for transaction fees.": "You need BNB for transaction fees.",
+  "Disconnect": "Disconnect",
+  "Disconnect Wallet": "Disconnect Wallet"
 }
