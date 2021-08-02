@@ -1694,5 +1694,21 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xB0e1fc65C1a741b4662B813eB787d369b8614Af1.png"
+  },
+  {
+    "name": "CryptoBlades Skill Token",
+    "symbol": "SKILL",
+    "address": "0x154A9F9cbd3449AD22FDaE23044319D6eF2a1Fab",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x154A9F9cbd3449AD22FDaE23044319D6eF2a1Fab.png"
+  },
+  {
+    "name": "REVV",
+    "symbol": "REVV",
+    "address": "0x833F307aC507D47309fD8CDD1F835BeF8D702a93",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x833F307aC507D47309fD8CDD1F835BeF8D702a93.png"
   }
 ]

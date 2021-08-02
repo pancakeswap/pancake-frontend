@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-07-28T07:18:41.522Z",
+  "timestamp": "2021-08-02T02:27:28.945Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 13
+    "patch": 14
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1261,6 +1261,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x695FD30aF473F2960e81Dc9bA7cB67679d35EDb7.png"
     },
     {
+      "name": "REVV",
+      "symbol": "REVV",
+      "address": "0x833F307aC507D47309fD8CDD1F835BeF8D702a93",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x833F307aC507D47309fD8CDD1F835BeF8D702a93.png"
+    },
+    {
       "name": "RFOX",
       "symbol": "RFOX",
       "address": "0x0a3A21356793B49154Fd3BbE91CBc2A16c0457f5",
@@ -1291,6 +1299,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xd41fdb03ba84762dd66a0af1a6c8540ff1ba5dfb.png"
+    },
+    {
+      "name": "CryptoBlades Skill Token",
+      "symbol": "SKILL",
+      "address": "0x154A9F9cbd3449AD22FDaE23044319D6eF2a1Fab",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x154A9F9cbd3449AD22FDaE23044319D6eF2a1Fab.png"
     },
     {
       "name": "SPARTAN PROTOCOL TOKEN",
