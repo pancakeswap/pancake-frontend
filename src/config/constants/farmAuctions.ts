@@ -21,7 +21,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   {
     account: '0x58092273a044D6e1d23B5095AE873F6E24E906ed',
-    farmName: 'RUSD-BNB',
+    farmName: 'RUSD-BUSD',
     tokenName: 'RAMP DEFI',
     projectSite: 'https://www.rampdefi.com/',
   },
@@ -39,7 +39,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   {
     account: '0xAe126B90d2835c5A2D720b0687EC59f59b768183',
-    farmName: 'WOW-BNB',
+    farmName: 'WOW-BUSD',
     tokenName: 'WOWswap',
     projectSite: 'https://wowswap.io/',
   },
