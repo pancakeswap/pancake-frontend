@@ -117,7 +117,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   {
     account: '0x8aC06b55C9812e3E574CF5A5F3b49619dF33099C',
-    farmName: 'NMX-BNB',
+    farmName: 'NMX-BUSD',
     tokenName: 'Nominex',
     projectSite: 'https://nominex.io/',
   },
