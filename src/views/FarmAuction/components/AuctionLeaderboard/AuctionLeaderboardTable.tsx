@@ -34,11 +34,7 @@ const GridCell = styled(Flex)<{ isTopPosition }>`
   align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 
-  ${({ theme, isTopPosition }) =>
-    isTopPosition &&
-    `
-    background-color: ${theme.colors.warning}2D;
-  `}
+  ${({ theme, isTopPosition }) => isTopPosition && `background-color: ${theme.colors.warning}2D;`}
 `
 
 const BidderEllipsisMenu: React.FC<{ bidder: Bidder }> = ({ bidder }) => {
