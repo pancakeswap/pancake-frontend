@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 367,
+    lpSymbol: 'BTT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x946696344e7d4346b223e1cf77035a76690d6a73',
+    },
+    token: tokens.btt,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 434,
     lpSymbol: 'SKILL-BNB LP',
     lpAddresses: {
@@ -787,16 +797,6 @@ const farms: FarmConfig[] = [
     },
     token: tokens.mcoin,
     quoteToken: tokens.ust,
-  },
-  {
-    pid: 367,
-    lpSymbol: 'BTT-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x946696344e7d4346b223e1cf77035a76690d6a73',
-    },
-    token: tokens.btt,
-    quoteToken: tokens.wbnb,
   },
   {
     pid: 366,
