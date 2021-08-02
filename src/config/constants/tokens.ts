@@ -73,6 +73,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  revv: {
+    symbol: 'REVV',
+    address: {
+      56: '0x833f307ac507d47309fd8cdd1f835bef8d702a93',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://revvmotorsport.com/',
+  },
   skill: {
     symbol: 'SKILL',
     address: {
