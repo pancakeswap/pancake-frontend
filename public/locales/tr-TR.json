@@ -1297,7 +1297,6 @@
   "Connect a whitelisted project wallet to participate in Auctions.": "Connect a whitelisted project wallet to participate in Auctions.",
   "Your bid in Auction #%auctionId% was successful.": "Your bid in Auction #%auctionId% was successful.",
   "Your Farm will be launched as follows:": "Your Farm will be launched as follows:",
-  "Weekly CAKE rewards per farm": "Weekly CAKE rewards per farm",
   "Multiplier per farm": "Multiplier per farm",
   "Total whitelisted bidders": "Total whitelisted bidders",
   "Please specify auction ID": "Please specify auction ID",
@@ -1310,5 +1309,9 @@
   "Search address or token": "Search address or token",
   "This page is for projects to bid for farms.": "This page is for projects to bid for farms.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!",
-  "through community auctions so far!": "through community auctions so far!"
+  "through community auctions so far!": "through community auctions so far!",
+  "5 Winners": "5 Winners",
+  "20 Contenders...": "20 Contenders...",
+  "Farm Auctions": "Farm Auctions",
+  "auction bunny": "auction bunny"
 }
