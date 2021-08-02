@@ -98,7 +98,7 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, 
               {t('LP Info')}
             </SubMenuItem>
           )}
-          {lpAddress && (
+          {account && (
             <SubMenuItem as={LinkExternal} href={getBscScanLink(account, 'address')} bold={false} color="text">
               {t('Bidder Address')}
             </SubMenuItem>

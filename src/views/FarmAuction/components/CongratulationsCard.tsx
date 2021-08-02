@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@pancakeswap/uikit'
 import { Auction, Bidder } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
-import { CAKE_PER_WEEK_1X_FARM } from 'config'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useCongratulateAuctionWinner from '../hooks/useCongratulateAuctionWinner'
 import { FarmSchedule } from './AuctionDetailsCard/AuctionSchedule'
@@ -33,10 +32,6 @@ const CongratulationsCard: React.FC<{ currentAuction: Auction; bidders: Bidder[]
         <Text mb="16px">{t('Your bid in Auction #%auctionId% was successful.', { auctionId: auction.id })}</Text>
         <Text>{t('Your Farm will be launched as follows:')}</Text>
         <Flex flexDirection="column" mb="24px">
-          <Flex justifyContent="space-between" width="100%" pt="8px">
-            <Text color="textSubtle">{t('Weekly CAKE rewards per farm')}</Text>
-            <Text>{CAKE_PER_WEEK_1X_FARM.toLocaleString()}</Text>
-          </Flex>
           <Flex justifyContent="space-between" width="100%" pt="8px">
             <Text color="textSubtle">{t('Multiplier per farm')}</Text>
             <Text>1x</Text>
