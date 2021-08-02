@@ -196,7 +196,7 @@ export const UserMenu: React.FC = () => {
             </Box>
           </Box>
           <UserMenuComponent variant={variant} text={text} account="0x8b017905DC96B38f817473dc885F84D4C76bC113">
-            <UserMenuItem type="button" onClick={() => alert("clicked")}>
+            <UserMenuItem type="button" onClick={noop}>
               Wallet
             </UserMenuItem>
             <UserMenuItem type="button">Transactions</UserMenuItem>
