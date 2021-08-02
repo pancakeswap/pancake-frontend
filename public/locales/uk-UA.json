@@ -1247,5 +1247,16 @@
   "%trades% trades": "%trades% угод",
   "Provably fair, on-chain games.": "Ігри на блокчейні, чесність яких можна підтвердити.",
   "made in the last 30 days": "укладено за останні 30 днів",
-  "Win big with PancakeSwap.": "У PancakeSwap на вас чекають великі виграші."
+  "Win big with PancakeSwap.": "У PancakeSwap на вас чекають великі виграші.",
+  "Copied": "Copied",
+  "Make a Profile": "Make a Profile",
+  "Your Address": "Your Address",
+  "Your Wallet": "Your Wallet",
+  "Transactions": "Transactions",
+  "BNB Balance Low": "BNB Balance Low",
+  "BNB Balance": "BNB Balance",
+  "CAKE Balance": "CAKE Balance",
+  "You need BNB for transaction fees.": "You need BNB for transaction fees.",
+  "Disconnect": "Disconnect",
+  "Disconnect Wallet": "Disconnect Wallet"
 }
