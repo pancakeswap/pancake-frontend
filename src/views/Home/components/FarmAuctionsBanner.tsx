@@ -3,12 +3,21 @@ import styled from 'styled-components'
 import { Text, Flex, Button, ArrowForwardIcon, Link, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
-const NowLive = styled(Text)`
+const StyledSubheading = styled(Text)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
   font-size: 24px;
   font-weight: 600;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+`
+
+const StyledHeading = styled(Heading)`
+  color: #ffffff;
+  background: -webkit-linear-gradient(#7645d9 0%, #452a7a 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 6px transparent;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
 const Wrapper = styled.div`
@@ -20,6 +29,7 @@ const Wrapper = styled.div`
 `
 
 const Inner = styled(Flex)`
+  position: relative;
   padding: 24px;
   flex-direction: row;
   justify-content: space-between;
@@ -27,6 +37,7 @@ const Inner = styled(Flex)`
 `
 
 const LeftWrapper = styled(Flex)`
+  z-index: 1;
   width: 100%;
   flex-direction: column;
   justify-content: center;
@@ -37,16 +48,25 @@ const LeftWrapper = styled(Flex)`
   }
 `
 
-const RightWrapper = styled(Flex)`
-  align-items: center;
-  justify-content: flex-end;
+const RightWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  right: 24px;
+  opacity: 0.8;
+
   & img {
-    display: none;
+    height: 200px;
+    width: auto;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    opacity: 1;
+
     & img {
-      display: flex;
       height: 100%;
       width: auto;
     }
@@ -60,10 +80,10 @@ const LotteryBanner = () => {
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <NowLive>{t('20 Contenders...')}</NowLive>
-          <Heading scale="xxl" mb="16px" color="#ffffff">
+          <StyledSubheading>{t('20 Contenders...')}</StyledSubheading>
+          <StyledHeading scale="xxl" mb="16px" color="#ffffff">
             {t('5 Winners')}
-          </Heading>
+          </StyledHeading>
           <Link href="/farms/auction">
             <Button>
               <Text color="white" bold fontSize="16px" mr="4px">
