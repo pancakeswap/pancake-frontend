@@ -27,7 +27,7 @@ const pools: PoolConfig[] = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     sortOrder: 999,
-    tokenPerBlock: '',
+    tokenPerBlock: '1.331',
   },
   {
     sousId: 207,
