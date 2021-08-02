@@ -58,7 +58,6 @@ const RightWrapper = styled.div`
 
   & img {
     height: 200px;
-    width: auto;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -70,7 +69,6 @@ const RightWrapper = styled.div`
 
     & img {
       height: 100%;
-      width: auto;
     }
   }
 `
@@ -86,10 +84,10 @@ const LotteryBanner = () => {
           <StyledHeading scale="xxl">{t('5 Winners')}</StyledHeading>
           <Link href="/farms/auction">
             <Button>
-              <Text color="white" bold fontSize="16px" mr="4px">
+              <Text color="invertedContrast" bold fontSize="16px" mr="4px">
                 {t('Farm Auctions')}
               </Text>
-              <ArrowForwardIcon color="white" />
+              <ArrowForwardIcon color="invertedContrast" />
             </Button>
           </Link>
         </LeftWrapper>
