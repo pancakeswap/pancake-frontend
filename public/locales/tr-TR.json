@@ -1247,5 +1247,16 @@
   "%trades% trades": "%trades% yatırım",
   "Provably fair, on-chain games.": "Blokzincir üzerinde güvenilir oyunlar.",
   "made in the last 30 days": "son 30 gün içinde yapılan",
-  "Win big with PancakeSwap.": "PancakeSwap ile büyük kazan."
+  "Win big with PancakeSwap.": "PancakeSwap ile büyük kazan.",
+  "Copied": "Copied",
+  "Make a Profile": "Make a Profile",
+  "Your Address": "Your Address",
+  "Your Wallet": "Your Wallet",
+  "Transactions": "Transactions",
+  "BNB Balance Low": "BNB Balance Low",
+  "BNB Balance": "BNB Balance",
+  "CAKE Balance": "CAKE Balance",
+  "You need BNB for transaction fees.": "You need BNB for transaction fees.",
+  "Disconnect": "Disconnect",
+  "Disconnect Wallet": "Disconnect Wallet"
 }

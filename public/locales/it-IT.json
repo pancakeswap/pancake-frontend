@@ -1247,5 +1247,16 @@
   "%trades% trades": "%trades% scambi",
   "Provably fair, on-chain games.": "Giochi sulla blockchain dalle probabilità eque.",
   "made in the last 30 days": "effettuati negli ultimi 30 giorni",
-  "Win big with PancakeSwap.": "Vinci alla grande con PancakeSwap."
+  "Win big with PancakeSwap.": "Vinci alla grande con PancakeSwap.",
+  "Copied": "Copied",
+  "Make a Profile": "Make a Profile",
+  "Your Address": "Your Address",
+  "Your Wallet": "Your Wallet",
+  "Transactions": "Transactions",
+  "BNB Balance Low": "BNB Balance Low",
+  "BNB Balance": "BNB Balance",
+  "CAKE Balance": "CAKE Balance",
+  "You need BNB for transaction fees.": "You need BNB for transaction fees.",
+  "Disconnect": "Disconnect",
+  "Disconnect Wallet": "Disconnect Wallet"
 }

@@ -1247,5 +1247,16 @@
   "%trades% trades": "%trades%のトレード",
   "Provably fair, on-chain games.": "証明できる公正なオンチェーンゲーム。",
   "made in the last 30 days": "過去30日間",
-  "Win big with PancakeSwap.": "PancakeSwapで大当たり。"
+  "Win big with PancakeSwap.": "PancakeSwapで大当たり。",
+  "Copied": "Copied",
+  "Make a Profile": "Make a Profile",
+  "Your Address": "Your Address",
+  "Your Wallet": "Your Wallet",
+  "Transactions": "Transactions",
+  "BNB Balance Low": "BNB Balance Low",
+  "BNB Balance": "BNB Balance",
+  "CAKE Balance": "CAKE Balance",
+  "You need BNB for transaction fees.": "You need BNB for transaction fees.",
+  "Disconnect": "Disconnect",
+  "Disconnect Wallet": "Disconnect Wallet"
 }

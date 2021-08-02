@@ -1247,5 +1247,16 @@
   "%trades% trades": "%trades%交易",
   "Provably fair, on-chain games.": "公平可證的鏈上遊戲。",
   "made in the last 30 days": "在過去 30 天內達成",
-  "Win big with PancakeSwap.": "透過 PancakeSwap 贏得大獎。"
+  "Win big with PancakeSwap.": "透過 PancakeSwap 贏得大獎。",
+  "Copied": "Copied",
+  "Make a Profile": "Make a Profile",
+  "Your Address": "Your Address",
+  "Your Wallet": "Your Wallet",
+  "Transactions": "Transactions",
+  "BNB Balance Low": "BNB Balance Low",
+  "BNB Balance": "BNB Balance",
+  "CAKE Balance": "CAKE Balance",
+  "You need BNB for transaction fees.": "You need BNB for transaction fees.",
+  "Disconnect": "Disconnect",
+  "Disconnect Wallet": "Disconnect Wallet"
 }
