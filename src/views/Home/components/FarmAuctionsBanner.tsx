@@ -74,7 +74,7 @@ const LotteryBanner = () => {
           </Link>
         </LeftWrapper>
         <RightWrapper>
-          <img src="/images/decorations/auction-bunny.png" alt="auction bunny" />
+          <img src="/images/decorations/auction-bunny.png" alt={t('auction bunny')} />
         </RightWrapper>
       </Inner>
     </Wrapper>
