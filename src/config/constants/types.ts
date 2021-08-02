@@ -177,3 +177,58 @@ export interface LotteryTicketClaimData {
   cakeTotal: BigNumber
   roundId: string
 }
+
+// Farm Auction
+export interface FarmAuctionBidderConfig {
+  account: string
+  farmName: string
+  tokenName: string
+  projectSite?: string
+  lpAddress?: string
+}
+
+// Note: this status is slightly different compared to 'status' comfing
+// from Farm Auction smart contract
+export enum AuctionStatus {
+  ToBeAnnounced, // No specific dates/blocks to display
+  Pending, // Auction is scheduled but not live yet (i.e. waiting for startBlock)
+  Open, // Auction is open for bids
+  Finished, // Auction end block is reached, bidding is not possible
+  Closed, // Auction was closed in smart contract
+}
+
+export interface Auction {
+  id: number
+  status: AuctionStatus
+  startBlock: number
+  startDate: Date
+  endBlock: number
+  endDate: Date
+  auctionDuration: number
+  farmStartBlock: number
+  farmStartDate: Date
+  farmEndBlock: number
+  farmEndDate: Date
+  initialBidAmount: number
+  topLeaderboard: number
+  leaderboardThreshold: BigNumber
+}
+
+export interface BidderAuction {
+  id: number
+  amount: BigNumber
+  claimed: boolean
+}
+
+export interface Bidder extends FarmAuctionBidderConfig {
+  position?: number
+  isTopPosition: boolean
+  samePositionAsAbove: boolean
+  amount: BigNumber
+}
+
+export interface ConnectedBidder {
+  account: string
+  isWhitelisted: boolean
+  bidderData?: Bidder
+}

@@ -103,33 +103,6 @@ const FAQs = () => {
             </FoldableText>
           </CardBody>
         </StyledCard>
-        <StyledCard>
-          <CardHeader>
-            <Heading>{t('Terms & Conditions')}</Heading>
-          </CardHeader>
-          <CardBody>
-            <Flex flexDirection="column">
-              <Text mb="4px">
-                {t('By participating in an Community Farm Auction, you agree to the following terms.')}
-              </Text>
-              <List>
-                <li>
-                  {t(
-                    'A project being whitelisted for participation in an auction by PancakeSwap is in no way an endorsement or recommendation about said project.',
-                  )}
-                </li>
-                <li>
-                  {t('PancakeSwap strongly advise against sending funds to any projects which request donations.')}
-                </li>
-                <li>
-                  {t(
-                    'PancakeSwap reserves all rights to remove any project it deems to have acted with malicious or dangerous intent from auctions at any time.',
-                  )}
-                </li>
-              </List>
-            </Flex>
-          </CardBody>
-        </StyledCard>
       </Flex>
     </Flex>
   )
