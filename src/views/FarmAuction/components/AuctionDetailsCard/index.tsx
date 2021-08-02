@@ -58,50 +58,51 @@ const AuctionDetails: React.FC<AuctionDetailsProps> = ({ auction, conncetedBidde
     )
   }
 
-  const notConnectedOrNotWhitelisted = !conncetedBidder || (conncetedBidder && !conncetedBidder.isWhitelisted)
-  const whitelistedAndReadyToBid = !notConnectedOrNotWhitelisted && conncetedBidder.bidderData
-
-  let bidSection = (
-    <>
-      <Skeleton width="200px" height="28px" />
-      <Flex justifyContent="space-between" width="100%" pt="24px" px="8px">
-        <Skeleton width="120px" height="24px" />
-        <Skeleton width="86px" height="24px" />
-      </Flex>
-      <Flex justifyContent="space-between" width="100%" pt="8px" px="8px">
-        <Skeleton width="96px" height="24px" />
-        <Skeleton width="42px" height="24px" />
-      </Flex>
-    </>
-  )
-  if (notConnectedOrNotWhitelisted || auction.status !== AuctionStatus.Open) {
-    bidSection = <CannotBidMessage />
-  }
-  if (whitelistedAndReadyToBid && auction.status === AuctionStatus.Open) {
-    const { amount, position } = conncetedBidder.bidderData
-    bidSection = (
+  const getBidSection = () => {
+    const notConnectedOrNotWhitelisted = !conncetedBidder || (conncetedBidder && !conncetedBidder.isWhitelisted)
+    const whitelistedAndReadyToBid = !notConnectedOrNotWhitelisted && conncetedBidder.bidderData
+    if (notConnectedOrNotWhitelisted || auction.status !== AuctionStatus.Open) {
+      return <CannotBidMessage />
+    }
+    if (whitelistedAndReadyToBid) {
+      const { amount, position } = conncetedBidder.bidderData
+      return (
+        <>
+          <Tag outline variant="success" startIcon={<CheckmarkCircleIcon />}>
+            {t('Connected as %projectName%', { projectName: conncetedBidder.bidderData.tokenName })}
+          </Tag>
+          <Flex justifyContent="space-between" width="100%" pt="24px">
+            <Text small color="textSubtle">
+              {t('Your existing bid')}
+            </Text>
+            <Text small>{getBalanceNumber(amount).toLocaleString()} CAKE</Text>
+          </Flex>
+          <Flex justifyContent="space-between" width="100%" pt="8px">
+            <Text small color="textSubtle">
+              {t('Your position')}
+            </Text>
+            <Text small>{position ? `#${position}` : '-'}</Text>
+          </Flex>
+          <Button my="24px" width="100%" onClick={onPresentPlaceBid}>
+            {t('Place bid')}
+          </Button>
+          <Text color="textSubtle" small>
+            {t('If your bid is unsuccessful, you’ll be able to reclaim your CAKE after the auction.')}
+          </Text>
+        </>
+      )
+    }
+    return (
       <>
-        <Tag outline variant="success" startIcon={<CheckmarkCircleIcon />}>
-          {t('Connected as %projectName%', { projectName: conncetedBidder.bidderData.tokenName })}
-        </Tag>
-        <Flex justifyContent="space-between" width="100%" pt="24px">
-          <Text small color="textSubtle">
-            {t('Your existing bid')}
-          </Text>
-          <Text small>{getBalanceNumber(amount).toLocaleString()} CAKE</Text>
+        <Skeleton width="200px" height="28px" />
+        <Flex justifyContent="space-between" width="100%" pt="24px" px="8px">
+          <Skeleton width="120px" height="24px" />
+          <Skeleton width="86px" height="24px" />
         </Flex>
-        <Flex justifyContent="space-between" width="100%" pt="8px">
-          <Text small color="textSubtle">
-            {t('Your position')}
-          </Text>
-          <Text small>{position ? `#${position}` : '-'}</Text>
+        <Flex justifyContent="space-between" width="100%" pt="8px" px="8px">
+          <Skeleton width="96px" height="24px" />
+          <Skeleton width="42px" height="24px" />
         </Flex>
-        <Button my="24px" width="100%" onClick={onPresentPlaceBid}>
-          {t('Place bid')}
-        </Button>
-        <Text color="textSubtle" small>
-          {t('If your bid is unsuccessful, you’ll be able to reclaim your CAKE after the auction.')}
-        </Text>
       </>
     )
   }
@@ -116,7 +117,7 @@ const AuctionDetails: React.FC<AuctionDetailsProps> = ({ auction, conncetedBidde
       <CardBody>
         <AuctionSchedule auction={auction} />
         <Flex mt="24px" flexDirection="column" justifyContent="center" alignItems="center">
-          {bidSection}
+          {getBidSection()}
         </Flex>
       </CardBody>
       <AuctionFooter auction={auction} />
