@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 const StyledSubheading = styled(Heading)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
   font-size: 24px;
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
