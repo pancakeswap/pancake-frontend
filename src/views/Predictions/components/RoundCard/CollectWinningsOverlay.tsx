@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, TrophyGoldIcon } from '@pancakeswap/uikit'
-import { useGetIsClaimable } from 'state/hooks'
+import { useGetIsClaimable } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import CollectWinningsButton from '../CollectWinningsButton'
 
