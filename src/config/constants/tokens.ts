@@ -1818,6 +1818,14 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://coin98.com/',
+  }, morralla: {
+    symbol: 'MRRLL',
+    address: {
+      56: '0xd163500d1C4595FB28349e154A1491700525cE9B',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://tianguis.finance/',
   },
 }
 
