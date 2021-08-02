@@ -43,7 +43,7 @@ export const sortAuctionBidders = (bidders: BidsPerAuction[], auction?: Auction)
     adjustedPosition = samePositionAsAbove ? adjustedPosition : adjustedPosition + 1
     // Reclaim and congratulations card don't need auction data or isTopPosition
     // in this case it is set to false just to avoid TS errors
-    let isTopPosition = auction ? adjustedPosition <= auction.topLeaderboard : false
+    let isTopPosition = auction ? index + 1 <= auction.topLeaderboard : false
     // This is here in case we closed auction with less/more winners for some reason
     if (auction && auction.leaderboardThreshold.gt(0)) {
       isTopPosition = auction.leaderboardThreshold.lte(amount)
