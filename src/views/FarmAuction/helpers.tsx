@@ -34,32 +34,25 @@ export const sortAuctionBidders = (bidders: BidsPerAuction[], auction?: Auction)
     })
 
   // Positions need to be adjusted in case 2 bidders has the same bid amount
-  let adjustedPosition = 1
+  // adjustedPosition will always increase by 1 in the following block for the first bidder
+  let adjustedPosition = 0
 
   return sortedBidders.map((bidder, index, unadjustedBidders) => {
     const amount = ethersToBigNumber(bidder.amount)
-    if (index !== 0) {
-      const samePositionAsAbove = bidder.amount.eq(unadjustedBidders[index - 1].amount)
-      adjustedPosition = samePositionAsAbove ? adjustedPosition : adjustedPosition + 1
-      // Reclaim and congratulations card don't need auction data or isTopPosition
-      // in this case it is set to false just to avoid TS errors
-      let isTopPosition = auction ? adjustedPosition <= auction.topLeaderboard : false
-      // This is here in case we closed auction with less/more winners for some reason
-      if (auction && auction.leaderboardThreshold.gt(0)) {
-        isTopPosition = auction.leaderboardThreshold.lte(amount)
-      }
-      return {
-        ...bidder,
-        position: adjustedPosition,
-        isTopPosition,
-        samePositionAsAbove,
-        amount,
-      }
+    const samePositionAsAbove = index === 0 ? false : bidder.amount.eq(unadjustedBidders[index - 1].amount)
+    adjustedPosition = samePositionAsAbove ? adjustedPosition : adjustedPosition + 1
+    // Reclaim and congratulations card don't need auction data or isTopPosition
+    // in this case it is set to false just to avoid TS errors
+    let isTopPosition = auction ? adjustedPosition <= auction.topLeaderboard : false
+    // This is here in case we closed auction with less/more winners for some reason
+    if (auction && auction.leaderboardThreshold.gt(0)) {
+      isTopPosition = auction.leaderboardThreshold.lte(amount)
     }
     return {
       ...bidder,
-      isTopPosition: true,
-      samePositionAsAbove: false,
+      position: adjustedPosition,
+      isTopPosition,
+      samePositionAsAbove,
       amount,
     }
   })
