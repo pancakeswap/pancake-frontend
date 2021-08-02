@@ -1247,5 +1247,16 @@
   "%trades% trades": "%trades% ট্রেড",
   "Provably fair, on-chain games.": "যথাযথভাবে সুষ্ঠু, অন-চেইন গেম। ",
   "made in the last 30 days": "গত 30 দিনে তৈরি",
-  "Win big with PancakeSwap.": "PancakeSwap এর মাধ্যমে বিশাল জয় অর্জন করুন।"
+  "Win big with PancakeSwap.": "PancakeSwap এর মাধ্যমে বিশাল জয় অর্জন করুন।",
+  "Copied": "Copied",
+  "Make a Profile": "Make a Profile",
+  "Your Address": "Your Address",
+  "Your Wallet": "Your Wallet",
+  "Transactions": "Transactions",
+  "BNB Balance Low": "BNB Balance Low",
+  "BNB Balance": "BNB Balance",
+  "CAKE Balance": "CAKE Balance",
+  "You need BNB for transaction fees.": "You need BNB for transaction fees.",
+  "Disconnect": "Disconnect",
+  "Disconnect Wallet": "Disconnect Wallet"
 }
