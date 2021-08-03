@@ -9,13 +9,13 @@ interface HeadingProps extends TextProps {
 const RowHeading: React.FC<HeadingProps> = ({ text, ...props }) => {
   const { theme } = useTheme()
   const split = text.split(' ')
-  const lastWord = split.pop()
-  const firstWords = split.join(' ')
+  const firstWord = split[0]
+  const remainingWords = split.slice(1).join(' ')
 
   return (
-    <Heading mb="24px" {...props}>
-      {firstWords}
-      <span style={{ color: theme.colors.secondary }}> {lastWord}</span>
+    <Heading {...props}>
+      {firstWord}
+      <span style={{ color: theme.colors.secondary }}> {remainingWords}</span>
     </Heading>
   )
 }
