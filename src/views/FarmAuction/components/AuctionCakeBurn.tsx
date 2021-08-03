@@ -13,7 +13,7 @@ const AuctionCakeBurn: React.FC = () => {
   const farmAuctionContract = useFarmAuctionContract()
   const cakePriceBusd = usePriceCakeBusd()
 
-  const burnedAmountAsUSD = cakePriceBusd.times(burnedCakeAmount).toNumber()
+  const burnedAmountAsUSD = cakePriceBusd.times(burnedCakeAmount)
 
   useEffect(() => {
     const fetchBurnedCakeAmount = async () => {
@@ -43,14 +43,16 @@ const AuctionCakeBurn: React.FC = () => {
         <Text fontSize="24px" bold>
           {t('through community auctions so far!')}
         </Text>
-        {!Number.isNaN(burnedAmountAsUSD) && burnedAmountAsUSD !== 0 ? (
-          <Text color="textSubtle">~${burnedAmountAsUSD.toLocaleString('en', { maximumFractionDigits: 0 })}</Text>
+        {!burnedAmountAsUSD.isNaN() && !burnedAmountAsUSD.isZero() ? (
+          <Text color="textSubtle">
+            ~${burnedAmountAsUSD.toNumber().toLocaleString('en', { maximumFractionDigits: 0 })}
+          </Text>
         ) : (
           <Skeleton width="128px" />
         )}
       </Flex>
       <Flex flex="1" alignSelf="center">
-        <img width="350px" height="320px" src="/images/burnt-cake.png" alt="Burnt CAKE" />
+        <img width="350px" height="320px" src="/images/burnt-cake.png" alt={t('Burnt CAKE')} />
       </Flex>
     </Flex>
   )
