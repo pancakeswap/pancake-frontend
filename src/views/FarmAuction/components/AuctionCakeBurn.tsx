@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Text, Flex, Skeleton } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton, Box, Image } from '@pancakeswap/uikit'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -52,7 +52,9 @@ const AuctionCakeBurn: React.FC = () => {
         )}
       </Flex>
       <Flex flex="1" alignSelf="center">
-        <img width="350px" height="320px" src="/images/burnt-cake.png" alt={t('Burnt CAKE')} />
+        <Box width="350px">
+          <Image width={350} height={320} src="/images/burnt-cake.png" alt={t('Burnt CAKE')} />
+        </Box>
       </Flex>
     </Flex>
   )
