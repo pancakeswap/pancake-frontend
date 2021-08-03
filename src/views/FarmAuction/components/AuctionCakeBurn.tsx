@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import CountUp from 'react-countup'
 import { Text, Flex, Skeleton } from '@pancakeswap/uikit'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
+import Balance from 'components/Balance'
 
 const AuctionCakeBurn: React.FC = () => {
-  const [burnedCakeAmount, setBurnedCakeAmount] = useState(null)
+  const [burnedCakeAmount, setBurnedCakeAmount] = useState(0)
   const { t } = useTranslation()
   const farmAuctionContract = useFarmAuctionContract()
   const cakePriceBusd = usePriceCakeBusd()
@@ -25,17 +25,15 @@ const AuctionCakeBurn: React.FC = () => {
         console.error('Failed to fetch burned auction cake', error)
       }
     }
-    if (!burnedCakeAmount) {
+    if (burnedCakeAmount === 0) {
       fetchBurnedCakeAmount()
     }
   }, [burnedCakeAmount, farmAuctionContract])
   return (
     <Flex flexDirection={['column-reverse', null, 'row']}>
       <Flex flexDirection="column" flex="2">
-        {burnedCakeAmount !== null ? (
-          <Text fontSize="64px" bold>
-            <CountUp start={0} end={burnedCakeAmount} suffix=" CAKE" decimals={0} duration={1} separator="," />
-          </Text>
+        {burnedCakeAmount !== 0 ? (
+          <Balance fontSize="64px" bold value={burnedCakeAmount} decimals={0} unit=" CAKE" />
         ) : (
           <Skeleton width="256px" height="64px" />
         )}
@@ -45,7 +43,7 @@ const AuctionCakeBurn: React.FC = () => {
         <Text fontSize="24px" bold>
           {t('through community auctions so far!')}
         </Text>
-        {!Number.isNaN(burnedAmountAsUSD) ? (
+        {!Number.isNaN(burnedAmountAsUSD) && burnedAmountAsUSD !== 0 ? (
           <Text color="textSubtle">~${burnedAmountAsUSD.toLocaleString('en', { maximumFractionDigits: 0 })}</Text>
         ) : (
           <Skeleton width="128px" />
