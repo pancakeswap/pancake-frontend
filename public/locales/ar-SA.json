@@ -1291,7 +1291,7 @@
   "Bid must be a multiple of 10": "Bid must be a multiple of 10",
   "First bid must be %initialBidAmount% CAKE or more.": "First bid must be %initialBidAmount% CAKE or more.",
   "If your bid is unsuccessful, you’ll be able to reclaim your CAKE after the auction.": "If your bid is unsuccessful, you’ll be able to reclaim your CAKE after the auction.",
-  "Notice": "Notice",
+  "Notice": "إشعار",
   "This page is a functional page, for projects to bid for farms.": "This page is a functional page, for projects to bid for farms.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view the auction bids in real time!": "If you’re not a whitelisted project, you won’t be able to participate, but you can still view the auction bids in real time!",
   "Connect a whitelisted project wallet to participate in Auctions.": "Connect a whitelisted project wallet to participate in Auctions.",
