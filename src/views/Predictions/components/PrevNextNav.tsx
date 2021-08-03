@@ -1,7 +1,7 @@
 import React from 'react'
 import { ArrowBackIcon, ArrowForwardIcon, BunnyCardsIcon, Card, IconButton } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useGetCurrentEpoch, useGetSortedRounds } from 'state/hooks'
+import { useGetCurrentEpoch, useGetSortedRounds } from 'state/predictions/hooks'
 import useSwiper from '../hooks/useSwiper'
 
 const StyledPrevNextNav = styled(Card)`
