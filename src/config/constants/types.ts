@@ -182,6 +182,8 @@ export interface LotteryTicketClaimData {
 export interface FarmAuctionBidderConfig {
   account: string
   farmName: string
+  tokenAddress: string
+  quoteToken: Token
   tokenName: string
   projectSite?: string
   lpAddress?: string
