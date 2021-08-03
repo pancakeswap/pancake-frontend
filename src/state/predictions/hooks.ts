@@ -129,3 +129,8 @@ export const useGetCurrentRoundLockTimestamp = () => {
 
   return currentRound.lockTimestamp
 }
+
+// Leaderboard
+export const useGetLeaderboardLoadingState = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.loadingState)
+}

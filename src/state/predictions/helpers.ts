@@ -270,13 +270,9 @@ export const getTotalWon = async (): Promise<number> => {
   return Math.max(totalBNB - totalBNBTreasury, 0)
 }
 
-type BetHistoryWhereClause = Record<string, string | number | boolean | string[]>
+type WhereClause = Record<string, string | number | boolean | string[]>
 
-export const getBetHistory = async (
-  where: BetHistoryWhereClause = {},
-  first = 1000,
-  skip = 0,
-): Promise<BetResponse[]> => {
+export const getBetHistory = async (where: WhereClause = {}, first = 1000, skip = 0): Promise<BetResponse[]> => {
   const response = await request(
     GRAPH_API_PREDICTION,
     gql`
@@ -320,7 +316,6 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
   return response.bet
 }
 
-// V2 REFACTOR
 export const getLedgerData = async (account: string, epochs: number[]) => {
   const address = getPredictionsAddress()
   const ledgerCalls = epochs.map((epoch) => ({
@@ -330,6 +325,57 @@ export const getLedgerData = async (account: string, epochs: number[]) => {
   }))
   const response = await multicallv2<PredictionsLedgerResponse[]>(predictionsAbi, ledgerCalls)
   return response
+}
+
+export const LEADERBOARD_RESULTS_PER_PAGE = 20
+
+interface GetPredictionUsersOptions {
+  skip?: number
+  first?: number
+  order?: string
+  orderDir?: string
+  where?: WhereClause
+}
+
+const defaultPredictionUserOptions = {
+  skip: 0,
+  first: LEADERBOARD_RESULTS_PER_PAGE,
+  order: 'createdAt',
+  orderDir: 'desc',
+}
+
+export const getPredictionUsers = async (options: GetPredictionUsersOptions = {}): Promise<UserResponse[]> => {
+  const { first, skip, where, order, orderDir } = { ...defaultPredictionUserOptions, ...options }
+
+  const response = await request(
+    GRAPH_API_PREDICTION,
+    gql`
+      query getUsers($first: Int!, $skip: Int!, $where: User_filter, $orderBy: User_orderBy, $orderDir: OrderDirection) {
+        users(first: $first, skip: $skip, where: $where, orderBy: $orderBy, orderDirection: $orderDir) {
+          ${getUserBaseFields()} 
+        }
+      }
+    `,
+    { first, skip, where, order, orderDir },
+  )
+  return response.users
+}
+
+export const getPredictionUser = async (account: string): Promise<UserResponse> => {
+  const response = await request(
+    GRAPH_API_PREDICTION,
+    gql`
+      query getUser($id: ID!) {
+        user(id: $id) {
+          ${getUserBaseFields()}
+        }
+      }
+  `,
+    {
+      id: account.toLowerCase(),
+    },
+  )
+  return response.user
 }
 
 export const getClaimStatuses = async (
