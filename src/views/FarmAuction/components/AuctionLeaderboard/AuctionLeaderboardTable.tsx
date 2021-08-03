@@ -60,7 +60,7 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, 
       <GridCell isTopPosition={isTopPosition}>
         <Flex flexDirection="column" pl={['8px']}>
           <Flex>
-            <Text bold={isTopPosition} textTransform="uppercase" mr="4px">
+            <Text bold={isTopPosition} mr="4px">
               {farmName}
             </Text>
             {!isMobile && <Text>(1x)</Text>}
