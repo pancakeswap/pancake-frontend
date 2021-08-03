@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import PageSection from 'components/PageSection'
 import { useWeb3React } from '@web3-react/core'
 import useTheme from 'hooks/useTheme'
-import { usePollFarmsData } from 'state/farms/hooks'
 import Container from 'components/Layout/Container'
 import Hero from './components/Hero'
 import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
@@ -44,8 +43,6 @@ const Home: React.FC = () => {
   const { account } = useWeb3React()
 
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
-
-  usePollFarmsData(true)
 
   return (
     <>
