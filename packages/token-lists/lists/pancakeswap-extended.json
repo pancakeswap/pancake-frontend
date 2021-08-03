@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-08-02T02:27:28.945Z",
+  "timestamp": "2021-08-03T08:58:43.225Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 14
+    "patch": 15
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -157,6 +157,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0.png"
     },
     {
+      "name": "BabyCake",
+      "symbol": "BABYCAKE",
+      "address": "0xdB8D30b74bf098aF214e862C90E647bbB1fcC58c",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xdB8D30b74bf098aF214e862C90E647bbB1fcC58c.png"
+    },
+    {
       "name": "Bakery Token",
       "symbol": "BAKE",
       "address": "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5",
@@ -275,6 +283,14 @@
       "chainId": 56,
       "decimals": 6,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x63870A18B6e42b01Ef1Ad8A2302ef50B7132054F.png"
+    },
+    {
+      "name": "Binamon",
+      "symbol": "BMON",
+      "address": "0x08ba0619b1e7A582E0BCe5BBE9843322C954C340",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x08ba0619b1e7A582E0BCe5BBE9843322C954C340.png"
     },
     {
       "name": "Multiplier",
@@ -725,6 +741,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x948d2a81086a075b3130bac19e4c6dee1d2e3fe8.png"
     },
     {
+      "name": "MetaHero",
+      "symbol": "HERO",
+      "address": "0xD40bEDb44C081D2935eebA6eF5a3c8A31A1bBE13",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xD40bEDb44C081D2935eebA6eF5a3c8A31A1bBE13.png"
+    },
+    {
       "name": "Hedget",
       "symbol": "HGET",
       "address": "0xC7d8D35EBA58a0935ff2D5a33Df105DD9f071731",
@@ -963,6 +987,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x49022089e78a8D46Ec87A3AF86a1Db6c189aFA6f.png"
+    },
+    {
+      "name": "MacaronSwap",
+      "symbol": "MCRN",
+      "address": "0xacb2d47827C9813AE26De80965845D80935afd0B",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xacb2d47827C9813AE26De80965845D80935afd0B.png"
     },
     {
       "name": "Mirror GOOGL Token",
@@ -1619,6 +1651,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x4691937a7508860F876c9c0a2a617E7d9E945D4B.png"
+    },
+    {
+      "name": "Wall Street Games",
+      "symbol": "WSG",
+      "address": "0xA58950F05FeA2277d2608748412bf9F802eA4901",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xA58950F05FeA2277d2608748412bf9F802eA4901.png"
     },
     {
       "name": "Soteria",

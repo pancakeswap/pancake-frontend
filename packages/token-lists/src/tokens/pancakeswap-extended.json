@@ -1710,5 +1710,45 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x833F307aC507D47309fD8CDD1F835BeF8D702a93.png"
+  },
+  {
+    "name": "Binamon",
+    "symbol": "BMON",
+    "address": "0x08ba0619b1e7A582E0BCe5BBE9843322C954C340",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x08ba0619b1e7A582E0BCe5BBE9843322C954C340.png"
+  },
+  {
+    "name": "BabyCake",
+    "symbol": "BABYCAKE",
+    "address": "0xdB8D30b74bf098aF214e862C90E647bbB1fcC58c",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xdB8D30b74bf098aF214e862C90E647bbB1fcC58c.png"
+  },
+  {
+    "name": "Wall Street Games",
+    "symbol": "WSG",
+    "address": "0xA58950F05FeA2277d2608748412bf9F802eA4901",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xA58950F05FeA2277d2608748412bf9F802eA4901.png"
+  },
+  {
+    "name": "MetaHero",
+    "symbol": "HERO",
+    "address": "0xD40bEDb44C081D2935eebA6eF5a3c8A31A1bBE13",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xD40bEDb44C081D2935eebA6eF5a3c8A31A1bBE13.png"
+  },
+  {
+    "name": "MacaronSwap",
+    "symbol": "MCRN",
+    "address": "0xacb2d47827C9813AE26De80965845D80935afd0B",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xacb2d47827C9813AE26De80965845D80935afd0B.png"
   }
 ]
