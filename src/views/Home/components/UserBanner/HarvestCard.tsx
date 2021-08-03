@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Card, CardBody, Flex, Skeleton, Text, Link, ArrowForwardIcon } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -9,6 +10,8 @@ import { useMasterchef } from 'hooks/useContract'
 import { harvestFarm } from 'utils/calls'
 import Balance from 'components/Balance'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
+import { usePools } from 'state/pools/hooks'
+import usePoolsWithBalance from 'views/Home/hooks/usePoolsWithBalance'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -18,11 +21,14 @@ const StyledCard = styled(Card)`
 const HarvestCard = () => {
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
-  const { farmsWithStakedBalance, earningsSum } = useFarmsWithBalance()
+  const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
+  const { poolsWithRewardsBalance, earningsSum: poolEarningsSum } = usePoolsWithBalance()
+
   const masterChefContract = useMasterchef()
   const cakePriceBusd = usePriceCakeBusd()
-  const earningsBusd = new BigNumber(earningsSum).multipliedBy(cakePriceBusd)
+  const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
   const numFarmsToCollect = farmsWithStakedBalance.length
 
   const earningsText = t('%earningsBusd% to collect from %count% %farms%', {
@@ -80,7 +86,7 @@ const HarvestCard = () => {
             <Link href="farms">
               <Button width={['100%', null, null, 'auto']} variant="secondary">
                 <Text color="primary" bold>
-                  {t('Farms')}
+                  {t('Start earning')}
                 </Text>
                 <ArrowForwardIcon ml="4px" color="primary" />
               </Button>
