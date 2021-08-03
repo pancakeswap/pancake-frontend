@@ -15,6 +15,7 @@ import AuctionTimer from './components/AuctionTimer'
 import ReclaimBidCard from './components/ReclaimBidCard'
 import NotWhitelistedNotice from './components/NotWhitelistedNotice'
 import CongratulationsCard from './components/CongratulationsCard'
+import AuctionCakeBurn from './components/AuctionCakeBurn'
 
 const StyledHeader = styled(PageHeader)`
   max-height: max-content;
@@ -66,6 +67,8 @@ const FarmAuction = () => {
 
   const { currentAuction, bidders, conncetedBidder, refreshBidders } = useCurrentFarmAuction(account)
   const FAQS_BG = 'linear-gradient(180deg, #CBD7EF 0%, #9A9FD0 100%)'
+  const CAKE_BURN_BG = 'radial-gradient(50% 79.31% at 50% 50%, #FAF9FA 0%, #EAECF4 100%)'
+  const CAKE_BURN_TOP_FILL = 'radial-gradient(ellipse at bottom, #f0f1f6, #EAECF4)'
 
   return (
     <>
@@ -132,7 +135,23 @@ const FarmAuction = () => {
             <AuctionLeaderboard auction={currentAuction} bidders={bidders} />
           </AuctionContainer>
         </PageSection>
-        <PageSection p="24px 0" background={FAQS_BG} index={3} hasCurvedDivider={false}>
+        <PageSection
+          background={CAKE_BURN_BG}
+          index={2}
+          innerProps={{ style: { width: '100%' } }}
+          dividerPosition="top"
+          dividerFill={{ light: CAKE_BURN_TOP_FILL }}
+        >
+          <AuctionCakeBurn />
+        </PageSection>
+        <PageSection
+          background={FAQS_BG}
+          clipFill={{ light: '#CBD7EF' }}
+          dividerFill={{ light: CAKE_BURN_BG }}
+          concaveDivider
+          index={3}
+          dividerPosition="top"
+        >
           <FAQs />
         </PageSection>
       </>
