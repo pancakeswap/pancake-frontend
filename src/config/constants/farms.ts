@@ -39,6 +39,56 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 436,
+    lpSymbol: 'BABYCAKE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb5e33fE13a821e55ED33C884589a804B1b4F6fD8',
+    },
+    token: tokens.babycake,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 437,
+    lpSymbol: 'BMON-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3C2b7B578Dd2175A1c3524Aa0D515106282Bf108',
+    },
+    token: tokens.bmon,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 438,
+    lpSymbol: 'HERO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xe267018C943E77992e7e515724B07b9CE7938124',
+    },
+    token: tokens.hero,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 439,
+    lpSymbol: 'WSG-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x37Ff7D4459ad96E0B01275E5efffe091f33c2CAD',
+    },
+    token: tokens.wsg,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 440,
+    lpSymbol: 'MCRN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xe8D5d81dac092Ae61d097f84EFE230759BF2e522',
+    },
+    token: tokens.mcrn,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 435,
     lpSymbol: 'REVV-BNB LP',
     lpAddresses: {
