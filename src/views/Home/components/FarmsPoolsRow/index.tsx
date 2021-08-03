@@ -1,26 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
-import { useFarms, usePriceCakeBusd } from 'state/farms/hooks'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
-import { useAppDispatch } from 'state'
-import { fetchFarmsPublicDataAsync, nonArchivedFarms } from 'state/farms'
-import { getFarmApr } from 'utils/apr'
-import BigNumber from 'bignumber.js'
-import { orderBy } from 'lodash'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import { Farm } from 'state/types'
-import { Skeleton, Flex, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
+import useGetTopFarmsByApr from 'views/Home/hooks/useGetTopFarmsByApr'
+import { Flex, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
 import TopFarm from './TopFarm'
 import RowHeading from './RowHeading'
-
-export enum FetchStatus {
-  NOT_FETCHED = 'not-fetched',
-  FETCHING = 'fetching',
-  SUCCESS = 'success',
-  FAILED = 'failed',
-}
 
 const Grid = styled.div`
   display: grid;
@@ -39,66 +24,10 @@ const Grid = styled.div`
 `
 
 const FarmsPoolsRow = () => {
-  const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
-  const [topFarms, setTopFarms] = useState([null, null, null, null, null])
   const [showFarms, setShowFarms] = useState(true)
   const { t } = useTranslation()
-  const { data: farms } = useFarms()
-  const dispatch = useAppDispatch()
   const { observerRef, isIntersecting } = useIntersectionObserver()
-
-  const cakePriceBusdAsString = usePriceCakeBusd().toString()
-
-  const cakePriceBusd = useMemo(() => {
-    return new BigNumber(cakePriceBusdAsString)
-  }, [cakePriceBusdAsString])
-
-  useEffect(() => {
-    const fetchFarmData = async () => {
-      setFetchStatus(FetchStatus.FETCHING)
-      const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-      try {
-        console.log('fetching')
-        await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
-        console.log('fetched')
-        setFetchStatus(FetchStatus.SUCCESS)
-      } catch (e) {
-        console.error(e)
-        setFetchStatus(FetchStatus.FAILED)
-      }
-    }
-
-    if (isIntersecting && fetchStatus === FetchStatus.NOT_FETCHED) {
-      fetchFarmData()
-      console.log('fetchFarmData')
-    }
-  }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting])
-
-  useEffect(() => {
-    const getTopFarmsByApr = (farmsState: Farm[]) => {
-      const farmsWithPrices = farmsState.filter((farm) => farm.lpTotalInQuoteToken && farm.quoteToken.busdPrice)
-
-      const farmsWithApr: FarmWithStakedValue[] = farmsWithPrices.map((farm) => {
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)
-        const { cakeRewardsApr, lpRewardsApr } = getFarmApr(
-          new BigNumber(farm.poolWeight),
-          cakePriceBusd,
-          totalLiquidity,
-          farm.lpAddresses[ChainId.MAINNET],
-        )
-
-        return { ...farm, apr: cakeRewardsApr, lpRewardsApr }
-      })
-
-      const sortedByApr = orderBy(farmsWithApr, (farm) => farm.apr + farm.lpRewardsApr, 'desc')
-      setTopFarms(sortedByApr.slice(0, 5))
-    }
-
-    if (fetchStatus === FetchStatus.SUCCESS && !topFarms[0]) {
-      console.log('getTopFarmsByApr')
-      getTopFarmsByApr(farms)
-    }
-  }, [setTopFarms, farms, fetchStatus, cakePriceBusd, topFarms])
+  const { topFarms } = useGetTopFarmsByApr(isIntersecting)
 
   return (
     <div ref={observerRef}>
