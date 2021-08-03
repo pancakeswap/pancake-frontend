@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import { Token as SDKToken } from '@pancakeswap/sdk'
 import { SerializedBigNumber, TranslatableText } from 'state/types'
 
 export interface Address {
@@ -184,7 +183,7 @@ export interface FarmAuctionBidderConfig {
   account: string
   farmName: string
   tokenAddress: string
-  quoteToken: SDKToken
+  quoteToken: Token
   tokenName: string
   projectSite?: string
   lpAddress?: string
