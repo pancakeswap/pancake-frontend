@@ -59,7 +59,7 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 438,
+    pid: 439,
     lpSymbol: 'HERO-BNB LP',
     lpAddresses: {
       97: '',
@@ -69,7 +69,7 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 439,
+    pid: 438,
     lpSymbol: 'WSG-BNB LP',
     lpAddresses: {
       97: '',
