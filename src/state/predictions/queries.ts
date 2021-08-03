@@ -125,19 +125,19 @@ export const getBetBaseFields = () => `
 `
 
 export const getUserBaseFields = () => `
- id
- createdAt
- updatedAt
- block
- totalBets
- totalBetsBull
- totalBetsBear
- totalBNB
- totalBNBBull
- totalBNBBear
- totalBetsClaimed
- totalBNBClaimed
- winRate
- averageBNB
- netBNB
+  id
+  createdAt
+  updatedAt
+  block
+  totalBets
+  totalBetsBull
+  totalBetsBear
+  totalBNB
+  totalBNBBull
+  totalBNBBear
+  totalBetsClaimed
+  totalBNBClaimed
+  winRate
+  averageBNB
+  netBNB
 `

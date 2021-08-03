@@ -243,6 +243,7 @@ export interface PredictionUser {
   winRate: number
   averageBNB: number
   netBNB: number
+  bets?: Bet[]
 }
 
 export enum HistoryFilter {

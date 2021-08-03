@@ -32,6 +32,46 @@ describe('makeFutureRoundResponse', () => {
   })
 })
 
+describe('transformUserResponse', () => {
+  const userResponse = {
+    averageBNB: '0.0101753905736882928',
+    block: '9316304',
+    createdAt: '1626767110',
+    id: '0x54f292760e248cfe64191c7d85260f9ddaa01f2b',
+    netBNB: '0.057914277602874121',
+    totalBNB: '0.050876952868441464',
+    totalBNBBear: '0.050876952868441464',
+    totalBNBBull: '0',
+    totalBNBClaimed: '0.119668183339757049',
+    totalBets: '5',
+    totalBetsBear: '3',
+    totalBetsBull: '2',
+    totalBetsClaimed: '1',
+    updatedAt: '1626770557',
+    winRate: '20',
+  }
+
+  it('transforms user response correctly', () => {
+    expect(transformUserResponse(userResponse)).toEqual({
+      averageBNB: 0.0101753905736882928,
+      block: 9316304,
+      createdAt: 1626767110,
+      id: '0x54f292760e248cfe64191c7d85260f9ddaa01f2b',
+      netBNB: 0.057914277602874121,
+      totalBNB: 0.050876952868441464,
+      totalBNBBear: 0.050876952868441464,
+      totalBNBBull: 0,
+      totalBNBClaimed: 0.119668183339757049,
+      totalBets: 5,
+      totalBetsBear: 3,
+      totalBetsBull: 2,
+      totalBetsClaimed: 1,
+      updatedAt: 1626770557,
+      winRate: 20,
+    })
+  })
+})
+
 describe('transformBetResponse', () => {
   const userResponse = {
     averageBNB: '0.005',
