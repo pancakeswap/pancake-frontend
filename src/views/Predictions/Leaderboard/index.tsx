@@ -6,6 +6,7 @@ import { initializeLeaderboard } from 'state/predictions'
 import { LeaderboardLoadingState } from 'state/types'
 import PageLoader from 'components/Loader/PageLoader'
 import Hero from './components/Hero'
+import Results from './components/Results'
 
 const Leaderboard = () => {
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
@@ -23,6 +24,7 @@ const Leaderboard = () => {
   return (
     <>
       <Hero />
+      <Results />
     </>
   )
 }
