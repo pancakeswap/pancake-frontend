@@ -60,7 +60,7 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, 
       <GridCell isTopPosition={isTopPosition}>
         <Flex flexDirection="column" pl={['8px']}>
           <Flex>
-            <Text bold={isTopPosition} textTransform="uppercase" mr="4px">
+            <Text bold={isTopPosition} mr="4px">
               {farmName}
             </Text>
             {!isMobile && <Text>(1x)</Text>}
@@ -77,7 +77,7 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, 
           </Text>
           {cakePriceBusd.gt(0) ? (
             <Text fontSize="12px" color="textSubtle" textAlign="right">
-              ~${getBalanceNumber(amount.times(cakePriceBusd)).toLocaleString()}
+              ~${getBalanceNumber(amount.times(cakePriceBusd)).toLocaleString('en', { maximumFractionDigits: 0 })}
             </Text>
           ) : (
             <Flex justifyContent="flex-end">
@@ -154,11 +154,11 @@ const AuctionLeaderboardTable: React.FC<{ bidders: Bidder[]; noBidsText: string 
           <LeaderboardRow key={bidder.account} bidder={bidder} cakePriceBusd={cakePriceBusd} isMobile={isXs || isSm} />
         ))}
       </LeaderboardContainer>
-      <Flex mt="16px" flexDirection="column" justifyContent="center" alignItems="center">
+      <Flex mt="16px" px="24px" flexDirection="column" justifyContent="center" alignItems="center">
         {visibleBidders <= 10 && totalBidders > 10 && (
-          <Text color="textSubtle">
+          <Text color="textSubtle" textAlign="center">
             {t('Showing top 10 bids only.')}{' '}
-            <Button pl="0" variant="text" onClick={onShowWhitelistedBidders}>
+            <Button px="0" variant="text" onClick={onShowWhitelistedBidders}>
               {t('See all whitelisted bidders')}
             </Button>
           </Text>
