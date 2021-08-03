@@ -154,11 +154,11 @@ const AuctionLeaderboardTable: React.FC<{ bidders: Bidder[]; noBidsText: string 
           <LeaderboardRow key={bidder.account} bidder={bidder} cakePriceBusd={cakePriceBusd} isMobile={isXs || isSm} />
         ))}
       </LeaderboardContainer>
-      <Flex mt="16px" flexDirection="column" justifyContent="center" alignItems="center">
+      <Flex mt="16px" px="24px" flexDirection="column" justifyContent="center" alignItems="center">
         {visibleBidders <= 10 && totalBidders > 10 && (
-          <Text color="textSubtle">
+          <Text color="textSubtle" textAlign="center">
             {t('Showing top 10 bids only.')}{' '}
-            <Button pl="0" variant="text" onClick={onShowWhitelistedBidders}>
+            <Button px="0" variant="text" onClick={onShowWhitelistedBidders}>
               {t('See all whitelisted bidders')}
             </Button>
           </Text>
