@@ -67,7 +67,7 @@ const EditNumbersModal: React.FC<{
       </ScrollableContainer>
       <Flex flexDirection="column" justifyContent="center" m="24px">
         <Button
-          id={`lottery_confirm_edit_${tickets?.length}`}
+          id="lotteryBuyEdited"
           disabled={!allComplete || isConfirming}
           endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : undefined}
           onClick={() => {

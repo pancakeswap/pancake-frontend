@@ -419,7 +419,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             />
             {isApproved && (
               <Button
-                id={`lottery_buy_ins_${ticketsToBuy}`}
+                id="lotteryBuyInstant"
                 variant="secondary"
                 mt="8px"
                 disabled={disableBuying || isConfirming}
