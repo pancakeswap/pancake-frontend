@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.44.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.43.0...@pancakeswap/uikit@0.44.0) (2021-08-03)
+
+
+### Features
+
+* **uikit:** Table ([#221](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/221)) ([6289718](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/6289718e7980a5021c70fa016571c0fc36c46a4c))
+
+
+
+
+
 # [0.43.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.42.1...@pancakeswap/uikit@0.43.0) (2021-08-02)
 
 
