@@ -334,7 +334,12 @@ export const predictionsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Initialize leaderboard
+    builder.addCase(filterLeaderboard.pending, (state) => {
+      // Only mark as loading if we come from IDLE. This allows initialization.
+      if (state.leaderboard.loadingState === LeaderboardLoadingState.IDLE) {
+        state.leaderboard.loadingState = LeaderboardLoadingState.LOADING
+      }
+    })
     builder.addCase(filterLeaderboard.fulfilled, (state, action) => {
       const { results } = action.payload
 

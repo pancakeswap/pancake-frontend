@@ -37,7 +37,7 @@ const DesktopResults: React.FC<DesktopResultsProps> = ({ results }) => {
   const { t } = useTranslation()
 
   return (
-    <Container mb="40px">
+    <Container mb="24px">
       <Card>
         <StyledTable>
           <thead>

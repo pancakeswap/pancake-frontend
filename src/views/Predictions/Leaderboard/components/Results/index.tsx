@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Button, Grid, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useGetLeaderboardResults } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
@@ -25,6 +25,9 @@ const Results = () => {
         </Grid>
       </Container>
       {isXl ? <DesktopResults results={rest} /> : <MobileResults results={rest} />}
+      <Flex mb="40px" justifyContent="center">
+        <Button variant="secondary">{t('View More')}</Button>
+      </Flex>
     </Box>
   )
 }
