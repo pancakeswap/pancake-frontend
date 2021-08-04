@@ -47,6 +47,7 @@ const farms: FarmConfig[] = [
     },
     token: tokens.babycake,
     quoteToken: tokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 437,
@@ -57,6 +58,7 @@ const farms: FarmConfig[] = [
     },
     token: tokens.bmon,
     quoteToken: tokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 440,
@@ -67,6 +69,7 @@ const farms: FarmConfig[] = [
     },
     token: tokens.hero,
     quoteToken: tokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 438,
@@ -77,6 +80,7 @@ const farms: FarmConfig[] = [
     },
     token: tokens.wsg,
     quoteToken: tokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 439,
@@ -87,6 +91,7 @@ const farms: FarmConfig[] = [
     },
     token: tokens.mcrn,
     quoteToken: tokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 435,
