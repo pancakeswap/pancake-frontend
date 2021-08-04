@@ -60,9 +60,9 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
       <CardBody p="24px">
         <Flex alignItems="center" justifyContent="center" flexDirection="column" mb="24px">
           <Box mb="4px">
-            <RotatedLaurelLeftIcon color={rankColor} width="32px" />
+            <RotatedLaurelLeftIcon color={rankColor} width="40px" />
             <PlaceholderIcon />
-            <RotatedLaurelRightIcon color={rankColor} width="32px" />
+            <RotatedLaurelRightIcon color={rankColor} width="40px" />
           </Box>
           <Link href={getBscScanLink(user.id, 'address')} external>
             {truncateWalletAddress(user.id)}

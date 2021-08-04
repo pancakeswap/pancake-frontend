@@ -138,3 +138,7 @@ export const useGetLeaderboardLoadingState = () => {
 export const useGetLeaderboardResults = () => {
   return useSelector((state: State) => state.predictions.leaderboard.results)
 }
+
+export const useGetLeaderboardFilters = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.filters)
+}
