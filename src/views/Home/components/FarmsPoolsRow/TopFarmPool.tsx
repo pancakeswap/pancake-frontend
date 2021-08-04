@@ -29,7 +29,7 @@ const AbsoluteWrapper = styled(Flex)<{ visible: boolean; index: number; topOffse
          ${theme.mediaQueries.sm} {
            height: 80px;
            top: 0;
-           padding: 0 16px;
+           padding-left: 16px;
            border-left: 1px ${theme.colors.inputSecondary} solid;
          }
        `

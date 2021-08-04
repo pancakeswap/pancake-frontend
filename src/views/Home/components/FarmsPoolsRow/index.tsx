@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -30,6 +30,25 @@ const FarmsPoolsRow = () => {
   const { topFarms } = useGetTopFarmsByApr(isIntersecting)
   const { topPools } = useGetTopPoolsByApr(isIntersecting)
 
+  const timer = useRef<ReturnType<typeof setTimeout>>(null)
+  const isLoaded = topFarms[0] && topPools[0]
+
+  const startTimer = useCallback(() => {
+    timer.current = setInterval(() => {
+      setShowFarms((prev) => !prev)
+    }, 8000)
+  }, [timer])
+
+  useEffect(() => {
+    if (isLoaded) {
+      startTimer()
+    }
+
+    return () => {
+      clearInterval(timer.current)
+    }
+  }, [timer, isLoaded, startTimer])
+
   const getPoolText = (pool: Pool) => {
     if (pool.isAutoVault) {
       return t('Auto CAKE')
@@ -50,23 +69,20 @@ const FarmsPoolsRow = () => {
       <Flex flexDirection="column" mt="24px">
         <Flex mb="24px">
           <RowHeading text={showFarms ? t('Top Farms') : t('Top Syrup Pools')} />
-          <IconButton variant="text" height="100%" width="auto" onClick={() => setShowFarms((prev) => !prev)}>
+          <IconButton
+            variant="text"
+            height="100%"
+            width="auto"
+            onClick={() => {
+              setShowFarms((prev) => !prev)
+              clearInterval(timer.current)
+              startTimer()
+            }}
+          >
             <SwapVertIcon height="24px" width="24px" color="textSubtle" />
           </IconButton>
         </Flex>
         <Box height={['240px', null, '80px']}>
-          <Grid>
-            {topPools.map((topPool, index) => (
-              <TopFarmPool
-                // eslint-disable-next-line react/no-array-index-key
-                key={index}
-                title={topPool && getPoolText(topPool)}
-                percentage={topPool?.apr}
-                index={index}
-                visible={!showFarms}
-              />
-            ))}
-          </Grid>
           <Grid>
             {topFarms.map((topFarm, index) => (
               <TopFarmPool
@@ -76,6 +92,18 @@ const FarmsPoolsRow = () => {
                 percentage={topFarm?.apr + topFarm?.lpRewardsApr}
                 index={index}
                 visible={showFarms}
+              />
+            ))}
+          </Grid>
+          <Grid>
+            {topPools.map((topPool, index) => (
+              <TopFarmPool
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
+                title={topPool && getPoolText(topPool)}
+                percentage={topPool?.apr}
+                index={index}
+                visible={!showFarms}
               />
             ))}
           </Grid>
