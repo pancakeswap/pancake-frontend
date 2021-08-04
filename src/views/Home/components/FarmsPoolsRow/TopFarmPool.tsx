@@ -1,60 +1,72 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 
-interface TopFarmProps {
-  farm: FarmWithStakedValue
+interface TopFarmPoolProps {
+  title: string
+  percentage: number
   index: number
   visible: boolean
 }
 
 const StyledWrapper = styled(Flex)<{ index: number }>`
   position: relative;
+`
+
+const AbsoluteWrapper = styled(Flex)<{ visible: boolean; index: number; topOffset: string }>`
+  position: absolute;
+  top: ${({ topOffset }) => topOffset};
+  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  margin-top: ${({ visible }) => (visible ? 0 : `50%`)};
+  transition: opacity, margin-top, 0.4s ease-out;
   flex-direction: column;
-  height: 67px;
 
   ${({ index, theme }) =>
     index > 0
       ? `
          ${theme.mediaQueries.sm} {
+           height: 80px;
+           top: 0;
            padding: 0 16px;
            border-left: 1px ${theme.colors.inputSecondary} solid;
          }
        `
-      : ``}
+      : `padding-right: 16px;`}
 `
 
-const AbsoluteWrapper = styled.div<{ visible: boolean; index: number }>`
-  position: absolute;
-  top: 0;
-  left: ${({ index }) => (index > 0 ? '16px' : 0)};
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
-  margin-top: ${({ visible }) => (visible ? 0 : `50%`)};
-  transition: opacity, margin-top, 0.4s ease-out;
-`
-
-const TopFarm: React.FC<TopFarmProps> = ({ farm, index, visible }) => {
+const TopFarmPool: React.FC<TopFarmPoolProps> = ({ title, percentage, index, visible }) => {
   const { t } = useTranslation()
+
+  const topOffset = () => {
+    if (index >= 0 && index < 2) {
+      return '0px'
+    }
+
+    if (index >= 2 && index < 3) {
+      return '80px'
+    }
+
+    return '160px'
+  }
 
   return (
     <StyledWrapper index={index}>
-      <AbsoluteWrapper index={index} visible={visible}>
-        {farm?.lpSymbol ? (
+      <AbsoluteWrapper index={index} visible={visible} topOffset={topOffset()}>
+        {title ? (
           <Text bold mb="8px" fontSize="12px" color="secondary">
-            {farm.lpSymbol}
+            {title}
           </Text>
         ) : (
           <Skeleton width={80} height={12} mb="8px" />
         )}
-        {farm?.apr ? (
-          <Balance lineHeight="1.1" fontSize="16px" bold unit="%" value={farm.apr + farm.lpRewardsApr} />
+        {percentage ? (
+          <Balance lineHeight="1.1" fontSize="16px" bold unit="%" value={percentage} />
         ) : (
           <Skeleton width={60} height={16} />
         )}
-        {farm?.apr ? (
+        {percentage ? (
           <Text fontSize="16px" color="textSubtle">
             {t('APR')}
           </Text>
@@ -66,4 +78,4 @@ const TopFarm: React.FC<TopFarmProps> = ({ farm, index, visible }) => {
   )
 }
 
-export default TopFarm
+export default TopFarmPool

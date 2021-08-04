@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { Flex, Box, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { Pool } from 'state/types'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import useGetTopFarmsByApr from 'views/Home/hooks/useGetTopFarmsByApr'
-import { Flex, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
-import TopFarm from './TopFarm'
+import useGetTopPoolsByApr from 'views/Home/hooks/useGetTopPoolsByApr'
+import TopFarmPool from './TopFarmPool'
 import RowHeading from './RowHeading'
 
 const Grid = styled.div`
   display: grid;
-  grid-gap: 16px 8px;
-  margin-top: 24px;
   grid-template-columns: repeat(2, auto);
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -28,6 +28,22 @@ const FarmsPoolsRow = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const { topFarms } = useGetTopFarmsByApr(isIntersecting)
+  const { topPools } = useGetTopPoolsByApr(isIntersecting)
+
+  const getPoolText = (pool: Pool) => {
+    if (pool.isAutoVault) {
+      return t('Auto CAKE')
+    }
+
+    if (pool.sousId === 0) {
+      return t('Manual CAKE')
+    }
+
+    return t('Stake %stakingSymbol% - Earn %earningSymbol%', {
+      earningSymbol: pool.earningToken.symbol,
+      stakingSymbol: pool.stakingToken.symbol,
+    })
+  }
 
   return (
     <div ref={observerRef}>
@@ -38,12 +54,32 @@ const FarmsPoolsRow = () => {
             <SwapVertIcon height="24px" width="24px" color="textSubtle" />
           </IconButton>
         </Flex>
-        <Grid>
-          {topFarms.map((topFarm, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <TopFarm key={index} farm={topFarm} index={index} visible={showFarms} />
-          ))}
-        </Grid>
+        <Box height={['240px', null, '80px']}>
+          <Grid>
+            {topPools.map((topPool, index) => (
+              <TopFarmPool
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
+                title={topPool && getPoolText(topPool)}
+                percentage={topPool?.apr}
+                index={index}
+                visible={!showFarms}
+              />
+            ))}
+          </Grid>
+          <Grid>
+            {topFarms.map((topFarm, index) => (
+              <TopFarmPool
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
+                title={topFarm?.lpSymbol}
+                percentage={topFarm?.apr + topFarm?.lpRewardsApr}
+                index={index}
+                visible={showFarms}
+              />
+            ))}
+          </Grid>
+        </Box>
       </Flex>
     </div>
   )

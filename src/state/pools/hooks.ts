@@ -44,6 +44,7 @@ export const usePools = (account): { pools: Pool[]; userDataLoaded: boolean } =>
     pools: state.pools.data,
     userDataLoaded: state.pools.userDataLoaded,
   }))
+
   return { pools: pools.map(transformPool), userDataLoaded }
 }
 
