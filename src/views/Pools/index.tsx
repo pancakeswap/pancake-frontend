@@ -311,7 +311,7 @@ const Pools: React.FC = () => {
                       value: 'totalStaked',
                     },
                   ]}
-                  onChange={handleSortOptionChange}
+                  onOptionChange={handleSortOptionChange}
                 />
               </ControlStretch>
             </LabelWrapper>
