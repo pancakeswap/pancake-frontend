@@ -30,7 +30,6 @@ export const fetchPoolsBlockLimits = async () => {
     const startBlock = starts[index]
     const endBlock = ends[index]
 
-    debugger // eslint-disable-line
     return {
       sousId: cakePoolConfig.sousId,
       startBlock: new BigNumber(startBlock).toJSON(),

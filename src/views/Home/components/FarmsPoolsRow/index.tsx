@@ -24,7 +24,7 @@ const Grid = styled.div`
 `
 
 const FarmsPoolsRow = () => {
-  const [showFarms, setShowFarms] = useState(true)
+  const [showFarms, setShowFarms] = useState(false)
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const { topFarms } = useGetTopFarmsByApr(isIntersecting)

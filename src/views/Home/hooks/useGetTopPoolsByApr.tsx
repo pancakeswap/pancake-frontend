@@ -5,9 +5,12 @@ import { useAppDispatch } from 'state'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from 'state/farms'
 import { getFarmApr } from 'utils/apr'
 import BigNumber from 'bignumber.js'
-import { orderBy } from 'lodash'
+import { orderBy, partition } from 'lodash'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import { Farm } from 'state/types'
+import { Farm, State } from 'state/types'
+import { fetchPoolsPublicDataAsync } from 'state/pools'
+import { simpleRpcProvider } from 'utils/providers'
+import { useSelector } from 'react-redux'
 
 enum FetchStatus {
   NOT_FETCHED = 'not-fetched',
@@ -16,11 +19,19 @@ enum FetchStatus {
   FAILED = 'failed',
 }
 
-const useGetTopFarmsByApr = (isIntersecting: boolean) => {
+const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
-  const { data: farms } = useFarms()
+  const poolsWithoutAutoVault = useSelector((state: State) => state.pools.data)
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
-  const [topFarms, setTopFarms] = useState<FarmWithStakedValue[]>([null, null, null, null, null])
+  const [topPools, setTopPools] = useState<FarmWithStakedValue[]>([null, null, null, null, null])
+
+  const pools = useMemo(() => {
+    const cakePool = poolsWithoutAutoVault.find((pool) => pool.sousId === 0)
+    const cakeAutoVault = { ...cakePool, isAutoVault: true }
+    return [cakeAutoVault, ...poolsWithoutAutoVault]
+  }, [poolsWithoutAutoVault])
+
+  const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
 
   const cakePriceBusdAsString = usePriceCakeBusd().toString()
 
@@ -29,11 +40,12 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   }, [cakePriceBusdAsString])
 
   useEffect(() => {
-    const fetchFarmData = async () => {
+    const fetchPoolsPublicData = async () => {
       setFetchStatus(FetchStatus.FETCHING)
-      const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+      const blockNumber = await simpleRpcProvider.getBlockNumber()
+
       try {
-        await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
+        await dispatch(fetchPoolsPublicDataAsync(blockNumber))
         setFetchStatus(FetchStatus.SUCCESS)
       } catch (e) {
         console.error(e)
@@ -42,12 +54,12 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
     }
 
     if (isIntersecting && fetchStatus === FetchStatus.NOT_FETCHED) {
-      fetchFarmData()
+      fetchPoolsPublicData()
     }
-  }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting])
+  }, [dispatch, setFetchStatus, fetchStatus, topPools, isIntersecting])
 
   useEffect(() => {
-    const getTopFarmsByApr = (farmsState: Farm[]) => {
+    const getTopPoolsByApr = (farmsState: Farm[]) => {
       const farmsWithPrices = farmsState.filter((farm) => farm.lpTotalInQuoteToken && farm.quoteToken.busdPrice)
       const farmsWithApr: FarmWithStakedValue[] = farmsWithPrices.map((farm) => {
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)
@@ -61,15 +73,15 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       })
 
       const sortedByApr = orderBy(farmsWithApr, (farm) => farm.apr + farm.lpRewardsApr, 'desc')
-      setTopFarms(sortedByApr.slice(0, 5))
+      setTopPools(sortedByApr.slice(0, 5))
     }
 
-    if (fetchStatus === FetchStatus.SUCCESS && !topFarms[0]) {
-      getTopFarmsByApr(farms)
+    if (fetchStatus === FetchStatus.SUCCESS && !topPools[0]) {
+      getTopPoolsByApr(pools)
     }
-  }, [setTopFarms, farms, fetchStatus, cakePriceBusd, topFarms])
+  }, [setTopPools, pools, fetchStatus, cakePriceBusd, topPools])
 
-  return { topFarms }
+  return { topPools }
 }
 
-export default useGetTopFarmsByApr
+export default useGetTopPoolsByApr
