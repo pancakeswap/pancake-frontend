@@ -3,16 +3,9 @@ import styled from "styled-components";
 import observerOptions from "./options";
 import Wrapper from "./Wrapper";
 import { ImageProps } from "./types";
+import Placeholder from "./Placeholder";
 
 const StyledImage = styled.img`
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-`;
-
-const Placeholder = styled.div`
   height: 100%;
   left: 0;
   position: absolute;

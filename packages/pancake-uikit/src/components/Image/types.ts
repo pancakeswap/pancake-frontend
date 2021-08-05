@@ -1,4 +1,4 @@
-import { HTMLAttributes, ImgHTMLAttributes } from "react";
+import { HTMLAttributes, ImgHTMLAttributes, ReactElement } from "react";
 import { SpaceProps } from "styled-system";
 import { BoxProps } from "../Box";
 
@@ -11,6 +11,10 @@ export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement>, SpacePr
   width: number;
   height: number;
   wrapperProps?: WrapperProps;
+}
+
+export interface BackgroundImageProps extends ImageProps {
+  loadingPlaceholder?: ReactElement;
 }
 
 export const variants = {
