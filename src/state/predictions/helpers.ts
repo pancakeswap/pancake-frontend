@@ -327,7 +327,7 @@ export const getLedgerData = async (account: string, epochs: number[]) => {
   return response
 }
 
-export const LEADERBOARD_RESULTS_PER_PAGE = 20
+export const LEADERBOARD_RESULTS_PER_PAGE = 5
 
 interface GetPredictionUsersOptions {
   skip?: number

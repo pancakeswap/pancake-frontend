@@ -1,6 +1,15 @@
 import React from 'react'
-import { Box, Button, Grid, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useGetLeaderboardResults } from 'state/predictions/hooks'
+import { Box, Button, Grid, Flex, Heading, useMatchBreakpoints, AutoRenewIcon } from '@pancakeswap/uikit'
+import { useAppDispatch } from 'state'
+import {
+  useGetLeaderboardHasMoreResults,
+  useGetLeaderboardLoadingState,
+  useGetLeaderboardResults,
+  useGetLeaderboardSkip,
+} from 'state/predictions/hooks'
+import { LeaderboardLoadingState } from 'state/types'
+import { filterNextPageLeaderboard } from 'state/predictions'
+import { LEADERBOARD_RESULTS_PER_PAGE } from 'state/predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import DesktopResults from './DesktopResults'
@@ -11,6 +20,15 @@ const Results = () => {
   const { isXl } = useMatchBreakpoints()
   const { t } = useTranslation()
   const [first, second, third, ...rest] = useGetLeaderboardResults()
+  const leaderboardLoadingState = useGetLeaderboardLoadingState()
+  const isLoading = leaderboardLoadingState === LeaderboardLoadingState.LOADING
+  const currentSkip = useGetLeaderboardSkip()
+  const hasMoreResults = useGetLeaderboardHasMoreResults()
+  const dispatch = useAppDispatch()
+
+  const handleClick = () => {
+    dispatch(filterNextPageLeaderboard(currentSkip + LEADERBOARD_RESULTS_PER_PAGE))
+  }
 
   return (
     <Box>
@@ -26,7 +44,16 @@ const Results = () => {
       </Container>
       {isXl ? <DesktopResults results={rest} /> : <MobileResults results={rest} />}
       <Flex mb="40px" justifyContent="center">
-        <Button variant="secondary">{t('View More')}</Button>
+        {hasMoreResults && (
+          <Button
+            variant="secondary"
+            isLoading={isLoading}
+            endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+            onClick={handleClick}
+          >
+            {isLoading ? t('Loading...') : t('View More')}
+          </Button>
+        )}
       </Flex>
     </Box>
   )

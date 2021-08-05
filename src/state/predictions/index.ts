@@ -16,6 +16,7 @@ import {
   LeaderboardLoadingState,
   PredictionUser,
   LeaderboardFilter,
+  State,
 } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUNDS_PER_PAGE, ROUND_BUFFER } from './config'
@@ -35,6 +36,7 @@ import {
   fetchUserRounds,
   getPredictionUsers,
   transformUserResponse,
+  LEADERBOARD_RESULTS_PER_PAGE,
 } from './helpers'
 
 const initialState: PredictionsState = {
@@ -63,7 +65,8 @@ const initialState: PredictionsState = {
       orderBy: 'netBNB',
       timePeriod: 'all',
     },
-    page: 1,
+    skip: 0,
+    hasMoreResults: true,
     accountResult: null,
     results: [],
   },
@@ -300,6 +303,20 @@ export const filterLeaderboard = createAsyncThunk<{ results: PredictionUser[] },
   },
 )
 
+export const filterNextPageLeaderboard = createAsyncThunk<
+  { results: PredictionUser[]; skip: number },
+  number,
+  { state: State }
+>('predictions/filterNextPageLeaderboard', async (skip, { getState }) => {
+  const state = getState()
+  const usersResponse = await getPredictionUsers({
+    skip,
+    orderBy: state.predictions.leaderboard.filters.orderBy,
+  })
+
+  return { results: usersResponse.map(transformUserResponse), skip }
+})
+
 export const predictionsSlice = createSlice({
   name: 'predictions',
   initialState,
@@ -309,6 +326,10 @@ export const predictionsSlice = createSlice({
         ...state.leaderboard.filters,
         ...action.payload,
       }
+
+      // Anytime we filters change we need to reset back to page 1
+      state.leaderboard.skip = 0
+      state.leaderboard.hasMoreResults = true
     },
     setPredictionStatus: (state, action: PayloadAction<PredictionStatus>) => {
       state.status = action.payload
@@ -334,6 +355,7 @@ export const predictionsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Leaderboard filter
     builder.addCase(filterLeaderboard.pending, (state) => {
       // Only mark as loading if we come from IDLE. This allows initialization.
       if (state.leaderboard.loadingState === LeaderboardLoadingState.IDLE) {
@@ -345,6 +367,26 @@ export const predictionsSlice = createSlice({
 
       state.leaderboard.loadingState = LeaderboardLoadingState.IDLE
       state.leaderboard.results = results
+
+      if (results.length < LEADERBOARD_RESULTS_PER_PAGE) {
+        state.leaderboard.hasMoreResults = false
+      }
+    })
+
+    // Leaderboard next page
+    builder.addCase(filterNextPageLeaderboard.pending, (state) => {
+      state.leaderboard.loadingState = LeaderboardLoadingState.LOADING
+    })
+    builder.addCase(filterNextPageLeaderboard.fulfilled, (state, action) => {
+      const { results, skip } = action.payload
+
+      state.leaderboard.loadingState = LeaderboardLoadingState.IDLE
+      state.leaderboard.results = [...state.leaderboard.results, ...results]
+      state.leaderboard.skip = skip
+
+      if (results.length < LEADERBOARD_RESULTS_PER_PAGE) {
+        state.leaderboard.hasMoreResults = false
+      }
     })
 
     // Claimable statuses

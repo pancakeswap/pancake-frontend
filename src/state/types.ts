@@ -352,7 +352,8 @@ export interface PredictionsState {
   leaderboard: {
     loadingState: LeaderboardLoadingState
     filters: LeaderboardFilter
-    page: number
+    skip: number
+    hasMoreResults: boolean
     accountResult: PredictionUser
     results: PredictionUser[]
   }

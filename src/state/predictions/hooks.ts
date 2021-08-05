@@ -142,3 +142,11 @@ export const useGetLeaderboardResults = () => {
 export const useGetLeaderboardFilters = () => {
   return useSelector((state: State) => state.predictions.leaderboard.filters)
 }
+
+export const useGetLeaderboardSkip = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.skip)
+}
+
+export const useGetLeaderboardHasMoreResults = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.hasMoreResults)
+}
