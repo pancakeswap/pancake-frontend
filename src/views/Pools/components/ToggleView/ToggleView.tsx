@@ -1,11 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ListViewIcon, CardViewIcon, IconButton } from '@pancakeswap/uikit'
-
-export enum ViewMode {
-  'TABLE' = 'TABLE',
-  'CARD' = 'CARD',
-}
+import { ViewMode } from '../types'
 
 interface ToggleViewProps {
   viewMode: ViewMode
@@ -13,12 +9,10 @@ interface ToggleViewProps {
 }
 
 const Container = styled.div`
-  margin-right: 0px;
   margin-left: -8px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-left: 0;
-    margin-right: 16px;
   }
 `
 
@@ -31,10 +25,10 @@ const ToggleView: React.FunctionComponent<ToggleViewProps> = ({ viewMode, onTogg
 
   return (
     <Container>
-      <IconButton variant="text" scale="sm" id="clickPoolCardView" onClick={() => handleToggle(ViewMode.CARD)}>
+      <IconButton variant="text" scale="sm" id="clickFarmCardView" onClick={() => handleToggle(ViewMode.CARD)}>
         <CardViewIcon color={viewMode === ViewMode.CARD ? 'primary' : 'textDisabled'} />
       </IconButton>
-      <IconButton variant="text" scale="sm" id="clickPoolTableView" onClick={() => handleToggle(ViewMode.TABLE)}>
+      <IconButton variant="text" scale="sm" id="clickFarmTableView" onClick={() => handleToggle(ViewMode.TABLE)}>
         <ListViewIcon color={viewMode === ViewMode.TABLE ? 'primary' : 'textDisabled'} />
       </IconButton>
     </Container>
