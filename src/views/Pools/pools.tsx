@@ -253,7 +253,7 @@ const Farms: React.FC = () => {
     <>
       <PageHeader>
         <Heading as="h1" scale="xl" color={variables.primary} mb="24px">
-          {t('Farms')}
+          {t('Pools')}
         </Heading>
       </PageHeader>
       <Page>

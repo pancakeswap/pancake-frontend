@@ -19,6 +19,7 @@ const GlobalStyle = createGlobalStyle`
       max-width: 100%;
     }
   }
+  
 `
 
 export default GlobalStyle
