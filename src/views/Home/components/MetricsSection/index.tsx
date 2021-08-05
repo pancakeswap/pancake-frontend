@@ -8,9 +8,9 @@ import IconCard, { IconCardData } from '../IconCard'
 import StatCardContent from './StatCardContent'
 import GradientLogo from '../GradientLogoSvg'
 
-// Values fetched from bitQuery effective 28/7/21
-const txCount = 30673865
-const addressCount = 1966700
+// Values fetched from bitQuery effective 5/8/21
+const txCount = 37553080
+const addressCount = 2279782
 
 const Stats = () => {
   const { t } = useTranslation()
