@@ -1,11 +1,10 @@
 import React from 'react'
-import { Box, BunnyPlaceholderIcon, Flex, Link, Text } from '@pancakeswap/uikit'
+import { Box, Text } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
 import styled from 'styled-components'
-import { getBscScanLink } from 'utils'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { useTranslation } from 'contexts/Localization'
 import { NetWinningsRow, Row } from './styles'
+import ResultAvatar from './ResultAvatar'
 
 interface MobileRowProps {
   rank: number
@@ -24,12 +23,7 @@ const MobileRow: React.FC<MobileRowProps> = ({ rank, user }) => {
     <StyledMobileRow p="16px">
       <Row mb="16px">
         <Text fontWeight="bold" color="secondary">{`#${rank}`}</Text>
-        <Flex alignItems="center">
-          <Link href={getBscScanLink(user.id, 'address')} external>
-            {truncateWalletAddress(user.id)}
-          </Link>
-          <BunnyPlaceholderIcon width="32px" ml="8px" />
-        </Flex>
+        <ResultAvatar user={user} />
       </Row>
       <Row mb="4px">
         <Text fontSize="12px" color="textSubtle">

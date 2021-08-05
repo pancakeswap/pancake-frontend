@@ -57,7 +57,7 @@ export const profileSlice = createSlice({
           nft,
         }
       } else {
-        state.profileAvatars[account] = { username: account, nft }
+        state.profileAvatars[account] = { username: null, nft }
       }
     })
   },

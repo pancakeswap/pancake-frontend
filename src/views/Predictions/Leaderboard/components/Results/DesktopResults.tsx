@@ -1,12 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BunnyPlaceholderIcon, Card, Flex, Link, Table, Text } from '@pancakeswap/uikit'
+import { Card, Table, Text } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
 import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
-import { getBscScanLink } from 'utils'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { NetWinnings } from './styles'
+import ResultAvatar from './ResultAvatar'
 
 interface DesktopResultsProps {
   results: PredictionUser[]
@@ -56,12 +55,7 @@ const DesktopResults: React.FC<DesktopResultsProps> = ({ results }) => {
                   <Text textAlign="center" fontWeight="bold" color="secondary">{`#${index + 4}`}</Text>
                 </td>
                 <td>
-                  <Flex alignItems="center">
-                    <BunnyPlaceholderIcon width="40px" mr="8px" />
-                    <Link href={getBscScanLink(result.id, 'address')} external>
-                      {truncateWalletAddress(result.id)}
-                    </Link>
-                  </Flex>
+                  <ResultAvatar user={result} />
                 </td>
                 <td>
                   <NetWinnings amount={result.netBNB} />

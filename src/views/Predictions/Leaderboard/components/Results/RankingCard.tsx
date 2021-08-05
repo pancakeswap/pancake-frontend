@@ -1,12 +1,11 @@
 import React from 'react'
 import {
   Box,
-  BunnyPlaceholderIcon,
   Card,
   CardBody,
   CardRibbon,
   Flex,
-  BackgroundImage,
+  ProfileAvatar,
   LaurelLeftIcon,
   LaurelRightIcon,
   Link,
@@ -24,14 +23,6 @@ interface RankingCardProps {
   rank: 1 | 2 | 3
   user: PredictionUser
 }
-
-const PlaceholderIcon = styled(BunnyPlaceholderIcon)`
-  width: 40px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    width: 64px;
-  }
-`
 
 const RotatedLaurelLeftIcon = styled(LaurelLeftIcon)`
   transform: rotate(30deg);
@@ -63,20 +54,11 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
       <CardBody p="24px">
         <Flex alignItems="center" justifyContent="center" flexDirection="column" mb="24px">
           <Flex mb="4px">
-            <RotatedLaurelLeftIcon color={rankColor} width="40px" />
+            <RotatedLaurelLeftIcon color={rankColor} width="32px" />
             <Box width={['40px', null, null, '64px']}>
-              {profileAvatar.nft ? (
-                <BackgroundImage
-                  src={`/images/nfts/${profileAvatar.nft?.images?.md}`}
-                  height={64}
-                  width={64}
-                  style={{ borderRadius: '50%' }}
-                />
-              ) : (
-                <PlaceholderIcon />
-              )}
+              <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={64} width={64} />
             </Box>
-            <RotatedLaurelRightIcon color={rankColor} width="40px" />
+            <RotatedLaurelRightIcon color={rankColor} width="32px" />
           </Flex>
           <Link href={getBscScanLink(user.id, 'address')} external>
             {truncateWalletAddress(user.id)}
