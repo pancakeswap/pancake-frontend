@@ -187,14 +187,22 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ pid, zombieUs
                 MAX
         </StyledButton>
         </Flex>
-        {currentDate >= userInfo.tokenWithdrawalDate ?
+        {/* eslint-disable-next-line no-nested-ternary */}
+        {pid === 0 ? currentDate >= userInfo.nftRevivalDate ?
+          <Button mt="8px" as="a" onClick={handleWithDraw} disabled={isDisabled} variant="secondary">
+              Withdraw ZMBE
+          </Button> :
+          <Button onClick={handleWithDrawEarly} disabled={isDisabled} mt="8px" as="a" variant="secondary">
+              Withdraw Early
+          </Button> :
+          currentDate >= userInfo.tokenWithdrawalDate ?
             <Button mt="8px" as="a" onClick={handleWithDraw} disabled={isDisabled} variant="secondary">
                 Withdraw ZMBE
             </Button> :
             <Button onClick={handleWithDrawEarly} disabled={isDisabled} mt="8px" as="a" variant="secondary">
                 Withdraw Early
-            </Button>
-        }
+            </Button>}
+
     </Modal>
 }
 

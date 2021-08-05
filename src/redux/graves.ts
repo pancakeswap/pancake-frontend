@@ -12,7 +12,7 @@ const graves: Grave[] = [
     subtitle: 'Basic Zombie',
     path: 'images/rugZombie/BasicZombie.gif',
     type: 'image',
-    withdrawalCooldown: '3 days',
+    withdrawalCooldown: '30 days',
     nftRevivalTime: '30 days',
     rug: tokens.none,
     artist: artists.RugZombie,
@@ -39,8 +39,42 @@ const graves: Grave[] = [
       allocPoint: 0
     },
   },
+  // {
+  //   id: 2,
+  //   pid: 17,
+  //   name: 'RugZombie Uncommon',
+  //   subtitle: 'Zombie Multiplier',
+  //   path: 'images/rugZombie/Zombie Multiplier.png',
+  //   type: 'image',
+  //   withdrawalCooldown: '3 days',
+  //   nftRevivalTime: '30 days',
+  //   rug: tokens.none,
+  //   artist: artists.RugZombie,
+  //   stakingToken: '',
+  //   pcsVersion: 'v2',
+  //   liquidityDetails: '',
+  //   isNew: false,
+  //   isClosing: false,
+  //   userInfo: {
+  //     paidUnlockFee: false,
+  //     tokenWithdrawalDate: 0,
+  //     nftRevivalDate: 0,
+  //     rugDeposited: BIG_ZERO,
+  //     amount: BIG_ZERO,
+  //     pendingZombie: BIG_ZERO,
+  //   },
+  //   poolInfo: {
+  //     lpToken: undefined,
+  //     unlockFee: BIG_ZERO,
+  //     minimumStake: BIG_ZERO,
+  //     totalStakingTokenStaked: BIG_ZERO,
+  //     withdrawCooldown: 0,
+  //     nftRevivalTime: 0,
+  //     allocPoint: 0
+  //   },
+  // },
   {
-    id: 2,
+    id: 3,
     pid: 1,
     name: 'VikingSwap Rare',
     subtitle: 'Viking Brains',
@@ -74,7 +108,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 3,
+    id: 4,
     pid: 2,
     name: 'MonsterSlayer Rare',
     subtitle: 'ZombieSlayer',
@@ -108,7 +142,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 2,
+    id: 5,
     pid: 12,
     name: 'Autoshark Legendary',
     subtitle: 'Chompers',
@@ -144,7 +178,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 5,
+    id: 6,
     pid: 15,
     name: 'RUGBIDEN Rare',
     subtitle: 'Zombiden',
@@ -178,7 +212,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 6,
+    id: 7,
     pid: 16,
     name: 'Burger Swap Rare',
     subtitle: 'Zomburger',
@@ -212,7 +246,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 7,
+    id: 8,
     pid: 13,
     name: 'The US Dollar Rare',
     subtitle: 'DeadDollar',
@@ -246,7 +280,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 8,
+    id: 9,
     pid: 3,
     name: 'Defi100 Rare',
     subtitle: 'Zombie100',
@@ -280,7 +314,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 9,
+    id: 10,
     pid: 10,
     name: 'Merlin Lab Rare',
     subtitle: 'My name is MERL',
@@ -314,7 +348,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 10,
+    id: 11,
     pid: 4,
     name: 'Fairmoon Rare',
     subtitle: 'Raremoon',
@@ -348,7 +382,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 11,
+    id: 12,
     pid: 14,
     name: 'Uranium Finance Uncommon',
     subtitle: 'The Rad Chad',
@@ -382,7 +416,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 12,
+    id: 13,
     pid: 5,
     name: 'Fairmoon Uncommon',
     subtitle: 'Zombie on the Moon',
@@ -416,7 +450,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 13,
+    id: 14,
     pid: 6,
     name: 'Fairmoon Common',
     subtitle: 'Fairmoon Common',
@@ -450,7 +484,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 14,
+    id: 15,
     pid: 7,
     name: 'Gorilla Yield Common',
     subtitle: 'Gorilla Yield Common',
@@ -484,7 +518,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 15,
+    id: 16,
     pid: 8,
     name: 'Dragon Farm Finance Common',
     subtitle: 'Dragon Farm Finance Common',
@@ -518,7 +552,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 16,
+    id: 18,
     pid: 9,
     name: 'yPanda Common',
     subtitle: 'yPanda Common',
