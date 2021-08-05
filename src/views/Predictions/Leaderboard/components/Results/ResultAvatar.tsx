@@ -1,9 +1,11 @@
 import React from 'react'
-import { Box, Flex, FlexProps, ProfileAvatar } from '@pancakeswap/uikit'
+import { Box, Flex, FlexProps, Link, ProfileAvatar, SubMenu, SubMenuItem } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { PredictionUser } from 'state/types'
 import { useGetProfileAvatar } from 'state/profile/hooks'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
+import { getBscScanLink } from 'utils'
+import { useTranslation } from 'contexts/Localization'
 
 interface ResultAvatarProps extends FlexProps {
   user: PredictionUser
@@ -29,15 +31,25 @@ const UsernameWrapper = styled(Box)`
 `
 
 const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
+  const { t } = useTranslation()
   const profileAvatar = useGetProfileAvatar(user.id)
 
   return (
-    <Flex alignItems="center" {...props}>
-      <UsernameWrapper>{profileAvatar.username || truncateWalletAddress(user.id)}</UsernameWrapper>
-      <AvatarWrapper width={['32px', null, null, null, '40px']} height={['32px', null, null, null, '40px']}>
-        <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={40} width={40} />
-      </AvatarWrapper>
-    </Flex>
+    <SubMenu
+      component={
+        <Flex alignItems="center" {...props}>
+          <UsernameWrapper>{profileAvatar.username || truncateWalletAddress(user.id)}</UsernameWrapper>
+          <AvatarWrapper width={['32px', null, null, null, '40px']} height={['32px', null, null, null, '40px']}>
+            <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={40} width={40} />
+          </AvatarWrapper>
+        </Flex>
+      }
+      options={{ placement: 'bottom' }}
+    >
+      <SubMenuItem as={Link} href={getBscScanLink(user.id, 'address')} bold={false} color="text" external>
+        {t('View on BscScan')}
+      </SubMenuItem>
+    </SubMenu>
   )
 }
 
