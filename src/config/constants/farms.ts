@@ -39,6 +39,36 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 443,
+    lpSymbol: 'BTT-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xdcfbb12ded3fea12d2a078bc6324131cd14bf835',
+    },
+    token: tokens.btt,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 442,
+    lpSymbol: 'TRX-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb5d108578be3750209d1b3a8f45ffee8c5a75146',
+    },
+    token: tokens.trx,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 441,
+    lpSymbol: 'WIN-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6a445ceb72c8b1751755386c3990055ff92e14a0',
+    },
+    token: tokens.win,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 436,
     lpSymbol: 'BABYCAKE-BNB LP',
     lpAddresses: {
