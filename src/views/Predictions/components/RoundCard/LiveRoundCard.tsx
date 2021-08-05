@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetLastOraclePrice, useGetRoundBufferSeconds } from 'state/hooks'
+import { useGetLastOraclePrice, useGetRoundBufferSeconds } from 'state/predictions/hooks'
 import RoundProgress from 'components/RoundProgress'
 import { formatUsdv2, getHasRoundFailed, getPriceDifference } from '../../helpers'
 import PositionTag from '../PositionTag'
