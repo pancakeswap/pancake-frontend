@@ -112,6 +112,12 @@ export interface ProfileState {
   isLoading: boolean
   hasRegistered: boolean
   data: Profile
+  profileAvatars: {
+    [key: string]: {
+      username: string
+      nft: Nft
+    }
+  }
 }
 
 export type TeamResponse = {

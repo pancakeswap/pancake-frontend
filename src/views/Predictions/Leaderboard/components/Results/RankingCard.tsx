@@ -6,12 +6,14 @@ import {
   CardBody,
   CardRibbon,
   Flex,
+  BackgroundImage,
   LaurelLeftIcon,
   LaurelRightIcon,
   Link,
   Text,
 } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
+import { useGetProfileAvatar } from 'state/profile/hooks'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
@@ -54,16 +56,28 @@ const getRankingColor = (rank: number) => {
 const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
+  const profileAvatar = useGetProfileAvatar(user.id)
 
   return (
     <Card ribbon={<CardRibbon variantColor={rankColor} text={`#${rank}`} ribbonPosition="left" />}>
       <CardBody p="24px">
         <Flex alignItems="center" justifyContent="center" flexDirection="column" mb="24px">
-          <Box mb="4px">
+          <Flex mb="4px">
             <RotatedLaurelLeftIcon color={rankColor} width="40px" />
-            <PlaceholderIcon />
+            <Box width={['40px', null, null, '64px']}>
+              {profileAvatar.nft ? (
+                <BackgroundImage
+                  src={`/images/nfts/${profileAvatar.nft?.images?.md}`}
+                  height={64}
+                  width={64}
+                  style={{ borderRadius: '50%' }}
+                />
+              ) : (
+                <PlaceholderIcon />
+              )}
+            </Box>
             <RotatedLaurelRightIcon color={rankColor} width="40px" />
-          </Box>
+          </Flex>
           <Link href={getBscScanLink(user.id, 'address')} external>
             {truncateWalletAddress(user.id)}
           </Link>

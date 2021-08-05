@@ -105,3 +105,19 @@ export interface FarmAuctionContract extends Contract {
   getWhitelistedAddresses: ContractFunction<GetWhitelistedAddressesResponse>
   auctionsHistory: ContractFunction<AuctionsHistoryResponse>
 }
+
+// Profile contract
+// [userId, points, teamId, tokenId, nftAddress isActive]
+export type GetUserProfileResponse = [
+  ethers.BigNumber,
+  ethers.BigNumber,
+  ethers.BigNumber,
+  string,
+  ethers.BigNumber,
+  boolean,
+]
+
+export interface PancakeProfileContract extends Contract {
+  getUserProfile: ContractFunction<GetUserProfileResponse>
+  hasRegistered: ContractFunction<boolean>
+}
