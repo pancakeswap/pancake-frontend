@@ -37,7 +37,7 @@ const FAQs = () => {
 
   return (
     <Flex flexDirection="column">
-      <Heading color="#280D5F" as="h1" scale="xxl" mb="40px">
+      <Heading as="h1" scale="xxl" mb="40px">
         {t('FAQs')}
       </Heading>
       <Flex flexDirection={['column', null, null, null, 'row']}>
