@@ -1,3 +1,8 @@
 {
-  "gitflow4code.features": []
+  "gitflow4code.features": [
+    {
+      "name": "feature/changeLoader",
+      "base": "develop"
+    }
+  ]
 }
