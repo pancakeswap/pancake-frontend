@@ -188,6 +188,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     closeRoundId,
     totalBets,
     totalAmount,
+    totalAmountTreasury,
     bullBets,
     bullAmount,
     bearBets,
@@ -215,6 +216,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     closePrice: closePrice ? parseFloat(closePrice) : 0,
     totalBets: numberOrNull(totalBets),
     totalAmount: totalAmount ? parseFloat(totalAmount) : 0,
+    totalAmountTreasury: totalAmountTreasury ? parseFloat(totalAmountTreasury) : 0,
     bullBets: numberOrNull(bullBets),
     bullAmount: bullAmount ? parseFloat(bullAmount) : 0,
     bearBets: numberOrNull(bearBets),
@@ -327,7 +329,7 @@ export const getLedgerData = async (account: string, epochs: number[]) => {
   return response
 }
 
-export const LEADERBOARD_RESULTS_PER_PAGE = 8
+export const LEADERBOARD_RESULTS_PER_PAGE = 20
 
 interface GetPredictionUsersOptions {
   skip?: number
