@@ -33,13 +33,13 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. Gorilla Fi Spawning Pool is live!</Text>
+            <Text fontSize='14px'>1. Euler Tools Spawning Pool is live!</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>2. First auction was a huge success, thanks for participating & congrats to the winner.</Text>
+            <Text fontSize='14px'>2. Autoshark Grave ends on Sept. 4th! We will alert both telegrams before doing, giving everyone time to claim their NFT.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>3. Burger Swap and RUGBIDEN Graves are out!</Text>
+            <Text fontSize='14px'>3. First auction was a huge success, thanks for participating & congrats to the winner.</Text>
           </Row>
           <Row>
             <Text fontSize='14px'>4. Releasing referral program along with some bigger news (1-2 weeks).</Text>

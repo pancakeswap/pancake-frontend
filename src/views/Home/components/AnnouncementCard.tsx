@@ -43,11 +43,11 @@ const AnnouncementCard = () => {
           {t('Announcements')}
         </Heading>
         <Text>
-          {t('Get your Autoshark NFT while you still can! The zSHARK token is scarce & youll have to ask around their telegram to find some.')}
+          {t('Spawning Pools are live! Earn partner project tokens and a limited time NFT.')}
         </Text>
         <br/>
         <image width="100%" >
-          <img src="https://storage.googleapis.com/rug-zombie/chompers.gif" alt="chompers"/>
+          <img src="https://storage.googleapis.com/rug-zombie/gorillafi-small.gif" alt="silverback"/>
         </image>
       </CardBody>
     </StyledAnnouncementCard>
