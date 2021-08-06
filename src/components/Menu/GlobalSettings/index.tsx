@@ -1,9 +1,9 @@
 import React from 'react'
 import { Flex, IconButton, CogIcon, useModal } from '@pancakeswap/uikit'
-import GlobalSettingsModal from './GlobalSettingsModal'
+import SettingsModal from './SettingsModal'
 
 const GlobalSettings = () => {
-  const [onPresentSettingsModal] = useModal(<GlobalSettingsModal />)
+  const [onPresentSettingsModal] = useModal(<SettingsModal />)
 
   return (
     <Flex>

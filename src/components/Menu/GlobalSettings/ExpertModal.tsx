@@ -1,16 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Button,
-  Text,
-  PancakeToggle,
-  Toggle,
-  Flex,
-  Message,
-  Modal,
-  ModalBody,
-  InjectedModalProps,
-  Checkbox,
-} from '@pancakeswap/uikit'
+import { Button, Text, Flex, Message, Modal, InjectedModalProps, Checkbox } from '@pancakeswap/uikit'
 import { useExpertModeManager } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 
@@ -39,7 +28,7 @@ const ExpertModal: React.FC<ExpertModalProps> = ({
       <Message variant="warning" mb="24px">
         <Text>
           {t(
-            'Expert mode turns off the “Confirm” transaction prompt, and allows high slippage trades that often result in bad rates and lost funds.',
+            "Expert mode turns off the 'Confirm' transaction prompt, and allows high slippage trades that often result in bad rates and lost funds.",
           )}
         </Text>
       </Message>

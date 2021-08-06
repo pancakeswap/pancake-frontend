@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Text, Button, Input, Flex, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks'
 import QuestionHelper from '../../QuestionHelper'
 
 enum SlippageError {
@@ -13,29 +14,24 @@ enum DeadlineError {
   InvalidInput = 'InvalidInput',
 }
 
-export interface SlippageTabsProps {
-  rawSlippage: number
-  setRawSlippage: (rawSlippage: number) => void
-  deadline: number
-  setDeadline: (deadline: number) => void
-}
-
-export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, setDeadline }: SlippageTabsProps) {
+const SlippageTabs = () => {
+  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
+  const [ttl, setTtl] = useUserTransactionTTL()
   const [slippageInput, setSlippageInput] = useState('')
   const [deadlineInput, setDeadlineInput] = useState('')
 
   const { t } = useTranslation()
 
   const slippageInputIsValid =
-    slippageInput === '' || (rawSlippage / 100).toFixed(2) === Number.parseFloat(slippageInput).toFixed(2)
-  const deadlineInputIsValid = deadlineInput === '' || (deadline / 60).toString() === deadlineInput
+    slippageInput === '' || (userSlippageTolerance / 100).toFixed(2) === Number.parseFloat(slippageInput).toFixed(2)
+  const deadlineInputIsValid = deadlineInput === '' || (ttl / 60).toString() === deadlineInput
 
   let slippageError: SlippageError | undefined
   if (slippageInput !== '' && !slippageInputIsValid) {
     slippageError = SlippageError.InvalidInput
-  } else if (slippageInputIsValid && rawSlippage < 50) {
+  } else if (slippageInputIsValid && userSlippageTolerance < 50) {
     slippageError = SlippageError.RiskyLow
-  } else if (slippageInputIsValid && rawSlippage > 500) {
+  } else if (slippageInputIsValid && userSlippageTolerance > 500) {
     slippageError = SlippageError.RiskyHigh
   } else {
     slippageError = undefined
@@ -48,26 +44,26 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
     deadlineError = undefined
   }
 
-  function parseCustomSlippage(value: string) {
+  const parseCustomSlippage = (value: string) => {
     setSlippageInput(value)
 
     try {
       const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString())
       if (!Number.isNaN(valueAsIntFromRoundedFloat) && valueAsIntFromRoundedFloat < 5000) {
-        setRawSlippage(valueAsIntFromRoundedFloat)
+        setUserslippageTolerance(valueAsIntFromRoundedFloat)
       }
     } catch (error) {
       console.error(error)
     }
   }
 
-  function parseCustomDeadline(value: string) {
+  const parseCustomDeadline = (value: string) => {
     setDeadlineInput(value)
 
     try {
       const valueAsInt: number = Number.parseInt(value) * 60
       if (!Number.isNaN(valueAsInt) && valueAsInt > 0) {
-        setDeadline(valueAsInt)
+        setTtl(valueAsInt)
       }
     } catch (error) {
       console.error(error)
@@ -93,9 +89,9 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             scale="sm"
             onClick={() => {
               setSlippageInput('')
-              setRawSlippage(10)
+              setUserslippageTolerance(10)
             }}
-            variant={rawSlippage === 10 ? 'primary' : 'tertiary'}
+            variant={userSlippageTolerance === 10 ? 'primary' : 'tertiary'}
           >
             0.1%
           </Button>
@@ -105,9 +101,9 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             scale="sm"
             onClick={() => {
               setSlippageInput('')
-              setRawSlippage(50)
+              setUserslippageTolerance(50)
             }}
-            variant={rawSlippage === 50 ? 'primary' : 'tertiary'}
+            variant={userSlippageTolerance === 50 ? 'primary' : 'tertiary'}
           >
             0.5%
           </Button>
@@ -117,9 +113,9 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             scale="sm"
             onClick={() => {
               setSlippageInput('')
-              setRawSlippage(100)
+              setUserslippageTolerance(100)
             }}
-            variant={rawSlippage === 100 ? 'primary' : 'tertiary'}
+            variant={userSlippageTolerance === 100 ? 'primary' : 'tertiary'}
           >
             1.0%
           </Button>
@@ -127,14 +123,14 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             <Box width="76px" mt="4px">
               <Input
                 scale="sm"
-                placeholder={(rawSlippage / 100).toFixed(2)}
+                placeholder={(userSlippageTolerance / 100).toFixed(2)}
                 value={slippageInput}
                 onBlur={() => {
-                  parseCustomSlippage((rawSlippage / 100).toFixed(2))
+                  parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
                 }}
                 onChange={(e) => parseCustomSlippage(e.target.value)}
                 isWarning={!slippageInputIsValid}
-                isSuccess={![10, 50, 100].includes(rawSlippage)}
+                isSuccess={![10, 50, 100].includes(userSlippageTolerance)}
               />
             </Box>
             <Text color="primary" bold ml="2px">
@@ -166,9 +162,9 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
               scale="sm"
               color={deadlineError ? 'red' : undefined}
               onBlur={() => {
-                parseCustomDeadline((deadline / 60).toString())
+                parseCustomDeadline((ttl / 60).toString())
               }}
-              placeholder={(deadline / 60).toString()}
+              placeholder={(ttl / 60).toString()}
               value={deadlineInput}
               onChange={(e) => parseCustomDeadline(e.target.value)}
             />
@@ -178,3 +174,5 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
     </Flex>
   )
 }
+
+export default SlippageTabs

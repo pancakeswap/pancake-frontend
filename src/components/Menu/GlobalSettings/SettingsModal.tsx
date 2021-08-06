@@ -1,44 +1,32 @@
 import React, { useState } from 'react'
-import {
-  Button,
-  Text,
-  PancakeToggle,
-  Toggle,
-  Flex,
-  Message,
-  Modal,
-  ModalBody,
-  InjectedModalProps,
-} from '@pancakeswap/uikit'
-import {
-  useAudioModeManager,
-  useExpertModeManager,
-  useUserTransactionTTL,
-  useUserSlippageTolerance,
-  useUserSingleHopOnly,
-} from 'state/user/hooks'
+import styled from 'styled-components'
+import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps } from '@pancakeswap/uikit'
+import { useAudioModeManager, useExpertModeManager, useUserSingleHopOnly } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useSwapActionHandlers } from 'state/swap/hooks'
 import usePersistState from 'hooks/usePersistState'
-import useTheme from 'hooks/useTheme'
 import QuestionHelper from '../../QuestionHelper'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
 
+// TODO: Temporary. Once uikit is merged with this style change, this can be removed.
+const PancakeToggleWrapper = styled.div`
+  .pancakes {
+    position: absolute;
+  }
+`
+
 const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
-  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
   const [rememberExpertModeAcknowledgement, setRememberExpertModeAcknowledgement] = usePersistState(false, {
     localStorageKey: 'pancake_expert_mode_remember_acknowledgement',
   })
-  const [ttl, setTtl] = useUserTransactionTTL()
   const [expertMode, toggleExpertMode] = useExpertModeManager()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
   const { onChangeRecipient } = useSwapActionHandlers()
 
   const { t } = useTranslation()
-  const { theme } = useTheme()
 
   if (showConfirmExpertModal) {
     return (
@@ -67,35 +55,15 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       title={t('Settings')}
       headerBackground="gradients.cardHeader"
       onDismiss={onDismiss}
-      style={{ maxWidth: '360px' }}
+      style={{ maxWidth: '380px' }}
     >
       <Flex flexDirection="column">
-        <Flex pb="24px" flexDirection="column">
-          <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">
-            {t('Global')}
-          </Text>
-          <Flex justifyContent="space-between" alignItems="center" mb="8px">
-            <Flex alignItems="center">
-              <Text>{t('Flippy sounds')}</Text>
-              <QuestionHelper
-                text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-                ml="4px"
-              />
-            </Flex>
-            <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="sm" />
-          </Flex>
-        </Flex>
-        <Flex pt="24px" flexDirection="column" borderTop={`1px ${theme.colors.cardBorder} solid`}>
+        <Flex flexDirection="column">
           <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">
             {t('Swaps & Liquidity')}
           </Text>
         </Flex>
-        <TransactionSettings
-          rawSlippage={userSlippageTolerance}
-          setRawSlippage={setUserslippageTolerance}
-          deadline={ttl}
-          setDeadline={setTtl}
-        />
+        <TransactionSettings />
         <Flex justifyContent="space-between" alignItems="center" mb="24px">
           <Flex alignItems="center">
             <Text>{t('Expert Mode')}</Text>
@@ -104,9 +72,9 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
               ml="4px"
             />
           </Flex>
-          <Toggle id="toggle-expert-mode-button" checked={expertMode} onChange={handleExpertModeToggle} />
+          <Toggle id="toggle-expert-mode-button" scale="md" checked={expertMode} onChange={handleExpertModeToggle} />
         </Flex>
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex justifyContent="space-between" alignItems="center" mb="24px">
           <Flex alignItems="center">
             <Text>{t('Disable Multihops')}</Text>
             <QuestionHelper text={t('Restricts swaps to direct pairs only.')} ml="4px" />
@@ -114,10 +82,23 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
           <Toggle
             id="toggle-disable-multihop-button"
             checked={singleHopOnly}
+            scale="md"
             onChange={() => {
               setSingleHopOnly(!singleHopOnly)
             }}
           />
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Flex alignItems="center">
+            <Text>{t('Flippy sounds')}</Text>
+            <QuestionHelper
+              text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
+              ml="4px"
+            />
+          </Flex>
+          <PancakeToggleWrapper>
+            <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
+          </PancakeToggleWrapper>
         </Flex>
       </Flex>
     </Modal>
