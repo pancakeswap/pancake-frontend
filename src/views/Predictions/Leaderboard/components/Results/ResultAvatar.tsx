@@ -1,11 +1,12 @@
 import React from 'react'
-import { Box, Flex, FlexProps, Link, ProfileAvatar, SubMenu, SubMenuItem } from '@pancakeswap/uikit'
+import { Box, Flex, FlexProps, Link, ProfileAvatar, SubMenu, SubMenuItem, useModal } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { getBscScanLink } from 'utils'
 import { PredictionUser } from 'state/types'
 import { useGetProfileAvatar } from 'state/profile/hooks'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
-import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'
+import WalletStatsModal from '../WalletStatsModal'
 
 interface ResultAvatarProps extends FlexProps {
   user: PredictionUser
@@ -33,6 +34,7 @@ const UsernameWrapper = styled(Box)`
 const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
   const { t } = useTranslation()
   const profileAvatar = useGetProfileAvatar(user.id)
+  const [onPresentWalletStatsModal] = useModal(<WalletStatsModal account={user.id} />)
 
   return (
     <SubMenu
@@ -44,8 +46,9 @@ const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
           </AvatarWrapper>
         </Flex>
       }
-      options={{ placement: 'bottom' }}
+      options={{ placement: 'bottom-start' }}
     >
+      <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
       <SubMenuItem as={Link} href={getBscScanLink(user.id, 'address')} bold={false} color="text" external>
         {t('View on BscScan')}
       </SubMenuItem>
