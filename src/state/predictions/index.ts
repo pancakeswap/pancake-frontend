@@ -30,7 +30,7 @@ const initialState: PredictionsState = {
   currentEpoch: 0,
   intervalSeconds: 300,
   minBetAmount: '10000000000000',
-  roundBufferSeconds: 60,
+  bufferSeconds: 60,
   lastOraclePrice: BIG_ZERO.toJSON(),
   rounds: {},
   history: {},
@@ -49,7 +49,7 @@ type PredictionInitialization = Pick<
   | 'rounds'
   | 'ledgers'
   | 'claimableStatuses'
-  | 'roundBufferSeconds'
+  | 'bufferSeconds'
 >
 export const initializePredictions = createAsyncThunk<PredictionInitialization, string>(
   'predictions/intialize',
@@ -222,7 +222,7 @@ export const predictionsSlice = createSlice({
 
     // Initialize predictions
     builder.addCase(initializePredictions.fulfilled, (state, action) => {
-      const { status, currentEpoch, intervalSeconds, roundBufferSeconds, rounds, claimableStatuses, ledgers } =
+      const { status, currentEpoch, intervalSeconds, bufferSeconds, rounds, claimableStatuses, ledgers } =
         action.payload
       const futureRounds: ReduxNodeRound[] = []
       const currentRound = rounds[currentEpoch]
@@ -236,7 +236,7 @@ export const predictionsSlice = createSlice({
         status,
         currentEpoch,
         intervalSeconds,
-        roundBufferSeconds,
+        bufferSeconds,
         claimableStatuses,
         ledgers,
         rounds: merge({}, rounds, makeRoundData(futureRounds)),

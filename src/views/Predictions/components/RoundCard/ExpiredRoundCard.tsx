@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
-import { useGetBetByEpoch, useGetRoundBufferSeconds } from 'state/predictions/hooks'
+import { useGetBetByEpoch, useGetBufferSeconds } from 'state/predictions/hooks'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import useTheme from 'hooks/useTheme'
 import { getHasRoundFailed, getNetPayoutv2 } from '../../helpers'
@@ -49,13 +49,12 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   const { theme } = useTheme()
   const { account } = useWeb3React()
   const { epoch, lockPrice, closePrice, closeTimestamp } = round
-
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const ledger = useGetBetByEpoch(account, epoch)
-  const roundBufferSeconds = useGetRoundBufferSeconds()
+  const bufferSeconds = useGetBufferSeconds()
   const payout = getNetPayoutv2(ledger, round)
   const formattedPayout = payout.toUnsafeFloat().toFixed(4)
-  const hasRoundFailed = getHasRoundFailed(round, roundBufferSeconds)
+  const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />

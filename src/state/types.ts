@@ -318,7 +318,7 @@ export interface PredictionsState {
   currentEpoch: number
   intervalSeconds: number
   minBetAmount: string
-  roundBufferSeconds: number
+  bufferSeconds: number
   lastOraclePrice: string
   history: HistoryData
   rounds?: RoundData

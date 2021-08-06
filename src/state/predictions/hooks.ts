@@ -89,8 +89,8 @@ export const useGetMinBetAmount = () => {
   return useMemo(() => ethers.BigNumber.from(minBetAmount), [minBetAmount])
 }
 
-export const useGetRoundBufferSeconds = () => {
-  return useSelector((state: State) => state.predictions.roundBufferSeconds)
+export const useGetBufferSeconds = () => {
+  return useSelector((state: State) => state.predictions.bufferSeconds)
 }
 
 export const useGetIsFetchingHistory = () => {

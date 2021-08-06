@@ -350,17 +350,15 @@ export const getClaimStatuses = async (
 
 export type MarketData = Pick<
   PredictionsState,
-  'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'roundBufferSeconds'
+  'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'bufferSeconds'
 >
 export const getPredictionData = async (): Promise<MarketData> => {
   const address = getPredictionsAddress()
-  const staticCalls = ['currentEpoch', 'intervalSeconds', 'minBetAmount', 'paused', 'roundBufferSeconds'].map(
-    (method) => ({
-      address,
-      name: method,
-    }),
-  )
-  const [[currentEpoch], [intervalSeconds], [minBetAmount], [paused], [roundBufferSeconds]] = await multicallv2(
+  const staticCalls = ['currentEpoch', 'intervalSeconds', 'minBetAmount', 'paused', 'bufferSeconds'].map((method) => ({
+    address,
+    name: method,
+  }))
+  const [[currentEpoch], [intervalSeconds], [minBetAmount], [paused], [bufferSeconds]] = await multicallv2(
     predictionsAbi,
     staticCalls,
   )
@@ -370,7 +368,7 @@ export const getPredictionData = async (): Promise<MarketData> => {
     currentEpoch: currentEpoch.toNumber(),
     intervalSeconds: intervalSeconds.toNumber(),
     minBetAmount: minBetAmount.toString(),
-    roundBufferSeconds: roundBufferSeconds.toNumber(),
+    bufferSeconds: bufferSeconds.toNumber(),
   }
 }
 
