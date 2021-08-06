@@ -1,4 +1,5 @@
 import { ethers, Contract } from 'ethers'
+import { getGlobalGasPrice } from 'utils/gasPriceSettings'
 
 /**
  * Estimate the gas needed to call a function, and add a 10% margin
@@ -41,6 +42,7 @@ export const callWithEstimateGas = async (
   const gasEstimation = estimateGas(contract, methodName, methodArgs, gasMarginPer10000)
   const tx = await contract[methodName](...methodArgs, {
     gasLimit: gasEstimation,
+    gasPrice: getGlobalGasPrice(),
   })
   return tx
 }
