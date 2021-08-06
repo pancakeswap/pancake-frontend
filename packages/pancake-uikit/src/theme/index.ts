@@ -33,3 +33,4 @@ export { default as light } from "./light";
 
 export { lightColors } from "./colors";
 export { darkColors } from "./colors";
+export * from "./types";
