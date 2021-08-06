@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
-import BigNumber from 'bignumber.js'
 import { orderBy } from 'lodash'
 import { Pool, State } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
@@ -38,11 +37,7 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
     return [cakeAutoVaultWithApr, ...poolsWithoutAutoVault]
   }, [poolsWithoutAutoVault, performanceFeeAsDecimal])
 
-  const cakePriceBusdAsString = usePriceCakeBusd().toString()
-
-  const cakePriceBusd = useMemo(() => {
-    return new BigNumber(cakePriceBusdAsString)
-  }, [cakePriceBusdAsString])
+  const cakePriceBusd = usePriceCakeBusd()
 
   useEffect(() => {
     const fetchPoolsPublicData = async () => {
