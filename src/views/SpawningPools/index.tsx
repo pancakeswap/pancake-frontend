@@ -8,6 +8,7 @@ import Page from '../../components/layout/Page'
 import Table from './components/Table'
 import './SpawningPools.Styles.css'
 import { grave, initialData, initialGraveData, spawningPool } from '../../redux/fetch'
+import { spawningPools } from '../../redux/get'
 import * as get from '../../redux/get'
 import useWeb3 from '../../hooks/useWeb3'
 import { useMultiCall, useZombie } from '../../hooks/useContract'
@@ -25,8 +26,9 @@ const SpawningPools: React.FC = () => {
   // const [userData, setUserData] = useState(graves())
   useEffect(() => {
     initialData(account)
-    // initialGraveData(undefined, setFarmData)
-    spawningPool(id, multi, zombie, setFarmData)
+    spawningPools().forEach(sp => {
+      spawningPool(sp.id, multi, zombie, setFarmData)
+    })
   }, [account, multi, zombie])
 
   accountAddress = account
