@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.45.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.44.1...@pancakeswap/uikit@0.45.0) (2021-08-06)
+
+
+### Features
+
+* **menu:** Add global settings to Menu Widget ([#224](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/224)) ([6ac2200](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/6ac220074777427d94e3cba78f09d2dadadce9f0))
+* **uikit:** Td & Th components ([#227](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/227)) ([c7f4283](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/c7f4283357532cdb03ae4a577253ed4a473e1eca))
+
+
+
+
+
 ## [0.44.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.44.0...@pancakeswap/uikit@0.44.1) (2021-08-05)
 
 **Note:** Version bump only for package @pancakeswap/uikit
