@@ -10,11 +10,13 @@ import Button from "../../components/Button/Button";
 import { Language } from "./types";
 import { links } from "./config";
 import { MenuEntry } from "./components/MenuEntry";
-import UserMenuComponent from "./components/UserMenu";
+import UserMenu from "./components/UserMenu";
 import { UserMenuDivider, UserMenuItem } from "./components/UserMenu/styles";
 import { variants, Variant } from "./components/UserMenu/types";
 import Menu from "./Menu";
-import { LogoutIcon } from "../../components/Svg";
+import { CogIcon, LanguageCurrencyIcon, LogoutIcon } from "../../components/Svg";
+import IconButton from "../../components/Button/IconButton";
+import { Modal, ModalProps, useModal } from "../Modal";
 
 export default {
   title: "Widgets/Menu",
@@ -27,6 +29,62 @@ const langs: Language[] = [...Array(20)].map((_, i) => ({
   language: `English${i}`,
   locale: `Locale${i}`,
 }));
+
+const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: string }> = ({
+  variant = variants.DEFAULT,
+  text,
+  account = "0x8b017905DC96B38f817473dc885F84D4C76bC113",
+}) => (
+  <UserMenu variant={variant} text={text} account={account}>
+    <UserMenuItem type="button" onClick={noop}>
+      Wallet
+    </UserMenuItem>
+    <UserMenuItem type="button">Transactions</UserMenuItem>
+    <UserMenuDivider />
+    <UserMenuItem type="button" disabled>
+      Dashboard
+    </UserMenuItem>
+    <UserMenuItem type="button" disabled>
+      Portfolio
+    </UserMenuItem>
+    <UserMenuItem as={Link} to="/profile">
+      React Router Link
+    </UserMenuItem>
+    <UserMenuItem as="a" href="https://pancakeswap.finance" target="_blank">
+      Link
+    </UserMenuItem>
+    <UserMenuDivider />
+    <UserMenuItem as="button" onClick={noop}>
+      <Flex alignItems="center" justifyContent="space-between" width="100%">
+        Disconnect
+        <LogoutIcon />
+      </Flex>
+    </UserMenuItem>
+  </UserMenu>
+);
+
+const GlobalMenuModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
+  <Modal title={title} onDismiss={onDismiss} {...props}>
+    <Heading>{title}</Heading>
+    <Button>This button Does nothing</Button>
+  </Modal>
+);
+
+const GlobalMenuComponent: React.FC = () => {
+  const [onPresent1] = useModal(<GlobalMenuModal title="Display Settings Modal" />);
+  const [onPresent2] = useModal(<GlobalMenuModal title="Global Settings Modal" />);
+
+  return (
+    <Flex>
+      <IconButton onClick={onPresent1} variant="text" scale="sm" mr="4px">
+        <LanguageCurrencyIcon height={22} width={22} color="textSubtle" />
+      </IconButton>
+      <IconButton onClick={onPresent2} variant="text" scale="sm" mr="8px">
+        <CogIcon height={22} width={22} color="textSubtle" />
+      </IconButton>
+    </Flex>
+  );
+};
 
 // This hook is used to simulate a props change, and force a re rendering
 const useProps = () => {
@@ -42,6 +100,8 @@ const useProps = () => {
     cakePriceUsd: 0.023158668932877668,
     links,
     profile: null,
+    userMenu: <UserMenuComponent account="0xbdda50183d817c3289f895a4472eb475967dc980" />,
+    globalMenu: <GlobalMenuComponent />,
   });
 
   useEffect(() => {
@@ -58,6 +118,8 @@ const useProps = () => {
         cakePriceUsd: 0.023158668932877668,
         links,
         profile: null,
+        userMenu: <UserMenuComponent account="0xbdda50183d817c3289f895a4472eb475967dc980" />,
+        globalMenu: <GlobalMenuComponent />,
       });
     }, 2000);
     return () => {
@@ -162,7 +224,7 @@ export const WithSubmenuSelected: React.FC = () => {
   );
 };
 
-export const UserMenu: React.FC = () => {
+export const UserMenuWithVariants: React.FC = () => {
   const [variant, setVariant] = useState<Variant>(variants.DEFAULT);
   const [text, setText] = useState(undefined);
 
@@ -195,32 +257,7 @@ export const UserMenu: React.FC = () => {
               <Input value={text} onChange={handleChange} placeholder="Custom Text..." />
             </Box>
           </Box>
-          <UserMenuComponent variant={variant} text={text} account="0x8b017905DC96B38f817473dc885F84D4C76bC113">
-            <UserMenuItem type="button" onClick={noop}>
-              Wallet
-            </UserMenuItem>
-            <UserMenuItem type="button">Transactions</UserMenuItem>
-            <UserMenuDivider />
-            <UserMenuItem type="button" disabled>
-              Dashboard
-            </UserMenuItem>
-            <UserMenuItem type="button" disabled>
-              Portfolio
-            </UserMenuItem>
-            <UserMenuItem as={Link} to="/profile">
-              React Router Link
-            </UserMenuItem>
-            <UserMenuItem as="a" href="https://pancakeswap.finance" target="_blank">
-              Link
-            </UserMenuItem>
-            <UserMenuDivider />
-            <UserMenuItem as="button" onClick={noop}>
-              <Flex alignItems="center" justifyContent="space-between" width="100%">
-                Disconnect
-                <LogoutIcon />
-              </Flex>
-            </UserMenuItem>
-          </UserMenuComponent>
+          <UserMenuComponent variant={variant} text={text} />
         </Flex>
       </Box>
     </BrowserRouter>

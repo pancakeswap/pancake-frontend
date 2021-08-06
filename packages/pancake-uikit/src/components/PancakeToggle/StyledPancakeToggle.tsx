@@ -22,6 +22,25 @@ const scaleKeyValues = {
     butterSmearTwoRight: "2.5px", // these values adjust the position of it
   },
   md: {
+    pancakeSize: "26px",
+    travelDistance: "28px",
+    toggleHeight: "32px",
+    toggleWidth: "56px",
+    pancakeThickness: "1.5px",
+    pancakeTwoOffset: "-1px",
+    pancakeThreeOffset: "-6px",
+    butterTop: "5px",
+    butterLeft: "13px",
+    butterWidth: "10px",
+    butterHeight: "8px",
+    butterThickness: "0.75px",
+    butterRadius: "3px",
+    butterSmearOneTop: "15px",
+    butterSmearOneLeft: "3.75px",
+    butterSmearTwoTop: "16px",
+    butterSmearTwoRight: "3.75px",
+  },
+  lg: {
     pancakeSize: "32px",
     travelDistance: "34px",
     toggleHeight: "40px",
@@ -44,7 +63,7 @@ const scaleKeyValues = {
 
 const getScale =
   (property: ScaleKeys) =>
-  ({ scale = scales.MD }: PancakeToggleProps) => {
+  ({ scale = scales.LG }: PancakeToggleProps) => {
     return scaleKeyValues[scale][property];
   };
 

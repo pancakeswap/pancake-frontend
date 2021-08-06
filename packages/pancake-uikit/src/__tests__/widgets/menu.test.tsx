@@ -60,6 +60,13 @@ it("renders correctly", () => {
       pointer-events: none;
     }
 
+    .c2 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+
     .c5 {
       -webkit-align-self: center;
       -ms-flex-item-align: center;
@@ -89,13 +96,6 @@ it("renders correctly", () => {
       -ms-flex-negative: 0;
       flex-shrink: 0;
       margin-right: 8px;
-    }
-
-    .c2 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
     }
 
     .c3 {
@@ -736,6 +736,11 @@ it("renders correctly", () => {
                 />
               </svg>
             </a>
+          </div>
+          <div
+            class="c2"
+          >
+             
           </div>
         </nav>
         <div

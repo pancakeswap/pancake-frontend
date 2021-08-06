@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { scales } from "../Checkbox/types";
-import { ToggleProps, HandleProps, InputProps, ScaleKeys } from "./types";
+import { ToggleProps, HandleProps, InputProps, ScaleKeys, scales } from "./types";
 
 const scaleKeyValues = {
   sm: {
@@ -13,6 +12,15 @@ const scaleKeyValues = {
     toggleWidth: "36px",
   },
   md: {
+    handleHeight: "26px",
+    handleWidth: "26px",
+    handleLeft: "3px",
+    handleTop: "3px",
+    checkedLeft: "calc(100% - 30px)",
+    toggleHeight: "32px",
+    toggleWidth: "56px",
+  },
+  lg: {
     handleHeight: "32px",
     handleWidth: "32px",
     handleLeft: "4px",
@@ -25,7 +33,7 @@ const scaleKeyValues = {
 
 const getScale =
   (property: ScaleKeys) =>
-  ({ scale = scales.MD }: ToggleProps) => {
+  ({ scale = scales.LG }: ToggleProps) => {
     return scaleKeyValues[scale][property];
   };
 

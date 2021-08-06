@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import throttle from "lodash/throttle";
 import Overlay from "../../components/Overlay/Overlay";
+import Flex from "../../components/Box/Flex";
 import { useMatchBreakpoints } from "../../hooks";
 import Logo from "./components/Logo";
 import Panel from "./components/Panel";
@@ -60,6 +61,7 @@ const MobileOnlyOverlay = styled(Overlay)`
 
 const Menu: React.FC<NavProps> = ({
   userMenu,
+  globalMenu,
   isDark,
   toggleTheme,
   langs,
@@ -116,7 +118,9 @@ const Menu: React.FC<NavProps> = ({
           isDark={isDark}
           href={homeLink?.href ?? "/"}
         />
-        {userMenu}
+        <Flex>
+          {globalMenu} {userMenu}
+        </Flex>
       </StyledNav>
       <BodyWrapper>
         <Panel
