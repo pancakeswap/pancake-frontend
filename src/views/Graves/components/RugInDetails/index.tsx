@@ -10,6 +10,7 @@ import { Token } from '../../../../config/constants/types'
 import { BASE_V1_EXCHANGE_URL } from '../../../../config'
 import { Grave } from '../../../../redux/types'
 import { bnbPriceUsd, grave } from '../../../../redux/get'
+import { formatDuration } from '../../../../utils/timerHelpers'
 
 
 interface RugInDetailsProps {
@@ -23,7 +24,6 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
 }) => {
   const { id, subtitle, rug, pcsVersion, liquidityDetails, path, type, endDate, latestEntryDate, isClosing, withdrawalCooldown, nftRevivalTime, poolInfo, artist } = grave(pid)
   const drFrankenstein = useDrFrankenstein();
-
   const [unlockFee, setUnlockFee] = useState(0);
 
   useEffect(() => {
@@ -104,8 +104,8 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           <span className='indetails-value'>{latestEntryDate}</span>
         </span>
           <span className='indetails-title'>
-          Rewards end on:
-          <span className='indetails-value'>{endDate}</span>
+          Grave ends in:
+          <span className='indetails-value'>{formatDuration(endDate - Math.round(Date.now() /1000))}</span>
         </span>
         </> : null}
 

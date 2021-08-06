@@ -157,7 +157,7 @@ const graves: Grave[] = [
     liquidityDetails: 'None! This grave is exclusive for victims of the flash loan attack on autoshark.',
     isNew: false,
     isClosing: true,
-    endDate: "Sept. 4th, 2021",
+    endDate: 1630900799,
     latestEntryDate: "Aug. 4th, 2021",
     userInfo: {
       paidUnlockFee: false,
