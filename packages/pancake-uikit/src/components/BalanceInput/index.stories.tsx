@@ -55,3 +55,90 @@ export const Default: React.FC = () => {
     </Box>
   );
 };
+
+export const UnitDisplay: React.FC = () => {
+  const CAKE_PRICE = 69;
+  const [cakeValue, setCakeValue] = useState("1006.086956");
+
+  const cakeToUSD = (input: string) => {
+    const convertedToUSD = parseFloat(input) * CAKE_PRICE;
+    return `~${convertedToUSD.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })} USD`;
+  };
+
+  const handleCakeChange = (input: string) => {
+    setCakeValue(input);
+  };
+
+  return (
+    <Box width="300px">
+      <BalanceInput
+        onUserInput={handleCakeChange}
+        value={cakeValue}
+        currencyValue={cakeToUSD(cakeValue)}
+        placeholder="0.0"
+        unit="CAKE"
+      />
+    </Box>
+  );
+};
+
+export const SiwtchUnits: React.FC = () => {
+  const CAKE_PRICE = 69;
+  const [editingUnit, setEditingUnit] = useState<"CAKE" | "USD">("CAKE");
+  const conversionUnit = editingUnit === "CAKE" ? "USD" : "CAKE";
+  const [values, setValues] = useState({
+    CAKE: "1006.086957",
+    USD: `${1006.086957 * CAKE_PRICE}`,
+  });
+
+  const currencyValue = !Number.isNaN(parseFloat(values[conversionUnit]))
+    ? parseFloat(values[conversionUnit]).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    : "0.00";
+
+  const switchEditingUnits = () => {
+    const editingUnitAfterChange = editingUnit === "CAKE" ? "USD" : "CAKE";
+    // This is needed to persist same value as shown for currencyValue after switching
+    // otherwise user will see lots of decimals
+    const valuesAfterChange = { ...values };
+    valuesAfterChange[editingUnitAfterChange] = !Number.isNaN(parseFloat(values[conversionUnit]))
+      ? parseFloat(values[conversionUnit]).toFixed(2)
+      : "0.00";
+    setValues(valuesAfterChange);
+    setEditingUnit(editingUnitAfterChange);
+  };
+
+  const handleCakeChange = (input: string) => {
+    const inputAsFloat = parseFloat(input);
+    if (editingUnit === "CAKE") {
+      setValues({
+        CAKE: input,
+        USD: Number.isNaN(inputAsFloat) ? "" : `${inputAsFloat * CAKE_PRICE}`,
+      });
+    } else {
+      setValues({
+        CAKE: Number.isNaN(inputAsFloat) ? "" : `${inputAsFloat / CAKE_PRICE}`,
+        USD: input,
+      });
+    }
+  };
+
+  return (
+    <Box width="300px">
+      <BalanceInput
+        onUserInput={handleCakeChange}
+        value={values[editingUnit]}
+        currencyValue={`~${currencyValue} ${conversionUnit}`}
+        placeholder="0.0"
+        unit={editingUnit}
+        isWarning={!values[editingUnit] || parseFloat(values[editingUnit]) <= 0}
+        switchEditingUnits={switchEditingUnits}
+      />
+    </Box>
+  );
+};
