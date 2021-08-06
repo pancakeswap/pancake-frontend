@@ -23,6 +23,7 @@ import * as fetch from './redux/fetch'
 import Predictions from './views/Predictions'
 import SpawningPools from './views/SpawningPools'
 import { BIG_ZERO } from './utils/bigNumber'
+import { useMultiCall } from './hooks/useContract'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Landing = lazy(() => import('./components/Landing'));
@@ -47,11 +48,11 @@ const App: React.FC = () => {
   })
 
   useEagerConnect()
-
+  const multi = useMultiCall()
   const {account} = useWeb3React()
   useEffect(() => {
-    fetch.initialData(account, setZombiePrice)
-  }, [account])
+    fetch.initialData(account, multi, setZombiePrice)
+  }, [account, multi])
 
   const handleAuthentication = () => {
     setAuthenticated(!isAuthenticated);

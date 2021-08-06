@@ -22,7 +22,16 @@ export interface PoolInfo {
   nftRevivalTime: number,
 }
 
-export interface TombsUserInfo {
+export interface TombPoolInfo {
+  allocPoint: BigNumber,
+  totalStaked: BigNumber,
+  reserves: [BigNumber, BigNumber]
+}
+
+export interface TombUserInfo {
+  amount: BigNumber,
+  tokenWithdrawalDate: number
+  lpAllowance: BigNumber,
   pendingZombie: BigNumber
 }
 
@@ -81,7 +90,7 @@ export interface Tomb {
   exchange: string,
   lpAddress: Address,
   result: any,
-  userInfo: TombsUserInfo,
+  userInfo: TombUserInfo,
   poolInfo: any,
 }
 

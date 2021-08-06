@@ -17,6 +17,7 @@ import Title from './components/Title'
 import GraveyardCard from './components/GraveyardCard'
 import EnterGravesCard from './components/EnterGravesCard'
 import useEagerConnect from '../../hooks/useEagerConnect'
+import { useMultiCall } from '../../hooks/useContract'
 
 const Hero = styled.div`
   align-items: center;
@@ -79,11 +80,11 @@ const CTACards = styled(BaseLayout)`
 
 const Home: React.FC = () => {
   useEagerConnect()
-
+  const multi = useMultiCall()
   const {account} = useWeb3React()
   useEffect(() => {
-    fetch.initialData(account)
-  }, [account])
+    fetch.initialData(account, multi)
+  }, [account, multi])
 
   return (
     <>

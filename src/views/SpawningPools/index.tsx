@@ -24,7 +24,7 @@ const SpawningPools: React.FC = () => {
   const [farmData, setFarmData] = useState(get.spawningPool(id))
   // const [userData, setUserData] = useState(graves())
   useEffect(() => {
-    initialData(account)
+    initialData(account, multi)
     // initialGraveData(undefined, setFarmData)
     spawningPool(id, multi, zombie, setFarmData)
   }, [account, multi, zombie])

@@ -33,7 +33,7 @@ export const drFrankensteinZombieBalance = (): BigNumber => {
   return store.getState().drFrankenstein.zombieBalance
 }
 
-export const tombByPid = (pid: number): any => {
+export const tombByPid = (pid: number): Tomb => {
   return store.getState().tombs.find(t => t.pid === pid)
 }
 

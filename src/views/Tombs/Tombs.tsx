@@ -26,7 +26,7 @@ const Tombs: React.FC = ( ) => {
 
   useEffect(() => {
     if (accountAddress) {
-      const newTombsData = tombs().map((tomb) => {
+      const newTombsData = tombs().sort((a, b) => a.id - b.id).map((tomb) => {
         drFrankenstein.methods.userInfo(tomb.pid, accountAddress).call()
           .then(res => {
             tomb.result = res

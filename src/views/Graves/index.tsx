@@ -9,6 +9,7 @@ import Table from './components/Table'
 import './Graves.Styles.css'
 import { grave, initialData, initialGraveData } from '../../redux/fetch'
 import { graves, zombiePriceUsd } from '../../redux/get'
+import { useMultiCall } from '../../hooks/useContract'
 
 let accountAddress
 
@@ -17,10 +18,11 @@ const Graves: React.FC = () => {
   const [isAllowance, setIsAllowance] = useState(false)
   const [farmData, setFarmData] = useState(graves())
   // const [userData, setUserData] = useState(graves())
+  const multi = useMultiCall()
   useEffect(() => {
-    initialData(account)
+    initialData(account, multi)
     initialGraveData(undefined, setFarmData)
-  }, [account])
+  }, [account, multi])
 
   accountAddress = account
   const [bnbInBusd, setBnbInBusd] = useState(0)

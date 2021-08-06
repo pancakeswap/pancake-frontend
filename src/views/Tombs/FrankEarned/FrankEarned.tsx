@@ -16,7 +16,8 @@ const FrankEarned: React.FC<FrankEarnedProps> = ({ pid }) => {
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
   const tomb = tombByPid(pid)
-  const {pendingZombie} = tomb.userInfo
+  const { pendingZombie } = tomb.userInfo
+  const pending = typeof pendingZombie === 'string' ? new BigNumber(pendingZombie) : pendingZombie
   const handleHarvest = () => {
     if (pid === 0) {
       drFrankenstein.methods.leaveStaking(0)
@@ -35,9 +36,9 @@ const FrankEarned: React.FC<FrankEarnedProps> = ({ pid }) => {
       </div>
       <div className="space-between">
         <div className="frank-earned">
-          <span className="text-shadow">{getFullDisplayBalance(new BigNumber(pendingZombie), tokens.zmbe.decimals, 4)}</span>
+          <span className="text-shadow">{getFullDisplayBalance(pending, tokens.zmbe.decimals, 4)}</span>
         </div>
-        <button disabled={pendingZombie === "0"} onClick={handleHarvest} className={`btn w-auto harvest ${pendingZombie === "0" ? 'btn-disabled':''}`} type="button">Harvest</button>
+        <button disabled={pending.isZero()} onClick={handleHarvest} className={`btn w-auto harvest ${pending.isZero() ? 'btn-disabled':''}`} type="button">Harvest</button>
       </div>
     </div>
   )

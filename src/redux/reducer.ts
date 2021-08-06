@@ -70,6 +70,16 @@ export default function reducer(state = defaultState, action) {
         ...state,
         graves: state.graves.map(grave => grave.pid === action.payload.pid ? { ...grave, userInfo: { ...grave.userInfo, ...action.payload.userInfo } } : grave),
       }
+    case types.UPDATE_TOMB_USER_INFO:
+      return {
+        ...state,
+        tombs: state.tombs.map(tomb => tomb.pid === action.payload.pid ? { ...tomb, userInfo: { ...tomb.userInfo, ...action.payload.userInfo } } : tomb),
+      }
+    case types.UPDATE_TOMB_POOL_INFO:
+      return {
+        ...state,
+        tombs: state.tombs.map(tomb => tomb.pid === action.payload.pid ? { ...tomb, poolInfo: { ...tomb.poolInfo, ...action.payload.poolInfo } } : tomb),
+      }
     case types.UPDATE_SPAWNING_POOL_INFO:
       return {
         ...state,

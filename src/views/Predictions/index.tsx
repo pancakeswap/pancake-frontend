@@ -15,6 +15,7 @@ import { initialData } from '../../redux/fetch'
 import auctions from '../../redux/auctions'
 import { getMausoleumAddress } from '../../utils/addressHelpers'
 import useWeb3 from '../../hooks/useWeb3'
+import { useMultiCall } from '../../hooks/useContract'
 
 const Predictions = () => {
   const { isLg, isXl } = useMatchBreakpoints()
@@ -26,8 +27,8 @@ const Predictions = () => {
   const [refresh, setRefresh] = useState(false)
   const { account } = useWeb3React()
   const web3 = useWeb3()
-
-  initialData(account)
+  const multi = useMultiCall()
+  initialData(account, multi)
 
   const aid = auctions[0].aid
 
@@ -46,7 +47,6 @@ const Predictions = () => {
   useEffect(() => {
     getMausoleumContract().methods.bidsLength(aid).call()
       .then(bidsLengthRes => {
-        const multi = new MultiCall(web3);
         const inputs = [];
         for (let x = 0; x < parseInt(bidsLengthRes); x++) {
           inputs.push({ target: getMausoleumAddress(), function: 'bidInfo', args: [aid, x] });
@@ -65,7 +65,7 @@ const Predictions = () => {
       })
     // setInterval(() => fetchBids(), 5000);
   // }
-  },[aid, refresh, web3])
+  },[aid, multi, refresh, web3])
 
   return (
     <>
