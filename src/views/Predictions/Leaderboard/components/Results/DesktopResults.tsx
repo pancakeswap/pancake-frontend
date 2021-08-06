@@ -27,7 +27,7 @@ const DesktopResults: React.FC<DesktopResultsProps> = ({ results }) => {
           </thead>
           <tbody>
             {results.map((result, index) => (
-              <DesktopRow rank={index + 4} user={result} />
+              <DesktopRow key={result.id} rank={index + 4} user={result} />
             ))}
           </tbody>
         </Table>

@@ -27,7 +27,7 @@ const ConnectedWalletResult = () => {
   }
 
   return (
-    <Container mb="16px">
+    <Container mb="48px">
       <Heading as="h2" scale="md" color="secondary" mb="16px">
         {t('My Rankings')}
       </Heading>
