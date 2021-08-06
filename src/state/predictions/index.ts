@@ -37,6 +37,7 @@ import {
   getPredictionUsers,
   transformUserResponse,
   LEADERBOARD_RESULTS_PER_PAGE,
+  getPredictionUser,
 } from './helpers'
 
 const initialState: PredictionsState = {
@@ -303,6 +304,14 @@ export const filterLeaderboard = createAsyncThunk<{ results: PredictionUser[] },
   },
 )
 
+export const fetchAccountResult = createAsyncThunk<PredictionUser, string>(
+  'predictions/fetchAccountResult',
+  async (account) => {
+    const userResponse = await getPredictionUser(account)
+    return transformUserResponse(userResponse)
+  },
+)
+
 export const filterNextPageLeaderboard = createAsyncThunk<
   { results: PredictionUser[]; skip: number },
   number,
@@ -371,6 +380,15 @@ export const predictionsSlice = createSlice({
       if (results.length < LEADERBOARD_RESULTS_PER_PAGE) {
         state.leaderboard.hasMoreResults = false
       }
+    })
+
+    // Leaderboard account result
+    builder.addCase(fetchAccountResult.pending, (state) => {
+      state.leaderboard.loadingState = LeaderboardLoadingState.LOADING
+    })
+    builder.addCase(fetchAccountResult.fulfilled, (state, action) => {
+      state.leaderboard.loadingState = LeaderboardLoadingState.IDLE
+      state.leaderboard.accountResult = action.payload
     })
 
     // Leaderboard next page
