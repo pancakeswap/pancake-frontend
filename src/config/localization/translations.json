@@ -1319,5 +1319,7 @@
   "Flippy sounds": "Flippy sounds",
   "Your transaction will revert if it is left confirming for longer than this time.": "Your transaction will revert if it is left confirming for longer than this time.",
   "Fun sounds to make a truly immersive pancake-flipping trading": "Fun sounds to make a truly immersive pancake-flipping trading",
-  "Found unknown key Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.": "Found unknown key Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution."
+  "Found unknown key Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.": "Found unknown key Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.",
+  "Swaps & Liquidity": "Swaps & Liquidity",
+  "Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.": "Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution."
 }
