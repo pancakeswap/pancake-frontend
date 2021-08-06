@@ -37,7 +37,7 @@
     "@pancakeswap/sdk": "^2.3.2",
     "@pancakeswap/uikit": "^0.43.0",
     "@reduxjs/toolkit": "^1.5.0",
-    "@ricefarm/uikitv2": "^0.42.1",
+    "@ricefarm/uikitv2": "^0.45.0",
     "@types/multicodec": "^1.0.0",
     "@types/node": "^13.13.5",
     "@types/qs": "^6.9.6",

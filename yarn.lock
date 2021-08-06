@@ -2794,10 +2794,10 @@
     debug "^3.1.0"
     hosted-git-info "^2.6.0"
 
-"@ricefarm/uikitv2@^0.42.1":
-  version "0.42.1"
-  resolved "https://registry.yarnpkg.com/@ricefarm/uikitv2/-/uikitv2-0.42.1.tgz#e374680205047287246f9d8bea78d5e476d183c0"
-  integrity sha512-XaDYyzPuQ8fv1j7Sf+RtJMyugFDp9gwFep66zZMJE10trvXHpBpjMXLvE0mGPKC+AuVR1GX/0PypS2JTIN5D1g==
+"@ricefarm/uikitv2@^0.45.0":
+  version "0.45.0"
+  resolved "https://registry.yarnpkg.com/@ricefarm/uikitv2/-/uikitv2-0.45.0.tgz#bc07cdfd3aca9ed439df8158e79fa332d76eecdc"
+  integrity sha512-RXqD/vALptWSqhlL4oC0VLk+xt8Snl5T57A6YyU/PBjyEj9VPTJUFTcV5/P7kLnJnSgr98vgLs9JnWZqTiCcvA==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
