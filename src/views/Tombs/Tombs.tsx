@@ -11,15 +11,14 @@ import Table from './Table'
 import '../Graves/Graves.Styles.css'
 import tableData from './data'
 import { BIG_ZERO } from '../../utils/bigNumber'
-import { zombiePriceUsd } from '../../redux/get'
+import { tombs } from '../../redux/get'
 
 
 let accountAddress
 
 const Tombs: React.FC = ( ) => {
-
   const { account } = useWeb3React()
-  const [tombsData, setTombsData] = useState(tableData)
+  const [tombsData, setTombsData] = useState([])
 
   accountAddress = account
   const drFrankenstein = useDrFrankenstein()
@@ -27,19 +26,19 @@ const Tombs: React.FC = ( ) => {
 
   useEffect(() => {
     if (accountAddress) {
-      const newTombsData = tableData.map((tokenInfo) => {
-        drFrankenstein.methods.userInfo(tokenInfo.pid, accountAddress).call()
+      const newTombsData = tombs().map((tomb) => {
+        drFrankenstein.methods.userInfo(tomb.pid, accountAddress).call()
           .then(res => {
-            tokenInfo.result = res
+            tomb.result = res
           })
-        drFrankenstein.methods.poolInfo(tokenInfo.pid).call().then(res => {
-          tokenInfo.poolInfo = res
+        drFrankenstein.methods.poolInfo(tomb.pid).call().then(res => {
+          tomb.poolInfo = res
         })
-        drFrankenstein.methods.pendingZombie(tokenInfo.pid, accountAddress).call()
+        drFrankenstein.methods.pendingZombie(tomb.pid, accountAddress).call()
           .then(res => {
-            tokenInfo.pendingZombie = res
+            tomb.userInfo.pendingZombie = res
           })
-        return tokenInfo
+        return tomb
       })
       setTombsData(newTombsData)
       getBnbPriceinBusd().then((res) => {
@@ -48,7 +47,6 @@ const Tombs: React.FC = ( ) => {
     }
 
   }, [drFrankenstein.methods])
-
 
   const [isAllowance, setIsAllowance] = useState(false)
 

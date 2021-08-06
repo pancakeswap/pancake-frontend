@@ -4,19 +4,19 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import tokens from 'config/constants/tokens';
 import { useDrFrankenstein } from 'hooks/useContract';
 import { useWeb3React } from '@web3-react/core';
+import { tombByPid } from '../../../redux/get'
 
 interface FrankEarnedProps {
   pid: number,
-  pendingZombie: any,
   lpTokenPrice: BigNumber,
   totalLpTokenStaked: BigNumber
 }
 
-const FrankEarned: React.FC<FrankEarnedProps> = ({ pendingZombie, pid }) => {
-
+const FrankEarned: React.FC<FrankEarnedProps> = ({ pid }) => {
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
-
+  const tomb = tombByPid(pid)
+  const {pendingZombie} = tomb.userInfo
   const handleHarvest = () => {
     if (pid === 0) {
       drFrankenstein.methods.leaveStaking(0)

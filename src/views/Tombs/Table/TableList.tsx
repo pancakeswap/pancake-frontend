@@ -8,7 +8,7 @@ import tokens from 'config/constants/tokens';
 import numeral from 'numeral'
 import { getGraveTombApr } from '../../../utils/apr'
 import { Token } from '../../../config/constants/types'
-import { zombiePriceUsd } from '../../../redux/get'
+import { tombByPid, zombiePriceUsd } from '../../../redux/get'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -60,14 +60,14 @@ interface TableListProps {
     pid: number,
     result: Result,
     poolInfo: any,
-    pendingZombie: any,
     token: Token,
     quoteToken: Token
   }
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
-  const { details: { name, poolInfo, pendingZombie, quoteToken, token },tvl, lpTokenPrice, totalLpTokenStaked, handler } = props;
+  const { details: { name, poolInfo, pid, quoteToken, token }, tvl, lpTokenPrice, totalLpTokenStaked, handler } = props;
+  const tomb = tombByPid(pid)
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
     allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -105,7 +105,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                     <div className="titel">{name}</div>
                     <div className="small-lable">
                       <div className="con-info">{poolWeight.toString()}X</div>
-                      <div className="small-titel">ZMBE</div>
+                      <div className="small-titel">{tomb.exchange}</div>
                     </div>
                   </div>
                 </div>
@@ -114,7 +114,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           </td>
           <td className="td-width-25">
             <DisplayFlex>
-              <span className="total-earned">{getFullDisplayBalance(new BigNumber(pendingZombie), tokens.zmbe.decimals, 4)}</span>
+              <span className="total-earned">{getFullDisplayBalance(new BigNumber(tomb.userInfo.pendingZombie), tokens.zmbe.decimals, 4)}</span>
               <div className="earned">Earned</div>
             </DisplayFlex>
           </td>

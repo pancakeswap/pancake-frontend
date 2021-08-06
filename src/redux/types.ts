@@ -1,5 +1,7 @@
 import { Address, Token } from '../config/constants/types'
 import { BigNumber } from 'bignumber.js'
+import tokens from '../config/constants/tokens'
+import { BIG_ZERO } from '../utils/bigNumber'
 
 export interface UserInfo {
   paidUnlockFee: boolean,
@@ -18,6 +20,10 @@ export interface PoolInfo {
   totalStakingTokenStaked: BigNumber,
   withdrawCooldown: number,
   nftRevivalTime: number,
+}
+
+export interface TombsUserInfo {
+  pendingZombie: BigNumber
 }
 
 export interface SpawningPoolInfo {
@@ -63,6 +69,20 @@ export interface Grave {
   liquidityDetails: string,
   userInfo: UserInfo,
   poolInfo: PoolInfo,
+}
+
+export interface Tomb {
+  id: number,
+  pid: number,
+  name: string,
+  withdrawalCooldown: string,
+  token: Token,
+  quoteToken: Token,
+  exchange: string,
+  lpAddress: Address,
+  result: any,
+  userInfo: TombsUserInfo,
+  poolInfo: any,
 }
 
 export interface SpawningPool {

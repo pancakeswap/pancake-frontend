@@ -39,7 +39,7 @@ interface TableData {
   pendingZombie: any
   quoteToken: any,
   token: any,
-  lpAddresses: any,
+  lpAddress: any,
 }
 
 interface TableProps {
@@ -56,7 +56,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateRe
   const openInDetails = (data) => {
     setIsOpen(data);
   }
-  const reserves = zmbeBnbTomb().result.reserves
+  const reserves = zmbeBnbTomb().result.reserves ? zmbeBnbTomb().result.reserves : [BIG_ZERO, BIG_ZERO]
   const lpTotalSupply = zmbeBnbTomb().result.totalSupply
   const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePriceUsd()), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
   const lpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
@@ -81,8 +81,8 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateRe
           <div className="table-bottom">
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
-                <FrankEarned pid={details.pid} pendingZombie={details.pendingZombie} lpTokenPrice={lpTokenPrice} totalLpTokenStaked={totalLpTokenStaked}/>
-                <StartFarming updateAllowance={updateAllowance} updateResult={updateResult} lpTokenAddress={getAddress(details.lpAddresses)} details={details} isAllowance={isAllowance} />
+                <FrankEarned pid={details.pid} lpTokenPrice={lpTokenPrice} totalLpTokenStaked={totalLpTokenStaked}/>
+                <StartFarming updateAllowance={updateAllowance} updateResult={updateResult} lpTokenAddress={getAddress(details.lpAddress)} details={details} isAllowance={isAllowance} />
                 <BuyFrank details={details}/>
               </div>
               <RugInDetails bnbInBusd={bnbInBusd} details={details} tvl={tvl} totalLpTokensStaked={totalLpTokenStaked} lpTokenPrice={lpTokenPrice}/>

@@ -245,7 +245,7 @@ export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: 
 }
 
 const zombiePriceBnb = (setZombiePrice?: any) => {
-  getPancakePair(getAddress(tombs[0].lpAddresses)).methods.getReserves().call()
+  getPancakePair(getAddress(tombs[0].lpAddress)).methods.getReserves().call()
     .then(res => {
       const price = new BigNumber(res._reserve1).div(res._reserve0)
       store.dispatch(updateZombiePriceBnb(price))

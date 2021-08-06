@@ -42,8 +42,6 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
     allocPoint = new BigNumber(poolInfo.allocPoint)
   }
 
-  console.log("tvl")
-  console.log(tvl.toString())
   return (
     <div key={id} className="rug-indetails">
       <div className="direction-column">
