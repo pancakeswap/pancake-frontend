@@ -46,7 +46,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [grave, setGrave] = useState(get.grave(pid))
-  const { rug, userInfo } = grave
+  const { rug, userInfo, isClosed } = grave
 
   const onUpdate = () => {
     fetch.grave(pid, data => {
@@ -150,7 +150,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
           <DisplayFlex>
             <span style={{ paddingRight: '50px' }} className="total-earned text-shadow">{getFullDisplayBalance(new BigNumber(userInfo.amount), tokens.zmbe.decimals, 4)}</span>
             <button onClick={onPresentWithdrawStake} style={{ marginRight: '10px' }} className="btn w-100" type="button">-</button>
-            <button onClick={onPresentZombieStake} className="btn w-100" type="button">+</button>
+            <button onClick={onPresentZombieStake} disabled={isClosed} className={`btn w-100 ${isClosed ? "btn-disabled" : ""}`} type="button">+</button>
           </DisplayFlex>
         </div>
         :  <span className="total-earned text-shadow">Connect Wallet</span>}
