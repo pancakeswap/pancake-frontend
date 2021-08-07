@@ -1,12 +1,8 @@
-import { useEffect, useMemo } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { ethers } from 'ethers'
 import { minBy, orderBy } from 'lodash'
-import { useAppDispatch } from 'state'
-import Nfts from 'config/constants/nfts'
 import { State, NodeRound, ReduxNodeLedger, NodeLedger, ReduxNodeRound } from './types'
-import { fetchWalletNfts } from './collectibles'
 import { parseBigNumberObj } from './predictions/helpers'
 
 // /!\
@@ -148,26 +144,4 @@ export const useGetLastOraclePrice = () => {
   return useMemo(() => {
     return ethers.BigNumber.from(lastOraclePrice)
   }, [lastOraclePrice])
-}
-
-// Collectibles
-export const useGetCollectibles = () => {
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
-  const { isInitialized, isLoading, data } = useSelector((state: State) => state.collectibles)
-  const identifiers = Object.keys(data)
-
-  useEffect(() => {
-    // Fetch nfts only if we have not done so already
-    if (!isInitialized) {
-      dispatch(fetchWalletNfts(account))
-    }
-  }, [isInitialized, account, dispatch])
-
-  return {
-    isInitialized,
-    isLoading,
-    tokenIds: data,
-    nftsInWallet: Nfts.filter((nft) => identifiers.includes(nft.identifier)),
-  }
 }

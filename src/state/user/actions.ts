@@ -13,6 +13,12 @@ export interface SerializedPair {
   token1: SerializedToken
 }
 
+export enum FarmStakedOnly {
+  ON_FINISHED = 'onFinished',
+  TRUE = 'true',
+  FALSE = 'false',
+}
+
 export const updateUserExpertMode = createAction<{ userExpertMode: boolean }>('user/updateUserExpertMode')
 export const updateUserSingleHopOnly = createAction<{ userSingleHopOnly: boolean }>('user/updateUserSingleHopOnly')
 export const updateUserSlippageTolerance = createAction<{ userSlippageTolerance: number }>(
@@ -28,3 +34,6 @@ export const removeSerializedPair =
 export const muteAudio = createAction<void>('user/muteAudio')
 export const unmuteAudio = createAction<void>('user/unmuteAudio')
 export const toggleTheme = createAction<void>('user/toggleTheme')
+export const updateUserFarmStakedOnly = createAction<{ userFarmStakedOnly: FarmStakedOnly }>(
+  'user/updateUserFarmStakedOnly',
+)

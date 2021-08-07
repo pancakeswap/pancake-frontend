@@ -73,6 +73,78 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  babycake: {
+    symbol: 'BABYCAKE',
+    address: {
+      56: '0xdB8D30b74bf098aF214e862C90E647bbB1fcC58c',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://babycake.app/',
+  },
+  bmon: {
+    symbol: 'BMON',
+    address: {
+      56: '0x08ba0619b1e7A582E0BCe5BBE9843322C954C340',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://binamon.org/',
+  },
+  hero: {
+    symbol: 'HERO',
+    address: {
+      56: '0xD40bEDb44C081D2935eebA6eF5a3c8A31A1bBE13',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://metahero.io/',
+  },
+  wsg: {
+    symbol: 'WSG',
+    address: {
+      56: '0xA58950F05FeA2277d2608748412bf9F802eA4901',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://wsg.gg/',
+  },
+  mcrn: {
+    symbol: 'MCRN',
+    address: {
+      56: '0xacb2d47827C9813AE26De80965845D80935afd0B',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.macaronswap.finance/',
+  },
+  revv: {
+    symbol: 'REVV',
+    address: {
+      56: '0x833f307ac507d47309fd8cdd1f835bef8d702a93',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://revvmotorsport.com/',
+  },
+  skill: {
+    symbol: 'SKILL',
+    address: {
+      56: '0x154A9F9cbd3449AD22FDaE23044319D6eF2a1Fab',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.cryptoblades.io/',
+  },
+  if: {
+    symbol: 'IF',
+    address: {
+      56: '0xB0e1fc65C1a741b4662B813eB787d369b8614Af1',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://impossible.finance/',
+  },
   sps: {
     symbol: 'SPS',
     address: {

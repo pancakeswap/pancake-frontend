@@ -1,6 +1,6 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useGetBetByEpoch, useGetCurrentEpoch } from 'state/hooks'
+import { useGetBetByEpoch, useGetCurrentEpoch } from 'state/predictions/hooks'
 import { BetPosition, NodeRound } from 'state/types'
 import { getMultiplierv2 } from '../../helpers'
 import ExpiredRoundCard from './ExpiredRoundCard'

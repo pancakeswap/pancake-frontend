@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
-import { useGetCurrentEpoch, useGetEarliestEpoch, useGetPredictionsStatus } from 'state/hooks'
+import { useGetCurrentEpoch, useGetEarliestEpoch, useGetPredictionsStatus } from 'state/predictions/hooks'
 import { fetchClaimableStatuses, fetchLedgerData, fetchMarketData, fetchRounds } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
 import { range } from 'lodash'

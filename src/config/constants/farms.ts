@@ -39,6 +39,151 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 397,
+    lpSymbol: 'TUSD-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x2e28b9b74d6d99d4697e913b82b41ef1cac51c6c',
+    },
+    token: tokens.tusd,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 443,
+    lpSymbol: 'BTT-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xdcfbb12ded3fea12d2a078bc6324131cd14bf835',
+    },
+    token: tokens.btt,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 442,
+    lpSymbol: 'TRX-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb5d108578be3750209d1b3a8f45ffee8c5a75146',
+    },
+    token: tokens.trx,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 441,
+    lpSymbol: 'WIN-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6a445ceb72c8b1751755386c3990055ff92e14a0',
+    },
+    token: tokens.win,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 436,
+    lpSymbol: 'BABYCAKE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb5e33fE13a821e55ED33C884589a804B1b4F6fD8',
+    },
+    token: tokens.babycake,
+    quoteToken: tokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 437,
+    lpSymbol: 'BMON-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3C2b7B578Dd2175A1c3524Aa0D515106282Bf108',
+    },
+    token: tokens.bmon,
+    quoteToken: tokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 440,
+    lpSymbol: 'HERO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xe267018C943E77992e7e515724B07b9CE7938124',
+    },
+    token: tokens.hero,
+    quoteToken: tokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 438,
+    lpSymbol: 'WSG-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x37Ff7D4459ad96E0B01275E5efffe091f33c2CAD',
+    },
+    token: tokens.wsg,
+    quoteToken: tokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 439,
+    lpSymbol: 'MCRN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xe8D5d81dac092Ae61d097f84EFE230759BF2e522',
+    },
+    token: tokens.mcrn,
+    quoteToken: tokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 435,
+    lpSymbol: 'REVV-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x1cc18962b919ef90085a8b21f8ddc95824fbad9e',
+    },
+    token: tokens.revv,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 367,
+    lpSymbol: 'BTT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x946696344e7d4346b223e1cf77035a76690d6a73',
+    },
+    token: tokens.btt,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 434,
+    lpSymbol: 'SKILL-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xc19dfd34d3ba5816df9cbdaa02d32a9f8dc6f6fc',
+    },
+    token: tokens.skill,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 369,
+    lpSymbol: 'WIN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x894bd57afd8efc93d9171cb585d11d0977557425',
+    },
+    token: tokens.win,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 433,
+    lpSymbol: 'IF-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x7b4682D2B3f8670b125aF6AEA8d7eD2Daa43Bdc1',
+    },
+    token: tokens.if,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 432,
     lpSymbol: 'SPS-BNB LP',
     lpAddresses: {
@@ -469,16 +614,6 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 397,
-    lpSymbol: 'TUSD-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x2e28b9b74d6d99d4697e913b82b41ef1cac51c6c',
-    },
-    token: tokens.tusd,
-    quoteToken: tokens.busd,
-  },
-  {
     pid: 396,
     lpSymbol: 'VRT-BNB LP',
     lpAddresses: {
@@ -757,26 +892,6 @@ const farms: FarmConfig[] = [
     },
     token: tokens.mcoin,
     quoteToken: tokens.ust,
-  },
-  {
-    pid: 369,
-    lpSymbol: 'WIN-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x894bd57afd8efc93d9171cb585d11d0977557425',
-    },
-    token: tokens.win,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 367,
-    lpSymbol: 'BTT-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x946696344e7d4346b223e1cf77035a76690d6a73',
-    },
-    token: tokens.btt,
-    quoteToken: tokens.wbnb,
   },
   {
     pid: 366,

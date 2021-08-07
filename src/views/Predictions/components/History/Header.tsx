@@ -14,7 +14,7 @@ import {
 import { useAppDispatch } from 'state'
 import { HistoryFilter } from 'state/types'
 import { setHistoryFilter, setHistoryPaneState, fetchHistory } from 'state/predictions'
-import { useGetHistoryFilter, useGetIsFetchingHistory } from 'state/hooks'
+import { useGetHistoryFilter, useGetIsFetchingHistory } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 

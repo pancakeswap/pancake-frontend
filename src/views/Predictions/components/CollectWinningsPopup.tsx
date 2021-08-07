@@ -5,7 +5,7 @@ import { Button, CloseIcon, IconButton, TrophyGoldIcon } from '@ricefarm/uikitv2
 import { CSSTransition } from 'react-transition-group'
 import { useTranslation } from 'contexts/Localization'
 import { getBetHistory } from 'state/predictions/helpers'
-import { useGetPredictionsStatus, useIsHistoryPaneOpen } from 'state/hooks'
+import { useGetPredictionsStatus, useIsHistoryPaneOpen } from 'state/predictions/hooks'
 import { useAppDispatch } from 'state'
 import { setHistoryPaneState } from 'state/predictions'
 

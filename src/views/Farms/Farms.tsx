@@ -16,6 +16,7 @@ import { getFarmApr } from 'utils/apr'
 import { orderBy } from 'lodash'
 import isArchivedPid from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
+import { useUserFarmStakedOnly } from 'state/user/hooks'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
@@ -133,10 +134,7 @@ const Farms: React.FC = () => {
   // Connected users should see loading indicator until first userData has loaded
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const [stakedOnly, setStakedOnly] = useState(!isActive)
-  useEffect(() => {
-    setStakedOnly(!isActive)
-  }, [isActive])
+  const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X' && !isArchivedPid(farm.pid))

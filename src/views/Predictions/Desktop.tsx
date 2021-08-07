@@ -5,7 +5,7 @@ import { ArrowDownIcon, Button, ChartIcon } from '@ricefarm/uikitv2'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
 import { useAppDispatch } from 'state'
-import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
+import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/predictions/hooks'
 import { setChartPaneState } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
@@ -169,11 +169,7 @@ const Desktop: React.FC = () => {
           <PositionPane>
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && (
-              <div>
-                <Positions />
-              </div>
-            )}
+            {status === PredictionStatus.LIVE && <Positions />}
           </PositionPane>
           <Gutter ref={gutterRef} />
           <ChartPane ref={chartRef}>

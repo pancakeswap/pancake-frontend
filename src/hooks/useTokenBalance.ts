@@ -85,22 +85,28 @@ export const useBurnedBalance = (tokenAddress: string) => {
 }
 
 export const useGetBnbBalance = () => {
+  const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
   const [balance, setBalance] = useState(BIG_ZERO)
   const { account } = useWeb3React()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const walletBalance = await simpleRpcProvider.getBalance(account)
-      setBalance(new BigNumber(walletBalance.toString()))
+      try {
+        const walletBalance = await simpleRpcProvider.getBalance(account)
+        setBalance(new BigNumber(walletBalance.toString()))
+        setFetchStatus(FetchStatus.SUCCESS)
+      } catch {
+        setFetchStatus(FetchStatus.FAILED)
+      }
     }
 
     if (account) {
       fetchBalance()
     }
-  }, [account, lastUpdated, setBalance])
+  }, [account, lastUpdated, setBalance, setFetchStatus])
 
-  return { balance, refresh: setLastUpdated }
+  return { balance, fetchStatus, refresh: setLastUpdated }
 }
 
 export default useTokenBalance

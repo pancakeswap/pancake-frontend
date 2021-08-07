@@ -14,7 +14,7 @@ import {
   useGetHistoryFilter,
   useGetIsFetchingHistory,
   useIsHistoryPaneOpen,
-} from 'state/hooks'
+} from 'state/predictions/hooks'
 import { Header, HistoryTabs } from './components/History'
 import RoundsTab from './components/History/RoundsTab'
 import PnlTab from './components/History/PnlTab/PnlTab'

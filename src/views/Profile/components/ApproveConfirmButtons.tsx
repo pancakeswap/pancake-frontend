@@ -17,6 +17,7 @@ interface ApproveConfirmButtonsProps {
   onConfirm: () => void
   buttonArrangement?: ButtonArrangement
   confirmLabel?: string
+  confirmId?: string
 }
 
 const StyledApproveConfirmButtonRow = styled.div`
@@ -67,6 +68,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
   onConfirm,
   buttonArrangement = ButtonArrangement.ROW,
   confirmLabel,
+  confirmId,
 }) => {
   const { t } = useTranslation()
   const confirmButtonText = confirmLabel ?? t('Confirm')
@@ -90,6 +92,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
         </Flex>
         <Box>
           <Button
+            id={confirmId}
             onClick={onConfirm}
             disabled={isConfirmDisabled}
             isLoading={isConfirming}
@@ -108,6 +111,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
         {isApproveDisabled ? (
           <Box>
             <Button
+              id={confirmId}
               onClick={onConfirm}
               disabled={isConfirmDisabled}
               isLoading={isConfirming}

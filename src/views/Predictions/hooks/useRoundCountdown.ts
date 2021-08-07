@@ -1,4 +1,4 @@
-import { useGetCurrentRoundBlockNumber, useGetIntervalBlocks } from 'state/hooks'
+import { useGetCurrentRoundBlockNumber, useGetIntervalBlocks } from 'state/predictions/hooks'
 import useBlockCountdown from 'hooks/useGetBlockCountdown'
 
 /**

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box, Flex } from '@ricefarm/uikitv2'
-import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
+import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/predictions/hooks'
 import { PredictionStatus } from 'state/types'
 import MobileMenu from './components/MobileMenu'
 import History from './History'

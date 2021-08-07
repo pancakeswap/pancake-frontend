@@ -4,7 +4,7 @@ import { CardBody, PlayCircleOutlineIcon, Button, useTooltip, ArrowUpIcon, Arrow
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
-import { useGetIntervalBlocks } from 'state/hooks'
+import { useGetIntervalBlocks } from 'state/predictions/hooks'
 import { useBlock } from 'state/block/hooks'
 import { BLOCK_PADDING, fetchLedgerData } from 'state/predictions'
 import useToast from 'hooks/useToast'
