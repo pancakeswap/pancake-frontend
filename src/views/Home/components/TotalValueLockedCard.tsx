@@ -4,10 +4,16 @@ import { Card, CardBody, Heading, Skeleton, Text } from '@rug-zombie-libs/uikit'
 import { BigNumber } from 'bignumber.js'
 import numeral from 'numeral'
 import { getBalanceAmount } from '../../../utils/formatBalance'
-import { bnbPriceUsd, drFrankensteinZombieBalance, zmbeBnbTomb, zombiePriceUsd } from '../../../redux/get'
+import {
+  bnbPriceUsd,
+  drFrankensteinZombieBalance,
+  spawningPools,
+  zmbeBnbTomb,
+  zombiePriceUsd,
+} from '../../../redux/get'
 import store from '../../../redux/store'
 import tombs from '../../../redux/tombs'
-import { spawningPool, tomb } from '../../../redux/fetch'
+import { initialSpawningPoolData, spawningPool, tomb } from '../../../redux/fetch'
 import { useMultiCall, useZombie } from '../../../hooks/useContract'
 import * as get from '../../../redux/get'
 import { BIG_ZERO } from '../../../utils/bigNumber'
@@ -31,13 +37,16 @@ const TotalValueLockedCard: React.FC = () => {
   const zombie = useZombie()
   const [poolInfo, setPoolInfo] = useState(get.spawningPool(0).poolInfo)
   useEffect(() => {
-    spawningPool(0, multi, zombie, (data) => {
+    initialSpawningPoolData(multi, zombie, data => {
       if(data.totalZombieStaked) {
         setPoolInfo(data)
       }
     })
   }, [multi, zombie])
 
+  const totalSpawningPoolStaked = spawningPools().reduce((accumulator, sp) => {
+    return  sp.poolInfo.totalZombieStaked.plus(accumulator)
+  }, BIG_ZERO)
 
   const zombiePrice = zombiePriceUsd()
   const {reserves} = zmbeBnbTomb().result
@@ -46,7 +55,7 @@ const TotalValueLockedCard: React.FC = () => {
   const bnbLpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
   const bnbTombTvl = new BigNumber(zmbeBnbTomb().result.totalStaked).times(bnbLpTokenPrice)
   const zombieBalance = getBalanceAmount(drFrankensteinZombieBalance()).times(zombiePrice)
-  const spawningPoolTvl = getBalanceAmount(poolInfo.totalZombieStaked).times(zombiePrice)
+  const spawningPoolTvl = getBalanceAmount(totalSpawningPoolStaked).times(zombiePrice)
   const [tvl, setTvl] = useState(bnbTombTvl.plus(zombieBalance).plus(spawningPoolTvl))
   const newTvl = bnbTombTvl.plus(zombieBalance).plus(spawningPoolTvl)
   useEffect(() => {
