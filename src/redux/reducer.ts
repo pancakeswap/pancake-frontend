@@ -55,11 +55,6 @@ export default function reducer(state = defaultState, action) {
         ...state,
         bnbPriceUsd: action.payload.bnbPriceUsd,
       }
-    case types.UPDATE_TOMB:
-      return {
-        ...state,
-        tombs: state.tombs.map(tomb => tomb.pid === action.payload.pid ? { ...tomb, result: { ...tomb.result, ...action.payload.tombResult } } : tomb),
-      }
     case types.UPDATE_GRAVE_POOL_INFO:
       return {
         ...state,

@@ -19,7 +19,6 @@ import {
   updateZombiePriceBnb,
   updateBnbPriceUsd,
   updateDrFrankensteinZombieBalance,
-  updateTomb,
   updateGravePoolInfo,
   updateGraveUserInfo,
   updateNftTotalSupply,
@@ -74,7 +73,7 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
   initialGraveData()
 }
 
-export const tomb = (pid: number, multi: any) => {
+export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, setUpdate: any}, updateUserObj?: {update: boolean, setUpdate: any}) => {
   const contractAddress = getDrFrankensteinAddress()
   if(account()) {
     let inputs = [
@@ -89,14 +88,17 @@ export const tomb = (pid: number, multi: any) => {
           { target: getAddress(get.tombByPid(pid).lpAddress), function: 'balanceOf', args: [contractAddress] },
           { target: getAddress(get.tombByPid(pid).lpAddress), function: 'getReserves', args: [] },
           { target: getAddress(get.tombByPid(pid).lpAddress), function: 'allowance', args: [account(), contractAddress] },
+          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'totalSupply', args: [] },
         ]
         multi.multiCall(pancakePairAbi, inputs)
           .then(lpRes => {
             const lpTokenRes = lpRes[1]
             store.dispatch(updateTombPoolInfo(pid, {
-              allocPoint: drFrankensteinRes.allocPoint,
-              totalStaked: lpTokenRes[0],
-              reserves: [new BigNumber(lpTokenRes[1][1]), new BigNumber(lpTokenRes[1][2])]
+              allocPoint: new BigNumber(drFrankensteinRes[0].allocPoint.toString()),
+              minimumStake: new BigNumber(drFrankensteinRes[0].minimumStake.toString()),
+              totalStaked: new BigNumber(lpTokenRes[0].toString()),
+              lpTotalSupply: new BigNumber(lpTokenRes[3].toString()),
+              reserves: [new BigNumber(lpTokenRes[1]._reserve0.toString()), new BigNumber(lpTokenRes[1]._reserve1.toString())],
             }))
             store.dispatch(updateTombUserInfo(pid, {
               amount: new BigNumber(drFrankensteinRes[1].amount.toString()),
@@ -104,6 +106,9 @@ export const tomb = (pid: number, multi: any) => {
               lpAllowance: new BigNumber(lpTokenRes[2].toString()),
               pendingZombie: new BigNumber(drFrankensteinRes[2].toString()),
             }))
+            if(updateUserObj && !updateUserObj.update) {
+              updateUserObj.setUpdate(!updateUserObj.update)
+            }
           })
       })
   } else {
@@ -112,18 +117,30 @@ export const tomb = (pid: number, multi: any) => {
         const inputs = [
           { target: getAddress(get.tombByPid(pid).lpAddress), function: 'balanceOf', args: [contractAddress] },
           { target: getAddress(get.tombByPid(pid).lpAddress), function: 'getReserves', args: [] },
+          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'totalSupply', args: [] },
         ]
         multi.multiCall(pancakePairAbi, inputs)
           .then(lpRes => {
             const lpTokenRes = lpRes[1]
             store.dispatch(updateTombPoolInfo(pid, {
               allocPoint: new BigNumber(poolInfoRes.allocPoint),
+              minimumStake: new BigNumber(poolInfoRes.minimumStake),
               totalStaked: new BigNumber(lpTokenRes[0].toString()),
-              reserves: [new BigNumber(lpTokenRes[1][1].toString()), new BigNumber(lpTokenRes[1][2].toString())]
+              lpTotalSupply: new BigNumber(lpTokenRes[2].toString()),
+              reserves: [new BigNumber(lpTokenRes[1]._reserve0.toString()), new BigNumber(lpTokenRes[1]._reserve1.toString())],
             }))
           })
+        if(updatePoolObj && !updatePoolObj.update) {
+          updatePoolObj.setUpdate(!updatePoolObj.update)
+        }
       })
   }
+}
+
+export const initialTombData = (multi: any, updatePoolObj?: {update: boolean, setUpdate: any}, updateUserObj?: {update: boolean, setUpdate: any}) => {
+  get.tombs().forEach(t => {
+    tomb(t.pid, multi, updatePoolObj, updateUserObj)
+  })
 }
 
 export const grave = (pid: number, setUserInfoState?, setPoolInfoState?) => {

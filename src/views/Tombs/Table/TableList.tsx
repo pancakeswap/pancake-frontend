@@ -41,44 +41,23 @@ const ArrowIcon = styled(BaseLayout)`
   margin-right: 0.3em;
 `
 
-interface Result {
-  paidUnlockFee: boolean,
-  rugDeposited: number
-}
-
 interface TableListProps {
   handler: any
-  totalLpTokenStaked: any,
   lpTokenPrice: BigNumber,
   tvl: BigNumber,
-  details: {
-    id: number,
-    name: string,
-    withdrawalCooldown: string,
-    artist?: any,
-    stakingToken: any,
-    pid: number,
-    result: Result,
-    poolInfo: any,
-    token: Token,
-    quoteToken: Token
-  }
+  pid: number
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
-  const { details: { name, poolInfo, pid, quoteToken, token }, tvl, lpTokenPrice, totalLpTokenStaked, handler } = props;
+  const { pid, tvl, lpTokenPrice, handler } = props;
   const tomb = tombByPid(pid)
-  let allocPoint = BIG_ZERO;
-  if(poolInfo.allocPoint) {
-    allocPoint = new BigNumber(poolInfo.allocPoint)
-  }
-
+  const { name, quoteToken, poolInfo: { allocPoint, totalStaked } } = tomb
   const poolWeight = allocPoint ? allocPoint.div(100) : null
 
   const [isOpen, setIsOpen] = useState(false);
 
   const bigZombiePrice = getDecimalAmount(new BigNumber(zombiePriceUsd()))
-  const apr = getGraveTombApr(poolWeight, bigZombiePrice, getDecimalAmount(totalLpTokenStaked).times(lpTokenPrice))
+  const apr = getGraveTombApr(poolWeight, bigZombiePrice, getDecimalAmount(totalStaked).times(lpTokenPrice))
   const dailyApr = apr / 365
   const displayApr = apr > 10 ? numeral(apr).format('(0.00 a)') : numeral(apr).format('(0.0000 a)')
   const displayDailyApr = dailyApr > 100 ? numeral(dailyApr).format('(0.00 a)') : numeral(dailyApr).format('(0.00000 a)')

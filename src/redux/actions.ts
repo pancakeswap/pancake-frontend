@@ -51,16 +51,8 @@ export const updateBnbPriceUsd = (bnbPriceUsd: number) => ({
   },
 })
 
-export const updateTomb = (pid: number, tombResult) => ({ // todo add tomb result type restriction
-  type: actions.UPDATE_TOMB,
-  payload: {
-    pid,
-    tombResult,
-  },
-})
-
 export const updateTombPoolInfo = (pid: number, poolInfo: TombPoolInfo) => ({ // todo add tomb result type restriction
-  type: actions.UPDATE_TOMB,
+  type: actions.UPDATE_TOMB_POOL_INFO,
   payload: {
     pid,
     poolInfo,
@@ -68,7 +60,7 @@ export const updateTombPoolInfo = (pid: number, poolInfo: TombPoolInfo) => ({ //
 })
 
 export const updateTombUserInfo = (pid: number, userInfo: TombUserInfo) => ({ // todo add tomb result type restriction
-  type: actions.UPDATE_TOMB,
+  type: actions.UPDATE_TOMB_USER_INFO,
   payload: {
     pid,
     userInfo,

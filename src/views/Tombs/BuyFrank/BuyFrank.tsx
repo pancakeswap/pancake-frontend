@@ -5,37 +5,27 @@ import { formatDuration } from '../../../utils/timerHelpers'
 import { tombByPid } from '../../../redux/get'
 import { APESWAP_ADD_LIQUIDITY_URL, BASE_ADD_LIQUIDITY_URL } from '../../../config'
 import { getAddress } from '../../../utils/addressHelpers'
-
-
-interface Details {
-  id: number,
-  name: string,
-  withdrawalCooldown: string,
-  artist?: any,
-  stakingToken: any,
-  pid: number,
-  result: any,
-  poolInfo: any,
-  pendingZombie: any
-}
+import tokens from '../../../config/constants/tokens'
 
 interface BuyFrankProps {
-  details: Details
+  pid: number
 }
 
-const BuyFrank: React.FC<BuyFrankProps> = ({ details: { pid, result: { tokenWithdrawalDate } } }) => {
+const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
   const currentDate = Math.floor(Date.now() / 1000);
-  const initialWithdrawCooldownTime = parseInt(tokenWithdrawalDate) - currentDate;
   const tomb = tombByPid(pid)
-  const { amount } = tomb.userInfo
+  const { userInfo: { amount, tokenWithdrawalDate } } = tomb
+  const initialWithdrawCooldownTime = tokenWithdrawalDate - currentDate;
   const [onPresent1] = useModal(<ModalInput inputTitle="Stake $ZMBE" />);
-  const addLiquidityUrl = `${tomb.exchange === 'Apeswap' ? APESWAP_ADD_LIQUIDITY_URL : BASE_ADD_LIQUIDITY_URL}/${getAddress(tomb.quoteToken.address)}/${getAddress(tomb.token.address)}`
-  console.log(amount)
+  // eslint-disable-next-line no-nested-ternary
+  const quoteTokenUrl = tomb.quoteToken === tokens.wbnb ? tomb.exchange === 'Apeswap' ? 'ETH' : 'BNB' : getAddress(tomb.quoteToken.address)
+  const addLiquidityUrl = `${tomb.exchange === 'Apeswap' ? APESWAP_ADD_LIQUIDITY_URL : BASE_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+
   return (
     !amount.isZero() ?
       <div className="frank-card">
         <div className="space-between">
-          {currentDate >= parseInt(tokenWithdrawalDate) ?
+          {currentDate >= tokenWithdrawalDate ?
             <span className="total-earned text-shadow">No Withdraw Fees</span> :
             <div>
               <div className="small-text">

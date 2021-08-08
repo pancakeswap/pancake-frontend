@@ -9,7 +9,6 @@ import { tombByPid } from '../../../redux/get'
 interface FrankEarnedProps {
   pid: number,
   lpTokenPrice: BigNumber,
-  totalLpTokenStaked: BigNumber
 }
 
 const FrankEarned: React.FC<FrankEarnedProps> = ({ pid }) => {

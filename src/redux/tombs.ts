@@ -15,15 +15,12 @@ const tombs: Tomb[] = [
     quoteToken: tokens.wbnb,
     exchange: 'Pancakeswap',
     withdrawalCooldown: '3 days',
-    result: {
-      tokenWithdrawalDate: 0,
-      amount: BIG_ZERO,
-      totalStaked: BIG_ZERO,
-      totalSupply: BIG_ZERO,
-      reserves: [BIG_ZERO, BIG_ZERO],
-    },
     poolInfo: {
       minimumStake: BIG_ZERO,
+      allocPoint: BIG_ZERO,
+      totalStaked: BIG_ZERO,
+      lpTotalSupply: BIG_ZERO,
+      reserves: [BIG_ZERO, BIG_ZERO],
     },
     userInfo: {
       amount: BIG_ZERO,
@@ -34,7 +31,7 @@ const tombs: Tomb[] = [
   },
   {
     id: 1,
-    pid: 12,
+    pid: 17,
     name: 'ZMBE-BNB',
     lpAddress: {
       97: '',
@@ -44,15 +41,13 @@ const tombs: Tomb[] = [
     quoteToken: tokens.wbnb,
     exchange: 'Apeswap',
     withdrawalCooldown: '3 days',
-    result: {
-      tokenWithdrawalDate: 0,
-      amount: BIG_ZERO,
-      totalStaked: BIG_ZERO,
-      totalSupply: BIG_ZERO,
-      reserves: [BIG_ZERO, BIG_ZERO],
-    },
+    notNativeDex: true,
     poolInfo: {
       minimumStake: BIG_ZERO,
+      allocPoint: BIG_ZERO,
+      totalStaked: BIG_ZERO,
+      lpTotalSupply: BIG_ZERO,
+      reserves: [BIG_ZERO, BIG_ZERO],
     },
     userInfo: {
       amount: BIG_ZERO,

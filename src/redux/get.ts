@@ -41,8 +41,8 @@ export const coingeckoPrice = (id: string) => {
   return axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`)
 }
 
-export const zmbeBnbTomb = (): any => {
-  return store.getState().tombs[0]
+export const zmbeBnbTomb = (): Tomb => {
+  return tombByPid(11)
 }
 
 export const graveByPid = (pid: number): any => {
@@ -87,13 +87,13 @@ export const nftTotalSupply = (): BigNumber => {
 
 // store lpreserves
 export const zmbeBnbLpPriceBnb = () => {
-  const reserves = zmbeBnbTomb().result.reserves
-  const lpTotalSupply = zmbeBnbTomb().result.totalSupply
+  const { poolInfo: { reserves, lpTotalSupply }} = zmbeBnbTomb()
   const reservesBnb = [new BigNumber(reserves[0]).times(zombiePriceBnb()), getBalanceAmount(reserves[1])]
   const bnbLpTokenPrice = reservesBnb[0].plus(reservesBnb[1]).div(lpTotalSupply)
   return bnbLpTokenPrice
 }
 
 export const zmbePerZmbeBnbLp = () => {
-  return new BigNumber(zmbeBnbTomb().result.reserves[0]).div(zmbeBnbTomb().result.totalSupply)
+  const { poolInfo: {reserves, lpTotalSupply } } = zmbeBnbTomb()
+  return reserves[0].div(lpTotalSupply)
 }

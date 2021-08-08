@@ -25,7 +25,9 @@ export interface PoolInfo {
 export interface TombPoolInfo {
   allocPoint: BigNumber,
   totalStaked: BigNumber,
-  reserves: [BigNumber, BigNumber]
+  minimumStake: BigNumber,
+  lpTotalSupply: BigNumber,
+  reserves: [BigNumber, BigNumber],
 }
 
 export interface TombUserInfo {
@@ -89,9 +91,9 @@ export interface Tomb {
   quoteToken: Token,
   exchange: string,
   lpAddress: Address,
-  result: any,
+  notNativeDex?: boolean,
   userInfo: TombUserInfo,
-  poolInfo: any,
+  poolInfo: TombPoolInfo,
 }
 
 export interface SpawningPool {

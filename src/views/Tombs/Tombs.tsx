@@ -4,49 +4,33 @@ import PageHeader from 'components/PageHeader'
 import { getBnbPriceinBusd } from 'state/hooks'
 import { Flex, Heading } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useDrFrankenstein } from 'hooks/useContract'
+import { useDrFrankenstein, useMultiCall } from 'hooks/useContract'
 import { getDrFrankensteinAddress } from 'utils/addressHelpers'
 import Page from '../../components/layout/Page'
 import Table from './Table'
 import '../Graves/Graves.Styles.css'
-import tableData from './data'
-import { BIG_ZERO } from '../../utils/bigNumber'
 import { tombs } from '../../redux/get'
-
+import { initialTombData } from '../../redux/fetch'
 
 let accountAddress
 
 const Tombs: React.FC = ( ) => {
   const { account } = useWeb3React()
   const [tombsData, setTombsData] = useState([])
-
+  const multi = useMultiCall()
   accountAddress = account
   const drFrankenstein = useDrFrankenstein()
   const [bnbInBusd, setBnbInBusd] = useState(0)
+  const [updatePoolInfo, setUpdatePoolInfo] = useState(false)
+  const [updateUserInfo, setUpdateUserInfo] = useState(false)
 
   useEffect(() => {
-    if (accountAddress) {
-      const newTombsData = tombs().sort((a, b) => a.id - b.id).map((tomb) => {
-        drFrankenstein.methods.userInfo(tomb.pid, accountAddress).call()
-          .then(res => {
-            tomb.result = res
-          })
-        drFrankenstein.methods.poolInfo(tomb.pid).call().then(res => {
-          tomb.poolInfo = res
-        })
-        drFrankenstein.methods.pendingZombie(tomb.pid, accountAddress).call()
-          .then(res => {
-            tomb.userInfo.pendingZombie = res
-          })
-        return tomb
-      })
-      setTombsData(newTombsData)
-      getBnbPriceinBusd().then((res) => {
-        setBnbInBusd(res.data.price)
-      })
-    }
-
-  }, [drFrankenstein.methods])
+    initialTombData(
+      multi,
+      { update: updatePoolInfo, setUpdate: setUpdatePoolInfo },
+      { update: updateUserInfo, setUpdate: setUpdateUserInfo }
+    )
+  }, [drFrankenstein.methods, multi, updatePoolInfo, updateUserInfo])
 
   const [isAllowance, setIsAllowance] = useState(false)
 
@@ -94,9 +78,9 @@ const Tombs: React.FC = ( ) => {
     </PageHeader>
     <Page >
       <div>
-        {tombsData.map((data) => {
-          return <Table updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
-                        isAllowance={isAllowance} details={data} key={data.id} />
+        {tombs().sort((a, b) => a.id - b.id).map((t) => {
+          return <Table pid={t.pid} updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
+                        isAllowance={isAllowance} key={t.id} />
         })}
       </div>
     </Page>
