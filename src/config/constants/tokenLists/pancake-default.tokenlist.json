@@ -11,6 +11,30 @@
   "keywords": ["pancake", "default"],
   "tokens": [
     {
+      "name": "RiceFarm Token",
+      "symbol": "RICE",
+      "address": "0xC4eEFF5aab678C3FF32362D80946A3f5De4a1861",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://ricefarm.fi/images/tokens/RICE.png"
+    },
+    {
+      "name": "TeslaSafe",
+      "symbol": "TeslaSafe",
+      "address": "0x3504de9e61FDFf2Fc70f5cC8a6D1Ee493434C1Aa",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://ricefarm.fi/images/tokens/teslasafe.png"
+    },
+    {
+      "name": "EpicBuy",
+      "symbol": "EPIC",
+      "address": "0x8C8B57F82b662553B2BdD053c7154Fe1821cC9C4",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://ricefarm.fi/images/tokens/EPIC.png"
+    },
+    {
       "name": "WBNB Token",
       "symbol": "WBNB",
       "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",

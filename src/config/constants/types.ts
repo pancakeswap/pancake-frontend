@@ -64,6 +64,12 @@ export interface FarmConfig {
     earnLabel: string
     endBlock: number
   }
+  // extra stuff we added
+  tokenAddresses?: Address
+  isTokenOnly?: boolean
+  isV1?: boolean
+  hide?: boolean
+  lpType?: string
 }
 
 export interface PoolConfig {

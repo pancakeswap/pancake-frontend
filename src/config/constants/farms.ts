@@ -5,39 +5,120 @@ const farms: FarmConfig[] = [
   /**
    * These 3 farms (PID 0, 251, 252) should always be at the top of the file.
    */
+  // {
+  //   pid: 0,
+  //   lpSymbol: 'CAKE',
+  //   lpAddresses: {
+  //     97: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
+  //     56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+  //   },
+  //   token: tokens.syrup,
+  //   quoteToken: tokens.wbnb,
+  // },
   {
     pid: 0,
-    lpSymbol: 'CAKE',
+    lpSymbol: 'RICE',
     lpAddresses: {
-      97: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
-      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+      97: '0x0cd6c8b18afd5586e54ae2cff0f6da1391185e25', // rice-bnb for getting prices
+      56: '0xf2F10a571F47fadaD256de41C8ED6AC150606a19',
     },
-    token: tokens.syrup,
-    quoteToken: tokens.wbnb,
+    tokenAddresses: {
+      97: '0xAb14aE27665F077AC2f8c08dFdCf011D80a3640C',
+      56: '0xC4eEFF5aab678C3FF32362D80946A3f5De4a1861',
+    },
+    token: tokens.rice,
+    quoteToken: tokens.rice,
+    // depositFee: 0,
+    // harvestInterval: 57600,
+    isTokenOnly: true,
   },
   {
-    pid: 251,
-    lpSymbol: 'CAKE-BNB LP',
+    pid: 1,
+    lpSymbol: 'TeslaSafe',
     lpAddresses: {
-      97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
-      56: '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0',
+      97: '0xC9dbefe1179f9BeD3A0AFFAF124C0A641666d1b4', // teslasafe-bnb for getting prices
+      56: '0xd0fDA937c512083091bA6e6193e421e6f125043f',
     },
-    token: tokens.cake,
-    quoteToken: tokens.wbnb,
+    tokenAddresses: {
+      97: '0x4bCdd13aa5911b82dFDd873be81015a887754913',
+      56: '0x3504de9e61FDFf2Fc70f5cC8a6D1Ee493434C1Aa',
+    },
+    token: tokens.teslasafe,
+    quoteToken: tokens.teslasafe,
+    // depositFee: 0,
+    // harvestInterval: 57600,
+    isTokenOnly: true,
+    isV1: true,
   },
   {
-    pid: 252,
+    pid: 2,
+    lpSymbol: 'RICE-BNB LP',
+    lpAddresses: {
+      97: '0x0cd6c8b18afd5586e54ae2cff0f6da1391185e25',
+      56: '0xf2F10a571F47fadaD256de41C8ED6AC150606a19',
+    },
+    token: tokens.rice,
+    quoteToken: tokens.wbnb,
+    // depositFee: 0,
+    // harvestInterval: 57600,
+    lpType: 'CAKE LP v2',
+  },
+  {
+    pid: 3,
+    lpSymbol: 'TeslaSafe-BNB LP',
+    lpAddresses: {
+      97: '0xC9dbefe1179f9BeD3A0AFFAF124C0A641666d1b4',
+      56: '0xd0fDA937c512083091bA6e6193e421e6f125043f',
+    },
+    token: tokens.teslasafe,
+    quoteToken: tokens.wbnb,
+    // depositFee: 0,
+    // harvestInterval: 57600,
+    lpType: 'CAKE LP v1',
+    isV1: true,
+  },
+  {
+    pid: 4,
+    lpSymbol: 'RICE-BUSD LP',
+    lpAddresses: {
+      97: '0x7bfdBDe6a7065BAF1Eb45CE15D546C15FeB4aDd0',
+      56: '0x089ea34C9b239F1c012f3a96C2B8987367B78dC4',
+    },
+    token: tokens.rice,
+    quoteToken: tokens.busd,
+    // depositFee: 0,
+    // harvestInterval: 57600,
+    lpType: 'CAKE LP v2',
+  },
+  {
+    pid: 5,
     lpSymbol: 'BUSD-BNB LP',
     lpAddresses: {
-      97: '',
+      97: '0x23Ec7009caBA76d3a0756c98dF6a650a3B0eAC8E',
       56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
     },
     token: tokens.busd,
     quoteToken: tokens.wbnb,
+    lpType: 'CAKE LP v2',
+    hide: true,
   },
-  /**
+  {
+    pid: 6,
+    lpSymbol: 'EPIC-BNB LP',
+    lpAddresses: {
+      97: '0x030EBA6c3Be6e0bB4814EA49EC833F18af6DCe15',
+      56: '0xEd3149e3742fa43FAC385314980e539E6dcDE714',
+    },
+    token: tokens.epic,
+    quoteToken: tokens.wbnb,
+    // depositFee: 1400,
+    // harvestInterval: 57600,
+    lpType: 'CAKE LP v2',
+  },
+  /*
+  /!**
    * V3 by order of release (some may be out of PID order due to multiplier boost)
-   */
+   *!/
   {
     pid: 397,
     lpSymbol: 'TUSD-BUSD LP',
@@ -1943,9 +2024,9 @@ const farms: FarmConfig[] = [
     token: tokens.ada,
     quoteToken: tokens.wbnb,
   },
-  /**
+  /!**
    * V2 farms, set to be removed once unstaked
-   */
+   *!/
   {
     pid: 139,
     lpSymbol: 'CAKE-BNB LP',
@@ -3066,9 +3147,9 @@ const farms: FarmConfig[] = [
     token: tokens.busd,
     quoteToken: tokens.wbnb,
   },
-  /**
+  /!**
    * All farms below here are from v1 and are to be set to 0x
-   */
+   *!/
   {
     pid: 1,
     lpSymbol: 'CAKE-BNB LP',
@@ -4372,7 +4453,7 @@ const farms: FarmConfig[] = [
     },
     token: tokens.bake,
     quoteToken: tokens.wbnb,
-  },
+  }, */
 ]
 
 export default farms
