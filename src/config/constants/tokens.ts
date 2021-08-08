@@ -21,6 +21,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
   },
+  euler: {
+    symbol: 'EULER',
+    address: {
+      56: '0x3920123482070c1a2dff73aad695c60e7c6f6862',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://euler.tools/',
+  },
   rugbiden: {
     symbol: 'RUGBIDEN',
     address: {

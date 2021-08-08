@@ -4,8 +4,16 @@ import { Card, CardBody, Heading, Skeleton, Text } from '@rug-zombie-libs/uikit'
 import { BigNumber } from 'bignumber.js'
 import numeral from 'numeral'
 import { getBalanceAmount } from '../../../utils/formatBalance'
-import { bnbPriceUsd, drFrankensteinZombieBalance, zmbeBnbTomb, zombiePriceUsd, tombs } from '../../../redux/get'
-import { initialTombData, spawningPool, tomb } from '../../../redux/fetch'
+import {
+  bnbPriceUsd,
+  drFrankensteinZombieBalance,
+  zmbeBnbTomb,
+  zombiePriceUsd,
+  tombs,
+  spawningPools,
+} from '../../../redux/get'
+import { initialTombData, spawningPool, initialSpawningPoolData, tomb } from '../../../redux/fetch'
+
 import { useMultiCall, useZombie } from '../../../hooks/useContract'
 import * as get from '../../../redux/get'
 import { BIG_ZERO } from '../../../utils/bigNumber'
@@ -35,12 +43,17 @@ const TotalValueLockedCard: React.FC = () => {
     )
   }, [multi])
   useEffect(() => {
-    spawningPool(0, multi, zombie, (data) => {
+    initialSpawningPoolData(multi, zombie, data => {
       if(data.totalZombieStaked) {
         setPoolInfo(data)
       }
     })
   }, [multi, zombie])
+
+
+  const totalSpawningPoolStaked = spawningPools().reduce((accumulator, sp) => {
+    return  sp.poolInfo.totalZombieStaked.plus(accumulator)
+  }, BIG_ZERO)
 
   const zombiePrice = zombiePriceUsd()
   let tombsTvl = BIG_ZERO
@@ -52,12 +65,11 @@ const TotalValueLockedCard: React.FC = () => {
   })
 
   const zombieBalance = getBalanceAmount(drFrankensteinZombieBalance()).times(zombiePrice)
-  const spawningPoolTvl = getBalanceAmount(poolInfo.totalZombieStaked).times(zombiePrice)
+  const spawningPoolTvl = getBalanceAmount(totalSpawningPoolStaked).times(zombiePrice)
   const [tvl, setTvl] = useState(tombsTvl.plus(zombieBalance).plus(spawningPoolTvl))
   const newTvl = tombsTvl.plus(zombieBalance).plus(spawningPoolTvl)
   useEffect(() => {
     if (!tvl.eq(newTvl) || tvl.isNaN() ) {
-      console.log(newTvl)
       setTvl(newTvl)
     }
   }, [newTvl, tvl])

@@ -6,6 +6,66 @@ import { SpawningPool } from './types'
 
 const spawningPools: SpawningPool[] = [
   {
+    id: 1,
+    name: 'Euler Tools Legendary',
+    subtitle: "Leonhard Euler's Day Off",
+    path: "images/rugZombie/Leonhard Euler's Day Off.gif",
+    type: 'image',
+    address: {
+      56: '0x637810116bfdEcA4bB38c61D9FeBC5911440B0eF',
+      97: '',
+    },
+    endBlock: 12350000,
+    project: {
+      name: 'Euler Tools',
+      description: 'Euler Tools is a platform to explore and discover blockchain content. With a clean, usable and responsive interface.',
+      additionalDetails: [
+        {
+          name: 'Project website',
+          url: tokens.euler.projectLink
+        },
+        {
+          name: 'Twitter',
+          url: 'twitter.com/EulerTools',
+        },
+        {
+          name: 'Telegram',
+          url: 't.me/eulertools'
+        },
+        {
+          name: 'Medium Post',
+          url: 'https://rugzombie.medium.com/new-spawning-pool-euler-tools-a07b095a9846'
+        }
+      ],
+
+    },
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '45 days',
+    rewardToken: tokens.euler,
+    rewardTokenId: 'euler-tools',
+    artist: artists.ZomBaes,
+    stakingToken: '',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: false,
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      amount: BIG_ZERO,
+      pendingReward: BIG_ZERO,
+      zombieAllowance: BIG_ZERO,
+    },
+    poolInfo: {
+      unlockFee: BIG_ZERO,
+      rewardPerBlock: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalZombieStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+    },
+  },
+  {
     id: 0,
     name: 'Gorilla-Fi Legendary',
     subtitle: 'Silverback',
@@ -64,7 +124,7 @@ const spawningPools: SpawningPool[] = [
       withdrawCooldown: 0,
       nftRevivalTime: 0,
     },
-  },
+  }
 ]
 
 export default spawningPools

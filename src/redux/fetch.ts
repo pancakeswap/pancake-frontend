@@ -294,6 +294,12 @@ export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: 
   }
 }
 
+export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: any, setUserData?: any) => {
+  get.spawningPools().forEach(sp => {
+    spawningPool(sp.id, multi, zombie, setPoolData, setUserData)
+  })
+}
+
 const zombiePriceBnb = (setZombiePrice?: any) => {
   getPancakePair(getAddress(tombs[0].lpAddress)).methods.getReserves().call()
     .then(res => {
