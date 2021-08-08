@@ -16,13 +16,12 @@ const HEADER_HEIGHT = '37px'
 
 // Used to get the gradient for the card border, which depends on the header color to create the illusion
 // that header is overlapping the 1px card border.
+// 'live' is not included into the switch case because it has isActive border style
 export const getBorderBackground = (theme: DefaultTheme, status: Status) => {
   const gradientStopPoint = `calc(${HEADER_HEIGHT} + 1px)`
   switch (status) {
     case 'calculating':
       return `linear-gradient(transparent ${gradientStopPoint}, ${theme.colors.cardBorder} ${gradientStopPoint}), ${theme.colors.gradients.cardHeader}`
-    case 'live':
-      return 'transparent'
     case 'canceled':
       return `linear-gradient(${theme.colors.warning} ${gradientStopPoint}, ${theme.colors.cardBorder} ${gradientStopPoint})`
     case 'next':
