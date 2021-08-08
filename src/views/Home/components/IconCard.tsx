@@ -30,7 +30,7 @@ interface IconCardProps extends IconCardData, CardProps {
 
 export interface IconCardData {
   icon: ReactNode
-  background: string
+  background?: string
   borderColor: string
   rotation?: string
 }
