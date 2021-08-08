@@ -26,11 +26,11 @@ const spawningPools: SpawningPool[] = [
         },
         {
           name: 'Twitter',
-          url: 'twitter.com/EulerTools',
+          url: 'https://twitter.com/EulerTools',
         },
         {
           name: 'Telegram',
-          url: 't.me/eulertools'
+          url: 'https://t.me/eulertools'
         },
         {
           name: 'Medium Post',
