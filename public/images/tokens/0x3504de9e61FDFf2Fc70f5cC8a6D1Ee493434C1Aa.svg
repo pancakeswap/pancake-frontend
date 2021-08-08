@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="897px" height="896px" viewBox="0 0 897 896" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>logo-circle</title>
+    <defs>
+        <circle id="path-1" cx="414" cy="414" r="414"></circle>
+        <filter x="-4.5%" y="-4.2%" width="108.9%" height="108.9%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="30" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="logo-circle" transform="translate(34.800000, 32.000000)">
+            <g id="Oval">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <circle stroke="#FFFFFF" stroke-width="30" fill="#092057" fill-rule="evenodd" cx="414" cy="414" r="429"></circle>
+            </g>
+            <g id="Group-Copy" transform="translate(115.800000, 130.200000)">
+                <polygon id="Fill-4" fill="#FFFFFF" points="596.6 176.231166 511.714811 176.231166 511.714811 145.968217 340.739723 93.4195423 340.739723 589.932928 298.295693 612 255.860277 589.932928 255.860277 93.4143907 84.8851892 145.968217 84.8851892 176.231166 -7.1938738e-13 176.231166 -1.05977449e-12 102.001502 298.295693 -1.59088367e-12 596.6 102.001502"></polygon>
+                <path d="M361.517755,425.351282 L109.923366,425.351282 L0,213.4 L595.6,213.4 L554.072043,287.580878 L119.224755,287.580916 L151.540654,351.170496 L335.554,351.17 L335.702232,351.082493 L523.257107,351.082493 L408.524578,555.2 L182.356858,555.2 L141.333793,481.019122 L365.157785,481.019084 L396.277331,425.26328 L361.665,425.263 L361.517755,425.351282 Z" id="Combined-Shape" fill="#1C7DFC" fill-rule="nonzero"></path>
+                <rect id="Rectangle-Copy-5" fill="#FFFFFF" x="255.8" y="321.8" width="85" height="126.2"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -4,11 +4,11 @@ import { PoolConfig, PoolCategory } from './types'
 const pools: PoolConfig[] = [
   {
     sousId: 0,
-    stakingToken: tokens.cake,
-    earningToken: tokens.cake,
+    stakingToken: tokens.rice,
+    earningToken: tokens.rice,
     contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+      97: '0x1afA9607136814473350eCbA53207219C3248ED7',
+      56: '0xAf7e26bE4397aa29f54679015DD61DB40097D9Ee',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -16,6 +16,7 @@ const pools: PoolConfig[] = [
     sortOrder: 1,
     isFinished: false,
   },
+  /*
   {
     sousId: 209,
     stakingToken: tokens.cake,
@@ -2768,6 +2769,7 @@ const pools: PoolConfig[] = [
     sortOrder: 999,
     isFinished: true,
   },
+  */
 ]
 
 export default pools

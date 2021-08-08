@@ -16,6 +16,23 @@ export const CAKE: { [chainId: number]: Token } = {
     'PancakeSwap Token',
   ),
 }
+
+export const RICE: { [chainId: number]: Token } = {
+  [ChainId.MAINNET]: new Token(
+    ChainId.MAINNET,
+    '0xC4eEFF5aab678C3FF32362D80946A3f5De4a1861',
+    18,
+    'RICE',
+    'RiceFarm Token',
+  ),
+  [ChainId.TESTNET]: new Token(
+    ChainId.TESTNET,
+    '0xAb14aE27665F077AC2f8c08dFdCf011D80a3640C',
+    18,
+    'RICE',
+    'RiceFarm Token',
+  ),
+}
 export const BUSD: { [chainId: number]: Token } = {
   [ChainId.MAINNET]: new Token(
     ChainId.MAINNET,
@@ -63,6 +80,42 @@ const tokens = {
   bnb: {
     symbol: 'BNB',
     projectLink: 'https://www.binance.com/',
+  },
+  epic: {
+    symbol: 'EPIC',
+    address: {
+      56: '0x8C8B57F82b662553B2BdD053c7154Fe1821cC9C4',
+      97: '0x15873fA0280F45223b550155AB75E38055EFb1ec',
+    },
+    decimals: 9,
+    projectLink: 'https://epicbuy.fi/',
+  },
+  rice: {
+    symbol: 'RICE',
+    address: {
+      56: '0xC4eEFF5aab678C3FF32362D80946A3f5De4a1861',
+      97: '0xAb14aE27665F077AC2f8c08dFdCf011D80a3640C',
+    },
+    decimals: 18,
+    projectLink: 'https://ricefarm.fi/',
+  },
+  teslasafe: {
+    symbol: 'TeslaSafe',
+    address: {
+      56: '0x3504de9e61FDFf2Fc70f5cC8a6D1Ee493434C1Aa',
+      97: '0x4bCdd13aa5911b82dFDd873be81015a887754913',
+    },
+    decimals: 9,
+    projectLink: 'https://teslasafe.fi/',
+  },
+  ricebar: {
+    symbol: 'xRICE',
+    address: {
+      56: '0xdB759784Cf1D1f21CCcFa23f6101CD83DdF6e976',
+      97: '0x935cc4802b884e64503f1E48a7e15242c4211604',
+    },
+    decimals: 18,
+    projectLink: 'https://ricefarm.fi/',
   },
   cake: {
     symbol: 'CAKE',
