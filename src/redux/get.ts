@@ -77,6 +77,10 @@ export const nfts = () => {
   return store.getState().nfts
 }
 
+export const nftByName = (name: string) => {
+  return nfts().find(t => t.name === name)
+}
+
 export const nftTotalSupply = (): BigNumber => {
   let totalSupply = BIG_ZERO
   nfts().forEach(nft => {

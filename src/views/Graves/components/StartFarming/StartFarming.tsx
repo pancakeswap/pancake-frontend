@@ -19,6 +19,8 @@ import StakeZombieModal from '../StakeZombieModal';
 import WithdrawZombieModal from '../WithdrawZombieModal';
 import * as get from '../../../../redux/get'
 import * as fetch from '../../../../redux/fetch'
+import { nftByName } from '../../../../redux/get'
+import ConvertNftModal from '../ConvertNftModal'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -46,7 +48,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [grave, setGrave] = useState(get.grave(pid))
-  const { rug, userInfo, isClosed } = grave
+  const { rug, userInfo, isClosed, requiresNft, nft } = grave
 
   const onUpdate = () => {
     fetch.grave(pid, data => {
@@ -82,6 +84,13 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
     />
   )
 
+  const [onPresentConvertNftModal] = useModal(
+    <ConvertNftModal
+      pid={pid}
+      updateAllowance={undefined}
+      updateResult={onUpdate}
+    />
+  )
 
   const zmbeContract = useERC20(getAddress(tokens.zmbe.address));
   const drFrankenstein = useDrFrankenstein();
@@ -168,12 +177,23 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
       :  <span className="total-earned text-shadow">Connect Wallet</span>}</div>
   }
 
+  const renderButtonsForNftGrave = () => {
+    return <div className="space-between">
+      {get.account() ?
+        isAllowanceForRugToken ?
+          userInfo.rugDeposited.toString() === '0' ?
+            <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Deposit {nftByName(nft).symbol}</button> :
+            renderButtonsForGrave()
+          : <button onClick={onPresentConvertNftModal} className="btn btn-disabled w-100" type="button">Approve {nftByName(nft).symbol}</button>
+        :  <span className="total-earned text-shadow">Connect Wallet</span>}</div>
+  }
+
   return (
     <div className="frank-card">
       <div className="small-text">
         <span className="white-color">STAKING</span>
       </div>
-      {pid === 0 ? renderButtonsForGrave() : renderButtonsForTraditionalGraves()}
+      {pid === 0 ? renderButtonsForGrave() : requiresNft ? renderButtonsForNftGrave() : renderButtonsForTraditionalGraves()}
     </div>
   )
 }

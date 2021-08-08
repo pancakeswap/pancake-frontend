@@ -51,7 +51,7 @@ interface TableListProps {
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { pid, tvl, lpTokenPrice, handler } = props;
   const tomb = tombByPid(pid)
-  const { name, quoteToken, poolInfo: { allocPoint, totalStaked } } = tomb
+  const { name, quoteToken, isNew, poolInfo: { allocPoint, totalStaked } } = tomb
   const poolWeight = allocPoint ? allocPoint.div(100) : null
 
   const [isOpen, setIsOpen] = useState(false);
