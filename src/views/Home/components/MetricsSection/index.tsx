@@ -26,20 +26,14 @@ const Stats = () => {
 
   const UsersCardData: IconCardData = {
     icon: <CommunityIcon color="secondary" width="36px" />,
-    background: theme.colors.background,
-    borderColor: theme.colors.cardBorder,
   }
 
   const TradesCardData: IconCardData = {
     icon: <SwapIcon color="primary" width="36px" />,
-    background: theme.colors.background,
-    borderColor: theme.colors.cardBorder,
   }
 
   const StakedCardData: IconCardData = {
     icon: <ChartIcon color="failure" width="36px" />,
-    background: theme.colors.background,
-    borderColor: theme.colors.cardBorder,
   }
 
   return (
