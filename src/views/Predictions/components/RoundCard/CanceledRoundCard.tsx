@@ -1,14 +1,14 @@
 import React from 'react'
-import { CardBody, Text, Flex, BlockIcon, LinkExternal } from '@pancakeswap/uikit'
+import { Card, CardBody, Text, Flex, BlockIcon, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/predictions/hooks'
+import useTheme from 'hooks/useTheme'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import useIsRefundable from '../../hooks/useIsRefundable'
 import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
-import Card from './Card'
-import CardHeader from './CardHeader'
+import CardHeader, { getBorderBackground } from './CardHeader'
 
 interface CanceledRoundCardProps {
   round: NodeRound
@@ -16,6 +16,7 @@ interface CanceledRoundCardProps {
 
 const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ round }) => {
   const { t } = useTranslation()
+  const { theme } = useTheme()
   const interval = useGetTotalIntervalBlocks()
   const { isRefundable, setIsRefundable } = useIsRefundable(round.epoch)
   const { epoch, startBlock } = round
@@ -26,7 +27,7 @@ const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ round }) => {
   }
 
   return (
-    <Card>
+    <Card borderBackground={getBorderBackground(theme, 'canceled')}>
       <CardHeader
         status="canceled"
         icon={<BlockIcon mr="4px" width="21px" />}

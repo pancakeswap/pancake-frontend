@@ -1,14 +1,14 @@
 import React from 'react'
-import { CardBody, Text, WaitIcon } from '@pancakeswap/uikit'
+import { Card, CardBody, Text, WaitIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
 import { useGetCurrentEpoch, useGetTotalIntervalBlocks } from 'state/predictions/hooks'
+import useTheme from 'hooks/useTheme'
 import { formatRoundTime } from '../../helpers'
 import useRoundCountdown from '../../hooks/useRoundCountdown'
 import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
-import Card from './Card'
-import CardHeader from './CardHeader'
+import CardHeader, { getBorderBackground } from './CardHeader'
 
 interface SoonRoundCardProps {
   round: NodeRound
@@ -16,6 +16,7 @@ interface SoonRoundCardProps {
 
 const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
   const { t } = useTranslation()
+  const { theme } = useTheme()
   const interval = useGetTotalIntervalBlocks()
   const currentEpoch = useGetCurrentEpoch()
   const estimatedEndBlock = round.startBlock + interval
@@ -23,7 +24,7 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
   const countdown = formatRoundTime(seconds)
 
   return (
-    <Card>
+    <Card borderBackground={getBorderBackground(theme, 'soon')}>
       <CardHeader
         status="soon"
         icon={<WaitIcon mr="4px" width="21px" />}

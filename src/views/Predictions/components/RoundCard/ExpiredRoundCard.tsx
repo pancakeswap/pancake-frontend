@@ -1,17 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
+import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
 import { useGetBetByEpoch } from 'state/predictions/hooks'
 import { useBlock } from 'state/block/hooks'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
+import useTheme from 'hooks/useTheme'
 import { getHasRoundFailed, getNetPayoutv2 } from '../../helpers'
 import { RoundResult } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
-import Card from './Card'
-import CardHeader from './CardHeader'
+import CardHeader, { getBorderBackground } from './CardHeader'
 import CollectWinningsOverlay from './CollectWinningsOverlay'
 import CanceledRoundCard from './CanceledRoundCard'
 
@@ -46,6 +46,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   bearMultiplier,
 }) => {
   const { t } = useTranslation()
+  const { theme } = useTheme()
   const { account } = useWeb3React()
   const { initialBlock } = useBlock()
   const { epoch, endBlock, lockPrice, closePrice } = round
@@ -62,7 +63,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
 
   return (
     <Box position="relative">
-      <StyledExpiredRoundCard>
+      <StyledExpiredRoundCard borderBackground={getBorderBackground(theme, 'expired')}>
         <CardHeader
           status="expired"
           icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
