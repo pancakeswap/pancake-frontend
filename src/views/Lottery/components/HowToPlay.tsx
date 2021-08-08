@@ -174,7 +174,7 @@ const PoolAllocations = () => {
         <AllocationGrid>
           <AllocationMatch color="#FFE362" text={t('Matches first %digits%', { digits: 1 })} />
           <Text textAlign="right" bold>
-            1%
+            2%
           </Text>
           <AllocationMatch color="#85C54E" text={t('Matches first %digits%', { digits: 2 })} />
           <Text textAlign="right" bold>
@@ -182,7 +182,7 @@ const PoolAllocations = () => {
           </Text>
           <AllocationMatch color="#028E75" text={t('Matches first %digits%', { digits: 3 })} />
           <Text textAlign="right" bold>
-            6%
+            5%
           </Text>
           <AllocationMatch color="#36E8F5" text={t('Matches first %digits%', { digits: 4 })} />
           <Text textAlign="right" bold>
