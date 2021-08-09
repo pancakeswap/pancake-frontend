@@ -39,16 +39,6 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
-    pid: 397,
-    lpSymbol: 'TUSD-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x2e28b9b74d6d99d4697e913b82b41ef1cac51c6c',
-    },
-    token: tokens.tusd,
-    quoteToken: tokens.busd,
-  },
-  {
     pid: 444,
     lpSymbol: 'POTS-BUSD LP',
     lpAddresses: {
@@ -56,6 +46,16 @@ const farms: FarmConfig[] = [
       56: '0xF90BAA331Cfd40F094476E752Bf272892170d399',
     },
     token: tokens.pots,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 397,
+    lpSymbol: 'TUSD-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x2e28b9b74d6d99d4697e913b82b41ef1cac51c6c',
+    },
+    token: tokens.tusd,
     quoteToken: tokens.busd,
   },
   {
