@@ -39,7 +39,8 @@ const ConnectedWalletResult = () => {
               <Th textAlign="left">&nbsp;</Th>
               <Th textAlign="right">{t('Net Winnings (BNB)')}</Th>
               <Th textAlign="center">{t('Win Rate')}</Th>
-              <Th textAlign="right">{t('Rounds Won')}</Th>
+              <Th>{t('Rounds Won')}</Th>
+              <Th>{t('Rounds Played')}</Th>
             </tr>
           </thead>
           <tbody>
