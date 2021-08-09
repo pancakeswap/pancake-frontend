@@ -11,12 +11,6 @@ interface SelectionCardProps {
   disabled?: boolean
 }
 
-const StyledCard = styled(Card)`
-  ${({ isSuccess }) => !isSuccess && 'box-shadow: none;'}
-  border-radius: 16px;
-  margin-bottom: 16px;
-`
-
 const Label = styled.label<{ isDisabled: boolean }>`
   cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
   display: flex;
@@ -27,8 +21,6 @@ const Label = styled.label<{ isDisabled: boolean }>`
 
 const Body = styled.div`
   align-items: center;
-  border: 2px solid ${({ theme }) => theme.colors.tertiary};
-  border-radius: 16px 0 0 16px;
   display: flex;
   flex-grow: 1;
   height: 80px;
@@ -60,7 +52,7 @@ const SelectionCard: React.FC<SelectionCardProps> = ({
   ...props
 }) => {
   return (
-    <StyledCard isSuccess={isChecked} isDisabled={disabled} mb="16px" {...props}>
+    <Card isSuccess={isChecked} isDisabled={disabled} mb="16px" {...props}>
       <Label isDisabled={disabled}>
         <Body>
           <Radio
@@ -75,7 +67,7 @@ const SelectionCard: React.FC<SelectionCardProps> = ({
         </Body>
         <StyledBackgroundImage src={image} />
       </Label>
-    </StyledCard>
+    </Card>
   )
 }
 

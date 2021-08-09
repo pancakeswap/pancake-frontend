@@ -47,7 +47,6 @@ const StyledCardHeader = styled(CardHeader)<{ bg: string }>`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  border-radius: 32px 32px 0 0;
   padding-top: 0;
   text-align: center;
 `

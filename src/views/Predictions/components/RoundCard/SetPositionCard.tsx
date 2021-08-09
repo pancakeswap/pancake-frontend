@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import {
   ArrowBackIcon,
+  Card,
   CardBody,
   CardHeader,
   Flex,
@@ -28,7 +29,6 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import PositionTag from '../PositionTag'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
-import Card from './Card'
 
 interface SetPositionCardProps {
   position: BetPosition

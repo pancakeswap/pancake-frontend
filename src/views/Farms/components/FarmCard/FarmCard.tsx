@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
-import styled, { keyframes } from 'styled-components'
-import { Flex, Text, Skeleton } from '@pancakeswap/uikit'
+import styled from 'styled-components'
+import { Card, Flex, Text, Skeleton } from '@pancakeswap/uikit'
 import { Farm } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'
@@ -20,53 +20,19 @@ export interface FarmWithStakedValue extends Farm {
   liquidity?: BigNumber
 }
 
-const AccentGradient = keyframes`  
-  0% {
-    background-position: 50% 0%;
-  }
-  50% {
-    background-position: 50% 100%;
-  }
-  100% {
-    background-position: 50% 0%;
-  }
-`
-
-const StyledCardAccent = styled.div`
-  background: ${({ theme }) => `linear-gradient(180deg, ${theme.colors.primaryBright}, ${theme.colors.secondary})`};
-  background-size: 400% 400%;
-  animation: ${AccentGradient} 2s linear infinite;
-  border-radius: 32px;
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  bottom: -3px;
-  left: -1px;
-  z-index: -1;
-`
-
-const FCard = styled.div<{ isPromotedFarm: boolean }>`
+const StyledCard = styled(Card)`
   align-self: baseline;
-  background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme, isPromotedFarm }) => (isPromotedFarm ? '31px' : theme.radii.card)};
-  box-shadow: 0px 1px 4px rgba(25, 19, 38, 0.15);
-  display: flex;
+`
+
+const FarmCardInnerContainer = styled(Flex)`
   flex-direction: column;
   justify-content: space-around;
   padding: 24px;
-  position: relative;
-  text-align: center;
 `
 
-const Divider = styled.div`
-  background-color: ${({ theme }) => theme.colors.cardBorder};
-  height: 1px;
-  margin: 28px auto;
-  width: 100%;
-`
-
-const ExpandingWrapper = styled.div<{ expanded: boolean }>`
-  height: ${(props) => (props.expanded ? '100%' : '0px')};
+const ExpandingWrapper = styled.div`
+  padding: 24px;
+  border-top: 2px solid ${({ theme }) => theme.colors.cardBorder};
   overflow: hidden;
 `
 
@@ -100,57 +66,60 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
   const isPromotedFarm = farm.token.symbol === 'CAKE'
 
   return (
-    <FCard isPromotedFarm={isPromotedFarm}>
-      {isPromotedFarm && <StyledCardAccent />}
-      <CardHeading
-        lpLabel={lpLabel}
-        multiplier={farm.multiplier}
-        isCommunityFarm={farm.isCommunity}
-        token={farm.token}
-        quoteToken={farm.quoteToken}
-      />
-      {!removed && (
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text>{t('APR')}:</Text>
-          <Text bold style={{ display: 'flex', alignItems: 'center' }}>
-            {farm.apr ? (
-              <>
-                <ApyButton
-                  lpLabel={lpLabel}
-                  addLiquidityUrl={addLiquidityUrl}
-                  cakePrice={cakePrice}
-                  apr={farm.apr}
-                  displayApr={displayApr}
-                />
-                {displayApr}%
-              </>
-            ) : (
-              <Skeleton height={24} width={80} />
-            )}
-          </Text>
-        </Flex>
-      )}
-      <Flex justifyContent="space-between">
-        <Text>{t('Earn')}:</Text>
-        <Text bold>{earnLabel}</Text>
-      </Flex>
-      <CardActionsContainer farm={farm} account={account} addLiquidityUrl={addLiquidityUrl} />
-      <Divider />
-      <ExpandableSectionButton
-        onClick={() => setShowExpandableSection(!showExpandableSection)}
-        expanded={showExpandableSection}
-      />
-      <ExpandingWrapper expanded={showExpandableSection}>
-        <DetailsSection
-          removed={removed}
-          bscScanAddress={getBscScanLink(lpAddress, 'address')}
-          infoAddress={`https://pancakeswap.info/pool/${lpAddress}`}
-          totalValueFormatted={totalValueFormatted}
+    <StyledCard isActive={isPromotedFarm}>
+      <FarmCardInnerContainer>
+        <CardHeading
           lpLabel={lpLabel}
-          addLiquidityUrl={addLiquidityUrl}
+          multiplier={farm.multiplier}
+          isCommunityFarm={farm.isCommunity}
+          token={farm.token}
+          quoteToken={farm.quoteToken}
         />
+        {!removed && (
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text>{t('APR')}:</Text>
+            <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+              {farm.apr ? (
+                <>
+                  <ApyButton
+                    lpLabel={lpLabel}
+                    addLiquidityUrl={addLiquidityUrl}
+                    cakePrice={cakePrice}
+                    apr={farm.apr}
+                    displayApr={displayApr}
+                  />
+                  {displayApr}%
+                </>
+              ) : (
+                <Skeleton height={24} width={80} />
+              )}
+            </Text>
+          </Flex>
+        )}
+        <Flex justifyContent="space-between">
+          <Text>{t('Earn')}:</Text>
+          <Text bold>{earnLabel}</Text>
+        </Flex>
+        <CardActionsContainer farm={farm} account={account} addLiquidityUrl={addLiquidityUrl} />
+      </FarmCardInnerContainer>
+
+      <ExpandingWrapper>
+        <ExpandableSectionButton
+          onClick={() => setShowExpandableSection(!showExpandableSection)}
+          expanded={showExpandableSection}
+        />
+        {showExpandableSection && (
+          <DetailsSection
+            removed={removed}
+            bscScanAddress={getBscScanLink(lpAddress, 'address')}
+            infoAddress={`https://pancakeswap.info/pool/${lpAddress}`}
+            totalValueFormatted={totalValueFormatted}
+            lpLabel={lpLabel}
+            addLiquidityUrl={addLiquidityUrl}
+          />
+        )}
       </ExpandingWrapper>
-    </FCard>
+    </StyledCard>
   )
 }
 

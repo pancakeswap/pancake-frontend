@@ -1,6 +1,14 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { CardBody, PlayCircleOutlineIcon, Button, useTooltip, ArrowUpIcon, ArrowDownIcon } from '@pancakeswap/uikit'
+import {
+  Card,
+  CardBody,
+  PlayCircleOutlineIcon,
+  Button,
+  useTooltip,
+  ArrowUpIcon,
+  ArrowDownIcon,
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
@@ -8,12 +16,12 @@ import { useGetIntervalBlocks } from 'state/predictions/hooks'
 import { useBlock } from 'state/block/hooks'
 import { BLOCK_PADDING, fetchLedgerData } from 'state/predictions'
 import useToast from 'hooks/useToast'
+import useTheme from 'hooks/useTheme'
 import CardFlip from '../CardFlip'
 import { formatBnbv2 } from '../../helpers'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
-import Card from './Card'
-import CardHeader from './CardHeader'
+import CardHeader, { getBorderBackground } from './CardHeader'
 import SetPositionCard from './SetPositionCard'
 
 interface OpenRoundCardProps {
@@ -43,6 +51,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     position: BetPosition.BULL,
   })
   const { t } = useTranslation()
+  const { theme } = useTheme()
   const interval = useGetIntervalBlocks()
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
@@ -114,7 +123,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
 
   return (
     <CardFlip isFlipped={isSettingPosition} height="404px">
-      <Card>
+      <Card borderBackground={getBorderBackground(theme, 'next')}>
         <CardHeader
           status="next"
           epoch={round.epoch}

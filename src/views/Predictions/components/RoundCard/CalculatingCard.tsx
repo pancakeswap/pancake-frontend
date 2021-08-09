@@ -1,12 +1,12 @@
 import React from 'react'
-import { CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@pancakeswap/uikit'
+import { Card, CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/predictions/hooks'
+import useTheme from 'hooks/useTheme'
 import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
-import Card from './Card'
-import CardHeader from './CardHeader'
+import CardHeader, { getBorderBackground } from './CardHeader'
 
 interface CalculatingCardProps {
   round: NodeRound
@@ -14,6 +14,7 @@ interface CalculatingCardProps {
 
 const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
   const { t } = useTranslation()
+  const { theme } = useTheme()
   const interval = useGetTotalIntervalBlocks()
   const estimatedEndBlock = round.startBlock + interval
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -23,7 +24,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
 
   return (
     <>
-      <Card>
+      <Card borderBackground={getBorderBackground(theme, 'calculating')}>
         <CardHeader
           status="calculating"
           icon={<WaitIcon mr="4px" width="21px" />}
