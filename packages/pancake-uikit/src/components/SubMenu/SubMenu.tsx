@@ -24,15 +24,19 @@ const SubMenu: React.FC<SubMenuProps> = ({ component, options, children }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggling = (event: React.MouseEvent<HTMLDivElement>) => {
-    setIsOpen(!isOpen);
-    event.stopPropagation();
+  const toggle = () => {
+    setIsOpen((prev) => !prev);
   };
 
   useEffect(() => {
     const handleClickOutside = ({ target }: Event) => {
       if (target instanceof Node) {
-        if (menuElement !== null && !menuElement.contains(target)) {
+        if (
+          menuElement !== null &&
+          targetElement !== null &&
+          !menuElement.contains(target) &&
+          !targetElement.contains(target)
+        ) {
           setIsOpen(false);
         }
       }
@@ -43,7 +47,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ component, options, children }) => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [menuElement]);
+  }, [menuElement, targetElement]);
 
   const { styles, attributes } = usePopper(targetElement, menuElement, {
     placement,
@@ -63,7 +67,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ component, options, children }) => {
 
   return (
     <>
-      <ClickableElementContainer ref={setTargetElement} onClick={toggling}>
+      <ClickableElementContainer ref={setTargetElement} onClick={toggle}>
         {component}
       </ClickableElementContainer>
       {isOpen && renderMenu}
