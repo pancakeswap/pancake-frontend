@@ -73,7 +73,7 @@ const RightWrapper = styled.div`
   }
 `
 
-const LotteryBanner = () => {
+const FarmAuctionsBanner = () => {
   const { t } = useTranslation()
 
   return (
@@ -99,4 +99,4 @@ const LotteryBanner = () => {
   )
 }
 
-export default LotteryBanner
+export default FarmAuctionsBanner
