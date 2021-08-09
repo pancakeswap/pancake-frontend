@@ -13,25 +13,33 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
-      background-color: #FFFFFF;
-      border: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
+      background: #E7E3EB;
       border-radius: 24px;
-      box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
       color: #280D5F;
       overflow: hidden;
       position: relative;
-    }
-
-    .c2 {
-      padding: 24px;
+      padding: 1px 1px 3px 1px;
     }
 
     .c1 {
-      background: linear-gradient(111.68deg,#F2ECF2 0%,#E8F2F6 100%);
-      padding: 24px;
+      width: 100%;
+      height: 100%;
+      overflow: inherit;
+      background: #FFFFFF;
+      border-radius: 24px;
     }
 
     .c3 {
+      padding: 24px;
+    }
+
+    .c2 {
+      background: linear-gradient(111.68deg,#F2ECF2 0%,#E8F2F6 100%);
+      border-radius: 24px 24px 0 0;
+      padding: 24px;
+    }
+
+    .c4 {
       border-top: 1px solid #E7E3EB;
       padding: 24px;
     }
@@ -42,17 +50,21 @@ it("renders correctly", () => {
         <div
           class="c1"
         >
-          Header
-        </div>
-        <div
-          class="c2"
-        >
-          Body
-        </div>
-        <div
-          class="c3"
-        >
-          Footer
+          <div
+            class="c2"
+          >
+            Header
+          </div>
+          <div
+            class="c3"
+          >
+            Body
+          </div>
+          <div
+            class="c4"
+          >
+            Footer
+          </div>
         </div>
       </div>
     </DocumentFragment>
