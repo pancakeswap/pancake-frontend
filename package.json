@@ -36,7 +36,7 @@
     "@binance-chain/bsc-connector": "^1.0.0",
     "@ethersproject/experimental": "^5.0.1",
     "@pancakeswap/sdk": "^2.3.2",
-    "@pancakeswap/uikit": "^0.43.0",
+    "@pancakeswap/uikit": "^0.46.0",
     "@reduxjs/toolkit": "^1.5.0",
     "@ricefarm/uikitv2": "^0.45.1",
     "@types/multicodec": "^1.0.0",
