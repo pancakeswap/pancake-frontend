@@ -22,11 +22,12 @@ export function useCallWithGasPrice() {
       overrides: CallOverrides = null,
     ): Promise<ethers.providers.TransactionResponse> => {
       const contractMethod = get(contract, methodName)
+      const hasManualGasPriceOverride = overrides?.gasPrice
 
-      const tx = await contractMethod(...methodArgs, {
-        ...overrides,
-        gasPrice,
-      })
+      const tx = await contractMethod(
+        ...methodArgs,
+        hasManualGasPriceOverride ? { ...overrides } : { ...overrides, gasPrice },
+      )
 
       return tx
     },
