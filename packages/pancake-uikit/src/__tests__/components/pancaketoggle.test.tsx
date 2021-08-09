@@ -18,6 +18,7 @@ it("renders correctly", () => {
     }
 
     .c0 .pancakes {
+      position: absolute;
       -webkit-transition: 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
       transition: 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
     }
@@ -25,8 +26,8 @@ it("renders correctly", () => {
     .c0 .pancake {
       background: #e27c31;
       border-radius: 50%;
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       position: absolute;
       -webkit-transition: 0.4s ease;
       transition: 0.4s ease;
@@ -109,9 +110,9 @@ it("renders correctly", () => {
     }
 
     .c1:checked + label .pancakes {
-      -webkit-transform: translateX(28px);
-      -ms-transform: translateX(28px);
-      transform: translateX(28px);
+      -webkit-transform: translateX(24px);
+      -ms-transform: translateX(24px);
+      transform: translateX(24px);
     }
 
     .c1:checked + label .pancake:nth-child(1) {
@@ -213,6 +214,7 @@ it("renders correctly scale sm", () => {
     }
 
     .c0 .pancakes {
+      position: absolute;
       -webkit-transition: 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
       transition: 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
     }
@@ -220,8 +222,8 @@ it("renders correctly scale sm", () => {
     .c0 .pancake {
       background: #e27c31;
       border-radius: 50%;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       position: absolute;
       -webkit-transition: 0.4s ease;
       transition: 0.4s ease;
@@ -304,9 +306,9 @@ it("renders correctly scale sm", () => {
     }
 
     .c1:checked + label .pancakes {
-      -webkit-transform: translateX(16px);
-      -ms-transform: translateX(16px);
-      transform: translateX(16px);
+      -webkit-transform: translateX(14px);
+      -ms-transform: translateX(14px);
+      transform: translateX(14px);
     }
 
     .c1:checked + label .pancake:nth-child(1) {
