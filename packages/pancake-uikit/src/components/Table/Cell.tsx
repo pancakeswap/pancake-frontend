@@ -5,6 +5,7 @@ export const Td = styled.td<TypographyProps>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   color: ${({ theme }) => theme.colors.text};
   padding: 16px;
+  vertical-align: middle;
 
   ${typography}
 `;

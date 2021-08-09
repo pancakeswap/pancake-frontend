@@ -6,7 +6,7 @@ const Table = styled.table`
   max-width: 100%;
   width: 100%;
 
-  tr:last-child {
+  tbody tr:last-child {
     ${Td} {
       border-bottom: 0;
     }
