@@ -1750,5 +1750,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xacb2d47827C9813AE26De80965845D80935afd0B.png"
+  },
+  {
+    "name": "Moonpot",
+    "symbol": "POTS",
+    "address": "0x3Fcca8648651E5b974DD6d3e50F61567779772A8",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x3Fcca8648651E5b974DD6d3e50F61567779772A8.png"
   }
 ]
