@@ -27,7 +27,7 @@ const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean }>`
 
 const Grid = styled.div`
   display: grid;
-  grid-gap: 8px;
+  grid-gap: 16px 8px;
   margin-top: 24px;
   grid-template-columns: repeat(2, auto);
 
