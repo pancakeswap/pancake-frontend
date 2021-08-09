@@ -11,6 +11,7 @@ import { getAddressByType } from 'utils/collectibles'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useProfile as useProfileContract } from 'hooks/useContract'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import SelectionCard from '../SelectionCard'
 import ApproveConfirmButtons from '../ApproveConfirmButtons'
@@ -29,18 +30,20 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const profileContract = useProfileContract()
   const { account, library } = useWeb3React()
   const { toastSuccess } = useToast()
+  const { callWithGasPrice } = useCallWithGasPrice()
+
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onApprove: () => {
         const contract = getErc721Contract(selectedNft.nftAddress, library.getSigner())
-        return contract.approve(getPancakeProfileAddress(), selectedNft.tokenId)
+        return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
       },
       onConfirm: () => {
         if (!profile.isActive) {
-          return profileContract.reactivateProfile(selectedNft.nftAddress, selectedNft.tokenId)
+          return callWithGasPrice(profileContract, 'reactivateProfile', [selectedNft.nftAddress, selectedNft.tokenId])
         }
 
-        return profileContract.updateProfile(selectedNft.nftAddress, selectedNft.tokenId)
+        return callWithGasPrice(profileContract, 'updateProfile', [selectedNft.nftAddress, selectedNft.tokenId])
       },
       onSuccess: async () => {
         // Re-fetch profile

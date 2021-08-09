@@ -15,6 +15,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
 import NftBunnies from '../../pngs/syrup-nft.png'
@@ -37,9 +38,10 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
   const { cakeReward } = useCompetitionCakeRewards(userCakeRewards)
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
-    const tx = await tradingCompetitionContract.claimReward()
+    const tx = await callWithGasPrice(tradingCompetitionContract, 'claimReward')
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {

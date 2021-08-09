@@ -8,6 +8,7 @@ import { Nft } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { useERC721 } from 'hooks/useContract'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import InfoRow from './InfoRow'
 
 interface TransferNftModalProps {
@@ -46,6 +47,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
   const { account } = useWeb3React()
   const contract = useERC721(getAddressByType(nft.type))
   const { toastSuccess } = useToast()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleConfirm = async () => {
     try {
@@ -54,8 +56,9 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
       if (!isValidAddress) {
         setError(t('Please enter a valid wallet address'))
       } else {
-        const tx = await contract.transferFrom(account, value, tokenIds[0])
+        const tx = await callWithGasPrice(contract, 'transferFrom', [account, value, tokenIds[0]])
         setIsLoading(true)
+        // TODO: Refactor to try/catch pattern so error state is properly handled
         const receipt = await tx.wait()
         if (receipt.status) {
           onDismiss()

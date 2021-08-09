@@ -10,6 +10,7 @@ import { useTransactionAdder, useHasPendingApproval } from '../state/transaction
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
+import { useCallWithGasPrice } from './useCallWithGasPrice'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -24,6 +25,7 @@ export function useApproveCallback(
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
@@ -72,6 +74,7 @@ export function useApproveCallback(
     }
 
     let useExact = false
+
     const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
       // general fallback for tokens who restrict approval amounts
       useExact = true
@@ -79,10 +82,14 @@ export function useApproveCallback(
     })
 
     // eslint-disable-next-line consistent-return
-    return tokenContract
-      .approve(spender, useExact ? amountToApprove.raw.toString() : MaxUint256, {
+    return callWithGasPrice(
+      tokenContract,
+      'approve',
+      [spender, useExact ? amountToApprove.raw.toString() : MaxUint256],
+      {
         gasLimit: calculateGasMargin(estimatedGas),
-      })
+      },
+    )
       .then((response: TransactionResponse) => {
         addTransaction(response, {
           summary: `Approve ${amountToApprove.currency.symbol}`,
@@ -93,7 +100,7 @@ export function useApproveCallback(
         console.error('Failed to approve token', error)
         throw error
       })
-  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction])
+  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction, callWithGasPrice])
 
   return [approvalState, approve]
 }

@@ -3,6 +3,7 @@ import { AutoRenewIcon, Button, ButtonProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { usePredictionsContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 interface ReclaimPositionButtonProps extends ButtonProps {
   epoch: number
@@ -14,10 +15,11 @@ const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, on
   const [isPendingTx, setIsPendingTx] = useState(false)
   const { t } = useTranslation()
   const predictionsContract = usePredictionsContract()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess, toastError } = useToast()
 
   const handleReclaim = async () => {
-    const tx = await predictionsContract.claim(epoch)
+    const tx = await callWithGasPrice(predictionsContract, 'claim', [epoch])
     setIsPendingTx(true)
 
     const receipt = await tx.wait()

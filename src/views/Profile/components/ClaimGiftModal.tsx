@@ -5,6 +5,7 @@ import useToast from 'hooks/useToast'
 import { useClaimRefundContract } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import { getClaimRefundContract } from 'utils/contractHelpers'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 interface ClaimGiftProps extends InjectedModalProps {
   onSuccess: () => void
@@ -40,9 +41,10 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
   const { canClaim } = useCanClaim()
   const claimRefundContract = useClaimRefundContract()
   const { toastSuccess, toastError } = useToast()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClick = async () => {
-    const tx = await claimRefundContract.getCakeBack()
+    const tx = await callWithGasPrice(claimRefundContract, 'getCakeBack')
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {
