@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { Pool } from 'state/types'
 import AprRow from './AprRow'
-import { StyledCard, StyledCardInner } from './StyledCard'
+import { StyledCard } from './StyledCard'
 import CardFooter from './CardFooter'
 import StyledCardHeader from './StyledCardHeader'
 import CardActions from './CardActions'
@@ -22,30 +22,28 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
       isFinished={isFinished && sousId !== 0}
       ribbon={isFinished && <CardRibbon variantColor="textDisabled" text={t('Finished')} />}
     >
-      <StyledCardInner>
-        <StyledCardHeader
-          isStaking={accountHasStakedBalance}
-          earningToken={earningToken}
-          stakingToken={stakingToken}
-          isFinished={isFinished && sousId !== 0}
-        />
-        <CardBody>
-          <AprRow pool={pool} />
-          <Flex mt="24px" flexDirection="column">
-            {account ? (
-              <CardActions pool={pool} stakedBalance={stakedBalance} />
-            ) : (
-              <>
-                <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                  {t('Start earning')}
-                </Text>
-                <ConnectWalletButton />
-              </>
-            )}
-          </Flex>
-        </CardBody>
-        <CardFooter pool={pool} account={account} />
-      </StyledCardInner>
+      <StyledCardHeader
+        isStaking={accountHasStakedBalance}
+        earningToken={earningToken}
+        stakingToken={stakingToken}
+        isFinished={isFinished && sousId !== 0}
+      />
+      <CardBody>
+        <AprRow pool={pool} />
+        <Flex mt="24px" flexDirection="column">
+          {account ? (
+            <CardActions pool={pool} stakedBalance={stakedBalance} />
+          ) : (
+            <>
+              <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
+                {t('Start earning')}
+              </Text>
+              <ConnectWalletButton />
+            </>
+          )}
+        </Flex>
+      </CardBody>
+      <CardFooter pool={pool} account={account} />
     </StyledCard>
   )
 }

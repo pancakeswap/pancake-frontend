@@ -86,7 +86,6 @@ const DesktopAvatar = styled.div`
 `
 
 const StyledTeamCard = styled(Card)`
-  display: flex;
   margin-bottom: 16px;
 `
 
@@ -96,42 +95,44 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
 
   return (
     <StyledTeamCard>
-      <TeamRank>
-        <Text bold fontSize="24px">
-          {rank}
-        </Text>
-      </TeamRank>
-      <Body>
-        <Info>
-          <Flex alignItems="center" mb="16px">
-            <MobileAvatar>{avatar}</MobileAvatar>
-            <TeamName>{team.name}</TeamName>
-          </Flex>
-          <Text as="p" color="textSubtle" pr="24px" mb="16px">
-            {t(team.description)}
+      <Flex>
+        <TeamRank>
+          <Text bold fontSize="24px">
+            {rank}
           </Text>
-          <Flex>
+        </TeamRank>
+        <Body>
+          <Info>
+            <Flex alignItems="center" mb="16px">
+              <MobileAvatar>{avatar}</MobileAvatar>
+              <TeamName>{team.name}</TeamName>
+            </Flex>
+            <Text as="p" color="textSubtle" pr="24px" mb="16px">
+              {t(team.description)}
+            </Text>
             <Flex>
-              {/* alignSelf for Safari fix */}
-              <PrizeIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} />
-              <Text fontSize="24px" bold>
-                {team.points.toLocaleString()}
-              </Text>
+              <Flex>
+                {/* alignSelf for Safari fix */}
+                <PrizeIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} />
+                <Text fontSize="24px" bold>
+                  {team.points.toLocaleString()}
+                </Text>
+              </Flex>
+              <Flex ml="24px">
+                {/* alignSelf for Safari fix */}
+                <CommunityIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} />
+                <Text fontSize="24px" bold>
+                  {team.users.toLocaleString()}
+                </Text>
+              </Flex>
             </Flex>
-            <Flex ml="24px">
-              {/* alignSelf for Safari fix */}
-              <CommunityIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} />
-              <Text fontSize="24px" bold>
-                {team.users.toLocaleString()}
-              </Text>
-            </Flex>
-          </Flex>
-        </Info>
-        <Button as={Link} to={`/teams/${team?.id}`} variant="secondary" scale="sm">
-          {t('See More')}
-        </Button>
-        <DesktopAvatar>{avatar}</DesktopAvatar>
-      </Body>
+          </Info>
+          <Button as={Link} to={`/teams/${team?.id}`} variant="secondary" scale="sm">
+            {t('See More')}
+          </Button>
+          <DesktopAvatar>{avatar}</DesktopAvatar>
+        </Body>
+      </Flex>
     </StyledTeamCard>
   )
 }
