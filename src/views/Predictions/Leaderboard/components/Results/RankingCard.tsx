@@ -10,6 +10,9 @@ import {
   LaurelRightIcon,
   Link,
   Text,
+  SubMenu,
+  SubMenuItem,
+  useModal,
 } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
 import { useGetProfileAvatar } from 'state/profile/hooks'
@@ -17,6 +20,7 @@ import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { useTranslation } from 'contexts/Localization'
+import WalletStatsModal from '../WalletStatsModal'
 import { NetWinningsRow, Row } from './styles'
 
 interface RankingCardProps {
@@ -48,18 +52,30 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
   const profileAvatar = useGetProfileAvatar(user.id)
+  const [onPresentWalletStatsModal] = useModal(<WalletStatsModal account={user.id} />)
 
   return (
     <Card ribbon={<CardRibbon variantColor={rankColor} text={`#${rank}`} ribbonPosition="left" />}>
       <CardBody p="24px">
         <Flex alignItems="center" justifyContent="center" flexDirection="column" mb="24px">
-          <Flex mb="4px">
-            <RotatedLaurelLeftIcon color={rankColor} width="32px" />
-            <Box width={['40px', null, null, '64px']}>
-              <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={64} width={64} />
-            </Box>
-            <RotatedLaurelRightIcon color={rankColor} width="32px" />
-          </Flex>
+          <SubMenu
+            component={
+              <Flex mb="4px">
+                <RotatedLaurelLeftIcon color={rankColor} width="32px" />
+                <Box width={['40px', null, null, '64px']}>
+                  <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={64} width={64} />
+                </Box>
+                <RotatedLaurelRightIcon color={rankColor} width="32px" />
+              </Flex>
+            }
+            options={{ placement: 'top' }}
+          >
+            <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
+            <SubMenuItem as={Link} href={getBscScanLink(user.id, 'address')} bold={false} color="text" external>
+              {t('View on BscScan')}
+            </SubMenuItem>
+          </SubMenu>
+
           <Link href={getBscScanLink(user.id, 'address')} external>
             {truncateWalletAddress(user.id)}
           </Link>
