@@ -7,7 +7,7 @@ import { NetWinningsRow, Row } from './styles'
 import ResultAvatar from './ResultAvatar'
 
 interface MobileRowProps {
-  rank: number
+  rank?: number
   user: PredictionUser
 }
 
@@ -22,7 +22,7 @@ const MobileRow: React.FC<MobileRowProps> = ({ rank, user }) => {
   return (
     <StyledMobileRow p="16px">
       <Row mb="16px">
-        <Text fontWeight="bold" color="secondary">{`#${rank}`}</Text>
+        {rank ? <Text fontWeight="bold" color="secondary">{`#${rank}`}</Text> : <div />}
         <ResultAvatar user={user} />
       </Row>
       <Row mb="4px">
