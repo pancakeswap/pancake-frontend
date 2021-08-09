@@ -48,7 +48,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss 
       <ModalHeader background={theme.colors.gradients.bubblegum}>
         <Flex alignItems="center" style={{ flex: 1 }}>
           <Box width={['64px', null, null, null, '96px']} mr="16px">
-            <ProfileAvatar src={`/images/nfts/${profileAvatar.nft.images.md}`} height={96} width={96} />
+            <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={96} width={96} />
           </Box>
           <Box>
             <ExternalLink href={getBscScanLink(account, 'address')}>{truncateWalletAddress(account)}</ExternalLink>
