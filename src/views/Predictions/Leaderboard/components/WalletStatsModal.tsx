@@ -11,7 +11,7 @@ import {
   ModalContainer,
   ModalHeader,
   ProfileAvatar,
-  ChevronUpIcon,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useGetAccountResult } from 'state/predictions/hooks'
 import { useGetProfileAvatar } from 'state/profile/hooks'
@@ -21,7 +21,8 @@ import { getBscScanLink } from 'utils'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { useTranslation } from 'contexts/Localization'
 import { NetWinnings } from './Results/styles'
-import PreviousBetsTable from './PreviousBetsTable'
+import MobileBetsTable from './MobileBetsTable'
+import DesktopBetsTable from './Results/DesktopBetsTable'
 
 interface WalletStatsModalProps extends InjectedModalProps {
   account: string
@@ -40,6 +41,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss 
   const { theme } = useTheme()
   const result = useGetAccountResult(account)
   const profileAvatar = useGetProfileAvatar(account)
+  const { isXl } = useMatchBreakpoints()
 
   return (
     <ModalContainer minWidth="320px">
@@ -91,21 +93,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss 
           <Text fontWeight="bold">{result.totalBets.toLocaleString()}</Text>
         </Box>
       </Grid>
-      <Flex
-        alignItems="center"
-        justifyContent="space-between"
-        px="24px"
-        py="32px"
-        borderBottom="1px solid"
-        borderColor="cardBorder"
-        style={{ cursor: 'pointer' }}
-      >
-        <Text as="h5" color="secondary" fontWeight="bold" textTransform="uppercase" fontSize="12px">
-          {t('Last %num% Bets', { num: 5 })}
-        </Text>
-        <ChevronUpIcon />
-      </Flex>
-      <PreviousBetsTable account={account} />
+      {isXl ? <DesktopBetsTable account={account} /> : <MobileBetsTable account={account} />}
     </ModalContainer>
   )
 }
