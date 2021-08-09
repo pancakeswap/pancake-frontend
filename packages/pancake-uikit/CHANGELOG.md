@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.46.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.45.0...@pancakeswap/uikit@0.46.0) (2021-08-09)
+
+
+### Bug Fixes
+
+* Auto-close SubMenu if clicked on another SubMenu ([#231](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/231)) ([895eb70](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/895eb700206b98a2220cbd6f46353a106e337988))
+
+
+### Features
+
+* Update Card component ([#232](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/232)) ([bf509c5](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/bf509c578533f8e1cc37dd9ef8e830ec7e43c999))
+
+
+
+
+
 # [0.45.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.44.1...@pancakeswap/uikit@0.45.0) (2021-08-06)
 
 
