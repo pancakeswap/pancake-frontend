@@ -349,7 +349,9 @@ export default function RemoveLiquidity({
     return (
       <>
         <RowBetween>
-          {t('%assetA%/%assetB% Burned', { assetA: currencyA?.symbol ?? '', assetB: currencyB?.symbol ?? '' })}
+          <Text>
+            {t('%assetA%/%assetB% Burned', { assetA: currencyA?.symbol ?? '', assetB: currencyB?.symbol ?? '' })}
+          </Text>
           <RowFixed>
             <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin />
             <Text>{parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}</Text>
