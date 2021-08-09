@@ -1864,6 +1864,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://coin98.com/',
   },
+  pots: {
+    symbol: 'POTS',
+    address: {
+      56: '0x3Fcca8648651E5b974DD6d3e50F61567779772A8',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://moonpot.com/',
+  },
 }
 
 export default tokens

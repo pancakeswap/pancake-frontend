@@ -49,6 +49,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.busd,
   },
   {
+    pid: 444,
+    lpSymbol: 'POTS-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xF90BAA331Cfd40F094476E752Bf272892170d399',
+    },
+    token: tokens.pots,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 443,
     lpSymbol: 'BTT-BUSD LP',
     lpAddresses: {
