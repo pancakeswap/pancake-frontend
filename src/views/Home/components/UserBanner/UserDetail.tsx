@@ -1,5 +1,5 @@
 import React from 'react'
-import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text, Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
@@ -22,18 +22,12 @@ const Mobile = styled(Flex)`
 `
 
 const Sticker = styled(Flex)`
-  width: 100%;
-  height: 100%;
+  height: 92px;
+  width: 92px;
   background-color: ${({ theme }) => theme.colors.invertedContrast};
   border: 3px solid ${({ theme }) => theme.colors.invertedContrast};
   border-radius: ${({ theme }) => theme.radii.circle};
   box-shadow: ${({ theme }) => theme.card.boxShadow};
-`
-
-const AvatarWrapper = styled.div`
-  height: 92px;
-  width: 92px;
-  margin-right: 24px;
 `
 
 const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
@@ -74,9 +68,9 @@ const UserDetail = () => {
   return (
     <>
       <Desktop>
-        <AvatarWrapper>
+        <Box mr="24px">
           <Sticker>{profile ? <ProfileAvatar profile={profile} /> : <StyledNoProfileAvatarIcon />}</Sticker>
-        </AvatarWrapper>
+        </Box>
         <Flex flexDirection="column">
           {getDesktopHeading()}
           {isLoading || !account ? (

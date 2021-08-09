@@ -19,10 +19,11 @@ const HarvestCard = () => {
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
-  const { farmsWithStakedBalance, earningsSum } = useFarmsWithBalance()
+  const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
+
   const masterChefContract = useMasterchef()
   const cakePriceBusd = usePriceCakeBusd()
-  const earningsBusd = new BigNumber(earningsSum).multipliedBy(cakePriceBusd)
+  const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
   const numFarmsToCollect = farmsWithStakedBalance.length
 
   const earningsText = t('%earningsBusd% to collect from %count% %farms%', {
@@ -80,7 +81,7 @@ const HarvestCard = () => {
             <Link href="farms">
               <Button width={['100%', null, null, 'auto']} variant="secondary">
                 <Text color="primary" bold>
-                  {t('Farms')}
+                  {t('Start earning')}
                 </Text>
                 <ArrowForwardIcon ml="4px" color="primary" />
               </Button>

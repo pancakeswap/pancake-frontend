@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useWeb3React } from '@web3-react/core'
@@ -100,5 +100,12 @@ export const usePriceBnbBusd = (): BigNumber => {
 
 export const usePriceCakeBusd = (): BigNumber => {
   const cakeBnbFarm = useFarmFromPid(251)
-  return new BigNumber(cakeBnbFarm.token.busdPrice)
+
+  const cakePriceBusdAsString = cakeBnbFarm.token.busdPrice
+
+  const cakePriceBusd = useMemo(() => {
+    return new BigNumber(cakePriceBusdAsString)
+  }, [cakePriceBusdAsString])
+
+  return cakePriceBusd
 }
