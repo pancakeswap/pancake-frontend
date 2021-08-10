@@ -1,7 +1,7 @@
 name: 🐞 Bug Report
 description: File a bug/issue
 title: '[BUG] <title>'
-labels: [Bug, Needs Triage]
+labels: [Bug, Triage]
 assignees:
   - Chef-Chungus
 body:
@@ -12,6 +12,21 @@ body:
       options:
         - label: I have searched the existing issues
           required: true
+  - type: dropdown
+    attributes:
+      label: Product
+      description: Which page or product does this relate to?
+      multiple: false
+      options:
+        - Farms
+        - Syrup Pools
+        - Lottery
+        - Prediction
+        - IFO
+        - Info
+        - Other
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Current Behavior
