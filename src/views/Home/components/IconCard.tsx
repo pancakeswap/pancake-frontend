@@ -35,7 +35,7 @@ export interface IconCardData {
 
 const IconCard: React.FC<IconCardProps> = ({ icon, background, borderColor, rotation, children, ...props }) => {
   return (
-    <StyledCard background={background} borderBackground={borderColor} rotation={rotation} {...props}>
+    <StyledCard background={background} rotation={rotation} {...props}>
       <CardBody>
         <IconWrapper rotation={rotation}>{icon}</IconWrapper>
         {children}
