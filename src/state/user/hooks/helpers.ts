@@ -22,8 +22,6 @@ export function deserializeToken(serializedToken: SerializedToken): Token {
   )
 }
 
-export const LS_GAS_PRICE_KEY = 'pancake_global_gas_price'
-
 export enum GAS_PRICE {
   default = '5',
   fast = '6',
