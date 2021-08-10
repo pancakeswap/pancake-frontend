@@ -1,7 +1,9 @@
 import { ChainId } from '@pancakeswap/sdk'
 import addresses from 'config/constants/contracts'
-import tokens from 'config/constants/tokens'
+import { getToken, coreTokens } from 'config/constants/tokens'
 import { Address } from 'config/constants/types'
+
+const { CAKE, WBNB } = coreTokens
 
 export const getAddress = (address: Address): string => {
   const chainId = process.env.REACT_APP_CHAIN_ID
@@ -9,7 +11,7 @@ export const getAddress = (address: Address): string => {
 }
 
 export const getCakeAddress = () => {
-  return getAddress(tokens.cake.address)
+  return getToken(CAKE).address
 }
 export const getMasterChefAddress = () => {
   return getAddress(addresses.masterChef)
@@ -18,7 +20,7 @@ export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)
 }
 export const getWbnbAddress = () => {
-  return getAddress(tokens.wbnb.address)
+  return getToken(WBNB).address
 }
 export const getLotteryV2Address = () => {
   return getAddress(addresses.lotteryV2)

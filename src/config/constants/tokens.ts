@@ -4,34 +4,66 @@ const { MAINNET, TESTNET } = ChainId
 
 interface TokenConfig {
   [MAINNET]: Token
-  [TESTNET]: Token
+  [TESTNET]?: Token
   projectLink?: string
 }
 
-export const CAKE: TokenConfig = {
-  [MAINNET]: new Token(MAINNET, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token'),
-  [TESTNET]: new Token(TESTNET, '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe', 18, 'CAKE', 'PancakeSwap Token'),
-}
-export const BUSD: { [chainId: number]: Token } = {
-  [MAINNET]: new Token(MAINNET, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'Binance USD'),
-  [TESTNET]: new Token(TESTNET, '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee', 18, 'BUSD', 'Binance USD'),
+export const getToken = (token: TokenConfig): Token => {
+  const chainId = process.env.REACT_APP_CHAIN_ID
+  return token[chainId] ? token[chainId] : token[ChainId.MAINNET]
 }
 
-export const WBNB = new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB')
-export const DAI = new Token(MAINNET, '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3', 18, 'DAI', 'Dai Stablecoin')
-export const USDT = new Token(MAINNET, '0x55d398326f99059fF775485246999027B3197955', 18, 'USDT', 'Tether USD')
-export const BTCB = new Token(MAINNET, '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c', 18, 'BTCB', 'Binance BTC')
-export const UST = new Token(MAINNET, '0x23396cF899Ca06c4472205fC903bDB4de249D6fC', 18, 'UST', 'Wrapped UST Token')
-export const ETH = new Token(
-  MAINNET,
-  '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
-  18,
-  'ETH',
-  'Binance-Peg Ethereum Token',
-)
-export const USDC = new Token(MAINNET, '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 18, 'USDC', 'Binance-Peg USD Coin')
+export const coreTokens: { [symbol: string]: TokenConfig } = {
+  CAKE: {
+    [MAINNET]: new Token(MAINNET, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token'),
+    [TESTNET]: new Token(TESTNET, '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe', 18, 'CAKE', 'PancakeSwap Token'),
+    projectLink: 'https://pancakeswap.finance/',
+  },
+  BUSD: {
+    [MAINNET]: new Token(MAINNET, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'Binance USD'),
+    [TESTNET]: new Token(TESTNET, '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee', 18, 'BUSD', 'Binance USD'),
+    projectLink: 'https://www.paxos.com/busd/',
+  },
+  WBNB: {
+    [MAINNET]: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB'),
+    [TESTNET]: new Token(TESTNET, '0xae13d989dac2f0debff460ac112a837c89baa7cd', 18, 'WBNB', 'Wrapped BNB'),
+    projectLink: 'https://pancakeswap.finance/',
+  },
+  DAI: {
+    [MAINNET]: new Token(MAINNET, '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3', 18, 'DAI', 'Dai Stablecoin'),
+    projectLink: 'https://www.makerdao.com/',
+  },
+  USDT: {
+    [MAINNET]: new Token(MAINNET, '0x55d398326f99059fF775485246999027B3197955', 18, 'USDT', 'Tether USD'),
+    [TESTNET]: new Token(TESTNET, '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5', 18, 'USDT', 'Tether USD'),
+    projectLink: 'https://tether.to/',
+  },
+  BTCB: {
+    [MAINNET]: new Token(MAINNET, '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c', 18, 'BTCB', 'Binance BTC'),
+    [TESTNET]: new Token(TESTNET, '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5', 18, 'BTCB', 'Binance BTC'),
+    projectLink: 'https://bitcoin.org/',
+  },
+  UST: {
+    [MAINNET]: new Token(MAINNET, '0x23396cf899ca06c4472205fc903bdb4de249d6fc', 18, 'UST', 'Wrapped UST Token'),
+    projectLink: 'https://mirror.finance/',
+  },
+  ETH: {
+    [MAINNET]: new Token(
+      MAINNET,
+      '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
+      18,
+      'WBNB',
+      'Binance-Peg Ethereum Token',
+    ),
+    projectLink: 'https://ethereum.org/en/',
+  },
+  USDC: {
+    [MAINNET]: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'USDC', 'Binance-Peg USD Coin'),
+    projectLink: 'https://www.centre.io/usdc',
+  },
+}
 
-const tokens: TokenConfig[] = {
+const tokens = {
   bnb: {
     symbol: 'BNB',
     projectLink: 'https://www.binance.com/',
