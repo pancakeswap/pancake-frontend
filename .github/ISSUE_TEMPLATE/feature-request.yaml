@@ -14,22 +14,24 @@ body:
           required: true
   - type: textarea
     attributes:
-      - label: Is your feature request related to a problem you are facing?
-      - description: Enter a clear and concise description of what the problem is 
-      - placeholder: I'm always frustrated when [...]
-      - required: true
+      label: Is your feature request related to a problem you are facing?
+      description: Enter a clear and concise description of what the problem is 
+      placeholder: I'm always frustrated when [...]
+    validations:
+      required: true
   - type: textarea
     attributes:
-      - label: Describe the solution you'd like
-      - description: A clear and concise description of what you want to happen.
-      - required: true
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+    validations:
+      required: true
   - type: textarea
     attributes:
-      - label: How does this feature benefit PancakeSwap users and CAKE holders?
-      - description: Explain how this feature will be beneficial for the PancakeSwap community and ecosystem.
-      - required: true
+      label: How does this feature benefit PancakeSwap users and CAKE holders?
+      description: Explain how this feature will be beneficial for the PancakeSwap community and ecosystem.
+    validations:
+      required: true
   - type: textarea
     attributes:
-      - label: Anything else? 
-      - description: Add any other context or screenshots about the feature request here.
-      - required: false
+      label: Anything else? 
+      description: Add any other context or screenshots about the feature request here.
