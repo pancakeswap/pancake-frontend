@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Card, Text, Skeleton, CardHeader, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useAppDispatch } from 'state'
+import { fetchAdditionalPublicLotteries } from 'state/lottery'
 import { useLottery } from 'state/lottery/hooks'
 import { fetchLottery } from 'state/lottery/helpers'
 import { LotteryStatus } from 'config/constants/types'
@@ -26,14 +28,18 @@ const StyledCardHeader = styled(CardHeader)`
 
 const AllHistoryCard = () => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const {
     currentLotteryId,
+    lotteriesData,
     currentRound: { status, isLoading },
   } = useLottery()
   const [latestRoundId, setLatestRoundId] = useState(null)
   const [selectedRoundId, setSelectedRoundId] = useState('')
   const [selectedLotteryInfo, setSelectedLotteryInfo] = useState(null)
   const timer = useRef(null)
+
+  const roundsFetched = lotteriesData?.length
 
   useEffect(() => {
     if (currentLotteryId) {
@@ -52,6 +58,13 @@ const AllHistoryCard = () => {
       const lotteryData = await fetchLottery(selectedRoundId)
       const processedLotteryData = processLotteryResponse(lotteryData)
       setSelectedLotteryInfo(processedLotteryData)
+
+      if (roundsFetched) {
+        const hasSelectedRoundBeenFetched = parseInt(selectedRoundId) > parseInt(currentLotteryId) - roundsFetched
+        if (!hasSelectedRoundBeenFetched) {
+          dispatch(fetchAdditionalPublicLotteries({ skip: roundsFetched }))
+        }
+      }
     }
 
     timer.current = setInterval(() => {
@@ -62,7 +75,7 @@ const AllHistoryCard = () => {
     }, 1000)
 
     return () => clearInterval(timer.current)
-  }, [selectedRoundId])
+  }, [selectedRoundId, currentLotteryId, roundsFetched, dispatch])
 
   const handleInputChange = (event) => {
     const {

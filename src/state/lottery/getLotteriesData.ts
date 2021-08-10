@@ -3,7 +3,7 @@ import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
 import { LotteryRoundGraphEntity, LotteryResponse } from 'state/types'
 import { getRoundIdsArray, fetchMultipleLotteries } from './helpers'
 
-const MAX_LOTTERIES_REQUEST_SIZE = 100
+export const MAX_LOTTERIES_REQUEST_SIZE = 5
 
 const applyNodeDataToLotteriesGraphResponse = (
   nodeData: LotteryResponse[],
