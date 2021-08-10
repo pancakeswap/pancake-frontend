@@ -2,13 +2,17 @@ import { ChainId, Token } from '@pancakeswap/sdk'
 
 const { MAINNET, TESTNET } = ChainId
 
-type TokenConfig = { [chainId: number]: Token }
+interface TokenConfig {
+  [MAINNET]: Token
+  [TESTNET]: Token
+  projectLink?: string
+}
 
 export const CAKE: TokenConfig = {
   [MAINNET]: new Token(MAINNET, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token'),
   [TESTNET]: new Token(TESTNET, '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe', 18, 'CAKE', 'PancakeSwap Token'),
 }
-export const BUSD: TokenConfig = {
+export const BUSD: { [chainId: number]: Token } = {
   [MAINNET]: new Token(MAINNET, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'Binance USD'),
   [TESTNET]: new Token(TESTNET, '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee', 18, 'BUSD', 'Binance USD'),
 }
@@ -27,7 +31,7 @@ export const ETH = new Token(
 )
 export const USDC = new Token(MAINNET, '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 18, 'USDC', 'Binance-Peg USD Coin')
 
-const tokens = {
+const tokens: TokenConfig[] = {
   bnb: {
     symbol: 'BNB',
     projectLink: 'https://www.binance.com/',
