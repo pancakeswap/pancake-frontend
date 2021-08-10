@@ -52,7 +52,7 @@ const TicketNumber: React.FC<TicketNumberProps> = ({ localId, id, number, reward
       <StyledNumberWrapper>
         {rewardBracket >= 0 && <RewardHighlighter numberMatches={numberMatches} />}
         {numberAsArray.map((digit) => (
-          <Text key={`${localId || id}-${digit}-${_uniqueId}`} fontSize="16px">
+          <Text key={`${localId || id}-${digit}-${_uniqueId()}`} fontSize="16px">
             {digit}
           </Text>
         ))}
