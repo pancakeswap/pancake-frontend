@@ -181,7 +181,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   // Wallet connected, user data loaded and approved
   if (isNotVaultAndHasStake || isVaultWithShares) {
     return (
-      <ActionContainer>
+      <ActionContainer isAutoVault={isAutoVault}>
         <ActionTitles>
           <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
             {stakingToken.symbol}{' '}
