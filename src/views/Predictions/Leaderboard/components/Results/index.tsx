@@ -36,7 +36,10 @@ const Results = () => {
         <Heading as="h2" scale="md" color="secondary" mb="16px">
           {t('All Others')}
         </Heading>
-        <Grid gridGap={['16px', null, null, '24px']} gridTemplateColumns={['1fr', null, null, 'repeat(3, 1fr)']}>
+        <Grid
+          gridGap={['16px', null, null, null, '24px']}
+          gridTemplateColumns={['1fr', null, null, null, 'repeat(3, 1fr)']}
+        >
           <RankingCard rank={1} user={first} />
           <RankingCard rank={2} user={second} />
           <RankingCard rank={3} user={third} />

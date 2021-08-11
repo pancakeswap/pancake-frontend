@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
+import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import { State, ProfileState } from '../types'
 import { fetchProfile, fetchProfileAvatar } from '.'
@@ -25,7 +26,9 @@ export const useGetProfileAvatar = (account: string) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (!nft) {
+    const address = isAddress(account)
+
+    if (!nft && address) {
       dispatch(fetchProfileAvatar(account))
     }
   }, [account, nft, dispatch])

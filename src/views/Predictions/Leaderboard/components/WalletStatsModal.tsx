@@ -12,13 +12,14 @@ import {
   ModalHeader,
   ProfileAvatar,
   useMatchBreakpoints,
+  Skeleton,
 } from '@pancakeswap/uikit'
-import { useGetAccountResult } from 'state/predictions/hooks'
 import { useGetProfileAvatar } from 'state/profile/hooks'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
+import { useGetLeaderboardAddressResult } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { NetWinnings } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
@@ -39,7 +40,7 @@ const ExternalLink = styled(LinkExternal)`
 const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const result = useGetAccountResult(account)
+  const result = useGetLeaderboardAddressResult(account)
   const profileAvatar = useGetProfileAvatar(account)
   const { isXl } = useMatchBreakpoints()
 
@@ -69,28 +70,32 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss 
           <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
             {t('Net Winnings')}
           </Text>
-          <NetWinnings amount={result.netBNB} alignItems="start" />
+          {result ? <NetWinnings amount={result.netBNB} alignItems="start" /> : <Skeleton />}
         </Box>
         <Box>
           <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
             {t('Win Rate')}
           </Text>
-          <Text fontWeight="bold">{`${result.winRate.toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-          })}%`}</Text>
+          {result ? (
+            <Text fontWeight="bold">{`${result.winRate.toLocaleString(undefined, {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 2,
+            })}%`}</Text>
+          ) : (
+            <Skeleton />
+          )}
         </Box>
         <Box>
           <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
             {t('Rounds Won')}
           </Text>
-          <Text fontWeight="bold">{result.totalBetsClaimed.toLocaleString()}</Text>
+          {result ? <Text fontWeight="bold">{result.totalBetsClaimed.toLocaleString()}</Text> : <Skeleton />}
         </Box>
         <Box>
           <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
             {t('Rounds Played')}
           </Text>
-          <Text fontWeight="bold">{result.totalBets.toLocaleString()}</Text>
+          {result ? <Text fontWeight="bold">{result.totalBets.toLocaleString()}</Text> : <Skeleton />}
         </Box>
       </Grid>
       {isXl ? <DesktopBetsTable account={account} /> : <MobileBetsTable account={account} />}

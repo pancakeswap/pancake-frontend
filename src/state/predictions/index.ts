@@ -68,7 +68,7 @@ const initialState: PredictionsState = {
     },
     skip: 0,
     hasMoreResults: true,
-    accountResult: null,
+    addressResults: {},
     results: [],
   },
 }
@@ -304,11 +304,11 @@ export const filterLeaderboard = createAsyncThunk<{ results: PredictionUser[] },
   },
 )
 
-export const fetchAccountResult = createAsyncThunk<PredictionUser, string>(
-  'predictions/fetchAccountResult',
+export const fetchAddressResult = createAsyncThunk<{ account: string; data: PredictionUser }, string>(
+  'predictions/fetchAddressResult',
   async (account) => {
     const userResponse = await getPredictionUser(account)
-    return transformUserResponse(userResponse)
+    return { account, data: transformUserResponse(userResponse) }
   },
 )
 
@@ -380,15 +380,28 @@ export const predictionsSlice = createSlice({
       if (results.length < LEADERBOARD_RESULTS_PER_PAGE) {
         state.leaderboard.hasMoreResults = false
       }
+
+      // Populate address results to reduce calls
+      state.leaderboard.addressResults = merge(
+        {},
+        state.leaderboard.addressResults,
+        results.reduce((accum, result) => {
+          return {
+            ...accum,
+            [result.id]: result,
+          }
+        }, {}),
+      )
     })
 
     // Leaderboard account result
-    builder.addCase(fetchAccountResult.pending, (state) => {
+    builder.addCase(fetchAddressResult.pending, (state) => {
       state.leaderboard.loadingState = LeaderboardLoadingState.LOADING
     })
-    builder.addCase(fetchAccountResult.fulfilled, (state, action) => {
+    builder.addCase(fetchAddressResult.fulfilled, (state, action) => {
+      const { account, data } = action.payload
       state.leaderboard.loadingState = LeaderboardLoadingState.IDLE
-      state.leaderboard.accountResult = action.payload
+      state.leaderboard.addressResults[account] = data
     })
 
     // Leaderboard next page

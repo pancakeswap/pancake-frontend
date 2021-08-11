@@ -1381,5 +1381,7 @@
   "Direction": "Direction",
   "My Rankings": "My Rankings",
   "View Stats": "View Stats",
-  "Last %num% Bets": "Last %num% Bets"
+  "Last %num% Bets": "Last %num% Bets",
+  "Search %subject%": "Search %subject%",
+  "Address": "Address"
 }
