@@ -31,7 +31,9 @@ describe('makeFutureRoundResponse', () => {
       bearAmount: { hex: '0x00', type: 'BigNumber' },
       rewardBaseCalAmount: { hex: '0x00', type: 'BigNumber' },
       rewardAmount: { hex: '0x00', type: 'BigNumber' },
-      priceResolved: false,
+      oracleCalled: false,
+      lockOracleId: null,
+      closeOracleId: null,
     })
   })
 })
