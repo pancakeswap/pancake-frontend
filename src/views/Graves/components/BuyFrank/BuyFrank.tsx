@@ -57,7 +57,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
               </div>
               <span className="total-earned text-shadow" style={{fontSize: "20px"}}>{formatDuration(nftTime)}</span>
             </div>}
-          {currentDate >= tokenWithdrawalDate ?
+          {currentDate >= withdrawCooldownTimeFixed ?
             <span className="total-earned text-shadow" style={{fontSize: "20px"}}>No Withdraw Fees</span> :
             <div>
               <div className="small-text">
