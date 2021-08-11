@@ -9,7 +9,7 @@ const useWhitelistedAddresses = () => {
   const farmAuctionContract = useFarmAuctionContract()
 
   useEffect(() => {
-    const fetchWhielistedAddresses = async () => {
+    const fetchWhitelistedAddresses = async () => {
       try {
         const [bidderAddresses] = await farmAuctionContract.viewBidders(0, AUCTION_WHITELISTED_BIDDERS_TO_FETCH)
         const bidders = bidderAddresses.map((address) => getBidderInfo(address))
@@ -19,7 +19,7 @@ const useWhitelistedAddresses = () => {
       }
     }
     if (!whitelistedAddresses) {
-      fetchWhielistedAddresses()
+      fetchWhitelistedAddresses()
     }
   }, [farmAuctionContract, whitelistedAddresses])
 

@@ -3,12 +3,12 @@ import { Text, Flex, Message, Box, HelpIcon } from '@pancakeswap/uikit'
 import { Auction, ConnectedBidder } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 
-const NotWhitelistedNotice: React.FC<{ conncetedBidder: ConnectedBidder; auction: Auction }> = ({
-  conncetedBidder,
+const NotWhitelistedNotice: React.FC<{ connectedBidder: ConnectedBidder; auction: Auction }> = ({
+  connectedBidder,
   auction,
 }) => {
   const { t } = useTranslation()
-  if ((conncetedBidder && conncetedBidder.isWhitelisted) || !auction) {
+  if ((connectedBidder && connectedBidder.isWhitelisted) || !auction) {
     return null
   }
   return (

@@ -44,7 +44,7 @@ export interface ChainLinkOracleContract extends Contract {
 
 // Farm Auction
 
-// Note: slightly different from AuctionStatus used thoughout UI
+// Note: slightly different from AuctionStatus used throughout UI
 export enum FarmAuctionContractStatus {
   Pending,
   Open,

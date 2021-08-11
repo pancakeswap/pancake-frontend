@@ -46,7 +46,7 @@ const floatingTicketLeft = keyframes`
   }  
 `
 
-const floatingTickeRight = keyframes`
+const floatingTicketRight = keyframes`
   from {
     transform: translate(0,  0px);
   }
@@ -139,7 +139,7 @@ const StarsDecorations = styled(Box)`
     animation-delay: 0.2s;
   }
   & :nth-child(5) {
-    animation: ${floatingTickeRight} 6s ease-in-out infinite;
+    animation: ${floatingTicketRight} 6s ease-in-out infinite;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {

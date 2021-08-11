@@ -161,7 +161,7 @@ export const useFarmAuctionContract = () => {
   // Calls were failing if unconnected user goes to farm auction page
   // Using library instead of library.getSigner() fixes the problem for unconnected users
   // However, this fix is not ideal, it currently has following behavior:
-  // - If you visit Farm Auction page coming from some other page there are no errors in console (unconnceted or connected)
+  // - If you visit Farm Auction page coming from some other page there are no errors in console (unconnected or connected)
   // - If you go directly to Farm Auction page
   //   - as unconnected user you don't see any console errors
   //   - as connected user you see `unknown account #0 (operation="getAddress", code=UNSUPPORTED_OPERATION, ...` errors

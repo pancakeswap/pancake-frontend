@@ -54,7 +54,7 @@ export default function ManageTokens({
   // if they input an address, use it
   const searchToken = useToken(searchQuery)
 
-  // all tokens for local lisr
+  // all tokens for local list
   const userAddedTokens: Token[] = useUserAddedTokens()
   const removeToken = useRemoveUserAddedToken()
 

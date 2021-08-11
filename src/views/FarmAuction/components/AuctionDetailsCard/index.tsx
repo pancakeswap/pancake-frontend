@@ -28,16 +28,16 @@ const AuctionDetailsCard = styled(Card)`
 
 interface AuctionDetailsProps {
   auction: Auction
-  conncetedBidder: ConnectedBidder
+  connectedBidder: ConnectedBidder
   refreshBidders: () => void
 }
 
-const AuctionDetails: React.FC<AuctionDetailsProps> = ({ auction, conncetedBidder, refreshBidders }) => {
+const AuctionDetails: React.FC<AuctionDetailsProps> = ({ auction, connectedBidder, refreshBidders }) => {
   const { t } = useTranslation()
 
   const [onPresentPlaceBid] = useModal(
     <PlaceBidModal
-      conncetedBidder={conncetedBidder}
+      connectedBidder={connectedBidder}
       refreshBidders={refreshBidders}
       initialBidAmount={auction?.initialBidAmount}
     />,
@@ -59,17 +59,17 @@ const AuctionDetails: React.FC<AuctionDetailsProps> = ({ auction, conncetedBidde
   }
 
   const getBidSection = () => {
-    const notConnectedOrNotWhitelisted = !conncetedBidder || (conncetedBidder && !conncetedBidder.isWhitelisted)
-    const whitelistedAndReadyToBid = !notConnectedOrNotWhitelisted && conncetedBidder.bidderData
+    const notConnectedOrNotWhitelisted = !connectedBidder || (connectedBidder && !connectedBidder.isWhitelisted)
+    const whitelistedAndReadyToBid = !notConnectedOrNotWhitelisted && connectedBidder.bidderData
     if (notConnectedOrNotWhitelisted || auction.status !== AuctionStatus.Open) {
       return <CannotBidMessage />
     }
     if (whitelistedAndReadyToBid) {
-      const { amount, position } = conncetedBidder.bidderData
+      const { amount, position } = connectedBidder.bidderData
       return (
         <>
           <Tag outline variant="success" startIcon={<CheckmarkCircleIcon />}>
-            {t('Connected as %projectName%', { projectName: conncetedBidder.bidderData.tokenName })}
+            {t('Connected as %projectName%', { projectName: connectedBidder.bidderData.tokenName })}
           </Tag>
           <Flex justifyContent="space-between" width="100%" pt="24px">
             <Text small color="textSubtle">

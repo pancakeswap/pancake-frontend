@@ -81,7 +81,7 @@ const AllHistoryCard = () => {
     }
   }
 
-  const handleArrowButonPress = (targetRound) => {
+  const handleArrowButtonPress = (targetRound) => {
     if (targetRound) {
       setSelectedRoundId(targetRound.toString())
     } else {
@@ -98,7 +98,7 @@ const AllHistoryCard = () => {
           selectedRoundId={selectedRoundId}
           mostRecentRound={latestRoundId}
           handleInputChange={handleInputChange}
-          handleArrowButonPress={handleArrowButonPress}
+          handleArrowButtonPress={handleArrowButtonPress}
         />
         <Box mt="8px">
           {selectedLotteryInfo?.endTime ? (

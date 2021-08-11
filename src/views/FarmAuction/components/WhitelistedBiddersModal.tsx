@@ -63,7 +63,7 @@ const WhitelistedBiddersModal: React.FC<WhitelistedBiddersModalProps> = ({ onDis
     setSearchTerm(e.target.value)
   }
 
-  const filteredBiders = bidders
+  const filteredBidders = bidders
     ? bidders.filter(
         ({ farmName, tokenName, account }) =>
           farmName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -73,7 +73,7 @@ const WhitelistedBiddersModal: React.FC<WhitelistedBiddersModalProps> = ({ onDis
     : []
 
   const modalContent = bidders ? (
-    filteredBiders.map((bidder) => <AddressRow key={bidder.account} bidder={bidder} isMobile={isXs || isSm} />)
+    filteredBidders.map((bidder) => <AddressRow key={bidder.account} bidder={bidder} isMobile={isXs || isSm} />)
   ) : (
     <Flex justifyContent="center" alignItems="center" py="24px">
       <Spinner />

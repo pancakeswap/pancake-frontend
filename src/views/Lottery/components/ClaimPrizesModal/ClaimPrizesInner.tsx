@@ -128,7 +128,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
             toastSuccess(
               t('Prizes Collected!'),
               t(
-                'Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation',
+                'Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction',
                 {
                   claimNum: receipts.length,
                   claimTotal: transactionsToFire,
