@@ -5,7 +5,7 @@ import range from 'lodash/range'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { Bet, LedgerData, HistoryFilter, PredictionsState, PredictionStatus, ReduxNodeRound } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
-import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT } from './config'
+import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUND_BUFFER } from './config'
 import {
   getBetHistory,
   transformBetResponse,
@@ -209,7 +209,10 @@ export const predictionsSlice = createSlice({
       // If the round has change add a new future round
       if (state.currentEpoch !== currentEpoch) {
         const newestRound = maxBy(Object.values(state.rounds), 'epoch')
-        const futureRound = makeFutureRoundResponse(newestRound.epoch + 1, 999)
+        const futureRound = makeFutureRoundResponse(
+          newestRound.epoch + 1,
+          newestRound.startTimestamp + intervalSeconds + ROUND_BUFFER,
+        )
 
         state.rounds[futureRound.epoch] = futureRound
       }
