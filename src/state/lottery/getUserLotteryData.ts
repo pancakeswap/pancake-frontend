@@ -5,6 +5,11 @@ import { LotteryUserGraphEntity, LotteryResponse, UserRound } from 'state/types'
 import { getRoundIdsArray, fetchMultipleLotteries, hasRoundBeenClaimed } from './helpers'
 import { fetchUserTicketsForMultipleRounds } from './getUserTicketsData'
 
+const MAX_USER_LOTTERIES_REQUEST_SIZE = 100
+
+/* eslint-disable camelcase */
+type UserLotteriesWhere = { lottery_in?: string[] }
+
 const applyNodeDataToUserGraphResponse = (
   userNodeData: { roundId: string; userTickets: LotteryTicket[] }[],
   userGraphData: UserRound[],
@@ -49,7 +54,12 @@ const applyNodeDataToUserGraphResponse = (
   return mergedResponse
 }
 
-const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
+export const getGraphLotteryUser = async (
+  account: string,
+  first = MAX_USER_LOTTERIES_REQUEST_SIZE,
+  skip = 0,
+  where: UserLotteriesWhere = {},
+): Promise<LotteryUserGraphEntity> => {
   let user
   const blankUser = {
     account,
@@ -62,12 +72,12 @@ const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEnt
     const response = await request(
       GRAPH_API_LOTTERY,
       gql`
-        query getUserLotteries($account: ID!) {
+        query getUserLotteries($account: ID!, $first: Int!, $skip: Int!, $where: Round_filter) {
           user(id: $account) {
             id
             totalTickets
             totalCake
-            rounds(first: 100, orderDirection: desc, orderBy: block) {
+            rounds(first: $first, skip: $skip, where: $where, orderDirection: desc, orderBy: block) {
               id
               lottery {
                 id
@@ -80,7 +90,7 @@ const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEnt
           }
         }
       `,
-      { account: account.toLowerCase() },
+      { account: account.toLowerCase(), first, skip, where },
     )
     const userRes = response.user
 
