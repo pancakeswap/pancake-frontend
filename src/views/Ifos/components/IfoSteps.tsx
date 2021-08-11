@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import every from 'lodash/every'
 import { Stepper, Step, StepStatus, Card, CardBody, Heading, Text, Button, Link, OpenNewIcon } from '@ricefarm/uikitv2'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import { BASE_ADD_LIQUIDITY_URL, BASE_V1_ADD_LIQUIDITY_URL } from 'config'
 import { Ifo } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
@@ -56,40 +56,41 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
         return (
           <CardBody>
             <Heading as="h4" color="secondary" mb="16px">
-              {t('Activate your Profile')}
+              {t('Get TeslaSafe-BNB LP Tokens')}
             </Heading>
-            <Text color="textSubtle" small mb="16px">
-              {t('You’ll need an active PancakeSwap Profile to take part in an IFO!')}
+            <Text color="textSubtle" small>
+              {t('Stake TeslaSafe and BNB in the liquidity pool to get LP tokens.')} <br />
+              {t('You’ll spend them to buy IFO sale tokens.')}
             </Text>
-            {isStepValid ? (
-              <Text color="success" bold>
-                {t('Profile Active!')}
-              </Text>
-            ) : (
-              <Button as={Link} href="/profile">
-                {t('Activate your Profile')}
-              </Button>
-            )}
+            <Button
+              as={Link}
+              external
+              href={`${BASE_V1_ADD_LIQUIDITY_URL}/BNB/0x3504de9e61FDFf2Fc70f5cC8a6D1Ee493434C1Aa`}
+              endIcon={<OpenNewIcon color="white" />}
+              mt="16px"
+            >
+              {t('Get TS-BNB LP tokens')}
+            </Button>
           </CardBody>
         )
       case 1:
         return (
           <CardBody>
             <Heading as="h4" color="secondary" mb="16px">
-              {t('Get CAKE-BNB LP Tokens')}
+              {t('Get RICE-BNB LP Tokens')}
             </Heading>
             <Text color="textSubtle" small>
-              {t('Stake CAKE and BNB in the liquidity pool to get LP tokens.')} <br />
+              {t('Stake RICE and BNB in the liquidity pool to get LP tokens.')} <br />
               {t('You’ll spend them to buy IFO sale tokens.')}
             </Text>
             <Button
               as={Link}
               external
-              href={`${BASE_ADD_LIQUIDITY_URL}/BNB/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82`}
+              href={`${BASE_ADD_LIQUIDITY_URL}/BNB/0xC4eEFF5aab678C3FF32362D80946A3f5De4a1861`}
               endIcon={<OpenNewIcon color="white" />}
               mt="16px"
             >
-              {t('Get LP tokens')}
+              {t('Get RICE-BNB LP tokens')}
             </Button>
           </CardBody>
         )
@@ -101,7 +102,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
             </Heading>
             <Text color="textSubtle" small>
               {t('When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.')} <br />
-              {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
+              {t('We recommend committing to both TeslaSafe and Rice Sales, but you can also do just one sale.')}
             </Text>
           </CardBody>
         )
@@ -109,11 +110,11 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
         return (
           <CardBody>
             <Heading as="h4" color="secondary" mb="16px">
-              {t('Claim your tokens and achievement')}
+              {t('Claim your tokens')}
             </Heading>
             <Text color="textSubtle" small>
               {t(
-                'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.',
+                'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent RICE-BNB LP tokens will be returned to your wallet.',
               )}
             </Text>
           </CardBody>

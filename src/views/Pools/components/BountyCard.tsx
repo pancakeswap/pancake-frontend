@@ -23,7 +23,18 @@ import BountyModal from './BountyModal'
 
 const StyledCard = styled(Card)`
   width: 100%;
-  flex: 1;
+  background-image: url(/images/vault-header.svg);
+  background-repeat: no-repeat;
+  background-size: 120px;
+  background-position: left center;
+  background-color: transparent;
+  border-radius: 0px;
+  padding-left: 120px;
+
+  > div {
+    background-color: ${({ theme }) => theme.colors.background};
+  }
+
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 240px;
   }

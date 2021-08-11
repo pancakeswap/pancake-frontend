@@ -1,7 +1,11 @@
+import Web3 from 'web3'
+import { AbiItem } from 'web3-utils'
 import { ethers } from 'ethers'
+import web3NoAccount from 'utils/web3'
 import { simpleRpcProvider } from 'utils/providers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
+import riceReferralAbi from 'config/abi/riceReferral.json'
 
 // Addresses
 import {
@@ -24,6 +28,7 @@ import {
   getBunnySpecialCakeVaultAddress,
   getBunnySpecialPredictionAddress,
   getFarmAuctionAddress,
+  getRiceReferralAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -139,4 +144,12 @@ export const getBunnySpecialPredictionContract = (signer?: ethers.Signer | ether
 }
 export const getFarmAuctionContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(farmAuctionAbi, getFarmAuctionAddress(), signer) as FarmAuctionContract
+}
+
+const getContractv1 = (abi: any, address: string, web3?: Web3) => {
+  const _web3 = web3 ?? web3NoAccount
+  return new _web3.eth.Contract(abi as unknown as AbiItem, address)
+}
+export const getReferralContract = (web3?: Web3) => {
+  return getContractv1(riceReferralAbi, getRiceReferralAddress(), web3)
 }

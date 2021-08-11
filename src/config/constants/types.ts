@@ -57,6 +57,8 @@ export interface FarmConfig {
   lpAddresses: Address
   token: Token
   quoteToken: Token
+  depositFee?: number
+  harvestInterval?: number
   multiplier?: string
   isCommunity?: boolean
   dual?: {

@@ -237,20 +237,19 @@ const Pools: React.FC = () => {
   return (
     <>
       <PageHeader>
-        <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
-          <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
+        <Flex justifyContent="space-between" flexDirection={['column', null, 'row']}>
+          <Flex flexDirection="column" mr={['8px', 0]}>
             <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('Syrup Pools')}
+              {t('Rice Cooker')}
             </Heading>
             <Heading scale="md" color="text">
-              {t('Just stake some tokens to earn.')}
+              {t('Enjoy tax free compounding.')}
             </Heading>
             <Heading scale="md" color="text">
               {t('High APR, low risk.')}
             </Heading>
           </Flex>
-          <Flex flex="1" height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
-            <HelpButton />
+          <Flex height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
             <BountyCard />
           </Flex>
         </Flex>
@@ -313,14 +312,7 @@ const Pools: React.FC = () => {
         )}
         {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
         <div ref={loadMoreRef} />
-        <Image
-          mx="auto"
-          mt="12px"
-          src="/images/decorations/3d-syrup-bunnies.png"
-          alt="Pancake illustration"
-          width={192}
-          height={184.5}
-        />
+
       </Page>
     </>
   )

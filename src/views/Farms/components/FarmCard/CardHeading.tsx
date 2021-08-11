@@ -12,6 +12,8 @@ export interface ExpandableSectionProps {
   token: Token
   quoteToken: Token
   isTokenOnly?: boolean
+  index?: number
+  depositFee?: number
 }
 
 const Wrapper = styled(Flex)`

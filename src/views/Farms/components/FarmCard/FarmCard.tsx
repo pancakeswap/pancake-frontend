@@ -135,6 +135,20 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
         <Text>{t('Earn')}:</Text>
         <Text bold>{earnLabel}</Text>
       </Flex>
+      <Flex justifyContent="space-between">
+        <Text>{t('Deposit Fee')}:</Text>
+        <Text bold>{`${farm.depositFee / 100}%`}</Text>
+      </Flex>
+      <Flex justifyContent="space-between">
+        <Text>{t('Harvest Delay')}:</Text>
+        <Text bold>{farm.harvestInterval > 0 ? `${farm.harvestInterval / 60 / 60} hour(s)` : '0'}</Text>
+      </Flex>
+      {!farm.isTokenOnly && (
+        <Flex justifyContent="space-between">
+          <Text>{t('LP Type')}:</Text>
+          <Text bold>{farm.lpType}</Text>
+        </Flex>
+      )}
       <CardActionsContainer farm={farm} account={account} addLiquidityUrl={addLiquidityUrl} />
       <Divider />
       <ExpandableSectionButton

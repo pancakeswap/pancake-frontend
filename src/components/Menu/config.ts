@@ -8,20 +8,30 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     href: '/',
   },
   {
-    label: t('Trade'),
+    label: 'Trade TeslaSafe v1',
     icon: 'TradeIcon',
     items: [
       {
-        label: t('Exchange'),
-        href: '/swap',
+        label: 'Exchange',
+        href: 'https://teslasafe.ricefarm.fi',
       },
       {
-        label: t('Liquidity'),
-        href: '/pool',
+        label: 'Liquidity',
+        href: 'https://teslasafe.ricefarm.fi/#/pool',
+      },
+    ],
+  },
+  {
+    label: 'Trade Rice v2',
+    icon: 'TradeIcon',
+    items: [
+      {
+        label: 'Exchange',
+        href: 'https://exchange.pancakeswap.finance/#/swap?outputCurrency=0xC4eEFF5aab678C3FF32362D80946A3f5De4a1861',
       },
       {
-        label: t('LP Migration'),
-        href: 'https://v1exchange.pancakeswap.finance/#/migrate',
+        label: 'Liquidity',
+        href: 'https://exchange.pancakeswap.finance/#/add/BNB/0xC4eEFF5aab678C3FF32362D80946A3f5De4a1861',
       },
     ],
   },
@@ -36,80 +46,104 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     href: '/pools',
   },
   {
-    label: t('Prediction (BETA)'),
-    icon: 'PredictionsIcon',
-    href: '/prediction',
+    label: 'Vaults',
+    icon: 'VaultIcon',
+    href: '/vaults',
   },
-  {
-    label: t('Lottery'),
-    icon: 'TicketIcon',
-    href: '/lottery',
-  },
-  {
-    label: t('Collectibles'),
-    icon: 'NftIcon',
-    href: '/collectibles',
-  },
-  {
-    label: t('Team Battle'),
-    icon: 'TeamBattleIcon',
-    href: '/competition',
-  },
-  {
-    label: t('Teams & Profile'),
-    icon: 'GroupsIcon',
-    items: [
-      {
-        label: t('Leaderboard'),
-        href: '/teams',
-      },
-      {
-        label: t('Task Center'),
-        href: '/profile/tasks',
-      },
-      {
-        label: t('Your Profile'),
-        href: '/profile',
-      },
-    ],
-  },
-  {
-    label: t('Info'),
-    icon: 'InfoIcon',
-    href: 'https://pancakeswap.info',
-  },
+  // {
+  //   label: t('Prediction (BETA)'),
+  //   icon: 'PredictionsIcon',
+  //   href: '/prediction',
+  // },
+  // {
+  //   label: t('Lottery'),
+  //   icon: 'TicketIcon',
+  //   href: '/lottery',
+  //   status: {
+  //     text: t('Win').toLocaleUpperCase(),
+  //     color: 'success',
+  //   },
+  // },
+  // {
+  //   label: t('Collectibles'),
+  //   icon: 'NftIcon',
+  //   href: '/collectibles',
+  // },
+  // {
+  //   label: t('Team Battle'),
+  //   icon: 'TeamBattleIcon',
+  //   href: '/competition',
+  // },
+  // {
+  //   label: t('Teams & Profile'),
+  //   icon: 'GroupsIcon',
+  //   items: [
+  //     {
+  //       label: t('Leaderboard'),
+  //       href: '/teams',
+  //     },
+  //     {
+  //       label: t('Task Center'),
+  //       href: '/profile/tasks',
+  //     },
+  //     {
+  //       label: t('Your Profile'),
+  //       href: '/profile',
+  //     },
+  //   ],
+  // },
+    // {
+  //   label: t('Info'),
+  //   icon: 'InfoIcon',
+  //   href: 'https://pancakeswap.info',
+  // },
   {
     label: t('IFO'),
     icon: 'IfoIcon',
     href: '/ifo',
   },
   {
-    label: t('More'),
+    label: 'Referrals',
+    icon: 'ReferralIcon',
+    href: '/referrals',
+  },
+  {
+    label: 'TechRate Audits',
+    icon: 'AuditIcon',
+    items: [
+      {
+        label: 'RiceFarm Audit',
+        href: 'https://teslasafe.fi/pdf/TechRateRiceFarmAudit.pdf',
+      },
+      {
+        label: 'TeslaSafe Audit',
+        href: 'https://teslasafe.fi/pdf/TeslaSafe_Audit.pdf',
+      },
+    ],
+  },
+  {
+    label: 'More',
     icon: 'MoreIcon',
     items: [
       {
-        label: t('Contact'),
-        href: 'https://docs.pancakeswap.finance/contact-us',
+        label: 'Chart',
+        href: 'https://charts.bogged.finance/?token=0xC4eEFF5aab678C3FF32362D80946A3f5De4a1861',
       },
       {
-        label: t('Voting'),
-        href: '/voting',
+        label: 'Github',
+        href: 'https://github.com/rice-farm',
       },
       {
-        label: t('Github'),
-        href: 'https://github.com/pancakeswap',
+        label: 'Docs',
+        href: 'https://docs.ricefarm.fi',
       },
       {
-        label: t('Docs'),
-        href: 'https://docs.pancakeswap.finance',
+        label: 'TeslaSafe',
+        href: 'https://teslasafe.fi',
       },
       {
-        label: t('Blog'),
-        href: 'https://pancakeswap.medium.com',
-      },
-      {
-        label: t('Merch'),
-        href: 'https://pancakeswap.creator-spring.com/',
+        label: 'TeslaSafe Github',
+        href: 'https://github.com/tesla-safe',
       },
     ],
   },

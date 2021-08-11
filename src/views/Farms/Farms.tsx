@@ -17,7 +17,7 @@ import { orderBy } from 'lodash'
 import isArchivedPid from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly } from 'state/user/hooks'
-import PageHeader from 'components/PageHeader'
+// import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
@@ -27,6 +27,7 @@ import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, ViewMode } from './components/types'
+import PageHeader from './components/PageHeader'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -112,7 +113,11 @@ const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
   return null
 }
 
-const Farms: React.FC = () => {
+export interface FarmsProps {
+  tokenMode?: boolean
+}
+
+const Farms: React.FC<FarmsProps> = (farmsProps) => {
   const { path } = useRouteMatch()
   const { pathname } = useLocation()
   const { t } = useTranslation()
@@ -127,6 +132,8 @@ const Farms: React.FC = () => {
   const isArchived = pathname.includes('archived')
   const isInactive = pathname.includes('history')
   const isActive = !isInactive && !isArchived
+
+  const { tokenMode } = farmsProps
 
   usePollFarmsData(isArchived)
 
@@ -380,22 +387,12 @@ const Farms: React.FC = () => {
 
   return (
     <>
-      <PageHeader>
-        <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-          {t('Farms')}
-        </Heading>
-        <Heading scale="lg" color="text">
-          {t('Stake LP tokens to earn.')}
-        </Heading>
-        <NavLink exact activeClassName="active" to="/farms/auction" id="lottery-pot-banner">
-          <Button p="0" variant="text">
-            <Text color="primary" bold fontSize="16px" mr="4px">
-              {t('Community Auctions')}
-            </Text>
-            <ArrowForwardIcon color="primary" />
-          </Button>
-        </NavLink>
-      </PageHeader>
+      <PageHeader
+        title={tokenMode ? 'Rice Paddy' : 'Farms'}
+        subtitle={tokenMode ? 'Stake Tokens to earn RICE.' : 'Stake Liquidity Pool (LP) tokens to earn RICE.'}
+        text={tokenMode ? 'Warning: RICE and TS tax applies to staking/unstaking' : null}
+        bgImage={tokenMode ? 'pool-header.svg' : 'farm-header.svg'}
+      />
       <Page>
         <ControlContainer>
           <ViewControls>

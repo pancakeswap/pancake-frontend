@@ -13,8 +13,12 @@ const getGradient = (isDark: boolean) => {
 }
 
 const StyledHero = styled.div`
-  background: ${({ theme }) => getGradient(theme.isDark)};
-  padding-bottom: 40px;
+  background-color: ${({ theme }) => (theme.isDark ? '#396a63' : '#e9faff')};
+  background-image: url('/images/ifo-header.svg');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: contain;
+  padding-bottom: 60px;
   padding-top: 40px;
 `
 
@@ -40,7 +44,6 @@ const Hero = () => {
           </Text>
         </Container>
       </StyledHero>
-      <CurtainBottom />
     </Box>
   )
 }
