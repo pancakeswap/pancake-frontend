@@ -1,2 +1,3 @@
 export { default as Input } from "./Input";
-export type { InputProps, Scales as InputScales } from "./types";
+export { default as InputGroup } from "./InputGroup";
+export type { InputProps, InputGroupProps, Scales as InputScales } from "./types";
