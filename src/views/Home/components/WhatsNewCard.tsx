@@ -36,7 +36,7 @@ const TotalValueLockedCard: React.FC = () => {
             <Text fontSize='14px'>1. Euler Tools Spawning Pool is live!</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>2. Autoshark Grave ends on Sept. 4th! We will alert both telegrams before doing, giving everyone time to claim their NFT.</Text>
+            <Text fontSize='14px'>2. Thunderswap grave is out now! Multiplier graves are on the way, you will deposit your RugZombie Common NFTs to gain access.</Text>
           </Row>
           <Row>
             <Text fontSize='14px'>3. First auction was a huge success, thanks for participating & congrats to the winner.</Text>
