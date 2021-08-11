@@ -32,6 +32,24 @@ const useCountdown = (timestamp: number) => {
     setSecondsRemaining(timestamp - getNow())
   }, [timestamp, setSecondsRemaining])
 
+  // Pause the timer if the tab becomes inactive to avoid it becoming out of sync
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState) {
+        setSecondsRemaining(timestamp - getNow())
+        unpause()
+      } else {
+        pause()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [pause, unpause, timestamp, setSecondsRemaining])
+
   return { secondsRemaining, pause, unpause }
 }
 
