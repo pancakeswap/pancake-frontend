@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Heading } from '@pancakeswap/uikit'
+import { useAppDispatch } from 'state'
+import { fetchCurrentLotteryId } from 'state/lottery'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import NftList from './components/NftList'
@@ -13,6 +15,12 @@ const StyledHero = styled.div`
 
 const Collectibles = () => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    // get current lottery ID - used for lottery NFT checks
+    dispatch(fetchCurrentLotteryId())
+  }, [dispatch])
 
   return (
     <Page>
