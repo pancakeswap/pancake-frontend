@@ -27,6 +27,7 @@ import DesktopBetsTable from './Results/DesktopBetsTable'
 
 interface WalletStatsModalProps extends InjectedModalProps {
   account: string
+  onBeforeDismiss?: () => void
 }
 
 const ExternalLink = styled(LinkExternal)`
@@ -37,12 +38,20 @@ const ExternalLink = styled(LinkExternal)`
   }
 `
 
-const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss }) => {
+const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss, onBeforeDismiss }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const result = useGetLeaderboardAddressResult(account)
   const profileAvatar = useGetProfileAvatar(account)
   const { isXl } = useMatchBreakpoints()
+
+  const handleDismiss = () => {
+    if (onBeforeDismiss) {
+      onBeforeDismiss()
+    }
+
+    onDismiss()
+  }
 
   return (
     <ModalContainer minWidth="320px">
@@ -55,7 +64,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss 
             <ExternalLink href={getBscScanLink(account, 'address')}>{truncateWalletAddress(account)}</ExternalLink>
           </Box>
         </Flex>
-        <IconButton variant="text" onClick={onDismiss} aria-label="Close the dialog">
+        <IconButton variant="text" onClick={handleDismiss} aria-label="Close the dialog">
           <CloseIcon color="text" width="24px" />
         </IconButton>
       </ModalHeader>

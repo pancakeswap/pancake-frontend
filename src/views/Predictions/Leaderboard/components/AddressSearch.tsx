@@ -43,7 +43,9 @@ const AddressSearch = () => {
   const [value, setValue] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const { t } = useTranslation()
-  const [onPresentWalletStatsModal] = useModal(<WalletStatsModal account={value} />)
+  const [onPresentWalletStatsModal] = useModal(
+    <WalletStatsModal account={value} onBeforeDismiss={() => setValue('')} />,
+  )
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { value: newValue } = evt.target
