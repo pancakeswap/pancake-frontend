@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import history from 'routerHistory'
 
 interface ProfileUserMenuItemProps {
   isLoading: boolean
@@ -19,6 +19,10 @@ const Dot = styled.div`
 const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, hasProfile }) => {
   const { t } = useTranslation()
 
+  const handleClick = () => {
+    history.push('/profile')
+  }
+
   if (isLoading) {
     return (
       <UserMenuItem>
@@ -29,7 +33,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
 
   if (!hasProfile) {
     return (
-      <UserMenuItem as={Link} to="/profile">
+      <UserMenuItem as="button" onClick={handleClick}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           {t('Make a Profile')}
           <Dot />
@@ -39,7 +43,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
   }
 
   return (
-    <UserMenuItem as={Link} to="/profile">
+    <UserMenuItem as="button" onClick={handleClick}>
       {t('Your Profile')}
     </UserMenuItem>
   )
