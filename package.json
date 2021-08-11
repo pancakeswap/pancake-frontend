@@ -21,13 +21,8 @@
     "lint": "lerna run lint",
     "format:check": "lerna run format:check",
     "storybook:build": "lerna run storybook:build",
-    "release": "yarn build && yarn lerna publish"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn format:check",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "release": "yarn build && yarn lerna publish",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -52,7 +47,7 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.12.0",
     "eslint": "^7.26.0",
-    "husky": "4.3.5",
+    "husky": "^7.0.0",
     "jest": "^26.6.3",
     "lerna": "^4.0.0",
     "prettier": "^2.3.0",
