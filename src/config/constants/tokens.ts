@@ -156,6 +156,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://monsterslayer.finance/',
   },
+  basicZmbe: {
+    symbol: 'BASIC-ZMBE',
+    address: {
+      56: '0x080060C1674dF895C1497A45F302493B5954cF0a',
+      97: '',
+    },
+    decimals: 0,
+    projectLink: '',
+  },
   txl: {
     symbol: 'TXL',
     address: {

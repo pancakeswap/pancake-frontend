@@ -45,7 +45,7 @@ export const zmbeBnbTomb = (): Tomb => {
   return tombByPid(11)
 }
 
-export const graveByPid = (pid: number): any => {
+export const graveByPid = (pid: number): Grave => {
   return store.getState().graves.find(g => g.pid === pid)
 }
 

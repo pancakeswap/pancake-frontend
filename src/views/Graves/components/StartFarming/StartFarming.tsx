@@ -19,7 +19,7 @@ import StakeZombieModal from '../StakeZombieModal';
 import WithdrawZombieModal from '../WithdrawZombieModal';
 import * as get from '../../../../redux/get'
 import * as fetch from '../../../../redux/fetch'
-import { nftByName } from '../../../../redux/get'
+import { account, nftByName } from '../../../../redux/get'
 import ConvertNftModal from '../ConvertNftModal'
 
 
@@ -48,12 +48,12 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [grave, setGrave] = useState(get.grave(pid))
-  const { rug, userInfo, isClosed, requiresNft, nft } = grave
+  const [hasNftGraveToken, setHasNftGraveToken] = useState(false)
+  const { rug, userInfo, isClosed, requiresNft, nft, graveNftToken } = grave
 
   const onUpdate = () => {
     fetch.grave(pid, data => {
       setGrave(data)
-
     })
   }
 
@@ -104,6 +104,15 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   }
 
   const zmbeBalance = useTokenBalance(getAddress(tokens.zmbe.address))
+
+  useEffect(() => {
+    if(account() && requiresNft) {
+      rugContract.methods.balanceOf(account()).call()
+        .then(res => {
+          setHasNftGraveToken(!(new BigNumber(res)).isZero())
+        })
+    }
+  })
 
   useEffect(() => {
     if (pid !== 0) {
@@ -180,11 +189,11 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   const renderButtonsForNftGrave = () => {
     return <div className="space-between">
       {get.account() ?
-        isAllowanceForRugToken ?
+        hasNftGraveToken ?
           userInfo.rugDeposited.toString() === '0' ?
             <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Deposit {nftByName(nft).symbol}</button> :
             renderButtonsForGrave()
-          : <button onClick={onPresentConvertNftModal} className="btn btn-disabled w-100" type="button">Approve {nftByName(nft).symbol}</button>
+          : <button onClick={onPresentConvertNftModal} className="btn btn-disabled w-100" type="button">Convert {nftByName(nft).symbol}</button>
         :  <span className="total-earned text-shadow">Connect Wallet</span>}</div>
   }
 

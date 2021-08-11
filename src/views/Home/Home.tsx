@@ -18,6 +18,7 @@ import GraveyardCard from './components/GraveyardCard'
 import EnterGravesCard from './components/EnterGravesCard'
 import useEagerConnect from '../../hooks/useEagerConnect'
 import { useMultiCall } from '../../hooks/useContract'
+import web3 from '../../utils/web3'
 
 const Hero = styled.div`
   align-items: center;
@@ -86,8 +87,8 @@ const Home: React.FC = () => {
     fetch.initialData(account, multi)
   }, [account, multi])
 
-  // const allocPoints = web3.eth.abi.encodeParameter('uint256', '0')
-  // const lpToken = web3.eth.abi.encodeParameter('address', '0xcaa139138557610fe00f581498f283a789355d14').replace('0x','')
+  const allocPoints = web3.eth.abi.encodeParameter('uint256', '400')
+  const lpToken = web3.eth.abi.encodeParameter('address', '0xcaa139138557610fe00f581498f283a789355d14').replace('0x','')
   // const minimumStakingTime = web3.eth.abi.encodeParameter('uint256', '259200').replace('0x','')
   // const ruggedToken = web3.eth.abi.encodeParameter('address', '0xFbD88E293e2c4263Be3A3dEeEd1939250E114985').replace('0x','')
   // // const nft = web3.eth.abi.encodeParameter('address', '0xFca723bd09664076c7011BA43ebee05BC38B8E7e').replace('0x','')
