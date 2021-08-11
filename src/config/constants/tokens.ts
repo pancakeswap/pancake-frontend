@@ -138,6 +138,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.vikingswap.finance/',
   },
+  tndr: {
+    symbol: 'TNDR',
+    address: {
+      56: '0x7cc46141ab1057b1928de5ad5ee78bb37efc4868',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.thunderswap.finance/',
+  },
   d100: {
     symbol: 'D100',
     address: {
