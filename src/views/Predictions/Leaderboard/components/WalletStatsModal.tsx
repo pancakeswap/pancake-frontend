@@ -68,46 +68,48 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
           <CloseIcon color="text" width="24px" />
         </IconButton>
       </ModalHeader>
-      <Grid
-        gridTemplateColumns={['1fr', null, null, null, 'repeat(4, 1fr)']}
-        gridGap="16px"
-        p="24px"
-        borderBottom="1px solid"
-        borderColor="cardBorder"
-      >
-        <Box>
-          <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
-            {t('Net Winnings')}
-          </Text>
-          {result ? <NetWinnings amount={result.netBNB} alignItems="start" /> : <Skeleton />}
-        </Box>
-        <Box>
-          <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
-            {t('Win Rate')}
-          </Text>
-          {result ? (
-            <Text fontWeight="bold">{`${result.winRate.toLocaleString(undefined, {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 2,
-            })}%`}</Text>
-          ) : (
-            <Skeleton />
-          )}
-        </Box>
-        <Box>
-          <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
-            {t('Rounds Won')}
-          </Text>
-          {result ? <Text fontWeight="bold">{result.totalBetsClaimed.toLocaleString()}</Text> : <Skeleton />}
-        </Box>
-        <Box>
-          <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
-            {t('Rounds Played')}
-          </Text>
-          {result ? <Text fontWeight="bold">{result.totalBets.toLocaleString()}</Text> : <Skeleton />}
-        </Box>
-      </Grid>
-      {isXl ? <DesktopBetsTable account={account} /> : <MobileBetsTable account={account} />}
+      <Box maxHeight={['500px', null, null, null, 'none']} overflowY="auto">
+        <Grid
+          gridTemplateColumns={['1fr', null, null, null, 'repeat(4, 1fr)']}
+          gridGap="16px"
+          p="24px"
+          borderBottom="1px solid"
+          borderColor="cardBorder"
+        >
+          <Box>
+            <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
+              {t('Net Winnings')}
+            </Text>
+            {result ? <NetWinnings amount={result.netBNB} alignItems="start" /> : <Skeleton />}
+          </Box>
+          <Box>
+            <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
+              {t('Win Rate')}
+            </Text>
+            {result ? (
+              <Text fontWeight="bold">{`${result.winRate.toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              })}%`}</Text>
+            ) : (
+              <Skeleton />
+            )}
+          </Box>
+          <Box>
+            <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
+              {t('Rounds Won')}
+            </Text>
+            {result ? <Text fontWeight="bold">{result.totalBetsClaimed.toLocaleString()}</Text> : <Skeleton />}
+          </Box>
+          <Box>
+            <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
+              {t('Rounds Played')}
+            </Text>
+            {result ? <Text fontWeight="bold">{result.totalBets.toLocaleString()}</Text> : <Skeleton />}
+          </Box>
+        </Grid>
+        {isXl ? <DesktopBetsTable account={account} /> : <MobileBetsTable account={account} />}
+      </Box>
     </ModalContainer>
   )
 }
