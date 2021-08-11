@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 317,
+    lpSymbol: 'RAMP-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xE834bf723f5bDff34a5D1129F3c31Ea4787Bc76a',
+    },
+    token: tokens.ramp,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 445,
     lpSymbol: 'POTS-BUSD LP',
     lpAddresses: {
@@ -1342,16 +1352,6 @@ const farms: FarmConfig[] = [
     },
     token: tokens.belt,
     quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 317,
-    lpSymbol: 'RAMP-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xE834bf723f5bDff34a5D1129F3c31Ea4787Bc76a',
-    },
-    token: tokens.ramp,
-    quoteToken: tokens.busd,
   },
   {
     pid: 316,
