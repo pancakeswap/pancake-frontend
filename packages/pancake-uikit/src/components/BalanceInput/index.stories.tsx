@@ -73,15 +73,27 @@ export const UnitDisplay: React.FC = () => {
   };
 
   return (
-    <Box width="300px">
-      <BalanceInput
-        onUserInput={handleCakeChange}
-        value={cakeValue}
-        currencyValue={cakeToUSD(cakeValue)}
-        placeholder="0.0"
-        unit="CAKE"
-      />
-    </Box>
+    <>
+      <Box width="300px" mb="24px">
+        <BalanceInput
+          onUserInput={handleCakeChange}
+          value={cakeValue}
+          currencyValue={cakeToUSD(cakeValue)}
+          placeholder="0.0"
+          unit="CAKE"
+        />
+      </Box>
+      {/* Long token names with spaces */}
+      <Box width="300px">
+        <BalanceInput
+          onUserInput={handleCakeChange}
+          value={cakeValue}
+          currencyValue="2854.66 BADGER-HOTCROSS LP"
+          placeholder="0.0"
+          unit="CAKE-BNB LP"
+        />
+      </Box>
+    </>
   );
 };
 

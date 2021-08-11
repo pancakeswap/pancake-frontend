@@ -1,9 +1,8 @@
 import React from "react";
 import { Flex, Box } from "../Box";
-import { IconButton } from "../Button";
 import { SwapVertIcon } from "../Svg";
 import Text from "../Text/Text";
-import { StyledBalanceInput, StyledInput } from "./styles";
+import { StyledBalanceInput, StyledInput, UnitContainer, SwitchUnitsButton } from "./styles";
 import { BalanceInputProps } from "./types";
 
 const BalanceInput: React.FC<BalanceInputProps> = ({
@@ -40,11 +39,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
               ref={innerRef}
               {...inputProps}
             />
-            {unit && (
-              <Text ml="4px" textAlign="right" color="textSubtle">
-                {unit}
-              </Text>
-            )}
+            {unit && <UnitContainer>{unit}</UnitContainer>}
           </Flex>
           {currencyValue && (
             <Text fontSize="12px" textAlign="right" color="textSubtle">
@@ -53,10 +48,10 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
           )}
         </Box>
         {switchEditingUnits && (
-          <Flex alignItems="center">
-            <IconButton scale="sm" variant="text" onClick={switchEditingUnits}>
+          <Flex alignItems="center" pl="12px">
+            <SwitchUnitsButton scale="sm" variant="text" onClick={switchEditingUnits}>
               <SwapVertIcon color="textSubtle" />
-            </IconButton>
+            </SwitchUnitsButton>
           </Flex>
         )}
       </Flex>
