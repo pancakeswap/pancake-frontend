@@ -24,13 +24,31 @@ const HarvestCard = () => {
   const masterChefContract = useMasterchef()
   const cakePriceBusd = usePriceCakeBusd()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
-  const numFarmsToCollect = farmsWithStakedBalance.length
+  const numTotalToCollect = farmsWithStakedBalance.length
+  const numFarmsToCollect = farmsWithStakedBalance.filter((value) => value.pid !== 0).length
+  const hasCakePoolToCollect = numTotalToCollect - numFarmsToCollect > 0
 
-  const earningsText = t('%earningsBusd% to collect from %count% %farms%', {
+  let earningsText = ''
+  const data = {
     earningsBusd: earningsBusd.toString(),
-    count: numFarmsToCollect > 0 ? numFarmsToCollect : '',
-    farms: numFarmsToCollect === 0 || numFarmsToCollect > 1 ? 'farms' : 'farm',
-  })
+    count: numFarmsToCollect,
+  }
+
+  if (numFarmsToCollect > 0 && hasCakePoolToCollect) {
+    if (numFarmsToCollect > 1) {
+      earningsText = t('%earningsBusd% to collect from %count% farms and CAKE pool', data)
+    } else {
+      earningsText = t('%earningsBusd% to collect from %count% farm and CAKE pool', data)
+    }
+  } else if (numFarmsToCollect > 0) {
+    if (numFarmsToCollect > 1) {
+      earningsText = t('%earningsBusd% to collect from %count% farms', data)
+    } else {
+      earningsText = t('%earningsBusd% to collect from %count% farm', data)
+    }
+  } else if (hasCakePoolToCollect) {
+    earningsText = t('%earningsBusd% to collect from CAKE pool', data)
+  }
   const [preText, toCollectText] = earningsText.split(earningsBusd.toString())
 
   const harvestAllFarms = useCallback(async () => {
@@ -77,7 +95,7 @@ const HarvestCard = () => {
               {toCollectText}
             </Text>
           </Flex>
-          {numFarmsToCollect <= 0 ? (
+          {numTotalToCollect <= 0 ? (
             <Link href="farms">
               <Button width={['100%', null, null, 'auto']} variant="secondary">
                 <Text color="primary" bold>
