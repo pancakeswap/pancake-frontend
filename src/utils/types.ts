@@ -20,12 +20,14 @@ export interface PredictionsRoundsResponse {
   closeTimestamp: ethers.BigNumber
   lockPrice: ethers.BigNumber
   closePrice: ethers.BigNumber
+  lockOracleId: ethers.BigNumber
+  closeOracleId: ethers.BigNumber
   totalAmount: ethers.BigNumber
   bullAmount: ethers.BigNumber
   bearAmount: ethers.BigNumber
   rewardBaseCalAmount: ethers.BigNumber
   rewardAmount: ethers.BigNumber
-  priceResolved: boolean
+  oracleCalled: boolean
 }
 
 export interface PredictionsContract extends Contract {

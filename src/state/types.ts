@@ -290,7 +290,9 @@ export interface ReduxNodeRound {
   bearAmount: BigNumberToJson
   rewardBaseCalAmount: BigNumberToJson
   rewardAmount: BigNumberToJson
-  priceResolved: boolean
+  oracleCalled: boolean
+  lockOracleId: string
+  closeOracleId: string
 }
 
 export interface NodeRound {
@@ -305,7 +307,9 @@ export interface NodeRound {
   bearAmount: ethers.BigNumber
   rewardBaseCalAmount: ethers.BigNumber
   rewardAmount: ethers.BigNumber
-  priceResolved: boolean
+  oracleCalled: boolean
+  closeOracleId: string
+  lockOracleId: string
 }
 
 export interface PredictionsState {

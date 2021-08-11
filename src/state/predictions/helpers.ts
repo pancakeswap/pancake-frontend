@@ -396,7 +396,9 @@ export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): 
     bearAmount: ethers.BigNumber.from(0).toJSON(),
     rewardBaseCalAmount: ethers.BigNumber.from(0).toJSON(),
     rewardAmount: ethers.BigNumber.from(0).toJSON(),
-    priceResolved: false,
+    oracleCalled: false,
+    lockOracleId: null,
+    closeOracleId: null,
   }
 }
 
@@ -454,10 +456,13 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
     bearAmount,
     rewardBaseCalAmount,
     rewardAmount,
-    priceResolved,
+    oracleCalled,
+    lockOracleId,
+    closeOracleId,
   } = response
 
   return {
+    oracleCalled,
     epoch: epoch.toNumber(),
     startTimestamp: startTimestamp.eq(0) ? null : startTimestamp.toNumber(),
     lockTimestamp: lockTimestamp.eq(0) ? null : lockTimestamp.toNumber(),
@@ -469,7 +474,8 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
     bearAmount: bearAmount.toJSON(),
     rewardBaseCalAmount: rewardBaseCalAmount.toJSON(),
     rewardAmount: rewardAmount.toJSON(),
-    priceResolved,
+    lockOracleId: lockOracleId.toString(),
+    closeOracleId: closeOracleId.toString(),
   }
 }
 
