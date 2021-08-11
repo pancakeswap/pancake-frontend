@@ -25,7 +25,6 @@ const StyledButtonMenu = styled.div<StyledButtonMenuProps>`
 
   & > button,
   & > a {
-    margin-left: ${({ fullWidth }) => (fullWidth ? "0px" : "2px")}; // To avoid focus shadow overlap
     flex: ${({ fullWidth }) => (fullWidth ? 1 : "auto")};
   }
 
