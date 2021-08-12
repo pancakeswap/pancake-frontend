@@ -1,11 +1,13 @@
 import React from 'react'
-import { Heading, Flex, Text } from '@pancakeswap/uikit'
+import { Heading, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlightColor: string }> = ({
   headingText,
   bodyText,
   highlightColor,
 }) => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
   const split = headingText.split(' ')
   const lastWord = split.pop()
   const remainingWords = split.slice(0, split.length).join(' ')
@@ -19,7 +21,11 @@ const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlig
       justifyContent="flex-end"
       mt={[null, null, null, '64px']}
     >
-      <Heading scale="xl">{remainingWords}</Heading>
+      {isMobile && remainingWords.length > 13 ? (
+        <Heading scale="lg">{remainingWords}</Heading>
+      ) : (
+        <Heading scale="xl">{remainingWords}</Heading>
+      )}
       <Heading color={highlightColor} scale="xl" mb="24px">
         {lastWord}
       </Heading>
