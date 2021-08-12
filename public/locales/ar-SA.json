@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "يختار \"شراء فوري\" أرقامًا عشوائية، دون أي تكرارات من بين تذاكرك. يتم تعيين الأسعار قبل كل جولة تبدأ، تساوي 5 دولارات في ذلك الوقت. المشتريات نهائية.",
   "Prizes Collected!": "تم تحصيل الجوائز!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "تم إرسال جوائز CAKE الخاصة بك للجولة %lotteryId% إلى محفظتك",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "نجحت المطالبة %claimNum% من %claimTotal% للجولة %lotteryId%. يرجى تأكيد المعاملة التالية",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "مطالبة",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "يجب أن تتطابق التذاكر مع الرقم الفائز بالترتيب نفسه بالضبط، بدءًا من الرقم الأول.",
   "If the winning number is “123456”:": "إذا كان الرقم الفائز هو \"123456\":",
