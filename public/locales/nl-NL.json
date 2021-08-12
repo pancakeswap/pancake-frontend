@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "Met \"Direct kopen\" worden willekeurige cijfers gekozen, zonder dubbels onder je ticketnummers. De prijzen worden vastgelegd voor aanvang van elke ronde en bedragen op dat moment $ 5. Aankopen zijn definitief.",
   "Prizes Collected!": "Prijzen geclaimd!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Je CAKE-prijzen voor ronde %lotteryId% zijn verzonden naar je wallet",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "Claim %claimNum% van %claimTotal% voor ronde %lotteryId% is geslaagd. Bevestig alsjeblieft de volgende transactie",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Claimen ...",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Tickets moeten overeenstemmen met het winnende nummer, in precies dezelfde volgorde vanaf het eerste cijfer.",
   "If the winning number is “123456”:": "Als het winnende nummer “123456” is:",
