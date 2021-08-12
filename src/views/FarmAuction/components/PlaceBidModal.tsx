@@ -41,14 +41,14 @@ interface PlaceBidModalProps {
   // undefined initialBidAmount is passed only if auction is not loaded
   // in this case modal will not be possible to open
   initialBidAmount?: number
-  conncetedBidder: ConnectedBidder
+  connectedBidder: ConnectedBidder
   refreshBidders: () => void
 }
 
 const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
   onDismiss,
   initialBidAmount,
-  conncetedBidder,
+  connectedBidder,
   refreshBidders,
 }) => {
   const { account } = useWeb3React()
@@ -70,7 +70,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
 
   const { toastSuccess } = useToast()
 
-  const { bidderData } = conncetedBidder
+  const { bidderData } = connectedBidder
   const { amount, position } = bidderData
   const isFirstBid = amount.isZero()
   const isInvalidFirstBid = isFirstBid && !isMoreThanInitialBidAmount
@@ -129,7 +129,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
     setBid(input)
   }
 
-  const setPercetageValue = (percentage: number) => {
+  const setPercentageValue = (percentage: number) => {
     const rounding = percentage === 1 ? BigNumber.ROUND_FLOOR : BigNumber.ROUND_CEIL
     const valueToSet = getBalanceAmount(userCake.times(percentage)).div(10).integerValue(rounding).times(10)
     setBid(valueToSet.toString())
@@ -189,7 +189,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
             mx="2px"
             p="4px 16px"
             variant="tertiary"
-            onClick={() => setPercetageValue(0.25)}
+            onClick={() => setPercentageValue(0.25)}
           >
             25%
           </Button>
@@ -199,7 +199,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
             mx="2px"
             p="4px 16px"
             variant="tertiary"
-            onClick={() => setPercetageValue(0.5)}
+            onClick={() => setPercentageValue(0.5)}
           >
             50%
           </Button>
@@ -209,7 +209,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
             mx="2px"
             p="4px 16px"
             variant="tertiary"
-            onClick={() => setPercetageValue(0.75)}
+            onClick={() => setPercentageValue(0.75)}
           >
             75%
           </Button>
@@ -219,7 +219,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
             mx="2px"
             p="4px 16px"
             variant="tertiary"
-            onClick={() => setPercetageValue(1)}
+            onClick={() => setPercentageValue(1)}
           >
             MAX
           </Button>

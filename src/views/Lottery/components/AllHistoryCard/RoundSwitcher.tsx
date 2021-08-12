@@ -30,7 +30,7 @@ interface RoundSwitcherProps {
   selectedRoundId: string
   mostRecentRound: number
   handleInputChange: (event: any) => void
-  handleArrowButonPress: (targetRound: number) => void
+  handleArrowButtonPress: (targetRound: number) => void
 }
 
 const RoundSwitcher: React.FC<RoundSwitcherProps> = ({
@@ -38,7 +38,7 @@ const RoundSwitcher: React.FC<RoundSwitcherProps> = ({
   selectedRoundId,
   mostRecentRound,
   handleInputChange,
-  handleArrowButonPress,
+  handleArrowButtonPress,
 }) => {
   const { t } = useTranslation()
   const selectedRoundIdAsInt = parseInt(selectedRoundId, 10)
@@ -60,7 +60,7 @@ const RoundSwitcher: React.FC<RoundSwitcherProps> = ({
       <Flex alignItems="center">
         <StyledIconButton
           disabled={!selectedRoundIdAsInt || selectedRoundIdAsInt <= 1}
-          onClick={() => handleArrowButonPress(selectedRoundIdAsInt - 1)}
+          onClick={() => handleArrowButtonPress(selectedRoundIdAsInt - 1)}
           variant="text"
           scale="sm"
           mr="4px"
@@ -69,7 +69,7 @@ const RoundSwitcher: React.FC<RoundSwitcherProps> = ({
         </StyledIconButton>
         <StyledIconButton
           disabled={selectedRoundIdAsInt >= mostRecentRound}
-          onClick={() => handleArrowButonPress(selectedRoundIdAsInt + 1)}
+          onClick={() => handleArrowButtonPress(selectedRoundIdAsInt + 1)}
           variant="text"
           scale="sm"
           mr="4px"
@@ -78,7 +78,7 @@ const RoundSwitcher: React.FC<RoundSwitcherProps> = ({
         </StyledIconButton>
         <StyledIconButton
           disabled={selectedRoundIdAsInt >= mostRecentRound}
-          onClick={() => handleArrowButonPress(mostRecentRound)}
+          onClick={() => handleArrowButtonPress(mostRecentRound)}
           variant="text"
           scale="sm"
         >

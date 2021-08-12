@@ -68,7 +68,7 @@ const getIdLabel = (id: number): string => {
   return `#${id}`
 }
 
-const TicketContaier: React.FC<{
+const TicketContainer: React.FC<{
   ticket: Ticket
   duplicateWith: number[]
   updateTicket: UpdateTicketAction
@@ -119,7 +119,7 @@ const TicketContaier: React.FC<{
       return
     }
 
-    // Handling numberic inputs
+    // Handling numeric inputs
     if (currentKey >= 0 && currentKey <= 9) {
       event.preventDefault()
       const newNumbers = [...ticket.numbers]
@@ -293,4 +293,4 @@ const TicketContaier: React.FC<{
   )
 }
 
-export default TicketContaier
+export default TicketContainer

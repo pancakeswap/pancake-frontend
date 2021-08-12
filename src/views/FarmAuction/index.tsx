@@ -65,7 +65,7 @@ const FarmAuction = () => {
   const { theme } = useTheme()
   const { account } = useWeb3React()
 
-  const { currentAuction, bidders, conncetedBidder, refreshBidders } = useCurrentFarmAuction(account)
+  const { currentAuction, bidders, connectedBidder, refreshBidders } = useCurrentFarmAuction(account)
   const FAQS_BG_LIGHT = 'linear-gradient(180deg, #CBD7EF 0%, #9A9FD0 100%)'
   const FAQ_BG_DARK = 'linear-gradient(180deg, #434575 0%, #66578D 100%)'
   const CAKE_BURN_BG_LIGHT = 'radial-gradient(50% 79.31% at 50% 50%, #FAF9FA 0%, #EAECF4 100%)'
@@ -121,19 +121,19 @@ const FarmAuction = () => {
           concaveDivider
           dividerPosition="top"
         >
-          <NotWhitelistedNotice conncetedBidder={conncetedBidder} auction={currentAuction} />
+          <NotWhitelistedNotice connectedBidder={connectedBidder} auction={currentAuction} />
           <AuctionTimer auction={currentAuction} />
           <AuctionContainer flexDirection={['column', null, null, 'row']}>
             <Flex flex="1" flexDirection="column" width="100%" minWidth="288px">
               <AuctionDetails
                 auction={currentAuction}
-                conncetedBidder={conncetedBidder}
+                connectedBidder={connectedBidder}
                 refreshBidders={refreshBidders}
               />
-              {conncetedBidder?.isWhitelisted && bidders && currentAuction && (
+              {connectedBidder?.isWhitelisted && bidders && currentAuction && (
                 <CongratulationsCard currentAuction={currentAuction} bidders={bidders} />
               )}
-              {conncetedBidder?.isWhitelisted && <ReclaimBidCard />}
+              {connectedBidder?.isWhitelisted && <ReclaimBidCard />}
             </Flex>
             <AuctionLeaderboard auction={currentAuction} bidders={bidders} />
           </AuctionContainer>

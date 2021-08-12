@@ -27,7 +27,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   const bearMultiplier = getMultiplierv2(totalAmount, bearAmount)
 
   const formattedBullMultiplier = bullMultiplier.toUnsafeFloat().toFixed(bullMultiplier.isZero() ? 0 : 2)
-  const formattedbearMultiplier = bearMultiplier.toUnsafeFloat().toFixed(bearMultiplier.isZero() ? 0 : 2)
+  const formattedBearMultiplier = bearMultiplier.toUnsafeFloat().toFixed(bearMultiplier.isZero() ? 0 : 2)
 
   // Next (open) round
   if (epoch === currentEpoch && lockPrice === null) {
@@ -38,7 +38,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
         hasEnteredUp={hasEnteredUp}
         betAmount={ledger?.amount}
         bullMultiplier={formattedBullMultiplier}
-        bearMultiplier={formattedbearMultiplier}
+        bearMultiplier={formattedBearMultiplier}
       />
     )
   }
@@ -52,7 +52,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
         hasEnteredUp={hasEnteredUp}
         round={round}
         bullMultiplier={formattedBullMultiplier}
-        bearMultiplier={formattedbearMultiplier}
+        bearMultiplier={formattedBearMultiplier}
       />
     )
   }
@@ -72,7 +72,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
       hasClaimedUp={hasClaimedUp}
       betAmount={ledger?.amount}
       bullMultiplier={formattedBullMultiplier}
-      bearMultiplier={formattedbearMultiplier}
+      bearMultiplier={formattedBearMultiplier}
     />
   )
 }

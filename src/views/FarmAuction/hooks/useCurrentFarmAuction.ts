@@ -12,7 +12,7 @@ import { sortAuctionBidders, processAuctionData } from '../helpers'
 export const useCurrentFarmAuction = (account: string) => {
   const [currentAuction, setCurrentAuction] = useState<Auction | null>(null)
   const [bidders, setBidders] = useState<Bidder[] | null>(null)
-  const [conncetedBidder, setConncetedBidder] = useState<ConnectedBidder | null>(null)
+  const [connectedBidder, setConnectedBidder] = useState<ConnectedBidder | null>(null)
   // Used to force-refresh bidders after successful bid
   const { lastUpdated, setLastUpdated } = useLastUpdated()
 
@@ -60,7 +60,7 @@ export const useCurrentFarmAuction = (account: string) => {
     const checkAccount = async () => {
       try {
         const whitelistedStatus = await farmAuctionContract.whitelisted(account)
-        setConncetedBidder({
+        setConnectedBidder({
           account,
           isWhitelisted: whitelistedStatus,
         })
@@ -68,16 +68,16 @@ export const useCurrentFarmAuction = (account: string) => {
         console.error('Failed to check if account is whitelisted', error)
       }
     }
-    if (account && (!conncetedBidder || conncetedBidder.account !== account)) {
+    if (account && (!connectedBidder || connectedBidder.account !== account)) {
       checkAccount()
     }
     // Refresh UI if user logs out
     if (!account) {
-      setConncetedBidder(null)
+      setConnectedBidder(null)
     }
-  }, [account, conncetedBidder, farmAuctionContract])
+  }, [account, connectedBidder, farmAuctionContract])
 
-  // Attach bidder data to conncetedBidder object
+  // Attach bidder data to connectedBidder object
   useEffect(() => {
     const getBidderData = () => {
       if (bidders && bidders.length > 0) {
@@ -96,22 +96,22 @@ export const useCurrentFarmAuction = (account: string) => {
       }
       return defaultBidderData
     }
-    if (conncetedBidder && conncetedBidder.isWhitelisted) {
+    if (connectedBidder && connectedBidder.isWhitelisted) {
       const bidderData = getBidderData()
-      if (!isEqual(bidderData, conncetedBidder.bidderData)) {
-        setConncetedBidder({
+      if (!isEqual(bidderData, connectedBidder.bidderData)) {
+        setConnectedBidder({
           account,
           isWhitelisted: true,
           bidderData,
         })
       }
     }
-  }, [account, conncetedBidder, bidders])
+  }, [account, connectedBidder, bidders])
 
   return {
     currentAuction,
     bidders,
-    conncetedBidder,
+    connectedBidder,
     refreshBidders: setLastUpdated,
   }
 }
