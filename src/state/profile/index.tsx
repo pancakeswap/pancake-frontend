@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProfileState } from 'state/types'
 import type { AppDispatch } from 'state'
 import { Nft } from 'config/constants/types'
-import { getProfile, getProfileAvatar, GetProfileResponse } from './helpers'
+import { getProfile, getProfileAvatar, GetProfileResponse, getUsername } from './helpers'
 
 const initialState: ProfileState = {
   isInitialized: false,
@@ -17,6 +17,14 @@ export const fetchProfileAvatar = createAsyncThunk<{ account: string; nft: Nft }
   async (account) => {
     const nft = await getProfileAvatar(account)
     return { account, nft }
+  },
+)
+
+export const fetchProfileUsername = createAsyncThunk<{ account: string; username: string }, string>(
+  'profile/fetchProfileUsername',
+  async (account) => {
+    const username = await getUsername(account)
+    return { account, username }
   },
 )
 
@@ -48,6 +56,18 @@ export const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchProfileUsername.fulfilled, (state, action) => {
+      const { account, username } = action.payload
+
+      if (state.profileAvatars[account]) {
+        state.profileAvatars[account] = {
+          ...state.profileAvatars[account],
+          username,
+        }
+      } else {
+        state.profileAvatars[account] = { username, nft: null }
+      }
+    })
     builder.addCase(fetchProfileAvatar.fulfilled, (state, action) => {
       const { account, nft } = action.payload
 

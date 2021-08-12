@@ -60,25 +60,26 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
         <Flex alignItems="center" justifyContent="center" flexDirection="column" mb="24px">
           <SubMenu
             component={
-              <Flex mb="4px">
-                <RotatedLaurelLeftIcon color={rankColor} width="32px" />
-                <Box width={['40px', null, null, '64px']}>
-                  <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={64} width={64} />
-                </Box>
-                <RotatedLaurelRightIcon color={rankColor} width="32px" />
-              </Flex>
+              <>
+                <Flex mb="4px">
+                  <RotatedLaurelLeftIcon color={rankColor} width="32px" />
+                  <Box width={['40px', null, null, '64px']}>
+                    <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={64} width={64} />
+                  </Box>
+                  <RotatedLaurelRightIcon color={rankColor} width="32px" />
+                </Flex>
+                <Text color="primary" fontWeight="bold" textAlign="center">
+                  {profileAvatar.username || truncateWalletAddress(user.id)}
+                </Text>
+              </>
             }
-            options={{ placement: 'top' }}
+            options={{ placement: 'right' }}
           >
             <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
             <SubMenuItem as={Link} href={getBscScanLink(user.id, 'address')} bold={false} color="text" external>
               {t('View on BscScan')}
             </SubMenuItem>
           </SubMenu>
-
-          <Link href={getBscScanLink(user.id, 'address')} external>
-            {truncateWalletAddress(user.id)}
-          </Link>
         </Flex>
         <Row mb="4px">
           <Text fontSize="12px" color="textSubtle">

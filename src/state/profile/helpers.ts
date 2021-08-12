@@ -29,7 +29,7 @@ const profileApi = process.env.REACT_APP_API_PROFILE
 
 export const getUsername = async (address: string): Promise<string> => {
   try {
-    const response = await fetch(`${profileApi}/api/users/${address}`)
+    const response = await fetch(`${profileApi}/api/users/${address.toLowerCase()}`)
 
     if (!response.ok) {
       return ''
