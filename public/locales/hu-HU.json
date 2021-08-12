@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "Az „Azonnali vétel\" véletlen számokat választ úgy, hogy a jegyek között nincs másolat. Az árakat minden forduló megkezdése előtt állapítják meg, ekkor 5 dollárnak felelnek meg. A vásárlások véglegesek.",
   "Prizes Collected!": "Nyeremények begyűjtve!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "A %lotteryId% forduló CAKE nyereményeit elküldtük a tárcádba",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "A %lotteryId% fordulóban a %claimTotal%-ból %claimNum% igénylése sikeres volt. Kérjük, erősítse meg a következő ügyletet",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Igénylés folyamatban",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "A szelvényeknek pontosan ugyanabban a sorrendben kell megegyezniük a nyertes számmal, az első számjegytől kezdve.",
   "If the winning number is “123456”:": "Ha a nyertes szám “123456”:",

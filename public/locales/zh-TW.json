@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "「立即購買」會選擇隨機號碼，且您的票券中無重複號碼。價格在每回合開始前確定，當時等於 5 美元。購買後不可變更。",
   "Prizes Collected!": "已收集獎金！",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "您第 %lotteryId% 回合的 CAKE 獎金已傳送到您的錢包",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "已成功領取第 %lotteryId% 回合的 %claimNum%，共 %claimTotal%。請確認下一次交易",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "正在領取",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "票券必須從第一位開始以完全相同的順序相符於中獎號碼。",
   "If the winning number is “123456”:": "如果中獎號碼為「123456」：",

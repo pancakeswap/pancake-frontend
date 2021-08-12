@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "Ang \"Pagbili kaagad\" ay pumipili ng mga sapalaran na numero, na walang mga duplikado sa iyong mga ticket. Ang mga presyo ay itinakda bago magsimula ang bawat round, na katumbas ng $5 sa oras na iyon. Ang mga pagbili ay pangwakas.",
   "Prizes Collected!": "Mga Nakolektang mga Premyo!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Ang iyong mga premyo sa CAKE para sa round na %lotteryId% ay naipadala na sa iyong wallet",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "I-claim ang %claimNum% ng %claimTotal% para sa round na %lotteryId% ay matagumpay. Mangyaring kumpirmahin ang susunod na transaksyon",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Pag-claim",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Ang mga ticket ay dapat na tumugma sa nanalong numero sa eksaktong parehong pagkakasunud-sunod, simula sa unang digit.",
   "If the winning number is “123456”:": "Kung ang nanalong numero ay “123456”:",

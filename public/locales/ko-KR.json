@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "\"즉시 구입\"은 무작위로 번호를 선택하며, 티켓 간에 중복되지 않습니다. 각 라운드가 시작되기 전에 가격이 설정되며, 당시 시점의 5달러와 같습니다. 구매는 최종적입니다.",
   "Prizes Collected!": "상금 수집함!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "라운드 %lotteryId%의 CAKE 상금이 지갑으로 전송되었습니다",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "라운드 %lotteryId%에 대한 %claimNum%/%claimTotal% 클레임에 성공했습니다. 다음 트랜잭션을 확인하세요.",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "클레임 중",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "티켓은 첫 번째 숫자부터 시작해서 똑같은 순서로 당첨 번호가 일치해야 합니다.",
   "If the winning number is “123456”:": "당첨 번호가 “123456”인 경우:",

@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "La función \"Comprar instantáneamente\" selecciona números aleatorios y no hay duplicados entre tus billetes. Los precios se determinan antes de que comience cada ronda y equivalen a $5 dólares. Las compras son definitivas.",
   "Prizes Collected!": "¡Premios obtenidos!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Tus premios en CAKE por la ronda %lotteryId% se enviaron a tu monedero",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "Cobrar %claimNum% de %claimTotal% debido a que la ronda %lotteryId% fue exitosa. Confirma la siguiente transacción",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Recuperación",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Los billetes deben coincidir con el número ganador exactamente en el mismo orden, comenzando desde el primer dígito.",
   "If the winning number is “123456”:": "Si el número ganador es \"123456\":",

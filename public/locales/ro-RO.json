@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "Opțiunea „Cumpără instant” alege numere aleatorii, fără duplicate dintre biletele tale. Prețurile sunt stabilite înainte de a începe fiecare rundă, egale cu 5 $ la momentul respectiv. Achizițiile sunt definitive.",
   "Prizes Collected!": "Premii adunate!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Premiile tale CAKE pentru runda %lotteryId% au fost trimise în portofelul tău",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "Revendicarea %claimNum% din %claimTotal% pentru runda %lotteryId% a fost reușită. Confirmă următoarea tranzacție",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Revendicare",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Biletele trebuie să corespundă cu numărul câștigător în exact aceeași ordine, începând de la prima cifră.",
   "If the winning number is “123456”:": "Dacă numărul câștigător este „123456”:",

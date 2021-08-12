@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "Osta heti valitsee satunnaiset numerot siten, ettei lipuissasi ole päällekkäisyyksiä. Hinnat asetetaan ennen kunkin kierroksen alkua vastaten 5 dollaria kyseisenä ajankohtana. Ostot ovat lopullisia.",
   "Prizes Collected!": "Palkinnot kerätty!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Kierroksen %lotteryId% CAKE-palkintosi on lähetetty lompakkoosi",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "%claimNum%/%claimTotal% lunastus kierroksella %lotteryId% onnistui. Vahvista seuraava transaktio",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Lunastetaan",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Lippujen täytyy vastata voittonumeroa täsmälleen samassa järjestyksessä ensimmäisestä numerosta alkaen.",
   "If the winning number is “123456”:": "Jos voittonumero on “123456”:",

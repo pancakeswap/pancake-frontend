@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "\"உடனே வாங்குக\" உங்கள் டிக்கெட்களுக்கு இடையே டூப்ளிகேட் இல்லாமல் தற்போக்கு எண்களைத் தேர்ந்தெடுக்கிறது. விலைகள், அந்த நேரத்தில் $5 க்குச் சமமாக ஒவ்வொரு சுற்றின் தொடக்கத்திற்கு முன்னரும் அமைக்கப்படுகிறது. பர்சேஸ்கள் இறுதியானவை.",
   "Prizes Collected!": "பரிசுகள் சேகரிக்கப்பட்டன!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "சுற்று %lotteryId% க்கான உங்கள் CAKE பரிசுகள் உங்கள் வாலெட்டிற்கு அனுப்பப்பட்டுவிட்டன",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "சுற்று %lotteryId% க்கு %claimTotal% ல் %claimNum% -ஐ கிளைம் செய்வது வெற்றிகரமானது. அடுத்த பரிவத்தனையை உறுதிசெய்திடுங்கள்",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "கிளைம் செய்தல்",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "டிக்கெட்கள், முதல் இலக்கத்திலிருந்து தொடங்கி துல்லியமாய் அதே வரிசையில் வெற்றி எண்களைப் பொருத்த வேண்டும்.",
   "If the winning number is “123456”:": "வெற்றி எண் “123456” ஆக இருந்தால்:",

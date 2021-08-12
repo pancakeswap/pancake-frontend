@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "\"तुरंत खरीदें\" रैंडम नंबर चुनता है, जिसमें से कोई आपके टिकट का डुप्लीकेट नहीं होता है। हर राउंड शुरू होने से पहले कीमतें सेट की जाती हैं, जो उस समय $5 के बराबर होती हैं। खरीदारी अंतिम होती है।",
   "Prizes Collected!": "पुरस्कार कलेक्ट किए गए!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "राउंड %lotteryId% के लिए आपके CAKE पुरस्कारों को आपके वॉलेट में भेजा जा चुका है",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "राउंड %lotteryId% के लिए %claimTotal% में से %claimNum% का क्लेम सफल रहा था। कृपया अगले लेनदेन को कन्फ़र्म करें",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "क्लेम किया जा रहा है",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "जीतने वाले नंबर से टिकट की मैचिंग ठीक उसी क्रम में, पहले अंक से शुरू करते हुए होनी चाहिए।",
   "If the winning number is “123456”:": "यदि जीतने वाला नंबर “123456” है:",

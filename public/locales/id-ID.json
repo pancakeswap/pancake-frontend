@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "\"Beli Seketika\" memilih angka secara acak, tanpa duplikat di antara tiket Anda. Harga ditetapkan sebelum setiap putaran dimulai, setara dengan $5 pada saat itu. Pembelian bersifat final.",
   "Prizes Collected!": "Hadiah Diambil!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Hadiah CAKE Anda untuk putaran %lotteryId% telah dikirimkan ke dompet Anda",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "Klaim %claimNum% dari %claimTotal% untuk putaran %lotteryId% telah berhasil. Silakan konfirmasi transaksi selanjutnya",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Mengeklaim",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Tiket harus cocok dengan angka kemenangan dalam urutan yang persis sama, dimulai dari digit pertama.",
   "If the winning number is “123456”:": "Jika angka kemenangan adalah “123456”:",
