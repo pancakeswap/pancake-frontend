@@ -204,7 +204,6 @@ export interface Round {
   closeRoundId: string
   totalBets: number
   totalAmount: number
-  totalAmountTreasury: number
   bullBets: number
   bullAmount: number
   bearBets: number

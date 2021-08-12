@@ -182,7 +182,6 @@ describe('transformBetResponse', () => {
         startBlock: '9303563',
         startHash: '0xca83e0aaf3113ed18203b69e2ca7598c3df80acc9229aab50304d16c19965945',
         totalAmount: '0',
-        totalAmountTreasury: '0',
         totalBets: '0',
         bets: [],
       },
