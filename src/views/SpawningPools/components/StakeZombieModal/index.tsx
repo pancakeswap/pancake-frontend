@@ -138,7 +138,7 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({
     </Flex>
     {zombieBalance.toString() === '0' ?
       <Button mt='8px' as='a' external
-              href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(tokens.zmbe.address)}`}
+              href={`${BASE_EXCHANGE_URL}/swap?outputCurrency=${getAddress(tokens.zmbe.address)}`}
               variant='secondary'>
         Get ZMBE
       </Button> :

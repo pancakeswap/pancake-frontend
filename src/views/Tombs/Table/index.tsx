@@ -15,7 +15,7 @@ import { getContract, getLpContract, getPancakePair } from '../../../utils/contr
 import pancakeFactoryAbi from '../../../config/abi/pancakeFactoryAbi.json'
 import erc20Abi from '../../../config/abi/erc20.json'
 import tokens from '../../../config/constants/tokens'
-import { bnbPriceUsd, zmbeBnbTomb, zombiePriceUsd } from '../../../redux/get'
+import { bnbPriceUsd, tombByPid, zmbeBnbTomb, zombiePriceUsd } from '../../../redux/get'
 
 const TableCards = styled(BaseLayout)`
   align-items: stretch;
@@ -27,48 +27,35 @@ const TableCards = styled(BaseLayout)`
   }
 `
 
-interface TableData {
-  id: number,
-  name: string,
-  withdrawalCooldown: string,
-  artist?: any,
-  stakingToken: any,
-  pid: number,
-  result : any,
-  poolInfo: any,
-  pendingZombie: any
-  quoteToken: any,
-  token: any,
-  lpAddresses: any,
-}
-
 interface TableProps {
-  details: TableData,
+  pid: number,
   isAllowance: boolean,
   bnbInBusd: number,
   updateAllowance:any,
   updateResult:any,
 }
 
-const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateResult, updateAllowance }: TableProps) => {
+const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateResult, updateAllowance }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const tomb = tombByPid(pid)
+  const { poolInfo: { totalStaked, reserves, lpTotalSupply } } = tomb
   const openInDetails = (data) => {
     setIsOpen(data);
   }
-  const reserves = zmbeBnbTomb().result.reserves
-  const lpTotalSupply = zmbeBnbTomb().result.totalSupply
   const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePriceUsd()), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
   const lpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
-  const totalLpTokenStaked = new BigNumber(zmbeBnbTomb().result.totalStaked)
-  const tvl = totalLpTokenStaked.times(lpTokenPrice)
+  const tvl = totalStaked.times(lpTokenPrice)
+  // console.log(reservesUsd[0].toString())
+  // console.log(reservesUsd[1].toString())
+  // console.log(lpTotalSupply.toString())
+  // console.log(lpTokenPrice.toString())
+  // console.log(tvl)
 
   const TableListProps = {
     "handler": openInDetails,
     lpTokenPrice,
     tvl,
-    totalLpTokenStaked,
-    details,
+    pid,
   }
 
   return (
@@ -81,11 +68,11 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateRe
           <div className="table-bottom">
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
-                <FrankEarned pid={details.pid} pendingZombie={details.pendingZombie} lpTokenPrice={lpTokenPrice} totalLpTokenStaked={totalLpTokenStaked}/>
-                <StartFarming updateAllowance={updateAllowance} updateResult={updateResult} lpTokenAddress={getAddress(details.lpAddresses)} details={details} isAllowance={isAllowance} />
-                <BuyFrank details={details}/>
+                <FrankEarned pid={pid} lpTokenPrice={lpTokenPrice}/>
+                <StartFarming pid={pid} updateAllowance={updateAllowance} updateResult={updateResult} isAllowance={isAllowance} />
+                <BuyFrank pid={pid}/>
               </div>
-              <RugInDetails bnbInBusd={bnbInBusd} details={details} tvl={tvl} totalLpTokensStaked={totalLpTokenStaked} lpTokenPrice={lpTokenPrice}/>
+              <RugInDetails pid={pid} bnbInBusd={bnbInBusd} tvl={tvl} lpTokenPrice={lpTokenPrice}/>
             </div>
           </div>
         ) : null}

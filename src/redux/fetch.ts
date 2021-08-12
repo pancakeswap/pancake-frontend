@@ -19,18 +19,24 @@ import {
   updateZombiePriceBnb,
   updateBnbPriceUsd,
   updateDrFrankensteinZombieBalance,
-  updateTomb,
-  updateGravePoolInfo, updateGraveUserInfo, updateNftTotalSupply, updateSpawningPoolInfo, updateSpawningPoolUserInfo,
+  updateGravePoolInfo,
+  updateGraveUserInfo,
+  updateNftTotalSupply,
+  updateSpawningPoolInfo,
+  updateSpawningPoolUserInfo,
+  updateTombPoolInfo, updateTombUserInfo,
 } from './actions'
 import { getAddress, getDrFrankensteinAddress, getSpawningPoolAddress, getZombieAddress } from '../utils/addressHelpers'
 import tombs from './tombs'
 import * as get from './get'
 import spawningPoolAbi from '../config/abi/spawningPool.json'
+import drFrankensteinAbi from '../config/abi/drFrankenstein.json'
+import pancakePairAbi from '../config/abi/pancakePairAbi.json'
 import { BIG_ZERO } from '../utils/bigNumber'
-import { account, spawningPools } from './get'
+import { account, spawningPools, zmbeBnbTomb } from './get'
 
 // eslint-disable-next-line import/prefer-default-export
-export const initialData = (accountAddress: string, setZombiePrice?: any) => {
+export const initialData = (accountAddress: string, multi: any, setZombiePrice?: any) => {
   store.dispatch(updateAccount(accountAddress))
   const zombie = getZombieContract()
 
@@ -48,7 +54,7 @@ export const initialData = (accountAddress: string, setZombiePrice?: any) => {
 
   zombiePriceBnb(setZombiePrice)
 
-  tomb(tombs[0].pid)
+  tomb(tombs[0].pid, multi)
 
   nfts()
 
@@ -67,30 +73,80 @@ export const initialData = (accountAddress: string, setZombiePrice?: any) => {
   initialGraveData()
 }
 
-export const tomb = (pid: number) => {
-  getDrFrankensteinContract().methods.poolInfo(pid).call()
-    .then(poolInfoRes => {
-      const lpTokenContract = getPancakePair(poolInfoRes.lpToken)
-      lpTokenContract.methods.balanceOf(getDrFrankensteinAddress()).call()
-        .then(balanceRes => {
-          lpTokenContract.methods.totalSupply().call()
-            .then(totalSupplyRes => {
-              lpTokenContract.methods.getReserves().call()
-                .then(reservesRes => {
-                  store.dispatch(updateTomb(
-                    pid,
-                    {
-                      allocPoint: poolInfoRes.allocPoint,
-                      withdrawalCooldown: poolInfoRes.tokenWithdrawalDate,
-                      totalStaked: balanceRes,
-                      totalSupply: totalSupplyRes,
-                      reserves: [reservesRes._reserve0, reservesRes._reserve1],
-                    },
-                  ))
-                })
-            })
-        })
-    })
+export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, setUpdate: any}, updateUserObj?: {update: boolean, setUpdate: any}, everyUpdateObj?:  {update: boolean, setUpdate: any}) => {
+  const contractAddress = getDrFrankensteinAddress()
+  if(account()) {
+    let inputs = [
+      { target: contractAddress, function: 'poolInfo', args: [pid] },
+      { target: contractAddress, function: 'userInfo', args: [pid, get.account()] },
+      { target: contractAddress, function: 'pendingZombie', args: [pid, get.account()] },
+    ]
+    multi.multiCall(drFrankensteinAbi, inputs)
+      .then(frankRes => {
+        const drFrankensteinRes = frankRes[1]
+        inputs = [
+          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'balanceOf', args: [contractAddress] },
+          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'getReserves', args: [] },
+          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'allowance', args: [account(), contractAddress] },
+          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'totalSupply', args: [] },
+        ]
+        multi.multiCall(pancakePairAbi, inputs)
+          .then(lpRes => {
+            const lpTokenRes = lpRes[1]
+            store.dispatch(updateTombPoolInfo(pid, {
+              allocPoint: new BigNumber(drFrankensteinRes[0].allocPoint.toString()),
+              minimumStake: new BigNumber(drFrankensteinRes[0].minimumStake.toString()),
+              totalStaked: new BigNumber(lpTokenRes[0].toString()),
+              lpTotalSupply: new BigNumber(lpTokenRes[3].toString()),
+              reserves: [new BigNumber(lpTokenRes[1]._reserve0.toString()), new BigNumber(lpTokenRes[1]._reserve1.toString())],
+            }))
+            store.dispatch(updateTombUserInfo(pid, {
+              amount: new BigNumber(drFrankensteinRes[1].amount.toString()),
+              tokenWithdrawalDate: drFrankensteinRes[1].tokenWithdrawalDate,
+              lpAllowance: new BigNumber(lpTokenRes[2].toString()),
+              pendingZombie: new BigNumber(drFrankensteinRes[2].toString()),
+            }))
+            if(everyUpdateObj) {
+              everyUpdateObj.setUpdate(!everyUpdateObj.update)
+            }
+            if(updateUserObj && !updateUserObj.update) {
+              updateUserObj.setUpdate(!updateUserObj.update)
+            }
+          })
+      })
+  } else {
+    getDrFrankensteinContract().methods.poolInfo(pid).call()
+      .then(poolInfoRes => {
+        const inputs = [
+          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'balanceOf', args: [contractAddress] },
+          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'getReserves', args: [] },
+          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'totalSupply', args: [] },
+        ]
+        multi.multiCall(pancakePairAbi, inputs)
+          .then(lpRes => {
+            const lpTokenRes = lpRes[1]
+            store.dispatch(updateTombPoolInfo(pid, {
+              allocPoint: new BigNumber(poolInfoRes.allocPoint),
+              minimumStake: new BigNumber(poolInfoRes.minimumStake),
+              totalStaked: new BigNumber(lpTokenRes[0].toString()),
+              lpTotalSupply: new BigNumber(lpTokenRes[2].toString()),
+              reserves: [new BigNumber(lpTokenRes[1]._reserve0.toString()), new BigNumber(lpTokenRes[1]._reserve1.toString())],
+            }))
+          })
+        if(everyUpdateObj) {
+          everyUpdateObj.setUpdate(!everyUpdateObj.update)
+        }
+        if(updatePoolObj && !updatePoolObj.update) {
+          updatePoolObj.setUpdate(!updatePoolObj.update)
+        }
+      })
+  }
+}
+
+export const initialTombData = (multi: any, updatePoolObj?: {update: boolean, setUpdate: any}, updateUserObj?: {update: boolean, setUpdate: any}) => {
+  get.tombs().forEach(t => {
+    tomb(t.pid, multi, updatePoolObj, updateUserObj)
+  })
 }
 
 export const grave = (pid: number, setUserInfoState?, setPoolInfoState?) => {
@@ -251,7 +307,7 @@ export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: a
 }
 
 const zombiePriceBnb = (setZombiePrice?: any) => {
-  getPancakePair(getAddress(tombs[0].lpAddresses)).methods.getReserves().call()
+  getPancakePair(getAddress(zmbeBnbTomb().lpAddress)).methods.getReserves().call()
     .then(res => {
       const price = new BigNumber(res._reserve1).div(res._reserve0)
       store.dispatch(updateZombiePriceBnb(price))

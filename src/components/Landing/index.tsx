@@ -37,7 +37,7 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
         </div>
       </div>
       <div className="_40_percent_block">
-        <a href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(tokens.zmbe.address)}`} className="button-2 w-button">
+        <a rel="noreferrer" target="_blank" href={`${BASE_EXCHANGE_URL}/swap?outputCurrency=${getAddress(tokens.zmbe.address)}`} className="button-2 w-button">
           Buy on Pancakeswap
         </a>
       </div>

@@ -17,6 +17,7 @@ import Title from './components/Title'
 import GraveyardCard from './components/GraveyardCard'
 import EnterGravesCard from './components/EnterGravesCard'
 import useEagerConnect from '../../hooks/useEagerConnect'
+import { useMultiCall } from '../../hooks/useContract'
 import web3 from '../../utils/web3'
 
 const Hero = styled.div`
@@ -80,22 +81,22 @@ const CTACards = styled(BaseLayout)`
 
 const Home: React.FC = () => {
   useEagerConnect()
-
+  const multi = useMultiCall()
   const {account} = useWeb3React()
   useEffect(() => {
-    fetch.initialData(account)
-  }, [account])
+    fetch.initialData(account, multi)
+  }, [account, multi])
 
-  const allocPoints = web3.eth.abi.encodeParameter('uint256', '800')
-  const lpToken = web3.eth.abi.encodeParameter('address', '0xdab566c6E63b06D641ABdCCaC4c6941C645812BD').replace('0x','')
-  const minimumStakingTime = web3.eth.abi.encodeParameter('uint256', '259200').replace('0x','')
-  const ruggedToken = web3.eth.abi.encodeParameter('address', '0x7cc46141ab1057b1928de5ad5ee78bb37efc4868').replace('0x','')
-  const nft = web3.eth.abi.encodeParameter('address', '0x61ea827873Ee1fAcD5c6Cc4D86c5477192AD7E34').replace('0x','')
-  const minimumStake = web3.eth.abi.encodeParameter('uint256', '5000000000000000000000').replace('0x','')
-  const unlockFee = web3.eth.abi.encodeParameter('uint256', '5000000000000000000').replace('0x','')
-  const nftRevivalTime = web3.eth.abi.encodeParameter('uint256', '2592000').replace('0x','')
-  const withUpdate = web3.eth.abi.encodeParameter('bool', 'true').replace('0x','')
-  console.log(`${allocPoints}${lpToken}${minimumStakingTime}${ruggedToken}${nft}${minimumStake}${unlockFee}${nftRevivalTime}${withUpdate}`)
+  // const allocPoints = web3.eth.abi.encodeParameter('uint256', '800')
+  // const lpToken = web3.eth.abi.encodeParameter('address', '0xdab566c6E63b06D641ABdCCaC4c6941C645812BD').replace('0x','')
+  // const minimumStakingTime = web3.eth.abi.encodeParameter('uint256', '259200').replace('0x','')
+  // const ruggedToken = web3.eth.abi.encodeParameter('address', '0x7cc46141ab1057b1928de5ad5ee78bb37efc4868').replace('0x','')
+  // const nft = web3.eth.abi.encodeParameter('address', '0x61ea827873Ee1fAcD5c6Cc4D86c5477192AD7E34').replace('0x','')
+  // const minimumStake = web3.eth.abi.encodeParameter('uint256', '5000000000000000000000').replace('0x','')
+  // const unlockFee = web3.eth.abi.encodeParameter('uint256', '5000000000000000000').replace('0x','')
+  // const nftRevivalTime = web3.eth.abi.encodeParameter('uint256', '2592000').replace('0x','')
+  // const withUpdate = web3.eth.abi.encodeParameter('bool', 'true').replace('0x','')
+  // console.log(`${allocPoints}${lpToken}${minimumStakingTime}${ruggedToken}${nft}${minimumStake}${unlockFee}${nftRevivalTime}${withUpdate}`)
   // const pid = web3.eth.abi.encodeParameter('uint256', '0')
   // const nft = web3.eth.abi.encodeParameter('address', '0x6209E17d98ba2089571476940751802AAc4249e8').replace('0x','')
   //

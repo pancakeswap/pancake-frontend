@@ -49,7 +49,7 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { pid, zombieUsdPrice, handler } = props
-  const { name, rug, poolInfo, isNew, isEnding, userInfo: { pendingZombie } } = grave(pid);
+  const { name, rug, poolInfo, isNew, requiresNft, requiredNftPath, userInfo: { pendingZombie } } = grave(pid);
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
      allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -77,7 +77,14 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="into-two-td">
                 <div className="info-1">
                   <div className="info-icon">
-                    { rug !== tokens.none ?
+                    {
+                      // // eslint-disable-next-line no-nested-ternary
+                      // requiresNft ?
+                      //   <>
+                      //     <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
+                      //     <img src={requiredNftPath} alt="rugicon" className="icon" />
+                      //   </> :
+                      rug !== tokens.none?
                       <>
                         <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
                         <img src={`images/tokens/${rug.symbol}.png`} alt="rugicon" className="icon" />

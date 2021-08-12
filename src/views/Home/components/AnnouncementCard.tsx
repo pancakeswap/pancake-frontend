@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Button,Text } from '@rug-zombie-libs/uikit'
+import { Heading, Card, CardBody, Button, Text, LinkExternal } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Tweet } from 'react-twitter-widgets'
 
@@ -49,6 +49,10 @@ const AnnouncementCard = () => {
         <image width="100%" >
           <img src="https://storage.googleapis.com/rug-zombie/gorillafi-small.gif" alt="silverback"/>
         </image>
+
+        <LinkExternal paddingTop="10px" href="https://twitter.com/rugzombie">
+          Follow our twitter for latest announcements
+        </LinkExternal>
       </CardBody>
     </StyledAnnouncementCard>
   )

@@ -14,6 +14,7 @@ import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
 import { useERC20 } from '../../../hooks/useContract';
 import StakeLpTokenModal from '../StakeLpTokenModal';
 import WithdrawLpModal from '../WithdrawLpModal';
+import { tombByPid } from '../../../redux/get'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -27,51 +28,31 @@ const DisplayFlex = styled(BaseLayout)`
 }`
 
 
-interface Result {
-  paidUnlockFee: boolean,
-  rugDeposited: number,
-  tokenWithdrawalDate: any,
-  amount: BigNumber
-}
-
 interface StartFarmingProps {
-  details: {
-    id: number,
-    pid: number,
-    name: string,
-    withdrawalCooldown: string,
-    artist?: any,
-    stakingToken: any,
-    result: Result,
-    poolInfo: any,
-    quoteToken:any,
-    token:any
-  },
+  pid: number,
   isAllowance: boolean,
   updateAllowance: any,
   updateResult: any,
-  lpTokenAddress: string,
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, pid, poolInfo, result }, updateResult, lpTokenAddress }) => {
-
-  const lpTokenContract = useERC20(lpTokenAddress);
+const StartFarming: React.FC<StartFarmingProps> = ({pid, updateResult }) => {
   const { account } = useWeb3React();
   const [isLpTokenAllowance, setIsLpTokenAllowance] = useState(false);
-  const lpTokenAllowance = useIfoAllowance(lpTokenContract, getDrFrankensteinAddress());
+  const tomb = tombByPid(pid)
+  const { name, lpAddress, userInfo: { lpAllowance, amount } } = tomb
 
-  const lpTokenBalance = useTokenBalance(lpTokenAddress);
-
+  const lpTokenBalance = useTokenBalance(getAddress(lpAddress));
+  const lpTokenContract = useERC20(getAddress(lpAddress))
   useEffect(() => {
-    if (lpTokenAllowance.toString() !== "0") {
+    if (!lpAllowance.isZero()) {
       setIsLpTokenAllowance(true);
     }
-  }, [lpTokenAllowance, details]);
+  }, [lpAllowance]);
 
   const [onPresentZombieStake] = useModal(
     <StakeLpTokenModal
-      details={details}
-      lpAddress={lpTokenAddress}
+      pid={pid}
+      lpAddress={getAddress(lpAddress)}
       updateResult={updateResult}
       lpTokenBalance={lpTokenBalance}
     />,
@@ -79,10 +60,9 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, p
 
   const [onPresentWithdrawStake] = useModal(
     <WithdrawLpModal
-      details={details}
+      pid={pid}
       updateResult={updateResult}
       lpTokenBalance={lpTokenBalance}
-      poolInfo={poolInfo}
     />
   )
 
@@ -102,7 +82,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, p
   const renderButtonsForGrave = () => {
     return <div className="space-between">
       <DisplayFlex>
-        <span style={{ paddingRight: '50px' }} className="total-earned text-shadow">{getFullDisplayBalance(new BigNumber(result.amount), tokens.zmbe.decimals, 4)}</span>
+        <span style={{ paddingRight: '50px' }} className="total-earned text-shadow">{getFullDisplayBalance(amount, tokens.zmbe.decimals, 4)}</span>
         <button onClick={onPresentWithdrawStake} style={{ marginRight: '10px' }} className="btn w-100" type="button">-</button>
         <button onClick={onPresentZombieStake} className="btn w-100" type="button">+</button>
       </DisplayFlex>
@@ -121,7 +101,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, p
       <div className="small-text">
         <span className="white-color">STAKING</span>
       </div>
-      {pid === 0 ? renderButtonsForGrave() : renderButtonsForTraditionalGraves()}
+      {renderButtonsForTraditionalGraves()}
     </div>
   )
 }

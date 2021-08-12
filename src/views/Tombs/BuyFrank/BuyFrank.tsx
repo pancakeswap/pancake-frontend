@@ -1,38 +1,31 @@
 import React, { useState } from 'react'
-import { useModal } from '@rug-zombie-libs/uikit';
+import { Button, useModal } from '@rug-zombie-libs/uikit';
 import ModalInput from 'components/ModalInput/ModalInput';
-import { format } from 'date-fns';
 import { formatDuration } from '../../../utils/timerHelpers'
-
-
-interface Details {
-  id: number,
-  name: string,
-  withdrawalCooldown: string,
-  artist?: any,
-  stakingToken: any,
-  pid: number,
-  result: any,
-  poolInfo: any,
-  pendingZombie: any
-}
+import { tombByPid } from '../../../redux/get'
+import { APESWAP_ADD_LIQUIDITY_URL, BASE_ADD_LIQUIDITY_URL } from '../../../config'
+import { getAddress } from '../../../utils/addressHelpers'
+import tokens from '../../../config/constants/tokens'
 
 interface BuyFrankProps {
-  details: Details
+  pid: number
 }
 
-const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, amount } } }) => {
+const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
   const currentDate = Math.floor(Date.now() / 1000);
-  const initialWithdrawCooldownTime = parseInt(tokenWithdrawalDate) - currentDate;
-
+  const tomb = tombByPid(pid)
+  const { userInfo: { amount, tokenWithdrawalDate } } = tomb
+  const initialWithdrawCooldownTime = tokenWithdrawalDate - currentDate;
   const [onPresent1] = useModal(<ModalInput inputTitle="Stake $ZMBE" />);
+  // eslint-disable-next-line no-nested-ternary
+  const quoteTokenUrl = tomb.quoteToken === tokens.wbnb ? tomb.exchange === 'Apeswap' ? 'ETH' : 'BNB' : getAddress(tomb.quoteToken.address)
+  const addLiquidityUrl = `${tomb.exchange === 'Apeswap' ? APESWAP_ADD_LIQUIDITY_URL : BASE_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+
   return (
-
-
-    amount !== "0" ?
+    !amount.isZero() ?
       <div className="frank-card">
         <div className="space-between">
-          {currentDate >= parseInt(tokenWithdrawalDate) ?
+          {currentDate >= tokenWithdrawalDate ?
             <span className="total-earned text-shadow">No Withdraw Fees</span> :
             <div>
               <div className="small-text">
@@ -43,12 +36,14 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
             </div>}
         </div>
       </div> :
-      <div className="frank-card">
-        <div className="small-text">
-          <span className="white-color">Buy Zombie</span>
+      <div className='frank-card'>
+        <div className='small-text'>
+          <span className='white-color'>Supply LP</span>
         </div>
-        <span className="total-earned text-shadow">
-                Pair LP</span>      </div>
+        <a href={addLiquidityUrl} target='_blank' rel='noreferrer'>
+          <Button className='btn btn-disabled w-100' >Pair LP on {tomb.exchange}</Button>
+        </a>
+      </div>
   )
 }
 

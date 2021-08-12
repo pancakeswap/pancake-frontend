@@ -32,6 +32,9 @@ export const getMulticallAddress = () => {
 export const getWbnbAddress = () => {
   return getAddress(tokens.wbnb.address)
 }
+export const getNftConverterAddress = () => {
+  return getAddress(addresses.nftConverter)
+}
 export const getLotteryAddress = () => {
   return getAddress(addresses.lottery)
 }

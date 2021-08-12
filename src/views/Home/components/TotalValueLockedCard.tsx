@@ -7,13 +7,13 @@ import { getBalanceAmount } from '../../../utils/formatBalance'
 import {
   bnbPriceUsd,
   drFrankensteinZombieBalance,
-  spawningPools,
   zmbeBnbTomb,
   zombiePriceUsd,
+  tombs,
+  spawningPools,
 } from '../../../redux/get'
-import store from '../../../redux/store'
-import tombs from '../../../redux/tombs'
-import { initialSpawningPoolData, spawningPool, tomb } from '../../../redux/fetch'
+import { initialTombData, spawningPool, initialSpawningPoolData, tomb } from '../../../redux/fetch'
+
 import { useMultiCall, useZombie } from '../../../hooks/useContract'
 import * as get from '../../../redux/get'
 import { BIG_ZERO } from '../../../utils/bigNumber'
@@ -36,6 +36,12 @@ const TotalValueLockedCard: React.FC = () => {
   const multi = useMultiCall()
   const zombie = useZombie()
   const [poolInfo, setPoolInfo] = useState(get.spawningPool(0).poolInfo)
+
+  useEffect(() => {
+    initialTombData(
+      multi
+    )
+  }, [multi])
   useEffect(() => {
     initialSpawningPoolData(multi, zombie, data => {
       if(data.totalZombieStaked) {
@@ -44,20 +50,24 @@ const TotalValueLockedCard: React.FC = () => {
     })
   }, [multi, zombie])
 
+
   const totalSpawningPoolStaked = spawningPools().reduce((accumulator, sp) => {
     return  sp.poolInfo.totalZombieStaked.plus(accumulator)
   }, BIG_ZERO)
 
   const zombiePrice = zombiePriceUsd()
-  const {reserves} = zmbeBnbTomb().result
-  const lpTotalSupply = zmbeBnbTomb().result.totalSupply
-  const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePrice), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
-  const bnbLpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
-  const bnbTombTvl = new BigNumber(zmbeBnbTomb().result.totalStaked).times(bnbLpTokenPrice)
+  let tombsTvl = BIG_ZERO
+  tombs().forEach(t => {
+    const {poolInfo: { reserves, lpTotalSupply, totalStaked }} = t
+    const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePrice), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
+    const bnbLpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
+    tombsTvl = tombsTvl.plus(totalStaked.times(bnbLpTokenPrice))
+  })
+
   const zombieBalance = getBalanceAmount(drFrankensteinZombieBalance()).times(zombiePrice)
   const spawningPoolTvl = getBalanceAmount(totalSpawningPoolStaked).times(zombiePrice)
-  const [tvl, setTvl] = useState(bnbTombTvl.plus(zombieBalance).plus(spawningPoolTvl))
-  const newTvl = bnbTombTvl.plus(zombieBalance).plus(spawningPoolTvl)
+  const [tvl, setTvl] = useState(tombsTvl.plus(zombieBalance).plus(spawningPoolTvl))
+  const newTvl = tombsTvl.plus(zombieBalance).plus(spawningPoolTvl)
   useEffect(() => {
     if (!tvl.eq(newTvl) || tvl.isNaN() ) {
       setTvl(newTvl)

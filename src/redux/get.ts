@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js'
 import axios from 'axios'
 import store from './store'
-import { Grave, PoolInfo, SpawningPool, UserInfo } from './types'
+import { Grave, Tomb, SpawningPool, UserInfo } from './types'
 import { BIG_ZERO } from '../utils/bigNumber'
 import { getBalanceAmount } from '../utils/formatBalance'
 
@@ -33,7 +33,7 @@ export const drFrankensteinZombieBalance = (): BigNumber => {
   return store.getState().drFrankenstein.zombieBalance
 }
 
-export const tombByPid = (pid: number): any => {
+export const tombByPid = (pid: number): Tomb => {
   return store.getState().tombs.find(t => t.pid === pid)
 }
 
@@ -41,11 +41,11 @@ export const coingeckoPrice = (id: string) => {
   return axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`)
 }
 
-export const zmbeBnbTomb = (): any => {
-  return store.getState().tombs[0]
+export const zmbeBnbTomb = (): Tomb => {
+  return tombByPid(11)
 }
 
-export const graveByPid = (pid: number): any => {
+export const graveByPid = (pid: number): Grave => {
   return store.getState().graves.find(g => g.pid === pid)
 }
 
@@ -69,8 +69,16 @@ export const grave = (pid: number): Grave => {
   return store.getState().graves.find(g => g.pid === pid)
 }
 
+export const tombs = (): Tomb[] => {
+  return store.getState().tombs
+}
+
 export const nfts = () => {
   return store.getState().nfts
+}
+
+export const nftByName = (name: string) => {
+  return nfts().find(t => t.name === name)
 }
 
 export const nftTotalSupply = (): BigNumber => {
@@ -83,13 +91,13 @@ export const nftTotalSupply = (): BigNumber => {
 
 // store lpreserves
 export const zmbeBnbLpPriceBnb = () => {
-  const reserves = zmbeBnbTomb().result.reserves
-  const lpTotalSupply = zmbeBnbTomb().result.totalSupply
+  const { poolInfo: { reserves, lpTotalSupply }} = zmbeBnbTomb()
   const reservesBnb = [new BigNumber(reserves[0]).times(zombiePriceBnb()), getBalanceAmount(reserves[1])]
   const bnbLpTokenPrice = reservesBnb[0].plus(reservesBnb[1]).div(lpTotalSupply)
   return bnbLpTokenPrice
 }
 
 export const zmbePerZmbeBnbLp = () => {
-  return new BigNumber(zmbeBnbTomb().result.reserves[0]).div(zmbeBnbTomb().result.totalSupply)
+  const { poolInfo: {reserves, lpTotalSupply } } = zmbeBnbTomb()
+  return reserves[0].div(lpTotalSupply)
 }

@@ -48,6 +48,7 @@ const nfts = [
     name: 'Basic Zombie',
     symbol: 'BASIC-ZMBE',
     address: '0x6209E17d98ba2089571476940751802AAc4249e8',
+    path: 'images/rugZombie/BasicZombie.gif',
     totalSupply: BIG_ZERO
   },
   {

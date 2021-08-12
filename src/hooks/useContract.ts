@@ -19,7 +19,12 @@ import {
   getEasterNftContract,
   getErc721Contract,
   getCakeVaultContract,
-  getPredictionsContract, getZombieContract, getDrFrankensteinContract, getMausoleumContract, getSpawningPoolContract,
+  getPredictionsContract,
+  getZombieContract,
+  getDrFrankensteinContract,
+  getMausoleumContract,
+  getSpawningPoolContract,
+  getNftConverterContract,
 } from 'utils/contractHelpers'
 import { MultiCall } from '@indexed-finance/multicall'
 
@@ -103,6 +108,11 @@ export const useDrFrankenstein = () => {
 export const useSpawningPool = (id: number) => {
   const web3 = useWeb3()
   return useMemo(() => getSpawningPoolContract(id, web3), [id, web3])
+}
+
+export const useNftConverter = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getNftConverterContract(web3), [web3])
 }
 
 export const useMultiCall = () => {

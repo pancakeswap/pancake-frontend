@@ -60,7 +60,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismiss })
 
   const [onGetTokenClick] = useModal(
     <WarningModal
-    url={`${pcsVersion === 'v1' ? BASE_V1_EXCHANGE_URL : BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}`} />,
+    url={`${pcsVersion === 'v1' ? BASE_V1_EXCHANGE_URL : BASE_EXCHANGE_URL}/swap?outputCurrency=${getAddress(rug.address)}`} />,
   )
 
   const handleWithdrawal = () => {
@@ -127,7 +127,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismiss })
     {rugTokenBalance.toString() === '0' ?
        <Button mt="8px" as="a" onClick={onGetTokenClick} variant="secondary">
        Get {rug.symbol}
-       {/* external href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}`} */}
+       {/* external href={`${BASE_EXCHANGE_URL}/swap?outputCurrency=${getAddress(rug.address)}`} */}
      </Button> :
       <Button onClick={onGetDepositRugClick} mt="8px" as="a" variant="secondary">
         Deposit {rug.symbol}

@@ -6,30 +6,22 @@ import { getFullDisplayBalance } from 'utils/formatBalance';
 import BigNumber from 'bignumber.js';
 import numeral from 'numeral'
 import { BIG_ZERO } from '../../../utils/bigNumber'
+import { tombByPid } from '../../../redux/get'
 
 interface RugInDetailsProps {
-  details: {
-    id: number,
-    pid: number,
-    name: string,
-    withdrawalCooldown: string,
-    artist?: any,
-    stakingToken: any,
-    poolInfo: any
-  },
+  pid: number,
   bnbInBusd: number,
-  totalLpTokensStaked: BigNumber,
   lpTokenPrice: BigNumber,
   tvl: BigNumber
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
-  details: { id, name, pid, withdrawalCooldown, artist, poolInfo }, tvl, totalLpTokensStaked, lpTokenPrice,
+  pid, tvl, lpTokenPrice,
 }) => {
   const drFrankenstein = useDrFrankenstein();
-
   const [unlockFee, setUnlockFee] = useState(0);
-
+  const tomb = tombByPid(pid)
+  const { id, name, withdrawalCooldown, poolInfo: { allocPoint } } = tomb
   useEffect(() => {
     drFrankenstein.methods.unlockFeeInBnb(pid).call()
       .then((res) => {
@@ -37,13 +29,6 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
       })
   })
 
-  let allocPoint = BIG_ZERO;
-  if(poolInfo.allocPoint) {
-    allocPoint = new BigNumber(poolInfo.allocPoint)
-  }
-
-  console.log("tvl")
-  console.log(tvl.toString())
   return (
     <div key={id} className="rug-indetails">
       <div className="direction-column">

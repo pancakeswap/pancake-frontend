@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js'
 import * as actions from './actionTypes'
-import { PoolInfo, SpawningPoolInfo, SpawningUserInfo, UserInfo } from './types'
+import { PoolInfo, SpawningPoolInfo, SpawningUserInfo, TombPoolInfo, TombUserInfo, UserInfo } from './types'
 
 export const updateAccount = (account: string) => ({
   type: actions.UPDATE_ACCOUNT,
@@ -51,11 +51,19 @@ export const updateBnbPriceUsd = (bnbPriceUsd: number) => ({
   },
 })
 
-export const updateTomb = (pid: number, tombResult) => ({ // todo add tomb result type restriction
-  type: actions.UPDATE_TOMB,
+export const updateTombPoolInfo = (pid: number, poolInfo: TombPoolInfo) => ({ // todo add tomb result type restriction
+  type: actions.UPDATE_TOMB_POOL_INFO,
   payload: {
     pid,
-    tombResult,
+    poolInfo,
+  },
+})
+
+export const updateTombUserInfo = (pid: number, userInfo: TombUserInfo) => ({ // todo add tomb result type restriction
+  type: actions.UPDATE_TOMB_USER_INFO,
+  payload: {
+    pid,
+    userInfo,
   },
 })
 

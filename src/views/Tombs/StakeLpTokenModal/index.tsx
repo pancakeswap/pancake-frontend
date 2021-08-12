@@ -10,6 +10,7 @@ import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core';
 import { BIG_TEN, BIG_ZERO } from '../../../utils/bigNumber'
+import { tombByPid } from '../../../redux/get'
 
 interface Result {
     paidUnlockFee: boolean,
@@ -17,19 +18,9 @@ interface Result {
 }
 
 interface StakeLpTokenModalProps {
-    details: {
-        id: number,
-        pid: number,
-        name: string,
-        withdrawalCooldown: string,
-        artist?: any,
-        stakingToken: any,
-        result: Result,
-        quoteToken:any,
-        token:any
-    },
-    lpTokenBalance:any,
-    updateResult:any,
+    pid: number,
+    lpTokenBalance: any,
+    updateResult: any,
     lpAddress: string,
     onDismiss?: () => void
 }
@@ -38,15 +29,15 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, pid, quoteToken, token }, lpAddress, lpTokenBalance, updateResult, onDismiss }) => {
-
-
+const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ pid, lpTokenBalance, updateResult, onDismiss }) => {
     const drFrankenstein = useDrFrankenstein();
     const { account } = useWeb3React();
 
     const { theme } = useTheme();
     const [stakeAmount, setStakeAmount] = useState(BIG_ZERO);
     const [percent, setPercent] = useState(0);
+    const tomb = tombByPid(pid)
+    const { name, quoteToken, token } = tomb
 
     const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value || '0'
