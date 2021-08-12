@@ -87,20 +87,18 @@ const Home: React.FC = () => {
     fetch.initialData(account, multi)
   }, [account, multi])
 
-  const allocPoints = web3.eth.abi.encodeParameter('uint256', '400')
-  const lpToken = web3.eth.abi.encodeParameter('address', '0xcaa139138557610fe00f581498f283a789355d14').replace('0x','')
+  const pid = web3.eth.abi.encodeParameter('uint256', '11')
+  const allocPoints = web3.eth.abi.encodeParameter('uint256', '1500').replace('0x','')
+  // const lpToken = web3.eth.abi.encodeParameter('address', '0xdab566c6E63b06D641ABdCCaC4c6941C645812BD').replace('0x','')
   // const minimumStakingTime = web3.eth.abi.encodeParameter('uint256', '259200').replace('0x','')
-  // const ruggedToken = web3.eth.abi.encodeParameter('address', '0xFbD88E293e2c4263Be3A3dEeEd1939250E114985').replace('0x','')
-  // // const nft = web3.eth.abi.encodeParameter('address', '0xFca723bd09664076c7011BA43ebee05BC38B8E7e').replace('0x','')
-  // const minimumStake = web3.eth.abi.encodeParameter('uint256', '10000000000000000000').replace('0x','')
+  // const ruggedToken = web3.eth.abi.encodeParameter('address', '0x7cc46141ab1057b1928de5ad5ee78bb37efc4868').replace('0x','')
+  // const nft = web3.eth.abi.encodeParameter('address', '0x61ea827873Ee1fAcD5c6Cc4D86c5477192AD7E34').replace('0x','')
+  // const minimumStake = web3.eth.abi.encodeParameter('uint256', '5000000000000000000000').replace('0x','')
   // const unlockFee = web3.eth.abi.encodeParameter('uint256', '5000000000000000000').replace('0x','')
   // const nftRevivalTime = web3.eth.abi.encodeParameter('uint256', '2592000').replace('0x','')
-  // const withUpdate = web3.eth.abi.encodeParameter('bool', 'true').replace('0x','')
-  // console.log(`${allocPoints}${lpToken}${minimumStakingTime}${withUpdate}`)
-  // const pid = web3.eth.abi.encodeParameter('uint256', '0')
-  // const nft = web3.eth.abi.encodeParameter('address', '0x6209E17d98ba2089571476940751802AAc4249e8').replace('0x','')
-  //
-  // console.log(`${pid}${nft}`)
+  const withUpdate = web3.eth.abi.encodeParameter('bool', 'false').replace('0x','')
+  // console.log(`${allocPoints}${lpToken}${minimumStakingTime}${ruggedToken}${nft}${minimumStake}${unlockFee}${nftRevivalTime}${withUpdate}`)
+  console.log(`${pid}${allocPoints}${withUpdate}`)
 
   return (
     <>

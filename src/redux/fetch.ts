@@ -33,7 +33,7 @@ import spawningPoolAbi from '../config/abi/spawningPool.json'
 import drFrankensteinAbi from '../config/abi/drFrankenstein.json'
 import pancakePairAbi from '../config/abi/pancakePairAbi.json'
 import { BIG_ZERO } from '../utils/bigNumber'
-import { account, spawningPools } from './get'
+import { account, spawningPools, zmbeBnbTomb } from './get'
 
 // eslint-disable-next-line import/prefer-default-export
 export const initialData = (accountAddress: string, multi: any, setZombiePrice?: any) => {
@@ -73,7 +73,7 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
   initialGraveData()
 }
 
-export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, setUpdate: any}, updateUserObj?: {update: boolean, setUpdate: any}) => {
+export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, setUpdate: any}, updateUserObj?: {update: boolean, setUpdate: any}, everyUpdateObj?:  {update: boolean, setUpdate: any}) => {
   const contractAddress = getDrFrankensteinAddress()
   if(account()) {
     let inputs = [
@@ -106,6 +106,9 @@ export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, 
               lpAllowance: new BigNumber(lpTokenRes[2].toString()),
               pendingZombie: new BigNumber(drFrankensteinRes[2].toString()),
             }))
+            if(everyUpdateObj) {
+              everyUpdateObj.setUpdate(!everyUpdateObj.update)
+            }
             if(updateUserObj && !updateUserObj.update) {
               updateUserObj.setUpdate(!updateUserObj.update)
             }
@@ -130,6 +133,9 @@ export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, 
               reserves: [new BigNumber(lpTokenRes[1]._reserve0.toString()), new BigNumber(lpTokenRes[1]._reserve1.toString())],
             }))
           })
+        if(everyUpdateObj) {
+          everyUpdateObj.setUpdate(!everyUpdateObj.update)
+        }
         if(updatePoolObj && !updatePoolObj.update) {
           updatePoolObj.setUpdate(!updatePoolObj.update)
         }
@@ -301,7 +307,7 @@ export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: a
 }
 
 const zombiePriceBnb = (setZombiePrice?: any) => {
-  getPancakePair(getAddress(tombs[0].lpAddress)).methods.getReserves().call()
+  getPancakePair(getAddress(zmbeBnbTomb().lpAddress)).methods.getReserves().call()
     .then(res => {
       const price = new BigNumber(res._reserve1).div(res._reserve0)
       store.dispatch(updateZombiePriceBnb(price))

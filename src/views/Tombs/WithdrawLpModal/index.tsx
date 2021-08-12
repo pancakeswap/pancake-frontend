@@ -44,80 +44,85 @@ const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ pid, updateResult, on
   const hasEarlyWithdrawFee = tokenWithdrawalDate > currentDate
   const hasWhaleTax = stakeAmount.div(lpTotalSupply).gte(0.05)
 
-  const [percent, setPercent] = useState(0)
+  const [percent, setPercent] = useState(notNativeDex && hasEarlyWithdrawFee ? 100 : 0)
 
     const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value || '0'
         setStakeAmount(getDecimalAmount(new BigNumber(inputValue)));
     }
 
-    const handleChangePercent = (sliderPercent: number) => {
-        const percentageOfStakingMax = amount.multipliedBy(sliderPercent).dividedBy(100)
-        const amountToStake = percentageOfStakingMax
-        if(notNativeDex && hasEarlyWithdrawFee) {
-          setStakeAmount(amount)
-        } else {
-          setStakeAmount(amountToStake)
-        }
-        setPercent(sliderPercent)
-    }
 
-    let formattedAmount = stakeAmount.toString()
-    const index = stakeAmount.toString().indexOf(".");
-    if (index >= 0) {
-        formattedAmount = formattedAmount.substring(0, index)
+  let isDisabled = false
+  let withdrawDetails = ''
+  let additionalDetails = ''
+  let learnMore = false
+  const handleChangePercent = (sliderPercent: number) => {
+    const percentageOfStakingMax = amount.multipliedBy(sliderPercent).dividedBy(100)
+    const amountToStake = percentageOfStakingMax
+    if (notNativeDex && hasEarlyWithdrawFee) {
+      setStakeAmount(amount)
+    } else {
+      setStakeAmount(amountToStake)
     }
+    setPercent(sliderPercent)
+  }
 
-    const handleWithDrawEarly = () => {
-        drFrankenstein.methods.withdrawEarly(pid, formattedAmount)
-            .send({ from: account }).then(() => {
-                updateResult(pid);
-                onDismiss()
-            })
+  let formattedAmount = stakeAmount.toString()
+  const index = stakeAmount.toString().indexOf('.')
+  if (index >= 0) {
+    formattedAmount = formattedAmount.substring(0, index)
+  }
+
+  const handleWithDrawEarly = () => {
+    if (!isDisabled) {
+      drFrankenstein.methods.withdrawEarly(pid, formattedAmount)
+        .send({ from: account }).then(() => {
+        updateResult(pid)
+        onDismiss()
+      })
     }
+  }
 
-    const handleWithDraw = () => {
-        drFrankenstein.methods.withdraw(pid, formattedAmount)
-            .send({ from: account }).then(()=>{
-                updateResult(pid);
-                onDismiss()
-            })
+  const handleWithDraw = () => {
+    if (!isDisabled) {
+      drFrankenstein.methods.withdraw(pid, formattedAmount)
+        .send({ from: account }).then(() => {
+        updateResult(pid)
+        onDismiss()
+      })
     }
+  }
 
-    const handleHarvestAndWithdrawAll = () => {
-        drFrankenstein.methods.withdraw(pid, 0)
+  const handleHarvestAndWithdrawAll = () => {
+    if (!isDisabled) {
+      drFrankenstein.methods.withdraw(pid, 0)
+        .send({ from: account }).then(() => {
+        updateResult(pid)
+        drFrankenstein.methods.emergencyWithdraw(pid)
           .send({ from: account }).then(() => {
-            updateResult(pid);
-            drFrankenstein.methods.emergencyWithdraw(pid)
-              .send({ from: account }).then(() => {
-                updateResult(pid)
-                onDismiss()
-            })
+          updateResult(pid)
+          onDismiss()
         })
+      })
     }
+  }
 
-    let isDisabled = false
-    let withdrawDetails = ''
-    let additionalDetails = ''
-    let learnMore = false
   if(new BigNumber(formattedAmount).gt(amount)) {
         isDisabled = true
         withdrawDetails = "Invalid Withdrawal: Insufficient ZMBE Staked"
-    } else if(notNativeDex) {
-      if(hasEarlyWithdrawFee) {
+    } else if(notNativeDex && hasEarlyWithdrawFee) {
         if (!amount.eq(formattedAmount)) {
           isDisabled = true
           withdrawDetails = `Partial Early Withdrawal's aren't supported on ${exchange} tombs.`
           additionalDetails = "You must withdraw max on early withdrawals during the migration."
           learnMore = true
+          setPercent(100)
         }
-      } else if(hasWhaleTax) {
-        isDisabled = true
-        withdrawDetails = `Whale tax isn't supported on ${exchange} tombs.`
-        additionalDetails = "Please withdraw max when withdrawing > 5% of total liquidity."
-        learnMore = true
-      }
-    }
+    } else if(hasWhaleTax) {
+    isDisabled = true
+    withdrawDetails = `8% whale tax is enabled.`
+    learnMore = true
+  }
 
     return <Modal onDismiss={onDismiss} title='Withdraw LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
