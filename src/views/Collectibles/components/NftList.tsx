@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import orderBy from 'lodash/orderBy'
 import { useWeb3React } from '@web3-react/core'
 import nfts from 'config/constants/nfts'
@@ -29,9 +29,13 @@ const NftList = () => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     dispatch(fetchWalletNfts(account))
-  }
+  }, [dispatch, account])
+
+  useEffect(() => {
+    handleRefresh()
+  }, [account, handleRefresh])
 
   return (
     <NftGrid>

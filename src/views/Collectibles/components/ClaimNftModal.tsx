@@ -30,14 +30,16 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onClaim, 
   const { toastError, toastSuccess } = useToast()
 
   const handleConfirm = async () => {
-    const tx = await onClaim()
     setIsConfirming(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
-      toastSuccess(t('Successfully claimed!'))
-      onDismiss()
-      onSuccess()
-    } else {
+    try {
+      const tx = await onClaim()
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        toastSuccess(t('Successfully claimed!'))
+        onDismiss()
+        onSuccess()
+      }
+    } catch {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setIsConfirming(false)
     }

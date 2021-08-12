@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
+import { useAppDispatch } from 'state'
+import { fetchWalletNfts } from 'state/collectibles'
 import { useGetCurrentLotteryId } from 'state/lottery/hooks'
 import { getGraphLotteryUser } from 'state/lottery/getUserLotteryData'
 import { UserRound } from 'state/types'
@@ -8,6 +10,7 @@ import { fetchUserTicketsForOneRound } from 'state/lottery/getUserTicketsData'
 import { ethersToSerializedBigNumber } from 'utils/bigNumber'
 import { getBunnySpecialLotteryAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
+import useLastUpdated from 'hooks/useLastUpdated'
 import { useBunnySpecialLotteryContract } from 'hooks/useContract'
 import bunnySpecialLotteryAbi from 'config/abi/bunnySpecialLottery.json'
 import NftCard, { NftCardProps } from './index'
@@ -26,6 +29,8 @@ interface PublicContractData {
 const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const { account } = useWeb3React()
   const { identifier, variationId } = nft
+  const { lastUpdated, setLastUpdated } = useLastUpdated()
+  const dispatch = useAppDispatch()
   const lotteryNftContract = useBunnySpecialLotteryContract()
   const lotteryNftContractAddress = getBunnySpecialLotteryAddress()
   const currentLotteryId = useGetCurrentLotteryId()
@@ -35,22 +40,29 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const [publicContractData, setPublicContractData] = useState<PublicContractData>(null)
   const [userRounds, setUserRounds] = useState<UserRound[]>(null)
 
-  // TO BE REPLACED BY NODE DATA
-  const startLotteryRound = 8
-  const finalLotteryRound = 18
-  // Also fetch userWhitelistForNft3 for Nft3 check
+  useEffect(() => {
+    setUserRounds(null)
+  }, [account])
 
   const handleClaim = async () => {
     const { bunnyId, lotteryId, cursor } = mintingData
     const response: ethers.providers.TransactionResponse = await lotteryNftContract.mintNFT(bunnyId, lotteryId, cursor)
-    await response.wait()
     return response
+  }
+
+  const refresh = async () => {
+    dispatch(fetchWalletNfts(account))
+    setLastUpdated()
   }
 
   useEffect(() => {
     const getUserData = async () => {
+      const { startLotteryRound, finalLotteryRound } = publicContractData
+      const startLotteryRoundInt = parseInt(startLotteryRound)
+      const finalLotteryRoundInt = parseInt(finalLotteryRound)
+
       const lotteryIdsArray = []
-      for (let i = startLotteryRound; i <= finalLotteryRound; i++) {
+      for (let i = startLotteryRoundInt; i <= finalLotteryRoundInt; i++) {
         lotteryIdsArray.push(`${i}`)
       }
       const userParticipation = await getGraphLotteryUser(account, undefined, undefined, {
@@ -88,11 +100,11 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
       if (!publicContractData) {
         getPublicContractData()
       }
-      if (currentLotteryIdNum && !userRounds) {
+      if (currentLotteryIdNum && publicContractData && !userRounds) {
         getUserData()
       }
     }
-  }, [currentLotteryIdNum, lotteryNftContract, userRounds, publicContractData, lotteryNftContractAddress, account])
+  }, [currentLotteryIdNum, userRounds, publicContractData, lotteryNftContractAddress, account])
 
   useEffect(() => {
     const genericClaimChecks = async () => {
@@ -137,6 +149,11 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
         const userTickets = await fetchUserTicketsForOneRound(account, winningRound.lotteryId)
         const claimedTickets = userTickets.filter((ticket) => ticket.status)
         const winningTicketCursor = userTickets.indexOf(claimedTickets[0])
+        // No winning ticket found for an expected winning round. Can happen when switching accounts.
+        if (winningTicketCursor < 0) {
+          setIsClaimable(false)
+          return
+        }
         try {
           const passesContractCheck = await lotteryNftContract.canClaimNft2(
             account,
@@ -197,18 +214,9 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
     if (account) {
       canClaimMap[identifier]()
     }
-  }, [
-    account,
-    identifier,
-    variationId,
-    startLotteryRound,
-    finalLotteryRound,
-    userRounds,
-    lotteryNftContract,
-    setIsClaimable,
-  ])
+  }, [account, identifier, variationId, userRounds, lotteryNftContract, lastUpdated, setIsClaimable])
 
-  return <NftCard nft={nft} {...props} canClaim={isClaimable} onClaim={handleClaim} />
+  return <NftCard nft={nft} canClaim={isClaimable} onClaim={handleClaim} refresh={refresh} {...props} />
 }
 
 export default LotteryNftCard
