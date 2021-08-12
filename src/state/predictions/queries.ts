@@ -24,6 +24,7 @@ export interface BetResponse {
   position: string
   claimed: boolean
   claimedAt: string
+  claimedBlock: string
   claimedHash: string
   claimedBNB: string
   claimedNetBNB: string
@@ -50,28 +51,27 @@ export interface HistoricalBetResponse {
 export interface RoundResponse {
   id: string
   epoch: string
+  position: string
   failed: boolean
-  startBlock: string
   startAt: string
+  startBlock: string
   startHash: string
   lockAt: string
   lockBlock: string
-  lockPrice: string
   lockHash: string
+  lockPrice: string
   lockRoundId: string
-  closeRoundId: string
-  closeHash: string
   closeAt: string
-  closePrice: string
   closeBlock: string
+  closeHash: string
+  closePrice: string
+  closeRoundId: string
   totalBets: string
   totalAmount: string
-  bearBets: string
   bullBets: string
-  bearAmount: string
   bullAmount: string
-  position: string
-  totalAmountTreasury: string
+  bearBets: string
+  bearAmount: string
   bets?: BetResponse[]
 }
 
@@ -88,52 +88,60 @@ export interface TotalWonRoundResponse {
  * Base fields are the all the top-level fields available in the api. Used in multiple queries
  */
 export const getRoundBaseFields = () => `
-  id
-  epoch
-  position
-  failed
-  startAt
-  startBlock
-  startHash
-  lockAt
-  lockPrice
-  lockRoundId
-  closeAt
-  closeBlock
-  closeHash
-  closePrice
-  closeRoundId
-  totalBets
-  totalAmount
-  totalAmountTreasury
-  bullBets
-  bullAmount
-  bearBets
-  bearAmount
+ id
+ epoch
+ position
+ failed
+ startAt
+ startBlock
+ startHash
+ lockAt
+ lockBlock
+ lockHash
+ lockPrice
+ lockRoundId
+ closeAt
+ closeBlock
+ closeHash
+ closePrice
+ closeRoundId
+ totalBets
+ totalAmount
+ bullBets
+ bullAmount
+ bearBets
+ bearAmount
 `
 
 export const getBetBaseFields = () => `
-  id
-  hash  
-  amount
-  position
-  claimed
-  claimedHash
+ id
+ hash  
+ amount
+ position
+ claimed
+ claimedAt
+ claimedHash
+ claimedBlock
+ claimedBNB
+ claimedNetBNB
+ createdAt
+ updatedAt
 `
 
 export const getUserBaseFields = () => `
-  id
-  createdAt
-  updatedAt
-  block
-  totalBets
-  totalBetsBull
-  totalBetsBear
-  totalBNB
-  totalBNBBull
-  totalBNBBear
-  totalBetsClaimed
-  winRate
-  averageBNB
-  netBNB
+ id
+ createdAt
+ updatedAt
+ block
+ totalBets
+ totalBetsBull
+ totalBetsBear
+ totalBNB
+ totalBNBBull
+ totalBNBBear
+ totalBetsClaimed
+ totalBNBClaimed
+ winRate
+ averageBNB
+ netBNB
 `

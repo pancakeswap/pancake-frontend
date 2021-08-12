@@ -201,7 +201,6 @@ export interface Round {
   bearBets: number
   bearAmount: number
   bullAmount: number
-  totalAmountTreasury: number
   position: BetPosition
   bets?: Bet[]
 }
