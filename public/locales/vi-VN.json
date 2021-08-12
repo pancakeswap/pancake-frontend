@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "\"Mua ngay\" sẽ chọn các số ngẫu nhiên không trùng lặp trong các vé của bạn. Giá được quy định trước mỗi vòng, tương đương $5 tại thời điểm đó. Các đơn hàng đều là cuối cùng.",
   "Prizes Collected!": "Đã thu được giải thưởng!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Giải thưởng CAKE cho vòng %lotteryId% đã được gửi đến ví của bạn",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "Đã nhận %claimNum% / %claimTotal% cho vòng %lotteryId%. Vui lòng xác nhận giao dịch tiếp theo",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Đang nhận",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Vé phải khớp với số chiến thắng theo đúng thứ tự, bắt đầu từ ký tự số đầu tiên.",
   "If the winning number is “123456”:": "Nếu số chiến thắng là “123456”:",
