@@ -12,6 +12,15 @@ interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
 }
 
+const nftsToCheck = [
+  {
+    identifier: 'baller',
+    variationId: 20,
+  },
+  { identifier: 'lucky', variationId: 19 },
+  { identifier: 'lottie', variationId: 18 },
+]
+
 /**
  * This is represented as a component rather than a hook because we need to keep it
  * inside the Router.
