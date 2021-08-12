@@ -115,7 +115,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   }
 
   return (
-    <ActionContainer>
+    <ActionContainer isAutoVault={isAutoVault}>
       <ActionTitles>{actionTitle}</ActionTitles>
       <ActionContent>
         <Flex flex="1" pt="16px" flexDirection="column" alignSelf="flex-start">
