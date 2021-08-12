@@ -11,6 +11,27 @@ import { Campaign } from './types'
 
 const campaigns: Campaign[] = [
   {
+    id: '515010001',
+    type: 'participation',
+    title: 'Lottie',
+    description: 'Joined a round in the early days of Lottery V2',
+    badge: 'lottie.svg',
+  },
+  {
+    id: '516010001',
+    type: 'participation',
+    title: 'Lucky',
+    description: 'Won a round in the early days of Lottery V2',
+    badge: 'lucky.svg',
+  },
+  {
+    id: '518010001',
+    type: 'participation',
+    title: 'Baller',
+    description: 'Top 100 ticket buyer in the early days of Lottery V2',
+    badge: 'baller.svg',
+  },
+  {
     id: '511110000',
     type: 'ifo',
     title: 'Kalmar',
