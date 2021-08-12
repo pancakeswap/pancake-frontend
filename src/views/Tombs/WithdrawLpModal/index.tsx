@@ -55,7 +55,7 @@ const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ pid, updateResult, on
   let isDisabled = false
   let withdrawDetails = ''
   let additionalDetails = ''
-  let learnMore = false
+  const learnMore = false
   const handleChangePercent = (sliderPercent: number) => {
     const percentageOfStakingMax = amount.multipliedBy(sliderPercent).dividedBy(100)
     const amountToStake = percentageOfStakingMax
@@ -115,7 +115,6 @@ const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ pid, updateResult, on
           isDisabled = true
           withdrawDetails = `Partial Early Withdrawal's aren't supported on ${exchange} tombs.`
           additionalDetails = "You must withdraw max on early withdrawals during the migration."
-          learnMore = true
         }
     } else if(hasWhaleTax) {
     withdrawDetails = `8% whale tax is enabled.`
