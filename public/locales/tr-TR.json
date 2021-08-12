@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "\"Anında Satın Al\", biletlerin arasında yinelenen olmadan rastgele sayılar seçer. Fiyatlar, her tur başlamadan önce belirlenir ve o sırada $5 miktarına eşittir. Satın alımlar kesindir.",
   "Prizes Collected!": "Ödüller Toplandı!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "%lotteryId%. turda kazandığın CAKE ödüllerin cüzdanına gönderildi",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "%LotteryId% turu için toplam %claimTotal% içinden %claimNum% alımı başarılı oldu. Lütfen bir sonraki işlemi onayla",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Alınıyor",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Biletler, kazanan sayılarla ilk basamaktan başlayarak aynı sırayla eşleşmelidir.",
   "If the winning number is “123456”:": "Kazanan sayılar \"123456\" ise:",
