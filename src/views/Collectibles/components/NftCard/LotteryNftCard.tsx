@@ -10,7 +10,6 @@ import { fetchUserTicketsForOneRound } from 'state/lottery/getUserTicketsData'
 import { ethersToSerializedBigNumber } from 'utils/bigNumber'
 import { getBunnySpecialLotteryAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import useLastUpdated from 'hooks/useLastUpdated'
 import { useBunnySpecialLotteryContract } from 'hooks/useContract'
 import bunnySpecialLotteryAbi from 'config/abi/bunnySpecialLottery.json'
 import NftCard, { NftCardProps } from './index'
@@ -29,7 +28,6 @@ interface PublicContractData {
 const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const { account } = useWeb3React()
   const { identifier, variationId } = nft
-  const { lastUpdated, setLastUpdated } = useLastUpdated()
   const dispatch = useAppDispatch()
   const lotteryNftContract = useBunnySpecialLotteryContract()
   const lotteryNftContractAddress = getBunnySpecialLotteryAddress()
@@ -51,8 +49,9 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   }
 
   const refresh = async () => {
+    // TODO: confirm this is firing
     dispatch(fetchWalletNfts(account))
-    setLastUpdated()
+    setIsClaimable(false)
   }
 
   useEffect(() => {
@@ -123,12 +122,14 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
 
     const canClaimLottie = async () => {
       const passesGenericChecks = await genericClaimChecks()
-      if (passesGenericChecks) {
+      const participatedRound = userRounds && userRounds[0]
+
+      if (passesGenericChecks && participatedRound) {
         try {
-          const passesContractCheck = await lotteryNftContract.canClaimNft1(account, userRounds[0].lotteryId)
+          const passesContractCheck = await lotteryNftContract.canClaimNft1(account, participatedRound.lotteryId)
           if (passesContractCheck) {
             setIsClaimable(true)
-            setMintingData({ bunnyId: variationId, lotteryId: userRounds[0].lotteryId, cursor: '0' })
+            setMintingData({ bunnyId: variationId, lotteryId: participatedRound.lotteryId, cursor: '0' })
           }
         } catch (error) {
           setIsClaimable(false)
@@ -214,7 +215,7 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
     if (account) {
       canClaimMap[identifier]()
     }
-  }, [account, identifier, variationId, userRounds, lotteryNftContract, lastUpdated, setIsClaimable])
+  }, [account, identifier, variationId, userRounds, lotteryNftContract, setIsClaimable])
 
   return <NftCard nft={nft} canClaim={isClaimable} onClaim={handleClaim} refresh={refresh} {...props} />
 }
