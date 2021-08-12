@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "Η λειτουργία \"Αγορά άμεσα\" επιλέγει τυχαίους αριθμούς, χωρίς επαναλήψεις στα λαχεία σας. Οι τιμές έχουν καθοριστεί πριν από κάθε έναρξη του γύρου, και αντιστοιχούν σε 5$ αυτή τη στιγμή. Οι αγορές είναι οριστικές.",
   "Prizes Collected!": "Συλλέχθηκαν έπαθλα!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Το έπαθλό σας CAKE για τον γύρο %lotteryId% έχει σταλεί στο πορτοφόλι σας",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "Η διεκδίκηση %claimNum% από %claimTotal% στον γύρο %lotteryId% ήταν επιτυχής. Επιβεβαιώστε την επόμενη συναλλαγή",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Διεκδίκηση",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Τα λαχεία πρέπει να ταιριάζουν με τον αριθμό που κερδίζει με την ίδια ακριβώς σειρά, ξεκινώντας από το πρώτο ψηφίο.",
   "If the winning number is “123456”:": "Εάν ο αριθμός που κερδίζει είναι “123456”:",
