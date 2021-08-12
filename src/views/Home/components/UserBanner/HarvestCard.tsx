@@ -9,6 +9,7 @@ import { useMasterchef } from 'hooks/useContract'
 import { harvestFarm } from 'utils/calls'
 import Balance from 'components/Balance'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
+import { getEarningsText } from './EarningsText'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -24,14 +25,12 @@ const HarvestCard = () => {
   const masterChefContract = useMasterchef()
   const cakePriceBusd = usePriceCakeBusd()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
-  const numFarmsToCollect = farmsWithStakedBalance.length
+  const numTotalToCollect = farmsWithStakedBalance.length
+  const numFarmsToCollect = farmsWithStakedBalance.filter((value) => value.pid !== 0).length
+  const hasCakePoolToCollect = numTotalToCollect - numFarmsToCollect > 0
 
-  const earningsText = t('%earningsBusd% to collect from %count% %farms%', {
-    earningsBusd: earningsBusd.toString(),
-    count: numFarmsToCollect > 0 ? numFarmsToCollect : '',
-    farms: numFarmsToCollect === 0 || numFarmsToCollect > 1 ? 'farms' : 'farm',
-  })
-  const [preText, toCollectText] = earningsText.split(earningsBusd.toString())
+  const earningsText = getEarningsText(numFarmsToCollect, hasCakePoolToCollect, earningsBusd, t)
+  const [preText, toCollectText] = earningsText.split(earningsBusd.isNaN() ? '0' : earningsBusd.toString())
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -77,7 +76,7 @@ const HarvestCard = () => {
               {toCollectText}
             </Text>
           </Flex>
-          {numFarmsToCollect <= 0 ? (
+          {numTotalToCollect <= 0 ? (
             <Link href="farms">
               <Button width={['100%', null, null, 'auto']} variant="secondary">
                 <Text color="primary" bold>
