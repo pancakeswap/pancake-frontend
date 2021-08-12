@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.47.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.46.2...@pancakeswap/uikit@0.47.0) (2021-08-12)
+
+
+### Features
+
+* **uikit:** Input Group ([#220](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/220)) ([109f3de](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/109f3de9c6167652bd84a1302ddae3008263498b))
+
+
+
+
+
 ## [0.46.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.46.1...@pancakeswap/uikit@0.46.2) (2021-08-11)
 
 **Note:** Version bump only for package @pancakeswap/uikit
