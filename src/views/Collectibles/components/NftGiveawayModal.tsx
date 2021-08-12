@@ -5,11 +5,7 @@ import { Modal, Text, Button, Flex, InjectedModalProps } from '@pancakeswap/uiki
 import history from 'routerHistory'
 import { delay } from 'lodash'
 import { useTranslation } from 'contexts/Localization'
-import nftList from 'config/constants/nfts'
 import { Nft } from 'config/constants/types'
-import { useProfile } from 'state/profile/hooks'
-import { Profile } from 'state/types'
-import { teamNftMap } from './NftCard/EasterNftCard'
 
 const NftImage = styled.img`
   border-radius: 50%;
@@ -32,25 +28,12 @@ const showConfetti = () => {
   })
 }
 
-const getClaimableNft = (profile: Profile): Nft => {
-  if (!profile) {
-    return null
-  }
-
-  if (!profile.team) {
-    return null
-  }
-
-  const identifier = Object.keys(teamNftMap).find(
-    (mapNftIdentifier) => teamNftMap[mapNftIdentifier] === profile.team.id,
-  )
-  return nftList.find((nft) => nft.identifier === identifier)
+interface NftGiveawayModalProps extends InjectedModalProps {
+  nft: Nft
 }
 
-const NftGiveawayModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nft }) => {
   const { t } = useTranslation()
-  const { profile } = useProfile()
-  const nft = getClaimableNft(profile)
 
   // This is required because the modal exists outside the Router
   const handleClick = () => {

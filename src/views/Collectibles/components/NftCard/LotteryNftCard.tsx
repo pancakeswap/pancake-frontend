@@ -27,6 +27,7 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   // TO BE REPLACED BY NODE DATA
   const startLotteryRound = 8
   const finalLotteryRound = 18
+  // Also fetch userWhitelistForNft3 for Nft3 check
 
   const handleClaim = async () => {
     const response: ethers.providers.TransactionResponse = await easterNftContract.mintNFT()
@@ -36,12 +37,12 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const lotteryInArray = []
+      const lotteryIdsArray = []
       for (let i = startLotteryRound; i <= finalLotteryRound; i++) {
-        lotteryInArray.push(`${i}`)
+        lotteryIdsArray.push(`${i}`)
       }
       const userParticipation = await getGraphLotteryUser(account, undefined, undefined, {
-        lottery_in: lotteryInArray,
+        lottery_in: lotteryIdsArray,
       })
       setUserRounds(userParticipation.rounds)
     }
@@ -54,6 +55,8 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   useEffect(() => {
     // User participated in ANY lottery between 8 & 18
     const canClaimLottie = () => {
+      // check hasClaimed(address[variationId])
+
       if (!userRounds) {
         setIsClaimable(false)
         return
@@ -83,6 +86,8 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
     }
 
     const canClaimBaller = () => {
+      // userWhitelistForNft3
+
       if (!userRounds) {
         setIsClaimable(false)
         return

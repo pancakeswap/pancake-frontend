@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { useModal } from '@pancakeswap/uikit'
+import { Nft } from 'config/constants/types'
+import nfts from 'config/constants/nfts'
 import { useProfile } from 'state/profile/hooks'
 import { useEasterNftContract } from 'hooks/useContract'
 import NftGiveawayModal from './NftGiveawayModal'
@@ -19,7 +21,8 @@ interface GlobalCheckClaimStatusProps {
 const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocations }) => {
   const hasDisplayedModal = useRef(false)
   const [isClaimable, setIsClaimable] = useState(false)
-  const [onPresentGiftModal] = useModal(<NftGiveawayModal />)
+  const [claimableNft, setClaimableNft] = useState<Nft>(null)
+  const [onPresentGiftModal] = useModal(<NftGiveawayModal nft={claimableNft} />)
   const easterNftContract = useEasterNftContract()
   const { profile } = useProfile()
   const { account } = useWeb3React()
@@ -29,7 +32,7 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
   useEffect(() => {
     const fetchClaimStatus = async () => {
       const canClaim = await easterNftContract.canClaim(account)
-      setIsClaimable(canClaim)
+      setIsClaimable(true)
     }
 
     // Wait until we have a profile
