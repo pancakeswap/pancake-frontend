@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "「すぐに購入」は宝くじ券が重複しないように、乱数を選択します。各ラウンドが開始する前に価格は設定され、各5ドルです。購入後は返金できません。",
   "Prizes Collected!": "賞金を回収しました！",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "ラウンド%lotteryId%のCAKE賞金が、お使いのウォレットに送金されました",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "ラウンド%lotteryId%の%claimTotal%のうち%claimNum%の請求が正常に行われました。次の取引を確認してください",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "請求しています",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "宝くじ券は、最初の数字から始めて全く同じ順番で当選番号が一致する必要があります。",
   "If the winning number is “123456”:": "当選番号が「123456」の場合:",
