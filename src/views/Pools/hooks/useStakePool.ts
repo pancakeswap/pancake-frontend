@@ -8,12 +8,14 @@ import { DEFAULT_TOKEN_DECIMAL, DEFAULT_GAS_LIMIT } from 'config'
 import { BIG_TEN } from 'utils/bigNumber'
 import { useMasterchef, useSousChef } from 'hooks/useContract'
 import { useGasPrice } from 'state/user/hooks'
+import getGasPrice from 'utils/getGasPrice'
 
 const options = {
   gasLimit: DEFAULT_GAS_LIMIT,
 }
 
-const sousStake = async (sousChefContract, amount, decimals = 18, gasPrice) => {
+const sousStake = async (sousChefContract, amount, decimals = 18) => {
+  const gasPrice = getGasPrice()
   const tx = await sousChefContract.deposit(new BigNumber(amount).times(BIG_TEN.pow(decimals)).toString(), {
     ...options,
     gasPrice,
@@ -45,7 +47,7 @@ const useStakePool = (sousId: number, isUsingBnb = false) => {
       } else if (isUsingBnb) {
         await sousStakeBnb(sousChefContract, amount, gasPrice)
       } else {
-        await sousStake(sousChefContract, amount, decimals, gasPrice)
+        await sousStake(sousChefContract, amount, decimals)
       }
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserBalance(sousId, account))
