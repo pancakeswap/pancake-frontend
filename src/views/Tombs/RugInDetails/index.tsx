@@ -7,6 +7,8 @@ import BigNumber from 'bignumber.js';
 import numeral from 'numeral'
 import { BIG_ZERO } from '../../../utils/bigNumber'
 import { tombByPid } from '../../../redux/get'
+import { getAddress } from '../../../utils/addressHelpers'
+import { APESWAP_ADD_LIQUIDITY_URL, BASE_ADD_LIQUIDITY_URL } from '../../../config'
 
 interface RugInDetailsProps {
   pid: number,
@@ -21,7 +23,10 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
   const drFrankenstein = useDrFrankenstein();
   const [unlockFee, setUnlockFee] = useState(0);
   const tomb = tombByPid(pid)
-  const { id, name, withdrawalCooldown, poolInfo: { allocPoint } } = tomb
+  const { id, name, withdrawalCooldown, exchange, poolInfo: { allocPoint } } = tomb
+  // eslint-disable-next-line no-nested-ternary
+  const quoteTokenUrl = tomb.quoteToken === tokens.wbnb ? tomb.exchange === 'Apeswap' ? 'ETH' : 'BNB' : getAddress(tomb.quoteToken.address)
+  const addLiquidityUrl = `${tomb.exchange === 'Apeswap' ? APESWAP_ADD_LIQUIDITY_URL : BASE_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
   useEffect(() => {
     drFrankenstein.methods.unlockFeeInBnb(pid).call()
       .then((res) => {
@@ -41,6 +46,9 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           Tomb TVL:
           <span className="indetails-value">{numeral(tvl).format('($ 0.00 a)')}</span>
         </span>
+        <LinkExternal href={addLiquidityUrl} className="indetails-title">
+          Pair on {exchange}
+        </LinkExternal>
       </div>
       <div className="direction-column">
         <span className="indetails-title">

@@ -87,7 +87,8 @@ const Home: React.FC = () => {
     fetch.initialData(account, multi)
   }, [account, multi])
 
-  // const allocPoints = web3.eth.abi.encodeParameter('uint256', '800')
+  // const pid = web3.eth.abi.encodeParameter('uint256', '11')
+  // const allocPoints = web3.eth.abi.encodeParameter('uint256', '1500').replace('0x','')
   // const lpToken = web3.eth.abi.encodeParameter('address', '0xdab566c6E63b06D641ABdCCaC4c6941C645812BD').replace('0x','')
   // const minimumStakingTime = web3.eth.abi.encodeParameter('uint256', '259200').replace('0x','')
   // const ruggedToken = web3.eth.abi.encodeParameter('address', '0x7cc46141ab1057b1928de5ad5ee78bb37efc4868').replace('0x','')
@@ -95,12 +96,12 @@ const Home: React.FC = () => {
   // const minimumStake = web3.eth.abi.encodeParameter('uint256', '5000000000000000000000').replace('0x','')
   // const unlockFee = web3.eth.abi.encodeParameter('uint256', '5000000000000000000').replace('0x','')
   // const nftRevivalTime = web3.eth.abi.encodeParameter('uint256', '2592000').replace('0x','')
-  // const withUpdate = web3.eth.abi.encodeParameter('bool', 'true').replace('0x','')
+  // const withUpdate = web3.eth.abi.encodeParameter('bool', 'false').replace('0x','')
   // console.log(`${allocPoints}${lpToken}${minimumStakingTime}${ruggedToken}${nft}${minimumStake}${unlockFee}${nftRevivalTime}${withUpdate}`)
   // const pid = web3.eth.abi.encodeParameter('uint256', '0')
   // const nft = web3.eth.abi.encodeParameter('address', '0x6209E17d98ba2089571476940751802AAc4249e8').replace('0x','')
   //
-  // console.log(`${pid}${nft}`)
+  // console.log(`${pid}${allocPoints}${withUpdate}`)
 
   return (
     <>
