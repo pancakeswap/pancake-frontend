@@ -957,7 +957,7 @@
   "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "Функція «Придбати миттєво» вибирає довільні номери білетів без повторів. Ціни встановлюються до того, як починається кожен раунд. На той момент вони складають п’ять доларів США. Покупки скасувати не можна.",
   "Prizes Collected!": "Призи зібрано!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Призи CAKE за раунд %lotteryId% надіслано у ваш гаманець",
-  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "Вам вдалось отримати %claimNum% із %claimTotal% за раунд %lotteryId%. Підтвердьте наступну транзакцію.",
+  "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Отримання",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Номери на білетах мають збігатися з виграшними номерами в тій же послідовності, починаючи з першої цифри.",
   "If the winning number is “123456”:": "Якщо виграшний номер – «123456»:",
