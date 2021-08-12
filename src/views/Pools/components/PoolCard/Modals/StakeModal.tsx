@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon, Link } from '@pancakeswap/uikit'
+import {
+  Modal,
+  Text,
+  Flex,
+  Image,
+  Button,
+  Slider,
+  BalanceInput,
+  AutoRenewIcon,
+  Link,
+  CalculateIcon,
+  IconButton,
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
 import BigNumber from 'bignumber.js'
+import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import { Pool } from 'state/types'
 import { getAddress } from 'utils/addressHelpers'
+import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import PercentageButton from './PercentageButton'
 import useStakePool from '../../../hooks/useStakePool'
 import useUnstakePool from '../../../hooks/useUnstakePool'
@@ -25,6 +39,18 @@ const StyledLink = styled(Link)`
   width: 100%;
 `
 
+const AnnualRoiContainer = styled(Flex)`
+  cursor: pointer;
+`
+
+const AnnualRoiDisplay = styled(Text)`
+  width: 72px;
+  max-width: 72px;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+`
+
 const StakeModal: React.FC<StakeModalProps> = ({
   isBnbPool,
   pool,
@@ -33,7 +59,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   isRemovingStake = false,
   onDismiss,
 }) => {
-  const { sousId, stakingToken, userData, stakingLimit, earningToken } = pool
+  const { sousId, stakingToken, earningTokenPrice, apr, userData, stakingLimit, earningToken } = pool
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { onStake } = useStakePool(sousId, isBnbPool)
@@ -43,6 +69,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const [stakeAmount, setStakeAmount] = useState('')
   const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false)
   const [percent, setPercent] = useState(0)
+  const [showRoiCalculator, setShowRoiCalculator] = useState(false)
   const getCalculatedStakingLimit = () => {
     if (isRemovingStake) {
       return userData.stakedBalance
@@ -50,7 +77,18 @@ const StakeModal: React.FC<StakeModalProps> = ({
     return stakingLimit.gt(0) && stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance
   }
 
-  const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
+  const usdValueStaked = new BigNumber(stakeAmount).times(stakingTokenPrice)
+  const formattedUsdValueStaked = !usdValueStaked.isNaN() && formatNumber(usdValueStaked.toNumber())
+
+  const interestBreakdown = getInterestBreakdown({
+    principalInUSD: !usdValueStaked.isNaN() ? usdValueStaked.toNumber() : 0,
+    apr,
+    earningTokenPrice,
+  })
+  const annualRoi = interestBreakdown[3] * pool.earningTokenPrice
+  const formattedAnnualRoi = formatNumber(annualRoi, annualRoi > 10000 ? 0 : 2, annualRoi > 10000 ? 0 : 2)
+
+  const getTokenLink = stakingToken.address ? `/swap?outputCurrency=${getAddress(stakingToken.address)}` : '/swap'
 
   useEffect(() => {
     if (stakingLimit.gt(0) && !isRemovingStake) {
@@ -119,8 +157,26 @@ const StakeModal: React.FC<StakeModalProps> = ({
     }
   }
 
+  if (showRoiCalculator) {
+    return (
+      <RoiCalculatorModal
+        earningTokenPrice={earningTokenPrice}
+        stakingTokenPrice={stakingTokenPrice}
+        apr={apr}
+        linkLabel={t('Get %symbol%', { symbol: stakingToken.symbol })}
+        linkHref={getTokenLink}
+        stakingTokenBalance={userData.stakedBalance.plus(stakingTokenBalance)}
+        stakingTokenSymbol={stakingToken.symbol}
+        earningTokenSymbol={earningToken.symbol}
+        onBack={() => setShowRoiCalculator(false)}
+        initialValue={stakeAmount}
+      />
+    )
+  }
+
   return (
     <Modal
+      minWidth="346px"
       title={isRemovingStake ? t('Unstake') : t('Stake in Pool')}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
@@ -150,7 +206,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       <BalanceInput
         value={stakeAmount}
         onUserInput={handleStakeInputChange}
-        currencyValue={stakingTokenPrice !== 0 && `~${usdValueStaked || 0} USD`}
+        currencyValue={stakingTokenPrice !== 0 && `~${formattedUsdValueStaked || 0} USD`}
         isWarning={hasReachedStakeLimit}
         decimals={stakingToken.decimals}
       />
@@ -182,6 +238,19 @@ const StakeModal: React.FC<StakeModalProps> = ({
         <PercentageButton onClick={() => handleChangePercent(75)}>75%</PercentageButton>
         <PercentageButton onClick={() => handleChangePercent(100)}>{t('Max')}</PercentageButton>
       </Flex>
+      {!isRemovingStake && (
+        <Flex mt="24px" alignItems="center" justifyContent="space-between">
+          <Text mr="8px" color="textSubtle">
+            {t('Annual ROI at current rates')}:
+          </Text>
+          <AnnualRoiContainer alignItems="center" onClick={() => setShowRoiCalculator(true)}>
+            <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
+            <IconButton variant="text" scale="sm">
+              <CalculateIcon color="textSubtle" width="18px" />
+            </IconButton>
+          </AnnualRoiContainer>
+        </Flex>
+      )}
       <Button
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
@@ -192,7 +261,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         {pendingTx ? t('Confirming') : t('Confirm')}
       </Button>
       {!isRemovingStake && (
-        <StyledLink external href="/swap">
+        <StyledLink external href={getTokenLink}>
           <Button width="100%" mt="8px" variant="secondary">
             {t('Get %symbol%', { symbol: stakingToken.symbol })}
           </Button>

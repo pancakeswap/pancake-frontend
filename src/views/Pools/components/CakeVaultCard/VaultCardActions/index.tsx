@@ -17,7 +17,8 @@ const CakeVaultCardActions: React.FC<{
   pool: Pool
   accountHasSharesStaked: boolean
   isLoading: boolean
-}> = ({ pool, accountHasSharesStaked, isLoading }) => {
+  performanceFee: number
+}> = ({ pool, accountHasSharesStaked, isLoading, performanceFee }) => {
   const { stakingToken, userData } = pool
   const { t } = useTranslation()
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
@@ -51,6 +52,7 @@ const CakeVaultCardActions: React.FC<{
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             accountHasSharesStaked={accountHasSharesStaked}
+            performanceFee={performanceFee}
           />
         ) : (
           <VaultApprovalAction isLoading={isLoading} setLastUpdated={setLastUpdated} />

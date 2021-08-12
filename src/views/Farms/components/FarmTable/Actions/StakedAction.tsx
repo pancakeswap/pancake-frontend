@@ -6,7 +6,7 @@ import { BigNumber } from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Balance from 'components/Balance'
 import { useWeb3React } from '@web3-react/core'
-import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
+import { useFarmUser, useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { useTranslation } from 'contexts/Localization'
@@ -29,15 +29,21 @@ const IconButtonWrapper = styled.div`
 
 interface StackedActionProps extends FarmWithStakedValue {
   userDataReady: boolean
+  lpLabel?: string
+  displayApr?: string
 }
 
 const Staked: React.FunctionComponent<StackedActionProps> = ({
   pid,
+  apr,
+  multiplier,
   lpSymbol,
+  lpLabel,
   lpAddresses,
   quoteToken,
   token,
   userDataReady,
+  displayApr,
 }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -47,6 +53,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const { onUnstake } = useUnstakeFarms(pid)
   const location = useLocation()
   const lpPrice = useLpTokenPrice(lpSymbol)
+  const cakePrice = usePriceCakeBusd()
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
@@ -79,7 +86,19 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   }, [stakedBalance])
 
   const [onPresentDeposit] = useModal(
-    <DepositModal max={tokenBalance} onConfirm={handleStake} tokenName={lpSymbol} addLiquidityUrl={addLiquidityUrl} />,
+    <DepositModal
+      max={tokenBalance}
+      lpPrice={lpPrice}
+      lpLabel={lpLabel}
+      apr={apr}
+      displayApr={displayApr}
+      stakedBalance={stakedBalance}
+      onConfirm={handleStake}
+      tokenName={lpSymbol}
+      multiplier={multiplier}
+      addLiquidityUrl={addLiquidityUrl}
+      cakePrice={cakePrice}
+    />,
   )
   const [onPresentWithdraw] = useModal(
     <WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,

@@ -13,9 +13,10 @@ import VaultStakeModal from '../VaultStakeModal'
 interface HasStakeActionProps {
   pool: Pool
   stakingTokenBalance: BigNumber
+  performanceFee: number
 }
 
-const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBalance }) => {
+const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBalance, performanceFee }) => {
   const {
     userData: { userShares },
     pricePerFullShare,
@@ -28,7 +29,9 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
     : 0
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
-  const [onPresentStake] = useModal(<VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} />)
+  const [onPresentStake] = useModal(
+    <VaultStakeModal stakingMax={stakingTokenBalance} performanceFee={performanceFee} pool={pool} />,
+  )
   const [onPresentUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
   return (

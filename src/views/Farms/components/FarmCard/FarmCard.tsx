@@ -80,16 +80,17 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
             <Text>{t('APR')}:</Text>
             <Text bold style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apr ? (
-                <>
-                  <ApyButton
-                    lpLabel={lpLabel}
-                    addLiquidityUrl={addLiquidityUrl}
-                    cakePrice={cakePrice}
-                    apr={farm.apr}
-                    displayApr={displayApr}
-                  />
-                  {displayApr}%
-                </>
+                <ApyButton
+                  variant="text-and-button"
+                  pid={farm.pid}
+                  lpSymbol={farm.lpSymbol}
+                  multiplier={farm.multiplier}
+                  lpLabel={lpLabel}
+                  addLiquidityUrl={addLiquidityUrl}
+                  cakePrice={cakePrice}
+                  apr={farm.apr}
+                  displayApr={displayApr}
+                />
               ) : (
                 <Skeleton height={24} width={80} />
               )}
@@ -100,7 +101,13 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
           <Text>{t('Earn')}:</Text>
           <Text bold>{earnLabel}</Text>
         </Flex>
-        <CardActionsContainer farm={farm} account={account} addLiquidityUrl={addLiquidityUrl} />
+        <CardActionsContainer
+          farm={farm}
+          lpLabel={lpLabel}
+          account={account}
+          cakePrice={cakePrice}
+          addLiquidityUrl={addLiquidityUrl}
+        />
       </FarmCardInnerContainer>
 
       <ExpandingWrapper>
