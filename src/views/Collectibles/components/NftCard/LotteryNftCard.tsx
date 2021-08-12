@@ -5,7 +5,11 @@ import { useGetCurrentLotteryId } from 'state/lottery/hooks'
 import { getGraphLotteryUser } from 'state/lottery/getUserLotteryData'
 import { UserRound } from 'state/types'
 import { fetchUserTicketsForOneRound } from 'state/lottery/getUserTicketsData'
-import { useEasterNftContract } from 'hooks/useContract'
+import { ethersToSerializedBigNumber } from 'utils/bigNumber'
+import { getBunnySpecialLotteryAddress } from 'utils/addressHelpers'
+import { multicallv2 } from 'utils/multicall'
+import { useBunnySpecialLotteryContract } from 'hooks/useContract'
+import bunnySpecialLotteryAbi from 'config/abi/bunnySpecialLottery.json'
 import NftCard, { NftCardProps } from './index'
 
 interface LotteryNftMintData {
@@ -17,11 +21,13 @@ interface LotteryNftMintData {
 const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const { account } = useWeb3React()
   const { identifier, variationId } = nft
-  const easterNftContract = useEasterNftContract()
+  const lotteryNftContract = useBunnySpecialLotteryContract()
+  const lotteryNftContractAddress = getBunnySpecialLotteryAddress()
   const currentLotteryId = useGetCurrentLotteryId()
   const currentLotteryIdNum = parseInt(currentLotteryId)
   const [isClaimable, setIsClaimable] = useState(false)
   const [mintingData, setMintingData] = useState<LotteryNftMintData>(null)
+  const [publicContractData, setPublicContractData] = useState(null)
   const [userRounds, setUserRounds] = useState<UserRound[]>(null)
 
   // TO BE REPLACED BY NODE DATA
@@ -30,7 +36,8 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   // Also fetch userWhitelistForNft3 for Nft3 check
 
   const handleClaim = async () => {
-    const response: ethers.providers.TransactionResponse = await easterNftContract.mintNFT()
+    const { bunnyId, lotteryId, cursor } = mintingData
+    const response: ethers.providers.TransactionResponse = await lotteryNftContract.mintNFT(bunnyId, lotteryId, cursor)
     await response.wait()
     return response
   }
@@ -47,10 +54,41 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
       setUserRounds(userParticipation.rounds)
     }
 
-    if (account && currentLotteryIdNum) {
-      getUserData()
+    const getPublicContractData = async () => {
+      const calls = [
+        {
+          name: 'startLotteryRound',
+          address: lotteryNftContractAddress,
+          params: [],
+        },
+        {
+          name: 'finalLotteryRound',
+          address: lotteryNftContractAddress,
+          params: [],
+        },
+      ]
+
+      try {
+        const [[startRound], [finalRound]] = await multicallv2(bunnySpecialLotteryAbi, calls)
+        const startRoundAsString = ethersToSerializedBigNumber(startRound)
+        const finalRoundAsString = ethersToSerializedBigNumber(finalRound)
+
+        debugger // eslint-disable-line
+        setPublicContractData({ startLotteryRound: startRoundAsString, finalLotteryRound: finalRoundAsString })
+      } catch (error) {
+        console.error('Failed to fetch public lottery nft data', error)
+      }
     }
-  }, [currentLotteryIdNum, account])
+
+    if (account) {
+      if (!publicContractData) {
+        getPublicContractData()
+      }
+      if (currentLotteryIdNum && !userRounds) {
+        getUserData()
+      }
+    }
+  }, [currentLotteryIdNum, lotteryNftContract, userRounds, publicContractData, lotteryNftContractAddress, account])
 
   useEffect(() => {
     // User participated in ANY lottery between 8 & 18
@@ -108,16 +146,7 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
     if (account) {
       canClaimMap[identifier]()
     }
-  }, [
-    account,
-    identifier,
-    variationId,
-    easterNftContract,
-    startLotteryRound,
-    finalLotteryRound,
-    userRounds,
-    setIsClaimable,
-  ])
+  }, [account, identifier, variationId, startLotteryRound, finalLotteryRound, userRounds, setIsClaimable])
 
   return <NftCard nft={nft} {...props} canClaim={isClaimable} onClaim={handleClaim} />
 }

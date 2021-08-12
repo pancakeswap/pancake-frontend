@@ -18,14 +18,14 @@ const campaigns: Campaign[] = [
     badge: 'lottie.svg',
   },
   {
-    id: '516010001',
+    id: '515020001',
     type: 'participation',
     title: 'Lucky',
     description: 'Won a round in the early days of Lottery V2',
     badge: 'lucky.svg',
   },
   {
-    id: '518010001',
+    id: '515030001',
     type: 'participation',
     title: 'Baller',
     description: 'Top 100 ticket buyer in the early days of Lottery V2',
