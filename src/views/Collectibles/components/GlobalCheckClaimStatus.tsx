@@ -7,19 +7,11 @@ import nfts from 'config/constants/nfts'
 import { useProfile } from 'state/profile/hooks'
 import { useEasterNftContract } from 'hooks/useContract'
 import NftGiveawayModal from './NftGiveawayModal'
+import useBunnySpecialLottery from '../hooks/useBunnySpecialLottery'
 
 interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
 }
-
-const nftsToCheck = [
-  {
-    identifier: 'baller',
-    variationId: 20,
-  },
-  { identifier: 'lucky', variationId: 19 },
-  { identifier: 'lottie', variationId: 18 },
-]
 
 /**
  * This is represented as a component rather than a hook because we need to keep it
@@ -32,23 +24,32 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
   const [isClaimable, setIsClaimable] = useState(false)
   const [claimableNft, setClaimableNft] = useState<Nft>(null)
   const [onPresentGiftModal] = useModal(<NftGiveawayModal nft={claimableNft} />)
-  const easterNftContract = useEasterNftContract()
-  const { profile } = useProfile()
   const { account } = useWeb3React()
   const { pathname } = useLocation()
+  const { canClaimBaller, canClaimLottie, canClaimLucky } = useBunnySpecialLottery()
 
   // Check claim status
   useEffect(() => {
     const fetchClaimStatus = async () => {
-      const canClaim = await easterNftContract.canClaim(account)
+      const lotteryNftIdentifiers = ['baller', 'lucky', 'lottie']
+
+      const canClaimMap = {
+        lottie: canClaimBaller,
+        lucky: canClaimLottie,
+        baller: canClaimLucky,
+      }
+
+      const { canClaim: isBallerClaimable } = await canClaimBaller()
+      const { canClaim: isLottieClaimable } = await canClaimLottie()
+      const { canClaim: isLuckyClaimable } = await canClaimLucky()
+
       setIsClaimable(true)
     }
 
-    // Wait until we have a profile
-    if (account && profile) {
+    if (account) {
       fetchClaimStatus()
     }
-  }, [easterNftContract, account, profile, setIsClaimable])
+  }, [account, canClaimBaller, canClaimLottie, canClaimLucky, setIsClaimable])
 
   // Check if we need to display the modal
   useEffect(() => {

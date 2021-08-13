@@ -109,6 +109,7 @@ const useBunnySpecialLottery = (): {
         hasClaimed = await lotteryNftContract.hasClaimed(account, variationId)
       } catch (error) {
         console.error(`Failed to check hasClaimed for id ${variationId}`, error)
+        return false
       }
       if (hasClaimed) {
         return false
