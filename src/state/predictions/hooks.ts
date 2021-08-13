@@ -161,7 +161,8 @@ export const useGetLeaderboardAddressResult = (account: string) => {
   useEffect(() => {
     const address = isAddress(account)
 
-    if (!addressResult && address) {
+    // If address result is null it means we already tried fetching the results and none came back
+    if (!addressResult && addressResult !== null && address) {
       dispatch(fetchAddressResult(account))
     }
   }, [dispatch, account, addressResult])
