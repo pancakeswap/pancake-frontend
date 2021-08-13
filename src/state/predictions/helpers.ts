@@ -24,7 +24,6 @@ import {
   getUserBaseFields,
   RoundResponse,
   TotalWonMarketResponse,
-  TotalWonRoundResponse,
   UserResponse,
 } from './queries'
 
@@ -178,20 +177,6 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
   }
 }
 
-export const transformTotalWonResponse = (
-  marketResponse: TotalWonMarketResponse,
-  roundResponse: TotalWonRoundResponse[],
-): number => {
-  const houseRounds = roundResponse.reduce((accum, round) => {
-    return accum + (round.totalAmount ? parseFloat(round.totalAmount) : 0)
-  }, 0)
-
-  const totalBNB = marketResponse.totalBNB ? parseFloat(marketResponse.totalBNB) : 0
-  const totalBNBTreasury = marketResponse.totalBNBTreasury ? parseFloat(marketResponse.totalBNBTreasury) : 0
-
-  return Math.max(totalBNB - (totalBNBTreasury + houseRounds), 0)
-}
-
 export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   const { round } = bet
   if (round.failed) {
@@ -222,23 +207,22 @@ export const getUnclaimedWinningBets = (bets: Bet[]): Bet[] => {
 }
 
 export const getTotalWon = async (): Promise<number> => {
-  const response = (await request(
+  const { market } = (await request(
     GRAPH_API_PREDICTION,
     gql`
-      query getTotalWonData($position: String) {
+      query getTotalWonData {
         market(id: 1) {
           totalBNB
           totalBNBTreasury
         }
-        rounds(where: { position: $position }) {
-          totalAmount
-        }
       }
     `,
-    { position: BetPosition.HOUSE },
-  )) as { market: TotalWonMarketResponse; rounds: TotalWonRoundResponse[] }
+  )) as { market: TotalWonMarketResponse }
 
-  return transformTotalWonResponse(response.market, response.rounds)
+  const totalBNB = market.totalBNB ? parseFloat(market.totalBNB) : 0
+  const totalBNBTreasury = market.totalBNBTreasury ? parseFloat(market.totalBNBTreasury) : 0
+
+  return Math.max(totalBNB - totalBNBTreasury, 0)
 }
 
 type BetHistoryWhereClause = Record<string, string | number | boolean | string[]>

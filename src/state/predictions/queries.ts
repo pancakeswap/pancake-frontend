@@ -80,10 +80,6 @@ export interface TotalWonMarketResponse {
   totalBNBTreasury: string
 }
 
-export interface TotalWonRoundResponse {
-  totalAmount: string
-}
-
 /**
  * Base fields are the all the top-level fields available in the api. Used in multiple queries
  */
