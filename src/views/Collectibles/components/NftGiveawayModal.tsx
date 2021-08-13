@@ -47,7 +47,7 @@ const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nfts }) 
   }, [])
 
   const getImages = () => {
-    return nfts.map((nft) => <NftImage src={`/images/nfts/${nft.images.md}`} />)
+    return nfts.map((nft) => <NftImage key={nft.variationId} src={`/images/nfts/${nft.images.md}`} />)
   }
 
   return (

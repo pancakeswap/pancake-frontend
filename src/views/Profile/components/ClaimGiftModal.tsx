@@ -23,8 +23,12 @@ export const useCanClaim = () => {
   useEffect(() => {
     const fetchClaimStatus = async () => {
       const claimRefundContract = getClaimRefundContract()
-      const walletCanClaim = await claimRefundContract.canClaim(account)
-      setCanClaim(walletCanClaim)
+      try {
+        const walletCanClaim = await claimRefundContract.canClaim(account)
+        setCanClaim(walletCanClaim)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     if (account) {
