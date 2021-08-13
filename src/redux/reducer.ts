@@ -4,6 +4,7 @@ import tombs from './tombs'
 import graves from './graves'
 import nfts from './nfts'
 import spawningPools from './spawningPools'
+import auctions from './auctions'
 
 const defaultState = {
   account: '',

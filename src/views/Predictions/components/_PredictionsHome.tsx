@@ -26,7 +26,7 @@ const Auctions = (props) => {
     </StyledCard>
   )
 }
-const PredictionsHome = () => {
+const _PredictionsHome = () => {
   return(
     <Container>
       <Row>
@@ -37,4 +37,4 @@ const PredictionsHome = () => {
   )
 }
 
-export default PredictionsHome
+export default _PredictionsHome
