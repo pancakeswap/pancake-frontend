@@ -27,7 +27,7 @@ export const NetWinnings: React.FC<NetWinningsProps> = ({ amount, textPrefix = '
         {`${textPrefix}${amount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 6 })}`}
       </Text>
       <Text fontSize="12px" color="textSubtle" lineHeight={1}>
-        {`~$${value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`}
+        {`~$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
       </Text>
     </Flex>
   )

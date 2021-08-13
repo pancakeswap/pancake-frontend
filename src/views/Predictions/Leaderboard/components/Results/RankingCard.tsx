@@ -73,7 +73,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
                 </Text>
               </>
             }
-            options={{ placement: 'right' }}
+            options={{ placement: 'bottom' }}
           >
             <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
             <SubMenuItem as={Link} href={getBscScanLink(user.id, 'address')} bold={false} color="text" external>

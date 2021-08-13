@@ -32,7 +32,7 @@ const Filters = () => {
         justifyContent={['start', null, null, null, 'space-between']}
       >
         <Box width={['100%', null, null, null, 'auto']}>
-          <Select options={orderByOptions} onOptionChange={handleOrderBy} mb="16px" />
+          <Select options={orderByOptions} onOptionChange={handleOrderBy} />
         </Box>
         <Box width={['100%', null, null, null, '320px']}>
           <AddressSearch />

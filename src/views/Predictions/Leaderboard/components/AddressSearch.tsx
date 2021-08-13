@@ -20,7 +20,7 @@ const SubMenu = styled.div<{ isOpen: boolean }>`
   transform: scaleY(0);
   transform-origin: top;
   width: 100%;
-  z-index: 5;
+  z-index: 15;
 
   ${({ isOpen }) =>
     isOpen &&

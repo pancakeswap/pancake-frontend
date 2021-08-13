@@ -10,7 +10,6 @@ const Hero = () => {
   return (
     <PageHeader>
       <Crumbs />
-
       <Heading as="h1" scale="xxl" color="secondary">
         {t('Leaderboard')}
       </Heading>

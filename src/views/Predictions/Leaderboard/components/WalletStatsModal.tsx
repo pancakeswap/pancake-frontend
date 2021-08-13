@@ -13,6 +13,7 @@ import {
   ProfileAvatar,
   useMatchBreakpoints,
   Skeleton,
+  Heading,
 } from '@pancakeswap/uikit'
 import { useGetProfileAvatar } from 'state/profile/hooks'
 import useTheme from 'hooks/useTheme'
@@ -61,6 +62,13 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
             <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={96} width={96} />
           </Box>
           <Box>
+            {profileAvatar.username ? (
+              <Heading scale="lg" mb="8px">
+                {profileAvatar.username}
+              </Heading>
+            ) : (
+              <Skeleton mb="8px" />
+            )}
             <ExternalLink href={getBscScanLink(account, 'address')}>{truncateWalletAddress(account)}</ExternalLink>
           </Box>
         </Flex>
