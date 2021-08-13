@@ -4,6 +4,7 @@ import { useAppDispatch } from 'state'
 import { updateUserBalance, updateUserPendingReward } from 'state/actions'
 import { harvestFarm } from 'utils/calls'
 import { BIG_ZERO } from 'utils/bigNumber'
+import getGasPrice from 'utils/getGasPrice'
 import { useMasterchef, useSousChef } from 'hooks/useContract'
 import { DEFAULT_GAS_LIMIT } from 'config'
 
@@ -12,13 +13,15 @@ const options = {
 }
 
 const harvestPool = async (sousChefContract) => {
-  const tx = await sousChefContract.deposit('0', options)
+  const gasPrice = getGasPrice()
+  const tx = await sousChefContract.deposit('0', { ...options, gasPrice })
   const receipt = await tx.wait()
   return receipt.status
 }
 
 const harvestPoolBnb = async (sousChefContract) => {
-  const tx = await sousChefContract.deposit({ ...options, value: BIG_ZERO })
+  const gasPrice = getGasPrice()
+  const tx = await sousChefContract.deposit({ ...options, value: BIG_ZERO, gasPrice })
   const receipt = await tx.wait()
   return receipt.status
 }

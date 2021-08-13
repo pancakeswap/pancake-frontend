@@ -29,6 +29,7 @@ import { Pool } from 'state/types'
 import { getAddress } from 'utils/addressHelpers'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { convertCakeToShares, convertSharesToCake } from '../../helpers'
 import FeeSummary from './FeeSummary'
 
@@ -71,6 +72,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const { stakingToken, earningToken, apr, stakingTokenPrice, earningTokenPrice } = pool
   const { account } = useWeb3React()
   const cakeVaultContract = useCakeVaultContract()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const {
     userData: { lastDepositedTime, userShares },
     pricePerFullShare,
@@ -132,7 +134,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 
     if (isWithdrawingAll) {
       try {
-        const tx = await cakeVaultContract.withdrawAll(callOptions)
+        const tx = await callWithGasPrice(cakeVaultContract, 'withdrawAll', undefined, callOptions)
         const receipt = await tx.wait()
         if (receipt.status) {
           toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
@@ -148,7 +150,12 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
       try {
-        const tx = await cakeVaultContract.withdraw(shareStakeToWithdraw.sharesAsBigNumber.toString(), callOptions)
+        const tx = await callWithGasPrice(
+          cakeVaultContract,
+          'withdraw',
+          [shareStakeToWithdraw.sharesAsBigNumber.toString()],
+          callOptions,
+        )
         const receipt = await tx.wait()
         if (receipt.status) {
           toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
@@ -168,7 +175,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     try {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const tx = await cakeVaultContract.deposit(convertedStakeAmount.toString(), callOptions)
+      const tx = await callWithGasPrice(cakeVaultContract, 'deposit', [convertedStakeAmount.toString()], callOptions)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(t('Staked!'), t('Your funds have been staked in the pool'))

@@ -27,6 +27,7 @@ import useTheme from 'hooks/useTheme'
 import useTokenBalance, { FetchStatus } from 'hooks/useTokenBalance'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useLotteryV2Contract } from 'hooks/useContract'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useToast from 'hooks/useToast'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
@@ -68,6 +69,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       userTickets: { tickets: userCurrentTickets },
     },
   } = useLottery()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const [ticketsToBuy, setTicketsToBuy] = useState('')
   const [discountValue, setDiscountValue] = useState('')
   const [totalCost, setTotalCost] = useState('')
@@ -247,14 +249,14 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         }
       },
       onApprove: () => {
-        return cakeContract.approve(lotteryContract.address, ethers.constants.MaxUint256)
+        return callWithGasPrice(cakeContract, 'approve', [lotteryContract.address, ethers.constants.MaxUint256])
       },
       onApproveSuccess: async () => {
         toastSuccess(t('Contract enabled - you can now purchase tickets'))
       },
       onConfirm: () => {
         const ticketsForPurchase = getTicketsForPurchase()
-        return lotteryContract.buyTickets(currentLotteryId, ticketsForPurchase)
+        return callWithGasPrice(lotteryContract, 'buyTickets', [currentLotteryId, ticketsForPurchase])
       },
       onSuccess: async () => {
         onDismiss()

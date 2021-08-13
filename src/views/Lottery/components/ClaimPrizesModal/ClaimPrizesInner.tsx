@@ -8,6 +8,7 @@ import { callWithEstimateGas } from 'utils/calls'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
 import { fetchUserLotteries } from 'state/lottery'
+import { useGasPrice } from 'state/user/hooks'
 import { useAppDispatch } from 'state'
 import Balance from 'components/Balance'
 import useToast from 'hooks/useToast'
@@ -23,6 +24,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { maxNumberTicketsPerBuyOrClaim, currentLotteryId } = useLottery()
+  const gasPrice = useGasPrice()
   const { toastSuccess, toastError } = useToast()
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
   const [pendingTx, setPendingTx] = useState(false)
@@ -84,7 +86,9 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
     setPendingTx(true)
     try {
-      const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets])
+      const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets], {
+        gasPrice,
+      })
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(
@@ -111,11 +115,12 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     for (const ticketBatch of ticketBatches) {
       try {
         /* eslint-disable no-await-in-loop */
-        const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [
-          lotteryId,
-          ticketBatch.ticketIds,
-          ticketBatch.brackets,
-        ])
+        const tx = await callWithEstimateGas(
+          lotteryContract,
+          'claimTickets',
+          [lotteryId, ticketBatch.ticketIds, ticketBatch.brackets],
+          { gasPrice },
+        )
         const receipt = await tx.wait()
         /* eslint-enable no-await-in-loop */
         if (receipt.status) {

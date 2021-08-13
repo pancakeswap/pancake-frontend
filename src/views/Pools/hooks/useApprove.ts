@@ -8,10 +8,12 @@ import { useTranslation } from 'contexts/Localization'
 import { useCake, useSousChef, useCakeVaultContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import useLastUpdated from 'hooks/useLastUpdated'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { toastSuccess, toastError } = useToast()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
@@ -20,7 +22,7 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      const tx = await lpContract.approve(sousChefContract.address, ethers.constants.MaxUint256)
+      const tx = await callWithGasPrice(lpContract, 'approve', [sousChefContract.address, ethers.constants.MaxUint256])
       const receipt = await tx.wait()
 
       dispatch(updateUserAllowance(sousId, account))
@@ -39,7 +41,18 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
       console.error(e)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     }
-  }, [account, dispatch, lpContract, sousChefContract, sousId, earningTokenSymbol, t, toastError, toastSuccess])
+  }, [
+    account,
+    dispatch,
+    lpContract,
+    sousChefContract,
+    sousId,
+    earningTokenSymbol,
+    t,
+    toastError,
+    toastSuccess,
+    callWithGasPrice,
+  ])
 
   return { handleApprove, requestedApproval }
 }
@@ -50,10 +63,11 @@ export const useVaultApprove = (setLastUpdated: () => void) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const cakeVaultContract = useCakeVaultContract()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const cakeContract = useCake()
 
   const handleApprove = async () => {
-    const tx = await cakeContract.approve(cakeVaultContract.address, ethers.constants.MaxUint256)
+    const tx = await callWithGasPrice(cakeContract, 'approve', [cakeVaultContract.address, ethers.constants.MaxUint256])
     setRequestedApproval(true)
     const receipt = await tx.wait()
     if (receipt.status) {

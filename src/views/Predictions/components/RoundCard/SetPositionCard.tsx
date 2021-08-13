@@ -23,6 +23,7 @@ import { useTranslation } from 'contexts/Localization'
 import { usePredictionsContract } from 'hooks/useContract'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { BetPosition } from 'state/types'
 import { formatBigNumber, formatFixedNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -37,10 +38,6 @@ interface SetPositionCardProps {
   onSuccess: (decimalValue: string, hash: string) => Promise<void>
 }
 
-// /!\ TEMPORARY /!\
-// Set default gasPrice (6 gwei) when calling BetBull/BetBear before new contract is released fixing this 'issue'.
-// TODO: Remove on beta-v2 smart contract release.
-const gasPrice = parseUnits('6', 'gwei')
 const dust = parseUnits('0.01', 18)
 const percentShortcuts = [10, 25, 50, 75]
 
@@ -84,6 +81,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
   const { toastError } = useToast()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract()
 
   // Convert bnb balance to ethers.BigNumber
@@ -154,7 +152,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
 
     try {
-      const tx = await predictionsContract[betMethod]({ value: valueAsBn.toString(), gasPrice })
+      const tx = await callWithGasPrice(predictionsContract, betMethod, undefined, { value: valueAsBn.toString() })
       setIsTxPending(true)
       const receipt = await tx.wait()
       onSuccess(valueAsBn.toString(), receipt.transactionHash as string)

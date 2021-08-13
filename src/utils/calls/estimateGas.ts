@@ -1,4 +1,4 @@
-import { ethers, Contract } from 'ethers'
+import { ethers, Contract, Overrides } from 'ethers'
 
 /**
  * Estimate the gas needed to call a function, and add a 10% margin
@@ -28,19 +28,22 @@ export const estimateGas = async (
 /**
  * Perform a contract call with a gas value returned from estimateGas
  * @param contract Used to perform the call
- * @param methodName The name of the methode called
- * @param args An array of arguments to pass to the method
+ * @param methodName The name of the method called
+ * @param methodArgs An array of arguments to pass to the method
+ * @param overrides An overrides object to pass to the method
  * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
 export const callWithEstimateGas = async (
   contract: Contract,
   methodName: string,
   methodArgs: any[] = [],
+  overrides: Overrides = {},
   gasMarginPer10000 = 1000,
 ): Promise<ethers.providers.TransactionResponse> => {
   const gasEstimation = estimateGas(contract, methodName, methodArgs, gasMarginPer10000)
   const tx = await contract[methodName](...methodArgs, {
     gasLimit: gasEstimation,
+    ...overrides,
   })
   return tx
 }

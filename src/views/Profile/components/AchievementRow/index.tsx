@@ -5,6 +5,7 @@ import { Achievement } from 'state/types'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import { usePointCenterIfoContract } from 'hooks/useContract'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import ActionColumn from '../ActionColumn'
 import PointsLabel from './PointsLabel'
 import AchievementTitle from '../AchievementTitle'
@@ -42,9 +43,10 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const { t } = useTranslation()
   const pointCenterContract = usePointCenterIfoContract()
   const { toastError, toastSuccess } = useToast()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleCollectPoints = async () => {
-    const tx = await pointCenterContract.getPoints(achievement.address)
+    const tx = await callWithGasPrice(pointCenterContract, 'getPoints', [achievement.address])
     setIsCollecting(true)
     const receipt = await tx.wait()
     if (receipt.status) {

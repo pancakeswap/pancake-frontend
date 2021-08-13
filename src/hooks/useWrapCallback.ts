@@ -5,6 +5,7 @@ import { tryParseAmount } from '../state/swap/hooks'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { useCurrencyBalance } from '../state/wallet/hooks'
 import { useWETHContract } from './useContract'
+import { useCallWithGasPrice } from './useCallWithGasPrice'
 
 export enum WrapType {
   NOT_APPLICABLE,
@@ -25,6 +26,7 @@ export default function useWrapCallback(
   typedValue: string | undefined,
 ): { wrapType: WrapType; execute?: undefined | (() => Promise<void>); inputError?: string } {
   const { chainId, account } = useActiveWeb3React()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const wethContract = useWETHContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
@@ -43,7 +45,9 @@ export default function useWrapCallback(
           sufficientBalance && inputAmount
             ? async () => {
                 try {
-                  const txReceipt = await wethContract.deposit({ value: `0x${inputAmount.raw.toString(16)}` })
+                  const txReceipt = await callWithGasPrice(wethContract, 'deposit', undefined, {
+                    value: `0x${inputAmount.raw.toString(16)}`,
+                  })
                   addTransaction(txReceipt, { summary: `Wrap ${inputAmount.toSignificant(6)} BNB to WBNB` })
                 } catch (error) {
                   console.error('Could not deposit', error)
@@ -60,7 +64,9 @@ export default function useWrapCallback(
           sufficientBalance && inputAmount
             ? async () => {
                 try {
-                  const txReceipt = await wethContract.withdraw(`0x${inputAmount.raw.toString(16)}`)
+                  const txReceipt = await callWithGasPrice(wethContract, 'withdraw', [
+                    `0x${inputAmount.raw.toString(16)}`,
+                  ])
                   addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WBNB to BNB` })
                 } catch (error) {
                   console.error('Could not withdraw', error)
@@ -71,5 +77,5 @@ export default function useWrapCallback(
       }
     }
     return NOT_APPLICABLE
-  }, [wethContract, chainId, inputCurrency, outputCurrency, inputAmount, balance, addTransaction])
+  }, [wethContract, chainId, inputCurrency, outputCurrency, inputAmount, balance, addTransaction, callWithGasPrice])
 }

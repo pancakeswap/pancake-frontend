@@ -8,6 +8,7 @@ import { ethersToBigNumber } from 'utils/bigNumber'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useToast from 'hooks/useToast'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethers } from 'ethers'
 import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
@@ -21,6 +22,7 @@ const StyledReclaimBidCard = styled(Card)`
 const ReclaimBidCard: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const [reclaimableAuction, checkForNextReclaimableAuction] = useReclaimAuctionBid()
 
@@ -40,13 +42,13 @@ const ReclaimBidCard: React.FC = () => {
       }
     },
     onApprove: () => {
-      return cakeContract.approve(farmAuctionContract.address, ethers.constants.MaxUint256)
+      return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, ethers.constants.MaxUint256])
     },
     onApproveSuccess: async () => {
       toastSuccess(t('Contract approved - you can now reclaim your bid!'))
     },
     onConfirm: () => {
-      return farmAuctionContract.claimAuction(reclaimableAuction.id)
+      return callWithGasPrice(farmAuctionContract, 'claimAuction', [reclaimableAuction.id])
     },
     onSuccess: async () => {
       checkForNextReclaimableAuction()

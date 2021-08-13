@@ -12,12 +12,14 @@ import {
   updateUserSlippageTolerance,
   updateUserDeadline,
   updateUserSingleHopOnly,
+  updateGasPrice,
   muteAudio,
   unmuteAudio,
   toggleTheme,
   updateUserFarmStakedOnly,
   FarmStakedOnly,
 } from './actions'
+import { GAS_PRICE_GWEI } from './hooks/helpers'
 
 const currentTimestamp = () => new Date().getTime()
 
@@ -53,6 +55,7 @@ export interface UserState {
   audioPlay: boolean
   isDark: boolean
   userFarmStakedOnly: FarmStakedOnly
+  gasPrice: string
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -70,6 +73,7 @@ export const initialState: UserState = {
   audioPlay: true,
   isDark: false,
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
+  gasPrice: GAS_PRICE_GWEI.default,
 }
 
 export default createReducer(initialState, (builder) =>
@@ -150,5 +154,8 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateUserFarmStakedOnly, (state, { payload: { userFarmStakedOnly } }) => {
       state.userFarmStakedOnly = userFarmStakedOnly
+    })
+    .addCase(updateGasPrice, (state, action) => {
+      state.gasPrice = action.payload.gasPrice
     }),
 )

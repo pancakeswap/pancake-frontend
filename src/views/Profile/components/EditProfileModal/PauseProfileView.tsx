@@ -9,6 +9,7 @@ import useToast from 'hooks/useToast'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useProfile as useProfileContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 type PauseProfilePageProps = InjectedModalProps
 
@@ -19,6 +20,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const { numberCakeToReactivate } = useGetProfileCosts()
   const { t } = useTranslation()
   const pancakeProfileContract = useProfileContract()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
   const dispatch = useAppDispatch()
@@ -26,7 +28,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const handleChange = () => setIsAcknowledged(!isAcknowledged)
 
   const handleDeactivateProfile = async () => {
-    const tx = await pancakeProfileContract.pauseProfile()
+    const tx = await callWithGasPrice(pancakeProfileContract, 'pauseProfile')
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {

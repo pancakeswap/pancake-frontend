@@ -69,8 +69,8 @@ const reducer = (state: State, actions: Action): State => {
 }
 
 interface ApproveConfirmTransaction {
-  onApprove: () => ethers.providers.TransactionResponse
-  onConfirm: () => ethers.providers.TransactionResponse
+  onApprove: () => Promise<ethers.providers.TransactionResponse>
+  onConfirm: () => Promise<ethers.providers.TransactionResponse>
   onRequiresApproval?: () => Promise<boolean>
   onSuccess: (state: State) => void
   onApproveSuccess?: (state: State) => void

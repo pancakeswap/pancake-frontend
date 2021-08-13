@@ -6,15 +6,20 @@ import { updateUserStakedBalance, updateUserBalance, updateUserPendingReward } f
 import { unstakeFarm } from 'utils/calls'
 import { useMasterchef, useSousChef } from 'hooks/useContract'
 import { BIG_TEN } from 'utils/bigNumber'
+import getGasPrice from 'utils/getGasPrice'
 
 const sousUnstake = async (sousChefContract, amount, decimals) => {
-  const tx = await sousChefContract.withdraw(new BigNumber(amount).times(BIG_TEN.pow(decimals)).toString())
+  const gasPrice = getGasPrice()
+  const tx = await sousChefContract.withdraw(new BigNumber(amount).times(BIG_TEN.pow(decimals)).toString(), {
+    gasPrice,
+  })
   const receipt = await tx.wait()
   return receipt.status
 }
 
 const sousEmergencyUnstake = async (sousChefContract) => {
-  const tx = await sousChefContract.emergencyWithdraw()
+  const gasPrice = getGasPrice()
+  const tx = await sousChefContract.emergencyWithdraw({ gasPrice })
   const receipt = await tx.wait()
   return receipt.status
 }

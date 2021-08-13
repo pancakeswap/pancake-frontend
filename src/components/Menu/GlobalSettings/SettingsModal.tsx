@@ -5,9 +5,11 @@ import { useAudioModeManager, useExpertModeManager, useUserSingleHopOnly } from 
 import { useTranslation } from 'contexts/Localization'
 import { useSwapActionHandlers } from 'state/swap/hooks'
 import usePersistState from 'hooks/usePersistState'
+import useTheme from 'hooks/useTheme'
 import QuestionHelper from '../../QuestionHelper'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
+import GasSettings from './GasSettings'
 
 // TODO: Temporary. Once uikit is merged with this style change, this can be removed.
 const PancakeToggleWrapper = styled.div`
@@ -27,6 +29,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const { onChangeRecipient } = useSwapActionHandlers()
 
   const { t } = useTranslation()
+  const { theme } = useTheme()
 
   if (showConfirmExpertModal) {
     return (
@@ -55,10 +58,16 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       title={t('Settings')}
       headerBackground="gradients.cardHeader"
       onDismiss={onDismiss}
-      style={{ maxWidth: '380px' }}
+      style={{ maxWidth: '420px' }}
     >
       <Flex flexDirection="column">
-        <Flex flexDirection="column">
+        <Flex pb="24px" flexDirection="column">
+          <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">
+            {t('Global')}
+          </Text>
+          <GasSettings />
+        </Flex>
+        <Flex pt="24px" flexDirection="column" borderTop={`1px ${theme.colors.cardBorder} solid`}>
           <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">
             {t('Swaps & Liquidity')}
           </Text>

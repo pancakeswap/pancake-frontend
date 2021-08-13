@@ -9,6 +9,7 @@ import { useCake, useBunnyFactory } from 'hooks/useContract'
 import { Nft } from 'config/constants/types'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import nftList from 'config/constants/nfts'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import ApproveConfirmButtons from '../components/ApproveConfirmButtons'
@@ -27,6 +28,8 @@ const Mint: React.FC = () => {
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
   const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalanceToMint)
+  const { callWithGasPrice } = useCallWithGasPrice()
+
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
@@ -40,10 +43,10 @@ const Mint: React.FC = () => {
         }
       },
       onApprove: () => {
-        return cakeContract.approve(bunnyFactoryContract.address, allowance.toJSON())
+        return callWithGasPrice(cakeContract, 'approve', [bunnyFactoryContract.address, allowance.toJSON()])
       },
       onConfirm: () => {
-        return bunnyFactoryContract.mintNFT(variationId)
+        return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [variationId])
       },
       onSuccess: () => actions.nextStep(),
     })

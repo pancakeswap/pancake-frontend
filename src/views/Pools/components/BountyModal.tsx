@@ -12,6 +12,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCakeVault } from 'state/pools/hooks'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 interface BountyModalProps {
   onDismiss?: () => void
@@ -37,6 +38,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
     totalPendingCakeHarvest,
     fees: { callFee },
   } = useCakeVault()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const cakePriceBusd = usePriceCakeBusd()
   const callFeeAsDecimal = callFee / 100
   const totalYieldToDisplay = getBalanceNumber(totalPendingCakeHarvest, 18)
@@ -58,7 +60,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
   const handleConfirmClick = async () => {
     setPendingTx(true)
     try {
-      const tx = await cakeVaultContract.harvest({ gasLimit: 300000 })
+      const tx = await callWithGasPrice(cakeVaultContract, 'harvest', undefined, { gasLimit: 300000 })
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(t('Bounty collected!'), t('CAKE bounty has been sent to your wallet.'))

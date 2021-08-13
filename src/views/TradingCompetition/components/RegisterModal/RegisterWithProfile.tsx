@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useToast from 'hooks/useToast'
 import { CompetitionProps } from '../../types'
 
@@ -20,9 +21,10 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
   const tradingCompetitionContract = useTradingCompetitionContract()
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleConfirmClick = async () => {
-    const tx = await tradingCompetitionContract.register()
+    const tx = await callWithGasPrice(tradingCompetitionContract, 'register')
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {

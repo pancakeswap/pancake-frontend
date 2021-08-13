@@ -1,4 +1,4 @@
-import { Pair, Token } from '@pancakeswap/sdk'
+import { ChainId, Pair, Token } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,8 +20,9 @@ import {
   updateUserFarmStakedOnly,
   updateUserSingleHopOnly,
   updateUserSlippageTolerance,
+  updateGasPrice,
 } from '../actions'
-import { deserializeToken, serializeToken } from './helpers'
+import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
 export function useAudioModeManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
@@ -151,6 +152,26 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
     },
     [dispatch],
   )
+}
+
+export function useGasPrice(): string {
+  const chainId = process.env.REACT_APP_CHAIN_ID
+  const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
+  return chainId === ChainId.MAINNET.toString() ? userGas : GAS_PRICE_GWEI.testnet
+}
+
+export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userGasPrice = useGasPrice()
+
+  const setGasPrice = useCallback(
+    (gasPrice: string) => {
+      dispatch(updateGasPrice({ gasPrice }))
+    },
+    [dispatch],
+  )
+
+  return [userGasPrice, setGasPrice]
 }
 
 function serializePair(pair: Pair): SerializedPair {

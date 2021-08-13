@@ -7,6 +7,7 @@ import { useCake, useProfile } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { fetchProfile } from 'state/profile'
 import useToast from 'hooks/useToast'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { REGISTER_COST } from '../ProfileCreation/config'
 import ApproveConfirmButtons from './ApproveConfirmButtons'
 import { State } from '../ProfileCreation/contexts/types'
@@ -34,6 +35,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const cakeContract = useCake()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -47,10 +49,10 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
         }
       },
       onApprove: () => {
-        return cakeContract.approve(profileContract.address, allowance.toJSON())
+        return callWithGasPrice(cakeContract, 'approve', [profileContract.address, allowance.toJSON()])
       },
       onConfirm: () => {
-        return profileContract.createProfile(teamId, selectedNft.nftAddress, selectedNft.tokenId)
+        return callWithGasPrice(profileContract, 'createProfile', [teamId, selectedNft.nftAddress, selectedNft.tokenId])
       },
       onSuccess: async () => {
         await dispatch(fetchProfile(account))

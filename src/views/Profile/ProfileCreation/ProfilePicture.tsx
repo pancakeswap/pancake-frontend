@@ -9,6 +9,7 @@ import { getErc721Contract } from 'utils/contractHelpers'
 import { useTranslation } from 'contexts/Localization'
 import { useGetCollectibles } from 'state/collectibles/hooks'
 import useToast from 'hooks/useToast'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
@@ -30,10 +31,11 @@ const ProfilePicture: React.FC = () => {
   const { t } = useTranslation()
   const { isLoading, nftsInWallet, tokenIds } = useGetCollectibles()
   const { toastError } = useToast()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleApprove = async () => {
     const contract = getErc721Contract(selectedNft.nftAddress, library.getSigner())
-    const tx = await contract.approve(getPancakeProfileAddress(), selectedNft.tokenId)
+    const tx = await callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
     setIsApproving(true)
     const receipt = await tx.wait()
     if (receipt.status) {
