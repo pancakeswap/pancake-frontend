@@ -18,9 +18,9 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
 
   useEffect(() => {
     const canClaimMap = {
-      lottie: canClaimBaller,
-      lucky: canClaimLottie,
-      baller: canClaimLucky,
+      lottie: canClaimLottie,
+      lucky: canClaimLucky,
+      baller: canClaimBaller,
     }
 
     const checkCanClaim = async () => {

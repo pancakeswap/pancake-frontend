@@ -10,6 +10,8 @@ import { multicallv2 } from 'utils/multicall'
 import { useBunnySpecialLotteryContract } from 'hooks/useContract'
 import bunnySpecialLotteryAbi from 'config/abi/bunnySpecialLottery.json'
 import Nfts from 'config/constants/nfts'
+import { fetchCurrentLotteryId } from 'state/lottery'
+import { useDispatch } from 'react-redux'
 
 export interface LotteryNftMintData {
   bunnyId: number | string
@@ -38,12 +40,17 @@ const useBunnySpecialLottery = (): {
   canClaimBaller: () => Promise<NftClaim>
 } => {
   const { account } = useWeb3React()
+  const dispatch = useDispatch()
   const lotteryNftContract = useBunnySpecialLotteryContract()
   const lotteryNftContractAddress = getBunnySpecialLotteryAddress()
   const currentLotteryId = useGetCurrentLotteryId()
-  const currentLotteryIdNum = parseInt(currentLotteryId)
+  const currentLotteryIdNum = currentLotteryId && parseInt(currentLotteryId)
   const [publicContractData, setPublicContractData] = useState<PublicContractData>(null)
   const [userRounds, setUserRounds] = useState<UserRound[]>(null)
+
+  useEffect(() => {
+    dispatch(fetchCurrentLotteryId())
+  }, [dispatch])
 
   useEffect(() => {
     setUserRounds(null)
