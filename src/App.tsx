@@ -21,6 +21,7 @@ import GlobalStyle from './style/Global'
 import Graves from './views/Graves'
 import * as fetch from './redux/fetch'
 import Predictions from './views/Predictions'
+import PredictionsHome from './views/Predictions/components/PredictionsHome'
 import SpawningPools from './views/SpawningPools'
 import { BIG_ZERO } from './utils/bigNumber'
 import { useMultiCall } from './hooks/useContract'
@@ -78,8 +79,8 @@ const App: React.FC = () => {
             <Route exact path={routes.GRAVES}><Graves/></Route>
             <Route exact path={routes.TOMBS}><Tombs/></Route>
             <Route exact path={routes.SPAWNING_POOLS}><SpawningPools/></Route>
-            <Route exact path={routes.MAUSOLEUM}><Predictions/></Route>
-          </Menu>
+            <Route exact path={routes.MAUSOLEUM}><PredictionsHome/></Route>
+            <Route exact path={routes.AUCTION}><Predictions/></Route>          </Menu>
         </Switch>
       </SuspenseWithChunkError>
       <ToastListener/>
