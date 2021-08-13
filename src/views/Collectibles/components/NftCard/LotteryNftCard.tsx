@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
+import omit from 'lodash/omit'
 import { ethers } from 'ethers'
 import { useAppDispatch } from 'state'
 import { fetchWalletNfts } from 'state/collectibles'
@@ -24,9 +25,9 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
     }
 
     const checkCanClaim = async () => {
-      const { canClaim, mintingData } = await canClaimMap[identifier]()
+      const { canClaim, mintData } = await canClaimMap[identifier]()
       setIsClaimable(canClaim)
-      setMintNFTData(mintingData)
+      setMintNFTData(mintData)
     }
 
     if (account) {
@@ -40,13 +41,23 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
     return response
   }
 
-  const refresh = async () => {
-    // TODO: confirm this is firing
+  const LotteryNftRefresh = () => {
     dispatch(fetchWalletNfts(account))
     setIsClaimable(false)
   }
 
-  return <NftCard nft={nft} canClaim={isClaimable} onClaim={handleClaim} refresh={refresh} {...props} />
+  // Don't pass the <NftList> 'refresh' function to the NftCard
+  const propsWithoutRefresh = omit(props, 'refresh')
+
+  return (
+    <NftCard
+      nft={nft}
+      canClaim={isClaimable}
+      onClaim={handleClaim}
+      refresh={LotteryNftRefresh}
+      {...propsWithoutRefresh}
+    />
+  )
 }
 
 export default LotteryNftCard
