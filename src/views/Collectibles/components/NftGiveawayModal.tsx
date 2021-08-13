@@ -11,6 +11,7 @@ const NftImage = styled.img`
   border-radius: 50%;
   height: 128px;
   margin-bottom: 24px;
+  margin-right: 8px;
   width: 128px;
 `
 
@@ -29,10 +30,10 @@ const showConfetti = () => {
 }
 
 interface NftGiveawayModalProps extends InjectedModalProps {
-  nft: Nft
+  nfts: Nft[]
 }
 
-const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nft }) => {
+const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nfts }) => {
   const { t } = useTranslation()
 
   // This is required because the modal exists outside the Router
@@ -45,12 +46,18 @@ const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nft }) =
     delay(showConfetti, 100)
   }, [])
 
+  const getImages = () => {
+    return nfts.map((nft) => <NftImage src={`/images/nfts/${nft.images.md}`} />)
+  }
+
   return (
     <Modal title={t('Congratulations!')} onDismiss={onDismiss}>
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
-        {nft && <NftImage src={`/images/nfts/${nft.images.md}`} />}
-        <Text bold color="secondary" fontSize="24px" mb="24px">
-          {t('You won a collectible!')}
+        <Flex flexWrap="wrap" alignItems="center" justifyContent="center">
+          {getImages()}
+        </Flex>
+        <Text textAlign="center" bold color="secondary" fontSize="24px" mb="24px">
+          {nfts.length > 1 ? t('You won multiple collectibles!') : t('You won a collectible!')}
         </Text>
         <Button onClick={handleClick}>{t('Claim now')}</Button>
       </Flex>
