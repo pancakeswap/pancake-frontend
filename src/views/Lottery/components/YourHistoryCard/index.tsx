@@ -46,7 +46,7 @@ const YourHistoryCard = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const [shouldShowRoundDetail, setShouldShowRoundDetail] = useState(false)
-  const [selectedLotteryInfo, setSelectedLotteryInfo] = useState<LotteryRound>(null)
+  const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState<LotteryRound>(null)
   const [selectedLotteryId, setSelectedLotteryId] = useState<string>(null)
 
   const {
@@ -61,12 +61,12 @@ const YourHistoryCard = () => {
     setSelectedLotteryId(lotteryId)
     const lotteryData = await fetchLottery(lotteryId)
     const processedLotteryData = processLotteryResponse(lotteryData)
-    setSelectedLotteryInfo(processedLotteryData)
+    setSelectedLotteryNodeData(processedLotteryData)
   }
 
   const clearState = () => {
     setShouldShowRoundDetail(false)
-    setSelectedLotteryInfo(null)
+    setSelectedLotteryNodeData(null)
     setSelectedLotteryId(null)
   }
 
@@ -79,9 +79,9 @@ const YourHistoryCard = () => {
             <Heading scale="md" mb="4px">
               {t('Round')} {selectedLotteryId || ''}
             </Heading>
-            {selectedLotteryInfo?.endTime ? (
+            {selectedLotteryNodeData?.endTime ? (
               <Text fontSize="14px">
-                {t('Drawn')} {getDrawnDate(selectedLotteryInfo.endTime)}
+                {t('Drawn')} {getDrawnDate(selectedLotteryNodeData.endTime)}
               </Text>
             ) : (
               <Skeleton width="185px" height="21px" />
@@ -96,7 +96,7 @@ const YourHistoryCard = () => {
 
   const getBody = () => {
     if (shouldShowRoundDetail) {
-      return <PreviousRoundCardBody lotteryData={selectedLotteryInfo} lotteryId={selectedLotteryId} />
+      return <PreviousRoundCardBody lotteryNodeData={selectedLotteryNodeData} lotteryId={selectedLotteryId} />
     }
 
     const claimableRounds = userLotteryData?.rounds.filter((round) => {
@@ -132,8 +132,8 @@ const YourHistoryCard = () => {
   }
 
   const getFooter = () => {
-    if (selectedLotteryInfo) {
-      return <PreviousRoundCardFooter lotteryData={selectedLotteryInfo} lotteryId={selectedLotteryId} />
+    if (selectedLotteryNodeData) {
+      return <PreviousRoundCardFooter lotteryNodeData={selectedLotteryNodeData} lotteryId={selectedLotteryId} />
     }
     return (
       <CardFooter>

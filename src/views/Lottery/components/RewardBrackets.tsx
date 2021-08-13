@@ -23,7 +23,7 @@ const RewardsInner = styled.div`
 `
 
 interface RewardMatchesProps {
-  lotteryData: LotteryRound
+  lotteryNodeData: LotteryRound
   isHistoricRound?: boolean
 }
 
@@ -35,7 +35,7 @@ interface RewardsState {
   countWinnersPerBracket: string[]
 }
 
-const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricRound }) => {
+const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryNodeData, isHistoricRound }) => {
   const { t } = useTranslation()
   const [state, setState] = useState<RewardsState>({
     isLoading: true,
@@ -46,8 +46,8 @@ const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricR
   })
 
   useEffect(() => {
-    if (lotteryData) {
-      const { treasuryFee, amountCollectedInCake, rewardsBreakdown, countWinnersPerBracket } = lotteryData
+    if (lotteryNodeData) {
+      const { treasuryFee, amountCollectedInCake, rewardsBreakdown, countWinnersPerBracket } = lotteryNodeData
 
       const feeAsPercentage = new BigNumber(treasuryFee).div(100)
       const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCake))
@@ -68,7 +68,7 @@ const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricR
         countWinnersPerBracket: null,
       })
     }
-  }, [lotteryData])
+  }, [lotteryNodeData])
 
   const getCakeRewards = (bracket: number) => {
     const shareAsPercentage = new BigNumber(state.rewardsBreakdown[bracket]).div(100)

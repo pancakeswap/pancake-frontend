@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Card, Text, Skeleton, CardHeader, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { fetchAdditionalPublicLotteries } from 'state/lottery'
 import { useLottery } from 'state/lottery/hooks'
 import { fetchLottery } from 'state/lottery/helpers'
 import { LotteryStatus } from 'config/constants/types'
@@ -36,10 +35,10 @@ const AllHistoryCard = () => {
   } = useLottery()
   const [latestRoundId, setLatestRoundId] = useState(null)
   const [selectedRoundId, setSelectedRoundId] = useState('')
-  const [selectedLotteryInfo, setSelectedLotteryInfo] = useState(null)
+  const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState(null)
   const timer = useRef(null)
 
-  const roundsFetched = lotteriesData?.length
+  const numRoundsFetched = lotteriesData?.length
 
   useEffect(() => {
     if (currentLotteryId) {
@@ -52,19 +51,12 @@ const AllHistoryCard = () => {
   }, [currentLotteryId, status])
 
   useEffect(() => {
-    setSelectedLotteryInfo(null)
+    setSelectedLotteryNodeData(null)
 
     const fetchLotteryData = async () => {
       const lotteryData = await fetchLottery(selectedRoundId)
       const processedLotteryData = processLotteryResponse(lotteryData)
-      setSelectedLotteryInfo(processedLotteryData)
-
-      if (roundsFetched) {
-        const hasSelectedRoundBeenFetched = parseInt(selectedRoundId) > parseInt(currentLotteryId) - roundsFetched
-        if (!hasSelectedRoundBeenFetched) {
-          dispatch(fetchAdditionalPublicLotteries({ skip: roundsFetched }))
-        }
-      }
+      setSelectedLotteryNodeData(processedLotteryData)
     }
 
     timer.current = setInterval(() => {
@@ -75,7 +67,7 @@ const AllHistoryCard = () => {
     }, 1000)
 
     return () => clearInterval(timer.current)
-  }, [selectedRoundId, currentLotteryId, roundsFetched, dispatch])
+  }, [selectedRoundId, currentLotteryId, numRoundsFetched, dispatch])
 
   const handleInputChange = (event) => {
     const {
@@ -114,17 +106,17 @@ const AllHistoryCard = () => {
           handleArrowButtonPress={handleArrowButtonPress}
         />
         <Box mt="8px">
-          {selectedLotteryInfo?.endTime ? (
+          {selectedLotteryNodeData?.endTime ? (
             <Text fontSize="14px">
-              {t('Drawn')} {getDrawnDate(selectedLotteryInfo.endTime)}
+              {t('Drawn')} {getDrawnDate(selectedLotteryNodeData.endTime)}
             </Text>
           ) : (
             <Skeleton width="185px" height="21px" />
           )}
         </Box>
       </StyledCardHeader>
-      <PreviousRoundCardBody lotteryData={selectedLotteryInfo} lotteryId={selectedRoundId} />
-      <PreviousRoundCardFooter lotteryData={selectedLotteryInfo} lotteryId={selectedRoundId} />
+      <PreviousRoundCardBody lotteryNodeData={selectedLotteryNodeData} lotteryId={selectedRoundId} />
+      <PreviousRoundCardFooter lotteryNodeData={selectedLotteryNodeData} lotteryId={selectedRoundId} />
     </StyledCard>
   )
 }

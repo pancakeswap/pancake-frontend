@@ -47,8 +47,8 @@ const StyedCardRibbon = styled(CardRibbon)`
   }
 `
 
-const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
-  lotteryData,
+const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId: string }> = ({
+  lotteryNodeData,
   lotteryId,
 }) => {
   const { t } = useTranslation()
@@ -67,7 +67,7 @@ const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: st
   const isLatestRound = mostRecentFinishedRoundId.toString() === lotteryId
 
   const [onPresentViewTicketsModal] = useModal(
-    <ViewTicketsModal roundId={lotteryId} roundStatus={lotteryData?.status} />,
+    <ViewTicketsModal roundId={lotteryId} roundStatus={lotteryNodeData?.status} />,
   )
 
   return (
@@ -78,10 +78,10 @@ const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: st
           <Heading mb="24px">{t('Winning Number')}</Heading>
         </Flex>
         <Flex maxWidth={['240px', null, null, '100%']} justifyContent={['center', null, null, 'flex-start']}>
-          {lotteryData ? (
+          {lotteryNodeData ? (
             <WinningNumbers
               rotateText={isDesktop || false}
-              number={lotteryData?.finalNumber.toString()}
+              number={lotteryNodeData?.finalNumber.toString()}
               mr={[null, null, null, '32px']}
               size="100%"
               fontSize={isDesktop ? '42px' : '16px'}

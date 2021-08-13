@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LotteryTicket, LotteryStatus } from 'config/constants/types'
 import { LotteryState, LotteryRoundGraphEntity, LotteryUserGraphEntity, LotteryResponse } from 'state/types'
 import { fetchLottery, fetchCurrentLotteryIdAndMaxBuy } from './helpers'
-import getLotteriesData, { getGraphLotteries } from './getLotteriesData'
+import getLotteriesData from './getLotteriesData'
 import getUserLotteryData from './getUserLotteryData'
 
 interface PublicLotteryData {
@@ -77,14 +77,6 @@ export const fetchPublicLotteries = createAsyncThunk<LotteryRoundGraphEntity[], 
   },
 )
 
-export const fetchAdditionalPublicLotteries = createAsyncThunk<LotteryRoundGraphEntity[], { skip: number }>(
-  'lottery/fetchAdditionalPublicLotteries',
-  async ({ skip }) => {
-    const lotteries = await getGraphLotteries(skip)
-    return lotteries
-  },
-)
-
 export const fetchUserLotteries = createAsyncThunk<
   LotteryUserGraphEntity,
   { account: string; currentLotteryId: string }
@@ -127,12 +119,6 @@ export const LotterySlice = createSlice({
     builder.addCase(fetchPublicLotteries.fulfilled, (state, action: PayloadAction<LotteryRoundGraphEntity[]>) => {
       state.lotteriesData = action.payload
     })
-    builder.addCase(
-      fetchAdditionalPublicLotteries.fulfilled,
-      (state, action: PayloadAction<LotteryRoundGraphEntity[]>) => {
-        state.lotteriesData = { ...state.lotteriesData, ...action.payload }
-      },
-    )
     builder.addCase(fetchUserLotteries.fulfilled, (state, action: PayloadAction<LotteryUserGraphEntity>) => {
       state.userLotteryData = action.payload
     })
