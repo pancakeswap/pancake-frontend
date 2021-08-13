@@ -68,7 +68,7 @@ const AddressSearch = () => {
         placeholder={t('Search %subject%', { subject: t('Address').toLowerCase() })}
         value={value}
         onChange={handleChange}
-        style={{ position: 'relative', zIndex: 10 }}
+        style={{ position: 'relative', zIndex: 16 }}
       />
       <SubMenu isOpen={isOpen}>
         <AddressLink onClick={handleClick}>{value}</AddressLink>
