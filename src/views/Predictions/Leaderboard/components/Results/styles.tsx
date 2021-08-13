@@ -13,16 +13,16 @@ export const Row: React.FC<FlexProps> = ({ children, ...props }) => {
 
 interface NetWinningsProps extends FlexProps {
   amount: number
-  textColor?: string
   textPrefix?: string
 }
 
-export const NetWinnings: React.FC<NetWinningsProps> = ({ amount, textColor = 'text', textPrefix = '', ...props }) => {
+export const NetWinnings: React.FC<NetWinningsProps> = ({ amount, textPrefix = '', ...props }) => {
   const bnbBusdPrice = usePriceBnbBusd()
   const value = bnbBusdPrice.times(Math.abs(amount)).toNumber()
+  const textColor = amount > 0 ? 'success' : 'failure'
 
   return (
-    <Flex flexDirection="column" alignItems="end" {...props}>
+    <Flex flexDirection="column" alignItems="flex-end" {...props}>
       <Text fontWeight="bold" color={textColor}>
         {`${textPrefix}${amount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 6 })}`}
       </Text>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Grid, Flex, Heading, useMatchBreakpoints, AutoRenewIcon } from '@pancakeswap/uikit'
+import { Box, Button, Grid, Flex, useMatchBreakpoints, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import {
   useGetLeaderboardHasMoreResults,
@@ -33,9 +33,6 @@ const Results = () => {
   return (
     <Box>
       <Container mb="16px">
-        <Heading as="h2" scale="md" color="secondary" mb="16px">
-          {t('All Others')}
-        </Heading>
         <Grid
           gridGap={['16px', null, null, null, '24px']}
           gridTemplateColumns={['1fr', null, null, null, 'repeat(3, 1fr)']}

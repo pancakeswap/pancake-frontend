@@ -63,7 +63,7 @@ const AddressSearch = () => {
   }, [value, setIsOpen])
 
   return (
-    <Box position="relative" width="320px">
+    <Box position="relative">
       <Input
         placeholder={t('Search %subject%', { subject: t('Address').toLowerCase() })}
         value={value}

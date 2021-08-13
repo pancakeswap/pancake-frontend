@@ -70,11 +70,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
                   <PositionLabel position={bet.position} />
                 </Td>
                 <Td textAlign="right">
-                  <NetWinnings
-                    amount={bet.amount}
-                    textColor={bet.position === bet.round.position ? 'success' : 'failure'}
-                    textPrefix={bet.position === bet.round.position ? '+' : '-'}
-                  />
+                  <NetWinnings amount={bet.amount} textPrefix={bet.position === bet.round.position ? '+' : '-'} />
                 </Td>
               </tr>
             ))}

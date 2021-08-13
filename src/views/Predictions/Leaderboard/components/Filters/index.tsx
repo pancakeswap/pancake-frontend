@@ -1,10 +1,11 @@
 import React from 'react'
-import { Box, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { setLeaderboardFilter } from 'state/predictions'
 import Select, { OptionProps } from 'components/Select/Select'
 import Container from 'components/Layout/Container'
+import AddressSearch from '../AddressSearch'
 
 const Filters = () => {
   const { t } = useTranslation()
@@ -25,9 +26,18 @@ const Filters = () => {
       <Text textTransform="uppercase" fontSize="12px" color="textSubtle" fontWeight="bold" mb="4px">
         {t('Rank By')}
       </Text>
-      <Box display={['block', null, null, 'inline-block']}>
-        <Select options={orderByOptions} onOptionChange={handleOrderBy} mb="16px" />
-      </Box>
+      <Flex
+        flexDirection={['column', null, null, null, 'row']}
+        alignItems={['start', null, null, null, 'center']}
+        justifyContent={['start', null, null, null, 'space-between']}
+      >
+        <Box width={['100%', null, null, null, 'auto']}>
+          <Select options={orderByOptions} onOptionChange={handleOrderBy} mb="16px" />
+        </Box>
+        <Box width={['100%', null, null, null, '320px']}>
+          <AddressSearch />
+        </Box>
+      </Flex>
     </Container>
   )
 }
