@@ -1,11 +1,13 @@
 import BigNumber from 'bignumber.js'
 import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
+import getGasPrice from 'utils/getGasPrice'
 
 const options = {
   gasLimit: DEFAULT_GAS_LIMIT,
 }
 
-export const stakeFarm = async (masterChefContract, pid, amount, gasPrice) => {
+export const stakeFarm = async (masterChefContract, pid, amount) => {
+  const gasPrice = getGasPrice()
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   if (pid === 0) {
     const tx = await masterChefContract.enterStaking(value, { ...options, gasPrice })
@@ -18,7 +20,8 @@ export const stakeFarm = async (masterChefContract, pid, amount, gasPrice) => {
   return receipt.status
 }
 
-export const unstakeFarm = async (masterChefContract, pid, amount, gasPrice) => {
+export const unstakeFarm = async (masterChefContract, pid, amount) => {
+  const gasPrice = getGasPrice()
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   if (pid === 0) {
     const tx = await masterChefContract.leaveStaking(value, { ...options, gasPrice })
@@ -31,7 +34,8 @@ export const unstakeFarm = async (masterChefContract, pid, amount, gasPrice) => 
   return receipt.status
 }
 
-export const harvestFarm = async (masterChefContract, pid, gasPrice) => {
+export const harvestFarm = async (masterChefContract, pid) => {
+  const gasPrice = getGasPrice()
   if (pid === 0) {
     const tx = await await masterChefContract.leaveStaking('0', { ...options, gasPrice })
     const receipt = await tx.wait()

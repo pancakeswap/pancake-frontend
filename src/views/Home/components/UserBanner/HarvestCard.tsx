@@ -9,7 +9,6 @@ import { useMasterchef } from 'hooks/useContract'
 import { harvestFarm } from 'utils/calls'
 import Balance from 'components/Balance'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
-import { useGasPrice } from 'state/user/hooks'
 import { getEarningsText } from './EarningsText'
 
 const StyledCard = styled(Card)`
@@ -22,7 +21,6 @@ const HarvestCard = () => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
-  const gasPrice = useGasPrice()
 
   const masterChefContract = useMasterchef()
   const cakePriceBusd = usePriceCakeBusd()
@@ -40,7 +38,7 @@ const HarvestCard = () => {
     for (const farmWithBalance of farmsWithStakedBalance) {
       try {
         // eslint-disable-next-line no-await-in-loop
-        await harvestFarm(masterChefContract, farmWithBalance.pid, gasPrice)
+        await harvestFarm(masterChefContract, farmWithBalance.pid)
         toastSuccess(
           `${t('Harvested')}!`,
           t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
@@ -50,7 +48,7 @@ const HarvestCard = () => {
       }
     }
     setPendingTx(false)
-  }, [farmsWithStakedBalance, masterChefContract, toastSuccess, toastError, t, gasPrice])
+  }, [farmsWithStakedBalance, masterChefContract, toastSuccess, toastError, t])
 
   return (
     <StyledCard>

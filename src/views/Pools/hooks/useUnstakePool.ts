@@ -6,9 +6,10 @@ import { updateUserStakedBalance, updateUserBalance, updateUserPendingReward } f
 import { unstakeFarm } from 'utils/calls'
 import { useMasterchef, useSousChef } from 'hooks/useContract'
 import { BIG_TEN } from 'utils/bigNumber'
-import { useGasPrice } from 'state/user/hooks'
+import getGasPrice from 'utils/getGasPrice'
 
-const sousUnstake = async (sousChefContract, amount, decimals, gasPrice) => {
+const sousUnstake = async (sousChefContract, amount, decimals) => {
+  const gasPrice = getGasPrice()
   const tx = await sousChefContract.withdraw(new BigNumber(amount).times(BIG_TEN.pow(decimals)).toString(), {
     gasPrice,
   })
@@ -16,7 +17,8 @@ const sousUnstake = async (sousChefContract, amount, decimals, gasPrice) => {
   return receipt.status
 }
 
-const sousEmergencyUnstake = async (sousChefContract, gasPrice) => {
+const sousEmergencyUnstake = async (sousChefContract) => {
+  const gasPrice = getGasPrice()
   const tx = await sousChefContract.emergencyWithdraw({ gasPrice })
   const receipt = await tx.wait()
   return receipt.status
@@ -27,22 +29,21 @@ const useUnstakePool = (sousId, enableEmergencyWithdraw = false) => {
   const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
   const sousChefContract = useSousChef(sousId)
-  const gasPrice = useGasPrice()
 
   const handleUnstake = useCallback(
     async (amount: string, decimals: number) => {
       if (sousId === 0) {
-        await unstakeFarm(masterChefContract, 0, amount, gasPrice)
+        await unstakeFarm(masterChefContract, 0, amount)
       } else if (enableEmergencyWithdraw) {
-        await sousEmergencyUnstake(sousChefContract, gasPrice)
+        await sousEmergencyUnstake(sousChefContract)
       } else {
-        await sousUnstake(sousChefContract, amount, decimals, gasPrice)
+        await sousUnstake(sousChefContract, amount, decimals)
       }
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserBalance(sousId, account))
       dispatch(updateUserPendingReward(sousId, account))
     },
-    [account, dispatch, enableEmergencyWithdraw, masterChefContract, sousChefContract, sousId, gasPrice],
+    [account, dispatch, enableEmergencyWithdraw, masterChefContract, sousChefContract, sousId],
   )
 
   return { onUnstake: handleUnstake }
