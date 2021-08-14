@@ -53,10 +53,8 @@ function getUserInfo(gid, account) {
 const PredictionsHome: React.FC = () => {
   const { path } = useRouteMatch()
   const { account } = useWeb3React()
-  const [stakedOnly, setStakedOnly] = usePersistState(false, 'pancake_pool_staked')
+  const [visibleAuctions, setVisibleAuctions] = useState(auctions())
   getUserInfo(0, account)
-  const zombieBalance = useTokenBalance(getZombieAddress())
-  const openGraves = auctions()
   const backgroundColor = '#101820'
 
   return (
@@ -78,14 +76,12 @@ const PredictionsHome: React.FC = () => {
        </PageHeader>
       <Page>
           <PoolTabButtons
-            stakedOnly={stakedOnly}
-            setStakedOnly={setStakedOnly}
-            hasStakeInFinishedPools={hasStakeInFinishedPools}
+            setAuctions={setVisibleAuctions}
           />
           <FlexLayout>
             <Route exact path={`${path}`}>
               <>
-                 {openGraves.map(auction => {
+                 {visibleAuctions.map(auction => {
                   return <AuctionCard
                     aid={auction.aid}
                   />
