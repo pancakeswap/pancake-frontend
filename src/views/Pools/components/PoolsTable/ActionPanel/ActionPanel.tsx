@@ -30,6 +30,7 @@ import { convertSharesToCake, getPoolBlockInfo } from 'views/Pools/helpers'
 import Harvest from './Harvest'
 import Stake from './Stake'
 import Apr from '../Apr'
+import AutoHarvest from './AutoHarvest'
 
 const expandAnimation = keyframes`
   from {
@@ -293,7 +294,11 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
             {isAutoVault ? t('Automatic restaking') : `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`}
           </Text>
         )}
-        <Harvest {...pool} userDataLoaded={userDataLoaded} />
+        {pool.isAutoVault ? (
+          <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
+        ) : (
+          <Harvest {...pool} userDataLoaded={userDataLoaded} />
+        )}
         <Stake pool={pool} userDataLoaded={userDataLoaded} />
       </ActionContainer>
     </StyledActionPanel>

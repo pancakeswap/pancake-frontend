@@ -14,6 +14,7 @@ import TotalStakedCell from './Cells/TotalStakedCell'
 import EndsInCell from './Cells/EndsInCell'
 import ExpandActionCell from './Cells/ExpandActionCell'
 import ActionPanel from './ActionPanel/ActionPanel'
+import AutoEarningsCell from './Cells/AutoEarningsCell'
 
 interface PoolRowProps {
   pool: Pool
@@ -52,7 +53,11 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
     <>
       <StyledRow role="row" onClick={toggleExpanded}>
         <NameCell pool={pool} />
-        <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+        {pool.isAutoVault ? (
+          <AutoEarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+        ) : (
+          <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+        )}
         <AprCell
           pool={pool}
           stakedBalance={isAutoVault ? cakeAsBigNumber : stakedBalance}

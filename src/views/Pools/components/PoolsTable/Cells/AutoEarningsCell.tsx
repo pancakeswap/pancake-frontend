@@ -1,17 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Skeleton, Text, useTooltip, HelpIcon, Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from 'state/types'
-import BigNumber from 'bignumber.js'
-import { PoolCategory } from 'config/constants/types'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import Balance from 'components/Balance'
+import { useCakeVault } from 'state/pools/hooks'
 import { useTranslation } from 'contexts/Localization'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from './BaseCell'
-import CollectModal from '../../PoolCard/Modals/CollectModal'
 
-interface EarningsCellProps {
+interface AutoEarningsCellProps {
   pool: Pool
   account: string
   userDataLoaded: boolean
@@ -24,38 +21,45 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoaded }) => {
+const HelpIconWrapper = styled.div`
+  align-self: center;
+`
+
+const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account, userDataLoaded }) => {
   const { t } = useTranslation()
   const { isXs, isSm } = useMatchBreakpoints()
-  const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
-  const isManualCakePool = sousId === 0
+  const { earningTokenPrice } = pool
 
-  const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
-  const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
-  const hasEarnings = account && earnings.gt(0)
-  const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
-  const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
-  const isBnbPool = poolCategory === PoolCategory.BINANCE
-
-  const labelText = t('%asset% Earned', { asset: earningToken.symbol })
-
-  const [onPresentCollect] = useModal(
-    <CollectModal
-      formattedBalance={formattedBalance}
-      fullBalance={fullBalance}
-      earningToken={earningToken}
-      earningsDollarValue={earningTokenDollarBalance}
-      sousId={sousId}
-      isBnbPool={isBnbPool}
-      isCompoundPool={isManualCakePool}
-    />,
+  const {
+    userData: { cakeAtLastUserAction, userShares, lastUserActionTime },
+    pricePerFullShare,
+  } = useCakeVault()
+  const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
+    account,
+    cakeAtLastUserAction,
+    userShares,
+    pricePerFullShare,
+    earningTokenPrice,
   )
 
-  const handleEarningsClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
-    onPresentCollect()
-  }
+  const labelText = t('Recent CAKE profit')
+  const earningTokenBalance = autoCakeToDisplay
+  const hasEarnings = hasAutoEarnings
+  const earningTokenDollarBalance = autoUsdToDisplay
+
+  const lastActionInMs = lastUserActionTime && parseInt(lastUserActionTime) * 1000
+  const dateTimeLastAction = new Date(lastActionInMs)
+  const dateStringToDisplay = dateTimeLastAction.toLocaleString()
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <>
+      <Balance fontSize="16px" value={autoCakeToDisplay} decimals={3} bold unit=" CAKE" />
+      <Balance fontSize="16px" value={autoUsdToDisplay} decimals={2} bold prefix="~$" />
+      {t('Earned since your last action')}
+      <Text>{dateStringToDisplay}</Text>
+    </>,
+    { placement: 'bottom' },
+  )
 
   return (
     <StyledCell role="cell">
@@ -67,8 +71,9 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
           <Skeleton width="80px" height="16px" />
         ) : (
           <>
+            {tooltipVisible && tooltip}
             <Flex>
-              <Box mr="8px" height="32px" onClick={hasEarnings ? handleEarningsClick : undefined}>
+              <Box mr="8px" height="32px">
                 <Balance
                   mt="4px"
                   bold={!isXs && !isSm}
@@ -97,6 +102,11 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
                   </Text>
                 )}
               </Box>
+              {hasEarnings && !isXs && !isSm && (
+                <HelpIconWrapper ref={targetRef}>
+                  <HelpIcon color="textSubtle" />
+                </HelpIconWrapper>
+              )}
             </Flex>
           </>
         )}
@@ -105,4 +115,4 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
   )
 }
 
-export default EarningsCell
+export default AutoEarningsCell
