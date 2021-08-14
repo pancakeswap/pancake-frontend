@@ -56,7 +56,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools }) 
         <StyledLink external href='https://docs.rugzombie.io/graves/grave'>
           <Button px={['14px', null, null, null, '20px']} >
             <ButtonText color='secondary' bold fontSize='16px'>
-              {t('Help')}
+              {t('Learn More')}
             </ButtonText>
             <HelpIcon color='secondary' ml={[null, null, null, 0, '6px']} />
           </Button>

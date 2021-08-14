@@ -51,10 +51,16 @@ const UnlockedTag = (props) => (
   </Tag>
 )
 
-const LockedTag = (props) => (
-  <Tag variant="success" outline startIcon={<ErrorIcon width="18px" color="success" mr="4px" />} {...props}>
-    Locked
+const EndedTag = (props) => (
+  <Tag variant="secondary" outline startIcon={<ErrorIcon width="18px" color="success" mr="4px" />} {...props}>
+    Ended
   </Tag>
 )
 
-export { CoreTag, CommunityTag, BinanceTag, DualTag, ManualPoolTag, CompoundingPoolTag, LockedTag, UnlockedTag }
+const OngoingTag = (props) => (
+  <Tag variant="primary" outline startIcon={<AutoRenewIcon width="18px" color="success" mr="4px" />} {...props}>
+    Ongoing
+  </Tag>
+)
+
+export { CoreTag, CommunityTag, BinanceTag, DualTag, ManualPoolTag, CompoundingPoolTag, OngoingTag, EndedTag, UnlockedTag }

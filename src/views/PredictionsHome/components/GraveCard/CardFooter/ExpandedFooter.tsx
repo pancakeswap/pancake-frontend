@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -21,11 +21,12 @@ import { registerToken } from 'utils/wallet'
 import Balance from 'components/Balance'
 import tokens from '../../../../../config/constants/tokens'
 import { GraveConfig } from '../../../../../config/constants/types'
+import { account, auctionByAid } from '../../../../../redux/get'
+import { BIG_ZERO } from '../../../../../utils/bigNumber'
+import { useMausoleum } from '../../../../../hooks/useContract'
 
 interface ExpandedFooterProps {
-  account: string
-  grave: GraveConfig
-  totalZombieInGrave?: BigNumber
+  aid: number
 }
 
 const ExpandedWrapper = styled(Flex)`
@@ -35,81 +36,33 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
-const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
-  account,
-  grave,
-  totalZombieInGrave,
-}) => {
-  const { currentBlock } = useBlock()
-
-  const graveContractAddress = getAddress(grave.contractAddress)
-  const imageSrc = `${BASE_URL}/images/tokens/${tokens.zmbe.symbol.toLowerCase()}.png`
-  const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    'Subtracted automatically from each yield harvest and burned.',
-    { placement: 'bottom-end' },
-  )
-
+const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ aid }) => {
+  const { artist } = auctionByAid(aid)
+  const mausoleum = useMausoleum()
+  const [totalBids, setTotalBids] = useState(BIG_ZERO)
+  useEffect(() => {
+    mausoleum.methods.bidsLength(aid).call()
+      .then(res => {
+        setTotalBids(new BigNumber(res))
+      })
+  }, [aid, mausoleum.methods])
   return (
     <ExpandedWrapper flexDirection="column">
       <Flex mb="2px" justifyContent="space-between" alignItems="center">
-        <Text small>Total staked:</Text>
+        <Text small>Total bids:</Text>
         <Flex alignItems="flex-start">
-          {totalZombieInGrave ? (
-            <>
-              <Balance
-                fontSize="14px"
-                value={getBalanceNumber(totalZombieInGrave, tokens.zmbe.decimals)}
-              />
-              <Text ml="4px" fontSize="14px">
-                {tokens.zmbe.symbol}
-              </Text>
-            </>
+          {!totalBids.isZero() ? (
+            <div>{totalBids.toString()}</div>
           ) : (
             <Skeleton width="90px" height="21px" />
           )}
         </Flex>
       </Flex>
-        <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          {tooltipVisible && tooltip}
-          <TooltipText ref={targetRef} small>
-            Early withdrawal Fee:
-          </TooltipText>
-          <Flex alignItems="center">
-            <Text ml="4px" small>
-              {grave.earlyWithdrawalFee * 100}%
-            </Text>
-          </Flex>
-        </Flex>
       <Flex mb="2px" justifyContent="flex-end">
-        <LinkExternal bold={false} small href={grave.artistUrl}>
+        <LinkExternal bold={false} small href={artist.twitter}>
           View NFT Artist
         </LinkExternal>
       </Flex>
-      {graveContractAddress && (
-        <Flex mb="2px" justifyContent="flex-end">
-          <LinkExternal
-            bold={false}
-            small
-            href={`${BASE_BSC_SCAN_URL}/address/${graveContractAddress}`}
-          >
-            View Contract
-          </LinkExternal>
-        </Flex>
-      )}
-      {account && isMetaMaskInScope && tokens.zmbe.address && (
-        <Flex justifyContent="flex-end">
-          <Text
-            color="primary"
-            small
-            onClick={() => registerToken(getAddress(tokens.zmbe.address), tokens.zmbe.symbol, tokens.zmbe.decimals, imageSrc)}
-          >
-            Add to Metamask
-          </Text>
-          <MetamaskIcon ml="4px" />
-        </Flex>
-      )}
     </ExpandedWrapper>
   )
 }

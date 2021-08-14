@@ -28,13 +28,6 @@ const MinimumStakingTime: React.FC<MinimumStakingTimeProps> = ({
   return (
     <Flex alignItems='center' justifyContent='space-between'>
       {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef}>Minimum Staking Time:</TooltipText>
-      <Flex alignItems='center'>
-        {period}
-        <IconButton variant='text' scale='sm'>
-          <TimerIcon color='textSubtle' width='18px' />
-        </IconButton>
-      </Flex>
     </Flex>
   )
 }

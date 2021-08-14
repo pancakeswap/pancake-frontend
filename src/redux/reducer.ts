@@ -13,6 +13,7 @@ const defaultState = {
   nfts,
   spawningPools,
   bnbPriceUsd: 0,
+  auctions,
   zombie: {
     allowance: BIG_ZERO,
     totalSupply: BIG_ZERO,

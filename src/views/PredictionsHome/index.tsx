@@ -9,13 +9,12 @@ import { BigNumber } from 'bignumber.js'
 import { BIG_TEN, BIG_ZERO } from '../../utils/bigNumber'
 import PoolTabButtons from './components/PoolTabButtons'
 import FlexLayout from '../../components/layout/Flex'
-import GraveCard from './components/GraveCard'
+import AuctionCard from './components/GraveCard'
 import usePersistState from '../../hooks/usePersistState'
 import graves from '../../config/constants/graves'
 import { getAddress, getZombieAddress } from '../../utils/addressHelpers'
 import useTokenBalance from '../../hooks/useTokenBalance'
-import { zombiePriceUsd } from '../../redux/get'
-import auctions from '../../redux/auctions'
+import { zombiePriceUsd, auctions } from '../../redux/get'
 
 let web3
 let restorationChef
@@ -51,26 +50,13 @@ function getUserInfo(gid, account) {
   }
 }
 
-function getgraveInfo(gid, setState) {
-  // restorationChef.methods.graveInfo(gid).call()
-  //   .then((data) => {
-  //     setState(data)
-  //     console.log(data)
-  //   })
-  //   .catch((res) => {
-  //     console.log(res)
-  //   })
-}
-
 const PredictionsHome: React.FC = () => {
   const { path } = useRouteMatch()
   const { account } = useWeb3React()
   const [stakedOnly, setStakedOnly] = usePersistState(false, 'pancake_pool_staked')
-  const zombiePriceInBusd = zombiePriceUsd()
   getUserInfo(0, account)
   const zombieBalance = useTokenBalance(getZombieAddress())
-  console.log(zombieBalance.toString())
-  const openGraves = auctions
+  const openGraves = auctions()
   const backgroundColor = '#101820'
 
   return (
@@ -99,11 +85,11 @@ const PredictionsHome: React.FC = () => {
           <FlexLayout>
             <Route exact path={`${path}`}>
               <>
-                {/* {openGraves.map(grave => { */}
-                {/*  return <GraveCard */}
-                {/*    auctionId={grave.aid} */}
-                {/*  /> */}
-                {/* })} */}
+                 {openGraves.map(auction => {
+                  return <AuctionCard
+                    aid={auction.aid}
+                  />
+                 })}
               </>
             </Route>
             <Route path={`${path}/history`}>

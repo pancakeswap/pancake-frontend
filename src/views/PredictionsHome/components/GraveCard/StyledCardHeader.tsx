@@ -2,6 +2,7 @@ import React from 'react'
 import { CardHeader, Heading, Text, Flex, Image } from '@rug-zombie-libs/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import { auctionByAid } from '../../../../redux/get'
 
 const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }>`
   background: ${({ isFinished, background, theme }) =>
@@ -9,15 +10,12 @@ const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }
 `
 
 const StyledCardHeader: React.FC<{
-  earningTokenSymbol: string
-  stakingTokenSymbol: string
-  stakingTokenImageUrl: string
-  isAutoVault?: boolean
-  isFinished?: boolean
-}> = ({ earningTokenSymbol, stakingTokenSymbol, stakingTokenImageUrl,isFinished = false, isAutoVault = false }) => {
+  aid: number
+}> = ({ aid }) => {
   const { t } = useTranslation()
+  const { prize, prizeSymbol, isFinished } = auctionByAid(aid)
   const getSubHeading = () => {
-    return `${t('Stake')} ${stakingTokenSymbol}`
+    return `#${aid}`
   }
 
   return (
@@ -25,11 +23,11 @@ const StyledCardHeader: React.FC<{
       <Flex alignItems="center" justifyContent="space-between">
         <Flex flexDirection="column">
           <Heading color={isFinished ? 'textDisabled' : 'body'} size="lg">
-            {`Earn ${earningTokenSymbol} NFT`}
+            {`${prizeSymbol} NFT`}
           </Heading>
           <Text color={isFinished ? 'textDisabled' : 'textSubtle'}>{getSubHeading()}</Text>
         </Flex>
-        <Image src={stakingTokenImageUrl} alt={earningTokenSymbol} width={64} height={64} />
+        {/* <Image src={stakingTokenImageUrl} alt={earningTokenSymbol} width={64} height={64} /> */}
       </Flex>
     </Wrapper>
   )

@@ -4,15 +4,13 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip, Box } from '@rug-zombie-libs/uikit'
 import { Pool } from 'state/types'
-import { CompoundingPoolTag, CoreTag, ManualPoolTag } from 'components/Tags'
+import { CompoundingPoolTag, CoreTag, EndedTag, ManualPoolTag, OngoingTag } from 'components/Tags'
 import ExpandedFooter from './ExpandedFooter'
 import { GraveConfig } from '../../../../../config/constants/types'
+import { auctionByAid } from '../../../../../redux/get'
 
 interface FooterProps {
-  account: string
-  grave: GraveConfig
-  userData: any
-  totalZombieInGrave?: BigNumber
+  aid: number
 }
 
 const ExpandableButtonWrapper = styled(Flex)`
@@ -23,18 +21,11 @@ const ExpandableButtonWrapper = styled(Flex)`
   }
 `
 
-const Footer: React.FC<FooterProps> = ({
-  account,
-  grave,
-  userData,
-  totalZombieInGrave,
-}) => {
+const Footer: React.FC<FooterProps> = ({ aid }) => {
   const { t } = useTranslation()
+  const { isFinished } = auctionByAid(aid)
   const [isExpanded, setIsExpanded] = useState(false)
-
-  const manualTooltipText = t('Tokens are locked for the staking period.')
-
-
+  const manualTooltipText = isFinished ? "Auction has ended" : "Auction is live!"
   const { targetRef, tooltip, tooltipVisible } = useTooltip( manualTooltipText, {
     placement: 'bottom-end',
   })
@@ -45,7 +36,7 @@ const Footer: React.FC<FooterProps> = ({
         <Flex alignItems="center">
           {tooltipVisible && tooltip}
           <Box ref={targetRef}>
-            <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+            { isFinished ? <EndedTag/> : <OngoingTag/>}
           </Box>
         </Flex>
         <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
@@ -53,11 +44,7 @@ const Footer: React.FC<FooterProps> = ({
         </ExpandableLabel>
       </ExpandableButtonWrapper>
       {isExpanded && (
-        <ExpandedFooter
-          grave={grave}
-          account={account}
-          totalZombieInGrave={totalZombieInGrave}
-        />
+        <ExpandedFooter aid={aid} />
       )}
     </CardFooter>
   )

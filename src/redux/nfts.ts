@@ -38,7 +38,7 @@ const nfts = [
   },
   {
     id: 5,
-    name: 'Patiend Zero Alpha',
+    name: 'Patient Zero Alpha',
     symbol: 'PATIENT-ZERO',
     address: '0xFEf72C8d941F4F2D308E2Ae892AEDc084b280bB0',
     totalSupply: BIG_ZERO

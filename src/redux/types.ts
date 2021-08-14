@@ -2,6 +2,7 @@ import { Address, Token } from '../config/constants/types'
 import { BigNumber } from 'bignumber.js'
 import tokens from '../config/constants/tokens'
 import { BIG_ZERO } from '../utils/bigNumber'
+import artists from '../config/constants/artists'
 
 export interface UserInfo {
   paidUnlockFee: boolean,
@@ -123,4 +124,19 @@ export interface SpawningPool {
   liquidityDetails: string,
   userInfo: SpawningUserInfo,
   poolInfo: SpawningPoolInfo,
+}
+
+export interface Auction {
+  aid: number,
+  prize: string,
+  prizeSymbol: string,
+  isFinished: boolean,
+  bidToken: string,
+  path: string,
+  prizeDescription: string,
+  startingBid: number,
+  bt: string,
+  artist: Artist,
+  token0: string,
+  token1: string
 }

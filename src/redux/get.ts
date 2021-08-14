@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js'
 import axios from 'axios'
 import store from './store'
-import { Grave, Tomb, SpawningPool, UserInfo } from './types'
+import { Grave, Tomb, SpawningPool, UserInfo, Auction } from './types'
 import { BIG_ZERO } from '../utils/bigNumber'
 import { getBalanceAmount } from '../utils/formatBalance'
 
@@ -71,6 +71,14 @@ export const grave = (pid: number): Grave => {
 
 export const tombs = (): Tomb[] => {
   return store.getState().tombs
+}
+
+export const auctions = (): Auction[] => {
+  return store.getState().auctions
+}
+
+export const auctionByAid = (aid: number): Auction => {
+  return auctions().find(a => a.aid === aid)
 }
 
 export const nfts = () => {
