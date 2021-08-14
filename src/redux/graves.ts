@@ -21,6 +21,8 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    isFeatured: true,
+    rarity: "Common",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -92,6 +94,8 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    isFeatured: true,
+    rarity: "Rare",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -126,6 +130,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Rare",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -160,6 +165,8 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: true,
     isEnding: false,
+    isFeatured: true,
+    rarity: "Rare",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -197,6 +204,7 @@ const graves: Grave[] = [
     isClosed: true,
     endDate: 1630900799,
     latestEntryDate: "Aug. 4th, 2021",
+    rarity: "Legendary",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -231,6 +239,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Rare",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -265,6 +274,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Rare",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -299,6 +309,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Rare",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -333,6 +344,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Rare",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -367,6 +379,9 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Rare",
+    isFeatured: true,
+
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -401,6 +416,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Rare",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -435,6 +451,8 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Uncommon",
+    isFeatured: true,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -469,6 +487,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Uncommon",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -503,6 +522,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Common",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -537,6 +557,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Common",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -571,6 +592,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Common",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -605,6 +627,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    rarity: "Common",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,

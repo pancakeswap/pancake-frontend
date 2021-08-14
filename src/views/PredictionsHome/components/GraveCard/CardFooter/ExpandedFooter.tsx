@@ -13,14 +13,6 @@ import {
   Skeleton,
   useTooltip,
 } from '@rug-zombie-libs/uikit'
-import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
-import { useBlock } from 'state/hooks'
-import { Pool } from 'state/types'
-import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
-import { registerToken } from 'utils/wallet'
-import Balance from 'components/Balance'
-import tokens from '../../../../../config/constants/tokens'
-import { GraveConfig } from '../../../../../config/constants/types'
 import { account, auctionByAid } from '../../../../../redux/get'
 import { BIG_ZERO } from '../../../../../utils/bigNumber'
 import { useMausoleum } from '../../../../../hooks/useContract'

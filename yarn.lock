@@ -2102,9 +2102,8 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@rug-zombie-libs/uikit@https://github.com/Rug-Zombie/rug-zombie-uikit.git":
+"@rug-zombie-libs/uikit@file:../rug-zombie-toolkit/packages/rug-zombie-uikit":
   version "0.29.3"
-  resolved "https://github.com/Rug-Zombie/rug-zombie-uikit.git#363ed3f0eeea9d1a699f676ba6bba8bdd9b9c7c2"
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"

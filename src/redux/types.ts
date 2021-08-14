@@ -87,6 +87,9 @@ export interface Grave {
   liquidityDetails: string,
   userInfo: UserInfo,
   poolInfo: PoolInfo,
+  rarity: string,
+  isFeatured?: boolean
+
 }
 
 export interface Tomb {
