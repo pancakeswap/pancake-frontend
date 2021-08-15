@@ -78,31 +78,43 @@ const GraveTabButtons = ({ setGraves, stakedOnly, setStakedOnly }) => {
       <Wrapper>
         {isDesktop ? <ButtonMenu onItemClick={toggleButtonMenu} activeIndex={index} scale='sm'>
           <ButtonMenuItem>
+            <Text color="tertiary" bold>
             {t('All')}
+            </Text>
           </ButtonMenuItem>
           <NotificationDot>
             <ButtonMenuItem>
+              <Text color="tertiary" bold>
               {t('Featured')}
+              </Text>
             </ButtonMenuItem>
           </NotificationDot>
           <NotificationDot>
             <ButtonMenuItem>
+              <Text color="tertiary" bold>
               {t('Legendary')}
+              </Text>
             </ButtonMenuItem>
           </NotificationDot>
           <NotificationDot>
             <ButtonMenuItem>
+              <Text color="tertiary" bold>
               {t('Rare')}
+              </Text>
             </ButtonMenuItem>
           </NotificationDot>
           <NotificationDot>
             <ButtonMenuItem>
+              <Text color="tertiary" bold>
               {t('Uncommon')}
+              </Text>
             </ButtonMenuItem>
           </NotificationDot>
           <NotificationDot>
             <ButtonMenuItem>
+              <Text color="tertiary" bold>
               {t('Common')}
+              </Text>
             </ButtonMenuItem>
           </NotificationDot>
         </ButtonMenu> :
