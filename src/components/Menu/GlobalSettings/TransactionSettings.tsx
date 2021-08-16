@@ -154,6 +154,7 @@ const SlippageTabs = () => {
           <Text>{t('Tx deadline (mins)')}</Text>
           <QuestionHelper
             text={t('Your transaction will revert if it is left confirming for longer than this time.')}
+            placement="top-start"
             ml="4px"
           />
         </Flex>

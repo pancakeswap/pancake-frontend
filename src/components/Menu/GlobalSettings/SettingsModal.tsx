@@ -71,13 +71,14 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
           <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">
             {t('Swaps & Liquidity')}
           </Text>
+          <TransactionSettings />
         </Flex>
-        <TransactionSettings />
         <Flex justifyContent="space-between" alignItems="center" mb="24px">
           <Flex alignItems="center">
             <Text>{t('Expert Mode')}</Text>
             <QuestionHelper
               text={t('Bypasses confirmation modals and allows high slippage trades. Use at your own risk.')}
+              placement="top-start"
               ml="4px"
             />
           </Flex>
@@ -86,7 +87,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
         <Flex justifyContent="space-between" alignItems="center" mb="24px">
           <Flex alignItems="center">
             <Text>{t('Disable Multihops')}</Text>
-            <QuestionHelper text={t('Restricts swaps to direct pairs only.')} ml="4px" />
+            <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
           </Flex>
           <Toggle
             id="toggle-disable-multihop-button"
@@ -102,6 +103,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             <Text>{t('Flippy sounds')}</Text>
             <QuestionHelper
               text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
+              placement="top-start"
               ml="4px"
             />
           </Flex>
