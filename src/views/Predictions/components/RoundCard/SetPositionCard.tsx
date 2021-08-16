@@ -153,7 +153,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
 
     try {
-      const tx = await callWithGasPrice(predictionsContract, betMethod, undefined, { value: valueAsBn.toString() })
+      const tx = await callWithGasPrice(predictionsContract, betMethod, [epoch], { value: valueAsBn.toString() })
       setIsTxPending(true)
       const receipt = await tx.wait()
       onSuccess(valueAsBn.toString(), receipt.transactionHash as string)
