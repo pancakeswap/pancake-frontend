@@ -17,6 +17,7 @@ const GasSettings = () => {
           text={t(
             'Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees',
           )}
+          placement="top-start"
           ml="4px"
         />
       </Flex>

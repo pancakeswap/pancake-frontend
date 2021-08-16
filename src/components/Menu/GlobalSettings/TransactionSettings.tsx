@@ -79,6 +79,7 @@ const SlippageTabs = () => {
             text={t(
               'Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.',
             )}
+            placement="top-start"
             ml="4px"
           />
         </Flex>
