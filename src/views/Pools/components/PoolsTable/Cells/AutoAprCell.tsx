@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BIG_ZERO } from 'utils/bigNumber'
 import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { Pool } from 'state/types'
+import { useCakeVault } from 'state/pools/hooks'
 import { useTranslation } from 'contexts/Localization'
 import BaseCell, { CellContent } from './BaseCell'
 import Apr from '../Apr'
+import { convertSharesToCake } from '../../../helpers'
 
 interface AprCellProps {
   pool: Pool
@@ -19,22 +19,34 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const AprCell: React.FC<AprCellProps> = ({ pool }) => {
+const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   const { t } = useTranslation()
   const { isXs, isSm } = useMatchBreakpoints()
-  const { userData } = pool
-  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
+
+  const {
+    userData: { userShares },
+    fees: { performanceFee },
+    pricePerFullShare,
+  } = useCakeVault()
+
+  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
+  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
 
   return (
     <StyledCell role="cell">
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {t('APR')}
+          {t('APY')}
         </Text>
-        <Apr pool={pool} stakedBalance={stakedBalance} showIcon={!isXs && !isSm} />
+        <Apr
+          pool={pool}
+          stakedBalance={cakeAsBigNumber}
+          performanceFee={performanceFeeAsDecimal}
+          showIcon={!isXs && !isSm}
+        />
       </CellContent>
     </StyledCell>
   )
 }
 
-export default AprCell
+export default AutoAprCell

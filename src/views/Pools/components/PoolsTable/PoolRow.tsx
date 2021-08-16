@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { Pool } from 'state/types'
-import { useCakeVault } from 'state/pools/hooks'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
-import { convertSharesToCake } from 'views/Pools/helpers'
-import { BIG_ZERO } from 'utils/bigNumber'
 import NameCell from './Cells/NameCell'
 import EarningsCell from './Cells/EarningsCell'
 import AprCell from './Cells/AprCell'
@@ -15,6 +11,7 @@ import EndsInCell from './Cells/EndsInCell'
 import ExpandActionCell from './Cells/ExpandActionCell'
 import ActionPanel from './ActionPanel/ActionPanel'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
+import AutoAprCell from './Cells/AutoAprCell'
 
 interface PoolRowProps {
   pool: Pool
@@ -37,18 +34,6 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
     setExpanded((prev) => !prev)
   }
 
-  const { isAutoVault, userData } = pool
-
-  const {
-    userData: { userShares },
-    fees: { performanceFee },
-    pricePerFullShare,
-  } = useCakeVault()
-
-  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
-  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
-  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
-
   return (
     <>
       <StyledRow role="row" onClick={toggleExpanded}>
@@ -58,11 +43,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         ) : (
           <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         )}
-        <AprCell
-          pool={pool}
-          stakedBalance={isAutoVault ? cakeAsBigNumber : stakedBalance}
-          performanceFee={performanceFeeAsDecimal}
-        />
+        {pool.isAutoVault ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
         {(isLg || isXl) && <TotalStakedCell pool={pool} />}
         {isXl && <EndsInCell pool={pool} />}
         <ExpandActionCell expanded={expanded} isFullLayout={isMd || isLg || isXl} />
