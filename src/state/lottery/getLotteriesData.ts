@@ -3,7 +3,10 @@ import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
 import { LotteryRoundGraphEntity, LotteryResponse } from 'state/types'
 import { getRoundIdsArray, fetchMultipleLotteries } from './helpers'
 
-const MAX_LOTTERIES_REQUEST_SIZE = 100
+export const MAX_LOTTERIES_REQUEST_SIZE = 100
+
+/* eslint-disable camelcase */
+type LotteriesWhere = { id_in?: string[] }
 
 const applyNodeDataToLotteriesGraphResponse = (
   nodeData: LotteryResponse[],
@@ -55,13 +58,14 @@ const applyNodeDataToLotteriesGraphResponse = (
 export const getGraphLotteries = async (
   first = MAX_LOTTERIES_REQUEST_SIZE,
   skip = 0,
+  where: LotteriesWhere = {},
 ): Promise<LotteryRoundGraphEntity[]> => {
   try {
     const response = await request(
       GRAPH_API_LOTTERY,
       gql`
-        query getLotteries($first: Int!, $skip: Int!) {
-          lotteries(first: $first, skip: $skip, orderDirection: desc, orderBy: block) {
+        query getLotteries($first: Int!, $skip: Int!, $where: Lottery_filter) {
+          lotteries(first: $first, skip: $skip, where: $where, orderDirection: desc, orderBy: block) {
             id
             totalUsers
             totalTickets
@@ -74,7 +78,7 @@ export const getGraphLotteries = async (
           }
         }
       `,
-      { skip, first },
+      { skip, first, where },
     )
     return response.lotteries
   } catch (error) {

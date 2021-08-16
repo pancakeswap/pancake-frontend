@@ -5,17 +5,17 @@ import { LotteryRound } from 'state/types'
 import FooterExpanded from './FooterExpanded'
 
 interface PreviousRoundCardFooterProps {
-  lotteryData: LotteryRound
+  lotteryNodeData: LotteryRound
   lotteryId: string
 }
 
-const PreviousRoundCardFooter: React.FC<PreviousRoundCardFooterProps> = ({ lotteryData, lotteryId }) => {
+const PreviousRoundCardFooter: React.FC<PreviousRoundCardFooterProps> = ({ lotteryNodeData, lotteryId }) => {
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <CardFooter p="0">
-      {isExpanded && <FooterExpanded lotteryData={lotteryData} lotteryId={lotteryId} />}
+      {isExpanded && <FooterExpanded lotteryNodeData={lotteryNodeData} lotteryId={lotteryId} />}
       <Flex p="8px 24px" alignItems="center" justifyContent="center">
         <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
           {isExpanded ? t('Hide') : t('Details')}

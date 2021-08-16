@@ -195,7 +195,7 @@ const NextDrawCard = () => {
       <CardFooter p="0">
         {isExpanded && (
           <NextDrawWrapper>
-            <RewardBrackets lotteryData={currentRound} />
+            <RewardBrackets lotteryNodeData={currentRound} />
           </NextDrawWrapper>
         )}
         {(status === LotteryStatus.OPEN || status === LotteryStatus.CLOSE) && (

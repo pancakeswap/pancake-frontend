@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Flex, Skeleton, Heading, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { LotteryRound } from 'state/types'
+import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
+import { getGraphLotteries } from 'state/lottery/getLotteriesData'
 import { formatNumber, getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import RewardBrackets from '../RewardBrackets'
@@ -20,18 +21,41 @@ const NextDrawWrapper = styled(Flex)`
   }
 `
 
-const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
-  lotteryData,
+const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lotteryId: string }> = ({
+  lotteryNodeData,
   lotteryId,
 }) => {
   const { t } = useTranslation()
+  const [fetchedLotteryGraphData, setFetchedLotteryGraphData] = useState<LotteryRoundGraphEntity>()
   const lotteryGraphData = useGetLotteryGraphDataById(lotteryId)
   const cakePriceBusd = usePriceCakeBusd()
 
+  useEffect(() => {
+    const getGraphData = async () => {
+      const fetchedGraphData = await getGraphLotteries(undefined, undefined, { id_in: [lotteryId] })
+      setFetchedLotteryGraphData(fetchedGraphData[0])
+    }
+    if (!lotteryGraphData) {
+      getGraphData()
+    }
+  }, [lotteryGraphData, lotteryId])
+
   let prizeInBusd = new BigNumber(NaN)
-  if (lotteryData) {
-    const { amountCollectedInCake } = lotteryData
+  if (lotteryNodeData) {
+    const { amountCollectedInCake } = lotteryNodeData
     prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+  }
+
+  const getTotalUsers = (): string => {
+    if (!lotteryGraphData && fetchedLotteryGraphData) {
+      return fetchedLotteryGraphData.totalUsers.toLocaleString()
+    }
+
+    if (lotteryGraphData) {
+      return lotteryGraphData.totalUsers.toLocaleString()
+    }
+
+    return null
   }
 
   const getPrizeBalances = () => {
@@ -51,7 +75,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
             fontSize="14px"
             color="textSubtle"
             unit=" CAKE"
-            value={getBalanceNumber(lotteryData?.amountCollectedInCake)}
+            value={getBalanceNumber(lotteryNodeData?.amountCollectedInCake)}
             decimals={0}
           />
         )}
@@ -70,8 +94,8 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
           <Flex>
             <Text fontSize="14px" display="inline">
               {t('Total players this round')}:{' '}
-              {lotteryData && lotteryGraphData.totalUsers ? (
-                lotteryGraphData.totalUsers.toLocaleString()
+              {lotteryNodeData && (lotteryGraphData || fetchedLotteryGraphData) ? (
+                getTotalUsers()
               ) : (
                 <Skeleton height={14} width={31} />
               )}
@@ -79,7 +103,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
           </Flex>
         </Box>
       </Flex>
-      <RewardBrackets lotteryData={lotteryData} isHistoricRound />
+      <RewardBrackets lotteryNodeData={lotteryNodeData} isHistoricRound />
     </NextDrawWrapper>
   )
 }
