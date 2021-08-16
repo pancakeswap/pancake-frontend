@@ -4385,4 +4385,4 @@ const farms: FarmConfig[] = [
   },
 ]
 
-export default farms
+export default process.env.REACT_APP_USING_FORK === 'true' ? farms.splice(0, 5) : farms

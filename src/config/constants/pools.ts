@@ -2796,4 +2796,4 @@ const pools: PoolConfig[] = [
   },
 ]
 
-export default pools
+export default process.env.REACT_APP_USING_FORK === 'true' ? pools.splice(0, 5) : pools
