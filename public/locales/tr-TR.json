@@ -1345,5 +1345,10 @@
   "5Y": "5Y",
   "Annual ROI at current rates": "Annual ROI at current rates",
   "Calling all BSC projects": "Calling all BSC projects",
-  "Apply for whitelisting now!": "Apply for whitelisting now!"
+  "Apply for whitelisting now!": "Apply for whitelisting now!",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
 }
