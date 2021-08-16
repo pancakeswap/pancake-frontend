@@ -87,13 +87,10 @@ const useBunnySpecialLottery = (): {
   }, [account, userRounds])
 
   const canClaimBaller = useCallback(async () => {
-    if (!userRounds || userRounds.length === 0) {
-      return NO_CLAIM
-    }
-
     const { variationId } = Nfts.find((nft) => nft.identifier === 'baller')
-    const [userRound] = userRounds
-    const lottieClaim = await getBallerClaim(account, variationId, userRound.lotteryId)
+    const lotteryId = userRounds && userRounds.length > 0 && userRounds[0].lotteryId
+
+    const lottieClaim = await getBallerClaim(account, variationId, lotteryId)
     return lottieClaim
   }, [account, userRounds])
 

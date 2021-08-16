@@ -105,7 +105,7 @@ export const getLuckyClaim = async (
 export const getBallerClaim = async (
   account: string,
   variationId: number | string,
-  lotteryId: string,
+  lotteryId?: string,
 ): Promise<NftClaim> => {
   const lotteryNftContract = getBunnySpecialLotteryContract()
   const passesGenericChecks = await hasBunnySpecialClaimed(account, variationId)
