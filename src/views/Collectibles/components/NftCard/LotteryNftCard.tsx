@@ -5,8 +5,9 @@ import { ethers } from 'ethers'
 import { useAppDispatch } from 'state'
 import { fetchWalletNfts } from 'state/collectibles'
 import { useBunnySpecialLotteryContract } from 'hooks/useContract'
+import { LotteryNftMintData } from 'views/Collectibles/helpers'
 import NftCard, { NftCardProps } from './index'
-import useBunnySpecialLottery, { LotteryNftMintData } from '../../hooks/useBunnySpecialLottery'
+import useBunnySpecialLottery from '../../hooks/useBunnySpecialLottery'
 
 const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const { account } = useWeb3React()
