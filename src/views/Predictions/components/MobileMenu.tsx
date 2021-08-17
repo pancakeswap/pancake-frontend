@@ -59,16 +59,13 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ userInfo, refreshMobile }) => {
-  const { swiper } = useSwiper()
   const isHistoryOpen = useIsHistoryPaneOpen()
   const isChartOpen = useIsChartPaneOpen()
-  const status = useGetPredictionsStatus()
   const activeIndex = getActiveIndex(isHistoryOpen, isChartOpen)
-  const dispatch = useAppDispatch()
-  const isChartPaneOpen = useIsChartPaneOpen()
+
 
   const handleItemClick = () => {
-    dispatch(setChartPaneState(!isChartPaneOpen))
+
     refreshMobile()
   }
 

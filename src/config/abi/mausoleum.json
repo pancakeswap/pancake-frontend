@@ -2,70 +2,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_startingBid",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_endDate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "contract IPancakePair",
-        "name": "_bidToken",
-        "type": "address"
-      },
-      {
-        "internalType": "contract IRevivedRugNft",
-        "name": "_prize",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_unlockFee",
-        "type": "uint256"
-      }
-    ],
-    "name": "addAuction",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_aid",
-        "type": "uint256"
-      }
-    ],
-    "name": "finalizeAuction",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_aid",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "increaseBid",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "contract IBEP20",
         "name": "_zombie",
         "type": "address"
@@ -82,7 +18,7 @@
       },
       {
         "internalType": "contract IUniswapV2Router02",
-        "name": "_pancakeRouter",
+        "name": "_apeswapRouter",
         "type": "address"
       },
       {
@@ -176,49 +112,49 @@
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "renounceOwnership",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_startingBid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_endDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "contract IPancakePair",
+        "name": "_bidToken",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IRevivedRugNft",
+        "name": "_prize",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_unlockFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "addAuction",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "apeswapRouter",
+    "outputs": [
       {
-        "internalType": "address",
-        "name": "newOwner",
+        "internalType": "contract IUniswapV2Router02",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_aid",
-        "type": "uint256"
-      }
-    ],
-    "name": "unlock",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_aid",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdrawBid",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -352,6 +288,50 @@
         "type": "uint256"
       }
     ],
+    "name": "emergencyFinalizeAuction",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_aid",
+        "type": "uint256"
+      }
+    ],
+    "name": "finalizeAuction",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_aid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "increaseBid",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_aid",
+        "type": "uint256"
+      }
+    ],
     "name": "lastBid",
     "outputs": [
       {
@@ -372,7 +352,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct Mausoleum.BidInfo",
+        "internalType": "struct MausoleumV2.BidInfo",
         "name": "",
         "type": "tuple"
       }
@@ -408,19 +388,6 @@
   },
   {
     "inputs": [],
-    "name": "pancakeswapRouter",
-    "outputs": [
-      {
-        "internalType": "contract IUniswapV2Router02",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "priceConsumer",
     "outputs": [
       {
@@ -434,6 +401,80 @@
   },
   {
     "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_aid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_endDate",
+        "type": "uint256"
+      }
+    ],
+    "name": "setEndDate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_aid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "contract IRevivedRugNft",
+        "name": "_prize",
+        "type": "address"
+      }
+    ],
+    "name": "setPrize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_aid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_unlockFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "setUnlockFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "treasury",
     "outputs": [
       {
@@ -443,6 +484,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_aid",
+        "type": "uint256"
+      }
+    ],
+    "name": "unlock",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -496,6 +550,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_aid",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawBid",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

@@ -64,7 +64,8 @@ export interface Bid {
 
 export interface AuctionInfo {
   lastBidId: number,
-  bids: Bid[]
+  bids: Bid[],
+  unlockFeeInBnb: BigNumber
 }
 
 export interface AuctionUserInfo {

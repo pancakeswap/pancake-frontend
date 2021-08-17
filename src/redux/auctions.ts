@@ -26,7 +26,8 @@ const auctions: Auction[] = [
     },
     auctionInfo: {
       lastBidId: 0,
-      bids: []
+      bids: [],
+      unlockFeeInBnb: BIG_ZERO
     }
   },
   {
@@ -48,11 +49,12 @@ const auctions: Auction[] = [
     end: 1629691199,
     userInfo: {
       bid: BIG_ZERO,
-      paidUnlockFee: false
+      paidUnlockFee: false,
     },
     auctionInfo: {
       lastBidId: 0,
-      bids: []
+      bids: [],
+      unlockFeeInBnb: BIG_ZERO
     }
   }
 ]

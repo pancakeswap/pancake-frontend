@@ -324,28 +324,35 @@ export const auction = (
   if (account()) {
     mausoleum.methods.bidsLength(aid).call()
       .then(bidsLengthRes => {
-        const inputs = [{ target: getMausoleumAddress(version), function: 'userInfo', args: [aid, account()] }]
-        for (let x = parseInt(bidsLengthRes); x > parseInt(bidsLengthRes) - 5; x--) {
+        const inputs = [
+          { target: getMausoleumAddress(version), function: 'userInfo', args: [aid, account()] },
+          { target: getMausoleumAddress(version), function: 'unlockFeeInBnb', args: [aid] },
+        ]
+        for (let x = parseInt(bidsLengthRes) - 5; x <= parseInt(bidsLengthRes); x++) {
           if (x - 1 >= 0) {
             inputs.push({ target: getMausoleumAddress(version), function: 'bidInfo', args: [aid, x - 1] })
           }
         }
         multi.multiCall(mausoleumAbi, inputs)
           .then(res => {
-            const bids = res[1].slice(1, res[1].length).map(bid => {
+            const start = parseInt(bidsLengthRes) - 6
+            let index = start < -1 ? -1 : parseInt(bidsLengthRes) - 6
+            const bids = res[1].slice(2, res[1].length).map(bid => {
+              index++
               return {
+                id: index,
                 amount: new BigNumber(bid.amount.toString()),
                 bidder: bid.bidder,
               }
             })
 
             const userInfoRes = res[1][0]
-            // console.log(userInfoRes)
             store.dispatch(updateAuctionInfo(
               id,
               {
                 lastBidId: parseInt(bidsLengthRes) - 1,
                 bids,
+                unlockFeeInBnb: new BigNumber(res[1][1].toString())
               },
             ))
             store.dispatch(updateAuctionUserInfo(
@@ -366,24 +373,31 @@ export const auction = (
   } else {
     mausoleum.methods.bidsLength(aid).call()
       .then(bidsLengthRes => {
-        const inputs = []
-        for (let x = parseInt(bidsLengthRes); x > parseInt(bidsLengthRes) - 5; x--) {
+        const inputs = [{ target: getMausoleumAddress(version), function: 'unlockFeeInBnb', args: [aid] }]
+        for (let x = parseInt(bidsLengthRes) - 5; x <= parseInt(bidsLengthRes); x++) {
           if (x - 1 >= 0) {
             inputs.push({ target: getMausoleumAddress(version), function: 'bidInfo', args: [aid, x - 1] })
           }
         }
         multi.multiCall(mausoleumAbi, inputs)
           .then(res => {
-            const bids = res[1].slice(1, res[1].length).map(bid => ({
-              amount: new BigNumber(bid.amount.toString()),
-              bidder: bid.bidder,
-            }))
+            const start = parseInt(bidsLengthRes) - 6
+            let index = start < -1 ? -1 : parseInt(bidsLengthRes) - 6
+            const bids = res[1].slice(1, res[1].length).map(bid => {
+              index++
+              return {
+                id: index,
+                amount: new BigNumber(bid.amount.toString()),
+                bidder: bid.bidder,
+              }
+            })
 
             store.dispatch(updateAuctionInfo(
               id,
               {
                 lastBidId: parseInt(bidsLengthRes) - 1,
                 bids,
+                unlockFeeInBnb: new BigNumber(res[1][0].toString())
               },
             ))
             if (updateAuctionObj && !updateAuctionObj.update) {

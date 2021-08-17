@@ -36,12 +36,13 @@ interface PositionsProps {
 
 const Positions: React.FC<PositionsProps> = ({ setRefresh, refresh, id }) => {
   const { setSwiper } = useSwiper()
-  const { auctionInfo: { bids, lastBidId }} = auctionById(id)
+  const { auctionInfo: { bids, lastBidId } } = auctionById(id)
   const initialIndex = Math.floor(1)
   // useOnNextRound()
 
   const formattedBids = bids.map((bid, i) => {
     return {
+      id: bid.id,
       amount: new BigNumber(bid.amount.toString()),
       bidder: bid.bidder,
       previousBidAmount: bids[i - 1] && bids[i - 1].amount ? new BigNumber(bids[i - 1].amount.toString()) : BIG_ZERO,
@@ -64,33 +65,23 @@ const Positions: React.FC<PositionsProps> = ({ setRefresh, refresh, id }) => {
           keyboard
           resizeObserver
         >
-          {bids[lastBidId - 2] ?
+          {formattedBids.map(bid => {
+            return <SwiperSlide>
+              <RoundCard bid={bid} id={id} bidId={bid.id} lastBidId={lastBidId} />
+            </SwiperSlide>
+          })}
+          {bids.length > 0 ?
             <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId - 2]} id={id} bidId={lastBidId - 2} lastBidId={lastBidId} />
-            </SwiperSlide> : null
-          }
-          {bids[lastBidId - 1] ?
-            <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId - 1]} id={id} bidId={lastBidId - 1} lastBidId={lastBidId} />
-            </SwiperSlide> : null
-          }
-          {bids[lastBidId] ?
-            <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId]} id={id} bidId={lastBidId} lastBidId={lastBidId} />
-            </SwiperSlide> : null
-          }
-          <SwiperSlide>
-            {bids.length > 0 ?
               <IncreaseBidCard
                 lastBid={formattedBids[bids.length - 1]}
                 id={id}
-                bidId={lastBidId}
+                bidId={lastBidId + 1}
                 setRefresh={setRefresh}
                 refresh={refresh}
-              /> :
-              null
-            }
-          </SwiperSlide>
+              />
+            </SwiperSlide> :
+            null
+          }
           <SwiperSlide>
             <SoonRoundCard lastBidId={lastBidId} bidId={lastBidId + 1} id={id} />
           </SwiperSlide>

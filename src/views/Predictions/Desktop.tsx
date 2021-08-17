@@ -71,14 +71,12 @@ const StyledDesktop = styled.div`
 `
 
 interface DesktopProps {
-  bids: any[],
-  lastBidId: number,
   setRefresh: any,
   refresh: boolean,
   id: number
 }
 
-const Desktop: React.FC<DesktopProps> = ({ bids, refresh, id, lastBidId, setRefresh }) => {
+const Desktop: React.FC<DesktopProps> = ({ refresh, id, setRefresh }) => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()

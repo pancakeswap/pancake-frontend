@@ -24,16 +24,7 @@ interface PrizeTabProps {
 }
 
 const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
-  const { aid, version , prizeDescription, artist: { twitter }} = auctionById(id)
-  const mausoleum = useMausoleum(version)
-  const [unlockFeeInBnb, setUnlockFeeInBnb] = useState(BIG_ZERO)
-
-  useEffect(() => {
-    mausoleum.methods.unlockFeeInBnb(aid).call()
-      .then(res => {
-        setUnlockFeeInBnb(new BigNumber(res))
-      })
-  }, [aid, mausoleum.methods])
+  const { path, prize , prizeDescription, artist: { twitter }, auctionInfo: { unlockFeeInBnb }} = auctionById(id)
 
   const type = 'image'
   return (
@@ -46,7 +37,7 @@ const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
                 <div className='direction-column imageColumn'>
                   <div className='sc-iwajpm dcRUtg'>
                     {type === 'image' ? (
-                      <img src='/images/rugZombie/Patient Zero.jpg' alt='PRIZE' className='sc-cxNHIi bjMxQn' />
+                      <img src={path} alt='PRIZE' className='sc-cxNHIi bjMxQn' />
                     ) : (
                       <video width='100%' autoPlay>
                         <source src='' type='video/mp4' />
@@ -55,7 +46,7 @@ const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
                   </div>
                 </div>
                 <div className='direction-column'>
-                  <span className='indetails-type'>Patient Zero Alpha</span>
+                  <span className='indetails-type'>{prize}</span>
                   <br />
                   <span className='indetails-title'>
                     Prize Details:

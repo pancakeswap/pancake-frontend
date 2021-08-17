@@ -56,8 +56,8 @@ const Predictions = () => {
        </Helmet>
        <SwiperProvider>
         <Container>
-           {isDesktop ? <Desktop refresh={refresh} bids={bids} lastBidId={lastBidId} setRefresh={setRefresh} id={auctionId} /> :
-            <Mobile refresh={refresh} bids={bids} lastBidId={lastBidId} setRefresh={setRefresh} userInfo={userInfo} aid={auctionId} id={auctionId}/>}
+           {isDesktop ? <Desktop refresh={refresh} setRefresh={setRefresh} id={auctionId} /> :
+            <Mobile refresh={refresh} setRefresh={setRefresh} userInfo={userInfo} aid={auctionId} id={auctionId}/>}
            <CollectWinningsPopup />
          </Container>
        </SwiperProvider>
