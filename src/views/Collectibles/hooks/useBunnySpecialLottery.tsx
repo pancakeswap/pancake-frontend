@@ -73,7 +73,6 @@ const useBunnySpecialLottery = (): {
     const { variationId } = Nfts.find((nft) => nft.identifier === 'lottie')
     const [userRound] = userRounds
     const lottieClaim = await getLottieClaim(account, variationId, userRound.lotteryId)
-
     return lottieClaim
   }, [account, userRounds])
 
