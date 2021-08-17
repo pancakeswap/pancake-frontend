@@ -81,7 +81,7 @@ const graves: Grave[] = [
   {
     id: 2,
     pid: 19,
-    name: 'Emperor Rare',
+    name: 'Emperor Token Rare',
     subtitle: 'Young Fool',
     path: 'https://storage.googleapis.com/rug-zombie/Young%20Fool.jpeg',
     type: 'image',
