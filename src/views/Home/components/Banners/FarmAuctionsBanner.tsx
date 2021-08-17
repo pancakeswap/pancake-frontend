@@ -87,8 +87,8 @@ const FarmAuctionsBanner = () => {
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{t('Calling all BSC projects')}</StyledSubheading>
-          <StyledHeading scale="xl">{t('Apply for whitelisting now!')}</StyledHeading>
+          <StyledSubheading>{t('%num% Contenders...', { num: 30 })}</StyledSubheading>
+          <StyledHeading scale="xl">{t('5 Winners')}</StyledHeading>
           <Link href="/farms/auction">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
