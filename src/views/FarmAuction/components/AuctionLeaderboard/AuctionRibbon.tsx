@@ -15,6 +15,7 @@ const StyledRibbon = styled.div<{ color: string }>`
   text-align: center;
   width: 94px;
   height: 94px;
+  z-index: 1;
   clip-path: polygon(0 0, 40% 0, 100% 60%, 100% 100%);
 
   & > div {
