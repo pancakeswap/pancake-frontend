@@ -15,6 +15,7 @@ interface MobileCardProps {
   lastBidId: number,
   userInfo: any,
   aid: number,
+  id: number,
   setRefresh: any,
   refresh: boolean
 }
@@ -32,16 +33,7 @@ const StyledSwiper = styled.div`
   }
 `
 
-interface PositionsProps {
-  bids: any[]
-  lastBidId: number,
-  userInfo: any,
-  aid: number,
-  setRefresh: any,
-  refresh: boolean
-}
-
-const MobileCard: React.FC<MobileCardProps> = ({ bids, refresh, lastBidId, setRefresh, userInfo, aid }) => {
+const MobileCard: React.FC<MobileCardProps> = ({ bids, id, refresh, lastBidId, setRefresh, userInfo }) => {
   const { setSwiper } = useSwiper()
 
   const formattedBids = bids.map((bid, i) => {
@@ -67,29 +59,25 @@ const MobileCard: React.FC<MobileCardProps> = ({ bids, refresh, lastBidId, setRe
           keyboard
           resizeObserver
         >
-          <SoonRoundCard lastBidId={lastBidId} id={lastBidId + 1} />
+          <SoonRoundCard lastBidId={lastBidId} id={id} bidId={lastBidId + 1} />
           {bids.length > 0 ?
             <IncreaseBidCard
               lastBid={formattedBids[bids.length - 1]}
-              userInfo={userInfo}
-              aid={aid}
-              id={lastBidId}
+              bidId={lastBidId}
+              id={id}
               setRefresh={setRefresh}
               refresh={refresh}
             /> :
             null
           }
           {bids[lastBidId - 1] ?
-            <RoundCard bid={formattedBids[lastBidId - 1]} id={lastBidId - 1} userInfo={userInfo} lastBidId={lastBidId}
-                       aid={aid} /> : null
+            <RoundCard bid={formattedBids[lastBidId - 1]} id={id} bidId={lastBidId - 1} lastBidId={lastBidId} /> : null
           }
           {bids[lastBidId - 2] ?
-            <RoundCard bid={formattedBids[lastBidId - 2]} id={lastBidId - 2} userInfo={userInfo} lastBidId={lastBidId}
-                       aid={aid} /> : null
+            <RoundCard bid={formattedBids[lastBidId - 2]} id={id} bidId={lastBidId - 2} lastBidId={lastBidId}/> : null
           }
           {bids[lastBidId - 3] ?
-            <RoundCard bid={formattedBids[lastBidId - 3]} id={lastBidId - 3} userInfo={userInfo}
-                       lastBidId={lastBidId} aid={aid} /> : null
+            <RoundCard bid={formattedBids[lastBidId - 3]} id={id} bidId={lastBidId - 3} lastBidId={lastBidId}/> : null
           }
         </Swiper>
       </StyledSwiper>

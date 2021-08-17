@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@rug-zombie-libs/uikit'
 import { BigNumber } from 'bignumber.js'
-import { auctionByAid } from '../../../../redux/get'
+import { auctionById } from '../../../../redux/get'
 import { useMausoleum } from '../../../../hooks/useContract'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
 import { getFullDisplayBalance } from '../../../../utils/formatBalance'
 
 interface MinimumStakeProps {
-  aid: number
+  id: number
 }
 
-const StartingBid: React.FC<MinimumStakeProps> = ({ aid }) => {
-  const { isFinished, startingBid } = auctionByAid(aid)
-  const mausoleum = useMausoleum()
+const StartingBid: React.FC<MinimumStakeProps> = ({ id }) => {
+  const { aid, isFinished, startingBid, version } = auctionById(id)
+  const mausoleum = useMausoleum(version)
   const [lastBidAmount, setLastBidAmount] = useState(BIG_ZERO)
   useEffect(() => {
     mausoleum.methods.lastBid(aid).call()

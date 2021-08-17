@@ -10,5 +10,5 @@ export const routes = {
     GRAVES:'/graves/',
     SPAWNING_POOLS:'/spawning_pools/',
     MAUSOLEUM:'/mausoleum/',
-    AUCTION:'/mausoleum/:aid'
+    AUCTION:'/mausoleum/:id'
 }

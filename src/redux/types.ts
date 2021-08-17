@@ -56,6 +56,23 @@ export interface SpawningUserInfo {
   zombieAllowance: BigNumber,
 }
 
+export interface Bid {
+  id: number,
+  bidder: number,
+  amount: Bid[],
+}
+
+export interface AuctionInfo {
+  lastBidId: number,
+  bids: Bid[]
+}
+
+export interface AuctionUserInfo {
+  bid: BigNumber,
+  paidUnlockFee: boolean
+}
+
+
 export interface Artist {
   name: string,
   twitter: string,
@@ -130,16 +147,22 @@ export interface SpawningPool {
 }
 
 export interface Auction {
+  id: number,
   aid: number,
   prize: string,
   prizeSymbol: string,
   isFinished: boolean,
   bidToken: string,
+  version: string,
+  exchange: string,
   path: string,
   prizeDescription: string,
   startingBid: number,
   bt: string,
   artist: Artist,
   token0: string,
-  token1: string
+  token1: string,
+  end: number,
+  userInfo: AuctionUserInfo,
+  auctionInfo: AuctionInfo,
 }

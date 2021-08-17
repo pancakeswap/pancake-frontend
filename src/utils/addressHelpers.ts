@@ -23,8 +23,11 @@ export const getMasterChefAddress = () => {
 export const getDrFrankensteinAddress = () => {
   return getAddress(addresses.drFrankenstein)
 }
-export const getMausoleumAddress = () => {
-  return getAddress(addresses.mausoleum)
+export const getMausoleumAddress = (version: string) => {
+  return getAddress(version === 'v2' ? addresses.mausoleumV2 : addresses.mausoleum)
+}
+export const getMausoleumV2Address = () => {
+  return getAddress(addresses.mausoleumV2)
 }
 export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)

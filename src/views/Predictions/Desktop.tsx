@@ -73,13 +73,12 @@ const StyledDesktop = styled.div`
 interface DesktopProps {
   bids: any[],
   lastBidId: number,
-  userInfo: any,
-  aid: number,
   setRefresh: any,
-  refresh: boolean
+  refresh: boolean,
+  id: number
 }
 
-const Desktop: React.FC<DesktopProps> = ({ bids, refresh, lastBidId, setRefresh, userInfo, aid }) => {
+const Desktop: React.FC<DesktopProps> = ({ bids, refresh, id, lastBidId, setRefresh }) => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
@@ -94,8 +93,7 @@ const Desktop: React.FC<DesktopProps> = ({ bids, refresh, lastBidId, setRefresh,
       <ContentWrapper>
         <>
           <PositionsPane>
-            <Positions bids={bids} refresh={refresh} setRefresh={setRefresh} userInfo={userInfo} lastBidId={lastBidId}
-                       aid={aid} />
+            <Positions refresh={refresh} id={id} setRefresh={setRefresh} />
           </PositionsPane>
           <ChartPane isChartPaneOpen={isChartPaneOpen}>
             <ExpandChartButton
@@ -106,7 +104,7 @@ const Desktop: React.FC<DesktopProps> = ({ bids, refresh, lastBidId, setRefresh,
             >
               {isChartPaneOpen ? t('Close') : t('Auction details')}
             </ExpandChartButton>
-            <PrizeTab />
+            <PrizeTab id={id} />
           </ChartPane>
         </>
       </ContentWrapper>

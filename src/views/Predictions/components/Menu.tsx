@@ -42,10 +42,10 @@ const HistoryButtonWrapper = styled.div`
   }
 `
 interface MenuProps {
-  userInfo: any
+  id: number
 }
 
-const Menu: React.FC<MenuProps> = ({userInfo}) => {
+const Menu: React.FC<MenuProps> = ({id}) => {
   return (
     <FlexRow alignItems="center" p="16px">
       <SetCol>
@@ -57,7 +57,7 @@ const Menu: React.FC<MenuProps> = ({userInfo}) => {
       <SetCol>
         <Flex alignItems="center" justifyContent="flex-end">
           <TimerLabelWrapper>
-            <TimerLabel userInfo={userInfo} />
+            <TimerLabel id={id} />
           </TimerLabelWrapper>
         </Flex>
       </SetCol>

@@ -7,10 +7,10 @@ import { Pool } from 'state/types'
 import { CompoundingPoolTag, CoreTag, EndedTag, ManualPoolTag, OngoingTag } from 'components/Tags'
 import ExpandedFooter from './ExpandedFooter'
 import { GraveConfig } from '../../../../../config/constants/types'
-import { auctionByAid } from '../../../../../redux/get'
+import { auctionById } from '../../../../../redux/get'
 
 interface FooterProps {
-  aid: number
+  id: number
 }
 
 const ExpandableButtonWrapper = styled(Flex)`
@@ -21,9 +21,9 @@ const ExpandableButtonWrapper = styled(Flex)`
   }
 `
 
-const Footer: React.FC<FooterProps> = ({ aid }) => {
+const Footer: React.FC<FooterProps> = ({ id }) => {
   const { t } = useTranslation()
-  const { isFinished } = auctionByAid(aid)
+  const { aid, isFinished } = auctionById(id)
   const [isExpanded, setIsExpanded] = useState(false)
   const manualTooltipText = isFinished ? "Auction has ended" : "Auction is live!"
   const { targetRef, tooltip, tooltipVisible } = useTooltip( manualTooltipText, {
@@ -44,7 +44,7 @@ const Footer: React.FC<FooterProps> = ({ aid }) => {
         </ExpandableLabel>
       </ExpandableButtonWrapper>
       {isExpanded && (
-        <ExpandedFooter aid={aid} />
+        <ExpandedFooter id={id} />
       )}
     </CardFooter>
   )

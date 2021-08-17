@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
 import {
   Flex,
-  MetamaskIcon,
   Text,
-  TooltipText,
   LinkExternal,
-  TimerIcon,
   Skeleton,
-  useTooltip,
 } from '@rug-zombie-libs/uikit'
-import { account, auctionByAid } from '../../../../../redux/get'
+import { auctionById } from '../../../../../redux/get'
 import { BIG_ZERO } from '../../../../../utils/bigNumber'
 import { useMausoleum } from '../../../../../hooks/useContract'
 
 interface ExpandedFooterProps {
-  aid: number
+  id: number
 }
 
 const ExpandedWrapper = styled(Flex)`
@@ -28,9 +22,9 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
-const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ aid }) => {
-  const { artist } = auctionByAid(aid)
-  const mausoleum = useMausoleum()
+const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ id }) => {
+  const { aid, artist, version } = auctionById(id)
+  const mausoleum = useMausoleum(version)
   const [totalBids, setTotalBids] = useState(BIG_ZERO)
   useEffect(() => {
     mausoleum.methods.bidsLength(aid).call()

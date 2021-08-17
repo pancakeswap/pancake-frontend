@@ -24,16 +24,23 @@ import {
   updateNftTotalSupply,
   updateSpawningPoolInfo,
   updateSpawningPoolUserInfo,
-  updateTombPoolInfo, updateTombUserInfo,
+  updateTombPoolInfo, updateTombUserInfo, updateAuctionInfo, updateAuctionUserInfo,
 } from './actions'
-import { getAddress, getDrFrankensteinAddress, getSpawningPoolAddress, getZombieAddress } from '../utils/addressHelpers'
+import {
+  getAddress,
+  getDrFrankensteinAddress,
+  getMausoleumAddress,
+  getSpawningPoolAddress,
+  getZombieAddress,
+} from '../utils/addressHelpers'
 import tombs from './tombs'
 import * as get from './get'
 import spawningPoolAbi from '../config/abi/spawningPool.json'
 import drFrankensteinAbi from '../config/abi/drFrankenstein.json'
 import pancakePairAbi from '../config/abi/pancakePairAbi.json'
 import { BIG_ZERO } from '../utils/bigNumber'
-import { account, spawningPools, zmbeBnbTomb } from './get'
+import { account, auctionById, spawningPools, zmbeBnbTomb } from './get'
+import mausoleumAbi from '../config/abi/mausoleum.json'
 
 // eslint-disable-next-line import/prefer-default-export
 export const initialData = (accountAddress: string, multi: any, setZombiePrice?: any) => {
@@ -73,9 +80,9 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
   initialGraveData()
 }
 
-export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, setUpdate: any}, updateUserObj?: {update: boolean, setUpdate: any}, everyUpdateObj?:  {update: boolean, setUpdate: any}) => {
+export const tomb = (pid: number, multi: any, updatePoolObj?: { update: boolean, setUpdate: any }, updateUserObj?: { update: boolean, setUpdate: any }, everyUpdateObj?: { update: boolean, setUpdate: any }) => {
   const contractAddress = getDrFrankensteinAddress()
-  if(account()) {
+  if (account()) {
     let inputs = [
       { target: contractAddress, function: 'poolInfo', args: [pid] },
       { target: contractAddress, function: 'userInfo', args: [pid, get.account()] },
@@ -87,7 +94,11 @@ export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, 
         inputs = [
           { target: getAddress(get.tombByPid(pid).lpAddress), function: 'balanceOf', args: [contractAddress] },
           { target: getAddress(get.tombByPid(pid).lpAddress), function: 'getReserves', args: [] },
-          { target: getAddress(get.tombByPid(pid).lpAddress), function: 'allowance', args: [account(), contractAddress] },
+          {
+            target: getAddress(get.tombByPid(pid).lpAddress),
+            function: 'allowance',
+            args: [account(), contractAddress],
+          },
           { target: getAddress(get.tombByPid(pid).lpAddress), function: 'totalSupply', args: [] },
         ]
         multi.multiCall(pancakePairAbi, inputs)
@@ -106,10 +117,10 @@ export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, 
               lpAllowance: new BigNumber(lpTokenRes[2].toString()),
               pendingZombie: new BigNumber(drFrankensteinRes[2].toString()),
             }))
-            if(everyUpdateObj) {
+            if (everyUpdateObj) {
               everyUpdateObj.setUpdate(!everyUpdateObj.update)
             }
-            if(updateUserObj && !updateUserObj.update) {
+            if (updateUserObj && !updateUserObj.update) {
               updateUserObj.setUpdate(!updateUserObj.update)
             }
           })
@@ -133,17 +144,17 @@ export const tomb = (pid: number, multi: any, updatePoolObj?: {update: boolean, 
               reserves: [new BigNumber(lpTokenRes[1]._reserve0.toString()), new BigNumber(lpTokenRes[1]._reserve1.toString())],
             }))
           })
-        if(everyUpdateObj) {
+        if (everyUpdateObj) {
           everyUpdateObj.setUpdate(!everyUpdateObj.update)
         }
-        if(updatePoolObj && !updatePoolObj.update) {
+        if (updatePoolObj && !updatePoolObj.update) {
           updatePoolObj.setUpdate(!updatePoolObj.update)
         }
       })
   }
 }
 
-export const initialTombData = (multi: any, updatePoolObj?: {update: boolean, setUpdate: any}, updateUserObj?: {update: boolean, setUpdate: any}) => {
+export const initialTombData = (multi: any, updatePoolObj?: { update: boolean, setUpdate: any }, updateUserObj?: { update: boolean, setUpdate: any }) => {
   get.tombs().forEach(t => {
     tomb(t.pid, multi, updatePoolObj, updateUserObj)
   })
@@ -296,6 +307,92 @@ export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: 
       })
       .catch(() => {
         console.count('userinfo multicall failed')
+      })
+  }
+}
+
+export const auction = (
+  id: number,
+  mausoleum: any,
+  multi: any,
+  updateAuctionObj?: { update: boolean, setUpdate: any },
+  updateUserObj?: { update: boolean, setUpdate: any },
+  everyUpdateObj?: { update: boolean, setUpdate: any },
+) => {
+  const { aid, version } = auctionById(id)
+
+  if (account()) {
+    mausoleum.methods.bidsLength(aid).call()
+      .then(bidsLengthRes => {
+        const inputs = [{ target: getMausoleumAddress(version), function: 'userInfo', args: [aid, account()] }]
+        for (let x = parseInt(bidsLengthRes); x > parseInt(bidsLengthRes) - 5; x--) {
+          if (x - 1 >= 0) {
+            inputs.push({ target: getMausoleumAddress(version), function: 'bidInfo', args: [aid, x - 1] })
+          }
+        }
+        multi.multiCall(mausoleumAbi, inputs)
+          .then(res => {
+            const bids = res[1].slice(1, res[1].length).map(bid => {
+              return {
+                amount: new BigNumber(bid.amount.toString()),
+                bidder: bid.bidder,
+              }
+            })
+
+            const userInfoRes = res[1][0]
+            // console.log(userInfoRes)
+            store.dispatch(updateAuctionInfo(
+              id,
+              {
+                lastBidId: parseInt(bidsLengthRes) - 1,
+                bids,
+              },
+            ))
+            store.dispatch(updateAuctionUserInfo(
+              id,
+              {
+                bid: new BigNumber(userInfoRes.bid.toString()),
+                paidUnlockFee: userInfoRes.paidUnlockFee,
+              },
+            ))
+            if (updateUserObj && !updateUserObj.update) {
+              updateUserObj.setUpdate(!updateUserObj.update)
+            }
+          })
+          .catch(() => {
+            console.log('multicall failed')
+          })
+      })
+  } else {
+    mausoleum.methods.bidsLength(aid).call()
+      .then(bidsLengthRes => {
+        const inputs = []
+        for (let x = parseInt(bidsLengthRes); x > parseInt(bidsLengthRes) - 5; x--) {
+          if (x - 1 >= 0) {
+            inputs.push({ target: getMausoleumAddress(version), function: 'bidInfo', args: [aid, x - 1] })
+          }
+        }
+        multi.multiCall(mausoleumAbi, inputs)
+          .then(res => {
+            const bids = res[1].slice(1, res[1].length).map(bid => ({
+              amount: new BigNumber(bid.amount.toString()),
+              bidder: bid.bidder,
+            }))
+
+            store.dispatch(updateAuctionInfo(
+              id,
+              {
+                lastBidId: parseInt(bidsLengthRes) - 1,
+                bids,
+              },
+            ))
+            if (updateAuctionObj && !updateAuctionObj.update) {
+              updateAuctionObj.setUpdate(!updateAuctionObj.update)
+            }
+          })
+          .catch(() => {
+            console.log('multicall failed')
+          })
       })
   }
 }

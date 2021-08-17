@@ -13,6 +13,7 @@ import useOnNextRound from './hooks/useOnNextRound'
 import SoonRoundCard from './components/RoundCard/SoonRoundCard'
 import IncreaseBidCard from './components/RoundCard/IncreaseBidCard'
 import { BIG_ZERO } from '../../utils/bigNumber'
+import { auctionById } from '../../redux/get'
 
 SwiperCore.use([Keyboard, Mousewheel])
 
@@ -28,18 +29,15 @@ const StyledSwiper = styled.div`
 `
 
 interface PositionsProps {
-  bids: any[]
-  lastBidId: number,
-  userInfo: any,
-  aid: number,
+  id: number,
   setRefresh: any,
   refresh: boolean
 }
 
-const Positions: React.FC<PositionsProps> = ({ bids, setRefresh,refresh, lastBidId, userInfo, aid }) => {
+const Positions: React.FC<PositionsProps> = ({ setRefresh, refresh, id }) => {
   const { setSwiper } = useSwiper()
+  const { auctionInfo: { bids, lastBidId }} = auctionById(id)
   const initialIndex = Math.floor(1)
-
   // useOnNextRound()
 
   const formattedBids = bids.map((bid, i) => {
@@ -52,7 +50,7 @@ const Positions: React.FC<PositionsProps> = ({ bids, setRefresh,refresh, lastBid
 
   return (
     <Box overflowX='hidden' overflowY='auto' style={{ width: '100%' }}>
-      <Menu userInfo={userInfo} />
+      <Menu id={id} />
       <StyledSwiper style={{ width: '100%' }}>
         <Swiper
           initialSlide={initialIndex}
@@ -66,40 +64,35 @@ const Positions: React.FC<PositionsProps> = ({ bids, setRefresh,refresh, lastBid
           keyboard
           resizeObserver
         >
-          {bids[lastBidId - 3] ?
-            <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId - 3]} id={lastBidId - 3} userInfo={userInfo}
-                         lastBidId={lastBidId} aid={aid} />
-            </SwiperSlide> : null
-          }
           {bids[lastBidId - 2] ?
             <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId - 2]} id={lastBidId - 2} userInfo={userInfo} lastBidId={lastBidId}
-                         aid={aid} />
+              <RoundCard bid={formattedBids[lastBidId - 2]} id={id} bidId={lastBidId - 2} lastBidId={lastBidId} />
             </SwiperSlide> : null
           }
           {bids[lastBidId - 1] ?
             <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId - 1]} id={lastBidId - 1} userInfo={userInfo} lastBidId={lastBidId}
-                         aid={aid} />
+              <RoundCard bid={formattedBids[lastBidId - 1]} id={id} bidId={lastBidId - 1} lastBidId={lastBidId} />
+            </SwiperSlide> : null
+          }
+          {bids[lastBidId] ?
+            <SwiperSlide>
+              <RoundCard bid={formattedBids[lastBidId]} id={id} bidId={lastBidId} lastBidId={lastBidId} />
             </SwiperSlide> : null
           }
           <SwiperSlide>
             {bids.length > 0 ?
               <IncreaseBidCard
                 lastBid={formattedBids[bids.length - 1]}
-                userInfo={userInfo}
-                aid={aid}
-                id={lastBidId}
+                id={id}
+                bidId={lastBidId}
                 setRefresh={setRefresh}
                 refresh={refresh}
               /> :
               null
             }
-
           </SwiperSlide>
           <SwiperSlide>
-            <SoonRoundCard lastBidId={lastBidId} id={lastBidId + 1} />
+            <SoonRoundCard lastBidId={lastBidId} bidId={lastBidId + 1} id={id} />
           </SwiperSlide>
         </Swiper>
       </StyledSwiper>

@@ -3,7 +3,7 @@ const SECONDS_PER_HOUR = 3600
 const SECONDS_PER_DAY = 86400
 
 // eslint-disable-next-line import/prefer-default-export
-export const formatDuration = (duration: number): string => {
+export const formatDuration = (duration: number, withSeconds?: boolean): string => {
   let remaining = duration
   const days = Math.floor(remaining / SECONDS_PER_DAY)
   remaining -= days * SECONDS_PER_DAY
@@ -13,6 +13,12 @@ export const formatDuration = (duration: number): string => {
   if(duration < SECONDS_PER_MINUTE) {
     return `${duration}s`
   }
+
+  if(withSeconds) {
+    remaining -= minutes * SECONDS_PER_MINUTE
+    return `${days}d ${hours}h ${minutes}m ${remaining}s`
+  }
+
   return `${days}d ${hours}h ${minutes}m`
 }
 

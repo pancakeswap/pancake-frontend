@@ -10,98 +10,55 @@ import { BIG_TEN, BIG_ZERO } from '../../utils/bigNumber'
 import PoolTabButtons from './components/PoolTabButtons'
 import FlexLayout from '../../components/layout/Flex'
 import AuctionCard from './components/GraveCard'
-import usePersistState from '../../hooks/usePersistState'
-import graves from '../../config/constants/graves'
-import { getAddress, getZombieAddress } from '../../utils/addressHelpers'
-import useTokenBalance from '../../hooks/useTokenBalance'
-import { zombiePriceUsd, auctions } from '../../redux/get'
-
-let web3
-let restorationChef
-const isLoading = true
-
-const ONE = BIG_TEN.pow(18)
-const hasStakeInFinishedPools = false
-
-const defaultUser = {
-  paidUnlockingFee: false,
-  withdrawalDate: 0,
-  rugDeposited: 0,
-  zombieStaked: 0,
-}
-
-const userData = {}
-const balances = {
-  zombie: 0,
-  rug: 0
-}
-
-
-function getUserInfo(gid, account) {
-  if(typeof account !== "undefined") {
-    // restorationChef.methods.userInfo(gid, account).call()
-    //   .then((data) => {
-    //     isLoading=false
-    //     userData[gid] = data
-    //   })
-    //   .catch(() => {
-    //     console.log("Failed to get user data")
-    //   })
-  }
-}
+import { auctions } from '../../redux/get'
 
 const PredictionsHome: React.FC = () => {
   const { path } = useRouteMatch()
-  const { account } = useWeb3React()
   const [visibleAuctions, setVisibleAuctions] = useState(auctions())
-  getUserInfo(0, account)
   const backgroundColor = '#101820'
-
+  const ids = visibleAuctions.reverse().map(a => a.id)
+  let key = -1
   return (
     <>
-       <PageHeader background={backgroundColor}>
-        <Flex justifyContent="space-between" flexDirection={['column', null, 'row']}>
-          <Flex flexDirection="column" mr={['8px', 0]}>
-            <Heading as="h1" size="xxl" color="secondary" mb="24px">
+      <PageHeader background={backgroundColor}>
+        <Flex justifyContent='space-between' flexDirection={['column', null, 'row']}>
+          <Flex flexDirection='column' mr={['8px', 0]}>
+            <Heading as='h1' size='xxl' color='secondary' mb='24px'>
               Mausoleum
             </Heading>
-            <Heading size="md" color="text">
+            <Heading size='md' color='text'>
               Participate in auctions to win one of a kind NFTs
             </Heading>
-            <Heading size="md" color="text">
+            <Heading size='md' color='text'>
               Remember to withdraw your previous bids
             </Heading>
           </Flex>
         </Flex>
-       </PageHeader>
+      </PageHeader>
       <Page>
-          <PoolTabButtons
-            setAuctions={setVisibleAuctions}
-          />
-          <FlexLayout>
-            <Route exact path={`${path}`}>
-              <>
-                 {visibleAuctions.map(auction => {
-                  return <AuctionCard
-                    aid={auction.aid}
-                  />
-                 })}
-              </>
-            </Route>
-            <Route path={`${path}/history`}>
-               {/* {orderBy(finishedPools, ['sortOrder']).map((pool) => ( */}
-               {/* <GraveCard key={pool.sousId} pool={pool} account={account} /> */}
-               {/* ) )} */}
-            </Route>
-          </FlexLayout>
-          <Image
-            mx="auto"
-            mt="12px"
-            src="https://storage.googleapis.com/rug-zombie/running-zombie-1.png"
-            alt="zombie running"
-            width={207}
-            height={142}
-          />
+        <PoolTabButtons
+          setAuctions={setVisibleAuctions}
+        />
+        <FlexLayout>
+
+          {visibleAuctions.reverse().map(auction => {
+            key += 1
+            return <AuctionCard id={ids[key]} key={key} />
+          })}
+          <Route path={`${path}/history`}>
+            {/* {orderBy(finishedPools, ['sortOrder']).map((pool) => ( */}
+            {/* <GraveCard key={pool.sousId} pool={pool} account={account} /> */}
+            {/* ) )} */}
+          </Route>
+        </FlexLayout>
+        <Image
+          mx='auto'
+          mt='12px'
+          src='https://storage.googleapis.com/rug-zombie/running-zombie-1.png'
+          alt='zombie running'
+          width={207}
+          height={142}
+        />
       </Page>
     </>
   )

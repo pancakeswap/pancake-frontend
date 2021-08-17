@@ -1,6 +1,14 @@
 import { BigNumber } from 'bignumber.js'
 import * as actions from './actionTypes'
-import { PoolInfo, SpawningPoolInfo, SpawningUserInfo, TombPoolInfo, TombUserInfo, UserInfo } from './types'
+import {
+  AuctionInfo, AuctionUserInfo,
+  PoolInfo,
+  SpawningPoolInfo,
+  SpawningUserInfo,
+  TombPoolInfo,
+  TombUserInfo,
+  UserInfo,
+} from './types'
 
 export const updateAccount = (account: string) => ({
   type: actions.UPDATE_ACCOUNT,
@@ -103,6 +111,22 @@ export const updateSpawningPoolInfo = (id: number, poolInfo: SpawningPoolInfo) =
 
 export const updateSpawningPoolUserInfo = (id: number, userInfo: SpawningUserInfo) => ({
   type: actions.UPDATE_SPAWNING_POOL_USER_INFO,
+  payload: {
+    id,
+    userInfo,
+  },
+})
+
+export const updateAuctionInfo = (id: number, auctionInfo: AuctionInfo) => ({
+  type: actions.UPDATE_AUCTION_INFO,
+  payload: {
+    id,
+    auctionInfo,
+  },
+})
+
+export const updateAuctionUserInfo = (id: number, userInfo: AuctionUserInfo) => ({
+  type: actions.UPDATE_AUCTION_USER_INFO,
   payload: {
     id,
     userInfo,

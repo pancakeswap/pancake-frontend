@@ -8,6 +8,7 @@ import tokens from '../../../config/constants/tokens'
 import { getBalanceAmount } from '../../../utils/formatBalance'
 import { BASE_EXCHANGE_URL } from '../../../config'
 import auctions from '../../../redux/auctions'
+import { auctionById } from '../../../redux/get'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -80,10 +81,11 @@ export const PricePairLabel: React.FC = () => {
 }
 
 interface TimerLabelProps {
-  userInfo: any
+  id: number
 }
 
-export const TimerLabel: React.FC<TimerLabelProps> = ({ userInfo }) => {
+export const TimerLabel: React.FC<TimerLabelProps> = ({ id }) => {
+  const { userInfo } = auctionById(id)
   return (
     <Box pr='100px' position='relative'>
       <Flex alignItems='center' justifyContent='center'>

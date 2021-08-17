@@ -12,19 +12,16 @@ import { BetPosition } from 'state/types'
 import { ethers } from 'ethers'
 import CardFlip from '../CardFlip'
 import { RoundResultBox } from '../RoundResult'
-import * as get from '../../../../redux/get'
 import Card from './Card'
 import CardHeader from './CardHeader'
 import SetPositionCard from './SetPositionCard'
-import { getBep20Contract, getMausoleumContract } from '../../../../utils/contractHelpers'
-import useWeb3 from '../../../../hooks/useWeb3'
 import { BIG_TEN, BIG_ZERO } from '../../../../utils/bigNumber'
 import { getBalanceAmount } from '../../../../utils/formatBalance'
-import { account } from '../../../../redux/get'
-import auctions from '../../../../redux/auctions'
+import { account, auctionById, auctions } from '../../../../redux/get'
 import { getMausoleumAddress } from '../../../../utils/addressHelpers'
-import { useERC20, useMausoleum } from '../../../../hooks/useContract'
+import { useERC20, useMausoleum, useMultiCall } from '../../../../hooks/useContract'
 import '../MobileCard/cardStyles.css';
+import { auction } from '../../../../redux/fetch'
 
 // PrizePoolRow
 interface CurrentBidProps extends FlexProps {
@@ -45,23 +42,23 @@ export const CurrentBid: React.FC<CurrentBidProps> = ({ totalAmount, ...props })
 
 interface OpenRoundCardProps {
   lastBid: any
-  userInfo: any
-  aid: number
+  bidId: number
   id: number
   setRefresh: any
   refresh: boolean
 }
 
-const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refresh, setRefresh, aid, id }) => {
+const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRefresh, id, bidId }) => {
   const [state, setState] = useState({
     isSettingPosition: false,
     position: BetPosition.BULL,
   })
   const { t } = useTranslation()
   const { isSettingPosition, position } = state
-  const mausoleum = useMausoleum()
-  const bidToken = useERC20(auctions[0].bidToken)
-
+  const { aid, version, bidToken, userInfo: { paidUnlockFee, bid } } = auctionById(id)
+  const mausoleum = useMausoleum(version)
+  const bidTokenContract = useERC20(bidToken)
+  const multi = useMultiCall()
   const handleBack = () =>
     setState((prevState) => ({
       ...prevState,
@@ -85,11 +82,10 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
 
   const [allowance, setAllowance] = useState(BIG_ZERO)
   const [amount, setAmount] = useState(lastBid.amount ? new BigNumber(lastBid.amount) : BIG_ZERO)
-  const [latestUserInfo, setLatestUserInfo] = useState(userInfo)
-  const [paidUnlockFee, setPaidUnlockFee] = useState(latestUserInfo.paidUnlockFee)
+  const [update, setUpdate] = useState(false)
 
-  if(!amount.eq(latestUserInfo.bid) && amount.eq(BIG_ZERO)) {
-    setAmount(new BigNumber(userInfo.bid))
+  if(!amount.eq(bid) && amount.eq(BIG_ZERO)) {
+    setAmount(new BigNumber(bid))
   }
 
   const increaseBid = () => {
@@ -106,7 +102,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
 
   const submitBid = () => {
     if(account()) {
-      mausoleum.methods.increaseBid(aid, amount.minus(userInfo.bid).toString())
+      mausoleum.methods.increaseBid(aid, amount.minus(bid).toString())
         .send({from: account() })
         .then(()=>{setRefresh(!refresh)})
     }
@@ -128,8 +124,14 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
             .then(() => {
               mausoleum.methods.userInfo(aid, account()).call()
                 .then(userInfoRes => {
-                  setLatestUserInfo(userInfoRes)
-                  setPaidUnlockFee(true)
+                  auction(
+                    id,
+                    multi,
+                    undefined,
+                    undefined,
+                    undefined,
+                    {  update, setUpdate }
+                  )
                 })
             })
         })
@@ -137,7 +139,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
   }
 
   const handleApprove = () => {
-    bidToken.methods.approve(getMausoleumAddress(), ethers.constants.MaxUint256)
+    bidTokenContract.methods.approve(getMausoleumAddress(version), ethers.constants.MaxUint256)
       .send({from: account()})
       .then(() => {
         setAllowance(new BigNumber(ethers.constants.MaxUint256.toString()))
@@ -145,18 +147,14 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
   }
   const accountAddress = account()
 
-  if(paidUnlockFee !== latestUserInfo.paidUnlockFee) {
-    setPaidUnlockFee(latestUserInfo.paidUnlockFee)
-  }
-
   useEffect(() => {
     if(accountAddress) {
-      getBep20Contract(auctions[0].bidToken).methods.allowance(accountAddress, getMausoleumAddress()).call()
+      bidTokenContract.methods.allowance(accountAddress, getMausoleumAddress(version)).call()
         .then(res => {
           setAllowance(new BigNumber(res))
         })
     }
-  }, [accountAddress])
+  }, [accountAddress, bidTokenContract.methods, version])
 
   return (
     <CardFlip isFlipped={isSettingPosition} height='404px'>
@@ -166,7 +164,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
           icon={<PlayCircleOutlineIcon color='white' mr='4px' width='21px' />}
           title={t('Bid')}
           bid={lastBid}
-          id={id}
+          id={bidId}
         />
         <CardBody p='16px'>
           <RoundResultBox>
@@ -260,6 +258,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, userInfo, refr
         </CardBody>
       </Card>
       <SetPositionCard
+        id={id}
         onBack={handleBack}
         onSuccess={async ()=>{console.log('success')}}
         position={position}

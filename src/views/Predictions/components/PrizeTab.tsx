@@ -6,7 +6,8 @@ import auctions from '../../../redux/auctions'
 import { getMausoleumContract } from '../../../utils/contractHelpers'
 import { BIG_ZERO } from '../../../utils/bigNumber'
 import { getBalanceAmount } from '../../../utils/formatBalance'
-import { bnbPriceUsd } from '../../../redux/get'
+import { auctionById, bnbPriceUsd } from '../../../redux/get'
+import { useMausoleum } from '../../../hooks/useContract'
 
 const TableCards = styled(BaseLayout)`
   align-items: stretch;
@@ -18,16 +19,21 @@ const TableCards = styled(BaseLayout)`
   }
 `
 
-const PrizeTab = () => {
-  const auction = auctions[0]
+interface PrizeTabProps {
+  id: number
+}
+
+const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
+  const { aid, version , prizeDescription, artist: { twitter }} = auctionById(id)
+  const mausoleum = useMausoleum(version)
   const [unlockFeeInBnb, setUnlockFeeInBnb] = useState(BIG_ZERO)
 
   useEffect(() => {
-    getMausoleumContract().methods.unlockFeeInBnb(auction.aid).call()
+    mausoleum.methods.unlockFeeInBnb(aid).call()
       .then(res => {
         setUnlockFeeInBnb(new BigNumber(res))
       })
-  }, [auction.aid])
+  }, [aid, mausoleum.methods])
 
   const type = 'image'
   return (
@@ -54,19 +60,19 @@ const PrizeTab = () => {
                   <span className='indetails-title'>
                     Prize Details:
                   <span className='indetails-value'>
-                    {auction.prizeDescription}
+                    {prizeDescription}
                   </span>
                   </span>
                   <br />
                   <span className='indetails-title'>
-                    <LinkExternal bold={false} small href={auction.artist.twitter}>
+                    <LinkExternal bold={false} small href={twitter}>
                       View NFT Artist
                     </LinkExternal>
                   </span>
 
                 </div>
                 <div className='direction-column'>
-                   <span className="indetails-type">Unlock Fees: {getBalanceAmount(unlockFeeInBnb).toString()} BNB
+                   <span className='indetails-type'>Unlock Fees: {getBalanceAmount(unlockFeeInBnb).toString()} BNB
                     ({Math.round(getBalanceAmount(unlockFeeInBnb).times(bnbPriceUsd()).toNumber() * 100) / 100} in USD)
                    </span>
                 </div>

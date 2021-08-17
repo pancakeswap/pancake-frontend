@@ -6,7 +6,7 @@ import tokens from '../../../../../config/constants/tokens'
 import { getAddress } from '../../../../../utils/addressHelpers'
 import { getBep20Contract, getContract } from '../../../../../utils/contractHelpers'
 import { routes } from '../../../../../routes'
-import { auctionByAid } from '../../../../../redux/get'
+import { auctionById } from '../../../../../redux/get'
 
 const InlineText = styled(Text)`
   display: inline;
@@ -38,9 +38,9 @@ async function getTokenAllowance(account, token, setState, resetTimer, web3) {
   //   })
 }
 
-const GraveCardActions: React.FC<{ aid: number }> = ({ aid }) => {
+const GraveCardActions: React.FC<{ id: number }> = ({ id }) => {
   const history = useHistory()
-  const { bt } = auctionByAid(aid)
+  const { bt } = auctionById(id)
   return (
     <Flex flexDirection='column'>
       <Flex flexDirection='column'>
@@ -63,7 +63,7 @@ const GraveCardActions: React.FC<{ aid: number }> = ({ aid }) => {
           </InlineText>
         </Box>
         <br/>
-        <Button onClick={() => history.push(`${routes.MAUSOLEUM }${ aid}`)}>ENTER</Button>
+        <Button onClick={() => history.push(`${routes.MAUSOLEUM }${ id}`)}>ENTER</Button>
       </Flex>
     </Flex>
   )

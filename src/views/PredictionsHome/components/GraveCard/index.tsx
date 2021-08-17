@@ -2,38 +2,28 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, Flex, Image, Text } from '@rug-zombie-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
-import BigNumber from 'bignumber.js'
-import Web3 from 'web3'
 import StartingBid from './StartingBid'
 import StyledCard from './StyledCard'
 import StyledCardHeader from './StyledCardHeader'
-import { GraveConfig } from '../../../../config/constants/types'
 import MinimumStakingTime from './MinimumStakingTime'
 import GraveCardActions from './GraveCardActions'
 import CardFooter from './CardFooter'
-import { BIG_TEN } from '../../../../utils/bigNumber'
-import useTokenBalance from '../../../../hooks/useTokenBalance'
-import { getAddress, getZombieAddress } from '../../../../utils/addressHelpers'
-import { account, auctionByAid } from '../../../../redux/get'
+import { account, auctionById } from '../../../../redux/get'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
 `
 
-const AuctionCard: React.FC<{
-  aid: number
-}> = ({ aid }) => {
-  const { prize, prizeSymbol, path } = auctionByAid(aid)
+const AuctionCard: React.FC<{ id: number }> = ({ id }) => {
+  const { prize, prizeSymbol, path } = auctionById(id)
   const isLoading = false
   return (
     <StyledCard isStaking={false} style={{
       minWidth: '350px',
     }} >
-      <StyledCardHeader aid={aid}/>
+      <StyledCardHeader id={id}/>
       <StyledCardBody isLoading={isLoading}>
-        <StartingBid
-          aid={aid}
-        />
+        <StartingBid id={id} />
         <MinimumStakingTime period="1000" />
         <br />
         <br />
@@ -48,7 +38,7 @@ const AuctionCard: React.FC<{
         </Flex>
         <Flex mt='24px' flexDirection='column'>
           {account() ? (
-            <GraveCardActions aid={aid}/>
+            <GraveCardActions id={id}/>
           ) : (
             <>
               <UnlockButton />
@@ -56,7 +46,7 @@ const AuctionCard: React.FC<{
           )}
         </Flex>
       </StyledCardBody>
-      <CardFooter aid={aid} />
+      <CardFooter id={id} />
     </StyledCard>
   )
 }

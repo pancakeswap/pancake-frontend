@@ -77,8 +77,8 @@ export const auctions = (): Auction[] => {
   return store.getState().auctions
 }
 
-export const auctionByAid = (aid: number): Auction => {
-  return auctions().find(a => a.aid === aid)
+export const auctionById = (id: number): Auction => {
+  return auctions().find(a => a.id === id)
 }
 
 export const nfts = () => {

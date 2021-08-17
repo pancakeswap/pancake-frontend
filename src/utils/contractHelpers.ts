@@ -25,7 +25,7 @@ import {
   getDrFrankensteinAddress,
   getMausoleumAddress,
   getSpawningPoolAddress,
-  getNftConverterAddress,
+  getNftConverterAddress, getMausoleumV2Address,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -119,8 +119,11 @@ export const getMasterchefContract = (web3?: Web3) => {
 export const getDrFrankensteinContract = (web3?: Web3) => {
   return getContract(drFrankensteinAbi, getDrFrankensteinAddress(), web3)
 }
-export const getMausoleumContract = (web3?: Web3) => {
-  return getContract(mausoleumAbi, getMausoleumAddress(), web3)
+export const getMausoleumContract = (version: string, web3?: Web3) => {
+  return getContract(mausoleumAbi, getMausoleumAddress(version), web3)
+}
+export const getMausoleumV2Contract = (web3?: Web3) => {
+  return getContract(mausoleumAbi, getMausoleumV2Address(), web3)
 }
 export const getSpawningPoolContract = (id: number, web3?: Web3) => {
   return getContract(spawningPoolAbi, getSpawningPoolAddress(id), web3)

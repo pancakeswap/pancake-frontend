@@ -34,8 +34,10 @@ import { getBep20Contract, getErc721Contract, getMausoleumContract } from '../..
 import { BIG_ZERO } from '../../../../utils/bigNumber'
 import auctions from '../../../../redux/auctions'
 import useWeb3 from '../../../../hooks/useWeb3'
+import { auctionById } from '../../../../redux/get'
 
 interface SetPositionCardProps {
+  id: number
   position: BetPosition
   togglePosition: () => void
   onBack: () => void
@@ -72,7 +74,7 @@ const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBal
   return { id: 464, fallback: 'SUBMIT', disabled: value.lt(minBetAmountBalance) }
 }
 
-const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, onBack, onSuccess }) => {
+const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, id, onBack, onSuccess }) => {
   const [value, setValue] = useState('')
   const [isTxPending, setIsTxPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -81,7 +83,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const mausoleum = useMausoleum()
+  const { version, bidToken } = auctionById(id)
+  const mausoleum = useMausoleum(version)
 
   const [maxBalance, setMaxBalance] = useState(0)
   const [bnMaxBalance, setBnMaxBalance] = useState(BIG_ZERO)
@@ -92,7 +95,6 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const showFieldWarning = account && valueAsBn.gt(0) && errorMessage !== null
   const minBetAmountBalance = getBnbAmount(minBetAmount).toNumber()
 
-  const bidToken = auctions[0].bidToken
   useEffect(() => {
     if(account) {
       getBep20Contract(bidToken).methods.balanceOf(account).call()

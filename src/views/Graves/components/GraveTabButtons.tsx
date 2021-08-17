@@ -119,7 +119,7 @@ const GraveTabButtons = ({ setGraves, stakedOnly, setStakedOnly }) => {
           </NotificationDot>
         </ButtonMenu> :
           <StyledButton onClick={nextFilter} className="total-earned text-shadow">
-            <Text color="tertiary">
+            <Text color="tertiary" bold>
               {t('Showing:')} {t(FILTERS[index])}
             </Text>
           </StyledButton>}

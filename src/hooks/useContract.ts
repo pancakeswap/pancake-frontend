@@ -24,7 +24,7 @@ import {
   getDrFrankensteinContract,
   getMausoleumContract,
   getSpawningPoolContract,
-  getNftConverterContract,
+  getNftConverterContract, getMausoleumV2Contract,
 } from 'utils/contractHelpers'
 import { MultiCall } from '@indexed-finance/multicall'
 
@@ -65,9 +65,14 @@ export const useZombie = () => {
   return useMemo(() => getZombieContract(web3), [web3])
 }
 
-export const useMausoleum = () => {
+export const useMausoleum = (version?: string) => {
   const web3 = useWeb3()
-  return useMemo(() => getMausoleumContract(web3), [web3])
+  return useMemo(() =>  getMausoleumContract(version, web3), [version, web3])
+}
+
+export const useMausoleumV2 = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getMausoleumV2Contract(web3), [web3])
 }
 
 export const useBunnyFactory = () => {

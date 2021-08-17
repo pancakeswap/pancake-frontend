@@ -8,17 +8,11 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { BigNumber } from 'bignumber.js'
 import MobileMenu from './components/MobileMenu'
-import History from './History'
-import Positions from './Positions'
-import Chart from './Chart'
-import { ErrorNotification, PauseNotification } from './components/Notification'
-import MobileCard from './components/MobileCard/MobileCard'
 import useSwiper from './hooks/useSwiper'
 import { BIG_ZERO } from '../../utils/bigNumber'
 import SoonRoundCard from './components/RoundCard/SoonRoundCard'
 import IncreaseBidCard from './components/RoundCard/IncreaseBidCard'
 import RoundCard from './components/RoundCard'
-import Menu from './components/Menu'
 import MobileTopMenu from './components/MobileTopMenu'
 import PrizeTab from './components/PrizeTab'
 import { setChartPaneState } from '../../state/predictions'
@@ -115,13 +109,14 @@ const ExpandChartButton = styled(Button)`
 interface MobileProps {
   bids: any[],
   lastBidId: number,
+  id: number,
   userInfo: any,
   aid: number,
   setRefresh: any,
   refresh: boolean
 }
 
-const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, userInfo, aid }) => {
+const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, userInfo, aid, id }) => {
   const { setSwiper } = useSwiper()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
@@ -162,15 +157,14 @@ const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, u
           resizeObserver
         >
           <SwiperSlide>
-            <SoonRoundCard lastBidId={lastBidId} id={lastBidId + 1} />
+            <SoonRoundCard lastBidId={lastBidId} bidId={lastBidId + 1} id={id} />
           </SwiperSlide>
           <SwiperSlide>
             {bids.length > 0 ?
               <IncreaseBidCard
                 lastBid={formattedBids[bids.length - 1]}
-                userInfo={userInfo}
-                aid={aid}
-                id={lastBidId}
+                id={id}
+                bidId={lastBidId}
                 setRefresh={setRefresh}
                 refresh={refresh}
               /> :
@@ -179,20 +173,19 @@ const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, u
           </SwiperSlide>
           {bids[lastBidId - 1] ?
             <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId - 1]} id={lastBidId - 1} userInfo={userInfo} lastBidId={lastBidId}
-                         aid={aid} />
+              <RoundCard bid={formattedBids[lastBidId - 1]} id={id} bidId={lastBidId - 1} lastBidId={lastBidId}
+                          />
             </SwiperSlide> : null
           }
           {bids[lastBidId - 2] ?
             <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId - 2]} id={lastBidId - 2} userInfo={userInfo} lastBidId={lastBidId}
-                         aid={aid} />
+              <RoundCard bid={formattedBids[lastBidId - 2]} id={id} bidId={lastBidId - 2} lastBidId={lastBidId}
+                        />
             </SwiperSlide> : null
           }
           {bids[lastBidId - 3] ?
             <SwiperSlide>
-                <RoundCard bid={formattedBids[lastBidId - 3]} id={lastBidId - 3} userInfo={userInfo}
-                           lastBidId={lastBidId} aid={aid} />
+                <RoundCard bid={formattedBids[lastBidId - 3]} id={id} bidId={lastBidId - 3} lastBidId={lastBidId}/>
             </SwiperSlide> : null
           }
         </Swiper>
@@ -213,7 +206,7 @@ const Mobile: React.FC<MobileProps> = ({ bids, refresh, lastBidId, setRefresh, u
           >
             {isChartPaneOpen ? 'Close' : 'Auction details'}
           </ExpandChartButton>
-          <PrizeTab />
+          <PrizeTab id={id} />
         </ChartPane>
         <MobileMenu userInfo={userInfo} refreshMobile={refreshMobile} />
       </div>

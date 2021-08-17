@@ -6,18 +6,17 @@ import LeaderRoundCard from './LeaderRoundCard'
 interface RoundCardProps {
   bid: any,
   lastBidId: number,
-  userInfo: any,
-  aid: number,
-  id: number
+  id: number,
+  bidId: number,
 }
 
-const RoundCard: React.FC<RoundCardProps> = ({ bid, lastBidId, id, userInfo, aid }) => {
+const RoundCard: React.FC<RoundCardProps> = ({ bid, lastBidId, id, bidId }) => {
   // Live round
-  if (id === lastBidId - 1) {
+  if (id === lastBidId) {
     return (
       <LeaderRoundCard
         bid={bid}
-        id={id}
+        id={bidId}
       />
     )
   }
@@ -26,7 +25,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ bid, lastBidId, id, userInfo, aid
   return (
     <OutbidRoundCard
       bid={bid}
-      id={id}
+      id={bidId}
     />
   )
 }
