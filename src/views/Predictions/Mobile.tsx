@@ -213,7 +213,7 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
             {isChartPaneOpen ? 'Close' : 'Auction details'}
           </ExpandChartButton>
         </ChartPane>
-        <MobileMenu userInfo={userInfo} refreshMobile={refreshMobile} />
+        <MobileMenu id={id} refreshMobile={refreshMobile} />
       </div>
     </>
   )

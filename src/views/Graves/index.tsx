@@ -14,11 +14,37 @@ import GraveTabButtons from './components/GraveTabButtons'
 
 let accountAddress
 
+const filterGraves = (i) => {
+  switch(i) {
+    case 0: // All
+      return graves()
+      break
+    case 1: // Featured
+      return graves().filter(g => g.isFeatured)
+      break
+    case 2: // Legendary
+      return graves().filter(g => g.rarity === "Legendary")
+      break
+    case 3: // Rare
+      return graves().filter(g => g.rarity === "Rare")
+      break
+    case 4: // Uncommon
+      return graves().filter(g => g.rarity === "Uncommon")
+      break
+    case 5: // Common
+      return graves().filter(g => g.rarity === "Common")
+      break
+    default:
+      return graves()
+      break
+  }
+}
+
 const Graves: React.FC = () => {
   const { account } = useWeb3React()
   const [isAllowance, setIsAllowance] = useState(false)
   const [farmData, setFarmData] = useState(graves())
-  const [currentGraves, setCurrentGraves] = useState(graves())
+  const [filter, setFilter] = useState(graves())
   const [stakedOnly, setStakedOnly] = useState(false)
   const multi = useMultiCall()
   useEffect(() => {
@@ -37,7 +63,6 @@ const Graves: React.FC = () => {
     grave(pid)
   }
 
-
     const updateAllowance = (tokenContact, pid) => {
       tokenContact.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
         .then(res => {
@@ -49,7 +74,10 @@ const Graves: React.FC = () => {
           updateResult(pid)
         })
     }
-    const visibleGraves = stakedOnly ? currentGraves.filter(g => !g.userInfo.amount.isZero()) : currentGraves
+
+
+
+    const visibleGraves = stakedOnly ? filterGraves(filter).filter(g => !g.userInfo.amount.isZero()) : filterGraves(filter)
   return (
     <>
       <PageHeader background='#101820'>
@@ -65,7 +93,7 @@ const Graves: React.FC = () => {
         </Flex>
       </PageHeader>
       <Page>
-        <GraveTabButtons setGraves={setCurrentGraves} stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
+        <GraveTabButtons setFilter={setFilter} stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
         <div>
           {visibleGraves.map((g) => {
             return <Table zombieUsdPrice={zombiePriceUsd()}

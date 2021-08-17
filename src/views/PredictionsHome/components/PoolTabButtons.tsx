@@ -48,15 +48,15 @@ const PoolTabButtons = ({ setAuctions }) => {
       <Flex alignItems='center' flexDirection={['column', null, 'row', null]}>
         <ButtonMenu onItemClick={toggleButtonMenu} activeIndex={index} scale='sm'>
           <ButtonMenuItem >
-            <ButtonText color='secondary' bold fontSize='16px'>
+            <Text color='secondary' bold fontSize='16px'>
               {t('All')}
-            </ButtonText>
+            </Text>
           </ButtonMenuItem>
           <NotificationDot >
             <ButtonMenuItem>
-              <ButtonText color='secondary' bold fontSize='16px'>
+              <Text color='secondary' bold fontSize='16px'>
                 {t('Live')}
-              </ButtonText>
+              </Text>
             </ButtonMenuItem>
           </NotificationDot>
         </ButtonMenu>

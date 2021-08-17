@@ -32,36 +32,14 @@ const StyledLink = styled(UiKitLink)`
 `
 const FILTERS = ['All', 'Featured', 'Legendary', 'Rare', 'Uncommon', 'Common']
 
-const GraveTabButtons = ({ setGraves, stakedOnly, setStakedOnly }) => {
+const GraveTabButtons = ({ setFilter, stakedOnly, setStakedOnly }) => {
   const { t } = useTranslation()
   const [index, setIndex] = useState(0)
   const { isLg, isXl, isMd } = useMatchBreakpoints()
   const isDesktop = isLg || isXl || isMd
 
   const toggleButtonMenu = (i) => {
-    switch(i) {
-      case 0: // All
-        setGraves(graves())
-        break
-      case 1: // Featured
-        setGraves(graves().filter(g => g.isFeatured))
-        break
-      case 2: // Legendary
-        setGraves(graves().filter(g => g.rarity === "Legendary"))
-        break
-      case 3: // Rare
-        setGraves(graves().filter(g => g.rarity === "Rare"))
-        break
-      case 4: // Uncommon
-        setGraves(graves().filter(g => g.rarity === "Uncommon"))
-        break
-      case 5: // Common
-        setGraves(graves().filter(g => g.rarity === "Common"))
-        break
-      default:
-        setGraves(graves())
-        break
-    }
+    setFilter(i)
     setIndex(i)
   }
 
@@ -131,7 +109,7 @@ const GraveTabButtons = ({ setGraves, stakedOnly, setStakedOnly }) => {
           <Text ml='8px'>{t('Staked only')}</Text>
          </Flex>
       <Flex ml='24px' alignItems='center' justifyContent='flex-end'>
-        <StyledLink external href='https://rugzombie.medium.com/new-feature-alert-introducing-the-mausoleum-4867bb4bdcbb'>
+        <StyledLink external href='https://rugzombie.medium.com/recap-of-ama-with-ama-lovers-club-june-11-2021-14-00-utc-92112c002262'>
           <Button px={['14px', null, null, null, '20px']}  >
             <ButtonText color='secondary' bold fontSize='16px'>
               {t('Learn More')}

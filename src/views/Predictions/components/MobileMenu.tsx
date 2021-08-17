@@ -17,8 +17,9 @@ import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } fro
 import { setChartPaneState, setHistoryPaneState } from 'state/predictions'
 import useSwiper from '../hooks/useSwiper'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
-import { BASE_EXCHANGE_URL } from '../../../config'
+import { APESWAP_ADD_LIQUIDITY_URL, BASE_EXCHANGE_URL } from '../../../config'
 import auctions from '../../../redux/auctions'
+import { auctionById } from '../../../redux/get'
 
 const ButtonNav = styled.div`
   flex: none;
@@ -54,15 +55,15 @@ const getActiveIndex = (isHistoryOpen: boolean, isChartOpen: boolean) => {
 }
 
 interface MobileMenuProps {
-  userInfo: any;
+  id: number;
   refreshMobile: any;
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({ userInfo, refreshMobile }) => {
+const MobileMenu: React.FC<MobileMenuProps> = ({ id, refreshMobile }) => {
   const isHistoryOpen = useIsHistoryPaneOpen()
   const isChartOpen = useIsChartPaneOpen()
   const activeIndex = getActiveIndex(isHistoryOpen, isChartOpen)
-
+  const {token0, token1, userInfo: { bid }} = auctionById(id)
 
   const handleItemClick = () => {
 
@@ -74,7 +75,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ userInfo, refreshMobile }) => {
     <StyledMobileMenu>
       <ButtonNav style={{marginLeft: "20px"}}>
         <Button>
-          Your Bid: {userInfo.bid ? getFullDisplayBalance(userInfo.bid) : null}
+          Your Bid: {getFullDisplayBalance(bid)}
         </Button>
       </ButtonNav>
       <TabNav style={{marginLeft: "40px"}}>
@@ -86,7 +87,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ userInfo, refreshMobile }) => {
         </ButtonMenu>
       </TabNav>
       <ButtonNav>
-        <a href={`${BASE_EXCHANGE_URL}/#/add/${auctions[0].token0}/${auctions[0].token1}`} target="_blank" rel="noreferrer">
+        <a href={`${APESWAP_ADD_LIQUIDITY_URL}//${token0}/${token1}`} target="_blank" rel="noreferrer">
 
         <Button variant="text">
           Get BT (Bid Tokens):
