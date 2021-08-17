@@ -62,6 +62,9 @@ export const getBunnySpecialCakeVaultAddress = () => {
 export const getBunnySpecialPredictionAddress = () => {
   return getAddress(addresses.bunnySpecialPrediction)
 }
+export const getBunnySpecialLotteryAddress = () => {
+  return getAddress(addresses.bunnySpecialLottery)
+}
 export const getFarmAuctionAddress = () => {
   return getAddress(addresses.farmAuction)
 }

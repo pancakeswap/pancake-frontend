@@ -24,6 +24,7 @@ import {
   getBunnySpecialCakeVaultContract,
   getBunnySpecialPredictionContract,
   getFarmAuctionContract,
+  getBunnySpecialLotteryContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 
@@ -154,6 +155,11 @@ export const useSpecialBunnyCakeVaultContract = () => {
 export const useSpecialBunnyPredictionContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getBunnySpecialPredictionContract(library.getSigner()), [library])
+}
+
+export const useBunnySpecialLotteryContract = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getBunnySpecialLotteryContract(library.getSigner()), [library])
 }
 
 export const useFarmAuctionContract = () => {

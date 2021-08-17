@@ -24,6 +24,7 @@ import {
 } from './views/AddLiquidity/redirects'
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
+import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -63,6 +64,7 @@ const App: React.FC = () => {
     <Router history={history}>
       <ResetCSS />
       <GlobalStyle />
+      <GlobalCheckClaimStatus excludeLocations={['/collectibles']} />
       <Menu>
         <SuspenseWithChunkError fallback={<PageLoader />}>
           <Switch>

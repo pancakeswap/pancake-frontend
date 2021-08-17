@@ -26,6 +26,60 @@ export const nftSources: NftSource = {
 
 const Nfts: Nft[] = [
   {
+    name: 'Baller',
+    description: 'Absolute (lottery) baller.',
+    images: {
+      lg: 'baller-lg.png',
+      md: 'baller-md.png',
+      sm: 'baller-sm.png',
+      ipfs: 'https://cloudflare-ipfs.com/ipfs/QmeMfJk6yxYmMd41ThDpqcdEJmKXZTF9EmFeP49D15NvsF/baller.png',
+    },
+    video: {
+      webm: 'https://gateway.pinata.cloud/ipfs/QmeMfJk6yxYmMd41ThDpqcdEJmKXZTF9EmFeP49D15NvsF/baller.webm',
+      mp4: 'https://gateway.pinata.cloud/ipfs/QmeMfJk6yxYmMd41ThDpqcdEJmKXZTF9EmFeP49D15NvsF/baller.mp4',
+    },
+    sortOrder: 999,
+    identifier: 'baller',
+    type: NftType.PANCAKE,
+    variationId: 20,
+  },
+  {
+    name: 'Lucky',
+    description: "Lucky's got the golden ticket!",
+    images: {
+      lg: 'lucky-lg.png',
+      md: 'lucky-md.png',
+      sm: 'lucky-sm.png',
+      ipfs: 'https://cloudflare-ipfs.com/ipfs/QmQzwfooRxLKigK7XBJzsQbP4DBpZW8jRM1sq5wrJLg6nF/lucky.png',
+    },
+    video: {
+      webm: 'https://gateway.pinata.cloud/ipfs/QmQzwfooRxLKigK7XBJzsQbP4DBpZW8jRM1sq5wrJLg6nF/lucky.webm',
+      mp4: 'https://gateway.pinata.cloud/ipfs/QmQzwfooRxLKigK7XBJzsQbP4DBpZW8jRM1sq5wrJLg6nF/lucky.mp4',
+    },
+    sortOrder: 999,
+    identifier: 'lucky',
+    type: NftType.PANCAKE,
+    variationId: 19,
+  },
+  {
+    name: 'Lottie',
+    description: "Lottie's looking hotto for lotto!",
+    images: {
+      lg: 'lottie-lg.png',
+      md: 'lottie-md.png',
+      sm: 'lottie-sm.png',
+      ipfs: 'https://cloudflare-ipfs.com/ipfs/QmWnhyxSrD8v9bx5tE9mDkwW853bpjoCXGd7o2fe1BtQJ8/lottie.png',
+    },
+    video: {
+      webm: 'https://gateway.pinata.cloud/ipfs/QmWnhyxSrD8v9bx5tE9mDkwW853bpjoCXGd7o2fe1BtQJ8/lottie.webm',
+      mp4: 'https://gateway.pinata.cloud/ipfs/QmWnhyxSrD8v9bx5tE9mDkwW853bpjoCXGd7o2fe1BtQJ8/lottie.mp4',
+    },
+    sortOrder: 999,
+    identifier: 'lottie',
+    type: NftType.PANCAKE,
+    variationId: 18,
+  },
+  {
     name: 'Claire',
     description: 'Can Claire the clairvoyant see what’s in the cards for you?',
     images: {

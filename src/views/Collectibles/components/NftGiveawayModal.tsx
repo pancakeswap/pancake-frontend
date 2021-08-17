@@ -5,16 +5,13 @@ import { Modal, Text, Button, Flex, InjectedModalProps } from '@pancakeswap/uiki
 import history from 'routerHistory'
 import { delay } from 'lodash'
 import { useTranslation } from 'contexts/Localization'
-import nftList from 'config/constants/nfts'
 import { Nft } from 'config/constants/types'
-import { useProfile } from 'state/profile/hooks'
-import { Profile } from 'state/types'
-import { teamNftMap } from './NftCard/EasterNftCard'
 
 const NftImage = styled.img`
   border-radius: 50%;
   height: 128px;
   margin-bottom: 24px;
+  margin-right: 8px;
   width: 128px;
 `
 
@@ -32,25 +29,12 @@ const showConfetti = () => {
   })
 }
 
-const getClaimableNft = (profile: Profile): Nft => {
-  if (!profile) {
-    return null
-  }
-
-  if (!profile.team) {
-    return null
-  }
-
-  const identifier = Object.keys(teamNftMap).find(
-    (mapNftIdentifier) => teamNftMap[mapNftIdentifier] === profile.team.id,
-  )
-  return nftList.find((nft) => nft.identifier === identifier)
+interface NftGiveawayModalProps extends InjectedModalProps {
+  nfts: Nft[]
 }
 
-const NftGiveawayModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nfts }) => {
   const { t } = useTranslation()
-  const { profile } = useProfile()
-  const nft = getClaimableNft(profile)
 
   // This is required because the modal exists outside the Router
   const handleClick = () => {
@@ -62,12 +46,18 @@ const NftGiveawayModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
     delay(showConfetti, 100)
   }, [])
 
+  const getImages = () => {
+    return nfts.map((nft) => <NftImage key={nft.variationId} src={`/images/nfts/${nft.images.md}`} />)
+  }
+
   return (
     <Modal title={t('Congratulations!')} onDismiss={onDismiss}>
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
-        {nft && <NftImage src={`/images/nfts/${nft.images.md}`} />}
-        <Text bold color="secondary" fontSize="24px" mb="24px">
-          {t('You won a collectible!')}
+        <Flex flexWrap="wrap" alignItems="center" justifyContent="center">
+          {getImages()}
+        </Flex>
+        <Text textAlign="center" bold color="secondary" fontSize="24px" mb="24px">
+          {nfts.length > 1 ? t('You won multiple collectibles!') : t('You won a collectible!')}
         </Text>
         <Button onClick={handleClick}>{t('Claim now')}</Button>
       </Flex>

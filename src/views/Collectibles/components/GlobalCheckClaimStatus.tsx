@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { useModal } from '@pancakeswap/uikit'
-import { useProfile } from 'state/profile/hooks'
-import { useEasterNftContract } from 'hooks/useContract'
+import { Nft } from 'config/constants/types'
+import nfts from 'config/constants/nfts'
 import NftGiveawayModal from './NftGiveawayModal'
+import useBunnySpecialLottery from '../hooks/useBunnySpecialLottery'
 
 interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
@@ -18,35 +19,56 @@ interface GlobalCheckClaimStatusProps {
  */
 const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocations }) => {
   const hasDisplayedModal = useRef(false)
-  const [isClaimable, setIsClaimable] = useState(false)
-  const [onPresentGiftModal] = useModal(<NftGiveawayModal />)
-  const easterNftContract = useEasterNftContract()
-  const { profile } = useProfile()
+  const [claimableNfts, setClaimableNfts] = useState<Nft[]>([])
+  const [onPresentGiftModal] = useModal(<NftGiveawayModal nfts={claimableNfts} />)
   const { account } = useWeb3React()
   const { pathname } = useLocation()
+  const { canClaimBaller, canClaimLottie, canClaimLucky } = useBunnySpecialLottery()
 
   // Check claim status
   useEffect(() => {
     const fetchClaimStatus = async () => {
-      const canClaim = await easterNftContract.canClaim(account)
-      setIsClaimable(canClaim)
+      const claimable: Nft[] = []
+
+      const nftConfigMap = {
+        lottie: nfts.find((nft) => nft.identifier === 'lottie'),
+        lucky: nfts.find((nft) => nft.identifier === 'lucky'),
+        baller: nfts.find((nft) => nft.identifier === 'baller'),
+      }
+
+      const { canClaim: isBallerClaimable } = await canClaimBaller()
+      const { canClaim: isLottieClaimable } = await canClaimLottie()
+      const { canClaim: isLuckyClaimable } = await canClaimLucky()
+
+      if (isBallerClaimable) {
+        claimable.push(nftConfigMap.baller)
+      }
+
+      if (isLottieClaimable) {
+        claimable.push(nftConfigMap.lottie)
+      }
+
+      if (isLuckyClaimable) {
+        claimable.push(nftConfigMap.lucky)
+      }
+
+      setClaimableNfts(claimable)
     }
 
-    // Wait until we have a profile
-    if (account && profile) {
+    if (account) {
       fetchClaimStatus()
     }
-  }, [easterNftContract, account, profile, setIsClaimable])
+  }, [account, canClaimBaller, canClaimLottie, canClaimLucky])
 
   // Check if we need to display the modal
   useEffect(() => {
     const matchesSomeLocations = excludeLocations.some((location) => pathname.includes(location))
 
-    if (isClaimable && !matchesSomeLocations && !hasDisplayedModal.current) {
+    if (claimableNfts.length > 0 && !matchesSomeLocations && !hasDisplayedModal.current) {
       onPresentGiftModal()
       hasDisplayedModal.current = true
     }
-  }, [pathname, isClaimable, excludeLocations, hasDisplayedModal, onPresentGiftModal])
+  }, [pathname, excludeLocations, hasDisplayedModal, onPresentGiftModal, claimableNfts])
 
   // Reset the check flag when account changes
   useEffect(() => {

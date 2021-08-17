@@ -180,6 +180,27 @@ const campaigns: Campaign[] = [
     description: 'Played a round of Prediction before round 12,120',
     badge: 'clairvoyant.svg',
   },
+  {
+    id: '515010001',
+    type: 'participation',
+    title: 'Lottie',
+    description: 'Joined a round in the early days of Lottery V2',
+    badge: 'lottie.svg',
+  },
+  {
+    id: '515020001',
+    type: 'participation',
+    title: 'Lucky',
+    description: 'Won a round in the early days of Lottery V2',
+    badge: 'lucky.svg',
+  },
+  {
+    id: '515030001',
+    type: 'participation',
+    title: 'Baller',
+    description: 'Top 100 ticket buyer in the early days of Lottery V2',
+    badge: 'baller.svg',
+  },
 ]
 
 /**
