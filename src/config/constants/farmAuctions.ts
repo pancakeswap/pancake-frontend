@@ -263,7 +263,7 @@ const UNKNOWN_BIDDER: FarmAuctionBidderConfig = {
 }
 
 export const getBidderInfo = (account: string): FarmAuctionBidderConfig => {
-  const matchingBidder = whitelistedBidders.find((bidder) => bidder.account === account)
+  const matchingBidder = whitelistedBidders.find((bidder) => bidder.account.toLowerCase() === account.toLowerCase())
   if (matchingBidder) {
     return matchingBidder
   }
