@@ -43,18 +43,25 @@ const RoundSwitcher: React.FC<RoundSwitcherProps> = ({
   const { t } = useTranslation()
   const selectedRoundIdAsInt = parseInt(selectedRoundId, 10)
 
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.validity.valid) {
+      handleInputChange(e)
+    }
+  }
+
   return (
     <Flex alignItems="center" justifyContent="space-between">
       <Flex alignItems="center">
         <Heading mr="8px">{t('Round')}</Heading>
         <StyledInput
+          pattern="^[0-9]+$"
+          inputMode="numeric"
           disabled={isLoading}
           id="round-id"
           name="round-id"
-          type="number"
           value={selectedRoundId}
           scale="lg"
-          onChange={handleInputChange}
+          onChange={handleOnChange}
         />
       </Flex>
       <Flex alignItems="center">
