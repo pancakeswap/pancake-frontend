@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Jika Anda tidak masuk dalam daftar putih atau tidak diizinkan untuk proyek, Anda tidak akan dapat berpartisipasi, tetapi Anda masih bisa tahu yang sedang terjadi!",
   "through community auctions so far!": "melalui lelang komunitas sejauh ini!",
   "5 Winners": "5 Pemenang",
-  "20 Contenders...": "20 Penantang ....",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "Lelang Farm",
   "auction bunny": "kelinci lelang",
   "Burnt CAKE": "CAKE hangus",
