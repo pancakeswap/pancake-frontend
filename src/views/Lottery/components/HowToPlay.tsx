@@ -134,8 +134,9 @@ const MatchExampleCard = () => {
 
 const AllocationGrid = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-auto-rows: 30px;
+  grid-template-columns: 4fr 1fr;
+  grid-auto-rows: max-content;
+  row-gap: 4px;
 `
 
 const AllocationColorCircle = styled.div<{ color: string }>`
@@ -159,7 +160,7 @@ const PoolAllocations = () => {
   const { t } = useTranslation()
   return (
     <StyledStepCard width={['280px', '330px', '380px']}>
-      <StepCardInner height="420px">
+      <StepCardInner height="auto">
         <Flex mb="32px" justifyContent="center">
           <PoolAllocationChart width="100px" height="100px" />
         </Flex>
@@ -167,7 +168,7 @@ const PoolAllocations = () => {
           <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
             {t('Digits matched')}
           </Text>
-          <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
+          <Text fontSize="12px" color="secondary" bold textAlign="right" textTransform="uppercase">
             {t('Prize pool allocation')}
           </Text>
         </Flex>
