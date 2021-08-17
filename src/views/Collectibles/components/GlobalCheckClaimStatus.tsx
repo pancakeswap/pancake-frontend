@@ -39,6 +39,7 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
       const { canClaim: isBallerClaimable } = await canClaimBaller()
       const { canClaim: isLottieClaimable } = await canClaimLottie()
       const { canClaim: isLuckyClaimable } = await canClaimLucky()
+      // console.log(isBallerClaimable, isLottieClaimable, isLuckyClaimable)
 
       if (isBallerClaimable) {
         claimable.push(nftConfigMap.baller)

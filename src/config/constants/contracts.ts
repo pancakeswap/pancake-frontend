@@ -68,7 +68,7 @@ export default {
     97: '',
   },
   bunnySpecialLottery: {
-    56: '',
+    56: '0x24ED31d31C5868e5a96aA77fdcB890f3511fa0b2',
     97: '0x382cB497110F398F0f152cae82821476AE51c9cF',
   },
   farmAuction: {

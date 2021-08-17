@@ -18,29 +18,17 @@ export const NO_CLAIM: NftClaim = {
   mintData: null,
 }
 
-export const hasBunnySpecialClaimed = async (account: string, variationId: number | string): Promise<boolean> => {
-  const lotteryNftContract = getBunnySpecialLotteryContract()
-
-  try {
-    const hasClaimed = await lotteryNftContract.hasClaimed(account, variationId)
-    return hasClaimed
-  } catch (error) {
-    console.error(`Failed to check hasClaimed for id ${variationId}`, error)
-    return false
-  }
-}
-
 export const getLottieClaim = async (
   account: string,
   variationId: number | string,
   lotteryId: string,
 ): Promise<NftClaim> => {
   const lotteryNftContract = getBunnySpecialLotteryContract()
-  const passesGenericChecks = await hasBunnySpecialClaimed(account, variationId)
 
-  if (passesGenericChecks && lotteryId) {
+  if (lotteryId) {
     try {
       const passesContractCheck = await lotteryNftContract.canClaimNft1(account, lotteryId)
+
       if (passesContractCheck) {
         return {
           canClaim: true,
@@ -61,12 +49,7 @@ export const getLuckyClaim = async (
   variationId: number | string,
   userRounds: UserRound[],
 ): Promise<NftClaim> => {
-  const passesGenericChecks = await hasBunnySpecialClaimed(account, variationId)
   const lotteryNftContract = getBunnySpecialLotteryContract()
-
-  if (!passesGenericChecks) {
-    return NO_CLAIM
-  }
 
   const claimedWinningRounds = userRounds.filter((round) => round.claimed)
   if (claimedWinningRounds.length > 0) {
@@ -108,10 +91,6 @@ export const getBallerClaim = async (
   lotteryId?: string,
 ): Promise<NftClaim> => {
   const lotteryNftContract = getBunnySpecialLotteryContract()
-  const passesGenericChecks = await hasBunnySpecialClaimed(account, variationId)
-  if (!passesGenericChecks) {
-    return NO_CLAIM
-  }
 
   try {
     const isWhitelisted = await lotteryNftContract.userWhitelistForNft3(account)
