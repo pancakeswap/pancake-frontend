@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Εάν το πρότζεκτ σας δεν είναι στη λευκή λίστα, δεν θα μπορείτε να συμμετάσχετε, αλλά μπορείτε ακόμα να δείτε τι συμβαίνει!",
   "through community auctions so far!": "μέσω κοινοτικών δημοπρασιών μέχρι τώρα!",
   "5 Winners": "5 νικητές",
-  "20 Contenders...": "20 διεκδικητές...",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "Δημοπρασίες Farm",
   "auction bunny": "λαγουδάκι δημοπρασίας",
   "Burnt CAKE": "Καμένα CAKE",
