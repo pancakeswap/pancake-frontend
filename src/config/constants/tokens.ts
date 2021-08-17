@@ -138,6 +138,13 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.vikingswap.finance/',
   },
+  zmpr: {
+    symbol: 'ZMPR',
+    address: {
+      56: '0x103ED7038914AB877cfA4A8961333D9af8236852',
+      97: ''
+    }
+  },
   tndr: {
     symbol: 'TNDR',
     address: {

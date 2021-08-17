@@ -80,6 +80,42 @@ const graves: Grave[] = [
   // },
   {
     id: 2,
+    pid: 19,
+    name: 'Emperor Rare',
+    subtitle: 'Young Fool',
+    path: 'https://storage.googleapis.com/rug-zombie/Young%20Fool.jpeg',
+    type: 'image',
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '30 days',
+    rug: tokens.zmpr,
+    artist: artists.jussjoshinduh,
+    stakingToken: '0x62debcB9f311a170BfbDA089465085DA551B42d2',
+    pcsVersion: 'none',
+    liquidityDetails: 'None! The ZMPR token was airdropped to EMPR holders so you will have to ask around the telegram.',
+    isNew: true,
+    isEnding: false,
+    isFeatured: true,
+    rarity: "Rare",
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      rugDeposited: BIG_ZERO,
+      amount: BIG_ZERO,
+      pendingZombie: BIG_ZERO,
+    },
+    poolInfo: {
+      lpToken: undefined,
+      unlockFee: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalStakingTokenStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+      allocPoint: 0
+    },
+  },
+  {
+    id: 3,
     pid: 1,
     name: 'VikingSwap Rare',
     subtitle: 'Viking Brains',
@@ -150,7 +186,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 3,
+    id: 5,
     pid: 18,
     name: 'Thunderswap Rare',
     subtitle: 'Electric Zombie',
@@ -186,7 +222,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 5,
+    id: 6,
     pid: 12,
     name: 'Autoshark Legendary',
     subtitle: 'Chompers',
@@ -224,7 +260,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 6,
+    id: 7,
     pid: 15,
     name: 'RUGBIDEN Rare',
     subtitle: 'Zombiden',
@@ -259,7 +295,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 7,
+    id: 8,
     pid: 16,
     name: 'Burger Swap Rare',
     subtitle: 'Zomburger',
@@ -294,7 +330,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 8,
+    id: 9,
     pid: 13,
     name: 'The US Dollar Rare',
     subtitle: 'DeadDollar',
@@ -329,7 +365,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 9,
+    id: 10,
     pid: 3,
     name: 'Defi100 Rare',
     subtitle: 'Zombie100',
@@ -364,7 +400,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 10,
+    id: 11,
     pid: 10,
     name: 'Merlin Lab Rare',
     subtitle: 'My name is MERL',
@@ -401,7 +437,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 11,
+    id: 12,
     pid: 4,
     name: 'Fairmoon Rare',
     subtitle: 'Raremoon',
@@ -436,7 +472,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 12,
+    id: 13,
     pid: 14,
     name: 'Uranium Finance Uncommon',
     subtitle: 'The Rad Chad',
@@ -472,7 +508,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 13,
+    id: 14,
     pid: 5,
     name: 'Fairmoon Uncommon',
     subtitle: 'Zombie on the Moon',
@@ -507,7 +543,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 14,
+    id: 15,
     pid: 6,
     name: 'Fairmoon Common',
     subtitle: 'Fairmoon Common',
@@ -542,7 +578,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 15,
+    id: 16,
     pid: 7,
     name: 'Gorilla Yield Common',
     subtitle: 'Gorilla Yield Common',
@@ -577,7 +613,7 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 16,
+    id: 17,
     pid: 8,
     name: 'Dragon Farm Finance Common',
     subtitle: 'Dragon Farm Finance Common',

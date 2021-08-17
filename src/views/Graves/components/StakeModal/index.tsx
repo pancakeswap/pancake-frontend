@@ -60,7 +60,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismiss })
 
   const [onGetTokenClick] = useModal(
     <WarningModal
-    url={`${pcsVersion === 'v1' ? BASE_V1_EXCHANGE_URL : BASE_EXCHANGE_URL}/swap?outputCurrency=${getAddress(rug.address)}`} />,
+    url={pcsVersion === 'v1' ? `${BASE_V1_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}` : `${BASE_EXCHANGE_URL}/swap?outputCurrency=${getAddress(rug.address)}` } />,
   )
 
   const handleWithdrawal = () => {
