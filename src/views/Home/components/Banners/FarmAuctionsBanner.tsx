@@ -5,10 +5,17 @@ import { useTranslation } from 'contexts/Localization'
 
 const StyledSubheading = styled(Heading)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
-  font-size: 24px;
+  font-size: 20px;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
+  ${({ theme }) => theme.mediaQueries.xs} {
+    font-size: 24px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    -webkit-text-stroke: unset;
+  }
   margin-bottom: 8px;
 `
 
@@ -44,7 +51,7 @@ const LeftWrapper = styled(Flex)`
   flex-direction: column;
   justify-content: center;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     padding-top: 40px;
     padding-bottom: 40px;
   }
@@ -60,7 +67,7 @@ const RightWrapper = styled.div`
     height: 200px;
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     position: relative;
     display: flex;
     align-items: center;
