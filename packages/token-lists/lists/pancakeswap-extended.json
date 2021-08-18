@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-08-09T09:37:47.062Z",
+  "timestamp": "2021-08-18T10:48:45.651Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 16
+    "patch": 17
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -315,6 +315,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xffEecbf8D7267757c2dc3d13D730E97E15BfdF7F.png"
+    },
+    {
+      "name": "BunnyPark",
+      "symbol": "BP",
+      "address": "0xACB8f52DC63BB752a51186D1c55868ADbFfEe9C1",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xACB8f52DC63BB752a51186D1c55868ADbFfEe9C1.png"
     },
     {
       "name": "ROOBEE",
@@ -699,6 +707,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x2090c8295769791ab7A3CF1CC6e0AA19F35e441A.png"
+    },
+    {
+      "name": "GreenTrust",
+      "symbol": "GNT",
+      "address": "0xF750A26EB0aCf95556e8529E72eD530f3b60f348",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xF750A26EB0aCf95556e8529E72eD530f3b60f348.png"
     },
     {
       "name": "Gourmet Galaxy",
@@ -1317,6 +1333,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x0a3a21356793b49154fd3bbe91cbc2a16c0457f5.png"
     },
     {
+      "name": "rUSD",
+      "symbol": "rUSD",
+      "address": "0x07663837218A003e66310a01596af4bf4e44623D",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x07663837218A003e66310a01596af4bf4e44623D.png"
+    },
+    {
       "name": "SafeMoon",
       "symbol": "SAFEMOON",
       "address": "0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3",
@@ -1339,6 +1363,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xd41fdb03ba84762dd66a0af1a6c8540ff1ba5dfb.png"
+    },
+    {
+      "name": "Seedify",
+      "symbol": "SFUND",
+      "address": "0x477bC8d23c634C154061869478bce96BE6045D12",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x477bC8d23c634C154061869478bce96BE6045D12.png"
     },
     {
       "name": "CryptoBlades Skill Token",

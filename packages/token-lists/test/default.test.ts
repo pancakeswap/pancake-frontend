@@ -87,9 +87,6 @@ expect.extend({
     const refersToLocalLogo =
       token.logoURI === `https://tokens.pancakeswap.finance/images/${token.address}.png` ||
       token.logoURI === `https://tokens.pancakeswap.finance/images/${token.address.toLowerCase()}.png`;
-    if (token.logoURI === "https://tokens.pancakeswap.finance/images/0x4e6415a5727ea08aae4580057187923aec331227.png") {
-      console.log("refersToLocalLogo", refersToLocalLogo);
-    }
     if (refersToLocalLogo) {
       const fileName = token.logoURI.split("/").pop();
       // Note: fs.existsSync can't be used here because its not case sensetive
