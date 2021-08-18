@@ -6,7 +6,7 @@ import { formatRoundTime } from '../helpers'
 import useRoundCountdown from '../hooks/useRoundCountdown'
 import tokens from '../../../config/constants/tokens'
 import { getBalanceAmount } from '../../../utils/formatBalance'
-import { BASE_EXCHANGE_URL } from '../../../config'
+import { APESWAP_ADD_LIQUIDITY_URL, APESWAP_EXCHANGE_URL, BASE_EXCHANGE_URL } from '../../../config'
 import auctions from '../../../redux/auctions'
 import { auctionById } from '../../../redux/get'
 
@@ -85,12 +85,14 @@ interface TimerLabelProps {
 }
 
 export const TimerLabel: React.FC<TimerLabelProps> = ({ id }) => {
+  const {token0, token1} = auctionById(id)
+
   const { userInfo } = auctionById(id)
   return (
     <Box pr='100px' position='relative'>
       <Flex alignItems='center' justifyContent='center'>
           <LinkExternal
-            href={`${BASE_EXCHANGE_URL}/#/add/${auctions[0].token0}/${auctions[0].token1}`}
+            href={`${APESWAP_ADD_LIQUIDITY_URL}/${token0}/${token1}`}
             style={{
               width: '200px',
               justifyContent: 'center',
