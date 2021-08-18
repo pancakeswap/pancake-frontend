@@ -30,7 +30,7 @@ const HarvestCard = () => {
   const hasCakePoolToCollect = numTotalToCollect - numFarmsToCollect > 0
 
   const earningsText = getEarningsText(numFarmsToCollect, hasCakePoolToCollect, earningsBusd, t)
-  const [preText, toCollectText] = earningsText.split(earningsBusd.isNaN() ? '0' : earningsBusd.toString())
+  const [preText, toCollectText] = earningsText.split(earningsBusd.toString())
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -60,7 +60,7 @@ const HarvestCard = () => {
                 {preText}
               </Text>
             )}
-            {earningsBusd && !earningsBusd.isNaN() ? (
+            {!earningsBusd.isNaN() ? (
               <Balance
                 decimals={earningsBusd.gt(0) ? 2 : 0}
                 fontSize="24px"
