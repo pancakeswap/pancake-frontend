@@ -1,8 +1,5 @@
 import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
-import { MultiCall } from '@indexed-finance/multicall'
-import Web3 from 'web3'
-import { useEffect } from 'react'
 import {
   getBep20Contract,
   getDrFrankensteinContract, getErc721Contract,

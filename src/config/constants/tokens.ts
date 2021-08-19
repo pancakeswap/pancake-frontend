@@ -146,6 +146,24 @@ const tokens = {
     },
     decimals: 0,
   },
+  rupee: {
+    symbol: 'RUPEE',
+    address: {
+      56: '0x7b0409a3a3f79baa284035d48e1dfd581d7d7654',
+      97: ''
+    },
+    decimals: 18,
+    projectLink: 'https://app.hyruleswap.com/'
+  },
+  grupee: {
+    symbol: 'gRUPEE',
+    address: {
+      56: '0x8efa59bf5f47c6fe0e97c15cad12f2be6bb899a1',
+      97: ''
+    },
+    decimals: 18,
+    projectLink: 'https://app.hyruleswap.com/'
+  },
   tndr: {
     symbol: 'TNDR',
     address: {
