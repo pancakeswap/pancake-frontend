@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.48.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.47.0...@pancakeswap/uikit@0.48.0) (2021-08-19)
+
+
+### Features
+
+* **uikit:** New breakpoint ([#241](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/241)) ([2262df1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/2262df11cffca2218fb1524a1f219ddf3be417e5))
+* **uikit-tags:** Add typography props ([#245](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/245)) ([55ed86b](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/55ed86ba48061e52cebe9bd92bb10fc22efebf4e))
+
+
+
+
+
 # [0.47.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.46.2...@pancakeswap/uikit@0.47.0) (2021-08-12)
 
 
