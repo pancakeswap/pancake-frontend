@@ -21,7 +21,7 @@ export const getIdentifierKeyFromAddress = (nftAddress: string) => {
  */
 export const getTokenUrl = (tokenUri: string) => {
   if (tokenUri.startsWith('ipfs://')) {
-    return `${IPFS_GATEWAY}/ipfs/${tokenUri.slice(6)}`
+    return `${IPFS_GATEWAY}/${tokenUri.slice(6)}`
   }
 
   return tokenUri
