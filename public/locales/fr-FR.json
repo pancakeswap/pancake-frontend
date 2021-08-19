@@ -1343,13 +1343,13 @@
   "30D": "30 J",
   "1Y": "1 A",
   "5Y": "5 A",
-  "Annual ROI at current rates": "Annual ROI at current rates",
-  "Calling all BSC projects": "Calling all BSC projects",
-  "Apply for whitelisting now!": "Apply for whitelisting now!",
-  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Annual ROI at current rates": "RSI annuel selon les taux actuels",
+  "Calling all BSC projects": "Appel à tous les projets BSC",
+  "Apply for whitelisting now!": "Postuler pour entrer dans la liste blanche maintenant !",
+  "Default Transaction Speed (GWEI)": "Vitesse de transaction par défaut (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Ajuste le prix du gas (frais de transaction) pour votre transaction. GWEI plus élevé = vitesse plus élevée = frais plus élevés",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
-  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
-  "You won multiple collectibles!": "You won multiple collectibles!"
+  "Fast (%gasPrice%)": "Rapide (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instantané (%gasPrice%)",
+  "You won multiple collectibles!": "Vous avez gagné plusieurs jetons non interchangeables !"
 }
