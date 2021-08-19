@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
 
 const getNow = () => Math.floor(Date.now() / 1000)
 
@@ -10,6 +11,7 @@ const useCountdown = (timestamp: number) => {
     return timestamp - getNow()
   })
   const [isPaused, setIsPaused] = useState(false)
+  const isWindowVisible = useIsWindowVisible()
 
   const pause = useCallback(() => setIsPaused(true), [setIsPaused])
   const unpause = useCallback(() => setIsPaused(false), [setIsPaused])
@@ -34,21 +36,13 @@ const useCountdown = (timestamp: number) => {
 
   // Pause the timer if the tab becomes inactive to avoid it becoming out of sync
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState) {
-        setSecondsRemaining(timestamp - getNow())
-        unpause()
-      } else {
-        pause()
-      }
+    if (isWindowVisible) {
+      setSecondsRemaining(timestamp - getNow())
+      unpause()
+    } else {
+      pause()
     }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-    }
-  }, [pause, unpause, timestamp, setSecondsRemaining])
+  }, [pause, unpause, timestamp, setSecondsRemaining, isWindowVisible])
 
   return { secondsRemaining, pause, unpause }
 }
