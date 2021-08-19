@@ -44,3 +44,16 @@ export const Default: React.FC = () => {
     </Box>
   );
 };
+
+export const TextVariations: React.FC = () => {
+  return (
+    <div>
+      <Tag textTransform="uppercase" mr="16px">
+        uppercase
+      </Tag>
+      <Tag fontWeight="bold" mr="16px">
+        Bold
+      </Tag>
+    </div>
+  );
+};

@@ -1,5 +1,5 @@
 import styled, { DefaultTheme } from "styled-components";
-import { space, variant } from "styled-system";
+import { space, variant, typography } from "styled-system";
 import { Colors } from "../../theme/types";
 import { scaleVariants, styleVariants } from "./theme";
 import { TagProps, variants } from "./types";
@@ -35,6 +35,8 @@ export const StyledTag = styled.div<ThemedProps>`
     fill: currentColor;
   }
 
+  ${({ textTransform }) => textTransform && `text-transform: ${textTransform};`}
+
   ${variant({
     prop: "scale",
     variants: scaleVariants,
@@ -43,6 +45,7 @@ export const StyledTag = styled.div<ThemedProps>`
     variants: styleVariants,
   })}
   ${space}
+  ${typography}
 
   ${getOutlineStyles}
 `;
