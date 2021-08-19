@@ -1228,7 +1228,7 @@
   "%earningsBusd% to collect from %count% farm and CAKE pool": "%count% tarladan ve CAKE havuzundan %earningsBusd% tahsil edilecek",
   "%earningsBusd% to collect from %count% farms and CAKE pool": "%count% tarladan ve CAKE havuzundan %earningsBusd% tahsil edilecek",
   "%earningsBusd% to collect from CAKE pool": "CAKE havuzundan %earningsBusd% tahsil edilecek",
-  "0 to collect": "0 tahsil edilecek",
+  "%earningsBusd% to collect": "%earningsBusd% to collect",
   "Harvest all": "Tümünü topla",
   "Start in seconds.": "Saniyeler içinde başla.",
   "Used by millions.": "Milyonlarca kişi kullanıyor.",
