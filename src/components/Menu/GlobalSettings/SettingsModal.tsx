@@ -58,7 +58,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       title={t('Settings')}
       headerBackground="gradients.cardHeader"
       onDismiss={onDismiss}
-      style={{ maxWidth: '420px' }}
+      style={{ maxWidth: '420px', overflowY: 'auto' }}
     >
       <Flex flexDirection="column">
         <Flex pb="24px" flexDirection="column">
