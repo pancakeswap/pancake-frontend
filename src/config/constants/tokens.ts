@@ -164,6 +164,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://app.hyruleswap.com/'
   },
+  mainst: {
+    symbol: "$MAINST",
+    address: {
+      56: '0x8fc1a944c149762b6b578a06c0de2abd6b7d2b89',
+      97: ''
+    },
+    decimals: 9,
+    projectLink: 'https://www.buymainstreet.com/'
+  },
   tndr: {
     symbol: 'TNDR',
     address: {

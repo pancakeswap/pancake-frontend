@@ -30,7 +30,7 @@ const FrankEarned: React.FC<FrankEarnedProps> = ({ id }) => {
   return (
     <div className='frank-card'>
       <div className='small-text'>
-        <span className='blue-color'>{rewardToken.symbol} </span>
+        <span className={rewardToken === tokens.mainst ? 'green-color' : 'blue-color'}>{rewardToken.symbol} </span>
         <span className='white-color'>EARNED</span>
       </div>
       <div className='space-between'>

@@ -6,6 +6,58 @@ import { SpawningPool } from './types'
 
 const spawningPools: SpawningPool[] = [
   {
+    id: 2,
+    name: 'Main Street Legendary',
+    subtitle: "Block Party",
+    path: "https://storage.googleapis.com/rug-zombie/Main%20Street.png",
+    type: 'image',
+    address: {
+      56: '0x0af40D42F805112ECc40b0148c1221eDc8Ce001B',
+      97: '',
+    },
+    endBlock: 12790000,
+    project: {
+      name: 'Main Street',
+      description: 'Main Street is a deflationary token that provides its holders with a space to find new high use case tokens in their Neighborhood and Alley, as well as entertainment and games in their Shops.',
+      additionalDetails: [
+        {
+          name: 'Project website',
+          url: tokens.mainst.projectLink
+        },
+        {
+          name: 'Telegram',
+          url: 'https://t.me/buymainstreet'
+        },
+      ],
+
+    },
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '45 days',
+    rewardToken: tokens.mainst,
+    rewardTokenId: 'euler-tools',
+    artist: artists.ZomBaes,
+    stakingToken: '',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: false,
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      amount: BIG_ZERO,
+      pendingReward: BIG_ZERO,
+      zombieAllowance: BIG_ZERO,
+    },
+    poolInfo: {
+      unlockFee: BIG_ZERO,
+      rewardPerBlock: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalZombieStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+    },
+  },
+  {
     id: 1,
     name: 'Euler Tools Legendary',
     subtitle: "Leonhard Euler's Day Off",
