@@ -167,3 +167,14 @@ export interface Auction {
   userInfo: AuctionUserInfo,
   auctionInfo: AuctionInfo,
 }
+
+export interface Nft {
+  id: number,
+  name: string,
+  symbol: string,
+  address: string,
+  totalSupply: BigNumber,
+  path: string,
+  type: string,
+  rarity: string,
+}
