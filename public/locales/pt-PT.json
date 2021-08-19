@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Se não for um projeto na lista de elementos seguros, não pode participar, mas ainda pode visualizar o que está a acontecer!",
   "through community auctions so far!": "através dos leilões da comunidade até ao momento!",
   "5 Winners": "5 vencedores",
-  "20 Contenders...": "20 concorrentes...",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "Leilões de quinta",
   "auction bunny": "coelho do leilão",
   "Burnt CAKE": "CAKE queimado",
@@ -1350,5 +1350,6 @@
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
+  "You won multiple collectibles!": "You won multiple collectibles!"
 }

@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "如果您並非列入允許清單的專案，您將無法參與，但您仍然可以檢視其動態！",
   "through community auctions so far!": "到目前為止透過社群拍賣！",
   "5 Winners": "5 位獲勝者",
-  "20 Contenders...": "20 位競爭者…",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "農場拍賣",
   "auction bunny": "拍賣兔子",
   "Burnt CAKE": "銷毀的 CAKE",
@@ -1350,5 +1350,6 @@
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
+  "You won multiple collectibles!": "You won multiple collectibles!"
 }

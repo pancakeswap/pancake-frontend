@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Als je project niet goedgekeurd is, kun je niet deelnemen. Je kunt echter wel volgen wat er gebeurt!",
   "through community auctions so far!": "door communityveilingen tot nog toe!",
   "5 Winners": "5 winnaars",
-  "20 Contenders...": "20 deelnemers ...",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "Farmveilingen",
   "auction bunny": "veilingkonijntje",
   "Burnt CAKE": "Verbrande CAKE",
@@ -1350,5 +1350,6 @@
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
+  "You won multiple collectibles!": "You won multiple collectibles!"
 }

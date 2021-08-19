@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "यदि आप व्हाइटलिस्ट वाले प्रोजेक्ट नहीं हैं, तो आप इसमें शामिल नहीं हो पाएंगे लेकिन आप देख पाएंगे कि क्या हो रहा है!",
   "through community auctions so far!": "अभी तक कम्युनिटी नीलामी के माध्यम से!",
   "5 Winners": "5 विजेता",
-  "20 Contenders...": "20 प्रतियोगी...",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "फार्म नीलामी",
   "auction bunny": "ऑक्शन बनी",
   "Burnt CAKE": "बर्न किए गए CAKE",
@@ -1350,5 +1350,6 @@
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
+  "You won multiple collectibles!": "You won multiple collectibles!"
 }

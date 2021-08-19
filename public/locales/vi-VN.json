@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Nếu bạn không phải là một dự án trong danh sách trắng, bạn sẽ không thể tham gia, nhưng bạn vẫn sẽ có thể theo dõi diễn biến!",
   "through community auctions so far!": "thông qua các đấu giá cộng đồng tính đến nay!",
   "5 Winners": "5 người chiến thắng",
-  "20 Contenders...": "20 người tranh tài...",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "Đấu giá Trang trại",
   "auction bunny": "thỏ đấu giá",
   "Burnt CAKE": "CAKE đã đốt cháy",
@@ -1350,5 +1350,6 @@
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
+  "You won multiple collectibles!": "You won multiple collectibles!"
 }

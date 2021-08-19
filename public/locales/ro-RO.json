@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Dacă nu faci parte dintr-un proiect inclus în lista acceptată, nu vei putea participa, dar poți vizualiza ce se întâmplă!",
   "through community auctions so far!": "prin licitațiile comunitare până acum!",
   "5 Winners": "5 câștigători",
-  "20 Contenders...": "20 concurenți...",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "Licitații ferme",
   "auction bunny": "iepuraș licitație",
   "Burnt CAKE": "CAKE consumat",
@@ -1350,5 +1350,6 @@
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
+  "You won multiple collectibles!": "You won multiple collectibles!"
 }

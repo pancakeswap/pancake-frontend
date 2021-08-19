@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "화이트리스트에 있는 프로젝트가 아닌 경우 참여할 수 없지만 진행 내용을 볼 수는 있습니다!",
   "through community auctions so far!": "지금까지의 커뮤니티 경매!",
   "5 Winners": "당첨자 5명",
-  "20 Contenders...": "경쟁자 20명...",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "팜 경매",
   "auction bunny": "경매 버니",
   "Burnt CAKE": "소각한 CAKE",
@@ -1350,5 +1350,6 @@
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
+  "You won multiple collectibles!": "You won multiple collectibles!"
 }

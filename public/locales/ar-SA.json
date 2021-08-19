@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "إذا لم تكن ضمن مشروع مدرج بالقائمة البيضاء، فلا يمكنك المشاركة، ولكن ما يزال بإمكانك مشاهدة ماذا يحدث!",
   "through community auctions so far!": "عن طريق مزادات المجتمع حتى الآن!",
   "5 Winners": "5 فائزين",
-  "20 Contenders...": "20 متنافس...",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "مزادات المزرعة",
   "auction bunny": "أرنب المزاد",
   "Burnt CAKE": "CAKE محترقة",
@@ -1350,5 +1350,6 @@
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
+  "You won multiple collectibles!": "You won multiple collectibles!"
 }

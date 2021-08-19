@@ -1310,7 +1310,7 @@
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Якщо ваш проєкт не в білому списку, ви не зможете взяти участь, але все одно зможете стежити за перебігом!",
   "through community auctions so far!": "через аукціони спільноти на даний момент!",
   "5 Winners": "5 переможців",
-  "20 Contenders...": "20 претендентів…",
+  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "Аукціони ферм",
   "auction bunny": "кролик аукціону",
   "Burnt CAKE": "Спалена сума CAKE",
@@ -1350,5 +1350,6 @@
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
-  "Instant (%gasPrice%)": "Instant (%gasPrice%)"
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
+  "You won multiple collectibles!": "You won multiple collectibles!"
 }
