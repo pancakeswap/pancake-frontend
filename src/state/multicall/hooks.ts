@@ -4,7 +4,7 @@ import { Contract } from '@ethersproject/contracts'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useBlockNumber } from '../application/hooks'
+import { useBlock } from 'state/block/hooks'
 import { AppDispatch, AppState } from '../index'
 import {
   addMulticallListeners,
@@ -185,11 +185,11 @@ export function useSingleContractMultipleData(
 
   const results = useCallsData(calls, options)
 
-  const latestBlockNumber = useBlockNumber()
+  const { currentBlock } = useBlock()
 
   return useMemo(() => {
-    return results.map((result) => toCallState(result, contract?.interface, fragment, latestBlockNumber))
-  }, [fragment, contract, results, latestBlockNumber])
+    return results.map((result) => toCallState(result, contract?.interface, fragment, currentBlock))
+  }, [fragment, contract, results, currentBlock])
 }
 
 export function useMultipleContractSingleData(
@@ -225,11 +225,11 @@ export function useMultipleContractSingleData(
 
   const results = useCallsData(calls, options)
 
-  const latestBlockNumber = useBlockNumber()
+  const { currentBlock } = useBlock()
 
   return useMemo(() => {
-    return results.map((result) => toCallState(result, contractInterface, fragment, latestBlockNumber))
-  }, [fragment, results, contractInterface, latestBlockNumber])
+    return results.map((result) => toCallState(result, contractInterface, fragment, currentBlock))
+  }, [fragment, results, contractInterface, currentBlock])
 }
 
 export function useSingleCallResult(
@@ -252,9 +252,9 @@ export function useSingleCallResult(
   }, [contract, fragment, inputs])
 
   const result = useCallsData(calls, options)[0]
-  const latestBlockNumber = useBlockNumber()
+  const { currentBlock } = useBlock()
 
   return useMemo(() => {
-    return toCallState(result, contract?.interface, fragment, latestBlockNumber)
-  }, [result, contract, fragment, latestBlockNumber])
+    return toCallState(result, contract?.interface, fragment, currentBlock)
+  }, [result, contract, fragment, currentBlock])
 }
