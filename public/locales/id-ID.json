@@ -1335,7 +1335,7 @@
   "“My Balance” here includes both %assetSymbol% in your wallet, and %assetSymbol% already staked in this pool.": "\"Saldo Saya\" di sini meliputi %assetSymbol% di dalam dompet Anda dan %assetSymbol% yang sudah ditumpuk di dalam pool ini.",
   "APY (%compoundTimes%x daily compound)": "APY (%compoundTimes%x gabungan harian)",
   "My Balance": "Saldo Saya",
-  "Staked for": "Ditumpuk untuk",
+  "Staked for": "Ditumpuk selama",
   "Compounding every": "Menggabungkan setiap",
   "1D": "1 H",
   "7D": "7 H",
