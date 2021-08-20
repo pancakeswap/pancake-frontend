@@ -25,6 +25,10 @@ import {
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
 import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
+import InfoPools from './views/Info/Pools'
+import InfoPoolPage from './views/Info/Pools/PoolPage'
+import InfoTokens from './views/Info/Tokens'
+import RedirectInvalidToken from './views/Info/Tokens/redirects'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -117,6 +121,22 @@ const App: React.FC = () => {
             <Route path="/voting/proposal/:id">
               <Proposal />
             </Route>
+            {/* Info pages */}
+            <Route path="/info" exact>
+              <Home />
+            </Route>
+            <Route path="/info/pools" exact>
+              <InfoPools />
+            </Route>
+            <Route path="/info/tokens" exact>
+              <InfoTokens />
+            </Route>
+            <Route exact path={['/info/tokens/:address', '/info/token/:address']} component={RedirectInvalidToken} />
+            <Route
+              exact
+              path={['/info/pools/:address', '/info/pool/:address', '/info/pair/:address']}
+              component={InfoPoolPage}
+            />
 
             {/* Using this format because these components use routes injected props. We need to rework them with hooks */}
             <Route exact strict path="/swap" component={Swap} />

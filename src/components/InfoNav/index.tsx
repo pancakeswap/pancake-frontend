@@ -19,8 +19,8 @@ const NavWrapper = styled(Flex)`
 
 const InfoNav = () => {
   const { t } = useTranslation()
-  const isPools = useRouteMatch(['/pools', '/pool', '/pair'])
-  const isTokens = useRouteMatch(['/tokens', '/token'])
+  const isPools = useRouteMatch(['/info/pools', '/info/pool', '/info/pair'])
+  const isTokens = useRouteMatch(['/info/tokens', '/info/token'])
   let activeIndex = 0
   if (isPools) {
     activeIndex = 1
