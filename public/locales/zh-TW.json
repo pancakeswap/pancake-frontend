@@ -413,8 +413,6 @@
   "No prediction history available": "無可用的預測歷史記錄",
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "如果您確定應該在此處檢查歷史記錄，請確保您已連線到正確的錢包，然後再試一次。",
   "Last price from Chainlink Oracle": "Chainlink Oracle 的最新價格",
-  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "圖表僅供參考，並不反映本回合的最終結果。",
-  "Please refer to the prices shown on the cards for the final outcome.": "請參考卡片上顯示的價格來取得最終結果。",
   "%num% Points to Collect": "要收集的積分：%num%",
   "Net results": "最終結果",
   "Average return / round": "平均回報/回合",
@@ -1351,5 +1349,10 @@
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
   "Instant (%gasPrice%)": "Instant (%gasPrice%)",
-  "You won multiple collectibles!": "You won multiple collectibles!"
+  "You won multiple collectibles!": "You won multiple collectibles!",
+  "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
+  "The price you see come from difference places": "The price you see come from difference places",
+  "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
 }

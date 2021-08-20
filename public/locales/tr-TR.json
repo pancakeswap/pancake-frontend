@@ -413,8 +413,6 @@
   "No prediction history available": "Hiçbir tahmin geçmişi yok",
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "Geçmişi burada görmeniz gerektiğinden eminseniz, doğru cüzdana bağlı olduğunuzdan emin olun ve tekrar deneyin.",
   "Last price from Chainlink Oracle": "Chainlink Oracle'dan son fiyat",
-  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "Grafikler sadece referans amaçlıdır ve turların nihai sonucunu yansıtmazlar.",
-  "Please refer to the prices shown on the cards for the final outcome.": "Lütfen nihai sonuç için kartlarda gösterilen fiyatlara göz atın.",
   "%num% Points to Collect": "Toplanacak %num% Puan",
   "Net results": "Net sonuçlar",
   "Average return / round": "Ortalama getiri / tur",
@@ -1351,5 +1349,10 @@
   "Standard (%gasPrice%)": "Standart (%gasPrice%)",
   "Fast (%gasPrice%)": "Hızlı (%gasPrice%)",
   "Instant (%gasPrice%)": "Anında (%gasPrice%)",
-  "You won multiple collectibles!": "Birden çok toplanabilir öğe kazandınız!"
+  "You won multiple collectibles!": "Birden çok toplanabilir öğe kazandınız!",
+  "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
+  "The price you see come from difference places": "The price you see come from difference places",
+  "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
 }

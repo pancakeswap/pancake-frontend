@@ -413,8 +413,6 @@
   "No prediction history available": "Історія прогнозів недоступна",
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "Якщо ви впевнені, що тут має відображатись історія, перевірте, чи до правильного гаманця ви підключились, і спробуйте ще раз.",
   "Last price from Chainlink Oracle": "Остання ціна від оракула Chainlink",
-  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "Графіки наведено лише для довідки, вони не відображають кінцеві результати раундів.",
-  "Please refer to the prices shown on the cards for the final outcome.": "Кінцевий результат наведено в цінах на картках.",
   "%num% Points to Collect": "Доступно балів: %num%",
   "Net results": "Чистий результат",
   "Average return / round": "Середній прибуток за раунд",
@@ -1351,5 +1349,10 @@
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
   "Instant (%gasPrice%)": "Instant (%gasPrice%)",
-  "You won multiple collectibles!": "You won multiple collectibles!"
+  "You won multiple collectibles!": "You won multiple collectibles!",
+  "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
+  "The price you see come from difference places": "The price you see come from difference places",
+  "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
 }
