@@ -413,8 +413,6 @@
   "No prediction history available": "Nu există istoric al predicțiilor disponibil",
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "Dacă ești sigur că ar trebui să vezi istoricul aici, asigură-te că ești conectat la portofelul corect și încearcă din nou.",
   "Last price from Chainlink Oracle": "Ultimul preț de la Chainlink Oracle",
-  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "Graficele sunt furnizate doar ca referință și nu reflectă rezultatul final al rundelor.",
-  "Please refer to the prices shown on the cards for the final outcome.": "Consultă prețurile afișate pe carduri pentru rezultatul final.",
   "%num% Points to Collect": "%num% puncte de adunat",
   "Net results": "Rezultate nete",
   "Average return / round": "Randament mediu/rundă",
@@ -1351,5 +1349,10 @@
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
   "Instant (%gasPrice%)": "Instant (%gasPrice%)",
-  "You won multiple collectibles!": "You won multiple collectibles!"
+  "You won multiple collectibles!": "You won multiple collectibles!",
+  "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
+  "The price you see come from difference places": "The price you see come from difference places",
+  "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
 }
