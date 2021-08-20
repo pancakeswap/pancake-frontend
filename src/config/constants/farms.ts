@@ -1439,16 +1439,6 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.busd,
   },
   {
-    pid: 314,
-    lpSymbol: 'BEL-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x69DEE989c30b5fFe40867f5FC14F00E4bCE7B681',
-    },
-    token: tokens.bel,
-    quoteToken: tokens.wbnb,
-  },
-  {
     pid: 313,
     lpSymbol: 'TPT-BUSD LP',
     lpAddresses: {
