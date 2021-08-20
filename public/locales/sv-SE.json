@@ -413,8 +413,6 @@
   "No prediction history available": "Ingen prognoshistorik tillgänglig",
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "Om du är säker på att du borde se din historik här ser du till att du är ansluten till rätt plånbok och försöker igen.",
   "Last price from Chainlink Oracle": "Senaste pris från Chainlink Oracle",
-  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "Diagrammen erbjuds endast som referens och speglar inte rundornas slutliga resultat.",
-  "Please refer to the prices shown on the cards for the final outcome.": "Referera till priserna som visas på korten för det slutliga resultatet.",
   "%num% Points to Collect": "%num% poäng att samla in",
   "Net results": "Nettoresultat",
   "Average return / round": "Genomsnittlig avkastning/runda",
@@ -1351,5 +1349,10 @@
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
   "Instant (%gasPrice%)": "Instant (%gasPrice%)",
-  "You won multiple collectibles!": "You won multiple collectibles!"
+  "You won multiple collectibles!": "You won multiple collectibles!",
+  "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
+  "The price you see come from difference places": "The price you see come from difference places",
+  "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
 }
