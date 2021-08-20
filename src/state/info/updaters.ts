@@ -1,8 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import useFetchProtocolData from 'data/protocol/overview'
 import useFetchGlobalChartData from 'data/protocol/chart'
 import fetchTopTransactions from 'data/protocol/transactions'
-import { useProtocolData, useProtocolChartData, useProtocolTransactions } from './hooks'
+import { useTopPoolAddresses } from 'data/pools/topPools'
+import { usePoolDatas } from 'data/pools/poolData'
+import {
+  useProtocolData,
+  useProtocolChartData,
+  useProtocolTransactions,
+  useUpdatePoolData,
+  useAllPoolData,
+  useAddPoolKeys,
+} from './hooks'
 
 export const ProtocolUpdater: React.FC = () => {
   const [protocolData, setProtocolData] = useProtocolData()
@@ -38,6 +47,42 @@ export const ProtocolUpdater: React.FC = () => {
       fetch()
     }
   }, [transactions, updateTransactions])
+
+  return null
+}
+
+export const PoolUpdater: React.FC = () => {
+  const updatePoolData = useUpdatePoolData()
+  const addPoolKeys = useAddPoolKeys()
+
+  const allPoolData = useAllPoolData()
+  const { loading, error, addresses } = useTopPoolAddresses()
+
+  // add top pools on first load
+  useEffect(() => {
+    if (addresses && !error && !loading) {
+      addPoolKeys(addresses)
+    }
+  }, [addPoolKeys, addresses, error, loading])
+
+  // detect for which addresses we havent loaded pool data yet
+  const unfetchedPoolAddresses = useMemo(() => {
+    return Object.keys(allPoolData).reduce((accum: string[], address) => {
+      const poolData = allPoolData[address]
+      if (!poolData.data || !poolData.lastUpdated) {
+        accum.push(address)
+      }
+      return accum
+    }, [])
+  }, [allPoolData])
+
+  // fetch data for unfetched pools and update them
+  const { error: poolDataError, loading: poolDataLoading, data: poolDatas } = usePoolDatas(unfetchedPoolAddresses)
+  useEffect(() => {
+    if (poolDatas && !poolDataError && !poolDataLoading) {
+      updatePoolData(Object.values(poolDatas))
+    }
+  }, [poolDataError, poolDataLoading, poolDatas, updatePoolData])
 
   return null
 }
