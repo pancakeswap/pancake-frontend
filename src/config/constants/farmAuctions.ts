@@ -115,9 +115,9 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   {
     account: '0xCCcC0b22799E82A79007814Dbc6A194410DCcEA5',
-    farmName: 'BMON-BNB',
+    farmName: 'BMON-BUSD',
     tokenAddress: '0x08ba0619b1e7A582E0BCe5BBE9843322C954C340',
-    quoteToken: tokens.wbnb,
+    quoteToken: tokens.busd,
     tokenName: 'Binamon',
     projectSite: 'https://binamon.org/',
   },
