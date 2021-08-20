@@ -11,6 +11,7 @@ import {
   ReduxNodeRound,
   Round,
   RoundData,
+  PredictionUser,
 } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import predictionsAbi from 'config/abi/predictions.json'
@@ -23,7 +24,7 @@ import {
   getUserBaseFields,
   RoundResponse,
   TotalWonMarketResponse,
-  TotalWonRoundResponse,
+  UserResponse,
 } from './queries'
 
 export enum Result {
@@ -42,22 +43,76 @@ export const numberOrNull = (value: string) => {
   return Number.isNaN(valueNum) ? null : valueNum
 }
 
+export const transformUserResponse = (userResponse: UserResponse): PredictionUser => {
+  const {
+    id,
+    createdAt,
+    updatedAt,
+    block,
+    totalBets,
+    totalBetsBull,
+    totalBetsBear,
+    totalBNB,
+    totalBNBBull,
+    totalBNBBear,
+    totalBetsClaimed,
+    totalBNBClaimed,
+    winRate,
+    averageBNB,
+    netBNB,
+  } = userResponse
+
+  return {
+    id,
+    createdAt: numberOrNull(createdAt),
+    updatedAt: numberOrNull(updatedAt),
+    block: numberOrNull(block),
+    totalBets: numberOrNull(totalBets),
+    totalBetsBull: numberOrNull(totalBetsBull),
+    totalBetsBear: numberOrNull(totalBetsBear),
+    totalBNB: totalBNB ? parseFloat(totalBNB) : 0,
+    totalBNBBull: totalBNBBull ? parseFloat(totalBNBBull) : 0,
+    totalBNBBear: totalBNBBear ? parseFloat(totalBNBBear) : 0,
+    totalBetsClaimed: numberOrNull(totalBetsClaimed),
+    totalBNBClaimed: totalBNBClaimed ? parseFloat(totalBNBClaimed) : 0,
+    winRate: winRate ? parseFloat(winRate) : 0,
+    averageBNB: averageBNB ? parseFloat(averageBNB) : 0,
+    netBNB: netBNB ? parseFloat(netBNB) : 0,
+  }
+}
+
+const getRoundPosition = (positionResponse: string) => {
+  if (positionResponse === 'Bull') {
+    return BetPosition.BULL
+  }
+
+  if (positionResponse === 'Bear') {
+    return BetPosition.BEAR
+  }
+
+  return null
+}
+
 export const transformBetResponse = (betResponse: BetResponse): Bet => {
   const bet = {
     id: betResponse.id,
     hash: betResponse.hash,
+    block: numberOrNull(betResponse.block),
     amount: betResponse.amount ? parseFloat(betResponse.amount) : 0,
     position: betResponse.position === 'Bull' ? BetPosition.BULL : BetPosition.BEAR,
     claimed: betResponse.claimed,
+    claimedAt: numberOrNull(betResponse.claimedAt),
+    claimedBlock: numberOrNull(betResponse.claimedBlock),
     claimedHash: betResponse.claimedHash,
-    user: {
-      id: betResponse.user.id,
-      address: betResponse.user.address,
-      block: numberOrNull(betResponse.user.block),
-      totalBets: numberOrNull(betResponse.user.totalBets),
-      totalBNB: numberOrNull(betResponse.user.totalBNB),
-    },
+    claimedBNB: betResponse.claimedBNB ? parseFloat(betResponse.claimedBNB) : 0,
+    claimedNetBNB: betResponse.claimedNetBNB ? parseFloat(betResponse.claimedNetBNB) : 0,
+    createdAt: numberOrNull(betResponse.createdAt),
+    updatedAt: numberOrNull(betResponse.updatedAt),
   } as Bet
+
+  if (betResponse.user) {
+    bet.user = transformUserResponse(betResponse.user)
+  }
 
   if (betResponse.round) {
     bet.round = transformRoundResponse(betResponse.round)
@@ -71,69 +126,55 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     id,
     epoch,
     failed,
-    startBlock,
+    position,
     startAt,
+    startBlock,
+    startHash,
     lockAt,
     lockBlock,
+    lockHash,
     lockPrice,
-    endBlock,
+    lockRoundId,
+    closeAt,
+    closeBlock,
+    closeHash,
     closePrice,
+    closeRoundId,
     totalBets,
     totalAmount,
     bullBets,
+    bullAmount,
     bearBets,
     bearAmount,
-    bullAmount,
-    position,
     bets = [],
   } = roundResponse
-
-  const getRoundPosition = (positionResponse: string) => {
-    if (positionResponse === 'Bull') {
-      return BetPosition.BULL
-    }
-
-    if (positionResponse === 'Bear') {
-      return BetPosition.BEAR
-    }
-
-    return null
-  }
 
   return {
     id,
     failed,
+    startHash,
+    lockHash,
+    lockRoundId,
+    closeRoundId,
+    closeHash,
+    position: getRoundPosition(position),
     epoch: numberOrNull(epoch),
-    startBlock: numberOrNull(startBlock),
     startAt: numberOrNull(startAt),
+    startBlock: numberOrNull(startBlock),
     lockAt: numberOrNull(lockAt),
     lockBlock: numberOrNull(lockBlock),
-    lockPrice: lockPrice ? parseFloat(lockPrice) : null,
-    endBlock: numberOrNull(endBlock),
-    closePrice: closePrice ? parseFloat(closePrice) : null,
+    lockPrice: lockPrice ? parseFloat(lockPrice) : 0,
+    closeAt: numberOrNull(closeAt),
+    closeBlock: numberOrNull(closeBlock),
+    closePrice: closePrice ? parseFloat(closePrice) : 0,
     totalBets: numberOrNull(totalBets),
     totalAmount: totalAmount ? parseFloat(totalAmount) : 0,
     bullBets: numberOrNull(bullBets),
+    bullAmount: bullAmount ? parseFloat(bullAmount) : 0,
     bearBets: numberOrNull(bearBets),
-    bearAmount: numberOrNull(bearAmount),
-    bullAmount: numberOrNull(bullAmount),
-    position: getRoundPosition(position),
+    bearAmount: bearAmount ? parseFloat(bearAmount) : 0,
     bets: bets.map(transformBetResponse),
   }
-}
-
-export const transformTotalWonResponse = (
-  marketResponse: TotalWonMarketResponse,
-  roundResponse: TotalWonRoundResponse[],
-): number => {
-  const houseRounds = roundResponse.reduce((accum, round) => {
-    return accum + (round.totalAmount ? parseFloat(round.totalAmount) : 0)
-  }, 0)
-
-  const totalBNB = marketResponse.totalBNB ? parseFloat(marketResponse.totalBNB) : 0
-  const totalBNBTreasury = marketResponse.totalBNBTreasury ? parseFloat(marketResponse.totalBNBTreasury) : 0
-
-  return Math.max(totalBNB - (totalBNBTreasury + houseRounds), 0)
 }
 
 export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
@@ -166,23 +207,22 @@ export const getUnclaimedWinningBets = (bets: Bet[]): Bet[] => {
 }
 
 export const getTotalWon = async (): Promise<number> => {
-  const response = (await request(
+  const { market } = (await request(
     GRAPH_API_PREDICTION,
     gql`
-      query getTotalWonData($position: String) {
+      query getTotalWonData {
         market(id: 1) {
           totalBNB
           totalBNBTreasury
         }
-        rounds(where: { position: $position }) {
-          totalAmount
-        }
       }
     `,
-    { position: BetPosition.HOUSE },
-  )) as { market: TotalWonMarketResponse; rounds: TotalWonRoundResponse[] }
+  )) as { market: TotalWonMarketResponse }
 
-  return transformTotalWonResponse(response.market, response.rounds)
+  const totalBNB = market.totalBNB ? parseFloat(market.totalBNB) : 0
+  const totalBNBTreasury = market.totalBNBTreasury ? parseFloat(market.totalBNBTreasury) : 0
+
+  return Math.max(totalBNB - totalBNBTreasury, 0)
 }
 
 type BetHistoryWhereClause = Record<string, string | number | boolean | string[]>
@@ -278,17 +318,15 @@ export const getClaimStatuses = async (
 
 export type MarketData = Pick<
   PredictionsState,
-  'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate'
+  'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'bufferSeconds'
 >
 export const getPredictionData = async (): Promise<MarketData> => {
   const address = getPredictionsAddress()
-  const staticCalls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks', 'rewardRate'].map(
-    (method) => ({
-      address,
-      name: method,
-    }),
-  )
-  const [[currentEpoch], [intervalBlocks], [minBetAmount], [paused], [bufferBlocks], [rewardRate]] = await multicallv2(
+  const staticCalls = ['currentEpoch', 'intervalSeconds', 'minBetAmount', 'paused', 'bufferSeconds'].map((method) => ({
+    address,
+    name: method,
+  }))
+  const [[currentEpoch], [intervalSeconds], [minBetAmount], [paused], [bufferSeconds]] = await multicallv2(
     predictionsAbi,
     staticCalls,
   )
@@ -296,10 +334,9 @@ export const getPredictionData = async (): Promise<MarketData> => {
   return {
     status: paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
     currentEpoch: currentEpoch.toNumber(),
-    intervalBlocks: intervalBlocks.toNumber(),
-    bufferBlocks: bufferBlocks.toNumber(),
+    intervalSeconds: intervalSeconds.toNumber(),
     minBetAmount: minBetAmount.toString(),
-    rewardRate: rewardRate.toNumber(),
+    bufferSeconds: bufferSeconds.toNumber(),
   }
 }
 
@@ -314,12 +351,12 @@ export const getRoundsData = async (epochs: number[]): Promise<PredictionsRounds
   return response
 }
 
-export const makeFutureRoundResponse = (epoch: number, startBlock: number): ReduxNodeRound => {
+export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): ReduxNodeRound => {
   return {
     epoch,
-    startBlock,
-    lockBlock: null,
-    endBlock: null,
+    startTimestamp,
+    lockTimestamp: null,
+    closeTimestamp: null,
     lockPrice: null,
     closePrice: null,
     totalAmount: ethers.BigNumber.from(0).toJSON(),
@@ -328,6 +365,8 @@ export const makeFutureRoundResponse = (epoch: number, startBlock: number): Redu
     rewardBaseCalAmount: ethers.BigNumber.from(0).toJSON(),
     rewardAmount: ethers.BigNumber.from(0).toJSON(),
     oracleCalled: false,
+    lockOracleId: null,
+    closeOracleId: null,
   }
 }
 
@@ -375,32 +414,36 @@ export const makeLedgerData = (account: string, ledgers: PredictionsLedgerRespon
 export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse): ReduxNodeRound => {
   const {
     epoch,
-    startBlock,
-    lockBlock,
-    endBlock,
+    startTimestamp,
+    lockTimestamp,
+    closeTimestamp,
     lockPrice,
     closePrice,
     totalAmount,
     bullAmount,
     bearAmount,
-    rewardAmount,
     rewardBaseCalAmount,
+    rewardAmount,
     oracleCalled,
+    lockOracleId,
+    closeOracleId,
   } = response
 
   return {
+    oracleCalled,
     epoch: epoch.toNumber(),
-    startBlock: startBlock.toNumber(),
-    lockBlock: lockBlock.toNumber(),
-    endBlock: endBlock.toNumber(),
+    startTimestamp: startTimestamp.eq(0) ? null : startTimestamp.toNumber(),
+    lockTimestamp: lockTimestamp.eq(0) ? null : lockTimestamp.toNumber(),
+    closeTimestamp: closeTimestamp.eq(0) ? null : closeTimestamp.toNumber(),
     lockPrice: lockPrice.eq(0) ? null : lockPrice.toJSON(),
     closePrice: closePrice.eq(0) ? null : closePrice.toJSON(),
     totalAmount: totalAmount.toJSON(),
     bullAmount: bullAmount.toJSON(),
     bearAmount: bearAmount.toJSON(),
-    rewardAmount: rewardAmount.toJSON(),
     rewardBaseCalAmount: rewardBaseCalAmount.toJSON(),
-    oracleCalled,
+    rewardAmount: rewardAmount.toJSON(),
+    lockOracleId: lockOracleId.toString(),
+    closeOracleId: closeOracleId.toString(),
   }
 }
 

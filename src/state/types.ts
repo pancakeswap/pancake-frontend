@@ -184,11 +184,17 @@ export interface Round {
   failed?: boolean
   startBlock: number
   startAt: number
+  startHash: string
   lockAt: number
   lockBlock: number
   lockPrice: number
-  endBlock: number
+  lockHash: string
+  lockRoundId: string
+  closeRoundId: string
+  closeHash: string
+  closeAt: number
   closePrice: number
+  closeBlock: number
   totalBets: number
   totalAmount: number
   bullBets: number
@@ -210,17 +216,33 @@ export interface Bet {
   amount: number
   position: BetPosition
   claimed: boolean
+  claimedAt: number
   claimedHash: string
+  claimedBNB: number
+  claimedNetBNB: number
+  createdAt: number
+  updatedAt: number
+  block: number
   user?: PredictionUser
-  round: Round
+  round?: Round
 }
 
 export interface PredictionUser {
   id: string
-  address: string
+  createdAt: number
+  updatedAt: number
   block: number
   totalBets: number
+  totalBetsBull: number
+  totalBetsBear: number
   totalBNB: number
+  totalBNBBull: number
+  totalBNBBear: number
+  totalBetsClaimed: number
+  totalBNBClaimed: number
+  winRate: number
+  averageBNB: number
+  netBNB: number
 }
 
 export interface HistoryData {
@@ -257,9 +279,9 @@ export interface NodeLedger {
 
 export interface ReduxNodeRound {
   epoch: number
-  startBlock: number
-  lockBlock: number | null
-  endBlock: number | null
+  startTimestamp: number | null
+  lockTimestamp: number | null
+  closeTimestamp: number | null
   lockPrice: BigNumberToJson | null
   closePrice: BigNumberToJson | null
   totalAmount: BigNumberToJson
@@ -268,21 +290,25 @@ export interface ReduxNodeRound {
   rewardBaseCalAmount: BigNumberToJson
   rewardAmount: BigNumberToJson
   oracleCalled: boolean
+  lockOracleId: string
+  closeOracleId: string
 }
 
 export interface NodeRound {
   epoch: number
-  startBlock: number
-  lockBlock: number
-  endBlock: number
-  lockPrice: ethers.BigNumber
-  closePrice: ethers.BigNumber
+  startTimestamp: number | null
+  lockTimestamp: number | null
+  closeTimestamp: number | null
+  lockPrice: ethers.BigNumber | null
+  closePrice: ethers.BigNumber | null
   totalAmount: ethers.BigNumber
   bullAmount: ethers.BigNumber
   bearAmount: ethers.BigNumber
   rewardBaseCalAmount: ethers.BigNumber
   rewardAmount: ethers.BigNumber
   oracleCalled: boolean
+  closeOracleId: string
+  lockOracleId: string
 }
 
 export interface PredictionsState {
@@ -293,11 +319,9 @@ export interface PredictionsState {
   isFetchingHistory: boolean
   historyFilter: HistoryFilter
   currentEpoch: number
-  currentRoundStartBlockNumber: number
-  intervalBlocks: number
-  bufferBlocks: number
+  intervalSeconds: number
   minBetAmount: string
-  rewardRate: number
+  bufferSeconds: number
   lastOraclePrice: string
   history: HistoryData
   rounds?: RoundData

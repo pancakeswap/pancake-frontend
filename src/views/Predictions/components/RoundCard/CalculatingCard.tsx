@@ -2,7 +2,6 @@ import React from 'react'
 import { Card, CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
-import { useGetTotalIntervalBlocks } from 'state/predictions/hooks'
 import useTheme from 'hooks/useTheme'
 import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -10,13 +9,13 @@ import CardHeader, { getBorderBackground } from './CardHeader'
 
 interface CalculatingCardProps {
   round: NodeRound
+  hasEnteredUp: boolean
+  hasEnteredDown: boolean
 }
 
-const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
+const CalculatingCard: React.FC<CalculatingCardProps> = ({ round, hasEnteredUp, hasEnteredDown }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const interval = useGetTotalIntervalBlocks()
-  const estimatedEndBlock = round.startBlock + interval
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.'),
     { placement: 'bottom' },
@@ -30,10 +29,9 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
           icon={<WaitIcon mr="4px" width="21px" />}
           title={t('Calculating')}
           epoch={round.epoch}
-          blockNumber={estimatedEndBlock}
         />
         <CardBody p="16px">
-          <MultiplierArrow isDisabled />
+          <MultiplierArrow isDisabled hasEntered={hasEnteredUp} />
           <RoundResultBox>
             <Flex alignItems="center" justifyContent="center" flexDirection="column">
               <Spinner size={96} />
@@ -43,7 +41,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
               </Flex>
             </Flex>
           </RoundResultBox>
-          <MultiplierArrow betPosition={BetPosition.BEAR} isDisabled />
+          <MultiplierArrow betPosition={BetPosition.BEAR} isDisabled hasEntered={hasEnteredDown} />
         </CardBody>
       </Card>
       {tooltipVisible && tooltip}

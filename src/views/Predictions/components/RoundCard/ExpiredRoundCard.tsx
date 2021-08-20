@@ -4,8 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
-import { useGetBetByEpoch } from 'state/predictions/hooks'
-import { useBlock } from 'state/block/hooks'
+import { useGetBetByEpoch, useGetBufferSeconds } from 'state/predictions/hooks'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import useTheme from 'hooks/useTheme'
 import { getHasRoundFailed, getNetPayoutv2 } from '../../helpers'
@@ -14,6 +13,7 @@ import MultiplierArrow from './MultiplierArrow'
 import CardHeader, { getBorderBackground } from './CardHeader'
 import CollectWinningsOverlay from './CollectWinningsOverlay'
 import CanceledRoundCard from './CanceledRoundCard'
+import CalculatingCard from './CalculatingCard'
 
 interface ExpiredRoundCardProps {
   round: NodeRound
@@ -48,17 +48,20 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { account } = useWeb3React()
-  const { initialBlock } = useBlock()
-  const { epoch, endBlock, lockPrice, closePrice } = round
-
+  const { epoch, lockPrice, closePrice } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const ledger = useGetBetByEpoch(account, epoch)
+  const bufferSeconds = useGetBufferSeconds()
   const payout = getNetPayoutv2(ledger, round)
   const formattedPayout = payout.toUnsafeFloat().toFixed(4)
-  const hasRoundFailed = getHasRoundFailed(round, initialBlock)
+  const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
+  }
+
+  if (!closePrice) {
+    return <CalculatingCard round={round} hasEnteredDown={hasEnteredDown} hasEnteredUp={hasEnteredUp} />
   }
 
   return (
@@ -68,7 +71,6 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
           status="expired"
           icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
           title={t('Expired')}
-          blockNumber={endBlock}
           epoch={round.epoch}
         />
         <CardBody p="16px" style={{ position: 'relative' }}>

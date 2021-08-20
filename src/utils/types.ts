@@ -15,11 +15,13 @@ export type PredictionsRefundableResponse = boolean
 
 export interface PredictionsRoundsResponse {
   epoch: ethers.BigNumber
-  startBlock: ethers.BigNumber
-  lockBlock: ethers.BigNumber
-  endBlock: ethers.BigNumber
+  startTimestamp: ethers.BigNumber
+  lockTimestamp: ethers.BigNumber
+  closeTimestamp: ethers.BigNumber
   lockPrice: ethers.BigNumber
   closePrice: ethers.BigNumber
+  lockOracleId: ethers.BigNumber
+  closeOracleId: ethers.BigNumber
   totalAmount: ethers.BigNumber
   bullAmount: ethers.BigNumber
   bearAmount: ethers.BigNumber

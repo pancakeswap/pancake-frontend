@@ -2,11 +2,12 @@ import React, { useEffect, useRef } from 'react'
 import { useCountUp } from 'react-countup'
 import styled from 'styled-components'
 import { BnbUsdtPairTokenIcon, Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
+import { ROUND_BUFFER } from 'state/predictions/config'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetLastOraclePrice } from 'state/predictions/hooks'
+import { useGetCurrentRoundLockTimestamp, useGetLastOraclePrice } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { formatRoundTime } from '../helpers'
-import useRoundCountdown from '../hooks/useRoundCountdown'
+import useCountdown from '../hooks/useCountdown'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -110,15 +111,16 @@ interface TimerLabelProps {
 }
 
 export const TimerLabel: React.FC<TimerLabelProps> = ({ interval, unit }) => {
-  const seconds = useRoundCountdown()
-  const countdown = formatRoundTime(seconds)
+  const currentRoundLockTimestamp = useGetCurrentRoundLockTimestamp()
+  const { secondsRemaining } = useCountdown(currentRoundLockTimestamp + ROUND_BUFFER)
+  const countdown = formatRoundTime(secondsRemaining)
   const { t } = useTranslation()
 
   return (
     <Box pr="24px" position="relative">
       <Label dir="right">
         <Title bold color="secondary">
-          {seconds === 0 ? t('Closing') : countdown}
+          {secondsRemaining === 0 ? t('Closing') : countdown}
         </Title>
         <Interval fontSize="12px">{`${interval}${t(unit)}`}</Interval>
       </Label>

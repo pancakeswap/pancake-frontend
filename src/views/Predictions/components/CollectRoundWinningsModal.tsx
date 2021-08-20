@@ -67,7 +67,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
 
   const handleClick = async () => {
     try {
-      const tx = await callWithGasPrice(predictionsContract, 'claim', [epoch])
+      const tx = await callWithGasPrice(predictionsContract, 'claim', [[epoch]])
       setIsPendingTx(true)
       const receipt = await tx.wait()
 
@@ -91,8 +91,12 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           )}
         </Box>,
       )
-    } catch {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } catch (error) {
+      console.error('Unable to claim winnings', error)
+      toastError(
+        t('Error'),
+        error?.data?.message || t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+      )
     } finally {
       setIsPendingTx(false)
     }
@@ -114,7 +118,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         <Flex alignItems="start" justifyContent="space-between" mb="8px">
           <Text>{t('Your position')}</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text>{`${betAmount} BNB`}</Text>
+            <Text>{`${betAmountAsFloat.toFixed(4)} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${bnbBusdPrice.times(betAmountAsFloat).toFormat(2)}`}
             </Text>

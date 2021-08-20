@@ -12,17 +12,15 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
-import { BLOCK_PADDING } from 'state/predictions'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetLastOraclePrice } from 'state/predictions/hooks'
-import { useBlock } from 'state/block/hooks'
-import BlockProgress from 'components/BlockProgress'
-import { formatUsdv2, getPriceDifference } from '../../helpers'
+import { useGetLastOraclePrice, useGetBufferSeconds } from 'state/predictions/hooks'
+import RoundProgress from 'components/RoundProgress'
+import { formatUsdv2, getHasRoundFailed, getPriceDifference } from '../../helpers'
 import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import CardHeader from './CardHeader'
-import CalculatingCard from './CalculatingCard'
+import CanceledRoundCard from './CanceledRoundCard'
 
 interface LiveRoundCardProps {
   round: NodeRound
@@ -42,16 +40,16 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   bearMultiplier,
 }) => {
   const { t } = useTranslation()
-  const { lockPrice, lockBlock, endBlock, totalAmount } = round
-  const { currentBlock } = useBlock()
+  const { lockPrice, totalAmount, lockTimestamp, closeTimestamp } = round
   const price = useGetLastOraclePrice()
+  const bufferSeconds = useGetBufferSeconds()
 
   const isBull = lockPrice && price.gt(lockPrice)
   const priceColor = isBull ? 'success' : 'failure'
-  const estimatedEndBlockPlusPadding = endBlock + BLOCK_PADDING
 
   const priceDifference = getPriceDifference(price, lockPrice)
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
+  const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
 
   const { countUp, update } = useCountUp({
     start: 0,
@@ -69,8 +67,8 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
     updateRef.current(priceAsNumber)
   }, [priceAsNumber, updateRef])
 
-  if (currentBlock > estimatedEndBlockPlusPadding) {
-    return <CalculatingCard round={round} />
+  if (hasRoundFailed) {
+    return <CanceledRoundCard round={round} />
   }
 
   return (
@@ -80,9 +78,8 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
         icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
         title={t('Live')}
         epoch={round.epoch}
-        blockNumber={estimatedEndBlockPlusPadding}
       />
-      <BlockProgress variant="flat" scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlockPlusPadding} />
+      <RoundProgress variant="flat" scale="sm" lockTimestamp={lockTimestamp} closeTimestamp={closeTimestamp} />
       <CardBody p="16px">
         <MultiplierArrow
           betAmount={betAmount}

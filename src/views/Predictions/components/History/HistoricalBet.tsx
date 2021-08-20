@@ -13,7 +13,8 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useAppDispatch } from 'state'
 import { Bet, PredictionStatus } from 'state/types'
-import { useGetCurrentEpoch, useGetPredictionsStatus, useGetRewardRate } from 'state/predictions/hooks'
+import { REWARD_RATE } from 'state/predictions/config'
+import { useGetCurrentEpoch, useGetPredictionsStatus } from 'state/predictions/hooks'
 import { fetchLedgerData, markBetHistoryAsCollected } from 'state/predictions'
 import { getRoundResult, Result } from 'state/predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
@@ -43,7 +44,6 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const { t } = useTranslation()
   const currentEpoch = useGetCurrentEpoch()
   const status = useGetPredictionsStatus()
-  const rewardRate = useGetRewardRate()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
@@ -82,7 +82,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const canClaim = !bet.claimed && bet.position === bet.round.position
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
-  const payout = roundResult === Result.WIN ? getNetPayout(bet, rewardRate) : amount
+  const payout = roundResult === Result.WIN ? getNetPayout(bet, REWARD_RATE) : amount
 
   const renderBetLabel = () => {
     if (isOpenRound) {

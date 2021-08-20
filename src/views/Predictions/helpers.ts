@@ -25,12 +25,15 @@ export const formatRoundTime = (secondsBetweenBlocks: number) => {
   return minutesSeconds
 }
 
-export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
-  if (!round.endBlock) {
-    return false
+export const getHasRoundFailed = (round: NodeRound, buffer: number) => {
+  const closeTimestampMs = (round.closeTimestamp + buffer) * 1000
+  const now = Date.now()
+
+  if (closeTimestampMs !== null && now > closeTimestampMs && !round.oracleCalled) {
+    return true
   }
 
-  return blockNumber > round.endBlock && round.oracleCalled === false
+  return false
 }
 
 export const getMultiplierv2 = (total: ethers.BigNumber, amount: ethers.BigNumber) => {

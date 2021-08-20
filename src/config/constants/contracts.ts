@@ -52,11 +52,11 @@ export default {
     97: '',
   },
   predictions: {
-    56: '0x516ffd7D1e0Ca40b1879935B2De87cb20Fc1124b',
-    97: '0x4f3140C74789F1D809420343ea83BcE52B7bbAA5',
+    56: '0xe7C277DB56F2089351E9ac910871EB820e11206B',
+    97: '',
   },
   chainlinkOracle: {
-    56: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE',
+    56: '0xD276fCF34D54A926773c399eBAa772C12ec394aC',
     97: '',
   },
   bunnySpecialCakeVault: {

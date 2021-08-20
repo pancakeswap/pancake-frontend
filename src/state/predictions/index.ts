@@ -5,6 +5,7 @@ import range from 'lodash/range'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { Bet, LedgerData, HistoryFilter, PredictionsState, PredictionStatus, ReduxNodeRound } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
+import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUND_BUFFER } from './config'
 import {
   getBetHistory,
   transformBetResponse,
@@ -19,12 +20,6 @@ import {
   getClaimStatuses,
 } from './helpers'
 
-const PAST_ROUND_COUNT = 5
-const FUTURE_ROUND_COUNT = 2
-
-// The estimated time it takes to broadcast
-export const BLOCK_PADDING = 3
-
 const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
   isLoading: false,
@@ -33,11 +28,9 @@ const initialState: PredictionsState = {
   isFetchingHistory: false,
   historyFilter: HistoryFilter.ALL,
   currentEpoch: 0,
-  currentRoundStartBlockNumber: 0,
-  intervalBlocks: 100,
-  bufferBlocks: 20,
-  minBetAmount: '1000000000000000',
-  rewardRate: 97,
+  intervalSeconds: 300,
+  minBetAmount: '10000000000000',
+  bufferSeconds: 60,
   lastOraclePrice: BIG_ZERO.toJSON(),
   rounds: {},
   history: {},
@@ -51,20 +44,22 @@ type PredictionInitialization = Pick<
   PredictionsState,
   | 'status'
   | 'currentEpoch'
-  | 'intervalBlocks'
-  | 'bufferBlocks'
+  | 'intervalSeconds'
   | 'minBetAmount'
-  | 'rewardRate'
   | 'rounds'
   | 'ledgers'
   | 'claimableStatuses'
+  | 'bufferSeconds'
 >
 export const initializePredictions = createAsyncThunk<PredictionInitialization, string>(
   'predictions/intialize',
   async (account = null) => {
     // Static values
     const marketData = await getPredictionData()
-    const epochs = range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
+    const epochs =
+      marketData.currentEpoch > PAST_ROUND_COUNT
+        ? range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
+        : [marketData.currentEpoch]
 
     // Round data
     const roundsResponse = await getRoundsData(epochs)
@@ -209,52 +204,42 @@ export const predictionsSlice = createSlice({
 
     // Get static market data
     builder.addCase(fetchMarketData.fulfilled, (state, action) => {
-      const { status, currentEpoch, intervalBlocks, bufferBlocks, minBetAmount, rewardRate } = action.payload
+      const { status, currentEpoch, intervalSeconds, minBetAmount } = action.payload
 
       // If the round has change add a new future round
       if (state.currentEpoch !== currentEpoch) {
         const newestRound = maxBy(Object.values(state.rounds), 'epoch')
         const futureRound = makeFutureRoundResponse(
           newestRound.epoch + 1,
-          newestRound.startBlock + (state.intervalBlocks + BLOCK_PADDING),
+          newestRound.startTimestamp + intervalSeconds + ROUND_BUFFER,
         )
 
         state.rounds[futureRound.epoch] = futureRound
-        state.currentRoundStartBlockNumber = state.currentRoundStartBlockNumber + state.intervalBlocks + BLOCK_PADDING
       }
 
       state.status = status
       state.currentEpoch = currentEpoch
-      state.intervalBlocks = intervalBlocks
-      state.bufferBlocks = bufferBlocks
+      state.intervalSeconds = intervalSeconds
       state.minBetAmount = minBetAmount
-      state.rewardRate = rewardRate
     })
 
     // Initialize predictions
     builder.addCase(initializePredictions.fulfilled, (state, action) => {
-      const { status, currentEpoch, bufferBlocks, intervalBlocks, rounds, claimableStatuses, rewardRate, ledgers } =
+      const { status, currentEpoch, intervalSeconds, bufferSeconds, rounds, claimableStatuses, ledgers } =
         action.payload
-      const currentRoundStartBlockNumber = action.payload.rounds[currentEpoch].startBlock
       const futureRounds: ReduxNodeRound[] = []
+      const currentRound = rounds[currentEpoch]
 
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-        futureRounds.push(
-          makeFutureRoundResponse(
-            currentEpoch + i,
-            currentRoundStartBlockNumber + (intervalBlocks + BLOCK_PADDING) * i,
-          ),
-        )
+        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, currentRound.startTimestamp + intervalSeconds * i))
       }
 
       return {
         ...state,
         status,
         currentEpoch,
-        bufferBlocks,
-        intervalBlocks,
-        rewardRate,
-        currentRoundStartBlockNumber,
+        intervalSeconds,
+        bufferSeconds,
         claimableStatuses,
         ledgers,
         rounds: merge({}, rounds, makeRoundData(futureRounds)),

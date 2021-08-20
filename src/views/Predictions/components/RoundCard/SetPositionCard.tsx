@@ -34,6 +34,7 @@ import FlexRow from '../FlexRow'
 interface SetPositionCardProps {
   position: BetPosition
   togglePosition: () => void
+  epoch: number
   onBack: () => void
   onSuccess: (decimalValue: string, hash: string) => Promise<void>
 }
@@ -69,7 +70,7 @@ const getValueAsEthersBn = (value: string) => {
   return Number.isNaN(valueAsFloat) ? ethers.BigNumber.from(0) : parseUnits(value)
 }
 
-const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, onBack, onSuccess }) => {
+const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, epoch, onBack, onSuccess }) => {
   const [value, setValue] = useState('')
   const [isTxPending, setIsTxPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -152,7 +153,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
 
     try {
-      const tx = await callWithGasPrice(predictionsContract, betMethod, undefined, { value: valueAsBn.toString() })
+      const tx = await callWithGasPrice(predictionsContract, betMethod, [epoch], { value: valueAsBn.toString() })
       setIsTxPending(true)
       const receipt = await tx.wait()
       onSuccess(valueAsBn.toString(), receipt.transactionHash as string)

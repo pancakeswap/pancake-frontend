@@ -4,8 +4,8 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getRoundResult, Result } from 'state/predictions/helpers'
+import { REWARD_RATE } from 'state/predictions/config'
 import { getBscScanLink } from 'utils'
-import store from 'state'
 import { useGetCurrentEpoch } from 'state/predictions/hooks'
 import { usePriceBnbBusd } from 'state/farms/hooks'
 import { Bet, BetPosition } from 'state/types'
@@ -58,13 +58,10 @@ const initialPnlSummary: PnlSummary = {
 }
 
 const getPnlSummary = (bets: Bet[], currentEpoch: number): PnlSummary => {
-  const state = store.getState()
-  const rewardRate = state.predictions.rewardRate / 100
-
   return bets.reduce((summary: PnlSummary, bet) => {
     const roundResult = getRoundResult(bet, currentEpoch)
     if (roundResult === Result.WIN) {
-      const payout = getNetPayout(bet, rewardRate)
+      const payout = getNetPayout(bet, REWARD_RATE)
       let { bestRound } = summary.won
       if (payout > bestRound.payout) {
         const { bullAmount, bearAmount, totalAmount } = bet.round

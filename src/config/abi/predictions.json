@@ -2,8 +2,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract AggregatorV3Interface",
-        "name": "_oracle",
+        "internalType": "address",
+        "name": "_oracleAddress",
         "type": "address"
       },
       {
@@ -18,12 +18,12 @@
       },
       {
         "internalType": "uint256",
-        "name": "_intervalBlocks",
+        "name": "_intervalSeconds",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_bufferBlocks",
+        "name": "_bufferSeconds",
         "type": "uint256"
       },
       {
@@ -34,6 +34,16 @@
       {
         "internalType": "uint256",
         "name": "_oracleUpdateAllowance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_rewardRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_treasuryRate",
         "type": "uint256"
       }
     ],
@@ -52,7 +62,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "currentEpoch",
+        "name": "epoch",
         "type": "uint256"
       },
       {
@@ -77,7 +87,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "currentEpoch",
+        "name": "epoch",
         "type": "uint256"
       },
       {
@@ -102,7 +112,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "currentEpoch",
+        "name": "epoch",
         "type": "uint256"
       },
       {
@@ -119,28 +129,15 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "ClaimTreasury",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": true,
         "internalType": "uint256",
         "name": "epoch",
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
-        "name": "blockNumber",
+        "name": "roundId",
         "type": "uint256"
       },
       {
@@ -163,9 +160,9 @@
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
-        "name": "blockNumber",
+        "name": "roundId",
         "type": "uint256"
       },
       {
@@ -176,6 +173,38 @@
       }
     ],
     "name": "LockRound",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "NewAdminAddress",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "bufferSeconds",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "intervalSeconds",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewBufferAndIntervalSeconds",
     "type": "event"
   },
   {
@@ -194,7 +223,71 @@
         "type": "uint256"
       }
     ],
-    "name": "MinBetAmountUpdated",
+    "name": "NewMinBetAmount",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "NewOperatorAddress",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      }
+    ],
+    "name": "NewOracle",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oracleUpdateAllowance",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewOracleUpdateAllowance",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "epoch",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "rewardRate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "treasuryRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewRewardAndTreasuryRates",
     "type": "event"
   },
   {
@@ -220,7 +313,7 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "epoch",
         "type": "uint256"
@@ -240,31 +333,6 @@
       }
     ],
     "name": "Paused",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "epoch",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewardRate",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "treasuryRate",
-        "type": "uint256"
-      }
-    ],
-    "name": "RatesUpdated",
     "type": "event"
   },
   {
@@ -306,12 +374,6 @@
         "internalType": "uint256",
         "name": "epoch",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "blockNumber",
-        "type": "uint256"
       }
     ],
     "name": "StartRound",
@@ -321,7 +383,39 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "TokenRecovery",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "TreasuryClaim",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "epoch",
         "type": "uint256"
@@ -345,19 +439,6 @@
   },
   {
     "inputs": [],
-    "name": "TOTAL_RATE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "adminAddress",
     "outputs": [
       {
@@ -370,14 +451,26 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "epoch",
+        "type": "uint256"
+      }
+    ],
     "name": "betBear",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "epoch",
+        "type": "uint256"
+      }
+    ],
     "name": "betBull",
     "outputs": [],
     "stateMutability": "payable",
@@ -385,7 +478,7 @@
   },
   {
     "inputs": [],
-    "name": "bufferBlocks",
+    "name": "bufferSeconds",
     "outputs": [
       {
         "internalType": "uint256",
@@ -399,9 +492,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "epoch",
-        "type": "uint256"
+        "internalType": "uint256[]",
+        "name": "epochs",
+        "type": "uint256[]"
       }
     ],
     "name": "claim",
@@ -526,6 +619,28 @@
         "type": "uint256[]"
       },
       {
+        "components": [
+          {
+            "internalType": "enum PancakePredictionV2.Position",
+            "name": "position",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "claimed",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct PancakePredictionV2.BetInfo[]",
+        "name": "",
+        "type": "tuple[]"
+      },
+      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
@@ -536,7 +651,7 @@
   },
   {
     "inputs": [],
-    "name": "intervalBlocks",
+    "name": "intervalSeconds",
     "outputs": [
       {
         "internalType": "uint256",
@@ -563,7 +678,7 @@
     "name": "ledger",
     "outputs": [
       {
-        "internalType": "enum BnbPricePrediction.Position",
+        "internalType": "enum PancakePredictionV2.Position",
         "name": "position",
         "type": "uint8"
       },
@@ -600,6 +715,19 @@
     "outputs": [
       {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oracle",
+    "outputs": [
+      {
+        "internalType": "contract AggregatorV3Interface",
         "name": "",
         "type": "address"
       }
@@ -669,6 +797,24 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "recoverToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "epoch",
         "type": "uint256"
@@ -727,17 +873,17 @@
       },
       {
         "internalType": "uint256",
-        "name": "startBlock",
+        "name": "startTimestamp",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "lockBlock",
+        "name": "lockTimestamp",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "endBlock",
+        "name": "closeTimestamp",
         "type": "uint256"
       },
       {
@@ -749,6 +895,16 @@
         "internalType": "int256",
         "name": "closePrice",
         "type": "int256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lockOracleId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "closeOracleId",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -801,24 +957,16 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_bufferBlocks",
+        "name": "_bufferSeconds",
         "type": "uint256"
-      }
-    ],
-    "name": "setBufferBlocks",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+      },
       {
         "internalType": "uint256",
-        "name": "_intervalBlocks",
+        "name": "_intervalSeconds",
         "type": "uint256"
       }
     ],
-    "name": "setIntervalBlocks",
+    "name": "setBufferAndIntervalSeconds",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -881,22 +1029,14 @@
         "internalType": "uint256",
         "name": "_rewardRate",
         "type": "uint256"
-      }
-    ],
-    "name": "setRewardRate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+      },
       {
         "internalType": "uint256",
         "name": "_treasuryRate",
         "type": "uint256"
       }
     ],
-    "name": "setTreasuryRate",
+    "name": "setRewardAndTreasuryRates",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
