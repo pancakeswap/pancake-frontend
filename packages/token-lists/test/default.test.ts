@@ -84,9 +84,7 @@ expect.extend({
     const hasTWLogo =
       token.logoURI === `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${token.address}/logo.png`;
     let hasLocalLogo = false;
-    const refersToLocalLogo =
-      token.logoURI === `https://tokens.pancakeswap.finance/images/${token.address}.png` ||
-      token.logoURI === `https://tokens.pancakeswap.finance/images/${token.address.toLowerCase()}.png`;
+    const refersToLocalLogo = token.logoURI === `https://tokens.pancakeswap.finance/images/${token.address}.png`;
     if (refersToLocalLogo) {
       const fileName = token.logoURI.split("/").pop();
       // Note: fs.existsSync can't be used here because its not case sensetive
@@ -145,7 +143,14 @@ describe.each([["pancakeswap-default"], ["pancakeswap-extended"], ["pancakeswap-
 
     it("all addresses are valid and checksummed", () => {
       for (const token of defaultTokenList.tokens) {
-        expect(getAddress(token.address)).toBe(token.address);
+        expect(token.address).toBe(getAddress(token.address));
+      }
+    });
+
+    it("all logos addresses are valid and checksummed", async () => {
+      for (const logo of logoFiles) {
+        const sanitizedLogo = logo.split(".")[0];
+        expect(sanitizedLogo).toBe(getAddress(sanitizedLogo));
       }
     });
 

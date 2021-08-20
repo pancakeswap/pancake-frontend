@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Default",
-  "timestamp": "2021-06-16T03:36:50.636Z",
+  "timestamp": "2021-08-20T10:38:20.113Z",
   "version": {
     "major": 2,
     "minor": 15,
-    "patch": 2
+    "patch": 3
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -18,7 +18,7 @@
       "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
     },
     {
       "name": "PancakeSwap Token",
@@ -26,7 +26,7 @@
       "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
     },
     {
       "name": "Binance Pegged BUSD",
@@ -34,7 +34,7 @@
       "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0xe9e7cea3dedca5984780bafc599bd69add087d56.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
     },
     {
       "name": "Binance Pegged USDT",
@@ -42,7 +42,7 @@
       "address": "0x55d398326f99059fF775485246999027B3197955",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x55d398326f99059ff775485246999027b3197955.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x55d398326f99059fF775485246999027B3197955.png"
     },
     {
       "name": "Binance Pegged Bitcoin",
@@ -50,7 +50,7 @@
       "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.png"
     },
     {
       "name": "Binance Pegged ETH",
@@ -58,7 +58,7 @@
       "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x2170ed0880ac9a755fd29b2688956bd959f933f8.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
     },
     {
       "name": "Bunny Token",
@@ -66,7 +66,7 @@
       "address": "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51.png"
     },
     {
       "name": "Venus Token",
@@ -74,7 +74,7 @@
       "address": "0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63.png"
     },
     {
       "name": "SafeMoon",
@@ -82,7 +82,7 @@
       "address": "0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3",
       "chainId": 56,
       "decimals": 9,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x8076c74c5e3f5852037f31ff0093eeb8c8add8d3.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3.png"
     },
     {
       "name": "Alpaca",
@@ -90,7 +90,7 @@
       "address": "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x8f0528ce5ef7b51152a59745befdd91d97091d2f.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F.png"
     },
     {
       "name": "Polkadot Token",
@@ -98,7 +98,7 @@
       "address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x7083609fce4d1d8dc0c979aab8c869ea2c873402.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402.png"
     },
     {
       "name": "Refinable",
@@ -106,7 +106,7 @@
       "address": "0x4e6415a5727ea08aAE4580057187923aeC331227",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x4e6415a5727ea08aae4580057187923aec331227.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x4e6415a5727ea08aAE4580057187923aeC331227.png"
     },
     {
       "name": "Binance Pegged DAI",
@@ -114,7 +114,7 @@
       "address": "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3.png"
     },
     {
       "name": "Binance Pegged USD Coin",
@@ -122,7 +122,7 @@
       "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
     },
     {
       "name": "Dopple Finance",
@@ -130,7 +130,7 @@
       "address": "0x844FA82f1E54824655470970F7004Dd90546bB28",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x844fa82f1e54824655470970f7004dd90546bb28.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x844FA82f1E54824655470970F7004Dd90546bB28.png"
     }
   ]
 }
