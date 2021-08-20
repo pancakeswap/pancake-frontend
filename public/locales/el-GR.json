@@ -413,8 +413,6 @@
   "No prediction history available": "Δεν υπάρχει διαθέσιμο ιστορικό προβλέψεων",
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "Εάν είστε βέβαιοι ότι το ιστορικό πρέπει να εμφανίζεται εδώ, βεβαιωθείτε ότι είστε συνδεδεμένοι στο σωστό πορτοφόλι και δοκιμάστε ξανά.",
   "Last price from Chainlink Oracle": "Τελευταία τιμή από την Chainlink Oracle",
-  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "Τα γραφήματα προορίζονται μόνο για αναφορά και δεν είναι το τελικό αποτέλεσμα των γύρων.",
-  "Please refer to the prices shown on the cards for the final outcome.": "Ανατρέξτε στις τιμές που εμφανίζονται στις κάρτες για το τελικό αποτέλεσμα.",
   "%num% Points to Collect": "%num% Πόντοι για συλλογή",
   "Net results": "Καθαρό αποτέλεσμα",
   "Average return / round": "Μέση απόδοση / γύρο",
@@ -1351,5 +1349,10 @@
   "Standard (%gasPrice%)": "Τυπική (%gasPrice%)",
   "Fast (%gasPrice%)": "Γρήγορη (%gasPrice%)",
   "Instant (%gasPrice%)": "Άμεση (%gasPrice%)",
-  "You won multiple collectibles!": "Κερδίσατε πολλαπλά συλλεκτικά!"
+  "You won multiple collectibles!": "Κερδίσατε πολλαπλά συλλεκτικά!",
+  "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
+  "The price you see come from difference places": "The price you see come from difference places",
+  "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
 }
