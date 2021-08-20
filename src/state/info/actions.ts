@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
-import { ChartDayData, Transaction, PoolData, PoolChartEntry, PriceChartEntry } from 'types'
-import { ProtocolData, TokenData, TokenChartEntry } from './types'
+import { ChartDayData, Transaction, PriceChartEntry } from 'types'
+import { ProtocolData, TokenData, TokenChartEntry, PoolData, PoolChartEntry } from './types'
 
 export const updateProtocolData = createAction<{ protocolData: ProtocolData }>('info/protocol/updateProtocolData')
 export const updateProtocolChartData = createAction<{ chartData: ChartDayData[] }>(

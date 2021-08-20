@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 import { client } from 'config/apolloClient'
-import { TOKEN_BLACKLIST } from 'config/info'
+import { TOKEN_BLACKLIST } from 'config/constants/info'
 
 /**
  * Data for showing Pools table on the Token page

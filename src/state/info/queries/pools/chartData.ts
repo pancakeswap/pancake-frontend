@@ -1,8 +1,8 @@
 import { getUnixTime } from 'date-fns'
 import gql from 'graphql-tag'
 import { client } from 'config/apolloClient'
-import { PoolChartEntry } from 'state/pools/types'
-import { PCS_V2_START, ONE_DAY_UNIX } from 'config/info'
+import { PoolChartEntry } from 'state/info/types'
+import { PCS_V2_START, ONE_DAY_UNIX } from 'config/constants/info'
 
 /**
  * Data for drawing Volume and TVL charts on pool page

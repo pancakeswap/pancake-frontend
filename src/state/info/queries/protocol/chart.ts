@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { getUnixTime } from 'date-fns'
 import gql from 'graphql-tag'
 import { client } from 'config/apolloClient'
-import { PCS_V2_START, ONE_DAY_UNIX } from 'config/info'
+import { PCS_V2_START, ONE_DAY_UNIX } from 'config/constants/info'
 
 /**
  * Data for displaying Liquidity and Volume charts on Overview page

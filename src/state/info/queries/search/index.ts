@@ -1,11 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
-import { useTokenDatas } from 'state/tokens/hooks'
-import { TokenData } from 'state/tokens/types'
-import { usePoolDatas } from 'state/pools/hooks'
-import { PoolData } from 'state/pools/types'
-import { MINIMUM_SEARCH_CHARACTERS } from 'config/info'
+import { useTokenDatas, usePoolDatas } from 'state/info/hooks'
+import { TokenData, PoolData } from 'state/info/types'
+import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 
 export const TOKEN_SEARCH = gql`
   query tokens($symbol: String, $name: String, $id: String) {

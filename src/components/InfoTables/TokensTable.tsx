@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, Skeleton, useMatchBreakpoints, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
-import { TokenData } from 'state/tokens/types'
+import { TokenData } from 'state/info/types'
 import { Link } from 'react-router-dom'
 import { CurrencyLogo } from 'components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'

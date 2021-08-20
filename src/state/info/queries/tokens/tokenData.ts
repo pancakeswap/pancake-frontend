@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
 import { getPercentChange, getChangeForPeriod, getAmountChange } from 'utils/infoData'
-import { TokenData } from 'state/tokens/types'
+import { TokenData } from 'state/info/types'
 import { useBnbPrices } from 'hooks/useBnbPrices'
 
 /**

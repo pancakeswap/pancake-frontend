@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
 import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
-import { PoolData } from 'state/pools/types'
+import { PoolData } from 'state/info/types'
 import { getChangeForPeriod, getLpFeesAndApr, getPercentChange } from 'utils/infoData'
 
 /**

@@ -1,5 +1,5 @@
 import { getChangeForPeriod, getPercentChange } from 'utils/infoData'
-import { ProtocolData } from 'state/protocol/types'
+import { ProtocolData } from 'state/info/types'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/client'
 import { useDeltaTimestamps } from 'utils/infoQueryHelpers'

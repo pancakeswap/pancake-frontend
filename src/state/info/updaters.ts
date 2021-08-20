@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
-import useFetchProtocolData from 'data/protocol/overview'
-import useFetchGlobalChartData from 'data/protocol/chart'
-import fetchTopTransactions from 'data/protocol/transactions'
-import { useTopPoolAddresses } from 'data/pools/topPools'
-import { usePoolDatas } from 'data/pools/poolData'
-import { useFetchedTokenDatas } from 'data/tokens/tokenData'
-import { useTopTokenAddresses } from 'data/tokens/topTokens'
+import useFetchProtocolData from 'state/info/queries/protocol/overview'
+import useFetchGlobalChartData from 'state/info/queries/protocol/chart'
+import fetchTopTransactions from 'state/info/queries/protocol/transactions'
+import { useTopPoolAddresses } from 'state/info/queries/pools/topPools'
+import { usePoolDatas } from 'state/info/queries/pools/poolData'
+import { useFetchedTokenDatas } from 'state/info/queries/tokens/tokenData'
+import { useTopTokenAddresses } from 'state/info/queries/tokens/topTokens'
 import {
   useProtocolData,
   useProtocolChartData,

@@ -1,5 +1,5 @@
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
-import { useDeltaTimestamps } from 'utils/queries'
+import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useState, useEffect, useMemo } from 'react'
 import { client } from 'config/apolloClient'
 import gql from 'graphql-tag'

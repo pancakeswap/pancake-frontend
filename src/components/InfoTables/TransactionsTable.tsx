@@ -7,7 +7,7 @@ import { Text, Flex, Box, Radio, Skeleton, LinkExternal, ArrowForwardIcon, Arrow
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { shortenAddress, getBscscanLink } from 'utils/infoUtils'
 import { Transaction, TransactionType } from 'types'
-import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/info'
+import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { useTranslation } from 'contexts/Localization'
 import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'
 

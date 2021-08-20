@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
-import { TOKEN_BLACKLIST } from 'config/info'
+import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
 
 /**

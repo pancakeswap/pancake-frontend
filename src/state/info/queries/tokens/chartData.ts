@@ -1,8 +1,8 @@
 import { getUnixTime } from 'date-fns'
 import gql from 'graphql-tag'
 import { client } from 'config/apolloClient'
-import { TokenChartEntry } from 'state/tokens/types'
-import { PCS_V2_START, ONE_DAY_UNIX } from 'config/info'
+import { TokenChartEntry } from 'state/info/types'
+import { PCS_V2_START, ONE_DAY_UNIX } from 'config/constants/info'
 
 /**
  * Data for drawing Volume and TVL charts on token page

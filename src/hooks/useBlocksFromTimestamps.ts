@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 import { useState, useEffect, useMemo } from 'react'
-import { splitQuery } from 'utils/queries'
+import { splitQuery } from 'utils/infoQueryHelpers'
 import { blockClient } from 'config/apolloClient'
 
 export const GET_BLOCKS = (timestamps: string[]) => {

@@ -1,8 +1,8 @@
 import { client } from 'config/apolloClient'
 import gql from 'graphql-tag'
 import { Transaction } from 'types'
-import { MintResponse, SwapResponse, BurnResponse } from 'data/types'
-import { mapMints, mapBurns, mapSwaps } from 'data/helpers'
+import { MintResponse, SwapResponse, BurnResponse } from 'state/info/queries/types'
+import { mapMints, mapBurns, mapSwaps } from 'state/info/queries/helpers'
 /**
  * Transactions of the given pool, used on Pool page
  */

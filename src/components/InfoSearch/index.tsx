@@ -1,18 +1,17 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text, Input, Flex, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useFetchSearchResults } from 'data/search'
+import { useFetchSearchResults } from 'state/info/queries/search'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useWatchlistTokens, useWatchlistPools } from 'state/user/hooks'
 import SaveIcon from 'components/SaveIcon'
 import { useHistory } from 'react-router-dom'
-import { useTokenDatas } from 'state/tokens/hooks'
-import { usePoolDatas } from 'state/pools/hooks'
+import { usePoolDatas, useTokenDatas } from 'state/info/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useDebounce from 'hooks/useDebounce'
-import { MINIMUM_SEARCH_CHARACTERS } from 'config/info'
-import { PoolData } from 'state/pools/types'
+import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
+import { PoolData } from 'state/info/types'
 
 const Container = styled.div`
   position: relative;
