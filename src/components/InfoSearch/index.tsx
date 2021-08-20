@@ -4,7 +4,7 @@ import { Text, Input, Flex, Skeleton, useMatchBreakpoints } from '@pancakeswap/u
 import { useFetchSearchResults } from 'data/search'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { useSavedTokens, useSavedPools } from 'state/user/hooks'
+import { useWatchlistTokens, useWatchlistPools } from 'state/user/hooks'
 import SaveIcon from 'components/SaveIcon'
 import { useHistory } from 'react-router-dom'
 import { useTokenDatas } from 'state/tokens/hooks'
@@ -186,8 +186,8 @@ const Search = () => {
   }, [showMenu])
 
   // watchlist
-  const [savedTokens, addSavedToken] = useSavedTokens()
-  const [savedPools, addSavedPool] = useSavedPools()
+  const [savedTokens, addSavedToken] = useWatchlistTokens()
+  const [savedPools, addSavedPool] = useWatchlistPools()
 
   const handleItemClick = (to: string) => {
     setShowMenu(false)
