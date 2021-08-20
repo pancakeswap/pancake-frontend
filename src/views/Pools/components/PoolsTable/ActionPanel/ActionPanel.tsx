@@ -90,6 +90,7 @@ type MediaBreakpoints = {
   isMd: boolean
   isLg: boolean
   isXl: boolean
+  isXxl: boolean
 }
 
 interface ActionPanelProps {
