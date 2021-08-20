@@ -32,13 +32,13 @@ const InfoNav = () => {
     <NavWrapper>
       <Box>
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-          <ButtonMenuItem as={Link} to="/">
+          <ButtonMenuItem as={Link} to="/info">
             {t('Overview')}
           </ButtonMenuItem>
-          <ButtonMenuItem as={Link} to="/pools">
+          <ButtonMenuItem as={Link} to="/info/pools">
             {t('Pools')}
           </ButtonMenuItem>
-          <ButtonMenuItem as={Link} to="/tokens">
+          <ButtonMenuItem as={Link} to="/info/tokens">
             {t('Tokens')}
           </ButtonMenuItem>
         </ButtonMenu>

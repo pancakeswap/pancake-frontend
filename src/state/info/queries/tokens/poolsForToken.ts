@@ -1,5 +1,5 @@
-import gql from 'graphql-tag'
-import { client } from 'config/apolloClient'
+import { request, gql } from 'graphql-request'
+import { INFO_CLIENT } from 'config/constants/endpoints'
 import { TOKEN_BLACKLIST } from 'config/constants/info'
 
 /**
@@ -35,44 +35,27 @@ interface PoolsForTokenResponse {
   }[]
 }
 
-/**
- * Fetch top addresses by volume
- */
-export async function fetchPoolsForToken(address: string): Promise<{
-  loading: boolean
+const fetchPoolsForToken = async (
+  address: string,
+): Promise<{
   error: boolean
-  addresses: string[] | undefined
-}> {
+  addresses?: string[]
+}> => {
   try {
-    const { loading, error, data } = await client.query<PoolsForTokenResponse>({
-      query: POOLS_FOR_TOKEN,
-      variables: {
-        address,
-        blacklist: TOKEN_BLACKLIST,
-      },
-      fetchPolicy: 'cache-first',
+    const data = await request<PoolsForTokenResponse>(INFO_CLIENT, POOLS_FOR_TOKEN, {
+      address,
+      blacklist: TOKEN_BLACKLIST,
     })
-
-    if (loading || error || !data) {
-      return {
-        loading,
-        error: Boolean(error),
-        addresses: undefined,
-      }
-    }
-
-    const formattedData = data.asToken0.concat(data.asToken1).map((p) => p.id)
-
     return {
-      loading,
-      error: Boolean(error),
-      addresses: formattedData,
+      error: false,
+      addresses: data.asToken0.concat(data.asToken1).map((p) => p.id),
     }
-  } catch {
+  } catch (error) {
+    console.error(`Failed to fetch pools for token ${address}`, error)
     return {
-      loading: false,
       error: true,
-      addresses: undefined,
     }
   }
 }
+
+export default fetchPoolsForToken

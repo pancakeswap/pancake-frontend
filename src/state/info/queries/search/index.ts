@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from 'react'
-import { useQuery } from '@apollo/client'
-import gql from 'graphql-tag'
+import { useState, useEffect } from 'react'
+import { request, gql } from 'graphql-request'
+import { INFO_CLIENT } from 'config/constants/endpoints'
 import { useTokenDatas, usePoolDatas } from 'state/info/hooks'
 import { TokenData, PoolData } from 'state/info/types'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
@@ -83,52 +83,40 @@ export const useFetchSearchResults = (
     })
   }, [searchString, searchStringTooShort])
 
-  const {
-    loading: loadingTokenSearch,
-    error: errorTokenSearch,
-    data: tokens,
-  } = useQuery<TokenSearchResponse>(TOKEN_SEARCH, {
-    fetchPolicy: 'cache-first',
-    variables: {
-      symbol: searchString.toUpperCase(),
-      // Most well known tokens have first letter capitalized
-      name: searchString.charAt(0).toUpperCase() + searchString.slice(1),
-      id: searchString.toLowerCase(),
-    },
-    skip: searchStringTooShort,
-  })
-
-  const tokensForPoolsSearch = useMemo(() => {
-    if (tokens) {
-      return getIds([tokens.asSymbol, tokens.asName])
-    }
-    return []
-  }, [tokens])
-
-  const {
-    loading: loadingPoolSearch,
-    error: errorPoolSearch,
-    data: pools,
-  } = useQuery<PoolSearchResponse>(POOL_SEARCH, {
-    fetchPolicy: 'cache-first',
-    variables: {
-      tokens: tokensForPoolsSearch,
-      id: searchString.toLowerCase(),
-    },
-    skip: searchStringTooShort || tokensForPoolsSearch.length === 0,
-  })
-
-  // tokens and pools retain array references so its safe to keep them in deps array
   useEffect(() => {
-    setSearchResults({
-      tokens: tokens ? getIds([tokens.asAddress, tokens.asName, tokens.asSymbol]) : [],
-      pools: pools ? getIds([pools.asAddress, pools.as0, pools.as1]) : [],
-      loading: loadingTokenSearch || loadingPoolSearch,
-      error: !!errorTokenSearch || !!errorPoolSearch,
-    })
-    if (errorTokenSearch) console.error(errorTokenSearch)
-    if (errorPoolSearch) console.error(errorPoolSearch)
-  }, [tokens, pools, loadingTokenSearch, loadingPoolSearch, errorTokenSearch, errorPoolSearch])
+    const search = async () => {
+      try {
+        const tokens = await request<TokenSearchResponse>(INFO_CLIENT, TOKEN_SEARCH, {
+          symbol: searchString.toUpperCase(),
+          // Most well known tokens have first letter capitalized
+          name: searchString.charAt(0).toUpperCase() + searchString.slice(1),
+          id: searchString.toLowerCase(),
+        })
+        const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName])
+        const pools = await request<PoolSearchResponse>(INFO_CLIENT, POOL_SEARCH, {
+          tokens: tokenIds,
+          id: searchString.toLowerCase(),
+        })
+        setSearchResults({
+          tokens: tokenIds,
+          pools: getIds([pools.asAddress, pools.as0, pools.as1]),
+          loading: false,
+          error: false,
+        })
+      } catch (error) {
+        console.error(`Search failed for ${searchString}`, error)
+        setSearchResults({
+          tokens: [],
+          pools: [],
+          loading: false,
+          error: true,
+        })
+      }
+    }
+    if (!searchStringTooShort) {
+      search()
+    }
+  }, [searchString, searchStringTooShort])
 
   // Save ids to Redux
   // Token and Pool updater will then go fetch full data for these addresses

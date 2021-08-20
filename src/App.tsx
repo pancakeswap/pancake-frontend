@@ -6,6 +6,7 @@ import useEagerConnect from 'hooks/useEagerConnect'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
+import { ProtocolUpdater, PoolUpdater, TokenUpdater } from 'state/info/updaters'
 import { DatePickerPortal } from 'components/DatePicker'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
@@ -13,6 +14,7 @@ import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import { ToastListener } from './contexts/ToastsContext'
 import PageLoader from './components/Loader/PageLoader'
 import EasterEgg from './components/EasterEgg'
+import InfoNav from './components/InfoNav'
 import history from './routerHistory'
 // Views included in the main bundle
 import Pools from './views/Pools'
@@ -25,6 +27,7 @@ import {
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
 import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
+import InfoOverview from './views/Info/Overview'
 import InfoPools from './views/Info/Pools'
 import InfoPoolPage from './views/Info/Pools/PoolPage'
 import InfoTokens from './views/Info/Tokens'
@@ -72,6 +75,12 @@ const App: React.FC = () => {
       <GlobalCheckClaimStatus excludeLocations={['/collectibles']} />
       <Menu>
         <SuspenseWithChunkError fallback={<PageLoader />}>
+          <Route path="/info">
+            <ProtocolUpdater />
+            <PoolUpdater />
+            <TokenUpdater />
+            <InfoNav />
+          </Route>
           <Switch>
             <Route path="/" exact>
               <Home />
@@ -123,7 +132,7 @@ const App: React.FC = () => {
             </Route>
             {/* Info pages */}
             <Route path="/info" exact>
-              <Home />
+              <InfoOverview />
             </Route>
             <Route path="/info/pools" exact>
               <InfoPools />

@@ -1,5 +1,5 @@
-import { client } from 'config/apolloClient'
-import gql from 'graphql-tag'
+import { request, gql } from 'graphql-request'
+import { INFO_CLIENT } from 'config/constants/endpoints'
 import { Transaction } from 'types'
 import { MintResponse, SwapResponse, BurnResponse } from 'state/info/queries/types'
 import { mapMints, mapBurns, mapSwaps } from 'state/info/queries/helpers'
@@ -133,34 +133,11 @@ interface TransactionResults {
   burnsAs1: BurnResponse[]
 }
 
-export default async function fetchTokenTransactions(
-  address: string,
-): Promise<{ data: Transaction[] | undefined; error: boolean; loading: boolean }> {
+const fetchTokenTransactions = async (address: string): Promise<{ data?: Transaction[]; error: boolean }> => {
   try {
-    const { data, error, loading } = await client.query<TransactionResults>({
-      query: TOKEN_TRANSACTIONS,
-      variables: {
-        address,
-      },
-      fetchPolicy: 'cache-first',
+    const data = await request<TransactionResults>(INFO_CLIENT, TOKEN_TRANSACTIONS, {
+      address,
     })
-
-    if (error) {
-      return {
-        data: undefined,
-        error: true,
-        loading: false,
-      }
-    }
-
-    if (loading && !data) {
-      return {
-        data: undefined,
-        error: false,
-        loading: true,
-      }
-    }
-
     const mints0 = data.mintsAs0.map(mapMints)
     const mints1 = data.mintsAs1.map(mapMints)
 
@@ -170,12 +147,13 @@ export default async function fetchTokenTransactions(
     const swaps0 = data.swapsAs0.map(mapSwaps)
     const swaps1 = data.swapsAs1.map(mapSwaps)
 
-    return { data: [...mints0, ...mints1, ...burns0, ...burns1, ...swaps0, ...swaps1], error: false, loading: false }
-  } catch {
+    return { data: [...mints0, ...mints1, ...burns0, ...burns1, ...swaps0, ...swaps1], error: false }
+  } catch (error) {
+    console.error(`Failed to fetch transactions for token ${address}`, error)
     return {
-      data: undefined,
       error: true,
-      loading: false,
     }
   }
 }
+
+export default fetchTokenTransactions

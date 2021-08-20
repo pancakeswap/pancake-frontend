@@ -89,7 +89,7 @@ const TableLoader: React.FC = () => {
 const DataRow: React.FC<{ tokenData: TokenData; index: number }> = ({ tokenData, index }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   return (
-    <LinkWrapper to={`token/${tokenData.address}`}>
+    <LinkWrapper to={`/info/token/${tokenData.address}`}>
       <ResponsiveGrid>
         <Flex>
           <Text>{index + 1}</Text>

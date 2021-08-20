@@ -20,7 +20,7 @@ import {
 
 export const ProtocolUpdater: React.FC = () => {
   const [protocolData, setProtocolData] = useProtocolData()
-  const { data: fetchedProtocolData, error, loading } = useFetchProtocolData()
+  const { data: fetchedProtocolData, error } = useFetchProtocolData()
 
   const [chartData, updateChartData] = useProtocolChartData()
   const { data: fetchedChartData, error: chartError } = useFetchGlobalChartData()
@@ -29,10 +29,10 @@ export const ProtocolUpdater: React.FC = () => {
 
   // update overview data if available and not set
   useEffect(() => {
-    if (protocolData === undefined && fetchedProtocolData && !loading && !error) {
+    if (protocolData === undefined && fetchedProtocolData && !error) {
       setProtocolData(fetchedProtocolData)
     }
-  }, [error, fetchedProtocolData, loading, protocolData, setProtocolData])
+  }, [error, fetchedProtocolData, protocolData, setProtocolData])
 
   // update global chart data if available and not set
   useEffect(() => {
@@ -61,14 +61,14 @@ export const PoolUpdater: React.FC = () => {
   const addPoolKeys = useAddPoolKeys()
 
   const allPoolData = useAllPoolData()
-  const { loading, error, addresses } = useTopPoolAddresses()
+  const addresses = useTopPoolAddresses()
 
   // add top pools on first load
   useEffect(() => {
-    if (addresses && !error && !loading) {
+    if (addresses.length > 0) {
       addPoolKeys(addresses)
     }
-  }, [addPoolKeys, addresses, error, loading])
+  }, [addPoolKeys, addresses])
 
   // detect for which addresses we havent loaded pool data yet
   const unfetchedPoolAddresses = useMemo(() => {
@@ -82,12 +82,12 @@ export const PoolUpdater: React.FC = () => {
   }, [allPoolData])
 
   // fetch data for unfetched pools and update them
-  const { error: poolDataError, loading: poolDataLoading, data: poolDatas } = usePoolDatas(unfetchedPoolAddresses)
+  const { error: poolDataError, data: poolDatas } = usePoolDatas(unfetchedPoolAddresses)
   useEffect(() => {
-    if (poolDatas && !poolDataError && !poolDataLoading) {
+    if (poolDatas && !poolDataError) {
       updatePoolData(Object.values(poolDatas))
     }
-  }, [poolDataError, poolDataLoading, poolDatas, updatePoolData])
+  }, [poolDataError, poolDatas, updatePoolData])
 
   return null
 }
@@ -97,14 +97,14 @@ export const TokenUpdater = (): null => {
   const addTokenKeys = useAddTokenKeys()
 
   const allTokenData = useAllTokenData()
-  const { loading, error, addresses } = useTopTokenAddresses()
+  const addresses = useTopTokenAddresses()
 
   // add top tokens on first load
   useEffect(() => {
-    if (addresses && !error && !loading) {
+    if (addresses.length > 0) {
       addTokenKeys(addresses)
     }
-  }, [addTokenKeys, addresses, error, loading])
+  }, [addTokenKeys, addresses])
 
   // detect for which addresses we havent loaded token data yet
   const unfetchedTokenAddresses = useMemo(() => {
@@ -118,16 +118,12 @@ export const TokenUpdater = (): null => {
   }, [allTokenData])
 
   // fetch data for unfetched tokens and update them
-  const {
-    error: tokenDataError,
-    loading: tokenDataLoading,
-    data: tokenDatas,
-  } = useFetchedTokenDatas(unfetchedTokenAddresses)
+  const { error: tokenDataError, data: tokenDatas } = useFetchedTokenDatas(unfetchedTokenAddresses)
   useEffect(() => {
-    if (tokenDatas && !tokenDataError && !tokenDataLoading) {
+    if (tokenDatas && !tokenDataError) {
       updateTokenDatas(Object.values(tokenDatas))
     }
-  }, [tokenDataError, tokenDataLoading, tokenDatas, updateTokenDatas])
+  }, [tokenDataError, tokenDatas, updateTokenDatas])
 
   return null
 }

@@ -102,6 +102,10 @@ const Overview: React.FC = () => {
       .filter(notEmpty)
   }, [allPoolData])
 
+  const somePoolsAreLoading = useMemo(() => {
+    return Object.values(allPoolData).some((pool) => !pool.data)
+  }, [allPoolData])
+
   return (
     <Page>
       <Heading scale="lg" mb="16px">
@@ -154,7 +158,7 @@ const Overview: React.FC = () => {
       <Heading scale="lg" mt="40px" mb="16px">
         {t('Top Pools')}
       </Heading>
-      <PoolTable poolDatas={poolDatas} />
+      <PoolTable poolDatas={poolDatas} loading={somePoolsAreLoading} />
       <Heading scale="lg" mt="40px" mb="16px">
         {t('Transactions')}
       </Heading>

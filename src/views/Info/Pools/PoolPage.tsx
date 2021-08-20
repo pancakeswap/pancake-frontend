@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo, useState } from 'react'
 import { RouteComponentProps, Link } from 'react-router-dom'
 import { format, fromUnixTime } from 'date-fns'
 import {
@@ -89,10 +89,6 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
   const currentDate = format(new Date(), 'MMM d, yyyy')
 
   // token data
@@ -165,7 +161,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
             </Flex>
             <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>
               <Flex flexDirection={['column', 'column', 'row']} mb={['8px', '8px', null]}>
-                <Link to={`/token/${poolData.token0.address}`}>
+                <Link to={`/info/token/${poolData.token0.address}`}>
                   <TokenButton>
                     <CurrencyLogo address={poolData.token0.address} size="24px" />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
@@ -177,7 +173,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                     </Text>
                   </TokenButton>
                 </Link>
-                <Link to={`/token/${poolData.token1.address}`}>
+                <Link to={`/info/token/${poolData.token1.address}`}>
                   <TokenButton ml={[null, null, '10px']}>
                     <CurrencyLogo address={poolData.token1.address} size="24px" />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
@@ -292,7 +288,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                         ${showWeeklyData ? formatAmount(poolData.lpFees7d) : formatAmount(poolData.lpFees24h)}
                       </Text>
                       <Text color="textSubtle" fontSize="12px">
-                        {t('out of %totalFees% total fees', {
+                        {t('out of $%totalFees% total fees', {
                           totalFees: showWeeklyData
                             ? formatAmount(poolData.totalFees7d)
                             : formatAmount(poolData.totalFees24h),

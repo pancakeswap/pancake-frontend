@@ -63,30 +63,29 @@ const SORT_FIELD = {
   lpApr7d: 'lpApr7d',
 }
 
-const TableLoader: React.FC = () => {
-  const loadingRow = (
-    <ResponsiveGrid>
-      <Skeleton />
-      <Skeleton />
-      <Skeleton />
-      <Skeleton />
-      <Skeleton />
-      <Skeleton />
-      <Skeleton />
-    </ResponsiveGrid>
-  )
-  return (
-    <>
-      {loadingRow}
-      {loadingRow}
-      {loadingRow}
-    </>
-  )
-}
+const LoadingRow: React.FC = () => (
+  <ResponsiveGrid>
+    <Skeleton />
+    <Skeleton />
+    <Skeleton />
+    <Skeleton />
+    <Skeleton />
+    <Skeleton />
+    <Skeleton />
+  </ResponsiveGrid>
+)
+
+const TableLoader: React.FC = () => (
+  <>
+    <LoadingRow />
+    <LoadingRow />
+    <LoadingRow />
+  </>
+)
 
 const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => {
   return (
-    <LinkWrapper to={`/pool/${poolData.address}`}>
+    <LinkWrapper to={`/info/pool/${poolData.address}`}>
       <ResponsiveGrid>
         <Text>{index + 1}</Text>
         <Flex>
@@ -107,9 +106,10 @@ const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => 
 
 interface PoolTableProps {
   poolDatas: PoolData[]
+  loading?: boolean // If true shows indication that SOME pools are loading, but the ones already fetched will be shown
 }
 
-const PoolTable: React.FC<PoolTableProps> = ({ poolDatas }) => {
+const PoolTable: React.FC<PoolTableProps> = ({ poolDatas, loading }) => {
   // for sorting
   const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
@@ -226,6 +226,7 @@ const PoolTable: React.FC<PoolTableProps> = ({ poolDatas }) => {
             }
             return null
           })}
+          {loading && <LoadingRow />}
           <PageButtons>
             <Arrow
               onClick={() => {

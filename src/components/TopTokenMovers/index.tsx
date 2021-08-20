@@ -7,6 +7,7 @@ import { TokenData } from 'state/info/types'
 import { CurrencyLogo } from 'components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import Percent from 'components/Percent'
+import { useTranslation } from 'contexts/Localization'
 
 const CardWrapper = styled(Link)`
   display: inline-block;
@@ -36,10 +37,13 @@ export const ScrollableRow = styled.div`
 
 const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
   return (
-    <CardWrapper to={`token/${tokenData.address}`}>
+    <CardWrapper to={`/info/token/${tokenData.address}`}>
       <TopMoverCard>
         <Flex>
-          <CurrencyLogo address={tokenData.address} size="32px" />
+          <Box width="32px" height="32px">
+            {/* wrapped in a box because of alignment issues between img and svg */}
+            <CurrencyLogo address={tokenData.address} size="32px" />
+          </Box>
           <Box ml="16px">
             <Text>{tokenData.symbol}</Text>
             <Flex alignItems="center">
@@ -57,6 +61,7 @@ const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
 
 const TopTokenMovers: React.FC = () => {
   const allTokens = useAllTokenData()
+  const { t } = useTranslation()
 
   const topPriceIncrease = useMemo(() => {
     return Object.values(allTokens)
@@ -89,6 +94,9 @@ const TopTokenMovers: React.FC = () => {
 
   return (
     <Card my="16px">
+      <Text ml="16px" mt="8px">
+        {t('Top Movers')}
+      </Text>
       <ScrollableRow ref={increaseRef}>
         {topPriceIncrease.map((entry) =>
           entry.data ? <DataCard key={`top-card-token-${entry.data?.address}`} tokenData={entry.data} /> : null,

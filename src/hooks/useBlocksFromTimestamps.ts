@@ -1,19 +1,22 @@
-import gql from 'graphql-tag'
-import { useState, useEffect, useMemo } from 'react'
-import { splitQuery } from 'utils/infoQueryHelpers'
-import { blockClient } from 'config/apolloClient'
+import { gql } from 'graphql-request'
+import { useState, useEffect } from 'react'
+import { multiQuery } from 'utils/infoQueryHelpers'
+import { BLOCKS_CLIENT } from 'config/constants/endpoints'
+import { Block } from 'types'
 
-export const GET_BLOCKS = (timestamps: string[]) => {
-  let queryString = 'query blocks {'
-  queryString += timestamps.map((timestamp) => {
+const getBlockSubqueries = (timestamps: number[]) =>
+  timestamps.map((timestamp) => {
     return `t${timestamp}:blocks(first: 1, orderBy: timestamp, orderDirection: desc, where: { timestamp_gt: ${timestamp}, timestamp_lt: ${
       timestamp + 600
     } }) {
-        number
-      }`
+      number
+    }`
   })
-  queryString += '}'
-  return gql(queryString)
+
+const blocksQueryConstructor = (subqueries: string[]) => {
+  return gql`query blocks {
+    ${subqueries}
+  }`
 }
 
 /**
@@ -23,22 +26,29 @@ export const GET_BLOCKS = (timestamps: string[]) => {
 export const useBlocksFromTimestamps = (
   timestamps: number[],
 ): {
-  blocks:
-    | {
-        timestamp: string
-        number: any
-      }[]
-    | undefined
+  blocks?: Block[]
   error: boolean
 } => {
-  const [blocks, setBlocks] = useState<any>()
+  const [blocks, setBlocks] = useState<Block[]>()
   const [error, setError] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
-      const results = await splitQuery(GET_BLOCKS, blockClient, [], timestamps)
+      const results = await multiQuery(blocksQueryConstructor, getBlockSubqueries(timestamps), BLOCKS_CLIENT)
       if (results) {
-        setBlocks(results)
+        const formattedBlocks = []
+        // eslint-disable-next-line no-restricted-syntax
+        for (const key of Object.keys(results)) {
+          if (results[key].length > 0) {
+            formattedBlocks.push({
+              timestamp: key.split('t')[1],
+              number: parseInt(results[key][0].number, 10),
+            })
+          }
+        }
+        // graphql-request does not guarantee same ordering of batched requests subqueries, hence sorting by blocks from recent to oldest
+        formattedBlocks.sort((a, b) => b.number - a.number)
+        setBlocks(formattedBlocks)
       } else {
         setError(true)
       }
@@ -46,27 +56,10 @@ export const useBlocksFromTimestamps = (
     if (!blocks && !error) {
       fetchData()
     }
-  })
-
-  const blocksFormatted = useMemo(() => {
-    if (blocks) {
-      const formatted = []
-      // eslint-disable-next-line no-restricted-syntax
-      for (const t in blocks) {
-        if (blocks[t].length > 0) {
-          formatted.push({
-            timestamp: t.split('t')[1],
-            number: parseInt(blocks[t][0].number, 10),
-          })
-        }
-      }
-      return formatted
-    }
-    return undefined
-  }, [blocks])
+  }) // TODO: dep array?
 
   return {
-    blocks: blocksFormatted,
+    blocks,
     error,
   }
 }
@@ -82,20 +75,25 @@ export const getBlocksFromTimestamps = async (timestamps: number[], skipCount = 
   if (timestamps?.length === 0) {
     return []
   }
-  const fetchedData: any = await splitQuery(GET_BLOCKS, blockClient, [], timestamps, skipCount)
+  const fetchedData: any = await multiQuery(
+    blocksQueryConstructor,
+    getBlockSubqueries(timestamps),
+    BLOCKS_CLIENT,
+    skipCount,
+  )
 
   const blocks: any[] = []
   if (fetchedData) {
-    // TODO rewrite loop
     // eslint-disable-next-line no-restricted-syntax
-    for (const t in fetchedData) {
-      if (fetchedData[t].length > 0) {
+    for (const key of Object.keys(fetchedData)) {
+      if (fetchedData[key].length > 0) {
         blocks.push({
-          timestamp: t.split('t')[1],
-          number: fetchedData[t][0].number,
+          timestamp: key.split('t')[1],
+          number: parseInt(fetchedData[key][0].number, 10),
         })
       }
     }
+    blocks.sort((a, b) => a.number - b.number)
   }
   return blocks
 }

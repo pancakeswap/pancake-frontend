@@ -303,7 +303,7 @@ const Search = () => {
           {tokensForList.slice(0, tokensShown).map((token, i) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <HoverRowLink onClick={() => handleItemClick(`/token/${token.address}`)} key={i}>
+              <HoverRowLink onClick={() => handleItemClick(`/info/token/${token.address}`)} key={i}>
                 <ResponsiveGrid>
                   <Flex>
                     <CurrencyLogo address={token.address} />
@@ -362,7 +362,7 @@ const Search = () => {
           {poolForList.slice(0, poolsShown).map((p, i) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <HoverRowLink onClick={() => handleItemClick(`/pool/${p.address}`)} key={i}>
+              <HoverRowLink onClick={() => handleItemClick(`/info/pool/${p.address}`)} key={i}>
                 <ResponsiveGrid>
                   <Flex>
                     <DoubleCurrencyLogo address0={p.token0.address} address1={p.token1.address} />

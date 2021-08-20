@@ -1,26 +1,8 @@
-import { useMemo } from 'react'
-import { useQuery } from '@apollo/client'
-import gql from 'graphql-tag'
+import { useEffect, useState } from 'react'
+import { request, gql } from 'graphql-request'
+import { INFO_CLIENT } from 'config/constants/endpoints'
 import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
-
-/**
- * Tokens to display on Home page
- * The actual data is later requested in tokenData.ts
- * Note: dailyTxns_gt: 300 is there to prevent fetching incorrectly priced tokens with high dailyVolumeUSD
- */
-export const TOP_TOKENS = gql`
-  query topTokens($blacklist: [String!], $timestamp24hAgo: Int) {
-    tokenDayDatas(
-      first: 30
-      where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: $timestamp24hAgo }
-      orderBy: dailyVolumeUSD
-      orderDirection: desc
-    ) {
-      id
-    }
-  }
-`
 
 interface TopTokensResponse {
   tokenDayDatas: {
@@ -29,29 +11,49 @@ interface TopTokensResponse {
 }
 
 /**
+ * Tokens to display on Home page
+ * The actual data is later requested in tokenData.ts
+ * Note: dailyTxns_gt: 300 is there to prevent fetching incorrectly priced tokens with high dailyVolumeUSD
+ */
+const fetchTopTokens = async (timestamp24hAgo: number): Promise<string[]> => {
+  try {
+    const query = gql`
+      query topTokens($blacklist: [String!], $timestamp24hAgo: Int) {
+        tokenDayDatas(
+          first: 30
+          where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: $timestamp24hAgo }
+          orderBy: dailyVolumeUSD
+          orderDirection: desc
+        ) {
+          id
+        }
+      }
+    `
+    const data = await request<TopTokensResponse>(INFO_CLIENT, query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo })
+    // tokenDayDatas id has compound id "0xTOKENADDRESS-NUMBERS", extracting token address with .split('-')
+    return data.tokenDayDatas.map((t) => t.id.split('-')[0])
+  } catch (error) {
+    console.error('Failed to fetch top tokens', error)
+    return []
+  }
+}
+
+/**
  * Fetch top addresses by volume
  */
-export function useTopTokenAddresses(): {
-  loading: boolean
-  error: boolean
-  addresses: string[] | undefined
-} {
+export const useTopTokenAddresses = (): string[] => {
+  const [topTokenAddresses, setTopTokenAddresses] = useState([])
   const [timestamp24hAgo] = useDeltaTimestamps()
-  const { loading, error, data } = useQuery<TopTokensResponse>(TOP_TOKENS, {
-    variables: { blacklist: TOKEN_BLACKLIST, timestamp24hAgo },
-  })
 
-  const formattedData = useMemo(() => {
-    if (data) {
-      // tokenDayDatas id has compound id "0xTOKENADDRESS-NUMBERS", extracting token address with .split('-')
-      return data.tokenDayDatas.map((t) => t.id.split('-')[0])
+  useEffect(() => {
+    const fetch = async () => {
+      const addresses = await fetchTopTokens(timestamp24hAgo)
+      setTopTokenAddresses(addresses)
     }
-    return undefined
-  }, [data])
+    if (topTokenAddresses.length === 0) {
+      fetch()
+    }
+  }, [topTokenAddresses, timestamp24hAgo])
 
-  return {
-    loading,
-    error: Boolean(error),
-    addresses: formattedData,
-  }
+  return topTokenAddresses
 }

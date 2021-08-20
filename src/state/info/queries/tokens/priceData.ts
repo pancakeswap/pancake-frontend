@@ -1,145 +1,128 @@
 import { getUnixTime } from 'date-fns'
-import gql from 'graphql-tag'
-import { client } from 'config/apolloClient'
+import { gql } from 'graphql-request'
 import { getBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
-import { splitQuery } from 'utils/infoQueryHelpers'
+import { multiQuery } from 'utils/infoQueryHelpers'
 import { PriceChartEntry } from 'types'
+import { INFO_CLIENT } from 'config/constants/endpoints'
 
-/**
- * Price data for token and bnb based on block number
- */
-export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
-  let queryString = 'query tokenPriceData {'
-  queryString += blocks.map(
+const getPriceSubqueries = (tokenAddress: string, blocks: any) =>
+  blocks.map(
     (block: any) => `
       t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }) { 
         derivedBNB
       }
-    `,
-  )
-  queryString += ','
-  queryString += blocks.map(
-    (block: any) => `
       b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }) { 
         bnbPrice
       }
     `,
   )
 
-  queryString += '}'
-  return gql(queryString)
+/**
+ * Price data for token and bnb based on block number
+ */
+export const priceQueryConstructor = (subqueries: string[]) => {
+  return gql`
+    query tokenPriceData {
+      ${subqueries}
+    }
+  `
 }
 
-export async function fetchTokenPriceData(
+const fetchTokenPriceData = async (
   address: string,
   interval: number,
   startTimestamp: number,
 ): Promise<{
-  data: PriceChartEntry[]
+  data?: PriceChartEntry[]
   error: boolean
-}> {
-  // start and end bounds
-
+}> => {
+  // Construct timestamps to query against
+  const endTimestamp = getUnixTime(new Date())
+  const timestamps = []
+  let time = startTimestamp
+  while (time <= endTimestamp) {
+    timestamps.push(time)
+    time += interval
+  }
   try {
-    const endTimestamp = getUnixTime(new Date())
-
-    if (!startTimestamp) {
-      console.error('Error constructing price start timestamp')
-      return {
-        data: [],
-        error: false,
-      }
-    }
-
-    // create an array of hour start times until we reach current hour
-    const timestamps = []
-    let time = startTimestamp
-    while (time <= endTimestamp) {
-      timestamps.push(time)
-      time += interval
-    }
-
-    // backout if invalid timestamp format
-    if (timestamps.length === 0) {
-      return {
-        data: [],
-        error: false,
-      }
-    }
-
-    // fetch blocks based on timestamp
     const blocks = await getBlocksFromTimestamps(timestamps, 500)
     if (!blocks || blocks.length === 0) {
-      console.error('Error fetching blocks')
+      console.error('Error fetching blocks for timestamps', timestamps)
       return {
-        data: [],
         error: false,
       }
     }
 
-    const prices: any | undefined = await splitQuery(PRICES_BY_BLOCK, client, [address], blocks, 200)
-    const pricesCopy = Object.assign([], prices)
+    const prices: any | undefined = await multiQuery(
+      priceQueryConstructor,
+      getPriceSubqueries(address, blocks),
+      INFO_CLIENT,
+      200,
+    )
 
-    if (prices && pricesCopy) {
-      // format token ETH price results
-      const values: {
-        timestamp: string
-        derivedBNB: number | undefined
-        priceUSD: number
-      }[] = []
-
-      // TODO PCS fix this shit
-      // eslint-disable-next-line no-restricted-syntax, guard-for-in
-      for (const row in prices) {
-        const timestamp = row.split('t')[1]
-        const derivedBNB = prices[row]?.derivedBNB ? parseFloat(prices[row]?.derivedBNB) : undefined
-        if (timestamp && derivedBNB) {
-          values.push({
-            timestamp,
-            derivedBNB,
-            priceUSD: 0,
-          })
-        }
+    if (!prices) {
+      console.error('Price data failed to load')
+      return {
+        error: false,
       }
+    }
 
-      // go through eth usd prices and assign to original values array
-      let index = 0
-      // TODO PCS fix this shit
-      // eslint-disable-next-line no-restricted-syntax, guard-for-in
-      for (const brow in pricesCopy) {
-        const timestamp = brow.split('b')[1]
-        const derivedBNB = values[index]?.derivedBNB
-        if (timestamp && derivedBNB) {
-          values[index].priceUSD = parseFloat(pricesCopy[brow]?.bnbPrice ?? 0) * derivedBNB
-          index += 1
-        }
-      }
+    // format token BNB price results
+    const tokenPrices: {
+      timestamp: string
+      derivedBNB: number
+      priceUSD: number
+    }[] = []
 
-      const formattedHistory = []
-
-      // for each hour, construct the open and close price
-      for (let i = 0; i < values.length - 1; i++) {
-        formattedHistory.push({
-          time: parseFloat(values[i].timestamp),
-          open: values[i].priceUSD,
-          close: values[i + 1].priceUSD,
-          high: values[i + 1].priceUSD,
-          low: values[i].priceUSD,
+    // Get Token prices in BNB
+    Object.keys(prices).forEach((priceKey) => {
+      const timestamp = priceKey.split('t')[1]
+      // if its BNB price e.g. `b123` split('t')[1] will be undefined and skip BNB price entry
+      if (timestamp) {
+        tokenPrices.push({
+          timestamp,
+          derivedBNB: prices[priceKey]?.derivedBNB ? parseFloat(prices[priceKey].derivedBNB) : 0,
+          priceUSD: 0,
         })
       }
+    })
 
-      return { data: formattedHistory, error: false }
+    // Go through BNB USD prices and calculate Token price based on it
+    Object.keys(prices).forEach((priceKey) => {
+      const timestamp = priceKey.split('b')[1]
+      // if its Token price e.g. `t123` split('b')[1] will be undefined and skip Token price entry
+      if (timestamp) {
+        const tokenPriceIndex = tokenPrices.findIndex((tokenPrice) => tokenPrice.timestamp === timestamp)
+        if (tokenPriceIndex >= 0) {
+          const { derivedBNB } = tokenPrices[tokenPriceIndex]
+          tokenPrices[tokenPriceIndex].priceUSD = parseFloat(prices[priceKey]?.bnbPrice ?? 0) * derivedBNB
+        }
+      }
+    })
+
+    // graphql-request does not guarantee same ordering of batched requests subqueries, hence sorting by timestamp from oldest to newest
+    tokenPrices.sort((a, b) => parseInt(a.timestamp, 10) - parseInt(b.timestamp, 10))
+
+    const formattedHistory = []
+
+    // for each timestamp, construct the open and close price
+    for (let i = 0; i < tokenPrices.length - 1; i++) {
+      formattedHistory.push({
+        time: parseFloat(tokenPrices[i].timestamp),
+        open: tokenPrices[i].priceUSD,
+        close: tokenPrices[i + 1].priceUSD,
+        high: tokenPrices[i + 1].priceUSD,
+        low: tokenPrices[i].priceUSD,
+      })
     }
-    console.info('no price data loaded')
+
+    return { data: formattedHistory, error: false }
+  } catch (error) {
+    console.error(`Failed to fetch price data for token ${address}`, error)
     return {
-      data: [],
-      error: false,
-    }
-  } catch (e) {
-    console.error(e)
-    return {
-      data: [],
       error: true,
     }
   }
 }
+
+export default fetchTokenPriceData

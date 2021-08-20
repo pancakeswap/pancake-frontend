@@ -8,8 +8,8 @@ import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
-import { fetchTokenPriceData } from 'state/info/queries/tokens/priceData'
-import { fetchPoolsForToken } from 'state/info/queries/tokens/poolsForToken'
+import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
+import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
 import { notEmpty } from 'utils/infoUtils'
 import {
   updateProtocolData,
@@ -142,7 +142,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
       const { error: fetchError, data } = await fetchPoolTransactions(address)
       if (fetchError) {
         setError(true)
-      } else if (data) {
+      } else {
         dispatch(updatePoolTransactions({ poolAddress: address, transactions: data }))
       }
     }
@@ -226,8 +226,8 @@ export const usePoolsForToken = (address: string): string[] | undefined => {
 
   useEffect(() => {
     const fetch = async () => {
-      const { loading, error: fetchError, addresses } = await fetchPoolsForToken(address)
-      if (!loading && !fetchError && addresses) {
+      const { error: fetchError, addresses } = await fetchPoolsForToken(address)
+      if (!fetchError && addresses) {
         dispatch(addTokenPoolAddresses({ tokenAddress: address, poolAddresses: addresses }))
       }
       if (fetchError) {

@@ -1,8 +1,8 @@
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
 import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
-import { useState, useEffect, useMemo } from 'react'
-import { client } from 'config/apolloClient'
-import gql from 'graphql-tag'
+import { useState, useEffect } from 'react'
+import { request, gql } from 'graphql-request'
+import { INFO_CLIENT } from 'config/constants/endpoints'
 
 export interface BnbPrices {
   current: number
@@ -44,21 +44,16 @@ interface PricesResponse {
 }
 
 const fetchBnbPrices = async (
-  blocks: [number, number, number],
+  block24: number,
+  block48: number,
+  blockWeek: number,
 ): Promise<{ bnbPrices: BnbPrices | undefined; error: boolean }> => {
   try {
-    const { data, error } = await client.query<PricesResponse>({
-      query: BNB_PRICES,
-      variables: {
-        block24: blocks[0],
-        block48: blocks[1],
-        blockWeek: blocks[2],
-      },
+    const data = await request<PricesResponse>(INFO_CLIENT, BNB_PRICES, {
+      block24,
+      block48,
+      blockWeek,
     })
-
-    if (error) {
-      throw error
-    }
     return {
       error: false,
       bnbPrices: {
@@ -68,8 +63,8 @@ const fetchBnbPrices = async (
         week: parseFloat(data.oneWeek?.bnbPrice ?? '0'),
       },
     }
-  } catch (e) {
-    console.error('Failed to fetch BNB prices', e)
+  } catch (error) {
+    console.error('Failed to fetch BNB prices', error)
     return {
       error: true,
       bnbPrices: undefined,
@@ -87,26 +82,20 @@ export const useBnbPrices = (): BnbPrices | undefined => {
   const [t24, t48, tWeek] = useDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48, tWeek])
 
-  const formattedBlocks = useMemo(() => {
-    if (blocks && !blockError) {
-      return blocks.map((b) => parseFloat(b.number))
-    }
-    return undefined
-  }, [blocks, blockError])
-
   useEffect(() => {
     const fetch = async () => {
-      const { bnbPrices, error: fetchError } = await fetchBnbPrices(formattedBlocks as [number, number, number])
+      const [block24, block48, blockWeek] = blocks
+      const { bnbPrices, error: fetchError } = await fetchBnbPrices(block24.number, block48.number, blockWeek.number)
       if (fetchError) {
         setError(true)
       } else {
         setPrices(bnbPrices)
       }
     }
-    if (!prices && !error && formattedBlocks) {
+    if (!prices && !error && blocks && !blockError) {
       fetch()
     }
-  }, [error, prices, formattedBlocks])
+  }, [error, prices, blocks, blockError])
 
   return prices
 }

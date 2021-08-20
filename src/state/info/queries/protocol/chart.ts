@@ -2,8 +2,8 @@
 import { ChartDayData } from 'types'
 import { useState, useEffect } from 'react'
 import { getUnixTime } from 'date-fns'
-import gql from 'graphql-tag'
-import { client } from 'config/apolloClient'
+import { request, gql } from 'graphql-request'
+import { INFO_CLIENT } from 'config/constants/endpoints'
 import { PCS_V2_START, ONE_DAY_UNIX } from 'config/constants/info'
 
 /**
@@ -29,6 +29,19 @@ interface ChartResults {
   pancakeDayDatas: PancakeDayDatas[]
 }
 
+const getOverviewChartData = async (skip: number): Promise<{ pancakeDayDatas?: PancakeDayDatas[]; error: boolean }> => {
+  try {
+    const { pancakeDayDatas } = await request<ChartResults>(INFO_CLIENT, PANCAKE_DAY_DATAS, {
+      startTime: PCS_V2_START,
+      skip,
+    })
+    return { pancakeDayDatas, error: false }
+  } catch (error) {
+    console.error('Failed to fetch overview chart data', error)
+    return { error: true }
+  }
+}
+
 const fetchChartData = async (): Promise<PancakeDayDatas[]> => {
   let data: {
     date: number
@@ -39,28 +52,13 @@ const fetchChartData = async (): Promise<PancakeDayDatas[]> => {
   let allFound = false
 
   while (!allFound) {
-    try {
-      const {
-        data: { pancakeDayDatas },
-        error,
-      } = await client.query<ChartResults>({
-        query: PANCAKE_DAY_DATAS,
-        variables: {
-          startTime: PCS_V2_START,
-          skip,
-        },
-        fetchPolicy: 'cache-first',
-      })
-      if (error) {
-        throw error
-      }
-      skip += 1000
-      allFound = pancakeDayDatas.length < 1000
-      data = data.concat(pancakeDayDatas)
-    } catch (error) {
-      console.error('Failed to fetch chart data', error)
+    const { pancakeDayDatas, error } = await getOverviewChartData(skip)
+    if (error) {
       return null
     }
+    skip += 1000
+    allFound = pancakeDayDatas.length < 1000
+    data = data.concat(pancakeDayDatas)
   }
 
   return data
@@ -71,13 +69,14 @@ const processChartData = (rawDayDatas: PancakeDayDatas[]): ChartDayData[] => {
   const formattedDayDatas = rawDayDatas.reduce((accum: { [date: number]: ChartDayData }, dayData) => {
     // At this stage we track unix day ordinal for each data point to check for empty days later
     const dayOrdinal = parseInt((dayData.date / ONE_DAY_UNIX).toFixed(0), 10)
-    // eslint-disable-next-line no-param-reassign
-    accum[dayOrdinal] = {
-      date: dayData.date,
-      volumeUSD: parseFloat(dayData.dailyVolumeUSD),
-      liquidityUSD: parseFloat(dayData.totalLiquidityUSD),
+    return {
+      [dayOrdinal]: {
+        date: dayData.date,
+        volumeUSD: parseFloat(dayData.dailyVolumeUSD),
+        liquidityUSD: parseFloat(dayData.totalLiquidityUSD),
+      },
+      ...accum,
     }
-    return accum
   }, {})
 
   const availableDays = Object.keys(formattedDayDatas).map((dayOrdinal) => parseInt(dayOrdinal, 10))
