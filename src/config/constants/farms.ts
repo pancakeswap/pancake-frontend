@@ -39,6 +39,56 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 450,
+    lpSymbol: 'SFUND-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
+    },
+    token: tokens.sfund,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 449,
+    lpSymbol: 'BP-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x2bF2dEB40639201C9A94c9e33b4852D9AEa5fd2D',
+    },
+    token: tokens.bp,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 448,
+    lpSymbol: 'RUSD-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x59FaC9e98479fc9979aE2a0C7422Af50bCBB9B26',
+    },
+    token: tokens.rusd,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 447,
+    lpSymbol: 'GNT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3747e3e107223539FD09bb730b055A1f11F78Adf',
+    },
+    token: tokens.gnt,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 446,
+    lpSymbol: 'BMON-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x00e53C169dA54a7E11172aEEDf8Eb87F060F479e',
+    },
+    token: tokens.bmon,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 317,
     lpSymbol: 'RAMP-BUSD LP',
     lpAddresses: {

@@ -1873,6 +1873,42 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://moonpot.com/',
   },
+  gnt: {
+    symbol: 'GNT',
+    address: {
+      56: '0xf750a26eb0acf95556e8529e72ed530f3b60f348',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.greentrusttoken.com/',
+  },
+  rusd: {
+    symbol: 'rUSD',
+    address: {
+      56: '0x07663837218a003e66310a01596af4bf4e44623d',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://appv2.rampdefi.com/#/',
+  },
+  bp: {
+    symbol: 'BP',
+    address: {
+      56: '0xacb8f52dc63bb752a51186d1c55868adbffee9c1',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.bunnypark.com/',
+  },
+  sfund: {
+    symbol: 'SFUND',
+    address: {
+      56: '0x477bc8d23c634c154061869478bce96be6045d12',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://seedify.fund/ ',
+  },
 }
 
 export default tokens
