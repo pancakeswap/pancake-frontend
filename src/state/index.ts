@@ -11,6 +11,7 @@ import blockReducer from './block'
 import collectiblesReducer from './collectibles'
 import votingReducer from './voting'
 import lotteryReducer from './lottery'
+import infoReducer from './info'
 import { updateVersion } from './global/actions'
 import user from './user/reducer'
 import transactions from './transactions/reducer'
@@ -35,6 +36,7 @@ const store = configureStore({
     collectibles: collectiblesReducer,
     voting: votingReducer,
     lottery: lotteryReducer,
+    info: infoReducer,
 
     // Exchange
     user,
