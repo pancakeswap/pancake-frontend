@@ -4,6 +4,7 @@ import { Box, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Bet } from 'state/types'
 import HistoricalBet from './HistoricalBet'
+import V1ClaimCheck from '../v1/V1ClaimCheck'
 
 interface RoundsTabProps {
   hasBetHistory: boolean
@@ -15,6 +16,7 @@ const RoundsTab: React.FC<RoundsTabProps> = ({ hasBetHistory, bets }) => {
 
   return hasBetHistory ? (
     <>
+      <V1ClaimCheck />
       {orderBy(bets, ['round.epoch'], ['desc']).map((bet) => (
         <HistoricalBet key={bet.id} bet={bet} />
       ))}
