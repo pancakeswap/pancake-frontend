@@ -1,20 +1,32 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { getUnixTime, startOfHour, Duration, sub } from 'date-fns'
 import { AppState, AppDispatch } from 'state'
-import { ChartDayData, Transaction } from 'types'
+import { isAddress } from 'utils'
+import { ChartDayData, PriceChartEntry, Transaction } from 'types'
 import fetchPoolChartData from 'data/pools/chartData'
 import fetchPoolTransactions from 'data/pools/transactions'
+import fetchTokenChartData from 'data/tokens/chartData'
+import fetchTokenTransactions from 'data/tokens/transactions'
+import { fetchTokenPriceData } from 'data/tokens/priceData'
+import { fetchPoolsForToken } from 'data/tokens/poolsForToken'
 import { notEmpty } from 'utils/infoUtils'
 import {
   updateProtocolData,
-  updateChartData,
-  updateTransactions,
+  updateProtocolChartData,
+  updateProtocolTransactions,
   updatePoolData,
   addPoolKeys,
   updatePoolChartData,
   updatePoolTransactions,
+  updateTokenData,
+  addTokenKeys,
+  addTokenPoolAddresses,
+  updateTokenChartData,
+  updateTokenPriceData,
+  updateTokenTransactions,
 } from './actions'
-import { ProtocolData, PoolData, PoolChartEntry } from './types'
+import { ProtocolData, PoolData, PoolChartEntry, TokenData, TokenChartEntry } from './types'
 
 // Protocol hooks
 
@@ -34,7 +46,7 @@ export const useProtocolChartData = (): [ChartDayData[] | undefined, (chartData:
   const chartData: ChartDayData[] | undefined = useSelector((state: AppState) => state.info.protocol.chartData)
   const dispatch = useDispatch<AppDispatch>()
   const setChartData: (chartData: ChartDayData[]) => void = useCallback(
-    (data: ChartDayData[]) => dispatch(updateChartData({ chartData: data })),
+    (data: ChartDayData[]) => dispatch(updateProtocolChartData({ chartData: data })),
     [dispatch],
   )
   return [chartData, setChartData]
@@ -44,7 +56,7 @@ export const useProtocolTransactions = (): [Transaction[] | undefined, (transact
   const transactions: Transaction[] | undefined = useSelector((state: AppState) => state.info.protocol.transactions)
   const dispatch = useDispatch<AppDispatch>()
   const setTransactions: (transactions: Transaction[]) => void = useCallback(
-    (transactionsData: Transaction[]) => dispatch(updateTransactions({ transactions: transactionsData })),
+    (transactionsData: Transaction[]) => dispatch(updateProtocolTransactions({ transactions: transactionsData })),
     [dispatch],
   )
   return [transactions, setTransactions]
@@ -132,6 +144,181 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
         setError(true)
       } else if (data) {
         dispatch(updatePoolTransactions({ poolAddress: address, transactions: data }))
+      }
+    }
+    if (!transactions && !error) {
+      fetch()
+    }
+  }, [address, dispatch, error, transactions])
+
+  return transactions
+}
+
+// Tokens hooks
+
+export const useAllTokenData = (): {
+  [address: string]: { data: TokenData | undefined; lastUpdated: number | undefined }
+} => {
+  return useSelector((state: AppState) => state.info.tokens.byAddress)
+}
+
+export const useUpdateTokenData = (): ((tokens: TokenData[]) => void) => {
+  const dispatch = useDispatch<AppDispatch>()
+  return useCallback(
+    (tokens: TokenData[]) => {
+      dispatch(updateTokenData({ tokens }))
+    },
+    [dispatch],
+  )
+}
+
+export const useAddTokenKeys = (): ((addresses: string[]) => void) => {
+  const dispatch = useDispatch<AppDispatch>()
+  return useCallback((tokenAddresses: string[]) => dispatch(addTokenKeys({ tokenAddresses })), [dispatch])
+}
+
+export const useTokenDatas = (addresses: string[] | undefined): TokenData[] | undefined => {
+  const allTokenData = useAllTokenData()
+  const addNewTokenKeys = useAddTokenKeys()
+
+  // if token not tracked yet track it
+  addresses?.forEach((a) => {
+    if (!allTokenData[a]) {
+      addNewTokenKeys([a])
+    }
+  })
+
+  const tokensWithData = useMemo(() => {
+    if (!addresses) {
+      return undefined
+    }
+    return addresses
+      .map((a) => {
+        return allTokenData[a]?.data
+      })
+      .filter(notEmpty)
+  }, [addresses, allTokenData])
+
+  return tokensWithData
+}
+
+export const useTokenData = (address: string | undefined): TokenData | undefined => {
+  const allTokenData = useAllTokenData()
+  const addNewTokenKeys = useAddTokenKeys()
+
+  if (!address || !isAddress(address)) {
+    return undefined
+  }
+
+  // if token not tracked yet track it
+  if (!allTokenData[address]) {
+    addNewTokenKeys([address])
+  }
+
+  return allTokenData[address]?.data
+}
+
+export const usePoolsForToken = (address: string): string[] | undefined => {
+  const dispatch = useDispatch<AppDispatch>()
+  const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
+  const poolsForToken = token.poolAddresses
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { loading, error: fetchError, addresses } = await fetchPoolsForToken(address)
+      if (!loading && !fetchError && addresses) {
+        dispatch(addTokenPoolAddresses({ tokenAddress: address, poolAddresses: addresses }))
+      }
+      if (fetchError) {
+        setError(fetchError)
+      }
+    }
+    if (!poolsForToken && !error) {
+      fetch()
+    }
+  }, [address, dispatch, error, poolsForToken])
+
+  return poolsForToken
+}
+
+export const useTokenChartData = (address: string): TokenChartEntry[] | undefined => {
+  const dispatch = useDispatch<AppDispatch>()
+  const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
+  const { chartData } = token
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { error: fetchError, data } = await fetchTokenChartData(address)
+      if (!fetchError && data) {
+        dispatch(updateTokenChartData({ tokenAddress: address, chartData: data }))
+      }
+      if (fetchError) {
+        setError(fetchError)
+      }
+    }
+    if (!chartData && !error) {
+      fetch()
+    }
+  }, [address, dispatch, error, chartData])
+
+  return chartData
+}
+
+export const useTokenPriceData = (
+  address: string,
+  interval: number,
+  timeWindow: Duration,
+): PriceChartEntry[] | undefined => {
+  const dispatch = useDispatch<AppDispatch>()
+  const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
+  const priceData = token.priceData[interval]
+  const [error, setError] = useState(false)
+
+  // construct timestamps and check if we need to fetch more data
+  const oldestTimestampFetched = token.priceData.oldestFetchedTimestamp
+  const utcCurrentTime = getUnixTime(new Date()) * 1000
+  const startTimestamp = getUnixTime(startOfHour(sub(utcCurrentTime, timeWindow)))
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { data, error: fetchingError } = await fetchTokenPriceData(address, interval, startTimestamp)
+      if (data) {
+        dispatch(
+          updateTokenPriceData({
+            tokenAddress: address,
+            secondsInterval: interval,
+            priceData: data,
+            oldestFetchedTimestamp: startTimestamp,
+          }),
+        )
+      }
+      if (fetchingError) {
+        setError(true)
+      }
+    }
+    if (!priceData && !error) {
+      fetch()
+    }
+  }, [address, dispatch, error, interval, oldestTimestampFetched, priceData, startTimestamp, timeWindow])
+
+  return priceData
+}
+
+export const useTokenTransactions = (address: string): Transaction[] | undefined => {
+  const dispatch = useDispatch<AppDispatch>()
+  const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
+  const { transactions } = token
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { error: fetchError, data } = await fetchTokenTransactions(address)
+      if (fetchError) {
+        setError(true)
+      } else if (data) {
+        dispatch(updateTokenTransactions({ tokenAddress: address, transactions: data }))
       }
     }
     if (!transactions && !error) {

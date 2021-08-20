@@ -4,12 +4,18 @@ import { currentTimestamp } from 'utils/infoUtils'
 import { InfoState } from './types'
 import {
   updateProtocolData,
-  updateChartData,
-  updateTransactions,
+  updateProtocolChartData,
+  updateProtocolTransactions,
   updatePoolData,
   addPoolKeys,
   updatePoolChartData,
   updatePoolTransactions,
+  updateTokenData,
+  addTokenKeys,
+  addTokenPoolAddresses,
+  updateTokenChartData,
+  updateTokenPriceData,
+  updateTokenTransactions,
 } from './actions'
 
 const initialState: InfoState = {
@@ -28,10 +34,10 @@ export default createReducer(initialState, (builder) =>
     .addCase(updateProtocolData, (state, { payload: { protocolData } }) => {
       state.protocol.overview = protocolData
     })
-    .addCase(updateChartData, (state, { payload: { chartData } }) => {
+    .addCase(updateProtocolChartData, (state, { payload: { chartData } }) => {
       state.protocol.chartData = chartData
     })
-    .addCase(updateTransactions, (state, { payload: { transactions } }) => {
+    .addCase(updateProtocolTransactions, (state, { payload: { transactions } }) => {
       state.protocol.transactions = transactions
     })
     // Pools actions
@@ -61,5 +67,51 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updatePoolTransactions, (state, { payload: { poolAddress, transactions } }) => {
       state.pools.byAddress[poolAddress] = { ...state.pools.byAddress[poolAddress], transactions }
-    }),
+    })
+    // Tokens actions
+    .addCase(updateTokenData, (state, { payload: { tokens } }) => {
+      tokens.forEach((tokenData) => {
+        state.tokens.byAddress[tokenData.address] = {
+          ...state.tokens.byAddress[tokenData.address],
+          data: tokenData,
+          lastUpdated: currentTimestamp(),
+        }
+      })
+    })
+    .addCase(addTokenKeys, (state, { payload: { tokenAddresses } }) => {
+      tokenAddresses.forEach((address) => {
+        if (!state.tokens.byAddress[address]) {
+          state.tokens.byAddress[address] = {
+            poolAddresses: undefined,
+            data: undefined,
+            chartData: undefined,
+            priceData: {},
+            transactions: undefined,
+            lastUpdated: undefined,
+          }
+        }
+      })
+    })
+    .addCase(addTokenPoolAddresses, (state, { payload: { tokenAddress, poolAddresses } }) => {
+      state.tokens.byAddress[tokenAddress] = { ...state.tokens.byAddress[tokenAddress], poolAddresses }
+    })
+    .addCase(updateTokenChartData, (state, { payload: { tokenAddress, chartData } }) => {
+      state.tokens.byAddress[tokenAddress] = { ...state.tokens.byAddress[tokenAddress], chartData }
+    })
+    .addCase(updateTokenTransactions, (state, { payload: { tokenAddress, transactions } }) => {
+      state.tokens.byAddress[tokenAddress] = { ...state.tokens.byAddress[tokenAddress], transactions }
+    })
+    .addCase(
+      updateTokenPriceData,
+      (state, { payload: { tokenAddress, secondsInterval, priceData, oldestFetchedTimestamp } }) => {
+        state.tokens.byAddress[tokenAddress] = {
+          ...state.tokens.byAddress[tokenAddress],
+          priceData: {
+            ...state.tokens.byAddress[tokenAddress].priceData,
+            [secondsInterval]: priceData,
+            oldestFetchedTimestamp,
+          },
+        }
+      },
+    ),
 )
