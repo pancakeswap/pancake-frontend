@@ -413,8 +413,6 @@
   "No prediction history available": "プレディクション参加履歴がありません",
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "ここに表示されるべき履歴が表示されない場合は、正しいウォレットに繋がっているかどうかを確認してからもう一度お試しください。",
   "Last price from Chainlink Oracle": "Chainlink Oracleによる最新価格",
-  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "チャートは参考目的でのみ提供されており、ラウンドの最終結果を反映するものではありません。",
-  "Please refer to the prices shown on the cards for the final outcome.": "最終結果は、カードに表示される価格をご確認ください。",
   "%num% Points to Collect": "集めるポイント数：%num%",
   "Net results": "最終結果",
   "Average return / round": "1ラウンドあたりの還元率",
@@ -1351,5 +1349,10 @@
   "Standard (%gasPrice%)": "標準（%gasPrice%）",
   "Fast (%gasPrice%)": "高速（%gasPrice%）",
   "Instant (%gasPrice%)": "瞬時（%gasPrice%）",
-  "You won multiple collectibles!": "複数のコレクティブルを獲得しました！"
+  "You won multiple collectibles!": "複数のコレクティブルを獲得しました！",
+  "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
+  "The price you see come from difference places": "The price you see come from difference places",
+  "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
 }
