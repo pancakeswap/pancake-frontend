@@ -27,7 +27,7 @@ const HelpIconWrapper = styled.div`
 
 const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account, userDataLoaded }) => {
   const { t } = useTranslation()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   const { earningTokenPrice } = pool
 
   const {
@@ -76,8 +76,8 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account, user
               <Box mr="8px" height="32px">
                 <Balance
                   mt="4px"
-                  bold={!isXs && !isSm}
-                  fontSize={isXs || isSm ? '14px' : '16px'}
+                  bold={!isMobile}
+                  fontSize={isMobile ? '14px' : '16px'}
                   color={hasEarnings ? 'primary' : 'textDisabled'}
                   decimals={hasEarnings ? 5 : 1}
                   value={hasEarnings ? earningTokenBalance : 0}
@@ -102,7 +102,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account, user
                   </Text>
                 )}
               </Box>
-              {hasEarnings && !isXs && !isSm && (
+              {hasEarnings && !isMobile && (
                 <HelpIconWrapper ref={targetRef}>
                   <HelpIcon color="textSubtle" />
                 </HelpIconWrapper>

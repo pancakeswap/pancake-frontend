@@ -46,7 +46,9 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
 
   const { t } = useTranslation()
 
-  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints()
+  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
+  const isLargerScreen = isLg || isXl || isXxl
+  const isSmallerScreen = isXs || isSm || isMd
 
   const auctionHistory = useAuctionHistory(historyAuctionIdAsInt)
   const selectedAuction = Object.values(auctionHistory).find(
@@ -103,7 +105,7 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
     <Box py="24px">
       <Flex px={['12px', '24px']} justifyContent="space-between" alignItems="center">
         <Flex flex="3" alignItems="center">
-          <Text bold fontSize={isLg || isXl ? '20px' : '16px'} mr={['4px', '8px']}>
+          <Text bold fontSize={isLargerScreen ? '20px' : '16px'} mr={['4px', '8px']}>
             {t('Auction #')}
           </Text>
           <Box width="62px" mr={['4px', '16px']}>
@@ -141,13 +143,13 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
             <ArrowLastIcon />
           </StyledIconButton>
         </Flex>
-        {(isLg || isXl) && (
+        {isLargerScreen && (
           <Flex flex="2" justifyContent="flex-end">
             {endDate && <Text>{t('Ended %date%', { date: endDate })}</Text>}
           </Flex>
         )}
       </Flex>
-      {(isXs || isSm || isMd) && (
+      {isSmallerScreen && (
         <Flex px={['12px', '24px']} pt="8px">
           {endDate && <Text>{t('Ended %date%', { date: endDate })}</Text>}
         </Flex>

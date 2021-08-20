@@ -119,7 +119,7 @@ const AuctionLeaderboardTable: React.FC<{ bidders: Bidder[]; noBidsText: string 
   const cakePriceBusd = usePriceCakeBusd()
   const { t } = useTranslation()
 
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   const [onShowWhitelistedBidders] = useModal(<WhitelistedBiddersModal />)
 
   const totalBidders = bidders.length
@@ -156,7 +156,7 @@ const AuctionLeaderboardTable: React.FC<{ bidders: Bidder[]; noBidsText: string 
         <Box />
         {/* Rows */}
         {bidders.slice(0, visibleBidders).map((bidder) => (
-          <LeaderboardRow key={bidder.account} bidder={bidder} cakePriceBusd={cakePriceBusd} isMobile={isXs || isSm} />
+          <LeaderboardRow key={bidder.account} bidder={bidder} cakePriceBusd={cakePriceBusd} isMobile={isMobile} />
         ))}
       </LeaderboardContainer>
       <Flex mt="16px" px="24px" flexDirection="column" justifyContent="center" alignItems="center">

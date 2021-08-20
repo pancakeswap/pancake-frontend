@@ -20,7 +20,7 @@ import RiskDisclaimer from './components/RiskDisclaimer'
 import ChartDisclaimer from './components/ChartDisclaimer'
 
 const Predictions = () => {
-  const { isXl } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
   const [hasAcceptedRisk, setHasAcceptedRisk] = usePersistState(false, {
     localStorageKey: 'pancake_predictions_accepted_risk',
   })
@@ -32,7 +32,6 @@ const Predictions = () => {
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
   const initialBlock = useInitialBlock()
-  const isDesktop = isXl
   const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
   const handleAcceptChart = () => setHasAcceptedChart(true)
   const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
