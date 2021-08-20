@@ -413,8 +413,6 @@
   "No prediction history available": "No hay un historial de predicciones disponible",
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "Si estás seguro de que deberías ver un historial aquí, asegúrate de estár conectado en el monedero correcto y vuelve a intentarlo.",
   "Last price from Chainlink Oracle": "Último precio de Chainlink Oracle",
-  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "Las gráficas solo se proporcionan como referencia y no reflejan el resultado final de las rondas.",
-  "Please refer to the prices shown on the cards for the final outcome.": "Consulta los precios que aparecen en las tarjetas para conocer el resultado final.",
   "%num% Points to Collect": "%num% puntos a recoger",
   "Net results": "Resultados netos",
   "Average return / round": "Rendimiento promedio/ronda",
@@ -1351,5 +1349,10 @@
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
   "Instant (%gasPrice%)": "Instant (%gasPrice%)",
-  "You won multiple collectibles!": "You won multiple collectibles!"
+  "You won multiple collectibles!": "You won multiple collectibles!",
+  "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
+  "The price you see come from difference places": "The price you see come from difference places",
+  "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
 }
