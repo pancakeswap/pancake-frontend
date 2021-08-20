@@ -413,8 +413,6 @@
   "No prediction history available": "कोई पूर्वानुमान हिस्ट्री उपलब्ध नहीं है",
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "यदि आपको लगता है कि आपको यहां पर हिस्ट्री दिखनी ही चाहिए, तो सुनिश्चित करें कि आप सही वॉलेट से कनेक्टेड हैं और फिर से ट्राई करें।",
   "Last price from Chainlink Oracle": "Chainlink Oracle की आखिरी कीमत",
-  "Charts are provided for reference only and do not reflect rounds’ final outcome.": "चार्ट केवल संदर्भ के लिए प्रदान किए जाते हैं और इनसे राउंड का अंतिम परिणाम प्रतिबिंबित नहीं होता है।",
-  "Please refer to the prices shown on the cards for the final outcome.": "कृपया अंतिम परिणाम के लिए कार्ड पर दिखाई गई कीमतों का संदर्भ लें।",
   "%num% Points to Collect": "कलेक्ट करने के लिए %num% पॉइंट",
   "Net results": "शुद्ध परिणाम",
   "Average return / round": "औसत रिटर्न / राउंड",
@@ -1351,5 +1349,10 @@
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
   "Instant (%gasPrice%)": "Instant (%gasPrice%)",
-  "You won multiple collectibles!": "You won multiple collectibles!"
+  "You won multiple collectibles!": "You won multiple collectibles!",
+  "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
+  "The price you see come from difference places": "The price you see come from difference places",
+  "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
 }
