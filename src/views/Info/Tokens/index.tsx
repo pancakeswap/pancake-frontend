@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect } from 'react'
 import { Text, Heading, Card } from '@pancakeswap/uikit'
-import Page from 'components/layout/Page'
+import Page from 'components/Layout/Page'
 import TokenTable from 'components/InfoTables/TokensTable'
 import { useAllTokenData, useTokenDatas } from 'state/info/hooks'
 import { notEmpty } from 'utils/infoUtils'

@@ -19,7 +19,7 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import Page from 'components/layout/Page'
+import Page from 'components/Layout/Page'
 import { getBscscanLink } from 'utils/infoUtils'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -72,11 +72,11 @@ enum ChartView {
   DENSITY,
 }
 
-const PoolPage: React.FC = ({
+const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
   match: {
     params: { address: routeAddress },
   },
-}: RouteComponentProps<{ address: string }>) => {
+}) => {
   const { theme } = useTheme()
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()

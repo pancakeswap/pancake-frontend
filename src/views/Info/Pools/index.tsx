@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { Text, Heading, Card } from '@pancakeswap/uikit'
-import Page from 'components/layout/Page'
+import Page from 'components/Layout/Page'
 import PoolTable from 'components/InfoTables/PoolsTable'
 import { useAllPoolData, usePoolDatas } from 'state/info/hooks'
 import { notEmpty } from 'utils/infoUtils'

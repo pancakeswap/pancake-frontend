@@ -17,7 +17,7 @@ import {
   Image,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import Page from 'components/layout/Page'
+import Page from 'components/Layout/Page'
 import { shortenAddress, getBscscanLink, currentTimestamp } from 'utils/infoUtils'
 import useTheme from 'hooks/useTheme'
 import useCMCLink from 'hooks/useCMCLink'
