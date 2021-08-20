@@ -26,12 +26,11 @@ const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
 
 const Details: React.FC<DetailsProps> = ({ actionPanelToggled }) => {
   const { t } = useTranslation()
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isDesktop } = useMatchBreakpoints()
 
   return (
     <Container>
-      {!isMobile && t('Details')}
+      {!isDesktop && t('Details')}
       <ArrowIcon color="primary" toggled={actionPanelToggled} />
     </Container>
   )

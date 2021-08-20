@@ -58,8 +58,8 @@ const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId
   } = useLottery()
   const userLotteryData = useGetUserLotteriesGraphData()
   const userDataForRound = userLotteryData.rounds.find((userLotteryRound) => userLotteryRound.lotteryId === lotteryId)
-  const { isLg, isXl } = useMatchBreakpoints()
-  const isDesktop = isLg || isXl
+  const { isLg, isXl, isXxl } = useMatchBreakpoints()
+  const isLargerScreen = isLg || isXl || isXxl
 
   const currentLotteryIdAsInt = parseInt(currentLotteryId)
   const mostRecentFinishedRoundId =
@@ -80,11 +80,11 @@ const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId
         <Flex maxWidth={['240px', null, null, '100%']} justifyContent={['center', null, null, 'flex-start']}>
           {lotteryNodeData ? (
             <WinningNumbers
-              rotateText={isDesktop || false}
+              rotateText={isLargerScreen || false}
               number={lotteryNodeData?.finalNumber.toString()}
               mr={[null, null, null, '32px']}
               size="100%"
-              fontSize={isDesktop ? '42px' : '16px'}
+              fontSize={isLargerScreen ? '42px' : '16px'}
             />
           ) : (
             <Skeleton

@@ -21,7 +21,7 @@ const StyledCell = styled(BaseCell)`
 
 const AprCell: React.FC<AprCellProps> = ({ pool }) => {
   const { t } = useTranslation()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   const { userData } = pool
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
 
@@ -31,7 +31,7 @@ const AprCell: React.FC<AprCellProps> = ({ pool }) => {
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('APR')}
         </Text>
-        <Apr pool={pool} stakedBalance={stakedBalance} showIcon={!isXs && !isSm} />
+        <Apr pool={pool} stakedBalance={stakedBalance} showIcon={!isMobile} />
       </CellContent>
     </StyledCell>
   )

@@ -85,9 +85,9 @@ const InlineLink = styled(Link)`
 `
 
 const ExampleBalls = () => {
-  const { isXs } = useMatchBreakpoints()
-  const ballSize = isXs ? '24px' : '32px'
-  const fontSize = isXs ? '14px' : '16px'
+  const { isDesktop } = useMatchBreakpoints()
+  const ballSize = isDesktop ? '24px' : '32px'
+  const fontSize = isDesktop ? '14px' : '16px'
   return (
     <BallsContainer>
       <BallWithNumber size={ballSize} fontSize={fontSize} color="yellow" number="9" />

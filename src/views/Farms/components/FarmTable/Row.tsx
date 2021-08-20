@@ -83,14 +83,14 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
 
-  const { isXl, isXs } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
 
-  const isMobile = !isXl
-  const tableSchema = isMobile ? MobileColumnSchema : DesktopColumnSchema
+  const isSmallerScreen = !isDesktop
+  const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
 
   const handleRenderRow = () => {
-    if (!isXs) {
+    if (!isMobile) {
       return (
         <StyledTr onClick={toggleActionPanel}>
           {Object.keys(props).map((key) => {
@@ -115,7 +115,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('APR')}>
-                        <Apr {...props.apr} hideButton={isMobile} />
+                        <Apr {...props.apr} hideButton={isSmallerScreen} />
                       </CellLayout>
                     </CellInner>
                   </td>

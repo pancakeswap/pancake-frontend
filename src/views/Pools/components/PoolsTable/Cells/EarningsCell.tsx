@@ -26,7 +26,7 @@ const StyledCell = styled(BaseCell)`
 
 const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoaded }) => {
   const { t } = useTranslation()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
   const isManualCakePool = sousId === 0
 
@@ -71,8 +71,8 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
               <Box mr="8px" height="32px" onClick={hasEarnings ? handleEarningsClick : undefined}>
                 <Balance
                   mt="4px"
-                  bold={!isXs && !isSm}
-                  fontSize={isXs || isSm ? '14px' : '16px'}
+                  bold={!isMobile}
+                  fontSize={isMobile ? '14px' : '16px'}
                   color={hasEarnings ? 'primary' : 'textDisabled'}
                   decimals={hasEarnings ? 5 : 1}
                   value={hasEarnings ? earningTokenBalance : 0}

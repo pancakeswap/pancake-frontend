@@ -21,7 +21,7 @@ const StyledCell = styled(BaseCell)`
 
 const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   const { t } = useTranslation()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
 
   const {
     userData: { userShares },
@@ -42,7 +42,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
           pool={pool}
           stakedBalance={cakeAsBigNumber}
           performanceFee={performanceFeeAsDecimal}
-          showIcon={!isXs && !isSm}
+          showIcon={!isMobile}
         />
       </CellContent>
     </StyledCell>

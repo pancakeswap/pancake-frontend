@@ -56,7 +56,7 @@ const WhitelistedBiddersModal: React.FC<WhitelistedBiddersModalProps> = ({ onDis
   const [searchTerm, setSearchTerm] = useState('')
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   const bidders = useWhitelistedAddresses()
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +73,7 @@ const WhitelistedBiddersModal: React.FC<WhitelistedBiddersModalProps> = ({ onDis
     : []
 
   const modalContent = bidders ? (
-    filteredBidders.map((bidder) => <AddressRow key={bidder.account} bidder={bidder} isMobile={isXs || isSm} />)
+    filteredBidders.map((bidder) => <AddressRow key={bidder.account} bidder={bidder} isMobile={isMobile} />)
   ) : (
     <Flex justifyContent="center" alignItems="center" py="24px">
       <Spinner />
