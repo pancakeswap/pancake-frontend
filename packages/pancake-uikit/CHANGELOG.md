@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.49.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.49.0...@pancakeswap/uikit@0.49.1) (2021-08-20)
+
+
+### Bug Fixes
+
+* **uikit:** Menu breakpoint ([#247](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/247)) ([4352c38](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/4352c38731ea0101d7f16cccee9fed801c74af6f))
+
+
+
+
+
 # [0.49.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.48.0...@pancakeswap/uikit@0.49.0) (2021-08-20)
 
 
