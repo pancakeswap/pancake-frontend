@@ -1,4 +1,4 @@
-import { TOTAL_FEE, LP_HOLDERS_FEE, WEEKS_IN_YEAR } from 'config'
+import { TOTAL_FEE, LP_HOLDERS_FEE, WEEKS_IN_YEAR } from 'config/constants/info'
 
 /**
  * Get increase/decrease of value compared to the previous value (e.g. 24h volume compared to 24h volume the day before )
