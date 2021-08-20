@@ -3,6 +3,11 @@ import path from "path";
 import { request, gql } from "graphql-request";
 import { getAddress } from "@ethersproject/address";
 
+const pathToImages = process.env.CI
+  ? path.join(process.env.GITHUB_WORKSPACE, "packages", "token-lists", "lists", "images")
+  : path.join(path.resolve(), "lists", "images");
+const logoFiles = fs.readdirSync(pathToImages);
+
 // Interface for Bitquery GraphQL response.
 interface BitqueryEntity {
   // eslint-disable-next-line camelcase
@@ -87,6 +92,21 @@ const getTokens = async (): Promise<BitqueryEntity[]> => {
 };
 
 /**
+ * Returns the URI of a token logo
+ * Note: If present in extended list, use main logo, else fallback to TrustWallet
+ *
+ * @returns string
+ */
+const getTokenLogo = (address: string): string => {
+  // Note: fs.existsSync can't be used here because its not case sensetive
+  if (logoFiles.includes(`${address}.png`)) {
+    return `https://tokens.pancakeswap.finance/images/${address}.png`;
+  }
+
+  return `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${address}/logo.png`;
+};
+
+/**
  * Main function.
  * Fetch tokems, build list, save list.
  */
@@ -103,7 +123,7 @@ const main = async (): Promise<void> => {
         address: checksummedAddress,
         chainId: 56,
         decimals: item.baseCurrency.decimals,
-        logoURI: `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${checksummedAddress}/logo.png`,
+        logoURI: getTokenLogo(checksummedAddress),
       };
       return [...list, updatedToken];
     }, []);
