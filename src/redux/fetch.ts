@@ -425,6 +425,17 @@ const zombiePriceBnb = (setZombiePrice?: any) => {
     })
 }
 
+const mainstPriceBnb = (setZombiePrice?: any) => {
+  getPancakePair(getAddress(zmbeBnbTomb().lpAddress)).methods.getReserves().call()
+    .then(res => {
+      const price = new BigNumber(res._reserve1).div(res._reserve0)
+      store.dispatch(updateZombiePriceBnb(price))
+      if (setZombiePrice) {
+        setZombiePrice(price)
+      }
+    })
+}
+
 const bnbPriceUsd = () => {
   axios.get('https://api.binance.com/api/v3/avgPrice?symbol=BNBBUSD')
     .then(res => {

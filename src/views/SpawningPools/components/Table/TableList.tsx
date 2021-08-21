@@ -8,7 +8,8 @@ import tokens from 'config/constants/tokens';
 import numeral from 'numeral';
 import { getGraveTombApr, getPoolApr } from '../../../../utils/apr'
 import { Grave } from '../../../../redux/types'
-import { coingeckoPrice, grave, spawningPool } from '../../../../redux/get'
+import { bnbPriceUsd, coingeckoPrice, grave, spawningPool } from '../../../../redux/get'
+import { fetchLpReserves } from '../../../../state/hooks'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -49,7 +50,8 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { id, zombieUsdPrice, handler } = props
-  const { name, rewardToken, rewardTokenId, poolInfo, isNew, userInfo: { pendingReward } } = spawningPool(id);
+  const { name, rewardToken, rewardTokenId, poolInfo, isNew, rewardTokenBnbLp, userInfo: { pendingReward } } = spawningPool(id);
+  const bnbPrice = bnbPriceUsd()
   let allocPoint = BIG_ZERO;
      allocPoint = new BigNumber(0)
 
@@ -59,10 +61,18 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const [rewardTokenPrice, setRewardTokenPrice] = useState(0)
 
   useEffect(() => {
-    coingeckoPrice(rewardTokenId).then(res => {
-      setRewardTokenPrice(res.data[rewardTokenId].usd)
-    })
-  }, [rewardTokenId])
+    if(rewardTokenId) {
+      coingeckoPrice(rewardTokenId).then(res => {
+        setRewardTokenPrice(res.data[rewardTokenId].usd)
+      })
+    } else {
+      fetchLpReserves(rewardTokenBnbLp).then(res => {
+        const rewardTokenPriceBnb = new BigNumber(res._reserve1).div(res._reserve0)
+        setRewardTokenPrice(getBalanceAmount(rewardTokenPriceBnb, rewardToken.decimals).times(bnbPrice).toNumber())
+      })
+    }
+
+  }, [bnbPrice, rewardToken.decimals, rewardTokenBnbLp, rewardTokenId])
 
   const apr = getPoolApr(zombieUsdPrice, rewardTokenPrice, getBalanceAmount(poolInfo.totalZombieStaked).toNumber(), getBalanceAmount(poolInfo.rewardPerBlock, rewardToken.decimals).toNumber())
   const dailyApr = apr / 365

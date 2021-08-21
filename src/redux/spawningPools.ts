@@ -29,12 +29,11 @@ const spawningPools: SpawningPool[] = [
           url: 'https://t.me/buymainstreet'
         },
       ],
-
     },
     withdrawalCooldown: '3 days',
     nftRevivalTime: '45 days',
     rewardToken: tokens.mainst,
-    rewardTokenId: 'euler-tools',
+    rewardTokenBnbLp: '0xdbb9ed740a8163a04cc0227e638c30b447d155b8',
     artist: artists.ZomBaes,
     stakingToken: '',
     pcsVersion: 'v2',
@@ -89,7 +88,6 @@ const spawningPools: SpawningPool[] = [
           url: 'https://rugzombie.medium.com/new-spawning-pool-euler-tools-a07b095a9846'
         }
       ],
-
     },
     withdrawalCooldown: '3 days',
     nftRevivalTime: '45 days',
