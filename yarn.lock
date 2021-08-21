@@ -2341,10 +2341,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@typeform/embed@^1.15.0":
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/@typeform/embed/-/embed-1.15.0.tgz#4b3787d8dfe71dd6a1a34913affde6192560fe13"
-  integrity sha512-EHmMjy51RydEM2EPK6fwcM6PjfRb6p++ry406ZNSeP8uy9WWpbQxjKvJ8pWm+F5FGhdI7EF277euPIDjQcQpcg==
+"@typeform/embed@^1.17.6":
+  version "1.17.6"
+  resolved "https://registry.yarnpkg.com/@typeform/embed/-/embed-1.17.6.tgz#0e829d5aeab21ceb4b12caa6db10b1584fab082a"
+  integrity sha512-kAevTe+AgD9bYw5MdunTqv2n/dFlwCQ84Owx0Nn2T+pUKdgNYOgQXTpreV6F0eOXYAU8llE6re/MpQpurohilQ==
 
 "@types/anymatch@*":
   version "1.3.1"

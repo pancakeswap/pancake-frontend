@@ -38,7 +38,7 @@
     "@pancakeswap-libs/eslint-config-pancake": "^1.0.1",
     "@reduxjs/toolkit": "^1.5.0",
     "@rug-zombie-libs/uikit": "https://github.com/Rug-Zombie/rug-zombie-uikit.git",
-    "@typeform/embed": "^1.15.0",
+    "@typeform/embed": "^1.17.6",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "@types/react-router-dom": "^5.1.5",

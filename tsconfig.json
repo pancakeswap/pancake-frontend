@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "react",
     "baseUrl": "src",
     "target": "es5",
     "lib": [

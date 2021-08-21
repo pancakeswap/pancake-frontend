@@ -27,6 +27,11 @@ const config: MenuEntry[] = [
     href: '/mausoleum',
   },
   {
+    label: 'Collectibles',
+    icon: 'PredictionsIcon',
+    href: '/collectibles',
+  },
+  {
     label: 'Graveyard',
     icon: 'NftIcon',
     items: [
