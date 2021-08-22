@@ -1,5 +1,5 @@
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
-import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
+import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useState, useEffect } from 'react'
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
@@ -79,7 +79,7 @@ export const useBnbPrices = (): BnbPrices | undefined => {
   const [prices, setPrices] = useState<BnbPrices | undefined>()
   const [error, setError] = useState(false)
 
-  const [t24, t48, tWeek] = useDeltaTimestamps()
+  const [t24, t48, tWeek] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48, tWeek])
 
   useEffect(() => {

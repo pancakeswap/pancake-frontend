@@ -69,7 +69,6 @@ export interface PoolsState {
       data: PoolData | undefined
       chartData: PoolChartEntry[] | undefined
       transactions: Transaction[] | undefined
-      lastUpdated: number | undefined
     }
   }
 }
@@ -114,7 +113,6 @@ export interface TokensState {
         [secondsInterval: number]: PriceChartEntry[] | undefined
       }
       transactions: Transaction[] | undefined
-      lastUpdated: number | undefined
     }
   }
 }

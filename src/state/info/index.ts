@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit'
-import { currentTimestamp } from 'utils/infoUtils'
 import { InfoState } from './types'
 import {
   updateProtocolData,
@@ -46,7 +45,6 @@ export default createReducer(initialState, (builder) =>
         state.pools.byAddress[poolData.address] = {
           ...state.pools.byAddress[poolData.address],
           data: poolData,
-          lastUpdated: currentTimestamp(),
         }
       })
     })
@@ -57,7 +55,6 @@ export default createReducer(initialState, (builder) =>
             data: undefined,
             chartData: undefined,
             transactions: undefined,
-            lastUpdated: undefined,
           }
         }
       })
@@ -74,7 +71,6 @@ export default createReducer(initialState, (builder) =>
         state.tokens.byAddress[tokenData.address] = {
           ...state.tokens.byAddress[tokenData.address],
           data: tokenData,
-          lastUpdated: currentTimestamp(),
         }
       })
     })
@@ -87,7 +83,6 @@ export default createReducer(initialState, (builder) =>
             chartData: undefined,
             priceData: {},
             transactions: undefined,
-            lastUpdated: undefined,
           }
         }
       })

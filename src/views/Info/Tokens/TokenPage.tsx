@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { RouteComponentProps, Link } from 'react-router-dom'
-import { format, fromUnixTime, Duration } from 'date-fns'
+import { Duration } from 'date-fns'
 import styled from 'styled-components'
 import {
   Text,
@@ -18,8 +18,7 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { shortenAddress, getBscscanLink, currentTimestamp } from 'utils/infoUtils'
-import useTheme from 'hooks/useTheme'
+import { shortenAddress, getBscScanLink } from 'utils'
 import useCMCLink from 'hooks/useCMCLink'
 import { CurrencyLogo } from 'components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -34,14 +33,11 @@ import {
   useTokenTransactions,
 } from 'state/info/hooks'
 import PoolTable from 'components/InfoTables/PoolsTable'
-import LineChart from 'components/LineChart'
-import BarChart from 'components/BarChart'
-import CandleChart from 'components/CandleChart'
 import TransactionTable from 'components/InfoTables/TransactionsTable'
 import { useWatchlistTokens } from 'state/user/hooks'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
-import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import { useTranslation } from 'contexts/Localization'
+import ChartCard from 'components/InfoCharts/ChartCard'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -63,13 +59,6 @@ const StyledCMCLink = styled(UIKitLink)`
     opacity: 0.8;
   }
 `
-
-enum ChartView {
-  TVL,
-  VOL,
-  PRICE,
-}
-
 const DEFAULT_TIME_WINDOW: Duration = { weeks: 1 }
 
 const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
@@ -77,9 +66,13 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
     params: { address: routeAddress },
   },
 }) => {
-  const { theme } = useTheme()
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
+
+  // Needed to scroll up if user comes to this page by clicking on entry in the table
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
@@ -92,56 +85,26 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
 
-  // format for chart component
-  const formattedTvlData = useMemo(() => {
-    if (chartData) {
-      return chartData.map((day) => {
-        return {
-          time: fromUnixTime(day.date),
-          value: day.totalValueLockedUSD,
-        }
-      })
-    }
-    return []
-  }, [chartData])
-  const formattedVolumeData = useMemo(() => {
-    if (chartData) {
-      return chartData.map((day) => {
-        return {
-          time: fromUnixTime(day.date),
-          value: day.volumeUSD,
-        }
-      })
-    }
-    return []
-  }, [chartData])
-
-  // chart labels
-  const [view, setView] = useState(ChartView.VOL)
-  const [latestValue, setLatestValue] = useState<number | undefined>()
-  const [valueLabel, setValueLabel] = useState<string | undefined>()
-  const [timeWindow] = useState(DEFAULT_TIME_WINDOW)
-
   // pricing data
-  const priceData = useTokenPriceData(address, ONE_HOUR_SECONDS, timeWindow)
-  const adjustedToCurrent = useMemo(() => {
+  const priceData = useTokenPriceData(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
+  const adjustedPriceData = useMemo(() => {
+    // Include latest available price
     if (priceData && tokenData && priceData.length > 0) {
-      const adjusted = Object.assign([], priceData)
-      adjusted.push({
-        time: currentTimestamp() / 1000,
-        open: priceData[priceData.length - 1].close,
-        close: tokenData?.priceUSD,
-        high: tokenData?.priceUSD,
-        low: priceData[priceData.length - 1].close,
-      })
-      return adjusted
+      return [
+        ...priceData,
+        {
+          time: new Date().getTime() / 1000,
+          open: priceData[priceData.length - 1].close,
+          close: tokenData?.priceUSD,
+          high: tokenData?.priceUSD,
+          low: priceData[priceData.length - 1].close,
+        },
+      ]
     }
     return undefined
   }, [priceData, tokenData])
 
   const [watchlistTokens, addWatchlistToken] = useWatchlistTokens()
-
-  const currentDate = format(new Date(), 'MMM d, yyyy')
 
   return (
     <Page symbol={tokenData?.symbol}>
@@ -165,10 +128,10 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
             {/* Stuff on top */}
             <Flex justifyContent="space-between" mb="24px" flexDirection={['column', 'column', 'row']}>
               <Breadcrumbs mb="32px">
-                <Link to="/">
-                  <Text color="primary">{t('Home')}</Text>
+                <Link to="/info">
+                  <Text color="primary">{t('Info')}</Text>
                 </Link>
-                <Link to="/tokens">
+                <Link to="/info/tokens">
                   <Text color="primary">{t('Tokens')}</Text>
                 </Link>
                 <Flex>
@@ -177,7 +140,7 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                 </Flex>
               </Breadcrumbs>
               <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-                <LinkExternal mr="8px" color="primary" href={getBscscanLink(address, 'address')}>
+                <LinkExternal mr="8px" color="primary" href={getBscScanLink(address, 'address')}>
                   {t('View on BscScan')}
                 </LinkExternal>
                 {cmcLink && (
@@ -233,7 +196,6 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                   <Text mt="24px" bold color="secondary" fontSize="12px" textTransform="uppercase">
                     {t('Volume 24H')}
                   </Text>
-                  {/* TODO PCS Capitalize MiBillions */}
                   <Text bold fontSize="24px" textTransform="uppercase">
                     ${formatAmount(tokenData.volumeUSD)}
                   </Text>
@@ -255,75 +217,12 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                 </Box>
               </Card>
               {/* charts card */}
-              <Card>
-                <TabToggleGroup>
-                  <TabToggle isActive={view === ChartView.VOL} onClick={() => setView(ChartView.VOL)}>
-                    <Text>{t('Volume')}</Text>
-                  </TabToggle>
-                  <TabToggle isActive={view === ChartView.TVL} onClick={() => setView(ChartView.TVL)}>
-                    <Text>{t('Liquidity')}</Text>
-                  </TabToggle>
-                  <TabToggle isActive={view === ChartView.PRICE} onClick={() => setView(ChartView.PRICE)}>
-                    <Text>{t('Price')}</Text>
-                  </TabToggle>
-                </TabToggleGroup>
-
-                <Flex flexDirection="column" px="24px" pt="24px">
-                  <Text fontSize="24px" bold>
-                    $
-                    {latestValue
-                      ? formatAmount(latestValue)
-                      : view === ChartView.VOL
-                      ? formatAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
-                      : view === ChartView.TVL
-                      ? formatAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
-                      : formatAmount(tokenData.priceUSD)}
-                  </Text>
-                  <Text small color="secondary">
-                    {valueLabel || currentDate}
-                  </Text>
-                </Flex>
-
-                <Box px="24px">
-                  {view === ChartView.TVL ? (
-                    <LineChart
-                      data={formattedTvlData}
-                      color={theme.colors.primary}
-                      height="270px"
-                      value={latestValue}
-                      label={valueLabel}
-                      setValue={setLatestValue}
-                      setLabel={setValueLabel}
-                    />
-                  ) : view === ChartView.VOL ? (
-                    <BarChart
-                      data={formattedVolumeData}
-                      color={theme.colors.primary}
-                      height="270px"
-                      value={latestValue}
-                      label={valueLabel}
-                      setValue={setLatestValue}
-                      setLabel={setValueLabel}
-                    />
-                  ) : view === ChartView.PRICE ? (
-                    adjustedToCurrent ? (
-                      <Box mb="16px">
-                        <CandleChart
-                          height={270}
-                          data={adjustedToCurrent}
-                          setValue={setLatestValue}
-                          setLabel={setValueLabel}
-                          color={theme.colors.primary}
-                        />
-                      </Box>
-                    ) : (
-                      <Flex justifyContent="center" alignItems="center">
-                        <Spinner />
-                      </Flex>
-                    )
-                  ) : null}
-                </Box>
-              </Card>
+              <ChartCard
+                variant="token"
+                chartData={chartData}
+                tokenData={tokenData}
+                tokenPriceData={adjustedPriceData}
+              />
             </ContentLayout>
 
             {/* pools and transaction tables */}

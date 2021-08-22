@@ -1,16 +1,14 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
-import { Flex, Box, Text, Heading, Card } from '@pancakeswap/uikit'
+import { Flex, Box, Text, Heading, Card, Skeleton } from '@pancakeswap/uikit'
 import { format, fromUnixTime } from 'date-fns'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
-import LineChart from 'components/LineChart'
+import LineChart from 'components/InfoCharts/LineChart'
 import TokenTable from 'components/InfoTables/TokensTable'
 import PoolTable from 'components/InfoTables/PoolsTable'
-import { notEmpty } from 'utils/infoUtils'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import useTheme from 'hooks/useTheme'
-import BarChart from 'components/BarChart'
+import BarChart from 'components/InfoCharts/BarChart'
 import {
   useAllPoolData,
   useAllTokenData,
@@ -38,7 +36,6 @@ export const ChartCardsContainer = styled(Flex)`
 
 const Overview: React.FC = () => {
   const { t } = useTranslation()
-  const { theme } = useTheme()
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
   const [liquidityDateHover, setLiquidityDateHover] = useState<string | undefined>()
   const [volumeHover, setVolumeHover] = useState<number | undefined>()
@@ -50,8 +47,7 @@ const Overview: React.FC = () => {
 
   const currentDate = format(new Date(), 'MMM d, yyyy')
 
-  // TODO: Why its not coming from chart data?
-  // if hover value undefined, reset to current day value
+  // Getting latest liquidity and volumeUSD to display on top of chart when not hovered
   useEffect(() => {
     if (volumeHover == null && protocolData) {
       setVolumeHover(protocolData.volumeUSD)
@@ -92,14 +88,14 @@ const Overview: React.FC = () => {
   const formattedTokens = useMemo(() => {
     return Object.values(allTokens)
       .map((token) => token.data)
-      .filter(notEmpty)
+      .filter((token) => token)
   }, [allTokens])
 
   const allPoolData = useAllPoolData()
   const poolDatas = useMemo(() => {
     return Object.values(allPoolData)
       .map((pool) => pool.data)
-      .filter(notEmpty)
+      .filter((pool) => pool)
   }, [allPoolData])
 
   const somePoolsAreLoading = useMemo(() => {
@@ -114,40 +110,42 @@ const Overview: React.FC = () => {
       <ChartCardsContainer>
         <Card>
           <Box p={['16px', '16px', '24px']}>
-            <Box>
-              <Text bold color="secondary">
-                {t('Liquidity')}
-              </Text>
+            <Text bold color="secondary">
+              {t('Liquidity')}
+            </Text>
+            {liquidityHover > 0 ? (
               <Text bold fontSize="24px">
                 ${formatAmount(liquidityHover)}
               </Text>
-              <Text>{liquidityDateHover ?? currentDate}</Text>
+            ) : (
+              <Skeleton width="128px" height="36px" />
+            )}
+            <Text>{liquidityDateHover ?? currentDate}</Text>
+            <Box height="250px">
+              <LineChart
+                data={formattedLiquidityData}
+                setHoverValue={setLiquidityHover}
+                setHoverDate={setLiquidityDateHover}
+              />
             </Box>
-            <LineChart
-              data={formattedLiquidityData}
-              color={theme.colors.secondary}
-              setValue={setLiquidityHover}
-              setLabel={setLiquidityDateHover}
-            />
           </Box>
         </Card>
         <Card>
           <Box p={['16px', '16px', '24px']}>
-            <Box>
-              <Text bold color="secondary">
-                {t('Volume 24H')}
-              </Text>
+            <Text bold color="secondary">
+              {t('Volume 24H')}
+            </Text>
+            {volumeHover > 0 ? (
               <Text bold fontSize="24px">
                 ${formatAmount(volumeHover)}
               </Text>
-              <Text>{volumeDateHover ?? currentDate}</Text>
+            ) : (
+              <Skeleton width="128px" height="36px" />
+            )}
+            <Text>{volumeDateHover ?? currentDate}</Text>
+            <Box height="250px">
+              <BarChart data={formattedVolumeData} setHoverValue={setVolumeHover} setHoverDate={setVolumeDateHover} />
             </Box>
-            <BarChart
-              data={formattedVolumeData}
-              color={theme.colors.primary}
-              setValue={setVolumeHover}
-              setLabel={setVolumeDateHover}
-            />
           </Box>
         </Card>
       </ChartCardsContainer>

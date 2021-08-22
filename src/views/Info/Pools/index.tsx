@@ -3,7 +3,6 @@ import { Text, Heading, Card } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import PoolTable from 'components/InfoTables/PoolsTable'
 import { useAllPoolData, usePoolDatas } from 'state/info/hooks'
-import { notEmpty } from 'utils/infoUtils'
 import { useWatchlistPools } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 
@@ -14,8 +13,8 @@ const PoolsOverview: React.FC = () => {
   const allPoolData = useAllPoolData()
   const poolDatas = useMemo(() => {
     return Object.values(allPoolData)
-      .map((p) => p.data)
-      .filter(notEmpty)
+      .map((pool) => pool.data)
+      .filter((pool) => pool)
   }, [allPoolData])
 
   const [savedPools] = useWatchlistPools()

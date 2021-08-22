@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, Link } from 'react-router-dom'
-import { format, fromUnixTime } from 'date-fns'
 import {
   Text,
   Flex,
@@ -20,19 +19,16 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Page from 'components/Layout/Page'
-import { getBscscanLink } from 'utils/infoUtils'
+import { getBscScanLink } from 'utils'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import Percent from 'components/Percent'
 import SaveIcon from 'components/SaveIcon'
 import { usePoolDatas, usePoolChartData, usePoolTransactions } from 'state/info/hooks'
-import LineChart from 'components/LineChart'
-import BarChart from 'components/BarChart'
 import TransactionTable from 'components/InfoTables/TransactionsTable'
 import { useWatchlistPools } from 'state/user/hooks'
-import { TabToggleGroup, TabToggle } from 'components/TabToggle'
-import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'
+import ChartCard from 'components/InfoCharts/ChartCard'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -65,19 +61,11 @@ const LockedTokensContainer = styled(Flex)`
   max-width: 280px;
 `
 
-enum ChartView {
-  TVL,
-  VOL,
-  PRICE,
-  DENSITY,
-}
-
 const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
   match: {
     params: { address: routeAddress },
   },
 }) => {
-  const { theme } = useTheme()
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
   const [showWeeklyData, setShowWeeklyData] = useState(0)
@@ -86,46 +74,19 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
     {},
   )
 
+  // Needed to scroll up if user comes to this page by clicking on entry in the table
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
 
-  const currentDate = format(new Date(), 'MMM d, yyyy')
-
-  // token data
   const poolData = usePoolDatas([address])[0]
   const chartData = usePoolChartData(address)
   const transactions = usePoolTransactions(address)
 
-  const [view, setView] = useState(ChartView.VOL)
-  const [latestValue, setLatestValue] = useState<number | undefined>()
-  const [valueLabel, setValueLabel] = useState<string | undefined>()
-
-  const formattedTvlData = useMemo(() => {
-    if (chartData) {
-      return chartData.map((day) => {
-        return {
-          time: fromUnixTime(day.date),
-          value: day.totalValueLockedUSD,
-        }
-      })
-    }
-    return []
-  }, [chartData])
-
-  const formattedVolumeData = useMemo(() => {
-    if (chartData) {
-      return chartData.map((day) => {
-        return {
-          time: fromUnixTime(day.date),
-          value: day.volumeUSD,
-        }
-      })
-    }
-    return []
-  }, [chartData])
-
-  // watchlist
-  const [savedPools, addSavedPool] = useWatchlistPools()
+  const [watchlistPools, addPoolToWatchlist] = useWatchlistPools()
 
   return (
     <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
@@ -133,10 +94,10 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
         <>
           <Flex justifyContent="space-between" mb="16px" flexDirection={['column', 'column', 'row']}>
             <Breadcrumbs mb="32px">
-              <Link to="/">
-                <Text color="primary">{t('Home')}</Text>
+              <Link to="/info">
+                <Text color="primary">{t('Info')}</Text>
               </Link>
-              <Link to="/pools">
+              <Link to="/info/pools">
                 <Text color="primary">{t('Pools')}</Text>
               </Link>
               <Flex>
@@ -144,10 +105,10 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
               </Flex>
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-              <LinkExternal mr="8px" href={getBscscanLink(address, 'address')}>
+              <LinkExternal mr="8px" href={getBscScanLink(address, 'address')}>
                 {t('View on BscScan')}
               </LinkExternal>
-              <SaveIcon fill={savedPools.includes(address)} onClick={() => addSavedPool(address)} />
+              <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} />
             </Flex>
           </Flex>
           <Flex flexDirection="column">
@@ -299,56 +260,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                 </Flex>
               </Card>
             </Box>
-            <Card>
-              <TabToggleGroup>
-                <TabToggle isActive={view === ChartView.VOL} onClick={() => setView(ChartView.VOL)}>
-                  <Text>{t('Volume')}</Text>
-                </TabToggle>
-                <TabToggle isActive={view === ChartView.TVL} onClick={() => setView(ChartView.TVL)}>
-                  <Text>{t('Liquidity')}</Text>
-                </TabToggle>
-              </TabToggleGroup>
-              <Flex flexDirection="column" px="24px" pt="24px">
-                <Text fontSize="24px" bold>
-                  $
-                  {latestValue
-                    ? formatAmount(latestValue)
-                    : view === ChartView.VOL
-                    ? formatAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
-                    : view === ChartView.DENSITY
-                    ? ''
-                    : formatAmount(formattedTvlData[formattedTvlData.length - 1]?.value)}
-                </Text>
-
-                <Text small>{valueLabel || currentDate}</Text>
-              </Flex>
-
-              <Box px="24px">
-                {view === ChartView.TVL ? (
-                  <LineChart
-                    data={formattedTvlData}
-                    setLabel={setValueLabel}
-                    color={theme.colors.primary}
-                    height="335px"
-                    chartHeight="335px"
-                    setValue={setLatestValue}
-                    value={latestValue}
-                    label={valueLabel}
-                  />
-                ) : (
-                  <BarChart
-                    data={formattedVolumeData}
-                    color={theme.colors.primary}
-                    height="335px"
-                    chartHeight="335px"
-                    setValue={setLatestValue}
-                    setLabel={setValueLabel}
-                    value={latestValue}
-                    label={valueLabel}
-                  />
-                )}
-              </Box>
-            </Card>
+            <ChartCard variant="pool" chartData={chartData} />
           </ContentLayout>
           <Heading mb="16px" mt="40px" scale="lg">
             {t('Transactions')}

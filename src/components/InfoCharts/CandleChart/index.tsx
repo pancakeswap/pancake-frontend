@@ -4,6 +4,7 @@ import { Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { format } from 'date-fns'
 import useTheme from 'hooks/useTheme'
+import { CandleChartLoader } from 'components/ChartLoaders'
 
 const Wrapper = styled(Box)`
   width: 100%;
@@ -147,6 +148,7 @@ const CandleChart = ({ data, setValue, setLabel, height = DEFAULT_HEIGHT, ...res
 
   return (
     <Wrapper height={height}>
+      {!chartCreated && <CandleChartLoader />}
       <div ref={chartRef} id="candle-chart" {...rest} />
     </Wrapper>
   )

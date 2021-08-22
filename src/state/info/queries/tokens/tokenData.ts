@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
-import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
+import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
 import { getPercentChange, getChangeForPeriod, getAmountChange } from 'utils/infoData'
 import { TokenData } from 'state/info/types'
@@ -15,20 +15,15 @@ interface TokenFields {
   derivedBNB: string // Price in BNB per token
   derivedUSD: string // Price in USD per token
   tradeVolumeUSD: string
-  tradeVolume: string // TODO: remove?
   totalTransactions: string
   totalLiquidity: string
 }
 
 interface FormattedTokenFields
-  extends Omit<
-    TokenFields,
-    'derivedBNB' | 'derivedUSD' | 'tradeVolumeUSD' | 'tradeVolume' | 'totalTransactions' | 'totalLiquidity'
-  > {
+  extends Omit<TokenFields, 'derivedBNB' | 'derivedUSD' | 'tradeVolumeUSD' | 'totalTransactions' | 'totalLiquidity'> {
   derivedBNB: number
   derivedUSD: number
   tradeVolumeUSD: number
-  tradeVolume: number
   totalTransactions: number
   totalLiquidity: number
 }
@@ -44,7 +39,7 @@ interface TokenQueryResponse {
 /**
  * Main token data to display on Token page
  */
-export const TOKEN_AT_BLOCK = (block: number | undefined, tokens: string[]) => {
+const TOKEN_AT_BLOCK = (block: number | undefined, tokens: string[]) => {
   const addressesString = `["${tokens.join('","')}"]`
   const blockString = block ? `block: {number: ${block}}` : ``
   return `tokens(
@@ -59,7 +54,6 @@ export const TOKEN_AT_BLOCK = (block: number | undefined, tokens: string[]) => {
       derivedBNB
       derivedUSD
       tradeVolumeUSD
-      tradeVolume
       totalTransactions
       totalLiquidity
     }
@@ -97,13 +91,12 @@ const parseTokenData = (tokens?: TokenFields[]) => {
     return {}
   }
   return tokens.reduce((accum: { [address: string]: FormattedTokenFields }, tokenData) => {
-    const { derivedBNB, derivedUSD, tradeVolumeUSD, tradeVolume, totalTransactions, totalLiquidity } = tokenData
+    const { derivedBNB, derivedUSD, tradeVolumeUSD, totalTransactions, totalLiquidity } = tokenData
     accum[tokenData.id] = {
       ...tokenData,
       derivedBNB: parseFloat(derivedBNB),
       derivedUSD: parseFloat(derivedUSD),
       tradeVolumeUSD: parseFloat(tradeVolumeUSD),
-      tradeVolume: parseFloat(tradeVolume),
       totalTransactions: parseFloat(totalTransactions),
       totalLiquidity: parseFloat(totalLiquidity),
     }
@@ -121,9 +114,9 @@ interface TokenDatas {
 /**
  * Fetch top addresses by volume
  */
-export const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
+const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
   const [fetchState, setFetchState] = useState<TokenDatas>({ error: false })
-  const [t24h, t48h, t7d, t14d] = useDeltaTimestamps()
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const [block24h, block48h, block7d, block14d] = blocks ?? []
   const bnbPrices = useBnbPrices()
@@ -211,3 +204,5 @@ export const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
 
   return fetchState
 }
+
+export default useFetchedTokenDatas

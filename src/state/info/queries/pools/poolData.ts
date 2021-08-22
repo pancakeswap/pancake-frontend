@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
-import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
+import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
 import { PoolData } from 'state/info/types'
 import { getChangeForPeriod, getLpFeesAndApr, getPercentChange } from 'utils/infoData'
@@ -50,7 +50,7 @@ interface PoolsQueryResponse {
  * Note: Don't try to refactor it to use variables, server throws error if blocks passed as undefined variable
  * only works if its hard-coded into query string
  */
-export const POOL_AT_BLOCK = (block: number | null, pools: string[]) => {
+const POOL_AT_BLOCK = (block: number | null, pools: string[]) => {
   const blockString = block ? `block: {number: ${block}}` : ``
   const addressesString = `["${pools.join('","')}"]`
   return `pairs(
@@ -77,18 +77,6 @@ export const POOL_AT_BLOCK = (block: number | null, pools: string[]) => {
       name
     }
   }`
-}
-
-export const POOLS_BULK = (block24h: number, block48h: number, block7d: number, block14d: number, pools: string[]) => {
-  return gql`
-    query pools {
-      now: ${POOL_AT_BLOCK(null, pools)}
-      oneDayAgo: ${POOL_AT_BLOCK(block24h, pools)}
-      twoDaysAgo: ${POOL_AT_BLOCK(block48h, pools)}
-      oneWeekAgo: ${POOL_AT_BLOCK(block7d, pools)}
-      twoWeeksAgo: ${POOL_AT_BLOCK(block14d, pools)}
-    }
-  `
 }
 
 const fetchPoolData = async (
@@ -146,9 +134,9 @@ interface PoolDatas {
 /**
  * Fetch top pools by liquidity
  */
-export const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
+const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
   const [fetchState, setFetchState] = useState<PoolDatas>({ error: false })
-  const [t24h, t48h, t7d, t14d] = useDeltaTimestamps()
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const [block24h, block48h, block7d, block14d] = blocks ?? []
 
@@ -247,3 +235,5 @@ export const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
 
   return fetchState
 }
+
+export default usePoolDatas

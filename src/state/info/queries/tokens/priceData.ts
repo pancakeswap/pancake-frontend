@@ -20,7 +20,7 @@ const getPriceSubqueries = (tokenAddress: string, blocks: any) =>
 /**
  * Price data for token and bnb based on block number
  */
-export const priceQueryConstructor = (subqueries: string[]) => {
+const priceQueryConstructor = (subqueries: string[]) => {
   return gql`
     query tokenPriceData {
       ${subqueries}

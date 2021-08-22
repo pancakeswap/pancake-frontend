@@ -2,10 +2,10 @@ import React, { useEffect, useMemo } from 'react'
 import useFetchProtocolData from 'state/info/queries/protocol/overview'
 import useFetchGlobalChartData from 'state/info/queries/protocol/chart'
 import fetchTopTransactions from 'state/info/queries/protocol/transactions'
-import { useTopPoolAddresses } from 'state/info/queries/pools/topPools'
-import { usePoolDatas } from 'state/info/queries/pools/poolData'
-import { useFetchedTokenDatas } from 'state/info/queries/tokens/tokenData'
-import { useTopTokenAddresses } from 'state/info/queries/tokens/topTokens'
+import useTopPoolAddresses from 'state/info/queries/pools/topPools'
+import usePoolDatas from 'state/info/queries/pools/poolData'
+import useFetchedTokenDatas from 'state/info/queries/tokens/tokenData'
+import useTopTokenAddresses from 'state/info/queries/tokens/topTokens'
 import {
   useProtocolData,
   useProtocolChartData,
@@ -74,7 +74,7 @@ export const PoolUpdater: React.FC = () => {
   const unfetchedPoolAddresses = useMemo(() => {
     return Object.keys(allPoolData).reduce((accum: string[], address) => {
       const poolData = allPoolData[address]
-      if (!poolData.data || !poolData.lastUpdated) {
+      if (!poolData.data) {
         accum.push(address)
       }
       return accum
@@ -110,7 +110,7 @@ export const TokenUpdater = (): null => {
   const unfetchedTokenAddresses = useMemo(() => {
     return Object.keys(allTokenData).reduce((accum: string[], key) => {
       const tokenData = allTokenData[key]
-      if (!tokenData.data || !tokenData.lastUpdated) {
+      if (!tokenData.data) {
         accum.push(key)
       }
       return accum

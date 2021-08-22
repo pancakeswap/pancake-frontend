@@ -3,7 +3,7 @@ import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
 import { getChangeForPeriod, getPercentChange } from 'utils/infoData'
 import { ProtocolData } from 'state/info/types'
-import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
+import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
 
 interface PancakeFactory {
@@ -59,7 +59,7 @@ const useFetchProtocolData = (): ProtocolFetchState => {
     error: false,
   })
   // TODO: need more blocks to fix percentages
-  const [t24, t48] = useDeltaTimestamps()
+  const [t24, t48] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48])
   const [block24, block48] = blocks ?? []
 

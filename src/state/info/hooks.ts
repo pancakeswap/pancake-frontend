@@ -10,7 +10,6 @@ import fetchTokenChartData from 'state/info/queries/tokens/chartData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
 import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
-import { notEmpty } from 'utils/infoUtils'
 import {
   updateProtocolData,
   updateProtocolChartData,
@@ -65,7 +64,7 @@ export const useProtocolTransactions = (): [Transaction[] | undefined, (transact
 // Pools hooks
 
 export const useAllPoolData = (): {
-  [address: string]: { data: PoolData | undefined; lastUpdated: number | undefined }
+  [address: string]: { data: PoolData | undefined }
 } => {
   return useSelector((state: AppState) => state.info.pools.byAddress)
 }
@@ -99,10 +98,9 @@ export const usePoolDatas = (poolAddresses: string[]): PoolData[] => {
 
   const poolsWithData = poolAddresses
     .map((address) => {
-      const poolData = allPoolData[address]?.data
-      return poolData ?? undefined
+      return allPoolData[address]?.data
     })
-    .filter(notEmpty)
+    .filter((pool) => pool)
 
   return poolsWithData
 }
@@ -157,7 +155,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
 // Tokens hooks
 
 export const useAllTokenData = (): {
-  [address: string]: { data: TokenData | undefined; lastUpdated: number | undefined }
+  [address: string]: { data: TokenData | undefined }
 } => {
   return useSelector((state: AppState) => state.info.tokens.byAddress)
 }
@@ -196,7 +194,7 @@ export const useTokenDatas = (addresses: string[] | undefined): TokenData[] | un
       .map((a) => {
         return allTokenData[a]?.data
       })
-      .filter(notEmpty)
+      .filter((token) => token)
   }, [addresses, allTokenData])
 
   return tokensWithData

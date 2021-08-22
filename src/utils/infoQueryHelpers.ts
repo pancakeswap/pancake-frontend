@@ -1,7 +1,20 @@
 import { getUnixTime, subDays, subWeeks, startOfMinute } from 'date-fns'
 import { request } from 'graphql-request'
 
-export const multiQuery = async (queryConstructor, subqueries, endpoint, skipCount = 1000) => {
+/**
+ * Helper function to get large amount GrqphQL subqueries
+ * @param queryConstructor constructor function that combines subqueries
+ * @param subqueries individual queries
+ * @param endpoint GraphQL endpoint
+ * @param skipCount how many subqueries to fire at a time
+ * @returns
+ */
+export const multiQuery = async (
+  queryConstructor: (subqueries: string[]) => string,
+  subqueries: string[],
+  endpoint: string,
+  skipCount = 1000,
+) => {
   let fetchedData = {}
   let allFound = false
   let skip = 0
@@ -29,47 +42,9 @@ export const multiQuery = async (queryConstructor, subqueries, endpoint, skipCou
 }
 
 /**
- * Used to get large amounts of data when
- * @param query - gql`` query string
- * @param localClient
- * @param vars - any variables that are passed in every query
- * @param values - the keys that are used as the values to map over if
- * @param skipCount - amount of entities to skip per query
+ * Returns UTC timestamps for 24h ago, 48h ago, 7d ago and 14d ago relative to current date and time
  */
-// export const splitQuery = async (query: string, client: any, vars: any[], values: any[], skipCount = 1000) => {
-//   let fetchedData = {}
-//   let allFound = false
-//   let skip = 0
-//   try {
-//     while (!allFound) {
-//       let end = values.length
-//       if (skip + skipCount < values.length) {
-//         end = skip + skipCount
-//       }
-//       const sliced = values.slice(skip, end)
-//       // eslint-disable-next-line no-await-in-loop
-//       const result = await request(INFO_CLIENT, query(...vars, sliced))
-//       fetchedData = {
-//         ...fetchedData,
-//         ...result.data,
-//       }
-//       if (Object.keys(result.data).length < skipCount || skip + skipCount > values.length) {
-//         allFound = true
-//       } else {
-//         skip += skipCount
-//       }
-//     }
-//     return fetchedData
-//   } catch (e) {
-//     console.error(e)
-//     return undefined
-//   }
-// }
-
-/**
- * Returns UTC timestamps for 24h ago, 48h ago and 7d ago relative to current date and time
- */
-export const useDeltaTimestamps = (): [number, number, number, number] => {
+export const getDeltaTimestamps = (): [number, number, number, number] => {
   const utcCurrentTime = getUnixTime(new Date()) * 1000
   const t24h = getUnixTime(startOfMinute(subDays(utcCurrentTime, 1)))
   const t48h = getUnixTime(startOfMinute(subDays(utcCurrentTime, 2)))

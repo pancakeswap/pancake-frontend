@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
 import { TOKEN_BLACKLIST } from 'config/constants/info'
-import { useDeltaTimestamps } from 'utils/infoQueryHelpers'
+import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
 
 interface TopPoolsResponse {
   pairDayDatas: {
@@ -39,9 +39,9 @@ const fetchTopPools = async (timestamp24hAgo: number): Promise<string[]> => {
 /**
  * Fetch top addresses by volume
  */
-export const useTopPoolAddresses = (): string[] => {
+const useTopPoolAddresses = (): string[] => {
   const [topPoolAddresses, setTopPoolAddresse] = useState([])
-  const [timestamp24hAgo] = useDeltaTimestamps()
+  const [timestamp24hAgo] = getDeltaTimestamps()
 
   useEffect(() => {
     const fetch = async () => {
@@ -55,3 +55,5 @@ export const useTopPoolAddresses = (): string[] => {
 
   return topPoolAddresses
 }
+
+export default useTopPoolAddresses

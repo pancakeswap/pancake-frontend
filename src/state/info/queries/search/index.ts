@@ -5,7 +5,7 @@ import { useTokenDatas, usePoolDatas } from 'state/info/hooks'
 import { TokenData, PoolData } from 'state/info/types'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 
-export const TOKEN_SEARCH = gql`
+const TOKEN_SEARCH = gql`
   query tokens($symbol: String, $name: String, $id: String) {
     asSymbol: tokens(first: 10, where: { symbol_contains: $symbol }, orderBy: tradeVolumeUSD, orderDirection: desc) {
       id
@@ -19,7 +19,7 @@ export const TOKEN_SEARCH = gql`
   }
 `
 
-export const POOL_SEARCH = gql`
+const POOL_SEARCH = gql`
   query pools($tokens: [Bytes]!, $id: String) {
     as0: pairs(first: 10, where: { token0_in: $tokens }) {
       id
@@ -55,7 +55,7 @@ const getIds = (entityArrays: SingleQueryResponse[][]) => {
   return Array.from(new Set(ids))
 }
 
-export const useFetchSearchResults = (
+const useFetchSearchResults = (
   searchString: string,
 ): {
   tokens: TokenData[]
@@ -137,3 +137,5 @@ export const useFetchSearchResults = (
     error: searchResults.error,
   }
 }
+
+export default useFetchSearchResults

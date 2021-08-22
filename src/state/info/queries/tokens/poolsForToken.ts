@@ -5,7 +5,7 @@ import { TOKEN_BLACKLIST } from 'config/constants/info'
 /**
  * Data for showing Pools table on the Token page
  */
-export const POOLS_FOR_TOKEN = gql`
+const POOLS_FOR_TOKEN = gql`
   query poolsForToken($address: Bytes!, $blacklist: [String!]) {
     asToken0: pairs(
       first: 15

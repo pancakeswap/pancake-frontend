@@ -3,7 +3,6 @@ import { Text, Heading, Card } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import TokenTable from 'components/InfoTables/TokensTable'
 import { useAllTokenData, useTokenDatas } from 'state/info/hooks'
-import { notEmpty } from 'utils/infoUtils'
 import { useWatchlistTokens } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import TopTokenMovers from 'components/TopTokenMovers'
@@ -14,12 +13,13 @@ const TokensOverview: React.FC = () => {
     window.scrollTo(0, 0)
   }, [])
 
+  // there is hook with alreadhy filteresd shit....
   const allTokens = useAllTokenData()
 
   const formattedTokens = useMemo(() => {
     return Object.values(allTokens)
       .map((token) => token.data)
-      .filter(notEmpty)
+      .filter((token) => token)
   }, [allTokens])
 
   const [savedTokens] = useWatchlistTokens()
