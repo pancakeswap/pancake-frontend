@@ -111,7 +111,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="earned">Earned</div>
             </DisplayFlex>
           </td>
-          <td className="td-width-17 desktop-view">
+          <td className="td-width-17">
             <DisplayFlex>
               <span className="total-earned text-shadow">{apr ? displayApr : "NAN"}%</span>
               <div className="earned">Yearly</div>
