@@ -28,7 +28,7 @@ const config: MenuEntry[] = [
   },
   {
     label: 'Collectibles',
-    icon: 'PredictionsIcon',
+    icon: 'IfoIcon',
     href: '/collectibles',
   },
   {

@@ -2,6 +2,13 @@
   border: 1px solid rgb(204, 246, 108);
   box-shadow: rgb(204 246 108) 0px 0px 20px !important;
 }
- .border-bottom {
+ .collectibles-bb {
   border-bottom: 3px solid #b4bd01;
  }
+ .collectibles {
+  background: #101820;
+  padding: 24px !important;
+ }
+ video {
+  object-fit: fill;
+}
