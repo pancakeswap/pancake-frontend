@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { BaseLayout } from '@rug-zombie-libs/uikit'
+import { BaseLayout, useMatchBreakpoints } from '@rug-zombie-libs/uikit'
 import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js';
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
@@ -54,6 +54,8 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   if(poolInfo.allocPoint) {
      allocPoint = new BigNumber(poolInfo.allocPoint)
   }
+  const { isLg, isXl } = useMatchBreakpoints()
+  const isDesktop = isLg || isXl
 
   const poolWeight = allocPoint ? allocPoint.div(100) : null
 
@@ -123,12 +125,13 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="earned">Daily</div>
             </DisplayFlex>
           </td>
-          <td className="td-width-25">
+          {isDesktop ? <td className='td-width-25'>
             <DisplayFlex>
-              <span className="total-earned">{numeral(getBalanceAmount(poolInfo.totalStakingTokenStaked).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
-              <div className="earned">TVL</div>
+              <span
+                className='total-earned'>{numeral(getBalanceAmount(poolInfo.totalStakingTokenStaked).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
+              <div className='earned'>TVL</div>
             </DisplayFlex>
-          </td>
+          </td>: null}
           <td className="last-td">
             <ArrowIcon onClick={toggleOpen}>
               {isOpen ? (
