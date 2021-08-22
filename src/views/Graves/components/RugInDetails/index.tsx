@@ -22,7 +22,7 @@ interface RugInDetailsProps {
 const RugInDetails: React.FC<RugInDetailsProps> = ({
   pid , zombieUsdPrice, bnbInBusd,
 }) => {
-  const { id, subtitle, rug, pcsVersion, liquidityDetails, path, type, endDate, latestEntryDate, isEnding, withdrawalCooldown, nftRevivalTime, poolInfo, artist } = grave(pid)
+  const { subtitle, rug, pcsVersion, liquidityDetails, path, type, endDate, latestEntryDate, isEnding, withdrawalCooldown, nftRevivalTime, poolInfo, artist } = grave(pid)
   const drFrankenstein = useDrFrankenstein();
   const [unlockFee, setUnlockFee] = useState(0);
 
@@ -48,7 +48,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
   }
 
   return (
-    <div key={id} className="rug-indetails">
+    <div key={pid} className="rug-indetails">
       <div className="direction-column imageColumn">
         <div className="sc-iwajpm dcRUtg">
           {type === 'image' ? (

@@ -23,6 +23,10 @@ export default {
     97: '',
     56: '0x50E4d9DB0A1655D3525b92841F671F7400aaE14D',
   },
+  nftOwnership: {
+    97: '',
+    56: '0x131C3B59816B96347411C945A947232397Ca3Be9',
+  },
   sousChef: {
     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
     56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',

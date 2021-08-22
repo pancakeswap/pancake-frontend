@@ -29,6 +29,9 @@ export const getMausoleumAddress = (version: string) => {
 export const getMausoleumV2Address = () => {
   return getAddress(addresses.mausoleumV2)
 }
+export const getNftOwnershipAddress = () => {
+  return getAddress(addresses.nftOwnership)
+}
 export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)
 }

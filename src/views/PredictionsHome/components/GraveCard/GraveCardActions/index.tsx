@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box, Button } from '@rug-zombie-libs/uikit'
 import { useHistory } from 'react-router'
@@ -7,6 +7,7 @@ import { getAddress } from '../../../../../utils/addressHelpers'
 import { getBep20Contract, getContract } from '../../../../../utils/contractHelpers'
 import { routes } from '../../../../../routes'
 import { auctionById } from '../../../../../redux/get'
+import { formatDuration } from '../../../../../utils/timerHelpers'
 
 const InlineText = styled(Text)`
   display: inline;
@@ -40,7 +41,16 @@ async function getTokenAllowance(account, token, setState, resetTimer, web3) {
 
 const GraveCardActions: React.FC<{ id: number }> = ({ id }) => {
   const history = useHistory()
-  const { bt } = auctionById(id)
+  const { bt, isFinished, end } = auctionById(id)
+  const [remainingTime, setRemainingTime] = useState(end - Math.floor(Date.now() / 1000))
+  const [timerSet, setTimerSet] = useState(false)
+
+  useEffect(() => {
+    setInterval(() => {
+      setRemainingTime(end - Math.floor(Date.now() / 1000))
+      setTimerSet(true)
+    },1000)
+  })
   return (
     <Flex flexDirection='column'>
       <Flex flexDirection='column'>
@@ -62,7 +72,27 @@ const GraveCardActions: React.FC<{ id: number }> = ({ id }) => {
             {bt}
           </InlineText>
         </Box>
-        <br/>
+        { !isFinished ? <>
+        <Box display='inline'>
+          <InlineText
+            color='textSubtle'
+            textTransform='uppercase'
+            bold
+            fontSize='12px'
+          >
+            Ends in:&nbsp;
+          </InlineText>
+          <InlineText
+            color='secondary'
+            textTransform='uppercase'
+            bold
+            fontSize='12px'
+          >
+            {formatDuration(remainingTime, true)}
+          </InlineText>
+        </Box>
+          <br/>
+        </> : <br/>}
         <Button onClick={() => history.push(`${routes.MAUSOLEUM }${ id}`)}>ENTER</Button>
       </Flex>
     </Flex>

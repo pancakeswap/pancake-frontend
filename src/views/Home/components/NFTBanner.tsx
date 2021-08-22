@@ -127,7 +127,7 @@ const NFTBanner: React.FC = () => {
     <Wrapper style={{width: "100%"}}>
       <Inner style={{width: "100%"}}>
         <LeftWrapper width="100%">
-          <NowLive>{t('Mausoleum End:')} ~{formatDuration(remainingTime, true)}</NowLive>
+          <NowLive>{t('Mausoleum End:')} {formatDuration(remainingTime, true)}</NowLive>
           { isDesktop ? <Flex>
             <Over fontSize='40px' bold mr='8px' style={{ whiteSpace: 'nowrap' }}>
               {t('Earn a')}
