@@ -1353,6 +1353,6 @@
   "Prices shown on cards and charts are different": "Prices shown on cards and charts are different",
   "The price you see come from difference places": "The price you see come from difference places",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Prices on cards come from Chainlink’s verifiable price oracle.",
-  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prices on charts come from Binance.com. Chart's are provided for your reference only.",
-  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Only the price from Chainlink (shown on the cards) determines the round's result."
+  "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prețurile din grafice provin de la Binance.com. Graficele sunt furnizate doar ca referință.",
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Numai prețul din Chainlink (afișat pe carduri) determină rezultatul rundei."
 }
