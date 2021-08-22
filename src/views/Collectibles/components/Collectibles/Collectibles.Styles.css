@@ -6,9 +6,12 @@
   border-bottom: 3px solid #b4bd01;
  }
  .collectibles {
-  background: #101820;
   padding: 24px !important;
  }
  video {
   object-fit: fill;
+}
+
+.cardHeader{
+  margin: 8px 32px;
 }
