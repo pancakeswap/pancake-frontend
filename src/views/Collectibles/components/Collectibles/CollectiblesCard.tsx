@@ -33,7 +33,7 @@ interface CollectiblesCardProps {
 
 const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ nft }: CollectiblesCardProps) => {
 
-    const { id, name, symbol, address, totalSupply, path, type, rarity, } = nft;
+    const { id, name, symbol, address, path, type, rarity, } = nft;
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleOpen = () => {
@@ -42,9 +42,12 @@ const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ nft }: Collectibles
 
     return (
         <Card className="card-active">
-            <img
-                src={path} alt="test"
-                style={{ width: '100%' }} />
+            {type === 'image' ? <img
+              src={path} alt='test'
+              style={{ width: '100%' }} /> :
+              <video width="100%" autoPlay>
+                  <source src={path} type="video/mp4" />
+              </video>}
             <CardBody>
                 <Heading as='h2' size="lg">{name}</Heading>
             </CardBody>
