@@ -8,4 +8,4 @@ If you want to contribute, please refer to the [contributing guidelines](./CONTR
 
 ## Documentation
 
-- [Info](./CONTRIBUTING.md)
+- [Info](doc/Info.md)
