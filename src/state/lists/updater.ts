@@ -6,8 +6,8 @@ import { useAllInactiveTokens } from 'hooks/Tokens'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
 import useFetchListCallback from 'hooks/useFetchListCallback'
+import useIsWindowVisibleRef from 'hooks/useIsWindowVisibleRef'
 import useInterval from 'hooks/useInterval'
-import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { AppDispatch } from '../index'
 import { acceptListUpdate } from './actions'
 import { useActiveListUrls } from './hooks'
@@ -15,7 +15,7 @@ import { useActiveListUrls } from './hooks'
 export default function Updater(): null {
   const { library } = useWeb3Provider()
   const dispatch = useDispatch<AppDispatch>()
-  const isWindowVisible = useIsWindowVisible()
+  const isWindowVisible = useIsWindowVisibleRef()
 
   // get all loaded lists, and the active urls
   const lists = useAllLists()
@@ -26,7 +26,7 @@ export default function Updater(): null {
 
   const fetchList = useFetchListCallback()
   const fetchAllListsCallback = useCallback(() => {
-    if (!isWindowVisible) return
+    if (!isWindowVisible.current) return
     Object.keys(lists).forEach((url) =>
       fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
     )
