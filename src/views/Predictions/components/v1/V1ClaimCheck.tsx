@@ -2,12 +2,18 @@ import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import useToast from 'hooks/useToast'
 import { Box, Flex, Text, ChevronRightIcon, useModal } from '@pancakeswap/uikit'
 import Loading from 'components/Loading'
 import { getMultiplier } from '../History/helpers'
 import CollectRoundWinningsModal from '../CollectRoundWinningsModal'
 import { getAllV1History } from './helpers'
+import NothingToClaimModal from './NothingToClaimModal'
+
+interface State {
+  payout: string
+  betAmount: string
+  epoch: number
+}
 
 const StyledClaimCheck = styled(Flex)`
   align-items: center;
@@ -20,14 +26,13 @@ const StyledClaimCheck = styled(Flex)`
 
 const ClaimCheck = () => {
   const [isFetching, setIsFetching] = useState(false)
-  const [betToClaim, setBetToClaim] = useState<{ payout: string; betAmount: string; epoch: number }>({
+  const [betToClaim, setBetToClaim] = useState<State>({
     payout: '0',
     betAmount: '0',
     epoch: 0,
   })
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { toastWarning } = useToast()
   const { payout, betAmount, epoch } = betToClaim
 
   const [onPresentCollectWinningsModal] = useModal(
@@ -35,13 +40,15 @@ const ClaimCheck = () => {
     false,
   )
 
+  const [onPresentNothingToClaimModal] = useModal(<NothingToClaimModal />)
+
   const handleClick = async () => {
     try {
       setIsFetching(true)
-      const history = await getAllV1History(account)
+      const betHistory = await getAllV1History({ user: account.toLowerCase(), claimed: false })
 
       // Filter out bets that can be claimed
-      const unclaimedBets = history.filter((bet) => {
+      const unclaimedBets = betHistory.filter((bet) => {
         return bet.round.position === bet.position || bet.round.failed === true
       })
 
@@ -60,7 +67,7 @@ const ClaimCheck = () => {
 
         setTimeout(() => onPresentCollectWinningsModal())
       } else {
-        toastWarning(t('Nothing to collect'), t('You have no unclaimed v0.1 prizes.'))
+        onPresentNothingToClaimModal()
       }
     } catch (error) {
       console.error('Unable to check v1 history', error)
