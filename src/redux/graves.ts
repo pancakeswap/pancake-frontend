@@ -48,7 +48,7 @@ const graves: Grave[] = [
     path: 'images/rugZombie/Zombie Multiplier.png',
     type: 'image',
     withdrawalCooldown: '3 days',
-    nftRevivalTime: '30 days',
+    nftRevivalTime: '14 days',
     rug: tokens.basicZmbe,
     artist: artists.RugZombie,
     stakingToken: '0x5E15E3431d2037d3Ce20238d8fF45faF551aD6b2',
