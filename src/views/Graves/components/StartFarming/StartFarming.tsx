@@ -49,7 +49,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   const { t } = useTranslation()
   const [grave, setGrave] = useState(get.grave(pid))
   const [hasNftGraveToken, setHasNftGraveToken] = useState(false)
-  const { rug, userInfo, isClosed, requiresNft, nft, graveNftToken } = grave
+  const { rug, userInfo, isClosed, requiresNft, nft } = grave
 
   const onUpdate = () => {
     fetch.grave(pid, data => {
@@ -161,7 +161,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
       {get.account() ?
         !userInfo.paidUnlockFee ?
           isZombieAllowance ?
-          <button onClick={handleUnlock} className="btn btn-disabled w-100" type="button">Unlock Grave</button> :
+          <button onClick={handleUnlock}  disabled={isClosed} className="btn btn-disabled w-100" type="button">{isClosed ? 'Grave is Retiring' : 'Unlock Grave'}</button> :
           <button onClick={handleApprove} className="btn btn-disabled w-100" type="button">Approve ZMBE</button>
         :
         <div>

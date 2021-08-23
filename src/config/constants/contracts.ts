@@ -21,7 +21,7 @@ export default {
   },
   nftConverter: {
     97: '',
-    56: '0x50E4d9DB0A1655D3525b92841F671F7400aaE14D',
+    56: '0x29F085A56050285ba2d6D72983bd7F77a373e413',
   },
   nftOwnership: {
     97: '',

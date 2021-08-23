@@ -53,8 +53,8 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           {type === 'image' ? (
             <img src={path} alt="NFT" className="sc-cxNHIi bjMxQn" />
           ) : (
-              <video width="100%" autoPlay>
-                <source src={path} type="video/mp4" />
+              <video width="100%" autoPlay loop>
+                <source src={path} type="video/mp4"/>
               </video>
             )}
         </div>

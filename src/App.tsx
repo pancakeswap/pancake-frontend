@@ -77,7 +77,8 @@ const App: React.FC = () => {
             <Route exact path={routes.TOMBS}><Tombs/></Route>
             <Route exact path={routes.SPAWNING_POOLS}><SpawningPools/></Route>
             <Route exact path={routes.MAUSOLEUM}><PredictionsHome/></Route>
-            <Route exact path={routes.AUCTION}><Predictions/></Route>          </Menu>
+            <Route exact path={routes.AUCTION}><Predictions/></Route>
+          </Menu>
         </Switch>
       </SuspenseWithChunkError>
       <ToastListener/>

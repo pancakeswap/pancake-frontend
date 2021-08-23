@@ -54,9 +54,8 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
       store.dispatch(updateDrFrankensteinZombieBalance(new BigNumber(res)))
     })
 
-  bnbPriceUsd()
+  bnbPriceUsd(setZombiePrice)
 
-  zombiePriceBnb(setZombiePrice)
 
   tomb(tombs[0].pid, multi)
 
@@ -436,10 +435,11 @@ const mainstPriceBnb = (setZombiePrice?: any) => {
     })
 }
 
-const bnbPriceUsd = () => {
+const bnbPriceUsd = (setZombiePrice?: any) => {
   axios.get('https://api.binance.com/api/v3/avgPrice?symbol=BNBBUSD')
     .then(res => {
       store.dispatch(updateBnbPriceUsd(res.data.price))
+      zombiePriceBnb(setZombiePrice)
     })
 }
 

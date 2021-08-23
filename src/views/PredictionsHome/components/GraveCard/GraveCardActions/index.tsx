@@ -93,7 +93,7 @@ const GraveCardActions: React.FC<{ id: number }> = ({ id }) => {
         </Box>
           <br/>
         </> : <br/>}
-        <Button onClick={() => history.push(`${routes.MAUSOLEUM }${ id}`)}>ENTER</Button>
+        <Button onClick={() => history.push(`${routes.MAUSOLEUM }${id}`)}>ENTER</Button>
       </Flex>
     </Flex>
   )
