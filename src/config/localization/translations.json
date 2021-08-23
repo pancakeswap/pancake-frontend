@@ -1425,5 +1425,6 @@
   "7D performance": "7D performance",
   "Based on last 7 days' performance. Does not account for impermanent loss": "Based on last 7 days' performance. Does not account for impermanent loss",
   "View token on CoinMarketCap": "View token on CoinMarketCap",
-  "Top Movers": "Top Movers"
+  "Top Movers": "Top Movers",
+  "Loading chart data...": "Loading chart data..."
 }
