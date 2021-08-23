@@ -7,7 +7,7 @@ export const getV1History = async (skip = 0, where = {}): Promise<Record<string,
     GRAPH_API_PREDICTION_V1,
     gql`
       query getV1BetHistory($skip: Int!, $where: Bet_filter) {
-        bets(first: 1000, skip: $skip, where: $where) {
+        bets(first: 1000, skip: $skip, where: $where, orderBy: createdAt, orderDirection: desc) {
           hash
           amount
           position

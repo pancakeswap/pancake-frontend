@@ -11,6 +11,7 @@ import {
   Heading,
   ModalCloseButton,
   Button,
+  AutoRenewIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getAllV1History } from './helpers'
@@ -118,7 +119,11 @@ const CollectRoundWinningsModal: React.FC<InjectedModalProps> = ({ onDismiss }) 
         <Text as="p" fontSize="14px" mb="24px">
           {t('Download your v0.1 Prediction history below.')}
         </Text>
-        <Button onClick={handleClick} isLoading={isFetching}>
+        <Button
+          onClick={handleClick}
+          isLoading={isFetching}
+          endIcon={isFetching ? <AutoRenewIcon spin width="24px" color="white" /> : null}
+        >
           {t('Download .CSV')}
         </Button>
       </ModalBody>
