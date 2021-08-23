@@ -2,7 +2,7 @@ import { getUnixTime } from 'date-fns'
 import { gql } from 'graphql-request'
 import { getBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
 import { multiQuery } from 'utils/infoQueryHelpers'
-import { PriceChartEntry } from 'types'
+import { PriceChartEntry } from 'state/info/types'
 import { INFO_CLIENT } from 'config/constants/endpoints'
 
 const getPriceSubqueries = (tokenAddress: string, blocks: any) =>

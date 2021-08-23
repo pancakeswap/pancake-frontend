@@ -1,10 +1,11 @@
 /* eslint-disable no-await-in-loop */
-import { ChartDayData } from 'types'
 import { useState, useEffect } from 'react'
-import { getUnixTime } from 'date-fns'
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
-import { PCS_V2_START, ONE_DAY_UNIX } from 'config/constants/info'
+import { PCS_V2_START } from 'config/constants/info'
+import { ChartEntry } from 'state/info/types'
+import { PancakeDayDatasResponse } from '../types'
+import { fetchChartData, mapDayData } from '../helpers'
 
 /**
  * Data for displaying Liquidity and Volume charts on Overview page
@@ -19,89 +20,18 @@ const PANCAKE_DAY_DATAS = gql`
   }
 `
 
-interface PancakeDayDatas {
-  date: number // UNIX timestamp in seconds
-  dailyVolumeUSD: string
-  totalLiquidityUSD: string
-}
-
-interface ChartResults {
-  pancakeDayDatas: PancakeDayDatas[]
-}
-
-const getOverviewChartData = async (skip: number): Promise<{ pancakeDayDatas?: PancakeDayDatas[]; error: boolean }> => {
+const getOverviewChartData = async (skip: number): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
-    const { pancakeDayDatas } = await request<ChartResults>(INFO_CLIENT, PANCAKE_DAY_DATAS, {
+    const { pancakeDayDatas } = await request<PancakeDayDatasResponse>(INFO_CLIENT, PANCAKE_DAY_DATAS, {
       startTime: PCS_V2_START,
       skip,
     })
-    return { pancakeDayDatas, error: false }
+    const data = pancakeDayDatas.map(mapDayData)
+    return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch overview chart data', error)
     return { error: true }
   }
-}
-
-const fetchChartData = async (): Promise<PancakeDayDatas[]> => {
-  let data: {
-    date: number
-    dailyVolumeUSD: string
-    totalLiquidityUSD: string
-  }[] = []
-  let skip = 0
-  let allFound = false
-
-  while (!allFound) {
-    const { pancakeDayDatas, error } = await getOverviewChartData(skip)
-    if (error) {
-      return null
-    }
-    skip += 1000
-    allFound = pancakeDayDatas.length < 1000
-    data = data.concat(pancakeDayDatas)
-  }
-
-  return data
-}
-
-const processChartData = (rawDayDatas: PancakeDayDatas[]): ChartDayData[] => {
-  // Format the datas to have number type for volume and liquidity as well as
-  const formattedDayDatas = rawDayDatas.reduce((accum: { [date: number]: ChartDayData }, dayData) => {
-    // At this stage we track unix day ordinal for each data point to check for empty days later
-    const dayOrdinal = parseInt((dayData.date / ONE_DAY_UNIX).toFixed(0), 10)
-    return {
-      [dayOrdinal]: {
-        date: dayData.date,
-        volumeUSD: parseFloat(dayData.dailyVolumeUSD),
-        liquidityUSD: parseFloat(dayData.totalLiquidityUSD),
-      },
-      ...accum,
-    }
-  }, {})
-
-  const availableDays = Object.keys(formattedDayDatas).map((dayOrdinal) => parseInt(dayOrdinal, 10))
-
-  const firstAvailableDayData = formattedDayDatas[availableDays[0]]
-
-  // Fill in empty days (there will be no day datas if no trades made that day)
-  let timestamp = firstAvailableDayData?.date ?? PCS_V2_START
-  let latestLiquidityUSD = firstAvailableDayData?.liquidityUSD ?? 0
-  const endTimestamp = getUnixTime(new Date())
-  while (timestamp < endTimestamp - ONE_DAY_UNIX) {
-    timestamp += ONE_DAY_UNIX
-    const dayOrdinal = parseInt((timestamp / ONE_DAY_UNIX).toFixed(0), 10)
-    if (!availableDays.includes(dayOrdinal)) {
-      formattedDayDatas[dayOrdinal] = {
-        date: timestamp,
-        volumeUSD: 0,
-        liquidityUSD: latestLiquidityUSD,
-      }
-    } else {
-      latestLiquidityUSD = formattedDayDatas[dayOrdinal].liquidityUSD
-    }
-  }
-
-  return Object.values(formattedDayDatas)
 }
 
 /**
@@ -109,29 +39,28 @@ const processChartData = (rawDayDatas: PancakeDayDatas[]): ChartDayData[] => {
  */
 const useFetchGlobalChartData = (): {
   error: boolean
-  data: ChartDayData[] | undefined
+  data: ChartEntry[] | undefined
 } => {
-  const [data, setData] = useState<ChartDayData[] | undefined>()
+  const [overviewChartData, setOverviewChartData] = useState<ChartEntry[] | undefined>()
   const [error, setError] = useState(false)
 
   useEffect(() => {
     const fetch = async () => {
-      const rawChartData = await fetchChartData()
-      if (rawChartData) {
-        const processedData = processChartData(rawChartData)
-        setData(processedData)
+      const { data } = await fetchChartData(getOverviewChartData)
+      if (data) {
+        setOverviewChartData(data)
       } else {
         setError(true)
       }
     }
-    if (!data && !error) {
+    if (!overviewChartData && !error) {
       fetch()
     }
-  }, [data, error])
+  }, [overviewChartData, error])
 
   return {
     error,
-    data,
+    data: overviewChartData,
   }
 }
 

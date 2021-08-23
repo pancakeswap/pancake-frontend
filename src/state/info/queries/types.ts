@@ -40,3 +40,29 @@ export interface BurnResponse {
   amount1: string
   amountUSD: string
 }
+export interface TokenDayData {
+  date: number // UNIX timestamp in seconds
+  dailyVolumeUSD: string
+  totalLiquidityUSD: string
+}
+
+export interface TokenDayDatasResponse {
+  tokenDayDatas: TokenDayData[]
+}
+
+// Footprint is the same, declared just for better readability
+export type PancakeDayData = TokenDayData
+
+export interface PancakeDayDatasResponse {
+  pancakeDayDatas: PancakeDayData[]
+}
+
+export interface PairDayData {
+  date: number // UNIX timestamp in seconds
+  dailyVolumeUSD: string
+  reserveUSD: string
+}
+
+export interface PairDayDatasResponse {
+  pairDayDatas: PairDayData[]
+}

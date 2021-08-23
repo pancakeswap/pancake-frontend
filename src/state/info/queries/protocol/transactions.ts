@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
-import { Transaction } from 'types'
+import { Transaction } from 'state/info/types'
 import { MintResponse, SwapResponse, BurnResponse } from 'state/info/queries/types'
 import { mapMints, mapBurns, mapSwaps } from 'state/info/queries/helpers'
 

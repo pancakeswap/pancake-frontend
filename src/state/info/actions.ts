@@ -1,9 +1,9 @@
 import { createAction } from '@reduxjs/toolkit'
-import { ChartDayData, Transaction, PriceChartEntry } from 'types'
-import { ProtocolData, TokenData, TokenChartEntry, PoolData, PoolChartEntry } from './types'
+import { Transaction } from 'state/info/types'
+import { ProtocolData, TokenData, PoolData, ChartEntry, PriceChartEntry } from './types'
 
 export const updateProtocolData = createAction<{ protocolData: ProtocolData }>('info/protocol/updateProtocolData')
-export const updateProtocolChartData = createAction<{ chartData: ChartDayData[] }>(
+export const updateProtocolChartData = createAction<{ chartData: ChartEntry[] }>(
   'info/protocol/updateProtocolChartData',
 )
 export const updateProtocolTransactions = createAction<{ transactions: Transaction[] }>(
@@ -12,7 +12,7 @@ export const updateProtocolTransactions = createAction<{ transactions: Transacti
 
 export const updatePoolData = createAction<{ pools: PoolData[] }>('info/pools/updatePoolData')
 export const addPoolKeys = createAction<{ poolAddresses: string[] }>('info/pools/addPoolKeys')
-export const updatePoolChartData = createAction<{ poolAddress: string; chartData: PoolChartEntry[] }>(
+export const updatePoolChartData = createAction<{ poolAddress: string; chartData: ChartEntry[] }>(
   'info/pools/updatePoolChartData',
 )
 export const updatePoolTransactions = createAction<{ poolAddress: string; transactions: Transaction[] }>(
@@ -24,7 +24,7 @@ export const addTokenKeys = createAction<{ tokenAddresses: string[] }>('info/tok
 export const addTokenPoolAddresses = createAction<{ tokenAddress: string; poolAddresses: string[] }>(
   'info/tokens/addTokenPoolAddresses',
 )
-export const updateTokenChartData = createAction<{ tokenAddress: string; chartData: TokenChartEntry[] }>(
+export const updateTokenChartData = createAction<{ tokenAddress: string; chartData: ChartEntry[] }>(
   'info/tokens/updateTokenChartData',
 )
 export const updateTokenTransactions = createAction<{ tokenAddress: string; transactions: Transaction[] }>(
@@ -33,6 +33,6 @@ export const updateTokenTransactions = createAction<{ tokenAddress: string; tran
 export const updateTokenPriceData = createAction<{
   tokenAddress: string
   secondsInterval: number
-  priceData: PriceChartEntry[] | undefined
+  priceData?: PriceChartEntry[]
   oldestFetchedTimestamp: number
 }>('info/tokens/updateTokenPriceData')

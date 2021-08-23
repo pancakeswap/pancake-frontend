@@ -18,7 +18,7 @@ const fetchTopPools = async (timestamp24hAgo: number): Promise<string[]> => {
     const query = gql`
       query topPools($blacklist: [String!], $timestamp24hAgo: Int) {
         pairDayDatas(
-          first: 30
+          first: 5
           where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: $timestamp24hAgo }
           orderBy: dailyVolumeUSD
           orderDirection: desc

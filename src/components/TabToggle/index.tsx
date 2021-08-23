@@ -5,10 +5,10 @@ import styled from 'styled-components'
 const Wrapper = styled(Flex)`
   overflow-x: scroll;
   padding: 0;
+  border-radius: 24px 24px 0 0;
   ::-webkit-scrollbar {
     display: none;
   }
-  -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 `
 
@@ -36,6 +36,7 @@ export const TabToggle = styled.button<TabProps>`
   border-radius: 24px 24px 0 0;
   font-size: 16px;
   font-weight: 600;
+  color: ${({ theme, isActive }) => (isActive ? theme.colors.text : theme.colors.textSubtle)};
   background-color: ${({ theme, isActive }) => (isActive ? theme.card.background : theme.colors.input)};
 `
 

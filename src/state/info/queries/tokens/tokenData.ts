@@ -132,69 +132,70 @@ const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
       )
       if (error) {
         setFetchState({ error: true })
+      } else {
+        const parsed = parseTokenData(data?.now)
+        const parsed24 = parseTokenData(data?.oneDayAgo)
+        const parsed48 = parseTokenData(data?.twoDaysAgo)
+        const parsed7d = parseTokenData(data?.oneWeekAgo)
+        const parsed14d = parseTokenData(data?.twoWeeksAgo)
+
+        // Calculate data and format
+        const formatted = tokenAddresses.reduce((accum: { [address: string]: TokenData }, address) => {
+          const current: FormattedTokenFields | undefined = parsed[address]
+          const oneDay: FormattedTokenFields | undefined = parsed24[address]
+          const twoDays: FormattedTokenFields | undefined = parsed48[address]
+          const week: FormattedTokenFields | undefined = parsed7d[address]
+          const twoWeeks: FormattedTokenFields | undefined = parsed14d[address]
+
+          const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
+            current?.tradeVolumeUSD,
+            oneDay?.tradeVolumeUSD,
+            twoDays?.tradeVolumeUSD,
+          )
+          const [volumeUSDWeek] = getChangeForPeriod(
+            current?.tradeVolumeUSD,
+            week?.tradeVolumeUSD,
+            twoWeeks?.tradeVolumeUSD,
+          )
+          const tvlUSD = current ? current.totalLiquidity * current.derivedUSD : 0
+          const tvlUSDOneDayAgo = oneDay ? oneDay.totalLiquidity * oneDay.derivedUSD : 0
+          const tvlUSDChange = getPercentChange(tvlUSD, tvlUSDOneDayAgo)
+          const tvlToken = current ? current.totalLiquidity : 0
+          // Prices of tokens for now, 24h ago and 7d ago
+          const priceUSD = current ? current.derivedBNB * bnbPrices.current : 0
+          const priceUSDOneDay = oneDay ? oneDay.derivedBNB * bnbPrices.oneDay : 0
+          const priceUSDWeek = week ? week.derivedBNB * bnbPrices.week : 0
+          const priceUSDChange = getPercentChange(priceUSD, priceUSDOneDay)
+          const priceUSDChangeWeek = getPercentChange(priceUSD, priceUSDWeek)
+          // if (address === '0x3fcca8648651e5b974dd6d3e50f61567779772a8') {
+          //   console.log('POTS')
+          //   console.log('bnbPrices.current', bnbPrices.current, current.derivedBNB)
+          //   console.log('bnbPrices.oneDay', bnbPrices.oneDay, oneDay.derivedBNB)
+          //   console.log({ priceUSD, priceUSDOneDay, priceUSDChange })
+          // }
+          const txCount = getAmountChange(current?.totalTransactions, oneDay?.totalTransactions)
+
+          accum[address] = {
+            exists: !!current,
+            address,
+            name: current ? current.name : '',
+            symbol: current ? current.symbol : '',
+            volumeUSD,
+            volumeUSDChange,
+            volumeUSDWeek,
+            txCount,
+            tvlUSD,
+            tvlUSDChange,
+            tvlToken,
+            priceUSD,
+            priceUSDChange,
+            priceUSDChangeWeek,
+          }
+
+          return accum
+        }, {})
+        setFetchState({ data: formatted, error: false })
       }
-      const parsed = parseTokenData(data?.now)
-      const parsed24 = parseTokenData(data?.oneDayAgo)
-      const parsed48 = parseTokenData(data?.twoDaysAgo)
-      const parsed7d = parseTokenData(data?.oneWeekAgo)
-      const parsed14d = parseTokenData(data?.twoWeeksAgo)
-
-      // Calculate data and format
-      const formatted = tokenAddresses.reduce((accum: { [address: string]: TokenData }, address) => {
-        const current: FormattedTokenFields | undefined = parsed[address]
-        const oneDay: FormattedTokenFields | undefined = parsed24[address]
-        const twoDays: FormattedTokenFields | undefined = parsed48[address]
-        const week: FormattedTokenFields | undefined = parsed7d[address]
-        const twoWeeks: FormattedTokenFields | undefined = parsed14d[address]
-
-        const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
-          current?.tradeVolumeUSD,
-          oneDay?.tradeVolumeUSD,
-          twoDays?.tradeVolumeUSD,
-        )
-        const [volumeUSDWeek] = getChangeForPeriod(
-          current?.tradeVolumeUSD,
-          week?.tradeVolumeUSD,
-          twoWeeks?.tradeVolumeUSD,
-        )
-        const tvlUSD = current ? current.totalLiquidity * current.derivedUSD : 0
-        const tvlUSDOneDayAgo = oneDay ? oneDay.totalLiquidity * oneDay.derivedUSD : 0
-        const tvlUSDChange = getPercentChange(tvlUSD, tvlUSDOneDayAgo)
-        const tvlToken = current ? current.totalLiquidity : 0
-        // Prices of tokens for now, 24h ago and 7d ago
-        const priceUSD = current ? current.derivedBNB * bnbPrices.current : 0
-        const priceUSDOneDay = oneDay ? oneDay.derivedBNB * bnbPrices.oneDay : 0
-        const priceUSDWeek = week ? week.derivedBNB * bnbPrices.week : 0
-        const priceUSDChange = getPercentChange(priceUSD, priceUSDOneDay)
-        const priceUSDChangeWeek = getPercentChange(priceUSD, priceUSDWeek)
-        // if (address === '0x3fcca8648651e5b974dd6d3e50f61567779772a8') {
-        //   console.log('POTS')
-        //   console.log('bnbPrices.current', bnbPrices.current, current.derivedBNB)
-        //   console.log('bnbPrices.oneDay', bnbPrices.oneDay, oneDay.derivedBNB)
-        //   console.log({ priceUSD, priceUSDOneDay, priceUSDChange })
-        // }
-        const txCount = getAmountChange(current?.totalTransactions, oneDay?.totalTransactions)
-
-        accum[address] = {
-          exists: !!current,
-          address,
-          name: current ? current.name : '',
-          symbol: current ? current.symbol : '',
-          volumeUSD,
-          volumeUSDChange,
-          volumeUSDWeek,
-          txCount,
-          tvlUSD,
-          tvlUSDChange,
-          tvlToken,
-          priceUSD,
-          priceUSDChange,
-          priceUSDChangeWeek,
-        }
-
-        return accum
-      }, {})
-      setFetchState({ data: formatted, error: false })
     }
     const allBlocksAvailable = block24h?.number && block48h?.number && block7d?.number && block14d?.number
     if (tokenAddresses.length > 0 && allBlocksAvailable && !blockError && bnbPrices) {

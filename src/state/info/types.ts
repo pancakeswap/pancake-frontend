@@ -1,4 +1,44 @@
-import { ChartDayData, PriceChartEntry, Transaction } from 'types'
+export interface Block {
+  number: number
+  timestamp: string
+}
+
+export interface ChartEntry {
+  date: number
+  volumeUSD: number
+  liquidityUSD: number
+}
+
+/**
+ * Formatted type for Candlestick charts
+ */
+export interface PriceChartEntry {
+  time: number
+  open: number
+  close: number
+  high: number
+  low: number
+}
+
+export enum TransactionType {
+  SWAP,
+  MINT,
+  BURN,
+}
+
+export type Transaction = {
+  type: TransactionType
+  hash: string
+  timestamp: string
+  sender: string
+  token0Symbol: string
+  token1Symbol: string
+  token0Address: string
+  token1Address: string
+  amountUSD: number
+  amountToken0: number
+  amountToken1: number
+}
 
 export interface ProtocolData {
   volumeUSD: number
@@ -12,11 +52,11 @@ export interface ProtocolData {
 }
 
 export interface ProtocolState {
-  readonly overview: ProtocolData | undefined
+  readonly overview?: ProtocolData
 
-  readonly chartData: ChartDayData[] | undefined
+  readonly chartData?: ChartEntry[]
 
-  readonly transactions: Transaction[] | undefined
+  readonly transactions?: Transaction[]
 }
 
 // POOLS
@@ -57,18 +97,12 @@ export interface PoolData {
   tvlToken1: number
 }
 
-export type PoolChartEntry = {
-  date: number
-  volumeUSD: number
-  totalValueLockedUSD: number
-}
-
 export interface PoolsState {
   byAddress: {
     [address: string]: {
-      data: PoolData | undefined
-      chartData: PoolChartEntry[] | undefined
-      transactions: Transaction[] | undefined
+      data?: PoolData
+      chartData?: ChartEntry[]
+      transactions?: Transaction[]
     }
   }
 }
@@ -96,23 +130,17 @@ export type TokenData = {
   priceUSDChangeWeek: number
 }
 
-export interface TokenChartEntry {
-  date: number
-  volumeUSD: number
-  totalValueLockedUSD: number
-}
-
 export interface TokensState {
   byAddress: {
     [address: string]: {
-      data: TokenData | undefined
-      poolAddresses: string[] | undefined
-      chartData: TokenChartEntry[] | undefined
+      data?: TokenData
+      poolAddresses?: string[]
+      chartData?: ChartEntry[]
       priceData: {
-        oldestFetchedTimestamp?: number | undefined
+        oldestFetchedTimestamp?: number
         [secondsInterval: number]: PriceChartEntry[] | undefined
       }
-      transactions: Transaction[] | undefined
+      transactions?: Transaction[]
     }
   }
 }

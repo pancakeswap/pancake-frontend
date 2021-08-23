@@ -6,9 +6,8 @@ import CandleChart from 'components/InfoCharts/CandleChart'
 import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import { useTranslation } from 'contexts/Localization'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { PoolChartEntry, TokenChartEntry, TokenData } from 'state/info/types'
+import { ChartEntry, TokenData, PriceChartEntry } from 'state/info/types'
 import { format, fromUnixTime } from 'date-fns'
-import { PriceChartEntry } from 'types'
 
 enum ChartView {
   LIQUIDITY,
@@ -18,7 +17,7 @@ enum ChartView {
 
 interface ChartCardProps {
   variant: 'pool' | 'token'
-  chartData: TokenChartEntry[] | PoolChartEntry[]
+  chartData: ChartEntry[]
   tokenData?: TokenData
   tokenPriceData?: PriceChartEntry[]
 }
@@ -36,7 +35,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ variant, chartData, tokenData, to
       return chartData.map((day) => {
         return {
           time: fromUnixTime(day.date),
-          value: day.totalValueLockedUSD,
+          value: day.liquidityUSD,
         }
       })
     }
