@@ -189,9 +189,9 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                     {t('Liquidity')}
                   </Text>
                   <Text bold fontSize="24px">
-                    ${formatAmount(tokenData.tvlUSD)}
+                    ${formatAmount(tokenData.liquidityUSD)}
                   </Text>
-                  <Percent value={tokenData.tvlUSDChange} />
+                  <Percent value={tokenData.liquidityUSDChange} />
 
                   <Text mt="24px" bold color="secondary" fontSize="12px" textTransform="uppercase">
                     {t('Volume 24H')}

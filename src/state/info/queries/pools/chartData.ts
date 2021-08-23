@@ -5,9 +5,6 @@ import { PCS_V2_START } from 'config/constants/info'
 import { PairDayDatasResponse } from '../types'
 import { mapPairDayData, fetchChartData } from '../helpers'
 
-/**
- * Data for drawing Volume and TVL charts on pool page
- */
 const getPoolChartData = async (skip: number, address: string): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
     const query = gql`

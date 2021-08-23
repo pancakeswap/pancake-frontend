@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
-import { getChangeForPeriod, getPercentChange } from 'utils/infoData'
+import { getChangeForPeriod, getPercentChange } from 'utils/infoDataHelpers'
 import { ProtocolData } from 'state/info/types'
 import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
@@ -58,7 +58,6 @@ const useFetchProtocolData = (): ProtocolFetchState => {
   const [fetchState, setFetchState] = useState<ProtocolFetchState>({
     error: false,
   })
-  // TODO: need more blocks to fix percentages
   const [t24, t48] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48])
   const [block24, block48] = blocks ?? []

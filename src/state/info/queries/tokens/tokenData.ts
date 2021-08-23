@@ -4,7 +4,7 @@ import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
 import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
-import { getPercentChange, getChangeForPeriod, getAmountChange } from 'utils/infoData'
+import { getPercentChange, getChangeForPeriod, getAmountChange } from 'utils/infoDataHelpers'
 import { TokenData } from 'state/info/types'
 import { useBnbPrices } from 'hooks/useBnbPrices'
 
@@ -157,22 +157,16 @@ const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
             week?.tradeVolumeUSD,
             twoWeeks?.tradeVolumeUSD,
           )
-          const tvlUSD = current ? current.totalLiquidity * current.derivedUSD : 0
-          const tvlUSDOneDayAgo = oneDay ? oneDay.totalLiquidity * oneDay.derivedUSD : 0
-          const tvlUSDChange = getPercentChange(tvlUSD, tvlUSDOneDayAgo)
-          const tvlToken = current ? current.totalLiquidity : 0
+          const liquidityUSD = current ? current.totalLiquidity * current.derivedUSD : 0
+          const liquidityUSDOneDayAgo = oneDay ? oneDay.totalLiquidity * oneDay.derivedUSD : 0
+          const liquidityUSDChange = getPercentChange(liquidityUSD, liquidityUSDOneDayAgo)
+          const liquidityToken = current ? current.totalLiquidity : 0
           // Prices of tokens for now, 24h ago and 7d ago
           const priceUSD = current ? current.derivedBNB * bnbPrices.current : 0
           const priceUSDOneDay = oneDay ? oneDay.derivedBNB * bnbPrices.oneDay : 0
           const priceUSDWeek = week ? week.derivedBNB * bnbPrices.week : 0
           const priceUSDChange = getPercentChange(priceUSD, priceUSDOneDay)
           const priceUSDChangeWeek = getPercentChange(priceUSD, priceUSDWeek)
-          // if (address === '0x3fcca8648651e5b974dd6d3e50f61567779772a8') {
-          //   console.log('POTS')
-          //   console.log('bnbPrices.current', bnbPrices.current, current.derivedBNB)
-          //   console.log('bnbPrices.oneDay', bnbPrices.oneDay, oneDay.derivedBNB)
-          //   console.log({ priceUSD, priceUSDOneDay, priceUSDChange })
-          // }
           const txCount = getAmountChange(current?.totalTransactions, oneDay?.totalTransactions)
 
           accum[address] = {
@@ -184,9 +178,9 @@ const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
             volumeUSDChange,
             volumeUSDWeek,
             txCount,
-            tvlUSD,
-            tvlUSDChange,
-            tvlToken,
+            liquidityUSD,
+            liquidityUSDChange,
+            liquidityToken,
             priceUSD,
             priceUSDChange,
             priceUSDChangeWeek,

@@ -5,10 +5,6 @@ import { PCS_V2_START } from 'config/constants/info'
 import { TokenDayDatasResponse } from '../types'
 import { mapDayData, fetchChartData } from '../helpers'
 
-/**
- * Data for drawing Volume and TVL charts on token page
- * Data for price chart comes from priceData.ts
- */
 const getTokenChartData = async (skip: number, address: string): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
     const query = gql`

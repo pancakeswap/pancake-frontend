@@ -322,7 +322,7 @@ const Search = () => {
                   </Flex>
                   {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.priceUSD)}</Text>}
                   {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.volumeUSD)}</Text>}
-                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.tvlUSD)}</Text>}
+                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.liquidityUSD)}</Text>}
                 </ResponsiveGrid>
               </HoverRowLink>
             )
@@ -381,7 +381,7 @@ const Search = () => {
                   </Flex>
                   {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSD)}</Text>}
                   {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSDWeek)}</Text>}
-                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.tvlUSD)}</Text>}
+                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.liquidityUSD)}</Text>}
                 </ResponsiveGrid>
               </HoverRowLink>
             )

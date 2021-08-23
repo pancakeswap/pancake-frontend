@@ -27,11 +27,6 @@ import {
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
 import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
-import InfoOverview from './views/Info/Overview'
-import InfoPools from './views/Info/Pools'
-import InfoPoolPage from './views/Info/Pools/PoolPage'
-import InfoTokens from './views/Info/Tokens'
-import RedirectInvalidToken from './views/Info/Tokens/redirects'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -55,6 +50,11 @@ const AddLiquidity = lazy(() => import('./views/AddLiquidity'))
 const Liquidity = lazy(() => import('./views/Pool'))
 const PoolFinder = lazy(() => import('./views/PoolFinder'))
 const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
+const InfoOverview = lazy(() => import('./views/Info/Overview'))
+const InfoPools = lazy(() => import('./views/Info/Pools'))
+const InfoPoolPage = lazy(() => import('./views/Info/Pools/PoolPage'))
+const InfoTokens = lazy(() => import('./views/Info/Tokens'))
+const RedirectInvalidToken = lazy(() => import('./views/Info/Tokens/redirects'))
 
 // This config is required for number formatting
 BigNumber.config({

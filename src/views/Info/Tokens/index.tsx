@@ -13,7 +13,6 @@ const TokensOverview: React.FC = () => {
     window.scrollTo(0, 0)
   }, [])
 
-  // there is hook with alreadhy filteresd shit....
   const allTokens = useAllTokenData()
 
   const formattedTokens = useMemo(() => {

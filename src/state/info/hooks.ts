@@ -175,7 +175,7 @@ export const useAddTokenKeys = (): ((addresses: string[]) => void) => {
   return useCallback((tokenAddresses: string[]) => dispatch(addTokenKeys({ tokenAddresses })), [dispatch])
 }
 
-export const useTokenDatas = (addresses: string[] | undefined): TokenData[] | undefined => {
+export const useTokenDatas = (addresses?: string[]): TokenData[] | undefined => {
   const allTokenData = useAllTokenData()
   const addNewTokenKeys = useAddTokenKeys()
 

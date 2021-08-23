@@ -87,14 +87,14 @@ export interface PoolData {
   lpFees7d: number
   lpApr7d: number
 
-  tvlUSD: number
-  tvlUSDChange: number
+  liquidityUSD: number
+  liquidityUSDChange: number
 
   token0Price: number
   token1Price: number
 
-  tvlToken0: number
-  tvlToken1: number
+  liquidityToken0: number
+  liquidityToken1: number
 }
 
 export interface PoolsState {
@@ -121,9 +121,9 @@ export type TokenData = {
   volumeUSDWeek: number
   txCount: number
 
-  tvlToken: number
-  tvlUSD: number
-  tvlUSDChange: number
+  liquidityToken: number
+  liquidityUSD: number
+  liquidityUSDChange: number
 
   priceUSD: number
   priceUSDChange: number

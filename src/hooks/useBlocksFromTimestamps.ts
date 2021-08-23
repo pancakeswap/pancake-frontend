@@ -20,11 +20,53 @@ const blocksQueryConstructor = (subqueries: string[]) => {
 }
 
 /**
+ * @notice Fetches block objects for an array of timestamps.
+ * @param {Array} timestamps
+ */
+export const getBlocksFromTimestamps = async (
+  timestamps: number[],
+  sortDirection: 'asc' | 'desc' = 'desc',
+  skipCount = 500,
+): Promise<Block[]> => {
+  if (timestamps?.length === 0) {
+    return []
+  }
+
+  const fetchedData: any = await multiQuery(
+    blocksQueryConstructor,
+    getBlockSubqueries(timestamps),
+    BLOCKS_CLIENT,
+    skipCount,
+  )
+
+  const sortingFunction =
+    sortDirection === 'desc' ? (a: Block, b: Block) => b.number - a.number : (a: Block, b: Block) => a.number - b.number
+
+  const blocks: Block[] = []
+  if (fetchedData) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key of Object.keys(fetchedData)) {
+      if (fetchedData[key].length > 0) {
+        blocks.push({
+          timestamp: key.split('t')[1],
+          number: parseInt(fetchedData[key][0].number, 10),
+        })
+      }
+    }
+    // graphql-request does not guarantee same ordering of batched requests subqueries, hence manual sorting
+    blocks.sort(sortingFunction)
+  }
+  return blocks
+}
+
+/**
  * for a given array of timestamps, returns block entities
  * @param timestamps
  */
 export const useBlocksFromTimestamps = (
   timestamps: number[],
+  sortDirection: 'asc' | 'desc' = 'desc',
+  skipCount = 1000,
 ): {
   blocks?: Block[]
   error: boolean
@@ -34,23 +76,11 @@ export const useBlocksFromTimestamps = (
 
   useEffect(() => {
     const fetchData = async () => {
-      const results = await multiQuery(blocksQueryConstructor, getBlockSubqueries(timestamps), BLOCKS_CLIENT)
-      if (results) {
-        const formattedBlocks = []
-        // eslint-disable-next-line no-restricted-syntax
-        for (const key of Object.keys(results)) {
-          if (results[key].length > 0) {
-            formattedBlocks.push({
-              timestamp: key.split('t')[1],
-              number: parseInt(results[key][0].number, 10),
-            })
-          }
-        }
-        // graphql-request does not guarantee same ordering of batched requests subqueries, hence sorting by blocks from recent to oldest
-        formattedBlocks.sort((a, b) => b.number - a.number)
-        setBlocks(formattedBlocks)
-      } else {
+      const result = await getBlocksFromTimestamps(timestamps, sortDirection, skipCount)
+      if (result.length === 0) {
         setError(true)
+      } else {
+        setBlocks(result)
       }
     }
     if (!blocks && !error) {
@@ -62,38 +92,4 @@ export const useBlocksFromTimestamps = (
     blocks,
     error,
   }
-}
-
-/**
- * @notice Fetches block objects for an array of timestamps.
- * @dev blocks are returned in chronological order (ASC) regardless of input.
- * @dev blocks are returned at string representations of Int
- * @dev timestamps are returns as they were provided; not the block time.
- * @param {Array} timestamps
- */
-export const getBlocksFromTimestamps = async (timestamps: number[], skipCount = 500) => {
-  if (timestamps?.length === 0) {
-    return []
-  }
-  const fetchedData: any = await multiQuery(
-    blocksQueryConstructor,
-    getBlockSubqueries(timestamps),
-    BLOCKS_CLIENT,
-    skipCount,
-  )
-
-  const blocks: any[] = []
-  if (fetchedData) {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const key of Object.keys(fetchedData)) {
-      if (fetchedData[key].length > 0) {
-        blocks.push({
-          timestamp: key.split('t')[1],
-          number: parseInt(fetchedData[key][0].number, 10),
-        })
-      }
-    }
-    blocks.sort((a, b) => a.number - b.number)
-  }
-  return blocks
 }

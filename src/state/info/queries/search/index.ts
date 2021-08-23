@@ -78,7 +78,7 @@ const useFetchSearchResults = (
     setSearchResults({
       tokens: [],
       pools: [],
-      loading: searchStringTooShort,
+      loading: !searchStringTooShort,
       error: false,
     })
   }, [searchString, searchStringTooShort])

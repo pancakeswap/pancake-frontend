@@ -98,7 +98,7 @@ const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => 
         <Text>${formatAmount(poolData.volumeUSDWeek)}</Text>
         <Text>${formatAmount(poolData.lpFees24h)}</Text>
         <Text>{formatAmount(poolData.lpApr7d)}%</Text>
-        <Text>${formatAmount(poolData.tvlUSD)}</Text>
+        <Text>${formatAmount(poolData.liquidityUSD)}</Text>
       </ResponsiveGrid>
     </LinkWrapper>
   )

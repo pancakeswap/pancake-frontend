@@ -5,7 +5,7 @@ import { INFO_CLIENT } from 'config/constants/endpoints'
 import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
 import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
 import { PoolData } from 'state/info/types'
-import { getChangeForPeriod, getLpFeesAndApr, getPercentChange } from 'utils/infoData'
+import { getChangeForPeriod, getLpFeesAndApr, getPercentChange } from 'utils/infoDataHelpers'
 
 interface PoolFields {
   id: string
@@ -178,17 +178,17 @@ const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
             twoWeeks?.volumeUSD,
           )
 
-          const tvlUSD = current ? current.reserveUSD : 0
+          const liquidityUSD = current ? current.reserveUSD : 0
 
-          const tvlUSDChange = getPercentChange(current?.reserveUSD, oneDay?.reserveUSD)
+          const liquidityUSDChange = getPercentChange(current?.reserveUSD, oneDay?.reserveUSD)
 
-          const tvlToken0 = current ? current.reserve0 : 0
-          const tvlToken1 = current ? current.reserve1 : 0
+          const liquidityToken0 = current ? current.reserve0 : 0
+          const liquidityToken1 = current ? current.reserve1 : 0
 
           const { totalFees24h, totalFees7d, lpFees24h, lpFees7d, lpApr7d } = getLpFeesAndApr(
             volumeUSD,
             volumeUSDWeek,
-            tvlUSD,
+            liquidityUSD,
           )
 
           if (current) {
@@ -215,10 +215,10 @@ const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
               lpFees24h,
               lpFees7d,
               lpApr7d,
-              tvlUSD,
-              tvlUSDChange,
-              tvlToken0,
-              tvlToken1,
+              liquidityUSD,
+              liquidityUSDChange,
+              liquidityToken0,
+              liquidityToken1,
             }
           }
 

@@ -173,9 +173,9 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                         {t('Liquidity')}
                       </Text>
                       <Text fontSize="24px" bold>
-                        ${formatAmount(poolData.tvlUSD)}
+                        ${formatAmount(poolData.liquidityUSD)}
                       </Text>
-                      <Percent value={poolData.tvlUSDChange} />
+                      <Percent value={poolData.liquidityUSDChange} />
                     </Flex>
                     <Flex flex="1" flexDirection="column">
                       <Text color="secondary" bold fontSize="12px" textTransform="uppercase">
@@ -206,7 +206,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                           {poolData.token0.symbol}
                         </Text>
                       </Flex>
-                      <Text small>{formatAmount(poolData.tvlToken0)}</Text>
+                      <Text small>{formatAmount(poolData.liquidityToken0)}</Text>
                     </Flex>
                     <Flex justifyContent="space-between">
                       <Flex>
@@ -215,7 +215,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                           {poolData.token1.symbol}
                         </Text>
                       </Flex>
-                      <Text small>{formatAmount(poolData.tvlToken1)}</Text>
+                      <Text small>{formatAmount(poolData.liquidityToken1)}</Text>
                     </Flex>
                   </LockedTokensContainer>
                 </Box>

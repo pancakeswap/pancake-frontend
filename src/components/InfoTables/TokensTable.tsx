@@ -109,7 +109,7 @@ const DataRow: React.FC<{ tokenData: TokenData; index: number }> = ({ tokenData,
           <Percent value={tokenData.priceUSDChange} fontWeight={400} />
         </Text>
         <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>
-        <Text fontWeight={400}>${formatAmount(tokenData.tvlUSD)}</Text>
+        <Text fontWeight={400}>${formatAmount(tokenData.liquidityUSD)}</Text>
       </ResponsiveGrid>
     </LinkWrapper>
   )
