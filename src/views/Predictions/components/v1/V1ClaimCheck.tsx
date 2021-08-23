@@ -53,7 +53,7 @@ const ClaimCheck = () => {
         const betPayout = totalAmount * multiplier
 
         setBetToClaim({
-          betAmount: firstBetToClaim.amount.toString(),
+          betAmount: amount.toString(),
           payout: betPayout.toString(),
           epoch: Number(firstBetToClaim.round.epoch),
         })
