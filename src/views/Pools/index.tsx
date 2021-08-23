@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
+import { ethers } from 'ethers'
+import { formatUnits } from 'ethers/lib/utils'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { Heading, Flex, Image, Text } from '@pancakeswap/uikit'
@@ -195,7 +197,27 @@ const Pools: React.FC = () => {
       case 'totalStaked':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => (pool.isAutoVault ? totalCakeInVault.toNumber() : pool.totalStaked.toNumber()),
+          (pool: Pool) => {
+            let totalStaked = Number.NaN
+            if (pool.isAutoVault) {
+              if (totalCakeInVault.isFinite()) {
+                totalStaked = +formatUnits(
+                  ethers.BigNumber.from(totalCakeInVault.toString()),
+                  pool.stakingToken.decimals,
+                )
+              }
+            } else if (pool.sousId === 0) {
+              if (pool.totalStaked?.isFinite() && totalCakeInVault.isFinite()) {
+                const manualCakeTotalMinusAutoVault = ethers.BigNumber.from(pool.totalStaked.toString()).sub(
+                  totalCakeInVault.toString(),
+                )
+                totalStaked = +formatUnits(manualCakeTotalMinusAutoVault, pool.stakingToken.decimals)
+              }
+            } else if (pool.totalStaked?.isFinite()) {
+              totalStaked = +formatUnits(ethers.BigNumber.from(pool.totalStaked.toString()), pool.stakingToken.decimals)
+            }
+            return Number.isFinite(totalStaked) ? totalStaked : 0
+          },
           'desc',
         )
       default:
