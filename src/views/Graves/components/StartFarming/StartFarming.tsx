@@ -189,11 +189,10 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   const renderButtonsForNftGrave = () => {
     return <div className="space-between">
       {get.account() ?
-        hasNftGraveToken ?
           userInfo.rugDeposited.toString() === '0' ?
-            <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Deposit {nftByName(nft).symbol}</button> :
-            renderButtonsForGrave()
-          : <button onClick={onPresentConvertNftModal} className="btn btn-disabled w-100" type="button">Convert {nftByName(nft).symbol}</button>
+            hasNftGraveToken ? <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Deposit {nftByName(nft).symbol}</button> :
+             <button onClick={onPresentConvertNftModal} className="btn btn-disabled w-100" type="button">Convert {nftByName(nft).symbol}</button> :
+              renderButtonsForGrave()
         :  <span className="total-earned text-shadow">Connect Wallet</span>}</div>
   }
 

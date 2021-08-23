@@ -87,16 +87,16 @@ const Home: React.FC = () => {
     fetch.initialData(account, multi)
   }, [account, multi])
 
-  const allocPoints = web3.eth.abi.encodeParameter('uint256', '400')
-  const lpToken = web3.eth.abi.encodeParameter('address', '0x5E15E3431d2037d3Ce20238d8fF45faF551aD6b2').replace('0x','')
-  const minimumStakingTime = web3.eth.abi.encodeParameter('uint256', '259200').replace('0x','')
-  const ruggedToken = web3.eth.abi.encodeParameter('address', '0x22e42D9425b55FD2262bfF72a316bb052DDb2a77').replace('0x','')
-  const nft = web3.eth.abi.encodeParameter('address', '0xABef28a6686A75c24c79fD95d31E7bD9828Ab1B8').replace('0x','')
-  const minimumStake = web3.eth.abi.encodeParameter('uint256', '2500000000000000000000').replace('0x','')
-  const unlockFee = web3.eth.abi.encodeParameter('uint256', '5000000000000000000').replace('0x','')
-  const nftRevivalTime = web3.eth.abi.encodeParameter('uint256', '1209600').replace('0x','')
-  const withUpdate = web3.eth.abi.encodeParameter('bool', 'true').replace('0x','')
-  console.log(`${allocPoints}${lpToken}${minimumStakingTime}${ruggedToken}${nft}${minimumStake}${unlockFee}${nftRevivalTime}${withUpdate}`)
+  // const allocPoints = web3.eth.abi.encodeParameter('uint256', '400')
+  // const lpToken = web3.eth.abi.encodeParameter('address', '0x5E15E3431d2037d3Ce20238d8fF45faF551aD6b2').replace('0x','')
+  // const minimumStakingTime = web3.eth.abi.encodeParameter('uint256', '259200').replace('0x','')
+  // const ruggedToken = web3.eth.abi.encodeParameter('address', '0x22e42D9425b55FD2262bfF72a316bb052DDb2a77').replace('0x','')
+  // const nft = web3.eth.abi.encodeParameter('address', '0xABef28a6686A75c24c79fD95d31E7bD9828Ab1B8').replace('0x','')
+  // const minimumStake = web3.eth.abi.encodeParameter('uint256', '2500000000000000000000').replace('0x','')
+  // const unlockFee = web3.eth.abi.encodeParameter('uint256', '5000000000000000000').replace('0x','')
+  // const nftRevivalTime = web3.eth.abi.encodeParameter('uint256', '1209600').replace('0x','')
+  // const withUpdate = web3.eth.abi.encodeParameter('bool', 'true').replace('0x','')
+  // console.log(`${allocPoints}${lpToken}${minimumStakingTime}${ruggedToken}${nft}${minimumStake}${unlockFee}${nftRevivalTime}${withUpdate}`)
   // const pid = web3.eth.abi.encodeParameter('uint256', '0')
   // const nft = web3.eth.abi.encodeParameter('address', '0x6209E17d98ba2089571476940751802AAc4249e8').replace('0x','')
   //
@@ -104,7 +104,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-    <NFTBanner/>
+     <NFTBanner/>
     <Title/>
     <Page>
       <div>

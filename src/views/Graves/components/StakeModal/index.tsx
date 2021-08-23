@@ -88,7 +88,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismiss })
       onClick={handleDepositRug}
   />
   )
-
+  const decimalAmount = getDecimalAmount(new BigNumber(stakeAmount), rug.decimals)
   return <Modal  onDismiss={onDismiss} title={typeof rug === "undefined" ? "Stake ZMBE" : `Stake ${rug.symbol}`} headerBackground={theme.colors.gradients.cardHeader}>
     <Flex alignItems="center" justifyContent="space-between" mb="8px">
       <Text bold>Stake</Text>
@@ -135,7 +135,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismiss })
        Get {rug.symbol}
        {/* external href={`${BASE_EXCHANGE_URL}/swap?outputCurrency=${getAddress(rug.address)}`} */}
      </Button> :
-      <Button onClick={onGetDepositRugClick} mt="8px" as="a" variant="secondary">
+      <Button disabled={decimalAmount.lt(1)} onClick={() =>{ if(decimalAmount.gte(1)) { onGetDepositRugClick() } }} mt="8px" as="a" variant="secondary">
         Deposit {rug.symbol}
       </Button>}
   </Modal>
