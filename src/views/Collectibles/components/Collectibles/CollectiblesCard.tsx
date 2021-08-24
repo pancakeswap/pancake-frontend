@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Card, CardBody, CardFooter, Heading, ChevronDownIcon, ChevronUpIcon, } from '@rug-zombie-libs/uikit'
+import { Card, CardBody, CardFooter, Heading, ChevronDownIcon, ChevronUpIcon, Flex } from '@rug-zombie-libs/uikit'
 
 
 const StyleDetails = styled.div`
@@ -49,12 +49,14 @@ const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ nft }: Collectibles
     <div>
       <Card className="card-active">
         <StyleCardHeader>
-          {type === 'image' ? <img
-            src={path} alt='test'
-            style={{ width: '100%', height: '100%' }} /> :
-            <video width="100%" height="100%" autoPlay>
-              <source src={path} type="video/mp4" />
-            </video>}
+          <Flex justifyContent="center" paddingTop="5%" height="100%">
+            {type === 'image' ? <img
+                src={path} alt='test'
+                style={{ maxWidth: '90%', maxHeight: '100%' }} /> :
+              <video style={{ maxWidth: '90%', maxHeight: '100%' }} autoPlay>
+                <source src={path} type='video/mp4' />
+              </video>}
+          </Flex>
         </StyleCardHeader>
         <CardBody>
           <Heading as='h2' fontSize="18px">{name}</Heading>
