@@ -52,7 +52,7 @@ const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ nft }: Collectibles
           <Flex justifyContent="center" paddingTop="5%" height="100%">
             {type === 'image' ? <img
                 src={path} alt='test'
-                style={{ maxWidth: '90%', maxHeight: '100%' }} /> :
+                style={{ maxWidth: '90%', maxHeight: '100%', objectFit: 'contain' }} /> :
               <video style={{ maxWidth: '90%', maxHeight: '100%' }} autoPlay>
                 <source src={path} type='video/mp4' />
               </video>}
