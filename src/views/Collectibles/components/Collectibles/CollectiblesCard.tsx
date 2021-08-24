@@ -19,8 +19,7 @@ const Styleinfo = styled.div`
 `
 const StyleCardHeader = styled.div `
   width: 100%;
-  height: 350px;
-  padding: 0;
+  height: 300px;
   background: #111820;
 `
 interface nftData {
@@ -58,7 +57,7 @@ const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ nft }: Collectibles
             </video>}
         </StyleCardHeader>
         <CardBody>
-          <Heading as='h2' fontSize="20px">{name}</Heading>
+          <Heading as='h2' fontSize="18px">{name}</Heading>
         </CardBody>
         <CardFooter>
           <StyleDetails>

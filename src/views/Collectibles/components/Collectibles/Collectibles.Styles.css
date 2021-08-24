@@ -15,3 +15,9 @@
 .cardHeader{
   margin: 8px 32px;
 }
+
+@media screen and (min-width: 968px) {
+  .collectibles.gOymta, .collectibles.iJWFDb {
+    grid-template-columns: repeat(16,1fr) !important;
+  }
+}
