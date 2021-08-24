@@ -316,7 +316,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         </Flex>
       </Flex>
       <BalanceInput
-        isWarning={userNotEnoughCake || maxTicketPurchaseExceeded}
+        isWarning={account && (userNotEnoughCake || maxTicketPurchaseExceeded)}
         placeholder="0"
         value={ticketsToBuy}
         onUserInput={handleInputChange}
@@ -327,30 +327,32 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       />
       <Flex alignItems="center" justifyContent="flex-end" mt="4px" mb="12px">
         <Flex justifyContent="flex-end" flexDirection="column">
-          {(userNotEnoughCake || maxTicketPurchaseExceeded) && (
+          {account && (userNotEnoughCake || maxTicketPurchaseExceeded) && (
             <Text fontSize="12px" color="failure">
               {getErrorMessage()}
             </Text>
           )}
-          <Flex justifyContent="flex-end">
-            <Text fontSize="12px" color="textSubtle" mr="4px">
-              CAKE {t('Balance')}:
-            </Text>
-            {hasFetchedBalance ? (
-              <Text fontSize="12px" color="textSubtle">
-                {userCakeDisplayBalance}
+          {account && (
+            <Flex justifyContent="flex-end">
+              <Text fontSize="12px" color="textSubtle" mr="4px">
+                CAKE {t('Balance')}:
               </Text>
-            ) : (
-              <Skeleton width={50} height={12} />
-            )}
-          </Flex>
+              {hasFetchedBalance ? (
+                <Text fontSize="12px" color="textSubtle">
+                  {userCakeDisplayBalance}
+                </Text>
+              ) : (
+                <Skeleton width={50} height={12} />
+              )}
+            </Flex>
+          )}
         </Flex>
       </Flex>
 
-      {!hasFetchedBalance ? (
+      {account && !hasFetchedBalance ? (
         <Skeleton width="100%" height={20} mt="8px" mb="24px" />
       ) : (
-        <ShortcutButtonsWrapper isVisible={hasFetchedBalance && oneHundredPercentOfBalance >= 1}>
+        <ShortcutButtonsWrapper isVisible={account && hasFetchedBalance && oneHundredPercentOfBalance >= 1}>
           {tenPercentOfBalance >= 1 && (
             <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(tenPercentOfBalance)}>
               {hasFetchedBalance ? tenPercentOfBalance : ``}
