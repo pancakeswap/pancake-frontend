@@ -1,6 +1,6 @@
-import React, { createContext, ReactNode, useCallback, useState } from 'react'
+import React, { createContext, useCallback, useState } from 'react'
 import { kebabCase } from 'lodash'
-import { Toast, toastTypes } from '@pancakeswap/uikit'
+import { Toast, toastTypes } from 'components/Toast'
 import { ToastContextApi } from './types'
 
 export const ToastsContext = createContext<ToastContextApi>(undefined)
@@ -9,7 +9,7 @@ export const ToastsProvider: React.FC = ({ children }) => {
   const [toasts, setToasts] = useState<ToastContextApi['toasts']>([])
 
   const toast = useCallback(
-    ({ title, description, type }: Omit<Toast, 'id'>) => {
+    ({ title, description, type, tx }: Omit<Toast, 'id'>) => {
       setToasts((prevToasts) => {
         const id = kebabCase(title)
 
@@ -22,6 +22,7 @@ export const ToastsProvider: React.FC = ({ children }) => {
             title,
             description,
             type,
+            tx,
           },
           ...currentToasts,
         ]
@@ -30,17 +31,17 @@ export const ToastsProvider: React.FC = ({ children }) => {
     [setToasts],
   )
 
-  const toastError = (title: string, description?: ReactNode) => {
-    return toast({ title, description, type: toastTypes.DANGER })
+  const toastError = (title: Toast['title'], description?: Toast['description'], tx?: Toast['tx']) => {
+    return toast({ title, description, type: toastTypes.DANGER, tx })
   }
-  const toastInfo = (title: string, description?: ReactNode) => {
-    return toast({ title, description, type: toastTypes.INFO })
+  const toastInfo = (title: Toast['title'], description?: Toast['description'], tx?: Toast['tx']) => {
+    return toast({ title, description, type: toastTypes.INFO, tx })
   }
-  const toastSuccess = (title: string, description?: ReactNode) => {
-    return toast({ title, description, type: toastTypes.SUCCESS })
+  const toastSuccess = (title: Toast['title'], description?: Toast['description'], tx?: Toast['tx']) => {
+    return toast({ title, description, type: toastTypes.SUCCESS, tx })
   }
-  const toastWarning = (title: string, description?: ReactNode) => {
-    return toast({ title, description, type: toastTypes.WARNING })
+  const toastWarning = (title: Toast['title'], description?: Toast['description'], tx?: Toast['tx']) => {
+    return toast({ title, description, type: toastTypes.WARNING, tx })
   }
   const clear = () => setToasts([])
   const remove = (id: string) => {
