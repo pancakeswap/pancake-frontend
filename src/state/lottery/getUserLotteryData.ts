@@ -47,7 +47,6 @@ const applyNodeDataToUserGraphResponse = (
           tickets: ticketDataForRound.userTickets,
         }
       }
-      // Add logging here to see if graphRound is being returned instead of nodeRound
       console.error('User nodeRound isLoading')
       return graphRound
     }
