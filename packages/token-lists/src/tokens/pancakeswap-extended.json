@@ -1790,5 +1790,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x07663837218A003e66310a01596af4bf4e44623D.png"
+  },
+  {
+    "name": "Phala Network",
+    "symbol": "PHA",
+    "address": "0x0112e557d400474717056C4e6D40eDD846F38351",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x0112e557d400474717056C4e6D40eDD846F38351.png"
   }
 ]

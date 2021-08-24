@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-08-20T10:38:41.215Z",
+  "timestamp": "2021-08-24T10:46:42.659Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 18
+    "patch": 19
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1195,6 +1195,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x0F9E4D49f25de22c2202aF916B681FBB3790497B.png"
+    },
+    {
+      "name": "Phala Network",
+      "symbol": "PHA",
+      "address": "0x0112e557d400474717056C4e6D40eDD846F38351",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x0112e557d400474717056C4e6D40eDD846F38351.png"
     },
     {
       "name": "Polkamon",
