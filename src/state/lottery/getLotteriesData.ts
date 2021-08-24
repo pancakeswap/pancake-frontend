@@ -48,6 +48,7 @@ const applyNodeDataToLotteriesGraphResponse = (
           winningTickets: graphRound.winningTickets,
         }
       }
+      console.error('Lotteries nodeRound isLoading')
       return graphRound
     }
     return graphRound

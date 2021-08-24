@@ -47,6 +47,8 @@ const applyNodeDataToUserGraphResponse = (
           tickets: ticketDataForRound.userTickets,
         }
       }
+      // Add logging here to see if graphRound is being returned instead of nodeRound
+      console.error('User nodeRound isLoading')
       return graphRound
     }
     return graphRound
@@ -108,7 +110,7 @@ export const getGraphLotteryUser = async (
             endTime: round?.lottery?.endTime,
             claimed: round?.claimed,
             totalTickets: round?.totalTickets,
-            status: round?.lottery?.status,
+            status: round?.lottery?.status.toLowerCase(),
           }
         }),
       }
@@ -126,7 +128,6 @@ const getUserLotteryData = async (account: string, currentLotteryId: string): Pr
   const roundDataAndUserTickets = await fetchUserTicketsForMultipleRounds(idsForTicketsNodeCall, account)
   const userRoundsNodeData = roundDataAndUserTickets.filter((round) => round.userTickets.length > 0)
   const idsForLotteriesNodeCall = userRoundsNodeData.map((round) => round.roundId)
-
   const lotteriesNodeData = await fetchMultipleLotteries(idsForLotteriesNodeCall)
   const graphResponse = await getGraphLotteryUser(account)
   const mergedRoundData = applyNodeDataToUserGraphResponse(userRoundsNodeData, graphResponse.rounds, lotteriesNodeData)

@@ -36,6 +36,7 @@ const fetchCakeRewardsForTickets = async (
       return accum.plus(new BigNumber(cakeReward[0].toString()))
     }, BIG_ZERO)
 
+    // Is the check getting to here and returning an empty array
     const ticketsWithUnclaimedRewards = winningTickets.map((winningTicket, index) => {
       return { ...winningTicket, cakeReward: cakeRewards[index] }
     })
@@ -156,9 +157,13 @@ const fetchUnclaimedUserRewards = async (
       (winningTicketData) => winningTicketData !== null,
     )
 
+    console.log('lotteriesData ', lotteriesData)
+    console.log('Rounds being checked, ', roundsWithTickets)
+
     // Filter to only rounds with unclaimed tickets
     const roundsWithUnclaimedWinningTickets = roundsWithWinningTickets.filter(
-      (winningTicketData) => winningTicketData.ticketsWithUnclaimedRewards,
+      (winningTicketData) =>
+        winningTicketData.ticketsWithUnclaimedRewards && winningTicketData.ticketsWithUnclaimedRewards.length > 0,
     )
 
     return roundsWithUnclaimedWinningTickets
