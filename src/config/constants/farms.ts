@@ -39,16 +39,6 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
-    pid: 314,
-    lpSymbol: 'BEL-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x69DEE989c30b5fFe40867f5FC14F00E4bCE7B681',
-    },
-    token: tokens.bel,
-    quoteToken: tokens.wbnb,
-  },
-  {
     pid: 451,
     lpSymbol: 'PHA-BUSD LP',
     lpAddresses: {
@@ -57,7 +47,16 @@ const farms: FarmConfig[] = [
     },
     token: tokens.pha,
     quoteToken: tokens.busd,
-    isCommunity: false,
+  },
+  {
+    pid: 314,
+    lpSymbol: 'BEL-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x69DEE989c30b5fFe40867f5FC14F00E4bCE7B681',
+    },
+    token: tokens.bel,
+    quoteToken: tokens.wbnb,
   },
   {
     pid: 446,
