@@ -21,7 +21,7 @@ const graves: Grave[] = [
     isNew: false,
     isEnding: false,
     isFeatured: true,
-    isClosed: true,
+    isClosed: false,
     rarity: "Common",
     userInfo: {
       paidUnlockFee: false,
