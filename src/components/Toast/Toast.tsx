@@ -72,7 +72,7 @@ const Toast: React.FC<ToastProps> = ({ toast, onRemove, style, ttl, ...props }) 
           {description}
           {txHash && (
             <Link external href={getBscScanLink(txHash, 'transaction', chainId)}>
-              {t('tx:')} {truncateWalletAddress(txHash, 8, 0)}
+              {t('View tx:')} {truncateWalletAddress(txHash, 8, 0)}
             </Link>
           )}
         </Alert>
