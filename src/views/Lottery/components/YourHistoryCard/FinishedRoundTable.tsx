@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Box, Flex } from '@pancakeswap/uikit'
+import { Text, Box, Flex, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData } from 'state/lottery/hooks'
@@ -13,9 +13,15 @@ const Grid = styled(Box)`
 
 interface FinishedRoundTableProps {
   handleHistoryRowClick: (string) => void
+  handleShowMoreClick: () => void
+  numUserRoundsRequested: number
 }
 
-const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRowClick }) => {
+const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({
+  handleShowMoreClick,
+  numUserRoundsRequested,
+  handleHistoryRowClick,
+}) => {
   const { t } = useTranslation()
   const userLotteryData = useGetUserLotteriesGraphData()
 
@@ -53,6 +59,13 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
               onClick={handleHistoryRowClick}
             />
           ))}
+        {userLotteryData?.rounds?.length === numUserRoundsRequested && (
+          <Flex justifyContent="center">
+            <Button mt="12px" variant="text" width="fit-content" onClick={handleShowMoreClick}>
+              {t('Show More')}
+            </Button>
+          </Flex>
+        )}
       </Flex>
     </>
   )

@@ -26,6 +26,11 @@ import PreviousRoundCardBody from '../PreviousRoundCard/Body'
 import { processLotteryResponse, getDrawnDate } from '../../helpers'
 import PreviousRoundCardFooter from '../PreviousRoundCard/Footer'
 
+interface YourHistoryCardProps {
+  handleShowMoreClick: () => void
+  numUserRoundsRequested: number
+}
+
 const StyledCard = styled(Card)`
   width: 100%;
 
@@ -42,7 +47,7 @@ const StyledCardBody = styled(CardBody)`
   min-height: 240px;
 `
 
-const YourHistoryCard = () => {
+const YourHistoryCard: React.FC<YourHistoryCardProps> = ({ handleShowMoreClick, numUserRoundsRequested }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const [shouldShowRoundDetail, setShouldShowRoundDetail] = useState(false)
@@ -128,7 +133,13 @@ const YourHistoryCard = () => {
         </StyledCardBody>
       )
     }
-    return <FinishedRoundTable handleHistoryRowClick={handleHistoryRowClick} />
+    return (
+      <FinishedRoundTable
+        handleHistoryRowClick={handleHistoryRowClick}
+        handleShowMoreClick={handleShowMoreClick}
+        numUserRoundsRequested={numUserRoundsRequested}
+      />
+    )
   }
 
   const getFooter = () => {

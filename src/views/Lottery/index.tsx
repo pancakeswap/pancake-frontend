@@ -23,6 +23,7 @@ import YourHistoryCard from './components/YourHistoryCard'
 import AllHistoryCard from './components/AllHistoryCard'
 import CheckPrizesSection from './components/CheckPrizesSection'
 import HowToPlay from './components/HowToPlay'
+import useShowMoreUserHistory from './hooks/useShowMoreUserRounds'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -39,6 +40,7 @@ const Lottery = () => {
   const [historyTabMenuIndex, setHistoryTabMenuIndex] = useState(0)
   const endTimeAsInt = parseInt(endTime, 10)
   const { nextEventTime, postCountdownText, preCountdownText } = useGetNextLotteryEvent(endTimeAsInt, status)
+  const { numUserRoundsRequested, handleShowMoreUserRounds } = useShowMoreUserHistory()
 
   return (
     <LotteryPage>
@@ -92,7 +94,14 @@ const Lottery = () => {
               setActiveIndex={(index) => setHistoryTabMenuIndex(index)}
             />
           </Box>
-          {historyTabMenuIndex === 0 ? <AllHistoryCard /> : <YourHistoryCard />}
+          {historyTabMenuIndex === 0 ? (
+            <AllHistoryCard />
+          ) : (
+            <YourHistoryCard
+              handleShowMoreClick={handleShowMoreUserRounds}
+              numUserRoundsRequested={numUserRoundsRequested}
+            />
+          )}
         </Flex>
       </PageSection>
       <PageSection
