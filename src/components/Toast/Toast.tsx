@@ -33,7 +33,7 @@ const Toast: React.FC<ToastProps> = ({ toast, onRemove, style, ttl, ...props }) 
   const removeHandler = useRef(onRemove)
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { id, title, description, type, tx } = toast
+  const { id, title, description, type, txHash } = toast
 
   const handleRemove = useCallback(() => removeHandler.current(id), [id, removeHandler])
 
@@ -70,9 +70,9 @@ const Toast: React.FC<ToastProps> = ({ toast, onRemove, style, ttl, ...props }) 
       <StyledToast ref={ref} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <Alert title={title} variant={alertTypeMap[type]} onClick={handleRemove}>
           {description}
-          {tx && (
-            <Link external href={getBscScanLink(tx, 'transaction', chainId)}>
-              {t('tx:')} {truncateWalletAddress(tx, 8, 0)}
+          {txHash && (
+            <Link external href={getBscScanLink(txHash, 'transaction', chainId)}>
+              {t('tx:')} {truncateWalletAddress(txHash, 8, 0)}
             </Link>
           )}
         </Alert>
