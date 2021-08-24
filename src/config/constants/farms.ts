@@ -57,7 +57,7 @@ const farms: FarmConfig[] = [
     },
     token: tokens.pha,
     quoteToken: tokens.busd,
-    isCommunity: true,
+    isCommunity: false,
   },
   {
     pid: 446,
