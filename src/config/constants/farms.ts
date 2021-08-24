@@ -49,6 +49,17 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 451,
+    lpSymbol: 'PHA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x4ddd56e2f34338839BB5953515833950eA680aFb',
+    },
+    token: tokens.pha,
+    quoteToken: tokens.busd,
+    isCommunity: false,
+  },
+  {
     pid: 446,
     lpSymbol: 'BMON-BUSD LP',
     lpAddresses: {

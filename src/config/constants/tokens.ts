@@ -73,6 +73,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  pha: {
+    symbol: 'PHA',
+    address: {
+      56: '0x0112e557d400474717056C4e6D40eDD846F38351',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://phala.network',
+  },
   babycake: {
     symbol: 'BABYCAKE',
     address: {
