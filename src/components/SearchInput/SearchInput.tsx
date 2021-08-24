@@ -16,15 +16,12 @@ const InputWrapper = styled.div`
   }
 `
 
-const Container = styled.div<{ toggled: boolean }>``
-
 interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
 }
 
 const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback, placeholder = 'Search' }) => {
-  const [toggled, setToggled] = useState(false)
   const [searchText, setSearchText] = useState('')
 
   const { t } = useTranslation()
@@ -40,16 +37,9 @@ const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback, placeholder 
   }
 
   return (
-    <Container toggled={toggled}>
-      <InputWrapper>
-        <StyledInput
-          value={searchText}
-          onChange={onChange}
-          placeholder={t(placeholder)}
-          onBlur={() => setToggled(false)}
-        />
-      </InputWrapper>
-    </Container>
+    <InputWrapper>
+      <StyledInput value={searchText} onChange={onChange} placeholder={t(placeholder)} />
+    </InputWrapper>
   )
 }
 
