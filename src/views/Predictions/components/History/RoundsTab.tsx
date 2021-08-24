@@ -18,7 +18,7 @@ const RoundsTab: React.FC<RoundsTabProps> = ({ hasBetHistory, bets }) => {
     <>
       <V1ClaimCheck />
       {orderBy(bets, ['round.epoch'], ['desc']).map((bet) => (
-        <HistoricalBet key={bet.id} bet={bet} />
+        <HistoricalBet key={bet.round.epoch} bet={bet} />
       ))}
     </>
   ) : (
