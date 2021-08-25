@@ -1354,5 +1354,11 @@
   "The price you see come from difference places": "Prețul pe care îl vezi vine din locuri diferite",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Prețurile de pe carduri provin de la oracolul de prețuri verificabile Chainlink.",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Prețurile din grafice provin de la Binance.com. Graficele sunt furnizate doar ca referință.",
-  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Numai prețul din Chainlink (afișat pe carduri) determină rezultatul rundei."
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Numai prețul din Chainlink (afișat pe carduri) determină rezultatul rundei.",
+  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
+  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
+  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
+  "Nothing to collect": "Nothing to collect",
+  "Download .CSV": "Download .CSV",
+  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below."
 }
