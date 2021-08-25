@@ -35,7 +35,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onClaim, 
       const tx = await onClaim()
       const receipt = await tx.wait()
       if (receipt.status) {
-        toastSuccess(t('Successfully claimed!'))
+        toastSuccess(t('Successfully claimed!'), undefined, tx.hash)
         onDismiss()
         onSuccess()
       }
