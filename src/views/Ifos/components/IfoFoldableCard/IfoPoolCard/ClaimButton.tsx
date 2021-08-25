@@ -26,12 +26,12 @@ const ClaimButton: React.FC<Props> = ({ poolId, ifoVersion, walletIfoData }) => 
 
       if (ifoVersion === 1) {
         const tx = await walletIfoData.contract.harvest()
-        await tx.wait()
-        txHash = tx.hash
+        const receipt = await tx.wait()
+        txHash = receipt.transactionHash
       } else {
         const tx = await walletIfoData.contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
-        await tx.wait()
-        txHash = tx.hash
+        const receipt = await tx.wait()
+        txHash = receipt.transactionHash
       }
 
       walletIfoData.setIsClaimed(poolId)

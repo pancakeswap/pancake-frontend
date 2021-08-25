@@ -98,7 +98,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     }))
   }
 
-  const handleSuccess = async (hash) => {
+  const handleSuccess = async (hash: string) => {
     await dispatch(fetchLedgerData({ account, epochs: [round.epoch] }))
 
     handleBack()
@@ -173,7 +173,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
       </Card>
       <SetPositionCard
         onBack={handleBack}
-        onSuccess={(decimalValue, hash) => handleSuccess(hash)}
+        onSuccess={handleSuccess}
         position={position}
         togglePosition={togglePosition}
         epoch={round.epoch}

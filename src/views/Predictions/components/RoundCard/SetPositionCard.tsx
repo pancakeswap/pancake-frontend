@@ -36,7 +36,7 @@ interface SetPositionCardProps {
   togglePosition: () => void
   epoch: number
   onBack: () => void
-  onSuccess: (decimalValue: string, hash: string) => Promise<void>
+  onSuccess: (hash: string) => Promise<void>
 }
 
 const dust = parseUnits('0.01', 18)
@@ -156,7 +156,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
       const tx = await callWithGasPrice(predictionsContract, betMethod, [epoch], { value: valueAsBn.toString() })
       setIsTxPending(true)
       const receipt = await tx.wait()
-      onSuccess(valueAsBn.toString(), receipt.transactionHash as string)
+      onSuccess(receipt.transactionHash)
     } catch {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     } finally {
