@@ -10,7 +10,19 @@ import useRefresh from 'hooks/useRefresh'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, nonArchivedFarms } from '.'
 import { State, Farm, FarmsState } from '../types'
 
-export const usePollFarmsData = (includeArchive = false) => {
+export const usePollFarmsPublicData = (includeArchive = false) => {
+  const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+
+  useEffect(() => {
+    const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
+    const pids = farmsToFetch.map((farmToFetch) => farmToFetch.pid)
+
+    dispatch(fetchFarmsPublicDataAsync(pids))
+  }, [includeArchive, dispatch, slowRefresh])
+}
+
+export const usePollFarmsWithUserData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   const { account } = useWeb3React()
