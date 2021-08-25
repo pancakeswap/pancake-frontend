@@ -30,8 +30,8 @@ const applyNodeDataToLotteriesGraphResponse = (
   }
 
   //   Else if there is a graph response - merge with node data where node data is more reliable
-  const mergedResponse = graphResponse.map((graphRound, index) => {
-    const nodeRound = nodeData[index]
+  const mergedResponse = graphResponse.map((graphRound) => {
+    const nodeRound = nodeData.find(n => n.lotteryId === graphRound.id)
     // if there is node data for this index, overwrite graph data. Otherwise - return graph data.
     if (nodeRound) {
       // if isLoading === true, there has been a node error - return graphRound
