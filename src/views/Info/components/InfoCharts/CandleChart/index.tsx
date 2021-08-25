@@ -1,41 +1,29 @@
 import React, { useRef, useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
 import { createChart, IChartApi } from 'lightweight-charts'
-import { Box } from '@pancakeswap/uikit'
-import styled from 'styled-components'
 import { format } from 'date-fns'
 import useTheme from 'hooks/useTheme'
 import { CandleChartLoader } from 'views/Info/components/ChartLoaders'
 
-const Wrapper = styled(Box)`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  > * {
-    font-size: 1rem;
-  }
-`
-
-const DEFAULT_HEIGHT = 300
+const CANDLE_CHART_HEIGHT = 250
 
 export type LineChartProps = {
   data: any[]
-  height?: number
   setValue?: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setLabel?: Dispatch<SetStateAction<string | undefined>> // used for value label on hover
 } & React.HTMLAttributes<HTMLDivElement>
 
-const CandleChart = ({ data, setValue, setLabel, height = DEFAULT_HEIGHT, ...rest }: LineChartProps) => {
+const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
   const { theme } = useTheme()
   const chartRef = useRef<HTMLDivElement>(null)
   const [chartCreated, setChart] = useState<IChartApi | undefined>()
 
   const handleResize = useCallback(() => {
     if (chartCreated && chartRef?.current?.parentElement) {
-      chartCreated.resize(chartRef.current.parentElement.clientWidth - 32, height)
+      chartCreated.resize(chartRef.current.parentElement.clientWidth - 32, CANDLE_CHART_HEIGHT)
       chartCreated.timeScale().fitContent()
       chartCreated.timeScale().scrollToPosition(0, false)
     }
-  }, [chartCreated, chartRef, height])
+  }, [chartCreated, chartRef])
 
   // add event listener for resize
   const isClient = typeof window === 'object'
@@ -51,7 +39,7 @@ const CandleChart = ({ data, setValue, setLabel, height = DEFAULT_HEIGHT, ...res
   useEffect(() => {
     if (!chartCreated && data && !!chartRef?.current?.parentElement) {
       const chart = createChart(chartRef.current, {
-        height,
+        height: CANDLE_CHART_HEIGHT,
         width: chartRef.current.parentElement.clientWidth - 32,
         layout: {
           backgroundColor: 'transparent',
@@ -104,7 +92,7 @@ const CandleChart = ({ data, setValue, setLabel, height = DEFAULT_HEIGHT, ...res
       chart.timeScale().fitContent()
       setChart(chart)
     }
-  }, [chartCreated, data, height, setValue, theme])
+  }, [chartCreated, data, setValue, theme])
 
   useEffect(() => {
     if (chartCreated && data) {
@@ -128,7 +116,7 @@ const CandleChart = ({ data, setValue, setLabel, height = DEFAULT_HEIGHT, ...res
             (param && param.point && param.point.x < 0) ||
             (param && param.point && param.point.x > chartRef.current.clientWidth) ||
             (param && param.point && param.point.y < 0) ||
-            (param && param.point && param.point.y > height))
+            (param && param.point && param.point.y > CANDLE_CHART_HEIGHT))
         ) {
           // reset values
           if (setValue) setValue(undefined)
@@ -144,13 +132,13 @@ const CandleChart = ({ data, setValue, setLabel, height = DEFAULT_HEIGHT, ...res
         }
       })
     }
-  }, [chartCreated, data, height, setValue, setLabel, theme])
+  }, [chartCreated, data, setValue, setLabel, theme])
 
   return (
-    <Wrapper height={height}>
+    <>
       {!chartCreated && <CandleChartLoader />}
       <div ref={chartRef} id="candle-chart" {...rest} />
-    </Wrapper>
+    </>
   )
 }
 

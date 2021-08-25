@@ -103,7 +103,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ variant, chartData, tokenData, to
         ) : view === ChartView.VOLUME ? (
           <BarChart data={formattedVolumeData} setHoverValue={setHoverValue} setHoverDate={setHoverDate} />
         ) : view === ChartView.PRICE ? (
-          <CandleChart height={270} data={tokenPriceData} setValue={setHoverValue} setLabel={setHoverDate} />
+          <CandleChart data={tokenPriceData} setValue={setHoverValue} setLabel={setHoverDate} />
         ) : null}
       </Box>
     </Card>
