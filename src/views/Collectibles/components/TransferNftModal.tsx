@@ -9,6 +9,7 @@ import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { useERC721 } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import InfoRow from './InfoRow'
 
 interface TransferNftModalProps {
@@ -63,7 +64,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
         if (receipt.status) {
           onDismiss()
           onSuccess()
-          toastSuccess(t('NFT successfully transferred!'))
+          toastSuccess(t('NFT successfully transferred!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         } else {
           setError(t('Unable to transfer NFT'))
           setIsLoading(false)

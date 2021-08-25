@@ -1,6 +1,6 @@
 import { Toast } from 'components/Toast'
 
-type ToastSignature = (title: Toast['title'], description?: Toast['description'], txHash?: Toast['txHash']) => void
+type ToastSignature = (title: Toast['title'], description?: Toast['description']) => void
 export interface ToastContextApi {
   toasts: Toast[]
   clear: () => void

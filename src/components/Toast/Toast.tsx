@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import styled from 'styled-components'
-import { Alert, alertVariants, Link, Text } from '@pancakeswap/uikit'
-import { getBscScanLink } from 'utils'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTranslation } from 'contexts/Localization'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import { Alert, alertVariants } from '@pancakeswap/uikit'
 import { ToastProps, types } from './types'
 
 const alertTypeMap = {
@@ -31,10 +27,7 @@ const Toast: React.FC<ToastProps> = ({ toast, onRemove, style, ttl, ...props }) 
   const timer = useRef<number>()
   const ref = useRef(null)
   const removeHandler = useRef(onRemove)
-  const { chainId } = useActiveWeb3React()
-  const { t } = useTranslation()
-
-  const { id, title, description, type, txHash } = toast
+  const { id, title, description, type } = toast
 
   const handleRemove = useCallback(() => removeHandler.current(id), [id, removeHandler])
 
@@ -70,12 +63,7 @@ const Toast: React.FC<ToastProps> = ({ toast, onRemove, style, ttl, ...props }) 
     <CSSTransition nodeRef={ref} timeout={250} style={style} {...props}>
       <StyledToast ref={ref} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <Alert title={title} variant={alertTypeMap[type]} onClick={handleRemove}>
-          <Text as="p">{description}</Text>
-          {txHash && (
-            <Link external href={getBscScanLink(txHash, 'transaction', chainId)}>
-              {t('View tx:')} {truncateWalletAddress(txHash, 8, 0)}
-            </Link>
-          )}
+          {description}
         </Alert>
       </StyledToast>
     </CSSTransition>

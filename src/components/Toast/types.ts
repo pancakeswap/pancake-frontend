@@ -14,7 +14,6 @@ export interface Toast {
   type: Types
   title: string
   description?: ReactNode
-  txHash?: string
 }
 
 export interface ToastContainerProps {

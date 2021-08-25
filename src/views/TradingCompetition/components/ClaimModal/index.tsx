@@ -16,6 +16,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
 import NftBunnies from '../../pngs/syrup-nft.png'
@@ -45,7 +46,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {
-      toastSuccess(t('You have claimed your rewards!'))
+      toastSuccess(t('You have claimed your rewards!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       onDismiss()
       onClaimSuccess()
     } else {

@@ -9,7 +9,7 @@ export const ToastsProvider: React.FC = ({ children }) => {
   const [toasts, setToasts] = useState<ToastContextApi['toasts']>([])
 
   const toast = useCallback(
-    ({ title, description, type, txHash }: Omit<Toast, 'id'>) => {
+    ({ title, description, type }: Omit<Toast, 'id'>) => {
       setToasts((prevToasts) => {
         const id = kebabCase(title)
 
@@ -22,7 +22,6 @@ export const ToastsProvider: React.FC = ({ children }) => {
             title,
             description,
             type,
-            txHash,
           },
           ...currentToasts,
         ]
@@ -31,17 +30,17 @@ export const ToastsProvider: React.FC = ({ children }) => {
     [setToasts],
   )
 
-  const toastError = (title: Toast['title'], description?: Toast['description'], txHash?: Toast['txHash']) => {
-    return toast({ title, description, type: toastTypes.DANGER, txHash })
+  const toastError = (title: Toast['title'], description?: Toast['description']) => {
+    return toast({ title, description, type: toastTypes.DANGER })
   }
-  const toastInfo = (title: Toast['title'], description?: Toast['description'], txHash?: Toast['txHash']) => {
-    return toast({ title, description, type: toastTypes.INFO, txHash })
+  const toastInfo = (title: Toast['title'], description?: Toast['description']) => {
+    return toast({ title, description, type: toastTypes.INFO })
   }
-  const toastSuccess = (title: Toast['title'], description?: Toast['description'], txHash?: Toast['txHash']) => {
-    return toast({ title, description, type: toastTypes.SUCCESS, txHash })
+  const toastSuccess = (title: Toast['title'], description?: Toast['description']) => {
+    return toast({ title, description, type: toastTypes.SUCCESS })
   }
-  const toastWarning = (title: Toast['title'], description?: Toast['description'], txHash?: Toast['txHash']) => {
-    return toast({ title, description, type: toastTypes.WARNING, txHash })
+  const toastWarning = (title: Toast['title'], description?: Toast['description']) => {
+    return toast({ title, description, type: toastTypes.WARNING })
   }
   const clear = () => setToasts([])
   const remove = (id: string) => {
