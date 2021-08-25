@@ -1354,5 +1354,11 @@
   "The price you see come from difference places": "Los precios que se ven provienen de diferentes lugares",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Los precios de las tarjetas provienen del oráculo de precios verificable de Chainlink.",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Los precios en las gráficas proceden de Binance.com. Las gráficas únicamente se proporcionan como referencia.",
-  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Solo el precio de Chainlink (el que se muestra en las tarjetas) determina el resultado de la ronda."
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Solo el precio de Chainlink (el que se muestra en las tarjetas) determina el resultado de la ronda.",
+  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
+  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
+  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
+  "Nothing to collect": "Nothing to collect",
+  "Download .CSV": "Download .CSV",
+  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below."
 }
