@@ -43,13 +43,14 @@ export const fetchCachedUriData = async (tokenUrl: string) => {
     const uriDataResponse = await fetch(tokenUrl)
 
     if (!uriDataResponse.ok) {
-      return null
+      throw new Error('Unable to fetch uriData')
     }
 
     const uriData = await uriDataResponse.json()
     localStorage.setItem(tokenUrl, JSON.stringify(uriData))
     return uriData
-  } catch {
+  } catch (error) {
+    console.error(error)
     return null
   }
 }
