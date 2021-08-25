@@ -13,7 +13,7 @@ const TOKEN_SEARCH = gql`
     asName: tokens(first: 10, where: { name_contains: $name }, orderBy: tradeVolumeUSD, orderDirection: desc) {
       id
     }
-    asAddress: tokens(first: 10, where: { id: $id }, orderBy: tradeVolumeUSD, orderDirection: desc) {
+    asAddress: tokens(first: 1, where: { id: $id }, orderBy: tradeVolumeUSD, orderDirection: desc) {
       id
     }
   }
@@ -27,7 +27,7 @@ const POOL_SEARCH = gql`
     as1: pairs(first: 10, where: { token1_in: $tokens }) {
       id
     }
-    asAddress: pairs(first: 10, where: { id: $id }) {
+    asAddress: pairs(first: 1, where: { id: $id }) {
       id
     }
   }
