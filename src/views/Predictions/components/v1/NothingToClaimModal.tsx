@@ -108,7 +108,7 @@ const CollectRoundWinningsModal: React.FC<InjectedModalProps> = ({ onDismiss }) 
       </BunnyDecoration>
       <ModalHeader>
         <ModalTitle>
-          <Heading>{t('Collect Winnings')}</Heading>
+          <Heading>{t('Nothing to Collect')}</Heading>
         </ModalTitle>
         <ModalCloseButton onDismiss={onDismiss} />
       </ModalHeader>
