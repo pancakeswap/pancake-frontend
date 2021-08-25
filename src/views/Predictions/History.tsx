@@ -5,8 +5,7 @@ import styled from 'styled-components'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import { fetchHistory, fetchNodeHistory } from 'state/predictions'
-import { getUnclaimedWinningBets } from 'state/predictions/helpers'
-import { HistoryFilter } from 'state/types'
+import { getFilteredBets } from 'state/predictions/helpers'
 import { useAppDispatch } from 'state'
 import {
   useGetCurrentEpoch,
@@ -67,10 +66,7 @@ const History = () => {
     }
   }, [account, currentEpoch, isHistoryPaneOpen, dispatch])
 
-  // Currently the api cannot filter by unclaimed AND won so we do it here
-  // when the user has selected Uncollected only include positions they won
-  const results = historyFilter === HistoryFilter.UNCOLLECTED ? getUnclaimedWinningBets(bets) : bets
-
+  const results = getFilteredBets(bets, historyFilter)
   const hasBetHistory = results && results.length > 0
 
   let activeTabComponent = null

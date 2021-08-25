@@ -12,6 +12,7 @@ import {
   Round,
   RoundData,
   PredictionUser,
+  HistoryFilter,
 } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import { getPredictionsContract } from 'utils/contractHelpers'
@@ -192,19 +193,18 @@ export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   return bet.position === roundResultPosition ? Result.WIN : Result.LOSE
 }
 
-/**
- * Given a bet object, check if it is eligible to be claimed or refunded
- */
-export const getCanClaim = (bet: Bet) => {
-  return !bet.claimed && (bet.position === bet.round.position || bet.round.failed === true)
-}
-
-/**
- * Returns only bets where the user has won.
- * This is necessary because the API currently cannot distinguish between an uncliamed bet that has won or lost
- */
-export const getUnclaimedWinningBets = (bets: Bet[]): Bet[] => {
-  return bets.filter(getCanClaim)
+export const getFilteredBets = (bets: Bet[], filter: HistoryFilter) => {
+  switch (filter) {
+    case HistoryFilter.COLLECTED:
+      return bets.filter((bet) => bet.claimed === true)
+    case HistoryFilter.UNCOLLECTED:
+      return bets.filter((bet) => {
+        return !bet.claimed && (bet.position === bet.round.position || bet.round.failed === true)
+      })
+    case HistoryFilter.ALL:
+    default:
+      return bets
+  }
 }
 
 export const getTotalWon = async (): Promise<number> => {
