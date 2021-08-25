@@ -26,7 +26,6 @@ import {
   getUserBaseFields,
   RoundResponse,
   TotalWonMarketResponse,
-  TotalWonRoundResponse,
   UserResponse,
 } from './queries'
 import { ROUNDS_PER_PAGE } from './config'
@@ -45,44 +44,6 @@ export const numberOrNull = (value: string) => {
 
   const valueNum = Number(value)
   return Number.isNaN(valueNum) ? null : valueNum
-}
-
-export const transformUserResponse = (userResponse: UserResponse): PredictionUser => {
-  const {
-    id,
-    createdAt,
-    updatedAt,
-    block,
-    totalBets,
-    totalBetsBull,
-    totalBetsBear,
-    totalBNB,
-    totalBNBBull,
-    totalBNBBear,
-    totalBetsClaimed,
-    totalBNBClaimed,
-    winRate,
-    averageBNB,
-    netBNB,
-  } = userResponse
-
-  return {
-    id,
-    createdAt: numberOrNull(createdAt),
-    updatedAt: numberOrNull(updatedAt),
-    block: numberOrNull(block),
-    totalBets: numberOrNull(totalBets),
-    totalBetsBull: numberOrNull(totalBetsBull),
-    totalBetsBear: numberOrNull(totalBetsBear),
-    totalBNB: totalBNB ? parseFloat(totalBNB) : 0,
-    totalBNBBull: totalBNBBull ? parseFloat(totalBNBBull) : 0,
-    totalBNBBear: totalBNBBear ? parseFloat(totalBNBBear) : 0,
-    totalBetsClaimed: numberOrNull(totalBetsClaimed),
-    totalBNBClaimed: totalBNBClaimed ? parseFloat(totalBNBClaimed) : 0,
-    winRate: winRate ? parseFloat(winRate) : 0,
-    averageBNB: averageBNB ? parseFloat(averageBNB) : 0,
-    netBNB: netBNB ? parseFloat(netBNB) : 0,
-  }
 }
 
 const getRoundPosition = (positionResponse: string) => {
