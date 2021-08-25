@@ -5,7 +5,7 @@ import { LotteryUserGraphEntity, LotteryResponse, UserRound } from 'state/types'
 import { getRoundIdsArray, fetchMultipleLotteries, hasRoundBeenClaimed } from './helpers'
 import { fetchUserTicketsForMultipleRounds } from './getUserTicketsData'
 
-const MAX_USER_LOTTERIES_REQUEST_SIZE = 100
+export const MAX_USER_LOTTERIES_REQUEST_SIZE = 100
 
 /* eslint-disable camelcase */
 type UserLotteriesWhere = { lottery_in?: string[] }
