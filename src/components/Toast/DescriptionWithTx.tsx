@@ -19,7 +19,7 @@ const DescriptionWithTx: React.FC<DescriptionWithTxProps> = ({ description, txHa
       {description && <Text as="p">{description}</Text>}
       {txHash && (
         <Link external href={getBscScanLink(txHash, 'transaction', chainId)}>
-          {t('View on BscScan:')} {truncateWalletAddress(txHash, 8, 0)}
+          {t('View on BscScan')}: {truncateWalletAddress(txHash, 8, 0)}
         </Link>
       )}
     </>
