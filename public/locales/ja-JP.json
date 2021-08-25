@@ -1345,7 +1345,7 @@
   "Calling all BSC projects": "すべてのBSCプロジェクトを呼び出しています",
   "Apply for whitelisting now!": "今すぐホワイトリストに申請しよう！",
   "Default Transaction Speed (GWEI)": "デフォルトの取引速度（GWEI）",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "取引のガソリン価格（取引手数料）を調整します。より高いGWEI = より高速 = より高い手数料",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "取引のガス価格（取引手数料）を調整します。より高いGWEI = より高速 = より高い手数料",
   "Standard (%gasPrice%)": "標準（%gasPrice%）",
   "Fast (%gasPrice%)": "高速（%gasPrice%）",
   "Instant (%gasPrice%)": "瞬時（%gasPrice%）",
