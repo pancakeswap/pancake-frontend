@@ -1,4 +1,9 @@
-import { makeFutureRoundResponse, numberOrNull, transformBetResponse } from 'state/predictions/helpers'
+import {
+  makeFutureRoundResponse,
+  numberOrNull,
+  transformBetResponse,
+  transformUserResponse,
+} from 'state/predictions/helpers'
 
 describe('numberOrNull', () => {
   it.each([
