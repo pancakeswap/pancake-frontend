@@ -48,9 +48,10 @@ const applyNodeDataToLotteriesGraphResponse = (
           winningTickets: graphRound.winningTickets,
         }
       }
-      console.error('Lotteries nodeRound isLoading')
+      console.error(graphRound.id, 'Lotteries nodeRound isLoading')
       return graphRound
     }
+    console.error(graphRound.id, 'Lotteries nodeRound did not exist')
     return graphRound
   })
   return mergedResponse

@@ -159,6 +159,7 @@ const fetchUnclaimedUserRewards = async (
 
     console.log('lotteriesData ', lotteriesData)
     console.log('Rounds being checked, ', roundsWithTickets)
+    console.log('Rounds with winning tickets, ', roundsWithWinningTickets)
 
     // Filter to only rounds with unclaimed tickets
     const roundsWithUnclaimedWinningTickets = roundsWithWinningTickets.filter(

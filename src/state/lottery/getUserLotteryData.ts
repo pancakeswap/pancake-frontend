@@ -47,9 +47,10 @@ const applyNodeDataToUserGraphResponse = (
           tickets: ticketDataForRound.userTickets,
         }
       }
-      console.error('User nodeRound isLoading')
+      console.error(graphRound.lotteryId, 'User nodeRound isLoading')
       return graphRound
     }
+    console.error(graphRound.lotteryId, 'User nodeRound does not exist')
     return graphRound
   })
   return mergedResponse
