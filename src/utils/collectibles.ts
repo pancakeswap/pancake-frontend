@@ -31,17 +31,39 @@ export const getAddressByType = (type: NftType) => {
   return getAddress(nftSources[type].address)
 }
 
-export const getTokenUriData = async (nftAddress: string, tokenId: number) => {
+export const fetchCachedUriData = async (tokenUrl: string) => {
   try {
-    const contract = getErc721Contract(nftAddress)
-    const tokenUri = await contract.tokenURI(tokenId)
-    const uriDataResponse = await fetch(getTokenUrl(tokenUri))
+    const localUriData = localStorage.getItem(tokenUrl)
+
+    if (localUriData) {
+      const data = JSON.parse(localUriData)
+      return data
+    }
+
+    const uriDataResponse = await fetch(tokenUrl)
 
     if (!uriDataResponse.ok) {
       return null
     }
 
     const uriData = await uriDataResponse.json()
+    localStorage.setItem(tokenUrl, JSON.stringify(uriData))
+    return uriData
+  } catch {
+    return null
+  }
+}
+
+export const getTokenUriData = async (nftAddress: string, tokenId: number) => {
+  try {
+    const contract = getErc721Contract(nftAddress)
+    const tokenUri = await contract.tokenURI(tokenId)
+    const uriData = await fetchCachedUriData(getTokenUrl(tokenUri))
+
+    if (!uriData) {
+      return null
+    }
+
     return uriData
   } catch (error) {
     console.error('getTokenUriData', error)
