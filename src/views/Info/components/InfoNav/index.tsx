@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link, useRouteMatch } from 'react-router-dom'
 import { Box, Flex, ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
-import SearchSmall from 'components/InfoSearch'
 import { useTranslation } from 'contexts/Localization'
+import Search from 'views/Info/components/InfoSearch'
 
 const NavWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradients.cardHeader};
@@ -44,7 +44,7 @@ const InfoNav = () => {
         </ButtonMenu>
       </Box>
       <Box width={['100%', '100%', '250px']}>
-        <SearchSmall />
+        <Search />
       </Box>
     </NavWrapper>
   )

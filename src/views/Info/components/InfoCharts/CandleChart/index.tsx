@@ -4,7 +4,7 @@ import { Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { format } from 'date-fns'
 import useTheme from 'hooks/useTheme'
-import { CandleChartLoader } from 'components/ChartLoaders'
+import { CandleChartLoader } from 'views/Info/components/ChartLoaders'
 
 const Wrapper = styled(Box)`
   width: 100%;

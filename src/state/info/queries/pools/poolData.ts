@@ -2,10 +2,10 @@
 import { useEffect, useState } from 'react'
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
-import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
-import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
+import { getDeltaTimestamps } from 'views/Info/utils/infoQueryHelpers'
+import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { PoolData } from 'state/info/types'
-import { getChangeForPeriod, getLpFeesAndApr, getPercentChange } from 'utils/infoDataHelpers'
+import { getChangeForPeriod, getLpFeesAndApr, getPercentChange } from 'views/Info/utils/infoDataHelpers'
 
 interface PoolFields {
   id: string

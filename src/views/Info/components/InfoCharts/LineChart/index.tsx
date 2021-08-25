@@ -1,37 +1,15 @@
 import React, { useEffect, Dispatch, SetStateAction } from 'react'
 import { format } from 'date-fns'
-import { BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Bar } from 'recharts'
+import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from 'recharts'
 import useTheme from 'hooks/useTheme'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import { BarChartLoader } from 'components/ChartLoaders'
+import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 
 export type LineChartProps = {
   data: any[]
-  height?: string
-  chartHeight?: string
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of valye
 } & React.HTMLAttributes<HTMLDivElement>
-
-const CustomBar = ({
-  x,
-  y,
-  width,
-  height,
-  fill,
-}: {
-  x: number
-  y: number
-  width: number
-  height: number
-  fill: string
-}) => {
-  return (
-    <g>
-      <rect x={x} y={y} fill={fill} width={width} height={height} rx="2" />
-    </g>
-  )
-}
 
 // Calls setHoverValue and setHoverDate when part of chart is hovered
 // Note: this NEEDs to be wrapped inside component and useEffect, if you plug it as is it will create big render problems (try and see console)
@@ -44,15 +22,20 @@ const HoverUpdater = ({ payload, setHoverValue, setHoverDate }) => {
   return null
 }
 
-const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
+/**
+ * Note: remember that it needs to be mounted inside the container with fixed height
+ */
+const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
   const { theme } = useTheme()
   if (!data || data.length === 0) {
-    return <BarChartLoader />
+    return <LineChartLoader />
   }
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart
+    <ResponsiveContainer>
+      <AreaChart
         data={data}
+        width={300}
+        height={308}
         margin={{
           top: 5,
           right: 15,
@@ -60,10 +43,16 @@ const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
           bottom: 5,
         }}
         onMouseLeave={() => {
-          setHoverDate(undefined)
-          setHoverValue(undefined)
+          if (setHoverDate) setHoverDate(undefined)
+          if (setHoverValue) setHoverValue(undefined)
         }}
       >
+        <defs>
+          <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={theme.colors.inputSecondary} stopOpacity={0.5} />
+            <stop offset="100%" stopColor={theme.colors.secondary} stopOpacity={0} />
+          </linearGradient>
+        </defs>
         <XAxis
           dataKey="time"
           axisLine={false}
@@ -77,29 +66,22 @@ const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
           scale="linear"
           axisLine={false}
           tickLine={false}
-          color={theme.colors.textSubtle}
           fontSize="12px"
           tickFormatter={(val) => `$${formatAmount(val)}`}
           orientation="right"
           tick={{ dx: 10, fill: theme.colors.textSubtle }}
         />
         <Tooltip
-          cursor={{ fill: theme.colors.backgroundDisabled }}
+          cursor={{ stroke: theme.colors.secondary }}
           contentStyle={{ display: 'none' }}
           formatter={(tooltipValue, name, props) => (
             <HoverUpdater payload={props.payload} setHoverValue={setHoverValue} setHoverDate={setHoverDate} />
           )}
         />
-        <Bar
-          dataKey="value"
-          fill={theme.colors.primary}
-          shape={(props) => (
-            <CustomBar height={props.height} width={props.width} x={props.x} y={props.y} fill={theme.colors.primary} />
-          )}
-        />
-      </BarChart>
+        <Area dataKey="value" type="monotone" stroke={theme.colors.secondary} fill="url(#gradient)" strokeWidth={2} />
+      </AreaChart>
     </ResponsiveContainer>
   )
 }
 
-export default Chart
+export default LineChart

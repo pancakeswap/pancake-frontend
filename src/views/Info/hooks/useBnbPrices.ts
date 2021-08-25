@@ -1,5 +1,5 @@
-import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
-import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
+import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { getDeltaTimestamps } from 'views/Info/utils/infoQueryHelpers'
 import { useState, useEffect } from 'react'
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'

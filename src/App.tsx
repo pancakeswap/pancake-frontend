@@ -14,7 +14,7 @@ import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import { ToastListener } from './contexts/ToastsContext'
 import PageLoader from './components/Loader/PageLoader'
 import EasterEgg from './components/EasterEgg'
-import InfoNav from './components/InfoNav'
+import InfoNav from './views/Info/components/InfoNav'
 import history from './routerHistory'
 // Views included in the main bundle
 import Pools from './views/Pools'

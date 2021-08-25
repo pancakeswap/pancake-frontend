@@ -20,15 +20,15 @@ import {
 import styled from 'styled-components'
 import Page from 'components/Layout/Page'
 import { getBscScanLink } from 'utils'
-import { CurrencyLogo, DoubleCurrencyLogo } from 'components/CurrencyLogo'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import Percent from 'components/Percent'
-import SaveIcon from 'components/SaveIcon'
+import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import Percent from 'views/Info/components/Percent'
+import SaveIcon from 'views/Info/components/SaveIcon'
 import { usePoolDatas, usePoolChartData, usePoolTransactions } from 'state/info/hooks'
-import TransactionTable from 'components/InfoTables/TransactionsTable'
+import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import { useWatchlistPools } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
-import ChartCard from 'components/InfoCharts/ChartCard'
+import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 
 const ContentLayout = styled.div`
   display: grid;

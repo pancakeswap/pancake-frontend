@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request'
 import { useState, useEffect } from 'react'
-import { multiQuery } from 'utils/infoQueryHelpers'
+import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import { BLOCKS_CLIENT } from 'config/constants/endpoints'
 import { Block } from 'state/info/types'
 

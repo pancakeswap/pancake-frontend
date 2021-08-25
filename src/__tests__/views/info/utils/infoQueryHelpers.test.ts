@@ -1,8 +1,8 @@
-import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
+import { getDeltaTimestamps } from 'views/Info/utils/infoQueryHelpers'
 
 const UTC_NOW_UNDER_TEST = 1624809600
 
-describe('utils/infoQueryHelpers', () => {
+describe('info/utils/infoQueryHelpers', () => {
   beforeAll(() => {
     jest.useFakeTimers('modern')
     jest.setSystemTime(new Date(UTC_NOW_UNDER_TEST * 1000))

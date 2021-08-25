@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { Text, Heading, Card } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import PoolTable from 'components/InfoTables/PoolsTable'
+import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import { useAllPoolData, usePoolDatas } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'

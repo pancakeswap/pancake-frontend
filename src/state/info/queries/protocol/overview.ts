@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { request, gql } from 'graphql-request'
 import { INFO_CLIENT } from 'config/constants/endpoints'
-import { getChangeForPeriod, getPercentChange } from 'utils/infoDataHelpers'
+import { getChangeForPeriod, getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import { ProtocolData } from 'state/info/types'
-import { getDeltaTimestamps } from 'utils/infoQueryHelpers'
-import { useBlocksFromTimestamps } from 'hooks/useBlocksFromTimestamps'
+import { getDeltaTimestamps } from 'views/Info/utils/infoQueryHelpers'
+import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 interface PancakeFactory {
   totalTransactions: string

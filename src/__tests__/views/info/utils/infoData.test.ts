@@ -1,6 +1,11 @@
-import { getAmountChange, getPercentChange, getChangeForPeriod, getLpFeesAndApr } from 'utils/infoDataHelpers'
+import {
+  getAmountChange,
+  getPercentChange,
+  getChangeForPeriod,
+  getLpFeesAndApr,
+} from 'views/Info/utils/infoDataHelpers'
 
-describe('utils/infoDataHelpers', () => {
+describe('info/utils/infoDataHelpers', () => {
   it.each`
     valueNow     | valueBefore  | expected
     ${undefined} | ${undefined} | ${0}

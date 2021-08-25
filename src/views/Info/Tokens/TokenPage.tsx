@@ -19,11 +19,11 @@ import {
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { shortenAddress, getBscScanLink } from 'utils'
-import useCMCLink from 'hooks/useCMCLink'
-import { CurrencyLogo } from 'components/CurrencyLogo'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import Percent from 'components/Percent'
-import SaveIcon from 'components/SaveIcon'
+import useCMCLink from 'views/Info/hooks/useCMCLink'
+import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import Percent from 'views/Info/components/Percent'
+import SaveIcon from 'views/Info/components/SaveIcon'
 import {
   usePoolDatas,
   useTokenData,
@@ -32,12 +32,12 @@ import {
   useTokenPriceData,
   useTokenTransactions,
 } from 'state/info/hooks'
-import PoolTable from 'components/InfoTables/PoolsTable'
-import TransactionTable from 'components/InfoTables/TransactionsTable'
+import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
+import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import { useWatchlistTokens } from 'state/user/hooks'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { useTranslation } from 'contexts/Localization'
-import ChartCard from 'components/InfoCharts/ChartCard'
+import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
