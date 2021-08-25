@@ -18,12 +18,15 @@ export const VotingPowerColumn = styled(Box)`
 const Row = styled(Grid)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   grid-gap: 8px;
-  grid-template-areas: 'address choice vote';
-  grid-template-columns: minmax(110px, 200px) 1fr 1fr;
+  grid-template-areas:
+    'address address address'
+    'choice choice vote';
+  grid-template-columns: 1fr 1fr 120px;
   padding: 8px 16px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     grid-gap: 16px;
+    grid-template-areas: 'address choice vote';
     padding: 16px 24px;
   }
 `
