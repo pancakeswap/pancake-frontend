@@ -1,6 +1,10 @@
-.card-active {
+.card-collectibles {
   border: 1px solid rgb(204, 246, 108);
   box-shadow: rgb(204 246 108) 0px 0px 20px !important;
+}
+.card-active {
+  border-color: #808080;
+  box-shadow: #808080 0px 0px 20px !important;
 }
  .collectibles-bb {
   border-bottom: 3px solid #b4bd01;
