@@ -1354,5 +1354,11 @@
   "The price you see come from difference places": "Giá bạn thấy đến từ nhiều nguồn khác nhau",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Giá trên thẻ đến từ oracle giá dễ kiểm chứng của Chainlink.",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Giá trên biểu đồ là từ Binance.com. Các biểu đồ chỉ được cung cấp vì mục đích tham khảo của bạn.",
-  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Chỉ giá từ Chainlink (hiển thị trên các thẻ) mới quyết định kết quả của vòng."
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Chỉ giá từ Chainlink (hiển thị trên các thẻ) mới quyết định kết quả của vòng.",
+  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
+  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
+  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
+  "Nothing to collect": "Nothing to collect",
+  "Download .CSV": "Download .CSV",
+  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below."
 }
