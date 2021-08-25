@@ -66,7 +66,7 @@ const getPnlSummary = (bets: Bet[], currentEpoch: number): PnlSummary => {
       if (payout > bestRound.payout) {
         const { bullAmount, bearAmount, totalAmount } = bet.round
         const multiplier = getMultiplier(totalAmount, bet.position === BetPosition.BULL ? bullAmount : bearAmount)
-        bestRound = { id: bet.round.id, payout, multiplier }
+        bestRound = { id: bet.round.epoch.toString(), payout, multiplier }
       }
       return {
         won: {
@@ -107,6 +107,7 @@ const PnlTab: React.FC<PnlTabProps> = ({ hasBetHistory, bets }) => {
   const bnbBusdPrice = usePriceBnbBusd()
 
   const summary = getPnlSummary(bets, currentEpoch)
+
   const netResultAmount = summary.won.payout - summary.lost.amount
   const netResultIsPositive = netResultAmount > 0
   const avgPositionEntered = summary.entered.amount / summary.entered.rounds
