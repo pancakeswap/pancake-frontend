@@ -21,7 +21,7 @@ interface Props {
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
   userCurrencyBalance: BigNumber
-  onSuccess: (amount: BigNumber) => void
+  onSuccess: (amount: BigNumber, txHash: string) => void
   onDismiss?: () => void
 }
 
@@ -79,8 +79,8 @@ const ContributeModal: React.FC<Props> = ({
           },
         )
       },
-      onSuccess: async () => {
-        await onSuccess(valueWithTokenDecimals)
+      onSuccess: async ({ receipt }) => {
+        await onSuccess(valueWithTokenDecimals, receipt.transactionHash)
         onDismiss()
       },
     })
