@@ -1354,5 +1354,11 @@
   "The price you see come from difference places": "நீங்கள் காணும் விலை, வெவ்வேறு இடங்களிலிருந்து வருகிறது",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "கார்டுகளிலுள்ள விலைகள், செயின்லிங்கின் சரிபார்க்கத்தக்க விலை ஆரக்கிளைச் சேர்ந்தது.",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "அட்டவணைகளிலுள்ள விலைகள் Binance.com -ஐச் சேர்ந்தவை. அட்டவணைகள், உங்கள் ஒப்பீட்டிற்காக மட்டுமே வழங்கப்படுகின்றன.",
-  "Only the price from Chainlink (shown on the cards) determines the round's result.": "செயின்லிங்கைச் சேர்ந்த விலை (கார்டுகளில் காட்டப்படுவது) மட்டுமே சுற்றின் விளைவைத் தீர்மானிக்கிறது."
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "செயின்லிங்கைச் சேர்ந்த விலை (கார்டுகளில் காட்டப்படுவது) மட்டுமே சுற்றின் விளைவைத் தீர்மானிக்கிறது.",
+  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
+  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
+  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
+  "Nothing to collect": "Nothing to collect",
+  "Download .CSV": "Download .CSV",
+  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below."
 }
