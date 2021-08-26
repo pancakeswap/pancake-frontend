@@ -50,7 +50,9 @@ const applyNodeDataToUserGraphResponse = (
       console.error(graphRound.lotteryId, 'User nodeRound isLoading')
       return graphRound
     }
-    console.error(graphRound.lotteryId, 'User nodeRound does not exist')
+    if (!lotteryNodeData) {
+      console.error(graphRound.lotteryId, 'User nodeData did not exist')
+    }
     return graphRound
   })
   return mergedResponse

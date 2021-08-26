@@ -51,7 +51,9 @@ const applyNodeDataToLotteriesGraphResponse = (
       console.error(graphRound.id, 'Lotteries nodeRound isLoading')
       return graphRound
     }
-    console.error(graphRound.id, 'Lotteries nodeRound did not exist')
+    if (!nodeData) {
+      console.error(graphRound.id, 'Lotteries nodeData did not exist')
+    }
     return graphRound
   })
   return mergedResponse
