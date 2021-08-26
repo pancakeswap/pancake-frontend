@@ -1918,6 +1918,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://seedify.fund/ ',
   },
+  naos: {
+    symbol: 'NAOS',
+    address: {
+      56: '0x758d08864fb6cce3062667225ca10b8f00496cc2',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://naos.finance/',
+  },
 }
 
 export default tokens
