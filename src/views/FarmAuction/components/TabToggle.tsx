@@ -30,7 +30,6 @@ export const TabToggle = styled.button<TabProps>`
   flex: 1;
   border: 0;
   outline: 0;
-  flex-grow: 1;
   padding: 16px;
   margin: 0;
   border-radius: 24px 24px 0 0;
