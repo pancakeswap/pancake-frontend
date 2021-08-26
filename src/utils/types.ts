@@ -30,8 +30,15 @@ export interface PredictionsRoundsResponse {
   oracleCalled: boolean
 }
 
+// [rounds, ledgers, count]
+export type PredictionsGetUserRoundsResponse = [ethers.BigNumber[], PredictionsLedgerResponse[], ethers.BigNumber]
+
+export type PredictionsGetUserRoundsLengthResponse = ethers.BigNumber
+
 export interface PredictionsContract extends Contract {
   claimable: ContractFunction<PredictionsClaimableResponse>
+  getUserRounds: ContractFunction<PredictionsGetUserRoundsResponse>
+  getUserRoundsLength: ContractFunction<PredictionsGetUserRoundsLengthResponse>
   ledger: ContractFunction<PredictionsLedgerResponse>
   refundable: ContractFunction<PredictionsRefundableResponse>
   rounds: ContractFunction<PredictionsRoundsResponse>

@@ -1,9 +1,19 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { ethers } from 'ethers'
+import { formatUnits } from 'ethers/lib/utils'
 import maxBy from 'lodash/maxBy'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { Bet, LedgerData, HistoryFilter, PredictionsState, PredictionStatus, ReduxNodeRound } from 'state/types'
+import {
+  Bet,
+  LedgerData,
+  HistoryFilter,
+  PredictionsState,
+  PredictionStatus,
+  ReduxNodeRound,
+  BetPosition,
+} from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUND_BUFFER } from './config'
 import {
@@ -18,6 +28,7 @@ import {
   makeLedgerData,
   serializePredictionsRoundsResponse,
   getClaimStatuses,
+  fetchLatestUserRounds,
 } from './helpers'
 
 const initialState: PredictionsState = {
@@ -39,7 +50,6 @@ const initialState: PredictionsState = {
 }
 
 // Thunks
-// V2 REFACTOR
 type PredictionInitialization = Pick<
   PredictionsState,
   | 'status'
@@ -141,7 +151,6 @@ export const fetchClaimableStatuses = createAsyncThunk<
   const ledgers = await getClaimStatuses(account, epochs)
   return ledgers
 })
-// END V2 REFACTOR
 
 export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
   'predictions/fetchHistory',
@@ -151,6 +160,82 @@ export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, {
       claimed,
     })
     const bets = response.map(transformBetResponse)
+
+    return { account, bets }
+  },
+)
+
+export const fetchNodeHistory = createAsyncThunk<{ account: string; bets: Bet[] }, string>(
+  'predictions/fetchNodeHistory',
+  async (account) => {
+    const userRounds = await fetchLatestUserRounds(account)
+
+    if (!userRounds) {
+      return { account, bets: [] }
+    }
+
+    const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
+    const roundData = await getRoundsData(epochs)
+
+    // Turn the data from the node into an Bet object that comes from the graph
+    const bets: Bet[] = roundData.reduce((accum, round) => {
+      const reduxRound = serializePredictionsRoundsResponse(round)
+      const ledger = userRounds[reduxRound.epoch]
+      const ledgerAmount = ethers.BigNumber.from(ledger.amount)
+      const closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
+      const lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, 8)) : null
+
+      const getRoundPosition = () => {
+        if (!closePrice) {
+          return null
+        }
+
+        return round.closePrice.gt(round.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+      }
+
+      return [
+        ...accum,
+        {
+          id: null,
+          hash: null,
+          amount: parseFloat(formatUnits(ledgerAmount)),
+          position: ledger.position,
+          claimed: ledger.claimed,
+          claimedAt: null,
+          claimedHash: null,
+          claimedBNB: 0,
+          claimedNetBNB: 0,
+          createdAt: null,
+          updatedAt: null,
+          block: 0,
+          round: {
+            id: null,
+            epoch: round.epoch.toNumber(),
+            failed: false,
+            startBlock: null,
+            startAt: round.startTimestamp ? round.startTimestamp.toNumber() : null,
+            startHash: null,
+            lockAt: round.lockTimestamp ? round.lockTimestamp.toNumber() : null,
+            lockBlock: null,
+            lockPrice,
+            lockHash: null,
+            lockRoundId: round.lockOracleId ? round.lockOracleId.toString() : null,
+            closeRoundId: round.closeOracleId ? round.closeOracleId.toString() : null,
+            closeHash: null,
+            closeAt: null,
+            closePrice,
+            closeBlock: null,
+            totalBets: 0,
+            totalAmount: parseFloat(formatUnits(round.totalAmount)),
+            bullBets: 0,
+            bullAmount: parseFloat(formatUnits(round.bullAmount)),
+            bearBets: 0,
+            bearAmount: parseFloat(formatUnits(round.bearAmount)),
+            position: getRoundPosition(),
+          },
+        },
+      ]
+    }, [])
 
     return { account, bets }
   },
@@ -269,7 +354,19 @@ export const predictionsSlice = createSlice({
       const { account, bets } = action.payload
 
       state.isFetchingHistory = false
-      state.history[account] = bets
+      state.history[account] = merge([], state.history[account] ?? [], bets)
+    })
+
+    // History from the node
+    builder.addCase(fetchNodeHistory.pending, (state) => {
+      state.isFetchingHistory = true
+    })
+    builder.addCase(fetchNodeHistory.rejected, (state) => {
+      state.isFetchingHistory = false
+    })
+    builder.addCase(fetchNodeHistory.fulfilled, (state, action) => {
+      const { account, bets } = action.payload
+      state.history[account] = merge([], state.history[account] ?? [], bets)
     })
   },
 })

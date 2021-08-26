@@ -38,12 +38,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_rewardRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_treasuryRate",
+        "name": "_treasuryFee",
         "type": "uint256"
       }
     ],
@@ -277,17 +272,11 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "rewardRate",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "treasuryRate",
+        "name": "treasuryFee",
         "type": "uint256"
       }
     ],
-    "name": "NewRewardAndTreasuryRates",
+    "name": "NewTreasuryFee",
     "type": "event"
   },
   {
@@ -436,6 +425,19 @@
     ],
     "name": "Unpaused",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_TREASURY_FEE",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -650,6 +652,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "getUserRoundsLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "intervalSeconds",
     "outputs": [
@@ -844,19 +865,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "rewardRate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -1027,16 +1035,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_rewardRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_treasuryRate",
+        "name": "_treasuryFee",
         "type": "uint256"
       }
     ],
-    "name": "setRewardAndTreasuryRates",
+    "name": "setTreasuryFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1069,7 +1072,7 @@
   },
   {
     "inputs": [],
-    "name": "treasuryRate",
+    "name": "treasuryFee",
     "outputs": [
       {
         "internalType": "uint256",

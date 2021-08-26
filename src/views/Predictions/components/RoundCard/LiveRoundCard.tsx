@@ -21,6 +21,7 @@ import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import CardHeader from './CardHeader'
 import CanceledRoundCard from './CanceledRoundCard'
+import CalculatingCard from './CalculatingCard'
 
 interface LiveRoundCardProps {
   round: NodeRound
@@ -51,6 +52,8 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
 
+  const now = Date.now()
+
   const { countUp, update } = useCountUp({
     start: 0,
     end: priceAsNumber,
@@ -69,6 +72,10 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
+  }
+
+  if (now > closeTimestamp * 1000) {
+    return <CalculatingCard round={round} hasEnteredDown={hasEnteredDown} hasEnteredUp={hasEnteredUp} />
   }
 
   return (

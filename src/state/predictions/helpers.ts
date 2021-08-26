@@ -12,8 +12,10 @@ import {
   Round,
   RoundData,
   PredictionUser,
+  HistoryFilter,
 } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
+import { getPredictionsContract } from 'utils/contractHelpers'
 import predictionsAbi from 'config/abi/predictions.json'
 import { getPredictionsAddress } from 'utils/addressHelpers'
 import { PredictionsClaimableResponse, PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
@@ -191,19 +193,18 @@ export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   return bet.position === roundResultPosition ? Result.WIN : Result.LOSE
 }
 
-/**
- * Given a bet object, check if it is eligible to be claimed or refunded
- */
-export const getCanClaim = (bet: Bet) => {
-  return !bet.claimed && (bet.position === bet.round.position || bet.round.failed === true)
-}
-
-/**
- * Returns only bets where the user has won.
- * This is necessary because the API currently cannot distinguish between an uncliamed bet that has won or lost
- */
-export const getUnclaimedWinningBets = (bets: Bet[]): Bet[] => {
-  return bets.filter(getCanClaim)
+export const getFilteredBets = (bets: Bet[], filter: HistoryFilter) => {
+  switch (filter) {
+    case HistoryFilter.COLLECTED:
+      return bets.filter((bet) => bet.claimed === true)
+    case HistoryFilter.UNCOLLECTED:
+      return bets.filter((bet) => {
+        return !bet.claimed && (bet.position === bet.round.position || bet.round.failed === true)
+      })
+    case HistoryFilter.ALL:
+    default:
+      return bets
+  }
 }
 
 export const getTotalWon = async (): Promise<number> => {
@@ -467,4 +468,53 @@ export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, an
       [key]: value,
     }
   }, {}) as K
+}
+
+/**
+ * Fetches rounds a user has participated in
+ */
+export const fetchUserRounds = async (
+  account: string,
+  cursor = 0,
+  size = 1000,
+): Promise<{ [key: string]: ReduxNodeLedger }> => {
+  const contract = getPredictionsContract()
+
+  try {
+    const [rounds, ledgers] = await contract.getUserRounds(account, cursor, size)
+
+    return rounds.reduce((accum, round, index) => {
+      return {
+        ...accum,
+        [round.toString()]: serializePredictionsLedgerResponse(ledgers[index]),
+      }
+    }, {})
+  } catch {
+    // When the results run out the contract throws an error.
+    return null
+  }
+}
+
+/**
+ * Fetches the latest rounds by checking the number of rounds a user has participated in first
+ * in order to calculate the correct cursor
+ */
+export const fetchLatestUserRounds = async (account: string, size = 1000) => {
+  const contract = getPredictionsContract()
+
+  try {
+    const roundCount = await contract.getUserRoundsLength(account)
+
+    if (roundCount.eq(0)) {
+      return null
+    }
+
+    const cursor = roundCount.lte(size) ? 0 : roundCount.sub(size).toNumber()
+    const userRounds = await fetchUserRounds(account, cursor, size)
+
+    return userRounds
+  } catch (error) {
+    // When the results run out the contract throws an error.
+    return null
+  }
 }

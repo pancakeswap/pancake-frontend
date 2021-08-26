@@ -41,18 +41,22 @@ const BetDetails: React.FC<BetDetailsProps> = ({ bet, result }) => {
         <PayoutRow positionLabel={t('Up')} multiplier={bullMultiplier} amount={bullAmount} />
         <PayoutRow positionLabel={t('Down')} multiplier={bearMultiplier} amount={bearAmount} />
       </RoundResultHistory>
-      <Flex alignItems="center" justifyContent="space-between" mb="8px">
-        <Text>{t('Opening Block')}</Text>
-        <Link href={getBscScanLink(bet.round.lockBlock, 'block')} external>
-          {bet.round.lockBlock}
-        </Link>
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text>{t('Closing Block')}</Text>
-        <Link href={getBscScanLink(bet.round.closeBlock, 'block')} external>
-          {bet.round.closeBlock}
-        </Link>
-      </Flex>
+      {bet.round.lockBlock && (
+        <Flex alignItems="center" justifyContent="space-between" mb="8px">
+          <Text>{t('Opening Block')}</Text>
+          <Link href={getBscScanLink(bet.round.lockBlock, 'block')} external>
+            {bet.round.lockBlock}
+          </Link>
+        </Flex>
+      )}
+      {bet.round.closeBlock && (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text>{t('Closing Block')}</Text>
+          <Link href={getBscScanLink(bet.round.closeBlock, 'block')} external>
+            {bet.round.closeBlock}
+          </Link>
+        </Flex>
+      )}
     </StyledBetDetails>
   )
 }
