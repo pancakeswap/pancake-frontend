@@ -1358,8 +1358,8 @@
   "Showing history for Prediction v0.2": "예측 v0.2에 대한 기록 표시",
   "Check for unclaimed v0.1 winnings": "클레임되지 않은 v0.1 당첨 확인",
   "You have no unclaimed v0.1 prizes.": "클레임되지 않은 v0.1 상금이 없습니다.",
-  "Nothing to collect": "Nothing to collect",
-  "Download .CSV": "Download .CSV",
-  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below.",
-  "Nothing to Collect": "Nothing to Collect"
+  "Nothing to collect": "수집할 항목 없음",
+  "Download .CSV": ".CSV 다운로드",
+  "Download your v0.1 Prediction history below.": "아래의 v0.1 예측 기록을 다운로드하세요.",
+  "Nothing to Collect": "수집할 항목 없음"
 }
