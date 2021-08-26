@@ -84,6 +84,8 @@ export const getWinningTickets = async (
     }
   })
 
+  console.log('ticketsWithRewardBrackets', ticketsWithRewardBrackets, 'id-', roundId, 'finalnum-', finalNumber)
+
   // A rewardBracket of -1 means no matches. 0 and above means there has been a match
   const allWinningTickets = ticketsWithRewardBrackets.filter((ticket) => {
     return ticket.rewardBracket >= 0
@@ -168,7 +170,7 @@ const fetchUnclaimedUserRewards = async (
     )
 
     console.log('lotteriesData ', lotteriesData)
-    console.log('Rounds being checked, ', roundsWithTickets)
+    console.log('Rounds being checked (with winning tickets), ', roundDataAndWinningTickets)
     console.log('Rounds with winning tickets, ', roundsWithWinningTickets)
 
     // Filter to only rounds with unclaimed tickets
