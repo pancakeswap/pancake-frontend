@@ -37,7 +37,6 @@ const fetchCakeRewardsForTickets = async (
       return accum.plus(new BigNumber(cakeReward[0].toString()))
     }, BIG_ZERO)
 
-    // Is the check getting to here and returning an empty array
     const ticketsWithUnclaimedRewards = winningTickets.map((winningTicket, index) => {
       return { ...winningTicket, cakeReward: cakeRewards[index] }
     })
@@ -51,7 +50,6 @@ const fetchCakeRewardsForTickets = async (
 const getRewardBracketByNumber = (ticketNumber: string, finalNumber: string): number => {
   // Winning numbers are evaluated right-to-left in the smart contract, so we reverse their order for validation here:
   // i.e. '1123456' should be evaluated as '6543211'
-
   const ticketNumAsArray = ticketNumber.split('').reverse()
   const winningNumsAsArray = finalNumber.split('').reverse()
   const matchingNumbers = []
@@ -83,8 +81,6 @@ export const getWinningTickets = async (
       rewardBracket: getRewardBracketByNumber(ticket.number, finalNumber),
     }
   })
-
-  // console.log('ticketsWithRewardBrackets', ticketsWithRewardBrackets, 'id-', roundId, 'finalnum-', finalNumber)
 
   // A rewardBracket of -1 means no matches. 0 and above means there has been a match
   const allWinningTickets = ticketsWithRewardBrackets.filter((ticket) => {
@@ -168,10 +164,6 @@ const fetchUnclaimedUserRewards = async (
     const roundsWithWinningTickets = winningTicketsForPastRounds.filter(
       (winningTicketData) => winningTicketData !== null,
     )
-
-    console.log('lotteriesData ', lotteriesData)
-    console.log('Rounds being checked (with winning tickets), ', roundDataAndWinningTickets)
-    console.log('Rounds with winning tickets, ', roundsWithWinningTickets)
 
     // Filter to only rounds with unclaimed tickets
     const roundsWithUnclaimedWinningTickets = roundsWithWinningTickets.filter(
