@@ -1355,11 +1355,11 @@
   "Prices on cards come from Chainlink’s verifiable price oracle.": "卡片上的价格来自 Chainlink 的可验证价格图表。",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "图表上的价格来自 Binance.com。图表仅供您参考。",
   "Only the price from Chainlink (shown on the cards) determines the round's result.": "只有来自 Chainlink 的价格（在卡片上显示）会被用于决定回合的结果。",
-  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
-  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
-  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
-  "Nothing to collect": "Nothing to collect",
-  "Download .CSV": "Download .CSV",
-  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below.",
-  "Nothing to Collect": "Nothing to Collect"
+  "Showing history for Prediction v0.2": "显示 v0.2 预测的历史记录",
+  "Check for unclaimed v0.1 winnings": "检查是否有未领取的 v0.1 奖金",
+  "You have no unclaimed v0.1 prizes.": "您没有未领取的 v0.1 奖金。",
+  "Nothing to collect": "没有什么可收集",
+  "Download .CSV": "下载 .CSV",
+  "Download your v0.1 Prediction history below.": "在下面下载您的 v0.1 预测历史记录。",
+  "Nothing to Collect": "没有什么可收集"
 }
