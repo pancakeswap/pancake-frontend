@@ -140,15 +140,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
         </Box>
         <YourResult px="24px">{renderBetLabel()}</YourResult>
         {roundResult === Result.WIN && canClaim && (
-          <CollectWinningsButton
-            hasClaimed={!canClaim}
-            epoch={bet.round.epoch}
-            payout={formatBnb(payout)}
-            onSuccess={handleSuccess}
-            betAmount={bet.amount.toString()}
-            scale="sm"
-            mr="8px"
-          >
+          <CollectWinningsButton hasClaimed={!canClaim} onSuccess={handleSuccess} scale="sm" mr="8px">
             {t('Collect')}
           </CollectWinningsButton>
         )}

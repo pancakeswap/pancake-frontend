@@ -119,15 +119,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
       </Flex>
       <StyledBetResult>
         {result === Result.WIN && !canClaim && (
-          <CollectWinningsButton
-            payout={formatBnb(payout)}
-            betAmount={bet.amount.toString()}
-            epoch={bet.round.epoch}
-            hasClaimed={!canClaim}
-            width="100%"
-            mb="16px"
-            onSuccess={handleSuccess}
-          >
+          <CollectWinningsButton hasClaimed={!canClaim} width="100%" mb="16px" onSuccess={handleSuccess}>
             {bet.claimed ? t('Already Collected') : t('Collect Winnings')}
           </CollectWinningsButton>
         )}

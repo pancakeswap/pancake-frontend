@@ -1,13 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
 import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
-import { useGetBetByEpoch, useGetBufferSeconds } from 'state/predictions/hooks'
-import { formatBigNumberToFixed } from 'utils/formatBalance'
+import { useGetBufferSeconds } from 'state/predictions/hooks'
 import useTheme from 'hooks/useTheme'
-import { getHasRoundFailed, getNetPayoutv2 } from '../../helpers'
+import { getHasRoundFailed } from '../../helpers'
 import { RoundResult } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import CardHeader, { getBorderBackground } from './CardHeader'
@@ -47,13 +45,9 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { account } = useWeb3React()
   const { epoch, lockPrice, closePrice } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
-  const ledger = useGetBetByEpoch(account, epoch)
   const bufferSeconds = useGetBufferSeconds()
-  const payout = getNetPayoutv2(ledger, round)
-  const formattedPayout = payout.toUnsafeFloat().toFixed(4)
   const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
 
   if (hasRoundFailed) {
@@ -92,12 +86,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
           />
         </CardBody>
       </StyledExpiredRoundCard>
-      <CollectWinningsOverlay
-        epoch={epoch}
-        payout={formattedPayout}
-        betAmount={betAmount ? formatBigNumberToFixed(betAmount, 4) : '0'}
-        isBottom={hasEnteredDown}
-      />
+      <CollectWinningsOverlay epoch={epoch} isBottom={hasEnteredDown} />
     </Box>
   )
 }
