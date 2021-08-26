@@ -61,22 +61,27 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
                 </Td>
               </tr>
             ))
-          : bets.map((bet) => (
-              <tr key={bet.id}>
-                <Td textAlign="center" fontWeight="bold">
-                  {bet.round.epoch.toLocaleString()}
-                </Td>
-                <Td textAlign="center">
-                  <PositionLabel position={bet.position} />
-                </Td>
-                <Td textAlign="right">
-                  <NetWinnings
-                    amount={bet.claimedNetBNB}
-                    textPrefix={bet.position === bet.round.position ? '+' : '-'}
-                  />
-                </Td>
-              </tr>
-            ))}
+          : bets.map((bet) => {
+              const isWinner = bet.position === bet.round.position
+
+              return (
+                <tr key={bet.id}>
+                  <Td textAlign="center" fontWeight="bold">
+                    {bet.round.epoch.toLocaleString()}
+                  </Td>
+                  <Td textAlign="center">
+                    <PositionLabel position={bet.position} />
+                  </Td>
+                  <Td textAlign="right">
+                    <NetWinnings
+                      amount={isWinner ? bet.claimedNetBNB : bet.amount}
+                      textPrefix={isWinner ? '+' : '-'}
+                      textColor={isWinner ? 'success' : 'failure'}
+                    />
+                  </Td>
+                </tr>
+              )
+            })}
       </tbody>
     </Table>
   )

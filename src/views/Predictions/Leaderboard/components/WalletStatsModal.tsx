@@ -94,7 +94,16 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
               <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Net Winnings')}
               </Text>
-              {isLoading ? <Skeleton /> : <NetWinnings amount={result.netBNB} alignItems="flex-end" />}
+              {isLoading ? (
+                <Skeleton />
+              ) : (
+                <NetWinnings
+                  amount={result.netBNB}
+                  textPrefix={result.netBNB > 0 ? '+' : ''}
+                  textColor={result.netBNB > 0 ? 'success' : 'failure'}
+                  alignItems="flex-end"
+                />
+              )}
             </Box>
             <Box>
               <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">

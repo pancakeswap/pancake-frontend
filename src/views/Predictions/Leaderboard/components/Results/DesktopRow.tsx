@@ -22,7 +22,11 @@ const DesktopRow: React.FC<DesktopRowProps> = ({ rank, user, ...props }) => (
       <ResultAvatar user={user} />
     </Td>
     <Td>
-      <NetWinnings amount={user.netBNB} />
+      <NetWinnings
+        amount={user.netBNB}
+        textPrefix={user.netBNB > 0 ? '+' : ''}
+        textColor={user.netBNB > 0 ? 'success' : 'failure'}
+      />
     </Td>
     <Td textAlign="center">
       {`${user.winRate.toLocaleString(undefined, {

@@ -14,12 +14,12 @@ export const Row: React.FC<FlexProps> = ({ children, ...props }) => {
 interface NetWinningsProps extends FlexProps {
   amount: number
   textPrefix?: string
+  textColor?: string
 }
 
-export const NetWinnings: React.FC<NetWinningsProps> = ({ amount, textPrefix = '', ...props }) => {
+export const NetWinnings: React.FC<NetWinningsProps> = ({ amount, textPrefix = '', textColor = 'text', ...props }) => {
   const bnbBusdPrice = usePriceBnbBusd()
   const value = bnbBusdPrice.times(Math.abs(amount)).toNumber()
-  const textColor = amount > 0 ? 'success' : 'failure'
 
   return (
     <Flex flexDirection="column" alignItems="flex-end" {...props}>
@@ -41,7 +41,7 @@ export const NetWinningsRow: React.FC<{ amount: number }> = ({ amount }) => {
       <Text fontSize="12px" color="textSubtle">
         {t('Net Winnings (BNB)')}
       </Text>
-      <NetWinnings amount={amount} />
+      <NetWinnings amount={amount} textPrefix={amount > 0 ? '+' : ''} textColor={amount > 0 ? 'success' : 'failure'} />
     </Row>
   )
 }
