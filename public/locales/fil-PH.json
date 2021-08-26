@@ -1355,11 +1355,11 @@
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Ang mga presyo sa mga card ay nagmula sa napatunayan na presyo ng orakulo ng Chainlink.",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Ang mga presyo sa mga chart ay nagmula sa Binance.com. Ang chart ay ibinibigay para sa iyong sanggunian lamang.",
   "Only the price from Chainlink (shown on the cards) determines the round's result.": "Ang presyo lamang mula sa Chainlink (ipinapakita sa mga card) ang tumutukoy sa resulta ng round.",
-  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
-  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
-  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
-  "Nothing to collect": "Nothing to collect",
-  "Download .CSV": "Download .CSV",
-  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below.",
-  "Nothing to Collect": "Nothing to Collect"
+  "Showing history for Prediction v0.2": "Ipinapakita ang history para sa Prediction v0.2",
+  "Check for unclaimed v0.1 winnings": "I-check para sa hindi kinukuhang v0.1 mga pagkapanalo",
+  "You have no unclaimed v0.1 prizes.": "Wala kang hindi pa nakukuha na premyo ng v0.1.",
+  "Nothing to collect": "Walang kokolektahin",
+  "Download .CSV": "I-download ang .CSV",
+  "Download your v0.1 Prediction history below.": "I-download ang iyong v0.1 Prediction history sa ibaba.",
+  "Nothing to Collect": "Wala pang kokolektahin"
 }
