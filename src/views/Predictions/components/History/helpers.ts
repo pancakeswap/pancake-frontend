@@ -6,7 +6,7 @@ export const formatUsd = (usd: number) => {
 }
 
 export const formatBnb = (bnb: number) => {
-  return bnb ? bnb.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 }) : '0'
+  return bnb ? bnb.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : '0'
 }
 
 export const getMultiplier = (total: number, amount: number) => {

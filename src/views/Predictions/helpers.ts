@@ -9,7 +9,7 @@ export const formatUsdv2 = (usd: ethers.BigNumber) => {
 
 export const formatBnbv2 = (bnb: ethers.BigNumber) => {
   const value = bnb || ethers.BigNumber.from(0)
-  return formatBigNumberToFixed(value, 4)
+  return formatBigNumberToFixed(value, 3)
 }
 
 export const padTime = (num: number) => num.toString().padStart(2, '0')
