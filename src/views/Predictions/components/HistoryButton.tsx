@@ -15,7 +15,7 @@ const HistoryButton = () => {
   }
 
   return (
-    <IconButton variant="subtle" ml="8px" onClick={handleClick} isLoading={isFetchingHistory} disabled={!account}>
+    <IconButton variant="subtle" onClick={handleClick} isLoading={isFetchingHistory} disabled={!account}>
       {isFetchingHistory ? <AutoRenewIcon spin color="white" /> : <HistoryIcon width="24px" color="white" />}
     </IconButton>
   )
