@@ -30,31 +30,30 @@ const applyNodeDataToUserGraphResponse = (
     })
   }
 
-  //   Else if there is a graph response - merge with node data where node data is more accurate
-  const mergedResponse = userGraphData.map((graphRound, index) => {
-    const nodeRound = lotteryNodeData[index]
-    // if there is node data for this index, overwrite graph data. Otherwise - return graph data.
-    if (nodeRound) {
-      const ticketDataForRound = userNodeData.find((roundTickets) => roundTickets.roundId === nodeRound.lotteryId)
-      // if isLoading === true, there has been a node error - return graphRound
-      if (!nodeRound.isLoading) {
-        return {
-          endTime: nodeRound.endTime,
-          status: nodeRound.status,
-          lotteryId: nodeRound.lotteryId.toString(),
-          claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
-          totalTickets: graphRound.totalTickets,
-          tickets: ticketDataForRound.userTickets,
-        }
-      }
-      console.error(graphRound.lotteryId, 'User nodeRound isLoading')
-      return graphRound
+  // Populate all nodeRound data with supplementary graphResponse round data
+  const nodeRoundsWithGraphData = userNodeData.map((userNodeRound) => {
+    const userGraphRound = userGraphData.find(
+      (graphResponseRound) => graphResponseRound.lotteryId === userNodeRound.roundId,
+    )
+    const nodeRoundData = lotteryNodeData.find((nodeRound) => nodeRound.lotteryId === userNodeRound.roundId)
+    return {
+      endTime: nodeRoundData.endTime,
+      status: nodeRoundData.status,
+      lotteryId: nodeRoundData.lotteryId.toString(),
+      claimed: hasRoundBeenClaimed(userNodeRound.userTickets),
+      totalTickets: userGraphRound.totalTickets,
+      tickets: userNodeRound.userTickets,
     }
-    if (!lotteryNodeData) {
-      console.error(graphRound.lotteryId, 'User nodeData did not exist')
-    }
-    return graphRound
   })
+
+  // Return the rounds with combined data, plus all remaining subgraph rounds.
+  const [lastCombinedDataRound] = nodeRoundsWithGraphData.slice(-1)
+  const lastCombinedDataRoundIndex = userGraphData
+    .map((graphRound) => graphRound.lotteryId)
+    .indexOf(lastCombinedDataRound.lotteryId)
+  const remainingSubgraphRounds =
+    lastCombinedDataRoundIndex >= 0 ? userGraphData.splice(lastCombinedDataRoundIndex + 1) : []
+  const mergedResponse = [...nodeRoundsWithGraphData, ...remainingSubgraphRounds]
   return mergedResponse
 }
 

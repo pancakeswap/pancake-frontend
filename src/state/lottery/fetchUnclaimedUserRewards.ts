@@ -84,7 +84,7 @@ export const getWinningTickets = async (
     }
   })
 
-  console.log('ticketsWithRewardBrackets', ticketsWithRewardBrackets, 'id-', roundId, 'finalnum-', finalNumber)
+  // console.log('ticketsWithRewardBrackets', ticketsWithRewardBrackets, 'id-', roundId, 'finalnum-', finalNumber)
 
   // A rewardBracket of -1 means no matches. 0 and above means there has been a match
   const allWinningTickets = ticketsWithRewardBrackets.filter((ticket) => {
