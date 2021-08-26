@@ -14,6 +14,10 @@ interface MobileRowProps {
 const StyledMobileRow = styled(Box)`
   background-color: ${({ theme }) => theme.card.background};
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+
+  &:first-child {
+    border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  }
 `
 
 const MobileRow: React.FC<MobileRowProps> = ({ rank, user }) => {
