@@ -28,7 +28,7 @@ export const useGetLotteriesGraphData = () => {
 
 export const useGetLotteryGraphDataById = (lotteryId: string) => {
   const lotteriesData = useGetLotteriesGraphData()
-  return lotteriesData.find((lottery) => lottery.id === lotteryId)
+  return lotteriesData?.find((lottery) => lottery.id === lotteryId)
 }
 
 export const useFetchLottery = () => {
