@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-08-24T10:46:42.659Z",
+  "timestamp": "2021-08-26T08:17:09.884Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 19
+    "patch": 20
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1067,6 +1067,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x9F882567A62a5560d147d64871776EeA72Df41D3.png"
+    },
+    {
+      "name": "NAOS Finance",
+      "symbol": "NAOS",
+      "address": "0x758d08864fB6cCE3062667225ca10b8F00496cc2",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x758d08864fB6cCE3062667225ca10b8F00496cc2.png"
     },
     {
       "name": "NAR Token",
