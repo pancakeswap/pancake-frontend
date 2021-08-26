@@ -1354,5 +1354,11 @@
   "The price you see come from difference places": "আপনি যে দাম দেখছেন তা বিভিন্ন জায়গা থেকে এসেছে",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "কার্ডের দাম চেইনলিংক এর যাচাইযোগ্য দাম ওরাকল থেকে আসে।",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "চার্টের দাম Binance.com থেকে আসে। চার্ট শুধুমাত্র আপনার রেফারেন্সের জন্য প্রদান করা হয়।",
-  "Only the price from Chainlink (shown on the cards) determines the round's result.": "শুধুমাত্র চেইনলিংক এর (কার্ডে প্রদর্শিত) দাম রাউন্ডের ফলাফল নির্ধারণ করে।"
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "শুধুমাত্র চেইনলিংক এর (কার্ডে প্রদর্শিত) দাম রাউন্ডের ফলাফল নির্ধারণ করে।",
+  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
+  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
+  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
+  "Nothing to collect": "Nothing to collect",
+  "Download .CSV": "Download .CSV",
+  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below."
 }

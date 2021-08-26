@@ -1354,5 +1354,11 @@
   "The price you see come from difference places": "Ціни, які ви бачите, походять із різних джерел",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Ціни на картках беруться в об’єктивного оракула цін Chainlink.",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Ціни на графіках беруться з Binance.com. Графіки наведено лише в довідкових цілях.",
-  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Результат раунду визначається лише за ціною від Chainlink (показаною на картках)."
+  "Only the price from Chainlink (shown on the cards) determines the round's result.": "Результат раунду визначається лише за ціною від Chainlink (показаною на картках).",
+  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
+  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
+  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
+  "Nothing to collect": "Nothing to collect",
+  "Download .CSV": "Download .CSV",
+  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below."
 }
