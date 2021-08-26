@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Button, Text } from '@pancakeswap/uikit'
+import { Heading, Button, Text } from '@gondolafinance/uikit'
 import history from 'routerHistory'
 import { useTranslation } from 'contexts/Localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'

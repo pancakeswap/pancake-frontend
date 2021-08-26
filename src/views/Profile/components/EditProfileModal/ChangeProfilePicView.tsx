@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap/uikit'
+import { Button, InjectedModalProps, Skeleton, Text } from '@gondolafinance/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { useGetCollectibles } from 'state/collectibles/hooks'

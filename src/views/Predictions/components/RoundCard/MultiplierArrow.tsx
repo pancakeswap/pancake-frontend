@@ -1,7 +1,7 @@
 import React from 'react'
 import { ethers } from 'ethers'
 import styled, { CSSProperties } from 'styled-components'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition } from 'state/types'
 import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMultiplierArrows'

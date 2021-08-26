@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Text, Flex, Skeleton, Box, Image } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton, Box, Image } from '@gondolafinance/uikit'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'

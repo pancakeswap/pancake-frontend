@@ -1,5 +1,5 @@
 import React from 'react'
-import { Svg, SvgProps } from '@pancakeswap/uikit'
+import { Svg, SvgProps } from '@gondolafinance/uikit'
 
 const WhiteBunny: React.FC<SvgProps> = (props) => {
   return (

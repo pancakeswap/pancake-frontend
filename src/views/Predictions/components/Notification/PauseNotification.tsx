@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Text } from '@pancakeswap/uikit'
+import { Box, Button, Text } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { setHistoryPaneState } from 'state/predictions'

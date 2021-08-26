@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { isAfter, differenceInSeconds } from 'date-fns'
-import { Text, Flex, PocketWatchIcon, Skeleton } from '@pancakeswap/uikit'
+import { Text, Flex, PocketWatchIcon, Skeleton } from '@gondolafinance/uikit'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useTranslation } from 'contexts/Localization'

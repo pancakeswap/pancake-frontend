@@ -12,7 +12,7 @@ import {
   Heading,
   Skeleton,
   Box,
-} from '@pancakeswap/uikit'
+} from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'

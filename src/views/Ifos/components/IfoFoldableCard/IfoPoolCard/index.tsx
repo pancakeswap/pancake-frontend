@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
-import { Card, CardBody, CardHeader, Text, useTooltip, HelpIcon, Flex } from '@pancakeswap/uikit'
+import { Card, CardBody, CardHeader, Text, useTooltip, HelpIcon, Flex } from '@gondolafinance/uikit'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useProfile } from 'state/profile/hooks'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'

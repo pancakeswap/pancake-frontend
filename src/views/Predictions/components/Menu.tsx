@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, HelpIcon, IconButton } from '@pancakeswap/uikit'
+import { Flex, HelpIcon, IconButton } from '@gondolafinance/uikit'
 import FlexRow from './FlexRow'
 import { PricePairLabel, TimerLabel } from './Label'
 import PrevNextNav from './PrevNextNav'

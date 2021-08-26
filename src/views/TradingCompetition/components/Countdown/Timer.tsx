@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Text, Link, useTooltip } from '@pancakeswap/uikit'
+import { Flex, Heading, Text, Link, useTooltip } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { getBscScanLink } from 'utils'

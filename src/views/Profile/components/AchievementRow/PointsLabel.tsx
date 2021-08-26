@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, FlexProps, PrizeIcon, Text } from '@pancakeswap/uikit'
+import { Flex, FlexProps, PrizeIcon, Text } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 interface PointsLabelProps extends FlexProps {

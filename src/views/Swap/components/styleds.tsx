@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, ErrorIcon } from '@pancakeswap/uikit'
+import { Text, ErrorIcon } from '@gondolafinance/uikit'
 import styled, { css } from 'styled-components'
 import { AutoColumn } from 'components/Layout/Column'
 

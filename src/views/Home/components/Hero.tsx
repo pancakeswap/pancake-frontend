@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Flex, Heading, Link, Button } from '@pancakeswap/uikit'
+import { Flex, Heading, Link, Button } from '@gondolafinance/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -75,7 +75,7 @@ const StarsWrapper = styled.div`
 `
 
 const imagePath = '/images/home/lunar-bunny/'
-const imageSrc = 'bunny'
+const imageSrc = 'Gondola_Final_About Us'
 
 const starsImage: CompositeImageProps = {
   path: '/images/home/lunar-bunny/',
@@ -104,10 +104,10 @@ const Hero = () => {
       >
         <Flex flex="1" flexDirection="column">
           <Heading scale="xxl" color="secondary" mb="24px">
-            {t('The moon is made of pancakes.')}
+            {t('Connect any asset on Avalanche')}
           </Heading>
           <Heading scale="md" mb="24px">
-            {t('Trade, earn, and win crypto on the most popular decentralized platform in the galaxy.')}
+            {t('Gondola Finance specializes in Stableswap on Avalanche, bridging fragmented liquidity.')}
           </Heading>
           <Flex>
             {!account && <ConnectWalletButton mr="8px" />}
@@ -124,7 +124,7 @@ const Hero = () => {
           position="relative"
         >
           <BunnyWrapper>
-            <img src={`${imagePath}${imageSrc}.png`} srcSet={getSrcSet(imagePath, imageSrc)} alt={t('Lunar bunny')} />
+            <img src={`${imagePath}${imageSrc}.png`} srcSet={getSrcSet(imagePath, imageSrc)} alt={t('Gondola')} />
           </BunnyWrapper>
           <StarsWrapper>
             <CompositeImage {...starsImage} />

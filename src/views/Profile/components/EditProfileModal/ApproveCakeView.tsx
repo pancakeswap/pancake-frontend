@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCake } from 'hooks/useContract'
 import useToast from 'hooks/useToast'

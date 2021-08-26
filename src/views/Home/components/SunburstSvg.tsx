@@ -1,5 +1,6 @@
 import React from 'react'
-import { Svg, SvgProps } from '@pancakeswap/uikit'
+// import { Svg, SvgProps } from '@gondolafinance/uikit'
+import { Svg, SvgProps } from '@gondolafinance/uikit'
 
 const SunburstSvg: React.FC<SvgProps> = (props) => {
   return (

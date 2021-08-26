@@ -11,7 +11,7 @@ import {
   useModal,
   CardRibbon,
   useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+} from '@gondolafinance/uikit'
 import { LotteryRound } from 'state/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
 import { LotteryStatus } from 'config/constants/types'

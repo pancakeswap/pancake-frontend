@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Text, Flex } from '@pancakeswap/uikit'
+import { Heading, Text, Flex } from '@gondolafinance/uikit'
 import styled from 'styled-components'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { LeaderboardDataItem } from '../../../types'

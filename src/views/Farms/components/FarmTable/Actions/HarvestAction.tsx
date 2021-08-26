@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { Button, Heading, Skeleton, Text } from '@gondolafinance/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'

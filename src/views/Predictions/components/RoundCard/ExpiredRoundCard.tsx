@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
+import { Card, Box, BlockIcon, CardBody } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
 import { useGetBetByEpoch, useGetBufferSeconds } from 'state/predictions/hooks'

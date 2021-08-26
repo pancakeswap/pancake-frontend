@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouteMatch, Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@pancakeswap/uikit'
+import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import ToggleView, { ViewMode } from './ToggleView/ToggleView'
 

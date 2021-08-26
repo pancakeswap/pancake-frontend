@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Heading, Flex, Text, useMatchBreakpoints } from '@gondolafinance/uikit'
 
 const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlightColor: string }> = ({
   headingText,

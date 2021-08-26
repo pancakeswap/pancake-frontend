@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex } from '@pancakeswap/uikit'
+import { Box, Flex } from '@gondolafinance/uikit'
 import styled from 'styled-components'
 import HarvestCard from './HarvestCard'
 import UserDetail from './UserDetail'

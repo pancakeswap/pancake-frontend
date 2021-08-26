@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
+import { Flex, Skeleton, UserMenuItem } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import history from 'routerHistory'
 

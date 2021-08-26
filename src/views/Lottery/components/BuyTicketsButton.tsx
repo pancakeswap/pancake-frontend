@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, useModal, WaitIcon, ButtonProps } from '@pancakeswap/uikit'
+import { Button, useModal, WaitIcon, ButtonProps } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useLottery } from 'state/lottery/hooks'
 import { LotteryStatus } from 'config/constants/types'

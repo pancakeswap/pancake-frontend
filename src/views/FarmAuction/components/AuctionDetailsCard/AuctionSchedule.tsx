@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { format } from 'date-fns'
-import { Text, Flex, Box } from '@pancakeswap/uikit'
+import { Text, Flex, Box } from '@gondolafinance/uikit'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 

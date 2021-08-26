@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TextProps } from '@pancakeswap/uikit'
+import { Text, TextProps } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { TranslatableText as AchievementTitleType } from 'state/types'
 

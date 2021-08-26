@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Text, Flex, ChevronRightIcon } from '@pancakeswap/uikit'
+import { Heading, Text, Flex, ChevronRightIcon } from '@gondolafinance/uikit'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { useGetCollectibles } from 'state/collectibles/hooks'

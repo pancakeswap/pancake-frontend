@@ -13,7 +13,7 @@ import {
   Spinner,
   Modal,
   InjectedModalProps,
-} from '@pancakeswap/uikit'
+} from '@gondolafinance/uikit'
 import { registerToken } from 'utils/wallet'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

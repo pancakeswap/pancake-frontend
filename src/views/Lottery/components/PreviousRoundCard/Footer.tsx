@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Flex, ExpandableLabel, CardFooter } from '@pancakeswap/uikit'
+import { Flex, ExpandableLabel, CardFooter } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryRound } from 'state/types'
 import FooterExpanded from './FooterExpanded'

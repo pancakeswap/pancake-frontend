@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Box } from '@pancakeswap/uikit'
+import { Box } from '@gondolafinance/uikit'
 import { DefaultTheme, useTheme } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 

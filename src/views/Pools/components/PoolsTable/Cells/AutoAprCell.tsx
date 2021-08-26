@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints } from '@gondolafinance/uikit'
 import { Pool } from 'state/types'
 import { useCakeVault } from 'state/pools/hooks'
 import { useTranslation } from 'contexts/Localization'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, CardBody, Flex, Heading, Text } from '@pancakeswap/uikit'
+import { Button, Card, CardBody, Flex, Heading, Text } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Link } from 'react-router-dom'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Text, useModal, Flex, Skeleton, Heading } from '@pancakeswap/uikit'
+import { Button, Text, useModal, Flex, Skeleton, Heading } from '@gondolafinance/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { PoolCategory } from 'config/constants/types'

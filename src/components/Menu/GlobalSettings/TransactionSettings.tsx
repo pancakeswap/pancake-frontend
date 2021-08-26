@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, Button, Input, Flex, Box } from '@pancakeswap/uikit'
+import { Text, Button, Input, Flex, Box } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks'
 import QuestionHelper from '../../QuestionHelper'

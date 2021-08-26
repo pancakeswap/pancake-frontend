@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Box } from '@pancakeswap/uikit'
+import { Flex, Text, Box } from '@gondolafinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Pool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'

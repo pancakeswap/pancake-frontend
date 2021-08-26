@@ -1,6 +1,6 @@
 import React, { lazy } from 'react'
 import { Router, Redirect, Route, Switch } from 'react-router-dom'
-import { ResetCSS } from '@pancakeswap/uikit'
+import { ResetCSS } from '@gondolafinance/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { usePollBlockNumber } from 'state/block/hooks'
@@ -40,9 +40,9 @@ const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 const Predictions = lazy(() => import('./views/Predictions'))
-const Voting = lazy(() => import('./views/Voting'))
-const Proposal = lazy(() => import('./views/Voting/Proposal'))
-const CreateProposal = lazy(() => import('./views/Voting/CreateProposal'))
+// const Voting = lazy(() => import('./views/Voting'))
+// const Proposal = lazy(() => import('./views/Voting/Proposal'))
+// const CreateProposal = lazy(() => import('./views/Voting/CreateProposal'))
 const AddLiquidity = lazy(() => import('./views/AddLiquidity'))
 const Liquidity = lazy(() => import('./views/Pool'))
 const PoolFinder = lazy(() => import('./views/PoolFinder'))
@@ -104,15 +104,7 @@ const App: React.FC = () => {
             <Route path="/prediction">
               <Predictions />
             </Route>
-            <Route exact path="/voting">
-              <Voting />
-            </Route>
-            <Route exact path="/voting/proposal/create">
-              <CreateProposal />
-            </Route>
-            <Route path="/voting/proposal/:id">
-              <Proposal />
-            </Route>
+  
 
             {/* Using this format because these components use routes injected props. We need to rework them with hooks */}
             <Route exact strict path="/swap" component={Swap} />
