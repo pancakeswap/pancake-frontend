@@ -1357,9 +1357,9 @@
   "Only the price from Chainlink (shown on the cards) determines the round's result.": "O wyniku rundy decyduje jedynie cena z Chainlink (pokazana na kartach).",
   "Showing history for Prediction v0.2": "Wyświetlanie historii dla prognozy v0.2",
   "Check for unclaimed v0.1 winnings": "Sprawdź czy nie ma nieodebranych wygranych za v0.1",
-  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
-  "Nothing to collect": "Nothing to collect",
-  "Download .CSV": "Download .CSV",
-  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below.",
-  "Nothing to Collect": "Nothing to Collect"
+  "You have no unclaimed v0.1 prizes.": "Nie masz żadnych nieodebranych nagród za v0.1.",
+  "Nothing to collect": "Nie ma czego odebrać",
+  "Download .CSV": "Pobierz plik .CSV",
+  "Download your v0.1 Prediction history below.": "Pobierz swoją historię prognozy v0.1 poniżej.",
+  "Nothing to Collect": "Nie ma czego odebrać"
 }
