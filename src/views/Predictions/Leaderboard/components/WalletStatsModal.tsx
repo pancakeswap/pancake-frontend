@@ -91,13 +91,13 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
             borderColor="cardBorder"
           >
             <Box>
-              <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
+              <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Net Winnings')}
               </Text>
-              {isLoading ? <Skeleton /> : <NetWinnings amount={result.netBNB} alignItems="start" />}
+              {isLoading ? <Skeleton /> : <NetWinnings amount={result.netBNB} alignItems="flex-end" />}
             </Box>
             <Box>
-              <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
+              <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Win Rate')}
               </Text>
               {isLoading ? (
@@ -110,13 +110,13 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
               )}
             </Box>
             <Box>
-              <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
+              <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Rounds Won')}
               </Text>
               {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result.totalBetsClaimed.toLocaleString()}</Text>}
             </Box>
             <Box>
-              <Text as="h6" fontSize="12px" textTransform="uppercase" color="secondary" fontWeight="bold" mb="8px">
+              <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Rounds Played')}
               </Text>
               {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result.totalBets.toLocaleString()}</Text>}

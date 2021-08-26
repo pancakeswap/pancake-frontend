@@ -71,7 +71,7 @@ const Menu = () => {
           </HelpButtonWrapper>
           <ButtonWrapper style={{ order: 3 }}>
             <Button as={Link} variant="subtle" to="/prediction/leaderboard" width="48px">
-              <PrizeIcon color="currentColor" />
+              <PrizeIcon color="white" />
             </Button>
           </ButtonWrapper>
           <ButtonWrapper style={{ order: 4 }}>

@@ -13,7 +13,7 @@ const Filters = () => {
   const orderByOptions = [
     { label: t('Net Winnings'), value: 'netBNB' },
     { label: t('Total Winnings'), value: 'totalBNB' },
-    { label: t('Total Bets'), value: 'totalBets' },
+    { label: t('Rounds Played'), value: 'totalBets' },
     { label: t('Win Rate'), value: 'winRate' },
   ]
 
