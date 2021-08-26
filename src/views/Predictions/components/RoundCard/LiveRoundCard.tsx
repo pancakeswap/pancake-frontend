@@ -14,7 +14,6 @@ import { useTranslation } from 'contexts/Localization'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useGetLastOraclePrice, useGetBufferSeconds } from 'state/predictions/hooks'
-import { CALCULATING_BUFFER } from 'state/predictions/config'
 import RoundProgress from 'components/RoundProgress'
 import { formatUsdv2, getHasRoundFailed, getPriceDifference } from '../../helpers'
 import PositionTag from '../PositionTag'
@@ -54,7 +53,6 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
 
   const now = Date.now()
-  const calculatingBuffer = (closeTimestamp - CALCULATING_BUFFER) * 1000
 
   const { countUp, update } = useCountUp({
     start: 0,
@@ -76,7 +74,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
     return <CanceledRoundCard round={round} />
   }
 
-  if (now >= calculatingBuffer) {
+  if (now > closeTimestamp * 1000) {
     return <CalculatingCard round={round} hasEnteredDown={hasEnteredDown} hasEnteredUp={hasEnteredUp} />
   }
 
