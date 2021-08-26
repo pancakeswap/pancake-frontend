@@ -17,7 +17,7 @@ import MobileResults from './MobileResults'
 import RankingCard from './RankingCard'
 
 const Results = () => {
-  const { isXl } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
   const [first, second, third, ...rest] = useGetLeaderboardResults()
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
@@ -34,15 +34,15 @@ const Results = () => {
     <Box>
       <Container mb="16px">
         <Grid
-          gridGap={['16px', null, null, null, '24px']}
-          gridTemplateColumns={['1fr', null, null, null, 'repeat(3, 1fr)']}
+          gridGap={['16px', null, null, null, null, '24px']}
+          gridTemplateColumns={['1fr', null, null, null, null, 'repeat(3, 1fr)']}
         >
           <RankingCard rank={1} user={first} />
           <RankingCard rank={2} user={second} />
           <RankingCard rank={3} user={third} />
         </Grid>
       </Container>
-      {isXl ? <DesktopResults results={rest} /> : <MobileResults results={rest} />}
+      {isDesktop ? <DesktopResults results={rest} /> : <MobileResults results={rest} />}
       <Flex mb="40px" justifyContent="center">
         {hasMoreResults && (
           <Button

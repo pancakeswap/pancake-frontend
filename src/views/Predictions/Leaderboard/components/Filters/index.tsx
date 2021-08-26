@@ -27,14 +27,14 @@ const Filters = () => {
         {t('Rank By')}
       </Text>
       <Flex
-        flexDirection={['column', null, null, null, 'row']}
-        alignItems={['start', null, null, null, 'center']}
-        justifyContent={['start', null, null, null, 'space-between']}
+        flexDirection={['column', null, null, null, null, 'row']}
+        alignItems={['start', null, null, null, null, 'center']}
+        justifyContent={['start', null, null, null, null, 'space-between']}
       >
-        <Box width={['100%', null, null, null, 'auto']}>
+        <Box width={['100%', null, null, null, null, 'auto']}>
           <Select options={orderByOptions} onOptionChange={handleOrderBy} />
         </Box>
-        <Box width={['100%', null, null, null, '320px']}>
+        <Box width={['100%', null, null, null, null, '320px']}>
           <AddressSearch />
         </Box>
       </Flex>

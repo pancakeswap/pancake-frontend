@@ -47,7 +47,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
   const profileAvatar = useGetProfileAvatar(account)
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
   const isLoading = leaderboardLoadingState === LeaderboardLoadingState.LOADING
-  const { isXl } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
 
   const handleDismiss = () => {
     if (onBeforeDismiss) {
@@ -61,7 +61,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
     <ModalContainer minWidth="320px">
       <ModalHeader background={theme.colors.gradients.bubblegum}>
         <Flex alignItems="center" style={{ flex: 1 }}>
-          <Box width={['64px', null, null, null, '96px']} mr="16px">
+          <Box width={['64px', null, null, null, null, null, '96px']} mr="16px">
             <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={96} width={96} />
           </Box>
           <Box>
@@ -82,9 +82,9 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
           {t('No results found.')}
         </Text>
       ) : (
-        <Box maxHeight={['500px', null, null, null, 'none']} overflowY="auto">
+        <Box maxHeight={['500px', null, null, null, null, null, 'none']} overflowY="auto">
           <Grid
-            gridTemplateColumns={['1fr', null, null, null, 'repeat(4, 1fr)']}
+            gridTemplateColumns={['1fr', null, null, null, null, null, 'repeat(4, 1fr)']}
             gridGap="16px"
             p="24px"
             borderBottom="1px solid"
@@ -122,7 +122,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
               {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result.totalBets.toLocaleString()}</Text>}
             </Box>
           </Grid>
-          {isXl ? <DesktopBetsTable account={account} /> : <MobileBetsTable account={account} />}
+          {isDesktop ? <DesktopBetsTable account={account} /> : <MobileBetsTable account={account} />}
         </Box>
       )}
     </ModalContainer>

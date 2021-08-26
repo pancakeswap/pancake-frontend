@@ -15,7 +15,7 @@ const ConnectedWalletResult = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const accountResult = useGetLeaderboardAddressResult(account)
-  const { isXl } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
 
   useEffect(() => {
     if (account) {
@@ -33,7 +33,7 @@ const ConnectedWalletResult = () => {
       <Heading as="h2" scale="md" color="secondary" mb="16px">
         {t('My Rankings')}
       </Heading>
-      {isXl ? (
+      {isDesktop ? (
         <Card isActive>
           <Table>
             <thead>

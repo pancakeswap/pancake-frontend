@@ -45,7 +45,10 @@ const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
               {profileAvatar.username || truncateWalletAddress(user.id)}
             </Text>{' '}
           </UsernameWrapper>
-          <AvatarWrapper width={['32px', null, null, null, '40px']} height={['32px', null, null, null, '40px']}>
+          <AvatarWrapper
+            width={['32px', null, null, null, null, '40px']}
+            height={['32px', null, null, null, null, '40px']}
+          >
             <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={40} width={40} />
           </AvatarWrapper>
         </Flex>
