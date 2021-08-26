@@ -18,11 +18,11 @@ describe('formatUsd', () => {
 
 describe('formatBnb', () => {
   it.each([
-    [20, '20.0000'],
-    [265.22, '265.2200'],
-    [689.889, '689.8890'],
-    [10.8829, '10.8829'],
-  ])('format %i BNB correctly with 4 decimals', (value, expected) => {
+    [20, '20.000'],
+    [265.22, '265.220'],
+    [689.889, '689.889'],
+    [10.8829, '10.883'],
+  ])('format %i BNB correctly with 3 decimals', (value, expected) => {
     expect(formatBnb(value)).toEqual(expected)
   })
 
