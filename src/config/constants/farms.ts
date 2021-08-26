@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 452,
+    lpSymbol: 'NAOS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xcaa662ad41a662b81be2aea5d59ec0697628665f',
+    },
+    token: tokens.naos,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 451,
     lpSymbol: 'PHA-BUSD LP',
     lpAddresses: {
