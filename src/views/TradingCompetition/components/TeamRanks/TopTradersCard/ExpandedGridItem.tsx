@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, Flex, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 import { LeaderboardDataItem } from '../../../types'
 import { localiseTradingVolume } from '../../../helpers'
 
@@ -102,7 +102,7 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem; teamImages: React.R
         </Flex>
         <Flex alignItems="center" justifyContent="flex-start">
           <Text color="primary" fontSize="12px">
-            {truncateWalletAddress(address)}
+            {truncateHash(address)}
           </Text>
         </Flex>
       </VolumeAddressWrapper>

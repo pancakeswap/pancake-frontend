@@ -79,10 +79,9 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
       setIsPendingTx(false)
       toastSuccess(
         t('Winnings collected!'),
-        <ToastDescriptionWithTx
-          description={t('Your prizes have been sent to your wallet')}
-          txHash={receipt.transactionHash}
-        />,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your prizes have been sent to your wallet')}
+        </ToastDescriptionWithTx>,
       )
     } catch (error) {
       console.error('Unable to claim winnings', error)

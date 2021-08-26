@@ -94,10 +94,9 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       if (receipt.status) {
         toastSuccess(
           t('Prizes Collected!'),
-          <ToastDescriptionWithTx
-            description={t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId })}
-            txHash={receipt.transactionHash}
-          />,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId })}
+          </ToastDescriptionWithTx>,
         )
         setPendingTx(false)
         handleProgressToNextClaim()
@@ -136,8 +135,8 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           if (receipts.length !== transactionsToFire) {
             toastSuccess(
               t('Prizes Collected!'),
-              <ToastDescriptionWithTx
-                description={t(
+              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                {t(
                   'Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction',
                   {
                     claimNum: receipts.length,
@@ -145,8 +144,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
                     lotteryId,
                   },
                 )}
-                txHash={receipt.transactionHash}
-              />,
+              </ToastDescriptionWithTx>,
             )
           }
         }

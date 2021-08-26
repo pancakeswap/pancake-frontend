@@ -119,10 +119,9 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, w
       setEnableStatus(EnableStatus.ENABLED)
       toastSuccess(
         t('Successfully Enabled!'),
-        <ToastDescriptionWithTx
-          description={t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
-          txHash={receipt.transactionHash}
-        />,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
+        </ToastDescriptionWithTx>,
       )
     } catch (error) {
       setEnableStatus(EnableStatus.DISABLED)

@@ -4,7 +4,7 @@ import { Modal, Box, Text, Flex, Input, OpenNewIcon, useMatchBreakpoints, Spinne
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { FarmAuctionBidderConfig } from 'config/constants/types'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 import useWhitelistedAddresses from '../hooks/useWhitelistedAddresses'
 
 interface WhitelistedBiddersModalProps {
@@ -44,7 +44,7 @@ const AddressRow: React.FC<{ bidder: FarmAuctionBidderConfig; isMobile: boolean 
           </Text>
         </Flex>
         <Flex justifyContent={['center', null, 'flex-start']} alignItems="center" flex="6">
-          <Text mr="8px">{isMobile ? truncateWalletAddress(account) : account}</Text>
+          <Text mr="8px">{isMobile ? truncateHash(account) : account}</Text>
         </Flex>
         <OpenNewIcon color="primary" />
       </AddressRowContainer>

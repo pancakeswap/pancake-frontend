@@ -105,12 +105,11 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
 
     toastSuccess(
       t('Success!'),
-      <ToastDescriptionWithTx
-        description={t('%position% position entered', {
+      <ToastDescriptionWithTx txHash={hash}>
+        {t('%position% position entered', {
           position: positionDisplay,
         })}
-        txHash={hash}
-      />,
+      </ToastDescriptionWithTx>,
     )
   }
 

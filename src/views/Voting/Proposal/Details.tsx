@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 import { Proposal } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanLink } from 'utils'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 import { IPFS_GATEWAY } from '../config'
 import { ProposalStateTag } from '../components/Proposals/tags'
 
@@ -41,7 +41,7 @@ const Details: React.FC<DetailsProps> = ({ proposal }) => {
         <Flex alignItems="center" mb="8px">
           <Text color="textSubtle">{t('Creator')}</Text>
           <LinkExternal href={getBscScanLink(proposal.author, 'address')} ml="8px">
-            {truncateWalletAddress(proposal.author)}
+            {truncateHash(proposal.author)}
           </LinkExternal>
         </Flex>
         <Flex alignItems="center" mb="16px">

@@ -32,12 +32,11 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
     await Promise.all([publicIfoData.fetchIfoData(), walletIfoData.fetchIfoData()])
     toastSuccess(
       t('Success!'),
-      <ToastDescriptionWithTx
-        description={t('You have contributed %amount% CAKE-BNB LP tokens to this IFO!', {
+      <ToastDescriptionWithTx txHash={txHash}>
+        {t('You have contributed %amount% CAKE-BNB LP tokens to this IFO!', {
           amount: getBalanceNumber(amount),
         })}
-        txHash={txHash}
-      />,
+      </ToastDescriptionWithTx>,
     )
   }
 

@@ -66,10 +66,9 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
       if (receipt.status) {
         toastSuccess(
           t('Bounty collected!'),
-          <ToastDescriptionWithTx
-            description={t('CAKE bounty has been sent to your wallet.')}
-            txHash={receipt.transactionHash}
-          />,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('CAKE bounty has been sent to your wallet.')}
+          </ToastDescriptionWithTx>,
         )
         setPendingTx(false)
         onDismiss()

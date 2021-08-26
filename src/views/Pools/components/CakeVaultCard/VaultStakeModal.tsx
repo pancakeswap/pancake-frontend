@@ -140,10 +140,9 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         if (receipt.status) {
           toastSuccess(
             t('Unstaked!'),
-            <ToastDescriptionWithTx
-              description={t('Your earnings have also been harvested to your wallet')}
-              txHash={receipt.transactionHash}
-            />,
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your earnings have also been harvested to your wallet')}
+            </ToastDescriptionWithTx>,
           )
           setPendingTx(false)
           onDismiss()
@@ -167,10 +166,9 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         if (receipt.status) {
           toastSuccess(
             t('Unstaked!'),
-            <ToastDescriptionWithTx
-              description={t('Your earnings have also been harvested to your wallet')}
-              txHash={receipt.transactionHash}
-            />,
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your earnings have also been harvested to your wallet')}
+            </ToastDescriptionWithTx>,
           )
           setPendingTx(false)
           onDismiss()
@@ -193,10 +191,9 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       if (receipt.status) {
         toastSuccess(
           t('Staked!'),
-          <ToastDescriptionWithTx
-            description={t('Your funds have been staked in the pool')}
-            txHash={receipt.transactionHash}
-          />,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your funds have been staked in the pool')}
+          </ToastDescriptionWithTx>,
         )
         setPendingTx(false)
         onDismiss()

@@ -30,10 +30,9 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
       if (receipt.status) {
         toastSuccess(
           t('Contract Enabled'),
-          <ToastDescriptionWithTx
-            description={t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol })}
-            txHash={receipt.transactionHash}
-          />,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol })}
+          </ToastDescriptionWithTx>,
         )
         setRequestedApproval(false)
       } else {
@@ -77,10 +76,9 @@ export const useVaultApprove = (setLastUpdated: () => void) => {
     if (receipt.status) {
       toastSuccess(
         t('Contract Enabled'),
-        <ToastDescriptionWithTx
-          description={t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' })}
-          txHash={receipt.transactionHash}
-        />,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' })}
+        </ToastDescriptionWithTx>,
       )
       setLastUpdated()
       setRequestedApproval(false)

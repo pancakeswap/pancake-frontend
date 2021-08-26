@@ -1,7 +1,7 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, LinkExternal, Text, Tag, CheckmarkCircleIcon } from '@pancakeswap/uikit'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'
 import { Vote } from 'state/types'
@@ -23,7 +23,7 @@ const VoteRow: React.FC<VoteRowProps> = ({ vote, isVoter }) => {
     <Row>
       <AddressColumn>
         <Flex alignItems="center">
-          <LinkExternal href={getBscScanLink(vote.voter, 'address')}>{truncateWalletAddress(vote.voter)}</LinkExternal>
+          <LinkExternal href={getBscScanLink(vote.voter, 'address')}>{truncateHash(vote.voter)}</LinkExternal>
           {isVoter && (
             <Tag variant="success" outline ml="8px">
               <CheckmarkCircleIcon mr="4px" /> {t('Voted')}
