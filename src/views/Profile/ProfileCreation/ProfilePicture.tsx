@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link as RouterLink } from 'react-router-dom'
-import { getAddressByType } from 'utils/collectibles'
+import { getBunnyNftAddress } from 'utils/collectibles'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useTranslation } from 'contexts/Localization'
@@ -93,7 +93,7 @@ const ProfilePicture: React.FC = () => {
             ) : (
               nftsInWallet.map((walletNft) => {
                 const [firstTokenId] = tokenIds[walletNft.identifier]
-                const address = getAddressByType(walletNft.type)
+                const address = getBunnyNftAddress()
 
                 return (
                   <SelectionCard

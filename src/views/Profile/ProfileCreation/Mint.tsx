@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
-import { Nft } from 'config/constants/types'
+import { Nft } from 'config/constants/nfts/types'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import nftList from 'config/constants/nfts'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -16,11 +16,11 @@ import ApproveConfirmButtons from '../components/ApproveConfirmButtons'
 import useProfileCreation from './contexts/hook'
 import { MINT_COST, STARTER_BUNNY_IDENTIFIERS } from './config'
 
-const nfts = nftList.filter((nft) => STARTER_BUNNY_IDENTIFIERS.includes(nft.identifier))
+const nfts = nftList.pancake.filter((nft) => STARTER_BUNNY_IDENTIFIERS.includes(nft.identifier))
 const minimumCakeBalanceToMint = new BigNumber(MINT_COST).multipliedBy(DEFAULT_TOKEN_DECIMAL)
 
 const Mint: React.FC = () => {
-  const [variationId, setVariationId] = useState<Nft['variationId']>(null)
+  const [variationId, setVariationId] = useState<Nft['id']>(null)
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
 
   const { account } = useWeb3React()
@@ -82,9 +82,9 @@ const Mint: React.FC = () => {
               <SelectionCard
                 key={nft.identifier}
                 name="mintStarter"
-                value={nft.variationId}
+                value={nft.id}
                 image={`/images/nfts/${nft.images.md}`}
-                isChecked={variationId === nft.variationId}
+                isChecked={variationId === nft.id}
                 onChange={handleChange}
                 disabled={isApproving || isConfirming || isConfirmed || !hasMinimumCakeRequired}
               >

@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { ethers } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Input, Modal, Text } from '@pancakeswap/uikit'
-import { getAddressByType } from 'utils/collectibles'
-import { Nft } from 'config/constants/types'
+import { getBunnyNftAddress } from 'utils/collectibles'
+import { Nft } from 'config/constants/nfts/types'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { useERC721 } from 'hooks/useContract'
@@ -46,7 +46,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
   const [error, setError] = useState(null)
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const contract = useERC721(getAddressByType(nft.type))
+  const contract = useERC721(getBunnyNftAddress())
   const { toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
 

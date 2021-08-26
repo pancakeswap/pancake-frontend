@@ -1,4 +1,4 @@
-import nfts from 'config/constants/nfts'
+import nfts from 'config/constants/nfts/pancakeBunnies'
 
 describe('Config NFTs', () => {
   it.each(nfts.map((nft) => nft.identifier))('NFT #%d has a unique identifier', (identifier) => {

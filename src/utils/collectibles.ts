@@ -1,20 +1,9 @@
-import Nfts, { IPFS_GATEWAY, nftSources } from 'config/constants/nfts'
-import { Nft, NftType } from 'config/constants/types'
+import nfts from 'config/constants/nfts'
+import { IPFS_GATEWAY } from 'config'
+import collections from 'config/constants/nfts/collections'
+import { Nft, CollectionKey } from 'config/constants/nfts/types'
 import { getAddress } from './addressHelpers'
 import { getErc721Contract } from './contractHelpers'
-
-/**
- * Gets the identifier key based on the nft address
- * Helpful for looking up the key when all you have is the address
- */
-export const getIdentifierKeyFromAddress = (nftAddress: string) => {
-  const nftSource = Object.values(nftSources).find((nftSourceEntry) => {
-    const address = getAddress(nftSourceEntry.address)
-    return address === nftAddress
-  })
-
-  return nftSource ? nftSource.identifierKey : null
-}
 
 /**
  * Some sources like Pancake do not return HTTP tokenURI's
@@ -27,8 +16,8 @@ export const getTokenUrl = (tokenUri: string) => {
   return tokenUri
 }
 
-export const getAddressByType = (type: NftType) => {
-  return getAddress(nftSources[type].address)
+export const getBunnyNftAddress = (collectionKey: CollectionKey = CollectionKey.PANCAKE) => {
+  return getAddress(collections[collectionKey].address)
 }
 
 export const fetchCachedUriData = async (tokenUrl: string) => {
@@ -74,7 +63,6 @@ export const getTokenUriData = async (nftAddress: string, tokenId: number) => {
 
 export const getNftByTokenId = async (nftAddress: string, tokenId: number): Promise<Nft | null> => {
   const uriData = await getTokenUriData(nftAddress, tokenId)
-  const identifierKey = getIdentifierKeyFromAddress(nftAddress)
 
   // Bail out early if we have no uriData, identifierKey, or the value does not
   // exist in the object
@@ -82,15 +70,7 @@ export const getNftByTokenId = async (nftAddress: string, tokenId: number): Prom
     return null
   }
 
-  if (!identifierKey) {
-    return null
-  }
-
-  if (!uriData[identifierKey]) {
-    return null
-  }
-
-  return Nfts.find((nft) => {
-    return uriData[identifierKey].includes(nft.identifier)
+  return nfts.pancake.find((nft) => {
+    return uriData.image.includes(nft.identifier)
   })
 }

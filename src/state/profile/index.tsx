@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProfileState } from 'state/types'
 import type { AppDispatch } from 'state'
-import { Nft } from 'config/constants/types'
+import { Nft } from 'config/constants/nfts/types'
 import { getProfile, getProfileAvatar, GetProfileResponse, getUsername } from './helpers'
 
 const initialState: ProfileState = {

@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 import { Profile } from 'state/types'
 import { GetUserProfileResponse } from 'utils/types'
 import { getProfileContract } from 'utils/contractHelpers'
-import { Nft } from 'config/constants/types'
+import { Nft } from 'config/constants/nfts/types'
 import { getNftByTokenId } from 'utils/collectibles'
 import { getTeam } from 'state/teams/helpers'
 
