@@ -304,7 +304,7 @@ export const filterLeaderboard = createAsyncThunk<{ results: PredictionUser[] },
     const usersResponse = await getPredictionUsers({
       skip: 0,
       orderBy: filters.orderBy,
-      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED },
+      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${filters.orderBy}_gt`]: 0 },
     })
 
     return { results: usersResponse.map(transformUserResponse) }
