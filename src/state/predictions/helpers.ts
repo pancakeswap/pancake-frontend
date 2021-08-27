@@ -450,7 +450,7 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
 
 /**
  * Parse serialized values back into ethers.BigNumber
- * ethers.BigNumber values are stored with the "toJSJON()" method, e.g  { type: "BigNumber", hex: string }
+ * ethers.BigNumber values are stored with the "toJSON()" method, e.g  { type: "BigNumber", hex: string }
  */
 export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, any>>(data: T): K => {
   return Object.keys(data).reduce((accum, key) => {

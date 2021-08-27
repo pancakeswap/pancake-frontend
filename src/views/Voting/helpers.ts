@@ -57,7 +57,7 @@ export const generatePayloadData = () => {
 /**
  * General function to send commands to the snapshot api
  */
-export const sendSnaphotData = async (message: Message) => {
+export const sendSnapshotData = async (message: Message) => {
   const response = await fetch(SNAPSHOT_HUB_API, {
     method: 'post',
     headers: {

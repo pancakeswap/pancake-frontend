@@ -37,7 +37,7 @@ const Grid = styled.div`
   }
 `
 
-const StyedCardRibbon = styled(CardRibbon)`
+const StyledCardRibbon = styled(CardRibbon)`
   right: -20px;
   top: -20px;
 
@@ -72,7 +72,7 @@ const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId
 
   return (
     <StyledCardBody>
-      {isLatestRound && <StyedCardRibbon text={t('Latest')} />}
+      {isLatestRound && <StyledCardRibbon text={t('Latest')} />}
       <Grid>
         <Flex justifyContent={['center', null, null, 'flex-start']}>
           <Heading mb="24px">{t('Winning Number')}</Heading>

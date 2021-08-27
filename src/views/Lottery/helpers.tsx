@@ -2,9 +2,9 @@ import BigNumber from 'bignumber.js'
 import { LotteryResponse, LotteryRound, LotteryRoundUserTickets } from 'state/types'
 
 /**
- * Remove the '1' and reverse the digits in a lottery number retreived from the smart contract
+ * Remove the '1' and reverse the digits in a lottery number retrieved from the smart contract
  */
-export const parseRetreivedNumber = (number: string): string => {
+export const parseRetrievedNumber = (number: string): string => {
   const numberAsArray = number.split('')
   numberAsArray.splice(0, 1)
   numberAsArray.reverse()

@@ -7,7 +7,7 @@ import { getInterestBreakdown, getPrincipalForInterest, getRoi } from 'utils/com
  * UI connected to it is merely representation of the data and buttons to trigger actions
  */
 
-// Mapping from the compounding frequency button index to actual componding frequency
+// Mapping from the compounding frequency button index to actual compounding frequency
 // in number of compounds per day
 const compoundingIndexToFrequency = {
   0: 1,
@@ -52,7 +52,7 @@ export interface RoiCalculatorReducerState {
 const initialState: RoiCalculatorReducerState = {
   controls: {
     compounding: true,
-    compoundingFrequency: 1, // how many compoound in a day , e.g. 1 = once a day, 0.071 - once per 2 weeks
+    compoundingFrequency: 1, // how many compound in a day , e.g. 1 = once a day, 0.071 - once per 2 weeks
     activeCompoundingIndex: 0, // active compounding selected in
     stakingDuration: 3,
     mode: CalculatorMode.ROI_BASED_ON_PRINCIPAL,
@@ -224,7 +224,7 @@ const useRoiCalculatorReducer = (
     }
   }, [stakingDuration, apr, compounding, compoundingFrequency, mode, roiUSD, stakingTokenPrice, performanceFee])
 
-  // Handler for compounding frequnecy buttons
+  // Handler for compounding frequency buttons
   const setCompoundingFrequency = (index: number) => {
     dispatch({ type: 'setCompoundingFrequency', payload: { index } })
   }

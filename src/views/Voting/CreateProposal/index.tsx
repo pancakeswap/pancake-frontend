@@ -31,7 +31,7 @@ import { DatePicker, TimePicker } from 'components/DatePicker'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ReactMarkdown from 'components/ReactMarkdown'
 import BreadcrumbLink from '../components/BreadcrumbLink'
-import { sendSnaphotData, Message, generateMetaData, generatePayloadData } from '../helpers'
+import { sendSnapshotData, Message, generateMetaData, generatePayloadData } from '../helpers'
 import Layout from '../components/Layout'
 import { FormErrors, Label, SecondaryLabel } from './styles'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
@@ -95,7 +95,7 @@ const CreateProposal = () => {
         const msg: Message = { address: account, msg: proposal, sig }
 
         // Save proposal to snapshot
-        const data = await sendSnaphotData(msg)
+        const data = await sendSnapshotData(msg)
 
         // Redirect user to newly created proposal page
         push(`/voting/proposal/${data.ipfsHash}`)

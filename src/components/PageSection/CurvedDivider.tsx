@@ -50,7 +50,7 @@ const CurvedDivider: React.FC<CurvedDividerProps> = ({
   const showConcaveTop = dividerPosition === 'top' && concave
   const showConcaveBottom = dividerPosition === 'bottom' && concave
 
-  const getconcaveDivider = () => {
+  const getConcaveDivider = () => {
     return (
       <>
         {showConcaveTop && <ConcaveTop clipFill={clipFill} />}
@@ -71,7 +71,7 @@ const CurvedDivider: React.FC<CurvedDividerProps> = ({
   return (
     <Wrapper index={index} dividerFill={dividerFill}>
       {dividerComponent && <ComponentWrapper index={index}>{dividerComponent}</ComponentWrapper>}
-      {getconcaveDivider()}
+      {getConcaveDivider()}
       {getConvexDivider()}
     </Wrapper>
   )

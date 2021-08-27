@@ -44,7 +44,7 @@ export const useFetchLottery = () => {
 
   useEffect(() => {
     if (currentLotteryId) {
-      // Get historical lottery data from nodes +  last 100 subgraph entires
+      // Get historical lottery data from nodes +  last 100 subgraph entries
       dispatch(fetchPublicLotteries({ currentLotteryId }))
       // get public data for current lottery
       dispatch(fetchCurrentLottery({ currentLotteryId }))

@@ -10,8 +10,8 @@ export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLScUkwbsMWwg7L5jjGjEcmv6RsoCNhFDkV3xEpRu2KcJrr47Sw/viewform'
 
 // Sorts bidders received from smart contract by bid amount in descending order (biggest -> smallest)
-// Also ammends bidder information with getBidderInfo
-// auction is required if data will be used for table display, hence in reclaim and congratulations card its ommited
+// Also amends bidder information with getBidderInfo
+// auction is required if data will be used for table display, hence in reclaim and congratulations card its omitted
 export const sortAuctionBidders = (bidders: BidsPerAuction[], auction?: Auction): Bidder[] => {
   const sortedBidders = [...bidders]
     .sort((a, b) => {
@@ -61,7 +61,7 @@ export const sortAuctionBidders = (bidders: BidsPerAuction[], auction?: Auction)
 // Determine if the auction is:
 // - Live and biddable
 // - Has been scheduled for specific future date
-// - Not annoucned yet
+// - Not announced yet
 // - Recently Finished/Closed
 const getAuctionStatus = (
   currentBlock: number,
@@ -113,7 +113,7 @@ export const processAuctionData = async (auctionId: number, auctionResponse: Auc
     endBlock: auctionResponse.endBlock.toNumber(),
   }
 
-  // Get all required datas and blocks
+  // Get all required data and blocks
   const currentBlock = await simpleRpcProvider.getBlockNumber()
   const startDate = await getDateForBlock(currentBlock, processedAuctionData.startBlock)
   const endDate = await getDateForBlock(currentBlock, processedAuctionData.endBlock)
