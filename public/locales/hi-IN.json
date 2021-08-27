@@ -1361,5 +1361,7 @@
   "Nothing to collect": "कलेक्ट करने के लिए कुछ नहीं है",
   "Download .CSV": ".CSV डाउनलोड करें",
   "Download your v0.1 Prediction history below.": "अपनी v0.1 पूर्वानुमान हिस्ट्री नीचे डाउनलोड करें।",
-  "Nothing to Collect": "कलेक्ट करने के लिए कुछ नहीं है"
+  "Nothing to Collect": "कलेक्ट करने के लिए कुछ नहीं है",
+  "From round %round%": "From round %round%",
+  "From rounds %rounds%": "From rounds %rounds%"
 }
