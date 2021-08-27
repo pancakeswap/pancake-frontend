@@ -31,7 +31,6 @@ const CheckIcon = styled(CheckmarkCircleIcon)`
 
 const NameOverflow = styled.div`
   white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 140px;
