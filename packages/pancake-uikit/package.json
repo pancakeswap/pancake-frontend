@@ -48,7 +48,6 @@
     "@types/styled-system": "^5.1.10",
     "lodash": "^4.17.20",
     "react-popper": "^2.2.5",
-    "react-transition-group": "^4.4.1",
     "styled-system": "^5.1.5"
   },
   "publishConfig": {
