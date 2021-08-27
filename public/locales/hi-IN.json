@@ -1355,11 +1355,11 @@
   "Prices on cards come from Chainlink’s verifiable price oracle.": "कार्ड की कीमतें Chainlink के सत्यापित करने योग्य प्राइस ओरेकल से प्राप्त हुई हैं।",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "चार्ट की कीमतें Binance.com से मिली हैं। चार्ट को केवल आपके संदर्भ के लिए दिया गया है।",
   "Only the price from Chainlink (shown on the cards) determines the round's result.": "केवल Chainlink की कीमतें (कार्ड पर दिखाई गई) ही राउंड का परिणाम तय करती हैं।",
-  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
-  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
-  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
-  "Nothing to collect": "Nothing to collect",
-  "Download .CSV": "Download .CSV",
-  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below.",
-  "Nothing to Collect": "Nothing to Collect"
+  "Showing history for Prediction v0.2": "पूर्वानुमान v0.2 की हिस्ट्री दिखाई जा रही है",
+  "Check for unclaimed v0.1 winnings": "जीते गए अनक्लेम किए गए v0.1 पुरस्कार के लिए देखें",
+  "You have no unclaimed v0.1 prizes.": "आपके पास कोई अनक्लेम किया गया v0.1 पुरस्कार नहीं है।",
+  "Nothing to collect": "कलेक्ट करने के लिए कुछ नहीं है",
+  "Download .CSV": ".CSV डाउनलोड करें",
+  "Download your v0.1 Prediction history below.": "अपनी v0.1 पूर्वानुमान हिस्ट्री नीचे डाउनलोड करें।",
+  "Nothing to Collect": "कलेक्ट करने के लिए कुछ नहीं है"
 }

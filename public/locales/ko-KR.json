@@ -1355,11 +1355,11 @@
   "Prices on cards come from Chainlink’s verifiable price oracle.": "카드의 가격은 Chainlink의 검증 가능한 가격 오라클에서 가져옵니다.",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "차트의 가격은 Binance.com에서 가져옵니다. 차트는 참조용으로만 제공됩니다.",
   "Only the price from Chainlink (shown on the cards) determines the round's result.": "Chainlink의 가격(카드에 표시됨)만이 라운드의 결과를 결정합니다.",
-  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
-  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
-  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
-  "Nothing to collect": "Nothing to collect",
-  "Download .CSV": "Download .CSV",
-  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below.",
-  "Nothing to Collect": "Nothing to Collect"
+  "Showing history for Prediction v0.2": "예측 v0.2에 대한 기록 표시",
+  "Check for unclaimed v0.1 winnings": "클레임되지 않은 v0.1 당첨 확인",
+  "You have no unclaimed v0.1 prizes.": "클레임되지 않은 v0.1 상금이 없습니다.",
+  "Nothing to collect": "수집할 항목 없음",
+  "Download .CSV": ".CSV 다운로드",
+  "Download your v0.1 Prediction history below.": "아래의 v0.1 예측 기록을 다운로드하세요.",
+  "Nothing to Collect": "수집할 항목 없음"
 }
