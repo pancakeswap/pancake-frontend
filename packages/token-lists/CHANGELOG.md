@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.17.13...@pancakeswap/token-lists@2.18.0) (2021-08-27)
+
+
+### Bug Fixes
+
+* **token-lists:** Top100 sanitization ([#251](https://github.com/pancakeswap/pancake-toolkit/issues/251)) ([67d89c6](https://github.com/pancakeswap/pancake-toolkit/commit/67d89c63e0630cb20354c35847d76b2b36af2d8e))
+
+
+### Features
+
+* **token-lists:** Tests for checksummed address ([#250](https://github.com/pancakeswap/pancake-toolkit/issues/250)) ([2197ed5](https://github.com/pancakeswap/pancake-toolkit/commit/2197ed52c572f15001cc09c6bccb553ae614c049))
+* **token-lists:** Top100 token list default URI ([#249](https://github.com/pancakeswap/pancake-toolkit/issues/249)) ([a671f70](https://github.com/pancakeswap/pancake-toolkit/commit/a671f70f5a021e28c9a8bbcbaf15341effc26c54))
+
+
+
+
+
 ## [2.17.13](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.17.12...@pancakeswap/token-lists@2.17.13) (2021-08-19)
 
 **Note:** Version bump only for package @pancakeswap/token-lists
