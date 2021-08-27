@@ -27,7 +27,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
 }) => {
   const { t } = useTranslation()
   const [fetchedLotteryGraphData, setFetchedLotteryGraphData] = useState<LotteryRoundGraphEntity>()
-  const lotteryGraphData = useGetLotteryGraphDataById(lotteryId)
+  const lotteryGraphDataFromState = useGetLotteryGraphDataById(lotteryId)
   const cakePriceBusd = usePriceCakeBusd()
 
   useEffect(() => {
@@ -35,10 +35,10 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
       const fetchedGraphData = await getGraphLotteries(undefined, undefined, { id_in: [lotteryId] })
       setFetchedLotteryGraphData(fetchedGraphData[0])
     }
-    if (!lotteryGraphData) {
+    if (!lotteryGraphDataFromState) {
       getGraphData()
     }
-  }, [lotteryGraphData, lotteryId])
+  }, [lotteryGraphDataFromState, lotteryId])
 
   let prizeInBusd = new BigNumber(NaN)
   if (lotteryNodeData) {
@@ -47,12 +47,12 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
   }
 
   const getTotalUsers = (): string => {
-    if (!lotteryGraphData && fetchedLotteryGraphData) {
-      return fetchedLotteryGraphData.totalUsers.toLocaleString()
+    if (!lotteryGraphDataFromState && fetchedLotteryGraphData) {
+      return fetchedLotteryGraphData?.totalUsers?.toLocaleString()
     }
 
-    if (lotteryGraphData) {
-      return lotteryGraphData.totalUsers.toLocaleString()
+    if (lotteryGraphDataFromState) {
+      return lotteryGraphDataFromState?.totalUsers?.toLocaleString()
     }
 
     return null
@@ -94,7 +94,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
           <Flex>
             <Text fontSize="14px" display="inline">
               {t('Total players this round')}:{' '}
-              {lotteryNodeData && (lotteryGraphData || fetchedLotteryGraphData) ? (
+              {lotteryNodeData && (lotteryGraphDataFromState || fetchedLotteryGraphData) ? (
                 getTotalUsers()
               ) : (
                 <Skeleton height={14} width={31} />
