@@ -41,7 +41,7 @@ const applyNodeDataToUserGraphResponse = (
       status: nodeRoundData.status,
       lotteryId: nodeRoundData.lotteryId.toString(),
       claimed: hasRoundBeenClaimed(userNodeRound.userTickets),
-      totalTickets: userGraphRound?.totalTickets,
+      totalTickets: userGraphRound?.totalTickets || userNodeRound.userTickets.length.toString(),
       tickets: userNodeRound.userTickets,
     }
   })
@@ -51,8 +51,7 @@ const applyNodeDataToUserGraphResponse = (
   const lastCombinedDataRoundIndex = userGraphData
     .map((graphRound) => graphRound.lotteryId)
     .indexOf(lastCombinedDataRound.lotteryId)
-  const remainingSubgraphRounds =
-    lastCombinedDataRoundIndex >= 0 ? userGraphData.splice(lastCombinedDataRoundIndex + 1) : []
+  const remainingSubgraphRounds = userGraphData ? userGraphData.splice(lastCombinedDataRoundIndex + 1) : []
   const mergedResponse = [...nodeRoundsWithGraphData, ...remainingSubgraphRounds]
   return mergedResponse
 }
