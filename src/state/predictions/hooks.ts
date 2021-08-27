@@ -154,8 +154,12 @@ export const useGetLeaderboardHasMoreResults = () => {
   return useSelector((state: State) => state.predictions.leaderboard.hasMoreResults)
 }
 
-export const useGetLeaderboardAddressResult = (account: string) => {
-  const addressResult = useSelector((state: State) => state.predictions.leaderboard.addressResults[account])
+export const useGetAddressResult = (account: string) => {
+  return useSelector((state: State) => state.predictions.leaderboard.addressResults[account])
+}
+
+export const useGetOrFetchLeaderboardAddressResult = (account: string) => {
+  const addressResult = useGetAddressResult(account)
   const dispatch = useAppDispatch()
 
   useEffect(() => {

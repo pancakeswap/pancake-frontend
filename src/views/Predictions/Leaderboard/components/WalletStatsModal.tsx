@@ -21,7 +21,7 @@ import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 import { LeaderboardLoadingState } from 'state/types'
-import { useGetLeaderboardAddressResult, useGetLeaderboardLoadingState } from 'state/predictions/hooks'
+import { useGetOrFetchLeaderboardAddressResult, useGetLeaderboardLoadingState } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { NetWinnings } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
@@ -43,7 +43,7 @@ const ExternalLink = styled(LinkExternal)`
 const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss, onBeforeDismiss }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const result = useGetLeaderboardAddressResult(account)
+  const result = useGetOrFetchLeaderboardAddressResult(account)
   const profileAvatar = useGetProfileAvatar(account)
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
   const isLoading = leaderboardLoadingState === LeaderboardLoadingState.LOADING

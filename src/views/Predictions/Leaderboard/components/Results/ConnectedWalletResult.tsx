@@ -6,7 +6,7 @@ import Container from 'components/Layout/Container'
 import { useAppDispatch } from 'state'
 import { fetchProfileAvatar } from 'state/profile'
 import { fetchAddressResult } from 'state/predictions'
-import { useGetLeaderboardAddressResult } from 'state/predictions/hooks'
+import { useGetOrFetchLeaderboardAddressResult } from 'state/predictions/hooks'
 import DesktopRow from './DesktopRow'
 import MobileRow from './MobileRow'
 
@@ -14,7 +14,7 @@ const ConnectedWalletResult = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const accountResult = useGetLeaderboardAddressResult(account)
+  const accountResult = useGetOrFetchLeaderboardAddressResult(account)
   const { isDesktop } = useMatchBreakpoints()
 
   useEffect(() => {
