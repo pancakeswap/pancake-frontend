@@ -21,6 +21,10 @@ export const NetWinnings: React.FC<NetWinningsProps> = ({ amount, textPrefix = '
   const bnbBusdPrice = usePriceBnbBusd()
   const value = bnbBusdPrice.times(Math.abs(amount)).toNumber()
 
+  if (!amount) {
+    return null
+  }
+
   return (
     <Flex flexDirection="column" alignItems="flex-end" {...props}>
       <Text fontWeight="bold" color={textColor}>

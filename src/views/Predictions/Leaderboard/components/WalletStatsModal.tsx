@@ -98,9 +98,9 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
                 <Skeleton />
               ) : (
                 <NetWinnings
-                  amount={result.netBNB}
-                  textPrefix={result.netBNB > 0 ? '+' : ''}
-                  textColor={result.netBNB > 0 ? 'success' : 'failure'}
+                  amount={result?.netBNB}
+                  textPrefix={result?.netBNB > 0 ? '+' : ''}
+                  textColor={result?.netBNB > 0 ? 'success' : 'failure'}
                   alignItems="flex-end"
                 />
               )}
@@ -112,7 +112,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
               {isLoading ? (
                 <Skeleton />
               ) : (
-                <Text fontWeight="bold">{`${result.winRate.toLocaleString(undefined, {
+                <Text fontWeight="bold">{`${result?.winRate?.toLocaleString(undefined, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 2,
                 })}%`}</Text>
@@ -122,13 +122,13 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
               <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Rounds Won')}
               </Text>
-              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result.totalBetsClaimed.toLocaleString()}</Text>}
+              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBetsClaimed?.toLocaleString()}</Text>}
             </Box>
             <Box>
               <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Rounds Played')}
               </Text>
-              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result.totalBets.toLocaleString()}</Text>}
+              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBets?.toLocaleString()}</Text>}
             </Box>
           </Grid>
           {isDesktop ? <DesktopBetsTable account={account} /> : <MobileBetsTable account={account} />}
