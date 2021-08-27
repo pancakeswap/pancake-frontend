@@ -4,16 +4,9 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Box, Flex, Text, ChevronRightIcon, useModal } from '@pancakeswap/uikit'
 import Loading from 'components/Loading'
-import { getMultiplier } from '../History/helpers'
 import CollectRoundWinningsModal from '../CollectRoundWinningsModal'
 import { getAllV1History } from './helpers'
 import NothingToClaimModal from './NothingToClaimModal'
-
-interface State {
-  payout: string
-  betAmount: string
-  epoch: number
-}
 
 const StyledClaimCheck = styled(Flex)`
   align-items: center;
@@ -26,19 +19,10 @@ const StyledClaimCheck = styled(Flex)`
 
 const ClaimCheck = () => {
   const [isFetching, setIsFetching] = useState(false)
-  const [betToClaim, setBetToClaim] = useState<State>({
-    payout: '0',
-    betAmount: '0',
-    epoch: 0,
-  })
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { payout, betAmount, epoch } = betToClaim
 
-  const [onPresentCollectWinningsModal] = useModal(
-    <CollectRoundWinningsModal payout={payout} betAmount={betAmount} epoch={epoch} />,
-    false,
-  )
+  const [onPresentCollectWinningsModal] = useModal(<CollectRoundWinningsModal />, false)
 
   const [onPresentNothingToClaimModal] = useModal(<NothingToClaimModal />)
 
@@ -53,19 +37,7 @@ const ClaimCheck = () => {
       })
 
       if (unclaimedBets.length > 0) {
-        const [firstBetToClaim] = unclaimedBets
-        const amount = firstBetToClaim.amount ? parseFloat(firstBetToClaim.amount) : 0
-        const totalAmount = firstBetToClaim.round.totalAmount ? parseFloat(firstBetToClaim.round.totalAmount) : 0
-        const multiplier = getMultiplier(totalAmount, amount)
-        const betPayout = totalAmount * multiplier
-
-        setBetToClaim({
-          betAmount: amount.toString(),
-          payout: betPayout.toString(),
-          epoch: Number(firstBetToClaim.round.epoch),
-        })
-
-        setTimeout(() => onPresentCollectWinningsModal())
+        onPresentCollectWinningsModal()
       } else {
         onPresentNothingToClaimModal()
       }

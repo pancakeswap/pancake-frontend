@@ -1361,5 +1361,7 @@
   "Nothing to collect": "Nothing to collect",
   "Download .CSV": "Download .CSV",
   "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below.",
-  "Nothing to Collect": "Nothing to Collect"
+  "Nothing to Collect": "Nothing to Collect",
+  "From round %round%": "From round %round%",
+  "From rounds %rounds%": "From rounds %rounds%"
 }
