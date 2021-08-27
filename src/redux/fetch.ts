@@ -414,6 +414,14 @@ export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: a
   })
 }
 
+export const nftOwnership = (multi: any) => {
+  const inputs = []
+  get.nfts().forEach(nft => {
+    inputs.push({ target: nft.address, function: 'bidInfo', args: [aid, x - 1] })
+
+  })
+}
+
 const zombiePriceBnb = (setZombiePrice?: any) => {
   getPancakePair(getAddress(zmbeBnbTomb().lpAddress)).methods.getReserves().call()
     .then(res => {

@@ -114,7 +114,7 @@ const nfts: Nft[] = [
   },
   {
     id: 11,
-    name: 'Merlin Labs Rare', // Fix
+    name: 'My name is MERL', // Fix
     symbol: 'MERL-RARE',
     address: '0x52ECFee39530A35696F6633Cba0e957657a66357',
     totalSupply: BIG_ZERO,

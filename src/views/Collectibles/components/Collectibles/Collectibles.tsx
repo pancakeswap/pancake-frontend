@@ -25,7 +25,7 @@ const Collectibles: React.FC = () => {
     <>
       {rarityArr.map((rarity) => {
         return <>
-          <Heading className='cardHeader' size="md" textTransform="capitalize" color='text'>
+          <Heading className='cardHeader' size="lg" textTransform="capitalize" color='text'>
             {rarity}
           </Heading>
           <CardsLayout className="collectibles">
