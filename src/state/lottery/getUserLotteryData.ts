@@ -30,27 +30,30 @@ const applyNodeDataToUserGraphResponse = (
     })
   }
 
-  //   Else if there is a graph response - merge with node data where node data is more accurate
-  const mergedResponse = userGraphData.map((graphRound, index) => {
-    const nodeRound = lotteryNodeData[index]
-    // if there is node data for this index, overwrite graph data. Otherwise - return graph data.
-    if (nodeRound) {
-      const ticketDataForRound = userNodeData.find((roundTickets) => roundTickets.roundId === nodeRound.lotteryId)
-      // if isLoading === true, there has been a node error - return graphRound
-      if (!nodeRound.isLoading) {
-        return {
-          endTime: nodeRound.endTime,
-          status: nodeRound.status,
-          lotteryId: nodeRound.lotteryId.toString(),
-          claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
-          totalTickets: graphRound.totalTickets,
-          tickets: ticketDataForRound.userTickets,
-        }
-      }
-      return graphRound
+  // Return the rounds with combined node + subgraph data, plus all remaining subgraph rounds.
+  const nodeRoundsWithGraphData = userNodeData.map((userNodeRound) => {
+    const userGraphRound = userGraphData.find(
+      (graphResponseRound) => graphResponseRound.lotteryId === userNodeRound.roundId,
+    )
+    const nodeRoundData = lotteryNodeData.find((nodeRound) => nodeRound.lotteryId === userNodeRound.roundId)
+    return {
+      endTime: nodeRoundData.endTime,
+      status: nodeRoundData.status,
+      lotteryId: nodeRoundData.lotteryId.toString(),
+      claimed: hasRoundBeenClaimed(userNodeRound.userTickets),
+      totalTickets: userGraphRound?.totalTickets,
+      tickets: userNodeRound.userTickets,
     }
-    return graphRound
   })
+
+  // Return the rounds with combined data, plus all remaining subgraph rounds.
+  const [lastCombinedDataRound] = nodeRoundsWithGraphData.slice(-1)
+  const lastCombinedDataRoundIndex = userGraphData
+    .map((graphRound) => graphRound.lotteryId)
+    .indexOf(lastCombinedDataRound.lotteryId)
+  const remainingSubgraphRounds =
+    lastCombinedDataRoundIndex >= 0 ? userGraphData.splice(lastCombinedDataRoundIndex + 1) : []
+  const mergedResponse = [...nodeRoundsWithGraphData, ...remainingSubgraphRounds]
   return mergedResponse
 }
 
@@ -108,7 +111,7 @@ export const getGraphLotteryUser = async (
             endTime: round?.lottery?.endTime,
             claimed: round?.claimed,
             totalTickets: round?.totalTickets,
-            status: round?.lottery?.status,
+            status: round?.lottery?.status.toLowerCase(),
           }
         }),
       }
@@ -126,7 +129,6 @@ const getUserLotteryData = async (account: string, currentLotteryId: string): Pr
   const roundDataAndUserTickets = await fetchUserTicketsForMultipleRounds(idsForTicketsNodeCall, account)
   const userRoundsNodeData = roundDataAndUserTickets.filter((round) => round.userTickets.length > 0)
   const idsForLotteriesNodeCall = userRoundsNodeData.map((round) => round.roundId)
-
   const lotteriesNodeData = await fetchMultipleLotteries(idsForLotteriesNodeCall)
   const graphResponse = await getGraphLotteryUser(account)
   const mergedRoundData = applyNodeDataToUserGraphResponse(userRoundsNodeData, graphResponse.rounds, lotteriesNodeData)

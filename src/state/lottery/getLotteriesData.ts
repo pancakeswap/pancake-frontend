@@ -29,29 +29,28 @@ const applyNodeDataToLotteriesGraphResponse = (
     })
   }
 
-  //   Else if there is a graph response - merge with node data where node data is more reliable
-  const mergedResponse = graphResponse.map((graphRound, index) => {
-    const nodeRound = nodeData[index]
-    // if there is node data for this index, overwrite graph data. Otherwise - return graph data.
-    if (nodeRound) {
-      // if isLoading === true, there has been a node error - return graphRound
-      if (!nodeRound.isLoading) {
-        return {
-          endTime: nodeRound.endTime,
-          finalNumber: nodeRound.finalNumber.toString(),
-          startTime: nodeRound.startTime,
-          status: nodeRound.status,
-          id: graphRound.id,
-          ticketPrice: graphRound.ticketPrice,
-          totalTickets: graphRound.totalTickets,
-          totalUsers: graphRound.totalUsers,
-          winningTickets: graphRound.winningTickets,
-        }
-      }
-      return graphRound
+  // Populate all nodeRound data with supplementary graphResponse round data when available
+  const nodeRoundsWithGraphData = nodeData.map((nodeRoundData) => {
+    const graphRoundData = graphResponse.find((graphResponseRound) => graphResponseRound.id === nodeRoundData.lotteryId)
+    return {
+      endTime: nodeRoundData.endTime,
+      finalNumber: nodeRoundData.finalNumber.toString(),
+      startTime: nodeRoundData.startTime,
+      status: nodeRoundData.status,
+      id: nodeRoundData.lotteryId,
+      ticketPrice: graphRoundData?.ticketPrice,
+      totalTickets: graphRoundData?.totalTickets,
+      totalUsers: graphRoundData?.totalUsers,
+      winningTickets: graphRoundData?.winningTickets,
     }
-    return graphRound
   })
+
+  // Return the rounds with combined node + subgraph data, plus all remaining subgraph rounds.
+  const [lastCombinedDataRound] = nodeRoundsWithGraphData.slice(-1)
+  const lastCombinedDataRoundIndex = graphResponse.map((graphRound) => graphRound.id).indexOf(lastCombinedDataRound.id)
+  const remainingSubgraphRounds =
+    lastCombinedDataRoundIndex >= 0 ? graphResponse.splice(lastCombinedDataRoundIndex + 1) : []
+  const mergedResponse = [...nodeRoundsWithGraphData, ...remainingSubgraphRounds]
   return mergedResponse
 }
 

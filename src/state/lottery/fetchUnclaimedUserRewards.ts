@@ -8,6 +8,7 @@ import { NUM_ROUNDS_TO_CHECK_FOR_REWARDS } from 'config/constants/lottery'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { fetchUserTicketsForMultipleRounds } from './getUserTicketsData'
+import { MAX_LOTTERIES_REQUEST_SIZE } from './getLotteriesData'
 
 interface RoundDataAndUserTickets {
   roundId: string
@@ -112,6 +113,7 @@ const fetchUnclaimedUserRewards = async (
   account: string,
   userLotteryData: LotteryUserGraphEntity,
   lotteriesData: LotteryRoundGraphEntity[],
+  currentLotteryId: string,
 ): Promise<LotteryTicketClaimData[]> => {
   const { rounds } = userLotteryData
 
@@ -125,8 +127,15 @@ const fetchUnclaimedUserRewards = async (
     return []
   }
 
+  // Filter out rounds without subgraph data (i.e. >100 rounds ago)
+  const roundsInRange = rounds.filter((round) => {
+    const lastCheckableRoundId = parseInt(currentLotteryId, 10) - MAX_LOTTERIES_REQUEST_SIZE
+    const roundId = parseInt(round.lotteryId, 10)
+    return roundId >= lastCheckableRoundId
+  })
+
   // Filter out non-claimable rounds
-  const claimableRounds = rounds.filter((round) => {
+  const claimableRounds = roundsInRange.filter((round) => {
     return round.status.toLowerCase() === LotteryStatus.CLAIMABLE
   })
 

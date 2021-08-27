@@ -11,7 +11,7 @@ export enum FetchStatus {
 
 const useGetUnclaimedRewards = () => {
   const { account } = useWeb3React()
-  const { isTransitioning } = useLottery()
+  const { isTransitioning, currentLotteryId } = useLottery()
   const userLotteryData = useGetUserLotteriesGraphData()
   const lotteriesData = useGetLotteriesGraphData()
   const [unclaimedRewards, setUnclaimedRewards] = useState([])
@@ -24,7 +24,12 @@ const useGetUnclaimedRewards = () => {
 
   const fetchAllRewards = async () => {
     setFetchStatus(FetchStatus.IN_PROGRESS)
-    const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(account, userLotteryData, lotteriesData)
+    const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
+      account,
+      userLotteryData,
+      lotteriesData,
+      currentLotteryId,
+    )
     setUnclaimedRewards(unclaimedRewardsResponse)
     setFetchStatus(FetchStatus.SUCCESS)
   }
