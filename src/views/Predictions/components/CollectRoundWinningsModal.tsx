@@ -13,11 +13,9 @@ import {
   Flex,
   Heading,
   Box,
-  LinkExternal,
   ModalCloseButton,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { getBscScanLink } from 'utils'
 import { useAppDispatch } from 'state'
 import { usePriceBnbBusd } from 'state/farms/hooks'
 import { fetchClaimableStatuses } from 'state/predictions'
@@ -25,6 +23,7 @@ import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
   payout: string
@@ -80,16 +79,9 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
       setIsPendingTx(false)
       toastSuccess(
         t('Winnings collected!'),
-        <Box>
-          <Text as="p" mb="8px">
-            {t('Your prizes have been sent to your wallet')}
-          </Text>
-          {receipt.transactionHash && (
-            <LinkExternal href={getBscScanLink(receipt.transactionHash, 'transaction')}>
-              {t('View on BscScan')}
-            </LinkExternal>
-          )}
-        </Box>,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your prizes have been sent to your wallet')}
+        </ToastDescriptionWithTx>,
       )
     } catch (error) {
       console.error('Unable to claim winnings', error)

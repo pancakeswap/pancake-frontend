@@ -19,6 +19,7 @@ import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/componen
 import { ConnectedBidder } from 'config/constants/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 const StyledModal = styled(Modal)`
   min-width: 280px;
@@ -113,17 +114,20 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
       onApprove: () => {
         return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, ethers.constants.MaxUint256])
       },
-      onApproveSuccess: async () => {
-        toastSuccess(t('Contract approved - you can now place your bid!'))
+      onApproveSuccess: async ({ receipt }) => {
+        toastSuccess(
+          t('Contract approved - you can now place your bid!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash} />,
+        )
       },
       onConfirm: () => {
         const bidAmount = new BigNumber(bid).times(DEFAULT_TOKEN_DECIMAL).toString()
         return callWithGasPrice(farmAuctionContract, 'bid', [bidAmount])
       },
-      onSuccess: async () => {
+      onSuccess: async ({ receipt }) => {
         refreshBidders()
         onDismiss()
-        toastSuccess(t('Bid placed!'))
+        toastSuccess(t('Bid placed!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       },
     })
 

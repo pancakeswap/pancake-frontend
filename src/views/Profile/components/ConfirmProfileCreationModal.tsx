@@ -8,6 +8,7 @@ import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { fetchProfile } from 'state/profile'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { REGISTER_COST } from '../ProfileCreation/config'
 import ApproveConfirmButtons from './ApproveConfirmButtons'
 import { State } from '../ProfileCreation/contexts/types'
@@ -54,10 +55,10 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
       onConfirm: () => {
         return callWithGasPrice(profileContract, 'createProfile', [teamId, selectedNft.nftAddress, selectedNft.tokenId])
       },
-      onSuccess: async () => {
+      onSuccess: async ({ receipt }) => {
         await dispatch(fetchProfile(account))
         onDismiss()
-        toastSuccess(t('Profile created!'))
+        toastSuccess(t('Profile created!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       },
     })
 

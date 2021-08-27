@@ -68,12 +68,17 @@ const reducer = (state: State, actions: Action): State => {
   }
 }
 
+interface OnSuccessProps {
+  state: State
+  receipt: ethers.providers.TransactionReceipt
+}
+
 interface ApproveConfirmTransaction {
   onApprove: () => Promise<ethers.providers.TransactionResponse>
   onConfirm: () => Promise<ethers.providers.TransactionResponse>
   onRequiresApproval?: () => Promise<boolean>
-  onSuccess: (state: State) => void
-  onApproveSuccess?: (state: State) => void
+  onSuccess: ({ state, receipt }: OnSuccessProps) => void
+  onApproveSuccess?: ({ state, receipt }: OnSuccessProps) => void
 }
 
 const useApproveConfirmTransaction = ({
@@ -112,7 +117,7 @@ const useApproveConfirmTransaction = ({
         const receipt = await tx.wait()
         if (receipt.status) {
           dispatch({ type: 'approve_receipt' })
-          onApproveSuccess(state)
+          onApproveSuccess({ state, receipt })
         }
       } catch (error) {
         dispatch({ type: 'approve_error' })
@@ -126,7 +131,7 @@ const useApproveConfirmTransaction = ({
         const receipt = await tx.wait()
         if (receipt.status) {
           dispatch({ type: 'confirm_receipt' })
-          onSuccess(state)
+          onSuccess({ state, receipt })
         }
       } catch (error) {
         dispatch({ type: 'confirm_error' })

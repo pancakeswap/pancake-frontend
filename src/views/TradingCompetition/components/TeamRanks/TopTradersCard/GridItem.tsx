@@ -1,7 +1,7 @@
 import React from 'react'
 import { Heading, Text, Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 import { LeaderboardDataItem } from '../../../types'
 import { localiseTradingVolume } from '../../../helpers'
 
@@ -88,7 +88,7 @@ const GridItem: React.FC<{
         <Text bold>${localiseTradingVolume(volume)}</Text>
       </Flex>
       <Flex alignItems="center" justifyContent="flex-start">
-        <Text color="primary">{truncateWalletAddress(address)}</Text>
+        <Text color="primary">{truncateHash(address)}</Text>
       </Flex>
       <TeamImageWrapper justifyContent="flex-end">{teamImages[teamId - 1]}</TeamImageWrapper>
     </Wrapper>

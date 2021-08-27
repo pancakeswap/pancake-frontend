@@ -4,6 +4,7 @@ import { PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 interface Props {
   poolId: PoolIds
@@ -20,18 +21,26 @@ const ClaimButton: React.FC<Props> = ({ poolId, ifoVersion, walletIfoData }) => 
 
   const handleClaim = async () => {
     try {
+      let txHash
       setPendingTx(true)
 
       if (ifoVersion === 1) {
         const tx = await walletIfoData.contract.harvest()
-        await tx.wait()
+        const receipt = await tx.wait()
+        txHash = receipt.transactionHash
       } else {
         const tx = await walletIfoData.contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
-        await tx.wait()
+        const receipt = await tx.wait()
+        txHash = receipt.transactionHash
       }
 
       walletIfoData.setIsClaimed(poolId)
-      toastSuccess(t('Success!'), t('You have successfully claimed your rewards.'))
+      toastSuccess(
+        t('Success!'),
+        <ToastDescriptionWithTx txHash={txHash}>
+          {t('You have successfully claimed your rewards.')}
+        </ToastDescriptionWithTx>,
+      )
     } catch (error) {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       console.error(error)

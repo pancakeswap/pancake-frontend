@@ -8,6 +8,7 @@ import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getAddress } from 'utils/addressHelpers'
 import useToast from 'hooks/useToast'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import ContributeModal from './ContributeModal'
 import GetLpModal from './GetLpModal'
 
@@ -27,11 +28,15 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   const { balance: userCurrencyBalance } = useTokenBalance(getAddress(ifo.currency.address))
 
   // Refetch all the data, and display a message when fetching is done
-  const handleContributeSuccess = async (amount: BigNumber) => {
+  const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {
     await Promise.all([publicIfoData.fetchIfoData(), walletIfoData.fetchIfoData()])
     toastSuccess(
       t('Success!'),
-      t('You have contributed %amount% CAKE-BNB LP tokens to this IFO!', { amount: getBalanceNumber(amount) }),
+      <ToastDescriptionWithTx txHash={txHash}>
+        {t('You have contributed %amount% CAKE-BNB LP tokens to this IFO!', {
+          amount: getBalanceNumber(amount),
+        })}
+      </ToastDescriptionWithTx>,
     )
   }
 

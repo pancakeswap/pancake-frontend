@@ -6,6 +6,7 @@ import { Button, InjectedModalProps, Modal, Text, Flex, AutoRenewIcon } from '@p
 import { Nft } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 interface ClaimNftModalProps extends InjectedModalProps {
   nft: Nft
@@ -35,7 +36,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onClaim, 
       const tx = await onClaim()
       const receipt = await tx.wait()
       if (receipt.status) {
-        toastSuccess(t('Successfully claimed!'))
+        toastSuccess(t('Successfully claimed!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         onDismiss()
         onSuccess()
       }

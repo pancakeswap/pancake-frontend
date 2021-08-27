@@ -23,7 +23,7 @@ import { SnapshotCommand } from 'state/types'
 import useToast from 'hooks/useToast'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 import { signMessage } from 'utils/web3React'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
@@ -259,9 +259,7 @@ const CreateProposal = () => {
                     <Text color="textSubtle" mr="16px">
                       {t('Creator')}
                     </Text>
-                    <LinkExternal href={getBscScanLink(account, 'address')}>
-                      {truncateWalletAddress(account)}
-                    </LinkExternal>
+                    <LinkExternal href={getBscScanLink(account, 'address')}>{truncateHash(account)}</LinkExternal>
                   </Flex>
                 )}
                 <Flex alignItems="center" mb="16px">

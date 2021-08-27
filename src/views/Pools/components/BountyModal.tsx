@@ -9,6 +9,7 @@ import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCakeVault } from 'state/pools/hooks'
@@ -63,7 +64,12 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
       const tx = await callWithGasPrice(cakeVaultContract, 'harvest', undefined, { gasLimit: 300000 })
       const receipt = await tx.wait()
       if (receipt.status) {
-        toastSuccess(t('Bounty collected!'), t('CAKE bounty has been sent to your wallet.'))
+        toastSuccess(
+          t('Bounty collected!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('CAKE bounty has been sent to your wallet.')}
+          </ToastDescriptionWithTx>,
+        )
         setPendingTx(false)
         onDismiss()
       }

@@ -4,6 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { usePredictionsContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 interface ReclaimPositionButtonProps extends ButtonProps {
   epoch: number
@@ -28,7 +29,7 @@ const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, on
         await onSuccess()
       }
       setIsPendingTx(false)
-      toastSuccess(t('Position reclaimed!'))
+      toastSuccess(t('Position reclaimed!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
     } else {
       setIsPendingTx(false)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))

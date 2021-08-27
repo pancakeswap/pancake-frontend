@@ -1,7 +1,6 @@
-import { Toast } from '@pancakeswap/uikit'
+import { Toast } from 'components/Toast'
 
 type ToastSignature = (title: Toast['title'], description?: Toast['description']) => void
-
 export interface ToastContextApi {
   toasts: Toast[]
   clear: () => void

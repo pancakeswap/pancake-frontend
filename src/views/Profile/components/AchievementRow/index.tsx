@@ -6,6 +6,7 @@ import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import { usePointCenterIfoContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import ActionColumn from '../ActionColumn'
 import PointsLabel from './PointsLabel'
 import AchievementTitle from '../AchievementTitle'
@@ -52,7 +53,7 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
     if (receipt.status) {
       setIsCollecting(false)
       onCollectSuccess(achievement)
-      toastSuccess(t('Points Collected!'))
+      toastSuccess(t('Points Collected!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
     } else {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setIsCollecting(false)

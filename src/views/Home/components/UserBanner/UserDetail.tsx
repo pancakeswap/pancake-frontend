@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
 import ProfileAvatar from 'views/Profile/components/ProfileAvatar'
 import { useTranslation } from 'contexts/Localization'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 
 const Desktop = styled(Flex)`
   align-items: center;
@@ -39,7 +39,7 @@ const UserDetail = () => {
   const { profile, isLoading } = useProfile()
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const truncatedAddress = truncateWalletAddress(account)
+  const truncatedAddress = truncateHash(account)
 
   const getDesktopHeading = () => {
     if (profile) {

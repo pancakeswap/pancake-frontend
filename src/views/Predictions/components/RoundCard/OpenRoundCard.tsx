@@ -16,6 +16,7 @@ import { fetchLedgerData } from 'state/predictions'
 import { ROUND_BUFFER } from 'state/predictions/config'
 import useToast from 'hooks/useToast'
 import useTheme from 'hooks/useTheme'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import CardFlip from '../CardFlip'
 import { formatBnbv2 } from '../../helpers'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
@@ -97,16 +98,18 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     }))
   }
 
-  const handleSuccess = async () => {
+  const handleSuccess = async (hash: string) => {
     await dispatch(fetchLedgerData({ account, epochs: [round.epoch] }))
 
     handleBack()
 
     toastSuccess(
       t('Success!'),
-      t('%position% position entered', {
-        position: positionDisplay,
-      }),
+      <ToastDescriptionWithTx txHash={hash}>
+        {t('%position% position entered', {
+          position: positionDisplay,
+        })}
+      </ToastDescriptionWithTx>,
     )
   }
 

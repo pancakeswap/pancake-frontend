@@ -19,6 +19,7 @@ import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import { getAddress } from 'utils/addressHelpers'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { EnableStatus } from './types'
 import IfoPoolCard from './IfoPoolCard'
 import Timer from './Timer'
@@ -113,12 +114,14 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, w
     try {
       setEnableStatus(EnableStatus.IS_ENABLING)
 
-      await onApprove()
+      const receipt = await onApprove()
 
       setEnableStatus(EnableStatus.ENABLED)
       toastSuccess(
         t('Successfully Enabled!'),
-        t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol }),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
+        </ToastDescriptionWithTx>,
       )
     } catch (error) {
       setEnableStatus(EnableStatus.DISABLED)

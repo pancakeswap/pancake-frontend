@@ -5,6 +5,7 @@ import { useTradingCompetitionContract } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useToast from 'hooks/useToast'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { CompetitionProps } from '../../types'
 
 const StyledCheckbox = styled(Checkbox)`
@@ -28,7 +29,10 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {
-      toastSuccess(t('You have registered for the competition!'))
+      toastSuccess(
+        t('You have registered for the competition!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash} />,
+      )
       onDismiss()
       onRegisterSuccess()
     } else {

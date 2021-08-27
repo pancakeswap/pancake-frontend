@@ -30,6 +30,7 @@ import { useCake, useLotteryV2Contract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useToast from 'hooks/useToast'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
 import NumTicketsToBuyButton from './NumTicketsToBuyButton'
 import EditNumbersModal from './EditNumbersModal'
@@ -251,17 +252,20 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       onApprove: () => {
         return callWithGasPrice(cakeContract, 'approve', [lotteryContract.address, ethers.constants.MaxUint256])
       },
-      onApproveSuccess: async () => {
-        toastSuccess(t('Contract enabled - you can now purchase tickets'))
+      onApproveSuccess: async ({ receipt }) => {
+        toastSuccess(
+          t('Contract enabled - you can now purchase tickets'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash} />,
+        )
       },
       onConfirm: () => {
         const ticketsForPurchase = getTicketsForPurchase()
         return callWithGasPrice(lotteryContract, 'buyTickets', [currentLotteryId, ticketsForPurchase])
       },
-      onSuccess: async () => {
+      onSuccess: async ({ receipt }) => {
         onDismiss()
         dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
-        toastSuccess(t('Lottery tickets purchased!'))
+        toastSuccess(t('Lottery tickets purchased!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       },
     })
 

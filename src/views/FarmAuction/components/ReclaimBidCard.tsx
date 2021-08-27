@@ -12,6 +12,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethers } from 'ethers'
 import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useReclaimAuctionBid from '../hooks/useReclaimAuctionBid'
 
 const StyledReclaimBidCard = styled(Card)`
@@ -44,15 +45,18 @@ const ReclaimBidCard: React.FC = () => {
     onApprove: () => {
       return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, ethers.constants.MaxUint256])
     },
-    onApproveSuccess: async () => {
-      toastSuccess(t('Contract approved - you can now reclaim your bid!'))
+    onApproveSuccess: async ({ receipt }) => {
+      toastSuccess(
+        t('Contract approved - you can now reclaim your bid!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash} />,
+      )
     },
     onConfirm: () => {
       return callWithGasPrice(farmAuctionContract, 'claimAuction', [reclaimableAuction.id])
     },
-    onSuccess: async () => {
+    onSuccess: async ({ receipt }) => {
       checkForNextReclaimableAuction()
-      toastSuccess(t('Bid reclaimed!'))
+      toastSuccess(t('Bid reclaimed!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
     },
   })
 

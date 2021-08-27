@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { ethers, Contract } from 'ethers'
 import BigNumber from 'bignumber.js'
@@ -9,6 +9,7 @@ import { useCake, useSousChef, useCakeVaultContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import useLastUpdated from 'hooks/useLastUpdated'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -29,7 +30,9 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
       if (receipt.status) {
         toastSuccess(
           t('Contract Enabled'),
-          t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol }),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol })}
+          </ToastDescriptionWithTx>,
         )
         setRequestedApproval(false)
       } else {
@@ -71,7 +74,12 @@ export const useVaultApprove = (setLastUpdated: () => void) => {
     setRequestedApproval(true)
     const receipt = await tx.wait()
     if (receipt.status) {
-      toastSuccess(t('Contract Enabled'), t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' }))
+      toastSuccess(
+        t('Contract Enabled'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' })}
+        </ToastDescriptionWithTx>,
+      )
       setLastUpdated()
       setRequestedApproval(false)
     } else {
