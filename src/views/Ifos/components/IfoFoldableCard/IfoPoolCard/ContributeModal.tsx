@@ -49,7 +49,7 @@ const ContributeModal: React.FC<Props> = ({
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const raisingTokenContract = useERC20(getAddress(currency.address))
+  const raisingTokenContract = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
 

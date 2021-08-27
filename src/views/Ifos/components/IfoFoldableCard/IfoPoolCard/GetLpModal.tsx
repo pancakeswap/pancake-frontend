@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, ModalBody, Text, Image, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { Token } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 
 interface Props {

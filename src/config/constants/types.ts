@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { Token as SDKToken } from '@pancakeswap/sdk'
 
 export type TranslatableText =
   | string
@@ -8,7 +9,6 @@ export type TranslatableText =
         [key: string]: string | number
       }
     }
-
 export interface Address {
   97?: string
   56: string
@@ -41,7 +41,7 @@ export interface Ifo {
   isActive: boolean
   address: string
   name: string
-  currency: Token
+  currency: SDKToken
   token: Token
   releaseBlockNumber: number
   articleUrl: string
@@ -154,7 +154,7 @@ export interface FarmAuctionBidderConfig {
   account: string
   farmName: string
   tokenAddress: string
-  quoteToken: Token
+  quoteToken: SDKToken
   tokenName: string
   projectSite?: string
   lpAddress?: string
