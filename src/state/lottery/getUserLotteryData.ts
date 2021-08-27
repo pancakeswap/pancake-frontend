@@ -30,7 +30,7 @@ const applyNodeDataToUserGraphResponse = (
     })
   }
 
-  // Populate all nodeRound data with supplementary graphResponse round data
+  // Return the rounds with combined node + subgraph data, plus all remaining subgraph rounds.
   const nodeRoundsWithGraphData = userNodeData.map((userNodeRound) => {
     const userGraphRound = userGraphData.find(
       (graphResponseRound) => graphResponseRound.lotteryId === userNodeRound.roundId,

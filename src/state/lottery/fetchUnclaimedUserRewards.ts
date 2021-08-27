@@ -167,8 +167,7 @@ const fetchUnclaimedUserRewards = async (
 
     // Filter to only rounds with unclaimed tickets
     const roundsWithUnclaimedWinningTickets = roundsWithWinningTickets.filter(
-      (winningTicketData) =>
-        winningTicketData.ticketsWithUnclaimedRewards && winningTicketData.ticketsWithUnclaimedRewards.length > 0,
+      (winningTicketData) => winningTicketData.ticketsWithUnclaimedRewards,
     )
 
     return roundsWithUnclaimedWinningTickets

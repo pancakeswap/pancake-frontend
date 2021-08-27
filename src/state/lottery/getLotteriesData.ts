@@ -29,10 +29,9 @@ const applyNodeDataToLotteriesGraphResponse = (
     })
   }
 
-  // Populate all nodeRound data with supplementary graphResponse round data
+  // Populate all nodeRound data with supplementary graphResponse round data when available
   const nodeRoundsWithGraphData = nodeData.map((nodeRoundData) => {
     const graphRoundData = graphResponse.find((graphResponseRound) => graphResponseRound.id === nodeRoundData.lotteryId)
-    // Where there is graph data for this nodeRound, use it.
     return {
       endTime: nodeRoundData.endTime,
       finalNumber: nodeRoundData.finalNumber.toString(),
@@ -46,7 +45,7 @@ const applyNodeDataToLotteriesGraphResponse = (
     }
   })
 
-  // Return the rounds with combined data, plus all remaining subgraph rounds.
+  // Return the rounds with combined node + subgraph data, plus all remaining subgraph rounds.
   const [lastCombinedDataRound] = nodeRoundsWithGraphData.slice(-1)
   const lastCombinedDataRoundIndex = graphResponse.map((graphRound) => graphRound.id).indexOf(lastCombinedDataRound.id)
   const remainingSubgraphRounds =
@@ -92,7 +91,6 @@ const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundG
   const nodeData = await fetchMultipleLotteries(idsForNodesCall)
   const graphResponse = await getGraphLotteries()
   const mergedData = applyNodeDataToLotteriesGraphResponse(nodeData, graphResponse)
-
   return mergedData
 }
 
