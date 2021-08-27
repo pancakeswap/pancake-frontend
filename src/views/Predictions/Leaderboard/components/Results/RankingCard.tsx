@@ -18,7 +18,7 @@ import { PredictionUser } from 'state/types'
 import { useGetProfileAvatar } from 'state/profile/hooks'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 import { useTranslation } from 'contexts/Localization'
 import WalletStatsModal from '../WalletStatsModal'
 import { NetWinningsRow, Row } from './styles'
@@ -69,7 +69,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
                   <RotatedLaurelRightIcon color={rankColor} width="32px" />
                 </Flex>
                 <Text color="primary" fontWeight="bold" textAlign="center">
-                  {profileAvatar.username || truncateWalletAddress(user.id)}
+                  {profileAvatar.username || truncateHash(user.id)}
                 </Text>
               </>
             }

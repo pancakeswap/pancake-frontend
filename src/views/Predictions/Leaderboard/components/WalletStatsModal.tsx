@@ -19,7 +19,7 @@ import { useGetProfileAvatar } from 'state/profile/hooks'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 import { LeaderboardLoadingState } from 'state/types'
 import { useGetLeaderboardAddressResult, useGetLeaderboardLoadingState } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
@@ -70,7 +70,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
                 {profileAvatar.username}
               </Heading>
             )}
-            <ExternalLink href={getBscScanLink(account, 'address')}>{truncateWalletAddress(account)}</ExternalLink>
+            <ExternalLink href={getBscScanLink(account, 'address')}>{truncateHash(account)}</ExternalLink>
           </Box>
         </Flex>
         <IconButton variant="text" onClick={handleDismiss} aria-label="Close the dialog">

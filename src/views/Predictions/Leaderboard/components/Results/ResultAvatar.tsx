@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import { PredictionUser } from 'state/types'
 import { useGetProfileAvatar } from 'state/profile/hooks'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import truncateHash from 'utils/truncateHash'
 import { useTranslation } from 'contexts/Localization'
 import WalletStatsModal from '../WalletStatsModal'
 
@@ -42,7 +42,7 @@ const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
         <Flex alignItems="center" {...props}>
           <UsernameWrapper>
             <Text color="primary" fontWeight="bold">
-              {profileAvatar.username || truncateWalletAddress(user.id)}
+              {profileAvatar.username || truncateHash(user.id)}
             </Text>{' '}
           </UsernameWrapper>
           <AvatarWrapper
