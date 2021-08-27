@@ -5,9 +5,8 @@ import {
   TokenImage as UIKitTokenImage,
   ImageProps,
 } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import tokens from 'config/constants/tokens'
-import { Token } from 'config/constants/types'
-import { getAddress } from 'utils/addressHelpers'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
   primaryToken: Token
@@ -15,7 +14,7 @@ interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc
 }
 
 const getImageUrlFromToken = (token: Token) => {
-  const address = getAddress(token.symbol === 'BNB' ? tokens.wbnb.address : token.address)
+  const address = token.symbol === 'BNB' ? tokens.wbnb.address : token.address
   return `/images/tokens/${address}.svg`
 }
 

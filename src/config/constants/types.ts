@@ -42,7 +42,7 @@ export interface Ifo {
   address: string
   name: string
   currency: SDKToken
-  token: Token
+  token: SDKToken
   releaseBlockNumber: number
   articleUrl: string
   campaignId: string

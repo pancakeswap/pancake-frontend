@@ -37,7 +37,7 @@ const StyledLinkExternal = styled(LinkExternal)`
 
 const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
   const { t } = useTranslation()
-  const tokenName = ifo.token.symbol.toLowerCase()
+  const tokenName = ifo.token.symbol?.toLowerCase()
   const campaignTitle = ifo.name
   const minLpForAchievement = MIN_DOLLAR_FOR_ACHIEVEMENT.div(publicIfoData.currencyPriceInUSD).toNumber()
 
