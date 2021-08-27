@@ -6,7 +6,7 @@
   "Docs": "Dokument",
   "Voting": "Omröstning",
   "Lottery": "Lotteri",
-  "Connect Wallet": "Connect Wallet",
+  "Connect Wallet": "Anslut plånbok",
   "Your %asset% Balance": "Din %asset% balans",
   "Total %asset% Supply": "Total %asset% mängd",
   "Locked": "Låst",
@@ -41,7 +41,7 @@
   "Finished": "Avslutad",
   "Farming ends in %num% Blocks": "Odling slutar om %num% Block",
   "Project site": "Projektwebbplats",
-  "Project Site": "Project Site",
+  "Project Site": "Projektwebbplats",
   "See Token Info": "Visa information om token",
   "You can unstake at any time.": "Du kan ta ut när som helst.",
   "Rewards are calculated per block.": "Belöningarna beräknas per block.",
@@ -1361,5 +1361,7 @@
   "Nothing to collect": "Nothing to collect",
   "Download .CSV": "Download .CSV",
   "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below.",
-  "Nothing to Collect": "Nothing to Collect"
+  "Nothing to Collect": "Nothing to Collect",
+  "From round %round%": "From round %round%",
+  "From rounds %rounds%": "From rounds %rounds%"
 }
