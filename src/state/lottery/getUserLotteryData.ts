@@ -49,8 +49,8 @@ const applyNodeDataToUserGraphResponse = (
   // Return the rounds with combined data, plus all remaining subgraph rounds.
   const [lastCombinedDataRound] = nodeRoundsWithGraphData.slice(-1)
   const lastCombinedDataRoundIndex = userGraphData
-    .map((graphRound) => graphRound.lotteryId)
-    .indexOf(lastCombinedDataRound.lotteryId)
+    .map((graphRound) => graphRound?.lotteryId)
+    .indexOf(lastCombinedDataRound?.lotteryId)
   const remainingSubgraphRounds = userGraphData ? userGraphData.splice(lastCombinedDataRoundIndex + 1) : []
   const mergedResponse = [...nodeRoundsWithGraphData, ...remainingSubgraphRounds]
   return mergedResponse
