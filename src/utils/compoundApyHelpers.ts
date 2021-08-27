@@ -45,8 +45,8 @@ export const getInterestBreakdown = ({
       interestEarned = accruedAmount - principal
       if (performanceFee) {
         const performanceFeeAsDecimal = performanceFee / 100
-        const perfomanceFeeAsAmount = interestEarned * performanceFeeAsDecimal
-        interestEarned -= perfomanceFeeAsAmount
+        const performanceFeeAsAmount = interestEarned * performanceFeeAsDecimal
+        interestEarned -= performanceFeeAsAmount
       }
     }
     return parseFloat(interestEarned.toFixed(roundingDecimalsNew))

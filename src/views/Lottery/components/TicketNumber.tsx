@@ -4,7 +4,7 @@ import { Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import _uniqueId from 'lodash/uniqueId'
-import { parseRetreivedNumber } from '../helpers'
+import { parseRetrievedNumber } from '../helpers'
 
 const StyledNumberWrapper = styled(Flex)`
   position: relative;
@@ -33,7 +33,7 @@ interface TicketNumberProps extends LotteryTicket {
 
 const TicketNumber: React.FC<TicketNumberProps> = ({ localId, id, number, rewardBracket }) => {
   const { t } = useTranslation()
-  const reversedNumber = parseRetreivedNumber(number)
+  const reversedNumber = parseRetrievedNumber(number)
   const numberAsArray = reversedNumber.split('')
   const numberMatches = rewardBracket + 1
 

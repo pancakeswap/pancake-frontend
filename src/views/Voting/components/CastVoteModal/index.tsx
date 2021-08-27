@@ -10,7 +10,7 @@ import useTheme from 'hooks/useTheme'
 import { CastVoteModalProps, ConfirmVoteView } from './types'
 import MainView from './MainView'
 import DetailsView from './DetailsView'
-import { generatePayloadData, Message, sendSnaphotData } from '../../helpers'
+import { generatePayloadData, Message, sendSnapshotData } from '../../helpers'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
 
 const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vote, block, onDismiss }) => {
@@ -67,7 +67,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
       const msg: Message = { address: account, msg: voteMsg, sig }
 
       // Save proposal to snapshot
-      await sendSnaphotData(msg)
+      await sendSnapshotData(msg)
       setIsPending(false)
 
       await onSuccess()
