@@ -107,7 +107,7 @@ const Hero = () => {
             {t('Connect any asset on Avalanche')}
           </Heading>
           <Heading scale="md" mb="24px">
-            {t('Gondola Finance specializes in Stableswap on Avalanche, bridging fragmented liquidity.')}
+            {t('Gondola Financeeee specializes in Stableswap on Avalanche, bridging fragmented liquidity.')}
           </Heading>
           <Flex>
             {!account && <ConnectWalletButton mr="8px" />}
