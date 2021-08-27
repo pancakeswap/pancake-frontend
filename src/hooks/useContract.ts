@@ -24,23 +24,13 @@ import {
   getDrFrankensteinContract,
   getMausoleumContract,
   getSpawningPoolContract,
-  getNftConverterContract, getMausoleumV2Contract,
+  getNftConverterContract, getMausoleumV2Contract, getNftOwnership,
 } from 'utils/contractHelpers'
 import { MultiCall } from '@indexed-finance/multicall'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
  */
-
-export const useIfoV1Contract = (address: string) => {
-  const web3 = useWeb3()
-  return useMemo(() => getIfoV1Contract(address, web3), [address, web3])
-}
-
-export const useIfoV2Contract = (address: string) => {
-  const web3 = useWeb3()
-  return useMemo(() => getIfoV2Contract(address, web3), [address, web3])
-}
 
 export const useERC20 = (address: string) => {
   const web3 = useWeb3()
@@ -123,6 +113,11 @@ export const useNftConverter = () => {
 export const useMultiCall = () => {
   const web3 = useWeb3()
   return useMemo(() => new MultiCall(web3), [web3])
+}
+
+export const useNftOwnership = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getNftOwnership(web3), [web3])
 }
 
 export const useSousChef = (id) => {

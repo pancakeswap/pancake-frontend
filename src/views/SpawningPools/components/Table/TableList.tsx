@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { BaseLayout } from '@rug-zombie-libs/uikit'
+import { BaseLayout, useMatchBreakpoints } from '@rug-zombie-libs/uikit'
 import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js';
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
@@ -8,7 +8,8 @@ import tokens from 'config/constants/tokens';
 import numeral from 'numeral';
 import { getGraveTombApr, getPoolApr } from '../../../../utils/apr'
 import { Grave } from '../../../../redux/types'
-import { coingeckoPrice, grave, spawningPool } from '../../../../redux/get'
+import { bnbPriceUsd, coingeckoPrice, grave, spawningPool } from '../../../../redux/get'
+import { fetchLpReserves } from '../../../../state/hooks'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -49,7 +50,8 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { id, zombieUsdPrice, handler } = props
-  const { name, rewardToken, rewardTokenId, poolInfo, isNew, userInfo: { pendingReward } } = spawningPool(id);
+  const { name, rewardToken, rewardTokenId, poolInfo, isNew, rewardTokenBnbLp, userInfo: { pendingReward } } = spawningPool(id);
+  const bnbPrice = bnbPriceUsd()
   let allocPoint = BIG_ZERO;
      allocPoint = new BigNumber(0)
 
@@ -59,15 +61,25 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const [rewardTokenPrice, setRewardTokenPrice] = useState(0)
 
   useEffect(() => {
-    coingeckoPrice(rewardTokenId).then(res => {
-      setRewardTokenPrice(res.data[rewardTokenId].usd)
-    })
-  }, [rewardTokenId])
+    if(rewardTokenId) {
+      coingeckoPrice(rewardTokenId).then(res => {
+        setRewardTokenPrice(res.data[rewardTokenId].usd)
+      })
+    } else {
+      fetchLpReserves(rewardTokenBnbLp).then(res => {
+        const rewardTokenPriceBnb = new BigNumber(res._reserve1).div(res._reserve0)
+        setRewardTokenPrice(getBalanceAmount(rewardTokenPriceBnb, rewardToken.decimals).times(bnbPrice).toNumber())
+      })
+    }
+
+  }, [bnbPrice, rewardToken.decimals, rewardTokenBnbLp, rewardTokenId])
 
   const apr = getPoolApr(zombieUsdPrice, rewardTokenPrice, getBalanceAmount(poolInfo.totalZombieStaked).toNumber(), getBalanceAmount(poolInfo.rewardPerBlock, rewardToken.decimals).toNumber())
   const dailyApr = apr / 365
   const displayApr = apr > 10 ? numeral(apr).format('(0.00 a)') : numeral(apr).format('(0.0000 a)')
   const displayDailyApr = dailyApr > 100 ? numeral(dailyApr).format('(0.00 a)') : numeral(dailyApr).format('(0.00000 a)')
+  const { isLg, isXl } = useMatchBreakpoints()
+  const isDesktop = isLg || isXl
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -108,7 +120,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="earned">Earned</div>
             </DisplayFlex>
           </td>
-          <td className="td-width-17 desktop-view">
+          <td className="td-width-17">
             <DisplayFlex>
               <span className="total-earned text-shadow">{apr ? displayApr : "NAN"}%</span>
               <div className="earned">Yearly</div>
@@ -120,12 +132,13 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="earned">Daily</div>
             </DisplayFlex>
           </td>
-          <td className="td-width-25">
+          {isDesktop ? <td className='td-width-25'>
             <DisplayFlex>
-              <span className="total-earned">{numeral(getBalanceAmount(poolInfo.totalZombieStaked).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
-              <div className="earned">TVL</div>
+              <span
+                className='total-earned'>{numeral(getBalanceAmount(poolInfo.totalZombieStaked).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
+              <div className='earned'>TVL</div>
             </DisplayFlex>
-          </td>
+          </td> : null}
           <td className="last-td">
             <ArrowIcon onClick={toggleOpen}>
               {isOpen ? (

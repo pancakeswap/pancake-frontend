@@ -75,8 +75,6 @@ const Graves: React.FC = () => {
         })
     }
 
-
-
     const visibleGraves = stakedOnly ? filterGraves(filter).filter(g => !g.userInfo.amount.isZero()) : filterGraves(filter)
   return (
     <>
@@ -95,10 +93,10 @@ const Graves: React.FC = () => {
       <Page>
         <GraveTabButtons setFilter={setFilter} stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
         <div>
-          {visibleGraves.map((g) => {
+          {visibleGraves.map((g, index) => {
             return <Table zombieUsdPrice={zombiePriceUsd()}
                           updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
-                          isAllowance={isAllowance} pid={g.pid} key={g.id} />
+                          isAllowance={isAllowance} pid={g.pid} key={g.pid} />
           })}
         </div>
       </Page>

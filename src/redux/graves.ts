@@ -6,7 +6,6 @@ import { Grave } from './types'
 
 const graves: Grave[] = [
   {
-    id: 1,
     pid: 0,
     name: 'RugZombie Common',
     subtitle: 'Basic Zombie',
@@ -22,6 +21,7 @@ const graves: Grave[] = [
     isNew: false,
     isEnding: false,
     isFeatured: true,
+    isClosed: false,
     rarity: "Common",
     userInfo: {
       paidUnlockFee: false,
@@ -41,45 +41,44 @@ const graves: Grave[] = [
       allocPoint: 0
     },
   },
-  // {
-  //   id: 2,
-  //   pid: 19,
-  //   name: 'RugZombie Uncommon',
-  //   subtitle: 'Zombie Multiplier',
-  //   path: 'images/rugZombie/Zombie Multiplier.png',
-  //   type: 'image',
-  //   withdrawalCooldown: '3 days',
-  //   nftRevivalTime: '30 days',
-  //   rug: tokens.basicZmbe,
-  //   artist: artists.RugZombie,
-  //   stakingToken: '0x909e59fFFcF1481Df184831eEea6680Cd437A340',
-  //   pcsVersion: 'none',
-  //   liquidityDetails: 'None! You must earn the Basic Zombie NFT from the RugZombie Common Grave to gain access.',
-  //   requiresNft: true,
-  //   requiredNftPath: 'images/rugZombie/BasicZombie.gif',
-  //   nftConverterPid: 1,
-  //   graveNftToken: "0x29529fc1d7d669dC8029174BF9cC396f459AF208",
-  //   nft: "Basic Zombie",
-  //   userInfo: {
-  //     paidUnlockFee: false,
-  //     tokenWithdrawalDate: 0,
-  //     nftRevivalDate: 0,
-  //     rugDeposited: BIG_ZERO,
-  //     amount: BIG_ZERO,
-  //     pendingZombie: BIG_ZERO,
-  //   },
-  //   poolInfo: {
-  //     lpToken: undefined,
-  //     unlockFee: BIG_ZERO,
-  //     minimumStake: BIG_ZERO,
-  //     totalStakingTokenStaked: BIG_ZERO,
-  //     withdrawCooldown: 0,
-  //     nftRevivalTime: 0,
-  //     allocPoint: 0
-  //   },
-  // },
   {
-    id: 2,
+    pid: 23,
+    name: 'RugZombie Uncommon',
+    subtitle: 'Zombie Horde',
+    path: 'images/rugZombie/Zombie Multiplier.png',
+    type: 'image',
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '14 days',
+    rug: tokens.basicZmbe,
+    artist: artists.RugZombie,
+    stakingToken: '0x5E15E3431d2037d3Ce20238d8fF45faF551aD6b2',
+    pcsVersion: 'none',
+    liquidityDetails: 'None! You must earn the Basic Zombie NFT from the RugZombie Common Grave to gain access.',
+    requiresNft: true,
+    requiredNftPath: 'images/rugZombie/BasicZombie.gif',
+    nftConverterPid: 0,
+    graveNftToken: "0x22e42D9425b55FD2262bfF72a316bb052DDb2a77",
+    nft: "Basic Zombie",
+    rarity: "Uncommon",
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      rugDeposited: BIG_ZERO,
+      amount: BIG_ZERO,
+      pendingZombie: BIG_ZERO,
+    },
+    poolInfo: {
+      lpToken: undefined,
+      unlockFee: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalStakingTokenStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+      allocPoint: 0
+    },
+  },
+  {
     pid: 19,
     name: 'Emperor Token Rare',
     subtitle: 'Young Fool',
@@ -115,7 +114,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 2,
     pid: 21,
     name: 'Hyrule Swap Rare',
     subtitle: 'GlitchLink',
@@ -151,7 +149,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 2,
     pid: 20,
     name: 'Hyrule Swap Uncommon',
     subtitle: 'Rugian Shield',
@@ -167,7 +164,7 @@ const graves: Grave[] = [
     isNew: true,
     isEnding: false,
     isFeatured: true,
-    rarity: "Rare",
+    rarity: "Uncommon",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -187,7 +184,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 3,
     pid: 1,
     name: 'VikingSwap Rare',
     subtitle: 'Viking Brains',
@@ -223,7 +219,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 4,
     pid: 2,
     name: 'MonsterSlayer Rare',
     subtitle: 'ZombieSlayer',
@@ -258,7 +253,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 5,
     pid: 18,
     name: 'Thunderswap Rare',
     subtitle: 'Electric Zombie',
@@ -294,7 +288,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 6,
     pid: 12,
     name: 'Autoshark Legendary',
     subtitle: 'Chompers',
@@ -332,7 +325,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 7,
     pid: 15,
     name: 'RUGBIDEN Rare',
     subtitle: 'Zombiden',
@@ -367,7 +359,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 8,
     pid: 16,
     name: 'Burger Swap Rare',
     subtitle: 'Zomburger',
@@ -402,7 +393,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 9,
     pid: 13,
     name: 'The US Dollar Rare',
     subtitle: 'DeadDollar',
@@ -437,7 +427,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 10,
     pid: 3,
     name: 'Defi100 Rare',
     subtitle: 'Zombie100',
@@ -472,7 +461,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 11,
     pid: 10,
     name: 'Merlin Lab Rare',
     subtitle: 'My name is MERL',
@@ -509,7 +497,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 12,
     pid: 4,
     name: 'Fairmoon Rare',
     subtitle: 'Raremoon',
@@ -544,7 +531,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 13,
     pid: 14,
     name: 'Uranium Finance Uncommon',
     subtitle: 'The Rad Chad',
@@ -580,7 +566,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 14,
     pid: 5,
     name: 'Fairmoon Uncommon',
     subtitle: 'Zombie on the Moon',
@@ -615,7 +600,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 15,
     pid: 6,
     name: 'Fairmoon Common',
     subtitle: 'Fairmoon Common',
@@ -650,7 +634,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 16,
     pid: 7,
     name: 'Gorilla Yield Common',
     subtitle: 'Gorilla Yield Common',
@@ -685,7 +668,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 17,
     pid: 8,
     name: 'Dragon Farm Finance Common',
     subtitle: 'Dragon Farm Finance Common',
@@ -720,7 +702,6 @@ const graves: Grave[] = [
     },
   },
   {
-    id: 18,
     pid: 9,
     name: 'yPanda Common',
     subtitle: 'yPanda Common',
@@ -735,6 +716,7 @@ const graves: Grave[] = [
     liquidityDetails: '',
     isNew: false,
     isEnding: false,
+    isClosed: false,
     rarity: "Common",
     userInfo: {
       paidUnlockFee: false,

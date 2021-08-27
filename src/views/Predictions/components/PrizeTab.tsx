@@ -39,7 +39,7 @@ const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
                     {type === 'image' ? (
                       <img src={path} alt='PRIZE' className='sc-cxNHIi bjMxQn' />
                     ) : (
-                      <video width='100%' autoPlay>
+                      <video width='100%' autoPlay loop>
                         <source src='' type='video/mp4' />
                       </video>
                     )}

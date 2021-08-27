@@ -24,6 +24,9 @@ import { getContract, getPancakePair } from '../utils/contractHelpers'
 import pancakeFactoryAbi from '../config/abi/pancakeFactoryAbi.json'
 import tokens from '../config/constants/tokens'
 import contracts from '../config/constants/contracts'
+import { zmbeBnbTomb } from '../redux/get'
+import store from '../redux/store'
+import { updateZombiePriceBnb } from '../redux/actions'
 
 export const getBnbPriceinBusd = () => {
   return axios.get('https://api.binance.com/api/v3/avgPrice?symbol=BNBBUSD')
@@ -33,7 +36,7 @@ export const fetchZmbeBnbAddress = (): Promise<string> => {
   return getContract(pancakeFactoryAbi, getAddress(contracts.pancakeFactory)).methods.getPair(getAddress(tokens.zmbe.address), getAddress(tokens.wbnb.address)).call()
 }
 
-export const fetchLpReserves = (address): Promise<void> => {
+export const fetchLpReserves = (address): Promise<any> => {
   return getPancakePair(address).methods.getReserves().call()
 }
 

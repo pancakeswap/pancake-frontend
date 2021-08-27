@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
-import { BaseLayout } from '@rug-zombie-libs/uikit'
+import { BaseLayout, useMatchBreakpoints } from '@rug-zombie-libs/uikit'
 import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js';
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
@@ -65,6 +65,8 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
     setIsOpen(!isOpen);
     handler(!isOpen);
   };
+  const { isLg, isXl } = useMatchBreakpoints()
+  const isDesktop = isLg || isXl
 
   return (
     <table className="table">
@@ -97,7 +99,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="earned">Earned</div>
             </DisplayFlex>
           </td>
-          <td className="td-width-17 desktop-view">
+          <td className="td-width-17">
             <DisplayFlex>
               <span className="total-earned text-shadow">{apr ? displayApr : "NAN"}%</span>
               <div className="earned">Yearly</div>
@@ -109,12 +111,12 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="earned">Daily</div>
             </DisplayFlex>
           </td>
-          <td className="td-width-25">
+          {isDesktop ? <td className='td-width-25'>
             <DisplayFlex>
-              <span className="total-earned">{numeral(tvl).format('($ 0.00 a)')}</span>
-              <div className="earned">TVL</div>
+              <span className='total-earned'>{numeral(tvl).format('($ 0.00 a)')}</span>
+              <div className='earned'>TVL</div>
             </DisplayFlex>
-          </td>
+          </td> : null}
           <td className="last-td">
             <ArrowIcon onClick={toggleOpen}>
               {isOpen ? (

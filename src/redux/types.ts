@@ -80,7 +80,6 @@ export interface Artist {
 }
 
 export interface Grave {
-  id: number,
   pid: number,
   name: string,
   subtitle: string,
@@ -138,7 +137,8 @@ export interface SpawningPool {
   nftRevivalTime: string,
   isNew: boolean,
   rewardToken: Token,
-  rewardTokenId: string,
+  rewardTokenId?: string,
+  rewardTokenBnbLp?: string,
   artist: Artist,
   pcsVersion: string,
   stakingToken: string,

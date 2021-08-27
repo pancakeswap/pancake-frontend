@@ -54,9 +54,8 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
       store.dispatch(updateDrFrankensteinZombieBalance(new BigNumber(res)))
     })
 
-  bnbPriceUsd()
+  bnbPriceUsd(setZombiePrice)
 
-  zombiePriceBnb(setZombiePrice)
 
   tomb(tombs[0].pid, multi)
 
@@ -433,10 +432,22 @@ const zombiePriceBnb = (setZombiePrice?: any) => {
     })
 }
 
-const bnbPriceUsd = () => {
+const mainstPriceBnb = (setZombiePrice?: any) => {
+  getPancakePair(getAddress(zmbeBnbTomb().lpAddress)).methods.getReserves().call()
+    .then(res => {
+      const price = new BigNumber(res._reserve1).div(res._reserve0)
+      store.dispatch(updateZombiePriceBnb(price))
+      if (setZombiePrice) {
+        setZombiePrice(price)
+      }
+    })
+}
+
+const bnbPriceUsd = (setZombiePrice?: any) => {
   axios.get('https://api.binance.com/api/v3/avgPrice?symbol=BNBBUSD')
     .then(res => {
       store.dispatch(updateBnbPriceUsd(res.data.price))
+      zombiePriceBnb(setZombiePrice)
     })
 }
 

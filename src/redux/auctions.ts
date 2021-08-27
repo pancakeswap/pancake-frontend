@@ -38,7 +38,7 @@ const auctions: Auction[] = [
     bidToken: "0xcaa139138557610fe00f581498f283a789355d14",
     path: "https://storage.googleapis.com/rug-zombie/PatientZeroBeta.png",
     prizeDescription: 'He loves cake.',
-    isFinished: false,
+    isFinished: true,
     artist: { ...artists.jussjoshinduh },
     startingBid: 10,
     bt: 'ZMBE-BNB APESWAP LP',

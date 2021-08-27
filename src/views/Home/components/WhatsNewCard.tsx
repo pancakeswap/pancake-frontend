@@ -33,22 +33,21 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. Apeswap migration starts today, check out tombs.</Text>
+            <Text fontSize='14px'>1. Our second PATIENT-ZERO NFT is being auctioned in the Mausoleum.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>2. Euler Tools Spawning Pool is live!</Text>
+            <Text fontSize='14px'>2. Main Street Spawning Pool is live!</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>3. Thunderswap grave is out now! Multiplier graves are on the way, you will deposit your RugZombie Common NFTs to gain access.</Text>
+            <Text fontSize='14px'>3. The Apeswap migration has begun, more news soon!</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>4. First auction was a huge success, thanks for participating & congrats to the winner.</Text>
+            <Text fontSize='14px'>4. Emperor & Hyrule graves are out now! Multiplier graves coming Monday, you will deposit your RugZombie Common NFTs to gain access.</Text>
           </Row>
           <Row>
             <Text fontSize='14px'>5. Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
           </Row>
         </>
-
       </CardBody>
     </StyledTotalValueLockedCard>
   )

@@ -7,7 +7,7 @@ import ToastListener from 'components/ToastListener'
 import { routes } from 'routes'
 import Menu from 'components/Menu'
 import Loader from 'components/Loader'
-import Home from 'views/Home/Home';
+import Home from 'views/Home/Home'
 import Tombs from 'views/Tombs/Tombs'
 import Gravedigger from 'views/Gravedigger/'
 import { useWeb3React } from '@web3-react/core'
@@ -25,7 +25,7 @@ import CollectiblesMain from './views/Collectibles'
 import { useMultiCall } from './hooks/useContract'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
-const Landing = lazy(() => import('./components/Landing'));
+const Landing = lazy(() => import('./components/Landing'))
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -39,8 +39,8 @@ const App: React.FC = () => {
     console.warn = () => null
   }, [])
 
-  const [isAuthenticated, setAuthenticated] = useState(false);
-  const [zombiePrice, setZombiePrice] = useState(0);
+  const [isAuthenticated, setAuthenticated] = useState(false)
+  const [zombiePrice, setZombiePrice] = useState(0)
 
   useEffect(() => {
     document.title = 'RugZombie'
@@ -48,18 +48,18 @@ const App: React.FC = () => {
 
   useEagerConnect()
   const multi = useMultiCall()
-  const {account} = useWeb3React()
+  const { account } = useWeb3React()
   useEffect(() => {
     fetch.initialData(account, multi, setZombiePrice)
   }, [account, multi])
 
   const handleAuthentication = () => {
-    setAuthenticated(!isAuthenticated);
-    history.push(routes.HOME);
+    setAuthenticated(!isAuthenticated)
+    history.push(routes.HOME)
   }
 
   const LandingProps = {
-    "handleAuthentication": handleAuthentication
+    'handleAuthentication': handleAuthentication,
   }
 
   return (
@@ -69,21 +69,21 @@ const App: React.FC = () => {
       <SuspenseWithChunkError fallback={<Loader />}>
         <Switch>
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
-          <Route exact path={routes.GRAVEDIGGER}><Gravedigger/></Route>
+          <Route exact path={routes.GRAVEDIGGER}><Gravedigger /></Route>
           <Route exact path={routes.SPAWNWITHUS}><SpawnWithUs /></Route>
-          <Route exact path={routes.CATACOMBS}><Catacombs/></Route>
+          <Route exact path={routes.CATACOMBS}><Catacombs /></Route>
           <Menu>
-            <Route exact path={routes.HOME}><Home/></Route>
-            <Route exact path={routes.GRAVES}><Graves/></Route>
-            <Route exact path={routes.TOMBS}><Tombs/></Route>
-            <Route exact path={routes.SPAWNING_POOLS}><SpawningPools/></Route>
-            <Route exact path={routes.MAUSOLEUM}><PredictionsHome/></Route>
-            <Route exact path={routes.AUCTION}><Predictions/></Route>
+            <Route exact path={routes.HOME}><Home /></Route>
+            <Route exact path={routes.GRAVES}><Graves /></Route>
+            <Route exact path={routes.TOMBS}><Tombs /></Route>
+            <Route exact path={routes.SPAWNING_POOLS}><SpawningPools /></Route>
+            <Route exact path={routes.MAUSOLEUM}><PredictionsHome /></Route>
+            <Route exact path={routes.AUCTION}><Predictions /></Route>
             <Route exact path={routes.COLLECTABLES}><CollectiblesMain /></Route>
-                      </Menu>
+          </Menu>
         </Switch>
       </SuspenseWithChunkError>
-      <ToastListener/>
+      <ToastListener />
     </Router>
   )
 }

@@ -203,7 +203,7 @@ const tokens = {
   basicZmbe: {
     symbol: 'BASIC-ZMBE',
     address: {
-      56: '0x080060C1674dF895C1497A45F302493B5954cF0a',
+      56: '0x22e42D9425b55FD2262bfF72a316bb052DDb2a77',
       97: '',
     },
     decimals: 0,
