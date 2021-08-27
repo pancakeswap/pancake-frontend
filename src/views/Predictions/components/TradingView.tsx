@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react'
 import { Box } from '@pancakeswap/uikit'
 import { DefaultTheme, useTheme } from 'styled-components'
+import debounce from 'lodash/debounce'
 import { useTranslation } from 'contexts/Localization'
+import useLastUpdated from 'hooks/useLastUpdated'
+
+const TRADING_VIEW_COMPONENT_ID = 'tradingview_b239c'
 
 /**
  * When the script tag is injected the TradingView object is not immediately
@@ -34,29 +38,46 @@ const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeC
     toolbar_bg: '#f1f3f6',
     enable_publishing: false,
     allow_symbol_change: true,
-    container_id: 'tradingview_b239c',
+    container_id: TRADING_VIEW_COMPONENT_ID,
   })
 }
 
 const TradingView = () => {
   const { currentLanguage } = useTranslation()
   const theme = useTheme()
+  const { lastUpdated, setLastUpdated } = useLastUpdated()
+
+  useEffect(() => {
+    const debouncedOnResize = debounce(() => {
+      setLastUpdated()
+    }, 500)
+
+    const resizeObserver = new ResizeObserver(() => {
+      debouncedOnResize()
+    })
+
+    resizeObserver.observe(document.getElementById(TRADING_VIEW_COMPONENT_ID))
+
+    return () => {
+      resizeObserver.unobserve(document.getElementById(TRADING_VIEW_COMPONENT_ID))
+    }
+  }, [setLastUpdated])
 
   useEffect(() => {
     // @ts-ignore
-    if (window.TradingView) {
+    if (window.tv) {
       // @ts-ignore
-      initializeTradingView(window.TradingView, theme, currentLanguage.code)
+      initializeTradingView(window.tv, theme, currentLanguage.code)
     } else {
       tradingViewListener().then((tv) => {
         initializeTradingView(tv, theme, currentLanguage.code)
       })
     }
-  }, [theme, currentLanguage])
+  }, [theme, currentLanguage, lastUpdated])
 
   return (
     <Box overflow="hidden" className="tradingview_container">
-      <div id="tradingview_b239c" />
+      <div id={TRADING_VIEW_COMPONENT_ID} />
     </Box>
   )
 }
