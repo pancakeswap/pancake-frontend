@@ -1361,5 +1361,7 @@
   "Nothing to collect": "Забирать нечего",
   "Download .CSV": "Скачать .CSV",
   "Download your v0.1 Prediction history below.": "Скачайте вашу историю v0.1 Prediction ниже.",
-  "Nothing to Collect": "Забирать нечего"
+  "Nothing to Collect": "Забирать нечего",
+  "From round %round%": "От раунда %round%",
+  "From rounds %rounds%": "От раундов %rounds%"
 }

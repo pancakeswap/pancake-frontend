@@ -1361,5 +1361,7 @@
   "Nothing to collect": "Walang kokolektahin",
   "Download .CSV": "I-download ang .CSV",
   "Download your v0.1 Prediction history below.": "I-download ang iyong v0.1 Prediction history sa ibaba.",
-  "Nothing to Collect": "Wala pang kokolektahin"
+  "Nothing to Collect": "Wala pang kokolektahin",
+  "From round %round%": "From round %round%",
+  "From rounds %rounds%": "From rounds %rounds%"
 }
