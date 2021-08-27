@@ -1,6 +1,7 @@
 name: Fetch and update LP APRs
 
 on:
+  workflow_dispatch:
   schedule:
     # 23:15 UTC
     # GitHub Actions might be delayed if time is at exact hour
@@ -14,12 +15,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Node
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: 14.x
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Fetch and save LP APR data
         run: yarn updateLPsAPR
