@@ -12,7 +12,6 @@ import {
   Heading,
   Skeleton,
   Box,
-  Link,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
@@ -46,10 +45,6 @@ const StyledCardBody = styled(CardBody)`
   align-items: center;
   justify-content: center;
   min-height: 240px;
-`
-
-const StyledLink = styled(Link)`
-  display: inline;
 `
 
 const YourHistoryCard: React.FC<YourHistoryCardProps> = ({ handleShowMoreClick, numUserRoundsRequested }) => {
@@ -155,15 +150,7 @@ const YourHistoryCard: React.FC<YourHistoryCardProps> = ({ handleShowMoreClick, 
       <CardFooter>
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
           <Text fontSize="12px" color="textSubtle">
-            {t(
-              'Note - due to a delay in the BSC Subgraph, lotteries after round 108 may temporarily show incomplete data.',
-            )}
-          </Text>
-          <Text display="inline" fontSize="12px" color="textSubtle">
-            {t('More information')}{' '}
-            <StyledLink fontSize="12px" external href="https://status.thegraph.com/">
-              status.thegraph.com
-            </StyledLink>
+            {t('Only showing data for Lottery V2')}
           </Text>
         </Flex>
       </CardFooter>
