@@ -2,11 +2,11 @@
 import React from 'react'
 import PageHeader from 'components/PageHeader'
 import { Flex, Heading } from '@rug-zombie-libs/uikit'
-import Collectibles from './components/Collectibles';
+import Collectibles from './components/Collectibles'
 import CollectibleTabButtons from './components/CollectibleTabButtons'
+import SwiperProvider from '../Predictions/context/SwiperProvider'
 
 const CollectiblesMain: React.FC = () => {
-  
   return (
     <>
       <PageHeader background='#101820'>
@@ -21,9 +21,10 @@ const CollectiblesMain: React.FC = () => {
           </Flex>
         </Flex>
       </PageHeader>
-
-      <div style={{paddingTop: "30px"}}>
-        <Collectibles />
+      <div style={{ paddingTop: '30px' }}>
+        <SwiperProvider>
+          <Collectibles />
+        </SwiperProvider>
       </div>
     </>
   )

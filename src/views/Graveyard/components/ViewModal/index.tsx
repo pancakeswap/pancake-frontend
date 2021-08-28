@@ -6,12 +6,11 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import styled from 'styled-components'
 import { nftById } from '../../../../redux/get'
 import ViewCard from '../ViewCard'
-import useSwiper from '../../../Predictions/hooks/useSwiper'
-import SwiperProvider from '../../../Predictions/context/SwiperProvider'
 
 interface ViewModalProps {
   id: number;
   onDismiss?: any;
+  setSwiper: any;
 }
 
 const StyledSwiper = styled.div`
@@ -25,10 +24,9 @@ const StyledSwiper = styled.div`
   }
 `
 
-const ViewModal: React.FC<ViewModalProps> = ({ id, onDismiss }) => {
+const ViewModal: React.FC<ViewModalProps> = ({ id, onDismiss, setSwiper }) => {
   const { userInfo: { ownedIds } } = nftById(id)
   const { theme } = useTheme()
-  const { setSwiper } = useSwiper()
 
   return <Modal onDismiss={onDismiss} title='In Wallet' headerBackground={theme.colors.backgroundAlt}
                 style={{ minWidth: '50%' }}>
@@ -45,9 +43,9 @@ const ViewModal: React.FC<ViewModalProps> = ({ id, onDismiss }) => {
         keyboard
         resizeObserver
       >
-          {ownedIds.map(ownedId => {
-            return <SwiperSlide><ViewCard id={id} nftId={ownedId} /></SwiperSlide>
-          })}
+        {ownedIds.map(ownedId => {
+          return <SwiperSlide><ViewCard id={id} nftId={ownedId} /></SwiperSlide>
+        })}
       </Swiper>
     </StyledSwiper>
   </Modal>

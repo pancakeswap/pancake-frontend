@@ -4,7 +4,7 @@ import SwiperCore from 'swiper'
 interface Context {
   swiper: SwiperCore
   setSwiper: Dispatch<React.SetStateAction<SwiperCore>>
-  destroySwiper: () => void
+  destroySwiper: () => void,
 }
 
 export const SwiperContext = createContext<Context>(undefined)

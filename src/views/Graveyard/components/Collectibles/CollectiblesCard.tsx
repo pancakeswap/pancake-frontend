@@ -11,9 +11,8 @@ import {
   Button, useModal,
 } from '@rug-zombie-libs/uikit'
 import { nftById } from '../../../../redux/get'
-import WithdrawLpModal from '../../../Tombs/WithdrawLpModal'
 import ViewModal from '../ViewModal'
-import SwiperProvider from '../../../Predictions/context/SwiperProvider'
+import useSwiper from '../../../Predictions/hooks/useSwiper'
 
 
 const StyleDetails = styled.div`
@@ -44,16 +43,17 @@ const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ id }: CollectiblesC
   const { name, description, address, path, type, rarity, userInfo: { ownedIds } } = nftById(id)
   const [isOpen, setIsOpen] = useState(false)
   const isOwned = ownedIds.length > 0
+  const { setSwiper } = useSwiper()
+
   const toggleOpen = () => {
     setIsOpen(!isOpen)
   }
 
-  const [onPresentViewModal] = useModal(
-    <SwiperProvider>
+  const [onPresentViewModal, onDismiss] = useModal(
       <ViewModal
         id={id}
+        setSwiper={setSwiper}
       />
-    </SwiperProvider>,
   )
 
   return (

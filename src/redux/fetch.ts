@@ -419,7 +419,6 @@ export const nftUserInfo = (contract: any, updateUserObj: { update: boolean, set
     const nftAddresses = get.nfts().map(nft => nft.address)
     contract.methods.massCheckOwnership(account(), nftAddresses).call()
       .then(res => {
-        console.log(res)
         get.nfts().forEach((nft, index) => {
           store.dispatch(updateNftUserInfo(
             nft.id,
