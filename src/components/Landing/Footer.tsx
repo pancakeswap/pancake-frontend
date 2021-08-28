@@ -1,5 +1,6 @@
 import React from 'react'
 import './Landing.Styles.css'
+import NomicsLogo from "../../images/Nomics_Graphicmark-Purple_200x200.png"
 
 const Footer = () => {
   return (
@@ -23,6 +24,9 @@ const Footer = () => {
             </a>
           </div>
           <div className="social_links_wrapper navbar_sm">
+            <a href="https://nomics.com/assets/zmbe-zombie-token" rel="noreferrer" target="_blank" className="social_link w-inline-block">
+              <img src={NomicsLogo} width="18" sizes="20px" alt="" className="image-3" />
+            </a>
             <a href="https://t.me/rugzombie" rel="noreferrer" target="_blank" className="social_link w-inline-block">
               <img src="https://uploads-ssl.webflow.com/60847fea0f393c67d6cd5297/60847fea0f393c065ecd52b3_Telegram.png" width="18" sizes="20px" alt="" className="image-3" />
             </a>
