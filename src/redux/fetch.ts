@@ -2,8 +2,8 @@ import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
 import {
   getBep20Contract,
-  getDrFrankensteinContract, getErc721Contract,
-  getPancakePair, getSpawningPoolContract,
+  getDrFrankensteinContract, getErc721Contract, getNftOwnership,
+  getPancakePair,
   getZombieContract,
 } from '../utils/contractHelpers'
 
@@ -21,23 +21,24 @@ import {
   updateNftTotalSupply,
   updateSpawningPoolInfo,
   updateSpawningPoolUserInfo,
-  updateTombPoolInfo, updateTombUserInfo, updateAuctionInfo, updateAuctionUserInfo,
+  updateTombPoolInfo, updateTombUserInfo, updateAuctionInfo, updateAuctionUserInfo, updateNftUserInfo,
 } from './actions'
 import {
   getAddress,
   getDrFrankensteinAddress,
-  getMausoleumAddress,
+  getMausoleumAddress, getNftOwnershipAddress,
   getSpawningPoolAddress,
-  getZombieAddress,
 } from '../utils/addressHelpers'
 import tombs from './tombs'
 import * as get from './get'
 import spawningPoolAbi from '../config/abi/spawningPool.json'
 import drFrankensteinAbi from '../config/abi/drFrankenstein.json'
 import pancakePairAbi from '../config/abi/pancakePairAbi.json'
-import { BIG_ZERO } from '../utils/bigNumber'
-import { account, auctionById, spawningPools, zmbeBnbTomb } from './get'
 import mausoleumAbi from '../config/abi/mausoleum.json'
+import nftOwnershipAbi from '../config/abi/nftOwnership.json'
+
+import { BIG_ZERO } from '../utils/bigNumber'
+import { account, auctionById, zmbeBnbTomb } from './get'
 
 // eslint-disable-next-line import/prefer-default-export
 export const initialData = (accountAddress: string, multi: any, setZombiePrice?: any) => {
@@ -348,7 +349,7 @@ export const auction = (
               {
                 lastBidId: parseInt(bidsLengthRes) - 1,
                 bids,
-                unlockFeeInBnb: new BigNumber(res[1][1].toString())
+                unlockFeeInBnb: new BigNumber(res[1][1].toString()),
               },
             ))
             store.dispatch(updateAuctionUserInfo(
@@ -393,7 +394,7 @@ export const auction = (
               {
                 lastBidId: parseInt(bidsLengthRes) - 1,
                 bids,
-                unlockFeeInBnb: new BigNumber(res[1][0].toString())
+                unlockFeeInBnb: new BigNumber(res[1][0].toString()),
               },
             ))
             if (updateAuctionObj && !updateAuctionObj.update) {
@@ -413,12 +414,28 @@ export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: a
   })
 }
 
-export const nftOwnership = (multi: any) => {
-  const inputs = []
-  get.nfts().forEach(nft => {
-    inputs.push({ target: nft.address, function: 'bidInfo', args: [aid, x - 1] })
-
-  })
+export const nftUserInfo = (contract: any, updateUserObj: { update: boolean, setUpdate: any }) => {
+  if (account()) {
+    const nftAddresses = get.nfts().map(nft => nft.address)
+    contract.methods.massCheckOwnership(account(), nftAddresses).call()
+      .then(res => {
+        console.log(res)
+        get.nfts().forEach((nft, index) => {
+          store.dispatch(updateNftUserInfo(
+            nft.id,
+            {
+              ownedIds: res[index]
+            }
+          ))
+        })
+        if (updateUserObj && !updateUserObj.update) {
+          updateUserObj.setUpdate(!updateUserObj.update)
+        }
+      })
+      .catch(() => {
+        console.log('massCheckOwnership failed')
+      })
+  }
 }
 
 const zombiePriceBnb = (setZombiePrice?: any) => {

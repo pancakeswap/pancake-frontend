@@ -27,19 +27,9 @@ const config: MenuEntry[] = [
     href: '/mausoleum',
   },
   {
-    label: 'Collectibles',
-    icon: 'IfoIcon',
-    href: '/collectibles',
-  },
-  {
     label: 'Graveyard',
     icon: 'NftIcon',
-    items: [
-      {
-        label: '(NFT Viewer) Coming Soon!',
-        href: '/',
-      },
-    ],
+    href: '/graveyard'
   },
   {
     label: 'Referral Program',

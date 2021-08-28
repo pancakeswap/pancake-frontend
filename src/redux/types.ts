@@ -73,6 +73,10 @@ export interface AuctionUserInfo {
   paidUnlockFee: boolean
 }
 
+export interface NftUserInfo {
+  ownedIds: number[],
+}
+
 
 export interface Artist {
   name: string,
@@ -171,10 +175,12 @@ export interface Auction {
 export interface Nft {
   id: number,
   name: string,
+  description: string,
   symbol: string,
   address: string,
   totalSupply: BigNumber,
   path: string,
   type: string,
   rarity: string,
+  userInfo: NftUserInfo
 }

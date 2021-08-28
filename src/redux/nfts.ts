@@ -1,196 +1,310 @@
 import { BIG_ZERO } from '../utils/bigNumber'
-import { Nft } from './types'
+import { Nft, NftUserInfo } from './types'
+
+const DEFAULT_USER_INFO: NftUserInfo = {
+  ownedIds: []
+}
 
 const nfts: Nft[] = [
   {
     id: 0,
     name: 'yApe Common',
     symbol: 'yAPE-COMMON',
+    description: 'Good things never last Mr. Denham.',
     address: '0xa8a30a507c44Cb7Bdcb7d6f1F8e6A7F373A9C9AA',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/yApeCommon.jpeg',
     type: 'image',
     rarity: 'Common',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 1,
     name: 'yPanda Common',
     symbol: 'yPANDA-COMMON',
+    description: 'Legend tells of a legendary warrior whose kung fu skills were the stuff of legend.',
     address: '0x864661Cd1FDedf6Bc249beB8B76CeaD629B48122',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/yPandaCommon.jpeg',
     type: 'image',
     rarity: 'Common',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 2,
     name: 'DragonFarm Finance Common',
     symbol: 'DRAGON-COMMON',
+    description: 'My armor is like tenfold shields, my teeth are swords, my claws spears, the shock of my tail a thunderbolt, my wings a hurricane, and my breath death!',
     address: '0x983608174E9ae08D938433119aD5C4b1f8B29A03',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/CommonDragonFarmFinance.mp4',
     type: 'video',
     rarity: 'Common',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 3,
     name: 'Fairmoon Common',
     symbol: 'FAIRMOON-COMMON',
+    description: 'It\'s fairly common.',
     address: '0x47367847B67b5D4fe905d18D2Cc4e0D149008C41',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/FairmoonCommon.mp4',
     type: 'video',
     rarity: 'Common',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 4,
     name: 'Zombie on the Moon',
     symbol: 'Z-MOON',
+    description: 'There is no fair side of the moon really.',
     address: '0x0b0dEa27fD22009A8ee2d0222025Eb9a81a9B26E',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/FairmoonUncommon.mp4',
     type: 'video',
     rarity: 'Uncommon',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 5,
     name: 'Patient Zero Alpha',
     symbol: 'PATIENT-ZERO',
+    description: 'Not much is known about the origin of the first humans gone zombie. We do know this one loved tacos.',
     address: '0xFEf72C8d941F4F2D308E2Ae892AEDc084b280bB0',
     totalSupply: BIG_ZERO,
     path: "/images/rugZombie/Patient Zero.jpg",
     type: 'image',
     rarity: 'One of a Kind',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 6,
     name: 'Basic Zombie',
     symbol: 'BASIC-ZMBE',
+    description: 'This grave\'s multiplier is suspiciously low, what could frankenstein be planning.',
     address: '0x6209E17d98ba2089571476940751802AAc4249e8',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/BasicZombie.gif',
     type: 'image',
     rarity: 'Common',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 7,
     name: 'Viking Brains',
     symbol: 'BRAINS',
+    description: 'Fear not death, for the hour of your doom is set and none may escape it.',
     address: '0x4659c3ad5d487c8de34744120559d48dcf288a22',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/VikingBrains.jpeg',
     type: 'image',
     rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 8,
     name: 'ZombieSlayer',
     symbol: 'ZSC',
+    description: 'We wrestle not with flesh and blood, but with principalities.',
     address: '0xbd7f3130cB219e47584591051b5806556006B0A9',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/ZombieSlayer.gif',
     type: 'image',
     rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 9,
     name: 'Zombie100',
     symbol: 'Z100',
+    description: 'My name is legion, for we are many.',
     address: '0xeC1CC772F2ad80D8341351a532303d986B41D5e4',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/Zombie100.gif',
     type: 'image',
     rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 10,
     name: 'Raremoon',
     symbol: 'RAREMOON',
+    description: 'Fair moon risin\' in a sky of black dust.',
     address: '0x6195E792F558A2BEA35f54bA8FF9897445867951',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/Raremoon.jpeg',
     type: 'image',
     rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 11,
-    name: 'My name is MERL', // Fix
+    name: 'My name is MERL',
     symbol: 'MERL-RARE',
+    description: 'The man who believes that the secrets of the world are forever hidden lives in mystery and fear.',
     address: '0x52ECFee39530A35696F6633Cba0e957657a66357',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/My Name Is MERL.png',
     type: 'image',
     rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 12,
     name: 'Chompers',
     symbol: 'CHOMP',
+    description: 'Live every week like it\'s shark week.',
     address: '0x37E178be665fE4bFD9dAd0F537B9f3E60a05Ff9A',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/Autoshark Legendary.mp4',
     type: 'video',
     rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 13,
     name: 'DeadDollar',
     symbol: '$DEAD',
+    description: 'https://en.wikipedia.org/wiki/Hyperinflation',
     address: '0x09853d458bfcD6690eB626302ca2A79ae98933F8',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/DeadDollar.png',
     type: 'image',
-    rarity: 'Rare'
+    rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 14,
     name: 'The Rad Chad',
     symbol: 'RAD-C',
+    description: 'The radiation gave him lzr eyes.',
     address: '0xd39c4280b080d33352d79c08d763570d7d7e62bb',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/The Rad Chad.png',
     type: 'image',
-    rarity: 'Uncommon'
+    rarity: 'Uncommon',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 15,
     name: 'Zombiden',
     symbol: 'Z-BIDEN',
+    description: 'C\'mon man.',
     address: '0x1050DC60784117fcc4F995Ca6980a3beE2765564',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/Zombiden.mp4',
     type: 'video',
-    rarity: 'Rare'
+    rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 16,
     name: 'Zomburger',
     symbol: 'Z-BURGER',
+    description: 'Would you like fries with that?',
     address: '0xD0AA831AcC0EE1d3b7aAA209Ab44eA680074C2Ed',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/Zomburger.jpeg',
     type: 'image',
-    rarity: 'Rare'
+    rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 17,
     name: 'Silverback',
     symbol: 'SILVERBACK',
+    description: 'One Family, One Troop.',
     address: '0xa8740132360f5c1C487259066ddb5C5c4292def2',
     totalSupply: BIG_ZERO,
     path: 'images/rugZombie/Silverback.mp4',
     type: 'video',
-    rarity: 'Legendary'
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 18,
     name: 'Patient Zero Beta',
     symbol: 'PATIENT-ZERO',
+    description: 'He loves cake.',
     address: '0xc4Ba6d56C162efBFA881DAd69AAcC9263A352C8A',
     totalSupply: BIG_ZERO,
     path: "https://storage.googleapis.com/rug-zombie/PatientZeroBeta.png",
     type: 'image',
-    rarity: 'One of a Kind'
+    rarity: 'One of a Kind',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 19,
+    name: 'Zombie Horde',
+    symbol: 'HORDE',
+    description: 'In your head X2.',
+    address: '0xABef28a6686A75c24c79fD95d31E7bD9828Ab1B8',
+    totalSupply: BIG_ZERO,
+    path: "images/rugZombie/Zombie Multiplier.png",
+    type: 'image',
+    rarity: 'Uncommon',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 20,
+    name: 'Block Party',
+    symbol: 'PARTY',
+    description: 'Some of us are like a shovel brigade that follow a parade down Main Street cleaning up.',
+    address: '0xbaca4665e539ffc5035a57b636b542c8c0dc8dd1',
+    totalSupply: BIG_ZERO,
+    path: "https://storage.googleapis.com/rug-zombie/Main%20Street.png",
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 21,
+    name: 'Electric Zombie',
+    symbol: 'ELECTRIC',
+    description: 'There was no help, no help from you. Sound of the drums, beating in my heart, the thunder of guns tore me apart.',
+    address: '0x61ea827873Ee1fAcD5c6Cc4D86c5477192AD7E34',
+    totalSupply: BIG_ZERO,
+    path: "images/rugZombie/Electric Zombie.png",
+    type: 'image',
+    rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 22,
+    name: 'Young Fool',
+    symbol: 'FOOL',
+    description: 'How dangerous emperors are when they go mad.',
+    address: '0x84890D06cD06778CfE7206A8c72b51551Fe26DF3',
+    totalSupply: BIG_ZERO,
+    path: "https://storage.googleapis.com/rug-zombie/Young%20Fool.jpeg",
+    type: 'image',
+    rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 23,
+    name: 'Rugian Shield',
+    symbol: 'SHIELD',
+    description: '"The twilight there holds a serene beauty... you have seen it yourself as sun sets on this world. Bathed in the light, all the people were pure and gentle."',
+    address: '0xeD84e84F95170bcdDCE92aD44e1E93ACe511Bb1d',
+    totalSupply: BIG_ZERO,
+    path: 'https://storage.googleapis.com/rug-zombie/Rugian%20Shield.png',
+    type: 'image',
+    rarity: 'Uncommon',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 24,
+    name: 'GlitchLink',
+    symbol: 'gLINK',
+    description: '"I am error.',
+    address: '0xd10A49fb53cFCc3b9C2c27aB314BCC8dB2A144A3',
+    totalSupply: BIG_ZERO,
+    path: 'https://storage.googleapis.com/rug-zombie/GlitchLink.mp4',
+    type: 'video',
+    rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
 ]
 

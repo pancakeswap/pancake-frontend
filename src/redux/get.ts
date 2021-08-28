@@ -86,7 +86,11 @@ export const nfts = () => {
 }
 
 export const nftByName = (name: string) => {
-  return nfts().find(t => t.name === name)
+  return nfts().find(n => n.name === name)
+}
+
+export const nftById = (id: number) => {
+  return nfts().find(n => n.id === id)
 }
 
 export const nftTotalSupply = (): BigNumber => {

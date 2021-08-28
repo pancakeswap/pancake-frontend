@@ -24,8 +24,6 @@ interface ParamTypes {
 const Predictions = () => {
   const { isLg, isXl } = useMatchBreakpoints()
   const isDesktop = isLg || isXl
-  const [bids, setBids] = useState([])
-  const [lastBidId, setLastBidId] = useState(0)
   const [userInfo, setUserInfo] = useState({})
   const [refresh, setRefresh] = useState(false)
   const { account } = useWeb3React()

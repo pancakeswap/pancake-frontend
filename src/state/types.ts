@@ -143,7 +143,7 @@ export interface BlockState {
   initialBlock: number
 }
 
-// Collectibles
+// Graveyard
 
 export interface CollectiblesState {
   isInitialized: boolean

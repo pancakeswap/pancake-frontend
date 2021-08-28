@@ -14,4 +14,5 @@ export const UPDATE_DR_FRANKENSTEIN_ZOMBIE_BALANCE = "updateDrFrankensteinZombie
 export const UPDATE_NFT_TOTAL_SUPPLY = "updateNftTotalSupply"
 export const UPDATE_AUCTION_INFO = "updateAuctionInfo"
 export const UPDATE_AUCTION_USER_INFO = "updateAuctionUserInfo"
+export const UPDATE_NFT_USER_INFO = "updateNftUserInfo"
 

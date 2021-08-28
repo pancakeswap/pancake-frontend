@@ -27,7 +27,7 @@ export const customMeta: { [key: string]: PageMeta } = {
     title: 'Lottery | RugZombie',
   },
   '/collectibles': {
-    title: 'Collectibles | RugZombie',
+    title: 'Graveyard | RugZombie',
   },
   '/ifo': {
     title: 'Initial Farm Offering | RugZombie',

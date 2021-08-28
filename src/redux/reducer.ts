@@ -107,6 +107,11 @@ export default function reducer(state = defaultState, action) {
         ...state,
         auctions: state.auctions.map(auction => auction.id === action.payload.id ? { ...auction, userInfo: { ...auction.userInfo, ...action.payload.userInfo } } : auction)
       }
+    case types.UPDATE_NFT_USER_INFO:
+      return {
+        ...state,
+        nfts: state.nfts.map(nft => nft.id === action.payload.id ? { ...nft, userInfo: { ...nft.userInfo, ...action.payload.userInfo } } : nft)
+      }
     default:
       return state
   }
