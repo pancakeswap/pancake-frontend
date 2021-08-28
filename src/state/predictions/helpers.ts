@@ -300,19 +300,13 @@ export const getClaimStatuses = async (
   }))
   const claimableResponses = await multicallv2<[PredictionsClaimableResponse][]>(predictionsAbi, claimableCalls)
 
-  // "claimable" currently has a bug where it returns true on Bull bets even if the wallet did not interact with the round
-  // To get around this temporarily we check the ledger status as well to confirm that it is claimable
-  // This can be removed in Predictions V2
-  const ledgerResponses = await getLedgerData(account, epochs)
-
   return claimableResponses.reduce((accum, claimableResponse, index) => {
-    const { amount, claimed } = ledgerResponses[index]
     const epoch = epochs[index]
     const [claimable] = claimableResponse
 
     return {
       ...accum,
-      [epoch]: claimable && amount.gt(0) && !claimed,
+      [epoch]: claimable,
     }
   }, {})
 }

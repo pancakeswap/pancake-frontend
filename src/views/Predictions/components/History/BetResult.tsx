@@ -7,8 +7,9 @@ import { useTranslation } from 'contexts/Localization'
 import { usePriceBnbBusd } from 'state/farms/hooks'
 import { REWARD_RATE } from 'state/predictions/config'
 import { Bet, BetPosition } from 'state/types'
-import { fetchLedgerData, markBetHistoryAsCollected } from 'state/predictions'
+import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
+import { useGetIsClaimable } from 'state/predictions/hooks'
 import { getBscScanLink } from 'utils'
 import useIsRefundable from '../../hooks/useIsRefundable'
 import { formatBnb, getNetPayout } from './helpers'
@@ -37,8 +38,8 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
+  const canClaim = useGetIsClaimable(bet.round.epoch)
   const bnbBusdPrice = usePriceBnbBusd()
-  const canClaim = !bet.claimed && bet.position === bet.round.position
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
     { placement: 'auto' },
@@ -102,7 +103,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
 
   const handleSuccess = async () => {
     // We have to mark the bet as claimed immediately because it does not update fast enough
-    dispatch(markBetHistoryAsCollected({ account, betId: bet.id }))
+    dispatch(markAsCollected({ [bet.round.epoch]: true }))
     dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
   }
 
