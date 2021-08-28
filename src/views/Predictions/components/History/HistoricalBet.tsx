@@ -14,8 +14,8 @@ import styled from 'styled-components'
 import { useAppDispatch } from 'state'
 import { Bet, PredictionStatus } from 'state/types'
 import { REWARD_RATE } from 'state/predictions/config'
-import { useGetCurrentEpoch, useGetPredictionsStatus } from 'state/predictions/hooks'
-import { fetchLedgerData, markBetHistoryAsCollected } from 'state/predictions'
+import { useGetCurrentEpoch, useGetIsClaimable, useGetPredictionsStatus } from 'state/predictions/hooks'
+import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { getRoundResult, Result } from 'state/predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import { formatBnb, getNetPayout } from './helpers'
@@ -44,6 +44,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const { t } = useTranslation()
   const currentEpoch = useGetCurrentEpoch()
   const status = useGetPredictionsStatus()
+  const canClaim = useGetIsClaimable(bet.round.epoch)
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
@@ -79,7 +80,6 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const resultTextPrefix = getRoundPrefix(roundResult)
   const isOpenRound = round.epoch === currentEpoch
   const isLiveRound = status === PredictionStatus.LIVE && round.epoch === currentEpoch - 1
-  const canClaim = !bet.claimed && bet.position === bet.round.position
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = roundResult === Result.WIN ? getNetPayout(bet, REWARD_RATE) : amount
@@ -121,7 +121,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
 
   const handleSuccess = async () => {
     // We have to mark the bet as claimed immediately because it does not update fast enough
-    dispatch(markBetHistoryAsCollected({ account, betId: bet.id }))
+    dispatch(markAsCollected({ [bet.round.epoch]: true }))
     dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
   }
 

@@ -264,16 +264,8 @@ export const predictionsSlice = createSlice({
     setLastOraclePrice: (state, action: PayloadAction<string>) => {
       state.lastOraclePrice = action.payload
     },
-    markBetHistoryAsCollected: (state, action: PayloadAction<{ account: string; betId: string }>) => {
-      const { account, betId } = action.payload
-
-      if (state.history[account]) {
-        const betIndex = state.history[account].findIndex((bet) => bet.id === betId)
-
-        if (betIndex >= 0) {
-          state.history[account][betIndex].claimed = true
-        }
-      }
+    markAsCollected: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
+      state.claimableStatuses = { ...state.claimableStatuses, ...action.payload }
     },
   },
   extraReducers: (builder) => {
@@ -379,7 +371,7 @@ export const {
   setHistoryPaneState,
   setPredictionStatus,
   setLastOraclePrice,
-  markBetHistoryAsCollected,
+  markAsCollected,
 } = predictionsSlice.actions
 
 export default predictionsSlice.reducer

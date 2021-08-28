@@ -19,7 +19,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { usePriceBnbBusd } from 'state/farms/hooks'
 import { REWARD_RATE } from 'state/predictions/config'
-import { fetchClaimableStatuses, fetchNodeHistory } from 'state/predictions'
+import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
@@ -88,7 +88,14 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
         await onSuccess()
       }
 
-      await dispatch(fetchClaimableStatuses({ account, epochs }))
+      // Immediately mark rounds as claimed
+      dispatch(
+        markAsCollected(
+          epochs.reduce((accum, epoch) => {
+            return { ...accum, [epoch]: true }
+          }, {}),
+        ),
+      )
       onDismiss()
       setIsPendingTx(false)
       toastSuccess(
