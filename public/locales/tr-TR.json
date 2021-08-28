@@ -1362,6 +1362,6 @@
   "Download .CSV": ".CSV'yi indir",
   "Download your v0.1 Prediction history below.": "Aşağıdan v0.1 Tahmin geçmişini indir.",
   "Nothing to Collect": "Tahsil Edilecek Bir Şey Yok",
-  "From round %round%": "From round %round%",
-  "From rounds %rounds%": "From rounds %rounds%"
+  "From round %round%": "Şu turdan: %round%",
+  "From rounds %rounds%": "Şu turlardan: %rounds%"
 }
