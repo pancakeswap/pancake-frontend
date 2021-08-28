@@ -1363,5 +1363,7 @@
   "Download your v0.1 Prediction history below.": "Скачайте вашу историю v0.1 Prediction ниже.",
   "Nothing to Collect": "Забирать нечего",
   "From round %round%": "От раунда %round%",
-  "From rounds %rounds%": "От раундов %rounds%"
+  "From rounds %rounds%": "От раундов %rounds%",
+  "Note - due to a delay in the BSC Subgraph, lotteries after round 108 may temporarily show incomplete data.": "Note - due to a delay in the BSC Subgraph, lotteries after round 108 may temporarily show incomplete data.",
+  "More information": "More information"
 }

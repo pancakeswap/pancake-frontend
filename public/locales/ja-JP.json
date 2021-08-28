@@ -1363,5 +1363,7 @@
   "Download your v0.1 Prediction history below.": "以下にあるPrediction v0.1の履歴をダウンロード",
   "Nothing to Collect": "回収するものはありません",
   "From round %round%": "From round %round%",
-  "From rounds %rounds%": "From rounds %rounds%"
+  "From rounds %rounds%": "From rounds %rounds%",
+  "Note - due to a delay in the BSC Subgraph, lotteries after round 108 may temporarily show incomplete data.": "Note - due to a delay in the BSC Subgraph, lotteries after round 108 may temporarily show incomplete data.",
+  "More information": "More information"
 }
