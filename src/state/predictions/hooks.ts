@@ -103,7 +103,7 @@ export const useGetHistory = () => {
 
 export const useGetHistoryByAccount = (account: string) => {
   const bets = useGetHistory()
-  return bets ? bets[account] : []
+  return bets[account] ?? []
 }
 
 export const useGetLastOraclePrice = () => {
