@@ -83,6 +83,12 @@
     opacity: 1;
     background-clip: border-box;
 }
+
+.bog-buy-background {
+    background-image: url('../../images/rugZombieBg.png');
+    height: 1200px;
+}
+
 .container {
     margin-top: 14px;
     padding-bottom: 47px;
