@@ -1363,7 +1363,5 @@
   "Download your v0.1 Prediction history below.": "Téléchargez votre historique de Prediction v0.1 ci-dessous.",
   "Nothing to Collect": "Rien à collecter",
   "From round %round%": "Du tirage %round%",
-  "From rounds %rounds%": "Des tirages %rounds%",
-  "Note - due to a delay in the BSC Subgraph, lotteries after round 108 may temporarily show incomplete data.": "Note - due to a delay in the BSC Subgraph, lotteries after round 108 may temporarily show incomplete data.",
-  "More information": "More information"
+  "From rounds %rounds%": "Des tirages %rounds%"
 }
