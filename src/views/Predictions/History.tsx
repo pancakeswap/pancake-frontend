@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
-import { fetchHistory, fetchNodeHistory } from 'state/predictions'
+import { fetchNodeHistory } from 'state/predictions'
 import { getFilteredBets } from 'state/predictions/helpers'
 import { useAppDispatch } from 'state'
 import {
@@ -56,13 +56,8 @@ const History = () => {
   const [activeTab, setActiveTab] = useState(HistoryTabs.ROUNDS)
 
   useEffect(() => {
-    const fetchAccountHistory = async () => {
-      await dispatch(fetchNodeHistory(account))
-      dispatch(fetchHistory({ account }))
-    }
-
     if (account && isHistoryPaneOpen) {
-      fetchAccountHistory()
+      dispatch(fetchNodeHistory(account))
     }
   }, [account, currentEpoch, isHistoryPaneOpen, dispatch])
 
