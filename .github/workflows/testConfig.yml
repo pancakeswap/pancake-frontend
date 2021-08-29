@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - 'src/__tests__/config__/**'
+      - 'src/__tests__/config/**'
 
 jobs:
   test:
@@ -17,7 +17,7 @@ jobs:
       matrix:
         node: [14]
 
-    name: Did you fuck up again?
+    name: Config (Jest)
 
     steps:
       - name: Checkout code

@@ -15,7 +15,7 @@ jobs:
       matrix:
         node: [14]
 
-    name: Did you fuck up again?
+    name: Unit (Jest)
 
     steps:
       - name: Checkout code
