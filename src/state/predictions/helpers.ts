@@ -92,6 +92,10 @@ const getRoundPosition = (positionResponse: string) => {
     return BetPosition.BEAR
   }
 
+  if (positionResponse === 'House') {
+    return BetPosition.HOUSE
+  }
+
   return null
 }
 
