@@ -37,7 +37,7 @@ const nfts: Nft[] = [
     description: 'My armor is like tenfold shields, my teeth are swords, my claws spears, the shock of my tail a thunderbolt, my wings a hurricane, and my breath death!',
     address: '0x983608174E9ae08D938433119aD5C4b1f8B29A03',
     totalSupply: BIG_ZERO,
-    path: 'images/rugZombie/CommonDragonFarmFinance.mp4',
+    path: 'images/rugZombie/CommonDragonFarmFinance.webm',
     type: 'video',
     rarity: 'Common',
     userInfo: { ...DEFAULT_USER_INFO }
@@ -49,7 +49,7 @@ const nfts: Nft[] = [
     description: 'It\'s fairly common.',
     address: '0x47367847B67b5D4fe905d18D2Cc4e0D149008C41',
     totalSupply: BIG_ZERO,
-    path: 'images/rugZombie/FairmoonCommon.mp4',
+    path: 'images/rugZombie/FairmoonCommon.webm',
     type: 'video',
     rarity: 'Common',
     userInfo: { ...DEFAULT_USER_INFO }
@@ -61,7 +61,7 @@ const nfts: Nft[] = [
     description: 'There is no fair side of the moon really.',
     address: '0x0b0dEa27fD22009A8ee2d0222025Eb9a81a9B26E',
     totalSupply: BIG_ZERO,
-    path: 'images/rugZombie/FairmoonUncommon.mp4',
+    path: 'images/rugZombie/FairmoonUncommon.webm',
     type: 'video',
     rarity: 'Uncommon',
     userInfo: { ...DEFAULT_USER_INFO }
@@ -157,7 +157,7 @@ const nfts: Nft[] = [
     description: 'Live every week like it\'s shark week.',
     address: '0x37E178be665fE4bFD9dAd0F537B9f3E60a05Ff9A',
     totalSupply: BIG_ZERO,
-    path: 'images/rugZombie/Autoshark Legendary.mp4',
+    path: 'images/rugZombie/Chompers.webm',
     type: 'video',
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
@@ -193,7 +193,7 @@ const nfts: Nft[] = [
     description: 'C\'mon man.',
     address: '0x1050DC60784117fcc4F995Ca6980a3beE2765564',
     totalSupply: BIG_ZERO,
-    path: 'images/rugZombie/Zombiden.mp4',
+    path: 'https://storage.googleapis.com/rug-zombie/RUGBIDEN.webm',
     type: 'video',
     rarity: 'Rare',
     userInfo: { ...DEFAULT_USER_INFO }
@@ -217,7 +217,7 @@ const nfts: Nft[] = [
     description: 'One Family, One Troop.',
     address: '0xa8740132360f5c1C487259066ddb5C5c4292def2',
     totalSupply: BIG_ZERO,
-    path: 'images/rugZombie/Silverback.mp4',
+    path: 'images/rugZombie/Silverback.webm',
     type: 'video',
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
@@ -301,7 +301,7 @@ const nfts: Nft[] = [
     description: '"I am error.',
     address: '0xd10A49fb53cFCc3b9C2c27aB314BCC8dB2A144A3',
     totalSupply: BIG_ZERO,
-    path: 'https://storage.googleapis.com/rug-zombie/GlitchLink.mp4',
+    path: 'https://storage.googleapis.com/rug-zombie/GlitchLink.webm',
     type: 'video',
     rarity: 'Rare',
     userInfo: { ...DEFAULT_USER_INFO }
