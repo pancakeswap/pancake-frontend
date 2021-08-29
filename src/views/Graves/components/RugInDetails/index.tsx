@@ -11,6 +11,7 @@ import { BASE_V1_EXCHANGE_URL } from '../../../../config'
 import { Grave } from '../../../../redux/types'
 import { bnbPriceUsd, grave } from '../../../../redux/get'
 import { formatDuration } from '../../../../utils/timerHelpers'
+import Video from '../../../../components/Video'
 
 
 interface RugInDetailsProps {
@@ -54,9 +55,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           {type === 'image' ? (
             <img src={path} alt="NFT" className="sc-cxNHIi bjMxQn" />
           ) : (
-              <video width="100%" autoPlay loop>
-                <source src={path} type="video/mp4" />
-              </video>
+              <Video path={path}/>
             )}
         </div>
       </div>

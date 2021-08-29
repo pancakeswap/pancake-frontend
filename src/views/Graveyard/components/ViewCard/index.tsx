@@ -3,33 +3,19 @@ import styled from 'styled-components';
 import {
   Card,
   CardFooter,
-  ChevronDownIcon,
-  ChevronUpIcon,
   Flex,
-  Button,
 } from '@rug-zombie-libs/uikit'
 import { nftById } from '../../../../redux/get'
-
+import Video from '../../../../components/Video'
 
 const StyleDetails = styled.div`
   display: flex;
   justify-content: center;
 `
-const StyleCursorPointer = styled.div`
-  cursor: pointer;
-  display: flex;
-`
-
 const Styleinfo = styled.div`
   display: flex;
   justify-content: center;
   padding: 20px;
-`
-const StyleCardHeader = styled.div `
-  width: 100%;
-  height: 300px;
-
-  background: blue;
 `
 
 interface ViewCardProps {
@@ -50,9 +36,7 @@ const ViewCard: React.FC<ViewCardProps> = ({ id, nftId }: ViewCardProps) => {
             {type === 'image' ? <img
                 src={path} alt='test'
                 style={{ maxWidth: '90%', maxHeight: '100%', objectFit: 'contain' }} /> :
-              <video style={{ maxWidth: '90%', maxHeight: '100%' }} autoPlay loop>
-                <source src={path} type='video/mp4' />
-              </video>}
+              <Video path={path}/> }
           </Flex>
         <CardFooter>
           <StyleDetails>

@@ -13,6 +13,7 @@ import {
 import { nftById } from '../../../../redux/get'
 import ViewModal from '../ViewModal'
 import useSwiper from '../../../Predictions/hooks/useSwiper'
+import Video from '../../../../components/Video'
 
 
 const StyleDetails = styled.div`
@@ -64,9 +65,7 @@ const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ id }: CollectiblesC
             {type === 'image' ? <img
                 src={path} alt='nft'
                 style={{ maxWidth: '90%', maxHeight: '100%', objectFit: 'contain' }} /> :
-              <video style={{ maxWidth: '90%', maxHeight: '100%' }} autoPlay loop>
-                <source src={path} type='video/mp4' />
-              </video>}
+              <Video path={path} />}
           </Flex>
         </StyleCardHeader>
         <CardBody>

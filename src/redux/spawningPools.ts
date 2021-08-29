@@ -119,7 +119,7 @@ const spawningPools: SpawningPool[] = [
     id: 0,
     name: 'Gorilla-Fi Legendary',
     subtitle: 'Silverback',
-    path: 'images/rugZombie/Silverback.mp4',
+    path: 'images/rugZombie/Silverback.webm',
     type: 'video',
     address: {
       56: '0x83818859688eF175F6AEAFb80Be881Db24A4E50a',

@@ -40,7 +40,7 @@ const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
                       <img src={path} alt='PRIZE' className='sc-cxNHIi bjMxQn' />
                     ) : (
                       <video width='100%' autoPlay loop>
-                        <source src='' type='video/mp4' />
+                        <source src='' type='video/webm' />
                       </video>
                     )}
                   </div>

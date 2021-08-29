@@ -34,7 +34,7 @@ export const CurrentBid: React.FC<CurrentBidProps> = ({ totalAmount, ...props })
 
   return (
     <Flex alignItems='center' justifyContent='space-between' {...props}>
-      <Text bold>{t('Bid Value')}:</Text>
+      <Text bold>{t('Bid Video')}:</Text>
       <Text bold>{getBalanceAmount(totalAmount).toString()} BT</Text>
     </Flex>
   )

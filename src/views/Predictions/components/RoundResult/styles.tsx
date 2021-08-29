@@ -27,7 +27,7 @@ export const PrizePoolRow: React.FC<PrizePoolRowProps> = ({ totalAmount,bt, ...p
 
   return (
     <Flex alignItems='center' justifyContent='space-between' {...props}>
-      <Text bold>{t('Bid Value')}:</Text>
+      <Text bold>{t('Bid Video')}:</Text>
       <Text bold>{`${getPrizePoolAmount(totalAmount)} ${bt ? "BT" : "BNB"}`}</Text>
     </Flex>
   )

@@ -106,7 +106,7 @@ const ConvertNftModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismi
         <img src={path} alt="NFT" style={{maxWidth: "50%"}} className="sc-cxNHIi bjMxQn" />
       ) : (
         <video  autoPlay loop className="sc-cxNHIi bjMxQn">
-          <source src={path} type="video/mp4" />
+          <source src={path} type="video/webm" />
         </video>
       )}
     </Flex>

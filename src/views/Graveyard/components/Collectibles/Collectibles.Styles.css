@@ -16,6 +16,12 @@
   object-fit: fill;
 }
 
+.collectible-card-video {
+    min-width: 90%;
+    min-height: 100%;
+}
+
+
 .cardHeader{
   margin: 8px 32px;
 }
