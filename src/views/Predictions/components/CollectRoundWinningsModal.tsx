@@ -21,6 +21,7 @@ import { useAppDispatch } from 'state'
 import { usePriceBnbBusd } from 'state/farms/hooks'
 import { REWARD_RATE } from 'state/predictions/config'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
+import { Bet } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
@@ -45,14 +46,19 @@ const BunnyDecoration = styled.div`
   width: 100%;
 `
 
-const calculateClaimableRounds = (history): { epochs: string[]; total: number } => {
+interface ClaimableRounds {
+  epochs: number[]
+  total: number
+}
+
+const calculateClaimableRounds = (history): ClaimableRounds => {
   if (!history) {
     return { epochs: [], total: 0 }
   }
 
   return history.reduce(
-    (accum, bet) => {
-      if (!bet.claimed && bet.position === bet.round.position) {
+    (accum: ClaimableRounds, bet: Bet) => {
+      if (!bet.claimed && bet.position === bet.round.position && bet.round.closePrice !== bet.round.lockPrice) {
         const betPayout = getPayout(bet, REWARD_RATE)
         return {
           ...accum,
