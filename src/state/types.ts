@@ -245,10 +245,6 @@ export interface PredictionUser {
   netBNB: number
 }
 
-export interface HistoryData {
-  [key: string]: Bet[]
-}
-
 export enum HistoryFilter {
   ALL = 'all',
   COLLECTED = 'collected',
@@ -323,7 +319,10 @@ export interface PredictionsState {
   minBetAmount: string
   bufferSeconds: number
   lastOraclePrice: string
-  history: HistoryData
+  history: Bet[]
+  totalHistory: number
+  currentHistoryPage: number
+  hasHistoryLoaded: boolean
   rounds?: RoundData
   ledgers?: LedgerData
   claimableStatuses: {

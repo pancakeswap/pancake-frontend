@@ -27,7 +27,7 @@ import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useGetHistoryByAccount, useGetIsFetchingHistory } from 'state/predictions/hooks'
+import { useGetHistory, useGetIsFetchingHistory } from 'state/predictions/hooks'
 import { getPayout } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
@@ -83,14 +83,14 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
   const bnbBusdPrice = usePriceBnbBusd()
   const dispatch = useAppDispatch()
   const isLoadingHistory = useGetIsFetchingHistory()
-  const history = useGetHistoryByAccount(account)
+  const history = useGetHistory()
 
   const { epochs, total } = calculateClaimableRounds(history)
 
   useEffect(() => {
     // Fetch history if they have not opened the history pane yet
     if (history.length === 0) {
-      dispatch(fetchNodeHistory(account))
+      dispatch(fetchNodeHistory({ account }))
     }
   }, [account, history, dispatch])
 
