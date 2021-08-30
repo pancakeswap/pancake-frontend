@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import times from 'lodash/times'
+import orderBy from 'lodash/orderBy'
 import { Skeleton, Table, Td, Th } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
@@ -16,6 +17,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
   const [isFetching, setIsFetching] = useState(false)
   const [bets, setBets] = useState<Bet[]>([])
   const { t } = useTranslation()
+  const orderedBets = orderBy(bets, ['round.epoch'], ['desc'])
 
   useEffect(() => {
     const fetchBetHistory = async () => {
@@ -61,7 +63,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
                 </Td>
               </tr>
             ))
-          : bets.map((bet) => {
+          : orderedBets.map((bet) => {
               const isWinner = bet.position === bet.round.position
 
               return (
