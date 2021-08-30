@@ -192,6 +192,10 @@ export const fetchNodeHistory = createAsyncThunk<
         return null
       }
 
+      if (round.closePrice.eq(round.lockPrice)) {
+        return BetPosition.HOUSE
+      }
+
       return round.closePrice.gt(round.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
     }
 

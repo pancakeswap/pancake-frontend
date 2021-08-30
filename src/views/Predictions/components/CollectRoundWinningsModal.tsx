@@ -58,7 +58,7 @@ const calculateClaimableRounds = (history): ClaimableRounds => {
 
   return history.reduce(
     (accum: ClaimableRounds, bet: Bet) => {
-      if (!bet.claimed && bet.position === bet.round.position && bet.round.closePrice !== bet.round.lockPrice) {
+      if (!bet.claimed && bet.position === bet.round.position) {
         const betPayout = getPayout(bet, REWARD_RATE)
         return {
           ...accum,
