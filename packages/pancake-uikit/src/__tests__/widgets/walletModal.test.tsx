@@ -4,7 +4,7 @@ import { renderWithTheme } from "../../testHelpers";
 import ConnectModal from "../../widgets/WalletModal/ConnectModal";
 
 it("renders ConnectModal correctly", () => {
-  const { asFragment } = renderWithTheme(<ConnectModal login={noop} />);
+  const { asFragment } = renderWithTheme(<ConnectModal login={noop} t={(key: string) => key} />);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
@@ -651,7 +651,7 @@ it("renders ConnectModal correctly", () => {
               class="c21"
               color="textSubtle"
             >
-              Haven't got a crypto wallet yet?
+              Haven’t got a crypto wallet yet?
             </p>
             <a
               class="c22"

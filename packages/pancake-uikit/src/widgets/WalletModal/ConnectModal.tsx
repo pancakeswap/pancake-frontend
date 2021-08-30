@@ -16,6 +16,7 @@ interface Props {
   login: Login;
   onDismiss?: () => void;
   displayCount?: number;
+  t: (key: string) => string;
 }
 
 const WalletWrapper = styled(Box)`
@@ -48,7 +49,7 @@ const getPreferredConfig = (walletConfig: Config[]) => {
   ];
 };
 
-const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayCount = 3 }) => {
+const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayCount = 3, t }) => {
   const [showMore, setShowMore] = useState(false);
   const theme = useTheme();
   const sortedConfig = getPreferredConfig(config);
@@ -58,7 +59,7 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
     <ModalContainer minWidth="320px">
       <ModalHeader background={getThemeValue("colors.gradients.bubblegum")(theme)}>
         <ModalTitle>
-          <Heading>Connect Wallet</Heading>
+          <Heading>{t("Connect Wallet")}</Heading>
         </ModalTitle>
         <ModalCloseButton onDismiss={onDismiss} />
       </ModalHeader>
@@ -70,12 +71,12 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
                 <WalletCard walletConfig={wallet} login={login} onDismiss={onDismiss} />
               </Box>
             ))}
-            {!showMore && <MoreWalletCard onClick={() => setShowMore(true)} />}
+            {!showMore && <MoreWalletCard t={t} onClick={() => setShowMore(true)} />}
           </Grid>
         </WalletWrapper>
         <Box p="24px">
           <Text textAlign="center" color="textSubtle" as="p" mb="16px">
-            Haven&#39;t got a crypto wallet yet?
+            {t("Haven’t got a crypto wallet yet?")}
           </Text>
           <Button
             as="a"
@@ -84,7 +85,7 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
             width="100%"
             {...getExternalLinkProps()}
           >
-            Learn How to Connect
+            {t("Learn How to Connect")}
           </Button>
         </Box>
       </ModalBody>
