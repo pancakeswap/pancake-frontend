@@ -80,8 +80,8 @@ export interface FarmConfig {
 
 export interface PoolConfig {
   sousId: number
-  earningToken: Token
-  stakingToken: Token
+  earningToken: SDKToken
+  stakingToken: SDKToken
   contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string

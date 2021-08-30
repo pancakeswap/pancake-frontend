@@ -1,4 +1,4 @@
-import tokens from './tokens'
+import tokens from './newTokens'
 import { PoolConfig, PoolCategory } from './types'
 
 const pools: PoolConfig[] = [
@@ -2690,6 +2690,7 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 20,
+    // TODO: Figure out implications of using wbnb or a bnb symbol token with wbnb contract address here
     stakingToken: tokens.bnb,
     earningToken: tokens.cake,
     contractAddress: {
@@ -2704,6 +2705,7 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 19,
+    // TODO: Figure out implications of using wbnb or a bnb symbol token with wbnb contract address here
     stakingToken: tokens.cake,
     earningToken: tokens.bnb,
     contractAddress: {

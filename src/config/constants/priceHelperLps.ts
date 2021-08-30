@@ -1,4 +1,4 @@
-import tokens from './tokens'
+import tokens from './newTokens'
 import { FarmConfig } from './types'
 
 const priceHelperLps: FarmConfig[] = [

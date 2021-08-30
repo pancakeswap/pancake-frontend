@@ -43,7 +43,7 @@ export const fetchPoolsTotalStaking = async () => {
 
   const callsNonBnbPools = nonBnbPools.map((poolConfig) => {
     return {
-      address: getAddress(poolConfig.stakingToken.address),
+      address: poolConfig.stakingToken.address,
       name: 'balanceOf',
       params: [getAddress(poolConfig.contractAddress)],
     }

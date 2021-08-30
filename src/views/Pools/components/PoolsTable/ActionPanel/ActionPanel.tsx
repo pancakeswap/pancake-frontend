@@ -136,7 +136,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     getPoolBlockInfo(pool, currentBlock)
 
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
-  const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
+  const tokenAddress = earningToken.address || ''
 
   const {
     totalCakeInVault,
@@ -255,11 +255,12 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
             {t('See Token Info')}
           </LinkExternal>
         </Flex>
-        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+        {/* TODO: Uncomment when SDK entity with projectLink added */}
+        {/* <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
           <LinkExternal href={earningToken.projectLink} bold={false}>
             {t('View Project Site')}
           </LinkExternal>
-        </Flex>
+        </Flex> */}
         {poolContractAddress && (
           <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
             <LinkExternal

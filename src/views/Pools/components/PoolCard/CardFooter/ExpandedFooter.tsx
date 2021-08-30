@@ -58,7 +58,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     isAutoVault,
   } = pool
 
-  const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
+  const tokenAddress = earningToken.address || ''
   const poolContractAddress = getAddress(contractAddress)
   const cakeVaultContractAddress = getCakeVaultAddress()
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
@@ -151,15 +151,16 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
         </Flex>
       )}
       <Flex mb="2px" justifyContent="flex-end">
-        <LinkExternal href={`/info/token/${getAddress(earningToken.address)}`} bold={false} small>
+        <LinkExternal href={`/info/token/${earningToken.address}`} bold={false} small>
           {t('See Token Info')}
         </LinkExternal>
       </Flex>
-      <Flex mb="2px" justifyContent="flex-end">
+      {/* TODO: Uncomment when SDK entity with projectLink added */}
+      {/* <Flex mb="2px" justifyContent="flex-end">
         <LinkExternal href={earningToken.projectLink} bold={false} small>
           {t('View Project Site')}
         </LinkExternal>
-      </Flex>
+      </Flex> */}
       {poolContractAddress && (
         <Flex mb="2px" justifyContent="flex-end">
           <LinkExternal

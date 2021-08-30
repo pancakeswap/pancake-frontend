@@ -2,7 +2,6 @@ import React from 'react'
 import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
-import { getAddress } from 'utils/addressHelpers'
 import { Pool } from 'state/types'
 import { useApprovePool } from '../../../hooks/useApprove'
 
@@ -14,7 +13,7 @@ interface ApprovalActionProps {
 const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false }) => {
   const { sousId, stakingToken, earningToken } = pool
   const { t } = useTranslation()
-  const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
+  const stakingTokenContract = useERC20(stakingToken.address || '')
   const { handleApprove, requestedApproval } = useApprovePool(stakingTokenContract, sousId, earningToken.symbol)
 
   return (

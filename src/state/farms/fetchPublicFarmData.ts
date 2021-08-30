@@ -24,13 +24,13 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
   const calls = [
     // Balance of token in the LP contract
     {
-      address: getAddress(token.address),
+      address: token.address,
       name: 'balanceOf',
       params: [lpAddress],
     },
     // Balance of quote token on LP contract
     {
-      address: getAddress(quoteToken.address),
+      address: quoteToken.address,
       name: 'balanceOf',
       params: [lpAddress],
     },
@@ -47,12 +47,12 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
     },
     // Token decimals
     {
-      address: getAddress(token.address),
+      address: token.address,
       name: 'decimals',
     },
     // Quote token decimals
     {
-      address: getAddress(quoteToken.address),
+      address: quoteToken.address,
       name: 'decimals',
     },
   ]
