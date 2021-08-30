@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
+import { SerializedToken } from 'config/constants/types'
 import { INITIAL_ALLOWED_SLIPPAGE, DEFAULT_DEADLINE_FROM_NOW } from '../../config/constants'
 import { updateVersion } from '../global/actions'
 import {
@@ -7,7 +8,6 @@ import {
   removeSerializedPair,
   removeSerializedToken,
   SerializedPair,
-  SerializedToken,
   updateUserExpertMode,
   updateUserSlippageTolerance,
   updateUserDeadline,

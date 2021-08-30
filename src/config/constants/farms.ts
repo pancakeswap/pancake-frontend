@@ -1,5 +1,7 @@
-import tokens from './newTokens'
+import tokens, { serializeTokens } from './newTokens'
 import { FarmConfig } from './types'
+
+const serializedTokens = serializeTokens()
 
 const farms: FarmConfig[] = [
   /**

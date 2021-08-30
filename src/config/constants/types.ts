@@ -26,6 +26,19 @@ export interface TokenWithPrice extends SDKToken {
   busdPrice?: string
 }
 
+export interface SerializedToken {
+  chainId: number
+  address: string
+  decimals: number
+  symbol?: string
+  name?: string
+  // TODO: Add projectLink
+}
+
+export interface SerializedTokenWithPrice extends SerializedToken {
+  busdPrice?: string
+}
+
 export enum PoolIds {
   poolBasic = 'poolBasic',
   poolUnlimited = 'poolUnlimited',
@@ -63,12 +76,10 @@ export enum PoolCategory {
   'AUTO' = 'Auto',
 }
 
-export interface FarmConfig {
+interface FarmConfigGenerics {
   pid: number
   lpSymbol: string
   lpAddresses: Address
-  token: TokenWithPrice
-  quoteToken: TokenWithPrice
   multiplier?: string
   isCommunity?: boolean
   dual?: {
@@ -76,6 +87,17 @@ export interface FarmConfig {
     earnLabel: string
     endBlock: number
   }
+}
+
+export interface FarmConfig extends FarmConfigGenerics {
+  token: TokenWithPrice
+  quoteToken: TokenWithPrice
+}
+
+// TODO: This needs to be more elegant.
+export interface SerializedFarmConfig extends FarmConfigGenerics {
+  token: SerializedTokenWithPrice
+  quoteToken: SerializedTokenWithPrice
 }
 
 export interface PoolConfig {

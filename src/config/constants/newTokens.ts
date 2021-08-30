@@ -1,4 +1,6 @@
 import { ChainId, Token, ETHER as bnb, Currency } from '@pancakeswap/sdk'
+import { deserializeToken, serializeToken } from 'state/user/hooks/helpers'
+import { SerializedToken } from './types'
 
 const { MAINNET, TESTNET } = ChainId
 
@@ -6,8 +8,13 @@ interface TokenList {
   [symbol: string]: Token
 }
 
+interface SerializedTokenList {
+  [symbol: string]: SerializedToken
+}
+
 export const mainnetTokens: TokenList = {
   wbnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB'),
+  bnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'BNB', 'BNB'),
   cake: new Token(MAINNET, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token'),
   busd: new Token(MAINNET, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'Binance USD'),
   dai: new Token(MAINNET, '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3', 18, 'DAI', 'Dai Stablecoin'),
@@ -15,16 +22,16 @@ export const mainnetTokens: TokenList = {
   btcb: new Token(MAINNET, '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c', 18, 'BTCB', 'Binance BTC'),
   ust: new Token(MAINNET, '0x23396cf899ca06c4472205fc903bdb4de249d6fc', 18, 'UST', 'Wrapped UST Token'),
   eth: new Token(MAINNET, '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 18, 'WBNB', 'Binance-Peg Ethereum Token'),
-  usdc: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'USDC', 'Binance-Peg USD Coin'),
+  usdc: new Token(MAINNET, '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 18, 'USDC', 'Binance-Peg USD Coin'),
   kalm: new Token(MAINNET, '0x4BA0057f784858a48fe351445C672FF2a3d43515', 18, 'KALM', 'Kalmar Token'),
   hotcross: new Token(MAINNET, '0x4FA7163E153419E0E1064e418dd7A99314Ed27b6', 18, 'HOTCROSS', 'Hotcross Token'),
   horizon: new Token(MAINNET, '0xC0eFf7749b125444953ef89682201Fb8c6A917CD', 18, 'HZN', 'Horizon Token'),
   belt: new Token(MAINNET, '0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f', 18, 'BELT', 'Belt Token'),
   watch: new Token(MAINNET, '0x7A9f28EB62C791422Aa23CeAE1dA9C847cBeC9b0', 18, 'WATCH', 'Yieldwatch Token'),
-  berry: new Token(MAINNET, '0xf859Bf77cBe8699013d6Dbc7C2b926Aaf307F830', 18, 'BRY', 'Berry Token'),
-  soteria: new Token(MAINNET, '0x541E619858737031A1244A5d0Cd47E5ef480342c', 18, 'wSOTE', 'Soteria Token'),
+  bry: new Token(MAINNET, '0xf859Bf77cBe8699013d6Dbc7C2b926Aaf307F830', 18, 'BRY', 'Berry Token'),
+  wsote: new Token(MAINNET, '0x541E619858737031A1244A5d0Cd47E5ef480342c', 18, 'wSOTE', 'Soteria Token'),
   helmet: new Token(MAINNET, '0x948d2a81086A075b3130BAc19e4c6DEe1D2E3fE8', 18, 'Helmet', 'Helmet Token'),
-  tenet: new Token(MAINNET, '0xdFF8cb622790b7F92686c722b02CaB55592f152C', 18, 'TEN', 'Tenet Token'),
+  ten: new Token(MAINNET, '0xdFF8cb622790b7F92686c722b02CaB55592f152C', 18, 'TEN', 'Tenet Token'),
   ditto: new Token(MAINNET, '0x233d91A0713155003fc4DcE0AFa871b508B3B715', 9, 'DITTO', 'Ditto Token'),
   blink: new Token(MAINNET, '0x63870A18B6e42b01Ef1Ad8A2302ef50B7132054F', 6, 'BLINK', 'Blink Token'),
   syrup: new Token(MAINNET, '0x009cF7bC57584b7998236eff51b98A168DceA9B0', 18, 'SYRUP', 'SyrupBar Token'),
@@ -130,6 +137,7 @@ export const mainnetTokens: TokenList = {
   pnt: new Token(MAINNET, '0xdaacB0Ab6Fb34d24E8a67BfA14BF4D95D4C7aF92', 18, 'PNT', 'pNetwork Token'),
   mir: new Token(MAINNET, '0x5B6DcF557E2aBE2323c48445E8CC948910d8c2c9', 18, 'MIR', 'Mirror Protocol Token'),
   pbtc: new Token(MAINNET, '0xeD28A457A5A76596ac48d87C0f577020F6Ea1c4C', 18, 'pBTC', 'pTokens BTC Token'),
+  lto: new Token(MAINNET, '0x857B222Fc79e1cBBf8Ca5f78CB133d1b7CF34BBd', 18, 'LTO', 'LTO Network Token'),
   pcws: new Token(MAINNET, '0xbcf39F0EDDa668C58371E519AF37CA705f2bFcbd', 18, 'pCWS', 'PolyCrowns Token'),
   zil: new Token(MAINNET, '0xb86AbCb37C3A4B64f74f59301AFF131a1BEcC787', 12, 'ZIL', 'Zilliqa Token'),
   lien: new Token(MAINNET, '0x5d684ADaf3FcFe9CFb5ceDe3abf02F0Cdd1012E3', 8, 'LIEN', 'Lien Finance Token'),
@@ -151,6 +159,7 @@ export const mainnetTokens: TokenList = {
   tlm: new Token(MAINNET, '0x2222227E22102Fe3322098e4CBfE18cFebD57c95', 4, 'TLM', 'Alien Worlds Trilium Token'),
   perl: new Token(MAINNET, '0x0F9E4D49f25de22c2202aF916B681FBB3790497B', 18, 'PERL', 'Perlin'),
   alpa: new Token(MAINNET, '0xc5E6689C9c8B02be7C49912Ef19e79cF24977f03', 18, 'ALPA', 'AlpaToken'),
+  hzn: new Token(MAINNET, '0xC0eFf7749b125444953ef89682201Fb8c6A917CD', 18, 'HZN', 'Horizon Protocol Token'),
   suter: new Token(MAINNET, '0x4CfbBdfBd5BF0814472fF35C72717Bd095ADa055', 18, 'SUTER', 'Suterusu Token'),
   cgg: new Token(MAINNET, '0x1613957159E9B0ac6c80e824F7Eea748a32a0AE2', 18, 'CGG', 'pTokens CGG Token'),
   mix: new Token(MAINNET, '0xB67754f5b4C704A24d2db68e661b2875a4dDD197', 18, 'MIX', 'Mix Token'),
@@ -254,6 +263,18 @@ const tokenLists: { [chainId in ChainId]: TokenList } = {
 const tokens = (): TokenList => {
   const chainId = process.env.REACT_APP_CHAIN_ID
   return tokenLists[chainId] ? tokenLists[chainId] : tokenLists[ChainId.MAINNET]
+}
+
+// Return full serialized list - TODO: May not be needed
+export const serializeTokens = (): SerializedTokenList => {
+  const unserializedTokens = tokens()
+  let serializedTokens = {}
+
+  Object.keys(unserializedTokens).forEach((key) => {
+    serializedTokens = { ...serializedTokens, [key]: serializeToken(unserializedTokens[key]) }
+  })
+
+  return serializedTokens
 }
 
 export default tokens()
