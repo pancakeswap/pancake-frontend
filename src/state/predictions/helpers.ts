@@ -28,6 +28,7 @@ import {
   TotalWonMarketResponse,
   UserResponse,
 } from './queries'
+import { ROUNDS_PER_PAGE } from './config'
 
 export enum Result {
   WIN = 'win',
@@ -468,13 +469,23 @@ export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, an
   }, {}) as K
 }
 
+export const fetchUsersRoundsLength = async (account: string) => {
+  try {
+    const contract = getPredictionsContract()
+    const length = await contract.getUserRoundsLength(account)
+    return length
+  } catch {
+    return ethers.BigNumber.from(0)
+  }
+}
+
 /**
  * Fetches rounds a user has participated in
  */
 export const fetchUserRounds = async (
   account: string,
   cursor = 0,
-  size = 1000,
+  size = ROUNDS_PER_PAGE,
 ): Promise<{ [key: string]: ReduxNodeLedger }> => {
   const contract = getPredictionsContract()
 
@@ -488,30 +499,6 @@ export const fetchUserRounds = async (
       }
     }, {})
   } catch {
-    // When the results run out the contract throws an error.
-    return null
-  }
-}
-
-/**
- * Fetches the latest rounds by checking the number of rounds a user has participated in first
- * in order to calculate the correct cursor
- */
-export const fetchLatestUserRounds = async (account: string, size = 1000) => {
-  const contract = getPredictionsContract()
-
-  try {
-    const roundCount = await contract.getUserRoundsLength(account)
-
-    if (roundCount.eq(0)) {
-      return null
-    }
-
-    const cursor = roundCount.lte(size) ? 0 : roundCount.sub(size).toNumber()
-    const userRounds = await fetchUserRounds(account, cursor, size)
-
-    return userRounds
-  } catch (error) {
     // When the results run out the contract throws an error.
     return null
   }

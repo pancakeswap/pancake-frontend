@@ -15,7 +15,7 @@ import {
   BetPosition,
 } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
-import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUND_BUFFER } from './config'
+import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUNDS_PER_PAGE, ROUND_BUFFER } from './config'
 import {
   getBetHistory,
   transformBetResponse,
@@ -28,7 +28,8 @@ import {
   makeLedgerData,
   serializePredictionsRoundsResponse,
   getClaimStatuses,
-  fetchLatestUserRounds,
+  fetchUsersRoundsLength,
+  fetchUserRounds,
 } from './helpers'
 
 const initialState: PredictionsState = {
@@ -44,7 +45,10 @@ const initialState: PredictionsState = {
   bufferSeconds: 60,
   lastOraclePrice: BIG_ZERO.toJSON(),
   rounds: {},
-  history: {},
+  history: [],
+  totalHistory: 0,
+  currentHistoryPage: 1,
+  hasHistoryLoaded: false,
   ledgers: {},
   claimableStatuses: {},
 }
@@ -166,13 +170,34 @@ export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, {
 )
 
 export const fetchNodeHistory = createAsyncThunk<
-  { account: string; bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses'] },
-  string
->('predictions/fetchNodeHistory', async (account) => {
-  const userRounds = await fetchLatestUserRounds(account)
+  { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
+  { account: string; page?: number }
+>('predictions/fetchNodeHistory', async ({ account, page = 1 }) => {
+  const userRoundsLength = await fetchUsersRoundsLength(account)
+  const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength.toNumber() }
+  const maxPages = userRoundsLength.lte(ROUNDS_PER_PAGE) ? 1 : Math.ceil(userRoundsLength.toNumber() / ROUNDS_PER_PAGE)
+
+  if (userRoundsLength.eq(0)) {
+    return emptyResult
+  }
+
+  if (page > maxPages) {
+    return emptyResult
+  }
+
+  const cursor = userRoundsLength.sub(ROUNDS_PER_PAGE * page)
+
+  // If the page request is the final one we only want to retrieve the amount of rounds up to the next cursor.
+  const size =
+    maxPages === page
+      ? userRoundsLength
+          .sub(ROUNDS_PER_PAGE * (page - 1)) // Previous page's cursor
+          .toNumber()
+      : ROUNDS_PER_PAGE
+  const userRounds = await fetchUserRounds(account, cursor.lt(0) ? 0 : cursor.toNumber(), size)
 
   if (!userRounds) {
-    return { account, bets: [], claimableStatuses: {} }
+    return emptyResult
   }
 
   const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
@@ -243,7 +268,7 @@ export const fetchNodeHistory = createAsyncThunk<
     ]
   }, [])
 
-  return { account, bets, claimableStatuses }
+  return { bets, claimableStatuses, page, totalHistory: userRoundsLength.toNumber() }
 })
 
 export const predictionsSlice = createSlice({
@@ -362,10 +387,14 @@ export const predictionsSlice = createSlice({
       state.isFetchingHistory = false
     })
     builder.addCase(fetchNodeHistory.fulfilled, (state, action) => {
-      const { account, bets, claimableStatuses } = action.payload
+      const { bets, claimableStatuses, page, totalHistory } = action.payload
+
       state.isFetchingHistory = false
-      state.history[account] = bets
+      state.history = page === 1 ? bets : [...state.history, ...bets]
       state.claimableStatuses = { ...state.claimableStatuses, ...claimableStatuses }
+      state.hasHistoryLoaded = state.history.length === totalHistory || bets.length === 0
+      state.totalHistory = totalHistory
+      state.currentHistoryPage = page
     })
   },
 })

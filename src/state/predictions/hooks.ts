@@ -84,6 +84,14 @@ export const useGetHistoryFilter = () => {
   return useSelector((state: State) => state.predictions.historyFilter)
 }
 
+export const useGetHasHistoryLoaded = () => {
+  return useSelector((state: State) => state.predictions.hasHistoryLoaded)
+}
+
+export const useGetCurrentHistoryPage = () => {
+  return useSelector((state: State) => state.predictions.currentHistoryPage)
+}
+
 export const useGetMinBetAmount = () => {
   const minBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
   return useMemo(() => ethers.BigNumber.from(minBetAmount), [minBetAmount])
@@ -99,11 +107,6 @@ export const useGetIsFetchingHistory = () => {
 
 export const useGetHistory = () => {
   return useSelector((state: State) => state.predictions.history)
-}
-
-export const useGetHistoryByAccount = (account: string) => {
-  const bets = useGetHistory()
-  return bets[account] ?? []
 }
 
 export const useGetLastOraclePrice = () => {

@@ -5,3 +5,5 @@ export const ROUND_BUFFER = 9
 
 export const PAST_ROUND_COUNT = 5
 export const FUTURE_ROUND_COUNT = 2
+
+export const ROUNDS_PER_PAGE = 1000

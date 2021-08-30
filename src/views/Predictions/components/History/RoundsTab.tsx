@@ -1,8 +1,12 @@
 import React from 'react'
+import { useWeb3React } from '@web3-react/core'
 import { orderBy } from 'lodash'
-import { Box, Heading, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useAppDispatch } from 'state'
 import { Bet } from 'state/types'
+import { fetchNodeHistory } from 'state/predictions'
+import { useGetCurrentHistoryPage, useGetHasHistoryLoaded, useGetIsFetchingHistory } from 'state/predictions/hooks'
 import HistoricalBet from './HistoricalBet'
 import V1ClaimCheck from '../v1/V1ClaimCheck'
 
@@ -13,6 +17,15 @@ interface RoundsTabProps {
 
 const RoundsTab: React.FC<RoundsTabProps> = ({ hasBetHistory, bets }) => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
+  const { account } = useWeb3React()
+  const hasHistoryLoaded = useGetHasHistoryLoaded()
+  const currentHistoryPage = useGetCurrentHistoryPage()
+  const isFetchingHistory = useGetIsFetchingHistory()
+
+  const handleClick = () => {
+    dispatch(fetchNodeHistory({ account, page: currentHistoryPage + 1 }))
+  }
 
   return hasBetHistory ? (
     <>
@@ -20,6 +33,13 @@ const RoundsTab: React.FC<RoundsTabProps> = ({ hasBetHistory, bets }) => {
       {orderBy(bets, ['round.epoch'], ['desc']).map((bet) => (
         <HistoricalBet key={bet.round.epoch} bet={bet} />
       ))}
+      {hasBetHistory && !hasHistoryLoaded && (
+        <Flex alignItems="center" justifyContent="center" py="24px">
+          <Button variant="secondary" scale="sm" onClick={handleClick} disabled={isFetchingHistory}>
+            {t('View More')}
+          </Button>
+        </Flex>
+      )}
     </>
   ) : (
     <>
