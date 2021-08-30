@@ -1,15 +1,36 @@
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import { NodeRound } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 
+const MIN_PRICE_USD_DISPLAYED = BigNumber.from(100000)
+const MIN_PRICE_BNB_DISPLAYED = BigNumber.from('1000000000000000')
+
+const formatPrice = (
+  price: ethers.BigNumber,
+  minPriceDisplayed: ethers.BigNumber,
+  unitPrefix: string,
+  displayDecimals: number,
+) => {
+  const value = price || BigNumber.from(0)
+  let prefix = unitPrefix
+  let priceToFormat = value
+  const sign = value.isNegative() ? BigNumber.from(-1) : BigNumber.from(1)
+
+  if (value.abs().lt(minPriceDisplayed)) {
+    prefix = `<${unitPrefix}`
+    priceToFormat = minPriceDisplayed.mul(sign)
+  }
+
+  return `${prefix}${formatBigNumberToFixed(priceToFormat, 3, displayDecimals)}`
+}
+
 export const formatUsdv2 = (usd: ethers.BigNumber) => {
-  return `$${formatBigNumberToFixed(usd, 3, 8)}`
+  return formatPrice(usd, MIN_PRICE_USD_DISPLAYED, '$', 8)
 }
 
 export const formatBnbv2 = (bnb: ethers.BigNumber) => {
-  const value = bnb || ethers.BigNumber.from(0)
-  return formatBigNumberToFixed(value, 3)
+  return formatPrice(bnb, MIN_PRICE_BNB_DISPLAYED, '', 18)
 }
 
 export const padTime = (num: number) => num.toString().padStart(2, '0')
