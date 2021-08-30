@@ -21,6 +21,7 @@ import * as get from '../../../../redux/get'
 import * as fetch from '../../../../redux/fetch'
 import { account, nftByName } from '../../../../redux/get'
 import ConvertNftModal from '../ConvertNftModal'
+import BurnZombieModal from '../BurnZombie'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -59,6 +60,14 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
 
   const [onPresentStake] = useModal(
     <StakeModal
+      pid={pid}
+      updateResult={onUpdate}
+      updateAllowance={updateAllowance}
+    />,
+  );
+
+  const [onBurnZombie] = useModal(
+    <BurnZombieModal
       pid={pid}
       updateResult={onUpdate}
       updateAllowance={updateAllowance}
@@ -175,12 +184,17 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
     </div>
   }
 
+  const renderDepositRugButtons = () => {
+    return pid === 22 ? <button onClick={onBurnZombie} className="btn btn-disabled w-100" type="button">Sacrifice ZMBE</button> :
+      <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Deposit {rug.symbol}</button>
+  }
+
   const renderButtonsForTraditionalGraves = () => {
     return <div className="space-between">
       {get.account() ?
         isAllowanceForRugToken ?
         userInfo.rugDeposited.toString() === '0' ?
-          <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Deposit {rug.symbol}</button> :
+          renderDepositRugButtons() :
           renderButtonsForGrave()
         : <button onClick={() => {handleApproveRug(rug)}} className="btn btn-disabled w-100" type="button">Approve {rug.symbol}</button>
       :  <span className="total-earned text-shadow">Connect Wallet</span>}</div>

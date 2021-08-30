@@ -13,6 +13,10 @@ export const zombieAllowance = (): BigNumber => {
   return store.getState().zombie.allowance
 }
 
+export const zombieBalance = (): BigNumber => {
+  return store.getState().zombie.balance
+}
+
 export const zombieTotalSupply = (): BigNumber => {
   return store.getState().zombie.totalSupply
 }

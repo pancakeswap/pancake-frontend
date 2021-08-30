@@ -86,7 +86,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                       //     <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
                       //     <img src={requiredNftPath} alt="rugicon" className="icon" />
                       //   </> :
-                      rug !== tokens.none?
+                      rug !== tokens.none && rug !== tokens.zmbe ?
                       <>
                         <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
                         <img src={`images/tokens/${rug.symbol}.png`} alt="rugicon" className="icon" />

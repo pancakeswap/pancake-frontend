@@ -17,7 +17,7 @@ interface BuyFrankProps {
 }
 
 const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
-  const { userInfo: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } } = grave(pid)
+  const { nftRevivalTime , userInfo: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } } = grave(pid)
   const currentDate = Math.floor(Date.now() / 1000);
   let nftRevivalDateFixed = nftRevivalDate
   if(nftRevivalDate < 0) {
@@ -64,7 +64,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
                 <span className="white-color">5% Withdraw fee is active:</span>
               </div>
               <span className="total-earned text-shadow" style={{fontSize: "20px"}}>
-                {formatDuration(initialWithdrawCooldownTime)}</span>
+                {initialNftTime > 0 ? formatDuration(initialWithdrawCooldownTime) : nftRevivalTime }</span>
             </div>}
         </div>
       </div> :
