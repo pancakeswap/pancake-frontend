@@ -12,13 +12,8 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'",
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "updateLPsAPR": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn format:check",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "updateLPsAPR": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
@@ -69,7 +64,7 @@
     "qs": "^6.9.4",
     "react": "^17.0.1",
     "react-countup": "^4.3.3",
-    "react-datepicker": "^4.1.0",
+    "react-datepicker": "^4.2.1",
     "react-dom": "^17.0.1",
     "react-feather": "^2.0.8",
     "react-helmet-async": "^1.0.9",
@@ -87,8 +82,8 @@
     "typescript": "^4.3.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.1.1",
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@pancakeswap/eslint-config-pancake": "^1.1.0",
     "@types/jest": "^26.0.23",
     "@types/react-datepicker": "^3.1.8",
@@ -96,7 +91,7 @@
     "@types/react-transition-group": "^4.4.1",
     "@types/simplemde": "^1.11.7",
     "eslint": "^7.26.0",
-    "husky": "4.3.5",
+    "husky": "^7.0.0",
     "prettier": "^2.3.0",
     "source-map-explorer": "^2.5.2",
     "ts-node": "^9.1.1"
