@@ -1355,13 +1355,13 @@
   "Prices on cards come from Chainlink’s verifiable price oracle.": "الأسعار على البطاقات مأخوذة من مستشار السعر المتغير في Chainlink.",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "الأسعار على الرسوم البيانية مأخوذة من Binance.com. يتم توفير الرسم البياني كمرجع لك فقط.",
   "Only the price from Chainlink (shown on the cards) determines the round's result.": "يحدد السعر من Chainlink فقط (المعروض على البطاقات) نتيجة الجولة.",
-  "Showing history for Prediction v0.2": "Showing history for Prediction v0.2",
-  "Check for unclaimed v0.1 winnings": "Check for unclaimed v0.1 winnings",
-  "You have no unclaimed v0.1 prizes.": "You have no unclaimed v0.1 prizes.",
-  "Nothing to collect": "Nothing to collect",
-  "Download .CSV": "Download .CSV",
-  "Download your v0.1 Prediction history below.": "Download your v0.1 Prediction history below.",
-  "Nothing to Collect": "Nothing to Collect",
-  "From round %round%": "From round %round%",
-  "From rounds %rounds%": "From rounds %rounds%"
+  "Showing history for Prediction v0.2": "إظهار المحفوظات للتنبؤ v0.2",
+  "Check for unclaimed v0.1 winnings": "فحص مكاسب v0.1 التي لم تتم المطالبة بها",
+  "You have no unclaimed v0.1 prizes.": "ليس لديك أي جوائز v0.1 لم تتم المطالبة بها.",
+  "Nothing to collect": "لا يوجد شيء لتحصيله",
+  "Download .CSV": "تنزيل .CSV",
+  "Download your v0.1 Prediction history below.": "تنزيل محفوظات التنبؤ v0.1 أدناه.",
+  "Nothing to Collect": "لا يوجد شيء لتحصيله",
+  "From round %round%": "من الجولة %round%",
+  "From rounds %rounds%": "من الجولات %rounds%"
 }
