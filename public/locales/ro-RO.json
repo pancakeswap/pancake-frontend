@@ -1362,6 +1362,7 @@
   "Download .CSV": "Descarcă .CSV",
   "Download your v0.1 Prediction history below.": "Descarcă istoricul Prediction v0.1 mai jos.",
   "Nothing to Collect": "Nimic de adunat",
-  "From round %round%": "From round %round%",
-  "From rounds %rounds%": "From rounds %rounds%"
+  "From round %round%": "Din runda %round%",
+  "From rounds %rounds%": "Din rundele %rounds%",
+  "View More": "View More"
 }
