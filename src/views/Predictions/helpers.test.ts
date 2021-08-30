@@ -3,7 +3,7 @@ import { formatBnbv2, formatUsdv2 } from './helpers'
 
 describe('formatUsdv2', () => {
   it.each`
-    price           | expectedPriceFormatted
+    priceDifference | expectedPriceDifferenceFormatted
     ${10}           | ${'<$0.001'}
     ${100}          | ${'<$0.001'}
     ${1000}         | ${'<$0.001'}
@@ -24,14 +24,16 @@ describe('formatUsdv2', () => {
     ${-1000}        | ${'<$-0.001'}
     ${-100}         | ${'<$-0.001'}
     ${-10}          | ${'<$-0.001'}
-  `('should format $price to $expectedPriceFormatted', ({ price, expectedPriceFormatted }) =>
-    expect(formatUsdv2(BigNumber.from(price))).toEqual(expectedPriceFormatted),
+  `(
+    'should format $priceDifference to $expectedPriceDifferenceFormatted',
+    ({ priceDifference, expectedPriceDifferenceFormatted }) =>
+      expect(formatUsdv2(BigNumber.from(priceDifference))).toEqual(expectedPriceDifferenceFormatted),
   )
 })
 
 describe('formatBnbv2', () => {
   it.each`
-    price                       | expectedPriceFormatted
+    priceDifference             | expectedPriceDifferenceFormatted
     ${'1000000000000'}          | ${'<0.001'}
     ${'10000000000000'}         | ${'<0.001'}
     ${'100000000000000'}        | ${'<0.001'}
@@ -51,7 +53,9 @@ describe('formatBnbv2', () => {
     ${'-10000000000000'}        | ${'<-0.001'}
     ${'-1000000000000'}         | ${'<-0.001'}
     ${'-100000000000'}          | ${'<-0.001'}
-  `('should format $price to $expectedPriceFormatted', ({ price, expectedPriceFormatted }) =>
-    expect(formatBnbv2(BigNumber.from(price))).toEqual(expectedPriceFormatted),
+  `(
+    'should format $priceDifference to $expectedPriceDifferenceFormatted',
+    ({ priceDifference, expectedPriceDifferenceFormatted }) =>
+      expect(formatBnbv2(BigNumber.from(priceDifference))).toEqual(expectedPriceDifferenceFormatted),
   )
 })
