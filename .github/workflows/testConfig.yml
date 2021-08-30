@@ -1,7 +1,9 @@
-name: Test
+name: Test Config
 
 on:
   pull_request:
+    paths:
+      - 'src/__tests__/config/**'
   push:
     branches:
       - master
@@ -15,7 +17,7 @@ jobs:
       matrix:
         node: [14]
 
-    name: Unit (Jest)
+    name: Config (Jest)
 
     steps:
       - name: Checkout code
@@ -42,4 +44,4 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run tests
-        run: yarn test --watchAll=false
+        run: yarn test:config --watchAll=false
