@@ -30,6 +30,14 @@ const StyledBreadcrumbs = styled.ul`
   flex-wrap: wrap;
   list-style-type: none;
 
+  a {
+    color: ${({ theme }) => theme.colors.primary};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.primaryBright};
+    }
+  }
+
   ${space}
 `;
 
