@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
-import { PoolConfig } from 'config/constants/types'
+import { SerializedPoolConfig } from 'config/constants/types'
 import { transformPool, transformUserData } from 'state/pools/helpers'
-import { Pool } from 'state/types'
+import { SerializedPool } from 'state/types'
 
 describe('transformUserData', () => {
   it.each([
@@ -50,24 +50,24 @@ describe('transformUserData', () => {
 
 describe('transformPool', () => {
   // Transform pool object with the sous id for a label. For display purposes only.
-  const poolTable: [number, PoolConfig][] = poolsConfig.map((poolsConfigItem) => [
+  const poolTable: [number, SerializedPoolConfig][] = poolsConfig.map((poolsConfigItem) => [
     poolsConfigItem.sousId,
     poolsConfigItem,
   ])
   it.each(poolTable)('transforms pool %d correctly', (sousId, config) => {
     const pool = {
       ...config,
-      totalStaked: new BigNumber(10),
-      stakingLimit: new BigNumber(10),
+      totalStaked: '10',
+      stakingLimit: '10',
       startBlock: 100,
       endBlock: 100,
       userData: {
-        allowance: new BigNumber(0),
-        stakingTokenBalance: new BigNumber(0),
-        stakedBalance: new BigNumber(0),
-        pendingReward: new BigNumber(0),
+        allowance: '0',
+        stakingTokenBalance: '0',
+        stakedBalance: '0',
+        pendingReward: '0',
       },
-    } as Pool
+    } as SerializedPool
     const transformedPool = transformPool(pool)
 
     expect(transformedPool).toHaveProperty('sousId', sousId)
