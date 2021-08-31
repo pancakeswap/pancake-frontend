@@ -3,7 +3,7 @@ name: Test Config
 on:
   pull_request:
     paths:
-      - 'src/__tests__/config/**'
+      - 'src/config/**'
   push:
     branches:
       - master
