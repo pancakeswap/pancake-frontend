@@ -73,6 +73,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  qbt: {
+    symbol: 'QBT',
+    address: {
+      56: '0x17B7163cf1Dbd286E262ddc68b553D899B93f526',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://qbt.fi/',
+  },
   pha: {
     symbol: 'PHA',
     address: {
