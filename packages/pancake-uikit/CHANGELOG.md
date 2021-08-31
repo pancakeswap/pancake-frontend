@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.50.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.50.0...@pancakeswap/uikit@0.50.1) (2021-08-31)
+
+**Note:** Version bump only for package @pancakeswap/uikit
+
+
+
+
+
 # [0.50.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.49.2...@pancakeswap/uikit@0.50.0) (2021-08-31)
 
 
