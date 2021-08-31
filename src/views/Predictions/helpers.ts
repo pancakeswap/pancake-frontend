@@ -20,17 +20,14 @@ const formatPriceDifference = ({
   unitPrefix,
   decimals,
 }: formatPriceDifferenceProps) => {
-  const value = price
-  let prefix = unitPrefix
-  let priceToFormat = value
-  const sign = value.isNegative() ? BigNumber.from(-1) : BigNumber.from(1)
+  const sign = price.isNegative() ? BigNumber.from(-1) : BigNumber.from(1)
 
-  if (value.abs().lt(minPriceDisplayed)) {
-    prefix = `<${unitPrefix}`
-    priceToFormat = minPriceDisplayed.mul(sign)
+  if (price.abs().lt(minPriceDisplayed)) {
+    const signedPriceToFormat = minPriceDisplayed.mul(sign)
+    return `<${unitPrefix}${formatBigNumberToFixed(signedPriceToFormat, DISPLAYED_DECIMALS, decimals)}`
   }
 
-  return `${prefix}${formatBigNumberToFixed(priceToFormat, DISPLAYED_DECIMALS, decimals)}`
+  return `${unitPrefix}${formatBigNumberToFixed(price, DISPLAYED_DECIMALS, decimals)}`
 }
 
 export const formatUsdv2 = (usd: BigNumber) => {
