@@ -4,7 +4,7 @@ import erc20 from 'config/abi/erc20.json'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import multicall from 'utils/multicall'
-import { Farm } from '../types'
+import { SerializedFarm, SerializedBigNumber } from '../types'
 
 type PublicFarmData = {
   tokenAmountMc: SerializedBigNumber
@@ -18,7 +18,7 @@ type PublicFarmData = {
   multiplier: string
 }
 
-const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
+const fetchFarm = async (farm: SerializedFarm): Promise<PublicFarmData> => {
   const { pid, lpAddresses, token, quoteToken } = farm
   const lpAddress = getAddress(lpAddresses)
   const calls = [

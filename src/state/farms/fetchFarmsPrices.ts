@@ -1,16 +1,24 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ONE, BIG_ZERO } from 'utils/bigNumber'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
-import { Farm } from 'state/types'
+import { SerializedFarm } from 'state/types'
 import { serializeToken } from 'state/user/hooks/helpers'
 
-const getFarmFromTokenSymbol = (farms: Farm[], tokenSymbol: string, preferredQuoteTokens?: string[]): Farm => {
+const getFarmFromTokenSymbol = (
+  farms: SerializedFarm[],
+  tokenSymbol: string,
+  preferredQuoteTokens?: string[],
+): SerializedFarm => {
   const farmsWithTokenSymbol = farms.filter((farm) => farm.token.symbol === tokenSymbol)
   const filteredFarm = filterFarmsByQuoteToken(farmsWithTokenSymbol, preferredQuoteTokens)
   return filteredFarm
 }
 
-const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: BigNumber): BigNumber => {
+const getFarmBaseTokenPrice = (
+  farm: SerializedFarm,
+  quoteTokenFarm: SerializedFarm,
+  bnbPriceBusd: BigNumber,
+): BigNumber => {
   const hasTokenPriceVsQuote = Boolean(farm.tokenPriceVsQuote)
 
   if (farm.quoteToken.symbol === 'BUSD') {
@@ -49,7 +57,11 @@ const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: B
   return BIG_ZERO
 }
 
-const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: BigNumber): BigNumber => {
+const getFarmQuoteTokenPrice = (
+  farm: SerializedFarm,
+  quoteTokenFarm: SerializedFarm,
+  bnbPriceBusd: BigNumber,
+): BigNumber => {
   if (farm.quoteToken.symbol === 'BUSD') {
     return BIG_ONE
   }
@@ -74,7 +86,7 @@ const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: 
 }
 
 const fetchFarmsPrices = async (farms) => {
-  const bnbBusdFarm = farms.find((farm: Farm) => farm.pid === 252)
+  const bnbBusdFarm = farms.find((farm: SerializedFarm) => farm.pid === 252)
   const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? BIG_ONE.div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
 
   const farmsWithPrices = farms.map((farm) => {

@@ -1,9 +1,9 @@
 import { serializeTokens } from './newTokens'
-import { FarmConfig } from './types'
+import { SerializedFarmConfig } from './types'
 
 const serializedTokens = serializeTokens()
 
-const farms: FarmConfig[] = [
+const farms: SerializedFarmConfig[] = [
   /**
    * These 3 farms (PID 0, 251, 252) should always be at the top of the file.
    */

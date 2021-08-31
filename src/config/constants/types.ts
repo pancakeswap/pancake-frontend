@@ -14,15 +14,6 @@ export interface Address {
   56: string
 }
 
-export interface Token {
-  symbol: string
-  address?: Address
-  decimals?: number
-  projectLink?: string
-  busdPrice?: string
-  // TODO: Kill
-}
-
 export interface SerializedToken {
   chainId: number
   address: string
@@ -32,15 +23,13 @@ export interface SerializedToken {
   // TODO: Add projectLink
 }
 
-// TODO: This should be deserialized
-export interface TokenWithPrice extends SerializedToken {
+export interface SerializedTokenWithPrice extends SerializedToken {
   busdPrice?: string
 }
 
-// TODO: When deserializing, make use of this
-// export interface SerializedTokenWithPrice extends SerializedToken {
-//   busdPrice?: string
-// }
+export interface DeserializedTokenWithPrice extends SDKToken {
+  busdPrice?: string
+}
 
 export enum PoolIds {
   poolBasic = 'poolBasic',
@@ -79,7 +68,9 @@ export enum PoolCategory {
   'AUTO' = 'Auto',
 }
 
-interface FarmConfigGenerics {
+export interface SerializedFarmConfig {
+  token: SerializedTokenWithPrice
+  quoteToken: SerializedTokenWithPrice
   pid: number
   lpSymbol: string
   lpAddresses: Address
@@ -92,16 +83,20 @@ interface FarmConfigGenerics {
   }
 }
 
-export interface FarmConfig extends FarmConfigGenerics {
-  token: TokenWithPrice
-  quoteToken: TokenWithPrice
+export interface DeserializedFarmConfig {
+  token: DeserializedTokenWithPrice
+  quoteToken: DeserializedTokenWithPrice
+  pid: number
+  lpSymbol: string
+  lpAddresses: Address
+  multiplier?: string
+  isCommunity?: boolean
+  dual?: {
+    rewardPerBlock: number
+    earnLabel: string
+    endBlock: number
+  }
 }
-
-// TODO: This needs to be more elegant.
-// export interface SerializedFarmConfig extends FarmConfigGenerics {
-//   token: SerializedTokenWithPrice
-//   quoteToken: SerializedTokenWithPrice
-// }
 
 export interface SerializedPoolConfig {
   sousId: number

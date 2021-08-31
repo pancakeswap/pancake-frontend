@@ -5,11 +5,11 @@ import multicall from 'utils/multicall'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import masterChefABI from 'config/abi/masterchef.json'
 import { farmsConfig } from 'config/constants'
-import { FarmConfig } from 'config/constants/types'
+import { SerializedFarmConfig } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 
-export interface FarmWithBalance extends FarmConfig {
+export interface FarmWithBalance extends SerializedFarmConfig {
   balance: BigNumber
 }
 

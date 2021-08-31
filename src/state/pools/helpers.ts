@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Farm, Pool, SerializedPool } from 'state/types'
+import { SerializedFarm, Pool, SerializedPool } from 'state/types'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
@@ -34,7 +34,7 @@ export const transformPool = (pool: SerializedPool): Pool => {
   }
 }
 
-export const getTokenPricesFromFarm = (farms: Farm[]) => {
+export const getTokenPricesFromFarm = (farms: SerializedFarm[]) => {
   return farms.reduce((prices, farm) => {
     const quoteTokenAddress = farm.quoteToken.address.toLocaleLowerCase()
     const tokenAddress = farm.token.address.toLocaleLowerCase()

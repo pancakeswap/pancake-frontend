@@ -5,7 +5,7 @@ import { Button, Flex, Text } from '@pancakeswap/uikit'
 import { getAddress } from 'utils/addressHelpers'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
-import { Farm } from 'state/types'
+import { SerializedFarm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -16,7 +16,7 @@ import useApproveFarm from '../../hooks/useApproveFarm'
 const Action = styled.div`
   padding-top: 16px;
 `
-export interface FarmWithStakedValue extends Farm {
+export interface FarmWithStakedValue extends SerializedFarm {
   apr?: number
 }
 

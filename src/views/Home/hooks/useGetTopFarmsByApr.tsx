@@ -7,7 +7,7 @@ import { getFarmApr } from 'utils/apr'
 import BigNumber from 'bignumber.js'
 import { orderBy } from 'lodash'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import { Farm } from 'state/types'
+import { SerializedFarm } from 'state/types'
 
 enum FetchStatus {
   NOT_FETCHED = 'not-fetched',
@@ -42,7 +42,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting])
 
   useEffect(() => {
-    const getTopFarmsByApr = (farmsState: Farm[]) => {
+    const getTopFarmsByApr = (farmsState: SerializedFarm[]) => {
       const farmsWithPrices = farmsState.filter((farm) => farm.lpTotalInQuoteToken && farm.quoteToken.busdPrice)
       const farmsWithApr: FarmWithStakedValue[] = farmsWithPrices.map((farm) => {
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)

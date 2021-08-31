@@ -7,8 +7,9 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { farmsConfig } from 'config/constants'
 import useRefresh from 'hooks/useRefresh'
+import { deserializeToken } from 'state/user/hooks/helpers'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, nonArchivedFarms } from '.'
-import { State, Farm, FarmsState } from '../types'
+import { State, SerializedFarm, FarmsState } from '../types'
 
 export const usePollFarmsPublicData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
@@ -58,12 +59,19 @@ export const useFarms = (): FarmsState => {
   return farms
 }
 
-export const useFarmFromPid = (pid): Farm => {
+const deserializeFarmTokens = (farm: SerializedFarm) => {
+  const deserializedFarm = { ...farm }
+  deserializedFarm.token = deserializeToken(farm.token)
+  deserializedFarm.quoteToken = deserializeToken(farm.quoteToken)
+  return deserializedFarm
+}
+
+export const useFarmFromPid = (pid): SerializedFarm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.pid === pid))
   return farm
 }
 
-export const useFarmFromLpSymbol = (lpSymbol: string): Farm => {
+export const useFarmFromLpSymbol = (lpSymbol: string): SerializedFarm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
   return farm
 }

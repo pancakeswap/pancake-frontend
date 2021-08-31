@@ -10,7 +10,7 @@ import {
   fetchFarmUserTokenBalances,
   fetchFarmUserStakedBalances,
 } from './fetchFarmUser'
-import { FarmsState, Farm } from '../types'
+import { FarmsState, SerializedFarm } from '../types'
 
 const noAccountFarmConfig = farmsConfig.map((farm) => ({
   ...farm,
@@ -27,7 +27,7 @@ const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsD
 export const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(pid))
 
 // Async thunks
-export const fetchFarmsPublicDataAsync = createAsyncThunk<Farm[], number[]>(
+export const fetchFarmsPublicDataAsync = createAsyncThunk<SerializedFarm[], number[]>(
   'farms/fetchFarmsPublicDataAsync',
   async (pids) => {
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
@@ -39,7 +39,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<Farm[], number[]>(
     const farmsWithPrices = await fetchFarmsPrices(farms)
 
     // Filter out price helper LP config farms
-    const farmsWithoutHelperLps = farmsWithPrices.filter((farm: Farm) => {
+    const farmsWithoutHelperLps = farmsWithPrices.filter((farm: SerializedFarm) => {
       return farm.pid || farm.pid === 0
     })
 

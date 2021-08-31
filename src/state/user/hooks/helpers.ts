@@ -1,9 +1,9 @@
 import { Token } from '@pancakeswap/sdk'
-import { SerializedToken, TokenWithPrice } from 'config/constants/types'
+import { DeserializedTokenWithPrice, SerializedToken, SerializedTokenWithPrice } from 'config/constants/types'
 import { parseUnits } from 'ethers/lib/utils'
 
-// TODO: Fix Types here - should be deserialised
-export function serializeToken(token: Token | TokenWithPrice): SerializedToken {
+// TODO: Fix Types here - remove SerializedTokenWithPrice when Farms typing is fixed
+export function serializeToken(token: Token | DeserializedTokenWithPrice | SerializedTokenWithPrice): SerializedToken {
   return {
     chainId: token.chainId,
     address: token.address,

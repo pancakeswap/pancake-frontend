@@ -10,7 +10,7 @@ import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 import usePersistState from 'hooks/usePersistState'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
-import { Farm } from 'state/types'
+import { SerializedFarm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getFarmApr } from 'utils/apr'
@@ -155,7 +155,7 @@ const Farms: React.FC = () => {
   )
 
   const farmsList = useCallback(
-    (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
+    (farmsToDisplay: SerializedFarm[]): FarmWithStakedValue[] => {
       let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.lpTotalInQuoteToken || !farm.quoteToken.busdPrice) {
           return farm

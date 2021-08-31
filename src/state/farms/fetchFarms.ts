@@ -1,8 +1,8 @@
-import { FarmConfig } from 'config/constants/types'
+import { SerializedFarmConfig } from 'config/constants/types'
 import { serializeToken } from 'state/user/hooks/helpers'
 import fetchFarm from './fetchFarm'
 
-const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
+const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]) => {
   const data = await Promise.all(
     farmsToFetch.map(async (farmConfig) => {
       const farm = await fetchFarm(farmConfig)
