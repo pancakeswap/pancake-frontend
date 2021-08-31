@@ -1355,14 +1355,14 @@
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Los precios de las tarjetas provienen del oráculo de precios verificable de Chainlink.",
   "Prices on charts come from Binance.com. Chart's are provided for your reference only.": "Los precios en las gráficas proceden de Binance.com. Las gráficas únicamente se proporcionan como referencia.",
   "Only the price from Chainlink (shown on the cards) determines the round's result.": "Solo el precio de Chainlink (el que se muestra en las tarjetas) determina el resultado de la ronda.",
-  "Showing history for Prediction v0.2": "Muestra el historial de Prediction v0.2",
+  "Showing history for Prediction v0.2": "Muestra el historial de Predición v0.2",
   "Check for unclaimed v0.1 winnings": "Verifica las ganancias no reclamadas de la versión 0.1",
   "You have no unclaimed v0.1 prizes.": "No tienes premios no reclamados de la versión 0.1.",
   "Nothing to collect": "No hay nada que recoger",
   "Download .CSV": "Descargar .CSV",
-  "Download your v0.1 Prediction history below.": "A continuación, descarga tu historial de Prediction v0.1.",
+  "Download your v0.1 Prediction history below.": "A continuación, descarga tu historial de Predicción v0.1.",
   "Nothing to Collect": "No hay nada que recoger",
   "From round %round%": "De la ronda %round%",
   "From rounds %rounds%": "De las rondas %rounds%",
-  "View More": "View More"
+  "View More": "Ver más"
 }
