@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/stale@v4
         with:
-          repo-token: ${{github.GH_STALE_ISSUES}}
+          repo-token: ${{ secrets.GH_STALE_ISSUES }}
           stale-issue-message: 'This issue is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 2 days.'
           days-before-issue-stale: 30
           days-before-pr-stale: 90
