@@ -2,18 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Box, Breadcrumbs, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import styled from 'styled-components'
-
-/**
- * TODO: Move this to UI Kit
- */
-const BreadcrumbLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.primary};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.primaryBright};
-  }
-`
 
 const Crumbs = () => {
   const { t } = useTranslation()
@@ -21,8 +9,8 @@ const Crumbs = () => {
   return (
     <Box mb="24px">
       <Breadcrumbs>
-        <BreadcrumbLink to="/">{t('Home')}</BreadcrumbLink>
-        <BreadcrumbLink to="/prediction">{t('Prediction')}</BreadcrumbLink>
+        <Link to="/">{t('Home')}</Link>
+        <Link to="/prediction">{t('Prediction')}</Link>
         <Text>{t('Leaderboard')}</Text>
       </Breadcrumbs>
     </Box>
