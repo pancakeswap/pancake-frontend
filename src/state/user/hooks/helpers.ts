@@ -1,8 +1,9 @@
 import { Token } from '@pancakeswap/sdk'
-import { SerializedToken } from 'config/constants/types'
+import { SerializedToken, TokenWithPrice } from 'config/constants/types'
 import { parseUnits } from 'ethers/lib/utils'
 
-export function serializeToken(token: Token): SerializedToken {
+// TODO: Fix Types here - should be deserialised
+export function serializeToken(token: Token | TokenWithPrice): SerializedToken {
   return {
     chainId: token.chainId,
     address: token.address,

@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js'
 import { BIG_ONE, BIG_ZERO } from 'utils/bigNumber'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
 import { Farm } from 'state/types'
+import { serializeToken } from 'state/user/hooks/helpers'
 
 const getFarmFromTokenSymbol = (farms: Farm[], tokenSymbol: string, preferredQuoteTokens?: string[]): Farm => {
   const farmsWithTokenSymbol = farms.filter((farm) => farm.token.symbol === tokenSymbol)
@@ -80,8 +81,8 @@ const fetchFarmsPrices = async (farms) => {
     const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol)
     const baseTokenPrice = getFarmBaseTokenPrice(farm, quoteTokenFarm, bnbPriceBusd)
     const quoteTokenPrice = getFarmQuoteTokenPrice(farm, quoteTokenFarm, bnbPriceBusd)
-    const token = { ...farm.token, busdPrice: baseTokenPrice.toJSON() }
-    const quoteToken = { ...farm.quoteToken, busdPrice: quoteTokenPrice.toJSON() }
+    const token = { ...serializeToken(farm.token), busdPrice: baseTokenPrice.toJSON() }
+    const quoteToken = { ...serializeToken(farm.quoteToken), busdPrice: quoteTokenPrice.toJSON() }
     return { ...farm, token, quoteToken }
   })
 

@@ -10,7 +10,6 @@ import {
   PoolConfig,
   Team,
   TranslatableText,
-  SerializedFarmConfig,
 } from 'config/constants/types'
 import { Nft } from 'config/constants/nfts/types'
 
