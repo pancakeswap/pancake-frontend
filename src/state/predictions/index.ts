@@ -396,16 +396,15 @@ export const predictionsSlice = createSlice({
       }
 
       // Populate address results to reduce calls
-      state.leaderboard.addressResults = merge(
-        {},
-        state.leaderboard.addressResults,
-        results.reduce((accum, result) => {
+      state.leaderboard.addressResults = {
+        ...state.leaderboard.addressResults,
+        ...results.reduce((accum, result) => {
           return {
             ...accum,
             [result.id]: result,
           }
         }, {}),
-      )
+      }
     })
 
     // Leaderboard account result
