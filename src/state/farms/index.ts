@@ -10,7 +10,7 @@ import {
   fetchFarmUserTokenBalances,
   fetchFarmUserStakedBalances,
 } from './fetchFarmUser'
-import { FarmsState, SerializedFarm } from '../types'
+import { SerializedFarmsState, SerializedFarm } from '../types'
 
 const noAccountFarmConfig = farmsConfig.map((farm) => ({
   ...farm,
@@ -22,7 +22,11 @@ const noAccountFarmConfig = farmsConfig.map((farm) => ({
   },
 }))
 
-const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsData: false, userDataLoaded: false }
+const initialState: SerializedFarmsState = {
+  data: noAccountFarmConfig,
+  loadArchivedFarmsData: false,
+  userDataLoaded: false,
+}
 
 export const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(pid))
 
