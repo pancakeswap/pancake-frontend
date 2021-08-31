@@ -3,12 +3,12 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip } from '@pancakeswap/uikit'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
 import ExpandedFooter from './ExpandedFooter'
 
 interface FooterProps {
-  pool: Pool
+  pool: DeserializedPool
   account: string
   totalCakeInVault?: BigNumber
 }

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
 import { orderBy } from 'lodash'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
 import { simpleRpcProvider } from 'utils/providers'
 import { useCakeVault, usePools } from 'state/pools/hooks'
@@ -23,7 +23,7 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   } = useCakeVault()
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
-  const [topPools, setTopPools] = useState<Pool[]>([null, null, null, null, null])
+  const [topPools, setTopPools] = useState<DeserializedPool[]>([null, null, null, null, null])
 
   const pools = useMemo(() => {
     const activePools = poolsWithoutAutoVault.filter((pool) => !pool.isFinished)
@@ -56,8 +56,8 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   }, [dispatch, setFetchStatus, fetchStatus, topPools, isIntersecting])
 
   useEffect(() => {
-    const getTopPoolsByApr = (activePools: Pool[]) => {
-      const sortedByApr = orderBy(activePools, (pool: Pool) => pool.apr || 0, 'desc')
+    const getTopPoolsByApr = (activePools: DeserializedPool[]) => {
+      const sortedByApr = orderBy(activePools, (pool: DeserializedPool) => pool.apr || 0, 'desc')
       setTopPools(sortedByApr.slice(0, 5))
     }
     if (fetchStatus === FetchStatus.SUCCESS && !topPools[0]) {

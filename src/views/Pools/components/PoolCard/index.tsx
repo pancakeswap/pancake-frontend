@@ -4,14 +4,14 @@ import { CardBody, Flex, Text, CardRibbon } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import AprRow from './AprRow'
 import { StyledCard } from './StyledCard'
 import CardFooter from './CardFooter'
 import StyledCardHeader from './StyledCardHeader'
 import CardActions from './CardActions'
 
-const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
+const PoolCard: React.FC<{ pool: DeserializedPool; account: string }> = ({ pool, account }) => {
   const { sousId, stakingToken, earningToken, isFinished, userData } = pool
   const { t } = useTranslation()
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO

@@ -5,7 +5,7 @@ import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, useTooltip,
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useWeb3React } from '@web3-react/core'
 import { useCakeVault } from 'state/pools/hooks'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -24,7 +24,7 @@ const IconButtonWrapper = styled.div`
 `
 
 interface StackedActionProps {
-  pool: Pool
+  pool: DeserializedPool
   userDataLoaded: boolean
 }
 

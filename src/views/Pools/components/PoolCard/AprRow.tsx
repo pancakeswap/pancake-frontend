@@ -4,7 +4,7 @@ import { Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTo
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { getAprData } from 'views/Pools/helpers'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -18,7 +18,7 @@ const ApyLabelContainer = styled(Flex)`
 `
 
 interface AprRowProps {
-  pool: Pool
+  pool: DeserializedPool
   stakedBalance: BigNumber
   performanceFee?: number
 }

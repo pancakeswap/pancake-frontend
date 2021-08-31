@@ -68,60 +68,48 @@ export enum PoolCategory {
   'AUTO' = 'Auto',
 }
 
-export interface SerializedFarmConfig {
+interface FarmConfigBaseProps {
+  pid: number
+  lpSymbol: string
+  lpAddresses: Address
+  multiplier?: string
+  isCommunity?: boolean
+  dual?: {
+    rewardPerBlock: number
+    earnLabel: string
+    endBlock: number
+  }
+}
+
+export interface SerializedFarmConfig extends FarmConfigBaseProps {
   token: SerializedTokenWithPrice
   quoteToken: SerializedTokenWithPrice
-  pid: number
-  lpSymbol: string
-  lpAddresses: Address
-  multiplier?: string
-  isCommunity?: boolean
-  dual?: {
-    rewardPerBlock: number
-    earnLabel: string
-    endBlock: number
-  }
 }
 
-export interface DeserializedFarmConfig {
+export interface DeserializedFarmConfig extends FarmConfigBaseProps {
   token: DeserializedTokenWithPrice
   quoteToken: DeserializedTokenWithPrice
-  pid: number
-  lpSymbol: string
-  lpAddresses: Address
-  multiplier?: string
-  isCommunity?: boolean
-  dual?: {
-    rewardPerBlock: number
-    earnLabel: string
-    endBlock: number
-  }
 }
 
-export interface SerializedPoolConfig {
+interface PoolConfigBaseProps {
   sousId: number
+  contractAddress: Address
+  poolCategory: PoolCategory
+  tokenPerBlock: string
+  sortOrder?: number
+  harvest?: boolean
+  isFinished?: boolean
+  enableEmergencyWithdraw?: boolean
+}
+
+export interface SerializedPoolConfig extends PoolConfigBaseProps {
   earningToken: SerializedToken
   stakingToken: SerializedToken
-  contractAddress: Address
-  poolCategory: PoolCategory
-  tokenPerBlock: string
-  sortOrder?: number
-  harvest?: boolean
-  isFinished?: boolean
-  enableEmergencyWithdraw?: boolean
 }
 
-export interface DeserializedPoolConfig {
-  sousId: number
+export interface DeserializedPoolConfig extends PoolConfigBaseProps {
   earningToken: SDKToken
   stakingToken: SDKToken
-  contractAddress: Address
-  poolCategory: PoolCategory
-  tokenPerBlock: string
-  sortOrder?: number
-  harvest?: boolean
-  isFinished?: boolean
-  enableEmergencyWithdraw?: boolean
 }
 
 export type Images = {

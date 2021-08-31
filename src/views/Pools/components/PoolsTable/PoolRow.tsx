@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import NameCell from './Cells/NameCell'
 import EarningsCell from './Cells/EarningsCell'
@@ -14,7 +14,7 @@ import AutoEarningsCell from './Cells/AutoEarningsCell'
 import AutoAprCell from './Cells/AutoAprCell'
 
 interface PoolRowProps {
-  pool: Pool
+  pool: DeserializedPool
   account: string
   userDataLoaded: boolean
 }

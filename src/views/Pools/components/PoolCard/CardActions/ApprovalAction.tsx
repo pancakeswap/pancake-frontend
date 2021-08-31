@@ -2,11 +2,11 @@ import React from 'react'
 import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { useApprovePool } from '../../../hooks/useApprove'
 
 interface ApprovalActionProps {
-  pool: Pool
+  pool: DeserializedPool
   isLoading?: boolean
 }
 

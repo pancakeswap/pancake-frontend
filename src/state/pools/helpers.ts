@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js'
-import { SerializedFarm, Pool, SerializedPool } from 'state/types'
+import { SerializedFarm, DeserializedPool, SerializedPool } from 'state/types'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
 type UserData =
-  | Pool['userData']
+  | DeserializedPool['userData']
   | {
       allowance: number | string
       stakingTokenBalance: number | string
@@ -21,7 +21,7 @@ export const transformUserData = (userData: UserData) => {
   }
 }
 
-export const transformPool = (pool: SerializedPool): Pool => {
+export const transformPool = (pool: SerializedPool): DeserializedPool => {
   const { totalStaked, stakingLimit, userData, stakingToken, earningToken, ...rest } = pool
 
   return {

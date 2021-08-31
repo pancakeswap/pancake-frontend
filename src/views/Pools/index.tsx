@@ -25,7 +25,7 @@ import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import Loading from 'components/Loading'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
@@ -161,19 +161,19 @@ const Pools: React.FC = () => {
     setSortOption(option.value)
   }
 
-  const sortPools = (poolsToSort: Pool[]) => {
+  const sortPools = (poolsToSort: DeserializedPool[]) => {
     switch (sortOption) {
       case 'apr':
         // Ternary is needed to prevent pools without APR (like MIX) getting top spot
         return orderBy(
           poolsToSort,
-          (pool: Pool) => (pool.apr ? getAprData(pool, performanceFeeAsDecimal).apr : 0),
+          (pool: DeserializedPool) => (pool.apr ? getAprData(pool, performanceFeeAsDecimal).apr : 0),
           'desc',
         )
       case 'earned':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => {
+          (pool: DeserializedPool) => {
             if (!pool.userData || !pool.earningTokenPrice) {
               return 0
             }
@@ -192,7 +192,7 @@ const Pools: React.FC = () => {
       case 'totalStaked':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => {
+          (pool: DeserializedPool) => {
             let totalStaked = Number.NaN
             if (pool.isAutoVault) {
               if (totalCakeInVault.isFinite()) {

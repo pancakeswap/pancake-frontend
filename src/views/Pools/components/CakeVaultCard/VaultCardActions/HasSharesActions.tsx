@@ -2,7 +2,7 @@ import React from 'react'
 import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCakeVault } from 'state/pools/hooks'
 import Balance from 'components/Balance'
@@ -11,7 +11,7 @@ import { convertSharesToCake } from '../../../helpers'
 import VaultStakeModal from '../VaultStakeModal'
 
 interface HasStakeActionProps {
-  pool: Pool
+  pool: DeserializedPool
   stakingTokenBalance: BigNumber
   performanceFee: number
 }

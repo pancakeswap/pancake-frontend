@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import Balance from 'components/Balance'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getAprData } from 'views/Pools/helpers'
 import BigNumber from 'bignumber.js'
@@ -16,7 +16,7 @@ const AprLabelContainer = styled(Flex)`
 `
 
 interface AprProps extends FlexProps {
-  pool: Pool
+  pool: DeserializedPool
   stakedBalance: BigNumber
   showIcon: boolean
   performanceFee?: number

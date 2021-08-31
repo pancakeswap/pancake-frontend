@@ -18,7 +18,7 @@ import { getBscScanLink } from 'utils'
 import { useBlock } from 'state/block/hooks'
 import { useCakeVault } from 'state/pools/hooks'
 import BigNumber from 'bignumber.js'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
@@ -95,7 +95,7 @@ type MediaBreakpoints = {
 
 interface ActionPanelProps {
   account: string
-  pool: Pool
+  pool: DeserializedPool
   userDataLoaded: boolean
   expanded: boolean
   breakpoints: MediaBreakpoints

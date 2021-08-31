@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { getApy } from 'utils/compoundApyHelpers'
 import { getBalanceNumber, getFullDisplayBalance, getDecimalAmount } from 'utils/formatBalance'
 
@@ -34,7 +34,7 @@ export const convertCakeToShares = (
 const AUTO_VAULT_COMPOUND_FREQUENCY = 5000
 const MANUAL_POOL_AUTO_COMPOUND_FREQUENCY = 0
 
-export const getAprData = (pool: Pool, performanceFee: number) => {
+export const getAprData = (pool: DeserializedPool, performanceFee: number) => {
   const { isAutoVault, apr } = pool
 
   //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
@@ -65,7 +65,7 @@ export const getCakeVaultEarnings = (
   return { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay }
 }
 
-export const getPoolBlockInfo = (pool: Pool, currentBlock: number) => {
+export const getPoolBlockInfo = (pool: DeserializedPool, currentBlock: number) => {
   const { startBlock, endBlock, isFinished } = pool
   const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)

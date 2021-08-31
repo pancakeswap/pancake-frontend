@@ -19,7 +19,7 @@ import {
 import { BASE_BSC_SCAN_URL } from 'config'
 import { useBlock } from 'state/block/hooks'
 import { useCakeVault } from 'state/pools/hooks'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
 import { getBscScanLink } from 'utils'
@@ -27,7 +27,7 @@ import Balance from 'components/Balance'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 
 interface ExpandedFooterProps {
-  pool: Pool
+  pool: DeserializedPool
   account: string
 }
 

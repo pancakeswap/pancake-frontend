@@ -19,7 +19,7 @@ import useToast from 'hooks/useToast'
 import BigNumber from 'bignumber.js'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import PercentageButton from './PercentageButton'
 import useStakePool from '../../../hooks/useStakePool'
@@ -27,7 +27,7 @@ import useUnstakePool from '../../../hooks/useUnstakePool'
 
 interface StakeModalProps {
   isBnbPool: boolean
-  pool: Pool
+  pool: DeserializedPool
   stakingTokenBalance: BigNumber
   stakingTokenPrice: number
   isRemovingStake?: boolean
@@ -179,7 +179,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   return (
     <Modal
       minWidth="346px"
-      title={isRemovingStake ? t('Unstake') : t('Stake in Pool')}
+      title={isRemovingStake ? t('Unstake') : t('Stake in DeserializedPool')}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >

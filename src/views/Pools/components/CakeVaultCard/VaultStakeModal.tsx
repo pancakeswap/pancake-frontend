@@ -25,7 +25,7 @@ import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
 import { fetchCakeVaultUserData } from 'state/pools'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -34,7 +34,7 @@ import { convertCakeToShares, convertSharesToCake } from '../../helpers'
 import FeeSummary from './FeeSummary'
 
 interface VaultStakeModalProps {
-  pool: Pool
+  pool: DeserializedPool
   stakingMax: BigNumber
   performanceFee?: number
   isRemovingStake?: boolean
@@ -235,7 +235,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 
   return (
     <Modal
-      title={isRemovingStake ? t('Unstake') : t('Stake in Pool')}
+      title={isRemovingStake ? t('Unstake') : t('Stake in DeserializedPool')}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >

@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import BaseCell, { CellContent } from './BaseCell'
 import Apr from '../Apr'
 
 interface AprCellProps {
-  pool: Pool
+  pool: DeserializedPool
 }
 
 const StyledCell = styled(BaseCell)`
