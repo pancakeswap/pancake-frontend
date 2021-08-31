@@ -38,7 +38,7 @@ const farms: FarmConfig[] = [
   /**
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
-   {
+  {
     pid: 453,
     lpSymbol: 'QBT-BNB LP',
     lpAddresses: {
