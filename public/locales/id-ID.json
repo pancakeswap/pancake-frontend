@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "Tidak Ada yang Dapat Diambil",
   "From round %round%": "Dari putaran %round%",
   "From rounds %rounds%": "Dari putaran %rounds%",
-  "View More": "Lihat Lebih Banyak"
+  "View More": "Lihat Lebih Banyak",
+  "User": "User",
+  "Net Winnings (BNB)": "Net Winnings (BNB)",
+  "Win Rate": "Win Rate",
+  "Rounds Won": "Rounds Won",
+  "Rank By": "Rank By",
+  "Net Winnings": "Net Winnings",
+  "Total BNB": "Total BNB",
+  "%num%m": "%num%m",
+  "Rounds Played": "Rounds Played",
+  "Winnings (BNB)": "Winnings (BNB)",
+  "Direction": "Direction",
+  "My Rankings": "My Rankings",
+  "View Stats": "View Stats",
+  "Last %num% Bets": "Last %num% Bets",
+  "Search %subject%": "Search %subject%",
+  "Address": "Address"
 }
