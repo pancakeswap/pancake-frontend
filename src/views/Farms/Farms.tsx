@@ -434,7 +434,7 @@ const Farms: React.FC = () => {
                     value: 'liquidity',
                   },
                 ]}
-                onChange={handleSortOptionChange}
+                onOptionChange={handleSortOptionChange}
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>

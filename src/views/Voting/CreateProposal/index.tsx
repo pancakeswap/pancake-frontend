@@ -15,6 +15,7 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import { useHistory } from 'react-router'
+import { Link } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import isEmpty from 'lodash/isEmpty'
@@ -30,7 +31,6 @@ import Container from 'components/Layout/Container'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ReactMarkdown from 'components/ReactMarkdown'
-import BreadcrumbLink from '../components/BreadcrumbLink'
 import { sendSnapshotData, Message, generateMetaData, generatePayloadData } from '../helpers'
 import Layout from '../components/Layout'
 import { FormErrors, Label, SecondaryLabel } from './styles'
@@ -161,8 +161,8 @@ const CreateProposal = () => {
     <Container py="40px">
       <Box mb="48px">
         <Breadcrumbs>
-          <BreadcrumbLink to="/">{t('Home')}</BreadcrumbLink>
-          <BreadcrumbLink to="/voting">{t('Voting')}</BreadcrumbLink>
+          <Link to="/">{t('Home')}</Link>
+          <Link to="/voting">{t('Voting')}</Link>
           <Text>{t('Make a Proposal')}</Text>
         </Breadcrumbs>
       </Box>

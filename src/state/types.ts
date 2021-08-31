@@ -112,6 +112,12 @@ export interface ProfileState {
   isLoading: boolean
   hasRegistered: boolean
   data: Profile
+  profileAvatars: {
+    [key: string]: {
+      username: string
+      nft: Nft
+    }
+  }
 }
 
 export type TeamResponse = {
@@ -181,27 +187,27 @@ export enum PredictionStatus {
 export interface Round {
   id: string
   epoch: number
-  failed?: boolean
-  startBlock: number
+  position: BetPosition
+  failed: boolean
   startAt: number
+  startBlock: number
   startHash: string
   lockAt: number
   lockBlock: number
-  lockPrice: number
   lockHash: string
+  lockPrice: number
   lockRoundId: string
-  closeRoundId: string
-  closeHash: string
   closeAt: number
-  closePrice: number
   closeBlock: number
+  closeHash: string
+  closePrice: number
+  closeRoundId: string
   totalBets: number
   totalAmount: number
   bullBets: number
+  bullAmount: number
   bearBets: number
   bearAmount: number
-  bullAmount: number
-  position: BetPosition
   bets?: Bet[]
 }
 
@@ -217,12 +223,12 @@ export interface Bet {
   position: BetPosition
   claimed: boolean
   claimedAt: number
+  claimedBlock: number
   claimedHash: string
   claimedBNB: number
   claimedNetBNB: number
   createdAt: number
   updatedAt: number
-  block: number
   user?: PredictionUser
   round?: Round
 }
@@ -243,6 +249,7 @@ export interface PredictionUser {
   winRate: number
   averageBNB: number
   netBNB: number
+  bets?: Bet[]
 }
 
 export enum HistoryFilter {
@@ -307,6 +314,20 @@ export interface NodeRound {
   lockOracleId: string
 }
 
+export enum LeaderboardLoadingState {
+  INITIAL,
+  LOADING,
+  IDLE,
+}
+
+export type LeaderboardFilterTimePeriod = '1d' | '7d' | '1m' | 'all'
+
+export interface LeaderboardFilter {
+  address?: string
+  orderBy?: string
+  timePeriod?: LeaderboardFilterTimePeriod
+}
+
 export interface PredictionsState {
   status: PredictionStatus
   isLoading: boolean
@@ -327,6 +348,16 @@ export interface PredictionsState {
   ledgers?: LedgerData
   claimableStatuses: {
     [key: string]: boolean
+  }
+  leaderboard: {
+    loadingState: LeaderboardLoadingState
+    filters: LeaderboardFilter
+    skip: number
+    hasMoreResults: boolean
+    addressResults: {
+      [key: string]: PredictionUser
+    }
+    results: PredictionUser[]
   }
 }
 

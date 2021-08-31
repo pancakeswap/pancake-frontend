@@ -40,6 +40,7 @@ const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 const Predictions = lazy(() => import('./views/Predictions'))
+const PredictionsLeaderboard = lazy(() => import('./views/Predictions/Leaderboard'))
 const Voting = lazy(() => import('./views/Voting'))
 const Proposal = lazy(() => import('./views/Voting/Proposal'))
 const CreateProposal = lazy(() => import('./views/Voting/CreateProposal'))
@@ -101,8 +102,11 @@ const App: React.FC = () => {
             <Route path="/competition">
               <TradingCompetition />
             </Route>
-            <Route path="/prediction">
+            <Route exact path="/prediction">
               <Predictions />
+            </Route>
+            <Route path="/prediction/leaderboard">
+              <PredictionsLeaderboard />
             </Route>
             <Route exact path="/voting">
               <Voting />

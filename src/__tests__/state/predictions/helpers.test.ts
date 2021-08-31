@@ -1,4 +1,9 @@
-import { makeFutureRoundResponse, numberOrNull, transformBetResponse } from 'state/predictions/helpers'
+import {
+  makeFutureRoundResponse,
+  numberOrNull,
+  transformBetResponse,
+  transformUserResponse,
+} from 'state/predictions/helpers'
 
 describe('numberOrNull', () => {
   it.each([
@@ -28,6 +33,46 @@ describe('makeFutureRoundResponse', () => {
       oracleCalled: false,
       lockOracleId: null,
       closeOracleId: null,
+    })
+  })
+})
+
+describe('transformUserResponse', () => {
+  const userResponse = {
+    averageBNB: '0.0101753905736882928',
+    block: '9316304',
+    createdAt: '1626767110',
+    id: '0x54f292760e248cfe64191c7d85260f9ddaa01f2b',
+    netBNB: '0.057914277602874121',
+    totalBNB: '0.050876952868441464',
+    totalBNBBear: '0.050876952868441464',
+    totalBNBBull: '0',
+    totalBNBClaimed: '0.119668183339757049',
+    totalBets: '5',
+    totalBetsBear: '3',
+    totalBetsBull: '2',
+    totalBetsClaimed: '1',
+    updatedAt: '1626770557',
+    winRate: '20',
+  }
+
+  it('transforms user response correctly', () => {
+    expect(transformUserResponse(userResponse)).toEqual({
+      averageBNB: 0.0101753905736882928,
+      block: 9316304,
+      createdAt: 1626767110,
+      id: '0x54f292760e248cfe64191c7d85260f9ddaa01f2b',
+      netBNB: 0.057914277602874121,
+      totalBNB: 0.050876952868441464,
+      totalBNBBear: 0.050876952868441464,
+      totalBNBBull: 0,
+      totalBNBClaimed: 0.119668183339757049,
+      totalBets: 5,
+      totalBetsBear: 3,
+      totalBetsBull: 2,
+      totalBetsClaimed: 1,
+      updatedAt: 1626770557,
+      winRate: 20,
     })
   })
 })
@@ -142,7 +187,6 @@ describe('transformBetResponse', () => {
         startBlock: '9303563',
         startHash: '0xca83e0aaf3113ed18203b69e2ca7598c3df80acc9229aab50304d16c19965945',
         totalAmount: '0',
-        totalAmountTreasury: '0',
         totalBets: '0',
         bets: [],
       },

@@ -1,9 +1,12 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { ethers } from 'ethers'
 import { minBy, orderBy } from 'lodash'
+import { isAddress } from 'utils'
+import { useAppDispatch } from 'state'
 import { State, NodeRound, ReduxNodeLedger, NodeLedger, ReduxNodeRound } from '../types'
 import { parseBigNumberObj } from './helpers'
+import { fetchAddressResult } from '.'
 
 export const useGetRounds = () => {
   const rounds = useSelector((state: State) => state.predictions.rounds)
@@ -128,4 +131,45 @@ export const useGetCurrentRoundLockTimestamp = () => {
   }
 
   return currentRound.lockTimestamp
+}
+
+// Leaderboard
+export const useGetLeaderboardLoadingState = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.loadingState)
+}
+
+export const useGetLeaderboardResults = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.results)
+}
+
+export const useGetLeaderboardFilters = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.filters)
+}
+
+export const useGetLeaderboardSkip = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.skip)
+}
+
+export const useGetLeaderboardHasMoreResults = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.hasMoreResults)
+}
+
+export const useGetAddressResult = (account: string) => {
+  return useSelector((state: State) => state.predictions.leaderboard.addressResults[account])
+}
+
+export const useGetOrFetchLeaderboardAddressResult = (account: string) => {
+  const addressResult = useGetAddressResult(account)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    const address = isAddress(account)
+
+    // If address result is null it means we already tried fetching the results and none came back
+    if (!addressResult && addressResult !== null && address) {
+      dispatch(fetchAddressResult(account))
+    }
+  }, [dispatch, account, addressResult])
+
+  return addressResult
 }

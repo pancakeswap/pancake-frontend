@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styled, { css } from 'styled-components'
-import { ArrowDropDownIcon, Text } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, Box, BoxProps, Text } from '@pancakeswap/uikit'
 
 const DropDownHeader = styled.div`
   width: 100%;
@@ -34,15 +34,16 @@ const DropDownListContainer = styled.div`
   }
 `
 
-const DropDownContainer = styled.div<{ isOpen: boolean; width: number; height: number }>`
+const DropDownContainer = styled(Box)<{ isOpen: boolean }>`
   cursor: pointer;
-  width: ${({ width }) => width}px;
+  width: 100%;
   position: relative;
   background: ${({ theme }) => theme.colors.input};
   border-radius: 16px;
   height: 40px;
   min-width: 136px;
   user-select: none;
+  z-index: 20;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 168px;
@@ -91,9 +92,9 @@ const ListItem = styled.li`
   }
 `
 
-export interface SelectProps {
+export interface SelectProps extends BoxProps {
   options: OptionProps[]
-  onChange?: (option: OptionProps) => void
+  onOptionChange?: (option: OptionProps) => void
 }
 
 export interface OptionProps {
@@ -101,12 +102,10 @@ export interface OptionProps {
   value: any
 }
 
-const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => {
-  const containerRef = useRef(null)
+const Select: React.FunctionComponent<SelectProps> = ({ options, onOptionChange, ...props }) => {
   const dropdownRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0)
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
 
   const toggling = (event: React.MouseEvent<HTMLDivElement>) => {
     setIsOpen(!isOpen)
@@ -117,17 +116,12 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
     setSelectedOptionIndex(selectedIndex)
     setIsOpen(false)
 
-    if (onChange) {
-      onChange(options[selectedIndex])
+    if (onOptionChange) {
+      onOptionChange(options[selectedIndex])
     }
   }
 
   useEffect(() => {
-    setContainerSize({
-      width: dropdownRef.current.offsetWidth, // Consider border
-      height: dropdownRef.current.offsetHeight,
-    })
-
     const handleClickOutside = () => {
       setIsOpen(false)
     }
@@ -139,12 +133,10 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
   }, [])
 
   return (
-    <DropDownContainer isOpen={isOpen} ref={containerRef} {...containerSize}>
-      {containerSize.width !== 0 && (
-        <DropDownHeader onClick={toggling}>
-          <Text>{options[selectedOptionIndex].label}</Text>
-        </DropDownHeader>
-      )}
+    <DropDownContainer isOpen={isOpen} {...props}>
+      <DropDownHeader onClick={toggling}>
+        <Text>{options[selectedOptionIndex].label}</Text>
+      </DropDownHeader>
       <ArrowDropDownIcon color="text" onClick={toggling} />
       <DropDownListContainer>
         <DropDownList ref={dropdownRef}>

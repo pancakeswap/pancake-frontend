@@ -1,14 +1,32 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProfileState } from 'state/types'
 import type { AppDispatch } from 'state'
-import getProfile, { GetProfileResponse } from './getProfile'
+import { Nft } from 'config/constants/types'
+import { getProfile, getProfileAvatar, GetProfileResponse, getUsername } from './helpers'
 
 const initialState: ProfileState = {
   isInitialized: false,
   isLoading: true,
   hasRegistered: false,
   data: null,
+  profileAvatars: {},
 }
+
+export const fetchProfileAvatar = createAsyncThunk<{ account: string; nft: Nft }, string>(
+  'profile/fetchProfileAvatar',
+  async (account) => {
+    const nft = await getProfileAvatar(account)
+    return { account, nft }
+  },
+)
+
+export const fetchProfileUsername = createAsyncThunk<{ account: string; username: string }, string>(
+  'profile/fetchProfileUsername',
+  async (account) => {
+    const username = await getUsername(account)
+    return { account, username }
+  },
+)
 
 export const profileSlice = createSlice({
   name: 'profile',
@@ -17,15 +35,13 @@ export const profileSlice = createSlice({
     profileFetchStart: (state) => {
       state.isLoading = true
     },
-    profileFetchSucceeded: (_state, action: PayloadAction<GetProfileResponse>) => {
+    profileFetchSucceeded: (state, action: PayloadAction<GetProfileResponse>) => {
       const { profile, hasRegistered } = action.payload
 
-      return {
-        isInitialized: true,
-        isLoading: false,
-        hasRegistered,
-        data: profile,
-      }
+      state.isInitialized = true
+      state.isLoading = false
+      state.hasRegistered = hasRegistered
+      state.data = profile
     },
     profileFetchFailed: (state) => {
       state.isLoading = false
@@ -38,6 +54,32 @@ export const profileSlice = createSlice({
     addPoints: (state, action: PayloadAction<number>) => {
       state.data.points += action.payload
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchProfileUsername.fulfilled, (state, action) => {
+      const { account, username } = action.payload
+
+      if (state.profileAvatars[account]) {
+        state.profileAvatars[account] = {
+          ...state.profileAvatars[account],
+          username,
+        }
+      } else {
+        state.profileAvatars[account] = { username, nft: null }
+      }
+    })
+    builder.addCase(fetchProfileAvatar.fulfilled, (state, action) => {
+      const { account, nft } = action.payload
+
+      if (state.profileAvatars[account]) {
+        state.profileAvatars[account] = {
+          ...state.profileAvatars[account],
+          nft,
+        }
+      } else {
+        state.profileAvatars[account] = { username: null, nft }
+      }
+    })
   },
 })
 

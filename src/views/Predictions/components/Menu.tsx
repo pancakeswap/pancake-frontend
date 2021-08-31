@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, HelpIcon, IconButton } from '@pancakeswap/uikit'
+import { Link } from 'react-router-dom'
+import { Flex, HelpIcon, Button, PrizeIcon } from '@pancakeswap/uikit'
 import FlexRow from './FlexRow'
 import { PricePairLabel, TimerLabel } from './Label'
 import PrevNextNav from './PrevNextNav'
@@ -33,12 +34,12 @@ const TimerLabelWrapper = styled.div`
   }
 `
 
-const HistoryButtonWrapper = styled.div`
+const ButtonWrapper = styled.div`
   display: none;
-  order: 3;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    display: initial;
+    display: block;
+    margin-left: 8px;
   }
 `
 
@@ -57,19 +58,25 @@ const Menu = () => {
             <TimerLabel interval="5" unit="m" />
           </TimerLabelWrapper>
           <HelpButtonWrapper>
-            <IconButton
+            <Button
               variant="subtle"
               as="a"
               href="https://docs.pancakeswap.finance/products/prediction"
               target="_blank"
               rel="noreferrer noopener"
+              width="48px"
             >
               <HelpIcon width="24px" color="white" />
-            </IconButton>
+            </Button>
           </HelpButtonWrapper>
-          <HistoryButtonWrapper>
+          <ButtonWrapper style={{ order: 3 }}>
+            <Button as={Link} variant="subtle" to="/prediction/leaderboard" width="48px">
+              <PrizeIcon color="white" />
+            </Button>
+          </ButtonWrapper>
+          <ButtonWrapper style={{ order: 4 }}>
             <HistoryButton />
-          </HistoryButtonWrapper>
+          </ButtonWrapper>
         </Flex>
       </SetCol>
     </FlexRow>

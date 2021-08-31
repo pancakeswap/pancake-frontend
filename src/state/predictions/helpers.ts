@@ -46,44 +46,6 @@ export const numberOrNull = (value: string) => {
   return Number.isNaN(valueNum) ? null : valueNum
 }
 
-export const transformUserResponse = (userResponse: UserResponse): PredictionUser => {
-  const {
-    id,
-    createdAt,
-    updatedAt,
-    block,
-    totalBets,
-    totalBetsBull,
-    totalBetsBear,
-    totalBNB,
-    totalBNBBull,
-    totalBNBBear,
-    totalBetsClaimed,
-    totalBNBClaimed,
-    winRate,
-    averageBNB,
-    netBNB,
-  } = userResponse
-
-  return {
-    id,
-    createdAt: numberOrNull(createdAt),
-    updatedAt: numberOrNull(updatedAt),
-    block: numberOrNull(block),
-    totalBets: numberOrNull(totalBets),
-    totalBetsBull: numberOrNull(totalBetsBull),
-    totalBetsBear: numberOrNull(totalBetsBear),
-    totalBNB: totalBNB ? parseFloat(totalBNB) : 0,
-    totalBNBBull: totalBNBBull ? parseFloat(totalBNBBull) : 0,
-    totalBNBBear: totalBNBBear ? parseFloat(totalBNBBear) : 0,
-    totalBetsClaimed: numberOrNull(totalBetsClaimed),
-    totalBNBClaimed: totalBNBClaimed ? parseFloat(totalBNBClaimed) : 0,
-    winRate: winRate ? parseFloat(winRate) : 0,
-    averageBNB: averageBNB ? parseFloat(averageBNB) : 0,
-    netBNB: netBNB ? parseFloat(netBNB) : 0,
-  }
-}
-
 const getRoundPosition = (positionResponse: string) => {
   if (positionResponse === 'Bull') {
     return BetPosition.BULL
@@ -126,6 +88,44 @@ export const transformBetResponse = (betResponse: BetResponse): Bet => {
   }
 
   return bet
+}
+
+export const transformUserResponse = (userResponse: UserResponse): PredictionUser => {
+  const {
+    id,
+    createdAt,
+    updatedAt,
+    block,
+    totalBets,
+    totalBetsBull,
+    totalBetsBear,
+    totalBNB,
+    totalBNBBull,
+    totalBNBBear,
+    totalBetsClaimed,
+    totalBNBClaimed,
+    winRate,
+    averageBNB,
+    netBNB,
+  } = userResponse
+
+  return {
+    id,
+    createdAt: numberOrNull(createdAt),
+    updatedAt: numberOrNull(updatedAt),
+    block: numberOrNull(block),
+    totalBets: numberOrNull(totalBets),
+    totalBetsBull: numberOrNull(totalBetsBull),
+    totalBetsBear: numberOrNull(totalBetsBear),
+    totalBNB: totalBNB ? parseFloat(totalBNB) : 0,
+    totalBNBBull: totalBNBBull ? parseFloat(totalBNBBull) : 0,
+    totalBNBBear: totalBNBBear ? parseFloat(totalBNBBear) : 0,
+    totalBetsClaimed: numberOrNull(totalBetsClaimed),
+    totalBNBClaimed: totalBNBClaimed ? parseFloat(totalBNBClaimed) : 0,
+    winRate: winRate ? parseFloat(winRate) : 0,
+    averageBNB: averageBNB ? parseFloat(averageBNB) : 0,
+    netBNB: netBNB ? parseFloat(netBNB) : 0,
+  }
 }
 
 export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
@@ -231,13 +231,9 @@ export const getTotalWon = async (): Promise<number> => {
   return Math.max(totalBNB - totalBNBTreasury, 0)
 }
 
-type BetHistoryWhereClause = Record<string, string | number | boolean | string[]>
+type WhereClause = Record<string, string | number | boolean | string[]>
 
-export const getBetHistory = async (
-  where: BetHistoryWhereClause = {},
-  first = 1000,
-  skip = 0,
-): Promise<BetResponse[]> => {
+export const getBetHistory = async (where: WhereClause = {}, first = 1000, skip = 0): Promise<BetResponse[]> => {
   const response = await request(
     GRAPH_API_PREDICTION,
     gql`
@@ -281,7 +277,6 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
   return response.bet
 }
 
-// V2 REFACTOR
 export const getLedgerData = async (account: string, epochs: number[]) => {
   const address = getPredictionsAddress()
   const ledgerCalls = epochs.map((epoch) => ({
@@ -291,6 +286,56 @@ export const getLedgerData = async (account: string, epochs: number[]) => {
   }))
   const response = await multicallv2<PredictionsLedgerResponse[]>(predictionsAbi, ledgerCalls)
   return response
+}
+
+export const LEADERBOARD_RESULTS_PER_PAGE = 20
+
+interface GetPredictionUsersOptions {
+  skip?: number
+  first?: number
+  orderBy?: string
+  orderDir?: string
+  where?: WhereClause
+}
+
+const defaultPredictionUserOptions = {
+  skip: 0,
+  first: LEADERBOARD_RESULTS_PER_PAGE,
+  orderBy: 'createdAt',
+  orderDir: 'desc',
+}
+
+export const getPredictionUsers = async (options: GetPredictionUsersOptions = {}): Promise<UserResponse[]> => {
+  const { first, skip, where, orderBy, orderDir } = { ...defaultPredictionUserOptions, ...options }
+  const response = await request(
+    GRAPH_API_PREDICTION,
+    gql`
+      query getUsers($first: Int!, $skip: Int!, $where: User_filter, $orderBy: User_orderBy, $orderDir: OrderDirection) {
+        users(first: $first, skip: $skip, where: $where, orderBy: $orderBy, orderDirection: $orderDir) {
+          ${getUserBaseFields()} 
+        }
+      }
+    `,
+    { first, skip, where, orderBy, orderDir },
+  )
+  return response.users
+}
+
+export const getPredictionUser = async (account: string): Promise<UserResponse> => {
+  const response = await request(
+    GRAPH_API_PREDICTION,
+    gql`
+      query getUser($id: ID!) {
+        user(id: $id) {
+          ${getUserBaseFields()}
+        }
+      }
+  `,
+    {
+      id: account.toLowerCase(),
+    },
+  )
+  return response.user
 }
 
 export const getClaimStatuses = async (
