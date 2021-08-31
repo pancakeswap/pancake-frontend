@@ -1806,5 +1806,21 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x758d08864fB6cCE3062667225ca10b8F00496cc2.png"
+  },
+  {
+    "name": "Qubit Token",
+    "symbol": "QBT",
+    "address": "0x17B7163cf1Dbd286E262ddc68b553D899B93f526",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x17B7163cf1Dbd286E262ddc68b553D899B93f526.png"
+  },
+  {
+    "name": "Bondly",
+    "symbol": "BONDLY",
+    "address": "0x5D0158A5c3ddF47d4Ea4517d8DB0D76aA2e87563",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x5D0158A5c3ddF47d4Ea4517d8DB0D76aA2e87563.png"
   }
 ]

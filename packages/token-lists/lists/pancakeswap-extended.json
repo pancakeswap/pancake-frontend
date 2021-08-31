@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-08-26T08:17:09.884Z",
+  "timestamp": "2021-08-31T07:51:47.237Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 20
+    "patch": 21
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -299,6 +299,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x4131b87F74415190425ccD873048C708F8005823.png"
+    },
+    {
+      "name": "Bondly",
+      "symbol": "BONDLY",
+      "address": "0x5D0158A5c3ddF47d4Ea4517d8DB0D76aA2e87563",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x5D0158A5c3ddF47d4Ea4517d8DB0D76aA2e87563.png"
     },
     {
       "name": "OPEN Governance Token",
@@ -1259,6 +1267,14 @@
       "chainId": 56,
       "decimals": 2,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xBc5609612b7C44BEf426De600B5fd1379DB2EcF1.png"
+    },
+    {
+      "name": "Qubit Token",
+      "symbol": "QBT",
+      "address": "0x17B7163cf1Dbd286E262ddc68b553D899B93f526",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x17B7163cf1Dbd286E262ddc68b553D899B93f526.png"
     },
     {
       "name": "QuarkChain Token",
