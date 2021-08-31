@@ -24,36 +24,42 @@ export interface BigNumberToJson {
 
 export type SerializedBigNumber = string
 
-interface FarmUserDataProps {
+interface SerializedFarmUserData {
   allowance: string
   tokenBalance: string
   stakedBalance: string
   earnings: string
 }
 
-export interface SerializedFarm extends SerializedFarmConfig {
-  tokenAmountMc?: SerializedBigNumber
-  quoteTokenAmountMc?: SerializedBigNumber
-  tokenAmountTotal?: SerializedBigNumber
-  quoteTokenAmountTotal?: SerializedBigNumber
-  lpTotalInQuoteToken?: SerializedBigNumber
-  lpTotalSupply?: SerializedBigNumber
-  tokenPriceVsQuote?: SerializedBigNumber
-  poolWeight?: SerializedBigNumber
-  userData?: FarmUserDataProps
+export interface DeserializedFarmUserData {
+  allowance: BigNumber
+  tokenBalance: BigNumber
+  stakedBalance: BigNumber
+  earnings: BigNumber
 }
 
-// TODO: Deserialize all this shit
-export interface DeserializedFarm extends DeserializedFarmConfig {
+export interface SerializedFarm extends SerializedFarmConfig {
+  tokenAmountTotal?: SerializedBigNumber
   tokenAmountMc?: SerializedBigNumber
   quoteTokenAmountMc?: SerializedBigNumber
-  tokenAmountTotal?: SerializedBigNumber
   quoteTokenAmountTotal?: SerializedBigNumber
   lpTotalInQuoteToken?: SerializedBigNumber
   lpTotalSupply?: SerializedBigNumber
   tokenPriceVsQuote?: SerializedBigNumber
   poolWeight?: SerializedBigNumber
-  userData?: FarmUserDataProps
+  userData?: SerializedFarmUserData
+}
+
+export interface DeserializedFarm extends DeserializedFarmConfig {
+  tokenAmountTotal?: BigNumber
+  tokenAmountMc?: BigNumber
+  quoteTokenAmountMc?: BigNumber
+  quoteTokenAmountTotal?: BigNumber
+  lpTotalInQuoteToken?: BigNumber
+  lpTotalSupply?: BigNumber
+  tokenPriceVsQuote?: BigNumber
+  poolWeight?: BigNumber
+  userData?: DeserializedFarmUserData
 }
 
 interface CorePoolProps {
