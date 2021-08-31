@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "No hay nada que recoger",
   "From round %round%": "De la ronda %round%",
   "From rounds %rounds%": "De las rondas %rounds%",
-  "View More": "Ver más"
+  "View More": "Ver más",
+  "User": "User",
+  "Net Winnings (BNB)": "Net Winnings (BNB)",
+  "Win Rate": "Win Rate",
+  "Rounds Won": "Rounds Won",
+  "Rank By": "Rank By",
+  "Net Winnings": "Net Winnings",
+  "Total BNB": "Total BNB",
+  "%num%m": "%num%m",
+  "Rounds Played": "Rounds Played",
+  "Winnings (BNB)": "Winnings (BNB)",
+  "Direction": "Direction",
+  "My Rankings": "My Rankings",
+  "View Stats": "View Stats",
+  "Last %num% Bets": "Last %num% Bets",
+  "Search %subject%": "Search %subject%",
+  "Address": "Address"
 }
