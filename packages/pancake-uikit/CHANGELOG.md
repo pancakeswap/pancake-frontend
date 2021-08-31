@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.50.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.49.2...@pancakeswap/uikit@0.50.0) (2021-08-31)
+
+
+### Features
+
+* Translation support for connect and account modal ([#257](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/257)) ([6d97f2e](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/6d97f2eeba94d4373385f6a1ace6f9f837e8db31))
+
+
+
+
+
 ## [0.49.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.49.1...@pancakeswap/uikit@0.49.2) (2021-08-27)
 
 **Note:** Version bump only for package @pancakeswap/uikit
