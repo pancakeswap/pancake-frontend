@@ -1,16 +1,16 @@
 import { Token } from '@pancakeswap/sdk'
-import { DeserializedTokenWithPrice, SerializedToken, SerializedTokenWithPrice } from 'config/constants/types'
+import { DeserializedTokenWithPrice, SerializedToken } from 'config/constants/types'
 import { parseUnits } from 'ethers/lib/utils'
 
 // TODO: Fix Types here - remove SerializedTokenWithPrice when Farms typing is fixed
-export function serializeToken(token: Token | DeserializedTokenWithPrice | SerializedTokenWithPrice): SerializedToken {
+export function serializeToken(token: Token | DeserializedTokenWithPrice): SerializedToken {
   return {
     chainId: token.chainId,
     address: token.address,
     decimals: token.decimals,
     symbol: token.symbol,
     name: token.name,
-    // TODO: Add projectLink
+    projectLink: token.projectLink,
   }
 }
 
@@ -21,7 +21,7 @@ export function deserializeToken(serializedToken: SerializedToken): Token {
     serializedToken.decimals,
     serializedToken.symbol,
     serializedToken.name,
-    // TODO: Add projectLink
+    serializedToken.projectLink,
   )
 }
 

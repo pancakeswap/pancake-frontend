@@ -20,7 +20,7 @@ export interface SerializedToken {
   decimals: number
   symbol?: string
   name?: string
-  // TODO: Add projectLink
+  projectLink?: string
 }
 
 export interface SerializedTokenWithPrice extends SerializedToken {

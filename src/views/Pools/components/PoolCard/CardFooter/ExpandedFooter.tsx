@@ -155,12 +155,11 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           {t('See Token Info')}
         </LinkExternal>
       </Flex>
-      {/* TODO: Uncomment when SDK entity with projectLink added */}
-      {/* <Flex mb="2px" justifyContent="flex-end">
+      <Flex mb="2px" justifyContent="flex-end">
         <LinkExternal href={earningToken.projectLink} bold={false} small>
           {t('View Project Site')}
         </LinkExternal>
-      </Flex> */}
+      </Flex>
       {poolContractAddress && (
         <Flex mb="2px" justifyContent="flex-end">
           <LinkExternal

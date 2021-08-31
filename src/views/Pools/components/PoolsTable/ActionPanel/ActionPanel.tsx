@@ -255,12 +255,11 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
             {t('See Token Info')}
           </LinkExternal>
         </Flex>
-        {/* TODO: Uncomment when SDK entity with projectLink added */}
-        {/* <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
           <LinkExternal href={earningToken.projectLink} bold={false}>
             {t('View Project Site')}
           </LinkExternal>
-        </Flex> */}
+        </Flex>
         {poolContractAddress && (
           <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
             <LinkExternal
