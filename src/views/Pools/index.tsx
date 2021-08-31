@@ -11,7 +11,13 @@ import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import usePersistState from 'hooks/usePersistState'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
-import { useFetchPublicPoolsData, usePools, useFetchCakeVault, useCakeVault } from 'state/pools/hooks'
+import {
+  useFetchPublicPoolsData,
+  usePools,
+  useFetchUserPools,
+  useFetchCakeVault,
+  useCakeVault,
+} from 'state/pools/hooks'
 import { usePollFarmsPublicData } from 'state/farms/hooks'
 import { latinise } from 'utils/latinise'
 import FlexLayout from 'components/Layout/Flex'
@@ -82,7 +88,7 @@ const Pools: React.FC = () => {
   const location = useLocation()
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools(account)
+  const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools()
   const [stakedOnly, setStakedOnly] = usePersistState(false, { localStorageKey: 'pancake_pool_staked' })
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { observerRef, isIntersecting } = useIntersectionObserver()
@@ -132,6 +138,7 @@ const Pools: React.FC = () => {
   usePollFarmsPublicData()
   useFetchCakeVault()
   useFetchPublicPoolsData()
+  useFetchUserPools(account)
 
   useEffect(() => {
     if (isIntersecting) {

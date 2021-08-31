@@ -2,11 +2,10 @@ import { useState, useEffect, useMemo } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
 import { orderBy } from 'lodash'
-import { Pool, State } from 'state/types'
+import { Pool } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
 import { simpleRpcProvider } from 'utils/providers'
-import { useSelector } from 'react-redux'
-import { useCakeVault } from 'state/pools/hooks'
+import { useCakeVault, usePools } from 'state/pools/hooks'
 import { getAprData } from 'views/Pools/helpers'
 
 enum FetchStatus {
@@ -18,10 +17,7 @@ enum FetchStatus {
 
 const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
-  const { pools: poolsWithoutAutoVault } = useSelector((state: State) => ({
-    pools: state.pools.data,
-    userDataLoaded: state.pools.userDataLoaded,
-  }))
+  const { pools: poolsWithoutAutoVault } = usePools()
   const {
     fees: { performanceFee },
   } = useCakeVault()

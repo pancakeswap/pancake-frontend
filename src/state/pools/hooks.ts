@@ -31,7 +31,7 @@ export const useFetchPublicPoolsData = () => {
   }, [dispatch, slowRefresh])
 }
 
-export const usePools = (account): { pools: Pool[]; userDataLoaded: boolean } => {
+export const useFetchUserPools = (account) => {
   const { fastRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -39,7 +39,9 @@ export const usePools = (account): { pools: Pool[]; userDataLoaded: boolean } =>
       dispatch(fetchPoolsUserDataAsync(account))
     }
   }, [account, dispatch, fastRefresh])
+}
 
+export const usePools = (): { pools: Pool[]; userDataLoaded: boolean } => {
   const { pools, userDataLoaded } = useSelector((state: State) => ({
     pools: state.pools.data,
     userDataLoaded: state.pools.userDataLoaded,

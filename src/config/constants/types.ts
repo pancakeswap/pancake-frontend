@@ -103,7 +103,20 @@ export interface FarmConfig extends FarmConfigGenerics {
 //   quoteToken: SerializedTokenWithPrice
 // }
 
-export interface PoolConfig {
+export interface SerializedPoolConfig {
+  sousId: number
+  earningToken: SerializedToken
+  stakingToken: SerializedToken
+  contractAddress: Address
+  poolCategory: PoolCategory
+  tokenPerBlock: string
+  sortOrder?: number
+  harvest?: boolean
+  isFinished?: boolean
+  enableEmergencyWithdraw?: boolean
+}
+
+export interface DeserializedPoolConfig {
   sousId: number
   earningToken: SDKToken
   stakingToken: SDKToken
