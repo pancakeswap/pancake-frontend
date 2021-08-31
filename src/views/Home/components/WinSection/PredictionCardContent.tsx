@@ -6,7 +6,7 @@ import { formatLocalisedCompactNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { getTotalWon } from 'state/predictions/helpers'
-import { usePriceBnbBusd } from 'state/farms/hooks'
+import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 
 const StyledLink = styled(Link)`
   width: 100%;
@@ -17,9 +17,11 @@ const PredictionCardContent = () => {
   const { slowRefresh } = useRefresh()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const bnbBusdPrice = usePriceBnbBusd()
+  const bnbBusdPrice = useBNBBusdPrice()
   const [bnbWon, setBnbWon] = useState(0)
-  const [bnbWonInUsd, setBnbWonInUsd] = useState(0)
+
+  const bnbPriceAsFloat = bnbBusdPrice ? parseFloat(bnbBusdPrice.toSignificant(9)) : 0
+  const bnbWonInUsd = bnbWon * bnbPriceAsFloat
 
   const localisedBnbUsdString = formatLocalisedCompactNumber(bnbWonInUsd)
   const bnbWonText = t('$%bnbWonInUsd% in BNB won so far', { bnbWonInUsd: localisedBnbUsdString })
@@ -41,12 +43,6 @@ const PredictionCardContent = () => {
       fetchMarketData()
     }
   }, [slowRefresh, loadData])
-
-  useEffect(() => {
-    if (bnbBusdPrice.gt(0) && bnbWon > 0) {
-      setBnbWonInUsd(bnbBusdPrice.times(bnbWon).toNumber())
-    }
-  }, [bnbBusdPrice, bnbWon])
 
   return (
     <>

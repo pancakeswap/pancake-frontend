@@ -18,11 +18,11 @@ import {
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
-import { usePriceBnbBusd } from 'state/farms/hooks'
 import { REWARD_RATE } from 'state/predictions/config'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { Bet } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
+import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -80,10 +80,11 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
   const { toastSuccess, toastError } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract()
-  const bnbBusdPrice = usePriceBnbBusd()
+  const bnbBusdPrice = useBNBBusdPrice()
   const dispatch = useAppDispatch()
   const isLoadingHistory = useGetIsFetchingHistory()
   const history = useGetHistory()
+  const bnbBusdPriceAsFloat = bnbBusdPrice ? parseFloat(bnbBusdPrice.toSignificant(9)) : 0
 
   const { epochs, total } = calculateClaimableRounds(history)
 
@@ -150,7 +151,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
           <Box style={{ textAlign: 'right' }}>
             <Text>{`${total.toFixed(4)} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
-              {`~$${bnbBusdPrice.times(total).toFormat(2)}`}
+              {`~$${(bnbBusdPriceAsFloat * total).toFixed(2)}`}
             </Text>
           </Box>
         </Flex>
