@@ -306,6 +306,18 @@ const nfts: Nft[] = [
     rarity: 'Rare',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 25,
+    name: 'The Inevitable Ape',
+    symbol: 'INEVITABLE',
+    description: 'Welcome to the Jungle.',
+    address: '0x1443f5Cb7F3128a9c09289dD48B41d200e0BE590',
+    totalSupply: BIG_ZERO,
+    path: 'https://storage.googleapis.com/rug-zombie/ApeSwap-min.png',
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts
