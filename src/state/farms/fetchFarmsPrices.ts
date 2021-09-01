@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { BIG_ONE, BIG_ZERO } from 'utils/bigNumber'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
 import { SerializedFarm } from 'state/types'
-import tokens from 'config/constants/newTokens'
+import tokens from 'config/constants/tokens'
 
 const getFarmFromTokenSymbol = (
   farms: SerializedFarm[],

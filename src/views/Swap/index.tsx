@@ -7,7 +7,6 @@ import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
-import { getAddress } from 'utils/addressHelpers'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Layout/Column'
@@ -224,8 +223,7 @@ export default function Swap({ history }: RouteComponentProps) {
   const shouldShowSwapWarning = (swapCurrency) => {
     const isWarningToken = Object.entries(SwapWarningTokens).find((warningTokenConfig) => {
       const warningTokenData = warningTokenConfig[1]
-      const warningTokenAddress = getAddress(warningTokenData.address)
-      return swapCurrency.address === warningTokenAddress
+      return swapCurrency.address === warningTokenData.address
     })
     return Boolean(isWarningToken)
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { TokenPairImage, ImageProps } from '@pancakeswap/uikit'
-import { mainnetTokens } from 'config/constants/newTokens'
+import { mainnetTokens } from 'config/constants/tokens'
 
 const CakeVaultTokenPairImage: React.FC<Omit<ImageProps, 'src'>> = (props) => {
   const primaryTokenSrc = `/images/tokens/${mainnetTokens.cake.address}.svg`

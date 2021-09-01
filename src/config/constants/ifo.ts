@@ -1,5 +1,5 @@
 import { Token, ChainId } from '@pancakeswap/sdk'
-import tokens from './newTokens'
+import tokens from './tokens'
 import farms from './farms'
 import { Ifo } from './types'
 

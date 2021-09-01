@@ -1,5 +1,5 @@
 import { Token as SDKToken, Pair, ChainId } from '@pancakeswap/sdk'
-import tokens from './newTokens'
+import tokens from './tokens'
 import { FarmAuctionBidderConfig } from './types'
 
 const getLpAddress = (token: string, quoteToken: SDKToken) => {

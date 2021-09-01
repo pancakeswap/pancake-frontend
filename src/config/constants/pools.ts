@@ -1,4 +1,4 @@
-import { serializeTokens } from './newTokens'
+import { serializeTokens } from './tokens'
 import { SerializedPoolConfig, PoolCategory } from './types'
 
 const serializedTokens = serializeTokens()
