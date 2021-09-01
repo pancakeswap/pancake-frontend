@@ -85,14 +85,10 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract()
 
-  // Convert bnb balance to ethers.BigNumber
-  const bnbBalanceAsBn = useMemo(() => {
-    return ethers.BigNumber.from(bnbBalance.toString())
-  }, [bnbBalance])
   const maxBalance = useMemo(() => {
-    return bnbBalanceAsBn.gt(dust) ? bnbBalanceAsBn.sub(dust) : dust
-  }, [bnbBalanceAsBn])
-  const balanceDisplay = formatBigNumber(bnbBalanceAsBn)
+    return bnbBalance.gt(dust) ? bnbBalance.sub(dust) : dust
+  }, [bnbBalance])
+  const balanceDisplay = formatBigNumber(bnbBalance)
 
   const valueAsBn = getValueAsEthersBn(value)
   const showFieldWarning = account && valueAsBn.gt(0) && errorMessage !== null
