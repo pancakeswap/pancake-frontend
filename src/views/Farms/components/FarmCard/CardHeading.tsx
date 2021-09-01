@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Tag, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
-import { SerializedTokenWithPrice } from 'config/constants/types'
+import { SerializedToken } from 'config/constants/types'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import { TokenPairImage } from 'components/TokenImage'
 
@@ -9,8 +9,8 @@ export interface ExpandableSectionProps {
   lpLabel?: string
   multiplier?: string
   isCommunityFarm?: boolean
-  token: SerializedTokenWithPrice
-  quoteToken: SerializedTokenWithPrice
+  token: SerializedToken
+  quoteToken: SerializedToken
 }
 
 const Wrapper = styled(Flex)`

@@ -46,8 +46,8 @@ const pools: SerializedPoolConfig[] = [
   },
   {
     sousId: 216,
-    stakingToken: tokens.cake,
-    earningToken: tokens.cvp,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.cvp,
     contractAddress: {
       97: '',
       56: '0xC4b15117BC0be030c20754FF36197641477af5d1',
@@ -59,8 +59,8 @@ const pools: SerializedPoolConfig[] = [
   },
   {
     sousId: 215,
-    stakingToken: tokens.cake,
-    earningToken: tokens.qbt,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.qbt,
     contractAddress: {
       97: '',
       56: '0xB72dEf58D0832f747d6B7197471Fe20AeA7EB463',

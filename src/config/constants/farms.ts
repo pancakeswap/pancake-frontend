@@ -67,8 +67,8 @@ const farms: SerializedFarmConfig[] = [
       97: '',
       56: '0x5B0A3b98C2f01741A11E57A9d0595B254E62F9F2',
     },
-    token: tokens.bscdefi,
-    quoteToken: tokens.wbnb,
+    token: serializedTokens.bscdefi,
+    quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 453,
@@ -77,8 +77,8 @@ const farms: SerializedFarmConfig[] = [
       97: '',
       56: '0x67EFeF66A55c4562144B9AcfCFbc62F9E4269b3e',
     },
-    token: tokens.qbt,
-    quoteToken: tokens.wbnb,
+    token: serializedTokens.qbt,
+    quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 452,

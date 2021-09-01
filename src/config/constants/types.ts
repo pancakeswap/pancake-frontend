@@ -23,14 +23,6 @@ export interface SerializedToken {
   projectLink?: string
 }
 
-export interface SerializedTokenWithPrice extends SerializedToken {
-  busdPrice?: string
-}
-
-export interface DeserializedTokenWithPrice extends SDKToken {
-  busdPrice?: string
-}
-
 export enum PoolIds {
   poolBasic = 'poolBasic',
   poolUnlimited = 'poolUnlimited',
@@ -82,13 +74,13 @@ interface FarmConfigBaseProps {
 }
 
 export interface SerializedFarmConfig extends FarmConfigBaseProps {
-  token: SerializedTokenWithPrice
-  quoteToken: SerializedTokenWithPrice
+  token: SerializedToken
+  quoteToken: SerializedToken
 }
 
 export interface DeserializedFarmConfig extends FarmConfigBaseProps {
-  token: DeserializedTokenWithPrice
-  quoteToken: DeserializedTokenWithPrice
+  token: SDKToken
+  quoteToken: SDKToken
 }
 
 interface PoolConfigBaseProps {

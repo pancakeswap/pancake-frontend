@@ -7,10 +7,7 @@ import multicall from 'utils/multicall'
 import { SerializedFarm, SerializedBigNumber } from '../types'
 
 type PublicFarmData = {
-  tokenAmountMc: SerializedBigNumber
-  quoteTokenAmountMc: SerializedBigNumber
   tokenAmountTotal: SerializedBigNumber
-  quoteTokenAmountTotal: SerializedBigNumber
   lpTotalInQuoteToken: SerializedBigNumber
   lpTotalSupply: SerializedBigNumber
   tokenPriceVsQuote: SerializedBigNumber
@@ -67,8 +64,7 @@ const fetchFarm = async (farm: SerializedFarm): Promise<PublicFarmData> => {
   const tokenAmountTotal = new BigNumber(tokenBalanceLP).div(BIG_TEN.pow(tokenDecimals))
   const quoteTokenAmountTotal = new BigNumber(quoteTokenBalanceLP).div(BIG_TEN.pow(quoteTokenDecimals))
 
-  // Amount of token in the LP that are staked in the MC (i.e amount of token * lp ratio)
-  const tokenAmountMc = tokenAmountTotal.times(lpTokenRatio)
+  // Amount of quoteToken in the LP that are staked in the MC
   const quoteTokenAmountMc = quoteTokenAmountTotal.times(lpTokenRatio)
 
   // Total staked in LP, in quote token value
@@ -94,10 +90,7 @@ const fetchFarm = async (farm: SerializedFarm): Promise<PublicFarmData> => {
   const poolWeight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : BIG_ZERO
 
   return {
-    tokenAmountMc: tokenAmountMc.toJSON(),
-    quoteTokenAmountMc: quoteTokenAmountMc.toJSON(),
     tokenAmountTotal: tokenAmountTotal.toJSON(),
-    quoteTokenAmountTotal: quoteTokenAmountTotal.toJSON(),
     lpTotalSupply: new BigNumber(lpTotalSupply).toJSON(),
     lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
     tokenPriceVsQuote: quoteTokenAmountTotal.div(tokenAmountTotal).toJSON(),

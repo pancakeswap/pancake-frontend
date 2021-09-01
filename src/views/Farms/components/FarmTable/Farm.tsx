@@ -4,14 +4,14 @@ import { useFarmUser } from 'state/farms/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { SerializedTokenWithPrice } from 'config/constants/types'
+import { SerializedToken } from 'config/constants/types'
 import { TokenPairImage } from 'components/TokenImage'
 
 export interface FarmProps {
   label: string
   pid: number
-  token: SerializedTokenWithPrice
-  quoteToken: SerializedTokenWithPrice
+  token: SerializedToken
+  quoteToken: SerializedToken
 }
 
 const Container = styled.div`

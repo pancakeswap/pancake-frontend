@@ -6,14 +6,14 @@ import {
   ImageProps,
 } from '@pancakeswap/uikit'
 import tokens from 'config/constants/newTokens'
-import { SerializedTokenWithPrice } from 'config/constants/types'
+import { SerializedToken } from 'config/constants/types'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
-  primaryToken: SerializedTokenWithPrice
-  secondaryToken: SerializedTokenWithPrice
+  primaryToken: SerializedToken
+  secondaryToken: SerializedToken
 }
 
-const getImageUrlFromToken = (token: SerializedTokenWithPrice) => {
+const getImageUrlFromToken = (token: SerializedToken) => {
   const address = token.symbol === 'BNB' ? tokens.wbnb.address : token.address
   return `/images/tokens/${address}.svg`
 }
@@ -29,7 +29,7 @@ export const TokenPairImage: React.FC<TokenPairImageProps> = ({ primaryToken, se
 }
 
 interface TokenImageProps extends ImageProps {
-  token: SerializedTokenWithPrice
+  token: SerializedToken
 }
 
 export const TokenImage: React.FC<TokenImageProps> = ({ token, ...props }) => {
