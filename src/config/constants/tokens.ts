@@ -98,7 +98,7 @@ const tokens = {
       97: '',
     },
     decimals: 18,
-    projectLink: 'http://powerpool.finance/',
+    projectLink: 'https://powerpool.finance/',
   },
   pha: {
     symbol: 'PHA',
