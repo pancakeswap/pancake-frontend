@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "回収するものはありません",
   "From round %round%": "ラウンド%round%から",
   "From rounds %rounds%": "ラウンド%rounds%から",
-  "View More": "詳細を表示"
+  "View More": "詳細を表示",
+  "User": "ユーザー",
+  "Net Winnings (BNB)": "最終当選額（BNB）",
+  "Win Rate": "勝率",
+  "Rounds Won": "ラウンド（当選）",
+  "Rank By": "ランク基準",
+  "Net Winnings": "最終当選額",
+  "Total BNB": "合計BNB",
+  "%num%m": "%num%分",
+  "Rounds Played": "ラウンド（プレイ済み）",
+  "Winnings (BNB)": "当選（BNB）",
+  "Direction": "方向",
+  "My Rankings": "自分のランキング",
+  "View Stats": "スタッツを表示",
+  "Last %num% Bets": "最終%num%ベット",
+  "Search %subject%": "%subject%を検索",
+  "Address": "アドレス"
 }

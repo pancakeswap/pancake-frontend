@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "Tidak Ada yang Dapat Diambil",
   "From round %round%": "Dari putaran %round%",
   "From rounds %rounds%": "Dari putaran %rounds%",
-  "View More": "Lihat Lebih Banyak"
+  "View More": "Lihat Lebih Banyak",
+  "User": "Pengguna",
+  "Net Winnings (BNB)": "Hadiah Bersih (BNB)",
+  "Win Rate": "Kurs Kemenangan",
+  "Rounds Won": "Putaran Menang",
+  "Rank By": "Peringkat",
+  "Net Winnings": "Hadiah Bersih",
+  "Total BNB": "Total BNB",
+  "%num%m": "%num%m",
+  "Rounds Played": "Putaran Dimainkan",
+  "Winnings (BNB)": "Hadiah (BNB)",
+  "Direction": "Arah",
+  "My Rankings": "Peringkat Saya",
+  "View Stats": "Lihat Stat",
+  "Last %num% Bets": "%num% Taruhan Terakhir",
+  "Search %subject%": "Cari %subject%",
+  "Address": "Alamat"
 }

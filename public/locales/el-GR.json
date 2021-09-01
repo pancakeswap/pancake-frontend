@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "Δεν υπάρχει τίποτα για συλλογή",
   "From round %round%": "Από τον γύρο %round%",
   "From rounds %rounds%": "Από τους γύρους %rounds%",
-  "View More": "View More"
+  "View More": "Περισσότερα",
+  "User": "Χρήστης",
+  "Net Winnings (BNB)": "Καθαρά κέρδη (BNB)",
+  "Win Rate": "Ποσοστό επιτυχίας",
+  "Rounds Won": "Κερδισμένοι γύροι",
+  "Rank By": "Κατάταξη κατά",
+  "Net Winnings": "Καθαρά κέρδη",
+  "Total BNB": "Σύνολο BNB",
+  "%num%m": "%num%m",
+  "Rounds Played": "Ολοκληρωμένοι γύροι",
+  "Winnings (BNB)": "Κέρδη (BNB)",
+  "Direction": "Κατεύθυνση",
+  "My Rankings": "Οι Κατατάξεις μου",
+  "View Stats": "Προβολή στατιστικών",
+  "Last %num% Bets": "Τελευταία %num% Στοιχήματα",
+  "Search %subject%": "Αναζήτηση %subject%",
+  "Address": "Διεύθυνση"
 }

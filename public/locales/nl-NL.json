@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "Niets op te halen",
   "From round %round%": "Van ronde %round%",
   "From rounds %rounds%": "Van rondes %rounds%",
-  "View More": "Meer bekijken"
+  "View More": "Meer bekijken",
+  "User": "Gebruiker",
+  "Net Winnings (BNB)": "Nettowinst (BNB)",
+  "Win Rate": "Winstpercentage",
+  "Rounds Won": "Gewonnen rondes",
+  "Rank By": "Rangschikken volgens",
+  "Net Winnings": "Nettowinst",
+  "Total BNB": "Totaal BNB",
+  "%num%m": "%num%m",
+  "Rounds Played": "Gespeelde rondes",
+  "Winnings (BNB)": "Winst (BNB)",
+  "Direction": "Richting",
+  "My Rankings": "Mijn rangschikkingen",
+  "View Stats": "Statistieken bekijken",
+  "Last %num% Bets": "Laatste %num% weddenschappen",
+  "Search %subject%": "%subject% zoeken",
+  "Address": "Adres"
 }

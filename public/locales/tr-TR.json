@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "Tahsil Edilecek Bir Şey Yok",
   "From round %round%": "Şu turdan: %round%",
   "From rounds %rounds%": "Şu turlardan: %rounds%",
-  "View More": "View More"
+  "View More": "Daha Fazlasını Görüntüle",
+  "User": "Kullanıcı",
+  "Net Winnings (BNB)": "Yeni Kazançlar (BNB)",
+  "Win Rate": "Kazanç Oranı",
+  "Rounds Won": "Kazanılan Turlar",
+  "Rank By": "Sırala",
+  "Net Winnings": "Net Kazançlar",
+  "Total BNB": "Toplam BNB",
+  "%num%m": "%num%m",
+  "Rounds Played": "Oynanan Turlar",
+  "Winnings (BNB)": "Kazançlar (BNB)",
+  "Direction": "Yön",
+  "My Rankings": "Sıralamam",
+  "View Stats": "İstatistikleri Görüntüle",
+  "Last %num% Bets": "Son %num% Bahis",
+  "Search %subject%": "%subject% ara",
+  "Address": "Adres"
 }

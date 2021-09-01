@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "Nie ma czego odebrać",
   "From round %round%": "Z rundy %round%",
   "From rounds %rounds%": "Z rund %rounds%",
-  "View More": "Wyświetl więcej"
+  "View More": "Wyświetl więcej",
+  "User": "Użytkownik",
+  "Net Winnings (BNB)": "Wygrane netto (BNB)",
+  "Win Rate": "Kurs wygranej",
+  "Rounds Won": "Wygrane rundy",
+  "Rank By": "Pozycja wg",
+  "Net Winnings": "Wygrane netto",
+  "Total BNB": "Łącznie BNB",
+  "%num%m": "%num%m",
+  "Rounds Played": "Rozegrane rundy",
+  "Winnings (BNB)": "Wygrane (BNB)",
+  "Direction": "Kierunek",
+  "My Rankings": "Moje rankingi",
+  "View Stats": "Wyświetl statystyki",
+  "Last %num% Bets": "Ostatnie oferty (%num%)",
+  "Search %subject%": "Wyszukaj %subject%",
+  "Address": "Adres"
 }

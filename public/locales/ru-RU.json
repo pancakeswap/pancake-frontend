@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "Забирать нечего",
   "From round %round%": "От раунда %round%",
   "From rounds %rounds%": "От раундов %rounds%",
-  "View More": "View More"
+  "View More": "Смотреть еще",
+  "User": "Пользователь",
+  "Net Winnings (BNB)": "Чистые выигрыши (BNB)",
+  "Win Rate": "Вероятность выигрыша",
+  "Rounds Won": "Выигранные раунды",
+  "Rank By": "Расположить по",
+  "Net Winnings": "Чистые выигрыши",
+  "Total BNB": "Всего BNB",
+  "%num%m": "%num%m",
+  "Rounds Played": "Сыгранных раундов",
+  "Winnings (BNB)": "Выигрыши (BNB)",
+  "Direction": "Направление",
+  "My Rankings": "Мои рейтинги",
+  "View Stats": "Смотреть статистику",
+  "Last %num% Bets": "Последние %num% ставок",
+  "Search %subject%": "Поиск %subject%",
+  "Address": "Адрес"
 }

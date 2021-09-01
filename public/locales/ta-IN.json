@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "சேகரிக்க எதுவுமில்லை",
   "From round %round%": "சுற்று %round% இலிருந்து",
   "From rounds %rounds%": "சுற்றுகள் %rounds% இலிருந்து",
-  "View More": "மேலும் காண்க"
+  "View More": "மேலும் காண்க",
+  "User": "பயனர்",
+  "Net Winnings (BNB)": "நிகர வெற்றிகள் (BNB)",
+  "Win Rate": "வெற்றி விகிதம்",
+  "Rounds Won": "சுற்றுகள் வென்றது",
+  "Rank By": "இதன்படி வரிசை",
+  "Net Winnings": "நிகர வெற்றிகள்",
+  "Total BNB": "மொத்த BNB",
+  "%num%m": "%num%m",
+  "Rounds Played": "சுற்றுகள் விளையாடியது",
+  "Winnings (BNB)": "வெற்றிகள் (BNB)",
+  "Direction": "திசை",
+  "My Rankings": "எனது தரவரிசைகள்",
+  "View Stats": "விவரங்களைக் காண்க",
+  "Last %num% Bets": "கடைசி %num% பந்தயங்கள்",
+  "Search %subject%": "%subject% தேடு",
+  "Address": "முகவரி"
 }

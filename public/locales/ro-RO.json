@@ -1364,5 +1364,21 @@
   "Nothing to Collect": "Nimic de adunat",
   "From round %round%": "Din runda %round%",
   "From rounds %rounds%": "Din rundele %rounds%",
-  "View More": "Vezi mai mult"
+  "View More": "Vezi mai mult",
+  "User": "Utilizator",
+  "Net Winnings (BNB)": "Câștiguri nete (BNB)",
+  "Win Rate": "Rată câștig",
+  "Rounds Won": "Runde câștigate",
+  "Rank By": "Clasificare după",
+  "Net Winnings": "Câștiguri nete",
+  "Total BNB": "BNB total",
+  "%num%m": "%num%m",
+  "Rounds Played": "Runde jucate",
+  "Winnings (BNB)": "Câștiguri (BNB)",
+  "Direction": "Direcția",
+  "My Rankings": "Clasamentele mele",
+  "View Stats": "Vizualizați statistici",
+  "Last %num% Bets": "Ultimele %num% pariuri",
+  "Search %subject%": "Căutați %subject%",
+  "Address": "Adresă"
 }
