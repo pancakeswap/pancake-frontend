@@ -1,7 +1,5 @@
-import BigNumber from 'bignumber.js'
 import { getCakeAddress } from 'utils/addressHelpers'
 import { SNAPSHOT_HUB_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
-import { BIG_ZERO } from 'utils/bigNumber'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import { simpleRpcProvider } from 'utils/providers'
 import { ADMIN_ADDRESS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
@@ -106,7 +104,7 @@ export const calculateVoteResults = (votes: Vote[]): { [key: string]: Vote[] } =
 
 export const getTotalFromVotes = (votes: Vote[]) => {
   return votes.reduce((accum, vote) => {
-    const power = new BigNumber(vote.metadata?.votingPower)
-    return accum.plus(power)
-  }, BIG_ZERO)
+    const power = parseFloat(vote.metadata?.votingPower)
+    return accum + power
+  }, 0)
 }
