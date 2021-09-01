@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Tag, Flex, Heading } from '@pancakeswap/uikit'
+import { Tag, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import { Token } from 'config/constants/types'
 import { TokenPairImage } from 'components/TokenImage'
@@ -31,7 +31,11 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ lpLabel, multiplier, is
         <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading>
         <Flex justifyContent="center">
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-          <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+          {multiplier ? (
+            <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+          ) : (
+            <Skeleton ml="4px" width={42} height={28} />
+          )}
         </Flex>
       </Flex>
     </Wrapper>
