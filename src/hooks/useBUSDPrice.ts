@@ -1,7 +1,7 @@
 import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { BUSD, CAKE } from '../config/constants/tokens'
+import { BUSD, CAKE, WBNB } from '../config/constants/tokens'
 import { PairState, usePairs } from './usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
@@ -66,6 +66,7 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
         return new Price(currency, BUSD_MAINNET, busdPrice.denominator, busdPrice.numerator)
       }
     }
+
     return undefined
   }, [chainId, currency, ethPair, ethPairState, busdEthPair, busdEthPairState, busdPair, busdPairState, wrapped])
 }
@@ -75,4 +76,9 @@ export const useCakeBusdPrice = (): Price | undefined => {
   const currentChaindId = chainId || ChainId.MAINNET
   const cakeBusdPrice = useBUSDPrice(CAKE[currentChaindId])
   return cakeBusdPrice
+}
+
+export const useBNBBusdPrice = (): Price | undefined => {
+  const bnbBusdPrice = useBUSDPrice(WBNB)
+  return bnbBusdPrice
 }

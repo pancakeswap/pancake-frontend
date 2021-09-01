@@ -1,7 +1,8 @@
 import React from 'react'
 import { Flex, FlexProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { usePriceBnbBusd } from 'state/farms/hooks'
+import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
+import { multiplyPriceByAmount } from 'utils/prices'
 
 export const Row: React.FC<FlexProps> = ({ children, ...props }) => {
   return (
@@ -18,8 +19,8 @@ interface NetWinningsProps extends FlexProps {
 }
 
 export const NetWinnings: React.FC<NetWinningsProps> = ({ amount, textPrefix = '', textColor = 'text', ...props }) => {
-  const bnbBusdPrice = usePriceBnbBusd()
-  const value = bnbBusdPrice.times(Math.abs(amount)).toNumber()
+  const bnbBusdPrice = useBNBBusdPrice()
+  const value = multiplyPriceByAmount(bnbBusdPrice, Math.abs(amount))
 
   if (!amount) {
     return null
