@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-08-31T07:51:47.237Z",
+  "timestamp": "2021-09-01T07:47:16.952Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 21
+    "patch": 22
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -349,6 +349,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0xf859Bf77cBe8699013d6Dbc7C2b926Aaf307F830.png"
     },
     {
+      "name": "BSC Ecosystem Defi blue chips",
+      "symbol": "BSCDEFI",
+      "address": "0x40E46dE174dfB776BB89E04dF1C47d8a66855EB3",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x40E46dE174dfB776BB89E04dF1C47d8a66855EB3.png"
+    },
+    {
       "name": "BSCPad",
       "symbol": "BSCPAD",
       "address": "0x5A3010d4d8D3B5fB49f8B6E57FB9E48063f16700",
@@ -499,6 +507,14 @@
       "chainId": 56,
       "decimals": 6,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xA8c2B8eec3d368C0253ad3dae65a5F2BBB89c929.png"
+    },
+    {
+      "name": "Concentrated Voting Power",
+      "symbol": "CVP",
+      "address": "0x5Ec3AdBDae549Dce842e24480Eb2434769e22B2E",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x5Ec3AdBDae549Dce842e24480Eb2434769e22B2E.png"
     },
     {
       "name": "Cyclone",
