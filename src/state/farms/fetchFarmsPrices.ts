@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import { BIG_ONE, BIG_ZERO } from 'utils/bigNumber'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
 import { SerializedFarm } from 'state/types'
-import { serializeToken } from 'state/user/hooks/helpers'
 import tokens from 'config/constants/newTokens'
 
 const getFarmFromTokenSymbol = (
@@ -86,19 +85,17 @@ const getFarmQuoteTokenPrice = (
   return BIG_ZERO
 }
 
-// TODO: Fix typing here. These farms are probably serialized
-const fetchFarmsPrices = async (farms) => {
-  const bnbBusdFarm = farms.find((farm: SerializedFarm) => farm.pid === 252)
+const fetchFarmsPrices = async (farms: SerializedFarm[]) => {
+  const bnbBusdFarm = farms.find((farm) => farm.pid === 252)
   const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? BIG_ONE.div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
     const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol)
     const tokenPriceBusd = getFarmBaseTokenPrice(farm, quoteTokenFarm, bnbPriceBusd)
     const quoteTokenPriceBusd = getFarmQuoteTokenPrice(farm, quoteTokenFarm, bnbPriceBusd)
+
     return {
       ...farm,
-      token: serializeToken(farm.token),
-      quoteToken: serializeToken(farm.quoteToken),
       tokenPriceBusd: tokenPriceBusd.toJSON(),
       quoteTokenPriceBusd: quoteTokenPriceBusd.toJSON(),
     }

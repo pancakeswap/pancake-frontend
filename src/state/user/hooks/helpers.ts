@@ -2,7 +2,6 @@ import { Token } from '@pancakeswap/sdk'
 import { SerializedToken } from 'config/constants/types'
 import { parseUnits } from 'ethers/lib/utils'
 
-// TODO: Fix Types here - remove SerializedToken when Farms typing is fixed
 export function serializeToken(token: Token): SerializedToken {
   return {
     chainId: token.chainId,
