@@ -308,6 +308,18 @@ const nfts: Nft[] = [
   },
   {
     id: 25,
+    name: 'Leonhard Euler\'s Day Off',
+    symbol: 'INEVITABLE',
+    description: 'Now I will have less distraction.',
+    address: '0x58D739aF3aBBb8d34A2D9068dCC60a95D172f80c',
+    totalSupply: BIG_ZERO,
+    path: 'images/rugZombie/Leonhard Euler\'s Day Off.gif',
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 26,
     name: 'The Inevitable Ape',
     symbol: 'INEVITABLE',
     description: 'Welcome to the Jungle.',
