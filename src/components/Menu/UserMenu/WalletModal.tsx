@@ -11,7 +11,7 @@ import {
   ModalHeader as UIKitModalHeader,
   ModalTitle,
 } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
+import { parseUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { FetchStatus, useGetBnbBalance } from 'hooks/useTokenBalance'
@@ -27,7 +27,7 @@ interface WalletModalProps extends InjectedModalProps {
   initialView?: WalletView
 }
 
-export const LOW_BNB_BALANCE = new BigNumber('2000000000') // 2 Gwei
+export const LOW_BNB_BALANCE = parseUnits('2', 'gwei')
 
 const ModalHeader = styled(UIKitModalHeader)`
   background: ${({ theme }) => theme.colors.gradients.bubblegum};

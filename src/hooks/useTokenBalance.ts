@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
@@ -86,7 +87,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
 
 export const useGetBnbBalance = () => {
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
-  const [balance, setBalance] = useState(BIG_ZERO)
+  const [balance, setBalance] = useState(ethers.BigNumber.from(0))
   const { account } = useWeb3React()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
 
@@ -94,7 +95,7 @@ export const useGetBnbBalance = () => {
     const fetchBalance = async () => {
       try {
         const walletBalance = await simpleRpcProvider.getBalance(account)
-        setBalance(new BigNumber(walletBalance.toString()))
+        setBalance(walletBalance)
         setFetchStatus(FetchStatus.SUCCESS)
       } catch {
         setFetchStatus(FetchStatus.FAILED)

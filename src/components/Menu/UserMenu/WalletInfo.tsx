@@ -6,7 +6,7 @@ import { getCakeAddress } from 'utils/addressHelpers'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanLink } from 'utils'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance, formatBigNumber } from 'utils/formatBalance'
 import CopyAddress from './CopyAddress'
 
 interface WalletInfoProps {
@@ -42,7 +42,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
       )}
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle">{t('BNB Balance')}</Text>
-        <Text>{getFullDisplayBalance(balance, 18, 6)}</Text>
+        <Text>{formatBigNumber(balance, 6)}</Text>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
         <Text color="textSubtle">{t('CAKE Balance')}</Text>
