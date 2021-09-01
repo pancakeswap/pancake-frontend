@@ -121,10 +121,9 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleConfirmClick = async () => {
     setPendingTx(true)
-
-    if (isRemovingStake) {
-      // unstaking
-      try {
+    try {
+      if (isRemovingStake) {
+        // unstaking
         await onUnstake(stakeAmount, stakingToken.decimals)
         toastSuccess(
           `${t('Unstaked')}!`,
@@ -132,14 +131,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
             symbol: earningToken.symbol,
           }),
         )
-        setPendingTx(false)
-        onDismiss()
-      } catch (e) {
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setPendingTx(false)
-      }
-    } else {
-      try {
+      } else {
         // staking
         await onStake(stakeAmount, stakingToken.decimals)
         toastSuccess(
@@ -148,12 +140,12 @@ const StakeModal: React.FC<StakeModalProps> = ({
             symbol: stakingToken.symbol,
           }),
         )
-        setPendingTx(false)
-        onDismiss()
-      } catch (e) {
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setPendingTx(false)
       }
+      setPendingTx(false)
+      onDismiss()
+    } catch (e) {
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      setPendingTx(false)
     }
   }
 
