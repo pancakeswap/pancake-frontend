@@ -7,6 +7,7 @@ import useRefresh from 'hooks/useRefresh'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { getTotalWon } from 'state/predictions/helpers'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
+import { multiplyPriceByAmount } from 'utils/prices'
 
 const StyledLink = styled(Link)`
   width: 100%;
@@ -19,9 +20,7 @@ const PredictionCardContent = () => {
   const [loadData, setLoadData] = useState(false)
   const bnbBusdPrice = useBNBBusdPrice()
   const [bnbWon, setBnbWon] = useState(0)
-
-  const bnbPriceAsFloat = bnbBusdPrice ? parseFloat(bnbBusdPrice.toSignificant(9)) : 0
-  const bnbWonInUsd = bnbWon * bnbPriceAsFloat
+  const bnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, bnbWon)
 
   const localisedBnbUsdString = formatLocalisedCompactNumber(bnbWonInUsd)
   const bnbWonText = t('$%bnbWonInUsd% in BNB won so far', { bnbWonInUsd: localisedBnbUsdString })

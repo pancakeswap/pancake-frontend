@@ -1,6 +1,7 @@
 import React from 'react'
 import { Price } from '@pancakeswap/sdk'
 import { Flex, Text } from '@pancakeswap/uikit'
+import { multiplyPriceByAmount } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
 import { formatBnb } from '../helpers'
 
@@ -33,7 +34,7 @@ const SummaryRow: React.FC<SummaryRowProps> = ({ type, summary, bnbBusdPrice }) 
   const roundsInPercents = ((rounds * 100) / totalRounds).toFixed(2)
   const typeTranslationKey = type.charAt(0).toUpperCase() + type.slice(1)
   const displayAmount = type === 'won' ? summary[type].payout : amount
-  const bnbBusdPriceAsFloat = bnbBusdPrice ? parseFloat(bnbBusdPrice.toSignificant(9)) : 0
+  const amountInUsd = multiplyPriceByAmount(bnbBusdPrice, displayAmount)
 
   return (
     <>
@@ -54,7 +55,7 @@ const SummaryRow: React.FC<SummaryRowProps> = ({ type, summary, bnbBusdPrice }) 
             {`${summaryTypeSigns[type]}${formatBnb(displayAmount)} BNB`}
           </Text>
           <Text fontSize="12px" color="textSubtle">
-            {`~$${(bnbBusdPriceAsFloat * displayAmount).toFixed(2)}`}
+            {`~$${amountInUsd.toFixed(2)}`}
           </Text>
         </Flex>
       </Flex>

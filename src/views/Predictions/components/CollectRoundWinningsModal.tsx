@@ -28,6 +28,8 @@ import { usePredictionsContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useGetHistory, useGetIsFetchingHistory } from 'state/predictions/hooks'
+import { multiplyPriceByAmount } from 'utils/prices'
+import { formatNumber } from 'utils/formatBalance'
 import { getPayout } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
@@ -84,9 +86,9 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
   const dispatch = useAppDispatch()
   const isLoadingHistory = useGetIsFetchingHistory()
   const history = useGetHistory()
-  const bnbBusdPriceAsFloat = bnbBusdPrice ? parseFloat(bnbBusdPrice.toSignificant(9)) : 0
 
   const { epochs, total } = calculateClaimableRounds(history)
+  const totalBnb = multiplyPriceByAmount(bnbBusdPrice, total)
 
   useEffect(() => {
     // Fetch history if they have not opened the history pane yet
@@ -149,9 +151,9 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
         <Flex alignItems="start" justifyContent="space-between" mb="8px">
           <Text>{t('Collecting')}</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text>{`${total.toFixed(4)} BNB`}</Text>
+            <Text>{`${formatNumber(totalBnb, 0, 4)} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
-              {`~$${(bnbBusdPriceAsFloat * total).toFixed(2)}`}
+              {`~$${totalBnb.toFixed(2)}`}
             </Text>
           </Box>
         </Flex>

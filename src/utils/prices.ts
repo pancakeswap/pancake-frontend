@@ -1,4 +1,5 @@
-import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '@pancakeswap/sdk'
+import { CurrencyAmount, Fraction, JSBI, Percent, Price, TokenAmount, Trade } from '@pancakeswap/sdk'
+import { ethers } from 'ethers'
 import {
   BLOCKED_PRICE_IMPACT_NON_EXPERT,
   ALLOWED_PRICE_IMPACT_HIGH,
@@ -79,4 +80,26 @@ export function formatExecutionPrice(trade?: Trade, inverted?: boolean): string 
     : `${trade.executionPrice.toSignificant(6)} ${trade.outputAmount.currency.symbol} / ${
         trade.inputAmount.currency.symbol
       }`
+}
+
+/**
+ * Helper to convert a Price class (from SDK) to an ethers.BigNumber
+ */
+export const getBnFromPrice = (price: Price, significantDigits = 18) => {
+  if (!price) {
+    return ethers.BigNumber.from(0)
+  }
+
+  return ethers.BigNumber.from(price.toSignificant(significantDigits))
+}
+
+/**
+ * Helper to multiply a Price object by an arbitrary amount
+ */
+export const multiplyPriceByAmount = (price: Price, amount: number, significantDigits = 18) => {
+  if (!price) {
+    return 0
+  }
+
+  return parseFloat(price.toSignificant(significantDigits)) * amount
 }

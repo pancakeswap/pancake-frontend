@@ -11,6 +11,7 @@ import { Result } from 'state/predictions/helpers'
 import { useGetIsClaimable } from 'state/predictions/hooks'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { getBscScanLink } from 'utils'
+import { multiplyPriceByAmount } from 'utils/prices'
 import useIsRefundable from '../../hooks/useIsRefundable'
 import { formatBnb, getNetPayout } from './helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
@@ -46,10 +47,10 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   )
 
   const isWinner = result === Result.WIN
-  const bnbBusdPriceAsFloat = bnbBusdPrice ? parseFloat(bnbBusdPrice.toSignificant(9)) : 0
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = isWinner ? getNetPayout(bet, REWARD_RATE) : bet.amount
+  const totalPayout = multiplyPriceByAmount(bnbBusdPrice, payout)
   const returned = payout + bet.amount
 
   const getHeaderColor = () => {
@@ -150,7 +151,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
           <Box style={{ textAlign: 'right' }}>
             <Text bold color={getResultColor()}>{`${isWinner ? '+' : '-'}${formatBnb(payout)} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
-              {`~$${(bnbBusdPriceAsFloat * payout).toFixed(2)}`}
+              {`~$${totalPayout.toFixed(2)}`}
             </Text>
           </Box>
         </Flex>
