@@ -1,5 +1,4 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
 import { Flex, LinkExternal, Text, Tag, CheckmarkCircleIcon } from '@pancakeswap/uikit'
 import truncateHash from 'utils/truncateHash'
 import { getBscScanLink } from 'utils'
@@ -17,7 +16,12 @@ interface VoteRowProps {
 const VoteRow: React.FC<VoteRowProps> = ({ vote, isVoter }) => {
   const { t } = useTranslation()
   const hasVotingPower = !!vote.metadata?.votingPower
-  const votingPower = hasVotingPower ? new BigNumber(vote.metadata.votingPower).toFormat(3) : '--'
+  const votingPower = hasVotingPower
+    ? parseFloat(vote.metadata.votingPower).toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 3,
+      })
+    : '--'
 
   return (
     <Row>
