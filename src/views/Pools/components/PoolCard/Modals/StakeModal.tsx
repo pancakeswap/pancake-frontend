@@ -179,7 +179,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   return (
     <Modal
       minWidth="346px"
-      title={isRemovingStake ? t('Unstake') : t('Stake in DeserializedPool')}
+      title={isRemovingStake ? t('Unstake') : t('Stake in Pool')}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >

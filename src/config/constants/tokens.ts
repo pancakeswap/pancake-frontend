@@ -12,7 +12,7 @@ interface SerializedTokenList {
   [symbol: string]: SerializedToken
 }
 
-export const mainnetTokens: TokenList = {
+export const mainnetTokens = {
   wbnb: new Token(
     MAINNET,
     '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
@@ -21,7 +21,7 @@ export const mainnetTokens: TokenList = {
     'Wrapped BNB',
     'https://www.binance.com/',
   ),
-  // TODO: Confirm bnb will be handled correctly here
+  // bnb here points to the wbnb contract. Wherever the currency BNB is required, conditional checks for the symbol 'BNB' can be used
   bnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
   cake: new Token(
     MAINNET,
@@ -127,14 +127,6 @@ export const mainnetTokens: TokenList = {
     'HOTCROSS',
     'Hotcross Token',
     'https://www.hotcross.com/',
-  ),
-  horizon: new Token(
-    MAINNET,
-    '0xC0eFf7749b125444953ef89682201Fb8c6A917CD',
-    18,
-    'HZN',
-    'Horizon Token',
-    'https://horizonprotocol.com/',
   ),
   belt: new Token(
     MAINNET,
@@ -654,7 +646,7 @@ export const mainnetTokens: TokenList = {
     MAINNET,
     '0xBc5609612b7C44BEf426De600B5fd1379DB2EcF1',
     2,
-    'PSD',
+    'PSG',
     'Paris Saint-Germain Token',
     'https://www.chiliz.com',
   ),
@@ -1508,7 +1500,7 @@ export const mainnetTokens: TokenList = {
     MAINNET,
     '0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377',
     18,
-    'MOBX',
+    'MBOX',
     'Mobox Token',
     'https://www.mobox.io/#/',
   ),
@@ -1528,13 +1520,20 @@ export const mainnetTokens: TokenList = {
     'Unmarshal Token',
     'https://unmarshal.io/',
   ),
-  ampl: new Token(MAINNET, '0xDB021b1B247fe2F1fa57e0A87C748Cc1E321F07F', 9, 'AMPL', 'https://www.ampleforth.org/'),
+  ampl: new Token(
+    MAINNET,
+    '0xDB021b1B247fe2F1fa57e0A87C748Cc1E321F07F',
+    9,
+    'AMPL',
+    'AMPL Token',
+    'https://www.ampleforth.org/',
+  ),
   o3: new Token(
     MAINNET,
     '0xEe9801669C6138E84bD50dEB500827b776777d28',
     18,
-    '03',
-    '03 Swap Token',
+    'O3',
+    'O3 Swap Token',
     'https://o3swap.com/',
   ),
   hai: new Token(MAINNET, '0xaA9E582e5751d703F85912903bacADdFed26484C', 8, 'HAI', 'Hacken Token', 'https://hacken.io/'),
@@ -1542,7 +1541,7 @@ export const mainnetTokens: TokenList = {
     MAINNET,
     '0x4e840AADD28DA189B9906674B4Afcb77C128d9ea',
     18,
-    'HBT',
+    'HTB',
     'Hotbit Token',
     'https://www.hotbit.io/',
   ),
@@ -1636,7 +1635,7 @@ export const mainnetTokens: TokenList = {
   ),
 }
 
-export const testnetTokens: TokenList = {
+export const testnetTokens = {
   wbnb: new Token(
     TESTNET,
     '0xae13d989dac2f0debff460ac112a837c89baa7cd',
@@ -1669,23 +1668,14 @@ export const testnetTokens: TokenList = {
     'SyrupBar Token',
     'https://pancakeswap.finance/',
   ),
-  ust: new Token(
-    TESTNET,
-    '0x23396cf899ca06c4472205fc903bdb4de249d6fc',
-    18,
-    'UST',
-    'Wrapped UST Token',
-    'https://mirror.finance/',
-  ),
   bake: new Token(
     TESTNET,
     '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     18,
-    'BALE',
+    'BAKE',
     'Bakeryswap Token',
     'https://www.bakeryswap.org/',
   ),
-  // Not sure why - in our original tokens.ts, all of the below have testnet entries but the address points to the bakeryswap token
   usdt: new Token(
     TESTNET,
     '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',

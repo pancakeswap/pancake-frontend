@@ -24,7 +24,7 @@ describe('Config pools', () => {
     async (pool) => {
       const contract = getSouschefContract(pool.sousId)
       const rewardTokenAddress = await contract.rewardToken()
-      expect(rewardTokenAddress.toLowerCase()).toBe(pool.earningToken.address[56].toLowerCase())
+      expect(rewardTokenAddress.toLowerCase()).toBe(pool.earningToken.address.toLowerCase())
     },
   )
   it.each(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
@@ -39,7 +39,7 @@ describe('Config pools', () => {
         stakingTokenAddress = await contract.syrup()
       }
 
-      expect(stakingTokenAddress.toLowerCase()).toBe(pool.stakingToken.address[56].toLowerCase())
+      expect(stakingTokenAddress.toLowerCase()).toBe(pool.stakingToken.address.toLowerCase())
     },
   )
 })
