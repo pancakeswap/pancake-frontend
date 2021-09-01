@@ -82,6 +82,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://qbt.fi/',
   },
+  cvp: {
+    symbol: 'CVP',
+    address: {
+      56: '0x5Ec3AdBDae549Dce842e24480Eb2434769e22B2E',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'http://powerpool.finance/',
+  },
+  bscdefi: {
+    symbol: 'BSCDEFI',
+    address: {
+      56: '0x40E46dE174dfB776BB89E04dF1C47d8a66855EB3',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://powerpool.finance/',
+  },
   pha: {
     symbol: 'PHA',
     address: {

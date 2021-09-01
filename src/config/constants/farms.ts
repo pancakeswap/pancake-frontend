@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 454,
+    lpSymbol: 'BSCDEFI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x5B0A3b98C2f01741A11E57A9d0595B254E62F9F2',
+    },
+    token: tokens.bscdefi,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 453,
     lpSymbol: 'QBT-BNB LP',
     lpAddresses: {
