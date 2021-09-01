@@ -140,9 +140,13 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
             {t('Performance Fee')}
           </TooltipText>
           <Flex alignItems="center">
-            <Text ml="4px" small>
-              {performanceFee / 100}%
-            </Text>
+            {performanceFee ? (
+              <Text ml="4px" small>
+                {performanceFee / 100}%
+              </Text>
+            ) : (
+              <Skeleton width="90px" height="21px" />
+            )}
           </Flex>
         </Flex>
       )}
