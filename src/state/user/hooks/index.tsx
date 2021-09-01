@@ -271,7 +271,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
 
 export const useWatchlistTokens = (): [string[], (address: string) => void] => {
   const dispatch = useDispatch<AppDispatch>()
-  const savedTokens = useSelector((state: AppState) => state.user.watchlistTokens)
+  const savedTokens = useSelector((state: AppState) => state.user.watchlistTokens) ?? []
   const updatedSavedTokens = useCallback(
     (address: string) => {
       dispatch(addWatchlistToken({ address }))

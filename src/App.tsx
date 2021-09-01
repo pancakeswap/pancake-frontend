@@ -6,7 +6,6 @@ import useEagerConnect from 'hooks/useEagerConnect'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
-import { ProtocolUpdater, PoolUpdater, TokenUpdater } from 'state/info/updaters'
 import { DatePickerPortal } from 'components/DatePicker'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
@@ -14,7 +13,6 @@ import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import { ToastListener } from './contexts/ToastsContext'
 import PageLoader from './components/Loader/PageLoader'
 import EasterEgg from './components/EasterEgg'
-import InfoNav from './views/Info/components/InfoNav'
 import history from './routerHistory'
 // Views included in the main bundle
 import Pools from './views/Pools'
@@ -50,11 +48,7 @@ const AddLiquidity = lazy(() => import('./views/AddLiquidity'))
 const Liquidity = lazy(() => import('./views/Pool'))
 const PoolFinder = lazy(() => import('./views/PoolFinder'))
 const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
-const InfoOverview = lazy(() => import('./views/Info/Overview'))
-const InfoPools = lazy(() => import('./views/Info/Pools'))
-const InfoPoolPage = lazy(() => import('./views/Info/Pools/PoolPage'))
-const InfoTokens = lazy(() => import('./views/Info/Tokens'))
-const RedirectInvalidToken = lazy(() => import('./views/Info/Tokens/redirects'))
+const Info = lazy(() => import('./views/Info'))
 
 // This config is required for number formatting
 BigNumber.config({
@@ -75,12 +69,6 @@ const App: React.FC = () => {
       <GlobalCheckClaimStatus excludeLocations={['/collectibles']} />
       <Menu>
         <SuspenseWithChunkError fallback={<PageLoader />}>
-          <Route path="/info">
-            <ProtocolUpdater />
-            <PoolUpdater />
-            <TokenUpdater />
-            <InfoNav />
-          </Route>
           <Switch>
             <Route path="/" exact>
               <Home />
@@ -131,21 +119,9 @@ const App: React.FC = () => {
               <Proposal />
             </Route>
             {/* Info pages */}
-            <Route path="/info" exact>
-              <InfoOverview />
+            <Route path="/info">
+              <Info />
             </Route>
-            <Route path="/info/pools" exact>
-              <InfoPools />
-            </Route>
-            <Route path="/info/tokens" exact>
-              <InfoTokens />
-            </Route>
-            <Route exact path={['/info/tokens/:address', '/info/token/:address']} component={RedirectInvalidToken} />
-            <Route
-              exact
-              path={['/info/pools/:address', '/info/pool/:address', '/info/pair/:address']}
-              component={InfoPoolPage}
-            />
 
             {/* Using this format because these components use routes injected props. We need to rework them with hooks */}
             <Route exact strict path="/swap" component={Swap} />
