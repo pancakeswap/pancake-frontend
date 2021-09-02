@@ -94,5 +94,5 @@ export const getRoundPosition = (lockPrice: ethers.BigNumber, closePrice: ethers
     return BetPosition.HOUSE
   }
 
-  return closePrice.gt(lockPrice) ? BetPosition.HOUSE : BetPosition.HOUSE
+  return closePrice.gt(lockPrice) ? BetPosition.BULL : BetPosition.BEAR
 }
