@@ -929,15 +929,12 @@
   "The PancakeSwap Lottery": "The PancakeSwap Lottery",
   "All History": "All History",
   "Winning Number": "Winning Number",
-  "You had": "You had",
   "tickets": "tickets",
-  "this round": "this round",
   "Prize pot": "Prize pot",
   "Total players this round": "Total players this round",
   "Draw": "Draw",
   "Next Draw": "Next Draw",
   "Your tickets": "Your tickets",
-  "You have": "You have",
   "Match the winning number in the same order to share prizes.": "Match the winning number in the same order to share prizes.",
   "Current prizes up for grabs:": "Current prizes up for grabs:",
   "Burn": "Burn",
@@ -1426,5 +1423,9 @@
   "Based on last 7 days' performance. Does not account for impermanent loss": "Based on last 7 days' performance. Does not account for impermanent loss",
   "View token on CoinMarketCap": "View token on CoinMarketCap",
   "Top Movers": "Top Movers",
-  "Loading chart data...": "Loading chart data..."
+  "Loading chart data...": "Loading chart data...",
+  "You have %amount% tickets this round": "You have %amount% tickets this round",
+  "You have %amount% ticket this round": "You have %amount% ticket this round",
+  "You had %amount% tickets this round": "You had %amount% tickets this round",
+  "You had %amount% ticket this round": "You had %amount% ticket this round"
 }

@@ -70,6 +70,13 @@ const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId
     <ViewTicketsModal roundId={lotteryId} roundStatus={lotteryNodeData?.status} />,
   )
 
+  const totalTicketNumber = userDataForRound ? userDataForRound.totalTickets : 0
+  const ticketRoundText =
+    totalTicketNumber > 1
+      ? t('You had %amount% tickets this round', { amount: totalTicketNumber })
+      : t('You had %amount% ticket this round', { amount: totalTicketNumber })
+  const [youHadText, ticketsThisRoundText] = ticketRoundText.split(totalTicketNumber.toString())
+
   return (
     <StyledCardBody>
       {isLatestRound && <StyledCardRibbon text={t('Latest')} />}
@@ -105,11 +112,11 @@ const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId
               alignItems={['center', null, null, 'flex-start']}
             >
               <Box mt={['32px', null, null, 0]}>
-                <Text display="inline">{t('You had')} </Text>
+                <Text display="inline">{youHadText} </Text>
                 <Text display="inline" bold>
-                  {userDataForRound.totalTickets} {t('tickets')}{' '}
+                  {userDataForRound.totalTickets}
                 </Text>
-                <Text display="inline">{t('this round')}</Text>
+                <Text display="inline">{ticketsThisRoundText}</Text>
               </Box>
               <Button
                 onClick={onPresentViewTicketsModal}
