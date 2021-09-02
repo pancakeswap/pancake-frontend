@@ -283,7 +283,7 @@ export const useWatchlistTokens = (): [string[], (address: string) => void] => {
 
 export const useWatchlistPools = (): [string[], (address: string) => void] => {
   const dispatch = useDispatch<AppDispatch>()
-  const savedPools = useSelector((state: AppState) => state.user.watchlistPools)
+  const savedPools = useSelector((state: AppState) => state.user.watchlistPools) ?? []
   const updateSavedPools = useCallback(
     (address: string) => {
       dispatch(addWatchlistPool({ address }))
