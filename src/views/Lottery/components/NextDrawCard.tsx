@@ -127,6 +127,12 @@ const NextDrawCard = () => {
     return ''
   }
 
+  const ticketRoundText =
+    userTicketCount > 1
+      ? t('You have %amount% tickets this round', { amount: userTicketCount })
+      : t('You have %amount% ticket this round', { amount: userTicketCount })
+  const [youHaveText, ticketsThisRoundText] = ticketRoundText.split(userTicketCount.toString())
+
   return (
     <StyledCard>
       <CardHeader p="16px 24px">
@@ -157,20 +163,13 @@ const NextDrawCard = () => {
               >
                 {account && (
                   <Flex justifyContent={['center', null, null, 'flex-start']}>
-                    <Text display="inline">{t('You have')} </Text>
+                    <Text display="inline">{youHaveText} </Text>
                     {!userTickets.isLoading ? (
-                      <Balance
-                        value={userTicketCount}
-                        decimals={0}
-                        unit={` ${t('tickets')}`}
-                        display="inline"
-                        bold
-                        mx="4px"
-                      />
+                      <Balance value={userTicketCount} decimals={0} display="inline" bold mx="4px" />
                     ) : (
                       <Skeleton mx="4px" height={20} width={40} />
                     )}
-                    <Text display="inline"> {t('this round')}</Text>
+                    <Text display="inline"> {ticketsThisRoundText}</Text>
                   </Flex>
                 )}
                 {!userTickets.isLoading && userTicketCount > 0 && (
