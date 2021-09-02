@@ -165,8 +165,10 @@ export default createReducer(initialState, (builder) =>
       state.gasPrice = action.payload.gasPrice
     })
     .addCase(addWatchlistToken, (state, { payload: { address } }) => {
-      if (!state.watchlistTokens.includes(address)) {
-        state.watchlistTokens = [...state.watchlistTokens, address]
+      // state.watchlistTokens can be undefined for pre-loaded localstorage user state
+      const tokenWatchlist = state.watchlistTokens ?? []
+      if (!tokenWatchlist.includes(address)) {
+        state.watchlistTokens = [...tokenWatchlist, address]
       } else {
         // Remove token from watchlist
         const newTokens = state.watchlistTokens.filter((x) => x !== address)
@@ -174,8 +176,10 @@ export default createReducer(initialState, (builder) =>
       }
     })
     .addCase(addWatchlistPool, (state, { payload: { address } }) => {
-      if (!state.watchlistPools.includes(address)) {
-        state.watchlistPools = [...state.watchlistPools, address]
+      // state.watchlistPools can be undefined for pre-loaded localstorage user state
+      const poolsWatchlist = state.watchlistPools ?? []
+      if (!poolsWatchlist.includes(address)) {
+        state.watchlistPools = [...poolsWatchlist, address]
       } else {
         // Remove pool from watchlist
         const newPools = state.watchlistPools.filter((x) => x !== address)
