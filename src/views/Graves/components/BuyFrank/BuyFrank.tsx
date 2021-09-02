@@ -24,9 +24,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
     nftRevivalDateFixed = currentDate
   }
   let withdrawCooldownTimeFixed = tokenWithdrawalDate
-  if(pid === 0) {
-    withdrawCooldownTimeFixed = nftRevivalDate
-  }
+
   if(tokenWithdrawalDate < 0) {
     withdrawCooldownTimeFixed = currentDate
   }
