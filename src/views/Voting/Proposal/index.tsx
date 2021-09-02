@@ -22,6 +22,7 @@ import Details from './Details'
 import Results from './Results'
 import Vote from './Vote'
 import Votes from './Votes'
+import { PageMeta } from '../../../components/Layout/Page'
 
 const Proposal = () => {
   const { id }: { id: string } = useParams()
@@ -59,6 +60,7 @@ const Proposal = () => {
 
   return (
     <Container py="40px">
+      <PageMeta />
       <Box mb="40px">
         <Button as={Link} to="/voting" variant="text" startIcon={<ArrowBackIcon color="primary" width="24px" />} px="0">
           {t('Back to Vote Overview')}

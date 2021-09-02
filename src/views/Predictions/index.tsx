@@ -9,6 +9,7 @@ import { initializePredictions } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
 import usePersistState from 'hooks/usePersistState'
 import PageLoader from 'components/Loader/PageLoader'
+import { PageMeta } from 'components/Layout/Page'
 import usePollOraclePrice from './hooks/usePollOraclePrice'
 import usePollPredictions from './hooks/usePollPredictions'
 import Container from './components/Container'
@@ -74,6 +75,7 @@ const Predictions = () => {
       <Helmet>
         <script src="https://s3.tradingview.com/tv.js" type="text/javascript" id="tradingViewWidget" />
       </Helmet>
+      <PageMeta />
       <SwiperProvider>
         <Container>
           {isDesktop ? <Desktop /> : <Mobile />}

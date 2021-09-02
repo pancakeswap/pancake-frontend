@@ -31,6 +31,7 @@ import Container from 'components/Layout/Container'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ReactMarkdown from 'components/ReactMarkdown'
+import { PageMeta } from 'components/Layout/Page'
 import { sendSnapshotData, Message, generateMetaData, generatePayloadData } from '../helpers'
 import Layout from '../components/Layout'
 import { FormErrors, Label, SecondaryLabel } from './styles'
@@ -159,6 +160,7 @@ const CreateProposal = () => {
 
   return (
     <Container py="40px">
+      <PageMeta />
       <Box mb="48px">
         <Breadcrumbs>
           <Link to="/">{t('Home')}</Link>

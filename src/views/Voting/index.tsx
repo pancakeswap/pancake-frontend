@@ -1,6 +1,7 @@
 import React from 'react'
 import { Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { PageMeta } from 'components/Layout/Page'
 import Hero from './components/Hero'
 import Footer from './components/Footer'
 import { Proposals } from './components/Proposals'
@@ -16,17 +17,20 @@ const Content = styled.div`
 
 const Voting = () => {
   return (
-    <Flex flexDirection="column" minHeight="calc(100vh - 64px)">
-      <Chrome>
-        <Hero />
-      </Chrome>
-      <Content>
-        <Proposals />
-      </Content>
-      <Chrome>
-        <Footer />
-      </Chrome>
-    </Flex>
+    <>
+      <PageMeta />
+      <Flex flexDirection="column" minHeight="calc(100vh - 64px)">
+        <Chrome>
+          <Hero />
+        </Chrome>
+        <Content>
+          <Proposals />
+        </Content>
+        <Chrome>
+          <Footer />
+        </Chrome>
+      </Flex>
+    </>
   )
 }
 
