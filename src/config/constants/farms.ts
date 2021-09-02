@@ -57,8 +57,8 @@ const farms: SerializedFarmConfig[] = [
       97: '',
       56: '0x2bF2dEB40639201C9A94c9e33b4852D9AEa5fd2D',
     },
-    token: tokens.bp,
-    quoteToken: tokens.wbnb,
+    token: serializedTokens.bp,
+    quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 454,
