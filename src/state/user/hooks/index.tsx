@@ -21,6 +21,8 @@ import {
   updateUserSingleHopOnly,
   updateUserSlippageTolerance,
   updateGasPrice,
+  addWatchlistToken,
+  addWatchlistPool,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -265,4 +267,28 @@ export function useTrackedTokenPairs(): [Token, Token][] {
 
     return Object.keys(keyed).map((key) => keyed[key])
   }, [combinedList])
+}
+
+export const useWatchlistTokens = (): [string[], (address: string) => void] => {
+  const dispatch = useDispatch<AppDispatch>()
+  const savedTokens = useSelector((state: AppState) => state.user.watchlistTokens) ?? []
+  const updatedSavedTokens = useCallback(
+    (address: string) => {
+      dispatch(addWatchlistToken({ address }))
+    },
+    [dispatch],
+  )
+  return [savedTokens, updatedSavedTokens]
+}
+
+export const useWatchlistPools = (): [string[], (address: string) => void] => {
+  const dispatch = useDispatch<AppDispatch>()
+  const savedPools = useSelector((state: AppState) => state.user.watchlistPools)
+  const updateSavedPools = useCallback(
+    (address: string) => {
+      dispatch(addWatchlistPool({ address }))
+    },
+    [dispatch],
+  )
+  return [savedPools, updateSavedPools]
 }

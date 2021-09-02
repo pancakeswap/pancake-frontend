@@ -18,6 +18,8 @@ import {
   toggleTheme,
   updateUserFarmStakedOnly,
   FarmStakedOnly,
+  addWatchlistToken,
+  addWatchlistPool,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -56,6 +58,8 @@ export interface UserState {
   isDark: boolean
   userFarmStakedOnly: FarmStakedOnly
   gasPrice: string
+  watchlistTokens: string[]
+  watchlistPools: string[]
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -74,6 +78,8 @@ export const initialState: UserState = {
   isDark: false,
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
   gasPrice: GAS_PRICE_GWEI.default,
+  watchlistTokens: [],
+  watchlistPools: [],
 }
 
 export default createReducer(initialState, (builder) =>
@@ -157,5 +163,23 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateGasPrice, (state, action) => {
       state.gasPrice = action.payload.gasPrice
+    })
+    .addCase(addWatchlistToken, (state, { payload: { address } }) => {
+      if (!state.watchlistTokens.includes(address)) {
+        state.watchlistTokens = [...state.watchlistTokens, address]
+      } else {
+        // Remove token from watchlist
+        const newTokens = state.watchlistTokens.filter((x) => x !== address)
+        state.watchlistTokens = newTokens
+      }
+    })
+    .addCase(addWatchlistPool, (state, { payload: { address } }) => {
+      if (!state.watchlistPools.includes(address)) {
+        state.watchlistPools = [...state.watchlistPools, address]
+      } else {
+        // Remove pool from watchlist
+        const newPools = state.watchlistPools.filter((x) => x !== address)
+        state.watchlistPools = newPools
+      }
     }),
 )

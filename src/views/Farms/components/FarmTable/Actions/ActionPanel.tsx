@@ -150,7 +150,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   })
   const lpAddress = getAddress(farm.lpAddresses)
   const bsc = getBscScanLink(lpAddress, 'address')
-  const info = `https://pancakeswap.info/pool/${lpAddress}`
+  const info = `/info/pool/${lpAddress}`
 
   return (
     <Container expanded={expanded}>

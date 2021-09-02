@@ -11,3 +11,6 @@ export const BITQUERY_API = 'https://graphql.bitquery.io'
  * V1 will be deprecated but is still used to claim old rounds
  */
 export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction'
+
+export const INFO_CLIENT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
+export const BLOCKS_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
