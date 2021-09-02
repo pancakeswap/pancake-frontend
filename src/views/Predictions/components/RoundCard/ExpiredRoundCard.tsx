@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
 import useTheme from 'hooks/useTheme'
-import { getHasRoundFailed } from '../../helpers'
+import { getHasRoundFailed, getRoundPosition } from '../../helpers'
 import { RoundResult } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import CardHeader, { getBorderBackground } from './CardHeader'
@@ -46,7 +46,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { epoch, lockPrice, closePrice } = round
-  const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
+  const betPosition = getRoundPosition(lockPrice, closePrice)
   const bufferSeconds = useGetBufferSeconds()
   const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
 
@@ -74,6 +74,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
             isActive={betPosition === BetPosition.BULL}
             hasEntered={hasEnteredUp}
             hasClaimed={hasClaimedUp}
+            isHouse={betPosition === BetPosition.HOUSE}
           />
           <RoundResult round={round} hasFailed={hasRoundFailed} />
           <MultiplierArrow
@@ -83,6 +84,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
             isActive={betPosition === BetPosition.BEAR}
             hasEntered={hasEnteredDown}
             hasClaimed={hasClaimedDown}
+            isHouse={betPosition === BetPosition.HOUSE}
           />
         </CardBody>
       </StyledExpiredRoundCard>

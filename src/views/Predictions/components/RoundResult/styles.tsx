@@ -1,10 +1,12 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
-import { Box, Flex, FlexProps, Text } from '@pancakeswap/uikit'
+import { ethers } from 'ethers'
+import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition, NodeRound, Round } from 'state/types'
-import { formatUsdv2, formatBnbv2 } from '../../helpers'
+import { formatUsdv2, formatBnbv2, getRoundPosition, getPriceDifference } from '../../helpers'
 import { formatBnb, formatUsd } from '../History/helpers'
+import PositionTag from '../PositionTag'
 
 // PrizePoolRow
 interface PrizePoolRowProps extends FlexProps {
@@ -103,15 +105,16 @@ const getBackgroundColor = ({
     return theme.colors.secondary
   }
 
-  if (betPosition === BetPosition.BULL) {
-    return theme.colors.success
+  switch (betPosition) {
+    case BetPosition.BULL:
+      return theme.colors.success
+    case BetPosition.BEAR:
+      return theme.colors.failure
+    case BetPosition.HOUSE:
+      return theme.colors.textDisabled
+    default:
+      return theme.colors.cardBorder
   }
-
-  if (betPosition === BetPosition.BEAR) {
-    return theme.colors.failure
-  }
-
-  return theme.colors.cardBorder
 }
 
 const Background = styled(Box)<RoundResultBoxProps>`
@@ -137,6 +140,41 @@ export const RoundResultBox: React.FC<RoundResultBoxProps> = ({
     <Background isNext={isNext} hasEntered={hasEntered} isLive={isLive} {...props}>
       <StyledRoundResultBox>{children}</StyledRoundResultBox>
     </Background>
+  )
+}
+
+interface RoundPriceProps {
+  lockPrice: ethers.BigNumber
+  closePrice: ethers.BigNumber
+}
+
+export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice }) => {
+  const betPosition = getRoundPosition(lockPrice, closePrice)
+  const priceDifference = getPriceDifference(closePrice, lockPrice)
+
+  const getTextColor = () => {
+    switch (betPosition) {
+      case BetPosition.BULL:
+        return 'success'
+      case BetPosition.BEAR:
+        return 'failure'
+      case BetPosition.HOUSE:
+      default:
+        return 'textDisabled'
+    }
+  }
+
+  return (
+    <Flex alignItems="center" justifyContent="space-between" mb="16px">
+      {closePrice ? (
+        <Text color={getTextColor()} bold fontSize="24px">
+          {formatUsdv2(closePrice)}
+        </Text>
+      ) : (
+        <Skeleton height="34px" my="1px" />
+      )}
+      <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference)}</PositionTag>
+    </Flex>
   )
 }
 
