@@ -1676,126 +1676,6 @@ export const testnetTokens = {
     'Bakeryswap Token',
     'https://www.bakeryswap.org/',
   ),
-  usdt: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'USDT',
-    'Tether USD',
-    'https://tether.to/',
-  ),
-  btcb: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'BTCB',
-    'Binance BTC',
-    'https://bitcoin.org/',
-  ),
-  ada: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'ADA',
-    ' Binance-Peg Cardano Token',
-    'https://www.cardano.org/',
-  ),
-  band: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'BAND',
-    'Binance-Peg Band Protocol Token',
-    'https://bandprotocol.com/',
-  ),
-  dot: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'DOT',
-    'Binance-Peg Polkadot Token',
-    'https://polkadot.network/',
-  ),
-  eos: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'EOS',
-    'Binance-Peg EOS Token',
-    'https://eos.io/',
-  ),
-  link: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'LINK',
-    'Binance-Peg Chainlink Token',
-    'https://chain.link/',
-  ),
-  xrp: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'XRP',
-    'Binance-Peg XRP Token',
-    'https://ripple.com/xrp/',
-  ),
-  atom: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'ATOM',
-    'Binance-Peg Cosmos Token',
-    'https://cosmos.network/',
-  ),
-  yfii: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'YFII',
-    'Binance-Peg YFII.finance Token',
-    'https://dfi.money/#/',
-  ),
-  xtz: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'XTZ',
-    'Binance-Peg Tezos Token',
-    'https://www.tezos.com/',
-  ),
-  bch: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'BCH',
-    'Binance-Peg Bitcoin Cash Token',
-    'https://bch.info/',
-  ),
-  yfi: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'YFI',
-    'Binance-Peg yearn.finance Token',
-    'https://yearn.finance/',
-  ),
-  uni: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'UNI',
-    'Binance-Peg Uniswap Token',
-    'https://uniswap.org/',
-  ),
-  fil: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'FIL',
-    'Binance-Peg Filecoin Token',
-    'https://filecoin.io/',
-  ),
 }
 
 const tokenLists: { [chainId in ChainId]: TokenList } = {
@@ -1810,11 +1690,9 @@ const tokens = (): TokenList => {
 
 export const serializeTokens = (): SerializedTokenList => {
   const unserializedTokens = tokens()
-  let serializedTokens = {}
-
-  Object.keys(unserializedTokens).forEach((key) => {
-    serializedTokens = { ...serializedTokens, [key]: serializeToken(unserializedTokens[key]) }
-  })
+  const serializedTokens = Object.keys(unserializedTokens).reduce((accum, key) => {
+    return { ...accum, [key]: serializeToken(unserializedTokens[key]) }
+  }, {})
 
   return serializedTokens
 }
