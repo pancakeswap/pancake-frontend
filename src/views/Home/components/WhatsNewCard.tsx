@@ -33,19 +33,16 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. Our second PATIENT-ZERO NFT is being auctioned in the Mausoleum.</Text>
+            <Text fontSize='14px'>1. Upgraded RugZombie Common grave is out! Please migrate your funds from the legacy grave. You can still remain in the old grave until you earn your NFT.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>2. Main Street Spawning Pool is live!</Text>
+            <Text fontSize='14px'>2. Koala Defi Spawning Pool coming this week!</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>3. The Apeswap migration has begun, more news soon!</Text>
+            <Text fontSize='14px'>4. You can now view your NFTs in the Graveyard.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>4. Emperor & Hyrule graves are out now! Multiplier graves coming Monday, you will deposit your RugZombie Common NFTs to gain access.</Text>
-          </Row>
-          <Row>
-            <Text fontSize='14px'>5. Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
+            <Text fontSize='14px'>4. Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
           </Row>
         </>
       </CardBody>

@@ -96,6 +96,10 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           NFT Minting Time:
           <span className="indetails-value">{nftRevivalTime}</span>
         </span>
+        <span className="indetails-title">
+          Minimum Stake:
+          <span className="indetails-value">{getFullDisplayBalance(poolInfo.minimumStake)} ZMBE</span>
+        </span>
         <br />
         {isEnding ? <>
           <span className='indetails-title'>

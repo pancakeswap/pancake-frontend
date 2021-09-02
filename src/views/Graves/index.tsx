@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react'
 import PageHeader from 'components/PageHeader'
-import { Flex, Heading } from '@rug-zombie-libs/uikit'
+import { Flex, Heading, LinkExternal } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getDrFrankensteinAddress } from 'utils/addressHelpers'
 import Page from '../../components/layout/Page'
@@ -87,6 +87,10 @@ const Graves: React.FC = () => {
             <Heading size='md' color='text'>
               Stake $ZMBE to Earn NFTs
             </Heading>
+            <br/>
+            <LinkExternal href="https://rugzombie.medium.com/new-basic-grave-retiring-old-grave-on-aug-30th-54fd10eb36540">
+              Learn more about the RugZombie Common grave migration.
+            </LinkExternal>
           </Flex>
         </Flex>
       </PageHeader>

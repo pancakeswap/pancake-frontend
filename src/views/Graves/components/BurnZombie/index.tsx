@@ -46,7 +46,7 @@ const BurnZombieModal: React.FC<BurnZombieModalProps> = ({ pid, updateResult, on
       </Flex>
     </Flex>
     <Text mt="8px" ml="auto" bold color="tertiary" fontSize="14px" mb="8px">
-      Your journey begins here. Burn a zombie to receive it as an NFT in 7 days.
+      Your journey begins here. Burn a zombie and start staking to receive it as an NFT in 7 days.
       <br/>
       Don&apos;t worry, he&apos;s already dead so he won&apos;t feel it.
     </Text>
