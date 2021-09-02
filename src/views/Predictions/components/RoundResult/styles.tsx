@@ -157,7 +157,7 @@ export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice })
       case BetPosition.BULL:
         return 'success'
       case BetPosition.BEAR:
-        return 'success'
+        return 'failure'
       case BetPosition.HOUSE:
       default:
         return 'textDisabled'
