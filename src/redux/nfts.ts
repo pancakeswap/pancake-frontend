@@ -330,6 +330,18 @@ const nfts: Nft[] = [
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 27,
+    name: 'Nightmare Fuel Karen',
+    symbol: 'KAREN',
+    description: 'May I speak to your manager?',
+    address: '0xa8fe5D109C7C974E9Dd54bbe11D552dA97d92e58',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmaTXD2A7dfTaMhGzDU9ubFwVS79GF9EPMRFkGc6G9XEHf',
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts
