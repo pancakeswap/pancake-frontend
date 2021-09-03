@@ -1,6 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { save, load } from 'redux-localstorage-simple'
 import { useDispatch } from 'react-redux'
+import { LS_PREFIX } from 'config'
 import farmsReducer from './farms'
 import poolsReducer from './pools'
 import predictionsReducer from './predictions'
@@ -50,9 +51,9 @@ const store = configureStore({
   },
   middleware: [
     ...getDefaultMiddleware({ thunk: true }),
-    save({ states: PERSISTED_KEYS, namespace: `pancakeswap-${appVersion}` }),
+    save({ states: PERSISTED_KEYS, namespace: `${LS_PREFIX}-${appVersion}` }),
   ],
-  preloadedState: load({ states: PERSISTED_KEYS, namespace: `pancakeswap-${appVersion}` }),
+  preloadedState: load({ states: PERSISTED_KEYS, namespace: `${LS_PREFIX}-${appVersion}` }),
 })
 
 store.dispatch(updateVersion())

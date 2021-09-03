@@ -1,8 +1,9 @@
+import { LS_PREFIX } from 'config'
 import { EN } from 'config/localization/languages'
 
 const publicUrl = process.env.PUBLIC_URL
 
-export const LS_KEY = 'pancakeswap_language'
+export const LS_KEY = `${LS_PREFIX}-lang`
 
 export const fetchLocale = async (locale) => {
   const response = await fetch(`${publicUrl}/locales/${locale}.json`)

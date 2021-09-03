@@ -1,3 +1,4 @@
+import { LS_PREFIX } from 'config'
 import Nfts, { IPFS_GATEWAY, nftSources } from 'config/constants/nfts'
 import { Nft, NftType } from 'config/constants/types'
 import { getAddress } from './addressHelpers'
@@ -33,7 +34,8 @@ export const getAddressByType = (type: NftType) => {
 
 export const fetchCachedUriData = async (tokenUrl: string) => {
   try {
-    const localUriData = localStorage.getItem(tokenUrl)
+    const prefixedTokenUrl = `${LS_PREFIX}-${tokenUrl}`
+    const localUriData = localStorage.getItem(prefixedTokenUrl)
 
     if (localUriData) {
       const data = JSON.parse(localUriData)
@@ -47,7 +49,7 @@ export const fetchCachedUriData = async (tokenUrl: string) => {
     }
 
     const uriData = await uriDataResponse.json()
-    localStorage.setItem(tokenUrl, JSON.stringify(uriData))
+    localStorage.setItem(prefixedTokenUrl, JSON.stringify(uriData))
     return uriData
   } catch (error) {
     console.error(error)
