@@ -16,6 +16,7 @@ import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import { Vote, VotingStateLoadingStatus } from 'state/types'
 import { useGetVotingStateLoadingStatus } from 'state/voting/hooks'
+import { formatNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import { calculateVoteResults, getTotalFromVotes } from '../helpers'
 import TextEllipsis from '../components/TextEllipsis'
@@ -44,8 +45,7 @@ const Results: React.FC<ResultsProps> = ({ choices, votes }) => {
           choices.map((choice, index) => {
             const choiceVotes = results[choice] || []
             const totalChoiceVote = getTotalFromVotes(choiceVotes)
-
-            const progress = totalVotes.eq(0) ? 0 : totalChoiceVote.div(totalVotes).times(100).toNumber()
+            const progress = totalVotes === 0 ? 0 : (totalChoiceVote / totalVotes) * 100
             const hasVoted = choiceVotes.some((vote) => {
               return account && vote.voter.toLowerCase() === account.toLowerCase()
             })
@@ -66,7 +66,7 @@ const Results: React.FC<ResultsProps> = ({ choices, votes }) => {
                   <Progress primaryStep={progress} scale="sm" />
                 </Box>
                 <Flex alignItems="center" justifyContent="space-between">
-                  <Text color="textSubtle">{t('%total% Votes', { total: totalChoiceVote.toFormat(3) })}</Text>
+                  <Text color="textSubtle">{t('%total% Votes', { total: formatNumber(progress, 0, 2) })}</Text>
                   <Text>
                     {progress.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
                   </Text>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { IconButton, Text, Skeleton, Button, AutoRenewIcon, ChevronRightIcon } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
+import { formatNumber } from 'utils/formatBalance'
 import TextEllipsis from '../TextEllipsis'
 import { VotingBox, ModalInner } from './styles'
 import { CastVoteModalProps } from './types'
@@ -13,7 +13,7 @@ interface MainViewProps {
   }
   isLoading: boolean
   isPending: boolean
-  total: BigNumber
+  total: number
   onConfirm: () => void
   onViewDetails: () => void
   onDismiss: CastVoteModalProps['onDismiss']
@@ -47,7 +47,7 @@ const MainView: React.FC<MainViewProps> = ({
         ) : (
           <VotingBox onClick={onViewDetails} style={{ cursor: 'pointer' }}>
             <Text bold fontSize="20px">
-              {total.toFormat(3)}
+              {formatNumber(total, 0, 3)}
             </Text>
             <IconButton scale="sm" variant="text">
               <ChevronRightIcon width="24px" />
@@ -61,7 +61,7 @@ const MainView: React.FC<MainViewProps> = ({
       <Button
         isLoading={isPending}
         endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
-        disabled={isLoading || total.eq(0)}
+        disabled={isLoading || total === 0}
         width="100%"
         mb="8px"
         onClick={onConfirm}
