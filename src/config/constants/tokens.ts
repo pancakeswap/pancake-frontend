@@ -173,6 +173,15 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://www.buymainstreet.com/'
   },
+  nalis: {
+    symbol: "NALIS",
+    address: {
+      56: '0xb2ebaa0ad65e9c888008bf10646016f7fcdd73c3',
+      97: ''
+    },
+    decimals: 18,
+    projectLink: 'https://app.koaladefi.finance/'
+  },
   tndr: {
     symbol: 'TNDR',
     address: {

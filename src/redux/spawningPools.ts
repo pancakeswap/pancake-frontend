@@ -6,6 +6,57 @@ import { SpawningPool } from './types'
 
 const spawningPools: SpawningPool[] = [
   {
+    id: 3,
+    name: 'Koala Defi Legendary',
+    subtitle: "Nightmare Fuel Karen",
+    path: "https://ipfs.io/ipfs/QmaTXD2A7dfTaMhGzDU9ubFwVS79GF9EPMRFkGc6G9XEHf",
+    type: 'image',
+    address: {
+      56: '0x14422173F2EA692Ae2e27c77a9bf5DB58b38b457',
+      97: '',
+    },
+    endBlock: 13140040,
+    project: {
+      name: 'Koala Defi',
+      description: 'Koala DeFi Finance is a yield farming dapp running on Binance Smart Chain and ApeSwap exchange, with cool new features that let you earn and win LYPTUS tokens. The idea behind this project is to create a safe place for conservative yield farmers. ',
+      additionalDetails: [
+        {
+          name: 'Project website',
+          url: tokens.nalis.projectLink
+        },
+        {
+          name: 'Telegram',
+          url: 'https://t.me/koaladefichat'
+        },
+      ],
+    },
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '45 days',
+    rewardToken: tokens.nalis,
+    rewardTokenBnbLp: '0x8c7ef42d68889ef820cae512f43d8c256fdaa1a0',
+    artist: artists.jussjoshinduh,
+    stakingToken: '',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: false,
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      amount: BIG_ZERO,
+      pendingReward: BIG_ZERO,
+      zombieAllowance: BIG_ZERO,
+    },
+    poolInfo: {
+      unlockFee: BIG_ZERO,
+      rewardPerBlock: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalZombieStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+    },
+  },
+  {
     id: 2,
     name: 'Main Street Legendary',
     subtitle: "Block Party",
