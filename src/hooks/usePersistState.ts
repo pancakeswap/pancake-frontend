@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import identity from 'lodash/identity'
-import { LS_PREFIX } from 'config'
+import makeLocalStorageKey from 'utils/makeLocalStorageKey'
 
 interface UsePersistStateOptions {
   localStorageKey: string
@@ -18,7 +18,7 @@ const defaultOptions = {
  */
 const usePersistState = (initialValue: any, userOptions: UsePersistStateOptions) => {
   const { localStorageKey, hydrate, dehydrate } = { ...defaultOptions, ...userOptions }
-  const prefixedLocalStorageKey = `${LS_PREFIX}-${localStorageKey}`
+  const prefixedLocalStorageKey = makeLocalStorageKey(localStorageKey)
 
   const [value, setValue] = useState(() => {
     try {

@@ -1,8 +1,8 @@
-import { LS_PREFIX } from 'config'
 import Nfts, { IPFS_GATEWAY, nftSources } from 'config/constants/nfts'
 import { Nft, NftType } from 'config/constants/types'
 import { getAddress } from './addressHelpers'
 import { getErc721Contract } from './contractHelpers'
+import makeLocalStorageKey from './makeLocalStorageKey'
 
 /**
  * Gets the identifier key based on the nft address
@@ -34,7 +34,7 @@ export const getAddressByType = (type: NftType) => {
 
 export const fetchCachedUriData = async (tokenUrl: string) => {
   try {
-    const prefixedTokenUrl = `${LS_PREFIX}-${tokenUrl}`
+    const prefixedTokenUrl = makeLocalStorageKey(tokenUrl)
     const localUriData = localStorage.getItem(prefixedTokenUrl)
 
     if (localUriData) {

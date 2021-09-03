@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { save, load } from 'redux-localstorage-simple'
 import { useDispatch } from 'react-redux'
-import { LS_PREFIX } from 'config'
+import makeLocalStorageKey from 'utils/makeLocalStorageKey'
 import farmsReducer from './farms'
 import poolsReducer from './pools'
 import predictionsReducer from './predictions'
@@ -22,8 +22,8 @@ import lists from './lists/reducer'
 import burn from './burn/reducer'
 import multicall from './multicall/reducer'
 
-const appVersion = process.env.REACT_APP_VERSION
 const PERSISTED_KEYS = ['user', 'transactions', 'lists', 'profile', 'collectibles']
+const namespace = makeLocalStorageKey()
 
 const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -49,11 +49,8 @@ const store = configureStore({
     multicall,
     lists,
   },
-  middleware: [
-    ...getDefaultMiddleware({ thunk: true }),
-    save({ states: PERSISTED_KEYS, namespace: `${LS_PREFIX}-${appVersion}` }),
-  ],
-  preloadedState: load({ states: PERSISTED_KEYS, namespace: `${LS_PREFIX}-${appVersion}` }),
+  middleware: [...getDefaultMiddleware({ thunk: true }), save({ states: PERSISTED_KEYS, namespace })],
+  preloadedState: load({ states: PERSISTED_KEYS, namespace }),
 })
 
 store.dispatch(updateVersion())
