@@ -6,7 +6,6 @@ import { Modal, Text, Flex, BalanceInput, Box, Button, PancakeRoundIcon } from '
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { formatNumber, getBalanceAmount, getBalanceNumber } from 'utils/formatBalance'
-import { getCakeAddress } from 'utils/addressHelpers'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import useTheme from 'hooks/useTheme'
 import useTokenBalance, { FetchStatus } from 'hooks/useTokenBalance'
@@ -20,6 +19,7 @@ import { ConnectedBidder } from 'config/constants/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import tokens from 'config/constants/tokens'
 
 const StyledModal = styled(Modal)`
   min-width: 280px;
@@ -64,7 +64,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
   const [userNotEnoughCake, setUserNotEnoughCake] = useState(false)
   const [errorText, setErrorText] = useState(null)
 
-  const { balance: userCake, fetchStatus } = useTokenBalance(getCakeAddress())
+  const { balance: userCake, fetchStatus } = useTokenBalance(tokens.cake.address)
   const userCakeBalance = getBalanceAmount(userCake)
 
   const cakePriceBusd = usePriceCakeBusd()
