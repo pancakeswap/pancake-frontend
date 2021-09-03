@@ -1,7 +1,7 @@
 import React from 'react'
-import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
+import useTokenBalance, { FetchStatus, useGetBnbBalance } from 'hooks/useTokenBalance'
 import { getCakeAddress } from 'utils/addressHelpers'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
@@ -17,8 +17,8 @@ interface WalletInfoProps {
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { balance } = useGetBnbBalance()
-  const { balance: cakeBalance } = useTokenBalance(getCakeAddress())
+  const { balance, fetchStatus } = useGetBnbBalance()
+  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useTokenBalance(getCakeAddress())
   const { logout } = useAuth()
 
   const handleLogout = () => {
@@ -42,11 +42,19 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
       )}
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle">{t('BNB Balance')}</Text>
-        <Text>{formatBigNumber(balance, 6)}</Text>
+        {fetchStatus !== FetchStatus.SUCCESS ? (
+          <Skeleton height="22px" width="60px" />
+        ) : (
+          <Text>{formatBigNumber(balance, 6)}</Text>
+        )}
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
         <Text color="textSubtle">{t('CAKE Balance')}</Text>
-        <Text>{getFullDisplayBalance(cakeBalance, 18, 3)}</Text>
+        {cakeFetchStatus !== FetchStatus.SUCCESS ? (
+          <Skeleton height="22px" width="60px" />
+        ) : (
+          <Text>{getFullDisplayBalance(cakeBalance, 18, 3)}</Text>
+        )}
       </Flex>
       <Flex alignItems="center" justifyContent="end" mb="24px">
         <LinkExternal href={getBscScanLink(account, 'address')}>{t('View on BscScan')}</LinkExternal>
