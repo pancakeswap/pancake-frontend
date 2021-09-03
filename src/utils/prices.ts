@@ -83,17 +83,6 @@ export function formatExecutionPrice(trade?: Trade, inverted?: boolean): string 
 }
 
 /**
- * Helper to convert a Price class (from SDK) to an ethers.BigNumber
- */
-export const getBnFromPrice = (price: Price, significantDigits = 18) => {
-  if (!price) {
-    return ethers.BigNumber.from(0)
-  }
-
-  return ethers.BigNumber.from(price.toSignificant(significantDigits))
-}
-
-/**
  * Helper to multiply a Price object by an arbitrary amount
  */
 export const multiplyPriceByAmount = (price: Price, amount: number, significantDigits = 18) => {
