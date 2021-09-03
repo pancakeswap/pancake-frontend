@@ -10,7 +10,7 @@ const makeLocalStorageKey = (key?: string) => {
     return `${LS_PREFIX}-${appVersion}`
   }
 
-  return `${LS_PREFIX}-${appVersion}-${key}`
+  return `${LS_PREFIX}-${appVersion}_${key}`
 }
 
 export default makeLocalStorageKey

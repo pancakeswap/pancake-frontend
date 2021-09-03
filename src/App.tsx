@@ -7,6 +7,7 @@ import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
 import { DatePickerPortal } from 'components/DatePicker'
+import migrateLocalStorage from 'utils/migrateLocalStorage'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
@@ -25,6 +26,9 @@ import {
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
 import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
+
+// TODO: Remove this after a certain period of time
+migrateLocalStorage()
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
