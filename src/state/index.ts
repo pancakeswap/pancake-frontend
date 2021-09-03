@@ -21,7 +21,8 @@ import lists from './lists/reducer'
 import burn from './burn/reducer'
 import multicall from './multicall/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile', 'collectibles']
+const appVersion = process.env.REACT_APP_VERSION
+const PERSISTED_KEYS = ['user', 'transactions', 'lists', 'profile', 'collectibles']
 
 const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -47,8 +48,11 @@ const store = configureStore({
     multicall,
     lists,
   },
-  middleware: [...getDefaultMiddleware({ thunk: true }), save({ states: PERSISTED_KEYS })],
-  preloadedState: load({ states: PERSISTED_KEYS }),
+  middleware: [
+    ...getDefaultMiddleware({ thunk: true }),
+    save({ states: PERSISTED_KEYS, namespace: `pancakeswap-${appVersion}` }),
+  ],
+  preloadedState: load({ states: PERSISTED_KEYS, namespace: `pancakeswap-${appVersion}` }),
 })
 
 store.dispatch(updateVersion())
