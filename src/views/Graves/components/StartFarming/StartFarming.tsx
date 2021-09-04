@@ -22,6 +22,7 @@ import * as fetch from '../../../../redux/fetch'
 import { account, nftByName } from '../../../../redux/get'
 import ConvertNftModal from '../ConvertNftModal'
 import BurnZombieModal from '../BurnZombie'
+import { formatDuration } from '../../../../utils/timerHelpers'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -50,7 +51,9 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   const { t } = useTranslation()
   const [grave, setGrave] = useState(get.grave(pid))
   const [hasNftGraveToken, setHasNftGraveToken] = useState(false)
-  const { rug, userInfo, isClosed, requiresNft, nft } = grave
+  const { rug, userInfo, isClosed, requiresNft, nft, startingDate } = grave
+  const [remainingTime, setRemainingTime] = useState(startingDate - Math.floor(Date.now() / 1000))
+  const [timerSet, setTimerSet] = useState(false)
 
   const onUpdate = () => {
     fetch.grave(pid, data => {
@@ -210,12 +213,30 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
         :  <span className="total-earned text-shadow">Connect Wallet</span>}</div>
   }
 
+
+  useEffect(() => {
+    if(startingDate) {
+      setInterval(() => {
+        setRemainingTime(startingDate - Math.floor(Date.now() / 1000))
+        setTimerSet(true)
+      },1000)
+    }
+  },[startingDate])
+
+  const countdownButton = () => {
+    return <button className="btn btn-disabled w-100" type="button">
+      ~{formatDuration(remainingTime, true)}
+    </button>
+  }
+
+  console.log(startingDate)
+
   return (
     <div className="frank-card">
       <div className="small-text">
         <span className="white-color">STAKING</span>
       </div>
-      {pid === 0 ? renderButtonsForGrave() : requiresNft ? renderButtonsForNftGrave() : renderButtonsForTraditionalGraves()}
+      {startingDate ? countdownButton() : pid === 0 ? renderButtonsForGrave() : requiresNft ? renderButtonsForNftGrave() : renderButtonsForTraditionalGraves()}
     </div>
   )
 }

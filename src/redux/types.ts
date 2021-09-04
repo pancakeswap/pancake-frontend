@@ -96,6 +96,7 @@ export interface Grave {
   isClosed?: boolean,
   endDate?: number,
   latestEntryDate?: string,
+  startingDate?: number,
   requiresNft?: boolean,
   requiredNftPath?: string,
   nft?: string,

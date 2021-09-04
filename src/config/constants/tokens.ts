@@ -182,6 +182,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://app.koaladefi.finance/'
   },
+  panther: {
+    symbol: "PANTHER",
+    address: {
+      56: '0x1f546ad641b56b86fd9dceac473d1c7a357276b7',
+      97: ''
+    },
+    decimals: 18,
+    projectLink: 'https://pantherswap.com/'
+  },
   tndr: {
     symbol: 'TNDR',
     address: {
