@@ -70,7 +70,6 @@ const LotteryCardContent = () => {
   return (
     <>
       <Flex flexDirection="column" mt="48px">
-        <div ref={observerRef} />
         <Text color="white" bold fontSize="16px">
           {t('Lottery')}
         </Text>

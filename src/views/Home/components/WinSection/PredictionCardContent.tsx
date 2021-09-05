@@ -46,7 +46,6 @@ const PredictionCardContent = () => {
   return (
     <>
       <Flex flexDirection="column" mt="48px">
-        <div ref={observerRef} />
         <Text color="#280D5F" bold fontSize="16px">
           {t('Prediction')}
         </Text>
