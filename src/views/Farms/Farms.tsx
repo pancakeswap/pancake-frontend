@@ -9,6 +9,7 @@ import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 import usePersistState from 'hooks/usePersistState'
+import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { Farm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -122,6 +123,7 @@ const Farms: React.FC = () => {
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' })
   const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
+  const { observerRef, isIntersecting } = useIntersectionObserver()
   const chosenFarmsLength = useRef(0)
 
   const isArchived = pathname.includes('archived')
@@ -181,10 +183,7 @@ const Farms: React.FC = () => {
     setQuery(event.target.value)
   }
 
-  const loadMoreRef = useRef<HTMLDivElement>(null)
-
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  const [observerIsSet, setObserverIsSet] = useState(false)
 
   const chosenFarmsMemoized = useMemo(() => {
     let chosenFarms = []
@@ -242,27 +241,15 @@ const Farms: React.FC = () => {
   chosenFarmsLength.current = chosenFarmsMemoized.length
 
   useEffect(() => {
-    const showMoreFarms = (entries) => {
-      const [entry] = entries
-      if (entry.isIntersecting) {
-        setNumberOfFarmsVisible((farmsCurrentlyVisible) => {
-          if (farmsCurrentlyVisible <= chosenFarmsLength.current) {
-            return farmsCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE
-          }
-          return farmsCurrentlyVisible
-        })
-      }
-    }
-
-    if (!observerIsSet) {
-      const loadMoreObserver = new IntersectionObserver(showMoreFarms, {
-        rootMargin: '0px',
-        threshold: 1,
+    if (isIntersecting) {
+      setNumberOfFarmsVisible((farmsCurrentlyVisible) => {
+        if (farmsCurrentlyVisible <= chosenFarmsLength.current) {
+          return farmsCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE
+        }
+        return farmsCurrentlyVisible
       })
-      loadMoreObserver.observe(loadMoreRef.current)
-      setObserverIsSet(true)
     }
-  }, [chosenFarmsMemoized, observerIsSet])
+  }, [isIntersecting])
 
   const rowData = chosenFarmsMemoized.map((farm) => {
     const { token, quoteToken } = farm
@@ -449,7 +436,7 @@ const Farms: React.FC = () => {
             <Loading />
           </Flex>
         )}
-        <div ref={loadMoreRef} />
+        <div ref={observerRef} />
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
     </>
