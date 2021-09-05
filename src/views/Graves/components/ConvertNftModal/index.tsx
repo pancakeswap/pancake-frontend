@@ -75,7 +75,6 @@ const ConvertNftModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismi
 
   const handleConvertNft = () => {
     if(selected) {
-      console.log(selected)
       nftContract.methods.approve(getNftConverterAddress(), selected)
         .send({ from: wallet }).then(() => {
         nftConverterContract.methods.deposit(nftConverterPid, selected)
@@ -118,7 +117,7 @@ const ConvertNftModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismi
     </Text>
     <Flex justifyContent="center" >
       {ids.map(currentId => {
-        return <div style={{padding: "10px"}}><Button  onClick={() => { setSelected(currentId) }} variant={currentId === selected ? 'secondary' : 'primary'} >{currentId}</Button></div>
+        return <div id={currentId} key={currentId} style={{padding: "10px"}}><Button  onClick={() => { setSelected(currentId) }} variant={currentId === selected ? 'secondary' : 'primary'} >{currentId}</Button></div>
       })}
     </Flex>
       <Button onClick={() => { if(selected){ onNftWarningModal() } }} disabled={!selected} mt="8px" as="a" variant={selected ? 'secondary' : 'primary'}>

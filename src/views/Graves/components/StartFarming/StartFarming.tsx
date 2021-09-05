@@ -229,8 +229,6 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
     </button>
   }
 
-  console.log(startingDate)
-
   return (
     <div className="frank-card">
       <div className="small-text">
