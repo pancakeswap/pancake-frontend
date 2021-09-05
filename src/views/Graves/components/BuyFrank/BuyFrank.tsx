@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react'
-import { useModal } from '@rug-zombie-libs/uikit';
+import { Skeleton, useModal } from '@rug-zombie-libs/uikit'
 import ModalInput from 'components/ModalInput/ModalInput';
 import { BigNumber } from 'bignumber.js'
 import { formatDuration } from '../../../../utils/timerHelpers'
@@ -17,7 +17,7 @@ interface BuyFrankProps {
 }
 
 const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
-  const { nftRevivalTime , userInfo: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } } = grave(pid)
+  const { nftRevivalTime , withdrawalCooldown, userInfo: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } } = grave(pid)
   const currentDate = Math.floor(Date.now() / 1000);
   let nftRevivalDateFixed = nftRevivalDate
   if(nftRevivalDate < 0) {
@@ -53,7 +53,8 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
               <div className="small-text">
                 <span className="white-color">NFT Timer</span>
               </div>
-              <span className="total-earned text-shadow" style={{fontSize: "20px"}}>{formatDuration(nftTime)}</span>
+              <span className="total-earned text-shadow" style={{fontSize: "20px"}}>
+                { nftRevivalDateFixed > 0 ? formatDuration(nftTime) :<Skeleton/> }</span>
             </div>}
           {currentDate >= withdrawCooldownTimeFixed ?
             <span className="total-earned text-shadow" style={{fontSize: "20px"}}>No Withdraw Fees</span> :
@@ -62,7 +63,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
                 <span className="white-color">5% Withdraw fee is active:</span>
               </div>
               <span className="total-earned text-shadow" style={{fontSize: "20px"}}>
-                {initialNftTime > 0 ? formatDuration(initialWithdrawCooldownTime) : nftRevivalTime }</span>
+                {initialWithdrawCooldownTime > 0 ? formatDuration(initialWithdrawCooldownTime) : <Skeleton/> }</span>
             </div>}
         </div>
       </div> :

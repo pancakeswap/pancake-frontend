@@ -13,11 +13,11 @@ const Collectibles: React.FC = () => {
   const { isLg, isXl } = useMatchBreakpoints()
   const isDesktop = isLg || isXl
   const contract = useNftOwnership()
-  const [updateUserInfo, setUdateUserInfo] = useState(false)
+  const [updateUserInfo, setUpdateUserInfo] = useState(false)
   const [filter, setFilter] = useState(0)
   useEffect(() => {
     if(!updateUserInfo) {
-      nftUserInfo(contract, { update: updateUserInfo, setUpdate: setUdateUserInfo });
+      nftUserInfo(contract, { update: updateUserInfo, setUpdate: setUpdateUserInfo });
     }
   }, [contract, updateUserInfo])
 
