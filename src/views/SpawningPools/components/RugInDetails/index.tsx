@@ -5,10 +5,6 @@ import React, { useEffect, useState } from 'react'
 import { BIG_ZERO } from 'utils/bigNumber';
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js';
-import numeral from 'numeral';
-import { Token } from '../../../../config/constants/types'
-import { BASE_V1_EXCHANGE_URL } from '../../../../config'
-import { Grave } from '../../../../redux/types'
 import { bnbPriceUsd, grave, spawningPool } from '../../../../redux/get'
 
 
@@ -18,11 +14,8 @@ interface RugInDetailsProps {
   zombieUsdPrice: number
 }
 
-const RugInDetails: React.FC<RugInDetailsProps> = ({
-  id , zombieUsdPrice, bnbInBusd,
-}) => {
-  const { subtitle, rewardToken, pcsVersion, liquidityDetails, project, path, type, withdrawalCooldown, nftRevivalTime, endBlock, artist } = spawningPool(id)
-  const { link,  } = project
+const RugInDetails: React.FC<RugInDetailsProps> = ({ id }) => {
+  const { subtitle, poolInfo, pcsVersion, liquidityDetails, project, path, type, withdrawalCooldown, nftRevivalTime, endBlock, artist } = spawningPool(id)
   const spawningPoolContract = useSpawningPool(id);
 
   const [unlockFee, setUnlockFee] = useState(0);
@@ -33,18 +26,6 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         setUnlockFee(parseFloat(getFullDisplayBalance(new BigNumber(res), tokens.zmbe.decimals, 4)));
       })
   })
-
-  let allocPoint = BIG_ZERO;
-    allocPoint = new BigNumber(0)
-
-  let liquidity
-  if(pcsVersion === 'v1') {
-    liquidity = 'Pancakeswap V1'
-  } else if(pcsVersion === 'v2') {
-    liquidity = 'Pancakeswap V2'
-  } else {
-    liquidity = liquidityDetails
-  }
 
   return (
     <div key={id} className="rug-indetails">
@@ -98,6 +79,10 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         <span className="indetails-title">
           NFT Minting Time:
           <span className="indetails-value">{nftRevivalTime}</span>
+        </span>
+        <span className="indetails-title">
+          Minimum Stake:
+          <span className="indetails-value">{getFullDisplayBalance(poolInfo.minimumStake)} ZMBE</span>
         </span>
         <span className="indetails-title">
           <LinkExternal href={`https://bscscan.com/block/countdown/${endBlock}`}>

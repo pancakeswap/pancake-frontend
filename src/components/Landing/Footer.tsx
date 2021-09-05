@@ -20,7 +20,7 @@ const Footer = () => {
           </div>
           <div className="copyright">
             <a href="/" target="_blank" className="link">
-              info@rugzombie.com
+              info@rugzombie.io
             </a>
           </div>
           <div className="social_links_wrapper navbar_sm">
