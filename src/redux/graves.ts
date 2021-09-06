@@ -54,6 +54,7 @@ const graves: Grave[] = [
     pcsVersion: 'v2',
     liquidityDetails: '',
     isClosed: true,
+    isRetired: true,
     rarity: "Common",
     userInfo: {
       paidUnlockFee: false,
@@ -371,6 +372,7 @@ const graves: Grave[] = [
     isNew: false,
     isEnding: true,
     isClosed: true,
+    isRetired: true,
     endDate: 1630900799,
     latestEntryDate: "Aug. 4th, 2021",
     rarity: "Legendary",
@@ -544,8 +546,6 @@ const graves: Grave[] = [
     isNew: false,
     isEnding: false,
     rarity: "Rare",
-    isFeatured: true,
-
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -614,7 +614,6 @@ const graves: Grave[] = [
     isNew: false,
     isEnding: false,
     rarity: "Uncommon",
-    isFeatured: true,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,

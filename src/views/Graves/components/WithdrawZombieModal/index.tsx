@@ -188,7 +188,7 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ pid, zombieUs
         </StyledButton>
         </Flex>
         {/* eslint-disable-next-line no-nested-ternary */}
-        {pid === 0 ? currentDate >= 0 ?
+        {pid === 0 ? currentDate >= userInfo.tokenWithdrawalDate ?
           <Button mt="8px" as="a" onClick={handleWithDraw} disabled={isDisabled} variant="secondary">
               Withdraw ZMBE (Resets NFT Timer)
           </Button> :

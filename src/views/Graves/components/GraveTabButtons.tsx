@@ -30,7 +30,7 @@ const StyledButton = styled(Button)`
 const StyledLink = styled(UiKitLink)`
   width: 100%;
 `
-const FILTERS = ['All', 'Featured', 'Legendary', 'Rare', 'Uncommon', 'Common']
+const FILTERS = ['All', 'Featured', 'Legendary', 'Rare', 'Uncommon', 'Common', 'Retired']
 
 const GraveTabButtons = ({ setFilter, stakedOnly, setStakedOnly }) => {
   const { t } = useTranslation()
@@ -44,7 +44,7 @@ const GraveTabButtons = ({ setFilter, stakedOnly, setStakedOnly }) => {
   }
 
   const nextFilter = () => {
-    if(index === 5) {
+    if(index === 6) {
       toggleButtonMenu(0)
     } else {
       toggleButtonMenu(index + 1)
@@ -95,6 +95,13 @@ const GraveTabButtons = ({ setFilter, stakedOnly, setStakedOnly }) => {
               </Text>
             </ButtonMenuItem>
           </NotificationDot>
+            <NotificationDot>
+              <ButtonMenuItem>
+                <Text color="tertiary" bold>
+                  {t('Retired')}
+                </Text>
+              </ButtonMenuItem>
+            </NotificationDot>
         </ButtonMenu> :
           <StyledButton onClick={nextFilter} className="total-earned text-shadow">
             <Text color="tertiary" bold>

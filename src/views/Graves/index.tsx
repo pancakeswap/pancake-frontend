@@ -34,6 +34,9 @@ const filterGraves = (i) => {
     case 5: // Common
       return graves().filter(g => g.rarity === "Common")
       break
+    case 6: // Retired
+      return graves().filter(g => g.isRetired)
+      break
     default:
       return graves()
       break
@@ -44,17 +47,13 @@ const Graves: React.FC = () => {
   const { account } = useWeb3React()
   const [isAllowance, setIsAllowance] = useState(false)
   const [farmData, setFarmData] = useState(graves())
-  const [filter, setFilter] = useState(graves())
+  const [filter, setFilter] = useState(0)
   const [stakedOnly, setStakedOnly] = useState(false)
   const multi = useMultiCall()
   useEffect(() => {
     initialData(account, multi)
     initialGraveData(undefined, setFarmData)
   }, [account, multi])
-
-  const toggleStakedOnly = () => {
-    setStakedOnly(!stakedOnly)
-  }
 
   accountAddress = account
   const [bnbInBusd, setBnbInBusd] = useState(0)
@@ -75,7 +74,7 @@ const Graves: React.FC = () => {
         })
     }
 
-    const visibleGraves = stakedOnly ? filterGraves(filter).filter(g => !g.userInfo.amount.isZero()) : filterGraves(filter)
+    const visibleGraves = stakedOnly ? filterGraves(filter).filter(g => !g.userInfo.amount.isZero()) : filterGraves(filter).filter(g => !g.isRetired || filter === 6)
   return (
     <>
       <PageHeader background='#101820'>

@@ -34,7 +34,6 @@ const Tombs: React.FC = () => {
 
   const [isAllowance, setIsAllowance] = useState(false)
 
-
   const updateResult = (pid) => {
     tomb(
       pid,

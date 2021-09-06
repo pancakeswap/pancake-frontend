@@ -111,6 +111,7 @@ export interface Grave {
   poolInfo: PoolInfo,
   rarity: string,
   isFeatured?: boolean
+  isRetired?: boolean
 
 }
 
