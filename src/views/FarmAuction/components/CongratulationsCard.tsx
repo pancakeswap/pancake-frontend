@@ -5,7 +5,6 @@ import { Auction, Bidder } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useCongratulateAuctionWinner from '../hooks/useCongratulateAuctionWinner'
-import { FarmSchedule } from './AuctionDetailsCard/AuctionSchedule'
 import WhitelistedBiddersButton from './WhitelistedBiddersButton'
 
 const StyledReclaimBidCard = styled(Card)`
@@ -40,7 +39,6 @@ const CongratulationsCard: React.FC<{ currentAuction: Auction; bidders: Bidder[]
             <Text color="textSubtle">{t('Total whitelisted bidders')}</Text>
             <WhitelistedBiddersButton />
           </Flex>
-          <FarmSchedule auction={auction} showForClosedAuction />
         </Flex>
 
         <Flex justifyContent="space-between" mb="8px">

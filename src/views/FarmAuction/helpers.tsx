@@ -1,4 +1,4 @@
-import { toDate, add, hoursToSeconds, differenceInHours } from 'date-fns'
+import { toDate, add, differenceInHours } from 'date-fns'
 import { BSC_BLOCK_TIME, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { simpleRpcProvider } from 'utils/providers'
@@ -117,12 +117,6 @@ export const processAuctionData = async (auctionId: number, auctionResponse: Auc
   const currentBlock = await simpleRpcProvider.getBlockNumber()
   const startDate = await getDateForBlock(currentBlock, processedAuctionData.startBlock)
   const endDate = await getDateForBlock(currentBlock, processedAuctionData.endBlock)
-  const farmStartDate = add(endDate, { hours: 12 })
-  const blocksToFarmStartDate = hoursToSeconds(12) / BSC_BLOCK_TIME
-  const farmStartBlock = processedAuctionData.endBlock + blocksToFarmStartDate
-  const farmDurationInBlocks = hoursToSeconds(7 * 24) / BSC_BLOCK_TIME
-  const farmEndBlock = farmStartBlock + farmDurationInBlocks
-  const farmEndDate = add(farmStartDate, { weeks: 1 })
 
   const auctionStatus = getAuctionStatus(
     currentBlock,
@@ -136,10 +130,6 @@ export const processAuctionData = async (auctionId: number, auctionResponse: Auc
     startDate,
     endDate,
     auctionDuration: differenceInHours(endDate, startDate),
-    farmStartBlock,
-    farmStartDate,
-    farmEndBlock,
-    farmEndDate,
     ...processedAuctionData,
     status: auctionStatus,
   }
