@@ -10,7 +10,7 @@ import {
   useGetVotes,
   useGetProposalLoadingStatus,
 } from 'state/voting/hooks'
-import { fetchProposal, fetchVotes, verifyVotes } from 'state/voting'
+import { fetchProposal, fetchVotes } from 'state/voting'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import ReactMarkdown from 'components/ReactMarkdown'
@@ -44,13 +44,8 @@ const Proposal = () => {
 
   // We have to wait for the proposal to load before fetching the votes because we need to include the snapshot
   useEffect(() => {
-    const getVotes = async () => {
-      await dispatch(fetchVotes({ proposalId, block: Number(snapshot) }))
-      dispatch(verifyVotes({ proposalId, snapshot }))
-    }
-
     if (proposalId && snapshot) {
-      getVotes()
+      dispatch(fetchVotes({ proposalId, block: Number(snapshot) }))
     }
   }, [proposalId, snapshot, dispatch])
 
