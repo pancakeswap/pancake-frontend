@@ -60,7 +60,7 @@ const Proposals = () => {
           <Text>{t('Voting')}</Text>
         </Breadcrumbs>
       </Box>
-      <Heading as="h2" scale="xl" mb="32px">
+      <Heading as="h2" scale="xl" mb="32px" id="voting-proposals">
         {t('Proposals')}
       </Heading>
       <Card>

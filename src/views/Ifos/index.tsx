@@ -20,7 +20,7 @@ const Ifos = () => {
             <ButtonMenuItem as={Link} to={`${url}`}>
               {t('Next IFO')}
             </ButtonMenuItem>
-            <ButtonMenuItem as={Link} to={`${url}/history`}>
+            <ButtonMenuItem id="past-ifos-button" as={Link} to={`${url}/history`}>
               {t('Past IFOs')}
             </ButtonMenuItem>
           </ButtonMenu>

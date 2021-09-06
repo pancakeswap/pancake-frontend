@@ -155,7 +155,13 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
               <Flex flexDirection="column" mb={['8px', null]}>
                 <Flex alignItems="center">
                   <CurrencyLogo size="32px" address={address} />
-                  <Text ml="12px" bold lineHeight="0.7" fontSize={isXs || isSm ? '24px' : '40px'}>
+                  <Text
+                    ml="12px"
+                    bold
+                    lineHeight="0.7"
+                    fontSize={isXs || isSm ? '24px' : '40px'}
+                    id="info-token-name-title"
+                  >
                     {tokenData.name}
                   </Text>
                   <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>

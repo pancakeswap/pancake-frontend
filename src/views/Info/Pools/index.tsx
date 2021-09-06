@@ -34,7 +34,7 @@ const PoolsOverview: React.FC = () => {
           </Text>
         )}
       </Card>
-      <Heading scale="lg" mt="40px" mb="16px">
+      <Heading scale="lg" mt="40px" mb="16px" id="info-pools-title">
         {t('All Pools')}
       </Heading>
       <PoolTable poolDatas={poolDatas} />

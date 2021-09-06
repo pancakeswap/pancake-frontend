@@ -39,7 +39,7 @@ const TokensOverview: React.FC = () => {
         </Card>
       )}
       <TopTokenMovers />
-      <Heading scale="lg" mt="40px" mb="16px">
+      <Heading scale="lg" mt="40px" mb="16px" id="info-tokens-title">
         {t('All Tokens')}
       </Heading>
       <TokenTable tokenDatas={formattedTokens} />

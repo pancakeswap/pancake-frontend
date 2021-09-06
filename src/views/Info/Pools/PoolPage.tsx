@@ -118,6 +118,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                 ml="38px"
                 bold
                 fontSize={isXs || isSm ? '24px' : '40px'}
+                id="info-pool-pair-title"
               >{`${poolData.token0.symbol} / ${poolData.token1.symbol}`}</Text>
             </Flex>
             <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>

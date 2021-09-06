@@ -44,7 +44,7 @@ const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataLoaded, account 
   }
   return (
     <StyledTableBorder>
-      <StyledTable role="table" ref={tableWrapperEl}>
+      <StyledTable id="pools-table" role="table" ref={tableWrapperEl}>
         {pools.map((pool) => (
           <PoolRow
             key={pool.isAutoVault ? 'auto-cake' : pool.sousId}
