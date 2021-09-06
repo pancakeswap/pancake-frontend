@@ -10,7 +10,10 @@ import multicall from 'utils/multicall'
 // remove HERO because there are two tokens with the symbol HERO (StepHero and Hero)
 const tokensToTest = omitBy(
   tokens,
-  (token) => token.symbol.toLowerCase() === 'bnb' || token.symbol.toLowerCase() === 'one' || token.symbol.toLowerCase() === 'hero',
+  (token) =>
+    token.symbol.toLowerCase() === 'bnb' ||
+    token.symbol.toLowerCase() === 'one' ||
+    token.symbol.toLowerCase() === 'hero',
 )
 
 describe('Config tokens', () => {
