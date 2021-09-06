@@ -1,6 +1,8 @@
 import styled from 'styled-components'
+import { Flex } from '@pancakeswap/uikit'
 
-const CollectionStatsWrapper = styled.div`
+const CollectionStatsWrapper = styled(Flex)`
+  justify-content: space-around;
   width: 100%;
   background: ${({ theme }) => theme.colors.invertedContrast};
   padding: 8px;

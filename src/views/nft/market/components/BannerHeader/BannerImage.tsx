@@ -1,6 +1,14 @@
 import styled from 'styled-components'
 
-const StyledBannerImage = styled.div<{ src: string }>`
+interface StyledBannerImageProps {
+  src: string
+  alt?: string
+}
+
+const StyledBannerImage = styled.div.attrs<StyledBannerImageProps>(({ alt }) => ({
+  alt,
+}))<StyledBannerImageProps>`
+  ${({ src, theme }) => (src ? `background-image: url('${src}')` : `background-color: ${theme.colors.cardBorder}`)};
   background-image: url('${({ src }) => src}');
   background-size: cover;
   background-position: center;

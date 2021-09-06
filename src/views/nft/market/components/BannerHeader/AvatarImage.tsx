@@ -1,6 +1,14 @@
 import styled from 'styled-components'
 
-const AvatarImage = styled.div<{ src: string; borderColor?: string }>`
+interface AvatarImageProps {
+  src: string
+  borderColor?: string
+  alt?: string
+}
+
+const AvatarImage = styled.div.attrs<AvatarImageProps>(({ alt }) => ({
+  alt,
+}))<AvatarImageProps>`
   background: url('${({ src }) => src}');
   background-repeat: no-repeat;
   background-size: cover;
