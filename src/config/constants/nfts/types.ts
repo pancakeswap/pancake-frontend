@@ -2,6 +2,7 @@ import { Address, Images } from '../types'
 
 export enum CollectionKey {
   PANCAKE = 'pancake',
+  SQUAD = 'pancakeSquad',
 }
 
 type Collection = {
@@ -18,7 +19,7 @@ export type NftImages = {
 } & Images
 
 export type Nft = {
-  id?: number | string
+  id: number | string
   name: string
   description: string
   images: NftImages
@@ -29,7 +30,7 @@ export type Nft = {
 
   // Uniquely identifies the nft.
   // Used for matching an NFT from the config with the data from the NFT's tokenURI
-  identifier: string
+  identifier?: string
 
   attributes?: any
 }
