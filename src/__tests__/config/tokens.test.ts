@@ -7,9 +7,13 @@ import multicall from 'utils/multicall'
 
 // remove BNB because it's not a Bep20 token
 // remove ONE because there are two tokens with the symbol ONE (Harmony ONE and BigONE)
+// remove HERO because there are two tokens with the symbol HERO (StepHero and Hero)
 const tokensToTest = omitBy(
   tokens,
-  (token) => token.symbol.toLowerCase() === 'bnb' || token.symbol.toLowerCase() === 'one',
+  (token) =>
+    token.symbol.toLowerCase() === 'bnb' ||
+    token.symbol.toLowerCase() === 'one' ||
+    token.symbol.toLowerCase() === 'hero',
 )
 
 describe('Config tokens', () => {
