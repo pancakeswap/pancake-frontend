@@ -20,8 +20,8 @@ const pools: SerializedPoolConfig[] = [
   },
   {
     sousId: 218,
-    stakingToken: tokens.cake,
-    earningToken: tokens.stephero,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.stephero,
     contractAddress: {
       97: '',
       56: '0xcecba456fefe5b18d43df23419e7ab755b436655',
