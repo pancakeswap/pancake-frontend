@@ -73,6 +73,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  stephero: {
+    symbol: 'HERO',
+    address: {
+      56: '0xE8176d414560cFE1Bf82Fd73B986823B89E4F545',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://stephero.io/',
+  },
   qbt: {
     symbol: 'QBT',
     address: {
