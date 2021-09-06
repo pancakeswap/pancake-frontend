@@ -23,6 +23,8 @@ import {
   updateGasPrice,
   addWatchlistToken,
   addWatchlistPool,
+  updateUserPredictionChartDisclaimerShow,
+  updateUserPredictionAcceptedRisk,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -118,6 +120,41 @@ export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly:
     userFarmStakedOnly === FarmStakedOnly.ON_FINISHED ? !isActive : userFarmStakedOnly === FarmStakedOnly.TRUE,
     setUserFarmStakedOnly,
   ]
+}
+
+export function useUserPredictionAcceptedRisk(): [boolean, (acceptedRisk: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userPredictionAcceptedRisk = useSelector<AppState, AppState['user']['userPredictionAcceptedRisk']>((state) => {
+    return state.user.userPredictionAcceptedRisk
+  })
+
+  const setUserPredictionAcceptedRisk = useCallback(
+    (acceptedRisk: boolean) => {
+      dispatch(updateUserPredictionAcceptedRisk({ userAcceptedRisk: acceptedRisk }))
+    },
+    [dispatch],
+  )
+
+  return [userPredictionAcceptedRisk, setUserPredictionAcceptedRisk]
+}
+
+export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaimer: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userPredictionChartDisclaimerShow = useSelector<
+    AppState,
+    AppState['user']['userPredictionChartDisclaimerShow']
+  >((state) => {
+    return state.user.userPredictionChartDisclaimerShow
+  })
+
+  const setPredictionUserChartDisclaimerShow = useCallback(
+    (showDisclaimer: boolean) => {
+      dispatch(updateUserPredictionChartDisclaimerShow({ userShowDisclaimer: showDisclaimer }))
+    },
+    [dispatch],
+  )
+
+  return [userPredictionChartDisclaimerShow, setPredictionUserChartDisclaimerShow]
 }
 
 export function useUserTransactionTTL(): [number, (slippage: number) => void] {

@@ -37,6 +37,12 @@ export const toggleTheme = createAction<void>('user/toggleTheme')
 export const updateUserFarmStakedOnly = createAction<{ userFarmStakedOnly: FarmStakedOnly }>(
   'user/updateUserFarmStakedOnly',
 )
+export const updateUserPredictionAcceptedRisk = createAction<{ userAcceptedRisk: boolean }>(
+  'user/updateUserPredictionAcceptedRisk',
+)
+export const updateUserPredictionChartDisclaimerShow = createAction<{ userShowDisclaimer: boolean }>(
+  'user/updateUserPredictionChartDisclaimerShow',
+)
 export const updateGasPrice = createAction<{ gasPrice: string }>('user/updateGasPrice')
 
 export const addWatchlistToken = createAction<{ address: string }>('user/addWatchlistToken')

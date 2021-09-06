@@ -20,6 +20,8 @@ import {
   FarmStakedOnly,
   addWatchlistToken,
   addWatchlistPool,
+  updateUserPredictionAcceptedRisk,
+  updateUserPredictionChartDisclaimerShow,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -57,6 +59,8 @@ export interface UserState {
   audioPlay: boolean
   isDark: boolean
   userFarmStakedOnly: FarmStakedOnly
+  userPredictionAcceptedRisk: boolean
+  userPredictionChartDisclaimerShow: boolean
   gasPrice: string
   watchlistTokens: string[]
   watchlistPools: string[]
@@ -77,6 +81,8 @@ export const initialState: UserState = {
   audioPlay: true,
   isDark: false,
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
+  userPredictionAcceptedRisk: false,
+  userPredictionChartDisclaimerShow: true,
   gasPrice: GAS_PRICE_GWEI.default,
   watchlistTokens: [],
   watchlistPools: [],
@@ -160,6 +166,12 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateUserFarmStakedOnly, (state, { payload: { userFarmStakedOnly } }) => {
       state.userFarmStakedOnly = userFarmStakedOnly
+    })
+    .addCase(updateUserPredictionAcceptedRisk, (state, { payload: { userAcceptedRisk } }) => {
+      state.userPredictionAcceptedRisk = userAcceptedRisk
+    })
+    .addCase(updateUserPredictionChartDisclaimerShow, (state, { payload: { userShowDisclaimer } }) => {
+      state.userPredictionChartDisclaimerShow = userShowDisclaimer
     })
     .addCase(updateGasPrice, (state, action) => {
       state.gasPrice = action.payload.gasPrice
