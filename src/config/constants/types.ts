@@ -178,10 +178,6 @@ export interface Auction {
   endBlock: number
   endDate: Date
   auctionDuration: number
-  farmStartBlock: number
-  farmStartDate: Date
-  farmEndBlock: number
-  farmEndDate: Date
   initialBidAmount: number
   topLeaderboard: number
   leaderboardThreshold: BigNumber

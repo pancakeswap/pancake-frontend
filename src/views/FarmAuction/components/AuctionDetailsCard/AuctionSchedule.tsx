@@ -18,7 +18,7 @@ interface ScheduleProps {
   showForClosedAuction?: boolean
 }
 
-export const AuctionSchedule: React.FC<ScheduleProps> = ({ auction }) => {
+const AuctionSchedule: React.FC<ScheduleProps> = ({ auction }) => {
   const { startBlock, endBlock, auctionDuration, startDate, endDate, status } = auction
   const { t } = useTranslation()
 
@@ -73,59 +73,4 @@ export const AuctionSchedule: React.FC<ScheduleProps> = ({ auction }) => {
   )
 }
 
-export const FarmSchedule: React.FC<ScheduleProps> = ({ auction, showForClosedAuction }) => {
-  const { status, farmStartBlock, farmEndBlock, farmStartDate, farmEndDate } = auction
-  const { t } = useTranslation()
-
-  let scheduleToBeAnnounced = status === AuctionStatus.ToBeAnnounced || status === AuctionStatus.Closed
-  // Schedule for closed auction is shown in congratulation card but not shown in Next Auction card
-  if (showForClosedAuction) {
-    scheduleToBeAnnounced = false
-  }
-
-  return (
-    <Flex flexDirection="column" mt="24px">
-      <Text textTransform="uppercase" color="secondary" bold fontSize="12px" mb="8px">
-        {t('Farm schedule')}
-      </Text>
-      <ScheduleInner>
-        <Flex justifyContent="space-between" mb="8px">
-          <Text small color="textSubtle">
-            {t('Farm duration')}
-          </Text>
-          <Text small>{t('%num% days', { num: 7 })}</Text>
-        </Flex>
-        <Flex justifyContent="space-between" mb="8px">
-          <Text small color="textSubtle">
-            {t('Start')}
-          </Text>
-          {scheduleToBeAnnounced ? (
-            <Text small>{t('To be announced')}</Text>
-          ) : (
-            <Box>
-              <Text small>{format(farmStartDate, 'MMMM dd yyyy hh:mm aa')}</Text>
-              <Text small textAlign="right">
-                {t('Block %num%', { num: farmStartBlock })}
-              </Text>
-            </Box>
-          )}
-        </Flex>
-        <Flex justifyContent="space-between">
-          <Text small color="textSubtle">
-            {t('End')}
-          </Text>
-          {scheduleToBeAnnounced ? (
-            <Text small>{t('To be announced')}</Text>
-          ) : (
-            <Box>
-              <Text small>{format(farmEndDate, 'MMMM dd yyyy hh:mm aa')}</Text>
-              <Text small textAlign="right">
-                {t('Block %num%', { num: farmEndBlock })}
-              </Text>
-            </Box>
-          )}
-        </Flex>
-      </ScheduleInner>
-    </Flex>
-  )
-}
+export default AuctionSchedule
