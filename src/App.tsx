@@ -51,6 +51,7 @@ const Liquidity = lazy(() => import('./views/Pool'))
 const PoolFinder = lazy(() => import('./views/PoolFinder'))
 const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 const Info = lazy(() => import('./views/Info'))
+const NftMarket = lazy(() => import('./views/nft/market'))
 
 // This config is required for number formatting
 BigNumber.config({
@@ -122,6 +123,12 @@ const App: React.FC = () => {
             <Route path="/voting/proposal/:id">
               <Proposal />
             </Route>
+
+            {/* NFT */}
+            <Route path="/nft/market">
+              <NftMarket />
+            </Route>
+
             {/* Info pages */}
             <Route path="/info">
               <Info />
