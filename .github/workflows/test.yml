@@ -15,7 +15,7 @@ jobs:
       matrix:
         node: [14]
 
-    name: Unit Tests (Jest)
+    name: Unit tests (Jest)
 
     steps:
       - name: Checkout code
@@ -44,17 +44,17 @@ jobs:
       - name: Run tests
         run: yarn test --watchAll=false
 
-integration-tests:
-  name: Integration tests
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-        registry-url: https://registry.npmjs.org
-    - run: yarn install --frozen-lockfile
-    - run: yarn cypress install
-    - run: yarn build
-    - run: yarn integration-test
+  integration-tests:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          registry-url: https://registry.npmjs.org
+      - run: yarn install --frozen-lockfile
+      - run: yarn cypress install
+      - run: yarn build
+      - run: yarn integration-test
