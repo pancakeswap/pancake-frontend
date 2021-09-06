@@ -10,6 +10,7 @@ import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import usePersistState from 'hooks/usePersistState'
+import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { useFetchPublicPoolsData, usePools, useFetchCakeVault, useCakeVault } from 'state/pools/hooks'
 import { usePollFarmsPublicData } from 'state/farms/hooks'
 import { latinise } from 'utils/latinise'
@@ -84,8 +85,7 @@ const Pools: React.FC = () => {
   const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools(account)
   const [stakedOnly, setStakedOnly] = usePersistState(false, { localStorageKey: 'pancake_pool_staked' })
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
-  const [observerIsSet, setObserverIsSet] = useState(false)
-  const loadMoreRef = useRef<HTMLDivElement>(null)
+  const { observerRef, isIntersecting } = useIntersectionObserver()
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_pool_view' })
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
@@ -134,27 +134,15 @@ const Pools: React.FC = () => {
   useFetchPublicPoolsData()
 
   useEffect(() => {
-    const showMorePools = (entries) => {
-      const [entry] = entries
-      if (entry.isIntersecting) {
-        setNumberOfPoolsVisible((poolsCurrentlyVisible) => {
-          if (poolsCurrentlyVisible <= chosenPoolsLength.current) {
-            return poolsCurrentlyVisible + NUMBER_OF_POOLS_VISIBLE
-          }
-          return poolsCurrentlyVisible
-        })
-      }
-    }
-
-    if (!observerIsSet) {
-      const loadMoreObserver = new IntersectionObserver(showMorePools, {
-        rootMargin: '0px',
-        threshold: 1,
+    if (isIntersecting) {
+      setNumberOfPoolsVisible((poolsCurrentlyVisible) => {
+        if (poolsCurrentlyVisible <= chosenPoolsLength.current) {
+          return poolsCurrentlyVisible + NUMBER_OF_POOLS_VISIBLE
+        }
+        return poolsCurrentlyVisible
       })
-      loadMoreObserver.observe(loadMoreRef.current)
-      setObserverIsSet(true)
     }
-  }, [observerIsSet])
+  }, [isIntersecting])
 
   const showFinishedPools = location.pathname.includes('history')
 
@@ -334,7 +322,7 @@ const Pools: React.FC = () => {
           </Flex>
         )}
         {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
-        <div ref={loadMoreRef} />
+        <div ref={observerRef} />
         <Image
           mx="auto"
           mt="12px"
