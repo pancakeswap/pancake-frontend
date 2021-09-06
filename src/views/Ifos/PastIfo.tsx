@@ -9,7 +9,7 @@ const inactiveIfo: Ifo[] = ifosConfig.filter((ifo) => !ifo.isActive)
 
 const PastIfo = () => {
   return (
-    <IfoLayout>
+    <IfoLayout id="past-ifos">
       {inactiveIfo.map((ifo) =>
         ifo.version === 1 ? (
           <IfoCardV1Data key={ifo.id} ifo={ifo} />

@@ -42,7 +42,7 @@ const NftList = () => {
         const Card = nftComponents[nft.identifier] || NftCard
 
         return (
-          <div key={nft.name}>
+          <div key={nft.name} id={`nft-${nft.name}`}>
             <Card nft={nft} tokenIds={tokenIds[nft.identifier]} refresh={handleRefresh} />
           </div>
         )

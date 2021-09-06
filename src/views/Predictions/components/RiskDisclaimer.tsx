@@ -44,7 +44,7 @@ const RiskDisclaimer: React.FC<RiskDisclaimerProps> = ({ onSuccess, onDismiss })
   }
 
   return (
-    <ModalContainer title={t('Welcome!')} minWidth="320px">
+    <ModalContainer title={t('Welcome!')} minWidth="320px" id="predictions-risk-disclaimer">
       <GradientModalHeader>
         <ModalTitle>
           <Heading scale="lg">{t('Welcome!')}</Heading>
@@ -60,10 +60,18 @@ const RiskDisclaimer: React.FC<RiskDisclaimerProps> = ({ onSuccess, onDismiss })
             {t('Once you enter a position, you cannot cancel or adjust it.')}
           </Text>
 
-          <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
+          <label
+            htmlFor="responsibility-checkbox"
+            style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}
+          >
             <Flex alignItems="center">
               <div style={{ flex: 'none' }}>
-                <Checkbox id="checkbox" scale="sm" checked={acknowledgeRisk} onChange={handleSetAcknowledgeRisk} />
+                <Checkbox
+                  id="responsibility-checkbox"
+                  scale="sm"
+                  checked={acknowledgeRisk}
+                  onChange={handleSetAcknowledgeRisk}
+                />
               </div>
               <Text ml="8px">
                 {t(
@@ -72,10 +80,10 @@ const RiskDisclaimer: React.FC<RiskDisclaimerProps> = ({ onSuccess, onDismiss })
               </Text>
             </Flex>
           </label>
-          <label htmlFor="checkbox1" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
+          <label htmlFor="beta-checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
             <Flex alignItems="center">
               <div style={{ flex: 'none' }}>
-                <Checkbox id="checkbox1" scale="sm" checked={acknowledgeBeta} onChange={handleSetAcknowledgeBeta} />
+                <Checkbox id="beta-checkbox" scale="sm" checked={acknowledgeBeta} onChange={handleSetAcknowledgeBeta} />
               </div>
               <Text ml="8px">
                 {t('I understand that this product is still in beta. I am participating at my own risk')}
@@ -83,7 +91,12 @@ const RiskDisclaimer: React.FC<RiskDisclaimerProps> = ({ onSuccess, onDismiss })
             </Flex>
           </label>
         </Box>
-        <Button width="100%" onClick={handleConfirm} disabled={!acknowledgeRisk || !acknowledgeBeta}>
+        <Button
+          id="prediction-disclaimer-continue"
+          width="100%"
+          onClick={handleConfirm}
+          disabled={!acknowledgeRisk || !acknowledgeBeta}
+        >
           {t('Continue')}
         </Button>
       </ModalBody>

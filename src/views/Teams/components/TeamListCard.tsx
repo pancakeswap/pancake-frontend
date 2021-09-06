@@ -94,7 +94,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
   const avatar = <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
 
   return (
-    <StyledTeamCard>
+    <StyledTeamCard id={`team-${team.id}`}>
       <Flex>
         <TeamRank>
           <Text bold fontSize="24px">
