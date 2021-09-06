@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-09-01T07:47:16.952Z",
+  "timestamp": "2021-09-06T07:34:58.933Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 22
+    "patch": 23
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -789,6 +789,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0xD40bEDb44C081D2935eebA6eF5a3c8A31A1bBE13.png"
     },
     {
+      "name": "StepHero",
+      "symbol": "HERO",
+      "address": "0xE8176d414560cFE1Bf82Fd73B986823B89E4F545",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xE8176d414560cFE1Bf82Fd73B986823B89E4F545.png"
+    },
+    {
       "name": "Hedget",
       "symbol": "HGET",
       "address": "0xC7d8D35EBA58a0935ff2D5a33Df105DD9f071731",
@@ -1431,10 +1439,10 @@
     {
       "name": "SPARTAN PROTOCOL TOKEN",
       "symbol": "SPARTA",
-      "address": "0xE4Ae305ebE1AbE663f261Bc00534067C80ad677C",
+      "address": "0x3910db0600eA925F63C36DdB1351aB6E2c6eb102",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0xE4Ae305ebE1AbE663f261Bc00534067C80ad677C.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x3910db0600eA925F63C36DdB1351aB6E2c6eb102.png"
     },
     {
       "name": "Splintershards",

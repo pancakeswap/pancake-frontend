@@ -266,10 +266,10 @@
   {
     "name": "SPARTAN PROTOCOL TOKEN",
     "symbol": "SPARTA",
-    "address": "0xE4Ae305ebE1AbE663f261Bc00534067C80ad677C",
+    "address": "0x3910db0600eA925F63C36DdB1351aB6E2c6eb102",
     "chainId": 56,
     "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0xE4Ae305ebE1AbE663f261Bc00534067C80ad677C.png"
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x3910db0600eA925F63C36DdB1351aB6E2c6eb102.png"
   },
   {
     "name": "Trust Wallet",
@@ -1838,5 +1838,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x5Ec3AdBDae549Dce842e24480Eb2434769e22B2E.png"
+  },
+  {
+    "name": "StepHero",
+    "symbol": "HERO",
+    "address": "0xE8176d414560cFE1Bf82Fd73B986823B89E4F545",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xE8176d414560cFE1Bf82Fd73B986823B89E4F545.png"
   }
 ]
