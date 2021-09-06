@@ -46,7 +46,7 @@ const NftProfile = () => {
           numAchievements={achievements?.length}
         />
       </PageHeader>
-      <Page>sss</Page>
+      <Page>Profile</Page>
     </>
   )
 }

@@ -1,14 +1,12 @@
 import React, { ReactNode } from 'react'
 import { Flex, Box } from '@pancakeswap/uikit'
-import AvatarImage from './AvatarImage'
 import BannerImage from './BannerImage'
 import CollectionStatsWrapper from './CollectionStatsWrapper'
 
 interface HeaderProps {
   bannerImage: string
   bannerAlt?: string
-  avatarImage: string
-  avatarAlt?: string
+  Avatar: ReactNode
   IconButtons: ReactNode
   TextContent: ReactNode
   CollectionStats: ReactNode
@@ -17,8 +15,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({
   bannerImage,
   bannerAlt,
-  avatarImage,
-  avatarAlt,
+  Avatar,
   IconButtons,
   TextContent,
   CollectionStats,
@@ -29,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({
         <BannerImage src={bannerImage} alt={bannerAlt} />
         <Box position="absolute" bottom={-68} left={-4}>
           <Flex alignItems="flex-end">
-            <AvatarImage src={avatarImage} alt={avatarAlt} />
+            {Avatar}
             {IconButtons}
           </Flex>
         </Box>

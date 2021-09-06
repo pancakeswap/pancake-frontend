@@ -3,8 +3,11 @@ import styled from 'styled-components'
 import { ArrowBackIcon, Flex, Heading, IconButton, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import truncateHash from 'utils/truncateHash'
+import { useProfile } from 'state/profile/hooks'
 import { getBscScanLink } from 'utils'
 import BannerHeader from '../components/BannerHeader'
+import EditProfileAvatar from './EditProfileAvatar'
+import AvatarImage from '../components/BannerHeader/AvatarImage'
 
 const StyledIconButton = styled(IconButton)`
   width: fit-content;
@@ -71,6 +74,22 @@ const CollectionStats: React.FC<{ numPoints: number; numAchievements: number }> 
   )
 }
 
+const Avatar: React.FC<{ avatarImage: string }> = ({ avatarImage }) => {
+  const { t } = useTranslation()
+  const { profile } = useProfile()
+
+  return (
+    <>
+      {profile ? (
+        <EditProfileAvatar src={avatarImage} alt={t('User profile picture')} />
+      ) : (
+        // TODO: Trigger creating profile modal onClick - or have EditProfileAvatar handle this
+        <AvatarImage src={avatarImage} alt={t('User profile picture')} />
+      )}
+    </>
+  )
+}
+
 interface HeaderProps {
   bannerImage: string
   avatarImage: string
@@ -92,10 +111,9 @@ const ProfileHeader: React.FC<HeaderProps> = ({
 
   return (
     <BannerHeader
-      avatarImage={avatarImage}
-      avatarAlt={t('User profile picture')}
       bannerImage={bannerImage}
       bannerAlt={t('User team banner')}
+      Avatar={Avatar({ avatarImage })}
       IconButtons={IconButtons({ account })}
       TextContent={TextContent({ account, username })}
       CollectionStats={CollectionStats({ numPoints, numAchievements })}
