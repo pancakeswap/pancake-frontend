@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
+import { ethers } from 'ethers'
 import { useTranslation } from 'contexts/Localization'
-import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from 'utils/bigNumber'
 import { multicallv2 } from 'utils/multicall'
 import profileABI from 'config/abi/pancakeProfile.json'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
@@ -10,9 +9,9 @@ import useToast from 'hooks/useToast'
 const useGetProfileCosts = () => {
   const { t } = useTranslation()
   const [costs, setCosts] = useState({
-    numberCakeToReactivate: BIG_ZERO,
-    numberCakeToRegister: BIG_ZERO,
-    numberCakeToUpdate: BIG_ZERO,
+    numberCakeToReactivate: ethers.BigNumber.from(0),
+    numberCakeToRegister: ethers.BigNumber.from(0),
+    numberCakeToUpdate: ethers.BigNumber.from(0),
   })
   const { toastError } = useToast()
 
@@ -23,15 +22,14 @@ const useGetProfileCosts = () => {
           address: getPancakeProfileAddress(),
           name: method,
         }))
-        const [[numberCakeToReactivate], [numberCakeToRegister], [numberCakeToUpdate]] = await multicallv2(
-          profileABI,
-          calls,
-        )
+        const [[numberCakeToReactivate], [numberCakeToRegister], [numberCakeToUpdate]] = await multicallv2<
+          [[ethers.BigNumber], [ethers.BigNumber], [ethers.BigNumber]]
+        >(profileABI, calls)
 
         setCosts({
-          numberCakeToReactivate: new BigNumber(numberCakeToReactivate.toString()),
-          numberCakeToRegister: new BigNumber(numberCakeToRegister.toString()),
-          numberCakeToUpdate: new BigNumber(numberCakeToUpdate.toString()),
+          numberCakeToReactivate,
+          numberCakeToRegister,
+          numberCakeToUpdate,
         })
       } catch (error) {
         toastError(t('Error'), t('Could not retrieve CAKE costs for profile'))

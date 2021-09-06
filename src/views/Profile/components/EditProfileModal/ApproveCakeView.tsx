@@ -5,7 +5,7 @@ import { useCake } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { formatBigNumber } from 'utils/formatBalance'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { UseEditProfileResponse } from './reducer'
 
@@ -23,7 +23,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
   const handleApprove = async () => {
-    const tx = await cakeContract.approve(getPancakeProfileAddress(), cost.times(2).toJSON())
+    const tx = await cakeContract.approve(getPancakeProfileAddress(), cost.mul(2).toString())
     setIsApproving(true)
     const receipt = await tx.wait()
     if (receipt.status) {
@@ -42,7 +42,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
     <Flex flexDirection="column">
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
         <Text>{profile.isActive ? t('Cost to update:') : t('Cost to reactivate:')}</Text>
-        <Text>{getFullDisplayBalance(cost)} CAKE</Text>
+        <Text>{formatBigNumber(cost)} CAKE</Text>
       </Flex>
       <Button
         disabled={isApproving}

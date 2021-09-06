@@ -1,13 +1,11 @@
 import React, { createContext, useEffect, useMemo, useReducer } from 'react'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { getBunnyFactoryContract } from 'utils/contractHelpers'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { MINT_COST, REGISTER_COST, ALLOWANCE_MULTIPLIER } from '../config'
 import { Actions, State, ContextType } from './types'
 
-const totalCost = MINT_COST + REGISTER_COST
-const allowance = totalCost * ALLOWANCE_MULTIPLIER
+const totalCost = MINT_COST.add(REGISTER_COST)
+const allowance = totalCost.mul(ALLOWANCE_MULTIPLIER)
 
 const initialState: State = {
   isInitialized: false,
@@ -18,8 +16,8 @@ const initialState: State = {
     tokenId: null,
   },
   userName: '',
-  minimumCakeRequired: new BigNumber(totalCost).multipliedBy(DEFAULT_TOKEN_DECIMAL),
-  allowance: new BigNumber(allowance).multipliedBy(DEFAULT_TOKEN_DECIMAL),
+  minimumCakeRequired: totalCost,
+  allowance,
 }
 
 const reducer = (state: State, action: Actions): State => {
