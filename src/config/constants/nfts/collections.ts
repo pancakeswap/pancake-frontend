@@ -8,6 +8,13 @@ const collections: Collections = {
       97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
     },
   },
+  [CollectionKey.SQUAD]: {
+    name: 'Pancake Squad',
+    address: {
+      56: '',
+      97: '0x7F9F37Ddcaa33893F9bEB3D8748c8D6BfbDE6AB2',
+    },
+  },
 }
 
 export default collections
