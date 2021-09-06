@@ -7,7 +7,7 @@ import { useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/h
 import { useInitialBlock } from 'state/block/hooks'
 import { initializePredictions } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
-import usePersistState from 'hooks/usePersistState'
+import { useUserPredictionAcceptedRisk, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
 import PageLoader from 'components/Loader/PageLoader'
 import { PageMeta } from 'components/Layout/Page'
 import usePollOraclePrice from './hooks/usePollOraclePrice'
@@ -18,13 +18,12 @@ import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
 import RiskDisclaimer from './components/RiskDisclaimer'
-import ChartDisclaimer, { CHART_LOCAL_STORAGE_KEY } from './components/ChartDisclaimer'
+import ChartDisclaimer from './components/ChartDisclaimer'
 
 const Predictions = () => {
   const { isDesktop } = useMatchBreakpoints()
-  const [hasAcceptedRisk, setHasAcceptedRisk] = usePersistState(false, {
-    localStorageKey: 'pancake_predictions_accepted_risk-2',
-  })
+  const [hasAcceptedRisk, setHasAcceptedRisk] = useUserPredictionAcceptedRisk()
+  const [showDisclaimer] = useUserPredictionChartDisclaimerShow()
   const { account } = useWeb3React()
   const status = useGetPredictionsStatus()
   const isChartPaneOpen = useIsChartPaneOpen()
@@ -47,14 +46,10 @@ const Predictions = () => {
 
   // Chart Disclaimer
   useEffect(() => {
-    if (isChartPaneOpen) {
-      const showChartDisclaimer = JSON.parse(localStorage.getItem(CHART_LOCAL_STORAGE_KEY))
-
-      if (showChartDisclaimer !== true) {
-        onPresentChartDisclaimerRef.current()
-      }
+    if (isChartPaneOpen && showDisclaimer) {
+      onPresentChartDisclaimerRef.current()
     }
-  }, [onPresentChartDisclaimerRef, isChartPaneOpen])
+  }, [onPresentChartDisclaimerRef, isChartPaneOpen, showDisclaimer])
 
   useEffect(() => {
     if (initialBlock > 0) {
