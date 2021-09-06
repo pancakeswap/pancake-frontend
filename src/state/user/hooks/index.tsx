@@ -23,6 +23,10 @@ import {
   updateGasPrice,
   addWatchlistToken,
   addWatchlistPool,
+  updateUserPoolStakedOnly,
+  updateUserPoolsViewMode,
+  ViewMode,
+  updateUserFarmsViewMode,
   updateUserPredictionChartDisclaimerShow,
   updateUserPredictionAcceptedRisk,
   updateUserUsernameVisibility,
@@ -122,6 +126,54 @@ export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly:
     userFarmStakedOnly === FarmStakedOnly.ON_FINISHED ? !isActive : userFarmStakedOnly === FarmStakedOnly.TRUE,
     setUserFarmStakedOnly,
   ]
+}
+
+export function useUserPoolStakedOnly(): [boolean, (stakedOnly: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userPoolStakedOnly = useSelector<AppState, AppState['user']['userPoolStakedOnly']>((state) => {
+    return state.user.userPoolStakedOnly
+  })
+
+  const setUserPoolStakedOnly = useCallback(
+    (stakedOnly: boolean) => {
+      dispatch(updateUserPoolStakedOnly({ userPoolStakedOnly: stakedOnly }))
+    },
+    [dispatch],
+  )
+
+  return [userPoolStakedOnly, setUserPoolStakedOnly]
+}
+
+export function useUserPoolsViewMode(): [ViewMode, (viewMode: ViewMode) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userPoolsViewMode = useSelector<AppState, AppState['user']['userPoolsViewMode']>((state) => {
+    return state.user.userPoolsViewMode
+  })
+
+  const setUserPoolsViewMode = useCallback(
+    (viewMode: ViewMode) => {
+      dispatch(updateUserPoolsViewMode({ userPoolsViewMode: viewMode }))
+    },
+    [dispatch],
+  )
+
+  return [userPoolsViewMode, setUserPoolsViewMode]
+}
+
+export function useUserFarmsViewMode(): [ViewMode, (viewMode: ViewMode) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userFarmsViewMode = useSelector<AppState, AppState['user']['userFarmsViewMode']>((state) => {
+    return state.user.userFarmsViewMode
+  })
+
+  const setUserFarmsViewMode = useCallback(
+    (viewMode: ViewMode) => {
+      dispatch(updateUserFarmsViewMode({ userFarmsViewMode: viewMode }))
+    },
+    [dispatch],
+  )
+
+  return [userFarmsViewMode, setUserFarmsViewMode]
 }
 
 export function useUserPredictionAcceptedRisk(): [boolean, (acceptedRisk: boolean) => void] {

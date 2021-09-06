@@ -1,25 +1,29 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { SerializedToken } from 'config/constants/types'
-import { INITIAL_ALLOWED_SLIPPAGE, DEFAULT_DEADLINE_FROM_NOW } from '../../config/constants'
+import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import { updateVersion } from '../global/actions'
 import {
   addSerializedPair,
   addSerializedToken,
+  addWatchlistPool,
+  addWatchlistToken,
+  FarmStakedOnly,
   removeSerializedPair,
   removeSerializedToken,
   SerializedPair,
-  updateUserExpertMode,
-  updateUserSlippageTolerance,
-  updateUserDeadline,
-  updateUserSingleHopOnly,
-  updateGasPrice,
   muteAudio,
-  unmuteAudio,
   toggleTheme,
+  unmuteAudio,
+  updateGasPrice,
+  updateUserDeadline,
+  updateUserExpertMode,
   updateUserFarmStakedOnly,
-  FarmStakedOnly,
-  addWatchlistToken,
-  addWatchlistPool,
+  updateUserFarmsViewMode,
+  updateUserPoolStakedOnly,
+  updateUserPoolsViewMode,
+  updateUserSingleHopOnly,
+  updateUserSlippageTolerance,
+  ViewMode,
   updateUserPredictionAcceptedRisk,
   updateUserPredictionChartDisclaimerShow,
   updateUserUsernameVisibility,
@@ -61,6 +65,9 @@ export interface UserState {
   audioPlay: boolean
   isDark: boolean
   userFarmStakedOnly: FarmStakedOnly
+  userPoolStakedOnly: boolean
+  userPoolsViewMode: ViewMode
+  userFarmsViewMode: ViewMode
   userPredictionAcceptedRisk: boolean
   userPredictionChartDisclaimerShow: boolean
   userExpertModeAcknowledgementShow: boolean
@@ -85,6 +92,9 @@ export const initialState: UserState = {
   audioPlay: true,
   isDark: false,
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
+  userPoolStakedOnly: false,
+  userPoolsViewMode: ViewMode.TABLE,
+  userFarmsViewMode: ViewMode.TABLE,
   userPredictionAcceptedRisk: false,
   userPredictionChartDisclaimerShow: true,
   userExpertModeAcknowledgementShow: true,
@@ -172,6 +182,15 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateUserFarmStakedOnly, (state, { payload: { userFarmStakedOnly } }) => {
       state.userFarmStakedOnly = userFarmStakedOnly
+    })
+    .addCase(updateUserPoolStakedOnly, (state, { payload: { userPoolStakedOnly } }) => {
+      state.userPoolStakedOnly = userPoolStakedOnly
+    })
+    .addCase(updateUserPoolsViewMode, (state, { payload: { userPoolsViewMode } }) => {
+      state.userPoolsViewMode = userPoolsViewMode
+    })
+    .addCase(updateUserFarmsViewMode, (state, { payload: { userFarmsViewMode } }) => {
+      state.userFarmsViewMode = userFarmsViewMode
     })
     .addCase(updateUserPredictionAcceptedRisk, (state, { payload: { userAcceptedRisk } }) => {
       state.userPredictionAcceptedRisk = userAcceptedRisk

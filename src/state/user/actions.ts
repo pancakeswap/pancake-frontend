@@ -12,6 +12,11 @@ export enum FarmStakedOnly {
   FALSE = 'false',
 }
 
+export enum ViewMode {
+  TABLE = 'TABLE',
+  CARD = 'CARD',
+}
+
 export const updateUserExpertMode = createAction<{ userExpertMode: boolean }>('user/updateUserExpertMode')
 export const updateUserSingleHopOnly = createAction<{ userSingleHopOnly: boolean }>('user/updateUserSingleHopOnly')
 export const updateUserSlippageTolerance = createAction<{ userSlippageTolerance: number }>(
@@ -30,6 +35,9 @@ export const toggleTheme = createAction<void>('user/toggleTheme')
 export const updateUserFarmStakedOnly = createAction<{ userFarmStakedOnly: FarmStakedOnly }>(
   'user/updateUserFarmStakedOnly',
 )
+export const updateUserPoolStakedOnly = createAction<{ userPoolStakedOnly: boolean }>('user/updateUserPoolStakedOnly')
+export const updateUserPoolsViewMode = createAction<{ userPoolsViewMode: ViewMode }>('user/updateUserPoolsViewMode')
+export const updateUserFarmsViewMode = createAction<{ userFarmsViewMode: ViewMode }>('user/updateUserFarmsViewMode')
 export const updateUserPredictionAcceptedRisk = createAction<{ userAcceptedRisk: boolean }>(
   'user/updateUserPredictionAcceptedRisk',
 )
