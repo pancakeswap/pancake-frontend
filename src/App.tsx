@@ -22,6 +22,8 @@ import Predictions from './views/Predictions'
 import PredictionsHome from './views/PredictionsHome'
 import SpawningPools from './views/SpawningPools'
 import Graveyard from './views/Graveyard'
+import Profile from './views/Profile'
+
 import { useMultiCall } from './hooks/useContract'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -80,6 +82,7 @@ const App: React.FC = () => {
             <Route exact path={routes.MAUSOLEUM}><PredictionsHome /></Route>
             <Route exact path={routes.AUCTION}><Predictions /></Route>
             <Route exact path={routes.GRAVEYARD}><Graveyard /></Route>
+            <Route exact path={routes.PROFILE}><Profile /></Route>          
           </Menu>
         </Switch>
       </SuspenseWithChunkError>
