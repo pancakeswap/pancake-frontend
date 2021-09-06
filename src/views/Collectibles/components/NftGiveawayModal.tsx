@@ -5,7 +5,7 @@ import { Modal, Text, Button, Flex, InjectedModalProps } from '@pancakeswap/uiki
 import history from 'routerHistory'
 import { delay } from 'lodash'
 import { useTranslation } from 'contexts/Localization'
-import { Nft } from 'config/constants/types'
+import { Nft } from 'config/constants/nfts/types'
 
 const NftImage = styled.img`
   border-radius: 50%;
@@ -47,7 +47,7 @@ const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nfts }) 
   }, [])
 
   const getImages = () => {
-    return nfts.map((nft) => <NftImage key={nft.variationId} src={`/images/nfts/${nft.images.md}`} />)
+    return nfts.map((nft) => <NftImage key={nft.id} src={`/images/nfts/${nft.images.md}`} />)
   }
 
   return (

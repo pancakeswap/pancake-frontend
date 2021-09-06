@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback } from 'react'
-import orderBy from 'lodash/orderBy'
 import { useWeb3React } from '@web3-react/core'
 import nfts from 'config/constants/nfts'
 import { useAppDispatch } from 'state'
@@ -39,7 +38,7 @@ const NftList = () => {
 
   return (
     <NftGrid>
-      {orderBy(nfts, 'sortOrder').map((nft) => {
+      {nfts.pancake.map((nft) => {
         const Card = nftComponents[nft.identifier] || NftCard
 
         return (

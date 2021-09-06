@@ -1,5 +1,13 @@
 import BigNumber from 'bignumber.js'
-import { SerializedBigNumber, TranslatableText } from 'state/types'
+
+export type TranslatableText =
+  | string
+  | {
+      key: string
+      data?: {
+        [key: string]: string | number
+      }
+    }
 
 export interface Address {
   97?: string
@@ -86,43 +94,6 @@ export type Images = {
   ipfs?: string
 }
 
-export type NftImages = {
-  blur?: string
-} & Images
-
-export type NftVideo = {
-  webm: string
-  mp4: string
-}
-
-export type NftSource = {
-  [key in NftType]: {
-    address: Address
-    identifierKey: string
-  }
-}
-
-export enum NftType {
-  PANCAKE = 'pancake',
-  MIXIE = 'mixie',
-}
-
-export type Nft = {
-  description: string
-  name: string
-  images: NftImages
-  sortOrder: number
-  type: NftType
-  video?: NftVideo
-
-  // Uniquely identifies the nft.
-  // Used for matching an NFT from the config with the data from the NFT's tokenURI
-  identifier: string
-
-  // Used to be "bunnyId". Used when minting NFT
-  variationId?: number | string
-}
-
 export type TeamImages = {
   alt: string
 } & Images
@@ -168,7 +139,7 @@ export interface LotteryTicket {
   status: boolean
   rewardBracket?: number
   roundId?: string
-  cakeReward?: SerializedBigNumber
+  cakeReward?: string
 }
 
 export interface LotteryTicketClaimData {

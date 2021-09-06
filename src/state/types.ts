@@ -2,7 +2,16 @@ import { ThunkAction } from 'redux-thunk'
 import { AnyAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { CampaignType, FarmConfig, LotteryStatus, LotteryTicket, Nft, PoolConfig, Team } from 'config/constants/types'
+import {
+  CampaignType,
+  FarmConfig,
+  LotteryStatus,
+  LotteryTicket,
+  PoolConfig,
+  Team,
+  TranslatableText,
+} from 'config/constants/types'
+import { Nft } from 'config/constants/nfts/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -10,17 +19,6 @@ export interface BigNumberToJson {
   type: 'BigNumber'
   hex: string
 }
-
-export type TranslatableText =
-  | string
-  | {
-      key: string
-      data?: {
-        [key: string]: string | number
-      }
-    }
-
-export type SerializedBigNumber = string
 
 export interface Farm extends FarmConfig {
   tokenAmountMc?: SerializedBigNumber

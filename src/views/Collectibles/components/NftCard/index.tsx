@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { Nft } from 'config/constants/types'
+import { Nft } from 'config/constants/nfts/types'
 import InfoRow from '../InfoRow'
 import TransferNftModal from '../TransferNftModal'
 import ClaimNftModal from '../ClaimNftModal'

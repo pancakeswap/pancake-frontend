@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { useModal } from '@pancakeswap/uikit'
-import { Nft } from 'config/constants/types'
+import { Nft } from 'config/constants/nfts/types'
 import nfts from 'config/constants/nfts'
 import NftGiveawayModal from './NftGiveawayModal'
 import useBunnySpecialLottery from '../hooks/useBunnySpecialLottery'
@@ -31,9 +31,9 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
       const claimable: Nft[] = []
 
       const nftConfigMap = {
-        lottie: nfts.find((nft) => nft.identifier === 'lottie'),
-        lucky: nfts.find((nft) => nft.identifier === 'lucky'),
-        baller: nfts.find((nft) => nft.identifier === 'baller'),
+        lottie: nfts.pancake.find((nft) => nft.identifier === 'lottie'),
+        lucky: nfts.pancake.find((nft) => nft.identifier === 'lucky'),
+        baller: nfts.pancake.find((nft) => nft.identifier === 'baller'),
       }
 
       const { canClaim: isBallerClaimable } = await canClaimBaller()

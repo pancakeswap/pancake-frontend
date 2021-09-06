@@ -70,9 +70,9 @@ const useBunnySpecialLottery = (): {
       return NO_CLAIM
     }
 
-    const { variationId } = Nfts.find((nft) => nft.identifier === 'lottie')
+    const { id } = Nfts.pancake.find((nft) => nft.identifier === 'lottie')
     const [userRound] = userRounds
-    const lottieClaim = await getLottieClaim(account, variationId, userRound.lotteryId)
+    const lottieClaim = await getLottieClaim(account, id, userRound.lotteryId)
     return lottieClaim
   }, [account, userRounds])
 
@@ -81,16 +81,16 @@ const useBunnySpecialLottery = (): {
       return NO_CLAIM
     }
 
-    const { variationId } = Nfts.find((nft) => nft.identifier === 'lucky')
-    const luckyClaim = await getLuckyClaim(account, variationId, userRounds)
+    const { id } = Nfts.pancake.find((nft) => nft.identifier === 'lucky')
+    const luckyClaim = await getLuckyClaim(account, id, userRounds)
     return luckyClaim
   }, [account, userRounds])
 
   const canClaimBaller = useCallback(async () => {
-    const { variationId } = Nfts.find((nft) => nft.identifier === 'baller')
+    const { id } = Nfts.pancake.find((nft) => nft.identifier === 'baller')
     const lotteryId = userRounds && userRounds.length > 0 && userRounds[0].lotteryId
 
-    const lottieClaim = await getBallerClaim(account, variationId, lotteryId)
+    const lottieClaim = await getBallerClaim(account, id, lotteryId)
     return lottieClaim
   }, [account, userRounds])
 

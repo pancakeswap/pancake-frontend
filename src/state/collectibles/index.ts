@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { CollectiblesState } from 'state/types'
-import { nftSources } from 'config/constants/nfts'
-import { NftType } from 'config/constants/types'
+import collections from 'config/constants/nfts/collections'
+import { CollectionKey } from 'config/constants/nfts/types'
 import { getAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { getNftByTokenId } from 'utils/collectibles'
@@ -20,8 +20,8 @@ export const fetchWalletNfts = createAsyncThunk<NftSourceItem[], string>(
   'collectibles/fetchWalletNfts',
   async (account) => {
     // For each nft source get nft data
-    const nftSourcePromises = Object.keys(nftSources).map(async (nftSourceType) => {
-      const { address: addressObj } = nftSources[nftSourceType as NftType]
+    const nftSourcePromises = Object.keys(collections).map(async (nftSourceType: CollectionKey) => {
+      const { address: addressObj } = collections[nftSourceType]
       const address = getAddress(addressObj)
       const contract = getErc721Contract(address)
 

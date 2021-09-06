@@ -7,7 +7,7 @@ import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { fetchProfile } from 'state/profile'
-import { getAddressByType } from 'utils/collectibles'
+import { getBunnyNftAddress } from 'utils/collectibles'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useProfile as useProfileContract } from 'hooks/useContract'
@@ -68,7 +68,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
           const handleChange = (value: string) => {
             setSelectedNft({
               tokenId: Number(value),
-              nftAddress: getAddressByType(walletNft.type),
+              nftAddress: getBunnyNftAddress(),
             })
           }
 
