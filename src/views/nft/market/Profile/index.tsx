@@ -1,10 +1,12 @@
 import React from 'react'
+import { Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
 import { useProfile } from 'state/profile/hooks'
 import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import ProfileHeader from './ProfileHeader'
+import TabMenu from './TabMenu'
 
 const NftProfile = () => {
   const { profile } = useProfile()
@@ -36,7 +38,7 @@ const NftProfile = () => {
 
   return (
     <>
-      <PageHeader background="linear-gradient(111.68deg, #f2ecf2 0%, #e8f2f6 100%)" pb={80}>
+      <PageHeader position="relative" background="linear-gradient(111.68deg, #f2ecf2 0%, #e8f2f6 100%)" pb={80}>
         <ProfileHeader
           avatarImage={avatarImage}
           bannerImage={getBannerImage()}
@@ -45,6 +47,9 @@ const NftProfile = () => {
           numPoints={profile?.points}
           numAchievements={achievements?.length}
         />
+        <Box position="absolute" bottom="0">
+          <TabMenu />
+        </Box>
       </PageHeader>
       <Page>sss</Page>
     </>
