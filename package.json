@@ -99,6 +99,7 @@
     "eslint-plugin-cypress": "^2.11.3",
     "husky": "^7.0.0",
     "prettier": "^2.3.0",
+    "serve": "^12.0.0",
     "source-map-explorer": "^2.5.2",
     "start-server-and-test": "^1.14.0",
     "ts-node": "^9.1.1"
