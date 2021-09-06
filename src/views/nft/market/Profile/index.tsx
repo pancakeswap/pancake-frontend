@@ -1,10 +1,12 @@
 import React from 'react'
+import { Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
 import { useProfile } from 'state/profile/hooks'
 import Page from 'components/Layout/Page'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './ProfileHeader'
+import TabMenu from './TabMenu'
 
 const NftProfile = () => {
   const { profile } = useProfile()
@@ -45,6 +47,9 @@ const NftProfile = () => {
           numPoints={profile?.points}
           numAchievements={achievements?.length}
         />
+        <Box position="absolute" bottom="0">
+          <TabMenu />
+        </Box>
       </MarketPageHeader>
       <Page>Profile</Page>
     </>
