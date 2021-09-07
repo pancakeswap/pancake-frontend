@@ -5,7 +5,7 @@ import { Button, Flex, Text } from '@pancakeswap/uikit'
 import { getAddress } from 'utils/addressHelpers'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
-import { Farm } from 'state/types'
+import { DeserializedFarm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -16,7 +16,7 @@ import useApproveFarm from '../../hooks/useApproveFarm'
 const Action = styled.div`
   padding-top: 16px;
 `
-export interface FarmWithStakedValue extends Farm {
+export interface FarmWithStakedValue extends DeserializedFarm {
   apr?: number
 }
 
@@ -32,16 +32,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
   const { t } = useTranslation()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = farm
-  const {
-    allowance: allowanceAsString = 0,
-    tokenBalance: tokenBalanceAsString = 0,
-    stakedBalance: stakedBalanceAsString = 0,
-    earnings: earningsAsString = 0,
-  } = farm.userData || {}
-  const allowance = new BigNumber(allowanceAsString)
-  const tokenBalance = new BigNumber(tokenBalanceAsString)
-  const stakedBalance = new BigNumber(stakedBalanceAsString)
-  const earnings = new BigNumber(earningsAsString)
+  const { allowance, tokenBalance, stakedBalance, earnings } = farm.userData || {}
   const lpAddress = getAddress(lpAddresses)
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const dispatch = useAppDispatch()

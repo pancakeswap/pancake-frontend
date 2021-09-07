@@ -11,7 +11,13 @@ import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import usePersistState from 'hooks/usePersistState'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
-import { useFetchPublicPoolsData, usePools, useFetchCakeVault, useCakeVault } from 'state/pools/hooks'
+import {
+  useFetchPublicPoolsData,
+  usePools,
+  useFetchUserPools,
+  useFetchCakeVault,
+  useCakeVault,
+} from 'state/pools/hooks'
 import { usePollFarmsPublicData } from 'state/farms/hooks'
 import { latinise } from 'utils/latinise'
 import FlexLayout from 'components/Layout/Flex'
@@ -19,7 +25,7 @@ import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import Loading from 'components/Loading'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
@@ -82,7 +88,7 @@ const Pools: React.FC = () => {
   const location = useLocation()
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools(account)
+  const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools()
   const [stakedOnly, setStakedOnly] = usePersistState(false, { localStorageKey: 'pancake_pool_staked' })
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { observerRef, isIntersecting } = useIntersectionObserver()
@@ -132,6 +138,7 @@ const Pools: React.FC = () => {
   usePollFarmsPublicData()
   useFetchCakeVault()
   useFetchPublicPoolsData()
+  useFetchUserPools(account)
 
   useEffect(() => {
     if (isIntersecting) {
@@ -154,19 +161,19 @@ const Pools: React.FC = () => {
     setSortOption(option.value)
   }
 
-  const sortPools = (poolsToSort: Pool[]) => {
+  const sortPools = (poolsToSort: DeserializedPool[]) => {
     switch (sortOption) {
       case 'apr':
         // Ternary is needed to prevent pools without APR (like MIX) getting top spot
         return orderBy(
           poolsToSort,
-          (pool: Pool) => (pool.apr ? getAprData(pool, performanceFeeAsDecimal).apr : 0),
+          (pool: DeserializedPool) => (pool.apr ? getAprData(pool, performanceFeeAsDecimal).apr : 0),
           'desc',
         )
       case 'earned':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => {
+          (pool: DeserializedPool) => {
             if (!pool.userData || !pool.earningTokenPrice) {
               return 0
             }
@@ -185,7 +192,7 @@ const Pools: React.FC = () => {
       case 'totalStaked':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => {
+          (pool: DeserializedPool) => {
             let totalStaked = Number.NaN
             if (pool.isAutoVault) {
               if (totalCakeInVault.isFinite()) {

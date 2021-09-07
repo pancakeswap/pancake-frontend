@@ -1,10 +1,10 @@
 import { BigNumber } from 'ethers'
 import farms from 'config/constants/farms'
-import { Farm } from 'state/types'
+import { SerializedFarm } from 'state/types'
 import { getBep20Contract, getLpContract } from 'utils/contractHelpers'
 
 // Test only against the last 10 farms, for performance concern
-const farmsToTest: [number, Farm][] = farms
+const farmsToTest: [number, SerializedFarm][] = farms
   .filter((farm) => farm.pid !== 0)
   .slice(0, 10)
   .map((farm) => [farm.pid, farm])
@@ -21,8 +21,8 @@ describe('Config farms', () => {
   })
 
   it.each(farmsToTest)('Farm %d has the correct token addresses', async (pid, farm) => {
-    const tokenAddress = farm.token.address[56]
-    const quoteTokenAddress = farm.quoteToken.address[56]
+    const tokenAddress = farm.token.address
+    const quoteTokenAddress = farm.quoteToken.address
     const lpContract = getLpContract(farm.lpAddresses[56])
 
     const token0Address = (await lpContract.token0()).toLowerCase()
@@ -37,8 +37,8 @@ describe('Config farms', () => {
   })
 
   it.each(farmsToTest)('Farm %d has non 0 tokens amount', async (pid, farm) => {
-    const tokenContract = getBep20Contract(farm.token.address[56])
-    const quoteTokenContract = getBep20Contract(farm.quoteToken.address[56])
+    const tokenContract = getBep20Contract(farm.token.address)
+    const quoteTokenContract = getBep20Contract(farm.quoteToken.address)
 
     const tokenAmount: BigNumber = await tokenContract.balanceOf(farm.lpAddresses[56])
     const quoteTokenAmount: BigNumber = await quoteTokenContract.balanceOf(farm.lpAddresses[56])

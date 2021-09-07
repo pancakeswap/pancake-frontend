@@ -1,11 +1,12 @@
-import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@pancakeswap/sdk'
+import { ChainId, Currency, currencyEquals, JSBI, Price } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { BUSD, CAKE, WBNB } from '../config/constants/tokens'
+import tokens, { mainnetTokens } from 'config/constants/tokens'
 import { PairState, usePairs } from './usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
-const BUSD_MAINNET = BUSD[ChainId.MAINNET]
+const BUSD_MAINNET = mainnetTokens.busd
+const { wbnb: WBNB } = tokens
 
 /**
  * Returns the price in BUSD of the input currency
@@ -16,12 +17,9 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
   const wrapped = wrappedCurrency(currency, chainId)
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
-      [
-        chainId && wrapped && currencyEquals(WETH[chainId], wrapped) ? undefined : currency,
-        chainId ? WETH[chainId] : undefined,
-      ],
+      [chainId && wrapped && currencyEquals(WBNB, wrapped) ? undefined : currency, chainId ? WBNB : undefined],
       [wrapped?.equals(BUSD_MAINNET) ? undefined : wrapped, chainId === ChainId.MAINNET ? BUSD_MAINNET : undefined],
-      [chainId ? WETH[chainId] : undefined, chainId === ChainId.MAINNET ? BUSD_MAINNET : undefined],
+      [chainId ? WBNB : undefined, chainId === ChainId.MAINNET ? BUSD_MAINNET : undefined],
     ],
     [chainId, currency, wrapped],
   )
@@ -32,9 +30,9 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
       return undefined
     }
     // handle weth/eth
-    if (wrapped.equals(WETH[chainId])) {
+    if (wrapped.equals(WBNB)) {
       if (busdPair) {
-        const price = busdPair.priceOf(WETH[chainId])
+        const price = busdPair.priceOf(WBNB)
         return new Price(currency, BUSD_MAINNET, price.denominator, price.numerator)
       }
       return undefined
@@ -44,9 +42,9 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
       return new Price(BUSD_MAINNET, BUSD_MAINNET, '1', '1')
     }
 
-    const ethPairETHAmount = ethPair?.reserveOf(WETH[chainId])
+    const ethPairETHAmount = ethPair?.reserveOf(WBNB)
     const ethPairETHBUSDValue: JSBI =
-      ethPairETHAmount && busdEthPair ? busdEthPair.priceOf(WETH[chainId]).quote(ethPairETHAmount).raw : JSBI.BigInt(0)
+      ethPairETHAmount && busdEthPair ? busdEthPair.priceOf(WBNB).quote(ethPairETHAmount).raw : JSBI.BigInt(0)
 
     // all other tokens
     // first try the busd pair
@@ -59,9 +57,9 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
       return new Price(currency, BUSD_MAINNET, price.denominator, price.numerator)
     }
     if (ethPairState === PairState.EXISTS && ethPair && busdEthPairState === PairState.EXISTS && busdEthPair) {
-      if (busdEthPair.reserveOf(BUSD_MAINNET).greaterThan('0') && ethPair.reserveOf(WETH[chainId]).greaterThan('0')) {
+      if (busdEthPair.reserveOf(BUSD_MAINNET).greaterThan('0') && ethPair.reserveOf(WBNB).greaterThan('0')) {
         const ethBusdPrice = busdEthPair.priceOf(BUSD_MAINNET)
-        const currencyEthPrice = ethPair.priceOf(WETH[chainId])
+        const currencyEthPrice = ethPair.priceOf(WBNB)
         const busdPrice = ethBusdPrice.multiply(currencyEthPrice).invert()
         return new Price(currency, BUSD_MAINNET, busdPrice.denominator, busdPrice.numerator)
       }
@@ -72,13 +70,11 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
 }
 
 export const useCakeBusdPrice = (): Price | undefined => {
-  const { chainId } = useActiveWeb3React()
-  const currentChaindId = chainId || ChainId.MAINNET
-  const cakeBusdPrice = useBUSDPrice(CAKE[currentChaindId])
+  const cakeBusdPrice = useBUSDPrice(tokens.cake)
   return cakeBusdPrice
 }
 
 export const useBNBBusdPrice = (): Price | undefined => {
-  const bnbBusdPrice = useBUSDPrice(WBNB)
+  const bnbBusdPrice = useBUSDPrice(tokens.wbnb)
   return bnbBusdPrice
 }

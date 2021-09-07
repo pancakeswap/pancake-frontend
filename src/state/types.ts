@@ -4,12 +4,14 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import {
   CampaignType,
-  FarmConfig,
+  SerializedFarmConfig,
   LotteryStatus,
   LotteryTicket,
-  PoolConfig,
+  DeserializedPoolConfig,
+  SerializedPoolConfig,
   Team,
   TranslatableText,
+  DeserializedFarmConfig,
 } from 'config/constants/types'
 import { Nft } from 'config/constants/nfts/types'
 
@@ -20,37 +22,72 @@ export interface BigNumberToJson {
   hex: string
 }
 
-export interface Farm extends FarmConfig {
-  tokenAmountMc?: SerializedBigNumber
-  quoteTokenAmountMc?: SerializedBigNumber
+export type SerializedBigNumber = string
+
+interface SerializedFarmUserData {
+  allowance: string
+  tokenBalance: string
+  stakedBalance: string
+  earnings: string
+}
+
+export interface DeserializedFarmUserData {
+  allowance: BigNumber
+  tokenBalance: BigNumber
+  stakedBalance: BigNumber
+  earnings: BigNumber
+}
+
+export interface SerializedFarm extends SerializedFarmConfig {
+  tokenPriceBusd?: string
+  quoteTokenPriceBusd?: string
   tokenAmountTotal?: SerializedBigNumber
-  quoteTokenAmountTotal?: SerializedBigNumber
   lpTotalInQuoteToken?: SerializedBigNumber
   lpTotalSupply?: SerializedBigNumber
   tokenPriceVsQuote?: SerializedBigNumber
   poolWeight?: SerializedBigNumber
-  userData?: {
-    allowance: string
-    tokenBalance: string
-    stakedBalance: string
-    earnings: string
-  }
+  userData?: SerializedFarmUserData
 }
 
-export interface Pool extends PoolConfig {
-  totalStaked?: BigNumber
-  stakingLimit?: BigNumber
+export interface DeserializedFarm extends DeserializedFarmConfig {
+  tokenPriceBusd?: string
+  quoteTokenPriceBusd?: string
+  tokenAmountTotal?: BigNumber
+  lpTotalInQuoteToken?: BigNumber
+  lpTotalSupply?: BigNumber
+  tokenPriceVsQuote?: BigNumber
+  poolWeight?: BigNumber
+  userData?: DeserializedFarmUserData
+}
+
+interface CorePoolProps {
   startBlock?: number
   endBlock?: number
   apr?: number
   stakingTokenPrice?: number
   earningTokenPrice?: number
   isAutoVault?: boolean
+}
+
+export interface DeserializedPool extends DeserializedPoolConfig, CorePoolProps {
+  totalStaked?: BigNumber
+  stakingLimit?: BigNumber
   userData?: {
     allowance: BigNumber
     stakingTokenBalance: BigNumber
     stakedBalance: BigNumber
     pendingReward: BigNumber
+  }
+}
+
+export interface SerializedPool extends SerializedPoolConfig, CorePoolProps {
+  totalStaked?: SerializedBigNumber
+  stakingLimit?: SerializedBigNumber
+  userData?: {
+    allowance: SerializedBigNumber
+    stakingTokenBalance: SerializedBigNumber
+    stakedBalance: SerializedBigNumber
+    pendingReward: SerializedBigNumber
   }
 }
 
@@ -69,8 +106,14 @@ export interface Profile {
 
 // Slices states
 
-export interface FarmsState {
-  data: Farm[]
+export interface SerializedFarmsState {
+  data: SerializedFarm[]
+  loadArchivedFarmsData: boolean
+  userDataLoaded: boolean
+}
+
+export interface DeserializedFarmsState {
+  data: DeserializedFarm[]
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
 }
@@ -100,7 +143,7 @@ export interface CakeVault {
 }
 
 export interface PoolsState {
-  data: Pool[]
+  data: SerializedPool[]
   cakeVault: CakeVault
   userDataLoaded: boolean
 }
@@ -523,7 +566,7 @@ export type UserTicketsResponse = [ethers.BigNumber[], number[], boolean[]]
 export interface State {
   achievements: AchievementState
   block: BlockState
-  farms: FarmsState
+  farms: SerializedFarmsState
   pools: PoolsState
   predictions: PredictionsState
   profile: ProfileState

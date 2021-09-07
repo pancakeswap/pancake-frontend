@@ -9,7 +9,6 @@ import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'
-import { getAddress } from 'utils/addressHelpers'
 
 interface Props {
   ifo: Ifo
@@ -33,7 +32,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
   const { poolBasic, poolUnlimited } = walletIfoData
   const { hasProfile } = useProfile()
   const { t } = useTranslation()
-  const { balance } = useTokenBalance(getAddress(ifo.currency.address))
+  const { balance } = useTokenBalance(ifo.currency.address)
   const stepsValidationStatus = [
     hasProfile,
     balance.isGreaterThan(0),

@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import tokens from 'config/constants/tokens'
 import { useCakeVault } from 'state/pools/hooks'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import AprRow from '../PoolCard/AprRow'
 import { StyledCard } from '../PoolCard/StyledCard'
@@ -21,7 +21,7 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
 `
 
 interface CakeVaultProps {
-  pool: Pool
+  pool: DeserializedPool
   showStakedOnly: boolean
 }
 

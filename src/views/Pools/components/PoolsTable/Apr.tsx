@@ -3,10 +3,9 @@ import styled from 'styled-components'
 import { Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import Balance from 'components/Balance'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getAprData } from 'views/Pools/helpers'
-import { getAddress } from 'utils/addressHelpers'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
 
@@ -17,7 +16,7 @@ const AprLabelContainer = styled(Flex)`
 `
 
 interface AprProps extends FlexProps {
-  pool: Pool
+  pool: DeserializedPool
   stakedBalance: BigNumber
   showIcon: boolean
   performanceFee?: number
@@ -31,7 +30,7 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
-  const apyModalLink = stakingToken.address ? `/swap?outputCurrency=${getAddress(stakingToken.address)}` : '/swap'
+  const apyModalLink = stakingToken.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'
 
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal

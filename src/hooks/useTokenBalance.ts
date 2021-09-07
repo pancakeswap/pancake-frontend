@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { getCakeAddress } from 'utils/addressHelpers'
+import tokens from 'config/constants/tokens'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { simpleRpcProvider } from 'utils/providers'
@@ -112,7 +112,7 @@ export const useGetBnbBalance = () => {
 }
 
 export const useGetCakeBalance = () => {
-  const { balance, fetchStatus } = useTokenBalance(getCakeAddress())
+  const { balance, fetchStatus } = useTokenBalance(tokens.cake.address)
 
   // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
   return { balance: ethers.BigNumber.from(balance.toString()), fetchStatus }

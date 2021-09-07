@@ -4,10 +4,9 @@ import { useFarms, usePriceCakeBusd } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from 'state/farms'
 import { getFarmApr } from 'utils/apr'
-import BigNumber from 'bignumber.js'
 import { orderBy } from 'lodash'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import { Farm } from 'state/types'
+import { DeserializedFarm } from 'state/types'
 
 enum FetchStatus {
   NOT_FETCHED = 'not-fetched',
@@ -42,12 +41,12 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting])
 
   useEffect(() => {
-    const getTopFarmsByApr = (farmsState: Farm[]) => {
-      const farmsWithPrices = farmsState.filter((farm) => farm.lpTotalInQuoteToken && farm.quoteToken.busdPrice)
+    const getTopFarmsByApr = (farmsState: DeserializedFarm[]) => {
+      const farmsWithPrices = farmsState.filter((farm) => farm.lpTotalInQuoteToken && farm.quoteTokenPriceBusd)
       const farmsWithApr: FarmWithStakedValue[] = farmsWithPrices.map((farm) => {
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)
+        const totalLiquidity = farm.lpTotalInQuoteToken.times(farm.quoteTokenPriceBusd)
         const { cakeRewardsApr, lpRewardsApr } = getFarmApr(
-          new BigNumber(farm.poolWeight),
+          farm.poolWeight,
           cakePriceBusd,
           totalLiquidity,
           farm.lpAddresses[ChainId.MAINNET],

@@ -2,7 +2,7 @@ import map from 'lodash/map'
 import omitBy from 'lodash/omitBy'
 import erc20ABI from 'config/abi/erc20.json'
 import tokens from 'config/constants/tokens'
-import { Token } from 'config/constants/types'
+import { Token } from '@pancakeswap/sdk'
 import multicall from 'utils/multicall'
 
 // remove BNB because it's not a Bep20 token
@@ -22,11 +22,11 @@ describe('Config tokens', () => {
     async (key, token: Token) => {
       const [[symbol], [decimals]] = await multicall(erc20ABI, [
         {
-          address: token.address[56],
+          address: token.address,
           name: 'symbol',
         },
         {
-          address: token.address[56],
+          address: token.address,
           name: 'decimals',
         },
       ])

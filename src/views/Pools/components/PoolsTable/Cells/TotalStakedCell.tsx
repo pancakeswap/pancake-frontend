@@ -4,13 +4,13 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { useCakeVault } from 'state/pools/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface TotalStakedCellProps {
-  pool: Pool
+  pool: DeserializedPool
 }
 
 const StyledCell = styled(BaseCell)`

@@ -2,10 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { PoolsState, Pool, CakeVault, VaultFees, VaultUser, AppThunk } from 'state/types'
+import { PoolsState, SerializedPool, CakeVault, VaultFees, VaultUser, AppThunk } from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getAddress } from 'utils/addressHelpers'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -55,10 +54,10 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
     const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
     const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
-    const stakingTokenAddress = pool.stakingToken.address ? getAddress(pool.stakingToken.address).toLowerCase() : null
+    const stakingTokenAddress = pool.stakingToken.address ? pool.stakingToken.address.toLowerCase() : null
     const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
 
-    const earningTokenAddress = pool.earningToken.address ? getAddress(pool.earningToken.address).toLowerCase() : null
+    const earningTokenAddress = pool.earningToken.address ? pool.earningToken.address.toLowerCase() : null
     const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
     const apr = !isPoolFinished
       ? getPoolApr(
@@ -173,7 +172,7 @@ export const PoolsSlice = createSlice({
   initialState,
   reducers: {
     setPoolsPublicData: (state, action) => {
-      const livePoolsData: Pool[] = action.payload
+      const livePoolsData: SerializedPool[] = action.payload
       state.data = state.data.map((pool) => {
         const livePoolData = livePoolsData.find((entry) => entry.sousId === pool.sousId)
         return { ...pool, ...livePoolData }

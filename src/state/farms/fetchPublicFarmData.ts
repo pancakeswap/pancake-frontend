@@ -4,13 +4,10 @@ import erc20 from 'config/abi/erc20.json'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import multicall from 'utils/multicall'
-import { Farm } from '../types'
+import { SerializedFarm, SerializedBigNumber } from '../types'
 
 type PublicFarmData = {
-  tokenAmountMc: SerializedBigNumber
-  quoteTokenAmountMc: SerializedBigNumber
   tokenAmountTotal: SerializedBigNumber
-  quoteTokenAmountTotal: SerializedBigNumber
   lpTotalInQuoteToken: SerializedBigNumber
   lpTotalSupply: SerializedBigNumber
   tokenPriceVsQuote: SerializedBigNumber
@@ -18,19 +15,19 @@ type PublicFarmData = {
   multiplier: string
 }
 
-const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
+const fetchFarm = async (farm: SerializedFarm): Promise<PublicFarmData> => {
   const { pid, lpAddresses, token, quoteToken } = farm
   const lpAddress = getAddress(lpAddresses)
   const calls = [
     // Balance of token in the LP contract
     {
-      address: getAddress(token.address),
+      address: token.address,
       name: 'balanceOf',
       params: [lpAddress],
     },
     // Balance of quote token on LP contract
     {
-      address: getAddress(quoteToken.address),
+      address: quoteToken.address,
       name: 'balanceOf',
       params: [lpAddress],
     },
@@ -47,12 +44,12 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
     },
     // Token decimals
     {
-      address: getAddress(token.address),
+      address: token.address,
       name: 'decimals',
     },
     // Quote token decimals
     {
-      address: getAddress(quoteToken.address),
+      address: quoteToken.address,
       name: 'decimals',
     },
   ]
@@ -67,8 +64,7 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
   const tokenAmountTotal = new BigNumber(tokenBalanceLP).div(BIG_TEN.pow(tokenDecimals))
   const quoteTokenAmountTotal = new BigNumber(quoteTokenBalanceLP).div(BIG_TEN.pow(quoteTokenDecimals))
 
-  // Amount of token in the LP that are staked in the MC (i.e amount of token * lp ratio)
-  const tokenAmountMc = tokenAmountTotal.times(lpTokenRatio)
+  // Amount of quoteToken in the LP that are staked in the MC
   const quoteTokenAmountMc = quoteTokenAmountTotal.times(lpTokenRatio)
 
   // Total staked in LP, in quote token value
@@ -94,10 +90,7 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
   const poolWeight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : BIG_ZERO
 
   return {
-    tokenAmountMc: tokenAmountMc.toJSON(),
-    quoteTokenAmountMc: quoteTokenAmountMc.toJSON(),
     tokenAmountTotal: tokenAmountTotal.toJSON(),
-    quoteTokenAmountTotal: quoteTokenAmountTotal.toJSON(),
     lpTotalSupply: new BigNumber(lpTotalSupply).toJSON(),
     lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
     tokenPriceVsQuote: quoteTokenAmountTotal.div(tokenAmountTotal).toJSON(),

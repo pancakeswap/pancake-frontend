@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { Token } from '@pancakeswap/sdk'
 
 export type TranslatableText =
   | string
@@ -8,18 +9,18 @@ export type TranslatableText =
         [key: string]: string | number
       }
     }
-
 export interface Address {
   97?: string
   56: string
 }
 
-export interface Token {
-  symbol: string
-  address?: Address
-  decimals?: number
+export interface SerializedToken {
+  chainId: number
+  address: string
+  decimals: number
+  symbol?: string
+  name?: string
   projectLink?: string
-  busdPrice?: string
 }
 
 export enum PoolIds {
@@ -59,12 +60,10 @@ export enum PoolCategory {
   'AUTO' = 'Auto',
 }
 
-export interface FarmConfig {
+interface FarmConfigBaseProps {
   pid: number
   lpSymbol: string
   lpAddresses: Address
-  token: Token
-  quoteToken: Token
   multiplier?: string
   isCommunity?: boolean
   dual?: {
@@ -74,10 +73,18 @@ export interface FarmConfig {
   }
 }
 
-export interface PoolConfig {
+export interface SerializedFarmConfig extends FarmConfigBaseProps {
+  token: SerializedToken
+  quoteToken: SerializedToken
+}
+
+export interface DeserializedFarmConfig extends FarmConfigBaseProps {
+  token: Token
+  quoteToken: Token
+}
+
+interface PoolConfigBaseProps {
   sousId: number
-  earningToken: Token
-  stakingToken: Token
   contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string
@@ -85,6 +92,16 @@ export interface PoolConfig {
   harvest?: boolean
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
+}
+
+export interface SerializedPoolConfig extends PoolConfigBaseProps {
+  earningToken: SerializedToken
+  stakingToken: SerializedToken
+}
+
+export interface DeserializedPoolConfig extends PoolConfigBaseProps {
+  earningToken: Token
+  stakingToken: Token
 }
 
 export type Images = {

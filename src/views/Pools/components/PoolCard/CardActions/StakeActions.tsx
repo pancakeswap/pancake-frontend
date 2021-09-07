@@ -3,13 +3,13 @@ import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, useModal, Skeleton,
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../Modals/NotEnoughTokensModal'
 import StakeModal from '../Modals/StakeModal'
 
 interface StakeActionsProps {
-  pool: Pool
+  pool: DeserializedPool
   stakingTokenBalance: BigNumber
   stakedBalance: BigNumber
   isBnbPool: boolean

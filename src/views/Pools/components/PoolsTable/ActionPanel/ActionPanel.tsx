@@ -18,7 +18,7 @@ import { getBscScanLink } from 'utils'
 import { useBlock } from 'state/block/hooks'
 import { useCakeVault } from 'state/pools/hooks'
 import BigNumber from 'bignumber.js'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
@@ -95,7 +95,7 @@ type MediaBreakpoints = {
 
 interface ActionPanelProps {
   account: string
-  pool: Pool
+  pool: DeserializedPool
   userDataLoaded: boolean
   expanded: boolean
   breakpoints: MediaBreakpoints
@@ -136,7 +136,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     getPoolBlockInfo(pool, currentBlock)
 
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
-  const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
+  const tokenAddress = earningToken.address || ''
 
   const {
     totalCakeInVault,
@@ -251,7 +251,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         {(isXs || isSm || isMd) && totalStakedRow}
         {shouldShowBlockCountdown && blocksRow}
         <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-          <LinkExternal href={`/info/token/${getAddress(earningToken.address)}`} bold={false}>
+          <LinkExternal href={`/info/token/${earningToken.address}`} bold={false}>
             {t('See Token Info')}
           </LinkExternal>
         </Flex>

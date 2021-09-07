@@ -5,7 +5,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { Flex, Text, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { PoolCategory } from 'config/constants/types'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import ApprovalAction from './ApprovalAction'
 import StakeActions from './StakeActions'
 import HarvestActions from './HarvestActions'
@@ -15,7 +15,7 @@ const InlineText = styled(Text)`
 `
 
 interface CardActionsProps {
-  pool: Pool
+  pool: DeserializedPool
   stakedBalance: BigNumber
 }
 

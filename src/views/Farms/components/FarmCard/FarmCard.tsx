@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Card, Flex, Text, Skeleton } from '@pancakeswap/uikit'
-import { Farm } from 'state/types'
+import { DeserializedFarm } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
@@ -14,7 +14,7 @@ import CardHeading from './CardHeading'
 import CardActionsContainer from './CardActionsContainer'
 import ApyButton from './ApyButton'
 
-export interface FarmWithStakedValue extends Farm {
+export interface FarmWithStakedValue extends DeserializedFarm {
   apr?: number
   lpRewardsApr?: number
   liquidity?: BigNumber

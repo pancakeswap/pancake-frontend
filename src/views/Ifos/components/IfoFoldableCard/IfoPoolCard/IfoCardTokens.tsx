@@ -12,7 +12,8 @@ import {
   BunnyPlaceholderIcon,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Ifo, PoolIds, Token } from 'config/constants/types'
+import { Token } from '@pancakeswap/sdk'
+import { Ifo, PoolIds } from 'config/constants/types'
 import tokens from 'config/constants/tokens'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'

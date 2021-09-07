@@ -8,7 +8,6 @@ import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { getAddress } from 'utils/addressHelpers'
 import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -49,7 +48,7 @@ const ContributeModal: React.FC<Props> = ({
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const raisingTokenContract = useERC20(getAddress(currency.address))
+  const raisingTokenContract = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
 

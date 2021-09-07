@@ -5,7 +5,6 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV1Contract } from 'hooks/useContract'
 import { multicallv2 } from 'utils/multicall'
 import ifoV1Abi from 'config/abi/ifoV1.json'
-import { getAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
@@ -35,7 +34,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
   const { account } = useWeb3React()
   const contract = useIfoV1Contract(address)
-  const currencyContract = useERC20(getAddress(currency.address))
+  const currencyContract = useERC20(currency.address)
   const allowance = useIfoAllowance(currencyContract, address, poolUnlimited.isPendingTx)
 
   const setPendingTx = (status: boolean) =>

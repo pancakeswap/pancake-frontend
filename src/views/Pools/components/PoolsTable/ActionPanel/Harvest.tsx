@@ -7,12 +7,12 @@ import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/for
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 
 import { ActionContainer, ActionTitles, ActionContent } from './styles'
 import CollectModal from '../../PoolCard/Modals/CollectModal'
 
-interface HarvestActionProps extends Pool {
+interface HarvestActionProps extends DeserializedPool {
   userDataLoaded: boolean
 }
 

@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
@@ -14,7 +14,7 @@ const InlineText = styled(Text)`
 `
 
 const CakeVaultCardActions: React.FC<{
-  pool: Pool
+  pool: DeserializedPool
   accountHasSharesStaked: boolean
   isLoading: boolean
   performanceFee: number

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { Pool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { PoolCategory } from 'config/constants/types'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -12,7 +12,7 @@ import BaseCell, { CellContent } from './BaseCell'
 import CollectModal from '../../PoolCard/Modals/CollectModal'
 
 interface EarningsCellProps {
-  pool: Pool
+  pool: DeserializedPool
   account: string
   userDataLoaded: boolean
 }

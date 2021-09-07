@@ -18,7 +18,6 @@ import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
-import { getAddress } from 'utils/addressHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { EnableStatus } from './types'
 import IfoPoolCard from './IfoPoolCard'
@@ -103,7 +102,7 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, w
   const [enableStatus, setEnableStatus] = useState(EnableStatus.DISABLED)
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const raisingTokenContract = useERC20(getAddress(ifo.currency.address))
+  const raisingTokenContract = useERC20(ifo.currency.address)
   const Ribbon = getRibbonComponent(ifo, publicIfoData.status, t)
   const isActive = publicIfoData.status !== 'finished' && ifo.isActive
   const { contract } = walletIfoData
