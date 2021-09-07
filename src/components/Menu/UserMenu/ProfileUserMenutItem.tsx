@@ -20,7 +20,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
   const { t } = useTranslation()
 
   const handleClick = () => {
-    history.push('/profile')
+    history.push('/nft/market/profile')
   }
 
   if (isLoading) {

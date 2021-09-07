@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Breadcrumbs, Heading, Text } from '@pancakeswap/uikit'
+import { Breadcrumbs, Heading, Text, Link, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
@@ -24,9 +24,14 @@ const Header: React.FC = () => {
       <Heading as="h2" scale="lg" mb="8px">
         {t('Show off your stats and collectibles with your unique profile')}
       </Heading>
-      <Text color="textSubtle" mb="24px">
+      <Text color="textSubtle" mb="8px">
         {t('Total cost: 1.5 CAKE')}
       </Text>
+      <Link href="/nft/market/profile">
+        <Button mb="24px" scale="sm" variant="secondary">
+          {t('Back to profile')}
+        </Button>
+      </Link>
       <Breadcrumbs>
         {steps.map((translationKey, index) => {
           return (

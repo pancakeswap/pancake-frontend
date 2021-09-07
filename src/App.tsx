@@ -37,7 +37,6 @@ const NotFound = lazy(() => import('./views/NotFound'))
 const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))
 const Team = lazy(() => import('./views/Teams/Team'))
-const Profile = lazy(() => import('./views/Profile'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 const Predictions = lazy(() => import('./views/Predictions'))
 const PredictionsLeaderboard = lazy(() => import('./views/Predictions/Leaderboard'))
@@ -51,6 +50,7 @@ const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 const Info = lazy(() => import('./views/Info'))
 const NftMarket = lazy(() => import('./views/Nft/market'))
 const NftProfile = lazy(() => import('./views/Nft/market/Profile'))
+const ProfileCreation = lazy(() => import('./views/Nft/market/Profile/components/ProfileCreation'))
 const Collectible = lazy(() => import('./views/Nft/market/Collectible'))
 const CollectibleOverview = lazy(() => import('./views/Nft/market/Collectibles'))
 
@@ -101,9 +101,6 @@ const App: React.FC = () => {
             <Route path="/teams/:id">
               <Team />
             </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
             <Route path="/competition">
               <TradingCompetition />
             </Route>
@@ -129,6 +126,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/nft/market/collectibles/:slug">
               <Collectible />
+            </Route>
+            <Route path="/nft/market/profile/create">
+              <ProfileCreation />
             </Route>
             <Route path="/nft/market/profile">
               <NftProfile />

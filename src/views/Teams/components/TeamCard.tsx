@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { Card, CardHeader, CardBody, CommunityIcon, Heading, PrizeIcon, Text } from '@pancakeswap/uikit'
 import { Team } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
-import ComingSoon from 'views/Profile/components/ComingSoon'
-import StatBox from 'views/Profile/components/StatBox'
+import ComingSoon from './ComingSoon'
+import StatBox from './StatBox'
 
 interface TeamCardProps {
   team: Team

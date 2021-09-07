@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useModal } from '@pancakeswap/uikit'
 import ProfileAvatarWithTeam, { ProfileAvatarProps } from 'components/ProfileAvatarWithTeam'
-import EditProfileModal from './EditProfileModal'
+import EditProfileModal from 'views/Nft/market/Profile/components/EditProfileModal'
 
 const EditOverlay = styled.div`
   background: rgba(0, 0, 0, 0.6) url('/images/camera.svg') no-repeat center center;
