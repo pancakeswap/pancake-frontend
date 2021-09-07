@@ -51,8 +51,8 @@ const Liquidity = lazy(() => import('./views/Pool'))
 const PoolFinder = lazy(() => import('./views/PoolFinder'))
 const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 const Info = lazy(() => import('./views/Info'))
-const NftMarket = lazy(() => import('./views/nft/market'))
-const NftProfile = lazy(() => import('./views/nft/market/Profile'))
+const NftMarket = lazy(() => import('./views/Nft/market'))
+const NftProfile = lazy(() => import('./views/Nft/market/Profile'))
 
 // This config is required for number formatting
 BigNumber.config({

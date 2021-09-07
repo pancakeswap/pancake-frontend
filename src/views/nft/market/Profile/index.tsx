@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
 import { useProfile } from 'state/profile/hooks'
 import Page from 'components/Layout/Page'
-import PageHeader from 'components/PageHeader'
+import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './ProfileHeader'
 
 const NftProfile = () => {
@@ -20,9 +20,9 @@ const NftProfile = () => {
         case 1:
           return `${imagePath}/storm-banner.png`
         case 2:
-          return `${imagePath}/cakers-banner.png`
-        case 3:
           return `${imagePath}/flippers-banner.png`
+        case 3:
+          return `${imagePath}/cakers-banner.png`
         default:
           return null
       }
@@ -36,7 +36,7 @@ const NftProfile = () => {
 
   return (
     <>
-      <PageHeader background="linear-gradient(111.68deg, #f2ecf2 0%, #e8f2f6 100%)" pb={80}>
+      <MarketPageHeader>
         <ProfileHeader
           avatarImage={avatarImage}
           bannerImage={getBannerImage()}
@@ -45,7 +45,7 @@ const NftProfile = () => {
           numPoints={profile?.points}
           numAchievements={achievements?.length}
         />
-      </PageHeader>
+      </MarketPageHeader>
       <Page>Profile</Page>
     </>
   )
