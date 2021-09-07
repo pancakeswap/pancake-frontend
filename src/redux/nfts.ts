@@ -342,6 +342,30 @@ const nfts: Nft[] = [
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 28,
+    name: 'Slow Zombie',
+    symbol: 'SLOW',
+    description: 'Too late bruh',
+    address: '0x096fAF55D6F9B0057f2100c423c321f9450B2a44',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmXcs1Bpp3d16pF6HEKGmo4WTj8WU7YyaGi9b6F71StvDF',
+    type: 'image',
+    rarity: 'Common',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 29,
+    name: 'Zombie Multiplexer',
+    symbol: 'MULTIPLEXER',
+    description: 'If three or more values occur at the maximum frequency, the dataset is multi-modal.',
+    address: '0xc8b1EF35f90E6461C24f1Bc5591a17EbFD6E0600',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/Qmdi7wTt8iF62ay8foD7nqP5F7qSB9YGaYgY3NL1URA5Cw',
+    type: 'image',
+    rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts

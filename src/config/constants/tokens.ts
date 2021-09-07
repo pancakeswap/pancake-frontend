@@ -227,6 +227,15 @@ const tokens = {
     decimals: 0,
     projectLink: '',
   },
+  horde: {
+    symbol: 'HORDE',
+    address: {
+      56: '0xE30043524ADb329169b11eDfe833a9beDd4D2A11',
+      97: '',
+    },
+    decimals: 0,
+    projectLink: '',
+  },
   txl: {
     symbol: 'TXL',
     address: {

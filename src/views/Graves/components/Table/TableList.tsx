@@ -70,6 +70,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
     setIsOpen(!isOpen);
     handler(!isOpen);
   };
+
   return (
     <table className="table">
       <tbody>
