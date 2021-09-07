@@ -18,7 +18,6 @@ const graves: Grave[] = [
     stakingToken: '0x1D4CA2139E942b2EA9d7B40AF3805967242b7525',
     pcsVersion: 'v2',
     liquidityDetails: '',
-    isNew: true,
     isEnding: false,
     isClosed: false,
     rarity: "Common",
@@ -130,6 +129,7 @@ const graves: Grave[] = [
     graveNftToken: "0xE30043524ADb329169b11eDfe833a9beDd4D2A11",
     nft: "Zombie Horde",
     rarity: "Rare",
+    isNew: true,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -197,7 +197,6 @@ const graves: Grave[] = [
     stakingToken: '0x62debcB9f311a170BfbDA089465085DA551B42d2',
     pcsVersion: 'none',
     liquidityDetails: 'None! The ZMPR token was airdropped to EMPR holders so you will have to ask around the telegram.',
-    isNew: true,
     isEnding: false,
     isFeatured: true,
     rarity: "Rare",
