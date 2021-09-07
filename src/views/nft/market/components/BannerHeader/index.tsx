@@ -6,10 +6,10 @@ import CollectionStatsWrapper from './CollectionStatsWrapper'
 interface HeaderProps {
   bannerImage: string
   bannerAlt?: string
-  Avatar: ReactNode
-  IconButtons: ReactNode
-  TextContent: ReactNode
-  CollectionStats: ReactNode
+  Avatar?: ReactNode
+  IconButtons?: ReactNode
+  TextContent?: ReactNode
+  CollectionStats?: ReactNode
 }
 
 const Header: React.FC<HeaderProps> = ({
