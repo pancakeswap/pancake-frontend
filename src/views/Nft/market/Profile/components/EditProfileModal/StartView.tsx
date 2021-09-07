@@ -7,10 +7,10 @@ import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
 import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
-import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
+import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
 import { useProfile } from 'state/profile/hooks'
 import { UseEditProfileResponse } from './reducer'
-import ModalAvatar from './ModalAvatar'
+import TeamAndProfileAvatar from './TeamAndProfileAvatar'
 
 interface StartPageProps extends InjectedModalProps {
   goToChange: UseEditProfileResponse['goToChange']
@@ -73,7 +73,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
   return (
     <Flex alignItems="center" justifyContent="center" flexDirection="column">
       <AvatarWrapper>
-        <ModalAvatar profile={profile} />
+        <TeamAndProfileAvatar profile={profile} />
       </AvatarWrapper>
       <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
         <Text as="p" color="failure">

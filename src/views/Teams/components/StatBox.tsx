@@ -1,6 +1,15 @@
 import React, { ElementType, ReactNode } from 'react'
 import { Flex, Heading, Text, TextProps } from '@pancakeswap/uikit'
-import SecondaryCard from './SecondaryCard'
+import styled from 'styled-components'
+
+const SecondaryCard = styled(Text)`
+  border: 2px solid ${({ theme }) => theme.colors.tertiary};
+  border-radius: 16px;
+`
+
+SecondaryCard.defaultProps = {
+  p: '24px',
+}
 
 interface StatBoxProps extends TextProps {
   icon: ElementType

@@ -64,12 +64,8 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         href: '/teams',
       },
       {
-        label: t('Task Center'),
-        href: '/profile/tasks',
-      },
-      {
-        label: t('Your Profile'),
-        href: '/profile',
+        label: t('Profile'),
+        href: '/nft/market/profile',
       },
     ],
   },

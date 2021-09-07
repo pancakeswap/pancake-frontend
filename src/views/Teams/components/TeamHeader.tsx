@@ -1,9 +1,15 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Heading, Text } from '@pancakeswap/uikit'
 import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
-import HeaderWrapper from 'views/Profile/components/HeaderWrapper'
 import NoProfileCard from './NoProfileCard'
+
+const HeaderWrapper = styled.div`
+  border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+`
 
 const TeamHeader = () => {
   const { t } = useTranslation()
