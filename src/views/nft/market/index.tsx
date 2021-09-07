@@ -1,32 +1,8 @@
 import React from 'react'
 import { Grid } from '@pancakeswap/uikit'
-import pancakeBunnies from 'config/constants/nfts/pancakeBunnies'
 import { useFetchCollections } from 'state/nftMarket/hooks'
 import NftCard from '../components/CollectibleCard'
-import { Collectible } from '../components/CollectibleCard/types'
-
-const example1: Collectible = {
-  name: 'Pancake Bunnies',
-  cost: 1.5,
-  nft: pancakeBunnies[1],
-  status: 'profile',
-}
-
-const example2: Collectible = {
-  name: 'Pancake Bunnies',
-  cost: 12.55,
-  lowestCost: 6.28,
-  nft: pancakeBunnies[4],
-  status: 'selling',
-}
-
-const example3: Collectible = {
-  name: 'Pancake Bunnies',
-  cost: 0.01,
-  lowestCost: 0.0019,
-  nft: pancakeBunnies[3],
-  status: 'wallet',
-}
+import { example1, example2, example3 } from './tmp'
 
 const Market = () => {
   useFetchCollections()
