@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Esta página es para proyectos que realizan ofertas para las granjas.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Si no estás en la lista blanca de los proyectos, no podrás participar, ¡pero aún podrás ver lo que está sucediendo!",
   "through community auctions so far!": "mediante las subastas de la comunidad realizadas hasta el momento.",
-  "5 Winners": "5 ganadores",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% contendientes...",
   "Farm Auctions": "Subastas en la granja",
   "auction bunny": "conejito de la subasta",
