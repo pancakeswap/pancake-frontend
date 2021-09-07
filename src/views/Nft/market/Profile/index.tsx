@@ -1,12 +1,27 @@
 import React from 'react'
+import styled from 'styled-components'
+import { useProfile } from 'state/profile/hooks'
 import { useWeb3React } from '@web3-react/core'
 import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
 import { Box } from '@pancakeswap/uikit'
-import { useProfile } from 'state/profile/hooks'
 import Page from 'components/Layout/Page'
+import { Route } from 'react-router'
 import MarketPageHeader from '../components/MarketPageHeader'
-import ProfileHeader from './ProfileHeader'
-import TabMenu from './TabMenu'
+import ProfileHeader from './components/ProfileHeader'
+import TabMenu from './components/TabMenu'
+import Achievements from './components/Achievements'
+
+const TabMenuWrapper = styled(Box)`
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0%);
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    left: auto;
+    transform: none;
+  }
+`
 
 const NftProfile = () => {
   const { profile } = useProfile()
@@ -26,10 +41,10 @@ const NftProfile = () => {
         case 3:
           return `${imagePath}/cakers-banner.png`
         default:
-          return null
+          break
       }
     }
-    return null
+    return `${imagePath}/no-team-banner.png`
   }
 
   const avatarImage = profile?.nft?.images?.md
@@ -43,16 +58,25 @@ const NftProfile = () => {
           avatarImage={avatarImage}
           bannerImage={getBannerImage()}
           account={account}
-          username={profile?.username}
-          numPoints={profile?.points}
+          profile={profile}
           numAchievements={achievements?.length}
         />
-        <Box position="absolute" bottom="0">
+        <TabMenuWrapper>
           <TabMenu />
-        </Box>
+        </TabMenuWrapper>
       </MarketPageHeader>
 
-      <Page>Profile</Page>
+      <Page style={{ minHeight: 'auto' }}>
+        <Route exact path="/nft/market/profile">
+          <span>Profile</span>
+        </Route>
+        <Route exact path="/nft/market/profile/activity">
+          <span>Activity</span>
+        </Route>
+        <Route path="/nft/market/profile/achievements">
+          <Achievements points={profile?.points} />
+        </Route>
+      </Page>
     </>
   )
 }

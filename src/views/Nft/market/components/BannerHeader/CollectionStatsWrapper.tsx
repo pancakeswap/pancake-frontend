@@ -3,6 +3,7 @@ import { Flex } from '@pancakeswap/uikit'
 
 const CollectionStatsWrapper = styled(Flex)`
   justify-content: space-around;
+  height: fit-content;
   width: 100%;
   background: ${({ theme }) => theme.colors.invertedContrast};
   padding: 8px;

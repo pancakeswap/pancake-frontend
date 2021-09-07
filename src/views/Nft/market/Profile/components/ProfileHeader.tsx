@@ -1,52 +1,78 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ArrowBackIcon, Flex, Heading, IconButton, Skeleton, Text } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
+import { BscScanIcon, Flex, Heading, Link, IconButton, Skeleton, Text, Button, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import truncateHash from 'utils/truncateHash'
-import { useProfile } from 'state/profile/hooks'
+import { Profile } from 'state/types'
 import { getBscScanLink } from 'utils'
-import BannerHeader from '../components/BannerHeader'
+import BannerHeader from '../../components/BannerHeader'
+import EditProfileModal from './EditProfileModal'
 import EditProfileAvatar from './EditProfileAvatar'
-import AvatarImage from '../components/BannerHeader/AvatarImage'
+import AvatarImage from '../../components/BannerHeader/AvatarImage'
 
 const StyledIconButton = styled(IconButton)`
   width: fit-content;
 `
 
 const IconButtons: React.FC<{ account: string }> = ({ account }) => {
+  const { t } = useTranslation()
   return (
-    // TODO: Implement real logo
     // TODO: Share functionality once user profiles routed by ID
     <Flex display="inline-flex">
       {account && (
-        <StyledIconButton as="a" href={getBscScanLink(account, 'address')}>
-          <ArrowBackIcon width="20px" color="primary" />
+        <StyledIconButton
+          target="_blank"
+          as="a"
+          href={getBscScanLink(account, 'address')}
+          alt={t('View BscScan for user address')}
+        >
+          <BscScanIcon width="20px" color="primary" />
         </StyledIconButton>
       )}
     </Flex>
   )
 }
 
-const TextContent: React.FC<{ account: string; username: string }> = ({ account, username }) => {
+const TextContent: React.FC<{ account: string; profile: Profile }> = ({ account, profile }) => {
+  const { t } = useTranslation()
+  const [onEditProfileModal] = useModal(<EditProfileModal />, false)
+
+  const getActivateButton = () => {
+    if (!profile) {
+      return (
+        <Link href="/nft/market/profile/create">
+          <Button mt="16px">{t('Activate Profile')}</Button>
+        </Link>
+      )
+    }
+    return (
+      <Button mt="16px" onClick={onEditProfileModal}>
+        {t('Rectivate Profile')}
+      </Button>
+    )
+  }
+
   return (
     <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
-      {username && (
+      {profile?.username && (
         <Heading mb={12} scale="lg" color="secondary">
-          @{username}
+          @{profile.username}
         </Heading>
       )}
       {account ? (
-        <Text bold color="primary">
+        <Link href={getBscScanLink(account, 'address')} external bold color="primary">
           {truncateHash(account)}
-        </Text>
+        </Link>
       ) : (
         <Skeleton width={80} height={16} my={4} />
       )}
+      {account && (!profile || !profile?.nft) && getActivateButton()}
     </Flex>
   )
 }
 
-const CollectionStats: React.FC<{ numPoints: number; numAchievements: number }> = ({ numPoints, numAchievements }) => {
+const CollectionStats: React.FC<{ points: number; numAchievements: number }> = ({ points, numAchievements }) => {
   const { t } = useTranslation()
 
   return (
@@ -62,7 +88,7 @@ const CollectionStats: React.FC<{ numPoints: number; numAchievements: number }> 
         <Text fontSize="12px" mb="8px" color="textSubtle">
           {t('Points')}
         </Text>
-        <Text bold>{numPoints || '-'}</Text>
+        <Text bold>{points || '-'}</Text>
       </Flex>
       <Flex flexDirection="column" alignItems="center">
         <Text fontSize="12px" mb="8px" color="textSubtle">
@@ -74,16 +100,15 @@ const CollectionStats: React.FC<{ numPoints: number; numAchievements: number }> 
   )
 }
 
-const Avatar: React.FC<{ avatarImage: string }> = ({ avatarImage }) => {
+const Avatar: React.FC<{ avatarImage: string; profile: Profile }> = ({ avatarImage, profile }) => {
   const { t } = useTranslation()
-  const { profile } = useProfile()
+  const { account } = useWeb3React()
 
   return (
     <>
-      {profile ? (
+      {profile && account ? (
         <EditProfileAvatar src={avatarImage} alt={t('User profile picture')} />
       ) : (
-        // TODO: Trigger creating profile modal onClick - or have EditProfileAvatar handle this
         <AvatarImage src={avatarImage} alt={t('User profile picture')} />
       )}
     </>
@@ -94,29 +119,22 @@ interface HeaderProps {
   bannerImage: string
   avatarImage: string
   account: string
-  username: string
-  numPoints: number
   numAchievements: number
+  profile: Profile
 }
 
-const ProfileHeader: React.FC<HeaderProps> = ({
-  avatarImage,
-  bannerImage,
-  account,
-  username,
-  numPoints,
-  numAchievements,
-}) => {
+const ProfileHeader: React.FC<HeaderProps> = ({ avatarImage, bannerImage, account, numAchievements, profile }) => {
   const { t } = useTranslation()
+  const { points } = profile || {}
 
   return (
     <BannerHeader
       bannerImage={bannerImage}
       bannerAlt={t('User team banner')}
-      Avatar={Avatar({ avatarImage })}
+      Avatar={Avatar({ avatarImage, profile })}
       IconButtons={IconButtons({ account })}
-      TextContent={TextContent({ account, username })}
-      CollectionStats={CollectionStats({ numPoints, numAchievements })}
+      TextContent={TextContent({ account, profile })}
+      CollectionStats={CollectionStats({ points, numAchievements })}
     />
   )
 }
