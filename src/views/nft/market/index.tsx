@@ -1,5 +1,6 @@
 import React from 'react'
-import { Grid } from '@pancakeswap/uikit'
+import { Link } from 'react-router-dom'
+import { Box, Grid } from '@pancakeswap/uikit'
 import pancakeBunnies from 'config/constants/nfts/pancakeBunnies'
 import { useFetchCollections } from 'state/nftMarket/hooks'
 import { CollectibleCard, Collectible } from './components/CollectibleCard'
@@ -31,22 +32,27 @@ const Market = () => {
   useFetchCollections()
 
   return (
-    <Grid
-      p="16px"
-      gridTemplateColumns={['1fr', null, null, 'repeat(3, 256px)']}
-      gridGap="16px"
-      justifyContent={['center', null, null, 'start']}
-    >
-      <div>
-        <CollectibleCard collectible={example1} />
-      </div>
-      <div>
-        <CollectibleCard collectible={example2} />
-      </div>
-      <div>
-        <CollectibleCard collectible={example3} />
-      </div>
-    </Grid>
+    <Box>
+      <Link to="/nft/market/collectibles">Collectibles</Link>
+      <br />
+      <Link to="/nft/market/profile">Profile</Link>
+      <Grid
+        p="16px"
+        gridTemplateColumns={['1fr', null, null, 'repeat(3, 256px)']}
+        gridGap="16px"
+        justifyContent={['center', null, null, 'start']}
+      >
+        <div>
+          <CollectibleCard collectible={example1} />
+        </div>
+        <div>
+          <CollectibleCard collectible={example2} />
+        </div>
+        <div>
+          <CollectibleCard collectible={example3} />
+        </div>
+      </Grid>
+    </Box>
   )
 }
 
