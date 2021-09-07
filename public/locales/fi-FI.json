@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Tämä sivu on tarkoitettu projekteille, jotka tekevät tarjouksia viljelmistä.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Jos et ole hyväksytty projekti, et voi osallistua, mutta voit kuitenkin nähdä mitä on meneillään!",
   "through community auctions so far!": "yhteisön huutokauppojen kautta tähän mennessä!",
-  "5 Winners": "5 voittajaa",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% osallistujaa...",
   "Farm Auctions": "Viljelmähuutokaupat",
   "auction bunny": "huutokauppapupu",

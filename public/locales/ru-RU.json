@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Эта страница – для проектов, участвующих в аукционе для ферм.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Вы не являетесь проектом, получившим разрешение, поэтому вы не сможете участвовать, но вы всё же сможете видеть, что происходит!",
   "through community auctions so far!": "пока через действия сообщества!",
-  "5 Winners": "Пять победителей",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% претендентов...",
   "Farm Auctions": "Фермерские аукционы",
   "auction bunny": "аукционный зайчик",

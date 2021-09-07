@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Bu sayfa, projelerin tarlalarda teklif verebilmesi içindir.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Beyaz listeye alınmış bir proje değilsen katılamazsın ancak yine de neler olup bittiğini görebilirsin!",
   "through community auctions so far!": "şimdiye kadar topluluk müzayedelerinde!",
-  "5 Winners": "5 Kazanan",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% Teklif Veren...",
   "Farm Auctions": "Tarla Müzayedeleri",
   "auction bunny": "müzayede tavşanı",

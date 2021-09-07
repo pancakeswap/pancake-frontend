@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Ez az oldal hozamfarmokra licitáló projekteknek szól.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Ha a projekted nem szerepel az engedélyező listán, ugyan nem vehetsz részt, de valós időben megtekintheted, hogy mi történik!",
   "through community auctions so far!": "eddig közösségi árveréseken keresztül!",
-  "5 Winners": "5 nyertes",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% versenyző...",
   "Farm Auctions": "Hozamfarm árverések",
   "auction bunny": "árverési nyuszi",

@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Deze pagina is bestemd voor projecten om te bieden op farms.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Als je project niet goedgekeurd is, kun je niet deelnemen. Je kunt echter wel volgen wat er gebeurt!",
   "through community auctions so far!": "door communityveilingen tot nog toe!",
-  "5 Winners": "5 winnaars",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% deelnemers ...",
   "Farm Auctions": "Farmveilingen",
   "auction bunny": "veilingkonijntje",

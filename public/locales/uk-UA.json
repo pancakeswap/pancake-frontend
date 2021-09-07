@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Це сторінка, на якій проєкти можуть здійснювати ставки на ферми.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Якщо ваш проєкт не в білому списку, ви не зможете взяти участь, але все одно зможете стежити за перебігом!",
   "through community auctions so far!": "через аукціони спільноти на даний момент!",
-  "5 Winners": "5 переможців",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "Претендентів: %num%…",
   "Farm Auctions": "Аукціони ферм",
   "auction bunny": "кролик аукціону",

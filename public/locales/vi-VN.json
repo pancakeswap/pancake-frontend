@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Trang này để các dự án đặt cọc cho các trang trại.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Nếu bạn không phải là một dự án trong danh sách trắng, bạn sẽ không thể tham gia, nhưng bạn vẫn sẽ có thể theo dõi diễn biến!",
   "through community auctions so far!": "thông qua các đấu giá cộng đồng tính đến nay!",
-  "5 Winners": "5 người chiến thắng",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% người tranh tài...",
   "Farm Auctions": "Đấu giá Trang trại",
   "auction bunny": "thỏ đấu giá",

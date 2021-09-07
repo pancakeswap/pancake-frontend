@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "இப்பக்கம், பண்ணைகளுக்கு பந்தயங்கட்டுவதற்கான செயல்திட்டங்களுக்கானது.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "நீங்கள் ஏற்புப்பட்டியலில் சேர்த்த செயல்திட்டத்தில் இல்லை எனில், உங்களால் பங்கேற்க முடியாது, ஆனால் நிகழ்வது என்னவென்பதை உங்களால் தொடர்ந்து பார்க்க முடியும்!",
   "through community auctions so far!": "இதுவரை சமூக ஏலங்கள் மூலம்!",
-  "5 Winners": "5 வெற்றியாளர்கள்",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% போட்டியாளர்கள்...",
   "Farm Auctions": "பண்ணை ஏலங்கள்",
   "auction bunny": "ஏல முயல்",

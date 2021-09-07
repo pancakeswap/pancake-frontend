@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Ang pahinang ito ay para sa mga proyekto na mag-bibid para sa mga farm.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Kung hindi ka isang whitelisted na proyekto, hindi ka makakasali, ngunit maaari mo pa ring tingnan kung ano ang nangyayari!",
   "through community auctions so far!": "sa pamamagitan ng mga auction ng komunidad sa ngayon!",
-  "5 Winners": "5 Mga nanalo",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% Mga Kalaban...",
   "Farm Auctions": "Mga auction ng Farm",
   "auction bunny": "bunny ng auction",

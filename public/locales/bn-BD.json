@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "এই পৃষ্ঠা প্রোজেক্টসমূহের খামারের জন্য দর প্রস্তাবের লক্ষ্যে।",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "শ্বেত তালিকাভুক্ত প্রোজেক্ট না হলে আপনি অংশগ্রহণ করতে পারবেন না, তবে কী ঘটছে আপনি তা দেখতে পারবেন! ",
   "through community auctions so far!": "এখন পর্যন্ত কমিউনিটি নিলামের মাধ্যমে!",
-  "5 Winners": "5 বিজয়ী",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% জন প্রতিযোগী...",
   "Farm Auctions": "খামার নিলাম",
   "auction bunny": "নিলামের খরগোশ",

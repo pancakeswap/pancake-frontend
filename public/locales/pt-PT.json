@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Esta página é para projetos que licitem por quintas.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Se não for um projeto na lista de elementos seguros, não pode participar, mas ainda pode visualizar o que está a acontecer!",
   "through community auctions so far!": "através dos leilões da comunidade até ao momento!",
-  "5 Winners": "5 vencedores",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% concorrentes...",
   "Farm Auctions": "Leilões de quinta",
   "auction bunny": "coelho do leilão",

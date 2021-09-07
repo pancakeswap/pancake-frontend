@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "هذه الصفحة لمشروعات تقديم عطاءات للمزارع.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "إذا لم تكن ضمن مشروع مدرج بالقائمة البيضاء، فلا يمكنك المشاركة، ولكن ما يزال بإمكانك مشاهدة ماذا يحدث!",
   "through community auctions so far!": "عن طريق مزادات المجتمع حتى الآن!",
-  "5 Winners": "5 فائزين",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% من المتنافسين...",
   "Farm Auctions": "مزادات المزرعة",
   "auction bunny": "أرنب المزاد",
