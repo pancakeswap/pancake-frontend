@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "此页面用于农场出价项目。",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "如果您不是列入白名单的项目，您将无法参与，但您仍然可以查看动态！",
   "through community auctions so far!": "到目前为止通过社区拍卖！",
-  "5 Winners": "5 位获胜者",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% 位竞争者…",
   "Farm Auctions": "农场拍卖",
   "auction bunny": "拍卖兔子",
