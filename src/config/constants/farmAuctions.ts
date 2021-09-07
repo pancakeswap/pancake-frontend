@@ -301,7 +301,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     farmName: 'DVI-BNB',
     tokenAddress: '0x758fb037a375f17c7e195cc634d77da4f554255b',
     quoteToken: tokens.wbnb,
-    tokenName: 'Division',
+    tokenName: 'Dvision',
     projectSite: 'https://dvision.network/',
   },
 ].map((bidderConfig) => ({
