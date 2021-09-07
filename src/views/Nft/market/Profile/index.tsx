@@ -38,7 +38,7 @@ const NftProfile = () => {
 
   return (
     <>
-      <MarketPageHeader>
+      <MarketPageHeader position="relative">
         <ProfileHeader
           avatarImage={avatarImage}
           bannerImage={getBannerImage()}
@@ -51,6 +51,7 @@ const NftProfile = () => {
           <TabMenu />
         </Box>
       </MarketPageHeader>
+
       <Page>Profile</Page>
     </>
   )
