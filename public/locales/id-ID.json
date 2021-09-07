@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Halaman ini untuk proyek guna menawar farm.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Jika Anda tidak masuk dalam daftar putih atau tidak diizinkan untuk proyek, Anda tidak akan dapat berpartisipasi, tetapi Anda masih bisa tahu yang sedang terjadi!",
   "through community auctions so far!": "melalui lelang komunitas sejauh ini!",
-  "5 Winners": "5 Pemenang",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% Penantang ....",
   "Farm Auctions": "Lelang Farm",
   "auction bunny": "kelinci lelang",
