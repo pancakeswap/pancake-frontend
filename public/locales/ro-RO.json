@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "Această pagină este pentru proiectele care licitează pentru ferme.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "Dacă nu faci parte dintr-un proiect inclus în lista acceptată, nu vei putea participa, dar poți vizualiza ce se întâmplă!",
   "through community auctions so far!": "prin licitațiile comunitare până acum!",
-  "5 Winners": "5 câștigători",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "%num% concurenți...",
   "Farm Auctions": "Licitații ferme",
   "auction bunny": "iepuraș licitație",
