@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { NoProfileAvatarIcon, LaurelLeftIcon, LaurelRightIcon, Skeleton } from '@pancakeswap/uikit'
+import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { YourScoreProps } from '../../types'
-import ProfileAvatar from '../../../Profile/components/ProfileAvatar'
 import Sticker from '../Sticker'
 
 const Wrapper = styled.div`
@@ -44,7 +44,7 @@ const ScoreHeader: React.FC<YourScoreProps> = ({ profile, isLoading }) => {
         <Skeleton height="96px" width="96px" variant="circle" />
       ) : (
         <ProfileWrapper>
-          <Sticker>{profile ? <ProfileAvatar profile={profile} /> : <StyledNoProfileAvatarIcon />}</Sticker>
+          <Sticker>{profile ? <ProfileAvatarWithTeam profile={profile} /> : <StyledNoProfileAvatarIcon />}</Sticker>
         </ProfileWrapper>
       )}
 

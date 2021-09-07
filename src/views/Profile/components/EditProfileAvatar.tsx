@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useModal } from '@pancakeswap/uikit'
+import ProfileAvatarWithTeam, { ProfileAvatarProps } from 'components/ProfileAvatarWithTeam'
 import EditProfileModal from './EditProfileModal'
-import ProfileAvatar, { ProfileAvatarProps } from './ProfileAvatar'
 
 const EditOverlay = styled.div`
   background: rgba(0, 0, 0, 0.6) url('/images/camera.svg') no-repeat center center;
@@ -50,7 +50,7 @@ const EditProfileAvatar: React.FC<ProfileAvatarProps> = ({ profile }) => {
   return (
     <StyledEditProfileAvatar onClick={onEditProfileModal}>
       <AvatarWrapper>
-        <ProfileAvatar profile={profile} />
+        <ProfileAvatarWithTeam profile={profile} />
       </AvatarWrapper>
       <EditOverlay />
     </StyledEditProfileAvatar>
