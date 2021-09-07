@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "이 페이지는 프로젝트가 팜에 입찰하기 위한 페이지입니다.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "화이트리스트에 있는 프로젝트가 아닌 경우 참여할 수 없지만 진행 내용을 볼 수는 있습니다!",
   "through community auctions so far!": "지금까지의 커뮤니티 경매!",
-  "5 Winners": "당첨자 5명",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "경쟁자 %num%명...",
   "Farm Auctions": "팜 경매",
   "auction bunny": "경매 버니",
