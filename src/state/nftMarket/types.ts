@@ -4,8 +4,10 @@ import { BigNumberish } from 'ethers'
 // Users -> Nft tokens IDs
 
 export interface State {
-  collections: Collection[]
-  users: User[]
+  data: {
+    collections: Collection[]
+    users: User[]
+  }
 }
 
 export interface Transaction {
@@ -30,18 +32,15 @@ export interface NFT {
 }
 
 export interface Collection {
-  address: string
+  id: string
   name: string
   symbol: string
   active: boolean
-  totalTrades: BigNumberish
   totalVolumeBNB: BigNumberish
   numberTokensListed: BigNumberish
-  nfts: NFT[]
-  creatorAddress: string
   tradingFee: BigNumberish
   creatorFee: BigNumberish
-  whitelistChecker: string
+  nfts: NFT[]
 }
 
 export interface User {
