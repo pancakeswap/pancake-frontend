@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps } from '@pancakeswap/uikit'
-import { useAudioModeManager, useExpertModeManager, useUserSingleHopOnly } from 'state/user/hooks'
+import {
+  useAudioModeManager,
+  useExpertModeManager,
+  useUserExpertModeAcknowledgementShow,
+  useUserSingleHopOnly,
+} from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useSwapActionHandlers } from 'state/swap/hooks'
-import usePersistState from 'hooks/usePersistState'
 import useTheme from 'hooks/useTheme'
 import QuestionHelper from '../../QuestionHelper'
 import TransactionSettings from './TransactionSettings'
@@ -20,9 +24,7 @@ const PancakeToggleWrapper = styled.div`
 
 const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
-  const [rememberExpertModeAcknowledgement, setRememberExpertModeAcknowledgement] = usePersistState(false, {
-    localStorageKey: 'pancake_expert_mode_remember_acknowledgement',
-  })
+  const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
   const [expertMode, toggleExpertMode] = useExpertModeManager()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
@@ -36,7 +38,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       <ExpertModal
         setShowConfirmExpertModal={setShowConfirmExpertModal}
         onDismiss={onDismiss}
-        setRememberExpertModeAcknowledgement={setRememberExpertModeAcknowledgement}
+        setShowExpertModeAcknowledgement={setShowExpertModeAcknowledgement}
       />
     )
   }
@@ -45,7 +47,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
     if (expertMode) {
       onChangeRecipient(null)
       toggleExpertMode()
-    } else if (rememberExpertModeAcknowledgement) {
+    } else if (!showExpertModeAcknowledgement) {
       onChangeRecipient(null)
       toggleExpertMode()
     } else {

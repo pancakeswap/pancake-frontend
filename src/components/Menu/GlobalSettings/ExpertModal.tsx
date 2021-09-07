@@ -5,13 +5,10 @@ import { useTranslation } from 'contexts/Localization'
 
 interface ExpertModalProps extends InjectedModalProps {
   setShowConfirmExpertModal: (boolean) => void
-  setRememberExpertModeAcknowledgement: (boolean) => void
+  setShowExpertModeAcknowledgement: (boolean) => void
 }
 
-const ExpertModal: React.FC<ExpertModalProps> = ({
-  setShowConfirmExpertModal,
-  setRememberExpertModeAcknowledgement,
-}) => {
+const ExpertModal: React.FC<ExpertModalProps> = ({ setShowConfirmExpertModal, setShowExpertModeAcknowledgement }) => {
   const [, toggleExpertMode] = useExpertModeManager()
   const [isRememberChecked, setIsRememberChecked] = useState(false)
 
@@ -54,7 +51,7 @@ const ExpertModal: React.FC<ExpertModalProps> = ({
             toggleExpertMode()
             setShowConfirmExpertModal(false)
             if (isRememberChecked) {
-              setRememberExpertModeAcknowledgement(true)
+              setShowExpertModeAcknowledgement(false)
             }
           }
         }}

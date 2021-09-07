@@ -36,6 +36,12 @@ export const updateUserPredictionAcceptedRisk = createAction<{ userAcceptedRisk:
 export const updateUserPredictionChartDisclaimerShow = createAction<{ userShowDisclaimer: boolean }>(
   'user/updateUserPredictionChartDisclaimerShow',
 )
+export const updateUserExpertModeAcknowledgementShow = createAction<{ userExpertModeAcknowledgementShow: boolean }>(
+  'user/updateUserExpertModeAcknowledgementShow',
+)
+export const updateUserUsernameVisibility = createAction<{ userUsernameVisibility: boolean }>(
+  'user/updateUserUsernameVisibility',
+)
 export const updateGasPrice = createAction<{ gasPrice: string }>('user/updateGasPrice')
 
 export const addWatchlistToken = createAction<{ address: string }>('user/addWatchlistToken')
