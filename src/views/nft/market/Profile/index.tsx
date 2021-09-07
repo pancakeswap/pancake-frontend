@@ -20,9 +20,9 @@ const NftProfile = () => {
         case 1:
           return `${imagePath}/storm-banner.png`
         case 2:
-          return `${imagePath}/cakers-banner.png`
-        case 3:
           return `${imagePath}/flippers-banner.png`
+        case 3:
+          return `${imagePath}/cakers-banner.png`
         default:
           return null
       }

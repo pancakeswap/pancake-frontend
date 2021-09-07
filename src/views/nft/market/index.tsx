@@ -2,8 +2,7 @@ import React from 'react'
 import { Grid } from '@pancakeswap/uikit'
 import pancakeBunnies from 'config/constants/nfts/pancakeBunnies'
 import { useFetchCollections } from 'state/nftMarket/hooks'
-import NftCard from '../components/CollectibleCard'
-import { Collectible } from '../components/CollectibleCard/types'
+import { CollectibleCard, Collectible } from './components/CollectibleCard'
 
 const example1: Collectible = {
   name: 'Pancake Bunnies',
@@ -39,13 +38,13 @@ const Market = () => {
       justifyContent={['center', null, null, 'start']}
     >
       <div>
-        <NftCard collectible={example1} />
+        <CollectibleCard collectible={example1} />
       </div>
       <div>
-        <NftCard collectible={example2} />
+        <CollectibleCard collectible={example2} />
       </div>
       <div>
-        <NftCard collectible={example3} />
+        <CollectibleCard collectible={example3} />
       </div>
     </Grid>
   )
