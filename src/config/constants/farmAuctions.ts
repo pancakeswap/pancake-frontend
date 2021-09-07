@@ -154,6 +154,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     projectSite: 'https://www.gmr.finance/',
   },
   {
+    account: '0x786B313b01A25eddbF7f7461b48D60AF680d758C',
+    farmName: 'BP-BNB',
+    tokenAddress: '0xacb8f52dc63bb752a51186d1c55868adbffee9c1',
+    quoteToken: tokens.wbnb,
+    tokenName: 'BunnyPark',
+    projectSite: 'https://www.bunnypark.com/',
+  },
+  {
     account: '0x70d7eCEE276Ad5fDFc91B3C30d2c1cDb9dD442Fb',
     farmName: 'DPET-BNB',
     tokenAddress: '0xfb62ae373aca027177d1c18ee0862817f9080d08',
