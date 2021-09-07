@@ -1304,7 +1304,7 @@
   "This page is for projects to bid for farms.": "このページはプロジェクトがファームに入札するためのものです。",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "ホワイトリストされていないプロジェクトの場合は参加できませんが、リアルタイムで何が起こっているのかを見ることができます!",
   "through community auctions so far!": "がコミュニティオークションを通じての累計総数です!",
-  "5 Winners": "落札者5名",
+  "%num% Winners": "%num% Winners",
   "%num% Contenders...": "競争者%num%名...",
   "Farm Auctions": "ファームオークション",
   "auction bunny": "アクションバニー",
