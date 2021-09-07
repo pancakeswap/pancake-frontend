@@ -1678,14 +1678,17 @@ export const testnetTokens = {
   ),
 }
 
-const tokenLists: { [chainId in ChainId]: TokenList } = {
-  [MAINNET]: mainnetTokens,
-  [TESTNET]: testnetTokens,
-}
-
 const tokens = (): TokenList => {
   const chainId = process.env.REACT_APP_CHAIN_ID
-  return tokenLists[chainId] ? tokenLists[chainId] : tokenLists[ChainId.MAINNET]
+
+  // If testnet - return list comprised of testnetTokens wherever they exist, and mainnetTokens where they don't
+  if (parseInt(chainId, 10) === ChainId.TESTNET) {
+    return Object.keys(mainnetTokens).reduce((accum, key) => {
+      return { ...accum, [key]: testnetTokens[key] || mainnetTokens[key] }
+    }, {})
+  }
+
+  return mainnetTokens
 }
 
 export const serializeTokens = (): SerializedTokenList => {
