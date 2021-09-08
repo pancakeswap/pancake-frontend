@@ -8,9 +8,9 @@ import { useCake } from 'hooks/useContract'
 import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
+import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { useProfile } from 'state/profile/hooks'
 import { UseEditProfileResponse } from './reducer'
-import ProfileAvatar from '../ProfileAvatar'
 
 interface StartPageProps extends InjectedModalProps {
   goToChange: UseEditProfileResponse['goToChange']
@@ -73,7 +73,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
   return (
     <Flex alignItems="center" justifyContent="center" flexDirection="column">
       <AvatarWrapper>
-        <ProfileAvatar profile={profile} />
+        <ProfileAvatarWithTeam profile={profile} />
       </AvatarWrapper>
       <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
         <Text as="p" color="failure">

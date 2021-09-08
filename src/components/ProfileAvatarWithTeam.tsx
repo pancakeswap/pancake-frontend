@@ -43,7 +43,7 @@ const AvatarInactive = styled(NoProfileAvatarIcon)`
   height: 100%;
 `
 
-const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ profile }) => {
+const ProfileAvatarWithTeam: React.FC<ProfileAvatarProps> = ({ profile }) => {
   return (
     <AvatarWrapper bg={`/images/nfts/${profile.nft?.images?.md}`}>
       {!profile.isActive && <AvatarInactive />}
@@ -52,4 +52,4 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ profile }) => {
   )
 }
 
-export default ProfileAvatar
+export default ProfileAvatarWithTeam
