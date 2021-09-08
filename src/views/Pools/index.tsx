@@ -9,7 +9,6 @@ import { Heading, Flex, Image, Text } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
-import usePersistState from 'hooks/usePersistState'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import {
   useFetchPublicPoolsData,
@@ -26,6 +25,8 @@ import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import { DeserializedPool } from 'state/types'
+import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
+import { ViewMode } from 'state/user/actions'
 import Loading from 'components/Loading'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
@@ -33,7 +34,6 @@ import PoolTabButtons from './components/PoolTabButtons'
 import BountyCard from './components/BountyCard'
 import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
-import { ViewMode } from './components/ToggleView/ToggleView'
 import { getAprData, getCakeVaultEarnings } from './helpers'
 
 const CardLayout = styled(FlexLayout)`
@@ -89,10 +89,10 @@ const Pools: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools()
-  const [stakedOnly, setStakedOnly] = usePersistState(false, { localStorageKey: 'pancake_pool_staked' })
+  const [stakedOnly, setStakedOnly] = useUserPoolStakedOnly()
+  const [viewMode, setViewMode] = useUserPoolsViewMode()
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { observerRef, isIntersecting } = useIntersectionObserver()
-  const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_pool_view' })
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const chosenPoolsLength = useRef(0)
