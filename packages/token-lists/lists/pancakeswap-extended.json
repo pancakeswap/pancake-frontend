@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-09-06T07:34:58.933Z",
+  "timestamp": "2021-09-08T07:18:18.692Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 23
+    "patch": 24
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1563,6 +1563,14 @@
       "chainId": 56,
       "decimals": 4,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x2222227E22102Fe3322098e4CBfE18cFebD57c95.png"
+    },
+    {
+      "name": "Telos",
+      "symbol": "TLOS",
+      "address": "0xb6C53431608E626AC81a9776ac3e999c5556717c",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xb6C53431608E626AC81a9776ac3e999c5556717c.png"
     },
     {
       "name": "TokenPocket",
