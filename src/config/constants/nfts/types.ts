@@ -5,8 +5,10 @@ export enum CollectionKey {
   SQUAD = 'pancakeSquad',
 }
 
-type Collection = {
+export type Collection = {
   name: string
+  description?: string
+  slug: string
   address: Address
 }
 

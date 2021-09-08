@@ -1,42 +1,27 @@
 import React, { ReactNode } from 'react'
-import { Flex, Box } from '@pancakeswap/uikit'
+import { Flex, Box, FlexProps } from '@pancakeswap/uikit'
 import BannerImage from './BannerImage'
-import CollectionStatsWrapper from './CollectionStatsWrapper'
 
-interface HeaderProps {
+interface BannerHeaderProps extends FlexProps {
   bannerImage: string
   bannerAlt?: string
-  Avatar?: ReactNode
-  IconButtons?: ReactNode
-  TextContent?: ReactNode
-  CollectionStats?: ReactNode
+  avatar?: ReactNode
 }
 
-const Header: React.FC<HeaderProps> = ({
-  bannerImage,
-  bannerAlt,
-  Avatar,
-  IconButtons,
-  TextContent,
-  CollectionStats,
-}) => {
+const BannerHeader: React.FC<BannerHeaderProps> = ({ bannerImage, bannerAlt, avatar, children, ...props }) => {
   return (
-    <Flex flexDirection="column">
-      <Box position="relative">
+    <Flex flexDirection="column" mb="24px" {...props}>
+      <Box position="relative" pb="56px">
         <BannerImage src={bannerImage} alt={bannerAlt} />
-        <Box position="absolute" bottom={-68} left={-4}>
+        <Box position="absolute" bottom={0} left={-4}>
           <Flex alignItems="flex-end">
-            {Avatar}
-            {IconButtons}
+            {avatar}
+            {children}
           </Flex>
         </Box>
       </Box>
-      <Flex flexDirection={['column', null, 'row']} justifyContent="space-between" mt={80}>
-        {TextContent}
-        <CollectionStatsWrapper>{CollectionStats}</CollectionStatsWrapper>
-      </Flex>
     </Flex>
   )
 }
 
-export default Header
+export default BannerHeader
