@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardBody, Heading, PrizeIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import StatBox from './StatBox'
+import IconStatBox from 'views/Teams/components/IconStatBox'
 import AchievementsList from './AchievementsList'
 import ClaimPointsCallout from './ClaimPointsCallout '
 
@@ -11,7 +11,7 @@ const Achievements = ({ points = 0 }) => {
   return (
     <Card>
       <CardBody>
-        <StatBox icon={PrizeIcon} title={points} subtitle={t('Points')} mb="24px" />
+        <IconStatBox icon={PrizeIcon} title={points} subtitle={t('Points')} mb="24px" />
         <Heading as="h4" scale="md" mb="16px">
           {t('Achievements')}
         </Heading>

@@ -11,14 +11,14 @@ SecondaryCard.defaultProps = {
   p: '24px',
 }
 
-interface StatBoxProps extends TextProps {
+interface IconStatBoxProps extends TextProps {
   icon: ElementType
   title: ReactNode
   subtitle: ReactNode
   isDisabled?: boolean
 }
 
-const StatBox: React.FC<StatBoxProps> = ({ icon: Icon, title, subtitle, isDisabled = false, ...props }) => {
+const IconStatBox: React.FC<IconStatBoxProps> = ({ icon: Icon, title, subtitle, isDisabled = false, ...props }) => {
   return (
     <SecondaryCard {...props}>
       <Flex alignItems="start">
@@ -36,4 +36,4 @@ const StatBox: React.FC<StatBoxProps> = ({ icon: Icon, title, subtitle, isDisabl
   )
 }
 
-export default StatBox
+export default IconStatBox

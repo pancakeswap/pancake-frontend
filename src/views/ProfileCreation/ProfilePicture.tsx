@@ -10,7 +10,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useGetCollectibles } from 'state/collectibles/hooks'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import SelectionCard from '../SelectionCard'
+import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 

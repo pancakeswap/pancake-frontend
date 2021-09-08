@@ -30,31 +30,10 @@ const NftProfile = () => {
 
   useFetchAchievements()
 
-  const getBannerImage = () => {
-    const imagePath = '/images/teams'
-    if (profile) {
-      switch (profile.teamId) {
-        case 1:
-          return `${imagePath}/storm-banner.png`
-        case 2:
-          return `${imagePath}/flippers-banner.png`
-        case 3:
-          return `${imagePath}/cakers-banner.png`
-        default:
-          break
-      }
-    }
-    return `${imagePath}/no-team-banner.png`
-  }
-
-  const avatarImage = profile?.nft?.images?.md
-    ? `/images/nfts/${profile?.nft?.images?.md}`
-    : '/images/nfts/no-profile-md.png'
-
   return (
     <>
       <MarketPageHeader position="relative">
-        <ProfileHeader />
+        <ProfileHeader account={account} profile={profile} achievements={achievements} />
         <TabMenuWrapper>
           <TabMenu />
         </TabMenuWrapper>

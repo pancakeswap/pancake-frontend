@@ -3,7 +3,7 @@ import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap
 import shuffle from 'lodash/shuffle'
 import { useTeams } from 'state/teams/hooks'
 import { useTranslation } from 'contexts/Localization'
-import SelectionCard from '../SelectionCard'
+import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import useProfileCreation from './contexts/hook'
 

@@ -4,7 +4,7 @@ import { Card, CardHeader, CardBody, CommunityIcon, Heading, PrizeIcon, Text } f
 import { Team } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import ComingSoon from './ComingSoon'
-import StatBox from './StatBox'
+import IconStatBox from './IconStatBox'
 
 interface TeamCardProps {
   team: Team
@@ -89,8 +89,8 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
         </StyledCardHeader>
         <CardBody>
           <StatRow>
-            <StatBox icon={CommunityIcon} title={team.users} subtitle={t('Active Members')} />
-            <StatBox icon={PrizeIcon} title={t('Coming Soon')} subtitle={t('Team Points')} isDisabled />
+            <IconStatBox icon={CommunityIcon} title={team.users} subtitle={t('Active Members')} />
+            <IconStatBox icon={PrizeIcon} title={t('Coming Soon')} subtitle={t('Team Points')} isDisabled />
           </StatRow>
           <Heading as="h3">{t('Team Achievements')}</Heading>
           <ComingSoon />

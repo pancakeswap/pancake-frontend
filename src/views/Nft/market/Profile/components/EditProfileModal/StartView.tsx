@@ -9,8 +9,8 @@ import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
 import { useProfile } from 'state/profile/hooks'
+import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { UseEditProfileResponse } from './reducer'
-import TeamAndProfileAvatar from './TeamAndProfileAvatar'
 
 interface StartPageProps extends InjectedModalProps {
   goToChange: UseEditProfileResponse['goToChange']
@@ -73,7 +73,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
   return (
     <Flex alignItems="center" justifyContent="center" flexDirection="column">
       <AvatarWrapper>
-        <TeamAndProfileAvatar profile={profile} />
+        <ProfileAvatarWithTeam profile={profile} />
       </AvatarWrapper>
       <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
         <Text as="p" color="failure">

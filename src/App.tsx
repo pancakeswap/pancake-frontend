@@ -50,7 +50,7 @@ const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 const Info = lazy(() => import('./views/Info'))
 const NftMarket = lazy(() => import('./views/Nft/market'))
 const NftProfile = lazy(() => import('./views/Nft/market/Profile'))
-const ProfileCreation = lazy(() => import('./views/Nft/market/Profile/components/ProfileCreation'))
+const ProfileCreation = lazy(() => import('./views/ProfileCreation'))
 const Collectible = lazy(() => import('./views/Nft/market/Collectible'))
 const CollectibleOverview = lazy(() => import('./views/Nft/market/Collectibles'))
 
@@ -101,6 +101,10 @@ const App: React.FC = () => {
             <Route path="/teams/:id">
               <Team />
             </Route>
+            <Route path="/create-profile">
+              <ProfileCreation />
+            </Route>
+            <Redirect from="/profile" to="/nft/market/profile" />
             <Route path="/competition">
               <TradingCompetition />
             </Route>
@@ -126,9 +130,6 @@ const App: React.FC = () => {
             </Route>
             <Route path="/nft/market/collectibles/:slug">
               <Collectible />
-            </Route>
-            <Route path="/nft/market/profile/create">
-              <ProfileCreation />
             </Route>
             <Route path="/nft/market/profile">
               <NftProfile />
