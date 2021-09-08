@@ -1,82 +1,26 @@
 import React from 'react'
-import styled from 'styled-components'
-import { ArrowBackIcon, Flex, Heading, IconButton, Skeleton, Text } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
+import { Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import truncateHash from 'utils/truncateHash'
+import { Profile } from 'state/types'
 import { useProfile } from 'state/profile/hooks'
+import { useFetchAchievements } from 'state/achievements/hooks'
 import { getBscScanLink } from 'utils'
+import { formatNumber } from 'utils/formatBalance'
+import truncateHash from 'utils/truncateHash'
 import BannerHeader from '../components/BannerHeader'
 import EditProfileAvatar from './EditProfileAvatar'
 import AvatarImage from '../components/BannerHeader/AvatarImage'
+import StatBox, { StatBoxItem } from '../components/StatBox'
+import MarketPageTitle from '../components/MarketPageTitle'
 
-const StyledIconButton = styled(IconButton)`
-  width: fit-content;
-`
-
-const IconButtons: React.FC<{ account: string }> = ({ account }) => {
-  return (
-    // TODO: Implement real logo
-    // TODO: Share functionality once user profiles routed by ID
-    <Flex display="inline-flex">
-      {account && (
-        <StyledIconButton as="a" href={getBscScanLink(account, 'address')}>
-          <ArrowBackIcon width="20px" color="primary" />
-        </StyledIconButton>
-      )}
-    </Flex>
-  )
+interface AvatarProps {
+  avatarImage: string
+  profile?: Profile
 }
 
-const TextContent: React.FC<{ account: string; username: string }> = ({ account, username }) => {
-  return (
-    <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
-      {username && (
-        <Heading mb={12} scale="lg" color="secondary">
-          @{username}
-        </Heading>
-      )}
-      {account ? (
-        <Text bold color="primary">
-          {truncateHash(account)}
-        </Text>
-      ) : (
-        <Skeleton width={80} height={16} my={4} />
-      )}
-    </Flex>
-  )
-}
-
-const CollectionStats: React.FC<{ numPoints: number; numAchievements: number }> = ({ numPoints, numAchievements }) => {
+const Avatar: React.FC<AvatarProps> = ({ avatarImage, profile }) => {
   const { t } = useTranslation()
-
-  return (
-    <>
-      <Flex flexDirection="column" alignItems="center">
-        <Text fontSize="12px" mb="8px" color="textSubtle">
-          {t('NFT Collected')}
-        </Text>
-        {/* TODO: Use real data */}
-        <Text bold>42</Text>
-      </Flex>
-      <Flex flexDirection="column" alignItems="center">
-        <Text fontSize="12px" mb="8px" color="textSubtle">
-          {t('Points')}
-        </Text>
-        <Text bold>{numPoints || '-'}</Text>
-      </Flex>
-      <Flex flexDirection="column" alignItems="center">
-        <Text fontSize="12px" mb="8px" color="textSubtle">
-          {t('Achievements')}
-        </Text>
-        <Text bold>{numAchievements || '-'}</Text>
-      </Flex>
-    </>
-  )
-}
-
-const Avatar: React.FC<{ avatarImage: string }> = ({ avatarImage }) => {
-  const { t } = useTranslation()
-  const { profile } = useProfile()
 
   return (
     <>
@@ -90,34 +34,70 @@ const Avatar: React.FC<{ avatarImage: string }> = ({ avatarImage }) => {
   )
 }
 
-interface HeaderProps {
-  bannerImage: string
-  avatarImage: string
-  account: string
-  username: string
-  numPoints: number
-  numAchievements: number
-}
-
-const ProfileHeader: React.FC<HeaderProps> = ({
-  avatarImage,
-  bannerImage,
-  account,
-  username,
-  numPoints,
-  numAchievements,
-}) => {
+const ProfileHeader: React.FC = () => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
+  const { profile, isInitialized } = useProfile()
+
+  useFetchAchievements()
+
+  const getTitle = () => {
+    if (isInitialized && !profile) {
+      return truncateHash(account, 5, 3)
+    }
+
+    return `@${profile.username}`
+  }
+
+  const renderDescription = () => {
+    if (isInitialized && !profile) {
+      return null
+    }
+
+    return (
+      <Link href={getBscScanLink(account, 'address')} external>
+        {truncateHash(account, 5, 3)}
+      </Link>
+    )
+  }
+
+  const getBannerImage = () => {
+    const imagePath = '/images/teams'
+    if (profile) {
+      switch (profile.teamId) {
+        case 1:
+          return `${imagePath}/storm-banner.png`
+        case 2:
+          return `${imagePath}/flippers-banner.png`
+        case 3:
+          return `${imagePath}/cakers-banner.png`
+        default:
+          return null
+      }
+    }
+    return null
+  }
+
+  const avatarImage = profile?.nft?.images?.md
+    ? `/images/nfts/${profile?.nft?.images?.md}`
+    : '/images/nfts/no-profile-md.png'
+
+  // Tmp
+  const nftCollected = 43
+  const points = 345
+  const achievements = 2
 
   return (
-    <BannerHeader
-      bannerImage={bannerImage}
-      bannerAlt={t('User team banner')}
-      Avatar={Avatar({ avatarImage })}
-      IconButtons={IconButtons({ account })}
-      TextContent={TextContent({ account, username })}
-      CollectionStats={CollectionStats({ numPoints, numAchievements })}
-    />
+    <>
+      <BannerHeader bannerImage={getBannerImage()} bannerAlt={t('User team banner')} avatar={Avatar({ avatarImage })} />
+      <MarketPageTitle title={getTitle()} description={renderDescription()}>
+        <StatBox>
+          <StatBoxItem title={t('NFT Collected')} stat={formatNumber(nftCollected, 0, 0)} />
+          <StatBoxItem title={t('Points')} stat={formatNumber(points, 0, 0)} />
+          <StatBoxItem title={t('Achievements')} stat={formatNumber(achievements, 0, 0)} />
+        </StatBox>
+      </MarketPageTitle>
+    </>
   )
 }
 
