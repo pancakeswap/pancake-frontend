@@ -22,7 +22,7 @@ const config: (t: ContextApi['t']) => MenuItemsType[] = (t) => [
     ],
   },
   {
-    label: 'Earn',
+    label: t('Earn'),
     href: '/farms',
     icon: 'Earn',
     items: [
@@ -37,7 +37,7 @@ const config: (t: ContextApi['t']) => MenuItemsType[] = (t) => [
     ],
   },
   {
-    label: 'Win',
+    label: t('Win'),
     href: '/prediction',
     icon: 'Trophy',
     items: [
@@ -52,7 +52,7 @@ const config: (t: ContextApi['t']) => MenuItemsType[] = (t) => [
     ],
   },
   {
-    label: 'Nft',
+    label: t('NFT'),
     href: '/collectibles',
     icon: 'Nft',
     items: [
@@ -63,9 +63,9 @@ const config: (t: ContextApi['t']) => MenuItemsType[] = (t) => [
     ],
   },
   {
-    label: '...',
+    label: '',
     href: '/info',
-    icon: 'More',
+    icon: t('More'),
     items: [
       {
         label: t('Info'),
