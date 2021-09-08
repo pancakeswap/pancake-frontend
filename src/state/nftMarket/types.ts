@@ -5,8 +5,8 @@ import { BigNumberish } from 'ethers'
 
 export interface State {
   data: {
-    collections: Collection[]
-    users: User[]
+    collections: Record<string, Collection> // string is the address
+    users: Record<string, User> // string is the address
   }
 }
 
@@ -48,5 +48,5 @@ export interface User {
   numberTokensListed: BigNumberish
   numberTokensPurchased: BigNumberish
   numberTokensSold: BigNumberish
-  nfts: { [collectionAddress: string]: BigNumberish[] } // List of tokens IDs
+  nfts: Record<string, BigNumberish> // String is an address, BigNumberish is a tokenID
 }
