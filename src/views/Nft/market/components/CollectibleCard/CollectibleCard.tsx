@@ -13,12 +13,16 @@ export interface CollectibleCardProps extends CardProps {
 const StyledCollectibleCard = styled(Card)`
   border-radius: 8px;
   transition: opacity 200ms;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 320px;
 
   & > div {
     border-radius: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    &:hover {
+      cursor: pointer;
+      opacity: 0.6;
+    }
   }
 `
 
@@ -39,7 +43,7 @@ const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible, ...props
           {status === 'wallet' && <WalletNftTag />}
         </Flex>
         <Text as="h4" fontWeight="600" mb="8px">
-          {name}
+          {nft.name}
         </Text>
         <Box borderTop="1px solid" borderTopColor="cardBorder" pt="8px">
           <MetaRow title="Price">
