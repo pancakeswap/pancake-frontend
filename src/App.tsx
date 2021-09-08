@@ -127,7 +127,7 @@ const App: React.FC = () => {
             <Route exact path="/nft/market/collectibles">
               <CollectibleOverview />
             </Route>
-            <Route path="/nft/market/collectibles/:name">
+            <Route path="/nft/market/collectibles/:slug">
               <Collectible />
             </Route>
             <Route path="/nft/market/profile">
