@@ -1,5 +1,5 @@
 import pancakeBunnies from 'config/constants/nfts/pancakeBunnies'
-import { Collectible } from '../components/CollectibleCard/types'
+import { Collectible } from './components/CollectibleCard'
 
 export const example1: Collectible = {
   name: 'Pancake Bunnies',
