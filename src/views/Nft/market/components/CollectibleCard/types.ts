@@ -6,5 +6,5 @@ export interface Collectible {
   cost: number
   lowestCost?: number
   nft: Nft
-  status: 'selling' | 'profile' | 'wallet'
+  status?: 'selling' | 'profile' | 'wallet'
 }
