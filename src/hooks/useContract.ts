@@ -25,6 +25,7 @@ import {
   getBunnySpecialPredictionContract,
   getFarmAuctionContract,
   getBunnySpecialLotteryContract,
+  getNftMarketContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 
@@ -176,6 +177,11 @@ export const useFarmAuctionContract = () => {
   //
   // Similar behavior was also noticed on Trading Competition page.
   return useMemo(() => getFarmAuctionContract(account ? library.getSigner() : library), [library, account])
+}
+
+export const useNftMarketContract = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getNftMarketContract(library.getSigner()), [library])
 }
 
 // Code below migrated from Exchange useContract.ts
