@@ -31,6 +31,7 @@ export const mainnetTokens = {
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
   stephero: new Token(
     MAINNET,
     '0xE8176d414560cFE1Bf82Fd73B986823B89E4F545',
