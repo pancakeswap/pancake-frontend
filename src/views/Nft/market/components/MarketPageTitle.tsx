@@ -1,9 +1,9 @@
-import React from 'react'
-import { Box, Grid, Text, GridProps, Heading } from '@pancakeswap/uikit'
+import React, { ReactNode } from 'react'
+import { Box, Grid, GridProps, Heading } from '@pancakeswap/uikit'
 
 interface MarketPageTitleProps extends GridProps {
   title: string
-  description?: string
+  description?: ReactNode
 }
 
 const MarketPageTitle: React.FC<MarketPageTitleProps> = ({ title, description, children, ...props }) => (
@@ -12,7 +12,7 @@ const MarketPageTitle: React.FC<MarketPageTitleProps> = ({ title, description, c
       <Heading as="h1" scale="xl" color="secondary" mb="16px">
         {title}
       </Heading>
-      {description && <Text color="textSubtle">{description}</Text>}
+      {description}
     </Box>
     <Box>{children}</Box>
   </Grid>
