@@ -47,7 +47,7 @@ const farms: SerializedFarmConfig[] = [
       97: '',
       56: '0x3eDb06e2d182d133864fe7C0f9B4C204bBf61D4E',
     },
-    token: serializedTokens.telos,
+    token: serializedTokens.tlos,
     quoteToken: serializedTokens.wbnb,
   },
   {
