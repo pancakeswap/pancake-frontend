@@ -1,22 +1,17 @@
 import React from 'react'
-import { Redirect, useParams } from 'react-router'
+import { Collection } from 'config/constants/nfts/types'
 import { useTranslation } from 'contexts/Localization'
-import nfts from 'config/constants/nfts'
 import { formatNumber } from 'utils/formatBalance'
 import MarketPageHeader from '../components/MarketPageHeader'
 import MarketPageTitle from '../components/MarketPageTitle'
 import StatBox, { StatBoxItem } from '../components/StatBox'
 
-const Header = () => {
+interface HeaderProps {
+  collection: Collection
+}
+
+const Header: React.FC<HeaderProps> = ({ collection }) => {
   const { t } = useTranslation()
-  const { name } = useParams<{ name: string }>()
-
-  if (!name || !nfts[name]) {
-    return <Redirect to="/404" />
-  }
-
-  // const imgDir = '/images/collections'
-  // const collectionName = name.toLowerCase()
 
   // Temp
   const items = 10000
@@ -26,15 +21,12 @@ const Header = () => {
 
   return (
     <MarketPageHeader>
-      <MarketPageTitle
-        title={name}
-        description={t("PancakeSwap's first official generative NFT collection.. Join the squad.")}
-      >
+      <MarketPageTitle title={collection.name} description={collection.description ? t(collection.description) : null}>
         <StatBox>
           <StatBoxItem title={t('Items')} stat={formatNumber(items, 0, 0)} />
           <StatBoxItem title={t('Owners')} stat={formatNumber(owners, 0, 0)} />
-          <StatBoxItem title={t('Lowest (BNB)')} stat={formatNumber(lowest, 0, 4)} />
-          <StatBoxItem title={t('Vol. (BNB)')} stat={formatNumber(vol, 0, 4)} />
+          <StatBoxItem title={t('Lowest (%symbol%)', { symbol: 'BNB' })} stat={formatNumber(lowest, 0, 4)} />
+          <StatBoxItem title={t('Vol. (%symbol%)', { symbol: 'BNB' })} stat={formatNumber(vol, 0, 4)} />
         </StatBox>
       </MarketPageTitle>
     </MarketPageHeader>
