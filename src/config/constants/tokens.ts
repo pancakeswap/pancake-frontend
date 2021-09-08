@@ -46,7 +46,7 @@ export const mainnetTokens = {
     18,
     'CVP',
     'Concentrated Voting Power Token',
-    'http://powerpool.finance/',
+    'https://powerpool.finance/',
   ),
   bscdefi: new Token(
     MAINNET,
