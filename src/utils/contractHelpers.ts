@@ -26,6 +26,7 @@ import {
   getBunnySpecialLotteryAddress,
   getFarmAuctionAddress,
   getAnniversaryAchievement,
+  getNftMarketAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -57,6 +58,8 @@ import bunnySpecialPredictionAbi from 'config/abi/bunnySpecialPrediction.json'
 import bunnySpecialLotteryAbi from 'config/abi/bunnySpecialLottery.json'
 import farmAuctionAbi from 'config/abi/farmAuction.json'
 import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
+import nftMarketAbi from 'config/abi/nftMarket.json'
+
 import { ChainLinkOracleContract, FarmAuctionContract, PancakeProfileContract, PredictionsContract } from './types'
 
 const getContract = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
@@ -149,4 +152,7 @@ export const getFarmAuctionContract = (signer?: ethers.Signer | ethers.providers
 }
 export const getAnniversaryAchievementContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(anniversaryAchievementAbi, getAnniversaryAchievement(), signer)
+}
+export const getNftMarketContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(nftMarketAbi, getNftMarketAddress(), signer)
 }
