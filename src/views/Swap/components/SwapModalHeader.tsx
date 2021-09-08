@@ -2,13 +2,12 @@ import React, { useMemo } from 'react'
 import { Trade, TradeType } from '@pancakeswap/sdk'
 import { Button, Text, ErrorIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'
-import { isAddress } from 'utils'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
 import { AutoColumn } from 'components/Layout/Column'
 import { CurrencyLogo } from 'components/Logo'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
-import { TruncatedText, SwapShowAcceptChanges } from './styleds'
 import truncateHash from 'utils/truncateHash'
+import { TruncatedText, SwapShowAcceptChanges } from './styleds'
 
 export default function SwapModalHeader({
   trade,
