@@ -1436,5 +1436,7 @@
   "Items": "Items",
   "Owners": "Owners",
   "Lowest (%symbol%)": "Lowest (%symbol%)",
-  "Vol. (%symbol%)": "Vol. (%symbol%)"
+  "Vol. (%symbol%)": "Vol. (%symbol%)",
+  "Profile": "Profile",
+  "Selling": "Selling"
 }
