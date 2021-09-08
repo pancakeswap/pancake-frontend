@@ -22,6 +22,8 @@ import {
   addWatchlistPool,
   updateUserPredictionAcceptedRisk,
   updateUserPredictionChartDisclaimerShow,
+  updateUserUsernameVisibility,
+  updateUserExpertModeAcknowledgementShow,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -61,6 +63,8 @@ export interface UserState {
   userFarmStakedOnly: FarmStakedOnly
   userPredictionAcceptedRisk: boolean
   userPredictionChartDisclaimerShow: boolean
+  userExpertModeAcknowledgementShow: boolean
+  userUsernameVisibility: boolean
   gasPrice: string
   watchlistTokens: string[]
   watchlistPools: string[]
@@ -83,6 +87,8 @@ export const initialState: UserState = {
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
   userPredictionAcceptedRisk: false,
   userPredictionChartDisclaimerShow: true,
+  userExpertModeAcknowledgementShow: true,
+  userUsernameVisibility: false,
   gasPrice: GAS_PRICE_GWEI.default,
   watchlistTokens: [],
   watchlistPools: [],
@@ -172,6 +178,12 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateUserPredictionChartDisclaimerShow, (state, { payload: { userShowDisclaimer } }) => {
       state.userPredictionChartDisclaimerShow = userShowDisclaimer
+    })
+    .addCase(updateUserExpertModeAcknowledgementShow, (state, { payload: { userExpertModeAcknowledgementShow } }) => {
+      state.userExpertModeAcknowledgementShow = userExpertModeAcknowledgementShow
+    })
+    .addCase(updateUserUsernameVisibility, (state, { payload: { userUsernameVisibility } }) => {
+      state.userUsernameVisibility = userUsernameVisibility
     })
     .addCase(updateGasPrice, (state, action) => {
       state.gasPrice = action.payload.gasPrice

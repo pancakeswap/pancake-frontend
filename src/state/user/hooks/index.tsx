@@ -25,6 +25,8 @@ import {
   addWatchlistPool,
   updateUserPredictionChartDisclaimerShow,
   updateUserPredictionAcceptedRisk,
+  updateUserUsernameVisibility,
+  updateUserExpertModeAcknowledgementShow,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -155,6 +157,41 @@ export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaime
   )
 
   return [userPredictionChartDisclaimerShow, setPredictionUserChartDisclaimerShow]
+}
+
+export function useUserExpertModeAcknowledgementShow(): [boolean, (showAcknowledgement: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userExpertModeAcknowledgementShow = useSelector<
+    AppState,
+    AppState['user']['userExpertModeAcknowledgementShow']
+  >((state) => {
+    return state.user.userExpertModeAcknowledgementShow
+  })
+
+  const setUserExpertModeAcknowledgementShow = useCallback(
+    (showAcknowledgement: boolean) => {
+      dispatch(updateUserExpertModeAcknowledgementShow({ userExpertModeAcknowledgementShow: showAcknowledgement }))
+    },
+    [dispatch],
+  )
+
+  return [userExpertModeAcknowledgementShow, setUserExpertModeAcknowledgementShow]
+}
+
+export function useUserUsernameVisibility(): [boolean, (usernameVisibility: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userUsernameVisibility = useSelector<AppState, AppState['user']['userUsernameVisibility']>((state) => {
+    return state.user.userUsernameVisibility
+  })
+
+  const setUserUsernameVisibility = useCallback(
+    (usernameVisibility: boolean) => {
+      dispatch(updateUserUsernameVisibility({ userUsernameVisibility: usernameVisibility }))
+    },
+    [dispatch],
+  )
+
+  return [userUsernameVisibility, setUserUsernameVisibility]
 }
 
 export function useUserTransactionTTL(): [number, (slippage: number) => void] {
