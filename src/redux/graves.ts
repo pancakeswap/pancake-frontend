@@ -151,8 +151,8 @@ const graves: Grave[] = [
   {
     pid: 25,
     name: 'Pantherswap Legendary',
-    subtitle: 'NFT released on Wednesday',
-    path: 'images/rugZombie/question mark.png',
+    subtitle: 'The Killmonger',
+    path: "images/rugZombie/The Killmonger min.jpeg",
     type: 'image',
     withdrawalCooldown: '3 days',
     nftRevivalTime: '30 days',
