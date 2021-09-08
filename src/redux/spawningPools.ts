@@ -6,6 +6,57 @@ import { SpawningPool } from './types'
 
 const spawningPools: SpawningPool[] = [
   {
+    id: 4,
+    name: 'WalletNow Legendary',
+    subtitle: "Zombie Wallet",
+    path: "https://ipfs.io/ipfs/QmcvagniUfh9k8Ks42pJPnDicHBGSkFgLB6dcUbJKnTB4p",
+    type: 'image',
+    address: {
+      56: '0x32c5ec65beB8482b5c727A0E3A352F8E330eb312',
+      97: '',
+    },
+    endBlock: 13140040,
+    project: {
+      name: 'WalletNow',
+      description: 'WalletNow is an advanced crypto portfolio monitoring solution. It aggregates all your DeFi & CeFi investments in a searchable table and actively monitors it with an integrated Telegram Bot. With detailed LP information, impermanent loss and yields calculation, you are always in control of your wallet.',
+      additionalDetails: [
+        {
+          name: 'Project website',
+          url: tokens.wnow.projectLink
+        },
+        {
+          name: 'Telegram',
+          url: 'https://t.me/WalletNow'
+        },
+      ],
+    },
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '45 days',
+    rewardToken: tokens.wnow,
+    rewardTokenBnbLp: '0x268c6d2bd3f593d44f3e697cc5a02ae6ecda9a23',
+    artist: artists.jussjoshinduh,
+    stakingToken: '',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: false,
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      amount: BIG_ZERO,
+      pendingReward: BIG_ZERO,
+      zombieAllowance: BIG_ZERO,
+    },
+    poolInfo: {
+      unlockFee: BIG_ZERO,
+      rewardPerBlock: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalZombieStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+    },
+  },
+  {
     id: 3,
     name: 'Koala Defi Legendary',
     subtitle: "Nightmare Fuel Karen",

@@ -366,6 +366,18 @@ const nfts: Nft[] = [
     rarity: 'Rare',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 30,
+    name: 'Zombie Wallet',
+    symbol: 'ZWALLET',
+    description: 'Genuine Human Leather!',
+    address: '0xd651aa4a1fc01505bc8c496a0c6f53403efc30bc',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmcvagniUfh9k8Ks42pJPnDicHBGSkFgLB6dcUbJKnTB4p',
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts

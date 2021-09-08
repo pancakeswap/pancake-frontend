@@ -227,6 +227,15 @@ const tokens = {
     decimals: 0,
     projectLink: '',
   },
+  wnow: {
+    symbol: 'WNOW',
+    address: {
+      56: '0x56aa0237244c67b9a854b4efe8479cca0b105289',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://walletnow.net/',
+  },
   horde: {
     symbol: 'HORDE',
     address: {
