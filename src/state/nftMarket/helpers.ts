@@ -27,7 +27,18 @@ export const getCollections = async (): Promise<any[]> => {
   }
 }
 
-export const getNftsFromCollection = async (collectionAddress: string): Promise<any[]> => {
+export const getNftsMetadata = async (collectionAddress: string) => {
+  // @TODO Replace by the API
+  return Promise.resolve([])
+}
+
+interface NftsFromSubgraph {
+  tokenId: string
+  currentSeller: string
+  isTradable: boolean
+  metadataUrl: string
+}
+export const getNftsMarketData = async (collectionAddress: string): Promise<NftsFromSubgraph[]> => {
   try {
     const res = await request(
       GRAPH_API_NFTMARKET,

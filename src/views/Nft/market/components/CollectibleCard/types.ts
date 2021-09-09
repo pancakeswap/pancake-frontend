@@ -1,10 +1,10 @@
-import { Nft } from 'config/constants/nfts/types'
+import { NFT } from 'state/nftMarket/types'
 
 // Temp
 export interface Collectible {
   name: string
   cost: number
   lowestCost?: number
-  nft: Nft
+  nft: NFT
   status?: 'selling' | 'profile' | 'wallet'
 }
