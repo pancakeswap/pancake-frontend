@@ -5,6 +5,7 @@ import { State, Collection, NFT } from './types'
 const initialState: State = {
   data: {
     collections: {},
+    nfts: {},
     users: {},
   },
 }
@@ -31,7 +32,7 @@ export const NftMarket = createSlice({
       state.data.collections = action.payload
     })
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
-      state.data.collections[action.meta.arg] = { ...state.data.collections[action.meta.arg], nfts: action.payload }
+      state.data.nfts[action.meta.arg] = action.payload
     })
   },
 })
