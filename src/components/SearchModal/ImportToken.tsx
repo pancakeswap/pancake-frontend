@@ -4,6 +4,7 @@ import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid } fro
 import { AutoColumn } from 'components/Layout/Column'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBscScanLink } from 'utils'
+import truncateHash from 'utils/truncateHash'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'
@@ -41,9 +42,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
       {tokens.map((token) => {
         const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
-        const address = token.address
-          ? `${token.address.substring(0, 6)}...${token.address.substring(token.address.length - 4)}`
-          : null
+        const address = token.address ? `${truncateHash(token.address)}` : null
         return (
           <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr" gridGap="4px">
             {list !== undefined ? (

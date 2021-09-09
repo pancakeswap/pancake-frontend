@@ -18,7 +18,8 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { shortenAddress, getBscScanLink } from 'utils'
+import { getBscScanLink } from 'utils'
+import truncateHash from 'utils/truncateHash'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
@@ -136,7 +137,7 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                 </Link>
                 <Flex>
                   <Text mr="8px">{tokenData.symbol}</Text>
-                  <Text>{`(${shortenAddress(address)})`}</Text>
+                  <Text>{`(${truncateHash(address)})`}</Text>
                 </Flex>
               </Breadcrumbs>
               <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
