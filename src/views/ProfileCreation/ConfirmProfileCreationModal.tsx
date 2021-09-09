@@ -11,8 +11,8 @@ import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
-import { REGISTER_COST } from '../ProfileCreation/config'
-import { State } from '../ProfileCreation/contexts/types'
+import { REGISTER_COST } from './config'
+import { State } from './contexts/types'
 
 interface Props {
   userName: string

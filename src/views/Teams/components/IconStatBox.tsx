@@ -1,15 +1,24 @@
 import React, { ElementType, ReactNode } from 'react'
 import { Flex, Heading, Text, TextProps } from '@pancakeswap/uikit'
-import SecondaryCard from './SecondaryCard'
+import styled from 'styled-components'
 
-interface StatBoxProps extends TextProps {
+const SecondaryCard = styled(Text)`
+  border: 2px solid ${({ theme }) => theme.colors.tertiary};
+  border-radius: 16px;
+`
+
+SecondaryCard.defaultProps = {
+  p: '24px',
+}
+
+interface IconStatBoxProps extends TextProps {
   icon: ElementType
   title: ReactNode
   subtitle: ReactNode
   isDisabled?: boolean
 }
 
-const StatBox: React.FC<StatBoxProps> = ({ icon: Icon, title, subtitle, isDisabled = false, ...props }) => {
+const IconStatBox: React.FC<IconStatBoxProps> = ({ icon: Icon, title, subtitle, isDisabled = false, ...props }) => {
   return (
     <SecondaryCard {...props}>
       <Flex alignItems="start">
@@ -27,4 +36,4 @@ const StatBox: React.FC<StatBoxProps> = ({ icon: Icon, title, subtitle, isDisabl
   )
 }
 
-export default StatBox
+export default IconStatBox
