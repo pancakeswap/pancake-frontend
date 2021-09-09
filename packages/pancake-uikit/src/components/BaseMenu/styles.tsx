@@ -1,7 +1,13 @@
 import styled from "styled-components";
+import { Box, Flex } from "../Box";
 
-export const SubMenuContainer = styled.div`
-  display: flex;
+export const InlineMenuContainer = styled(Box)`
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  border-radius: ${({ theme }) => theme.radii.card};
+  box-shadow: ${({ theme }) => theme.shadows.tooltip};
+`;
+
+export const SubMenuContainer = styled(Flex)`
   flex-direction: column;
   overflow: hidden;
   min-width: 136px;
@@ -12,6 +18,7 @@ export const SubMenuContainer = styled.div`
 
 export const ClickableElementContainer = styled.div`
   cursor: pointer;
+  display: inline-flex;
 `;
 
 export const SubMenuItem = styled.button`

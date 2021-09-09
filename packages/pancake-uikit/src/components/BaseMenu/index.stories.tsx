@@ -1,24 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Link } from "react-router-dom";
-import SubMenu from "./SubMenu";
+import InlineMenu from "./InlineMenu";
+import SubMenuComp from "./SubMenu";
 import { SubMenuItem } from "./styles";
 import { LinkExternal } from "../Link";
-import { Flex } from "../Box";
+import { Box, Flex, Grid } from "../Box";
 import { Text } from "../Text";
+import Button from "../Button/Button";
 import { EllipsisIcon } from "../Svg";
 
 export default {
-  title: "Components/SubMenu",
-  component: SubMenu,
-  argTypes: {},
+  title: "Components/Menu",
 };
 
 export const Default: React.FC = () => {
   return (
+    <Flex justifyContent="space-around" p="64px">
+      <InlineMenu component={<Button>Inline Menu #1</Button>}>
+        <Box p="24px" width="320px">
+          <Text>Menu Content</Text>
+        </Box>
+        <Grid
+          alignItems="center"
+          borderTop="1px solid"
+          borderTopColor="cardBorder"
+          py="16px"
+          px="24px"
+          gridGap="16px"
+          gridTemplateColumns="repeat(2, 1fr)"
+        >
+          <Button variant="secondary">Clear</Button>
+          <Button>Apply</Button>
+        </Grid>
+      </InlineMenu>
+      <InlineMenu component={<Button variant="tertiary">Menu #2</Button>}>
+        <Box p="24px" width="320px">
+          <Text>Menu Content #2</Text>
+        </Box>
+      </InlineMenu>
+    </Flex>
+  );
+};
+
+export const Controlled: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <Box>
+      <Button variant="success" scale="sm" mr="32px" onClick={() => setIsOpen(!isOpen)}>
+        Outside component controlling menu
+      </Button>
+      <InlineMenu component={<Button>Controlled Menu</Button>} isOpen={isOpen}>
+        <Box p="24px" width="320px">
+          <Text mb="8px">Open Initially</Text>
+          <Button scale="sm" variant="danger" onClick={() => setIsOpen(false)}>
+            Close this menu inside
+          </Button>
+        </Box>
+      </InlineMenu>
+    </Box>
+  );
+};
+
+export const SubMenu: React.FC = () => {
+  return (
     <BrowserRouter>
       <Flex mb="24px" p="8px" width="300px" border="1px solid grey" justifyContent="space-between" alignItems="center">
         <Text>Icon</Text>
-        <SubMenu
+        <SubMenuComp
           component={<EllipsisIcon height="16px" width="16px" />}
           options={{ placement: "right", offset: [0, 15], padding: { top: 20 } }}
         >
@@ -32,11 +81,11 @@ export const Default: React.FC = () => {
             Go to profile page
           </SubMenuItem>
           <SubMenuItem>Just button</SubMenuItem>
-        </SubMenu>
+        </SubMenuComp>
       </Flex>
       <Flex p="8px" width="300px" border="1px solid grey" justifyContent="space-between" alignItems="center">
         <Text>Text</Text>
-        <SubMenu
+        <SubMenuComp
           component={
             <Text color="primary" bold>
               Click me
@@ -53,7 +102,7 @@ export const Default: React.FC = () => {
             Go to profile page
           </SubMenuItem>
           <SubMenuItem>Just button</SubMenuItem>
-        </SubMenu>
+        </SubMenuComp>
       </Flex>
     </BrowserRouter>
   );

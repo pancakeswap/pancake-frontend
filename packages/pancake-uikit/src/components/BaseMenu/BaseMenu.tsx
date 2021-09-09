@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
-import { Placement, Padding } from "@popperjs/core";
-import { SubMenuContainer, ClickableElementContainer } from "./styles";
-
-export interface SubMenuProps {
-  component: React.ReactNode;
-  options?: {
-    placement?: Placement;
-    offset?: [number, number];
-    padding?: Padding;
-  };
-}
+import { ClickableElementContainer } from "./styles";
+import { BaseMenuProps } from "./types";
 
 const portalRoot = document.getElementById("portal-root");
 
-const SubMenu: React.FC<SubMenuProps> = ({ component, options, children }) => {
+const BaseMenu: React.FC<BaseMenuProps> = ({ component, options, children, isOpen = false }) => {
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [menuElement, setMenuElement] = useState<HTMLElement | null>(null);
   const placement = options?.placement ?? "bottom";
   const offset = options?.offset ?? [0, 10];
   const padding = options?.padding ?? { left: 16, right: 16 };
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
 
   const toggle = () => {
-    setIsOpen((prev) => !prev);
+    setIsMenuOpen((prev) => !prev);
   };
+
+  const open = () => {
+    setIsMenuOpen(true);
+  };
+
+  const close = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Allow for component to be controlled
+  useEffect(() => {
+    setIsMenuOpen(isOpen);
+  }, [isOpen, setIsMenuOpen]);
 
   useEffect(() => {
     const handleClickOutside = ({ target }: Event) => {
@@ -37,7 +41,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ component, options, children }) => {
           !menuElement.contains(target) &&
           !targetElement.contains(target)
         ) {
-          setIsOpen(false);
+          setIsMenuOpen(false);
         }
       }
     };
@@ -58,9 +62,9 @@ const SubMenu: React.FC<SubMenuProps> = ({ component, options, children }) => {
   });
 
   const menu = (
-    <SubMenuContainer ref={setMenuElement} style={styles.popper} {...attributes.popper}>
-      {children}
-    </SubMenuContainer>
+    <div ref={setMenuElement} style={styles.popper} {...attributes.popper}>
+      {typeof children === "function" ? children({ toggle, open, close }) : children}
+    </div>
   );
 
   const renderMenu = portalRoot ? createPortal(menu, portalRoot) : menu;
@@ -70,9 +74,9 @@ const SubMenu: React.FC<SubMenuProps> = ({ component, options, children }) => {
       <ClickableElementContainer ref={setTargetElement} onClick={toggle}>
         {component}
       </ClickableElementContainer>
-      {isOpen && renderMenu}
+      {isMenuOpen && renderMenu}
     </>
   );
 };
 
-export default SubMenu;
+export default BaseMenu;

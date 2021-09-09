@@ -26,6 +26,7 @@ export type Shadows = {
   warning: string;
   focus: string;
   inset: string;
+  tooltip: string;
 };
 
 export type Gradients = {
