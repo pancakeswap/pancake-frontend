@@ -7,9 +7,9 @@ import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
 import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
-import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
-import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
+import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
 import { useProfile } from 'state/profile/hooks'
+import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { UseEditProfileResponse } from './reducer'
 
 interface StartPageProps extends InjectedModalProps {
