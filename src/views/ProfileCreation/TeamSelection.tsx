@@ -3,8 +3,8 @@ import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap
 import shuffle from 'lodash/shuffle'
 import { useTeams } from 'state/teams/hooks'
 import { useTranslation } from 'contexts/Localization'
-import SelectionCard from '../components/SelectionCard'
-import NextStepButton from '../components/NextStepButton'
+import SelectionCard from './SelectionCard'
+import NextStepButton from './NextStepButton'
 import useProfileCreation from './contexts/hook'
 
 const Team: React.FC = () => {

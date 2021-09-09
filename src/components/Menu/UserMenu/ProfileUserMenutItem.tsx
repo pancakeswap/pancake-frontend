@@ -20,7 +20,11 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
   const { t } = useTranslation()
 
   const handleClick = () => {
-    history.push('/profile')
+    history.push('/nft/market/profile')
+  }
+
+  const handleNoProfileClick = () => {
+    history.push('/create-profile')
   }
 
   if (isLoading) {
@@ -33,7 +37,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
 
   if (!hasProfile) {
     return (
-      <UserMenuItem as="button" onClick={handleClick}>
+      <UserMenuItem as="button" onClick={handleNoProfileClick}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           {t('Make a Profile')}
           <Dot />

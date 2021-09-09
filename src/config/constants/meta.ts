@@ -89,14 +89,6 @@ export const getCustomMeta = (path: string, t: ContextApi['t']): PageMeta => {
       return {
         title: `${t('Leaderboard')} | ${t('PancakeSwap')}`,
       }
-    case '/profile':
-      return {
-        title: `${t('Your Profile')} | ${t('PancakeSwap')}`,
-      }
-    case '/profile/tasks':
-      return {
-        title: `${t('Task Center')} | ${t('PancakeSwap')}`,
-      }
     case '/voting':
       return {
         title: `${t('Voting')} | ${t('PancakeSwap')}`,
@@ -123,6 +115,10 @@ export const getCustomMeta = (path: string, t: ContextApi['t']): PageMeta => {
       return {
         title: `${t('Pools')} | ${t('PancakeSwap Info & Analytics')}`,
         description: 'View statistics for Pancakeswap exchanges.',
+      }
+    case '/nft/market/profile':
+      return {
+        title: `${t('Your Profile')} | ${t('PancakeSwap')}`,
       }
     default:
       return null
