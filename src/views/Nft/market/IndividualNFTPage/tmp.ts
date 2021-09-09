@@ -1,6 +1,5 @@
 import pancakeBunnies from 'config/constants/nfts/pancakeBunnies'
-import { Collectible } from '../components/CollectibleCard/types'
-import { CollectibleAndOwnerData, NFTLocation, UserCollectibles } from './types'
+import { CollectibleAndOwnerData, NFTLocation, UserCollectibles, Collectible } from './types'
 
 export const twinkleForSale: Collectible = {
   name: 'Pancake Bunnies',

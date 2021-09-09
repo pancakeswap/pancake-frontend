@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Flex, Text, SearchIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import ExpandableCard from './ExpandableCard'
-import { Collectible } from '../components/CollectibleCard/types'
+import { Collectible } from './types'
 
 interface DetailsCardProps {
   collectible: Collectible

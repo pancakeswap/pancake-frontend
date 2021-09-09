@@ -14,8 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import ExpandableCard from './ExpandableCard'
-import { NFTLocation, UserCollectibles } from './types'
-import { Collectible } from '../components/CollectibleCard/types'
+import { NFTLocation, UserCollectibles, Collectible } from './types'
 
 const RoundedImage = styled(Image)`
   & > img {

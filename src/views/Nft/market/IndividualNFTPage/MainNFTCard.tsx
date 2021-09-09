@@ -4,7 +4,7 @@ import { Flex, Box, Card, CardBody, Text, Button, Image, BinanceIcon } from '@pa
 import { useTranslation } from 'contexts/Localization'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
-import { Collectible } from '../components/CollectibleCard/types'
+import { Collectible } from './types'
 
 const RoundedImage = styled(Image)`
   height: max-content;
