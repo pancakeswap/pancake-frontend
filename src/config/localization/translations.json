@@ -1479,5 +1479,16 @@
   "Selling": "Selling",
   "View BscScan for user address": "View BscScan for user address",
   "Back to profile": "Back to profile",
-  "Activate Profile": "Activate Profile"
+  "Activate Profile": "Activate Profile",
+  "Lowest price": "Lowest price",
+  "Your price": "Your price",
+  "Not for sale": "Not for sale",
+  "For Sale (%num%)": "For Sale (%num%)",
+  "Owner": "Owner",
+  "Contract address": "Contract address",
+  "Token id": "Token id",
+  "Manage Yours": "Manage Yours",
+  "Properties": "Properties",
+  "Bunny id": "Bunny id",
+  "More from this collection": "More from this collection"
 }
