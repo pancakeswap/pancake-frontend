@@ -39,7 +39,6 @@ const NotFound = lazy(() => import('./views/NotFound'))
 const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))
 const Team = lazy(() => import('./views/Teams/Team'))
-const Profile = lazy(() => import('./views/Profile'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 const Predictions = lazy(() => import('./views/Predictions'))
 const PredictionsLeaderboard = lazy(() => import('./views/Predictions/Leaderboard'))
@@ -102,9 +101,6 @@ const App: React.FC = () => {
             </Route>
             <Route path="/teams/:id">
               <Team />
-            </Route>
-            <Route path="/profile">
-              <Profile />
             </Route>
             <Route path="/competition">
               <TradingCompetition />
