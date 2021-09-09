@@ -14,6 +14,7 @@ import {
   DeserializedFarmConfig,
 } from 'config/constants/types'
 import { Nft } from 'config/constants/nfts/types'
+import { State as NftMarketState } from './nftMarket/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -574,4 +575,5 @@ export interface State {
   collectibles: CollectiblesState
   voting: VotingState
   lottery: LotteryState
+  nftMarket: NftMarketState
 }

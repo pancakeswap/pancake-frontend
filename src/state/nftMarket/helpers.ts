@@ -1,6 +1,5 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
-import nftCollections from 'config/constants/nfts'
 
 export const getCollections = async (): Promise<any[]> => {
   try {

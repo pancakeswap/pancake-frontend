@@ -1,5 +1,5 @@
 import { BigNumberish } from 'ethers'
-import { Collection as CollectionMeta } from 'config/constants/nfts/types'
+import { Collection as CollectionMeta, Nft as NftMeta } from 'config/constants/nfts/types'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
@@ -23,13 +23,9 @@ export interface Transaction {
   withBNB: boolean
 }
 
-export interface NFT {
+export interface NFT extends NftMeta {
   tokenId: BigNumberish
   metadataUrl: string
-  name: string
-  description: string
-  visual: string[]
-  attributes: { name: string; value: string }[]
   transactionHistory: Transaction[]
 }
 
