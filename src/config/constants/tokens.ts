@@ -245,6 +245,15 @@ const tokens = {
     decimals: 0,
     projectLink: '',
   },
+  kcake: {
+    symbol: 'KCAKE',
+    address: {
+      56: '0xc22e8114818a918260662375450e19ac73d32852',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: '',
+  },
   txl: {
     symbol: 'TXL',
     address: {
