@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getCollections, getNftsFromCollection } from './helpers'
+import { getCollections, getNftsMetadata, getNftsMarketData } from './helpers'
 import { State, Collection, NFT } from './types'
 
 const initialState: State = {
@@ -18,7 +18,13 @@ export const fetchCollections = createAsyncThunk<{ [key: string]: Collection }>(
 export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
   'nft/fetchNftsFromCollections',
   async (collectionAddress) => {
-    const nfts = await getNftsFromCollection(collectionAddress)
+    const nftsMeta = await getNftsMetadata(collectionAddress)
+    const nftsMarket = await getNftsMarketData(collectionAddress)
+    const nfts = nftsMarket.map((matchingMarketData) => {
+      const meta = nftsMeta.find((market) => market.tokenId === meta.id)
+      return { ...matchingMarketData, ...meta }
+    })
+
     return nfts
   },
 )
