@@ -25,7 +25,7 @@ import { signMessage } from 'utils/web3React'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import debounce from 'lodash/debounce'
-import ConfirmProfileCreationModal from '../components/ConfirmProfileCreationModal'
+import ConfirmProfileCreationModal from './ConfirmProfileCreationModal'
 import useProfileCreation from './contexts/hook'
 import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, REGISTER_COST } from './config'
 

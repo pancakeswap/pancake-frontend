@@ -7,16 +7,28 @@ import { useTranslation } from 'contexts/Localization'
 import { usePointCenterIfoContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import ActionColumn from '../ActionColumn'
+import AchievementTitle from 'views/Nft/market/Profile/components/Achievements/AchievementTitle'
+import AchievementAvatar from 'views/Nft/market/Profile/components/Achievements/AchievementAvatar'
+import AchievementDescription from 'views/Nft/market/Profile/components/Achievements/AchievementDescription'
 import PointsLabel from './PointsLabel'
-import AchievementTitle from '../AchievementTitle'
-import AchievementAvatar from '../AchievementAvatar'
-import AchievementDescription from '../AchievementDescription'
 
 interface AchievementRowProps {
   achievement: Achievement
   onCollectSuccess?: (achievement: Achievement) => void
 }
+
+const ActionColumn = styled.div`
+  flex: none;
+  width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-width: 160px;
+
+    & > button {
+      width: 100%;
+    }
+  }
+`
 
 const StyledAchievementRow = styled(Flex)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};

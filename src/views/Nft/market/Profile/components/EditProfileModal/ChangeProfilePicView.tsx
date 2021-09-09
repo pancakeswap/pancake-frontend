@@ -15,7 +15,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
-import SelectionCard from '../SelectionCard'
+import SelectionCard from 'views/ProfileCreation/SelectionCard'
 
 type ChangeProfilePicPageProps = InjectedModalProps
 
