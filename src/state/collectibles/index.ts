@@ -31,7 +31,7 @@ export const fetchWalletNfts = createAsyncThunk<NftSourceItem[], string>(
       const balanceOfResponse = await contract.balanceOf(account)
       const balanceOf = balanceOfResponse.toNumber()
 
-      if (balanceOf === 0) {
+      if (balanceOfResponse.eq(0)) {
         return []
       }
 

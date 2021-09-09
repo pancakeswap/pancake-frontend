@@ -16,17 +16,23 @@ export interface State {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NFT[]> // string is the address
     users: Record<string, User> // string is the address
+    userNfts: UserNftsState
   }
 }
 
+export interface UserNftsState {
+  isInitialized: boolean
+  nfts: NftSubgraphEntity[]
+}
+
 export interface Transaction {
-  hash: string
+  id: string
   block: BigNumberish
   timestamp: BigNumberish
-  price: BigNumberish
+  askPrice: BigNumberish
   netPrice: BigNumberish
-  buyerAddress: string
-  sellerAddress: string
+  buyer: { id: string }
+  seller: { id: string }
   withBNB: boolean
 }
 
@@ -49,6 +55,12 @@ export interface NFT {
   description: string
   image: Image
   tokens: Record<number, NftToken>
+}
+
+export interface NftSubgraphEntity {
+  tokenId: string
+  metadataUrl?: string
+  transactionHistory?: Transaction[]
 }
 
 export interface Collection {

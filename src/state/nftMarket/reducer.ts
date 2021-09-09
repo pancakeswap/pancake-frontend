@@ -1,7 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import mapValues from 'lodash/mapValues'
-import { getNftsFromCollectionApi, getNftsFromCollectionSg, getCollectionsApi, getCollectionsSg } from './helpers'
-import { State, Collection, NFT, NFTMarketInitializationState } from './types'
+import {
+  getNftsFromCollectionApi,
+  getNftsFromCollectionSg,
+  getCollectionsApi,
+  getCollectionsSg,
+  getNftsMarketData,
+  fetchWalletNftIds,
+} from './helpers'
+import { State, Collection, NFT, NftSubgraphEntity, NFTMarketInitializationState } from './types'
 
 const initialState: State = {
   initializationState: NFTMarketInitializationState.UNINITIALIZED,
@@ -9,6 +16,7 @@ const initialState: State = {
     collections: {},
     nfts: {},
     users: {},
+    userNfts: { isInitialized: false, nfts: [] },
   },
 }
 
@@ -67,6 +75,23 @@ export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
   },
 )
 
+export const fetchUserNfts = createAsyncThunk<NftSubgraphEntity[], { account: string; profileNftTokenId: string }>(
+  'nft/fetchUserNfts',
+  async ({ account, profileNftTokenId }) => {
+    const nftIdsInWallet = await fetchWalletNftIds(account)
+    if (profileNftTokenId) {
+      nftIdsInWallet.push(profileNftTokenId)
+    }
+    const marketDataForNftsInWallet = await getNftsMarketData({ tokenId_in: nftIdsInWallet })
+    const walletNftsWithMarketData = nftIdsInWallet.map((walletId) => {
+      const marketData = marketDataForNftsInWallet.find((marketNft) => marketNft.tokenId === walletId)
+      return marketData || { tokenId: walletId, metadataUrl: null, transactionHistory: null }
+    })
+    const marketDataForNftsOnSale = await getNftsMarketData({ currentSeller: account.toLowerCase() })
+    return [...walletNftsWithMarketData, ...marketDataForNftsOnSale]
+  },
+)
+
 export const NftMarket = createSlice({
   name: 'NftMarket',
   initialState,
@@ -78,6 +103,10 @@ export const NftMarket = createSlice({
     })
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       state.data.nfts[action.meta.arg] = action.payload
+    })
+    builder.addCase(fetchUserNfts.fulfilled, (state, action) => {
+      state.data.userNfts.nfts = action.payload
+      state.data.userNfts.isInitialized = true
     })
   },
 })

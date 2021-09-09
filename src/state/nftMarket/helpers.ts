@@ -1,6 +1,10 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { NftToken } from './types'
+import { collections } from 'config/constants/nfts'
+import { getAddress } from 'utils/addressHelpers'
+import { getErc721Contract } from 'utils/contractHelpers'
+import { ethers } from 'ethers'
 
 /**
  * Fetch static data from all collections using the API
@@ -69,7 +73,7 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
     const res = await request(
       GRAPH_API_NFTMARKET,
       gql`
-        query getNftsFromCollection($collectionAddress: String!) {
+        query getNftCollectionMarketData($collectionAddress: String!) {
           collection(id: $collectionAddress) {
             id
             NFTs {
@@ -85,7 +89,87 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
     )
     return res.collection.NFTs
   } catch (error) {
-    console.error('Failed to fetch NFTs', error)
+    console.error('Failed to fetch NFTs from collection', error)
     return []
   }
+}
+
+export const getNftsMarketData = async (where = {}): Promise<NftSubgraphEntity[]> => {
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getNftsMarketData($where: NFT_filter) {
+          nfts(where: $where) {
+            tokenId
+            metadataUrl
+            transactionHistory {
+              id
+              block
+              timestamp
+              askPrice
+              netPrice
+              buyer {
+                id
+              }
+              seller {
+                id
+              }
+              withBNB
+            }
+          }
+        }
+      `,
+      { where },
+    )
+
+    return res.nfts
+  } catch (error) {
+    console.error('Failed to fetch NFTs market data', error)
+    return []
+  }
+}
+
+export const fetchWalletNftIds = async (account: string): Promise<string[]> => {
+  const nftIdPromises = Object.keys(collections).map(async (nftCollectionKey) => {
+    // Temporarily skip over pancake-squad
+    if (collections[nftCollectionKey].slug === 'pancake-squad') {
+      return []
+    }
+
+    const { address: addressObj } = collections[nftCollectionKey]
+    const contractAddress = getAddress(addressObj)
+    const contract = getErc721Contract(contractAddress)
+    const balanceOfResponse = await contract.balanceOf(account)
+    const balanceOf = balanceOfResponse.toNumber()
+
+    if (balanceOfResponse.eq(0)) {
+      return []
+    }
+
+    const getTokenId = async (index: number) => {
+      try {
+        const tokenIdBn: ethers.BigNumber = await contract.tokenOfOwnerByIndex(account, index)
+        const tokenId = tokenIdBn.toString()
+        return tokenId
+      } catch (error) {
+        console.error('getTokenIdAndData', error)
+        return null
+      }
+    }
+
+    const nftDataFetchPromises = []
+
+    // For each index get the tokenId
+    for (let i = 0; i < balanceOf; i++) {
+      nftDataFetchPromises.push(getTokenId(i))
+    }
+
+    return Promise.all(nftDataFetchPromises)
+  })
+
+  const nftIds = await Promise.all(nftIdPromises)
+
+  // flatten Ids across collections into one array
+  return nftIds.flat()
 }
