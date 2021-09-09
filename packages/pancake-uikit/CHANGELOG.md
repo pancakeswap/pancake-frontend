@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.51.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.50.3...@pancakeswap/uikit@0.51.0) (2021-09-09)
+
+
+### Features
+
+* Menu ([#271](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/271)) ([4227823](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/42278237b8a47e2144f7cf7f84e303fa86e792d2))
+* **uikit:** Button light variant ([#273](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/273)) ([ac063c1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/ac063c11f1825f32ee2666036ad097b6f5189c9b))
+* **uikit:** TextField ([#272](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/272)) ([8c68ce8](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/8c68ce8a7518039fdc8fba082018271b92ca08df))
+
+
+
+
+
 ## [0.50.3](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.50.2...@pancakeswap/uikit@0.50.3) (2021-09-06)
 
 **Note:** Version bump only for package @pancakeswap/uikit
