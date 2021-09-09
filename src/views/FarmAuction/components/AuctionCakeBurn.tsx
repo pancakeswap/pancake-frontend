@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { Text, Flex, Skeleton, Box, Image } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton, Image } from '@pancakeswap/uikit'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import Balance from 'components/Balance'
+import styled from 'styled-components'
+
+const BurnedText = styled(Text)`
+  font-size: 52px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 64px;
+  }
+`
 
 const AuctionCakeBurn: React.FC = () => {
   const [burnedCakeAmount, setBurnedCakeAmount] = useState(0)
@@ -37,9 +46,9 @@ const AuctionCakeBurn: React.FC = () => {
         ) : (
           <Skeleton width="256px" height="64px" />
         )}
-        <Text textTransform="uppercase" fontSize="64px" bold color="secondary">
+        <BurnedText textTransform="uppercase" bold color="secondary">
           {t('Burned')}
-        </Text>
+        </BurnedText>
         <Text fontSize="24px" bold>
           {t('through community auctions so far!')}
         </Text>
@@ -51,11 +60,7 @@ const AuctionCakeBurn: React.FC = () => {
           <Skeleton width="128px" />
         )}
       </Flex>
-      <Flex flex="1" alignSelf="center">
-        <Box width="350px">
-          <Image width={350} height={320} src="/images/burnt-cake.png" alt={t('Burnt CAKE')} />
-        </Box>
-      </Flex>
+      <Image width={350} height={320} src="/images/burnt-cake.png" alt={t('Burnt CAKE')} />
     </Flex>
   )
 }
