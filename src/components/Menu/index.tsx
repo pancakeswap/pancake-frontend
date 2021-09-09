@@ -37,6 +37,7 @@ const Menu = (props) => {
       footerLinks={footerLinks}
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}
+      buyCakeLabel={t('Buy CAKE')}
       profile={{
         username: profile?.username,
         image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,
