@@ -8,7 +8,7 @@ const ReactivateProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
 
   const handleClick = () => {
-    history.push('/profile')
+    history.push('/nft/market/profile')
     onDismiss()
   }
 
