@@ -91,7 +91,7 @@ export const mainnetTokens = {
   ),
   ust: new Token(
     MAINNET,
-    '0x23396cf899ca06c4472205fc903bdb4de249d6fc',
+    '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
     18,
     'UST',
     'Wrapped UST Token',
@@ -251,7 +251,7 @@ export const mainnetTokens = {
   ),
   revv: new Token(
     MAINNET,
-    '0x833f307ac507d47309fd8cdd1f835bef8d702a93',
+    '0x833F307aC507D47309fD8CDD1F835BeF8D702a93',
     18,
     'REVV',
     'REVV Token',
@@ -509,7 +509,7 @@ export const mainnetTokens = {
   ),
   swgb: new Token(
     MAINNET,
-    '0xe40255c5d7fa7ceec5120408c78c787cecb4cfdb',
+    '0xE40255C5d7fa7ceEc5120408C78C787CECB4cfdb',
     18,
     'SWGb',
     'SWGb Token',
@@ -1580,7 +1580,7 @@ export const mainnetTokens = {
   ),
   c98: new Token(
     MAINNET,
-    '0xaec945e04baf28b135fa7c640f624f8d90f1c3a6',
+    '0xaEC945e04baF28b135Fa7c640f624f8D90F1C3a6',
     18,
     'c98',
     'Coin98 Token',
@@ -1596,7 +1596,7 @@ export const mainnetTokens = {
   ),
   gnt: new Token(
     MAINNET,
-    '0xf750a26eb0acf95556e8529e72ed530f3b60f348',
+    '0xF750A26EB0aCf95556e8529E72eD530f3b60f348',
     18,
     'GNT',
     'GreenTrust Token',
@@ -1604,7 +1604,7 @@ export const mainnetTokens = {
   ),
   rusd: new Token(
     MAINNET,
-    '0x07663837218a003e66310a01596af4bf4e44623d',
+    '0x07663837218A003e66310a01596af4bf4e44623D',
     18,
     'rUSD',
     'rUSD Token',
@@ -1612,7 +1612,7 @@ export const mainnetTokens = {
   ),
   bp: new Token(
     MAINNET,
-    '0xacb8f52dc63bb752a51186d1c55868adbffee9c1',
+    '0xACB8f52DC63BB752a51186D1c55868ADbFfEe9C1',
     18,
     'BP',
     'BunnyPark Token',
@@ -1620,7 +1620,7 @@ export const mainnetTokens = {
   ),
   sfund: new Token(
     MAINNET,
-    '0x477bc8d23c634c154061869478bce96be6045d12',
+    '0x477bC8d23c634C154061869478bce96BE6045D12',
     18,
     'SFUND',
     'Seedify Fund Token',
@@ -1628,7 +1628,7 @@ export const mainnetTokens = {
   ),
   naos: new Token(
     MAINNET,
-    '0x758d08864fb6cce3062667225ca10b8f00496cc2',
+    '0x758d08864fB6cCE3062667225ca10b8F00496cc2',
     18,
     'NAOS',
     'NAOSToken',
@@ -1639,7 +1639,7 @@ export const mainnetTokens = {
 export const testnetTokens = {
   wbnb: new Token(
     TESTNET,
-    '0xae13d989dac2f0debff460ac112a837c89baa7cd',
+    '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
     18,
     'WBNB',
     'Wrapped BNB',

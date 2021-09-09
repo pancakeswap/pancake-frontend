@@ -11,7 +11,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x9Ed5a62535A5Dd2dB2d9bB21bAc42035Af47F630',
     farmName: 'NAV-BNB',
-    tokenAddress: '0xbfef6ccfc830d3baca4f6766a0d4aaa242ca9f3d',
+    tokenAddress: '0xBFEf6cCFC830D3BaCA4F6766a0d4AaA242Ca9F3D',
     quoteToken: tokens.wbnb,
     tokenName: 'Navcoin',
     projectSite: 'https://navcoin.org/en',
@@ -19,7 +19,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x33723811B0FCa2a751f3912B80603Fe11499D894',
     farmName: 'WSG-BNB',
-    tokenAddress: '0xa58950f05fea2277d2608748412bf9f802ea4901',
+    tokenAddress: '0xA58950F05FeA2277d2608748412bf9F802eA4901',
     quoteToken: tokens.wbnb,
     tokenName: 'Wall Street Games',
     projectSite: 'https://wsg.gg/',
@@ -35,7 +35,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x58092273a044D6e1d23B5095AE873F6E24E906ed',
     farmName: 'rUSD-BUSD',
-    tokenAddress: '0x07663837218a003e66310a01596af4bf4e44623d',
+    tokenAddress: '0x07663837218A003e66310a01596af4bf4e44623D',
     quoteToken: tokens.busd,
     tokenName: 'RAMP DEFI',
     projectSite: 'https://www.rampdefi.com/',
@@ -51,7 +51,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x6a2d41c87c3F28C2C0b466424DE8e08FC2E23eDc',
     farmName: 'BBT-BNB',
-    tokenAddress: '0xd48474e7444727bf500a32d5abe01943f3a59a64',
+    tokenAddress: '0xD48474E7444727bF500a32D5AbE01943f3A59A64',
     quoteToken: tokens.wbnb,
     tokenName: 'BitBook',
     projectSite: 'https://www.bitbook.network/',
@@ -59,7 +59,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xAe126B90d2835c5A2D720b0687EC59f59b768183',
     farmName: 'WOW-BUSD',
-    tokenAddress: '0x4da996c5fe84755c80e108cf96fe705174c5e36a',
+    tokenAddress: '0x4DA996C5Fe84755C80e108cf96Fe705174c5e36A',
     quoteToken: tokens.busd,
     tokenName: 'WOWswap',
     projectSite: 'https://wowswap.io/',
@@ -67,7 +67,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x88F0A6cb89909838d69E4E6e76eC21e2a7bdcA66',
     farmName: 'BREW-BNB',
-    tokenAddress: '0x790be81c3ca0e53974be2688cdb954732c9862e1',
+    tokenAddress: '0x790Be81C3cA0e53974bE2688cDb954732C9862e1',
     quoteToken: tokens.wbnb,
     tokenName: 'CafeSwap Finance',
     projectSite: 'https://app.cafeswap.finance/',
@@ -75,7 +75,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x0Cf86283ad1a1B7D04669696eD13BAE3d5925a0a',
     farmName: 'SAKE-BNB',
-    tokenAddress: '0x8bd778b12b15416359a227f0533ce2d91844e1ed',
+    tokenAddress: '0x8BD778B12b15416359A227F0533Ce2D91844e1eD',
     quoteToken: tokens.wbnb,
     tokenName: 'SakeSwap',
     projectSite: 'https://bsc.sakeswap.finance/',
@@ -83,7 +83,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xCe059E8af96a654d4afe630Fa325FBF70043Ab11',
     farmName: 'XBLZD-BNB',
-    tokenAddress: '0x9a946c3cb16c08334b69ae249690c236ebd5583e',
+    tokenAddress: '0x9a946c3Cb16c08334b69aE249690C236Ebd5583E',
     quoteToken: tokens.wbnb,
     tokenName: 'Blizzard',
     projectSite: 'https://www.blizzard.money/',
@@ -99,7 +99,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x46D8e47b9A6487FDAB0a700b269A452cFeED49Aa',
     farmName: 'MCRN-BNB',
-    tokenAddress: '0xacb2d47827c9813ae26de80965845d80935afd0b',
+    tokenAddress: '0xacb2d47827C9813AE26De80965845D80935afd0B',
     quoteToken: tokens.wbnb,
     tokenName: 'MacaronSwap',
     projectSite: 'https://www.macaronswap.finance/',
@@ -107,7 +107,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x1bA962acab22Be9e49C4cEBE7710c9201A72dFcc',
     farmName: 'BABYCAKE-BNB',
-    tokenAddress: '0xdb8d30b74bf098af214e862c90e647bbb1fcc58c',
+    tokenAddress: '0xdB8D30b74bf098aF214e862C90E647bbB1fcC58c',
     quoteToken: tokens.wbnb,
     tokenName: 'Babycake',
     projectSite: 'https://babycake.app/',
@@ -131,7 +131,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x6cfA3ff4e96abe93a290dc3d7A911A483C194758',
     farmName: 'ANY-BNB',
-    tokenAddress: '0xf68c9df95a18b2a5a5fa1124d79eeeffbad0b6fa',
+    tokenAddress: '0xF68C9Df95a18B2A5a5fa1124d79EEEffBaD0B6Fa',
     quoteToken: tokens.wbnb,
     tokenName: 'Anyswap',
     projectSite: 'https://anyswap.exchange/',
@@ -147,7 +147,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x8f8c77987C0ea9dd2400383b623d9cbcBbAf98CF',
     farmName: 'GMR-BNB',
-    tokenAddress: '0x0523215dcafbf4e4aa92117d13c6985a3bef27d7',
+    tokenAddress: '0x0523215DCafbF4E4aA92117d13C6985a3BeF27D7',
     quoteToken: tokens.wbnb,
     tokenName: 'GMR Finance',
     projectSite: 'https://www.gmr.finance/',
@@ -155,7 +155,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x786B313b01A25eddbF7f7461b48D60AF680d758C',
     farmName: 'BP-BNB',
-    tokenAddress: '0xacb8f52dc63bb752a51186d1c55868adbffee9c1',
+    tokenAddress: '0xACB8f52DC63BB752a51186D1c55868ADbFfEe9C1',
     quoteToken: tokens.wbnb,
     tokenName: 'BunnyPark',
     projectSite: 'https://www.bunnypark.com/',
@@ -163,7 +163,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x70d7eCEE276Ad5fDFc91B3C30d2c1cDb9dD442Fb',
     farmName: 'DPET-BNB',
-    tokenAddress: '0xfb62ae373aca027177d1c18ee0862817f9080d08',
+    tokenAddress: '0xfb62AE373acA027177D1c18Ee0862817f9080d08',
     quoteToken: tokens.wbnb,
     tokenName: 'MyDefiPet',
     projectSite: 'https://mydefipet.com/',
@@ -171,7 +171,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x8aC06b55C9812e3E574CF5A5F3b49619dF33099C',
     farmName: 'NMX-BUSD',
-    tokenAddress: '0xd32d01a43c869edcd1117c640fbdcfcfd97d9d65',
+    tokenAddress: '0xd32d01A43c869EdcD1117C640fBDcfCFD97d9d65',
     quoteToken: tokens.busd,
     tokenName: 'Nominex',
     projectSite: 'https://nominex.io/',
@@ -179,7 +179,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xd27E57Ff5dD3d78B03c85e2A2bB8dc37E67c5140',
     farmName: 'POOLZ-BNB',
-    tokenAddress: '0x77018282fd033daf370337a5367e62d8811bc885',
+    tokenAddress: '0x77018282fD033DAF370337A5367E62d8811Bc885',
     quoteToken: tokens.wbnb,
     tokenName: 'Poolz Finance',
     projectSite: 'https://poolz.finance/',
@@ -187,7 +187,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x0767a2f9c644b364Bc88Eea5a535afE506Ba6802',
     farmName: 'ODDZ-BNB',
-    tokenAddress: '0xcd40f2670cf58720b694968698a5514e924f742d',
+    tokenAddress: '0xCD40F2670CF58720b694968698A5514e924F742d',
     quoteToken: tokens.wbnb,
     tokenName: 'Oddz Finance',
     projectSite: 'https://oddz.fi',
@@ -195,7 +195,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x2B6b2701d7F7b65BA2E1ec2d2dAa17d46B85A4fe',
     farmName: 'UBXT-BUSD',
-    tokenAddress: '0xbbeb90cfb6fafa1f69aa130b7341089abeef5811',
+    tokenAddress: '0xBbEB90cFb6FAFa1F69AA130B7341089AbeEF5811',
     quoteToken: tokens.busd,
     tokenName: 'UpBots',
     projectSite: 'https://upbots.com/',
@@ -211,7 +211,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xb7d303BbaE2573513801C5F94aE0B61Fa5b3426F',
     farmName: 'ZOON-BNB',
-    tokenAddress: '0x9d173e6c594f479b4d47001f8e6a95a7adda42bc',
+    tokenAddress: '0x9D173E6c594f479B4d47001F8E6A95A7aDDa42bC',
     quoteToken: tokens.wbnb,
     tokenName: 'CryptoZoon',
     projectSite: 'https://cryptozoon.io/',
@@ -219,7 +219,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x22d56946c6cc1d4ed09f02858ddb990fcc981c55',
     farmName: 'HGET-BUSD',
-    tokenAddress: '0xc7d8d35eba58a0935ff2d5a33df105dd9f071731',
+    tokenAddress: '0xC7d8D35EBA58a0935ff2D5a33Df105DD9f071731',
     quoteToken: tokens.busd,
     tokenName: 'Hedget',
     projectSite: 'https://www.hedget.com/',
@@ -235,7 +235,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x73f9eb8eB7109b171396C8cbffcb29839c8b3064',
     farmName: 'PKMON-BUSD',
-    tokenAddress: '0x609d183fb91a0fce59550b62ab7d2c931b0bb1be',
+    tokenAddress: '0x609D183Fb91a0fce59550b62ab7d2c931b0Bb1BE',
     quoteToken: tokens.busd,
     tokenName: 'PolkaMonster',
     projectSite: 'https://polkamonster.game/',
@@ -243,7 +243,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x88Dba2cF8911A80cc50A1B392b5fF6b47B930330',
     farmName: 'SFUND-BNB',
-    tokenAddress: '0x477bc8d23c634c154061869478bce96be6045d12',
+    tokenAddress: '0x477bC8d23c634C154061869478bce96BE6045D12',
     quoteToken: tokens.wbnb,
     tokenName: 'Seedify',
     projectSite: 'https://launchpad.seedify.fund/',
@@ -251,7 +251,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xf1dD352EF3a94F60b3047B607C2Bd976401F538c',
     farmName: 'GNT-BNB',
-    tokenAddress: '0xf750a26eb0acf95556e8529e72ed530f3b60f348',
+    tokenAddress: '0xF750A26EB0aCf95556e8529E72eD530f3b60f348',
     quoteToken: tokens.wbnb,
     tokenName: 'GreenTrust',
     projectSite: 'https://www.greentrusttoken.com/',
@@ -259,7 +259,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x3992D7D9Ed721257d8bD7501d280b857eD7F9C24',
     farmName: 'TT-BUSD',
-    tokenAddress: '0x990e7154bb999faa9b2fa5ed29e822703311ea85',
+    tokenAddress: '0x990E7154bB999FAa9b2fa5Ed29E822703311eA85',
     quoteToken: tokens.busd,
     tokenName: 'ThunderCore',
     projectSite: 'https://www.thundercore.com/',
@@ -267,7 +267,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x2Ef317299888DD4a4F57FFf99FF2685D544fEAf1',
     farmName: 'TT-BNB',
-    tokenAddress: '0x990e7154bb999faa9b2fa5ed29e822703311ea85',
+    tokenAddress: '0x990E7154bB999FAa9b2fa5Ed29E822703311eA85',
     quoteToken: tokens.wbnb,
     tokenName: 'ThunderCore',
     projectSite: 'https://www.thundercore.com/',
@@ -291,7 +291,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x75015B56dA228A5367d313866f6520495344C65c',
     farmName: 'BNX-BUSD',
-    tokenAddress: '0x8c851d1a123ff703bd1f9dabe631b69902df5f97',
+    tokenAddress: '0x8C851d1a123Ff703BD1f9dabe631b69902Df5f97',
     quoteToken: tokens.busd,
     tokenName: 'BinaryX',
     projectSite: 'https://www.binaryx.pro/#/',
@@ -299,7 +299,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xCbD932aC66f645a3764733aACD30Ce50e522Fac1',
     farmName: 'DVI-BNB',
-    tokenAddress: '0x758fb037a375f17c7e195cc634d77da4f554255b',
+    tokenAddress: '0x758FB037A375F17c7e195CC634D77dA4F554255B',
     quoteToken: tokens.wbnb,
     tokenName: 'Dvision',
     projectSite: 'https://dvision.network/',
