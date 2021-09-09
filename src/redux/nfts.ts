@@ -378,8 +378,20 @@ const nfts: Nft[] = [
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 31,
+    name: 'Meowser',
+    symbol: 'MEOWSER',
+    description: 'Here kitty kitty',
+    address: '0xB48b4aAC280C2a89b58272f942c46C66C1b42e20',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmeRBJF6shwm23FrvCQ3SU69wWFcN3kJXNqseTxCyvi3LN',
+    type: 'image',
+    rarity: 'Common',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
   // {
-  //   id: 31,
+  //   id: 32,
   //   name: 'The Killmonger',
   //   symbol: 'KILLMONGER',
   //   description: 'Bury me in the ocean, with my ancestors that jumped from the ships, because they knew death was better than bondage',
