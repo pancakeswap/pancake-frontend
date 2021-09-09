@@ -40,6 +40,20 @@ const Title = styled(Text)`
   }
 `
 
+const ClosingTitle = styled(Text)`
+  font-size: 9px;
+  line-height: 21px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 16px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 20px;
+    line-height: 22px;
+  }
+`
+
 const Price = styled(Text)`
   height: 18px;
   justify-self: start;
@@ -119,9 +133,15 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ interval, unit }) => {
   return (
     <Box pr="24px" position="relative">
       <Label dir="right">
-        <Title bold color="secondary">
-          {secondsRemaining === 0 ? t('Closing') : countdown}
-        </Title>
+        {secondsRemaining !== 0 ? (
+          <Title bold color="secondary">
+            {countdown}
+          </Title>
+        ) : (
+          <ClosingTitle bold color="secondary">
+            {t('Closing')}
+          </ClosingTitle>
+        )}
         <Interval fontSize="12px">{`${interval}${t(unit)}`}</Interval>
       </Label>
       <Token right={0}>

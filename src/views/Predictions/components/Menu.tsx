@@ -18,7 +18,7 @@ const SetCol = styled.div`
 
 const HelpButtonWrapper = styled.div`
   order: 1;
-  margin: 0 8px 0 0;
+  margin: 0 2px 0 8px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     order: 2;
@@ -27,10 +27,27 @@ const HelpButtonWrapper = styled.div`
 `
 
 const TimerLabelWrapper = styled.div`
-  order: 2;
+  order: 3;
+  max-width: 100px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-width: none;
+  }
 
   ${({ theme }) => theme.mediaQueries.lg} {
     order: 1;
+  }
+`
+
+const LeaderboardButtonWrapper = styled.div`
+  display: block;
+
+  order: 2;
+  margin: 0 8px 0 0;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    order: 3;
+    margin: 0 0 0 8px;
   }
 `
 
@@ -69,11 +86,11 @@ const Menu = () => {
               <HelpIcon width="24px" color="white" />
             </Button>
           </HelpButtonWrapper>
-          <ButtonWrapper style={{ order: 3 }}>
+          <LeaderboardButtonWrapper>
             <Button as={Link} variant="subtle" to="/prediction/leaderboard" width="48px">
               <PrizeIcon color="white" />
             </Button>
-          </ButtonWrapper>
+          </LeaderboardButtonWrapper>
           <ButtonWrapper style={{ order: 4 }}>
             <HistoryButton />
           </ButtonWrapper>
