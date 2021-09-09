@@ -66,9 +66,21 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ collectible }) => {
           <BinanceIcon width="16px" height="16px" mr="4px" />
           <Text small>{collectible.lowestCost}</Text>
         </Flex>
-        <Text small color="textDisabled">
-          {t('Not for sale')}
-        </Text>
+        {collectible.status === 'selling' ? (
+          <>
+            <Text small color="textSubtle">
+              {t('Your price')}
+            </Text>
+            <Flex justifySelf="flex-end" width="max-content">
+              <BinanceIcon width="16px" height="16px" mr="4px" />
+              <Text small>{collectible.cost}</Text>
+            </Flex>
+          </>
+        ) : (
+          <Text small color="textDisabled">
+            {t('Not for sale')}
+          </Text>
+        )}
       </Grid>
     </Grid>
   )
