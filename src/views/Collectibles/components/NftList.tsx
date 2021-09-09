@@ -20,7 +20,9 @@ const NftList = () => {
   const { account } = useWeb3React()
 
   const handleRefresh = useCallback(() => {
-    dispatch(fetchWalletNfts(account))
+    if (account) {
+      dispatch(fetchWalletNfts(account))
+    }
   }, [dispatch, account])
 
   useEffect(() => {

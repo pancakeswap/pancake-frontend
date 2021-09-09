@@ -10,6 +10,7 @@ import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import TabMenu from './components/TabMenu'
 import Achievements from './components/Achievements'
+import useGetOwnedNfts from './hooks/useGetOwnedNfts'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;
@@ -29,6 +30,7 @@ const NftProfile = () => {
   const { account } = useWeb3React()
 
   useFetchAchievements()
+  const { tokenIds, nftsInWallet } = useGetOwnedNfts(account)
 
   return (
     <>
