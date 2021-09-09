@@ -1,7 +1,9 @@
 import { MenuItemsType, DropdownMenuItemType, menuStatus } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
-const config: (t: ContextApi['t']) => MenuItemsType[] = (t) => [
+export type ConfigMenuItemsType = MenuItemsType & { hideSubNav?: boolean }
+
+const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   {
     label: t('Trade'),
     icon: 'Swap',
@@ -66,6 +68,7 @@ const config: (t: ContextApi['t']) => MenuItemsType[] = (t) => [
     label: '',
     href: '/info',
     icon: t('More'),
+    hideSubNav: true,
     items: [
       {
         label: t('Info'),

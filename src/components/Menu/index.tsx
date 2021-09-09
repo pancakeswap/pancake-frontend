@@ -33,7 +33,7 @@ const Menu = (props) => {
       setLang={setLanguage}
       cakePriceUsd={cakePriceUsd.toNumber()}
       links={config(t)}
-      subLinks={activeMenuItem?.items}
+      subLinks={activeMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
       footerLinks={footerLinks}
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}
