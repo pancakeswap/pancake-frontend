@@ -1,0 +1,99 @@
+.small-text {
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.frank-earned {
+    font-weight: 600;
+    font-size: 20px;
+    color: rgb(204, 246, 108);
+}
+.staked-graves-header {
+    margin-left: 50px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.text-shadow {
+    font-weight: unset;
+    color: rgb(204, 246, 108);
+    text-shadow: rgb(204 246 108) 0px 0px 12px;
+}
+
+.frank-card {
+    padding: 16px;
+    border: 2px solid rgb(204, 246, 108);
+    border-radius: 16px;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    flex-basis: 0px;
+    margin-bottom: 16px;
+    margin-left: 12px;
+    margin-right: 12px;
+    max-height: 150px;
+}
+
+.green-color {
+    color: rgb(204, 246, 108);
+}
+
+.white-color {
+    color: #FFFFFF;
+}
+
+.space-between {
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.btn {
+    -webkit-box-align: center;
+    align-items: center;
+    border-radius: 16px;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    -webkit-box-pack: center;
+    justify-content: center;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    opacity: 1;
+    outline: 0px;
+    transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s;
+    height: 48px;
+    padding: 0px 24px;
+    background-color: transparent;
+    border: 2px solid rgb(92, 109, 120);
+    box-shadow: none;
+    color: rgb(92, 109, 120);
+    width: 100%;
+}
+
+.btn.btn-disabled {
+    border: none;
+    box-shadow: rgb(14 14 44 / 40%) 0px -1px 0px 0px inset;
+    background-color: rgb(92, 109, 120);
+    color: white;
+    margin-left: 4px;
+}
+
+.harvest.btn-disabled {
+    background-color: rgb(29, 47, 59);
+    border-color: rgb(29, 47, 59);
+    box-shadow: none;
+    color: rgb(150, 156, 161);
+    cursor: not-allowed;
+  }
+
+.title {
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  line-height: 1.5;
+
+}
