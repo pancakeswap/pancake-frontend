@@ -11,6 +11,8 @@ const Market = () => {
       <Link to="/nft/market/collectibles">Collectibles</Link>
       <br />
       <Link to="/nft/market/profile">Profile</Link>
+      <br />
+      <Link to="/nft/market/item/7">Individual NFT page</Link>
     </Box>
   )
 }
