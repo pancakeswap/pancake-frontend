@@ -41,6 +41,39 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 447,
+    lpSymbol: 'GNT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3747e3e107223539FD09bb730b055A1f11F78Adf',
+    },
+    token: serializedTokens.gnt,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 425,
+    lpSymbol: 'DVI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x89ebf9cd99864f6e51bd7a578965922029cab977',
+    },
+    token: serializedTokens.dvi,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 439,
+    lpSymbol: 'MCRN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xe8D5d81dac092Ae61d097f84EFE230759BF2e522',
+    },
+    token: serializedTokens.mcrn,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
     pid: 456,
     lpSymbol: 'TLOS-BNB LP',
     lpAddresses: {
@@ -129,17 +162,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.bmon,
     quoteToken: serializedTokens.busd,
-    isCommunity: true,
-  },
-  {
-    pid: 447,
-    lpSymbol: 'GNT-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x3747e3e107223539FD09bb730b055A1f11F78Adf',
-    },
-    token: serializedTokens.gnt,
-    quoteToken: serializedTokens.wbnb,
     isCommunity: true,
   },
   {
@@ -265,17 +287,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0x37Ff7D4459ad96E0B01275E5efffe091f33c2CAD',
     },
     token: serializedTokens.wsg,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-  },
-  {
-    pid: 439,
-    lpSymbol: 'MCRN-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xe8D5d81dac092Ae61d097f84EFE230759BF2e522',
-    },
-    token: serializedTokens.mcrn,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
   },
@@ -417,16 +428,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0x46c6bA71af7648cD7f67D0AD4d16f75bE251ed12',
     },
     token: serializedTokens.mask,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 425,
-    lpSymbol: 'DVI-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x89ebf9cd99864f6e51bd7a578965922029cab977',
-    },
-    token: serializedTokens.dvi,
     quoteToken: serializedTokens.wbnb,
   },
   {
