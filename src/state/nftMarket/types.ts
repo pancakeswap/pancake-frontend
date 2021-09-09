@@ -1,4 +1,5 @@
 import { BigNumberish } from 'ethers'
+import { Collection as CollectionMeta } from 'config/constants/nfts/types'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
@@ -32,7 +33,7 @@ export interface NFT {
   transactionHistory: Transaction[]
 }
 
-export interface Collection {
+export interface Collection extends CollectionMeta {
   id: string
   name: string
   symbol: string
