@@ -13,3 +13,12 @@ export interface BalanceInputProps extends BoxProps {
   unit?: string;
   switchEditingUnits?: () => void;
 }
+
+export interface TextfieldProps {
+  label: ReactNode;
+  value: ReactText;
+  placeholder?: string;
+  onUserInput: (input: string) => void;
+  inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "placeholder" | "onChange">;
+  isWarning?: boolean;
+}

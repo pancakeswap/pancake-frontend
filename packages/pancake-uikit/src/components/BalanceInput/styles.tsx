@@ -24,13 +24,13 @@ export const StyledBalanceInput = styled(Box)<{ isWarning: BalanceInputProps["is
   padding: 8px 16px;
 `;
 
-export const StyledInput = styled(Input)`
+export const StyledInput = styled(Input)<{ textAlign?: string }>`
   background: transparent;
   border-radius: 0;
   box-shadow: none;
   padding-left: 0;
   padding-right: 0;
-  text-align: right;
+  text-align: ${({ textAlign = "right" }) => textAlign};
   border: none;
 
   ::placeholder {
