@@ -23,6 +23,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     label: t('Earn'),
     href: '/farms',
     icon: 'Earn',
+    showItemsOnMobile: true,
     items: [
       {
         label: t('Farms'),
@@ -38,6 +39,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     label: t('Win'),
     href: '/prediction',
     icon: 'Trophy',
+    showItemsOnMobile: true,
     items: [
       {
         label: t('Prediction (BETA)'),
@@ -63,8 +65,9 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   {
     label: '',
     href: '/info',
-    icon: t('More'),
+    icon: 'More',
     hideSubNav: true,
+    showItemsOnMobile: true,
     items: [
       {
         label: t('Info'),
