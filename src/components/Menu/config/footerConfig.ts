@@ -35,7 +35,7 @@ export const footerLinks: FooterLinkType[] = [
     items: [
       {
         label: 'Customer',
-        href: 'Support https://docs.pancakeswap.finance/contact-us/customer-support',
+        href: 'https://docs.pancakeswap.finance/contact-us/customer-support',
       },
       {
         label: 'Troubleshooting',

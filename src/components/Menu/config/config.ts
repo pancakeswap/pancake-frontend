@@ -8,6 +8,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     label: t('Trade'),
     icon: 'Swap',
     href: '/swap',
+    showItemsOnMobile: false,
     items: [
       {
         label: t('Exchange'),
@@ -23,7 +24,6 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     label: t('Earn'),
     href: '/farms',
     icon: 'Earn',
-    showItemsOnMobile: true,
     items: [
       {
         label: t('Farms'),
@@ -39,7 +39,6 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     label: t('Win'),
     href: '/prediction',
     icon: 'Trophy',
-    showItemsOnMobile: true,
     items: [
       {
         label: t('Prediction (BETA)'),
@@ -55,6 +54,8 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     label: t('NFT'),
     href: '/collectibles',
     icon: 'Nft',
+    showOnMobile: false,
+    showItemsOnMobile: false,
     items: [
       {
         label: t('Collectibles'),
@@ -67,7 +68,6 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     href: '/info',
     icon: 'More',
     hideSubNav: true,
-    showItemsOnMobile: true,
     items: [
       {
         label: t('Info'),

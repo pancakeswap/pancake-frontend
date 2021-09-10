@@ -28,7 +28,7 @@ const UserBannerWrapper = styled(Container)`
   z-index: 1;
   position: absolute;
   width: 100%;
-  top: 0px;
+  top: 56px;
   left: 50%;
   transform: translate(-50%, 0);
   padding-left: 0px;
@@ -50,7 +50,7 @@ const Home: React.FC = () => {
     <>
       <PageMeta />
       <StyledHeroSection
-        innerProps={{ style: { margin: '0', width: '100%', position: 'relative' } }}
+        innerProps={{ style: { margin: '0', width: '100%' } }}
         background={
           theme.isDark
             ? 'radial-gradient(103.12% 50% at 50% 50%, #21193A 0%, #191326 100%)'
