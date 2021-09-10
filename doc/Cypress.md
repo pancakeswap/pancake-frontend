@@ -19,7 +19,7 @@ serve -s build -p 3000
 After that you can specify the test to run with the following command
 
 ```bash
-cypress run --spec cypress/integration/add-liquidity.test.ts
+cypress run --spec cypress/integration/exchange/add-liquidity.test.ts
 ```
 
 Remember that if you modify the code under test (e.g. adding id to some element) you need to rebuild the app.
