@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { Price } from '@pancakeswap/sdk'
 import { Button, Grid, Text, Flex, Box, BinanceIcon } from '@pancakeswap/uikit'
+import truncateHash from 'utils/truncateHash'
 import { ContextApi } from 'contexts/Localization/types'
 import { useTranslation } from 'contexts/Localization'
-import { shortenAddress } from 'utils'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { CollectibleAndOwnerData } from '../types'
@@ -59,7 +59,7 @@ const Row: React.FC<RowProps> = ({ t, collectibleForSale, bnbBusdPrice }) => {
         <Flex width="max-content" alignItems="center">
           <Avatar src="https://ipfs.io/ipfs/QmYD9AtzyQPjSa9jfZcZq88gSaRssdhGmKqQifUDjGFfXm/twinkle.png" alt="Twinkle" />
           <Box display="inline">
-            <Text lineHeight="1.25">{shortenAddress(owner.account)}</Text>
+            <Text lineHeight="1.25">{truncateHash(owner.account)}</Text>
             <Text lineHeight="1.25">{owner.profileName}</Text>
           </Box>
         </Flex>
