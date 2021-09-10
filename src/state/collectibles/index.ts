@@ -23,6 +23,12 @@ export const fetchWalletNfts = createAsyncThunk<NftSourceItem[], string>(
       const { address: addressObj } = collections[nftSourceType]
       const address = getAddress(addressObj)
       const contract = getErc721Contract(address)
+      const balanceOfResponse = await contract.balanceOf(account)
+      const balanceOf = balanceOfResponse.toNumber()
+
+      if (balanceOfResponse.eq(0)) {
+        return []
+      }
 
       const getTokenIdAndData = async (index: number) => {
         try {
@@ -35,13 +41,6 @@ export const fetchWalletNfts = createAsyncThunk<NftSourceItem[], string>(
           console.error('getTokenIdAndData', error)
           return null
         }
-      }
-
-      const balanceOfResponse = await contract.balanceOf(account)
-      const balanceOf = balanceOfResponse.toNumber()
-
-      if (balanceOf === 0) {
-        return []
       }
 
       const nftDataFetchPromises = []

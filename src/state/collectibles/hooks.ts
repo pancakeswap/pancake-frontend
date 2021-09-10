@@ -15,7 +15,7 @@ export const useGetCollectibles = () => {
 
   useEffect(() => {
     // Fetch nfts only if we have not done so already
-    if (!isInitialized) {
+    if (!isInitialized && account) {
       dispatch(fetchWalletNfts(account))
     }
   }, [isInitialized, account, dispatch])
