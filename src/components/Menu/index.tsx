@@ -26,9 +26,9 @@ const Menu = (props) => {
       links={config}
       profile={{
         username: undefined,
-        image: 'images/rugZombie/BasicZombie.png',
-        profileLink: '/profile',
-        noProfileLink: '/profile',
+        image: '/images/rugZombie/BasicZombie.png',
+        profileLink: '/home',
+        noProfileLink: '/home',
         showPip: undefined,
       }}
       {...props}
