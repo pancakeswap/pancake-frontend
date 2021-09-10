@@ -30,9 +30,13 @@ export const ItemRow: React.FC<ItemRowProps> = ({ item, onSelect }) => (
   </StyledItemRow>
 )
 
-export const SearchWrapper = styled(Flex)`
+export const SearchWrapper = styled(Flex)<{ hasHeader: boolean }>`
   background: ${({ theme }) => theme.colors.dropdown};
-  border-radius: 24px 24px 0 0;
+  ${({ hasHeader }) =>
+    !hasHeader &&
+    `
+    border-radius: 24px 24px 0 0;
+  `}
 `
 
 export const SelectAllButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`

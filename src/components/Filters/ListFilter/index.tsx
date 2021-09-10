@@ -1,18 +1,31 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Box, Button, Text, Flex, InlineMenu, Input, InputGroup, SearchIcon } from '@pancakeswap/uikit'
+import {
+  Box,
+  Button,
+  Text,
+  Flex,
+  InlineMenu,
+  Input,
+  InputGroup,
+  SearchIcon,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import FilterFooter from '../FilterFooter'
+import FilterHeader from '../FilterHeader'
 import { Item, ItemRow, SearchWrapper, ClearAllButton, SelectAllButton } from './styles'
 
 interface ListFilterProps {
+  title?: string
   items: Item[]
   onApply: (items: Item[]) => void
   onClear?: () => void
 }
 
-const ListFilter: React.FC<ListFilterProps> = ({ items, onApply, onClear }) => {
+const ListFilter: React.FC<ListFilterProps> = ({ title, items, onApply, onClear }) => {
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
+  const { isMobile } = useMatchBreakpoints()
   const [localItems, setLocalItems] = useState<Item[]>(
     items.map((item) => {
       return {
@@ -82,7 +95,6 @@ const ListFilter: React.FC<ListFilterProps> = ({ items, onApply, onClear }) => {
 
   return (
     <InlineMenu
-      isOpen
       component={
         <Button variant="light" scale="sm">
           {t('Attributes')}
@@ -90,11 +102,18 @@ const ListFilter: React.FC<ListFilterProps> = ({ items, onApply, onClear }) => {
       }
     >
       <Box maxWidth="375px">
-        <SearchWrapper alignItems="center" p="16px">
+        <FilterHeader title={title}>
+          <Button onClick={handleApply} variant="text" scale="sm">
+            {selectedLocalItems > 0 ? t('Apply (%num%)', { num: selectedLocalItems }) : t('Apply')}
+          </Button>
+        </FilterHeader>
+        <SearchWrapper hasHeader={!!title && !isMobile} alignItems="center" p="16px">
           <InputGroup startIcon={<SearchIcon color="textSubtle" />}>
             <Input name="query" placeholder={t('Search')} onChange={handleChange} value={query} autoFocus />
           </InputGroup>
-          <SelectAllButton onClick={handleSelectAll}>{t('Select All')}</SelectAllButton>
+          <SelectAllButton onClick={handleSelectAll} ml="8px">
+            {t('Select All')}
+          </SelectAllButton>
           <ClearAllButton onClick={handleClear}>{t('Clear All')}</ClearAllButton>
         </SearchWrapper>
         <Box height="230px" overflowY="auto">

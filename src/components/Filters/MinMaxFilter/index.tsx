@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Grid, InlineMenu, TextField } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import FilterHeader from '../FilterHeader'
 import FilterFooter from '../FilterFooter'
 
 interface MinMaxFilterProps {
+  title?: string
   min?: number
   max: number
   onApply: (min: number, max: number) => void
   onClear?: () => void
 }
 
-const MinMaxFilter: React.FC<MinMaxFilterProps> = ({ onApply, onClear, max, min = 0 }) => {
+const MinMaxFilter: React.FC<MinMaxFilterProps> = ({ title, onApply, onClear, max, min = 0 }) => {
   const { t } = useTranslation()
   const [currentMax, setCurrentMax] = useState(max)
   const [currentMin, setCurrentMin] = useState(min)
@@ -60,6 +62,11 @@ const MinMaxFilter: React.FC<MinMaxFilterProps> = ({ onApply, onClear, max, min 
       }
     >
       <Box width="320px">
+        <FilterHeader title={title}>
+          <Button onClick={handleApply} variant="text" scale="sm">
+            {t('Apply')}
+          </Button>
+        </FilterHeader>
         <Box px="24px" py="16px">
           <Grid gridGap="16px" gridTemplateColumns="repeat(2, 1fr)">
             <TextField label={t('Min')} value={currentMin} onUserInput={handleMinChange} isWarning={isError} />

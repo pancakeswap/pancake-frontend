@@ -39,8 +39,8 @@ const Market = () => {
       <Link to="/nft/market/item/7">Individual NFT page</Link>
       <br />
       <br />
-      <MinMaxFilter min={1} max={100} onApply={handleApply} />
-      <ListFilter items={exampleList} onApply={handleListApply} />
+      <MinMaxFilter title="Price" min={1} max={100} onApply={handleApply} />
+      <ListFilter title="Attribute" items={exampleList} onApply={handleListApply} />
     </Page>
   )
 }
