@@ -38,6 +38,13 @@ export const updateDrFrankensteinZombieBalance = (zombieBalance: BigNumber) => (
   },
 })
 
+export const updateDrFrankensteinTotalAllocPoint = (totalAllocPoint: BigNumber) => ({
+  type: actions.UPDATE_DR_FRANKENSTEIN_TOTAL_ALLOC_POINT,
+  payload: {
+    totalAllocPoint,
+  },
+})
+
 export const updateZombieBalance = (balance: BigNumber) => ({
   type: actions.UPDATE_ZOMBIE_BALANCE,
   payload: {

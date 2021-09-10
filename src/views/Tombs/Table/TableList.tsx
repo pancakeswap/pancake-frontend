@@ -8,7 +8,7 @@ import tokens from 'config/constants/tokens';
 import numeral from 'numeral'
 import { getGraveTombApr } from '../../../utils/apr'
 import { Token } from '../../../config/constants/types'
-import { tombByPid, zombiePriceUsd } from '../../../redux/get'
+import { tombByPid, totalAllocPoint, zombiePriceUsd } from '../../../redux/get'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -51,8 +51,8 @@ interface TableListProps {
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { pid, tvl, lpTokenPrice, handler } = props;
   const tomb = tombByPid(pid)
-  const { name, quoteToken, isNew, poolInfo: { allocPoint, totalStaked } } = tomb
-  const poolWeight = allocPoint ? allocPoint.div(100) : null
+  const { name, quoteToken, poolInfo: { allocPoint, totalStaked } } = tomb
+  const poolWeight = new BigNumber(allocPoint).div(new BigNumber(totalAllocPoint()))
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -85,7 +85,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                   <div>
                     <div className="titel">{name}</div>
                     <div className="small-lable">
-                      <div className="con-info">{poolWeight.toString()}X</div>
+                      <div className="con-info">{allocPoint.div(100).toString()}X</div>
                       <div className="small-titel">{tomb.exchange}</div>
                     </div>
                   </div>

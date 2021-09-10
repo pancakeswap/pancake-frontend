@@ -8,7 +8,8 @@ import tokens from 'config/constants/tokens';
 import numeral from 'numeral';
 import { getGraveTombApr } from '../../../../utils/apr'
 import { Grave } from '../../../../redux/types'
-import { grave } from '../../../../redux/get'
+import { grave, totalAllocPoint } from '../../../../redux/get'
+import { useDrFrankenstein } from '../../../../hooks/useContract'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -50,14 +51,10 @@ interface TableListProps {
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { pid, zombieUsdPrice, handler } = props
   const { name, rug, poolInfo, isNew, requiresNft, requiredNftPath, userInfo: { pendingZombie } } = grave(pid);
-  let allocPoint = BIG_ZERO;
-  if(poolInfo.allocPoint) {
-     allocPoint = new BigNumber(poolInfo.allocPoint)
-  }
   const { isLg, isXl } = useMatchBreakpoints()
   const isDesktop = isLg || isXl
 
-  const poolWeight = allocPoint ? allocPoint.div(100) : null
+  const poolWeight = new BigNumber(poolInfo.allocPoint).div(new BigNumber(totalAllocPoint()))
 
   const [isOpen, setIsOpen] = useState(false);
   const bigZombiePrice = getDecimalAmount(new BigNumber(zombieUsdPrice))
@@ -98,7 +95,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                   <div>
                     <div className="titel">{name}</div>
                     <div className="small-lable">
-                      <div className="con-info">{poolWeight.toString()}X</div>
+                      <div className="con-info">{new BigNumber(poolInfo.allocPoint).div(100).toString()}X</div>
                       <div className="small-titel">ZMBE</div>
                       {isNew ? <div className='con-info' style={{marginLeft: "4px"}}>NEW!</div> : null}
                       {/* {isClosing ? <div className='con-info' style={{marginLeft: "4px"}}>RESTRICTING ACCESS</div> : null} */}

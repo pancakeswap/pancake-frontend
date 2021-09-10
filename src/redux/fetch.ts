@@ -21,7 +21,12 @@ import {
   updateNftTotalSupply,
   updateSpawningPoolInfo,
   updateSpawningPoolUserInfo,
-  updateTombPoolInfo, updateTombUserInfo, updateAuctionInfo, updateAuctionUserInfo, updateNftUserInfo,
+  updateTombPoolInfo,
+  updateTombUserInfo,
+  updateAuctionInfo,
+  updateAuctionUserInfo,
+  updateNftUserInfo,
+  updateDrFrankensteinTotalAllocPoint,
 } from './actions'
 import {
   getAddress,
@@ -44,7 +49,7 @@ import { account, auctionById, zmbeBnbTomb } from './get'
 export const initialData = (accountAddress: string, multi: any, setZombiePrice?: any) => {
   store.dispatch(updateAccount(accountAddress))
   const zombie = getZombieContract()
-
+  const drFrankenstein = getDrFrankensteinContract()
   zombie.methods.totalSupply().call()
     .then(res => {
       store.dispatch(updateZombieTotalSupply(new BigNumber(res)))
@@ -66,6 +71,11 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
     zombie.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
       .then(res => {
         store.dispatch(updateZombieAllowance(new BigNumber(res)))
+      })
+
+    drFrankenstein.methods.totalAllocPoint().call()
+      .then(res => {
+        store.dispatch(updateDrFrankensteinTotalAllocPoint(new BigNumber(res)))
       })
 
     zombie.methods.balanceOf(accountAddress).call()

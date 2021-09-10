@@ -22,6 +22,7 @@ const defaultState = {
   },
   drFrankenstein: {
     zombieBalance: BIG_ZERO,
+    totalAllocPoint: BIG_ZERO
   },
 }
 
@@ -91,6 +92,11 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         drFrankenstein: { ...state.drFrankenstein, zombieBalance: action.payload.zombieBalance },
+      }
+    case types.UPDATE_DR_FRANKENSTEIN_TOTAL_ALLOC_POINT:
+      return {
+        ...state,
+        drFrankenstein: { ...state.drFrankenstein, totalAllocPoint: action.payload.totalAllocPoint },
       }
     case types.UPDATE_NFT_TOTAL_SUPPLY:
       return {

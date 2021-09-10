@@ -45,11 +45,6 @@ const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateResult
   const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePriceUsd()), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
   const lpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
   const tvl = totalStaked.times(lpTokenPrice)
-  // console.log(reservesUsd[0].toString())
-  // console.log(reservesUsd[1].toString())
-  // console.log(lpTotalSupply.toString())
-  // console.log(lpTokenPrice.toString())
-  // console.log(tvl)
 
   const TableListProps = {
     "handler": openInDetails,
