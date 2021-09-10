@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { random } from 'lodash'
 import { useFetchCollections } from 'state/nftMarket/hooks'
 import Page from 'components/Layout/Page'
-import { MinMaxFilter, ListFilter } from './components/Filters'
-import { Item } from './components/Filters/ListFilter/styles'
+import { MinMaxFilter, ListFilter } from 'components/Filters'
+import { Item } from 'components/Filters/ListFilter/styles'
 
 const exampleList: Item[] = [
   { label: 'Smiley', count: random(1, 50) },
