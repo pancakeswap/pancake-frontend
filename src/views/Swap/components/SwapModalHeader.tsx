@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { Trade, TradeType } from '@pancakeswap/sdk'
 import { Button, Text, ErrorIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'
+import { useTranslation } from 'contexts/Localization'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
 import { AutoColumn } from 'components/Layout/Column'
 import { CurrencyLogo } from 'components/Logo'
@@ -22,12 +23,41 @@ export default function SwapModalHeader({
   showAcceptChanges: boolean
   onAcceptChanges: () => void
 }) {
+  const { t } = useTranslation()
   const slippageAdjustedAmounts = useMemo(
     () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
     [trade, allowedSlippage],
   )
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+
+  const amount =
+    trade.tradeType === TradeType.EXACT_INPUT
+      ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)
+      : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)
+  const symbol =
+    trade.tradeType === TradeType.EXACT_INPUT ? trade.outputAmount.currency.symbol : trade.inputAmount.currency.symbol
+
+  const tradeInfoText =
+    trade.tradeType === TradeType.EXACT_INPUT
+      ? t('Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.', {
+          amount,
+          symbol,
+        })
+      : t('Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.', {
+          amount,
+          symbol,
+        })
+
+  const [estimatedText, transactionRevertText] = tradeInfoText.split(`${amount} ${symbol}`)
+
+  const truncatedRecipient = recipient ? truncateHash(recipient) : ''
+
+  const recipientInfoText = t('Output will be sent to %recipient%', {
+    recipient: truncatedRecipient,
+  })
+
+  const [recipientSentToText, postSentToText] = recipientInfoText.split(truncatedRecipient)
 
   return (
     <AutoColumn gap="md">
@@ -77,35 +107,27 @@ export default function SwapModalHeader({
           <RowBetween>
             <RowFixed>
               <ErrorIcon mr="8px" />
-              <Text bold> Price Updated</Text>
+              <Text bold> {t('Price Updated')}</Text>
             </RowFixed>
-            <Button onClick={onAcceptChanges}>Accept</Button>
+            <Button onClick={onAcceptChanges}>{t('Accept')}</Button>
           </RowBetween>
         </SwapShowAcceptChanges>
       ) : null}
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '24px 0 0 0px' }}>
-        {trade.tradeType === TradeType.EXACT_INPUT ? (
-          <Text small color="textSubtle" textAlign="left" style={{ width: '100%' }}>
-            {`Output is estimated. You will receive at least `}
-            <b>
-              {slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)} {trade.outputAmount.currency.symbol}
-            </b>
-            {' or the transaction will revert.'}
-          </Text>
-        ) : (
-          <Text small color="textSubtle" textAlign="left" style={{ width: '100%' }}>
-            {`Input is estimated. You will sell at most `}
-            <b>
-              {slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)} {trade.inputAmount.currency.symbol}
-            </b>
-            {' or the transaction will revert.'}
-          </Text>
-        )}
+        <Text small color="textSubtle" textAlign="left" style={{ width: '100%' }}>
+          {estimatedText}
+          <b>
+            {amount} {symbol}
+          </b>
+          {transactionRevertText}
+        </Text>
       </AutoColumn>
       {recipient !== null ? (
         <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
           <Text color="textSubtle">
-            Output will be sent to <b title={recipient}>{truncateHash(recipient)}</b>
+            {recipientSentToText}
+            <b title={recipient}>{truncatedRecipient}</b>
+            {postSentToText}
           </Text>
         </AutoColumn>
       ) : null}
