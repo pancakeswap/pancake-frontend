@@ -43,7 +43,9 @@ const LotteryNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   }
 
   const LotteryNftRefresh = () => {
-    dispatch(fetchWalletNfts(account))
+    if (account) {
+      dispatch(fetchWalletNfts(account))
+    }
     setIsClaimable(false)
   }
 
