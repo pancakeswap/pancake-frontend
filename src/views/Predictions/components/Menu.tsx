@@ -20,7 +20,7 @@ const HelpButtonWrapper = styled.div`
   order: 1;
   margin: 0 2px 0 8px;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     order: 2;
     margin: 0 0 0 8px;
   }
@@ -28,14 +28,11 @@ const HelpButtonWrapper = styled.div`
 
 const TimerLabelWrapper = styled.div`
   order: 3;
-  max-width: 100px;
+  width: 100px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    max-width: none;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
     order: 1;
+    width: auto;
   }
 `
 
@@ -45,7 +42,7 @@ const LeaderboardButtonWrapper = styled.div`
   order: 2;
   margin: 0 8px 0 0;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     order: 3;
     margin: 0 0 0 8px;
   }
