@@ -7,6 +7,7 @@ import { MinMaxFilter, ListFilter } from 'components/Filters'
 import { Item } from 'components/Filters/ListFilter/styles'
 
 const exampleList: Item[] = [
+  { image: '/images/collections/pancake-bunnies-avatar.png', label: 'Collection Name', count: random(1, 50) },
   { label: 'Smiley', count: random(1, 50) },
   { label: 'Big', count: random(1, 50) },
   { label: 'Teeth', count: random(1, 50) },
