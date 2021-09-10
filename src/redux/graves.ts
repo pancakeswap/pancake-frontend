@@ -165,7 +165,6 @@ const graves: Grave[] = [
     isNew: true,
     isFeatured: true,
     rarity: "Legendary",
-    // startingDate: 1631290500,
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,

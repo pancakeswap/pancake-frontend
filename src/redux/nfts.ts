@@ -390,18 +390,18 @@ const nfts: Nft[] = [
     rarity: 'Common',
     userInfo: { ...DEFAULT_USER_INFO }
   },
-  // {
-  //   id: 32,
-  //   name: 'The Killmonger',
-  //   symbol: 'KILLMONGER',
-  //   description: 'Bury me in the ocean, with my ancestors that jumped from the ships, because they knew death was better than bondage',
-  //   address: '',
-  //   totalSupply: BIG_ZERO,
-  //   path: "images/rugZombie/The Killmonger.jpeg",
-  //   type: 'image',
-  //   rarity: 'Legendary',
-  //   userInfo: { ...DEFAULT_USER_INFO }
-  // },
+  {
+    id: 32,
+    name: 'The Killmonger',
+    symbol: 'KILLMONGER',
+    description: 'Bury me in the ocean, with my ancestors that jumped from the ships, because they knew death was better than bondage',
+    address: '0x33566cd376B81975f23c74Fe0105cf198342Ac74',
+    totalSupply: BIG_ZERO,
+    path: "images/rugZombie/The Killmonger min.jpeg",
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts
