@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@pancakeswap/uikit'
-import { Collection } from 'config/constants/nfts/types'
+import { Collection } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber } from 'utils/formatBalance'
 import MarketPageHeader from '../components/MarketPageHeader'
