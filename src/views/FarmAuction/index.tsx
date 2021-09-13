@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link as RouterLink } from 'react-router-dom'
 import { Button, Heading, Text, Flex, Link, Breadcrumbs } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
@@ -77,12 +78,12 @@ const FarmAuction = () => {
     <>
       <StyledHeader>
         <Breadcrumbs>
-          <Link href="/" color="primary" style={{ fontWeight: 400 }}>
+          <RouterLink to="/" color="primary" style={{ fontWeight: 400 }}>
             {t('Home')}
-          </Link>
-          <Link href="/farms" color="primary" style={{ fontWeight: 400 }}>
+          </RouterLink>
+          <RouterLink to="/farms" color="primary" style={{ fontWeight: 400 }}>
             {t('Farms')}
-          </Link>
+          </RouterLink>
           <Text>{t('Community Farm Auction')}</Text>
         </Breadcrumbs>
         <Flex flexDirection={['column-reverse', null, 'row']}>
