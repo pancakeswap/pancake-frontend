@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getCollectionsApi, getCollectionsSg, getNftsMetadata, getNftsMarketData } from './helpers'
-import { State, Collection, NFT } from './types'
+import { getNftsMetadata, getNftsMarketData, getCollectionsApi, getCollectionsSg } from './helpers'
+import { State, Collection, NFT, NFTMarketLoadingState } from './types'
 
 const initialState: State = {
-  isInitializing: true,
+  loadingState: NFTMarketLoadingState.IDLE,
   data: {
     collections: {},
     nfts: {},
@@ -54,12 +54,20 @@ export const NftMarket = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(fetchCollections.pending, (state) => {
+      state.loadingState = NFTMarketLoadingState.LOADING
+    })
     builder.addCase(fetchCollections.fulfilled, (state, action) => {
       state.data.collections = action.payload
-      state.isInitializing = false
+      state.loadingState = NFTMarketLoadingState.IDLE
+    })
+
+    builder.addCase(fetchNftsFromCollections.pending, (state) => {
+      state.loadingState = NFTMarketLoadingState.LOADING
     })
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       state.data.nfts[action.meta.arg] = action.payload
+      state.loadingState = NFTMarketLoadingState.IDLE
     })
   },
 })

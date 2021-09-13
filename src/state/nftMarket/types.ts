@@ -4,8 +4,14 @@ import { Nft as NftMeta } from 'config/constants/nfts/types'
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
 
+export enum NFTMarketLoadingState {
+  IDLE,
+  LOADING,
+  ERROR,
+}
+
 export interface State {
-  isInitializing: boolean
+  loadingState: NFTMarketLoadingState
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NFT[]> // string is the address

@@ -23,3 +23,7 @@ export const useNftsFromCollection = (collectionAddress: string) => {
   const collections = useSelector((state: State) => state.nftMarket.data.nfts[collectionAddress])
   return collections
 }
+
+export const useGetNFTMarketLoadingState = () => {
+  return useSelector((state: State) => state.nftMarket.loadingState)
+}
