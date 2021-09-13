@@ -1,8 +1,8 @@
 import React, { lazy } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFetchCollections, useGetNFTMarketLoadingState } from 'state/nftMarket/hooks'
+import { useFetchCollections, useGetNFTInitializationState } from 'state/nftMarket/hooks'
 import PageLoader from 'components/Loader/PageLoader'
-import { NFTMarketLoadingState } from 'state/nftMarket/types'
+import { NFTMarketInitializationState } from 'state/nftMarket/types'
 
 const Home = lazy(() => import('./Home'))
 const NftProfile = lazy(() => import('./Profile'))
@@ -12,11 +12,11 @@ const IndividualNFTPage = lazy(() => import('./IndividualNFTPage'))
 
 const Market = () => {
   const { path } = useRouteMatch()
-  const nftMarketLoadingState = useGetNFTMarketLoadingState()
+  const initializationState = useGetNFTInitializationState()
 
   useFetchCollections()
 
-  if (nftMarketLoadingState === NFTMarketLoadingState.LOADING) {
+  if (initializationState !== NFTMarketInitializationState.INITIALIZED) {
     return <PageLoader />
   }
 
