@@ -16,7 +16,7 @@ export interface State {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NFT[]> // string is the address
     users: Record<string, User> // string is the address
-    userNfts: UserNftsState
+    user: UserNftsState
   }
 }
 
@@ -57,8 +57,12 @@ export interface NFT {
   tokens: Record<number, NftToken>
 }
 
-export interface NftSubgraphEntity {
+export interface TokenIdWithCollectionAddress {
+  collectionAddress: string
   tokenId: string
+}
+
+export interface NftSubgraphEntity extends TokenIdWithCollectionAddress {
   metadataUrl?: string
   transactionHistory?: Transaction[]
 }
@@ -79,6 +83,10 @@ export interface Collection {
   owner: string
   totalSupply: BigNumberish
   verified: boolean
+}
+
+export interface ApiCollections {
+  [key: string]: Collection
 }
 
 export interface User {

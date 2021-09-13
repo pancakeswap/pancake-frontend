@@ -34,5 +34,5 @@ export const useGetNFTInitializationState = () => {
 }
 
 export const useUserNfts = (): UserNftsState => {
-  return useSelector((state: State) => state.nftMarket.data.userNfts)
+  return useSelector((state: State) => state.nftMarket.data.user)
 }

@@ -47,7 +47,9 @@ const NftProfile = () => {
         <Route exact path="/nft/market/profile">
           <span>Profile</span>
           {userNfts.map((nft) => (
-            <Text key={nft.tokenId}>{nft.tokenId}</Text>
+            <Text key={nft.tokenId}>
+              {nft.tokenId} - {nft.collectionAddress}
+            </Text>
           ))}
         </Route>
         <Route exact path="/nft/market/profile/activity">

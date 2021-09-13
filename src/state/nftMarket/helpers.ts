@@ -1,10 +1,9 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
-import { NftToken } from './types'
-import { collections } from 'config/constants/nfts'
-import { getAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
+import map from 'lodash/map'
+import { NftToken, ApiCollections, NftSubgraphEntity, TokenIdWithCollectionAddress } from './types'
 
 /**
  * Fetch static data from all collections using the API
@@ -103,6 +102,9 @@ export const getNftsMarketData = async (where = {}): Promise<NftSubgraphEntity[]
           nfts(where: $where) {
             tokenId
             metadataUrl
+            collection {
+              id
+            }
             transactionHistory {
               id
               block
@@ -123,26 +125,31 @@ export const getNftsMarketData = async (where = {}): Promise<NftSubgraphEntity[]
       { where },
     )
 
-    return res.nfts
+    return res.nfts.map((nftRes): NftSubgraphEntity => {
+      return {
+        tokenId: nftRes?.tokenId,
+        metadataUrl: nftRes?.metadataUrl,
+        transactionHistory: nftRes?.transactionHistory,
+        collectionAddress: nftRes?.collection.id,
+      }
+    })
   } catch (error) {
     console.error('Failed to fetch NFTs market data', error)
     return []
   }
 }
 
-export const fetchWalletNftIds = async (account: string): Promise<string[]> => {
-  const nftIdPromises = Object.keys(collections).map(async (nftCollectionKey) => {
-    // Temporarily skip over pancake-squad
-    if (collections[nftCollectionKey].slug === 'pancake-squad') {
-      return []
-    }
-
-    const { address: addressObj } = collections[nftCollectionKey]
-    const contractAddress = getAddress(addressObj)
-    const contract = getErc721Contract(contractAddress)
+export const fetchWalletTokenIdsForCollections = async (
+  account: string,
+  collections: ApiCollections,
+): Promise<TokenIdWithCollectionAddress[]> => {
+  const walletNftPromises = map(collections, async (collection): Promise<TokenIdWithCollectionAddress[]> => {
+    const { address: collectionAddress } = collection
+    const contract = getErc721Contract(collectionAddress)
     const balanceOfResponse = await contract.balanceOf(account)
     const balanceOf = balanceOfResponse.toNumber()
 
+    // User has no NFTs for this collection
     if (balanceOfResponse.eq(0)) {
       return []
     }
@@ -158,18 +165,20 @@ export const fetchWalletNftIds = async (account: string): Promise<string[]> => {
       }
     }
 
-    const nftDataFetchPromises = []
+    const tokenIdPromises = []
 
     // For each index get the tokenId
     for (let i = 0; i < balanceOf; i++) {
-      nftDataFetchPromises.push(getTokenId(i))
+      tokenIdPromises.push(getTokenId(i))
     }
 
-    return Promise.all(nftDataFetchPromises)
+    const tokenIds = await Promise.all(tokenIdPromises)
+    const tokensWithCollectionAddress = tokenIds.map((tokenId) => {
+      return { tokenId, collectionAddress }
+    })
+    return tokensWithCollectionAddress
   })
 
-  const nftIds = await Promise.all(nftIdPromises)
-
-  // flatten Ids across collections into one array
-  return nftIds.flat()
+  const walletNfts = await Promise.all(walletNftPromises)
+  return walletNfts.flat()
 }
