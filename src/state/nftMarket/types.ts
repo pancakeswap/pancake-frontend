@@ -51,6 +51,7 @@ export interface Collection {
   creatorFee: BigNumberish
   image: { original: string; thumbnail: string }
   owner: string
+  // TODO Update when API is updated
   // eslint-disable-next-line camelcase
   total_supply: BigNumberish
   verified: boolean
