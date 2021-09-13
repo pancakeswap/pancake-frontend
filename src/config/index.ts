@@ -26,7 +26,6 @@ export const BLOCKS_PER_YEAR = new BigNumber((60 / BSC_BLOCK_TIME) * 60 * 24 * 3
 export const CAKE_PER_YEAR = CAKE_PER_BLOCK.times(BLOCKS_PER_YEAR)
 export const BASE_URL = 'https://pancakeswap.finance'
 export const BASE_ADD_LIQUIDITY_URL = `${BASE_URL}/add`
-export const BASE_LIQUIDITY_POOL_URL = `${BASE_URL}/pool`
 export const BASE_BSC_SCAN_URL = BASE_BSC_SCAN_URLS[ChainId.MAINNET]
 export const DEFAULT_TOKEN_DECIMAL = BIG_TEN.pow(18)
 export const DEFAULT_GAS_LIMIT = 200000
