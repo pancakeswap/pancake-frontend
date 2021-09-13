@@ -19,6 +19,10 @@ const artists = {
     name: 'Jussjoshinduh',
     twitter: 'https://twitter.com/jussjoshinduh',
   },
+  cryptomonkeyemp: {
+    name: 'Crypto Monkey Empire',
+    twitter: 'https://twitter.com/CryptoMonkeyEmp',
+  },
   eyes_of_lamia: {
     name: 'EyesOfLamia',
     twitter: 'https://twitter.com/eyes_of_lamia',

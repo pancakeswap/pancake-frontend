@@ -6,10 +6,70 @@ import { SpawningPool } from './types'
 
 const spawningPools: SpawningPool[] = [
   {
+    id: 5,
+    name: 'Monkey Coin Legendary',
+    subtitle: 'Crypto Mutant Zombie',
+    path: 'https://storage.googleapis.com/rug-zombie/Zombi_Monkey-min.jpg',
+    type: 'image',
+    address: {
+      56: '0x1976e5607aB7D163E5DA2F6D427aD1868e967f97',
+      97: '',
+    },
+    endBlock: 13503600,
+    project: {
+      name: 'CryptoMonkey Empire',
+      description: 'CryptoMonkey Empire is a Massively Multiplayer Online Real Time Strategy video game. Where you, the player manages monkeys to build an Empire. You will collect resources by raiding other player\'s empires to build up a city and make technological progress. Their MonkeyCoin token is used in game as a resource and your army is used to steal other player\'s cryptocurrency during raids.',
+      additionalDetails: [
+        {
+          name: 'Project website',
+          url: tokens.mkc.projectLink,
+        },
+        {
+          name: 'Pre-alpha Gameplay Video',
+          url: 'https://www.youtube.com/watch?v=OiiQ8CBOuLw',
+        },
+        {
+          name: 'Whitepaper',
+          url: 'https://mwgbucket.s3.eu-west-3.amazonaws.com/CME_WP_V7bis.pdf',
+        },
+        {
+          name: 'Telegram',
+          url: 'https://t.me/cryptomonkeyempire',
+        },
+      ],
+    },
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '45 days',
+    rewardToken: tokens.mkc,
+    rewardTokenBnbLp: '0x77acd18484430203212dc67c9b5362d0abace8de',
+    artist: artists.cryptomonkeyemp,
+    stakingToken: '',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: false,
+    color: "red",
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      amount: BIG_ZERO,
+      pendingReward: BIG_ZERO,
+      zombieAllowance: BIG_ZERO,
+    },
+    poolInfo: {
+      unlockFee: BIG_ZERO,
+      rewardPerBlock: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalZombieStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+    },
+  },
+  {
     id: 4,
     name: 'WalletNow Legendary',
-    subtitle: "Zombie Wallet",
-    path: "https://ipfs.io/ipfs/QmcvagniUfh9k8Ks42pJPnDicHBGSkFgLB6dcUbJKnTB4p",
+    subtitle: 'Zombie Wallet',
+    path: 'https://ipfs.io/ipfs/QmcvagniUfh9k8Ks42pJPnDicHBGSkFgLB6dcUbJKnTB4p',
     type: 'image',
     address: {
       56: '0x32c5ec65beB8482b5c727A0E3A352F8E330eb312',
@@ -22,11 +82,11 @@ const spawningPools: SpawningPool[] = [
       additionalDetails: [
         {
           name: 'Project website',
-          url: tokens.wnow.projectLink
+          url: tokens.wnow.projectLink,
         },
         {
           name: 'Telegram',
-          url: 'https://t.me/WalletNow'
+          url: 'https://t.me/WalletNow',
         },
       ],
     },
@@ -39,6 +99,7 @@ const spawningPools: SpawningPool[] = [
     pcsVersion: 'v2',
     liquidityDetails: '',
     isNew: false,
+    color: "rgb(0, 150, 255)",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -59,8 +120,8 @@ const spawningPools: SpawningPool[] = [
   {
     id: 3,
     name: 'Koala Defi Legendary',
-    subtitle: "Nightmare Fuel Karen",
-    path: "https://ipfs.io/ipfs/QmaTXD2A7dfTaMhGzDU9ubFwVS79GF9EPMRFkGc6G9XEHf",
+    subtitle: 'Nightmare Fuel Karen',
+    path: 'https://ipfs.io/ipfs/QmaTXD2A7dfTaMhGzDU9ubFwVS79GF9EPMRFkGc6G9XEHf',
     type: 'image',
     address: {
       56: '0x14422173F2EA692Ae2e27c77a9bf5DB58b38b457',
@@ -73,11 +134,11 @@ const spawningPools: SpawningPool[] = [
       additionalDetails: [
         {
           name: 'Project website',
-          url: tokens.nalis.projectLink
+          url: tokens.nalis.projectLink,
         },
         {
           name: 'Telegram',
-          url: 'https://t.me/koaladefichat'
+          url: 'https://t.me/koaladefichat',
         },
       ],
     },
@@ -110,8 +171,8 @@ const spawningPools: SpawningPool[] = [
   {
     id: 2,
     name: 'Main Street Legendary',
-    subtitle: "Block Party",
-    path: "https://storage.googleapis.com/rug-zombie/Main%20Street.png",
+    subtitle: 'Block Party',
+    path: 'https://storage.googleapis.com/rug-zombie/Main%20Street.png',
     type: 'image',
     address: {
       56: '0x0af40D42F805112ECc40b0148c1221eDc8Ce001B',
@@ -124,11 +185,11 @@ const spawningPools: SpawningPool[] = [
       additionalDetails: [
         {
           name: 'Project website',
-          url: tokens.mainst.projectLink
+          url: tokens.mainst.projectLink,
         },
         {
           name: 'Telegram',
-          url: 'https://t.me/buymainstreet'
+          url: 'https://t.me/buymainstreet',
         },
       ],
     },
@@ -161,8 +222,8 @@ const spawningPools: SpawningPool[] = [
   {
     id: 1,
     name: 'Euler Tools Legendary',
-    subtitle: "Leonhard Euler's Day Off",
-    path: "images/rugZombie/Leonhard Euler's Day Off.gif",
+    subtitle: 'Leonhard Euler\'s Day Off',
+    path: 'images/rugZombie/Leonhard Euler\'s Day Off.gif',
     type: 'image',
     address: {
       56: '0x637810116bfdEcA4bB38c61D9FeBC5911440B0eF',
@@ -175,7 +236,7 @@ const spawningPools: SpawningPool[] = [
       additionalDetails: [
         {
           name: 'Project website',
-          url: tokens.euler.projectLink
+          url: tokens.euler.projectLink,
         },
         {
           name: 'Twitter',
@@ -183,12 +244,12 @@ const spawningPools: SpawningPool[] = [
         },
         {
           name: 'Telegram',
-          url: 'https://t.me/eulertools'
+          url: 'https://t.me/eulertools',
         },
         {
           name: 'Medium Post',
-          url: 'https://rugzombie.medium.com/new-spawning-pool-euler-tools-a07b095a9846'
-        }
+          url: 'https://rugzombie.medium.com/new-spawning-pool-euler-tools-a07b095a9846',
+        },
       ],
     },
     withdrawalCooldown: '3 days',
@@ -200,6 +261,7 @@ const spawningPools: SpawningPool[] = [
     pcsVersion: 'v2',
     liquidityDetails: '',
     isNew: false,
+    color: "rgb(0, 150, 255)",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -234,7 +296,7 @@ const spawningPools: SpawningPool[] = [
       additionalDetails: [
         {
           name: 'Project website',
-          url: 'https://www.gorillafi.com/'
+          url: 'https://www.gorillafi.com/',
         },
         {
           name: 'Podcast with project founder',
@@ -242,12 +304,12 @@ const spawningPools: SpawningPool[] = [
         },
         {
           name: 'Telegram',
-          url: 'https://t.me/GorillaFi'
+          url: 'https://t.me/GorillaFi',
         },
         {
           name: 'Medium post',
-          url: 'https://rugzombie.medium.com/first-spawn-gorilla-fi-g-fi-f16a234047f7'
-        }
+          url: 'https://rugzombie.medium.com/first-spawn-gorilla-fi-g-fi-f16a234047f7',
+        },
       ],
 
     },
@@ -260,6 +322,7 @@ const spawningPools: SpawningPool[] = [
     pcsVersion: 'v1',
     liquidityDetails: '',
     isNew: false,
+    color: "rgb(0, 150, 255)",
     userInfo: {
       paidUnlockFee: false,
       tokenWithdrawalDate: 0,
@@ -276,7 +339,7 @@ const spawningPools: SpawningPool[] = [
       withdrawCooldown: 0,
       nftRevivalTime: 0,
     },
-  }
+  },
 ]
 
 export default spawningPools

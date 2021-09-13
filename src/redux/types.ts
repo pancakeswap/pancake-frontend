@@ -149,6 +149,7 @@ export interface SpawningPool {
   pcsVersion: string,
   stakingToken: string,
   liquidityDetails: string,
+  color?: string,
   userInfo: SpawningUserInfo,
   poolInfo: SpawningPoolInfo,
 }

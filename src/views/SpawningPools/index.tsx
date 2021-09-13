@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react'
 import PageHeader from 'components/PageHeader'
-import { Flex, Heading } from '@rug-zombie-libs/uikit'
+import { Flex, Heading, LinkExternal } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getDrFrankensteinAddress, getSpawningPoolAddress } from 'utils/addressHelpers'
 import Page from '../../components/layout/Page'
@@ -66,6 +66,10 @@ const SpawningPools: React.FC = () => {
             <Heading size='md' color='text'>
               Earn partner project tokens and NFTs by staking $ZMBE
             </Heading>
+            <br/>
+            <LinkExternal href="https://rugzombie.medium.com/happy-spawntemberfest-eca586d78b6b">
+              Spawntemberfest release schedule
+            </LinkExternal>
           </Flex>
         </Flex>
       </PageHeader>

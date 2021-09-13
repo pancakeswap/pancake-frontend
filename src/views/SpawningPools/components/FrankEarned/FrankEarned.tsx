@@ -14,7 +14,7 @@ interface FrankEarnedProps {
 }
 
 const FrankEarned: React.FC<FrankEarnedProps> = ({ id }) => {
-  const { userInfo: { pendingReward }, rewardToken } = spawningPool(id)
+  const { userInfo: { pendingReward }, rewardToken, color } = spawningPool(id)
   const spawningPoolContract = useSpawningPool(id)
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()
@@ -30,7 +30,7 @@ const FrankEarned: React.FC<FrankEarnedProps> = ({ id }) => {
   return (
     <div className='frank-card'>
       <div className='small-text'>
-        <span className={rewardToken === tokens.mainst ? 'green-color' : 'blue-color'}>{rewardToken.symbol} </span>
+        <span style={{color: color || "rgb(204, 246, 108)" }}>{rewardToken.symbol} </span>
         <span className='white-color'>EARNED</span>
       </div>
       <div className='space-between'>

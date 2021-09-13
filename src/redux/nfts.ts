@@ -402,6 +402,18 @@ const nfts: Nft[] = [
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 33,
+    name: 'Crypto Mutant Zombie',
+    symbol: 'MUTANT',
+    description: 'This ape is never bored.',
+    address: '0xDB47182F403114872b8d219cc54Ad68a08a15d1D',
+    totalSupply: BIG_ZERO,
+    path: "https://storage.googleapis.com/rug-zombie/Zombi_Monkey-min.jpg",
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts

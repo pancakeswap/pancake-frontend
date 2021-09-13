@@ -254,6 +254,15 @@ const tokens = {
     decimals: 18,
     projectLink: '',
   },
+  mkc: {
+    symbol: 'MKC',
+    address: {
+      56: '0x92cc2c999ade41c71d1c8136d5b57d12564e045f',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.milkyway.games/',
+  },
   txl: {
     symbol: 'TXL',
     address: {
