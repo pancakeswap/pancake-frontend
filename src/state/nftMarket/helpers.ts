@@ -2,12 +2,10 @@ import { request, gql } from 'graphql-request'
 import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 
 export const getCollectionsApi = async () => {
-  // Collections endpoint is not ready yet
-  // When it's ready, replace this line with it and [json.data] by json.data
-  const res = await fetch(`${API_NFT}/collection/0x60935f36e4631f73f0f407e68642144e07ac7f5e`)
+  const res = await fetch(`${API_NFT}/collections`)
   if (res.ok) {
     const json = await res.json()
-    return [json.data]
+    return json.data
   }
   return []
 }
