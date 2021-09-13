@@ -1,73 +1,74 @@
 import { FooterLinkType } from '@pancakeswap/uikit'
+import { ContextApi } from 'contexts/Localization/types'
 
-export const footerLinks: FooterLinkType[] = [
+export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
   {
-    label: 'About',
+    label: t('About'),
     items: [
       {
-        label: 'Contact',
+        label: t('Contact'),
         href: 'https://docs.pancakeswap.finance/contact-us',
       },
       {
-        label: 'Blog',
+        label: t('Blog'),
         href: 'https://pancakeswap.medium.com/',
       },
       {
-        label: 'Community',
+        label: t('Community'),
         href: 'https://docs.pancakeswap.finance/contact-us/telegram',
       },
       {
-        label: 'CAKE',
+        label: t('CAKE Token'),
         href: 'https://docs.pancakeswap.finance/tokenomics/cake',
       },
       {
         label: '—',
       },
       {
-        label: 'Online Store',
+        label: t('Online Store'),
         href: 'https://pancakeswap.creator-spring.com/',
         isHighlighted: true,
       },
     ],
   },
   {
-    label: 'Help',
+    label: t('Help'),
     items: [
       {
-        label: 'Customer',
+        label: t('Customer Support'),
         href: 'https://docs.pancakeswap.finance/contact-us/customer-support',
       },
       {
-        label: 'Troubleshooting',
+        label: t('Troubleshooting'),
         href: 'https://docs.pancakeswap.finance/help/troubleshooting',
       },
       {
-        label: 'Guides',
+        label: t('Guides'),
         href: 'https://docs.pancakeswap.finance/get-started',
       },
     ],
   },
   {
-    label: 'Developers',
+    label: t('Developers'),
     items: [
       {
-        label: 'Github',
+        label: t('Github'),
         href: 'https://github.com/pancakeswap',
       },
       {
-        label: 'Documentation',
+        label: t('Documentation'),
         href: 'https://docs.pancakeswap.finance',
       },
       {
-        label: 'Bug Bounty',
+        label: t('Bug Bounty'),
         href: 'https://app.gitbook.com/@pancakeswap-1/s/pancakeswap/code/bug-bounty',
       },
       {
-        label: 'Audits',
+        label: t('Audits'),
         href: 'https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited',
       },
       {
-        label: 'Careers',
+        label: t('Careers'),
         href: 'https://docs.pancakeswap.finance/hiring/become-a-chef',
       },
     ],
