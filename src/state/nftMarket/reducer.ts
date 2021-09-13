@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getCollections, getNftsMetadata, getNftsMarketData } from './helpers'
+import { getCollectionsApi, getCollectionsSg, getNftsMetadata, getNftsMarketData } from './helpers'
 import { State, Collection, NFT } from './types'
 
 const initialState: State = {
+  isInitializing: true,
   data: {
     collections: {},
     nfts: {},
@@ -11,8 +12,27 @@ const initialState: State = {
 }
 
 export const fetchCollections = createAsyncThunk<{ [key: string]: Collection }>('nft/fetchCollections', async () => {
-  const collections = await getCollections()
-  return collections.reduce((prev, current) => ({ ...prev, [current.id]: { ...current, nfts: [] } }), {})
+  const collections = await getCollectionsApi()
+  const collectionsMarket = await getCollectionsSg()
+  const collectionsMarketObj = collectionsMarket.reduce(
+    (prev, current) => ({ ...prev, [current.id]: { ...current } }),
+    {},
+  )
+
+  return collections.reduce((prev, current) => {
+    const collectionMarket = collectionsMarketObj[current.address]
+    return {
+      ...prev,
+      [current.address]: {
+        ...current,
+        active: collectionMarket.active,
+        totalVolumeBNB: collectionMarket.totalVolumeBNB,
+        numberTokensListed: collectionMarket.numberTokensListed,
+        tradingFee: collectionMarket.tradingFee,
+        creatorFee: collectionMarket.creatorFee,
+      },
+    }
+  }, {})
 })
 
 export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
@@ -36,6 +56,7 @@ export const NftMarket = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchCollections.fulfilled, (state, action) => {
       state.data.collections = action.payload
+      state.isInitializing = false
     })
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       state.data.nfts[action.meta.arg] = action.payload
