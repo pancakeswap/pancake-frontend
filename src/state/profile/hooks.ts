@@ -11,7 +11,9 @@ export const useFetchProfile = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchProfile(account))
+    if (account) {
+      dispatch(fetchProfile(account))
+    }
   }, [account, dispatch])
 }
 
