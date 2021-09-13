@@ -1,48 +1,43 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { random } from 'lodash'
-import { useFetchCollections } from 'state/nftMarket/hooks'
-import Page from 'components/Layout/Page'
-import { MinMaxFilter, ListFilter } from 'components/Filters'
-import { Item } from 'components/Filters/ListFilter/styles'
+import React, { lazy } from 'react'
+import { Route, useRouteMatch } from 'react-router-dom'
+import { useFetchCollections, useGetNFTInitializationState } from 'state/nftMarket/hooks'
+import PageLoader from 'components/Loader/PageLoader'
+import { NFTMarketInitializationState } from 'state/nftMarket/types'
 
-const exampleList: Item[] = [
-  { image: '/images/collections/pancake-bunnies-avatar.png', label: 'Collection Name', count: random(1, 50) },
-  { label: 'Smiley', count: random(1, 50) },
-  { label: 'Big', count: random(1, 50) },
-  { label: 'Teeth', count: random(1, 50) },
-  { label: 'Cigar', count: random(1, 50) },
-  { label: 'Lollipop', count: random(1, 50) },
-  { label: 'Ears', count: random(1, 50) },
-  { label: 'Glasses', count: random(1, 50) },
-  { label: 'Frown', count: random(1, 50) },
-  { label: 'Zombie', count: random(1, 50) },
-  { label: 'Bazooka', count: random(1, 50) },
-]
+const Home = lazy(() => import('./Home'))
+const NftProfile = lazy(() => import('./Profile'))
+const Collectible = lazy(() => import('./Collectible'))
+const CollectibleOverview = lazy(() => import('./Collectibles'))
+const IndividualNFTPage = lazy(() => import('./IndividualNFTPage'))
 
 const Market = () => {
-  const handleApply = (min: number, max: number) => {
-    console.log(min, max)
-  }
-
-  const handleListApply = (items: Item[]) => {
-    console.log(items)
-  }
+  const { path } = useRouteMatch()
+  const initializationState = useGetNFTInitializationState()
 
   useFetchCollections()
 
+  if (initializationState !== NFTMarketInitializationState.INITIALIZED) {
+    return <PageLoader />
+  }
+
   return (
-    <Page>
-      <Link to="/nft/market/collectibles">Collectibles</Link>
-      <br />
-      <Link to="/nft/market/profile">Profile</Link>
-      <br />
-      <Link to="/nft/market/item/7">Individual NFT page</Link>
-      <br />
-      <br />
-      <MinMaxFilter title="Price" min={1} max={100} onApply={handleApply} />
-      <ListFilter title="Attribute" items={exampleList} onApply={handleListApply} />
-    </Page>
+    <>
+      <Route exact path={path}>
+        <Home />
+      </Route>
+      <Route exact path={`${path}/collectibles`}>
+        <CollectibleOverview />
+      </Route>
+      <Route path={`${path}/collectibles/:slug`}>
+        <Collectible />
+      </Route>
+      <Route path={`${path}/profile`}>
+        <NftProfile />
+      </Route>
+      <Route exact path={`${path}/item/:id`}>
+        <IndividualNFTPage />
+      </Route>
+    </>
   )
 }
 
