@@ -1490,5 +1490,9 @@
   "Manage Yours": "Manage Yours",
   "Properties": "Properties",
   "Bunny id": "Bunny id",
-  "More from this collection": "More from this collection"
+  "More from this collection": "More from this collection",
+  "Apply (%num%)": "Apply (%num%)",
+  "Apply": "Apply",
+  "Attributes": "Attributes",
+  "Min": "Min"
 }
