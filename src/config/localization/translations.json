@@ -1124,7 +1124,6 @@
   "Your transaction will revert if it is pending for more than this long.": "Your transaction will revert if it is pending for more than this long.",
   "minutes": "minutes",
   "Token Amount": "Token Amount",
-  "Balance: %amount%": "Balance: %amount%",
   "LP tokens in your wallet": "LP tokens in your wallet",
   "Pooled %asset%": "Pooled %asset%",
   "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.": "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",

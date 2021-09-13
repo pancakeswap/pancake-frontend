@@ -96,8 +96,8 @@ export default function CurrencyInputPanel({
               <Text fontSize="14px">{translatedLabel}</Text>
               {account && (
                 <Text onClick={onMax} fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
-                  {!hideBalance && !!currency && selectedCurrencyBalance
-                    ? t('Balance: %amount%', { amount: selectedCurrencyBalance?.toSignificant(6) ?? '' })
+                  {!hideBalance && !!currency
+                    ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
                     : ' -'}
                 </Text>
               )}
