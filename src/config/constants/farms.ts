@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 429,
+    lpSymbol: 'CHESS-USDC LP',
+    lpAddresses: {
+      97: '',
+      56: '0x1472976e0b97f5b2fc93f1fff14e2b5c4447b64f',
+    },
+    token: serializedTokens.chess,
+    quoteToken: serializedTokens.usdc,
+  },
+  {
     pid: 447,
     lpSymbol: 'GNT-BNB LP',
     lpAddresses: {
@@ -389,16 +399,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.trx,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 429,
-    lpSymbol: 'CHESS-USDC LP',
-    lpAddresses: {
-      97: '',
-      56: '0x1472976e0b97f5b2fc93f1fff14e2b5c4447b64f',
-    },
-    token: serializedTokens.chess,
-    quoteToken: serializedTokens.usdc,
   },
   {
     pid: 428,
