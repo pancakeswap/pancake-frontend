@@ -1,30 +1,13 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Box, Card, CardBody, CardProps, Flex, Text } from '@pancakeswap/uikit'
+import { Box, CardBody, CardProps, Flex, Text } from '@pancakeswap/uikit'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import PreviewImage from './PreviewImage'
-import { CostLabel, MetaRow, ProfileNftTag, SellingNftTag, WalletNftTag } from './styles'
+import { CostLabel, MetaRow, ProfileNftTag, SellingNftTag, StyledCollectibleCard, WalletNftTag } from './styles'
 import { Collectible } from './types'
 
 export interface CollectibleCardProps extends CardProps {
   collectible: Collectible
 }
-
-const StyledCollectibleCard = styled(Card)`
-  border-radius: 8px;
-  transition: opacity 200ms;
-
-  & > div {
-    border-radius: 8px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    &:hover {
-      cursor: pointer;
-      opacity: 0.6;
-    }
-  }
-`
 
 const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible, ...props }) => {
   const { name, status, cost, lowestCost, nft } = collectible
