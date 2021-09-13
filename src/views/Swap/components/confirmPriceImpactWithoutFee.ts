@@ -9,7 +9,7 @@ import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 
  * @param t Translation
  */
 export default function confirmPriceImpactWithoutFee(priceImpactWithoutFee: Percent, t: ContextApi['t']): boolean {
-  if (priceImpactWithoutFee.lessThan(PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN)) {
+  if (!priceImpactWithoutFee.lessThan(PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN)) {
     const confirmWord = 'confirm'
     return (
       // eslint-disable-next-line no-alert
