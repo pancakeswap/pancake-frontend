@@ -3,8 +3,8 @@ import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
 import map from 'lodash/map'
-import { NftTokenSg, ApiCollections, TokenIdWithCollectionAddress, NFT } from './types'
-import { getBaseNftsFields } from './queries'
+import { NftTokenSg, ApiCollections, TokenIdWithCollectionAddress, NFT, UserActivity } from './types'
+import { getBaseNftFields, getBaseTransactionFields } from './queries'
 
 /**
  * Fetch static data from all collections using the API
@@ -77,7 +77,7 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
           collection(id: $collectionAddress) {
             id
             NFTs {
-             ${getBaseNftsFields()}
+             ${getBaseNftFields()}
             }
           }
         }
@@ -114,23 +114,9 @@ export const getNftsMarketData = async (where = {}): Promise<NftTokenSg[]> => {
       gql`
         query getNftsMarketData($where: NFT_filter) {
           nfts(where: $where) {
-            ${getBaseNftsFields()}
-            collection {
-              id
-            }
+            ${getBaseNftFields()}
             transactionHistory {
-              id
-              block
-              timestamp
-              askPrice
-              netPrice
-              buyer {
-                id
-              }
-              seller {
-                id
-              }
-              withBNB
+              ${getBaseTransactionFields()}
             }
           }
         }
@@ -155,6 +141,57 @@ export const getNftsMarketData = async (where = {}): Promise<NftTokenSg[]> => {
   } catch (error) {
     console.error('Failed to fetch NFTs market data', error)
     return []
+  }
+}
+
+/**
+ * Fetch user trading data for buyTradeHistory, sellTradeHistory and askOrderHistory from the Subgraph
+ * @param where a User_filter where condition
+ * @returns a UserActivity object
+ */
+export const getUserActivity = async (where = {}): Promise<UserActivity> => {
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getUserActivity($where: User_filter) {
+          users(where: $where) {
+            buyTradeHistory(orderBy: timestamp) {
+              ${getBaseTransactionFields()}
+              NFT {
+                ${getBaseNftFields()}
+              }
+            }
+            sellTradeHistory(orderBy: timestamp) {
+              ${getBaseTransactionFields()}
+              NFT {
+                ${getBaseNftFields()}
+              }
+            }
+            askOrderHistory(orderBy: timestamp) {
+              id
+              block
+              timestamp
+              orderType
+              askPrice
+              NFT {
+                ${getBaseNftFields()}
+              }
+            }
+          }
+        }
+      `,
+      { where },
+    )
+
+    return res.users[0] || { askOrderHistory: [], buyTradeHistory: [], sellTradeHistory: [] }
+  } catch (error) {
+    console.error('Failed to fetch user Activity', error)
+    return {
+      askOrderHistory: [],
+      buyTradeHistory: [],
+      sellTradeHistory: [],
+    }
   }
 }
 
@@ -195,6 +232,7 @@ export const fetchWalletTokenIdsForCollections = async (
     const tokensWithCollectionAddress = tokenIds.map((tokenId) => {
       return { tokenId, collectionAddress }
     })
+
     return tokensWithCollectionAddress
   })
 
