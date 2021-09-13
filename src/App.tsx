@@ -51,7 +51,6 @@ const PoolFinder = lazy(() => import('./views/PoolFinder'))
 const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 const Info = lazy(() => import('./views/Info'))
 const NftMarket = lazy(() => import('./views/Nft/market'))
-const NftProfile = lazy(() => import('./views/Nft/market/Profile'))
 const ProfileCreation = lazy(() => import('./views/ProfileCreation'))
 
 // This config is required for number formatting
@@ -126,9 +125,6 @@ const App: React.FC = () => {
             </Route>
 
             {/* NFT */}
-            <Route path="/nft/market/profile">
-              <NftProfile />
-            </Route>
             <Route path="/nft/market">
               <NftMarket />
             </Route>
