@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.52.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.51.0...@pancakeswap/uikit@0.52.0) (2021-09-13)
+
+
+### Features
+
+* **rework navigation:** Rework top and bottom navigation ([#263](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/263)) ([67b4e53](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/67b4e53d12d442cf596a969208b45097a0066534)), closes [#261](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/261) [#264](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/264) [#268](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/268)
+
+
+
+
+
 # [0.51.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.50.3...@pancakeswap/uikit@0.51.0) (2021-09-09)
 
 
