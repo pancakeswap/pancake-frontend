@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react'
 import {
+  Card,
   BinanceIcon,
   Box,
   BoxProps,
@@ -13,11 +14,28 @@ import {
 import { Price } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import { multiplyPriceByAmount } from 'utils/prices'
+import styled from 'styled-components'
 
 export const Footer: React.FC<BoxProps> = ({ children, ...props }) => (
   <Box borderTop={[null, null, null, '1px solid']} borderColor="cardBorder" pt="8px" {...props}>
     {children}
   </Box>
+)
+
+interface BNBAmountLabelProps extends FlexProps {
+  amount: number
+}
+
+export const BNBAmountLabel: React.FC<BNBAmountLabelProps> = ({ amount, ...props }) => (
+  <Flex alignItems="center" {...props}>
+    <BinanceIcon width="16px" mx="4px" />
+    <Text fontWeight="600">
+      {amount.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 4,
+      })}
+    </Text>
+  </Flex>
 )
 
 interface CostLabelProps extends FlexProps {
@@ -34,13 +52,7 @@ export const CostLabel: React.FC<CostLabelProps> = ({ cost, bnbBusdPrice, ...pro
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })})`}</Text>
-      <BinanceIcon width="16px" mx="4px" />
-      <Text fontWeight="600">
-        {cost.toLocaleString(undefined, {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 4,
-        })}
-      </Text>
+      <BNBAmountLabel amount={cost} />
     </Flex>
   )
 }
@@ -101,3 +113,19 @@ export const SellingNftTag: React.FC<NftTagProps> = (props) => {
     </NftTag>
   )
 }
+
+export const StyledCollectibleCard = styled(Card)`
+  border-radius: 8px;
+  transition: opacity 200ms;
+
+  & > div {
+    border-radius: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    &:hover {
+      cursor: pointer;
+      opacity: 0.6;
+    }
+  }
+`
