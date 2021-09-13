@@ -20,7 +20,8 @@ export const fetchCollections = createAsyncThunk<{ [key: string]: Collection }>(
   )
 
   return collections.reduce((prev, current) => {
-    const collectionMarket = collectionsMarketObj[current.address]
+    // TODO Remove lower case when the subgraph support checksumed addresses
+    const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
     return {
       ...prev,
       [current.address]: {
