@@ -4,8 +4,15 @@ import { Nft as NftMeta } from 'config/constants/nfts/types'
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
 
+// TODO: Handle the error state on the UI
+export enum NFTMarketInitializationState {
+  UNINITIALIZED,
+  INITIALIZED,
+  ERROR,
+}
+
 export interface State {
-  isInitializing: boolean
+  initializationState: NFTMarketInitializationState
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NFT[]> // string is the address
