@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from "react";
 import noop from "lodash/noop";
-import { BrowserRouter, Link, MemoryRouter } from "react-router-dom";
-import Flex from "../../components/Box/Flex";
+import React, { useState } from "react";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import Box from "../../components/Box/Box";
-import Heading from "../../components/Heading/Heading";
-import Text from "../../components/Text/Text";
-import Input from "../../components/Input/Input";
+import Flex from "../../components/Box/Flex";
 import Button from "../../components/Button/Button";
-import { Language } from "./types";
-import { links } from "./config";
-import { MenuEntry } from "./components/MenuEntry";
-import UserMenu from "./components/UserMenu";
-import { UserMenuDivider, UserMenuItem } from "./components/UserMenu/styles";
-import { variants, Variant } from "./components/UserMenu/types";
-import Menu from "./Menu";
-import { CogIcon, LanguageCurrencyIcon, LogoutIcon } from "../../components/Svg";
 import IconButton from "../../components/Button/IconButton";
+import DropdownMenu from "../../components/DropdownMenu/DropdownMenu";
+import Heading from "../../components/Heading/Heading";
+import Input from "../../components/Input/Input";
+import { ChevronDownIcon, CogIcon, LanguageCurrencyIcon } from "../../components/Svg";
+import Text from "../../components/Text/Text";
 import { Modal, ModalProps, useModal } from "../Modal";
+import { LabelText, StyledUserMenu } from "./components/UserMenu";
+import MenuIcon from "./components/UserMenu/MenuIcon";
+import { Variant, variants } from "./components/UserMenu/types";
+import { links, userMenulinks } from "./config";
+import { footerLinks } from "../../components/Footer/config";
+import Menu from "./Menu";
+import { Language, NavProps } from "./types";
 
 export default {
   title: "Widgets/Menu",
   component: Menu,
-  argTypes: {},
+  argTypes: {
+    activeItem: {
+      options: ["Trade", "Earn", "Win"],
+      control: { type: "select" },
+    },
+  },
 };
 
 const langs: Language[] = [...Array(20)].map((_, i) => ({
@@ -34,34 +40,18 @@ const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: 
   variant = variants.DEFAULT,
   text,
   account = "0x8b017905DC96B38f817473dc885F84D4C76bC113",
-}) => (
-  <UserMenu variant={variant} text={text} account={account}>
-    <UserMenuItem type="button" onClick={noop}>
-      Wallet
-    </UserMenuItem>
-    <UserMenuItem type="button">Transactions</UserMenuItem>
-    <UserMenuDivider />
-    <UserMenuItem type="button" disabled>
-      Dashboard
-    </UserMenuItem>
-    <UserMenuItem type="button" disabled>
-      Portfolio
-    </UserMenuItem>
-    <UserMenuItem as={Link} to="/profile">
-      React Router Link
-    </UserMenuItem>
-    <UserMenuItem as="a" href="https://pancakeswap.finance" target="_blank">
-      Link
-    </UserMenuItem>
-    <UserMenuDivider />
-    <UserMenuItem as="button" onClick={noop}>
-      <Flex alignItems="center" justifyContent="space-between" width="100%">
-        Disconnect
-        <LogoutIcon />
-      </Flex>
-    </UserMenuItem>
-  </UserMenu>
-);
+}) => {
+  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+  return (
+    <DropdownMenu items={userMenulinks} py="12px">
+      <StyledUserMenu>
+        <MenuIcon avatarSrc="" variant={variant} />
+        <LabelText title={text || account}>{text || accountEllipsis}</LabelText>
+        <ChevronDownIcon color="text" width="24px" />
+      </StyledUserMenu>
+    </DropdownMenu>
+  );
+};
 
 const GlobalMenuModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
   <Modal title={title} onDismiss={onDismiss} {...props}>
@@ -86,55 +76,31 @@ const GlobalMenuComponent: React.FC = () => {
   );
 };
 
-// This hook is used to simulate a props change, and force a re rendering
-const useProps = () => {
-  const [props, setProps] = useState({
-    account: "0xbdda50183d817c3289f895a4472eb475967dc980",
-    login: noop,
-    logout: noop,
-    isDark: false,
-    toggleTheme: noop,
-    langs,
-    setLang: noop,
-    currentLang: "EN",
-    cakePriceUsd: 0.023158668932877668,
-    links,
-    profile: null,
-    userMenu: <UserMenuComponent account="0xbdda50183d817c3289f895a4472eb475967dc980" />,
-    globalMenu: <GlobalMenuComponent />,
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProps({
-        account: "0xbdda50183d817c3289f895a4472eb475967dc980",
-        login: noop,
-        logout: noop,
-        isDark: false,
-        toggleTheme: noop,
-        langs,
-        setLang: noop,
-        currentLang: "EN",
-        cakePriceUsd: 0.023158668932877668,
-        links,
-        profile: null,
-        userMenu: <UserMenuComponent account="0xbdda50183d817c3289f895a4472eb475967dc980" />,
-        globalMenu: <GlobalMenuComponent />,
-      });
-    }, 2000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  return props;
+const defaultProps = {
+  account: "0xbdda50183d817c3289f895a4472eb475967dc980",
+  login: noop,
+  logout: noop,
+  isDark: false,
+  toggleTheme: noop,
+  langs,
+  setLang: noop,
+  currentLang: "EN",
+  cakePriceUsd: 0.023158668932877668,
+  links,
+  subLinks: links[0].items,
+  footerLinks,
+  profile: null,
+  userMenu: <UserMenuComponent account="0xbdda50183d817c3289f895a4472eb475967dc980" />,
+  globalMenu: <GlobalMenuComponent />,
+  activeItem: "/swap",
+  activeSubItem: "https://exchange.pancakeswap.finance",
+  buyCakeLabel: "Buy CAKE",
 };
 
-export const Connected: React.FC = () => {
-  const props = useProps();
+const ConnectedTemplate: React.FC<NavProps> = (args) => {
   return (
     <BrowserRouter>
-      <Menu {...props}>
+      <Menu {...args}>
         <div>
           <Heading as="h1" mb="8px">
             Page body
@@ -157,11 +123,22 @@ export const Connected: React.FC = () => {
     </BrowserRouter>
   );
 };
+export const Connected = ConnectedTemplate.bind({});
+Connected.args = defaultProps;
 
 export const NotConnected: React.FC = () => {
   return (
     <BrowserRouter>
-      <Menu isDark={false} toggleTheme={noop} langs={langs} setLang={noop} currentLang="EN" links={links}>
+      <Menu
+        isDark={false}
+        toggleTheme={noop}
+        langs={langs}
+        setLang={noop}
+        currentLang="EN"
+        links={links}
+        subLinks={subLinks}
+        footerLinks={footerLinks}
+      >
         <div>
           <h1>Page body</h1>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
@@ -182,23 +159,22 @@ export const NotConnected: React.FC = () => {
 export const WithoutConnectButton: React.FC = () => {
   return (
     <BrowserRouter>
-      <Menu isDark={false} toggleTheme={noop} langs={langs} setLang={noop} currentLang="EN" links={links}>
+      <Menu
+        isDark={false}
+        toggleTheme={noop}
+        langs={langs}
+        setLang={noop}
+        currentLang="EN"
+        links={links}
+        footerLinks={footerLinks}
+        subLinks={subLinks}
+      >
         <div>
           <h1>No connect button on top</h1>
           This variant is needed for info site
         </div>
       </Menu>
     </BrowserRouter>
-  );
-};
-
-export const MenuEntryComponent: React.FC = () => {
-  return (
-    <Flex justifyContent="space-between" p="16px" style={{ backgroundColor: "wheat" }}>
-      <MenuEntry>Default</MenuEntry>
-      <MenuEntry secondary>Secondary</MenuEntry>
-      <MenuEntry isActive>isActive</MenuEntry>
-    </Flex>
   );
 };
 
@@ -213,6 +189,8 @@ export const WithSubmenuSelected: React.FC = () => {
         currentLang="EN"
         cakePriceUsd={0.23158668932877668}
         links={links}
+        subLinks={subLinks}
+        footerLinks={footerLinks}
       >
         <div>
           <Heading as="h1" mb="8px">

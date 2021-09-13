@@ -8,7 +8,7 @@ import { UserMenuProps, variants } from "./types";
 import MenuIcon from "./MenuIcon";
 import { UserMenuItem } from "./styles";
 
-const StyledUserMenu = styled(Flex)`
+export const StyledUserMenu = styled(Flex)`
   align-items: center;
   background-color: ${({ theme }) => theme.colors.tertiary};
   border-radius: 16px;
@@ -25,7 +25,7 @@ const StyledUserMenu = styled(Flex)`
   }
 `;
 
-const LabelText = styled.div`
+export const LabelText = styled.div`
   color: ${({ theme }) => theme.colors.text};
   display: none;
   font-weight: 600;
