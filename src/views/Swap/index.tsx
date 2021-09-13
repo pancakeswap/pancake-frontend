@@ -168,7 +168,7 @@ export default function Swap({ history }: RouteComponentProps) {
   const [singleHopOnly] = useUserSingleHopOnly()
 
   const handleSwap = useCallback(() => {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
+    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
       return
     }
     if (!swapCallback) {
@@ -187,7 +187,7 @@ export default function Swap({ history }: RouteComponentProps) {
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm])
+  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)

@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Trade, TradeType } from '@pancakeswap/sdk'
 import { Button, Text, AutoRenewIcon } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { Field } from 'state/swap/actions'
 import {
   computeSlippageAdjustedAmounts,
@@ -36,6 +37,7 @@ export default function SwapModalFooter({
   swapErrorMessage: string | undefined
   disabledConfirm: boolean
 }) {
+  const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
   const slippageAdjustedAmounts = useMemo(
     () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
@@ -48,7 +50,7 @@ export default function SwapModalFooter({
     <>
       <SwapModalFooterContainer>
         <RowBetween align="center">
-          <Text fontSize="14px">Price</Text>
+          <Text fontSize="14px">{t('Price')}</Text>
           <Text
             fontSize="14px"
             style={{
@@ -69,10 +71,12 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <Text fontSize="14px">
-              {trade.tradeType === TradeType.EXACT_INPUT ? 'Minimum received' : 'Maximum sold'}
+              {trade.tradeType === TradeType.EXACT_INPUT ? t('Minimum received') : t('Maximum sold')}
             </Text>
             <QuestionHelper
-              text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
+              text={t(
+                'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
+              )}
               ml="4px"
             />
           </RowFixed>
@@ -91,21 +95,24 @@ export default function SwapModalFooter({
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <Text fontSize="14px">Price Impact</Text>
-            <QuestionHelper text="The difference between the market price and your price due to trade size." ml="4px" />
+            <Text fontSize="14px">{t('Price Impact')}</Text>
+            <QuestionHelper
+              text={t('The difference between the market price and your price due to trade size.')}
+              ml="4px"
+            />
           </RowFixed>
           <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <Text fontSize="14px">Liquidity Provider Fee</Text>
+            <Text fontSize="14px">{t('Liquidity Provider Fee')}</Text>
             <QuestionHelper
               text={
                 <>
-                  <Text mb="12px">For each trade a 0.25% fee is paid</Text>
-                  <Text>- 0.17% to LP token holders</Text>
-                  <Text>- 0.03% to the Treasury</Text>
-                  <Text>- 0.05% towards CAKE buyback and burn</Text>
+                  <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: '0.25%' })}</Text>
+                  <Text>- {t('%amount% to LP token holders', { amount: '0.17%' })}</Text>
+                  <Text>- {t('%amount% to the Treasury', { amount: '0.03%' })}</Text>
+                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: '0.05%' })}</Text>
                 </>
               }
               ml="4px"
@@ -126,7 +133,7 @@ export default function SwapModalFooter({
           id="confirm-swap-or-send"
           width="100%"
         >
-          {severity > 2 ? 'Swap Anyway' : 'Confirm Swap'}
+          {severity > 2 ? t('Swap Anyway') : t('Confirm Swap')}
         </Button>
 
         {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
