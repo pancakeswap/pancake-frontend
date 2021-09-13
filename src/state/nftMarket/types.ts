@@ -1,10 +1,11 @@
 import { BigNumberish } from 'ethers'
-import { Collection as CollectionMeta, Nft as NftMeta } from 'config/constants/nfts/types'
+import { Nft as NftMeta } from 'config/constants/nfts/types'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
 
 export interface State {
+  isInitializing: boolean
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NFT[]> // string is the address
@@ -29,15 +30,23 @@ export interface NFT extends NftMeta {
   transactionHistory: Transaction[]
 }
 
-export interface Collection extends CollectionMeta {
+export interface Collection {
   id: string
+  address: string
   name: string
+  description?: string
+  slug: string
   symbol: string
   active: boolean
   totalVolumeBNB: BigNumberish
   numberTokensListed: BigNumberish
   tradingFee: BigNumberish
   creatorFee: BigNumberish
+  image: { original: string; thumbnail: string }
+  owner: string
+  // eslint-disable-next-line camelcase
+  total_supply: BigNumberish
+  verified: boolean
 }
 
 export interface User {
