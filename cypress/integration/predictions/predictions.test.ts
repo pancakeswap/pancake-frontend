@@ -8,6 +8,5 @@ describe('Predictions Page', () => {
     cy.get('#prediction-disclaimer-continue').should('not.be.disabled')
     cy.get('#prediction-disclaimer-continue').click()
     cy.get('#predictions-risk-disclaimer').should('not.exist')
-    cy.get('#prediction-history-button').should('be.visible')
   })
 })
