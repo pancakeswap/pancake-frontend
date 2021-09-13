@@ -14,12 +14,20 @@ export const useFetchCollections = () => {
   }, [dispatch])
 }
 
+export const useGetCollections = () => {
+  return useSelector((state: State) => state.nftMarket.data.collections)
+}
+
 export const useCollectionFromSlug = (slug: string) => {
-  const collections = useSelector((state: State) => state.nftMarket.data.collections)
+  const collections = useGetCollections()
   return find(collections, (collection) => slugify(collection.name) === slug)
 }
 
 export const useNftsFromCollection = (collectionAddress: string) => {
   const collections = useSelector((state: State) => state.nftMarket.data.nfts[collectionAddress])
   return collections
+}
+
+export const useGetNFTInitializationState = () => {
+  return useSelector((state: State) => state.nftMarket.initializationState)
 }
