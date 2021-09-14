@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
         description={collection.description ? <Text color="textSubtle">{t(collection.description)}</Text> : null}
       >
         <StatBox>
-          <StatBoxItem title={t('Items')} stat={formatNumber(totalSupply, 0, 0)} />
+          <StatBoxItem title={t('Items')} stat={formatNumber(ethers.BigNumber.from(totalSupply).toNumber(), 0, 0)} />
           <StatBoxItem title={t('Owners')} stat={formatBigNumber(owners, 0, 0)} />
           <StatBoxItem title={t('Vol. (%symbol%)', { symbol: 'BNB' })} stat={formatBigNumber(volume, 0, 0)} />
         </StatBox>
