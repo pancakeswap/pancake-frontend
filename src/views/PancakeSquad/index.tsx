@@ -1,12 +1,12 @@
-import Page from 'components/Layout/Page'
 import React from 'react'
 import PancakeSquadHeader from './components/Header'
+import { StyledSquadContainer } from './styles'
 
 const PancakeSquad: React.FC = () => {
   return (
-    <Page>
+    <StyledSquadContainer>
       <PancakeSquadHeader />
-    </Page>
+    </StyledSquadContainer>
   )
 }
 
