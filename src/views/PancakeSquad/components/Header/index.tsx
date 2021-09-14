@@ -1,9 +1,13 @@
-import { Box, Button, Flex, Progress, Text, useModal } from '@pancakeswap/uikit'
+import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
+import { Box, Button, Flex, Progress, Text, useModal } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
+import { useNftSaleContract, useProfile } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import React from 'react'
+import useTokenBalance from 'hooks/useTokenBalance'
+import tokens from 'config/constants/tokens'
+import { getBalanceAmount } from 'utils/formatBalance'
 import HeaderBottomWave from '../../assets/HeaderBottomWave'
 import BuyTicketsModal from '../Modals/BuyTickets'
 import ConfirmModal from '../Modals/Confirm'
@@ -14,11 +18,29 @@ import {
   StyledSquadEventContainer,
   StyledSquadHeaderContainer,
 } from './styles'
+import { SaleStatusEnum } from '../../types'
+import { DynamicSaleInfos, FixedSaleInfos } from './types'
 
 const PancakeSquadHeader: React.FC = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const nftSaleContract = useNftSaleContract()
+  const [fixedSaleInfo, setFixedSaleInfo] = useState<FixedSaleInfos>({
+    canClaimGen0: null,
+    maxSupply: null,
+    maxPerAddress: null,
+    pricePerTicket: null,
+    startTimestamp: null,
+  })
+  const [dynamicSaleInfo, setDynamicSaleInfo] = useState<DynamicSaleInfos>({
+    saleStatus: null,
+    totalTicketsDistributed: null,
+  })
+  const { isInitialized, isLoading, profile } = useProfile()
+  const hasProfile = isInitialized && !!profile
+  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useTokenBalance(tokens.cake.address)
+  const userCakeBalance = getBalanceAmount(cakeBalance)
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal title={t('Confirm')} headerBackground={theme.colors.gradients.cardHeader} />,
@@ -33,6 +55,31 @@ const PancakeSquadHeader: React.FC = () => {
       headerBackground={theme.colors.gradients.cardHeader}
     />,
   )
+
+  useEffect(() => {
+    const fetchFixedSaleInfo = async () => {
+      const currentMaxSupply = await nftSaleContract.maxSupply()
+      const currentMaxPerAddress = await nftSaleContract.maxPerAddress()
+      const currentPricePerTicket = await nftSaleContract.pricePerTicket()
+      const currentStartTimestamp = await nftSaleContract.startTimestamp()
+      const currentCanClaimGen0 = await nftSaleContract.canClaimForGen0(account)
+      setFixedSaleInfo({
+        maxSupply: currentMaxSupply,
+        maxPerAddress: currentMaxPerAddress,
+        pricePerTicket: currentPricePerTicket,
+        startTimestamp: currentStartTimestamp,
+        canClaimGen0: currentCanClaimGen0,
+      })
+    }
+    const fetchDynamicSaleInfo = async () => {
+      const currentTotalTicketsDistributed = await nftSaleContract.totalTicketsDistributed()
+      const currentSaleStatus = (await nftSaleContract.currentStatus()) as SaleStatusEnum
+      setDynamicSaleInfo({
+        totalTicketsDistributed: currentTotalTicketsDistributed,
+        saleStatus: currentSaleStatus,
+      })
+    }
+  }, [nftSaleContract, account])
 
   return (
     <StyledSquadHeaderContainer flexDirection="column" alignItems="center">
