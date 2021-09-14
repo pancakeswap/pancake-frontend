@@ -13,9 +13,9 @@ import {
   Collection,
   ApiCollections,
   NFT,
-  NftSubgraphEntity,
   TokenIdWithCollectionAddress,
   NFTMarketInitializationState,
+  NftToken,
 } from './types'
 
 const initialState: State = {
@@ -84,7 +84,7 @@ export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
 )
 
 export const fetchUserNfts = createAsyncThunk<
-  NftSubgraphEntity[],
+  NftToken[],
   { account: string; profileNftWithCollectionAddress: TokenIdWithCollectionAddress; collections: ApiCollections }
 >('nft/fetchUserNfts', async ({ account, profileNftWithCollectionAddress, collections }) => {
   const nftsInWallet = await fetchWalletTokenIdsForCollections(account, collections)
@@ -103,6 +103,8 @@ export const fetchUserNfts = createAsyncThunk<
         collectionAddress: walletNft.collectionAddress,
         metadataUrl: null,
         transactionHistory: null,
+        currentSeller: null,
+        isTradable: null,
       }
     )
   })

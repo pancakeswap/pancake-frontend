@@ -22,7 +22,7 @@ export interface State {
 
 export interface UserNftsState {
   isInitialized: boolean
-  nfts: NftSubgraphEntity[]
+  nfts: NftToken[]
 }
 
 export interface Transaction {
@@ -47,6 +47,8 @@ export interface NftToken {
   currentSeller: string
   isTradable: boolean
   metadataUrl: string
+  collectionAddress?: string
+  transactionHistory?: Transaction[]
 }
 
 export interface NFT {
@@ -60,11 +62,6 @@ export interface NFT {
 export interface TokenIdWithCollectionAddress {
   collectionAddress: string
   tokenId: string
-}
-
-export interface NftSubgraphEntity extends TokenIdWithCollectionAddress {
-  metadataUrl?: string
-  transactionHistory?: Transaction[]
 }
 
 export interface Collection {

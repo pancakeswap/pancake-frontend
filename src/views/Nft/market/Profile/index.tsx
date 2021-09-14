@@ -1,4 +1,5 @@
 import React from 'react'
+import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
 import { useWeb3React } from '@web3-react/core'
@@ -46,11 +47,14 @@ const NftProfile = () => {
       <Page style={{ minHeight: 'auto' }}>
         <Route exact path="/nft/market/profile">
           <span>Profile</span>
-          {userNfts.map((nft) => (
-            <Text key={nft.tokenId}>
-              {nft.tokenId} - {nft.collectionAddress}
-            </Text>
-          ))}
+          {userNfts.map((nft) => {
+            const tokenId = ethers.BigNumber.from(nft.tokenId).toString()
+            return (
+              <Text key={tokenId}>
+                {tokenId} - {nft.collectionAddress}
+              </Text>
+            )
+          })}
         </Route>
         <Route exact path="/nft/market/profile/activity">
           <span>Activity</span>

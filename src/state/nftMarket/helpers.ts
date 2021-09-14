@@ -3,7 +3,7 @@ import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
 import map from 'lodash/map'
-import { NftToken, ApiCollections, NftSubgraphEntity, TokenIdWithCollectionAddress } from './types'
+import { NftToken, ApiCollections, TokenIdWithCollectionAddress } from './types'
 
 /**
  * Fetch static data from all collections using the API
@@ -93,7 +93,7 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
   }
 }
 
-export const getNftsMarketData = async (where = {}): Promise<NftSubgraphEntity[]> => {
+export const getNftsMarketData = async (where = {}): Promise<NftToken[]> => {
   try {
     const res = await request(
       GRAPH_API_NFTMARKET,
@@ -102,6 +102,8 @@ export const getNftsMarketData = async (where = {}): Promise<NftSubgraphEntity[]
           nfts(where: $where) {
             tokenId
             metadataUrl
+            currentSeller
+            isTradable
             collection {
               id
             }
@@ -125,11 +127,13 @@ export const getNftsMarketData = async (where = {}): Promise<NftSubgraphEntity[]
       { where },
     )
 
-    return res.nfts.map((nftRes): NftSubgraphEntity => {
+    return res.nfts.map((nftRes): NftToken => {
       return {
         tokenId: nftRes?.tokenId,
         metadataUrl: nftRes?.metadataUrl,
         transactionHistory: nftRes?.transactionHistory,
+        currentSeller: nftRes?.currentSeller,
+        isTradable: nftRes?.isTradable,
         collectionAddress: nftRes?.collection.id,
       }
     })
