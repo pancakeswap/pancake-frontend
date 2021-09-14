@@ -1,7 +1,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import mapValues from 'lodash/mapValues'
-import { getNftsFromCollectionApi, getNftsFromCollectionSg, getCollectionsApi, getCollectionsSg } from './helpers'
-import { State, Collection, NFT, NFTMarketInitializationState } from './types'
+import {
+  getNftsFromCollectionApi,
+  getNftsFromCollectionSg,
+  getNftsMarketData,
+  fetchWalletTokenIdsForCollections,
+  getCollectionsApi,
+  getCollectionsSg,
+} from './helpers'
+import {
+  State,
+  Collection,
+  ApiCollections,
+  NFT,
+  TokenIdWithCollectionAddress,
+  NFTMarketInitializationState,
+  NftToken,
+} from './types'
 
 const initialState: State = {
   initializationState: NFTMarketInitializationState.UNINITIALIZED,
@@ -9,6 +24,7 @@ const initialState: State = {
     collections: {},
     nfts: {},
     users: {},
+    user: { isInitialized: false, nfts: [] },
   },
 }
 
@@ -67,6 +83,36 @@ export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
   },
 )
 
+export const fetchUserNfts = createAsyncThunk<
+  NftToken[],
+  { account: string; profileNftWithCollectionAddress: TokenIdWithCollectionAddress; collections: ApiCollections }
+>('nft/fetchUserNfts', async ({ account, profileNftWithCollectionAddress, collections }) => {
+  const nftsInWallet = await fetchWalletTokenIdsForCollections(account, collections)
+
+  if (profileNftWithCollectionAddress?.tokenId) {
+    nftsInWallet.push(profileNftWithCollectionAddress)
+  }
+
+  const nftIdsInWallet = nftsInWallet.map((nft) => nft.tokenId)
+  const marketDataForNftsInWallet = await getNftsMarketData({ tokenId_in: nftIdsInWallet })
+  const walletNftsWithMarketData = nftsInWallet.map((walletNft) => {
+    const marketData = marketDataForNftsInWallet.find((marketNft) => marketNft.tokenId === walletNft.tokenId)
+    return (
+      marketData || {
+        tokenId: walletNft.tokenId,
+        collectionAddress: walletNft.collectionAddress,
+        metadataUrl: null,
+        transactionHistory: null,
+        currentSeller: null,
+        isTradable: null,
+      }
+    )
+  })
+
+  const marketDataForNftsOnSale = await getNftsMarketData({ currentSeller: account.toLowerCase() })
+  return [...walletNftsWithMarketData, ...marketDataForNftsOnSale]
+})
+
 export const NftMarket = createSlice({
   name: 'NftMarket',
   initialState,
@@ -78,6 +124,10 @@ export const NftMarket = createSlice({
     })
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       state.data.nfts[action.meta.arg] = action.payload
+    })
+    builder.addCase(fetchUserNfts.fulfilled, (state, action) => {
+      state.data.user.nfts = action.payload
+      state.data.user.isInitialized = true
     })
   },
 })
