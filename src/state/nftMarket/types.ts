@@ -1,14 +1,13 @@
 import { BigNumberish } from 'ethers'
-import { Nft as NftMeta } from 'config/constants/nfts/types'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
 
 // TODO: Handle the error state on the UI
 export enum NFTMarketInitializationState {
-  UNINITIALIZED,
-  INITIALIZED,
-  ERROR,
+  UNINITIALIZED = 'UNINITIALIZED',
+  INITIALIZED = 'INITIALIZED',
+  ERROR = 'ERROR',
 }
 
 export interface State {
@@ -31,10 +30,25 @@ export interface Transaction {
   withBNB: boolean
 }
 
-export interface NFT extends NftMeta {
+interface Image {
+  original: string
+  thumbnail: string
+}
+
+// Return type from subgraph
+export interface NftToken {
   tokenId: BigNumberish
+  currentSeller: string
+  isTradable: boolean
   metadataUrl: string
-  transactionHistory: Transaction[]
+}
+
+export interface NFT {
+  id: BigNumberish
+  name: string
+  description: string
+  image: Image
+  tokens: Record<number, NftToken>
 }
 
 export interface Collection {
@@ -49,11 +63,9 @@ export interface Collection {
   numberTokensListed: BigNumberish
   tradingFee: BigNumberish
   creatorFee: BigNumberish
-  image: { original: string; thumbnail: string }
+  image: Image
   owner: string
-  // TODO Update when API is updated
-  // eslint-disable-next-line camelcase
-  total_supply: BigNumberish
+  totalSupply: BigNumberish
   verified: boolean
 }
 
