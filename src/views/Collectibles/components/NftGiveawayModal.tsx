@@ -38,7 +38,7 @@ const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nfts }) 
   // This is required because the modal exists outside the Router
   const handleClick = () => {
     onDismiss()
-    history.push('/collectibles')
+    history.push('/profile')
   }
 
   useEffect(() => {
