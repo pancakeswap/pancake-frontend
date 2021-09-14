@@ -6,7 +6,7 @@ import { Box } from "../../components/Box";
 import Flex from "../../components/Box/Flex";
 import Footer from "../../components/Footer";
 import MenuItems from "../../components/MenuItems/MenuItems";
-import SubMenuItems from "../../components/SubMenuItems";
+import { SubMenuItems } from "../../components/SubMenuItems";
 import { useMatchBreakpoints } from "../../hooks";
 import CakePrice from "../../components/CakePrice/CakePrice";
 import Logo from "./components/Logo";
