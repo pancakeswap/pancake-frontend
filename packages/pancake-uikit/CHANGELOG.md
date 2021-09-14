@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.53.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.52.0...@pancakeswap/uikit@0.53.0) (2021-09-14)
+
+
+### Features
+
+* **menu rework:** Menu rework adjustments ([#275](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/275)) ([894a2d4](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/894a2d4f71a2d83493dc4dbe6f5706ef21eaaa44))
+
+
+
+
+
 # [0.52.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.51.0...@pancakeswap/uikit@0.52.0) (2021-09-13)
 
 
