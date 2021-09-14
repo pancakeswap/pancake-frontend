@@ -13,7 +13,7 @@
     "lint": "eslint '**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check '**/*.{js,jsx,ts,tsx}'",
     "format:write": "prettier --write '**/*.{js,jsx,ts,tsx}'",
-    "updateLPsAPR": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
+    "updateLPsAPR": "NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "prepare": "husky install"
   },
   "browserslist": {
