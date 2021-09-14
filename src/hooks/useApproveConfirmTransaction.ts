@@ -127,6 +127,7 @@ const useApproveConfirmTransaction = ({
     handleConfirm: async () => {
       dispatch({ type: 'confirm_sending' })
       try {
+        console.log('try', onConfirm)
         const tx = await onConfirm()
         const receipt = await tx.wait()
         if (receipt.status) {
