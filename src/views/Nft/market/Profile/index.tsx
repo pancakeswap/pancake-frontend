@@ -1,18 +1,19 @@
-import React from 'react'
-import { ethers } from 'ethers'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
 import { useWeb3React } from '@web3-react/core'
 import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
-import { Box, Text } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { Route } from 'react-router'
 import { useUserNfts } from 'state/nftMarket/hooks'
+import useFetchUserNfts from './hooks/useFetchUserNfts'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import TabMenu from './components/TabMenu'
 import Achievements from './components/Achievements'
-import useFetchUserNfts from './hooks/useFetchUserNfts'
+import UserNfts from './components/UserNfts'
+import SubMenu from './components/SubMenu'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;
@@ -31,6 +32,11 @@ const NftProfile = () => {
   const achievements = useAchievements()
   const { account } = useWeb3React()
   const { nfts: userNfts } = useUserNfts()
+  const [activeSubMenuIndex, setActiveSubMenuIndex] = useState(0)
+
+  useEffect(() => {
+    console.log('Change url')
+  }, [activeSubMenuIndex])
 
   useFetchAchievements()
   useFetchUserNfts(account)
@@ -45,22 +51,16 @@ const NftProfile = () => {
       </MarketPageHeader>
 
       <Page style={{ minHeight: 'auto' }}>
-        <Route exact path="/nft/market/profile">
-          <span>Profile</span>
-          {userNfts.map((nft) => {
-            const tokenId = ethers.BigNumber.from(nft.tokenId).toString()
-            return (
-              <Text key={tokenId}>
-                {tokenId} - {nft.collectionAddress}
-              </Text>
-            )
-          })}
+        <Route path="/nft/market/profile/achievements">
+          <SubMenu activeIndex={activeSubMenuIndex} handleClick={setActiveSubMenuIndex} />
+          <Achievements points={profile?.points} />
         </Route>
-        <Route exact path="/nft/market/profile/activity">
+        <Route path="/nft/market/profile/activity">
+          <SubMenu activeIndex={activeSubMenuIndex} handleClick={setActiveSubMenuIndex} />
           <span>Activity</span>
         </Route>
-        <Route path="/nft/market/profile/achievements">
-          <Achievements points={profile?.points} />
+        <Route exact path="/nft/market/profile">
+          <UserNfts />
         </Route>
       </Page>
     </>
