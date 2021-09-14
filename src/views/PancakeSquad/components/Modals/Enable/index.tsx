@@ -7,7 +7,6 @@ import {
   Flex,
   Heading,
   IconButton,
-  Link,
   LinkExternal,
   ModalBody,
   ModalContainer,
@@ -21,7 +20,7 @@ import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
 
-const ConfirmModal: React.FC<ModalProps> = ({ onDismiss, title, headerBackground }) => {
+const EnableModal: React.FC<ModalProps> = ({ onDismiss, title, headerBackground }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const [isLoading, setIsLoading] = useState(true)
@@ -50,13 +49,13 @@ const ConfirmModal: React.FC<ModalProps> = ({ onDismiss, title, headerBackground
                     {t('Enable')}
                   </Text>
                   <Text fontSize="14px" color="textSubtle">
-                    {t('Please enable WBNB spending in your wallet')}
+                    {t('Please enable CAKE spending in your wallet')}
                   </Text>
                 </Box>
                 <Spinner size={50} />
               </Flex>
               <Button width="100%" variant="secondary" disabled>
-                {t('Confirming...')}
+                {t('Enabling...')}
               </Button>
             </Box>
           ) : (
@@ -74,7 +73,7 @@ const ConfirmModal: React.FC<ModalProps> = ({ onDismiss, title, headerBackground
                 borderTop={`1px solid ${theme.colors.cardBorder}`}
               >
                 <Button width="100%" variant="secondary" onClick={onDismiss}>
-                  {t('Mint more')}
+                  {t('Close')}
                 </Button>
               </Flex>
             </>
@@ -85,4 +84,4 @@ const ConfirmModal: React.FC<ModalProps> = ({ onDismiss, title, headerBackground
   )
 }
 
-export default ConfirmModal
+export default EnableModal
