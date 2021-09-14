@@ -20,7 +20,12 @@ export const fetchWalletNfts = createAsyncThunk<NftSourceItem[], string>(
   async (account) => {
     // For each nft source get nft data
     const nftSourcePromises = Object.keys(collections).map(async (nftSourceType) => {
+      // Temporarily skip over pancake-squad
+      if (collections[nftSourceType].slug === 'pancake-squad') {
+        return []
+      }
       const { address: addressObj } = collections[nftSourceType]
+
       const address = getAddress(addressObj)
       const contract = getErc721Contract(address)
       const balanceOfResponse = await contract.balanceOf(account)
@@ -34,7 +39,6 @@ export const fetchWalletNfts = createAsyncThunk<NftSourceItem[], string>(
         try {
           const tokenIdBn: ethers.BigNumber = await contract.tokenOfOwnerByIndex(account, index)
           const tokenId = tokenIdBn.toNumber()
-
           const walletNft = await getNftByTokenId(address, tokenId)
           return [tokenId, walletNft.identifier]
         } catch (error) {
