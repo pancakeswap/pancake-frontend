@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.54.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.53.0...@pancakeswap/uikit@0.54.0) (2021-09-14)
+
+
+### Bug Fixes
+
+* **missing export:** Export SubMenuItems ([#277](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/277)) ([da5ecb1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/da5ecb1b893d0654ad450c3a0dcac8aebdc0d8ce))
+
+
+### Features
+
+* **timeline:** Add timeline component ([#276](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/276)) ([a4346dd](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/a4346ddce39ed3d28e83ff05492194d53e7a321f))
+
+
+
+
+
 # [0.53.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.52.0...@pancakeswap/uikit@0.53.0) (2021-09-14)
 
 
