@@ -18,6 +18,7 @@ interface HeaderProps {
   account: string
   profile: Profile
   achievements: Achievement[]
+  nftCollected: number
 }
 
 const StyledIconButton = styled(IconButton)`
@@ -25,12 +26,11 @@ const StyledIconButton = styled(IconButton)`
 `
 
 // Account and profile passed down as the profile could be used to render _other_ users' profiles.
-const ProfileHeader: React.FC<HeaderProps> = ({ account, profile, achievements }) => {
+const ProfileHeader: React.FC<HeaderProps> = ({ account, profile, achievements, nftCollected }) => {
   const { t } = useTranslation()
   const [onEditProfileModal] = useModal(<EditProfileModal />, false)
 
-  // TODO: Get correct NFT count
-  const nftCollected = 42
+  const numNftCollected = nftCollected ? formatNumber(nftCollected, 0, 0) : '-'
   const numPoints = profile?.points ? formatNumber(profile.points, 0, 0) : '-'
   const numAchievements = achievements?.length ? formatNumber(achievements.length, 0, 0) : '-'
 
@@ -138,7 +138,7 @@ const ProfileHeader: React.FC<HeaderProps> = ({ account, profile, achievements }
       <BannerHeader bannerImage={getBannerImage()} bannerAlt={t('User team banner')} avatar={getAvatar()} />
       <MarketPageTitle pb="48px" title={getTitle()} description={renderDescription()}>
         <StatBox>
-          <StatBoxItem title={t('NFT Collected')} stat={formatNumber(nftCollected, 0, 0)} />
+          <StatBoxItem title={t('NFT Collected')} stat={numNftCollected} />
           <StatBoxItem title={t('Points')} stat={numPoints} />
           <StatBoxItem title={t('Achievements')} stat={numAchievements} />
         </StatBox>
