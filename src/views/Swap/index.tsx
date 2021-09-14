@@ -475,7 +475,7 @@ export default function Swap({ history }: RouteComponentProps) {
               >
                 {swapInputError ||
                   (priceImpactSeverity > 3 && !isExpertMode
-                    ? `Price Impact Too High`
+                    ? t('Price Impact Too High')
                     : priceImpactSeverity > 2
                     ? t('Swap Anyway')
                     : t('Swap'))}
