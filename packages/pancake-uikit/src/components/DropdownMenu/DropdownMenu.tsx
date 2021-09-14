@@ -11,6 +11,7 @@ import {
   StyledDropdownMenu,
   LinkStatus,
   StyledDropdownMenuItemContainer,
+  StyledOverlay,
 } from "./styles";
 import { DropdownMenuItemType, DropdownMenuProps } from "./types";
 
@@ -127,6 +128,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   return (
     <Box ref={isBottomNav ? null : setTargetRef} {...props}>
       <Box ref={isBottomNav ? setTargetRef : null}>{children}</Box>
+      {isBottomNav && isOpen && <StyledOverlay />}
       {hasItems && (
         <StyledDropdownMenu
           style={styles.popper}

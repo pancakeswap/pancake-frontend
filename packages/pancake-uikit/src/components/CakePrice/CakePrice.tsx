@@ -5,7 +5,7 @@ import Text from "../Text/Text";
 import Skeleton from "../Skeleton/Skeleton";
 import { Colors } from "../../theme";
 
-interface Props {
+export interface Props {
   color?: keyof Colors;
   cakePriceUsd?: number;
 }
