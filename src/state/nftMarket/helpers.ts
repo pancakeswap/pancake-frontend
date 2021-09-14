@@ -84,7 +84,7 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
       `,
       { collectionAddress: collectionAddress.toLowerCase() },
     )
-    return res.collection.NFTs
+    return res.collection.nfts
   } catch (error) {
     console.error('Failed to fetch NFTs from collection', error)
     return []
