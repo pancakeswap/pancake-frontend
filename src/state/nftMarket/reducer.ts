@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getNftsMetadata, getNftsMarketData, getCollectionsApi, getCollectionsSg } from './helpers'
+import mapValues from 'lodash/mapValues'
+import { getNftsFromCollectionApi, getNftsFromCollectionSg, getCollectionsApi, getCollectionsSg } from './helpers'
 import { State, Collection, NFT, NFTMarketInitializationState } from './types'
 
 const initialState: State = {
@@ -11,6 +12,9 @@ const initialState: State = {
   },
 }
 
+/**
+ * Fetch all collections data by combining data from the API (static metadata) and the Subgraph (dynamic market data)
+ */
 export const fetchCollections = createAsyncThunk<{ [key: string]: Collection }>('nft/fetchCollections', async () => {
   const collections = await getCollectionsApi()
   const collectionsMarket = await getCollectionsSg()
@@ -20,7 +24,6 @@ export const fetchCollections = createAsyncThunk<{ [key: string]: Collection }>(
   )
 
   return collections.reduce((prev, current) => {
-    // TODO Remove lower case when the subgraph support checksumed addresses
     const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
     return {
       ...prev,
@@ -36,17 +39,31 @@ export const fetchCollections = createAsyncThunk<{ [key: string]: Collection }>(
   }, {})
 })
 
+/**
+ * Fetch all NFT data for a collections by combining data from the API (static metadata)
+ * and the Subgraph (dynamic market data)
+ * @param collectionAddress
+ */
 export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
   'nft/fetchNftsFromCollections',
   async (collectionAddress) => {
-    const nftsMeta = await getNftsMetadata(collectionAddress)
-    const nftsMarket = await getNftsMarketData(collectionAddress)
-    const nfts = nftsMarket.map((matchingMarketData) => {
-      const meta = nftsMeta.find((market) => market.tokenId === meta.id)
-      return { ...matchingMarketData, ...meta }
-    })
+    const nfts = await getNftsFromCollectionApi(collectionAddress)
+    const nftsMarket = await getNftsFromCollectionSg(collectionAddress)
+    const nftsMarketObj = nftsMarket.reduce(
+      (prev, current) => ({ ...prev, [current.tokenId as number]: { ...current } }),
+      {},
+    )
 
-    return nfts
+    return mapValues(nfts, (nft, key) => {
+      return {
+        id: key,
+        ...nft,
+        tokens: nft.tokens.reduce((prev, current) => {
+          const token = nftsMarketObj[current]
+          return { ...prev, [current]: token }
+        }, {}),
+      }
+    })
   },
 )
 
@@ -59,7 +76,6 @@ export const NftMarket = createSlice({
       state.data.collections = action.payload
       state.initializationState = NFTMarketInitializationState.INITIALIZED
     })
-
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       state.data.nfts[action.meta.arg] = action.payload
     })
