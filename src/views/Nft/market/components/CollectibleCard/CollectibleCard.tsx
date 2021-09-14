@@ -16,7 +16,7 @@ const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible, ...props
   return (
     <StyledCollectibleCard {...props}>
       <CardBody p="8px">
-        <PreviewImage src={`/images/nfts/${nft.images.lg}`} height={320} width={320} mb="8px" />
+        <PreviewImage src={`/images/nfts/${nft.image.thumbnail}`} height={320} width={320} mb="8px" />
         <Flex alignItems="center" justifyContent="space-between">
           <Text fontSize="12px" color="textSubtle" mb="8px">
             {name}
