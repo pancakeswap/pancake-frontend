@@ -4,6 +4,7 @@ import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
 import map from 'lodash/map'
 import { NftTokenSg, ApiCollections, TokenIdWithCollectionAddress, NFT } from './types'
+import { getBaseNftsFields } from './queries'
 
 /**
  * Fetch static data from all collections using the API
@@ -76,10 +77,7 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
           collection(id: $collectionAddress) {
             id
             NFTs {
-              currentSeller
-              isTradable
-              tokenId
-              metadataUrl
+             ${getBaseNftsFields()}
             }
           }
         }
@@ -116,10 +114,7 @@ export const getNftsMarketData = async (where = {}): Promise<NftTokenSg[]> => {
       gql`
         query getNftsMarketData($where: NFT_filter) {
           nfts(where: $where) {
-            tokenId
-            metadataUrl
-            currentSeller
-            isTradable
+            ${getBaseNftsFields()}
             collection {
               id
             }
@@ -151,6 +146,10 @@ export const getNftsMarketData = async (where = {}): Promise<NftTokenSg[]> => {
         currentSeller: nftRes?.currentSeller,
         isTradable: nftRes?.isTradable,
         collectionAddress: nftRes?.collection.id,
+        currentAskPrice: nftRes?.currentAskPrice,
+        latestTradedPriceInBNB: nftRes?.latestTradedPriceInBNB,
+        tradeVolumeBNB: nftRes?.tradeVolumeBNB,
+        totalTrades: nftRes?.totalTrades,
       }
     })
   } catch (error) {
