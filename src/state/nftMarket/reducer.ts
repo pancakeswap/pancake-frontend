@@ -63,10 +63,14 @@ export const fetchCollections = createAsyncThunk<{ [key: string]: Collection }>(
 export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
   'nft/fetchNftsFromCollections',
   async (collectionAddress) => {
-    const nfts = await getNftsFromCollectionApi(collectionAddress)
-    const nftsMarket = await getNftsFromCollectionSg(collectionAddress)
-    const nftsMarketObj = nftsMarket.reduce(
-      (prev, current) => ({ ...prev, [current.tokenId as number]: { ...current } }),
+    const [nfts, nftsMarket] = await Promise.all([
+      getNftsFromCollectionApi(collectionAddress),
+      getNftsFromCollectionSg(collectionAddress),
+    ])
+
+    // Separate market data by token id
+    const nftsMarketObj: Record<string, NftTokenSg> = nftsMarket.reduce(
+      (accum, nftMarketData) => ({ ...accum, [nftMarketData.tokenId]: { ...nftMarketData } }),
       {},
     )
 
@@ -74,9 +78,9 @@ export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
       return {
         id: key,
         ...nft,
-        tokens: nft.tokens.reduce((prev, current) => {
-          const token = nftsMarketObj[current]
-          return { ...prev, [current]: token }
+        tokens: nft.tokens.reduce((accum: Record<string, NftTokenSg>, tokenId: string) => {
+          const token = nftsMarketObj[tokenId]
+          return { ...accum, [tokenId]: token }
         }, {}),
       }
     })
@@ -105,6 +109,10 @@ export const fetchUserNfts = createAsyncThunk<
         transactionHistory: null,
         currentSeller: null,
         isTradable: null,
+        currentAskPrice: null,
+        latestTradedPriceInBNB: null,
+        tradeVolumeBNB: null,
+        totalTrades: null,
       }
     )
   })
