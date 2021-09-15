@@ -1451,5 +1451,16 @@
   "This swap has a price impact of at least %amount%%. Please type the word \"%word%\" to continue with this swap.": "இந்த ஸ்வாப், குறைந்தது %amount%% எனும் விலைத் தாக்கத்தைக் கொண்டுள்ளது. இந்த ஸ்வாப்புடன் தொடர \"%word%\" எனும் வார்த்தையை டைப் செய்யுங்கள்.",
   "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "இந்த ஸ்வாப், குறைந்தது %amount%% எனும் விலைத் தாக்கத்தைக் கொண்டுள்ளது. இந்த ஸ்வாப்புடன் தொடர விரும்புகிறீர்கள் என்பதை உறுதிசெய்திடுங்கள்.",
   "To receive %assetA% and %assetB%": "To receive %assetA% and %assetB%",
-  "Price Impact Too High": "Price Impact Too High"
+  "Price Impact Too High": "Price Impact Too High",
+  "About": "About",
+  "Online Store": "Online Store",
+  "Customer Support": "Customer Support",
+  "Troubleshooting": "Troubleshooting",
+  "Guides": "Guides",
+  "Developers": "Developers",
+  "Documentation": "Documentation",
+  "Bug Bounty": "Bug Bounty",
+  "Audits": "Audits",
+  "Careers": "Careers",
+  "Dark mode": "Dark mode"
 }
