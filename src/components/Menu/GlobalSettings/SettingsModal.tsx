@@ -22,6 +22,14 @@ const PancakeToggleWrapper = styled.div`
   }
 `
 
+const ScrollableContainer = styled(Flex)`
+  flex-direction: column;
+  max-height: 400px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-height: none;
+  }
+`
+
 const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
@@ -60,9 +68,9 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       title={t('Settings')}
       headerBackground="gradients.cardHeader"
       onDismiss={onDismiss}
-      style={{ maxWidth: '420px', overflowY: 'auto' }}
+      style={{ maxWidth: '420px' }}
     >
-      <Flex flexDirection="column">
+      <ScrollableContainer>
         <Flex pb="24px" flexDirection="column">
           <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">
             {t('Global')}
@@ -117,7 +125,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
           </PancakeToggleWrapper>
         </Flex>
-      </Flex>
+      </ScrollableContainer>
     </Modal>
   )
 }
