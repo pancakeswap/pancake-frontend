@@ -62,6 +62,7 @@ export interface NftTokenSg {
 
 export interface NFT {
   id: string
+  tokenId: string
   name: string
   collectionName: string
   description: string
