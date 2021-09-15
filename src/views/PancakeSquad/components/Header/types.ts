@@ -1,7 +1,6 @@
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 export type FixedSaleInfos = {
-  canClaimGen0: boolean | null
   maxSupply: number | null
   maxPerAddress: number | null
   pricePerTicket: number | null
@@ -11,4 +10,12 @@ export type FixedSaleInfos = {
 export type DynamicSaleInfos = {
   saleStatus: SaleStatusEnum | null
   totalTicketsDistributed: number | null
+  canClaimForGen0: boolean | null
+  numberTicketsForGen0: number | null
+  numberTicketsUsedForGen0: number | null
+  numberTicketsOfUser: number | null
+  ticketsOfUser: number[] | null
+  totalSupplyMinted: number | null
+  numberTokensOfUser: number | null
+  hasActiveProfile: boolean | null
 }

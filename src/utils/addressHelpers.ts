@@ -70,3 +70,6 @@ export const getNftMarketAddress = () => {
 export const getNftSaleAddress = () => {
   return getAddress(addresses.nftSale)
 }
+export const getPancakeSquadAddress = () => {
+  return getAddress(addresses.pancakeSquad)
+}

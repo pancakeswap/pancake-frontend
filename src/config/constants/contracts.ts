@@ -87,4 +87,8 @@ export default {
     56: '',
     97: '',
   },
+  pancakeSquad: {
+    56: '0xb92Ab7c1edcb273AbA24b0656cEb3681654805D2',
+    97: '0x3F9602593b4f7C67ab045DB51BbDEa94E40fA9Fe',
+  },
 }
