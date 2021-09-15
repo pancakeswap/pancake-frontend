@@ -109,6 +109,10 @@ export const fetchUserNfts = createAsyncThunk<
         transactionHistory: null,
         currentSeller: null,
         isTradable: null,
+        currentAskPrice: null,
+        latestTradedPriceInBNB: null,
+        tradeVolumeBNB: null,
+        totalTrades: null,
       }
     )
   })

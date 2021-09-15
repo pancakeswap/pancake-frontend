@@ -30,10 +30,6 @@ const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectionName, nft, 
               {collectionName}
             </Text>
           )}
-
-          {/* {status === 'profile' && <ProfileNftTag />}
-          {status === 'selling' && <SellingNftTag />}
-          {status === 'wallet' && <WalletNftTag />} */}
         </Flex>
         <Text as="h4" fontWeight="600" mb="8px">
           {name}
