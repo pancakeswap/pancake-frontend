@@ -1,4 +1,5 @@
 /* eslint-disable react/no-array-index-key */
+import { BigNumber } from '@ethersproject/bignumber'
 import {
   Box,
   Button,
@@ -15,23 +16,60 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useNftSaleContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import React, { useState } from 'react'
-
-const MAX_TICKETS_BUY = 5
+import { formatBigNumber, getDecimalAmount } from 'utils/formatBalance'
+import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 interface BuyTicketsModalProps extends ModalProps {
-  onSuccess: () => void
+  buyTicketCallBack: (params: { isLoading?: boolean; transactionId?: string }) => void
+  saleStatus: SaleStatusEnum
+  cakeBalance: BigNumber
+  pricePerTicket: BigNumber
+  maxPerAddress: number
+  maxPerTransaction: number
+  numberTicketsOfUser: number
+  numberTicketsForGen0: number
+  numberTicketsUsedForGen0: number
 }
 
-const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss, onSuccess, title, headerBackground }) => {
+const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
+  onDismiss,
+  buyTicketCallBack,
+  title,
+  headerBackground,
+  saleStatus,
+  cakeBalance,
+  pricePerTicket,
+  maxPerAddress,
+  maxPerTransaction,
+  numberTicketsForGen0,
+  numberTicketsOfUser,
+  numberTicketsUsedForGen0,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const buyButtons = new Array(MAX_TICKETS_BUY).fill('')
   const [ticketsNumber, setTicketsNumber] = useState<number | null>(null)
+  const nftSaleContract = useNftSaleContract()
+  const { callWithGasPrice } = useCallWithGasPrice()
+  const isPreSale = saleStatus === SaleStatusEnum.Presale
+  const remainingTickets = isPreSale
+    ? numberTicketsForGen0
+    : maxPerAddress - numberTicketsOfUser - numberTicketsUsedForGen0
 
-  const onConfirm = () => {
-    onSuccess()
+  const maxBuyTickets = Math.min(Number(formatBigNumber(cakeBalance.div(pricePerTicket), 0)), remainingTickets)
+  const totalCost = formatBigNumber(pricePerTicket.mul(BigNumber.from(ticketsNumber)), 0)
+  const buyButtons = new Array(maxPerTransaction).fill('')
+
+  const onConfirm = async () => {
+    const tx = await callWithGasPrice(nftSaleContract, isPreSale ? 'buyTicketsInPreSaleForGen0' : 'buyTickets', [
+      ticketsNumber,
+    ])
+    buyTicketCallBack({ isLoading: true })
+    const receipt = await tx.wait()
+    // set transaction id
   }
 
   return (
@@ -56,6 +94,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss, onSuccess,
                   key={index}
                   variant={index === ticketsNumber ? 'primary' : 'tertiary'}
                   onClick={() => setTicketsNumber(index)}
+                  disabled={index <= maxBuyTickets}
                 >
                   {index + 1}
                 </Button>
@@ -65,13 +104,13 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss, onSuccess,
               <Text font-size="14px" color="textSubtle">
                 {t('Cost per Ticket')}
               </Text>
-              <Text font-size="14px">5 CAKE</Text>
+              <Text font-size="14px">{formatBigNumber(pricePerTicket, 0)} CAKE</Text>
             </Flex>
             <Flex mb="8px" justifyContent="space-between">
               <Text font-size="14px" color="textSubtle">
                 {t('Your CAKE Balance')}
               </Text>
-              <Text font-size="14px">100 CAKE</Text>
+              <Text font-size="14px">{formatBigNumber(cakeBalance, 3)} CAKE</Text>
             </Flex>
             <Flex
               mb="8px"
@@ -84,14 +123,14 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss, onSuccess,
               <Text font-size="14px" color="textSubtle">
                 {t('Your remaining limit')}
               </Text>
-              <Text font-size="14px">20 {t('Tickets')}</Text>
+              <Text font-size="14px">{`${remainingTickets} ${t('Tickets')}`}</Text>
             </Flex>
             <Flex mb="25px" justifyContent="space-between">
               <Text font-size="14px" color="textSubtle">
                 {t('Total Cost')}
               </Text>
               <Text font-size="14px" bold>
-                15 CAKE
+                {totalCost} CAKE
               </Text>
             </Flex>
           </Box>
@@ -111,9 +150,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss, onSuccess,
               {t('The network may become busy during the sale period. Consider setting a high gas fee (GWEI).')}
               <br />
               <br />
-              {t('Max. Tickets per transaction: 5')}s
+              {t(`Max. Tickets per transaction: ${maxPerTransaction}`)}s
               <br />
-              {t('Max. Tickets per wallet: 20')}
+              {t(`Max. Tickets per wallet: ${maxPerAddress}`)}
               <br />
             </Text>
           </Flex>

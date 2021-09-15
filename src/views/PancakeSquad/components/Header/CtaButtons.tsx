@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Flex, Text, useModal } from '@pancakeswap/uikit'
+import { BigNumber } from '@ethersproject/bignumber'
 import { ContextApi } from 'contexts/Localization/types'
 import { DefaultTheme } from 'styled-components'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useNftSaleContract } from 'hooks/useContract'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 import ConfirmModal from '../Modals/Confirm'
-import EnableModal from '../Modals/Enable'
 import BuyTicketsModal from '../Modals/BuyTickets'
 
 type PreEventProps = {
@@ -15,11 +17,16 @@ type PreEventProps = {
   theme: DefaultTheme
   canClaimForGen0: boolean
   maxPerAddress: number
+  maxPerTransaction: number
   numberTicketsOfUser: number
+  numberTicketsForGen0: number
   numberTicketsUsedForGen0: number
   maxSupply: number
   totalSupplyMinted: number
   numberTokensOfUser: number
+  cakeBalance: BigNumber
+  pricePerTicket: BigNumber
+  ticketsOfUser: number[]
 }
 
 const CtaButtons: React.FC<PreEventProps> = ({
@@ -29,25 +36,21 @@ const CtaButtons: React.FC<PreEventProps> = ({
   theme,
   canClaimForGen0,
   maxPerAddress,
+  maxPerTransaction,
   numberTicketsOfUser,
+  numberTicketsForGen0,
   numberTicketsUsedForGen0,
   numberTokensOfUser,
   maxSupply,
   totalSupplyMinted,
+  cakeBalance,
+  pricePerTicket,
+  ticketsOfUser,
 }) => {
-  const [onPresentConfirmModal] = useModal(
-    <ConfirmModal title={t('Confirm')} headerBackground={theme.colors.gradients.cardHeader} />,
-  )
-  const [onPresentEnableModal] = useModal(
-    <EnableModal title={t('Enable')} headerBackground={theme.colors.gradients.cardHeader} />,
-  )
-  const [onPresentBuyTicketsModal] = useModal(
-    <BuyTicketsModal
-      title={t('Buy Minting Tickets')}
-      onSuccess={onPresentConfirmModal}
-      headerBackground={theme.colors.gradients.cardHeader}
-    />,
-  )
+  const [isTransactionLoading, setIsTransactionLoading] = useState(null)
+  const [transactionIdResult, setTransactionIdResult] = useState(null)
+  const { callWithGasPrice } = useCallWithGasPrice()
+  const nftSaleContract = useNftSaleContract()
 
   const isUserUnconnected = userStatus === UserStatusEnum.UNCONNECTED
   const isUserUnactiveProfile = userStatus === UserStatusEnum.NO_PROFILE
@@ -56,6 +59,48 @@ const CtaButtons: React.FC<PreEventProps> = ({
   const canMintTickets = saleStatus === SaleStatusEnum.Claim && numberTicketsOfUser > 0
   const hasSquad = saleStatus === SaleStatusEnum.Claim && numberTokensOfUser > 0
   const canViewMarket = maxSupply === totalSupplyMinted
+
+  const buyTicketCallBack = ({ isLoading, transactionId }: { isLoading?: boolean; transactionId?: string }) => {
+    if (isLoading !== undefined) setIsTransactionLoading(isLoading)
+    if (transactionId !== undefined) setTransactionIdResult(transactionId)
+  }
+  const mintTokenCallBack = async () => {
+    setIsTransactionLoading(true)
+    const receipt = await callWithGasPrice(nftSaleContract, 'mint', ticketsOfUser)
+    // set transactionId
+  }
+
+  const [onPresentConfirmModal] = useModal(
+    <ConfirmModal
+      title={t('Confirm')}
+      isLoading={isTransactionLoading}
+      headerBackground={theme.colors.gradients.cardHeader}
+      transactionId={transactionIdResult}
+    />,
+  )
+
+  const [onPresentBuyTicketsModal] = useModal(
+    <BuyTicketsModal
+      title={t('Buy Minting Tickets')}
+      buyTicketCallBack={buyTicketCallBack}
+      headerBackground={theme.colors.gradients.cardHeader}
+      cakeBalance={cakeBalance}
+      maxPerAddress={maxPerAddress}
+      maxPerTransaction={maxPerTransaction}
+      numberTicketsForGen0={numberTicketsForGen0}
+      numberTicketsOfUser={numberTicketsOfUser}
+      numberTicketsUsedForGen0={numberTicketsUsedForGen0}
+      pricePerTicket={pricePerTicket}
+      saleStatus={saleStatus}
+    />,
+  )
+
+  useEffect(
+    () => isTransactionLoading !== null && onPresentConfirmModal(),
+    [isTransactionLoading, onPresentConfirmModal],
+  )
+
+  useEffect(() => transactionIdResult !== null && setIsTransactionLoading(false), [transactionIdResult])
 
   return (
     <Flex>
@@ -67,7 +112,7 @@ const CtaButtons: React.FC<PreEventProps> = ({
         </Button>
       )}
       {canMintTickets && (
-        <Button scale="sm" onClick={onPresentEnableModal}>
+        <Button scale="sm" onClick={mintTokenCallBack}>
           {t('Mint NFTs (%tickets_number%)')}
         </Button>
       )}

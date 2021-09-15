@@ -7,7 +7,6 @@ import {
   Flex,
   Heading,
   IconButton,
-  Link,
   LinkExternal,
   ModalBody,
   ModalContainer,
@@ -19,16 +18,17 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-const ConfirmModal: React.FC<ModalProps> = ({ onDismiss, title, headerBackground }) => {
+const ConfirmModal: React.FC<ModalProps & { isLoading: boolean; transactionId: string }> = ({
+  onDismiss,
+  title,
+  isLoading,
+  headerBackground,
+  transactionId,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 3000)
-  }, [])
 
   return (
     <ModalContainer minWidth="375px">
@@ -65,7 +65,10 @@ const ConfirmModal: React.FC<ModalProps> = ({ onDismiss, title, headerBackground
               <Text mb="30px" bold>
                 {t('Transaction Submitted')}
               </Text>
-              <LinkExternal mb="30px">{t('View on BscScan')}</LinkExternal>
+              <LinkExternal mb="30px">
+                {t('View on BscScan')}
+                {` id: ${transactionId}`}
+              </LinkExternal>
               <Flex
                 justifyContent="center"
                 width="100%"
