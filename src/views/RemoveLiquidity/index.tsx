@@ -461,7 +461,10 @@ export default function RemoveLiquidity({
             assetA: currencyA?.symbol ?? '',
             assetB: currencyB?.symbol ?? '',
           })}
-          subtitle={`To receive ${currencyA?.symbol} and ${currencyB?.symbol}`}
+          subtitle={t('To receive %assetA% and %assetB%', {
+            assetA: currencyA?.symbol ?? '',
+            assetB: currencyB?.symbol ?? '',
+          })}
           noConfig
         />
 
