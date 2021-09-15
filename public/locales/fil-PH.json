@@ -1449,5 +1449,7 @@
   "Route": "Idirekta",
   "Price Impact": "Epekto sa Presyo",
   "This swap has a price impact of at least %amount%%. Please type the word \"%word%\" to continue with this swap.": "Ang pag-swap na ito ay may epekto sa presyo na hindi bababa sa %amount%%. Paki-type ang salitang \"%word%\" para ipagpapatuloy ang pag-swap na ito.",
-  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "Ang pag-swap na ito ay may epekto sa presyo na hindi bababa sa %amount%%. Pakikumpirma kung gusto mong ipagpatuloy ang pag-swap na ito."
+  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "Ang pag-swap na ito ay may epekto sa presyo na hindi bababa sa %amount%%. Pakikumpirma kung gusto mong ipagpatuloy ang pag-swap na ito.",
+  "To receive %assetA% and %assetB%": "To receive %assetA% and %assetB%",
+  "Price Impact Too High": "Price Impact Too High"
 }

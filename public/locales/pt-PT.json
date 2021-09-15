@@ -1449,5 +1449,7 @@
   "Route": "Rota",
   "Price Impact": "Impacto no preço",
   "This swap has a price impact of at least %amount%%. Please type the word \"%word%\" to continue with this swap.": "Este swap tem um impacto no preço de pelo menos %amount%. Escreva a palavra \"%word%\" para continuar com este swap.",
-  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "Este swap tem um impacto no preço de pelo menos %amount%. Confirme que pretende continuar com este swap."
+  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "Este swap tem um impacto no preço de pelo menos %amount%. Confirme que pretende continuar com este swap.",
+  "To receive %assetA% and %assetB%": "To receive %assetA% and %assetB%",
+  "Price Impact Too High": "Price Impact Too High"
 }

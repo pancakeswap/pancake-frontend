@@ -1449,5 +1449,7 @@
   "Route": "রুট",
   "Price Impact": "মূল্যের প্রভাব",
   "This swap has a price impact of at least %amount%%. Please type the word \"%word%\" to continue with this swap.": "এই সোয়াপে কমপক্ষে %amount%% দামের প্রভাব রয়েছে। এই সোয়াপ অব্যাহত রাখতে অনুগ্রহ করে \"%word%\" শব্দটি টাইপ করুন। ",
-  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "এই সোয়াপে কমপক্ষে %amount%% দামের প্রভাব রয়েছে। নিশ্চিত করুন যে আপনি এই সোয়াপ অব্যাহত রাখবেন।"
+  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "এই সোয়াপে কমপক্ষে %amount%% দামের প্রভাব রয়েছে। নিশ্চিত করুন যে আপনি এই সোয়াপ অব্যাহত রাখবেন।",
+  "To receive %assetA% and %assetB%": "To receive %assetA% and %assetB%",
+  "Price Impact Too High": "Price Impact Too High"
 }

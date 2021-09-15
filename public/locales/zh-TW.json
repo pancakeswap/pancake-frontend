@@ -1449,5 +1449,7 @@
   "Route": "路線",
   "Price Impact": "價格影響",
   "This swap has a price impact of at least %amount%%. Please type the word \"%word%\" to continue with this swap.": "這次交換至少會對價格造成 %amount%% 的影響。若要繼續交換，請輸入「%word%」文字。",
-  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "這次交換至少會對價格造成 %amount%% 的影響。請確認您願意繼續進行這次交換。"
+  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "這次交換至少會對價格造成 %amount%% 的影響。請確認您願意繼續進行這次交換。",
+  "To receive %assetA% and %assetB%": "To receive %assetA% and %assetB%",
+  "Price Impact Too High": "Price Impact Too High"
 }
