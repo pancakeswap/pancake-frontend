@@ -1,9 +1,11 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 export type FixedSaleInfos = {
   maxSupply: number | null
   maxPerAddress: number | null
-  pricePerTicket: number | null
+  maxPerTransaction: number | null
+  pricePerTicket: BigNumber | null
   startTimestamp: string | null
 }
 

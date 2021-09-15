@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import { BigNumber } from '@ethersproject/bignumber'
+import { Flex, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Box, Button, Flex, Progress, Text, useModal } from '@pancakeswap/uikit'
-import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import { useNftSaleContract, usePancakeSquadContract, useProfile } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import useTokenBalance from 'hooks/useTokenBalance'
-import tokens from 'config/constants/tokens'
+import { useGetCakeBalance } from 'hooks/useTokenBalance'
+import React, { useEffect, useState } from 'react'
 import { getUserStatus } from 'views/PancakeSquad/utils'
-import { getBalanceAmount } from 'utils/formatBalance'
 import HeaderBottomWave from '../../assets/HeaderBottomWave'
-import BuyTicketsModal from '../Modals/BuyTickets'
-import ConfirmModal from '../Modals/Confirm'
-import EnableModal from '../Modals/Enable'
+import { SaleStatusEnum } from '../../types'
+import CtaButtons from './CtaButtons'
+import MintText from './MintText'
+import PreEventText from './PreEventText'
+import ReadyText from './ReadyText'
+import SaleProgress from './SaleProgress'
 import {
   StyledHeaderWaveContainer,
   StyledSquadEventBorder,
   StyledSquadEventContainer,
   StyledSquadHeaderContainer,
 } from './styles'
-import { SaleStatusEnum } from '../../types'
 import { DynamicSaleInfos, FixedSaleInfos } from './types'
-import PreEventText from './PreEventText'
-import SaleProgress from './SaleProgress'
-import MintText from './MintText'
-import CtaButtons from './CtaButtons'
-import ReadyText from './ReadyText'
 
 const PancakeSquadHeader: React.FC = () => {
   const { account } = useWeb3React()
@@ -52,9 +47,7 @@ const PancakeSquadHeader: React.FC = () => {
     numberTokensOfUser: null,
     hasActiveProfile: null,
   })
-  const { isInitialized, isLoading, profile } = useProfile()
-  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useTokenBalance(tokens.cake.address)
-  const userCakeBalance = getBalanceAmount(cakeBalance)
+  const { balance: cakeBalance } = useGetCakeBalance()
   const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket, startTimestamp } = fixedSaleInfo
   const {
     saleStatus,
@@ -80,7 +73,7 @@ const PancakeSquadHeader: React.FC = () => {
       setFixedSaleInfo({
         maxSupply: currentMaxSupply,
         maxPerAddress: currentMaxPerAddress,
-        pricePerTicket: currentPricePerTicket,
+        pricePerTicket: BigNumber.from(currentPricePerTicket),
         startTimestamp: currentStartTimestamp,
         maxPerTransaction: cuurentMaxPerTransaction,
       })
@@ -154,6 +147,11 @@ const PancakeSquadHeader: React.FC = () => {
                 numberTicketsOfUser={numberTicketsOfUser}
                 numberTicketsUsedForGen0={numberTicketsUsedForGen0}
                 totalSupplyMinted={totalSupplyMinted}
+                cakeBalance={cakeBalance}
+                maxPerTransaction={maxPerTransaction}
+                numberTicketsForGen0={numberTicketsForGen0}
+                pricePerTicket={pricePerTicket}
+                ticketsOfUser={ticketsOfUser}
               />
               <ReadyText t={t} userStatus={userStatus} saleStatus={saleStatus} />
             </Flex>

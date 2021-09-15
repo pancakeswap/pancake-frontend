@@ -19,7 +19,7 @@ const getReadyStatusMapping: Record<SaleStatusEnum, string> = {
 const nftSaleConfigBuilder: ({
   t,
   saleStatus,
-  canClaimGen0,
+  canClaimForGen0,
   maxPerAddress,
   maxSupply,
   pricePerTicket,
