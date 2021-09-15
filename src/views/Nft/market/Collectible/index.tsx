@@ -2,9 +2,9 @@ import React from 'react'
 import { Redirect, useParams } from 'react-router'
 import { useCollectionFromSlug } from 'state/nftMarket/hooks'
 import Page from 'components/Layout/Page'
-import GridPlaceholder from '../components/GridPlaceholder'
 import Header from './Header'
 import Filters from './Filters'
+import CollectionNfts from './CollectionNfts'
 
 const Collectible = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -19,7 +19,7 @@ const Collectible = () => {
       <Header collection={collection} />
       <Page>
         <Filters />
-        <GridPlaceholder />
+        <CollectionNfts collectionName={collection.name} collectionAddress={collection.address} />
       </Page>
     </>
   )
