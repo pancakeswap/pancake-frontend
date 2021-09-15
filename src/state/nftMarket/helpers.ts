@@ -107,6 +107,14 @@ export const getNftMetadataFromTokenIdApi = async (collectionAddress: string, to
   return null
 }
 
+export const getMultipleNftsMetadataFromApi = async (tokens: TokenIdWithCollectionAddress[]) => {
+  const metaDataPromises = tokens.map((token) => {
+    return getNftMetadataFromTokenIdApi(token.collectionAddress, token.tokenId)
+  })
+  const nftMetaData = await Promise.all(metaDataPromises)
+  return nftMetaData
+}
+
 export const getNftsMarketData = async (where = {}): Promise<NftTokenSg[]> => {
   try {
     const res = await request(

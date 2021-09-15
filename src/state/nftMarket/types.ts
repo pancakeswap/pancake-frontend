@@ -35,7 +35,7 @@ export interface Transaction {
   buyer: { id: string }
   seller: { id: string }
   withBNB: boolean
-  nft?: NftTokenSg
+  NFT?: NftTokenSg
 }
 
 export enum AskOrderType {
@@ -50,7 +50,7 @@ export interface AskOrder {
   timestamp: string
   askPrice: string
   orderType: AskOrderType
-  nft?: NftTokenSg
+  NFT?: NftTokenSg
 }
 
 export interface UserActivity {
@@ -85,6 +85,7 @@ export interface NftTokenSg {
 
 export interface NFT {
   id: string
+  tokenId: string
   name: string
   collectionName: string
   description: string
