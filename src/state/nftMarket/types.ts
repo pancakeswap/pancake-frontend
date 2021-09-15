@@ -54,7 +54,9 @@ export interface NftTokenSg {
   tradeVolumeBNB: string
   totalTrades: string
   isTradable: boolean
-  collectionAddress?: string
+  collection?: {
+    id: string
+  }
   transactionHistory?: Transaction[]
 }
 

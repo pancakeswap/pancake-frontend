@@ -138,20 +138,7 @@ export const getNftsMarketData = async (where = {}): Promise<NftTokenSg[]> => {
       { where },
     )
 
-    return res.nfts.map((nftRes): NftTokenSg => {
-      return {
-        tokenId: nftRes?.tokenId,
-        metadataUrl: nftRes?.metadataUrl,
-        transactionHistory: nftRes?.transactionHistory,
-        currentSeller: nftRes?.currentSeller,
-        isTradable: nftRes?.isTradable,
-        collectionAddress: nftRes?.collection.id,
-        currentAskPrice: nftRes?.currentAskPrice,
-        latestTradedPriceInBNB: nftRes?.latestTradedPriceInBNB,
-        tradeVolumeBNB: nftRes?.tradeVolumeBNB,
-        totalTrades: nftRes?.totalTrades,
-      }
-    })
+    return res.nfts
   } catch (error) {
     console.error('Failed to fetch NFTs market data', error)
     return []

@@ -51,7 +51,7 @@ const NftProfile = () => {
             const tokenId = ethers.BigNumber.from(nft.tokenId).toString()
             return (
               <Text key={tokenId}>
-                {tokenId} - {nft.collectionAddress}
+                {tokenId} - {nft.collection.id}
               </Text>
             )
           })}
