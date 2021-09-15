@@ -46,17 +46,22 @@ interface Image {
 
 // Return type from subgraph
 export interface NftTokenSg {
-  tokenId: BigNumberish
-  currentSeller: string
-  isTradable: boolean
+  tokenId: string
   metadataUrl: string
+  currentAskPrice: string
+  currentSeller: string
+  latestTradedPriceInBNB: string
+  tradeVolumeBNB: string
+  totalTrades: string
+  isTradable: boolean
   collectionAddress?: string
   transactionHistory?: Transaction[]
 }
 
 export interface NFT {
-  id: BigNumberish
+  id: string
   name: string
+  collectionName: string
   description: string
   image: Image
   tokens?: Record<number, NftTokenSg>
