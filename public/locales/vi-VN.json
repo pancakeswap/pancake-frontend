@@ -1449,5 +1449,7 @@
   "Route": "Định tuyến",
   "Price Impact": "Ảnh hưởng giá",
   "This swap has a price impact of at least %amount%%. Please type the word \"%word%\" to continue with this swap.": "Giao dịch hoán đổi này có ảnh hưởng giá tối thiểu là %amount%%. Vui lòng nhập từ \"%word%\" để tiếp tục với giao dịch hoán đổi này.",
-  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "Giao dịch hoán đổi này có ảnh hưởng giá tối thiểu là %amount%%. Vui lòng xác nhận rằng bạn muốn tiếp tục với giao dịch hoán đổi này."
+  "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "Giao dịch hoán đổi này có ảnh hưởng giá tối thiểu là %amount%%. Vui lòng xác nhận rằng bạn muốn tiếp tục với giao dịch hoán đổi này.",
+  "To receive %assetA% and %assetB%": "To receive %assetA% and %assetB%",
+  "Price Impact Too High": "Price Impact Too High"
 }
