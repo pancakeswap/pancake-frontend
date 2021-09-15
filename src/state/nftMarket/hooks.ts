@@ -5,7 +5,7 @@ import { useAppDispatch } from 'state'
 import slugify from 'utils/slugify'
 import { fetchCollections, fetchNftsFromCollections } from './reducer'
 import { State } from '../types'
-import { UserNftsState } from './types'
+import { Collection, UserNftsState } from './types'
 
 export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
@@ -19,7 +19,7 @@ export const useGetCollections = () => {
   return useSelector((state: State) => state.nftMarket.data.collections)
 }
 
-export const useCollectionFromSlug = (slug: string) => {
+export const useCollectionFromSlug = (slug: string): Collection => {
   const collections = useGetCollections()
   return find(collections, (collection) => slugify(collection.name) === slug)
 }
