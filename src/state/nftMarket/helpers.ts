@@ -76,10 +76,14 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
           collection(id: $collectionAddress) {
             id
             NFTs {
-              currentSeller
-              isTradable
               tokenId
               metadataUrl
+              currentAskPrice
+              currentSeller
+              latestTradedPriceInBNB
+              tradeVolumeBNB
+              totalTrades
+              isTradable
             }
           }
         }
