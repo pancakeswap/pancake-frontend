@@ -414,6 +414,18 @@ const nfts: Nft[] = [
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 34,
+    name: 'Zombabe',
+    symbol: 'BABE',
+    description: 'Her brains bring all the zomboys to the yard.',
+    address: '0x0D8A324D7B8F3e5adDcD50eD18E3e756dcdF756A',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmVGjzRvf2WD5JKjh5wNVjVtimPv9R2mzeuYUNin2cFsc7',
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts

@@ -80,7 +80,8 @@ export interface NftUserInfo {
 
 export interface Artist {
   name: string,
-  twitter: string,
+  twitter?: string,
+  instagram?: string,
 }
 
 export interface Grave {
@@ -145,6 +146,7 @@ export interface SpawningPool {
   rewardToken: Token,
   rewardTokenId?: string,
   rewardTokenBnbLp?: string,
+  bnbLpTokenIndex?: number,
   artist: Artist,
   pcsVersion: string,
   stakingToken: string,

@@ -263,6 +263,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.milkyway.games/',
   },
+  atmssft: {
+    symbol: 'ATMSSFT',
+    address: {
+      56: '0xc53c65c4a925039cc149fa99fd011490d40270a3',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.atmossoftdefi.app/',
+  },
   txl: {
     symbol: 'TXL',
     address: {

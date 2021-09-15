@@ -43,7 +43,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({ id }) => {
       <div className="direction-column">
         <span className="indetails-type">{subtitle}</span>
         <span className="indetails-title">
-          <LinkExternal bold={false} small href={artist.twitter}>
+          <LinkExternal bold={false} small href={artist.twitter ? artist.twitter : artist.instagram}>
             View NFT Artist
         </LinkExternal>
         </span>

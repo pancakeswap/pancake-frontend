@@ -50,13 +50,8 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { id, zombieUsdPrice, handler } = props
-  const { name, rewardToken, rewardTokenId, poolInfo, isNew, rewardTokenBnbLp, userInfo: { pendingReward } } = spawningPool(id);
+  const { name, rewardToken, rewardTokenId, poolInfo, isNew, rewardTokenBnbLp, bnbLpTokenIndex, userInfo: { pendingReward } } = spawningPool(id);
   const bnbPrice = bnbPriceUsd()
-  let allocPoint = BIG_ZERO;
-     allocPoint = new BigNumber(0)
-
-  const poolWeight = allocPoint ? allocPoint.div(100) : null
-
   const [isOpen, setIsOpen] = useState(false);
   const [rewardTokenPrice, setRewardTokenPrice] = useState(0)
 
@@ -67,7 +62,15 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
       })
     } else {
       fetchLpReserves(rewardTokenBnbLp).then(res => {
-        const rewardTokenPriceBnb = new BigNumber(res._reserve1).div(res._reserve0)
+        if(id === 2) {
+          console.log(res)
+        }
+        let rewardTokenPriceBnb
+          if(bnbLpTokenIndex === 0) {
+            rewardTokenPriceBnb = new BigNumber(res._reserve0).div(res._reserve1)
+          } else if(bnbLpTokenIndex === 1) {
+            rewardTokenPriceBnb = new BigNumber(res._reserve1).div(res._reserve0)
+          }
         if(rewardToken.decimals === 18) {
           setRewardTokenPrice(rewardTokenPriceBnb.times(bnbPrice).toNumber())
         } else {
@@ -75,10 +78,10 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
         }
       })
     }
-  }, [bnbPrice, rewardToken.decimals, rewardTokenBnbLp, rewardTokenId])
+  }, [id, bnbLpTokenIndex, bnbPrice, rewardToken.decimals, rewardTokenBnbLp, rewardTokenId])
 
   const apr = getPoolApr(zombieUsdPrice, rewardTokenPrice, getBalanceAmount(poolInfo.totalZombieStaked).toNumber(), getBalanceAmount(poolInfo.rewardPerBlock, rewardToken.decimals).toNumber())
-  console.log(rewardTokenPrice.toString())
+
   const dailyApr = apr / 365
   const displayApr = apr > 10 ? numeral(apr).format('(0.00 a)') : numeral(apr).format('(0.0000 a)')
   const displayDailyApr = dailyApr > 100 ? numeral(dailyApr).format('(0.00 a)') : numeral(dailyApr).format('(0.00000 a)')

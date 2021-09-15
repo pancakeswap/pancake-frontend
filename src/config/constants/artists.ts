@@ -27,6 +27,10 @@ const artists = {
     name: 'EyesOfLamia',
     twitter: 'https://twitter.com/eyes_of_lamia',
   },
+  geek_amy_art: {
+    name: 'Geek Amy Art',
+    instagram: 'https://www.instagram.com/geek_amy_art/',
+  },
   none: {
     name: '',
     twitter: '/',
