@@ -6,7 +6,6 @@ import { Box, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
 import { CollectibleCard } from '../components/CollectibleCard'
-import { Collectible } from '../components/CollectibleCard/types'
 
 import 'swiper/swiper-bundle.css'
 
@@ -40,31 +39,20 @@ const MoreFromThisCollection: React.FC = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const nftList = useNftsFromCollection('0x60935f36e4631f73f0f407e68642144e07ac7f5e')
-  const exampleBunnies =
-    nftList && nftList.length > 0
-      ? nftList.map(
-          (nft) =>
-            ({
-              name: 'Pancake Bunnies',
-              cost: 0.02,
-              lowestCost: 0.002,
-              nft,
-              status: 'selling',
-            } as Collectible),
-        )
-      : null
-  if (!exampleBunnies) {
+
+  if (!nftList) {
     return null
   }
+
   return (
     <Box pt="56px" pb="32px" mb="52px">
       <Text bold>{t('More from this collection')}</Text>
       {isMobile ? (
         <StyledSwiper>
           <Swiper spaceBetween={16} slidesPerView={1.5}>
-            {exampleBunnies.map((bunny) => (
+            {Object.values(nftList).map((bunny) => (
               <SwiperSlide>
-                <CollectibleCard collectible={bunny} />
+                <CollectibleCard nft={bunny} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -80,9 +68,9 @@ const MoreFromThisCollection: React.FC = () => {
               clickable: true,
             }}
           >
-            {exampleBunnies.map((bunny) => (
+            {Object.values(nftList).map((bunny) => (
               <SwiperSlide>
-                <CollectibleCard collectible={bunny} />
+                <CollectibleCard nft={bunny} />
               </SwiperSlide>
             ))}
           </Swiper>
