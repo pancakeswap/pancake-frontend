@@ -28,7 +28,7 @@ const UserBannerWrapper = styled(Container)`
   z-index: 1;
   position: absolute;
   width: 100%;
-  top: 0px;
+  top: 56px;
   left: 50%;
   transform: translate(-50%, 0);
   padding-left: 0px;
