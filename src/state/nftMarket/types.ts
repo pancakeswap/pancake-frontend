@@ -22,7 +22,7 @@ export interface State {
 
 export interface UserNftsState {
   isInitialized: boolean
-  nfts: NftToken[]
+  nfts: NftTokenSg[]
 }
 
 export interface Transaction {
@@ -39,10 +39,13 @@ export interface Transaction {
 interface Image {
   original: string
   thumbnail: string
+  mp4?: string
+  webm?: string
+  gif?: string
 }
 
 // Return type from subgraph
-export interface NftToken {
+export interface NftTokenSg {
   tokenId: BigNumberish
   currentSeller: string
   isTradable: boolean
@@ -56,7 +59,8 @@ export interface NFT {
   name: string
   description: string
   image: Image
-  tokens: Record<number, NftToken>
+  tokens?: Record<number, NftTokenSg>
+  attributes?: any[]
 }
 
 export interface TokenIdWithCollectionAddress {
