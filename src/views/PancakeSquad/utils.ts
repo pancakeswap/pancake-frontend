@@ -2,15 +2,15 @@ import { UserStatusEnum } from './types'
 
 type getUserStatusType = {
   account?: string
-  canClaimGen0: boolean | null
-  hasProfile: boolean
+  canClaimForGen0: boolean | null
+  hasActiveProfile: boolean
 }
 
-export const getUserStatus = ({ account, hasProfile, canClaimGen0 }: getUserStatusType): UserStatusEnum => {
-  if (account && hasProfile && canClaimGen0) {
+export const getUserStatus = ({ account, hasActiveProfile, canClaimForGen0 }: getUserStatusType): UserStatusEnum => {
+  if (account && hasActiveProfile && canClaimForGen0) {
     return UserStatusEnum.PROFILE_ACTIVE_GEN0
   }
-  if (account && hasProfile) {
+  if (account && hasActiveProfile) {
     return UserStatusEnum.PROFILE_ACTIVE
   }
   if (account) {

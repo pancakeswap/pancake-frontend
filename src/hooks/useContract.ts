@@ -26,6 +26,7 @@ import {
   getFarmAuctionContract,
   getBunnySpecialLotteryContract,
   getNftSaleContract,
+  getPancakeSquadContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 
@@ -166,6 +167,11 @@ export const useBunnySpecialLotteryContract = () => {
 export const useNftSaleContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getNftSaleContract(library.getSigner()), [library])
+}
+
+export const usePancakeSquadContract = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getPancakeSquadContract(library.getSigner()), [library])
 }
 
 export const useFarmAuctionContract = () => {

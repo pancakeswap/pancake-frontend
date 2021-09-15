@@ -1,10 +1,10 @@
 export enum SaleStatusEnum {
-  Pending = 'Pending', // Contract is deployed
-  Premint = 'Premint', // Tickets are preminted by owner
-  Presale = 'Presale', // Tickets are preminted by Gen0 users
-  Sale = 'Sale', // Tickets are for sold in general sale
-  DrawingRandomness = 'DrawingRandomness', // Randomness has been drawn
-  Claim = 'Claim', // Tickets can be claimed for the token
+  Pending, // Contract is deployed
+  Premint, // Tickets are preminted by owner
+  Presale, // Tickets are preminted by Gen0 users
+  Sale, // Tickets are for sold in general sale
+  DrawingRandomness, // Randomness has been drawn
+  Claim, // Tickets can be claimed for the token
 }
 
 export enum UserStatusEnum {

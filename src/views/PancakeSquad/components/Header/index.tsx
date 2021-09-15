@@ -3,10 +3,11 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, Button, Flex, Progress, Text, useModal } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
-import { useNftSaleContract, useProfile } from 'hooks/useContract'
+import { useNftSaleContract, usePancakeSquadContract, useProfile } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useTokenBalance from 'hooks/useTokenBalance'
 import tokens from 'config/constants/tokens'
+import { getUserStatus } from 'views/PancakeSquad/utils'
 import { getBalanceAmount } from 'utils/formatBalance'
 import HeaderBottomWave from '../../assets/HeaderBottomWave'
 import BuyTicketsModal from '../Modals/BuyTickets'
@@ -20,41 +21,54 @@ import {
 } from './styles'
 import { SaleStatusEnum } from '../../types'
 import { DynamicSaleInfos, FixedSaleInfos } from './types'
+import PreEventText from './PreEventText'
+import SaleProgress from './SaleProgress'
+import MintText from './MintText'
+import CtaButtons from './CtaButtons'
+import ReadyText from './ReadyText'
 
 const PancakeSquadHeader: React.FC = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()
   const nftSaleContract = useNftSaleContract()
+  const pancakeSquadContract = usePancakeSquadContract()
   const [fixedSaleInfo, setFixedSaleInfo] = useState<FixedSaleInfos>({
-    canClaimGen0: null,
     maxSupply: null,
     maxPerAddress: null,
     pricePerTicket: null,
     startTimestamp: null,
+    maxPerTransaction: null,
   })
   const [dynamicSaleInfo, setDynamicSaleInfo] = useState<DynamicSaleInfos>({
-    saleStatus: null,
     totalTicketsDistributed: null,
+    saleStatus: null,
+    canClaimForGen0: null,
+    numberTicketsForGen0: null,
+    numberTicketsUsedForGen0: null,
+    numberTicketsOfUser: null,
+    ticketsOfUser: null,
+    totalSupplyMinted: null,
+    numberTokensOfUser: null,
+    hasActiveProfile: null,
   })
   const { isInitialized, isLoading, profile } = useProfile()
-  const hasProfile = isInitialized && !!profile
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useTokenBalance(tokens.cake.address)
   const userCakeBalance = getBalanceAmount(cakeBalance)
-
-  const [onPresentConfirmModal] = useModal(
-    <ConfirmModal title={t('Confirm')} headerBackground={theme.colors.gradients.cardHeader} />,
-  )
-  const [onPresentEnableModal] = useModal(
-    <EnableModal title={t('Enable')} headerBackground={theme.colors.gradients.cardHeader} />,
-  )
-  const [onPresentBuyTicketsModal] = useModal(
-    <BuyTicketsModal
-      title={t('Buy Minting Tickets')}
-      onSuccess={onPresentConfirmModal}
-      headerBackground={theme.colors.gradients.cardHeader}
-    />,
-  )
+  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket, startTimestamp } = fixedSaleInfo
+  const {
+    saleStatus,
+    totalTicketsDistributed,
+    canClaimForGen0,
+    hasActiveProfile,
+    ticketsOfUser,
+    numberTicketsUsedForGen0,
+    numberTicketsOfUser,
+    numberTicketsForGen0,
+    totalSupplyMinted,
+    numberTokensOfUser,
+  } = dynamicSaleInfo
+  const userStatus = getUserStatus({ account, hasActiveProfile, canClaimForGen0 })
 
   useEffect(() => {
     const fetchFixedSaleInfo = async () => {
@@ -62,24 +76,40 @@ const PancakeSquadHeader: React.FC = () => {
       const currentMaxPerAddress = await nftSaleContract.maxPerAddress()
       const currentPricePerTicket = await nftSaleContract.pricePerTicket()
       const currentStartTimestamp = await nftSaleContract.startTimestamp()
-      const currentCanClaimGen0 = await nftSaleContract.canClaimForGen0(account)
+      const cuurentMaxPerTransaction = await nftSaleContract.maxPerTransaction()
       setFixedSaleInfo({
         maxSupply: currentMaxSupply,
         maxPerAddress: currentMaxPerAddress,
         pricePerTicket: currentPricePerTicket,
         startTimestamp: currentStartTimestamp,
-        canClaimGen0: currentCanClaimGen0,
+        maxPerTransaction: cuurentMaxPerTransaction,
       })
     }
     const fetchDynamicSaleInfo = async () => {
       const currentTotalTicketsDistributed = await nftSaleContract.totalTicketsDistributed()
       const currentSaleStatus = (await nftSaleContract.currentStatus()) as SaleStatusEnum
+      const currentCanClaimForGen0 = await nftSaleContract.canClaimForGen0(account)
+      const currentNumberTicketsForGen0 = await nftSaleContract.numberTicketsForGen0(account)
+      const currentNumberTicketsUsedForGen0 = await nftSaleContract.numberTicketsUsedForGen0(account)
+      const currentNumberTicketsOfUser = await nftSaleContract.viewNumberTicketsOfUser(account)
+      const currentTicketsOfUser = await nftSaleContract.ticketsOfUserBySize(account, 0, 600)
+      const currentTotalSupplyMinted = await pancakeSquadContract.totalSupply()
+      const currentNumberTokensOfUser = await pancakeSquadContract.balanceOf(account)
+      const currentHasActiveProfile = await pancakeSquadContract.getUserStatus(account)
       setDynamicSaleInfo({
         totalTicketsDistributed: currentTotalTicketsDistributed,
         saleStatus: currentSaleStatus,
+        canClaimForGen0: currentCanClaimForGen0,
+        numberTicketsForGen0: currentNumberTicketsForGen0,
+        numberTicketsUsedForGen0: currentNumberTicketsUsedForGen0,
+        numberTicketsOfUser: currentNumberTicketsOfUser,
+        ticketsOfUser: currentTicketsOfUser,
+        totalSupplyMinted: currentTotalSupplyMinted,
+        numberTokensOfUser: currentNumberTokensOfUser,
+        hasActiveProfile: currentHasActiveProfile,
       })
     }
-  }, [nftSaleContract, account])
+  }, [nftSaleContract, pancakeSquadContract, account])
 
   return (
     <StyledSquadHeaderContainer flexDirection="column" alignItems="center">
@@ -96,23 +126,36 @@ const PancakeSquadHeader: React.FC = () => {
         <StyledSquadEventContainer m="1px" p="32px">
           <Flex>
             <Flex flexDirection="column">
-              <Text color="invertedContrast" mb="24px" bold>
-                {t('%remaining% of %total% remaining')}
-              </Text>
-              <Box mb="24px">
-                <Progress variant="round" primaryStep={20} />
-              </Box>
-              {!account ? (
-                <Box>
-                  <ConnectWalletButton scale="sm" />
-                </Box>
-              ) : (
-                <Box>
-                  <Button onClick={onPresentBuyTicketsModal} scale="sm">
-                    {t('Buy Tickets')}
-                  </Button>
-                </Box>
-              )}
+              <PreEventText t={t} userStatus={userStatus} saleStatus={saleStatus} />
+              <SaleProgress
+                t={t}
+                userStatus={userStatus}
+                saleStatus={saleStatus}
+                totalTicketsDistributed={totalTicketsDistributed}
+                maxSupply={maxSupply}
+                totalSupplyMinted={totalSupplyMinted}
+              />
+              <MintText
+                t={t}
+                userStatus={userStatus}
+                saleStatus={saleStatus}
+                numberTicketsOfUser={numberTicketsOfUser}
+                numberTokensOfUser={numberTokensOfUser}
+              />
+              <CtaButtons
+                t={t}
+                theme={theme}
+                userStatus={userStatus}
+                saleStatus={saleStatus}
+                numberTokensOfUser={numberTokensOfUser}
+                canClaimForGen0={canClaimForGen0}
+                maxPerAddress={maxPerAddress}
+                maxSupply={maxSupply}
+                numberTicketsOfUser={numberTicketsOfUser}
+                numberTicketsUsedForGen0={numberTicketsUsedForGen0}
+                totalSupplyMinted={totalSupplyMinted}
+              />
+              <ReadyText t={t} userStatus={userStatus} saleStatus={saleStatus} />
             </Flex>
           </Flex>
         </StyledSquadEventContainer>
