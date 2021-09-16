@@ -16,15 +16,13 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { useNftSaleContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import React, { useState } from 'react'
-import { formatBigNumber, getDecimalAmount } from 'utils/formatBalance'
+import { formatBigNumber } from 'utils/formatBalance'
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 interface BuyTicketsModalProps extends ModalProps {
-  buyTicketCallBack: (params: { isLoading?: boolean; transactionId?: string }) => void
+  buyTicketCallBack: () => void
   saleStatus: SaleStatusEnum
   cakeBalance: BigNumber
   pricePerTicket: BigNumber
@@ -52,8 +50,6 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
   const [ticketsNumber, setTicketsNumber] = useState<number | null>(null)
-  const nftSaleContract = useNftSaleContract()
-  const { callWithGasPrice } = useCallWithGasPrice()
   const isPreSale = saleStatus === SaleStatusEnum.Presale
   const remainingTickets = isPreSale
     ? numberTicketsForGen0
@@ -62,15 +58,6 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
   const maxBuyTickets = Math.min(Number(formatBigNumber(cakeBalance.div(pricePerTicket), 0)), remainingTickets)
   const totalCost = formatBigNumber(pricePerTicket.mul(BigNumber.from(ticketsNumber)), 0)
   const buyButtons = new Array(maxPerTransaction).fill('')
-
-  const onConfirm = async () => {
-    const tx = await callWithGasPrice(nftSaleContract, isPreSale ? 'buyTicketsInPreSaleForGen0' : 'buyTickets', [
-      ticketsNumber,
-    ])
-    buyTicketCallBack({ isLoading: true })
-    const receipt = await tx.wait()
-    // set transaction id
-  }
 
   return (
     <ModalContainer minWidth="375px">
@@ -157,7 +144,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
             </Text>
           </Flex>
           <Box px="16px">
-            <Button onClick={onConfirm} width="100%">
+            <Button onClick={buyTicketCallBack} width="100%">
               {t('Confirm')}
             </Button>
           </Box>

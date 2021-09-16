@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { useNftSaleContract, usePancakeSquadContract, useProfile } from 'hooks/useContract'
+import { useNftSaleContract, usePancakeSquadContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import React, { useEffect, useState } from 'react'
@@ -12,7 +12,6 @@ import { SaleStatusEnum } from '../../types'
 import CtaButtons from './CtaButtons'
 import MintText from './MintText'
 import PreEventText from './PreEventText'
-import ReadyText from './ReadyText'
 import SaleProgress from './SaleProgress'
 import {
   StyledHeaderWaveContainer,
@@ -137,6 +136,7 @@ const PancakeSquadHeader: React.FC = () => {
               />
               <CtaButtons
                 t={t}
+                account={account}
                 theme={theme}
                 userStatus={userStatus}
                 saleStatus={saleStatus}
@@ -153,7 +153,6 @@ const PancakeSquadHeader: React.FC = () => {
                 pricePerTicket={pricePerTicket}
                 ticketsOfUser={ticketsOfUser}
               />
-              <ReadyText t={t} userStatus={userStatus} saleStatus={saleStatus} />
             </Flex>
           </Flex>
         </StyledSquadEventContainer>
