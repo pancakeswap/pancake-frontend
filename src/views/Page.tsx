@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import Footer from 'components/Menu/Footer'
-import SubNav from 'components/Menu/SubNav'
 import { PageMeta } from 'components/Layout/Page'
 
 const StyledPage = styled.div`
