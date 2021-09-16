@@ -37,23 +37,3 @@ export const useGetNFTInitializationState = () => {
 export const useUserNfts = (): UserNftsState => {
   return useSelector((state: State) => state.nftMarket.data.user)
 }
-
-export const useUserActivity = (): (Transaction | AskOrder)[] => {
-  const userNftState = useUserNfts()
-  const {
-    activity: { askOrderHistory, buyTradeHistory, sellTradeHistory },
-  } = userNftState
-
-  const allActivity = [...askOrderHistory, ...buyTradeHistory, ...sellTradeHistory]
-  if (allActivity.length > 0) {
-    const sortedByMostRecent = allActivity.sort((activityItem1, activityItem2) => {
-      const timestamp1 = ethers.BigNumber.from(activityItem1.timestamp)
-      const timestamp2 = ethers.BigNumber.from(activityItem2.timestamp)
-      return timestamp2.sub(timestamp1).toNumber()
-    })
-    // TODO: This return is an array of different types (AskOrders & Transactions)
-    // Once the UI requirements are clearer - there could be data transformation of these to return data of one type
-    return sortedByMostRecent
-  }
-  return []
-}
