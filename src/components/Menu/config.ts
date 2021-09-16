@@ -1,15 +1,14 @@
-import { MenuEntry } from '@pancakeswap/uikit'
+import { MenuItemsType, DropdownMenuItemType } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
-const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
-  {
-    label: t('Home'),
-    icon: 'HomeIcon',
-    href: '/',
-  },
+export type ConfigMenuItemsType = MenuItemsType & { hideSubNav?: boolean }
+
+const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   {
     label: t('Trade'),
-    icon: 'TradeIcon',
+    icon: 'Swap',
+    href: '/swap',
+    showItemsOnMobile: false,
     items: [
       {
         label: t('Exchange'),
@@ -19,93 +18,88 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         label: t('Liquidity'),
         href: '/liquidity',
       },
-      {
-        label: t('LP Migration'),
-        href: 'https://v1exchange.pancakeswap.finance/#/migrate',
-      },
     ],
   },
   {
-    label: t('Farms'),
-    icon: 'FarmIcon',
+    label: t('Earn'),
     href: '/farms',
-  },
-  {
-    label: t('Pools'),
-    icon: 'PoolIcon',
-    href: '/pools',
-  },
-  {
-    label: t('Prediction (BETA)'),
-    icon: 'PredictionsIcon',
-    href: '/prediction',
-  },
-  {
-    label: t('Lottery'),
-    icon: 'TicketIcon',
-    href: '/lottery',
-  },
-  {
-    label: t('Collectibles'),
-    icon: 'NftIcon',
-    href: '/collectibles',
-  },
-  {
-    label: t('Team Battle'),
-    icon: 'TeamBattleIcon',
-    href: '/competition',
-  },
-  {
-    label: t('Teams & Profile'),
-    icon: 'GroupsIcon',
+    icon: 'Earn',
     items: [
       {
-        label: t('Leaderboard'),
-        href: '/teams',
+        label: t('Farms'),
+        href: '/farms',
       },
       {
-        label: t('Profile'),
-        href: '/nft/market/profile',
+        label: t('Pools'),
+        href: '/pools',
       },
     ],
   },
   {
-    label: t('Info'),
-    icon: 'InfoIcon',
-    href: '/info',
-  },
-  {
-    label: t('IFO'),
-    icon: 'IfoIcon',
-    href: '/ifo',
-  },
-  {
-    label: t('More'),
-    icon: 'MoreIcon',
+    label: t('Win'),
+    href: '/prediction',
+    icon: 'Trophy',
     items: [
       {
-        label: t('Contact'),
-        href: 'https://docs.pancakeswap.finance/contact-us',
+        label: t('Prediction (BETA)'),
+        href: '/prediction',
+      },
+      {
+        label: t('Lottery'),
+        href: '/lottery',
+      },
+    ],
+  },
+  {
+    label: t('NFT'),
+    href: '/collectibles',
+    icon: 'Nft',
+    showOnMobile: false,
+    showItemsOnMobile: false,
+    items: [
+      {
+        label: t('Collectibles'),
+        href: '/collectibles',
+      },
+    ],
+  },
+  {
+    label: '',
+    href: '/info',
+    icon: 'More',
+    hideSubNav: true,
+    items: [
+      {
+        label: t('Info'),
+        href: '/info',
+      },
+      {
+        label: t('IFO'),
+        href: '/ifo',
       },
       {
         label: t('Voting'),
         href: '/voting',
       },
       {
-        label: t('Github'),
-        href: 'https://github.com/pancakeswap',
+        type: DropdownMenuItemType.DIVIDER,
       },
       {
-        label: t('Docs'),
-        href: 'https://docs.pancakeswap.finance',
+        label: t('Leaderboard'),
+        href: '/teams',
+      },
+      {
+        type: DropdownMenuItemType.DIVIDER,
       },
       {
         label: t('Blog'),
         href: 'https://pancakeswap.medium.com',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
       },
       {
-        label: t('Merch'),
-        href: 'https://pancakeswap.creator-spring.com/',
+        label: t('Docs'),
+        href: 'https://docs.pancakeswap.finance',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
       },
     ],
   },
