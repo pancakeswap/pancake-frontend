@@ -2,22 +2,21 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 export type FixedSaleInfos = {
-  maxSupply: number | null
-  maxPerAddress: number | null
-  maxPerTransaction: number | null
-  pricePerTicket: BigNumber | null
-  startTimestamp: string | null
+  maxSupply: BigNumber
+  maxPerAddress: BigNumber
+  maxPerTransaction: BigNumber
+  pricePerTicket: BigNumber
+  startTimestamp: string
 }
 
 export type DynamicSaleInfos = {
-  saleStatus: SaleStatusEnum | null
-  totalTicketsDistributed: number | null
-  canClaimForGen0: boolean | null
-  numberTicketsForGen0: number | null
-  numberTicketsUsedForGen0: number | null
-  numberTicketsOfUser: number | null
-  ticketsOfUser: number[] | null
-  totalSupplyMinted: number | null
-  numberTokensOfUser: number | null
-  hasActiveProfile: boolean | null
+  saleStatus: SaleStatusEnum
+  totalTicketsDistributed: BigNumber
+  canClaimForGen0: boolean
+  numberTicketsForGen0: BigNumber
+  numberTicketsUsedForGen0: BigNumber
+  numberTicketsOfUser: BigNumber
+  ticketsOfUser: BigNumber[]
+  totalSupplyMinted: BigNumber
+  numberTokensOfUser: BigNumber
 }

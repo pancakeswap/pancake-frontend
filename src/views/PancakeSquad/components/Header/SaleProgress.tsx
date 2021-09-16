@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Progress, Text } from '@pancakeswap/uikit'
+import { BigNumber } from '@ethersproject/bignumber'
 import { ContextApi } from 'contexts/Localization/types'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 
@@ -7,9 +8,9 @@ type PreEventProps = {
   t: ContextApi['t']
   saleStatus: SaleStatusEnum
   userStatus: UserStatusEnum
-  totalTicketsDistributed: number | null
-  maxSupply: number | null
-  totalSupplyMinted: number | null
+  totalTicketsDistributed: BigNumber
+  maxSupply: BigNumber
+  totalSupplyMinted: BigNumber
 }
 
 const SaleProgressTextMapping: Record<SaleStatusEnum, string> = {
@@ -23,6 +24,8 @@ const SaleProgressTextMapping: Record<SaleStatusEnum, string> = {
 
 const SaleProgress: React.FC<PreEventProps> = ({ t, saleStatus, totalSupplyMinted, maxSupply }) => {
   const displaySaleProgress = saleStatus !== SaleStatusEnum.Pending
+  const supplyRemaining = maxSupply.sub(totalSupplyMinted)
+  const supplyRemainingPercentage = Number(supplyRemaining.div(maxSupply).toString())
   const isMintCompleted = totalSupplyMinted === maxSupply && saleStatus === SaleStatusEnum.Claim
   return displaySaleProgress ? (
     <Box mb="24px">
@@ -34,9 +37,12 @@ const SaleProgress: React.FC<PreEventProps> = ({ t, saleStatus, totalSupplyMinte
       <Text color="invertedContrast" mb="24px" bold>
         {isMintCompleted
           ? t('All 10,000 Pancake Squad NFTs have now been minted!')
-          : t(SaleProgressTextMapping[saleStatus])}
+          : t(SaleProgressTextMapping[saleStatus], {
+              remaining: supplyRemaining.toString(),
+              total: maxSupply.toString(),
+            })}
       </Text>
-      {!isMintCompleted && <Progress variant="round" primaryStep={20} />}
+      {!isMintCompleted && <Progress variant="round" primaryStep={supplyRemainingPercentage} />}
     </Box>
   ) : null
 }

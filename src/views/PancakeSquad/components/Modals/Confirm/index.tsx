@@ -17,12 +17,15 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import React from 'react'
+import { getBscScanLink } from 'utils'
+import truncateHash from 'utils/truncateHash'
 
 type ConfirmModalProps = {
   isLoading: boolean
-  transactionId: string
+  txHash?: string
   loadingText: string
   loadingButtonLabel: string
   successButtonLabel: string
@@ -33,11 +36,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   title,
   isLoading,
   headerBackground,
-  transactionId,
+  txHash,
   loadingText,
   loadingButtonLabel,
   successButtonLabel,
 }) => {
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()
 
@@ -53,7 +57,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       </ModalHeader>
       <ModalBody py="24px" maxWidth="375px" width="100%">
         <Flex flexDirection="column" alignItems="center">
-          {isLoading ? (
+          {isLoading || !txHash ? (
             <Box px="16px">
               <Flex mb="16px" alignItems="center">
                 <Box mr="16px">
@@ -76,9 +80,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
               <Text mb="30px" bold>
                 {t('Transaction Submitted')}
               </Text>
-              <LinkExternal mb="30px">
-                {t('View on BscScan')}
-                {` id: ${transactionId}`}
+              <LinkExternal href={getBscScanLink(txHash, 'transaction', chainId)} mb="30px">
+                {t('View on BscScan')}: {truncateHash(txHash, 8, 0)}
               </LinkExternal>
               <Flex
                 justifyContent="center"
