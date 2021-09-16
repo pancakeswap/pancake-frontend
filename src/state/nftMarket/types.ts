@@ -115,6 +115,11 @@ export interface Collection {
   owner: string
   totalSupply: BigNumberish
   verified: boolean
+  avatar: string
+  banner: {
+    large: string
+    small: string
+  }
 }
 
 export interface ApiCollections {
