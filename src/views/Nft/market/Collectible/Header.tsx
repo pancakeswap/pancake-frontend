@@ -10,6 +10,7 @@ import MarketPageTitle from '../components/MarketPageTitle'
 import StatBox, { StatBoxItem } from '../components/StatBox'
 import BannerHeader from '../components/BannerHeader'
 import AvatarImage from '../components/BannerHeader/AvatarImage'
+import TopBar from './TopBar'
 
 interface HeaderProps {
   collection: Collection
@@ -26,6 +27,7 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
 
   return (
     <MarketPageHeader>
+      <TopBar />
       <BannerHeader
         bannerImage={`/images/collections/${slug}-banner-lg.png`}
         avatar={<AvatarImage src={`/images/collections/${slug}-avatar.png`} />}
