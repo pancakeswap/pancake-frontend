@@ -1,29 +1,31 @@
 import React from 'react'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
+import { BigNumber } from '@ethersproject/bignumber'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 
 type PreEventProps = {
   t: ContextApi['t']
   saleStatus: SaleStatusEnum
   userStatus: UserStatusEnum
-  numberTicketsOfUser: number
-  numberTokensOfUser: number
+  numberTicketsOfUser: BigNumber
+  numberTokensOfUser: BigNumber
 }
 
 const MintText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus, numberTicketsOfUser, numberTokensOfUser }) => {
+  const zero = BigNumber.from(0)
   const isUserUnconnected = userStatus === UserStatusEnum.UNCONNECTED
   const displayMintText =
     (userStatus === UserStatusEnum.PROFILE_ACTIVE_GEN0 && saleStatus === SaleStatusEnum.Presale) ||
     saleStatus >= SaleStatusEnum.Sale
-  const hasNoTicketOrToken = numberTicketsOfUser === 0 && numberTokensOfUser === 0
+  const hasNoTicketOrToken = numberTicketsOfUser.isZero() && numberTokensOfUser.isZero
   return displayMintText ? (
     <Flex flexDirection="column" mb="24px">
       <Box>
         <Text fontSize="16px" color="text" mr="2px">
           {t('Your Mint Tickets')}
         </Text>
-        <Text fontSize="16px" color={numberTicketsOfUser > 0 ? 'warning' : 'failure'} bold>
+        <Text fontSize="16px" color={numberTicketsOfUser.gt(zero) ? 'warning' : 'failure'} bold>
           {numberTicketsOfUser}
         </Text>
       </Box>

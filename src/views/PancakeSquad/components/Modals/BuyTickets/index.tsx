@@ -26,11 +26,11 @@ interface BuyTicketsModalProps extends ModalProps {
   saleStatus: SaleStatusEnum
   cakeBalance: BigNumber
   pricePerTicket: BigNumber
-  maxPerAddress: number
-  maxPerTransaction: number
-  numberTicketsOfUser: number
-  numberTicketsForGen0: number
-  numberTicketsUsedForGen0: number
+  maxPerAddress: BigNumber
+  maxPerTransaction: BigNumber
+  numberTicketsOfUser: BigNumber
+  numberTicketsForGen0: BigNumber
+  numberTicketsUsedForGen0: BigNumber
 }
 
 const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
@@ -49,15 +49,18 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const [ticketsNumber, setTicketsNumber] = useState<number | null>(null)
+  const [ticketsNumber, setTicketsNumber] = useState<number | null>(0)
   const isPreSale = saleStatus === SaleStatusEnum.Presale
   const remainingTickets = isPreSale
     ? numberTicketsForGen0
-    : maxPerAddress - numberTicketsOfUser - numberTicketsUsedForGen0
+    : maxPerAddress.sub(numberTicketsOfUser).sub(numberTicketsUsedForGen0)
 
-  const maxBuyTickets = Math.min(Number(formatBigNumber(cakeBalance.div(pricePerTicket), 0)), remainingTickets)
+  const maxBuyTickets = Math.min(
+    Number(formatBigNumber(cakeBalance.div(pricePerTicket), 0)),
+    Number(formatBigNumber(remainingTickets)),
+  )
   const totalCost = formatBigNumber(pricePerTicket.mul(BigNumber.from(ticketsNumber)), 0)
-  const buyButtons = new Array(maxPerTransaction).fill('')
+  const buyButtons = new Array(Number(maxPerTransaction.toString())).fill('')
 
   return (
     <ModalContainer minWidth="375px">
@@ -79,9 +82,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
               {buyButtons.map((_, index) => (
                 <Button
                   key={index}
-                  variant={index === ticketsNumber ? 'primary' : 'tertiary'}
-                  onClick={() => setTicketsNumber(index)}
-                  disabled={index <= maxBuyTickets}
+                  variant={index + 1 === ticketsNumber ? 'primary' : 'tertiary'}
+                  onClick={() => setTicketsNumber(index + 1)}
+                  disabled={index + 1 <= maxBuyTickets}
                 >
                   {index + 1}
                 </Button>
@@ -137,7 +140,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
               {t('The network may become busy during the sale period. Consider setting a high gas fee (GWEI).')}
               <br />
               <br />
-              {t(`Max. Tickets per transaction: ${maxPerTransaction}`)}s
+              {t(`Max. Tickets per transaction: ${maxPerTransaction}`)}
               <br />
               {t(`Max. Tickets per wallet: ${maxPerAddress}`)}
               <br />
