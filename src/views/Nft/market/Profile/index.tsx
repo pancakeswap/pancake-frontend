@@ -45,7 +45,6 @@ const NftProfile = () => {
           <TabMenu />
         </TabMenuWrapper>
       </MarketPageHeader>
-
       <Page style={{ minHeight: 'auto' }}>
         <Route path="/nft/market/profile/achievements">
           <Achievements points={profile?.points} />

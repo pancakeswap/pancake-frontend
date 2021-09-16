@@ -67,6 +67,12 @@ interface Image {
   gif?: string
 }
 
+export enum NftLocation {
+  FORSALE = 'FORSALE',
+  PROFILE = 'PROFILE',
+  WALLET = 'WALLET',
+}
+
 // Return type from subgraph
 export interface NftTokenSg {
   tokenId: string
@@ -81,6 +87,7 @@ export interface NftTokenSg {
     id: string
   }
   transactionHistory?: Transaction[]
+  nftLocation?: NftLocation
 }
 
 export interface NFT {
@@ -97,6 +104,7 @@ export interface NFT {
 export interface TokenIdWithCollectionAddress {
   collectionAddress: string
   tokenId: string
+  nftLocation?: NftLocation
 }
 
 export interface Collection {
