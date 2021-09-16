@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.54.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.54.0...@pancakeswap/uikit@0.54.1) (2021-09-16)
+
+
+### Bug Fixes
+
+* **footer links:** Add rel attribute ([#278](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/278)) ([c35e027](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/c35e027d2cf22133b238a4d75039c2dedb6b498e))
+* **uikit:** BottomNav ([#279](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/279)) ([5d75877](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/5d7587739fa09d1745467ffe6807d7ade1dfc42d))
+
+
+
+
+
 # [0.54.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.53.0...@pancakeswap/uikit@0.54.0) (2021-09-14)
 
 
