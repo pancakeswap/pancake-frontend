@@ -120,8 +120,6 @@ export interface Collection {
     large: string
     small: string
   }
-  createdAt: string
-  updatedAt: string
 }
 
 export interface ApiCollections {
