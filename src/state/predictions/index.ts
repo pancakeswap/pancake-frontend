@@ -66,6 +66,7 @@ const initialState: PredictionsState = {
   ledgers: {},
   claimableStatuses: {},
   leaderboard: {
+    selectedAddress: null,
     loadingState: LeaderboardLoadingState.INITIAL,
     filters: {
       address: null,
@@ -376,6 +377,9 @@ export const predictionsSlice = createSlice({
     markAsCollected: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.claimableStatuses = { ...state.claimableStatuses, ...action.payload }
     },
+    setSelectedAddress: (state, action: PayloadAction<string>) => {
+      state.leaderboard.selectedAddress = action.payload
+    },
   },
   extraReducers: (builder) => {
     // Leaderboard filter
@@ -547,6 +551,7 @@ export const {
   setLastOraclePrice,
   markAsCollected,
   setLeaderboardFilter,
+  setSelectedAddress,
 } = predictionsSlice.actions
 
 export default predictionsSlice.reducer
