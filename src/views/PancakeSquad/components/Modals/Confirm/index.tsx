@@ -20,12 +20,23 @@ import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import React from 'react'
 
-const ConfirmModal: React.FC<ModalProps & { isLoading: boolean; transactionId: string }> = ({
+type ConfirmModalProps = {
+  isLoading: boolean
+  transactionId: string
+  loadingText: string
+  loadingButtonLabel: string
+  successButtonLabel: string
+} & ModalProps
+
+const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onDismiss,
   title,
   isLoading,
   headerBackground,
   transactionId,
+  loadingText,
+  loadingButtonLabel,
+  successButtonLabel,
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -47,16 +58,16 @@ const ConfirmModal: React.FC<ModalProps & { isLoading: boolean; transactionId: s
               <Flex mb="16px" alignItems="center">
                 <Box mr="16px">
                   <Text fontSize="20px" bold color="secondary">
-                    {t('Enable')}
+                    {title}
                   </Text>
                   <Text fontSize="14px" color="textSubtle">
-                    {t('Please enable WBNB spending in your wallet')}
+                    {loadingText}
                   </Text>
                 </Box>
                 <Spinner size={50} />
               </Flex>
               <Button width="100%" variant="secondary" disabled>
-                {t('Confirming...')}
+                {loadingButtonLabel}
               </Button>
             </Box>
           ) : (
@@ -77,7 +88,7 @@ const ConfirmModal: React.FC<ModalProps & { isLoading: boolean; transactionId: s
                 borderTop={`1px solid ${theme.colors.cardBorder}`}
               >
                 <Button width="100%" variant="secondary" onClick={onDismiss}>
-                  {t('Mint more')}
+                  {successButtonLabel}
                 </Button>
               </Flex>
             </>
