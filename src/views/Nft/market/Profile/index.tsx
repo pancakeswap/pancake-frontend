@@ -8,11 +8,12 @@ import { Box, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { Route } from 'react-router'
 import { useUserNfts } from 'state/nftMarket/hooks'
+import useFetchUserNfts from './hooks/useFetchUserNfts'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import TabMenu from './components/TabMenu'
 import Achievements from './components/Achievements'
-import useFetchUserNfts from './hooks/useFetchUserNfts'
+import Activity from './components/Activity'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;
@@ -57,7 +58,7 @@ const NftProfile = () => {
           })}
         </Route>
         <Route exact path="/nft/market/profile/activity">
-          <span>Activity</span>
+          <Activity />
         </Route>
         <Route path="/nft/market/profile/achievements">
           <Achievements points={profile?.points} />
