@@ -31,8 +31,9 @@ const Collectible = () => {
   return (
     <>
       <Page>
-        <Link to="/nft/market/collectibles/pancake-bunnies">Pancake Bunnies</Link>
-        <Link to="/nft/market/collectibles/pancake-squad">Pancake Bunnies</Link>
+        <Link to="/nft/market/collections/pancake-bunnies">Pancake Bunnies</Link>
+        <br />
+        <Link to="/nft/market/collections/pancake-squad">Pancake Squad</Link>
 
         <Box py="40px">
           <FilterContainer items={exampleList} onFilterClick={(item) => console.log(item)} />
