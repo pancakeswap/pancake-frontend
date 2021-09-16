@@ -47,7 +47,7 @@ const ApproveAndConfirmStage: React.FC<ApproveAndConfirmStageProps> = ({
       </Flex>
       {!isApproved && (
         <Button variant="secondary" disabled={isApproving} onClick={handleApprove}>
-          {isApproving ? `${t('Enabling')}...` : t('Start')}
+          {isApproving ? `${t('Enabling')}...` : t('Enable')}
         </Button>
       )}
       <Flex alignItems="center" mt="8px">
