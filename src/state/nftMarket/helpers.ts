@@ -76,7 +76,7 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
         query getNftCollectionMarketData($collectionAddress: String!) {
           collection(id: $collectionAddress) {
             id
-            NFTs {
+            nfts {
              ${getBaseNftFields()}
             }
           }
@@ -158,13 +158,13 @@ export const getUserActivity = async (where = {}): Promise<UserActivity> => {
           users(where: $where) {
             buyTradeHistory(orderBy: timestamp) {
               ${getBaseTransactionFields()}
-              NFT {
+              nft {
                 ${getBaseNftFields()}
               }
             }
             sellTradeHistory(orderBy: timestamp) {
               ${getBaseTransactionFields()}
-              NFT {
+              nft {
                 ${getBaseNftFields()}
               }
             }
@@ -174,7 +174,7 @@ export const getUserActivity = async (where = {}): Promise<UserActivity> => {
               timestamp
               orderType
               askPrice
-              NFT {
+              nft {
                 ${getBaseNftFields()}
               }
             }
