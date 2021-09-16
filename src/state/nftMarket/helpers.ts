@@ -239,3 +239,73 @@ export const fetchWalletTokenIdsForCollections = async (
   const walletNfts = await Promise.all(walletNftPromises)
   return walletNfts.flat()
 }
+
+/**
+ * Get the most recently listed NFTs
+ * @param first Number of nfts to retrieve
+ * @returns NftTokenSg[]
+ */
+export const getLatestListedNfts = async (first: number): Promise<NftTokenSg[]> => {
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getLatestNftMarketData($first: Int) {
+          nfts(orderBy: updatedAt , orderDirection: desc, first: $first) {
+            ${getBaseNftFields()}
+            collection {
+              id
+            }
+          }
+        }
+      `,
+      { first },
+    )
+
+    return res.nfts
+  } catch (error) {
+    console.error('Failed to fetch NFTs market data', error)
+    return []
+  }
+}
+
+/**
+ * Fetch a NFT using the API
+ * /!\ THIS FUNCTION WILL BE REPLACED BY AN ENDPOINT ALLOWING TO FETCH MULTIPLE NFTS /!\
+ * @param collectionAddress
+ * @param tokenId
+ * @returns NFT from API
+ */
+const getNftApi = async (collectionAddress: string, tokenId: string) => {
+  const res = await fetch(`${API_NFT}/collections/${collectionAddress}/tokens/${tokenId}`)
+  if (res.ok) {
+    const json = await res.json()
+    return json.data
+  }
+
+  console.error("Can't fetch NFT API", res.status)
+  return {}
+}
+
+/**
+ * Fetch a list of NFT from different collections
+ * @param from Array of { collectionAddress: string; tokenId: string }
+ * @returns Array of NFT from API
+ */
+export const getNftsFromDifferentCollectionsApi = async (
+  from: { collectionAddress: string; tokenId: string }[],
+): Promise<NFT[]> => {
+  const promises = from.map((nft) => getNftApi(nft.collectionAddress, nft.tokenId))
+  const responses = await Promise.all(promises)
+  return responses.map((res) => ({
+    tokenId: res.tokenId,
+    id: res.id,
+    name: res.name,
+    collectionName: null,
+    description: res.description,
+    image: {
+      original: res.image?.original,
+      thumbnail: res.image?.thumbnail,
+    },
+  }))
+}
