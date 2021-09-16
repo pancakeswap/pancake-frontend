@@ -4,7 +4,6 @@ import { Text } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { formatBigNumber, formatNumber } from 'utils/formatBalance'
-import slugify from 'utils/slugify'
 import MarketPageHeader from '../components/MarketPageHeader'
 import MarketPageTitle from '../components/MarketPageTitle'
 import StatBox, { StatBoxItem } from '../components/StatBox'
@@ -17,21 +16,15 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ collection }) => {
-  const { totalSupply, numberTokensListed, totalVolumeBNB } = collection
+  const { totalSupply, numberTokensListed, totalVolumeBNB, banner, avatar } = collection
   const { t } = useTranslation()
   const owners = ethers.BigNumber.from(numberTokensListed)
   const volume = ethers.BigNumber.from(totalVolumeBNB)
 
-  // This might be temporary
-  const slug = slugify(collection.name)
-
   return (
     <MarketPageHeader>
       <TopBar />
-      <BannerHeader
-        bannerImage={`/images/collections/${slug}-banner-lg.png`}
-        avatar={<AvatarImage src={`/images/collections/${slug}-avatar.png`} />}
-      />
+      <BannerHeader bannerImage={banner.large} avatar={<AvatarImage src={avatar} />} />
       <MarketPageTitle
         title={collection.name}
         description={collection.description ? <Text color="textSubtle">{t(collection.description)}</Text> : null}
