@@ -7,6 +7,7 @@ export const getBaseNftFields = () => `
   tradeVolumeBNB
   totalTrades
   isTradable
+  updatedAt
   collection {
     id
   }

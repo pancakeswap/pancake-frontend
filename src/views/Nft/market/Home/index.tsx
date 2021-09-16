@@ -5,6 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import { HotCollectionCard } from '../components/CollectibleCard'
 import { BNBAmountLabel } from '../components/CollectibleCard/styles'
+import Newest from './Newest'
 
 const Home = () => {
   const { t } = useTranslation()
@@ -27,7 +28,7 @@ const Home = () => {
             {t('View All')}
           </Button>
         </Flex>
-        <Grid gridGap="16px" gridTemplateColumns="repeat(3, 1fr)">
+        <Grid gridGap="16px" gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} mb="64px">
           <HotCollectionCard
             bgSrc="/images/collections/pancake-bunnies-banner-sm.png"
             avatarSrc="/images/collections/pancake-bunnies-avatar.png"
@@ -58,6 +59,7 @@ const Home = () => {
             </Text>
           </HotCollectionCard>
         </Grid>
+        <Newest />
       </Page>
     </>
   )
