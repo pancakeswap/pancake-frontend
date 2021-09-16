@@ -21,19 +21,42 @@ export interface State {
 }
 
 export interface UserNftsState {
-  isInitialized: boolean
+  userNftsInitialised: boolean
   nfts: NftTokenSg[]
+  activity: UserActivity
 }
 
 export interface Transaction {
   id: string
-  block: BigNumberish
-  timestamp: BigNumberish
-  askPrice: BigNumberish
-  netPrice: BigNumberish
+  block: string
+  timestamp: string
+  askPrice: string
+  netPrice: string
   buyer: { id: string }
   seller: { id: string }
   withBNB: boolean
+  nft?: NftTokenSg
+}
+
+export enum AskOrderType {
+  NEW = 'NEW',
+  MODIFY = 'MODIFY',
+  CANCEL = 'CANCEL',
+}
+
+export interface AskOrder {
+  id: string
+  block: string
+  timestamp: string
+  askPrice: string
+  orderType: AskOrderType
+  nft?: NftTokenSg
+}
+
+export interface UserActivity {
+  askOrderHistory: AskOrder[]
+  buyTradeHistory: Transaction[]
+  sellTradeHistory: Transaction[]
 }
 
 interface Image {
