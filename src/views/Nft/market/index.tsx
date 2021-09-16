@@ -25,10 +25,10 @@ const Market = () => {
       <Route exact path={path}>
         <Home />
       </Route>
-      <Route exact path={`${path}/collectibles`}>
+      <Route exact path={`${path}/collections`}>
         <CollectibleOverview />
       </Route>
-      <Route path={`${path}/collectibles/:slug`}>
+      <Route path={`${path}/collections/:slug`}>
         <Collectible />
       </Route>
       <Route path={`${path}/profile`}>
