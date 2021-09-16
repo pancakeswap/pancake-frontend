@@ -6,7 +6,7 @@ import slugify from 'utils/slugify'
 import { ethers } from 'ethers'
 import { fetchCollections, fetchNftsFromCollections } from './reducer'
 import { State } from '../types'
-import { Collection, UserNftsState, AskOrder, Transaction } from './types'
+import { UserNftsState, AskOrder, Transaction } from './types'
 
 export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
@@ -20,7 +20,7 @@ export const useGetCollections = () => {
   return useSelector((state: State) => state.nftMarket.data.collections)
 }
 
-export const useCollectionFromSlug = (slug: string): Collection => {
+export const useCollectionFromSlug = (slug: string) => {
   const collections = useGetCollections()
   return find(collections, (collection) => slugify(collection.name) === slug)
 }
