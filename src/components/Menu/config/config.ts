@@ -1,4 +1,4 @@
-import { MenuItemsType, DropdownMenuItemType, menuStatus } from '@pancakeswap/uikit'
+import { MenuItemsType, DropdownMenuItemType } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
 export type ConfigMenuItemsType = MenuItemsType & { hideSubNav?: boolean }
@@ -76,7 +76,6 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('IFO'),
         href: '/ifo',
-        status: menuStatus.SOON,
       },
       {
         label: t('Voting'),
