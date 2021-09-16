@@ -1451,5 +1451,16 @@
   "This swap has a price impact of at least %amount%%. Please type the word \"%word%\" to continue with this swap.": "هذه المبادلة تؤثر على السعر بمقدار %amount%% على الأقل. يُرجى كتابة الكلمة \"%word%\" للاستمرار في هذه المبادلة.",
   "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "هذه المبادلة تؤثر على السعر بمقدار %amount%% على الأقل. يُرجى تأكيد أنك ترغب في الاستمرار في هذه المبادلة.",
   "To receive %assetA% and %assetB%": "To receive %assetA% and %assetB%",
-  "Price Impact Too High": "Price Impact Too High"
+  "Price Impact Too High": "Price Impact Too High",
+  "About": "About",
+  "Online Store": "Online Store",
+  "Customer Support": "Customer Support",
+  "Troubleshooting": "Troubleshooting",
+  "Guides": "Guides",
+  "Developers": "Developers",
+  "Documentation": "Documentation",
+  "Bug Bounty": "Bug Bounty",
+  "Audits": "Audits",
+  "Careers": "Careers",
+  "Dark mode": "Dark mode"
 }

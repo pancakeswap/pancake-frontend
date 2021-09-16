@@ -1451,5 +1451,16 @@
   "This swap has a price impact of at least %amount%%. Please type the word \"%word%\" to continue with this swap.": "Ang pag-swap na ito ay may epekto sa presyo na hindi bababa sa %amount%%. Paki-type ang salitang \"%word%\" para ipagpapatuloy ang pag-swap na ito.",
   "This swap has a price impact of at least %amount%%. Please confirm that you would like to continue with this swap.": "Ang pag-swap na ito ay may epekto sa presyo na hindi bababa sa %amount%%. Pakikumpirma kung gusto mong ipagpatuloy ang pag-swap na ito.",
   "To receive %assetA% and %assetB%": "To receive %assetA% and %assetB%",
-  "Price Impact Too High": "Price Impact Too High"
+  "Price Impact Too High": "Price Impact Too High",
+  "About": "About",
+  "Online Store": "Online Store",
+  "Customer Support": "Customer Support",
+  "Troubleshooting": "Troubleshooting",
+  "Guides": "Guides",
+  "Developers": "Developers",
+  "Documentation": "Documentation",
+  "Bug Bounty": "Bug Bounty",
+  "Audits": "Audits",
+  "Careers": "Careers",
+  "Dark mode": "Dark mode"
 }
