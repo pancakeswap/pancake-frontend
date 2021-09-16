@@ -91,35 +91,6 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
   }
 }
 
-/**
- * Fetch NFT metadata with a given collection and tokenId using the API
- * @param collectionAddress
- * @param tokenId
- * @returns
- */
-export const getNftMetadataFromTokenIdApi = async (collectionAddress: string, tokenId: string): Promise<NFT> => {
-  const res = await fetch(`${API_NFT}/collections/${collectionAddress}/tokens/${tokenId}`)
-  if (res.ok) {
-    const json = await res.json()
-    return json.data
-  }
-  console.error('Failed to fetch token', res.statusText)
-  return null
-}
-
-/**
- * Fetch NFT metadata for an array of tokenIds and collection addresses
- * @param tokens TokenIdWithCollectionAddress[]
- * @returns
- */
-export const getMultipleNftsMetadataFromApi = async (tokens: TokenIdWithCollectionAddress[]) => {
-  const metaDataPromises = tokens.map((token) => {
-    return getNftMetadataFromTokenIdApi(token.collectionAddress, token.tokenId)
-  })
-  const nftMetaData = await Promise.all(metaDataPromises)
-  return nftMetaData
-}
-
 export const getNftsMarketData = async (where = {}): Promise<NftTokenSg[]> => {
   try {
     const res = await request(
