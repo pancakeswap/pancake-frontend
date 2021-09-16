@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchUserActivity } from 'state/nftMarket/reducer'
 
-const useFetchUserNfts = (account: string) => {
+const useFetchUserActivity = (account: string) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -12,4 +12,4 @@ const useFetchUserNfts = (account: string) => {
   }, [dispatch, account])
 }
 
-export default useFetchUserNfts
+export default useFetchUserActivity

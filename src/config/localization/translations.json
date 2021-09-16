@@ -1552,5 +1552,21 @@
   "Removing it will suspend your profile, and you won’t be able to earn points, participate in team activities, or be eligible for new NFT drops.": "Removing it will suspend your profile, and you won’t be able to earn points, participate in team activities, or be eligible for new NFT drops.",
   "Traits": "Traits",
   "Trait": "Trait",
-  "Count": "Count"
+  "Count": "Count",
+  "$%amount%": "$%amount%",
+  "NFT Market": "NFT Market",
+  "Delisted": "Delisted",
+  "No NFTs found": "No NFTs found",
+  "Listed": "Listed",
+  "Transaction Details": "Transaction Details",
+  "Buy and Sell verified PancakeSwap collectibles.": "Buy and Sell verified PancakeSwap collectibles.",
+  "Modified": "Modified",
+  "From/To": "From/To",
+  "Item": "Item",
+  "PancakeSwap NFTs only... for now!": "PancakeSwap NFTs only... for now!",
+  "Bought": "Bought",
+  "Event": "Event",
+  "Manage/Sell": "Manage/Sell",
+  "Sold": "Sold",
+  "Page %currentPage% of %maxPages%": "Page %currentPage% of %maxPages%"
 }
