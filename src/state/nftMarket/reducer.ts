@@ -110,7 +110,9 @@ export const fetchUserNfts = createAsyncThunk<
     return (
       marketData || {
         tokenId: walletNft.tokenId,
-        collectionAddress: walletNft.collectionAddress,
+        collection: {
+          id: walletNft.collectionAddress.toLowerCase(),
+        },
         metadataUrl: null,
         transactionHistory: null,
         currentSeller: null,
