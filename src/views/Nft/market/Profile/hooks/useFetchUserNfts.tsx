@@ -9,7 +9,7 @@ import { useProfile } from 'state/profile/hooks'
 const useFetchUserNfts = (account: string) => {
   const dispatch = useAppDispatch()
   const { profile, isInitialized: isProfileInitialized, isLoading: isProfileLoading } = useProfile()
-  const { isInitialized } = useUserNfts()
+  const { userNftsInitialised } = useUserNfts()
   const collections = useGetCollections()
 
   const profileNftTokenId = profile?.tokenId?.toString()
@@ -22,7 +22,7 @@ const useFetchUserNfts = (account: string) => {
   const previousProfileNftTokenId = usePreviousValue(profileNftTokenId)
 
   // Fetch on first load when profile fetch is resolved
-  const shouldFetch = account && !isInitialized && isProfileInitialized && !isProfileLoading
+  const shouldFetch = account && !userNftsInitialised && isProfileInitialized && !isProfileLoading
 
   // Fetch on account / profile change, once profile fetch is resoleved
   const hasAccountSwitched =
