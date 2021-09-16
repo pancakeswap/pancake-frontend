@@ -392,6 +392,7 @@ export interface PredictionsState {
     [key: string]: boolean
   }
   leaderboard: {
+    selectedAddress: string
     loadingState: LeaderboardLoadingState
     filters: LeaderboardFilter
     skip: number

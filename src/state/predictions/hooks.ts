@@ -173,3 +173,7 @@ export const useGetOrFetchLeaderboardAddressResult = (account: string) => {
 
   return addressResult
 }
+
+export const useGetSelectedAddress = () => {
+  return useSelector((state: State) => state.predictions.leaderboard.selectedAddress)
+}
