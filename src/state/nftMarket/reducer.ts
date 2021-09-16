@@ -7,6 +7,7 @@ import {
   fetchWalletTokenIdsForCollections,
   getCollectionsApi,
   getCollectionsSg,
+  getUserActivity,
 } from './helpers'
 import {
   State,
@@ -16,6 +17,7 @@ import {
   TokenIdWithCollectionAddress,
   NFTMarketInitializationState,
   NftTokenSg,
+  UserActivity,
 } from './types'
 
 const initialState: State = {
@@ -24,7 +26,11 @@ const initialState: State = {
     collections: {},
     nfts: {},
     users: {},
-    user: { isInitialized: false, nfts: [] },
+    user: {
+      userNftsInitialised: false,
+      nfts: [],
+      activity: { askOrderHistory: [], buyTradeHistory: [], sellTradeHistory: [] },
+    },
   },
 }
 
@@ -121,6 +127,11 @@ export const fetchUserNfts = createAsyncThunk<
   return [...walletNftsWithMarketData, ...marketDataForNftsOnSale]
 })
 
+export const fetchUserActivity = createAsyncThunk<UserActivity, string>('nft/fetchUserActivity', async (address) => {
+  const userActivity = await getUserActivity({ id: address.toLocaleLowerCase() })
+  return userActivity
+})
+
 export const NftMarket = createSlice({
   name: 'NftMarket',
   initialState,
@@ -135,7 +146,10 @@ export const NftMarket = createSlice({
     })
     builder.addCase(fetchUserNfts.fulfilled, (state, action) => {
       state.data.user.nfts = action.payload
-      state.data.user.isInitialized = true
+      state.data.user.userNftsInitialised = true
+    })
+    builder.addCase(fetchUserActivity.fulfilled, (state, action) => {
+      state.data.user.activity = action.payload
     })
   },
 })
