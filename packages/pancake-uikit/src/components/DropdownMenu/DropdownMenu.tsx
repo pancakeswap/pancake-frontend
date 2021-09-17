@@ -125,7 +125,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   return (
     <Box ref={isBottomNav ? null : setTargetRef} {...props}>
       <Box ref={isBottomNav ? setTargetRef : null}>{children}</Box>
-      {isBottomNav && isOpen && <StyledOverlay />}
+      {isBottomNav && isOpen && showItemsOnMobile && <StyledOverlay />}
       {hasItems && (
         <StyledDropdownMenu
           style={styles.popper}
