@@ -38,7 +38,7 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   padding-right: 16px;
 `;
 
-const BodyWrapper = styled.div`
+const BodyWrapper = styled(Box)`
   position: relative;
   display: flex;
 `;
@@ -130,7 +130,7 @@ const Menu: React.FC<NavProps> = ({
         </Flex>
       </StyledNav>
       {subLinks && <SubMenuItems items={subLinks} mt={`${MENU_HEIGHT + 1}px`} activeItem={activeSubItem} />}
-      <BodyWrapper>
+      <BodyWrapper mt={!subLinks ? `${MENU_HEIGHT + 1}px` : "0"}>
         <Inner isPushed={false} showMenu={showMenu}>
           {children}
           <Footer

@@ -32,42 +32,46 @@ exports[`renders correctly 1`] = `
   margin-right: 20px;
 }
 
-.c40 {
+.c38 {
+  margin-top: 0;
+}
+
+.c41 {
   padding: 40px 16px;
   margin-bottom: 44px;
 }
 
-.c43 {
+.c44 {
   width: 100%;
 }
 
-.c45 {
+.c46 {
   display: block;
 }
 
-.c47 {
+.c48 {
   margin-bottom: 42px;
 }
 
-.c54 {
+.c55 {
   display: none;
 }
 
-.c55 {
+.c56 {
   padding-bottom: 42px;
   margin-bottom: 0;
 }
 
-.c70 {
+.c71 {
   height: 100%;
 }
 
-.c73 {
+.c74 {
   width: 100%;
   height: 100%;
 }
 
-.c80 {
+.c81 {
   margin-bottom: 24px;
 }
 
@@ -115,7 +119,7 @@ exports[`renders correctly 1`] = `
   justify-content: start;
 }
 
-.c41 {
+.c42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -126,7 +130,7 @@ exports[`renders correctly 1`] = `
   justify-content: center;
 }
 
-.c44 {
+.c45 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -136,7 +140,7 @@ exports[`renders correctly 1`] = `
   flex-direction: column;
 }
 
-.c48 {
+.c49 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -157,7 +161,7 @@ exports[`renders correctly 1`] = `
   align-items: flex-start;
 }
 
-.c56 {
+.c57 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -167,7 +171,7 @@ exports[`renders correctly 1`] = `
   order: 2;
 }
 
-.c63 {
+.c64 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -184,7 +188,7 @@ exports[`renders correctly 1`] = `
   justify-content: space-between;
 }
 
-.c65 {
+.c66 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -198,7 +202,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c71 {
+.c72 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -213,7 +217,7 @@ exports[`renders correctly 1`] = `
   justify-content: center;
 }
 
-.c74 {
+.c75 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -228,7 +232,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c81 {
+.c82 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -288,7 +292,7 @@ exports[`renders correctly 1`] = `
   margin-right: 0.5rem;
 }
 
-.c59 {
+.c60 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -298,7 +302,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c60 {
+.c61 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -309,7 +313,7 @@ exports[`renders correctly 1`] = `
   margin-right: 24px;
 }
 
-.c72 {
+.c73 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -319,7 +323,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c75 {
+.c76 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -329,7 +333,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c77 {
+.c78 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -340,7 +344,7 @@ exports[`renders correctly 1`] = `
   margin-right: 0.5rem;
 }
 
-.c84 {
+.c85 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -366,21 +370,21 @@ exports[`renders correctly 1`] = `
   line-height: 1.5;
 }
 
-.c51 {
+.c52 {
   color: #F4EEFF;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
 }
 
-.c53 {
+.c54 {
   color: #FFB237;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
 }
 
-.c58 {
+.c59 {
   color: #1FC7D4;
   font-size: 16px;
   font-weight: 600;
@@ -388,7 +392,7 @@ exports[`renders correctly 1`] = `
   margin-right: 24px;
 }
 
-.c62 {
+.c63 {
   color: #1FC7D4;
   font-size: 16px;
   font-weight: 600;
@@ -396,14 +400,14 @@ exports[`renders correctly 1`] = `
   margin-right: 0;
 }
 
-.c78 {
+.c79 {
   color: #B8ADD2;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
 }
 
-.c82 {
+.c83 {
   color: #B8ADD2;
   font-size: 16px;
   font-weight: 600;
@@ -488,7 +492,7 @@ exports[`renders correctly 1`] = `
   margin-left: 8px;
 }
 
-.c52 {
+.c53 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -502,7 +506,7 @@ exports[`renders correctly 1`] = `
   width: fit-content;
 }
 
-.c52:hover {
+.c53:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -530,7 +534,7 @@ exports[`renders correctly 1`] = `
   border-radius: 4px;
 }
 
-.c61 {
+.c62 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -553,7 +557,7 @@ exports[`renders correctly 1`] = `
   border-radius: 4px;
 }
 
-.c79 {
+.c80 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -588,32 +592,32 @@ exports[`renders correctly 1`] = `
   display: flex;
 }
 
-.c42 {
+.c43 {
   background: #27262c;
 }
 
-.c49 {
+.c50 {
   list-style: none;
   margin-bottom: 40px;
 }
 
-.c50 {
+.c51 {
   font-size: 16px;
   margin-bottom: 8px;
   text-transform: capitalize;
 }
 
-.c50:first-child {
+.c51:first-child {
   color: #9A6AFF;
   font-weight: 600;
   text-transform: uppercase;
 }
 
-.c46 {
+.c47 {
   margin-bottom: 24px;
 }
 
-.c64 {
+.c65 {
   border-color: #383241;
   border-top-width: 1px;
   border-bottom-width: 1px;
@@ -622,11 +626,11 @@ exports[`renders correctly 1`] = `
   margin-bottom: 24px;
 }
 
-.c57 {
+.c58 {
   border-bottom: 1px solid #383241;
 }
 
-.c69 {
+.c70 {
   background-color: #FFFFFF;
   border-radius: 50%;
   cursor: pointer;
@@ -640,7 +644,7 @@ exports[`renders correctly 1`] = `
   z-index: 1;
 }
 
-.c67 {
+.c68 {
   cursor: pointer;
   opacity: 0;
   height: 100%;
@@ -649,19 +653,19 @@ exports[`renders correctly 1`] = `
   z-index: 3;
 }
 
-.c67:checked + .c68 {
+.c68:checked + .c69 {
   left: calc(100% - 30px);
 }
 
-.c67:focus + .c68 {
+.c68:focus + .c69 {
   box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
 }
 
-.c67:hover + .c68:not(:disabled):not(:checked) {
+.c68:hover + .c69:not(:disabled):not(:checked) {
   box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
 }
 
-.c66 {
+.c67 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -798,7 +802,7 @@ exports[`renders correctly 1`] = `
   cursor: not-allowed;
 }
 
-.c76 {
+.c77 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -834,11 +838,11 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c76:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+.c77:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
   opacity: 0.65;
 }
 
-.c76:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c77:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
   -ms-transform: translateY(1px);
@@ -846,8 +850,8 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c76:disabled,
-.c76.pancake-button--disabled {
+.c77:disabled,
+.c77.pancake-button--disabled {
   background-color: #E9EAEB;
   border-color: #E9EAEB;
   box-shadow: none;
@@ -855,7 +859,7 @@ exports[`renders correctly 1`] = `
   cursor: not-allowed;
 }
 
-.c83 {
+.c84 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -890,11 +894,11 @@ exports[`renders correctly 1`] = `
   color: white;
 }
 
-.c83:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+.c84:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
   opacity: 0.65;
 }
 
-.c83:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c84:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
   -ms-transform: translateY(1px);
@@ -902,8 +906,8 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c83:disabled,
-.c83.pancake-button--disabled {
+.c84:disabled,
+.c84.pancake-button--disabled {
   background-color: #E9EAEB;
   border-color: #E9EAEB;
   box-shadow: none;
@@ -1102,7 +1106,7 @@ exports[`renders correctly 1`] = `
   padding-right: 16px;
 }
 
-.c38 {
+.c39 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1110,7 +1114,7 @@ exports[`renders correctly 1`] = `
   display: flex;
 }
 
-.c39 {
+.c40 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -1138,7 +1142,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c40 {
+  .c41 {
     padding: 56px 40px 32px 40px;
     margin-bottom: 0px;
   }
@@ -1149,7 +1153,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c43 {
+  .c44 {
     width: 1200px;
   }
 }
@@ -1159,7 +1163,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c45 {
+  .c46 {
     display: none;
   }
 }
@@ -1169,7 +1173,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c47 {
+  .c48 {
     margin-bottom: 36px;
   }
 }
@@ -1179,7 +1183,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c54 {
+  .c55 {
     display: block;
   }
 }
@@ -1189,7 +1193,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c55 {
+  .c56 {
     padding-bottom: 32px;
     margin-bottom: 32px;
   }
@@ -1200,7 +1204,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c80 {
+  .c81 {
     margin-bottom: 0;
   }
 }
@@ -1223,7 +1227,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c48 {
+  .c49 {
     -webkit-order: 1;
     -ms-flex-order: 1;
     order: 1;
@@ -1238,7 +1242,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c63 {
+  .c64 {
     -webkit-order: 3;
     -ms-flex-order: 3;
     order: 3;
@@ -1253,7 +1257,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c65 {
+  .c66 {
     -webkit-order: 1;
     -ms-flex-order: 1;
     order: 1;
@@ -1265,7 +1269,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c81 {
+  .c82 {
     -webkit-order: 2;
     -ms-flex-order: 2;
     order: 2;
@@ -1273,13 +1277,13 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:852px) {
-  .c49 {
+  .c50 {
     margin-bottom: 0px;
   }
 }
 
 @media screen and (min-width:576px) {
-  .c64 {
+  .c65 {
     border-top-width: 0;
     border-bottom-width: 0;
     padding: 0 0;
@@ -2080,21 +2084,21 @@ exports[`renders correctly 1`] = `
       </div>
     </div>
     <div
-      class="c38"
+      class="c38 c39"
     >
       <div
-        class="c39"
+        class="c40"
       >
         body
         <div
-          class="c40 c41 c42"
+          class="c41 c42 c43"
         >
           <div
-            class="c43 c44"
+            class="c44 c45"
             width="100%,,1200px;"
           >
             <div
-              class="c45 c46"
+              class="c46 c47"
               display="block,,none"
             >
               <svg
@@ -2177,22 +2181,22 @@ exports[`renders correctly 1`] = `
               </svg>
             </div>
             <div
-              class="c47 c48"
+              class="c48 c49"
               order="2,,1"
             >
               <ul
-                class="c49"
+                class="c50"
               >
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   About
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/contact-us"
                     rel="noreferrer noopener"
@@ -2202,10 +2206,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://pancakeswap.medium.com/"
                     rel="noreferrer noopener"
@@ -2215,10 +2219,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/contact-us/telegram"
                     rel="noreferrer noopener"
@@ -2228,10 +2232,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/tokenomics/cake"
                     rel="noreferrer noopener"
@@ -2241,10 +2245,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     rel="noreferrer noopener"
                     target="_black"
@@ -2253,10 +2257,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c53 c52"
+                    class="c54 c53"
                     color="#FFB237"
                     href="https://pancakeswap.creator-spring.com/"
                     rel="noreferrer noopener"
@@ -2267,18 +2271,18 @@ exports[`renders correctly 1`] = `
                 </li>
               </ul>
               <ul
-                class="c49"
+                class="c50"
               >
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   Help
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="Support https://docs.pancakeswap.finance/contact-us/customer-support"
                     rel="noreferrer noopener"
@@ -2288,10 +2292,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/help/troubleshooting"
                     rel="noreferrer noopener"
@@ -2301,10 +2305,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/get-started"
                     rel="noreferrer noopener"
@@ -2315,18 +2319,18 @@ exports[`renders correctly 1`] = `
                 </li>
               </ul>
               <ul
-                class="c49"
+                class="c50"
               >
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   Developers
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://github.com/pancakeswap"
                     rel="noreferrer noopener"
@@ -2336,10 +2340,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance"
                     rel="noreferrer noopener"
@@ -2349,10 +2353,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://app.gitbook.com/@pancakeswap-1/s/pancakeswap/code/bug-bounty"
                     rel="noreferrer noopener"
@@ -2362,10 +2366,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited"
                     rel="noreferrer noopener"
@@ -2375,10 +2379,10 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c50"
+                  class="c51"
                 >
                   <a
-                    class="c51 c52"
+                    class="c52 c53"
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/hiring/become-a-chef"
                     rel="noreferrer noopener"
@@ -2389,7 +2393,7 @@ exports[`renders correctly 1`] = `
                 </li>
               </ul>
               <div
-                class="c54"
+                class="c55"
                 display="none,,block"
               >
                 <svg
@@ -2473,19 +2477,19 @@ exports[`renders correctly 1`] = `
               </div>
             </div>
             <div
-              class="c55 c56 c57"
+              class="c56 c57 c58"
               order="2"
             >
               <a
                 aria-label="Twitter"
-                class="c58 c52"
+                class="c59 c53"
                 color="primary"
                 href="https://twitter.com/pancakeswap"
                 rel="noreferrer noopener"
                 target="_blank"
               >
                 <svg
-                  class="c59"
+                  class="c60"
                   color="#B8ADD2"
                   style="cursor: pointer;"
                   viewBox="0 0 18 15"
@@ -2502,7 +2506,7 @@ exports[`renders correctly 1`] = `
                 class="c26"
               >
                 <svg
-                  class="c60"
+                  class="c61"
                   color="#B8ADD2"
                   style="cursor: pointer;"
                   viewBox="0 0 20 20"
@@ -2514,11 +2518,11 @@ exports[`renders correctly 1`] = `
                   />
                 </svg>
                 <div
-                  class="c29 c61"
+                  class="c29 c62"
                 >
                   <a
                     aria-label="English"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/pancakeswap"
                     rel="noreferrer noopener"
@@ -2528,7 +2532,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Bahasa Indonesia"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/PancakeSwapIndonesia"
                     rel="noreferrer noopener"
@@ -2538,7 +2542,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="中文"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/PancakeSwap_CN"
                     rel="noreferrer noopener"
@@ -2548,7 +2552,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Tiếng Việt"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/PancakeSwapVN"
                     rel="noreferrer noopener"
@@ -2558,7 +2562,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Italiano"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/pancakeswap_ita"
                     rel="noreferrer noopener"
@@ -2568,7 +2572,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="русский"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/pancakeswap_ru"
                     rel="noreferrer noopener"
@@ -2578,7 +2582,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Türkiye"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/pancakeswapturkiye"
                     rel="noreferrer noopener"
@@ -2588,7 +2592,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Português"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/PancakeSwapPortuguese"
                     rel="noreferrer noopener"
@@ -2598,7 +2602,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Español"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/PancakeswapEs"
                     rel="noreferrer noopener"
@@ -2608,7 +2612,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="日本語"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/pancakeswapjp"
                     rel="noreferrer noopener"
@@ -2618,7 +2622,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Français"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/pancakeswapfr"
                     rel="noreferrer noopener"
@@ -2628,7 +2632,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Announcements"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/PancakeSwapAnn"
                     rel="noreferrer noopener"
@@ -2638,7 +2642,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Whale Alert"
-                    class="c24 c52"
+                    class="c24 c53"
                     color="textSubtle"
                     href="https://t.me/PancakeSwapWhales"
                     rel="noreferrer noopener"
@@ -2650,14 +2654,14 @@ exports[`renders correctly 1`] = `
               </div>
               <a
                 aria-label="Reddit"
-                class="c58 c52"
+                class="c59 c53"
                 color="primary"
                 href="https://reddit.com/r/pancakeswap"
                 rel="noreferrer noopener"
                 target="_blank"
               >
                 <svg
-                  class="c59"
+                  class="c60"
                   color="#B8ADD2"
                   style="cursor: pointer;"
                   viewBox="0 0 20 20"
@@ -2677,14 +2681,14 @@ exports[`renders correctly 1`] = `
               </a>
               <a
                 aria-label="Instagram"
-                class="c58 c52"
+                class="c59 c53"
                 color="primary"
                 href="https://instagram.com/pancakeswap_official"
                 rel="noreferrer noopener"
                 target="_blank"
               >
                 <svg
-                  class="c59"
+                  class="c60"
                   color="#B8ADD2"
                   style="cursor: pointer;"
                   viewBox="0 0 18 18"
@@ -2701,14 +2705,14 @@ exports[`renders correctly 1`] = `
               </a>
               <a
                 aria-label="Github"
-                class="c62 c52"
+                class="c63 c53"
                 color="primary"
                 href="https://github.com/pancakeswap/"
                 rel="noreferrer noopener"
                 target="_blank"
               >
                 <svg
-                  class="c59"
+                  class="c60"
                   color="#B8ADD2"
                   style="cursor: pointer;"
                   viewBox="0 0 20 20"
@@ -2724,32 +2728,32 @@ exports[`renders correctly 1`] = `
               </a>
             </div>
             <div
-              class="c63 c64"
+              class="c64 c65"
               order="1,,3"
             >
               <div
-                class="c65"
+                class="c66"
                 order="2,,1"
               >
                 <div
-                  class="c66"
+                  class="c67"
                   scale="md"
                 >
                   <input
-                    class="c67"
+                    class="c68"
                     scale="md"
                     type="checkbox"
                   />
                   <div
-                    class="c68 c69"
+                    class="c69 c70"
                     scale="md"
                   >
                     <div
-                      class="c70 c71"
+                      class="c71 c72"
                       height="100%"
                     >
                       <svg
-                        class="c72"
+                        class="c73"
                         color="warning"
                         viewBox="0 0 24 24"
                         width="20px"
@@ -2788,12 +2792,12 @@ exports[`renders correctly 1`] = `
                     </div>
                   </div>
                   <div
-                    class="c73 c74"
+                    class="c74 c75"
                     height="100%"
                     width="100%"
                   >
                     <svg
-                      class="c75"
+                      class="c76"
                       color="backgroundAlt"
                       viewBox="0 0 24 24"
                       width="20px"
@@ -2830,7 +2834,7 @@ exports[`renders correctly 1`] = `
                       />
                     </svg>
                     <svg
-                      class="c75"
+                      class="c76"
                       color="backgroundAlt"
                       viewBox="0 0 24 24"
                       width="20px"
@@ -2848,11 +2852,11 @@ exports[`renders correctly 1`] = `
                   class="c26"
                 >
                   <button
-                    class="c76"
+                    class="c77"
                     scale="md"
                   >
                     <svg
-                      class="c77"
+                      class="c78"
                       color="#B8ADD2"
                       viewBox="0 0 24 24"
                       width="24px"
@@ -2863,14 +2867,14 @@ exports[`renders correctly 1`] = `
                       />
                     </svg>
                     <div
-                      class="c78"
+                      class="c79"
                       color="#B8ADD2"
                     >
                       EN-US
                     </div>
                   </button>
                   <div
-                    class="c29 c79"
+                    class="c29 c80"
                   >
                     <button
                       class="c31 c32"
@@ -3016,7 +3020,7 @@ exports[`renders correctly 1`] = `
                 </div>
               </div>
               <div
-                class="c80 c81"
+                class="c81 c82"
                 order="1,,2"
               >
                 <div
@@ -3170,7 +3174,7 @@ exports[`renders correctly 1`] = `
                       </defs>
                     </svg>
                     <div
-                      class="c82"
+                      class="c83"
                       color="#B8ADD2"
                     >
                       $0.232
@@ -3178,14 +3182,14 @@ exports[`renders correctly 1`] = `
                   </a>
                 </div>
                 <a
-                  class="c83"
+                  class="c84"
                   href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
                   scale="sm"
                   target="_blank"
                 >
                   Buy CAKE
                   <svg
-                    class="c84"
+                    class="c85"
                     color="#FFFFFF"
                     viewBox="0 0 24 24"
                     width="20px"
