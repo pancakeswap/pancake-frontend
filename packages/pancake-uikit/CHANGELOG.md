@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.54.3](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.54.2...@pancakeswap/uikit@0.54.3) (2021-09-17)
+
+
+### Bug Fixes
+
+* **uikit:** DropdownMenu ([#280](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/280)) ([f8f8b56](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/f8f8b56c42f53d66186e16bc8150de04c8c49d08))
+
+
+
+
+
 ## [0.54.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.54.1...@pancakeswap/uikit@0.54.2) (2021-09-17)
 
 
