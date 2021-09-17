@@ -4,6 +4,7 @@ const HeaderWrapper = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
   margin-bottom: 24px;
   padding-bottom: 24px;
+  margin-top: 57px;
 `
 
 export default HeaderWrapper
