@@ -2,6 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
 import { useNftSaleContract, usePancakeSquadContract, useProfile as useProfileContract } from 'hooks/useContract'
 import React, { useEffect, useState } from 'react'
+import BunniesSection from './components/BunniesSection'
 import PancakeSquadHeader from './components/Header'
 import { StyledSquadContainer } from './styles'
 import { DynamicSaleInfos, FixedSaleInfos, SaleStatusEnum } from './types'
@@ -80,6 +81,7 @@ const PancakeSquad: React.FC = () => {
         dynamicSaleInfo={dynamicSaleInfo}
         fixedSaleInfo={fixedSaleInfo}
       />
+      <BunniesSection />
     </StyledSquadContainer>
   )
 }

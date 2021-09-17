@@ -75,12 +75,4 @@ export default {
     56: '0xb92Ab7c1edcb273AbA24b0656cEb3681654805D2',
     97: '0x3F9602593b4f7C67ab045DB51BbDEa94E40fA9Fe',
   },
-  nftSale: {
-    56: '',
-    97: '0xff6a1bCd1D4bA0f99F4C9573B3306b77CF67ABb1',
-  },
-  pancakeSquad: {
-    56: '',
-    97: '0x3F4D58ddcE6b488666D0B50FE95211884458d97C',
-  },
 }
