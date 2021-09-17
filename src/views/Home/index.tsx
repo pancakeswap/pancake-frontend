@@ -19,8 +19,12 @@ import UserBanner from './components/UserBanner'
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
 
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-top: 240px;
+  }
+
   ${({ theme }) => theme.mediaQueries.md} {
-    padding-top: 48px;
+    padding-top: 120px;
   }
 `
 
@@ -28,7 +32,7 @@ const UserBannerWrapper = styled(Container)`
   z-index: 1;
   position: absolute;
   width: 100%;
-  top: 56px;
+  top: 0;
   left: 50%;
   transform: translate(-50%, 0);
   padding-left: 0px;
