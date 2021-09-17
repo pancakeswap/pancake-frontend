@@ -107,6 +107,12 @@ export interface TokenIdWithCollectionAddress {
   nftLocation?: NftLocation
 }
 
+export interface NftAttribute {
+  traitType: string
+  value: string | number
+  displayType: string
+}
+
 export interface Collection {
   id: string
   address: string
@@ -128,6 +134,7 @@ export interface Collection {
     large: string
     small: string
   }
+  attributes?: NftAttribute[]
 }
 
 export interface ApiCollections {
