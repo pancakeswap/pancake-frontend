@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from 'react'
+import React, { useState } from 'react'
 import { Flex, Modal, Text } from '@rug-zombie-libs/uikit'
 import useTheme from 'hooks/useTheme'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -11,6 +11,7 @@ interface ViewModalProps {
   id: number;
   onDismiss?: any;
   setSwiper: any;
+  refresh: () => void;
 }
 
 const StyledSwiper = styled.div`
@@ -24,10 +25,9 @@ const StyledSwiper = styled.div`
   }
 `
 
-const ViewModal: React.FC<ViewModalProps> = ({ id, onDismiss, setSwiper }) => {
+const ViewModal: React.FC<ViewModalProps> = ({ id, onDismiss, setSwiper, refresh }) => {
   const { userInfo: { ownedIds } } = nftById(id)
   const { theme } = useTheme()
-
   return <Modal onDismiss={onDismiss} title='In Wallet' headerBackground={theme.colors.backgroundAlt}
                 style={{ minWidth: '50%' }}>
     <StyledSwiper style={{ width: '100%' }}>
@@ -44,7 +44,7 @@ const ViewModal: React.FC<ViewModalProps> = ({ id, onDismiss, setSwiper }) => {
         resizeObserver
       >
         {ownedIds.map(ownedId => {
-          return <SwiperSlide><ViewCard id={id} nftId={ownedId} /></SwiperSlide>
+          return <SwiperSlide><ViewCard id={id} nftId={ownedId} refresh={refresh} /></SwiperSlide>
         })}
       </Swiper>
     </StyledSwiper>

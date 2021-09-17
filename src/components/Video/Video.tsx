@@ -15,7 +15,6 @@ const Video: React.FC<VideoProps> = ({ path }) => {
 
   const maxMobileHeight =  280
   const maxMobileWidth = 260
- console.log(isDesktop)
   return isDesktop ? (
     <video style={{ maxWidth: '90%', maxHeight: '100%' }} autoPlay controls={false} loop muted>
       <source src={path} type='video/webm' />

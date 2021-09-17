@@ -35,6 +35,11 @@ export const getNftOwnershipAddress = () => {
 export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)
 }
+
+export const getZombieBalanceChecker = () => {
+  return getAddress(addresses.zombieBalanceChecker)
+}
+
 export const getWbnbAddress = () => {
   return getAddress(tokens.wbnb.address)
 }

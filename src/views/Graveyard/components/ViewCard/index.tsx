@@ -1,33 +1,37 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import {
+  Button,
   Card,
   CardFooter,
-  Flex,
+  Flex, useModal,
 } from '@rug-zombie-libs/uikit'
 import { nftById } from '../../../../redux/get'
 import Video from '../../../../components/Video'
+import TransferNftModal from '../TransferNftModal'
 
 const StyleDetails = styled.div`
   display: flex;
   justify-content: center;
 `
-const Styleinfo = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-`
 
 interface ViewCardProps {
   id: number;
   nftId: number;
+  refresh: () => void;
 }
 
-const ViewCard: React.FC<ViewCardProps> = ({ id, nftId }: ViewCardProps) => {
-  const { name, symbol, address, path, type, rarity, userInfo: { ownedIds } } = nftById(id);
-  const [isOpen, setIsOpen] = useState(false);
+const ViewCard: React.FC<ViewCardProps> = ({ id, nftId, refresh }: ViewCardProps) => {
+  const { path, type, userInfo: { ownedIds } } = nftById(id);
   const isOwned = ownedIds.length > 0
 
+  const handleSuccess = () => {
+    refresh()
+  }
+
+  const [onPresentTransferModal] = useModal(
+    <TransferNftModal id={id} tokenId={nftId} onSuccess={handleSuccess} />,
+  )
 
   return (
     <div>
@@ -42,14 +46,11 @@ const ViewCard: React.FC<ViewCardProps> = ({ id, nftId }: ViewCardProps) => {
           <StyleDetails>
             Rarity: {nftId}
           </StyleDetails>
-          {
-            isOpen &&
-            <Styleinfo>
-              <p>
-                {name}
-              </p>
-            </Styleinfo>
-          }
+
+          <Button width="100%" variant="secondary" mt="24px" onClick={onPresentTransferModal}>
+            Transfer
+          </Button>
+
         </CardFooter>
       </Card>
     </div>

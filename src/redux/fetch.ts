@@ -424,7 +424,7 @@ export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: a
   })
 }
 
-export const nftUserInfo = (contract: any, updateUserObj: { update: boolean, setUpdate: any }) => {
+export const nftUserInfo = (contract: any, updateUserObj: { update: boolean, setUpdate: any }, updateEveryObj?: { update: boolean, setUpdate: any }) => {
   if (account()) {
     const nftAddresses = get.nfts().map(nft => nft.address)
     contract.methods.massCheckOwnership(account(), nftAddresses).call()
@@ -439,6 +439,9 @@ export const nftUserInfo = (contract: any, updateUserObj: { update: boolean, set
         })
         if (updateUserObj && !updateUserObj.update) {
           updateUserObj.setUpdate(!updateUserObj.update)
+        }
+        if (updateEveryObj ) {
+          updateEveryObj.setUpdate(!updateEveryObj.update)
         }
       })
       .catch(() => {

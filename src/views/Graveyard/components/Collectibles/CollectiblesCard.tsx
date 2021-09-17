@@ -37,10 +37,11 @@ const StyleCardHeader = styled.div`
 `
 
 interface CollectiblesCardProps {
-  id: number
+  id: number;
+  refresh: () => void;
 }
 
-const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ id }: CollectiblesCardProps) => {
+const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ id, refresh }: CollectiblesCardProps) => {
   const { name, description, address, path, type, rarity, userInfo: { ownedIds } } = nftById(id)
   const [isOpen, setIsOpen] = useState(false)
   const isOwned = ownedIds.length > 0
@@ -54,6 +55,7 @@ const CollectiblesCard: React.FC<CollectiblesCardProps> = ({ id }: CollectiblesC
       <ViewModal
         id={id}
         setSwiper={setSwiper}
+        refresh={refresh}
       />
   )
 

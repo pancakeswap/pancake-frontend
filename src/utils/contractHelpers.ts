@@ -25,7 +25,7 @@ import {
   getDrFrankensteinAddress,
   getMausoleumAddress,
   getSpawningPoolAddress,
-  getNftConverterAddress, getMausoleumV2Address, getNftOwnershipAddress,
+  getNftConverterAddress, getMausoleumV2Address, getNftOwnershipAddress, getZombieBalanceChecker,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -101,6 +101,9 @@ export const getNftOwnership = (web3?: Web3) => {
 }
 export const getProfileContract = (web3?: Web3) => {
   return getContract(profileABI, getPancakeProfileAddress(), web3)
+}
+export const getZombieBalanceCheckerContract = (web3?: Web3) => {
+  return getContract(profileABI, getZombieBalanceChecker(), web3)
 }
 export const getPancakeRabbitContract = (web3?: Web3) => {
   return getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress(), web3)

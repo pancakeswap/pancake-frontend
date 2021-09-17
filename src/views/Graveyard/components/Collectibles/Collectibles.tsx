@@ -10,10 +10,9 @@ import { nfts } from '../../../../redux/get'
 const RARITIES = ['One of a Kind', 'Legendary', 'Rare', 'Uncommon', 'Common']
 
 const Collectibles: React.FC = () => {
-  const { isLg, isXl } = useMatchBreakpoints()
-  const isDesktop = isLg || isXl
   const contract = useNftOwnership()
   const [updateUserInfo, setUpdateUserInfo] = useState(false)
+  const [updateEvery, setUpdateEvery] = useState(false)
   const [filter, setFilter] = useState(0)
   useEffect(() => {
     if(!updateUserInfo) {
@@ -34,12 +33,16 @@ const Collectibles: React.FC = () => {
       break
   }
 
+  const refresh = () => {
+    nftUserInfo(contract, { update: updateEvery, setUpdate: setUpdateEvery });
+  }
+
   return (
     <>
       <CollectibleTabButtons setFilter={setFilter}/>
       {RARITIES.map((rarity) => {
         const nftsByRarity = currentNfts.map((nft) => {
-          return nft.rarity === rarity ? <CollectiblesCard id={nft.id} key={nft.id}/> : null
+          return nft.rarity === rarity ? <CollectiblesCard id={nft.id} key={nft.id} refresh={refresh}/> : null
         })
 
         return <>

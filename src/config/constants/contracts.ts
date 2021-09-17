@@ -23,6 +23,10 @@ export default {
     97: '',
     56: '0x29F085A56050285ba2d6D72983bd7F77a373e413',
   },
+  zombieBalanceChecker: {
+    97: '',
+    56: '0xF2AFFACff5eF60EfB174F5C1AfAe65976F18664e',
+  },
   nftOwnership: {
     97: '',
     56: '0x156537f9C6eb300A3FDf73cD77d1181CEbFd1c88',
