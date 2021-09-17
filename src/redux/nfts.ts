@@ -426,6 +426,18 @@ const nfts: Nft[] = [
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 35,
+    name: 'Freaky Zolom',
+    symbol: 'ZOLOM',
+    description: 'Hail Hydra.',
+    address: '0x65c8747e82F3CC648045f06a85Dc239D09d8286A',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmafkchvcXFDdMkdJzQFjWaXcZQyGfe4F8p35X4TQVVGH3',
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts

@@ -6,6 +6,63 @@ import { SpawningPool } from './types'
 
 const spawningPools: SpawningPool[] = [
   {
+    id: 7,
+    name: 'Octaplex Legendary',
+    subtitle: 'Freaky Zolom',
+    path: 'https://ipfs.io/ipfs/QmafkchvcXFDdMkdJzQFjWaXcZQyGfe4F8p35X4TQVVGH3',
+    type: 'image',
+    address: {
+      56: '0xe9Dc48d8F5a1eAd54b8ADC263c4564b5346b1aEB',
+      97: '',
+    },
+    endBlock: 13620000,
+    project: {
+      name: 'Octaplex Network',
+      description: 'Octaplex Network is an ecosystem with a unique and revolutionary concept bringing a new template for the future development of DeFi and yield bearing tokens. They aim to create an ecosystem of tokens in which users shall be rewarded and will be able to get special deals by holding their native $PLX token as well as our partner project tokens.',
+      additionalDetails: [
+        {
+          name: 'Project website',
+          url: tokens.plx.projectLink,
+        },
+        {
+          name: 'Whitepaper',
+          url: 'https://octaplex.gitbook.io/octaplex-network-whitepaper/',
+        },
+        {
+          name: 'Telegram',
+          url: 'https://t.me/OctaplexNetwork',
+        },
+      ],
+    },
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '45 days',
+    rewardToken: tokens.plx,
+    rewardTokenBnbLp: '0x63730fcf35b0edc45742c19ebe20205ab99ce05d',
+    bnbLpTokenIndex: 1,
+    artist: artists.jussjoshinduh,
+    stakingToken: '',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: false,
+    color: "violet",
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      amount: BIG_ZERO,
+      pendingReward: BIG_ZERO,
+      zombieAllowance: BIG_ZERO,
+    },
+    poolInfo: {
+      unlockFee: BIG_ZERO,
+      rewardPerBlock: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalZombieStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+    },
+  },
+  {
     id: 6,
     name: 'AtmosSoft Legendary',
     subtitle: 'Zombabe',
@@ -43,7 +100,7 @@ const spawningPools: SpawningPool[] = [
     stakingToken: '',
     pcsVersion: 'v2',
     liquidityDetails: '',
-    isNew: true,
+    isNew: false,
     color: "red",
     userInfo: {
       paidUnlockFee: false,
@@ -104,7 +161,7 @@ const spawningPools: SpawningPool[] = [
     stakingToken: '',
     pcsVersion: 'v2',
     liquidityDetails: '',
-    isNew: true,
+    isNew: false,
     color: "red",
     userInfo: {
       paidUnlockFee: false,

@@ -272,6 +272,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.atmossoftdefi.app/',
   },
+  plx: {
+    symbol: 'PLX',
+    address: {
+      56: '0x57022edd5c7ed7b6bd870488853fe961dfdd3fb6',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://octaplex.io/',
+  },
   txl: {
     symbol: 'TXL',
     address: {
