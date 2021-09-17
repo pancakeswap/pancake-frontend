@@ -2,22 +2,31 @@ import React from 'react'
 import { Box, CardBody, CardProps, Flex, Text } from '@pancakeswap/uikit'
 import minBy from 'lodash/minBy'
 import { useTranslation } from 'contexts/Localization'
-import { NFT } from 'state/nftMarket/types'
+import { NFT, NftLocation } from 'state/nftMarket/types'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import PreviewImage from './PreviewImage'
 import { CostLabel, MetaRow, StyledCollectibleCard } from './styles'
+import LocationTag from './LocationTag'
 
 export interface CollectibleCardProps extends CardProps {
   collectionName?: string
   nft: NFT
+  nftLocation?: NftLocation
+  currentAskPrice?: number
 }
 
-const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectionName, nft, ...props }) => {
+const CollectibleCard: React.FC<CollectibleCardProps> = ({
+  collectionName,
+  nft,
+  nftLocation,
+  currentAskPrice,
+  ...props
+}) => {
   const { t } = useTranslation()
   const { name, image, tokens } = nft
   const bnbBusdPrice = useBNBBusdPrice()
 
-  const lowestPriceToken = minBy(Object.values(tokens), 'currentAskPrice')
+  const lowestPriceToken = tokens && minBy(Object.values(tokens), 'currentAskPrice')
   const lowestPriceNum = lowestPriceToken ? parseFloat(lowestPriceToken.currentAskPrice) : 0
 
   return (
@@ -30,6 +39,7 @@ const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectionName, nft, 
               {collectionName}
             </Text>
           )}
+          {nftLocation && <LocationTag nftLocation={nftLocation} />}
         </Flex>
         <Text as="h4" fontWeight="600" mb="8px">
           {name}
@@ -38,6 +48,11 @@ const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectionName, nft, 
           {lowestPriceToken && (
             <MetaRow title={t('Lowest price')}>
               <CostLabel cost={lowestPriceNum} bnbBusdPrice={bnbBusdPrice} />
+            </MetaRow>
+          )}
+          {currentAskPrice && (
+            <MetaRow title={t('Your price')}>
+              <CostLabel cost={currentAskPrice} bnbBusdPrice={bnbBusdPrice} />
             </MetaRow>
           )}
         </Box>

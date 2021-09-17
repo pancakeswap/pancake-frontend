@@ -18,6 +18,7 @@ import {
   NFTMarketInitializationState,
   NftTokenSg,
   UserActivity,
+  NftLocation,
 } from './types'
 
 const initialState: State = {
@@ -97,6 +98,16 @@ export const fetchUserNfts = createAsyncThunk<
   NftTokenSg[],
   { account: string; profileNftWithCollectionAddress: TokenIdWithCollectionAddress; collections: ApiCollections }
 >('nft/fetchUserNfts', async ({ account, profileNftWithCollectionAddress, collections }) => {
+  const getCategoryForNftWithMarketData = (marketNft: NftTokenSg): NftLocation => {
+    if (profileNftWithCollectionAddress?.tokenId === marketNft.tokenId) {
+      return NftLocation.PROFILE
+    }
+    if (marketNft.isTradable && marketNft.currentSeller === account.toLowerCase()) {
+      return NftLocation.FORSALE
+    }
+    return NftLocation.WALLET
+  }
+
   const nftsInWallet = await fetchWalletTokenIdsForCollections(account, collections)
 
   if (profileNftWithCollectionAddress?.tokenId) {
@@ -105,28 +116,34 @@ export const fetchUserNfts = createAsyncThunk<
 
   const nftIdsInWallet = nftsInWallet.map((nft) => nft.tokenId)
   const marketDataForNftsInWallet = await getNftsMarketData({ tokenId_in: nftIdsInWallet })
+
   const walletNftsWithMarketData = nftsInWallet.map((walletNft) => {
     const marketData = marketDataForNftsInWallet.find((marketNft) => marketNft.tokenId === walletNft.tokenId)
-    return (
-      marketData || {
-        tokenId: walletNft.tokenId,
-        collection: {
-          id: walletNft.collectionAddress.toLowerCase(),
-        },
-        metadataUrl: null,
-        transactionHistory: null,
-        currentSeller: null,
-        isTradable: null,
-        currentAskPrice: null,
-        latestTradedPriceInBNB: null,
-        tradeVolumeBNB: null,
-        totalTrades: null,
-      }
-    )
+    return marketData
+      ? { ...marketData, nftLocation: getCategoryForNftWithMarketData(marketData) }
+      : {
+          tokenId: walletNft.tokenId,
+          collection: {
+            id: walletNft.collectionAddress.toLowerCase(),
+          },
+          nftLocation: walletNft.nftLocation,
+          metadataUrl: null,
+          transactionHistory: null,
+          currentSeller: null,
+          isTradable: null,
+          currentAskPrice: null,
+          latestTradedPriceInBNB: null,
+          tradeVolumeBNB: null,
+          totalTrades: null,
+        }
   })
 
-  const marketDataForNftsOnSale = await getNftsMarketData({ currentSeller: account.toLowerCase() })
-  return [...walletNftsWithMarketData, ...marketDataForNftsOnSale]
+  const nftsForSale = await getNftsMarketData({ currentSeller: account.toLowerCase() })
+  const nftsForSaleWithCategory = nftsForSale.map((nft) => {
+    return { ...nft, nftLocation: NftLocation.FORSALE }
+  })
+
+  return [...walletNftsWithMarketData, ...nftsForSaleWithCategory]
 })
 
 export const fetchUserActivity = createAsyncThunk<UserActivity, string>('nft/fetchUserActivity', async (address) => {
