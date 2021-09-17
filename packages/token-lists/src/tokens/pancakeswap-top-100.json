@@ -12,7 +12,7 @@
     "symbol": "XWG",
     "address": "0x6b23C89196DeB721e6Fd9726E6C76E4810a464bc",
     "chainId": 56,
-    "decimals": 0,
+    "decimals": 18,
     "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x6b23C89196DeB721e6Fd9726E6C76E4810a464bc/logo.png"
   },
   {

@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Top 100",
-  "timestamp": "2021-09-10T08:20:09.549Z",
+  "timestamp": "2021-09-17T07:42:45.223Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 7
+    "patch": 8
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -785,7 +785,7 @@
       "symbol": "XWG",
       "address": "0x6b23C89196DeB721e6Fd9726E6C76E4810a464bc",
       "chainId": 56,
-      "decimals": 0,
+      "decimals": 18,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x6b23C89196DeB721e6Fd9726E6C76E4810a464bc/logo.png"
     },
     {
