@@ -1,12 +1,14 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import find from 'lodash/find'
+import uniqBy from 'lodash/uniqBy'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import slugify from 'utils/slugify'
 import { ethers } from 'ethers'
 import { fetchCollections, fetchNftsFromCollections } from './reducer'
 import { State } from '../types'
-import { UserNftsState, AskOrder, Transaction } from './types'
+import { UserNftsState, AskOrder, Transaction, TokenIdWithCollectionAddress, NFT, NftTokenSg } from './types'
+import { getNftsFromDifferentCollectionsApi } from './helpers'
 
 export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
@@ -56,4 +58,33 @@ export const useUserActivity = (): (Transaction | AskOrder)[] => {
     return sortedByMostRecent
   }
   return []
+}
+
+/**
+ * Fetch metadata for a given array of Nft subgraph responses
+ * @param sgNfts NftTokenSg[]
+ * @returns NFT[]
+ */
+export const useGetNftMetadata = (sgNfts: NftTokenSg[]) => {
+  const [nftMetadata, setNftMetadata] = useState<NFT[]>([])
+
+  useEffect(() => {
+    const fetchMetadata = async () => {
+      const nftTokenIds = uniqBy(
+        sgNfts.map((nft): TokenIdWithCollectionAddress => {
+          return { tokenId: nft.tokenId, collectionAddress: nft.collection.id }
+        }),
+        'tokenId',
+      )
+
+      const nfts = await getNftsFromDifferentCollectionsApi(nftTokenIds)
+      setNftMetadata(nfts)
+    }
+
+    if (sgNfts.length > 0) {
+      fetchMetadata()
+    }
+  }, [sgNfts])
+
+  return nftMetadata
 }
