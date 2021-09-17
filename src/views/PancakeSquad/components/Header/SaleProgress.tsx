@@ -1,6 +1,5 @@
 import React from 'react'
 import { Box, Progress, Text } from '@pancakeswap/uikit'
-import { BigNumber } from '@ethersproject/bignumber'
 import { ContextApi } from 'contexts/Localization/types'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 
@@ -8,9 +7,9 @@ type PreEventProps = {
   t: ContextApi['t']
   saleStatus: SaleStatusEnum
   userStatus: UserStatusEnum
-  totalTicketsDistributed: BigNumber
-  maxSupply: BigNumber
-  totalSupplyMinted: BigNumber
+  totalTicketsDistributed: number
+  maxSupply: number
+  totalSupplyMinted: number
 }
 
 const SaleProgressTextMapping: Record<SaleStatusEnum, string> = {
@@ -22,10 +21,16 @@ const SaleProgressTextMapping: Record<SaleStatusEnum, string> = {
   [SaleStatusEnum.Claim]: '%remaining% of %total% minted',
 }
 
-const SaleProgress: React.FC<PreEventProps> = ({ t, saleStatus, totalSupplyMinted, maxSupply }) => {
+const SaleProgress: React.FC<PreEventProps> = ({
+  t,
+  saleStatus,
+  totalTicketsDistributed,
+  totalSupplyMinted,
+  maxSupply,
+}) => {
   const displaySaleProgress = saleStatus !== SaleStatusEnum.Pending
-  const supplyRemaining = maxSupply.sub(totalSupplyMinted)
-  const supplyRemainingPercentage = Number(supplyRemaining.div(maxSupply).toString())
+  const supplyRemaining = maxSupply - totalTicketsDistributed
+  const supplyRemainingPercentage = Math.round((supplyRemaining / maxSupply) * 100)
   const isMintCompleted = totalSupplyMinted === maxSupply && saleStatus === SaleStatusEnum.Claim
   return displaySaleProgress ? (
     <Box mb="24px">
@@ -42,7 +47,7 @@ const SaleProgress: React.FC<PreEventProps> = ({ t, saleStatus, totalSupplyMinte
               total: maxSupply.toString(),
             })}
       </Text>
-      {!isMintCompleted && <Progress variant="round" primaryStep={supplyRemainingPercentage} />}
+      {!isMintCompleted && <Progress variant="round" primaryStep={100 - supplyRemainingPercentage} />}
     </Box>
   ) : null
 }

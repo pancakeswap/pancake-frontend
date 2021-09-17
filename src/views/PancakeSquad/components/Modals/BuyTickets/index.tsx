@@ -22,15 +22,15 @@ import { formatBigNumber } from 'utils/formatBalance'
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 interface BuyTicketsModalProps extends ModalProps {
-  buyTicketCallBack: () => void
+  buyTicketCallBack: ({ ticketsNumber }: { ticketsNumber: number }) => void
   saleStatus: SaleStatusEnum
   cakeBalance: BigNumber
   pricePerTicket: BigNumber
-  maxPerAddress: BigNumber
-  maxPerTransaction: BigNumber
-  numberTicketsOfUser: BigNumber
-  numberTicketsForGen0: BigNumber
-  numberTicketsUsedForGen0: BigNumber
+  maxPerAddress: number
+  maxPerTransaction: number
+  numberTicketsOfUser: number
+  numberTicketsForGen0: number
+  numberTicketsUsedForGen0: number
 }
 
 const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
@@ -53,14 +53,11 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
   const isPreSale = saleStatus === SaleStatusEnum.Presale
   const remainingTickets = isPreSale
     ? numberTicketsForGen0
-    : maxPerAddress.sub(numberTicketsOfUser).sub(numberTicketsUsedForGen0)
+    : maxPerAddress - numberTicketsOfUser - numberTicketsUsedForGen0
 
-  const maxBuyTickets = Math.min(
-    Number(formatBigNumber(cakeBalance.div(pricePerTicket), 0)),
-    Number(formatBigNumber(remainingTickets)),
-  )
-  const totalCost = formatBigNumber(pricePerTicket.mul(BigNumber.from(ticketsNumber)), 0)
-  const buyButtons = new Array(Number(maxPerTransaction.toString())).fill('')
+  const maxBuyTickets = Math.min(cakeBalance.div(BigNumber.from(pricePerTicket)).toNumber(), remainingTickets)
+  const totalCost = pricePerTicket.mul(BigNumber.from(ticketsNumber))
+  const buyButtons = new Array(maxPerTransaction || 5).fill('')
 
   return (
     <ModalContainer minWidth="375px">
@@ -84,7 +81,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
                   key={index}
                   variant={index + 1 === ticketsNumber ? 'primary' : 'tertiary'}
                   onClick={() => setTicketsNumber(index + 1)}
-                  disabled={index + 1 <= maxBuyTickets}
+                  disabled={index + 1 > maxBuyTickets}
                 >
                   {index + 1}
                 </Button>
@@ -120,7 +117,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
                 {t('Total Cost')}
               </Text>
               <Text font-size="14px" bold>
-                {totalCost} CAKE
+                {formatBigNumber(totalCost, 0)} CAKE
               </Text>
             </Flex>
           </Box>
@@ -147,7 +144,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
             </Text>
           </Flex>
           <Box px="16px">
-            <Button onClick={buyTicketCallBack} width="100%">
+            <Button onClick={() => buyTicketCallBack({ ticketsNumber })} width="100%">
               {t('Confirm')}
             </Button>
           </Box>
