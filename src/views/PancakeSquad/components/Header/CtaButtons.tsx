@@ -1,20 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
-import { Button, Flex, useModal } from '@pancakeswap/uikit'
-import { ethers } from 'ethers'
+import React from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
+import { Flex } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { DefaultTheme } from 'styled-components'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { Link } from 'react-router-dom'
-import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { ethersToBigNumber } from 'utils/bigNumber'
-import { useCake, useNftSaleContract } from 'hooks/useContract'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
-import ConfirmModal from '../Modals/Confirm'
-import BuyTicketsModal from '../Modals/BuyTickets'
-import ReadyText from './ReadyText'
+import BuyTicketsButtons from '../Buttons/BuyTickets'
+import MintButton from '../Buttons/Mint'
+import EndEventButtons from '../Buttons/EndEvent'
+import ActivateProfileButton from '../Buttons/ActivateProfile'
+import ConnectWalletButton from '../Buttons/ConnectWallet'
 
 type PreEventProps = {
   t: ContextApi['t']
@@ -55,129 +50,46 @@ const CtaButtons: React.FC<PreEventProps> = ({
   pricePerTicket,
   ticketsOfUser,
 }) => {
-  const [txHashEnablingResult, setTxHashEnablingResult] = useState(null)
-  const [txHashBuyingResult, setTxHashBuyingResult] = useState(null)
-  const { callWithGasPrice } = useCallWithGasPrice()
-  const nftSaleContract = useNftSaleContract()
-  const cakeContract = useCake()
-
   const isUserUnconnected = userStatus === UserStatusEnum.UNCONNECTED
   const isUserUnactiveProfile = userStatus === UserStatusEnum.NO_PROFILE || userStatus === UserStatusEnum.UNCONNECTED
-  const canBuySaleTicket =
-    saleStatus === SaleStatusEnum.Sale && numberTicketsOfUser - numberTicketsUsedForGen0 < maxPerAddress
-  const canMintTickets = saleStatus === SaleStatusEnum.Claim && numberTicketsOfUser > 0
-  const hasSquad = saleStatus === SaleStatusEnum.Claim && numberTokensOfUser > 0
-  const canViewMarket = maxSupply === totalSupplyMinted
-  const isPreSale = saleStatus === SaleStatusEnum.Presale
-
-  const mintTokenCallBack = async () => {
-    const receipt = await callWithGasPrice(nftSaleContract, 'mint', ticketsOfUser)
-  }
-
-  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
-    useApproveConfirmTransaction({
-      onRequiresApproval: async () => {
-        try {
-          const response = await cakeContract.allowance(account, nftSaleContract.address)
-          const currentAllowance = ethersToBigNumber(response)
-          return currentAllowance.gt(0)
-        } catch (error) {
-          return false
-        }
-      },
-      onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [nftSaleContract.address, ethers.constants.MaxUint256])
-      },
-      onApproveSuccess: async ({ receipt }) => {
-        setTxHashEnablingResult(receipt.transactionHash)
-      },
-      onConfirm: ({ ticketsNumber }) => {
-        onPresentConfirmModal()
-        return callWithGasPrice(nftSaleContract, isPreSale ? 'buyTicketsInPreSaleForGen0' : 'buyTickets', [
-          ticketsNumber,
-        ])
-      },
-      onSuccess: async ({ receipt }) => {
-        setTxHashBuyingResult(receipt.transactionHash)
-      },
-    })
-
-  const [onPresentConfirmModal] = useModal(
-    <ConfirmModal
-      title={t('Confirm')}
-      isLoading={isConfirming}
-      headerBackground={theme.colors.gradients.cardHeader}
-      txHash={txHashBuyingResult}
-      loadingText={t('Please enable WBNB spending in your wallet')}
-      loadingButtonLabel={t('Confirming...')}
-      successButtonLabel={t('Mint more')}
-    />,
-  )
-
-  const [onPresentEnableModal] = useModal(
-    <ConfirmModal
-      title={t('Enable')}
-      isLoading={isApproving}
-      headerBackground={theme.colors.gradients.cardHeader}
-      txHash={txHashEnablingResult}
-      loadingText={t('Please enable CAKE spending in yout wallet')}
-      loadingButtonLabel={t('Enabling...')}
-      successButtonLabel={t('Close')}
-    />,
-  )
-
-  const [onPresentBuyTicketsModal] = useModal(
-    <BuyTicketsModal
-      title={t('Buy Minting Tickets')}
-      buyTicketCallBack={handleConfirm}
-      headerBackground={theme.colors.gradients.cardHeader}
-      cakeBalance={cakeBalance}
-      maxPerAddress={maxPerAddress}
-      maxPerTransaction={maxPerTransaction}
-      numberTicketsForGen0={numberTicketsForGen0}
-      numberTicketsOfUser={numberTicketsOfUser}
-      numberTicketsUsedForGen0={numberTicketsUsedForGen0}
-      pricePerTicket={pricePerTicket}
-      saleStatus={saleStatus}
-    />,
-  )
-
-  useEffect(() => txHashEnablingResult && onPresentEnableModal(), [txHashEnablingResult])
-  useEffect(() => txHashBuyingResult && onPresentConfirmModal(), [txHashBuyingResult])
-
-  const handleEnableClick = () => {
-    onPresentEnableModal()
-    handleApprove()
-  }
 
   return (
     <>
       <Flex>
-        {isUserUnconnected && <ConnectWalletButton scale="sm" />}
-        {isUserUnactiveProfile && (
-          <Button as={Link} to="/profile" scale="sm">
-            {t('Activate Profile')}
-          </Button>
-        )}
-        {!isApproved && !isUserUnactiveProfile && (
-          <Button scale="sm" onClick={handleEnableClick}>
-            {t('Enable')}
-          </Button>
-        )}
-        {(canClaimForGen0 || canBuySaleTicket) && isApproved && (
-          <Button scale="sm" onClick={onPresentBuyTicketsModal}>
-            {t('Buy Tickets')}
-          </Button>
-        )}
-        {canMintTickets && (
-          <Button scale="sm" onClick={mintTokenCallBack}>
-            {t('Mint NFTs (%tickets%)', { tickets: numberTicketsOfUser })}
-          </Button>
-        )}
-        {canViewMarket && <Button scale="sm">{t('View market')}</Button>}
-        {hasSquad && <Button scale="sm">{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Button>}
+        <ConnectWalletButton isUserUnconnected={isUserUnconnected} />
+        <ActivateProfileButton isUserUnactiveProfile={isUserUnactiveProfile} t={t} />
+        <BuyTicketsButtons
+          t={t}
+          account={account}
+          theme={theme}
+          userStatus={userStatus}
+          saleStatus={saleStatus}
+          canClaimForGen0={canClaimForGen0}
+          maxPerAddress={maxPerAddress}
+          numberTicketsOfUser={numberTicketsOfUser}
+          numberTicketsUsedForGen0={numberTicketsUsedForGen0}
+          cakeBalance={cakeBalance}
+          maxPerTransaction={maxPerTransaction}
+          numberTicketsForGen0={numberTicketsForGen0}
+          pricePerTicket={pricePerTicket}
+        />
+        <MintButton
+          t={t}
+          theme={theme}
+          saleStatus={saleStatus}
+          numberTicketsOfUser={numberTicketsOfUser}
+          numberTokensOfUser={numberTokensOfUser}
+          ticketsOfUser={ticketsOfUser}
+        />
+        <EndEventButtons
+          t={t}
+          saleStatus={saleStatus}
+          userStatus={userStatus}
+          maxSupply={maxSupply}
+          totalSupplyMinted={totalSupplyMinted}
+          numberTokensOfUser={numberTokensOfUser}
+        />
       </Flex>
-      <ReadyText t={t} userStatus={userStatus} saleStatus={saleStatus} isApproved={isApproved} />
     </>
   )
 }
