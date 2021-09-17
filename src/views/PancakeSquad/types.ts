@@ -1,3 +1,5 @@
+import { BigNumber } from '@ethersproject/bignumber'
+
 export enum SaleStatusEnum {
   Pending, // Contract is deployed
   Premint, // Tickets are preminted by owner
@@ -12,4 +14,24 @@ export enum UserStatusEnum {
   NO_PROFILE,
   PROFILE_ACTIVE,
   PROFILE_ACTIVE_GEN0,
+}
+
+export type FixedSaleInfos = {
+  maxSupply: number
+  maxPerAddress: number
+  maxPerTransaction: number
+  pricePerTicket: BigNumber
+}
+
+export type DynamicSaleInfos = {
+  saleStatus: SaleStatusEnum
+  totalTicketsDistributed: number
+  canClaimForGen0: boolean
+  numberTicketsForGen0: number
+  numberTicketsUsedForGen0: number
+  numberTicketsOfUser: number
+  ticketsOfUser: BigNumber[]
+  totalSupplyMinted: number
+  numberTokensOfUser: number
+  startTimestamp: number
 }
