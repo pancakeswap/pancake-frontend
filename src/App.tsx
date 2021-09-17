@@ -82,7 +82,7 @@ const App: React.FC = () => {
             <Route exact path={routes.MAUSOLEUM}><PredictionsHome /></Route>
             <Route exact path={routes.AUCTION}><Predictions /></Route>
             <Route exact path={routes.GRAVEYARD}><Graveyard /></Route>
-            {/* <Route exact path={routes.PROFILE}><Profile /></Route>          */}
+            <Route exact path={routes.PROFILE}><Profile /></Route>
           </Menu>
         </Switch>
       </SuspenseWithChunkError>

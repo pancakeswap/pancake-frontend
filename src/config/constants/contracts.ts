@@ -25,7 +25,7 @@ export default {
   },
   zombieBalanceChecker: {
     97: '',
-    56: '0xF2AFFACff5eF60EfB174F5C1AfAe65976F18664e',
+    56: '0xa7E5bE955311988cb9d74d0edc4e3bFabA7439B5',
   },
   nftOwnership: {
     97: '',

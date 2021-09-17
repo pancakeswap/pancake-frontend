@@ -36,7 +36,7 @@ export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)
 }
 
-export const getZombieBalanceChecker = () => {
+export const getZombieBalanceCheckerAddress = () => {
   return getAddress(addresses.zombieBalanceChecker)
 }
 
