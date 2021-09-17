@@ -2,10 +2,10 @@ import { SNAPSHOT_HUB_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoint
 import tokens from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import { simpleRpcProvider } from 'utils/providers'
-import { ADMIN_ADDRESS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
+import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 
 export const isCoreProposal = (proposal: Proposal) => {
-  return proposal.author.toLowerCase() === ADMIN_ADDRESS.toLowerCase()
+  return ADMINS.includes(proposal.author.toLowerCase())
 }
 
 export const filterProposalsByType = (proposals: Proposal[], proposalType: ProposalType) => {

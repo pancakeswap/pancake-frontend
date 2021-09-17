@@ -38,7 +38,7 @@ import { FormErrors, Label, SecondaryLabel } from './styles'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
 import { combineDateAndTime, getFormErrors } from './helpers'
 import { FormState } from './types'
-import { ADMIN_ADDRESS, VOTE_THRESHOLD } from '../config'
+import { ADMINS, VOTE_THRESHOLD } from '../config'
 import VoteDetailsModal from '../components/VoteDetailsModal'
 
 const EasyMde = lazy(() => import('components/EasyMde'))
@@ -144,7 +144,9 @@ const CreateProposal = () => {
 
   const options = useMemo(
     () => ({
-      hideIcons: account === ADMIN_ADDRESS ? [] : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
+      hideIcons: ADMINS.includes(account.toLowerCase())
+        ? []
+        : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
     }),
     [account],
   )
