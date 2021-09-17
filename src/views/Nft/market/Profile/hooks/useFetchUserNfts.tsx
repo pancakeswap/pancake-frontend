@@ -4,6 +4,7 @@ import { fetchUserNfts } from 'state/nftMarket/reducer'
 import { useGetCollections, useUserNfts } from 'state/nftMarket/hooks'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { useProfile } from 'state/profile/hooks'
+import { NftLocation } from 'state/nftMarket/types'
 
 // We need to fetch collectibles for non-connected accounts, hence this hook accepts an account string.
 const useFetchUserNfts = (account: string) => {
@@ -15,7 +16,11 @@ const useFetchUserNfts = (account: string) => {
   const profileNftTokenId = profile?.tokenId?.toString()
   const profileNftCollectionAddress = profile?.nftAddress
   const profileNftWithCollectionAddress = useMemo(() => {
-    return { tokenId: profileNftTokenId, collectionAddress: profileNftCollectionAddress }
+    return {
+      tokenId: profileNftTokenId,
+      collectionAddress: profileNftCollectionAddress,
+      nftLocation: NftLocation.PROFILE,
+    }
   }, [profileNftTokenId, profileNftCollectionAddress])
 
   const previousAccount = usePreviousValue(account)
