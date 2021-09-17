@@ -1444,7 +1444,7 @@
   "%amount% to LP token holders": "LPトークン保有者へ%amount%",
   "%amount% to the Treasury": "Treasuryへ%amount%",
   "%amount% towards CAKE buyback and burn": "CAKEの買い戻しとバーンへ%amount%",
-  "Routing through these tokens resulted in the best price for your trade.": "Routing through these tokens resulted in the best price for your trade.",
+  "Routing through these tokens resulted in the best price for your trade.": "これらのトークンを経由した結果、このトレードにおいての最良の価格となりました。",
   "Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.": "Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.",
   "Route": "Route",
   "Price Impact": "Price Impact",
