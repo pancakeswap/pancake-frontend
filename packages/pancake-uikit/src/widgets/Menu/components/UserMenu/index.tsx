@@ -128,7 +128,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         // Don't close the menu immediately so it catches the event
         setTimeout(() => {
           setIsOpen(false);
-        }, 100);
+        }, 500);
       } else {
         setIsOpen(false);
       }
