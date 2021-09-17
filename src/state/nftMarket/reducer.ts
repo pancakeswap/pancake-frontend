@@ -8,6 +8,9 @@ import {
   getCollectionsApi,
   getCollectionsSg,
   getUserActivity,
+  combineCollectionData,
+  getCollectionSg,
+  getCollectionApi,
 } from './helpers'
 import {
   State,
@@ -38,29 +41,25 @@ const initialState: State = {
 /**
  * Fetch all collections data by combining data from the API (static metadata) and the Subgraph (dynamic market data)
  */
-export const fetchCollections = createAsyncThunk<{ [key: string]: Collection }>('nft/fetchCollections', async () => {
-  const collections = await getCollectionsApi()
-  const collectionsMarket = await getCollectionsSg()
-  const collectionsMarketObj = collectionsMarket.reduce(
-    (prev, current) => ({ ...prev, [current.id]: { ...current } }),
-    {},
-  )
-
-  return collections.reduce((prev, current) => {
-    const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
-    return {
-      ...prev,
-      [current.address]: {
-        ...current,
-        active: collectionMarket.active,
-        totalVolumeBNB: collectionMarket.totalVolumeBNB,
-        numberTokensListed: collectionMarket.numberTokensListed,
-        tradingFee: collectionMarket.tradingFee,
-        creatorFee: collectionMarket.creatorFee,
-      },
-    }
-  }, {})
+export const fetchCollections = createAsyncThunk<Record<string, Collection>>('nft/fetchCollections', async () => {
+  const [collections, collectionsMarket] = await Promise.all([getCollectionsApi(), getCollectionsSg()])
+  return combineCollectionData(collections, collectionsMarket)
 })
+
+/**
+ * Fetch collection data by combining data from the API (static metadata) and the Subgraph (dynamic market data)
+ */
+export const fetchCollection = createAsyncThunk<Record<string, Collection>, string>(
+  'nft/fetchCollection',
+  async (collectionAddress) => {
+    const [collection, collectionMarket] = await Promise.all([
+      getCollectionApi(collectionAddress),
+      getCollectionSg(collectionAddress),
+    ])
+
+    return combineCollectionData([collection], [collectionMarket])
+  },
+)
 
 /**
  * Fetch all NFT data for a collections by combining data from the API (static metadata)
@@ -156,6 +155,9 @@ export const NftMarket = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(fetchCollection.fulfilled, (state, action) => {
+      state.data.collections = { ...state.data.collections, ...action.payload }
+    })
     builder.addCase(fetchCollections.fulfilled, (state, action) => {
       state.data.collections = action.payload
       state.initializationState = NFTMarketInitializationState.INITIALIZED

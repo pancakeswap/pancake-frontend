@@ -1,32 +1,35 @@
 import React from 'react'
-import { Box, BoxProps, Flex, Text } from '@pancakeswap/uikit'
+import { Box, BoxProps } from '@pancakeswap/uikit'
+import uniqBy from 'lodash/uniqBy'
+import { Collection, NftAttribute } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { MinMaxFilter } from 'components/Filters'
+import FilterContainer from '../components/FilterContainer'
 
-const Filters: React.FC<BoxProps> = (props) => {
+interface FiltersProps extends BoxProps {
+  collection: Collection
+}
+
+const Filters: React.FC<FiltersProps> = ({ collection, ...props }) => {
   const { t } = useTranslation()
 
-  const handleApply = (min: number, max: number) => {
+  const handleMinMaxApply = (min: number, max: number) => {
     console.log(min, max)
   }
 
+  const handleAttributeClick = (attribute: NftAttribute) => {
+    console.log(attribute)
+  }
+
+  // Remove duplicate attributes
+  const uniqueAttrs = uniqBy(collection.attributes, 'traitType') ?? []
+
   return (
-    <Box mb="32px" {...props}>
-      <Text
-        as="h4"
-        fontSize="12px"
-        color="textSubtle"
-        fontWeight="bold"
-        textTransform="uppercase"
-        letterSpacing=".03em"
-        mb="8px"
-      >
-        {t('Filter by')}
-      </Text>
-      <Flex alignItems="center">
-        <MinMaxFilter title={t('Price')} min={1} max={100} onApply={handleApply} />
-      </Flex>
-    </Box>
+    <FilterContainer attributes={uniqueAttrs} onAttributeClick={handleAttributeClick} {...props}>
+      <Box mb="16px" mr="4px">
+        <MinMaxFilter title={t('Price')} onApply={handleMinMaxApply} max={100} />
+      </Box>
+    </FilterContainer>
   )
 }
 
