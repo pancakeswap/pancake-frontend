@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.4](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.18.3...@pancakeswap/token-lists@2.18.4) (2021-09-17)
+
+
+### Bug Fixes
+
+* XWG Decimals ([#285](https://github.com/pancakeswap/pancake-toolkit/issues/285)) ([e0abf9e](https://github.com/pancakeswap/pancake-toolkit/commit/e0abf9edff43698c00d83b807b12a867440d0ad4))
+
+
+
+
+
 ## [2.18.3](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.18.2...@pancakeswap/token-lists@2.18.3) (2021-09-13)
 
 **Note:** Version bump only for package @pancakeswap/token-lists

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.54.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.54.1...@pancakeswap/uikit@0.54.2) (2021-09-17)
+
+
+### Bug Fixes
+
+* User menu item on click action not triggered intermittently ([#281](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/281)) ([fc51464](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/fc5146454b6a9841101fc42ad1f0939b1de176c8))
+* **menu:** Apply margin to BodyWrapper ([#284](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/284)) ([651c856](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/651c856f4e5796620129ae0f94efee83f2e8db70))
+* **menu:** Increase timeout on touch devices ([#283](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/283)) ([2262017](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/2262017150a239c9632cf55f5758d6d381af7da5))
+
+
+
+
+
 ## [0.54.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.54.0...@pancakeswap/uikit@0.54.1) (2021-09-16)
 
 
