@@ -4,7 +4,7 @@ import { StyledSquadContainer } from './styles'
 
 const PancakeSquad: React.FC = () => {
   return (
-    <StyledSquadContainer mt="56px">
+    <StyledSquadContainer>
       <PancakeSquadHeader />
     </StyledSquadContainer>
   )

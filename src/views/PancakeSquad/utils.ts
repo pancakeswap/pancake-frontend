@@ -2,12 +2,12 @@ import { UserStatusEnum } from './types'
 
 type getUserStatusType = {
   account?: string
-  canClaimForGen0: boolean | null
+  hasGen0: boolean | null
   hasActiveProfile: boolean
 }
 
-export const getUserStatus = ({ account, hasActiveProfile, canClaimForGen0 }: getUserStatusType): UserStatusEnum => {
-  if (account && hasActiveProfile && canClaimForGen0) {
+export const getUserStatus = ({ account, hasActiveProfile, hasGen0 }: getUserStatusType): UserStatusEnum => {
+  if (account && hasActiveProfile && hasGen0) {
     return UserStatusEnum.PROFILE_ACTIVE_GEN0
   }
   if (account && hasActiveProfile) {

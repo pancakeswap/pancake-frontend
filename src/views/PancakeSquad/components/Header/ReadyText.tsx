@@ -16,7 +16,7 @@ const ReadyText: React.FC<ReadyTextProps> = ({ t, saleStatus, userStatus, isAppr
     (userStatus === UserStatusEnum.PROFILE_ACTIVE && saleStatus < SaleStatusEnum.Sale) ||
     (userStatus === isGen0User && saleStatus === SaleStatusEnum.Pending)
   return isUserReady && isApproved ? (
-    <Flex alignItems="center" mt="30px">
+    <Flex alignItems="center">
       <CheckmarkIcon color="success" width="17px" mr="2px" />
       <Text fontSize="16px" color="success" bold>
         {t(isGen0User ? 'Ready for Pre-Sale!' : 'Ready for Public Sale!')}

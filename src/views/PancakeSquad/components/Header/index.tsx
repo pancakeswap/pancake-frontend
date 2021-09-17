@@ -39,7 +39,7 @@ const PancakeSquadHeader: React.FC = () => {
   const [dynamicSaleInfo, setDynamicSaleInfo] = useState<DynamicSaleInfos | null>(null)
   const { profile } = useProfile()
   const { balance: cakeBalance } = useGetCakeBalance()
-  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket, startTimestamp } = fixedSaleInfo || {}
+  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = fixedSaleInfo || {}
   const {
     saleStatus,
     totalTicketsDistributed,
@@ -50,8 +50,13 @@ const PancakeSquadHeader: React.FC = () => {
     numberTicketsForGen0,
     totalSupplyMinted,
     numberTokensOfUser,
+    startTimestamp,
   } = dynamicSaleInfo || {}
-  const userStatus = getUserStatus({ account, hasActiveProfile: profile?.isActive, canClaimForGen0 })
+  const userStatus = getUserStatus({
+    account,
+    hasActiveProfile: true,
+    hasGen0: canClaimForGen0 || numberTicketsUsedForGen0 > 0,
+  })
 
   useEffect(() => {
     const fetchFixedSaleInfo = async () => {
@@ -59,14 +64,12 @@ const PancakeSquadHeader: React.FC = () => {
         const currentMaxSupply = await nftSaleContract.maxSupply()
         const currentMaxPerAddress = await nftSaleContract.maxPerAddress()
         const currentPricePerTicket = await nftSaleContract.pricePerTicket()
-        const currentStartTimestamp = await nftSaleContract.startTimestamp()
-        const cuurentMaxPerTransaction = await nftSaleContract.maxPerTransaction()
+        const curentMaxPerTransaction = await nftSaleContract.maxPerTransaction()
         setFixedSaleInfo({
-          maxSupply: BigNumber.from(currentMaxSupply),
-          maxPerAddress: BigNumber.from(currentMaxPerAddress),
+          maxSupply: currentMaxSupply.toNumber(),
+          maxPerAddress: currentMaxPerAddress.toNumber(),
           pricePerTicket: BigNumber.from(currentPricePerTicket),
-          startTimestamp: currentStartTimestamp,
-          maxPerTransaction: BigNumber.from(cuurentMaxPerTransaction),
+          maxPerTransaction: curentMaxPerTransaction.toNumber(),
         })
       } catch (e) {
         console.error(e)
@@ -88,16 +91,18 @@ const PancakeSquadHeader: React.FC = () => {
         const currentTicketsOfUser = await nftSaleContract.ticketsOfUserBySize(account, 0, 600)
         const currentTotalSupplyMinted = await pancakeSquadContract.totalSupply()
         const currentNumberTokensOfUser = await pancakeSquadContract.balanceOf(account)
+        const currentStartTimestamp = await nftSaleContract.startTimestamp()
         setDynamicSaleInfo({
-          totalTicketsDistributed: BigNumber.from(currentTotalTicketsDistributed),
+          totalTicketsDistributed: currentTotalTicketsDistributed.toNumber(),
           saleStatus: currentSaleStatus,
           canClaimForGen0: currentCanClaimForGen0,
-          numberTicketsForGen0: BigNumber.from(currentNumberTicketsForGen0),
-          numberTicketsUsedForGen0: BigNumber.from(currentNumberTicketsUsedForGen0),
-          numberTicketsOfUser: BigNumber.from(currentNumberTicketsOfUser),
+          numberTicketsForGen0: currentNumberTicketsForGen0.toNumber(),
+          numberTicketsUsedForGen0: currentNumberTicketsUsedForGen0.toNumber(),
+          numberTicketsOfUser: currentNumberTicketsOfUser.toNumber(),
           ticketsOfUser: currentTicketsOfUser,
-          totalSupplyMinted: BigNumber.from(currentTotalSupplyMinted),
-          numberTokensOfUser: BigNumber.from(currentNumberTokensOfUser),
+          totalSupplyMinted: currentTotalSupplyMinted.toNumber(),
+          numberTokensOfUser: currentNumberTokensOfUser.toNumber(),
+          startTimestamp: currentStartTimestamp.toNumber(),
         })
       } catch (e) {
         console.error(e)
@@ -112,20 +117,24 @@ const PancakeSquadHeader: React.FC = () => {
 
   return (
     <StyledSquadHeaderContainer flexDirection="column" alignItems="center">
-      <Text fontSize="64px" my="32px" color="invertedContrast" bold>
+      <Text fontSize="64px" my="32px" color="invertedContrast" bold textAlign="center">
         {t('Pancake Squad')}
       </Text>
-      <Text color="warning" bold>
+      <Text color="warning" textAlign="center" bold>
         {t('Mint Cost: 5 CAKE each')}
+        <br />
+        {t('Max per wallet: 20')}
       </Text>
-      <Text color="invertedContrast" mb="32px">
-        {t('PancakeSwap’s first official generative NFT collection. Join the squad.')}
+      <Text color="invertedContrast" mb="32px" textAlign="center">
+        {t('PancakeSwap’s first official generative NFT collection.')}
+        <br />
+        {t('Join the squad.')}
       </Text>
       <StyledSquadEventBorder mb="56px">
         <StyledSquadEventContainer m="1px" p="32px">
-          <Flex>
+          <Flex flexDirection={['column', null, 'row']}>
             <Box mr="100px">
-              <Timeline events={nftSaleConfigBuilder({ t, saleStatus })} />
+              <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} />
             </Box>
             <Flex flexDirection="column">
               {isLoading ? (

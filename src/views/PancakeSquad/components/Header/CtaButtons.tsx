@@ -23,14 +23,14 @@ type PreEventProps = {
   userStatus: UserStatusEnum
   theme: DefaultTheme
   canClaimForGen0: boolean
-  maxPerAddress: BigNumber
-  maxPerTransaction: BigNumber
-  numberTicketsOfUser: BigNumber
-  numberTicketsForGen0: BigNumber
-  numberTicketsUsedForGen0: BigNumber
-  maxSupply: BigNumber
-  totalSupplyMinted: BigNumber
-  numberTokensOfUser: BigNumber
+  maxPerAddress: number
+  maxPerTransaction: number
+  numberTicketsOfUser: number
+  numberTicketsForGen0: number
+  numberTicketsUsedForGen0: number
+  maxSupply: number
+  totalSupplyMinted: number
+  numberTokensOfUser: number
   cakeBalance: BigNumber
   pricePerTicket: BigNumber
   ticketsOfUser: BigNumber[]
@@ -61,13 +61,12 @@ const CtaButtons: React.FC<PreEventProps> = ({
   const nftSaleContract = useNftSaleContract()
   const cakeContract = useCake()
 
-  const zero = BigNumber.from(0)
   const isUserUnconnected = userStatus === UserStatusEnum.UNCONNECTED
-  const isUserUnactiveProfile = userStatus === UserStatusEnum.NO_PROFILE
+  const isUserUnactiveProfile = userStatus === UserStatusEnum.NO_PROFILE || userStatus === UserStatusEnum.UNCONNECTED
   const canBuySaleTicket =
-    saleStatus === SaleStatusEnum.Sale && numberTicketsOfUser.sub(numberTicketsUsedForGen0).lt(maxPerAddress)
-  const canMintTickets = saleStatus === SaleStatusEnum.Claim && numberTicketsOfUser.gt(zero)
-  const hasSquad = saleStatus === SaleStatusEnum.Claim && numberTokensOfUser.gt(zero)
+    saleStatus === SaleStatusEnum.Sale && numberTicketsOfUser - numberTicketsUsedForGen0 < maxPerAddress
+  const canMintTickets = saleStatus === SaleStatusEnum.Claim && numberTicketsOfUser > 0
+  const hasSquad = saleStatus === SaleStatusEnum.Claim && numberTokensOfUser > 0
   const canViewMarket = maxSupply === totalSupplyMinted
   const isPreSale = saleStatus === SaleStatusEnum.Presale
 
@@ -93,6 +92,7 @@ const CtaButtons: React.FC<PreEventProps> = ({
         setTxHashEnablingResult(receipt.transactionHash)
       },
       onConfirm: ({ ticketsNumber }) => {
+        onPresentConfirmModal()
         return callWithGasPrice(nftSaleContract, isPreSale ? 'buyTicketsInPreSaleForGen0' : 'buyTickets', [
           ticketsNumber,
         ])
@@ -159,7 +159,7 @@ const CtaButtons: React.FC<PreEventProps> = ({
             {t('Activate Profile')}
           </Button>
         )}
-        {isApproved && !isUserUnactiveProfile && (
+        {!isApproved && !isUserUnactiveProfile && (
           <Button scale="sm" onClick={handleEnableClick}>
             {t('Enable')}
           </Button>
@@ -171,11 +171,11 @@ const CtaButtons: React.FC<PreEventProps> = ({
         )}
         {canMintTickets && (
           <Button scale="sm" onClick={mintTokenCallBack}>
-            {t('Mint NFTs (%tickets_number%)')}
+            {t('Mint NFTs (%tickets%)', { tickets: numberTicketsOfUser })}
           </Button>
         )}
         {canViewMarket && <Button scale="sm">{t('View market')}</Button>}
-        {hasSquad && <Button scale="sm">{t('Your Squad (%tokens_number%)')}</Button>}
+        {hasSquad && <Button scale="sm">{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Button>}
       </Flex>
       <ReadyText t={t} userStatus={userStatus} saleStatus={saleStatus} isApproved={isApproved} />
     </>
