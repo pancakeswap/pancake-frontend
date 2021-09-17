@@ -3,8 +3,16 @@ import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
 import map from 'lodash/map'
-import { NftTokenSg, ApiCollections, TokenIdWithCollectionAddress, NFT, UserActivity, NftLocation } from './types'
-import { getBaseNftFields, getBaseTransactionFields } from './queries'
+import {
+  NftTokenSg,
+  ApiCollections,
+  TokenIdWithCollectionAddress,
+  NFT,
+  UserActivity,
+  NftLocation,
+  Collection,
+} from './types'
+import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
 
 /**
  * Fetch static data from all collections using the API
@@ -21,6 +29,44 @@ export const getCollectionsApi = async () => {
 }
 
 /**
+ * Fetch static data from a collection using the API
+ * @returns
+ */
+export const getCollectionApi = async (collectionAddress: string) => {
+  const res = await fetch(`${API_NFT}/collections/${collectionAddress}`)
+  if (res.ok) {
+    const json = await res.json()
+    return json.data
+  }
+  console.error('Failed to fetch NFT collection', res.statusText)
+  return []
+}
+
+/**
+ * Fetch market data from a collection using the Subgraph
+ * @returns
+ */
+export const getCollectionSg = async (collectionAddress: string): Promise<any[]> => {
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getCollectionData($collectionAddress: String!) {
+          collection(id: $collectionAddress) {
+            ${getCollectionBaseFields()}
+          }
+        }
+      `,
+      { collectionAddress: collectionAddress.toLowerCase() },
+    )
+    return res.collection
+  } catch (error) {
+    console.error('Failed to fetch collection', error)
+    return []
+  }
+}
+
+/**
  * Fetch market data from all collections using the Subgraph
  * @returns
  */
@@ -31,12 +77,7 @@ export const getCollectionsSg = async (): Promise<any[]> => {
       gql`
         {
           collections {
-            id
-            active
-            totalVolumeBNB
-            numberTokensListed
-            tradingFee
-            creatorFee
+            ${getCollectionBaseFields()}
           }
         }
       `,
@@ -280,4 +321,31 @@ export const getNftsFromDifferentCollectionsApi = async (
       thumbnail: res.image?.thumbnail,
     },
   }))
+}
+
+/**
+ * Helper to combine data from the collections' API and subgraph
+ * TODO: Type this properly
+ */
+export const combineCollectionData = (collectionApiData: any, collectionSgData: any): Record<string, Collection> => {
+  const collectionsMarketObj = collectionSgData.reduce(
+    (prev, current) => ({ ...prev, [current.id]: { ...current } }),
+    {},
+  )
+
+  return collectionApiData.reduce((accum, current) => {
+    const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
+
+    return {
+      ...accum,
+      [current.address]: {
+        ...current,
+        active: collectionMarket.active,
+        totalVolumeBNB: collectionMarket.totalVolumeBNB,
+        numberTokensListed: collectionMarket.numberTokensListed,
+        tradingFee: collectionMarket.tradingFee,
+        creatorFee: collectionMarket.creatorFee,
+      },
+    }
+  }, {})
 }
