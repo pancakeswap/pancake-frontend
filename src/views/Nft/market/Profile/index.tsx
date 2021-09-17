@@ -1,10 +1,9 @@
 import React from 'react'
-import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
 import { useWeb3React } from '@web3-react/core'
 import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
-import { Box, Text } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { Route } from 'react-router'
 import { useUserNfts } from 'state/nftMarket/hooks'
@@ -14,6 +13,8 @@ import ProfileHeader from './components/ProfileHeader'
 import TabMenu from './components/TabMenu'
 import Achievements from './components/Achievements'
 import Activity from './components/Activity'
+import SubMenu from './components/SubMenu'
+import UserNfts from './components/UserNfts'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;
@@ -44,24 +45,17 @@ const NftProfile = () => {
           <TabMenu />
         </TabMenuWrapper>
       </MarketPageHeader>
-
       <Page style={{ minHeight: 'auto' }}>
-        <Route exact path="/nft/market/profile">
-          <span>Profile</span>
-          {userNfts.map((nft) => {
-            const tokenId = ethers.BigNumber.from(nft.tokenId).toString()
-            return (
-              <Text key={tokenId}>
-                {tokenId} - {nft.collection.id}
-              </Text>
-            )
-          })}
-        </Route>
-        <Route exact path="/nft/market/profile/activity">
-          <Activity />
-        </Route>
         <Route path="/nft/market/profile/achievements">
           <Achievements points={profile?.points} />
+        </Route>
+        <Route path="/nft/market/profile/activity">
+          <SubMenu />
+          <Activity />
+        </Route>
+        <Route exact path="/nft/market/profile">
+          <SubMenu />
+          <UserNfts />
         </Route>
       </Page>
     </>
