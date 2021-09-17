@@ -3,6 +3,13 @@ import styled from 'styled-components'
 import { Text, Button, HelpIcon, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
+const ButtonText = styled(Text)`
+  display: none;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    display: block;
+  }
+`
+
 const Container = styled.div`
   margin-right: 16px;
   display: flex;
@@ -25,9 +32,9 @@ const HelpButton = () => {
     <Container>
       <StyledLink external href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool">
         <Button px={['14px', null, null, null, '20px']} variant="subtle">
-          <Text color="backgroundAlt" bold fontSize="16px">
+          <ButtonText color="backgroundAlt" bold fontSize="16px">
             {t('Help')}
-          </Text>
+          </ButtonText>
           <HelpIcon color="backgroundAlt" ml={[null, null, null, 0, '6px']} />
         </Button>
       </StyledLink>
