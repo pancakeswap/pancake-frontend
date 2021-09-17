@@ -17,6 +17,8 @@ const Home = () => {
         <br />
         <Link to="/nft/market/profile">Profile</Link>
         <br />
+        <Link to="/nft/market/buy-modal-demo">Buy NFT modal demo</Link>
+        <br />
         <Box mb="40px">
           <Link to="/nft/market/item/7">Individual NFT page</Link>
         </Box>
