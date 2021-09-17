@@ -3,7 +3,7 @@ import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
 import map from 'lodash/map'
-import { NftTokenSg, ApiCollections, TokenIdWithCollectionAddress, NFT, UserActivity } from './types'
+import { NftTokenSg, ApiCollections, TokenIdWithCollectionAddress, NFT, UserActivity, NftLocation } from './types'
 import { getBaseNftFields, getBaseTransactionFields } from './queries'
 
 /**
@@ -200,8 +200,9 @@ export const fetchWalletTokenIdsForCollections = async (
     }
 
     const tokenIds = await Promise.all(tokenIdPromises)
+    const nftLocation = NftLocation.WALLET
     const tokensWithCollectionAddress = tokenIds.map((tokenId) => {
-      return { tokenId, collectionAddress }
+      return { tokenId, collectionAddress, nftLocation }
     })
 
     return tokensWithCollectionAddress
