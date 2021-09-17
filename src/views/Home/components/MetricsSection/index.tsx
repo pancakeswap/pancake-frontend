@@ -1,23 +1,22 @@
 import React from 'react'
 import { Heading, Flex, Text, Skeleton, ChartIcon, CommunityIcon, SwapIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
 import IconCard, { IconCardData } from '../IconCard'
 import StatCardContent from './StatCardContent'
 import GradientLogo from '../GradientLogoSvg'
 
-// Values fetched from bitQuery effective 6/9/21
-const txCount = 30841921
-const addressCount = 2751624
+// Values fetched from bitQuery effective 17/9/21
+const txCount = 30636495
+const addressCount = 2978980
+const tvlData = 11000000000
 
 const Stats = () => {
   const { t } = useTranslation()
-  const data = useGetStats()
   const { theme } = useTheme()
 
-  const tvlString = data ? formatLocalisedCompactNumber(data.tvl) : '-'
+  const tvlString = formatLocalisedCompactNumber(tvlData)
   const trades = formatLocalisedCompactNumber(txCount)
   const users = formatLocalisedCompactNumber(addressCount)
 
@@ -51,7 +50,7 @@ const Stats = () => {
       <Flex flexWrap="wrap">
         <Text display="inline" textAlign="center" color="textSubtle" mb="20px">
           {entrusting}
-          <>{data ? <>{tvlString}</> : <Skeleton display="inline-block" height={16} width={70} mt="2px" />}</>
+          {tvlString}
           {inFunds}
         </Text>
       </Flex>
