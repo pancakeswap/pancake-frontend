@@ -27,3 +27,17 @@ export const getBaseTransactionFields = () => `
     id
   }
 `
+
+export const getCollectionBaseFields = () => `
+  id
+  name
+  symbol
+  active
+  totalTrades
+  totalVolumeBNB
+  numberTokensListed
+  creatorAddress
+  tradingFee
+  creatorFee
+  whitelistChecker
+`
