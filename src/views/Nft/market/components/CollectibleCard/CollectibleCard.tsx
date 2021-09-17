@@ -44,18 +44,20 @@ const CollectibleCard: React.FC<CollectibleCardProps> = ({
         <Text as="h4" fontWeight="600" mb="8px">
           {name}
         </Text>
-        <Box borderTop="1px solid" borderTopColor="cardBorder" pt="8px">
-          {lowestPriceToken && (
-            <MetaRow title={t('Lowest price')}>
-              <CostLabel cost={lowestPriceNum} bnbBusdPrice={bnbBusdPrice} />
-            </MetaRow>
-          )}
-          {currentAskPrice && (
-            <MetaRow title={t('Your price')}>
-              <CostLabel cost={currentAskPrice} bnbBusdPrice={bnbBusdPrice} />
-            </MetaRow>
-          )}
-        </Box>
+        {(lowestPriceToken || currentAskPrice) && (
+          <Box borderTop="1px solid" borderTopColor="cardBorder" pt="8px">
+            {lowestPriceToken && (
+              <MetaRow title={t('Lowest price')}>
+                <CostLabel cost={lowestPriceNum} bnbBusdPrice={bnbBusdPrice} />
+              </MetaRow>
+            )}
+            {currentAskPrice && (
+              <MetaRow title={t('Your price')}>
+                <CostLabel cost={currentAskPrice} bnbBusdPrice={bnbBusdPrice} />
+              </MetaRow>
+            )}
+          </Box>
+        )}
       </CardBody>
     </StyledCollectibleCard>
   )
