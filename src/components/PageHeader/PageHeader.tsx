@@ -3,8 +3,10 @@ import styled from 'styled-components'
 import { Box } from '@pancakeswap/uikit'
 import Container from '../Layout/Container'
 
+/* ${({ theme, background }) => background || theme.colors.gradients.bubblegum}; */
+
 const Outer = styled(Box)<{ background?: string }>`
-  background: ${({ theme, background }) => background || theme.colors.gradients.bubblegum};
+  background: transparent;
 `
 
 const Inner = styled(Container)`

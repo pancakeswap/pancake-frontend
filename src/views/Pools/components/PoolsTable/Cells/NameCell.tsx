@@ -47,7 +47,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const showSubtitle = sousId !== 0 || (sousId === 0 && !isMobile)
 
   if (isAutoVault) {
-    title = t('Tanda Automatico')
+    title = t('Tanda Automatica')
     subtitle = t('Automatic restaking')
   } else if (isManualCakePool) {
     title = t('Tanda Manual')

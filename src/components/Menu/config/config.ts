@@ -36,21 +36,16 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     ],
   },
   {
-    label: t('Lottery'),
-    href: '/lottery',
-    icon: 'Trophy',
-    items: [
-      {
-        label: t('Lottery'),
-        href: '/lottery',
-      },
-    ],
-  },
-  {
-    label: '',
+    label: 'Info',
     href: '/info',
     icon: 'Info',
-    items: [{}],
+    hideSubNav: true,
+    items: [
+      {
+        label: t('Info'),
+        href: '/info',
+      },
+    ],
   },
 ]
 
