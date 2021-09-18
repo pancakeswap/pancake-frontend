@@ -5,10 +5,10 @@ import { useTranslation } from 'contexts/Localization'
 import { BASE_URL } from 'config'
 import { Divider, RoundedImage } from '../shared/styles'
 import { BorderedBox, BnbAmountCell } from './styles'
-import { PaymentCurrency } from './types'
+import { BuyNFT, PaymentCurrency } from './types'
 
 interface ReviewStageProps {
-  nftToBuy: any
+  nftToBuy: BuyNFT
   paymentCurrency: PaymentCurrency
   setPaymentCurrency: (index: number) => void
   nftPrice: number
