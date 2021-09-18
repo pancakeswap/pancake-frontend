@@ -74,8 +74,8 @@ const StarsWrapper = styled.div`
   }
 `
 
-const imagePath = '/images/home/lunar-bunny/'
-const imageSrc = 'bunny'
+const imagePath = '/images/tianguis/'
+const imageSrc = 'tianguis.svg'
 
 const starsImage: CompositeImageProps = {
   path: '/images/home/lunar-bunny/',
@@ -93,9 +93,10 @@ const Hero = () => {
 
   return (
     <>
-      <BgWrapper>
+      {/*       <BgWrapper>
         <InnerWrapper>{theme.isDark ? <SlideSvgDark width="100%" /> : <SlideSvgLight width="100%" />}</InnerWrapper>
       </BgWrapper>
+ */}
       <Flex
         position="relative"
         flexDirection={['column-reverse', null, null, 'row']}
@@ -104,6 +105,10 @@ const Hero = () => {
         mt={[account ? '280px' : '50px', null, 0]}
         id="homepage-hero"
       >
+        <BunnyWrapper>
+          <img src={`${imagePath}${imageSrc}`} /* srcSet={getSrcSet(imagePath, imageSrc)} */ alt={t('EL TIANGUIS')} />
+        </BunnyWrapper>
+        {/* 
         <Flex flex="1" flexDirection="column">
           <Heading scale="xxl" color="secondary" mb="24px">
             {t('The moon is made of pancakes.')}
@@ -125,13 +130,10 @@ const Hero = () => {
           mb={['24px', null, null, '0']}
           position="relative"
         >
-          <BunnyWrapper>
-            <img src={`${imagePath}${imageSrc}.png`} srcSet={getSrcSet(imagePath, imageSrc)} alt={t('Lunar bunny')} />
-          </BunnyWrapper>
           <StarsWrapper>
             <CompositeImage {...starsImage} />
           </StarsWrapper>
-        </Flex>
+        </Flex> */}
       </Flex>
     </>
   )

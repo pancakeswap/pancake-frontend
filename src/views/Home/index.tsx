@@ -46,25 +46,28 @@ const Home: React.FC = () => {
 
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
 
-  return (
-    <>
-      <PageMeta />
-      <StyledHeroSection
-        innerProps={{ style: { margin: '0', width: '100%' } }}
+  /*  de styled hero section componente
         background={
           theme.isDark
             ? 'radial-gradient(103.12% 50% at 50% 50%, #21193A 0%, #191326 100%)'
             : 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)'
         }
+ */
+  return (
+    <>
+      <PageMeta />
+      <StyledHeroSection
+        innerProps={{ style: { margin: '0', width: '100%' } }}
+        background="transparent"
         index={2}
         hasCurvedDivider={false}
       >
-        {account && (
+        {/* {account && (
           <UserBannerWrapper>
             <UserBanner />
           </UserBannerWrapper>
-        )}
-        {/*  <Hero /> */}
+        )} */}
+        <Hero />
       </StyledHeroSection>
       {/*   <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}

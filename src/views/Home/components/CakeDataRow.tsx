@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import { getBalanceNumber, formatLocalisedCompactNumber } from 'utils/formatBalance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { Flex, Text, Heading, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Text, Heading, Skeleton, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import tokens from 'config/constants/tokens'
@@ -52,17 +52,20 @@ const CakeDataRow = () => {
   const mcap = cakePriceBusd.times(cakeSupply)
   const mcapString = formatLocalisedCompactNumber(mcap.toNumber())
 
+  const morrallalogo = '/images/tianguis/morralla.svg'
+
   return (
     <Grid>
       <Flex flexDirection="column">
+        <Image src={morrallalogo} width={1080} height={1467} />
+      </Flex>
+      <StyledColumn>
         <Text color="textSubtle">{t('Total supply')}</Text>
         {cakeSupply ? (
           <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-      </Flex>
-      <StyledColumn>
         <Text color="textSubtle">{t('Burned to date')}</Text>
         {burnedBalance ? (
           <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
@@ -77,10 +80,7 @@ const CakeDataRow = () => {
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-      </StyledColumn>
-      <StyledColumn>
         <Text color="textSubtle">{t('Current emissions')}</Text>
-
         <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: emissionsPerBlock })}</Heading>
       </StyledColumn>
     </Grid>
