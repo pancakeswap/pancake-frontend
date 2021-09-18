@@ -1,7 +1,7 @@
 export default {
   masterChef: {
-    97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
-    56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+    97: '0x98f310a06b2018FC3350c5E2d01864Ac8783cDEA',
+    56: '0xFd0Dd713048E911630A7dB824857637d31A675b7', // tianguis farm
   },
   sousChef: {
     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
@@ -48,7 +48,7 @@ export default {
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
   cakeVault: {
-    56: '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC',
+    56: '0x794f41acC994e70b1a0023BB0c60A783722CB482', // 0xE2038D803e830667EA81E4858fd018144D9323F9', // '0x0be87b4cfb4635b94878048665CA63BB44E52BF6', // morrallavault  new: 0xF4f5F7392bb662B9e708e766FD4Dbba7EbFc1753
     97: '',
   },
   predictions: {

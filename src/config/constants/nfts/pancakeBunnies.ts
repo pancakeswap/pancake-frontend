@@ -186,7 +186,7 @@ const Nfts: Nft[] = [
   },
   {
     name: 'Churro',
-    description: "Don't let that dopey smile deceive you... Churro's a master CAKE chef!",
+    description: "Don't let that dopey smile deceive you... Churro's a master MORRALLA chef!",
     images: {
       lg: 'churro-lg.png',
       md: 'churro-md.png',
@@ -199,7 +199,7 @@ const Nfts: Nft[] = [
   },
   {
     name: 'Dollop',
-    description: "Nommm... Oh hi, I'm just meditating on the meaning of CAKE.",
+    description: "Nommm... Oh hi, I'm just meditating on the meaning of MORRALLA.",
     images: {
       lg: 'dollop-lg.png',
       md: 'dollop-md.png',
@@ -212,7 +212,7 @@ const Nfts: Nft[] = [
   },
   {
     name: 'Twinkle',
-    description: "Three guesses what's put that twinkle in those eyes! (Hint: it's CAKE)",
+    description: "Three guesses what's put that twinkle in those eyes! (Hint: it's MORRALLA)",
     images: {
       lg: 'twinkle-lg.png',
       md: 'twinkle-md.png',
