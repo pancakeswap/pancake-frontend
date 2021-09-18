@@ -29,7 +29,7 @@ const LotteryCardContent = () => {
   const [currentLotteryPrize, setCurrentLotteryPrize] = useState<BigNumber>(null)
   const cakePriceBusdAsString = usePriceCakeBusd().toString()
 
-  const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePriceBusdAsString })
+  const cakePrizesText = t('%cakePrizeInUsd% in MORRALLA prizes this round', { cakePrizeInUsd: cakePriceBusdAsString })
   const [pretext, prizesThisRound] = cakePrizesText.split(cakePriceBusdAsString)
 
   const cakePriceBusd = useMemo(() => {
@@ -96,7 +96,7 @@ const LotteryCardContent = () => {
           {prizesThisRound}
         </Text>
         <Text color="white" mb="40px">
-          {t('Buy tickets with CAKE, win CAKE if your numbers match')}
+          {t('Buy tickets with MORRALLA, win MORRALLA if your numbers match')}
         </Text>
       </Flex>
       <Flex alignItems="center" justifyContent="center">

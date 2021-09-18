@@ -52,7 +52,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
   /**
-   * Check if the wallet has the required CAKE allowance to change their profile pic or reactivate
+   * Check if the wallet has the required MORRALLA allowance to change their profile pic or reactivate
    * If they don't, we send them to the approval screen first
    */
   useEffect(() => {
@@ -78,7 +78,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
       <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
         <Text as="p" color="failure">
           {!hasMinimumCakeRequired &&
-            t('%minimum% CAKE required to change profile pic', { minimum: formatBigNumber(minimumCakeRequired) })}
+            t('%minimum% MORRALLA required to change profile pic', { minimum: formatBigNumber(minimumCakeRequired) })}
         </Text>
       </Flex>
       {profile.isActive ? (

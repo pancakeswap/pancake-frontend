@@ -1,8 +1,8 @@
 {
   "short_name": "PancakeSwap",
   "name": "PancakeSwap",
-  "description": "Farm CAKE with Pancake LP Tokens",
-  "homepage_url": "https://pancakeswap.finance",
+  "description": "Farm MORALLA with Tianguis LP Tokens",
+  "homepage_url": "https://tianguis.finance",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#1FC7D4",

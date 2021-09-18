@@ -21,7 +21,7 @@ const GetLpModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
           margin="auto"
           mb="24px"
         />
-        <Text mb="16px">{t('You’ll need CAKE-BNB LP tokens to participate in the IFO!')}</Text>
+        <Text mb="16px">{t('You’ll need MORRALLA-BNB LP tokens to participate in the IFO!')}</Text>
         <Text mb="24px">{t('Get LP tokens, or make sure your tokens aren’t staked somewhere else.')}</Text>
         <Button
           as={Link}

@@ -64,7 +64,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
                 <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: '0.25%' })}</Text>
                 <Text>- {t('%amount% to LP token holders', { amount: '0.17%' })}</Text>
                 <Text>- {t('%amount% to the Treasury', { amount: '0.03%' })}</Text>
-                <Text>- {t('%amount% towards CAKE buyback and burn', { amount: '0.05%' })}</Text>
+                <Text>- {t('%amount% towards MORRALLA buyback and burn', { amount: '0.05%' })}</Text>
               </>
             }
             ml="4px"

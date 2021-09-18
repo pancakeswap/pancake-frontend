@@ -162,7 +162,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       const limitedMaxPurchase = limitNumberByMaxTicketsPerBuy(maxBalancePurchase)
       let maxPurchase
 
-      // If the users' max CAKE balance purchase is less than the contract limit - factor the discount logic into the max number of tickets they can purchase
+      // If the users' max MORRALLA balance purchase is less than the contract limit - factor the discount logic into the max number of tickets they can purchase
       if (limitedMaxPurchase.lt(maxNumberTicketsPerBuyOrClaim)) {
         // Get max tickets purchasable with the users' balance, as well as using the discount to buy tickets
         const { overallTicketBuy: maxPlusDiscountTickets } = getMaxTicketBuyWithDiscount(limitedMaxPurchase)
@@ -270,7 +270,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     })
 
   const getErrorMessage = () => {
-    if (userNotEnoughCake) return t('Insufficient CAKE balance')
+    if (userNotEnoughCake) return t('Insufficient MORRALLA balance')
     return t('The maximum number of tickets you can buy in one transaction is %maxTickets%', {
       maxTickets: maxNumberTicketsPerBuyOrClaim.toString(),
     })
@@ -326,7 +326,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         onUserInput={handleInputChange}
         currencyValue={
           cakePriceBusd.gt(0) &&
-          `~${ticketsToBuy ? getFullDisplayBalance(priceTicketInCake.times(new BigNumber(ticketsToBuy))) : '0.00'} CAKE`
+          `~${ticketsToBuy ? getFullDisplayBalance(priceTicketInCake.times(new BigNumber(ticketsToBuy))) : '0.00'} MORRALLA`
         }
       />
       <Flex alignItems="center" justifyContent="flex-end" mt="4px" mb="12px">
@@ -339,7 +339,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
           {account && (
             <Flex justifyContent="flex-end">
               <Text fontSize="12px" color="textSubtle" mr="4px">
-                CAKE {t('Balance')}:
+                MORRALLA {t('Balance')}:
               </Text>
               {hasFetchedBalance ? (
                 <Text fontSize="12px" color="textSubtle">
@@ -382,10 +382,10 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       <Flex flexDirection="column">
         <Flex mb="8px" justifyContent="space-between">
           <Text color="textSubtle" fontSize="14px">
-            {t('Cost')} (CAKE)
+            {t('Cost')} (MORRALLA)
           </Text>
           <Text color="textSubtle" fontSize="14px">
-            {priceTicketInCake && getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy || 0))} CAKE
+            {priceTicketInCake && getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy || 0))} MORRALLA
           </Text>
         </Flex>
         <Flex mb="8px" justifyContent="space-between">
@@ -401,7 +401,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             </Flex>
           </Flex>
           <Text fontSize="14px" color="textSubtle">
-            ~{discountValue} CAKE
+            ~{discountValue} MORRALLA
           </Text>
         </Flex>
         <Flex borderTop={`1px solid ${theme.colors.cardBorder}`} pt="8px" mb="24px" justifyContent="space-between">
@@ -409,7 +409,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             {t('You pay')}
           </Text>
           <Text fontSize="16px" bold>
-            ~{totalCost} CAKE
+            ~{totalCost} MORRALLA
           </Text>
         </Flex>
 

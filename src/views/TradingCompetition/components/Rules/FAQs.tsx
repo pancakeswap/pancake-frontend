@@ -36,7 +36,7 @@ const FAQ = () => {
           <FoldableText title={t('Eligible trading pairs')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {t(
-                'Only trades on BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB pairs will be included in volume calculations.',
+                'Only trades on BNB/BUSD, MORRALLA/BNB, ETH/BNB and BTCB/BNB pairs will be included in volume calculations.',
               )}
             </Text>
           </FoldableText>
@@ -58,13 +58,13 @@ const FAQ = () => {
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'Prizes to be distributed in CAKE and shared by all members of each respective tier as per the Prizes section above.',
+                'Prizes to be distributed in MORRALLA and shared by all members of each respective tier as per the Prizes section above.',
               )}
             </Text>
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'CAKE prizes will be distributed as per the CAKE/BUSD price on the day of distribution. Every eligible participant will win prizes at the end of the competition.',
+                'MORRALLA prizes will be distributed as per the MORRALLA/BUSD price on the day of distribution. Every eligible participant will win prizes at the end of the competition.',
               )}
             </Text>
             <Text fontSize="14px" color="textSubtle">

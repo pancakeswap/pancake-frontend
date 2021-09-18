@@ -41,7 +41,7 @@ const HarvestCard = () => {
         await harvestFarm(masterChefContract, farmWithBalance.pid)
         toastSuccess(
           `${t('Harvested')}!`,
-          t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
+          t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'MORRALLA' }),
         )
       } catch (error) {
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))

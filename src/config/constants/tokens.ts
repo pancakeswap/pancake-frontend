@@ -1667,7 +1667,7 @@ export const testnetTokens = {
     18,
     'CAKE',
     'PancakeSwap Token',
-    'https://pancakeswap.finance/',
+    'https://tianguis.finance/',
   ),
   busd: new Token(
     TESTNET,
@@ -1683,7 +1683,7 @@ export const testnetTokens = {
     18,
     'SYRUP',
     'SyrupBar Token',
-    'https://pancakeswap.finance/',
+    'https://tianguis.finance/',
   ),
   bake: new Token(
     TESTNET,

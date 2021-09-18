@@ -23,7 +23,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount
       </Text>
       <Text>
         {t(
-          'Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.',
+          'Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new MORRALLA in the pool.',
         )}
       </Text>
     </>,

@@ -1,5 +1,5 @@
-const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
-const PANCAKE_TOP100 = 'https://tokens.pancakeswap.finance/pancakeswap-top-100.json'
+const PANCAKE_EXTENDED = 'https://tokens.tianguis.finance/pancakeswap-extended.json'
+const PANCAKE_TOP100 = 'https://tokens.tianguis.finance/pancakeswap-top-100.json'
 
 export const UNSUPPORTED_LIST_URLS: string[] = []
 
