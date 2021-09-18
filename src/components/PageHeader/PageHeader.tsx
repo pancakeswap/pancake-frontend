@@ -8,9 +8,9 @@ import Container from '../Layout/Container'
 const Outer = styled(Box)<{ background?: string }>`
   background: transparent;
 `
-
+// paddnig top era 32
 const Inner = styled(Container)`
-  padding-top: 32px;
+  padding-top: 0px;
   padding-bottom: 32px;
 `
 

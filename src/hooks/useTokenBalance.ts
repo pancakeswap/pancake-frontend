@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
-import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
+import { getBep20Contract, getCakeContract, getMorrallaContract } from 'utils/contractHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { simpleRpcProvider } from 'utils/providers'
 import useRefresh from './useRefresh'
@@ -73,10 +73,12 @@ export const useBurnedBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(BIG_ZERO)
   const { slowRefresh } = useRefresh()
 
+  /* balanceOf('0x000000000000000000000000000000000000dEaD') */
+
   useEffect(() => {
     const fetchBalance = async () => {
-      const contract = getBep20Contract(tokenAddress)
-      const res = await contract.balanceOf('0x000000000000000000000000000000000000dEaD')
+      const contract = getMorrallaContract(tokenAddress)
+      const res = await contract.totalMorrallaBurned()
       setBalance(new BigNumber(res.toString()))
     }
 

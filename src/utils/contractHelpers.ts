@@ -33,6 +33,7 @@ import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
 import bunnyFactoryAbi from 'config/abi/bunnyFactory.json'
 import bunnySpecialAbi from 'config/abi/bunnySpecial.json'
 import bep20Abi from 'config/abi/erc20.json'
+import morrallaAbi from 'config/abi/morralla.json'
 import erc721Abi from 'config/abi/erc721.json'
 import lpTokenAbi from 'config/abi/lpToken.json'
 import cakeAbi from 'config/abi/cake.json'
@@ -64,6 +65,9 @@ const getContract = (abi: any, address: string, signer?: ethers.Signer | ethers.
 
 export const getBep20Contract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(bep20Abi, address, signer)
+}
+export const getMorrallaContract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(morrallaAbi, address, signer)
 }
 export const getErc721Contract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(erc721Abi, address, signer)

@@ -1,5 +1,5 @@
 {
-  "name": "PancakeSwap Default List",
+  "name": "TianguisSwap Default List",
   "timestamp": "2021-05-06T00:00:00Z",
   "version": {
     "major": 3,
@@ -10,6 +10,15 @@
   "logoURI": "https://tianguis.finance/logo.png",
   "keywords": ["pancake", "default"],
   "tokens": [
+    {
+      "name": "Morralla",
+      "symbol": "MORRALLA",
+      "address": "0x5625eb03D999817941BaD868BbF8A0eaf0749557",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tianguis.finance/images/tokens/0x5625eb03D999817941BaD868BbF8A0eaf0749557.png"
+    },
+
     {
       "name": "WBNB Token",
       "symbol": "WBNB",

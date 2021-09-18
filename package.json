@@ -1,5 +1,6 @@
 {
   "name": "pancake-frontend",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,8 +14,7 @@
     "lint": "eslint '**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check '**/*.{js,jsx,ts,tsx}'",
     "format:write": "prettier --write '**/*.{js,jsx,ts,tsx}'",
-    "updateLPsAPR": "NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
-    "prepare": "husky install"
+    "updateLPsAPR": "NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts"
   },
   "browserslist": {
     "production": [

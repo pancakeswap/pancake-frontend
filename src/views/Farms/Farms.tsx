@@ -122,7 +122,7 @@ const Farms: React.FC = () => {
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useUserFarmsViewMode()
   const { account } = useWeb3React()
-  const [sortOption, setSortOption] = useState('hot')
+  const [sortOption, setSortOption] = useState('apr')
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const chosenFarmsLength = useRef(0)
 
@@ -373,7 +373,7 @@ const Farms: React.FC = () => {
         <Heading as="h1" scale="xxl" color="secondary" mb="24px">
           {t('Farms')}
         </Heading>
-        <Heading scale="lg" color="text">
+        {/*    <Heading scale="lg" color="text">
           {t('Stake LP tokens to earn.')}
         </Heading>
         <NavLink exact activeClassName="active" to="/farms/auction" id="lottery-pot-banner">
@@ -383,7 +383,7 @@ const Farms: React.FC = () => {
             </Text>
             <ArrowForwardIcon color="primary" />
           </Button>
-        </NavLink>
+        </NavLink> */}
       </PageHeader>
       <Page>
         <ControlContainer>
@@ -405,10 +405,6 @@ const Farms: React.FC = () => {
               <Text textTransform="uppercase">{t('Sort by')}</Text>
               <Select
                 options={[
-                  {
-                    label: t('Hot'),
-                    value: 'hot',
-                  },
                   {
                     label: t('APR'),
                     value: 'apr',

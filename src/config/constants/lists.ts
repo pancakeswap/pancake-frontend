@@ -1,5 +1,6 @@
-const PANCAKE_EXTENDED = 'https://tokens.tianguis.finance/pancakeswap-extended.json'
-const PANCAKE_TOP100 = 'https://tokens.tianguis.finance/pancakeswap-top-100.json'
+const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
+const PANCAKE_TOP100 = 'https://tokens.pancakeswap.finance/pancakeswap-top-100.json'
+const TIANGUIS_LIST = 'https://tokens.tianguis.finance/tianguis-tokens.json'
 
 export const UNSUPPORTED_LIST_URLS: string[] = []
 
@@ -7,8 +8,9 @@ export const UNSUPPORTED_LIST_URLS: string[] = []
 export const DEFAULT_LIST_OF_LISTS: string[] = [
   PANCAKE_TOP100,
   PANCAKE_EXTENDED,
+  TIANGUIS_LIST,
   ...UNSUPPORTED_LIST_URLS, // need to load unsupported tokens as well
 ]
-
+console.log(DEFAULT_LIST_OF_LISTS)
 // default lists to be 'active' aka searched across
-export const DEFAULT_ACTIVE_LIST_URLS: string[] = []
+export const DEFAULT_ACTIVE_LIST_URLS: string[] = [TIANGUIS_LIST]

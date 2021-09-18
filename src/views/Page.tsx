@@ -4,6 +4,9 @@ import { Flex } from '@pancakeswap/uikit'
 import Footer from 'components/Menu/Footer'
 import { PageMeta } from 'components/Layout/Page'
 
+// chanclas: lo quite de StyledPage
+/* ${({ theme }) => theme.colors.gradients.bubblegum}; */
+
 const StyledPage = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,7 +15,7 @@ const StyledPage = styled.div`
   padding: 16px;
   padding-bottom: 0;
   min-height: calc(100vh - 64px);
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+  background: transparent;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     background-size: auto;

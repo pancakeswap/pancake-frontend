@@ -33,7 +33,7 @@ const HelpButton = () => {
       <StyledLink external href="https://docs.tianguis.finance/apoyaalabanda">
         <Button px={['14px', null, null, null, '20px']} variant="subtle">
           <ButtonText color="backgroundAlt" bold fontSize="16px">
-            {t('Apoya a la banda')}
+            {t('Apoya a la banda!')}
           </ButtonText>
           <HelpIcon color="backgroundAlt" ml={[null, null, null, 0, '6px']} />
         </Button>
