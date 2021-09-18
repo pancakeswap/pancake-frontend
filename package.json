@@ -86,8 +86,6 @@
     "typescript": "^4.3.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^13.1.0",
-    "@commitlint/config-conventional": "^13.1.0",
     "@pancakeswap/eslint-config-pancake": "^1.1.0",
     "@types/jest": "^26.0.23",
     "@types/react-datepicker": "^3.1.8",
@@ -97,7 +95,6 @@
     "cypress": "^8.3.1",
     "eslint": "^7.26.0",
     "eslint-plugin-cypress": "^2.11.3",
-    "husky": "^7.0.0",
     "prettier": "^2.3.0",
     "serve": "^12.0.0",
     "source-map-explorer": "^2.5.2",
