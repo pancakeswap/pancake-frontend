@@ -1,13 +1,30 @@
 import React from 'react'
-import { Grid } from '@pancakeswap/uikit'
+import styled from 'styled-components'
+import { Grid, Text, Flex } from '@pancakeswap/uikit'
 import { useGetCollections, useGetNftMetadata, useUserNfts } from 'state/nftMarket/hooks'
 import { NftLocation } from 'state/nftMarket/types'
 import { getAddress } from 'ethers/lib/utils'
+import { useTranslation } from 'contexts/Localization'
 import { CollectibleCard } from '../../components/CollectibleCard'
 import GridPlaceholder from '../../components/GridPlaceholder'
 
+const NoNftsImage = styled.div`
+  background: url('/images/nfts/no-profile-md.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 50%;
+  position: relative;
+  width: 96px;
+  height: 96px;
+
+  & > img {
+    border-radius: 50%;
+  }
+`
+
 const UserNfts = () => {
-  const { nfts: userNfts } = useUserNfts()
+  const { t } = useTranslation()
+  const { nfts: userNfts, userNftsInitialised } = useUserNfts()
   const nftMetadata = useGetNftMetadata(userNfts)
   const collections = useGetCollections()
 
@@ -29,7 +46,16 @@ const UserNfts = () => {
 
   return (
     <>
-      {nftMetadata.length > 0 ? (
+      {/* User has no NFTs */}
+      {userNftsInitialised && userNfts.length === 0 ? (
+        <Flex p="24px" flexDirection="column" alignItems="center">
+          <NoNftsImage />
+          <Text pt="8px" bold>
+            {t('No NFTs found')}
+          </Text>
+        </Flex>
+      ) : // User has NFTs, and metadata has been fetched
+      nftMetadata.length > 0 ? (
         <Grid
           gridGap="16px"
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
@@ -52,6 +78,7 @@ const UserNfts = () => {
           })}
         </Grid>
       ) : (
+        // User has NFTs but metadata hasn't been fetched
         <GridPlaceholder />
       )}
     </>
