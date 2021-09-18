@@ -6,6 +6,7 @@ import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 const Wrapper = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
+  margin-top: 32px;
   margin-bottom: 24px;
   padding-bottom: 24px;
 `

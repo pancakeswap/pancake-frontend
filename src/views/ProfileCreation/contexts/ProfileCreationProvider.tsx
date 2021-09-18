@@ -90,7 +90,7 @@ const ProfileCreationProvider: React.FC = ({ children }) => {
     () => ({
       nextStep: () => dispatch({ type: 'next_step' }),
       setTeamId: (teamId: number) => dispatch({ type: 'set_team', teamId }),
-      setSelectedNft: (tokenId: number, nftAddress: string) =>
+      setSelectedNft: (tokenId: string, nftAddress: string) =>
         dispatch({ type: 'set_selected_nft', tokenId, nftAddress }),
       setUserName: (userName: string) => dispatch({ type: 'set_username', userName }),
     }),
