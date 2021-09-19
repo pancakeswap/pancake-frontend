@@ -41,6 +41,13 @@ const Grid = styled.div`
   }
 `
 
+const StyledContainer = styled.div`
+  border: 2px solid yellow;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0px 10px 30px 0px #008800;
+`
+
 const emissionsPerBlock = 1
 
 const CakeDataRow = () => {
@@ -53,10 +60,11 @@ const CakeDataRow = () => {
   const mcapString = formatLocalisedCompactNumber(mcap.toNumber())
 
   const morrallalogo = '/images/tianguis/morralla.svg'
+  const morrallalogoText = '/images/tianguis/morrallalogo.png'
 
   return (
-    <>
-      <Heading>Tokenomics</Heading>
+    <StyledContainer>
+      <Heading>Tokenomics de MORRALLA - el token del Tianguis!</Heading>
       <Grid>
         <Flex flexDirection="column">
           <Image src={morrallalogo} width={1080} height={1467} />
@@ -86,7 +94,7 @@ const CakeDataRow = () => {
           <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: emissionsPerBlock })}</Heading>
         </StyledColumn>
       </Grid>
-    </>
+    </StyledContainer>
   )
 }
 
