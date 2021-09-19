@@ -3,8 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDrFrankenstein } from 'hooks/useContract';
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import { graves } from 'redux/get'
-import { useWeb3React } from '@web3-react/core';
+import { account, graves } from 'redux/get'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
@@ -47,18 +46,18 @@ const StakedGraves:React.FC<{zombieStaked}> = ({zombieStaked}) => {
   }
     const drFrankenstein = useDrFrankenstein();
     const { toastSuccess } = useToast()
-    const { account } = useWeb3React();
     const { t } = useTranslation()
     const handleHarvest = () => {
+
       stakedGraves.forEach((stakedGrave) => {
         if (stakedGrave.pid === 0) {
           drFrankenstein.methods.leaveStaking(0)
-          .send({from: account}).then(() => {
+          .send({from: account()}).then(() => {
             toastSuccess(t('Claimed ZMBE'))
           });
         } else {
           drFrankenstein.methods.withdraw(stakedGrave.pid, 0)
-          .send({from: account}).then(() => {
+          .send({from: account()}).then(() => {
             toastSuccess(t('Claimed ZMBE'))
           });
         }

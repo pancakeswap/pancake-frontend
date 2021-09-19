@@ -22,9 +22,10 @@ import Predictions from './views/Predictions'
 import PredictionsHome from './views/PredictionsHome'
 import SpawningPools from './views/SpawningPools'
 import Graveyard from './views/Graveyard'
-import Profile from './views/Profile'
+import ProfilePage from './views/Profile/ProfilePage'
 
 import { useMultiCall } from './hooks/useContract'
+import Profile from './views/Profile'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Landing = lazy(() => import('./components/Landing'))
