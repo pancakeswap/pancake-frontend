@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BaseLayout, Flex } from '@rug-zombie-libs/uikit'
+import { BaseLayout, Flex, useMatchBreakpoints } from '@rug-zombie-libs/uikit'
 import styled from 'styled-components'
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import {
@@ -38,8 +38,9 @@ const StakedTombs: React.FC = () => {
   const [updateTombUserInfo, setUpdateTombUserInfo] = useState(0)
   const [updateTombPoolInfo, setUpdateTombPoolInfo] = useState(0)
   const multi = useMultiCall()
-  const { poolInfo: { totalStaked, reserves, lpTotalSupply } } = zmbeBnbTomb()
-
+  const { poolInfo: { reserves, lpTotalSupply } } = zmbeBnbTomb()
+  const { isLg, isXl } = useMatchBreakpoints()
+  const isDesktop = isLg || isXl
   const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePriceUsd()), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
   const lpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
 
@@ -76,6 +77,7 @@ const StakedTombs: React.FC = () => {
     }
   }, [drFrankenstein.methods, multi, updateTombPoolInfo, updateTombUserInfo])
 
+  const buttonStyle = isDesktop ? { } : { fontSize: "10px"}
   return (
     <TableCards>
       <div className='frank-card'>
@@ -86,7 +88,7 @@ const StakedTombs: React.FC = () => {
                 <span className='green-color'>LPs </span>
                 <span className='white-color'>STAKED</span>
               </div>
-              <span className='total-earned'>{getFullDisplayBalance(lpStaked(), 18, 4)}</span>
+              <span className='total-earned'>{getFullDisplayBalance(lpStaked(), 18, 2)}</span>
             </DisplayFlex>
           </td>
           <td className='td-width-25'>
@@ -95,7 +97,7 @@ const StakedTombs: React.FC = () => {
                 <span className='green-color'>Zombie </span>
                 <span className='white-color'>EARNED</span>
               </div>
-              <span className='total-earned text-shadow'>{getFullDisplayBalance(zombieEarned(), 18, 4)}</span>
+              <span className='total-earned text-shadow'>{getFullDisplayBalance(zombieEarned(), 18, 2)}</span>
             </DisplayFlex>
           </td>
           <td className='td-width-25'>
@@ -108,7 +110,7 @@ const StakedTombs: React.FC = () => {
             </DisplayFlex>
           </td>
           <td className='td-width-17'>
-            <button onClick={handleHarvest} className='btn w-auto harvest' type='button'>Harvest All ({stakedTombs.length})</button>
+            <button onClick={handleHarvest}  className={isDesktop ? 'btn w-auto harvest' : 'btn w-100 harvest'} style={buttonStyle} type='button'><span>Harvest All ({stakedTombs.length})</span></button>
           </td>
         </Flex>
       </div>

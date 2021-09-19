@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Heading, LinkExternal, Text, CardsLayout, Skeleton } from '@rug-zombie-libs/uikit'
+import { Heading, LinkExternal, Text, CardsLayout, Skeleton, Flex } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import PageHeader from 'components/PageHeader'
 import { graves, nfts, tombs, zombiePriceUsd } from 'redux/get'
 import styled from 'styled-components'
 
-import { initialGraveData, initialSpawningPoolData, initialTombData, nftUserInfo } from 'redux/fetch'
-import { useNftOwnership, useMultiCall, useDrFrankenstein, useZombieBalanceChecker } from 'hooks/useContract'
+import { nftUserInfo } from 'redux/fetch'
+import { useNftOwnership, useZombieBalanceChecker } from 'hooks/useContract'
 import { BigNumber } from 'bignumber.js'
 import Page from '../../components/layout/Page'
 import StakedGraves from './components/StakedGraves'
@@ -34,11 +34,11 @@ const StyledCollectibleCard = styled(CollectiblesCard)`
 const Profile: React.FC = () => {
   const contract = useNftOwnership()
   const [updateNftUserInfo, setUpdateNftUserInfo] = useState(false)
-
   const [updateEvery, setUpdateEvery] = useState(false)
   const [stakedInGraves, setStakedInGraves] = useState(BIG_ZERO)
   const [stakedInSpawningPools, setStakedInSpawningPools] = useState(BIG_ZERO)
   const zombieBalanceChecker = useZombieBalanceChecker()
+
   useEffect(() => {
     if (!updateNftUserInfo) {
       nftUserInfo(contract, { update: updateNftUserInfo, setUpdate: setUpdateNftUserInfo })
@@ -48,6 +48,8 @@ const Profile: React.FC = () => {
 
   const { account } = useWeb3React()
   const ownedNfts = nfts().filter(nft => nft.userInfo.ownedIds.length > 0)
+  const accountLength = account ? account.length : 0
+  const displayAccount = account ? `${account.slice(0,6)}...${account.slice(accountLength - 4, accountLength)}` : ""
   const refresh = () => {
     nftUserInfo(contract, { update: updateEvery, setUpdate: setUpdateEvery })
   }
@@ -75,13 +77,69 @@ const Profile: React.FC = () => {
   return (
     <>
       <PageHeader background='#101820'>
-        <Heading size='md' color='text'>
-          Profile
-        </Heading>
+        <Flex justifyContent='space-between' flexDirection={['column', null, 'row']}>
+          <Flex flexDirection='column' mr={['8px', 0]}>
+            <Heading as='h1' size='xxl' color='secondary' mb='24px'>
+              Your Profile
+            </Heading>
+            <Heading size='md' color='text'>
+              View your Zombie stats and collection.
+            </Heading>
+          </Flex>
+        </Flex>
       </PageHeader>
       <Page>
+        <Row>
+          <Avatar />
+          <LinkExternal href={`https://bscscan.com/address/${account}`}>
+            <Text>{displayAccount}</Text>
+          </LinkExternal>
+        </Row>
+        <Heading color='text' size='md' className='staked-graves-header'>
+          Total Zombie Staked
+          <Text>
+            {getFullDisplayBalance(totalStaked, 18, 4)} ZMBE
+          </Text>
+          <Text fontSize='12px' color='textSubtle'>{`~${
+            totalStaked.isZero() ? '0.00' : getBalanceAmount(totalStaked, 18).times(zombiePrice).toFormat(2)
+          } USD`}
+          </Text>
+        </Heading>
 
-      <Row>
+        <Heading color='text' size='md' className='staked-graves-header'>
+          Staked Graves
+        </Heading>
+        <StakedGraves zombieStaked={stakedInGraves} />
+        <Heading color='text' size='md' className='staked-graves-header'>
+          Staked Tombs
+        </Heading>
+        <StakedTombs />
+        <Heading color='text' size='md' className='staked-graves-header'>
+          Staked Spawning Pools
+        </Heading>
+        <StakedSpawningPools zombieStaked={stakedInSpawningPools} />
+        <Heading color='text' size='md' className='staked-graves-header'>
+          Collectibles
+          <Text>
+            RugZombie collectibles are special ERC-721 NFTs that can be used on the RugZombie platform.
+            NFTs in this user&apos;s wallet that aren&apos;t approved by RugZombie won&apos;t be shown here.
+          </Text>
+        </Heading>
+        <SwiperProvider>
+          <Row>
+            <CardsLayout>
+              {ownedNfts.map((nft) => {
+                return (<Col>
+                    <StyledCollectibleCard id={nft.id} key={nft.id} refresh={refresh} />
+                  </Col>
+                )
+              })
+              }
+            </CardsLayout>
+          </Row>
+        </SwiperProvider>
+
+        <Row>
         <Avatar />
         <LinkExternal href={`https://bscscan.com/address/${account}`}>
           <Text>{account}</Text>

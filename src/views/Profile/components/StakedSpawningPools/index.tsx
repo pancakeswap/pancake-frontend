@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BaseLayout, Flex } from '@rug-zombie-libs/uikit'
+import { BaseLayout, Flex, useMatchBreakpoints } from '@rug-zombie-libs/uikit'
 import styled from 'styled-components'
 import tokens from 'config/constants/tokens'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -34,7 +34,8 @@ const StakedSpawningPools: React.FC<{ zombieStaked }> = ({ zombieStaked }) => {
   const multi = useMultiCall()
   const zombie = useZombie()
   const stakedSpawningPools = spawningPools().filter(sp => !sp.userInfo.amount.isZero())
-
+  const { isLg, isXl } = useMatchBreakpoints()
+  const isDesktop = isLg || isXl
   const handleHarvest = () => {
     stakedSpawningPools.forEach((sp) => {
       getSpawningPoolContract(sp.id, web3).methods.withdraw(0)
@@ -63,6 +64,7 @@ const StakedSpawningPools: React.FC<{ zombieStaked }> = ({ zombieStaked }) => {
     }
   }, [multi, updateUserInfo, zombie])
 
+  const buttonStyle = isDesktop ? { } : { fontSize: "10px"}
   return (
     <Flex justifyContent='center'>
       <TableCards>
@@ -74,7 +76,7 @@ const StakedSpawningPools: React.FC<{ zombieStaked }> = ({ zombieStaked }) => {
                   <span className='green-color'>Zombie </span>
                   <span className='white-color'>STAKED</span>
                 </div>
-                <span className='total-earned'>{getFullDisplayBalance(zombieStaked, 18, 4)}</span>
+                <span className='total-earned'>{getFullDisplayBalance(zombieStaked, 18, 2)}</span>
               </DisplayFlex>
             </td>
             <td className='td-width-25'>
@@ -87,7 +89,7 @@ const StakedSpawningPools: React.FC<{ zombieStaked }> = ({ zombieStaked }) => {
               </DisplayFlex>
             </td>
             <td className='td-width-17'>
-              <button onClick={handleHarvest} className='btn w-auto harvest' type='button'>Harvest All ({stakedSpawningPools.length})</button>
+              <button onClick={handleHarvest}  className={isDesktop ? 'btn w-auto harvest' : 'btn w-100 harvest'} style={buttonStyle} type='button'><span>Harvest All ({stakedSpawningPools.length})</span></button>
             </td>
           </Flex>
         </div>

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react'
 import PageHeader from 'components/PageHeader'
-import { Flex, Heading, LinkExternal } from '@rug-zombie-libs/uikit'
+import { Flex, Heading, LinkExternal, useMatchBreakpoints } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getDrFrankensteinAddress } from 'utils/addressHelpers'
 import Page from '../../components/layout/Page'
@@ -51,6 +51,8 @@ const Graves: React.FC = () => {
   const [filter, setFilter] = useState(0)
   const [stakedOnly, setStakedOnly] = useState(false)
   const multi = useMultiCall()
+  const { isLg, isXl } = useMatchBreakpoints()
+  const isDesktop = isLg || isXl
   useEffect(() => {
     initialData(account, multi)
     if(updateUserInfo) {

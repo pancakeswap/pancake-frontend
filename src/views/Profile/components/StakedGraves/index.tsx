@@ -1,4 +1,4 @@
-import { BaseLayout, Flex } from '@rug-zombie-libs/uikit'
+import { BaseLayout, Flex, useMatchBreakpoints } from '@rug-zombie-libs/uikit'
 import React from 'react';
 import styled from 'styled-components';
 import { useDrFrankenstein } from 'hooks/useContract';
@@ -27,6 +27,8 @@ const TableCards = styled(BaseLayout)`
 `
 const StakedGraves:React.FC<{zombieStaked}> = ({zombieStaked}) => {
   const stakedGraves = graves().filter(g => !g.userInfo.amount.isZero())
+  const { isLg, isXl } = useMatchBreakpoints()
+  const isDesktop = isLg || isXl
   const nftsReady = () => {
     let count = 0;
     stakedGraves.forEach((g) => {
@@ -62,7 +64,9 @@ const StakedGraves:React.FC<{zombieStaked}> = ({zombieStaked}) => {
         }
       })
       }
-    return (
+
+  const buttonStyle = isDesktop ? { } : { fontSize: "10px"}
+  return (
       <TableCards>
         <div className='frank-card'>
           <Flex justifyContent='center'>
@@ -72,7 +76,7 @@ const StakedGraves:React.FC<{zombieStaked}> = ({zombieStaked}) => {
                   <span className='green-color'>Zombie </span>
                   <span className='white-color'>STAKED</span>
                 </div>
-                <span className='total-earned'>{getFullDisplayBalance(zombieStaked, 18, 4)}</span>
+                <span className='total-earned'>{getFullDisplayBalance(zombieStaked, 18, 2)}</span>
               </DisplayFlex>
             </td>
             <td className='td-width-25'>
@@ -81,7 +85,7 @@ const StakedGraves:React.FC<{zombieStaked}> = ({zombieStaked}) => {
                   <span className='green-color'>Zombie </span>
                   <span className='white-color'>EARNED</span>
                 </div>
-                <span className="total-earned text-shadow">{getFullDisplayBalance(zombieEarned(), 18, 4)}</span>
+                <span className="total-earned text-shadow">{getFullDisplayBalance(zombieEarned(), 18, 2)}</span>
               </DisplayFlex>
             </td>
             <td className='td-width-25'>
@@ -94,7 +98,7 @@ const StakedGraves:React.FC<{zombieStaked}> = ({zombieStaked}) => {
               </DisplayFlex>
             </td>
             <td className='td-width-17'>
-              <button onClick={handleHarvest} className='btn w-auto harvest' type='button'>Harvest All ({stakedGraves.length})</button>
+              <button onClick={handleHarvest}  className={isDesktop ? 'btn w-auto harvest' : 'btn w-100 harvest'} style={buttonStyle} type='button'><span>Harvest All ({stakedGraves.length})</span></button>
             </td>
           </Flex>
         </div>
