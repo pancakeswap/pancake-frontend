@@ -57,8 +57,8 @@ const Home: React.FC = () => {
  */
   return (
     <>
-{/*       <PageMeta />
- */}      <StyledHeroSection
+      <PageMeta />
+      <StyledHeroSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background="transparent"
         index={1}
