@@ -33,7 +33,6 @@ const StyledCollectibleCard = styled(CollectiblesCard)`
 `
 const Profile: React.FC = () => {
   const contract = useNftOwnership()
-  const drFrankenstein = useDrFrankenstein()
   const [updateNftUserInfo, setUpdateNftUserInfo] = useState(false)
 
   const [updateEvery, setUpdateEvery] = useState(false)
@@ -73,7 +72,6 @@ const Profile: React.FC = () => {
 
   const zombiePrice = zombiePriceUsd()
   const totalStaked = stakedInGraves.plus(stakedInSpawningPools)
-
   return (
     <>
       <PageHeader background='#101820'>

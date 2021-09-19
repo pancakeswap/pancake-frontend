@@ -50,8 +50,8 @@ const StartFarming: React.FC<StartFarmingProps> = ({ id, zombieUsdPrice, updateA
   const { userInfo } = pool
   const [isZombieAllowance, setZombieAllowance] = useState(!userInfo.zombieAllowance.isZero());
   const [zombieBalance, setZombieBalance] = useState(get.zombieAllowance());
-  const [poolInfoUpdate, setPoolInfoUpdate] = useState(false)
-  const [userInfoUpdate, setUserInfoUpdate] = useState(false)
+  const [poolInfoUpdate, setPoolInfoUpdate] = useState(0)
+  const [userInfoUpdate, setUserInfoUpdate] = useState(0)
   const onUpdate = () => {
     fetch.spawningPool(
       id,

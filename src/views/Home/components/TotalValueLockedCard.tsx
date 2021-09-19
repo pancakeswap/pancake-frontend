@@ -35,15 +35,14 @@ const Row = styled.div`
 const TotalValueLockedCard: React.FC = () => {
   const multi = useMultiCall()
   const zombie = useZombie()
-  const [poolInfo, setPoolInfo] = useState(get.spawningPoolById(0).poolInfo)
-  const [updatePoolInfo, setUpdatePoolInfo] = useState(false)
+  const [updatePoolInfo, setUpdatePoolInfo] = useState(0)
   useEffect(() => {
     initialTombData(
       multi
     )
   }, [multi])
   useEffect(() => {
-    if(!updatePoolInfo) {
+    if(updatePoolInfo === 0) {
       initialSpawningPoolData(multi, zombie, {update: updatePoolInfo, setUpdate: setUpdatePoolInfo})
     }
   }, [multi, updatePoolInfo, zombie])

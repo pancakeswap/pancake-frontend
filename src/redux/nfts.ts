@@ -438,6 +438,18 @@ const nfts: Nft[] = [
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 36,
+    name: 'The Eye of the Bingus',
+    symbol: 'EYE-OF-BINGUS',
+    description: 'Oh my gosh, that guy has a mullet!',
+    address: '0x0e57816deb67dA534e7C2D29cb3A0c02594a195b',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmYvobX57rSxJE9LC2tgQhWKKirZQRmnfTHFy12tR8SQba',
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts

@@ -87,7 +87,7 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
   initialGraveData()
 }
 
-export const tomb = (pid: number, multi: any, updatePoolObj?: { update: boolean, setUpdate: any }, updateUserObj?: { update: boolean, setUpdate: any }, everyUpdateObj?: { update: boolean, setUpdate: any }) => {
+export const tomb = (pid: number, multi: any, updatePoolObj?: { update: number, setUpdate: any }, updateUserObj?: { update: number, setUpdate: any }, everyUpdateObj?: { update: boolean, setUpdate: any }) => {
   const contractAddress = getDrFrankensteinAddress()
   if (account()) {
     let inputs = [
@@ -127,8 +127,8 @@ export const tomb = (pid: number, multi: any, updatePoolObj?: { update: boolean,
             if (everyUpdateObj) {
               everyUpdateObj.setUpdate(!everyUpdateObj.update)
             }
-            if (updateUserObj && !updateUserObj.update) {
-              updateUserObj.setUpdate(!updateUserObj.update)
+            if (updateUserObj) {
+              updateUserObj.setUpdate(updateUserObj.update + 1)
             }
           })
       })
@@ -154,16 +154,23 @@ export const tomb = (pid: number, multi: any, updatePoolObj?: { update: boolean,
         if (everyUpdateObj) {
           everyUpdateObj.setUpdate(!everyUpdateObj.update)
         }
-        if (updatePoolObj && !updatePoolObj.update) {
-          updatePoolObj.setUpdate(!updatePoolObj.update)
+        if (updatePoolObj) {
+          updatePoolObj.setUpdate(updatePoolObj.update + 1)
         }
       })
   }
 }
 
-export const initialTombData = (multi: any, updatePoolObj?: { update: boolean, setUpdate: any }, updateUserObj?: { update: boolean, setUpdate: any }) => {
+export const initialTombData = (multi: any, updatePoolObj?: { update: number, setUpdate: any }, updateUserObj?: { update: number, setUpdate: any }) => {
+  let index = 0
   get.tombs().forEach(t => {
-    tomb(t.pid, multi, updatePoolObj, updateUserObj)
+    tomb(
+      t.pid,
+      multi,
+      updatePoolObj ? { update: updatePoolObj.update + index, setUpdate: updatePoolObj.setUpdate } : undefined,
+      updateUserObj ? { update: updateUserObj.update + index, setUpdate: updateUserObj.setUpdate } : undefined
+    )
+    index++
   })
 }
 
@@ -249,7 +256,7 @@ export const initialGraveData = (setUserState?, setPoolState?) => {
   })
 }
 
-export const spawningPool = (id: number, multi: any, zombie: any, poolUpdateObj?: { update: boolean, setUpdate: any }, userUpdateObj?: { update: boolean, setUpdate: any }) => {
+export const spawningPool = (id: number, multi: any, zombie: any, poolUpdateObj?: { update: number, setUpdate: any }, userUpdateObj?: { update: number, setUpdate: any }) => {
   const address = getSpawningPoolAddress(id)
   let inputs = [
     { target: address, function: 'rewardPerBlock', args: [] },
@@ -275,7 +282,7 @@ export const spawningPool = (id: number, multi: any, zombie: any, poolUpdateObj?
             },
           ))
           if (poolUpdateObj) {
-            poolUpdateObj.setUpdate(!poolUpdateObj.update)
+            poolUpdateObj.setUpdate(poolUpdateObj.update + 1)
           }
         })
     })
@@ -305,7 +312,7 @@ export const spawningPool = (id: number, multi: any, zombie: any, poolUpdateObj?
               },
             ))
             if (userUpdateObj) {
-              userUpdateObj.setUpdate(!userUpdateObj.update)
+              userUpdateObj.setUpdate(userUpdateObj.update + 1)
             }
           })
           .catch((err) => {
@@ -418,9 +425,17 @@ export const auction = (
   }
 }
 
-export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: { update: boolean, setUpdate: any }, setUserData?: { update: boolean, setUpdate: any }) => {
+export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: { update: number, setUpdate: any }, setUserData?: { update: number, setUpdate: any }) => {
+  let index = 0
   get.spawningPools().forEach(sp => {
-    spawningPool(sp.id, multi, zombie, setPoolData, setUserData)
+    spawningPool(
+      sp.id,
+      multi,
+      zombie,
+      setPoolData ? { update: setPoolData.update + index, setUpdate: setPoolData.setUpdate } : undefined,
+      setUserData ? { update: setUserData.update + index, setUpdate: setUserData.setUpdate } : undefined,
+    )
+    index++
   })
 }
 

@@ -22,13 +22,12 @@ const SpawningPools: React.FC = () => {
   const web3 = useWeb3()
   const [isAllowance, setIsAllowance] = useState(false)
   const id = 0
-  const [updatePoolInfo, setUpdatePoolInfo] = useState(false)
-  const [updateUserInfo, setUpdateUserInfo] = useState(false)
+  const [updatePoolInfo, setUpdatePoolInfo] = useState(0)
+  const [updateUserInfo, setUpdateUserInfo] = useState(0)
   useEffect(() => {
     initialData(account, multi)
-    if(!updatePoolInfo) {
+    if(updatePoolInfo === 0) {
       initialSpawningPoolData(multi, zombie, {update: updatePoolInfo, setUpdate: setUpdatePoolInfo}, {update: updateUserInfo, setUpdate: setUpdateUserInfo})
-
     }
   }, [account, multi, updatePoolInfo, updateUserInfo, zombie])
 

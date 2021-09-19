@@ -21,15 +21,17 @@ const Tombs: React.FC = () => {
   accountAddress = account
   const drFrankenstein = useDrFrankenstein()
   const [bnbInBusd, setBnbInBusd] = useState(0)
-  const [updatePoolInfo, setUpdatePoolInfo] = useState(false)
-  const [updateUserInfo, setUpdateUserInfo] = useState(false)
+  const [updatePoolInfo, setUpdatePoolInfo] = useState(0)
+  const [updateUserInfo, setUpdateUserInfo] = useState(0)
 
   useEffect(() => {
-    initialTombData(
-      multi,
-      { update: updatePoolInfo, setUpdate: setUpdatePoolInfo },
-      { update: updateUserInfo, setUpdate: setUpdateUserInfo },
-    )
+    if(updatePoolInfo === 0) {
+      initialTombData(
+        multi,
+        { update: updatePoolInfo, setUpdate: setUpdatePoolInfo },
+        { update: updateUserInfo, setUpdate: setUpdateUserInfo },
+      )
+    }
   }, [drFrankenstein.methods, multi, updatePoolInfo, updateUserInfo])
 
   const [isAllowance, setIsAllowance] = useState(false)

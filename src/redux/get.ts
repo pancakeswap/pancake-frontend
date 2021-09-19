@@ -117,6 +117,10 @@ export const zmbeBnbLpPriceBnb = () => {
   return bnbLpTokenPrice
 }
 
+export const zmbeBnbLpPriceUsd = () => {
+  return zmbeBnbLpPriceBnb().times(bnbPriceUsd())
+}
+
 export const zmbePerZmbeBnbLp = () => {
   const { poolInfo: {reserves, lpTotalSupply } } = zmbeBnbTomb()
   return reserves[0].div(lpTotalSupply)

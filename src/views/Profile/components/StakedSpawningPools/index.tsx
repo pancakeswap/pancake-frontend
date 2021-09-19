@@ -3,11 +3,13 @@ import { BaseLayout, Flex } from '@rug-zombie-libs/uikit'
 import styled from 'styled-components'
 import tokens from 'config/constants/tokens'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import { grave, graves, spawningPools, tombByPid } from 'redux/get'
-import { useDrFrankenstein, useMultiCall } from 'hooks/useContract'
+import { account, grave, graves, spawningPools, tombByPid } from 'redux/get'
+import { useDrFrankenstein, useMultiCall, useSpawningPool, useZombie } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { initialSpawningPoolData } from '../../../../redux/fetch'
+import { getSpawningPoolContract } from '../../../../utils/contractHelpers'
+import useWeb3 from '../../../../hooks/useWeb3'
 
 const TableCards = styled(BaseLayout)`
   width: 100%;
@@ -27,14 +29,19 @@ const DisplayFlex = styled(BaseLayout)`
   grid-gap: 0px;
 }`
 const StakedSpawningPools: React.FC<{ zombieStaked }> = ({ zombieStaked }) => {
-  const [updateSpawningPoolUserInfo, setUpdateSpawningPoolUserInfo] = useState(false)
-  const [updateSpawningPoolPoolInfo, setUpdateSpawningPoolPoolInfo] = useState(false)
+  const [updateUserInfo, setUpdateUserInfo] = useState(0)
+  const web3 = useWeb3()
   const multi = useMultiCall()
+  const zombie = useZombie()
+  const stakedSpawningPools = spawningPools().filter(sp => !sp.userInfo.amount.isZero())
 
   const handleHarvest = () => {
-    console.log('harvest')
+    stakedSpawningPools.forEach((sp) => {
+      getSpawningPoolContract(sp.id, web3).methods.withdraw(0)
+        .send({ from: account()
+        })
+    })
   }
-  const stakedSpawningPools = spawningPools().filter(sp => !sp.userInfo.amount.isZero())
   const nftsReady = () => {
     let count = 0;
     stakedSpawningPools.forEach((sp) => {
@@ -46,12 +53,15 @@ const StakedSpawningPools: React.FC<{ zombieStaked }> = ({ zombieStaked }) => {
   }
 
   useEffect(() => {
-    initialSpawningPoolData(
-      multi,
-      { update: updateSpawningPoolUserInfo, setUpdate: setUpdateSpawningPoolUserInfo },
-      { update: updateSpawningPoolPoolInfo, setUpdate: setUpdateSpawningPoolPoolInfo },
-    )
-  }, [multi, updateSpawningPoolPoolInfo, updateSpawningPoolUserInfo])
+    if(updateUserInfo === 0) {
+      initialSpawningPoolData(
+        multi,
+        zombie,
+        undefined,
+        { update: updateUserInfo, setUpdate: setUpdateUserInfo },
+      )
+    }
+  }, [multi, updateUserInfo, zombie])
 
   return (
     <Flex justifyContent='center'>

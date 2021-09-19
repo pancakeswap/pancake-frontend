@@ -31,11 +31,11 @@ const config: MenuEntry[] = [
     icon: 'NftIcon',
     href: '/graveyard'
   },
-  // {
-  //   label: 'Profile',
-  //   icon: 'GroupsIcon',
-  //   href: '/profile'
-  // },
+  {
+    label: 'Profile',
+    icon: 'GroupsIcon',
+    href: '/profile'
+  },
   {
     label: 'Referral Program',
     icon: 'TeamBattleIcon',

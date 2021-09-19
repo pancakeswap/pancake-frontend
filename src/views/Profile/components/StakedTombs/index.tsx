@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { BaseLayout, Flex } from '@rug-zombie-libs/uikit'
 import styled from 'styled-components'
-import tokens from 'config/constants/tokens'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import { account, tombByPid, tombs } from 'redux/get'
+import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import {
+  account,
+  bnbPriceUsd,
+  tombs,
+  zmbeBnbTomb,
+  zombiePriceUsd,
+} from 'redux/get'
 import { useDrFrankenstein, useMultiCall } from 'hooks/useContract'
-import { useWeb3React } from '@web3-react/core'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
 import { initialTombData } from '../../../../redux/fetch'
 
@@ -31,9 +35,13 @@ const DisplayFlex = styled(BaseLayout)`
 const StakedTombs: React.FC = () => {
   const drFrankenstein = useDrFrankenstein()
   const stakedTombs = tombs().filter(t => !t.userInfo.amount.isZero())
-  const [updateTombUserInfo, setUpdateTombUserInfo] = useState(false)
-  const [updateTombPoolInfo, setUpdateTombPoolInfo] = useState(false)
+  const [updateTombUserInfo, setUpdateTombUserInfo] = useState(0)
+  const [updateTombPoolInfo, setUpdateTombPoolInfo] = useState(0)
   const multi = useMultiCall()
+  const { poolInfo: { totalStaked, reserves, lpTotalSupply } } = zmbeBnbTomb()
+
+  const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePriceUsd()), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
+  const lpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
 
   const lpStaked = () => {
     let total = BIG_ZERO
@@ -59,7 +67,7 @@ const StakedTombs: React.FC = () => {
   }
 
   useEffect(() => {
-    if(updateTombUserInfo) {
+    if(updateTombUserInfo === 0) {
       initialTombData(
         multi,
         { update: updateTombPoolInfo, setUpdate: setUpdateTombPoolInfo },
@@ -96,7 +104,7 @@ const StakedTombs: React.FC = () => {
                 <span className='green-color'>LP </span>
                 <span className='white-color'>PRICE</span>
               </div>
-              <span className='total-earned'>0</span>
+              <span className='total-earned'>${lpTokenPrice.isNaN() ? "0" : getDecimalAmount(lpTokenPrice).toFormat(2).toString()}</span>
             </DisplayFlex>
           </td>
           <td className='td-width-17'>
