@@ -18,7 +18,7 @@ const spawningPools: SpawningPool[] = [
     endBlock: 13700000,
     project: {
       name: 'Bingus Network',
-      description: 'The Bingus project was launched as an animal charity / meme token on BSC. Bingus Network aims to save as many animals as possible. A percentage of every Bingus Network transaction is donated to animal shelters and charities and over $40k has been donated since April.',
+      description: 'The Bingus project was launched as an animal charity / meme token on BSC. Bingus Network aims to save as many animals as possible. A percentage of every Bingus Network transaction is donated to animal shelters and charities and over $120k has been donated since April.',
       additionalDetails: [
         {
           name: 'Project website',
