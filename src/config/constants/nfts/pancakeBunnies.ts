@@ -85,7 +85,7 @@ const Nfts: Nft[] = [
       lg: 'easter-champion-storm-lg.png',
       md: 'easter-champion-storm-md.png',
       sm: 'easter-champion-storm-sm.png',
-      ipfs: `${IPFS_GATEWAY}/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.png'`,
+      ipfs: `${IPFS_GATEWAY}/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.png`,
     },
     video: {
       webm: `${IPFS_GATEWAY}/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.webm`,
