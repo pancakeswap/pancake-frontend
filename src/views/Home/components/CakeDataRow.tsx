@@ -55,35 +55,38 @@ const CakeDataRow = () => {
   const morrallalogo = '/images/tianguis/morralla.svg'
 
   return (
-    <Grid>
-      <Flex flexDirection="column">
-        <Image src={morrallalogo} width={1080} height={1467} />
-      </Flex>
-      <StyledColumn>
-        <Text color="textSubtle">{t('Total supply')}</Text>
-        {cakeSupply ? (
-          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
-        ) : (
-          <Skeleton height={24} width={126} my="4px" />
-        )}
-        <Text color="textSubtle">{t('Burned to date')}</Text>
-        {burnedBalance ? (
-          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
-        ) : (
-          <Skeleton height={24} width={126} my="4px" />
-        )}
-      </StyledColumn>
-      <StyledColumn noMobileBorder>
-        <Text color="textSubtle">{t('Market cap')}</Text>
-        {mcap?.gt(0) && mcapString ? (
-          <Heading scale="lg">{t('$%marketCap%', { marketCap: mcapString })}</Heading>
-        ) : (
-          <Skeleton height={24} width={126} my="4px" />
-        )}
-        <Text color="textSubtle">{t('Current emissions')}</Text>
-        <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: emissionsPerBlock })}</Heading>
-      </StyledColumn>
-    </Grid>
+    <>
+      <Heading>Tokenomics</Heading>
+      <Grid>
+        <Flex flexDirection="column">
+          <Image src={morrallalogo} width={1080} height={1467} />
+        </Flex>
+        <StyledColumn>
+          <Text color="textSubtle">{t('Total supply')}</Text>
+          {cakeSupply ? (
+            <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
+          ) : (
+            <Skeleton height={24} width={126} my="4px" />
+          )}
+          <Text color="textSubtle">{t('Burned to date')}</Text>
+          {burnedBalance ? (
+            <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
+          ) : (
+            <Skeleton height={24} width={126} my="4px" />
+          )}
+        </StyledColumn>
+        <StyledColumn noMobileBorder>
+          <Text color="textSubtle">{t('Market cap')}</Text>
+          {mcap?.gt(0) && mcapString ? (
+            <Heading scale="lg">{t('$%marketCap%', { marketCap: mcapString })}</Heading>
+          ) : (
+            <Skeleton height={24} width={126} my="4px" />
+          )}
+          <Text color="textSubtle">{t('Current emissions')}</Text>
+          <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: emissionsPerBlock })}</Heading>
+        </StyledColumn>
+      </Grid>
+    </>
   )
 }
 

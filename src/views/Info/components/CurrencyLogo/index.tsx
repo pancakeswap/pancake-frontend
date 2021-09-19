@@ -19,7 +19,9 @@ export const CurrencyLogo: React.FC<{
   const src = useMemo(() => {
     const checksummedAddress = isAddress(address)
     if (checksummedAddress) {
-      return `https://tianguis.finance/images/tokens/${checksummedAddress}.png` /* `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${checksummedAddress}/logo.png` */
+      return address.toLowerCase() === '0x5625eb03D999817941BaD868BbF8A0eaf0749557'.toLowerCase()
+        ? `https://tianguis.finance/images/tokens/${checksummedAddress}.png`
+        : `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${checksummedAddress}/logo.png`
     }
     return null
   }, [address])
