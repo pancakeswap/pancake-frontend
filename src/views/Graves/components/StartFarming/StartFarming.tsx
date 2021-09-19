@@ -49,16 +49,13 @@ const StartFarming: React.FC<StartFarmingProps> = ({ pid, zombieUsdPrice, update
   const [zombieBalance, setZombieBalance] = useState(get.zombieAllowance());
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
-  const [grave, setGrave] = useState(get.grave(pid))
   const [hasNftGraveToken, setHasNftGraveToken] = useState(false)
-  const { rug, userInfo, isClosed, requiresNft, nft, startingDate } = grave
+  const { rug, userInfo, isClosed, requiresNft, nft, startingDate } = get.grave(pid)
   const [remainingTime, setRemainingTime] = useState(startingDate - Math.floor(Date.now() / 1000))
   const [timerSet, setTimerSet] = useState(false)
-
+  const [updateUserInfo, setUpdateUserInfo] = useState(false)
   const onUpdate = () => {
-    fetch.grave(pid, data => {
-      setGrave(data)
-    })
+    fetch.grave(pid, { update: updateUserInfo, setUpdate: setUpdateUserInfo })
   }
 
   const [onPresentStake] = useModal(

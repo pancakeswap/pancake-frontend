@@ -174,7 +174,7 @@ export const initialTombData = (multi: any, updatePoolObj?: { update: number, se
   })
 }
 
-export const grave = (pid: number, setUserInfoState?, setPoolInfoState?) => {
+export const grave = (pid: number, setUserInfoState?: { update: boolean, setUpdate: any }, setPoolInfoState?: { update: boolean, setUpdate: any }) => {
   getDrFrankensteinContract().methods.poolInfo(pid).call()
     .then(poolInfoRes => {
       if (pid !== 0) {
