@@ -13,7 +13,7 @@ import tokens from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { Grave } from '../../../../redux/types'
-import { grave, spawningPool } from '../../../../redux/get'
+import { grave, spawningPoolById } from '../../../../redux/get'
 
 interface StakeZombieModalProps {
   pid: number,
@@ -34,7 +34,7 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({
                                                              updateResult,
                                                              onDismiss,
                                                            }) => {
-  const { userInfo: { amount }, poolInfo } = spawningPool(pid)
+  const { userInfo: { amount }, poolInfo } = spawningPoolById(pid)
   const spawningPoolContract = useSpawningPool(pid)
   const { account } = useWeb3React()
   console.log(poolInfo)

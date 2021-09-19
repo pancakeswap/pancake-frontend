@@ -7,7 +7,7 @@ import { getDrFrankensteinAddress, getSpawningPoolAddress } from 'utils/addressH
 import Page from '../../components/layout/Page'
 import Table from './components/Table'
 import './SpawningPools.Styles.css'
-import { grave, initialData, initialGraveData, spawningPool } from '../../redux/fetch'
+import { grave, initialData, initialGraveData, initialSpawningPoolData, spawningPool } from '../../redux/fetch'
 import { spawningPools } from '../../redux/get'
 import * as get from '../../redux/get'
 import useWeb3 from '../../hooks/useWeb3'
@@ -22,14 +22,15 @@ const SpawningPools: React.FC = () => {
   const web3 = useWeb3()
   const [isAllowance, setIsAllowance] = useState(false)
   const id = 0
-  const [farmData, setFarmData] = useState(get.spawningPool(id))
-  // const [userData, setUserData] = useState(graves())
+  const [updatePoolInfo, setUpdatePoolInfo] = useState(false)
+  const [updateUserInfo, setUpdateUserInfo] = useState(false)
   useEffect(() => {
     initialData(account, multi)
-    spawningPools().forEach(sp => {
-      spawningPool(sp.id, multi, zombie, setFarmData)
-    })
-  }, [account, multi, zombie])
+    if(!updatePoolInfo) {
+      initialSpawningPoolData(multi, zombie, {update: updatePoolInfo, setUpdate: setUpdatePoolInfo}, {update: updateUserInfo, setUpdate: setUpdateUserInfo})
+
+    }
+  }, [account, multi, updatePoolInfo, updateUserInfo, zombie])
 
   accountAddress = account
   const [bnbInBusd, setBnbInBusd] = useState(0)

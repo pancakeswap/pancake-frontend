@@ -1,31 +1,48 @@
-import { BaseLayout } from '@rug-zombie-libs/uikit';
+import { BaseLayout, Flex } from '@rug-zombie-libs/uikit'
 import React from 'react';
-import BigNumber from 'bignumber.js';
-import tokens from 'config/constants/tokens';
 import styled from 'styled-components';
 import { useDrFrankenstein } from 'hooks/useContract';
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import { grave } from 'redux/get';
+import { graves } from 'redux/get'
 import { useWeb3React } from '@web3-react/core';
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
+import { BIG_ZERO } from '../../../../utils/bigNumber'
 
+const DisplayFlex = styled(BaseLayout)`
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  grid-gap: 0px;
+}`
 const TableCards = styled(BaseLayout)`
-  width: 80%;
+  width: 100%;
   & > div {
     grid-column: span 12;
     width: 100%;
   }
 `
-const StakedGraves:React.FC<{stakedGraves}> = ({stakedGraves}) => {
-    const zmbeEarned = () => {
-      let total = 0; 
-      stakedGraves.forEach((stakedGrave) => {
-      const {userInfo:{pendingZombie}} = grave(stakedGrave.pid)
-      total += parseFloat(getFullDisplayBalance(new BigNumber(pendingZombie), tokens.zmbe.decimals, 4))
-      })
-      return total.toString()
-    }
+const StakedGraves:React.FC<{zombieStaked}> = ({zombieStaked}) => {
+  const stakedGraves = graves().filter(g => !g.userInfo.amount.isZero())
+  const nftsReady = () => {
+    let count = 0;
+    stakedGraves.forEach((g) => {
+      if(Math.floor(Date.now() / 1000) > g.userInfo.nftRevivalDate) {
+        count++
+      }
+    })
+    return count
+  }
+  const zombieEarned = () => {
+    let total = BIG_ZERO
+    stakedGraves.forEach((g) => {
+      total = total.plus(g.userInfo.pendingZombie)
+    })
+    return total
+  }
     const drFrankenstein = useDrFrankenstein();
     const { toastSuccess } = useToast()
     const { account } = useWeb3React();
@@ -46,20 +63,42 @@ const StakedGraves:React.FC<{stakedGraves}> = ({stakedGraves}) => {
       })
       }
     return (
-        <TableCards>
-        <div className="frank-card">
-            <div className="small-text">
-                <span className="green-color">Zombie </span>
-                <span className="white-color">EARNED</span>
-            </div>
-            <div className="space-between">
-                <div className="frank-earned">
-                <span className="text-shadow">{zmbeEarned()}</span>
+      <TableCards>
+        <div className='frank-card'>
+          <Flex justifyContent='center'>
+            <td className='td-width-25'>
+              <DisplayFlex>
+                <div className='small-text'>
+                  <span className='green-color'>Zombie </span>
+                  <span className='white-color'>STAKED</span>
                 </div>
-                <button onClick={handleHarvest} className="btn w-auto harvest" type="button">Harvest All</button>
-            </div>
+                <span className='total-earned'>{getFullDisplayBalance(zombieStaked, 18, 4)}</span>
+              </DisplayFlex>
+            </td>
+            <td className='td-width-25'>
+              <DisplayFlex>
+                <div className='small-text'>
+                  <span className='green-color'>Zombie </span>
+                  <span className='white-color'>EARNED</span>
+                </div>
+                <span className="total-earned text-shadow">{getFullDisplayBalance(zombieEarned(), 18, 4)}</span>
+              </DisplayFlex>
+            </td>
+            <td className='td-width-25'>
+              <DisplayFlex>
+                <div className='small-text'>
+                  <span className='green-color'>NFTs </span>
+                  <span className='white-color'>READY</span>
+                </div>
+                <span className='total-earned'>{nftsReady()}</span>
+              </DisplayFlex>
+            </td>
+            <td className='td-width-17'>
+              <button onClick={handleHarvest} className='btn w-auto harvest' type='button'>Harvest All ({stakedGraves.length})</button>
+            </td>
+          </Flex>
         </div>
-        </TableCards>
+      </TableCards>
     )
 }
 

@@ -2,7 +2,7 @@ import addresses from 'config/constants/contracts'
 import tokens from 'config/constants/tokens'
 import tombs from 'views/Tombs/data'
 import { Address } from 'config/constants/types'
-import { spawningPool } from '../redux/get'
+import { spawningPoolById } from '../redux/get'
 
 export const getAddress = (address: Address): string => {
   const mainNetChainId = 56
@@ -84,5 +84,5 @@ export const getPredictionsAddress = () => {
 }
 
 export const getSpawningPoolAddress = (id: number) => {
-  return getAddress(spawningPool(id).address)
+  return getAddress(spawningPoolById(id).address)
 }

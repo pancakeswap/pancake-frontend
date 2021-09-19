@@ -5,7 +5,7 @@ import { BigNumber } from 'bignumber.js'
 import { formatDuration } from '../../../../utils/timerHelpers'
 import { Grave } from '../../../../redux/types'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
-import { grave, spawningPool } from '../../../../redux/get'
+import { grave, spawningPoolById } from '../../../../redux/get'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 
@@ -16,7 +16,7 @@ interface BuyFrankProps {
 }
 
 const BuyFrank: React.FC<BuyFrankProps> = ({ id }) => {
-  const { userInfo: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } } = spawningPool(id)
+  const { userInfo: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } } = spawningPoolById(id)
   const currentDate = Math.floor(Date.now() / 1000);
   let nftRevivalDateFixed = nftRevivalDate
   if(nftRevivalDate < 0) {

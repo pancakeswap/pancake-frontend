@@ -6,7 +6,7 @@ import { useDrFrankenstein, useSpawningPool } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
-import { grave, spawningPool } from '../../../../redux/get'
+import { grave, spawningPoolById } from '../../../../redux/get'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
 
 interface FrankEarnedProps {
@@ -14,7 +14,7 @@ interface FrankEarnedProps {
 }
 
 const FrankEarned: React.FC<FrankEarnedProps> = ({ id }) => {
-  const { userInfo: { pendingReward }, rewardToken, color } = spawningPool(id)
+  const { userInfo: { pendingReward }, rewardToken, color } = spawningPoolById(id)
   const spawningPoolContract = useSpawningPool(id)
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()

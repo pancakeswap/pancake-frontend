@@ -46,20 +46,26 @@ const filterGraves = (i) => {
 const Graves: React.FC = () => {
   const { account } = useWeb3React()
   const [isAllowance, setIsAllowance] = useState(false)
-  const [farmData, setFarmData] = useState(graves())
+  const [updateUserInfo, setUpdateUserInfo] = useState(false)
+  const [updatePoolInfo, setUpdatePoolInfo] = useState(false)
   const [filter, setFilter] = useState(0)
   const [stakedOnly, setStakedOnly] = useState(false)
   const multi = useMultiCall()
   useEffect(() => {
     initialData(account, multi)
-    initialGraveData(undefined, setFarmData)
-  }, [account, multi])
+    if(updateUserInfo) {
+      initialGraveData(
+        { update: updateUserInfo, setUpdate: setUpdateUserInfo },
+        { update: updatePoolInfo, setUpdate: setUpdatePoolInfo }
+      )
+    }
+  }, [account, multi, updatePoolInfo, updateUserInfo])
 
   accountAddress = account
   const [bnbInBusd, setBnbInBusd] = useState(0)
 
   const updateResult = (pid) => {
-    grave(pid)
+    grave(pid, { update: updateUserInfo, setUpdate: setUpdateUserInfo})
   }
 
     const updateAllowance = (tokenContact, pid) => {

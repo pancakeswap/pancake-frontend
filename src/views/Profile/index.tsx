@@ -5,9 +5,10 @@ import PageHeader from 'components/PageHeader'
 import { graves, nfts, tombs, zombiePriceUsd } from 'redux/get'
 import styled from 'styled-components'
 
-import { initialTombData, nftUserInfo } from 'redux/fetch'
+import { initialGraveData, initialSpawningPoolData, initialTombData, nftUserInfo } from 'redux/fetch'
 import { useNftOwnership, useMultiCall, useDrFrankenstein, useZombieBalanceChecker } from 'hooks/useContract'
 import { BigNumber } from 'bignumber.js'
+import Page from '../../components/layout/Page'
 import StakedGraves from './components/StakedGraves'
 import SwiperProvider from '../Predictions/context/SwiperProvider'
 import CollectiblesCard from '../Graveyard/components/Collectibles/CollectiblesCard'
@@ -33,29 +34,21 @@ const StyledCollectibleCard = styled(CollectiblesCard)`
 const Profile: React.FC = () => {
   const contract = useNftOwnership()
   const drFrankenstein = useDrFrankenstein()
-  const [updateUserInfo, setUpdateUserInfo] = useState(false)
-  const [updatePoolInfo, setUpdatePoolInfo] = useState(false)
+  const [updateNftUserInfo, setUpdateNftUserInfo] = useState(false)
+
   const [updateEvery, setUpdateEvery] = useState(false)
   const [stakedInGraves, setStakedInGraves] = useState(BIG_ZERO)
   const [stakedInSpawningPools, setStakedInSpawningPools] = useState(BIG_ZERO)
-  const multi = useMultiCall()
   const zombieBalanceChecker = useZombieBalanceChecker()
   useEffect(() => {
-    if (!updateUserInfo) {
-      nftUserInfo(contract, { update: updateUserInfo, setUpdate: setUpdateUserInfo })
+    if (!updateNftUserInfo) {
+      nftUserInfo(contract, { update: updateNftUserInfo, setUpdate: setUpdateNftUserInfo })
     }
-  }, [contract, updateUserInfo])
-  useEffect(() => {
-    initialTombData(
-      multi,
-      { update: updatePoolInfo, setUpdate: setUpdatePoolInfo },
-      { update: updateUserInfo, setUpdate: setUpdateUserInfo },
-    )
-  }, [drFrankenstein.methods, multi, updatePoolInfo, updateUserInfo])
+  }, [contract, updateNftUserInfo])
+
+
   const { account } = useWeb3React()
   const ownedNfts = nfts().filter(nft => nft.userInfo.ownedIds.length > 0)
-  const stakedGraves = graves().filter(g => !g.userInfo.amount.isZero())
-  const stakedTombs = tombs().filter(t => t.userInfo.amount.gt(0))
   const refresh = () => {
     nftUserInfo(contract, { update: updateEvery, setUpdate: setUpdateEvery })
   }
@@ -88,6 +81,8 @@ const Profile: React.FC = () => {
           Profile
         </Heading>
       </PageHeader>
+      <Page>
+
       <Row>
         <Avatar />
         <LinkExternal href={`https://bscscan.com/address/${account}`}>
@@ -108,11 +103,11 @@ const Profile: React.FC = () => {
       <Heading color='text' size='md' className='staked-graves-header'>
         Staked Graves
       </Heading>
-      <StakedGraves stakedGraves={stakedGraves} />
+      <StakedGraves zombieStaked={stakedInGraves} />
       <Heading color='text' size='md' className='staked-graves-header'>
         Staked Tombs
       </Heading>
-      <StakedTombs stakedTombs={stakedTombs} />
+      <StakedTombs />
       <Heading color='text' size='md' className='staked-graves-header'>
         Staked Spawning Pools
       </Heading>
@@ -121,7 +116,7 @@ const Profile: React.FC = () => {
         Collectibles
         <Text>
           RugZombie collectibles are special ERC-721 NFTs that can be used on the RugZombie platform.
-          NFTs in this user&apos;s wallet that aren&apos;t approved by RugZombie collectibles won&apos;t be shown here.
+          NFTs in this user&apos;s wallet that aren&apos;t approved by RugZombie won&apos;t be shown here.
         </Text>
       </Heading>
       <SwiperProvider>
@@ -137,6 +132,7 @@ const Profile: React.FC = () => {
           </CardsLayout>
         </Row>
       </SwiperProvider>
+      </Page>
     </>
   )
 }

@@ -1,59 +1,111 @@
-import React from 'react'
-import { BaseLayout } from '@rug-zombie-libs/uikit';
-import styled from 'styled-components';
-import tokens from 'config/constants/tokens';
-import { getFullDisplayBalance } from 'utils/formatBalance';
-import { tombByPid } from 'redux/get';
-import { useDrFrankenstein } from 'hooks/useContract';
-import { useWeb3React } from '@web3-react/core';
+import React, { useEffect, useState } from 'react'
+import { BaseLayout, Flex } from '@rug-zombie-libs/uikit'
+import styled from 'styled-components'
+import tokens from 'config/constants/tokens'
+import { getFullDisplayBalance } from 'utils/formatBalance'
+import { account, tombByPid, tombs } from 'redux/get'
+import { useDrFrankenstein, useMultiCall } from 'hooks/useContract'
+import { useWeb3React } from '@web3-react/core'
+import { BIG_ZERO } from '../../../../utils/bigNumber'
+import { initialTombData } from '../../../../redux/fetch'
 
 const TableCards = styled(BaseLayout)`
-  width: 80%;
+  width: 100%;
+
   & > div {
     grid-column: span 12;
     width: 100%;
   }
 `
-const StakedTombs:React.FC<{stakedTombs}> = ({stakedTombs}) => {
-    const drFrankenstein = useDrFrankenstein()
-    const account = useWeb3React()
-    const zmbeEarned = () => {
-        let total = 0;
-        stakedTombs.forEach((stakedTomb) => {
-            const tomb = tombByPid(stakedTomb.pid)
-            const { pendingZombie } = tomb.userInfo
-            total += parseFloat(getFullDisplayBalance(pendingZombie, tokens.zmbe.decimals, 4))
-            
-        })
-        return total
+
+const DisplayFlex = styled(BaseLayout)`
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  grid-gap: 0px;
+}`
+
+const StakedTombs: React.FC = () => {
+  const drFrankenstein = useDrFrankenstein()
+  const stakedTombs = tombs().filter(t => !t.userInfo.amount.isZero())
+  const [updateTombUserInfo, setUpdateTombUserInfo] = useState(false)
+  const [updateTombPoolInfo, setUpdateTombPoolInfo] = useState(false)
+  const multi = useMultiCall()
+
+  const lpStaked = () => {
+    let total = BIG_ZERO
+    stakedTombs.forEach(t => {
+      total = total.plus(t.userInfo.amount)
+    })
+    return total
+  }
+
+  const zombieEarned = () => {
+    let total = BIG_ZERO
+    stakedTombs.forEach(t => {
+      total = total.plus(t.userInfo.pendingZombie)
+    })
+    return total
+  }
+
+  const handleHarvest = () => {
+    stakedTombs.forEach((t) => {
+      drFrankenstein.methods.withdraw(t.pid, 0)
+        .send({ from: account() })
+    })
+  }
+
+  useEffect(() => {
+    if(updateTombUserInfo) {
+      initialTombData(
+        multi,
+        { update: updateTombPoolInfo, setUpdate: setUpdateTombPoolInfo },
+        { update: updateTombUserInfo, setUpdate: setUpdateTombUserInfo },
+      )
     }
-    const handleHarvest = () => {
-        stakedTombs.forEach((stakedTomb) => {
-            if (stakedTomb.pid === 0) {
-                drFrankenstein.methods.leaveStaking(0)
-                .send({from: account});
-              } else {
-                drFrankenstein.methods.withdraw(stakedTomb.pid, 0)
-                .send({from: account});
-              }
-        })
-      }
-    return (
-        <TableCards>
-        <div className="frank-card">
-            <div className="small-text">
-                <span className="green-color">Zombie </span>
-                <span className="white-color">EARNED</span>
-            </div>
-            <div className="space-between">
-                <div className="frank-earned">
-                <span className="text-shadow">{zmbeEarned()}</span>
-                </div>
-                <button onClick={handleHarvest} className="btn w-auto harvest" type="button">Harvest All</button>
-            </div>
-        </div>
-        </TableCards>
-    )
+  }, [drFrankenstein.methods, multi, updateTombPoolInfo, updateTombUserInfo])
+
+  return (
+    <TableCards>
+      <div className='frank-card'>
+        <Flex justifyContent='center'>
+          <td className='td-width-25'>
+            <DisplayFlex>
+              <div className='small-text'>
+                <span className='green-color'>LPs </span>
+                <span className='white-color'>STAKED</span>
+              </div>
+              <span className='total-earned'>{getFullDisplayBalance(lpStaked(), 18, 4)}</span>
+            </DisplayFlex>
+          </td>
+          <td className='td-width-25'>
+            <DisplayFlex>
+              <div className='small-text'>
+                <span className='green-color'>Zombie </span>
+                <span className='white-color'>EARNED</span>
+              </div>
+              <span className='total-earned text-shadow'>{getFullDisplayBalance(zombieEarned(), 18, 4)}</span>
+            </DisplayFlex>
+          </td>
+          <td className='td-width-25'>
+            <DisplayFlex>
+              <div className='small-text'>
+                <span className='green-color'>LP </span>
+                <span className='white-color'>PRICE</span>
+              </div>
+              <span className='total-earned'>0</span>
+            </DisplayFlex>
+          </td>
+          <td className='td-width-17'>
+            <button onClick={handleHarvest} className='btn w-auto harvest' type='button'>Harvest All ({stakedTombs.length})</button>
+          </td>
+        </Flex>
+      </div>
+    </TableCards>
+  )
 }
 
 export default StakedTombs

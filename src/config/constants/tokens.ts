@@ -236,6 +236,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://walletnow.net/',
   },
+  bingus: {
+    symbol: 'BINGUS',
+    address: {
+      56: '0x12adadddc8d86081561a3ff107a2cb347779e717',
+      97: '',
+    },
+    decimals: 9,
+    projectLink: 'https://bingus.io/',
+  },
   horde: {
     symbol: 'HORDE',
     address: {

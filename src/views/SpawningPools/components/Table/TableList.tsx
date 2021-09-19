@@ -6,9 +6,8 @@ import BigNumber from 'bignumber.js';
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import tokens from 'config/constants/tokens';
 import numeral from 'numeral';
-import { getGraveTombApr, getPoolApr } from '../../../../utils/apr'
-import { Grave } from '../../../../redux/types'
-import { bnbPriceUsd, coingeckoPrice, grave, spawningPool } from '../../../../redux/get'
+import { getPoolApr } from '../../../../utils/apr'
+import { bnbPriceUsd, coingeckoPrice, grave, spawningPoolById } from '../../../../redux/get'
 import { fetchLpReserves } from '../../../../state/hooks'
 
 
@@ -50,7 +49,7 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { id, zombieUsdPrice, handler } = props
-  const { name, rewardToken, rewardTokenId, poolInfo, isNew, rewardTokenBnbLp, bnbLpTokenIndex, userInfo: { pendingReward } } = spawningPool(id);
+  const { name, rewardToken, rewardTokenId, poolInfo, isNew, rewardTokenBnbLp, bnbLpTokenIndex, userInfo: { pendingReward } } = spawningPoolById(id);
   const bnbPrice = bnbPriceUsd()
   const [isOpen, setIsOpen] = useState(false);
   const [rewardTokenPrice, setRewardTokenPrice] = useState(0)
@@ -62,24 +61,24 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
       })
     } else {
       fetchLpReserves(rewardTokenBnbLp).then(res => {
-        if(id === 2) {
-          console.log(res)
-        }
         let rewardTokenPriceBnb
           if(bnbLpTokenIndex === 0) {
-            rewardTokenPriceBnb = new BigNumber(res._reserve0).div(res._reserve1)
+            rewardTokenPriceBnb = getBalanceAmount(new BigNumber(res._reserve0), 18).div(getBalanceAmount(new BigNumber(res._reserve1), rewardToken.decimals))
           } else if(bnbLpTokenIndex === 1) {
-            rewardTokenPriceBnb = new BigNumber(res._reserve1).div(res._reserve0)
+            rewardTokenPriceBnb = getBalanceAmount(new BigNumber(res._reserve1), 18).div(getBalanceAmount(new BigNumber(res._reserve0), rewardToken.decimals))
           }
-        if(rewardToken.decimals === 18) {
+        // if(rewardToken.decimals === 18) {
           setRewardTokenPrice(rewardTokenPriceBnb.times(bnbPrice).toNumber())
-        } else {
-          setRewardTokenPrice(getBalanceAmount(rewardTokenPriceBnb, rewardToken.decimals).times(bnbPrice).toNumber())
-        }
+        // }// else {
+        //   setRewardTokenPrice(getBalanceAmount(rewardTokenPriceBnb, rewardToken.decimals).times(bnbPrice).toNumber())
+        // }
       })
     }
   }, [id, bnbLpTokenIndex, bnbPrice, rewardToken.decimals, rewardTokenBnbLp, rewardTokenId])
+  if(id === 8) {
+    console.log(getBalanceAmount(poolInfo.rewardPerBlock, rewardToken.decimals).toString())
 
+  }
   const apr = getPoolApr(zombieUsdPrice, rewardTokenPrice, getBalanceAmount(poolInfo.totalZombieStaked).toNumber(), getBalanceAmount(poolInfo.rewardPerBlock, rewardToken.decimals).toNumber())
 
   const dailyApr = apr / 365

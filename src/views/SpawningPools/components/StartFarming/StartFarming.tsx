@@ -20,6 +20,7 @@ import WithdrawZombieModal from '../WithdrawZombieModal';
 import * as get from '../../../../redux/get'
 import * as fetch from '../../../../redux/fetch'
 import useWeb3 from '../../../../hooks/useWeb3'
+import { spawningPoolById } from '../../../../redux/get'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -45,15 +46,20 @@ const StartFarming: React.FC<StartFarmingProps> = ({ id, zombieUsdPrice, updateA
   const multi = useMultiCall()
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
-  const [pool, setPool] = useState(get.spawningPool(id))
+  const pool = spawningPoolById(id)
   const { userInfo } = pool
   const [isZombieAllowance, setZombieAllowance] = useState(!userInfo.zombieAllowance.isZero());
   const [zombieBalance, setZombieBalance] = useState(get.zombieAllowance());
-  // console.log(get.spawningPool(id).userInfo.zombieAllowance.toString())
+  const [poolInfoUpdate, setPoolInfoUpdate] = useState(false)
+  const [userInfoUpdate, setUserInfoUpdate] = useState(false)
   const onUpdate = () => {
-    fetch.spawningPool(id, multi, zombie, undefined, data => {
-      setPool(data)
-    })
+    fetch.spawningPool(
+      id,
+      multi,
+      zombie,
+      { update: poolInfoUpdate, setUpdate: setPoolInfoUpdate },
+      { update: userInfoUpdate, setUpdate: setUserInfoUpdate },
+    )
   }
 
   const [onPresentStake] = useModal(

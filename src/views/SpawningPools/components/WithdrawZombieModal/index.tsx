@@ -12,7 +12,7 @@ import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { BIG_TEN, BIG_ZERO } from '../../../../utils/bigNumber'
 import { Grave } from '../../../../redux/types'
-import { grave, spawningPool } from '../../../../redux/get'
+import { grave, spawningPoolById } from '../../../../redux/get'
 
 interface WithdrawZombieModalProps {
   pid: number,
@@ -27,7 +27,7 @@ const StyledButton = styled(Button)`
 `
 
 const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ pid, zombieUsdPrice, updateResult, onDismiss }) => {
-  const { userInfo, poolInfo } = spawningPool(pid)
+  const { userInfo, poolInfo } = spawningPoolById(pid)
   const currentDate = Math.floor(Date.now() / 1000)
   const { toastSuccess } = useToast()
   const { t } = useTranslation()

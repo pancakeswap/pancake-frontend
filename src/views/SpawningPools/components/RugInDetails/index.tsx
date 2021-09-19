@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { BIG_ZERO } from 'utils/bigNumber';
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js';
-import { bnbPriceUsd, grave, spawningPool } from '../../../../redux/get'
+import { bnbPriceUsd, grave, spawningPoolById } from '../../../../redux/get'
 
 
 interface RugInDetailsProps {
@@ -15,7 +15,7 @@ interface RugInDetailsProps {
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({ id }) => {
-  const { subtitle, poolInfo, pcsVersion, liquidityDetails, project, path, type, withdrawalCooldown, nftRevivalTime, endBlock, artist } = spawningPool(id)
+  const { subtitle, poolInfo, pcsVersion, liquidityDetails, project, path, type, withdrawalCooldown, nftRevivalTime, endBlock, artist } = spawningPoolById(id)
   const spawningPoolContract = useSpawningPool(id);
 
   const [unlockFee, setUnlockFee] = useState(0);

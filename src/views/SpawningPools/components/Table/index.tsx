@@ -6,7 +6,7 @@ import StartFarming from '../StartFarming/StartFarming'
 import BuyFrank from '../BuyFrank/BuyFrank'
 import RugInDetails from '../RugInDetails'
 import TableList from './TableList'
-import { spawningPool } from '../../../../redux/get'
+import { spawningPoolById } from '../../../../redux/get'
 
 const TableCards = styled(BaseLayout)`
   align-items: stretch;
@@ -29,7 +29,7 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ id, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [poolData, setPoolData] = useState(spawningPool(id))
+  const [poolData, setPoolData] = useState(spawningPoolById(id))
   const openInDetails = (data) => {
     setIsOpen(data);
   }

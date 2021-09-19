@@ -69,7 +69,7 @@ export const spawningPools = (): SpawningPool[] => {
   return store.getState().spawningPools
 }
 
-export const spawningPool = (id: number): SpawningPool => {
+export const spawningPoolById = (id: number): SpawningPool => {
   return store.getState().spawningPools.find(p => p.id === id)
 }
 

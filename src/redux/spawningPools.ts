@@ -6,6 +6,63 @@ import { SpawningPool } from './types'
 
 const spawningPools: SpawningPool[] = [
   {
+    id: 8,
+    name: 'Bingus Network Legendary',
+    subtitle: 'The Eye of Bingus',
+    path: 'https://ipfs.io/ipfs/QmYvobX57rSxJE9LC2tgQhWKKirZQRmnfTHFy12tR8SQba',
+    type: 'image',
+    address: {
+      56: '0xBBB1c60CA67cab1441AcD8c077BB0b779e73DA40',
+      97: '',
+    },
+    endBlock: 13700000,
+    project: {
+      name: 'Bingus Network',
+      description: 'The Bingus project was launched as an animal charity / meme token on BSC. Bingus Network aims to save as many animals as possible. A percentage of every Bingus Network transaction is donated to animal shelters and charities and over $40k has been donated since April.',
+      additionalDetails: [
+        {
+          name: 'Project website',
+          url: tokens.bingus.projectLink,
+        },
+        {
+          name: 'Whitepaper',
+          url: 'https://bingus.io/documents/Bingus-Network-Whitepaper.pdf',
+        },
+        {
+          name: 'Telegram',
+          url: 'https://t.me/BingusNetworkOfficial',
+        },
+      ],
+    },
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '45 days',
+    rewardToken: tokens.bingus,
+    rewardTokenBnbLp: '0xafd29fd11b5570171ff62e5b638baffa7f00938f',
+    bnbLpTokenIndex: 1,
+    artist: artists.jussjoshinduh,
+    stakingToken: '',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: false,
+    color: "#C4A484",
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      amount: BIG_ZERO,
+      pendingReward: BIG_ZERO,
+      zombieAllowance: BIG_ZERO,
+    },
+    poolInfo: {
+      unlockFee: BIG_ZERO,
+      rewardPerBlock: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalZombieStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+    },
+  },
+  {
     id: 7,
     name: 'Octaplex Legendary',
     subtitle: 'Freaky Zolom',

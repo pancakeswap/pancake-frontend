@@ -187,7 +187,7 @@ export const grave = (pid: number, setUserInfoState?, setPoolInfoState?) => {
                   minimumStake: new BigNumber(poolInfoRes.minimumStake),
                 }))
               if (setPoolInfoState) {
-                setPoolInfoState(get.grave(pid))
+                setPoolInfoState.setUpdate(!setUserInfoState.update)
               }
             }
           })
@@ -214,7 +214,7 @@ export const grave = (pid: number, setUserInfoState?, setPoolInfoState?) => {
               minimumStake: new BigNumber(poolInfoRes.minimumStake),
             }))
           if (setPoolInfoState) {
-            setPoolInfoState(get.grave(pid))
+            setPoolInfoState.setUpdate(!setPoolInfoState.update)
           }
         }
       }
@@ -236,7 +236,7 @@ export const grave = (pid: number, setUserInfoState?, setPoolInfoState?) => {
               },
             ))
             if (setUserInfoState) {
-              setUserInfoState(get.grave(pid))
+              setUserInfoState.setUpdate(!setUserInfoState.update)
             }
           })
       })
@@ -249,7 +249,7 @@ export const initialGraveData = (setUserState?, setPoolState?) => {
   })
 }
 
-export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: any, setUserData?: any) => {
+export const spawningPool = (id: number, multi: any, zombie: any, poolUpdateObj?: { update: boolean, setUpdate: any }, userUpdateObj?: { update: boolean, setUpdate: any }) => {
   const address = getSpawningPoolAddress(id)
   let inputs = [
     { target: address, function: 'rewardPerBlock', args: [] },
@@ -274,8 +274,8 @@ export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: 
               nftRevivalTime: res[5],
             },
           ))
-          if (setPoolData) {
-            setPoolData(get.spawningPool(id).poolInfo)
+          if (poolUpdateObj) {
+            poolUpdateObj.setUpdate(!poolUpdateObj.update)
           }
         })
     })
@@ -304,8 +304,8 @@ export const spawningPool = (id: number, multi: any, zombie: any, setPoolData?: 
                 zombieAllowance: new BigNumber(balanceRes.toString()),
               },
             ))
-            if (setUserData) {
-              setUserData(get.spawningPool(id))
+            if (userUpdateObj) {
+              userUpdateObj.setUpdate(!userUpdateObj.update)
             }
           })
           .catch((err) => {
@@ -418,7 +418,7 @@ export const auction = (
   }
 }
 
-export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: any, setUserData?: any) => {
+export const initialSpawningPoolData = (multi: any, zombie: any, setPoolData?: { update: boolean, setUpdate: any }, setUserData?: { update: boolean, setUpdate: any }) => {
   get.spawningPools().forEach(sp => {
     spawningPool(sp.id, multi, zombie, setPoolData, setUserData)
   })
