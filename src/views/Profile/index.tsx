@@ -138,56 +138,6 @@ const Profile: React.FC = () => {
             </CardsLayout>
           </Row>
         </SwiperProvider>
-
-        <Row>
-        <Avatar />
-        <LinkExternal href={`https://bscscan.com/address/${account}`}>
-          <Text>{account}</Text>
-        </LinkExternal>
-      </Row>
-      <Heading color='text' size='md' className='staked-graves-header'>
-        Total Zombie Staked
-        <Text>
-          {getFullDisplayBalance(totalStaked, 18, 4)} ZMBE
-        </Text>
-        <Text fontSize='12px' color='textSubtle'>{`~${
-          totalStaked.isZero() ? '0.00' : getBalanceAmount(totalStaked, 18).times(zombiePrice).toFormat(2)
-        } USD`}
-        </Text>
-      </Heading>
-
-      <Heading color='text' size='md' className='staked-graves-header'>
-        Staked Graves
-      </Heading>
-      <StakedGraves zombieStaked={stakedInGraves} />
-      <Heading color='text' size='md' className='staked-graves-header'>
-        Staked Tombs
-      </Heading>
-      <StakedTombs />
-      <Heading color='text' size='md' className='staked-graves-header'>
-        Staked Spawning Pools
-      </Heading>
-      <StakedSpawningPools zombieStaked={stakedInSpawningPools} />
-      <Heading color='text' size='md' className='staked-graves-header'>
-        Collectibles
-        <Text>
-          RugZombie collectibles are special ERC-721 NFTs that can be used on the RugZombie platform.
-          NFTs in this user&apos;s wallet that aren&apos;t approved by RugZombie won&apos;t be shown here.
-        </Text>
-      </Heading>
-      <SwiperProvider>
-        <Row>
-          <CardsLayout>
-            {ownedNfts.map((nft) => {
-              return (<Col>
-                  <StyledCollectibleCard id={nft.id} key={nft.id} refresh={refresh} />
-                </Col>
-              )
-            })
-            }
-          </CardsLayout>
-        </Row>
-      </SwiperProvider>
       </Page>
     </>
   )
