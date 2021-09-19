@@ -13,14 +13,16 @@ import WinSection from './components/WinSection'
 import FarmsPoolsRow from './components/FarmsPoolsRow'
 import Footer from './components/Footer'
 import CakeDataRow from './components/CakeDataRow'
+import Equipo from './components/Equipo'
+import Roadmap from './components/Roadmap'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
 import UserBanner from './components/UserBanner'
 
 const StyledHeroSection = styled(PageSection)`
-  padding-top: 16px;
+  padding-top: 0px;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    padding-top: 48px;
+    padding-top: 0px;
   }
 `
 
@@ -55,11 +57,11 @@ const Home: React.FC = () => {
  */
   return (
     <>
-      <PageMeta />
-      <StyledHeroSection
+{/*       <PageMeta />
+ */}      <StyledHeroSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background="transparent"
-        index={2}
+        index={1}
         hasCurvedDivider={false}
       >
         {/* {account && (
@@ -68,6 +70,18 @@ const Home: React.FC = () => {
           </UserBannerWrapper>
         )} */}
         <Hero />
+        <h1
+          style={{
+            margin: '32px',
+            fontSize: '3.5em',
+            letterSpacing: '-1px',
+            color: 'yellow',
+            fontStyle: 'italic',
+            textAlign: 'center',
+          }}
+        >
+          DEFI PA LA BANDA!
+        </h1>
       </StyledHeroSection>
       {/*   <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
@@ -128,6 +142,8 @@ const Home: React.FC = () => {
       >
         {/*  <SalesSection {...cakeSectionData} /> */}
         <CakeDataRow />
+        <Roadmap />
+        <Equipo />
       </PageSection>
       {/*   <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}

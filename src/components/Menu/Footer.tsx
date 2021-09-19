@@ -39,13 +39,13 @@ const Footer = () => {
   return (
     <Wrapper>
       <Flex flexDirection={['column', 'column', 'row']} alignItems="center">
-        <ButtonMenu variant="subtle" scale="sm" activeIndex={0}>
+       {/*  <ButtonMenu variant="subtle" scale="sm" activeIndex={0}>
           <ButtonMenuItem>V2</ButtonMenuItem>
           <ButtonMenuItem as="a" href="https://v1exchange.tianguis.finance/#/">
             V1 (old)
           </ButtonMenuItem>
-        </ButtonMenu>
-        <LinkExternal
+        </ButtonMenu> */}
+       {/*  <LinkExternal
           id="ercBridge"
           href="https://www.binance.org/en/bridge?utm_source=PancakeSwap"
           ml={[0, 0, '40px']}
@@ -53,7 +53,7 @@ const Footer = () => {
           mb={['8px', '8px', 0]}
         >
           {t('Convert ERC-20 to BEP-20')}
-        </LinkExternal>
+        </LinkExternal> */}
       </Flex>
       <Flex
         flexGrow={1}
@@ -62,7 +62,7 @@ const Footer = () => {
         justifyContent={['center', 'center', 'center', 'flex-end']}
       >
         <BubbleWrapper>
-          <Button
+        {/*   <Button
             id="clickExchangeHelp"
             as="a"
             external
@@ -70,13 +70,13 @@ const Footer = () => {
             variant="subtle"
           >
             {t('Need help ?')}
-          </Button>
-          <Svg viewBox="0 0 16 16">
+          </Button> */}
+         {/*  <Svg viewBox="0 0 16 16">
             <path d="M0 16V0C0 0 3 1 6 1C9 1 16 -2 16 3.5C16 10.5 7.5 16 0 16Z" />
-          </Svg>
+          </Svg> */}
         </BubbleWrapper>
-        <Image src="/images/help.svg" alt="Get some help" width={160} height={108} />
-      </Flex>
+{/*         <Image src="/images/help.svg" alt="Get some help" width={160} height={108} />
+ */}      </Flex>
     </Wrapper>
   )
 }
