@@ -311,11 +311,12 @@ export const getNftsFromDifferentCollectionsApi = async (
 ): Promise<NFT[]> => {
   const promises = from.map((nft) => getNftApi(nft.collectionAddress, nft.tokenId))
   const responses = await Promise.all(promises)
-  return responses.map((res) => ({
+  return responses.map((res, index) => ({
     tokenId: res.tokenId,
     id: res.id,
     name: res.name,
     collectionName: res.collection.name,
+    collectionAddress: from[index].collectionAddress,
     description: res.description,
     updatedAt: res.updatedAt,
     image: {
