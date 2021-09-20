@@ -35,11 +35,11 @@ const Market = () => {
       <Route exact path={`${path}/collections/:slug`}>
         <Collectible />
       </Route>
-      <Route path={`${path}/profile`}>
-        <NftProfile />
-      </Route>
       <Route path={`${path}/collections/:collectionAddress/:tokenId`}>
         <IndividualNFTPage />
+      </Route>
+      <Route path={`${path}/profile`}>
+        <NftProfile />
       </Route>
     </>
   )
