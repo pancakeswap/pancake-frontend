@@ -18,7 +18,7 @@ import { StyledModal } from './styles'
 import ReviewStage from './ReviewStage'
 import ConfirmStage from '../shared/ConfirmStage'
 import ApproveAndConfirmStage from '../shared/ApproveAndConfirmStage'
-import { PaymentCurrency, BuyingStage } from './types'
+import { PaymentCurrency, BuyingStage, BuyNFT } from './types'
 import TransactionConfirmed from '../shared/TransactionConfirmed'
 
 const modalTitles = {
@@ -29,7 +29,7 @@ const modalTitles = {
 }
 
 interface BuyModalProps extends InjectedModalProps {
-  nftToBuy: any
+  nftToBuy: BuyNFT
 }
 
 const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
@@ -144,6 +144,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
       )}
       {stage === BuyingStage.APPROVE_AND_CONFIRM && (
         <ApproveAndConfirmStage
+          variant="buy"
           handleApprove={handleApprove}
           isApproved={isApproved}
           isApproving={isApproving}
@@ -152,7 +153,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
         />
       )}
       {stage === BuyingStage.CONFIRM && <ConfirmStage isConfirming={isConfirming} handleConfirm={handleConfirm} />}
-      {stage === BuyingStage.TX_CONFIRMED && <TransactionConfirmed txHash={confirmedTxHash} />}
+      {stage === BuyingStage.TX_CONFIRMED && <TransactionConfirmed txHash={confirmedTxHash} onDismiss={onDismiss} />}
     </StyledModal>
   )
 }

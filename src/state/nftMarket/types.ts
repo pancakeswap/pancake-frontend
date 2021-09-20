@@ -59,7 +59,7 @@ export interface UserActivity {
   sellTradeHistory: Transaction[]
 }
 
-interface Image {
+export interface Image {
   original: string
   thumbnail: string
   mp4?: string
