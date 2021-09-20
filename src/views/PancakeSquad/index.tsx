@@ -2,6 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
 import { useNftSaleContract, usePancakeSquadContract, useProfile as useProfileContract } from 'hooks/useContract'
 import React, { useEffect, useState } from 'react'
+import { formatBigNumber } from 'utils/formatBalance'
 import BunniesSection from './components/BunniesSection'
 import PancakeSquadHeader from './components/Header'
 import { StyledSquadContainer } from './styles'
@@ -50,6 +51,7 @@ const PancakeSquad: React.FC = () => {
         const currentTotalSupplyMinted = await pancakeSquadContract.totalSupply()
         const currentNumberTokensOfUser = await pancakeSquadContract.balanceOf(account)
         const currentStartTimestamp = await nftSaleContract.startTimestamp()
+
         setDynamicSaleInfo({
           totalTicketsDistributed: currentTotalTicketsDistributed.toNumber(),
           saleStatus: currentSaleStatus,
@@ -60,7 +62,7 @@ const PancakeSquad: React.FC = () => {
           ticketsOfUser: currentTicketsOfUser,
           totalSupplyMinted: currentTotalSupplyMinted.toNumber(),
           numberTokensOfUser: currentNumberTokensOfUser.toNumber(),
-          startTimestamp: currentStartTimestamp.toNumber(),
+          startTimestamp: Number(currentStartTimestamp.toString().padEnd(13, '0')),
         })
       } catch (e) {
         console.error(e)
