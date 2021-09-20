@@ -4,6 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { StepIndicator } from './styles'
 
 interface ApproveAndConfirmStageProps {
+  variant: 'buy' | 'sell'
   isApproved: boolean
   isApproving: boolean
   isConfirming: boolean
@@ -11,8 +12,12 @@ interface ApproveAndConfirmStageProps {
   handleConfirm: () => void
 }
 
+// Buy Flow:
 // Shown if user wants to pay with WBNB and contract isn't approved yet
+// Sell Flow:
+// Shown the first time user puts NFT for sale
 const ApproveAndConfirmStage: React.FC<ApproveAndConfirmStageProps> = ({
+  variant,
   isApproved,
   isApproving,
   isConfirming,
@@ -37,7 +42,9 @@ const ApproveAndConfirmStage: React.FC<ApproveAndConfirmStageProps> = ({
           </Flex>
           {!isApproved && (
             <Text mt="8px" maxWidth="275px" small color="textSubtle">
-              {t('Please enable WBNB spending in your wallet')}
+              {variant === 'buy'
+                ? t('Please enable WBNB spending in your wallet')
+                : t('Please enable your NFT to be sent to the market')}
             </Text>
           )}
         </Flex>

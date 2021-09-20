@@ -9,7 +9,7 @@ const NftProfile = lazy(() => import('./Profile'))
 const Collectible = lazy(() => import('./Collectible'))
 const CollectibleOverview = lazy(() => import('./Collectibles'))
 const IndividualNFTPage = lazy(() => import('./IndividualNFTPage'))
-const BuyModalDemo = lazy(() => import('./BuyModalDemo'))
+const BuySellDemo = lazy(() => import('./BuySellDemo'))
 
 const Market = () => {
   const { path } = useRouteMatch()
@@ -26,8 +26,8 @@ const Market = () => {
       <Route exact path={path}>
         <Home />
       </Route>
-      <Route exact path={`${path}/buy-modal-demo`}>
-        <BuyModalDemo />
+      <Route exact path={`${path}/buy-sell-demo`}>
+        <BuySellDemo />
       </Route>
       <Route exact path={`${path}/collections`}>
         <CollectibleOverview />
