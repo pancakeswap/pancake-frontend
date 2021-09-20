@@ -99,6 +99,8 @@ export interface NFT {
   image: Image
   tokens?: Record<number, NftTokenSg>
   attributes?: any[]
+  updatedAt: string
+  meta?: Record<string, string | number>
 }
 
 export interface TokenIdWithCollectionAddress {
