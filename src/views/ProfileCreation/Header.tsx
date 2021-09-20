@@ -6,6 +6,7 @@ import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 const Wrapper = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
+  margin-top: 32px;
   margin-bottom: 24px;
   padding-bottom: 24px;
 `
@@ -27,7 +28,7 @@ const Header: React.FC = () => {
       <Text color="textSubtle" mb="8px">
         {t('Total cost: 1.5 CAKE')}
       </Text>
-      <Link href="/nft/market/profile">
+      <Link href="/nfts/profile">
         <Button mb="24px" scale="sm" variant="secondary">
           {t('Back to profile')}
         </Button>

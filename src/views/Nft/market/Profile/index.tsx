@@ -46,14 +46,14 @@ const NftProfile = () => {
         </TabMenuWrapper>
       </MarketPageHeader>
       <Page style={{ minHeight: 'auto' }}>
-        <Route path="/nft/market/profile/achievements">
+        <Route path="/nfts/profile/achievements">
           <Achievements points={profile?.points} />
         </Route>
-        <Route path="/nft/market/profile/activity">
+        <Route path="/nfts/profile/activity">
           <SubMenu />
           <Activity />
         </Route>
-        <Route exact path="/nft/market/profile">
+        <Route exact path="/nfts/profile">
           <SubMenu />
           <UserNfts />
         </Route>

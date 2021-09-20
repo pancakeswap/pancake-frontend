@@ -6,7 +6,7 @@ const Collectible = () => {
   return (
     <>
       <Page>
-        <Link to="/nft/market/collections/pancake-bunnies">Pancake Bunnies</Link>
+        <Link to="/nfts/collections/pancake-bunnies">Pancake Bunnies</Link>
       </Page>
     </>
   )
