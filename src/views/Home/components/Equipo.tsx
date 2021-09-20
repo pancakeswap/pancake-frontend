@@ -64,7 +64,7 @@ const Equipo = () => {
       <Text color="yellow">Chacharas - diseñador distroy </Text>
       <Text color="yellow">El Vato - administrador pinche ñero</Text>
       <Text color="yellow">Ropitas de paca - marketing y bien chismoso</Text>
-      <Text color="yellow">Gomi Chela - cholear es mi pasión</Text>
+      <Text color="yellow">Gomi Chela - dev cholear es mi pasión</Text>
     </StyledContainer>
   )
 }
