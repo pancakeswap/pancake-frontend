@@ -93,37 +93,23 @@ const SellModalDemo = () => {
   useFetchUserNfts(account)
 
   useEffect(() => {
-    const fetchMetadata = async () => {
-      const fullNftData = await Promise.all(
-        userNfts.map(async (nft) => {
-          if (nft.metadataUrl) {
-            const res = await fetch(`https://ipfs.io/ipfs/${nft.metadataUrl.split('//')[1]}`)
-            const metadata = await res.json()
-            return { ...nft, metadata }
-          }
-          return {
-            ...nft,
-            metadata: { name: 'Sleepy', image: 'ipfs://QmYD9AtzyQPjSa9jfZcZq88gSaRssdhGmKqQifUDjGFfXm/sleepy.png' },
-          }
-        }),
-      )
-
-      const nftsToSell = fullNftData.map((nft) => ({
-        tokenId: nft.tokenId,
-        name: nft.metadata.name,
-        collection: {
-          address: nft.collection.id,
-          name: 'Pancake Bunnies',
-        },
-        isTradable: nft.isTradable,
-        lowestPrice: nft.latestTradedPriceInBNB, // TODO: should get lowest
-        currentAskPrice: nft.currentAskPrice,
-        thumbnail: `https://ipfs.io/ipfs/${nft.metadata.image.split('//')[1]}`, // TODO: need smaller thumbnail here
-      }))
-      setNftsWithMetadata(nftsToSell)
-    }
     if (userNfts.length > 0) {
-      fetchMetadata()
+      const nftsToSell = userNfts.reduce((allUserNfts, nft) => {
+        const tokens = Object.keys(nft.tokens).map((tokenId) => ({
+          tokenId: nft.tokens[tokenId].tokenId,
+          name: nft.name,
+          collection: {
+            address: nft.tokens[tokenId].collection.id,
+            name: nft.collectionName,
+          },
+          isTradable: nft.tokens[tokenId].isTradable,
+          lowestPrice: nft.tokens[tokenId].latestTradedPriceInBNB,
+          currentAskPrice: nft.tokens[tokenId].currentAskPrice,
+          thumbnail: nft.image.thumbnail,
+        }))
+        return [...allUserNfts, ...tokens]
+      }, [])
+      setNftsWithMetadata(nftsToSell)
     }
   }, [userNfts])
 
