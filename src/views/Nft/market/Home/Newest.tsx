@@ -48,9 +48,9 @@ const Newest: React.FC = () => {
           gridColumnGap="16px"
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
         >
-          {nfts.map((nft) => (
-            <CollectibleCard key={nft.id + nft.name} nft={nft} />
-          ))}
+          {nfts.map((nft) => {
+            return <CollectibleCard key={nft.collectionAddress + nft.tokenId} nft={nft} />
+          })}
         </Grid>
       ) : (
         <GridPlaceholder numItems={8} />
