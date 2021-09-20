@@ -10,6 +10,13 @@ export enum NFTMarketInitializationState {
   ERROR = 'ERROR',
 }
 
+export enum UserNftInitializationState {
+  UNINITIALIZED = 'UNINITIALIZED',
+  INITIALIZING = 'INITIALIZING',
+  INITIALIZED = 'INITIALIZED',
+  ERROR = 'ERROR',
+}
+
 export interface State {
   initializationState: NFTMarketInitializationState
   data: {
@@ -21,7 +28,7 @@ export interface State {
 }
 
 export interface UserNftsState {
-  userNftsInitialised: boolean
+  userNftsInitializationState: UserNftInitializationState
   nfts: NFT[]
   activity: UserActivity
 }
