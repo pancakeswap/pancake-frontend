@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap/uikit'
+import { Button, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
-import { useGetCollectibles } from 'state/collectibles/hooks'
 import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { fetchProfile } from 'state/profile'
-import { getBunnyNftAddress } from 'utils/collectibles'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useProfile as useProfileContract } from 'hooks/useContract'
@@ -16,6 +14,7 @@ import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
+import { useUserNfts } from 'state/nftMarket/hooks'
 
 type ChangeProfilePicPageProps = InjectedModalProps
 
@@ -25,7 +24,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     nftAddress: null,
   })
   const { t } = useTranslation()
-  const { isLoading, tokenIds, nftsInWallet } = useGetCollectibles()
+  const { nfts } = useUserNfts()
   const dispatch = useAppDispatch()
   const { profile } = useProfile()
   const profileContract = useProfileContract()
@@ -60,34 +59,32 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
       <Text as="p" color="textSubtle" mb="24px">
         {t('Choose a new Collectible to use as your profile pic.')}
       </Text>
-      {isLoading ? (
-        <Skeleton height="80px" mb="16px" />
-      ) : (
-        nftsInWallet.map((walletNft) => {
-          const [firstTokenId] = tokenIds[walletNft.identifier]
-          const handleChange = (value: string) => {
-            setSelectedNft({
-              tokenId: Number(value),
-              nftAddress: getBunnyNftAddress(),
-            })
-          }
+      {nfts.map((walletNft) => {
+        const firstTokenId = nfts[0].tokenId
+        const handleChange = (value: string) => {
+          setSelectedNft({
+            tokenId: value,
+            nftAddress: walletNft.collection.id,
+          })
+        }
 
-          return (
-            <SelectionCard
-              name="profilePicture"
-              key={walletNft.identifier}
-              value={firstTokenId}
-              image={`/images/nfts/${walletNft.images.md}`}
-              isChecked={firstTokenId === selectedNft.tokenId}
-              onChange={handleChange}
-              disabled={isApproving || isConfirming || isConfirmed}
-            >
-              <Text bold>{walletNft.name}</Text>
-            </SelectionCard>
-          )
-        })
-      )}
-      {!isLoading && nftsInWallet.length === 0 && (
+        return (
+          <SelectionCard
+            name="profilePicture"
+            key={walletNft.tokenId}
+            value={firstTokenId}
+            // TODO: Get from metadata. Do we merge types?
+            image={`/images/nfts/${walletNft.tokenId}`}
+            isChecked={firstTokenId === selectedNft.tokenId}
+            onChange={handleChange}
+            disabled={isApproving || isConfirming || isConfirmed}
+          >
+            {/* TODO: Get from metadata. Return combined types. */}
+            <Text bold>{walletNft.tokenId}</Text>
+          </SelectionCard>
+        )
+      })}
+      {nfts.length === 0 && (
         <>
           <Text as="p" color="textSubtle" mb="16px">
             {t('Sorry! You don’t have any eligible Collectibles in your wallet to use!')}
