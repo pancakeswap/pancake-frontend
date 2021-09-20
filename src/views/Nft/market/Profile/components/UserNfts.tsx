@@ -16,6 +16,7 @@ const UserNfts = () => {
   const nftMetadata = useGetNftMetadata(userNfts, account)
   const collections = useGetCollections()
 
+
   const handleCollectibleClick = (nft: NFT, location: NftLocation) => {
     setClicked({ nft, location })
   }
@@ -40,7 +41,7 @@ const UserNfts = () => {
 
   return (
     <>
-      {nftMetadata.length > 0 ? (
+      {nfts.length > 0 ? (
         <Grid
           gridGap="16px"
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
@@ -59,6 +60,7 @@ const UserNfts = () => {
                 nft={nftDataForCard}
                 currentAskPrice={userNft.currentAskPrice && userNft.isTradable && parseFloat(userNft.currentAskPrice)}
                 nftLocation={userNft.nftLocation}
+
               />
             )
           })}
