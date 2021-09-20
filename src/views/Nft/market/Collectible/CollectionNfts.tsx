@@ -4,17 +4,21 @@ import { getAddress } from '@ethersproject/address'
 import orderBy from 'lodash/orderBy'
 import { useAppDispatch } from 'state'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
+import { getLastUpdatedFromNft, getLowestPriceFromNft } from 'state/nftMarket/helpers'
+import { Collection } from 'state/nftMarket/types'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import GridPlaceholder from '../components/GridPlaceholder'
 import { CollectibleCard } from '../components/CollectibleCard'
+import Filters from './Filters'
 
 interface CollectionNftsProps {
-  collectionName: string
-  collectionAddress: string
+  collection: Collection
+  sortBy?: string
 }
 
-const CollectionNfts: React.FC<CollectionNftsProps> = ({ collectionName, collectionAddress }) => {
-  const checksummedAddress = getAddress(collectionAddress)
+const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'updatedAt' }) => {
+  const { address, name } = collection
+  const checksummedAddress = getAddress(address)
   const nfts = useNftsFromCollection(checksummedAddress)
   const dispatch = useAppDispatch()
 
@@ -26,18 +30,28 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collectionName, collect
     return <GridPlaceholder />
   }
 
-  const orderedNfts = orderBy(Object.values(nfts), ['id'], ['desc'])
+  const nftList = Object.values(nfts).map((nft) => ({
+    ...nft,
+    meta: {
+      lowestTokenPrice: getLowestPriceFromNft(nft),
+      updatedAt: getLastUpdatedFromNft(nft),
+    },
+  }))
+  const orderedNfts = orderBy(nftList, [`meta.${sortBy}`], [sortBy === 'lowestTokenPrice' ? 'asc' : 'desc'])
 
   return (
-    <Grid
-      gridGap="16px"
-      gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
-      alignItems="start"
-    >
-      {orderedNfts.map((nft) => {
-        return <CollectibleCard key={nft.id} collectionName={collectionName} nft={nft} />
-      })}
-    </Grid>
+    <>
+      <Filters collection={collection} />
+      <Grid
+        gridGap="16px"
+        gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
+        alignItems="start"
+      >
+        {orderedNfts.map((nft) => {
+          return <CollectibleCard key={nft.id} collectionName={name} nft={nft} />
+        })}
+      </Grid>
+    </>
   )
 }
 
