@@ -3,6 +3,7 @@ import { Flex, Text, Button, ArrowUpIcon, LinkExternal } from '@pancakeswap/uiki
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
 import { Divider } from './styles'
 
 interface TransactionConfirmedProps {
@@ -11,8 +12,11 @@ interface TransactionConfirmedProps {
 }
 
 const TransactionConfirmed: React.FC<TransactionConfirmedProps> = ({ txHash, onDismiss }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const { t } = useTranslation()
+
+  useFetchUserNfts(account)
+
   return (
     <>
       <Flex p="16px" flexDirection="column" alignItems="center" justifyContent="space-between" height="150px">
