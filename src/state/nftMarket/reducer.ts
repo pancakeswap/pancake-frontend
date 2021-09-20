@@ -97,10 +97,21 @@ export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
 )
 
 export const fetchUserNfts = createAsyncThunk<
-  NFT[],
-  { account: string; profileNftWithCollectionAddress: TokenIdWithCollectionAddress; collections: ApiCollections }
->('nft/fetchUserNfts', async ({ account, profileNftWithCollectionAddress, collections }) => {
-  const walletNftIds = await fetchWalletTokenIdsForCollections(account, collections)
+  NftTokenSg[],
+  { account: string; collections: ApiCollections; profileNftWithCollectionAddress?: TokenIdWithCollectionAddress }
+>('nft/fetchUserNfts', async ({ account, collections, profileNftWithCollectionAddress }) => {
+  const getCategoryForNftWithMarketData = (marketNft: NftTokenSg): NftLocation => {
+    if (profileNftWithCollectionAddress?.tokenId === marketNft.tokenId) {
+      return NftLocation.PROFILE
+    }
+    if (marketNft.isTradable && marketNft.currentSeller === account.toLowerCase()) {
+      return NftLocation.FORSALE
+    }
+    return NftLocation.WALLET
+  }
+
+  const nftsInWallet = await fetchWalletTokenIdsForCollections(account, collections)
+
   if (profileNftWithCollectionAddress?.tokenId) {
     walletNftIds.push(profileNftWithCollectionAddress)
   }

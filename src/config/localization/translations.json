@@ -1507,5 +1507,9 @@
   "Transaction Confirmed": "Transaction Confirmed",
   "Activity": "Activity",
   "Your NFTs & Profile": "Your NFTs & Profile",
-  "For sale": "For sale"
+  "For sale": "For sale",
+  "Please progress to the next step.": "Please progress to the next step.",
+  "Please confirm this NFT for minting": "Please confirm this NFT for minting",
+  "You have minted your starter NFT": "You have minted your starter NFT",
+  "Go to your profile page to continue.": "Go to your profile page to continue."
 }
