@@ -17,7 +17,7 @@ interface CollectionNftsProps {
 }
 
 const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'updatedAt' }) => {
-  const { address, name } = collection
+  const { address } = collection
   const checksummedAddress = getAddress(address)
   const nfts = useNftsFromCollection(checksummedAddress)
   const dispatch = useAppDispatch()
@@ -48,7 +48,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
         alignItems="start"
       >
         {orderedNfts.map((nft) => {
-          return <CollectibleCard key={nft.id} collectionName={name} nft={nft} />
+          return <CollectibleCard key={nft.id} nft={nft} />
         })}
       </Grid>
     </>
