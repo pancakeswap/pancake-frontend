@@ -1026,6 +1026,10 @@ exports[`renders correctly 1`] = `
   background-color: rgba(255,255,255,0.7);
   box-shadow: inset 0px -2px 0px -8px rgba(133,133,133,0.1);
   overflow-x: scroll;
+  -webkit-scrollbar-width: none;
+  -moz-scrollbar-width: none;
+  -ms-scrollbar-width: none;
+  scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
