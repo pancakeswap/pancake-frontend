@@ -25,6 +25,7 @@ import {
   NftTokenSg,
   UserActivity,
   NftLocation,
+  UserNftInitializationState,
 } from './types'
 
 const initialState: State = {
@@ -34,7 +35,7 @@ const initialState: State = {
     nfts: {},
     users: {},
     user: {
-      userNftsInitialised: false,
+      userNftsInitializationState: UserNftInitializationState.UNINITIALIZED,
       nfts: [],
       activity: { askOrderHistory: [], buyTradeHistory: [], sellTradeHistory: [] },
     },
@@ -154,9 +155,15 @@ export const NftMarket = createSlice({
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       state.data.nfts[action.meta.arg] = action.payload
     })
+    builder.addCase(fetchUserNfts.rejected, (state) => {
+      state.data.user.userNftsInitializationState = UserNftInitializationState.ERROR
+    })
+    builder.addCase(fetchUserNfts.pending, (state) => {
+      state.data.user.userNftsInitializationState = UserNftInitializationState.INITIALIZING
+    })
     builder.addCase(fetchUserNfts.fulfilled, (state, action) => {
       state.data.user.nfts = action.payload
-      state.data.user.userNftsInitialised = true
+      state.data.user.userNftsInitializationState = UserNftInitializationState.INITIALIZED
     })
     builder.addCase(fetchUserActivity.fulfilled, (state, action) => {
       state.data.user.activity = action.payload
