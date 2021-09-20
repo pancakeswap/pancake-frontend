@@ -3,6 +3,7 @@ import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
 import map from 'lodash/map'
+import minBy from 'lodash/minBy'
 import {
   NftTokenSg,
   ApiCollections,
@@ -316,6 +317,7 @@ export const getNftsFromDifferentCollectionsApi = async (
     name: res.name,
     collectionName: res.collection.name,
     description: res.description,
+    updatedAt: res.updatedAt,
     image: {
       original: res.image?.original,
       thumbnail: res.image?.thumbnail,
@@ -435,4 +437,20 @@ export const combineNftMarketAndMetadata = (
     return { ...nft, tokens: tokensObj }
   })
   return completeNftData
+}
+
+/*
+ * Filter heloper: Get lowest token price from NFT
+ */
+export const getLowestPriceFromNft = (nft: NFT) => {
+  const { tokens } = nft
+  const minTokenPrice = minBy(Object.values(tokens), (token) => (token ? parseFloat(token.currentAskPrice) : 0))
+  return minTokenPrice ? parseFloat(minTokenPrice.currentAskPrice) : 0
+}
+
+/**
+ * Filter heloper: Get updated at as a number
+ */
+export const getLastUpdatedFromNft = (nft: NFT) => {
+  return Number(nft.updatedAt)
 }
