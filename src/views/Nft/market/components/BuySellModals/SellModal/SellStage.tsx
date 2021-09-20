@@ -47,7 +47,7 @@ const SellStage: React.FC<SellStageProps> = ({ nftToSell, continueToNextStage, c
           external
           variant="text"
           // TODO: make sure this link is correct
-          href={`${BASE_URL}/nft/market/items/${nftToSell.tokenId}`}
+          href={`${BASE_URL}/nfts/items/${nftToSell.tokenId}`}
         >
           {t('View Item Page')}
         </Button>

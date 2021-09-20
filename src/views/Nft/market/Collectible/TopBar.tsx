@@ -17,7 +17,7 @@ const TopBar: React.FC = () => {
   const history = useHistory()
 
   const handleAddressClick = (value: string) => {
-    history.push(`/nft/market/profile/${value}`)
+    history.push(`/nfts/profile/${value}`)
   }
 
   return (
