@@ -1,14 +1,18 @@
 import React from 'react'
 import { Box, Button, ChevronRightIcon, Flex, Grid, Heading, Text } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
+import { ethers } from 'ethers'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
+import { useGetCollections } from 'state/nftMarket/hooks'
 import { HotCollectionCard } from '../components/CollectibleCard'
 import { BNBAmountLabel } from '../components/CollectibleCard/styles'
 import Newest from './Newest'
 
 const Home = () => {
   const { t } = useTranslation()
+  const collections = useGetCollections()
+  const { url } = useRouteMatch()
 
   return (
     <>
@@ -31,31 +35,32 @@ const Home = () => {
           </Button>
         </Flex>
         <Grid gridGap="16px" gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} mb="64px">
+          {Object.keys(collections)
+            .slice(0, 2)
+            .map((collectionAddress) => {
+              const collection = collections[collectionAddress]
+              return (
+                <HotCollectionCard
+                  key={collectionAddress}
+                  bgSrc={collection.banner.small}
+                  avatarSrc={collection.avatar}
+                  collectionName={collection.name}
+                  url={`${url}/collections/${collectionAddress}`}
+                >
+                  <Flex alignItems="center">
+                    <Text fontSize="12px" color="textSubtle">
+                      {t('Volume')}
+                    </Text>
+                    <BNBAmountLabel amount={ethers.BigNumber.from(collection.totalVolumeBNB).toNumber()} />
+                  </Flex>
+                </HotCollectionCard>
+              )
+            })}
           <HotCollectionCard
-            bgSrc="/images/collections/pancake-bunnies-banner-sm.png"
-            avatarSrc="/images/collections/pancake-bunnies-avatar.png"
-            collectionName="Pancake Bunnies"
+            bgSrc="/images/collections/no-collection-banner-sm.png"
+            collectionName="Coming Soon"
+            url={url}
           >
-            <Flex alignItems="center">
-              <Text fontSize="12px" color="textSubtle">
-                {t('Volume')}
-              </Text>
-              <BNBAmountLabel amount={255.66} />
-            </Flex>
-          </HotCollectionCard>
-          <HotCollectionCard
-            bgSrc="/images/collections/pancake-squad-banner-sm.png"
-            avatarSrc="/images/collections/pancake-squad-avatar.png"
-            collectionName="Pancake Squad"
-          >
-            <Flex alignItems="center">
-              <Text fontSize="12px" color="textSubtle">
-                {t('Volume')}
-              </Text>
-              <BNBAmountLabel amount={43000.02} />
-            </Flex>
-          </HotCollectionCard>
-          <HotCollectionCard bgSrc="/images/collections/no-collection-banner-sm.png" collectionName="Coming Soon">
             <Text fontSize="12px" color="textSubtle">
               {t('More Collections are on their way!')}
             </Text>
