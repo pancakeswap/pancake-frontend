@@ -11,6 +11,9 @@ import {
   combineCollectionData,
   getCollectionSg,
   getCollectionApi,
+  getNftsFromDifferentCollectionsApi,
+  attachMarketDataToWalletNfts,
+  combineNftMarketAndMetadata,
 } from './helpers'
 import {
   State,
@@ -94,55 +97,41 @@ export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
 )
 
 export const fetchUserNfts = createAsyncThunk<
-  NftTokenSg[],
+  NFT[],
   { account: string; profileNftWithCollectionAddress: TokenIdWithCollectionAddress; collections: ApiCollections }
 >('nft/fetchUserNfts', async ({ account, profileNftWithCollectionAddress, collections }) => {
-  const getCategoryForNftWithMarketData = (marketNft: NftTokenSg): NftLocation => {
-    if (profileNftWithCollectionAddress?.tokenId === marketNft.tokenId) {
-      return NftLocation.PROFILE
-    }
-    if (marketNft.isTradable && marketNft.currentSeller === account.toLowerCase()) {
-      return NftLocation.FORSALE
-    }
-    return NftLocation.WALLET
-  }
-
-  const nftsInWallet = await fetchWalletTokenIdsForCollections(account, collections)
-
+  const walletNftIds = await fetchWalletTokenIdsForCollections(account, collections)
   if (profileNftWithCollectionAddress?.tokenId) {
-    nftsInWallet.push(profileNftWithCollectionAddress)
+    walletNftIds.push(profileNftWithCollectionAddress)
   }
+  const tokenIds = walletNftIds.map((nft) => nft.tokenId)
 
-  const nftIdsInWallet = nftsInWallet.map((nft) => nft.tokenId)
-  const marketDataForNftsInWallet = await getNftsMarketData({ tokenId_in: nftIdsInWallet })
+  const marketDataForWalletNfts = await getNftsMarketData({ tokenId_in: tokenIds })
+  const walletNftsWithMarketData = attachMarketDataToWalletNfts(
+    walletNftIds,
+    marketDataForWalletNfts,
+    account,
+    profileNftWithCollectionAddress?.tokenId,
+  )
 
-  const walletNftsWithMarketData = nftsInWallet.map((walletNft) => {
-    const marketData = marketDataForNftsInWallet.find((marketNft) => marketNft.tokenId === walletNft.tokenId)
-    return marketData
-      ? { ...marketData, nftLocation: getCategoryForNftWithMarketData(marketData) }
-      : {
-          tokenId: walletNft.tokenId,
-          collection: {
-            id: walletNft.collectionAddress.toLowerCase(),
-          },
-          nftLocation: walletNft.nftLocation,
-          metadataUrl: null,
-          transactionHistory: null,
-          currentSeller: null,
-          isTradable: null,
-          currentAskPrice: null,
-          latestTradedPriceInBNB: null,
-          tradeVolumeBNB: null,
-          totalTrades: null,
-        }
-  })
-
-  const nftsForSale = await getNftsMarketData({ currentSeller: account.toLowerCase() })
-  const nftsForSaleWithCategory = nftsForSale.map((nft) => {
+  const marketDataForSaleNfts = await getNftsMarketData({ currentSeller: account.toLowerCase() })
+  const nftsForSaleWithCategory = marketDataForSaleNfts.map((nft) => {
     return { ...nft, nftLocation: NftLocation.FORSALE }
   })
 
-  return [...walletNftsWithMarketData, ...nftsForSaleWithCategory]
+  const forSaleNftIds = marketDataForSaleNfts.map((nft) => {
+    return { collectionAddress: nft.collection.id, tokenId: nft.tokenId }
+  })
+
+  const metadataForAllNfts = await getNftsFromDifferentCollectionsApi([...walletNftIds, ...forSaleNftIds])
+
+  const completeNftData = combineNftMarketAndMetadata(
+    metadataForAllNfts,
+    nftsForSaleWithCategory,
+    walletNftsWithMarketData,
+  )
+
+  return completeNftData
 })
 
 export const fetchUserActivity = createAsyncThunk<UserActivity, string>('nft/fetchUserActivity', async (address) => {
