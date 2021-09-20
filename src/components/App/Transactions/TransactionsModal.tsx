@@ -9,6 +9,7 @@ import { AppDispatch } from 'state'
 import { clearAllTransactions } from 'state/transactions/actions'
 import { AutoRow } from '../../Layout/Row'
 import Transaction from './Transaction'
+import ConnectWalletButton from '../../ConnectWalletButton'
 
 // we want the latest one to come first, so return negative if a is after b
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
@@ -46,7 +47,7 @@ const TransactionsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
 
   return (
     <Modal title={t('Recent Transactions')} headerBackground="gradients.cardHeader" onDismiss={onDismiss}>
-      {account && (
+      {account ? (
         <ModalBody>
           {!!pending.length || !!confirmed.length ? (
             <>
@@ -63,6 +64,8 @@ const TransactionsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             <Text>{t('No recent transactions')}</Text>
           )}
         </ModalBody>
+      ) : (
+        <ConnectWalletButton />
       )}
     </Modal>
   )
