@@ -4,12 +4,16 @@ import { useWeb3React } from '@web3-react/core'
 import { useModal } from '@pancakeswap/uikit'
 import { Nft } from 'config/constants/nfts/types'
 import nfts from 'config/constants/nfts'
+import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import NftGiveawayModal from './NftGiveawayModal'
 import useBunnySpecialLottery from '../hooks/useBunnySpecialLottery'
+import AnniversaryAchievementModal from './AnniversaryAchievement'
 
 interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
 }
+
+const returnTrue = () => true
 
 /**
  * This is represented as a component rather than a hook because we need to keep it
@@ -20,10 +24,13 @@ interface GlobalCheckClaimStatusProps {
 const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocations }) => {
   const hasDisplayedModal = useRef(false)
   const [claimableNfts, setClaimableNfts] = useState<Nft[]>([])
+  const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState<boolean>(false)
   const [onPresentGiftModal] = useModal(<NftGiveawayModal nfts={claimableNfts} />)
   const { account } = useWeb3React()
   const { pathname } = useLocation()
   const { canClaimBaller, canClaimLottie, canClaimLucky } = useBunnySpecialLottery()
+  const { canClaim, claimAnniversaryPoints } = useAnniversaryAchievementContract()
+  const [onPresentAnniversaryModal] = useModal(<AnniversaryAchievementModal onClick={claimAnniversaryPoints} />)
 
   // Check claim status
   useEffect(() => {
@@ -55,10 +62,16 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
       setClaimableNfts(claimable)
     }
 
+    const fetchClaimAnniversaryStatus = async () => {
+      const canClaimAnniversary = await canClaim()
+      setCanClaimAnniversaryPoints(canClaimAnniversary)
+    }
+
     if (account) {
       fetchClaimStatus()
+      fetchClaimAnniversaryStatus()
     }
-  }, [account, canClaimBaller, canClaimLottie, canClaimLucky])
+  }, [account, canClaimBaller, canClaimLottie, canClaimLucky, canClaim])
 
   // Check if we need to display the modal
   useEffect(() => {
@@ -68,7 +81,20 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
       onPresentGiftModal()
       hasDisplayedModal.current = true
     }
-  }, [pathname, excludeLocations, hasDisplayedModal, onPresentGiftModal, claimableNfts])
+
+    if (canClaimAnniversaryPoints && !hasDisplayedModal.current) {
+      onPresentAnniversaryModal()
+      hasDisplayedModal.current = true
+    }
+  }, [
+    pathname,
+    excludeLocations,
+    hasDisplayedModal,
+    onPresentGiftModal,
+    onPresentAnniversaryModal,
+    claimableNfts,
+    canClaimAnniversaryPoints,
+  ])
 
   // Reset the check flag when account changes
   useEffect(() => {
