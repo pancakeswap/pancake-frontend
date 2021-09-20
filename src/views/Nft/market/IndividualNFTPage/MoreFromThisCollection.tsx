@@ -5,7 +5,7 @@ import SwiperCore, { Pagination } from 'swiper'
 import { Box, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
-import { CollectibleCard } from '../components/CollectibleCard'
+import { CollectibleLinkCard } from '../components/CollectibleCard'
 
 import 'swiper/swiper-bundle.css'
 
@@ -52,7 +52,7 @@ const MoreFromThisCollection: React.FC = () => {
           <Swiper spaceBetween={16} slidesPerView={1.5}>
             {Object.values(nftList).map((bunny) => (
               <SwiperSlide>
-                <CollectibleCard nft={bunny} />
+                <CollectibleLinkCard nft={bunny} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -70,7 +70,7 @@ const MoreFromThisCollection: React.FC = () => {
           >
             {Object.values(nftList).map((bunny) => (
               <SwiperSlide>
-                <CollectibleCard nft={bunny} />
+                <CollectibleLinkCard nft={bunny} />
               </SwiperSlide>
             ))}
           </Swiper>

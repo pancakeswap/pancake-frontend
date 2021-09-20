@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uikit'
 import { NFT } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
-import { CollectibleCard } from '../components/CollectibleCard'
+import { CollectibleLinkCard } from '../components/CollectibleCard'
 import GridPlaceholder from '../components/GridPlaceholder'
 
 /**
@@ -49,7 +49,7 @@ const Newest: React.FC = () => {
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
         >
           {nfts.map((nft) => {
-            return <CollectibleCard key={nft.collectionAddress + nft.tokenId} nft={nft} />
+            return <CollectibleLinkCard key={nft.collectionAddress + nft.tokenId} nft={nft} />
           })}
         </Grid>
       ) : (
