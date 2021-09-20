@@ -314,7 +314,7 @@ export const getNftsFromDifferentCollectionsApi = async (
     tokenId: res.tokenId,
     id: res.id,
     name: res.name,
-    collectionName: null,
+    collectionName: res.collection.name,
     description: res.description,
     image: {
       original: res.image?.original,
@@ -348,4 +348,91 @@ export const combineCollectionData = (collectionApiData: any, collectionSgData: 
       },
     }
   }, {})
+}
+
+/**
+ * Evaluate whether a market NFT is in a users wallet, their profile picture, or on sale
+ * @param marketNft NftTokenSg
+ * @param account account string
+ * @param profileNftId Optional tokenId of users' profile picture
+ * @returns NftLocation enum value
+ */
+export const getNftLocationForMarketNft = (
+  marketNft: NftTokenSg,
+  account: string,
+  profileNftId?: string,
+): NftLocation => {
+  if (profileNftId === marketNft.tokenId) {
+    return NftLocation.PROFILE
+  }
+  if (marketNft.isTradable && marketNft.currentSeller === account.toLowerCase()) {
+    return NftLocation.FORSALE
+  }
+  return NftLocation.WALLET
+}
+
+/**
+ * Construct complete NftTokenSg entities with a users' wallet NFT ids and market data for their wallet NFTs
+ * @param walletNfts { collectionAddress: string, tokenId: string, nftLocation?: NftLocation}[]
+ * @param marketDataForWalletNfts NftTokenSg[]
+ * @param account account string
+ * @param profileNftId tokenId of a users' profile picture
+ * @returns NftTokenSg[]
+ */
+export const attachMarketDataToWalletNfts = (
+  walletNfts: TokenIdWithCollectionAddress[],
+  marketDataForWalletNfts: NftTokenSg[],
+  account: string,
+  profileNftId: string,
+): NftTokenSg[] => {
+  const walletNftsWithMarketData = walletNfts.map((walletNft) => {
+    const marketData = marketDataForWalletNfts.find((marketNft) => marketNft.tokenId === walletNft.tokenId)
+    return marketData
+      ? {
+          ...marketData,
+          nftLocation: getNftLocationForMarketNft(marketData, account, profileNftId),
+        }
+      : {
+          tokenId: walletNft.tokenId,
+          collection: {
+            id: walletNft.collectionAddress.toLowerCase(),
+          },
+          nftLocation: walletNft.nftLocation,
+          metadataUrl: null,
+          transactionHistory: null,
+          currentSeller: null,
+          isTradable: null,
+          currentAskPrice: null,
+          latestTradedPriceInBNB: null,
+          tradeVolumeBNB: null,
+          totalTrades: null,
+        }
+  })
+  return walletNftsWithMarketData
+}
+
+/**
+ * Attach NftTokenSg data to NFT metadata's tokens object
+ * @param nftsWithMetadata NFT[] with and empty tokens object
+ * @param nftsForSale nfts that are on sale (i.e. not in a user's wallet)
+ * @param walletNfts nfts in a user's wallet
+ * @returns NFT[]
+ */
+export const combineNftMarketAndMetadata = (
+  nftsWithMetadata: NFT[],
+  nftsForSale: NftTokenSg[],
+  walletNfts: NftTokenSg[],
+): NFT[] => {
+  const completeNftData = nftsWithMetadata.map((nft: NFT): NFT => {
+    const isOnSale = nftsForSale.filter((forSaleNft) => forSaleNft.tokenId === nft.tokenId).length > 0
+    let marketDataForNft
+    if (isOnSale) {
+      marketDataForNft = nftsForSale.find((marketNft) => marketNft.tokenId === nft.tokenId)
+    } else {
+      marketDataForNft = walletNfts.find((marketNft) => marketNft.tokenId === nft.tokenId)
+    }
+    const tokensObj = { [nft.tokenId]: marketDataForNft }
+    return { ...nft, tokens: tokensObj }
+  })
+  return completeNftData
 }
