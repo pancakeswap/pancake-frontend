@@ -65,7 +65,7 @@ export const useUserActivity = (): (Transaction | AskOrder)[] => {
  * @param sgNfts NftTokenSg[]
  * @returns NFT[]
  */
-export const useGetNftMetadata = (sgNfts: NftTokenSg[]) => {
+export const useGetNftMetadata = (sgNfts: NftTokenSg[], account?: string) => {
   const [nftMetadata, setNftMetadata] = useState<NFT[]>([])
 
   useEffect(() => {
@@ -85,6 +85,11 @@ export const useGetNftMetadata = (sgNfts: NftTokenSg[]) => {
       fetchMetadata()
     }
   }, [sgNfts])
+
+  useEffect(() => {
+    // Clear metadata on account change
+    setNftMetadata([])
+  }, [account])
 
   return nftMetadata
 }

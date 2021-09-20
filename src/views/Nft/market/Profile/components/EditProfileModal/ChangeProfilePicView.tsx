@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap/uikit'
+import { Button, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
-import { useGetCollectibles } from 'state/collectibles/hooks'
 import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { fetchProfile } from 'state/profile'
-import { getBunnyNftAddress } from 'utils/collectibles'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useProfile as useProfileContract } from 'hooks/useContract'
@@ -16,6 +14,8 @@ import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
+import { useUserNfts } from 'state/nftMarket/hooks'
+import { NftLocation } from 'state/nftMarket/types'
 
 type ChangeProfilePicPageProps = InjectedModalProps
 
@@ -25,13 +25,15 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     nftAddress: null,
   })
   const { t } = useTranslation()
-  const { isLoading, tokenIds, nftsInWallet } = useGetCollectibles()
+  const { nfts } = useUserNfts()
   const dispatch = useAppDispatch()
   const { profile } = useProfile()
   const profileContract = useProfileContract()
   const { account, library } = useWeb3React()
   const { toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
+
+  const nftsInWallet = nfts.filter((nft) => nft.tokens[nft.tokenId].nftLocation === NftLocation.WALLET)
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -60,34 +62,29 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
       <Text as="p" color="textSubtle" mb="24px">
         {t('Choose a new Collectible to use as your profile pic.')}
       </Text>
-      {isLoading ? (
-        <Skeleton height="80px" mb="16px" />
-      ) : (
-        nftsInWallet.map((walletNft) => {
-          const [firstTokenId] = tokenIds[walletNft.identifier]
-          const handleChange = (value: string) => {
-            setSelectedNft({
-              tokenId: Number(value),
-              nftAddress: getBunnyNftAddress(),
-            })
-          }
+      {nftsInWallet.map((walletNft) => {
+        const handleChange = (tokenId: string) => {
+          setSelectedNft({
+            tokenId,
+            nftAddress: walletNft.collectionAddress,
+          })
+        }
 
-          return (
-            <SelectionCard
-              name="profilePicture"
-              key={walletNft.identifier}
-              value={firstTokenId}
-              image={`/images/nfts/${walletNft.images.md}`}
-              isChecked={firstTokenId === selectedNft.tokenId}
-              onChange={handleChange}
-              disabled={isApproving || isConfirming || isConfirmed}
-            >
-              <Text bold>{walletNft.name}</Text>
-            </SelectionCard>
-          )
-        })
-      )}
-      {!isLoading && nftsInWallet.length === 0 && (
+        return (
+          <SelectionCard
+            name="profilePicture"
+            key={walletNft.tokenId}
+            value={selectedNft.tokenId}
+            image={walletNft.image.thumbnail}
+            isChecked={walletNft.tokenId === selectedNft.tokenId}
+            onChange={() => handleChange(walletNft.tokenId)}
+            disabled={isApproving || isConfirming || isConfirmed}
+          >
+            <Text bold>{walletNft.name}</Text>
+          </SelectionCard>
+        )
+      })}
+      {nfts.length === 0 && (
         <>
           <Text as="p" color="textSubtle" mb="16px">
             {t('Sorry! You don’t have any eligible Collectibles in your wallet to use!')}
@@ -105,7 +102,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
         onApprove={handleApprove}
         onConfirm={handleConfirm}
       />
-      <Button variant="text" width="100%" onClick={onDismiss} disabled={isApproving || isConfirming}>
+      <Button mt="8px" variant="text" width="100%" onClick={onDismiss} disabled={isApproving || isConfirming}>
         {t('Close Window')}
       </Button>
     </>
