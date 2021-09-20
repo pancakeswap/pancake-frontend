@@ -95,6 +95,7 @@ export interface NFT {
   tokenId: string
   name: string
   collectionName: string
+  collectionAddress: string
   description: string
   image: Image
   tokens?: Record<number, NftTokenSg>
