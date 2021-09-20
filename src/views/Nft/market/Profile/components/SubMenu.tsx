@@ -18,11 +18,11 @@ const SubMenuComponent: React.FC = () => {
   const ItemsConfig = [
     {
       label: t('Items'),
-      href: '/nft/market/profile',
+      href: '/nfts/profile',
     },
     {
       label: t('Activity'),
-      href: '/nft/market/profile/activity',
+      href: '/nfts/profile/activity',
     },
   ]
 
