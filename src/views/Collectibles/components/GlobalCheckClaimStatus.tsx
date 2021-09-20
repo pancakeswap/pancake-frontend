@@ -13,8 +13,6 @@ interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
 }
 
-const returnTrue = () => true
-
 /**
  * This is represented as a component rather than a hook because we need to keep it
  * inside the Router.
