@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, useModal } from '@pancakeswap/uikit'
+import { Grid, useModal, Text, Flex } from '@pancakeswap/uikit'
 import { useUserNfts } from 'state/nftMarket/hooks'
-import { NFT, NftLocation } from 'state/nftMarket/types'
+import { NFT, NftLocation, UserNftInitializationState } from 'state/nftMarket/types'
+import { useTranslation } from 'contexts/Localization'
 import { CollectibleCard } from '../../components/CollectibleCard'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import ProfileNftModal from '../../components/ProfileNftModal'
+import NoNftsImage from './NoNftsImage'
 
 const UserNfts = () => {
-  const { nfts } = useUserNfts()
+  const { nfts, userNftsInitializationState } = useUserNfts()
   const [clicked, setClicked] = useState<{ nft: NFT; location: NftLocation }>({ nft: null, location: null })
   const [onProfileNftModal] = useModal(<ProfileNftModal nft={clicked.nft} />, false)
+  const { t } = useTranslation()
 
   const handleCollectibleClick = (nft: NFT, location: NftLocation) => {
     setClicked({ nft, location })
@@ -35,7 +38,16 @@ const UserNfts = () => {
 
   return (
     <>
-      {nfts.length > 0 ? (
+      {/* User has no NFTs */}
+      {nfts.length === 0 && userNftsInitializationState === UserNftInitializationState.INITIALIZED ? (
+        <Flex p="24px" flexDirection="column" alignItems="center">
+          <NoNftsImage />
+          <Text pt="8px" bold>
+            {t('No NFTs found')}
+          </Text>
+        </Flex>
+      ) : // User has NFTs and data has been fetched
+      nfts.length > 0 ? (
         <Grid
           gridGap="16px"
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
@@ -58,6 +70,7 @@ const UserNfts = () => {
           })}
         </Grid>
       ) : (
+        // User NFT data hasn't been fetched
         <GridPlaceholder />
       )}
     </>
