@@ -22,7 +22,7 @@ export interface State {
 
 export interface UserNftsState {
   userNftsInitialised: boolean
-  nfts: NftTokenSg[]
+  nfts: NFT[]
   activity: UserActivity
 }
 
