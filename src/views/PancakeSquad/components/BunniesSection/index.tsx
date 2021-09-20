@@ -13,8 +13,14 @@ const BunniesSection = () => {
   const headingTranslatedText = t(headingText)
   const subHeadingTranslatedText = t(subHeadingText)
   return (
-    <StyledBunnySectionContainer justifyContent="center">
-      <Box mb="-3px">
+    <StyledBunnySectionContainer
+      px={['16px', null, '0']}
+      py={['64px', null, '0']}
+      justifyContent={['flex-start', null, 'center']}
+      alignItems={['flex-end', null, 'flex-start']}
+      flexDirection={['column', null, 'row']}
+    >
+      <Box mb={['24px', null, '-3px']} maxWidth={['192px', null, '100%']}>
         <img src={image.src} alt={image.alt} />
       </Box>
       <Flex flexDirection="column" ml={[null, null, null, '64px']} alignSelf={['flex-start', null, null, 'center']}>
