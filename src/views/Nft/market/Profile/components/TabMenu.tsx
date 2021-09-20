@@ -32,7 +32,7 @@ const TabMenu = () => {
         onClick={() => setIsAchievementsActive(false)}
         $active={!achievementsActive}
         as={RouterLink}
-        to="/nft/market/profile"
+        to="/nfts/profile"
       >
         NFTs
       </Tab>
@@ -40,7 +40,7 @@ const TabMenu = () => {
         onClick={() => setIsAchievementsActive(true)}
         $active={achievementsActive}
         as={RouterLink}
-        to="/nft/market/profile/achievements"
+        to="/nfts/profile/achievements"
       >
         {t('Achievements')}
       </Tab>

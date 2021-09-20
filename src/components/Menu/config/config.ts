@@ -52,22 +52,22 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   },
   {
     label: t('NFT'),
-    href: '/nft/market',
+    href: '/nfts',
     icon: 'Nft',
     showOnMobile: false,
     showItemsOnMobile: false,
     items: [
       {
         label: t('Overview'),
-        href: '/nft/market',
+        href: '/nfts',
       },
       {
         label: t('Collections'),
-        href: '/nft/market/collections',
+        href: '/nfts/collections',
       },
       {
         label: t('All Items'),
-        href: '/nft/market/all',
+        href: '/nfts/all',
       },
     ],
   },

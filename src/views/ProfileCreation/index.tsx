@@ -17,7 +17,7 @@ const ProfileCreation = () => {
   }
 
   if (account && hasProfile) {
-    return <Redirect to="/nft/market/profile" />
+    return <Redirect to="/nfts/profile" />
   }
 
   return (

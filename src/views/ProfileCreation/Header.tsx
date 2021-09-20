@@ -27,7 +27,7 @@ const Header: React.FC = () => {
       <Text color="textSubtle" mb="8px">
         {t('Total cost: 1.5 CAKE')}
       </Text>
-      <Link href="/nft/market/profile">
+      <Link href="/nfts/profile">
         <Button mb="24px" scale="sm" variant="secondary">
           {t('Back to profile')}
         </Button>
