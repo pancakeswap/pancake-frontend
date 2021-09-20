@@ -12,16 +12,19 @@ import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
 import nftList from 'config/constants/nfts'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import useToast from 'hooks/useToast'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import useProfileCreation from './contexts/hook'
 import { MINT_COST, STARTER_BUNNY_IDENTIFIERS } from './config'
 
+// TODO: Once collections API is no longer returning dummy data - migrate this away from using static nft config
 const nfts = nftList.pancake.filter((nft) => STARTER_BUNNY_IDENTIFIERS.includes(nft.identifier))
 
 const Mint: React.FC = () => {
   const [variationId, setVariationId] = useState<Nft['id']>(null)
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
+  const { toastSuccess } = useToast()
 
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()

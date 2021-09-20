@@ -17,14 +17,14 @@ const Home = () => {
   return (
     <>
       <Page>
-        <Link to="/nft/market/collectibles">Collectibles</Link>
+        <Link to="/nfts/collectibles">Collectibles</Link>
         <br />
-        <Link to="/nft/market/profile">Profile</Link>
+        <Link to="/nfts/profile">Profile</Link>
         <br />
-        <Link to="/nft/market/buy-sell-demo">Buy and Sell demo</Link>
+        <Link to="/nfts/buy-sell-demo">Buy and Sell demo</Link>
         <br />
         <Box mb="40px">
-          <Link to="/nft/market/item/7">Individual NFT page</Link>
+          <Link to="/nfts/item/7">Individual NFT page</Link>
         </Box>
         <Flex alignItems="center" justifyContent="space-between" mb="32px">
           <Heading as="h3" scale="lg">
