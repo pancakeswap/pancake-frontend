@@ -1,15 +1,15 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Card, CardBody, Heading, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link as RouterLink } from 'react-router-dom'
-import { getBunnyNftAddress } from 'utils/collectibles'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useTranslation } from 'contexts/Localization'
-import { useGetCollectibles } from 'state/collectibles/hooks'
+import { useUserNfts } from 'state/nftMarket/hooks'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
@@ -23,14 +23,16 @@ const NftWrapper = styled.div`
 `
 
 const ProfilePicture: React.FC = () => {
-  const { library } = useWeb3React()
+  const { library, account } = useWeb3React()
   const [isApproved, setIsApproved] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
 
+  const { nfts } = useUserNfts()
+  useFetchUserNfts(account)
+
   const { t } = useTranslation()
-  const { isLoading, nftsInWallet, tokenIds } = useGetCollectibles()
-  const { toastError } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleApprove = async () => {
@@ -39,6 +41,7 @@ const ProfilePicture: React.FC = () => {
     setIsApproving(true)
     const receipt = await tx.wait()
     if (receipt.status) {
+      toastSuccess(t('Enabled'), t('Please progress to the next step.'))
       setIsApproving(false)
       setIsApproved(true)
     } else {
@@ -47,7 +50,7 @@ const ProfilePicture: React.FC = () => {
     }
   }
 
-  if (!isLoading && nftsInWallet.length === 0) {
+  if (nfts.length === 0) {
     return (
       <>
         <Heading scale="xl" mb="24px">
@@ -88,27 +91,21 @@ const ProfilePicture: React.FC = () => {
             </Link>
           </Text>
           <NftWrapper>
-            {isLoading ? (
-              <Skeleton height="80px" mb="16px" />
-            ) : (
-              nftsInWallet.map((walletNft) => {
-                const [firstTokenId] = tokenIds[walletNft.identifier]
-                const address = getBunnyNftAddress()
-
-                return (
-                  <SelectionCard
-                    name="profilePicture"
-                    key={walletNft.identifier}
-                    value={firstTokenId}
-                    image={`/images/nfts/${walletNft.images.md}`}
-                    isChecked={firstTokenId === selectedNft.tokenId}
-                    onChange={(value: string) => actions.setSelectedNft(parseInt(value, 10), address)}
-                  >
-                    <Text bold>{walletNft.name}</Text>
-                  </SelectionCard>
-                )
-              })
-            )}
+            {nfts.map((walletNft) => {
+              const firstTokenId = nfts[0].tokenId
+              return (
+                <SelectionCard
+                  name="profilePicture"
+                  key={walletNft.tokenId}
+                  value={firstTokenId}
+                  image={walletNft.image.thumbnail}
+                  isChecked={firstTokenId === selectedNft.tokenId}
+                  onChange={(value: string) => actions.setSelectedNft(value, walletNft.collectionAddress)}
+                >
+                  <Text bold>{walletNft.name}</Text>
+                </SelectionCard>
+              )
+            })}
           </NftWrapper>
           <Heading as="h4" scale="lg" mb="8px">
             {t('Allow collectible to be locked')}
