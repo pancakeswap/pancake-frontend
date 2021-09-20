@@ -110,6 +110,8 @@ const useApproveConfirmTransaction = ({
     isApproved: state.approvalState === 'success',
     isConfirming: state.confirmState === 'loading',
     isConfirmed: state.confirmState === 'success',
+    hasApproveFailed: state.approvalState === 'fail',
+    hasConfirmFailed: state.confirmState === 'fail',
     handleApprove: async () => {
       try {
         const tx = await onApprove()

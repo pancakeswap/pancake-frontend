@@ -33,6 +33,8 @@ interface BuyTicketsModalProps extends ModalProps {
   numberTicketsUsedForGen0: number
 }
 
+const DEFAULT_MAX_PER_TX = 5
+
 const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
   onDismiss,
   buyTicketCallBack,
@@ -53,11 +55,11 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
   const isPreSale = saleStatus === SaleStatusEnum.Presale
   const remainingTickets = isPreSale
     ? numberTicketsForGen0
-    : maxPerAddress - numberTicketsOfUser - numberTicketsUsedForGen0
+    : maxPerAddress - (numberTicketsOfUser - numberTicketsUsedForGen0)
 
-  const maxBuyTickets = Math.min(cakeBalance.div(BigNumber.from(pricePerTicket)).toNumber(), remainingTickets)
+  const maxBuyTickets = Math.min(cakeBalance.div(pricePerTicket).toNumber(), remainingTickets)
   const totalCost = pricePerTicket.mul(BigNumber.from(ticketsNumber))
-  const buyButtons = new Array(maxPerTransaction || 5).fill('')
+  const buyButtons = new Array(Math.min(maxPerTransaction, DEFAULT_MAX_PER_TX)).fill('')
 
   return (
     <ModalContainer minWidth="375px">

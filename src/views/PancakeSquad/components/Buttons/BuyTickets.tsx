@@ -56,30 +56,33 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
     saleStatus === SaleStatusEnum.Sale && numberTicketsOfUser - numberTicketsUsedForGen0 < maxPerAddress
   const isPreSale = saleStatus === SaleStatusEnum.Presale
 
-  const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
-    onRequiresApproval: async () => {
-      try {
-        const response = await cakeContract.allowance(account, nftSaleContract.address)
-        const currentAllowance = ethersToBigNumber(response)
-        return currentAllowance.gt(0)
-      } catch (error) {
-        return false
-      }
-    },
-    onApprove: () => {
-      return callWithGasPrice(cakeContract, 'approve', [nftSaleContract.address, ethers.constants.MaxUint256])
-    },
-    onApproveSuccess: async ({ receipt }) => {
-      setTxHashEnablingResult(receipt.transactionHash)
-    },
-    onConfirm: ({ ticketsNumber }) => {
-      onPresentConfirmModal()
-      return callWithGasPrice(nftSaleContract, isPreSale ? 'buyTicketsInPreSaleForGen0' : 'buyTickets', [ticketsNumber])
-    },
-    onSuccess: async ({ receipt }) => {
-      setTxHashBuyingResult(receipt.transactionHash)
-    },
-  })
+  const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm, hasApproveFailed, hasConfirmFailed } =
+    useApproveConfirmTransaction({
+      onRequiresApproval: async () => {
+        try {
+          const response = await cakeContract.allowance(account, nftSaleContract.address)
+          const currentAllowance = ethersToBigNumber(response)
+          return currentAllowance.gt(0)
+        } catch (error) {
+          return false
+        }
+      },
+      onApprove: () => {
+        return callWithGasPrice(cakeContract, 'approve', [nftSaleContract.address, ethers.constants.MaxUint256])
+      },
+      onApproveSuccess: async ({ receipt }) => {
+        setTxHashEnablingResult(receipt.transactionHash)
+      },
+      onConfirm: ({ ticketsNumber }) => {
+        onPresentConfirmModal()
+        return callWithGasPrice(nftSaleContract, isPreSale ? 'buyTicketsInPreSaleForGen0' : 'buyTickets', [
+          ticketsNumber,
+        ])
+      },
+      onSuccess: async ({ receipt }) => {
+        setTxHashBuyingResult(receipt.transactionHash)
+      },
+    })
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
@@ -87,13 +90,13 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
       isLoading={isConfirming}
       headerBackground={theme.colors.gradients.cardHeader}
       txHash={txHashBuyingResult}
-      loadingText={t('Please enable WBNB spending in your wallet')}
+      loadingText={t('Please enable BNB spending in your wallet')}
       loadingButtonLabel={t('Confirming...')}
       successButtonLabel={t('Mint more')}
     />,
   )
 
-  const [onPresentEnableModal] = useModal(
+  const [onPresentEnableModal, onDismissEnableModal] = useModal(
     <ConfirmModal
       title={t('Enable')}
       isLoading={isApproving}
@@ -105,7 +108,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
     />,
   )
 
-  const [onPresentBuyTicketsModal] = useModal(
+  const [onPresentBuyTicketsModal, onDismissBuyTicketsModal] = useModal(
     <BuyTicketsModal
       title={t('Buy Minting Tickets')}
       buyTicketCallBack={handleConfirm}
@@ -123,6 +126,8 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
 
   useEffect(() => txHashEnablingResult && onPresentEnableModal(), [txHashEnablingResult])
   useEffect(() => txHashBuyingResult && onPresentConfirmModal(), [txHashBuyingResult])
+  useEffect(() => hasApproveFailed && onDismissEnableModal(), [hasApproveFailed])
+  useEffect(() => hasConfirmFailed && onDismissBuyTicketsModal(), [hasConfirmFailed])
 
   const handleEnableClick = () => {
     onPresentEnableModal()
