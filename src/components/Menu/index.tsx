@@ -41,8 +41,8 @@ const Menu = (props) => {
       profile={{
         username: profile?.username,
         image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,
-        profileLink: '/nft/market/profile',
-        noProfileLink: '/nft/market/profile',
+        profileLink: '/nfts/profile',
+        noProfileLink: '/nfts/profile',
         showPip: !profile?.username,
       }}
       {...props}
