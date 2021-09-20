@@ -2,7 +2,7 @@ import React from 'react'
 import { Flex, Text, Button, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import CompositeImage, { CompositeImageProps } from '../CompositeImage'
-import PurpleWordHeading from '../PurpleWordHeading'
+import ColoredWordHeading from '../ColoredWordHeading'
 
 interface SalesSectionButton {
   to: string
@@ -41,7 +41,7 @@ const SalesSection: React.FC<SalesSectionProps> = (props) => {
           mr={[null, null, null, !reverse && '64px']}
           alignSelf={['flex-start', null, null, 'center']}
         >
-          <PurpleWordHeading text={headingTranslatedText} />
+          <ColoredWordHeading text={headingTranslatedText} />
           <Text color="textSubtle" mb="24px">
             {bodyTranslatedText}
           </Text>
