@@ -3,6 +3,8 @@ import { formatUnits } from '@ethersproject/units'
 import { Card, CardBody, Heading, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
+import { fetchWalletNfts } from 'state/collectibles'
+import { useAppDispatch } from 'state'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
 import { Nft } from 'config/constants/nfts/types'
@@ -22,6 +24,7 @@ const Mint: React.FC = () => {
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
 
   const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
   const cakeContract = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
@@ -46,7 +49,10 @@ const Mint: React.FC = () => {
       onConfirm: () => {
         return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [variationId])
       },
-      onSuccess: () => actions.nextStep(),
+      onSuccess: () => {
+        dispatch(fetchWalletNfts(account))
+        actions.nextStep()
+      },
     })
 
   return (
