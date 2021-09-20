@@ -4,13 +4,13 @@ import { fetchUserNfts } from 'state/nftMarket/reducer'
 import { useGetCollections, useUserNfts } from 'state/nftMarket/hooks'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { useProfile } from 'state/profile/hooks'
-import { NftLocation } from 'state/nftMarket/types'
+import { NftLocation, UserNftInitializationState } from 'state/nftMarket/types'
 
 // We need to fetch collectibles for non-connected accounts, hence this hook accepts an account string.
 const useFetchUserNfts = (account: string) => {
   const dispatch = useAppDispatch()
   const { profile, isInitialized: isProfileInitialized, isLoading: isProfileLoading } = useProfile()
-  const { userNftsInitialised } = useUserNfts()
+  const { userNftsInitializationState } = useUserNfts()
   const collections = useGetCollections()
 
   const hasProfileNft = profile?.tokenId
@@ -31,7 +31,11 @@ const useFetchUserNfts = (account: string) => {
   const previousProfileNftTokenId = usePreviousValue(profileNftTokenId)
 
   // Fetch on first load when profile fetch is resolved
-  const shouldFetch = account && !userNftsInitialised && isProfileInitialized && !isProfileLoading
+  const shouldFetch =
+    account &&
+    userNftsInitializationState === UserNftInitializationState.UNINITIALIZED &&
+    isProfileInitialized &&
+    !isProfileLoading
 
   // Fetch on account / profile change, once profile fetch is resoleved
   const hasAccountSwitched = previousProfileNftTokenId !== profileNftTokenId && !isProfileLoading
