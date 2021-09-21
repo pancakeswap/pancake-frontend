@@ -4,7 +4,7 @@ import { Link as RouterLink, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import AddressInputSelect from 'components/AddressInputSelect'
-import { nftsBaseUrl } from 'views/Nft/market'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 
 const BackLink = styled(RouterLink)`
   align-items: center;
