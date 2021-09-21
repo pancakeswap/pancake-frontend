@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Link, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import ColoredWordHeading from 'views/Home/components/ColoredWordHeading'
 import { LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import bunniesConfig from './config'
@@ -24,8 +24,8 @@ const BunniesSection = () => {
           <img src={image.src} alt={image.alt} />
         </Box>
         <Flex flexDirection="column" ml={[null, null, null, '64px']} alignSelf={['flex-start', null, null, 'center']}>
-          <ColoredWordHeading text={headingTranslatedText} mb="0" />
-          <ColoredWordHeading text={subHeadingTranslatedText} color="failure" />
+          <ColoredWordHeading text={headingTranslatedText} color="text" mb="0" />
+          <ColoredWordHeading text={subHeadingTranslatedText} color="text" firstColor="failure" />
           {bodyText.map((text) => (
             <Text key={text} color="textSubtle" mb="20px">
               {text}

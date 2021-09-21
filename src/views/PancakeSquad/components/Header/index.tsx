@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Spinner, Text, Timeline } from '@pancakeswap/uikit'
+import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import useTheme from 'hooks/useTheme'
@@ -39,15 +39,15 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
 
   return (
     <StyledSquadHeaderContainer flexDirection="column" alignItems="center">
-      <Text fontSize="64px" my="32px" color="invertedContrast" bold textAlign="center">
+      <Text fontSize="64px" my="32px" color={lightColors.invertedContrast} bold textAlign="center">
         {t('Pancake Squad')}
       </Text>
-      <Text color="warning" textAlign="center" bold>
+      <Text color={lightColors.warning} textAlign="center" bold>
         {t('Mint Cost: 5 CAKE each')}
         <br />
         {t('Max per wallet: 20')}
       </Text>
-      <Text color="invertedContrast" mb="32px" textAlign="center">
+      <Text color={lightColors.invertedContrast} mb="32px" textAlign="center">
         {t('PancakeSwap’s first official generative NFT collection.')}
         <br />
         {t('Join the squad.')}
