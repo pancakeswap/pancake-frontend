@@ -37,7 +37,11 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
 
   const handleClick = async () => {
     setIsLoading(true)
-    await onClick()
+    try {
+      await onClick()
+    } catch (e) {
+      onDismiss()
+    }
     onDismiss()
   }
 
@@ -52,7 +56,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
           <AnniversaryImage src="/images/achievements/1-year.svg" />
         </Box>
         <Text textAlign="center" bold color="secondary" fontSize="24px" mb="24px">
-          {t('You won points for joigning PancakeSwap during the first year of our journey!')}
+          {t('You won points for joining PancakeSwap during the first year of our journey!')}
         </Text>
         <Button disabled={isLoading} onClick={handleClick}>
           {isLoading ? t('Claiming...') : t('Claim now')}

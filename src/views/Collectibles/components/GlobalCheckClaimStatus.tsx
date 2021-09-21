@@ -22,7 +22,7 @@ interface GlobalCheckClaimStatusProps {
 const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocations }) => {
   const hasDisplayedModal = useRef(false)
   const [claimableNfts, setClaimableNfts] = useState<Nft[]>([])
-  const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState<boolean>(false)
+  const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(false)
   const [onPresentGiftModal] = useModal(<NftGiveawayModal nfts={claimableNfts} />)
   const { account } = useWeb3React()
   const { pathname } = useLocation()
@@ -61,7 +61,7 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
     }
 
     const fetchClaimAnniversaryStatus = async () => {
-      const canClaimAnniversary = await canClaim()
+      const canClaimAnniversary = await canClaim(account)
       setCanClaimAnniversaryPoints(canClaimAnniversary)
     }
 

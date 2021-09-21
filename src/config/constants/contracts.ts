@@ -77,6 +77,6 @@ export default {
   },
   AnniversaryAchievement: {
     56: '',
-    97: '',
+    97: '0x981aE96378e770DE44F89cD9175E708f9EDB70a9',
   },
 }
