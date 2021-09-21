@@ -1,5 +1,5 @@
 import React, { lazy } from 'react'
-import { Route, useRouteMatch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import { useFetchCollections, useGetNFTInitializationState } from 'state/nftMarket/hooks'
 import PageLoader from 'components/Loader/PageLoader'
 import { NFTMarketInitializationState } from 'state/nftMarket/types'
@@ -11,8 +11,9 @@ const CollectibleOverview = lazy(() => import('./Collectibles'))
 const IndividualNFTPage = lazy(() => import('./IndividualNFTPage'))
 const BuySellDemo = lazy(() => import('./BuySellDemo'))
 
+export const nftsBaseUrl = '/nfts'
+
 const Market = () => {
-  const { path } = useRouteMatch()
   const initializationState = useGetNFTInitializationState()
 
   useFetchCollections()
@@ -23,22 +24,22 @@ const Market = () => {
 
   return (
     <>
-      <Route exact path={path}>
+      <Route exact path={nftsBaseUrl}>
         <Home />
       </Route>
-      <Route exact path={`${path}/buy-sell-demo`}>
+      <Route exact path={`${nftsBaseUrl}/buy-sell-demo`}>
         <BuySellDemo />
       </Route>
-      <Route exact path={`${path}/collections`}>
+      <Route exact path={`${nftsBaseUrl}/collections`}>
         <CollectibleOverview />
       </Route>
-      <Route exact path={`${path}/collections/:slug`}>
+      <Route exact path={`${nftsBaseUrl}/collections/:slug`}>
         <Collectible />
       </Route>
-      <Route path={`${path}/collections/:collectionAddress/:tokenId`}>
+      <Route path={`${nftsBaseUrl}/collections/:collectionAddress/:tokenId`}>
         <IndividualNFTPage />
       </Route>
-      <Route path={`${path}/profile`}>
+      <Route path={`${nftsBaseUrl}/profile`}>
         <NftProfile />
       </Route>
     </>

@@ -7,6 +7,7 @@ import { Box } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { Route } from 'react-router'
 import { useUserNfts } from 'state/nftMarket/hooks'
+import { nftsBaseUrl } from 'views/Nft/market'
 import useFetchUserNfts from './hooks/useFetchUserNfts'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
@@ -46,14 +47,14 @@ const NftProfile = () => {
         </TabMenuWrapper>
       </MarketPageHeader>
       <Page style={{ minHeight: 'auto' }}>
-        <Route path="/nfts/profile/achievements">
+        <Route path={`${nftsBaseUrl}/profile/achievements`}>
           <Achievements points={profile?.points} />
         </Route>
-        <Route path="/nfts/profile/activity">
+        <Route path={`${nftsBaseUrl}/profile/activity`}>
           <SubMenu />
           <Activity />
         </Route>
-        <Route exact path="/nfts/profile">
+        <Route exact path={`${nftsBaseUrl}/profile`}>
           <SubMenu />
           <UserNfts />
         </Route>

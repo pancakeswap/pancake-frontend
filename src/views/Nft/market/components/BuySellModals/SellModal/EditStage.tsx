@@ -2,6 +2,7 @@ import React from 'react'
 import { Flex, Grid, Text, Button, Link, BinanceIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BASE_URL } from 'config'
+import { nftsBaseUrl } from 'views/Nft/market'
 import { Divider, RoundedImage } from '../shared/styles'
 import { SellNFT } from './types'
 
@@ -51,7 +52,7 @@ const EditStage: React.FC<EditStageProps> = ({
           external
           variant="text"
           // TODO: make sure this link is correct
-          href={`${BASE_URL}/nfts/items/${nftToSell.tokenId}`}
+          href={`${BASE_URL}${nftsBaseUrl}/items/${nftToSell.tokenId}`}
         >
           {t('View Item Page')}
         </Button>
