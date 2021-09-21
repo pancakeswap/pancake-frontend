@@ -8,6 +8,7 @@ import { nftsBaseUrl, pancakeBunniesAddress } from './constants'
 const Home = lazy(() => import('./Home'))
 const NftProfile = lazy(() => import('./Profile'))
 const Collection = lazy(() => import('./Collection'))
+const Collections = lazy(() => import('./Collections'))
 const BuySellDemo = lazy(() => import('./BuySellDemo'))
 
 const Market = () => {
@@ -29,6 +30,7 @@ const Market = () => {
       </Route>
       <Route exact path={`${nftsBaseUrl}/collections`}>
         <Redirect to={`${nftsBaseUrl}/collections/${pancakeBunniesAddress}`} />
+        <Collections />
       </Route>
       <Route path={`${nftsBaseUrl}/collections/:collectionAddress`}>
         <Collection />
