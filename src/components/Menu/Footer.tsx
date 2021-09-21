@@ -42,7 +42,7 @@ const Footer = () => {
         <ButtonMenu variant="subtle" scale="sm" activeIndex={0}>
           <ButtonMenuItem>V2</ButtonMenuItem>
           <ButtonMenuItem as="a" href="https://v1exchange.pancakeswap.finance/#/">
-            V1 (old)
+            {t('V1 (old)')}
           </ButtonMenuItem>
         </ButtonMenu>
         <LinkExternal
