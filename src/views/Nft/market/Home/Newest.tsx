@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { NFT } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
 import { TMP_SEE_ALL_LINK } from 'views/Nft/market/constants'
-import { CollectibleCard } from '../components/CollectibleCard'
+import { CollectibleLinkCard } from '../components/CollectibleCard'
 import GridPlaceholder from '../components/GridPlaceholder'
 
 /**
@@ -57,7 +57,7 @@ const Newest: React.FC = () => {
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
         >
           {nfts.map((nft) => {
-            return <CollectibleCard key={nft.collectionAddress + nft.tokenId} nft={nft} />
+            return <CollectibleLinkCard key={nft.collectionAddress + nft.tokenId} nft={nft} />
           })}
         </Grid>
       ) : (
