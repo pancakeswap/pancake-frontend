@@ -1,21 +1,30 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
-import { useNftSaleContract, usePancakeSquadContract, useProfile as useProfileContract } from 'hooks/useContract'
+import { useNftSaleContract, usePancakeSquadContract } from 'hooks/useContract'
+import { useProfile } from 'state/profile/hooks'
 import React, { useEffect, useState } from 'react'
 import BunniesSection from './components/BunniesSection'
 import EventDescriptionSection from './components/EventDescriptionSection'
+import EventStepsSection from './components/EventStepsSection'
 import PancakeSquadHeader from './components/Header'
 import { StyledSquadContainer } from './styles'
 import { DynamicSaleInfos, FixedSaleInfos, SaleStatusEnum } from './types'
+import { getUserStatus } from './utils'
 
 const PancakeSquad: React.FC = () => {
   const { account } = useWeb3React()
   const [isLoading, setIsLoading] = useState(true)
+  const { hasProfile, isInitialized } = useProfile()
   const nftSaleContract = useNftSaleContract()
   const pancakeSquadContract = usePancakeSquadContract()
-  const profileContract = useProfileContract()
-  const [fixedSaleInfo, setFixedSaleInfo] = useState<FixedSaleInfos | null>(null)
-  const [dynamicSaleInfo, setDynamicSaleInfo] = useState<DynamicSaleInfos | null>(null)
+  const [fixedSaleInfo, setFixedSaleInfo] = useState<FixedSaleInfos>()
+  const [dynamicSaleInfo, setDynamicSaleInfo] = useState<DynamicSaleInfos>()
+
+  const userStatus = getUserStatus({
+    account,
+    hasActiveProfile: hasProfile && isInitialized,
+    hasGen0: dynamicSaleInfo?.canClaimForGen0 || dynamicSaleInfo?.numberTicketsUsedForGen0 > 0,
+  })
 
   useEffect(() => {
     const fetchFixedSaleInfo = async () => {
@@ -68,11 +77,11 @@ const PancakeSquad: React.FC = () => {
         console.error(e)
       }
     }
-    if (account && nftSaleContract && pancakeSquadContract && profileContract) fetchDynamicSaleInfo()
-  }, [nftSaleContract, pancakeSquadContract, profileContract, account])
+    if (account && nftSaleContract && pancakeSquadContract) fetchDynamicSaleInfo()
+  }, [nftSaleContract, pancakeSquadContract, account])
 
   useEffect(() => {
-    if (fixedSaleInfo != null && dynamicSaleInfo !== null && isLoading) setIsLoading(false)
+    if (fixedSaleInfo !== undefined && dynamicSaleInfo !== undefined && isLoading) setIsLoading(false)
   }, [fixedSaleInfo, dynamicSaleInfo, isLoading])
 
   return (
@@ -82,9 +91,17 @@ const PancakeSquad: React.FC = () => {
         isLoading={isLoading}
         dynamicSaleInfo={dynamicSaleInfo}
         fixedSaleInfo={fixedSaleInfo}
+        userStatus={userStatus}
       />
       <BunniesSection />
       <EventDescriptionSection />
+      <EventStepsSection
+        dynamicSaleInfo={dynamicSaleInfo}
+        fixedSaleInfo={fixedSaleInfo}
+        userStatus={userStatus}
+        isLoading={isLoading}
+        account={account}
+      />
     </StyledSquadContainer>
   )
 }

@@ -1,16 +1,17 @@
-import { Button } from '@pancakeswap/uikit'
-import { ContextApi } from 'contexts/Localization/types'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from '@pancakeswap/uikit'
+import { ContextApi } from 'contexts/Localization/types'
+import { UserStatusEnum } from 'views/PancakeSquad/types'
 
 type ActivateProfileButtonProps = {
   t: ContextApi['t']
-  isUserUnactiveProfile: boolean
+  userStatus: UserStatusEnum
 }
 
-const ActivateProfileButton: React.FC<ActivateProfileButtonProps> = ({ t, isUserUnactiveProfile }) => (
+const ActivateProfileButton: React.FC<ActivateProfileButtonProps> = ({ t, userStatus }) => (
   <>
-    {isUserUnactiveProfile && (
+    {(userStatus === UserStatusEnum.NO_PROFILE || userStatus === UserStatusEnum.UNCONNECTED) && (
       <Button as={Link} to="/profile" scale="sm">
         {t('Activate Profile')}
       </Button>

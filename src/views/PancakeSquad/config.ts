@@ -1,71 +1,11 @@
-import { EventStatus } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
-import formatTimePeriod from 'utils/formatTimePeriod'
-import getTimePeriods from 'utils/getTimePeriods'
 import { SaleStatusEnum } from './types'
+import { getAltText, getEventStepStatus, getEventText } from './utils'
 
 type nftSaleType = {
   t: ContextApi['t']
   saleStatus?: SaleStatusEnum
   startTimestamp?: number
-}
-
-const eventTextMapping: Record<SaleStatusEnum, string> = {
-  [SaleStatusEnum.Pending]: 'Get Ready',
-  [SaleStatusEnum.Premint]: 'Get Ready',
-  [SaleStatusEnum.Presale]: 'Presale',
-  [SaleStatusEnum.Sale]: 'Public Sale',
-  [SaleStatusEnum.DrawingRandomness]: 'Public Sale',
-  [SaleStatusEnum.Claim]: 'Claim Phase',
-}
-
-type getEventStepStatus = {
-  eventStatus: SaleStatusEnum[]
-  saleStatus: SaleStatusEnum
-  startTimestamp?: number
-}
-const getEventStepStatus = ({ eventStatus, saleStatus, startTimestamp }: getEventStepStatus): EventStatus => {
-  const now = Date.now()
-  if (eventStatus.every((status) => status < saleStatus)) return 'past'
-  if (eventStatus.some((status) => status === saleStatus)) {
-    if (startTimestamp && now > startTimestamp) return 'live'
-    if (!startTimestamp) return 'live'
-  }
-  return 'upcoming'
-}
-
-type getEventTextType = {
-  t: ContextApi['t']
-  saleStatus: SaleStatusEnum
-  eventStatus: SaleStatusEnum[]
-  startTimestamp?: number
-}
-const getEventText = ({ eventStatus, saleStatus, startTimestamp, t }: getEventTextType): string => {
-  const eventStepStatus = getEventStepStatus({ eventStatus, saleStatus, startTimestamp })
-  if (eventStepStatus === 'live' && saleStatus === SaleStatusEnum.DrawingRandomness)
-    return `${t(eventTextMapping[eventStatus[0]])}: ${t('Sold Out!')}`
-  if (eventStepStatus === 'live') return `${t(eventTextMapping[eventStatus[0]])}: ${t('Now Live')}`
-  if (eventStepStatus === 'upcoming') return `${t(eventTextMapping[eventStatus[0]])}: `
-
-  return t(eventTextMapping[eventStatus[0]])
-}
-
-type getAltTextType = {
-  t: ContextApi['t']
-  saleStatus: SaleStatusEnum
-  eventStatus: SaleStatusEnum[]
-  startTimestamp?: number
-}
-const getAltText = ({ startTimestamp, eventStatus, saleStatus, t }: getAltTextType): string | undefined => {
-  const nowInSeconds = Date.now() / 1000
-  const startTimestampInSeconds = startTimestamp / 1000
-  const eventStepStatus = getEventStepStatus({ eventStatus, saleStatus, startTimestamp })
-  if (saleStatus === SaleStatusEnum.DrawingRandomness && eventStepStatus === 'upcoming') return t('Starting Soon')
-  if (startTimestamp && eventStepStatus === 'upcoming' && saleStatus === SaleStatusEnum.Sale) {
-    const timePeriods = getTimePeriods(Math.round(startTimestampInSeconds - nowInSeconds))
-    return formatTimePeriod(timePeriods)
-  }
-  return undefined
 }
 
 const nftSaleConfigBuilder = ({ t, saleStatus, startTimestamp }: nftSaleType) =>

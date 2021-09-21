@@ -50,14 +50,11 @@ const CtaButtons: React.FC<PreEventProps> = ({
   pricePerTicket,
   ticketsOfUser,
 }) => {
-  const isUserUnconnected = userStatus === UserStatusEnum.UNCONNECTED
-  const isUserUnactiveProfile = userStatus === UserStatusEnum.NO_PROFILE || userStatus === UserStatusEnum.UNCONNECTED
-
   return (
     <>
       <Flex>
-        <ConnectWalletButton isUserUnconnected={isUserUnconnected} />
-        <ActivateProfileButton isUserUnactiveProfile={isUserUnactiveProfile} t={t} />
+        <ConnectWalletButton userStatus={userStatus} />
+        <ActivateProfileButton userStatus={userStatus} t={t} />
         <BuyTicketsButtons
           t={t}
           account={account}

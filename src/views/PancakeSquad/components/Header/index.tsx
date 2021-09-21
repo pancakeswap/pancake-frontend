@@ -1,35 +1,29 @@
 import React from 'react'
 import { Box, Flex, Spinner, Text, Timeline } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useProfile } from 'hooks/useContract'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import useTheme from 'hooks/useTheme'
-import { getUserStatus } from 'views/PancakeSquad/utils'
+import { StyledWaveContainer } from 'views/PancakeSquad/styles'
 import HeaderBottomWave from '../../assets/HeaderBottomWave'
 import nftSaleConfigBuilder from '../../config'
 import CtaButtons from './CtaButtons'
 import MintText from './MintText'
 import PreEventText from './PreEventText'
 import SaleProgress from './SaleProgress'
-import {
-  StyledHeaderWaveContainer,
-  StyledSquadEventBorder,
-  StyledSquadEventContainer,
-  StyledSquadHeaderContainer,
-} from './styles'
+import { StyledSquadEventBorder, StyledSquadEventContainer, StyledSquadHeaderContainer } from './styles'
 import { PancakeSquadHeaderType } from './types'
 
 const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
-  dynamicSaleInfo,
-  fixedSaleInfo,
+  dynamicSaleInfo = {},
+  fixedSaleInfo = {},
   account,
+  userStatus,
   isLoading,
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { profile } = useProfile()
   const { balance: cakeBalance } = useGetCakeBalance()
-  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = fixedSaleInfo || {}
+  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = fixedSaleInfo
   const {
     saleStatus,
     totalTicketsDistributed,
@@ -41,12 +35,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
     totalSupplyMinted,
     numberTokensOfUser,
     startTimestamp,
-  } = dynamicSaleInfo || {}
-  const userStatus = getUserStatus({
-    account,
-    hasActiveProfile: true,
-    hasGen0: canClaimForGen0 || numberTicketsUsedForGen0 > 0,
-  })
+  } = dynamicSaleInfo
 
   return (
     <StyledSquadHeaderContainer flexDirection="column" alignItems="center">
@@ -115,9 +104,9 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
           </Flex>
         </StyledSquadEventContainer>
       </StyledSquadEventBorder>
-      <StyledHeaderWaveContainer>
+      <StyledWaveContainer bottom="-2px">
         <HeaderBottomWave />
-      </StyledHeaderWaveContainer>
+      </StyledWaveContainer>
     </StyledSquadHeaderContainer>
   )
 }
