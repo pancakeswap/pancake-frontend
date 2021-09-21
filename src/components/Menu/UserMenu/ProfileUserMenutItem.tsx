@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import history from 'routerHistory'
-import { nftsBaseUrl } from 'views/Nft/market'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 
 interface ProfileUserMenuItemProps {
   isLoading: boolean
