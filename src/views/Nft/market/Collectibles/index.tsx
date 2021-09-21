@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Page from 'components/Layout/Page'
-import { nftsBaseUrl } from 'views/Nft/market'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 
 const Collectible = () => {
   return (
