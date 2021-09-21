@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uikit'
+import { Link } from 'react-router-dom'
 import { NFT } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
+import { TMP_SEE_ALL_LINK } from 'views/Nft/market/constants'
 import { CollectibleCard } from '../components/CollectibleCard'
 import GridPlaceholder from '../components/GridPlaceholder'
 
@@ -38,7 +40,13 @@ const Newest: React.FC = () => {
     <div>
       <Flex justifyContent="space-between" alignItems="center" mb="26px">
         <Heading>Newest Arrivals</Heading>
-        <Button variant="secondary" scale="sm" endIcon={<ChevronRightIcon color="primary" />}>
+        <Button
+          as={Link}
+          to={TMP_SEE_ALL_LINK}
+          variant="secondary"
+          scale="sm"
+          endIcon={<ChevronRightIcon color="primary" />}
+        >
           View All
         </Button>
       </Flex>
