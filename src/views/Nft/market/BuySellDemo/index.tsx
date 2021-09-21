@@ -59,7 +59,7 @@ const BuyModalDemo = () => {
   return (
     <Box>
       {nftList.map((nft) => (
-        <Box key={nft.id} m="4px">
+        <Box key={`${nft.tokenId}-${nft.collectionName}`} m="4px">
           {Object.values(nft.tokens).map((token) => (
             <BuyBunnyButton key={token.tokenId} nft={nft} token={token} />
           ))}
