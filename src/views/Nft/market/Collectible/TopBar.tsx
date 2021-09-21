@@ -4,6 +4,7 @@ import { Link as RouterLink, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import AddressInputSelect from 'components/AddressInputSelect'
+import { nftsBaseUrl } from 'views/Nft/market'
 
 const BackLink = styled(RouterLink)`
   align-items: center;
@@ -17,7 +18,7 @@ const TopBar: React.FC = () => {
   const history = useHistory()
 
   const handleAddressClick = (value: string) => {
-    history.push(`/nfts/profile/${value}`)
+    history.push(`${nftsBaseUrl}/profile/${value}`)
   }
 
   return (
