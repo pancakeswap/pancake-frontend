@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import find from 'lodash/find'
 import uniqBy from 'lodash/uniqBy'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import slugify from 'utils/slugify'
 import { ethers } from 'ethers'
+import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { fetchCollections, fetchNftsFromCollections } from './reducer'
 import { State } from '../types'
 import { UserNftsState, AskOrder, Transaction, TokenIdWithCollectionAddress, NFT, NftTokenSg } from './types'
@@ -14,7 +13,7 @@ export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(fetchCollections())
-    dispatch(fetchNftsFromCollections('0x60935f36e4631f73f0f407e68642144e07ac7f5e'))
+    dispatch(fetchNftsFromCollections(pancakeBunniesAddress))
   }, [dispatch])
 }
 
@@ -22,9 +21,9 @@ export const useGetCollections = () => {
   return useSelector((state: State) => state.nftMarket.data.collections)
 }
 
-export const useCollectionFromSlug = (slug: string) => {
+export const useGetCollection = (collectionAddress: string) => {
   const collections = useGetCollections()
-  return find(collections, (collection) => slugify(collection.name) === slug)
+  return collections[collectionAddress]
 }
 
 export const useNftsFromCollection = (collectionAddress: string) => {

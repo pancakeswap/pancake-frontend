@@ -4,7 +4,7 @@ import uniqBy from 'lodash/uniqBy'
 import { Collection, NftAttribute } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { MinMaxFilter } from 'components/Filters'
-import FilterContainer from '../components/FilterContainer'
+import FilterContainer from '../../components/FilterContainer'
 
 interface FiltersProps extends BoxProps {
   collection: Collection
