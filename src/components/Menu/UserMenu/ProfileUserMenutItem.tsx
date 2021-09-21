@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import history from 'routerHistory'
+import { nftsBaseUrl } from 'views/Nft/market'
 
 interface ProfileUserMenuItemProps {
   isLoading: boolean
@@ -20,7 +21,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
   const { t } = useTranslation()
 
   const handleClick = () => {
-    history.push('/nfts/profile')
+    history.push(`${nftsBaseUrl}/profile`)
   }
 
   const handleNoProfileClick = () => {

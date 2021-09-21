@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useProfile } from 'state/profile/hooks'
+import { nftsBaseUrl } from 'views/Nft/market'
 import config from './config/config'
 import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
@@ -41,8 +42,8 @@ const Menu = (props) => {
       profile={{
         username: profile?.username,
         image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,
-        profileLink: '/nfts/profile',
-        noProfileLink: '/nfts/profile',
+        profileLink: `${nftsBaseUrl}/profile`,
+        noProfileLink: `${nftsBaseUrl}/profile`,
         showPip: !profile?.username,
       }}
       {...props}
