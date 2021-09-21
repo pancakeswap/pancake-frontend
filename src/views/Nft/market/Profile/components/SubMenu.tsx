@@ -1,16 +1,7 @@
 import React from 'react'
-import { SubMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useLocation } from 'react-router'
-import styled from 'styled-components'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
-
-const StyledSubMenuItems = styled(SubMenuItems)`
-  background-color: ${({ theme }) => theme.colors.background};
-  justify-content: flex-start;
-  border-bottom: 1px ${({ theme }) => theme.colors.cardBorder} solid;
-  margin-bottom: 60px;
-`
+import BaseSubMenu from '../../components/BaseSubMenu'
 
 const SubMenuComponent: React.FC = () => {
   const { t } = useTranslation()
@@ -19,15 +10,15 @@ const SubMenuComponent: React.FC = () => {
   const ItemsConfig = [
     {
       label: t('Items'),
-      href: `${nftsBaseUrl}/profile`,
+      href: '/nft/market/profile',
     },
     {
       label: t('Activity'),
-      href: `${nftsBaseUrl}/profile/activity`,
+      href: '/nft/market/profile/activity',
     },
   ]
 
-  return <StyledSubMenuItems items={ItemsConfig} activeItem={pathname} />
+  return <BaseSubMenu items={ItemsConfig} activeItem={pathname} justifyContent="flex-start" mb="60px" />
 }
 
 export default SubMenuComponent
