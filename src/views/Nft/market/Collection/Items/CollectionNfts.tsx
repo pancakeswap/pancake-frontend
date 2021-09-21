@@ -8,7 +8,7 @@ import { getLastUpdatedFromNft, getLowestPriceFromNft } from 'state/nftMarket/he
 import { Collection } from 'state/nftMarket/types'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import GridPlaceholder from '../../components/GridPlaceholder'
-import { CollectibleCard } from '../../components/CollectibleCard'
+import { CollectibleLinkCard } from '../../components/CollectibleCard'
 
 interface CollectionNftsProps {
   collection: Collection
@@ -45,7 +45,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
       alignItems="start"
     >
       {orderedNfts.map((nft) => {
-        return <CollectibleCard key={nft.id} nft={nft} />
+        return <CollectibleLinkCard key={nft.id} nft={nft} />
       })}
     </Grid>
   )
