@@ -45,7 +45,13 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
       alignItems="start"
     >
       {orderedNfts.map((nft) => {
-        return <CollectibleLinkCard key={`${nft.tokenId}-${nft.collectionName}`} nft={nft} />
+        return (
+          <CollectibleLinkCard
+            key={`${nft.name}-${nft.collectionName}`}
+            nft={nft}
+            lowestPrice={nft.meta.lowestTokenPrice}
+          />
+        )
       })}
     </Grid>
   )
