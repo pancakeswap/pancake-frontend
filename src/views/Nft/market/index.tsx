@@ -1,5 +1,5 @@
 import React, { lazy } from 'react'
-import { Route } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import { useFetchCollections, useGetNFTInitializationState } from 'state/nftMarket/hooks'
 import PageLoader from 'components/Loader/PageLoader'
 import { NFTMarketInitializationState } from 'state/nftMarket/types'
@@ -8,7 +8,6 @@ import { nftsBaseUrl } from './constants'
 const Home = lazy(() => import('./Home'))
 const NftProfile = lazy(() => import('./Profile'))
 const Collectible = lazy(() => import('./Collectible'))
-const CollectibleOverview = lazy(() => import('./Collectibles'))
 const IndividualNFTPage = lazy(() => import('./IndividualNFTPage'))
 const BuySellDemo = lazy(() => import('./BuySellDemo'))
 
@@ -30,7 +29,7 @@ const Market = () => {
         <BuySellDemo />
       </Route>
       <Route exact path={`${nftsBaseUrl}/collections`}>
-        <CollectibleOverview />
+        <Redirect to={`${nftsBaseUrl}/collections/pancake-bunnies`} />
       </Route>
       <Route exact path={`${nftsBaseUrl}/collections/:slug`}>
         <Collectible />
