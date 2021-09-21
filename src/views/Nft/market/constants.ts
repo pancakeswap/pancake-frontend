@@ -1,3 +1,11 @@
+import { collections } from 'config/constants/nfts'
+import { CollectionKey } from 'config/constants/nfts/types'
+import { getAddress } from 'utils/addressHelpers'
+
 export const nftsBaseUrl = '/nfts'
+
+// @TODO This will be removed when more collections are added
+export const pancakeBunniesAddress = getAddress(collections[CollectionKey.PANCAKE].address)
+
 // @TODO Remove after the V1
-export const TMP_SEE_ALL_LINK = `${nftsBaseUrl}/collections/0x60935f36e4631f73f0f407e68642144e07ac7f5e`
+export const TMP_SEE_ALL_LINK = `${nftsBaseUrl}/collections/${pancakeBunniesAddress}`
