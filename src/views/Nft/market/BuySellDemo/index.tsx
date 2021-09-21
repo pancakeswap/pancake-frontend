@@ -6,11 +6,12 @@ import useFetchUserNfts from '../Profile/hooks/useFetchUserNfts'
 import BuyModal from '../components/BuySellModals/BuyModal'
 import SellModal from '../components/BuySellModals/SellModal'
 import { BuyNFT } from '../components/BuySellModals/BuyModal/types'
+import { pancakeBunniesAddress } from '../constants'
 
 const BuyBunnyButton = ({ nft, token }) => {
   const nftToBuy: BuyNFT = {
     collection: {
-      address: '0x60935f36e4631f73f0f407e68642144e07ac7f5e',
+      address: pancakeBunniesAddress,
       name: 'Pancake Bunnies',
     },
     token,
@@ -46,7 +47,7 @@ const BuyBunnyButton = ({ nft, token }) => {
 }
 
 const BuyModalDemo = () => {
-  const nfts = useNftsFromCollection('0x60935f36e4631f73f0f407e68642144e07ac7f5e')
+  const nfts = useNftsFromCollection(pancakeBunniesAddress)
   if (!nfts) return null
 
   const nftList = Object.values(nfts).filter((nft) => {
