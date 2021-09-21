@@ -3,7 +3,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Link as RouterLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
-import { nftsBaseUrl } from 'views/Nft/market'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 
 const Tab = styled.button<{ $active: boolean }>`
   display: inline-flex;

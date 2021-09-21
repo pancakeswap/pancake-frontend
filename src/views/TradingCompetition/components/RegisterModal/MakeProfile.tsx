@@ -3,7 +3,7 @@ import { Button, Heading, Text } from '@pancakeswap/uikit'
 import history from 'routerHistory'
 import { useTranslation } from 'contexts/Localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'
-import { nftsBaseUrl } from 'views/Nft/market'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 
 const MakeProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
