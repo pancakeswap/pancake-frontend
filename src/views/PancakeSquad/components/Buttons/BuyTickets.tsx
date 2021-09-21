@@ -55,6 +55,10 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   const canBuySaleTicket =
     saleStatus === SaleStatusEnum.Sale && numberTicketsOfUser - numberTicketsUsedForGen0 < maxPerAddress
   const isPreSale = saleStatus === SaleStatusEnum.Presale
+  const isGen0User = UserStatusEnum.PROFILE_ACTIVE_GEN0
+  const isUserReady =
+    (userStatus === UserStatusEnum.PROFILE_ACTIVE && saleStatus < SaleStatusEnum.Sale) ||
+    (userStatus === isGen0User && saleStatus === SaleStatusEnum.Pending)
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm, hasApproveFailed, hasConfirmFailed } =
     useApproveConfirmTransaction({
@@ -137,16 +141,23 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   return (
     <>
       {!isApproved && !isUserUnactiveProfile && (
-        <Button scale="sm" onClick={handleEnableClick}>
+        <Button width="100%" onClick={handleEnableClick}>
           {t('Enable')}
         </Button>
       )}
       {(canClaimForGen0 || canBuySaleTicket) && isApproved && (
-        <Button scale="sm" onClick={onPresentBuyTicketsModal}>
+        <Button width="100%" onClick={onPresentBuyTicketsModal}>
           {t('Buy Tickets')}
         </Button>
       )}
-      <ReadyText t={t} userStatus={userStatus} saleStatus={saleStatus} isApproved={isApproved} />
+      {!canBuySaleTicket && (
+        <Button width="100% " disabled>
+          {numberTicketsOfUser > 0 ? t('Max purchased') : t('Not Eligible')}
+        </Button>
+      )}
+      {isUserReady && isApproved && (
+        <ReadyText text={t(isGen0User ? 'Ready for Pre-Sale!' : 'Ready for Public Sale!')} />
+      )}
     </>
   )
 }

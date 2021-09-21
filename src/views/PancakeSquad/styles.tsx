@@ -15,3 +15,16 @@ export const LandingBodyWrapper = styled(Flex)`
     margin: 0 0;
   }
 `
+
+export const StyledWaveContainer = styled(Box)`
+  position: absolute;
+  width: 100%;
+
+  & > svg {
+    max-height: 16px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+  }
+`

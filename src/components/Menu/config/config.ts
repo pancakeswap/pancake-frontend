@@ -61,6 +61,10 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
         label: t('Collectibles'),
         href: '/collectibles',
       },
+      {
+        label: t('Pancake Squad'),
+        href: '/pancake-squad',
+      },
     ],
   },
   {

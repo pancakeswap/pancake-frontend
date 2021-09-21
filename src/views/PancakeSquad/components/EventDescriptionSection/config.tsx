@@ -1,5 +1,5 @@
-import { Text } from '@pancakeswap/uikit'
 import React from 'react'
+import { Text } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
 type EventDescriptionType = {
