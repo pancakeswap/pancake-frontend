@@ -5,7 +5,8 @@ import SwiperCore, { Pagination } from 'swiper'
 import { Box, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
-import { CollectibleCard } from '../components/CollectibleCard'
+import { CollectibleCard } from '../../components/CollectibleCard'
+import { pancakeBunniesAddress } from '../../constants'
 
 import 'swiper/swiper-bundle.css'
 
@@ -38,7 +39,7 @@ const StyledSwiper = styled.div`
 const MoreFromThisCollection: React.FC = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const nftList = useNftsFromCollection('0x60935f36e4631f73f0f407e68642144e07ac7f5e')
+  const nftList = useNftsFromCollection(pancakeBunniesAddress)
 
   if (!nftList) {
     return null

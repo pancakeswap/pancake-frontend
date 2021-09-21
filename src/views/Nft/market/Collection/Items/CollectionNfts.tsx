@@ -7,9 +7,8 @@ import { useNftsFromCollection } from 'state/nftMarket/hooks'
 import { getLastUpdatedFromNft, getLowestPriceFromNft } from 'state/nftMarket/helpers'
 import { Collection } from 'state/nftMarket/types'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
-import GridPlaceholder from '../components/GridPlaceholder'
-import { CollectibleCard } from '../components/CollectibleCard'
-import Filters from './Filters'
+import GridPlaceholder from '../../components/GridPlaceholder'
+import { CollectibleCard } from '../../components/CollectibleCard'
 
 interface CollectionNftsProps {
   collection: Collection
@@ -40,18 +39,15 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
   const orderedNfts = orderBy(nftList, [`meta.${sortBy}`], [sortBy === 'lowestTokenPrice' ? 'asc' : 'desc'])
 
   return (
-    <>
-      <Filters collection={collection} />
-      <Grid
-        gridGap="16px"
-        gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
-        alignItems="start"
-      >
-        {orderedNfts.map((nft) => {
-          return <CollectibleCard key={nft.id} nft={nft} />
-        })}
-      </Grid>
-    </>
+    <Grid
+      gridGap="16px"
+      gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
+      alignItems="start"
+    >
+      {orderedNfts.map((nft) => {
+        return <CollectibleCard key={nft.id} nft={nft} />
+      })}
+    </Grid>
   )
 }
 
