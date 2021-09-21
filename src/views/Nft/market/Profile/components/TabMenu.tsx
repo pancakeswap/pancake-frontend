@@ -3,6 +3,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Link as RouterLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
+import { nftsBaseUrl } from 'views/Nft/market'
 
 const Tab = styled.button<{ $active: boolean }>`
   display: inline-flex;
@@ -32,7 +33,7 @@ const TabMenu = () => {
         onClick={() => setIsAchievementsActive(false)}
         $active={!achievementsActive}
         as={RouterLink}
-        to="/nfts/profile"
+        to={`${nftsBaseUrl}/profile`}
       >
         NFTs
       </Tab>
@@ -40,7 +41,7 @@ const TabMenu = () => {
         onClick={() => setIsAchievementsActive(true)}
         $active={achievementsActive}
         as={RouterLink}
-        to="/nfts/profile/achievements"
+        to={`${nftsBaseUrl}/profile/achievements`}
       >
         {t('Achievements')}
       </Tab>
