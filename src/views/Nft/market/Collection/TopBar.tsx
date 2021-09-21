@@ -23,7 +23,7 @@ const TopBar: React.FC = () => {
 
   return (
     <Flex alignItems="center" justifyContent="space-between" mb="24px">
-      <BackLink to="/collectibles">
+      <BackLink to={nftsBaseUrl}>
         <ChevronLeftIcon color="primary" width="24px" />
         {t('All Collections')}
       </BackLink>
