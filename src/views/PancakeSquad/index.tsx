@@ -1,8 +1,10 @@
+import React, { useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
 import { useNftSaleContract, usePancakeSquadContract } from 'hooks/useContract'
 import { useProfile } from 'state/profile/hooks'
-import React, { useEffect, useState } from 'react'
+import { useBlock } from 'state/block/hooks'
+import { useGetCollectibles } from 'state/collectibles/hooks'
 import BunniesSection from './components/BunniesSection'
 import EventDescriptionSection from './components/EventDescriptionSection'
 import EventStepsSection from './components/EventStepsSection'
@@ -19,11 +21,13 @@ const PancakeSquad: React.FC = () => {
   const pancakeSquadContract = usePancakeSquadContract()
   const [fixedSaleInfo, setFixedSaleInfo] = useState<FixedSaleInfos>()
   const [dynamicSaleInfo, setDynamicSaleInfo] = useState<DynamicSaleInfos>()
+  const { hasGen0 } = useGetCollectibles()
+  const lastBlockNumber = useBlock()
 
   const userStatus = getUserStatus({
     account,
     hasActiveProfile: hasProfile && isInitialized,
-    hasGen0: dynamicSaleInfo?.canClaimForGen0 || dynamicSaleInfo?.numberTicketsUsedForGen0 > 0,
+    hasGen0,
   })
 
   useEffect(() => {
@@ -78,7 +82,7 @@ const PancakeSquad: React.FC = () => {
       }
     }
     if (account && nftSaleContract && pancakeSquadContract) fetchDynamicSaleInfo()
-  }, [nftSaleContract, pancakeSquadContract, account])
+  }, [nftSaleContract, pancakeSquadContract, account, lastBlockNumber])
 
   useEffect(() => {
     if (fixedSaleInfo !== undefined && dynamicSaleInfo !== undefined && isLoading) setIsLoading(false)
