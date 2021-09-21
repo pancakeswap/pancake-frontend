@@ -3,12 +3,13 @@ import { Heading, Button, Text } from '@pancakeswap/uikit'
 import history from 'routerHistory'
 import { useTranslation } from 'contexts/Localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'
+import { nftsBaseUrl } from 'views/Nft/market'
 
 const ReactivateProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
 
   const handleClick = () => {
-    history.push('/nfts/profile')
+    history.push(`${nftsBaseUrl}/profile`)
     onDismiss()
   }
 

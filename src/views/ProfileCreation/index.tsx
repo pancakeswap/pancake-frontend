@@ -5,6 +5,7 @@ import Page from 'components/Layout/Page'
 import { useProfile } from 'state/profile/hooks'
 import PageLoader from 'components/Loader/PageLoader'
 import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
+import { nftsBaseUrl } from 'views/Nft/market'
 import { useFetchCollections } from 'state/nftMarket/hooks'
 import Header from './Header'
 import ProfileCreationProvider from './contexts/ProfileCreationProvider'
@@ -22,7 +23,7 @@ const ProfileCreation = () => {
   }
 
   if (account && hasProfile) {
-    return <Redirect to="/nfts/profile" />
+    return <Redirect to={`${nftsBaseUrl}/profile`} />
   }
 
   return (

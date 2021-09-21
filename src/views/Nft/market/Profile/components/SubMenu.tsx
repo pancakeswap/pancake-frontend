@@ -3,6 +3,7 @@ import { SubMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useLocation } from 'react-router'
 import styled from 'styled-components'
+import { nftsBaseUrl } from 'views/Nft/market'
 
 const StyledSubMenuItems = styled(SubMenuItems)`
   background-color: ${({ theme }) => theme.colors.background};
@@ -18,11 +19,11 @@ const SubMenuComponent: React.FC = () => {
   const ItemsConfig = [
     {
       label: t('Items'),
-      href: '/nfts/profile',
+      href: `${nftsBaseUrl}/profile`,
     },
     {
       label: t('Activity'),
-      href: '/nfts/profile/activity',
+      href: `${nftsBaseUrl}/profile/activity`,
     },
   ]
 
