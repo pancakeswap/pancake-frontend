@@ -102,7 +102,7 @@ const UserNfts = () => {
             return (
               <CollectibleActionCard
                 onClick={() => handleCollectibleClick(nft, marketData.nftLocation)}
-                key={nft.tokenId}
+                key={`${nft.tokenId}-${nft.collectionName}`}
                 nft={nft}
                 currentAskPrice={
                   marketData.currentAskPrice && marketData.isTradable && parseFloat(marketData.currentAskPrice)
