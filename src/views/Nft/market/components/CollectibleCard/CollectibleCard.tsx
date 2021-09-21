@@ -1,10 +1,11 @@
 import React from 'react'
 import { Box, CardBody, CardProps, Flex, Text } from '@pancakeswap/uikit'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import minBy from 'lodash/minBy'
 import { useTranslation } from 'contexts/Localization'
 import { NFT, NftLocation } from 'state/nftMarket/types'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
+import { nftsBaseUrl } from 'views/Nft/market'
 import PreviewImage from './PreviewImage'
 import { CostLabel, MetaRow, StyledCollectibleCard } from './styles'
 import LocationTag from './LocationTag'
@@ -19,14 +20,13 @@ const CollectibleCard: React.FC<CollectibleCardProps> = ({ nft, nftLocation, cur
   const { t } = useTranslation()
   const { name, image, tokens } = nft
   const bnbBusdPrice = useBNBBusdPrice()
-  const { url } = useRouteMatch()
 
   const lowestPriceToken = tokens && minBy(Object.values(tokens), 'currentAskPrice')
   const lowestPriceNum = lowestPriceToken ? parseFloat(lowestPriceToken.currentAskPrice) : 0
 
   return (
     <StyledCollectibleCard {...props}>
-      <Link to={`${url}/collections/${nft.collectionAddress}/${nft.tokenId}`}>
+      <Link to={`${nftsBaseUrl}/collections/${nft.collectionAddress}/${nft.tokenId}`}>
         <CardBody p="8px">
           <PreviewImage src={image.thumbnail} height={320} width={320} mb="8px" />
           <Flex alignItems="center" justifyContent="space-between">

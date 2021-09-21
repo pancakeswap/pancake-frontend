@@ -5,6 +5,7 @@ import { ethers } from 'ethers'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import { useGetCollections } from 'state/nftMarket/hooks'
+import { nftsBaseUrl } from 'views/Nft/market'
 import { HotCollectionCard } from '../components/CollectibleCard'
 import { BNBAmountLabel } from '../components/CollectibleCard/styles'
 import Newest from './Newest'
@@ -17,14 +18,14 @@ const Home = () => {
   return (
     <>
       <Page>
-        <Link to="/nfts/collectibles">Collectibles</Link>
+        <Link to={`${nftsBaseUrl}/collectibles`}>Collectibles</Link>
         <br />
-        <Link to="/nfts/profile">Profile</Link>
+        <Link to={`${nftsBaseUrl}/profile`}>Profile</Link>
         <br />
-        <Link to="/nfts/buy-sell-demo">Buy and Sell demo</Link>
+        <Link to={`${nftsBaseUrl}/buy-sell-demo`}>Buy and Sell demo</Link>
         <br />
         <Box mb="40px">
-          <Link to="/nfts/item/7">Individual NFT page</Link>
+          <Link to={`${nftsBaseUrl}/item/7`}>Individual NFT page</Link>
         </Box>
         <Flex alignItems="center" justifyContent="space-between" mb="32px">
           <Heading as="h3" scale="lg">
@@ -45,7 +46,7 @@ const Home = () => {
                   bgSrc={collection.banner.small}
                   avatarSrc={collection.avatar}
                   collectionName={collection.name}
-                  url={`${url}/collections/${collectionAddress}`}
+                  url={`${nftsBaseUrl}/collections/${collectionAddress}`}
                 >
                   <Flex alignItems="center">
                     <Text fontSize="12px" color="textSubtle">
