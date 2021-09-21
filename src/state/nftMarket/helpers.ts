@@ -313,12 +313,12 @@ export const getNftsFromDifferentCollectionsApi = async (
   const responses = await Promise.all(promises)
   return responses.map((res, index) => ({
     tokenId: res.tokenId,
-    id: res.id,
     name: res.name,
     collectionName: res.collection.name,
     collectionAddress: from[index].collectionAddress,
     description: res.description,
     updatedAt: res.updatedAt,
+    attributes: res.attributes,
     image: {
       original: res.image?.original,
       thumbnail: res.image?.thumbnail,
