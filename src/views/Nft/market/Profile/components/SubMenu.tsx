@@ -3,7 +3,7 @@ import { SubMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useLocation } from 'react-router'
 import styled from 'styled-components'
-import { nftsBaseUrl } from 'views/Nft/market'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 
 const StyledSubMenuItems = styled(SubMenuItems)`
   background-color: ${({ theme }) => theme.colors.background};
