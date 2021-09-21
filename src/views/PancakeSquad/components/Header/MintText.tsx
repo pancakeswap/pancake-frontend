@@ -21,7 +21,7 @@ const MintText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus, numberTi
   return displayMintText ? (
     <Flex flexDirection="column" mb="24px">
       <Flex>
-        <Text fontSize="16px" color={darkColors.text} mr="2px">
+        <Text fontSize="16px" color="invertedContrast" mr="2px">
           {t('Your Mint Tickets: ')}
         </Text>
         <Text fontSize="16px" color={numberTicketsOfUser > 0 ? 'warning' : 'failure'} bold>

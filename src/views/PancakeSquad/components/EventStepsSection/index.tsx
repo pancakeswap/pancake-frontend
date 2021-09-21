@@ -22,7 +22,8 @@ const EventStepsSection: React.FC<EventStepsProps> = ({
   const { theme, isDark } = useTheme()
   const { balance: cakeBalance } = useGetCakeBalance()
   const stepsConfig = stepsConfigBuilder({ t, fixedSaleInfo, dynamicSaleInfo, userStatus, account, theme, cakeBalance })
-  const isMintingFinished = dynamicSaleInfo && fixedSaleInfo.maxSupply === dynamicSaleInfo.totalSupplyMinted
+  const isMintingFinished =
+    dynamicSaleInfo && fixedSaleInfo && fixedSaleInfo.maxSupply === dynamicSaleInfo.totalSupplyMinted
   return (
     <StyledEventStepsSectionContainer flexDirection="column" alignItems="center" py="64px" $isDark={isDark}>
       <StyledWaveContainer top="-13px">

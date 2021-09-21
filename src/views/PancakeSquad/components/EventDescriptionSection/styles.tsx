@@ -2,7 +2,7 @@ import { Flex, lightColors } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 export const StyledEventDescriptionSectionContainer = styled(Flex)`
-  background: ${lightColors.background};
+  background: ${({ theme }) => theme.colors.background};
 `
 
 export const StyledBodyTextList = styled('ul')`
