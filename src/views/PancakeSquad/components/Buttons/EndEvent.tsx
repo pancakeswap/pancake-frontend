@@ -24,8 +24,8 @@ const EndEventButtons: React.FC<EndEventProps> = ({
 
   return (
     <>
-      {canViewMarket && <Button scale="sm">{t('View market')}</Button>}
-      {hasSquad && <Button scale="sm">{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Button>}
+      {canViewMarket && <Button>{t('View market')}</Button>}
+      {hasSquad && <Button>{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Button>}
     </>
   )
 }

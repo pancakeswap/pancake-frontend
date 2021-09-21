@@ -6,6 +6,8 @@ import Nfts from 'config/constants/nfts'
 import { State } from '../types'
 import { fetchWalletNfts } from './index'
 
+const MAX_GEN0_ID = 5
+
 export const useGetCollectibles = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
@@ -20,10 +22,14 @@ export const useGetCollectibles = () => {
     }
   }, [isInitialized, account, dispatch])
 
+  const nftsInWallet = Nfts.pancake.filter((nft) => identifiers.includes(nft.identifier))
+  const hasGen0 = nftsInWallet?.some((nft) => nft.id <= MAX_GEN0_ID)
+
   return {
     isInitialized,
     isLoading,
     tokenIds: data,
-    nftsInWallet: Nfts.pancake.filter((nft) => identifiers.includes(nft.identifier)),
+    hasGen0,
+    nftsInWallet,
   }
 }

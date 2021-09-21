@@ -6,7 +6,7 @@ import { simpleRpcProvider } from 'utils/providers'
 import { setBlock } from '.'
 import { State } from '../types'
 
-export const usePollBlockNumber = () => {
+export const usePollBlockNumber = (refreshTime = 6000) => {
   const timer = useRef(null)
   const dispatch = useAppDispatch()
   const isWindowVisible = useIsWindowVisible()
@@ -16,13 +16,13 @@ export const usePollBlockNumber = () => {
       timer.current = setInterval(async () => {
         const blockNumber = await simpleRpcProvider.getBlockNumber()
         dispatch(setBlock(blockNumber))
-      }, 6000)
+      }, refreshTime)
     } else {
       clearInterval(timer.current)
     }
 
     return () => clearInterval(timer.current)
-  }, [dispatch, timer, isWindowVisible])
+  }, [dispatch, timer, isWindowVisible, refreshTime])
 }
 
 export const useBlock = () => {
