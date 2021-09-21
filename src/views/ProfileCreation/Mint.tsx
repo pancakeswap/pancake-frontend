@@ -3,8 +3,6 @@ import { formatUnits } from '@ethersproject/units'
 import { Card, CardBody, Heading, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { fetchWalletNfts } from 'state/collectibles'
-import { useAppDispatch } from 'state'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
 import { Nft } from 'config/constants/nfts/types'
@@ -27,7 +25,6 @@ const Mint: React.FC = () => {
   const { toastSuccess } = useToast()
 
   const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
   const cakeContract = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
@@ -52,8 +49,11 @@ const Mint: React.FC = () => {
       onConfirm: () => {
         return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [variationId])
       },
+      onApproveSuccess: () => {
+        toastSuccess('Enabled', 'Please confirm this NFT for minting')
+      },
       onSuccess: () => {
-        dispatch(fetchWalletNfts(account))
+        toastSuccess('Success', 'You have minted your starter NFT')
         actions.nextStep()
       },
     })

@@ -14,6 +14,8 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useAppDispatch } from 'state'
+import { addUserNft } from 'state/nftMarket/reducer'
 import { StyledModal } from './styles'
 import ReviewStage from './ReviewStage'
 import ConfirmStage from '../shared/ConfirmStage'
@@ -45,6 +47,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const nftMarketContract = useNftMarketContract()
 
   const { toastSuccess } = useToast()
+  const dispatch = useAppDispatch()
 
   const nftPriceWei = parseUnits(nftToBuy.token.currentAskPrice, 'ether')
   const nftPrice = parseFloat(nftToBuy.token.currentAskPrice)
@@ -101,6 +104,12 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
     onSuccess: async ({ receipt }) => {
       setConfirmedTxHash(receipt.transactionHash)
       setStage(BuyingStage.TX_CONFIRMED)
+      dispatch(
+        addUserNft({
+          tokenId: nftToBuy.token.tokenId,
+          collectionAddress: nftToBuy.collection.address,
+        }),
+      )
       toastSuccess(
         t('Your NFT has been sent to your wallet'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash} />,

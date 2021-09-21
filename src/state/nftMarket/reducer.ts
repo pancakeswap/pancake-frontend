@@ -31,6 +31,7 @@ import {
   UserNftInitializationState,
   ApiResponseCollectionTokens,
   NftToken,
+  NftLocation,
 } from './types'
 
 const initialState: State = {
@@ -168,6 +169,35 @@ export const fetchUserNfts = createAsyncThunk<
   return completeNftData
 })
 
+export const updateUserNft = createAsyncThunk<
+  NftToken,
+  { tokenId: string; collectionAddress: string; location?: NftLocation }
+>('nft/updateUserNft', async ({ tokenId, collectionAddress, location = NftLocation.WALLET }) => {
+  const marketDataForNft = await getNftsMarketData({ tokenId_in: [tokenId] })
+  const metadataForNft = await getNftsFromDifferentCollectionsApi([{ tokenId, collectionAddress }])
+  const completeNftData = { ...metadataForNft[0], location, marketData: marketDataForNft[0] }
+
+  return completeNftData
+})
+
+export const removeUserNft = createAsyncThunk<string, { tokenId: string }>(
+  'nft/removeUserNft',
+  async ({ tokenId }) => tokenId,
+)
+
+export const addUserNft = createAsyncThunk<
+  NftToken,
+  { tokenId: string; collectionAddress: string; nftLocation?: NftLocation }
+>('nft/addUserNft', async ({ tokenId, collectionAddress, nftLocation = NftLocation.WALLET }) => {
+  const marketDataForNft = await getNftsMarketData({ tokenId_in: [tokenId] })
+  const metadataForNft = await getNftsFromDifferentCollectionsApi([{ tokenId, collectionAddress }])
+
+  const tokens = { [tokenId]: { ...marketDataForNft[0], nftLocation } }
+  const completeNftData = { ...metadataForNft[0], tokens }
+
+  return completeNftData
+})
+
 export const fetchUserActivity = createAsyncThunk<UserActivity, string>('nft/fetchUserActivity', async (address) => {
   const userActivity = await getUserActivity({ id: address.toLocaleLowerCase() })
   return userActivity
@@ -197,6 +227,22 @@ export const NftMarket = createSlice({
     builder.addCase(fetchUserNfts.fulfilled, (state, action) => {
       state.data.user.nfts = action.payload
       state.data.user.userNftsInitializationState = UserNftInitializationState.INITIALIZED
+    })
+    builder.addCase(updateUserNft.fulfilled, (state, action) => {
+      const userNftsState: NftToken[] = state.data.user.nfts
+      const nftToUpdate = userNftsState.find((nft) => nft.tokenId === action.payload.tokenId)
+      const indexInState = userNftsState.indexOf(nftToUpdate)
+      state.data.user.nfts[indexInState] = action.payload
+    })
+    builder.addCase(removeUserNft.fulfilled, (state, action) => {
+      const copyOfState: NftToken[] = [...state.data.user.nfts]
+      const nftToRemove = copyOfState.find((nft) => nft.tokenId === action.payload)
+      const indexInState = copyOfState.indexOf(nftToRemove)
+      copyOfState.splice(indexInState, 1)
+      state.data.user.nfts = copyOfState
+    })
+    builder.addCase(addUserNft.fulfilled, (state, action) => {
+      state.data.user.nfts = [...state.data.user.nfts, action.payload]
     })
     builder.addCase(fetchUserActivity.fulfilled, (state, action) => {
       state.data.user.activity = action.payload

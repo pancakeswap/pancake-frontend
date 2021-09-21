@@ -10,6 +10,9 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
 import { isAddress } from 'utils'
 import { useNftMarketContract, usePancakeRabbits } from 'hooks/useContract'
+import { useAppDispatch } from 'state'
+import { removeUserNft, updateUserNft } from 'state/nftMarket/reducer'
+import { NftLocation } from 'state/nftMarket/types'
 import SellStage from './SellStage'
 import SetPriceStage from './SetPriceStage'
 import EditStage from './EditStage'
@@ -70,6 +73,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
   const { toastSuccess } = useToast()
   const pancakeBunniesContract = usePancakeRabbits()
   const nftMarketContract = useNftMarketContract()
+  const dispatch = useAppDispatch()
 
   const isInvalidTransferAddress = transferAddress.length > 0 && !isAddress(transferAddress)
 
@@ -138,6 +142,37 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
     setStage(SellingStage.TRANSFER)
   }
 
+  const dispatchSuccessAction = () => {
+    // Remove from sale
+    if (stage === SellingStage.CONFIRM_REMOVE_FROM_MARKET) {
+      dispatch(
+        updateUserNft({
+          tokenId: nftToSell.tokenId,
+          collectionAddress: nftToSell.collection.address,
+          location: NftLocation.WALLET,
+        }),
+      )
+      return
+    }
+    // Transfer NFT
+    if (stage === SellingStage.CONFIRM_TRANSFER) {
+      dispatch(
+        removeUserNft({
+          tokenId: nftToSell.tokenId,
+        }),
+      )
+      return
+    }
+    // Modify listing OR list for sale
+    dispatch(
+      updateUserNft({
+        tokenId: nftToSell.tokenId,
+        collectionAddress: nftToSell.collection.address,
+        location: NftLocation.FORSALE,
+      }),
+    )
+  }
+
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
@@ -177,6 +212,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
     },
     onSuccess: async ({ receipt }) => {
       toastSuccess(t(getToastText(variant, stage)), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+      dispatchSuccessAction()
       setConfirmedTxHash(receipt.transactionHash)
       setStage(SellingStage.TX_CONFIRMED)
     },
