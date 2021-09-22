@@ -19,7 +19,7 @@ const pools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
-    sousId: 220,
+    sousId: 221,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.nft,
     contractAddress: {
