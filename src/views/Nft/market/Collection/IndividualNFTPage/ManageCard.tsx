@@ -101,8 +101,9 @@ const CollectiblesByLocation: React.FC<CollectiblesByLocationProps> = ({ locatio
         </Text>
       </Grid>
       <ScrollableContainer>
-        {collectibles.map((collectible) => (
-          <CollectibleRow collectible={collectible} />
+        {collectibles.map((collectible, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <CollectibleRow key={index} collectible={collectible} />
         ))}
       </ScrollableContainer>
     </Flex>
