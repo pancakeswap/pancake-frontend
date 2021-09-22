@@ -1,4 +1,5 @@
 import { request, gql } from 'graphql-request'
+import { parseUnits } from '@ethersproject/units'
 import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
@@ -133,13 +134,19 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
   }
 }
 
-export const getNftsMarketData = async (where = {}): Promise<NftTokenSg[]> => {
+export const getNftsMarketData = async (
+  where = {},
+  first = 1000,
+  orderBy = 'id',
+  orderDirection: 'asc' | 'desc' = 'desc',
+  skip = 0,
+): Promise<NftTokenSg[]> => {
   try {
     const res = await request(
       GRAPH_API_NFTMARKET,
       gql`
-        query getNftsMarketData($where: NFT_filter) {
-          nfts(where: $where) {
+        query getNftsMarketData($first: Int, $skip: Int!, $where: NFT_filter, $orderBy: NFT_orderBy, $orderDirection: OrderDirection) {
+          nfts(where: $where, orderBy: $orderBy, orderDirection: $orderDirection, skip: $skip) {
             ${getBaseNftFields()}
             transactionHistory {
               ${getBaseTransactionFields()}
@@ -147,13 +154,37 @@ export const getNftsMarketData = async (where = {}): Promise<NftTokenSg[]> => {
           }
         }
       `,
-      { where },
+      { where, first, skip, orderBy, orderDirection },
     )
 
     return res.nfts
   } catch (error) {
     console.error('Failed to fetch NFTs market data', error)
     return []
+  }
+}
+
+/**
+ * Returns the lowest price of any NFT in a collection
+ */
+export const getLowestPriceInCollection = async (collectionAddress: string) => {
+  try {
+    const response = await getNftsMarketData(
+      { collection: collectionAddress.toLowerCase() },
+      1,
+      'currentAskPrice',
+      'asc',
+    )
+
+    if (response.length === 0) {
+      return parseUnits('0')
+    }
+
+    const [nftSg] = response
+    return parseUnits(nftSg.currentAskPrice)
+  } catch (error) {
+    console.error('Failed to fetch NFTs market data', error)
+    return parseUnits('0')
   }
 }
 
