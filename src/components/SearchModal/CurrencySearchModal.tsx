@@ -34,6 +34,7 @@ const StyledModalContainer = styled(ModalContainer)`
 
 const StyledModalBody = styled(ModalBody)`
   padding: 24px;
+  overflow-y: hidden;
 `
 
 interface CurrencySearchModalProps extends InjectedModalProps {
