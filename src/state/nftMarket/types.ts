@@ -21,7 +21,7 @@ export interface State {
   initializationState: NFTMarketInitializationState
   data: {
     collections: Record<string, Collection> // string is the address
-    nfts: Record<string, NFT[]> // string is the address
+    nfts: Record<string, Record<string, PancakeBunnyNftWithTokens>> // first string is the collection address address, second string is bunny id
     users: Record<string, User> // string is the address
     user: UserNftsState
   }
@@ -29,7 +29,7 @@ export interface State {
 
 export interface UserNftsState {
   userNftsInitializationState: UserNftInitializationState
-  nfts: NFT[]
+  nfts: NftToken[]
   activity: UserActivity
 }
 
@@ -42,7 +42,7 @@ export interface Transaction {
   buyer: { id: string }
   seller: { id: string }
   withBNB: boolean
-  nft?: NftTokenSg
+  nft?: TokenMarketData
 }
 
 export enum AskOrderType {
@@ -57,13 +57,7 @@ export interface AskOrder {
   timestamp: string
   askPrice: string
   orderType: AskOrderType
-  nft?: NftTokenSg
-}
-
-export interface UserActivity {
-  askOrderHistory: AskOrder[]
-  buyTradeHistory: Transaction[]
-  sellTradeHistory: Transaction[]
+  nft?: TokenMarketData
 }
 
 export interface Image {
@@ -80,8 +74,8 @@ export enum NftLocation {
   WALLET = 'WALLET',
 }
 
-// Return type from subgraph
-export interface NftTokenSg {
+// Market data regarding specific token ID, acquired via subgraph
+export interface TokenMarketData {
   tokenId: string
   metadataUrl: string
   currentAskPrice: string
@@ -93,21 +87,41 @@ export interface NftTokenSg {
   collection?: {
     id: string
   }
+  updatedAt?: string
   transactionHistory?: Transaction[]
-  nftLocation?: NftLocation
 }
 
-export interface NFT {
-  tokenId: string
+// This type is somewhat specific to PancakeBunnies NFTs
+// It stores basic PancakeBunny NFT data together with `tokens` object containing specific token ID market data
+// It is used when retrieving all bunny tokens from redux.
+// In case you need to work with specific stand-alone token use NftToken
+export interface PancakeBunnyNftWithTokens {
   name: string
   collectionName: string
   collectionAddress: string
   description: string
   image: Image
-  updatedAt: string
+  tokens?: Record<number, TokenMarketData>
+  lowestPricedToken?: TokenMarketData
   attributes?: any[]
-  tokens?: Record<number, NftTokenSg>
-  lowestPricedToken?: NftTokenSg
+  updatedAt?: string
+  meta?: Record<string, string | number>
+}
+
+// Represents single NFT token, either Squad-like NFT or single PancakeBunny.
+// Main difference between this and NFT is absense of `tokens` object holding "grouped" tokens and presence of tokenId on the main object level
+export interface NftToken {
+  tokenId: string
+  name: string
+  description: string
+  collectionName: string
+  collectionAddress: string
+  image: Image
+  attributes?: any[]
+  createdAt: string
+  updatedAt: string
+  marketData?: TokenMarketData
+  location?: NftLocation
   meta?: Record<string, string | number>
 }
 
@@ -123,19 +137,19 @@ export interface NftAttribute {
   displayType: string
 }
 
+// Internal type used to refer to a collection
+// Most fields are populated from API (via ApiCollection type)
 export interface Collection {
   id: string
   address: string
   name: string
   description?: string
-  slug: string
   symbol: string
   active: boolean
   totalVolumeBNB: BigNumberish
   numberTokensListed: BigNumberish
   tradingFee: BigNumberish
   creatorFee: BigNumberish
-  image: Image
   owner: string
   totalSupply: BigNumberish
   verified: boolean
@@ -157,4 +171,98 @@ export interface User {
   numberTokensPurchased: BigNumberish
   numberTokensSold: BigNumberish
   nfts: Record<string, BigNumberish> // String is an address, BigNumberish is a tokenID
+}
+
+/**
+ * API RESPONSES
+ */
+
+export interface ApiCollection {
+  address: string
+  owner: string
+  name: string
+  description: string
+  symbol: string
+  totalSupply: string
+  verified: boolean
+  createdAt: string
+  updatedAt: string
+  avatar: string
+  banner: {
+    large: string
+    small: string
+  }
+  attributes?: NftAttribute[] // returned for specific collection but not for all collections
+}
+
+// Get all collections
+// ${API_NFT}/collections/
+export interface ApiCollectionsReponse {
+  total: number
+  data: ApiCollection[]
+}
+
+// Get single collection
+// ${API_NFT}/collections/${collectionAddress}
+export interface ApiSingleCollectionResponse {
+  data: ApiCollection
+}
+
+// Get tokens within collection
+// ${API_NFT}/collections/${collectionAddress}/tokens
+export interface ApiResponseCollectionTokens {
+  total: number
+  attributeDistribution: Record<string, number>
+  data: {
+    [key: string]: {
+      name: string
+      description: string
+      image: Image
+      collection: {
+        name: string
+      }
+      tokens: number[]
+    }
+  }
+}
+
+// Get specific token data
+// ${API_NFT}/collections/${collectionAddress}/tokens/${tokenId}
+export interface ApiResponseSpecificToken {
+  data: {
+    tokenId: string
+    name: string
+    description: string
+    image: Image
+    createdAt: string
+    updatedAt: string
+    attributes: NftAttribute[]
+    collection: {
+      name: string
+    }
+  }
+}
+
+/**
+ * SUBGRAPH RESPONSES
+ */
+
+export interface CollectionMarketDataBaseFields {
+  id: string
+  name: string
+  symbol: string
+  active: boolean
+  totalTrades: string
+  totalVolumeBNB: string
+  numberTokensListed: string
+  creatorAddress: string
+  tradingFee: string
+  creatorFee: string
+  whitelistChecked: string
+}
+
+export interface UserActivity {
+  askOrderHistory: AskOrder[]
+  buyTradeHistory: Transaction[]
+  sellTradeHistory: Transaction[]
 }
