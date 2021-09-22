@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react'
+import isEmpty from 'lodash/isEmpty'
 import { useAppDispatch } from 'state'
 import { fetchUserNfts } from 'state/nftMarket/reducer'
 import { useGetCollections, useUserNfts } from 'state/nftMarket/hooks'
@@ -41,7 +42,7 @@ const useFetchUserNfts = (account: string) => {
   const hasAccountSwitched = previousProfileNftTokenId !== profileNftTokenId && !isProfileLoading
 
   useEffect(() => {
-    if (shouldFetch || hasAccountSwitched) {
+    if ((shouldFetch || hasAccountSwitched) && !isEmpty(collections)) {
       dispatch(fetchUserNfts({ account, collections, profileNftWithCollectionAddress }))
     }
   }, [
