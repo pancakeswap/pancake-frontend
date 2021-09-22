@@ -1,12 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useWeb3React } from '@web3-react/core'
 import { useModal } from '@pancakeswap/uikit'
-import { Nft } from 'config/constants/nfts/types'
-import nfts from 'config/constants/nfts'
+import { useWeb3React } from '@web3-react/core'
 import { useAnniversaryAchievementContract } from 'hooks/useContract'
-import NftGiveawayModal from './NftGiveawayModal'
-import useBunnySpecialLottery from '../hooks/useBunnySpecialLottery'
 import AnniversaryAchievementModal from './AnniversaryAchievementModal'
 
 interface GlobalCheckClaimStatusProps {
