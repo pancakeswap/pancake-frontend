@@ -4,6 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import useTheme from 'hooks/useTheme'
 import { StyledWaveContainer } from 'views/PancakeSquad/styles'
+import { formatBigNumber } from 'utils/formatBalance'
 import HeaderBottomWave from '../../assets/HeaderBottomWave'
 import nftSaleConfigBuilder from '../../config'
 import CtaButtons from './CtaButtons'
@@ -12,6 +13,9 @@ import PreEventText from './PreEventText'
 import SaleProgress from './SaleProgress'
 import { StyledSquadEventBorder, StyledSquadEventContainer, StyledSquadHeaderContainer } from './styles'
 import { PancakeSquadHeaderType } from './types'
+
+const DEFAULT_CAKE_COST = 5
+const DEFAULT_MAX_TICKETS = 20
 
 const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
   dynamicSaleInfo = {},
@@ -43,9 +47,11 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         {t('Pancake Squad')}
       </Text>
       <Text color={lightColors.warning} textAlign="center" bold>
-        {t('Mint Cost: 5 CAKE each')}
+        {t('Mint Cost: %minCost% CAKE each', {
+          minCost: pricePerTicket ? formatBigNumber(pricePerTicket, 0) : DEFAULT_CAKE_COST,
+        })}
         <br />
-        {t('Max per wallet: 20')}
+        {t('Max per wallet: %maxPerWallet%', { maxPerWallet: maxPerAddress ?? DEFAULT_MAX_TICKETS })}
       </Text>
       <Text color={lightColors.invertedContrast} mb="32px" textAlign="center">
         {t('PancakeSwap’s first official generative NFT collection.')}
