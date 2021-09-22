@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
+    "@catacombs-libs/uikit": "https://github.com/Rug-Zombie/catacombs-uikit.git",
     "@crowdin/crowdin-api-client": "^1.10.4",
     "@ethersproject/abi": "^5.0.7",
     "@indexed-finance/multicall": "^2.0.0",

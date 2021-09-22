@@ -1,6 +1,6 @@
 import { useTranslation } from "contexts/Localization"
 import React from "react"
-import {Heading,Text} from "@rug-zombie-libs/uikit"
+import {Heading,Text} from "@catacombs-libs/uikit"
 import styled from "styled-components"
 
 const StyledHeading = styled(Heading)`

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu as UikitMenu } from '@rug-zombie-libs/uikit'
+import { Menu as UikitMenu } from '@catacombs-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { languageList, Language } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
