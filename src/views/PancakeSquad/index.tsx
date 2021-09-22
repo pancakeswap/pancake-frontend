@@ -15,7 +15,6 @@ import { getUserStatus } from './utils'
 
 const PancakeSquad: React.FC = () => {
   const { account } = useWeb3React()
-  const [isLoading, setIsLoading] = useState(true)
   const { hasProfile, isInitialized } = useProfile()
   const nftSaleContract = useNftSaleContract()
   const pancakeSquadContract = usePancakeSquadContract()
@@ -23,6 +22,7 @@ const PancakeSquad: React.FC = () => {
   const [dynamicSaleInfo, setDynamicSaleInfo] = useState<DynamicSaleInfos>()
   const { hasGen0 } = useGetCollectibles()
   const lastBlockNumber = useBlock()
+  const isLoading = !fixedSaleInfo || !dynamicSaleInfo
 
   const userStatus = getUserStatus({
     account,
@@ -85,8 +85,10 @@ const PancakeSquad: React.FC = () => {
   }, [nftSaleContract, pancakeSquadContract, account, lastBlockNumber])
 
   useEffect(() => {
-    if (fixedSaleInfo !== undefined && dynamicSaleInfo !== undefined && isLoading) setIsLoading(false)
-  }, [fixedSaleInfo, dynamicSaleInfo, isLoading])
+    if (account) {
+      setDynamicSaleInfo(undefined)
+    }
+  }, [account])
 
   return (
     <StyledSquadContainer>
