@@ -51,8 +51,10 @@ const MoreFromThisCollection: React.FC = () => {
       {isMobile ? (
         <StyledSwiper>
           <Swiper spaceBetween={16} slidesPerView={1.5}>
-            {Object.values(nftList).map((bunny) => (
-              <SwiperSlide>
+            {Object.values(nftList).map((bunny, index) => (
+              // TODO temp
+              // eslint-disable-next-line react/no-array-index-key
+              <SwiperSlide key={index}>
                 <CollectibleLinkCard nft={bunny} />
               </SwiperSlide>
             ))}
@@ -69,8 +71,10 @@ const MoreFromThisCollection: React.FC = () => {
               clickable: true,
             }}
           >
-            {Object.values(nftList).map((bunny) => (
-              <SwiperSlide>
+            {Object.values(nftList).map((bunny, index) => (
+              // TODO temp
+              // eslint-disable-next-line react/no-array-index-key
+              <SwiperSlide key={index}>
                 <CollectibleLinkCard nft={bunny} />
               </SwiperSlide>
             ))}
