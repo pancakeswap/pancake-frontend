@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Button, Flex, Link, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LandingBodyWrapper, StyledWaveContainer } from 'views/PancakeSquad/styles'
+import { useTheme } from 'styled-components'
 import artistConfigBuilder from './config'
 import { StyledArtistBioContainer, StyledArtistSectionContainer } from './styles'
 import ArtistBottomWave from '../../assets/ArtistBottomWave'
@@ -9,6 +10,7 @@ import TriangleBio from '../../assets/TriangleBio'
 
 const ArtistSection = () => {
   const { t } = useTranslation()
+  const { isDark } = useTheme()
 
   const { headingText, bodyText, buttons, image } = artistConfigBuilder({ t })
 
@@ -40,7 +42,7 @@ const ArtistSection = () => {
                 {text}
               </Text>
             ))}
-            <TriangleBio />
+            <TriangleBio isDark={isDark} />
           </StyledArtistBioContainer>
           <Flex justifyContent={['center', null, null, 'flex-start']}>
             {buttons.map((button) => (
@@ -55,8 +57,8 @@ const ArtistSection = () => {
           </Flex>
         </Flex>
       </LandingBodyWrapper>
-      <StyledWaveContainer bottom="-2px">
-        <ArtistBottomWave />
+      <StyledWaveContainer bottom="-3px">
+        <ArtistBottomWave isDark={isDark} />
       </StyledWaveContainer>
     </StyledArtistSectionContainer>
   )

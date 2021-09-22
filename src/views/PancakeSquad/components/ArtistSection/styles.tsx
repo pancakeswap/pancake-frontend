@@ -10,7 +10,7 @@ export const StyledArtistBioContainer = styled(Flex)`
   position: relative;
   padding: 48px 36px;
   border-radius: 56px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.invertedContrast};
   box-shadow: ${({ theme }) => theme.shadows.level1};
 
   & > svg {

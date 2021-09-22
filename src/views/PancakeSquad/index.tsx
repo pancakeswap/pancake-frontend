@@ -13,6 +13,7 @@ import { StyledSquadContainer } from './styles'
 import { DynamicSaleInfos, FixedSaleInfos, SaleStatusEnum } from './types'
 import { getUserStatus } from './utils'
 import ArtistSection from './components/ArtistSection'
+import FaqSection from './components/FaqSection'
 
 const PancakeSquad: React.FC = () => {
   const { account } = useWeb3React()
@@ -110,6 +111,7 @@ const PancakeSquad: React.FC = () => {
         account={account}
       />
       <ArtistSection />
+      <FaqSection />
     </StyledSquadContainer>
   )
 }
