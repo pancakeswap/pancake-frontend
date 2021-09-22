@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 457,
+    lpSymbol: 'NFT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x0ecc84c9629317a494f12bc56aa2522475bf32e8',
+    },
+    token: serializedTokens.nft,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 429,
     lpSymbol: 'CHESS-USDC LP',
     lpAddresses: {
