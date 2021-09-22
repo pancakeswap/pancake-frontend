@@ -104,9 +104,10 @@ export interface NFT {
   collectionAddress: string
   description: string
   image: Image
-  tokens?: Record<number, NftTokenSg>
-  attributes?: any[]
   updatedAt: string
+  attributes?: any[]
+  tokens?: Record<number, NftTokenSg>
+  lowestPricedToken?: NftTokenSg
   meta?: Record<string, string | number>
 }
 
