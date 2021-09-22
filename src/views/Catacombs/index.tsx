@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { BaseLayout } from '@rug-zombie-libs/uikit'
+import { BaseLayout } from '@catacombs-libs/uikit'
 import CatacombsSVG from '../../images/catacombs.svg'
 import useEagerConnect from '../../hooks/useEagerConnect'
 import { useMultiCall } from '../../hooks/useContract'
