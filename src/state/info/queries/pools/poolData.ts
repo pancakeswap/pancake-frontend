@@ -100,7 +100,7 @@ const fetchPoolData = async (
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch pool data', error)
-    return { erro: true }
+    return { error: true }
   }
 }
 

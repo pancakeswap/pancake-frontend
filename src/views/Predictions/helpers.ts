@@ -62,7 +62,7 @@ export const getHasRoundFailed = (round: NodeRound, buffer: number) => {
   return false
 }
 
-export const getMultiplierv2 = (total: ethers.BigNumber, amount: ethers.BigNumber) => {
+export const getMultiplierV2 = (total: ethers.BigNumber, amount: ethers.BigNumber) => {
   if (!total) {
     return ethers.FixedNumber.from(0)
   }

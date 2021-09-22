@@ -33,7 +33,7 @@ export const getPercentChange = (valueNow?: number, valueBefore?: number): numbe
  * @param valueNow - current value
  * @param valueOnePeriodAgo - value 1 period ago (e.g. 1 day or 1 week ago), period unit must be same as valueTwoPeriodsAgo
  * @param valueTwoPeriodsAgo - value 2 periods ago (e.g. 2 days or 2 weeks ago), period unit must be same as valueOnePeriodAgo
- * @returns amount change for the latest period and percetage change compared to previous period
+ * @returns amount change for the latest period and percentage change compared to previous period
  */
 export const getChangeForPeriod = (
   valueNow?: number,
