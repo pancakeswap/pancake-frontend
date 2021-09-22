@@ -5,7 +5,7 @@ import orderBy from 'lodash/orderBy'
 import { useAppDispatch } from 'state'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
 import { getLastUpdatedFromNft, getLowestPriceFromNft } from 'state/nftMarket/helpers'
-import { Collection } from 'state/nftMarket/types'
+import { Collection, NFT } from 'state/nftMarket/types'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
@@ -29,7 +29,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
     return <GridPlaceholder />
   }
 
-  const nftList = Object.values(nfts).map((nft) => ({
+  const nftList: NFT[] = Object.values(nfts).map((nft) => ({
     ...nft,
     meta: {
       lowestTokenPrice: getLowestPriceFromNft(nft),
