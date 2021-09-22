@@ -729,6 +729,7 @@
   "Congratulations!": "வாழ்த்துக்கள்!",
   "You won a collectible!": "கலெக்டிபிளை வென்றுள்ளீர்கள்!",
   "Claim now": "இப்போது கிளைம்செய்",
+  "Claiming...": "Claiming...",
   "NFT in wallet": "வாலெட்டிலுள்ள NFT",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "CAKEக்கு உங்கள் NFTல் டிரேட் செய்யவும் அல்லது உங்கள் சேகரிப்பிற்கு வைத்துக்கொள்ளவும்.",
   "No NFTs to claim": "கிளைம் செய்ய NFTகள் இல்லை",
@@ -1465,5 +1466,6 @@
   "Dark mode": "டார்க் முறைமை",
   "Invalid pair": "செல்லுபடியற்ற ஜோடி",
   "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt"
+  "Transaction receipt": "Transaction receipt",
+  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
 }
