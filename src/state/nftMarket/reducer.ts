@@ -3,6 +3,7 @@ import minBy from 'lodash/minBy'
 import pickBy from 'lodash/pickBy'
 import isEmpty from 'lodash/isEmpty'
 import mapValues from 'lodash/mapValues'
+import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
   getNftsFromCollectionApi,
   getNftsFromCollectionSg,
@@ -88,7 +89,7 @@ export const fetchNftsFromCollections = createAsyncThunk<Record<string, PancakeB
       {},
     )
 
-    return mapValues<ApiResponseCollectionTokens['data'], PancakeBunnyNftWithTokens>(nfts, (nft) => {
+    return mapValues<ApiResponseCollectionTokens['data'], PancakeBunnyNftWithTokens>(nfts, (nft, bunnyId) => {
       const tokens = nft.tokens.reduce((accum: Record<number, TokenMarketData>, tokenId: number) => {
         const token = nftsMarketObj[tokenId]
         return { ...accum, [tokenId]: token }
@@ -98,6 +99,18 @@ export const fetchNftsFromCollections = createAsyncThunk<Record<string, PancakeB
       const lowestPricedToken: TokenMarketData = !isEmpty(tradableTokens)
         ? minBy(Object.values(tradableTokens), 'currentAskPrice')
         : null
+
+      // Generating attributes field that is not returned by API but can be "faked" since objects are keyed with bunny id
+      const attributes =
+        collectionAddress === pancakeBunniesAddress
+          ? [
+              {
+                traitType: 'bunnyId',
+                value: bunnyId,
+                displayType: null,
+              },
+            ]
+          : null
       return {
         name: nft.name,
         description: nft.description,
@@ -105,6 +118,7 @@ export const fetchNftsFromCollections = createAsyncThunk<Record<string, PancakeB
         collectionAddress,
         image: nft.image,
         tokens,
+        attributes,
         lowestPricedToken,
       }
     })
