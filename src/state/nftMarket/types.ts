@@ -212,7 +212,7 @@ export interface ApiSingleCollectionResponse {
 // ${API_NFT}/collections/${collectionAddress}/tokens
 export interface ApiResponseCollectionTokens {
   total: number
-  attributeDistribution: Record<string, number>
+  attributesDistribution: Record<string, number>
   data: {
     [key: string]: {
       name: string

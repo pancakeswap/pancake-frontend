@@ -90,7 +90,7 @@ export const fetchNftsFromCollections = createAsyncThunk<Record<string, PancakeB
       {},
     )
 
-    return mapValues<ApiResponseCollectionTokens['data'], PancakeBunnyNftWithTokens>(nfts, (nft, bunnyId) => {
+    return mapValues<ApiResponseCollectionTokens['data'], PancakeBunnyNftWithTokens>(nfts?.data, (nft) => {
       const tokens = nft.tokens.reduce((accum: Record<number, TokenMarketData>, tokenId: number) => {
         const token = nftsMarketObj[tokenId]
         return { ...accum, [tokenId]: token }
