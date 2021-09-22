@@ -12,6 +12,7 @@ import PancakeSquadHeader from './components/Header'
 import { StyledSquadContainer } from './styles'
 import { DynamicSaleInfos, FixedSaleInfos, SaleStatusEnum } from './types'
 import { getUserStatus } from './utils'
+import ArtistSection from './components/ArtistSection'
 
 const PancakeSquad: React.FC = () => {
   const { account } = useWeb3React()
@@ -108,6 +109,7 @@ const PancakeSquad: React.FC = () => {
         isLoading={isLoading}
         account={account}
       />
+      <ArtistSection />
     </StyledSquadContainer>
   )
 }
