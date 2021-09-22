@@ -27,7 +27,7 @@ const EventDescriptionSection = () => {
           mr={[null, null, null, '64px']}
           alignSelf={['flex-start', null, null, 'center']}
         >
-          <Text fontSize="40px" mb="24px" bold>
+          <Text color="text" fontSize="40px" mb="24px" bold>
             {headingText}
           </Text>
           <Text color="textSubtle" mb="24px">

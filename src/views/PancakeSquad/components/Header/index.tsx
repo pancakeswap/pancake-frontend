@@ -21,7 +21,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
   isLoading,
 }) => {
   const { t } = useTranslation()
-  const { theme } = useTheme()
+  const { theme, isDark } = useTheme()
   const { balance: cakeBalance } = useGetCakeBalance()
   const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = fixedSaleInfo
   const {
@@ -105,7 +105,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         </StyledSquadEventContainer>
       </StyledSquadEventBorder>
       <StyledWaveContainer bottom="-2px">
-        <HeaderBottomWave />
+        <HeaderBottomWave isDark={isDark} />
       </StyledWaveContainer>
     </StyledSquadHeaderContainer>
   )
