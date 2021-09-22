@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, useModal, Text, Flex } from '@pancakeswap/uikit'
 import { useUserNfts } from 'state/nftMarket/hooks'
-import { NFT, NftLocation, NftTokenSg, UserNftInitializationState } from 'state/nftMarket/types'
+import { PancakeBunnyNftWithTokens, NftLocation, UserNftInitializationState, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { CollectibleActionCard } from '../../components/CollectibleCard'
 import GridPlaceholder from '../../components/GridPlaceholder'
@@ -11,7 +11,7 @@ import SellModal from '../../components/BuySellModals/SellModal'
 import { SellNFT } from '../../components/BuySellModals/SellModal/types'
 
 interface ProfileNftProps {
-  nft: NFT
+  nft: PancakeBunnyNftWithTokens
   location: NftLocation
 }
 
@@ -29,8 +29,8 @@ const UserNfts = () => {
   const [onPresentSellModal] = useModal(<SellModal variant={clickedSellNft.variant} nftToSell={clickedSellNft.nft} />)
   const { t } = useTranslation()
 
-  const transformToSellNft = (nft: NFT) => {
-    const marketData: NftTokenSg = nft.tokens[nft.tokenId]
+  const transformToSellNft = (nft: NftToken) => {
+    const { marketData } = nft
 
     return {
       tokenId: nft.tokenId,
@@ -47,7 +47,7 @@ const UserNfts = () => {
     }
   }
 
-  const handleCollectibleClick = (nft, location) => {
+  const handleCollectibleClick = (nft: NftToken, location: NftLocation) => {
     switch (location) {
       case NftLocation.PROFILE:
         setClickedProfileNft({ nft, location })
@@ -97,17 +97,17 @@ const UserNfts = () => {
           alignItems="start"
         >
           {nfts.map((nft) => {
-            const marketData = nft.tokens[nft.tokenId]
+            const { marketData, location } = nft
 
             return (
               <CollectibleActionCard
-                onClick={() => handleCollectibleClick(nft, marketData.nftLocation)}
+                onClick={() => handleCollectibleClick(nft, location)}
                 key={`${nft.tokenId}-${nft.collectionName}`}
                 nft={nft}
                 currentAskPrice={
                   marketData.currentAskPrice && marketData.isTradable && parseFloat(marketData.currentAskPrice)
                 }
-                nftLocation={marketData.nftLocation}
+                nftLocation={location}
               />
             )
           })}

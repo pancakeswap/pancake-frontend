@@ -3,7 +3,7 @@ import { InjectedModalProps, Modal, Flex, Text, Button, useModal, Link, Grid } f
 import { BASE_URL } from 'config'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
-import { NFT } from 'state/nftMarket/types'
+import { PancakeBunnyNftWithTokens } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { RoundedImage } from './BuySellModals/shared/styles'
 import EditProfileModal from '../Profile/components/EditProfileModal'
@@ -19,7 +19,7 @@ const TextWrapper = styled(Flex)`
 `
 
 interface ProfileNftModalProps extends InjectedModalProps {
-  nft: NFT
+  nft: PancakeBunnyNftWithTokens
 }
 
 const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => {
@@ -52,7 +52,7 @@ const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => 
           </Text>
         </TextWrapper>
         <Flex flexDirection="column" pt="4px" pb="16px" px="16px" alignItems="center">
-          <Button as={Link} variant="text" mb="8px" href={`${BASE_URL}/nft/market/item/${nft.tokenId}`}>
+          <Button as={Link} variant="text" mb="8px" href={`${BASE_URL}/nft/market/item/${nft.name}`}>
             {t('View Item Page')}
           </Button>
           <Button onClick={onEditProfileModal} variant="secondary">
