@@ -27,7 +27,7 @@ const EventStepsSection: React.FC<EventStepsProps> = ({
   return (
     <StyledEventStepsSectionContainer flexDirection="column" alignItems="center" py="64px" $isDark={isDark}>
       <StyledWaveContainer top="-13px">
-        <EventStepsTopWave />
+        <EventStepsTopWave isDark={isDark} />
       </StyledWaveContainer>
       <Text color="invertedContrast" fontSize="40px" mb="64px" bold>
         {t('Sounds great, how can I get one?')}
