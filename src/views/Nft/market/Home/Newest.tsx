@@ -36,22 +36,6 @@ const useNewestNfts = () => {
 const Newest: React.FC = () => {
   const nfts = useNewestNfts()
 
-  // Get lowest price among same PancakeBunnies
-  // Note - most certainly temporary, not scalable on mainnet
-  const lowestPrices = nfts
-    ? nfts.reduce((lowestPricesMap, nftToken) => {
-        const { name } = nftToken
-        let lowestPrice = parseFloat(nftToken.marketData.currentAskPrice)
-        if (lowestPricesMap[name]) {
-          lowestPrice =
-            lowestPricesMap[name] < parseFloat(nftToken.marketData.currentAskPrice)
-              ? lowestPricesMap[name]
-              : parseFloat(nftToken.marketData.currentAskPrice)
-        }
-        return { ...lowestPricesMap, [name]: lowestPrice }
-      }, {})
-    : {}
-
   return (
     <div>
       <Flex justifyContent="space-between" alignItems="center" mb="26px">
@@ -73,13 +57,7 @@ const Newest: React.FC = () => {
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
         >
           {nfts.map((nft) => {
-            return (
-              <CollectibleLinkCard
-                key={nft.collectionAddress + nft.tokenId}
-                nft={nft}
-                lowestPrice={lowestPrices[nft.name]}
-              />
-            )
+            return <CollectibleLinkCard key={nft.collectionAddress + nft.tokenId} nft={nft} />
           })}
         </Grid>
       ) : (

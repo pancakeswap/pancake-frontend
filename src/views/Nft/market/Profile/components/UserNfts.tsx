@@ -108,7 +108,6 @@ const UserNfts = () => {
                   marketData.currentAskPrice && marketData.isTradable && parseFloat(marketData.currentAskPrice)
                 }
                 nftLocation={location}
-                lowestPrice={0.1}
               />
             )
           })}

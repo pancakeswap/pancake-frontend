@@ -55,7 +55,7 @@ const MoreFromThisCollection: React.FC = () => {
               // TODO temp
               // eslint-disable-next-line react/no-array-index-key
               <SwiperSlide key={index}>
-                <CollectibleLinkCard nft={bunny} lowestPrice={0.1} />
+                <CollectibleLinkCard nft={bunny} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -75,7 +75,7 @@ const MoreFromThisCollection: React.FC = () => {
               // TODO temp
               // eslint-disable-next-line react/no-array-index-key
               <SwiperSlide key={index}>
-                <CollectibleLinkCard nft={bunny} lowestPrice={0.1} />
+                <CollectibleLinkCard nft={bunny} />
               </SwiperSlide>
             ))}
           </Swiper>

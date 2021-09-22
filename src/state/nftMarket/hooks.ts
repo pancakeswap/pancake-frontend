@@ -66,7 +66,7 @@ export const useUserActivity = (): (Transaction | AskOrder)[] => {
   return []
 }
 
-export const useGetLowestPricedPB = (nft: NFT): NftTokenSg => {
+export const useGetLowestPricedPB = (nft: PancakeBunnyNftWithTokens): TokenMarketData => {
   const nfts = useNftsFromCollection(nft.collectionAddress)
 
   if (!nft.attributes) {

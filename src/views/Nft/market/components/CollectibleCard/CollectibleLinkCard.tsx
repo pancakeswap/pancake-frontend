@@ -5,17 +5,11 @@ import CardBody from './CardBody'
 import { CollectibleCardProps } from './types'
 import { nftsBaseUrl } from '../../constants'
 
-const CollectibleLinkCard: React.FC<CollectibleCardProps> = ({
-  nft,
-  nftLocation,
-  currentAskPrice,
-  lowestPrice,
-  ...props
-}) => {
+const CollectibleLinkCard: React.FC<CollectibleCardProps> = ({ nft, nftLocation, currentAskPrice, ...props }) => {
   return (
     <StyledCollectibleCard {...props}>
       <Link to={`${nftsBaseUrl}/collections/${nft.collectionAddress}/${nft.name}`}>
-        <CardBody nft={nft} nftLocation={nftLocation} currentAskPrice={currentAskPrice} lowestPrice={lowestPrice} />
+        <CardBody nft={nft} nftLocation={nftLocation} currentAskPrice={currentAskPrice} />
       </Link>
     </StyledCollectibleCard>
   )
