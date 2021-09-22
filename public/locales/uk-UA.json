@@ -729,6 +729,7 @@
   "Congratulations!": "Вітаємо!",
   "You won a collectible!": "Ви виграли колекційний токен!",
   "Claim now": "Отримати зараз",
+  "Claiming...": "Claiming...",
   "NFT in wallet": "Невзаємозамінний токен у гаманці",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "Обміняйте свій невзаємозамінний токен на CAKE або збережіть його для колекції.",
   "No NFTs to claim": "Немає невзаємозамінних токенів, які можна було б отримати",
@@ -1465,5 +1466,6 @@
   "Dark mode": "Темний режим",
   "Invalid pair": "Недійсна пара",
   "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt"
+  "Transaction receipt": "Transaction receipt",
+  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
 }
