@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uikit'
 import { Link } from 'react-router-dom'
-import { NFT } from 'state/nftMarket/types'
+import { NftToken } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
 import { TMP_SEE_ALL_LINK } from 'views/Nft/market/constants'
 import { CollectibleLinkCard } from '../components/CollectibleCard'
@@ -9,13 +9,13 @@ import GridPlaceholder from '../components/GridPlaceholder'
 
 /**
  * Fetch latest NFTs data from SG+API and combine them
- * @returns Array of NFT
+ * @returns Array of NftToken
  */
 const useNewestNfts = () => {
-  const [state, setstate] = useState<NFT[]>(null)
+  const [newestNfts, setNewestNfts] = useState<NftToken[]>(null)
 
   useEffect(() => {
-    const runEffect = async () => {
+    const fetchNewestNfts = async () => {
       const nftsFromSg = await getLatestListedNfts(8)
       const nftsFromApi = await getNftsFromDifferentCollectionsApi(
         nftsFromSg.map((nft) => ({ collectionAddress: nft.collection.id, tokenId: nft.tokenId })),
@@ -23,14 +23,14 @@ const useNewestNfts = () => {
 
       const nfts = nftsFromSg.map((nftFromSg, index) => {
         const nftFromApi = nftsFromApi[index]
-        return { ...nftFromApi, tokens: [nftFromSg] }
+        return { ...nftFromApi, marketData: nftFromSg }
       })
-      setstate(nfts)
+      setNewestNfts(nfts)
     }
-    runEffect()
+    fetchNewestNfts()
   }, [])
 
-  return state
+  return newestNfts
 }
 
 const Newest: React.FC = () => {

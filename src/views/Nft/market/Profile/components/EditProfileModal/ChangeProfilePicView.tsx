@@ -33,7 +33,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const { toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
 
-  const nftsInWallet = nfts.filter((nft) => nft.tokens[nft.tokenId].nftLocation === NftLocation.WALLET)
+  const nftsInWallet = nfts.filter((nft) => nft.location === NftLocation.WALLET)
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({

@@ -82,8 +82,15 @@ const MintedTableRows: React.FC<ForSaleTableRowsProps> = ({ collectiblesForSale 
   const bnbBusdPrice = useBNBBusdPrice()
   return (
     <OwnersTableRow>
-      {collectiblesForSale.map((collectibleAndOwnerData) => (
-        <Row t={t} collectibleForSale={collectibleAndOwnerData} bnbBusdPrice={bnbBusdPrice} />
+      {collectiblesForSale.map((collectibleAndOwnerData, index) => (
+        <Row
+          // TODO temp
+          // eslint-disable-next-line react/no-array-index-key
+          key={index}
+          t={t}
+          collectibleForSale={collectibleAndOwnerData}
+          bnbBusdPrice={bnbBusdPrice}
+        />
       ))}
     </OwnersTableRow>
   )
