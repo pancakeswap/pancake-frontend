@@ -62,7 +62,11 @@ export const useUserActivity = (): (Transaction | AskOrder)[] => {
 export const useGetLowestPricedPB = (nft: NFT): NftTokenSg => {
   const nfts = useNftsFromCollection(nft.collectionAddress)
 
-  const bunnyId = nft.attributes.find((attribute) => attribute.traitType === 'bunnyId')?.value
+  if (!nft.attributes) {
+    return null
+  }
+
+  const bunnyId = nft.attributes.find((attribute) => attribute?.traitType === 'bunnyId')?.value
   const lowestPriceToken = nfts && nfts[bunnyId].lowestPricedToken
 
   return lowestPriceToken
