@@ -96,7 +96,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
       txHash={txHashBuyingResult}
       loadingText={t('Please enable BNB spending in your wallet')}
       loadingButtonLabel={t('Confirming...')}
-      successButtonLabel={t('Mint more')}
+      successButtonLabel={t('Close')}
     />,
   )
 
