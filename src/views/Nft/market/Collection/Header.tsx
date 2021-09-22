@@ -14,6 +14,7 @@ import AvatarImage from '../components/BannerHeader/AvatarImage'
 import BaseSubMenu from '../components/BaseSubMenu'
 import { nftsBaseUrl } from '../constants'
 import TopBar from './TopBar'
+import LowestPriceStatBoxItem from './LowestPriceStatBoxItem'
 
 interface HeaderProps {
   collection: Collection
@@ -50,6 +51,7 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
           <StatBox>
             <StatBoxItem title={t('Items')} stat={formatNumber(ethers.BigNumber.from(totalSupply).toNumber(), 0, 0)} />
             <StatBoxItem title={t('Owners')} stat={formatBigNumber(owners, 0, 0)} />
+            <LowestPriceStatBoxItem collectionAddress={collection.address} />
             <StatBoxItem title={t('Vol. (%symbol%)', { symbol: 'BNB' })} stat={formatBigNumber(volume, 0, 0)} />
           </StatBox>
         </MarketPageTitle>

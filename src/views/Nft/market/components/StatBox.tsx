@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, BoxProps, Flex, Text } from '@pancakeswap/uikit'
+import { Box, BoxProps, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 
-interface StatBoxItemProps extends BoxProps {
+export interface StatBoxItemProps extends BoxProps {
   title: string
   stat: string
 }
@@ -12,9 +12,13 @@ export const StatBoxItem: React.FC<StatBoxItemProps> = ({ title, stat, ...props 
     <Text fontSize="12px" color="textSubtle" textAlign="center">
       {title}
     </Text>
-    <Text fontWeight="600" textAlign="center">
-      {stat}
-    </Text>
+    {stat === null ? (
+      <Skeleton height="24px" width="50%" mx="auto" />
+    ) : (
+      <Text fontWeight="600" textAlign="center">
+        {stat}
+      </Text>
+    )}
   </Box>
 )
 
