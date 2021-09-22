@@ -1,4 +1,4 @@
-import { Box, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
 import confetti from 'canvas-confetti'
 import { useTranslation } from 'contexts/Localization'
 import { delay } from 'lodash'
@@ -39,10 +39,9 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
     setIsLoading(true)
     try {
       await onClick()
-    } catch (e) {
+    } finally {
       onDismiss()
     }
-    onDismiss()
   }
 
   useEffect(() => {
@@ -58,7 +57,11 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
         <Text textAlign="center" bold color="secondary" fontSize="24px" mb="24px">
           {t('You won points for joining PancakeSwap during the first year of our journey!')}
         </Text>
-        <Button disabled={isLoading} onClick={handleClick}>
+        <Button
+          disabled={isLoading}
+          onClick={handleClick}
+          endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+        >
           {isLoading ? t('Claiming...') : t('Claim now')}
         </Button>
       </Flex>

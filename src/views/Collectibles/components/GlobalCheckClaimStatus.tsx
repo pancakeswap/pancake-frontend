@@ -7,7 +7,7 @@ import nfts from 'config/constants/nfts'
 import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import NftGiveawayModal from './NftGiveawayModal'
 import useBunnySpecialLottery from '../hooks/useBunnySpecialLottery'
-import AnniversaryAchievementModal from './AnniversaryAchievement'
+import AnniversaryAchievementModal from './AnniversaryAchievementModal'
 
 interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
@@ -22,7 +22,7 @@ interface GlobalCheckClaimStatusProps {
 const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocations }) => {
   const hasDisplayedModal = useRef(false)
   const [claimableNfts, setClaimableNfts] = useState<Nft[]>([])
-  const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(false)
+  const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(true)
   const [onPresentGiftModal] = useModal(<NftGiveawayModal nfts={claimableNfts} />)
   const { account } = useWeb3React()
   const { pathname } = useLocation()
