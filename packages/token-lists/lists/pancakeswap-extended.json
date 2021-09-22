@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-09-08T07:18:18.692Z",
+  "timestamp": "2021-09-22T08:03:26.032Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 24
+    "patch": 25
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1115,6 +1115,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xA1303E6199b319a891b79685F0537D289af1FC83.png"
+    },
+    {
+      "name": "APENFT",
+      "symbol": "NFT",
+      "address": "0x1fC9004eC7E5722891f5f38baE7678efCB11d34D",
+      "chainId": 56,
+      "decimals": 6,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x1fC9004eC7E5722891f5f38baE7678efCB11d34D.png"
     },
     {
       "name": "Nerve Finance",

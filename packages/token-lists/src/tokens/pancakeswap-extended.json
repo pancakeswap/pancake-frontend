@@ -1854,5 +1854,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xb6C53431608E626AC81a9776ac3e999c5556717c.png"
+  },
+  {
+    "name": "APENFT",
+    "symbol": "NFT",
+    "address": "0x1fC9004eC7E5722891f5f38baE7678efCB11d34D",
+    "chainId": 56,
+    "decimals": 6,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x1fC9004eC7E5722891f5f38baE7678efCB11d34D.png"
   }
 ]
