@@ -67,20 +67,12 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           } else if(bnbLpTokenIndex === 1) {
             rewardTokenPriceBnb = getBalanceAmount(new BigNumber(res._reserve1), 18).div(getBalanceAmount(new BigNumber(res._reserve0), rewardToken.decimals))
           }
-        // if(rewardToken.decimals === 18) {
           setRewardTokenPrice(rewardTokenPriceBnb.times(bnbPrice).toNumber())
-        // }// else {
-        //   setRewardTokenPrice(getBalanceAmount(rewardTokenPriceBnb, rewardToken.decimals).times(bnbPrice).toNumber())
-        // }
       })
     }
   }, [id, bnbLpTokenIndex, bnbPrice, rewardToken.decimals, rewardTokenBnbLp, rewardTokenId])
-  if(id === 8) {
-    console.log(getBalanceAmount(poolInfo.rewardPerBlock, rewardToken.decimals).toString())
 
-  }
   const apr = getPoolApr(zombieUsdPrice, rewardTokenPrice, getBalanceAmount(poolInfo.totalZombieStaked).toNumber(), getBalanceAmount(poolInfo.rewardPerBlock, rewardToken.decimals).toNumber())
-
   const dailyApr = apr / 365
   const displayApr = apr > 10 ? numeral(apr).format('(0.00 a)') : numeral(apr).format('(0.0000 a)')
   const displayDailyApr = dailyApr > 100 ? numeral(dailyApr).format('(0.00 a)') : numeral(dailyApr).format('(0.00000 a)')
