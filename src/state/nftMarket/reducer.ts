@@ -1,4 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import minBy from 'lodash/minBy'
+import pickBy from 'lodash/pickBy'
+import isEmpty from 'lodash/isEmpty'
 import mapValues from 'lodash/mapValues'
 import {
   getNftsFromCollectionApi,
@@ -85,13 +88,21 @@ export const fetchNftsFromCollections = createAsyncThunk<NFT[], string>(
     )
 
     return mapValues(nfts, (nft, key) => {
+      const tokens = nft.tokens.reduce((accum: Record<string, NftTokenSg>, tokenId: string) => {
+        const token = nftsMarketObj[tokenId]
+        return { ...accum, [tokenId]: token }
+      }, {})
+
+      const tradableTokens = tokens && pickBy(tokens, (value: NftTokenSg) => value?.isTradable)
+      const lowestPricedToken: NftTokenSg = !isEmpty(tradableTokens)
+        ? minBy(Object.values(tradableTokens), 'currentAskPrice')
+        : null
+      const nftWithLowestPrice = { ...nft, lowestPricedToken }
+
       return {
         id: key,
-        ...nft,
-        tokens: nft.tokens.reduce((accum: Record<string, NftTokenSg>, tokenId: string) => {
-          const token = nftsMarketObj[tokenId]
-          return { ...accum, [tokenId]: token }
-        }, {}),
+        ...nftWithLowestPrice,
+        tokens,
       }
     })
   },
