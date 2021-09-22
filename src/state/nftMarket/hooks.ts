@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { ethers } from 'ethers'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { isAddress } from 'utils'
 import { fetchCollections, fetchNftsFromCollections } from './reducer'
 import { State } from '../types'
 import {
@@ -34,7 +35,8 @@ export const useGetCollection = (collectionAddress: string) => {
 }
 
 export const useNftsFromCollection = (collectionAddress: string) => {
-  const collections = useSelector((state: State) => state.nftMarket.data.nfts[collectionAddress])
+  const checksummedCollectionAddress = isAddress(collectionAddress) || ''
+  const collections = useSelector((state: State) => state.nftMarket.data.nfts[checksummedCollectionAddress])
   return collections
 }
 
