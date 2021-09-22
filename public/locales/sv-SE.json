@@ -729,6 +729,7 @@
   "Congratulations!": "Grattis!",
   "You won a collectible!": "Du vann ett samlarobjekt!",
   "Claim now": "Lös in nu",
+  "Claiming...": "Claiming...",
   "NFT in wallet": "NFT i plånbok",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "Växla in din NFT mot CAKE eller behåll det bara i din samling.",
   "No NFTs to claim": "Inga NFT att lösa in",
@@ -1465,5 +1466,6 @@
   "Dark mode": "Dark mode",
   "Invalid pair": "Invalid pair",
   "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt"
+  "Transaction receipt": "Transaction receipt",
+  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
 }
