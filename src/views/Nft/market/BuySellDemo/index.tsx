@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Box, Button, Grid, Heading, Text, useModal } from '@pancakeswap/uikit'
 import { useUserNfts, useNftsFromCollection } from 'state/nftMarket/hooks'
+import { PancakeBunnyNftWithTokens } from 'state/nftMarket/types'
 import useFetchUserNfts from '../Profile/hooks/useFetchUserNfts'
 import BuyModal from '../components/BuySellModals/BuyModal'
 import SellModal from '../components/BuySellModals/SellModal'
@@ -50,16 +51,28 @@ const BuyModalDemo = () => {
   const nfts = useNftsFromCollection(pancakeBunniesAddress)
   if (!nfts) return null
 
-  const nftList = Object.values(nfts).filter((nft) => {
-    const tokens = Object.values(nft.tokens)
-    const isTradable = tokens.find((t) => t?.isTradable)
-    return !!isTradable
-  })
+  // Make it an array
+  // Filter out PancakeBunnyNftWithTokens that have none tradable tokens
+  // Filter out non-tradable tokens within that
+  const nftList = Object.values(nfts)
+    .filter((nft) => {
+      const tokens = Object.values(nft.tokens)
+      const isTradable = tokens.find((t) => t?.isTradable)
+      return !!isTradable
+    })
+    .map<PancakeBunnyNftWithTokens>((nft) => {
+      const tradableTokens = Object.keys(nft.tokens)
+        .filter((tokenId) => nft.tokens[tokenId]?.isTradable)
+        .reduce((tokenArray, tokenId) => {
+          return { ...tokenArray, [tokenId]: nft.tokens[tokenId] }
+        }, {})
+      return { ...nft, tokens: tradableTokens }
+    })
 
   return (
     <Box>
       {nftList.map((nft) => (
-        <Box key={`${nft.tokenId}-${nft.collectionName}`} m="4px">
+        <Box key={`${nft.name}-${nft.collectionName}`} m="4px">
           {Object.values(nft.tokens).map((token) => (
             <BuyBunnyButton key={token.tokenId} nft={nft} token={token} />
           ))}
@@ -95,21 +108,21 @@ const SellModalDemo = () => {
 
   useEffect(() => {
     if (userNfts.length > 0) {
-      const nftsToSell = userNfts.reduce((allUserNfts, nft) => {
-        const tokens = Object.keys(nft.tokens).map((tokenId) => ({
-          tokenId: nft.tokens[tokenId].tokenId,
+      const nftsToSell = userNfts.map((nft) => {
+        return {
+          tokenId: nft.tokenId,
           name: nft.name,
           collection: {
-            address: nft.tokens[tokenId].collection.id,
+            // TODO: doesn't have to be object, can plug NftToken directly
             name: nft.collectionName,
+            address: nft.collectionAddress,
           },
-          isTradable: nft.tokens[tokenId].isTradable,
-          lowestPrice: nft.tokens[tokenId].latestTradedPriceInBNB,
-          currentAskPrice: nft.tokens[tokenId].currentAskPrice,
+          isTradable: nft.marketData.isTradable,
+          lowestPrice: nft.marketData.latestTradedPriceInBNB, // TODO: need to get lowest
+          currentAskPrice: nft.marketData.currentAskPrice,
           thumbnail: nft.image.thumbnail,
-        }))
-        return [...allUserNfts, ...tokens]
-      }, [])
+        }
+      })
       setNftsWithMetadata(nftsToSell)
     }
   }, [userNfts])

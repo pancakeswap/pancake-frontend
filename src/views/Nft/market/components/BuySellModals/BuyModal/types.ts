@@ -1,4 +1,4 @@
-import { NftTokenSg, Image } from 'state/nftMarket/types'
+import { TokenMarketData, Image } from 'state/nftMarket/types'
 
 export enum PaymentCurrency {
   BNB,
@@ -17,7 +17,7 @@ export interface BuyNFT {
     address: string
     name: string
   }
-  token: NftTokenSg
+  token: TokenMarketData
   name: string
   image: Image
 }
