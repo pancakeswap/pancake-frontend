@@ -1,4 +1,4 @@
-import { darkColors, Flex, Text } from '@pancakeswap/uikit'
+import { darkColors, Flex, lightColors, Text } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import React from 'react'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
@@ -21,15 +21,15 @@ const MintText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus, numberTi
   return displayMintText ? (
     <Flex flexDirection="column" mb="24px">
       <Flex>
-        <Text fontSize="16px" color="invertedContrast" mr="2px">
+        <Text fontSize="16px" color={lightColors.invertedContrast} mr="2px">
           {t('Your Mint Tickets: ')}
         </Text>
-        <Text fontSize="16px" color={numberTicketsOfUser > 0 ? 'warning' : 'failure'} bold>
+        <Text fontSize="16px" color={numberTicketsOfUser > 0 ? lightColors.warning : lightColors.failure} bold>
           {numberTicketsOfUser}
         </Text>
       </Flex>
       {saleStatus === SaleStatusEnum.Claim && (isUserUnconnected || hasNoTicketOrToken) && (
-        <Text mt="24px" fontSize="16px" color="warning" bold>
+        <Text mt="24px" fontSize="16px" color={lightColors.warning} bold>
           {t(
             isUserUnconnected
               ? 'Redeem Mint Tickets to mint NFTs'

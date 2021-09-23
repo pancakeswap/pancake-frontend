@@ -3,7 +3,12 @@ import { Button, Flex, Link, Text } from '@pancakeswap/uikit'
 import { LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import { useTranslation } from 'contexts/Localization'
 import eventDescriptionConfigBuilder from './config'
-import { StyledBodyTextElement, StyledBodyTextList, StyledEventDescriptionSectionContainer } from './styles'
+import {
+  StyledBodyTextElement,
+  StyledBodyTextList,
+  StyledBunnyImageContainer,
+  StyledEventDescriptionSectionContainer,
+} from './styles'
 
 const EventDescriptionSection = () => {
   const { t } = useTranslation()
@@ -26,6 +31,7 @@ const EventDescriptionSection = () => {
           flexDirection="column"
           mr={[null, null, null, '64px']}
           alignSelf={['flex-start', null, null, 'center']}
+          width={['100%', null, null, '50%']}
         >
           <Text color="text" fontSize="40px" mb="24px" bold>
             {headingText}
@@ -49,9 +55,13 @@ const EventDescriptionSection = () => {
             </Link>
           </Flex>
         </Flex>
-        <Flex order={[1, null, null, 2]} mb={['24px', null, '-3px']} maxWidth={['192px', null, '250px', '350px']}>
+        <StyledBunnyImageContainer
+          order={[1, null, null, 2]}
+          mb={['24px', null, '-3px']}
+          width={['192px', null, '250px', '50%']}
+        >
           <img src={image.src} alt={image.alt} />
-        </Flex>
+        </StyledBunnyImageContainer>
       </LandingBodyWrapper>
     </StyledEventDescriptionSectionContainer>
   )

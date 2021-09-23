@@ -7,12 +7,12 @@ export const StyledSquadContainer = styled(Box)`
 `
 
 export const LandingBodyWrapper = styled(Flex)`
-  max-width: 968px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 16px;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    margin: 0 0;
+    margin: 0 40px;
   }
 `
 

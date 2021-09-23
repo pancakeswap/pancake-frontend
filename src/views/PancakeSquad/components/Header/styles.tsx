@@ -1,4 +1,4 @@
-import { Box, Flex } from '@pancakeswap/uikit'
+import { Box, Flex, lightColors } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 export const StyledSquadHeaderContainer = styled(Flex)`
@@ -12,7 +12,7 @@ export const StyledSquadEventBorder = styled(Box)`
 `
 
 export const StyledSquadEventContainer = styled(Flex)`
-  background: ${({ theme }) => theme.colors.text};
+  background: ${lightColors.text};
   background-clip: padding-box;
   border-radius: inherit;
 `
