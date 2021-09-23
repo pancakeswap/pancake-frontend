@@ -20,7 +20,7 @@ const Items = () => {
 
   const sortByItems = [
     { label: t('Recently listed'), value: 'updatedAt' },
-    { label: t('Lowest price'), value: 'lowestTokenPrice' },
+    { label: t('Lowest price'), value: 'currentAskPrice' },
   ]
 
   const handleChange = (newOption: OptionProps) => {
