@@ -39,7 +39,7 @@ const config = ({ t }: FAQsType) => [
     title: 'How many can I mint?',
     description: [
       'The max limit per wallet is 20 NFTs.',
-      'Gen 0 Pancake Bunny NFT holders may also purchase one additional Pancake Squad NFT in the presale for each Pancake Bunny they hold.',
+      'Users holding Gen 0 Pancake Bunny NFTs at the snapshot may also purchase one additional Pancake Squad NFT in the presale for each Pancake Bunny they hold.',
       'For example, if you have 5 Gen 0 bunnies, you can buy 5 minting tickets in the presale, then max. 20 in the public sale.',
     ],
   },
