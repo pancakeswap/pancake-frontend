@@ -7,11 +7,16 @@ const useGetLowestPBNftPrice = (bunnyId: string) => {
 
   useEffect(() => {
     const fetchLowestPrice = async () => {
-      const response = await getNftsMarketData({ otherId: bunnyId, isTradable: true }, 1, 'currentAskPrice', 'asc')
+      try {
+        setIsFetching(true)
+        const response = await getNftsMarketData({ otherId: bunnyId, isTradable: true }, 1, 'currentAskPrice', 'asc')
 
-      if (response.length > 0) {
-        const [tokenMarketData] = response
-        setLowestPrice(parseFloat(tokenMarketData.currentAskPrice))
+        if (response.length > 0) {
+          const [tokenMarketData] = response
+          setLowestPrice(parseFloat(tokenMarketData.currentAskPrice))
+        }
+      } finally {
+        setIsFetching(false)
       }
     }
 
