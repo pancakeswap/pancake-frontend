@@ -41,6 +41,39 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 437,
+    lpSymbol: 'BMON-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3C2b7B578Dd2175A1c3524Aa0D515106282Bf108',
+    },
+    token: serializedTokens.bmon,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 446,
+    lpSymbol: 'BMON-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x00e53C169dA54a7E11172aEEDf8Eb87F060F479e',
+    },
+    token: serializedTokens.bmon,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
+    pid: 458,
+    lpSymbol: 'PROS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x109cBFfE72C02F26536Ff8b92278Dfd3610dE656',
+    },
+    token: serializedTokens.pros,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
     pid: 457,
     lpSymbol: 'NFT-BNB LP',
     lpAddresses: {
@@ -174,17 +207,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: serializedTokens.wbnb,
   },
   {
-    pid: 446,
-    lpSymbol: 'BMON-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x00e53C169dA54a7E11172aEEDf8Eb87F060F479e',
-    },
-    token: serializedTokens.bmon,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
-  },
-  {
     pid: 450,
     lpSymbol: 'SFUND-BNB LP',
     lpAddresses: {
@@ -274,17 +296,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0xb5e33fE13a821e55ED33C884589a804B1b4F6fD8',
     },
     token: serializedTokens.babycake,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-  },
-  {
-    pid: 437,
-    lpSymbol: 'BMON-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x3C2b7B578Dd2175A1c3524Aa0D515106282Bf108',
-    },
-    token: serializedTokens.bmon,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
   },

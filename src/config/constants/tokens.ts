@@ -41,6 +41,7 @@ export const mainnetTokens = {
     'StepHero',
     'https://stephero.io/',
   ),
+  pros: new Token(MAINNET, '0xEd8c8Aa8299C10f067496BB66f8cC7Fb338A3405', 18, 'PROS', 'Prosper', 'https://prosper.so/'),
   qbt: new Token(MAINNET, '0x17B7163cf1Dbd286E262ddc68b553D899B93f526', 18, 'QBT', 'Qubit Token', 'https://qbt.fi/'),
   cvp: new Token(
     MAINNET,
