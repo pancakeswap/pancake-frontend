@@ -58,16 +58,14 @@ export const getCollectionApi = async (collectionAddress: string): Promise<ApiCo
  * @param collectionAddress
  * @returns
  */
-export const getNftsFromCollectionApi = async (
-  collectionAddress: string,
-): Promise<ApiResponseCollectionTokens['data']> => {
+export const getNftsFromCollectionApi = async (collectionAddress: string): Promise<ApiResponseCollectionTokens> => {
   const res = await fetch(`${API_NFT}/collections/${collectionAddress}/tokens`)
   if (res.ok) {
-    const json = await res.json()
-    return json.data
+    const data = await res.json()
+    return data
   }
   console.error(`API: Failed to fetch NFT tokens for ${collectionAddress} collection`, res.statusText)
-  return {}
+  return null
 }
 
 /**
@@ -461,6 +459,7 @@ export const attachMarketDataToWalletNfts = (
         latestTradedPriceInBNB: null,
         tradeVolumeBNB: null,
         totalTrades: null,
+        otherId: null,
       }
     )
   })
