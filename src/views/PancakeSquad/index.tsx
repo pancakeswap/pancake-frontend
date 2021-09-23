@@ -74,7 +74,7 @@ const PancakeSquad: React.FC = () => {
           numberTicketsForGen0: currentNumberTicketsForGen0.toNumber(),
           numberTicketsUsedForGen0: currentNumberTicketsUsedForGen0.toNumber(),
           numberTicketsOfUser: currentNumberTicketsOfUser.toNumber(),
-          ticketsOfUser: currentTicketsOfUser,
+          ticketsOfUser: currentTicketsOfUser[0],
           totalSupplyMinted: currentTotalSupplyMinted.toNumber(),
           numberTokensOfUser: currentNumberTokensOfUser.toNumber(),
           startTimestamp: Number(currentStartTimestamp.toString().padEnd(13, '0')),
