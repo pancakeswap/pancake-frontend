@@ -107,7 +107,7 @@ const stepsConfigBuilder = ({
             numberTicketsForGen0={numberTicketsForGen0}
             pricePerTicket={pricePerTicket}
           />
-          {isBuyPhaseFinished && <ReadyText mt="16px" text={t('PhaseComplete!')} />}
+          {isBuyPhaseFinished && <ReadyText mt="16px" text={t('Phase Complete!')} />}
         </>
       ),
     },

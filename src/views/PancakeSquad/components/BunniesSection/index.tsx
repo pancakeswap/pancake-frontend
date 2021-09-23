@@ -3,11 +3,14 @@ import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import ColoredWordHeading from 'views/Home/components/ColoredWordHeading'
 import { LandingBodyWrapper } from 'views/PancakeSquad/styles'
+import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
+import useTheme from 'hooks/useTheme'
 import bunniesConfig from './config'
-import { StyledBunnySectionContainer } from './styles'
+import { StyledBunnySectionContainer, StyledImageContainer, StyledTextContainer } from './styles'
 
 const BunniesSection = () => {
   const { t } = useTranslation()
+  const { isDark } = useTheme()
 
   const { headingText, bodyText, subHeadingText, primaryButton, image } = bunniesConfig
 
@@ -20,10 +23,14 @@ const BunniesSection = () => {
         alignItems={['flex-end', null, 'center', null]}
         flexDirection={['column', null, null, 'row']}
       >
-        <Box mb={['24px', null, null, '-3px']} maxWidth={['192px', null, '250px', '100%']}>
+        <StyledImageContainer mb={['24px', null, null, '-3px']} width={['192px', null, '250px', '50%']}>
           <img src={image.src} alt={image.alt} />
-        </Box>
-        <Flex flexDirection="column" ml={[null, null, null, '64px']} alignSelf={['flex-start', null, null, 'center']}>
+        </StyledImageContainer>
+        <StyledTextContainer
+          flexDirection="column"
+          alignSelf={['flex-start', null, null, 'center']}
+          width={['100%', null, null, '50%']}
+        >
           <ColoredWordHeading text={headingTranslatedText} color="text" mb="0" />
           <ColoredWordHeading text={subHeadingTranslatedText} color="text" firstColor="failure" />
           {bodyText.map((text) => (
@@ -40,8 +47,11 @@ const BunniesSection = () => {
               </Button>
             </Link>
           </Flex>
-        </Flex>
+        </StyledTextContainer>
       </LandingBodyWrapper>
+      <Box position="absolute" bottom="-2px" width="100%">
+        {isDark ? <SlideSvgDark width="100%" /> : <SlideSvgLight width="100%" />}
+      </Box>
     </StyledBunnySectionContainer>
   )
 }

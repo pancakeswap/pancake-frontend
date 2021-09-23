@@ -31,12 +31,13 @@ const ArtistSection = () => {
             alignSelf={['flex-start', null, null, 'center']}
             mb="40px"
           >
-            <Flex flexDirection={['column', null, null, 'row']}>
-              <Text fontSize="40px" mr="4px" bold>{`${headingText}, `}</Text>
-              <Text fontSize="40px" color="secondary" bold>
+            <Text fontSize="40px" mr="4px" bold>
+              {`${headingText}, `}{' '}
+              <Text as="span" fontSize="40px" color="secondary" bold>
                 Chef Cecy
               </Text>
-            </Flex>
+            </Text>
+
             {bodyText.map((text) => (
               <Text key={text} color="textSubtle" mb="20px">
                 {text}
