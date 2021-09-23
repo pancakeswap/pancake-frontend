@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-09-22T08:03:26.032Z",
+  "timestamp": "2021-09-23T07:36:11.494Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 25
+    "patch": 26
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1291,6 +1291,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xaF53d56ff99f1322515E54FdDE93FF8b3b7DAFd5.png"
+    },
+    {
+      "name": "Prosper",
+      "symbol": "PROS",
+      "address": "0xEd8c8Aa8299C10f067496BB66f8cC7Fb338A3405",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xEd8c8Aa8299C10f067496BB66f8cC7Fb338A3405.png"
     },
     {
       "name": "Paris Saint-Germain",

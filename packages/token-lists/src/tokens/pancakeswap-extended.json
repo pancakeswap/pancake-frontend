@@ -1862,5 +1862,13 @@
     "chainId": 56,
     "decimals": 6,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x1fC9004eC7E5722891f5f38baE7678efCB11d34D.png"
+  },
+  {
+    "name": "Prosper",
+    "symbol": "PROS",
+    "address": "0xEd8c8Aa8299C10f067496BB66f8cC7Fb338A3405",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xEd8c8Aa8299C10f067496BB66f8cC7Fb338A3405.png"
   }
 ]
