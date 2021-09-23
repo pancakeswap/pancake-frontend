@@ -81,11 +81,11 @@ const fetchTokenData = async (
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch token data', error)
-    return { erro: true }
+    return { error: true }
   }
 }
 
-// Transforms tokens into "0xADDRESS: { ...TokenFields }" format and cast strigns to numbers
+// Transforms tokens into "0xADDRESS: { ...TokenFields }" format and cast strings to numbers
 const parseTokenData = (tokens?: TokenFields[]) => {
   if (!tokens) {
     return {}
