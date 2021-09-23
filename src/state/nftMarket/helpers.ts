@@ -459,6 +459,7 @@ export const attachMarketDataToWalletNfts = (
         latestTradedPriceInBNB: null,
         tradeVolumeBNB: null,
         totalTrades: null,
+        otherId: null,
       }
     )
   })

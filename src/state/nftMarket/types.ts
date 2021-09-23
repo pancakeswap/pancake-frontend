@@ -84,6 +84,7 @@ export interface TokenMarketData {
   tradeVolumeBNB: string
   totalTrades: string
   isTradable: boolean
+  otherId: string
   collection?: {
     id: string
   }
