@@ -20,11 +20,3 @@ export type UserCollectibles = {
   [NFTLocation.IN_WALLET]: Collectible[]
   [NFTLocation.PROFILE_PIC]: Collectible[]
 }
-
-export interface CollectibleAndOwnerData {
-  owner: {
-    account: string
-    profileName: string
-  }
-  collectible: Collectible
-}

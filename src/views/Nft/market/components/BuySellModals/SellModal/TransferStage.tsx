@@ -2,12 +2,13 @@ import React from 'react'
 import { Flex, Grid, Text, Button, Input, BinanceIcon, ErrorIcon } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
+import { NftToken } from 'state/nftMarket/types'
 import { Divider, RoundedImage } from '../shared/styles'
 import { GreyedOutContainer } from './styles'
-import { SellNFT } from './types'
 
 interface TransferStageProps {
-  nftToSell: SellNFT
+  nftToSell: NftToken
+  lowestPrice: number
   transferAddress: string
   setTransferAddress: React.Dispatch<React.SetStateAction<string>>
   isInvalidTransferAddress: boolean
@@ -16,6 +17,7 @@ interface TransferStageProps {
 
 const TransferStage: React.FC<TransferStageProps> = ({
   nftToSell,
+  lowestPrice,
   transferAddress,
   setTransferAddress,
   isInvalidTransferAddress,
@@ -39,18 +41,18 @@ const TransferStage: React.FC<TransferStageProps> = ({
         {t('Transfer to New Wallet')}
       </Text>
       <Flex p="16px">
-        <RoundedImage src={nftToSell.thumbnail} height={68} width={68} mr="8px" />
+        <RoundedImage src={nftToSell.image.thumbnail} height={68} width={68} mr="8px" />
         <Grid flex="1" gridTemplateColumns="1fr 1fr" alignItems="center">
           <Text bold>{nftToSell.name}</Text>
           <Text fontSize="12px" color="textSubtle" textAlign="right">
-            {nftToSell.collection.name}
+            {nftToSell.collectionName}
           </Text>
           <Text small color="textSubtle">
             {t('Lowest price')}
           </Text>
           <Flex alignItems="center" justifyContent="flex-end">
             <BinanceIcon width={16} height={16} mr="4px" />
-            <Text small>{nftToSell.lowestPrice}</Text>
+            <Text small>{lowestPrice}</Text>
           </Flex>
         </Grid>
       </Flex>

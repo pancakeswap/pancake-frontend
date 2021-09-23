@@ -16,16 +16,3 @@ export enum SellingStage {
   // Common
   TX_CONFIRMED,
 }
-
-export interface SellNFT {
-  tokenId: string
-  name: string
-  collection: {
-    address: string
-    name: string
-  }
-  isTradeable: boolean
-  lowestPrice: string
-  currentAskPrice: string
-  thumbnail: string
-}
