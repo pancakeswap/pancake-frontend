@@ -7,14 +7,7 @@ import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
 import { fetchCollections, fetchNftsFromCollections } from './reducer'
 import { State } from '../types'
-import {
-  UserNftsState,
-  AskOrder,
-  Transaction,
-  TokenIdWithCollectionAddress,
-  PancakeBunnyNftWithTokens,
-  TokenMarketData,
-} from './types'
+import { UserNftsState, AskOrder, Transaction, TokenIdWithCollectionAddress, TokenMarketData, NftToken } from './types'
 import { getNftsFromDifferentCollectionsApi } from './helpers'
 
 export const useFetchCollections = () => {
@@ -74,7 +67,7 @@ export const useUserActivity = (): (Transaction | AskOrder)[] => {
  * @returns NFT[]
  */
 export const useGetNftMetadata = (sgNfts: TokenMarketData[], account?: string) => {
-  const [nftMetadata, setNftMetadata] = useState<PancakeBunnyNftWithTokens[]>([])
+  const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
 
   useEffect(() => {
     const fetchMetadata = async () => {
