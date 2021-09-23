@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getNftsMarketData } from 'state/nftMarket/helpers'
-import { PancakeBunnyNftWithTokens } from 'state/nftMarket/types'
+import { NftToken } from 'state/nftMarket/types'
 
 export interface LowestPBNftPrice {
   isFetching: boolean
@@ -12,7 +12,7 @@ export interface LowestPBNftPrice {
  * Pancake Bunnies this helper will make sure it doesn't throw an error
  * @TODO: Revisit this once we get additional collections
  */
-export const useGetLowestPriceFromNft = (nft: PancakeBunnyNftWithTokens) => {
+export const useGetLowestPriceFromNft = (nft: NftToken) => {
   const bunnyIdAttr = nft.attributes?.find((attr) => attr.traitType === 'bunnyId')
   return useGetLowestPBNftPrice(bunnyIdAttr.value.toString())
 }

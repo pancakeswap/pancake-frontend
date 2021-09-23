@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Box, Button, Grid, Heading, Text, useModal } from '@pancakeswap/uikit'
 import { useUserNfts, useNftsFromCollection } from 'state/nftMarket/hooks'
-import { PancakeBunnyNftWithTokens } from 'state/nftMarket/types'
 import useFetchUserNfts from '../Profile/hooks/useFetchUserNfts'
 import BuyModal from '../components/BuySellModals/BuyModal'
 import SellModal from '../components/BuySellModals/SellModal'
@@ -15,7 +14,7 @@ const BuyBunnyButton = ({ nft, token }) => {
       address: pancakeBunniesAddress,
       name: 'Pancake Bunnies',
     },
-    token,
+    token: nft.marketData,
     name: nft.name,
     image: nft.image,
   }
@@ -39,7 +38,7 @@ const BuyBunnyButton = ({ nft, token }) => {
       <Text bold color="secondary" mr="8px">
         {nftToBuy.name}
       </Text>
-      <Text>{token.currentAskPrice} BNB</Text>
+      <Text>{token.marketData.currentAskPrice} BNB</Text>
       <Button scale="sm" variant="success" mr="4px" onClick={onPresentModal} disabled={yourListing}>
         {yourListing ? 'Its yours' : 'Buy'}
       </Button>
@@ -51,31 +50,15 @@ const BuyModalDemo = () => {
   const nfts = useNftsFromCollection(pancakeBunniesAddress)
   if (!nfts) return null
 
-  // Make it an array
-  // Filter out PancakeBunnyNftWithTokens that have none tradable tokens
-  // Filter out non-tradable tokens within that
-  const nftList = Object.values(nfts)
-    .filter((nft) => {
-      const tokens = Object.values(nft.tokens)
-      const isTradable = tokens.find((t) => t?.isTradable)
-      return !!isTradable
-    })
-    .map<PancakeBunnyNftWithTokens>((nft) => {
-      const tradableTokens = Object.keys(nft.tokens)
-        .filter((tokenId) => nft.tokens[tokenId]?.isTradable)
-        .reduce((tokenArray, tokenId) => {
-          return { ...tokenArray, [tokenId]: nft.tokens[tokenId] }
-        }, {})
-      return { ...nft, tokens: tradableTokens }
-    })
+  const nftList = nfts.filter((nft) => {
+    return !!nft.marketData.isTradable
+  })
 
   return (
     <Box>
       {nftList.map((nft) => (
-        <Box key={`${nft.name}-${nft.collectionName}`} m="4px">
-          {Object.values(nft.tokens).map((token) => (
-            <BuyBunnyButton key={token.tokenId} nft={nft} token={token} />
-          ))}
+        <Box key={`${nft.tokenId}`} m="4px">
+          <BuyBunnyButton key={nft.tokenId} nft={nft} token={nft} />
         </Box>
       ))}
     </Box>
