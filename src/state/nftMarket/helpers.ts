@@ -409,8 +409,9 @@ export const combineCollectionData = (
 
 /**
  * Evaluate whether a market NFT is in a users wallet, their profile picture, or on sale
- * @param marketNft NftTokenSg
- * @param account account string
+ * @param tokenId string
+ * @param tokenIdsInWallet array of tokenIds in wallet
+ * @param tokenIdsForSale array of tokenIds on sale
  * @param profileNftId Optional tokenId of users' profile picture
  * @returns NftLocation enum value
  */
@@ -434,12 +435,10 @@ export const getNftLocationForMarketNft = (
 }
 
 /**
- * Construct complete NftTokenSg entities with a users' wallet NFT ids and market data for their wallet NFTs
- * @param walletNfts { collectionAddress: string, tokenId: string, nftLocation?: NftLocation}[]
- * @param marketDataForWalletNfts NftTokenSg[]
- * @param account account string
- * @param profileNftId tokenId of a users' profile picture
- * @returns NftTokenSg[]
+ * Construct complete TokenMarketData entities with a users' wallet NFT ids and market data for their wallet NFTs
+ * @param walletNfts TokenIdWithCollectionAddress
+ * @param marketDataForWalletNfts TokenMarketData[]
+ * @returns TokenMarketData[]
  */
 export const attachMarketDataToWalletNfts = (
   walletNfts: TokenIdWithCollectionAddress[],
@@ -469,10 +468,13 @@ export const attachMarketDataToWalletNfts = (
 }
 
 /**
- * Attach NftTokenSg data to NftToken metadata's tokens object
- * @param nftsWithMetadata NFT[] with and empty tokens object
- * @param nftsForSale nfts that are on sale (i.e. not in a user's wallet)
- * @param walletNfts nfts in a user's wallet
+ * Attach TokenMarketData and location to NftToken
+ * @param nftsWithMetadata NftToken[] with API metadata
+ * @param nftsForSale  market data for nfts that are on sale (i.e. not in a user's wallet)
+ * @param walletNfts makret data for nfts in a user's wallet
+ * @param tokenIdsInWallet array of token ids in user's wallet
+ * @param tokenIdsForSale array of token ids of nfts that are on sale
+ * @param profileNftId profile picture token id
  * @returns NFT[]
  */
 export const combineNftMarketAndMetadata = (
