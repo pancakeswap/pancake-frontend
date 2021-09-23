@@ -729,6 +729,7 @@
   "Congratulations!": "Tebrikler!",
   "You won a collectible!": "Bir toplanabilir öğe kazandınız!",
   "Claim now": "Şimdi Alın",
+  "Claiming...": "Claiming...",
   "NFT in wallet": "NFT cüzdanda",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "NFT'nizi CAKE karşılığında takas edin ya da sadece koleksiyonunuzda tutun.",
   "No NFTs to claim": "Alınabilecek NFT'ler yok",
@@ -1465,5 +1466,6 @@
   "Dark mode": "Koyu mod",
   "Invalid pair": "Geçersiz işlem çifti",
   "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt"
+  "Transaction receipt": "Transaction receipt",
+  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
 }
