@@ -1,3 +1,4 @@
+import React from 'react'
 import { InstagramIcon, TwitterIcon } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
@@ -16,13 +17,13 @@ const artistConfigBuilder = ({ t }: ArtistConfigType) => ({
       to: 'https://twitter.com/cecymeade',
       text: t('Follow on Twitter'),
       external: true,
-      icon: TwitterIcon,
+      icon: <TwitterIcon color="white" />,
     },
     {
       to: 'https://www.instagram.com/cecymeade/',
-      text: t('Follow on instagram'),
+      text: t('Follow on Instagram'),
       external: true,
-      icon: InstagramIcon,
+      icon: <InstagramIcon color="white" />,
     },
   ],
   image: { src: '/images/pancakeSquad/artist.png', alt: 'Chef Cecy bio' },

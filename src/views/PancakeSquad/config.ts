@@ -15,7 +15,7 @@ const nftSaleConfigBuilder = ({ t, saleStatus, startTimestamp }: nftSaleType) =>
           status: getEventStepStatus({ saleStatus, eventStatus: [SaleStatusEnum.Pending, SaleStatusEnum.Premint] }),
           text: getEventText({ saleStatus, eventStatus: [SaleStatusEnum.Pending, SaleStatusEnum.Premint], t }),
           infoText: t(
-            'Activate your profile and make sure you  have at least 5 BNB in your wallet to buy a Minting Ticket.',
+            'Activate your profile and make sure you have at least the cost of 1 NFT in your wallet to buy a Squad Ticket.',
           ),
         },
         {
@@ -23,7 +23,7 @@ const nftSaleConfigBuilder = ({ t, saleStatus, startTimestamp }: nftSaleType) =>
           text: getEventText({ saleStatus, eventStatus: [SaleStatusEnum.Presale], t }),
           altText: getAltText({ t, saleStatus, eventStatus: [SaleStatusEnum.Presale], startTimestamp }),
           infoText: t(
-            'During this phase, any wallet holding a Minting Ticket can redeem their ticket to mint a Pancake Squad NFT.',
+            'Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at block xxxxxxx can purchase one Minting Ticket per Gen 0 NFT.',
           ),
         },
         {
@@ -45,7 +45,7 @@ const nftSaleConfigBuilder = ({ t, saleStatus, startTimestamp }: nftSaleType) =>
             startTimestamp,
           }),
           infoText: t(
-            'Public Sale: Any wallet with an active Pancake Profile can purchase up to 20 Minting Tickets, while stocks last.',
+            'Public Sale: Any wallet with an active Pancake Profile can purchase up to 20 Squad Tickets, while stocks last.',
           ),
         },
         {
@@ -53,7 +53,7 @@ const nftSaleConfigBuilder = ({ t, saleStatus, startTimestamp }: nftSaleType) =>
           text: getEventText({ saleStatus, eventStatus: [SaleStatusEnum.Claim], t }),
           altText: getAltText({ t, saleStatus, eventStatus: [SaleStatusEnum.Claim] }),
           infoText: t(
-            'Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at block xxxxxxx can purchase one Minting Ticket per Gen 0 NFT.',
+            'During this phase, any wallet holding a Squad Ticket can redeem their ticket to mint a Pancake Squad NFT.',
           ),
         },
       ]
