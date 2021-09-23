@@ -7,3 +7,12 @@ export type PancakeSquadHeaderType = {
   dynamicSaleInfo?: DynamicSaleInfos
   userStatus: UserStatusEnum
 }
+
+export enum ButtonsEnum {
+  CONNECT,
+  ACTIVATE,
+  BUY,
+  MINT,
+  END,
+  NONE,
+}

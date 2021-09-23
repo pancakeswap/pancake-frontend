@@ -10,8 +10,10 @@ import MintButton from '../Buttons/Mint'
 import EndEventButtons from '../Buttons/EndEvent'
 import ActivateProfileButton from '../Buttons/ActivateProfile'
 import ConnectWalletButton from '../Buttons/ConnectWallet'
+import { getCurrentButton } from './utils'
+import { ButtonsEnum } from './types'
 
-type PreEventProps = {
+export type CtaButtonsProps = {
   t: ContextApi['t']
   account: string
   saleStatus: SaleStatusEnum
@@ -31,7 +33,7 @@ type PreEventProps = {
   ticketsOfUser: BigNumber[]
 }
 
-const CtaButtons: React.FC<PreEventProps> = ({
+const CtaButtons: React.FC<CtaButtonsProps> = ({
   t,
   account,
   saleStatus,
@@ -50,42 +52,49 @@ const CtaButtons: React.FC<PreEventProps> = ({
   pricePerTicket,
   ticketsOfUser,
 }) => {
+  const buttonType = getCurrentButton({ numberTicketsOfUser, saleStatus, userStatus })
   return (
     <>
       <Flex>
-        <ConnectWalletButton userStatus={userStatus} />
-        <ActivateProfileButton userStatus={userStatus} t={t} />
-        <BuyTicketsButtons
-          t={t}
-          account={account}
-          theme={theme}
-          userStatus={userStatus}
-          saleStatus={saleStatus}
-          canClaimForGen0={canClaimForGen0}
-          maxPerAddress={maxPerAddress}
-          numberTicketsOfUser={numberTicketsOfUser}
-          numberTicketsUsedForGen0={numberTicketsUsedForGen0}
-          cakeBalance={cakeBalance}
-          maxPerTransaction={maxPerTransaction}
-          numberTicketsForGen0={numberTicketsForGen0}
-          pricePerTicket={pricePerTicket}
-        />
-        <MintButton
-          t={t}
-          theme={theme}
-          saleStatus={saleStatus}
-          numberTicketsOfUser={numberTicketsOfUser}
-          numberTokensOfUser={numberTokensOfUser}
-          ticketsOfUser={ticketsOfUser}
-        />
-        <EndEventButtons
-          t={t}
-          saleStatus={saleStatus}
-          userStatus={userStatus}
-          maxSupply={maxSupply}
-          totalSupplyMinted={totalSupplyMinted}
-          numberTokensOfUser={numberTokensOfUser}
-        />
+        {buttonType === ButtonsEnum.CONNECT && <ConnectWalletButton userStatus={userStatus} />}
+        {buttonType === ButtonsEnum.ACTIVATE && <ActivateProfileButton userStatus={userStatus} t={t} />}
+        {buttonType === ButtonsEnum.BUY && (
+          <BuyTicketsButtons
+            t={t}
+            account={account}
+            theme={theme}
+            userStatus={userStatus}
+            saleStatus={saleStatus}
+            canClaimForGen0={canClaimForGen0}
+            maxPerAddress={maxPerAddress}
+            numberTicketsOfUser={numberTicketsOfUser}
+            numberTicketsUsedForGen0={numberTicketsUsedForGen0}
+            cakeBalance={cakeBalance}
+            maxPerTransaction={maxPerTransaction}
+            numberTicketsForGen0={numberTicketsForGen0}
+            pricePerTicket={pricePerTicket}
+          />
+        )}
+        {buttonType === ButtonsEnum.MINT && (
+          <MintButton
+            t={t}
+            theme={theme}
+            saleStatus={saleStatus}
+            numberTicketsOfUser={numberTicketsOfUser}
+            numberTokensOfUser={numberTokensOfUser}
+            ticketsOfUser={ticketsOfUser}
+          />
+        )}
+        {buttonType === ButtonsEnum.END && (
+          <EndEventButtons
+            t={t}
+            saleStatus={saleStatus}
+            userStatus={userStatus}
+            maxSupply={maxSupply}
+            totalSupplyMinted={totalSupplyMinted}
+            numberTokensOfUser={numberTokensOfUser}
+          />
+        )}
       </Flex>
     </>
   )
