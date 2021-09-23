@@ -16,6 +16,7 @@ import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useAppDispatch } from 'state'
 import { addUserNft } from 'state/nftMarket/reducer'
+import { NftLocation } from 'state/nftMarket/types'
 import { StyledModal } from './styles'
 import ReviewStage from './ReviewStage'
 import ConfirmStage from '../shared/ConfirmStage'
@@ -108,6 +109,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
         addUserNft({
           tokenId: nftToBuy.token.tokenId,
           collectionAddress: nftToBuy.collection.address,
+          nftLocation: NftLocation.WALLET,
         }),
       )
       toastSuccess(

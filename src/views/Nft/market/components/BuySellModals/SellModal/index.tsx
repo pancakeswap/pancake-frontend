@@ -143,34 +143,36 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
   }
 
   const dispatchSuccessAction = () => {
-    // Remove from sale
-    if (stage === SellingStage.CONFIRM_REMOVE_FROM_MARKET) {
-      dispatch(
-        updateUserNft({
-          tokenId: nftToSell.tokenId,
-          collectionAddress: nftToSell.collection.address,
-          location: NftLocation.WALLET,
-        }),
-      )
-      return
+    switch (stage) {
+      // Remove from sale
+      case SellingStage.CONFIRM_REMOVE_FROM_MARKET:
+        dispatch(
+          updateUserNft({
+            tokenId: nftToSell.tokenId,
+            collectionAddress: nftToSell.collection.address,
+            location: NftLocation.WALLET,
+          }),
+        )
+        break
+      // Transfer NFT
+      case SellingStage.CONFIRM_TRANSFER:
+        dispatch(
+          removeUserNft({
+            tokenId: nftToSell.tokenId,
+          }),
+        )
+        break
+      default:
+        // Modify listing OR list for sale
+        dispatch(
+          updateUserNft({
+            tokenId: nftToSell.tokenId,
+            collectionAddress: nftToSell.collection.address,
+            location: NftLocation.FORSALE,
+          }),
+        )
+        break
     }
-    // Transfer NFT
-    if (stage === SellingStage.CONFIRM_TRANSFER) {
-      dispatch(
-        removeUserNft({
-          tokenId: nftToSell.tokenId,
-        }),
-      )
-      return
-    }
-    // Modify listing OR list for sale
-    dispatch(
-      updateUserNft({
-        tokenId: nftToSell.tokenId,
-        collectionAddress: nftToSell.collection.address,
-        location: NftLocation.FORSALE,
-      }),
-    )
   }
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
