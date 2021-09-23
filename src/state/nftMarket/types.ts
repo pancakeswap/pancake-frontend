@@ -84,6 +84,7 @@ export interface TokenMarketData {
   tradeVolumeBNB: string
   totalTrades: string
   isTradable: boolean
+  otherId: string
   collection?: {
     id: string
   }
@@ -102,8 +103,7 @@ export interface PancakeBunnyNftWithTokens {
   description: string
   image: Image
   tokens?: Record<number, TokenMarketData>
-  lowestPricedToken?: TokenMarketData
-  attributes?: any[]
+  attributes?: NftAttribute[]
   updatedAt?: string
   meta?: Record<string, string | number>
 }
@@ -212,7 +212,7 @@ export interface ApiSingleCollectionResponse {
 // ${API_NFT}/collections/${collectionAddress}/tokens
 export interface ApiResponseCollectionTokens {
   total: number
-  attributeDistribution: Record<string, number>
+  attributesDistribution: Record<string, number>
   data: {
     [key: string]: {
       name: string
