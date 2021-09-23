@@ -151,7 +151,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
         </Button>
       )}
       {!canBuySaleTicket && (
-        <Button width="100% " disabled>
+        <Button width="100%" disabled>
           {numberTicketsOfUser > 0 ? t('Max purchased') : t('Not Eligible')}
         </Button>
       )}

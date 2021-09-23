@@ -33,7 +33,7 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
       isLoading={isLoading}
       headerBackground={theme.colors.gradients.cardHeader}
       txHash={txHashMintingResult}
-      loadingText={t('Please enable WBNB spending in your wallet')}
+      loadingText={t('Please enable BNB spending in your wallet')}
       loadingButtonLabel={t('Minting...')}
       successButtonLabel={t('Close')}
     />,
@@ -43,16 +43,16 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
     setIsLoading(true)
     onPresentConfirmModal()
     try {
-      const tx = await callWithGasPrice(nftSaleContract, 'mint', ticketsOfUser)
+      const tx = await callWithGasPrice(nftSaleContract, 'mint', [ticketsOfUser])
       const receipt = await tx.wait()
       if (receipt.status) {
         setTxHashMintingResult(receipt.transactionHash)
-        setIsLoading(false)
       }
     } catch (error) {
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } finally {
       onDismiss()
       setIsLoading(false)
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     }
   }
 
@@ -61,7 +61,7 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
   return (
     <>
       {canMintTickets && (
-        <Button scale="sm" onClick={mintTokenCallBack}>
+        <Button width="100%" onClick={mintTokenCallBack}>
           {t('Mint NFTs (%tickets%)', { tickets: numberTicketsOfUser })}
         </Button>
       )}
