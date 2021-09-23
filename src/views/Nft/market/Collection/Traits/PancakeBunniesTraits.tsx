@@ -73,7 +73,11 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
             <tbody>
               {Object.keys(tokenApiResponse.data).map((bunnyId) => {
                 const nft = tokenApiResponse.data[bunnyId]
-                const count: number = tokenApiResponse.attributesDistribution.bunnyId[bunnyId]
+                if (!nft) {
+                  // Some bunnies don't exist on testnet
+                  return null
+                }
+                const count: number = tokenApiResponse.attributesDistribution[bunnyId] ?? 0
 
                 return (
                   <tr key={bunnyId}>
