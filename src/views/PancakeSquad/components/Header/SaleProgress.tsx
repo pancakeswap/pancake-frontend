@@ -49,7 +49,12 @@ const SaleProgress: React.FC<PreEventProps> = ({
               total: maxSupply.toString(),
             })}
       </Text>
-      {!isMintCompleted && <Progress variant="round" primaryStep={100 - supplyRemainingPercentage} />}
+      {!isMintCompleted && (
+        <Progress
+          variant="round"
+          primaryStep={isClaimingPhase ? supplyRemainingPercentage : 100 - supplyRemainingPercentage}
+        />
+      )}
     </Box>
   ) : null
 }
