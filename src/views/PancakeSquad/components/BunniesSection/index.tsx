@@ -6,13 +6,14 @@ import { LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
 import useTheme from 'hooks/useTheme'
 import bunniesConfig from './config'
-import { StyledBunnySectionContainer, StyledImageContainer, StyledTextContainer } from './styles'
+import { StyledBunnySectionContainer, StyledTextContainer } from './styles'
+import BunniesImages from './BunniesImages'
 
 const BunniesSection = () => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
 
-  const { headingText, bodyText, subHeadingText, primaryButton, image } = bunniesConfig
+  const { headingText, bodyText, subHeadingText, primaryButton, images } = bunniesConfig
 
   const headingTranslatedText = t(headingText)
   const subHeadingTranslatedText = t(subHeadingText)
@@ -23,9 +24,7 @@ const BunniesSection = () => {
         alignItems={['flex-end', null, 'center', null]}
         flexDirection={['column', null, null, 'row']}
       >
-        <StyledImageContainer mb={['24px', null, null, '-3px']} width={['192px', null, '250px', '50%']}>
-          <img src={image.src} alt={image.alt} />
-        </StyledImageContainer>
+        <BunniesImages basePath={images.basePath} altText={images.alt} />
         <StyledTextContainer
           flexDirection="column"
           alignSelf={['flex-start', null, null, 'center']}

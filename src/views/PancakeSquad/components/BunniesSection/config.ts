@@ -11,7 +11,7 @@ const bunniesConfig = {
     text: 'View in Market',
     external: false,
   },
-  image: { src: '/images/pancakeSquad/yellowBunny.png', alt: 'yellow bunny' },
+  images: { basePath: '/images/pancakeSquad/bunnies/bunny', alt: 'bunny nft' },
 }
 
 export default bunniesConfig
