@@ -7,7 +7,8 @@ import { RoundResult } from '../RoundResult'
 import BetResult, { Result } from './BetResult'
 
 interface BetDetailsProps {
-  bid: any
+  bid: any;
+  id: number;
 }
 
 const StyledBetDetails = styled.div`
@@ -16,13 +17,13 @@ const StyledBetDetails = styled.div`
   padding: 24px;
 `
 
-const BetDetails: React.FC<BetDetailsProps> = ({ bid }) => {
+const BetDetails: React.FC<BetDetailsProps> = ({ bid, id }) => {
   const { t } = useTranslation()
 
   return (
     <StyledBetDetails>
       <Heading mb="8px">{t('Round History')}</Heading>
-      <RoundResult bid={bid} mb="24px" />
+      <RoundResult bid={bid} id={id} mb="24px" />
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text>{t('Opening Block')}</Text>
         <Link href="https://bscscan.com/block/getBidTx" external>

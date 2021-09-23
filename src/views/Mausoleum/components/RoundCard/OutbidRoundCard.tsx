@@ -11,8 +11,9 @@ import CollectWinningsOverlay from './CollectWinningsOverlay'
 import CanceledRoundCard from './CanceledRoundCard'
 
 interface ExpiredRoundCardProps {
-  bid: any,
-  id: number
+  bid: any;
+  id: number;
+  bidId: number;
 }
 
 const StyledExpiredRoundCard = styled(Card)`
@@ -24,13 +25,8 @@ const StyledExpiredRoundCard = styled(Card)`
   }
 `
 
-const OutbidRoundCard: React.FC<ExpiredRoundCardProps> = ({
-  bid,
-  id
-}) => {
+const OutbidRoundCard: React.FC<ExpiredRoundCardProps> = ({ bid, id, bidId }) => {
   const { t } = useTranslation()
-
-
   return (
     <StyledExpiredRoundCard>
       <CardHeader
@@ -38,10 +34,10 @@ const OutbidRoundCard: React.FC<ExpiredRoundCardProps> = ({
         icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
         title={t('Outbid')}
         bid={bid}
-        id={id}
+        id={bidId}
       />
       <CardBody p="16px" style={{ position: 'relative' }}>
-        <RoundResult bid={bid} />
+        <RoundResult bid={bid} id={id} />
       </CardBody>
     </StyledExpiredRoundCard>
   )

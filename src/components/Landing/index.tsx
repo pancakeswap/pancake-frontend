@@ -27,7 +27,7 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
     <div className="section hero-section">
       <div className="container w-container">
         <img  src='/images/rugZombie/loader.gif' width="350" alt="" className="image" />
-          <h1 className="heading">Bringing your rugged tokens<span className="text-span"> back from the dead</span></h1>
+          <h1 className="heading">Bringing your rugged tokens<span className="century"> back from the dead</span></h1>
           {/* <p className="max_width_400">Rug zombie is a frictionless, yield-generating contract that allows you to seek shelter amidst the chaos of the market.<br />
           </p> */}
       </div>

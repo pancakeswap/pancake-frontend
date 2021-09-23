@@ -12,7 +12,7 @@ import {
 } from '@rug-zombie-libs/uikit'
 import { nftById } from '../../../../redux/get'
 import ViewModal from '../ViewModal'
-import useSwiper from '../../../Predictions/hooks/useSwiper'
+import useSwiper from '../../../Mausoleum/hooks/useSwiper'
 import Video from '../../../../components/Video'
 
 

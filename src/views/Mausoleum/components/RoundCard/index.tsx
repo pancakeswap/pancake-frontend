@@ -25,7 +25,8 @@ const RoundCard: React.FC<RoundCardProps> = ({ bid, lastBidId, id, bidId }) => {
   return (
     <OutbidRoundCard
       bid={bid}
-      id={bidId}
+      id={id}
+      bidId={bidId}
     />
   )
 }

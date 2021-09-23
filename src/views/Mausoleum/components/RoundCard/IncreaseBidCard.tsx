@@ -34,7 +34,7 @@ export const CurrentBid: React.FC<CurrentBidProps> = ({ totalAmount, ...props })
 
   return (
     <Flex alignItems='center' justifyContent='space-between' {...props}>
-      <Text bold>{t('Bid Video')}:</Text>
+      <Text bold>{t('Bid Value')}:</Text>
       <Text bold>{getBalanceAmount(totalAmount).toString()} BT</Text>
     </Flex>
   )
@@ -102,9 +102,15 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRe
 
   const submitBid = () => {
     if(account()) {
-      mausoleum.methods.increaseBid(aid, amount.minus(bid).toString())
-        .send({from: account() })
-        .then(()=>{setRefresh(!refresh)})
+      if(version === 'v3') {
+        mausoleum.methods.increaseBid(aid)
+          .send({from: account(), value: amount.minus(bid).toString() })
+          .then(()=>{setRefresh(!refresh)})
+      }  else {
+        mausoleum.methods.increaseBid(aid, amount.minus(bid).toString())
+          .send({from: account() })
+          .then(()=>{setRefresh(!refresh)})
+      }
     }
   }
 
@@ -123,7 +129,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRe
             .send({from: account(), value: res.toString()})
             .then(() => {
               mausoleum.methods.userInfo(aid, account()).call()
-                .then(userInfoRes => {
+                .then(() => {
                   auction(
                     id,
                     multi,
@@ -169,7 +175,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRe
         <CardBody p='16px'>
           <RoundResultBox>
             {/* eslint-disable-next-line no-nested-ternary */}
-            {paidUnlockFee ? allowance.gt(BIG_ZERO) ?
+            {paidUnlockFee || version === 'v3' ? allowance.gt(BIG_ZERO) ?
             <>
               <CurrentBid totalAmount={amount} mb='8px' />
               <Button

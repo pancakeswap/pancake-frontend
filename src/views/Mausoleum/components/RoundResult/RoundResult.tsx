@@ -6,11 +6,13 @@ import { LockPriceRow, PrizePoolRow, RoundResultBox } from './styles'
 import { zmbeBnbLpPriceBnb } from '../../../../redux/get'
 import { getBalanceAmount } from '../../../../utils/formatBalance'
 
-interface RoundResultProps extends BoxProps {
-  bid: any
+interface RoundResultProps {
+  bid: any;
+  id: number;
+  mb?: string;
 }
 
-const RoundResult: React.FC<RoundResultProps> = ({ bid }) => {
+const RoundResult: React.FC<RoundResultProps> = ({ bid, id,mb }) => {
   const bidder = bid.bidder
   const bidderLength = bid.bidder.length
   const displayBidder = `${bidder.slice(0,6)}...${bidder.slice(bidderLength - 4, bidderLength)}`
@@ -26,7 +28,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ bid }) => {
            <PositionTag betPosition={bid.amount}>{Math.round(getBalanceAmount(new BigNumber(bid.amount - bid.previousBidAmount)).toNumber() * 100) / 100} BT</PositionTag>
         </Flex>
 
-        <LockPriceRow bid={bid} />
+        <LockPriceRow bid={bid} id={id} />
        <PrizePoolRow totalAmount={getBalanceAmount(zmbeBnbLpPriceBnb().times(bid.amount)).toNumber()} />
     </RoundResultBox>
   )

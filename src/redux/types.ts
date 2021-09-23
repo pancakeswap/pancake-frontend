@@ -65,12 +65,12 @@ export interface Bid {
 export interface AuctionInfo {
   lastBidId: number,
   bids: Bid[],
-  unlockFeeInBnb: BigNumber
+  unlockFeeInBnb?: BigNumber
 }
 
 export interface AuctionUserInfo {
   bid: BigNumber,
-  paidUnlockFee: boolean
+  paidUnlockFee?: boolean
 }
 
 export interface NftUserInfo {
@@ -152,6 +152,7 @@ export interface SpawningPool {
   stakingToken: string,
   liquidityDetails: string,
   color?: string,
+  tokenLogoFormat?: string,
   userInfo: SpawningUserInfo,
   poolInfo: SpawningPoolInfo,
 }
@@ -162,16 +163,16 @@ export interface Auction {
   prize: string,
   prizeSymbol: string,
   isFinished: boolean,
-  bidToken: string,
+  bidToken?: string,
   version: string,
-  exchange: string,
+  exchange?: string,
   path: string,
   prizeDescription: string,
   startingBid: number,
-  bt: string,
+  bt?: string,
   artist: Artist,
-  token0: string,
-  token1: string,
+  token0?: string,
+  token1?: string,
   end: number,
   userInfo: AuctionUserInfo,
   auctionInfo: AuctionInfo,

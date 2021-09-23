@@ -41,7 +41,7 @@ const LeaderRoundCard: React.FC<LiveRoundCardProps> = ({
           id={id}
         />
         <CardBody p="16px" style={{ position: 'relative' }}>
-          <RoundResult bid={bid} />
+          <RoundResult bid={bid} id={id} />
         </CardBody>
       </StyledExpiredRoundCard>
   )

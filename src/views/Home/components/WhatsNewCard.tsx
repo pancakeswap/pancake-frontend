@@ -33,7 +33,7 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. Crypto Moneky Empire Spawning pool is live! Go checkout the legendary NFT.</Text>
+            <Text fontSize='14px'>1. Go earn ChompersV2 in the Autoshark Legendary Spawning Pool.</Text>
           </Row>
           <Row>
             <Text fontSize='14px'>2. Happy Spawntemberfest. 6 Partnerships, 6 Spawning Pools over 10 days.</Text>

@@ -56,7 +56,27 @@ const auctions: Auction[] = [
       bids: [],
       unlockFeeInBnb: BIG_ZERO
     }
-  }
+  },
+  // {
+  //   id: 2,
+  //   aid: 0,
+  //   prize: "Trust Us",
+  //   prizeSymbol: "TRUST",
+  //   path: 'https://storage.googleapis.com/rug-zombie/Trust%20Us.jpeg',
+  //   prizeDescription: 'Or don\'t, we will just zombie on.',
+  //   isFinished: false,
+  //   artist: { ...artists.jussjoshinduh },
+  //   startingBid: 0,
+  //   version: 'v3',
+  //   end: 1633439795,
+  //   userInfo: {
+  //     bid: BIG_ZERO,
+  //   },
+  //   auctionInfo: {
+  //     lastBidId: 0,
+  //     bids: [],
+  //   }
+  // }
 ]
 
 export default auctions

@@ -245,6 +245,15 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://bingus.io/',
   },
+  fins: {
+    symbol: 'FINS',
+    address: {
+      56: '0x1b219aca875f8c74c33cff9ff98f3a9b62fcbff5',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://autoshark.finance/',
+  },
   horde: {
     symbol: 'HORDE',
     address: {

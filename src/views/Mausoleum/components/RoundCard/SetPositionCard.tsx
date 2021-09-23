@@ -74,7 +74,7 @@ const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBal
   return { id: 464, fallback: 'SUBMIT', disabled: value.lt(minBetAmountBalance) }
 }
 
-const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, id, onBack, onSuccess }) => {
+const SetPositionCard: React.FC<SetPositionCardProps> = ({ id, onBack, onSuccess }) => {
   const [value, setValue] = useState('')
   const [isTxPending, setIsTxPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -83,7 +83,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, id, onBack,
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const { version, bidToken } = auctionById(id)
+  const { aid, version, bidToken } = auctionById(id)
   const mausoleum = useMausoleum(version)
 
   const [maxBalance, setMaxBalance] = useState(0)
@@ -96,7 +96,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, id, onBack,
   const minBetAmountBalance = getBnbAmount(minBetAmount).toNumber()
 
   useEffect(() => {
-    if(account) {
+    if (account) {
       getBep20Contract(bidToken).methods.balanceOf(account).call()
         .then(res => {
           setMaxBalance(new BigNumber(res).toNumber())
@@ -142,10 +142,12 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, id, onBack,
   const { fallback, disabled } = getButtonProps(valueAsBn, new BigNumber(maxBalance), minBetAmountBalance)
   const handleEnterPosition = () => {
     let decimalValue = getDecimalAmount(valueAsBn)
-    decimalValue = decimalValue.gt(maxBalance) ? new BigNumber(maxBalance) : decimalValue
+    if (decimalValue.gt(maxBalance)) {
+      decimalValue = new BigNumber(maxBalance)
+    }
 
-    mausoleum.methods.increaseBid(auctions[0].aid, decimalValue)
-      .send({ from: account })
+    (version === 'v3' ? mausoleum.methods.increaseBid(aid).send({ from: account, value: decimalValue }) :
+      mausoleum.methods.increaseBid(aid, decimalValue).send({ from: account }))
       .once('sending', () => {
         setIsTxPending(true)
       })
@@ -181,24 +183,24 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, id, onBack,
 
   return (
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-      <CardHeader p="16px">
-        <Flex alignItems="center">
-          <IconButton variant="text" scale="sm" onClick={handleGoBack} mr="8px">
-            <ArrowBackIcon width="24px" />
+      <CardHeader p='16px'>
+        <Flex alignItems='center'>
+          <IconButton variant='text' scale='sm' onClick={handleGoBack} mr='8px'>
+            <ArrowBackIcon width='24px' />
           </IconButton>
           <FlexRow>
-            <Heading size="md">{t('Set Bid')}</Heading>
+            <Heading size='md'>{t('Set Bid')}</Heading>
           </FlexRow>
         </Flex>
       </CardHeader>
-      <CardBody py="16px">
-        <Flex alignItems="center" justifyContent="space-between" mb="8px">
-          <Text textAlign="right" color="textSubtle">
+      <CardBody py='16px'>
+        <Flex alignItems='center' justifyContent='space-between' mb='8px'>
+          <Text textAlign='right' color='textSubtle'>
             {t('Increase Bid by')}:
           </Text>
-          <Flex alignItems="center">
-            <Text bold textTransform="uppercase">
-              BT
+          <Flex alignItems='center'>
+            <Text bold textTransform='uppercase'>
+              {version === 'v3' ? 'BNB' : 'BT'}
             </Text>
           </Flex>
         </Flex>
@@ -209,24 +211,24 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, id, onBack,
           inputProps={{ disabled: !account || isTxPending }}
         />
         {showFieldWarning && (
-          <Text color="failure" fontSize="12px" mt="4px" textAlign="right">
+          <Text color='failure' fontSize='12px' mt='4px' textAlign='right'>
             {t(errorMessage.fallback, errorMessage.data)}
           </Text>
         )}
-        <Text textAlign="right" mb="16px" color="textSubtle" fontSize="12px" style={{ height: '18px' }}>
+        <Text textAlign='right' mb='16px' color='textSubtle' fontSize='12px' style={{ height: '18px' }}>
           {account && t(`Balance: ${getBalanceAmount(new BigNumber(maxBalance))}`)}
         </Text>
         <Slider
-          name="balance"
+          name='balance'
           min={0}
           max={getBalanceAmount(new BigNumber(maxBalance)).toNumber()}
           value={valueAsBn.lte(maxBalance) ? valueAsBn.toNumber() : 0}
           onValueChanged={handleSliderChange}
           valueLabel={account ? percentageDisplay : ''}
           disabled={!account || isTxPending}
-          mb="4px"
+          mb='4px'
         />
-        <Flex alignItems="center" justifyContent="space-between" mb="16px">
+        <Flex alignItems='center' justifyContent='space-between' mb='16px'>
           {percentShortcuts.map((percent) => {
             const handleClick = () => {
               setValue(getBalanceAmount(new BigNumber(maxBalance)).times(percent / 100).toString())
@@ -235,8 +237,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, id, onBack,
             return (
               <Button
                 key={percent}
-                scale="xs"
-                variant="tertiary"
+                scale='xs'
+                variant='tertiary'
                 onClick={handleClick}
                 disabled={!account || isTxPending}
                 style={{ flex: 1 }}
@@ -245,27 +247,27 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, id, onBack,
               </Button>
             )
           })}
-          <Button scale="xs" variant="tertiary" onClick={setMax} disabled={!account || isTxPending}>
+          <Button scale='xs' variant='tertiary' onClick={setMax} disabled={!account || isTxPending}>
             {t('Max')}
           </Button>
         </Flex>
-        <Box mb="8px">
+        <Box mb='8px'>
           {account ? (
             <Button
-              width="100%"
+              width='100%'
               disabled={!account || disabled}
               onClick={handleEnterPosition}
               isLoading={isTxPending}
-              endIcon={isTxPending ? <AutoRenewIcon color="currentColor" spin /> : null}
+              endIcon={isTxPending ? <AutoRenewIcon color='currentColor' spin /> : null}
             >
               {t(fallback)}
             </Button>
           ) : (
-            <UnlockButton width="100%" />
+            <UnlockButton width='100%' />
           )}
         </Box>
-        <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">
-          {t("You can withdraw your full bid if you're outbid.")}
+        <Text as='p' fontSize='12px' lineHeight={1} color='textSubtle'>
+          {t('You can withdraw your full bid if you\'re outbid.')}
         </Text>
       </CardBody>
     </Card>

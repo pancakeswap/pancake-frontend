@@ -1,11 +1,11 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { Box, Flex, FlexProps, Text } from '@rug-zombie-libs/uikit'
-import { formatBnb, formatUsd } from 'views/Predictions/helpers'
+import { formatBnb, formatUsd } from 'views/Mausoleum/helpers'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition, Round } from 'state/types'
 import { BigNumber } from 'bignumber.js'
-import { zmbeBnbLpPriceBnb } from '../../../../redux/get'
+import { auctionById, zmbePerZmbeBnbLp } from '../../../../redux/get'
 import { formatNumber, getBalanceAmount } from '../../../../utils/formatBalance'
 
 // PrizePoolRow
@@ -27,30 +27,42 @@ export const PrizePoolRow: React.FC<PrizePoolRowProps> = ({ totalAmount,bt, ...p
 
   return (
     <Flex alignItems='center' justifyContent='space-between' {...props}>
-      <Text bold>{t('Bid Video')}:</Text>
+      <Text bold>{t('Bid Value')}:</Text>
       <Text bold>{`${getPrizePoolAmount(totalAmount)} ${bt ? "BT" : "BNB"}`}</Text>
     </Flex>
   )
 }
 
 // LockPriceRow
-interface LockPriceRowProps extends FlexProps {
-  bid: any
+interface LockPriceRowProps {
+  bid: any;
+  id: number;
 }
 
-export const LockPriceRow: React.FC<LockPriceRowProps> = ({ bid, ...props }) => {
+export const LockPriceRow: React.FC<LockPriceRowProps> = ({ id, bid, ...props }) => {
   const { t } = useTranslation()
   const quarterBid = bid.amount / 4
+  console.log(id)
+  const { version } = auctionById(id)
+
   return (
     <>
-      <Flex alignItems='center' justifyContent='space-between' {...props}>
+      {version === 'v3' ? <Flex alignItems='center' justifyContent='space-between' {...props}>
+        <Text fontSize='14px'>{t('USD Value')}:</Text>
+        <Text
+          fontSize='14px'>{formatNumber(getBalanceAmount(bid.amount).toNumber())}</Text>
+      </Flex> :
+        <>
+        <Flex alignItems='center' justifyContent='space-between' {...props}>
         <Text fontSize='14px'>{t('ZMBE Burned')}:</Text>
-        <Text fontSize='14px'>{formatNumber(getBalanceAmount(zmbeBnbLpPriceBnb().times(quarterBid * 3)).toNumber())}</Text>
+        <Text
+          fontSize='14px'>{formatNumber(getBalanceAmount(zmbePerZmbeBnbLp().times(quarterBid * 3)).toNumber())}</Text>
       </Flex>
-      <Flex alignItems='center' justifyContent='space-between' {...props}>
+        <Flex alignItems='center' justifyContent='space-between' {...props}>
         <Text fontSize='14px'>{t('LP Locked')}:</Text>
         <Text fontSize='14px'>{Math.round(getBalanceAmount(new BigNumber(quarterBid)).toNumber() * 100) / 100} BT</Text>
-      </Flex>
+        </Flex>
+        </>}
     </>
   )
 }
@@ -102,11 +114,14 @@ const StyledRoundResultBox = styled.div`
 `
 
 export const RoundResultBox: React.FC<RoundResultBoxProps> = ({
-
+                                                                isNext = false,
+                                                                hasEntered = false,
+                                                                isLive = false,
                                                                 children,
+                                                                ...props
                                                               }) => {
   return (
-    <Background >
+    <Background isNext={isNext} hasEntered={hasEntered} isLive={isLive} {...props}>
       <StyledRoundResultBox>{children}</StyledRoundResultBox>
     </Background>
   )

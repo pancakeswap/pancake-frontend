@@ -153,7 +153,7 @@ export interface CollectiblesState {
   }
 }
 
-// Predictions
+// Mausoleum
 
 export enum BetPosition {
   BULL = 'Bull',

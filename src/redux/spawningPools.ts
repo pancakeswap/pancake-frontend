@@ -6,6 +6,64 @@ import { SpawningPool } from './types'
 
 const spawningPools: SpawningPool[] = [
   {
+    id: 9,
+    name: 'Autoshark Legendary',
+    subtitle: 'ChompersV2',
+    path: 'https://ipfs.io/ipfs/QmSwn2nVZ7onSrh59LTtiC4o44Qbzzdk5eQFJkPB6wxbWw',
+    type: 'image',
+    address: {
+      56: '0x2B2327E219D6BA1DE8b3cF5715Dd1d1FE6f39e60',
+      97: '',
+    },
+    endBlock: 13800000,
+    project: {
+      name: 'Autoshark',
+      description: 'AutoShark Finance is the 1st Cross-Chain Hybrid AMM and Yield Optimizer, offering unparalleled access to farming opportunities through the use of superior yield strategies, auto-compounding vaults, and NFT-powered farming.',
+      additionalDetails: [
+        {
+          name: 'Project website',
+          url: tokens.fins.projectLink,
+        },
+        {
+          name: 'Whitepaper',
+          url: 'https://autosharkgw.gitbook.io/autoshark/',
+        },
+        {
+          name: 'Telegram',
+          url: 'https://t.me/AutoSharkFinance',
+        },
+      ],
+    },
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '45 days',
+    rewardToken: tokens.fins,
+    rewardTokenBnbLp: '0x14b5a6d26577970953f9e6608d6604e4676ac5b7',
+    bnbLpTokenIndex: 1,
+    artist: artists.eyes_of_lamia,
+    stakingToken: '',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: true,
+    tokenLogoFormat: "svg",
+    color: "#9400d3",
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      amount: BIG_ZERO,
+      pendingReward: BIG_ZERO,
+      zombieAllowance: BIG_ZERO,
+    },
+    poolInfo: {
+      unlockFee: BIG_ZERO,
+      rewardPerBlock: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalZombieStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+    },
+  },
+  {
     id: 8,
     name: 'Bingus Network Legendary',
     subtitle: 'The Eye of Bingus',

@@ -450,6 +450,30 @@ const nfts: Nft[] = [
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 37,
+    name: 'ChompersV2',
+    symbol: 'CHOMP-V2',
+    description: 'Sharks. I never saw that coming.',
+    address: '0x0Fa3AbBD69226164b9960ed0AfE4B7224ACc0eCc',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmSwn2nVZ7onSrh59LTtiC4o44Qbzzdk5eQFJkPB6wxbWw',
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 38,
+    name: 'Zombie Trader Common',
+    symbol: 'TRADER-COMMON',
+    description: 'Price is what you pay. Value is what you get. Risk comes from not knowing what you\'re doing.',
+    address: '0x9E926ba265AaE57Cf50193f6984E7e44A2763E4a',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmPiLdr6ZRieLFLYNRA2ch1PUr9aDqw7QAm832VZ9Texyj',
+    type: 'image',
+    rarity: 'Common',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts

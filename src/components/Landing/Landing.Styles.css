@@ -184,6 +184,8 @@
     text-align: center;
     font-size: 60px;
     margin: .67em 0;
+    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+    font-weight: bold;
 }
 .heading-2 {
     display: block;
@@ -210,6 +212,11 @@
     line-height: 36px;
     text-transform: none;
     color: #ffffff;
+}
+
+.century {
+    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+    font-weight: bold;
 }
 .card {
     position: static;

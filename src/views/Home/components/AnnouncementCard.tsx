@@ -47,7 +47,7 @@ const AnnouncementCard = () => {
         </Text>
         <br/>
         <image width="100%" >
-          <img src="https://storage.googleapis.com/rug-zombie/gorillafi-small.gif" alt="silverback"/>
+          <img src="https://storage.googleapis.com/rug-zombie/chompersv2%20preview.png" alt="Chompers V2 preview"/>
         </image>
 
         <LinkExternal paddingTop="10px" href="https://twitter.com/rugzombie">
