@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Skeleton, Link, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
+import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
@@ -68,7 +69,7 @@ const PredictionCardContent = () => {
         </Text>
       </Flex>
       <Flex alignItems="center" justifyContent="center">
-        <StyledLink href="/prediction" id="homepage-prediction-cta">
+        <StyledLink to="/prediction" id="homepage-prediction-cta">
           <Button width="100%">
             <Text bold color="invertedContrast">
               {t('Play')}
