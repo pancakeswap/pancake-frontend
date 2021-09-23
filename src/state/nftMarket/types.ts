@@ -21,7 +21,7 @@ export interface State {
   initializationState: NFTMarketInitializationState
   data: {
     collections: Record<string, Collection> // string is the address
-    nfts: Record<string, Record<string, PancakeBunnyNftWithTokens>> // first string is the collection address address, second string is bunny id
+    nfts: Record<string, NftToken[]> // string is the collection address
     users: Record<string, User> // string is the address
     user: UserNftsState
   }
@@ -92,24 +92,7 @@ export interface TokenMarketData {
   transactionHistory?: Transaction[]
 }
 
-// This type is somewhat specific to PancakeBunnies NFTs
-// It stores basic PancakeBunny NFT data together with `tokens` object containing specific token ID market data
-// It is used when retrieving all bunny tokens from redux.
-// In case you need to work with specific stand-alone token use NftToken
-export interface PancakeBunnyNftWithTokens {
-  name: string
-  collectionName: string
-  collectionAddress: string
-  description: string
-  image: Image
-  tokens?: Record<number, TokenMarketData>
-  attributes?: NftAttribute[]
-  updatedAt?: string
-  meta?: Record<string, string | number>
-}
-
 // Represents single NFT token, either Squad-like NFT or single PancakeBunny.
-// Main difference between this and NFT is absense of `tokens` object holding "grouped" tokens and presence of tokenId on the main object level
 export interface NftToken {
   tokenId: string
   name: string
@@ -117,9 +100,9 @@ export interface NftToken {
   collectionName: string
   collectionAddress: string
   image: Image
-  attributes?: any[]
-  createdAt: string
-  updatedAt: string
+  attributes?: NftAttribute[]
+  createdAt?: string // API createdAt
+  updatedAt?: string // API updatedAt
   marketData?: TokenMarketData
   location?: NftLocation
   meta?: Record<string, string | number>
@@ -221,7 +204,6 @@ export interface ApiResponseCollectionTokens {
       collection: {
         name: string
       }
-      tokens: number[]
     }
   }
 }
