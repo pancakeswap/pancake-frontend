@@ -10,11 +10,13 @@ import {
   SellIcon,
   Text,
   WalletFilledIcon,
+  Skeleton,
 } from '@pancakeswap/uikit'
 import { Price } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import { multiplyPriceByAmount } from 'utils/prices'
 import styled from 'styled-components'
+import { LowestPBNftPrice } from '../../hooks/useGetLowestPBPrice'
 
 export const Footer: React.FC<BoxProps> = ({ children, ...props }) => (
   <Box borderTop={[null, null, null, '1px solid']} borderColor="cardBorder" pt="8px" {...props}>
@@ -131,3 +133,26 @@ export const StyledCollectibleCard = styled(Card)`
     }
   }
 `
+interface LowestPriceMetaRowProps {
+  lowestPriceData: LowestPBNftPrice
+  bnbBusdPrice: Price
+}
+
+export const LowestPriceMetaRow = ({ lowestPriceData, bnbBusdPrice }: LowestPriceMetaRowProps) => {
+  const { t } = useTranslation()
+  const { isFetching, lowestPrice } = lowestPriceData
+
+  if (!isFetching && !lowestPrice) {
+    return null
+  }
+
+  return (
+    <MetaRow title={t('Lowest price')}>
+      {isFetching ? (
+        <Skeleton height="24px" width="30px" />
+      ) : (
+        <CostLabel cost={lowestPrice} bnbBusdPrice={bnbBusdPrice} />
+      )}
+    </MetaRow>
+  )
+}

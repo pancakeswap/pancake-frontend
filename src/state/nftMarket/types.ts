@@ -103,8 +103,7 @@ export interface PancakeBunnyNftWithTokens {
   description: string
   image: Image
   tokens?: Record<number, TokenMarketData>
-  lowestPricedToken?: TokenMarketData
-  attributes?: any[]
+  attributes?: NftAttribute[]
   updatedAt?: string
   meta?: Record<string, string | number>
 }

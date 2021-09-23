@@ -1,7 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import minBy from 'lodash/minBy'
-import pickBy from 'lodash/pickBy'
-import isEmpty from 'lodash/isEmpty'
 import mapValues from 'lodash/mapValues'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
@@ -96,11 +93,6 @@ export const fetchNftsFromCollections = createAsyncThunk<Record<string, PancakeB
         return { ...accum, [tokenId]: token }
       }, {})
 
-      const tradableTokens = tokens && pickBy(tokens, (value: TokenMarketData) => value?.isTradable)
-      const lowestPricedToken: TokenMarketData = !isEmpty(tradableTokens)
-        ? minBy(Object.values(tradableTokens), 'currentAskPrice')
-        : null
-
       // Generating attributes field that is not returned by API but can be "faked" since objects are keyed with bunny id
       const attributes =
         collectionAddress === pancakeBunniesAddress
@@ -120,7 +112,6 @@ export const fetchNftsFromCollections = createAsyncThunk<Record<string, PancakeB
         image: nft.image,
         tokens,
         attributes,
-        lowestPricedToken,
       }
     })
   },

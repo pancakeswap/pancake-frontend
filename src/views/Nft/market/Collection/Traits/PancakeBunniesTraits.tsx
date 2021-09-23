@@ -30,7 +30,11 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
   const { isFetching, lowestPrice } = useGetLowestPBNftPrice(bunnyId)
 
   if (isFetching) {
-    return <Skeleton height="24px" width="48px" />
+    return (
+      <Flex justifyContent="center">
+        <Skeleton height="24px" width="48px" />
+      </Flex>
+    )
   }
 
   if (!lowestPrice) {
@@ -92,9 +96,10 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
           <Table>
             <thead>
               <tr>
-                <Th>test</Th>
-                <Th>test</Th>
-                <Th>test</Th>
+                <Th textAlign="left">Name</Th>
+                <Th>Count</Th>
+                <Th>Rarity</Th>
+                <Th>Lowest</Th>
               </tr>
             </thead>
             <tbody>
