@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import uniqBy from 'lodash/uniqBy'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { ethers } from 'ethers'
@@ -7,15 +6,7 @@ import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
 import { fetchCollections, fetchNftsFromCollections } from './reducer'
 import { State } from '../types'
-import {
-  UserNftsState,
-  AskOrder,
-  Transaction,
-  TokenIdWithCollectionAddress,
-  PancakeBunnyNftWithTokens,
-  TokenMarketData,
-} from './types'
-import { getNftsFromDifferentCollectionsApi } from './helpers'
+import { UserNftsState, AskOrder, Transaction, PancakeBunnyNftWithTokens, TokenMarketData } from './types'
 
 export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
@@ -79,38 +70,4 @@ export const useGetLowestPricedPB = (nft: PancakeBunnyNftWithTokens): TokenMarke
   const lowestPriceToken = nfts && nfts[bunnyId].lowestPricedToken
 
   return lowestPriceToken
-}
-
-/**
- * Fetch metadata for a given array of Nft subgraph responses
- * @param sgNfts NftTokenSg[]
- * @returns NFT[]
- */
-export const useGetNftMetadata = (sgNfts: TokenMarketData[], account?: string) => {
-  const [nftMetadata, setNftMetadata] = useState<PancakeBunnyNftWithTokens[]>([])
-
-  useEffect(() => {
-    const fetchMetadata = async () => {
-      const nftTokenIds = uniqBy(
-        sgNfts.map((nft): TokenIdWithCollectionAddress => {
-          return { tokenId: nft.tokenId, collectionAddress: nft.collection.id }
-        }),
-        'tokenId',
-      )
-
-      const nfts = await getNftsFromDifferentCollectionsApi(nftTokenIds)
-      setNftMetadata(nfts)
-    }
-
-    if (sgNfts.length > 0) {
-      fetchMetadata()
-    }
-  }, [sgNfts])
-
-  useEffect(() => {
-    // Clear metadata on account change
-    setNftMetadata([])
-  }, [account])
-
-  return nftMetadata
 }
