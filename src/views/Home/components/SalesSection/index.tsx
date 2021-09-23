@@ -1,5 +1,6 @@
 import React from 'react'
 import { Flex, Text, Button, Link } from '@pancakeswap/uikit'
+import { Link as RouterLink } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import CompositeImage, { CompositeImageProps } from '../CompositeImage'
 import PurpleWordHeading from '../PurpleWordHeading'
@@ -46,16 +47,28 @@ const SalesSection: React.FC<SalesSectionProps> = (props) => {
             {bodyTranslatedText}
           </Text>
           <Flex>
-            <Link mr="16px" external={primaryButton.external} href={primaryButton.to}>
-              <Button>
-                <Text color="card" bold fontSize="16px">
-                  {t(primaryButton.text)}
-                </Text>
-              </Button>
-            </Link>
-            <Link external={secondaryButton.external} href={secondaryButton.to}>
-              {t(secondaryButton.text)}
-            </Link>
+            <Button mr="16px">
+              {primaryButton.external ? (
+                <Link external href={primaryButton.to}>
+                  <Text color="card" bold fontSize="16px">
+                    {t(primaryButton.text)}
+                  </Text>
+                </Link>
+              ) : (
+                <RouterLink to={primaryButton.to}>
+                  <Text color="card" bold fontSize="16px">
+                    {t(primaryButton.text)}
+                  </Text>
+                </RouterLink>
+              )}
+            </Button>
+            {secondaryButton.external ? (
+              <Link external href={secondaryButton.to}>
+                {t(secondaryButton.text)}
+              </Link>
+            ) : (
+              <RouterLink to={secondaryButton.to}>{t(secondaryButton.text)}</RouterLink>
+            )}
           </Flex>
         </Flex>
         <Flex
