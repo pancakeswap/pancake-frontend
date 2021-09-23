@@ -29,9 +29,11 @@ const SaleProgress: React.FC<PreEventProps> = ({
   maxSupply,
 }) => {
   const displaySaleProgress = saleStatus !== SaleStatusEnum.Pending
+  const isClaimingPhase = saleStatus === SaleStatusEnum.Claim
   const supplyRemaining = maxSupply - totalTicketsDistributed
-  const supplyRemainingPercentage = Math.round((supplyRemaining / maxSupply) * 100)
-  const isMintCompleted = totalSupplyMinted === maxSupply && saleStatus === SaleStatusEnum.Claim
+  const remainingTickets = isClaimingPhase ? totalSupplyMinted : supplyRemaining
+  const supplyRemainingPercentage = Math.round((remainingTickets / maxSupply) * 100)
+  const isMintCompleted = totalSupplyMinted === maxSupply && isClaimingPhase
   return displaySaleProgress ? (
     <Box mb="24px">
       {isMintCompleted && (
@@ -43,7 +45,7 @@ const SaleProgress: React.FC<PreEventProps> = ({
         {isMintCompleted
           ? t('All 10,000 Pancake Squad NFTs have now been minted!')
           : t(SaleProgressTextMapping[saleStatus], {
-              remaining: supplyRemaining.toString(),
+              remaining: remainingTickets.toString(),
               total: maxSupply.toString(),
             })}
       </Text>

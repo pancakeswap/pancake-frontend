@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BigNumber } from '@ethersproject/bignumber'
 import React, { useEffect, useState } from 'react'
-import { Button, useModal } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, useModal } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useNftSaleContract } from 'hooks/useContract'
@@ -41,7 +41,6 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
 
   const mintTokenCallBack = async () => {
     setIsLoading(true)
-    onPresentConfirmModal()
     try {
       const tx = await callWithGasPrice(nftSaleContract, 'mint', [ticketsOfUser])
       const receipt = await tx.wait()
@@ -49,9 +48,9 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
         setTxHashMintingResult(receipt.transactionHash)
       }
     } catch (error) {
+      onDismiss()
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     } finally {
-      onDismiss()
       setIsLoading(false)
     }
   }
@@ -61,7 +60,12 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
   return (
     <>
       {canMintTickets && (
-        <Button width="100%" onClick={mintTokenCallBack}>
+        <Button
+          width="100%"
+          onClick={mintTokenCallBack}
+          disabled={isLoading}
+          endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+        >
           {t('Mint NFTs (%tickets%)', { tickets: numberTicketsOfUser })}
         </Button>
       )}

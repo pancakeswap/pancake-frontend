@@ -11,7 +11,7 @@ const config = ({ t }: FAQsType) => [
   {
     title: 'What’s the Smart Contract?',
     description: [
-      <Text color="textSubtle" as="p">
+      <Text key={1} color="textSubtle">
         {t('View the smart contract address on BscScan')}:&nbsp;
         <StyledLinkFAQs display="inline-block" color="primary">
           <a href="/" target="_blank" rel="noreferrer noopener">
@@ -19,7 +19,7 @@ const config = ({ t }: FAQsType) => [
           </a>
         </StyledLinkFAQs>
       </Text>,
-      <Text color="textSubtle" as="p">
+      <Text key={2} color="textSubtle">
         {t('View the')}&nbsp;
         <StyledLinkFAQs display="inline-block" color="primary">
           <a href="https://docs.pancakeswap.finance/" target="_blank" rel="noreferrer noopener">
@@ -50,7 +50,7 @@ const config = ({ t }: FAQsType) => [
   {
     title: 'Where can I view rarity?',
     description: [
-      <Text color="textSubtle" as="p">
+      <Text key={3} color="textSubtle">
         {t('Check the rarity of each NFT’s traits on the')}&nbsp;
         <StyledLinkFAQs display="inline-block" color="primary">
           <a href="/">{t('Pancake Squad page in the NFT Market')}&nbsp;</a>
@@ -66,7 +66,7 @@ const config = ({ t }: FAQsType) => [
     description: [
       'Once all 10,000 Squad Tickets have been bought, Chainlink VRF will be used to randomly allocate the pre-generated NFTs to the purchased Tickets. Squad Tickets are allocated IDs numbered in order of their purchase.',
       'Once all 10,000 have been sold, VRF will pick numbers from 0 to 9999, which will be used to shift the Squad Ticket ID. This will ensure that the distribution of rare NFTs will be randomized, and prevents “sniping” of specific NFTs during the pre-sale or public sale phases.',
-      <Text color="textSubtle" as="p">
+      <Text key={4} color="textSubtle">
         {t('For more details, check the')}&nbsp;
         <StyledLinkFAQs display="inline-block" color="primary">
           <a href="https://docs.pancakeswap.finance/" target="_blank" rel="noreferrer noopener">

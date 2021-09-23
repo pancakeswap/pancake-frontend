@@ -2,11 +2,11 @@ import React from 'react'
 import { Button } from '@pancakeswap/uikit'
 import { SaleStatusEnum, UserStatusEnum } from 'views/PancakeSquad/types'
 import ActivateProfileButton from '../Buttons/ActivateProfile'
+import BuyTicketsButtons from '../Buttons/BuyTickets'
+import EndEventButtons from '../Buttons/EndEvent'
+import MintButton from '../Buttons/Mint'
 import ReadyText from '../Header/ReadyText'
 import { EventStepsType } from './types'
-import BuyTicketsButtons from '../Buttons/BuyTickets'
-import MintButton from '../Buttons/Mint'
-import EndEventButtons from '../Buttons/EndEvent'
 import { getStepperStatus } from './utils'
 
 const stepsConfigBuilder = ({
@@ -33,7 +33,6 @@ const stepsConfigBuilder = ({
 
   const hasProfileActivated = [UserStatusEnum.PROFILE_ACTIVE, UserStatusEnum.PROFILE_ACTIVE_GEN0].includes(userStatus)
   const isBuyPhaseFinished = totalTicketsDistributed === maxSupply
-  const isMintingFinished = maxSupply === totalSupplyMinted
 
   return [
     {
@@ -108,7 +107,7 @@ const stepsConfigBuilder = ({
             numberTicketsForGen0={numberTicketsForGen0}
             pricePerTicket={pricePerTicket}
           />
-          {isBuyPhaseFinished && <ReadyText text={t('PhaseComplete!')} />}
+          {isBuyPhaseFinished && <ReadyText mt="16px" text={t('PhaseComplete!')} />}
         </>
       ),
     },
@@ -118,7 +117,7 @@ const stepsConfigBuilder = ({
         saleStatus,
         hasProfileActivated,
         eventStatus: [SaleStatusEnum.Claim],
-        isMintingFinished,
+        numberTicketsOfUser,
       }),
       title: t('Claim Phase'),
       bodyText: [
@@ -143,6 +142,7 @@ const stepsConfigBuilder = ({
         saleStatus,
         hasProfileActivated,
         eventStatus: [SaleStatusEnum.Claim],
+        isLastPhase: true,
       }),
       title: t('Wait for the Reveal'),
       bodyText: [
