@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import uniqBy from 'lodash/uniqBy'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { ethers } from 'ethers'
@@ -6,7 +7,15 @@ import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
 import { fetchCollections, fetchNftsFromCollections } from './reducer'
 import { State } from '../types'
-import { UserNftsState, AskOrder, Transaction, PancakeBunnyNftWithTokens, TokenMarketData } from './types'
+import {
+  UserNftsState,
+  AskOrder,
+  Transaction,
+  TokenIdWithCollectionAddress,
+  PancakeBunnyNftWithTokens,
+  TokenMarketData,
+} from './types'
+import { getNftsFromDifferentCollectionsApi } from './helpers'
 
 export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
@@ -59,15 +68,36 @@ export const useUserActivity = (): (Transaction | AskOrder)[] => {
   return []
 }
 
-export const useGetLowestPricedPB = (nft: PancakeBunnyNftWithTokens): TokenMarketData => {
-  const nfts = useNftsFromCollection(nft.collectionAddress)
+/**
+ * Fetch metadata for a given array of Nft subgraph responses
+ * @param sgNfts NftTokenSg[]
+ * @returns NFT[]
+ */
+export const useGetNftMetadata = (sgNfts: TokenMarketData[], account?: string) => {
+  const [nftMetadata, setNftMetadata] = useState<PancakeBunnyNftWithTokens[]>([])
 
-  if (!nft.attributes) {
-    return null
-  }
+  useEffect(() => {
+    const fetchMetadata = async () => {
+      const nftTokenIds = uniqBy(
+        sgNfts.map((nft): TokenIdWithCollectionAddress => {
+          return { tokenId: nft.tokenId, collectionAddress: nft.collection.id }
+        }),
+        'tokenId',
+      )
 
-  const bunnyId = nft.attributes.find((attribute) => attribute?.traitType === 'bunnyId')?.value
-  const lowestPriceToken = nfts && nfts[bunnyId].lowestPricedToken
+      const nfts = await getNftsFromDifferentCollectionsApi(nftTokenIds)
+      setNftMetadata(nfts)
+    }
 
-  return lowestPriceToken
+    if (sgNfts.length > 0) {
+      fetchMetadata()
+    }
+  }, [sgNfts])
+
+  useEffect(() => {
+    // Clear metadata on account change
+    setNftMetadata([])
+  }, [account])
+
+  return nftMetadata
 }

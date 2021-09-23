@@ -8,6 +8,7 @@ export const getBaseNftFields = () => `
   totalTrades
   isTradable
   updatedAt
+  otherId
   collection {
     id
   }
