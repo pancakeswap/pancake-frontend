@@ -4,8 +4,7 @@ import { getAddress } from '@ethersproject/address'
 import orderBy from 'lodash/orderBy'
 import { useAppDispatch } from 'state'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
-import { getLastUpdatedFromNft, getLowestPriceFromNft } from 'state/nftMarket/helpers'
-import { Collection, PancakeBunnyNftWithTokens } from 'state/nftMarket/types'
+import { Collection } from 'state/nftMarket/types'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
@@ -29,14 +28,11 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
     return <GridPlaceholder />
   }
 
-  const nftList: PancakeBunnyNftWithTokens[] = Object.values(nfts).map((nft) => ({
-    ...nft,
-    meta: {
-      lowestTokenPrice: getLowestPriceFromNft(nft),
-      updatedAt: getLastUpdatedFromNft(nft),
-    },
-  }))
-  const orderedNfts = orderBy(nftList, [`meta.${sortBy}`], [sortBy === 'lowestTokenPrice' ? 'asc' : 'desc'])
+  const orderedNfts = orderBy(
+    nfts,
+    (nft) => (sortBy === 'updatedAt' ? Number(nft.marketData[sortBy]) : nft.marketData[sortBy]),
+    [sortBy === 'lowestTokenPrice' ? 'asc' : 'desc'],
+  )
 
   return (
     <Grid
@@ -45,7 +41,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
       alignItems="start"
     >
       {orderedNfts.map((nft) => {
-        return <CollectibleLinkCard key={`${nft.name}-${nft.collectionName}`} nft={nft} />
+        return <CollectibleLinkCard key={`${nft.tokenId}-${nft.collectionName}`} nft={nft} />
       })}
     </Grid>
   )

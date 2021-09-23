@@ -4,12 +4,10 @@ import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
 import map from 'lodash/map'
-import minBy from 'lodash/minBy'
 import {
   TokenMarketData,
   ApiCollections,
   TokenIdWithCollectionAddress,
-  PancakeBunnyNftWithTokens,
   NftToken,
   UserActivity,
   NftLocation,
@@ -244,7 +242,7 @@ export const getLowestPriceInCollection = async (collectionAddress: string) => {
     const [nftSg] = response
     return parseUnits(nftSg.currentAskPrice)
   } catch (error) {
-    console.error('Failed to fetch NFTs market data', error)
+    console.error(`Failed to lowest price NFTs in collection ${collectionAddress}`, error)
     return parseUnits('0')
   }
 }
@@ -497,20 +495,4 @@ export const combineNftMarketAndMetadata = (
     return { ...nft, marketData, location }
   })
   return completeNftData
-}
-
-/*
- * Filter heloper: Get lowest token price from NFT
- */
-export const getLowestPriceFromNft = (nft: PancakeBunnyNftWithTokens) => {
-  const { tokens } = nft
-  const minTokenPrice = minBy(Object.values(tokens), (token) => (token ? parseFloat(token.currentAskPrice) : 0))
-  return minTokenPrice ? parseFloat(minTokenPrice.currentAskPrice) : 0
-}
-
-/**
- * Filter heloper: Get updated at as a number
- */
-export const getLastUpdatedFromNft = (nft: PancakeBunnyNftWithTokens) => {
-  return Number(nft.updatedAt)
 }

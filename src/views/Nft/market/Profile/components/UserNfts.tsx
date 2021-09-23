@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, useModal, Text, Flex } from '@pancakeswap/uikit'
 import { useUserNfts } from 'state/nftMarket/hooks'
-import { PancakeBunnyNftWithTokens, NftLocation, UserNftInitializationState, NftToken } from 'state/nftMarket/types'
+import { NftLocation, UserNftInitializationState, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { CollectibleActionCard } from '../../components/CollectibleCard'
 import GridPlaceholder from '../../components/GridPlaceholder'
@@ -11,7 +11,7 @@ import SellModal from '../../components/BuySellModals/SellModal'
 import { SellNFT } from '../../components/BuySellModals/SellModal/types'
 
 interface ProfileNftProps {
-  nft: PancakeBunnyNftWithTokens
+  nft: NftToken
   location: NftLocation
 }
 
