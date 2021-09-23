@@ -729,6 +729,7 @@
   "Congratulations!": "おめでとうございます！",
   "You won a collectible!": "コレクティブルを獲得しました！",
   "Claim now": "今すぐ請求",
+  "Claiming...": "Claiming...",
   "NFT in wallet": "ウォレット内NFT",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "NFTをCAKEにトレードするか、コレクション用に残しておきましょう。",
   "No NFTs to claim": "請求するNFTがありません",
@@ -1465,5 +1466,6 @@
   "Dark mode": "ダークモード",
   "Invalid pair": "無効なペア",
   "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt"
+  "Transaction receipt": "Transaction receipt",
+  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
 }

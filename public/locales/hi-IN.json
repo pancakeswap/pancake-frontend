@@ -729,6 +729,7 @@
   "Congratulations!": "बधाई हो!",
   "You won a collectible!": "आपने एक कलेक्शन आइटम जीता है!",
   "Claim now": "अभी क्लेम करें",
+  "Claiming...": "Claiming...",
   "NFT in wallet": "वॉलेट में NFT",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "CAKE के लिए अपने NFT ट्रेड-इन करें या अपने कलेक्शन के लिए रखें।",
   "No NFTs to claim": "क्लेम करने के लिए कोई NFT नहीं",
@@ -1465,5 +1466,6 @@
   "Dark mode": "डार्क मोड",
   "Invalid pair": "अमान्य पेयर",
   "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt"
+  "Transaction receipt": "Transaction receipt",
+  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
 }

@@ -729,6 +729,7 @@
   "Congratulations!": "Félicitations !",
   "You won a collectible!": "Vous avez gagné un jeton non interchangeable !",
   "Claim now": "Récupérer maintenant",
+  "Claiming...": "Claiming...",
   "NFT in wallet": "NFT dans le portefeuille",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "Échangez votre NFT contre des CAKE ou conservez-le dans votre collection.",
   "No NFTs to claim": "Aucun NFT à récupérer",
@@ -1465,5 +1466,6 @@
   "Dark mode": "Mode sombre",
   "Invalid pair": "Paire non valide",
   "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt"
+  "Transaction receipt": "Transaction receipt",
+  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
 }

@@ -2,7 +2,7 @@ import { getUnixTime, subDays, subWeeks, startOfMinute } from 'date-fns'
 import { request } from 'graphql-request'
 
 /**
- * Helper function to get large amount GrqphQL subqueries
+ * Helper function to get large amount GraphQL subqueries
  * @param queryConstructor constructor function that combines subqueries
  * @param subqueries individual queries
  * @param endpoint GraphQL endpoint
