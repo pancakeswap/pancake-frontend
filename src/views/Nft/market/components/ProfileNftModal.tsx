@@ -3,7 +3,7 @@ import { InjectedModalProps, Modal, Flex, Text, Button, useModal, Link, Grid } f
 import { BASE_URL } from 'config'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
-import { PancakeBunnyNftWithTokens } from 'state/nftMarket/types'
+import { NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { RoundedImage } from './BuySellModals/shared/styles'
 import EditProfileModal from '../Profile/components/EditProfileModal'
@@ -19,7 +19,7 @@ const TextWrapper = styled(Flex)`
 `
 
 interface ProfileNftModalProps extends InjectedModalProps {
-  nft: PancakeBunnyNftWithTokens
+  nft: NftToken
 }
 
 const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => {

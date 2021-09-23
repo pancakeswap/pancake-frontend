@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import mapValues from 'lodash/mapValues'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
   getNftsFromCollectionApi,
@@ -20,13 +19,10 @@ import {
   State,
   Collection,
   ApiCollections,
-  PancakeBunnyNftWithTokens,
   TokenIdWithCollectionAddress,
   NFTMarketInitializationState,
-  TokenMarketData,
   UserActivity,
   UserNftInitializationState,
-  ApiResponseCollectionTokens,
   NftToken,
   NftLocation,
 } from './types'
@@ -73,47 +69,58 @@ export const fetchCollection = createAsyncThunk<Record<string, Collection>, stri
  * and the Subgraph (dynamic market data)
  * @param collectionAddress
  */
-export const fetchNftsFromCollections = createAsyncThunk<Record<string, PancakeBunnyNftWithTokens>, string>(
+export const fetchNftsFromCollections = createAsyncThunk(
   'nft/fetchNftsFromCollections',
-  async (collectionAddress) => {
-    const [nfts, nftsMarket] = await Promise.all([
-      getNftsFromCollectionApi(collectionAddress),
-      getNftsFromCollectionSg(collectionAddress),
-    ])
+  async (collectionAddress: string) => {
+    try {
+      const [nfts, nftsMarket] = await Promise.all([
+        getNftsFromCollectionApi(collectionAddress),
+        getNftsFromCollectionSg(collectionAddress),
+      ])
 
-    // Separate market data by token id
-    const nftsMarketObj: Record<string, TokenMarketData> = nftsMarket.reduce(
-      (accum, nftMarketData) => ({ ...accum, [nftMarketData.tokenId]: { ...nftMarketData } }),
-      {},
-    )
-
-    return mapValues<ApiResponseCollectionTokens['data'], PancakeBunnyNftWithTokens>(nfts?.data, (nft, bunnyId) => {
-      const tokens = nft.tokens.reduce((accum: Record<number, TokenMarketData>, tokenId: number) => {
-        const token = nftsMarketObj[tokenId]
-        return { ...accum, [tokenId]: token }
-      }, {})
-
-      // Generating attributes field that is not returned by API but can be "faked" since objects are keyed with bunny id
-      const attributes =
-        collectionAddress === pancakeBunniesAddress
-          ? [
-              {
-                traitType: 'bunnyId',
-                value: bunnyId,
-                displayType: null,
-              },
-            ]
-          : null
-      return {
-        name: nft.name,
-        description: nft.description,
-        collectionName: nft.collection.name,
-        collectionAddress,
-        image: nft.image,
-        tokens,
-        attributes,
+      if (!nfts?.data) {
+        return []
       }
-    })
+
+      if (collectionAddress === pancakeBunniesAddress) {
+        return nftsMarket.map((marketData) => {
+          // The fallback is just for the testnet where some bunnies don't exist
+          const apiMetadata = nfts.data[marketData.otherId] ?? {
+            name: '',
+            description: '',
+            collection: { name: 'Pancake Bunnies' },
+            image: {
+              original: '',
+              thumbnail: '',
+            },
+          }
+          // Generating attributes field that is not returned by API but can be "faked" since objects are keyed with bunny id
+          const attributes = [
+            {
+              traitType: 'bunnyId',
+              value: marketData.otherId,
+              displayType: null,
+            },
+          ]
+          return {
+            tokenId: marketData.tokenId,
+            name: apiMetadata.name,
+            description: apiMetadata.description,
+            collectionName: apiMetadata.collection.name,
+            collectionAddress,
+            image: apiMetadata.image,
+            marketData,
+            attributes,
+          }
+        })
+      }
+
+      // TODO: revisit this for other collecitons
+      return []
+    } catch (error) {
+      console.error(`Failed to fetch collection NFTs for ${collectionAddress}`, error)
+      return []
+    }
   },
 )
 
