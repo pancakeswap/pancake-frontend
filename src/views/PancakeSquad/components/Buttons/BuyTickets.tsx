@@ -13,6 +13,7 @@ import { SaleStatusEnum, UserStatusEnum } from '../../types'
 import BuyTicketsModal from '../Modals/BuyTickets'
 import ConfirmModal from '../Modals/Confirm'
 import ReadyText from '../Header/ReadyText'
+import getBuyButtonText from './utils'
 
 type BuyTicketsProps = {
   t: ContextApi['t']
@@ -55,6 +56,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   const canBuySaleTicket =
     saleStatus === SaleStatusEnum.Sale && numberTicketsOfUser - numberTicketsUsedForGen0 < maxPerAddress
   const isPreSale = saleStatus === SaleStatusEnum.Presale
+  const isSale = saleStatus === SaleStatusEnum.Sale
   const isGen0User = UserStatusEnum.PROFILE_ACTIVE_GEN0
   const isUserReady =
     (userStatus === UserStatusEnum.PROFILE_ACTIVE && saleStatus < SaleStatusEnum.Sale) ||
@@ -138,6 +140,8 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
     handleApprove()
   }
 
+  const canBuyTickets = (canClaimForGen0 || canBuySaleTicket) && isApproved
+
   return (
     <>
       {!isApproved && !isUserUnactiveProfile && (
@@ -145,14 +149,9 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
           {t('Enable')}
         </Button>
       )}
-      {(canClaimForGen0 || canBuySaleTicket) && isApproved && (
-        <Button width="100%" onClick={onPresentBuyTicketsModal}>
-          {t('Buy Tickets')}
-        </Button>
-      )}
-      {!canBuySaleTicket && (
-        <Button width="100%" disabled>
-          {numberTicketsOfUser > 0 ? t('Max purchased') : t('Not Eligible')}
+      {(isPreSale || isSale) && (
+        <Button width="100%" onClick={onPresentBuyTicketsModal} disabled={!canBuyTickets}>
+          {getBuyButtonText({ canBuyTickets, numberTicketsOfUser, saleStatus, t })}
         </Button>
       )}
       {isUserReady && isApproved && (
