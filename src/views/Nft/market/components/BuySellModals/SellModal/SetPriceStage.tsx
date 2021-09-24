@@ -3,12 +3,11 @@ import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon } from '@pancakes
 import { useTranslation } from 'contexts/Localization'
 import { Divider } from '../shared/styles'
 import { GreyedOutContainer, BnbAmountCell, RightAlignedInput } from './styles'
-import { SellNFT } from './types'
 
 interface SetPriceStageProps {
   variant: 'set' | 'adjust'
-  nftToSell: SellNFT
   currentPrice?: string
+  lowestPrice?: number
   price: string
   setPrice: React.Dispatch<React.SetStateAction<string>>
   continueToNextStage: () => void
@@ -18,7 +17,7 @@ interface SetPriceStageProps {
 // Also shown when user wants to adjust the price of already lsited NFT
 const SetPriceStage: React.FC<SetPriceStageProps> = ({
   variant,
-  nftToSell,
+  lowestPrice,
   currentPrice,
   price,
   setPrice,
@@ -73,7 +72,7 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
           <Text small color="textSubtle">
             {t('Lowest price on market')}
           </Text>
-          <BnbAmountCell bnbAmount={parseFloat(nftToSell.lowestPrice)} />
+          <BnbAmountCell bnbAmount={lowestPrice} />
         </Flex>
       </GreyedOutContainer>
       <Grid gridTemplateColumns="32px 1fr" p="16px" maxWidth="360px">

@@ -12,20 +12,20 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
+import { NftToken } from 'state/nftMarket/types'
 import MintedTableRows from './ForSaleTableRows'
-import { CollectibleAndOwnerData } from '../types'
 
 const ITEMS_PER_PAGE_DESKTOP = 10
 const ITEMS_PER_PAGE_MOBILE = 5
 
-const StyledCard = styled(Card)`
+const StyledCard = styled(Card)<{ hasManyPages: boolean }>`
   width: 100%;
   & > div:first-child {
-    min-height: 480px;
+    ${({ hasManyPages }) => (hasManyPages ? 'min-height: 480px;' : null)}
     display: flex;
     flex-direction: column;
     ${({ theme }) => theme.mediaQueries.md} {
-      min-height: 850px;
+      ${({ hasManyPages }) => (hasManyPages ? 'min-height: 850px;' : null)}
     }
   }
 `
@@ -39,8 +39,8 @@ const PageButtons = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0.2em;
-  margin-bottom: 1.2em;
+  margin-top: 16px;
+  margin-bottom: 16px;
 `
 
 const Arrow = styled.div`
@@ -52,30 +52,30 @@ const Arrow = styled.div`
 `
 
 interface ForSaleTableCardProps {
-  collectiblesForSale: CollectibleAndOwnerData[]
+  nftsForSale: NftToken[]
   totalForSale: number
 }
 
-const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ collectiblesForSale, totalForSale }) => {
+const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalForSale }) => {
   const [page, setPage] = useState(1)
   const { isMobile } = useMatchBreakpoints()
   const itemsPerPage = isMobile ? ITEMS_PER_PAGE_MOBILE : ITEMS_PER_PAGE_DESKTOP
-  const [displayedCollectibles, setDisplayedCollectibles] = useState(collectiblesForSale.slice(0, itemsPerPage - 1))
+  const [displayedCollectibles, setDisplayedCollectibles] = useState(nftsForSale.slice(0, itemsPerPage - 1))
   const { t } = useTranslation()
   const { theme } = useTheme()
 
-  let maxPage = Math.floor(collectiblesForSale.length / itemsPerPage) + 1
-  if (collectiblesForSale.length % itemsPerPage === 0) {
-    maxPage = Math.floor(collectiblesForSale.length / itemsPerPage)
+  let maxPage = Math.floor(nftsForSale.length / itemsPerPage) + 1
+  if (nftsForSale.length % itemsPerPage === 0) {
+    maxPage = Math.floor(nftsForSale.length / itemsPerPage)
   }
 
   const switchPage = (pageNumber: number) => {
     setPage(pageNumber)
-    setDisplayedCollectibles(collectiblesForSale.slice((pageNumber - 1) * itemsPerPage, pageNumber * itemsPerPage))
+    setDisplayedCollectibles(nftsForSale.slice((pageNumber - 1) * itemsPerPage, pageNumber * itemsPerPage))
   }
 
   return (
-    <StyledCard>
+    <StyledCard hasManyPages={maxPage > 1}>
       <Grid
         flex="0 1 auto"
         gridTemplateColumns="34px 1fr"
@@ -96,7 +96,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ collectiblesForSale
         </Text>
       </TableHeading>
       <Flex flex="1 1 auto" flexDirection="column" justifyContent="space-between" height="100%">
-        <MintedTableRows collectiblesForSale={displayedCollectibles} />
+        <MintedTableRows nftsForSale={displayedCollectibles} />
         <PageButtons>
           <Arrow
             onClick={() => {

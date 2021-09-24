@@ -29,8 +29,13 @@ export const useGetCollection = (collectionAddress: string) => {
 
 export const useNftsFromCollection = (collectionAddress: string) => {
   const checksummedCollectionAddress = isAddress(collectionAddress) || ''
-  const collections = useSelector((state: State) => state.nftMarket.data.nfts[checksummedCollectionAddress])
-  return collections
+  const nfts = useSelector((state: State) => state.nftMarket.data.nfts[checksummedCollectionAddress])
+  return nfts
+}
+
+export const useGetAllBunniesByBunnyId = (bunnyId: string) => {
+  const nfts = useSelector((state: State) => state.nftMarket.data.nfts[pancakeBunniesAddress])
+  return nfts ? nfts.filter((nft) => nft.attributes[0].value === bunnyId && nft.marketData.isTradable) : []
 }
 
 export const useGetNFTInitializationState = () => {
