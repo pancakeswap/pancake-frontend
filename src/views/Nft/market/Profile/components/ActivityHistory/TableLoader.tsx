@@ -13,19 +13,19 @@ const LoadingRow: React.FC = () => {
     <tr>
       <Td>
         <GridItem>
-          <Skeleton height={68} width="100%" />
+          <Skeleton height={[162, null, 64]} width={[80, null, 200]} />
         </GridItem>
       </Td>
       <Td>
         <GridItem justifyContent="flex-end">
-          <Skeleton height={20} width={52} />
+          <Skeleton height={[66, null, 24]} width={64} />
         </GridItem>
       </Td>
       {isXs || isSm ? null : (
         <>
           <Td>
             <GridItem justifyContent="flex-end">
-              <Skeleton height={32} width={96} />
+              <Skeleton height={42} width={64} />
             </GridItem>
           </Td>
           <Td>
@@ -37,7 +37,7 @@ const LoadingRow: React.FC = () => {
       )}
       <Td>
         <GridItem justifyContent="center">
-          <Skeleton height={20} width={96} />
+          <Skeleton height={[36, null, 24]} width={[80, null, 120]} />
         </GridItem>
       </Td>
     </tr>

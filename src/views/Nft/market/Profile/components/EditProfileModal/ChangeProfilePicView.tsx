@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, InjectedModalProps, Text } from '@pancakeswap/uikit'
+import { Button, Box, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { useProfile } from 'state/profile/hooks'
@@ -62,28 +62,29 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
       <Text as="p" color="textSubtle" mb="24px">
         {t('Choose a new Collectible to use as your profile pic.')}
       </Text>
-      {nftsInWallet.map((walletNft) => {
-        const handleChange = (tokenId: string) => {
-          setSelectedNft({
-            tokenId,
-            nftAddress: walletNft.collectionAddress,
-          })
-        }
-
-        return (
-          <SelectionCard
-            name="profilePicture"
-            key={walletNft.tokenId}
-            value={selectedNft.tokenId}
-            image={walletNft.image.thumbnail}
-            isChecked={walletNft.tokenId === selectedNft.tokenId}
-            onChange={() => handleChange(walletNft.tokenId)}
-            disabled={isApproving || isConfirming || isConfirmed}
-          >
-            <Text bold>{walletNft.name}</Text>
-          </SelectionCard>
-        )
-      })}
+      <Box maxHeight="300px" overflowY="scroll">
+        {nftsInWallet.map((walletNft) => {
+          const handleChange = (tokenId: string) => {
+            setSelectedNft({
+              tokenId,
+              nftAddress: walletNft.collectionAddress,
+            })
+          }
+          return (
+            <SelectionCard
+              name="profilePicture"
+              key={walletNft.tokenId}
+              value={selectedNft.tokenId}
+              image={walletNft.image.thumbnail}
+              isChecked={walletNft.tokenId === selectedNft.tokenId}
+              onChange={() => handleChange(walletNft.tokenId)}
+              disabled={isApproving || isConfirming || isConfirmed}
+            >
+              <Text bold>{walletNft.name}</Text>
+            </SelectionCard>
+          )
+        })}
+      </Box>
       {nfts.length === 0 && (
         <>
           <Text as="p" color="textSubtle" mb="16px">
