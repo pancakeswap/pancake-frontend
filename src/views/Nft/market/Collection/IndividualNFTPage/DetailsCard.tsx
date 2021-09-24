@@ -1,40 +1,43 @@
 import React from 'react'
-import { Box, Flex, Text, SearchIcon } from '@pancakeswap/uikit'
+import styled from 'styled-components'
+import { Box, Flex, Text, SearchIcon, Link } from '@pancakeswap/uikit'
+import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ExpandableCard from './ExpandableCard'
-import { Collectible } from './types'
 
 interface DetailsCardProps {
-  collectible: Collectible
+  contractAddress: string
+  ipfsJson: string
 }
 
-const DetailsCard: React.FC<DetailsCardProps> = ({ collectible }) => {
+const LongTextContainer = styled(Text)`
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+const DetailsCard: React.FC<DetailsCardProps> = ({ contractAddress, ipfsJson }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
   const content = (
     <Box p="24px">
       <Flex justifyContent="space-between" alignItems="center" mb="16px">
         <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
           {t('Contract address')}
         </Text>
-        <Text bold textTransform="uppercase">
-          {collectible.nft.id}
-        </Text>
-      </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mb="16px">
-        <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
-          {t('Token id')}
-        </Text>
-        <Text bold textTransform="uppercase">
-          {collectible.nft.id}
-        </Text>
+        <Link external href={getBscScanLink(contractAddress, 'address', chainId)}>
+          <LongTextContainer bold>{contractAddress}</LongTextContainer>
+        </Link>
       </Flex>
       <Flex justifyContent="space-between" alignItems="center">
         <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
           IPFS JSON
         </Text>
-        <Text bold textTransform="uppercase">
-          {collectible.nft.id}
-        </Text>
+        <Link external href={ipfsJson}>
+          <LongTextContainer bold>{ipfsJson}</LongTextContainer>
+        </Link>
       </Flex>
     </Box>
   )

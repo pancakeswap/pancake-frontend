@@ -16,12 +16,12 @@ import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useAppDispatch } from 'state'
 import { addUserNft } from 'state/nftMarket/reducer'
-import { NftLocation } from 'state/nftMarket/types'
+import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { StyledModal } from './styles'
 import ReviewStage from './ReviewStage'
 import ConfirmStage from '../shared/ConfirmStage'
 import ApproveAndConfirmStage from '../shared/ApproveAndConfirmStage'
-import { PaymentCurrency, BuyingStage, BuyNFT } from './types'
+import { PaymentCurrency, BuyingStage } from './types'
 import TransactionConfirmed from '../shared/TransactionConfirmed'
 
 const modalTitles = {
@@ -32,7 +32,7 @@ const modalTitles = {
 }
 
 interface BuyModalProps extends InjectedModalProps {
-  nftToBuy: BuyNFT
+  nftToBuy: NftToken
 }
 
 const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
@@ -50,8 +50,8 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const { toastSuccess } = useToast()
   const dispatch = useAppDispatch()
 
-  const nftPriceWei = parseUnits(nftToBuy.token.currentAskPrice, 'ether')
-  const nftPrice = parseFloat(nftToBuy.token.currentAskPrice)
+  const nftPriceWei = parseUnits(nftToBuy.marketData.currentAskPrice, 'ether')
+  const nftPrice = parseFloat(nftToBuy.marketData.currentAskPrice)
 
   // BNB - returns ethers.BigNumber
   const { balance: bnbBalance, fetchStatus: bnbFetchStatus } = useGetBnbBalance()
@@ -87,18 +87,17 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
       )
     },
     onConfirm: () => {
-      const payAmount = Number.isNaN(nftPrice) ? ethers.BigNumber.from(0) : parseUnits(nftToBuy.token.currentAskPrice)
+      const payAmount = Number.isNaN(nftPrice)
+        ? ethers.BigNumber.from(0)
+        : parseUnits(nftToBuy.marketData.currentAskPrice)
       if (paymentCurrency === PaymentCurrency.BNB) {
-        return callWithGasPrice(
-          nftMarketContract,
-          'buyTokenUsingBNB',
-          [nftToBuy.collection.address, nftToBuy.token.tokenId],
-          { value: payAmount },
-        )
+        return callWithGasPrice(nftMarketContract, 'buyTokenUsingBNB', [nftToBuy.collectionAddress, nftToBuy.tokenId], {
+          value: payAmount,
+        })
       }
       return callWithGasPrice(nftMarketContract, 'buyTokenUsingWBNB', [
-        nftToBuy.collection.address,
-        nftToBuy.token.tokenId,
+        nftToBuy.collectionAddress,
+        nftToBuy.tokenId,
         payAmount,
       ])
     },
@@ -107,8 +106,8 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
       setStage(BuyingStage.TX_CONFIRMED)
       dispatch(
         addUserNft({
-          tokenId: nftToBuy.token.tokenId,
-          collectionAddress: nftToBuy.collection.address,
+          tokenId: nftToBuy.tokenId,
+          collectionAddress: nftToBuy.collectionAddress,
           nftLocation: NftLocation.WALLET,
         }),
       )

@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Box, Card, CardBody, Text, Button, Image, BinanceIcon } from '@pancakeswap/uikit'
+import { Flex, Box, Card, CardBody, Text, Button, Image, BinanceIcon, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { NftToken } from 'state/nftMarket/types'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
-import { Collectible } from './types'
+import BuyModal from '../../components/BuySellModals/BuyModal'
 
 const RoundedImage = styled(Image)`
   height: max-content;
@@ -20,13 +21,14 @@ const Container = styled(Flex)`
 `
 
 interface MainNFTCardProps {
-  collectible: Collectible
+  cheapestNft: NftToken
 }
 
-const MainNFTCard: React.FC<MainNFTCardProps> = ({ collectible }) => {
+const MainNFTCard: React.FC<MainNFTCardProps> = ({ cheapestNft }) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
-  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, collectible.lowestCost)
+  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(cheapestNft.marketData.currentAskPrice))
+  const [onPresentModal] = useModal(<BuyModal nftToBuy={cheapestNft} />)
   return (
     <Card mb="40px">
       <CardBody>
@@ -34,32 +36,32 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ collectible }) => {
           <Flex flex="2">
             <Box>
               <Text bold color="primary" mt={['16px', '16px', '50px']}>
-                {collectible.name}
+                {cheapestNft.collectionName}
               </Text>
               <Text fontSize="40px" bold mt="12px">
-                {collectible.nft.name}
+                {cheapestNft.name}
               </Text>
-              <Text mt={['16px', '16px', '48px']}>{t(collectible.nft.description)}</Text>
+              <Text mt={['16px', '16px', '48px']}>{t(cheapestNft.description)}</Text>
               <Text color="textSubtle" mt={['16px', '16px', '48px']}>
                 {t('Lowest price')}
               </Text>
               <Flex alignItems="center" mt="8px">
                 <BinanceIcon width={18} height={18} mr="4px" />
                 <Text fontSize="24px" bold mr="4px">
-                  {collectible.lowestCost}
+                  {cheapestNft.marketData.currentAskPrice}
                 </Text>
                 <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })} USD)`}</Text>
               </Flex>
-              <Button minWidth="168px" width={['100%', null, 'max-content']} mt="24px">
+              <Button minWidth="168px" width={['100%', null, 'max-content']} mt="24px" onClick={onPresentModal}>
                 {t('Buy')}
               </Button>
             </Box>
           </Flex>
           <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center">
-            <RoundedImage src={collectible.nft.images.ipfs} width={440} height={440} />
+            <RoundedImage src={cheapestNft.image.original} width={440} height={440} />
           </Flex>
         </Container>
       </CardBody>
