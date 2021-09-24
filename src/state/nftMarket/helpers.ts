@@ -252,13 +252,13 @@ export const getLowestPriceInCollection = async (collectionAddress: string) => {
  * @param where a User_filter where condition
  * @returns a UserActivity object
  */
-export const getUserActivity = async (where = {}): Promise<UserActivity> => {
+export const getUserActivity = async (address: string): Promise<UserActivity> => {
   try {
     const res = await request(
       GRAPH_API_NFTMARKET,
       gql`
-        query getUserActivity($where: User_filter) {
-          users(where: $where) {
+        query getUserActivity($address: String!) {
+          user(id: $address) {
             buyTradeHistory(orderBy: timestamp) {
               ${getBaseTransactionFields()}
               nft {
@@ -284,10 +284,10 @@ export const getUserActivity = async (where = {}): Promise<UserActivity> => {
           }
         }
       `,
-      { where },
+      { address },
     )
 
-    return res.users[0] || { askOrderHistory: [], buyTradeHistory: [], sellTradeHistory: [] }
+    return res.user || { askOrderHistory: [], buyTradeHistory: [], sellTradeHistory: [] }
   } catch (error) {
     console.error('Failed to fetch user Activity', error)
     return {
