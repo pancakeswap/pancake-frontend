@@ -69,9 +69,9 @@ export interface Image {
 }
 
 export enum NftLocation {
-  FORSALE = 'FORSALE',
-  PROFILE = 'PROFILE',
-  WALLET = 'WALLET',
+  FORSALE = 'For Sale',
+  PROFILE = 'Profile Pic',
+  WALLET = 'In Wallet',
 }
 
 // Market data regarding specific token ID, acquired via subgraph

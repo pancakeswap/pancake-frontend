@@ -8,7 +8,6 @@ import GridPlaceholder from '../../components/GridPlaceholder'
 import ProfileNftModal from '../../components/ProfileNftModal'
 import NoNftsImage from './NoNftsImage'
 import SellModal from '../../components/BuySellModals/SellModal'
-import { SellNFT } from '../../components/BuySellModals/SellModal/types'
 
 interface ProfileNftProps {
   nft: NftToken
@@ -16,7 +15,7 @@ interface ProfileNftProps {
 }
 
 interface SellNftProps {
-  nft: SellNFT
+  nft: NftToken
   location: NftLocation
   variant: 'sell' | 'edit'
 }
@@ -29,34 +28,16 @@ const UserNfts = () => {
   const [onPresentSellModal] = useModal(<SellModal variant={clickedSellNft.variant} nftToSell={clickedSellNft.nft} />)
   const { t } = useTranslation()
 
-  const transformToSellNft = (nft: NftToken) => {
-    const { marketData } = nft
-
-    return {
-      tokenId: nft.tokenId,
-      name: nft.name,
-      collection: {
-        address: nft.collectionAddress,
-        name: nft.collectionName,
-      },
-      isTradeable: marketData.isTradable,
-      // TODO: Get lowest price
-      lowestPrice: null,
-      currentAskPrice: marketData.currentAskPrice,
-      thumbnail: nft.image.thumbnail,
-    }
-  }
-
   const handleCollectibleClick = (nft: NftToken, location: NftLocation) => {
     switch (location) {
       case NftLocation.PROFILE:
         setClickedProfileNft({ nft, location })
         break
       case NftLocation.WALLET:
-        setClickedSellNft({ nft: transformToSellNft(nft), location, variant: 'sell' })
+        setClickedSellNft({ nft, location, variant: 'sell' })
         break
       case NftLocation.FORSALE:
-        setClickedSellNft({ nft: transformToSellNft(nft), location, variant: 'edit' })
+        setClickedSellNft({ nft, location, variant: 'edit' })
         break
       default:
         break
