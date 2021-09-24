@@ -247,4 +247,5 @@ export interface UserActivity {
   askOrderHistory: AskOrder[]
   buyTradeHistory: Transaction[]
   sellTradeHistory: Transaction[]
+  initializationState: UserNftInitializationState
 }

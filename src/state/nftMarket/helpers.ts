@@ -9,13 +9,14 @@ import {
   ApiCollections,
   TokenIdWithCollectionAddress,
   NftToken,
-  UserActivity,
   NftLocation,
   Collection,
   ApiResponseCollectionTokens,
   ApiResponseSpecificToken,
   ApiCollection,
   CollectionMarketDataBaseFields,
+  Transaction,
+  AskOrder,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
 
@@ -252,7 +253,9 @@ export const getLowestPriceInCollection = async (collectionAddress: string) => {
  * @param where a User_filter where condition
  * @returns a UserActivity object
  */
-export const getUserActivity = async (address: string): Promise<UserActivity> => {
+export const getUserActivity = async (
+  address: string,
+): Promise<{ askOrderHistory: AskOrder[]; buyTradeHistory: Transaction[]; sellTradeHistory: Transaction[] }> => {
   try {
     const res = await request(
       GRAPH_API_NFTMARKET,
