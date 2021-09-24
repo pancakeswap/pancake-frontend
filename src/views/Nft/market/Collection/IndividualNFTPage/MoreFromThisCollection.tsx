@@ -12,15 +12,6 @@ import 'swiper/swiper-bundle.css'
 
 SwiperCore.use([Pagination])
 
-// tmp
-// const exampleBunnies: Collectible[] = [...Array(12).keys()].map((i) => ({
-//   name: 'Pancake Bunnies',
-//   cost: 0.02,
-//   lowestCost: 0.002,
-//   nft: pancakeBunnies[i],
-//   status: 'selling',
-// }))
-
 const StyledSwiper = styled.div`
   .swiper-wrapper {
     align-items: center;
@@ -45,17 +36,17 @@ const MoreFromThisCollection: React.FC = () => {
     return null
   }
 
+  const nftsToShow = nftList.slice(0, 12)
+
   return (
     <Box pt="56px" pb="32px" mb="52px">
       <Text bold>{t('More from this collection')}</Text>
       {isMobile ? (
         <StyledSwiper>
           <Swiper spaceBetween={16} slidesPerView={1.5}>
-            {Object.values(nftList).map((bunny, index) => (
-              // TODO temp
-              // eslint-disable-next-line react/no-array-index-key
-              <SwiperSlide key={index}>
-                <CollectibleLinkCard nft={bunny} />
+            {nftsToShow.map((nft) => (
+              <SwiperSlide key={nft.tokenId}>
+                <CollectibleLinkCard nft={nft} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -71,11 +62,9 @@ const MoreFromThisCollection: React.FC = () => {
               clickable: true,
             }}
           >
-            {Object.values(nftList).map((bunny, index) => (
-              // TODO temp
-              // eslint-disable-next-line react/no-array-index-key
-              <SwiperSlide key={index}>
-                <CollectibleLinkCard nft={bunny} />
+            {nftsToShow.map((nft) => (
+              <SwiperSlide key={nft.tokenId}>
+                <CollectibleLinkCard nft={nft} />
               </SwiperSlide>
             ))}
           </Swiper>
