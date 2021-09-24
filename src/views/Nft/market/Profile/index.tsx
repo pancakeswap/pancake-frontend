@@ -13,7 +13,7 @@ import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import TabMenu from './components/TabMenu'
 import Achievements from './components/Achievements'
-import Activity from './components/Activity'
+import ActivityHistory from './components/ActivityHistory'
 import SubMenu from './components/SubMenu'
 import UserNfts from './components/UserNfts'
 
@@ -52,7 +52,7 @@ const NftProfile = () => {
         </Route>
         <Route path={`${nftsBaseUrl}/profile/activity`}>
           <SubMenu />
-          <Activity />
+          <ActivityHistory />
         </Route>
         <Route exact path={`${nftsBaseUrl}/profile`}>
           <SubMenu />
