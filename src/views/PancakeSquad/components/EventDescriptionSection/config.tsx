@@ -42,7 +42,13 @@ const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
     text: 'View Documentation',
     external: true,
   },
-  image: { src: '/images/pancakeSquad/moonBunny.png', alt: 'moon bunny' },
+  image: { src: '/images/pancakeSquad/moonBunny/body.png', alt: 'moon bunny' },
+  accessoriesImages: [
+    { src: '/images/pancakeSquad/moonBunny/band.png', alt: 'headband' },
+    { src: '/images/pancakeSquad/moonBunny/cloth.png', alt: 'cloth' },
+    { src: '/images/pancakeSquad/moonBunny/glasses.png', alt: 'glasses' },
+    { src: '/images/pancakeSquad/moonBunny/pancake.png', alt: 'pancake' },
+  ],
 })
 
 export default eventDescriptionConfigBuilder
