@@ -10,6 +10,7 @@ import { useUserNfts } from 'state/nftMarket/hooks'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
+import { UserNftInitializationState } from 'state/nftMarket/types'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
@@ -28,7 +29,7 @@ const ProfilePicture: React.FC = () => {
   const [isApproving, setIsApproving] = useState(false)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
 
-  const { nfts } = useUserNfts()
+  const { nfts, userNftsInitializationState } = useUserNfts()
   useFetchUserNfts(account)
 
   const { t } = useTranslation()
@@ -50,7 +51,7 @@ const ProfilePicture: React.FC = () => {
     }
   }
 
-  if (nfts.length === 0) {
+  if (nfts.length === 0 && userNftsInitializationState === UserNftInitializationState.INITIALIZED) {
     return (
       <>
         <Heading scale="xl" mb="24px">

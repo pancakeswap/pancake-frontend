@@ -128,7 +128,7 @@ export const fetchNftsFromCollections = createAsyncThunk(
 // Combines them with market data and assigns location
 export const fetchUserNfts = createAsyncThunk<
   NftToken[],
-  { account: string; profileNftWithCollectionAddress: TokenIdWithCollectionAddress; collections: ApiCollections }
+  { account: string; profileNftWithCollectionAddress?: TokenIdWithCollectionAddress; collections: ApiCollections }
 >('nft/fetchUserNfts', async ({ account, profileNftWithCollectionAddress, collections }) => {
   const walletNftIds = await fetchWalletTokenIdsForCollections(account, collections)
   if (profileNftWithCollectionAddress?.tokenId) {
