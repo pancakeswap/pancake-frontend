@@ -55,12 +55,10 @@ const MobileModal: React.FC<MobileModalProps> = ({ nft, activity, bnbBusdPrice, 
                   {priceAsFloat}
                 </Text>
                 <Text color="textSubtle">
-                  {`(~${t('$%amount%', {
-                    amount: priceInUsd.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    }),
-                  })})`}
+                  {`(~$${priceInUsd.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}`}
                 </Text>
               </Flex>
             ) : (

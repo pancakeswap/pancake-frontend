@@ -1560,7 +1560,6 @@
   "Lowest": "Lowest",
   "You don’t have any of this item.": "You don’t have any of this item.",
   "Manage/Sell": "Manage/Sell",
-  "$%amount%": "$%amount%",
   "NFT Market": "NFT Market",
   "Delisted": "Delisted",
   "No NFTs found": "No NFTs found",
@@ -1573,6 +1572,5 @@
   "PancakeSwap NFTs only... for now!": "PancakeSwap NFTs only... for now!",
   "Bought": "Bought",
   "Event": "Event",
-  "Sold": "Sold",
-  "Page %currentPage% of %maxPages%": "Page %currentPage% of %maxPages%"
+  "Sold": "Sold"
 }

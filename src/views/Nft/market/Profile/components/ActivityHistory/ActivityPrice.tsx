@@ -4,7 +4,6 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
 
 const ActivityPrice = ({ bnbBusdPrice, price }) => {
-  const { t } = useTranslation()
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, price)
 
   return (
@@ -16,12 +15,10 @@ const ActivityPrice = ({ bnbBusdPrice, price }) => {
             <Text bold>{price}</Text>
           </Flex>
           <Text fontSize="12px" color="textSubtle">
-            {`(~${t('$%amount%', {
-              amount: priceInUsd.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              }),
-            })})`}
+            {`(~$${priceInUsd.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`}
           </Text>
         </>
       ) : (

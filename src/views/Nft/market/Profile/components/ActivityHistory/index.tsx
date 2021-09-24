@@ -37,7 +37,7 @@ const ActivityHistory = () => {
   const { theme } = useTheme()
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
-  const [maxPages, setMaxPages] = useState(1)
+  const [maxPage, setMaxPages] = useState(1)
   const [activitiesSlice, setActivitiesSlice] = useState<Activity[]>([])
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
   const sortedUserActivites = useUserActivity(account)
@@ -129,13 +129,13 @@ const ActivityHistory = () => {
           >
             <ArrowBackIcon color={currentPage === 1 ? 'textDisabled' : 'primary'} />
           </Arrow>
-          <Text>{t('Page %currentPage% of %maxPages%', { currentPage, maxPages })}</Text>
+          <Text>{t('Page %page% of %maxPage%', { page: currentPage, maxPage })}</Text>
           <Arrow
             onClick={() => {
-              setCurrentPage(currentPage === maxPages ? currentPage : currentPage + 1)
+              setCurrentPage(currentPage === maxPage ? currentPage : currentPage + 1)
             }}
           >
-            <ArrowForwardIcon color={currentPage === maxPages ? 'textDisabled' : 'primary'} />
+            <ArrowForwardIcon color={currentPage === maxPage ? 'textDisabled' : 'primary'} />
           </Arrow>
         </PageButtons>
       </Flex>
