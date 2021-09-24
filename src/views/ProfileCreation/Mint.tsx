@@ -11,6 +11,9 @@ import nftList from 'config/constants/nfts'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import useToast from 'hooks/useToast'
+import { useAppDispatch } from 'state'
+import { fetchUserNfts } from 'state/nftMarket/reducer'
+import { useGetCollections } from 'state/nftMarket/hooks'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import useProfileCreation from './contexts/hook'
@@ -22,7 +25,9 @@ const nfts = nftList.pancake.filter((nft) => STARTER_BUNNY_IDENTIFIERS.includes(
 const Mint: React.FC = () => {
   const [variationId, setVariationId] = useState<Nft['id']>(null)
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
+  const collections = useGetCollections()
   const { toastSuccess } = useToast()
+  const dispatch = useAppDispatch()
 
   const { account } = useWeb3React()
   const cakeContract = useCake()
@@ -50,10 +55,11 @@ const Mint: React.FC = () => {
         return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [variationId])
       },
       onApproveSuccess: () => {
-        toastSuccess('Enabled', 'Please confirm this NFT for minting')
+        toastSuccess('Enabled', "Press 'confirm' to mint this NFT")
       },
       onSuccess: () => {
         toastSuccess('Success', 'You have minted your starter NFT')
+        dispatch(fetchUserNfts({ account, collections }))
         actions.nextStep()
       },
     })
