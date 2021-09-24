@@ -3,6 +3,22 @@ import { IPFS_GATEWAY } from '../../index'
 
 const Nfts: Nft[] = [
   {
+    name: 'Panurai',
+    description: 'Panurai: Honorable defender of the PancakeSwap Community.',
+    images: {
+      lg: 'panurai-lg.png',
+      md: 'panurai-md.png',
+      sm: 'panurai-sm.png',
+      ipfs: `${IPFS_GATEWAY}/QmUuHGh2ujMuFurQQga588GoZ1qmXrhHw8mHXGaKKpPbfm/panurai.png`,
+    },
+    video: {
+      webm: `${IPFS_GATEWAY}/QmUuHGh2ujMuFurQQga588GoZ1qmXrhHw8mHXGaKKpPbfm/panurai.webm`,
+      mp4: `${IPFS_GATEWAY}/QmUuHGh2ujMuFurQQga588GoZ1qmXrhHw8mHXGaKKpPbfm/panurai.mp4`,
+    },
+    identifier: 'panurai',
+    id: 21,
+  },
+  {
     name: 'Baller',
     description: 'Absolute (lottery) baller.',
     images: {
