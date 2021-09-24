@@ -12,10 +12,10 @@ const ArtistSection = () => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
 
-  const { headingText, bodyText, buttons, image } = artistConfigBuilder({ t })
+  const { headingText, bodyText, buttons, image } = artistConfigBuilder({ t, isDark })
 
   return (
-    <StyledArtistSectionContainer justifyContent={['flex-start', null, null, 'center']}>
+    <StyledArtistSectionContainer $isDark={isDark} justifyContent={['flex-start', null, null, 'center']}>
       <LandingBodyWrapper
         py={['64px', null, null, '100px']}
         alignItems={['center']}

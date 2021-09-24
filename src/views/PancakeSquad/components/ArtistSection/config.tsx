@@ -4,9 +4,10 @@ import { ContextApi } from 'contexts/Localization/types'
 
 type ArtistConfigType = {
   t: ContextApi['t']
+  isDark: boolean
 }
 
-const artistConfigBuilder = ({ t }: ArtistConfigType) => ({
+const artistConfigBuilder = ({ t, isDark }: ArtistConfigType) => ({
   headingText: t('Meet the Artist'),
   bodyText: [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
@@ -26,7 +27,7 @@ const artistConfigBuilder = ({ t }: ArtistConfigType) => ({
       icon: <InstagramIcon color="white" />,
     },
   ],
-  image: { src: '/images/pancakeSquad/artist.png', alt: 'Chef Cecy bio' },
+  image: { src: `/images/pancakeSquad/artist${isDark ? '-dark' : ''}.png`, alt: 'Chef Cecy bio' },
 })
 
 export default artistConfigBuilder

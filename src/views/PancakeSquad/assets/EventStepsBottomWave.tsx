@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const Icon: React.FC<SvgProps> = (props) => {
+const Icon: React.FC<SvgProps & { isDark: boolean }> = ({ isDark, ...props }) => {
   return (
     <Svg preserveAspectRatio="none" viewBox="0 0 1280 17" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
@@ -10,8 +10,8 @@ const Icon: React.FC<SvgProps> = (props) => {
       />
       <defs>
         <linearGradient id="paint0_linear" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FAF9FA" />
-          <stop offset="1" stopColor="#d7caec" />
+          <stop stopColor={isDark ? '#313D5C' : '#FAF9FA'} />
+          <stop offset="1" stopColor={isDark ? '#3D2A54' : '#d7caec'} />
         </linearGradient>
       </defs>
     </Svg>
