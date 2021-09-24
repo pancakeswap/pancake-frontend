@@ -1,13 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Price } from '@pancakeswap/sdk'
-import { Button, Grid, Text, Flex, Box, BinanceIcon } from '@pancakeswap/uikit'
+import { Button, Grid, Text, Flex, Box, BinanceIcon, useModal, Skeleton } from '@pancakeswap/uikit'
 import truncateHash from 'utils/truncateHash'
 import { ContextApi } from 'contexts/Localization/types'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { CollectibleAndOwnerData } from '../types'
+import { NftToken } from 'state/nftMarket/types'
+import BuyModal from 'views/Nft/market/components/BuySellModals/BuyModal'
+import { useProfileForAddress } from 'state/profile/hooks'
 
 const Avatar = styled.img`
   margin-right: 12px;
@@ -34,19 +36,21 @@ const ButtonContainer = styled(Box)`
 
 interface RowProps {
   t: ContextApi['t']
-  collectibleForSale: CollectibleAndOwnerData
+  nft: NftToken
   bnbBusdPrice: Price
 }
 
-const Row: React.FC<RowProps> = ({ t, collectibleForSale, bnbBusdPrice }) => {
-  const { owner, collectible } = collectibleForSale
-  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, collectible.cost)
+const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice }) => {
+  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft.marketData.currentAskPrice))
+  const [onPresentModal] = useModal(<BuyModal nftToBuy={nft} />)
+  const { profile, isFetching } = useProfileForAddress(nft.marketData.currentSeller)
+  const profileName = profile?.hasRegistered ? profile.profile.username : '-'
   return (
     <>
       <Box pl="24px">
         <Flex justifySelf="flex-start" alignItems="center" width="max-content">
           <BinanceIcon width="24px" height="24px" mr="8px" />
-          <Text bold>{collectible.cost}</Text>
+          <Text bold>{nft.marketData.currentAskPrice}</Text>
         </Flex>
         <Text fontSize="12px" color="textSubtle">
           {`(~${priceInUsd.toLocaleString(undefined, {
@@ -57,15 +61,15 @@ const Row: React.FC<RowProps> = ({ t, collectibleForSale, bnbBusdPrice }) => {
       </Box>
       <Box>
         <Flex width="max-content" alignItems="center">
-          <Avatar src="https://ipfs.io/ipfs/QmYD9AtzyQPjSa9jfZcZq88gSaRssdhGmKqQifUDjGFfXm/twinkle.png" alt="Twinkle" />
+          <Avatar src={nft.image.thumbnail} alt="Twinkle" />
           <Box display="inline">
-            <Text lineHeight="1.25">{truncateHash(owner.account)}</Text>
-            <Text lineHeight="1.25">{owner.profileName}</Text>
+            <Text lineHeight="1.25">{truncateHash(nft.marketData.currentSeller)}</Text>
+            {isFetching ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
           </Box>
         </Flex>
       </Box>
       <ButtonContainer>
-        <Button scale="sm" variant="secondary" maxWidth="128px">
+        <Button scale="sm" variant="secondary" maxWidth="128px" onClick={onPresentModal}>
           {t('Buy')}
         </Button>
       </ButtonContainer>
@@ -74,26 +78,19 @@ const Row: React.FC<RowProps> = ({ t, collectibleForSale, bnbBusdPrice }) => {
 }
 
 interface ForSaleTableRowsProps {
-  collectiblesForSale: CollectibleAndOwnerData[]
+  nftsForSale: NftToken[]
 }
 
-const MintedTableRows: React.FC<ForSaleTableRowsProps> = ({ collectiblesForSale }) => {
+const ForSaleTableRow: React.FC<ForSaleTableRowsProps> = ({ nftsForSale }) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
   return (
     <OwnersTableRow>
-      {collectiblesForSale.map((collectibleAndOwnerData, index) => (
-        <Row
-          // TODO temp
-          // eslint-disable-next-line react/no-array-index-key
-          key={index}
-          t={t}
-          collectibleForSale={collectibleAndOwnerData}
-          bnbBusdPrice={bnbBusdPrice}
-        />
+      {nftsForSale.map((nft) => (
+        <Row key={nft.tokenId} t={t} nft={nft} bnbBusdPrice={bnbBusdPrice} />
       ))}
     </OwnersTableRow>
   )
 }
 
-export default MintedTableRows
+export default ForSaleTableRow
