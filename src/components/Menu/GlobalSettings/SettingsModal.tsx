@@ -15,13 +15,6 @@ import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
 import GasSettings from './GasSettings'
 
-// TODO: Temporary. Once uikit is merged with this style change, this can be removed.
-const PancakeToggleWrapper = styled.div`
-  .pancakes {
-    position: absolute;
-  }
-`
-
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   max-height: 400px;
@@ -121,9 +114,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
               ml="4px"
             />
           </Flex>
-          <PancakeToggleWrapper>
-            <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
-          </PancakeToggleWrapper>
+          <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
         </Flex>
       </ScrollableContainer>
     </Modal>
