@@ -1,7 +1,6 @@
 import React from 'react'
 import { Flex, BinanceIcon, Text } from '@pancakeswap/uikit'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { useTranslation } from 'contexts/Localization'
 
 const ActivityPrice = ({ bnbBusdPrice, price }) => {
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, price)
