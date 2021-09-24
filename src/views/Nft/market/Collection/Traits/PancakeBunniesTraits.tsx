@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton, Table, Td, Th, Image, Flex, Text } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 import times from 'lodash/times'
-import CollapsibleCard from 'components/CollapsibleCard'
+import sum from 'lodash/sum'
+import { formatNumber } from 'utils/formatBalance'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
-import styled from 'styled-components'
+import CollapsibleCard from 'components/CollapsibleCard'
 import useGetLowestPBNftPrice from '../../hooks/useGetLowestPBPrice'
 import { BNBAmountLabel } from '../../components/CollectibleCard/styles'
 
@@ -57,6 +59,8 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
     fetchTokens()
   }, [collectionAddress, setTokenApiResponse])
 
+  const totalMinted = tokenApiResponse ? sum(Object.values(tokenApiResponse.attributesDistribution)) : 0
+
   return (
     <>
       {tokenApiResponse ? (
@@ -64,10 +68,10 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
           <Table>
             <thead>
               <tr>
-                <Th textAlign="left">Name</Th>
-                <Th>Count</Th>
-                <Th>Rarity</Th>
-                <Th>Lowest</Th>
+                <Th textAlign="left">{t('Name')}</Th>
+                <Th>{t('Count')}</Th>
+                <Th>{t('Rarity')}</Th>
+                <Th>{t('Lowest')}</Th>
               </tr>
             </thead>
             <tbody>
@@ -78,14 +82,15 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
                   return null
                 }
                 const count: number = tokenApiResponse.attributesDistribution[bunnyId] ?? 0
+                const percentage = (count / totalMinted) * 100
 
                 return (
                   <tr key={bunnyId}>
                     <Td>
                       <NftName thumbnailSrc={nft.image.thumbnail} name={nft.name} />
                     </Td>
-                    <Td textAlign="center">{count.toLocaleString()}</Td>
-                    <Td textAlign="center">{`${((count / tokenApiResponse.total) * 100).toLocaleString()}%`}</Td>
+                    <Td textAlign="center">{formatNumber(count, 0, 0)}</Td>
+                    <Td textAlign="center">{`${formatNumber(percentage, 0, 2)}%`}</Td>
                     <Td textAlign="center">
                       <LowestPriceCell bunnyId={bunnyId} />
                     </Td>
@@ -100,10 +105,10 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
           <Table>
             <thead>
               <tr>
-                <Th textAlign="left">Name</Th>
-                <Th>Count</Th>
-                <Th>Rarity</Th>
-                <Th>Lowest</Th>
+                <Th textAlign="left">{t('Name')}</Th>
+                <Th>{t('Count')}</Th>
+                <Th>{t('Rarity')}</Th>
+                <Th>{t('Lowest')}</Th>
               </tr>
             </thead>
             <tbody>
