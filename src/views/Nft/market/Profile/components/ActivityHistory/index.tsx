@@ -4,7 +4,7 @@ import { uniqBy } from 'lodash'
 import { Flex, Text, Card, ArrowBackIcon, ArrowForwardIcon, Table, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
-import { NftToken, TokenIdWithCollectionAddress } from 'state/nftMarket/types'
+import { NftToken, TokenIdWithCollectionAddress, UserNftInitializationState } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
@@ -12,6 +12,7 @@ import useFetchUserActivity from '../../hooks/useFetchUserActivity'
 import useUserActivity, { Activity } from '../../hooks/useUserActivity'
 import ActivityRow from './ActivityRow'
 import TableLoader from './TableLoader'
+import NoNftsImage from '../NoNftsImage'
 
 const PageButtons = styled.div`
   width: 100%;
@@ -40,7 +41,7 @@ const ActivityHistory = () => {
   const [maxPage, setMaxPages] = useState(1)
   const [activitiesSlice, setActivitiesSlice] = useState<Activity[]>([])
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
-  const sortedUserActivites = useUserActivity(account)
+  const { sortedUserActivites, initializationState } = useUserActivity(account)
   const bnbBusdPrice = useBNBBusdPrice()
   const { isXs, isSm } = useMatchBreakpoints()
 
@@ -67,6 +68,13 @@ const ActivityHistory = () => {
       getMaxPages()
       fetchActivityNftMetadata()
     }
+
+    return () => {
+      setActivitiesSlice([])
+      setNftMetadata([])
+      setMaxPages(1)
+      setCurrentPage(1)
+    }
   }, [sortedUserActivites])
 
   useEffect(() => {
@@ -81,64 +89,79 @@ const ActivityHistory = () => {
 
   return (
     <Card>
-      <Table>
-        <thead>
-          <tr>
-            <Th textAlign={['center', null, 'left']}> {t('Item')}</Th>
-            <Th textAlign="right"> {t('Event')}</Th>
-            {isXs || isSm ? null : (
-              <>
-                <Th textAlign="right"> {t('Price')}</Th>
-                <Th textAlign="right"> {t('From/To')}</Th>
-              </>
-            )}
-            <Th textAlign="center"> {t('Date')}</Th>
-            {isXs || isSm ? null : <Th />}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedUserActivites.length === 0 || nftMetadata.length === 0 || activitiesSlice.length === 0 ? (
-            <TableLoader />
-          ) : (
-            activitiesSlice.map((activity) => {
-              const nftMeta = nftMetadata.find((metaNft) => metaNft.tokenId === activity.nft.tokenId)
-              return (
-                <ActivityRow
-                  key={`${activity.nft.tokenId}${activity.timestamp}`}
-                  activity={activity}
-                  nft={nftMeta}
-                  bnbBusdPrice={bnbBusdPrice}
-                />
-              )
-            })
-          )}
-        </tbody>
-      </Table>
-      <Flex
-        borderTop={`1px ${theme.colors.cardBorder} solid`}
-        pt="24px"
-        flexDirection="column"
-        justifyContent="space-between"
-        height="100%"
-      >
-        <PageButtons>
-          <Arrow
-            onClick={() => {
-              setCurrentPage(currentPage === 1 ? currentPage : currentPage - 1)
-            }}
+      {sortedUserActivites.length === 0 &&
+      nftMetadata.length === 0 &&
+      activitiesSlice.length === 0 &&
+      initializationState === UserNftInitializationState.INITIALIZED ? (
+        <Flex p="24px" flexDirection="column" alignItems="center">
+          <NoNftsImage />
+          <Text pt="8px" bold>
+            {t('No NFT market history found')}
+          </Text>
+        </Flex>
+      ) : (
+        <>
+          <Table>
+            <thead>
+              <tr>
+                <Th textAlign={['center', null, 'left']}> {t('Item')}</Th>
+                <Th textAlign="right"> {t('Event')}</Th>
+                {isXs || isSm ? null : (
+                  <>
+                    <Th textAlign="right"> {t('Price')}</Th>
+                    <Th textAlign="right"> {t('From/To')}</Th>
+                  </>
+                )}
+                <Th textAlign="center"> {t('Date')}</Th>
+                {isXs || isSm ? null : <Th />}
+              </tr>
+            </thead>
+
+            <tbody>
+              {initializationState === UserNftInitializationState.INITIALIZING ? (
+                <TableLoader />
+              ) : (
+                activitiesSlice.map((activity) => {
+                  const nftMeta = nftMetadata.find((metaNft) => metaNft.tokenId === activity.nft.tokenId)
+                  return (
+                    <ActivityRow
+                      key={`${activity.nft.tokenId}${activity.timestamp}`}
+                      activity={activity}
+                      nft={nftMeta}
+                      bnbBusdPrice={bnbBusdPrice}
+                    />
+                  )
+                })
+              )}
+            </tbody>
+          </Table>
+          <Flex
+            borderTop={`1px ${theme.colors.cardBorder} solid`}
+            pt="24px"
+            flexDirection="column"
+            justifyContent="space-between"
+            height="100%"
           >
-            <ArrowBackIcon color={currentPage === 1 ? 'textDisabled' : 'primary'} />
-          </Arrow>
-          <Text>{t('Page %page% of %maxPage%', { page: currentPage, maxPage })}</Text>
-          <Arrow
-            onClick={() => {
-              setCurrentPage(currentPage === maxPage ? currentPage : currentPage + 1)
-            }}
-          >
-            <ArrowForwardIcon color={currentPage === maxPage ? 'textDisabled' : 'primary'} />
-          </Arrow>
-        </PageButtons>
-      </Flex>
+            <PageButtons>
+              <Arrow
+                onClick={() => {
+                  setCurrentPage(currentPage === 1 ? currentPage : currentPage - 1)
+                }}
+              >
+                <ArrowBackIcon color={currentPage === 1 ? 'textDisabled' : 'primary'} />
+              </Arrow>
+              <Text>{t('Page %page% of %maxPage%', { page: currentPage, maxPage })}</Text>
+              <Arrow
+                onClick={() => {
+                  setCurrentPage(currentPage === maxPage ? currentPage : currentPage + 1)
+                }}
+              >
+                <ArrowForwardIcon color={currentPage === maxPage ? 'textDisabled' : 'primary'} />
+              </Arrow>
+            </PageButtons>
+          </Flex>
+        </>
+      )}
     </Card>
   )
 }
