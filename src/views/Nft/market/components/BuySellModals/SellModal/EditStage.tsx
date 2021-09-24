@@ -3,11 +3,12 @@ import { Flex, Grid, Text, Button, Link, BinanceIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BASE_URL } from 'config'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import { NftToken } from 'state/nftMarket/types'
 import { Divider, RoundedImage } from '../shared/styles'
-import { SellNFT } from './types'
 
 interface EditStageProps {
-  nftToSell: SellNFT
+  nftToSell: NftToken
+  lowestPrice: number
   continueToAdjustPriceStage: () => void
   continueToRemoveFromMarketStage: () => void
 }
@@ -15,6 +16,7 @@ interface EditStageProps {
 // Initial stage when user wants to edit already listed NFT (i.e. adjust price or remove from sale)
 const EditStage: React.FC<EditStageProps> = ({
   nftToSell,
+  lowestPrice,
   continueToAdjustPriceStage,
   continueToRemoveFromMarketStage,
 }) => {
@@ -22,25 +24,25 @@ const EditStage: React.FC<EditStageProps> = ({
   return (
     <>
       <Flex p="16px">
-        <RoundedImage src={nftToSell.thumbnail} height={68} width={68} mr="8px" />
+        <RoundedImage src={nftToSell.image.thumbnail} height={68} width={68} mr="8px" />
         <Grid flex="1" gridTemplateColumns="1fr 1fr" alignItems="center">
           <Text bold>{nftToSell.name}</Text>
           <Text fontSize="12px" color="textSubtle" textAlign="right">
-            {nftToSell.collection.name}
+            {nftToSell.collectionName}
           </Text>
           <Text small color="textSubtle">
             {t('Lowest price')}
           </Text>
           <Flex alignItems="center" justifyContent="flex-end">
             <BinanceIcon width={16} height={16} mr="4px" />
-            <Text small>{nftToSell.lowestPrice}</Text>
+            <Text small>{lowestPrice}</Text>
           </Flex>
           <Text small color="textSubtle">
             {t('Your price')}
           </Text>
           <Flex alignItems="center" justifyContent="flex-end">
             <BinanceIcon width={16} height={16} mr="4px" />
-            <Text small>{nftToSell.currentAskPrice}</Text>
+            <Text small>{nftToSell.marketData.currentAskPrice}</Text>
           </Flex>
         </Grid>
       </Flex>

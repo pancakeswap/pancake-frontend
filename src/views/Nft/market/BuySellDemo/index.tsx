@@ -5,25 +5,15 @@ import { useUserNfts, useNftsFromCollection } from 'state/nftMarket/hooks'
 import useFetchUserNfts from '../Profile/hooks/useFetchUserNfts'
 import BuyModal from '../components/BuySellModals/BuyModal'
 import SellModal from '../components/BuySellModals/SellModal'
-import { BuyNFT } from '../components/BuySellModals/BuyModal/types'
 import { pancakeBunniesAddress } from '../constants'
 
 const BuyBunnyButton = ({ nft, token }) => {
-  const nftToBuy: BuyNFT = {
-    collection: {
-      address: pancakeBunniesAddress,
-      name: 'Pancake Bunnies',
-    },
-    token: nft.marketData,
-    name: nft.name,
-    image: nft.image,
-  }
-  const [onPresentModal] = useModal(<BuyModal nftToBuy={nftToBuy} />)
+  const [onPresentModal] = useModal(<BuyModal nftToBuy={nft} />)
   const { account } = useWeb3React()
   const yourListing = token.currentSeller === account.toLowerCase()
   return (
     <Grid
-      key={nftToBuy.token.tokenId}
+      key={nft.tokenId}
       border="1px solid grey"
       borderRadius="8px"
       p="8px"
@@ -33,10 +23,10 @@ const BuyBunnyButton = ({ nft, token }) => {
       gridTemplateColumns="1fr 1fr 1fr 1fr"
     >
       <Text bold mr="8px">
-        {nftToBuy.token.tokenId}
+        {nft.tokenId}
       </Text>
       <Text bold color="secondary" mr="8px">
-        {nftToBuy.name}
+        {nft.name}
       </Text>
       <Text>{token.marketData.currentAskPrice} BNB</Text>
       <Button scale="sm" variant="success" mr="4px" onClick={onPresentModal} disabled={yourListing}>

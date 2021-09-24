@@ -3,12 +3,13 @@ import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@
 import { FetchStatus } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import { BASE_URL } from 'config'
+import { NftToken } from 'state/nftMarket/types'
 import { Divider, RoundedImage } from '../shared/styles'
 import { BorderedBox, BnbAmountCell } from './styles'
-import { BuyNFT, PaymentCurrency } from './types'
+import { PaymentCurrency } from './types'
 
 interface ReviewStageProps {
-  nftToBuy: BuyNFT
+  nftToBuy: NftToken
   paymentCurrency: PaymentCurrency
   setPaymentCurrency: (index: number) => void
   nftPrice: number
@@ -36,7 +37,7 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
           <RoundedImage src={nftToBuy.image.thumbnail} height={68} width={68} mr="16px" />
           <Flex flexDirection="column" justifyContent="space-evenly">
             <Text color="textSubtle" fontSize="12px">
-              {nftToBuy.collection.name}
+              {nftToBuy.collectionName}
             </Text>
             <Text bold>{nftToBuy.name}</Text>
           </Flex>
