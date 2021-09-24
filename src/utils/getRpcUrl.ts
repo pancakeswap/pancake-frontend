@@ -8,6 +8,10 @@ export const nodes = [
   // process.env.REACT_APP_NODE_4,
 ]
 
+if (process.env.NODE_ENV === 'production') {
+  nodes.push(process.env.REACT_APP_NODE_4)
+}
+
 const getNodeUrl = () => {
   return sample(nodes)
 }
