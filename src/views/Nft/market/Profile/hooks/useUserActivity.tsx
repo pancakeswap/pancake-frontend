@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useUserNfts } from 'state/nftMarket/hooks'
-import { AskOrder, AskOrderType, TokenMarketData, Transaction } from 'state/nftMarket/types'
+import { AskOrder, AskOrderType, TokenMarketData, Transaction, UserNftInitializationState } from 'state/nftMarket/types'
 
 export enum MarketEvent {
   NEW = 'NEW',
@@ -24,10 +24,12 @@ export interface Activity {
  * Return an array of all user activity, sorted by most recent timestamp.
  * @returns
  */
-const useUserActivity = (account: string): Activity[] => {
+const useUserActivity = (
+  account: string,
+): { sortedUserActivites: Activity[]; initializationState: UserNftInitializationState } => {
   const [sortedUserActivites, setSortedUserActivities] = useState<Activity[]>([])
   const {
-    activity: { askOrderHistory, buyTradeHistory, sellTradeHistory },
+    activity: { askOrderHistory, buyTradeHistory, sellTradeHistory, initializationState },
   } = useUserNfts()
 
   useEffect(() => {
@@ -84,9 +86,13 @@ const useUserActivity = (account: string): Activity[] => {
 
       setSortedUserActivities(sortedByMostRecent)
     }
+
+    return () => {
+      setSortedUserActivities([])
+    }
   }, [account, askOrderHistory, buyTradeHistory, sellTradeHistory])
 
-  return sortedUserActivites
+  return { sortedUserActivites, initializationState }
 }
 
 export default useUserActivity
