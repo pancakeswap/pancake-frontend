@@ -7,7 +7,7 @@ type BunniesImages = {
   altText: string
 }
 
-const BUNNIES_CYCLING_TIME = 5000
+const BUNNIES_CYCLING_TIME = 2500
 
 const BunniesImages: React.FC<BunniesImages> = ({ basePath, altText }) => {
   const bunnies = new Array(11).fill({})
