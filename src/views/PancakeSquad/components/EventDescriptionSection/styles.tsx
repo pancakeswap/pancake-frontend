@@ -26,6 +26,16 @@ export const StyledBodyTextElement = styled('li')`
   margin-left: 12px;
 `
 
-export const StyledBunnyImageContainer = styled(Flex)`
+export const StyledBunnyAccessoriesContainer = styled(Flex)`
+  position: absolute;
   animation: ${flyingAnim} 3.5s ease-in-out infinite;
+  width: 100%;
+  height: 100%;
+`
+
+export const StyledBunnyAccessory = styled.img`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
 `

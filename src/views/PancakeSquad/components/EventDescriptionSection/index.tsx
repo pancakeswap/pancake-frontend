@@ -1,21 +1,21 @@
 import React from 'react'
-import { Button, Flex, Link, Text } from '@pancakeswap/uikit'
-import { LandingBodyWrapper } from 'views/PancakeSquad/styles'
+import { Box, Button, Flex, Link, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import eventDescriptionConfigBuilder from './config'
 import {
   StyledBodyTextElement,
   StyledBodyTextList,
-  StyledBunnyImageContainer,
+  StyledBunnyAccessoriesContainer,
+  StyledBunnyAccessory,
   StyledEventDescriptionSectionContainer,
 } from './styles'
 
 const EventDescriptionSection = () => {
   const { t } = useTranslation()
 
-  const { headingText, subHeadingText, bodyTextHeader, bodyText, primaryButton, image } = eventDescriptionConfigBuilder(
-    { t },
-  )
+  const { headingText, subHeadingText, bodyTextHeader, bodyText, primaryButton, image, accessoriesImages } =
+    eventDescriptionConfigBuilder({ t })
 
   return (
     <StyledEventDescriptionSectionContainer justifyContent={['flex-start', null, null, 'center']}>
@@ -55,13 +55,21 @@ const EventDescriptionSection = () => {
             </Link>
           </Flex>
         </Flex>
-        <StyledBunnyImageContainer
+        <Flex
+          position="relative"
           order={[1, null, null, 2]}
           mb={['24px', null, '-3px']}
           width={['192px', null, '250px', '50%']}
         >
-          <img src={image.src} alt={image.alt} />
-        </StyledBunnyImageContainer>
+          <Box>
+            <img src={image.src} alt={image.alt} />
+          </Box>
+          <StyledBunnyAccessoriesContainer>
+            {accessoriesImages.map((accessory) => (
+              <StyledBunnyAccessory key={accessory.alt} src={accessory.src} alt={accessory.alt} />
+            ))}
+          </StyledBunnyAccessoriesContainer>
+        </Flex>
       </LandingBodyWrapper>
     </StyledEventDescriptionSectionContainer>
   )
