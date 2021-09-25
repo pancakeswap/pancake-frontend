@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams } from 'react-router'
+import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import minBy from 'lodash/minBy'
 import Page from 'components/Layout/Page'
@@ -28,10 +29,15 @@ const TwoColumnsContainer = styled(Flex)`
 
 const IndividualNFTPage = () => {
   // For PabncakeBunnies tokenId in url is really bunnyId
+  const { account } = useWeb3React()
   const { collectionAddress, tokenId } = useParams<{ collectionAddress: string; tokenId: string }>()
   const [attributesDistribution, setAttributesDistribution] = useState<{ [key: string]: number }>(null)
   const allBunnies = useGetAllBunniesByBunnyId(tokenId)
+  const allBunniesFromOtherSellers = allBunnies.filter(
+    (bunny) => bunny.marketData.currentSeller !== account.toLowerCase(),
+  )
   const cheapestBunny = minBy(allBunnies, (nft) => nft.marketData.currentAskPrice)
+  const cheapestBunnyFromOtherSellers = minBy(allBunniesFromOtherSellers, (nft) => nft.marketData.currentAskPrice)
 
   useEffect(() => {
     const fetchTokens = async () => {
@@ -65,7 +71,7 @@ const IndividualNFTPage = () => {
 
   return (
     <Page>
-      <MainNFTCard cheapestNft={cheapestBunny} />
+      <MainNFTCard cheapestNft={cheapestBunny} cheapestNftFromOtherSellers={cheapestBunnyFromOtherSellers} />
       <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
           <ManageCard bunnyId={tokenId} lowestPrice={cheapestBunny.marketData.currentAskPrice} />
