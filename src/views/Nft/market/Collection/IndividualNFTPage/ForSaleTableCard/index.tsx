@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { NftToken } from 'state/nftMarket/types'
-import MintedTableRows from './ForSaleTableRows'
+import ForSaleTableRows from './ForSaleTableRows'
 
 const ITEMS_PER_PAGE_DESKTOP = 10
 const ITEMS_PER_PAGE_MOBILE = 5
@@ -96,7 +96,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalF
         </Text>
       </TableHeading>
       <Flex flex="1 1 auto" flexDirection="column" justifyContent="space-between" height="100%">
-        <MintedTableRows nftsForSale={displayedCollectibles} />
+        <ForSaleTableRows nftsForSale={displayedCollectibles} />
         <PageButtons>
           <Arrow
             onClick={() => {
