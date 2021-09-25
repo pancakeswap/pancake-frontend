@@ -1581,5 +1581,6 @@
   "%percentage%% royalties to the collection owner": "%percentage%% royalties to the collection owner",
   "%percentage%% trading fee will be used to buy & burn CAKE": "%percentage%% trading fee will be used to buy & burn CAKE",
   "Sell": "Sell",
-  "Set as Profile Pic": "Set as Profile Pic"
+  "Set as Profile Pic": "Set as Profile Pic",
+  "Allowed price range is bettween %minPrice% and %maxPrice% WBNB": "Allowed price range is bettween %minPrice% and %maxPrice% WBNB"
 }

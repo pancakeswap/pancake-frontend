@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link, LinkExternal } from '@pancakeswap/uikit'
+import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@pancakeswap/uikit'
 import { FetchStatus } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import { BASE_URL } from 'config'
