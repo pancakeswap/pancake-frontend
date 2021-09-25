@@ -237,14 +237,14 @@ export const getLowestPriceInCollection = async (collectionAddress: string) => {
     )
 
     if (response.length === 0) {
-      return parseUnits('0')
+      return 0
     }
 
     const [nftSg] = response
-    return parseUnits(nftSg.currentAskPrice)
+    return parseFloat(nftSg.currentAskPrice)
   } catch (error) {
     console.error(`Failed to lowest price NFTs in collection ${collectionAddress}`, error)
-    return parseUnits('0')
+    return 0
   }
 }
 
