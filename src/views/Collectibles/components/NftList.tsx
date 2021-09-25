@@ -6,13 +6,18 @@ import { fetchWalletNfts } from 'state/collectibles'
 import { useGetCollectibles } from 'state/collectibles/hooks'
 import NftCard from './NftCard'
 import NftGrid from './NftGrid'
+import LotteryNftCard from './NftCard/LotteryNftCard'
 
 /**
  * A map of bunnyIds to special campaigns (NFT distribution)
  * Each NftCard is responsible for checking it's own claim status
  *
  */
-const nftComponents = {}
+const nftComponents = {
+  lottie: LotteryNftCard,
+  lucky: LotteryNftCard,
+  baller: LotteryNftCard,
+}
 
 const NftList = () => {
   const { tokenIds } = useGetCollectibles()
