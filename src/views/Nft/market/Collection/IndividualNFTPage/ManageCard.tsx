@@ -175,19 +175,19 @@ const ManageCard: React.FC<ManageCardProps> = ({ bunnyId, lowestPrice }) => {
         </Box>
       )}
       {bunniesForSale.length > 0 && (
-        <>
-          <CollectiblesByLocation location={NftLocation.FORSALE} nfts={bunniesForSale} lowestPrice={lowestPrice} />
-          <Divider />
-        </>
+        <CollectiblesByLocation location={NftLocation.FORSALE} nfts={bunniesForSale} lowestPrice={lowestPrice} />
       )}
       {bunniesInWallet.length > 0 && (
         <>
-          <CollectiblesByLocation location={NftLocation.WALLET} nfts={bunniesInWallet} lowestPrice={lowestPrice} />
           <Divider />
+          <CollectiblesByLocation location={NftLocation.WALLET} nfts={bunniesInWallet} lowestPrice={lowestPrice} />
         </>
       )}
       {profilePicBunny.length > 0 && (
-        <CollectiblesByLocation location={NftLocation.PROFILE} nfts={profilePicBunny} lowestPrice={lowestPrice} />
+        <>
+          <Divider />
+          <CollectiblesByLocation location={NftLocation.PROFILE} nfts={profilePicBunny} lowestPrice={lowestPrice} />
+        </>
       )}
     </Box>
   )

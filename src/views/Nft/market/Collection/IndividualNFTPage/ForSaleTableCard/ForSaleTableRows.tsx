@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 import { Price } from '@pancakeswap/sdk'
 import { Button, Grid, Text, Flex, Box, BinanceIcon, useModal, Skeleton } from '@pancakeswap/uikit'
 import truncateHash from 'utils/truncateHash'
@@ -10,6 +11,7 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
 import BuyModal from 'views/Nft/market/components/BuySellModals/BuyModal'
 import { useProfileForAddress } from 'state/profile/hooks'
+import SellModal from 'views/Nft/market/components/BuySellModals/SellModal'
 
 const Avatar = styled.img`
   margin-right: 12px;
@@ -38,11 +40,15 @@ interface RowProps {
   t: ContextApi['t']
   nft: NftToken
   bnbBusdPrice: Price
+  account: string
 }
 
-const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice }) => {
+const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft.marketData.currentAskPrice))
-  const [onPresentModal] = useModal(<BuyModal nftToBuy={nft} />)
+
+  const ownNft = nft.marketData.currentSeller === account.toLowerCase()
+  const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
+  const [onPresentAdjustPriceModal] = useModal(<SellModal variant="edit" nftToSell={nft} />)
   const { profile, isFetching } = useProfileForAddress(nft.marketData.currentSeller)
   const profileName = profile?.hasRegistered ? profile.profile.username : '-'
   return (
@@ -61,7 +67,7 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice }) => {
       </Box>
       <Box>
         <Flex width="max-content" alignItems="center">
-          <Avatar src={nft.image.thumbnail} alt="Twinkle" />
+          <Avatar src={nft.image.thumbnail} alt={nft.name} />
           <Box display="inline">
             <Text lineHeight="1.25">{truncateHash(nft.marketData.currentSeller)}</Text>
             {isFetching ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
@@ -69,9 +75,15 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice }) => {
         </Flex>
       </Box>
       <ButtonContainer>
-        <Button scale="sm" variant="secondary" maxWidth="128px" onClick={onPresentModal}>
-          {t('Buy')}
-        </Button>
+        {ownNft ? (
+          <Button scale="sm" variant="danger" maxWidth="128px" onClick={onPresentAdjustPriceModal}>
+            {t('Edit')}
+          </Button>
+        ) : (
+          <Button scale="sm" variant="secondary" maxWidth="128px" onClick={onPresentBuyModal}>
+            {t('Buy')}
+          </Button>
+        )}
       </ButtonContainer>
     </>
   )
@@ -82,12 +94,13 @@ interface ForSaleTableRowsProps {
 }
 
 const ForSaleTableRow: React.FC<ForSaleTableRowsProps> = ({ nftsForSale }) => {
+  const { account } = useWeb3React()
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
   return (
     <OwnersTableRow>
       {nftsForSale.map((nft) => (
-        <Row key={nft.tokenId} t={t} nft={nft} bnbBusdPrice={bnbBusdPrice} />
+        <Row key={nft.tokenId} t={t} nft={nft} bnbBusdPrice={bnbBusdPrice} account={account} />
       ))}
     </OwnersTableRow>
   )
