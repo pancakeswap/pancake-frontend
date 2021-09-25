@@ -1,5 +1,4 @@
 import { request, gql } from 'graphql-request'
-import { parseUnits } from '@ethersproject/units'
 import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
