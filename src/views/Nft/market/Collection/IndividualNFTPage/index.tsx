@@ -33,9 +33,9 @@ const IndividualNFTPage = () => {
   const { collectionAddress, tokenId } = useParams<{ collectionAddress: string; tokenId: string }>()
   const [attributesDistribution, setAttributesDistribution] = useState<{ [key: string]: number }>(null)
   const allBunnies = useGetAllBunniesByBunnyId(tokenId)
-  const allBunniesFromOtherSellers = allBunnies.filter(
-    (bunny) => bunny.marketData.currentSeller !== account.toLowerCase(),
-  )
+  const allBunniesFromOtherSellers = account
+    ? allBunnies.filter((bunny) => bunny.marketData.currentSeller !== account.toLowerCase())
+    : allBunnies
   const cheapestBunny = minBy(allBunnies, (nft) => nft.marketData.currentAskPrice)
   const cheapestBunnyFromOtherSellers = minBy(allBunniesFromOtherSellers, (nft) => nft.marketData.currentAskPrice)
 
