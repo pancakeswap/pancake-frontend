@@ -10,7 +10,7 @@ interface LowestPriceStatBoxItemProps extends Omit<StatBoxItemProps, 'title' | '
 }
 
 const LowestPriceStatBoxItem: React.FC<LowestPriceStatBoxItemProps> = ({ collectionAddress, ...props }) => {
-  const [lowestPrice, setLowestPrice] = useState<ethers.BigNumber>(null)
+  const [lowestPrice, setLowestPrice] = useState<number>(null)
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -22,13 +22,15 @@ const LowestPriceStatBoxItem: React.FC<LowestPriceStatBoxItemProps> = ({ collect
     fetchLowestPrice()
   }, [collectionAddress, setLowestPrice])
 
-  return (
-    <StatBoxItem
-      title={t('Lowest (%symbol%)', { symbol: 'BNB' })}
-      stat={lowestPrice === null ? null : formatBigNumber(lowestPrice, 0, 0)}
-      {...props}
-    />
-  )
+  const formattedLowestPrice =
+    lowestPrice === null
+      ? null
+      : lowestPrice.toLocaleString(undefined, {
+          minimumFractionDigits: 3,
+          maximumFractionDigits: 3,
+        })
+
+  return <StatBoxItem title={t('Lowest (%symbol%)', { symbol: 'BNB' })} stat={formattedLowestPrice} {...props} />
 }
 
 export default LowestPriceStatBoxItem
