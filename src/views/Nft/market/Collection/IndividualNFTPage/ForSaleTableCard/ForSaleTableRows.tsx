@@ -67,7 +67,7 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
       </Box>
       <Box>
         <Flex width="max-content" alignItems="center">
-          <Avatar src={nft.image.thumbnail} alt="Twinkle" />
+          <Avatar src={nft.image.thumbnail} alt={nft.name} />
           <Box display="inline">
             <Text lineHeight="1.25">{truncateHash(nft.marketData.currentSeller)}</Text>
             {isFetching ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
