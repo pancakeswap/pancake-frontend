@@ -1,10 +1,11 @@
 import React from 'react'
-import { Flex, Grid, Text, Button, Link, BinanceIcon } from '@pancakeswap/uikit'
+import { Flex, Grid, Text, Button, Link, LinkExternal, BinanceIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BASE_URL } from 'config'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
+import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { NftToken } from 'state/nftMarket/types'
-import { Divider, RoundedImage } from '../shared/styles'
+import { getBscScanLinkForNft } from 'utils'
+import { Divider, HorizontalDivider, RoundedImage } from '../shared/styles'
 
 interface EditStageProps {
   nftToSell: NftToken
@@ -21,6 +22,8 @@ const EditStage: React.FC<EditStageProps> = ({
   continueToRemoveFromMarketStage,
 }) => {
   const { t } = useTranslation()
+  const itemPageUrlId =
+    nftToSell.collectionAddress === pancakeBunniesAddress ? nftToSell.attributes[0].value : nftToSell.tokenId
   return (
     <>
       <Flex p="16px">
@@ -46,26 +49,40 @@ const EditStage: React.FC<EditStageProps> = ({
           </Flex>
         </Grid>
       </Flex>
-      <Flex justifyContent="center" mt="8px">
-        <Button
-          as={Link}
-          p="0px"
-          height="16px"
-          external
-          variant="text"
-          // TODO: make sure this link is correct
-          href={`${BASE_URL}${nftsBaseUrl}/items/${nftToSell.tokenId}`}
-        >
-          {t('View Item Page')}
-        </Button>
+      <Flex justifyContent="space-between" px="16px" mt="8px">
+        <Flex flex="2">
+          <Text small color="textSubtle">
+            {t('Token ID: %id%', { id: nftToSell.tokenId })}
+          </Text>
+        </Flex>
+        <Flex justifyContent="space-between" flex="3">
+          <Button
+            as={Link}
+            p="0px"
+            height="16px"
+            external
+            variant="text"
+            href={`${BASE_URL}${nftsBaseUrl}/collections/${nftToSell.collectionAddress}/${itemPageUrlId}`}
+          >
+            {t('View Item')}
+          </Button>
+          <HorizontalDivider />
+          <LinkExternal
+            p="0px"
+            height="16px"
+            href={getBscScanLinkForNft(nftToSell.collectionAddress, nftToSell.tokenId)}
+          >
+            BscScan
+          </LinkExternal>
+        </Flex>
       </Flex>
       <Divider />
       <Flex flexDirection="column" px="16px" pb="16px">
         <Button mb="8px" onClick={continueToAdjustPriceStage}>
-          Adjust Sale Price
+          {t('Adjust Sale Price')}
         </Button>
         <Button variant="danger" onClick={continueToRemoveFromMarketStage}>
-          Remove from Market
+          {t('Remove from Market')}
         </Button>
       </Flex>
     </>

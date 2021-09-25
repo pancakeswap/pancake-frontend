@@ -71,3 +71,38 @@ export const BnbAmountCell: React.FC<BnbAmountCellProps> = ({ bnbAmount }) => {
     </Flex>
   )
 }
+
+interface FeeAmountCellProps {
+  bnbAmount: number
+  creatorFee: number
+  tradingFee: number
+}
+
+export const FeeAmountCell: React.FC<FeeAmountCellProps> = ({ bnbAmount, creatorFee, tradingFee }) => {
+  if (!bnbAmount || bnbAmount === 0) {
+    return (
+      <Flex alignItems="center" justifyContent="flex-end">
+        <BinanceIcon width={16} height={16} mr="4px" />
+        <Text bold mr="4px">
+          -
+        </Text>
+      </Flex>
+    )
+  }
+
+  const totalFee = creatorFee + tradingFee
+  const totalFeeAsDecimal = totalFee / 100
+  const feeAmount = bnbAmount * totalFeeAsDecimal
+  return (
+    <Flex alignItems="center" justifyContent="flex-end">
+      <BinanceIcon width={16} height={16} mr="4px" />
+      <Text bold mr="4px">{`${feeAmount.toLocaleString(undefined, {
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3,
+      })}`}</Text>
+      <Text small color="textSubtle" textAlign="right">
+        ({totalFee}%)
+      </Text>
+    </Flex>
+  )
+}

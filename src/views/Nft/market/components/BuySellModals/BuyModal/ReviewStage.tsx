@@ -1,9 +1,10 @@
 import React from 'react'
-import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@pancakeswap/uikit'
+import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link, LinkExternal } from '@pancakeswap/uikit'
 import { FetchStatus } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import { BASE_URL } from 'config'
 import { NftToken } from 'state/nftMarket/types'
+import { getBscScanLinkForNft } from 'utils'
 import { Divider, RoundedImage } from '../shared/styles'
 import { BorderedBox, BnbAmountCell } from './styles'
 import { PaymentCurrency } from './types'
@@ -40,6 +41,22 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
               {nftToBuy.collectionName}
             </Text>
             <Text bold>{nftToBuy.name}</Text>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Text fontSize="12px" color="textSubtle" p="0px" height="16px" mr="4px">
+                {t('Token ID:')}
+              </Text>
+              <Button
+                as={Link}
+                scale="xs"
+                px="0px"
+                pt="2px"
+                external
+                variant="text"
+                href={getBscScanLinkForNft(nftToBuy.collectionAddress, nftToBuy.tokenId)}
+              >
+                {nftToBuy.tokenId}
+              </Button>
+            </Flex>
           </Flex>
         </Flex>
         <BorderedBox>
