@@ -31,13 +31,14 @@ const showConfetti = () => {
 
 interface NftGiveawayModalProps extends InjectedModalProps {
   nfts: Nft[]
+  hasActiveProfile: boolean
 }
 
-const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nfts }) => {
+const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, hasActiveProfile, nfts }) => {
   const { t } = useTranslation()
 
   // This is required because the modal exists outside the Router
-  const handleClick = () => {
+  const handleClaimClick = () => {
     onDismiss()
     history.push('/collectibles')
   }
@@ -45,6 +46,11 @@ const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nfts }) 
   useEffect(() => {
     delay(showConfetti, 100)
   }, [])
+
+  const handleActivateClick = () => {
+    onDismiss()
+    history.push('/profile')
+  }
 
   const getImages = () => {
     return nfts.map((nft) => <NftImage key={nft.id} src={`/images/nfts/${nft.images.md}`} />)
@@ -59,7 +65,16 @@ const NftGiveawayModal: React.FC<NftGiveawayModalProps> = ({ onDismiss, nfts }) 
         <Text textAlign="center" bold color="secondary" fontSize="24px" mb="24px">
           {nfts.length > 1 ? t('You won multiple collectibles!') : t('You won a collectible!')}
         </Text>
-        <Button onClick={handleClick}>{t('Claim now')}</Button>
+        {!hasActiveProfile && (
+          <Text textAlign="center" bold color="secondary" mb="24px">
+            {t('Activate your profile so you can claim:')}
+          </Text>
+        )}
+        {hasActiveProfile ? (
+          <Button onClick={handleClaimClick}>{t('Claim now')}</Button>
+        ) : (
+          <Button onClick={handleActivateClick}>{t('Activate Profile')}</Button>
+        )}
       </Flex>
     </Modal>
   )
