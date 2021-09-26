@@ -1,12 +1,14 @@
 import React from 'react'
-import { InjectedModalProps, Modal, Flex, Text, Button, useModal, Link, Grid } from '@pancakeswap/uikit'
+import { InjectedModalProps, Modal, Flex, Text, Button, useModal, Link, Grid, LinkExternal } from '@pancakeswap/uikit'
 import { BASE_URL } from 'config'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
-import { RoundedImage } from './BuySellModals/shared/styles'
+import { getBscScanLinkForNft } from 'utils'
+import { HorizontalDivider, RoundedImage } from './BuySellModals/shared/styles'
 import EditProfileModal from '../Profile/components/EditProfileModal'
+import { nftsBaseUrl, pancakeBunniesAddress } from '../constants'
 
 export const StyledModal = styled(Modal)`
   & > div:last-child {
@@ -27,6 +29,8 @@ const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => 
   const { t } = useTranslation()
   const { theme } = useTheme()
 
+  const itemPageUrlId = nft.collectionAddress === pancakeBunniesAddress ? nft.attributes[0].value : nft.tokenId
+
   return (
     <StyledModal title={t('Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
       <Flex flexDirection="column" maxWidth="350px">
@@ -40,6 +44,29 @@ const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => 
             {/* TODO: Add lowestPrice when available */}
           </Grid>
         </Flex>
+        <Flex justifyContent="space-between" px="16px" mb="16px">
+          <Flex flex="2">
+            <Text small color="textSubtle">
+              {t('Token ID: %id%', { id: nft.tokenId })}
+            </Text>
+          </Flex>
+          <Flex justifyContent="space-between" flex="3">
+            <Button
+              as={Link}
+              p="0px"
+              height="16px"
+              external
+              variant="text"
+              href={`${BASE_URL}${nftsBaseUrl}/collections/${nft.collectionAddress}/${itemPageUrlId}`}
+            >
+              {t('View Item')}
+            </Button>
+            <HorizontalDivider />
+            <LinkExternal p="0px" height="16px" href={getBscScanLinkForNft(nft.collectionAddress, nft.tokenId)}>
+              BscScan
+            </LinkExternal>
+          </Flex>
+        </Flex>
         <TextWrapper p="24px 16px" flexDirection="column">
           <Text mb="16px">{t("You're using this NFT as your Pancake Profile picture")}</Text>
           <Text color="textSubtle" mb="16px" fontSize="14px">
@@ -51,11 +78,8 @@ const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => 
             {t('Go to your profile page to continue.')}
           </Text>
         </TextWrapper>
-        <Flex flexDirection="column" pt="4px" pb="16px" px="16px" alignItems="center">
-          <Button as={Link} variant="text" mb="8px" href={`${BASE_URL}/nft/market/item/${nft.name}`}>
-            {t('View Item Page')}
-          </Button>
-          <Button onClick={onEditProfileModal} variant="secondary">
+        <Flex flexDirection="column" py="16px" px="16px">
+          <Button onClick={onEditProfileModal} width="100%" variant="secondary">
             {t('Remove Profile Pic')}
           </Button>
         </Flex>
