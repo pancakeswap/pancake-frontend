@@ -229,7 +229,7 @@ export const getNftsMarketData = async (
 export const getLowestPriceInCollection = async (collectionAddress: string) => {
   try {
     const response = await getNftsMarketData(
-      { collection: collectionAddress.toLowerCase() },
+      { collection: collectionAddress.toLowerCase(), isTradable: true },
       1,
       'currentAskPrice',
       'asc',
