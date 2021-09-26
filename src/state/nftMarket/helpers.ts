@@ -311,7 +311,7 @@ export const getLatestListedNfts = async (first: number): Promise<TokenMarketDat
       GRAPH_API_NFTMARKET,
       gql`
         query getLatestNftMarketData($first: Int) {
-          nfts(orderBy: updatedAt , orderDirection: desc, first: $first) {
+          nfts(where: { isTradable: true }, orderBy: updatedAt , orderDirection: desc, first: $first) {
             ${getBaseNftFields()}
             collection {
               id
