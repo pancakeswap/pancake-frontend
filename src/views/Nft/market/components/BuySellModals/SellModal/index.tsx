@@ -239,6 +239,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
       )}
       {stage === SellingStage.SET_PRICE && (
         <SetPriceStage
+          nftToSell={nftToSell}
           variant="set"
           continueToNextStage={continueToNextStage}
           lowestPrice={lowestPriceData.lowestPrice}
@@ -267,6 +268,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
       )}
       {stage === SellingStage.ADJUST_PRICE && (
         <SetPriceStage
+          nftToSell={nftToSell}
           variant="adjust"
           continueToNextStage={continueToNextStage}
           currentPrice={nftToSell.marketData.currentAskPrice}
