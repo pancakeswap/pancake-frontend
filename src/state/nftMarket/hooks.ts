@@ -20,8 +20,9 @@ export const useGetCollections = () => {
 }
 
 export const useGetCollection = (collectionAddress: string) => {
+  const checksummedCollectionAddress = isAddress(collectionAddress) || ''
   const collections = useGetCollections()
-  return collections[collectionAddress]
+  return collections[checksummedCollectionAddress]
 }
 
 export const useNftsFromCollection = (collectionAddress: string) => {
