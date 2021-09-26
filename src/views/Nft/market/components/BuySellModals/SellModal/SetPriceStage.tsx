@@ -1,10 +1,13 @@
 import React, { useEffect, useRef } from 'react'
-import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon } from '@pancakeswap/uikit'
+import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { NftToken } from 'state/nftMarket/types'
+import { useGetCollection } from 'state/nftMarket/hooks'
 import { Divider } from '../shared/styles'
-import { GreyedOutContainer, BnbAmountCell, RightAlignedInput } from './styles'
+import { GreyedOutContainer, BnbAmountCell, RightAlignedInput, FeeAmountCell } from './styles'
 
 interface SetPriceStageProps {
+  nftToSell: NftToken
   variant: 'set' | 'adjust'
   currentPrice?: string
   lowestPrice?: number
@@ -13,9 +16,13 @@ interface SetPriceStageProps {
   continueToNextStage: () => void
 }
 
+const MIN_PRICE = 0.005
+const MAX_PRICE = 10000
+
 // Stage where user puts price for NFT they're about to put on sale
 // Also shown when user wants to adjust the price of already lsited NFT
 const SetPriceStage: React.FC<SetPriceStageProps> = ({
+  nftToSell,
   variant,
   lowestPrice,
   currentPrice,
@@ -27,6 +34,27 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
   const inputRef = useRef<HTMLInputElement>()
   const adjustedPriceIsTheSame = variant === 'adjust' && parseFloat(currentPrice) === parseFloat(price)
   const priceIsValid = !price || Number.isNaN(parseFloat(price)) || parseFloat(price) <= 0
+
+  const { creatorFee, tradingFee } = useGetCollection(nftToSell.collectionAddress)
+  const creatorFeeAsNumber = parseFloat(creatorFee)
+  const tradingFeeAsNumber = parseFloat(tradingFee)
+
+  const priceIsOutOfRange = parseFloat(price) > MAX_PRICE || parseFloat(price) < MIN_PRICE
+
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(
+    <>
+      <Text>
+        {t(
+          'When selling NFTs from this collection, a portion of the BNB paid will be diverted before reaching the seller:',
+        )}
+      </Text>
+      {creatorFeeAsNumber > 0 && (
+        <Text>{t('%percentage%% royalties to the collection owner', { percentage: creatorFee })}</Text>
+      )}
+      <Text>{t('%percentage%% trading fee will be used to buy & burn CAKE', { percentage: tradingFee })}</Text>
+    </>,
+    { placement: 'right' },
+  )
 
   useEffect(() => {
     if (inputRef && inputRef.current) {
@@ -68,7 +96,36 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
             />
           </Flex>
         </Flex>
-        <Flex justifyContent="space-between" alignItems="center" mt="24px">
+        {priceIsOutOfRange && (
+          <Text fontSize="12px" color="failure" mt="8px">
+            {t('Allowed price range is bettween %minPrice% and %maxPrice% WBNB', {
+              minPrice: MIN_PRICE,
+              maxPrice: MAX_PRICE,
+            })}
+          </Text>
+        )}
+        <Flex mt={priceIsOutOfRange ? '8px' : '24px'}>
+          <Text small color="textSubtle" mr="8px">
+            {t('Seller pays %percentage%% platform fee on sale', {
+              percentage: creatorFeeAsNumber + tradingFeeAsNumber,
+            })}
+          </Text>
+          <span ref={targetRef}>
+            <ErrorIcon />
+          </span>
+          {tooltipVisible && tooltip}
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center" mt="16px">
+          <Text small color="textSubtle">
+            {t('Platform fee if sold')}
+          </Text>
+          <FeeAmountCell
+            bnbAmount={parseFloat(price)}
+            creatorFee={creatorFeeAsNumber}
+            tradingFee={tradingFeeAsNumber}
+          />
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center" mt="16px">
           <Text small color="textSubtle">
             {t('Lowest price on market')}
           </Text>
@@ -90,7 +147,11 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
       </Grid>
       <Divider />
       <Flex flexDirection="column" px="16px" pb="16px">
-        <Button mb="8px" onClick={continueToNextStage} disabled={priceIsValid || adjustedPriceIsTheSame}>
+        <Button
+          mb="8px"
+          onClick={continueToNextStage}
+          disabled={priceIsValid || adjustedPriceIsTheSame || priceIsOutOfRange}
+        >
           {getButtonText()}
         </Button>
       </Flex>

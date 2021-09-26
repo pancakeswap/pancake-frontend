@@ -1512,7 +1512,7 @@
   "Activity": "Activity",
   "Your NFTs & Profile": "Your NFTs & Profile",
   "For sale": "For sale",
-  "View Item Page": "View Item Page",
+  "View Item": "View Item",
   "The NFT will be removed from your wallet and put on sale at this price.": "The NFT will be removed from your wallet and put on sale at this price.",
   "Sales are in WBNB. You can swap WBNB to BNB 1:1 for free with PancakeSwap.": "Sales are in WBNB. You can swap WBNB to BNB 1:1 for free with PancakeSwap.",
   "Enable Listing": "Enable Listing",
@@ -1574,5 +1574,15 @@
   "Event": "Event",
   "Sold": "Sold",
   "No NFT market history found": "No NFT market history found",
-  "Edit": "Edit"
+  "Edit": "Edit",
+  "Token ID:": "Token ID:",
+  "Token ID: %id%": "Token ID: %id%",
+  "When selling NFTs from this collection, a portion of the BNB paid will be diverted before reaching the seller:": "When selling NFTs from this collection, a portion of the BNB paid will be diverted before reaching the seller:",
+  "%percentage%% royalties to the collection owner": "%percentage%% royalties to the collection owner",
+  "%percentage%% trading fee will be used to buy & burn CAKE": "%percentage%% trading fee will be used to buy & burn CAKE",
+  "Sell": "Sell",
+  "Set as Profile Pic": "Set as Profile Pic",
+  "Allowed price range is bettween %minPrice% and %maxPrice% WBNB": "Allowed price range is bettween %minPrice% and %maxPrice% WBNB",
+  "Seller pays %percentage%% platform fee on sale": "Seller pays %percentage%% platform fee on sale",
+  "Platform fee if sold": "Platform fee if sold"
 }
