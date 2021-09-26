@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, ChevronRightIcon, Flex, Grid, Heading, Text } from '@pancakeswap/uikit'
-import { ethers } from 'ethers'
 import { Link } from 'react-router-dom'
 import { useGetCollections } from 'state/nftMarket/hooks'
 import { nftsBaseUrl, TMP_SEE_ALL_LINK } from 'views/Nft/market/constants'
@@ -45,7 +44,7 @@ const Collections = () => {
                   <Text fontSize="12px" color="textSubtle">
                     {t('Volume')}
                   </Text>
-                  <BNBAmountLabel amount={ethers.BigNumber.from(collection.totalVolumeBNB).toNumber()} />
+                  <BNBAmountLabel amount={parseFloat(collection.totalVolumeBNB)} />
                 </Flex>
               </HotCollectionCard>
             )
