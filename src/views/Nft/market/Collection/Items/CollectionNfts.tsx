@@ -8,6 +8,7 @@ import { Collection } from 'state/nftMarket/types'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
+import { pancakeBunniesAddress } from '../../constants'
 
 interface CollectionNftsProps {
   collection: Collection
@@ -28,8 +29,13 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
     return <GridPlaceholder />
   }
 
+  let nftsToShow = nfts.filter((nft) => nft.marketData.isTradable)
+  if (checksummedAddress === pancakeBunniesAddress) {
+    nftsToShow = [...new Map(nftsToShow.map((nft) => [nft.attributes[0].value, nft])).values()]
+  }
+
   const orderedNfts = orderBy(
-    nfts,
+    nftsToShow,
     (nft) => (sortBy === 'updatedAt' ? Number(nft.marketData[sortBy]) : nft.marketData[sortBy]),
     [sortBy === 'lowestTokenPrice' ? 'asc' : 'desc'],
   )
