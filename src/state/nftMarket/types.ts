@@ -129,12 +129,12 @@ export interface Collection {
   description?: string
   symbol: string
   active: boolean
-  totalVolumeBNB: BigNumberish
-  numberTokensListed: BigNumberish
-  tradingFee: BigNumberish
-  creatorFee: BigNumberish
+  totalVolumeBNB: string
+  numberTokensListed: string
+  tradingFee: string
+  creatorFee: string
   owner: string
-  totalSupply: BigNumberish
+  totalSupply: string
   verified: boolean
   avatar: string
   banner: {
