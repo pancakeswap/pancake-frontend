@@ -29,16 +29,21 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
     return <GridPlaceholder />
   }
 
-  let nftsToShow = nfts.filter((nft) => nft.marketData.isTradable)
-  if (checksummedAddress === pancakeBunniesAddress) {
-    nftsToShow = [...new Map(nftsToShow.map((nft) => [nft.attributes[0].value, nft])).values()]
-  }
-
-  const orderedNfts = orderBy(
-    nftsToShow,
-    (nft) => (sortBy === 'updatedAt' ? Number(nft.marketData[sortBy]) : nft.marketData[sortBy]),
-    [sortBy === 'lowestTokenPrice' ? 'asc' : 'desc'],
+  let nftsToShow = orderBy(
+    nfts.filter((nft) => nft.marketData.isTradable),
+    (nft) => Number(nft.marketData[sortBy]),
+    [sortBy === 'currentAskPrice' ? 'asc' : 'desc'],
   )
+  if (checksummedAddress === pancakeBunniesAddress) {
+    // PancakeBunnies should display 1 card per bunny id
+    nftsToShow = nftsToShow.reduce((nftArray, current) => {
+      const bunnyId = current.attributes[0].value
+      if (!nftArray.find((nft) => nft.attributes[0].value === bunnyId)) {
+        nftArray.push(current)
+      }
+      return nftArray
+    }, [])
+  }
 
   return (
     <Grid
@@ -46,7 +51,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
       gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
       alignItems="start"
     >
-      {orderedNfts.map((nft) => {
+      {nftsToShow.map((nft) => {
         return <CollectibleLinkCard key={`${nft.tokenId}-${nft.collectionName}`} nft={nft} />
       })}
     </Grid>
