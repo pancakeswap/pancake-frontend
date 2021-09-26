@@ -9,7 +9,6 @@ const Home = lazy(() => import('./Home'))
 const NftProfile = lazy(() => import('./Profile'))
 const Collection = lazy(() => import('./Collection'))
 const Collections = lazy(() => import('./Collections'))
-const BuySellDemo = lazy(() => import('./BuySellDemo'))
 
 const Market = () => {
   const initializationState = useGetNFTInitializationState()
@@ -24,9 +23,6 @@ const Market = () => {
     <>
       <Route exact path={nftsBaseUrl}>
         <Home />
-      </Route>
-      <Route exact path={`${nftsBaseUrl}/buy-sell-demo`}>
-        <BuySellDemo />
       </Route>
       <Route exact path={`${nftsBaseUrl}/collections`}>
         <Redirect to={`${nftsBaseUrl}/collections/${pancakeBunniesAddress}`} />
