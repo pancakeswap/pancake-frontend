@@ -1,10 +1,8 @@
 import React from 'react'
 import { useLocation, useParams } from 'react-router'
-import { ethers } from 'ethers'
 import { Text } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
-import { formatBigNumber, formatNumber } from 'utils/formatBalance'
 import Container from 'components/Layout/Container'
 import MarketPageHeader from '../components/MarketPageHeader'
 import MarketPageTitle from '../components/MarketPageTitle'
@@ -25,8 +23,11 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
   const { totalSupply, numberTokensListed, totalVolumeBNB, banner, avatar } = collection
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const owners = ethers.BigNumber.from(numberTokensListed)
-  const volume = ethers.BigNumber.from(totalVolumeBNB)
+
+  const volume = parseFloat(totalVolumeBNB).toLocaleString(undefined, {
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3,
+  })
 
   const itemsConfig = [
     {
@@ -49,10 +50,10 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
           description={collection.description ? <Text color="textSubtle">{t(collection.description)}</Text> : null}
         >
           <StatBox>
-            <StatBoxItem title={t('Items')} stat={formatNumber(ethers.BigNumber.from(totalSupply).toNumber(), 0, 0)} />
-            <StatBoxItem title={t('Owners')} stat={formatBigNumber(owners, 0, 0)} />
+            <StatBoxItem title={t('Items')} stat={totalSupply} />
+            <StatBoxItem title={t('Owners')} stat={numberTokensListed} />
             <LowestPriceStatBoxItem collectionAddress={collection.address} />
-            <StatBoxItem title={t('Vol. (%symbol%)', { symbol: 'BNB' })} stat={formatBigNumber(volume, 0, 0)} />
+            <StatBoxItem title={t('Vol. (%symbol%)', { symbol: 'BNB' })} stat={volume} />
           </StatBox>
         </MarketPageTitle>
       </MarketPageHeader>
