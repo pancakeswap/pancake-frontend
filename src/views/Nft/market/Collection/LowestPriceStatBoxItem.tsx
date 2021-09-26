@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
-import { formatBigNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import { getLowestPriceInCollection } from 'state/nftMarket/helpers'
 import { StatBoxItem, StatBoxItemProps } from '../components/StatBox'
