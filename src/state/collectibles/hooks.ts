@@ -6,7 +6,7 @@ import Nfts from 'config/constants/nfts'
 import { State } from '../types'
 import { fetchWalletNfts } from './index'
 
-const MAX_GEN0_ID = 5
+const MAX_GEN0_ID = 4
 
 export const useGetCollectibles = () => {
   const { account } = useWeb3React()
