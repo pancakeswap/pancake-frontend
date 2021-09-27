@@ -78,12 +78,16 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
           <BinanceIcon width="24px" height="24px" mr="8px" />
           <Text bold>{nft.marketData.currentAskPrice}</Text>
         </Flex>
-        <Text fontSize="12px" color="textSubtle">
-          {`(~${priceInUsd.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })} USD)`}
-        </Text>
+        {bnbBusdPrice ? (
+          <Text fontSize="12px" color="textSubtle">
+            {`(~${priceInUsd.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })} USD)`}
+          </Text>
+        ) : (
+          <Skeleton width="86px" height="12px" mt="4px" />
+        )}
       </Box>
       <Box>
         <Flex width="max-content" alignItems="center">

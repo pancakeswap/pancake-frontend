@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Box, Card, CardBody, Text, Button, Image, BinanceIcon, useModal } from '@pancakeswap/uikit'
+import { Flex, Box, Card, CardBody, Text, Button, Image, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
@@ -57,10 +57,14 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ cheapestNft, cheapestNftFromO
                 <Text fontSize="24px" bold mr="4px">
                   {nftToDisplay.marketData.currentAskPrice}
                 </Text>
-                <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })} USD)`}</Text>
+                {bnbBusdPrice ? (
+                  <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })} USD)`}</Text>
+                ) : (
+                  <Skeleton width="64px" />
+                )}
               </Flex>
               {onlyOwnNftsOnSale ? (
                 <Button
