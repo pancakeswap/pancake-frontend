@@ -18,16 +18,26 @@ const StyledSwiper = styled.div`
     display: flex;
   }
 
-  .swiper-slide {
-    width: 365px;
-  }
-
   .swiper-pagination-bullet-active {
     background-color: ${({ theme }) => theme.colors.secondary};
   }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    .swiper-container {
+      padding-bottom: 48px;
+    }
+
+    .swiper-slide {
+      max-height: 377px;
+    }
+  }
 `
 
-const MoreFromThisCollection: React.FC = () => {
+interface MoreFromThisCollectionProps {
+  currentTokenName: string
+}
+
+const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ currentTokenName }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const nftList = useNftsFromCollection(pancakeBunniesAddress)
@@ -36,11 +46,13 @@ const MoreFromThisCollection: React.FC = () => {
     return null
   }
 
-  const nftsToShow = nftList.slice(0, 12)
+  const nftsToShow = nftList.filter((nft) => nft.name !== currentTokenName).slice(0, 12)
 
   return (
     <Box pt="56px" pb="32px" mb="52px">
-      <Text bold>{t('More from this collection')}</Text>
+      <Text bold mb="24px">
+        {t('More from this collection')}
+      </Text>
       {isMobile ? (
         <StyledSwiper>
           <Swiper spaceBetween={16} slidesPerView={1.5}>
