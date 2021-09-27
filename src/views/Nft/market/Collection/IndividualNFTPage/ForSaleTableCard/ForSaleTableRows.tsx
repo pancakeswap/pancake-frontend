@@ -61,7 +61,7 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
   const [onPresentAdjustPriceModal] = useModal(<SellModal variant="edit" nftToSell={nft} />)
   const { profile, isFetching } = useProfileForAddress(nft.marketData.currentSeller)
   const profileName = profile?.hasRegistered ? profile.profile.username : '-'
-  const sellerProfilePic = profile?.hasRegistered ? profile.profile.nft.images.sm : null
+  const sellerProfilePic = profile?.hasRegistered && profile?.profile?.isActive ? profile.profile.nft.images.sm : null
 
   let sellerProfilePicComponent = <Skeleton width="32px" height="32px" mr="12px" />
   if (!isFetching) {
