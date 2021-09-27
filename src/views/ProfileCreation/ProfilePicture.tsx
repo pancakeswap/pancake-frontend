@@ -10,6 +10,7 @@ import { useUserNfts } from 'state/nftMarket/hooks'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { UserNftInitializationState } from 'state/nftMarket/types'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
@@ -87,7 +88,7 @@ const ProfilePicture: React.FC = () => {
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
             {t('Only approved Pancake Collectibles can be used.')}
-            <Link to="/collectibles" style={{ marginLeft: '4px' }}>
+            <Link to={`${nftsBaseUrl}/collections`} style={{ marginLeft: '4px' }}>
               {t('See the list >')}
             </Link>
           </Text>
