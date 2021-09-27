@@ -130,8 +130,13 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
       </Heading>
       <Stepper>
         {stepsValidationStatus.map((_, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <Step key={index} index={index} status={getStatusProp(index)}>
+          <Step
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            index={index}
+            statusFirstPart={getStatusProp(index)}
+            statusSecondPart={getStatusProp(index + 1)}
+          >
             <Card>{renderCardBody(index)}</Card>
           </Step>
         ))}
