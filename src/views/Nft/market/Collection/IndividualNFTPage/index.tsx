@@ -4,6 +4,7 @@ import { useParams } from 'react-router'
 import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import minBy from 'lodash/minBy'
+import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
 import { useGetAllBunniesByBunnyId } from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
@@ -33,11 +34,12 @@ const IndividualNFTPage = () => {
   const { collectionAddress, tokenId } = useParams<{ collectionAddress: string; tokenId: string }>()
   const [attributesDistribution, setAttributesDistribution] = useState<{ [key: string]: number }>(null)
   const allBunnies = useGetAllBunniesByBunnyId(tokenId)
+  const bunniesSortedByPrice = orderBy(allBunnies, 'marketData.currentAskPrice')
   const allBunniesFromOtherSellers = account
-    ? allBunnies.filter((bunny) => bunny.marketData.currentSeller !== account.toLowerCase())
-    : allBunnies
-  const cheapestBunny = minBy(allBunnies, (nft) => nft.marketData.currentAskPrice)
-  const cheapestBunnyFromOtherSellers = minBy(allBunniesFromOtherSellers, (nft) => nft.marketData.currentAskPrice)
+    ? bunniesSortedByPrice.filter((bunny) => bunny.marketData.currentSeller !== account.toLowerCase())
+    : bunniesSortedByPrice
+  const cheapestBunny = bunniesSortedByPrice[0]
+  const cheapestBunnyFromOtherSellers = allBunniesFromOtherSellers[0]
 
   useEffect(() => {
     const fetchTokens = async () => {
@@ -78,7 +80,7 @@ const IndividualNFTPage = () => {
           <PropertiesCard properties={properties} rarity={propertyRarity} />
           <DetailsCard contractAddress={collectionAddress} ipfsJson={cheapestBunny.marketData.metadataUrl} />
         </Flex>
-        <ForSaleTableCard nftsForSale={allBunnies} totalForSale={allBunnies.length} />
+        <ForSaleTableCard nftsForSale={bunniesSortedByPrice} totalForSale={allBunnies.length} />
       </TwoColumnsContainer>
       <MoreFromThisCollection currentTokenName={cheapestBunny.name} />
     </Page>
