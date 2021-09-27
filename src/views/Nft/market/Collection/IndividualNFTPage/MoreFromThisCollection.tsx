@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Pagination } from 'swiper'
-import { Box, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import SwiperCore from 'swiper'
+import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
 import { isAddress } from 'utils'
@@ -11,25 +11,21 @@ import { CollectibleLinkCard } from '../../components/CollectibleCard'
 
 import 'swiper/swiper-bundle.css'
 
-SwiperCore.use([Pagination])
+const INITIAL_SLIDE = 4
+
+const SwiperCircle = styled.div<{ isActive }>`
+  background-color: ${({ theme, isActive }) => (isActive ? theme.colors.secondary : theme.colors.textDisabled)};
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+`
 
 const StyledSwiper = styled.div`
-  .swiper-wrapper {
-    align-items: center;
-    display: flex;
-  }
-
-  .swiper-pagination-bullet-active {
-    background-color: ${({ theme }) => theme.colors.secondary};
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    .swiper-container {
-      padding-bottom: 48px;
-    }
-
-    .swiper-slide {
-      max-height: 377px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    .swiper-wrapper {
+      max-height: 390px;
     }
   }
 `
@@ -41,14 +37,28 @@ interface MoreFromThisCollectionProps {
 
 const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collectionAddress, currentTokenName }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
+  const [activeIndex, setActiveIndex] = useState(1)
+  const { isMobile, isMd, isLg } = useMatchBreakpoints()
   const nftList = useNftsFromCollection(collectionAddress)
 
   if (!nftList) {
     return null
   }
 
-  let nftsToShow = nftList.filter((nft) => nft.name !== currentTokenName)
+  let slidesPerView = 4
+  let maxPageIndex = 3
+
+  if (isLg) {
+    slidesPerView = 3
+    maxPageIndex = 4
+  }
+  if (isMd) {
+    slidesPerView = 2
+    maxPageIndex = 6
+  }
+
+  let nftsToShow = nftList.filter((nft) => nft.name !== currentTokenName && nft.marketData.isTradable)
   if (isAddress(collectionAddress) === pancakeBunniesAddress) {
     // PancakeBunnies should display 1 card per bunny id
     nftsToShow = nftsToShow.reduce((nftArray, current) => {
@@ -61,8 +71,27 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collect
   }
   nftsToShow = nftsToShow.slice(0, 12)
 
+  const nextSlide = () => {
+    if (activeIndex < maxPageIndex - 1) {
+      setActiveIndex(activeIndex + 1)
+      swiperRef.slideNext()
+    }
+  }
+
+  const previousSlide = () => {
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex - 1)
+      swiperRef.slidePrev()
+    }
+  }
+
+  const goToSlide = (index: number) => {
+    setActiveIndex(index / slidesPerView)
+    swiperRef.slideTo(index)
+  }
+
   return (
-    <Box pt="56px" pb="32px" mb="52px">
+    <Box pt="56px" mb="52px">
       <Text bold mb="24px">
         {t('More from this collection')}
       </Text>
@@ -79,13 +108,11 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collect
       ) : (
         <StyledSwiper>
           <Swiper
+            onSwiper={setSwiperRef}
             spaceBetween={16}
-            slidesPerView={4}
-            slidesPerGroup={4}
-            initialSlide={4}
-            pagination={{
-              clickable: true,
-            }}
+            slidesPerView={slidesPerView}
+            slidesPerGroup={slidesPerView}
+            initialSlide={INITIAL_SLIDE}
           >
             {nftsToShow.map((nft) => (
               <SwiperSlide key={nft.tokenId}>
@@ -93,6 +120,21 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collect
               </SwiperSlide>
             ))}
           </Swiper>
+          <Flex mt="16px" alignItems="center" justifyContent="center">
+            <IconButton variant="text" onClick={previousSlide}>
+              <ArrowBackIcon />
+            </IconButton>
+            {[...Array(maxPageIndex).keys()].map((index) => (
+              <SwiperCircle
+                key={index}
+                onClick={() => goToSlide(index * slidesPerView)}
+                isActive={activeIndex === index}
+              />
+            ))}
+            <IconButton variant="text" onClick={nextSlide}>
+              <ArrowForwardIcon />
+            </IconButton>
+          </Flex>
         </StyledSwiper>
       )}
     </Box>
