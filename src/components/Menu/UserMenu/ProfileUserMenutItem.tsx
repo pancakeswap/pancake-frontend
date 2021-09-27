@@ -21,7 +21,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
   const { t } = useTranslation()
 
   const handleClick = () => {
-    history.push(`${nftsBaseUrl}/profile`)
+    history.push(`${nftsBaseUrl}/profile/achievements`)
   }
 
   const handleNoProfileClick = () => {
@@ -49,7 +49,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
 
   return (
     <UserMenuItem as="button" onClick={handleClick}>
-      {t('Your NFTs & Profile')}
+      {t('Your Profile')}
     </UserMenuItem>
   )
 }
