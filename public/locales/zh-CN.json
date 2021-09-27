@@ -729,7 +729,7 @@
   "Congratulations!": "恭喜！",
   "You won a collectible!": "您赢得了一个收藏品！",
   "Claim now": "立即领取",
-  "Claiming...": "Claiming...",
+  "Claiming...": "正在领取…",
   "NFT in wallet": "钱包中的 NFT",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "将 NFT 兑换成 CAKE，或者保留作为您的收藏品！",
   "No NFTs to claim": "没有 NFT 可领取",
@@ -1465,7 +1465,7 @@
   "Careers": "招贤纳士",
   "Dark mode": "深色模式",
   "Invalid pair": "币对无效",
-  "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt",
-  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
+  "V1 (old)": "V1（旧）",
+  "Transaction receipt": "交易收据",
+  "You won points for joining PancakeSwap during the first year of our journey!": "您在我们上线的第一年就加入 Pancakeswap，因此获得了积分！"
 }
