@@ -1,14 +1,14 @@
-import { CardBody, Flex, Heading, Image, ProfileAvatar } from '@pancakeswap/uikit'
+import { Card, CardBody, Flex, Heading, Image, ProfileAvatar } from '@pancakeswap/uikit'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import { StyledCollectibleCard } from './styles'
+import styled, { css } from 'styled-components'
 
 interface HotCollectionCardProps {
   bgSrc: string
   avatarSrc?: string
   collectionName: string
   url?: string
+  disabled?: boolean
 }
 
 export const CollectionAvatar = styled(ProfileAvatar)`
@@ -17,18 +17,46 @@ export const CollectionAvatar = styled(ProfileAvatar)`
   top: -32px;
 `
 
-const StyledHotCollectionCard = styled(StyledCollectibleCard)`
+const StyledHotCollectionCard = styled(Card)<{ disabled?: boolean }>`
+  border-radius: 8px;
   border-bottom-left-radius: 56px;
+  transition: opacity 200ms;
 
   & > div {
+    border-radius: 8px;
     border-bottom-left-radius: 56px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    ${({ disabled }) =>
+      disabled
+        ? ''
+        : css`
+            &:hover {
+              cursor: pointer;
+              opacity: 0.6;
+            }
+          `}
   }
 `
 
-const HotCollectionCard: React.FC<HotCollectionCardProps> = ({ bgSrc, avatarSrc, collectionName, url, children }) => {
+const StyledImage = styled(Image)`
+  img {
+    border-radius: 4px;
+  }
+`
+
+const HotCollectionCard: React.FC<HotCollectionCardProps> = ({
+  bgSrc,
+  avatarSrc,
+  collectionName,
+  url,
+  disabled,
+  children,
+}) => {
   const renderBody = () => (
     <CardBody p="8px">
-      <Image src={bgSrc} height={125} width={375} />
+      <StyledImage src={bgSrc} height={125} width={375} />
       <Flex
         position="relative"
         height="65px"
@@ -38,7 +66,7 @@ const HotCollectionCard: React.FC<HotCollectionCardProps> = ({ bgSrc, avatarSrc,
         flexDirection="column"
       >
         <CollectionAvatar src={avatarSrc} width={96} height={96} />
-        <Heading as="h3" mb={children ? '8px' : '0'}>
+        <Heading color={disabled ? 'textDisabled' : 'body'} as="h3" mb={children ? '8px' : '0'}>
           {collectionName}
         </Heading>
         {children}
@@ -47,7 +75,7 @@ const HotCollectionCard: React.FC<HotCollectionCardProps> = ({ bgSrc, avatarSrc,
   )
 
   return (
-    <StyledHotCollectionCard>
+    <StyledHotCollectionCard disabled={disabled}>
       {url ? <Link to={url}>{renderBody()}</Link> : <div style={{ cursor: 'default' }}>{renderBody()}</div>}
     </StyledHotCollectionCard>
   )

@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import { Box, Button, Heading } from '@pancakeswap/uikit'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
-import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFoldableText'
+import PageSection from 'components/PageSection'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import useTheme from 'hooks/useTheme'
 import Collections from './Collections'
 import Newest from './Newest'
 import config from './config'
@@ -15,12 +16,18 @@ const Gradient = styled(Box)`
   background: ${({ theme }) => theme.colors.gradients.cardHeader};
 `
 
+const StyledPageHeader = styled(PageHeader)`
+  margin-bottom: -40px;
+  padding-bottom: 40px;
+`
+
 const Home = () => {
   const { t } = useTranslation()
+  const { theme } = useTheme()
 
   return (
     <>
-      <PageHeader>
+      <StyledPageHeader>
         <Heading as="h1" scale="xxl" color="secondary" mb="24px">
           {t('NFT Market')}
         </Heading>
@@ -33,11 +40,17 @@ const Home = () => {
         <Button as={Link} to={`${nftsBaseUrl}/profile`} mt="32px">
           {t('Manage/Sell')}
         </Button>
-      </PageHeader>
-      <Page>
+      </StyledPageHeader>
+      <PageSection
+        innerProps={{ style: { margin: '0', width: '100%' } }}
+        background={theme.colors.background}
+        index={1}
+        concaveDivider
+        dividerPosition="top"
+      >
         <Collections />
         <Newest />
-      </Page>
+      </PageSection>
       <Gradient p="64px 0">
         <SectionsWithFoldableText header="FAQs" config={config} m="auto" />
       </Gradient>
