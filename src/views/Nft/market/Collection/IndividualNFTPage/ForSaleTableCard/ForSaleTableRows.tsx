@@ -2,7 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Price } from '@pancakeswap/sdk'
-import { Button, Grid, Text, Flex, Box, BinanceIcon, useModal, Skeleton } from '@pancakeswap/uikit'
+import {
+  Button,
+  Grid,
+  Text,
+  Flex,
+  Box,
+  BinanceIcon,
+  useModal,
+  Skeleton,
+  BunnyPlaceholderIcon,
+} from '@pancakeswap/uikit'
 import truncateHash from 'utils/truncateHash'
 import { ContextApi } from 'contexts/Localization/types'
 import { useTranslation } from 'contexts/Localization'
@@ -51,6 +61,16 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
   const [onPresentAdjustPriceModal] = useModal(<SellModal variant="edit" nftToSell={nft} />)
   const { profile, isFetching } = useProfileForAddress(nft.marketData.currentSeller)
   const profileName = profile?.hasRegistered ? profile.profile.username : '-'
+  const sellerProfilePic = profile?.hasRegistered ? profile.profile.nft.images.sm : null
+
+  let sellerProfilePicComponent = <Skeleton width="32px" height="32px" mr="12px" />
+  if (!isFetching) {
+    if (sellerProfilePic) {
+      sellerProfilePicComponent = <Avatar src={`/images/nfts/${sellerProfilePic}`} />
+    } else {
+      sellerProfilePicComponent = <BunnyPlaceholderIcon width="32px" height="32px" mr="12px" />
+    }
+  }
   return (
     <>
       <Box pl="24px">
@@ -67,7 +87,7 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
       </Box>
       <Box>
         <Flex width="max-content" alignItems="center">
-          <Avatar src={nft.image.thumbnail} alt={nft.name} />
+          {sellerProfilePicComponent}
           <Box display="inline">
             <Text lineHeight="1.25">{truncateHash(nft.marketData.currentSeller)}</Text>
             {isFetching ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
