@@ -729,7 +729,7 @@
   "Congratulations!": "बधाई हो!",
   "You won a collectible!": "आपने एक कलेक्शन आइटम जीता है!",
   "Claim now": "अभी क्लेम करें",
-  "Claiming...": "Claiming...",
+  "Claiming...": "क्लेम किया जा रहा है...",
   "NFT in wallet": "वॉलेट में NFT",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "CAKE के लिए अपने NFT ट्रेड-इन करें या अपने कलेक्शन के लिए रखें।",
   "No NFTs to claim": "क्लेम करने के लिए कोई NFT नहीं",
@@ -942,7 +942,7 @@
   "Match all %numberMatch%": "सभी %numberMatch% को मैच करें",
   "Match first %numberMatch%": "पहले %numberMatch% को मैच करें",
   "Matched first": "पहले मैच किया गया",
-  "Drawn": "Drawn",
+  "Drawn": "ड्रॉ निकाला गया",
   "Connect your wallet to check your history": "अपनी हिस्ट्री देखने के लिए अपना वॉलेट कनेक्ट करें",
   "Buy tickets for the next round!": "अगले राउंड के लिए टिकट खरीदें!",
   "No lottery history found": "कोई लॉटरी हिस्ट्री नहीं मिली",
@@ -1465,7 +1465,7 @@
   "Careers": "करियर",
   "Dark mode": "डार्क मोड",
   "Invalid pair": "अमान्य पेयर",
-  "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt",
-  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
+  "V1 (old)": "V1 (पुराना)",
+  "Transaction receipt": "लेन-देन की रसीद",
+  "You won points for joining PancakeSwap during the first year of our journey!": "आपने हमारी यात्रा के पहले वर्ष में PancakeSwap से जुड़ने के लिए पॉइंट जीते हैं!"
 }
