@@ -729,7 +729,7 @@
   "Congratulations!": "Onnittelut!",
   "You won a collectible!": "Voitit keräilykohteen!",
   "Claim now": "Lunasta nyt",
-  "Claiming...": "Claiming...",
+  "Claiming...": "Lunastetaan...",
   "NFT in wallet": "NFT lompakossa",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "Vaihda NFT:si CAKEen tai säilytä se kokoelmaasi varten.",
   "No NFTs to claim": "Ei lunastettavia NFT:itä",
@@ -1465,7 +1465,7 @@
   "Careers": "Työpaikat",
   "Dark mode": "Tumma tila",
   "Invalid pair": "Virheellinen pari",
-  "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt",
-  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
+  "V1 (old)": "V1 (vanha)",
+  "Transaction receipt": "Transaktion kuitti",
+  "You won points for joining PancakeSwap during the first year of our journey!": "Voitit pisteitä liittymisestä PancakeSwapiin matkamme ensimmäisen vuoden aikana!"
 }

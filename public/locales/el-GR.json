@@ -729,7 +729,7 @@
   "Congratulations!": "Συγχαρητήρια!",
   "You won a collectible!": "Κερδίσατε ένα συλλεκτικό!",
   "Claim now": "Λάβετε το τώρα",
-  "Claiming...": "Claiming...",
+  "Claiming...": "Διεκδίκηση...",
   "NFT in wallet": "NFT στο πορτοφόλι",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "Ανταλλάξτε τα NFT σας για CAKE ή απλώς κρατήστε τα για τη συλλογή σας.",
   "No NFTs to claim": "Δεν υπάρχουν NFT για διεκδίκηση",
@@ -1465,7 +1465,7 @@
   "Careers": "Θέσεις εργασίας",
   "Dark mode": "Σκοτεινή λειτουργία",
   "Invalid pair": "Μη έγκυρο ζευγάρι",
-  "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt",
-  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
+  "V1 (old)": "V1 (παλιά)",
+  "Transaction receipt": "Απόδειξη συναλλαγής",
+  "You won points for joining PancakeSwap during the first year of our journey!": "Κερδίσατε πόντους για τη συμμετοχή σας στο PancakeSwap τον πρώτο χρόνο του ταξιδιού μας!"
 }
