@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon, useTooltip } from '@pancakeswap/uikit'
+import { multiplyPriceByAmount } from 'utils/prices'
+import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { useTranslation } from 'contexts/Localization'
 import { NftToken } from 'state/nftMarket/types'
 import { useGetCollection } from 'state/nftMarket/hooks'
@@ -38,8 +40,11 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
   const { creatorFee, tradingFee } = useGetCollection(nftToSell.collectionAddress)
   const creatorFeeAsNumber = parseFloat(creatorFee)
   const tradingFeeAsNumber = parseFloat(tradingFee)
+  const bnbPrice = useBNBBusdPrice()
+  const priceAsFloat = parseFloat(price)
+  const priceInUsd = multiplyPriceByAmount(bnbPrice, priceAsFloat)
 
-  const priceIsOutOfRange = parseFloat(price) > MAX_PRICE || parseFloat(price) < MIN_PRICE
+  const priceIsOutOfRange = priceAsFloat > MAX_PRICE || priceAsFloat < MIN_PRICE
 
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
     <>
@@ -80,7 +85,7 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
         <Text fontSize="12px" color="secondary" textTransform="uppercase" bold>
           {t('Set Price')}
         </Text>
-        <Flex mt="8px">
+        <Flex>
           <Flex flex="1" alignItems="center">
             <BinanceIcon width={24} height={24} mr="4px" />
             <Text bold>WBNB</Text>
@@ -92,19 +97,27 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
               inputMode="numeric"
               value={price}
               ref={inputRef}
+              isWarning={priceIsOutOfRange}
               onChange={(e) => setPrice(e.target.value)}
             />
           </Flex>
         </Flex>
+        <Flex alignItems="center" height="21px" justifyContent="flex-end">
+          {!Number.isNaN(priceInUsd) && (
+            <Text fontSize="12px" color="textSubtle">
+              {`$${priceInUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+            </Text>
+          )}
+        </Flex>
         {priceIsOutOfRange && (
-          <Text fontSize="12px" color="failure" mt="8px">
+          <Text fontSize="12px" color="failure">
             {t('Allowed price range is bettween %minPrice% and %maxPrice% WBNB', {
               minPrice: MIN_PRICE,
               maxPrice: MAX_PRICE,
             })}
           </Text>
         )}
-        <Flex mt={priceIsOutOfRange ? '8px' : '24px'}>
+        <Flex mt="8px">
           <Text small color="textSubtle" mr="8px">
             {t('Seller pays %percentage%% platform fee on sale', {
               percentage: creatorFeeAsNumber + tradingFeeAsNumber,
@@ -119,11 +132,7 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
           <Text small color="textSubtle">
             {t('Platform fee if sold')}
           </Text>
-          <FeeAmountCell
-            bnbAmount={parseFloat(price)}
-            creatorFee={creatorFeeAsNumber}
-            tradingFee={tradingFeeAsNumber}
-          />
+          <FeeAmountCell bnbAmount={priceAsFloat} creatorFee={creatorFeeAsNumber} tradingFee={tradingFeeAsNumber} />
         </Flex>
         <Flex justifyContent="space-between" alignItems="center" mt="16px">
           <Text small color="textSubtle">
