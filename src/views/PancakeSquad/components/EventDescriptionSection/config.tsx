@@ -17,7 +17,7 @@ const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
       id: 1,
       content: (
         <>
-          {t('360 are available in the pre-sale for owners of ')}
+          {t('380 are available in the pre-sale for owners of ')}
           <Text display="inline-block" color="primary" bold>
             {t('Gen 0 Pancake Bunnies')}
           </Text>
