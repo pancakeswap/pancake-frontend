@@ -1,5 +1,5 @@
 {
-  "Farm": "Gazdaság",
+  "Farm": "Hozamgazdaság",
   "Staking": "Tétet feltesz",
   "Syrup Pool": "Syrup összevont alap",
   "Exchange": "Tőzsde",
@@ -729,7 +729,7 @@
   "Congratulations!": "Gratulálunk!",
   "You won a collectible!": "Ön nyert egy gyűjtőcikket!",
   "Claim now": "Igényelje most",
-  "Claiming...": "Claiming...",
+  "Claiming...": "Igénylés folyamatban...",
   "NFT in wallet": "NFT a tárcában",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "Váltsa be NFT-jét CAKE-re, vagy tartsa meg gyűjteményében.",
   "No NFTs to claim": "Nincs igényelhető NFT",
@@ -1465,7 +1465,7 @@
   "Careers": "Karrier",
   "Dark mode": "Sötét mód",
   "Invalid pair": "Érvénytelen pár",
-  "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt",
-  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
+  "V1 (old)": "V1 (régi)",
+  "Transaction receipt": "Ügyleti nyugta",
+  "You won points for joining PancakeSwap during the first year of our journey!": "Pontokat nyert, ha utunk első évében csatlakozott a PancakeSwap -hez!"
 }
