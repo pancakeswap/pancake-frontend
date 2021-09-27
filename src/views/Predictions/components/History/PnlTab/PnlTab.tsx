@@ -83,7 +83,7 @@ const getPnlSummary = (bets: Bet[], currentEpoch: number): PnlSummary => {
         lost: summary.lost,
       }
     }
-    if (roundResult === Result.LOSE) {
+    if (roundResult === Result.LOSE || roundResult === Result.HOUSE) {
       return {
         lost: {
           rounds: summary.lost.rounds + 1,
