@@ -98,7 +98,7 @@ export const FeeAmountCell: React.FC<FeeAmountCellProps> = ({ bnbAmount, creator
       <BinanceIcon width={16} height={16} mr="4px" />
       <Text bold mr="4px">{`${feeAmount.toLocaleString(undefined, {
         minimumFractionDigits: 3,
-        maximumFractionDigits: 3,
+        maximumFractionDigits: 6,
       })}`}</Text>
       <Text small color="textSubtle" textAlign="right">
         ({totalFee}%)
