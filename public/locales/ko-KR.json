@@ -729,7 +729,7 @@
   "Congratulations!": "성공!",
   "You won a collectible!": "수집품을 획득했습니다!",
   "Claim now": "지금 클레임",
-  "Claiming...": "Claiming...",
+  "Claiming...": "클레임 중...",
   "NFT in wallet": "지갑의 NFT",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "NFT를 CAKE과 교환하거나 컬렉션에 보관하세요.",
   "No NFTs to claim": "클레임할 NFT 없음",
@@ -1465,7 +1465,7 @@
   "Careers": "커리어",
   "Dark mode": "다크 모드",
   "Invalid pair": "유효하지 않은 쌍",
-  "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt",
-  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
+  "V1 (old)": "V1(이전)",
+  "Transaction receipt": "트랜잭션 리시트",
+  "You won points for joining PancakeSwap during the first year of our journey!": "여정의 첫 해에 PancakeSwap에 가입하면 포인트가 제공됩니다!"
 }
