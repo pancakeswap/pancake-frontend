@@ -80,7 +80,7 @@ const IndividualNFTPage = () => {
         </Flex>
         <ForSaleTableCard nftsForSale={allBunnies} totalForSale={allBunnies.length} />
       </TwoColumnsContainer>
-      <MoreFromThisCollection currentTokenName={cheapestBunny.name} />
+      <MoreFromThisCollection collectionAddress={collectionAddress} currentTokenName={cheapestBunny.name} />
     </Page>
   )
 }
