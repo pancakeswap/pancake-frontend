@@ -6,9 +6,9 @@ export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; 
 export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string; menuItem?: ConfigMenuItemsType }) => {
   const activeSubMenuItems = menuItem?.items.filter((subMenuItem) => pathname.includes(subMenuItem.href))
 
-  // Pathname doesn't include any submenu item href - return null
+  // Pathname doesn't include any submenu item href - return undefined
   if (activeSubMenuItems.length === 0) {
-    return null
+    return undefined
   }
 
   // Pathname includes one sub menu item href - return it
