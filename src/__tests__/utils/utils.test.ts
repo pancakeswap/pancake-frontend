@@ -26,6 +26,17 @@ describe('getActiveMenuItem', () => {
     expect(result).toEqual(menuConfig(mockT)[1])
   })
 
+  it('should not return an item that only includes pathname but not starts with', () => {
+    // Given
+    const pathname = '/info/pools'
+
+    // When
+    const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT) })
+
+    // Then
+    expect(result).toEqual(menuConfig(mockT)[4])
+  })
+
   it('should return undefined if item is not found', () => {
     // Given
     const pathname = '/corgi'
@@ -39,6 +50,17 @@ describe('getActiveMenuItem', () => {
 })
 
 describe('getActiveSubMenuItem', () => {
+  it('should return undefined', () => {
+    // Given
+    const pathname = '/'
+
+    // When
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[1] })
+
+    // Then
+    expect(result).toEqual(undefined)
+  })
+
   it('should return an active sub item', () => {
     // Given
     const pathname = '/pools'
@@ -48,6 +70,17 @@ describe('getActiveSubMenuItem', () => {
 
     // Then
     expect(result).toEqual(menuConfig(mockT)[1].items[1])
+  })
+
+  it('should return the item with the longest href when multiple items are found', () => {
+    // Given
+    const pathname = '/nfts/collections/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'
+
+    // When
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[3] })
+
+    // Then
+    expect(result).toEqual(menuConfig(mockT)[3].items[1])
   })
 
   it('should return undefined if item is not found', () => {
