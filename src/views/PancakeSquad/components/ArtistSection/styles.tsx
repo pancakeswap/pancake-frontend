@@ -1,4 +1,4 @@
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, Link } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 export const StyledArtistSectionContainer = styled(Flex)<{ $isDark: boolean }>`
@@ -29,5 +29,12 @@ export const StyledArtistBioContainer = styled(Flex)`
       top: calc(50% - 42px);
       transform: none;
     }
+  }
+`
+
+export const StyledSocialButton = styled(Link)`
+  width: 100%;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: fit-content;
   }
 `
