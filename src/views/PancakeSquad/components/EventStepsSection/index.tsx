@@ -30,10 +30,10 @@ const EventStepsSection: React.FC<EventStepsProps> = ({
         <EventStepsTopWave isDark={isDark} />
       </StyledWaveContainer>
       <LandingBodyWrapper flexDirection="column" alignItems="center" py="64px">
-        <Text color="invertedContrast" fontSize="40px" mb="64px" bold>
+        <Text color="invertedContrast" textAlign="center" fontSize="40px" mb="64px" bold>
           {t('Sounds great, how can I get one?')}
         </Text>
-        <Box mb="170px">
+        <Box mb={['80px', null, null, '170px']}>
           {isMintingFinished ? (
             <Flex flexDirection="column" alignItems="center">
               <Text fontSize="16px" color="text" textAlign="center" mb="64px">

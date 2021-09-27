@@ -22,7 +22,7 @@ const EventDescriptionSection = () => {
       <LandingBodyWrapper
         alignItems={['flex-end', null, 'center', null]}
         flexDirection={['column', null, null, 'row']}
-        pt={['88px', null, '104']}
+        pt={['64px', null, '104px']}
         pb="60px"
       >
         <Flex

@@ -4,7 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { LandingBodyWrapper, StyledWaveContainer } from 'views/PancakeSquad/styles'
 import { useTheme } from 'styled-components'
 import artistConfigBuilder from './config'
-import { StyledArtistBioContainer, StyledArtistSectionContainer } from './styles'
+import { StyledArtistBioContainer, StyledArtistSectionContainer, StyledSocialButton } from './styles'
 import ArtistBottomWave from '../../assets/ArtistBottomWave'
 import TriangleBio from '../../assets/TriangleBio'
 
@@ -45,15 +45,26 @@ const ArtistSection = () => {
             ))}
             <TriangleBio isDark={isDark} />
           </StyledArtistBioContainer>
-          <Flex justifyContent={['center', null, null, 'flex-start']}>
+          <Flex
+            flexDirection={['column', null, null, 'row']}
+            justifyContent={['center', null, null, 'flex-start']}
+            alignItems="center"
+            mx={['10%', null, null, '0']}
+          >
             {buttons.map((button) => (
-              <Link key={button.text} mr="16px" external={button.external} href={button.to}>
-                <Button startIcon={button.icon}>
+              <StyledSocialButton
+                key={button.text}
+                mb={['16px', null, null, '0']}
+                mr={['0', null, null, '16px']}
+                external={button.external}
+                href={button.to}
+              >
+                <Button width="100%" startIcon={button.icon}>
                   <Text color="card" bold fontSize="16px">
                     {button.text}
                   </Text>
                 </Button>
-              </Link>
+              </StyledSocialButton>
             ))}
           </Flex>
         </Flex>

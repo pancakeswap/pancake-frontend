@@ -20,7 +20,8 @@ const BunniesSection = () => {
   return (
     <StyledBunnySectionContainer justifyContent={['flex-start', null, null, 'center']}>
       <LandingBodyWrapper
-        py={['64px', null, null, '0']}
+        pb={['64px', null, null, '0']}
+        pt={['64px', null, null, '40px']}
         alignItems={['flex-end', null, 'center', null]}
         flexDirection={['column', null, null, 'row']}
       >
