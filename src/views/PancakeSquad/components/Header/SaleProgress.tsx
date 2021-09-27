@@ -38,7 +38,7 @@ const SaleProgress: React.FC<PreEventProps> = ({
     <Box mb="24px">
       {isMintCompleted && (
         <Text color={lightColors.warning} mb="40px" bold>
-          {t('Mint Complete')}
+          {t('Claiming Complete!')}
         </Text>
       )}
       <Text color={lightColors.invertedContrast} mb="24px" bold>

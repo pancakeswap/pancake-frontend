@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@pancakeswap/uikit'
+import { Button, Flex } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 
@@ -23,10 +23,14 @@ const EndEventButtons: React.FC<EndEventProps> = ({
   const canViewMarket = maxSupply === totalSupplyMinted
 
   return (
-    <>
-      {canViewMarket && <Button>{t('View market')}</Button>}
-      {hasSquad && <Button>{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Button>}
-    </>
+    <Flex flexDirection={['column', null, null, 'row']}>
+      {canViewMarket && (
+        <Button width="100%" mb={['4px', null, null, '0']} mr={[0, null, null, '4px']}>
+          {t('View market')}
+        </Button>
+      )}
+      {hasSquad && <Button width="100%">{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Button>}
+    </Flex>
   )
 }
 

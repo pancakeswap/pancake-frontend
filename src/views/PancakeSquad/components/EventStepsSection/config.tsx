@@ -33,6 +33,7 @@ const stepsConfigBuilder = ({
 
   const hasProfileActivated = [UserStatusEnum.PROFILE_ACTIVE, UserStatusEnum.PROFILE_ACTIVE_GEN0].includes(userStatus)
   const isBuyPhaseFinished = totalTicketsDistributed === maxSupply
+  const isMintingFinished = totalSupplyMinted === maxSupply
 
   return [
     {
@@ -133,6 +134,7 @@ const stepsConfigBuilder = ({
             numberTokensOfUser={numberTokensOfUser}
             ticketsOfUser={ticketsOfUser}
           />
+          {isMintingFinished && <ReadyText mt="16px" text={t('Phase Complete!')} />}
         </>
       ),
     },
