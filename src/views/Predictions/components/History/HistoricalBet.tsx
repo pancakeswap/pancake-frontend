@@ -5,8 +5,10 @@ import {
   ChevronUpIcon,
   Flex,
   IconButton,
+  InfoIcon,
   PlayCircleOutlineIcon,
   Text,
+  useTooltip,
   WaitIcon,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
@@ -40,8 +42,21 @@ const YourResult = styled(Box)`
 const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { amount, round } = bet
-
   const { t } = useTranslation()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <>
+      <Text bold mb="4px">
+        {t('Neither side wins this round')}
+      </Text>
+      <Text>
+        {t(
+          'The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly CAKE burn.',
+        )}
+      </Text>
+    </>,
+    { placement: 'right' },
+  )
+
   const currentEpoch = useGetCurrentEpoch()
   const status = useGetPredictionsStatus()
   const canClaim = useGetIsClaimable(bet.round.epoch)
@@ -57,6 +72,8 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
       case Result.LOSE:
         return 'failure'
       case Result.CANCELED:
+        return 'textDisabled'
+      case Result.HOUSE:
         return 'textDisabled'
       default:
         return 'text'
@@ -113,7 +130,19 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
           {t('Your Result')}
         </Text>
         <Text bold color={resultTextColor} lineHeight={1}>
-          {roundResult === Result.CANCELED ? t('Canceled') : `${resultTextPrefix}${formatBnb(payout)}`}
+          {roundResult === Result.CANCELED ? (
+            t('Canceled')
+          ) : roundResult === Result.HOUSE ? (
+            <>
+              {tooltipVisible && tooltip}
+              <Flex alignItems="center" ref={targetRef}>
+                {t('To Burn')}
+                <InfoIcon width="16px" ml="4px" color="secondary" />
+              </Flex>
+            </>
+          ) : (
+            `${resultTextPrefix}${formatBnb(payout)}`
+          )}
         </Text>
       </>
     )

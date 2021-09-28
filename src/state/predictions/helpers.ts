@@ -34,6 +34,7 @@ export enum Result {
   WIN = 'win',
   LOSE = 'lose',
   CANCELED = 'canceled',
+  HOUSE = 'house',
   LIVE = 'live',
 }
 
@@ -193,6 +194,11 @@ export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   if (round.epoch >= currentEpoch - 1) {
     return Result.LIVE
   }
+
+  if (bet.round.position === BetPosition.HOUSE) {
+    return Result.HOUSE
+  }
+
   const roundResultPosition = round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
 
   return bet.position === roundResultPosition ? Result.WIN : Result.LOSE
