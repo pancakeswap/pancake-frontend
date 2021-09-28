@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import {
   Flex,
@@ -63,6 +63,11 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalF
   const [displayedCollectibles, setDisplayedCollectibles] = useState(nftsForSale.slice(0, itemsPerPage - 1))
   const { t } = useTranslation()
   const { theme } = useTheme()
+
+  useEffect(() => {
+    // nftsForSale prop change does not reinitialize useState on change, hence this effect
+    setDisplayedCollectibles(nftsForSale.slice(0, itemsPerPage - 1))
+  }, [nftsForSale, itemsPerPage])
 
   let maxPage = Math.floor(nftsForSale.length / itemsPerPage) + 1
   if (nftsForSale.length % itemsPerPage === 0) {
