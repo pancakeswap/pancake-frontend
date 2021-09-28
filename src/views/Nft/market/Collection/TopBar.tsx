@@ -1,10 +1,10 @@
 import React from 'react'
 import { Box, ChevronLeftIcon, Flex } from '@pancakeswap/uikit'
-import { Link as RouterLink, useHistory } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import AddressInputSelect from 'components/AddressInputSelect'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import SearchBar from '../components/SearchBar'
 
 const BackLink = styled(RouterLink)`
   align-items: center;
@@ -15,11 +15,6 @@ const BackLink = styled(RouterLink)`
 
 const TopBar: React.FC = () => {
   const { t } = useTranslation()
-  const history = useHistory()
-
-  const handleAddressClick = (value: string) => {
-    history.push(`${nftsBaseUrl}/profile/${value}`)
-  }
 
   return (
     <Flex alignItems="center" justifyContent="space-between" mb="24px">
@@ -28,7 +23,7 @@ const TopBar: React.FC = () => {
         {t('All Collections')}
       </BackLink>
       <Box>
-        <AddressInputSelect onAddressClick={handleAddressClick} />
+        <SearchBar />
       </Box>
     </Flex>
   )
