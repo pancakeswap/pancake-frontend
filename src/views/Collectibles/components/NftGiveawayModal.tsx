@@ -17,7 +17,6 @@ const NftImage = styled.img`
 
 const showConfetti = () => {
   confetti({
-    resize: true,
     particleCount: 200,
     startVelocity: 30,
     gravity: 0.5,
