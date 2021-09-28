@@ -14,6 +14,7 @@ import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import { ToastListener } from './contexts/ToastsContext'
 import PageLoader from './components/Loader/PageLoader'
 import EasterEgg from './components/EasterEgg'
+import GlobalCheckClaimStatus from './components/GlobalCheckClaimStatus'
 import history from './routerHistory'
 // Views included in the main bundle
 import Pools from './views/Pools'
@@ -25,7 +26,6 @@ import {
 } from './views/AddLiquidity/redirects'
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
-import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -35,7 +35,6 @@ const FarmAuction = lazy(() => import('./views/FarmAuction'))
 const Lottery = lazy(() => import('./views/Lottery'))
 const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
-const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))
 const Team = lazy(() => import('./views/Teams/Team'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
@@ -90,9 +89,6 @@ const App: React.FC = () => {
             </Route>
             <Route path="/ifo">
               <Ifos />
-            </Route>
-            <Route path="/collectibles">
-              <Collectibles />
             </Route>
             <Route exact path="/teams">
               <Teams />
@@ -158,8 +154,8 @@ const App: React.FC = () => {
             <Route path="/syrup">
               <Redirect to="/pools" />
             </Route>
-            <Route path="/nft">
-              <Redirect to="/collectibles" />
+            <Route path="/collectibles">
+              <Redirect to="/nfts" />
             </Route>
 
             {/* 404 */}
