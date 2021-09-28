@@ -729,7 +729,7 @@
   "Congratulations!": "Chúc mừng!",
   "You won a collectible!": "Bạn đã giành được một ảnh sưu tập!",
   "Claim now": "Nhận ngay",
-  "Claiming...": "Claiming...",
+  "Claiming...": "Đang nhận...",
   "NFT in wallet": "NFT trong ví",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "Đổi NFT của bạn để lấy CAKE, hoặc giữ nó trong bộ sưu tập của bạn.",
   "No NFTs to claim": "Không có NFT nào để nhận",
@@ -1465,7 +1465,7 @@
   "Careers": "Sự nghiệp",
   "Dark mode": "Chế độ tối",
   "Invalid pair": "Cặp giao dịch không hợp lệ",
-  "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt",
-  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
+  "V1 (old)": "V1 (cũ)",
+  "Transaction receipt": "Biên lai giao dịch",
+  "You won points for joining PancakeSwap during the first year of our journey!": "Bạn nhận điểm bởi đã tham gia PancakeSwap trong năm đầu của hành trình của chúng tôi!"
 }
