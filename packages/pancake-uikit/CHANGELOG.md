@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.54.5](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.54.4...@pancakeswap/uikit@0.54.5) (2021-09-28)
+
+
+### Bug Fixes
+
+* **Menu:** Hide menu bar only when scrolled enough ([#292](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/292)) ([8cbab63](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/8cbab63addfd77d2ce5823d63571b8ec19aad042))
+* DarkMode flag and Stepper issue ([#291](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/291)) ([7c248b7](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/7c248b7031b8a0c6d8173e5eb64dac76df235226))
+
+
+
+
+
 ## [0.54.4](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.54.3...@pancakeswap/uikit@0.54.4) (2021-09-20)
 
 
