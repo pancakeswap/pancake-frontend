@@ -1,9 +1,11 @@
 import nfts from 'config/constants/nfts'
 import { IPFS_GATEWAY } from 'config'
-import collections from 'config/constants/nfts/collections'
-import { Nft, CollectionKey } from 'config/constants/nfts/types'
-import { getAddress } from './addressHelpers'
+import { Nft } from 'config/constants/nfts/types'
 import { getErc721Contract } from './contractHelpers'
+
+// ALL CODE IN THIS FILE IS USED BY getProfileAvatar
+// ONCE THAT IS REFACTORED TO USE THE NFTS API
+// THIS CAN ALL BE REMOVED
 
 /**
  * Some sources like Pancake do not return HTTP tokenURI's
@@ -14,10 +16,6 @@ export const getTokenUrl = (tokenUri: string) => {
   }
 
   return tokenUri
-}
-
-export const getBunnyNftAddress = (collectionKey: CollectionKey = CollectionKey.PANCAKE) => {
-  return getAddress(collections[collectionKey].address)
 }
 
 export const fetchCachedUriData = async (tokenUrl: string) => {
