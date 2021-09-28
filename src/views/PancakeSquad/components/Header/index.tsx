@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
@@ -11,7 +12,12 @@ import CtaButtons from './CtaButtons'
 import MintText from './MintText'
 import PreEventText from './PreEventText'
 import SaleProgress from './SaleProgress'
-import { StyledSquadEventBorder, StyledSquadEventContainer, StyledSquadHeaderContainer } from './styles'
+import {
+  StyledSquadEventBorder,
+  StyledSquadEventContainer,
+  StyledSquadHeaderContainer,
+  StyledSquadTitle,
+} from './styles'
 import { PancakeSquadHeaderType } from './types'
 
 const DEFAULT_CAKE_COST = 5
@@ -42,10 +48,20 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
   } = dynamicSaleInfo
 
   return (
-    <StyledSquadHeaderContainer flexDirection="column" alignItems="center">
-      <Text fontSize="64px" my="32px" color={lightColors.invertedContrast} bold textAlign="center">
+    <StyledSquadHeaderContainer
+      pt={['16px', null, null, '40px']}
+      px={['16px', null, null, '80px']}
+      flexDirection="column"
+      alignItems="center"
+    >
+      <Flex width="100%">
+        <Link to="/nfts/market">
+          <Text color="primary" bold>{`< ${t('NFT Market')}`}</Text>
+        </Link>
+      </Flex>
+      <StyledSquadTitle my="32px" color={lightColors.invertedContrast} bold textAlign="center">
         {t('Pancake Squad')}
-      </Text>
+      </StyledSquadTitle>
       <Text color={lightColors.warning} textAlign="center" bold>
         {t('Mint Cost: %minCost% CAKE each', {
           minCost: pricePerTicket ? formatBigNumber(pricePerTicket, 0) : DEFAULT_CAKE_COST,
