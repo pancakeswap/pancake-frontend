@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useAnniversaryAchievementContract } from 'hooks/useContract'
+import { getAnniversaryAchievementContract } from 'utils/contractHelpers'
 import AnniversaryAchievementModal from './AnniversaryAchievementModal'
 
 interface GlobalCheckClaimStatusProps {
@@ -20,12 +20,12 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
   const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(false)
   const { account } = useWeb3React()
   const { pathname } = useLocation()
-  const { canClaim, claimAnniversaryPoints } = useAnniversaryAchievementContract()
-  const [onPresentAnniversaryModal] = useModal(<AnniversaryAchievementModal onClick={claimAnniversaryPoints} />)
+  const [onPresentAnniversaryModal] = useModal(<AnniversaryAchievementModal />)
 
   // Check claim status
   useEffect(() => {
     const fetchClaimAnniversaryStatus = async () => {
+      const { canClaim } = getAnniversaryAchievementContract()
       const canClaimAnniversary = await canClaim(account)
       setCanClaimAnniversaryPoints(canClaimAnniversary)
     }
@@ -33,7 +33,7 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
     if (account) {
       fetchClaimAnniversaryStatus()
     }
-  }, [account, canClaim])
+  }, [account])
 
   // Check if we need to display the modal
   useEffect(() => {
