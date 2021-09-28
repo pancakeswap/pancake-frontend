@@ -2,10 +2,11 @@ import React from 'react'
 import { Card, CardBody, Heading, PrizeIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import IconStatBox from 'views/Teams/components/IconStatBox'
+import { Achievement } from 'state/types'
 import AchievementsList from './AchievementsList'
 import ClaimPointsCallout from './ClaimPointsCallout '
 
-const Achievements = ({ points = 0 }) => {
+const Achievements: React.FC<{ achievements: Achievement[]; points?: number }> = ({ achievements, points = 0 }) => {
   const { t } = useTranslation()
 
   return (
@@ -16,7 +17,7 @@ const Achievements = ({ points = 0 }) => {
           {t('Achievements')}
         </Heading>
         <ClaimPointsCallout />
-        <AchievementsList />
+        <AchievementsList achievements={achievements} />
       </CardBody>
     </Card>
   )
