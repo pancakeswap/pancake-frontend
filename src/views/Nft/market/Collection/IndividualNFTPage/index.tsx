@@ -33,7 +33,7 @@ const IndividualNFTPage = () => {
   const { collectionAddress, tokenId } = useParams<{ collectionAddress: string; tokenId: string }>()
   const [attributesDistribution, setAttributesDistribution] = useState<{ [key: string]: number }>(null)
   const allBunnies = useGetAllBunniesByBunnyId(tokenId)
-  const bunniesSortedByPrice = orderBy(allBunnies, 'marketData.currentAskPrice')
+  const bunniesSortedByPrice = orderBy(allBunnies, (nft) => parseFloat(nft.marketData.currentAskPrice))
   const allBunniesFromOtherSellers = account
     ? bunniesSortedByPrice.filter((bunny) => bunny.marketData.currentSeller !== account.toLowerCase())
     : bunniesSortedByPrice
