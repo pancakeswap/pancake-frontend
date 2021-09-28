@@ -89,6 +89,7 @@
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@pancakeswap/eslint-config-pancake": "^1.1.0",
+    "@types/canvas-confetti": "^1.4.2",
     "@types/jest": "^26.0.23",
     "@types/react-datepicker": "^3.1.8",
     "@types/react-redux": "^7.1.16",
