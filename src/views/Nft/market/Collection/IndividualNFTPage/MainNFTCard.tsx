@@ -37,18 +37,43 @@ const CollectionLink = styled(Link)`
 interface MainNFTCardProps {
   cheapestNft: NftToken
   cheapestNftFromOtherSellers?: NftToken
+  nothingForSaleBunny?: NftToken
 }
 
-const MainNFTCard: React.FC<MainNFTCardProps> = ({ cheapestNft, cheapestNftFromOtherSellers }) => {
+const MainNFTCard: React.FC<MainNFTCardProps> = ({ cheapestNft, cheapestNftFromOtherSellers, nothingForSaleBunny }) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
 
-  const nftToDisplay = cheapestNftFromOtherSellers ?? cheapestNft
-  const onlyOwnNftsOnSale = !cheapestNftFromOtherSellers
+  const nftToDisplay = cheapestNftFromOtherSellers || cheapestNft || nothingForSaleBunny
 
-  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nftToDisplay.marketData.currentAskPrice))
+  const onlyOwnNftsOnSale = !cheapestNftFromOtherSellers
+  const hasListings = cheapestNftFromOtherSellers || cheapestNft
+
+  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nftToDisplay.marketData?.currentAskPrice))
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nftToDisplay} />)
   const [onPresentAdjustPriceModal] = useModal(<SellModal variant="edit" nftToSell={cheapestNft} />)
+
+  const actionButton = onlyOwnNftsOnSale ? (
+    <Button
+      variant="danger"
+      minWidth="168px"
+      width={['100%', null, 'max-content']}
+      mt="24px"
+      onClick={onPresentAdjustPriceModal}
+    >
+      {t('Adjust Sale Price')}
+    </Button>
+  ) : (
+    <Button
+      disabled={onlyOwnNftsOnSale}
+      minWidth="168px"
+      width={['100%', null, 'max-content']}
+      mt="24px"
+      onClick={onPresentBuyModal}
+    >
+      {t('Buy')}
+    </Button>
+  )
   return (
     <Card mb="40px">
       <CardBody>
@@ -62,44 +87,28 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ cheapestNft, cheapestNftFromO
                 {nftToDisplay.name}
               </Text>
               <Text mt={['16px', '16px', '48px']}>{t(nftToDisplay.description)}</Text>
-              <Text color="textSubtle" mt={['16px', '16px', '48px']}>
-                {t('Lowest price')}
-              </Text>
-              <Flex alignItems="center" mt="8px">
-                <BinanceIcon width={18} height={18} mr="4px" />
-                <Text fontSize="24px" bold mr="4px">
-                  {nftToDisplay.marketData.currentAskPrice}
-                </Text>
-                {bnbBusdPrice ? (
-                  <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })} USD)`}</Text>
-                ) : (
-                  <Skeleton width="64px" />
-                )}
-              </Flex>
-              {onlyOwnNftsOnSale ? (
-                <Button
-                  variant="danger"
-                  minWidth="168px"
-                  width={['100%', null, 'max-content']}
-                  mt="24px"
-                  onClick={onPresentAdjustPriceModal}
-                >
-                  {t('Adjust Sale Price')}
-                </Button>
-              ) : (
-                <Button
-                  disabled={onlyOwnNftsOnSale}
-                  minWidth="168px"
-                  width={['100%', null, 'max-content']}
-                  mt="24px"
-                  onClick={onPresentBuyModal}
-                >
-                  {t('Buy')}
-                </Button>
+              {(cheapestNft || cheapestNftFromOtherSellers) && (
+                <>
+                  <Text color="textSubtle" mt={['16px', '16px', '48px']}>
+                    {t('Lowest price')}
+                  </Text>
+                  <Flex alignItems="center" mt="8px">
+                    <BinanceIcon width={18} height={18} mr="4px" />
+                    <Text fontSize="24px" bold mr="4px">
+                      {nftToDisplay.marketData.currentAskPrice}
+                    </Text>
+                    {bnbBusdPrice ? (
+                      <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })} USD)`}</Text>
+                    ) : (
+                      <Skeleton width="64px" />
+                    )}
+                  </Flex>
+                </>
               )}
+              {hasListings && actionButton}
             </Box>
           </Flex>
           <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center">
