@@ -33,19 +33,22 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. Go earn ChompersV2 in the Autoshark Legendary Spawning Pool.</Text>
+            <Text fontSize='14px'>1. We are listed on CoinMarketCap! Make sure you add RugZombie to your watchlist to get us trending.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>2. Happy Spawntemberfest. 6 Partnerships, 6 Spawning Pools over 10 days.</Text>
+            <Text fontSize='14px'>2. Go earn ChompersV2 in the Autoshark Legendary Spawning Pool.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>3. Upgraded RugZombie Common grave is out! Please migrate your funds from the legacy grave. You can still remain in the old grave until you earn your NFT.</Text>
+            <Text fontSize='14px'>3. Happy Spawntemberfest. 6 Partnerships, 6 Spawning Pools over 10 days.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>4. You can now view your NFTs in the Graveyard.</Text>
+            <Text fontSize='14px'>4. Upgraded RugZombie Common grave is out! Please migrate your funds from the legacy grave. You can still remain in the old grave until you earn your NFT.</Text>
           </Row>
           <Row>
-            <Text fontSize='14px'>5. Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
+            <Text fontSize='14px'>5. You can now view your NFTs in the Graveyard.</Text>
+          </Row>
+          <Row>
+            <Text fontSize='14px'>6. Send a message in our telegram if you find bugs, might even send you some zmbe if theyre good ones ;).</Text>
           </Row>
         </>
       </CardBody>

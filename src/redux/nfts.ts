@@ -347,7 +347,7 @@ const nfts: Nft[] = [
     name: 'Slow Zombie',
     symbol: 'SLOW',
     description: 'Too late bruh',
-    address: '0x096fAF55D6F9B0057f2100c423c321f9450B2a44',
+    address: '0xe72CfFDEFfd85f2a2b83B58fDBF3cCAba578599a',
     totalSupply: BIG_ZERO,
     path: 'https://ipfs.io/ipfs/QmXcs1Bpp3d16pF6HEKGmo4WTj8WU7YyaGi9b6F71StvDF',
     type: 'image',
@@ -472,6 +472,18 @@ const nfts: Nft[] = [
     path: 'https://ipfs.io/ipfs/QmPiLdr6ZRieLFLYNRA2ch1PUr9aDqw7QAm832VZ9Texyj',
     type: 'image',
     rarity: 'Common',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 38,
+    name: 'Season 1',
+    symbol: 'WHALE',
+    description: 'I try all things, I achieve what I can.',
+    address: '0xADEbC6fe47Baf315bfbD66F8Ce515fBc78Bf42EB',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmQnj8i4k2kwoboNN2TMoJ5ugH1Mxav4r8zAsz6PmXvP7P',
+    type: 'image',
+    rarity: 'Rare',
     userInfo: { ...DEFAULT_USER_INFO }
   },
 ]

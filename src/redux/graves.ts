@@ -159,7 +159,7 @@ const graves: Grave[] = [
     nftRevivalTime: '90 days',
     rug: tokens.basicZmbe,
     artist: artists.jussjoshinduh,
-    stakingToken: '0x0c6BE9c0c47d533be7e417E08b870935814c7dB8',
+    stakingToken: '0x3e2e7DC42fc7FF54229fab4F92B859DDB28691B1',
     pcsVersion: 'none',
     liquidityDetails: 'None! You must earn the Basic Zombie NFT from the RugZombie Common Grave to gain access.',
     requiresNft: true,
