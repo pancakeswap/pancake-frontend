@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Button, Flex, Text } from '@pancakeswap/uikit'
 import { AppDispatch } from 'state'
-import { useAllTransactions } from 'state/transactions/hooks'
+import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { clearAllTransactions } from 'state/transactions/actions'
@@ -14,7 +14,7 @@ const WalletTransactions: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { t } = useTranslation()
   const allTransactions = useAllTransactions()
-  const sortedTransactions = orderBy(allTransactions, 'addedTime', 'desc')
+  const sortedTransactions = orderBy(Object.values(allTransactions).filter(isTransactionRecent), 'addedTime', 'desc')
 
   const handleClearAll = () => {
     if (chainId) {
