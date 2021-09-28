@@ -729,7 +729,7 @@
   "Congratulations!": "অভিনন্দন!",
   "You won a collectible!": "আপনি একটি কলেক্টিবেল জিতেছেন!",
   "Claim now": "এখনই দাবি করুন",
-  "Claiming...": "Claiming...",
+  "Claiming...": "দাবি করা হচ্ছে",
   "NFT in wallet": "ওয়ালেটে NFT",
   "Trade in your NFT for CAKE, or just keep it for your collection.": "CAKE এর জন্য আপনার NFT ট্রেড করুন বা আপনার সংগ্রহের জন্য রাখুন।",
   "No NFTs to claim": "দাবি করার মতো কোনো NFT নেই",
@@ -1465,7 +1465,7 @@
   "Careers": "ক্যারিয়ার",
   "Dark mode": "ডার্ক মোড",
   "Invalid pair": "অবৈধ পেয়ার।",
-  "V1 (old)": "V1 (old)",
-  "Transaction receipt": "Transaction receipt",
-  "You won points for joining PancakeSwap during the first year of our journey!": "You won points for joining PancakeSwap during the first year of our journey!"
+  "V1 (old)": "V1 (পুরাতন)",
+  "Transaction receipt": "লেনদেনের রসিদ",
+  "You won points for joining PancakeSwap during the first year of our journey!": "আপনি আমাদের যাত্রার প্রথম বছরে PancakeSwap-এ যোগদানের জন্য পয়েন্ট অর্জন করেছেন!"
 }
