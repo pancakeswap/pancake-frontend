@@ -53,6 +53,7 @@ const SaleProgress: React.FC<PreEventProps> = ({
         <Progress
           variant="round"
           primaryStep={isClaimingPhase ? supplyRemainingPercentage : 100 - supplyRemainingPercentage}
+          useDark={false}
         />
       )}
     </Box>

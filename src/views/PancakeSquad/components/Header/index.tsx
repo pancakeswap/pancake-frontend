@@ -62,7 +62,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         <StyledSquadEventContainer m="1px" p="32px">
           <Flex flexDirection={['column', null, 'row']}>
             <Box mr="100px">
-              <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} />
+              <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} useDark={false} />
             </Box>
             <Flex flexDirection="column">
               {isLoading ? (

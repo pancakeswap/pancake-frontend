@@ -18,7 +18,7 @@ const artistConfigBuilder = ({ t, isDark }: ArtistConfigType) => ({
       to: 'https://twitter.com/cecymeade',
       text: t('Follow on Twitter'),
       external: true,
-      icon: <TwitterIcon color="white" />,
+      icon: <TwitterIcon fillColor="white" />,
     },
     {
       to: 'https://www.instagram.com/cecymeade/',

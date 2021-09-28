@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Box, Button, Card, CardBody, Flex, Step, Stepper, StepStatus, Text } from '@pancakeswap/uikit'
+import { Box, Button, Card, CardBody, Flex, Step, Stepper, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { StyledWaveContainer, LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import useTheme from 'hooks/useTheme'
@@ -50,7 +50,12 @@ const EventStepsSection: React.FC<EventStepsProps> = ({
           ) : (
             <Stepper>
               {stepsConfig.map((step, index) => (
-                <Step key={step.id} index={index} status={step.status as StepStatus}>
+                <Step
+                  key={step.id}
+                  index={index}
+                  statusFirstPart={step.status}
+                  statusSecondPart={stepsConfig[index + 1]?.status}
+                >
                   <Card>
                     <CardBody>
                       <Box maxWidth="388px">
