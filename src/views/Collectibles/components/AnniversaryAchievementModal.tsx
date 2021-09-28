@@ -1,9 +1,10 @@
+import React, { useEffect, useState } from 'react'
 import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 import confetti from 'canvas-confetti'
 import { useTranslation } from 'contexts/Localization'
+import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import { delay } from 'lodash'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
 
 const AnniversaryImage = styled.img`
   border-radius: 50%;
@@ -27,18 +28,15 @@ const showConfetti = () => {
   })
 }
 
-interface AnniversaryModalProps extends InjectedModalProps {
-  onClick: () => Promise<void>
-}
-
-const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismiss, onClick }) => {
+const AnniversaryAchievementModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
+  const { claimAnniversaryPoints } = useAnniversaryAchievementContract()
 
   const handleClick = async () => {
     setIsLoading(true)
     try {
-      await onClick()
+      await claimAnniversaryPoints()
     } finally {
       onDismiss()
     }
