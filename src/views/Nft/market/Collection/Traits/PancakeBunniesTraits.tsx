@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Skeleton, Table, Td, Th, Image, Flex, Text } from '@pancakeswap/uikit'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Skeleton, Table, Td, Th, Image, Flex, Text, ArrowUpIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import times from 'lodash/times'
 import sum from 'lodash/sum'
@@ -10,6 +10,9 @@ import { useTranslation } from 'contexts/Localization'
 import CollapsibleCard from 'components/CollapsibleCard'
 import useGetLowestPBNftPrice from '../../hooks/useGetLowestPBPrice'
 import { BNBAmountLabel } from '../../components/CollectibleCard/styles'
+import { SortType } from './types'
+import { StyledSortButton } from './styles'
+import { sortBunniesByRarirityBuilder } from './utils'
 
 interface PancakeBunniesTraitsProps {
   collectionAddress: string
@@ -48,6 +51,7 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
 
 const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
   const [tokenApiResponse, setTokenApiResponse] = useState<ApiResponseCollectionTokens>(null)
+  const [rarirySort, setRarirySort] = useState<SortType>('asc')
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -61,6 +65,16 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
 
   const totalMinted = tokenApiResponse ? sum(Object.values(tokenApiResponse.attributesDistribution)) : 0
 
+  const sortedBunnieKeys = useMemo(() => {
+    if (!tokenApiResponse) return []
+
+    return Object.keys(tokenApiResponse.data).sort(sortBunniesByRarirityBuilder({ rarirySort, data: tokenApiResponse }))
+  }, [rarirySort, tokenApiResponse])
+
+  const toggleRarirySort = () => {
+    setRarirySort((currentValue) => (currentValue === 'asc' ? 'desc' : 'asc'))
+  }
+
   return (
     <>
       {tokenApiResponse ? (
@@ -70,12 +84,19 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
               <tr>
                 <Th textAlign="left">{t('Name')}</Th>
                 <Th>{t('Count')}</Th>
-                <Th>{t('Rarity')}</Th>
+                <Th>
+                  <StyledSortButton type="button" onClick={toggleRarirySort}>
+                    <Flex alignItems="center">
+                      {t('Rarity')}
+                      {rarirySort === 'asc' ? <ArrowUpIcon color="secondary" /> : <ArrowDownIcon color="secondary" />}
+                    </Flex>
+                  </StyledSortButton>
+                </Th>
                 <Th>{t('Lowest')}</Th>
               </tr>
             </thead>
             <tbody>
-              {Object.keys(tokenApiResponse.data).map((bunnyId) => {
+              {sortedBunnieKeys.map((bunnyId) => {
                 const nft = tokenApiResponse.data[bunnyId]
                 if (!nft) {
                   // Some bunnies don't exist on testnet
