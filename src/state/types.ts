@@ -201,16 +201,6 @@ export interface BlockState {
   initialBlock: number
 }
 
-// Collectibles
-
-export interface CollectiblesState {
-  isInitialized: boolean
-  isLoading: boolean
-  data: {
-    [key: string]: number[]
-  }
-}
-
 // Predictions
 
 export enum BetPosition {
@@ -573,7 +563,6 @@ export interface State {
   predictions: PredictionsState
   profile: ProfileState
   teams: TeamsState
-  collectibles: CollectiblesState
   voting: VotingState
   lottery: LotteryState
   nftMarket: NftMarketState
