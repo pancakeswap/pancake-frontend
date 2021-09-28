@@ -82,6 +82,7 @@ const UserNfts = () => {
 
             return (
               <CollectibleActionCard
+                isUserNft
                 onClick={() => handleCollectibleClick(nft, location)}
                 key={`${nft.tokenId}-${nft.collectionName}`}
                 nft={nft}

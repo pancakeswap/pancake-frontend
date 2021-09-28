@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { uniqBy } from 'lodash'
 import { Flex, Text, Card, ArrowBackIcon, ArrowForwardIcon, Table, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
 import { getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
 import { NftToken, TokenIdWithCollectionAddress, UserNftInitializationState } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
+import { useParams } from 'react-router'
 import useFetchUserActivity from '../../hooks/useFetchUserActivity'
 import useUserActivity, { Activity } from '../../hooks/useUserActivity'
 import ActivityRow from './ActivityRow'
@@ -34,18 +34,18 @@ const Arrow = styled.div`
 const MAX_PER_PAGE = 8
 
 const ActivityHistory = () => {
-  const { account } = useWeb3React()
+  const { accountAddress } = useParams<{ accountAddress: string }>()
   const { theme } = useTheme()
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
   const [activitiesSlice, setActivitiesSlice] = useState<Activity[]>([])
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
-  const { sortedUserActivites, initializationState } = useUserActivity(account)
+  const { sortedUserActivites, initializationState } = useUserActivity(accountAddress)
   const bnbBusdPrice = useBNBBusdPrice()
   const { isXs, isSm } = useMatchBreakpoints()
 
-  useFetchUserActivity(account)
+  useFetchUserActivity(accountAddress)
 
   useEffect(() => {
     const fetchActivityNftMetadata = async () => {

@@ -340,7 +340,15 @@ export const fetchWalletTokenIdsForCollections = async (
   const walletNftPromises = map(collections, async (collection): Promise<TokenIdWithCollectionAddress[]> => {
     const { address: collectionAddress } = collection
     const contract = getErc721Contract(collectionAddress)
-    const balanceOfResponse = await contract.balanceOf(account)
+    let balanceOfResponse
+
+    try {
+      balanceOfResponse = await contract.balanceOf(account)
+    } catch (e) {
+      console.error(e)
+      return []
+    }
+
     const balanceOf = balanceOfResponse.toNumber()
 
     // User has no NFTs for this collection
@@ -496,5 +504,54 @@ export const combineNftMarketAndMetadata = (
     const location = getNftLocationForMarketNft(nft.tokenId, tokenIdsInWallet, tokenIdsForSale, profileNftId)
     return { ...nft, marketData, location }
   })
+  return completeNftData
+}
+
+/**
+ * Get in-wallet, on-sale & profile pic NFT metadata, complete with market data for a given account
+ * @param account
+ * @param collections
+ * @param profileNftWithCollectionAddress
+ * @returns Promise<NftToken[]>
+ */
+export const getCompleteAccountNftData = async (
+  account: string,
+  collections: ApiCollections,
+  profileNftWithCollectionAddress?: TokenIdWithCollectionAddress,
+): Promise<NftToken[]> => {
+  const walletNftIds = await fetchWalletTokenIdsForCollections(account, collections)
+  if (profileNftWithCollectionAddress?.tokenId) {
+    walletNftIds.push(profileNftWithCollectionAddress)
+  }
+  const tokenIds = walletNftIds.map((nft) => nft.tokenId)
+
+  const marketDataForWalletNfts = await getNftsMarketData({ tokenId_in: tokenIds })
+  const walletNftsWithMarketData = attachMarketDataToWalletNfts(walletNftIds, marketDataForWalletNfts)
+
+  const tokenIdsInWallet = walletNftIds
+    .filter((walletNft) => {
+      // Profile Pic NFT is included in walletNftIds array, hence this filter
+      return profileNftWithCollectionAddress?.tokenId !== walletNft.tokenId
+    })
+    .map((nft) => nft.tokenId)
+
+  const marketDataForSaleNfts = await getNftsMarketData({ currentSeller: account.toLowerCase() })
+  const tokenIdsForSale = marketDataForSaleNfts.map((nft) => nft.tokenId)
+
+  const forSaleNftIds = marketDataForSaleNfts.map((nft) => {
+    return { collectionAddress: nft.collection.id, tokenId: nft.tokenId }
+  })
+
+  const metadataForAllNfts = await getNftsFromDifferentCollectionsApi([...walletNftIds, ...forSaleNftIds])
+
+  const completeNftData = combineNftMarketAndMetadata(
+    metadataForAllNfts,
+    marketDataForSaleNfts,
+    walletNftsWithMarketData,
+    tokenIdsInWallet,
+    tokenIdsForSale,
+    profileNftWithCollectionAddress?.tokenId,
+  )
+
   return completeNftData
 }

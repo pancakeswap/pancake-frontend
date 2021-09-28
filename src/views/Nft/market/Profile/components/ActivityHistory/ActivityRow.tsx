@@ -53,7 +53,7 @@ const ActivityRow: React.FC<ActivityRowProps> = ({ activity, bnbBusdPrice, nft }
           />
           <Flex flexDirection="column">
             <Text textAlign={['center', null, 'left']} color="textSubtle" fontSize="14px">
-              {nft?.collectionName || 'absent'}
+              {nft?.collectionName}
             </Text>
             <Text textAlign={['center', null, 'left']} bold>
               {nft?.name}

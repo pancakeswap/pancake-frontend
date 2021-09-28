@@ -8,7 +8,7 @@ import LocationTag from './LocationTag'
 import { CollectibleCardProps } from './types'
 import { useGetLowestPriceFromNft } from '../../hooks/useGetLowestPBPrice'
 
-const CollectibleCardBody: React.FC<CollectibleCardProps> = ({ nft, nftLocation, currentAskPrice }) => {
+const CollectibleCardBody: React.FC<CollectibleCardProps> = ({ nft, nftLocation, currentAskPrice, isUserNft }) => {
   const { t } = useTranslation()
   const { name, image } = nft
   const bnbBusdPrice = useBNBBusdPrice()
@@ -31,7 +31,7 @@ const CollectibleCardBody: React.FC<CollectibleCardProps> = ({ nft, nftLocation,
       <Box borderTop="1px solid" borderTopColor="cardBorder" pt="8px">
         <LowestPriceMetaRow lowestPriceData={lowestPriceData} bnbBusdPrice={bnbBusdPrice} />
         {currentAskPrice && (
-          <MetaRow title={t('Your price')}>
+          <MetaRow title={isUserNft ? t('Your price') : t('Asking price')}>
             <CostLabel cost={currentAskPrice} bnbBusdPrice={bnbBusdPrice} />
           </MetaRow>
         )}
