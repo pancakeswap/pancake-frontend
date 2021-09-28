@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState, useEffect } from 'react'
-import { Box, Text, Input } from '@pancakeswap/uikit'
+import { Box, BoxProps, Text, Input } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
@@ -11,7 +11,7 @@ enum ResultStatus {
   NOT_FOUND,
 }
 
-interface AddressInputSelectProps {
+interface AddressInputSelectProps extends BoxProps {
   onValidAddress?: (value: string) => Promise<boolean>
   onAddressClick: (value: string) => void
 }
@@ -60,6 +60,7 @@ const defaultValidAddressHandler = () => Promise.resolve(true)
 const AddressInputSelect: React.FC<AddressInputSelectProps> = ({
   onValidAddress = defaultValidAddressHandler,
   onAddressClick,
+  ...props
 }) => {
   const [state, setState] = useState(initialState)
   const { t } = useTranslation()
@@ -105,7 +106,7 @@ const AddressInputSelect: React.FC<AddressInputSelectProps> = ({
   }, [value, onValidAddress, setState])
 
   return (
-    <Box position="relative">
+    <Box position="relative" {...props}>
       <Input
         placeholder={t('Search %subject%', { subject: t('Address').toLowerCase() })}
         value={state.value}
