@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ProfileState } from 'state/types'
+import { ProfileState, ProfileAvatarFetchStatus } from 'state/types'
 import type { AppDispatch } from 'state'
 import { Nft } from 'config/constants/nfts/types'
 import { getProfile, getProfileAvatar, GetProfileResponse, getUsername } from './helpers'
@@ -12,21 +12,24 @@ const initialState: ProfileState = {
   profileAvatars: {},
 }
 
-export const fetchProfileAvatar = createAsyncThunk<{ account: string; nft: Nft }, string>(
+export const fetchProfileAvatar = createAsyncThunk<{ account: string; nft: Nft; hasRegistered: boolean }, string>(
   'profile/fetchProfileAvatar',
   async (account) => {
-    const nft = await getProfileAvatar(account)
-    return { account, nft }
+    const { nft, hasRegistered } = await getProfileAvatar(account)
+    return { account, nft, hasRegistered }
   },
 )
 
-export const fetchProfileUsername = createAsyncThunk<{ account: string; username: string }, string>(
-  'profile/fetchProfileUsername',
-  async (account) => {
-    const username = await getUsername(account)
-    return { account, username }
-  },
-)
+export const fetchProfileUsername = createAsyncThunk<
+  { account: string; username: string },
+  { account: string; hasRegistered: boolean }
+>('profile/fetchProfileUsername', async ({ account, hasRegistered }) => {
+  if (!hasRegistered) {
+    return { account, username: '' }
+  }
+  const username = await getUsername(account)
+  return { account, username }
+})
 
 export const profileSlice = createSlice({
   name: 'profile',
@@ -56,6 +59,25 @@ export const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchProfileUsername.pending, (state, action) => {
+      const { account } = action.meta.arg
+      if (state.profileAvatars[account]) {
+        state.profileAvatars[account] = {
+          ...state.profileAvatars[account],
+          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHING,
+        }
+      } else {
+        state.profileAvatars[account] = {
+          hasRegistered: false,
+          username: null,
+          nft: null,
+          // I think in theory this else should never be reached since we only check for username after we checked for profile/avatar
+          // just in case I set isFetchingAvatar will be ProfileAvatarFetchStatus.FETCHED at this point to avoid refetching
+          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHING,
+          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+        }
+      }
+    })
     builder.addCase(fetchProfileUsername.fulfilled, (state, action) => {
       const { account, username } = action.payload
 
@@ -63,21 +85,94 @@ export const profileSlice = createSlice({
         state.profileAvatars[account] = {
           ...state.profileAvatars[account],
           username,
+          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
         }
       } else {
-        state.profileAvatars[account] = { username, nft: null }
+        state.profileAvatars[account] = {
+          username,
+          nft: null,
+          hasRegistered: true,
+          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          // I think in theory this else should never be reached since we only check for username after we checked for profile/avatar
+          // just in case I set isFetchingAvatar will be ProfileAvatarFetchStatus.FETCHED at this point to avoid refetching
+          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+        }
+      }
+    })
+    builder.addCase(fetchProfileUsername.rejected, (state, action) => {
+      const { account } = action.meta.arg
+      if (state.profileAvatars[account]) {
+        state.profileAvatars[account] = {
+          ...state.profileAvatars[account],
+          username: '',
+          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+        }
+      } else {
+        state.profileAvatars[account] = {
+          hasRegistered: false,
+          username: '',
+          nft: null,
+          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+        }
+      }
+    })
+    builder.addCase(fetchProfileAvatar.pending, (state, action) => {
+      const account = action.meta.arg
+      if (state.profileAvatars[account]) {
+        state.profileAvatars[account] = {
+          ...state.profileAvatars[account],
+          hasRegistered: false,
+          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHING,
+        }
+      } else {
+        state.profileAvatars[account] = {
+          username: null,
+          nft: null,
+          hasRegistered: false,
+          usernameFetchStatus: ProfileAvatarFetchStatus.NOT_FETCHED,
+          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHING,
+        }
       }
     })
     builder.addCase(fetchProfileAvatar.fulfilled, (state, action) => {
-      const { account, nft } = action.payload
+      const { account, nft, hasRegistered } = action.payload
 
       if (state.profileAvatars[account]) {
         state.profileAvatars[account] = {
           ...state.profileAvatars[account],
           nft,
+          hasRegistered,
+          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
         }
       } else {
-        state.profileAvatars[account] = { username: null, nft }
+        state.profileAvatars[account] = {
+          username: null,
+          nft,
+          hasRegistered,
+          usernameFetchStatus: ProfileAvatarFetchStatus.NOT_FETCHED,
+          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+        }
+      }
+    })
+    builder.addCase(fetchProfileAvatar.rejected, (state, action) => {
+      const account = action.meta.arg
+
+      if (state.profileAvatars[account]) {
+        state.profileAvatars[account] = {
+          ...state.profileAvatars[account],
+          nft: null,
+          hasRegistered: false,
+          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+        }
+      } else {
+        state.profileAvatars[account] = {
+          username: null,
+          nft: null,
+          hasRegistered: false,
+          usernameFetchStatus: ProfileAvatarFetchStatus.NOT_FETCHED,
+          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+        }
       }
     })
   },
