@@ -1,5 +1,5 @@
 import React from "react";
-import { Colors } from "../../theme";
+import { Colors, lightColors } from "../../theme";
 import { Flex } from "../Box";
 import IconComponent from "../Svg/IconComponent";
 import { Text } from "../Text";
@@ -7,13 +7,18 @@ import InfoTooltip from "./InfoTooltip";
 import { TimelineContainer, TimelineEvent } from "./styles";
 import { TimelineProps, EventStatus } from "./types";
 
-const getTextColor = (eventStatus: EventStatus): keyof Colors => {
-  if (eventStatus === "upcoming") return "textDisabled";
-  if (eventStatus === "live") return "success";
-  return "textSubtle";
+type getTextColorProps = {
+  eventStatus: EventStatus;
+  useDark: boolean;
 };
 
-const Timeline: React.FC<TimelineProps> = ({ events }) => {
+const getTextColor = ({ eventStatus, useDark }: getTextColorProps): keyof Colors => {
+  if (eventStatus === "upcoming") return useDark ? "textDisabled" : (lightColors.textDisabled as keyof Colors);
+  if (eventStatus === "live") return "success";
+  return useDark ? "textSubtle" : (lightColors.textSubtle as keyof Colors);
+};
+
+const Timeline: React.FC<TimelineProps> = ({ events, useDark = true }) => {
   return (
     <TimelineContainer>
       {events.map(({ text, status, altText, infoText }) => {
@@ -21,13 +26,17 @@ const Timeline: React.FC<TimelineProps> = ({ events }) => {
         const isLive = status === "live";
         const isPast = status === "past";
         return (
-          <TimelineEvent key={text}>
+          <TimelineEvent key={text} $useDark={useDark}>
             <Flex mr="10px" alignItems="center">
-              {isUpcoming && <IconComponent iconName="CircleOutline" color="textDisabled" />}
+              {isUpcoming && (
+                <IconComponent iconName="CircleOutline" color={useDark ? "textDisabled" : lightColors.textDisabled} />
+              )}
               {isLive && <IconComponent iconName="Logo" />}
-              {isPast && <IconComponent iconName="CheckmarkCircleFill" color="textSubtle" />}
+              {isPast && (
+                <IconComponent iconName="CheckmarkCircleFill" color={useDark ? "textSubtle" : lightColors.textSubtle} />
+              )}
             </Flex>
-            <Text color={getTextColor(status)} bold>
+            <Text color={getTextColor({ eventStatus: status, useDark })} bold>
               {text}
             </Text>
             {altText && (
@@ -35,7 +44,9 @@ const Timeline: React.FC<TimelineProps> = ({ events }) => {
                 {altText}
               </Text>
             )}
-            {infoText && <InfoTooltip text={infoText} ml="10px" />}
+            {infoText && (
+              <InfoTooltip text={infoText} ml="10px" iconColor={useDark ? "textSubtle" : lightColors.textSubtle} />
+            )}
           </TimelineEvent>
         );
       })}

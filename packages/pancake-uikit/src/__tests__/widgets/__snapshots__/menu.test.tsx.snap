@@ -2204,7 +2204,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/contact-us"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Contact
                   </a>
@@ -2217,7 +2217,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://pancakeswap.medium.com/"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Blog
                   </a>
@@ -2230,7 +2230,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/contact-us/telegram"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Community
                   </a>
@@ -2243,7 +2243,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/tokenomics/cake"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     CAKE
                   </a>
@@ -2255,7 +2255,7 @@ exports[`renders correctly 1`] = `
                     class="c52 c53"
                     color="#F4EEFF"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     —
                   </a>
@@ -2268,7 +2268,7 @@ exports[`renders correctly 1`] = `
                     color="#FFB237"
                     href="https://pancakeswap.creator-spring.com/"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Online Store
                   </a>
@@ -2290,7 +2290,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="Support https://docs.pancakeswap.finance/contact-us/customer-support"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Customer
                   </a>
@@ -2303,7 +2303,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/help/troubleshooting"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Troubleshooting
                   </a>
@@ -2316,7 +2316,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/get-started"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Guides
                   </a>
@@ -2338,7 +2338,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://github.com/pancakeswap"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Github
                   </a>
@@ -2351,7 +2351,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Documentation
                   </a>
@@ -2364,7 +2364,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://app.gitbook.com/@pancakeswap-1/s/pancakeswap/code/bug-bounty"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Bug Bounty
                   </a>
@@ -2377,7 +2377,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Audits
                   </a>
@@ -2390,7 +2390,7 @@ exports[`renders correctly 1`] = `
                     color="#F4EEFF"
                     href="https://docs.pancakeswap.finance/hiring/become-a-chef"
                     rel="noreferrer noopener"
-                    target="_black"
+                    target="_blank"
                   >
                     Careers
                   </a>

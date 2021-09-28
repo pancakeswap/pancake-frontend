@@ -9,4 +9,5 @@ export type Event = {
 
 export type TimelineProps = {
   events: Event[];
+  useDark?: boolean;
 };

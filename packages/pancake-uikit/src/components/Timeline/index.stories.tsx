@@ -47,4 +47,5 @@ export const Default = Template.bind({});
 
 Default.args = {
   events: eventsMock,
+  useDark: false,
 };

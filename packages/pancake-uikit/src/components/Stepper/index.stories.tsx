@@ -19,14 +19,13 @@ const status: Status[] = ["past", "current", "future", "future"];
 
 const Row = styled.div`
   display: flex;
-  margin-bottom: 32px;
 `;
 
 export const Default: React.FC = () => {
   return (
     <Stepper>
       {steps.map((step, index) => (
-        <Step key={step} index={index} status={status[index]}>
+        <Step key={step} index={index} statusFirstPart={status[index]} statusSecondPart={status[index + 1]}>
           <Card>
             <CardBody>{step}</CardBody>
           </Card>
@@ -45,7 +44,7 @@ export const Components: React.FC = () => {
         <StepNumber status="future">1</StepNumber>
       </Row>
       <Row>
-        <Step index={0} status="past">
+        <Step index={0} statusFirstPart="past">
           <Card>
             <CardBody>
               <h2>Step 0</h2>
@@ -59,7 +58,7 @@ export const Components: React.FC = () => {
         </Step>
       </Row>
       <Row>
-        <Step index={1} status="current">
+        <Step index={1} statusFirstPart="current" statusSecondPart="future">
           <Card>
             <CardBody>
               <h2>Step 1</h2>
@@ -73,7 +72,7 @@ export const Components: React.FC = () => {
         </Step>
       </Row>
       <Row>
-        <Step index={2} status="future">
+        <Step index={2} statusFirstPart="future">
           <Card>
             <CardBody>
               <h2>Step 2</h2>

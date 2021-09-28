@@ -49,7 +49,7 @@ const MenuItem: React.FC<FooterProps> = ({
                 <StyledListItem key={label}>
                   <Link
                     href={href}
-                    target="_black"
+                    target="_blank"
                     rel="noreferrer noopener"
                     color={isHighlighted ? baseColors.warning : darkColors.text}
                     bold={false}

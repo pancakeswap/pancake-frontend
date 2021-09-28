@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { lightColors } from "../../theme";
 
 export const TimelineContainer = styled.ul`
   display: flex;
@@ -6,7 +7,7 @@ export const TimelineContainer = styled.ul`
   list-style: none;
 `;
 
-export const TimelineEvent = styled.li`
+export const TimelineEvent = styled.li<{ $useDark: boolean }>`
   display: flex;
   position: relative;
   margin-bottom: 14px;
@@ -18,7 +19,7 @@ export const TimelineEvent = styled.li`
     top: 26px;
     width: 2px;
     height: 10px;
-    background-color: ${({ theme }) => theme.colors.textSubtle};
+    background-color: ${({ theme, $useDark }) => ($useDark ? theme.colors.textSubtle : lightColors.textSubtle)};
   }
 
   &:last-child:after {
