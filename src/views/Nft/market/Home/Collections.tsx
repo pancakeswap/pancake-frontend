@@ -10,6 +10,7 @@ import { BNBAmountLabel } from '../components/CollectibleCard/styles'
 const Collections = () => {
   const { t } = useTranslation()
   const collections = useGetCollections()
+  const isViewAllDisabled = true
 
   return (
     <>
@@ -17,15 +18,21 @@ const Collections = () => {
         <Heading as="h3" scale="lg">
           {t('Hot Collections')}
         </Heading>
-        <Button
-          as={Link}
-          to={TMP_SEE_ALL_LINK}
-          variant="secondary"
-          scale="sm"
-          endIcon={<ChevronRightIcon color="primary" width="24px" />}
-        >
-          {t('View All')}
-        </Button>
+        {isViewAllDisabled ? (
+          <Button variant="secondary" scale="sm" disabled>
+            {t('View All')}
+          </Button>
+        ) : (
+          <Button
+            as={Link}
+            to={TMP_SEE_ALL_LINK}
+            variant="secondary"
+            scale="sm"
+            endIcon={<ChevronRightIcon color="primary" width="24px" />}
+          >
+            {t('View All')}
+          </Button>
+        )}
       </Flex>
       <Grid gridGap="16px" gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} mb="64px">
         {Object.keys(collections)
