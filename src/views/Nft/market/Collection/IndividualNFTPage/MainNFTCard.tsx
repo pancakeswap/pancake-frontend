@@ -90,7 +90,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ cheapestNft, cheapestNftFromO
             </Box>
           </Flex>
           <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center">
-            <RoundedImage src={nftToDisplay.image.original} width={440} height={440} />
+            <RoundedImage src={nftToDisplay.image.thumbnail} width={440} height={440} />
           </Flex>
         </Container>
       </CardBody>
