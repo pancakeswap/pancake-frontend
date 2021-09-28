@@ -17,7 +17,7 @@ const ActivityPrice = ({ bnbBusdPrice, price }) => {
             {`(~$${priceInUsd.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
-            })}`}
+            })})`}
           </Text>
         </>
       ) : (

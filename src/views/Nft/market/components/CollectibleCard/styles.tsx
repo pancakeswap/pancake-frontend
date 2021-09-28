@@ -61,15 +61,22 @@ export const CostLabel: React.FC<CostLabelProps> = ({ cost, bnbBusdPrice, ...pro
   )
 }
 
+const TruncatedText = styled(Text)`
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
 interface MetaRowProps extends FlexProps {
   title: string
 }
 
 export const MetaRow: React.FC<MetaRowProps> = ({ title, children, ...props }) => (
   <Flex alignItems="center" justifyContent="space-between" {...props}>
-    <Text fontSize="12px" color="textSubtle">
+    <TruncatedText fontSize="12px" color="textSubtle" title={title}>
       {title}
-    </Text>
+    </TruncatedText>
     <Box>{children}</Box>
   </Flex>
 )
@@ -120,6 +127,7 @@ export const SellingNftTag: React.FC<NftTagProps> = (props) => {
 
 export const StyledCollectibleCard = styled(Card)`
   border-radius: 8px;
+  max-width: 320px;
   transition: opacity 200ms;
 
   & > div {
