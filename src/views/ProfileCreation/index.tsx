@@ -23,7 +23,7 @@ const ProfileCreation = () => {
   }
 
   if (account && hasProfile) {
-    return <Redirect to={`${nftsBaseUrl}/profile`} />
+    return <Redirect to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} />
   }
 
   return (

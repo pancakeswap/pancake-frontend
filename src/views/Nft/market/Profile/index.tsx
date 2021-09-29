@@ -1,66 +1,43 @@
 import React from 'react'
-import styled from 'styled-components'
-import { useProfile } from 'state/profile/hooks'
 import { useWeb3React } from '@web3-react/core'
-import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
-import { Box } from '@pancakeswap/uikit'
+import { useParams } from 'react-router'
+import { isAddress } from 'utils'
+import { Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { Route } from 'react-router'
-import { useUserNfts } from 'state/nftMarket/hooks'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
-import useFetchUserNfts from './hooks/useFetchUserNfts'
+import { useTranslation } from 'contexts/Localization'
+import ConnectedProfile from './ConnectedProfile'
+import UnconnectedProfile from './UnconnectedProfile'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
-import TabMenu from './components/TabMenu'
-import Achievements from './components/Achievements'
-import ActivityHistory from './components/ActivityHistory'
-import SubMenu from './components/SubMenu'
-import UserNfts from './components/UserNfts'
-
-const TabMenuWrapper = styled(Box)`
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0%);
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    left: auto;
-    transform: none;
-  }
-`
+import NoNftsImage from './components/NoNftsImage'
 
 const NftProfile = () => {
-  const { profile } = useProfile()
-  const achievements = useAchievements()
   const { account } = useWeb3React()
-  const { nfts: userNfts } = useUserNfts()
+  const { accountAddress } = useParams<{ accountAddress: string }>()
+  const { t } = useTranslation()
 
-  useFetchAchievements()
-  useFetchUserNfts(account)
+  const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()
+  const invalidAddress = !accountAddress || isAddress(accountAddress) === false
 
-  return (
-    <>
-      <MarketPageHeader position="relative">
-        <ProfileHeader account={account} profile={profile} achievements={achievements} nftCollected={userNfts.length} />
-        <TabMenuWrapper>
-          <TabMenu />
-        </TabMenuWrapper>
-      </MarketPageHeader>
-      <Page style={{ minHeight: 'auto' }}>
-        <Route path={`${nftsBaseUrl}/profile/achievements`}>
-          <Achievements points={profile?.points} />
-        </Route>
-        <Route path={`${nftsBaseUrl}/profile/activity`}>
-          <SubMenu />
-          <ActivityHistory />
-        </Route>
-        <Route exact path={`${nftsBaseUrl}/profile`}>
-          <SubMenu />
-          <UserNfts />
-        </Route>
-      </Page>
-    </>
-  )
+  if (invalidAddress) {
+    return (
+      <>
+        <MarketPageHeader position="relative">
+          <ProfileHeader accountPath={accountAddress} profile={null} achievements={null} nftCollected={null} />
+        </MarketPageHeader>
+        <Page style={{ minHeight: 'auto' }}>
+          <Flex p="24px" flexDirection="column" alignItems="center">
+            <NoNftsImage />
+            <Text textAlign="center" maxWidth="420px" pt="8px" bold>
+              {t('Please enter a valid address, or connect your wallet to view your profile')}
+            </Text>
+          </Flex>
+        </Page>
+      </>
+    )
+  }
+
+  return <>{isConnectedProfile ? <ConnectedProfile /> : <UnconnectedProfile />}</>
 }
 
 export default NftProfile
