@@ -223,6 +223,69 @@ export const getNftsMarketData = async (
   }
 }
 
+export const getAllPancakeBunniesLowestPrice = async (bunnyIds: string[]): Promise<Record<string, number>> => {
+  try {
+    const singlePancakeBunnySubQueries = bunnyIds.map(
+      (
+        bunnyId,
+      ) => `b${bunnyId}:nfts(first: 1, where: { otherId: ${bunnyId}, isTradable: true }, orderBy: currentAskPrice, orderDirection: asc) {
+        currentAskPrice
+      }
+    `,
+    )
+    const rawResponse: Record<string, { currentAskPrice: string }[]> = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getAllPancakeBunniesLowestPrice {
+          ${singlePancakeBunnySubQueries}
+        }
+      `,
+    )
+    return Object.keys(rawResponse).reduce((lowestPricesData, subQueryKey) => {
+      const bunnyId = subQueryKey.split('b')[1]
+      return {
+        ...lowestPricesData,
+        [bunnyId]:
+          rawResponse[subQueryKey].length > 0 ? parseFloat(rawResponse[subQueryKey][0].currentAskPrice) : Infinity,
+      }
+    }, {})
+  } catch (error) {
+    console.error('Failed to fetch PancakeBunnies lowest prices', error)
+    return {}
+  }
+}
+
+export const getAllPancakeBunniesRecentUpdatedAt = async (bunnyIds: string[]): Promise<Record<string, number>> => {
+  try {
+    const singlePancakeBunnySubQueries = bunnyIds.map(
+      (
+        bunnyId,
+      ) => `b${bunnyId}:nfts(first: 1, where: { otherId: ${bunnyId}, isTradable: true }, orderBy: updatedAt, orderDirection: desc) {
+        updatedAt
+      }
+    `,
+    )
+    const rawResponse: Record<string, { updatedAt: string }[]> = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getAllPancakeBunniesLowestPrice {
+          ${singlePancakeBunnySubQueries}
+        }
+      `,
+    )
+    return Object.keys(rawResponse).reduce((updatedAtData, subQueryKey) => {
+      const bunnyId = subQueryKey.split('b')[1]
+      return {
+        ...updatedAtData,
+        [bunnyId]: rawResponse[subQueryKey].length > 0 ? Number(rawResponse[subQueryKey][0].updatedAt) : -Infinity,
+      }
+    }, {})
+  } catch (error) {
+    console.error('Failed to fetch PancakeBunnies latest market updates', error)
+    return {}
+  }
+}
+
 /**
  * Returns the lowest price of any NFT in a collection
  */

@@ -1483,7 +1483,7 @@
   "Activate Profile": "Activate Profile",
   "Lowest price": "Lowest price",
   "Your price": "Your price",
-  "Not for sale": "Not for sale",
+  "Not on sale": "Not on sale",
   "For Sale (%num%)": "For Sale (%num%)",
   "Owner": "Owner",
   "Contract address": "Contract address",
@@ -1586,5 +1586,6 @@
   "Platform fee if sold": "Platform fee if sold",
   "Click to view NFT": "Click to view NFT",
   "Asking price": "Asking price",
-  "Please enter a valid address, or connect your wallet to view your profile": "Please enter a valid address, or connect your wallet to view your profile"
+  "Please enter a valid address, or connect your wallet to view your profile": "Please enter a valid address, or connect your wallet to view your profile",
+  "No items for sale": "No items for sale"
 }

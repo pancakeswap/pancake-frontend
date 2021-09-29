@@ -9,6 +9,7 @@ import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
 import { pancakeBunniesAddress } from '../../constants'
+import useAllPancakeBunnyNfts from '../../hooks/useAllPancakeBunnyNfts'
 
 interface CollectionNftsProps {
   collection: Collection
@@ -21,29 +22,23 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
   const nfts = useNftsFromCollection(checksummedAddress)
   const dispatch = useAppDispatch()
 
+  const isPBCollection = address === pancakeBunniesAddress
+
   useEffect(() => {
     dispatch(fetchNftsFromCollections(checksummedAddress))
   }, [checksummedAddress, dispatch])
 
-  if (!nfts) {
+  const allPancakeBunnyNfts = useAllPancakeBunnyNfts(address)
+
+  let nftsToShow = isPBCollection ? allPancakeBunnyNfts : nfts.filter((nft) => nft.marketData.isTradable)
+
+  if (!nftsToShow) {
     return <GridPlaceholder />
   }
 
-  let nftsToShow = orderBy(
-    nfts.filter((nft) => nft.marketData.isTradable),
-    (nft) => Number(nft.marketData[sortBy]),
-    [sortBy === 'currentAskPrice' ? 'asc' : 'desc'],
-  )
-  if (checksummedAddress === pancakeBunniesAddress) {
-    // PancakeBunnies should display 1 card per bunny id
-    nftsToShow = nftsToShow.reduce((nftArray, current) => {
-      const bunnyId = current.attributes[0].value
-      if (!nftArray.find((nft) => nft.attributes[0].value === bunnyId)) {
-        nftArray.push(current)
-      }
-      return nftArray
-    }, [])
-  }
+  nftsToShow = orderBy(nftsToShow, (nft) => (isPBCollection ? nft.meta[sortBy] : Number(nft.marketData[sortBy])), [
+    sortBy === 'currentAskPrice' ? 'asc' : 'desc',
+  ])
 
   return (
     <Grid

@@ -82,13 +82,17 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, lowestPrice }) => 
         <Text fontSize="12px" color="textSubtle" textAlign="right">
           {nft.collectionName}
         </Text>
-        <Text small color="textSubtle">
-          {t('Lowest price')}
-        </Text>
-        <Flex justifySelf="flex-end" width="max-content">
-          <BinanceIcon width="16px" height="16px" mr="4px" />
-          <Text small>{lowestPrice}</Text>
-        </Flex>
+        {lowestPrice && (
+          <>
+            <Text small color="textSubtle">
+              {t('Lowest price')}
+            </Text>
+            <Flex justifySelf="flex-end" width="max-content">
+              <BinanceIcon width="16px" height="16px" mr="4px" />
+              <Text small>{lowestPrice}</Text>
+            </Flex>
+          </>
+        )}
         {nft.location === NftLocation.FORSALE ? (
           <>
             <Text small color="textSubtle">
@@ -101,7 +105,7 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, lowestPrice }) => 
           </>
         ) : (
           <Text small color="textDisabled">
-            {t('Not for sale')}
+            {t('Not on sale')}
           </Text>
         )}
       </Grid>
@@ -137,7 +141,7 @@ const CollectiblesByLocation: React.FC<CollectiblesByLocationProps> = ({ locatio
 
 interface ManageCardProps {
   bunnyId: string
-  lowestPrice: string
+  lowestPrice?: string
 }
 
 const ManageCard: React.FC<ManageCardProps> = ({ bunnyId, lowestPrice }) => {
@@ -179,13 +183,13 @@ const ManageCard: React.FC<ManageCardProps> = ({ bunnyId, lowestPrice }) => {
       )}
       {bunniesInWallet.length > 0 && (
         <>
-          <Divider />
+          {bunniesForSale.length > 0 && <Divider />}
           <CollectiblesByLocation location={NftLocation.WALLET} nfts={bunniesInWallet} lowestPrice={lowestPrice} />
         </>
       )}
       {profilePicBunny.length > 0 && (
         <>
-          <Divider />
+          {(bunniesForSale.length > 0 || bunniesInWallet.length > 0) && <Divider />}
           <CollectiblesByLocation location={NftLocation.PROFILE} nfts={profilePicBunny} lowestPrice={lowestPrice} />
         </>
       )}
