@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import { Flex, Box, Card, CardBody, Text, Button, Image, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { multiplyPriceByAmount } from 'utils/prices'
@@ -7,6 +8,7 @@ import { NftToken } from 'state/nftMarket/types'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import BuyModal from '../../components/BuySellModals/BuyModal'
 import SellModal from '../../components/BuySellModals/SellModal'
+import { nftsBaseUrl } from '../../constants'
 
 const RoundedImage = styled(Image)`
   height: max-content;
@@ -42,7 +44,13 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ cheapestNft, cheapestNftFromO
         <Container flexDirection={['column-reverse', null, 'row']}>
           <Flex flex="2">
             <Box>
-              <Text bold color="primary" mt={['16px', '16px', '50px']}>
+              <Text
+                as={Link}
+                to={`${nftsBaseUrl}/collections/${cheapestNft.collectionAddress}`}
+                bold
+                color="primary"
+                mt={['16px', '16px', '50px']}
+              >
                 {nftToDisplay.collectionName}
               </Text>
               <Text fontSize="40px" bold mt="12px">
