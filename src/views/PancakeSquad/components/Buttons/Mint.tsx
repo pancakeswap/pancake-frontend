@@ -27,6 +27,10 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
   const { toastError } = useToast()
   const canMintTickets = saleStatus === SaleStatusEnum.Claim && numberTicketsOfUser > 0
 
+  const onConfirmClose = () => {
+    setTxHashMintingResult(null)
+  }
+
   const [onPresentConfirmModal, onDismiss] = useModal(
     <ConfirmModal
       title={t('Mint')}
@@ -36,7 +40,9 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
       loadingText={t('Please enable BNB spending in your wallet')}
       loadingButtonLabel={t('Minting...')}
       successButtonLabel={t('Close')}
+      onConfirmClose={onConfirmClose}
     />,
+    false,
   )
 
   const mintTokenCallBack = async () => {

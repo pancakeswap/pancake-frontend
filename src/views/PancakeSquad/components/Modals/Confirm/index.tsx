@@ -29,10 +29,12 @@ type ConfirmModalProps = {
   loadingText: string
   loadingButtonLabel: string
   successButtonLabel: string
+  onConfirmClose: () => void
 } & ModalProps
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onDismiss,
+  onConfirmClose,
   title,
   isLoading,
   headerBackground,
@@ -45,13 +47,18 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
 
+  const onCloseCallback = () => {
+    onConfirmClose()
+    onDismiss()
+  }
+
   return (
     <ModalContainer minWidth="375px">
       <ModalHeader background={headerBackground}>
         <ModalTitle>
           <Heading>{title}</Heading>
         </ModalTitle>
-        <IconButton variant="text" onClick={onDismiss}>
+        <IconButton variant="text" onClick={onCloseCallback}>
           <CloseIcon width="24px" color="text" />
         </IconButton>
       </ModalHeader>
@@ -90,7 +97,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 pt="16px"
                 borderTop={`1px solid ${theme.colors.cardBorder}`}
               >
-                <Button width="100%" variant="secondary" onClick={onDismiss}>
+                <Button width="100%" variant="secondary" onClick={onCloseCallback}>
                   {successButtonLabel}
                 </Button>
               </Flex>

@@ -50,6 +50,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
 }) => {
   const [txHashEnablingResult, setTxHashEnablingResult] = useState(null)
   const [txHashBuyingResult, setTxHashBuyingResult] = useState(null)
+  console.log('🚀 ~ file: BuyTickets.tsx ~ line 53 ~ txHashBuyingResult', txHashBuyingResult)
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
   const cakeContract = useCake()
@@ -92,6 +93,10 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
       },
     })
 
+  const onConfirmClose = () => {
+    setTxHashBuyingResult(null)
+  }
+
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
       title={t('Confirm')}
@@ -101,7 +106,9 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
       loadingText={t('Please enable BNB spending in your wallet')}
       loadingButtonLabel={t('Confirming...')}
       successButtonLabel={t('Close')}
+      onConfirmClose={onConfirmClose}
     />,
+    false,
   )
 
   const [onPresentEnableModal, onDismissEnableModal] = useModal(
@@ -113,7 +120,9 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
       loadingText={t('Please enable CAKE spending in yout wallet')}
       loadingButtonLabel={t('Enabling...')}
       successButtonLabel={t('Close')}
+      onConfirmClose={onConfirmClose}
     />,
+    false,
   )
 
   const [onPresentBuyTicketsModal, onDismissBuyTicketsModal] = useModal(
