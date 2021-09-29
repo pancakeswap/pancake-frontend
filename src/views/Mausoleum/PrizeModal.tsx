@@ -20,7 +20,7 @@ const TableCards = styled(BaseLayout)`
   }
 `
 const PrizeModal: React.FC<PrizeModalProps> = ({ id, onDismiss }) => {
-  const { prize, prizeDescription, path, artist: { twitter }, auctionInfo: { unlockFeeInBnb } } = auctionById(id)
+  const { prize, prizeDescription, path, version, artist: { twitter }, auctionInfo: { unlockFeeInBnb } } = auctionById(id)
 
   const { theme } = useTheme()
 
@@ -37,7 +37,7 @@ const PrizeModal: React.FC<PrizeModalProps> = ({ id, onDismiss }) => {
                     <img src={path} alt='PRIZE' />
                 </div>
               </div>
-              <div className='direction-column'>
+              <div className='direction-column' >
                 <span className='indetails-type'>Patient Zero Alpha</span>
                 <br />
                 <span className='indetails-title'>
@@ -53,11 +53,12 @@ const PrizeModal: React.FC<PrizeModalProps> = ({ id, onDismiss }) => {
                     </LinkExternal>
                   </span>
               </div>
-              <div className='direction-column'>
-                   <span className='indetails-type'>Unlock Fees: {getBalanceAmount(unlockFeeInBnb).toString()} BNB
+              {version !== 'v3' ?
+                <div className='direction-column'>
+                   <span className='indetails-type' >Unlock Fees: {getBalanceAmount(unlockFeeInBnb).toString()} BNB
                     ({Math.round(getBalanceAmount(unlockFeeInBnb).times(bnbPriceUsd()).toNumber() * 100) / 100} in USD)
                    </span>
-              </div>
+              </div> : null }
             </div>
           </div>
         </div>

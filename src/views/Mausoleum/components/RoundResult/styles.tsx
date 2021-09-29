@@ -42,7 +42,6 @@ interface LockPriceRowProps {
 export const LockPriceRow: React.FC<LockPriceRowProps> = ({ id, bid, ...props }) => {
   const { t } = useTranslation()
   const quarterBid = bid.amount / 4
-  console.log(id)
   const { version } = auctionById(id)
 
   return (

@@ -66,7 +66,7 @@ const Positions: React.FC<PositionsProps> = ({ setRefresh, refresh, id }) => {
           resizeObserver
         >
           {formattedBids.map(bid => {
-            return <SwiperSlide>
+            return <SwiperSlide key={bid.id}>
               <RoundCard bid={bid} id={id} bidId={bid.id} lastBidId={lastBidId} />
             </SwiperSlide>
           })}

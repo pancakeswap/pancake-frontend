@@ -68,7 +68,7 @@ const auctions: Auction[] = [
   //   artist: { ...artists.jussjoshinduh },
   //   startingBid: 0,
   //   version: 'v3',
-  //   end: 1633439795,
+  //   end: 1632897059,
   //   userInfo: {
   //     bid: BIG_ZERO,
   //   },

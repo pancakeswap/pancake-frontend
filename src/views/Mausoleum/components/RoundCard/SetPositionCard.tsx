@@ -96,7 +96,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ id, onBack, onSuccess
   const minBetAmountBalance = getBnbAmount(minBetAmount).toNumber()
 
   useEffect(() => {
-    if (account) {
+    if (account && version !== 'v3') {
       getBep20Contract(bidToken).methods.balanceOf(account).call()
         .then(res => {
           setMaxBalance(new BigNumber(res).toNumber())

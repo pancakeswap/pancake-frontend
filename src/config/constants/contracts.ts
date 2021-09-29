@@ -17,7 +17,7 @@ export default {
   },
   mausoleumV3: {
     97: '',
-    56: '0x3a1a6711631959B2E64B6724da60DA2DA0c8d389',
+    56: '0xEc65fA9d5A8C3522a43296FFb3dd1d7478E27b05',
   },
   pancakeFactory: {
     97: '',

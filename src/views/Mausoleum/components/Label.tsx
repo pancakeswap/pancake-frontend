@@ -85,28 +85,27 @@ interface TimerLabelProps {
 }
 
 export const TimerLabel: React.FC<TimerLabelProps> = ({ id }) => {
-  const {token0, token1} = auctionById(id)
+  const {token0, token1, userInfo, version} = auctionById(id)
 
-  const { userInfo } = auctionById(id)
   return (
     <Box pr='100px' position='relative'>
       <Flex alignItems='center' justifyContent='center'>
-          <LinkExternal
-            href={`${APESWAP_ADD_LIQUIDITY_URL}/${token0}/${token1}`}
-            style={{
-              width: '200px',
-              justifyContent: 'center',
-              position: 'relative',
-              right: '10px',
-            }}
-          >
-            Get BT (Bid Tokens)
-          </LinkExternal>
+        {version !== 'v3' ? <LinkExternal
+          href={`${APESWAP_ADD_LIQUIDITY_URL}/${token0}/${token1}`}
+          style={{
+            width: '200px',
+            justifyContent: 'center',
+            position: 'relative',
+            right: '10px',
+          }}
+        >
+          Get BT (Bid Tokens)
+        </LinkExternal> : null}
         <Label dir='right' style={{width: "170px"}}>
           <Title bold color='secondary'>
             Your Bid
           </Title>
-          <Interval paddingLeft="3px" fontSize='12px'>{Math.round(getBalanceAmount(userInfo.bid).toNumber() * 100) / 100} BT</Interval>
+          <Interval paddingLeft="3px" fontSize='12px'>{Math.round(getBalanceAmount(userInfo.bid).toNumber() * 100) / 100} {version === 'v3' ? 'BNB' : 'BT'}</Interval>
         </Label>
         <IconButton
           variant="subtle"

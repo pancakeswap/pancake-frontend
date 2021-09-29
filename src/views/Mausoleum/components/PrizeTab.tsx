@@ -24,7 +24,7 @@ interface PrizeTabProps {
 }
 
 const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
-  const { path, prize , prizeDescription, artist: { twitter }, auctionInfo: { unlockFeeInBnb }} = auctionById(id)
+  const { path, prize , prizeDescription, version, artist: { twitter }, auctionInfo: { unlockFeeInBnb }} = auctionById(id)
 
   const type = 'image'
   return (
@@ -62,11 +62,11 @@ const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
                   </span>
 
                 </div>
-                <div className='direction-column'>
+                { version !== 'v3' ? <div className='direction-column'>
                    <span className='indetails-type'>Unlock Fees: {getBalanceAmount(unlockFeeInBnb).toString()} BNB
                     ({Math.round(getBalanceAmount(unlockFeeInBnb).times(bnbPriceUsd()).toNumber() * 100) / 100} in USD)
                    </span>
-                </div>
+                </div> : <div className='direction-column' /> }
               </div>
             </div>
           </div>

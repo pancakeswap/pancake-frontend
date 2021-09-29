@@ -89,20 +89,21 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRe
   }
 
   const increaseBid = () => {
-    setAmount(amount.plus(BIG_TEN.pow(19)))
+    setAmount(amount.plus(BIG_TEN.pow(17)))
   }
 
   const decreaseBid = () => {
-    let result = amount.minus(BIG_TEN.pow(19))
+    let result = amount.minus(BIG_TEN.pow(17))
     result = result.lt(BIG_ZERO) ? BIG_ZERO : result
     setAmount(result)
   }
 
   const isDisabled = amount.lte(lastBid.amount)
+  const v3 = version === 'v3'
 
   const submitBid = () => {
     if(account()) {
-      if(version === 'v3') {
+      if(v3) {
         mausoleum.methods.increaseBid(aid)
           .send({from: account(), value: amount.minus(bid).toString() })
           .then(()=>{setRefresh(!refresh)})
@@ -154,13 +155,13 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRe
   const accountAddress = account()
 
   useEffect(() => {
-    if(accountAddress) {
+    if(accountAddress && !v3) {
       bidTokenContract.methods.allowance(accountAddress, getMausoleumAddress(version)).call()
         .then(res => {
           setAllowance(new BigNumber(res))
         })
     }
-  }, [accountAddress, bidTokenContract.methods, version])
+  }, [accountAddress, bidTokenContract.methods, v3, version])
 
   return (
     <CardFlip isFlipped={isSettingPosition} height='404px'>
@@ -175,7 +176,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRe
         <CardBody p='16px'>
           <RoundResultBox>
             {/* eslint-disable-next-line no-nested-ternary */}
-            {paidUnlockFee || version === 'v3' ? allowance.gt(BIG_ZERO) ?
+            {paidUnlockFee || v3 ? allowance.gt(BIG_ZERO) || v3 ?
             <>
               <CurrentBid totalAmount={amount} mb='8px' />
               <Button

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
 import {
   getBep20Contract,
-  getDrFrankensteinContract, getErc721Contract, getNftOwnership,
+  getDrFrankensteinContract, getErc721Contract,
   getPancakePair,
   getZombieContract,
 } from '../utils/contractHelpers'
@@ -31,7 +31,7 @@ import {
 import {
   getAddress,
   getDrFrankensteinAddress,
-  getMausoleumAddress, getNftOwnershipAddress,
+  getMausoleumAddress,
   getSpawningPoolAddress,
 } from '../utils/addressHelpers'
 import tombs from './tombs'
@@ -40,7 +40,7 @@ import spawningPoolAbi from '../config/abi/spawningPool.json'
 import drFrankensteinAbi from '../config/abi/drFrankenstein.json'
 import pancakePairAbi from '../config/abi/pancakePairAbi.json'
 import mausoleumAbi from '../config/abi/mausoleum.json'
-import nftOwnershipAbi from '../config/abi/nftOwnership.json'
+import mausoleumV3Abi from '../config/abi/mausoleumV3.json'
 
 import { BIG_ZERO } from '../utils/bigNumber'
 import { account, auctionById, zmbeBnbTomb } from './get'
@@ -334,24 +334,27 @@ export const auction = (
   everyUpdateObj?: { update: boolean, setUpdate: any },
 ) => {
   const { aid, version } = auctionById(id)
-
+  const v3 = version === 'v3'
   if (account()) {
     mausoleum.methods.bidsLength(aid).call()
       .then(bidsLengthRes => {
         const inputs = [
           { target: getMausoleumAddress(version), function: 'userInfo', args: [aid, account()] },
-          { target: getMausoleumAddress(version), function: 'unlockFeeInBnb', args: [aid] },
         ]
+        if(!v3) {
+          inputs.push({ target: getMausoleumAddress(version), function: 'unlockFeeInBnb', args: [aid] })
+        }
         for (let x = parseInt(bidsLengthRes) - 5; x <= parseInt(bidsLengthRes); x++) {
           if (x - 1 >= 0) {
             inputs.push({ target: getMausoleumAddress(version), function: 'bidInfo', args: [aid, x - 1] })
           }
         }
-        multi.multiCall(mausoleumAbi, inputs)
+        multi.multiCall(version === 'v3' ? mausoleumV3Abi : mausoleumAbi, inputs)
           .then(res => {
             const start = parseInt(bidsLengthRes) - 6
             let index = start < -1 ? -1 : parseInt(bidsLengthRes) - 6
-            const bids = res[1].slice(2, res[1].length).map(bid => {
+
+            const bids = res[1].slice((v3 ? 1 : 2), res[1].length).map(bid => {
               index++
               return {
                 id: index,
@@ -366,7 +369,7 @@ export const auction = (
               {
                 lastBidId: parseInt(bidsLengthRes) - 1,
                 bids,
-                unlockFeeInBnb: new BigNumber(res[1][1].toString()),
+                unlockFeeInBnb: v3 ? BIG_ZERO : new BigNumber(res[1][1].toString()),
               },
             ))
             store.dispatch(updateAuctionUserInfo(
@@ -418,8 +421,8 @@ export const auction = (
               updateAuctionObj.setUpdate(!updateAuctionObj.update)
             }
           })
-          .catch(() => {
-            console.log('multicall failed')
+          .catch((res) => {
+            console.log(res)
           })
       })
   }
