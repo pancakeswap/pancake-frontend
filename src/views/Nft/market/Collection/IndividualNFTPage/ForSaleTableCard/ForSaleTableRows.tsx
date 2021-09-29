@@ -14,6 +14,7 @@ import {
   BunnyPlaceholderIcon,
 } from '@pancakeswap/uikit'
 import truncateHash from 'utils/truncateHash'
+import { formatNumber } from 'utils/formatBalance'
 import { ContextApi } from 'contexts/Localization/types'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
@@ -76,14 +77,11 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
       <Box pl="24px">
         <Flex justifySelf="flex-start" alignItems="center" width="max-content">
           <BinanceIcon width="24px" height="24px" mr="8px" />
-          <Text bold>{nft.marketData.currentAskPrice}</Text>
+          <Text bold>{formatNumber(parseFloat(nft.marketData.currentAskPrice), 0, 3)}</Text>
         </Flex>
         {bnbBusdPrice ? (
           <Text fontSize="12px" color="textSubtle">
-            {`(~${priceInUsd.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })} USD)`}
+            {`(~${formatNumber(priceInUsd, 2, 2)} USD)`}
           </Text>
         ) : (
           <Skeleton width="86px" height="12px" mt="4px" />
