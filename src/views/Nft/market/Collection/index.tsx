@@ -1,6 +1,6 @@
 import HashRoute from 'components/HashRoute'
 import React, { lazy } from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router'
+import { Route, useRouteMatch } from 'react-router'
 
 const Items = lazy(() => import('./Items'))
 const Traits = lazy(() => import('./Traits'))
