@@ -54,6 +54,30 @@ const RugRollDiv = styled.div`
   }
 `
 
+const DataLabDiv = styled.div`
+  text-align: center;
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  height: 22%;
+  @media (max-width: 479px) {
+    top: 66%;
+    height: 40%;
+  }
+`
+
+const BlackMarketDiv = styled.div`
+  text-align: center;
+  position: absolute;
+  top: 55%;
+  width: 100%;
+  height: 22%;
+  @media (max-width: 479px) {
+    top: 90%;
+    height: 40%;
+  }
+`
+
 
 const Main = () => {
   const { t } = useTranslation()
@@ -69,6 +93,12 @@ const Main = () => {
             <RugRollDiv>
               <StyledButton>RUG ROLL</StyledButton>
             </RugRollDiv>
+            <DataLabDiv>
+              <StyledButton>DATA LAB</StyledButton>
+            </DataLabDiv>
+            <BlackMarketDiv>
+              <StyledButton>BLACK MARKET</StyledButton>
+            </BlackMarketDiv>
           </div>
         </Page>
       </>
