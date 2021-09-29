@@ -196,8 +196,9 @@ export interface ApiSingleCollectionResponse {
 export interface ApiResponseCollectionTokens {
   total: number
   attributesDistribution: Record<string, number>
-  data: {
-    [key: string]: {
+  data: Record<
+    string,
+    {
       name: string
       description: string
       image: Image
@@ -205,7 +206,7 @@ export interface ApiResponseCollectionTokens {
         name: string
       }
     }
-  }
+  >
 }
 
 // Get specific token data

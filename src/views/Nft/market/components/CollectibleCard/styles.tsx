@@ -67,7 +67,7 @@ interface MetaRowProps extends FlexProps {
 
 export const MetaRow: React.FC<MetaRowProps> = ({ title, children, ...props }) => (
   <Flex alignItems="center" justifyContent="space-between" {...props}>
-    <Text fontSize="12px" color="textSubtle">
+    <Text fontSize="12px" color="textSubtle" maxWidth="120px" ellipsis title={title}>
       {title}
     </Text>
     <Box>{children}</Box>
@@ -120,6 +120,7 @@ export const SellingNftTag: React.FC<NftTagProps> = (props) => {
 
 export const StyledCollectibleCard = styled(Card)`
   border-radius: 8px;
+  max-width: 320px;
   transition: opacity 200ms;
 
   & > div {
