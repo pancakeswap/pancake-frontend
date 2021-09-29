@@ -281,7 +281,7 @@ export const getAllPancakeBunniesRecentUpdatedAt = async (bunnyIds: string[]): P
       }
     }, {})
   } catch (error) {
-    console.error('Failed to fetch PancakeBunnies lowest prices', error)
+    console.error('Failed to fetch PancakeBunnies latest market updates', error)
     return {}
   }
 }
