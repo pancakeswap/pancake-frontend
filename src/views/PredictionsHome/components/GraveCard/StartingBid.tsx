@@ -12,6 +12,7 @@ interface MinimumStakeProps {
 
 const StartingBid: React.FC<MinimumStakeProps> = ({ id }) => {
   const { aid, isFinished, startingBid, version } = auctionById(id)
+  const v3 = version === 'v3'
   const mausoleum = useMausoleum(version)
   const [lastBidAmount, setLastBidAmount] = useState(BIG_ZERO)
   useEffect(() => {
@@ -24,7 +25,7 @@ const StartingBid: React.FC<MinimumStakeProps> = ({ id }) => {
     <>
     <Flex alignItems="center" justifyContent="space-between">
       <TooltipText >Starting Bid:</TooltipText>
-        {startingBid} BT
+        {startingBid} { v3 ? 'BNB' : 'BT' }
     </Flex>
       <Flex alignItems="center" justifyContent="space-between">
   <TooltipText >{isFinished ? "Final Bid:" : "Current Bid:" }</TooltipText>
@@ -32,7 +33,7 @@ const StartingBid: React.FC<MinimumStakeProps> = ({ id }) => {
     <Skeleton width="82px" height="32px" />
   ) : (
     <Flex alignItems="center">
-      {getFullDisplayBalance(lastBidAmount, 18, 2)} BT
+      {getFullDisplayBalance(lastBidAmount, 18, 2)} { v3 ? 'BNB' : 'BT' }
     </Flex>
   )}
       </Flex>
