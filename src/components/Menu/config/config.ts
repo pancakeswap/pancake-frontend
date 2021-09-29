@@ -55,8 +55,6 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     label: t('NFT'),
     href: `${nftsBaseUrl}`,
     icon: 'Nft',
-    showOnMobile: false,
-    showItemsOnMobile: false,
     items: [
       {
         label: t('Overview'),
