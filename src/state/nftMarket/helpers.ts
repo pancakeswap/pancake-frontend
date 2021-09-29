@@ -261,19 +261,19 @@ export const getUserActivity = async (
       gql`
         query getUserActivity($address: String!) {
           user(id: $address) {
-            buyTradeHistory(orderBy: timestamp) {
+            buyTradeHistory(first: 250, orderBy: timestamp, orderDirection: desc) {
               ${getBaseTransactionFields()}
               nft {
                 ${getBaseNftFields()}
               }
             }
-            sellTradeHistory(orderBy: timestamp) {
+            sellTradeHistory(first: 250, orderBy: timestamp, orderDirection: desc) {
               ${getBaseTransactionFields()}
               nft {
                 ${getBaseNftFields()}
               }
             }
-            askOrderHistory(orderBy: timestamp) {
+            askOrderHistory(first: 500, orderBy: timestamp, orderDirection: desc) {
               id
               block
               timestamp
