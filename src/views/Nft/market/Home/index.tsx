@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box, Button, Heading, Flex } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import PageHeader from 'components/PageHeader'
@@ -49,6 +50,7 @@ const StyledHeaderInner = styled(Flex)`
 
 const Home = () => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const { theme } = useTheme()
 
   return (
@@ -65,9 +67,11 @@ const Home = () => {
             <Heading scale="lg" color="text">
               {t('PancakeSwap NFTs only... for now!')}
             </Heading>
-            <Button as={Link} to={`${nftsBaseUrl}/profile`} mt="32px">
-              {t('Manage/Sell')}
-            </Button>
+            {account && (
+              <Button as={Link} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} mt="32px">
+                {t('Manage/Sell')}
+              </Button>
+            )}
           </div>
           <SearchBar />
         </StyledHeaderInner>

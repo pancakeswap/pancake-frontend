@@ -7,6 +7,7 @@ import { getBscScanLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'
 import truncateHash from 'utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
+import { useWeb3React } from '@web3-react/core'
 import EditProfileAvatar from './EditProfileAvatar'
 import BannerHeader from '../../components/BannerHeader'
 import StatBox, { StatBoxItem } from '../../components/StatBox'
@@ -15,7 +16,7 @@ import EditProfileModal from './EditProfileModal'
 import AvatarImage from '../../components/BannerHeader/AvatarImage'
 
 interface HeaderProps {
-  account: string
+  accountPath: string
   profile: Profile
   achievements: Achievement[]
   nftCollected: number
@@ -26,10 +27,12 @@ const StyledIconButton = styled(IconButton)`
 `
 
 // Account and profile passed down as the profile could be used to render _other_ users' profiles.
-const ProfileHeader: React.FC<HeaderProps> = ({ account, profile, achievements, nftCollected }) => {
+const ProfileHeader: React.FC<HeaderProps> = ({ accountPath, profile, achievements, nftCollected }) => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const [onEditProfileModal] = useModal(<EditProfileModal />, false)
 
+  const isConnectedAccount = account?.toLowerCase() === accountPath?.toLowerCase()
   const numNftCollected = nftCollected ? formatNumber(nftCollected, 0, 0) : '-'
   const numPoints = profile?.points ? formatNumber(profile.points, 0, 0) : '-'
   const numAchievements = achievements?.length ? formatNumber(achievements.length, 0, 0) : '-'
@@ -60,11 +63,11 @@ const ProfileHeader: React.FC<HeaderProps> = ({ account, profile, achievements, 
       return (
         // TODO: Share functionality once user profiles routed by ID
         <Flex display="inline-flex">
-          {account && (
+          {accountPath && (
             <StyledIconButton
               target="_blank"
               as="a"
-              href={getBscScanLink(account, 'address')}
+              href={getBscScanLink(accountPath, 'address')}
               alt={t('View BscScan for user address')}
             >
               <BscScanIcon width="20px" color="primary" />
@@ -77,7 +80,7 @@ const ProfileHeader: React.FC<HeaderProps> = ({ account, profile, achievements, 
     const getImage = () => {
       return (
         <>
-          {profile && account ? (
+          {profile && accountPath && isConnectedAccount ? (
             <EditProfileAvatar src={avatarImage} alt={t('User profile picture')} />
           ) : (
             <AvatarImage src={avatarImage} alt={t('User profile picture')} />
@@ -98,8 +101,8 @@ const ProfileHeader: React.FC<HeaderProps> = ({ account, profile, achievements, 
       return `@${profile.username}`
     }
 
-    if (account) {
-      return truncateHash(account, 5, 3)
+    if (accountPath) {
+      return truncateHash(accountPath, 5, 3)
     }
 
     return null
@@ -123,12 +126,12 @@ const ProfileHeader: React.FC<HeaderProps> = ({ account, profile, achievements, 
 
     return (
       <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
-        {account && profile?.username && (
-          <Link href={getBscScanLink(account, 'address')} external bold color="primary">
-            {truncateHash(account)}
+        {accountPath && profile?.username && (
+          <Link href={getBscScanLink(accountPath, 'address')} external bold color="primary">
+            {truncateHash(accountPath)}
           </Link>
         )}
-        {account && (!profile || !profile?.nft) && getActivateButton()}
+        {accountPath && isConnectedAccount && (!profile || !profile?.nft) && getActivateButton()}
       </Flex>
     )
   }

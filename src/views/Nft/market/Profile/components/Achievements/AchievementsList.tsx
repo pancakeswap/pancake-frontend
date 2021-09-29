@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useAchievements } from 'state/achievements/hooks'
+import { Achievement } from 'state/types'
 import AchievementCard from './AchievementCard'
 
 const Grid = styled.div`
@@ -15,9 +15,8 @@ const Grid = styled.div`
   }
 `
 
-const AchievementsList = () => {
+const AchievementsList: React.FC<{ achievements: Achievement[] }> = ({ achievements }) => {
   const { t } = useTranslation()
-  const achievements = useAchievements()
 
   return (
     <>

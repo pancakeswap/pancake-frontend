@@ -1,6 +1,7 @@
 import React, { lazy } from 'react'
 import { Router, Redirect, Route, Switch } from 'react-router-dom'
 import { ResetCSS } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useUserAgent from 'hooks/useUserAgent'
@@ -9,6 +10,7 @@ import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
 import { DatePickerPortal } from 'components/DatePicker'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
@@ -59,6 +61,8 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
+  const { account } = useWeb3React()
+
   usePollBlockNumber()
   useEagerConnect()
   useFetchProfile()
@@ -158,6 +162,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/collectibles">
               <Redirect to="/nfts" />
+            </Route>
+            <Route path="/profile">
+              <Redirect to={`${nftsBaseUrl}/profile/${account?.toLowerCase() || ''}`} />
             </Route>
 
             {/* 404 */}
