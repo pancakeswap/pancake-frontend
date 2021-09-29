@@ -15,6 +15,7 @@ export const CollectionAvatar = styled(ProfileAvatar)`
   left: 0;
   position: absolute;
   top: -32px;
+  border: 4px white solid;
 `
 
 const StyledHotCollectionCard = styled(Card)<{ disabled?: boolean }>`
