@@ -3,9 +3,9 @@ import { Image, Flex, Text, Td, IconButton, Link, OpenNewIcon, useMatchBreakpoin
 import { NftToken } from 'state/nftMarket/types'
 import { Price } from '@pancakeswap/sdk'
 import styled from 'styled-components'
-import truncateHash from 'utils/truncateHash'
 import { getBscScanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import ProfileCell from 'views/Nft/market/components/ProfileCell'
 import { Activity } from '../../hooks/useUserActivity'
 import ActivityEventText from './ActivityEventText'
 import ActivityPrice from './ActivityPrice'
@@ -73,8 +73,8 @@ const ActivityRow: React.FC<ActivityRowProps> = ({ activity, bnbBusdPrice, nft }
             <ActivityPrice price={priceAsFloat} bnbBusdPrice={bnbBusdPrice} />
           </Td>
           <Td>
-            <Flex justifyContent="flex-end">
-              <Text>{activity.otherParty ? truncateHash(activity.otherParty) : '-'}</Text>
+            <Flex justifyContent="flex-end" alignItems="center">
+              {activity.otherParty ? <ProfileCell accountAddress={activity.otherParty} /> : '-'}
             </Flex>
           </Td>
         </>
