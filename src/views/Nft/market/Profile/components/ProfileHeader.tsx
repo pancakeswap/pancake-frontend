@@ -32,7 +32,7 @@ const ProfileHeader: React.FC<HeaderProps> = ({ accountPath, profile, achievemen
   const { account } = useWeb3React()
   const [onEditProfileModal] = useModal(<EditProfileModal />, false)
 
-  const isConnectedAccount = account?.toLowerCase() === accountPath.toLowerCase()
+  const isConnectedAccount = account?.toLowerCase() === accountPath?.toLowerCase()
   const numNftCollected = nftCollected ? formatNumber(nftCollected, 0, 0) : '-'
   const numPoints = profile?.points ? formatNumber(profile.points, 0, 0) : '-'
   const numAchievements = achievements?.length ? formatNumber(achievements.length, 0, 0) : '-'

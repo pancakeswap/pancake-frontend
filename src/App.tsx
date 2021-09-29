@@ -10,7 +10,7 @@ import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
 import { DatePickerPortal } from 'components/DatePicker'
-import { nftsBaseUrl, nullProfileAccountAddress } from 'views/Nft/market/constants'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
@@ -164,7 +164,7 @@ const App: React.FC = () => {
               <Redirect to="/nfts" />
             </Route>
             <Route path="/profile">
-              <Redirect to={`${nftsBaseUrl}/profile/${account?.toLowerCase() || nullProfileAccountAddress}`} />
+              <Redirect to={`${nftsBaseUrl}/profile/${account?.toLowerCase() || ''}`} />
             </Route>
 
             {/* 404 */}

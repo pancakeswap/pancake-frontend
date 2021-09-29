@@ -16,11 +16,10 @@ const NftProfile = () => {
   const { accountAddress } = useParams<{ accountAddress: string }>()
   const { t } = useTranslation()
 
-  const isConnectedProfile = account?.toLowerCase() === accountAddress.toLowerCase()
+  const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()
+  const invalidAddress = !accountAddress || isAddress(accountAddress) === false
 
-  const isAddressValid = isAddress(accountAddress) !== false
-
-  if (!isAddressValid) {
+  if (invalidAddress) {
     return (
       <>
         <MarketPageHeader position="relative">
@@ -29,8 +28,8 @@ const NftProfile = () => {
         <Page style={{ minHeight: 'auto' }}>
           <Flex p="24px" flexDirection="column" alignItems="center">
             <NoNftsImage />
-            <Text pt="8px" bold>
-              {t('The address entered is not valid')}
+            <Text textAlign="center" maxWidth="420px" pt="8px" bold>
+              {t('Please enter a valid address, or connect your wallet to view your profile')}
             </Text>
           </Flex>
         </Page>

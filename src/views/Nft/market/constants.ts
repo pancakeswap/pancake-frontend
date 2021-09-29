@@ -4,8 +4,6 @@ import { getAddress } from 'utils/addressHelpers'
 
 export const nftsBaseUrl = '/nfts'
 
-export const nullProfileAccountAddress = '0x0000000000000000000000000100000000000000'
-
 // @TODO This will be removed when more collections are added
 export const pancakeBunniesAddress = getAddress(collections[CollectionKey.PANCAKE].address)
 
