@@ -57,14 +57,14 @@ export const getProfileAvatar = async (address: string) => {
     const profileResponse = await profileContract.getUserProfile(address)
     const { tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
 
-    if (!isActive) {
-      return null
+    let nft = null
+    if (isActive) {
+      nft = await getNftByTokenId(nftAddress, tokenId)
     }
 
-    const nft = await getNftByTokenId(nftAddress, tokenId)
-    return nft
+    return { nft, hasRegistered }
   } catch {
-    return null
+    return { nft: null, hasRegistered: false }
   }
 }
 

@@ -149,6 +149,12 @@ export interface PoolsState {
   userDataLoaded: boolean
 }
 
+export enum ProfileAvatarFetchStatus {
+  NOT_FETCHED = 'not-fetched',
+  FETCHING = 'fetching',
+  FETCHED = 'fetched',
+}
+
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean
@@ -158,6 +164,9 @@ export interface ProfileState {
     [key: string]: {
       username: string
       nft: Nft
+      hasRegistered: boolean
+      usernameFetchStatus: ProfileAvatarFetchStatus
+      avatarFetchStatus: ProfileAvatarFetchStatus
     }
   }
 }
