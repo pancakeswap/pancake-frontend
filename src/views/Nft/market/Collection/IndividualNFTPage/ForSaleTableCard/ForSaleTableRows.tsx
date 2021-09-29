@@ -21,8 +21,9 @@ import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
 import BuyModal from 'views/Nft/market/components/BuySellModals/BuyModal'
-import { useProfileForAddress } from 'state/profile/hooks'
+import { useGetProfileAvatar } from 'state/profile/hooks'
 import SellModal from 'views/Nft/market/components/BuySellModals/SellModal'
+import { ProfileAvatarFetchStatus } from 'state/types'
 
 const Avatar = styled.img`
   margin-right: 12px;
@@ -60,14 +61,18 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
   const ownNft = account ? nft.marketData.currentSeller === account.toLowerCase() : false
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
   const [onPresentAdjustPriceModal] = useModal(<SellModal variant="edit" nftToSell={nft} />)
-  const { profile, isFetching } = useProfileForAddress(nft.marketData.currentSeller)
-  const profileName = profile?.hasRegistered ? profile.profile.username : '-'
-  const sellerProfilePic = profile?.hasRegistered && profile?.profile?.isActive ? profile.profile.nft.images.sm : null
+  const {
+    username,
+    nft: profileNft,
+    usernameFetchStatus,
+    avatarFetchStatus,
+  } = useGetProfileAvatar(nft.marketData.currentSeller)
+  const profileName = username || '-'
 
   let sellerProfilePicComponent = <Skeleton width="32px" height="32px" mr="12px" />
-  if (!isFetching) {
-    if (sellerProfilePic) {
-      sellerProfilePicComponent = <Avatar src={`/images/nfts/${sellerProfilePic}`} />
+  if (avatarFetchStatus === ProfileAvatarFetchStatus.FETCHED) {
+    if (profileNft?.images?.sm) {
+      sellerProfilePicComponent = <Avatar src={`/images/nfts/${profileNft?.images?.sm}`} />
     } else {
       sellerProfilePicComponent = <BunnyPlaceholderIcon width="32px" height="32px" mr="12px" />
     }
@@ -92,7 +97,11 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
           {sellerProfilePicComponent}
           <Box display="inline">
             <Text lineHeight="1.25">{truncateHash(nft.marketData.currentSeller)}</Text>
-            {isFetching ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
+            {usernameFetchStatus !== ProfileAvatarFetchStatus.FETCHED ? (
+              <Skeleton />
+            ) : (
+              <Text lineHeight="1.25">{profileName}</Text>
+            )}
           </Box>
         </Flex>
       </Box>
