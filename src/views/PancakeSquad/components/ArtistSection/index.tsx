@@ -39,7 +39,7 @@ const ArtistSection = () => {
             </Text>
 
             {bodyText.map((text) => (
-              <Text key={text} color="textSubtle" mb="20px">
+              <Text key={text} color="textSubtle">
                 {text}
               </Text>
             ))}
