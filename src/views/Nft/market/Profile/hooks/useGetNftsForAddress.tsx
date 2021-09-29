@@ -4,15 +4,11 @@ import { useGetCollections } from 'state/nftMarket/hooks'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { Profile } from 'state/types'
 import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
-import { isAddress } from 'utils'
 
 const useFetchUserNfts = (account: string, profile: Profile, isProfileFetching: boolean) => {
   const [combinedNfts, setCombinedNfts] = useState<NftToken[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const collections = useGetCollections()
-
-  //   TODO: Not certain this is solving the problem
-  const isAddressValid = isAddress(account) !== false
 
   const hasProfileNft = profile?.tokenId
   const profileNftTokenId = profile?.tokenId?.toString()
@@ -36,11 +32,11 @@ const useFetchUserNfts = (account: string, profile: Profile, isProfileFetching: 
       setIsLoading(false)
     }
 
-    if (isAddressValid && !isProfileFetching && !isEmpty(collections)) {
+    if (!isProfileFetching && !isEmpty(collections)) {
       setIsLoading(true)
       getNfts()
     }
-  }, [account, collections, isProfileFetching, isAddressValid, profileNftWithCollectionAddress])
+  }, [account, collections, isProfileFetching, profileNftWithCollectionAddress])
 
   return { nfts: combinedNfts, isLoading }
 }
