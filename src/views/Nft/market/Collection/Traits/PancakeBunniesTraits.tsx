@@ -56,7 +56,7 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
 
   if (isFetching) {
     return (
-      <Flex justifyContent="center" width="100px">
+      <Flex justifyContent="flex-end" width="100px">
         <Skeleton height="24px" width="48px" />
       </Flex>
     )
@@ -66,7 +66,7 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
     return null
   }
 
-  return <BNBAmountLabel justifyContent="center" amount={lowestPrice} width="100px" />
+  return <BNBAmountLabel justifyContent="flex-end" amount={lowestPrice} width="100px" />
 }
 
 const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
@@ -115,7 +115,7 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
                       </Flex>
                     </StyledSortButton>
                   </Th>
-                  <Th>{t('Lowest')}</Th>
+                  <Th textAlign="right">{t('Lowest')}</Th>
                 </tr>
               </thead>
               <tbody>
@@ -143,7 +143,7 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
                       </Td>
                       <Td textAlign="center">{formatNumber(count, 0, 0)}</Td>
                       <Td textAlign="center">{`${formatNumber(percentage, 0, 2)}%`}</Td>
-                      <Td textAlign="center" width="100px">
+                      <Td textAlign="right" width="100px">
                         <LowestPriceCell bunnyId={bunnyId} />
                       </Td>
                     </ClickableRow>
