@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState, useEffect } from 'react'
+import React, { useMemo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, Card } from '@pancakeswap/uikit'
 import { Link } from 'react-router-dom'
@@ -73,20 +73,30 @@ const TopTokenMovers: React.FC = () => {
   }, [allTokens])
 
   const increaseRef = useRef<HTMLDivElement>(null)
-  const [increaseSet, setIncreaseSet] = useState(false)
+  const moveLeftRef = useRef<boolean>(true)
+
   // const [pauseAnimation, setPauseAnimation] = useState(false)
   // const [resetInterval, setClearInterval] = useState<() => void | undefined>()
 
   useEffect(() => {
-    if (!increaseSet && increaseRef && increaseRef.current) {
-      setInterval(() => {
-        if (increaseRef.current && increaseRef.current.scrollLeft !== increaseRef.current.scrollWidth) {
-          increaseRef.current.scrollTo(increaseRef.current.scrollLeft + 1, 0)
+    const scrollInterval = setInterval(() => {
+      if (increaseRef.current) {
+        if (increaseRef.current.scrollLeft === increaseRef.current.scrollWidth - increaseRef.current.clientWidth) {
+          moveLeftRef.current = false
+        } else if (increaseRef.current.scrollLeft === 0) {
+          moveLeftRef.current = true
         }
-      }, 30)
-      setIncreaseSet(true)
+        increaseRef.current.scrollTo(
+          moveLeftRef.current ? increaseRef.current.scrollLeft + 1 : increaseRef.current.scrollLeft - 1,
+          0,
+        )
+      }
+    }, 30)
+
+    return () => {
+      clearInterval(scrollInterval)
     }
-  }, [increaseRef, increaseSet])
+  }, [])
 
   if (topPriceIncrease.length === 0 || !topPriceIncrease.some((entry) => entry.data)) {
     return null
