@@ -6,6 +6,8 @@ import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import useTheme from 'hooks/useTheme'
 import { StyledWaveContainer } from 'views/PancakeSquad/styles'
 import { formatBigNumber } from 'utils/formatBalance'
+import { UserStatusEnum } from 'views/PancakeSquad/types'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import HeaderBottomWave from '../../assets/HeaderBottomWave'
 import nftSaleConfigBuilder from '../../config'
 import CtaButtons from './CtaButtons'
@@ -63,7 +65,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         {t('Pancake Squad')}
       </StyledSquadTitle>
       <Text color={lightColors.warning} textAlign="center" bold>
-        {t('Mint Cost: %minCost% CAKE each', {
+        {t('Mint Cost: To Be Announced', {
           minCost: pricePerTicket ? formatBigNumber(pricePerTicket, 0) : DEFAULT_CAKE_COST,
         })}
         <br />
@@ -77,12 +79,18 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
       <StyledSquadEventBorder mb="56px">
         <StyledSquadEventContainer m="1px" p="32px">
           <Flex flexDirection={['column', null, 'row']}>
-            <Box mr="100px">
-              <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} useDark={false} />
-            </Box>
+            {!isLoading && (
+              <Box mr="100px">
+                <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} useDark={false} />
+              </Box>
+            )}
             <Flex flexDirection="column">
               {isLoading ? (
-                <Spinner />
+                userStatus === UserStatusEnum.UNCONNECTED ? (
+                  <ConnectWalletButton userStatus={userStatus} />
+                ) : (
+                  <Spinner />
+                )
               ) : (
                 <>
                   <PreEventText t={t} userStatus={userStatus} saleStatus={saleStatus} />

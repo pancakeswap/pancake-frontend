@@ -41,6 +41,7 @@ const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
     to: 'https://docs.pancakeswap.finance/',
     text: 'View Documentation',
     external: true,
+    isDisplayed: false,
   },
   image: { src: '/images/pancakeSquad/moonBunny/body.png', alt: 'moon bunny' },
   accessoriesImages: [

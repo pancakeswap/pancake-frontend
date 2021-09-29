@@ -9,7 +9,6 @@ export type PancakeSquadHeaderType = {
 }
 
 export enum ButtonsEnum {
-  CONNECT,
   ACTIVATE,
   BUY,
   MINT,

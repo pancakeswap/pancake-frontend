@@ -12,7 +12,7 @@ const config = ({ t }: FAQsType) => [
     title: 'What’s the Smart Contract?',
     description: [
       <Text key={1} color="textSubtle">
-        {t('View the smart contract address on BscScan')}:&nbsp;
+        {t('The smart contract address will be released soon before the sale starts.')}:&nbsp;
         <StyledLinkFAQs display="inline-block" color="primary">
           <a href="/" target="_blank" rel="noreferrer noopener">
             0x???????????????????????????????
@@ -66,14 +66,6 @@ const config = ({ t }: FAQsType) => [
     description: [
       'Once all 10,000 Squad Tickets have been bought, Chainlink VRF will be used to randomly allocate the pre-generated NFTs to the purchased Tickets. Squad Tickets are allocated IDs numbered in order of their purchase.',
       'Once all 10,000 have been sold, VRF will pick numbers from 0 to 9999, which will be used to shift the Squad Ticket ID. This will ensure that the distribution of rare NFTs will be randomized, and prevents “sniping” of specific NFTs during the pre-sale or public sale phases.',
-      <Text key={4} color="textSubtle">
-        {t('For more details, check the')}&nbsp;
-        <StyledLinkFAQs display="inline-block" color="primary">
-          <a href="https://docs.pancakeswap.finance/" target="_blank" rel="noreferrer noopener">
-            {t('randomization documentation on our docs site')}
-          </a>
-        </StyledLinkFAQs>
-      </Text>,
     ],
   },
   {

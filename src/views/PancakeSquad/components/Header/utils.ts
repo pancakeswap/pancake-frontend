@@ -13,7 +13,6 @@ export const getCurrentButton = ({
   numberTicketsOfUser,
 }: getCurrentButtonType): ButtonsEnum => {
   const isBuyingFinished = saleStatus > SaleStatusEnum.Sale
-  if (userStatus === UserStatusEnum.UNCONNECTED && !isBuyingFinished) return ButtonsEnum.CONNECT
   if (userStatus === UserStatusEnum.NO_PROFILE && !isBuyingFinished) return ButtonsEnum.ACTIVATE
   if (saleStatus === SaleStatusEnum.Presale || saleStatus === SaleStatusEnum.Sale) return ButtonsEnum.BUY
   if (saleStatus === SaleStatusEnum.Claim && numberTicketsOfUser > 0) return ButtonsEnum.MINT

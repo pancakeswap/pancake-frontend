@@ -28,9 +28,28 @@ export const StyledBodyTextElement = styled('li')`
 
 export const StyledBunnyAccessoriesContainer = styled(Flex)`
   position: absolute;
-  animation: ${flyingAnim} 3.5s ease-in-out infinite;
   width: 100%;
   height: 100%;
+
+  & :nth-child(1) {
+    animation: ${flyingAnim} 3.5s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+
+  & :nth-child(2) {
+    animation: ${flyingAnim} 3.5s ease-in-out infinite;
+    animation-delay: 0.66s;
+  }
+
+  & :nth-child(3) {
+    animation: ${flyingAnim} 3.5s ease-in-out infinite;
+    animation-delay: 0.33s;
+  }
+
+  & :nth-child(4) {
+    animation: ${flyingAnim} 3.5s ease-in-out infinite;
+    animation-delay: 0s;
+  }
 `
 
 export const StyledBunnyAccessory = styled.img`

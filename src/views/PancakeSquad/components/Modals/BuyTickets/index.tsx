@@ -143,10 +143,13 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
               {t('The network may become busy during the sale period. Consider setting a high gas fee (GWEI).')}
               <br />
               <br />
-              {t(`Max. Tickets per transaction: ${maxPerTransaction}`)}
+              {t(`Max. Tickets per transaction: ${maxPerTransaction || DEFAULT_MAX_PER_TX}`)}
               <br />
-              {t(`Max. Tickets per wallet: ${maxPerAddress}`)}
-              <br />
+              {maxPerAddress > 0 && (
+                <>
+                  t(`Max. Tickets per wallet: ${maxPerAddress}`) <br />
+                </>
+              )}
             </Text>
           </Flex>
           <Box px="16px">

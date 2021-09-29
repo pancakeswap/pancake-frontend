@@ -45,15 +45,17 @@ const EventDescriptionSection = () => {
               <StyledBodyTextElement key={text.id}>{text.content}</StyledBodyTextElement>
             ))}
           </StyledBodyTextList>
-          <Flex>
-            <Link mr="16px" external={primaryButton.external} href={primaryButton.to}>
-              <Button variant="secondary">
-                <Text color="card" bold fontSize="16px">
-                  {t(primaryButton.text)}
-                </Text>
-              </Button>
-            </Link>
-          </Flex>
+          {primaryButton?.isDisplayed && (
+            <Flex>
+              <Link mr="16px" external={primaryButton.external} href={primaryButton.to}>
+                <Button variant="secondary">
+                  <Text color="card" bold fontSize="16px">
+                    {t(primaryButton.text)}
+                  </Text>
+                </Button>
+              </Link>
+            </Flex>
+          )}
         </Flex>
         <Flex
           position="relative"
