@@ -59,7 +59,11 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
 
   const maxBuyTickets = Math.min(cakeBalance.div(pricePerTicket).toNumber(), remainingTickets)
   const totalCost = pricePerTicket.mul(BigNumber.from(ticketsNumber))
-  const buyButtons = new Array(Math.min(maxPerTransaction, DEFAULT_MAX_PER_TX)).fill('')
+  const maxBuyButtons =
+    saleStatus === SaleStatusEnum.Presale
+      ? Math.min(numberTicketsForGen0, DEFAULT_MAX_PER_TX)
+      : Math.min(maxPerTransaction, DEFAULT_MAX_PER_TX)
+  const buyButtons = new Array(maxBuyButtons).fill('')
 
   return (
     <ModalContainer minWidth="375px">

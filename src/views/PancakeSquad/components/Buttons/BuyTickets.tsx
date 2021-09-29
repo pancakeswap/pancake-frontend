@@ -13,7 +13,8 @@ import { SaleStatusEnum, UserStatusEnum } from '../../types'
 import BuyTicketsModal from '../Modals/BuyTickets'
 import ConfirmModal from '../Modals/Confirm'
 import ReadyText from '../Header/ReadyText'
-import getBuyButtonText from './utils'
+import { getBuyButton, getBuyButtonText } from './utils'
+import { BuyButtonsEnum } from './types'
 
 type BuyTicketsProps = {
   t: ContextApi['t']
@@ -52,7 +53,6 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   const nftSaleContract = useNftSaleContract()
   const cakeContract = useCake()
 
-  const isUserUnactiveProfile = userStatus === UserStatusEnum.NO_PROFILE || userStatus === UserStatusEnum.UNCONNECTED
   const canBuySaleTicket =
     saleStatus === SaleStatusEnum.Sale && numberTicketsOfUser - numberTicketsUsedForGen0 < maxPerAddress
   const isPreSale = saleStatus === SaleStatusEnum.Presale
@@ -141,21 +141,22 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   }
 
   const canBuyTickets = (canClaimForGen0 || canBuySaleTicket) && isApproved
+  const buyButton = getBuyButton({ isApproved, isSalePhase: isPreSale || isSale, isUserReady })
 
   return (
     <>
-      {!isApproved && !isUserUnactiveProfile && (
+      {buyButton === BuyButtonsEnum.ENABLE && (
         <Button width="100%" onClick={handleEnableClick}>
           {t('Enable')}
         </Button>
       )}
-      {(isPreSale || isSale) && (
+      {buyButton === BuyButtonsEnum.READY && (
+        <ReadyText text={t(isGen0User ? 'Ready for Pre-Sale!' : 'Ready for Public Sale!')} />
+      )}
+      {buyButton === BuyButtonsEnum.BUY && (
         <Button width="100%" onClick={onPresentBuyTicketsModal} disabled={!canBuyTickets}>
           {getBuyButtonText({ canBuyTickets, numberTicketsOfUser, saleStatus, t })}
         </Button>
-      )}
-      {isUserReady && isApproved && (
-        <ReadyText text={t(isGen0User ? 'Ready for Pre-Sale!' : 'Ready for Public Sale!')} />
       )}
     </>
   )
