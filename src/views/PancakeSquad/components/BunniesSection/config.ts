@@ -1,6 +1,6 @@
 const bunniesConfig = {
   headingText: '10,000 bunnies.',
-  subHeadingText: 'ZERO duplicate.',
+  subHeadingText: 'ZERO duplicates.',
   bodyText: [
     'Every Pancake Squad bunny is different.',
     'They’re all randomly generated from over 200 different features, with over eight BILLION possible combinations, so that no bunny is ever exactly alike.',

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
@@ -9,6 +9,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake, useNftSaleContract } from 'hooks/useContract'
 import { DefaultTheme } from 'styled-components'
 import { ethersToBigNumber } from 'utils/bigNumber'
+import { PancakeSquadContext } from 'views/PancakeSquad/context'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 import BuyTicketsModal from '../Modals/BuyTickets'
 import ConfirmModal from '../Modals/Confirm'
@@ -52,6 +53,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
   const cakeContract = useCake()
+  const { isUserEnabled, setIsUserEnabled } = useContext(PancakeSquadContext)
 
   const canBuySaleTicket =
     saleStatus === SaleStatusEnum.Sale && numberTicketsOfUser - numberTicketsUsedForGen0 < maxPerAddress
@@ -134,14 +136,15 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   useEffect(() => txHashBuyingResult && onPresentConfirmModal(), [txHashBuyingResult])
   useEffect(() => hasApproveFailed && onDismissEnableModal(), [hasApproveFailed])
   useEffect(() => hasConfirmFailed && onDismissBuyTicketsModal(), [hasConfirmFailed])
+  useEffect(() => isApproved && setIsUserEnabled && setIsUserEnabled(isApproved), [isApproved, setIsUserEnabled])
 
   const handleEnableClick = () => {
     onPresentEnableModal()
     handleApprove()
   }
 
-  const canBuyTickets = (canClaimForGen0 || canBuySaleTicket) && isApproved
-  const buyButton = getBuyButton({ isApproved, isSalePhase: isPreSale || isSale, isUserReady })
+  const canBuyTickets = (canClaimForGen0 || canBuySaleTicket) && isUserEnabled
+  const buyButton = getBuyButton({ isApproved: isUserEnabled, isSalePhase: isPreSale || isSale, isUserReady })
 
   return (
     <>

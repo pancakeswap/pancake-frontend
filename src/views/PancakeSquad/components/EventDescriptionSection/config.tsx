@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
+import { Link } from 'react-router-dom'
 
 type EventDescriptionType = {
   t: ContextApi['t']
@@ -9,7 +10,7 @@ type EventDescriptionType = {
 const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
   headingText: t('Fair, Random, Rare'),
   subHeadingText: t(
-    'All Pancake Squad NFTs are allocated to Minting Ticket holders through a provably-fair system based on ChainLink at the time of minting.',
+    'All Pancake Squad NFTs are allocated to Squad Ticket holders through a provably-fair system based on ChainLink at the time of minting.',
   ),
   bodyTextHeader: t('Out of the 10,000 total NFTs in the squad,'),
   bodyText: [
@@ -19,7 +20,7 @@ const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
         <>
           {t('490 are available in the pre-sale for owners of ')}
           <Text display="inline-block" color="primary" bold>
-            {t('Gen 0 Pancake Bunnies')}
+            {t('Gen 0 Pancake Bunnies (bunnyID 0, 1, 2, 3, 4)')}
           </Text>
         </>
       ),
@@ -30,9 +31,11 @@ const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
       content: (
         <>
           {t('and the remaining NFTs can be minted by anyone with a ')}
-          <Text display="inline-block" color="primary" bold>
-            {t('Pancake Profile!')}
-          </Text>
+          <Link to="/profile">
+            <Text display="inline-block" color="primary" bold>
+              {t('Pancake Profile!')}
+            </Text>
+          </Link>
         </>
       ),
     },

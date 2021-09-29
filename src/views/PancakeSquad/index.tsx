@@ -14,6 +14,7 @@ import { DynamicSaleInfos, FixedSaleInfos, SaleStatusEnum } from './types'
 import { getUserStatus } from './utils'
 import ArtistSection from './components/ArtistSection'
 import FaqSection from './components/FaqSection'
+import { PancakeSquadContext } from './context'
 
 const PancakeSquad: React.FC = () => {
   const { account } = useWeb3React()
@@ -24,6 +25,7 @@ const PancakeSquad: React.FC = () => {
   const [dynamicSaleInfo, setDynamicSaleInfo] = useState<DynamicSaleInfos>()
   const { hasGen0 } = useGetCollectibles()
   const lastBlockNumber = useBlock()
+  const [isUserEnabled, setIsUserEnabled] = useState(false)
   const isLoading = !fixedSaleInfo || !dynamicSaleInfo
 
   const userStatus = getUserStatus({
@@ -93,26 +95,28 @@ const PancakeSquad: React.FC = () => {
   }, [account])
 
   return (
-    <StyledSquadContainer>
-      <PancakeSquadHeader
-        account={account}
-        isLoading={isLoading}
-        dynamicSaleInfo={dynamicSaleInfo}
-        fixedSaleInfo={fixedSaleInfo}
-        userStatus={userStatus}
-      />
-      <BunniesSection />
-      <EventDescriptionSection />
-      <EventStepsSection
-        dynamicSaleInfo={dynamicSaleInfo}
-        fixedSaleInfo={fixedSaleInfo}
-        userStatus={userStatus}
-        isLoading={isLoading}
-        account={account}
-      />
-      <ArtistSection />
-      <FaqSection />
-    </StyledSquadContainer>
+    <PancakeSquadContext.Provider value={{ isUserEnabled, setIsUserEnabled }}>
+      <StyledSquadContainer>
+        <PancakeSquadHeader
+          account={account}
+          isLoading={isLoading}
+          dynamicSaleInfo={dynamicSaleInfo}
+          fixedSaleInfo={fixedSaleInfo}
+          userStatus={userStatus}
+        />
+        <BunniesSection />
+        <EventDescriptionSection />
+        <EventStepsSection
+          dynamicSaleInfo={dynamicSaleInfo}
+          fixedSaleInfo={fixedSaleInfo}
+          userStatus={userStatus}
+          isLoading={isLoading}
+          account={account}
+        />
+        <ArtistSection />
+        <FaqSection />
+      </StyledSquadContainer>
+    </PancakeSquadContext.Provider>
   )
 }
 
