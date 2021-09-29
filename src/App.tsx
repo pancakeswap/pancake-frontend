@@ -3,6 +3,7 @@ import { Router, Redirect, Route, Switch } from 'react-router-dom'
 import { ResetCSS } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
+import useUserAgent from 'hooks/useUserAgent'
 import useScrollOnRouteChange from 'hooks/useScrollOnRouteChange'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
@@ -63,6 +64,7 @@ const App: React.FC = () => {
   useFetchProfile()
   usePollCoreFarmData()
   useScrollOnRouteChange()
+  useUserAgent()
 
   return (
     <Router history={history}>
