@@ -7,6 +7,8 @@ import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
 import { useGetAllBunniesByBunnyId } from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
+import { NftToken } from 'state/nftMarket/types'
+import PageLoader from 'components/Loader/PageLoader'
 import MainNFTCard from './MainNFTCard'
 import ManageCard from './ManageCard'
 import PropertiesCard from './PropertiesCard'
@@ -32,6 +34,7 @@ const IndividualNFTPage = () => {
   const { account } = useWeb3React()
   const { collectionAddress, tokenId } = useParams<{ collectionAddress: string; tokenId: string }>()
   const [attributesDistribution, setAttributesDistribution] = useState<{ [key: string]: number }>(null)
+  const [nothingForSaleBunny, setNothingForSaleBunny] = useState<NftToken>(null)
   const allBunnies = useGetAllBunniesByBunnyId(tokenId)
   const bunniesSortedByPrice = orderBy(allBunnies, (nft) => parseFloat(nft.marketData.currentAskPrice))
   const allBunniesFromOtherSellers = account
@@ -39,6 +42,8 @@ const IndividualNFTPage = () => {
     : bunniesSortedByPrice
   const cheapestBunny = bunniesSortedByPrice[0]
   const cheapestBunnyFromOtherSellers = allBunniesFromOtherSellers[0]
+
+  const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
 
   useEffect(() => {
     const fetchTokens = async () => {
@@ -49,9 +54,38 @@ const IndividualNFTPage = () => {
     fetchTokens()
   }, [collectionAddress, setAttributesDistribution])
 
-  if (allBunnies.length === 0 || !cheapestBunny) {
-    // TODO redirect to nft market page if collection or bunny id does not exist
-    return null
+  useEffect(() => {
+    const fetchBasicBunnyData = async () => {
+      const { data } = await getNftsFromCollectionApi(pancakeBunniesAddress)
+      setNothingForSaleBunny({
+        // In this case tokenId doesn't matter, this token can't be bought
+        tokenId: data[tokenId].name,
+        name: data[tokenId].name,
+        description: data[tokenId].description,
+        collectionName: data[tokenId].collection.name,
+        collectionAddress: pancakeBunniesAddress,
+        image: data[tokenId].image,
+        attributes: [
+          {
+            traitType: 'bunnyId',
+            value: tokenId,
+            displayType: null,
+          },
+        ],
+      })
+    }
+    // If bunny id has no listings on the market - get basic bunny info
+    if (isPBCollection && !cheapestBunny) {
+      fetchBasicBunnyData()
+    }
+  }, [cheapestBunny, tokenId, isPBCollection])
+
+  if (!cheapestBunny && !nothingForSaleBunny) {
+    // TODO redirect to nft market page if collection or bunny id does not exist (came here from some bad url)
+    // That would require tracking loading states and stuff...
+
+    // For now this if is used to show loading spinner while we're getting the data
+    return <PageLoader />
   }
 
   const getBunnyIdRarity = () => {
@@ -64,24 +98,29 @@ const IndividualNFTPage = () => {
     return null
   }
 
-  const properties =
-    collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase() ? cheapestBunny.attributes : []
+  const properties = isPBCollection ? cheapestBunny?.attributes || nothingForSaleBunny?.attributes : []
 
-  const propertyRarity =
-    collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase() ? { bunnyId: getBunnyIdRarity() } : {}
+  const propertyRarity = isPBCollection ? { bunnyId: getBunnyIdRarity() } : {}
 
   return (
     <Page>
-      <MainNFTCard cheapestNft={cheapestBunny} cheapestNftFromOtherSellers={cheapestBunnyFromOtherSellers} />
+      <MainNFTCard
+        cheapestNft={cheapestBunny}
+        cheapestNftFromOtherSellers={cheapestBunnyFromOtherSellers}
+        nothingForSaleBunny={nothingForSaleBunny}
+      />
       <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
-          <ManageCard bunnyId={tokenId} lowestPrice={cheapestBunny.marketData.currentAskPrice} />
+          <ManageCard bunnyId={tokenId} lowestPrice={cheapestBunny?.marketData?.currentAskPrice} />
           <PropertiesCard properties={properties} rarity={propertyRarity} />
-          <DetailsCard contractAddress={collectionAddress} ipfsJson={cheapestBunny.marketData.metadataUrl} />
+          <DetailsCard contractAddress={collectionAddress} ipfsJson={cheapestBunny?.marketData?.metadataUrl} />
         </Flex>
         <ForSaleTableCard nftsForSale={bunniesSortedByPrice} totalForSale={allBunnies.length} />
       </TwoColumnsContainer>
-      <MoreFromThisCollection collectionAddress={collectionAddress} currentTokenName={cheapestBunny.name} />
+      <MoreFromThisCollection
+        collectionAddress={collectionAddress}
+        currentTokenName={cheapestBunny?.name || nothingForSaleBunny?.name}
+      />
     </Page>
   )
 }
