@@ -19,11 +19,13 @@ interface HeaderProps {
   collection: Collection
 }
 
+const DEFAULT_TABS = '#items'
+
 const Header: React.FC<HeaderProps> = ({ collection }) => {
   const { collectionAddress } = useParams<{ collectionAddress: string }>()
   const { totalSupply, numberTokensListed, totalVolumeBNB, banner, avatar } = collection
   const { t } = useTranslation()
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
 
   const volume = parseFloat(totalVolumeBNB).toLocaleString(undefined, {
     minimumFractionDigits: 3,
@@ -33,11 +35,11 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
   const itemsConfig = [
     {
       label: t('Items'),
-      href: `${nftsBaseUrl}/collections/${collectionAddress}`,
+      href: `${nftsBaseUrl}/collections/${collectionAddress}#items`,
     },
     {
       label: t('Traits'),
-      href: `${nftsBaseUrl}/collections/${collectionAddress}/traits`,
+      href: `${nftsBaseUrl}/collections/${collectionAddress}#traits`,
     },
   ]
 
@@ -59,7 +61,7 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
         </MarketPageTitle>
       </MarketPageHeader>
       <Container>
-        <BaseSubMenu items={itemsConfig} activeItem={pathname} mt="24px" mb="8px" />
+        <BaseSubMenu items={itemsConfig} activeItem={`${pathname}${hash || DEFAULT_TABS}`} mt="24px" mb="8px" />
       </Container>
     </>
   )
