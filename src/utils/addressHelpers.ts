@@ -82,7 +82,9 @@ export const getCakeVaultAddress = () => {
 export const getPredictionsAddress = () => {
   return getAddress(addresses.predictions)
 }
-
 export const getSpawningPoolAddress = (id: number) => {
   return getAddress(spawningPoolById(id).address)
+}
+export const getCatacombsAddress = () => {
+  return getAddress(addresses.catacombs)
 }
