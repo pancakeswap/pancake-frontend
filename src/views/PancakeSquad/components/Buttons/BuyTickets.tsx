@@ -50,7 +50,6 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
 }) => {
   const [txHashEnablingResult, setTxHashEnablingResult] = useState(null)
   const [txHashBuyingResult, setTxHashBuyingResult] = useState(null)
-  console.log('🚀 ~ file: BuyTickets.tsx ~ line 53 ~ txHashBuyingResult', txHashBuyingResult)
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
   const cakeContract = useCake()
@@ -91,6 +90,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
       onSuccess: async ({ receipt }) => {
         setTxHashBuyingResult(receipt.transactionHash)
       },
+      showSuccessToast: true,
     })
 
   const onConfirmClose = () => {
