@@ -38,7 +38,7 @@ const Items = () => {
       <Header collection={collection} />
       <Page>
         <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">
-          <Box>
+          <Box minWidth="165px">
             <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
               {t('Sort By')}
             </Text>

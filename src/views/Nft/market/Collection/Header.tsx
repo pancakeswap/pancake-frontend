@@ -2,6 +2,7 @@ import React from 'react'
 import { useLocation, useParams } from 'react-router'
 import { Text } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'
+import { formatNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import MarketPageHeader from '../components/MarketPageHeader'
@@ -50,8 +51,8 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
           description={collection.description ? <Text color="textSubtle">{t(collection.description)}</Text> : null}
         >
           <StatBox>
-            <StatBoxItem title={t('Items')} stat={totalSupply} />
-            <StatBoxItem title={t('Owners')} stat={numberTokensListed} />
+            <StatBoxItem title={t('Items')} stat={formatNumber(Number(totalSupply), 0, 0)} />
+            <StatBoxItem title={t('Owners')} stat={formatNumber(Number(numberTokensListed), 0, 0)} />
             <LowestPriceStatBoxItem collectionAddress={collection.address} />
             <StatBoxItem title={t('Vol. (%symbol%)', { symbol: 'BNB' })} stat={volume} />
           </StatBox>
