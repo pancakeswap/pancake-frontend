@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import {
   Flex,
@@ -9,11 +9,16 @@ import {
   ArrowBackIcon,
   ArrowForwardIcon,
   useMatchBreakpoints,
+  ArrowUpIcon,
+  ArrowDownIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { NftToken } from 'state/nftMarket/types'
+import { SortType } from 'views/Nft/market/types'
 import ForSaleTableRows from './ForSaleTableRows'
+import { sortNFTsByPriceBuilder } from './utils'
+import { StyledSortButton } from './styles'
 
 const ITEMS_PER_PAGE_DESKTOP = 10
 const ITEMS_PER_PAGE_MOBILE = 5
@@ -61,6 +66,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalF
   const { isMobile } = useMatchBreakpoints()
   const itemsPerPage = isMobile ? ITEMS_PER_PAGE_MOBILE : ITEMS_PER_PAGE_DESKTOP
   const [displayedCollectibles, setDisplayedCollectibles] = useState(nftsForSale.slice(0, itemsPerPage - 1))
+  const [priceSort, setPriceSort] = useState<SortType>('asc')
   const { t } = useTranslation()
   const { theme } = useTheme()
 
@@ -79,6 +85,15 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalF
     setDisplayedCollectibles(nftsForSale.slice((pageNumber - 1) * itemsPerPage, pageNumber * itemsPerPage))
   }
 
+  const sortedDisplayedCollectibles = useMemo(
+    () => displayedCollectibles.sort(sortNFTsByPriceBuilder({ priceSort })),
+    [displayedCollectibles, priceSort],
+  )
+
+  const togglePriceSort = () => {
+    setPriceSort((currentValue) => (currentValue === 'asc' ? 'desc' : 'asc'))
+  }
+
   return (
     <StyledCard hasManyPages={maxPage > 1}>
       <Grid
@@ -93,15 +108,20 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalF
         <Text bold>{t('For Sale (%num%)', { num: totalForSale.toLocaleString() })}</Text>
       </Grid>
       <TableHeading flex="0 1 auto" gridTemplateColumns="2fr 2fr 1fr" py="12px">
-        <Text textTransform="uppercase" color="textSubtle" bold fontSize="12px" px="24px">
-          {t('Price')}
-        </Text>
+        <StyledSortButton type="button" onClick={togglePriceSort}>
+          <Flex alignItems="center">
+            <Text textTransform="uppercase" color="textSubtle" bold fontSize="12px" px="24px">
+              {t('Price')}
+            </Text>
+            {priceSort === 'asc' ? <ArrowUpIcon color="textSubtle" /> : <ArrowDownIcon color="textSubtle" />}
+          </Flex>
+        </StyledSortButton>
         <Text textTransform="uppercase" color="textSubtle" bold fontSize="12px">
           {t('Owner')}
         </Text>
       </TableHeading>
       <Flex flex="1 1 auto" flexDirection="column" justifyContent="space-between" height="100%">
-        <ForSaleTableRows nftsForSale={displayedCollectibles} />
+        <ForSaleTableRows nftsForSale={sortedDisplayedCollectibles} />
         <PageButtons>
           <Arrow
             onClick={() => {

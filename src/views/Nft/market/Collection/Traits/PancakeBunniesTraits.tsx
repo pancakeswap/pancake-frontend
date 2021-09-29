@@ -12,10 +12,10 @@ import { useTranslation } from 'contexts/Localization'
 import CollapsibleCard from 'components/CollapsibleCard'
 import useGetLowestPBNftPrice from '../../hooks/useGetLowestPBPrice'
 import { BNBAmountLabel } from '../../components/CollectibleCard/styles'
-import { SortType } from './types'
 import { StyledSortButton } from './styles'
 import { sortBunniesByRarirityBuilder } from './utils'
 import { nftsBaseUrl } from '../../constants'
+import { SortType } from '../../types'
 
 interface PancakeBunniesTraitsProps {
   collectionAddress: string
