@@ -38,7 +38,8 @@ const BarracksDiv = styled.div`
   width: 100%;
   height: 22%;
   @media (max-width: 479px) {
-    height: 40%;;
+    height: 40%;
+    top: 5%;
   }
 `
 
@@ -49,7 +50,7 @@ const RugRollDiv = styled.div`
   width: 100%;
   height: 22%;
   @media (max-width: 479px) {
-    top: 33%;
+    top: 28%;
     height: 40%;
   }
 `
@@ -61,7 +62,7 @@ const DataLabDiv = styled.div`
   width: 100%;
   height: 22%;
   @media (max-width: 479px) {
-    top: 66%;
+    top: 53%;
     height: 40%;
   }
 `
@@ -73,7 +74,7 @@ const BlackMarketDiv = styled.div`
   width: 100%;
   height: 22%;
   @media (max-width: 479px) {
-    top: 90%;
+    top: 78%;
     height: 40%;
   }
 `

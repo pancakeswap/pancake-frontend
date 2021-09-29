@@ -71,7 +71,7 @@ const Catacombs: React.FC = (props) => {
   }
 
   return (
-    <Entry />
+    <Main />
   )
 }
 
