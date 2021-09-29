@@ -12,6 +12,8 @@ import {
   getCollectionApi,
   getNftsFromDifferentCollectionsApi,
   getCompleteAccountNftData,
+  getNftsByBunnyIdSg,
+  getMarketDataForTokenIds,
 } from './helpers'
 import {
   State,
@@ -22,6 +24,7 @@ import {
   UserNftInitializationState,
   NftToken,
   NftLocation,
+  ApiSingleTokenData,
 } from './types'
 
 const initialState: State = {
@@ -29,6 +32,9 @@ const initialState: State = {
   data: {
     collections: {},
     nfts: {},
+    isFetchingMoreNfts: false,
+    latestFetchAt: 0,
+    lastUpdateAt: Date.now(),
     users: {},
     user: {
       userNftsInitializationState: UserNftInitializationState.UNINITIALIZED,
@@ -126,6 +132,114 @@ export const fetchNftsFromCollections = createAsyncThunk(
   },
 )
 
+/**
+ * Fetch fresh marketdata for existing tokens in the store
+ */
+export const updateNftTokensData = createAsyncThunk<
+  NftToken[],
+  { collectionAddress: string; existingTokenIds: string[] }
+>('nft/updateNftTokensData', async ({ collectionAddress, existingTokenIds }) => {
+  try {
+    // TODO: this kinda should work for other collections too, but doublecheck during Squad integration
+    const [nfts, nftsMarket] = await Promise.all([
+      getNftsFromCollectionApi(collectionAddress),
+      getMarketDataForTokenIds(collectionAddress, existingTokenIds),
+    ])
+
+    if (!nfts?.data) {
+      return []
+    }
+
+    return nftsMarket.map((marketData) => {
+      // The fallback is just for the testnet where some bunnies don't exist
+      const apiMetadata = nfts.data[marketData.otherId] ?? {
+        name: '',
+        description: '',
+        collection: { name: 'Pancake Bunnies' },
+        image: {
+          original: '',
+          thumbnail: '',
+        },
+      }
+      // Generating attributes field that is not returned by API but can be "faked" since objects are keyed with bunny id
+      const attributes = [
+        {
+          traitType: 'bunnyId',
+          value: marketData.otherId,
+          displayType: null,
+        },
+      ]
+      return {
+        tokenId: marketData.tokenId,
+        name: apiMetadata.name,
+        description: apiMetadata.description,
+        collectionName: apiMetadata.collection.name,
+        collectionAddress: pancakeBunniesAddress,
+        image: apiMetadata.image,
+        marketData,
+        attributes,
+      }
+    })
+  } catch (error) {
+    console.error(`Failed to update collection NFTs for ${collectionAddress}`, error)
+    return []
+  }
+})
+
+/**
+ * Fetch all 30 on sale NFTs with specified bunny id
+ */
+export const fetchNftsByBunnyId = createAsyncThunk<
+  NftToken[],
+  { bunnyId: string; existingTokenIds: string[]; existingMetadata: ApiSingleTokenData; orderDirection: 'asc' | 'desc' }
+>('nft/fetchNftsByBunnyId', async ({ bunnyId, existingTokenIds, existingMetadata, orderDirection }) => {
+  try {
+    let nfts = { data: { [bunnyId]: existingMetadata } }
+    if (!existingMetadata) {
+      nfts = await getNftsFromCollectionApi(pancakeBunniesAddress)
+    }
+    const nftsMarket = await getNftsByBunnyIdSg(bunnyId, existingTokenIds, orderDirection)
+
+    if (!nfts?.data) {
+      return []
+    }
+
+    return nftsMarket.map((marketData) => {
+      // The fallback is just for the testnet where some bunnies don't exist
+      const apiMetadata = nfts.data[marketData.otherId] ?? {
+        name: '',
+        description: '',
+        collection: { name: 'Pancake Bunnies' },
+        image: {
+          original: '',
+          thumbnail: '',
+        },
+      }
+      // Generating attributes field that is not returned by API but can be "faked" since objects are keyed with bunny id
+      const attributes = [
+        {
+          traitType: 'bunnyId',
+          value: marketData.otherId,
+          displayType: null,
+        },
+      ]
+      return {
+        tokenId: marketData.tokenId,
+        name: apiMetadata.name,
+        description: apiMetadata.description,
+        collectionName: apiMetadata.collection.name,
+        collectionAddress: pancakeBunniesAddress,
+        image: apiMetadata.image,
+        marketData,
+        attributes,
+      }
+    })
+  } catch (error) {
+    console.error(`Failed to fetch collection NFTs for bunny id ${bunnyId}`, error)
+    return []
+  }
+})
+
 export const fetchUserNfts = createAsyncThunk<
   NftToken[],
   { account: string; profileNftWithCollectionAddress?: TokenIdWithCollectionAddress; collections: ApiCollections }
@@ -182,6 +296,25 @@ export const NftMarket = createSlice({
     })
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       state.data.nfts[action.meta.arg] = action.payload
+    })
+    builder.addCase(updateNftTokensData.fulfilled, (state, action) => {
+      state.data.nfts[action.meta.arg.collectionAddress] = action.payload
+      state.data.lastUpdateAt = Date.now()
+    })
+    builder.addCase(updateNftTokensData.rejected, (state) => {
+      state.data.lastUpdateAt = Date.now()
+    })
+    builder.addCase(fetchNftsByBunnyId.pending, (state) => {
+      state.data.isFetchingMoreNfts = true
+    })
+    builder.addCase(fetchNftsByBunnyId.fulfilled, (state, action) => {
+      const existingNftsInState = state.data.nfts[pancakeBunniesAddress] || []
+      state.data.nfts[pancakeBunniesAddress] = [...existingNftsInState, ...action.payload]
+      state.data.isFetchingMoreNfts = false
+      state.data.latestFetchAt = Date.now()
+    })
+    builder.addCase(fetchNftsByBunnyId.rejected, (state) => {
+      state.data.isFetchingMoreNfts = false
     })
     builder.addCase(fetchUserNfts.rejected, (state) => {
       state.data.user.userNftsInitializationState = UserNftInitializationState.ERROR

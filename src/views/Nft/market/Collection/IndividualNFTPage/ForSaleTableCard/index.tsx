@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import {
   Flex,
@@ -11,13 +11,13 @@ import {
   useMatchBreakpoints,
   ArrowUpIcon,
   ArrowDownIcon,
+  Button,
+  Spinner,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { NftToken } from 'state/nftMarket/types'
-import { SortType } from 'views/Nft/market/types'
 import ForSaleTableRows from './ForSaleTableRows'
-import { sortNFTsByPriceBuilder } from './utils'
 import { StyledSortButton } from './styles'
 
 const ITEMS_PER_PAGE_DESKTOP = 10
@@ -58,41 +58,61 @@ const Arrow = styled.div`
 
 interface ForSaleTableCardProps {
   nftsForSale: NftToken[]
+  bunnyId: string
   totalForSale: number
+  priceSort: 'asc' | 'desc'
+  isFetchingMoreNfts: boolean
+  togglePriceSort: () => void
+  loadMore: (orderDirection: 'asc' | 'desc') => void
 }
 
-const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalForSale }) => {
+const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({
+  nftsForSale,
+  bunnyId,
+  totalForSale,
+  loadMore,
+  isFetchingMoreNfts,
+  priceSort,
+  togglePriceSort,
+}) => {
   const [page, setPage] = useState(1)
   const { isMobile } = useMatchBreakpoints()
   const itemsPerPage = isMobile ? ITEMS_PER_PAGE_MOBILE : ITEMS_PER_PAGE_DESKTOP
-  const [displayedCollectibles, setDisplayedCollectibles] = useState(nftsForSale.slice(0, itemsPerPage - 1))
-  const [priceSort, setPriceSort] = useState<SortType>('asc')
+
   const { t } = useTranslation()
   const { theme } = useTheme()
 
   useEffect(() => {
-    // nftsForSale prop change does not reinitialize useState on change, hence this effect
-    setDisplayedCollectibles(nftsForSale.slice(0, itemsPerPage - 1))
-  }, [nftsForSale, itemsPerPage])
+    // If user clicks on other NFT at the bottom of the page - load new NFT table starting on page 1
+    // Same for reversing sorting direction
+    setPage(1)
+  }, [bunnyId, priceSort])
 
-  let maxPage = Math.floor(nftsForSale.length / itemsPerPage) + 1
-  if (nftsForSale.length % itemsPerPage === 0) {
-    maxPage = Math.floor(nftsForSale.length / itemsPerPage)
+  const needsExtraPage = nftsForSale.length % itemsPerPage !== 0
+  let maxPage = Math.floor(nftsForSale.length / itemsPerPage)
+  if (needsExtraPage) {
+    maxPage += 1
   }
+
+  const nftsOnCurrentPage = nftsForSale.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 
   const switchPage = (pageNumber: number) => {
     setPage(pageNumber)
-    setDisplayedCollectibles(nftsForSale.slice((pageNumber - 1) * itemsPerPage, pageNumber * itemsPerPage))
   }
 
-  const sortedDisplayedCollectibles = useMemo(
-    () => displayedCollectibles.sort(sortNFTsByPriceBuilder({ priceSort })),
-    [displayedCollectibles, priceSort],
+  const loadMoreHandler = () => {
+    loadMore(priceSort)
+  }
+
+  const loadMoreButton = isFetchingMoreNfts ? (
+    <Flex width="96px" justifyContent="center">
+      <Spinner size={32} />
+    </Flex>
+  ) : (
+    <Button variant="primary" scale="xs" ml="12px" onClick={loadMoreHandler}>
+      {t('Load more')}
+    </Button>
   )
-
-  const togglePriceSort = () => {
-    setPriceSort((currentValue) => (currentValue === 'asc' ? 'desc' : 'asc'))
-  }
 
   return (
     <StyledCard hasManyPages={maxPage > 1}>
@@ -107,7 +127,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalF
         <SellIcon width="24px" height="24px" />
         <Text bold>{t('For Sale (%num%)', { num: totalForSale.toLocaleString() })}</Text>
       </Grid>
-      {sortedDisplayedCollectibles.length > 0 ? (
+      {nftsOnCurrentPage.length > 0 ? (
         <>
           <TableHeading flex="0 1 auto" gridTemplateColumns="2fr 2fr 1fr" py="12px">
             <StyledSortButton type="button" onClick={togglePriceSort}>
@@ -123,7 +143,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalF
             </Text>
           </TableHeading>
           <Flex flex="1 1 auto" flexDirection="column" justifyContent="space-between" height="100%">
-            <ForSaleTableRows nftsForSale={sortedDisplayedCollectibles} />
+            <ForSaleTableRows nftsForSale={nftsOnCurrentPage} />
             <PageButtons>
               <Arrow
                 onClick={() => {
@@ -133,13 +153,17 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ nftsForSale, totalF
                 <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
               </Arrow>
               <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
-              <Arrow
-                onClick={() => {
-                  switchPage(page === maxPage ? page : page + 1)
-                }}
-              >
-                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
-              </Arrow>
+              {page === maxPage ? (
+                loadMoreButton
+              ) : (
+                <Arrow
+                  onClick={() => {
+                    switchPage(page === maxPage ? page : page + 1)
+                  }}
+                >
+                  <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+                </Arrow>
+              )}
             </PageButtons>
           </Flex>
         </>

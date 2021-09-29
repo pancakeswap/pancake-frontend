@@ -3,6 +3,7 @@ import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
 import map from 'lodash/map'
+import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
   TokenMarketData,
   ApiCollections,
@@ -189,6 +190,79 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
     return res.collection.nfts
   } catch (error) {
     console.error('Failed to fetch NFTs from collection', error)
+    return []
+  }
+}
+
+/**
+ * Fetch market data for PancakeBunnies NFTs by bunny id using the Subgraph
+ * @param bunnyId - bunny id to query
+ * @param existingTokenIds - tokens that are already loaded into redux
+ * @returns
+ */
+export const getNftsByBunnyIdSg = async (
+  bunnyId: string,
+  existingTokenIds: string[],
+  orderDirection: 'asc' | 'desc',
+): Promise<TokenMarketData[]> => {
+  try {
+    const where =
+      existingTokenIds.length > 0
+        ? { otherId: bunnyId, isTradable: true, tokenId_not_in: existingTokenIds }
+        : { otherId: bunnyId, isTradable: true }
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getNftsByBunnyIdSg($collectionAddress: String!, $where: NFT_filter, $orderDirection: String!) {
+          nfts(first: 30, where: $where, orderBy: currentAskPrice, orderDirection: $orderDirection) {
+            ${getBaseNftFields()}
+          }
+        }
+      `,
+      {
+        collectionAddress: pancakeBunniesAddress.toLowerCase(),
+        where,
+        orderDirection,
+      },
+    )
+    return res.nfts
+  } catch (error) {
+    console.error(`Failed to fetch collection NFTs for bunny id ${bunnyId}`, error)
+    return []
+  }
+}
+
+/**
+ * Fetch market data for PancakeBunnies NFTs by bunny id using the Subgraph
+ * @param bunnyId - bunny id to query
+ * @param existingTokenIds - tokens that are already loaded into redux
+ * @returns
+ */
+export const getMarketDataForTokenIds = async (
+  collectionAddress: string,
+  existingTokenIds: string[],
+): Promise<TokenMarketData[]> => {
+  try {
+    if (existingTokenIds.length === 0) {
+      return []
+    }
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getMarketDataForTokenIds($collectionAddress: String!, $where: NFT_filter) {
+          nfts(first: 1000, where: $where) {
+            ${getBaseNftFields()}
+          }
+        }
+      `,
+      {
+        collectionAddress: collectionAddress.toLowerCase(),
+        where: { tokenId_not_in: existingTokenIds },
+      },
+    )
+    return res.nfts
+  } catch (error) {
+    console.error(`Failed to fetch market data for NFTs stored tokens`, error)
     return []
   }
 }
