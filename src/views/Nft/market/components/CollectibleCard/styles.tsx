@@ -61,22 +61,15 @@ export const CostLabel: React.FC<CostLabelProps> = ({ cost, bnbBusdPrice, ...pro
   )
 }
 
-const TruncatedText = styled(Text)`
-  max-width: 120px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`
-
 interface MetaRowProps extends FlexProps {
   title: string
 }
 
 export const MetaRow: React.FC<MetaRowProps> = ({ title, children, ...props }) => (
   <Flex alignItems="center" justifyContent="space-between" {...props}>
-    <TruncatedText fontSize="12px" color="textSubtle" title={title}>
+    <Text fontSize="12px" color="textSubtle" maxWidth="120px" ellipsis title={title}>
       {title}
-    </TruncatedText>
+    </Text>
     <Box>{children}</Box>
   </Flex>
 )
