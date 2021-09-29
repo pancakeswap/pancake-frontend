@@ -75,9 +75,6 @@ const TopTokenMovers: React.FC = () => {
   const increaseRef = useRef<HTMLDivElement>(null)
   const moveLeftRef = useRef<boolean>(true)
 
-  // const [pauseAnimation, setPauseAnimation] = useState(false)
-  // const [resetInterval, setClearInterval] = useState<() => void | undefined>()
-
   useEffect(() => {
     const scrollInterval = setInterval(() => {
       if (increaseRef.current) {
