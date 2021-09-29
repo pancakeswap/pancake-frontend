@@ -4,7 +4,7 @@ export default {
     56: '0x15960EdF8551e7f55a8410E82CdFfcEC82928F8c',
   },
   drFrankenstein: {
-    97: '',
+    97: '0xb9f3E39f04De6842BEc106254B1A3aEa211F1298',
     56: '0x590Ea7699A4E9EaD728F975efC573f6E34a5dC7B',
   },
   mausoleum: {
@@ -91,4 +91,9 @@ export default {
     56: '0x516ffd7D1e0Ca40b1879935B2De87cb20Fc1124b',
     97: '0x4f3140C74789F1D809420343ea83BcE52B7bbAA5',
   },
+  catacombs: {
+    56: '0x671923370d24ad73216c07327177286431222a1D',
+    97: '0xEae1624673dc31acA17f3053A09BC69643CBAAE4',
+  },
+
 }
