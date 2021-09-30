@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useNftSaleContract, usePancakeSquadContract } from 'hooks/useContract'
 import { useProfile } from 'state/profile/hooks'
 import { useBlock } from 'state/block/hooks'
-import { useGetCollectibles } from 'state/collectibles/hooks'
+import { useHasGen0Nfts } from 'state/nftMarket/hooks'
 import BunniesSection from './components/BunniesSection'
 import EventDescriptionSection from './components/EventDescriptionSection'
 import EventStepsSection from './components/EventStepsSection'
@@ -23,7 +23,7 @@ const PancakeSquad: React.FC = () => {
   const pancakeSquadContract = usePancakeSquadContract()
   const [fixedSaleInfo, setFixedSaleInfo] = useState<FixedSaleInfos>()
   const [dynamicSaleInfo, setDynamicSaleInfo] = useState<DynamicSaleInfos>()
-  const { hasGen0 } = useGetCollectibles()
+  const hasGen0 = useHasGen0Nfts()
   const lastBlockNumber = useBlock()
   const [isUserEnabled, setIsUserEnabled] = useState(false)
   const isLoading = !fixedSaleInfo || !dynamicSaleInfo
