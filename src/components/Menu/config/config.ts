@@ -59,6 +59,10 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('Overview'),
         href: `${nftsBaseUrl}`,
+        status: {
+          text: 'LIVE',
+          color: 'failure',
+        },
       },
       {
         label: t('Collections'),
