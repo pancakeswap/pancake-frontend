@@ -7,6 +7,7 @@ import { useTranslation } from 'contexts/Localization'
 import PageHeader from 'components/PageHeader'
 import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFoldableText'
 import PageSection from 'components/PageSection'
+import { PageMeta } from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import useTheme from 'hooks/useTheme'
 import SearchBar from '../components/SearchBar'
@@ -55,6 +56,7 @@ const Home = () => {
 
   return (
     <>
+      <PageMeta />
       <StyledPageHeader>
         <StyledHeaderInner>
           <div>
