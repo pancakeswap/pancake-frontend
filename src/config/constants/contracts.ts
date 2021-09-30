@@ -80,7 +80,7 @@ export default {
     97: '0x981aE96378e770DE44F89cD9175E708f9EDB70a9',
   },
   nftMarket: {
-    56: '0x5981f557d8BD176976E3B1FBb12DBff15d028314',
+    56: '0x17539cCa21C7933Df5c980172d22659B8C345C5A',
     97: '0x7f9f37ddcaa33893f9beb3d8748c8d6bfbde6ab2',
   },
 }
