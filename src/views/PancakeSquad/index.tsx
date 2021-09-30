@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useBlock } from 'state/block/hooks'
 import { useHasGen0Nfts } from 'state/nftMarket/hooks'
 import { useProfile } from 'state/profile/hooks'
 import ArtistSection from './components/ArtistSection'
@@ -16,24 +15,33 @@ import { StyledSquadContainer } from './styles'
 import { EventInfos, UserInfos } from './types'
 import { getUserStatus } from './utils'
 
+const REFRESH_INTERVAL = 4000
+
 const PancakeSquad: React.FC = () => {
   const { account } = useWeb3React()
   const { hasProfile, isInitialized } = useProfile()
   const [eventInfos, setEventInfo] = useState<EventInfos>()
   const [userInfos, setUserInfos] = useState<UserInfos>()
+  const [refreshCounter, setRefreshCounter] = useState(0)
   const hasGen0 = useHasGen0Nfts()
-  const lastBlockNumber = useBlock()
   const [isUserEnabled, setIsUserEnabled] = useState(false)
   const isLoading = !eventInfos || !userInfos
 
-  useEventInfos({ setCallback: setEventInfo, lastBlockNumber })
-  useUserInfos({ setCallback: setUserInfos, lastBlockNumber, account })
+  useEventInfos({ setCallback: setEventInfo, refreshCounter })
+  useUserInfos({ setCallback: setUserInfos, refreshCounter, account })
 
   const userStatus = getUserStatus({
     account,
     hasActiveProfile: hasProfile && isInitialized,
     hasGen0,
   })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRefreshCounter((prev) => prev + 1)
+    }, REFRESH_INTERVAL)
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     if (account) {

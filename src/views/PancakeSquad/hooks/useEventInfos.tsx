@@ -5,7 +5,7 @@ import { multicallv2 } from 'utils/multicall'
 import { BigNumber } from 'ethers'
 import nftSaleAbi from 'config/abi/nftSale.json'
 
-const useEventInfos = ({ lastBlockNumber, setCallback }) => {
+const useEventInfos = ({ refreshCounter, setCallback }) => {
   useEffect(() => {
     const fetchEventInfos = async () => {
       try {
@@ -53,7 +53,7 @@ const useEventInfos = ({ lastBlockNumber, setCallback }) => {
     }
 
     fetchEventInfos()
-  }, [lastBlockNumber, setCallback])
+  }, [refreshCounter, setCallback])
 }
 
 export default useEventInfos

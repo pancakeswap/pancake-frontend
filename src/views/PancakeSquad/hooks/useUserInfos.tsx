@@ -4,7 +4,7 @@ import { getPancakeSquadContract } from 'utils/contractHelpers'
 import { multicallv2 } from 'utils/multicall'
 import nftSaleAbi from 'config/abi/nftSale.json'
 
-const useUserInfos = ({ account, lastBlockNumber, setCallback }) => {
+const useUserInfos = ({ account, refreshCounter, setCallback }) => {
   useEffect(() => {
     const fetchUserInfos = async () => {
       try {
@@ -48,7 +48,7 @@ const useUserInfos = ({ account, lastBlockNumber, setCallback }) => {
       }
     }
     fetchUserInfos()
-  }, [account, lastBlockNumber, setCallback])
+  }, [account, refreshCounter, setCallback])
 }
 
 export default useUserInfos
