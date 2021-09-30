@@ -26,7 +26,7 @@ const SellStage: React.FC<SellStageProps> = ({
   const { t } = useTranslation()
   const { hasProfile } = useProfile()
   const itemPageUrlId =
-    nftToSell.collectionAddress === pancakeBunniesAddress.toLowerCase()
+    nftToSell.collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
       ? nftToSell.attributes[0].value
       : nftToSell.tokenId
 

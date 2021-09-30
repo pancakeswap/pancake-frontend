@@ -23,9 +23,10 @@ const EditStage: React.FC<EditStageProps> = ({
 }) => {
   const { t } = useTranslation()
   const itemPageUrlId =
-    nftToSell.collectionAddress === pancakeBunniesAddress.toLowerCase()
+    nftToSell.collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
       ? nftToSell.attributes[0].value
       : nftToSell.tokenId
+
   return (
     <>
       <Flex p="16px">
