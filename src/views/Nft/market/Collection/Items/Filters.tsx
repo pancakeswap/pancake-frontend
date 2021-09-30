@@ -13,12 +13,16 @@ interface FiltersProps extends BoxProps {
 const Filters: React.FC<FiltersProps> = ({ collection, ...props }) => {
   const { t } = useTranslation()
 
+  // @TODO
+  // Implement filter logic and remove the log
   const handleMinMaxApply = (min: number, max: number) => {
-    console.log(min, max)
+    console.info(min, max)
   }
 
+  // @TODO
+  // Implement filter logic and remove the log
   const handleAttributeClick = (attribute: NftAttribute) => {
-    console.log(attribute)
+    console.info(attribute)
   }
 
   // Remove duplicate attributes
