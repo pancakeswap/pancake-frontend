@@ -41,7 +41,7 @@ const Menu = (props) => {
       buyCakeLabel={t('Buy CAKE')}
       profile={{
         username: profile?.username,
-        image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,
+        image: profile?.nft?.image.thumbnail,
         profileLink: `${nftsBaseUrl}/profile`,
         noProfileLink: `${nftsBaseUrl}/profile`,
         showPip: !profile?.username,

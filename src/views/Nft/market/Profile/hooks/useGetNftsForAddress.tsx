@@ -12,7 +12,7 @@ const useFetchUserNfts = (account: string, profile: Profile, isProfileFetching: 
 
   const hasProfileNft = profile?.tokenId
   const profileNftTokenId = profile?.tokenId?.toString()
-  const profileNftCollectionAddress = profile?.nftAddress
+  const profileNftCollectionAddress = profile?.collectionAddress
 
   const profileNftWithCollectionAddress = useMemo(() => {
     if (hasProfileNft) {

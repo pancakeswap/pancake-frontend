@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProfileState, ProfileAvatarFetchStatus } from 'state/types'
 import type { AppDispatch } from 'state'
-import { Nft } from 'config/constants/nfts/types'
+import { NftToken } from 'state/nftMarket/types'
 import { getProfile, getProfileAvatar, GetProfileResponse, getUsername } from './helpers'
 
 const initialState: ProfileState = {
@@ -12,7 +12,7 @@ const initialState: ProfileState = {
   profileAvatars: {},
 }
 
-export const fetchProfileAvatar = createAsyncThunk<{ account: string; nft: Nft; hasRegistered: boolean }, string>(
+export const fetchProfileAvatar = createAsyncThunk<{ account: string; nft: NftToken; hasRegistered: boolean }, string>(
   'profile/fetchProfileAvatar',
   async (account) => {
     const { nft, hasRegistered } = await getProfileAvatar(account)

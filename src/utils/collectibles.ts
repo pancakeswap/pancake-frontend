@@ -42,9 +42,9 @@ export const fetchCachedUriData = async (tokenUrl: string) => {
   }
 }
 
-export const getTokenUriData = async (nftAddress: string, tokenId: number) => {
+export const getTokenUriData = async (collectionAddress: string, tokenId: number) => {
   try {
-    const contract = getErc721Contract(nftAddress)
+    const contract = getErc721Contract(collectionAddress)
     const tokenUri = await contract.tokenURI(tokenId)
     const uriData = await fetchCachedUriData(getTokenUrl(tokenUri))
 
@@ -59,8 +59,8 @@ export const getTokenUriData = async (nftAddress: string, tokenId: number) => {
   }
 }
 
-export const getNftByTokenId = async (nftAddress: string, tokenId: number): Promise<Nft | null> => {
-  const uriData = await getTokenUriData(nftAddress, tokenId)
+export const getNftByTokenId = async (collectionAddress: string, tokenId: number): Promise<Nft | null> => {
+  const uriData = await getTokenUriData(collectionAddress, tokenId)
 
   // Bail out early if we have no uriData, identifierKey, or the value does not
   // exist in the object

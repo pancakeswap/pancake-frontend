@@ -33,8 +33,8 @@ const ProfileCell: React.FC<{ accountAddress: string }> = ({ accountAddress }) =
 
   let sellerProfilePicComponent = <Skeleton width="32px" height="32px" mr={['4px', null, '12px']} />
   if (avatarFetchStatus === ProfileAvatarFetchStatus.FETCHED) {
-    if (profileNft?.images?.sm) {
-      sellerProfilePicComponent = <Avatar src={`/images/nfts/${profileNft?.images?.md}`} />
+    if (profileNft?.image?.thumbnail) {
+      sellerProfilePicComponent = <Avatar src={profileNft?.image?.thumbnail} />
     } else {
       sellerProfilePicComponent = <BunnyPlaceholderIcon width="32px" height="32px" mr={['4px', null, '12px']} />
     }

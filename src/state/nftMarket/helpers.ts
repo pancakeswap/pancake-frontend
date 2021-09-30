@@ -68,13 +68,15 @@ export const getNftsFromCollectionApi = async (collectionAddress: string): Promi
 }
 
 /**
- * Fetch a NFT using the API
- * /!\ THIS FUNCTION WILL BE REPLACED BY AN ENDPOINT ALLOWING TO FETCH MULTIPLE NFTS /!\
+ * Fetch a single NFT using the API
  * @param collectionAddress
  * @param tokenId
  * @returns NFT from API
  */
-const getNftApi = async (collectionAddress: string, tokenId: string): Promise<ApiResponseSpecificToken['data']> => {
+export const getNftApi = async (
+  collectionAddress: string,
+  tokenId: string,
+): Promise<ApiResponseSpecificToken['data']> => {
   const res = await fetch(`${API_NFT}/collections/${collectionAddress}/tokens/${tokenId}`)
   if (res.ok) {
     const json = await res.json()

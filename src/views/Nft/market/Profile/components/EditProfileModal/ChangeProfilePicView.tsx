@@ -22,7 +22,7 @@ type ChangeProfilePicPageProps = InjectedModalProps
 const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }) => {
   const [selectedNft, setSelectedNft] = useState({
     tokenId: null,
-    nftAddress: null,
+    collectionAddress: null,
   })
   const { t } = useTranslation()
   const { nfts } = useUserNfts()
@@ -38,15 +38,18 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onApprove: () => {
-        const contract = getErc721Contract(selectedNft.nftAddress, library.getSigner())
+        const contract = getErc721Contract(selectedNft.collectionAddress, library.getSigner())
         return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
       },
       onConfirm: () => {
         if (!profile.isActive) {
-          return callWithGasPrice(profileContract, 'reactivateProfile', [selectedNft.nftAddress, selectedNft.tokenId])
+          return callWithGasPrice(profileContract, 'reactivateProfile', [
+            selectedNft.collectionAddress,
+            selectedNft.tokenId,
+          ])
         }
 
-        return callWithGasPrice(profileContract, 'updateProfile', [selectedNft.nftAddress, selectedNft.tokenId])
+        return callWithGasPrice(profileContract, 'updateProfile', [selectedNft.collectionAddress, selectedNft.tokenId])
       },
       onSuccess: async ({ receipt }) => {
         // Re-fetch profile
@@ -67,7 +70,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
           const handleChange = (tokenId: string) => {
             setSelectedNft({
               tokenId,
-              nftAddress: walletNft.collectionAddress,
+              collectionAddress: walletNft.collectionAddress,
             })
           }
           return (

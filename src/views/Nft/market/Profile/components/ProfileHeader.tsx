@@ -37,9 +37,7 @@ const ProfileHeader: React.FC<HeaderProps> = ({ accountPath, profile, achievemen
   const numPoints = profile?.points ? formatNumber(profile.points, 0, 0) : '-'
   const numAchievements = achievements?.length ? formatNumber(achievements.length, 0, 0) : '-'
 
-  const avatarImage = profile?.nft?.images?.md
-    ? `/images/nfts/${profile?.nft?.images?.md}`
-    : '/images/nfts/no-profile-md.png'
+  const avatarImage = profile?.nft?.image?.thumbnail || '/images/nfts/no-profile-md.png'
 
   const getBannerImage = () => {
     const imagePath = '/images/teams'

@@ -53,7 +53,11 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
         return callWithGasPrice(cakeContract, 'approve', [profileContract.address, allowance.toJSON()])
       },
       onConfirm: () => {
-        return callWithGasPrice(profileContract, 'createProfile', [teamId, selectedNft.nftAddress, selectedNft.tokenId])
+        return callWithGasPrice(profileContract, 'createProfile', [
+          teamId,
+          selectedNft.collectionAddress,
+          selectedNft.tokenId,
+        ])
       },
       onSuccess: async ({ receipt }) => {
         await dispatch(fetchProfile(account))

@@ -12,7 +12,7 @@ const initialState: State = {
   currentStep: 0,
   teamId: null,
   selectedNft: {
-    nftAddress: null,
+    collectionAddress: null,
     tokenId: null,
   },
   userName: '',
@@ -43,7 +43,7 @@ const reducer = (state: State, action: Actions): State => {
         ...state,
         selectedNft: {
           tokenId: action.tokenId,
-          nftAddress: action.nftAddress,
+          collectionAddress: action.collectionAddress,
         },
       }
     case 'set_username':
@@ -90,8 +90,8 @@ const ProfileCreationProvider: React.FC = ({ children }) => {
     () => ({
       nextStep: () => dispatch({ type: 'next_step' }),
       setTeamId: (teamId: number) => dispatch({ type: 'set_team', teamId }),
-      setSelectedNft: (tokenId: string, nftAddress: string) =>
-        dispatch({ type: 'set_selected_nft', tokenId, nftAddress }),
+      setSelectedNft: (tokenId: string, collectionAddress: string) =>
+        dispatch({ type: 'set_selected_nft', tokenId, collectionAddress }),
       setUserName: (userName: string) => dispatch({ type: 'set_username', userName }),
     }),
     [dispatch],
