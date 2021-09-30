@@ -298,8 +298,10 @@ export const NftMarket = createSlice({
       state.data.nfts[action.meta.arg] = action.payload
     })
     builder.addCase(updateNftTokensData.fulfilled, (state, action) => {
-      state.data.nfts[action.meta.arg.collectionAddress] = action.payload
-      state.data.lastUpdateAt = Date.now()
+      if (action.payload.length > 0) {
+        state.data.nfts[action.meta.arg.collectionAddress] = action.payload
+        state.data.lastUpdateAt = Date.now()
+      }
     })
     builder.addCase(updateNftTokensData.rejected, (state) => {
       state.data.lastUpdateAt = Date.now()
