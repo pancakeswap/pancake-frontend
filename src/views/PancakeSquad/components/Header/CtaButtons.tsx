@@ -27,6 +27,7 @@ export type CtaButtonsProps = {
   maxSupply: number
   totalSupplyMinted: number
   numberTokensOfUser: number
+  startTimestamp: number
   cakeBalance: BigNumber
   pricePerTicket: BigNumber
   ticketsOfUser: BigNumber[]
@@ -45,13 +46,14 @@ const CtaButtons: React.FC<CtaButtonsProps> = ({
   numberTicketsForGen0,
   numberTicketsUsedForGen0,
   numberTokensOfUser,
+  startTimestamp,
   maxSupply,
   totalSupplyMinted,
   cakeBalance,
   pricePerTicket,
   ticketsOfUser,
 }) => {
-  const buttonType = getCurrentButton({ numberTicketsOfUser, saleStatus, userStatus })
+  const buttonType = getCurrentButton({ numberTicketsOfUser, saleStatus, userStatus, startTimestamp })
   return (
     <>
       <Flex>

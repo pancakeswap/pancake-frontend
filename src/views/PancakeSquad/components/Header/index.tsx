@@ -127,6 +127,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
                     numberTicketsForGen0={numberTicketsForGen0}
                     pricePerTicket={pricePerTicket}
                     ticketsOfUser={ticketsOfUser}
+                    startTimestamp={startTimestamp}
                   />
                 </>
               )}
