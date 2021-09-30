@@ -58,7 +58,7 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
       )}
       <Text>{t('%percentage%% trading fee will be used to buy & burn CAKE', { percentage: tradingFee })}</Text>
     </>,
-    { placement: 'right' },
+    { placement: 'auto' },
   )
 
   useEffect(() => {
