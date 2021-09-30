@@ -56,16 +56,17 @@ export const useUpdateNftInfo = (collectionAddress: string) => {
   const { fastRefresh } = useRefresh()
 
   const lastUpdateAt = useSelector((state: State) => state.nftMarket.data.lastUpdateAt)
+  const isFetchingMoreNfts = useSelector((state: State) => state.nftMarket.data.isFetchingMoreNfts)
 
   const existingNfts = useNftsFromCollection(collectionAddress)
 
   useEffect(() => {
     const msSinceLastUpdate = Date.now() - lastUpdateAt
     const existingTokenIds = existingNfts ? existingNfts.map((nft) => nft.tokenId) : []
-    if (msSinceLastUpdate > 10000) {
+    if (msSinceLastUpdate > 10000 && !isFetchingMoreNfts) {
       dispatch(updateNftTokensData({ collectionAddress, existingTokenIds }))
     }
-  }, [dispatch, fastRefresh, collectionAddress, existingNfts, lastUpdateAt])
+  }, [dispatch, fastRefresh, collectionAddress, existingNfts, lastUpdateAt, isFetchingMoreNfts])
 }
 
 export const useGetCollections = () => {
