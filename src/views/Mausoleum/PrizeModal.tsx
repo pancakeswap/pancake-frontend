@@ -24,8 +24,7 @@ const PrizeModal: React.FC<PrizeModalProps> = ({ id, onDismiss }) => {
 
   const { theme } = useTheme()
 
-  return <Modal onDismiss={onDismiss} title={prize} headerBackground={theme.colors.primary}>
-    <Box overflow='hidden'>
+  return <Modal onDismiss={onDismiss} title={prize} headerBackground={theme.colors.backgroundAlt} style={{width: "95%", maxHeight: "90%", overflowY: "scroll"}}>
 
     <TableCards>
       <div className='table-bottom'>
@@ -73,7 +72,6 @@ const PrizeModal: React.FC<PrizeModalProps> = ({ id, onDismiss }) => {
         </div>
       </div>
     </TableCards>
-    </Box>
   </Modal>
 }
 
