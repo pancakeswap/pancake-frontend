@@ -160,6 +160,7 @@ const stepsConfigBuilder = ({
             maxSupply={maxSupply}
             totalSupplyMinted={totalSupplyMinted}
             numberTokensOfUser={numberTokensOfUser}
+            account={account}
           />
         </>
       ),

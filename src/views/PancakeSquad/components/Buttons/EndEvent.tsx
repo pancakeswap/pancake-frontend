@@ -1,10 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 
 type EndEventProps = {
   t: ContextApi['t']
+  account: string
   saleStatus: SaleStatusEnum
   userStatus: UserStatusEnum
   maxSupply: number
@@ -14,6 +16,7 @@ type EndEventProps = {
 
 const EndEventButtons: React.FC<EndEventProps> = ({
   t,
+  account,
   saleStatus,
   numberTokensOfUser,
   maxSupply,
@@ -25,11 +28,17 @@ const EndEventButtons: React.FC<EndEventProps> = ({
   return (
     <Flex flexDirection={['column', null, null, 'row']}>
       {canViewMarket && (
-        <Button width="100%" mb={['4px', null, null, '0']} mr={[0, null, null, '4px']}>
-          {t('View market')}
-        </Button>
+        <Link to="/nfts">
+          <Button width="100%" mb={['4px', null, null, '0']} mr={[0, null, null, '4px']}>
+            {t('View market')}
+          </Button>
+        </Link>
       )}
-      {hasSquad && <Button width="100%">{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Button>}
+      {hasSquad && (
+        <Link to={`/nfts/profile/${account}`}>
+          <Button width="100%">{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Button>
+        </Link>
+      )}
     </Flex>
   )
 }

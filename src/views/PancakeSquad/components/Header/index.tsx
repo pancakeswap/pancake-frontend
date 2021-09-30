@@ -57,7 +57,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
       alignItems="center"
     >
       <Flex width="100%">
-        <Link to="/nfts/market">
+        <Link to="/nfts">
           <Text color="primary" bold>{`< ${t('NFT Market')}`}</Text>
         </Link>
       </Flex>

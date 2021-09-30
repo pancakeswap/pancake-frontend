@@ -88,6 +88,7 @@ const CtaButtons: React.FC<CtaButtonsProps> = ({
         {buttonType === ButtonsEnum.END && (
           <EndEventButtons
             t={t}
+            account={account}
             saleStatus={saleStatus}
             userStatus={userStatus}
             maxSupply={maxSupply}
