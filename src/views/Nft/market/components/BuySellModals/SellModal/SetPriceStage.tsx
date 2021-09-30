@@ -94,7 +94,7 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
             <RightAlignedInput
               scale="sm"
               type="number"
-              inputMode="numeric"
+              inputMode="decimal"
               value={price}
               ref={inputRef}
               isWarning={priceIsOutOfRange}
