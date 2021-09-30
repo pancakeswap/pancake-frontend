@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
         >
           <StatBox>
             <StatBoxItem title={t('Items')} stat={formatNumber(Number(totalSupply), 0, 0)} />
-            <StatBoxItem title={t('Owners')} stat={formatNumber(Number(numberTokensListed), 0, 0)} />
+            <StatBoxItem title={t('Items listed')} stat={formatNumber(Number(numberTokensListed), 0, 0)} />
             <LowestPriceStatBoxItem collectionAddress={collection.address} />
             <StatBoxItem title={t('Vol. (%symbol%)', { symbol: 'BNB' })} stat={volume} />
           </StatBox>
