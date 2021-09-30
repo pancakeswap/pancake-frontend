@@ -53,7 +53,7 @@ const IndividualNFTPage = () => {
 
   const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
 
-  useUpdateNftInfo(collectionAddress)
+  // useUpdateNftInfo(collectionAddress)
 
   useEffect(() => {
     // Fetch first 30 NFTs on page load
