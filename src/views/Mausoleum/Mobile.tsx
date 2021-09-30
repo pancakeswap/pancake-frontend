@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { ArrowDownIcon, Box, Button, ChartIcon, Flex, useModal } from '@rug-zombie-libs/uikit'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
-import { PredictionStatus } from 'state/types'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -14,7 +13,6 @@ import SoonRoundCard from './components/RoundCard/SoonRoundCard'
 import IncreaseBidCard from './components/RoundCard/IncreaseBidCard'
 import RoundCard from './components/RoundCard'
 import MobileTopMenu from './components/MobileTopMenu'
-import PrizeTab from './components/PrizeTab'
 import { setChartPaneState } from '../../state/predictions'
 import { useAppDispatch } from '../../state'
 import { auctionById } from '../../redux/get'
@@ -112,14 +110,14 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
   const [refreshMob, setRefreshMob] = useState(false)
-  const { auctionInfo: {bids, lastBidId, endDate} } = auctionById(id)
+  const { auctionInfo: { bids, lastBidId, endDate } } = auctionById(id)
   const toggleChartPane = () => {
     dispatch(setChartPaneState(!isChartPaneOpen))
   }
 
 
   const [onPresentPrize] = useModal(
-    <PrizeModal id={id} />
+    <PrizeModal id={id} setSwiper={setSwiper} />,
   )
 
   const refreshMobile = () => {
@@ -147,7 +145,7 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
           spaceBetween={16}
           slidesPerView='auto'
           freeMode
-          direction="vertical"
+          direction='vertical'
           freeModeSticky
           centeredSlides
           mousewheel
@@ -159,7 +157,7 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
           </SwiperSlide>
           {bids.length > 0 ?
             <SwiperSlide>
-              { Math.floor(Date.now() / 1000) > endDate ?
+              {Math.floor(Date.now() / 1000) > endDate ?
                 <AuctionEndCard
                   lastBid={formattedBids[bids.length - 1]}
                   id={id}
@@ -179,28 +177,28 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
           {bids[lastBidId] ?
             <SwiperSlide>
               <RoundCard bid={formattedBids[lastBidId]} id={id} bidId={lastBidId} lastBidId={lastBidId}
-                          />
+              />
             </SwiperSlide> : null
           }
           {bids[lastBidId - 1] ?
             <SwiperSlide>
               <RoundCard bid={formattedBids[lastBidId - 1]} id={id} bidId={lastBidId - 1} lastBidId={lastBidId}
-                        />
+              />
             </SwiperSlide> : null
           }
           {bids[lastBidId - 2] ?
             <SwiperSlide>
-                <RoundCard bid={formattedBids[lastBidId - 2]} id={id} bidId={lastBidId - 2} lastBidId={lastBidId}/>
+              <RoundCard bid={formattedBids[lastBidId - 2]} id={id} bidId={lastBidId - 2} lastBidId={lastBidId} />
             </SwiperSlide> : null
           }
         </Swiper>
       </StyledSwiper>
       <div style={{
-        position: "fixed",
+        position: 'fixed',
         zIndex: 100,
-        bottom: "0",
-        left: "0",
-        width: "100%"
+        bottom: '0',
+        left: '0',
+        width: '100%',
       }}>
         <ChartPane isChartPaneOpen={isChartPaneOpen}>
           <ExpandChartButton
