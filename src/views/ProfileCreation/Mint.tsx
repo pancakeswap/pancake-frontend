@@ -1,29 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { formatUnits } from '@ethersproject/units'
 import { Card, CardBody, Heading, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
-import { Nft } from 'config/constants/nfts/types'
 import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
-import nftList from 'config/constants/nfts'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import useToast from 'hooks/useToast'
 import { useAppDispatch } from 'state'
 import { fetchUserNfts } from 'state/nftMarket/reducer'
 import { useGetCollections } from 'state/nftMarket/hooks'
+import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
+import { ApiSingleTokenData } from 'state/nftMarket/types'
+import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import useProfileCreation from './contexts/hook'
-import { MINT_COST, STARTER_BUNNY_IDENTIFIERS } from './config'
+import { MINT_COST, STARTER_NFT_BUNNY_IDS } from './config'
 
-// TODO: Once collections API is no longer returning dummy data - migrate this away from using static nft config
-const nfts = nftList.pancake.filter((nft) => STARTER_BUNNY_IDENTIFIERS.includes(nft.identifier))
+interface MintNftData extends ApiSingleTokenData {
+  bunnyId?: string
+}
 
 const Mint: React.FC = () => {
-  const [variationId, setVariationId] = useState<Nft['id']>(null)
+  const [selectedBunnyId, setSelectedBunnyId] = useState<string>('')
+  const [starterNfts, setStarterNfts] = useState<MintNftData[]>([])
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
   const collections = useGetCollections()
   const { toastSuccess } = useToast()
@@ -36,6 +39,22 @@ const Mint: React.FC = () => {
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
   const hasMinimumCakeRequired = fetchStatus === FetchStatus.SUCCESS && cakeBalance.gte(MINT_COST)
   const { callWithGasPrice } = useCallWithGasPrice()
+
+  useEffect(() => {
+    const getStarterNfts = async () => {
+      const { data: allPbTokens } = await getNftsFromCollectionApi(pancakeBunniesAddress)
+      const nfts = STARTER_NFT_BUNNY_IDS.map((bunnyId) => {
+        if (allPbTokens && allPbTokens[bunnyId]) {
+          return { ...allPbTokens[bunnyId], bunnyId }
+        }
+        return undefined
+      })
+      setStarterNfts(nfts)
+    }
+    if (starterNfts.length === 0) {
+      getStarterNfts()
+    }
+  }, [starterNfts])
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -52,7 +71,7 @@ const Mint: React.FC = () => {
         return callWithGasPrice(cakeContract, 'approve', [bunnyFactoryContract.address, allowance.toString()])
       },
       onConfirm: () => {
-        return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [variationId])
+        return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [selectedBunnyId])
       },
       onApproveSuccess: () => {
         toastSuccess('Enabled', "Press 'confirm' to mint this NFT")
@@ -88,20 +107,20 @@ const Mint: React.FC = () => {
           <Text as="p" mb="24px" color="textSubtle">
             {t('Cost: %num% CAKE', { num: formatUnits(MINT_COST) })}
           </Text>
-          {nfts.map((nft) => {
-            const handleChange = (value: string) => setVariationId(Number(value))
+          {starterNfts.map((nft) => {
+            const handleChange = (value: string) => setSelectedBunnyId(value)
 
             return (
               <SelectionCard
-                key={nft.identifier}
+                key={nft?.name}
                 name="mintStarter"
-                value={nft.id}
-                image={`/images/nfts/${nft.images.md}`}
-                isChecked={variationId === nft.id}
+                value={nft?.bunnyId}
+                image={nft?.image.thumbnail}
+                isChecked={selectedBunnyId === nft?.bunnyId}
                 onChange={handleChange}
                 disabled={isApproving || isConfirming || isConfirmed || !hasMinimumCakeRequired}
               >
-                <Text bold>{nft.name}</Text>
+                <Text bold>{nft?.name}</Text>
               </SelectionCard>
             )
           })}
@@ -111,7 +130,7 @@ const Mint: React.FC = () => {
             </Text>
           )}
           <ApproveConfirmButtons
-            isApproveDisabled={variationId === null || isConfirmed || isConfirming || isApproved}
+            isApproveDisabled={selectedBunnyId === null || isConfirmed || isConfirming || isApproved}
             isApproving={isApproving}
             isConfirmDisabled={!isApproved || isConfirmed || !hasMinimumCakeRequired}
             isConfirming={isConfirming}

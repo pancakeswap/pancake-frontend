@@ -1,5 +1,5 @@
-import { collections } from 'config/constants/nfts'
-import { CollectionKey } from 'config/constants/nfts/types'
+import collections from 'config/constants/nftsCollections'
+import { CollectionKey } from 'config/constants/nftsCollections/types'
 import { getAddress } from 'utils/addressHelpers'
 
 export const nftsBaseUrl = '/nfts'
