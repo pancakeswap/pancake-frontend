@@ -26,6 +26,7 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
   const [txHashMintingResult, setTxHashMintingResult] = useState(null)
   const { toastError } = useToast()
   const canMintTickets = saleStatus === SaleStatusEnum.Claim && numberTicketsOfUser > 0
+  const { toastSuccess } = useToast()
 
   const onConfirmClose = () => {
     setTxHashMintingResult(null)
@@ -51,6 +52,7 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
       const tx = await callWithGasPrice(nftSaleContract, 'mint', [ticketsOfUser])
       const receipt = await tx.wait()
       if (receipt.status) {
+        toastSuccess(t('Transaction has succeeded!'))
         setTxHashMintingResult(receipt.transactionHash)
       }
     } catch (error) {
@@ -61,7 +63,7 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
     }
   }
 
-  useEffect(() => txHashMintingResult && onPresentConfirmModal(), [txHashMintingResult])
+  useEffect(() => txHashMintingResult && !isLoading && onPresentConfirmModal(), [isLoading, txHashMintingResult])
 
   return (
     <>
