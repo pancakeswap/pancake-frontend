@@ -147,7 +147,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
               <br />
               {maxPerAddress > 0 && (
                 <>
-                  t(`Max. Tickets per wallet: ${maxPerAddress}`) <br />
+                  {t(`Max. Tickets per wallet: ${maxPerAddress}`)} <br />
                 </>
               )}
             </Text>
