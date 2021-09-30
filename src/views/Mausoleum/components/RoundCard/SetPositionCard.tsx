@@ -23,7 +23,7 @@ import { useMausoleum, usePredictionsContract } from 'hooks/useContract'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
 import { BetPosition } from 'state/types'
-import { getBalanceAmount, getDecimalAmount } from 'utils/formatBalance'
+import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import PositionTag from '../PositionTag'
 import { getBnbAmount } from '../../helpers'
@@ -34,7 +34,7 @@ import { getBep20Contract, getErc721Contract, getMausoleumContract } from '../..
 import { BIG_ZERO } from '../../../../utils/bigNumber'
 import auctions from '../../../../redux/auctions'
 import useWeb3 from '../../../../hooks/useWeb3'
-import { auctionById } from '../../../../redux/get'
+import { auctionById, bnbBalance } from '../../../../redux/get'
 
 interface SetPositionCardProps {
   id: number
@@ -63,9 +63,9 @@ const getPercentDisplay = (percentage: number) => {
   return `${percentage.toLocaleString(undefined, { maximumFractionDigits: 1 })}%`
 }
 
-const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBalance: number) => {
-  if (bnbBalance.eq(0)) {
-    return { id: 999, fallback: 'Insufficient BT balance', disabled: true }
+const getButtonProps = (value: BigNumber, balance: BigNumber, minBetAmountBalance: number, v3: boolean) => {
+  if (balance.eq(0)) {
+    return { id: 999, fallback: `Insufficient ${v3 ? 'BNB' : 'BT'} balance`, disabled: true }
   }
 
   if (value.eq(0) || value.isNaN()) {
@@ -85,6 +85,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ id, onBack, onSuccess
   const { toastError } = useToast()
   const { aid, version, bidToken } = auctionById(id)
   const mausoleum = useMausoleum(version)
+  const v3 = version === 'v3'
 
   const [maxBalance, setMaxBalance] = useState(0)
   const [bnMaxBalance, setBnMaxBalance] = useState(BIG_ZERO)
@@ -94,16 +95,20 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ id, onBack, onSuccess
   const percentageDisplay = getPercentDisplay(percentageOfMaxBalance)
   const showFieldWarning = account && valueAsBn.gt(0) && errorMessage !== null
   const minBetAmountBalance = getBnbAmount(minBetAmount).toNumber()
-
   useEffect(() => {
-    if (account && version !== 'v3') {
-      getBep20Contract(bidToken).methods.balanceOf(account).call()
-        .then(res => {
-          setMaxBalance(new BigNumber(res).toNumber())
-          setBnMaxBalance(new BigNumber(res))
-        })
+    if (account) {
+      if (v3) {
+        setMaxBalance(bnbBalance().toNumber())
+        setBnMaxBalance(bnbBalance)
+      } else {
+        getBep20Contract(bidToken).methods.balanceOf(account).call()
+          .then(res => {
+            setMaxBalance(new BigNumber(res).toNumber())
+            setBnMaxBalance(new BigNumber(res))
+          })
+      }
     }
-  })
+  }, [account, bidToken, v3])
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const newValue = evt.target.value
@@ -139,7 +144,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ id, onBack, onSuccess
   }
 
 
-  const { fallback, disabled } = getButtonProps(valueAsBn, new BigNumber(maxBalance), minBetAmountBalance)
+  const { fallback, disabled } = getButtonProps(valueAsBn, new BigNumber(maxBalance), minBetAmountBalance, v3)
   const handleEnterPosition = () => {
     let decimalValue = getDecimalAmount(valueAsBn)
     if (decimalValue.gt(maxBalance)) {
@@ -170,7 +175,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ id, onBack, onSuccess
     const hasSufficientBalance = bnValue.gt(0) && bnValue.lte(maxBalance)
 
     if (!hasSufficientBalance) {
-      setErrorMessage({ id: 999, fallback: 'Insufficient BT balance' })
+      setErrorMessage({ id: 999, fallback: `Insufficient ${v3 ? 'BNB' : 'BT'} balance` })
     } else if (bnValue.gt(0) && bnValue.lt(minBetAmountBalance)) {
       setErrorMessage({
         fallback: 'A minimum amount of %num% %token% is required',
@@ -179,7 +184,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ id, onBack, onSuccess
     } else {
       setErrorMessage(null)
     }
-  }, [value, maxBalance, minBetAmountBalance, setErrorMessage])
+  }, [value, maxBalance, minBetAmountBalance, setErrorMessage, v3])
 
   return (
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>

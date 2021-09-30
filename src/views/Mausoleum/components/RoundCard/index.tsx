@@ -12,11 +12,11 @@ interface RoundCardProps {
 
 const RoundCard: React.FC<RoundCardProps> = ({ bid, lastBidId, id, bidId }) => {
   // Live round
-  if (id === lastBidId) {
+  if (bid.id === lastBidId) {
     return (
       <LeaderRoundCard
         bid={bid}
-        id={bidId}
+        id={id}
       />
     )
   }

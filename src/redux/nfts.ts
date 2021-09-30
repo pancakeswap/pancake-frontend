@@ -475,7 +475,7 @@ const nfts: Nft[] = [
     userInfo: { ...DEFAULT_USER_INFO }
   },
   {
-    id: 38,
+    id: 39,
     name: 'Season 1',
     symbol: 'WHALE',
     description: 'I try all things, I achieve what I can.',
@@ -484,6 +484,18 @@ const nfts: Nft[] = [
     path: 'https://ipfs.io/ipfs/QmQnj8i4k2kwoboNN2TMoJ5ugH1Mxav4r8zAsz6PmXvP7P',
     type: 'image',
     rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
+  {
+    id: 40,
+    name: 'Trust Us',
+    symbol: 'TRUST',
+    description: 'Or don\'t, we will just zombie on.',
+    address: '0xaCA0503F854fF89a7FFA75CE139fdaEa3DccD21B',
+    totalSupply: BIG_ZERO,
+    path: 'https://storage.googleapis.com/rug-zombie/Trust%20Us.jpeg',
+    type: 'image',
+    rarity: 'Biblical',
     userInfo: { ...DEFAULT_USER_INFO }
   },
 ]

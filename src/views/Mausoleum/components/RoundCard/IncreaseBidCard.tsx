@@ -24,18 +24,21 @@ import '../MobileCard/cardStyles.css';
 import { auction } from '../../../../redux/fetch'
 
 // PrizePoolRow
-interface CurrentBidProps extends FlexProps {
-  totalAmount: BigNumber,
+interface CurrentBidProps  {
+  totalAmount: BigNumber;
+  id: number;
+  mb?: string;
 }
 
 
-export const CurrentBid: React.FC<CurrentBidProps> = ({ totalAmount, ...props }) => {
+export const CurrentBid: React.FC<CurrentBidProps> = ({ totalAmount, id, ...props }) => {
   const { t } = useTranslation()
-
+  const { version } = auctionById(id)
+  const v3 = version === 'v3'
   return (
     <Flex alignItems='center' justifyContent='space-between' {...props}>
       <Text bold>{t('Bid Value')}:</Text>
-      <Text bold>{getBalanceAmount(totalAmount).toString()} BT</Text>
+      <Text bold>{getBalanceAmount(totalAmount).toString()} {v3 ? 'BNB' : 'BT'}</Text>
     </Flex>
   )
 }
@@ -178,7 +181,7 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRe
             {/* eslint-disable-next-line no-nested-ternary */}
             {paidUnlockFee || v3 ? allowance.gt(BIG_ZERO) || v3 ?
             <>
-              <CurrentBid totalAmount={amount} mb='8px' />
+              <CurrentBid totalAmount={amount} id={id} mb='8px' />
               <Button
                 variant='success'
                 width='100%'

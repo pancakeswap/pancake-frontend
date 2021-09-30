@@ -5,7 +5,7 @@ import { formatBnb, formatUsd } from 'views/Mausoleum/helpers'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition, Round } from 'state/types'
 import { BigNumber } from 'bignumber.js'
-import { auctionById, zmbePerZmbeBnbLp } from '../../../../redux/get'
+import { auctionById, bnbPriceUsd, zmbePerZmbeBnbLp } from '../../../../redux/get'
 import { formatNumber, getBalanceAmount } from '../../../../utils/formatBalance'
 
 // PrizePoolRow
@@ -39,17 +39,18 @@ interface LockPriceRowProps {
   id: number;
 }
 
-export const LockPriceRow: React.FC<LockPriceRowProps> = ({ id, bid, ...props }) => {
+export const UsdPriceRow: React.FC<LockPriceRowProps> = ({ id, bid, ...props }) => {
   const { t } = useTranslation()
   const quarterBid = bid.amount / 4
   const { version } = auctionById(id)
-
+  const v3 = version === 'v3'
+  console.log(id)
   return (
     <>
-      {version === 'v3' ? <Flex alignItems='center' justifyContent='space-between' {...props}>
+      {v3 ? <Flex alignItems='center' justifyContent='space-between' {...props}>
         <Text fontSize='14px'>{t('USD Value')}:</Text>
         <Text
-          fontSize='14px'>{formatNumber(getBalanceAmount(bid.amount).toNumber())}</Text>
+          fontSize='14px'>{formatNumber(getBalanceAmount(bid.amount).times(bnbPriceUsd()).toNumber())}</Text>
       </Flex> :
         <>
         <Flex alignItems='center' justifyContent='space-between' {...props}>
@@ -59,7 +60,7 @@ export const LockPriceRow: React.FC<LockPriceRowProps> = ({ id, bid, ...props })
       </Flex>
         <Flex alignItems='center' justifyContent='space-between' {...props}>
         <Text fontSize='14px'>{t('LP Locked')}:</Text>
-        <Text fontSize='14px'>{Math.round(getBalanceAmount(new BigNumber(quarterBid)).toNumber() * 100) / 100} BT</Text>
+        <Text fontSize='14px'>{Math.round(getBalanceAmount(new BigNumber(quarterBid)).toNumber() * 100) / 100} vssß</Text>
         </Flex>
         </>}
     </>

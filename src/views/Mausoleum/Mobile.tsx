@@ -19,6 +19,7 @@ import { setChartPaneState } from '../../state/predictions'
 import { useAppDispatch } from '../../state'
 import { auctionById } from '../../redux/get'
 import PrizeModal from './PrizeModal'
+import AuctionEndCard from './components/RoundCard/AuctionEndCard'
 
 enum PageView {
   POSITIONS = 'positions',
@@ -56,16 +57,6 @@ const getView = (isHistoryPaneOpen: boolean, isChartPaneOpen: boolean): PageView
   }
 
   return PageView.POSITIONS
-}
-
-
-interface MobileCardProps {
-  bids: any[],
-  lastBidId: number,
-  userInfo: any,
-  aid: number,
-  setRefresh: any,
-  refresh: boolean
 }
 
 SwiperCore.use([Keyboard, Mousewheel])
@@ -121,7 +112,7 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
   const [refreshMob, setRefreshMob] = useState(false)
-  const { auctionInfo: {bids, lastBidId} } = auctionById(id)
+  const { auctionInfo: {bids, lastBidId, endDate} } = auctionById(id)
   const toggleChartPane = () => {
     dispatch(setChartPaneState(!isChartPaneOpen))
   }
@@ -138,6 +129,7 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
 
   const formattedBids = bids.map((bid, i) => {
     return {
+      id: bid.id,
       amount: new BigNumber(bid.amount.toString()),
       bidder: bid.bidder,
       previousBidAmount: bids[i - 1] && bids[i - 1].amount ? new BigNumber(bids[i - 1].amount.toString()) : BIG_ZERO,
@@ -165,18 +157,25 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
           <SwiperSlide>
             <SoonRoundCard lastBidId={lastBidId} bidId={lastBidId + 1} id={id} />
           </SwiperSlide>
-          <SwiperSlide>
-            {bids.length > 0 ?
-              <IncreaseBidCard
-                lastBid={formattedBids[bids.length - 1]}
-                id={id}
-                bidId={lastBidId}
-                setRefresh={setRefresh}
-                refresh={refresh}
-              /> :
-              null
-            }
-          </SwiperSlide>
+          {bids.length > 0 ?
+            <SwiperSlide>
+              { Math.floor(Date.now() / 1000) > endDate ?
+                <AuctionEndCard
+                  lastBid={formattedBids[bids.length - 1]}
+                  id={id}
+                  bidId={lastBidId + 1}
+                  setRefresh={setRefresh}
+                  refresh={refresh}
+                /> : <IncreaseBidCard
+                  lastBid={formattedBids[bids.length - 1]}
+                  id={id}
+                  bidId={lastBidId + 1}
+                  setRefresh={setRefresh}
+                  refresh={refresh}
+                />}
+            </SwiperSlide> :
+            null
+          }
           {bids[lastBidId] ?
             <SwiperSlide>
               <RoundCard bid={formattedBids[lastBidId]} id={id} bidId={lastBidId} lastBidId={lastBidId}

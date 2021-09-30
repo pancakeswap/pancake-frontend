@@ -20,7 +20,7 @@ const TableCards = styled(BaseLayout)`
   }
 `
 const PrizeModal: React.FC<PrizeModalProps> = ({ id, onDismiss }) => {
-  const { prize, prizeDescription, path, version, artist: { twitter }, auctionInfo: { unlockFeeInBnb } } = auctionById(id)
+  const { prize, prizeDescription, path, version, additionalDetails, artist: { twitter }, auctionInfo: { unlockFeeInBnb } } = auctionById(id)
 
   const { theme } = useTheme()
 
@@ -53,6 +53,15 @@ const PrizeModal: React.FC<PrizeModalProps> = ({ id, onDismiss }) => {
                     </LinkExternal>
                   </span>
               </div>
+              {additionalDetails ? additionalDetails.map(details => {
+                return <>
+                  <LinkExternal href={details.url}>
+                    <br/>
+                    {details.name}
+                  </LinkExternal>
+                  <br/>
+                </>
+              }) : null}
               {version !== 'v3' ?
                 <div className='direction-column'>
                    <span className='indetails-type' >Unlock Fees: {getBalanceAmount(unlockFeeInBnb).toString()} BNB

@@ -17,6 +17,10 @@ export const zombieBalance = (): BigNumber => {
   return store.getState().zombie.balance
 }
 
+export const bnbBalance = (): BigNumber => {
+  return store.getState().bnbBalance
+}
+
 export const zombieTotalSupply = (): BigNumber => {
   return store.getState().zombie.totalSupply
 }

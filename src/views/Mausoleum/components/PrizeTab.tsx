@@ -24,7 +24,7 @@ interface PrizeTabProps {
 }
 
 const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
-  const { path, prize , prizeDescription, version, artist: { twitter }, auctionInfo: { unlockFeeInBnb }} = auctionById(id)
+  const { path, prize , prizeDescription, version, additionalDetails, artist: { twitter }, auctionInfo: { unlockFeeInBnb }} = auctionById(id)
 
   const type = 'image'
   return (
@@ -60,7 +60,15 @@ const PrizeTab:  React.FC<PrizeTabProps> = ({ id }) => {
                       View NFT Artist
                     </LinkExternal>
                   </span>
-
+                  {additionalDetails.map(details => {
+                    return <>
+                      <LinkExternal href={details.url}>
+                        <br/>
+                        {details.name}
+                      </LinkExternal>
+                      <br/>
+                    </>
+                  })}
                 </div>
                 { version !== 'v3' ? <div className='direction-column'>
                    <span className='indetails-type'>Unlock Fees: {getBalanceAmount(unlockFeeInBnb).toString()} BNB

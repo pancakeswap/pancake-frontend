@@ -128,27 +128,27 @@ const NFTBanner: React.FC = () => {
       <Inner style={{width: "100%"}}>
         <LeftWrapper width="100%">
           {/* <NowLive>{t('Mausoleum End:')} {formatDuration(remainingTime, true)}</NowLive> */}
-          <NowLive>{t('Mausoleum has Ended')}</NowLive>
+          <NowLive>{t('Mausoleum is Live!')}</NowLive>
           { isDesktop ? <Flex>
             <Over fontSize='40px' bold mr='8px' style={{ whiteSpace: 'nowrap' }}>
-              {t('The Second')}
+              {t('The first')}
             </Over>
             <Over fontSize='40px' color='primary' bold mr='8px' style={{ whiteSpace: 'nowrap' }}>
-              PATIENT-ZERO
+              BIBLICAL
             </Over>
             <Over fontSize='40px' bold mr='8px'>
-              NFT has been rewarded.
+              NFT is being auctioned in the Mausoleum.
             </Over>
           </Flex> :
             <>
               <Over fontSize='40px' bold mr='8px'>
-                {t('The Second')}
+                {t('The first')}
               </Over>
               <Over fontSize='40px' color='primary' bold mr='8px'>
-                PATIENT-ZERO
+                BIBLICAL
               </Over>
               <Over fontSize='40px' bold mr='8px'>
-                NFT has been rewarded.
+                NFT is being auctioned in the Mausoleum.
               </Over>
             </>
           }

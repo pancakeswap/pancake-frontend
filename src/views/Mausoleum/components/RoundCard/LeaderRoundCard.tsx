@@ -11,10 +11,7 @@ interface LiveRoundCardProps {
   id: number
 }
 
-const LeaderRoundCard: React.FC<LiveRoundCardProps> = ({
-  bid,
-  id
-}) => {
+const LeaderRoundCard: React.FC<LiveRoundCardProps> = ({ bid, id }) => {
   const { t } = useTranslation()
   const StyledExpiredRoundCard = styled(Card)`
   opacity: 0.7;
@@ -24,12 +21,6 @@ const LeaderRoundCard: React.FC<LiveRoundCardProps> = ({
     opacity: 1;
   }
 `
-
-  const tooltipContent = (
-    <Box width="256px">
-      {t('The final price at the end of a round may be different from the price shown on the live feed.')}
-    </Box>
-  )
 
   return (
       <StyledExpiredRoundCard>

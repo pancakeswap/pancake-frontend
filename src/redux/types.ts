@@ -65,6 +65,8 @@ export interface Bid {
 export interface AuctionInfo {
   lastBidId: number,
   bids: Bid[],
+  endDate: number,
+  finalized: boolean,
   unlockFeeInBnb?: BigNumber
 }
 
@@ -76,7 +78,6 @@ export interface AuctionUserInfo {
 export interface NftUserInfo {
   ownedIds: number[],
 }
-
 
 export interface Artist {
   name: string,
@@ -174,6 +175,7 @@ export interface Auction {
   token0?: string,
   token1?: string,
   end: number,
+  additionalDetails?: any,
   userInfo: AuctionUserInfo,
   auctionInfo: AuctionInfo,
 }

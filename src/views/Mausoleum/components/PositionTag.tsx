@@ -41,7 +41,6 @@ interface PositionTagProps extends FlexProps {
 }
 
 const PositionTag: React.FC<PositionTagProps> = ({ betPosition, children, ...props }) => {
-  const isUpPosition = betPosition === BetPosition.BULL
   const icon = <ArrowUpIcon color="white" />
 
   return (
