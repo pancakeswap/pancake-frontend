@@ -11,19 +11,12 @@ import stepsConfigBuilder from './config'
 import { StyledBunniesSquadImg, StyledEventStepsSectionContainer } from './styles'
 import { EventStepsProps } from './types'
 
-const EventStepsSection: React.FC<EventStepsProps> = ({
-  fixedSaleInfo,
-  dynamicSaleInfo,
-  isLoading,
-  userStatus,
-  account,
-}) => {
+const EventStepsSection: React.FC<EventStepsProps> = ({ eventInfos, userInfos, isLoading, userStatus, account }) => {
   const { t } = useTranslation()
   const { theme, isDark } = useTheme()
   const { balance: cakeBalance } = useGetCakeBalance()
-  const stepsConfig = stepsConfigBuilder({ t, fixedSaleInfo, dynamicSaleInfo, userStatus, account, theme, cakeBalance })
-  const isMintingFinished =
-    dynamicSaleInfo && fixedSaleInfo && fixedSaleInfo.maxSupply === dynamicSaleInfo.totalSupplyMinted
+  const stepsConfig = stepsConfigBuilder({ t, eventInfos, userInfos, userStatus, account, theme, cakeBalance })
+  const isMintingFinished = userInfos && eventInfos && eventInfos.maxSupply === eventInfos.totalSupplyMinted
   return (
     <StyledEventStepsSectionContainer justifyContent="center" $isDark={isDark}>
       <StyledWaveContainer top="-13px">

@@ -16,22 +16,22 @@ export enum UserStatusEnum {
   PROFILE_ACTIVE_GEN0,
 }
 
-export type FixedSaleInfos = {
+export type EventInfos = {
   maxSupply: number
   maxPerAddress: number
   maxPerTransaction: number
   pricePerTicket: BigNumber
+  totalTicketsDistributed: number
+  saleStatus: SaleStatusEnum
+  totalSupplyMinted: number
+  startTimestamp: number
 }
 
-export type DynamicSaleInfos = {
-  saleStatus: SaleStatusEnum
-  totalTicketsDistributed: number
+export type UserInfos = {
   canClaimForGen0: boolean
   numberTicketsForGen0: number
   numberTicketsUsedForGen0: number
   numberTicketsOfUser: number
   ticketsOfUser: BigNumber[]
-  totalSupplyMinted: number
   numberTokensOfUser: number
-  startTimestamp: number
 }

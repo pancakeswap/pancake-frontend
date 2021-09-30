@@ -26,8 +26,8 @@ const DEFAULT_CAKE_COST = 5
 const DEFAULT_MAX_TICKETS = 20
 
 const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
-  dynamicSaleInfo = {},
-  fixedSaleInfo = {},
+  userInfos = {},
+  eventInfos = {},
   account,
   userStatus,
   isLoading,
@@ -35,19 +35,17 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
   const { t } = useTranslation()
   const { theme, isDark } = useTheme()
   const { balance: cakeBalance } = useGetCakeBalance()
-  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = fixedSaleInfo
+  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = eventInfos
   const {
-    saleStatus,
-    totalTicketsDistributed,
-    canClaimForGen0,
     ticketsOfUser,
     numberTicketsUsedForGen0,
     numberTicketsOfUser,
     numberTicketsForGen0,
-    totalSupplyMinted,
+    canClaimForGen0,
     numberTokensOfUser,
-    startTimestamp,
-  } = dynamicSaleInfo
+  } = userInfos
+
+  const { saleStatus, totalTicketsDistributed, totalSupplyMinted, startTimestamp } = eventInfos
 
   return (
     <StyledSquadHeaderContainer
@@ -79,7 +77,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
       <StyledSquadEventBorder mb="56px">
         <StyledSquadEventContainer m="1px" p="32px">
           <Flex flexDirection={['column', null, 'row']}>
-            {!isLoading && (
+            {saleStatus && startTimestamp && (
               <Box mr="100px">
                 <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} useDark={false} />
               </Box>

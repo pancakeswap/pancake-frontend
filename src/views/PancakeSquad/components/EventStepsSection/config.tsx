@@ -9,27 +9,18 @@ import ReadyText from '../Header/ReadyText'
 import { EventStepsType } from './types'
 import { getStepperStatus } from './utils'
 
-const stepsConfigBuilder = ({
-  t,
-  dynamicSaleInfo,
-  fixedSaleInfo,
-  userStatus,
-  account,
-  theme,
-  cakeBalance,
-}: EventStepsType) => {
-  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = fixedSaleInfo || {}
+const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, theme, cakeBalance }: EventStepsType) => {
+  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = eventInfos || {}
   const {
-    saleStatus,
-    totalTicketsDistributed,
     canClaimForGen0,
     ticketsOfUser,
     numberTicketsUsedForGen0,
     numberTicketsOfUser,
     numberTicketsForGen0,
-    totalSupplyMinted,
     numberTokensOfUser,
-  } = dynamicSaleInfo || {}
+  } = userInfos || {}
+
+  const { saleStatus, totalTicketsDistributed, totalSupplyMinted } = eventInfos || {}
 
   const hasProfileActivated = [UserStatusEnum.PROFILE_ACTIVE, UserStatusEnum.PROFILE_ACTIVE_GEN0].includes(userStatus)
   const isBuyPhaseFinished = totalTicketsDistributed === maxSupply
