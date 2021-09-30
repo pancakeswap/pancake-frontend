@@ -22,6 +22,9 @@ export interface State {
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
+    isFetchingMoreNfts: boolean
+    latestFetchAt: number
+    lastUpdateAt: number
     users: Record<string, User> // string is the address
     user: UserNftsState
   }
@@ -191,22 +194,21 @@ export interface ApiSingleCollectionResponse {
   data: ApiCollection
 }
 
+export interface ApiSingleTokenData {
+  name: string
+  description: string
+  image: Image
+  collection: {
+    name: string
+  }
+}
+
 // Get tokens within collection
 // ${API_NFT}/collections/${collectionAddress}/tokens
 export interface ApiResponseCollectionTokens {
   total: number
   attributesDistribution: Record<string, number>
-  data: Record<
-    string,
-    {
-      name: string
-      description: string
-      image: Image
-      collection: {
-        name: string
-      }
-    }
-  >
+  data: Record<string, ApiSingleTokenData>
 }
 
 // Get specific token data
