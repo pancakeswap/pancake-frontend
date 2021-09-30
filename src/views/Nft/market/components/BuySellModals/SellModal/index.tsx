@@ -8,6 +8,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
+import { ContextApi } from 'contexts/Localization/types'
 import { isAddress } from 'utils'
 import { useNftMarketContract, usePancakeRabbits } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
@@ -25,36 +26,50 @@ import ConfirmStage from '../shared/ConfirmStage'
 import RemoveStage from './RemoveStage'
 import TransferStage from './TransferStage'
 
-const modalTitles = {
-  // Sell flow
-  [SellingStage.SELL]: 'Details',
-  [SellingStage.SET_PRICE]: 'Back',
-  [SellingStage.APPROVE_AND_CONFIRM_SELL]: 'Back',
-  // Adjust price flow
-  [SellingStage.EDIT]: 'Details',
-  [SellingStage.ADJUST_PRICE]: 'Back',
-  [SellingStage.CONFIRM_ADJUST_PRICE]: 'Confirm transaction',
-  // Remove from market flow
-  [SellingStage.REMOVE_FROM_MARKET]: 'Back',
-  [SellingStage.CONFIRM_REMOVE_FROM_MARKET]: 'Confirm transaction',
-  // Transfer flow
-  [SellingStage.TRANSFER]: 'Back',
-  [SellingStage.CONFIRM_TRANSFER]: 'Confirm transaction',
-  // Common
-  [SellingStage.TX_CONFIRMED]: 'Transaction Confirmed',
+export const modalTitles = (stage: SellingStage, t: ContextApi['t']) => {
+  switch (stage) {
+    // Sell flow
+    case SellingStage.SELL:
+      return t('Details')
+    case SellingStage.SET_PRICE:
+    case SellingStage.APPROVE_AND_CONFIRM_SELL:
+      return t('Back')
+    // Adjust price flow
+    case SellingStage.EDIT:
+      return t('Details')
+    case SellingStage.ADJUST_PRICE:
+      return t('Back')
+    case SellingStage.CONFIRM_ADJUST_PRICE:
+      return t('Confirm transaction')
+    // Remove from market flow
+    case SellingStage.REMOVE_FROM_MARKET:
+      return t('Back')
+    case SellingStage.CONFIRM_REMOVE_FROM_MARKET:
+      return t('Confirm transaction')
+    // Transfer flow
+    case SellingStage.TRANSFER:
+      return t('Back')
+    case SellingStage.CONFIRM_TRANSFER:
+      return t('Confirm transaction')
+    // Common
+    case SellingStage.TX_CONFIRMED:
+      return t('Transaction Confirmed')
+    default:
+      return ''
+  }
 }
 
-const getToastText = (variant: string, stage: SellingStage) => {
+const getToastText = (variant: string, stage: SellingStage, t: ContextApi['t']) => {
   if (stage === SellingStage.CONFIRM_REMOVE_FROM_MARKET) {
-    return 'Your NFT has been returned to your wallet'
+    return t('Your NFT has been returned to your wallet')
   }
   if (stage === SellingStage.CONFIRM_TRANSFER) {
-    return 'Your NFT has been transfered to another wallet'
+    return t('Your NFT has been transferred to another wallet')
   }
   if (variant === 'sell') {
-    return 'Your NFT has been listed for sale!'
+    return t('Your NFT has been listed for sale!')
   }
-  return 'Your NFT listing has been changed.'
+  return t('Your NFT listing has been changed.')
 }
 
 interface SellModalProps extends InjectedModalProps {
@@ -212,7 +227,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
       return callWithGasPrice(nftMarketContract, methodName, [nftToSell.collectionAddress, nftToSell.tokenId, askPrice])
     },
     onSuccess: async ({ receipt }) => {
-      toastSuccess(t(getToastText(variant, stage)), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+      toastSuccess(getToastText(variant, stage, t), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       dispatchSuccessAction()
       setConfirmedTxHash(receipt.transactionHash)
       setStage(SellingStage.TX_CONFIRMED)

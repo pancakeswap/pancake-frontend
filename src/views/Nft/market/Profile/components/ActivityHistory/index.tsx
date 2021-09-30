@@ -41,7 +41,7 @@ const ActivityHistory = () => {
   const [maxPage, setMaxPages] = useState(1)
   const [activitiesSlice, setActivitiesSlice] = useState<Activity[]>([])
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
-  const { sortedUserActivites, initializationState } = useUserActivity(accountAddress)
+  const { sortedUserActivities, initializationState } = useUserActivity(accountAddress)
   const bnbBusdPrice = useBNBBusdPrice()
   const { isXs, isSm } = useMatchBreakpoints()
 
@@ -50,7 +50,7 @@ const ActivityHistory = () => {
   useEffect(() => {
     const fetchActivityNftMetadata = async () => {
       const activityNftTokenIds = uniqBy(
-        sortedUserActivites.map((activity): TokenIdWithCollectionAddress => {
+        sortedUserActivities.map((activity): TokenIdWithCollectionAddress => {
           return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id }
         }),
         'tokenId',
@@ -60,11 +60,11 @@ const ActivityHistory = () => {
     }
 
     const getMaxPages = () => {
-      const max = Math.ceil(sortedUserActivites.length / MAX_PER_PAGE)
+      const max = Math.ceil(sortedUserActivities.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
 
-    if (sortedUserActivites.length > 0) {
+    if (sortedUserActivities.length > 0) {
       getMaxPages()
       fetchActivityNftMetadata()
     }
@@ -75,21 +75,21 @@ const ActivityHistory = () => {
       setMaxPages(1)
       setCurrentPage(1)
     }
-  }, [sortedUserActivites])
+  }, [sortedUserActivities])
 
   useEffect(() => {
     const getActivitiesSlice = () => {
-      const slice = sortedUserActivites.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
+      const slice = sortedUserActivities.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
       setActivitiesSlice(slice)
     }
-    if (sortedUserActivites.length > 0) {
+    if (sortedUserActivities.length > 0) {
       getActivitiesSlice()
     }
-  }, [sortedUserActivites, currentPage])
+  }, [sortedUserActivities, currentPage])
 
   return (
     <Card>
-      {sortedUserActivites.length === 0 &&
+      {sortedUserActivities.length === 0 &&
       nftMetadata.length === 0 &&
       activitiesSlice.length === 0 &&
       initializationState === UserNftInitializationState.INITIALIZED ? (

@@ -22,7 +22,7 @@ const MIN_PRICE = 0.005
 const MAX_PRICE = 10000
 
 // Stage where user puts price for NFT they're about to put on sale
-// Also shown when user wants to adjust the price of already lsited NFT
+// Also shown when user wants to adjust the price of already listed NFT
 const SetPriceStage: React.FC<SetPriceStageProps> = ({
   nftToSell,
   variant,
@@ -111,7 +111,7 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
         </Flex>
         {priceIsOutOfRange && (
           <Text fontSize="12px" color="failure">
-            {t('Allowed price range is bettween %minPrice% and %maxPrice% WBNB', {
+            {t('Allowed price range is between %minPrice% and %maxPrice% WBNB', {
               minPrice: MIN_PRICE,
               maxPrice: MAX_PRICE,
             })}

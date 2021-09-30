@@ -34,7 +34,7 @@ const TwoColumnsContainer = styled(Flex)`
 `
 
 const IndividualNFTPage = () => {
-  // For PabncakeBunnies tokenId in url is really bunnyId
+  // For PancakeBunnies tokenId in url is really bunnyId
   const { account } = useWeb3React()
   const { collectionAddress, tokenId } = useParams<{ collectionAddress: string; tokenId: string }>()
   const [attributesDistribution, setAttributesDistribution] = useState<{ [key: string]: number }>(null)

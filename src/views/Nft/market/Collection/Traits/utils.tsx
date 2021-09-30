@@ -2,14 +2,14 @@ import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
 
 type sortBuilder = {
   data: ApiResponseCollectionTokens
-  rarirySort: string
+  raritySort: string
 }
 
-export const sortBunniesByRarirityBuilder =
-  ({ rarirySort, data }: sortBuilder) =>
+export const sortBunniesByRarityBuilder =
+  ({ raritySort, data }: sortBuilder) =>
   (bunnyIdA, bunnyIdB) => {
     const bunnyCountA = data.attributesDistribution[bunnyIdA] ?? 0
     const bunnyCountB = data.attributesDistribution[bunnyIdB] ?? 0
 
-    return rarirySort === 'asc' ? bunnyCountA - bunnyCountB : bunnyCountB - bunnyCountA
+    return raritySort === 'asc' ? bunnyCountA - bunnyCountB : bunnyCountB - bunnyCountA
   }
