@@ -7,7 +7,6 @@ import sum from 'lodash/sum'
 import { formatNumber } from 'utils/formatBalance'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
-import { useNftsFromCollection } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'
 import CollapsibleCard from 'components/CollapsibleCard'
 import useGetLowestPBNftPrice from '../../hooks/useGetLowestPBPrice'
@@ -72,7 +71,6 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
 const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
   const [tokenApiResponse, setTokenApiResponse] = useState<ApiResponseCollectionTokens>(null)
   const [raritySort, setRaritySort] = useState<SortType>('asc')
-  const nfts = useNftsFromCollection(collectionAddress)
   const { t } = useTranslation()
   const { push } = useHistory()
 
@@ -128,12 +126,7 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
                   const count: number = tokenApiResponse.attributesDistribution[bunnyId] ?? 0
                   const percentage = (count / totalMinted) * 100
                   const handleClick = () => {
-                    // Find the corresponding bunny id
-                    const nftInCollection = nfts.find((nftInState) => nftInState.name === nft.name)
-
-                    if (nftInCollection && nftInCollection.marketData?.otherId) {
-                      push(`${nftsBaseUrl}/collections/${collectionAddress}/${nftInCollection.marketData.otherId}`)
-                    }
+                    push(`${nftsBaseUrl}/collections/${collectionAddress}/${bunnyId}`)
                   }
 
                   return (
