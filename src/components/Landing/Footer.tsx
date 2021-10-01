@@ -13,22 +13,16 @@ import YouTubeLogo from "../../images/Youtube_Logo.svg";
 
 const Footer = () => {
   return (
-    <div className="footer-wrapper">
-      <div className="footer_section-2">
-        <div className="footer_logo_wrap">
-          <a href="/" className="brand_link w-inline-block">
-            <img src="https://storage.googleapis.com/rug-zombie/RugZombieBanner.png" width="200" sizes="200px" alt="" className="footer_logo" />
-          </a>
-        </div>
-      </div>
-      <div className="copyrights_wrap-2">
-        <div className="wrapper copyrights_wrapper">
-          <div className="copyright">
-            <a href="#Tokenomics" className="footer_link-2">Tokenomics</a>
-            <a href="#How-To-Buy" className="footer_link-2"> | How to buy</a>
+    <div className="footer-wrapper">      
+      <div className="copyrights_wrap-1">
+        <div className="footer_section-2">
+          <div className="footer_logo_wrap">
+            <a href="/" className="brand_link w-inline-block">
+              <img src="https://storage.googleapis.com/rug-zombie/RugZombieBanner.png" width="200" sizes="200px" alt="" className="footer_logo" />
+            </a>
           </div>
           <div className="social_links_wrapper navbar_sm">
-          <a href="mailto:info@rugzombie.io" rel="noreferrer" target="_blank" className="social_link w-inline-block">
+            <a href="mailto:info@rugzombie.io" rel="noreferrer" target="_blank" className="social_link w-inline-block">
               <img src={EmailLogo} width="27" sizes="30px" alt="" className="image-3" />
             </a>
             <a href="https://coinmarketcap.com/currencies/rugzombie/" rel="noreferrer" target="_blank" className="social_link w-inline-block">
