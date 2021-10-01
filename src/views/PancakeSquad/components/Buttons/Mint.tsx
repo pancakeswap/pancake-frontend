@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { AutoRenewIcon, Button, useModal } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'

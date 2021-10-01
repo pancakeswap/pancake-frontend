@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
-import { ethers } from 'ethers'
+import { ethers, BigNumber } from 'ethers'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake, useNftSaleContract } from 'hooks/useContract'
