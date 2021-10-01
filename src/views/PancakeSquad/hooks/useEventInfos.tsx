@@ -52,7 +52,9 @@ const useEventInfos = ({ refreshCounter, setCallback }) => {
       }
     }
 
-    fetchEventInfos()
+    if (nftSaleAbi.length > 0) {
+      fetchEventInfos()
+    }
   }, [refreshCounter, setCallback])
 }
 

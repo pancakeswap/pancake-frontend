@@ -23,11 +23,11 @@ import {
 import { PancakeSquadHeaderType } from './types'
 
 const DEFAULT_CAKE_COST = 5
-const DEFAULT_MAX_TICKETS = 20
+const DEFAULT_MAX_TICKETS = 10
 
 const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
-  userInfos = {},
-  eventInfos = {},
+  userInfos,
+  eventInfos,
   account,
   userStatus,
   isLoading,
@@ -35,7 +35,8 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
   const { t } = useTranslation()
   const { theme, isDark } = useTheme()
   const { balance: cakeBalance } = useGetCakeBalance()
-  const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = eventInfos
+  const hasData = !!eventInfos && !!userInfos
+  const displayEventBlock = !!eventInfos || isLoading
   const {
     ticketsOfUser,
     numberTicketsUsedForGen0,
@@ -43,9 +44,18 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
     numberTicketsForGen0,
     canClaimForGen0,
     numberTokensOfUser,
-  } = userInfos
+  } = userInfos || {}
 
-  const { saleStatus, totalTicketsDistributed, totalSupplyMinted, startTimestamp } = eventInfos
+  const {
+    maxPerAddress,
+    maxPerTransaction,
+    maxSupply,
+    pricePerTicket,
+    saleStatus,
+    totalTicketsDistributed,
+    totalSupplyMinted,
+    startTimestamp,
+  } = eventInfos || {}
 
   return (
     <StyledSquadHeaderContainer
@@ -69,70 +79,74 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         <br />
         {t('Max per wallet: %maxPerWallet%', { maxPerWallet: maxPerAddress ?? DEFAULT_MAX_TICKETS })}
       </Text>
-      <Text color={lightColors.invertedContrast} mb="32px" textAlign="center">
+      <Text color={lightColors.invertedContrast} mb={!displayEventBlock ? '80px' : '32px'} textAlign="center">
         {t('PancakeSwap’s first official generative NFT collection.')}
         <br />
         {t('Join the squad.')}
       </Text>
-      <StyledSquadEventBorder mb="56px">
-        <StyledSquadEventContainer m="1px" p="32px">
-          <Flex flexDirection={['column', null, 'row']}>
-            {saleStatus && startTimestamp && (
-              <Box mr="100px">
-                <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} useDark={false} />
-              </Box>
-            )}
-            <Flex flexDirection="column">
-              {isLoading ? (
-                userStatus === UserStatusEnum.UNCONNECTED ? (
-                  <ConnectWalletButton userStatus={userStatus} />
-                ) : (
-                  <Spinner />
-                )
-              ) : (
-                <>
-                  <PreEventText t={t} userStatus={userStatus} saleStatus={saleStatus} />
-                  <SaleProgress
-                    t={t}
-                    userStatus={userStatus}
-                    saleStatus={saleStatus}
-                    totalTicketsDistributed={totalTicketsDistributed}
-                    maxSupply={maxSupply}
-                    totalSupplyMinted={totalSupplyMinted}
-                  />
-                  <MintText
-                    t={t}
-                    userStatus={userStatus}
-                    saleStatus={saleStatus}
-                    numberTicketsOfUser={numberTicketsOfUser}
-                    numberTokensOfUser={numberTokensOfUser}
-                  />
-                  <CtaButtons
-                    t={t}
-                    account={account}
-                    theme={theme}
-                    userStatus={userStatus}
-                    saleStatus={saleStatus}
-                    numberTokensOfUser={numberTokensOfUser}
-                    canClaimForGen0={canClaimForGen0}
-                    maxPerAddress={maxPerAddress}
-                    maxSupply={maxSupply}
-                    numberTicketsOfUser={numberTicketsOfUser}
-                    numberTicketsUsedForGen0={numberTicketsUsedForGen0}
-                    totalSupplyMinted={totalSupplyMinted}
-                    cakeBalance={cakeBalance}
-                    maxPerTransaction={maxPerTransaction}
-                    numberTicketsForGen0={numberTicketsForGen0}
-                    pricePerTicket={pricePerTicket}
-                    ticketsOfUser={ticketsOfUser}
-                    startTimestamp={startTimestamp}
-                  />
-                </>
+      {displayEventBlock && (
+        <StyledSquadEventBorder mb="56px">
+          <StyledSquadEventContainer m="1px" p="32px">
+            <Flex flexDirection={['column', null, 'row']}>
+              {eventInfos && (
+                <Box mr="100px">
+                  <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} useDark={false} />
+                </Box>
               )}
+              <Flex flexDirection="column">
+                {isLoading ? (
+                  userStatus === UserStatusEnum.UNCONNECTED ? (
+                    <ConnectWalletButton userStatus={userStatus} />
+                  ) : (
+                    <Spinner />
+                  )
+                ) : (
+                  hasData && (
+                    <>
+                      <PreEventText t={t} userStatus={userStatus} saleStatus={saleStatus} />
+                      <SaleProgress
+                        t={t}
+                        userStatus={userStatus}
+                        saleStatus={saleStatus}
+                        totalTicketsDistributed={totalTicketsDistributed}
+                        maxSupply={maxSupply}
+                        totalSupplyMinted={totalSupplyMinted}
+                      />
+                      <MintText
+                        t={t}
+                        userStatus={userStatus}
+                        saleStatus={saleStatus}
+                        numberTicketsOfUser={numberTicketsOfUser}
+                        numberTokensOfUser={numberTokensOfUser}
+                      />
+                      <CtaButtons
+                        t={t}
+                        account={account}
+                        theme={theme}
+                        userStatus={userStatus}
+                        saleStatus={saleStatus}
+                        numberTokensOfUser={numberTokensOfUser}
+                        canClaimForGen0={canClaimForGen0}
+                        maxPerAddress={maxPerAddress}
+                        maxSupply={maxSupply}
+                        numberTicketsOfUser={numberTicketsOfUser}
+                        numberTicketsUsedForGen0={numberTicketsUsedForGen0}
+                        totalSupplyMinted={totalSupplyMinted}
+                        cakeBalance={cakeBalance}
+                        maxPerTransaction={maxPerTransaction}
+                        numberTicketsForGen0={numberTicketsForGen0}
+                        pricePerTicket={pricePerTicket}
+                        ticketsOfUser={ticketsOfUser}
+                        startTimestamp={startTimestamp}
+                      />
+                    </>
+                  )
+                )}
+              </Flex>
             </Flex>
-          </Flex>
-        </StyledSquadEventContainer>
-      </StyledSquadEventBorder>
+          </StyledSquadEventContainer>
+        </StyledSquadEventBorder>
+      )}
       <StyledWaveContainer bottom="-2px">
         <HeaderBottomWave isDark={isDark} />
       </StyledWaveContainer>

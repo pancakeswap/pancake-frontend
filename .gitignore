@@ -35,6 +35,3 @@ yarn-debug.log*
 yarn-error.log*
 debug.log*
 
-# ABI
-nftSale.json
-pancakeSquad.json

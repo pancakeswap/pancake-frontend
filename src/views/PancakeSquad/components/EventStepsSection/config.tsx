@@ -25,6 +25,7 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
   const hasProfileActivated = [UserStatusEnum.PROFILE_ACTIVE, UserStatusEnum.PROFILE_ACTIVE_GEN0].includes(userStatus)
   const isBuyPhaseFinished = totalTicketsDistributed === maxSupply
   const isMintingFinished = totalSupplyMinted === maxSupply
+  const hasData = !!eventInfos && !!userInfos
 
   return [
     {
@@ -84,22 +85,24 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
       ],
       buttons: (
         <>
-          <BuyTicketsButtons
-            t={t}
-            account={account}
-            theme={theme}
-            userStatus={userStatus}
-            saleStatus={saleStatus}
-            canClaimForGen0={canClaimForGen0}
-            maxPerAddress={maxPerAddress}
-            numberTicketsOfUser={numberTicketsOfUser}
-            numberTicketsUsedForGen0={numberTicketsUsedForGen0}
-            cakeBalance={cakeBalance}
-            maxPerTransaction={maxPerTransaction}
-            numberTicketsForGen0={numberTicketsForGen0}
-            pricePerTicket={pricePerTicket}
-          />
-          {isBuyPhaseFinished && <ReadyText mt="16px" text={t('Phase Complete!')} />}
+          {hasData && (
+            <BuyTicketsButtons
+              t={t}
+              account={account}
+              theme={theme}
+              userStatus={userStatus}
+              saleStatus={saleStatus}
+              canClaimForGen0={canClaimForGen0}
+              maxPerAddress={maxPerAddress}
+              numberTicketsOfUser={numberTicketsOfUser}
+              numberTicketsUsedForGen0={numberTicketsUsedForGen0}
+              cakeBalance={cakeBalance}
+              maxPerTransaction={maxPerTransaction}
+              numberTicketsForGen0={numberTicketsForGen0}
+              pricePerTicket={pricePerTicket}
+            />
+          )}
+          {isBuyPhaseFinished && hasData && <ReadyText mt="16px" text={t('Phase Complete!')} />}
         </>
       ),
     },
@@ -117,15 +120,17 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
       ],
       buttons: (
         <>
-          <MintButton
-            t={t}
-            theme={theme}
-            saleStatus={saleStatus}
-            numberTicketsOfUser={numberTicketsOfUser}
-            numberTokensOfUser={numberTokensOfUser}
-            ticketsOfUser={ticketsOfUser}
-          />
-          {isMintingFinished && <ReadyText mt="16px" text={t('Phase Complete!')} />}
+          {hasData && (
+            <MintButton
+              t={t}
+              theme={theme}
+              saleStatus={saleStatus}
+              numberTicketsOfUser={numberTicketsOfUser}
+              numberTokensOfUser={numberTokensOfUser}
+              ticketsOfUser={ticketsOfUser}
+            />
+          )}
+          {isMintingFinished && hasData && <ReadyText mt="16px" text={t('Phase Complete!')} />}
         </>
       ),
     },
@@ -144,15 +149,17 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
       ],
       buttons: (
         <>
-          <EndEventButtons
-            t={t}
-            saleStatus={saleStatus}
-            userStatus={userStatus}
-            maxSupply={maxSupply}
-            totalSupplyMinted={totalSupplyMinted}
-            numberTokensOfUser={numberTokensOfUser}
-            account={account}
-          />
+          {hasData && (
+            <EndEventButtons
+              t={t}
+              saleStatus={saleStatus}
+              userStatus={userStatus}
+              maxSupply={maxSupply}
+              totalSupplyMinted={totalSupplyMinted}
+              numberTokensOfUser={numberTokensOfUser}
+              account={account}
+            />
+          )}
         </>
       ),
     },
