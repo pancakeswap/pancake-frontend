@@ -8,8 +8,10 @@ export interface LowestNftPrice {
   lowestPrice: number
 }
 
-export const getBunnyIdFromNft = (nft: NftToken): string =>
-  nft.attributes?.find((attr) => attr.traitType === 'bunnyId').value.toString()
+const getBunnyIdFromNft = (nft: NftToken): string => {
+  const bunnyId = nft.attributes?.find((attr) => attr.traitType === 'bunnyId')?.value
+  return bunnyId ? bunnyId.toString() : null
+}
 
 export const useGetLowestPriceFromBunnyId = (bunnyId: string): LowestNftPrice => {
   const [isFetching, setIsFetching] = useState<boolean>(false)
