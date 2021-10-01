@@ -62,6 +62,8 @@ export const getBlocksFromTimestamps = async (
 /**
  * for a given array of timestamps, returns block entities
  * @param timestamps
+ * @param sortDirection
+ * @param skipCount
  */
 export const useBlocksFromTimestamps = (
   timestamps: number[],
@@ -74,19 +76,24 @@ export const useBlocksFromTimestamps = (
   const [blocks, setBlocks] = useState<Block[]>()
   const [error, setError] = useState(false)
 
+  const timestampsString = JSON.stringify(timestamps)
+  const blocksString = blocks ? JSON.stringify(blocks) : undefined
+
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getBlocksFromTimestamps(timestamps, sortDirection, skipCount)
+      const timestampsArray = JSON.parse(timestampsString)
+      const result = await getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount)
       if (result.length === 0) {
         setError(true)
       } else {
         setBlocks(result)
       }
     }
-    if (!blocks && !error) {
+    const blocksArray = blocksString ? JSON.parse(blocksString) : undefined
+    if (!blocksArray && !error) {
       fetchData()
     }
-  }) // TODO: dep array?
+  }, [blocksString, error, skipCount, sortDirection, timestampsString])
 
   return {
     blocks,
