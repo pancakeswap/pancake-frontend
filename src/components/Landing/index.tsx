@@ -24,6 +24,7 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
   return (
     <>
     <Header />
+    <br /><br /><br /><br /><br />
     <div className="section hero-section">
       <div className="container w-container">
         <img  src='/images/rugZombie/loader.gif' width="350" alt="" className="image" />
