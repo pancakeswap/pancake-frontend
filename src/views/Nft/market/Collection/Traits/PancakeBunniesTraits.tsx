@@ -9,7 +9,7 @@ import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import CollapsibleCard from 'components/CollapsibleCard'
-import useGetLowestPBNftPrice from '../../hooks/useGetLowestPBPrice'
+import { useGetLowestPriceFromBunnyId } from '../../hooks/useGetLowestPrice'
 import { BNBAmountLabel } from '../../components/CollectibleCard/styles'
 import { StyledSortButton } from './styles'
 import { sortBunniesByRarityBuilder } from './utils'
@@ -51,7 +51,7 @@ const NftName: React.FC<{ thumbnailSrc: string; name: string }> = ({ thumbnailSr
 )
 
 const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
-  const { isFetching, lowestPrice } = useGetLowestPBNftPrice(bunnyId)
+  const { isFetching, lowestPrice } = useGetLowestPriceFromBunnyId(bunnyId)
 
   if (isFetching) {
     return (

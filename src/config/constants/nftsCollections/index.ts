@@ -15,7 +15,7 @@ const collections: Collections = {
     slug: 'pancake-squad',
     address: {
       56: '',
-      97: '0x7F9F37Ddcaa33893F9bEB3D8748c8D6BfbDE6AB2',
+      97: '0xEf12ef570300bFA65c4F022deAaA3dfF4f5d5c91',
     },
   },
 }
