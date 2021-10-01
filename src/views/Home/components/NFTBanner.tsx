@@ -152,7 +152,7 @@ const NFTBanner: React.FC = () => {
               </Over>
             </>
           }
-          <NavLink exact activeClassName='active' to='/mausoleum' id='lottery-pot-banner' style={{paddingTop: "8px"}}>
+          <NavLink exact activeClassName='active' to='/mausoleum/2' id='lottery-pot-banner' style={{paddingTop: "8px"}}>
             <Button>
               <Text color='white' bold fontSize='16px' mr='4px'>
                 {t('Enter the Mausoleum')}
