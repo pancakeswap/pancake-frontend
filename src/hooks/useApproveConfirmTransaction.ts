@@ -79,7 +79,6 @@ interface ApproveConfirmTransaction {
   onRequiresApproval?: () => Promise<boolean>
   onSuccess: ({ state, receipt }: OnSuccessProps) => void
   onApproveSuccess?: ({ state, receipt }: OnSuccessProps) => void
-  showSuccessToast?: boolean
 }
 
 const useApproveConfirmTransaction = ({
@@ -88,13 +87,12 @@ const useApproveConfirmTransaction = ({
   onRequiresApproval,
   onSuccess = noop,
   onApproveSuccess = noop,
-  showSuccessToast = false,
 }: ApproveConfirmTransaction) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const [state, dispatch] = useReducer(reducer, initialState)
   const handlePreApprove = useRef(onRequiresApproval)
-  const { toastError, toastSuccess } = useToast()
+  const { toastError } = useToast()
 
   // Check if approval is necessary, re-check if account changes
   useEffect(() => {
@@ -122,7 +120,6 @@ const useApproveConfirmTransaction = ({
         if (receipt.status) {
           dispatch({ type: 'approve_receipt' })
           onApproveSuccess({ state, receipt })
-          if (showSuccessToast) toastSuccess(t('Transaction has succeeded!'))
         }
       } catch (error) {
         dispatch({ type: 'approve_error' })
@@ -137,7 +134,6 @@ const useApproveConfirmTransaction = ({
         if (receipt.status) {
           dispatch({ type: 'confirm_receipt' })
           onSuccess({ state, receipt })
-          if (showSuccessToast) toastSuccess(t('Transaction has succeeded!'))
         }
       } catch (error) {
         dispatch({ type: 'confirm_error' })

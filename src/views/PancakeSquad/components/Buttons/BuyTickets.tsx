@@ -6,6 +6,7 @@ import { ethers, BigNumber } from 'ethers'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake, useNftSaleContract } from 'hooks/useContract'
+import useToast from 'hooks/useToast'
 import { DefaultTheme } from 'styled-components'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import { PancakeSquadContext } from 'views/PancakeSquad/context'
@@ -53,6 +54,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   const [txHashBuyingResult, setTxHashBuyingResult] = useState(null)
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
+  const { toastSuccess } = useToast()
   const cakeContract = useCake()
   const { isUserEnabled, setIsUserEnabled } = useContext(PancakeSquadContext)
 
@@ -79,6 +81,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
         return callWithGasPrice(cakeContract, 'approve', [nftSaleContract.address, ethers.constants.MaxUint256])
       },
       onApproveSuccess: async ({ receipt }) => {
+        toastSuccess(t('Transaction has succeeded!'))
         setTxHashEnablingResult(receipt.transactionHash)
       },
       onConfirm: ({ ticketsNumber }) => {
@@ -88,9 +91,9 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
         ])
       },
       onSuccess: async ({ receipt }) => {
+        toastSuccess(t('Transaction has succeeded!'))
         setTxHashBuyingResult(receipt.transactionHash)
       },
-      showSuccessToast: true,
     })
 
   const onConfirmClose = () => {
