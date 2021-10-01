@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useHasGen0Nfts } from 'state/nftMarket/hooks'
-import { useProfile } from 'state/profile/hooks'
 import nftSaleAbi from 'config/abi/nftSale.json'
+import { useFetchCollections, useHasGen0Nfts } from 'state/nftMarket/hooks'
+import { useProfile } from 'state/profile/hooks'
+import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
 import ArtistSection from './components/ArtistSection'
 import BunniesSection from './components/BunniesSection'
 import EventDescriptionSection from './components/EventDescriptionSection'
@@ -30,6 +31,8 @@ const PancakeSquad: React.FC = () => {
 
   useEventInfos({ setCallback: setEventInfo, refreshCounter })
   useUserInfos({ setCallback: setUserInfos, refreshCounter, account })
+  useFetchCollections()
+  useFetchUserNfts(account)
 
   const userStatus = getUserStatus({
     account,
