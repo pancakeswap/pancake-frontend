@@ -1,4 +1,4 @@
-import getBuyButtonText from 'views/PancakeSquad/components/Buttons/utils'
+import { getBuyButtonText } from 'views/PancakeSquad/components/Buttons/utils'
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 describe('PancakeSquad/buttons/utils/getBuyButtonText', () => {
