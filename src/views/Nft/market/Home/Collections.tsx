@@ -63,7 +63,7 @@ const Collections = () => {
         <HotCollectionCard
           disabled
           bgSrc="/images/collections/no-collection-banner-sm.png"
-          collectionName="Coming Soon"
+          collectionName={t('Coming Soon')}
         >
           <Text color="textDisabled" fontSize="12px">
             {t('More Collections are on their way!')}

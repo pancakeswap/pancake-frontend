@@ -26,8 +26,8 @@ export interface Activity {
  */
 const useUserActivity = (
   account: string,
-): { sortedUserActivites: Activity[]; initializationState: UserNftInitializationState } => {
-  const [sortedUserActivites, setSortedUserActivities] = useState<Activity[]>([])
+): { sortedUserActivities: Activity[]; initializationState: UserNftInitializationState } => {
+  const [sortedUserActivities, setSortedUserActivities] = useState<Activity[]>([])
   const {
     activity: { askOrderHistory, buyTradeHistory, sellTradeHistory, initializationState },
   } = useUserNfts()
@@ -92,7 +92,7 @@ const useUserActivity = (
     }
   }, [account, askOrderHistory, buyTradeHistory, sellTradeHistory])
 
-  return { sortedUserActivites, initializationState }
+  return { sortedUserActivities, initializationState }
 }
 
 export default useUserActivity

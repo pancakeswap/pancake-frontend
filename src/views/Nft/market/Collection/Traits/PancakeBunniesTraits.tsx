@@ -13,7 +13,7 @@ import CollapsibleCard from 'components/CollapsibleCard'
 import useGetLowestPBNftPrice from '../../hooks/useGetLowestPBPrice'
 import { BNBAmountLabel } from '../../components/CollectibleCard/styles'
 import { StyledSortButton } from './styles'
-import { sortBunniesByRarirityBuilder } from './utils'
+import { sortBunniesByRarityBuilder } from './utils'
 import { nftsBaseUrl } from '../../constants'
 import { SortType } from '../../types'
 
@@ -71,7 +71,7 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
 
 const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
   const [tokenApiResponse, setTokenApiResponse] = useState<ApiResponseCollectionTokens>(null)
-  const [rarirySort, setRarirySort] = useState<SortType>('asc')
+  const [raritySort, setRaritySort] = useState<SortType>('asc')
   const nfts = useNftsFromCollection(collectionAddress)
   const { t } = useTranslation()
   const { push } = useHistory()
@@ -90,11 +90,11 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
   const sortedBunnieKeys = useMemo(() => {
     if (!tokenApiResponse) return []
 
-    return Object.keys(tokenApiResponse.data).sort(sortBunniesByRarirityBuilder({ rarirySort, data: tokenApiResponse }))
-  }, [rarirySort, tokenApiResponse])
+    return Object.keys(tokenApiResponse.data).sort(sortBunniesByRarityBuilder({ raritySort, data: tokenApiResponse }))
+  }, [raritySort, tokenApiResponse])
 
-  const toggleRarirySort = () => {
-    setRarirySort((currentValue) => (currentValue === 'asc' ? 'desc' : 'asc'))
+  const toggleRaritySort = () => {
+    setRaritySort((currentValue) => (currentValue === 'asc' ? 'desc' : 'asc'))
   }
 
   return (
@@ -108,10 +108,10 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
                   <Th textAlign="left">{t('Name')}</Th>
                   <Th>{t('Count')}</Th>
                   <Th>
-                    <StyledSortButton type="button" onClick={toggleRarirySort}>
+                    <StyledSortButton type="button" onClick={toggleRaritySort}>
                       <Flex alignItems="center">
                         {t('Rarity')}
-                        {rarirySort === 'asc' ? <ArrowUpIcon color="secondary" /> : <ArrowDownIcon color="secondary" />}
+                        {raritySort === 'asc' ? <ArrowUpIcon color="secondary" /> : <ArrowDownIcon color="secondary" />}
                       </Flex>
                     </StyledSortButton>
                   </Th>

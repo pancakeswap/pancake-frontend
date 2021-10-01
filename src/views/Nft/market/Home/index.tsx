@@ -87,7 +87,7 @@ const Home = () => {
         <Newest />
       </PageSection>
       <Gradient p="64px 0">
-        <SectionsWithFoldableText header="FAQs" config={config} m="auto" />
+        <SectionsWithFoldableText header={t('FAQs')} config={config} m="auto" />
       </Gradient>
     </>
   )

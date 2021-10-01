@@ -22,10 +22,10 @@ const Collectible = () => {
           <Table>
             <thead>
               <tr>
-                <Th textAlign="left">Collection</Th>
-                <Th textAlign="left">Volume</Th>
-                <Th textAlign="left">Items</Th>
-                <Th textAlign="left">Supply</Th>
+                <Th textAlign="left">{t('Collection')}</Th>
+                <Th textAlign="left">{t('Volume')}</Th>
+                <Th textAlign="left">{t('Items')}</Th>
+                <Th textAlign="left">{t('Supply')}</Th>
               </tr>
             </thead>
             <tbody>
