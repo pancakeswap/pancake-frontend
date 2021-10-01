@@ -19,7 +19,6 @@ interface CollectionNftsProps {
 const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'updatedAt' }) => {
   const { address } = collection
   const checksummedAddress = getAddress(address)
-  const nfts = useNftsFromCollection(checksummedAddress)
   const dispatch = useAppDispatch()
 
   const isPBCollection = address === pancakeBunniesAddress
@@ -28,17 +27,20 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
     dispatch(fetchNftsFromCollections(checksummedAddress))
   }, [checksummedAddress, dispatch])
 
+  const nfts = useNftsFromCollection(checksummedAddress)
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(address)
 
-  let nftsToShow = isPBCollection ? allPancakeBunnyNfts : nfts.filter((nft) => nft.marketData.isTradable)
+  const currentNfts = isPBCollection ? allPancakeBunnyNfts : nfts?.filter((nft) => nft.marketData.isTradable)
 
-  if (!nftsToShow) {
+  if (!currentNfts) {
     return <GridPlaceholder />
   }
 
-  nftsToShow = orderBy(nftsToShow, (nft) => (isPBCollection ? nft.meta[sortBy] : Number(nft.marketData[sortBy])), [
-    sortBy === 'currentAskPrice' ? 'asc' : 'desc',
-  ])
+  const nftsToShow = orderBy(
+    currentNfts,
+    (nft) => (isPBCollection ? nft.meta[sortBy] : Number(nft.marketData[sortBy])),
+    [sortBy === 'currentAskPrice' ? 'asc' : 'desc'],
+  )
 
   return (
     <Grid
