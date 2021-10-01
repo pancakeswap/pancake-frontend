@@ -1,4 +1,4 @@
-import { MenuEntry } from '@rug-zombie-libs/uikit'
+import { MenuEntry } from '@catacombs-libs/uikit'
 
 const config: MenuEntry[] = [
   // {
@@ -7,12 +7,22 @@ const config: MenuEntry[] = [
   //   href: '/home',
   // },
   // {
-  //   label: 'Burn Graves',
+  //   label: 'Barracks',
   //   icon: 'PoolIcon',
   //   href: '/graves',
   // },
   // {
-  //   label: 'Rug Swap',
+  //   label: 'Rug Roll',
+  //   icon: 'FarmIcon',
+  //   href: '/tombs',
+  // },
+  // {
+  //   label: 'Data Lab',
+  //   icon: 'FarmIcon',
+  //   href: '/tombs',
+  // },
+  // {
+  //   label: 'Black Market',
   //   icon: 'FarmIcon',
   //   href: '/tombs',
   // },
