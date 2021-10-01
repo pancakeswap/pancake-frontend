@@ -109,7 +109,7 @@ export const getCustomMeta = (path: string, t: ContextApi['t']): PageMeta => {
       }
     case '/info/tokens':
       return {
-        title: `${t('Pools')} | ${t('PancakeSwap Info & Analytics')}`,
+        title: `${t('Tokens')} | ${t('PancakeSwap Info & Analytics')}`,
         description: 'View statistics for Pancakeswap exchanges.',
       }
     case '/nfts/profile':
