@@ -2,9 +2,9 @@ import Cookies from 'js-cookie'
 import { Profile } from 'state/types'
 import { GetUserProfileResponse } from 'utils/types'
 import { getProfileContract } from 'utils/contractHelpers'
-import { Nft } from 'config/constants/nfts/types'
-import { getNftByTokenId } from 'utils/collectibles'
 import { getTeam } from 'state/teams/helpers'
+import { NftToken } from 'state/nftMarket/types'
+import { getNftApi } from 'state/nftMarket/helpers'
 
 export interface GetProfileResponse {
   hasRegistered: boolean
@@ -12,14 +12,14 @@ export interface GetProfileResponse {
 }
 
 const transformProfileResponse = (profileResponse: GetUserProfileResponse): Partial<Profile> => {
-  const { 0: userId, 1: numberPoints, 2: teamId, 3: nftAddress, 4: tokenId, 5: isActive } = profileResponse
+  const { 0: userId, 1: numberPoints, 2: teamId, 3: collectionAddress, 4: tokenId, 5: isActive } = profileResponse
 
   return {
     userId: userId.toNumber(),
     points: numberPoints.toNumber(),
     teamId: teamId.toNumber(),
     tokenId: tokenId.toNumber(),
-    nftAddress,
+    collectionAddress,
     isActive,
   }
 }
@@ -55,11 +55,26 @@ export const getProfileAvatar = async (address: string) => {
     }
 
     const profileResponse = await profileContract.getUserProfile(address)
-    const { tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
+    const { tokenId, collectionAddress, isActive } = transformProfileResponse(profileResponse)
 
     let nft = null
     if (isActive) {
-      nft = await getNftByTokenId(nftAddress, tokenId)
+      const apiRes = await getNftApi(collectionAddress, tokenId.toString())
+
+      nft = {
+        tokenId: apiRes.tokenId,
+        name: apiRes.name,
+        collectionName: apiRes.collection.name,
+        collectionAddress,
+        description: apiRes.description,
+        attributes: apiRes.attributes,
+        createdAt: apiRes.createdAt,
+        updatedAt: apiRes.updatedAt,
+        image: {
+          original: apiRes.image?.original,
+          thumbnail: apiRes.image?.thumbnail,
+        },
+      }
     }
 
     return { nft, hasRegistered }
@@ -77,22 +92,37 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
     }
 
     const profileResponse = await profileContract.getUserProfile(address)
-    const { userId, points, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
+    const { userId, points, teamId, tokenId, collectionAddress, isActive } = transformProfileResponse(profileResponse)
     const team = await getTeam(teamId)
     const username = await getUsername(address)
+    let nftToken: NftToken
 
     // If the profile is not active the tokenId returns 0, which is still a valid token id
     // so only fetch the nft data if active
-    let nft: Nft
     if (isActive) {
-      nft = await getNftByTokenId(nftAddress, tokenId)
+      const apiRes = await getNftApi(collectionAddress, tokenId.toString())
+
+      nftToken = {
+        tokenId: apiRes.tokenId,
+        name: apiRes.name,
+        collectionName: apiRes.collection.name,
+        collectionAddress,
+        description: apiRes.description,
+        attributes: apiRes.attributes,
+        createdAt: apiRes.createdAt,
+        updatedAt: apiRes.updatedAt,
+        image: {
+          original: apiRes.image?.original,
+          thumbnail: apiRes.image?.thumbnail,
+        },
+      }
 
       // Save the preview image in a cookie so it can be used on the exchange
       Cookies.set(
         `profile_${address}`,
         {
           username,
-          avatar: `https://pancakeswap.finance/images/nfts/${nft?.images.sm}`,
+          avatar: `${nftToken.image.thumbnail}`,
         },
         { domain: 'pancakeswap.finance', secure: true, expires: 30 },
       )
@@ -104,9 +134,9 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
       teamId,
       tokenId,
       username,
-      nftAddress,
+      collectionAddress,
       isActive,
-      nft,
+      nft: nftToken,
       team,
     } as Profile
 

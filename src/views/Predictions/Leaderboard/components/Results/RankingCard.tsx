@@ -64,7 +64,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
                 <Flex mb="4px">
                   <RotatedLaurelLeftIcon color={rankColor} width="32px" />
                   <Box width={['40px', null, null, '64px']} height={['40px', null, null, '64px']}>
-                    <ProfileAvatar src={`/images/nfts/${profileAvatar.nft?.images?.md}`} height={64} width={64} />
+                    <ProfileAvatar src={profileAvatar.nft?.image?.thumbnail} height={64} width={64} />
                   </Box>
                   <RotatedLaurelRightIcon color={rankColor} width="32px" />
                 </Flex>

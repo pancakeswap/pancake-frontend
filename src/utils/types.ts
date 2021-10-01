@@ -107,7 +107,7 @@ export interface FarmAuctionContract extends Contract {
 }
 
 // Profile contract
-// [userId, points, teamId, tokenId, nftAddress isActive]
+// [userId, points, teamId, tokenId, collectionAddress isActive]
 export type GetUserProfileResponse = [
   ethers.BigNumber,
   ethers.BigNumber,

@@ -38,7 +38,7 @@ const ProfilePicture: React.FC = () => {
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleApprove = async () => {
-    const contract = getErc721Contract(selectedNft.nftAddress, library.getSigner())
+    const contract = getErc721Contract(selectedNft.collectionAddress, library.getSigner())
     const tx = await callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
     setIsApproving(true)
     const receipt = await tx.wait()
