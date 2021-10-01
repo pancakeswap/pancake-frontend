@@ -12,6 +12,7 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 
 interface Props {
   ifo: Ifo
@@ -54,6 +55,27 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
 
   const renderCardBody = (step: number) => {
     const isStepValid = stepsValidationStatus[step]
+
+    const renderAccountStatus = () => {
+      if (!account) {
+        return <ConnectWalletButton />
+      }
+
+      if (isStepValid) {
+        return (
+          <Text color="success" bold>
+            {t('Profile Active!')}
+          </Text>
+        )
+      }
+
+      return (
+        <Button as={RouterLink} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`}>
+          {t('Activate your Profile')}
+        </Button>
+      )
+    }
+
     switch (step) {
       case 0:
         return (
@@ -64,15 +86,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
             <Text color="textSubtle" small mb="16px">
               {t('You’ll need an active PancakeSwap Profile to take part in an IFO!')}
             </Text>
-            {isStepValid ? (
-              <Text color="success" bold>
-                {t('Profile Active!')}
-              </Text>
-            ) : (
-              <Button as={RouterLink} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`}>
-                {t('Activate your Profile')}
-              </Button>
-            )}
+            {renderAccountStatus()}
           </CardBody>
         )
       case 1:
