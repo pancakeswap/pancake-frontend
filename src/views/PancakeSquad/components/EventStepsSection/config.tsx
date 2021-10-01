@@ -20,7 +20,7 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
     numberTokensOfUser,
   } = userInfos || {}
 
-  const { saleStatus, totalTicketsDistributed, totalSupplyMinted } = eventInfos || {}
+  const { saleStatus, totalTicketsDistributed, totalSupplyMinted, startTimestamp } = eventInfos || {}
 
   const hasProfileActivated = [UserStatusEnum.PROFILE_ACTIVE, UserStatusEnum.PROFILE_ACTIVE_GEN0].includes(userStatus)
   const isBuyPhaseFinished = totalTicketsDistributed === maxSupply
@@ -100,6 +100,7 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
               maxPerTransaction={maxPerTransaction}
               numberTicketsForGen0={numberTicketsForGen0}
               pricePerTicket={pricePerTicket}
+              startTimestamp={startTimestamp}
             />
           )}
           {isBuyPhaseFinished && hasData && <ReadyText mt="16px" text={t('Phase Complete!')} />}

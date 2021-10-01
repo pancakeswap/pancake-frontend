@@ -19,13 +19,26 @@ export const getBuyButtonText = ({ t, canBuyTickets, saleStatus, numberTicketsOf
 type getBuyButtonProps = {
   isApproved: boolean
   isUserReady: boolean
-  isSalePhase: boolean
+  isGen0User: boolean
+  saleStatus: SaleStatusEnum
+  startTimestamp: number
 }
 
-export const getBuyButton = ({ isApproved, isSalePhase, isUserReady }: getBuyButtonProps) => {
+export const getBuyButton = ({
+  isApproved,
+  isGen0User,
+  saleStatus,
+  startTimestamp,
+  isUserReady,
+}: getBuyButtonProps) => {
+  const now = Date.now()
   if (!isApproved) return BuyButtonsEnum.ENABLE
-  if (isSalePhase) return BuyButtonsEnum.BUY
   if (isUserReady) return BuyButtonsEnum.READY
+  if (
+    (saleStatus === SaleStatusEnum.Presale && isGen0User) ||
+    (saleStatus === SaleStatusEnum.Sale && now >= startTimestamp)
+  )
+    return BuyButtonsEnum.BUY
 
   return BuyButtonsEnum.NONE
 }

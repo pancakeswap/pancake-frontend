@@ -30,6 +30,7 @@ type BuyTicketsProps = {
   numberTicketsUsedForGen0: number
   cakeBalance: BigNumber
   pricePerTicket: BigNumber
+  startTimestamp: number
 }
 
 const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
@@ -46,6 +47,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   numberTicketsUsedForGen0,
   cakeBalance,
   pricePerTicket,
+  startTimestamp,
 }) => {
   const [txHashEnablingResult, setTxHashEnablingResult] = useState(null)
   const [txHashBuyingResult, setTxHashBuyingResult] = useState(null)
@@ -57,11 +59,10 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   const canBuySaleTicket =
     saleStatus === SaleStatusEnum.Sale && numberTicketsOfUser - numberTicketsUsedForGen0 < maxPerAddress
   const isPreSale = saleStatus === SaleStatusEnum.Presale
-  const isSale = saleStatus === SaleStatusEnum.Sale
-  const isGen0User = UserStatusEnum.PROFILE_ACTIVE_GEN0
+  const isGen0User = userStatus === UserStatusEnum.PROFILE_ACTIVE_GEN0
   const isUserReady =
     (userStatus === UserStatusEnum.PROFILE_ACTIVE && saleStatus < SaleStatusEnum.Sale) ||
-    (userStatus === isGen0User && saleStatus === SaleStatusEnum.Pending)
+    (isGen0User && saleStatus === SaleStatusEnum.Pending)
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm, hasApproveFailed, hasConfirmFailed } =
     useApproveConfirmTransaction({
@@ -152,7 +153,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   }
 
   const canBuyTickets = (canClaimForGen0 || canBuySaleTicket) && isUserEnabled
-  const buyButton = getBuyButton({ isApproved: isUserEnabled, isSalePhase: isPreSale || isSale, isUserReady })
+  const buyButton = getBuyButton({ isApproved: isUserEnabled, isGen0User, saleStatus, startTimestamp, isUserReady })
 
   return (
     <>

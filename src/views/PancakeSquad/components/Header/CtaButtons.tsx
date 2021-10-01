@@ -53,7 +53,7 @@ const CtaButtons: React.FC<CtaButtonsProps> = ({
   pricePerTicket,
   ticketsOfUser,
 }) => {
-  const buttonType = getCurrentButton({ numberTicketsOfUser, saleStatus, userStatus, startTimestamp })
+  const buttonType = getCurrentButton({ numberTicketsOfUser, saleStatus, userStatus })
   return (
     <>
       <Flex>
@@ -73,6 +73,7 @@ const CtaButtons: React.FC<CtaButtonsProps> = ({
             maxPerTransaction={maxPerTransaction}
             numberTicketsForGen0={numberTicketsForGen0}
             pricePerTicket={pricePerTicket}
+            startTimestamp={startTimestamp}
           />
         )}
         {buttonType === ButtonsEnum.MINT && (

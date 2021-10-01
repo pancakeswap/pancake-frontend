@@ -8,14 +8,12 @@ describe('PancakeSquad/Header/utils/getCurrentButton', () => {
     const saleStatus = SaleStatusEnum.Pending
     const userStatus = UserStatusEnum.NO_PROFILE
     const numberTicketsOfUser = 0
-    const startTimestamp = 0
 
     // When
     const result = getCurrentButton({
       saleStatus,
       numberTicketsOfUser,
       userStatus,
-      startTimestamp,
     })
 
     // Then
@@ -27,14 +25,12 @@ describe('PancakeSquad/Header/utils/getCurrentButton', () => {
     const saleStatus = SaleStatusEnum.Sale
     const userStatus = UserStatusEnum.PROFILE_ACTIVE
     const numberTicketsOfUser = 0
-    const startTimestamp = 0
 
     // When
     const result = getCurrentButton({
       saleStatus,
       numberTicketsOfUser,
       userStatus,
-      startTimestamp,
     })
 
     // Then
@@ -46,14 +42,12 @@ describe('PancakeSquad/Header/utils/getCurrentButton', () => {
     const saleStatus = SaleStatusEnum.Claim
     const userStatus = UserStatusEnum.PROFILE_ACTIVE
     const numberTicketsOfUser = 3
-    const startTimestamp = 0
 
     // When
     const result = getCurrentButton({
       saleStatus,
       numberTicketsOfUser,
       userStatus,
-      startTimestamp,
     })
 
     // Then
@@ -65,14 +59,12 @@ describe('PancakeSquad/Header/utils/getCurrentButton', () => {
     const saleStatus = SaleStatusEnum.Claim
     const userStatus = UserStatusEnum.PROFILE_ACTIVE
     const numberTicketsOfUser = 0
-    const startTimestamp = 0
 
     // When
     const result = getCurrentButton({
       saleStatus,
       numberTicketsOfUser,
       userStatus,
-      startTimestamp,
     })
 
     // Then
