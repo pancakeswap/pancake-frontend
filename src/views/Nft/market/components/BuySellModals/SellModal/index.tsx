@@ -14,7 +14,7 @@ import { useNftMarketContract, usePancakeRabbits } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
 import { removeUserNft, updateUserNft } from 'state/nftMarket/reducer'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
-import { useGetLowestPriceFromNft } from 'views/Nft/market/hooks/useGetLowestPBPrice'
+import { useGetLowestPriceFromNft } from 'views/Nft/market/hooks/useGetLowestPrice'
 import SellStage from './SellStage'
 import SetPriceStage from './SetPriceStage'
 import EditStage from './EditStage'
@@ -93,7 +93,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
 
   const isInvalidTransferAddress = transferAddress.length > 0 && !isAddress(transferAddress)
 
-  const lowestPriceData = useGetLowestPriceFromNft(nftToSell)
+  const { lowestPrice } = useGetLowestPriceFromNft(nftToSell)
 
   const goBack = () => {
     switch (stage) {
@@ -247,7 +247,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
       {stage === SellingStage.SELL && (
         <SellStage
           nftToSell={nftToSell}
-          lowestPrice={lowestPriceData.lowestPrice}
+          lowestPrice={lowestPrice}
           continueToNextStage={continueToNextStage}
           continueToTransferStage={continueToTransferStage}
         />
@@ -257,7 +257,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
           nftToSell={nftToSell}
           variant="set"
           continueToNextStage={continueToNextStage}
-          lowestPrice={lowestPriceData.lowestPrice}
+          lowestPrice={lowestPrice}
           price={price}
           setPrice={setPrice}
         />
@@ -276,7 +276,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
       {stage === SellingStage.EDIT && (
         <EditStage
           nftToSell={nftToSell}
-          lowestPrice={lowestPriceData.lowestPrice}
+          lowestPrice={lowestPrice}
           continueToAdjustPriceStage={continueToNextStage}
           continueToRemoveFromMarketStage={continueToRemoveFromMarketStage}
         />
@@ -287,7 +287,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
           variant="adjust"
           continueToNextStage={continueToNextStage}
           currentPrice={nftToSell.marketData.currentAskPrice}
-          lowestPrice={lowestPriceData.lowestPrice}
+          lowestPrice={lowestPrice}
           price={price}
           setPrice={setPrice}
         />
@@ -302,7 +302,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
       {stage === SellingStage.TRANSFER && (
         <TransferStage
           nftToSell={nftToSell}
-          lowestPrice={lowestPriceData.lowestPrice}
+          lowestPrice={lowestPrice}
           continueToNextStage={continueToNextStage}
           transferAddress={transferAddress}
           setTransferAddress={setTransferAddress}
