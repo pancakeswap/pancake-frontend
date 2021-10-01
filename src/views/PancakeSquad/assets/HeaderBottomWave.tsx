@@ -6,11 +6,11 @@ const Icon: React.FC<SvgProps & { isDark: boolean }> = ({ isDark, ...props }) =>
     <Svg viewBox="0 0 1280 16" preserveAspectRatio="none" {...props}>
       <path
         d="M0 16V0c159.43 9.206 387.163 14.966 640 14.966S1120.57 9.206 1280 0v16H0z"
-        fill="url(#prefix__paint0_linear)"
+        fill="url(#squad_header_bottom_wave)"
       />
       <defs>
         <linearGradient
-          id="prefix__paint0_linear"
+          id="squad_header_bottom_wave"
           x1={174.5}
           y1={15.999}
           x2={1233.5}
