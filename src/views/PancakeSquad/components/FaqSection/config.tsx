@@ -12,20 +12,7 @@ const config = ({ t }: FAQsType) => [
     title: 'What’s the Smart Contract?',
     description: [
       <Text key={1} color="textSubtle">
-        {t('The smart contract address will be released soon before the sale starts.')}:&nbsp;
-        <StyledLinkFAQs display="inline-block" color="primary">
-          <a href="/" target="_blank" rel="noreferrer noopener">
-            0x???????????????????????????????
-          </a>
-        </StyledLinkFAQs>
-      </Text>,
-      <Text key={2} color="textSubtle">
-        {t('View the')}&nbsp;
-        <StyledLinkFAQs display="inline-block" color="primary">
-          <a href="https://docs.pancakeswap.finance/" target="_blank" rel="noreferrer noopener">
-            {t('documentation on our site')}
-          </a>
-        </StyledLinkFAQs>
+        {t('The smart contract address will be released soon before the sale starts.')}
       </Text>,
     ],
   },

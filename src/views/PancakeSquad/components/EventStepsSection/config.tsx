@@ -77,7 +77,7 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
       bodyText: [
         t('Buy Squad Tickets, while stocks last. You’ll use them in step 4.'),
         t(
-          'Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at block xxxxxxx can purchase one Squad Ticket per Gen 0 NFT.',
+          'Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at a snapshot shortly before the presale phase begins can purchase one Squad Ticket per Gen 0 NFT.',
         ),
         t(
           'Public Sale: Any wallet with an active Pancake Profile can purchase up to 20 Squad Tickets, while stocks last.',
