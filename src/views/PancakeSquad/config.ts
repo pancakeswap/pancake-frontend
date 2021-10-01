@@ -45,7 +45,7 @@ const nftSaleConfigBuilder = ({ t, saleStatus, startTimestamp }: nftSaleType) =>
             startTimestamp,
           }),
           infoText: t(
-            'Public Sale: Any wallet with an active Pancake Profile can purchase up to 20 Squad Tickets, while stocks last.',
+            'Public Sale: Any wallet with an active Pancake Profile can purchase up to 10 Squad Tickets, while stocks last.',
           ),
         },
         {
