@@ -25,21 +25,21 @@ const useUserInfos = ({ account, refreshCounter, setCallback }) => {
           }))
 
           const [
-            currentCanClaimForGen0,
-            currentNumberTicketsForGen0,
-            currentNumberTicketsUsedForGen0,
-            currentNumberTicketsOfUser,
-            currentTicketsOfUser,
+            [currentCanClaimForGen0],
+            [currentNumberTicketsForGen0],
+            [currentNumberTicketsUsedForGen0],
+            [currentNumberTicketsOfUser],
+            [currentTicketsOfUser],
           ] = await multicallv2(nftSaleAbi, calls)
 
           const currentNumberTokensOfUser = await pancakeSquadContract.balanceOf(account)
 
           setCallback({
-            canClaimForGen0: currentCanClaimForGen0[0],
-            numberTicketsForGen0: currentNumberTicketsForGen0[0].toNumber(),
-            numberTicketsUsedForGen0: currentNumberTicketsUsedForGen0[0].toNumber(),
-            numberTicketsOfUser: currentNumberTicketsOfUser[0].toNumber(),
-            ticketsOfUser: currentTicketsOfUser[0][0],
+            canClaimForGen0: currentCanClaimForGen0,
+            numberTicketsForGen0: currentNumberTicketsForGen0.toNumber(),
+            numberTicketsUsedForGen0: currentNumberTicketsUsedForGen0.toNumber(),
+            numberTicketsOfUser: currentNumberTicketsOfUser.toNumber(),
+            ticketsOfUser: currentTicketsOfUser[0],
             numberTokensOfUser: currentNumberTokensOfUser.toNumber(),
           })
         }

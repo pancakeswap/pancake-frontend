@@ -26,25 +26,25 @@ const useEventInfos = ({ refreshCounter, setCallback }) => {
         }))
 
         const [
-          currentMaxSupply,
-          currentMaxPerAddress,
-          currentPricePerTicket,
-          curentMaxPerTransaction,
-          currentTotalTicketsDistributed,
-          currentSaleStatus,
-          currentStartTimestamp,
+          [currentMaxSupply],
+          [currentMaxPerAddress],
+          [currentPricePerTicket],
+          [curentMaxPerTransaction],
+          [currentTotalTicketsDistributed],
+          [currentSaleStatus],
+          [currentStartTimestamp],
         ] = await multicallv2(nftSaleAbi, calls)
 
         const currentTotalSupplyMinted = await pancakeSquadContract.totalSupply()
 
         setCallback({
-          maxSupply: currentMaxSupply[0].toNumber(),
-          maxPerAddress: currentMaxPerAddress[0].toNumber(),
-          pricePerTicket: BigNumber.from(currentPricePerTicket[0]),
-          maxPerTransaction: curentMaxPerTransaction[0].toNumber(),
-          totalTicketsDistributed: currentTotalTicketsDistributed[0].toNumber(),
-          saleStatus: currentSaleStatus[0],
-          startTimestamp: Number(currentStartTimestamp[0].toString().padEnd(13, '0')),
+          maxSupply: currentMaxSupply.toNumber(),
+          maxPerAddress: currentMaxPerAddress.toNumber(),
+          pricePerTicket: BigNumber.from(currentPricePerTicket),
+          maxPerTransaction: curentMaxPerTransaction.toNumber(),
+          totalTicketsDistributed: currentTotalTicketsDistributed.toNumber(),
+          saleStatus: currentSaleStatus,
+          startTimestamp: Number(currentStartTimestamp.toString().padEnd(13, '0')),
           totalSupplyMinted: currentTotalSupplyMinted.toNumber(),
         })
       } catch (e) {

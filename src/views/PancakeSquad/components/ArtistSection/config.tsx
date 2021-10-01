@@ -10,16 +10,16 @@ type ArtistConfigType = {
 const artistConfigBuilder = ({ t, isDark }: ArtistConfigType) => ({
   headingText: t('Meet the Artist'),
   bodyText: [
-    'Cecy´s birth place is definitely unknown',
-    'But legend said she was sailing all alone',
-    'Through the mountains and across the sea',
-    'She found an island in which to live',
-    'Was full of rabbitts!! that caught her attention ',
-    'making stuff beyond her comprehension',
-    'The bunnies were working on a kitchen ',
-    'baking pancakes with one Big mission ',
-    'To send sweet bread very soon',
-    'so they all together can reach the moon.',
+    t('Cecy´s birth place is definitely unknown'),
+    t('But legend said she was sailing all alone'),
+    t('Through the mountains and across the sea'),
+    t('She found an island in which to live'),
+    t('Was full of rabbitts!! that caught her attention '),
+    t('making stuff beyond her comprehension'),
+    t('The bunnies were working on a kitchen '),
+    t('baking pancakes with one Big mission '),
+    t('To send sweet bread very soon'),
+    t('so they all together can reach the moon.'),
   ],
   buttons: [
     {
