@@ -4,9 +4,9 @@ import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
 import { Button, Text, ArrowDownIcon, Box, useModal } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
-import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
+import { useHistory } from 'react-router'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Layout/Column'
@@ -48,10 +48,11 @@ const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.secondary};
 `
 
-export default function Swap({ history }: RouteComponentProps) {
+export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
   const { t } = useTranslation()
+  const history = useHistory()
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -272,7 +273,7 @@ export default function Swap({ history }: RouteComponentProps) {
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
   const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap/')} />,
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap')} />,
   )
 
   useEffect(() => {

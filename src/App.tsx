@@ -134,21 +134,48 @@ const App: React.FC = () => {
               <Info />
             </Route>
 
-            {/* Using this format because these components use routes injected props. We need to rework them with hooks */}
-            <Route exact strict path="/swap" component={Swap} />
-            <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
-            <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
-            <Route exact strict path="/find" component={PoolFinder} />
-            <Route exact strict path="/liquidity" component={Liquidity} />
-            <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-            <Route exact path="/add" component={AddLiquidity} />
-            <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-            <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-            <Route exact path="/create" component={AddLiquidity} />
-            <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-            <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-            <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
-            <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+            <Route exact strict path="/swap">
+              <Swap />
+            </Route>
+            <Route exact strict path="/swap/:outputCurrency">
+              <RedirectToSwap />
+            </Route>
+            <Route exact strict path="/send">
+              <RedirectPathToSwapOnly />
+            </Route>
+            <Route exact strict path="/find">
+              <PoolFinder />
+            </Route>
+            <Route exact strict path="/liquidity">
+              <Liquidity />
+            </Route>
+            <Route exact strict path="/create">
+              <RedirectToAddLiquidity />
+            </Route>
+            <Route exact path="/add">
+              <AddLiquidity />
+            </Route>
+            <Route exact path="/add/:currencyIdA">
+              <RedirectOldAddLiquidityPathStructure />
+            </Route>
+            <Route exact path="/add/:currencyIdA/:currencyIdB">
+              <RedirectDuplicateTokenIds />
+            </Route>
+            <Route exact path="/create">
+              <AddLiquidity />
+            </Route>
+            <Route exact path="/create/:currencyIdA">
+              <RedirectOldAddLiquidityPathStructure />
+            </Route>
+            <Route exact path="/create/:currencyIdA/:currencyIdB">
+              <RedirectDuplicateTokenIds />
+            </Route>
+            <Route exact strict path="/remove/:tokens">
+              <RedirectOldRemoveLiquidityPathStructure />
+            </Route>
+            <Route exact strict path="/remove/:currencyIdA/:currencyIdB">
+              <RemoveLiquidity />
+            </Route>
 
             {/* Redirect */}
             <Route path="/pool">
