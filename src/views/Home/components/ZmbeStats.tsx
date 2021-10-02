@@ -44,7 +44,7 @@ const ZmbeStats = () => {
         </Row>
         <Row>
           <Text fontSize="14px">{t('New ZMBE/block')}</Text>
-          <CardValue fontSize="14px" decimals={0} value={20} />
+          <CardValue fontSize="14px" decimals={0} value={10} />
         </Row>
         <Row>
           <Text fontSize="14px">{t('Total NFT\'s Minted')}</Text>

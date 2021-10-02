@@ -33,7 +33,7 @@ const TotalValueLockedCard: React.FC = () => {
         </Heading>
         <>
           <Row>
-            <Text fontSize='14px'>1. We are listed on CoinMarketCap and CoinGecko, 2X rewards in graves and tombs for 72HRS! Make sure you add RugZombie to your watchlist to get us trending.</Text>
+            <Text fontSize='14px'>1. We are listed on CoinMarketCap and CoinGecko! Make sure you add RugZombie to your watchlist to get us trending.</Text>
           </Row>
           <Row>
             <Text fontSize='14px'>2. Go earn ChompersV2 in the Autoshark Legendary Spawning Pool.</Text>
