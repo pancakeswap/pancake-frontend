@@ -89,16 +89,16 @@ const Main = () => {
           <div className='parent-div'>
             <img src={CatacombsBackground} alt='catacombs-rug-zombie' className='backgroundImageStyle' />
             <BarracksDiv>
-              <StyledButton>BARRACKS</StyledButton>
+              <StyledButton>{t('BARRACKS')}</StyledButton>
             </BarracksDiv>
             <RugRollDiv>
-              <StyledButton>RUG ROLL</StyledButton>
+              <StyledButton>{t('RUG ROLL')}</StyledButton>
             </RugRollDiv>
             <DataLabDiv>
-              <StyledButton>DATA LAB</StyledButton>
+              <StyledButton>{t('DATA LAB')}</StyledButton>
             </DataLabDiv>
             <BlackMarketDiv>
-              <StyledButton>BLACK MARKET</StyledButton>
+              <StyledButton>{t('BLACK MARKET')}</StyledButton>
             </BlackMarketDiv>
           </div>
         </Page>
