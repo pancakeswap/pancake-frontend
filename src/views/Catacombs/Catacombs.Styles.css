@@ -11,7 +11,8 @@
     text-align: center;
     position: absolute;
     top: 10%;
-    width: 100%;
+    width: 75%;
+    left: 12%;
 }
 
 .enter-password {
@@ -21,17 +22,49 @@
     right: 50%;
 }
 
+.password {
+    text-align: center;
+    position: absolute;
+    bottom: 5%;
+    right: 21%;
+    margin-bottom: 3px;
+}
+
+.password-input {
+    font-size: 30px;
+    border: none;
+    background: transparent;
+    color: white;
+    letter-spacing: 0.2em;
+    outline-width: 0;
+}
+
 .text-size {
     font-size: 35px;
     display: inline;
+}
+
+.backgroundImageStyle {
+    height: 90vh;
+    /*width: 100%*/
 }
 
 @media (max-width: 479px) {
     .text-size {
         font-size: 20px;
     }
+
+    .password-input {
+        font-size: 18px;
+    }
+
+    .password {
+        right: 0;
+        width: 49%;
+    }
+
+    .backgroundImageStyle {
+        height: auto;
+    }
 }
 
-.backgroundImageStyle {
-    width: 100%
-}
