@@ -5,20 +5,23 @@ import React, { useEffect, useState } from 'react'
 import { BIG_ZERO } from 'utils/bigNumber';
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js';
+import { registerToken } from 'utils/wallet'
 import { bnbPriceUsd, grave, spawningPoolById } from '../../../../redux/get'
 
 
 interface RugInDetailsProps {
   id: number,
   bnbInBusd: number,
-  zombieUsdPrice: number
+  zombieUsdPrice: number,
+  account: string
 }
 
-const RugInDetails: React.FC<RugInDetailsProps> = ({ id }) => {
-  const { subtitle, poolInfo, pcsVersion, liquidityDetails, project, path, type, withdrawalCooldown, nftRevivalTime, endBlock, artist } = spawningPoolById(id)
+const RugInDetails: React.FC<RugInDetailsProps> = ({ id, account }) => {
+  const { subtitle, poolInfo, pcsVersion, liquidityDetails, project, path, type, withdrawalCooldown, nftRevivalTime, endBlock, artist, rewardToken } = spawningPoolById(id)
   const spawningPoolContract = useSpawningPool(id);
 
   const [unlockFee, setUnlockFee] = useState(0);
+  const isMetaMaskInScope = !!window.ethereum?.isMetaMask
 
   useEffect(() => {
     spawningPoolContract.methods.unlockFeeInBnb().call()
@@ -88,6 +91,15 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({ id }) => {
           <LinkExternal href={`https://bscscan.com/block/countdown/${endBlock}`}>
             Rewards End Block
           </LinkExternal>
+        </span>
+        <br />
+        <span className="indetails-title">
+          {account && isMetaMaskInScope && (          
+            <button
+              className='btn w-auto harvest' type='button'
+              onClick={() => registerToken(rewardToken.address[56], rewardToken.symbol, rewardToken.decimals, rewardToken.tokenLogo)}
+            >Add {rewardToken.symbol} To MetaMask</button>
+          )}
         </span>
       </div>
       {/* <div className="direction-column">
