@@ -140,7 +140,7 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
         <MobileTopMenu userInfo={userInfo} />
 
         <Swiper
-          initialSlide={1}
+          initialSlide={3}
           onSwiper={setSwiper}
           spaceBetween={16}
           slidesPerView='auto'
@@ -174,23 +174,11 @@ const Mobile: React.FC<MobileProps> = ({ refresh, setRefresh, userInfo, id }) =>
             </SwiperSlide> :
             null
           }
-          {bids[lastBidId] ?
-            <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId]} id={id} bidId={lastBidId} lastBidId={lastBidId}
-              />
-            </SwiperSlide> : null
-          }
-          {bids[lastBidId - 1] ?
-            <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId - 1]} id={id} bidId={lastBidId - 1} lastBidId={lastBidId}
-              />
-            </SwiperSlide> : null
-          }
-          {bids[lastBidId - 2] ?
-            <SwiperSlide>
-              <RoundCard bid={formattedBids[lastBidId - 2]} id={id} bidId={lastBidId - 2} lastBidId={lastBidId} />
-            </SwiperSlide> : null
-          }
+          {formattedBids.reverse().map(bid => {
+            return <SwiperSlide key={bid.id}>
+              <RoundCard bid={bid} id={id} bidId={bid.id} lastBidId={lastBidId} />
+            </SwiperSlide>
+          })}
         </Swiper>
       </StyledSwiper>
       <div style={{

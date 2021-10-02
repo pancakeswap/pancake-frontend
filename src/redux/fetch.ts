@@ -358,7 +358,7 @@ export const auction = (
         multi.multiCall(version === 'v3' ? mausoleumV3Abi : mausoleumAbi, inputs)
           .then(res => {
             const start = parseInt(bidsLengthRes) - 6
-            let index = start < -1 ? -1 : parseInt(bidsLengthRes) - 6
+            let index = start < -1 ? 0 : parseInt(bidsLengthRes) - 6
 
             const bids = res[1].slice((v3 ? 2 : 3), res[1].length).map(bid => {
               index++
@@ -374,7 +374,7 @@ export const auction = (
             store.dispatch(updateAuctionInfo(
               id,
               {
-                lastBidId: parseInt(bidsLengthRes) - 1,
+                lastBidId: parseInt(bidsLengthRes),
                 bids,
                 endDate: auctionInfoRes.endDate.toNumber(),
                 finalized: auctionInfoRes.finalized,
@@ -414,7 +414,7 @@ export const auction = (
             const auctionInfoRes = v3 ? res[1][1] : res[1][2]
 
             const start = parseInt(bidsLengthRes) - 6
-            let index = start < -1 ? -1 : parseInt(bidsLengthRes) - 6
+            let index = start < -1 ? 0 : parseInt(bidsLengthRes) - 6
             const bids = res[1].slice((v3 ? 2 : 3), res[1].length).map(bid => {
               index++
               return {
@@ -427,7 +427,7 @@ export const auction = (
             store.dispatch(updateAuctionInfo(
               id,
               {
-                lastBidId: parseInt(bidsLengthRes) - 1,
+                lastBidId: parseInt(bidsLengthRes),
                 bids,
                 endDate: auctionInfoRes.endDate.toNumber(),
                 finalized: auctionInfoRes.finalized,

@@ -44,7 +44,6 @@ export const UsdPriceRow: React.FC<LockPriceRowProps> = ({ id, bid, ...props }) 
   const quarterBid = bid.amount / 4
   const { version } = auctionById(id)
   const v3 = version === 'v3'
-  console.log(id)
   return (
     <>
       {v3 ? <Flex alignItems='center' justifyContent='space-between' {...props}>
