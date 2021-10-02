@@ -107,7 +107,7 @@ const Graves: React.FC = () => {
           {visibleGraves.map((g, index) => {
             return <Table zombieUsdPrice={zombiePriceUsd()}
                           updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
-                          isAllowance={isAllowance} pid={g.pid} key={g.pid} />
+                          isAllowance={isAllowance} pid={g.pid} key={g.pid} account={accountAddress} />
           })}
         </div>
       </Page>

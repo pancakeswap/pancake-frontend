@@ -25,9 +25,10 @@ interface TableProps {
   updateAllowance: any,
   updateResult: any,
   zombieUsdPrice: number,
+  account: string,
 }
 
-const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
+const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice, account }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [graveData, setGraveData] = useState(grave(pid))
   const openInDetails = (data) => {
@@ -53,7 +54,7 @@ const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateAllowa
                 <StartFarming updateResult={setGraveData} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} pid={pid} isAllowance={isAllowance}  />
                 <BuyFrank pid={pid} />
               </div>
-              <RugInDetails bnbInBusd={bnbInBusd} pid={pid} zombieUsdPrice={zombieUsdPrice} />
+              <RugInDetails bnbInBusd={bnbInBusd} pid={pid} zombieUsdPrice={zombieUsdPrice} account={account} />
             </div>
           </div>
         ) : null}
