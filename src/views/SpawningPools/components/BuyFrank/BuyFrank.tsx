@@ -43,7 +43,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ id }) => {
         <div className="space-between">
           {currentDate >= nftRevivalDate ?
             <span className="total-earned text-shadow" data-tip data-for="nft-minting">NFT is Ready
-            <ReactTooltip id="nft-minting" place="top" type="error" effect="solid">
+            <ReactTooltip id="nft-minting" place="top" type="error" effect="solid" className="nftTimerPopup">
               Mint your NFT by harvesting or unstaking
             </ReactTooltip>
             </span> :
