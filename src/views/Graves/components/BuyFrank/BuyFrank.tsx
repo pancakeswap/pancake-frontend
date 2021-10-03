@@ -1,4 +1,5 @@
 import React, { useState , useEffect } from 'react'
+import ReactTooltip from 'react-tooltip';
 import { Skeleton, useModal } from '@rug-zombie-libs/uikit'
 import ModalInput from 'components/ModalInput/ModalInput';
 import { BigNumber } from 'bignumber.js'
@@ -48,10 +49,14 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
       <div className="frank-card">
         <div className="space-between">
           {currentDate >= nftRevivalDate ?
-            <span className="total-earned text-shadow">NFT is Ready</span> :
+            <span className="total-earned text-shadow" data-tip data-for="nft-minting">NFT is Ready
+              <ReactTooltip id="nft-minting" place="top" type="error" effect="solid">
+                Mint your NFT by harvesting or unstaking
+              </ReactTooltip>
+            </span> :
             <div>
               <div className="small-text">
-                <span className="white-color">NFT Timer</span>
+                <span className="white-color">NFT Timer</span>                
               </div>
               <span className="total-earned text-shadow" style={{fontSize: "20px"}}>
                 { nftRevivalDateFixed > 0 ? formatDuration(nftTime) :<Skeleton/> }</span>

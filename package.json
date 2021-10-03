@@ -67,6 +67,7 @@
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
+    "react-tooltip": "^4.2.21",
     "react-transition-group": "^4.4.1",
     "react-twitter-widgets": "^1.10.0",
     "react-youtube": "^7.13.1",
