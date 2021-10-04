@@ -4,10 +4,10 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
 import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useNftsFromCollection } from 'state/nftMarket/hooks'
 import { isAddress } from 'utils'
 import { pancakeBunniesAddress } from '../../constants'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
+import useAllPancakeBunnyNfts from '../../hooks/useAllPancakeBunnyNfts'
 
 import 'swiper/swiper-bundle.css'
 
@@ -40,9 +40,11 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collect
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
   const [activeIndex, setActiveIndex] = useState(1)
   const { isMobile, isMd, isLg } = useMatchBreakpoints()
-  const nftList = useNftsFromCollection(collectionAddress)
+  const allPancakeBunnyNfts = useAllPancakeBunnyNfts(collectionAddress)
 
-  if (!nftList) {
+  let nftsToShow = allPancakeBunnyNfts ? allPancakeBunnyNfts.filter((nft) => nft.name !== currentTokenName) : []
+
+  if (!nftsToShow) {
     return null
   }
 
@@ -58,7 +60,6 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collect
     maxPageIndex = 6
   }
 
-  let nftsToShow = nftList.filter((nft) => nft.name !== currentTokenName && nft.marketData.isTradable)
   if (isAddress(collectionAddress) === pancakeBunniesAddress) {
     // PancakeBunnies should display 1 card per bunny id
     nftsToShow = nftsToShow.reduce((nftArray, current) => {
