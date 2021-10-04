@@ -1,7 +1,6 @@
 import React from 'react'
 import { Text } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
-import { StyledLinkFAQs } from './styles'
 
 type FAQsType = {
   t: ContextApi['t']
