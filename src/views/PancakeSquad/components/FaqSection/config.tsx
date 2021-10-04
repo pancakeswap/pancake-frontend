@@ -35,20 +35,6 @@ const config = ({ t }: FAQsType) => [
     description: ['100% of CAKE spent on Pancake Squad NFTs will be burned as part of our weekly CAKE burn.'],
   },
   {
-    title: 'Where can I view rarity?',
-    description: [
-      <Text key={3} color="textSubtle">
-        {t('Check the rarity of each NFT’s traits on the')}&nbsp;
-        <StyledLinkFAQs display="inline-block" color="primary">
-          <a href="/">{t('Pancake Squad page in the NFT Market')}&nbsp;</a>
-        </StyledLinkFAQs>
-        {t(
-          'by clicking the “Filter” view. The number of bunnies with a specific trait is displayed next to the trait name.',
-        )}
-      </Text>,
-    ],
-  },
-  {
     title: 'How are the NFTs randomly distributed?',
     description: [
       'Once all 10,000 Squad Tickets have been bought, Chainlink VRF will be used to randomly allocate the pre-generated NFTs to the purchased Tickets. Squad Tickets are allocated IDs numbered in order of their purchase.',

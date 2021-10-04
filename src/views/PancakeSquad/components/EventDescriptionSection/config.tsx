@@ -25,7 +25,7 @@ const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
         </>
       ),
     },
-    { id: 2, content: t('100 are reserved by the team for community giveaways;') },
+    { id: 2, content: t('120 are reserved by the team for community giveaways, etc;') },
     {
       id: 3,
       content: (
