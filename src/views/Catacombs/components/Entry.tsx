@@ -1,10 +1,14 @@
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
+import React, { useState } from 'react'
+import { Text } from '@catacombs-libs/uikit'
+import { useModal } from '@rug-zombie-libs/uikit';
 import Typewriter from 'typewriter-effect'
-import { Heading, Text } from '@catacombs-libs/uikit'
 import styled from 'styled-components'
 import Page from '../../../components/layout/Page'
 import CatacombsEntryBackgroundSVG from '../../../images/Catacombs_Entry_650_x_650_px.svg'
+import { useCatacombsContract, useZombie } from '../../../hooks/useContract'
+import BurnZombieModal from '../../Graves/components/BurnZombie'
+import BurnZombieConfirmationModal from './BurnZombieConfirmationModal'
 
 const StyledText = styled(Text)`
   font-size: 35px;
@@ -16,20 +20,26 @@ const StyledText = styled(Text)`
 
 const Entry = () => {
   const { t } = useTranslation()
+
+  const [onBurnZombie] = useModal(
+    <BurnZombieConfirmationModal />,
+  );
+
   const Input = () => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter') {
-        console.log('do validate')
+      if (event.key === 'Enter' && event.target.value === 'nozombie') {
+        console.log('password entered')
+        onBurnZombie()
       }
     }
     // eslint-disable-next-line jsx-a11y/no-autofocus
-    return <input type="password" className="password-input" onKeyDown={handleKeyDown} maxLength={8} autoFocus/>
+    return <input type='password' className='password-input' onKeyDown={handleKeyDown} maxLength={8} autoFocus />
   }
   return (
     <>
       <Page>
         <div className='parent-div'>
-          <img src={CatacombsEntryBackgroundSVG} alt='catacombs-rug-zombie' className="backgroundImageStyle" />
+          <img src={CatacombsEntryBackgroundSVG} alt='catacombs-rug-zombie' className='backgroundImageStyle' />
           <div className='main-text'>
             <Typewriter options={{ cursor: '' }}
                         onInit={(typewriter) => {
