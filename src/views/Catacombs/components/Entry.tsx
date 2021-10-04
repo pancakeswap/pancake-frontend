@@ -9,6 +9,7 @@ import CatacombsEntryBackgroundSVG from '../../../images/Catacombs_Entry_650_x_6
 import { useCatacombsContract, useZombie } from '../../../hooks/useContract'
 import BurnZombieModal from '../../Graves/components/BurnZombie'
 import BurnZombieConfirmationModal from './BurnZombieConfirmationModal'
+import WrongPasswordModal from './WrongPasswordModal'
 
 const StyledText = styled(Text)`
   font-size: 35px;
@@ -25,11 +26,16 @@ const Entry = () => {
     <BurnZombieConfirmationModal />,
   );
 
+  const [onWrongPassword] = useModal(<WrongPasswordModal/>);
+
   const Input = () => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && event.target.value === 'nozombie') {
-        console.log('password entered')
-        onBurnZombie()
+      if (event.key === 'Enter') {
+        if (event.target.value === 'nozombie') {
+          onBurnZombie()
+        } else {
+          onWrongPassword()
+        }
       }
     }
     // eslint-disable-next-line jsx-a11y/no-autofocus

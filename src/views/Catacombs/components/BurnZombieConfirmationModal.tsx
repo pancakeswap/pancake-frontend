@@ -19,27 +19,21 @@ interface BurnZombieModalProps {
 }
 
 const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss }) => {
-  // const { toastSuccess } = useToast()
-  // const { t } = useTranslation()
   const { account } = useWeb3React();
   const [burnAmount, setBurnAmount] = useState(null)
   const catacombs = useCatacombsContract()
   const zombie = useZombie()
-  console.log(account)
+
   catacombs.methods.burnAmount().call()
     .then(
       res => {
         setBurnAmount(getBalanceNumber(res))
       })
-  // console.log(burnAmount, ' < =============')
-  // console.log(zombieBalance(), ' < zombie balance')
+
   const handleBurnZombie = () => {
-    console.log('burn zombie');
-    console.log(getAddress(addresses.catacombs), ' < catacombs address');
-    console.log(getDecimalAmount(burnAmount), ' < burn amount')
-    zombie.methods.approve(getAddress(addresses.catacombs), getDecimalAmount(burnAmount)).call().then(_res => {
+    zombie.methods.approve(getAddress(addresses.catacombs), getDecimalAmount(burnAmount)).send({from: account}).then(_res => {
       if (_res) {
-        catacombs.methods.UnlockCatacombs().call().then( res => {
+        catacombs.methods.UnlockCatacombs().send().then( res => {
           if (res) {
             window.location.reload(false);
           }
@@ -60,7 +54,7 @@ const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss
     <Text mt="8px" ml="auto" bold color="tertiary" fontSize="14px" mb="8px">
       Your journey begins here. Burn {burnAmount} zombie to enter the Catacombs.
       <br/>
-      Don&apos;t worry, he&apos;s already dead so he won&apos;t feel it.
+      Don’t worry, “they won’t feel it because they’re already dead”
     </Text>
     {
       zombieBalance().isZero() ?
