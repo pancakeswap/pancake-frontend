@@ -1,6 +1,8 @@
 import HashRoute from 'components/HashRoute'
+import PageLoader from 'components/Loader/PageLoader'
 import React, { lazy } from 'react'
-import { Route, useRouteMatch } from 'react-router'
+import { Route, useParams, useRouteMatch } from 'react-router'
+import { useFetchCollection, useGetCollection } from 'state/nftMarket/hooks'
 
 const Items = lazy(() => import('./Items'))
 const Traits = lazy(() => import('./Traits'))
@@ -8,6 +10,14 @@ const IndividualNFTPage = lazy(() => import('./IndividualNFTPage'))
 
 const Collection = () => {
   const { path } = useRouteMatch()
+  const { collectionAddress } = useParams<{ collectionAddress: string }>()
+  const collection = useGetCollection(collectionAddress)
+
+  useFetchCollection(collectionAddress)
+
+  if (!collection) {
+    return <PageLoader />
+  }
 
   return (
     <>
