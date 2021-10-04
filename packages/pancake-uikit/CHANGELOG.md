@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.55.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.54.5...@pancakeswap/uikit@0.55.0) (2021-10-04)
+
+
+### Features
+
+* **bottom nav:** Fix ios bottom nav issue on specifics browsers ([#293](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/293)) ([8beb5cc](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/8beb5ccd6581b4804f7f6bf1edae16d3278206cb))
+
+
+
+
+
 ## [0.54.5](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.54.4...@pancakeswap/uikit@0.54.5) (2021-09-28)
 
 
