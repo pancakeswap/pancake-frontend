@@ -3,13 +3,7 @@ import { Button, Checkbox, Flex, Image, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import noop from 'lodash/noop'
 import { formatNumber } from 'utils/formatBalance'
-
-export type Item = {
-  label: string
-  count: number
-  image?: string
-  isSelected?: boolean
-}
+import { Item } from './types'
 
 const StyledItemRow = styled(Flex)`
   cursor: pointer;
@@ -29,9 +23,11 @@ export const ItemRow: React.FC<ItemRowProps> = ({ item, onSelect }) => (
   <StyledItemRow alignItems="center" px="16px" py="8px" onClick={onSelect}>
     {item.image && <ItemImage src={item.image} height={48} width={48} mr="16px" />}
     <Text style={{ flex: 1 }}>{item.label}</Text>
-    <Text color="textSubtle" mr="4px">
-      {formatNumber(item.count, 0, 0)}
-    </Text>
+    {item.count !== undefined && (
+      <Text color="textSubtle" mr="4px">
+        {formatNumber(item.count, 0, 0)}
+      </Text>
+    )}
     <Checkbox name="item-select" scale="sm" checked={item.isSelected} onChange={noop} />
   </StyledItemRow>
 )

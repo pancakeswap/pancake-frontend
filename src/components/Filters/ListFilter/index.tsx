@@ -13,7 +13,8 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import FilterFooter from '../FilterFooter'
 import FilterHeader from '../FilterHeader'
-import { Item, ItemRow, SearchWrapper, ClearAllButton, SelectAllButton } from './styles'
+import { ItemRow, SearchWrapper, ClearAllButton, SelectAllButton } from './styles'
+import { Item } from './types'
 
 interface ListFilterProps {
   title?: string
@@ -22,7 +23,7 @@ interface ListFilterProps {
   onClear?: () => void
 }
 
-const ListFilter: React.FC<ListFilterProps> = ({ title, items, onApply, onClear }) => {
+export const ListFilter: React.FC<ListFilterProps> = ({ title, items, onApply, onClear }) => {
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
   const { isMobile } = useMatchBreakpoints()
@@ -69,8 +70,10 @@ const ListFilter: React.FC<ListFilterProps> = ({ title, items, onApply, onClear 
     }
   }
 
+  const selectedItems = localItems.filter((localItem) => localItem.isSelected)
+
   const handleApply = () => {
-    onApply(localItems.filter((localItem) => localItem.isSelected))
+    onApply(selectedItems)
   }
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -96,8 +99,8 @@ const ListFilter: React.FC<ListFilterProps> = ({ title, items, onApply, onClear 
   return (
     <InlineMenu
       component={
-        <Button variant="light" scale="sm">
-          {t('Attributes')}
+        <Button variant={selectedItems.length > 0 ? 'primary' : 'light'} scale="sm" mr="4px">
+          {title}
         </Button>
       }
     >
@@ -145,5 +148,3 @@ const ListFilter: React.FC<ListFilterProps> = ({ title, items, onApply, onClear 
     </InlineMenu>
   )
 }
-
-export default ListFilter

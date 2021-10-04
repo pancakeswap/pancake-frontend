@@ -1,39 +1,53 @@
-import React from 'react'
-import { Box, BoxProps } from '@pancakeswap/uikit'
-import uniqBy from 'lodash/uniqBy'
+import React, { useEffect, useState } from 'react'
+import { Flex } from '@pancakeswap/uikit'
+import capitalize from 'lodash/capitalize'
 import { Collection, NftAttribute } from 'state/nftMarket/types'
-import { useTranslation } from 'contexts/Localization'
-import { MinMaxFilter } from 'components/Filters'
-import FilterContainer from '../../components/FilterContainer'
+import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
+import { ListFilter } from 'components/Filters'
 
-interface FiltersProps extends BoxProps {
+interface FiltersProps {
   collection: Collection
 }
 
-const Filters: React.FC<FiltersProps> = ({ collection, ...props }) => {
-  const { t } = useTranslation()
+const Filters: React.FC<FiltersProps> = ({ collection }) => {
+  const [attributeDistribution, setAttributeDistribution] = useState({})
+  const attrsByType: Record<string, NftAttribute[]> = collection?.attributes?.reduce(
+    (accum, attr) => ({
+      ...accum,
+      [attr.traitType]: accum[attr.traitType] ? [...accum[attr.traitType], attr] : [attr],
+    }),
+    {},
+  )
+  const uniqueTraitTypes = attrsByType ? Object.keys(attrsByType) : []
+  const { address } = collection
 
-  // @TODO
-  // Implement filter logic and remove the log
-  const handleMinMaxApply = (min: number, max: number) => {
-    console.info(min, max)
+  const handleApplyFilter = (items) => {
+    console.log(items)
   }
 
-  // @TODO
-  // Implement filter logic and remove the log
-  const handleAttributeClick = (attribute: NftAttribute) => {
-    console.info(attribute)
-  }
+  useEffect(() => {
+    // @TODO
+    // Use the new distribution api
+    const fetchDistribution = async () => {
+      const response = await getNftsFromCollectionApi(address)
+      setAttributeDistribution(response.attributesDistribution)
+    }
 
-  // Remove duplicate attributes
-  const uniqueAttrs = uniqBy(collection.attributes, 'traitType') ?? []
+    fetchDistribution()
+  }, [address, setAttributeDistribution])
 
   return (
-    <FilterContainer attributes={uniqueAttrs} onAttributeClick={handleAttributeClick} {...props}>
-      <Box mb="16px" mr="4px">
-        <MinMaxFilter title={t('Price')} onApply={handleMinMaxApply} max={100} />
-      </Box>
-    </FilterContainer>
+    <Flex alignItems="center" flexWrap="wrap">
+      {uniqueTraitTypes.map((traitType) => {
+        const attrs = attrsByType[traitType]
+        const items = attrs.map((attr) => ({
+          label: capitalize(attr.value as string),
+          count: attributeDistribution[traitType] ? attributeDistribution[traitType][attr.value] : undefined,
+        }))
+
+        return <ListFilter key={traitType} title={capitalize(traitType)} items={items} onApply={handleApplyFilter} />
+      })}
+    </Flex>
   )
 }
 
