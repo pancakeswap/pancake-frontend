@@ -17,6 +17,7 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import { useUserNfts } from 'state/nftMarket/hooks'
 import { NftLocation, NftToken, UserNftInitializationState } from 'state/nftMarket/types'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import ExpandableCard from './ExpandableCard'
 import useFetchUserNfts from '../../Profile/hooks/useFetchUserNfts'
@@ -166,12 +167,17 @@ const ManageCard: React.FC<ManageCardProps> = ({ bunnyId, lowestPrice }) => {
 
   const content = (
     <Box pt="16px">
+      {!account && (
+        <Flex mb="16px" justifyContent="center">
+          <ConnectWalletButton />
+        </Flex>
+      )}
       {useHasNoBunnies && (
         <Text px="16px" pb="16px" color="textSubtle">
           {t('You don’t have any of this item.')}
         </Text>
       )}
-      {loading && (
+      {account && loading && (
         <Box px="16px" pb="8px">
           <Skeleton mb="8px" />
           <Skeleton mb="8px" />
