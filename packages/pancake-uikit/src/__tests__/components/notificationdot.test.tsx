@@ -37,6 +37,7 @@ it("renders correctly", () => {
         <div />
         <span
           class="c1"
+          color="failure"
         />
       </span>
     </DocumentFragment>

@@ -4,11 +4,13 @@ import StyledBottomNav from "./styles";
 import { Box } from "../Box";
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
 import { BottomNavProps } from "./types";
+import { NotificationDot } from "../NotificationDot";
 
 const BottomNav: React.FC<BottomNavProps> = ({ items = [], activeItem = "", activeSubItem = "", ...props }) => {
   return (
     <StyledBottomNav justifyContent="space-around" {...props}>
       {items.map(({ label, items: menuItems, href, icon, showOnMobile = true, showItemsOnMobile = true }) => {
+        const statusColor = menuItems?.find((menuItem) => menuItem.status !== undefined)?.status?.color;
         return (
           showOnMobile && (
             <DropdownMenu
@@ -19,13 +21,15 @@ const BottomNav: React.FC<BottomNavProps> = ({ items = [], activeItem = "", acti
               showItemsOnMobile={showItemsOnMobile}
             >
               <Box>
-                <BottomNavItem
-                  href={href}
-                  isActive={href === activeItem}
-                  label={label}
-                  iconName={icon}
-                  showItemsOnMobile={showItemsOnMobile}
-                />
+                <NotificationDot show={!!statusColor} color={statusColor}>
+                  <BottomNavItem
+                    href={href}
+                    isActive={href === activeItem}
+                    label={label}
+                    iconName={icon}
+                    showItemsOnMobile={showItemsOnMobile}
+                  />
+                </NotificationDot>
               </Box>
             </DropdownMenu>
           )
