@@ -24,7 +24,11 @@ import {
   getDrFrankensteinContract,
   getMausoleumContract,
   getSpawningPoolContract,
-  getNftConverterContract, getMausoleumV2Contract, getNftOwnership, getZombieBalanceCheckerContract,
+  getNftConverterContract,
+  getMausoleumV2Contract,
+  getNftOwnership,
+  getZombieBalanceCheckerContract,
+  getCatacombsContract,
 } from 'utils/contractHelpers'
 import { MultiCall } from '@indexed-finance/multicall'
 
@@ -152,4 +156,9 @@ export const useCakeVaultContract = () => {
 export const usePredictionsContract = () => {
   const web3 = useWeb3()
   return useMemo(() => getPredictionsContract(web3), [web3])
+}
+
+export const useCatacombsContract = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getCatacombsContract(web3), [web3])
 }

@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { ThemeProvider as SCThemeProvider } from 'styled-components'
 import { light, dark } from '@rug-zombie-libs/uikit'
+import { light as catacombsLight, dark as catacombsDark } from '@catacombs-libs/uikit'
 
 const CACHE_KEY = 'IS_DARK'
 
 const ThemeContext = React.createContext({ isDark: null, toggleTheme: () => null })
+const CatacombsThemeContext = React.createContext({ isDark: null, toggleTheme: () => null })
 
 const ThemeContextProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(() => {
@@ -26,4 +28,25 @@ const ThemeContextProvider = ({ children }) => {
   )
 }
 
-export { ThemeContext, ThemeContextProvider }
+
+const CatacombsThemeContextProvider = ({ children }) => {
+  const [isDark, setIsDark] = useState(() => {
+    const isDarkUserSetting = localStorage.getItem(CACHE_KEY)
+    return isDarkUserSetting ? JSON.parse(isDarkUserSetting) : false
+  })
+
+  const toggleTheme = () => {
+    setIsDark((prevState) => {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(!prevState))
+      return !prevState
+    })
+  }
+
+  return (
+    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+      <SCThemeProvider theme={isDark ? catacombsDark : catacombsLight}>{children}</SCThemeProvider>
+    </ThemeContext.Provider>
+  )
+}
+
+export { ThemeContext, ThemeContextProvider, CatacombsThemeContext, CatacombsThemeContextProvider }
