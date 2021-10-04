@@ -3,7 +3,7 @@ export const routes = {
     HOME : '/home/',
     LANDING: '/',
     SPAWNWITHUS:'/spawnwithus',
-    CATACOMBS:'/catacombs',
+    CATACOMBS:'/catacombss',
     GRAVEDIGGER:'/gravedigger',
     FARMS:'/farms/',
     TOMBS:'/tombs/',
