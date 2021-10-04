@@ -49,7 +49,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-     <NFTBanner/>
+     {/* <NFTBanner/> */}
     <Title/>
     <Page>
       <div>

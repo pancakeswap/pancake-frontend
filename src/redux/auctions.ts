@@ -64,7 +64,7 @@ const auctions: Auction[] = [
     prizeSymbol: "TRUST",
     path: 'https://storage.googleapis.com/rug-zombie/Trust%20Us.jpeg',
     prizeDescription: 'Or don\'t, we will just zombie on.',
-    isFinished: false,
+    isFinished: true,
     artist: { ...artists.jussjoshinduh },
     startingBid: 0.05,
     bt: 'BNB',

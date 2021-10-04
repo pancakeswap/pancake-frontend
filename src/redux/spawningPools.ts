@@ -305,7 +305,7 @@ const spawningPools: SpawningPool[] = [
       56: '0x32c5ec65beB8482b5c727A0E3A352F8E330eb312',
       97: '',
     },
-    endBlock: 13140040,
+    endBlock: 13350000,
     project: {
       name: 'WalletNow',
       description: 'WalletNow is an advanced crypto portfolio monitoring solution. It aggregates all your DeFi & CeFi investments in a searchable table and actively monitors it with an integrated Telegram Bot. With detailed LP information, impermanent loss and yields calculation, you are always in control of your wallet.',
