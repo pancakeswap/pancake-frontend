@@ -4,7 +4,7 @@ import { useAppDispatch } from 'state'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
 import useRefresh from 'hooks/useRefresh'
-import { fetchCollections, fetchNftsByBunnyId, fetchNftsFromCollections, updateNftTokensData } from './reducer'
+import { fetchCollection, fetchCollections, fetchNftsByBunnyId, updateNftTokensData } from './reducer'
 import { State } from '../types'
 import { NftToken, UserNftsState } from './types'
 
@@ -12,8 +12,14 @@ export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(fetchCollections())
-    dispatch(fetchNftsFromCollections(pancakeBunniesAddress))
   }, [dispatch])
+}
+
+export const useFetchCollection = (collectionAddress: string) => {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(fetchCollection(collectionAddress))
+  }, [dispatch, collectionAddress])
 }
 
 // Returns a function that fetches more NFTs when called and puts them into redux state.
