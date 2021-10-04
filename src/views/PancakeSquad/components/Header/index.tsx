@@ -76,12 +76,14 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         {t('Mint Cost: To Be Announced', {
           minCost: pricePerTicket ? formatBigNumber(pricePerTicket, 0) : DEFAULT_CAKE_COST,
         })}
-        <br />
+      </Text>
+      <Text color={lightColors.warning} textAlign="center" bold>
         {t('Max per wallet: %maxPerWallet%', { maxPerWallet: maxPerAddress ?? DEFAULT_MAX_TICKETS })}
       </Text>
-      <Text color={lightColors.invertedContrast} mb={!displayEventBlock ? '80px' : '32px'} textAlign="center">
+      <Text color={lightColors.invertedContrast} textAlign="center">
         {t('PancakeSwap’s first official generative NFT collection.')}
-        <br />
+      </Text>
+      <Text color={lightColors.invertedContrast} mb={!displayEventBlock ? '80px' : '32px'} textAlign="center">
         {t('Join the squad.')}
       </Text>
       {displayEventBlock && (
