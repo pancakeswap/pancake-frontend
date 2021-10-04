@@ -251,7 +251,7 @@ const nfts: Nft[] = [
     name: 'Block Party',
     symbol: 'PARTY',
     description: 'Some of us are like a shovel brigade that follow a parade down Main Street cleaning up.',
-    address: '0xbaca4665e539ffc5035a57b636b542c8c0dc8dd1',
+    address: '0xce428a085298e89034195c776cc8a5904093a532',
     totalSupply: BIG_ZERO,
     path: "https://storage.googleapis.com/rug-zombie/Main%20Street.png",
     type: 'image',
