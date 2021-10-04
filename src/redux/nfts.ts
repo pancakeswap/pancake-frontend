@@ -359,7 +359,7 @@ const nfts: Nft[] = [
     name: 'Zombie Multiplexer',
     symbol: 'MULTIPLEXER',
     description: 'If three or more values occur at the maximum frequency, the dataset is multi-modal.',
-    address: '0xc8b1EF35f90E6461C24f1Bc5591a17EbFD6E0600',
+    address: '0x72762C0D0812F157b59CecF0eeC6b1B15d175b97',
     totalSupply: BIG_ZERO,
     path: 'https://ipfs.io/ipfs/Qmdi7wTt8iF62ay8foD7nqP5F7qSB9YGaYgY3NL1URA5Cw',
     type: 'image',
