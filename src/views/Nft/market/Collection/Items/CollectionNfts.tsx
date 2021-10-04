@@ -30,7 +30,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
 
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(address)
 
-  let nftsToShow = isPBCollection ? allPancakeBunnyNfts : nfts.filter((nft) => nft.marketData.isTradable)
+  let nftsToShow = isPBCollection ? allPancakeBunnyNfts : nfts?.filter((nft) => nft.marketData.isTradable)
 
   if (!nftsToShow) {
     return <GridPlaceholder />
