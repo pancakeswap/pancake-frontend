@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { InjectedModalProps } from '@pancakeswap/uikit'
 import { ethers } from 'ethers'
 import useTheme from 'hooks/useTheme'
@@ -39,6 +39,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const [stage, setStage] = useState(BuyingStage.REVIEW)
   const [confirmedTxHash, setConfirmedTxHash] = useState('')
   const [paymentCurrency, setPaymentCurrency] = useState<PaymentCurrency>(PaymentCurrency.BNB)
+  const [isPaymentCurrentInitialized, setIsPaymentCurrentInitialized] = useState(false)
   const { theme } = useTheme()
   const { t } = useTranslation()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -67,6 +68,13 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
     paymentCurrency === PaymentCurrency.BNB
       ? bnbBalance.lt(nftPriceWei)
       : wbnbBalance.lt(ethersToBigNumber(nftPriceWei))
+
+  useEffect(() => {
+    if (bnbBalance.lt(nftPriceWei) && wbnbBalance.gte(ethersToBigNumber(nftPriceWei)) && !isPaymentCurrentInitialized) {
+      setPaymentCurrency(PaymentCurrency.WBNB)
+      setIsPaymentCurrentInitialized(true)
+    }
+  }, [bnbBalance, wbnbBalance, nftPriceWei, isPaymentCurrentInitialized])
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
