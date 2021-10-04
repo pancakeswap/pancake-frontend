@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
-import useRefresh from 'hooks/useRefresh'
-import { fetchCollection, fetchCollections, fetchNftsByBunnyId, updateNftTokensData } from './reducer'
+import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
 import { NftToken, UserNftsState } from './types'
 
@@ -22,18 +21,23 @@ export const useFetchCollection = (collectionAddress: string) => {
   }, [dispatch, collectionAddress])
 }
 
-// Returns a function that fetches more NFTs when called and puts them into redux state.
-// Also returns loading flag and time of latest successful fetch
-export const useFetchByBunnyId = (bunnyId: string) => {
+// Returns a function that fetches more NFTs for specified bunny id
+// as well as updating existing PB NFTs in state
+// Note: PancakeBunny specific
+export const useFetchByBunnyIdAndUpdate = (bunnyId: string) => {
   const dispatch = useAppDispatch()
 
-  const isFetchingMoreNfts = useSelector((state: State) => state.nftMarket.data.isFetchingMoreNfts)
-  const latestFetchAt = useSelector((state: State) => state.nftMarket.data.latestFetchAt)
+  const { latestPancakeBunniesUpdateAt, isUpdatingPancakeBunnies } = useSelector(
+    (state: State) => state.nftMarket.data.loadingState,
+  )
 
   // Extra guard in case market data shifts
   // we don't wanna fetch same tokens multiple times
   const existingBunniesInState = useGetAllBunniesByBunnyId(bunnyId)
-  const existingTokenIds = existingBunniesInState ? existingBunniesInState.map((nft) => nft.tokenId) : []
+  const existingTokensWithBunnyId = existingBunniesInState ? existingBunniesInState.map((nft) => nft.tokenId) : []
+
+  const allPancakeBunnies = useNftsFromCollection(pancakeBunniesAddress)
+  const allExistingPBTokenIds = allPancakeBunnies ? allPancakeBunnies.map((nft) => nft.tokenId) : []
 
   const firstBunny = existingBunniesInState.length > 0 ? existingBunniesInState[0] : null
 
@@ -49,30 +53,24 @@ export const useFetchByBunnyId = (bunnyId: string) => {
       : null
   }, [firstBunny])
 
+  // This fetches more bunnies when called
   const fetchMorePancakeBunnies = (orderDirection: 'asc' | 'desc') => {
-    dispatch(fetchNftsByBunnyId({ bunnyId, existingTokenIds, existingMetadata, orderDirection }))
+    dispatch(
+      fetchNewPBAndUpdateExisting({
+        bunnyId,
+        existingTokensWithBunnyId,
+        allExistingPBTokenIds,
+        existingMetadata,
+        orderDirection,
+      }),
+    )
   }
-  return { isFetchingMoreNfts, latestFetchAt, fetchMorePancakeBunnies }
+
+  return { isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fetchMorePancakeBunnies }
 }
 
-// This hook gets all token ids stored in redux and periodically checks subgraph in case the data we have is staled
-// e.g. NFT gets sold - must be changed form isTradable: true to isTradable: false
-export const useUpdateNftInfo = (collectionAddress: string) => {
-  const dispatch = useAppDispatch()
-  const { fastRefresh } = useRefresh()
-
-  const lastUpdateAt = useSelector((state: State) => state.nftMarket.data.lastUpdateAt)
-  const isFetchingMoreNfts = useSelector((state: State) => state.nftMarket.data.isFetchingMoreNfts)
-
-  const existingNfts = useNftsFromCollection(collectionAddress)
-
-  useEffect(() => {
-    const msSinceLastUpdate = Date.now() - lastUpdateAt
-    const existingTokenIds = existingNfts ? existingNfts.map((nft) => nft.tokenId) : []
-    if (msSinceLastUpdate > 10000 && !isFetchingMoreNfts) {
-      dispatch(updateNftTokensData({ collectionAddress, existingTokenIds }))
-    }
-  }, [dispatch, fastRefresh, collectionAddress, existingNfts, lastUpdateAt, isFetchingMoreNfts])
+export const useLoadingState = () => {
+  return useSelector((state: State) => state.nftMarket.data.loadingState)
 }
 
 export const useGetCollections = () => {

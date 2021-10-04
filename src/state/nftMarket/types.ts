@@ -22,9 +22,10 @@ export interface State {
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
-    isFetchingMoreNfts: boolean
-    latestFetchAt: number
-    lastUpdateAt: number
+    loadingState: {
+      isUpdatingPancakeBunnies: boolean
+      latestPancakeBunniesUpdateAt: number
+    }
     users: Record<string, User> // string is the address
     user: UserNftsState
   }

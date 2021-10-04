@@ -5,12 +5,13 @@ import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
-import { useFetchByBunnyId, useGetAllBunniesByBunnyId } from 'state/nftMarket/hooks'
+import { useFetchByBunnyIdAndUpdate, useGetAllBunniesByBunnyId } from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
 import usePreviousValue from 'hooks/usePreviousValue'
 import useRefresh from 'hooks/useRefresh'
+import { PANCAKE_BUNNIES_UPDATE_FREQUENCY } from 'config'
 import MainNFTCard from './MainNFTCard'
 import ManageCard from './ManageCard'
 import PropertiesCard from './PropertiesCard'
@@ -42,7 +43,8 @@ const IndividualNFTPage = () => {
   const allBunnies = useGetAllBunniesByBunnyId(tokenId)
   const [priceSort, setPriceSort] = useState<SortType>('asc')
   const previousPriceSort = usePreviousValue(priceSort)
-  const { isFetchingMoreNfts, latestFetchAt, fetchMorePancakeBunnies } = useFetchByBunnyId(tokenId)
+  const { isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fetchMorePancakeBunnies } =
+    useFetchByBunnyIdAndUpdate(tokenId)
   const { fastRefresh } = useRefresh()
   const bunniesSortedByPrice = orderBy(allBunnies, (nft) => parseFloat(nft.marketData.currentAskPrice))
   const allBunniesFromOtherSellers = account
@@ -57,14 +59,16 @@ const IndividualNFTPage = () => {
 
   useEffect(() => {
     // Fetch first 30 NFTs on page load
-    // And then query every 10 sec in case some new (cheaper) NFTs were listed
-    const msSinceLastUpdate = Date.now() - latestFetchAt
+    // And then query every FETCH_NEW_NFTS_INTERVAL_MS in case some new (cheaper) NFTs were listed
+    const msSinceLastUpdate = Date.now() - latestPancakeBunniesUpdateAt
     // Check for last update is here to prevent too many request due to fetchMorePancakeBunnies updating too often
     // (it can't be reasonably wrapper in useCallback because the tokens are updated every time you call it, which is the whole point)
-    if (msSinceLastUpdate > 10000 && !isFetchingMoreNfts) {
+    // Since fastRefresh is 10 seconds and FETCH_NEW_NFTS_INTERVAL_MS is 8 seconds it fires every 10 seconds
+    // The difference in 2 seconds is just to prevent some edge cases when request takes too long
+    if (msSinceLastUpdate > PANCAKE_BUNNIES_UPDATE_FREQUENCY && !isUpdatingPancakeBunnies) {
       fetchMorePancakeBunnies(priceSort)
     }
-  }, [priceSort, fetchMorePancakeBunnies, isFetchingMoreNfts, latestFetchAt, fastRefresh])
+  }, [priceSort, fetchMorePancakeBunnies, isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fastRefresh])
 
   useEffect(() => {
     const fetchTokens = async () => {
@@ -156,7 +160,7 @@ const IndividualNFTPage = () => {
           loadMore={fetchMorePancakeBunnies}
           priceSort={priceSort}
           togglePriceSort={togglePriceSort}
-          isFetchingMoreNfts={isFetchingMoreNfts}
+          isFetchingMoreNfts={isUpdatingPancakeBunnies}
         />
       </TwoColumnsContainer>
       <MoreFromThisCollection
