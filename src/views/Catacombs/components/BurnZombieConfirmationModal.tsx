@@ -1,10 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react'
 import { Button, Flex, Image, Modal, Text } from '@catacombs-libs/uikit'
-import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import { useWeb3React } from '@web3-react/core'
-import useToast from 'hooks/useToast'
-import { useTranslation } from 'contexts/Localization'
 import tokens from '../../../config/constants/tokens'
 import { zombieBalance } from '../../../redux/get'
 import { APESWAP_EXCHANGE_URL } from '../../../config'

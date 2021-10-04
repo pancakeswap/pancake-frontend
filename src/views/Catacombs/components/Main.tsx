@@ -1,7 +1,5 @@
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
-import Typewriter from 'typewriter-effect'
-import { Heading, Text, Button } from '@catacombs-libs/uikit'
 import styled from 'styled-components'
 import Menu from '../../../components/Catacombs/Menu'
 import Page from '../../../components/layout/Page'
