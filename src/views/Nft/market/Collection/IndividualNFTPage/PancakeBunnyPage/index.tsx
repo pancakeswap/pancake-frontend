@@ -45,6 +45,10 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
 
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
 
+  // const totalMinted = distributionData ? sum(Object.values(distributionData)) : 0
+  // const count: number = distributionData ? distributionData[tokenId] : 0
+  // const percentage = (count / totalMinted) * 100
+
   useEffect(() => {
     // Fetch first 30 NFTs on page load
     // And then query every FETCH_NEW_NFTS_INTERVAL_MS in case some new (cheaper) NFTs were listed
@@ -105,9 +109,16 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
     setPriceSort((currentValue) => (currentValue === 'asc' ? 'desc' : 'asc'))
   }
 
+  const getBunnyIdCount = () => {
+    if (distributionData && !isFetchingDistribution) {
+      return sum(Object.values(distributionData))
+    }
+    return null
+  }
+
   const getBunnyIdRarity = () => {
     if (distributionData && !isFetchingDistribution) {
-      const total = sum(Object.values(distributionData))
+      const total = getBunnyIdCount()
       return (distributionData[bunnyId] / total) * 100
     }
     return null
@@ -128,7 +139,12 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
         <Flex flexDirection="column" width="100%">
           <ManagePancakeBunniesCard bunnyId={bunnyId} lowestPrice={cheapestBunny?.marketData?.currentAskPrice} />
           <PropertiesCard properties={properties} rarity={propertyRarity} />
-          <DetailsCard contractAddress={pancakeBunniesAddress} ipfsJson={cheapestBunny?.marketData?.metadataUrl} />
+          <DetailsCard
+            contractAddress={pancakeBunniesAddress}
+            ipfsJson={cheapestBunny?.marketData?.metadataUrl}
+            rarity={propertyRarity?.bunnyId}
+            count={getBunnyIdCount()}
+          />
         </Flex>
         <ForSaleTableCard
           nftsForSale={sortedNfts}

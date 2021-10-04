@@ -28,6 +28,10 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
 
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistribution(collectionAddress)
 
+  // const totalMinted = distributionData ? sum(Object.values(distributionData)) : 0
+  // const count: number = distributionData ? distributionData[tokenId] : 0
+  // const percentage = (count / totalMinted) * 100
+
   const { account } = useWeb3React()
   const { userNftsInitializationState, nfts: userNfts } = useUserNfts()
   useFetchUserNfts(account)
