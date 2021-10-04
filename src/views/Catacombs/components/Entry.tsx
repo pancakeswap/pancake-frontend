@@ -1,15 +1,15 @@
 import { useTranslation } from 'contexts/Localization'
 import React, { useState } from 'react'
-import { Text } from '@catacombs-libs/uikit'
+import { Heading, Text } from '@catacombs-libs/uikit'
 import { useModal } from '@rug-zombie-libs/uikit';
 import Typewriter from 'typewriter-effect'
-import styled from 'styled-components'
 import Page from '../../../components/layout/Page'
 import CatacombsEntryBackgroundSVG from '../../../images/Catacombs_Entry_650_x_650_px.svg'
 import { useCatacombsContract, useZombie } from '../../../hooks/useContract'
-import BurnZombieModal from '../../Graves/components/BurnZombie'
 import BurnZombieConfirmationModal from './BurnZombieConfirmationModal'
 import WrongPasswordModal from './WrongPasswordModal'
+import Typewriter from 'typewriter-effect'
+import styled from 'styled-components'
 
 const StyledText = styled(Text)`
   font-size: 35px;
