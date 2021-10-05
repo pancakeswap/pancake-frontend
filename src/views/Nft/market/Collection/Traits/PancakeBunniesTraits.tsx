@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Skeleton, Table, Td, Th, Image, Flex, Text, ArrowUpIcon, ArrowDownIcon } from '@pancakeswap/uikit'
+import { Skeleton, Table, Td, Th, Flex, ArrowUpIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { useHistory } from 'react-router'
-import styled from 'styled-components'
 import times from 'lodash/times'
 import sum from 'lodash/sum'
 import { formatNumber } from 'utils/formatBalance'
@@ -11,44 +10,14 @@ import { useTranslation } from 'contexts/Localization'
 import CollapsibleCard from 'components/CollapsibleCard'
 import { useGetLowestPriceFromBunnyId } from '../../hooks/useGetLowestPrice'
 import { BNBAmountLabel } from '../../components/CollectibleCard/styles'
-import { StyledSortButton } from './styles'
 import { sortBunniesByRarityBuilder } from './utils'
 import { nftsBaseUrl } from '../../constants'
 import { SortType } from '../../types'
+import { ClickableRow, NftName, StyledSortButton, TableWrapper } from './styles'
 
 interface PancakeBunniesTraitsProps {
   collectionAddress: string
 }
-
-const NftImage = styled(Image)`
-  flex: none;
-  & > img {
-    border-radius: 8px;
-  }
-`
-
-const ClickableRow = styled.tr`
-  cursor: pointer;
-
-  &:hover {
-    td {
-      opacity: 0.65;
-    }
-  }
-`
-
-const TableWrapper = styled.div`
-  -webkit-overflow-scrolling: touch;
-  min-width: 320px;
-  overflow-x: auto;
-`
-
-const NftName: React.FC<{ thumbnailSrc: string; name: string }> = ({ thumbnailSrc, name }) => (
-  <Flex alignItems="center">
-    <NftImage src={thumbnailSrc} width={48} height={48} mr="8px" />
-    <Text>{name}</Text>
-  </Flex>
-)
 
 const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
   const { isFetching, lowestPrice } = useGetLowestPriceFromBunnyId(bunnyId)
