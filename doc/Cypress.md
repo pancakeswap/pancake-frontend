@@ -26,7 +26,7 @@ Remember that if you modify the code under test (e.g. adding id to some element)
 
 ### Cypress GUI
 
-Cypress GUI is a nice tool to use if screenshot don't tell enough information.
+Cypress GUI is a nice tool to use if screenshots don't tell enough information.
 
 You open it with
 
@@ -38,4 +38,4 @@ It might ask you to update by installing latest GUI version - this will download
 
 ### Tips and tricks
 
-- If you trying to debug something in GUI console be sure to switch to context of iFramed app (Click "top &#9660;" and then "Your App: pancake-frontend")
+- If you are trying to debug something in GUI console be sure to switch to context of iFramed app (Click "top &#9660;" and then "Your App: pancake-frontend")
