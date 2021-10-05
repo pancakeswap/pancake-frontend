@@ -382,7 +382,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenAddress: '0x2CD14cbA3F26254beeD1d78158cd2B6F91809600',
     quoteToken: tokens.busd,
     tokenName: 'Genshiro',
-    projectSite: 'https://genshiro.equilibrium.io/zh',
+    projectSite: 'https://genshiro.equilibrium.io/en',
   },
 ].map((bidderConfig) => ({
   ...bidderConfig,
