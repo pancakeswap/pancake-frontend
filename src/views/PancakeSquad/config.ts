@@ -23,7 +23,7 @@ const nftSaleConfigBuilder = ({ t, saleStatus, startTimestamp }: nftSaleType) =>
           text: getEventText({ saleStatus, eventStatus: [SaleStatusEnum.Presale], t }),
           altText: getAltText({ t, saleStatus, eventStatus: [SaleStatusEnum.Presale], startTimestamp }),
           infoText: t(
-            'Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at a snapshot shortly before the presale phase begins can purchase one Squad Ticket per Gen 0 NFT.',
+            'Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at a snapshot taken some time between 12 and 2 hours before the presale begins can purchase one Squad Ticket per Gen 0 NFT.',
           ),
         },
         {
