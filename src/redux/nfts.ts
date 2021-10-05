@@ -498,6 +498,18 @@ const nfts: Nft[] = [
     rarity: 'Biblical',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 41,
+    name: 'The Chosen',
+    symbol: 'CHOSEN',
+    description: 'Did you hear the bells ringing?',
+    address: '0x9609Ee9f17987587083279e60ca5e86c30FF28A2',
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/Qmet1ztQoPXekbc8AK3VkxJK62CAQJC35weUKM6iz4Mn8s',
+    type: 'image',
+    rarity: 'Rare',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts

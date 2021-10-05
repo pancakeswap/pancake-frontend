@@ -93,6 +93,15 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://fairmoon.org/',
   },
+  bonfire: {
+    symbol: 'BONFIRE',
+    address: {
+      56: '0x5e90253fbae4dab78aa351f4e6fed08a64ab5590',
+      97: '',
+    },
+    decimals: 9,
+    projectLink: 'https://www.bonfiretoken.co/',
+  },
   u92: {
     symbol: 'U92',
     address: {
