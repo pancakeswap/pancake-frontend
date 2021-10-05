@@ -13,20 +13,19 @@ const Traits = () => {
   const { collectionAddress } = useParams<{ collectionAddress: string }>()
   const dispatch = useAppDispatch()
   const collection = useGetCollection(collectionAddress)
-  const { address } = collection || {}
 
   useEffect(() => {
-    if (address) {
-      dispatch(fetchCollection(address))
+    if (collectionAddress) {
+      dispatch(fetchCollection(collectionAddress))
     }
-  }, [address, dispatch])
+  }, [collectionAddress, dispatch])
 
   return (
     <>
       <Header collection={collection} />
       <Container py="40px">
         {collectionAddress === pancakeBunniesAddress ? (
-          <PancakeBunniesTraits collectionAddress={address} />
+          <PancakeBunniesTraits collectionAddress={collectionAddress} />
         ) : (
           <CollectionTraits collectionAddress={collectionAddress} />
         )}
