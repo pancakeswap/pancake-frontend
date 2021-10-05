@@ -19,6 +19,7 @@ import useTheme from 'hooks/useTheme'
 import { NftToken } from 'state/nftMarket/types'
 import ForSaleTableRows from './ForSaleTableRows'
 import { StyledSortButton } from './styles'
+import UpdateIndicator from './UpdateIndicator'
 
 const ITEMS_PER_PAGE_DESKTOP = 10
 const ITEMS_PER_PAGE_MOBILE = 5
@@ -118,7 +119,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({
     <StyledCard hasManyPages={maxPage > 1}>
       <Grid
         flex="0 1 auto"
-        gridTemplateColumns="34px 1fr"
+        gridTemplateColumns="34px 1fr 48px"
         alignItems="center"
         height="72px"
         px="24px"
@@ -126,6 +127,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({
       >
         <SellIcon width="24px" height="24px" />
         <Text bold>{t('For Sale (%num%)', { num: totalForSale.toLocaleString() })}</Text>
+        <UpdateIndicator />
       </Grid>
       {nftsOnCurrentPage.length > 0 ? (
         <>

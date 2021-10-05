@@ -44,7 +44,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collect
 
   let nftsToShow = allPancakeBunnyNfts ? allPancakeBunnyNfts.filter((nft) => nft.name !== currentTokenName) : []
 
-  if (!nftsToShow) {
+  if (nftsToShow.length === 0) {
     return null
   }
 

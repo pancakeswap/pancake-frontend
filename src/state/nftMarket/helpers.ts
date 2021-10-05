@@ -17,6 +17,8 @@ import {
   CollectionMarketDataBaseFields,
   Transaction,
   AskOrder,
+  ApiSingleTokenData,
+  NftAttribute,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
 
@@ -259,7 +261,7 @@ export const getMarketDataForTokenIds = async (
       `,
       {
         collectionAddress: collectionAddress.toLowerCase(),
-        where: { tokenId_not_in: existingTokenIds },
+        where: { tokenId_in: existingTokenIds },
       },
     )
     return res.nfts
@@ -471,6 +473,50 @@ export const getLatestListedNfts = async (first: number): Promise<TokenMarketDat
 /**
  * OTHER HELPERS
  */
+
+export const getMetadataWithFallback = (apiMetadata: ApiResponseCollectionTokens['data'], bunnyId: string) => {
+  // The fallback is just for the testnet where some bunnies don't exist
+  return (
+    apiMetadata[bunnyId] ?? {
+      name: '',
+      description: '',
+      collection: { name: 'Pancake Bunnies' },
+      image: {
+        original: '',
+        thumbnail: '',
+      },
+    }
+  )
+}
+
+export const getPancakeBunniesAttributesField = (bunnyId: string) => {
+  // Generating attributes field that is not returned by API
+  // but can be "faked" since objects are keyed with bunny id
+  return [
+    {
+      traitType: 'bunnyId',
+      value: bunnyId,
+      displayType: null,
+    },
+  ]
+}
+
+export const combineApiAndSgResponseToNftToken = (
+  apiMetadata: ApiSingleTokenData,
+  marketData: TokenMarketData,
+  attributes: NftAttribute[],
+) => {
+  return {
+    tokenId: marketData.tokenId,
+    name: apiMetadata.name,
+    description: apiMetadata.description,
+    collectionName: apiMetadata.collection.name,
+    collectionAddress: pancakeBunniesAddress,
+    image: apiMetadata.image,
+    marketData,
+    attributes,
+  }
+}
 
 export const fetchWalletTokenIdsForCollections = async (
   account: string,
