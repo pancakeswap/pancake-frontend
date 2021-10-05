@@ -142,7 +142,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
 
   return (
     <StyledModal
-      title={modalTitles[stage]}
+      title={t(modalTitles[stage])}
       stage={stage}
       onDismiss={onDismiss}
       onBack={showBackButton ? goBack : null}
