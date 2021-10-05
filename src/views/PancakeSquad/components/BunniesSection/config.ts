@@ -7,9 +7,8 @@ const bunniesConfig = {
     'On top of that, there are a very small number of ultra-rare special unique bunnies as well...!',
   ],
   primaryButton: {
-    to: '/market',
+    to: '/nfts',
     text: 'View in Market',
-    external: false,
   },
   images: { basePath: '/images/pancakeSquad/bunnies/bunny', alt: 'bunny nft' },
 }
