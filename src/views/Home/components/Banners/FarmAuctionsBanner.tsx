@@ -88,7 +88,7 @@ const FarmAuctionsBanner = () => {
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{t('%num% Contenders...', { num: 39 })}</StyledSubheading>
+          <StyledSubheading>{t('%num% Contenders...', { num: 46 })}</StyledSubheading>
           <StyledHeading scale="xl">{t('%num% Winners', { num: 3 })}</StyledHeading>
           <Link to="/farms/auction">
             <Button>
