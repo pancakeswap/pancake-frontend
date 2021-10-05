@@ -73,7 +73,13 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         {t('Pancake Squad')}
       </StyledSquadTitle>
       <Text color={lightColors.warning} textAlign="center" bold>
-        {t('Mint Cost: To Be Announced', {
+        {`${t('Presale:')} 04:00 UTC, Oct. 7`}
+      </Text>
+      <Text color={lightColors.warning} textAlign="center" bold>
+        {`${t('Public Sale:')} 08:00 UTC, Oct. 7`}
+      </Text>
+      <Text color={lightColors.warning} textAlign="center" bold>
+        {t('Mint Cost: around 300 USD in CAKE', {
           minCost: pricePerTicket ? formatBigNumber(pricePerTicket, 0) : DEFAULT_CAKE_COST,
         })}
       </Text>

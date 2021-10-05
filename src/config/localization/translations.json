@@ -1658,7 +1658,7 @@
   "Wait for the Reveal": "Wait for the Reveal",
   "It’ll take a few days before your bunny’s image is revealed. Just hold tight and wait for the final image!": "It’ll take a few days before your bunny’s image is revealed. Just hold tight and wait for the final image!",
   "Trading will open before the images are live, but you’ll still be able to check the bunnies’ stats.": "Trading will open before the images are live, but you’ll still be able to check the bunnies’ stats.",
-  "Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at a snapshot shortly before the presale phase begins can purchase one Squad Ticket per Gen 0 NFT.": "Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at a snapshot shortly before the presale phase begins can purchase one Squad Ticket per Gen 0 NFT.",
+  "Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at a snapshot taken some time between 12 and 2 hours before the presale begins can purchase one Squad Ticket per Gen 0 NFT.": "Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at a snapshot taken some time between 12 and 2 hours before the presale begins can purchase one Squad Ticket per Gen 0 NFT.",
   "Transaction has succeeded!": "Transaction has succeeded!",
   "Gen 0 Pancake Bunnies (bunnyID 0, 1, 2, 3, 4)": "Gen 0 Pancake Bunnies (bunnyID 0, 1, 2, 3, 4)",
   "The birthplace of Cecy is truly unknown": "The birthplace of Cecy is truly unknown",
@@ -1672,7 +1672,9 @@
   "To drizzle in syrup and hand them out soon": "To drizzle in syrup and hand them out soon",
   "So that bunnies worldwide may fly to the moon.": "So that bunnies worldwide may fly to the moon.",
   "All Pancake Squad NFTs are allocated to Squad Ticket holders through a provably-fair system based on ChainLink at the time of minting.": "All Pancake Squad NFTs are allocated to Squad Ticket holders through a provably-fair system based on ChainLink at the time of minting.",
-  "Mint Cost: To Be Announced": "Mint Cost: To Be Announced",
+  "Mint Cost: around 300 USD in CAKE": "Mint Cost: around 300 USD in CAKE",
   "The smart contract address will be released soon before the sale starts.": "The smart contract address will be released soon before the sale starts.",
-  "Coming Oct. 7": "Coming Oct. 7"
+  "Coming Oct. 7": "Coming Oct. 7",
+  "Presale:": "Presale:",
+  "Public Sale:": "Public Sale:"
 }
