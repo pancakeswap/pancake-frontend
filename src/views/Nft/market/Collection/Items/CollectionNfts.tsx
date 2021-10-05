@@ -30,7 +30,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
   const nfts = useNftsFromCollection(checksummedAddress)
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(address)
 
-  const currentNfts = isPBCollection ? allPancakeBunnyNfts : nfts?.filter((nft) => nft.marketData.isTradable)
+  const currentNfts = isPBCollection ? allPancakeBunnyNfts : nfts
 
   if (!currentNfts) {
     return <GridPlaceholder />
@@ -38,7 +38,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
 
   const nftsToShow = orderBy(
     currentNfts,
-    (nft) => (isPBCollection ? nft.meta[sortBy] : Number(nft.marketData[sortBy])),
+    (nft) => (isPBCollection ? nft.meta[sortBy] : nft.marketData ? Number(nft.marketData[sortBy]) : 0),
     [sortBy === 'currentAskPrice' ? 'asc' : 'desc'],
   )
 

@@ -25,6 +25,8 @@ import {
   NftToken,
   NftLocation,
   ApiSingleTokenData,
+  NftAttribute,
+  TokenMarketData,
 } from './types'
 
 const initialState: State = {
@@ -103,7 +105,7 @@ export const fetchNftsFromCollections = createAsyncThunk(
             },
           }
           // Generating attributes field that is not returned by API but can be "faked" since objects are keyed with bunny id
-          const attributes = [
+          const attributes: NftAttribute[] = [
             {
               traitType: 'bunnyId',
               value: marketData.otherId,
@@ -113,6 +115,7 @@ export const fetchNftsFromCollections = createAsyncThunk(
           return {
             tokenId: marketData.tokenId,
             name: apiMetadata.name,
+
             description: apiMetadata.description,
             collectionName: apiMetadata.collection.name,
             collectionAddress,
@@ -123,8 +126,20 @@ export const fetchNftsFromCollections = createAsyncThunk(
         })
       }
 
-      // TODO: revisit this for other collecitons
-      return []
+      return Object.keys(nfts.data).map((id) => {
+        const apiMetadata = nfts.data[id]
+        const marketData = nftsMarket.find((nft) => nft.tokenId === id)
+        return {
+          tokenId: id,
+          name: apiMetadata.name,
+          description: apiMetadata.description,
+          collectionName: apiMetadata.collection.name,
+          collectionAddress,
+          image: apiMetadata.image,
+          marketData,
+          attributes: apiMetadata.attributes,
+        }
+      })
     } catch (error) {
       console.error(`Failed to fetch collection NFTs for ${collectionAddress}`, error)
       return []
