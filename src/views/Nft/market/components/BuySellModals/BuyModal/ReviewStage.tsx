@@ -1,4 +1,6 @@
 import React from 'react'
+import { useWeb3React } from '@web3-react/core'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@pancakeswap/uikit'
 import { FetchStatus } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
@@ -31,6 +33,7 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
   continueToNextStage,
 }) => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   return (
     <>
       <Flex px="24px" pt="24px" flexDirection="column">
@@ -79,11 +82,17 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
           <Text small color="textSubtle">
             {t('%symbol% in wallet', { symbol: paymentCurrency === PaymentCurrency.BNB ? 'BNB' : 'WBNB' })}
           </Text>
-          <BnbAmountCell
-            bnbAmount={walletBalance}
-            isLoading={walletFetchStatus !== FetchStatus.SUCCESS}
-            isInsufficient={walletFetchStatus === FetchStatus.SUCCESS && notEnoughBnbForPurchase}
-          />
+          {!account ? (
+            <Flex justifySelf="flex-end">
+              <ConnectWalletButton scale="sm" />
+            </Flex>
+          ) : (
+            <BnbAmountCell
+              bnbAmount={walletBalance}
+              isLoading={walletFetchStatus !== FetchStatus.SUCCESS}
+              isInsufficient={walletFetchStatus === FetchStatus.SUCCESS && notEnoughBnbForPurchase}
+            />
+          )}
         </BorderedBox>
         {walletFetchStatus === FetchStatus.SUCCESS && notEnoughBnbForPurchase && (
           <Message p="8px" variant="danger">
