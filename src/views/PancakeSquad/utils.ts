@@ -70,7 +70,7 @@ export const getEventText = ({ eventStatus, saleStatus, startTimestamp, t }: get
   const eventStepStatus = getEventStepStatus({ eventStatus, saleStatus, startTimestamp })
   if (eventStepStatus === 'live' && saleStatus === SaleStatusEnum.DrawingRandomness)
     return `${t(eventTextMapping[eventStatus[0]])}: ${t('Sold Out!')}`
-  if (eventStepStatus === 'live') return `${t(eventTextMapping[eventStatus[0]])}: ${t('Now Live')}`
+  if (eventStepStatus === 'live' && saleStatus > 0) return `${t(eventTextMapping[eventStatus[0]])}: ${t('Now Live')}`
   if (eventStepStatus === 'upcoming') return `${t(eventTextMapping[eventStatus[0]])}: `
 
   return t(eventTextMapping[eventStatus[0]])

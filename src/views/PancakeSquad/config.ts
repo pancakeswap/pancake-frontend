@@ -9,7 +9,7 @@ type nftSaleType = {
 }
 
 const nftSaleConfigBuilder = ({ t, saleStatus, startTimestamp }: nftSaleType) =>
-  saleStatus
+  saleStatus !== undefined
     ? [
         {
           status: getEventStepStatus({ saleStatus, eventStatus: [SaleStatusEnum.Pending, SaleStatusEnum.Premint] }),
