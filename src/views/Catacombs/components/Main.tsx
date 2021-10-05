@@ -27,30 +27,31 @@ const StyledButton = styled.button`
 
   @media (max-width: 479px) {
     font-size: 15px;
-    width: 50%;
+    width: 55%;
+    height: 25%;
   }
 `
 
 const BarracksDiv = styled.div`
   text-align: center;
   position: absolute;
-  top: 10%;
+  top: 15%;
   width: 100%;
   height: 22%;
   @media (max-width: 479px) {
     height: 40%;
-    top: 5%;
+    top: 10%;
   }
 `
 
 const RugRollDiv = styled.div`
   text-align: center;
   position: absolute;
-  top: 25%;
+  top: 30%;
   width: 100%;
   height: 22%;
   @media (max-width: 479px) {
-    top: 28%;
+    top: 30%;
     height: 40%;
   }
 `
@@ -58,11 +59,11 @@ const RugRollDiv = styled.div`
 const DataLabDiv = styled.div`
   text-align: center;
   position: absolute;
-  top: 40%;
+  top: 45%;
   width: 100%;
   height: 22%;
   @media (max-width: 479px) {
-    top: 53%;
+    top: 50%;
     height: 40%;
   }
 `
@@ -70,11 +71,11 @@ const DataLabDiv = styled.div`
 const BlackMarketDiv = styled.div`
   text-align: center;
   position: absolute;
-  top: 55%;
+  top: 60%;
   width: 100%;
   height: 22%;
   @media (max-width: 479px) {
-    top: 78%;
+    top: 70%;
     height: 40%;
   }
 `
@@ -87,8 +88,8 @@ const Main = () => {
       <>
         <Page>
           <div className='parent-div'>
-            { isMobile ? <img src={CatacombsBackgroundMobileSVG} alt='catacombs-rug-zombie' className='backgroundImageStyle' /> :
-              <img src={CatacombsBackgroundDesktopSVG} alt='catacombs-rug-zombie' className='backgroundImageStyle' />
+            { isMobile ? <img src={CatacombsBackgroundMobileSVG} alt='catacombs-rug-zombie' /> :
+              <img src={CatacombsBackgroundDesktopSVG} alt='catacombs-rug-zombie' />
             }
             <BarracksDiv>
               <StyledButton>{t('BARRACKS')}</StyledButton>
