@@ -155,7 +155,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
           </StyledSquadEventContainer>
         </StyledSquadEventBorder>
       )}
-      <StyledWaveContainer bottom="-2px">
+      <StyledWaveContainer bottom="-3px">
         <HeaderBottomWave isDark={isDark} />
       </StyledWaveContainer>
     </StyledSquadHeaderContainer>
