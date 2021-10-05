@@ -196,14 +196,14 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
-        const approvedForContract = await collectionContract.getApproved(nftToSell.tokenId)
-        return approvedForContract.toLowerCase() === nftMarketContract.address.toLowerCase()
+        const approvedForContract = await collectionContract.isApprovedForAll(account, nftMarketContract.address)
+        return approvedForContract
       } catch (error) {
         return false
       }
     },
     onApprove: () => {
-      return callWithGasPrice(collectionContract, 'approve', [nftMarketContract.address, nftToSell.tokenId])
+      return callWithGasPrice(collectionContract, 'setApprovalForAll', [nftMarketContract.address, true])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
