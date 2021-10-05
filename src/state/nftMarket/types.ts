@@ -230,6 +230,12 @@ export interface ApiResponseSpecificToken {
   }
 }
 
+// ${API_NFT}/collections/${collectionAddress}/distribution
+export interface ApiCollectionDistribution {
+  total: number
+  data: Record<string, Record<string, number>>
+}
+
 /**
  * SUBGRAPH RESPONSES
  */

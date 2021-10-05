@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import times from 'lodash/times'
 import capitalize from 'lodash/capitalize'
 import sum from 'lodash/sum'
@@ -7,44 +7,66 @@ import { ArrowDownIcon, ArrowUpIcon, Flex, Skeleton, Table, Td, Th } from '@panc
 import { formatNumber } from 'utils/formatBalance'
 import CollapsibleCard from 'components/CollapsibleCard'
 import { useTranslation } from 'contexts/Localization'
-import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
-import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import { SortType } from '../../types'
 import { StyledSortButton, TableWrapper } from './styles'
+import useGetCollectionDistribution from '../../hooks/useGetCollectionDistribution'
 
 interface CollectionTraitsProps {
   collectionAddress: string
 }
 
 const CollectionTraits: React.FC<CollectionTraitsProps> = ({ collectionAddress }) => {
-  const [tokenApiResponse, setTokenApiResponse] = useState<ApiResponseCollectionTokens>(null)
+  const { data, isFetching } = useGetCollectionDistribution(collectionAddress)
   const [raritySort, setRaritySort] = useState<Record<string, SortType>>({})
   const { t } = useTranslation()
 
-  useEffect(() => {
-    const fetchTokens = async () => {
-      const apiResponse = await getNftsFromCollectionApi(collectionAddress)
-      setTokenApiResponse(apiResponse)
-    }
-
-    fetchTokens()
-  }, [collectionAddress, setTokenApiResponse])
+  if (isFetching) {
+    return (
+      <CollapsibleCard title={t('Loading...')}>
+        <Table>
+          <thead>
+            <tr>
+              <Th textAlign="left">{t('Name')}</Th>
+              <Th width="100px">{t('Count')}</Th>
+              <Th width="160px">{t('Rarity')}</Th>
+            </tr>
+          </thead>
+          <tbody>
+            {times(19).map((bunnyCnt) => (
+              <tr key={bunnyCnt}>
+                <Td>
+                  <Skeleton width="100px" />
+                </Td>
+                <Td>
+                  <Skeleton />
+                </Td>
+                <Td>
+                  <Skeleton />
+                </Td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </CollapsibleCard>
+    )
+  }
 
   return (
     <>
-      {tokenApiResponse ? (
-        Object.keys(tokenApiResponse.attributesDistribution).map((traitType, index) => {
-          const total = sum(Object.values(tokenApiResponse.attributesDistribution[traitType]))
+      {data &&
+        Object.keys(data).map((traitType, index) => {
+          const total = sum(Object.values(data[traitType]))
 
           // Parse the distribution values into an array to make it easier to sort
-          const traitValues: { value: string; count: number; rarity: number }[] = Object.keys(
-            tokenApiResponse.attributesDistribution[traitType],
-          ).reduce((accum, traitValue) => {
-            const count = tokenApiResponse.attributesDistribution[traitType][traitValue]
-            const rarity = (count / total) * 100
+          const traitValues: { value: string; count: number; rarity: number }[] = Object.keys(data[traitType]).reduce(
+            (accum, traitValue) => {
+              const count = data[traitType][traitValue]
+              const rarity = (count / total) * 100
 
-            return [...accum, { value: traitValue, count, rarity }]
-          }, [])
+              return [...accum, { value: traitValue, count, rarity }]
+            },
+            [],
+          )
           const sortType = raritySort[traitType] || 'desc'
 
           const toggleRaritySort = () => {
@@ -100,32 +122,7 @@ const CollectionTraits: React.FC<CollectionTraitsProps> = ({ collectionAddress }
               </TableWrapper>
             </CollapsibleCard>
           )
-        })
-      ) : (
-        <CollapsibleCard title={t('Loading...')}>
-          <Table>
-            <thead>
-              <tr>
-                <Th textAlign="left">{t('Name')}</Th>
-                <Th>{t('Count')}</Th>
-                <Th>{t('Rarity')}</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {times(19).map((bunnyCnt) => (
-                <tr key={bunnyCnt}>
-                  <Td>
-                    <Skeleton width="100px" />
-                  </Td>
-                  <Td>
-                    <Skeleton />
-                  </Td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </CollapsibleCard>
-      )}
+        })}
     </>
   )
 }
