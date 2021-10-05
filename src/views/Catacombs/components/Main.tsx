@@ -1,9 +1,11 @@
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
+import { isMobile } from 'react-device-detect';
 import styled from 'styled-components'
 import Menu from '../../../components/Catacombs/Menu'
 import Page from '../../../components/layout/Page'
-import CatacombsBackground from '../../../images/Catacombs_650_x_650_px.svg'
+import CatacombsBackgroundDesktopSVG from '../../../images/CatacombsMain-1920x1080px.svg'
+import CatacombsBackgroundMobileSVG from '../../../images/CatacombsMain-414x720px.svg'
 
 
 const StyledButton = styled.button`
@@ -85,7 +87,9 @@ const Main = () => {
       <>
         <Page>
           <div className='parent-div'>
-            <img src={CatacombsBackground} alt='catacombs-rug-zombie' className='backgroundImageStyle' />
+            { isMobile ? <img src={CatacombsBackgroundMobileSVG} alt='catacombs-rug-zombie' className='backgroundImageStyle' /> :
+              <img src={CatacombsBackgroundDesktopSVG} alt='catacombs-rug-zombie' className='backgroundImageStyle' />
+            }
             <BarracksDiv>
               <StyledButton>{t('BARRACKS')}</StyledButton>
             </BarracksDiv>

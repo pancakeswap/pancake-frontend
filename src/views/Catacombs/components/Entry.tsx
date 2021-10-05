@@ -2,10 +2,12 @@ import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { Text } from '@catacombs-libs/uikit'
 import { useModal } from '@rug-zombie-libs/uikit'
+import { isMobile } from 'react-device-detect';
 import Typewriter from 'typewriter-effect'
 import styled from 'styled-components'
 import Page from '../../../components/layout/Page'
-import CatacombsEntryBackgroundSVG from '../../../images/Catacombs_Entry_650_x_650_px.svg'
+import CatacombsEntryBackgroundDesktopSVG from '../../../images/CatacombsEntry-1920x1080px.svg'
+import CatacombsEntryBackgroundMobileSVG from '../../../images/CatacombsEntry-414x720px.svg'
 import BurnZombieConfirmationModal from './BurnZombieConfirmationModal'
 import WrongPasswordModal from './WrongPasswordModal'
 
@@ -43,7 +45,10 @@ const Entry = () => {
     <>
       <Page>
         <div className='parent-div'>
-          <img src={CatacombsEntryBackgroundSVG} alt='catacombs-rug-zombie' className='backgroundImageStyle' />
+          { 
+            isMobile ? <img src={CatacombsEntryBackgroundMobileSVG} alt='catacombs-rug-zombie' className='backgroundImageStyle' /> :
+            <img src={CatacombsEntryBackgroundDesktopSVG} alt='catacombs-rug-zombie' className='backgroundImageStyle' />
+          }
           <div className='main-text'>
             <Typewriter options={{ cursor: '' }}
                         onInit={(typewriter) => {
