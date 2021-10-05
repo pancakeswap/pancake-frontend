@@ -1,5 +1,6 @@
-import { Box, Button, Flex, Link, Text } from '@pancakeswap/uikit'
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { Box, Button, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import ColoredWordHeading from 'views/Home/components/ColoredWordHeading'
 import { LandingBodyWrapper } from 'views/PancakeSquad/styles'
@@ -39,7 +40,7 @@ const BunniesSection = () => {
             </Text>
           ))}
           <Flex>
-            <Link mr="16px" external={primaryButton.external} href={primaryButton.to}>
+            <Link to={primaryButton.to}>
               <Button>
                 <Text color="card" bold fontSize="16px">
                   {t(primaryButton.text)}
