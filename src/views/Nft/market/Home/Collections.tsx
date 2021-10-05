@@ -49,17 +49,6 @@ const Collections = () => {
               </HotCollectionCard>
             )
           })}
-        {/* Remove when squad is added to collections API */}
-        <HotCollectionCard
-          disabled
-          bgSrc="/images/collections/pancake-squad-banner-sm.png"
-          avatarSrc="/images/collections/pancake-squad-avatar.png"
-          collectionName="Pancake Squad"
-        >
-          <Text color="textDisabled" fontSize="12px">
-            {t('Coming Soon')}
-          </Text>
-        </HotCollectionCard>
         <HotCollectionCard
           disabled
           bgSrc="/images/collections/no-collection-banner-sm.png"

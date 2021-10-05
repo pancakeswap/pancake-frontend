@@ -7,5 +7,7 @@ export const nftsBaseUrl = '/nfts'
 // @TODO This will be removed when more collections are added
 export const pancakeBunniesAddress = getAddress(collections[CollectionKey.PANCAKE].address)
 
+export const pancakeSquadAddress = getAddress(collections[CollectionKey.SQUAD].address)
+
 // @TODO Remove after the V1
 export const TMP_SEE_ALL_LINK = `${nftsBaseUrl}/collections/${pancakeBunniesAddress}`
