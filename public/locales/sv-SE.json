@@ -1592,5 +1592,6 @@
   "Your NFT has been transferred to another wallet": "Your NFT has been transferred to another wallet",
   "Back": "Back",
   "Confirm transaction": "Confirm transaction",
-  "Collection": "Collection"
+  "Collection": "Collection",
+  "Items in the table update every 10 seconds": "Items in the table update every 10 seconds"
 }
