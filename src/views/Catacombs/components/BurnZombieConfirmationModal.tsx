@@ -32,7 +32,7 @@ const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss
       if (_res) {
         catacombs.methods.UnlockCatacombs().send().then( res => {
           if (res) {
-            window.location.reload(false);
+            window.location.reload();
           }
         })
       }
