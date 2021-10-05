@@ -75,7 +75,7 @@ interface OnSuccessProps {
 
 interface ApproveConfirmTransaction {
   onApprove: () => Promise<ethers.providers.TransactionResponse>
-  onConfirm: () => Promise<ethers.providers.TransactionResponse>
+  onConfirm: (params?) => Promise<ethers.providers.TransactionResponse>
   onRequiresApproval?: () => Promise<boolean>
   onSuccess: ({ state, receipt }: OnSuccessProps) => void
   onApproveSuccess?: ({ state, receipt }: OnSuccessProps) => void
@@ -110,6 +110,8 @@ const useApproveConfirmTransaction = ({
     isApproved: state.approvalState === 'success',
     isConfirming: state.confirmState === 'loading',
     isConfirmed: state.confirmState === 'success',
+    hasApproveFailed: state.approvalState === 'fail',
+    hasConfirmFailed: state.confirmState === 'fail',
     handleApprove: async () => {
       try {
         const tx = await onApprove()
@@ -124,10 +126,10 @@ const useApproveConfirmTransaction = ({
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
     },
-    handleConfirm: async () => {
+    handleConfirm: async (params = {}) => {
       dispatch({ type: 'confirm_sending' })
       try {
-        const tx = await onConfirm()
+        const tx = await onConfirm(params)
         const receipt = await tx.wait()
         if (receipt.status) {
           dispatch({ type: 'confirm_receipt' })

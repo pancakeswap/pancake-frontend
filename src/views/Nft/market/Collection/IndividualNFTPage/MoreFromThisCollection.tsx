@@ -32,10 +32,15 @@ const StyledSwiper = styled.div`
 
 interface MoreFromThisCollectionProps {
   collectionAddress: string
-  currentTokenName: string
+  currentTokenName?: string
+  title?: string
 }
 
-const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collectionAddress, currentTokenName }) => {
+const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
+  collectionAddress,
+  currentTokenName = '',
+  title = 'More from this collection',
+}) => {
   const { t } = useTranslation()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
   const [activeIndex, setActiveIndex] = useState(1)
@@ -51,13 +56,14 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collect
   let slidesPerView = 4
   let maxPageIndex = 3
 
-  if (isLg) {
-    slidesPerView = 3
-    maxPageIndex = 4
-  }
   if (isMd) {
     slidesPerView = 2
     maxPageIndex = 6
+  }
+
+  if (isLg) {
+    slidesPerView = 3
+    maxPageIndex = 4
   }
 
   if (isAddress(collectionAddress) === pancakeBunniesAddress) {
@@ -97,9 +103,11 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({ collect
 
   return (
     <Box pt="56px" mb="52px">
-      <Text bold mb="24px">
-        {t('More from this collection')}
-      </Text>
+      {title && (
+        <Text bold mb="24px">
+          {t(title)}
+        </Text>
+      )}
       {isMobile ? (
         <StyledSwiper>
           <Swiper spaceBetween={16} slidesPerView={1.5}>

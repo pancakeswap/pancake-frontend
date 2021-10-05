@@ -67,3 +67,9 @@ export const getAnniversaryAchievement = () => {
 export const getNftMarketAddress = () => {
   return getAddress(addresses.nftMarket)
 }
+export const getNftSaleAddress = () => {
+  return getAddress(addresses.nftSale)
+}
+export const getPancakeSquadAddress = () => {
+  return getAddress(addresses.pancakeSquad)
+}
