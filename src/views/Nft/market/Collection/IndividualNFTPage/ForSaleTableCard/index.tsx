@@ -20,6 +20,7 @@ import { NftToken } from 'state/nftMarket/types'
 import ForSaleTableRows from './ForSaleTableRows'
 import { StyledSortButton } from './styles'
 import UpdateIndicator from './UpdateIndicator'
+import { Arrow, PageButtons } from '../../../components/PaginationButtons'
 
 const ITEMS_PER_PAGE_DESKTOP = 10
 const ITEMS_PER_PAGE_MOBILE = 5
@@ -38,23 +39,6 @@ const StyledCard = styled(Card)<{ hasManyPages: boolean }>`
 
 const TableHeading = styled(Grid)`
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
-`
-
-const PageButtons = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 16px;
-  margin-bottom: 16px;
-`
-
-const Arrow = styled.div`
-  color: ${({ theme }) => theme.colors.primary};
-  padding: 0 20px;
-  :hover {
-    cursor: pointer;
-  }
 `
 
 interface ForSaleTableCardProps {

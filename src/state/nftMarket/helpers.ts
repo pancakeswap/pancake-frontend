@@ -58,10 +58,21 @@ export const getCollectionApi = async (collectionAddress: string): Promise<ApiCo
 /**
  * Fetch static data for all nfts in a collection using the API
  * @param collectionAddress
+ * @param size
+ * @param page
  * @returns
  */
-export const getNftsFromCollectionApi = async (collectionAddress: string): Promise<ApiResponseCollectionTokens> => {
-  const res = await fetch(`${API_NFT}/collections/${collectionAddress}/tokens`)
+export const getNftsFromCollectionApi = async (
+  collectionAddress: string,
+  size = 100,
+  page = 1,
+): Promise<ApiResponseCollectionTokens> => {
+  const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
+  const requestPath = `${API_NFT}/collections/${collectionAddress}/tokens${
+    !isPBCollection ? `?page=${page}&size=${size}` : ``
+  }`
+
+  const res = await fetch(requestPath)
   if (res.ok) {
     const data = await res.json()
     return data
@@ -172,11 +183,20 @@ export const getCollectionsSg = async (): Promise<CollectionMarketDataBaseFields
 }
 
 /**
- * Fetch market data for all nfts in a collection using the Subgraph
+ * Fetch market data for nfts in a collection using the Subgraph
  * @param collectionAddress
+ * @param first
+ * @param skip
  * @returns
  */
-export const getNftsFromCollectionSg = async (collectionAddress: string): Promise<TokenMarketData[]> => {
+export const getNftsFromCollectionSg = async (
+  collectionAddress: string,
+  first = 1000,
+  skip = 0,
+): Promise<TokenMarketData[]> => {
+  // Squad to be sorted by tokenId as this matches the order of the paginated API return. For PBs - get the most recent,
+  const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
+
   try {
     const res = await request(
       GRAPH_API_NFTMARKET,
@@ -184,13 +204,13 @@ export const getNftsFromCollectionSg = async (collectionAddress: string): Promis
         query getNftCollectionMarketData($collectionAddress: String!) {
           collection(id: $collectionAddress) {
             id
-            nfts {
+            nfts(orderBy:${isPBCollection ? 'updatedAt' : 'tokenId'}, skip: $skip, first: $first) {
              ${getBaseNftFields()}
             }
           }
         }
       `,
-      { collectionAddress: collectionAddress.toLowerCase() },
+      { collectionAddress: collectionAddress.toLowerCase(), skip, first },
     )
     return res.collection.nfts
   } catch (error) {
