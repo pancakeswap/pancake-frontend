@@ -36,6 +36,7 @@ type getAltTextType = {
 }
 
 const FIFTEEN_MINUTES = 60 * 15
+const PRESALE_TIMESTAMP = 1633579200000
 
 export const getUserStatus = ({ account, hasActiveProfile, hasGen0 }: getUserStatusType): UserStatusEnum => {
   if (account && hasActiveProfile && hasGen0) {
@@ -70,8 +71,6 @@ export const getEventStepStatus = ({
     if (startTimestamp && saleStatus === SaleStatusEnum.Presale && now > startTimestamp - FIFTEEN_MINUTES * 1000) {
       return 'past'
     }
-    if (startTimestamp && now > startTimestamp) return 'live'
-    if (!startTimestamp) return 'live'
     return 'live'
   }
   return 'upcoming'
@@ -105,7 +104,9 @@ export const getEventText = ({ eventStatus, saleStatus, startTimestamp, t }: get
       return `${t(eventTextMapping[eventStatus[0]])}: ${t('Sold Out!')}`
     }
 
-    return `${t(eventTextMapping[eventStatus[0]])}: ${t('Now Live')}`
+    if (saleStatus > SaleStatusEnum.Premint) {
+      return `${t(eventTextMapping[eventStatus[0]])}: ${t('Now Live')}`
+    }
   }
   if (eventStepStatus === 'past' && eventStatus[0] === SaleStatusEnum.Presale) {
     return `${t(eventTextMapping[eventStatus[0]])}: Closed`
@@ -120,6 +121,9 @@ export const getEventText = ({ eventStatus, saleStatus, startTimestamp, t }: get
 export const getAltText = ({ startTimestamp, eventStatus, saleStatus, t }: getAltTextType): string | undefined => {
   const eventStepStatus = getEventStepStatus({ eventStatus, saleStatus, startTimestamp })
   if (saleStatus === SaleStatusEnum.DrawingRandomness && eventStepStatus === 'upcoming') return t('Starting Soon')
+  if (eventStepStatus === 'upcoming' && eventStatus[0] === SaleStatusEnum.Presale) {
+    return `${t('starts in')} ${getTimePeriodFromTimeStamp({ startTimestamp: PRESALE_TIMESTAMP })}`
+  }
   if (startTimestamp && eventStepStatus === 'upcoming' && eventStatus[0] === SaleStatusEnum.Sale) {
     return `${t('starts in')} ${getTimePeriodFromTimeStamp({ startTimestamp })}`
   }
