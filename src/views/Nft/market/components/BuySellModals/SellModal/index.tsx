@@ -10,7 +10,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { isAddress } from 'utils'
-import { useNftMarketContract, usePancakeRabbits } from 'hooks/useContract'
+import { useContractForCollection, useNftMarketContract } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
 import { removeUserNft, updateUserNft } from 'state/nftMarket/reducer'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
@@ -87,7 +87,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
-  const pancakeBunniesContract = usePancakeRabbits()
+  const collectionContract = useContractForCollection(nftToSell.collectionAddress)
   const nftMarketContract = useNftMarketContract()
   const dispatch = useAppDispatch()
 
@@ -196,14 +196,14 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
-        const approvedForContract = await pancakeBunniesContract.getApproved(nftToSell.tokenId)
-        return approvedForContract.toLowerCase() === nftMarketContract.address.toLowerCase()
+        const approvedForContract = await collectionContract.isApprovedForAll(account, nftMarketContract.address)
+        return approvedForContract
       } catch (error) {
         return false
       }
     },
     onApprove: () => {
-      return callWithGasPrice(pancakeBunniesContract, 'approve', [nftMarketContract.address, nftToSell.tokenId])
+      return callWithGasPrice(collectionContract, 'setApprovalForAll', [nftMarketContract.address, true])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
@@ -216,7 +216,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
         return callWithGasPrice(nftMarketContract, 'cancelAskOrder', [nftToSell.collectionAddress, nftToSell.tokenId])
       }
       if (stage === SellingStage.CONFIRM_TRANSFER) {
-        return callWithGasPrice(pancakeBunniesContract, 'safeTransferFrom(address,address,uint256)', [
+        return callWithGasPrice(collectionContract, 'safeTransferFrom(address,address,uint256)', [
           account,
           transferAddress,
           nftToSell.tokenId,
@@ -238,7 +238,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
 
   return (
     <StyledModal
-      title={modalTitles[stage]}
+      title={modalTitles(stage, t)}
       stage={stage}
       onDismiss={onDismiss}
       onBack={showBackButton ? goBack : null}
