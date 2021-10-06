@@ -33,7 +33,7 @@ interface BuyTicketsModalProps extends ModalProps {
   numberTicketsUsedForGen0: number
 }
 
-const DEFAULT_MAX_PER_TX = 5
+const DEFAULT_MAX_PER_TX = 3
 
 const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
   onDismiss,
@@ -51,12 +51,12 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const [ticketsNumber, setTicketsNumber] = useState<number | null>(0)
+  const [ticketsNumber, setTicketsNumber] = useState<number | null>(1)
   const isPreSale = saleStatus === SaleStatusEnum.Presale
   const remainingTickets = isPreSale
     ? numberTicketsForGen0
     : maxPerAddress - (numberTicketsOfUser - numberTicketsUsedForGen0)
-
+  const isCakeBalanceInsufficient = cakeBalance.lt(pricePerTicket)
   const maxBuyTickets = Math.min(cakeBalance.div(pricePerTicket).toNumber(), remainingTickets)
   const totalCost = pricePerTicket.mul(BigNumber.from(ticketsNumber))
   const maxBuyButtons =
@@ -81,7 +81,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
             <Text fontSize="12px" fontWeight="600" textTransform="uppercase" color="secondary" mb="16px">
               {t('Buy how many?')}
             </Text>
-            <Flex justifyContent="space-between" mb="24px">
+            <Flex justifyContent="space-evenly" mb="24px">
               {buyButtons.map((_, index) => (
                 <Button
                   key={index}
@@ -103,7 +103,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
               <Text font-size="14px" color="textSubtle">
                 {t('Your CAKE Balance')}
               </Text>
-              <Text font-size="14px">{formatBigNumber(cakeBalance, 3)} CAKE</Text>
+              <Text font-size="14px" color={isCakeBalanceInsufficient ? 'failure' : 'text'}>
+                {formatBigNumber(cakeBalance, 3)} CAKE
+              </Text>
             </Flex>
             <Flex
               mb="8px"
@@ -139,21 +141,27 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
             <Box>
               <InfoIcon width="20px" mt="4px" mr="10px" color="textSubtle" />
             </Box>
-            <Text font-size="12px" color="textSubtle">
-              {t('The network may become busy during the sale period. Consider setting a high gas fee (GWEI).')}
-            </Text>
-            <Text font-size="12px" color="textSubtle">
-              {t(`Max. Tickets per transaction: ${maxPerTransaction || DEFAULT_MAX_PER_TX}`)}
-            </Text>
-            {maxPerAddress > 0 && (
-              <Text font-size="12px" color="textSubtle">
-                {t(`Max. Tickets per wallet: ${maxPerAddress}`)}
+            <Box>
+              <Text font-size="12px" color="textSubtle" mb="12px">
+                {t('The network may become busy during the sale period. Consider setting a high gas fee (GWEI).')}
               </Text>
-            )}
+              <Text font-size="12px" color="textSubtle">
+                {t(`Max. Tickets per transaction: ${maxPerTransaction || DEFAULT_MAX_PER_TX}`)}
+              </Text>
+              {maxPerAddress > 0 && (
+                <Text font-size="12px" color="textSubtle">
+                  {t(`Max. Tickets per wallet: ${maxPerAddress}`)}
+                </Text>
+              )}
+            </Box>
           </Flex>
           <Box px="16px">
-            <Button onClick={() => buyTicketCallBack({ ticketsNumber })} width="100%">
-              {t('Confirm')}
+            <Button
+              disabled={isCakeBalanceInsufficient}
+              onClick={() => buyTicketCallBack({ ticketsNumber })}
+              width="100%"
+            >
+              {isCakeBalanceInsufficient ? t('Insufficient Balance') : t('Confirm')}
             </Button>
           </Box>
         </Flex>

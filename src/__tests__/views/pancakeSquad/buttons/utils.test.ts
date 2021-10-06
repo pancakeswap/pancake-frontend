@@ -54,9 +54,17 @@ describe('PancakeSquad/buttons/utils/getBuyButton', () => {
     const isUserReady = false
     const saleStatus = SaleStatusEnum.Sale
     const startTimestamp = 0
+    const numberTicketsUsedForGen0 = 0
 
     // When
-    const result = getBuyButton({ isApproved, isGen0User, saleStatus, startTimestamp, isUserReady })
+    const result = getBuyButton({
+      isApproved,
+      isGen0User,
+      saleStatus,
+      startTimestamp,
+      isUserReady,
+      numberTicketsUsedForGen0,
+    })
 
     // Then
     expect(result).toEqual(BuyButtonsEnum.ENABLE)
@@ -69,9 +77,17 @@ describe('PancakeSquad/buttons/utils/getBuyButton', () => {
     const isUserReady = true
     const saleStatus = SaleStatusEnum.Sale
     const startTimestamp = 0
+    const numberTicketsUsedForGen0 = 0
 
     // When
-    const result = getBuyButton({ isApproved, isGen0User, saleStatus, startTimestamp, isUserReady })
+    const result = getBuyButton({
+      isApproved,
+      isGen0User,
+      saleStatus,
+      startTimestamp,
+      isUserReady,
+      numberTicketsUsedForGen0,
+    })
 
     // Then
     expect(result).toEqual(BuyButtonsEnum.READY)
@@ -84,9 +100,17 @@ describe('PancakeSquad/buttons/utils/getBuyButton', () => {
     const isUserReady = true
     const saleStatus = SaleStatusEnum.Presale
     const startTimestamp = 0
+    const numberTicketsUsedForGen0 = 0
 
     // When
-    const result = getBuyButton({ isApproved, isGen0User, saleStatus, startTimestamp, isUserReady })
+    const result = getBuyButton({
+      isApproved,
+      isGen0User,
+      saleStatus,
+      startTimestamp,
+      isUserReady,
+      numberTicketsUsedForGen0,
+    })
 
     // Then
     expect(result).toEqual(BuyButtonsEnum.READY)
@@ -99,9 +123,17 @@ describe('PancakeSquad/buttons/utils/getBuyButton', () => {
     const isUserReady = false
     const saleStatus = SaleStatusEnum.Sale
     const startTimestamp = new Date('06-08-2021').getDate()
+    const numberTicketsUsedForGen0 = 0
 
     // When
-    const result = getBuyButton({ isApproved, isGen0User, saleStatus, startTimestamp, isUserReady })
+    const result = getBuyButton({
+      isApproved,
+      isGen0User,
+      saleStatus,
+      startTimestamp,
+      isUserReady,
+      numberTicketsUsedForGen0,
+    })
 
     // Then
     expect(result).toEqual(BuyButtonsEnum.BUY)
@@ -113,10 +145,64 @@ describe('PancakeSquad/buttons/utils/getBuyButton', () => {
     const isGen0User = true
     const isUserReady = false
     const saleStatus = SaleStatusEnum.Presale
-    const startTimestamp = new Date('06-08-2021').getDate()
+    const startTimestamp = new Date(Date.now() + 30 * 60 * 1000).getTime()
+    const numberTicketsUsedForGen0 = 0
 
     // When
-    const result = getBuyButton({ isApproved, isGen0User, saleStatus, startTimestamp, isUserReady })
+    const result = getBuyButton({
+      isApproved,
+      isGen0User,
+      saleStatus,
+      startTimestamp,
+      isUserReady,
+      numberTicketsUsedForGen0,
+    })
+
+    // Then
+    expect(result).toEqual(BuyButtonsEnum.BUY)
+  })
+
+  it('Should not return BUY button for gen0 in preSale when presale is over', () => {
+    // Given
+    const isApproved = true
+    const isGen0User = true
+    const isUserReady = false
+    const saleStatus = SaleStatusEnum.Presale
+    const startTimestamp = new Date(Date.now() + 10 * 60 * 1000).getTime()
+    const numberTicketsUsedForGen0 = 0
+
+    // When
+    const result = getBuyButton({
+      isApproved,
+      isGen0User,
+      saleStatus,
+      startTimestamp,
+      isUserReady,
+      numberTicketsUsedForGen0,
+    })
+
+    // Then
+    expect(result).toEqual(BuyButtonsEnum.NONE)
+  })
+
+  it('Should return BUY button for gen0 in preSale when all tickets are bought', () => {
+    // Given
+    const isApproved = true
+    const isGen0User = false
+    const isUserReady = false
+    const saleStatus = SaleStatusEnum.Presale
+    const startTimestamp = new Date(Date.now() + 30 * 60 * 1000).getTime()
+    const numberTicketsUsedForGen0 = 2
+
+    // When
+    const result = getBuyButton({
+      isApproved,
+      isGen0User,
+      saleStatus,
+      startTimestamp,
+      isUserReady,
+      numberTicketsUsedForGen0,
+    })
 
     // Then
     expect(result).toEqual(BuyButtonsEnum.BUY)
@@ -129,9 +215,17 @@ describe('PancakeSquad/buttons/utils/getBuyButton', () => {
     const isUserReady = false
     const saleStatus = SaleStatusEnum.Claim
     const startTimestamp = new Date('06-08-2021').getDate()
+    const numberTicketsUsedForGen0 = 0
 
     // When
-    const result = getBuyButton({ isApproved, isGen0User, saleStatus, startTimestamp, isUserReady })
+    const result = getBuyButton({
+      isApproved,
+      isGen0User,
+      saleStatus,
+      startTimestamp,
+      isUserReady,
+      numberTicketsUsedForGen0,
+    })
 
     // Then
     expect(result).toEqual(BuyButtonsEnum.NONE)

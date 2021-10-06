@@ -17,12 +17,7 @@ const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
     {
       id: 1,
       content: (
-        <>
-          {t('490 are available in the pre-sale for owners of ')}
-          <Text display="inline-block" color="primary" bold>
-            {t('Gen 0 Pancake Bunnies (bunnyID 0, 1, 2, 3, 4)')}
-          </Text>
-        </>
+        <>{t('490 are available in the pre-sale for owners of Gen 0 Pancake Bunnies (bunnyID 0, 1, 2, 3, 4)')}</>
       ),
     },
     { id: 2, content: t('120 are reserved by the team for community giveaways, etc;') },

@@ -15,8 +15,7 @@ const MintText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus, numberTi
   const isUserUnconnected = userStatus === UserStatusEnum.UNCONNECTED
   const displayMintText =
     (userStatus === UserStatusEnum.PROFILE_ACTIVE_GEN0 && saleStatus === SaleStatusEnum.Presale) ||
-    saleStatus >= SaleStatusEnum.Sale ||
-    numberTicketsOfUser > 0
+    saleStatus >= SaleStatusEnum.Sale
   const hasNoTicketOrToken = numberTicketsOfUser === 0 && numberTokensOfUser === 0
   return displayMintText ? (
     <Flex flexDirection="column" mb="24px">

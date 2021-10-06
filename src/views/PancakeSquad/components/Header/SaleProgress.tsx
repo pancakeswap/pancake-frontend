@@ -14,10 +14,10 @@ type PreEventProps = {
 
 const SaleProgressTextMapping: Record<SaleStatusEnum, string> = {
   [SaleStatusEnum.Pending]: '',
+  [SaleStatusEnum.Premint]: '',
   [SaleStatusEnum.Presale]: '%remaining% of %total% remaining',
   [SaleStatusEnum.Sale]: '%remaining% of %total% remaining',
   [SaleStatusEnum.DrawingRandomness]: 'Randomizing NFT allocation with Chainlink',
-  [SaleStatusEnum.Premint]: '%remaining% of %total% minted',
   [SaleStatusEnum.Claim]: '%remaining% of %total% minted',
 }
 
@@ -28,7 +28,7 @@ const SaleProgress: React.FC<PreEventProps> = ({
   totalSupplyMinted,
   maxSupply,
 }) => {
-  const displaySaleProgress = saleStatus !== SaleStatusEnum.Pending
+  const displaySaleProgress = saleStatus > SaleStatusEnum.Premint
   const isClaimingPhase = saleStatus === SaleStatusEnum.Claim
   const supplyRemaining = maxSupply - totalTicketsDistributed
   const remainingTickets = isClaimingPhase ? totalSupplyMinted : supplyRemaining

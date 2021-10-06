@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import nftSaleAbi from 'config/abi/nftSale.json'
-import { useFetchCollections, useHasGen0Nfts } from 'state/nftMarket/hooks'
 import { useProfile } from 'state/profile/hooks'
-import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
 import ArtistSection from './components/ArtistSection'
 import BunniesSection from './components/BunniesSection'
 import EventDescriptionSection from './components/EventDescriptionSection'
@@ -25,19 +23,16 @@ const PancakeSquad: React.FC = () => {
   const [eventInfos, setEventInfo] = useState<EventInfos>()
   const [userInfos, setUserInfos] = useState<UserInfos>()
   const [refreshCounter, setRefreshCounter] = useState(0)
-  const hasGen0 = useHasGen0Nfts()
   const [isUserEnabled, setIsUserEnabled] = useState(false)
   const isLoading = (!eventInfos || !userInfos) && nftSaleAbi?.length > 0
 
   useEventInfos({ setCallback: setEventInfo, refreshCounter })
   useUserInfos({ setCallback: setUserInfos, refreshCounter, account })
-  useFetchCollections()
-  useFetchUserNfts(account)
 
   const userStatus = getUserStatus({
     account,
     hasActiveProfile: hasProfile && isInitialized,
-    hasGen0,
+    hasGen0: userInfos?.canClaimForGen0,
   })
 
   useEffect(() => {
@@ -49,6 +44,7 @@ const PancakeSquad: React.FC = () => {
 
   useEffect(() => {
     if (account) {
+      setIsUserEnabled(false)
       setUserInfos(undefined)
     }
   }, [account])

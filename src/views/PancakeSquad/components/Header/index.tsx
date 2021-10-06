@@ -35,7 +35,6 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
   const { t } = useTranslation()
   const { theme, isDark } = useTheme()
   const { balance: cakeBalance } = useGetCakeBalance()
-  const hasData = !!eventInfos && !!userInfos
   const displayEventBlock = !!eventInfos || isLoading
   const {
     ticketsOfUser,
@@ -79,12 +78,12 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         {`${t('Public Sale:')} 08:00 UTC, Oct. 7`}
       </Text>
       <Text color={lightColors.warning} textAlign="center" bold>
-        {t('Mint Cost: around 300 USD in CAKE', {
+        {t('Mint Cost: 16 CAKE', {
           minCost: pricePerTicket ? formatBigNumber(pricePerTicket, 0) : DEFAULT_CAKE_COST,
         })}
       </Text>
       <Text color={lightColors.warning} textAlign="center" bold>
-        {t('Max per wallet: %maxPerWallet%', { maxPerWallet: maxPerAddress ?? DEFAULT_MAX_TICKETS })}
+        {t('Max per wallet: %maxPerWallet%', { maxPerWallet: DEFAULT_MAX_TICKETS })}
       </Text>
       <Text color={lightColors.invertedContrast} textAlign="center">
         {t('PancakeSwap’s first official generative NFT collection.')}
@@ -98,28 +97,29 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
             <Flex flexDirection={['column', null, 'row']}>
               {eventInfos && (
                 <Box mr="100px">
-                  <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} useDark={false} />
+                  <Timeline
+                    events={nftSaleConfigBuilder({
+                      t,
+                      saleStatus,
+                      startTimestamp,
+                    })}
+                    useDark={false}
+                  />
                 </Box>
               )}
               <Flex flexDirection="column">
-                {isLoading ? (
-                  userStatus === UserStatusEnum.UNCONNECTED ? (
-                    <ConnectWalletButton userStatus={userStatus} />
-                  ) : (
-                    <Spinner />
-                  )
-                ) : (
-                  hasData && (
-                    <>
-                      <PreEventText t={t} userStatus={userStatus} saleStatus={saleStatus} />
-                      <SaleProgress
-                        t={t}
-                        userStatus={userStatus}
-                        saleStatus={saleStatus}
-                        totalTicketsDistributed={totalTicketsDistributed}
-                        maxSupply={maxSupply}
-                        totalSupplyMinted={totalSupplyMinted}
-                      />
+                {eventInfos && (
+                  <>
+                    <PreEventText t={t} userStatus={userStatus} saleStatus={saleStatus} />
+                    <SaleProgress
+                      t={t}
+                      userStatus={userStatus}
+                      saleStatus={saleStatus}
+                      totalTicketsDistributed={totalTicketsDistributed}
+                      maxSupply={maxSupply}
+                      totalSupplyMinted={totalSupplyMinted}
+                    />
+                    {userInfos && (
                       <MintText
                         t={t}
                         userStatus={userStatus}
@@ -127,6 +127,8 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
                         numberTicketsOfUser={numberTicketsOfUser}
                         numberTokensOfUser={numberTokensOfUser}
                       />
+                    )}
+                    {userInfos && (
                       <CtaButtons
                         t={t}
                         account={account}
@@ -147,9 +149,15 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
                         ticketsOfUser={ticketsOfUser}
                         startTimestamp={startTimestamp}
                       />
-                    </>
-                  )
+                    )}
+                  </>
                 )}
+                {isLoading &&
+                  (userStatus === UserStatusEnum.UNCONNECTED ? (
+                    <ConnectWalletButton userStatus={userStatus} />
+                  ) : (
+                    <Spinner />
+                  ))}
               </Flex>
             </Flex>
           </StyledSquadEventContainer>

@@ -106,7 +106,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
       isLoading={isConfirming}
       headerBackground={theme.colors.gradients.cardHeader}
       txHash={txHashBuyingResult}
-      loadingText={t('Please enable BNB spending in your wallet')}
+      loadingText={t('Please confirm your transaction in wallet.')}
       loadingButtonLabel={t('Confirming...')}
       successButtonLabel={t('Close')}
       onConfirmClose={onConfirmClose}
@@ -156,7 +156,14 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   }
 
   const canBuyTickets = (canClaimForGen0 || canBuySaleTicket) && isUserEnabled
-  const buyButton = getBuyButton({ isApproved: isUserEnabled, isGen0User, saleStatus, startTimestamp, isUserReady })
+  const buyButton = getBuyButton({
+    isApproved: isUserEnabled,
+    isGen0User,
+    saleStatus,
+    startTimestamp,
+    isUserReady,
+    numberTicketsUsedForGen0,
+  })
 
   return (
     <>
