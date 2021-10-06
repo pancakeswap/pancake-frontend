@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
+import sum from 'lodash/sum'
 import Page from 'components/Layout/Page'
 import { useFetchByBunnyIdAndUpdate, useGetAllBunniesByBunnyId } from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
@@ -10,6 +11,7 @@ import PageLoader from 'components/Loader/PageLoader'
 import usePreviousValue from 'hooks/usePreviousValue'
 import useRefresh from 'hooks/useRefresh'
 import { PANCAKE_BUNNIES_UPDATE_FREQUENCY } from 'config'
+import { useGetCollectionDistributionPB } from 'views/Nft/market/hooks/useGetCollectionDistribution'
 import MainPancakeBunnyCard from './MainPancakeBunnyCard'
 import ManagePancakeBunniesCard from './ManagePancakeBunniesCard'
 import PropertiesCard from '../shared/PropertiesCard'
@@ -27,7 +29,6 @@ interface IndividualPancakeBunnyPageProps {
 
 const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({ bunnyId }) => {
   const { account } = useWeb3React()
-  const [attributesDistribution, setAttributesDistribution] = useState<{ [key: string]: number }>(null)
   const [nothingForSaleBunny, setNothingForSaleBunny] = useState<NftToken>(null)
   const allBunnies = useGetAllBunniesByBunnyId(bunnyId)
   const [priceSort, setPriceSort] = useState<SortType>('asc')
@@ -42,6 +43,8 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
   const cheapestBunny = bunniesSortedByPrice[0]
   const cheapestBunnyFromOtherSellers = allBunniesFromOtherSellers[0]
 
+  const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
+
   useEffect(() => {
     // Fetch first 30 NFTs on page load
     // And then query every FETCH_NEW_NFTS_INTERVAL_MS in case some new (cheaper) NFTs were listed
@@ -54,15 +57,6 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
       fetchMorePancakeBunnies(priceSort)
     }
   }, [priceSort, fetchMorePancakeBunnies, isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fastRefresh])
-
-  useEffect(() => {
-    const fetchTokens = async () => {
-      const apiResponse = await getNftsFromCollectionApi(pancakeBunniesAddress)
-      setAttributesDistribution(apiResponse.attributesDistribution)
-    }
-
-    fetchTokens()
-  }, [setAttributesDistribution])
 
   useEffect(() => {
     // Fetch most expensive items if user selects other sorting
@@ -112,11 +106,9 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
   }
 
   const getBunnyIdRarity = () => {
-    if (attributesDistribution) {
-      const total = Object.values(attributesDistribution).reduce((acc, cur) => {
-        return acc + cur
-      }, 0)
-      return (attributesDistribution[bunnyId] / total) * 100
+    if (distributionData && !isFetchingDistribution) {
+      const total = sum(Object.values(distributionData))
+      return (distributionData[bunnyId] / total) * 100
     }
     return null
   }

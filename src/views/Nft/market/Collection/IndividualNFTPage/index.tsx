@@ -1,8 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router'
 import { pancakeBunniesAddress } from '../../constants'
-import IndividualPancakeBunnyPage from './PancakeBunnyPage/IndividualPancakeBunnyPage'
-import IndividualNFTPage from './GenerativeNftPage/IndividualNFTPage'
+import IndividualPancakeBunnyPage from './PancakeBunnyPage'
+import IndividualNFTPage from './GenerativeNftPage'
 
 const IndividualNFTPageRouter = () => {
   // For PancakeBunnies tokenId in url is really bunnyId

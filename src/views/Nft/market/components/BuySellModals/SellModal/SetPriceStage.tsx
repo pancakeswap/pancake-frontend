@@ -134,12 +134,14 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
           </Text>
           <FeeAmountCell bnbAmount={priceAsFloat} creatorFee={creatorFeeAsNumber} tradingFee={tradingFeeAsNumber} />
         </Flex>
-        <Flex justifyContent="space-between" alignItems="center" mt="16px">
-          <Text small color="textSubtle">
-            {t('Lowest price on market')}
-          </Text>
-          <BnbAmountCell bnbAmount={lowestPrice} />
-        </Flex>
+        {lowestPrice && (
+          <Flex justifyContent="space-between" alignItems="center" mt="16px">
+            <Text small color="textSubtle">
+              {t('Lowest price on market')}
+            </Text>
+            <BnbAmountCell bnbAmount={lowestPrice} />
+          </Flex>
+        )}
       </GreyedOutContainer>
       <Grid gridTemplateColumns="32px 1fr" p="16px" maxWidth="360px">
         <Flex alignSelf="flex-start">

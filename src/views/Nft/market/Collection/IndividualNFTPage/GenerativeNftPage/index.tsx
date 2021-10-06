@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import sum from 'lodash/sum'
 import Page from 'components/Layout/Page'
-import { getNftApi, getNftMarketData } from 'state/nftMarket/helpers'
+import { getNftApi, getNftsMarketData } from 'state/nftMarket/helpers'
 import { NftLocation, NftToken, UserNftInitializationState } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
 import { useUserNfts } from 'state/nftMarket/hooks'
@@ -35,7 +35,7 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
   useEffect(() => {
     const fetchNftData = async () => {
       const metadata = await getNftApi(collectionAddress, tokenId)
-      const marketData = await getNftMarketData(collectionAddress, tokenId)
+      const [marketData] = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
       setNft({
         tokenId,
         collectionAddress,
