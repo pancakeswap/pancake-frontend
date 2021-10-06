@@ -491,6 +491,31 @@ export const getLatestListedNfts = async (first: number): Promise<TokenMarketDat
   }
 }
 
+// Get NFT market data from subgraph by collection address and tokenID
+// Note: intended to be used with non-PB collections
+export const getNftMarketData = async (collectionAddress: string, tokenId: string) => {
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getNftMarketData($collectionAddress: String!, $tokenId: String!) {
+          collections(first: 1, where: { id: $collectionAddress }) {
+            nfts(first: 1, where: { tokenId: $tokenId }) {
+              ${getBaseNftFields()}
+            }
+          }
+        }
+      `,
+      { collectionAddress: collectionAddress.toLowerCase(), tokenId },
+    )
+
+    return res.collections[0].nfts.length > 0 ? res.collections[0].nfts[0] : null
+  } catch (error) {
+    console.error('Failed to fetch NFTs market data', error)
+    return null
+  }
+}
+
 /**
  * OTHER HELPERS
  */

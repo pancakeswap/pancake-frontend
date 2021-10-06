@@ -18,9 +18,9 @@ import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { NftToken } from 'state/nftMarket/types'
 import ForSaleTableRows from './ForSaleTableRows'
-import { StyledSortButton } from './styles'
+import { StyledSortButton, TableHeading } from '../../shared/styles'
 import UpdateIndicator from './UpdateIndicator'
-import { Arrow, PageButtons } from '../../../components/PaginationButtons'
+import { Arrow, PageButtons } from '../../../../components/PaginationButtons'
 
 const ITEMS_PER_PAGE_DESKTOP = 10
 const ITEMS_PER_PAGE_MOBILE = 5
@@ -35,10 +35,6 @@ const StyledCard = styled(Card)<{ hasManyPages: boolean }>`
       ${({ hasManyPages }) => (hasManyPages ? 'min-height: 850px;' : null)}
     }
   }
-`
-
-const TableHeading = styled(Grid)`
-  border-bottom: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
 `
 
 interface ForSaleTableCardProps {

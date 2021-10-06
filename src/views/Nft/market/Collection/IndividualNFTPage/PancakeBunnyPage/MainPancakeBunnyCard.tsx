@@ -1,46 +1,25 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { Flex, Box, Card, CardBody, Text, Button, Image, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
+import { Flex, Box, Card, CardBody, Text, Button, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
-import BuyModal from '../../components/BuySellModals/BuyModal'
-import SellModal from '../../components/BuySellModals/SellModal'
-import { nftsBaseUrl } from '../../constants'
+import BuyModal from '../../../components/BuySellModals/BuyModal'
+import SellModal from '../../../components/BuySellModals/SellModal'
+import { nftsBaseUrl } from '../../../constants'
+import { RoundedImage, Container, CollectionLink } from '../shared/styles'
 
-const RoundedImage = styled(Image)`
-  height: max-content;
-  border-radius: ${({ theme }) => theme.radii.default};
-  overflow: hidden;
-  & > img {
-    object-fit: contain;
-  }
-`
-
-const Container = styled(Flex)`
-  gap: 24px;
-`
-
-const CollectionLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.primary};
-  display: block;
-  font-weight: 600;
-  margin-top: 16px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: 50px;
-  }
-`
-
-interface MainNFTCardProps {
+interface MainPancakeBunnyCardProps {
   cheapestNft: NftToken
   cheapestNftFromOtherSellers?: NftToken
   nothingForSaleBunny?: NftToken
 }
 
-const MainNFTCard: React.FC<MainNFTCardProps> = ({ cheapestNft, cheapestNftFromOtherSellers, nothingForSaleBunny }) => {
+const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
+  cheapestNft,
+  cheapestNftFromOtherSellers,
+  nothingForSaleBunny,
+}) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
 
@@ -120,4 +99,4 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ cheapestNft, cheapestNftFromO
   )
 }
 
-export default MainNFTCard
+export default MainPancakeBunnyCard

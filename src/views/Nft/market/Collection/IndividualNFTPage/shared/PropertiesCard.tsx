@@ -6,7 +6,7 @@ import ExpandableCard from './ExpandableCard'
 
 interface PropertiesCardProps {
   properties: NftAttribute[]
-  rarity: { [key: string]: string }
+  rarity: { [key: string]: number }
 }
 
 // Map of known traits to human-readable text
@@ -14,7 +14,7 @@ const KNOWN_TRAITS_TEXT = {
   bunnyId: 'Bunny ID',
 }
 
-const SingleProperty: React.FC<{ title: string; value: string | number; rarity: string }> = ({
+const SingleProperty: React.FC<{ title: string; value: string | number; rarity: number }> = ({
   title,
   value,
   rarity,
@@ -28,9 +28,11 @@ const SingleProperty: React.FC<{ title: string; value: string | number; rarity: 
         <Text bold textTransform="uppercase" mr="4px">
           {value}
         </Text>
-        <Text small color="textSubtle">
-          ({rarity}%)
-        </Text>
+        {rarity && (
+          <Text small color="textSubtle">
+            ({rarity.toFixed(2)}%)
+          </Text>
+        )}
       </Flex>
     </Flex>
   )

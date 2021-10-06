@@ -5,7 +5,6 @@ import {
   Flex,
   Grid,
   Text,
-  Image,
   CogIcon,
   SellIcon,
   WalletFilledIcon,
@@ -19,16 +18,11 @@ import { useUserNfts } from 'state/nftMarket/hooks'
 import { NftLocation, NftToken, UserNftInitializationState } from 'state/nftMarket/types'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
-import ExpandableCard from './ExpandableCard'
-import useFetchUserNfts from '../../Profile/hooks/useFetchUserNfts'
-import SellModal from '../../components/BuySellModals/SellModal'
-import ProfileNftModal from '../../components/ProfileNftModal'
-
-const RoundedImage = styled(Image)`
-  & > img {
-    border-radius: ${({ theme }) => theme.radii.default};
-  }
-`
+import ExpandableCard from '../shared/ExpandableCard'
+import useFetchUserNfts from '../../../Profile/hooks/useFetchUserNfts'
+import SellModal from '../../../components/BuySellModals/SellModal'
+import ProfileNftModal from '../../../components/ProfileNftModal'
+import { SmallRoundedImage, CollectibleRowContainer } from '../shared/styles'
 
 const ScrollableContainer = styled(Box)`
   overflow-y: auto;
@@ -38,13 +32,6 @@ const ScrollableContainer = styled(Box)`
 const Divider = styled.div`
   margin: 16px 20px;
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
-`
-
-const CollectibleRowContainer = styled(Grid)`
-  &:hover {
-    opacity: 0.5;
-    cursor: pointer;
-  }
 `
 
 const LocationColors = {
@@ -77,7 +64,7 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, lowestPrice }) => 
       my="16px"
       onClick={nft.location === NftLocation.PROFILE ? onPresentProfileNftModal : onPresentModal}
     >
-      <RoundedImage src={nft.image.thumbnail} width={64} height={64} mx="16px" />
+      <SmallRoundedImage src={nft.image.thumbnail} width={64} height={64} mx="16px" />
       <Grid gridTemplateColumns="1fr 1fr">
         <Text bold>{nft.name}</Text>
         <Text fontSize="12px" color="textSubtle" textAlign="right">
@@ -140,12 +127,12 @@ const CollectiblesByLocation: React.FC<CollectiblesByLocationProps> = ({ locatio
   )
 }
 
-interface ManageCardProps {
+interface ManagePancakeBunniesCardProps {
   bunnyId: string
   lowestPrice?: string
 }
 
-const ManageCard: React.FC<ManageCardProps> = ({ bunnyId, lowestPrice }) => {
+const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bunnyId, lowestPrice }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { userNftsInitializationState, nfts: userNfts } = useUserNfts()
@@ -204,4 +191,4 @@ const ManageCard: React.FC<ManageCardProps> = ({ bunnyId, lowestPrice }) => {
   return <ExpandableCard title={t('Manage Yours')} icon={<CogIcon width="24px" height="24px" />} content={content} />
 }
 
-export default ManageCard
+export default ManagePancakeBunniesCard

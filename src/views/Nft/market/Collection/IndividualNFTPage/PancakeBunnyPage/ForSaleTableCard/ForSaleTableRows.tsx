@@ -12,6 +12,7 @@ import { NftToken } from 'state/nftMarket/types'
 import BuyModal from 'views/Nft/market/components/BuySellModals/BuyModal'
 import SellModal from 'views/Nft/market/components/BuySellModals/SellModal'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
+import { ButtonContainer } from '../../shared/styles'
 
 const OwnersTableRow = styled(Grid)`
   grid-template-columns: 2fr 2fr 1fr;
@@ -22,11 +23,6 @@ const OwnersTableRow = styled(Grid)`
     padding-bottom: 16px;
     border-bottom: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
   }
-`
-
-const ButtonContainer = styled(Box)`
-  text-align: right;
-  padding-right: 24px;
 `
 
 interface RowProps {
