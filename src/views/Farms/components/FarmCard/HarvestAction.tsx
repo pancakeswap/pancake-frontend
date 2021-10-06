@@ -59,7 +59,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
           dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
         }}
       >
-        {t('Harvest')}
+        {pendingTx ? t('Harvesting') : t('Harvest')}
       </Button>
     </Flex>
   )
