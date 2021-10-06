@@ -98,7 +98,14 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
             <Flex flexDirection={['column', null, 'row']}>
               {eventInfos && (
                 <Box mr="100px">
-                  <Timeline events={nftSaleConfigBuilder({ t, saleStatus, startTimestamp })} useDark={false} />
+                  <Timeline
+                    events={nftSaleConfigBuilder({
+                      t,
+                      saleStatus,
+                      startTimestamp,
+                    })}
+                    useDark={false}
+                  />
                 </Box>
               )}
               <Flex flexDirection="column">
