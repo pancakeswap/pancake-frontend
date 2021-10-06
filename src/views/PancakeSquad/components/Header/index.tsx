@@ -35,7 +35,6 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
   const { t } = useTranslation()
   const { theme, isDark } = useTheme()
   const { balance: cakeBalance } = useGetCakeBalance()
-  const hasData = !!eventInfos && !!userInfos
   const displayEventBlock = !!eventInfos || isLoading
   const {
     ticketsOfUser,
@@ -109,24 +108,18 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
                 </Box>
               )}
               <Flex flexDirection="column">
-                {isLoading ? (
-                  userStatus === UserStatusEnum.UNCONNECTED ? (
-                    <ConnectWalletButton userStatus={userStatus} />
-                  ) : (
-                    <Spinner />
-                  )
-                ) : (
-                  hasData && (
-                    <>
-                      <PreEventText t={t} userStatus={userStatus} saleStatus={saleStatus} />
-                      <SaleProgress
-                        t={t}
-                        userStatus={userStatus}
-                        saleStatus={saleStatus}
-                        totalTicketsDistributed={totalTicketsDistributed}
-                        maxSupply={maxSupply}
-                        totalSupplyMinted={totalSupplyMinted}
-                      />
+                {eventInfos && (
+                  <>
+                    <PreEventText t={t} userStatus={userStatus} saleStatus={saleStatus} />
+                    <SaleProgress
+                      t={t}
+                      userStatus={userStatus}
+                      saleStatus={saleStatus}
+                      totalTicketsDistributed={totalTicketsDistributed}
+                      maxSupply={maxSupply}
+                      totalSupplyMinted={totalSupplyMinted}
+                    />
+                    {userInfos && (
                       <MintText
                         t={t}
                         userStatus={userStatus}
@@ -134,6 +127,8 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
                         numberTicketsOfUser={numberTicketsOfUser}
                         numberTokensOfUser={numberTokensOfUser}
                       />
+                    )}
+                    {userInfos && (
                       <CtaButtons
                         t={t}
                         account={account}
@@ -154,9 +149,15 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
                         ticketsOfUser={ticketsOfUser}
                         startTimestamp={startTimestamp}
                       />
-                    </>
-                  )
+                    )}
+                  </>
                 )}
+                {isLoading &&
+                  (userStatus === UserStatusEnum.UNCONNECTED ? (
+                    <ConnectWalletButton userStatus={userStatus} />
+                  ) : (
+                    <Spinner />
+                  ))}
               </Flex>
             </Flex>
           </StyledSquadEventContainer>
