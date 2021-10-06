@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { ArrowBackIcon, ArrowForwardIcon, AutoRenewIcon, Flex, Grid, Text } from '@pancakeswap/uikit'
 import { getAddress } from '@ethersproject/address'
-import orderBy from 'lodash/orderBy'
 import { useAppDispatch } from 'state'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
 import { Collection, NftToken } from 'state/nftMarket/types'
@@ -9,40 +8,38 @@ import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
-import { pancakeBunniesAddress } from '../../constants'
-import useAllPancakeBunnyNfts from '../../hooks/useAllPancakeBunnyNfts'
 import { Arrow, PageButtons } from '../../components/PaginationButtons'
 
 interface CollectionNftsProps {
   collection: Collection
-  sortBy?: string
-  scrollToTop: () => void
 }
 
 const REQUEST_SIZE = 100
 const MAX_ITEMS_PER_PAGE = 100
 
-const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'updatedAt', scrollToTop }) => {
+const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
   const dispatch = useAppDispatch()
-
+  const scrollEl = useRef<HTMLDivElement>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
-  const [sortedNfts, setSortedNfts] = useState<NftToken[]>([])
   const [nftsSlice, setNftsSlice] = useState<NftToken[]>([])
   const { t } = useTranslation()
 
   const { address, totalSupply } = collection
 
   const checksummedAddress = getAddress(address)
-  const isPBCollection = address === pancakeBunniesAddress
 
-  const nfts = useNftsFromCollection(checksummedAddress)
-  const allPancakeBunnyNfts = useAllPancakeBunnyNfts(address)
+  const nftsFromCollection = useNftsFromCollection(checksummedAddress)
 
-  const currentNfts = isPBCollection ? allPancakeBunnyNfts : nfts
-  const shouldFetchMoreNfts = currentNfts?.length <= currentPage * MAX_ITEMS_PER_PAGE
+  const shouldFetchMoreNfts = nftsFromCollection?.length <= currentPage * MAX_ITEMS_PER_PAGE
   const isArrowBackDisabled = currentPage === 1
   const isArrowForwardDisabled = currentPage === maxPage || shouldFetchMoreNfts
+
+  const scrollToTop = (): void => {
+    scrollEl.current.scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
 
   useEffect(() => {
     // First fetch
@@ -58,7 +55,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
   useEffect(() => {
     // Additional fetches
     const fetchMoreNftsFromCollections = () => {
-      const requestPage = Math.ceil(currentNfts.length / REQUEST_SIZE) + 1
+      const requestPage = Math.ceil(nftsFromCollection.length / REQUEST_SIZE) + 1
       dispatch(
         fetchNftsFromCollections({
           collectionAddress: checksummedAddress,
@@ -69,50 +66,34 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
     }
 
     // NB: TRAIT FILTERS - When trait filter is active, should probably prevent this from firing
-    if (!isPBCollection && currentNfts?.length > 0 && shouldFetchMoreNfts) {
+    if (nftsFromCollection?.length > 0 && shouldFetchMoreNfts) {
       fetchMoreNftsFromCollections()
     }
-  }, [currentNfts, currentPage, checksummedAddress, shouldFetchMoreNfts, isPBCollection, dispatch])
+  }, [nftsFromCollection, currentPage, checksummedAddress, shouldFetchMoreNfts, dispatch])
 
   useEffect(() => {
     const getMaxPages = () => {
-      // NB: TRAIT FILTERS - changing the `totalSupply` here to the length of the data returned by the traits res should work well for FE pagination.
+      // NB: TRAIT FILTERS - changing the `totalSupply` here to the length of the data returned by the traits res should work well for pure FE pagination.
       const max = Math.ceil(Number(totalSupply) / MAX_ITEMS_PER_PAGE)
       setMaxPages(max)
     }
 
-    if (!isPBCollection && totalSupply) {
+    if (totalSupply) {
       getMaxPages()
     }
-  }, [totalSupply, isPBCollection])
-
-  // Sort data returned from redux
-  useEffect(() => {
-    const applySortToNfts = () => {
-      const sorted = orderBy(
-        currentNfts,
-        (nft) => (isPBCollection ? nft.meta[sortBy] : nft.marketData ? Number(nft.marketData[sortBy]) : 0),
-        [sortBy === 'currentAskPrice' ? 'asc' : 'desc'],
-      )
-      setSortedNfts(sorted)
-    }
-
-    if (currentNfts?.length > 0) {
-      applySortToNfts()
-    }
-  }, [currentNfts, isPBCollection, sortBy])
+  }, [totalSupply])
 
   // Slice sorted data to paginate in FE
   useEffect(() => {
     const getActivitiesSlice = () => {
-      const slice = sortedNfts.slice(MAX_ITEMS_PER_PAGE * (currentPage - 1), MAX_ITEMS_PER_PAGE * currentPage)
+      const slice = nftsFromCollection.slice(MAX_ITEMS_PER_PAGE * (currentPage - 1), MAX_ITEMS_PER_PAGE * currentPage)
       setNftsSlice(slice)
     }
 
-    if (sortedNfts?.length > 0) {
+    if (nftsFromCollection?.length > 0) {
       getActivitiesSlice()
     }
-  }, [sortedNfts, currentPage, isPBCollection, sortBy])
+  }, [nftsFromCollection, currentPage])
 
   if (!nftsSlice.length) {
     return <GridPlaceholder />
@@ -121,6 +102,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
   return (
     <>
       <Grid
+        ref={scrollEl}
         gridGap="16px"
         gridTemplateColumns={['1fr', null, 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
         alignItems="start"
@@ -129,7 +111,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'u
           return <CollectibleLinkCard key={`${nft.tokenId}-${nft.collectionName}`} nft={nft} />
         })}
       </Grid>
-      {nfts?.length > MAX_ITEMS_PER_PAGE && (
+      {nftsFromCollection?.length > MAX_ITEMS_PER_PAGE && (
         <Flex mt="24px">
           <PageButtons>
             <Arrow
