@@ -56,7 +56,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
   const remainingTickets = isPreSale
     ? numberTicketsForGen0
     : maxPerAddress - (numberTicketsOfUser - numberTicketsUsedForGen0)
-
+  const isCakeBalanceInsufficient = cakeBalance.lt(pricePerTicket)
   const maxBuyTickets = Math.min(cakeBalance.div(pricePerTicket).toNumber(), remainingTickets)
   const totalCost = pricePerTicket.mul(BigNumber.from(ticketsNumber))
   const maxBuyButtons =
@@ -103,7 +103,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
               <Text font-size="14px" color="textSubtle">
                 {t('Your CAKE Balance')}
               </Text>
-              <Text font-size="14px">{formatBigNumber(cakeBalance, 3)} CAKE</Text>
+              <Text font-size="14px" color={isCakeBalanceInsufficient ? 'failure' : 'text'}>
+                {formatBigNumber(cakeBalance, 3)} CAKE
+              </Text>
             </Flex>
             <Flex
               mb="8px"
@@ -154,8 +156,12 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
             </Box>
           </Flex>
           <Box px="16px">
-            <Button onClick={() => buyTicketCallBack({ ticketsNumber })} width="100%">
-              {t('Confirm')}
+            <Button
+              disabled={isCakeBalanceInsufficient}
+              onClick={() => buyTicketCallBack({ ticketsNumber })}
+              width="100%"
+            >
+              {isCakeBalanceInsufficient ? t('Insufficient Balance') : t('Confirm')}
             </Button>
           </Box>
         </Flex>
