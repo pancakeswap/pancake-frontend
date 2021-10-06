@@ -510,6 +510,18 @@ const nfts: Nft[] = [
     rarity: 'Rare',
     userInfo: { ...DEFAULT_USER_INFO }
   },
+  {
+    id: 42,
+    name: 'Fluffy',
+    symbol: 'FLUFFY',
+    description: 'Did you hear the bells ringing?',
+    address: '0xf5971902a4625236C1f268C6d077aFAD340359D9',
+    totalSupply: BIG_ZERO,
+    path: 'https://storage.googleapis.com/rug-zombie/French%20Connection%20NFT.jpeg',
+    type: 'image',
+    rarity: 'Legendary',
+    userInfo: { ...DEFAULT_USER_INFO }
+  },
 ]
 
 export default nfts

@@ -6,6 +6,63 @@ import { SpawningPool } from './types'
 
 const spawningPools: SpawningPool[] = [
   {
+    id: 10,
+    name: 'French Connection Legendary',
+    subtitle: 'Fluffy',
+    path: 'https://storage.googleapis.com/rug-zombie/French%20Connection%20NFT.jpeg',
+    type: 'image',
+    address: {
+      56: '0xFC57f86f80D3f6155dE76F15e245F0A9ad33fFA5',
+      97: '',
+    },
+    endBlock: 14170000,
+    project: {
+      name: 'French Connection Finance',
+      description: 'French Connection Finance aims to create the world\'s first credit card to cryptocurrency encrypted online payment gateway, which rewards its holders with 9% fully automated BNB reflection on all the transactions made with $FCF during the same 24 hour period.',
+      additionalDetails: [
+        {
+          name: 'Project website',
+          url: tokens.fcf.projectLink,
+        },
+        {
+          name: 'Whitepaper',
+          url: 'https://frenchconnection.finance/white-paper/',
+        },
+        {
+          name: 'Telegram',
+          url: 'https://t.me/frenchconnection_bsc',
+        },
+      ],
+    },
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '45 days',
+    rewardToken: tokens.fcf,
+    rewardTokenBnbLp: '0xc58a80cf11d1cbbae4fc1c2fa9244f517676ab3d',
+    bnbLpTokenIndex: 1,
+    artist: artists.TheLeap3d,
+    stakingToken: '',
+    pcsVersion: 'v2',
+    liquidityDetails: '',
+    isNew: true,
+    color: "brown",
+    userInfo: {
+      paidUnlockFee: false,
+      tokenWithdrawalDate: 0,
+      nftRevivalDate: 0,
+      amount: BIG_ZERO,
+      pendingReward: BIG_ZERO,
+      zombieAllowance: BIG_ZERO,
+    },
+    poolInfo: {
+      unlockFee: BIG_ZERO,
+      rewardPerBlock: BIG_ZERO,
+      minimumStake: BIG_ZERO,
+      totalZombieStaked: BIG_ZERO,
+      withdrawCooldown: 0,
+      nftRevivalTime: 0,
+    },
+  },
+  {
     id: 9,
     name: 'Autoshark Legendary',
     subtitle: 'ChompersV2',
@@ -43,7 +100,7 @@ const spawningPools: SpawningPool[] = [
     stakingToken: '',
     pcsVersion: 'v2',
     liquidityDetails: '',
-    isNew: true,
+    isNew: false,
     tokenLogoFormat: "svg",
     color: "#9400d3",
     userInfo: {

@@ -308,6 +308,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://octaplex.io/',
   },
+  fcf: {
+    symbol: 'FCF',
+    address: {
+      56: '0x4673f018cc6d401AAD0402BdBf2abcBF43dd69F3',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://frenchconnection.finance/',
+  },
   txl: {
     symbol: 'TXL',
     address: {
