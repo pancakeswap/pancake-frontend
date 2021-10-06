@@ -42,7 +42,7 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
 
   const clearAll = () => {
     dispatch(removeAllFilters(address))
-    dispatch(fetchNftsFromCollections(address))
+    dispatch(fetchNftsFromCollections({ collectionAddress: address, page: 1, size: 100 }))
   }
 
   useEffect(() => {
@@ -52,43 +52,47 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
   }, [address, nftFilters, dispatch])
 
   return (
-    <Flex alignItems="center" flexWrap="wrap">
-      {uniqueTraitTypes.map((traitType) => {
-        const attrs = attrsByType[traitType]
-        const items: Item[] = attrs.map((attr) => ({
-          label: capitalize(attr.value as string),
-          count: data && data[traitType] ? data[traitType][attr.value] : undefined,
-          attr,
-        }))
+    <Flex alignItems="center" justifyContent="space-between" mb="32px">
+      <Flex alignItems="center" flexWrap="wrap" style={{ flex: 1 }}>
+        {uniqueTraitTypes.map((traitType) => {
+          const attrs = attrsByType[traitType]
+          const items: Item[] = attrs.map((attr) => ({
+            label: capitalize(attr.value as string),
+            count: data && data[traitType] ? data[traitType][attr.value] : undefined,
+            attr,
+          }))
 
-        // If the attribute has already been selected get it from the current filter list and create an item
-        const selectedAttr = nftFilters ? nftFilters.attributes[traitType] : null
-        const selectedItem = selectedAttr
-          ? {
-              label: capitalize(selectedAttr.value as string),
-              count: data && data[traitType] ? data[traitType][selectedAttr.value] : undefined,
-              attr: selectedAttr,
-            }
-          : undefined
+          // If the attribute has already been selected get it from the current filter list and create an item
+          const selectedAttr = nftFilters ? nftFilters.attributes[traitType] : null
+          const selectedItem = selectedAttr
+            ? {
+                label: capitalize(selectedAttr.value as string),
+                count: data && data[traitType] ? data[traitType][selectedAttr.value] : undefined,
+                attr: selectedAttr,
+              }
+            : undefined
 
-        const handleClear = () => {
-          dispatch(removeAttributeFilter({ collectionAddress: address, traitType }))
-        }
+          const handleClear = () => {
+            dispatch(removeAttributeFilter({ collectionAddress: address, traitType }))
+          }
 
-        return (
-          <ListFilter
-            key={traitType}
-            title={capitalize(traitType)}
-            selectedItem={selectedItem}
-            items={items}
-            onApply={handleApply}
-            onClear={handleClear}
-          />
-        )
-      })}
-      <Button key="clear-all" variant="text" scale="sm" onClick={clearAll} disabled={isEmpty(nftFilters?.attributes)}>
-        {t('Clear All')}
-      </Button>
+          return (
+            <ListFilter
+              key={traitType}
+              title={capitalize(traitType)}
+              selectedItem={selectedItem}
+              items={items}
+              onApply={handleApply}
+              onClear={handleClear}
+            />
+          )
+        })}
+      </Flex>
+      {!isEmpty(nftFilters?.attributes) && (
+        <Button key="clear-all" variant="text" scale="sm" onClick={clearAll}>
+          {t('Clear All')}
+        </Button>
+      )}
     </Flex>
   )
 }
