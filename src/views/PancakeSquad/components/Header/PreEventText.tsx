@@ -17,7 +17,7 @@ const PreEventTextMapping: Record<UserStatusEnum, string> = {
 }
 
 const PreEventText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus }) =>
-  saleStatus === SaleStatusEnum.Pending ? (
+  [SaleStatusEnum.Pending, SaleStatusEnum.Premint].includes(saleStatus) ? (
     <Text fontSize="16px" color={darkColors.text}>
       {t(PreEventTextMapping[userStatus])}
     </Text>
