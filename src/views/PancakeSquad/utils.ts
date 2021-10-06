@@ -83,7 +83,7 @@ export const getAltText = ({ startTimestamp, eventStatus, saleStatus, t }: getAl
   if (saleStatus === SaleStatusEnum.DrawingRandomness && eventStepStatus === 'upcoming') return t('Starting Soon')
   if (startTimestamp && eventStepStatus === 'upcoming' && eventStatus[0] === SaleStatusEnum.Sale) {
     const timePeriods = getTimePeriods(Math.round(startTimestampInSeconds - nowInSeconds))
-    return `start in ${formatTimePeriod(timePeriods)}`
+    return `${t('starts in')} ${formatTimePeriod(timePeriods)}`
   }
   return undefined
 }
