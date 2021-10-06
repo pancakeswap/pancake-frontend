@@ -4,6 +4,7 @@ import orderBy from 'lodash/orderBy'
 import { Collection } from 'state/nftMarket/types'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
 import useAllPancakeBunnyNfts from '../../hooks/useAllPancakeBunnyNfts'
+import GridPlaceholder from '../../components/GridPlaceholder'
 
 interface CollectionNftsProps {
   collection: Collection
@@ -13,9 +14,16 @@ interface CollectionNftsProps {
 const PancakeBunniesCollectionNfts: React.FC<CollectionNftsProps> = ({ collection, sortBy = 'updatedAt' }) => {
   const { address } = collection
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(address)
-  const sortedNfts = orderBy(allPancakeBunnyNfts, (nft) => (nft.meta[sortBy] ? Number(nft.marketData[sortBy]) : 0), [
-    sortBy === 'currentAskPrice' ? 'asc' : 'desc',
-  ])
+
+  const sortedNfts = allPancakeBunnyNfts
+    ? orderBy(allPancakeBunnyNfts, (nft) => (nft.meta[sortBy] ? Number(nft?.meta[sortBy]) : 0), [
+        sortBy === 'currentAskPrice' ? 'asc' : 'desc',
+      ])
+    : []
+
+  if (!sortedNfts.length) {
+    return <GridPlaceholder />
+  }
 
   return (
     <>
