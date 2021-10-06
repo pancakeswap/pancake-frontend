@@ -33,7 +33,7 @@ interface BuyTicketsModalProps extends ModalProps {
   numberTicketsUsedForGen0: number
 }
 
-const DEFAULT_MAX_PER_TX = 5
+const DEFAULT_MAX_PER_TX = 3
 
 const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
   onDismiss,
@@ -51,7 +51,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const [ticketsNumber, setTicketsNumber] = useState<number | null>(0)
+  const [ticketsNumber, setTicketsNumber] = useState<number | null>(1)
   const isPreSale = saleStatus === SaleStatusEnum.Presale
   const remainingTickets = isPreSale
     ? numberTicketsForGen0
@@ -81,7 +81,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
             <Text fontSize="12px" fontWeight="600" textTransform="uppercase" color="secondary" mb="16px">
               {t('Buy how many?')}
             </Text>
-            <Flex justifyContent="space-between" mb="24px">
+            <Flex justifyContent="space-evenly" mb="24px">
               {buyButtons.map((_, index) => (
                 <Button
                   key={index}

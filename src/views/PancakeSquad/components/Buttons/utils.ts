@@ -22,6 +22,7 @@ type getBuyButtonProps = {
   isGen0User: boolean
   saleStatus: SaleStatusEnum
   startTimestamp: number
+  numberTicketsUsedForGen0: number
 }
 
 export const getBuyButton = ({
@@ -30,12 +31,13 @@ export const getBuyButton = ({
   saleStatus,
   startTimestamp,
   isUserReady,
+  numberTicketsUsedForGen0,
 }: getBuyButtonProps) => {
   const now = Date.now()
   if (!isApproved) return BuyButtonsEnum.ENABLE
   if (isUserReady) return BuyButtonsEnum.READY
   if (
-    (saleStatus === SaleStatusEnum.Presale && isGen0User) ||
+    (saleStatus === SaleStatusEnum.Presale && (isGen0User || numberTicketsUsedForGen0 > 0)) ||
     (saleStatus === SaleStatusEnum.Sale && now >= startTimestamp)
   )
     return BuyButtonsEnum.BUY
