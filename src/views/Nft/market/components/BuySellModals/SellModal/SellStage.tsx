@@ -41,20 +41,22 @@ const SellStage: React.FC<SellStageProps> = ({
           <Text fontSize="12px" color="textSubtle" textAlign="right">
             {nftToSell.collectionName}
           </Text>
-          <Text small color="textSubtle">
-            {t('Lowest price')}
-          </Text>
-          <Flex alignItems="center" justifyContent="flex-end">
-            <BinanceIcon width={16} height={16} mr="4px" />
-            <Text small>
-              {lowestPrice
-                ? lowestPrice.toLocaleString(undefined, {
+          {lowestPrice && (
+            <>
+              <Text small color="textSubtle">
+                {t('Lowest price')}
+              </Text>
+              <Flex alignItems="center" justifyContent="flex-end">
+                <BinanceIcon width={16} height={16} mr="4px" />
+                <Text small>
+                  {lowestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 3,
                     maximumFractionDigits: 3,
-                  })
-                : '-'}
-            </Text>
-          </Flex>
+                  })}
+                </Text>
+              </Flex>
+            </>
+          )}
         </Grid>
       </Flex>
       <Flex justifyContent="space-between" px="16px" mt="8px">

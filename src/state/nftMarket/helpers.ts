@@ -19,7 +19,6 @@ import {
   AskOrder,
   ApiSingleTokenData,
   NftAttribute,
-  ApiCollectionDistribution,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
 
@@ -766,7 +765,7 @@ export const getCompleteAccountNftData = async (
  * Fetch distribution information for a collection
  * @returns
  */
-export const getCollectionDistributionApi = async (collectionAddress: string): Promise<ApiCollectionDistribution> => {
+export const getCollectionDistributionApi = async <T>(collectionAddress: string): Promise<T> => {
   const res = await fetch(`${API_NFT}/collections/${collectionAddress}/distribution`)
   if (res.ok) {
     const data = await res.json()

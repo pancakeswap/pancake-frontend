@@ -6,7 +6,7 @@ import { useFetchCollection, useGetCollection } from 'state/nftMarket/hooks'
 
 const Items = lazy(() => import('./Items'))
 const Traits = lazy(() => import('./Traits'))
-const IndividualNFTPage = lazy(() => import('./IndividualNFTPage'))
+const IndividualNFTPageRouter = lazy(() => import('./IndividualNFTPage'))
 
 const Collection = () => {
   const { path } = useRouteMatch()
@@ -25,7 +25,7 @@ const Collection = () => {
       <HashRoute exact path={path} hash="#items" component={Items} />
       <HashRoute exact path={path} hash="#traits" component={Traits} />
       <Route path={`${path}/:tokenId`}>
-        <IndividualNFTPage />
+        <IndividualNFTPageRouter />
       </Route>
     </>
   )

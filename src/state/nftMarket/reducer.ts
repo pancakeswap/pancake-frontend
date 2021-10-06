@@ -209,10 +209,11 @@ export const addUserNft = createAsyncThunk<
   const marketDataForNft = await getNftsMarketData({ tokenId_in: [tokenId] })
   const metadataForNft = await getNftsFromDifferentCollectionsApi([{ tokenId, collectionAddress }])
 
-  const tokens = { [tokenId]: { ...marketDataForNft[0], nftLocation } }
-  const completeNftData = { ...metadataForNft[0], tokens }
-
-  return completeNftData
+  return {
+    ...metadataForNft[0],
+    location: nftLocation,
+    marketData: marketDataForNft[0],
+  }
 })
 
 export const fetchUserActivity = createAsyncThunk('nft/fetchUserActivity', async (address: string) => {

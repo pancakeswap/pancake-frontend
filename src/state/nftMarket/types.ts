@@ -236,6 +236,11 @@ export interface ApiCollectionDistribution {
   data: Record<string, Record<string, number>>
 }
 
+export interface ApiCollectionDistributionPB {
+  total: number
+  data: Record<string, number>
+}
+
 /**
  * SUBGRAPH RESPONSES
  */
