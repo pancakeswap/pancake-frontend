@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
   getNftsFromCollectionApi,
@@ -17,6 +17,7 @@ import {
   getMetadataWithFallback,
   getPancakeBunniesAttributesField,
   combineApiAndSgResponseToNftToken,
+  fetchNftsFiltered,
 } from './helpers'
 import {
   State,
@@ -28,6 +29,9 @@ import {
   NftToken,
   NftLocation,
   ApiSingleTokenData,
+  NftFilter,
+  ApiTokenFilterResponse,
+  NftAttribute,
 } from './types'
 
 const initialState: State = {
@@ -35,6 +39,7 @@ const initialState: State = {
   data: {
     collections: {},
     nfts: {},
+    nftFilters: {},
     loadingState: {
       isUpdatingPancakeBunnies: false,
       latestPancakeBunniesUpdateAt: 0,
@@ -117,6 +122,18 @@ export const fetchNftsFromCollections = createAsyncThunk<
   } catch (error) {
     console.error(`Failed to fetch collection NFTs for ${collectionAddress}`, error)
     return []
+  }
+})
+
+export const filterNftsFromCollection = createAsyncThunk<
+  ApiTokenFilterResponse['data'],
+  { collectionAddress: string; filters: NftFilter['attributes'] }
+>('nft/filterNftsFromCollection', async ({ collectionAddress, filters }) => {
+  try {
+    const filteredNfts = await fetchNftsFiltered(collectionAddress, filters)
+    return filteredNfts.data
+  } catch {
+    return {}
   }
 })
 
@@ -230,7 +247,23 @@ export const fetchUserActivity = createAsyncThunk('nft/fetchUserActivity', async
 export const NftMarket = createSlice({
   name: 'NftMarket',
   initialState,
-  reducers: {},
+  reducers: {
+    addAttributeFilter: (state, action: PayloadAction<{ collectionAddress: string; attr: NftAttribute }>) => {
+      const { collectionAddress, attr } = action.payload
+
+      state.data.nftFilters[collectionAddress].attributes = {
+        ...state.data.nftFilters[collectionAddress].attributes,
+        [attr.traitType]: attr,
+      }
+    },
+    removeAttributeFilter: (state, action: PayloadAction<{ collectionAddress: string; traitType: string }>) => {
+      const { collectionAddress, traitType } = action.payload
+
+      if (state.data.nftFilters[collectionAddress]) {
+        delete state.data.nftFilters[collectionAddress].attributes[traitType]
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCollection.fulfilled, (state, action) => {
       state.data.collections = { ...state.data.collections, ...action.payload }
@@ -242,6 +275,9 @@ export const NftMarket = createSlice({
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       const { collectionAddress } = action.meta.arg
       const existingNfts = state.data.nfts[collectionAddress] ?? []
+
+      // Reset filters
+      state.data.nftFilters[collectionAddress] = { attributes: {} }
       state.data.nfts[collectionAddress] = [...existingNfts, ...action.payload]
     })
     builder.addCase(fetchNewPBAndUpdateExisting.pending, (state) => {
@@ -295,5 +331,8 @@ export const NftMarket = createSlice({
     })
   },
 })
+
+// Actions
+export const { addAttributeFilter, removeAttributeFilter } = NftMarket.actions
 
 export default NftMarket.reducer

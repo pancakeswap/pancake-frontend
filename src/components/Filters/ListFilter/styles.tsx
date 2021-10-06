@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Checkbox, Flex, Image, Text } from '@pancakeswap/uikit'
+import { Radio, Flex, Image, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import noop from 'lodash/noop'
 import { formatNumber } from 'utils/formatBalance'
@@ -16,10 +16,11 @@ const ItemImage = styled(Image)`
 
 interface ItemRowProps {
   item: Item
+  isSelected: boolean
   onSelect: () => void
 }
 
-export const ItemRow: React.FC<ItemRowProps> = ({ item, onSelect }) => (
+export const ItemRow: React.FC<ItemRowProps> = ({ item, isSelected, onSelect }) => (
   <StyledItemRow alignItems="center" px="16px" py="8px" onClick={onSelect}>
     {item.image && <ItemImage src={item.image} height={48} width={48} mr="16px" />}
     <Text style={{ flex: 1 }}>{item.label}</Text>
@@ -28,7 +29,7 @@ export const ItemRow: React.FC<ItemRowProps> = ({ item, onSelect }) => (
         {formatNumber(item.count, 0, 0)}
       </Text>
     )}
-    <Checkbox name="item-select" scale="sm" checked={item.isSelected} onChange={noop} />
+    <Radio name="item-select" scale="sm" checked={isSelected} onChange={noop} ml="4px" />
   </StyledItemRow>
 )
 
@@ -39,12 +40,4 @@ export const SearchWrapper = styled(Flex)<{ hasHeader: boolean }>`
     `
     border-radius: 24px 24px 0 0;
   `}
-`
-
-export const SelectAllButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`
-  white-space: nowrap;
-`
-
-export const ClearAllButton = styled(SelectAllButton)`
-  color: ${({ theme }) => theme.colors.failure};
 `

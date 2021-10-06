@@ -17,11 +17,14 @@ export enum UserNftInitializationState {
   ERROR = 'ERROR',
 }
 
+export type NftFilter = { attributes: Record<string, NftAttribute> }
+
 export interface State {
   initializationState: NFTMarketInitializationState
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
+    nftFilters: Record<string, NftFilter> // string is the collection address
     loadingState: {
       isUpdatingPancakeBunnies: boolean
       latestPancakeBunniesUpdateAt: number
@@ -193,6 +196,13 @@ export interface ApiCollectionsReponse {
 // ${API_NFT}/collections/${collectionAddress}
 export interface ApiSingleCollectionResponse {
   data: ApiCollection
+}
+
+// Get single collection
+// ${API_NFT}/collections/${collectionAddress}
+export interface ApiTokenFilterResponse {
+  total: number
+  data: Record<string, ApiSingleTokenData>
 }
 
 export interface ApiSingleTokenData {

@@ -108,3 +108,7 @@ export const useHasGen0Nfts = (): boolean => {
   const userNfts = useSelector((state: State) => state.nftMarket.data.user)
   return userNfts.nfts.some((nft) => nft.attributes && Number(nft.attributes[0]?.value) <= MAX_GEN0_ID)
 }
+
+export const useGetNftFilters = (collectionAddress: string) => {
+  return useSelector((state: State) => state.nftMarket.data.nftFilters[collectionAddress])
+}
