@@ -1558,6 +1558,7 @@
   "Rarity": "Rarity",
   "Lowest": "Lowest",
   "You don’t have any of this item.": "You don’t have any of this item.",
+  "You don’t have this item.": "You don’t have this item.",
   "Manage/Sell": "Manage/Sell",
   "NFT Market": "NFT Market",
   "Delisted": "Delisted",
@@ -1677,5 +1678,10 @@
   "Coming Oct. 7": "Coming Oct. 7",
   "Presale:": "Presale:",
   "Public Sale:": "Public Sale:",
-  "Review": "Review"
+  "Review": "Review",
+  "Not for sale": "Not for sale",
+  "This NFT is your profile picture, you must change it to some other NFT if you want to sell this one.": "This NFT is your profile picture, you must change it to some other NFT if you want to sell this one.",
+  "Owner information is not available for this item": "Owner information is not available for this item",
+  "List for sale": "List for sale",
+  "Adjust price": "Adjust price"
 }
