@@ -44,6 +44,7 @@ const PancakeSquad: React.FC = () => {
 
   useEffect(() => {
     if (account) {
+      setIsUserEnabled(false)
       setUserInfos(undefined)
     }
   }, [account])
