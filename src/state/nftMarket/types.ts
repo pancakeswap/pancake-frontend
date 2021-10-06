@@ -24,7 +24,10 @@ export interface State {
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
-    nftFilters: Record<string, NftFilter> // string is the collection address
+    nftFilters: {
+      totalResults: number
+      activeFilters: Record<string, NftFilter> // string is the collection address
+    }
     loadingState: {
       isUpdatingPancakeBunnies: boolean
       latestPancakeBunniesUpdateAt: number

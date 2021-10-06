@@ -11,6 +11,7 @@ import { pancakeBunniesAddress } from '../../constants'
 import CollectionNfts from './CollectionNfts'
 import PancakeBunniesCollectionNfts from './PancakeBunniesCollectionNfts'
 import Header from '../Header'
+import Filters from './Filters'
 
 const Items = () => {
   const { collectionAddress } = useParams<{ collectionAddress: string }>()
@@ -42,7 +43,7 @@ const Items = () => {
       <Header collection={collection} />
       <Page>
         {/* Only PBs can return enough data to viably sort the entire collection */}
-        {isPBCollection && (
+        {isPBCollection ? (
           <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">
             <Box minWidth="165px">
               <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
@@ -51,6 +52,8 @@ const Items = () => {
               <Select options={sortByItems} onOptionChange={handleChange} />
             </Box>
           </Flex>
+        ) : (
+          <Filters collection={collection} />
         )}
         {isPBCollection ? (
           <PancakeBunniesCollectionNfts collection={collection} sortBy={sortBy} />
