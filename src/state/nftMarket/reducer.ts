@@ -190,7 +190,10 @@ export const updateUserNft = createAsyncThunk<
   NftToken,
   { tokenId: string; collectionAddress: string; location?: NftLocation }
 >('nft/updateUserNft', async ({ tokenId, collectionAddress, location = NftLocation.WALLET }) => {
-  const marketDataForNft = await getNftsMarketData({ tokenId_in: [tokenId] })
+  const marketDataForNft = await getNftsMarketData({
+    tokenId_in: [tokenId],
+    collection: collectionAddress.toLowerCase(),
+  })
   const metadataForNft = await getNftsFromDifferentCollectionsApi([{ tokenId, collectionAddress }])
   const completeNftData = { ...metadataForNft[0], location, marketData: marketDataForNft[0] }
 
@@ -206,7 +209,10 @@ export const addUserNft = createAsyncThunk<
   NftToken,
   { tokenId: string; collectionAddress: string; nftLocation?: NftLocation }
 >('nft/addUserNft', async ({ tokenId, collectionAddress, nftLocation = NftLocation.WALLET }) => {
-  const marketDataForNft = await getNftsMarketData({ tokenId_in: [tokenId] })
+  const marketDataForNft = await getNftsMarketData({
+    tokenId_in: [tokenId],
+    collection: collectionAddress.toLowerCase(),
+  })
   const metadataForNft = await getNftsFromDifferentCollectionsApi([{ tokenId, collectionAddress }])
 
   return {

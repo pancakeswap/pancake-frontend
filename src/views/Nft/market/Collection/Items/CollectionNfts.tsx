@@ -108,7 +108,14 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
         alignItems="start"
       >
         {nftsSlice.map((nft) => {
-          return <CollectibleLinkCard key={`${nft.tokenId}-${nft.collectionName}`} nft={nft} />
+          const currentAskPrice = nft.marketData?.isTradable ? parseFloat(nft.marketData.currentAskPrice) : undefined
+          return (
+            <CollectibleLinkCard
+              key={`${nft.tokenId}-${nft.collectionName}`}
+              nft={nft}
+              currentAskPrice={currentAskPrice}
+            />
+          )
         })}
       </Grid>
       {nftsFromCollection?.length > MAX_ITEMS_PER_PAGE && (
