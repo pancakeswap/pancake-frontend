@@ -18,7 +18,7 @@ const Items = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const collection = useGetCollection(collectionAddress)
-  const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress
+  const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
 
   const { address } = collection || {}
 
