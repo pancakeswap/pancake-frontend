@@ -14,6 +14,7 @@ const collections: Collections = {
     description: "PancakeSwap's first official generative NFT collection.. Join the squad.",
     slug: 'pancake-squad',
     address: {
+      // TODO: NEEDS FILLING BEFORE MERGE
       56: '',
       97: '0xEf12ef570300bFA65c4F022deAaA3dfF4f5d5c91',
     },
