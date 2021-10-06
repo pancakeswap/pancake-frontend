@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
 import { uniqBy } from 'lodash'
 import { Flex, Text, Card, ArrowBackIcon, ArrowForwardIcon, Table, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
@@ -13,23 +12,7 @@ import useUserActivity, { Activity } from '../../hooks/useUserActivity'
 import ActivityRow from './ActivityRow'
 import TableLoader from './TableLoader'
 import NoNftsImage from '../NoNftsImage'
-
-const PageButtons = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.2em;
-  margin-bottom: 1.2em;
-`
-
-const Arrow = styled.div`
-  color: ${({ theme }) => theme.colors.primary};
-  padding: 0 20px;
-  :hover {
-    cursor: pointer;
-  }
-`
+import { Arrow, PageButtons } from '../../../components/PaginationButtons'
 
 const MAX_PER_PAGE = 8
 

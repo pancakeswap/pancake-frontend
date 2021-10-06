@@ -7,7 +7,9 @@ import { useGetCollection } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'
 import Select, { OptionProps } from 'components/Select/Select'
 import Page from 'components/Layout/Page'
+import { pancakeBunniesAddress } from '../../constants'
 import CollectionNfts from './CollectionNfts'
+import PancakeBunniesCollectionNfts from './PancakeBunniesCollectionNfts'
 import Header from '../Header'
 
 const Items = () => {
@@ -16,6 +18,8 @@ const Items = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const collection = useGetCollection(collectionAddress)
+  const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress
+
   const { address } = collection || {}
 
   const sortByItems = [
@@ -37,15 +41,22 @@ const Items = () => {
     <>
       <Header collection={collection} />
       <Page>
-        <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">
-          <Box minWidth="165px">
-            <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
-              {t('Sort By')}
-            </Text>
-            <Select options={sortByItems} onOptionChange={handleChange} />
-          </Box>
-        </Flex>
-        <CollectionNfts collection={collection} sortBy={sortBy} />
+        {/* Only PBs can return enough data to viably sort the entire collection */}
+        {isPBCollection && (
+          <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">
+            <Box minWidth="165px">
+              <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
+                {t('Sort By')}
+              </Text>
+              <Select options={sortByItems} onOptionChange={handleChange} />
+            </Box>
+          </Flex>
+        )}
+        {isPBCollection ? (
+          <PancakeBunniesCollectionNfts collection={collection} sortBy={sortBy} />
+        ) : (
+          <CollectionNfts collection={collection} />
+        )}
       </Page>
     </>
   )
