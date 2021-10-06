@@ -1597,7 +1597,7 @@
   "Items in the table update every 10 seconds": "Items in the table update every 10 seconds",
   "Pancake Squad": "Pancake Squad",
   "Meet the Artist": "Meet the Artist",
-  "Please enable BNB spending in your wallet": "Please enable BNB spending in your wallet",
+  "Please confirm your transaction in wallet.": "Please confirm your transaction in wallet.",
   "View market": "View market",
   "Mint": "Mint",
   "Max purchased": "Max purchased",
@@ -1625,7 +1625,7 @@
   "Follow on Instagram": "Follow on Instagram",
   "Please enable CAKE spending in yout wallet": "Please enable CAKE spending in yout wallet",
   "Mint NFTs (%tickets%)": "Mint NFTs (%tickets%)",
-  "490 are available in the pre-sale for owners of ": "490 are available in the pre-sale for owners of ",
+  "490 are available in the pre-sale for owners of Gen 0 Pancake Bunnies (bunnyID 0, 1, 2, 3, 4)": "490 are available in the pre-sale for owners of Gen 0 Pancake Bunnies (bunnyID 0, 1, 2, 3, 4)",
   "Hold CAKE": "Hold CAKE",
   "Head to the NFT Market to buy!": "Head to the NFT Market to buy!",
   "documentation on our site": "documentation on our site",
@@ -1673,7 +1673,7 @@
   "To drizzle in syrup and hand them out soon": "To drizzle in syrup and hand them out soon",
   "So that bunnies worldwide may fly to the moon.": "So that bunnies worldwide may fly to the moon.",
   "All Pancake Squad NFTs are allocated to Squad Ticket holders through a provably-fair system based on ChainLink at the time of minting.": "All Pancake Squad NFTs are allocated to Squad Ticket holders through a provably-fair system based on ChainLink at the time of minting.",
-  "Mint Cost: around 300 USD in CAKE": "Mint Cost: around 300 USD in CAKE",
+  "Mint Cost: 16 CAKE": "Mint Cost: 16 CAKE",
   "The smart contract address will be released soon before the sale starts.": "The smart contract address will be released soon before the sale starts.",
   "Coming Oct. 7": "Coming Oct. 7",
   "Presale:": "Presale:",
@@ -1683,5 +1683,9 @@
   "This NFT is your profile picture, you must change it to some other NFT if you want to sell this one.": "This NFT is your profile picture, you must change it to some other NFT if you want to sell this one.",
   "Owner information is not available for this item": "Owner information is not available for this item",
   "List for sale": "List for sale",
-  "Adjust price": "Adjust price"
+  "Adjust price": "Adjust price",
+  "starts in": "starts in",
+  "Presale max purchased": "Presale max purchased",
+  "end in": "end in",
+  "Insufficient Balance": "Insufficient Balance"
 }
