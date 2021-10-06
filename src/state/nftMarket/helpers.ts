@@ -21,7 +21,6 @@ import {
   AskOrder,
   ApiSingleTokenData,
   NftAttribute,
-  NftFilter,
   ApiTokenFilterResponse,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
@@ -501,7 +500,7 @@ export const getLatestListedNfts = async (first: number): Promise<TokenMarketDat
  */
 export const fetchNftsFiltered = async (
   collectionAddress: string,
-  filters: NftFilter['attributes'],
+  filters: Record<string, string | number>,
 ): Promise<ApiTokenFilterResponse> => {
   const res = await fetch(`${API_NFT}/collections/${collectionAddress}/filter?${stringify(filters)}`)
 

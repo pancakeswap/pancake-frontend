@@ -213,6 +213,7 @@ export interface ApiSingleTokenData {
     name: string
   }
   attributes?: NftAttribute[]
+  tokenId?: string
 }
 
 // Get tokens within collection
