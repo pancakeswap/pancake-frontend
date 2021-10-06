@@ -48,7 +48,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
           mt="24px"
           onClick={onEditProfileModal}
         >
-          {nftIsProfilePic ? t('Change profile pic') : t('Set as Profile Pic')}
+          {nftIsProfilePic ? t('Change Profile Pic') : t('Set as Profile Pic')}
         </Button>
       )}
     </Flex>

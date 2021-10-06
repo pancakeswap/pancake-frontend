@@ -1680,5 +1680,8 @@
   "Public Sale:": "Public Sale:",
   "Review": "Review",
   "Not for sale": "Not for sale",
-  "This NFT is your profile picture, you must change it to some other NFT if you want to sell this one.": "This NFT is your profile picture, you must change it to some other NFT if you want to sell this one."
+  "This NFT is your profile picture, you must change it to some other NFT if you want to sell this one.": "This NFT is your profile picture, you must change it to some other NFT if you want to sell this one.",
+  "Owner information is not available for this item": "Owner information is not available for this item",
+  "List for sale": "List for sale",
+  "Adjust price": "Adjust price"
 }
