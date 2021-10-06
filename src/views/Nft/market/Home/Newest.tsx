@@ -3,7 +3,7 @@ import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uiki
 import { Link } from 'react-router-dom'
 import { NftToken } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
-import { TMP_SEE_ALL_LINK } from 'views/Nft/market/constants'
+import { pancakeBunniesAddress, TMP_SEE_ALL_LINK } from 'views/Nft/market/constants'
 import { CollectibleLinkCard } from '../components/CollectibleCard'
 import GridPlaceholder from '../components/GridPlaceholder'
 
@@ -57,7 +57,16 @@ const Newest: React.FC = () => {
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
         >
           {nfts.map((nft) => {
-            return <CollectibleLinkCard key={nft.collectionAddress + nft.tokenId} nft={nft} />
+            const isPBCollection = nft.collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
+            const currentAskPrice =
+              !isPBCollection && nft.marketData?.isTradable ? parseFloat(nft.marketData.currentAskPrice) : undefined
+            return (
+              <CollectibleLinkCard
+                key={nft.collectionAddress + nft.tokenId}
+                nft={nft}
+                currentAskPrice={currentAskPrice}
+              />
+            )
           })}
         </Grid>
       ) : (
