@@ -96,7 +96,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
           <StyledSquadEventContainer m="1px" p="32px">
             <Flex flexDirection={['column', null, 'row']}>
               {eventInfos && (
-                <Box mr="100px">
+                <Box mr={['0', null, null, '100px']}>
                   <Timeline
                     events={nftSaleConfigBuilder({
                       t,
