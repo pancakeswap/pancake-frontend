@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
-import { Box, Flex, Grid, Spinner, Text, Button } from '@pancakeswap/uikit'
+import { Box, Flex, Grid, Text, Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import { uniqBy } from 'lodash'
 import { NftToken, TokenMarketData } from 'state/nftMarket/types'
 import { useGetCollection } from 'state/nftMarket/hooks'
@@ -27,6 +27,7 @@ const OnSale = () => {
   const [skip, setSkip] = useState(0)
   const { t } = useTranslation()
   const collection = useGetCollection(collectionAddress)
+  const { numberTokensListed } = collection
 
   const sortByItems = [
     { label: t('Lowest price'), value: { orderDirection: 'asc', orderBy: 'currentAskPrice' } },
@@ -49,8 +50,7 @@ const OnSale = () => {
       setIsFetching(false)
       setNfts((prevState) => {
         const combinedNfts = [...prevState, ...responsesWithMarketData]
-        const filteredForDuplicates = uniqBy(combinedNfts, 'tokenId')
-        return filteredForDuplicates
+        return uniqBy(combinedNfts, 'tokenId')
       })
     }
 
@@ -119,11 +119,13 @@ const OnSale = () => {
           )}
 
           <Flex mt="60px" mb="12px" justifyContent="center">
-            {isFetching ? (
-              <Spinner />
-            ) : (
-              <Button onClick={handleLoadMore} scale="sm">
-                {t('Load more')}
+            {Number(numberTokensListed) > nfts?.length && (
+              <Button
+                onClick={handleLoadMore}
+                scale="sm"
+                endIcon={isFetching ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+              >
+                {isFetching ? t('Loading') : t('Load more')}
               </Button>
             )}
           </Flex>
