@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
-import { Box, Flex, Grid, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Grid, Spinner, Text, Button } from '@pancakeswap/uikit'
+import { uniqBy } from 'lodash'
 import { NftToken, TokenMarketData } from 'state/nftMarket/types'
 import { useGetCollection } from 'state/nftMarket/hooks'
 import { getNftApi, getNftsMarketData } from 'state/nftMarket/helpers'
@@ -11,10 +12,14 @@ import Header from './Header'
 import GridPlaceholder from '../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../components/CollectibleCard'
 
+const REQUEST_SIZE = 100
+
 const OnSale = () => {
   const { collectionAddress } = useParams<{ collectionAddress: string }>()
   const [nfts, setNfts] = useState<NftToken[]>([])
   const [sortBy, setSortBy] = useState<'asc' | 'desc'>('asc')
+  const [isFetching, setIsFetching] = useState(false)
+  const [skip, setSkip] = useState(0)
   const { t } = useTranslation()
   const collection = useGetCollection(collectionAddress)
 
@@ -35,62 +40,87 @@ const OnSale = () => {
           marketData: marketData[i],
         }
       })
-      setNfts(responsesWithMarketData)
+      setIsFetching(false)
+      setNfts((prevState) => {
+        const combinedNfts = [...prevState, ...responsesWithMarketData]
+        const filteredForDuplicates = uniqBy(combinedNfts, 'tokenId')
+        return filteredForDuplicates
+      })
     }
 
     const fetchMarketData = async () => {
       const subgraphRes = await getNftsMarketData(
         { collection: collectionAddress.toLowerCase(), isTradable: true },
-        100,
+        REQUEST_SIZE,
         'currentAskPrice',
         sortBy,
+        skip,
       )
       fetchApiData(subgraphRes)
     }
 
+    setIsFetching(true)
     fetchMarketData()
-  }, [collectionAddress, sortBy])
+  }, [collectionAddress, sortBy, skip])
 
   const handleChange = (event: OptionProps) => {
     setNfts([])
     setSortBy(event.value)
   }
 
+  const handleLoadMore = () => {
+    setSkip(skip + REQUEST_SIZE)
+  }
+
   return (
     <>
       <Header collection={collection} />
       <Page>
-        <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">
-          <Box minWidth="165px">
-            <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
-              {t('Sort By')}
-            </Text>
-            <Select options={sortByItems} onOptionChange={handleChange} />
-          </Box>
-        </Flex>
-        {!nfts.length ? (
-          <GridPlaceholder />
-        ) : (
-          <Grid
-            gridGap="16px"
-            gridTemplateColumns={['1fr', null, 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
-            alignItems="start"
-          >
-            {nfts.map((nft) => {
-              const currentAskPriceAsNumber = nft.marketData?.currentAskPrice
-                ? parseFloat(nft.marketData.currentAskPrice)
-                : 0
+        <Box position="relative">
+          <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">
+            <Box minWidth="165px">
+              <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
+                {t('Sort By')}
+              </Text>
+              <Select options={sortByItems} onOptionChange={handleChange} />
+            </Box>
+          </Flex>
+          {!nfts.length ? (
+            <GridPlaceholder />
+          ) : (
+            <>
+              <Grid
+                gridGap="16px"
+                gridTemplateColumns={['1fr', null, 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
+                alignItems="start"
+              >
+                {nfts.map((nft) => {
+                  const currentAskPriceAsNumber = nft.marketData?.currentAskPrice
+                    ? parseFloat(nft.marketData.currentAskPrice)
+                    : 0
 
-              return (
-                <CollectibleLinkCard
-                  key={`${nft.tokenId}-${nft.collectionName}`}
-                  nft={nft}
-                  currentAskPrice={currentAskPriceAsNumber}
-                />
-              )
-            })}
-          </Grid>
-        )}
+                  return (
+                    <CollectibleLinkCard
+                      key={`${nft.tokenId}-${nft.collectionName}`}
+                      nft={nft}
+                      currentAskPrice={currentAskPriceAsNumber}
+                    />
+                  )
+                })}
+              </Grid>
+            </>
+          )}
+
+          <Flex mt="60px" mb="12px" justifyContent="center">
+            {isFetching ? (
+              <Spinner />
+            ) : (
+              <Button onClick={handleLoadMore} scale="sm">
+                {t('Load more')}
+              </Button>
+            )}
+          </Flex>
+        </Box>
       </Page>
     </>
   )
