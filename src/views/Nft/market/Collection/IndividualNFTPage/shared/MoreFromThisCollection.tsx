@@ -101,14 +101,14 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
 
   const nextSlide = () => {
     if (activeIndex < maxPageIndex - 1) {
-      setActiveIndex(activeIndex + 1)
+      setActiveIndex((index) => index + 1)
       swiperRef.slideNext()
     }
   }
 
   const previousSlide = () => {
     if (activeIndex > 0) {
-      setActiveIndex(activeIndex - 1)
+      setActiveIndex((index) => index - 1)
       swiperRef.slidePrev()
     }
   }
