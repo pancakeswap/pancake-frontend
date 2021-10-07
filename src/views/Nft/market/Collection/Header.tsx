@@ -11,7 +11,7 @@ import StatBox, { StatBoxItem } from '../components/StatBox'
 import BannerHeader from '../components/BannerHeader'
 import AvatarImage from '../components/BannerHeader/AvatarImage'
 import BaseSubMenu from '../components/BaseSubMenu'
-import { nftsBaseUrl } from '../constants'
+import { nftsBaseUrl, pancakeBunniesAddress } from '../constants'
 import TopBar from './TopBar'
 import LowestPriceStatBoxItem from './LowestPriceStatBoxItem'
 
@@ -19,13 +19,14 @@ interface HeaderProps {
   collection: Collection
 }
 
-const DEFAULT_TABS = '#items'
-
 const Header: React.FC<HeaderProps> = ({ collection }) => {
   const { collectionAddress } = useParams<{ collectionAddress: string }>()
   const { totalSupply, numberTokensListed, totalVolumeBNB, banner, avatar } = collection
   const { t } = useTranslation()
   const { pathname, hash } = useLocation()
+
+  const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
+  const DEFAULT_TABS = isPBCollection ? '#items' : '#onsale'
 
   const volume = totalVolumeBNB
     ? parseFloat(totalVolumeBNB).toLocaleString(undefined, {
@@ -33,6 +34,11 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
         maximumFractionDigits: 3,
       })
     : '0'
+
+  const onSaleEntry = {
+    label: t('On sale'),
+    href: `${nftsBaseUrl}/collections/${collectionAddress}#onsale`,
+  }
 
   const itemsConfig = [
     {
@@ -66,7 +72,12 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
         </MarketPageTitle>
       </MarketPageHeader>
       <Container>
-        <BaseSubMenu items={itemsConfig} activeItem={`${pathname}${hash || DEFAULT_TABS}`} mt="24px" mb="8px" />
+        <BaseSubMenu
+          items={isPBCollection ? itemsConfig : [onSaleEntry, ...itemsConfig]}
+          activeItem={`${pathname}${hash || DEFAULT_TABS}`}
+          mt="24px"
+          mb="8px"
+        />
       </Container>
     </>
   )

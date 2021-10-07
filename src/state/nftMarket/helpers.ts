@@ -304,7 +304,7 @@ export const getNftsMarketData = async (
       GRAPH_API_NFTMARKET,
       gql`
         query getNftsMarketData($first: Int, $skip: Int!, $where: NFT_filter, $orderBy: NFT_orderBy, $orderDirection: OrderDirection) {
-          nfts(where: $where, orderBy: $orderBy, orderDirection: $orderDirection, skip: $skip) {
+          nfts(where: $where, first: $first, orderBy: $orderBy, orderDirection: $orderDirection, skip: $skip) {
             ${getBaseNftFields()}
             transactionHistory {
               ${getBaseTransactionFields()}
