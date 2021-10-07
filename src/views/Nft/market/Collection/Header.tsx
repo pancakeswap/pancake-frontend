@@ -19,8 +19,6 @@ interface HeaderProps {
   collection: Collection
 }
 
-const DEFAULT_TABS = '#items'
-
 const Header: React.FC<HeaderProps> = ({ collection }) => {
   const { collectionAddress } = useParams<{ collectionAddress: string }>()
   const { totalSupply, numberTokensListed, totalVolumeBNB, banner, avatar } = collection
@@ -28,6 +26,7 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
   const { pathname, hash } = useLocation()
 
   const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
+  const DEFAULT_TABS = isPBCollection ? '#items' : '#onsale'
 
   const volume = totalVolumeBNB
     ? parseFloat(totalVolumeBNB).toLocaleString(undefined, {
