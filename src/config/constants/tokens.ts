@@ -1636,6 +1636,22 @@ export const mainnetTokens = {
     'NAOSToken',
     'https://naos.finance/',
   ),
+  cart: new Token(
+    MAINNET,
+    '0x5C8C8D560048F34E5f7f8ad71f2f81a89DBd273e',
+    18,
+    'CART',
+    'CryptoArt.ai',
+    'https://cryptoart.ai/',
+  ),
+  light: new Token(
+    MAINNET,
+    '0x037838b556d9c9d654148a284682C55bB5f56eF4',
+    18,
+    'LIGHT',
+    'Lightning',
+    'https://lightningprotocol.finance/',
+  ),
 }
 
 export const testnetTokens = {
