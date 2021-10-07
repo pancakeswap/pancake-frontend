@@ -1642,7 +1642,7 @@ export const mainnetTokens = {
     18,
     'CART',
     'CryptoArt.ai',
-    'http://cryptoart.ai/',
+    'https://cryptoart.ai/',
   ),
   light: new Token(
     MAINNET,
