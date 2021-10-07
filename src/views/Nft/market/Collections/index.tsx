@@ -32,10 +32,12 @@ const Collectible = () => {
             <tbody>
               {Object.keys(collections).map((key) => {
                 const collection = collections[key]
-                const volume = parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
-                  minimumFractionDigits: 3,
-                  maximumFractionDigits: 3,
-                })
+                const volume = collection.totalVolumeBNB
+                  ? parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
+                      minimumFractionDigits: 3,
+                      maximumFractionDigits: 3,
+                    })
+                  : '0'
                 return (
                   <tr>
                     <Td>
