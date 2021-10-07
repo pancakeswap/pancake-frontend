@@ -1870,5 +1870,21 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xEd8c8Aa8299C10f067496BB66f8cC7Fb338A3405.png"
+  },
+  {
+    "name": "Lightning",
+    "symbol": "LIGHT",
+    "address": "0x037838b556d9c9d654148a284682C55bB5f56eF4",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x037838b556d9c9d654148a284682C55bB5f56eF4.png"
+  },
+  {
+    "name": "CryptoArt.ai",
+    "symbol": "CART",
+    "address": "0x5C8C8D560048F34E5f7f8ad71f2f81a89DBd273e",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x5C8C8D560048F34E5f7f8ad71f2f81a89DBd273e.png"
   }
 ]
