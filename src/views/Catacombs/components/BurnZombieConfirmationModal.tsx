@@ -39,9 +39,10 @@ const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss
     })
   }
 
-  return <Modal onDismiss={onDismiss} title="Congratulations!. You cracked the code." background="black" color="white">
-    <Flex alignItems="center" justifyContent="space-between" mb="8px" background="black">
-      <Flex alignItems="center" minWidth="70px">
+  return <Modal onDismiss={onDismiss} title="Congratulations!. You cracked the code." background="black!important" color="white!important" 
+  border="1px solid white!important">
+    <Flex alignItems="center" justifyContent="space-between" mb="8px" background="black!important">
+      <Flex alignItems="center" minWidth="70px" background="black">
         <Image src={`/images/tokens/${tokens.zmbe.symbol}.png`} width={24} height={24} alt='ZMBE' />
         <Text ml="4px" bold color="white">
           {tokens.zmbe.symbol}
@@ -56,10 +57,10 @@ const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss
     {
       zombieBalance().isZero() ?
       <Button mt="8px" as="a" href={`${APESWAP_EXCHANGE_URL}/swap?outputCurrency=${getZombieAddress()}`} variant="secondary">
-        Get ZMBE
+        <Text color="white">Get ZMBE</Text>
       </Button> :
-        <Button onClick={handleBurnZombie} mt="8px" as="a" variant="secondary" color="white">
-          Burn {burnAmount} ZMBE
+        <Button onClick={handleBurnZombie} mt="8px" as="a" variant="secondary">
+          <Text color="white">Burn {burnAmount} ZMBE</Text>
         </Button>
       }
   </Modal>

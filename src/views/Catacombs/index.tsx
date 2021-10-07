@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import useEagerConnect from '../../hooks/useEagerConnect'
 import { useCatacombsContract, useMultiCall } from '../../hooks/useContract'
 import * as fetch from '../../redux/fetch'
 import Entry from './components/Entry'
-import Main from './components/Main'
-import './Catacombs.Styles.css'
+import CatacombsRouter from './components/CatacombsRouter'
 
 const Catacombs: React.FC = (props) => {
   useEagerConnect()
@@ -28,7 +27,7 @@ const Catacombs: React.FC = (props) => {
   }
 
   return (
-    unlocked ? <Main /> : <Entry />
+    unlocked ? <CatacombsRouter /> : <Entry />
   )
 }
 

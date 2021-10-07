@@ -10,6 +10,7 @@ import CatacombsEntryBackgroundDesktopSVG from '../../../images/CatacombsEntry-1
 import CatacombsEntryBackgroundMobileSVG from '../../../images/CatacombsEntry-414x720px.svg'
 import BurnZombieConfirmationModal from './BurnZombieConfirmationModal'
 import WrongPasswordModal from './WrongPasswordModal'
+import '../Catacombs.Styles.css'
 
 const StyledText = styled(Text)`
   font-size: 35px;

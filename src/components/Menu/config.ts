@@ -32,6 +32,11 @@ const config: MenuEntry[] = [
     href: '/graveyard'
   },
   {
+    label: 'Catacombs',
+    icon: 'PoolIcon',
+    href: '/catacombs'
+  },
+  {
     label: 'Profile',
     icon: 'GroupsIcon',
     href: '/profile'
