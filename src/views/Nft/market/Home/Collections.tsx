@@ -44,7 +44,7 @@ const Collections = () => {
                   <Text fontSize="12px" color="textSubtle">
                     {t('Volume')}
                   </Text>
-                  <BNBAmountLabel amount={parseFloat(collection.totalVolumeBNB)} />
+                  <BNBAmountLabel amount={collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0} />
                 </Flex>
               </HotCollectionCard>
             )

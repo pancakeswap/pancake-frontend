@@ -27,10 +27,12 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
   const { t } = useTranslation()
   const { pathname, hash } = useLocation()
 
-  const volume = parseFloat(totalVolumeBNB).toLocaleString(undefined, {
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3,
-  })
+  const volume = totalVolumeBNB
+    ? parseFloat(totalVolumeBNB).toLocaleString(undefined, {
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3,
+      })
+    : '0'
 
   const itemsConfig = [
     {
@@ -54,7 +56,10 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
         >
           <StatBox>
             <StatBoxItem title={t('Items')} stat={formatNumber(Number(totalSupply), 0, 0)} />
-            <StatBoxItem title={t('Items listed')} stat={formatNumber(Number(numberTokensListed), 0, 0)} />
+            <StatBoxItem
+              title={t('Items listed')}
+              stat={numberTokensListed ? formatNumber(Number(numberTokensListed), 0, 0) : '0'}
+            />
             <LowestPriceStatBoxItem collectionAddress={collection.address} />
             <StatBoxItem title={t('Vol. (%symbol%)', { symbol: 'BNB' })} stat={volume} />
           </StatBox>
