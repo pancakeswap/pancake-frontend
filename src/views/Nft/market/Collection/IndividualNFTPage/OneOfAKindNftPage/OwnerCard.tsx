@@ -129,7 +129,7 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic })
       )}
       {isLoadingOwner && <Skeleton />}
       {!isLoadingOwner && !owner && (
-        <Flex justifyContent="center" alignItems="center" height="200px">
+        <Flex justifyContent="center" alignItems="center" padding="24px">
           <Text>{t('Owner information is not available for this item')}</Text>
         </Flex>
       )}
