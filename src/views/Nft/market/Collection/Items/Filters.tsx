@@ -6,7 +6,7 @@ import { useAppDispatch } from 'state'
 import { useGetNftFilters } from 'state/nftMarket/hooks'
 import { Collection, NftAttribute } from 'state/nftMarket/types'
 import { addAttributeFilter, filterNftsFromCollection, removeAttributeFilter } from 'state/nftMarket/reducer'
-import { Item, ListFilter } from 'components/Filters'
+import { Item, ListFilter } from 'views/Nft/market/components/Filters'
 import useGetCollectionDistribution from '../../hooks/useGetCollectionDistribution'
 import ClearAllButton from './ClearAllButton'
 
@@ -40,42 +40,40 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
   }, [address, nftFilters, dispatch])
 
   return (
-    <Flex alignItems="center" justifyContent="space-between" mb="32px">
-      <Flex alignItems="center" flexWrap="wrap" style={{ flex: 1 }}>
-        {uniqueTraitTypes.map((traitType) => {
-          const attrs = attrsByType[traitType]
-          const items: Item[] = attrs.map((attr) => ({
-            label: capitalize(attr.value as string),
-            count: data && data[traitType] ? data[traitType][attr.value] : undefined,
-            attr,
-          }))
+    <Flex alignItems="center" flexWrap="wrap" style={{ flex: 1 }} mb="32px">
+      {uniqueTraitTypes.map((traitType) => {
+        const attrs = attrsByType[traitType]
+        const items: Item[] = attrs.map((attr) => ({
+          label: capitalize(attr.value as string),
+          count: data && data[traitType] ? data[traitType][attr.value] : undefined,
+          attr,
+        }))
 
-          // If the attribute has already been selected get it from the current filter list and create an item
-          const selectedAttr = nftFilters ? nftFilters.attributes[traitType] : null
-          const selectedItem = selectedAttr
-            ? {
-                label: capitalize(selectedAttr.value as string),
-                count: data && data[traitType] ? data[traitType][selectedAttr.value] : undefined,
-                attr: selectedAttr,
-              }
-            : undefined
+        // If the attribute has already been selected get it from the current filter list and create an item
+        const selectedAttr = nftFilters ? nftFilters.attributes[traitType] : null
+        const selectedItem = selectedAttr
+          ? {
+              label: capitalize(selectedAttr.value as string),
+              count: data && data[traitType] ? data[traitType][selectedAttr.value] : undefined,
+              attr: selectedAttr,
+            }
+          : undefined
 
-          const handleClear = () => {
-            dispatch(removeAttributeFilter({ collectionAddress: address, traitType }))
-          }
+        const handleClear = () => {
+          dispatch(removeAttributeFilter({ collectionAddress: address, traitType }))
+        }
 
-          return (
-            <ListFilter
-              key={traitType}
-              title={capitalize(traitType)}
-              selectedItem={selectedItem}
-              items={items}
-              onApply={handleApply}
-              onClear={handleClear}
-            />
-          )
-        })}
-      </Flex>
+        return (
+          <ListFilter
+            key={traitType}
+            title={capitalize(traitType)}
+            selectedItem={selectedItem}
+            items={items}
+            onApply={handleApply}
+            onClear={handleClear}
+          />
+        )
+      })}
       {!isEmpty(nftFilters?.attributes) && <ClearAllButton collectionAddress={address} />}
     </Flex>
   )

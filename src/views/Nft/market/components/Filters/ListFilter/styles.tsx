@@ -29,7 +29,7 @@ export const ItemRow: React.FC<ItemRowProps> = ({ item, isSelected, onSelect }) 
         {formatNumber(item.count, 0, 0)}
       </Text>
     )}
-    <Radio name="item-select" scale="sm" checked={isSelected} onChange={noop} ml="4px" />
+    <Radio name="item-select" scale="sm" checked={isSelected} value={item.label} onChange={noop} ml="24px" />
   </StyledItemRow>
 )
 

@@ -11,8 +11,9 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useGetNftFilterLoadingState } from 'state/nftMarket/hooks'
+import { NftFilterLoadingState } from 'state/nftMarket/types'
 import FilterFooter from '../FilterFooter'
-import FilterHeader from '../FilterHeader'
 import { ItemRow, SearchWrapper } from './styles'
 import { Item } from './types'
 
@@ -31,7 +32,8 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, selectedItem, ite
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
   const [localSelectedItem, setLocalSelectedItem] = useState(selectedItem)
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isDesktop } = useMatchBreakpoints()
+  const nftFilterState = useGetNftFilterLoadingState()
   const filteredItems =
     query && query.length > 1
       ? items.filter((item) => item.label.toLowerCase().indexOf(query.toLowerCase()) !== -1)
@@ -91,21 +93,29 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, selectedItem, ite
     <Box ref={wrapperRef}>
       <InlineMenu
         component={
-          <Button onClick={handleMenuClick} variant={localSelectedItem ? 'primary' : 'light'} scale="sm" mr="4px">
+          <Button
+            onClick={handleMenuClick}
+            variant={localSelectedItem ? 'subtle' : 'light'}
+            scale="sm"
+            mr="4px"
+            mb="4px"
+            disabled={nftFilterState === NftFilterLoadingState.LOADING}
+          >
             {title}
           </Button>
         }
         isOpen={isOpen}
       >
         <Box maxWidth="375px" ref={menuRef}>
-          <FilterHeader title={title}>
-            <Button onClick={handleApply} variant="text" scale="sm" disabled={localSelectedItem === null}>
-              {t('Apply')}
-            </Button>
-          </FilterHeader>
           <SearchWrapper hasHeader={!!title && !isMobile} alignItems="center" p="16px">
             <InputGroup startIcon={<SearchIcon color="textSubtle" />}>
-              <Input name="query" placeholder={t('Search')} onChange={handleChange} value={query} autoFocus />
+              <Input
+                name="query"
+                placeholder={t('Search')}
+                onChange={handleChange}
+                value={query}
+                autoFocus={isDesktop}
+              />
             </InputGroup>
           </SearchWrapper>
           <Box height="240px" overflowY="auto">
