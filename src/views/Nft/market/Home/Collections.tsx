@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, ChevronRightIcon, Flex, Grid, Heading, Text } from '@pancakeswap/uikit'
 import { Link } from 'react-router-dom'
 import { useGetCollections } from 'state/nftMarket/hooks'
-import { nftsBaseUrl, TMP_SEE_ALL_LINK } from 'views/Nft/market/constants'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useTranslation } from 'contexts/Localization'
 import { HotCollectionCard } from '../components/CollectibleCard'
 import { BNBAmountLabel } from '../components/CollectibleCard/styles'
@@ -19,7 +19,7 @@ const Collections = () => {
         </Heading>
         <Button
           as={Link}
-          to={TMP_SEE_ALL_LINK}
+          to={`${nftsBaseUrl}/collections/`}
           variant="secondary"
           scale="sm"
           endIcon={<ChevronRightIcon color="primary" width="24px" />}
