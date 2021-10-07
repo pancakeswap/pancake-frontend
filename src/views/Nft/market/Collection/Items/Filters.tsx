@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
@@ -13,6 +14,20 @@ import ClearAllButton from './ClearAllButton'
 interface FiltersProps {
   collection: Collection
 }
+
+const ScrollableFlexContainer = styled(Flex)`
+  align-items: center;
+  flex: 1;
+  flex-wrap: nowrap;
+  margin-bottom: 32px;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-wrap: wrap;
+    overflow-x: revert;
+  }
+`
 
 const Filters: React.FC<FiltersProps> = ({ collection }) => {
   const { address } = collection
@@ -40,7 +55,7 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
   }, [address, nftFilters, dispatch])
 
   return (
-    <Flex alignItems="center" flexWrap="wrap" style={{ flex: 1 }} mb="32px">
+    <ScrollableFlexContainer>
       {uniqueTraitTypes.map((traitType) => {
         const attrs = attrsByType[traitType]
         const items: Item[] = attrs.map((attr) => ({
@@ -75,7 +90,7 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
         )
       })}
       {!isEmpty(nftFilters?.attributes) && <ClearAllButton collectionAddress={address} />}
-    </Flex>
+    </ScrollableFlexContainer>
   )
 }
 
