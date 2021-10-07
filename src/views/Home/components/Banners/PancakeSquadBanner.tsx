@@ -89,7 +89,7 @@ const PancakeSquadBanner = () => {
       <Inner>
         <LeftWrapper>
           <StyledSubheading>PancakeSquad NFT</StyledSubheading>
-          <StyledHeading scale="xl">{t('Coming Oct. 7')}</StyledHeading>
+          <StyledHeading scale="xl">{t('Now Live')}</StyledHeading>
           <Link to="/pancake-squad">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
