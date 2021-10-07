@@ -30,6 +30,8 @@ describe('Check translations available', () => {
 
     let match
 
+    const unknownKeys = new Set()
+
     const regexWithoutCarriageReturn = /\bt\('([^']*?)'/gm
     const regexWithCarriageReturn = /\bt\([\r\n]\s+'([^']*?)'/gm
 
@@ -44,8 +46,8 @@ describe('Check translations available', () => {
         try {
           expect(includes).toBe(true)
         } catch (e) {
+          unknownKeys.add(match[1])
           console.info(`Found unknown key "${match[1]}" in ${file}`)
-          throw new Error(`Found unknown key ${match[1]} in ${file}`)
         }
       }
     }
@@ -64,11 +66,15 @@ describe('Check translations available', () => {
           try {
             expect(includes).toBe(true)
           } catch (e) {
+            unknownKeys.add(placeHolderMatch[1])
             console.info(`Found unknown key "${placeHolderMatch[1]}" in ${file}`)
-            throw new Error(`Found unknown key ${placeHolderMatch[1]} in ${file}`)
           }
         }
       }
+    }
+
+    if (unknownKeys.size > 0) {
+      throw new Error(`Found unknown key(s) ${JSON.stringify(Array.from(unknownKeys.values()), null, '\t')} in ${file}`)
     }
   })
 })
