@@ -5,7 +5,6 @@ import { useTranslation } from 'contexts/Localization'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import useTheme from 'hooks/useTheme'
 import { StyledWaveContainer } from 'views/PancakeSquad/styles'
-import { formatBigNumber } from 'utils/formatBalance'
 import { UserStatusEnum } from 'views/PancakeSquad/types'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import HeaderBottomWave from '../../assets/HeaderBottomWave'
@@ -22,7 +21,7 @@ import {
 } from './styles'
 import { PancakeSquadHeaderType } from './types'
 
-const DEFAULT_CAKE_COST = 5
+const DEFAULT_CAKE_COST = 15
 const DEFAULT_MAX_TICKETS = 10
 
 const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
@@ -78,8 +77,8 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         {`${t('Public Sale:')} 08:00 UTC, Oct. 7`}
       </Text>
       <Text color={lightColors.warning} textAlign="center" bold>
-        {t('Mint Cost: 16 CAKE', {
-          minCost: pricePerTicket ? formatBigNumber(pricePerTicket, 0) : DEFAULT_CAKE_COST,
+        {t('Mint Cost: %minCost% CAKE each', {
+          minCost: DEFAULT_CAKE_COST,
         })}
       </Text>
       <Text color={lightColors.warning} textAlign="center" bold>
