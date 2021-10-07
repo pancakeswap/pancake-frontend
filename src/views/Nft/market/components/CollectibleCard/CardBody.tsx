@@ -18,7 +18,7 @@ const CollectibleCardBody: React.FC<CollectibleCardProps> = ({ nft, nftLocation,
 
   return (
     <CardBody p="8px">
-      <PreviewImage src={image.thumbnail} height={258} width={258} mb="8px" />
+      <PreviewImage src={image.thumbnail} height={320} width={320} mb="8px" />
       <Flex alignItems="center" justifyContent="space-between">
         {nft.collectionName && (
           <Text fontSize="12px" color="textSubtle" mb="8px">

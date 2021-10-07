@@ -29,7 +29,7 @@ const ClearAllButton: React.FC<ClearAllButtonProps> = ({ collectionAddress, ...p
       disabled={nftFilterState === NftFilterLoadingState.LOADING}
       {...props}
     >
-      {t('Clear All')}
+      {t('Clear')}
     </Button>
   )
 }

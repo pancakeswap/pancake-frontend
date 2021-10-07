@@ -291,7 +291,7 @@ export const NftMarket = createSlice({
     removeAttributeFilter: (state, action: PayloadAction<{ collectionAddress: string; traitType: string }>) => {
       const { collectionAddress, traitType } = action.payload
 
-      if (state.data.nftFilters[collectionAddress]) {
+      if (state.data.nftFilters.activeFilters[collectionAddress]) {
         delete state.data.nftFilters.activeFilters[collectionAddress].attributes[traitType]
       }
     },
