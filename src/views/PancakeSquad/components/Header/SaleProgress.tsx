@@ -12,13 +12,27 @@ type PreEventProps = {
   totalSupplyMinted: number
 }
 
-const SaleProgressTextMapping: Record<SaleStatusEnum, string> = {
-  [SaleStatusEnum.Pending]: '',
-  [SaleStatusEnum.Premint]: '',
-  [SaleStatusEnum.Presale]: '%remaining% of %total% remaining',
-  [SaleStatusEnum.Sale]: '%remaining% of %total% remaining',
-  [SaleStatusEnum.DrawingRandomness]: 'Randomizing NFT allocation with Chainlink',
-  [SaleStatusEnum.Claim]: '%remaining% of %total% minted',
+const saleProgressTextMapping = (t: ContextApi['t'], saleStatus: SaleStatusEnum, remaining: string, total: string) => {
+  const data = {
+    remaining,
+    total,
+  }
+
+  switch (saleStatus) {
+    case SaleStatusEnum.Pending:
+    case SaleStatusEnum.Premint:
+      return ''
+    case SaleStatusEnum.Presale:
+      return t('%remaining% of %total% remaining', data)
+    case SaleStatusEnum.Sale:
+      return t('%remaining% of %total% remaining', data)
+    case SaleStatusEnum.DrawingRandomness:
+      return t('Randomizing NFT allocation with Chainlink', data)
+    case SaleStatusEnum.Claim:
+      return t('%remaining% of %total% minted', data)
+    default:
+      return ''
+  }
 }
 
 const SaleProgress: React.FC<PreEventProps> = ({
@@ -44,10 +58,7 @@ const SaleProgress: React.FC<PreEventProps> = ({
       <Text color={lightColors.invertedContrast} mb="24px" bold>
         {isMintCompleted
           ? t('All 10,000 Pancake Squad NFTs have now been minted!')
-          : t(SaleProgressTextMapping[saleStatus], {
-              remaining: remainingTickets.toString(),
-              total: maxSupply.toString(),
-            })}
+          : saleProgressTextMapping(t, saleStatus, remainingTickets.toString(), maxSupply.toString())}
       </Text>
       {!isMintCompleted && (
         <Progress

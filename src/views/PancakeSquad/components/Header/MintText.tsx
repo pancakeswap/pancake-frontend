@@ -30,11 +30,9 @@ const MintText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus, numberTi
       </Flex>
       {saleStatus === SaleStatusEnum.Claim && (isUserUnconnected || hasNoTicketOrToken) && (
         <Text mt="24px" fontSize="16px" color={lightColors.warning} bold>
-          {t(
-            isUserUnconnected
-              ? 'Redeem Mint Tickets to mint NFTs'
-              : 'Sorry, you can’t mint any NFTs! Better luck next time.',
-          )}
+          {isUserUnconnected
+            ? t('Redeem Mint Tickets to mint NFTs')
+            : t('Sorry, you can’t mint any NFTs! Better luck next time.')}
         </Text>
       )}
     </Flex>

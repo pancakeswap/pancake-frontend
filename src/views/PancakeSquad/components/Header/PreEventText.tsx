@@ -9,17 +9,25 @@ type PreEventProps = {
   userStatus: UserStatusEnum
 }
 
-const PreEventTextMapping: Record<UserStatusEnum, string> = {
-  [UserStatusEnum.UNCONNECTED]: 'Are you ready?',
-  [UserStatusEnum.NO_PROFILE]: 'You need a profile to participate!',
-  [UserStatusEnum.PROFILE_ACTIVE]: 'You’re all set!',
-  [UserStatusEnum.PROFILE_ACTIVE_GEN0]: 'You’re all set!',
+const preEventTextMapping = (t: ContextApi['t'], userStatus: UserStatusEnum) => {
+  switch (userStatus) {
+    case UserStatusEnum.UNCONNECTED:
+      return t('Are you ready?')
+    case UserStatusEnum.NO_PROFILE:
+      return t('You need a profile to participate!')
+    case UserStatusEnum.PROFILE_ACTIVE:
+      return t('You’re all set!')
+    case UserStatusEnum.PROFILE_ACTIVE_GEN0:
+      return t('You’re all set!')
+    default:
+      return ''
+  }
 }
 
 const PreEventText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus }) =>
   [SaleStatusEnum.Pending, SaleStatusEnum.Premint].includes(saleStatus) ? (
     <Text fontSize="16px" color={darkColors.text}>
-      {t(PreEventTextMapping[userStatus])}
+      {preEventTextMapping(t, userStatus)}
     </Text>
   ) : null
 
