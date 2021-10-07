@@ -1,34 +1,43 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { ArrowBackIcon, ArrowForwardIcon, AutoRenewIcon, Flex, Grid, Text } from '@pancakeswap/uikit'
 import { getAddress } from '@ethersproject/address'
 import isEmpty from 'lodash/isEmpty'
 import { useAppDispatch } from 'state'
-import { useGetNftFilters, useGetNftTotalFilterResults, useNftsFromCollection } from 'state/nftMarket/hooks'
-import { Collection } from 'state/nftMarket/types'
-import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
+import {
+  useGetNftFilterCurrentPage,
+  useGetNftFilterLoadingState,
+  useGetNftFilters,
+  useGetNftTotalFilterResults,
+  useNftsFromCollection,
+} from 'state/nftMarket/hooks'
+import { Collection, NftFilterLoadingState } from 'state/nftMarket/types'
+import { fetchNftsFromCollections, setNftFilterCurrentPage } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
 import { Arrow, PageButtons } from '../../components/PaginationButtons'
+import ClearAllButton from './ClearAllButton'
 
 interface CollectionNftsProps {
   collection: Collection
+  scrollToTop: () => void
 }
 
 const REQUEST_SIZE = 100
 const MAX_ITEMS_PER_PAGE = 12
 
-const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
+const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, scrollToTop }) => {
   const dispatch = useAppDispatch()
   const scrollEl = useRef<HTMLDivElement>(null)
-  const [currentPage, setCurrentPage] = useState(1)
   const { t } = useTranslation()
 
   const { address, totalSupply: collectionTotalSupply } = collection
   const checksummedAddress = getAddress(address)
+  const currentPage = useGetNftFilterCurrentPage()
   const nftFilters = useGetNftFilters(checksummedAddress)
   const totalFilterResults = useGetNftTotalFilterResults()
   const nftsFromCollection = useNftsFromCollection(checksummedAddress)
+  const nftFilterLoadingState = useGetNftFilterLoadingState()
 
   const hasFilter = !isEmpty(nftFilters?.attributes)
   const totalSupply = hasFilter ? totalFilterResults : Number(collectionTotalSupply)
@@ -42,12 +51,6 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
   const nftsSlice = nftsFromCollection
     ? nftsFromCollection.slice(MAX_ITEMS_PER_PAGE * (currentPage - 1), MAX_ITEMS_PER_PAGE * currentPage)
     : []
-
-  const scrollToTop = (): void => {
-    scrollEl.current.scrollIntoView({
-      behavior: 'smooth',
-    })
-  }
 
   useEffect(() => {
     // First fetch
@@ -78,35 +81,44 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
     }
   }, [requestPage, currentPage, checksummedAddress, shouldFetchMoreNfts, dispatch])
 
-  if (!nftsSlice.length) {
+  if (nftFilterLoadingState === NftFilterLoadingState.LOADING) {
     return <GridPlaceholder />
   }
 
   return (
     <>
-      <Grid
-        ref={scrollEl}
-        gridGap="16px"
-        gridTemplateColumns={['1fr', null, 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
-        alignItems="start"
-      >
-        {nftsSlice.map((nft) => {
-          const currentAskPrice = nft.marketData?.isTradable ? parseFloat(nft.marketData.currentAskPrice) : undefined
-          return (
-            <CollectibleLinkCard
-              key={`${nft.tokenId}-${nft.collectionName}`}
-              nft={nft}
-              currentAskPrice={currentAskPrice}
-            />
-          )
-        })}
-      </Grid>
+      {nftsSlice.length > 0 ? (
+        <Grid
+          ref={scrollEl}
+          gridGap="16px"
+          gridTemplateColumns={['1fr', null, 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
+          alignItems="start"
+        >
+          {nftsSlice.map((nft) => {
+            const currentAskPrice = nft.marketData?.isTradable ? parseFloat(nft.marketData.currentAskPrice) : undefined
+            return (
+              <CollectibleLinkCard
+                key={`${nft.tokenId}-${nft.collectionName}`}
+                nft={nft}
+                currentAskPrice={currentAskPrice}
+              />
+            )
+          })}
+        </Grid>
+      ) : (
+        <Flex alignItems="center" justifyContent="center" py="40px" flexDirection="column">
+          <Text fontSize="20px" color="secondary" textAlign="center" fontWeight="bold" mb="8px">
+            {t('No items found')}
+          </Text>
+          <ClearAllButton variant="secondary" collectionAddress={address} />
+        </Flex>
+      )}
       {nftsFromCollection?.length > MAX_ITEMS_PER_PAGE && (
         <Flex mt="24px">
           <PageButtons>
             <Arrow
               onClick={() => {
-                setCurrentPage(isArrowBackDisabled ? currentPage : currentPage - 1)
+                dispatch(setNftFilterCurrentPage(isArrowBackDisabled ? currentPage : currentPage - 1))
               }}
             >
               <ArrowBackIcon
@@ -119,7 +131,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
               onClick={() => {
                 if (!isArrowForwardDisabled) {
                   scrollToTop()
-                  setCurrentPage(currentPage + 1)
+                  dispatch(setNftFilterCurrentPage(currentPage + 1))
                 }
               }}
             >

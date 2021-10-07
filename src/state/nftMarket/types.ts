@@ -17,6 +17,11 @@ export enum UserNftInitializationState {
   ERROR = 'ERROR',
 }
 
+export enum NftFilterLoadingState {
+  IDLE = 'IDLE',
+  LOADING = 'LOADING',
+}
+
 export type NftFilter = { attributes: Record<string, NftAttribute> }
 
 export interface State {
@@ -25,6 +30,8 @@ export interface State {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
     nftFilters: {
+      loadingState: NftFilterLoadingState
+      currentPage: number
       totalResults: number
       activeFilters: Record<string, NftFilter> // string is the collection address
     }
