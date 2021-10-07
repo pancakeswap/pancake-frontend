@@ -10,6 +10,7 @@ import { nftsBaseUrl } from 'views/Nft/market/constants'
 const Collectible = () => {
   const { t } = useTranslation()
   const collections = useGetCollections()
+
   return (
     <>
       <PageHeader>
@@ -31,6 +32,12 @@ const Collectible = () => {
             <tbody>
               {Object.keys(collections).map((key) => {
                 const collection = collections[key]
+                const volume = collection.totalVolumeBNB
+                  ? parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
+                      minimumFractionDigits: 3,
+                      maximumFractionDigits: 3,
+                    })
+                  : '0'
                 return (
                   <tr>
                     <Td>
@@ -43,7 +50,7 @@ const Collectible = () => {
                     </Td>
                     <Td>
                       <Flex alignItems="center">
-                        {collection.totalVolumeBNB}
+                        {volume}
                         <BnbUsdtPairTokenIcon ml="8px" />
                       </Flex>
                     </Td>

@@ -3,7 +3,7 @@ import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uiki
 import { Link } from 'react-router-dom'
 import { NftToken } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
-import { pancakeBunniesAddress, TMP_SEE_ALL_LINK } from 'views/Nft/market/constants'
+import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { CollectibleLinkCard } from '../components/CollectibleCard'
 import GridPlaceholder from '../components/GridPlaceholder'
 
@@ -42,7 +42,7 @@ const Newest: React.FC = () => {
         <Heading>Newest Arrivals</Heading>
         <Button
           as={Link}
-          to={TMP_SEE_ALL_LINK}
+          to={`${nftsBaseUrl}/collections/`}
           variant="secondary"
           scale="sm"
           endIcon={<ChevronRightIcon color="primary" />}

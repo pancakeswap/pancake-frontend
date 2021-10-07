@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, ChevronRightIcon, Flex, Grid, Heading, Text } from '@pancakeswap/uikit'
 import { Link } from 'react-router-dom'
 import { useGetCollections } from 'state/nftMarket/hooks'
-import { nftsBaseUrl, TMP_SEE_ALL_LINK } from 'views/Nft/market/constants'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useTranslation } from 'contexts/Localization'
 import { HotCollectionCard } from '../components/CollectibleCard'
 import { BNBAmountLabel } from '../components/CollectibleCard/styles'
@@ -19,7 +19,7 @@ const Collections = () => {
         </Heading>
         <Button
           as={Link}
-          to={TMP_SEE_ALL_LINK}
+          to={`${nftsBaseUrl}/collections/`}
           variant="secondary"
           scale="sm"
           endIcon={<ChevronRightIcon color="primary" width="24px" />}
@@ -44,22 +44,11 @@ const Collections = () => {
                   <Text fontSize="12px" color="textSubtle">
                     {t('Volume')}
                   </Text>
-                  <BNBAmountLabel amount={parseFloat(collection.totalVolumeBNB)} />
+                  <BNBAmountLabel amount={collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0} />
                 </Flex>
               </HotCollectionCard>
             )
           })}
-        {/* Remove when squad is added to collections API */}
-        <HotCollectionCard
-          disabled
-          bgSrc="/images/collections/pancake-squad-banner-sm.png"
-          avatarSrc="/images/collections/pancake-squad-avatar.png"
-          collectionName="Pancake Squad"
-        >
-          <Text color="textDisabled" fontSize="12px">
-            {t('Coming Soon')}
-          </Text>
-        </HotCollectionCard>
         <HotCollectionCard
           disabled
           bgSrc="/images/collections/no-collection-banner-sm.png"
