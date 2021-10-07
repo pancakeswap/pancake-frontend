@@ -1,5 +1,13 @@
 import React, { useEffect, useRef } from 'react'
-import { ArrowBackIcon, ArrowForwardIcon, AutoRenewIcon, Flex, Grid, Text } from '@pancakeswap/uikit'
+import {
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  AutoRenewIcon,
+  BunnyPlaceholderIcon,
+  Flex,
+  Grid,
+  Text,
+} from '@pancakeswap/uikit'
 import { getAddress } from '@ethersproject/address'
 import isEmpty from 'lodash/isEmpty'
 import { useAppDispatch } from 'state'
@@ -16,7 +24,6 @@ import { useTranslation } from 'contexts/Localization'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
 import { Arrow, PageButtons } from '../../components/PaginationButtons'
-import ClearAllButton from './ClearAllButton'
 
 interface CollectionNftsProps {
   collection: Collection
@@ -24,7 +31,7 @@ interface CollectionNftsProps {
 }
 
 const REQUEST_SIZE = 100
-const MAX_ITEMS_PER_PAGE = 12
+const MAX_ITEMS_PER_PAGE = 100
 
 const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, scrollToTop }) => {
   const dispatch = useAppDispatch()
@@ -106,11 +113,11 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection, scrollToTop
           })}
         </Grid>
       ) : (
-        <Flex alignItems="center" justifyContent="center" py="40px" flexDirection="column">
-          <Text fontSize="20px" color="secondary" textAlign="center" fontWeight="bold" mb="8px">
-            {t('No items found')}
+        <Flex alignItems="center" justifyContent="center" py="48px" flexDirection="column">
+          <BunnyPlaceholderIcon width="96px" mb="24px" />
+          <Text textAlign="center" fontWeight="bold" mb="8px">
+            {t('No NFTs found')}
           </Text>
-          <ClearAllButton variant="secondary" collectionAddress={address} />
         </Flex>
       )}
       {nftsFromCollection?.length > MAX_ITEMS_PER_PAGE && (
