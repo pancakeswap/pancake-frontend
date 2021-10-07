@@ -1399,7 +1399,7 @@
   "Total Tokens Locked": "Усього заблоковано токенів",
   "LP reward fees 24H": "Комісії в нагороду постачальникам ліквідності за 24 години",
   "LP reward fees 7D": "Комісії в нагороду постачальникам ліквідності за 7 днів",
-  "No pool has been created with this token yet. Create one": "Із цим токеном не створено жодних токенів. Створіть пул",
+  "No pool has been created with this token yet. Create one": "Із цим токеном не створено жодних пулів. Створіть пул.",
   "here.": "тут.",
   "Price Change": "Змінення ціни",
   "Page %page% of %maxPage%": "Сторінка %page% із %maxPage%",
@@ -1686,5 +1686,8 @@
   "starts in": "starts in",
   "Presale max purchased": "Presale max purchased",
   "end in": "end in",
-  "Insufficient Balance": "Insufficient Balance"
+  "Insufficient Balance": "Insufficient Balance",
+  "Bunnies": "Bunnies",
+  "Squad": "Squad",
+  "Highest price": "Highest price"
 }
