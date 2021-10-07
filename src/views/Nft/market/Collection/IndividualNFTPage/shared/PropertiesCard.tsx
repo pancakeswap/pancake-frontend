@@ -40,6 +40,12 @@ const SingleProperty: React.FC<{ title: string; value: string | number; rarity: 
 
 const PropertiesCard: React.FC<PropertiesCardProps> = ({ properties, rarity }) => {
   const { t } = useTranslation()
+  const overallRarity =
+    properties && properties.length > 0
+      ? properties.reduce((accum: number, property) => {
+          return accum + rarity[property.traitType]
+        }, 0) / properties.length
+      : Number.NaN
   const content = (
     <Box p="24px">
       {properties.map((property) => (
@@ -50,6 +56,17 @@ const PropertiesCard: React.FC<PropertiesCardProps> = ({ properties, rarity }) =
           rarity={rarity[property.traitType]}
         />
       ))}
+      {Number.isFinite(overallRarity) && (
+        <>
+          <hr />
+          <SingleProperty
+            key="Overall"
+            title={t('Overall Rareness')}
+            value={`${overallRarity.toFixed(2)}%`}
+            rarity={undefined}
+          />
+        </>
+      )}
     </Box>
   )
   return <ExpandableCard title={t('Properties')} icon={<NftIcon width="24px" height="24px" />} content={content} />
