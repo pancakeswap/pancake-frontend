@@ -58,7 +58,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
     if (!isPBCollection) {
       dispatch(
         fetchNftsFromCollections({
-          collectionAddress,
+          collectionAddress: isAddress(collectionAddress) || collectionAddress,
           page: 1,
           size: 100,
         }),
@@ -68,7 +68,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
 
   let nftsToShow = allPancakeBunnyNfts
     ? allPancakeBunnyNfts.filter((nft) => nft.name !== currentTokenName)
-    : collectionNfts?.filter((nft) => nft.name !== currentTokenName)
+    : collectionNfts?.filter((nft) => nft.name !== currentTokenName && nft.marketData?.isTradable)
 
   if (!nftsToShow || nftsToShow.length === 0) {
     return null
@@ -151,7 +151,10 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
           >
             {nftsToShow.map((nft) => (
               <SwiperSlide key={nft.tokenId}>
-                <CollectibleLinkCard nft={nft} />
+                <CollectibleLinkCard
+                  nft={nft}
+                  currentAskPrice={isPBCollection ? null : parseFloat(nft.marketData?.currentAskPrice)}
+                />
               </SwiperSlide>
             ))}
           </Swiper>
