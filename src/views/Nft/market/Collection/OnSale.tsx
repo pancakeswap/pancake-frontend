@@ -14,18 +14,24 @@ import { CollectibleLinkCard } from '../components/CollectibleCard'
 
 const REQUEST_SIZE = 100
 
+interface QueryParams {
+  orderDirection: 'asc' | 'desc'
+  orderBy: 'currentAskPrice' | 'updatedAt'
+}
+
 const OnSale = () => {
   const { collectionAddress } = useParams<{ collectionAddress: string }>()
   const [nfts, setNfts] = useState<NftToken[]>([])
-  const [sortBy, setSortBy] = useState<'asc' | 'desc'>('asc')
+  const [queryParams, setQueryParams] = useState<QueryParams>({ orderDirection: 'asc', orderBy: 'currentAskPrice' })
   const [isFetching, setIsFetching] = useState(false)
   const [skip, setSkip] = useState(0)
   const { t } = useTranslation()
   const collection = useGetCollection(collectionAddress)
 
   const sortByItems = [
-    { label: t('Lowest price'), value: 'asc' },
-    { label: t('Highest price'), value: 'desc' },
+    { label: t('Lowest price'), value: { orderDirection: 'asc', orderBy: 'currentAskPrice' } },
+    { label: t('Highest price'), value: { orderDirection: 'desc', orderBy: 'currentAskPrice' } },
+    { label: t('Recently listed'), value: { orderDirection: 'desc', orderBy: 'updatedAt' } },
   ]
 
   useEffect(() => {
@@ -52,8 +58,8 @@ const OnSale = () => {
       const subgraphRes = await getNftsMarketData(
         { collection: collectionAddress.toLowerCase(), isTradable: true },
         REQUEST_SIZE,
-        'currentAskPrice',
-        sortBy,
+        queryParams.orderBy,
+        queryParams.orderDirection,
         skip,
       )
       fetchApiData(subgraphRes)
@@ -61,11 +67,12 @@ const OnSale = () => {
 
     setIsFetching(true)
     fetchMarketData()
-  }, [collectionAddress, sortBy, skip])
+  }, [collectionAddress, queryParams, skip])
 
   const handleChange = (event: OptionProps) => {
     setNfts([])
-    setSortBy(event.value)
+    const { value } = event
+    setQueryParams({ orderDirection: value.orderDirection, orderBy: value.orderBy })
   }
 
   const handleLoadMore = () => {
