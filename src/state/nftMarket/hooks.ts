@@ -116,3 +116,11 @@ export const useGetNftTotalFilterResults = () => {
 export const useGetNftFilters = (collectionAddress: string) => {
   return useSelector((state: State) => state.nftMarket.data.nftFilters.activeFilters[collectionAddress])
 }
+
+export const useGetNftFilterLoadingState = () => {
+  return useSelector((state: State) => state.nftMarket.data.nftFilters.loadingState)
+}
+
+export const useGetNftFilterCurrentPage = () => {
+  return useSelector((state: State) => state.nftMarket.data.nftFilters.currentPage)
+}

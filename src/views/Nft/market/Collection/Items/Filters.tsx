@@ -1,20 +1,14 @@
 import React, { useEffect } from 'react'
-import { Flex, Button } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import { useAppDispatch } from 'state'
 import { useGetNftFilters } from 'state/nftMarket/hooks'
 import { Collection, NftAttribute } from 'state/nftMarket/types'
-import {
-  addAttributeFilter,
-  fetchNftsFromCollections,
-  filterNftsFromCollection,
-  removeAllFilters,
-  removeAttributeFilter,
-} from 'state/nftMarket/reducer'
+import { addAttributeFilter, filterNftsFromCollection, removeAttributeFilter } from 'state/nftMarket/reducer'
 import { Item, ListFilter } from 'components/Filters'
-import { useTranslation } from 'contexts/Localization'
 import useGetCollectionDistribution from '../../hooks/useGetCollectionDistribution'
+import ClearAllButton from './ClearAllButton'
 
 interface FiltersProps {
   collection: Collection
@@ -24,7 +18,6 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
   const { address } = collection
   const { data } = useGetCollectionDistribution(address)
   const dispatch = useAppDispatch()
-  const { t } = useTranslation()
 
   const nftFilters = useGetNftFilters(address)
   const attrsByType: Record<string, NftAttribute[]> = collection?.attributes?.reduce(
@@ -38,11 +31,6 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
 
   const handleApply = ({ attr }: Item) => {
     dispatch(addAttributeFilter({ collectionAddress: address, attr }))
-  }
-
-  const clearAll = () => {
-    dispatch(removeAllFilters(address))
-    dispatch(fetchNftsFromCollections({ collectionAddress: address, page: 1, size: 100 }))
   }
 
   useEffect(() => {
@@ -88,11 +76,7 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
           )
         })}
       </Flex>
-      {!isEmpty(nftFilters?.attributes) && (
-        <Button key="clear-all" variant="text" scale="sm" onClick={clearAll}>
-          {t('Clear All')}
-        </Button>
-      )}
+      {!isEmpty(nftFilters?.attributes) && <ClearAllButton collectionAddress={address} />}
     </Flex>
   )
 }
