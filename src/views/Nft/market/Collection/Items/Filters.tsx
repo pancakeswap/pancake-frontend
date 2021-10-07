@@ -89,7 +89,7 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
           />
         )
       })}
-      {!isEmpty(nftFilters?.attributes) && <ClearAllButton collectionAddress={address} />}
+      {!isEmpty(nftFilters?.attributes) && <ClearAllButton collectionAddress={address} mb="4px" />}
     </ScrollableFlexContainer>
   )
 }
