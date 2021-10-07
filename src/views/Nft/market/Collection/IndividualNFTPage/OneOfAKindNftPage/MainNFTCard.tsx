@@ -29,7 +29,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
   const [onEditProfileModal] = useModal(<EditProfileModal />, false)
 
   const ownerButtons = (
-    <Flex>
+    <Flex flexDirection={['column', 'column', 'row']}>
       <Button
         disabled={nftIsProfilePic}
         minWidth="168px"
