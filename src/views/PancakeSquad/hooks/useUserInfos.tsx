@@ -39,7 +39,7 @@ const useUserInfos = ({ account, refreshCounter, setCallback }) => {
             numberTicketsForGen0: currentNumberTicketsForGen0.toNumber(),
             numberTicketsUsedForGen0: currentNumberTicketsUsedForGen0.toNumber(),
             numberTicketsOfUser: currentNumberTicketsOfUser.toNumber(),
-            ticketsOfUser: currentTicketsOfUser[0],
+            ticketsOfUser: currentTicketsOfUser,
             numberTokensOfUser: currentNumberTokensOfUser.toNumber(),
           })
         }

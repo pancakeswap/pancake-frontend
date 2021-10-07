@@ -56,6 +56,7 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
         setTxHashMintingResult(receipt.transactionHash)
       }
     } catch (error) {
+      console.error(error)
       onDismiss()
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     } finally {
