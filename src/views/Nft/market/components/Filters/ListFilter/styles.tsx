@@ -23,11 +23,9 @@ interface ItemRowProps {
 export const ItemRow: React.FC<ItemRowProps> = ({ item, isSelected, onSelect }) => (
   <StyledItemRow alignItems="center" px="16px" py="8px" onClick={onSelect}>
     {item.image && <ItemImage src={item.image} height={48} width={48} mr="16px" />}
-    <Text style={{ flex: 1 }} px="16px">
-      {item.label}
-    </Text>
+    <Text style={{ flex: 1 }}>{item.label}</Text>
     {item.count !== undefined && (
-      <Text color="textSubtle" mr="4px">
+      <Text color="textSubtle" px="8px">
         {formatNumber(item.count, 0, 0)}
       </Text>
     )}

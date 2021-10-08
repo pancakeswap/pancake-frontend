@@ -12,7 +12,10 @@ import {
   useMatchBreakpoints,
   IconButton,
   CloseIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
 } from '@pancakeswap/uikit'
+import orderBy from 'lodash/orderBy'
 import { useAppDispatch } from 'state'
 import { filterNftsFromCollection } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
@@ -57,6 +60,7 @@ export const ListFilter: React.FC<ListFilterProps> = ({
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
+  const [orderDir, setOrderDir] = useState<'asc' | 'desc'>('asc')
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
   const [localSelectedItem, setLocalSelectedItem] = useState(selectedItem)
@@ -105,6 +109,10 @@ export const ListFilter: React.FC<ListFilterProps> = ({
 
   const handleItemSelect = (newItem: Item) => {
     setLocalSelectedItem(newItem)
+  }
+
+  const toggleOrderDir = () => {
+    setOrderDir(orderDir === 'asc' ? 'desc' : 'asc')
   }
 
   // Update local state if parent state changes
@@ -162,9 +170,24 @@ export const ListFilter: React.FC<ListFilterProps> = ({
                 />
               </InputGroup>
             </SearchWrapper>
+            <Flex alignItems="center" p="16px">
+              <Text style={{ flex: 1 }} fontSize="12px" color="secondary" fontWeight="bold" textTransform="uppercase">
+                {t('Name')}
+              </Text>
+              <Flex alignItems="center" style={{ cursor: 'pointer', userSelect: 'none' }} onClick={toggleOrderDir}>
+                <Text fontSize="12px" color="secondary" fontWeight="bold" textTransform="uppercase">
+                  {t('Count')}
+                </Text>
+                {orderDir === 'asc' ? (
+                  <ArrowUpIcon width="18px" color="secondary" />
+                ) : (
+                  <ArrowDownIcon width="18px" color="secondary" />
+                )}
+              </Flex>
+            </Flex>
             <Box height="240px" overflowY="auto">
               {filteredItems.length > 0 ? (
-                filteredItems.map((filteredItem) => {
+                orderBy(filteredItems, 'count', orderDir).map((filteredItem) => {
                   const handleSelect = () => handleItemSelect(filteredItem)
 
                   return (
