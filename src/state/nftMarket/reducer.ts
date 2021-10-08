@@ -296,9 +296,8 @@ export const NftMarket = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(filterNftsFromCollection.pending, (state, action) => {
-      const { collectionAddress } = action.meta.arg
-      state.data.nfts[collectionAddress] = []
+    builder.addCase(filterNftsFromCollection.pending, (state) => {
+      state.data.filters.loadingState = NftFilterLoadingState.LOADING
     })
     builder.addCase(filterNftsFromCollection.fulfilled, (state, action) => {
       const { collectionAddress, nftFilters } = action.meta.arg
