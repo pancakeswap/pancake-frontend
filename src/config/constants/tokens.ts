@@ -32,6 +32,14 @@ export const mainnetTokens = {
     'https://pancakeswap.finance/',
   ),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
+  beta: new Token(
+    MAINNET,
+    '0xBe1a001FE942f96Eea22bA08783140B9Dcc09D28',
+    18,
+    'BETA',
+    'Beta Finance',
+    'https://betafinance.org',
+  ),
   nft: new Token(MAINNET, '0x1fC9004eC7E5722891f5f38baE7678efCB11d34D', 6, 'NFT', 'APENFT', 'https://apenft.org'),
   stephero: new Token(
     MAINNET,
