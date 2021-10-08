@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
   getNftsFromCollectionApi,
-  getNftsFromCollectionSg,
   getNftsMarketData,
   getCollectionsApi,
   getCollectionsSg,
@@ -101,18 +100,20 @@ export const fetchNftsFromCollections = createAsyncThunk<
       // When user visits IndividualNFTPage required nfts will be fetched via bunny id
       return []
     }
-    const [nfts, nftsMarket] = await Promise.all([
-      getNftsFromCollectionApi(collectionAddress, size, page),
-      getNftsFromCollectionSg(collectionAddress, size, (page - 1) * size), // sg uses a skip value rather than page
-    ])
+
+    const nfts = await getNftsFromCollectionApi(collectionAddress, size, page)
 
     if (!nfts?.data) {
       return []
     }
 
-    return Object.keys(nfts.data).map((id) => {
+    const tokenIds = Object.values(nfts.data).map((nft) => nft.tokenId)
+    const nftsMarket = await getMarketDataForTokenIds(collectionAddress, tokenIds)
+
+    return tokenIds.map((id) => {
       const apiMetadata = nfts.data[id]
       const marketData = nftsMarket.find((nft) => nft.tokenId === id)
+
       return {
         tokenId: id,
         name: apiMetadata.name,
@@ -120,8 +121,8 @@ export const fetchNftsFromCollections = createAsyncThunk<
         collectionName: apiMetadata.collection.name,
         collectionAddress,
         image: apiMetadata.image,
-        marketData,
         attributes: apiMetadata.attributes,
+        marketData,
       }
     })
   } catch (error) {

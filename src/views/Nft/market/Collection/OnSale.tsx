@@ -102,15 +102,13 @@ const OnSale = () => {
                 alignItems="start"
               >
                 {nfts.map((nft) => {
-                  const currentAskPriceAsNumber = nft.marketData?.currentAskPrice
-                    ? parseFloat(nft.marketData.currentAskPrice)
-                    : 0
+                  const currentAskPriceAsNumber = nft.marketData && parseFloat(nft.marketData.currentAskPrice)
 
                   return (
                     <CollectibleLinkCard
                       key={`${nft.tokenId}-${nft.collectionName}`}
                       nft={nft}
-                      currentAskPrice={currentAskPriceAsNumber}
+                      currentAskPrice={currentAskPriceAsNumber > 0 ? currentAskPriceAsNumber : undefined}
                     />
                   )
                 })}

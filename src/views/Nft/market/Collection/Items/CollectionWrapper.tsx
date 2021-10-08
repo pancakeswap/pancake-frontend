@@ -1,5 +1,7 @@
-import React, { useRef } from 'react'
+import React from 'react'
+import isEmpty from 'lodash/isEmpty'
 import { Collection } from 'state/nftMarket/types'
+import { useGetNftFilters } from 'state/nftMarket/hooks'
 import Filters from './Filters'
 import CollectionNfts from './CollectionNfts'
 
@@ -8,19 +10,13 @@ interface CollectionWrapperProps {
 }
 
 const CollectionWrapper: React.FC<CollectionWrapperProps> = ({ collection }) => {
-  const scrollRef = useRef<HTMLDivElement>(null)
-
-  const scrollToTop = (): void => {
-    scrollRef.current.scrollIntoView({
-      behavior: 'smooth',
-    })
-  }
+  const nftFilters = useGetNftFilters(collection.address)
 
   return (
-    <div ref={scrollRef}>
+    <>
       <Filters collection={collection} />
-      <CollectionNfts collection={collection} scrollToTop={scrollToTop} />
-    </div>
+      {isEmpty(nftFilters?.attributes) ? <CollectionNfts collection={collection} /> : <div>Filtered</div>}
+    </>
   )
 }
 
