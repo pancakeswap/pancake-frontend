@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, ButtonProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { fetchNftsFromCollections, removeAllFilters } from 'state/nftMarket/reducer'
+import { removeAllFilters } from 'state/nftMarket/reducer'
 import { useGetNftFilterLoadingState } from 'state/nftMarket/hooks'
 import { NftFilterLoadingState } from 'state/nftMarket/types'
 
@@ -17,7 +17,6 @@ const ClearAllButton: React.FC<ClearAllButtonProps> = ({ collectionAddress, ...p
 
   const clearAll = () => {
     dispatch(removeAllFilters(collectionAddress))
-    dispatch(fetchNftsFromCollections({ collectionAddress, page: 1, size: 100 }))
   }
 
   return (

@@ -109,18 +109,10 @@ export const useHasGen0Nfts = (): boolean => {
   return userNfts.nfts.some((nft) => nft.attributes && Number(nft.attributes[0]?.value) <= MAX_GEN0_ID)
 }
 
-export const useGetNftTotalFilterResults = () => {
-  return useSelector((state: State) => state.nftMarket.data.nftFilters.totalResults)
-}
-
-export const useGetNftFilters = (collectionAddress: string) => {
-  return useSelector((state: State) => state.nftMarket.data.nftFilters.activeFilters[collectionAddress])
+export const useGetNftFilters = () => {
+  return useSelector((state: State) => state.nftMarket.data.filters.activeFilters)
 }
 
 export const useGetNftFilterLoadingState = () => {
-  return useSelector((state: State) => state.nftMarket.data.nftFilters.loadingState)
-}
-
-export const useGetNftFilterCurrentPage = () => {
-  return useSelector((state: State) => state.nftMarket.data.nftFilters.currentPage)
+  return useSelector((state: State) => state.nftMarket.data.filters.loadingState)
 }

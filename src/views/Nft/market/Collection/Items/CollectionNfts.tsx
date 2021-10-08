@@ -7,12 +7,11 @@ import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
+import { REQUEST_SIZE } from '../config'
 
 interface CollectionNftsProps {
   collection: Collection
 }
-
-const REQUEST_SIZE = 100
 
 const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
   const { totalSupply, address: collectionAddress } = collection
@@ -37,8 +36,8 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
     )
   }, [page, collectionAddress, dispatch])
 
-  if (!collectionNfts) {
-    return <GridPlaceholder />
+  if (!collectionNfts || collectionNfts?.length === 0) {
+    return <GridPlaceholder numItems={REQUEST_SIZE} />
   }
 
   return (

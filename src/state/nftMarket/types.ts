@@ -22,18 +22,14 @@ export enum NftFilterLoadingState {
   LOADING = 'LOADING',
 }
 
-export type NftFilter = { attributes: Record<string, NftAttribute> }
-
 export interface State {
   initializationState: NFTMarketInitializationState
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
-    nftFilters: {
+    filters: {
       loadingState: NftFilterLoadingState
-      currentPage: number
-      totalResults: number
-      activeFilters: Record<string, NftFilter> // string is the collection address
+      activeFilters: Record<string, NftAttribute> // string is the collection address
     }
     loadingState: {
       isUpdatingPancakeBunnies: boolean

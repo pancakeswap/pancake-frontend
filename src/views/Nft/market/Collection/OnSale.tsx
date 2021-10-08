@@ -11,8 +11,7 @@ import Select, { OptionProps } from 'components/Select/Select'
 import Header from './Header'
 import GridPlaceholder from '../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../components/CollectibleCard'
-
-const REQUEST_SIZE = 100
+import { REQUEST_SIZE } from './config'
 
 interface QueryParams {
   orderDirection: 'asc' | 'desc'
