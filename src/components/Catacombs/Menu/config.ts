@@ -1,5 +1,4 @@
 import { MenuEntry } from '@catacombs-libs/uikit'
-import { CatacombsRoutes } from './catacombs_routes'
 
 const config: MenuEntry[] = [
   {
@@ -10,22 +9,22 @@ const config: MenuEntry[] = [
   {
     label: 'Barracks',
     icon: 'PoolIcon',
-    href: '/catacombs/' + CatacombsRoutes.BARRACKS,
+    href: `/barracks`,
   },
   {
     label: 'Rug Roll',
     icon: 'FarmIcon',
-    href: '/catacombs/' + CatacombsRoutes.RUGROLL,
+    href: `/rugroll`,
   },
   {
     label: 'Data Lab',
     icon: 'FarmIcon',
-    href: '/catacombs/' + CatacombsRoutes.DATALAB,
+    href: `/datalab`,
   },
   {
     label: 'Black Market',
     icon: 'FarmIcon',
-    href: '/catacombs/' + CatacombsRoutes.BLACKMARKET,
+    href: `/blackmarket`,
   },
 ]
 

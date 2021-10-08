@@ -36,9 +36,11 @@ const Barracks: React.FC = () => {
     const { t } = useTranslation()
     console.log('in barracks =========================')
     return (
+      <Menu>
         <div>
             Barracks is working!
         </div>
+      </Menu>
     )
 }
 

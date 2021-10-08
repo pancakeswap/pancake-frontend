@@ -35,13 +35,13 @@ const StyledButton = styled.button`
 const BlackMarket: React.FC = () => {
   const { t } = useTranslation()
   return (
-      <>
+      <Menu>
         <Page>
           <div className='parent-div'>
             Black Market is working!
           </div>
         </Page>
-      </>
+      </Menu>
   )
 }
 

@@ -4,6 +4,7 @@ import { isMobile } from 'react-device-detect';
 import styled from 'styled-components'
 import CatacombsBackgroundDesktopSVG from '../../../../images/CatacombsMain-1920x1080px.svg'
 import CatacombsBackgroundMobileSVG from '../../../../images/CatacombsMain-414x720px.svg'
+import Menu from '../../../../components/Catacombs/Menu'
 
 const StyledDiv = styled.div`
     text-align: center;
@@ -88,6 +89,7 @@ const BlackMarketDiv = styled.div`
 const Home: React.FC = () => {
     const { t } = useTranslation()
     return (
+      <Menu>
         <StyledDiv>
             {isMobile ? <img src={CatacombsBackgroundMobileSVG} alt='catacombs-rug-zombie' /> :
                 <img src={CatacombsBackgroundDesktopSVG} alt='catacombs-rug-zombie' />
@@ -105,6 +107,7 @@ const Home: React.FC = () => {
                 <StyledButton>{t('BLACK MARKET')}</StyledButton>
             </BlackMarketDiv>
         </StyledDiv>
+      </Menu>
     )
 }
 

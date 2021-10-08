@@ -35,9 +35,11 @@ const StyledButton = styled.button`
 const DataLab: React.FC = () => {
     const { t } = useTranslation()
     return (
+      <Menu>
         <div>
             DataLab is working!
         </div>
+      </Menu>
     )
 }
 

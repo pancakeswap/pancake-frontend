@@ -34,10 +34,13 @@ const StyledButton = styled.button`
 
 const RugRoll: React.FC = () => {
     const { t } = useTranslation()
+    console.log("yeEAH")
     return (
+      <Menu>
         <div>
             RugRoll is working!
         </div>
+      </Menu>
     )
 }
 
