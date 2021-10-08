@@ -1886,5 +1886,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x5C8C8D560048F34E5f7f8ad71f2f81a89DBd273e.png"
+  },
+  {
+    "name": "Beta Finance",
+    "symbol": "BETA",
+    "address": "0xBe1a001FE942f96Eea22bA08783140B9Dcc09D28",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xBe1a001FE942f96Eea22bA08783140B9Dcc09D28.png"
   }
 ]

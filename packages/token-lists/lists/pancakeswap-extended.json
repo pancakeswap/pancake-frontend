@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-10-06T15:24:51.895Z",
+  "timestamp": "2021-10-08T08:11:35.213Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 27
+    "patch": 28
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -251,6 +251,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f.png"
+    },
+    {
+      "name": "Beta Finance",
+      "symbol": "BETA",
+      "address": "0xBe1a001FE942f96Eea22bA08783140B9Dcc09D28",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xBe1a001FE942f96Eea22bA08783140B9Dcc09D28.png"
     },
     {
       "name": "Beacon ETH",
