@@ -22,7 +22,7 @@ const MintText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus, numberTi
     <Flex flexDirection="column" mb="24px">
       <Flex>
         <Text fontSize="16px" color={lightColors.invertedContrast} mr="2px">
-          {t('Your Mint Tickets: ')}
+          {t('Your Claim Tickets: ')}
         </Text>
         <Text fontSize="16px" color={numberTicketsOfUser > 0 ? lightColors.warning : lightColors.failure} bold>
           {numberTicketsOfUser}
@@ -31,8 +31,8 @@ const MintText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus, numberTi
       {saleStatus === SaleStatusEnum.Claim && (isUserUnconnected || hasNoTicketOrToken) && (
         <Text mt="24px" fontSize="16px" color={lightColors.warning} bold>
           {isUserUnconnected
-            ? t('Redeem Mint Tickets to mint NFTs')
-            : t('Sorry, you can’t mint any NFTs! Better luck next time.')}
+            ? t('Redeem Tickets to claim NFTs')
+            : t('Sorry, you can’t claim any NFTs! Better luck next time.')}
         </Text>
       )}
     </Flex>
