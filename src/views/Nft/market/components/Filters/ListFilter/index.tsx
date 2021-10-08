@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 import {
   Box,
   Button,
@@ -9,9 +10,13 @@ import {
   InputGroup,
   SearchIcon,
   useMatchBreakpoints,
+  IconButton,
+  CloseIcon,
 } from '@pancakeswap/uikit'
+import { useAppDispatch } from 'state'
+import { filterNftsFromCollection } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
-import { useGetNftFilterLoadingState } from 'state/nftMarket/hooks'
+import { useGetNftFilterLoadingState, useGetNftFilters } from 'state/nftMarket/hooks'
 import { NftFilterLoadingState } from 'state/nftMarket/types'
 import FilterFooter from '../FilterFooter'
 import { ItemRow, SearchWrapper } from './styles'
@@ -21,11 +26,34 @@ interface ListFilterProps {
   title?: string
   selectedItem?: Item
   items: Item[]
+  collectionAddress: string
   onApply: (item: Item) => void
   onClear: () => void
 }
 
-export const ListFilter: React.FC<ListFilterProps> = ({ title, selectedItem, items, onApply, onClear }) => {
+const TriggerButton = styled(Button)<{ hasItem: boolean }>`
+  ${({ hasItem }) =>
+    hasItem &&
+    `  
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: 8px;
+  `}
+`
+
+const CloseButton = styled(IconButton)`
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+`
+
+export const ListFilter: React.FC<ListFilterProps> = ({
+  title,
+  selectedItem,
+  items,
+  collectionAddress,
+  onApply,
+  onClear,
+}) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -33,7 +61,10 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, selectedItem, ite
   const menuRef = useRef(null)
   const [localSelectedItem, setLocalSelectedItem] = useState(selectedItem)
   const { isMobile, isDesktop } = useMatchBreakpoints()
+  const nftFilters = useGetNftFilters()
   const nftFilterState = useGetNftFilterLoadingState()
+  const dispatch = useAppDispatch()
+
   const filteredItems =
     query && query.length > 1
       ? items.filter((item) => item.label.toLowerCase().indexOf(query.toLowerCase()) !== -1)
@@ -45,6 +76,19 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, selectedItem, ite
     setIsOpen(false)
 
     onClear()
+  }
+
+  const handleClearItem = () => {
+    const newFilters = { ...nftFilters }
+
+    delete newFilters[localSelectedItem.attr.traitType]
+
+    dispatch(
+      filterNftsFromCollection({
+        collectionAddress,
+        nftFilters: newFilters,
+      }),
+    )
   }
 
   const handleMenuClick = () => setIsOpen(!isOpen)
@@ -90,66 +134,77 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, selectedItem, ite
   }, [setIsOpen, wrapperRef, menuRef])
 
   return (
-    <Box ref={wrapperRef}>
-      <InlineMenu
-        component={
-          <Button
-            onClick={handleMenuClick}
-            variant={localSelectedItem ? 'subtle' : 'light'}
-            scale="sm"
-            mr="4px"
-            mb="4px"
-            disabled={nftFilterState === NftFilterLoadingState.LOADING}
-          >
-            {title}
-          </Button>
-        }
-        isOpen={isOpen}
-      >
-        <Box maxWidth="375px" ref={menuRef}>
-          <SearchWrapper hasHeader={!!title && !isMobile} alignItems="center" p="16px">
-            <InputGroup startIcon={<SearchIcon color="textSubtle" />}>
-              <Input
-                name="query"
-                placeholder={t('Search')}
-                onChange={handleChange}
-                value={query}
-                autoFocus={isDesktop}
-              />
-            </InputGroup>
-          </SearchWrapper>
-          <Box height="240px" overflowY="auto">
-            {filteredItems.length > 0 ? (
-              filteredItems.map((filteredItem) => {
-                const handleSelect = () => handleItemSelect(filteredItem)
+    <Flex alignItems="center" mr="4px" mb="4px">
+      <Box ref={wrapperRef}>
+        <InlineMenu
+          component={
+            <TriggerButton
+              onClick={handleMenuClick}
+              variant={localSelectedItem ? 'subtle' : 'light'}
+              scale="sm"
+              disabled={nftFilterState === NftFilterLoadingState.LOADING}
+              hasItem={!!localSelectedItem}
+            >
+              {title}
+            </TriggerButton>
+          }
+          isOpen={isOpen}
+        >
+          <Box maxWidth="375px" ref={menuRef}>
+            <SearchWrapper hasHeader={!!title && !isMobile} alignItems="center" p="16px">
+              <InputGroup startIcon={<SearchIcon color="textSubtle" />}>
+                <Input
+                  name="query"
+                  placeholder={t('Search')}
+                  onChange={handleChange}
+                  value={query}
+                  autoFocus={isDesktop}
+                />
+              </InputGroup>
+            </SearchWrapper>
+            <Box height="240px" overflowY="auto">
+              {filteredItems.length > 0 ? (
+                filteredItems.map((filteredItem) => {
+                  const handleSelect = () => handleItemSelect(filteredItem)
 
-                return (
-                  <ItemRow
-                    key={filteredItem.label}
-                    item={filteredItem}
-                    isSelected={localSelectedItem && localSelectedItem.label === filteredItem.label}
-                    onSelect={handleSelect}
-                  />
-                )
-              })
-            ) : (
-              <Flex alignItems="center" justifyContent="center" height="230px">
-                <Text color="textDisabled" textAlign="center">
-                  {t('No results found')}
-                </Text>
-              </Flex>
-            )}
+                  return (
+                    <ItemRow
+                      key={filteredItem.label}
+                      item={filteredItem}
+                      isSelected={localSelectedItem && localSelectedItem.label === filteredItem.label}
+                      onSelect={handleSelect}
+                    />
+                  )
+                })
+              ) : (
+                <Flex alignItems="center" justifyContent="center" height="230px">
+                  <Text color="textDisabled" textAlign="center">
+                    {t('No results found')}
+                  </Text>
+                </Flex>
+              )}
+            </Box>
+            <FilterFooter>
+              <Button variant="secondary" onClick={handleClear}>
+                {localSelectedItem ? t('Clear') : t('Close')}
+              </Button>
+              <Button onClick={handleApply} disabled={localSelectedItem === null}>
+                {t('Apply')}
+              </Button>
+            </FilterFooter>
           </Box>
-          <FilterFooter>
-            <Button variant="secondary" onClick={handleClear}>
-              {localSelectedItem ? t('Clear') : t('Close')}
-            </Button>
-            <Button onClick={handleApply} disabled={localSelectedItem === null}>
-              {t('Apply')}
-            </Button>
-          </FilterFooter>
-        </Box>
-      </InlineMenu>
-    </Box>
+        </InlineMenu>
+      </Box>
+      {localSelectedItem && (
+        <CloseButton
+          variant={localSelectedItem ? 'subtle' : 'light'}
+          scale="sm"
+          onClick={handleClearItem}
+          disabled={nftFilterState === NftFilterLoadingState.LOADING}
+        >
+          <CloseIcon color="currentColor" width="18px" />
+        </CloseButton>
+      )}
+    </Flex>
   )
 }

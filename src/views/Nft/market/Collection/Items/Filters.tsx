@@ -83,6 +83,7 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
             title={capitalize(traitType)}
             selectedItem={selectedItem}
             items={items}
+            collectionAddress={address}
             onApply={handleApply}
             onClear={handleClear}
           />

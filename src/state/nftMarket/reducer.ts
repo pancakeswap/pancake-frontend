@@ -298,7 +298,6 @@ export const NftMarket = createSlice({
   extraReducers: (builder) => {
     builder.addCase(filterNftsFromCollection.pending, (state, action) => {
       const { collectionAddress } = action.meta.arg
-      state.data.filters.loadingState = NftFilterLoadingState.LOADING
       state.data.nfts[collectionAddress] = []
     })
     builder.addCase(filterNftsFromCollection.fulfilled, (state, action) => {
@@ -307,13 +306,11 @@ export const NftMarket = createSlice({
       state.data.filters = {
         ...state.data.filters,
         loadingState: NftFilterLoadingState.IDLE,
-        activeFilters: {
-          ...state.data.filters.activeFilters,
-          ...nftFilters,
-        },
+        activeFilters: nftFilters,
       }
       state.data.nfts[collectionAddress] = action.payload
     })
+
     builder.addCase(fetchCollection.fulfilled, (state, action) => {
       state.data.collections = { ...state.data.collections, ...action.payload }
     })
