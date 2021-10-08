@@ -271,11 +271,11 @@ export const useTokenPriceData = (
 ): PriceChartEntry[] | undefined => {
   const dispatch = useDispatch<AppDispatch>()
   const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
-  const priceData = token.priceData[interval]
+  const priceData = token?.priceData[interval]
   const [error, setError] = useState(false)
 
   // construct timestamps and check if we need to fetch more data
-  const oldestTimestampFetched = token.priceData.oldestFetchedTimestamp
+  const oldestTimestampFetched = token?.priceData.oldestFetchedTimestamp
   const utcCurrentTime = getUnixTime(new Date()) * 1000
   const startTimestamp = getUnixTime(startOfHour(sub(utcCurrentTime, timeWindow)))
 
