@@ -34,7 +34,7 @@ export const mainnetTokens = {
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
   beta: new Token(
     MAINNET,
-    '0xbe1a001fe942f96eea22ba08783140b9dcc09d28',
+    '0xBe1a001FE942f96Eea22bA08783140B9Dcc09D28',
     18,
     'BETA',
     'Beta Finance',
