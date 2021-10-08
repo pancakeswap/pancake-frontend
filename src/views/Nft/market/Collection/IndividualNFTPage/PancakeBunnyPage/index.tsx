@@ -111,14 +111,14 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
 
   const getBunnyIdCount = () => {
     if (distributionData && !isFetchingDistribution) {
-      return sum(Object.values(distributionData))
+      return distributionData[bunnyId]
     }
     return null
   }
 
   const getBunnyIdRarity = () => {
     if (distributionData && !isFetchingDistribution) {
-      const total = getBunnyIdCount()
+      const total = sum(Object.values(distributionData))
       return (distributionData[bunnyId] / total) * 100
     }
     return null

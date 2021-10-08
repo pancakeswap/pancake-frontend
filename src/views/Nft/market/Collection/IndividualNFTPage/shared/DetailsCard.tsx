@@ -25,7 +25,7 @@ const LongTextContainer = styled(Text)`
 const DetailsCard: React.FC<DetailsCardProps> = ({ contractAddress, ipfsJson, count, rarity }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  const ipfsLink = uriToHttp(ipfsJson)[0]
+  const ipfsLink = ipfsJson ? uriToHttp(ipfsJson)[0] : null
   const content = (
     <Box p="24px">
       <Flex justifyContent="space-between" alignItems="center" mb="16px">
