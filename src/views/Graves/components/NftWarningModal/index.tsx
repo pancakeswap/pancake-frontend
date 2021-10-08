@@ -4,7 +4,7 @@ import ModalActions from 'components/ModalActions'
 import styled from 'styled-components'
 
 
-const NftWarningModal: React.FC<{ onDismiss?: () => void, onClick: any }> = ({ onDismiss, onClick }) => {
+const NftWarningModal: React.FC<{ onDismiss?: () => void, onClick: any, approved: boolean }> = ({ onDismiss, onClick, approved }) => {
 
   const action = (onDismissAction) => {
     onDismissAction()
@@ -18,7 +18,7 @@ const NftWarningModal: React.FC<{ onDismiss?: () => void, onClick: any }> = ({ o
       </TicketsList>
       <ModalActions>
         <Button width="100%" onClick={() => {action(onDismiss)}}>
-          I understand. (Queues 2 transactions)
+          I understand. {approved ? null : "Queues 2 transactions"}
         </Button>
       </ModalActions>
     </Modal>
