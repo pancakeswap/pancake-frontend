@@ -51,13 +51,23 @@ export const getUserStatus = ({ account, hasActiveProfile, hasGen0 }: getUserSta
   return UserStatusEnum.UNCONNECTED
 }
 
-const eventTextMapping: Record<SaleStatusEnum, string> = {
-  [SaleStatusEnum.Pending]: 'Get Ready',
-  [SaleStatusEnum.Premint]: 'Get Ready',
-  [SaleStatusEnum.Presale]: 'Presale',
-  [SaleStatusEnum.Sale]: 'Public Sale',
-  [SaleStatusEnum.DrawingRandomness]: 'Public Sale',
-  [SaleStatusEnum.Claim]: 'Claim Phase',
+const eventTextMapping = (t: ContextApi['t'], saleStatus: SaleStatusEnum) => {
+  switch (saleStatus) {
+    case SaleStatusEnum.Pending:
+      return t('Get Ready')
+    case SaleStatusEnum.Premint:
+      return t('Get Ready')
+    case SaleStatusEnum.Presale:
+      return t('Presale')
+    case SaleStatusEnum.Sale:
+      return t('Public Sale')
+    case SaleStatusEnum.DrawingRandomness:
+      return t('Public Sale')
+    case SaleStatusEnum.Claim:
+      return t('Claim Phase')
+    default:
+      return ''
+  }
 }
 
 export const getEventStepStatus = ({
@@ -91,31 +101,31 @@ const getTimePeriodFromTimeStamp = ({
 export const getEventText = ({ eventStatus, saleStatus, startTimestamp, t }: getEventTextType): string => {
   const eventStepStatus = getEventStepStatus({ eventStatus, saleStatus, startTimestamp })
   if (eventStepStatus === 'live' && saleStatus === SaleStatusEnum.DrawingRandomness)
-    return `${t(eventTextMapping[eventStatus[0]])}: ${t('Sold Out!')}`
+    return `${eventTextMapping(t, eventStatus[0])}: ${t('Sold Out!')}`
   if (eventStepStatus === 'live' && saleStatus > 0) {
     if (saleStatus === SaleStatusEnum.Presale) {
-      return `${t(eventTextMapping[eventStatus[0]])}: ${t('end in')} ${getTimePeriodFromTimeStamp({
+      return `${eventTextMapping(t, eventStatus[0])}: ${t('end in')} ${getTimePeriodFromTimeStamp({
         startTimestamp,
         timestampOffsetInSeconds: FIFTEEN_MINUTES,
       })}`
     }
 
     if (saleStatus === SaleStatusEnum.DrawingRandomness) {
-      return `${t(eventTextMapping[eventStatus[0]])}: ${t('Sold Out!')}`
+      return `${eventTextMapping(t, eventStatus[0])}: ${t('Sold Out!')}`
     }
 
     if (saleStatus > SaleStatusEnum.Premint) {
-      return `${t(eventTextMapping[eventStatus[0]])}: ${t('Now Live')}`
+      return `${eventTextMapping(t, eventStatus[0])}: ${t('Now Live')}`
     }
   }
   if (eventStepStatus === 'past' && eventStatus[0] === SaleStatusEnum.Presale) {
-    return `${t(eventTextMapping[eventStatus[0]])}: Closed`
+    return `${eventTextMapping(t, eventStatus[0])}: Closed`
   }
   if (eventStepStatus === 'upcoming') {
-    return `${t(eventTextMapping[eventStatus[0]])}: `
+    return `${eventTextMapping(t, eventStatus[0])}: `
   }
 
-  return t(eventTextMapping[eventStatus[0]])
+  return eventTextMapping(t, eventStatus[0])
 }
 
 export const getAltText = ({ startTimestamp, eventStatus, saleStatus, t }: getAltTextType): string | undefined => {

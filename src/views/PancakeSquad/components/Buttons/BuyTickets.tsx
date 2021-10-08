@@ -120,7 +120,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
       isLoading={isApproving}
       headerBackground={theme.colors.gradients.cardHeader}
       txHash={txHashEnablingResult}
-      loadingText={t('Please enable CAKE spending in yout wallet')}
+      loadingText={t('Please enable CAKE spending in your wallet')}
       loadingButtonLabel={t('Enabling...')}
       successButtonLabel={t('Close')}
       onConfirmClose={onConfirmClose}
@@ -173,7 +173,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
         </Button>
       )}
       {buyButton === BuyButtonsEnum.READY && (
-        <ReadyText text={t(isGen0User ? 'Ready for Pre-Sale!' : 'Ready for Public Sale!')} />
+        <ReadyText text={isGen0User ? t('Ready for Pre-Sale!') : t('Ready for Public Sale!')} />
       )}
       {buyButton === BuyButtonsEnum.BUY && (
         <Button width="100%" onClick={onPresentBuyTicketsModal} disabled={!canBuyTickets}>

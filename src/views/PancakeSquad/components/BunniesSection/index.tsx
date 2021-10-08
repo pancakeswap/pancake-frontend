@@ -14,10 +14,8 @@ const BunniesSection = () => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
 
-  const { headingText, bodyText, subHeadingText, primaryButton, images } = bunniesConfig
+  const { headingText, bodyText, subHeadingText, primaryButton, images } = bunniesConfig(t)
 
-  const headingTranslatedText = t(headingText)
-  const subHeadingTranslatedText = t(subHeadingText)
   return (
     <StyledBunnySectionContainer justifyContent={['flex-start', null, null, 'center']}>
       <LandingBodyWrapper
@@ -32,8 +30,8 @@ const BunniesSection = () => {
           alignSelf={['flex-start', null, null, 'center']}
           width={['100%', null, null, '50%']}
         >
-          <ColoredWordHeading text={headingTranslatedText} color="text" mb="0" />
-          <ColoredWordHeading text={subHeadingTranslatedText} color="text" firstColor="failure" />
+          <ColoredWordHeading text={headingText} color="text" mb="0" />
+          <ColoredWordHeading text={subHeadingText} color="text" firstColor="failure" />
           {bodyText.map((text) => (
             <Text key={text} color="textSubtle" mb="20px">
               {text}
