@@ -53,7 +53,7 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
           userNft.collectionAddress.toLowerCase() === collectionAddress.toLowerCase() && userNft.tokenId === tokenId,
       )
       if (nftOwnedByConnectedUser) {
-        // If user is the ownerwe already have all needed data available
+        // If user is the owner we already have all needed data available
         setNft(nftOwnedByConnectedUser)
         setIsOwnNft(true)
       } else {

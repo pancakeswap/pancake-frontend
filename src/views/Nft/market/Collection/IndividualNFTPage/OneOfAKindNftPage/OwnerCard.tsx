@@ -26,7 +26,7 @@ const OwnerRow = styled(Grid)`
   grid-row-gap: 16px;
   margin-top: 16px;
   margin-bottom: 8px;
-  align-itmes: center;
+  align-items: center;
 `
 
 interface OwnerCardProps {

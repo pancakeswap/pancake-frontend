@@ -18,7 +18,6 @@ const OwnersTableRow = styled(Grid)`
   grid-template-columns: 2fr 2fr 1fr;
   grid-row-gap: 16px;
   margin-top: 16px;
-  align-itmes: center;
   & > div {
     padding-bottom: 16px;
     border-bottom: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};

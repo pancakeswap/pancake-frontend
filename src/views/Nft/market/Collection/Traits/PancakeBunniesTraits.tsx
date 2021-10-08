@@ -67,7 +67,7 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
   return (
     <>
       {tokenApiResponse ? (
-        <CollapsibleCard title="Bunny Id">
+        <CollapsibleCard title={t('Bunny Id')}>
           <TableWrapper>
             <Table>
               <thead>
