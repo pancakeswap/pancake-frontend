@@ -147,3 +147,10 @@ export const updateNftUserInfo = (id: number, userInfo: NftUserInfo) => ({
     userInfo,
   },
 })
+
+export const updateBnbBalance = (bnbBalance: BigNumber) => ({
+  type: actions.UPDATE_BNB_BALANCE,
+  payload: {
+    bnbBalance,
+  },
+})

@@ -18,7 +18,7 @@ import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import Graves from './views/Graves'
 import * as fetch from './redux/fetch'
-import Predictions from './views/Predictions'
+import Mausoleum from './views/Mausoleum'
 import PredictionsHome from './views/PredictionsHome'
 import SpawningPools from './views/SpawningPools'
 import Graveyard from './views/Graveyard'
@@ -81,7 +81,7 @@ const App: React.FC = () => {
             <Route exact path={routes.TOMBS}><Tombs /></Route>
             <Route exact path={routes.SPAWNING_POOLS}><SpawningPools /></Route>
             <Route exact path={routes.MAUSOLEUM}><PredictionsHome /></Route>
-            <Route exact path={routes.AUCTION}><Predictions /></Route>
+            <Route exact path={routes.AUCTION}><Mausoleum /></Route>
             <Route exact path={routes.GRAVEYARD}><Graveyard /></Route>
             <Route exact path={routes.PROFILE}><Profile /></Route>
           </Menu>

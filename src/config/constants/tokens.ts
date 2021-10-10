@@ -93,6 +93,15 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://fairmoon.org/',
   },
+  bonfire: {
+    symbol: 'BONFIRE',
+    address: {
+      56: '0x5e90253fbae4dab78aa351f4e6fed08a64ab5590',
+      97: '',
+    },
+    decimals: 9,
+    projectLink: 'https://www.bonfiretoken.co/',
+  },
   u92: {
     symbol: 'U92',
     address: {
@@ -245,6 +254,15 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://bingus.io/',
   },
+  fins: {
+    symbol: 'FINS',
+    address: {
+      56: '0x1b219aca875f8c74c33cff9ff98f3a9b62fcbff5',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://autoshark.finance/',
+  },
   horde: {
     symbol: 'HORDE',
     address: {
@@ -289,6 +307,15 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://octaplex.io/',
+  },
+  fcf: {
+    symbol: 'FCF',
+    address: {
+      56: '0x4673f018cc6d401AAD0402BdBf2abcBF43dd69F3',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://frenchconnection.finance/',
   },
   txl: {
     symbol: 'TXL',

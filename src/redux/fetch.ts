@@ -2,7 +2,7 @@ import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
 import {
   getBep20Contract,
-  getDrFrankensteinContract, getErc721Contract, getNftOwnership,
+  getDrFrankensteinContract, getErc721Contract,
   getPancakePair,
   getZombieContract,
 } from '../utils/contractHelpers'
@@ -26,12 +26,12 @@ import {
   updateAuctionInfo,
   updateAuctionUserInfo,
   updateNftUserInfo,
-  updateDrFrankensteinTotalAllocPoint,
+  updateDrFrankensteinTotalAllocPoint, updateBnbBalance,
 } from './actions'
 import {
   getAddress,
   getDrFrankensteinAddress,
-  getMausoleumAddress, getNftOwnershipAddress,
+  getMausoleumAddress,
   getSpawningPoolAddress,
 } from '../utils/addressHelpers'
 import tombs from './tombs'
@@ -40,10 +40,11 @@ import spawningPoolAbi from '../config/abi/spawningPool.json'
 import drFrankensteinAbi from '../config/abi/drFrankenstein.json'
 import pancakePairAbi from '../config/abi/pancakePairAbi.json'
 import mausoleumAbi from '../config/abi/mausoleum.json'
-import nftOwnershipAbi from '../config/abi/nftOwnership.json'
+import mausoleumV3Abi from '../config/abi/mausoleumV3.json'
 
 import { BIG_ZERO } from '../utils/bigNumber'
 import { account, auctionById, zmbeBnbTomb } from './get'
+import web3 from '../utils/web3'
 
 // eslint-disable-next-line import/prefer-default-export
 export const initialData = (accountAddress: string, multi: any, setZombiePrice?: any) => {
@@ -68,6 +69,10 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
   nfts()
 
   if (accountAddress) {
+    web3.eth.getBalance(accountAddress).then(res => {
+      store.dispatch(updateBnbBalance(new BigNumber(res)))
+    })
+
     zombie.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
       .then(res => {
         store.dispatch(updateZombieAllowance(new BigNumber(res)))
@@ -168,7 +173,7 @@ export const initialTombData = (multi: any, updatePoolObj?: { update: number, se
       t.pid,
       multi,
       updatePoolObj ? { update: updatePoolObj.update + index, setUpdate: updatePoolObj.setUpdate } : undefined,
-      updateUserObj ? { update: updateUserObj.update + index, setUpdate: updateUserObj.setUpdate } : undefined
+      updateUserObj ? { update: updateUserObj.update + index, setUpdate: updateUserObj.setUpdate } : undefined,
     )
     index++
   })
@@ -334,24 +339,28 @@ export const auction = (
   everyUpdateObj?: { update: boolean, setUpdate: any },
 ) => {
   const { aid, version } = auctionById(id)
-
+  const v3 = version === 'v3'
   if (account()) {
     mausoleum.methods.bidsLength(aid).call()
       .then(bidsLengthRes => {
         const inputs = [
           { target: getMausoleumAddress(version), function: 'userInfo', args: [aid, account()] },
-          { target: getMausoleumAddress(version), function: 'unlockFeeInBnb', args: [aid] },
+          { target: getMausoleumAddress(version), function: 'auctionInfo', args: [aid] },
         ]
+        if (!v3) {
+          inputs.push({ target: getMausoleumAddress(version), function: 'unlockFeeInBnb', args: [aid] })
+        }
         for (let x = parseInt(bidsLengthRes) - 5; x <= parseInt(bidsLengthRes); x++) {
           if (x - 1 >= 0) {
             inputs.push({ target: getMausoleumAddress(version), function: 'bidInfo', args: [aid, x - 1] })
           }
         }
-        multi.multiCall(mausoleumAbi, inputs)
+        multi.multiCall(version === 'v3' ? mausoleumV3Abi : mausoleumAbi, inputs)
           .then(res => {
             const start = parseInt(bidsLengthRes) - 6
-            let index = start < -1 ? -1 : parseInt(bidsLengthRes) - 6
-            const bids = res[1].slice(2, res[1].length).map(bid => {
+            let index = start < -1 ? 0 : parseInt(bidsLengthRes) - 6
+
+            const bids = res[1].slice((v3 ? 2 : 3), res[1].length).map(bid => {
               index++
               return {
                 id: index,
@@ -361,12 +370,15 @@ export const auction = (
             })
 
             const userInfoRes = res[1][0]
+            const auctionInfoRes = v3 ? res[1][1] : res[1][2]
             store.dispatch(updateAuctionInfo(
               id,
               {
-                lastBidId: parseInt(bidsLengthRes) - 1,
+                lastBidId: parseInt(bidsLengthRes),
                 bids,
-                unlockFeeInBnb: new BigNumber(res[1][1].toString()),
+                endDate: auctionInfoRes.endDate.toNumber(),
+                finalized: auctionInfoRes.finalized,
+                unlockFeeInBnb: v3 ? BIG_ZERO : new BigNumber(res[1][1].toString()),
               },
             ))
             store.dispatch(updateAuctionUserInfo(
@@ -378,6 +390,9 @@ export const auction = (
             ))
             if (updateUserObj && !updateUserObj.update) {
               updateUserObj.setUpdate(!updateUserObj.update)
+            }
+            if (everyUpdateObj) {
+              everyUpdateObj.setUpdate(!everyUpdateObj.update)
             }
           })
           .catch(() => {
@@ -393,11 +408,14 @@ export const auction = (
             inputs.push({ target: getMausoleumAddress(version), function: 'bidInfo', args: [aid, x - 1] })
           }
         }
+
         multi.multiCall(mausoleumAbi, inputs)
           .then(res => {
+            const auctionInfoRes = v3 ? res[1][1] : res[1][2]
+
             const start = parseInt(bidsLengthRes) - 6
-            let index = start < -1 ? -1 : parseInt(bidsLengthRes) - 6
-            const bids = res[1].slice(1, res[1].length).map(bid => {
+            let index = start < -1 ? 0 : parseInt(bidsLengthRes) - 6
+            const bids = res[1].slice((v3 ? 2 : 3), res[1].length).map(bid => {
               index++
               return {
                 id: index,
@@ -409,17 +427,22 @@ export const auction = (
             store.dispatch(updateAuctionInfo(
               id,
               {
-                lastBidId: parseInt(bidsLengthRes) - 1,
+                lastBidId: parseInt(bidsLengthRes),
                 bids,
-                unlockFeeInBnb: new BigNumber(res[1][0].toString()),
+                endDate: auctionInfoRes.endDate.toNumber(),
+                finalized: auctionInfoRes.finalized,
+                unlockFeeInBnb: v3 ? BIG_ZERO : new BigNumber(res[1][1].toString()),
               },
             ))
             if (updateAuctionObj && !updateAuctionObj.update) {
               updateAuctionObj.setUpdate(!updateAuctionObj.update)
             }
+            if (everyUpdateObj) {
+              everyUpdateObj.setUpdate(!everyUpdateObj.update)
+            }
           })
-          .catch(() => {
-            console.log('multicall failed')
+          .catch((res) => {
+            console.log(res)
           })
       })
   }
@@ -448,14 +471,14 @@ export const nftUserInfo = (contract: any, updateUserObj: { update: boolean, set
           store.dispatch(updateNftUserInfo(
             nft.id,
             {
-              ownedIds: res[index]
-            }
+              ownedIds: res[index],
+            },
           ))
         })
         if (updateUserObj && !updateUserObj.update) {
           updateUserObj.setUpdate(!updateUserObj.update)
         }
-        if (updateEveryObj ) {
+        if (updateEveryObj) {
           updateEveryObj.setUpdate(!updateEveryObj.update)
         }
       })
@@ -466,17 +489,6 @@ export const nftUserInfo = (contract: any, updateUserObj: { update: boolean, set
 }
 
 const zombiePriceBnb = (setZombiePrice?: any) => {
-  getPancakePair(getAddress(zmbeBnbTomb().lpAddress)).methods.getReserves().call()
-    .then(res => {
-      const price = new BigNumber(res._reserve1).div(res._reserve0)
-      store.dispatch(updateZombiePriceBnb(price))
-      if (setZombiePrice) {
-        setZombiePrice(price)
-      }
-    })
-}
-
-const mainstPriceBnb = (setZombiePrice?: any) => {
   getPancakePair(getAddress(zmbeBnbTomb().lpAddress)).methods.getReserves().call()
     .then(res => {
       const price = new BigNumber(res._reserve1).div(res._reserve0)

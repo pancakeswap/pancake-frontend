@@ -1,6 +1,14 @@
 import artists from '../config/constants/artists'
 import { Auction } from './types'
 import { BIG_ZERO } from '../utils/bigNumber'
+import tokens from '../config/constants/tokens'
+
+const DEFAULT_AUCTION_INFO = {
+  lastBidId: 0,
+  bids: [],
+  endDate: 0,
+  finalized: false
+}
 
 const auctions: Auction[] = [
   {
@@ -24,11 +32,7 @@ const auctions: Auction[] = [
       bid: BIG_ZERO,
       paidUnlockFee: false
     },
-    auctionInfo: {
-      lastBidId: 0,
-      bids: [],
-      unlockFeeInBnb: BIG_ZERO
-    }
+    auctionInfo: { ...DEFAULT_AUCTION_INFO }
   },
   {
     id: 1,
@@ -51,11 +55,31 @@ const auctions: Auction[] = [
       bid: BIG_ZERO,
       paidUnlockFee: false,
     },
-    auctionInfo: {
-      lastBidId: 0,
-      bids: [],
-      unlockFeeInBnb: BIG_ZERO
-    }
+    auctionInfo: { ...DEFAULT_AUCTION_INFO }
+  },
+  {
+    id: 2,
+    aid: 0,
+    prize: "Trust Us",
+    prizeSymbol: "TRUST",
+    path: 'https://storage.googleapis.com/rug-zombie/Trust%20Us.jpeg',
+    prizeDescription: 'Or don\'t, we will just zombie on.',
+    isFinished: true,
+    artist: { ...artists.jussjoshinduh },
+    startingBid: 0.05,
+    bt: 'BNB',
+    version: 'v3',
+    end: 1633319999,
+    additionalDetails: [
+      {
+        name: 'Learn what the RugZombie Team accomplished during the Trust Us Campaign',
+        url: "https://rugzombie.gitbook.io/docs/security-and-team-information/basic-team-security-information/trust-us-campaign",
+      },
+    ],
+    userInfo: {
+      bid: BIG_ZERO,
+    },
+    auctionInfo: { ...DEFAULT_AUCTION_INFO }
   }
 ]
 

@@ -25,7 +25,11 @@ import {
   getDrFrankensteinAddress,
   getMausoleumAddress,
   getSpawningPoolAddress,
-  getNftConverterAddress, getMausoleumV2Address, getNftOwnershipAddress, getZombieBalanceCheckerAddress,
+  getNftConverterAddress,
+  getMausoleumV2Address,
+  getNftOwnershipAddress,
+  getZombieBalanceCheckerAddress,
+  getCatacombsAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -53,10 +57,12 @@ import predictionsAbi from 'config/abi/predictions.json'
 import pancakePairAbi from 'config/abi/pancakePairAbi.json'
 import drFrankensteinAbi from 'config/abi/drFrankenstein.json'
 import mausoleumAbi from 'config/abi/mausoleum.json'
+import mausoleumV3Abi from 'config/abi/mausoleumV3.json'
 import spawningPoolAbi from 'config/abi/spawningPool.json'
 import nftConverterAbi from 'config/abi/nftGraveTokenConverter.json'
 import nftOwnershipAbi from 'config/abi/nftOwnership.json'
 import zombieBalanceCheckerAbi from 'config/abi/zombieBalanceChecker.json'
+import catacombsAbi from 'config/abi/catacombs.json'
 
 export const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? web3NoAccount
@@ -128,7 +134,7 @@ export const getDrFrankensteinContract = (web3?: Web3) => {
   return getContract(drFrankensteinAbi, getDrFrankensteinAddress(), web3)
 }
 export const getMausoleumContract = (version: string, web3?: Web3) => {
-  return getContract(mausoleumAbi, getMausoleumAddress(version), web3)
+  return getContract(version === 'v3' ? mausoleumV3Abi : mausoleumAbi, getMausoleumAddress(version), web3)
 }
 export const getMausoleumV2Contract = (web3?: Web3) => {
   return getContract(mausoleumAbi, getMausoleumV2Address(), web3)
@@ -153,4 +159,7 @@ export const getCakeVaultContract = (web3?: Web3) => {
 }
 export const getPredictionsContract = (web3?: Web3) => {
   return getContract(predictionsAbi, getPredictionsAddress(), web3)
+}
+export const getCatacombsContract = (web3?: Web3) => {
+  return getContract(catacombsAbi, getCatacombsAddress(), web3)
 }

@@ -4,7 +4,7 @@ import PageHeader from 'components/PageHeader'
 import { Flex, Heading } from '@rug-zombie-libs/uikit'
 import Collectibles from './components/Collectibles'
 import CollectibleTabButtons from './components/CollectibleTabButtons'
-import SwiperProvider from '../Predictions/context/SwiperProvider'
+import SwiperProvider from '../Mausoleum/context/SwiperProvider'
 
 const CollectiblesMain: React.FC = () => {
   return (

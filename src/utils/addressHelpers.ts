@@ -24,6 +24,16 @@ export const getDrFrankensteinAddress = () => {
   return getAddress(addresses.drFrankenstein)
 }
 export const getMausoleumAddress = (version: string) => {
+  switch (version) {
+    case 'v1':
+      return getAddress(addresses.mausoleum)
+    case 'v2':
+      return getAddress(addresses.mausoleumV2)
+    case 'v3':
+      return getAddress(addresses.mausoleumV3)
+    default:
+      return getAddress(addresses.mausoleumV3)
+  }
   return getAddress(version === 'v2' ? addresses.mausoleumV2 : addresses.mausoleum)
 }
 export const getMausoleumV2Address = () => {
@@ -82,7 +92,9 @@ export const getCakeVaultAddress = () => {
 export const getPredictionsAddress = () => {
   return getAddress(addresses.predictions)
 }
-
 export const getSpawningPoolAddress = (id: number) => {
   return getAddress(spawningPoolById(id).address)
+}
+export const getCatacombsAddress = () => {
+  return getAddress(addresses.catacombs)
 }

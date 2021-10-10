@@ -49,7 +49,7 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { id, zombieUsdPrice, handler } = props
-  const { name, rewardToken, rewardTokenId, poolInfo, isNew, rewardTokenBnbLp, bnbLpTokenIndex, userInfo: { pendingReward } } = spawningPoolById(id);
+  const { name, rewardToken, rewardTokenId, poolInfo, isNew, rewardTokenBnbLp, bnbLpTokenIndex, tokenLogoFormat, userInfo: { pendingReward } } = spawningPoolById(id);
   const bnbPrice = bnbPriceUsd()
   const [isOpen, setIsOpen] = useState(false);
   const [rewardTokenPrice, setRewardTokenPrice] = useState(0)
@@ -95,7 +95,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                     { rewardToken !== tokens.none ?
                       <>
                         <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
-                        <img src={`images/tokens/${rewardToken.symbol}.png`} alt="rugicon" className="icon" />
+                        <img src={`images/tokens/${rewardToken.symbol}.${tokenLogoFormat === "svg" ? "svg" : "png"}`} alt="rugicon" className="icon" />
                       </>
                       : <><img src="images/tokens/clear.png" alt="clearicon" className="icon" />
                         <img src="images/rugZombie/BasicZombie.png" alt="rugicon" className="icon" /></>}

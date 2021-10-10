@@ -14,6 +14,7 @@ const defaultState = {
   spawningPools,
   bnbPriceUsd: 0,
   auctions,
+  bnbBalance: BIG_ZERO,
   zombie: {
     allowance: BIG_ZERO,
     totalSupply: BIG_ZERO,
@@ -117,6 +118,11 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         nfts: state.nfts.map(nft => nft.id === action.payload.id ? { ...nft, userInfo: { ...nft.userInfo, ...action.payload.userInfo } } : nft)
+      }
+    case types.UPDATE_BNB_BALANCE:
+      return {
+        ...state,
+        bnbBalance: action.payload.bnbBalance
       }
     default:
       return state

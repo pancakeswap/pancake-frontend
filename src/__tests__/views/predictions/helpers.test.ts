@@ -8,7 +8,7 @@ import {
   getMultiplier,
   getPayout,
   padTime,
-} from 'views/Predictions/helpers'
+} from 'views/Mausoleum/helpers'
 
 describe('getBnbAmount', () => {
   it.each([

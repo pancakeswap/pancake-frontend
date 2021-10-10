@@ -49,7 +49,7 @@ export const useInitialBlock = () => {
   return useSelector((state: State) => state.block.initialBlock)
 }
 
-// Predictions
+// Mausoleum
 export const useIsHistoryPaneOpen = () => {
   return useSelector((state: State) => state.predictions.isHistoryPaneOpen)
 }

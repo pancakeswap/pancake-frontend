@@ -31,6 +31,10 @@ const artists = {
     name: 'Geek Amy Art',
     instagram: 'https://www.instagram.com/geek_amy_art/',
   },
+  xvni: {
+    name: 'XVNI',
+    twitter: 'https://twitter.com/xxxvniii',
+  },
   none: {
     name: '',
     twitter: '/',
