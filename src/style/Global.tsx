@@ -24,6 +24,13 @@ const GlobalStyle = createGlobalStyle`
     background-repeat: no-repeat;
     background-size: cover;
   }
+  .nftTimerPopup {
+    font-size: 20px !important;
+    pointer-events: auto !important;
+    &:hover {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
 `
 
 export default GlobalStyle
