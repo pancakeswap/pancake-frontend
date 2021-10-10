@@ -28,7 +28,7 @@ import {
   getMausoleumV2Contract,
   getNftOwnership,
   getZombieBalanceCheckerContract,
-  getCatacombsContract,
+  getCatacombsContract, getMulticallContract,
 } from 'utils/contractHelpers'
 import { MultiCall } from '@indexed-finance/multicall'
 
@@ -110,7 +110,7 @@ export const useNftConverter = () => {
 
 export const useMultiCall = () => {
   const web3 = useWeb3()
-  return useMemo(() => new MultiCall(web3), [web3])
+  return useMemo(() => getMulticallContract(web3), [web3])
 }
 
 export const useNftOwnership = () => {

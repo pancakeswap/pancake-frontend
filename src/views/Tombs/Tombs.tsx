@@ -27,7 +27,6 @@ const Tombs: React.FC = () => {
   useEffect(() => {
     if(updatePoolInfo === 0) {
       initialTombData(
-        multi,
         { update: updatePoolInfo, setUpdate: setUpdatePoolInfo },
         { update: updateUserInfo, setUpdate: setUpdateUserInfo },
       )
@@ -39,7 +38,6 @@ const Tombs: React.FC = () => {
   const updateResult = (pid) => {
     tomb(
       pid,
-      multi,
       null,
       null,
       { update, setUpdate },

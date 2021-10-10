@@ -70,7 +70,6 @@ const StakedTombs: React.FC = () => {
   useEffect(() => {
     if(updateTombUserInfo === 0) {
       initialTombData(
-        multi,
         { update: updateTombPoolInfo, setUpdate: setUpdateTombPoolInfo },
         { update: updateTombUserInfo, setUpdate: setUpdateTombUserInfo },
       )

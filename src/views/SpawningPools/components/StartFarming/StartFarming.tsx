@@ -55,7 +55,6 @@ const StartFarming: React.FC<StartFarmingProps> = ({ id, zombieUsdPrice, updateA
   const onUpdate = () => {
     fetch.spawningPool(
       id,
-      multi,
       zombie,
       { update: poolInfoUpdate, setUpdate: setPoolInfoUpdate },
       { update: userInfoUpdate, setUpdate: setUserInfoUpdate },

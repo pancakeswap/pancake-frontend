@@ -8,7 +8,7 @@ const tombs: Tomb[] = [
     pid: 11,
     name: 'ZMBE-BNB',
     lpAddress: {
-      97: '',
+      97: '0x72427e9ee25cc6e9e4cee3c52a77eea7ee33a83b',
       56: '0x4dbaf6479f0afa9f03c2a7d611151fa5b53ecdc8',
     },
     token: tokens.zmbe,
@@ -34,7 +34,7 @@ const tombs: Tomb[] = [
     pid: 17,
     name: 'ZMBE-BNB',
     lpAddress: {
-      97: '',
+      97: '0x72427e9ee25cc6e9e4cee3c52a77eea7ee33a83b',
       56: '0xcaa139138557610fe00f581498f283a789355d14',
     },
     token: tokens.zmbe,
