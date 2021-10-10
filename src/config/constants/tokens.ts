@@ -29,6 +29,7 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://euler.tools/',
+    tokenLogo: 'https://bscscan.com/token/images/eulertools_32.png'
   },
   rugbiden: {
     symbol: 'RUGBIDEN',
@@ -64,7 +65,8 @@ const tokens = {
       97: '0xc82C80E03E491B252Cae745575ea2d1c2fDDe25A',
     },
     decimals: 8,
-    projectLink: 'https://www.gorillafi.com/'
+    projectLink: 'https://www.gorillafi.com/',
+    tokenLogo: 'https://bscscan.com/token/images/gorillafi2_32.png'
   },
   merl: {
     symbol: 'MERL',
@@ -180,7 +182,8 @@ const tokens = {
       97: ''
     },
     decimals: 9,
-    projectLink: 'https://www.buymainstreet.com/'
+    projectLink: 'https://www.buymainstreet.com/',
+    tokenLogo: ''
   },
   nalis: {
     symbol: "NALIS",
@@ -189,7 +192,8 @@ const tokens = {
       97: ''
     },
     decimals: 18,
-    projectLink: 'https://app.koaladefi.finance/'
+    projectLink: 'https://app.koaladefi.finance/',
+    tokenLogo: ''
   },
   panther: {
     symbol: "PANTHER",
@@ -244,6 +248,7 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://walletnow.net/',
+    tokenLogo: 'https://bscscan.com/token/images/walletnow_32.png'
   },
   bingus: {
     symbol: 'BINGUS',
@@ -253,6 +258,7 @@ const tokens = {
     },
     decimals: 9,
     projectLink: 'https://bingus.io/',
+    tokenLogo: ''
   },
   fins: {
     symbol: 'FINS',
@@ -262,6 +268,7 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://autoshark.finance/',
+    tokenLogo: 'https://bscscan.com/token/images/autoshark_32b.png'
   },
   horde: {
     symbol: 'HORDE',
@@ -289,6 +296,7 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://www.milkyway.games/',
+    tokenLogo: ''
   },
   atmssft: {
     symbol: 'ATMSSFT',
@@ -298,6 +306,7 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://www.atmossoftdefi.app/',
+    tokenLogo: 'https://bscscan.com/token/images/atmossoft_32.png'
   },
   plx: {
     symbol: 'PLX',
@@ -307,6 +316,7 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://octaplex.io/',
+    tokenLogo: 'https://bscscan.com/token/images/octaplex_32.png'
   },
   fcf: {
     symbol: 'FCF',

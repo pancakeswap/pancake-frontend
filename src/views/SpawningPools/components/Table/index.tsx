@@ -25,9 +25,10 @@ interface TableProps {
   updateAllowance: any,
   updateResult: any,
   zombieUsdPrice: number,
+  account: string,
 }
 
-const Table: React.FC<TableProps> = ({ id, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
+const Table: React.FC<TableProps> = ({ id, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice, account }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [poolData, setPoolData] = useState(spawningPoolById(id))
   const openInDetails = (data) => {
@@ -53,7 +54,7 @@ const Table: React.FC<TableProps> = ({ id, isAllowance, bnbInBusd, updateAllowan
                 <StartFarming updateResult={setPoolData} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} id={id} isAllowance={isAllowance}  />
                 <BuyFrank id={id} />
               </div>
-              <RugInDetails bnbInBusd={bnbInBusd} id={id} zombieUsdPrice={zombieUsdPrice} />
+              <RugInDetails account={account} bnbInBusd={bnbInBusd} id={id} zombieUsdPrice={zombieUsdPrice} />
             </div>
           </div>
         ) : null}
