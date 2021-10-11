@@ -29,7 +29,7 @@ const saleProgressTextMapping = (t: ContextApi['t'], saleStatus: SaleStatusEnum,
     case SaleStatusEnum.DrawingRandomness:
       return t('Randomizing NFT allocation with Chainlink', data)
     case SaleStatusEnum.Claim:
-      return t('%remaining% of %total% minted', data)
+      return t('%remaining% of %total% claimed', data)
     default:
       return ''
   }
