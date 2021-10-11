@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import uniqBy from 'lodash/uniqBy'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
   getNftsFromCollectionApi,
@@ -322,14 +321,17 @@ export const NftMarket = createSlice({
     })
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       const { collectionAddress } = action.meta.arg
-      const existingNfts = state.data.nfts[collectionAddress] ?? []
+      const existingNfts: NftToken[] = state.data.nfts[collectionAddress] ?? []
+      const existingNftsWithoutNewOnes = existingNfts.filter(
+        (nftToken) => !action.payload.find((newToken) => newToken.tokenId === nftToken.tokenId),
+      )
 
       state.data.filters = {
         ...state.data.filters,
         loadingState: NftFilterLoadingState.IDLE,
         activeFilters: {},
       }
-      state.data.nfts[collectionAddress] = uniqBy([...existingNfts, ...action.payload], 'tokenId')
+      state.data.nfts[collectionAddress] = [...existingNftsWithoutNewOnes, ...action.payload]
     })
     builder.addCase(fetchNewPBAndUpdateExisting.pending, (state) => {
       state.data.loadingState.isUpdatingPancakeBunnies = true
