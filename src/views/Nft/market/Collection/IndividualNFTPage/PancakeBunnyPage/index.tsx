@@ -45,10 +45,6 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
 
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
 
-  // const totalMinted = distributionData ? sum(Object.values(distributionData)) : 0
-  // const count: number = distributionData ? distributionData[tokenId] : 0
-  // const percentage = (count / totalMinted) * 100
-
   useEffect(() => {
     // Fetch first 30 NFTs on page load
     // And then query every FETCH_NEW_NFTS_INTERVAL_MS in case some new (cheaper) NFTs were listed
