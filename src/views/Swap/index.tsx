@@ -308,9 +308,13 @@ export default function Swap({ history }: RouteComponentProps) {
 
   return (
     <Page>
-      <Flex>
+      <Flex mb="60px">
         <Suspense fallback="loading...">
-          <PriceChartContainer inputCurrencyId={inputCurrencyId} />
+          <PriceChartContainer
+            inputCurrencyId={inputCurrencyId}
+            inputCurrency={currencies[Field.INPUT]}
+            outputCurrency={currencies[Field.OUTPUT]}
+          />
         </Suspense>
         <AppBody>
           <AppHeader title={t('Exchange')} subtitle={t('Trade tokens in an instant')} />
@@ -502,7 +506,7 @@ export default function Swap({ history }: RouteComponentProps) {
         </AppBody>
       </Flex>
       {!swapIsUnsupported ? (
-        <AdvancedSwapDetailsDropdown trade={trade} />
+        trade && <AdvancedSwapDetailsDropdown trade={trade} />
       ) : (
         <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}
