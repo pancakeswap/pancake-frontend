@@ -6,6 +6,7 @@ import { fetchCollection } from 'state/nftMarket/reducer'
 import { useGetCollection } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'
 import Select, { OptionProps } from 'components/Select/Select'
+import Container from 'components/Layout/Container'
 import { pancakeBunniesAddress } from '../../constants'
 import PancakeBunniesCollectionNfts from './PancakeBunniesCollectionNfts'
 import Header from '../Header'
@@ -41,18 +42,18 @@ const Items = () => {
       <Header collection={collection} />
 
       {/* Only PBs can return enough data to viably sort the entire collection */}
-      {isPBCollection && (
-        <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">
-          <Box minWidth="165px">
-            <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
-              {t('Sort By')}
-            </Text>
-            <Select options={sortByItems} onOptionChange={handleChange} />
-          </Box>
-        </Flex>
-      )}
       {isPBCollection ? (
-        <PancakeBunniesCollectionNfts collection={collection} sortBy={sortBy} />
+        <Container mb="24px">
+          <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">
+            <Box minWidth="165px">
+              <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
+                {t('Sort By')}
+              </Text>
+              <Select options={sortByItems} onOptionChange={handleChange} />
+            </Box>
+          </Flex>
+          <PancakeBunniesCollectionNfts collection={collection} sortBy={sortBy} />
+        </Container>
       ) : (
         <CollectionWrapper collection={collection} />
       )}
