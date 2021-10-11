@@ -21,17 +21,19 @@ import { filterNftsFromCollection } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
 import { useGetNftFilterLoadingState, useGetNftFilters } from 'state/nftMarket/hooks'
 import { NftFilterLoadingState } from 'state/nftMarket/types'
-import FilterFooter from '../FilterFooter'
-import { ItemRow, SearchWrapper } from './styles'
+import { FilterButton, ItemRow, SearchWrapper } from './styles'
 import { Item } from './types'
 
 interface ListFilterProps {
   title?: string
-  selectedItem?: Item
+  traitType: string
   items: Item[]
   collectionAddress: string
-  onApply: (item: Item) => void
-  onClear: () => void
+}
+
+interface State {
+  orderKey: string
+  orderDir: 'asc' | 'desc'
 }
 
 const TriggerButton = styled(Button)<{ hasItem: boolean }>`
@@ -49,43 +51,31 @@ const CloseButton = styled(IconButton)`
   border-bottom-left-radius: 0;
 `
 
-export const ListFilter: React.FC<ListFilterProps> = ({
-  title,
-  selectedItem,
-  items,
-  collectionAddress,
-  onApply,
-  onClear,
-}) => {
+export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items, collectionAddress }) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
-  const [orderDir, setOrderDir] = useState<'asc' | 'desc'>('asc')
+  const [orderState, setOrderState] = useState<State>({ orderKey: 'count', orderDir: 'asc' })
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
-  const [localSelectedItem, setLocalSelectedItem] = useState(selectedItem)
   const { isMobile, isDesktop } = useMatchBreakpoints()
   const nftFilters = useGetNftFilters()
   const nftFilterState = useGetNftFilterLoadingState()
   const dispatch = useAppDispatch()
+  const { orderKey, orderDir } = orderState
+
+  const traitFilter = nftFilters[traitType]
+  const isTraitSelected = !!traitFilter
 
   const filteredItems =
     query && query.length > 1
       ? items.filter((item) => item.label.toLowerCase().indexOf(query.toLowerCase()) !== -1)
       : items
 
-  const handleClear = () => {
-    setQuery('')
-    setLocalSelectedItem(null)
-    setIsOpen(false)
-
-    onClear()
-  }
-
   const handleClearItem = () => {
     const newFilters = { ...nftFilters }
 
-    delete newFilters[localSelectedItem.attr.traitType]
+    delete newFilters[traitType]
 
     dispatch(
       filterNftsFromCollection({
@@ -97,28 +87,35 @@ export const ListFilter: React.FC<ListFilterProps> = ({
 
   const handleMenuClick = () => setIsOpen(!isOpen)
 
-  const handleApply = () => {
-    onApply(localSelectedItem)
-    setIsOpen(false)
-  }
-
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { value } = evt.target
     setQuery(value)
   }
 
-  const handleItemSelect = (newItem: Item) => {
-    setLocalSelectedItem(newItem)
+  const handleItemSelect = ({ attr }: Item) => {
+    dispatch(
+      filterNftsFromCollection({
+        collectionAddress,
+        nftFilters: { ...nftFilters, [traitType]: attr },
+      }),
+    )
   }
 
-  const toggleOrderDir = () => {
-    setOrderDir(orderDir === 'asc' ? 'desc' : 'asc')
-  }
+  const toggleSort = (newOrderKey: string) => () => {
+    setOrderState((prevOrderDir) => {
+      if (prevOrderDir.orderKey !== newOrderKey) {
+        return {
+          orderKey: newOrderKey,
+          orderDir: 'asc',
+        }
+      }
 
-  // Update local state if parent state changes
-  useEffect(() => {
-    setLocalSelectedItem(selectedItem)
-  }, [selectedItem, setLocalSelectedItem])
+      return {
+        orderKey: newOrderKey,
+        orderDir: prevOrderDir.orderDir === 'asc' ? 'desc' : 'asc',
+      }
+    })
+  }
 
   // @TODO Fix this in the Toolkit
   // This is a fix to ensure the "isOpen" value is aligned with the menus's (to avoid a double click)
@@ -148,10 +145,10 @@ export const ListFilter: React.FC<ListFilterProps> = ({
           component={
             <TriggerButton
               onClick={handleMenuClick}
-              variant={localSelectedItem ? 'subtle' : 'light'}
+              variant={isTraitSelected ? 'subtle' : 'light'}
               scale="sm"
               disabled={nftFilterState === NftFilterLoadingState.LOADING}
-              hasItem={!!localSelectedItem}
+              hasItem={isTraitSelected}
             >
               {title}
             </TriggerButton>
@@ -171,30 +168,36 @@ export const ListFilter: React.FC<ListFilterProps> = ({
               </InputGroup>
             </SearchWrapper>
             <Flex alignItems="center" p="16px">
-              <Text style={{ flex: 1 }} fontSize="12px" color="secondary" fontWeight="bold" textTransform="uppercase">
-                {t('Name')}
-              </Text>
-              <Flex alignItems="center" style={{ cursor: 'pointer', userSelect: 'none' }} onClick={toggleOrderDir}>
+              <FilterButton onClick={toggleSort('label')} style={{ flex: 1 }}>
+                <Text fontSize="12px" color="secondary" fontWeight="bold" textTransform="uppercase">
+                  {t('Name')}
+                </Text>
+                <Box width="18px">
+                  {orderKey === 'label' && orderDir === 'asc' && <ArrowUpIcon width="18px" color="secondary" />}
+                  {orderKey === 'label' && orderDir === 'desc' && <ArrowDownIcon width="18px" color="secondary" />}
+                </Box>
+              </FilterButton>
+              <FilterButton onClick={toggleSort('count')}>
                 <Text fontSize="12px" color="secondary" fontWeight="bold" textTransform="uppercase">
                   {t('Count')}
                 </Text>
-                {orderDir === 'asc' ? (
-                  <ArrowUpIcon width="18px" color="secondary" />
-                ) : (
-                  <ArrowDownIcon width="18px" color="secondary" />
-                )}
-              </Flex>
+                <Box width="18px">
+                  {orderKey === 'count' && orderDir === 'asc' && <ArrowUpIcon width="18px" color="secondary" />}
+                  {orderKey === 'count' && orderDir === 'desc' && <ArrowDownIcon width="18px" color="secondary" />}
+                </Box>
+              </FilterButton>
             </Flex>
             <Box height="240px" overflowY="auto">
               {filteredItems.length > 0 ? (
-                orderBy(filteredItems, 'count', orderDir).map((filteredItem) => {
+                orderBy(filteredItems, orderKey, orderDir).map((filteredItem) => {
                   const handleSelect = () => handleItemSelect(filteredItem)
+                  const isItemSelected = traitFilter && traitFilter.value === filteredItem.attr.value
 
                   return (
                     <ItemRow
                       key={filteredItem.label}
                       item={filteredItem}
-                      isSelected={localSelectedItem && localSelectedItem.label === filteredItem.label}
+                      isSelected={isItemSelected}
                       onSelect={handleSelect}
                     />
                   )
@@ -207,20 +210,12 @@ export const ListFilter: React.FC<ListFilterProps> = ({
                 </Flex>
               )}
             </Box>
-            <FilterFooter>
-              <Button variant="secondary" onClick={handleClear}>
-                {localSelectedItem ? t('Clear') : t('Close')}
-              </Button>
-              <Button onClick={handleApply} disabled={localSelectedItem === null}>
-                {t('Apply')}
-              </Button>
-            </FilterFooter>
           </Box>
         </InlineMenu>
       </Box>
-      {localSelectedItem && (
+      {isTraitSelected && (
         <CloseButton
-          variant={localSelectedItem ? 'subtle' : 'light'}
+          variant={isTraitSelected ? 'subtle' : 'light'}
           scale="sm"
           onClick={handleClearItem}
           disabled={nftFilterState === NftFilterLoadingState.LOADING}
