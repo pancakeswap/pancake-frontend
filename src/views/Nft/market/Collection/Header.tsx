@@ -35,11 +35,6 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
       })
     : '0'
 
-  const onSaleEntry = {
-    label: t('On sale'),
-    href: `${nftsBaseUrl}/collections/${collectionAddress}#onsale`,
-  }
-
   const itemsConfig = [
     {
       label: t('Items'),
@@ -72,12 +67,7 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
         </MarketPageTitle>
       </MarketPageHeader>
       <Container>
-        <BaseSubMenu
-          items={isPBCollection ? itemsConfig : [onSaleEntry, ...itemsConfig]}
-          activeItem={`${pathname}${hash || DEFAULT_TABS}`}
-          mt="24px"
-          mb="8px"
-        />
+        <BaseSubMenu items={itemsConfig} activeItem={`${pathname}${hash || DEFAULT_TABS}`} mt="24px" mb="8px" />
       </Container>
     </>
   )

@@ -30,6 +30,11 @@ export interface State {
     filters: {
       loadingState: NftFilterLoadingState
       activeFilters: Record<string, NftAttribute> // string is the collection address
+      showOnlyOnSale: boolean
+      ordering: {
+        field: string
+        direction: 'asc' | 'desc'
+      }
     }
     loadingState: {
       isUpdatingPancakeBunnies: boolean

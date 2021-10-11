@@ -1,9 +1,11 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
 import { Box } from '@pancakeswap/uikit'
 import isEmpty from 'lodash/isEmpty'
 import { Collection } from 'state/nftMarket/types'
 import { useGetNftFilters } from 'state/nftMarket/hooks'
 import Container from 'components/Layout/Container'
+import ScrollButton from 'components/ScrollToTopButton'
 import Filters from './Filters'
 import CollectionNfts from './CollectionNfts'
 import FilteredCollectionNfts from './FilteredCollectionNfts'
@@ -27,6 +29,7 @@ const CollectionWrapper: React.FC<CollectionWrapperProps> = ({ collection }) => 
           <FilteredCollectionNfts collection={collection} />
         )}
       </Container>
+      {createPortal(<ScrollButton />, document.body)}
     </Box>
   )
 }
