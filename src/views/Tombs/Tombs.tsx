@@ -11,6 +11,7 @@ import Table from './Table'
 import '../Graves/Graves.Styles.css'
 import { tombs } from '../../redux/get'
 import { initialTombData, tomb } from '../../redux/fetch'
+import { getId } from '../../utils'
 
 let accountAddress
 
@@ -77,7 +78,7 @@ const Tombs: React.FC = () => {
       <Page>
         <div>
           {tombs().sort((a, b) => a.id - b.id).map((t) => {
-            return <Table pid={t.pid} updateResult={updateResult} updateAllowance={updateAllowance}
+            return <Table pid={getId(t.pid)} updateResult={updateResult} updateAllowance={updateAllowance}
                           bnbInBusd={bnbInBusd}
                           isAllowance={isAllowance} key={t.id} />
           })}

@@ -5,10 +5,13 @@ import { Tomb } from './types'
 const tombs: Tomb[] = [
   {
     id: 2,
-    pid: 11,
+    pid: {
+      56: 11,
+      97: 2,
+    },
     name: 'ZMBE-BNB',
     lpAddress: {
-      97: '0x72427e9ee25cc6e9e4cee3c52a77eea7ee33a83b',
+      97: '0x72427E9ee25CC6e9e4Cee3C52a77EEA7eE33A83B',
       56: '0x4dbaf6479f0afa9f03c2a7d611151fa5b53ecdc8',
     },
     token: tokens.zmbe,
@@ -31,10 +34,13 @@ const tombs: Tomb[] = [
   },
   {
     id: 1,
-    pid: 17,
+    pid: {
+      56: 17,
+      97: 3,
+    },
     name: 'ZMBE-BNB',
     lpAddress: {
-      97: '0x72427e9ee25cc6e9e4cee3c52a77eea7ee33a83b',
+      97: '0x72427E9ee25CC6e9e4Cee3C52a77EEA7eE33A83B',
       56: '0xcaa139138557610fe00f581498f283a789355d14',
     },
     token: tokens.zmbe,

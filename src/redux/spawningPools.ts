@@ -13,7 +13,7 @@ const spawningPools: SpawningPool[] = [
     type: 'image',
     address: {
       56: '0xFC57f86f80D3f6155dE76F15e245F0A9ad33fFA5',
-      97: '',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 14170000,
     project: {
@@ -70,7 +70,7 @@ const spawningPools: SpawningPool[] = [
     type: 'image',
     address: {
       56: '0x2B2327E219D6BA1DE8b3cF5715Dd1d1FE6f39e60',
-      97: '',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 13800000,
     project: {
@@ -128,7 +128,7 @@ const spawningPools: SpawningPool[] = [
     type: 'image',
     address: {
       56: '0xBBB1c60CA67cab1441AcD8c077BB0b779e73DA40',
-      97: '',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 13700000,
     project: {
@@ -185,7 +185,7 @@ const spawningPools: SpawningPool[] = [
     type: 'image',
     address: {
       56: '0xe9Dc48d8F5a1eAd54b8ADC263c4564b5346b1aEB',
-      97: '',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 13620000,
     project: {
@@ -242,7 +242,7 @@ const spawningPools: SpawningPool[] = [
     type: 'image',
     address: {
       56: '0x20E060a9FD13F9F2D442f6e7A804B186C53EcF60',
-      97: '',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 13566061,
     project: {
@@ -299,7 +299,7 @@ const spawningPools: SpawningPool[] = [
     type: 'image',
     address: {
       56: '0x1976e5607aB7D163E5DA2F6D427aD1868e967f97',
-      97: '',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 13503600,
     project: {
@@ -360,7 +360,7 @@ const spawningPools: SpawningPool[] = [
     type: 'image',
     address: {
       56: '0x32c5ec65beB8482b5c727A0E3A352F8E330eb312',
-      97: '',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 13350000,
     project: {
@@ -413,7 +413,7 @@ const spawningPools: SpawningPool[] = [
     type: 'image',
     address: {
       56: '0x14422173F2EA692Ae2e27c77a9bf5DB58b38b457',
-      97: '',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 13140040,
     project: {
@@ -465,7 +465,7 @@ const spawningPools: SpawningPool[] = [
     type: 'image',
     address: {
       56: '0x0af40D42F805112ECc40b0148c1221eDc8Ce001B',
-      97: '',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 12790000,
     project: {
@@ -577,7 +577,7 @@ const spawningPools: SpawningPool[] = [
     type: 'video',
     address: {
       56: '0x83818859688eF175F6AEAFb80Be881Db24A4E50a',
-      97: '0x09804035E6D09fe1d4992F64fE9F69A183572DD3',
+      97: '0xBf559640BCEa0f19eC0B1dc30B7F294e4194a300',
     },
     endBlock: 12209400,
     project: {

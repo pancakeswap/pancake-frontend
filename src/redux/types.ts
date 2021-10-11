@@ -1,4 +1,4 @@
-import { Address, Token } from '../config/constants/types'
+import { Address, Id, Token } from '../config/constants/types'
 import { BigNumber } from 'bignumber.js'
 import tokens from '../config/constants/tokens'
 import { BIG_ZERO } from '../utils/bigNumber'
@@ -119,7 +119,7 @@ export interface Grave {
 
 export interface Tomb {
   id: number,
-  pid: number,
+  pid: Id,
   name: string,
   withdrawalCooldown: string,
   token: Token,
@@ -185,7 +185,7 @@ export interface Nft {
   name: string,
   description: string,
   symbol: string,
-  address: string,
+  address: Address,
   totalSupply: BigNumber,
   path: string,
   type: string,

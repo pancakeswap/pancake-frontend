@@ -1,6 +1,5 @@
 import addresses from 'config/constants/contracts'
 import tokens from 'config/constants/tokens'
-import tombs from 'views/Tombs/data'
 import { Address } from 'config/constants/types'
 import { spawningPoolById } from '../redux/get'
 

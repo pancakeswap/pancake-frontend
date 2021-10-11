@@ -45,8 +45,8 @@ import { BIG_ZERO } from '../utils/bigNumber'
 import { account, auctionById, zmbeBnbTomb } from './get'
 import web3 from '../utils/web3'
 import { multicallv2 } from '../utils/multicall'
+import { getId } from '../utils'
 
-// eslint-disable-next-line import/prefer-default-export
 export const initialData = (accountAddress: string, multi: any, setZombiePrice?: any) => {
   store.dispatch(updateAccount(accountAddress))
   const zombie = getZombieContract()
@@ -63,8 +63,7 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
 
   bnbPriceUsd(setZombiePrice)
 
-
-  tomb(tombs[0].pid, multi)
+  tomb(getId(tombs[0].pid))
 
   nfts()
 
@@ -89,12 +88,11 @@ export const initialData = (accountAddress: string, multi: any, setZombiePrice?:
       })
   }
 
-  initialGraveData()
+  // initialGraveData()
 }
 
 export const tomb = (pid: number, updatePoolObj?: { update: number, setUpdate: any }, updateUserObj?: { update: number, setUpdate: any }, everyUpdateObj?: { update: boolean, setUpdate: any }) => {
   const address = getDrFrankensteinAddress()
-
 
   if (account()) {
     let calls = [
@@ -103,8 +101,7 @@ export const tomb = (pid: number, updatePoolObj?: { update: number, setUpdate: a
       { address, name: 'pendingZombie', params: [pid, get.account()] },
     ]
     multicallv2(drFrankensteinAbi, calls)
-      .then(frankRes => {
-        const drFrankensteinRes = frankRes[1]
+      .then(drFrankensteinRes => {
         calls = [
           { address: getAddress(get.tombByPid(pid).lpAddress), name: 'balanceOf', params: [address] },
           { address: getAddress(get.tombByPid(pid).lpAddress), name: 'getReserves', params: [] },
@@ -112,8 +109,7 @@ export const tomb = (pid: number, updatePoolObj?: { update: number, setUpdate: a
           { address: getAddress(get.tombByPid(pid).lpAddress), name: 'totalSupply', params: [] },
         ]
         multicallv2(pancakePairAbi, calls)
-          .then(lpRes => {
-            const lpTokenRes = lpRes[1]
+          .then(lpTokenRes => {
             store.dispatch(updateTombPoolInfo(pid, {
               allocPoint: new BigNumber(drFrankensteinRes[0].allocPoint.toString()),
               minimumStake: new BigNumber(drFrankensteinRes[0].minimumStake.toString()),
@@ -144,8 +140,7 @@ export const tomb = (pid: number, updatePoolObj?: { update: number, setUpdate: a
           { address: getAddress(get.tombByPid(pid).lpAddress), name: 'totalSupply', params: [] },
         ]
         multicallv2(pancakePairAbi, calls)
-          .then(lpRes => {
-            const lpTokenRes = lpRes[1]
+          .then(lpTokenRes => {
             store.dispatch(updateTombPoolInfo(pid, {
               allocPoint: new BigNumber(poolInfoRes.allocPoint),
               minimumStake: new BigNumber(poolInfoRes.minimumStake),
@@ -168,7 +163,7 @@ export const initialTombData = (updatePoolObj?: { update: number, setUpdate: any
   let index = 0
   get.tombs().forEach(t => {
     tomb(
-      t.pid,
+      getId(t.pid),
       updatePoolObj ? { update: updatePoolObj.update + index, setUpdate: updatePoolObj.setUpdate } : undefined,
       updateUserObj ? { update: updateUserObj.update + index, setUpdate: updateUserObj.setUpdate } : undefined,
     )
@@ -268,8 +263,7 @@ export const spawningPool = (id: number, zombie: any, poolUpdateObj?: { update: 
     { address, name: 'nftRevivalTime', params: [] },
   ]
   multicallv2(spawningPoolAbi, calls)
-    .then(poolInfoRes => {
-      const res = poolInfoRes[1]
+    .then(res => {
       zombie.methods.balanceOf(getSpawningPoolAddress(id)).call()
         .then(balanceRes => {
           store.dispatch(updateSpawningPoolInfo(
@@ -299,8 +293,7 @@ export const spawningPool = (id: number, zombie: any, poolUpdateObj?: { update: 
     ]
 
     multicallv2(spawningPoolAbi, calls)
-      .then(userInfoRes => {
-        const res = userInfoRes[1]
+      .then(res => {
         getZombieContract().methods.allowance(get.account(), address).call()
           .then(balanceRes => {
             store.dispatch(updateSpawningPoolUserInfo(
@@ -506,7 +499,7 @@ const bnbPriceUsd = (setZombiePrice?: any) => {
 
 const nfts = () => {
   get.nfts().forEach(nft => {
-    getErc721Contract(nft.address).methods.totalSupply().call()
+    getErc721Contract(getAddress(nft.address)).methods.totalSupply().call()
       .then(res => {
         store.dispatch(updateNftTotalSupply(nft.id, new BigNumber(res)))
       })

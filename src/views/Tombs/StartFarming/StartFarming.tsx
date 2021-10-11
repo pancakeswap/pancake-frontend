@@ -40,7 +40,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({pid, updateResult }) => {
   const [isLpTokenAllowance, setIsLpTokenAllowance] = useState(false);
   const tomb = tombByPid(pid)
   const { name, lpAddress, userInfo: { lpAllowance, amount } } = tomb
-
+  console.log()
   const lpTokenBalance = useTokenBalance(getAddress(lpAddress));
   const lpTokenContract = useERC20(getAddress(lpAddress))
   useEffect(() => {

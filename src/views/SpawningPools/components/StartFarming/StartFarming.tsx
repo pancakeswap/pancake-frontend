@@ -123,7 +123,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ id, zombieUsdPrice, updateA
       {get.account() ?
         !userInfo.paidUnlockFee ?
           isZombieAllowance ?
-          <button onClick={handleUnlock} className="btn btn-disabled w-100" type="button">Unlock Grave</button> :
+          <button onClick={handleUnlock} className="btn btn-disabled w-100" type="button">Unlock Pool</button> :
           <button onClick={handleApprove} className="btn btn-disabled w-100" type="button">Approve ZMBE</button>
         :
         <div>
