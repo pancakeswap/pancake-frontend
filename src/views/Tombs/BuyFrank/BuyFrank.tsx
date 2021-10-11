@@ -3,7 +3,7 @@ import { Button, useModal } from '@rug-zombie-libs/uikit';
 import ModalInput from 'components/ModalInput/ModalInput';
 import { formatDuration } from '../../../utils/timerHelpers'
 import { tombByPid } from '../../../redux/get'
-import { APESWAP_ADD_LIQUIDITY_URL, BASE_ADD_LIQUIDITY_URL } from '../../../config'
+import { APESWAP_ADD_LIQUIDITY_URL, AUTOSHARK_ADD_LIQUIDITY_URL, BASE_ADD_LIQUIDITY_URL } from '../../../config'
 import { getAddress } from '../../../utils/addressHelpers'
 import tokens from '../../../config/constants/tokens'
 
@@ -19,7 +19,16 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
   const [onPresent1] = useModal(<ModalInput inputTitle="Stake $ZMBE" />);
   // eslint-disable-next-line no-nested-ternary
   const quoteTokenUrl = tomb.quoteToken === tokens.wbnb ? tomb.exchange === 'Apeswap' ? 'ETH' : 'BNB' : getAddress(tomb.quoteToken.address)
-  const addLiquidityUrl = `${tomb.exchange === 'Apeswap' ? APESWAP_ADD_LIQUIDITY_URL : BASE_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+
+  let addLiquidityUrl
+
+  if(tomb.exchange === 'Apeswap') {
+    addLiquidityUrl = `${APESWAP_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+  } else if(tomb.exchange === 'Autoshark') {
+    addLiquidityUrl = `${AUTOSHARK_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+  } else {
+    addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+  }
 
   return (
     !amount.isZero() ?

@@ -8,7 +8,7 @@ import numeral from 'numeral'
 import { BIG_ZERO } from '../../../utils/bigNumber'
 import { tombByPid } from '../../../redux/get'
 import { getAddress } from '../../../utils/addressHelpers'
-import { APESWAP_ADD_LIQUIDITY_URL, BASE_ADD_LIQUIDITY_URL } from '../../../config'
+import { APESWAP_ADD_LIQUIDITY_URL, AUTOSHARK_ADD_LIQUIDITY_URL, BASE_ADD_LIQUIDITY_URL } from '../../../config'
 
 interface RugInDetailsProps {
   pid: number,
@@ -26,7 +26,15 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
   const { id, name, withdrawalCooldown, exchange, poolInfo: { allocPoint } } = tomb
   // eslint-disable-next-line no-nested-ternary
   const quoteTokenUrl = tomb.quoteToken === tokens.wbnb ? tomb.exchange === 'Apeswap' ? 'ETH' : 'BNB' : getAddress(tomb.quoteToken.address)
-  const addLiquidityUrl = `${tomb.exchange === 'Apeswap' ? APESWAP_ADD_LIQUIDITY_URL : BASE_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+  let addLiquidityUrl
+
+  if(tomb.exchange === 'Apeswap') {
+    addLiquidityUrl = `${APESWAP_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+  } else if(tomb.exchange === 'Autoshark') {
+    addLiquidityUrl = `${AUTOSHARK_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+  } else {
+    addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+  }
   useEffect(() => {
     drFrankenstein.methods.unlockFeeInBnb(pid).call()
       .then((res) => {
