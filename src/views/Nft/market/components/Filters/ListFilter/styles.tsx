@@ -41,3 +41,13 @@ export const SearchWrapper = styled(Flex)<{ hasHeader: boolean }>`
     border-radius: 24px 24px 0 0;
   `}
 `
+
+export const FilterButton = styled(Flex)`
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+
+  svg {
+    pointer-events: none;
+  }
+`

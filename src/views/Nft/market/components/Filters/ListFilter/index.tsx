@@ -21,7 +21,7 @@ import { filterNftsFromCollection } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
 import { useGetNftFilterLoadingState, useGetNftFilters } from 'state/nftMarket/hooks'
 import { NftFilterLoadingState } from 'state/nftMarket/types'
-import { ItemRow, SearchWrapper } from './styles'
+import { FilterButton, ItemRow, SearchWrapper } from './styles'
 import { Item } from './types'
 
 interface ListFilterProps {
@@ -29,6 +29,11 @@ interface ListFilterProps {
   traitType: string
   items: Item[]
   collectionAddress: string
+}
+
+interface State {
+  orderKey: string
+  orderDir: 'asc' | 'desc'
 }
 
 const TriggerButton = styled(Button)<{ hasItem: boolean }>`
@@ -50,13 +55,14 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
-  const [orderDir, setOrderDir] = useState<'asc' | 'desc'>('asc')
+  const [orderState, setOrderState] = useState<State>({ orderKey: 'count', orderDir: 'asc' })
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
   const { isMobile, isDesktop } = useMatchBreakpoints()
   const nftFilters = useGetNftFilters()
   const nftFilterState = useGetNftFilterLoadingState()
   const dispatch = useAppDispatch()
+  const { orderKey, orderDir } = orderState
 
   const traitFilter = nftFilters[traitType]
   const isTraitSelected = !!traitFilter
@@ -95,8 +101,20 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
     )
   }
 
-  const toggleOrderDir = () => {
-    setOrderDir(orderDir === 'asc' ? 'desc' : 'asc')
+  const toggleSort = (newOrderKey: string) => () => {
+    setOrderState((prevOrderDir) => {
+      if (prevOrderDir.orderKey !== newOrderKey) {
+        return {
+          orderKey: newOrderKey,
+          orderDir: 'asc',
+        }
+      }
+
+      return {
+        orderKey: newOrderKey,
+        orderDir: prevOrderDir.orderDir === 'asc' ? 'desc' : 'asc',
+      }
+    })
   }
 
   // @TODO Fix this in the Toolkit
@@ -149,29 +167,29 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
                 />
               </InputGroup>
             </SearchWrapper>
-            <Flex
-              alignItems="center"
-              p="16px"
-              style={{ cursor: 'pointer', userSelect: 'none' }}
-              onClick={toggleOrderDir}
-            >
-              <Text style={{ flex: 1 }} fontSize="12px" color="secondary" fontWeight="bold" textTransform="uppercase">
-                {t('Name')}
-              </Text>
-              <Flex alignItems="center">
+            <Flex alignItems="center" p="16px">
+              <FilterButton onClick={toggleSort('label')} style={{ flex: 1 }}>
+                <Text fontSize="12px" color="secondary" fontWeight="bold" textTransform="uppercase">
+                  {t('Name')}
+                </Text>
+                <Box width="18px">
+                  {orderKey === 'label' && orderDir === 'asc' && <ArrowUpIcon width="18px" color="secondary" />}
+                  {orderKey === 'label' && orderDir === 'desc' && <ArrowDownIcon width="18px" color="secondary" />}
+                </Box>
+              </FilterButton>
+              <FilterButton onClick={toggleSort('count')}>
                 <Text fontSize="12px" color="secondary" fontWeight="bold" textTransform="uppercase">
                   {t('Count')}
                 </Text>
-                {orderDir === 'asc' ? (
-                  <ArrowUpIcon width="18px" color="secondary" />
-                ) : (
-                  <ArrowDownIcon width="18px" color="secondary" />
-                )}
-              </Flex>
+                <Box width="18px">
+                  {orderKey === 'count' && orderDir === 'asc' && <ArrowUpIcon width="18px" color="secondary" />}
+                  {orderKey === 'count' && orderDir === 'desc' && <ArrowDownIcon width="18px" color="secondary" />}
+                </Box>
+              </FilterButton>
             </Flex>
             <Box height="240px" overflowY="auto">
               {filteredItems.length > 0 ? (
-                orderBy(filteredItems, 'count', orderDir).map((filteredItem) => {
+                orderBy(filteredItems, orderKey, orderDir).map((filteredItem) => {
                   const handleSelect = () => handleItemSelect(filteredItem)
                   const isItemSelected = traitFilter && traitFilter.value === filteredItem.attr.value
 
