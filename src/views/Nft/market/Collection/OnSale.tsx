@@ -11,8 +11,7 @@ import Select, { OptionProps } from 'components/Select/Select'
 import Header from './Header'
 import GridPlaceholder from '../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../components/CollectibleCard'
-
-const REQUEST_SIZE = 100
+import { REQUEST_SIZE } from './config'
 
 interface QueryParams {
   orderDirection: 'asc' | 'desc'
@@ -102,15 +101,13 @@ const OnSale = () => {
                 alignItems="start"
               >
                 {nfts.map((nft) => {
-                  const currentAskPriceAsNumber = nft.marketData?.currentAskPrice
-                    ? parseFloat(nft.marketData.currentAskPrice)
-                    : 0
+                  const currentAskPriceAsNumber = nft.marketData && parseFloat(nft.marketData.currentAskPrice)
 
                   return (
                     <CollectibleLinkCard
                       key={`${nft.tokenId}-${nft.collectionName}`}
                       nft={nft}
-                      currentAskPrice={currentAskPriceAsNumber}
+                      currentAskPrice={currentAskPriceAsNumber > 0 ? currentAskPriceAsNumber : undefined}
                     />
                   )
                 })}

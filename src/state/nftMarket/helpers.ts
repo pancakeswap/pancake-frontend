@@ -1,4 +1,5 @@
 import { request, gql } from 'graphql-request'
+import { stringify } from 'qs'
 import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
@@ -20,6 +21,7 @@ import {
   AskOrder,
   ApiSingleTokenData,
   NftAttribute,
+  ApiTokenFilterResponse,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
 
@@ -489,6 +491,26 @@ export const getLatestListedNfts = async (first: number): Promise<TokenMarketDat
     console.error('Failed to fetch NFTs market data', error)
     return []
   }
+}
+
+/**
+ * Filter NFTs from a collection
+ * @param collectionAddress
+ * @returns
+ */
+export const fetchNftsFiltered = async (
+  collectionAddress: string,
+  filters: Record<string, string | number>,
+): Promise<ApiTokenFilterResponse> => {
+  const res = await fetch(`${API_NFT}/collections/${collectionAddress}/filter?${stringify(filters)}`)
+
+  if (res.ok) {
+    const data = await res.json()
+    return data
+  }
+
+  console.error(`API: Failed to fetch NFT collection ${collectionAddress}`, res.statusText)
+  return null
 }
 
 /**

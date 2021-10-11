@@ -17,11 +17,20 @@ export enum UserNftInitializationState {
   ERROR = 'ERROR',
 }
 
+export enum NftFilterLoadingState {
+  IDLE = 'IDLE',
+  LOADING = 'LOADING',
+}
+
 export interface State {
   initializationState: NFTMarketInitializationState
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
+    filters: {
+      loadingState: NftFilterLoadingState
+      activeFilters: Record<string, NftAttribute> // string is the collection address
+    }
     loadingState: {
       isUpdatingPancakeBunnies: boolean
       latestPancakeBunniesUpdateAt: number
@@ -195,6 +204,13 @@ export interface ApiSingleCollectionResponse {
   data: ApiCollection
 }
 
+// Get single collection
+// ${API_NFT}/collections/${collectionAddress}
+export interface ApiTokenFilterResponse {
+  total: number
+  data: Record<string, ApiSingleTokenData>
+}
+
 export interface ApiSingleTokenData {
   name: string
   description: string
@@ -203,6 +219,7 @@ export interface ApiSingleTokenData {
     name: string
   }
   attributes?: NftAttribute[]
+  tokenId?: string
 }
 
 // Get tokens within collection

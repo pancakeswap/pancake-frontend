@@ -1,157 +1,75 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { ArrowBackIcon, ArrowForwardIcon, AutoRenewIcon, Flex, Grid, Text } from '@pancakeswap/uikit'
-import { getAddress } from '@ethersproject/address'
+import React, { useEffect, useState } from 'react'
+import { AutoRenewIcon, Button, Flex, Grid } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
-import { useNftsFromCollection } from 'state/nftMarket/hooks'
-import { Collection, NftToken } from 'state/nftMarket/types'
+import { useGetNftFilterLoadingState, useNftsFromCollection } from 'state/nftMarket/hooks'
+import { Collection, NftFilterLoadingState } from 'state/nftMarket/types'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
-import { Arrow, PageButtons } from '../../components/PaginationButtons'
+import { REQUEST_SIZE } from '../config'
 
 interface CollectionNftsProps {
   collection: Collection
 }
 
-const REQUEST_SIZE = 100
-const MAX_ITEMS_PER_PAGE = 100
-
 const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
-  const dispatch = useAppDispatch()
-  const scrollEl = useRef<HTMLDivElement>(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [maxPage, setMaxPages] = useState(1)
-  const [nftsSlice, setNftsSlice] = useState<NftToken[]>([])
+  const { totalSupply, address: collectionAddress } = collection
+  const [page, setPage] = useState(1)
   const { t } = useTranslation()
+  const collectionNfts = useNftsFromCollection(collectionAddress)
+  const nftFilterLoadingState = useGetNftFilterLoadingState()
+  const isFetching = nftFilterLoadingState === NftFilterLoadingState.LOADING
+  const dispatch = useAppDispatch()
 
-  const { address, totalSupply } = collection
-
-  const checksummedAddress = getAddress(address)
-
-  const nftsFromCollection = useNftsFromCollection(checksummedAddress)
-
-  const shouldFetchMoreNfts = nftsFromCollection?.length <= currentPage * MAX_ITEMS_PER_PAGE
-  const isArrowBackDisabled = currentPage === 1
-  const isArrowForwardDisabled = currentPage === maxPage || shouldFetchMoreNfts
-
-  const scrollToTop = (): void => {
-    scrollEl.current.scrollIntoView({
-      behavior: 'smooth',
-    })
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1)
   }
 
   useEffect(() => {
-    // First fetch
     dispatch(
       fetchNftsFromCollections({
-        collectionAddress: checksummedAddress,
-        page: 1,
+        collectionAddress,
+        page,
         size: REQUEST_SIZE,
       }),
     )
-  }, [checksummedAddress, dispatch])
+  }, [page, collectionAddress, dispatch])
 
-  useEffect(() => {
-    // Additional fetches
-    const fetchMoreNftsFromCollections = () => {
-      const requestPage = Math.ceil(nftsFromCollection.length / REQUEST_SIZE) + 1
-      dispatch(
-        fetchNftsFromCollections({
-          collectionAddress: checksummedAddress,
-          page: requestPage,
-          size: REQUEST_SIZE,
-        }),
-      )
-    }
-
-    // NB: TRAIT FILTERS - When trait filter is active, should probably prevent this from firing
-    if (nftsFromCollection?.length > 0 && shouldFetchMoreNfts) {
-      fetchMoreNftsFromCollections()
-    }
-  }, [nftsFromCollection, currentPage, checksummedAddress, shouldFetchMoreNfts, dispatch])
-
-  useEffect(() => {
-    const getMaxPages = () => {
-      // NB: TRAIT FILTERS - changing the `totalSupply` here to the length of the data returned by the traits res should work well for pure FE pagination.
-      const max = Math.ceil(Number(totalSupply) / MAX_ITEMS_PER_PAGE)
-      setMaxPages(max)
-    }
-
-    if (totalSupply) {
-      getMaxPages()
-    }
-  }, [totalSupply])
-
-  // Slice sorted data to paginate in FE
-  useEffect(() => {
-    const getActivitiesSlice = () => {
-      const slice = nftsFromCollection.slice(MAX_ITEMS_PER_PAGE * (currentPage - 1), MAX_ITEMS_PER_PAGE * currentPage)
-      setNftsSlice(slice)
-    }
-
-    if (nftsFromCollection?.length > 0) {
-      getActivitiesSlice()
-    }
-  }, [nftsFromCollection, currentPage])
-
-  if (!nftsSlice.length) {
-    return <GridPlaceholder />
+  if (!collectionNfts || collectionNfts?.length === 0) {
+    return <GridPlaceholder numItems={REQUEST_SIZE} />
   }
 
   return (
     <>
       <Grid
-        ref={scrollEl}
         gridGap="16px"
         gridTemplateColumns={['1fr', null, 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
         alignItems="start"
       >
-        {nftsSlice.map((nft) => {
-          const currentAskPrice = nft.marketData?.isTradable ? parseFloat(nft.marketData.currentAskPrice) : undefined
+        {collectionNfts.map((nft) => {
+          const currentAskPriceAsNumber = nft.marketData && parseFloat(nft.marketData.currentAskPrice)
+
           return (
             <CollectibleLinkCard
-              key={`${nft.tokenId}-${nft.collectionName}`}
+              key={nft.tokenId}
               nft={nft}
-              currentAskPrice={currentAskPrice}
+              currentAskPrice={currentAskPriceAsNumber > 0 ? currentAskPriceAsNumber : undefined}
             />
           )
         })}
       </Grid>
-      {nftsFromCollection?.length > MAX_ITEMS_PER_PAGE && (
-        <Flex mt="24px">
-          <PageButtons>
-            <Arrow
-              onClick={() => {
-                setCurrentPage(isArrowBackDisabled ? currentPage : currentPage - 1)
-              }}
-            >
-              <ArrowBackIcon
-                color={isArrowBackDisabled ? 'textDisabled' : 'primary'}
-                cursor={isArrowBackDisabled ? 'not-allowed' : 'pointer'}
-              />
-            </Arrow>
-            <Text>{t('Page %page% of %maxPage%', { page: currentPage, maxPage })}</Text>
-            <Arrow
-              onClick={() => {
-                if (!isArrowForwardDisabled) {
-                  scrollToTop()
-                  setCurrentPage(currentPage + 1)
-                }
-              }}
-            >
-              {shouldFetchMoreNfts ? (
-                <AutoRenewIcon spin color="textDisabled" cursor="not-allowed" />
-              ) : (
-                <ArrowForwardIcon
-                  color={isArrowForwardDisabled ? 'textDisabled' : 'primary'}
-                  cursor={isArrowForwardDisabled ? 'not-allowed' : 'pointer'}
-                />
-              )}
-            </Arrow>
-          </PageButtons>
-        </Flex>
-      )}
+      <Flex mt="60px" mb="12px" justifyContent="center">
+        {collectionNfts?.length < Number(totalSupply) && (
+          <Button
+            onClick={handleLoadMore}
+            scale="sm"
+            endIcon={isFetching ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+          >
+            {isFetching ? t('Loading') : t('Load more')}
+          </Button>
+        )}
+      </Flex>
     </>
   )
 }

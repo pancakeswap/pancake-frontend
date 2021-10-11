@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, BoxProps, Button, Grid, InlineMenu, TextField } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import FilterHeader from '../FilterHeader'
 import FilterFooter from '../FilterFooter'
 
 interface MinMaxFilterProps extends BoxProps {
@@ -12,7 +11,7 @@ interface MinMaxFilterProps extends BoxProps {
   onClear?: () => void
 }
 
-const MinMaxFilter: React.FC<MinMaxFilterProps> = ({ title, onApply, onClear, max, min = 0, ...props }) => {
+export const MinMaxFilter: React.FC<MinMaxFilterProps> = ({ onApply, onClear, max, min = 0, ...props }) => {
   const { t } = useTranslation()
   const [currentMax, setCurrentMax] = useState(max)
   const [currentMin, setCurrentMin] = useState(min)
@@ -63,11 +62,6 @@ const MinMaxFilter: React.FC<MinMaxFilterProps> = ({ title, onApply, onClear, ma
       {...props}
     >
       <Box width="320px">
-        <FilterHeader title={title}>
-          <Button onClick={handleApply} variant="text" scale="sm">
-            {t('Apply')}
-          </Button>
-        </FilterHeader>
         <Box px="24px" py="16px">
           <Grid gridGap="16px" gridTemplateColumns="repeat(2, 1fr)">
             <TextField label={t('Min')} value={currentMin} onUserInput={handleMinChange} isWarning={isError} />
@@ -86,5 +80,3 @@ const MinMaxFilter: React.FC<MinMaxFilterProps> = ({ title, onApply, onClear, ma
     </InlineMenu>
   )
 }
-
-export default MinMaxFilter
