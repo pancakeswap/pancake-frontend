@@ -184,7 +184,7 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
               {filteredItems.length > 0 ? (
                 orderBy(filteredItems, orderKey, orderDir).map((filteredItem) => {
                   const handleSelect = () => handleItemSelect(filteredItem)
-                  const isItemSelected = traitFilter && traitFilter.value === filteredItem.attr.value
+                  const isItemSelected = traitFilter ? traitFilter.value === filteredItem.attr.value : false
 
                   return (
                     <ItemRow
