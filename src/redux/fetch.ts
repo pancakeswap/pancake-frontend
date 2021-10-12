@@ -47,7 +47,7 @@ import web3 from '../utils/web3'
 import { multicallv2 } from '../utils/multicall'
 import { getId } from '../utils'
 
-export const initialData = (accountAddress: string, multi: any, setZombiePrice?: any) => {
+export const initialData = (accountAddress: string, setZombiePrice?: any) => {
   store.dispatch(updateAccount(accountAddress))
   const zombie = getZombieContract()
   const drFrankenstein = getDrFrankensteinContract()
@@ -174,10 +174,13 @@ export const initialTombData = (updatePoolObj?: { update: number, setUpdate: any
 export const grave = (pid: number, setUserInfoState?: { update: boolean, setUpdate: any }, setPoolInfoState?: { update: boolean, setUpdate: any }) => {
   getDrFrankensteinContract().methods.poolInfo(pid).call()
     .then(poolInfoRes => {
+      console.log(poolInfoRes)
+
       if (pid !== 0) {
         const graveStakingTokenContract = getBep20Contract(get.graveByPid(pid).stakingToken)
         graveStakingTokenContract.methods.totalSupply().call()
           .then(stakingTokenSupplyRes => {
+
             if (poolInfoRes.allocPoint !== 0) {
               store.dispatch(updateGravePoolInfo(
                 pid,
@@ -248,8 +251,9 @@ export const grave = (pid: number, setUserInfoState?: { update: boolean, setUpda
 }
 
 export const initialGraveData = (setUserState?, setPoolState?) => {
+  console.log('ayo')
   get.graves().forEach(g => {
-    grave(g.pid, setUserState, setPoolState)
+    grave(getId(g.pid), setUserState, setPoolState)
   })
 }
 
@@ -324,7 +328,6 @@ export const spawningPool = (id: number, zombie: any, poolUpdateObj?: { update: 
 export const auction = (
   id: number,
   mausoleum: any,
-  multi: any,
   updateAuctionObj?: { update: boolean, setUpdate: any },
   updateUserObj?: { update: boolean, setUpdate: any },
   everyUpdateObj?: { update: boolean, setUpdate: any },
@@ -348,10 +351,11 @@ export const auction = (
         }
         multicallv2(version === 'v3' ? mausoleumV3Abi : mausoleumAbi, calls)
           .then(res => {
+
             const start = parseInt(bidsLengthRes) - 6
             let index = start < -1 ? 0 : parseInt(bidsLengthRes) - 6
 
-            const bids = res[1].slice((v3 ? 2 : 3), res[1].length).map(bid => {
+            const bids = res.slice((v3 ? 2 : 3), res.length).map(bid => {
               index++
               return {
                 id: index,
@@ -359,9 +363,11 @@ export const auction = (
                 bidder: bid.bidder,
               }
             })
+            console.log(bids)
 
-            const userInfoRes = res[1][0]
-            const auctionInfoRes = v3 ? res[1][1] : res[1][2]
+            const userInfoRes = res[0]
+            const auctionInfoRes = v3 ? res[1] : res[2]
+
             store.dispatch(updateAuctionInfo(
               id,
               {
@@ -369,7 +375,7 @@ export const auction = (
                 bids,
                 endDate: auctionInfoRes.endDate.toNumber(),
                 finalized: auctionInfoRes.finalized,
-                unlockFeeInBnb: v3 ? BIG_ZERO : new BigNumber(res[1][1].toString()),
+                unlockFeeInBnb: v3 ? BIG_ZERO : new BigNumber(res[1].toString()),
               },
             ))
             store.dispatch(updateAuctionUserInfo(
@@ -386,27 +392,27 @@ export const auction = (
               everyUpdateObj.setUpdate(!everyUpdateObj.update)
             }
           })
-          .catch(() => {
-            console.log('multicall failed')
+          .catch((res) => {
+            console.log(res)
           })
       })
   } else {
     mausoleum.methods.bidsLength(aid).call()
       .then(bidsLengthRes => {
-        const inputs = [{ target: getMausoleumAddress(version), function: 'unlockFeeInBnb', args: [aid] }]
+        const calls = [{ address: getMausoleumAddress(version), name: 'unlockFeeInBnb', params: [aid] }]
         for (let x = parseInt(bidsLengthRes) - 5; x <= parseInt(bidsLengthRes); x++) {
           if (x - 1 >= 0) {
-            inputs.push({ target: getMausoleumAddress(version), function: 'bidInfo', args: [aid, x - 1] })
+            calls.push({ address: getMausoleumAddress(version), name: 'bidInfo', params: [aid, x - 1] })
           }
         }
 
-        multi.multiCall(mausoleumAbi, inputs)
+        multicallv2(mausoleumAbi, calls)
           .then(res => {
-            const auctionInfoRes = v3 ? res[1][1] : res[1][2]
+            const auctionInfoRes = v3 ? res[1] : res[2]
 
             const start = parseInt(bidsLengthRes) - 6
             let index = start < -1 ? 0 : parseInt(bidsLengthRes) - 6
-            const bids = res[1].slice((v3 ? 2 : 3), res[1].length).map(bid => {
+            const bids = res.slice((v3 ? 2 : 3), res.length).map(bid => {
               index++
               return {
                 id: index,
@@ -422,7 +428,7 @@ export const auction = (
                 bids,
                 endDate: auctionInfoRes.endDate.toNumber(),
                 finalized: auctionInfoRes.finalized,
-                unlockFeeInBnb: v3 ? BIG_ZERO : new BigNumber(res[1][1].toString()),
+                unlockFeeInBnb: v3 ? BIG_ZERO : new BigNumber(res[1].toString()),
               },
             ))
             if (updateAuctionObj && !updateAuctionObj.update) {
@@ -454,8 +460,8 @@ export const initialSpawningPoolData = (zombie: any, setPoolData?: { update: num
 
 export const nftUserInfo = (contract: any, updateUserObj: { update: boolean, setUpdate: any }, updateEveryObj?: { update: boolean, setUpdate: any }) => {
   if (account()) {
-    const nftAddresses = get.nfts().map(nft => nft.address)
-    contract.methods.massCheckOwnership(account(), nftAddresses).call()
+    const nftAddresses = get.nfts().map(nft => getAddress(nft.address))
+    contract.methods.massCheckOwnership(account(), (nftAddresses)).call()
       .then(res => {
         get.nfts().forEach((nft, index) => {
           store.dispatch(updateNftUserInfo(
@@ -493,7 +499,9 @@ const bnbPriceUsd = (setZombiePrice?: any) => {
   axios.get('https://api.binance.com/api/v3/avgPrice?symbol=BNBBUSD')
     .then(res => {
       store.dispatch(updateBnbPriceUsd(res.data.price))
-      zombiePriceBnb(setZombiePrice)
+      if(setZombiePrice) {
+        zombiePriceBnb(setZombiePrice)
+      }
     })
 }
 

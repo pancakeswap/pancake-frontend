@@ -7,6 +7,7 @@ import { account, graves } from 'redux/get'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
+import { getId } from '../../../../utils'
 
 const DisplayFlex = styled(BaseLayout)`
   display: flex;
@@ -50,7 +51,7 @@ const StakedGraves:React.FC<{zombieStaked}> = ({zombieStaked}) => {
     const handleHarvest = () => {
 
       stakedGraves.forEach((stakedGrave) => {
-        if (stakedGrave.pid === 0) {
+        if (getId(stakedGrave.pid) === 0) {
           drFrankenstein.methods.leaveStaking(0)
           .send({from: account()}).then(() => {
             toastSuccess(t('Claimed ZMBE'))

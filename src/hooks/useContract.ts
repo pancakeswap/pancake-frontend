@@ -25,12 +25,10 @@ import {
   getMausoleumContract,
   getSpawningPoolContract,
   getNftConverterContract,
-  getMausoleumV2Contract,
   getNftOwnership,
   getZombieBalanceCheckerContract,
   getCatacombsContract, getMulticallContract,
 } from 'utils/contractHelpers'
-import { MultiCall } from '@indexed-finance/multicall'
 
 /**
  * Helper hooks to get specific contracts (by ABI)

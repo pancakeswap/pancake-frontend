@@ -195,7 +195,7 @@ const tokens = {
     symbol: "PANTHER",
     address: {
       56: '0x1f546ad641b56b86fd9dceac473d1c7a357276b7',
-      97: ''
+      97: '0x8CD20B92A5853b50AADbf355e46A0E995A170286'
     },
     decimals: 18,
     projectLink: 'https://pantherswap.com/'

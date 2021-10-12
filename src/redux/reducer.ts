@@ -5,6 +5,7 @@ import graves from './graves'
 import nfts from './nfts'
 import spawningPools from './spawningPools'
 import auctions from './auctions'
+import { getId } from '../utils'
 
 const defaultState = {
   account: '',
@@ -62,22 +63,22 @@ export default function reducer(state = defaultState, action) {
     case types.UPDATE_GRAVE_POOL_INFO:
       return {
         ...state,
-        graves: state.graves.map(grave => grave.pid === action.payload.pid ? { ...grave, poolInfo: { ...grave.poolInfo, ...action.payload.poolInfo } } : grave),
+        graves: state.graves.map(grave => getId(grave.pid) === action.payload.pid ? { ...grave, poolInfo: { ...grave.poolInfo, ...action.payload.poolInfo } } : grave),
       }
     case types.UPDATE_GRAVE_USER_INFO:
       return {
         ...state,
-        graves: state.graves.map(grave => grave.pid === action.payload.pid ? { ...grave, userInfo: { ...grave.userInfo, ...action.payload.userInfo } } : grave),
+        graves: state.graves.map(grave => getId(grave.pid) === action.payload.pid ? { ...grave, userInfo: { ...grave.userInfo, ...action.payload.userInfo } } : grave),
       }
     case types.UPDATE_TOMB_USER_INFO:
       return {
         ...state,
-        tombs: state.tombs.map(tomb => tomb.pid === action.payload.pid ? { ...tomb, userInfo: { ...tomb.userInfo, ...action.payload.userInfo } } : tomb),
+        tombs: state.tombs.map(tomb => getId(tomb.pid) === action.payload.pid ? { ...tomb, userInfo: { ...tomb.userInfo, ...action.payload.userInfo } } : tomb),
       }
     case types.UPDATE_TOMB_POOL_INFO:
       return {
         ...state,
-        tombs: state.tombs.map(tomb => tomb.pid === action.payload.pid ? { ...tomb, poolInfo: { ...tomb.poolInfo, ...action.payload.poolInfo } } : tomb),
+        tombs: state.tombs.map(tomb => getId(tomb.pid) === action.payload.pid ? { ...tomb, poolInfo: { ...tomb.poolInfo, ...action.payload.poolInfo } } : tomb),
       }
     case types.UPDATE_SPAWNING_POOL_INFO:
       return {

@@ -64,7 +64,7 @@ export const zmbeBnbTomb = (): Tomb => {
 }
 
 export const graveByPid = (pid: number): Grave => {
-  return store.getState().graves.find(g => g.pid === pid)
+  return store.getState().graves.find(g => getId(g.pid) === pid)
 }
 
 export const graves = (): Grave[] => {
@@ -84,7 +84,7 @@ export const spawningPoolById = (id: number): SpawningPool => {
 }
 
 export const grave = (pid: number): Grave => {
-  return store.getState().graves.find(g => g.pid === pid)
+  return store.getState().graves.find(g => getId(g.pid) === pid)
 }
 
 export const tombs = (): Tomb[] => {

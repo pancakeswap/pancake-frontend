@@ -86,7 +86,7 @@ export interface Artist {
 }
 
 export interface Grave {
-  pid: number,
+  pid: Id,
   name: string,
   subtitle: string,
   path: string,
