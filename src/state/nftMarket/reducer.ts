@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import isEmpty from 'lodash/isEmpty'
 import {
   getNftsFromCollectionApi,
   getNftsMarketData,
@@ -145,6 +146,9 @@ export const filterNftsFromCollection = createAsyncThunk<
       }),
       {},
     )
+    if (isEmpty(attrParams)) {
+      return []
+    }
     const attrFilters = await fetchNftsFiltered(collectionAddress, attrParams)
 
     // Fetch market data for each token returned
