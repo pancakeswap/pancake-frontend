@@ -1660,6 +1660,14 @@ export const mainnetTokens = {
     'Lightning',
     'https://lightningprotocol.finance/',
   ),
+  rpg: new Token(
+    MAINNET,
+    '0xc2098a8938119A52B1F7661893c0153A6CB116d5',
+    18,
+    'RPG',
+    'Rangers Protocol',
+    'https://www.rangersprotocol.com/',
+  ),
 }
 
 export const testnetTokens = {
