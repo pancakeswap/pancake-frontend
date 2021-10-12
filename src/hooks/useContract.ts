@@ -29,6 +29,7 @@ import {
   getNftOwnership,
   getZombieBalanceCheckerContract,
   getCatacombsContract,
+  getInstaBuyContract,
 } from 'utils/contractHelpers'
 import { MultiCall } from '@indexed-finance/multicall'
 
@@ -161,4 +162,9 @@ export const usePredictionsContract = () => {
 export const useCatacombsContract = () => {
   const web3 = useWeb3()
   return useMemo(() => getCatacombsContract(web3), [web3])
+}
+
+export const useInstaBuyContract = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getInstaBuyContract(web3), [web3])
 }

@@ -1,0 +1,459 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_treasury",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_zmbe",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_dexRouter",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_priceConsumer",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nftAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_priceMode",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxMints",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxMintsPerUser",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_salesPerPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_priceIncrease",
+                "type": "uint256"
+            }
+        ],
+        "name": "addNft",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "burnAddr",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "dexRouter",
+        "outputs": [
+            {
+                "internalType": "contract IUniswapV2Router02",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            }
+        ],
+        "name": "instaBuy",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "nftAddresses",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "nftInfo",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "isEnabled",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum PriceMode",
+                "name": "priceMode",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxMints",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxMintsPerUser",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "salesPerPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "priceIncrease",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "nftLength",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "priceConsumer",
+        "outputs": [
+            {
+                "internalType": "contract IPriceConsumerV3",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            }
+        ],
+        "name": "priceInBnb",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "name": "setIsEnabled",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxMints",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMaxMints",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxMintsPerUser",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMaxMintsPerUser",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_price",
+                "type": "uint256"
+            }
+        ],
+        "name": "setPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_priceConsumer",
+                "type": "address"
+            }
+        ],
+        "name": "setPriceConsumer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_priceIncrease",
+                "type": "uint256"
+            }
+        ],
+        "name": "setPriceIncrease",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_priceMode",
+                "type": "uint256"
+            }
+        ],
+        "name": "setPriceMode",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_dexRouter",
+                "type": "address"
+            }
+        ],
+        "name": "setRouter",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_salesPerPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "setSalesPerPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_treasury",
+                "type": "address"
+            }
+        ],
+        "name": "setTreasury",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "zmbe",
+        "outputs": [
+            {
+                "internalType": "contract IBEP20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

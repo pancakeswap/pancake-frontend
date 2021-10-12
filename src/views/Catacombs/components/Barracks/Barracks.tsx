@@ -38,7 +38,7 @@ const Barracks: React.FC = () => {
     return (
       <Menu>
         <div>
-            Barracks is working!
+          <p color="white!important">Barracks is working!</p>
         </div>
       </Menu>
     )
