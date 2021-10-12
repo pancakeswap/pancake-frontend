@@ -16,8 +16,8 @@ const config = [
   {
     title: 'How can I list my NFT collection on the Market?',
     description: [
-      'Right now, you can only buy and sell NFTs PancakeSwap’s home-made NFT collections on the market.',
-      'Support for other collections is coming soon. We’ll make an announcement once applications are open, together with an application form for NFT projects to submit for review.',
+      'In Phase 2 of the NFT Marketplace, collections must be whitelisted before they may be listed.',
+      'We are now accepting applications from NFT collection owners seeking to list their collections. Please apply here: https://docs.pancakeswap.finance/contact-us/nft-market-applications',
     ],
   },
   {

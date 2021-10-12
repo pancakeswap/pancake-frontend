@@ -16,7 +16,7 @@ const useNewestNfts = () => {
 
   useEffect(() => {
     const fetchNewestNfts = async () => {
-      const nftsFromSg = await getLatestListedNfts(8)
+      const nftsFromSg = await getLatestListedNfts(16)
       const nftsFromApi = await getNftsFromDifferentCollectionsApi(
         nftsFromSg.map((nft) => ({ collectionAddress: nft.collection.id, tokenId: nft.tokenId })),
       )
