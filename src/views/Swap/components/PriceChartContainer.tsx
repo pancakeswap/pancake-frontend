@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { fromUnixTime } from 'date-fns'
 import { useTokenPriceData } from 'state/info/hooks'
-import { PoolUpdater, ProtocolUpdater, TokenUpdater } from 'state/info/updaters'
+import { TokenUpdater } from 'state/info/updaters'
 import { useSwapActionHandlers } from 'state/swap/hooks'
 import useTheme from 'hooks/useTheme'
 import { DEFAULT_INPUT_ADDRESS } from '../constants'
@@ -32,8 +32,6 @@ const PriceChartContainer = ({ inputCurrencyId, inputCurrency, outputCurrency })
   return (
     <>
       <TokenUpdater />
-      <ProtocolUpdater />
-      <PoolUpdater />
 
       <PriceChart
         lineChartData={lineChartData}

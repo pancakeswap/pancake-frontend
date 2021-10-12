@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
 import { Button, Text, ArrowDownIcon, Box, useModal, Flex } from '@pancakeswap/uikit'
@@ -308,15 +308,13 @@ export default function Swap({ history }: RouteComponentProps) {
 
   return (
     <Page>
-      <Flex mb="60px">
-        <Suspense fallback="loading...">
-          <PriceChartContainer
-            inputCurrencyId={inputCurrencyId}
-            inputCurrency={currencies[Field.INPUT]}
-            outputCurrency={currencies[Field.OUTPUT]}
-          />
-        </Suspense>
-        <AppBody>
+      <Flex width="100%" mb="60px" justifyContent="center">
+        <PriceChartContainer
+          inputCurrencyId={inputCurrencyId}
+          inputCurrency={currencies[Field.INPUT]}
+          outputCurrency={currencies[Field.OUTPUT]}
+        />
+        <AppBody maxWidth="328px" fitContent>
           <AppHeader title={t('Exchange')} subtitle={t('Trade tokens in an instant')} />
           <Wrapper id="swap-page">
             <AutoColumn gap="md">
