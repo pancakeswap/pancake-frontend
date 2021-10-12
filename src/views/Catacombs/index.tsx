@@ -9,13 +9,12 @@ import './Catacombs.Styles.css'
 
 const Catacombs: React.FC = (props) => {
   useEagerConnect()
-  const multi = useMultiCall()
   const { account } = useWeb3React()
   const catacombs = useCatacombsContract()
 
   useEffect(() => {
-    fetch.initialData(account, multi)
-  }, [account, multi])
+    fetch.initialData(account)
+  }, [account])
 
   const [unlocked, setUnlocked] = useState(false)
 

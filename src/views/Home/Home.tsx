@@ -41,11 +41,10 @@ const Cards = styled(BaseLayout)`
 
 const Home: React.FC = () => {
   useEagerConnect()
-  const multi = useMultiCall()
   const {account} = useWeb3React()
   useEffect(() => {
-    fetch.initialData(account, multi)
-  }, [account, multi])
+    fetch.initialData(account)
+  }, [account])
 
   return (
     <>

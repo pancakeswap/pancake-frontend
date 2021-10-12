@@ -6,7 +6,10 @@ import { Grave } from './types'
 
 const graves: Grave[] = [
   {
-    pid: 22,
+    pid: {
+      56: 22,
+      97: 0,
+    },
     name: 'RugZombie Common',
     subtitle: 'Basic Zombie',
     path: 'images/rugZombie/BasicZombie.gif',
@@ -40,7 +43,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 0,
+    pid: {
+      56: 0,
+      97: 0,
+    },
     name: 'RugZombie Common (Legacy)',
     subtitle: 'Basic Zombie',
     path: 'images/rugZombie/BasicZombie.gif',
@@ -74,7 +80,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 23,
+    pid: {
+      56: 23,
+      97: 0,
+    },
     name: 'RugZombie Uncommon',
     subtitle: 'Zombie Horde',
     path: 'images/rugZombie/Zombie Multiplier.png',
@@ -111,7 +120,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 24,
+    pid: {
+      56: 24,
+      97: 0,
+    },
     name: 'RugZombie Rare',
     subtitle: 'Zombie Multiplexer',
     path: 'https://ipfs.io/ipfs/Qmdi7wTt8iF62ay8foD7nqP5F7qSB9YGaYgY3NL1URA5Cw',
@@ -148,7 +160,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 27,
+    pid: {
+      56: 27,
+      97: 0,
+    },
     name: 'Whale Pass Rare',
     subtitle: 'Season 1',
     path: 'https://ipfs.io/ipfs/QmQnj8i4k2kwoboNN2TMoJ5ugH1Mxav4r8zAsz6PmXvP7P',
@@ -187,7 +202,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 26,
+    pid: {
+      56: 26,
+      97: 1,
+    },
     name: 'Pantherswap Legendary',
     subtitle: 'The Killmonger',
     path: "images/rugZombie/The Killmonger min.jpeg",
@@ -221,7 +239,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 28,
+    pid: {
+      56: 28,
+      97: 1,
+    },
     name: 'Bonfire Rare',
     subtitle: 'The Chosen',
     path: 'https://ipfs.io/ipfs/Qmet1ztQoPXekbc8AK3VkxJK62CAQJC35weUKM6iz4Mn8s',
@@ -256,7 +277,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 19,
+    pid: {
+      56: 19,
+      97: 1,
+    },
     name: 'Emperor Token Rare',
     subtitle: 'Young Fool',
     path: 'https://storage.googleapis.com/rug-zombie/Young%20Fool.jpeg',
@@ -290,7 +314,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 21,
+    pid: {
+      56: 21,
+      97: 1,
+    },
     name: 'Hyrule Swap Rare',
     subtitle: 'GlitchLink',
     path: 'https://storage.googleapis.com/rug-zombie/GlitchLink.webm',
@@ -324,7 +351,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 20,
+    pid: {
+      56: 20,
+      97: 1,
+    },
     name: 'Hyrule Swap Uncommon',
     subtitle: 'Rugian Shield',
     path: 'https://storage.googleapis.com/rug-zombie/Rugian%20Shield.png',
@@ -358,7 +388,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 1,
+    pid: {
+      56: 1,
+      97: 1,
+    },
     name: 'VikingSwap Rare',
     subtitle: 'Viking Brains',
     path: 'images/rugZombie/VikingBrains.jpeg',
@@ -393,7 +426,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 2,
+    pid: {
+      56: 2,
+      97: 1,
+    },
     name: 'MonsterSlayer Rare',
     subtitle: 'ZombieSlayer',
     path: 'images/rugZombie/ZombieSlayer.gif',
@@ -427,7 +463,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 18,
+    pid: {
+      56: 18,
+      97: 1,
+    },
     name: 'Thunderswap Rare',
     subtitle: 'Electric Zombie',
     path: 'images/rugZombie/Electric Zombie.png',
@@ -462,7 +501,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 12,
+    pid: {
+      56: 12,
+      97: 1,
+    },
     name: 'Autoshark Legendary',
     subtitle: 'Chompers',
     path: 'images/rugZombie/Chompers.webm',
@@ -500,7 +542,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 15,
+    pid: {
+      56: 15,
+      97: 1,
+    },
     name: 'RUGBIDEN Rare',
     subtitle: 'Zombiden',
     path: 'https://storage.googleapis.com/rug-zombie/RUGBIDEN.webm',
@@ -534,7 +579,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 16,
+    pid: {
+      56: 16,
+      97: 1,
+    },
     name: 'Burger Swap Rare',
     subtitle: 'Zomburger',
     path: 'images/rugZombie/Zomburger.jpeg',
@@ -568,7 +616,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 13,
+    pid: {
+      56: 13,
+      97: 1,
+    },
     name: 'The US Dollar Rare',
     subtitle: 'DeadDollar',
     path: 'images/rugZombie/DeadDollar.png',
@@ -602,7 +653,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 3,
+    pid: {
+      56: 3,
+      97: 1,
+    },
     name: 'Defi100 Rare',
     subtitle: 'Zombie100',
     path: 'images/rugZombie/Zombie100.gif',
@@ -636,7 +690,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 10,
+    pid: {
+      56: 10,
+      97: 1,
+    },
     name: 'Merlin Lab Rare',
     subtitle: 'My name is MERL',
     path: 'images/rugZombie/My Name Is MERL.png',
@@ -670,7 +727,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 4,
+    pid: {
+      56: 4,
+      97: 1,
+    },
     name: 'Fairmoon Rare',
     subtitle: 'Raremoon',
     path: 'images/rugZombie/Raremoon.jpeg',
@@ -704,7 +764,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 14,
+    pid: {
+      56: 14,
+      97: 1,
+    },
     name: 'Uranium Finance Uncommon',
     subtitle: 'The Rad Chad',
     path: 'images/rugZombie/The Rad Chad.png',
@@ -738,7 +801,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 5,
+    pid: {
+      56: 5,
+      97: 1,
+    },
     name: 'Fairmoon Uncommon',
     subtitle: 'Zombie on the Moon',
     path: 'images/rugZombie/FairmoonUncommon.webm',
@@ -772,7 +838,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 25,
+    pid: {
+      56: 25,
+      97: 1,
+    },
     name: 'Kitty Cake Common',
     subtitle: 'Meowser',
     path: 'https://ipfs.io/ipfs/QmeRBJF6shwm23FrvCQ3SU69wWFcN3kJXNqseTxCyvi3LN',
@@ -806,7 +875,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 6,
+    pid: {
+      56: 6,
+      97: 1,
+    },
     name: 'Fairmoon Common',
     subtitle: 'Fairmoon Common',
     path: 'images/rugZombie/FairmoonCommon.webm',
@@ -840,7 +912,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 7,
+    pid: {
+      56: 7,
+      97: 1,
+    },
     name: 'Gorilla Yield Common',
     subtitle: 'Gorilla Yield Common',
     path: 'images/rugZombie/yApeCommon.jpeg',
@@ -874,7 +949,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 8,
+    pid: {
+      56: 8,
+      97: 1,
+    },
     name: 'Dragon Farm Finance Common',
     subtitle: 'Dragon Farm Finance Common',
     path: 'images/rugZombie/CommonDragonFarmFinance.webm',
@@ -908,7 +986,10 @@ const graves: Grave[] = [
     },
   },
   {
-    pid: 9,
+    pid: {
+      56: 9,
+      97: 1,
+    },
     name: 'yPanda Common',
     subtitle: 'yPanda Common',
     path: 'images/rugZombie/yPandaCommon.jpeg',

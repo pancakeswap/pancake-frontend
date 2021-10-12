@@ -11,6 +11,7 @@ import { grave, initialData, initialGraveData } from '../../redux/fetch'
 import { graves, zombiePriceUsd } from '../../redux/get'
 import { useMultiCall } from '../../hooks/useContract'
 import GraveTabButtons from './components/GraveTabButtons'
+import { getId } from '../../utils'
 
 let accountAddress
 
@@ -50,18 +51,16 @@ const Graves: React.FC = () => {
   const [updatePoolInfo, setUpdatePoolInfo] = useState(false)
   const [filter, setFilter] = useState(0)
   const [stakedOnly, setStakedOnly] = useState(false)
-  const multi = useMultiCall()
-  const { isLg, isXl } = useMatchBreakpoints()
-  const isDesktop = isLg || isXl
+
   useEffect(() => {
-    initialData(account, multi)
-    if(updateUserInfo) {
+    initialData(account)
+    if(!updateUserInfo) {
       initialGraveData(
         { update: updateUserInfo, setUpdate: setUpdateUserInfo },
         { update: updatePoolInfo, setUpdate: setUpdatePoolInfo }
       )
     }
-  }, [account, multi, updatePoolInfo, updateUserInfo])
+  }, [account, updatePoolInfo, updateUserInfo])
 
   accountAddress = account
   const [bnbInBusd, setBnbInBusd] = useState(0)
@@ -107,7 +106,7 @@ const Graves: React.FC = () => {
           {visibleGraves.map((g, index) => {
             return <Table zombieUsdPrice={zombiePriceUsd()}
                           updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
-                          isAllowance={isAllowance} pid={g.pid} key={g.pid} account={accountAddress} />
+                          isAllowance={isAllowance} pid={getId(g.pid)} key={getId(g.pid)} />
           })}
         </div>
       </Page>

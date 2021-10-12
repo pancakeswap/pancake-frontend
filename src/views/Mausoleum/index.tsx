@@ -20,7 +20,6 @@ const Mausoleum = () => {
   const isDesktop = isLg || isXl
   const [userInfo] = useState({})
   const [refresh, setRefresh] = useState(false)
-  const multi = useMultiCall()
   const { id } = useParams<ParamTypes>()
   const auctionId = parseInt(id)
   const { version } = auctionById(auctionId)
@@ -32,7 +31,6 @@ const Mausoleum = () => {
     auction(
       auctionId,
       mausoleum,
-      multi,
       { update: updateAuctionInfo, setUpdate: setUpdateAuctionInfo },
       { update: updateUserInfo, setUpdate: setUpdateUserInfo },
     )

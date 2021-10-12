@@ -50,11 +50,10 @@ const App: React.FC = () => {
   })
 
   useEagerConnect()
-  const multi = useMultiCall()
   const { account } = useWeb3React()
   useEffect(() => {
-    fetch.initialData(account, multi, setZombiePrice)
-  }, [account, multi])
+    fetch.initialData(account, setZombiePrice)
+  }, [account])
 
   const handleAuthentication = () => {
     setAuthenticated(!isAuthenticated)

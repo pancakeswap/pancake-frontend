@@ -9,37 +9,30 @@ import { getDrFrankensteinAddress } from 'utils/addressHelpers'
 import Page from '../../components/layout/Page'
 import Table from './Table'
 import '../Graves/Graves.Styles.css'
-import { tombs } from '../../redux/get'
+import { account, tombs } from '../../redux/get'
 import { initialTombData, tomb } from '../../redux/fetch'
-
-let accountAddress
+import { getId } from '../../utils'
 
 const Tombs: React.FC = () => {
-  const { account } = useWeb3React()
   const [update, setUpdate] = useState(false)
-  const multi = useMultiCall()
-  accountAddress = account
   const drFrankenstein = useDrFrankenstein()
   const [bnbInBusd, setBnbInBusd] = useState(0)
   const [updatePoolInfo, setUpdatePoolInfo] = useState(0)
   const [updateUserInfo, setUpdateUserInfo] = useState(0)
 
   useEffect(() => {
-    if(updatePoolInfo === 0) {
+    if(updatePoolInfo === 0 && updateUserInfo === 0) {
       initialTombData(
-        multi,
         { update: updatePoolInfo, setUpdate: setUpdatePoolInfo },
         { update: updateUserInfo, setUpdate: setUpdateUserInfo },
       )
     }
-  }, [drFrankenstein.methods, multi, updatePoolInfo, updateUserInfo])
+  }, [drFrankenstein.methods, updatePoolInfo, updateUserInfo])
 
   const [isAllowance, setIsAllowance] = useState(false)
-
   const updateResult = (pid) => {
     tomb(
       pid,
-      multi,
       null,
       null,
       { update, setUpdate },
@@ -47,7 +40,7 @@ const Tombs: React.FC = () => {
   }
 
   const updateAllowance = (tokenContact, pid) => {
-    tokenContact.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
+    tokenContact.methods.allowance(account(), getDrFrankensteinAddress()).call()
       .then(res => {
         if (parseInt(res.toString()) !== 0) {
           setIsAllowance(true)
@@ -79,7 +72,7 @@ const Tombs: React.FC = () => {
       <Page>
         <div>
           {tombs().sort((a, b) => a.id - b.id).map((t) => {
-            return <Table pid={t.pid} updateResult={updateResult} updateAllowance={updateAllowance}
+            return <Table pid={getId(t.pid)} updateResult={updateResult} updateAllowance={updateAllowance}
                           bnbInBusd={bnbInBusd}
                           isAllowance={isAllowance} key={t.id} />
           })}

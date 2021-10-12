@@ -26,19 +26,19 @@ const SpawningPools: React.FC = () => {
   useEffect(() => {
     if(account) {
       if(updateUserInfo === 0) {
-        initialSpawningPoolData(multi, zombie, undefined,{update: updateUserInfo, setUpdate: setUpdateUserInfo})
+        initialSpawningPoolData(zombie, undefined,{update: updateUserInfo, setUpdate: setUpdateUserInfo})
       }
     } else if(updatePoolInfo === 0) {
-        initialSpawningPoolData(multi, zombie, {update: updatePoolInfo, setUpdate: setUpdatePoolInfo})
+        initialSpawningPoolData(zombie, {update: updatePoolInfo, setUpdate: setUpdatePoolInfo})
     }
 
-  }, [account, multi, updatePoolInfo, updateUserInfo, zombie])
+  }, [account, updatePoolInfo, updateUserInfo, zombie])
 
   accountAddress = account
   const [bnbInBusd, setBnbInBusd] = useState(0)
 
   const updateResult = (pid) => {
-    spawningPool(pid, multi, zombie)
+    spawningPool(pid, zombie)
   }
     const updateAllowance = (tokenContact, pid) => {
       tokenContact.methods.allowance(accountAddress, getSpawningPoolAddress(id)).call()

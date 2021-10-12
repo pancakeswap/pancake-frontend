@@ -6,7 +6,7 @@ import StartFarming from '../StartFarming/StartFarming'
 import BuyFrank from '../BuyFrank/BuyFrank'
 import RugInDetails from '../RugInDetails'
 import TableList from './TableList'
-import { grave } from '../../../../redux/get'
+import { account, grave } from '../../../../redux/get'
 
 const TableCards = styled(BaseLayout)`
   align-items: stretch;
@@ -25,10 +25,9 @@ interface TableProps {
   updateAllowance: any,
   updateResult: any,
   zombieUsdPrice: number,
-  account: string,
 }
 
-const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice, account }: TableProps) => {
+const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [graveData, setGraveData] = useState(grave(pid))
   const openInDetails = (data) => {
@@ -54,7 +53,7 @@ const Table: React.FC<TableProps> = ({ pid, isAllowance, bnbInBusd, updateAllowa
                 <StartFarming updateResult={setGraveData} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} pid={pid} isAllowance={isAllowance}  />
                 <BuyFrank pid={pid} />
               </div>
-              <RugInDetails bnbInBusd={bnbInBusd} pid={pid} zombieUsdPrice={zombieUsdPrice} account={account} />
+              <RugInDetails bnbInBusd={bnbInBusd} pid={pid} zombieUsdPrice={zombieUsdPrice} account={account()} />
             </div>
           </div>
         ) : null}

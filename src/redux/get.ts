@@ -4,6 +4,8 @@ import store from './store'
 import { Grave, Tomb, SpawningPool, UserInfo, Auction } from './types'
 import { BIG_ZERO } from '../utils/bigNumber'
 import { getBalanceAmount } from '../utils/formatBalance'
+import { getId } from '../utils'
+import { Id } from '../config/constants/types'
 
 export const account = (): string => {
   return store.getState().account
@@ -46,7 +48,7 @@ export const totalAllocPoint = (): BigNumber => {
 }
 
 export const tombByPid = (pid: number): Tomb => {
-  return store.getState().tombs.find(t => t.pid === pid)
+  return store.getState().tombs.find(t => getId(t.pid) === pid)
 }
 
 export const coingeckoPrice = (id: string) => {
@@ -54,11 +56,15 @@ export const coingeckoPrice = (id: string) => {
 }
 
 export const zmbeBnbTomb = (): Tomb => {
-  return tombByPid(11)
+  const pancakeZmbeBnbTombPid: Id = {
+    56: 11,
+    97: 2
+  }
+  return tombByPid(getId(pancakeZmbeBnbTombPid))
 }
 
 export const graveByPid = (pid: number): Grave => {
-  return store.getState().graves.find(g => g.pid === pid)
+  return store.getState().graves.find(g => getId(g.pid) === pid)
 }
 
 export const graves = (): Grave[] => {
@@ -78,7 +84,7 @@ export const spawningPoolById = (id: number): SpawningPool => {
 }
 
 export const grave = (pid: number): Grave => {
-  return store.getState().graves.find(g => g.pid === pid)
+  return store.getState().graves.find(g => getId(g.pid) === pid)
 }
 
 export const tombs = (): Tomb[] => {

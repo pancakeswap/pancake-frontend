@@ -56,7 +56,6 @@ const StakedSpawningPools: React.FC<{ zombieStaked }> = ({ zombieStaked }) => {
   useEffect(() => {
     if(updateUserInfo === 0) {
       initialSpawningPoolData(
-        multi,
         zombie,
         undefined,
         { update: updateUserInfo, setUpdate: setUpdateUserInfo },

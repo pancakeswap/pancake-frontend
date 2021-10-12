@@ -8,6 +8,7 @@ import { useERC721 } from 'hooks/useContract'
 import InfoRow from './InfoRow'
 import { nftById } from '../../../redux/get'
 import { ToastDescriptionWithTx } from '../../../components/Toast'
+import { getAddress } from '../../../utils/addressHelpers'
 
 interface TransferNftModalProps {
   id: number
@@ -43,7 +44,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ id, tokenId, onSucc
   const [error, setError] = useState(null)
   const { account } = useWeb3React()
   const { address, name} = nftById(id)
-  const contract = useERC721(address)
+  const contract = useERC721(getAddress(address))
   const { toastSuccess } = useToast()
 
   const handleConfirm = async () => {

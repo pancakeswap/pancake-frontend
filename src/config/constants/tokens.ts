@@ -16,7 +16,7 @@ const tokens = {
     symbol: 'ZMBE',
     address: {
       56: '0x50ba8BF9E34f0F83F96a340387d1d3888BA4B3b5',
-      97: '0x2eC0Ab80Ce0Cb3758964Fd18189bC5AC61A830A5',
+      97: '0xB8EE810b15553A7f11eC813C0FDF7C25bab89C4E',
     },
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
@@ -199,7 +199,7 @@ const tokens = {
     symbol: "PANTHER",
     address: {
       56: '0x1f546ad641b56b86fd9dceac473d1c7a357276b7',
-      97: ''
+      97: '0x8CD20B92A5853b50AADbf355e46A0E995A170286'
     },
     decimals: 18,
     projectLink: 'https://pantherswap.com/'

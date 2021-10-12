@@ -37,13 +37,11 @@ const TotalValueLockedCard: React.FC = () => {
   const zombie = useZombie()
   const [updatePoolInfo, setUpdatePoolInfo] = useState(0)
   useEffect(() => {
-    initialTombData(
-      multi
-    )
-  }, [multi])
+    initialTombData()
+  }, [])
   useEffect(() => {
     if(updatePoolInfo === 0) {
-      initialSpawningPoolData(multi, zombie, {update: updatePoolInfo, setUpdate: setUpdatePoolInfo})
+      initialSpawningPoolData(zombie, {update: updatePoolInfo, setUpdate: setUpdatePoolInfo})
     }
   }, [multi, updatePoolInfo, zombie])
 

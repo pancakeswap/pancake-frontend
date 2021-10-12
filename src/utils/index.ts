@@ -1,4 +1,5 @@
 import { BASE_BSC_SCAN_URLS } from '../config'
+import { Id } from '../config/constants/types'
 
 // eslint-disable-next-line import/prefer-default-export
 export function getBscScanLink(
@@ -22,4 +23,10 @@ export function getBscScanLink(
       return `${BASE_BSC_SCAN_URLS[56]}/address/${data}`
     }
   }
+}
+
+export function getId(id: Id): number {
+  const mainNetChainId = 56
+  const chainId = process.env.REACT_APP_CHAIN_ID
+  return id[chainId] ? id[chainId] : id[mainNetChainId]
 }

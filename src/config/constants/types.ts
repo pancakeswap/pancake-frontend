@@ -5,6 +5,11 @@ export interface Address {
   56: string
 }
 
+export interface Id {
+  97?: number
+  56: number
+}
+
 export interface Token {
   symbol: string
   address?: Address

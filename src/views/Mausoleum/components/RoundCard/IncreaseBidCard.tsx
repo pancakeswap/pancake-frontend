@@ -5,7 +5,7 @@ import {
   LinkExternal,
   PlayCircleOutlineIcon,
   Button,
- Text, Flex, FlexProps,
+ Text, Flex,
 } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition } from 'state/types'
@@ -19,7 +19,7 @@ import { BIG_TEN, BIG_ZERO } from '../../../../utils/bigNumber'
 import { getBalanceAmount } from '../../../../utils/formatBalance'
 import { account, auctionById, auctions } from '../../../../redux/get'
 import { getMausoleumAddress } from '../../../../utils/addressHelpers'
-import { useERC20, useMausoleum, useMultiCall } from '../../../../hooks/useContract'
+import { useERC20, useMausoleum } from '../../../../hooks/useContract'
 import '../MobileCard/cardStyles.css';
 import { auction } from '../../../../redux/fetch'
 
@@ -61,7 +61,6 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRe
   const { aid, version, bidToken, userInfo: { paidUnlockFee, bid } } = auctionById(id)
   const mausoleum = useMausoleum(version)
   const bidTokenContract = useERC20(bidToken)
-  const multi = useMultiCall()
   const handleBack = () =>
     setState((prevState) => ({
       ...prevState,
@@ -136,11 +135,10 @@ const IncreaseBidCard: React.FC<OpenRoundCardProps> = ({ lastBid, refresh, setRe
                 .then(() => {
                   auction(
                     id,
-                    multi,
                     undefined,
                     undefined,
                     undefined,
-                    {  update, setUpdate }
+                    { update, setUpdate }
                   )
                 })
             })
