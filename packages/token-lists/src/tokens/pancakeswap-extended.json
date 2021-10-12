@@ -1894,5 +1894,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xBe1a001FE942f96Eea22bA08783140B9Dcc09D28.png"
+  },
+  {
+    "name": "Rangers Protocol",
+    "symbol": "RPG",
+    "address": "0xc2098a8938119A52B1F7661893c0153A6CB116d5",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xc2098a8938119A52B1F7661893c0153A6CB116d5.png"
   }
 ]

@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-10-08T08:11:35.213Z",
+  "timestamp": "2021-10-12T12:17:32.091Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 28
+    "patch": 29
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1427,6 +1427,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x0a3A21356793B49154Fd3BbE91CBc2A16c0457f5.png"
+    },
+    {
+      "name": "Rangers Protocol",
+      "symbol": "RPG",
+      "address": "0xc2098a8938119A52B1F7661893c0153A6CB116d5",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xc2098a8938119A52B1F7661893c0153A6CB116d5.png"
     },
     {
       "name": "rUSD",
