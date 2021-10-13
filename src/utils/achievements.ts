@@ -71,7 +71,7 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
       const [claimStatus] = claimStatusArr
 
       if (claimStatus === true) {
-        return [...accum, { address: getPointCenterIfoAddress(), name: 'ifos', params: [index] }]
+        return [...accum, { address: getPointCenterIfoAddress(), name: 'ifos', params: [ifoCampaigns[index].address] }]
       }
 
       return accum
@@ -80,18 +80,19 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
 
   // Transform response to an Achievement
   return claimableIfoData.reduce((accum, claimableIfoDataItem) => {
-    if (!campaignMap.has(claimableIfoDataItem.campaignId)) {
+    const claimableCampaignId = claimableIfoDataItem.campaignId.toString()
+    if (!campaignMap.has(claimableCampaignId)) {
       return accum
     }
 
-    const campaignMeta = campaignMap.get(claimableIfoDataItem.campaignId)
-    const { address } = ifoCampaigns.find((ifoCampaign) => ifoCampaign.campaignId === claimableIfoDataItem.campaignId)
+    const campaignMeta = campaignMap.get(claimableCampaignId)
+    const { address } = ifoCampaigns.find((ifoCampaign) => ifoCampaign.campaignId === claimableCampaignId)
 
     return [
       ...accum,
       {
         address,
-        id: claimableIfoDataItem.campaignId,
+        id: claimableCampaignId,
         type: 'ifo',
         title: getAchievementTitle(campaignMeta),
         description: getAchievementDescription(campaignMeta),

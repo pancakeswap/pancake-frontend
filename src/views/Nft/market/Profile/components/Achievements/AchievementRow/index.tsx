@@ -59,15 +59,19 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleCollectPoints = async () => {
-    const tx = await callWithGasPrice(pointCenterContract, 'getPoints', [achievement.address])
-    setIsCollecting(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
-      setIsCollecting(false)
-      onCollectSuccess(achievement)
-      toastSuccess(t('Points Collected!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-    } else {
+    try {
+      const tx = await callWithGasPrice(pointCenterContract, 'getPoints', [achievement.address])
+      setIsCollecting(true)
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        onCollectSuccess(achievement)
+        toastSuccess(t('Points Collected!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+      } else {
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      }
+    } catch (error) {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } finally {
       setIsCollecting(false)
     }
   }
