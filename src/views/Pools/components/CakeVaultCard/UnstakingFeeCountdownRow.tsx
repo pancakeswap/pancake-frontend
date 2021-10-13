@@ -46,7 +46,7 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isT
 
   const getRowText = () => {
     if (noFeeToPay) {
-      return t('Unstaking Fee').toLowerCase()
+      return t('Unstaking Fee')
     }
     if (shouldShowTimer) {
       return t('unstaking fee until')
@@ -61,7 +61,7 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isT
       flexDirection={isTableVariant ? 'column' : 'row'}
     >
       {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef} small>
+      <TooltipText ref={targetRef} small textTransform="lowercase">
         {noFeeToPay ? '0' : feeAsDecimal}% {getRowText()}
       </TooltipText>
       {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
