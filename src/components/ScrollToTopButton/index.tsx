@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Button, ChevronUpIcon } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 
 const FixedContainer = styled.div`
   position: fixed;
@@ -10,6 +11,7 @@ const FixedContainer = styled.div`
 
 const ScrollToTopButton = () => {
   const [visible, setVisible] = useState(false)
+  const { t } = useTranslation()
 
   const toggleVisible = () => {
     const scrolled = document.documentElement.scrollTop
@@ -36,7 +38,7 @@ const ScrollToTopButton = () => {
   return (
     <FixedContainer style={{ display: visible ? 'inline' : 'none' }}>
       <Button variant="subtle" endIcon={<ChevronUpIcon color="invertedContrast" />} onClick={scrollToTop}>
-        Top
+        {t('To Top')}
       </Button>
     </FixedContainer>
   )
