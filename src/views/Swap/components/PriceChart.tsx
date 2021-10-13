@@ -29,7 +29,7 @@ const PriceChart = ({
   const [hoverDate, setHoverDate] = useState<string | undefined>()
   const [isExpanded, setIsExpanded] = useState(false)
   const currentDate = format(new Date(), 'MMM d, yyyy')
-  const valueToDisplay = formatAmount(hoverValue)
+  const valueToDisplay = hoverValue
 
   const toggleExpanded = () => setIsExpanded((currentIsExpanded) => !currentIsExpanded)
 
