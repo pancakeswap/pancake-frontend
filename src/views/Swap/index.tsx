@@ -312,6 +312,7 @@ export default function Swap({ history }: RouteComponentProps) {
         <PriceChartContainer
           inputCurrencyId={inputCurrencyId}
           inputCurrency={currencies[Field.INPUT]}
+          outputCurrencyId={outputCurrencyId}
           outputCurrency={currencies[Field.OUTPUT]}
         />
         <AppBody maxWidth="328px" fitContent>

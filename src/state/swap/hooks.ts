@@ -16,6 +16,10 @@ import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
 import { SwapState } from './reducer'
 import { useUserSlippageTolerance } from '../user/hooks'
+import fetchPairHourData from './queries/pairHoursData'
+import { normalizeFetchPairHourData } from './normalizers'
+import { PairHoursNormalized } from './types'
+import fetchPairId from './queries/pairId'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -284,4 +288,33 @@ export function useDefaultsFromURLSearch():
   }, [dispatch, chainId])
 
   return result
+}
+
+export const useFetchPairPrices = (token0Address, token1Address) => {
+  const [pairPrices, setPairPrices] = useState<PairHoursNormalized>([])
+  const [pairId, setPairId] = useState()
+
+  useEffect(() => {
+    const fetchAndUpdatePairPrice = async () => {
+      if (pairId) {
+        const { data } = await fetchPairHourData(pairId)
+        setPairPrices(normalizeFetchPairHourData(data))
+      }
+    }
+
+    fetchAndUpdatePairPrice()
+  }, [pairId])
+
+  useEffect(() => {
+    const fetchAndUpdatePairId = async () => {
+      const { data } = await fetchPairId(token0Address, token1Address)
+      if (data?.pairs.length > 0) {
+        setPairId(data.pairs[0].id)
+      }
+    }
+
+    fetchAndUpdatePairId()
+  }, [token0Address, token1Address])
+
+  return pairPrices
 }
