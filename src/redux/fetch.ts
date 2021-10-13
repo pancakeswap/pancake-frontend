@@ -88,7 +88,7 @@ export const initialData = (accountAddress: string, setZombiePrice?: any) => {
       })
   }
 
-  // initialGraveData()
+  initialGraveData()
 }
 
 export const tomb = (pid: number, updatePoolObj?: { update: number, setUpdate: any }, updateUserObj?: { update: number, setUpdate: any }, everyUpdateObj?: { update: boolean, setUpdate: any }) => {
@@ -251,7 +251,6 @@ export const grave = (pid: number, setUserInfoState?: { update: boolean, setUpda
 }
 
 export const initialGraveData = (setUserState?, setPoolState?) => {
-  console.log('ayo')
   get.graves().forEach(g => {
     grave(getId(g.pid), setUserState, setPoolState)
   })

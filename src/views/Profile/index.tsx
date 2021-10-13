@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import './Profile.Styles.css'
 import { Flex, Heading } from '@rug-zombie-libs/uikit'

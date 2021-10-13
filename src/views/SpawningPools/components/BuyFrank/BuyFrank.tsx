@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 import ReactTooltip from 'react-tooltip';
-import { useModal } from '@rug-zombie-libs/uikit';
-import ModalInput from 'components/ModalInput/ModalInput';
-import { BigNumber } from 'bignumber.js'
 import { formatDuration } from '../../../../utils/timerHelpers'
-import { Grave } from '../../../../redux/types'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
-import { grave, spawningPoolById } from '../../../../redux/get'
+import { spawningPoolById } from '../../../../redux/get'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 

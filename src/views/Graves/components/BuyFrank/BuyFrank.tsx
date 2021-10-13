@@ -1,24 +1,18 @@
 import React, { useState , useEffect } from 'react'
 import ReactTooltip from 'react-tooltip';
 import { Skeleton, useModal } from '@rug-zombie-libs/uikit'
-import ModalInput from 'components/ModalInput/ModalInput';
-import { BigNumber } from 'bignumber.js'
 import { formatDuration } from '../../../../utils/timerHelpers'
-import { Grave } from '../../../../redux/types'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
 import { grave } from '../../../../redux/get'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-
-
-
 
 interface BuyFrankProps {
   pid: number
 }
 
 const BuyFrank: React.FC<BuyFrankProps> = ({ pid }) => {
-  const { nftRevivalTime , withdrawalCooldown, userInfo: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } } = grave(pid)
+  const { userInfo: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } } = grave(pid)
   const currentDate = Math.floor(Date.now() / 1000);
   let nftRevivalDateFixed = nftRevivalDate
   if(nftRevivalDate < 0) {
