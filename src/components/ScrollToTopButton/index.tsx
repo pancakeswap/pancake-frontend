@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Button, ChevronUpIcon } from '@pancakeswap/uikit'
 
@@ -27,7 +27,11 @@ const ScrollToTopButton = () => {
     })
   }
 
-  window.addEventListener('scroll', toggleVisible)
+  useEffect(() => {
+    window.addEventListener('scroll', toggleVisible)
+
+    return () => window.removeEventListener('scroll', toggleVisible)
+  }, [])
 
   return (
     <FixedContainer style={{ display: visible ? 'inline' : 'none' }}>
