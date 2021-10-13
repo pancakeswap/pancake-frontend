@@ -1,5 +1,7 @@
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
+/* eslint-disable */
+
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components'
 import CatacombsBackgroundDesktopSVG from '../../../../images/CatacombsMain-1920x1080px.svg'

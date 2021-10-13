@@ -2,6 +2,7 @@ import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { Text } from '@catacombs-libs/uikit'
 import { useModal } from '@rug-zombie-libs/uikit'
+/* eslint-disable */
 import { isMobile } from 'react-device-detect';
 import Typewriter from 'typewriter-effect'
 import styled from 'styled-components'
