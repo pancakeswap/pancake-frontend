@@ -67,6 +67,7 @@
     "react-feather": "^2.0.8",
     "react-helmet-async": "^1.0.9",
     "react-redux": "^7.2.2",
+    "react-responsive-carousel": "^3.2.21",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "react-transition-group": "^4.4.1",
