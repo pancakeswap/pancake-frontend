@@ -28,35 +28,6 @@ Don't forget to setup your IDE with `eslint` and `prettier`.
 
 Run tests with `yarn test`.
 
-## Localisation
-
-Keys should be added to translation.json file, in order to be translated to other languages.
-
-### Adding translations
-
-A hook expose the function you need to translate content.
-
-```
-import { useTranslation } from 'contexts/Localization'
-
-...
-const { t } =  useTranslation()
-...
-
-t(key, data)
-```
-
-- **key** is the crowdin key of the string you want to translate.
-- **data** dynamic variables
-
-#### Dynamic variables Example
-
-If a Crowdin translation like this `You have %num% left in your wallet` - would look something like:
-
-```
-t(`You have %num% left in your wallet`, { num: cakeBalance })
-```
-
 ## Issue reports
 
 A bug is a _demonstrable problem_ that is caused by the code in the repository.
