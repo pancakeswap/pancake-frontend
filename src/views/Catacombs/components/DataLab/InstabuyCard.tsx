@@ -11,10 +11,9 @@ import {
   Button, useModal,
 } from '@catacombs-libs/uikit'
 import { BigNumber } from 'bignumber.js'
+import { Lightbox } from "react-modal-image";
 import { account, nftById } from '../../../../redux/get'
-import useSwiper from '../../../Mausoleum/hooks/useSwiper'
 import Video from '../../../../components/Video'
-import InstabuyViewCard from './InstabuyViewCard'
 import { useInstaBuyContract } from '../../../../hooks/useContract'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
 import { getFullDisplayBalance } from '../../../../utils/formatBalance'
@@ -46,16 +45,17 @@ const StyleCardHeader = styled.div`
   background: #111820;
 `
 
-interface CollectiblesCardProps {
+interface InstabuyCardProps {
   id: number;
   refresh: () => void;
+  modalObj: {modal: boolean, setModal: any};
 }
 
 const initialNftInfo = {
-  price: BIG_ZERO
+  price: BIG_ZERO,
 }
 
-const InstabuyCard: React.FC<CollectiblesCardProps> = ({ id, refresh }: CollectiblesCardProps) => {
+const InstabuyCard: React.FC<InstabuyCardProps> = ({ id, refresh, modalObj }: InstabuyCardProps) => {
   const { name, symbol, description, address, path, type, rarity } = nftById(id)
   const [isOpen, setIsOpen] = useState(false)
   const [nftInfo, setNftInfo] = useState(initialNftInfo)
@@ -71,13 +71,26 @@ const InstabuyCard: React.FC<CollectiblesCardProps> = ({ id, refresh }: Collecti
       })
   }, [address, instaBuy.methods])
 
-  const toggleOpen = () => {
-    setIsOpen(!isOpen)
+
+  const closeModal = () => {
+    modalObj.setModal(null)
   }
+
+  const openModal = () => {
+      modalObj.setModal(
+        <Lightbox
+          large={path}
+          alt={name}
+          onClose={closeModal}
+          hideDownload
+        />
+      )
+  }
+
+
 
   const handleInstabuy = () => {
     instaBuy.methods.priceInBnb(address).call().then(res => {
-      console.log(res)
       instaBuy.methods.instaBuy(address)
         .send({ from: account(), value: res }).then(() => {
         toastSuccess(`Bought ${symbol}`)
@@ -89,7 +102,7 @@ const InstabuyCard: React.FC<CollectiblesCardProps> = ({ id, refresh }: Collecti
     <div>
       <Card className='card-active'>
         <StyleCardHeader>
-          <Flex justifyContent='center' paddingTop='5%' paddingBottom='5%' height='100%'>
+          <Flex justifyContent='center' paddingTop='5%' paddingBottom='5%' height='100%' onClick={openModal}>
             {type === 'image' ? <img
                 src={path} alt='nft'
                 style={{ maxWidth: '90%', maxHeight: '100%', objectFit: 'contain' }} /> :
@@ -106,7 +119,7 @@ const InstabuyCard: React.FC<CollectiblesCardProps> = ({ id, refresh }: Collecti
                 Instabuy
               </StyledButton>
               </div>
-              <StyleCursorPointer onClick={toggleOpen}>
+              <StyleCursorPointer onClick={openModal}>
                 Details
                 {
                   isOpen ? <ChevronUpIcon color='text' ml='10px' />

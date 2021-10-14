@@ -47,11 +47,12 @@ const App: React.FC = () => {
 
   const [isAuthenticated, setAuthenticated] = useState(false)
   const [zombiePrice, setZombiePrice] = useState(0)
+  const [modal, setModal] = useState( null)
+
 
   useEffect(() => {
     document.title = 'RugZombie'
   })
-
   useEagerConnect()
   const multi = useMultiCall()
   const { account } = useWeb3React()
@@ -67,7 +68,7 @@ const App: React.FC = () => {
   const LandingProps = {
     'handleAuthentication': handleAuthentication,
   }
-
+  console.log(modal)
   return (
     <Router history={history}>
       <ResetCSS />
@@ -79,7 +80,7 @@ const App: React.FC = () => {
           <Route exact path={routes.SPAWNWITHUS}><SpawnWithUs /></Route>
           <Route exact path={routes.CATACOMBS}><Catacombs /></Route>
           <Route exact path={routes.RUGROLL}><RugRoll /></Route>
-          <Route exact path={routes.DATALAB}><DataLab /></Route>
+          <Route exact path={routes.DATALAB}><DataLab modalObj={{ modal ,setModal }} /></Route>
           <Route exact path={routes.BLACKMARKET}><BlackMarket /></Route>
           <Route exact path={routes.BARRACKS}><Barracks /></Route>
           <Menu>
@@ -95,6 +96,7 @@ const App: React.FC = () => {
         </Switch>
       </SuspenseWithChunkError>
       <ToastListener />
+      {modal}
     </Router>
   )
 }

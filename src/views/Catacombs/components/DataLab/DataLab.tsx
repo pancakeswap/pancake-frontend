@@ -66,7 +66,11 @@ const StyleCursorPointer = styled.div`
   padding-left: 20px;
 `
 
-const DataLab: React.FC = () => {
+interface DataLabProps {
+  modalObj: {modal: boolean, setModal: any};
+}
+
+const DataLab: React.FC<DataLabProps>  = ({ modalObj }) => {
   const { isLg, isXl } = useMatchBreakpoints()
   const isDesktop = isLg || isXl
 
@@ -75,14 +79,13 @@ const DataLab: React.FC = () => {
       <StyledDiv>
         {isDesktop ? <img src={CatacombsBackgroundDesktopSVG} alt='catacombs-rug-zombie' /> :
           <img src={CatacombsBackgroundMobileSVG} alt='catacombs-rug-zombie' />
-
         }
         <Flex justifyContent='center'>
         <Container>
           <Page >
               <InstabuyCard id={41} refresh={() => {
                 console.log('refresh')
-              }} />
+              }} modalObj={modalObj}/>
           </Page>
         </Container>
         </Flex>
