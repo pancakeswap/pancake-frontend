@@ -13,7 +13,7 @@ const MenuItems: React.FC<MenuItemsProps> = ({ items = [], activeItem, activeSub
         const statusColor = menuItems?.find((menuItem) => menuItem.status !== undefined)?.status?.color;
         const isActive = activeItem === href;
         return (
-          <DropdownMenu key={label} items={menuItems} py={1} activeItem={activeSubItem}>
+          <DropdownMenu key={`${label}#${href}#${icon}`} items={menuItems} py={1} activeItem={activeSubItem}>
             <MenuItem
               href={isTouchDevice() && menuItems && menuItems.length > 0 ? "" : href}
               isActive={isActive}
