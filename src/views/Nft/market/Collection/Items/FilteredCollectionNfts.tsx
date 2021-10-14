@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
+import orderBy from 'lodash/orderBy'
 import { BunnyPlaceholderIcon, Button, Flex, Grid, Text } from '@pancakeswap/uikit'
-import { useGetNftFilterLoadingState, useNftsFromCollection } from 'state/nftMarket/hooks'
+import {
+  useGetNftFilterLoadingState,
+  useGetNftOrdering,
+  useGetNftShowOnlyOnSale,
+  useNftsFromCollection,
+} from 'state/nftMarket/hooks'
 import { Collection, NftFilterLoadingState } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import GridPlaceholder from '../../components/GridPlaceholder'
@@ -15,6 +21,8 @@ const FilteredCollectionNfts: React.FC<FilteredCollectionNftsProps> = ({ collect
   const { address: collectionAddress } = collection
   const [numToShow, setNumToShow] = useState(REQUEST_SIZE)
   const { t } = useTranslation()
+  const selectedOrder = useGetNftOrdering()
+  const showOnlyNftsOnSale = useGetNftShowOnlyOnSale()
   const collectionNfts = useNftsFromCollection(collectionAddress)
   const nftFilterLoadingState = useGetNftFilterLoadingState()
 
@@ -26,10 +34,37 @@ const FilteredCollectionNfts: React.FC<FilteredCollectionNftsProps> = ({ collect
     return <GridPlaceholder />
   }
 
-  const nftsToShow = collectionNfts ? collectionNfts.slice(0, numToShow) : []
+  const orderedNfts = collectionNfts
+    ? orderBy(
+        collectionNfts,
+        (nft) => {
+          if (selectedOrder.field === 'currentAskPrice') {
+            const currentAskPriceAsNumber = nft.marketData?.currentAskPrice
+              ? parseFloat(nft.marketData?.currentAskPrice)
+              : 0
+            if (currentAskPriceAsNumber > 0) {
+              return parseFloat(nft.marketData.currentAskPrice)
+            }
+            return selectedOrder.direction === 'asc' ? Infinity : -Infinity
+          }
+          // recently listed sorting
+          return nft.marketData ? parseInt(nft.marketData[selectedOrder.field], 10) : 0
+        },
+        selectedOrder.direction,
+      )
+    : []
+
+  const filteredNfts = showOnlyNftsOnSale ? orderedNfts.filter((nft) => nft.marketData?.isTradable) : orderedNfts
+
+  const nftsToShow = filteredNfts.slice(0, numToShow)
 
   return (
     <>
+      <Flex p="16px">
+        <Text bold>
+          {filteredNfts.length} {t('Results')}
+        </Text>
+      </Flex>
       {nftsToShow.length > 0 ? (
         <>
           <Grid

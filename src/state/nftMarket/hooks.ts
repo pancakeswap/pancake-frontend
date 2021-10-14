@@ -116,3 +116,11 @@ export const useGetNftFilters = () => {
 export const useGetNftFilterLoadingState = () => {
   return useSelector((state: State) => state.nftMarket.data.filters.loadingState)
 }
+
+export const useGetNftOrdering = () => {
+  return useSelector((state: State) => state.nftMarket.data.filters.ordering)
+}
+
+export const useGetNftShowOnlyOnSale = () => {
+  return useSelector((state: State) => state.nftMarket.data.filters.showOnlyOnSale)
+}

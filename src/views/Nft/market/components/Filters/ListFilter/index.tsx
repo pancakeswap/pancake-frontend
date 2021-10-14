@@ -9,7 +9,6 @@ import {
   Input,
   InputGroup,
   SearchIcon,
-  useMatchBreakpoints,
   IconButton,
   CloseIcon,
   ArrowUpIcon,
@@ -58,7 +57,6 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
   const [orderState, setOrderState] = useState<State>({ orderKey: 'count', orderDir: 'asc' })
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
-  const { isMobile, isDesktop } = useMatchBreakpoints()
   const nftFilters = useGetNftFilters()
   const nftFilterState = useGetNftFilterLoadingState()
   const dispatch = useAppDispatch()
@@ -154,17 +152,12 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
             </TriggerButton>
           }
           isOpen={isOpen}
+          options={{ placement: 'bottom' }}
         >
           <Box maxWidth="375px" ref={menuRef}>
-            <SearchWrapper hasHeader={!!title && !isMobile} alignItems="center" p="16px">
+            <SearchWrapper alignItems="center" p="16px">
               <InputGroup startIcon={<SearchIcon color="textSubtle" />}>
-                <Input
-                  name="query"
-                  placeholder={t('Search')}
-                  onChange={handleChange}
-                  value={query}
-                  autoFocus={isDesktop}
-                />
+                <Input name="query" placeholder={t('Search')} onChange={handleChange} value={query} />
               </InputGroup>
             </SearchWrapper>
             <Flex alignItems="center" p="16px">

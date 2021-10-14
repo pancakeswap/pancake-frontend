@@ -95,6 +95,7 @@ const ListItem = styled.li`
 export interface SelectProps extends BoxProps {
   options: OptionProps[]
   onOptionChange?: (option: OptionProps) => void
+  defaultOptionIndex?: number
 }
 
 export interface OptionProps {
@@ -102,10 +103,15 @@ export interface OptionProps {
   value: any
 }
 
-const Select: React.FunctionComponent<SelectProps> = ({ options, onOptionChange, ...props }) => {
+const Select: React.FunctionComponent<SelectProps> = ({
+  options,
+  onOptionChange,
+  defaultOptionIndex = 0,
+  ...props
+}) => {
   const dropdownRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0)
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(defaultOptionIndex)
 
   const toggling = (event: React.MouseEvent<HTMLDivElement>) => {
     setIsOpen(!isOpen)

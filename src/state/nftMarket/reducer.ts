@@ -40,6 +40,11 @@ const initialState: State = {
     filters: {
       loadingState: NftFilterLoadingState.IDLE,
       activeFilters: {},
+      showOnlyOnSale: true,
+      ordering: {
+        field: 'currentAskPrice',
+        direction: 'asc',
+      },
     },
     loadingState: {
       isUpdatingPancakeBunnies: false,
@@ -293,6 +298,12 @@ export const NftMarket = createSlice({
       state.data.filters.activeFilters = {}
       state.data.nfts[action.payload] = []
     },
+    setOrdering: (state, action: PayloadAction<{ field: string; direction: 'asc' | 'desc' }>) => {
+      state.data.filters.ordering = action.payload
+    },
+    setShowOnlyOnSale: (state, action: PayloadAction<boolean>) => {
+      state.data.filters.showOnlyOnSale = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(filterNftsFromCollection.pending, (state) => {
@@ -386,6 +397,7 @@ export const NftMarket = createSlice({
 })
 
 // Actions
-export const { addAttributeFilter, removeAttributeFilter, removeAllFilters } = NftMarket.actions
+export const { addAttributeFilter, removeAttributeFilter, removeAllFilters, setOrdering, setShowOnlyOnSale } =
+  NftMarket.actions
 
 export default NftMarket.reducer

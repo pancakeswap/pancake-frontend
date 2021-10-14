@@ -40,8 +40,6 @@ const Items = () => {
   return (
     <>
       <Header collection={collection} />
-
-      {/* Only PBs can return enough data to viably sort the entire collection */}
       {isPBCollection ? (
         <Container mb="24px">
           <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">

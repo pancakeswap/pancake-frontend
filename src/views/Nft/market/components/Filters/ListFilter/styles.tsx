@@ -33,13 +33,9 @@ export const ItemRow: React.FC<ItemRowProps> = ({ item, isSelected, onSelect }) 
   </StyledItemRow>
 )
 
-export const SearchWrapper = styled(Flex)<{ hasHeader: boolean }>`
+export const SearchWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.dropdown};
-  ${({ hasHeader }) =>
-    !hasHeader &&
-    `
-    border-radius: 24px 24px 0 0;
-  `}
+  border-radius: 24px 24px 0 0;
 `
 
 export const FilterButton = styled(Flex)`
