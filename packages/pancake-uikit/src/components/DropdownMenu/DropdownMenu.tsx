@@ -11,7 +11,6 @@ import {
   StyledDropdownMenu,
   LinkStatus,
   StyledDropdownMenuItemContainer,
-  StyledOverlay,
 } from "./styles";
 import { DropdownMenuItemType, DropdownMenuProps } from "./types";
 
@@ -22,6 +21,8 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   activeItem = "",
   items = [],
   openMenuTimeout = 0,
+  index,
+  setMenuOpenByIndex,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -122,10 +123,15 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
     };
   }, [targetRef, tooltipRef, hideTimeout, isHoveringOverTooltip, setIsOpen, openMenuTimeout, isOpen, isBottomNav]);
 
+  useEffect(() => {
+    if (setMenuOpenByIndex && index !== undefined) {
+      setMenuOpenByIndex((prevValue) => ({ ...prevValue, [index]: isOpen }));
+    }
+  }, [isOpen, setMenuOpenByIndex, index]);
+
   return (
     <Box ref={isBottomNav ? null : setTargetRef} {...props}>
       <Box ref={isBottomNav ? setTargetRef : null}>{children}</Box>
-      {isBottomNav && isOpen && showItemsOnMobile && <StyledOverlay />}
       {hasItems && (
         <StyledDropdownMenu
           style={styles.popper}
@@ -135,7 +141,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
           $isOpen={isOpen && ((isBottomNav && showItemsOnMobile) || !isBottomNav)}
         >
           {items.map(
-            ({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, ...itemProps }, index) => {
+            ({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, ...itemProps }, itemItem) => {
               const MenuItemContent = (
                 <>
                   {label}
@@ -148,7 +154,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
               );
               const isActive = href === activeItem;
               return (
-                <StyledDropdownMenuItemContainer key={index}>
+                <StyledDropdownMenuItemContainer key={itemItem}>
                   {type === DropdownMenuItemType.BUTTON && (
                     <DropdownMenuItem $isActive={isActive} type="button" {...itemProps}>
                       {MenuItemContent}

@@ -59,17 +59,6 @@ export const DropdownMenuDivider = styled.hr`
   margin: 4px 0;
 `;
 
-export const StyledOverlay = styled.div`
-  content: "";
-  position: fixed;
-  top: 0;
-  bottom: 55px;
-  left: 0;
-  right: 0;
-  background-color: ${({ theme }) => `${theme.colors.text}99`};
-  backdrop-filter: blur(2px);
-`;
-
 export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: boolean }>`
   background-color: ${({ theme }) => theme.card.background};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
