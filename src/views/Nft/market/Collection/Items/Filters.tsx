@@ -23,14 +23,16 @@ const GridContainer = styled(Grid)`
   grid-gap: 8px 16px;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
+    'filterByTitle .'
     'attributeFilters attributeFilters'
-    'filterByTitle sortByTitle'
+    '. sortByTitle'
     'filterByControls sortByControls';
   ${({ theme }) => theme.mediaQueries.sm} {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
+      'filterByTitle . .'
       'attributeFilters attributeFilters attributeFilters'
-      'filterByTitle . sortByTitle'
+      '. . sortByTitle'
       'filterByControls . sortByControls';
   }
   ${({ theme }) => theme.mediaQueries.md} {
