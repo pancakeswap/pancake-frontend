@@ -1,7 +1,6 @@
-import { BigNumber } from 'ethers'
 import farms from 'config/constants/farms'
 import { SerializedFarm } from 'state/types'
-import { getBep20Contract, getLpContract } from 'utils/contractHelpers'
+import { getLpContract } from 'utils/contractHelpers'
 
 // Test only against the last 10 farms, for performance concern
 const farmsToTest: [number, SerializedFarm][] = farms
@@ -34,17 +33,6 @@ describe('Config farms', () => {
     expect(
       token1Address === tokenAddress.toLowerCase() || token1Address === quoteTokenAddress.toLowerCase(),
     ).toBeTruthy()
-  })
-
-  it.each(farmsToTest)('Farm %d has non 0 tokens amount', async (pid, farm) => {
-    const tokenContract = getBep20Contract(farm.token.address)
-    const quoteTokenContract = getBep20Contract(farm.quoteToken.address)
-
-    const tokenAmount: BigNumber = await tokenContract.balanceOf(farm.lpAddresses[56])
-    const quoteTokenAmount: BigNumber = await quoteTokenContract.balanceOf(farm.lpAddresses[56])
-
-    expect(tokenAmount.gt(0)).toBeTruthy()
-    expect(quoteTokenAmount.gt(0)).toBeTruthy()
   })
 
   // The first pid using the new factory
