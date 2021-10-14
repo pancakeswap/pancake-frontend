@@ -142,14 +142,14 @@ const CreateProposal = () => {
     updateValue(key, value)
   }
 
-  const options = useMemo(
-    () => ({
-      hideIcons: ADMINS.includes(account.toLowerCase())
-        ? []
-        : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
-    }),
-    [account],
-  )
+  const options = useMemo(() => {
+    return {
+      hideIcons:
+        account && ADMINS.includes(account.toLowerCase())
+          ? []
+          : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
+    }
+  }, [account])
 
   useEffect(() => {
     if (initialBlock > 0) {
