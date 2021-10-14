@@ -182,6 +182,10 @@ const Search = () => {
       document.removeEventListener('click', handleOutsideClick)
       document.querySelector('body').style.overflow = 'visible'
     }
+
+    return () => {
+      document.removeEventListener('click', handleOutsideClick)
+    }
   }, [showMenu])
 
   // watchlist
