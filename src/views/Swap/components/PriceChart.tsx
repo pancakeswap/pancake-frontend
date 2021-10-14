@@ -13,13 +13,12 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { format } from 'date-fns'
 import React, { useState } from 'react'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
-import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import { StyledExpandButton, StyledPriceChart, StyledSwapButton } from './styles/priceChartStyles'
 
 const PriceChart = ({
   lineChartData = [],
-  setTimeWindowIndex,
-  timeWindowIndex,
+  setTimeWindow,
+  timeWindow,
   inputCurrency,
   outputCurrency,
   onSwitchTokens,
@@ -65,7 +64,7 @@ const PriceChart = ({
                 {valueToDisplay}
               </Text>
               <Text color="textSubtle" fontSize="20px" mb="8px" bold>
-                {inputCurrency?.symbol}
+                {outputCurrency?.symbol}
               </Text>
             </Flex>
           ) : (
@@ -76,7 +75,7 @@ const PriceChart = ({
           </Text>
         </Flex>
         <Box mr="40px">
-          <ButtonMenu activeIndex={timeWindowIndex} onItemClick={setTimeWindowIndex} scale="sm">
+          <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
             <ButtonMenuItem>24H</ButtonMenuItem>
             <ButtonMenuItem>1W</ButtonMenuItem>
             <ButtonMenuItem>1M</ButtonMenuItem>
