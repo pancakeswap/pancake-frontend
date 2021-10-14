@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   Card,
@@ -10,10 +10,15 @@ import {
   Flex,
   Button, useModal,
 } from '@catacombs-libs/uikit'
-import { nftById } from '../../../../redux/get'
+import { BigNumber } from 'bignumber.js'
+import { account, nftById } from '../../../../redux/get'
 import useSwiper from '../../../Mausoleum/hooks/useSwiper'
 import Video from '../../../../components/Video'
 import InstabuyViewCard from './InstabuyViewCard'
+import { useInstaBuyContract } from '../../../../hooks/useContract'
+import { BIG_ZERO } from '../../../../utils/bigNumber'
+import { getFullDisplayBalance } from '../../../../utils/formatBalance'
+import useToast from '../../../../hooks/useToast'
 
 
 const StyleDetails = styled.div`
@@ -21,7 +26,8 @@ const StyleDetails = styled.div`
   justify-content: center;
 `
 const StyleCursorPointer = styled.div`
-  cursor: pointer;ß
+  cursor: pointer;
+  ß
   display: flex;
 `
 
@@ -29,6 +35,10 @@ const Styleinfo = styled.div`
   display: flex;
   justify-content: center;
   padding: 20px;
+`
+const StyledButton = styled(Button)`
+  border: 2px solid white;
+  color: white;
 `
 const StyleCardHeader = styled.div`
   width: 100%;
@@ -41,20 +51,39 @@ interface CollectiblesCardProps {
   refresh: () => void;
 }
 
+const initialNftInfo = {
+  price: BIG_ZERO
+}
+
 const InstabuyCard: React.FC<CollectiblesCardProps> = ({ id, refresh }: CollectiblesCardProps) => {
-  const { name, description, address, path, type, rarity } = nftById(id)
+  const { name, symbol, description, address, path, type, rarity } = nftById(id)
   const [isOpen, setIsOpen] = useState(false)
+  const [nftInfo, setNftInfo] = useState(initialNftInfo)
+  const instaBuy = useInstaBuyContract()
+  const { toastSuccess } = useToast()
+
+  useEffect(() => {
+    instaBuy.methods.nftInfo(address).call()
+      .then(res => {
+        setNftInfo({
+          price: new BigNumber(res.price)
+        })
+      })
+  }, [address, instaBuy.methods])
 
   const toggleOpen = () => {
     setIsOpen(!isOpen)
   }
 
-  const [onPresentViewModal, onDismiss] = useModal(
-      <InstabuyViewCard
-        id={id}
-        refresh={refresh}
-      />
-  )
+  const handleInstabuy = () => {
+    instaBuy.methods.priceInBnb(address).call().then(res => {
+      console.log(res)
+      instaBuy.methods.instaBuy(address)
+        .send({ from: account(), value: res }).then(() => {
+        toastSuccess(`Bought ${symbol}`)
+      })
+    })
+  }
 
   return (
     <div>
@@ -68,14 +97,15 @@ const InstabuyCard: React.FC<CollectiblesCardProps> = ({ id, refresh }: Collecti
           </Flex>
         </StyleCardHeader>
         <CardBody>
-          <Heading as='h2' fontSize='18px'>{name}</Heading>
+          <Heading as='h2' fontSize='18px'>{name} - {getFullDisplayBalance(nftInfo.price)} BNB</Heading>
         </CardBody>
         <CardFooter>
           <StyleDetails>
             <Flex justifyContent='center' alignItems='center'>
-              <div style={{ paddingRight: '10px' }}><Button onClick={onPresentViewModal}>
-                View
-              </Button></div>
+              <div style={{ paddingRight: '10px' }}><StyledButton variant='secondary' onClick={handleInstabuy}>
+                Instabuy
+              </StyledButton>
+              </div>
               <StyleCursorPointer onClick={toggleOpen}>
                 Details
                 {

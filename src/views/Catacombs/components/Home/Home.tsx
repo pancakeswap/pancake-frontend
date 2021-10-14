@@ -2,18 +2,19 @@ import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 /* eslint-disable */
 
-import { isMobile } from 'react-device-detect';
+import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import CatacombsBackgroundDesktopSVG from '../../../../images/CatacombsMain-1920x1080px.svg'
 import CatacombsBackgroundMobileSVG from '../../../../images/CatacombsMain-414x720px.svg'
 import Menu from '../../../../components/Catacombs/Menu'
+import { useMatchBreakpoints } from '@rug-zombie-libs/uikit'
 
 const StyledDiv = styled.div`
-    text-align: center;
-    position: relative;
-    color: white;
-    height: 100%;
-    width: 100%;
+  text-align: center;
+  position: relative;
+  color: white;
+  height: 100%;
+  width: 100%;
 `
 
 const StyledButton = styled.button`
@@ -89,28 +90,30 @@ const BlackMarketDiv = styled.div`
 `
 
 const Home: React.FC = () => {
-    const { t } = useTranslation()
-    return (
-      <Menu>
-        <StyledDiv>
-            {isMobile ? <img src={CatacombsBackgroundMobileSVG} alt='catacombs-rug-zombie' /> :
-                <img src={CatacombsBackgroundDesktopSVG} alt='catacombs-rug-zombie' />
-            }
-            <BarracksDiv>
-                <StyledButton>{t('BARRACKS')}</StyledButton>
-            </BarracksDiv>
-            <RugRollDiv>
-                <StyledButton>{t('RUG ROLL')}</StyledButton>
-            </RugRollDiv>
-            <DataLabDiv>
-                <StyledButton>{t('DATA LAB')}</StyledButton>
-            </DataLabDiv>
-            <BlackMarketDiv>
-                <StyledButton>{t('BLACK MARKET')}</StyledButton>
-            </BlackMarketDiv>
-        </StyledDiv>
-      </Menu>
-    )
+  const { t } = useTranslation()
+  const { isLg, isXl } = useMatchBreakpoints()
+  const isDesktop = isLg || isXl
+  return (
+    <Menu>
+      <StyledDiv>
+        {isDesktop ? <img src={CatacombsBackgroundDesktopSVG} alt='catacombs-rug-zombie' /> :
+          <img src={CatacombsBackgroundMobileSVG} alt='catacombs-rug-zombie' />
+        }
+        <DataLabDiv>
+          <StyledButton>{t('DATA LAB')}</StyledButton>
+        </DataLabDiv>
+        <BarracksDiv>
+          <StyledButton>{t('BARRACKS')}</StyledButton>
+        </BarracksDiv>
+        <RugRollDiv>
+          <StyledButton>{t('RUG ROLL')}</StyledButton>
+        </RugRollDiv>
+        <BlackMarketDiv>
+          <StyledButton>{t('BLACK MARKET')}</StyledButton>
+        </BlackMarketDiv>
+      </StyledDiv>
+    </Menu>
+  )
 }
 
 export default Home
