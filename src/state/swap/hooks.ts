@@ -16,10 +16,11 @@ import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
 import { SwapState } from './reducer'
 import { useUserSlippageTolerance } from '../user/hooks'
-import fetchPairHourData from './queries/pairHoursData'
-import { normalizeFetchPairHourData } from './normalizers'
-import { PairHoursNormalized } from './types'
-import fetchPairId from './queries/pairId'
+import fetchPairHourData from './fetch/pairHourDatas'
+import { normalizeFetchPairDayData, normalizeFetchPairHourData } from './normalizers'
+import { PairDataTimeWindowEnum, PairPricesNormalized } from './types'
+import fetchPairId from './fetch/pairId'
+import fetchPairDayData from './fetch/pairDayDatas'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -290,20 +291,31 @@ export function useDefaultsFromURLSearch():
   return result
 }
 
-export const useFetchPairPrices = (token0Address, token1Address) => {
-  const [pairPrices, setPairPrices] = useState<PairHoursNormalized>([])
-  const [pairId, setPairId] = useState()
+type useFetchPairPricesParams = {
+  token0Address: string
+  token1Address: string
+  timeWindow: PairDataTimeWindowEnum
+}
+
+export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }: useFetchPairPricesParams) => {
+  const [pairPrices, setPairPrices] = useState<PairPricesNormalized>([])
+  const [pairId, setPairId] = useState('0x0ed7e52944161450477ee417de9cd3a859b14fd0')
 
   useEffect(() => {
     const fetchAndUpdatePairPrice = async () => {
       if (pairId) {
-        const { data } = await fetchPairHourData(pairId)
-        setPairPrices(normalizeFetchPairHourData(data))
+        if (timeWindow <= PairDataTimeWindowEnum.WEEK) {
+          const { data } = await fetchPairHourData({ pairId, timeWindow })
+          setPairPrices(normalizeFetchPairHourData(data) || [])
+        } else {
+          const { data } = await fetchPairDayData({ pairId, timeWindow })
+          setPairPrices(normalizeFetchPairDayData(data) || [])
+        }
       }
     }
 
     fetchAndUpdatePairPrice()
-  }, [pairId])
+  }, [pairId, timeWindow])
 
   useEffect(() => {
     const fetchAndUpdatePairId = async () => {
@@ -313,7 +325,7 @@ export const useFetchPairPrices = (token0Address, token1Address) => {
       }
     }
 
-    fetchAndUpdatePairId()
+    // fetchAndUpdatePairId()
   }, [token0Address, token1Address])
 
   return pairPrices
