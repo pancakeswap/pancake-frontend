@@ -2,6 +2,6 @@
 # the repo. Unless a later match takes precedence,
 # @global-owner1 and @global-owner2 will be requested for
 # review when someone opens a pull request.
-*       @RabbitDoge @hachiojidev @Chef-Chungus
+*       @RabbitDoge @Chef-Chungus @Chef-Cheems
 
-packages/token-lists/ @RabbitDoge @hachiojidev @Chef-Chungus @ChefKai
+packages/token-lists/ @RabbitDoge @Chef-Chungus @ChefKai @Chef-Cheems
