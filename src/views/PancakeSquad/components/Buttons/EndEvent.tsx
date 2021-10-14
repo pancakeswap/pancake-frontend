@@ -28,16 +28,14 @@ const EndEventButtons: React.FC<EndEventProps> = ({
   return (
     <Flex flexDirection={['column', null, null, 'row']}>
       {canViewMarket && (
-        <Link to="/nfts">
-          <Button width="100%" mb={['4px', null, null, '0']} mr={[0, null, null, '4px']}>
-            {t('View market')}
-          </Button>
-        </Link>
+        <Button mb={['4px', null, null, '0']} mr={[0, null, null, '4px']}>
+          <Link to="/nfts">{t('View market')}</Link>
+        </Button>
       )}
       {hasSquad && (
-        <Link to={`/nfts/profile/${account}`}>
-          <Button width="100%">{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Button>
-        </Link>
+        <Button>
+          <Link to={`/nfts/profile/${account}`}>{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Link>
+        </Button>
       )}
     </Flex>
   )
