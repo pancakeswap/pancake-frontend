@@ -140,6 +140,8 @@ export { default as TicketIcon } from "./Icons/Ticket";
 export { default as EarnFillIcon } from "./Icons/EarnFill";
 export { default as TrophyIcon } from "./Icons/Trophy";
 export { default as TrophyFillIcon } from "./Icons/TrophyFill";
+export { default as ExpandIcon } from "./Icons/Expand";
+export { default as ShrinkIcon } from "./Icons/Shrink";
 
 export { default as Svg } from "./Svg";
 export type { SvgProps } from "./types";
