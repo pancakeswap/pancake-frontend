@@ -277,8 +277,11 @@ export const getMarketDataForTokenIds = async (
       GRAPH_API_NFTMARKET,
       gql`
         query getMarketDataForTokenIds($collectionAddress: String!, $where: NFT_filter) {
-          nfts(first: 1000, where: $where) {
-            ${getBaseNftFields()}
+          collection(id: $collectionAddress) {
+            id
+            nfts(first: 1000, where: $where) {
+              ${getBaseNftFields()}
+            }
           }
         }
       `,
@@ -287,7 +290,7 @@ export const getMarketDataForTokenIds = async (
         where: { tokenId_in: existingTokenIds },
       },
     )
-    return res.nfts
+    return res.collection.nfts
   } catch (error) {
     console.error(`Failed to fetch market data for NFTs stored tokens`, error)
     return []
