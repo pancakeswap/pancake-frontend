@@ -40,9 +40,9 @@ const initialState: State = {
     filters: {
       loadingState: NftFilterLoadingState.IDLE,
       activeFilters: {},
-      showOnlyOnSale: false,
+      showOnlyOnSale: true,
       ordering: {
-        field: 'tokenId',
+        field: 'currentAskPrice',
         direction: 'asc',
       },
     },

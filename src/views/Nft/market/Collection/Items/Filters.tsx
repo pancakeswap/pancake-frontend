@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Box, ButtonMenu, ButtonMenuItem, Flex, Grid, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, Grid, Text } from '@pancakeswap/uikit'
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftFilters, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks'
@@ -86,7 +86,6 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
   const { address } = collection
   const dispatch = useAppDispatch()
   const { data } = useGetCollectionDistribution(address)
-  const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
   const showOnlyNftsOnSale = useGetNftShowOnlyOnSale()
   const [activeButtonIndex, setActiveButtonIndex] = useState(showOnlyNftsOnSale ? 1 : 0)
@@ -145,42 +144,6 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
         {!isEmpty(nftFilters) && <ClearAllButton collectionAddress={address} mb="4px" />}
       </ScrollableFlexContainer>
     </GridContainer>
-  )
-
-  return (
-    <Flex mb="32px" alignItems="flex-end">
-      <Flex flexDirection="column" mr="16px" borderRight="1px solid black">
-        <Text textTransform="uppercase" color="textSubtle" fontSize="12px" bold>
-          Filter by
-        </Text>
-        <ButtonMenu scale="sm" activeIndex={activeButtonIndex} onItemClick={onActiveButtonChange}>
-          <ButtonMenuItem>All</ButtonMenuItem>
-          <ButtonMenuItem>On Sale</ButtonMenuItem>
-        </ButtonMenu>
-      </Flex>
-      <ScrollableFlexContainer>
-        {uniqueTraitTypes.map((traitType) => {
-          const attrs = attrsByType[traitType]
-          const items: Item[] = attrs.map((attr) => ({
-            label: capitalize(attr.value as string),
-            count: data && data[traitType] ? data[traitType][attr.value] : undefined,
-            attr,
-          }))
-
-          return (
-            <ListFilter
-              key={traitType}
-              title={capitalize(traitType)}
-              traitType={traitType}
-              items={items}
-              collectionAddress={address}
-            />
-          )
-        })}
-        {!isEmpty(nftFilters) && <ClearAllButton collectionAddress={address} mb="4px" />}
-      </ScrollableFlexContainer>
-      {isDesktop && <SortSelect />}
-    </Flex>
   )
 }
 
