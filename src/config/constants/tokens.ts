@@ -1719,6 +1719,14 @@ export const testnetTokens = {
     'Bakeryswap Token',
     'https://www.bakeryswap.org/',
   ),
+  xnx: new Token(
+    MAINNET,
+    '0x1cd11ea1586865449e110303b5882353d14c1bd2',
+    18,
+    'XNX',
+    'XNX',
+    'https://www.xnxmatrix.io/',
+  ),
 }
 
 const tokens = (): TokenList => {
