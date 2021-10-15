@@ -4,13 +4,19 @@ import styled from 'styled-components'
 import { BalanceInput, Button, Flex, Modal, Slider, Text, useModal } from '@rug-zombie-libs/uikit'
 import useTheme from 'hooks/useTheme'
 import { useDrFrankenstein } from 'hooks/useContract'
-import { BASE_EXCHANGE_URL } from 'config'
+import {
+    APESWAP_ADD_LIQUIDITY_URL,
+    AUTOSHARK_ADD_LIQUIDITY_URL,
+    BASE_ADD_LIQUIDITY_URL,
+    BASE_EXCHANGE_URL,
+} from 'config'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core';
 import { BIG_TEN, BIG_ZERO } from '../../../utils/bigNumber'
 import { tombByPid } from '../../../redux/get'
+import tokens from '../../../config/constants/tokens'
 
 interface Result {
     paidUnlockFee: boolean,
@@ -79,6 +85,19 @@ const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ pid, lpTokenBalan
         stakingDetails = "Invalid Stake: Insufficient LP Balance"
     }
 
+    // eslint-disable-next-line no-nested-ternary
+    const quoteTokenUrl = tomb.quoteToken === tokens.wbnb ? tomb.exchange === 'Apeswap' ? 'ETH' : 'BNB' : getAddress(tomb.quoteToken.address)
+
+    let addLiquidityUrl
+
+    if(tomb.exchange === 'Apeswap') {
+        addLiquidityUrl = `${APESWAP_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+    } else if(tomb.exchange === 'Autoshark') {
+        addLiquidityUrl = `${AUTOSHARK_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+    } else {
+        addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${quoteTokenUrl}/${getAddress(tomb.token.address)}`
+    }
+
     return <Modal onDismiss={onDismiss} title='Stake LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
             <Text bold>Stake</Text>
@@ -122,7 +141,7 @@ const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ pid, lpTokenBalan
         </StyledButton>
         </Flex>
         {lpTokenBalance.toString() === '0' ?
-            <Button mt="8px" as="a" external href={`${BASE_EXCHANGE_URL}/#/add/${getAddress(quoteToken.address)}/${getAddress(token.address)}`}  variant="secondary">
+            <Button mt="8px" as="a" external href={addLiquidityUrl}  variant="secondary">
                 Get {name}
             </Button> :
             <Button onClick={handleDepositLP} disabled={isDisabled} mt="8px" as="a" variant="secondary">
