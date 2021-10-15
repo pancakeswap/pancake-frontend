@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-10-12T12:17:32.091Z",
+  "timestamp": "2021-10-15T10:47:51.319Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 29
+    "patch": 30
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1051,6 +1051,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377.png"
+    },
+    {
+      "name": "MCDEX",
+      "symbol": "MCB",
+      "address": "0x5fE80d2CD054645b9419657d3d10d26391780A7B",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x5fE80d2CD054645b9419657d3d10d26391780A7B.png"
     },
     {
       "name": "Mirror COIN",

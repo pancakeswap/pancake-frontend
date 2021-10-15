@@ -1902,5 +1902,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xc2098a8938119A52B1F7661893c0153A6CB116d5.png"
+  },
+  {
+    "name": "MCDEX",
+    "symbol": "MCB",
+    "address": "0x5fE80d2CD054645b9419657d3d10d26391780A7B",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x5fE80d2CD054645b9419657d3d10d26391780A7B.png"
   }
 ]
