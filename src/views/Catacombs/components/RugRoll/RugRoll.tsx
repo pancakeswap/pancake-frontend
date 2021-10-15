@@ -2,6 +2,7 @@ import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'
 import Menu from '../../../../components/Catacombs/Menu'
+import Page from '../../../../components/layout/Page'
 
 
 const StyledButton = styled.button`
@@ -33,9 +34,11 @@ const RugRoll: React.FC = () => {
     console.log("yeEAH")
     return (
       <Menu>
-        <div>
-            RugRoll is working!
-        </div>
+          <Page>
+              <div className='parent-div'>
+                  Rug Roll is coming very soon!
+              </div>
+          </Page>
       </Menu>
     )
 }

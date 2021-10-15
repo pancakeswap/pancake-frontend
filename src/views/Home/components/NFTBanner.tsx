@@ -13,7 +13,6 @@ import { useTranslation } from 'contexts/Localization'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import Container from '../../../components/layout/Container'
-import { formatDuration } from '../../../utils/timerHelpers'
 import { auctionById } from '../../../redux/get'
 
 const NowLive = styled(Text)`

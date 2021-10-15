@@ -119,7 +119,7 @@ const InstabuyCard: React.FC<InstabuyCardProps> = ({ id, refresh, modalObj }: In
                 Instabuy
               </StyledButton>
               </div>
-              <StyleCursorPointer onClick={openModal}>
+              <StyleCursorPointer onClick={() => {setIsOpen(!isOpen)}}>
                 Details
                 {
                   isOpen ? <ChevronUpIcon color='text' ml='10px' />

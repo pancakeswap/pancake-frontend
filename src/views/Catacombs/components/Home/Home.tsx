@@ -1,5 +1,7 @@
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
+import { NavLink } from 'react-router-dom'
+
 /* eslint-disable */
 
 import { isMobile } from 'react-device-detect'
@@ -41,7 +43,7 @@ const StyledButton = styled.button`
   }
 `
 
-const BarracksDiv = styled.div`
+const DataLabDiv = styled.div`
   text-align: center;
   position: absolute;
   top: 15%;
@@ -65,7 +67,7 @@ const RugRollDiv = styled.div`
   }
 `
 
-const DataLabDiv = styled.div`
+const BarracksDiv = styled.div`
   text-align: center;
   position: absolute;
   top: 45%;
@@ -100,7 +102,10 @@ const Home: React.FC = () => {
           <img src={CatacombsBackgroundMobileSVG} alt='catacombs-rug-zombie' />
         }
         <DataLabDiv>
-          <StyledButton>{t('DATA LAB')}</StyledButton>
+          <NavLink exact activeClassName='active' to='/datalab' id='lottery-pot-banner'
+                   style={{ paddingTop: '8px' }}>
+            <StyledButton>{t('DATA LAB')}</StyledButton>
+          </NavLink>
         </DataLabDiv>
         <BarracksDiv>
           <StyledButton>{t('BARRACKS')}</StyledButton>

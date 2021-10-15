@@ -33,7 +33,7 @@ const config: MenuEntry[] = [
   },
   {
     label: 'Catacombs',
-    icon: 'PoolIcon',
+    icon: 'GroupsIcon',
     href: '/catacombs'
   },
   {

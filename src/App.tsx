@@ -68,7 +68,6 @@ const App: React.FC = () => {
   const LandingProps = {
     'handleAuthentication': handleAuthentication,
   }
-  console.log(modal)
   return (
     <Router history={history}>
       <ResetCSS />

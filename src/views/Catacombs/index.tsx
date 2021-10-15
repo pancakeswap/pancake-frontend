@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Flex, Text } from '@rug-zombie-libs/uikit'
 import useEagerConnect from '../../hooks/useEagerConnect'
 import { useCatacombsContract, useMultiCall } from '../../hooks/useContract'
 import * as fetch from '../../redux/fetch'
@@ -16,6 +17,7 @@ const Catacombs: React.FC = (props) => {
   }, [multi])
 
   const [unlocked, setUnlocked] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (account()) {
@@ -23,12 +25,24 @@ const Catacombs: React.FC = (props) => {
         .then(
           res => {
             setUnlocked(res)
+            setLoading(false)
           })
     }
   }, [catacombs.methods])
 
   return (
-    unlocked ? <Home /> : <Entry />
+    <>
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {loading ? <>
+        <Flex alignItems='center' justifyContent='center' mb='16px'>
+          <img src='images/rugZombie/BasicZombie.gif' alt='loading' />
+        </Flex>
+        <Flex alignItems='center' justifyContent='center' mb='16px'>
+          <Text color='white' bold fontSize='30px'>Entering the Catacombs</Text>
+        </Flex>
+      </> : unlocked ? <Home /> : <Entry />}
+    </>
+
   )
 }
 

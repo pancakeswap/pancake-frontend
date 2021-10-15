@@ -35,7 +35,7 @@ const BlackMarket: React.FC = () => {
       <Menu>
         <Page>
           <div className='parent-div'>
-            Black Market is working!
+            Black Market is coming soon!
           </div>
         </Page>
       </Menu>

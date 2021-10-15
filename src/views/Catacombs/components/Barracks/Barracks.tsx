@@ -2,6 +2,7 @@ import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'
 import Menu from '../../../../components/Catacombs/Menu'
+import Page from '../../../../components/layout/Page'
 
 const StyledButton = styled.button`
   title: 'BARRACKS';
@@ -29,12 +30,13 @@ const StyledButton = styled.button`
 
 const Barracks: React.FC = () => {
     const { t } = useTranslation()
-    console.log('in barracks =========================')
     return (
       <Menu>
-        <div>
-          <p color="white!important">Barracks is working!</p>
-        </div>
+        <Page>
+          <div className='parent-div'>
+            Barracks are coming soon!
+          </div>
+        </Page>
       </Menu>
     )
 }

@@ -2,7 +2,7 @@ import { MenuEntry } from '@catacombs-libs/uikit'
 
 const config: MenuEntry[] = [
   {
-    label: 'RugZombie',
+    label: 'Catacombs',
     icon: 'HomeIcon',
     href: '/catacombs',
   },
@@ -25,6 +25,11 @@ const config: MenuEntry[] = [
     label: 'Black Market',
     icon: 'FarmIcon',
     href: `/blackmarket`,
+  },
+  {
+    label: 'RugZombie',
+    icon: 'HomeIcon',
+    href: `/`,
   },
 ]
 
