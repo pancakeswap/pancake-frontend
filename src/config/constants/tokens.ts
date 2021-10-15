@@ -1668,6 +1668,14 @@ export const mainnetTokens = {
     'Rangers Protocol',
     'https://www.rangersprotocol.com/',
   ),
+  mcb: new Token(
+    MAINNET,
+    '0x5fE80d2CD054645b9419657d3d10d26391780A7B',
+    18,
+    'MCB',
+    'MCDEX',
+    'https://mcdex.io/homepage/',
+  ),
 }
 
 export const testnetTokens = {
