@@ -3,7 +3,6 @@ export const routes = {
     HOME : '/home/',
     LANDING: '/',
     SPAWNWITHUS:'/spawnwithus',
-    CATACOMBS:'/catacombss',
     GRAVEDIGGER:'/gravedigger',
     FARMS:'/farms/',
     TOMBS:'/tombs/',
@@ -12,5 +11,12 @@ export const routes = {
     MAUSOLEUM:'/mausoleum/',
     AUCTION:'/mausoleum/:id',
     GRAVEYARD:'/graveyard',
-    PROFILE:'/profile'
+
+    // Catacombs
+    CATACOMBS:'/catacombs/',
+    PROFILE:'/profile/',
+    RUGROLL: '/rugroll/',
+    BLACKMARKET:'/blackmarket/',
+    BARRACKS:'/barracks/',
+    DATALAB:'/datalab/',
 }

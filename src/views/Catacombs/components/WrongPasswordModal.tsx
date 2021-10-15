@@ -8,8 +8,8 @@ interface WrongPasswordModalProps {
 
 const WrongPasswordModal: React.FC<WrongPasswordModalProps> = ({ onDismiss }) => {
 
-  return <Modal onDismiss={onDismiss} title="Wrong Password!">
-    <Text mt="8px" bold color="tertiary" fontSize="14px" mb="8px">
+  return <Modal onDismiss={onDismiss} title="Wrong Password!" background="black!important" color="white!important" border="1px solid white!important">
+    <Text mt="8px" bold color="white" fontSize="14px" mb="8px">
       Hint : No zombies allowed....
     </Text>
   </Modal>

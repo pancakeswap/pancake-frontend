@@ -98,8 +98,8 @@ const nfts: Nft[] = [
     totalSupply: BIG_ZERO,
     path: '/images/rugZombie/Patient Zero.jpg',
     type: 'image',
-    rarity: 'One of a Kind',
-    userInfo: { ...DEFAULT_USER_INFO },
+    rarity: 'Biblical',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 6,
@@ -306,8 +306,8 @@ const nfts: Nft[] = [
     totalSupply: BIG_ZERO,
     path: 'https://storage.googleapis.com/rug-zombie/PatientZeroBeta.png',
     type: 'image',
-    rarity: 'One of a Kind',
-    userInfo: { ...DEFAULT_USER_INFO },
+    rarity: 'Biblical',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
   {
     id: 19,
@@ -692,6 +692,21 @@ const nfts: Nft[] = [
     type: 'image',
     rarity: 'Legendary',
     userInfo: { ...DEFAULT_USER_INFO },
+  },
+  {
+    id: 41,
+    name: 'Catacombs',
+    symbol: 'CATACOMBS',
+    description: 'They lurk down there.',
+    address: {
+      56: '0xbAcDdD813c4C786eFB43d899C9b5d9E7F43e5A20',
+      97: '0x2d8b022125f4afbf9594a4dff269eb44e15ae295'
+    },
+    totalSupply: BIG_ZERO,
+    path: 'https://ipfs.io/ipfs/QmbCfEW45ZFBXs1NgRHYyMXd2u9bUAeL8poHybZ1kP5oLY',
+    type: 'image',
+    rarity: 'Mythic',
+    userInfo: { ...DEFAULT_USER_INFO }
   },
 ]
 

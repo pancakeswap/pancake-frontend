@@ -1,33 +1,43 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import React, { useEffect, useState } from 'react'
+import { Flex, Text } from '@rug-zombie-libs/uikit'
 import useEagerConnect from '../../hooks/useEagerConnect'
 import { useCatacombsContract, useMultiCall } from '../../hooks/useContract'
 import * as fetch from '../../redux/fetch'
 import Entry from './components/Entry'
-import Main from './components/Main'
-import './Catacombs.Styles.css'
+import { account } from '../../redux/get'
+import Home from './components/Home'
 
 const Catacombs: React.FC = (props) => {
   useEagerConnect()
-  const { account } = useWeb3React()
   const catacombs = useCatacombsContract()
 
-  useEffect(() => {
-    fetch.initialData(account)
-  }, [account])
-
   const [unlocked, setUnlocked] = useState(false)
+  const [loading, setLoading] = useState(true)
 
-  if (account !== undefined) {
-    catacombs.methods.isUnlocked(account).call()
-      .then(
-        res => {
-          setUnlocked(res)
-        })
-  }
+  useEffect(() => {
+    if (account()) {
+      catacombs.methods.isUnlocked(account()).call()
+        .then(
+          res => {
+            setUnlocked(res)
+            setLoading(false)
+          })
+    }
+  }, [catacombs.methods])
 
   return (
-    unlocked ? <Main /> : <Entry />
+    <>
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {loading ? <>
+        <Flex alignItems='center' justifyContent='center' mb='16px'>
+          <img src='images/rugZombie/BasicZombie.gif' alt='loading' />
+        </Flex>
+        <Flex alignItems='center' justifyContent='center' mb='16px'>
+          <Text color='white' bold fontSize='30px'>Entering the Catacombs</Text>
+        </Flex>
+      </> : unlocked ? <Home /> : <Entry />}
+    </>
+
   )
 }
 

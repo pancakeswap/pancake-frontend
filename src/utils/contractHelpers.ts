@@ -29,7 +29,9 @@ import {
   getMausoleumV2Address,
   getNftOwnershipAddress,
   getZombieBalanceCheckerAddress,
-  getCatacombsAddress, getMulticallAddress,
+  getMulticallAddress,
+  getCatacombsAddress,
+  getInstaBuyAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -64,6 +66,7 @@ import nftOwnershipAbi from 'config/abi/nftOwnership.json'
 import zombieBalanceCheckerAbi from 'config/abi/zombieBalanceChecker.json'
 import catacombsAbi from 'config/abi/catacombs.json'
 import MultiCallAbi from 'config/abi/Multicall.json'
+import instaBuyAbi from 'config/abi/instaBuy.json'
 
 export const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? web3NoAccount
@@ -164,6 +167,10 @@ export const getPredictionsContract = (web3?: Web3) => {
 export const getCatacombsContract = (web3?: Web3) => {
   return getContract(catacombsAbi, getCatacombsAddress(), web3)
 }
+
 export const getMulticallContract = (web3?: Web3) => {
   return getContract(MultiCallAbi, getMulticallAddress(), web3)
+}
+  export const getInstaBuyContract = (web3?: Web3) => {
+  return getContract(instaBuyAbi, getInstaBuyAddress(), web3)
 }

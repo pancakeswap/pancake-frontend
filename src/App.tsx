@@ -22,10 +22,13 @@ import Mausoleum from './views/Mausoleum'
 import PredictionsHome from './views/PredictionsHome'
 import SpawningPools from './views/SpawningPools'
 import Graveyard from './views/Graveyard'
-import ProfilePage from './views/Profile/ProfilePage'
 
 import { useMultiCall } from './hooks/useContract'
 import Profile from './views/Profile'
+import DataLab from './views/Catacombs/components/DataLab'
+import BlackMarket from './views/Catacombs/components/BlackMarket'
+import Barracks from './views/Catacombs/components/Barracks'
+import RugRoll from './views/Catacombs/components/RugRoll'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Landing = lazy(() => import('./components/Landing'))
@@ -44,11 +47,12 @@ const App: React.FC = () => {
 
   const [isAuthenticated, setAuthenticated] = useState(false)
   const [zombiePrice, setZombiePrice] = useState(0)
+  const [modal, setModal] = useState( null)
+
 
   useEffect(() => {
     document.title = 'RugZombie'
   })
-
   useEagerConnect()
   const { account } = useWeb3React()
   useEffect(() => {
@@ -63,7 +67,6 @@ const App: React.FC = () => {
   const LandingProps = {
     'handleAuthentication': handleAuthentication,
   }
-
   return (
     <Router history={history}>
       <ResetCSS />
@@ -74,6 +77,10 @@ const App: React.FC = () => {
           <Route exact path={routes.GRAVEDIGGER}><Gravedigger /></Route>
           <Route exact path={routes.SPAWNWITHUS}><SpawnWithUs /></Route>
           <Route exact path={routes.CATACOMBS}><Catacombs /></Route>
+          <Route exact path={routes.RUGROLL}><RugRoll /></Route>
+          <Route exact path={routes.DATALAB}><DataLab modalObj={{ modal ,setModal }} /></Route>
+          <Route exact path={routes.BLACKMARKET}><BlackMarket /></Route>
+          <Route exact path={routes.BARRACKS}><Barracks /></Route>
           <Menu>
             <Route exact path={routes.HOME}><Home /></Route>
             <Route exact path={routes.GRAVES}><Graves /></Route>
@@ -87,6 +94,7 @@ const App: React.FC = () => {
         </Switch>
       </SuspenseWithChunkError>
       <ToastListener />
+      {modal}
     </Router>
   )
 }

@@ -45,11 +45,15 @@
 }
 
 .backgroundImageStyle {
-    height: 90vh;
-    /*width: 100%*/
+    height: 100vh;
+    /* width: 100% */
 }
 
 @media (max-width: 479px) {
+    /* .parent-div {
+        height: 100vh;
+    } */
+
     .text-size {
         font-size: 20px;
     }
@@ -58,19 +62,24 @@
         font-size: 18px;
     }
 
+    .enter-password {
+        bottom: 20%;
+    }
+
     .password {
         right: 0;
         width: 49%;
+        bottom: 20%;
     }
 
     .backgroundImageStyle {
-        height: auto;
+        height: 100vh;
     }
 
     .main-text {
         text-align: center;
         position: absolute;
-        top: 10%;
+        top: 25%;
         width: 80%;
         left: 10%;
     }

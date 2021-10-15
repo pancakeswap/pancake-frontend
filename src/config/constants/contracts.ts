@@ -1,3 +1,4 @@
+// Note - 56 is mainnet and 97 is testnet
 export default {
   masterChef: {
     97: '0x61dd856CF7eC5627083BD4EED64592B5796f0300',
@@ -94,6 +95,10 @@ export default {
   catacombs: {
     56: '0xEb1791080A208B7d81bCfc149bEE184629BCfA75',
     97: '0xEae1624673dc31acA17f3053A09BC69643CBAAE4',
+  },
+  instaBuy: {
+    56: '0x89dAcA018a58b765e64e6388662D7F5aCc38C5fB',
+    97: '0x4D579E7081c198EE47ee55549357a5E90a974A6A',
   },
 
 }

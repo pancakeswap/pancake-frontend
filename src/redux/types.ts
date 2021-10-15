@@ -190,5 +190,5 @@ export interface Nft {
   path: string,
   type: string,
   rarity: string,
-  userInfo: NftUserInfo
+  userInfo: NftUserInfo,
 }
