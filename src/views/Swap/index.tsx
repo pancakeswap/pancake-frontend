@@ -41,7 +41,7 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
 import SwapWarningModal from './components/SwapWarningModal'
-import PriceChartContainer from './components/PriceChartContainer'
+import PriceChartContainer from './components/Chart/PriceChartContainer'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -52,6 +52,7 @@ const Label = styled(Text)`
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
+  const [isChartExpanded, setIsChartExpanded] = useState(false)
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -305,15 +306,16 @@ export default function Swap({ history }: RouteComponentProps) {
     true,
     'confirmSwapModal',
   )
-
   return (
-    <Page>
+    <Page removePadding={isChartExpanded}>
       <Flex width="100%" mb="60px" justifyContent="center">
         <PriceChartContainer
           inputCurrencyId={inputCurrencyId}
           inputCurrency={currencies[Field.INPUT]}
           outputCurrencyId={outputCurrencyId}
           outputCurrency={currencies[Field.OUTPUT]}
+          isChartExpanded={isChartExpanded}
+          setIsChartExpanded={setIsChartExpanded}
         />
         <AppBody maxWidth="328px" fitContent>
           <AppHeader title={t('Exchange')} subtitle={t('Trade tokens in an instant')} />
@@ -330,6 +332,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 otherCurrency={currencies[Field.OUTPUT]}
                 id="swap-currency-input"
               />
+
               <AutoColumn justify="space-between">
                 <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                   <ArrowWrapper clickable>

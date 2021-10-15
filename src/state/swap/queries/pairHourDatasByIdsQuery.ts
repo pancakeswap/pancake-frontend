@@ -6,6 +6,12 @@ const pairHourDatasByIdsQuery = gql`
       id
       hourStartUnix
       pair {
+        token0 {
+          id
+        }
+        token1 {
+          id
+        }
         name
         timestamp
         token0Price

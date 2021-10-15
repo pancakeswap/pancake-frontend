@@ -4,9 +4,9 @@ import styled, { css } from 'styled-components'
 export const StyledPriceChart = styled(Box)<{ $isDark: boolean; $isExpanded: boolean }>`
   background: ${({ $isDark }) => ($isDark ? 'rgba(39, 38, 44, 0.5)' : 'rgba(255, 255, 255, 0.5)')};
   border: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
-  border-radius: 16px;
+  border-radius: ${({ $isExpanded }) => ($isExpanded ? '0' : '16px')};
   width: ${({ $isExpanded }) => ($isExpanded ? '100%' : '50%')};
-  height: ${({ $isExpanded }) => ($isExpanded ? 'calc(100vh - 130px)' : '100%')};
+  height: ${({ $isExpanded }) => ($isExpanded ? 'calc(100vh - 100px)' : '100%')};
 `
 
 const UnstyledButton = css`
