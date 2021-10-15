@@ -29,8 +29,9 @@ import {
   getNftMarketContract,
   getNftSaleContract,
   getPancakeSquadContract,
+  getErc721CollectionContract,
 } from 'utils/contractHelpers'
-import { getMulticallAddress, getPancakeRabbitsAddress, getPancakeSquadAddress } from 'utils/addressHelpers'
+import { getMulticallAddress } from 'utils/addressHelpers'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
@@ -202,16 +203,10 @@ export const useNftMarketContract = () => {
   return useMemo(() => getNftMarketContract(library.getSigner()), [library])
 }
 
-export const useContractForCollection = (collectionAddress: string) => {
+export const useErc721CollectionContract = (collectionAddress: string) => {
   const { library } = useActiveWeb3React()
   return useMemo(() => {
-    if (collectionAddress === getPancakeRabbitsAddress()) {
-      return getPancakeRabbitContract(library.getSigner())
-    }
-    if (collectionAddress === getPancakeSquadAddress()) {
-      return getPancakeSquadContract(library.getSigner())
-    }
-    return null
+    return getErc721CollectionContract(library.getSigner(), collectionAddress)
   }, [library, collectionAddress])
 }
 
