@@ -33,7 +33,7 @@ const Entry = () => {
   const Input = () => {
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
-        if (event.target.value === 'nozombie') {
+        if (event.target.value.includes('no') && event.target.value.includes('zombie')) {
           onBurnZombie()
         } else {
           onWrongPassword()

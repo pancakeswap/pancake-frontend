@@ -71,9 +71,9 @@ const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss
       </Flex>
     </Flex>
     <Text mt='8px' ml='auto' bold color='white' fontSize='14px' mb='8px'>
-      Your journey begins here. Burn {getFullDisplayBalance(burnAmount).toString()} zombie to enter the Catacombs.
+      The remaining humans hide in the Catacombs. Burn {getFullDisplayBalance(burnAmount).toString()} Zombie to enter.
       <br />
-      Don’t worry, “they won’t feel it because they’re already dead”
+      Don’t worry, they won’t feel it because they’re already dead.
     </Text>
     {
       // eslint-disable-next-line no-nested-ternary
