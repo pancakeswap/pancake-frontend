@@ -19,6 +19,7 @@ import { BIG_ZERO } from '../../../../utils/bigNumber'
 import { getFullDisplayBalance } from '../../../../utils/formatBalance'
 import useToast from '../../../../hooks/useToast'
 import { getAddress } from '../../../../utils/addressHelpers'
+import { getErc721Contract } from '../../../../utils/contractHelpers'
 
 
 const StyleDetails = styled.div`
@@ -54,10 +55,11 @@ interface InstabuyCardProps {
 
 const initialNftInfo = {
   price: BIG_ZERO,
+  maxMints: BIG_ZERO
 }
 
 const InstabuyCard: React.FC<InstabuyCardProps> = ({ id, refresh, modalObj }: InstabuyCardProps) => {
-  const { name, symbol, description, address, path, type } = nftById(id)
+  const { name, symbol, description, address, path, type, totalSupply } = nftById(id)
   const [isOpen, setIsOpen] = useState(false)
   const [nftInfo, setNftInfo] = useState(initialNftInfo)
   const instaBuy = useInstaBuyContract()
@@ -67,11 +69,11 @@ const InstabuyCard: React.FC<InstabuyCardProps> = ({ id, refresh, modalObj }: In
     instaBuy.methods.nftInfo(getAddress(address)).call()
       .then(res => {
         setNftInfo({
-          price: new BigNumber(res.price)
+          price: new BigNumber(res.price),
+          maxMints: new BigNumber(res.maxMints)
         })
       })
   }, [address, instaBuy.methods])
-
 
   const closeModal = () => {
     modalObj.setModal(null)
@@ -134,6 +136,7 @@ const InstabuyCard: React.FC<InstabuyCardProps> = ({ id, refresh, modalObj }: In
             <div className='direction-column' style={{ paddingTop: '5%' }}>
               <span className='indetails-type'>{name}</span>
               <span className='indetails-title'>{description}</span>
+              <span className='indetails-title'>1 per wallet ({nftInfo.maxMints.minus(totalSupply).toString()} remaining).</span>
             </div>
           }
         </CardFooter>
