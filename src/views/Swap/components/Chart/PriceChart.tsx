@@ -12,8 +12,8 @@ import {
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { format } from 'date-fns'
 import React, { useState } from 'react'
-import LineChart from 'views/Info/components/InfoCharts/LineChart'
-import { StyledExpandButton, StyledPriceChart, StyledSwapButton } from './styles/priceChartStyles'
+import SwapLineChart from './SwapLineChart'
+import { StyledExpandButton, StyledPriceChart, StyledSwapButton } from './styles'
 
 const PriceChart = ({
   lineChartData = [],
@@ -23,17 +23,19 @@ const PriceChart = ({
   outputCurrency,
   onSwitchTokens,
   isDark,
+  isPairReversed,
+  isChartExpanded,
+  setIsChartExpanded,
 }) => {
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
-  const [isExpanded, setIsExpanded] = useState(false)
   const currentDate = format(new Date(), 'MMM d, yyyy')
   const valueToDisplay = hoverValue
 
-  const toggleExpanded = () => setIsExpanded((currentIsExpanded) => !currentIsExpanded)
+  const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
   return (
-    <StyledPriceChart $isDark={isDark} $isExpanded={isExpanded} p="24px" mr="40px">
+    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} p="24px" mr="40px">
       <Flex justifyContent="space-between">
         <Flex alignItems="center">
           {outputCurrency ? (
@@ -52,7 +54,7 @@ const PriceChart = ({
         </Flex>
         <Flex>
           <StyledExpandButton type="button" onClick={toggleExpanded}>
-            {isExpanded ? <ArrowUpIcon color="text" /> : <ArrowDownIcon color="text" />}
+            {isChartExpanded ? <ArrowUpIcon color="text" /> : <ArrowDownIcon color="text" />}
           </StyledExpandButton>
         </Flex>
       </Flex>
@@ -80,11 +82,18 @@ const PriceChart = ({
             <ButtonMenuItem>1W</ButtonMenuItem>
             <ButtonMenuItem>1M</ButtonMenuItem>
             <ButtonMenuItem>1Y</ButtonMenuItem>
+            <ButtonMenuItem>All time</ButtonMenuItem>
           </ButtonMenu>
         </Box>
       </Flex>
-      <Box height={isExpanded ? 'calc(100% - 120px)' : '516px'} width="100%" maxWidth={isExpanded ? '100%' : '752px'}>
-        <LineChart data={lineChartData} setHoverValue={setHoverValue} setHoverDate={setHoverDate} />
+      <Box height={isChartExpanded ? 'calc(100% - 120px)' : '516px'} width="100%">
+        <SwapLineChart
+          data={lineChartData}
+          setHoverValue={setHoverValue}
+          setHoverDate={setHoverDate}
+          isPairReversed={isPairReversed}
+          timeWindow={timeWindow}
+        />
       </Box>
     </StyledPriceChart>
   )

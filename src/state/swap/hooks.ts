@@ -1,7 +1,7 @@
 import { parseUnits } from '@ethersproject/units'
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade } from '@pancakeswap/sdk'
 import { ParsedQs } from 'qs'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useENS from 'hooks/ENS/useENS'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -17,8 +17,8 @@ import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies
 import { SwapState } from './reducer'
 import { useUserSlippageTolerance } from '../user/hooks'
 import fetchPairHourData from './fetch/pairHourDatas'
-import { normalizeFetchPairDayData, normalizeFetchPairHourData } from './normalizers'
-import { PairDataTimeWindowEnum, PairPricesNormalized } from './types'
+import { normalizeFetchPairDayData, normalizeFetchPairHourData, normalizePairByActiveToken } from './normalizers'
+import { PairDataNormalized, PairDataTimeWindowEnum, PairPricesNormalized } from './types'
 import fetchPairId from './fetch/pairId'
 import fetchPairDayData from './fetch/pairDayDatas'
 
@@ -298,8 +298,9 @@ type useFetchPairPricesParams = {
 }
 
 export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }: useFetchPairPricesParams) => {
-  const [pairPrices, setPairPrices] = useState<PairPricesNormalized>([])
+  const [pairPrices, setPairPrices] = useState<PairDataNormalized>([])
   const [pairId, setPairId] = useState('0x0ed7e52944161450477ee417de9cd3a859b14fd0')
+  const isPairReversed = pairPrices?.length > 0 && pairPrices[0].token0Id !== token0Address
 
   useEffect(() => {
     const fetchAndUpdatePairPrice = async () => {
@@ -320,13 +321,18 @@ export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }:
   useEffect(() => {
     const fetchAndUpdatePairId = async () => {
       const { data } = await fetchPairId(token0Address, token1Address)
-      if (data?.pairs.length > 0) {
+      if (data?.pairs.length > 0 && data.pairs[0].id !== pairId) {
         setPairId(data.pairs[0].id)
       }
     }
 
     // fetchAndUpdatePairId()
-  }, [token0Address, token1Address])
+  }, [token0Address, token1Address, pairId])
 
-  return pairPrices
+  const normalizedPairPrices = useMemo(
+    () => normalizePairByActiveToken({ activeToken: token0Address, pairPrices }),
+    [token0Address, pairPrices],
+  )
+
+  return [normalizedPairPrices, isPairReversed]
 }

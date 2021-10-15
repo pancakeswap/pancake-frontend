@@ -6,6 +6,12 @@ const lastPairDayDatasQuery = gql`
       id
       date
       pairAddress {
+        token0 {
+          id
+        }
+        token1 {
+          id
+        }
         name
         timestamp
         token0Price
