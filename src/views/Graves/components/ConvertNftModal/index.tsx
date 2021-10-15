@@ -77,7 +77,7 @@ const ConvertNftModal: React.FC<StakeModalProps> = ({ pid, updateResult, onDismi
 
   useEffect(() => {
     if (wallet)
-      nftOwnershipContract.methods.checkOwnership(wallet, address).call()
+      nftOwnershipContract.methods.checkOwnership(wallet, getAddress(address)).call()
         .then(res => {
           setIds(res)
         })
