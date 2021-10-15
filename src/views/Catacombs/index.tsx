@@ -28,7 +28,7 @@ const Catacombs: React.FC = (props) => {
   return (
     <>
       {/* eslint-disable-next-line no-nested-ternary */}
-      {loading ? <>
+      {loading && account() ? <>
         <Flex alignItems='center' justifyContent='center' mb='16px'>
           <img src='images/rugZombie/BasicZombie.gif' alt='loading' />
         </Flex>
