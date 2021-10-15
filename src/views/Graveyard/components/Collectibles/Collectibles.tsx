@@ -7,7 +7,7 @@ import { useMultiCall, useNftOwnership } from '../../../../hooks/useContract'
 import CollectibleTabButtons from '../CollectibleTabButtons'
 import { nfts } from '../../../../redux/get'
 
-const RARITIES = ['Biblical', 'Legendary', 'Mythic', 'Rare', 'Uncommon', 'Common']
+const RARITIES = ['Biblical', 'Mythic', 'Legendary', 'Rare', 'Uncommon', 'Common']
 
 const Collectibles: React.FC = () => {
   const contract = useNftOwnership()
