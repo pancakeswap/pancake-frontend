@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, Heading, Card, CardHeader, CardBody, Box, BoxProps } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import FoldableText from './FoldableText'
 
 interface Props extends BoxProps {
@@ -9,8 +8,6 @@ interface Props extends BoxProps {
 }
 
 const SectionsWithFoldableText: React.FC<Props> = ({ header, config, ...props }) => {
-  const { t } = useTranslation()
-
   return (
     <Box maxWidth="888px" {...props}>
       <Card>
@@ -21,11 +18,11 @@ const SectionsWithFoldableText: React.FC<Props> = ({ header, config, ...props })
         </CardHeader>
         <CardBody>
           {config.map(({ title, description }, i, { length }) => (
-            <FoldableText key={title} id={title} mb={i + 1 === length ? '' : '24px'} title={t(title)}>
+            <FoldableText key={title} id={title} mb={i + 1 === length ? '' : '24px'} title={title}>
               {description.map((desc) => {
                 return (
                   <Text key={desc} color="textSubtle" as="p">
-                    {t(desc)}
+                    {desc}
                   </Text>
                 )
               })}
