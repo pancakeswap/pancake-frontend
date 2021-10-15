@@ -18,6 +18,7 @@ import { useInstaBuyContract } from '../../../../hooks/useContract'
 import { BIG_ZERO } from '../../../../utils/bigNumber'
 import { getFullDisplayBalance } from '../../../../utils/formatBalance'
 import useToast from '../../../../hooks/useToast'
+import { getAddress } from '../../../../utils/addressHelpers'
 
 
 const StyleDetails = styled.div`
@@ -56,14 +57,14 @@ const initialNftInfo = {
 }
 
 const InstabuyCard: React.FC<InstabuyCardProps> = ({ id, refresh, modalObj }: InstabuyCardProps) => {
-  const { name, symbol, description, address, path, type, rarity } = nftById(id)
+  const { name, symbol, description, address, path, type } = nftById(id)
   const [isOpen, setIsOpen] = useState(false)
   const [nftInfo, setNftInfo] = useState(initialNftInfo)
   const instaBuy = useInstaBuyContract()
   const { toastSuccess } = useToast()
 
   useEffect(() => {
-    instaBuy.methods.nftInfo(address).call()
+    instaBuy.methods.nftInfo(getAddress(address)).call()
       .then(res => {
         setNftInfo({
           price: new BigNumber(res.price)
@@ -90,8 +91,8 @@ const InstabuyCard: React.FC<InstabuyCardProps> = ({ id, refresh, modalObj }: In
 
 
   const handleInstabuy = () => {
-    instaBuy.methods.priceInBnb(address).call().then(res => {
-      instaBuy.methods.instaBuy(address)
+    instaBuy.methods.priceInBnb(getAddress(address)).call().then(res => {
+      instaBuy.methods.instaBuy(getAddress(address))
         .send({ from: account(), value: res }).then(() => {
         toastSuccess(`Bought ${symbol}`)
       })

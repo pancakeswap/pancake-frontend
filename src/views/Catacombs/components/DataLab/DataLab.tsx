@@ -83,7 +83,7 @@ const DataLab: React.FC<DataLabProps>  = ({ modalObj }) => {
         <Flex justifyContent='center'>
         <Container>
           <Page >
-              <InstabuyCard id={41} refresh={() => {
+              <InstabuyCard id={43} refresh={() => {
                 console.log('refresh')
               }} modalObj={modalObj}/>
           </Page>

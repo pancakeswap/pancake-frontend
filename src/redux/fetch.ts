@@ -174,8 +174,6 @@ export const initialTombData = (updatePoolObj?: { update: number, setUpdate: any
 export const grave = (pid: number, setUserInfoState?: { update: boolean, setUpdate: any }, setPoolInfoState?: { update: boolean, setUpdate: any }) => {
   getDrFrankensteinContract().methods.poolInfo(pid).call()
     .then(poolInfoRes => {
-      console.log(poolInfoRes)
-
       if (pid !== 0) {
         const graveStakingTokenContract = getBep20Contract(get.graveByPid(pid).stakingToken)
         graveStakingTokenContract.methods.totalSupply().call()

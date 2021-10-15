@@ -694,7 +694,7 @@ const nfts: Nft[] = [
     userInfo: { ...DEFAULT_USER_INFO },
   },
   {
-    id: 41,
+    id: 43,
     name: 'Catacombs',
     symbol: 'CATACOMBS',
     description: 'They lurk down there.',
