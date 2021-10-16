@@ -10,7 +10,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { isAddress } from 'utils'
-import { useContractForCollection, useNftMarketContract } from 'hooks/useContract'
+import { useErc721CollectionContract, useNftMarketContract } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
 import { removeUserNft, updateUserNft } from 'state/nftMarket/reducer'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
@@ -87,7 +87,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
-  const collectionContract = useContractForCollection(nftToSell.collectionAddress)
+  const collectionContract = useErc721CollectionContract(nftToSell.collectionAddress)
   const nftMarketContract = useNftMarketContract()
   const dispatch = useAppDispatch()
 
