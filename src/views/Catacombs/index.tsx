@@ -24,7 +24,7 @@ const Catacombs: React.FC = (props) => {
           })
     }
   }, [catacombs.methods])
-
+  console.log(unlocked)
   return (
     <>
       {/* eslint-disable-next-line no-nested-ternary */}
@@ -35,7 +35,7 @@ const Catacombs: React.FC = (props) => {
         <Flex alignItems='center' justifyContent='center' mb='16px'>
           <Text color='white' bold fontSize='30px'>Entering the Catacombs</Text>
         </Flex>
-      </> : unlocked ? <Home /> : <Entry />}
+      </> : unlocked ? <Home /> : <Entry setUnlocked={setUnlocked} />}
     </>
 
   )

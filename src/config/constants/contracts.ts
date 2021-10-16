@@ -94,7 +94,7 @@ export default {
   },
   catacombs: {
     56: '0xEb1791080A208B7d81bCfc149bEE184629BCfA75',
-    97: '0xEae1624673dc31acA17f3053A09BC69643CBAAE4',
+    97: '0x21282AFBfa1d7d4c3753b5AFf2AfD6509E8aBdA1',
   },
   instaBuy: {
     56: '0x89dAcA018a58b765e64e6388662D7F5aCc38C5fB',

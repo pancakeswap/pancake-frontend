@@ -15,9 +15,10 @@ import { getFullDisplayBalance } from '../../../utils/formatBalance'
 
 interface BurnZombieModalProps {
   onDismiss?: () => void,
+  setUnlocked: any
 }
 
-const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss }) => {
+const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss, setUnlocked }) => {
   const [burnAmount, setBurnAmount] = useState(BIG_ZERO)
   const [burned, setBurned] = useState(false)
   const [allowance, setAllowance] = useState(BIG_ZERO)
@@ -45,6 +46,8 @@ const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss
     if (account()) {
       catacombs.methods.UnlockCatacombs().send({ from: account() }).then(() => {
         setBurned(!burned)
+        setUnlocked(true)
+        onDismiss()
       })
     }
   }
@@ -54,6 +57,8 @@ const BurnZombieConfirmationModal: React.FC<BurnZombieModalProps> = ({ onDismiss
       zombie.methods.approve(getAddress(addresses.catacombs), burnAmount).send({ from: account() }).then(() => {
         catacombs.methods.UnlockCatacombs().send({ from: account() }).then(() => {
           setBurned(!burned)
+          setUnlocked(true)
+          onDismiss()
         })
       })
     }

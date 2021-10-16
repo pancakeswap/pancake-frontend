@@ -21,11 +21,15 @@ const StyledText = styled(Text)`
   }
 `
 
-const Entry = () => {
+interface EntryProps {
+  setUnlocked: any
+}
+
+const Entry: React.FC<EntryProps> = ({ setUnlocked }) => {
   const { t } = useTranslation()
 
   const [onBurnZombie] = useModal(
-    <BurnZombieConfirmationModal />,
+    <BurnZombieConfirmationModal  setUnlocked={setUnlocked}/>,
   );
 
   const [onWrongPassword] = useModal(<WrongPasswordModal/>);
