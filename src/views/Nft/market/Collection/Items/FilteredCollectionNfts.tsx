@@ -47,6 +47,10 @@ const FilteredCollectionNfts: React.FC<FilteredCollectionNftsProps> = ({ collect
             }
             return selectedOrder.direction === 'asc' ? Infinity : -Infinity
           }
+          if (selectedOrder.field === 'tokenId') {
+            const tokenIdNumber = Number(nft.tokenId)
+            return Number.isFinite(tokenIdNumber) ? tokenIdNumber : 0
+          }
           // recently listed sorting
           return nft.marketData ? parseInt(nft.marketData[selectedOrder.field], 10) : 0
         },
