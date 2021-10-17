@@ -36,7 +36,7 @@ const EventStepsSection: React.FC<EventStepsProps> = ({ eventInfos, userInfos, i
                 {t('Head to the NFT Market to buy!')}
               </Text>
               <Box>
-                <Button as={Link} to="/market">
+                <Button as={Link} to="/nfts">
                   {t('View market')}
                 </Button>
               </Box>
