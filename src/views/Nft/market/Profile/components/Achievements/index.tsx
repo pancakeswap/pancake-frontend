@@ -4,7 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import IconStatBox from 'views/Teams/components/IconStatBox'
 import { Achievement } from 'state/types'
 import AchievementsList from './AchievementsList'
-import ClaimPointsCallout from './ClaimPointsCallout '
+import ClaimPointsCallout from './ClaimPointsCallout'
 
 const Achievements: React.FC<{ achievements: Achievement[]; points?: number }> = ({ achievements, points = 0 }) => {
   const { t } = useTranslation()

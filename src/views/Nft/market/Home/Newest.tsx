@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { Link } from 'react-router-dom'
 import { NftToken } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
@@ -34,12 +35,13 @@ const useNewestNfts = () => {
 }
 
 const Newest: React.FC = () => {
+  const { t } = useTranslation()
   const nfts = useNewestNfts()
 
   return (
     <div>
       <Flex justifyContent="space-between" alignItems="center" mb="26px">
-        <Heading>Newest Arrivals</Heading>
+        <Heading>{t('Newest Arrivals')}</Heading>
         <Button
           as={Link}
           to={`${nftsBaseUrl}/collections/`}
@@ -47,7 +49,7 @@ const Newest: React.FC = () => {
           scale="sm"
           endIcon={<ChevronRightIcon color="primary" />}
         >
-          View All
+          {t('View All')}
         </Button>
       </Flex>
       {nfts ? (
