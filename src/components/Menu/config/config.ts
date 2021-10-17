@@ -100,7 +100,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       },
       {
         label: t('Blog'),
-        href: 'https://pancakeswap.medium.com',
+        href: 'https://medium.com/pancakeswap',
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
       {
