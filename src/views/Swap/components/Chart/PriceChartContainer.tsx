@@ -22,16 +22,6 @@ const PriceChartContainer = ({
   const { onSwitchTokens } = useSwapActionHandlers()
   const { isDark } = useTheme()
 
-  const mockPairPrices = [
-    { time: new Date(Date.now() + 1000), value: 50 },
-    { time: new Date(Date.now() + 2000), value: 60 },
-    { time: new Date(Date.now() + 3000), value: 55 },
-    { time: new Date(Date.now() + 4000), value: 70 },
-    { time: new Date(Date.now() + 5000), value: 68 },
-    { time: new Date(Date.now() + 6000), value: 80 },
-    { time: new Date(Date.now() + 7000), value: 90 },
-  ]
-
   return (
     <PriceChart
       lineChartData={pairPrices}
