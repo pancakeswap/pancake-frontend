@@ -308,7 +308,7 @@ type useFetchPairPricesParams = {
 }
 
 export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }: useFetchPairPricesParams) => {
-  const [pairId, setPairId] = useState('0x0ed7e52944161450477ee417de9cd3a859b14fd0')
+  const [pairId, setPairId] = useState()
   const pairData = useSelector(pairByDataIdSelector({ pairId, timeWindow }))
   const isPairReversed = pairData?.length > 0 && pairData[0].token0Id !== token0Address
   const dispatch = useDispatch()
@@ -343,7 +343,7 @@ export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }:
       }
     }
 
-    // fetchAndUpdatePairId()
+    fetchAndUpdatePairId()
   }, [token0Address, token1Address, pairId])
 
   const normalizedPairData = useMemo(

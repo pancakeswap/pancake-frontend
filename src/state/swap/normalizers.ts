@@ -41,7 +41,7 @@ export const normalizePairDataByActiveToken = ({
       time: fromUnixTime(pairPrice.time),
       value:
         activeToken === pairPrice?.token0Id
-          ? formatAmount(pairPrice.reserve0 / pairPrice.reserve1, formatOptions)
-          : formatAmount(pairPrice.reserve1 / pairPrice.reserve0, formatOptions),
+          ? formatAmount(pairPrice.reserve1 / pairPrice.reserve0, formatOptions)
+          : formatAmount(pairPrice.reserve0 / pairPrice.reserve1, formatOptions),
     }))
     .reverse()
