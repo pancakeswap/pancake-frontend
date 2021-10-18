@@ -30,7 +30,7 @@ const PriceChart = ({
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
   const currentDate = format(new Date(), 'MMM d, yyyy')
-  const valueToDisplay = hoverValue
+  const valueToDisplay = hoverValue || lineChartData[lineChartData.length - 1]?.value
 
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
@@ -52,15 +52,21 @@ const PriceChart = ({
             <SyncAltIcon ml="6px" color="primary" />
           </StyledSwapButton>
         </Flex>
-        <Flex>
-          <StyledExpandButton type="button" onClick={toggleExpanded}>
-            {isChartExpanded ? <ArrowUpIcon color="text" /> : <ArrowDownIcon color="text" />}
-          </StyledExpandButton>
-        </Flex>
+        {setIsChartExpanded && (
+          <Flex>
+            <StyledExpandButton type="button" onClick={toggleExpanded}>
+              {isChartExpanded ? <ArrowUpIcon color="text" /> : <ArrowDownIcon color="text" />}
+            </StyledExpandButton>
+          </Flex>
+        )}
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex
+        flexDirection={['column', null, null, null, 'row']}
+        alignItems={['flex-start', null, null, null, 'center']}
+        justifyContent="space-between"
+      >
         <Flex flexDirection="column" pt="12px">
-          {valueToDisplay ? (
+          {lineChartData?.length > 0 ? (
             <Flex alignItems="flex-end">
               <Text fontSize="40px" mr="8px" bold>
                 {valueToDisplay}

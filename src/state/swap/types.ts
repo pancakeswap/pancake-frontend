@@ -1,5 +1,5 @@
 export type PairDataNormalized = {
-  time: Date
+  time: number
   token0Id: string
   token1Id: string
   token0Price: number

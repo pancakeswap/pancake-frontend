@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 
 const lastPairHourDatasQuery = gql`
   query lastPairHourDatasQuery($pairId: String, $first: Int) {
-    pairHourDatas(first: $first, where: { pair: $pairId }) {
+    pairHourDatas(first: $first, where: { pair: $pairId }, orderBy: hourStartUnix, orderDirection: desc) {
       id
       hourStartUnix
       pair {

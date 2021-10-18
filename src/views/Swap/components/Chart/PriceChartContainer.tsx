@@ -18,7 +18,7 @@ const PriceChartContainer = ({
     inputCurrencyId && inputCurrencyId !== 'BNB' ? String(inputCurrencyId).toLowerCase() : DEFAULT_INPUT_ADDRESS
   const token1Address = outputCurrencyId ? String(outputCurrencyId).toLowerCase() : ''
 
-  const [pairPrices, isPairReversed] = useFetchPairPrices({ token0Address, token1Address, timeWindow })
+  const { pairPrices, isPairReversed } = useFetchPairPrices({ token0Address, token1Address, timeWindow })
   const { onSwitchTokens } = useSwapActionHandlers()
   const { isDark } = useTheme()
 
@@ -34,7 +34,7 @@ const PriceChartContainer = ({
 
   return (
     <PriceChart
-      lineChartData={mockPairPrices}
+      lineChartData={pairPrices}
       timeWindow={timeWindow}
       setTimeWindow={setTimeWindow}
       inputCurrency={inputCurrency}
