@@ -7,6 +7,7 @@ import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { DeserializedFarm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
+import useToast from 'hooks/useToast'
 import { useERC20 } from 'hooks/useContract'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import StakeAction from './StakeAction'
@@ -30,6 +31,7 @@ interface FarmCardActionsProps {
 
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl, cakePrice, lpLabel }) => {
   const { t } = useTranslation()
+  const { toastError } = useToast()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = farm
   const { allowance, tokenBalance, stakedBalance, earnings } = farm.userData || {}
@@ -46,11 +48,13 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
       setRequestedApproval(true)
       await onApprove()
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-      setRequestedApproval(false)
     } catch (e) {
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       console.error(e)
+    } finally {
+      setRequestedApproval(false)
     }
-  }, [onApprove, dispatch, account, pid])
+  }, [onApprove, dispatch, account, pid, t, toastError])
 
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (
