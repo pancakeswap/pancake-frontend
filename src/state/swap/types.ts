@@ -2,8 +2,8 @@ export type PairDataNormalized = {
   time: number
   token0Id: string
   token1Id: string
-  token0Price: number
-  token1Price: number
+  reserve0: number
+  reserve1: number
 }[]
 
 export type PairPricesNormalized = {

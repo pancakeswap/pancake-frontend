@@ -5,6 +5,8 @@ const pairDayDatasByIdsQuery = gql`
     pairDayDatas(where: { id_in: $pairIds }, orderBy: date, orderDirection: desc) {
       id
       date
+      reserve0
+      reserve1
       pairAddress {
         token0 {
           id
@@ -12,10 +14,6 @@ const pairDayDatasByIdsQuery = gql`
         token1 {
           id
         }
-        name
-        timestamp
-        token0Price
-        token1Price
       }
     }
   }

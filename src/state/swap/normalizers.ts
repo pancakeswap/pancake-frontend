@@ -14,8 +14,8 @@ export const normalizeFetchPairHourData = (data: PairHoursDatasResponse | null):
     time: fetchPairEntry.hourStartUnix,
     token0Id: fetchPairEntry.pair.token0.id,
     token1Id: fetchPairEntry.pair.token1.id,
-    token0Price: formatAmount(parseFloat(fetchPairEntry.pair.token0Price), formatOptions),
-    token1Price: formatAmount(parseFloat(fetchPairEntry.pair.token1Price), formatOptions),
+    reserve0: parseFloat(fetchPairEntry.reserve0),
+    reserve1: parseFloat(fetchPairEntry.reserve1),
   }))
 
 export const normalizeFetchPairDayData = (data: PairDayDatasResponse | null): PairDataNormalized =>
@@ -23,8 +23,8 @@ export const normalizeFetchPairDayData = (data: PairDayDatasResponse | null): Pa
     time: fetchPairEntry.date,
     token0Id: fetchPairEntry.pairAddress.token0.id,
     token1Id: fetchPairEntry.pairAddress.token1.id,
-    token0Price: formatAmount(parseFloat(fetchPairEntry.pairAddress.token0Price), formatOptions),
-    token1Price: formatAmount(parseFloat(fetchPairEntry.pairAddress.token1Price), formatOptions),
+    reserve0: parseFloat(fetchPairEntry.reserve0),
+    reserve1: parseFloat(fetchPairEntry.reserve1),
   }))
 
 type normalizePairDataByActiveTokenParams = {
@@ -39,6 +39,9 @@ export const normalizePairDataByActiveToken = ({
   pairData
     .map((pairPrice) => ({
       time: fromUnixTime(pairPrice.time),
-      value: activeToken === pairPrice?.token0Id ? pairPrice.token1Price : pairPrice.token0Price,
+      value:
+        activeToken === pairPrice?.token0Id
+          ? formatAmount(pairPrice.reserve0 / pairPrice.reserve1, formatOptions)
+          : formatAmount(pairPrice.reserve1 / pairPrice.reserve0, formatOptions),
     }))
     .reverse()

@@ -5,6 +5,8 @@ const lastPairHourDatasQuery = gql`
     pairHourDatas(first: $first, where: { pair: $pairId }, orderBy: hourStartUnix, orderDirection: desc) {
       id
       hourStartUnix
+      reserve0
+      reserve1
       pair {
         token0 {
           id
@@ -12,10 +14,6 @@ const lastPairHourDatasQuery = gql`
         token1 {
           id
         }
-        name
-        timestamp
-        token0Price
-        token1Price
       }
     }
   }
