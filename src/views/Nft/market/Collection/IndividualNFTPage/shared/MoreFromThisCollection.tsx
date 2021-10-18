@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
+import shuffle from 'lodash/shuffle'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
@@ -55,7 +56,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
   const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
 
   useEffect(() => {
-    if (!isPBCollection) {
+    if (!isPBCollection && !collectionNfts) {
       dispatch(
         fetchNftsFromCollections({
           collectionAddress: isAddress(collectionAddress) || collectionAddress,
@@ -64,11 +65,15 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
         }),
       )
     }
-  }, [collectionAddress, dispatch, isPBCollection])
+  }, [collectionNfts, collectionAddress, dispatch, isPBCollection])
 
-  let nftsToShow = allPancakeBunnyNfts
-    ? allPancakeBunnyNfts.filter((nft) => nft.name !== currentTokenName)
-    : collectionNfts?.filter((nft) => nft.name !== currentTokenName && nft.marketData?.isTradable)
+  let nftsToShow = useMemo(() => {
+    return shuffle(
+      allPancakeBunnyNfts
+        ? allPancakeBunnyNfts.filter((nft) => nft.name !== currentTokenName)
+        : collectionNfts?.filter((nft) => nft.name !== currentTokenName && nft.marketData?.isTradable),
+    )
+  }, [allPancakeBunnyNfts, collectionNfts, currentTokenName])
 
   if (!nftsToShow || nftsToShow.length === 0) {
     return null
