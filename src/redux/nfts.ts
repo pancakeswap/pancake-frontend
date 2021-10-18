@@ -443,7 +443,7 @@ const nfts: Nft[] = [
     symbol: 'KAREN',
     description: 'May I speak to your manager?',
     address: {
-      56: '0xa8fe5D109C7C974E9Dd54bbe11D552dA97d92e58',
+      56: '0xe10F32986c97F9c74bD604E081Db114Ca17D3B5a',
       97: '0x2d8b022125f4afbf9594a4dff269eb44e15ae295',
 
     },
