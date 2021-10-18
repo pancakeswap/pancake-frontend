@@ -21,6 +21,8 @@ export type PairHoursDatasResponse = {
   pairHourDatas: {
     id: string
     hourStartUnix: number
+    reserve0: string
+    reserve1: string
     pair: {
       token0: {
         id: string
@@ -28,10 +30,6 @@ export type PairHoursDatasResponse = {
       token1: {
         id: string
       }
-      name: string
-      timestamp: string
-      token0Price: string
-      token1Price: string
     }
   }[]
 }
@@ -40,6 +38,8 @@ export type PairDayDatasResponse = {
   pairDayDatas: {
     id: string
     date: number
+    reserve0: string
+    reserve1: string
     pairAddress: {
       token0: {
         id: string
@@ -47,10 +47,6 @@ export type PairDayDatasResponse = {
       token1: {
         id: string
       }
-      name: string
-      timestamp: string
-      token0Price: string
-      token1Price: string
     }
   }[]
 }
