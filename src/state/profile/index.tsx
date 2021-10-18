@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ProfileState, ProfileAvatarFetchStatus } from 'state/types'
-import type { AppDispatch } from 'state'
+import { ProfileState, ProfileAvatarFetchStatus, Profile } from 'state/types'
 import { NftToken } from 'state/nftMarket/types'
-import { getProfile, getProfileAvatar, GetProfileResponse, getUsername } from './helpers'
+import { getProfile, getProfileAvatar, getUsername } from './helpers'
 
 const initialState: ProfileState = {
   isInitialized: false,
@@ -11,6 +10,14 @@ const initialState: ProfileState = {
   data: null,
   profileAvatars: {},
 }
+
+export const fetchProfile = createAsyncThunk<{ hasRegistered: boolean; profile?: Profile }, string>(
+  'profile/fetchProfile',
+  async (account) => {
+    const { hasRegistered, profile } = await getProfile(account)
+    return { hasRegistered, profile }
+  },
+)
 
 export const fetchProfileAvatar = createAsyncThunk<{ account: string; nft: NftToken; hasRegistered: boolean }, string>(
   'profile/fetchProfileAvatar',
@@ -35,21 +42,6 @@ export const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    profileFetchStart: (state) => {
-      state.isLoading = true
-    },
-    profileFetchSucceeded: (state, action: PayloadAction<GetProfileResponse>) => {
-      const { profile, hasRegistered } = action.payload
-
-      state.isInitialized = true
-      state.isLoading = false
-      state.hasRegistered = hasRegistered
-      state.data = profile
-    },
-    profileFetchFailed: (state) => {
-      state.isLoading = false
-      state.isInitialized = true
-    },
     profileClear: () => ({
       ...initialState,
       isLoading: false,
@@ -59,6 +51,21 @@ export const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchProfile.pending, (state) => {
+      state.isLoading = true
+    })
+    builder.addCase(fetchProfile.fulfilled, (state, action) => {
+      const { hasRegistered, profile } = action.payload
+
+      state.isInitialized = true
+      state.isLoading = false
+      state.hasRegistered = hasRegistered
+      state.data = profile
+    })
+    builder.addCase(fetchProfile.rejected, (state) => {
+      state.isLoading = false
+      state.isInitialized = true
+    })
     builder.addCase(fetchProfileUsername.pending, (state, action) => {
       const { account } = action.meta.arg
       if (state.profileAvatars[account]) {
@@ -179,20 +186,6 @@ export const profileSlice = createSlice({
 })
 
 // Actions
-export const { profileFetchStart, profileFetchSucceeded, profileFetchFailed, profileClear, addPoints } =
-  profileSlice.actions
-
-// Thunks
-// TODO: this should be an AsyncThunk
-export const fetchProfile = (address: string) => async (dispatch: AppDispatch) => {
-  try {
-    dispatch(profileFetchStart())
-    const response = await getProfile(address)
-    dispatch(profileFetchSucceeded(response))
-  } catch (e) {
-    console.error(e)
-    dispatch(profileFetchFailed())
-  }
-}
+export const { profileClear, addPoints } = profileSlice.actions
 
 export default profileSlice.reducer
