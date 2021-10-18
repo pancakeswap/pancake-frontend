@@ -11,7 +11,7 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
       },
       {
         label: t('Blog'),
-        href: 'https://pancakeswap.medium.com/',
+        href: 'https://medium.com/pancakeswap',
       },
       {
         label: t('Community'),
