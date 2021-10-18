@@ -39,7 +39,7 @@ const Collectible = () => {
                     })
                   : '0'
                 return (
-                  <tr>
+                  <tr key={collection.address}>
                     <Td>
                       <Link to={`${nftsBaseUrl}/collections/${collection.address}`}>
                         <Flex alignItems="center">
