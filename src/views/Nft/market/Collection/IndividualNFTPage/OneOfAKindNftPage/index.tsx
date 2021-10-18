@@ -57,6 +57,8 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
         setNft(nftOwnedByConnectedUser)
         setIsOwnNft(true)
       } else {
+        // reset to defaults
+        setIsOwnNft(false)
         // Get metadata and market data separately if connected user is not the owner
         fetchNftData()
       }
