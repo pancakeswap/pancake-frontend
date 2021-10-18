@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Text, SearchIcon, Link } from '@pancakeswap/uikit'
 import { getBscScanLink } from 'utils'
+import { formatNumber } from 'utils/formatBalance'
+import uriToHttp from 'utils/uriToHttp'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ExpandableCard from './ExpandableCard'
@@ -9,6 +11,8 @@ import ExpandableCard from './ExpandableCard'
 interface DetailsCardProps {
   contractAddress: string
   ipfsJson: string
+  count?: number
+  rarity?: number
 }
 
 const LongTextContainer = styled(Text)`
@@ -18,9 +22,10 @@ const LongTextContainer = styled(Text)`
   text-overflow: ellipsis;
 `
 
-const DetailsCard: React.FC<DetailsCardProps> = ({ contractAddress, ipfsJson }) => {
+const DetailsCard: React.FC<DetailsCardProps> = ({ contractAddress, ipfsJson, count, rarity }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
+  const ipfsLink = ipfsJson ? uriToHttp(ipfsJson)[0] : null
   const content = (
     <Box p="24px">
       <Flex justifyContent="space-between" alignItems="center" mb="16px">
@@ -31,14 +36,30 @@ const DetailsCard: React.FC<DetailsCardProps> = ({ contractAddress, ipfsJson }) 
           <LongTextContainer bold>{contractAddress}</LongTextContainer>
         </Link>
       </Flex>
-      {ipfsJson && (
-        <Flex justifyContent="space-between" alignItems="center">
+      {ipfsLink && (
+        <Flex justifyContent="space-between" alignItems="center" mb="16px">
           <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
             IPFS JSON
           </Text>
-          <Link external href={ipfsJson}>
-            <LongTextContainer bold>{ipfsJson}</LongTextContainer>
+          <Link external href={ipfsLink}>
+            <LongTextContainer bold>{ipfsLink}</LongTextContainer>
           </Link>
+        </Flex>
+      )}
+      {count && (
+        <Flex justifyContent="space-between" alignItems="center" mb="16px" mr="4px">
+          <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+            {t('Supply Count')}
+          </Text>
+          <LongTextContainer bold>{formatNumber(count, 0, 0)}</LongTextContainer>
+        </Flex>
+      )}
+      {rarity && (
+        <Flex justifyContent="space-between" alignItems="center" mr="4px">
+          <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+            {t('Rarity')}
+          </Text>
+          <LongTextContainer bold>{`${formatNumber(rarity, 0, 2)}%`}</LongTextContainer>
         </Flex>
       )}
     </Box>
