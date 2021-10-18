@@ -10,7 +10,7 @@ export type LineChartProps = {
   height?: string
   chartHeight?: string
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
-  setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of valye
+  setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
 } & React.HTMLAttributes<HTMLDivElement>
 
 const CustomBar = ({
