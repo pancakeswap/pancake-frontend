@@ -13,14 +13,23 @@ import { isAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/prices'
 import { AppDispatch, AppState } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
-import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
+import {
+  Field,
+  replaceSwapState,
+  selectCurrency,
+  setRecipient,
+  switchCurrencies,
+  typeInput,
+  updatePairData,
+} from './actions'
 import { SwapState } from './reducer'
 import { useUserSlippageTolerance } from '../user/hooks'
 import fetchPairHourData from './fetch/pairHourDatas'
-import { normalizeFetchPairDayData, normalizeFetchPairHourData, normalizePairByActiveToken } from './normalizers'
-import { PairDataNormalized, PairDataTimeWindowEnum, PairPricesNormalized } from './types'
+import { normalizeFetchPairDayData, normalizeFetchPairHourData, normalizePairDataByActiveToken } from './normalizers'
+import { PairDataTimeWindowEnum } from './types'
 import fetchPairId from './fetch/pairId'
 import fetchPairDayData from './fetch/pairDayDatas'
+import { pairByDataIdSelector } from './selectors'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -256,6 +265,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
     recipient,
+    pairDataById: {},
   }
 }
 
@@ -298,25 +308,32 @@ type useFetchPairPricesParams = {
 }
 
 export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }: useFetchPairPricesParams) => {
-  const [pairPrices, setPairPrices] = useState<PairDataNormalized>([])
   const [pairId, setPairId] = useState('0x0ed7e52944161450477ee417de9cd3a859b14fd0')
-  const isPairReversed = pairPrices?.length > 0 && pairPrices[0].token0Id !== token0Address
+  const pairData = useSelector(pairByDataIdSelector({ pairId, timeWindow }))
+  const isPairReversed = pairData?.length > 0 && pairData[0].token0Id !== token0Address
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchAndUpdatePairPrice = async () => {
       if (pairId) {
         if (timeWindow <= PairDataTimeWindowEnum.WEEK) {
           const { data } = await fetchPairHourData({ pairId, timeWindow })
-          setPairPrices(normalizeFetchPairHourData(data) || [])
+          const newPairData = normalizeFetchPairHourData(data) || []
+          if (data) {
+            dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
+          }
         } else {
           const { data } = await fetchPairDayData({ pairId, timeWindow })
-          setPairPrices(normalizeFetchPairDayData(data) || [])
+          const newPairData = normalizeFetchPairDayData(data) || []
+          if (data) {
+            dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
+          }
         }
       }
     }
 
     fetchAndUpdatePairPrice()
-  }, [pairId, timeWindow])
+  }, [pairId, timeWindow, dispatch])
 
   useEffect(() => {
     const fetchAndUpdatePairId = async () => {
@@ -329,10 +346,10 @@ export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }:
     // fetchAndUpdatePairId()
   }, [token0Address, token1Address, pairId])
 
-  const normalizedPairPrices = useMemo(
-    () => normalizePairByActiveToken({ activeToken: token0Address, pairPrices }),
-    [token0Address, pairPrices],
+  const normalizedPairData = useMemo(
+    () => normalizePairDataByActiveToken({ activeToken: token0Address, pairData }),
+    [token0Address, pairData],
   )
 
-  return [normalizedPairPrices, isPairReversed]
+  return { pairPrices: normalizedPairData, isPairReversed }
 }

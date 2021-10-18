@@ -7,6 +7,11 @@ export const StyledPriceChart = styled(Box)<{ $isDark: boolean; $isExpanded: boo
   border-radius: ${({ $isExpanded }) => ($isExpanded ? '0' : '16px')};
   width: ${({ $isExpanded }) => ($isExpanded ? '100%' : '50%')};
   height: ${({ $isExpanded }) => ($isExpanded ? 'calc(100vh - 100px)' : '100%')};
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: block;
+  }
 `
 
 const UnstyledButton = css`
