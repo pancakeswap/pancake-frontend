@@ -35,7 +35,7 @@ const PriceChart = ({
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
   return (
-    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} p="24px" mr="40px">
+    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} p="24px">
       <Flex justifyContent="space-between">
         <Flex alignItems="center">
           {outputCurrency ? (
