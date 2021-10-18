@@ -1,5 +1,19 @@
-import React from 'react'
-import { Table, Th, Td, Card, ProfileAvatar, Flex, BnbUsdtPairTokenIcon, Heading } from '@pancakeswap/uikit'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  Table,
+  Th,
+  Td,
+  Card,
+  Flex,
+  BnbUsdtPairTokenIcon,
+  Heading,
+  useMatchBreakpoints,
+  ProfileAvatar,
+  ArrowBackIcon,
+  Text,
+  ArrowForwardIcon,
+} from '@pancakeswap/uikit'
+import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useGetCollections } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'
@@ -7,9 +21,79 @@ import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 
+export const ITEMS_PER_PAGE = 10
+
+const SORT_FIELD = {
+  volumeBNB: 'totalVolumeBNB',
+  items: 'numberTokensListed',
+  supply: 'totalSupply',
+}
+
+export const PageButtons = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.2em;
+  margin-bottom: 1.2em;
+`
+
+export const Arrow = styled.div`
+  color: ${({ theme }) => theme.colors.primary};
+  padding: 0 20px;
+  :hover {
+    cursor: pointer;
+  }
+`
+
 const Collectible = () => {
   const { t } = useTranslation()
   const collections = useGetCollections()
+  const { isMobile } = useMatchBreakpoints()
+  const [sortField, setSortField] = useState(null)
+  const [sortDirection, setSortDirection] = useState<boolean>(false)
+  const [page, setPage] = useState(1)
+  const [maxPage, setMaxPage] = useState(1)
+
+  useEffect(() => {
+    let extraPages = 1
+    const collectionValues = collections ? Object.values(collections) : []
+    if (collectionValues.length % ITEMS_PER_PAGE === 0) {
+      extraPages = 0
+    }
+    setMaxPage(Math.floor(collectionValues.length / ITEMS_PER_PAGE) + extraPages)
+  }, [collections])
+
+  const sortedCollections = useMemo(() => {
+    const collectionValues = collections ? Object.values(collections) : []
+
+    return collectionValues
+      .sort((a, b) => {
+        if (sortField && a && b) {
+          return parseFloat(a[sortField]) > parseFloat(b[sortField])
+            ? (sortDirection ? -1 : 1) * 1
+            : (sortDirection ? -1 : 1) * -1
+        }
+        return -1
+      })
+      .slice(ITEMS_PER_PAGE * (page - 1), page * ITEMS_PER_PAGE)
+  }, [page, collections, sortDirection, sortField])
+
+  const handleSort = useCallback(
+    (newField: string) => {
+      setSortField(newField)
+      setSortDirection(sortField !== newField ? true : !sortDirection)
+    },
+    [sortDirection, sortField],
+  )
+
+  const arrow = useCallback(
+    (field: string) => {
+      const directionArrow = !sortDirection ? '↑' : '↓'
+      return sortField === field ? directionArrow : ''
+    },
+    [sortDirection, sortField],
+  )
 
   return (
     <>
@@ -24,14 +108,26 @@ const Collectible = () => {
             <thead>
               <tr>
                 <Th textAlign="left">{t('Collection')}</Th>
-                <Th textAlign="left">{t('Volume')}</Th>
-                <Th textAlign="left">{t('Items')}</Th>
-                <Th textAlign="left">{t('Supply')}</Th>
+                <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.volumeBNB)}>
+                  {t('Volume')}
+                  {arrow(SORT_FIELD.volumeBNB)}
+                </Th>
+                {!isMobile && (
+                  <>
+                    <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.items)}>
+                      {t('Items')}
+                      {arrow(SORT_FIELD.items)}
+                    </Th>
+                    <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.supply)}>
+                      {t('Supply')}
+                      {arrow(SORT_FIELD.supply)}
+                    </Th>
+                  </>
+                )}
               </tr>
             </thead>
             <tbody>
-              {Object.keys(collections).map((key) => {
-                const collection = collections[key]
+              {sortedCollections.map((collection) => {
                 const volume = collection.totalVolumeBNB
                   ? parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
                       minimumFractionDigits: 3,
@@ -54,13 +150,36 @@ const Collectible = () => {
                         <BnbUsdtPairTokenIcon ml="8px" />
                       </Flex>
                     </Td>
-                    <Td>{collection.numberTokensListed}</Td>
-                    <Td>{collection.totalSupply}</Td>
+                    {!isMobile && (
+                      <>
+                        <Td>{collection.numberTokensListed}</Td>
+                        <Td>{collection.totalSupply}</Td>
+                      </>
+                    )}
                   </tr>
                 )
               })}
             </tbody>
           </Table>
+          <PageButtons>
+            <Arrow
+              onClick={() => {
+                setPage(page === 1 ? page : page - 1)
+              }}
+            >
+              <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+            </Arrow>
+
+            <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
+
+            <Arrow
+              onClick={() => {
+                setPage(page === maxPage ? page : page + 1)
+              }}
+            >
+              <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+            </Arrow>
+          </PageButtons>
         </Card>
       </Page>
     </>
