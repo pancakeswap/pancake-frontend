@@ -66,7 +66,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
               <Text fontSize="40px" bold mt="12px">
                 {nft.name}
               </Text>
-              <Text mt={['16px', '16px', '48px']}>{t(nft.description)}</Text>
+              {nft.description && <Text mt={['16px', '16px', '48px']}>{t(nft.description)}</Text>}
               <Text color="textSubtle" mt={['16px', '16px', '48px']}>
                 {t('Price')}
               </Text>
