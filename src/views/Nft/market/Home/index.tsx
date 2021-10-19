@@ -10,7 +10,6 @@ import PageSection from 'components/PageSection'
 import { PageMeta } from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import useTheme from 'hooks/useTheme'
-import PancakeSquadBanner from 'views/Home/components/Banners/PancakeSquadBanner'
 import SearchBar from '../components/SearchBar'
 import Collections from './Collections'
 import Newest from './Newest'
@@ -65,10 +64,7 @@ const Home = () => {
               {t('NFT Market')}
             </Heading>
             <Heading scale="lg" color="text">
-              {t('Buy and Sell verified PancakeSwap collectibles.')}
-            </Heading>
-            <Heading scale="lg" color="text">
-              {t('PancakeSwap NFTs only... for now!')}
+              {t('Buy and Sell NFTs on Binance Smart Chain')}
             </Heading>
             {account && (
               <Button as={Link} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} mt="32px">
@@ -86,9 +82,6 @@ const Home = () => {
         concaveDivider
         dividerPosition="top"
       >
-        <Flex mb="24px">
-          <PancakeSquadBanner />
-        </Flex>
         <Collections />
         <Newest />
       </PageSection>
