@@ -40,7 +40,7 @@ const useFetchUserNfts = () => {
     !isProfileLoading
 
   // Fetch on account / profile change, once profile fetch is resolved
-  const hasAccountSwitched = previousProfileNftTokenId !== profileNftTokenId && !isProfileLoading
+  const hasAccountSwitched = previousProfileNftTokenId !== profileNftTokenId && !isProfileLoading && account
 
   useEffect(() => {
     if ((shouldFetch || hasAccountSwitched) && !isEmpty(collections)) {

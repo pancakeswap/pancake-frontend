@@ -308,6 +308,9 @@ export const NftMarket = createSlice({
     setShowOnlyOnSale: (state, action: PayloadAction<boolean>) => {
       state.data.filters.showOnlyOnSale = action.payload
     },
+    resetUserNftState: (state) => {
+      state.data.user = { ...initialState.data.user }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(filterNftsFromCollection.pending, (state) => {
@@ -401,7 +404,13 @@ export const NftMarket = createSlice({
 })
 
 // Actions
-export const { addAttributeFilter, removeAttributeFilter, removeAllFilters, setOrdering, setShowOnlyOnSale } =
-  NftMarket.actions
+export const {
+  addAttributeFilter,
+  removeAttributeFilter,
+  removeAllFilters,
+  setOrdering,
+  setShowOnlyOnSale,
+  resetUserNftState,
+} = NftMarket.actions
 
 export default NftMarket.reducer
