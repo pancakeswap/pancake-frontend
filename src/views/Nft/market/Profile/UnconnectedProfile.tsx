@@ -30,8 +30,8 @@ const UnconnectedProfile = () => {
   const { accountAddress } = useParams<{ accountAddress: string }>()
   const { profile: profileHookState, isFetching: isProfileFetching } = useProfileForAddress(accountAddress)
   const { profile } = profileHookState || {}
-  const { achievements } = useAchievementsForAddress(accountAddress)
-  const { nfts, isLoading } = useNftsForAddress(accountAddress, profile, isProfileFetching)
+  const { achievements, isFetching: isAchievementFetching } = useAchievementsForAddress(accountAddress)
+  const { nfts, isLoading: isNftLoading } = useNftsForAddress(accountAddress, profile, isProfileFetching)
 
   return (
     <>
@@ -41,6 +41,9 @@ const UnconnectedProfile = () => {
           profile={profile}
           achievements={achievements}
           nftCollected={nfts.length}
+          isProfileLoading={isProfileFetching}
+          isNftLoading={isNftLoading}
+          isAchievementsLoading={isAchievementFetching}
         />
         <TabMenuWrapper>
           <TabMenu />
@@ -56,7 +59,7 @@ const UnconnectedProfile = () => {
         </Route>
         <Route exact path={`${nftsBaseUrl}/profile/:accountAddress`}>
           <SubMenu />
-          <UnconnectedProfileNfts nfts={nfts} isLoading={isLoading} />
+          <UnconnectedProfileNfts nfts={nfts} isLoading={isNftLoading} />
         </Route>
       </Page>
     </>

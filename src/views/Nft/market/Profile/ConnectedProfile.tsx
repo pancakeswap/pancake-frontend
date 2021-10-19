@@ -8,6 +8,8 @@ import { Route } from 'react-router'
 import { useUserNfts } from 'state/nftMarket/hooks'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
+import { AchievementFetchStatus } from 'state/types'
+import { UserNftInitializationState } from 'state/nftMarket/types'
 import useFetchUserNfts from './hooks/useFetchUserNfts'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
@@ -30,10 +32,10 @@ const TabMenuWrapper = styled(Box)`
 `
 
 const ConnectedProfile = () => {
-  const { profile } = useProfile()
-  const achievements = useAchievements()
+  const { profile, isLoading: isProfileLoading } = useProfile()
+  const { achievements, achievementFetchStatus } = useAchievements()
   const { account } = useWeb3React()
-  const { nfts: userNfts } = useUserNfts()
+  const { userNftsInitializationState, nfts: userNfts } = useUserNfts()
 
   useFetchAchievements()
   useFetchUserNfts()
@@ -46,6 +48,9 @@ const ConnectedProfile = () => {
           profile={profile}
           achievements={achievements}
           nftCollected={userNfts.length}
+          isProfileLoading={isProfileLoading}
+          isNftLoading={userNftsInitializationState !== UserNftInitializationState.INITIALIZED}
+          isAchievementsLoading={achievementFetchStatus !== AchievementFetchStatus.FETCHED}
         />
         <TabMenuWrapper>
           <TabMenu />

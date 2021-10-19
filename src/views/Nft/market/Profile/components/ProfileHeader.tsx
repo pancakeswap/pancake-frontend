@@ -20,6 +20,9 @@ interface HeaderProps {
   profile: Profile
   achievements: Achievement[]
   nftCollected: number
+  isAchievementsLoading: boolean
+  isNftLoading: boolean
+  isProfileLoading: boolean
 }
 
 const StyledIconButton = styled(IconButton)`
@@ -27,15 +30,27 @@ const StyledIconButton = styled(IconButton)`
 `
 
 // Account and profile passed down as the profile could be used to render _other_ users' profiles.
-const ProfileHeader: React.FC<HeaderProps> = ({ accountPath, profile, achievements, nftCollected }) => {
+const ProfileHeader: React.FC<HeaderProps> = ({
+  accountPath,
+  profile,
+  achievements,
+  nftCollected,
+  isAchievementsLoading,
+  isNftLoading,
+  isProfileLoading,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const [onEditProfileModal] = useModal(<EditProfileModal />, false)
 
   const isConnectedAccount = account?.toLowerCase() === accountPath?.toLowerCase()
-  const numNftCollected = nftCollected ? formatNumber(nftCollected, 0, 0) : '-'
-  const numPoints = profile?.points ? formatNumber(profile.points, 0, 0) : '-'
-  const numAchievements = achievements?.length ? formatNumber(achievements.length, 0, 0) : '-'
+  const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
+  const numPoints = !isProfileLoading ? (profile?.points ? formatNumber(profile.points, 0, 0) : '-') : null
+  const numAchievements = !isAchievementsLoading
+    ? achievements?.length
+      ? formatNumber(achievements.length, 0, 0)
+      : '-'
+    : null
 
   const avatarImage = profile?.nft?.image?.thumbnail || '/images/nfts/no-profile-md.png'
 

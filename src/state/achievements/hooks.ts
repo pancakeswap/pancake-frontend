@@ -17,6 +17,6 @@ export const useFetchAchievements = () => {
 }
 
 export const useAchievements = () => {
-  const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)
+  const achievements: AchievementState = useSelector((state: State) => state.achievements)
   return achievements
 }

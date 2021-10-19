@@ -23,7 +23,15 @@ const NftProfile = () => {
     return (
       <>
         <MarketPageHeader position="relative">
-          <ProfileHeader accountPath={accountAddress} profile={null} achievements={null} nftCollected={null} />
+          <ProfileHeader
+            accountPath={accountAddress}
+            profile={null}
+            achievements={null}
+            nftCollected={null}
+            isAchievementsLoading={false}
+            isNftLoading={false}
+            isProfileLoading={false}
+          />
         </MarketPageHeader>
         <Page style={{ minHeight: 'auto' }}>
           <Flex p="24px" flexDirection="column" alignItems="center">
