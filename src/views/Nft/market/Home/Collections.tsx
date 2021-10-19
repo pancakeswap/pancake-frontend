@@ -1,4 +1,5 @@
 import React from 'react'
+import orderBy from 'lodash/orderBy'
 import { Button, ChevronRightIcon, Flex, Grid, Heading, Text } from '@pancakeswap/uikit'
 import { Link } from 'react-router-dom'
 import { useGetCollections } from 'state/nftMarket/hooks'
@@ -11,6 +12,13 @@ const Collections = () => {
   const { t } = useTranslation()
   const collections = useGetCollections()
 
+  const orderedCollections = orderBy(
+    collections,
+    (collection) => (collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0),
+    'desc',
+  )
+
+  console.log('ordered', orderedCollections)
   return (
     <>
       <Flex alignItems="center" justifyContent="space-between" mb="32px">
@@ -28,27 +36,24 @@ const Collections = () => {
         </Button>
       </Flex>
       <Grid gridGap="16px" gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} mb="64px">
-        {Object.keys(collections)
-          .slice(0, 2)
-          .map((collectionAddress) => {
-            const collection = collections[collectionAddress]
-            return (
-              <HotCollectionCard
-                key={collectionAddress}
-                bgSrc={collection.banner.small}
-                avatarSrc={collection.avatar}
-                collectionName={collection.name}
-                url={`${nftsBaseUrl}/collections/${collectionAddress}`}
-              >
-                <Flex alignItems="center">
-                  <Text fontSize="12px" color="textSubtle">
-                    {t('Volume')}
-                  </Text>
-                  <BNBAmountLabel amount={collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0} />
-                </Flex>
-              </HotCollectionCard>
-            )
-          })}
+        {orderedCollections.slice(0, 5).map((collection) => {
+          return (
+            <HotCollectionCard
+              key={collection.address}
+              bgSrc={collection.banner.small}
+              avatarSrc={collection.avatar}
+              collectionName={collection.name}
+              url={`${nftsBaseUrl}/collections/${collection.address}`}
+            >
+              <Flex alignItems="center">
+                <Text fontSize="12px" color="textSubtle">
+                  {t('Volume')}
+                </Text>
+                <BNBAmountLabel amount={collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0} />
+              </Flex>
+            </HotCollectionCard>
+          )
+        })}
         <HotCollectionCard
           disabled
           bgSrc="/images/collections/no-collection-banner-sm.png"
