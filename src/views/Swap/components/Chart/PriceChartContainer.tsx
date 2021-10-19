@@ -18,7 +18,7 @@ const PriceChartContainer = ({
     inputCurrencyId && inputCurrencyId !== 'BNB' ? String(inputCurrencyId).toLowerCase() : DEFAULT_INPUT_ADDRESS
   const token1Address = outputCurrencyId ? String(outputCurrencyId).toLowerCase() : ''
 
-  const { pairPrices, isPairReversed } = useFetchPairPrices({ token0Address, token1Address, timeWindow })
+  const { pairPrices } = useFetchPairPrices({ token0Address, token1Address, timeWindow })
   const { onSwitchTokens } = useSwapActionHandlers()
   const { isDark } = useTheme()
 
@@ -31,7 +31,6 @@ const PriceChartContainer = ({
       outputCurrency={outputCurrency}
       onSwitchTokens={onSwitchTokens}
       isDark={isDark}
-      isPairReversed={isPairReversed}
       isChartExpanded={isChartExpanded}
       setIsChartExpanded={setIsChartExpanded}
     />

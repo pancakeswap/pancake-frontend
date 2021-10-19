@@ -310,7 +310,6 @@ type useFetchPairPricesParams = {
 export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }: useFetchPairPricesParams) => {
   const [pairId, setPairId] = useState()
   const pairData = useSelector(pairByDataIdSelector({ pairId, timeWindow }))
-  const isPairReversed = pairData?.length > 0 && pairData[0].token0Id !== token0Address
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -351,5 +350,5 @@ export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }:
     [token0Address, pairData],
   )
 
-  return { pairPrices: normalizedPairData, isPairReversed }
+  return { pairPrices: normalizedPairData }
 }
