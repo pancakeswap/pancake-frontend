@@ -16,7 +16,7 @@ import Footer from './components/Footer'
 import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
 import UserBanner from './components/UserBanner'
-import PancakeSquadBanner from './components/Banners/PancakeSquadBanner'
+import FarmAuctionsBanner from './components/Banners/FarmAuctionsBanner'
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
@@ -71,7 +71,7 @@ const Home: React.FC = () => {
           mt={[account ? '0' : '-16px', null, null, account ? '0' : '-48px']}
           pb="24px"
         >
-          <PancakeSquadBanner />
+          <FarmAuctionsBanner />
         </Flex>
         <Hero />
       </StyledHeroSection>
