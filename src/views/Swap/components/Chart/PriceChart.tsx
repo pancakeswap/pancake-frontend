@@ -14,6 +14,7 @@ import { format } from 'date-fns'
 import React, { useState } from 'react'
 import SwapLineChart from './SwapLineChart'
 import { StyledExpandButton, StyledPriceChart, StyledSwapButton } from './styles'
+import { getTimewindowChange } from './utils'
 
 const PriceChart = ({
   lineChartData = [],
@@ -23,7 +24,6 @@ const PriceChart = ({
   outputCurrency,
   onSwitchTokens,
   isDark,
-  isPairReversed,
   isChartExpanded,
   setIsChartExpanded,
 }) => {
@@ -31,6 +31,8 @@ const PriceChart = ({
   const [hoverDate, setHoverDate] = useState<string | undefined>()
   const currentDate = format(new Date(), 'MMM d, yyyy')
   const valueToDisplay = hoverValue || lineChartData[lineChartData.length - 1]?.value
+  const { changePercentage, changeValue } = getTimewindowChange(lineChartData)
+  const isChangePositive = changeValue >= 0
 
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
@@ -74,6 +76,9 @@ const PriceChart = ({
               <Text color="textSubtle" fontSize="20px" mb="8px" bold>
                 {outputCurrency?.symbol}
               </Text>
+              <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mb="8px" bold>
+                {`${changeValue} (${changePercentage}%)`}
+              </Text>
             </Flex>
           ) : (
             <Skeleton height="36px" width="128px" />
@@ -97,7 +102,7 @@ const PriceChart = ({
           data={lineChartData}
           setHoverValue={setHoverValue}
           setHoverDate={setHoverDate}
-          isPairReversed={isPairReversed}
+          isChangePositive={isChangePositive}
           timeWindow={timeWindow}
         />
       </Box>

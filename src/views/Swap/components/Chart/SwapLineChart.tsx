@@ -9,7 +9,7 @@ export type SwapLineChartProps = {
   data: any[]
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of valye
-  isPairReversed: boolean
+  isChangePositive: boolean
   timeWindow: PairDataTimeWindowEnum
 } & React.HTMLAttributes<HTMLDivElement>
 
@@ -24,10 +24,10 @@ const HoverUpdater = ({ payload, setHoverValue, setHoverDate }) => {
   return null
 }
 
-const getChartColors = ({ isPairReversed }) => {
-  return isPairReversed
-    ? { gradient1: '#ED4B9E', gradient2: '#ED4B9E', stroke: '#ED4B9E ' }
-    : { gradient1: '#00E7B0', gradient2: '#0C8B6C', stroke: '#31D0AA' }
+const getChartColors = ({ isChangePositive }) => {
+  return isChangePositive
+    ? { gradient1: '#00E7B0', gradient2: '#0C8B6C', stroke: '#31D0AA' }
+    : { gradient1: '#ED4B9E', gradient2: '#ED4B9E', stroke: '#ED4B9E ' }
 }
 
 const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
@@ -41,9 +41,9 @@ const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
 /**
  * Note: remember that it needs to be mounted inside the container with fixed height
  */
-const LineChart = ({ data, setHoverValue, setHoverDate, isPairReversed, timeWindow }: SwapLineChartProps) => {
+const LineChart = ({ data, setHoverValue, setHoverDate, isChangePositive, timeWindow }: SwapLineChartProps) => {
   const { theme } = useTheme()
-  const colors = getChartColors({ isPairReversed })
+  const colors = getChartColors({ isChangePositive })
   const dateFormatting = dateFormattingByTimewindow[timeWindow]
 
   if (!data || data.length === 0) {
