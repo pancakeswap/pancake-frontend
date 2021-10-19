@@ -131,6 +131,7 @@ export const mainnetTokens = {
     'Kalmar Token',
     'https://kalmar.io/',
   ),
+  dkt: new Token(MAINNET, '', 18, '', '', ''),
   hotcross: new Token(
     MAINNET,
     '0x4FA7163E153419E0E1064e418dd7A99314Ed27b6',

@@ -208,6 +208,13 @@ const campaigns: Campaign[] = [
     description: 'Joined PancakeSwap during the first year of our journey!',
     badge: '1-year.svg',
   },
+  {
+    id: '',
+    type: 'participation',
+    title: '',
+    description: '',
+    badge: 'ifo-dkt.svg',
+  },
 ]
 
 /**

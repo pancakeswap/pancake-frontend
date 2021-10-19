@@ -7,9 +7,34 @@ const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[ChainId.M
 
 const ifos: Ifo[] = [
   {
+    id: 'dkt',
+    address: '',
+    isActive: true,
+    name: 'DKT',
+    poolBasic: {
+      saleAmount: '',
+      raiseAmount: '$131,250',
+      cakeToBurn: '$65,625',
+      distributionRatio: 1.75,
+    },
+    poolUnlimited: {
+      saleAmount: '',
+      raiseAmount: '$306,250',
+      cakeToBurn: '$153,125',
+      distributionRatio: 1.75,
+    },
+    currency: cakeBnbLpToken,
+    token: tokens.kalm,
+    releaseBlockNumber: 0,
+    campaignId: '',
+    articleUrl: '',
+    tokenOfferingPrice: 1.75,
+    version: 2,
+  },
+  {
     id: 'kalmar',
     address: '0x1aFB32b76696CdF05593Ca3f3957AEFB23a220FB',
-    isActive: true,
+    isActive: false,
     name: 'Kalmar (KALM)',
     poolBasic: {
       saleAmount: '375,000 KALM',
