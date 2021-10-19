@@ -18,7 +18,6 @@ const Collections = () => {
     'desc',
   )
 
-  console.log('ordered', orderedCollections)
   return (
     <>
       <Flex alignItems="center" justifyContent="space-between" mb="32px">
