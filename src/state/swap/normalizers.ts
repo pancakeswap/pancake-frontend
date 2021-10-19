@@ -1,13 +1,6 @@
 import { fromUnixTime } from 'date-fns'
-import { formatAmount, formatAmoutNotation } from 'views/Info/utils/formatInfoNumbers'
 import { PairDayDatasResponse, PairHoursDatasResponse } from './fetch/types'
 import { PairDataNormalized, PairPricesNormalized } from './types'
-
-const formatOptions = {
-  notation: 'standard' as formatAmoutNotation,
-  displayThreshold: 0.001,
-  tokenPrecision: true,
-}
 
 export const normalizeFetchPairHourData = (data: PairHoursDatasResponse | null): PairDataNormalized =>
   data?.pairHourDatas?.map((fetchPairEntry) => ({
@@ -41,7 +34,7 @@ export const normalizePairDataByActiveToken = ({
       time: fromUnixTime(pairPrice.time),
       value:
         activeToken === pairPrice?.token0Id
-          ? formatAmount(pairPrice.reserve1 / pairPrice.reserve0, formatOptions)
-          : formatAmount(pairPrice.reserve0 / pairPrice.reserve1, formatOptions),
+          ? pairPrice.reserve1 / pairPrice.reserve0
+          : pairPrice.reserve0 / pairPrice.reserve1,
     }))
     .reverse()

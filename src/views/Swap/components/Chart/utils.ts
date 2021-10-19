@@ -4,7 +4,7 @@ export const getTimewindowChange = (lineChartData) => {
     const lastValue = lineChartData[lineChartData.length - 1].value
     const changeValue = lastValue - firstValue
     return {
-      changeValue: changeValue.toFixed(3),
+      changeValue,
       changePercentage: (changeValue / firstValue).toFixed(2),
     }
   }

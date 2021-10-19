@@ -9,12 +9,20 @@ import {
   SyncAltIcon,
   Text,
 } from '@pancakeswap/uikit'
-import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import { format } from 'date-fns'
 import React, { useState } from 'react'
+import { format } from 'date-fns'
+import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import { formatAmount, formatAmoutNotation } from 'views/Info/utils/formatInfoNumbers'
+import { useTranslation } from 'contexts/Localization'
 import SwapLineChart from './SwapLineChart'
 import { StyledExpandButton, StyledPriceChart, StyledSwapButton } from './styles'
 import { getTimewindowChange } from './utils'
+
+const formatOptions = {
+  notation: 'standard' as formatAmoutNotation,
+  displayThreshold: 0.001,
+  tokenPrecision: true,
+}
 
 const PriceChart = ({
   lineChartData = [],
@@ -29,10 +37,11 @@ const PriceChart = ({
 }) => {
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
-  const currentDate = format(new Date(), 'MMM d, yyyy')
+  const currentDate = format(new Date(), 'HH:mm dd MMM, yyyy')
   const valueToDisplay = hoverValue || lineChartData[lineChartData.length - 1]?.value
   const { changePercentage, changeValue } = getTimewindowChange(lineChartData)
   const isChangePositive = changeValue >= 0
+  const { t } = useTranslation()
 
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
@@ -68,16 +77,16 @@ const PriceChart = ({
         justifyContent="space-between"
       >
         <Flex flexDirection="column" pt="12px">
-          {lineChartData?.length > 0 ? (
+          {lineChartData?.length > 0 && valueToDisplay ? (
             <Flex alignItems="flex-end">
               <Text fontSize="40px" mr="8px" bold>
-                {valueToDisplay}
+                {formatAmount(valueToDisplay, formatOptions)}
               </Text>
-              <Text color="textSubtle" fontSize="20px" mb="8px" bold>
+              <Text color="textSubtle" fontSize="20px" mb="8px" mr="8px" bold>
                 {outputCurrency?.symbol}
               </Text>
               <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mb="8px" bold>
-                {`${changeValue} (${changePercentage}%)`}
+                {`${isChangePositive ? '+' : ''}${formatAmount(changeValue, formatOptions)} (${changePercentage}%)`}
               </Text>
             </Flex>
           ) : (
@@ -89,11 +98,11 @@ const PriceChart = ({
         </Flex>
         <Box mr="40px">
           <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
-            <ButtonMenuItem>24H</ButtonMenuItem>
-            <ButtonMenuItem>1W</ButtonMenuItem>
-            <ButtonMenuItem>1M</ButtonMenuItem>
-            <ButtonMenuItem>1Y</ButtonMenuItem>
-            <ButtonMenuItem>All time</ButtonMenuItem>
+            <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('1M')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('1Y')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('All time')}</ButtonMenuItem>
           </ButtonMenu>
         </Box>
       </Flex>

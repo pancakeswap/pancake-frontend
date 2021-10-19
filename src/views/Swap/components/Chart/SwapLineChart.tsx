@@ -18,7 +18,7 @@ export type SwapLineChartProps = {
 const HoverUpdater = ({ payload, setHoverValue, setHoverDate }) => {
   useEffect(() => {
     setHoverValue(payload.value)
-    setHoverDate(format(payload.time, 'HH:mm MMM, yyyy'))
+    setHoverDate(format(payload.time, 'HH:mm dd MMM, yyyy'))
   }, [payload.value, payload.time, setHoverValue, setHoverDate])
 
   return null
@@ -31,7 +31,7 @@ const getChartColors = ({ isChangePositive }) => {
 }
 
 const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
-  [PairDataTimeWindowEnum.DAY]: 'hh:mm aa',
+  [PairDataTimeWindowEnum.DAY]: 'h:mm aa',
   [PairDataTimeWindowEnum.WEEK]: 'dd MMM',
   [PairDataTimeWindowEnum.MONTH]: 'dd MMM',
   [PairDataTimeWindowEnum.YEAR]: 'dd MMM',
