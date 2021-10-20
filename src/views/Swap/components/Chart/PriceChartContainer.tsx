@@ -18,22 +18,25 @@ const PriceChartContainer = ({
     inputCurrencyId && inputCurrencyId !== 'BNB' ? String(inputCurrencyId).toLowerCase() : DEFAULT_INPUT_ADDRESS
   const token1Address = outputCurrencyId ? String(outputCurrencyId).toLowerCase() : ''
 
-  const { pairPrices } = useFetchPairPrices({ token0Address, token1Address, timeWindow })
+  const { pairPrices, pairId } = useFetchPairPrices({ token0Address, token1Address, timeWindow })
   const { onSwitchTokens } = useSwapActionHandlers()
   const { isDark } = useTheme()
+  const showPriceChart = (!pairPrices || pairPrices.length > 0) && pairId !== null
 
   return (
-    <PriceChart
-      lineChartData={pairPrices}
-      timeWindow={timeWindow}
-      setTimeWindow={setTimeWindow}
-      inputCurrency={inputCurrency}
-      outputCurrency={outputCurrency}
-      onSwitchTokens={onSwitchTokens}
-      isDark={isDark}
-      isChartExpanded={isChartExpanded}
-      setIsChartExpanded={setIsChartExpanded}
-    />
+    showPriceChart && (
+      <PriceChart
+        lineChartData={pairPrices}
+        timeWindow={timeWindow}
+        setTimeWindow={setTimeWindow}
+        inputCurrency={inputCurrency}
+        outputCurrency={outputCurrency}
+        onSwitchTokens={onSwitchTokens}
+        isDark={isDark}
+        isChartExpanded={isChartExpanded}
+        setIsChartExpanded={setIsChartExpanded}
+      />
+    )
   )
 }
 
