@@ -131,7 +131,14 @@ export const mainnetTokens = {
     'Kalmar Token',
     'https://kalmar.io/',
   ),
-  dkt: new Token(MAINNET, '', 18, '', '', ''),
+  dkt: new Token(
+    MAINNET,
+    '0x7ceb519718a80dd78a8545ad8e7f401de4f2faa7',
+    18,
+    'DKT',
+    'Duelist King',
+    'https://duelistking.com/',
+  ),
   hotcross: new Token(
     MAINNET,
     '0x4FA7163E153419E0E1064e418dd7A99314Ed27b6',
