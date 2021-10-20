@@ -30,7 +30,7 @@ export const normalizePairDataByActiveToken = ({
   activeToken,
 }: normalizePairDataByActiveTokenParams): PairPricesNormalized =>
   pairData
-    .map((pairPrice) => ({
+    ?.map((pairPrice) => ({
       time: fromUnixTime(pairPrice.time),
       value:
         activeToken === pairPrice?.token0Id

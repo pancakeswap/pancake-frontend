@@ -72,8 +72,8 @@ const PriceChart = ({
         )}
       </Flex>
       <Flex
-        flexDirection={['column', null, null, null, 'row']}
-        alignItems={['flex-start', null, null, null, 'center']}
+        flexDirection={['column', null, null, null, null, null, 'row']}
+        alignItems={['flex-start', null, null, null, null, null, 'center']}
         justifyContent="space-between"
       >
         <Flex flexDirection="column" pt="12px">

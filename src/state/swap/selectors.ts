@@ -10,4 +10,4 @@ type pairByDataIdSelectorParams = {
 export const pairByDataIdSelector =
   ({ pairId, timeWindow }: pairByDataIdSelectorParams) =>
   (state: AppState) =>
-    get(state, ['swap', 'pairDataById', pairId, timeWindow]) || []
+    get(state, ['swap', 'pairDataById', pairId, timeWindow])

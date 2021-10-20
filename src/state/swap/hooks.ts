@@ -340,6 +340,8 @@ export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }:
       const { data } = await fetchPairId(token0Address, token1Address)
       if (data?.pairs.length > 0 && data.pairs[0].id !== pairId) {
         setPairId(data.pairs[0].id)
+      } else if (data?.pairs.length === 0 && pairId !== null) {
+        setPairId(null)
       }
     }
 
@@ -351,5 +353,5 @@ export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }:
     [token0Address, pairData],
   )
 
-  return { pairPrices: normalizedPairData }
+  return { pairPrices: normalizedPairData, pairId }
 }
