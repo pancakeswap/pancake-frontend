@@ -102,7 +102,6 @@ const PriceChart = ({
             <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1M')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1Y')}</ButtonMenuItem>
-            <ButtonMenuItem>{t('All time')}</ButtonMenuItem>
           </ButtonMenu>
         </Box>
       </Flex>
