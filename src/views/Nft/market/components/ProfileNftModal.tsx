@@ -1,6 +1,5 @@
 import React from 'react'
 import { InjectedModalProps, Modal, Flex, Text, Button, useModal, Link, Grid, LinkExternal } from '@pancakeswap/uikit'
-import { BASE_URL } from 'config'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { NftToken } from 'state/nftMarket/types'
@@ -57,7 +56,7 @@ const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => 
               height="16px"
               external
               variant="text"
-              href={`${BASE_URL}${nftsBaseUrl}/collections/${nft.collectionAddress}/${itemPageUrlId}`}
+              href={`${nftsBaseUrl}/collections/${nft.collectionAddress}/${itemPageUrlId}`}
             >
               {t('View Item')}
             </Button>
