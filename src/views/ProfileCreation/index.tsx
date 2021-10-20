@@ -15,7 +15,7 @@ const ProfileCreation = () => {
   const { account } = useWeb3React()
   const { isInitialized, isLoading, hasProfile } = useProfile()
 
-  useFetchUserNfts(account)
+  useFetchUserNfts()
   useFetchCollections()
 
   if (!isInitialized || isLoading) {

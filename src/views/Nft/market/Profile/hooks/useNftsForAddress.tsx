@@ -5,7 +5,7 @@ import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { Profile } from 'state/types'
 import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
 
-const useFetchUserNfts = (account: string, profile: Profile, isProfileFetching: boolean) => {
+const useNftsForAddress = (account: string, profile: Profile, isProfileFetching: boolean) => {
   const [combinedNfts, setCombinedNfts] = useState<NftToken[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const collections = useGetCollections()
@@ -41,4 +41,4 @@ const useFetchUserNfts = (account: string, profile: Profile, isProfileFetching: 
   return { nfts: combinedNfts, isLoading }
 }
 
-export default useFetchUserNfts
+export default useNftsForAddress
