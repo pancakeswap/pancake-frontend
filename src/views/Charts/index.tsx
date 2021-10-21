@@ -20,8 +20,9 @@ const Charts = () => {
           inputCurrency={currencies[Field.INPUT]}
           outputCurrencyId={outputCurrencyId}
           outputCurrency={currencies[Field.OUTPUT]}
-          isChartExpanded
           setIsChartExpanded={null}
+          isChartExpanded
+          isChartDisplayed
         />
       </Flex>
     </Page>

@@ -54,6 +54,7 @@ export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
   const [isChartExpanded, setIsChartExpanded] = useState(false)
+  const [isChartDisplayed, setIsChartDisplayed] = useState(true)
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -317,11 +318,17 @@ export default function Swap({ history }: RouteComponentProps) {
           outputCurrency={currencies[Field.OUTPUT]}
           isChartExpanded={isChartExpanded}
           setIsChartExpanded={setIsChartExpanded}
+          isChartDisplayed={isChartDisplayed}
         />
         <StyledSwapContainer $isChartExpanded={isChartExpanded}>
           <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'} mr={isChartExpanded ? '0' : '0'}>
             <AppBody>
-              <AppHeader title={t('Exchange')} subtitle={t('Trade tokens in an instant')} />
+              <AppHeader
+                title={t('Exchange')}
+                subtitle={t('Trade tokens in an instant')}
+                setIsChartDisplayed={setIsChartDisplayed}
+                isChartDisplayed={isChartDisplayed}
+              />
               <Wrapper id="swap-page">
                 <AutoColumn gap="md">
                   <CurrencyInputPanel
