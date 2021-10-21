@@ -104,7 +104,7 @@ const fetchPoolData = async (
   }
 }
 
-// Transforms pools into "0xADDRESS: { ...PoolFields }" format and cast strigns to numbers
+// Transforms pools into "0xADDRESS: { ...PoolFields }" format and cast strings to numbers
 const parsePoolData = (pairs?: PoolFields[]) => {
   if (!pairs) {
     return {}

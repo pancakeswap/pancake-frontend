@@ -8,7 +8,7 @@ import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 export type LineChartProps = {
   data: any[]
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
-  setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of valye
+  setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
 } & React.HTMLAttributes<HTMLDivElement>
 
 // Calls setHoverValue and setHoverDate when part of chart is hovered

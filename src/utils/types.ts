@@ -44,7 +44,7 @@ export interface PredictionsContract extends Contract {
   rounds: ContractFunction<PredictionsRoundsResponse>
 }
 
-// Chainlink Orance
+// Chainlink Oracle
 export type ChainLinkOracleLatestAnswerResponse = ethers.BigNumber
 
 export interface ChainLinkOracleContract extends Contract {
