@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 464,
+    lpSymbol: 'LAZIO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x11c0b2bb4fbb430825d07507a9e24e4c32f7704d',
+    },
+    token: serializedTokens.lazio,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 432,
     lpSymbol: 'SPS-BNB LP',
     lpAddresses: {

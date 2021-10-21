@@ -1676,6 +1676,14 @@ export const mainnetTokens = {
     'MCDEX',
     'https://mcdex.io/homepage/',
   ),
+  lazio: new Token(
+    MAINNET,
+    '0x77d547256A2cD95F32F67aE0313E450Ac200648d',
+    8,
+    'LAZIO',
+    'FC Lazio Fan Token',
+    'https://launchpad.binance.com/en/subscription/LAZIO_BNB',
+  ),
 }
 
 export const testnetTokens = {
