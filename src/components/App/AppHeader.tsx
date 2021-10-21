@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Heading, IconButton, ArrowBackIcon, NotificationDot, ChartIcon } from '@pancakeswap/uikit'
+import { Text, Flex, Heading, IconButton, ArrowBackIcon, NotificationDot } from '@pancakeswap/uikit'
 import { Link } from 'react-router-dom'
 import { useExpertModeManager } from 'state/user/hooks'
 import GlobalSettings from 'components/Menu/GlobalSettings'
@@ -13,8 +13,6 @@ interface Props {
   helper?: string
   backTo?: string
   noConfig?: boolean
-  setIsChartDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
-  isChartDisplayed?: boolean
 }
 
 const AppHeaderContainer = styled(Flex)`
@@ -25,34 +23,18 @@ const AppHeaderContainer = styled(Flex)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const AppHeader: React.FC<Props> = ({
-  title,
-  subtitle,
-  helper,
-  backTo,
-  noConfig = false,
-  setIsChartDisplayed,
-  isChartDisplayed,
-}) => {
+const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig = false }) => {
   const [expertMode] = useExpertModeManager()
-  const toggleChartDisplayed = () => {
-    setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
-  }
 
   return (
     <AppHeaderContainer>
-      <Flex alignItems="flex-start" justifyContent="space-around">
+      <Flex alignItems="center" mr={noConfig ? 0 : '16px'}>
         {backTo && (
           <IconButton as={Link} to={backTo}>
             <ArrowBackIcon width="32px" />
           </IconButton>
         )}
-        {setIsChartDisplayed && (
-          <IconButton onClick={toggleChartDisplayed} variant="text" scale="sm" mr="8px">
-            <ChartIcon width="24px" color={isChartDisplayed ? 'failure' : 'primary'} />
-          </IconButton>
-        )}
-        <Flex flexDirection="column" alignItems="center">
+        <Flex flexDirection="column">
           <Heading as="h2" mb="8px">
             {title}
           </Heading>
@@ -63,15 +45,15 @@ const AppHeader: React.FC<Props> = ({
             </Text>
           </Flex>
         </Flex>
-        {!noConfig && (
-          <Flex>
-            <NotificationDot show={expertMode}>
-              <GlobalSettings />
-            </NotificationDot>
-            <Transactions />
-          </Flex>
-        )}
       </Flex>
+      {!noConfig && (
+        <Flex alignItems="center">
+          <NotificationDot show={expertMode}>
+            <GlobalSettings />
+          </NotificationDot>
+          <Transactions />
+        </Flex>
+      )}
     </AppHeaderContainer>
   )
 }
