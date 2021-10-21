@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 432,
+    lpSymbol: 'SPS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xfdfde3af740a22648b9dd66d05698e5095940850',
+    },
+    token: serializedTokens.sps,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 463,
     lpSymbol: 'MCB-BNB LP',
     lpAddresses: {
@@ -422,16 +432,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.if,
     quoteToken: serializedTokens.busd,
-  },
-  {
-    pid: 432,
-    lpSymbol: 'SPS-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xfdfde3af740a22648b9dd66d05698e5095940850',
-    },
-    token: serializedTokens.sps,
-    quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 431,
