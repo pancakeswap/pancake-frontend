@@ -18,7 +18,9 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
   const { profile } = useProfile()
-  const { numberCakeToReactivate } = useGetProfileCosts()
+  const {
+    costs: { numberCakeToReactivate },
+  } = useGetProfileCosts()
   const { t } = useTranslation()
   const pancakeProfileContract = useProfileContract()
   const { callWithGasPrice } = useCallWithGasPrice()

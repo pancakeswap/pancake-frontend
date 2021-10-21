@@ -17,7 +17,9 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   const [isApproving, setIsApproving] = useState(false)
   const { profile } = useProfile()
   const { t } = useTranslation()
-  const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
+  const {
+    costs: { numberCakeToUpdate, numberCakeToReactivate },
+  } = useGetProfileCosts()
   const cakeContract = useCake()
   const { toastError } = useToast()
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate

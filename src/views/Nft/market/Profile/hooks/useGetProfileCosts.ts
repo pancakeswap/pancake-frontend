@@ -8,6 +8,7 @@ import useToast from 'hooks/useToast'
 
 const useGetProfileCosts = () => {
   const { t } = useTranslation()
+  const [isLoading, setIsLoading] = useState(true)
   const [costs, setCosts] = useState({
     numberCakeToReactivate: ethers.BigNumber.from(0),
     numberCakeToRegister: ethers.BigNumber.from(0),
@@ -31,6 +32,7 @@ const useGetProfileCosts = () => {
           numberCakeToRegister,
           numberCakeToUpdate,
         })
+        setIsLoading(false)
       } catch (error) {
         toastError(t('Error'), t('Could not retrieve CAKE costs for profile'))
       }
@@ -39,7 +41,7 @@ const useGetProfileCosts = () => {
     fetchCosts()
   }, [setCosts, toastError, t])
 
-  return costs
+  return { costs, isLoading }
 }
 
 export default useGetProfileCosts
