@@ -19,7 +19,7 @@ import { ArrowWrapper, SwapCallbackError, Wrapper } from './components/styleds'
 import TradePrice from './components/TradePrice'
 import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 import ProgressSteps from './components/ProgressSteps'
-import { AppHeader, AppBody } from '../../components/App'
+import { AppBody } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
@@ -43,6 +43,7 @@ import Page from '../Page'
 import SwapWarningModal from './components/SwapWarningModal'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
+import CurrencyInputHeader from './components/CurrencyInputHeader'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -323,7 +324,7 @@ export default function Swap({ history }: RouteComponentProps) {
         <StyledSwapContainer $isChartExpanded={isChartExpanded}>
           <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'} mr={isChartExpanded ? '0' : '0'}>
             <AppBody>
-              <AppHeader
+              <CurrencyInputHeader
                 title={t('Exchange')}
                 subtitle={t('Trade tokens in an instant')}
                 setIsChartDisplayed={setIsChartDisplayed}
