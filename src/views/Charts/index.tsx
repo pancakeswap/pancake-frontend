@@ -23,6 +23,7 @@ const Charts = () => {
           setIsChartExpanded={null}
           isChartExpanded
           isChartDisplayed
+          isHiddenOnMobile={false}
         />
       </Flex>
     </Page>

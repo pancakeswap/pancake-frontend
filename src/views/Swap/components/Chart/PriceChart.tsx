@@ -34,6 +34,7 @@ const PriceChart = ({
   isDark,
   isChartExpanded,
   setIsChartExpanded,
+  isHiddenOnMobile,
 }) => {
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
@@ -46,7 +47,7 @@ const PriceChart = ({
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
   return (
-    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} p="24px">
+    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} $isHiddenOnMobile={isHiddenOnMobile} p="24px">
       <Flex justifyContent="space-between">
         <Flex alignItems="center">
           {outputCurrency ? (
@@ -66,7 +67,7 @@ const PriceChart = ({
         {setIsChartExpanded && (
           <Flex>
             <StyledExpandButton type="button" onClick={toggleExpanded}>
-              {isChartExpanded ? <ArrowUpIcon color="text" /> : <ArrowDownIcon color="text" />}
+              {isChartExpanded ? <ArrowDownIcon color="text" /> : <ArrowUpIcon color="text" />}
             </StyledExpandButton>
           </Flex>
         )}

@@ -1,4 +1,4 @@
 // BNB Address
-const DEFAULT_INPUT_ADDRESS = '0x14b05e4998f3086249f8d7ca87f387e18779bcf4'
+const BNB_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
 
-export { DEFAULT_INPUT_ADDRESS }
+export { BNB_ADDRESS }
