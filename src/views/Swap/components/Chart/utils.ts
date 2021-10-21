@@ -1,13 +1,17 @@
 import { BNB_ADDRESS } from './constants'
 
-export const getTimewindowChange = (lineChartData) => {
+const MIN_VALUE_DISPLAYED = 0.001
+
+export const getTimeWindowChange = (lineChartData) => {
   if (lineChartData.length > 0) {
     const firstValue = lineChartData[0].value
     const lastValue = lineChartData[lineChartData.length - 1].value
     const changeValue = lastValue - firstValue
+
     return {
-      changeValue,
-      changePercentage: (changeValue / firstValue).toFixed(2),
+      changeValue:
+        changeValue > 0 ? Math.max(changeValue, MIN_VALUE_DISPLAYED) : Math.min(changeValue, MIN_VALUE_DISPLAYED * -1),
+      changePercentage: ((changeValue / firstValue) * 100).toFixed(2),
     }
   }
 
