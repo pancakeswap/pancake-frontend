@@ -3,8 +3,9 @@ import useTheme from 'hooks/useTheme'
 import React, { useState } from 'react'
 import { useFetchPairPrices, useSwapActionHandlers } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
-import { DEFAULT_INPUT_ADDRESS } from './constants'
+import { BNB_ADDRESS } from './constants'
 import PriceChart from './PriceChart'
+import { getTokenAddress } from './utils'
 
 type PriceChartContainerProps = {
   inputCurrencyId: string
@@ -14,6 +15,7 @@ type PriceChartContainerProps = {
   isChartExpanded: boolean
   setIsChartExpanded: React.Dispatch<React.SetStateAction<boolean>>
   isChartDisplayed: boolean
+  isHiddenOnMobile?: boolean
 }
 
 const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
@@ -24,11 +26,11 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   isChartExpanded,
   setIsChartExpanded,
   isChartDisplayed,
+  isHiddenOnMobile = true,
 }) => {
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
-  const token0Address =
-    inputCurrencyId && inputCurrencyId !== 'BNB' ? String(inputCurrencyId).toLowerCase() : DEFAULT_INPUT_ADDRESS
-  const token1Address = outputCurrencyId ? String(outputCurrencyId).toLowerCase() : ''
+  const token0Address = getTokenAddress(inputCurrencyId)
+  const token1Address = getTokenAddress(outputCurrencyId)
 
   const { pairPrices, pairId } = useFetchPairPrices({ token0Address, token1Address, timeWindow })
   const { onSwitchTokens } = useSwapActionHandlers()
@@ -47,6 +49,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
         isDark={isDark}
         isChartExpanded={isChartExpanded}
         setIsChartExpanded={setIsChartExpanded}
+        isHiddenOnMobile={isHiddenOnMobile}
       />
     )
   )

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal, Flex } from '@pancakeswap/uikit'
+import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { RouteComponentProps } from 'react-router-dom'
@@ -325,7 +325,7 @@ export default function Swap({ history }: RouteComponentProps) {
           <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'} mr={isChartExpanded ? '0' : '0'}>
             <AppBody>
               <CurrencyInputHeader
-                title={t('Exchange')}
+                title={t('Swap')}
                 subtitle={t('Trade tokens in an instant')}
                 setIsChartDisplayed={setIsChartDisplayed}
                 isChartDisplayed={isChartDisplayed}
@@ -346,7 +346,7 @@ export default function Swap({ history }: RouteComponentProps) {
 
                   <AutoColumn justify="space-between">
                     <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                      <ArrowWrapper clickable>
+                      <IconButton variant="light" scale="sm">
                         <ArrowDownIcon
                           width="16px"
                           onClick={() => {
@@ -355,7 +355,7 @@ export default function Swap({ history }: RouteComponentProps) {
                           }}
                           color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                         />
-                      </ArrowWrapper>
+                      </IconButton>
                       {recipient === null && !showWrap && isExpertMode ? (
                         <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                           {t('+ Add a send (optional)')}
