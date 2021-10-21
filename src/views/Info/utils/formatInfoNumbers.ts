@@ -8,7 +8,7 @@ export const getFirstThreeNonZeroDecimals = (value: number) => {
   return value.toFixed(9).match(/^-?\d*\.?0*\d{0,2}/)[0]
 }
 
-export type formatAmoutNotation = 'compact' | 'standard'
+export type formatAmountNotation = 'compact' | 'standard'
 
 /**
  * This function is used to format token prices, liquidity, amount of tokens in TX, and in general any numbers on info section
@@ -22,7 +22,7 @@ export type formatAmoutNotation = 'compact' | 'standard'
 export const formatAmount = (
   amount: number | undefined,
   options?: {
-    notation?: formatAmoutNotation
+    notation?: formatAmountNotation
     displayThreshold?: number
     tokenPrecision?: boolean
     isInteger?: boolean

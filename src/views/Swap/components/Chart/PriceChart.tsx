@@ -12,14 +12,14 @@ import {
 import React, { useState } from 'react'
 import { format } from 'date-fns'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import { formatAmount, formatAmoutNotation } from 'views/Info/utils/formatInfoNumbers'
+import { formatAmount, formatAmountNotation } from 'views/Info/utils/formatInfoNumbers'
 import { useTranslation } from 'contexts/Localization'
 import SwapLineChart from './SwapLineChart'
 import { StyledExpandButton, StyledPriceChart, StyledSwapButton } from './styles'
-import { getTimewindowChange } from './utils'
+import { getTimeWindowChange } from './utils'
 
 const formatOptions = {
-  notation: 'standard' as formatAmoutNotation,
+  notation: 'standard' as formatAmountNotation,
   displayThreshold: 0.001,
   tokenPrecision: true,
 }
@@ -40,7 +40,7 @@ const PriceChart = ({
   const [hoverDate, setHoverDate] = useState<string | undefined>()
   const currentDate = format(new Date(), 'HH:mm dd MMM, yyyy')
   const valueToDisplay = hoverValue || lineChartData[lineChartData.length - 1]?.value
-  const { changePercentage, changeValue } = getTimewindowChange(lineChartData)
+  const { changePercentage, changeValue } = getTimeWindowChange(lineChartData)
   const isChangePositive = changeValue >= 0
   const { t } = useTranslation()
 
@@ -87,7 +87,7 @@ const PriceChart = ({
                 {outputCurrency?.symbol}
               </Text>
               <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mb="8px" bold>
-                {`${isChangePositive ? '+' : ''}${formatAmount(changeValue, formatOptions)} (${changePercentage}%)`}
+                {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
               </Text>
             </Flex>
           ) : (
