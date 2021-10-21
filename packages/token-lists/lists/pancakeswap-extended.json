@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-10-15T10:47:51.319Z",
+  "timestamp": "2021-10-21T11:15:57.644Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 30
+    "patch": 31
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -939,6 +939,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x1A2fb0Af670D0234c2857FaD35b789F8Cb725584.png"
+    },
+    {
+      "name": "FC Lazio Fan Token",
+      "symbol": "LAZIO",
+      "address": "0x77d547256A2cD95F32F67aE0313E450Ac200648d",
+      "chainId": 56,
+      "decimals": 8,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x77d547256A2cD95F32F67aE0313E450Ac200648d.png"
     },
     {
       "name": "Lien",
