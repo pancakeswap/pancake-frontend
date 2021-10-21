@@ -310,6 +310,7 @@ type useFetchPairPricesParams = {
 
 export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }: useFetchPairPricesParams) => {
   const [pairId, setPairId] = useState()
+  const [tokensPair, setTokensPair] = useState([])
   const pairData = useSelector(pairByDataIdSelector({ pairId, timeWindow }))
   const dispatch = useDispatch()
 
@@ -338,15 +339,20 @@ export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }:
   useEffect(() => {
     const fetchAndUpdatePairId = async () => {
       const { data } = await fetchPairId(token0Address, token1Address)
-      if (data?.pairs.length > 0 && data.pairs[0].id !== pairId) {
-        setPairId(data.pairs[0].id)
-      } else if (data?.pairs.length === 0 && pairId !== null) {
-        setPairId(null)
+      const isNewTokenPair = !tokensPair.includes(token0Address) || !tokensPair.includes(token1Address)
+      if (isNewTokenPair) {
+        if (data?.pairs.length > 0 && data.pairs[0].id !== pairId) {
+          setPairId(data.pairs[0].id)
+          setTokensPair([token0Address, token1Address])
+        } else if (data?.pairs.length === 0 && pairId !== null) {
+          setPairId(null)
+          setTokensPair([token0Address, token1Address])
+        }
       }
     }
 
     fetchAndUpdatePairId()
-  }, [token0Address, token1Address, pairId])
+  }, [token0Address, token1Address, pairId, tokensPair])
 
   const normalizedPairData = useMemo(
     () => normalizePairDataByActiveToken({ activeToken: token0Address, pairData }),
