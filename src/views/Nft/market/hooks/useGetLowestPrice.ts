@@ -47,11 +47,12 @@ export const useGetLowestPriceFromNft = (nft: NftToken): LowestNftPrice => {
 
   useEffect(() => {
     const fetchLowestPrice = async () => {
-      const bunnyIdAttr = getBunnyIdFromNft(nft)
       try {
         setIsFetching(true)
         const response = await getNftsMarketData(
-          { otherId: bunnyIdAttr, isTradable: true },
+          isPancakeBunny
+            ? { otherId: getBunnyIdFromNft(nft), isTradable: true }
+            : { collection: nft.collectionAddress.toLowerCase(), isTradable: true },
           1,
           'currentAskPrice',
           'asc',
@@ -66,7 +67,7 @@ export const useGetLowestPriceFromNft = (nft: NftToken): LowestNftPrice => {
       }
     }
 
-    if (isPancakeBunny && nft) {
+    if (nft) {
       fetchLowestPrice()
     }
   }, [isPancakeBunny, nft])
