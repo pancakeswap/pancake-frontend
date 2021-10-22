@@ -39,7 +39,6 @@ const farms: SerializedFarmConfig[] = [
   },
   /**
    * V3 by order of release (some may be out of PID order due to multiplier boost)
-   * Last pid: 465
    */
   {
     pid: 464,
