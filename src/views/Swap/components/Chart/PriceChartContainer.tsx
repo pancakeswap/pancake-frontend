@@ -55,4 +55,4 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   )
 }
 
-export default PriceChartContainer
+export default React.memo(PriceChartContainer)

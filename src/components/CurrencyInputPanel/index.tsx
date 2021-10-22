@@ -1,6 +1,6 @@
 import React from 'react'
 import { Currency, Pair } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex } from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, Text, useModal, Flex, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -15,6 +15,7 @@ const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  justify-content: flex-end;
   padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
 `
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
@@ -88,73 +89,74 @@ export default function CurrencyInputPanel({
     />,
   )
   return (
-    <InputPanel id={id}>
-      <Container hideInput={hideInput}>
-        {!hideInput && (
-          <LabelRow>
-            <RowBetween>
-              <Text fontSize="14px">{translatedLabel}</Text>
-              {account && (
-                <Text onClick={onMax} fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
-                  {!hideBalance && !!currency
-                    ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
-                    : ' -'}
-                </Text>
-              )}
-            </RowBetween>
-          </LabelRow>
+    <Box>
+      <Flex mb="6px" alignItems="center" justifyContent="space-between">
+        <CurrencySelectButton
+          selected={!!currency}
+          className="open-currency-select-button"
+          onClick={() => {
+            if (!disableCurrencySelect) {
+              onPresentCurrencyModal()
+            }
+          }}
+        >
+          <Flex alignItems="center" justifyContent="space-between">
+            {pair ? (
+              <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
+            ) : currency ? (
+              <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+            ) : null}
+            {pair ? (
+              <Text id="pair" bold>
+                {pair?.token0.symbol}:{pair?.token1.symbol}
+              </Text>
+            ) : (
+              <Text id="pair" bold>
+                {(currency && currency.symbol && currency.symbol.length > 20
+                  ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                      currency.symbol.length - 5,
+                      currency.symbol.length,
+                    )}`
+                  : currency?.symbol) || t('Select a currency')}
+              </Text>
+            )}
+            {!disableCurrencySelect && <ChevronDownIcon />}
+          </Flex>
+        </CurrencySelectButton>
+        {account && (
+          <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+            {!hideBalance && !!currency
+              ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
+              : ' -'}
+          </Text>
         )}
-        <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
+      </Flex>
+      <InputPanel id={id}>
+        <Container hideInput={hideInput}>
           {!hideInput && (
-            <>
-              <NumericalInput
-                className="token-amount-input"
-                value={value}
-                onUserInput={(val) => {
-                  onUserInput(val)
-                }}
-              />
+            <LabelRow>
+              <RowBetween>
+                <NumericalInput
+                  className="token-amount-input"
+                  value={value}
+                  onUserInput={(val) => {
+                    onUserInput(val)
+                  }}
+                />
+              </RowBetween>
+            </LabelRow>
+          )}
+          {!hideInput && (
+            <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
               {account && currency && showMaxButton && label !== 'To' && (
-                <Button onClick={onMax} scale="sm" variant="text">
+                <Button onClick={onMax} scale="xs" variant="secondary">
                   MAX
                 </Button>
               )}
-            </>
+            </InputRow>
           )}
-          <CurrencySelectButton
-            selected={!!currency}
-            className="open-currency-select-button"
-            onClick={() => {
-              if (!disableCurrencySelect) {
-                onPresentCurrencyModal()
-              }
-            }}
-          >
-            <Flex alignItems="center" justifyContent="space-between">
-              {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
-              ) : currency ? (
-                <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
-              ) : null}
-              {pair ? (
-                <Text id="pair">
-                  {pair?.token0.symbol}:{pair?.token1.symbol}
-                </Text>
-              ) : (
-                <Text id="pair">
-                  {(currency && currency.symbol && currency.symbol.length > 20
-                    ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                        currency.symbol.length - 5,
-                        currency.symbol.length,
-                      )}`
-                    : currency?.symbol) || t('Select a currency')}
-                </Text>
-              )}
-              {!disableCurrencySelect && <ChevronDownIcon />}
-            </Flex>
-          </CurrencySelectButton>
-        </InputRow>
-      </Container>
-    </InputPanel>
+        </Container>
+      </InputPanel>
+    </Box>
   )
 }

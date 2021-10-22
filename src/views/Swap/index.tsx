@@ -309,6 +309,7 @@ export default function Swap({ history }: RouteComponentProps) {
     true,
     'confirmSwapModal',
   )
+
   return (
     <Page removePadding={isChartExpanded}>
       <Flex width="100%" mb="60px" justifyContent="center">
@@ -517,14 +518,14 @@ export default function Swap({ history }: RouteComponentProps) {
                 </Box>
               </Wrapper>
             </AppBody>
+            {!swapIsUnsupported ? (
+              trade && <AdvancedSwapDetailsDropdown trade={trade} />
+            ) : (
+              <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
+            )}
           </StyledInputCurrencyWrapper>
         </StyledSwapContainer>
       </Flex>
-      {!swapIsUnsupported ? (
-        trade && <AdvancedSwapDetailsDropdown trade={trade} />
-      ) : (
-        <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
-      )}
     </Page>
   )
 }
