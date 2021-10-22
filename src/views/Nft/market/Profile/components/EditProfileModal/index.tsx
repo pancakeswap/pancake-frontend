@@ -1,6 +1,7 @@
 import React from 'react'
 import { InjectedModalProps, Modal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { ContextApi } from 'contexts/Localization/types'
 import useEditProfile, { Views } from './reducer'
 import StartView from './StartView'
 import PauseProfileView from './PauseProfileView'
@@ -9,23 +10,30 @@ import ApproveCakeView from './ApproveCakeView'
 
 type EditProfileModalProps = InjectedModalProps
 
-const viewTitle = {
-  [Views.START]: 'Edit Profile',
-  [Views.CHANGE]: 'Change Profile Pic',
-  [Views.REMOVE]: 'Remove Profile Pic',
-  [Views.APPROVE]: 'Enable CAKE',
+const viewTitle = (t: ContextApi['t'], currentView: Views) => {
+  switch (currentView) {
+    case Views.START:
+      return t('Edit Profile')
+    case Views.CHANGE:
+      return t('Change Profile Pic')
+    case Views.REMOVE:
+      return t('Remove Profile Pic')
+    case Views.APPROVE:
+      return t('Enable CAKE')
+    default:
+      return ''
+  }
 }
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({ onDismiss }) => {
   const { currentView, goToChange, goToRemove, goToApprove, goPrevious } = useEditProfile()
   const { t } = useTranslation()
-  const translationKey = viewTitle[currentView]
 
   const isStartView = currentView === Views.START
   const handleBack = isStartView ? null : () => goPrevious()
 
   return (
-    <Modal title={t(translationKey)} onBack={handleBack} onDismiss={onDismiss} hideCloseButton={!isStartView}>
+    <Modal title={viewTitle(t, currentView)} onBack={handleBack} onDismiss={onDismiss} hideCloseButton={!isStartView}>
       <div style={{ maxWidth: '400px' }}>
         {currentView === Views.START && (
           <StartView goToApprove={goToApprove} goToChange={goToChange} goToRemove={goToRemove} onDismiss={onDismiss} />
