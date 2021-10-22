@@ -39,6 +39,7 @@ const farms: SerializedFarmConfig[] = [
   },
   /**
    * V3 by order of release (some may be out of PID order due to multiplier boost)
+   * Last pid: 465
    */
   {
     pid: 464,
@@ -59,6 +60,39 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.sps,
     quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 459,
+    lpSymbol: 'CART-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x47F0987f276b06E7Ce8D3F09E4E7fEc41a5dB808',
+    },
+    token: serializedTokens.cart,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 465,
+    lpSymbol: 'ARV-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xa63e32feefc6590bbf869070fd2e706eb7881bd2',
+    },
+    token: serializedTokens.arv,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 460,
+    lpSymbol: 'LIGHT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xD469F2E7d1329836733aDBAc6B53E09b775a6e03',
+    },
+    token: serializedTokens.light,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 463,
@@ -91,17 +125,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: serializedTokens.wbnb,
   },
   {
-    pid: 460,
-    lpSymbol: 'LIGHT-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xD469F2E7d1329836733aDBAc6B53E09b775a6e03',
-    },
-    token: serializedTokens.light,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-  },
-  {
     pid: 446,
     lpSymbol: 'BMON-BUSD LP',
     lpAddresses: {
@@ -110,17 +133,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.bmon,
     quoteToken: serializedTokens.busd,
-    isCommunity: true,
-  },
-  {
-    pid: 459,
-    lpSymbol: 'CART-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x47F0987f276b06E7Ce8D3F09E4E7fEc41a5dB808',
-    },
-    token: serializedTokens.cart,
-    quoteToken: serializedTokens.wbnb,
     isCommunity: true,
   },
   {

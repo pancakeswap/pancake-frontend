@@ -1684,6 +1684,7 @@ export const mainnetTokens = {
     'FC Lazio Fan Token',
     'https://launchpad.binance.com/en/subscription/LAZIO_BNB',
   ),
+  arv: new Token(MAINNET, '0x6679eb24f59dfe111864aec72b443d1da666b360', 8, 'ARV', 'ARIVA', 'https://ariva.digital'),
 }
 
 export const testnetTokens = {
