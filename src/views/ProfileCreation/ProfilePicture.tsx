@@ -25,13 +25,13 @@ const NftWrapper = styled.div`
 `
 
 const ProfilePicture: React.FC = () => {
-  const { library, account } = useWeb3React()
+  const { library } = useWeb3React()
   const [isApproved, setIsApproved] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
 
   const { nfts, userNftsInitializationState } = useUserNfts()
-  useFetchUserNfts(account)
+  useFetchUserNfts()
 
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()

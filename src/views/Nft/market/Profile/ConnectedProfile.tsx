@@ -36,7 +36,7 @@ const ConnectedProfile = () => {
   const { nfts: userNfts } = useUserNfts()
 
   useFetchAchievements()
-  useFetchUserNfts(account)
+  useFetchUserNfts()
 
   return (
     <>

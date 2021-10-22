@@ -30,7 +30,7 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
 
   const { account } = useWeb3React()
   const { userNftsInitializationState, nfts: userNfts } = useUserNfts()
-  useFetchUserNfts(account)
+  useFetchUserNfts()
 
   useEffect(() => {
     const fetchNftData = async () => {
