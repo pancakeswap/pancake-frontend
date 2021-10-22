@@ -77,7 +77,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ARV-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0xa63e32feefc6590bbf869070fd2e706eb7881bd2',
+      56: '0xA63E32FeEFC6590bBf869070Fd2e706Eb7881bd2',
     },
     token: serializedTokens.arv,
     quoteToken: serializedTokens.wbnb,
