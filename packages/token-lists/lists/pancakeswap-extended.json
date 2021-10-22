@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-10-21T11:15:57.644Z",
+  "timestamp": "2021-10-22T09:05:26.555Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 31
+    "patch": 32
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -107,6 +107,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x6F769E65c14Ebd1f68817F5f1DcDb61Cfa2D6f7e.png"
+    },
+    {
+      "name": "ARIVA",
+      "symbol": "ARV",
+      "address": "0x6679eB24F59dFe111864AEc72B443d1Da666B360",
+      "chainId": 56,
+      "decimals": 8,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x6679eB24F59dFe111864AEc72B443d1Da666B360.png"
     },
     {
       "name": "AS Roma",

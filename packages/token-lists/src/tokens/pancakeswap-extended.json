@@ -1918,5 +1918,13 @@
     "chainId": 56,
     "decimals": 8,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x77d547256A2cD95F32F67aE0313E450Ac200648d.png"
+  },
+  {
+    "name": "ARIVA",
+    "symbol": "ARV",
+    "address": "0x6679eB24F59dFe111864AEc72B443d1Da666B360",
+    "chainId": 56,
+    "decimals": 8,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x6679eB24F59dFe111864AEc72B443d1Da666B360.png"
   }
 ]
