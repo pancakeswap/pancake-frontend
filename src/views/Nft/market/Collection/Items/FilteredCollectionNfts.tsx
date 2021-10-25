@@ -21,10 +21,10 @@ const FilteredCollectionNfts: React.FC<FilteredCollectionNftsProps> = ({ collect
   const { address: collectionAddress } = collection
   const [numToShow, setNumToShow] = useState(REQUEST_SIZE)
   const { t } = useTranslation()
-  const selectedOrder = useGetNftOrdering()
-  const showOnlyNftsOnSale = useGetNftShowOnlyOnSale()
+  const selectedOrder = useGetNftOrdering(collectionAddress)
+  const showOnlyNftsOnSale = useGetNftShowOnlyOnSale(collectionAddress)
   const collectionNfts = useNftsFromCollection(collectionAddress)
-  const nftFilterLoadingState = useGetNftFilterLoadingState()
+  const nftFilterLoadingState = useGetNftFilterLoadingState(collectionAddress)
 
   const handleLoadMore = () => {
     setNumToShow((prevNumToShow) => prevNumToShow + REQUEST_SIZE)

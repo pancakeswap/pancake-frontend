@@ -15,7 +15,7 @@ interface CollectionWrapperProps {
 }
 
 const CollectionWrapper: React.FC<CollectionWrapperProps> = ({ collection }) => {
-  const nftFilters = useGetNftFilters()
+  const nftFilters = useGetNftFilters(collection.address)
 
   return (
     <Box py="32px">

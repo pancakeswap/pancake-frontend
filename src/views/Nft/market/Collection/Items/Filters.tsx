@@ -89,15 +89,15 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
   const dispatch = useAppDispatch()
   const { data } = useGetCollectionDistribution(address)
   const { t } = useTranslation()
-  const showOnlyNftsOnSale = useGetNftShowOnlyOnSale()
+  const showOnlyNftsOnSale = useGetNftShowOnlyOnSale(address)
   const [activeButtonIndex, setActiveButtonIndex] = useState(showOnlyNftsOnSale ? 1 : 0)
 
   const onActiveButtonChange = (newIndex: number) => {
-    dispatch(setShowOnlyOnSale(newIndex === 1))
+    dispatch(setShowOnlyOnSale({ collection: address, showOnlyOnSale: newIndex === 1 }))
     setActiveButtonIndex(newIndex)
   }
 
-  const nftFilters = useGetNftFilters()
+  const nftFilters = useGetNftFilters(address)
   const attrsByType: Record<string, NftAttribute[]> = collection?.attributes?.reduce(
     (accum, attr) => ({
       ...accum,
@@ -122,7 +122,7 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
         {t('Sort By')}
       </SortByTitle>
       <SortByControls>
-        <SortSelect />
+        <SortSelect collectionAddress={address} />
       </SortByControls>
       <ScrollableFlexContainer>
         {uniqueTraitTypes.map((traitType) => {

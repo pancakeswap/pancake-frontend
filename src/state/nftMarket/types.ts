@@ -27,15 +27,7 @@ export interface State {
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
-    filters: {
-      loadingState: NftFilterLoadingState
-      activeFilters: Record<string, NftAttribute> // string is the collection address
-      showOnlyOnSale: boolean
-      ordering: {
-        field: string
-        direction: 'asc' | 'desc'
-      }
-    }
+    filters: Record<string, NftFilter> // string is the collection address
     loadingState: {
       isUpdatingPancakeBunnies: boolean
       latestPancakeBunniesUpdateAt: number
@@ -124,6 +116,16 @@ export interface NftToken {
   marketData?: TokenMarketData
   location?: NftLocation
   meta?: Record<string, string | number>
+}
+
+export interface NftFilter {
+  loadingState: NftFilterLoadingState
+  activeFilters: Record<string, NftAttribute>
+  showOnlyOnSale: boolean
+  ordering: {
+    field: string
+    direction: 'asc' | 'desc'
+  }
 }
 
 export interface TokenIdWithCollectionAddress {
