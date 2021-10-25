@@ -1,7 +1,6 @@
 import React from 'react'
 import { Flex, Grid, Text, Button, Link, BinanceIcon, LinkExternal, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { BASE_URL } from 'config'
 import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
@@ -72,7 +71,7 @@ const SellStage: React.FC<SellStageProps> = ({
             height="16px"
             external
             variant="text"
-            href={`${BASE_URL}${nftsBaseUrl}/collections/${nftToSell.collectionAddress}/${itemPageUrlId}`}
+            href={`${nftsBaseUrl}/collections/${nftToSell.collectionAddress}/${itemPageUrlId}`}
           >
             {t('View Item')}
           </Button>
