@@ -10,6 +10,7 @@ import { NftToken } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
 import usePreviousValue from 'hooks/usePreviousValue'
 import useRefresh from 'hooks/useRefresh'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { PANCAKE_BUNNIES_UPDATE_FREQUENCY } from 'config'
 import { useGetCollectionDistributionPB } from 'views/Nft/market/hooks/useGetCollectionDistribution'
 import MainPancakeBunnyCard from './MainPancakeBunnyCard'
@@ -36,6 +37,7 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
   const { isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fetchMorePancakeBunnies } =
     useFetchByBunnyIdAndUpdate(bunnyId)
   const { fastRefresh } = useRefresh()
+  const isWindowVisible = useIsWindowVisible()
   const bunniesSortedByPrice = orderBy(allBunnies, (nft) => parseFloat(nft.marketData.currentAskPrice))
   const allBunniesFromOtherSellers = account
     ? bunniesSortedByPrice.filter((bunny) => bunny.marketData.currentSeller !== account.toLowerCase())
@@ -53,10 +55,17 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
     // (it can't be reasonably wrapper in useCallback because the tokens are updated every time you call it, which is the whole point)
     // Since fastRefresh is 10 seconds and FETCH_NEW_NFTS_INTERVAL_MS is 8 seconds it fires every 10 seconds
     // The difference in 2 seconds is just to prevent some edge cases when request takes too long
-    if (msSinceLastUpdate > PANCAKE_BUNNIES_UPDATE_FREQUENCY && !isUpdatingPancakeBunnies) {
+    if (msSinceLastUpdate > PANCAKE_BUNNIES_UPDATE_FREQUENCY && !isUpdatingPancakeBunnies && isWindowVisible) {
       fetchMorePancakeBunnies(priceSort)
     }
-  }, [priceSort, fetchMorePancakeBunnies, isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fastRefresh])
+  }, [
+    priceSort,
+    fetchMorePancakeBunnies,
+    isUpdatingPancakeBunnies,
+    latestPancakeBunniesUpdateAt,
+    fastRefresh,
+    isWindowVisible,
+  ])
 
   useEffect(() => {
     // Fetch most expensive items if user selects other sorting
