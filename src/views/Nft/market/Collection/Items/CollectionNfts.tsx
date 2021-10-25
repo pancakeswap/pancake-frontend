@@ -28,11 +28,11 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
   const [isFetchingFilteredNfts, setIsFetchingFilteredNfts] = useState(false)
   const { t } = useTranslation()
   const collectionNfts = useNftsFromCollection(collectionAddress)
-  const nftFilterLoadingState = useGetNftFilterLoadingState()
+  const nftFilterLoadingState = useGetNftFilterLoadingState(collectionAddress)
   const dispatch = useAppDispatch()
 
-  const showOnlyNftsOnSale = useGetNftShowOnlyOnSale()
-  const { field: orderField, direction: orderDirection } = useGetNftOrdering()
+  const showOnlyNftsOnSale = useGetNftShowOnlyOnSale(collectionAddress)
+  const { field: orderField, direction: orderDirection } = useGetNftOrdering(collectionAddress)
   const isFetching =
     orderField === 'tokenId' ? nftFilterLoadingState === NftFilterLoadingState.LOADING : isFetchingFilteredNfts
 

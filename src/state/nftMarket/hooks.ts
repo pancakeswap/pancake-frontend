@@ -5,7 +5,7 @@ import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
 import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
-import { NftToken, UserNftsState } from './types'
+import { NftFilter, NftFilterLoadingState, NftToken, UserNftsState } from './types'
 
 const MAX_GEN0_ID = 4
 
@@ -109,18 +109,22 @@ export const useHasGen0Nfts = (): boolean => {
   return userNfts.nfts.some((nft) => nft.attributes && Number(nft.attributes[0]?.value) <= MAX_GEN0_ID)
 }
 
-export const useGetNftFilters = () => {
-  return useSelector((state: State) => state.nftMarket.data.filters.activeFilters)
+export const useGetNftFilters = (collectionAddress: string) => {
+  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
+  return collectionFilter ? collectionFilter.activeFilters : {}
 }
 
-export const useGetNftFilterLoadingState = () => {
-  return useSelector((state: State) => state.nftMarket.data.filters.loadingState)
+export const useGetNftFilterLoadingState = (collectionAddress: string) => {
+  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
+  return collectionFilter ? collectionFilter.loadingState : NftFilterLoadingState.IDLE
 }
 
-export const useGetNftOrdering = () => {
-  return useSelector((state: State) => state.nftMarket.data.filters.ordering)
+export const useGetNftOrdering = (collectionAddress: string) => {
+  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
+  return collectionFilter ? collectionFilter.ordering : { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
 }
 
-export const useGetNftShowOnlyOnSale = () => {
-  return useSelector((state: State) => state.nftMarket.data.filters.showOnlyOnSale)
+export const useGetNftShowOnlyOnSale = (collectionAddress: string) => {
+  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
+  return collectionFilter ? collectionFilter.showOnlyOnSale : true
 }

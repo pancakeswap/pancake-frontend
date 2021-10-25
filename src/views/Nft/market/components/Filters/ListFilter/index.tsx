@@ -57,8 +57,8 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
   const [orderState, setOrderState] = useState<State>({ orderKey: 'count', orderDir: 'asc' })
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
-  const nftFilters = useGetNftFilters()
-  const nftFilterState = useGetNftFilterLoadingState()
+  const nftFilters = useGetNftFilters(collectionAddress)
+  const nftFilterState = useGetNftFilterLoadingState(collectionAddress)
   const dispatch = useAppDispatch()
   const { orderKey, orderDir } = orderState
 
