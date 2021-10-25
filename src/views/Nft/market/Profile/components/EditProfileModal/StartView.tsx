@@ -40,16 +40,18 @@ const AvatarWrapper = styled.div`
 `
 
 const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemove, onDismiss }) => {
-  const [needsApproval, setNeedsApproval] = useState(null)
-  const { profile } = useProfile()
-  const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
-  const minimumCakeRequired = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
-  const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
-  const hasMinimumCakeRequired = fetchStatus === FetchStatus.SUCCESS && cakeBalance.gte(minimumCakeRequired)
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const cakeContract = useCake()
-  const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
+  const { profile } = useProfile()
+  const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
+  const {
+    costs: { numberCakeToUpdate, numberCakeToReactivate },
+    isLoading: isProfileCostsLoading,
+  } = useGetProfileCosts()
+  const [needsApproval, setNeedsApproval] = useState(null)
+  const minimumCakeRequired = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
+  const hasMinimumCakeRequired = fetchStatus === FetchStatus.SUCCESS && cakeBalance.gte(minimumCakeRequired)
 
   /**
    * Check if the wallet has the required CAKE allowance to change their profile pic or reactivate
@@ -58,13 +60,13 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
   useEffect(() => {
     const checkApprovalStatus = async () => {
       const response = await cakeContract.allowance(account, getPancakeProfileAddress())
-      setNeedsApproval(response.lt(cost))
+      setNeedsApproval(response.lt(minimumCakeRequired))
     }
 
-    if (account) {
+    if (account && !isProfileCostsLoading) {
       checkApprovalStatus()
     }
-  }, [account, cost, setNeedsApproval, cakeContract])
+  }, [account, minimumCakeRequired, setNeedsApproval, cakeContract, isProfileCostsLoading])
 
   if (!profile) {
     return null
@@ -77,7 +79,8 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
       </AvatarWrapper>
       <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
         <Text as="p" color="failure">
-          {!hasMinimumCakeRequired &&
+          {!isProfileCostsLoading &&
+            !hasMinimumCakeRequired &&
             t('%minimum% CAKE required to change profile pic', { minimum: formatBigNumber(minimumCakeRequired) })}
         </Text>
       </Flex>
@@ -87,7 +90,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
             width="100%"
             mb="8px"
             onClick={needsApproval === true ? goToApprove : goToChange}
-            disabled={!hasMinimumCakeRequired || needsApproval === null}
+            disabled={isProfileCostsLoading || !hasMinimumCakeRequired || needsApproval === null}
           >
             {t('Change Profile Pic')}
           </Button>
@@ -100,7 +103,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
           width="100%"
           mb="8px"
           onClick={needsApproval === true ? goToApprove : goToChange}
-          disabled={!hasMinimumCakeRequired || needsApproval === null}
+          disabled={isProfileCostsLoading || !hasMinimumCakeRequired || needsApproval === null}
         >
           {t('Reactivate Profile')}
         </Button>
