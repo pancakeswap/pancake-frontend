@@ -380,7 +380,14 @@ export const NftMarket = createSlice({
     })
     builder.addCase(fetchNftsFromCollections.pending, (state, action) => {
       const { collectionAddress } = action.meta.arg
-      state.data.filters[collectionAddress].loadingState = NftFilterLoadingState.LOADING
+      if (state.data.filters[collectionAddress]) {
+        state.data.filters[collectionAddress].loadingState = NftFilterLoadingState.LOADING
+      } else {
+        state.data.filters[collectionAddress] = {
+          ...initialNftFilterState,
+          loadingState: NftFilterLoadingState.LOADING,
+        }
+      }
     })
     builder.addCase(fetchNftsFromCollections.fulfilled, (state, action) => {
       const { collectionAddress } = action.meta.arg
