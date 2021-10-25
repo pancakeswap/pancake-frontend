@@ -195,21 +195,23 @@ const Pools: React.FC = () => {
           (pool: DeserializedPool) => {
             let totalStaked = Number.NaN
             if (pool.isAutoVault) {
-              if (totalCakeInVault.isFinite()) {
-                totalStaked = +formatUnits(
-                  ethers.BigNumber.from(totalCakeInVault.toString()),
-                  pool.stakingToken.decimals,
-                )
+              if (pool.stakingTokenPrice && totalCakeInVault.isFinite()) {
+                totalStaked =
+                  +formatUnits(ethers.BigNumber.from(totalCakeInVault.toString()), pool.stakingToken.decimals) *
+                  pool.stakingTokenPrice
               }
             } else if (pool.sousId === 0) {
-              if (pool.totalStaked?.isFinite() && totalCakeInVault.isFinite()) {
+              if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice && totalCakeInVault.isFinite()) {
                 const manualCakeTotalMinusAutoVault = ethers.BigNumber.from(pool.totalStaked.toString()).sub(
                   totalCakeInVault.toString(),
                 )
-                totalStaked = +formatUnits(manualCakeTotalMinusAutoVault, pool.stakingToken.decimals)
+                totalStaked =
+                  +formatUnits(manualCakeTotalMinusAutoVault, pool.stakingToken.decimals) * pool.stakingTokenPrice
               }
-            } else if (pool.totalStaked?.isFinite()) {
-              totalStaked = +formatUnits(ethers.BigNumber.from(pool.totalStaked.toString()), pool.stakingToken.decimals)
+            } else if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice) {
+              totalStaked =
+                +formatUnits(ethers.BigNumber.from(pool.totalStaked.toString()), pool.stakingToken.decimals) *
+                pool.stakingTokenPrice
             }
             return Number.isFinite(totalStaked) ? totalStaked : 0
           },
