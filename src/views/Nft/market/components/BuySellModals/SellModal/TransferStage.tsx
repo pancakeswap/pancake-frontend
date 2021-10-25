@@ -47,13 +47,17 @@ const TransferStage: React.FC<TransferStageProps> = ({
           <Text fontSize="12px" color="textSubtle" textAlign="right">
             {nftToSell.collectionName}
           </Text>
-          <Text small color="textSubtle">
-            {t('Lowest price')}
-          </Text>
-          <Flex alignItems="center" justifyContent="flex-end">
-            <BinanceIcon width={16} height={16} mr="4px" />
-            <Text small>{lowestPrice}</Text>
-          </Flex>
+          {lowestPrice && (
+            <>
+              <Text small color="textSubtle">
+                {t('Lowest price')}
+              </Text>
+              <Flex alignItems="center" justifyContent="flex-end">
+                <BinanceIcon width={16} height={16} mr="4px" />
+                <Text small>{lowestPrice}</Text>
+              </Flex>
+            </>
+          )}
         </Grid>
       </Flex>
       <GreyedOutContainer>
