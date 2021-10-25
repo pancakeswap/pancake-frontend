@@ -198,8 +198,16 @@ export interface Achievement {
   points: number
 }
 
+export enum AchievementFetchStatus {
+  ERROR = 'error',
+  NOT_FETCHED = 'not-fetched',
+  FETCHING = 'fetching',
+  FETCHED = 'fetched',
+}
+
 export interface AchievementState {
-  data: Achievement[]
+  achievements: Achievement[]
+  achievementFetchStatus: AchievementFetchStatus
 }
 
 // Block
