@@ -10,7 +10,7 @@ import truncateHash from 'utils/truncateHash'
 import { multiplyPriceByAmount } from 'utils/prices'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
-import { Activity } from '../../hooks/useUserActivity'
+import { Activity } from '../../utils/sortUserActivity'
 import ActivityEventText from './ActivityEventText'
 
 const RoundedImage = styled(Image)`
