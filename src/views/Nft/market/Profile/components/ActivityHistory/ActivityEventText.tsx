@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, TextProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { MarketEvent } from '../../hooks/useUserActivity'
+import { MarketEvent } from '../../utils/sortUserActivity'
 
 interface ActivityEventTextProps extends TextProps {
   marketEvent: MarketEvent

@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
 import { uniqBy } from 'lodash'
-import { Flex, Text, Card, ArrowBackIcon, ArrowForwardIcon, Table, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
+import { isAddress } from 'utils'
+import { fetchUserActivity } from 'state/nftMarket/reducer'
+import { useAppDispatch } from 'state'
+import { useUserNfts } from 'state/nftMarket/hooks'
+import { ArrowBackIcon, ArrowForwardIcon, Card, Flex, Table, Text, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { getNftsFromDifferentCollectionsApi, getUserActivity } from 'state/nftMarket/helpers'
 import { NftToken, TokenIdWithCollectionAddress, UserNftInitializationState } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
 import { useParams } from 'react-router'
-import useFetchUserActivity from '../../hooks/useFetchUserActivity'
-import useUserActivity, { Activity } from '../../hooks/useUserActivity'
+import { Activity, sortUserActivity } from '../../utils/sortUserActivity'
 import ActivityRow from './ActivityRow'
 import TableLoader from './TableLoader'
 import NoNftsImage from '../NoNftsImage'
@@ -17,6 +21,8 @@ import { Arrow, PageButtons } from '../../../components/PaginationButtons'
 const MAX_PER_PAGE = 8
 
 const ActivityHistory = () => {
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
   const { accountAddress } = useParams<{ accountAddress: string }>()
   const { theme } = useTheme()
   const { t } = useTranslation()
@@ -24,11 +30,50 @@ const ActivityHistory = () => {
   const [maxPage, setMaxPages] = useState(1)
   const [activitiesSlice, setActivitiesSlice] = useState<Activity[]>([])
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
-  const { sortedUserActivities, initializationState } = useUserActivity(accountAddress)
+  const [sortedUserActivities, setSortedUserActivities] = useState<Activity[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const { activity: userActivity, userNftsInitializationState } = useUserNfts()
   const bnbBusdPrice = useBNBBusdPrice()
   const { isXs, isSm } = useMatchBreakpoints()
 
-  useFetchUserActivity(accountAddress)
+  useEffect(() => {
+    if (account && userNftsInitializationState === UserNftInitializationState.INITIALIZED) {
+      const differentAddress =
+        accountAddress && isAddress(accountAddress)
+          ? account.toLowerCase() !== accountAddress.toLocaleLowerCase()
+          : false
+      if (!differentAddress) {
+        setSortedUserActivities(sortUserActivity(account, userActivity))
+        setIsLoading(false)
+      }
+    }
+  }, [account, userNftsInitializationState, userActivity, accountAddress])
+
+  useEffect(() => {
+    const fetchAddressActivity = async () => {
+      try {
+        const addressActivity = await getUserActivity(accountAddress.toLocaleLowerCase())
+        setSortedUserActivities(sortUserActivity(accountAddress, addressActivity))
+        setIsLoading(false)
+      } catch (error) {
+        console.error('Failed to fetch address activity', error)
+      }
+    }
+
+    if (account) {
+      const differentAddress =
+        accountAddress && isAddress(accountAddress)
+          ? account.toLowerCase() !== accountAddress.toLocaleLowerCase()
+          : false
+      if (differentAddress) {
+        fetchAddressActivity()
+      } else {
+        dispatch(fetchUserActivity(account))
+      }
+    } else if (accountAddress && isAddress(accountAddress)) {
+      fetchAddressActivity()
+    }
+  }, [account, accountAddress, dispatch])
 
   useEffect(() => {
     const fetchActivityNftMetadata = async () => {
@@ -72,10 +117,7 @@ const ActivityHistory = () => {
 
   return (
     <Card>
-      {sortedUserActivities.length === 0 &&
-      nftMetadata.length === 0 &&
-      activitiesSlice.length === 0 &&
-      initializationState === UserNftInitializationState.INITIALIZED ? (
+      {sortedUserActivities.length === 0 && nftMetadata.length === 0 && activitiesSlice.length === 0 && !isLoading ? (
         <Flex p="24px" flexDirection="column" alignItems="center">
           <NoNftsImage />
           <Text pt="8px" bold>
@@ -101,7 +143,7 @@ const ActivityHistory = () => {
             </thead>
 
             <tbody>
-              {initializationState === UserNftInitializationState.INITIALIZING ? (
+              {isLoading ? (
                 <TableLoader />
               ) : (
                 activitiesSlice.map((activity) => {
