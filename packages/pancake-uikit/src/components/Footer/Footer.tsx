@@ -7,6 +7,7 @@ import {
   StyledIconMobileContainer,
   StyledList,
   StyledListItem,
+  StyledText,
   StyledSocialLinks,
   StyledToolsContainer,
 } from "./styles";
@@ -47,15 +48,19 @@ const MenuItem: React.FC<FooterProps> = ({
               <StyledListItem>{item.label}</StyledListItem>
               {item.items?.map(({ label, href, isHighlighted = false }) => (
                 <StyledListItem key={label}>
-                  <Link
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    color={isHighlighted ? baseColors.warning : darkColors.text}
-                    bold={false}
-                  >
-                    {label}
-                  </Link>
+                  {href ? (
+                    <Link
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      color={isHighlighted ? baseColors.warning : darkColors.text}
+                      bold={false}
+                    >
+                      {label}
+                    </Link>
+                  ) : (
+                    <StyledText>{label}</StyledText>
+                  )}
                 </StyledListItem>
               ))}
             </StyledList>
