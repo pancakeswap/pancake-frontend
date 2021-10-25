@@ -291,13 +291,26 @@ export const NftMarket = createSlice({
   initialState,
   reducers: {
     addAttributeFilter: (state, action: PayloadAction<{ collection: string; attribute: NftAttribute }>) => {
-      state.data.filters[action.payload.collection].activeFilters = {
-        ...state.data.filters[action.payload.collection].activeFilters,
-        [action.payload.attribute.traitType]: action.payload.attribute,
+      if (state.data.filters[action.payload.collection]) {
+        state.data.filters[action.payload.collection].activeFilters = {
+          ...state.data.filters[action.payload.collection].activeFilters,
+          [action.payload.attribute.traitType]: action.payload.attribute,
+        }
+      } else {
+        state.data.filters[action.payload.collection] = {
+          ...initialNftFilterState,
+          activeFilters: {
+            ...state.data.filters[action.payload.collection].activeFilters,
+            [action.payload.attribute.traitType]: action.payload.attribute,
+          },
+        }
       }
     },
     removeAttributeFilter: (state, action: PayloadAction<{ collection: string; attributeKey: string }>) => {
-      if (state.data.filters[action.payload.collection].activeFilters[action.payload.attributeKey]) {
+      if (
+        state.data.filters[action.payload.collection] &&
+        state.data.filters[action.payload.collection].activeFilters[action.payload.attributeKey]
+      ) {
         delete state.data.filters[action.payload.collection].activeFilters[action.payload.attributeKey]
       }
     },
@@ -306,13 +319,30 @@ export const NftMarket = createSlice({
       state.data.nfts[action.payload] = []
     },
     setOrdering: (state, action: PayloadAction<{ collection: string; field: string; direction: 'asc' | 'desc' }>) => {
-      state.data.filters[action.payload.collection].ordering = {
-        field: action.payload.field,
-        direction: action.payload.direction,
+      if (state.data.filters[action.payload.collection]) {
+        state.data.filters[action.payload.collection].ordering = {
+          field: action.payload.field,
+          direction: action.payload.direction,
+        }
+      } else {
+        state.data.filters[action.payload.collection] = {
+          ...initialNftFilterState,
+          ordering: {
+            field: action.payload.field,
+            direction: action.payload.direction,
+          },
+        }
       }
     },
     setShowOnlyOnSale: (state, action: PayloadAction<{ collection: string; showOnlyOnSale: boolean }>) => {
-      state.data.filters[action.payload.collection].showOnlyOnSale = action.payload.showOnlyOnSale
+      if (state.data.filters[action.payload.collection]) {
+        state.data.filters[action.payload.collection].showOnlyOnSale = action.payload.showOnlyOnSale
+      } else {
+        state.data.filters[action.payload.collection] = {
+          ...initialNftFilterState,
+          showOnlyOnSale: action.payload.showOnlyOnSale,
+        }
+      }
     },
     resetUserNftState: (state) => {
       state.data.user = { ...initialState.data.user }
