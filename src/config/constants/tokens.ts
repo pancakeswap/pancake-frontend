@@ -133,7 +133,7 @@ export const mainnetTokens = {
   ),
   dkt: new Token(
     MAINNET,
-    '0x7ceb519718a80dd78a8545ad8e7f401de4f2faa7',
+    '0x7Ceb519718A80Dd78a8545AD8e7f401dE4f2faA7',
     18,
     'DKT',
     'Duelist King',

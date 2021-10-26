@@ -8,17 +8,17 @@ const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[ChainId.M
 const ifos: Ifo[] = [
   {
     id: 'dkt',
-    address: '0x1aFB32b76696CdF05593Ca3f3957AEFB23a220FB',
+    address: '0x89ab9852155A794e371095d863aEAa2DF198067C',
     isActive: true,
     name: 'Duelist King (DKT)',
     poolBasic: {
-      saleAmount: 'TBA',
+      saleAmount: '75,000 DKT',
       raiseAmount: '$131,250',
       cakeToBurn: '$65,625',
       distributionRatio: 0.3,
     },
     poolUnlimited: {
-      saleAmount: 'TBA',
+      saleAmount: '175,000 DKT',
       raiseAmount: '$306,250',
       cakeToBurn: '$153,125',
       distributionRatio: 0.7,

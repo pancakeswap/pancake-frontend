@@ -65,7 +65,7 @@ const Header = styled(CardHeader)<{ ifoId: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg')`};
+  background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg'), url('/images/ifos/${ifoId}-bg.png')`};
 `
 
 const FoldableContent = styled.div<{ isVisible: boolean; isActive: boolean }>`
