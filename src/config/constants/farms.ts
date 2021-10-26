@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 448,
+    lpSymbol: 'RUSD-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x59FaC9e98479fc9979aE2a0C7422Af50bCBB9B26',
+    },
+    token: serializedTokens.rusd,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 464,
     lpSymbol: 'LAZIO-BNB LP',
     lpAddresses: {
@@ -298,17 +308,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.sfund,
     quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-  },
-  {
-    pid: 448,
-    lpSymbol: 'RUSD-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x59FaC9e98479fc9979aE2a0C7422Af50bCBB9B26',
-    },
-    token: serializedTokens.rusd,
-    quoteToken: serializedTokens.busd,
     isCommunity: true,
   },
   {
