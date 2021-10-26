@@ -11,7 +11,7 @@ import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { UserNftInitializationState } from 'state/nftMarket/types'
+import { NftLocation, UserNftInitializationState } from 'state/nftMarket/types'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
@@ -93,21 +93,22 @@ const ProfilePicture: React.FC = () => {
             </Link>
           </Text>
           <NftWrapper>
-            {nfts.map((walletNft) => {
-              const firstTokenId = nfts[0].tokenId
-              return (
-                <SelectionCard
-                  name="profilePicture"
-                  key={walletNft.tokenId}
-                  value={firstTokenId}
-                  image={walletNft.image.thumbnail}
-                  isChecked={firstTokenId === selectedNft.tokenId}
-                  onChange={(value: string) => actions.setSelectedNft(value, walletNft.collectionAddress)}
-                >
-                  <Text bold>{walletNft.name}</Text>
-                </SelectionCard>
-              )
-            })}
+            {nfts
+              .filter((walletNft) => walletNft.location === NftLocation.WALLET)
+              .map((walletNft) => {
+                return (
+                  <SelectionCard
+                    name="profilePicture"
+                    key={`${walletNft.collectionAddress}#${walletNft.tokenId}`}
+                    value={walletNft.tokenId}
+                    image={walletNft.image.thumbnail}
+                    isChecked={walletNft.tokenId === selectedNft.tokenId}
+                    onChange={(value: string) => actions.setSelectedNft(value, walletNft.collectionAddress)}
+                  >
+                    <Text bold>{walletNft.name}</Text>
+                  </SelectionCard>
+                )
+              })}
           </NftWrapper>
           <Heading as="h4" scale="lg" mb="8px">
             {t('Allow collectible to be locked')}
