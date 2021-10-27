@@ -79,10 +79,6 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('IFO'),
         href: '/ifo',
-        status: {
-          text: t('Soon'),
-          color: 'warning',
-        },
       },
       {
         label: t('Voting'),
