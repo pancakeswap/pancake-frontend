@@ -1741,5 +1741,6 @@
   "Platform fees: 2% is subtracted from NFT sales on the market. Subject to change.Collection fees: Additional fees may be taken by collection creators, once those collections are live. These will not contribute to the CAKE burns.": "Platform fees: 2% is subtracted from NFT sales on the market. Subject to change.Collection fees: Additional fees may be taken by collection creators, once those collections are live. These will not contribute to the CAKE burns.",
   "Mint Cost: To Be Announced": "Mint Cost: To Be Announced",
   "The smart contract address will be released soon before the sale starts.": "The smart contract address will be released soon before the sale starts.",
-  "Supply Count": "Supply Count"
+  "Supply Count": "Supply Count",
+  "Brand": "Brand"
 }
