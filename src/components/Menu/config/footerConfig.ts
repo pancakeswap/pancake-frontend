@@ -10,6 +10,10 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
         href: 'https://docs.pancakeswap.finance/contact-us',
       },
       {
+        label: t('Brand'),
+        href: 'https://docs.pancakeswap.finance/brand',
+      },
+      {
         label: t('Blog'),
         href: 'https://medium.com/pancakeswap',
       },
