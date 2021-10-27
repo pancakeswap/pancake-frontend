@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-10-22T09:05:26.555Z",
+  "timestamp": "2021-10-26T16:24:48.114Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 32
+    "patch": 33
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -611,6 +611,14 @@
       "chainId": 56,
       "decimals": 9,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x233d91A0713155003fc4DcE0AFa871b508B3B715.png"
+    },
+    {
+      "name": "Duelist King",
+      "symbol": "DKT",
+      "address": "0x7Ceb519718A80Dd78a8545AD8e7f401dE4f2faA7",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x7Ceb519718A80Dd78a8545AD8e7f401dE4f2faA7.png"
     },
     {
       "name": "Dodo",

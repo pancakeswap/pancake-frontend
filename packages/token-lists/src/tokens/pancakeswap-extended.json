@@ -1926,5 +1926,13 @@
     "chainId": 56,
     "decimals": 8,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x6679eB24F59dFe111864AEc72B443d1Da666B360.png"
+  },
+  {
+    "name": "Duelist King",
+    "symbol": "DKT",
+    "address": "0x7Ceb519718A80Dd78a8545AD8e7f401dE4f2faA7",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x7Ceb519718A80Dd78a8545AD8e7f401dE4f2faA7.png"
   }
 ]
