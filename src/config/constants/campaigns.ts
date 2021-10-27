@@ -209,7 +209,7 @@ const campaigns: Campaign[] = [
     badge: '1-year.svg',
   },
   {
-    id: '517010001',
+    id: '511120000',
     type: 'ifo',
     title: 'Duelist King',
     badge: 'ifo-dkt.svg',

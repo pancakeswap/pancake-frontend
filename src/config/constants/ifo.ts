@@ -26,7 +26,7 @@ const ifos: Ifo[] = [
     currency: cakeBnbLpToken,
     token: tokens.dkt,
     releaseBlockNumber: 12112017,
-    campaignId: '517010001',
+    campaignId: '511120000',
     articleUrl: 'https://pancakeswap.finance/voting/proposal/QmTRWdW9a65fAkyJy1wrAJRU548fNMAZhRUDrSxzMDLmwk',
     tokenOfferingPrice: 1.75,
     version: 2,
