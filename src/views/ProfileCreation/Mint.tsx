@@ -74,10 +74,10 @@ const Mint: React.FC = () => {
         return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [selectedBunnyId])
       },
       onApproveSuccess: () => {
-        toastSuccess('Enabled', "Press 'confirm' to mint this NFT")
+        toastSuccess(t('Enabled'), t("Press 'confirm' to mint this NFT"))
       },
       onSuccess: () => {
-        toastSuccess('Success', 'You have minted your starter NFT')
+        toastSuccess(t('Success'), t('You have minted your starter NFT'))
         dispatch(fetchUserNfts({ account, collections }))
         actions.nextStep()
       },
