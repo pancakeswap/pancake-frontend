@@ -24,9 +24,7 @@ interface VotesProps {
 }
 
 const parseVotePower = (incomingVote: Vote) => {
-  let votingPower = parseFloat(incomingVote?.metadata?.votingPower)
-  if (!votingPower) votingPower = 0
-  return votingPower
+  return parseFloat(incomingVote?.metadata?.votingPower)
 }
 
 const Votes: React.FC<VotesProps> = ({ votes }) => {
