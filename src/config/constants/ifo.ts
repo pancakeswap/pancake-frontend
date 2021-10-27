@@ -7,9 +7,34 @@ const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[ChainId.M
 
 const ifos: Ifo[] = [
   {
+    id: 'dkt',
+    address: '0x89ab9852155A794e371095d863aEAa2DF198067C',
+    isActive: true,
+    name: 'Duelist King (DKT)',
+    poolBasic: {
+      saleAmount: '75,000 DKT',
+      raiseAmount: '$131,250',
+      cakeToBurn: '$65,625',
+      distributionRatio: 0.3,
+    },
+    poolUnlimited: {
+      saleAmount: '175,000 DKT',
+      raiseAmount: '$306,250',
+      cakeToBurn: '$153,125',
+      distributionRatio: 0.7,
+    },
+    currency: cakeBnbLpToken,
+    token: tokens.dkt,
+    releaseBlockNumber: 12130750,
+    campaignId: '511120000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmTRWdW9a65fAkyJy1wrAJRU548fNMAZhRUDrSxzMDLmwk',
+    tokenOfferingPrice: 1.75,
+    version: 2,
+  },
+  {
     id: 'kalmar',
     address: '0x1aFB32b76696CdF05593Ca3f3957AEFB23a220FB',
-    isActive: true,
+    isActive: false,
     name: 'Kalmar (KALM)',
     poolBasic: {
       saleAmount: '375,000 KALM',

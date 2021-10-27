@@ -208,6 +208,12 @@ const campaigns: Campaign[] = [
     description: 'Joined PancakeSwap during the first year of our journey!',
     badge: '1-year.svg',
   },
+  {
+    id: '511120000',
+    type: 'ifo',
+    title: 'Duelist King',
+    badge: 'ifo-dkt.svg',
+  },
 ]
 
 /**
