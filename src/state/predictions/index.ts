@@ -93,7 +93,7 @@ type PredictionInitialization = Pick<
   | 'bufferSeconds'
 >
 export const initializePredictions = createAsyncThunk<PredictionInitialization, string>(
-  'predictions/intialize',
+  'predictions/initialize',
   async (account = null) => {
     // Static values
     const marketData = await getPredictionData()
