@@ -32,6 +32,12 @@ export const links: MenuItemsType[] = [
         label: "Liquidity",
         href: "https://exchange.pancakeswap.finance/#/pool",
       },
+      {
+        label: "Charts",
+        href: "https://exchange.pancakeswap.finance/#/charts",
+        iconName: "Chart",
+        isMobileOnly: true,
+      },
     ],
   },
   {

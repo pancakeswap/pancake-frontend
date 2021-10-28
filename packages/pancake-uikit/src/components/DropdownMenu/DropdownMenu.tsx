@@ -140,8 +140,9 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
           $isBottomNav={isBottomNav}
           $isOpen={isOpen && ((isBottomNav && showItemsOnMobile) || !isBottomNav)}
         >
-          {items.map(
-            ({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, ...itemProps }, itemItem) => {
+          {items
+            .filter((item) => !item.isMobileOnly)
+            .map(({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, ...itemProps }, itemItem) => {
               const MenuItemContent = (
                 <>
                   {label}
@@ -176,8 +177,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                   {type === DropdownMenuItemType.DIVIDER && <DropdownMenuDivider />}
                 </StyledDropdownMenuItemContainer>
               );
-            }
-          )}
+            })}
         </StyledDropdownMenu>
       )}
     </Box>

@@ -103,6 +103,9 @@ const Menu: React.FC<NavProps> = ({
   // Find the home link if provided
   const homeLink = links.find((link) => link.label === "Home");
 
+  const subLinksWithoutMobile = subLinks?.filter((subLink) => !subLink.isMobileOnly);
+  const subLinksMobileOnly = subLinks?.filter((subLink) => subLink.isMobileOnly);
+
   return (
     <Wrapper>
       <StyledNav showMenu={showMenu}>
@@ -129,7 +132,20 @@ const Menu: React.FC<NavProps> = ({
           {globalMenu} {userMenu}
         </Flex>
       </StyledNav>
-      {subLinks && <SubMenuItems items={subLinks} mt={`${MENU_HEIGHT + 1}px`} activeItem={activeSubItem} />}
+      {subLinks && (
+        <Flex justifyContent="space-around">
+          <SubMenuItems items={subLinksWithoutMobile} mt={`${MENU_HEIGHT + 1}px`} activeItem={activeSubItem} />
+
+          {subLinksMobileOnly?.length > 0 && (
+            <SubMenuItems
+              items={subLinksMobileOnly}
+              mt={`${MENU_HEIGHT + 1}px`}
+              activeItem={activeSubItem}
+              isMobileOnly
+            />
+          )}
+        </Flex>
+      )}
       <BodyWrapper mt={!subLinks ? `${MENU_HEIGHT + 1}px` : "0"}>
         <Inner isPushed={false} showMenu={showMenu}>
           {children}

@@ -20,4 +20,5 @@ const Template: React.FC<SubMenuItemsProps> = (args) => {
 export const Default = Template.bind({});
 Default.args = {
   items: SubMenuItemsMock,
+  activeItem: "/swap",
 };

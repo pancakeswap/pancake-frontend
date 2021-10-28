@@ -13,7 +13,8 @@ const SubMenuItemsMock = [
   },
   {
     label: "Swap",
-    href: "/",
+    href: "/swap",
+    iconName: "Swap",
   },
 ];
 
