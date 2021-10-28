@@ -77,6 +77,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate, isChangePositive, timeWi
           tickFormatter={(time) => format(time, dateFormatting)}
           minTickGap={10}
         />
+        <YAxis dataKey="value" axisLine={false} tickLine={false} domain={['auto', 'auto']} hide />
         <Tooltip
           cursor={{ stroke: theme.colors.textDisabled }}
           contentStyle={{ display: 'none' }}
