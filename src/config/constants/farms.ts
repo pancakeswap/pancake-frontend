@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 437,
+    lpSymbol: 'BMON-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3C2b7B578Dd2175A1c3524Aa0D515106282Bf108',
+    },
+    token: serializedTokens.bmon,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 466,
     lpSymbol: 'DKT-BNB LP',
     lpAddresses: {
@@ -152,17 +162,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.bmon,
     quoteToken: serializedTokens.busd,
-    isCommunity: true,
-  },
-  {
-    pid: 437,
-    lpSymbol: 'BMON-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x3C2b7B578Dd2175A1c3524Aa0D515106282Bf108',
-    },
-    token: serializedTokens.bmon,
-    quoteToken: serializedTokens.wbnb,
     isCommunity: true,
   },
   {
