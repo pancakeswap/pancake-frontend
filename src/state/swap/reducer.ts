@@ -8,7 +8,7 @@ import {
   typeInput,
   updatePairData,
 } from './actions'
-import { PairDataNormalized, PairDataTimeWindowEnum } from './types'
+import { PairDataNormalized } from './types'
 
 export interface SwapState {
   readonly independentField: Field

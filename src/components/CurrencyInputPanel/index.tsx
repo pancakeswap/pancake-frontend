@@ -78,7 +78,6 @@ export default function CurrencyInputPanel({
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
-  const translatedLabel = label || t('Input')
 
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal

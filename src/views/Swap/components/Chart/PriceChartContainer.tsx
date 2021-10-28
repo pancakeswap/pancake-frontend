@@ -3,7 +3,6 @@ import useTheme from 'hooks/useTheme'
 import React, { useState } from 'react'
 import { useFetchPairPrices, useSwapActionHandlers } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
-import { BNB_ADDRESS } from './constants'
 import PriceChart from './PriceChart'
 import { getTokenAddress } from './utils'
 
