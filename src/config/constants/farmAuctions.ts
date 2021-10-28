@@ -334,7 +334,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenAddress: '0x5c8c8d560048f34e5f7f8ad71f2f81a89dbd273e',
     quoteToken: tokens.wbnb,
     tokenName: 'Cryptoart.ai',
-    projectSite: 'http://cryptoart.ai/',
+    projectSite: 'https://cryptoart.ai/',
   },
   {
     account: '0x73a4C2d21282dd9f9f2DF2aD3e06fd25aB487C9c',
