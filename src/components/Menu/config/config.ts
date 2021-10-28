@@ -22,6 +22,8 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('Charts'),
         href: '/swap/charts',
+        isMobileOnly: true,
+        iconName: 'Chart',
       },
     ],
   },

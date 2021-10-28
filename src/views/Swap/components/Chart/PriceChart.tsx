@@ -1,10 +1,10 @@
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
   Box,
   ButtonMenu,
   ButtonMenuItem,
+  ExpandIcon,
   Flex,
+  ShrinkIcon,
   Skeleton,
   SyncAltIcon,
   Text,
@@ -67,7 +67,7 @@ const PriceChart = ({
         {setIsChartExpanded && (
           <Flex>
             <StyledExpandButton type="button" onClick={toggleExpanded}>
-              {isChartExpanded ? <ArrowDownIcon color="text" /> : <ArrowUpIcon color="text" />}
+              {isChartExpanded ? <ShrinkIcon color="text" /> : <ExpandIcon color="text" />}
             </StyledExpandButton>
           </Flex>
         )}
