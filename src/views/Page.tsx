@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { Box, Flex } from '@pancakeswap/uikit'
 import Footer from 'components/Menu/Footer'
 import { PageMeta } from 'components/Layout/Page'
 
@@ -29,18 +29,18 @@ const StyledPage = styled.div<{ $removePadding: boolean }>`
   }
 `
 
-const Page: React.FC<React.HTMLAttributes<HTMLDivElement> & { removePadding?: boolean }> = ({
-  children,
-  removePadding = false,
-  ...props
-}) => {
+const Page: React.FC<
+  React.HTMLAttributes<HTMLDivElement> & { removePadding?: boolean; hideFooterOnDesktop?: boolean }
+> = ({ children, removePadding = false, hideFooterOnDesktop = false, ...props }) => {
   return (
     <>
       <PageMeta />
       <StyledPage $removePadding={removePadding} {...props}>
         {children}
         <Flex flexGrow={1} />
-        <Footer />
+        <Box display={['block', null, null, hideFooterOnDesktop ? 'none' : 'block']} width="100%">
+          <Footer />
+        </Box>
       </StyledPage>
     </>
   )

@@ -106,7 +106,7 @@ const PriceChart = ({
           </ButtonMenu>
         </Box>
       </Flex>
-      <Box height={isChartExpanded ? 'calc(100% - 120px)' : '516px'} width="100%">
+      <Box height={isChartExpanded ? 'calc(100% - 120px)' : '310px'} width="100%">
         <SwapLineChart
           data={lineChartData}
           setHoverValue={setHoverValue}

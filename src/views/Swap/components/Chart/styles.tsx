@@ -6,9 +6,8 @@ export const StyledPriceChart = styled(Box)<{ $isDark: boolean; $isExpanded: boo
   border: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
   border-radius: ${({ $isExpanded }) => ($isExpanded ? '0' : '16px')};
   width: ${({ $isExpanded }) => ($isExpanded ? '100%' : '50%')};
-  height: ${({ $isExpanded }) => ($isExpanded ? 'calc(100vh - 100px)' : '100%')};
+  height: ${({ $isExpanded }) => ($isExpanded ? 'calc(100vh - 100px)' : '484px')};
   ${({ $isHiddenOnMobile }) => ($isHiddenOnMobile ? 'display: none;' : '')}
-
   ${({ theme }) => theme.mediaQueries.md} {
     display: block;
   }
