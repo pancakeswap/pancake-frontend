@@ -51,7 +51,7 @@ const UnconnectedProfile = () => {
       </MarketPageHeader>
       <Page style={{ minHeight: 'auto' }}>
         <Route path={`${nftsBaseUrl}/profile/:accountAddress/achievements`}>
-          <Achievements achievements={achievements} points={profile?.points} />
+          <Achievements achievements={achievements} isLoading={isAchievementFetching} points={profile?.points} />
         </Route>
         <Route path={`${nftsBaseUrl}/profile/:accountAddress/activity`}>
           <SubMenu />
