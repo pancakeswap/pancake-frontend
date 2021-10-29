@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading } from '@pancakeswap/uikit'
+import { Flex, Heading, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Achievement } from 'state/types'
 import AchievementCard from './AchievementCard'
@@ -15,8 +15,19 @@ const Grid = styled.div`
   }
 `
 
-const AchievementsList: React.FC<{ achievements: Achievement[] }> = ({ achievements }) => {
+const AchievementsList: React.FC<{ achievements: Achievement[]; isLoading: boolean }> = ({
+  achievements,
+  isLoading,
+}) => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
+
+  if (isLoading) {
+    if (isMobile) {
+      return <Skeleton width="100%" height="64px" />
+    }
+    return <Skeleton width="540px" height="64px" />
+  }
 
   return (
     <>

@@ -6,7 +6,11 @@ import { Achievement } from 'state/types'
 import AchievementsList from './AchievementsList'
 import ClaimPointsCallout from './ClaimPointsCallout'
 
-const Achievements: React.FC<{ achievements: Achievement[]; points?: number }> = ({ achievements, points = 0 }) => {
+const Achievements: React.FC<{ achievements: Achievement[]; isLoading: boolean; points?: number }> = ({
+  achievements,
+  isLoading,
+  points = 0,
+}) => {
   const { t } = useTranslation()
 
   return (
@@ -17,7 +21,7 @@ const Achievements: React.FC<{ achievements: Achievement[]; points?: number }> =
           {t('Achievements')}
         </Heading>
         <ClaimPointsCallout />
-        <AchievementsList achievements={achievements} />
+        <AchievementsList achievements={achievements} isLoading={isLoading} />
       </CardBody>
     </Card>
   )
