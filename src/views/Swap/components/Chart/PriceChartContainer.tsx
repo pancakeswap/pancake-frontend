@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useFetchPairPrices, useSwapActionHandlers } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 import PriceChart from './PriceChart'
@@ -30,9 +30,14 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
   const token0Address = getTokenAddress(inputCurrencyId)
   const token1Address = getTokenAddress(outputCurrencyId)
+  const [isPairReversed, setIsPairReversed] = useState(false)
+  const togglePairReversed = useCallback(() => setIsPairReversed((prePairReversed) => !prePairReversed), [])
 
-  const { pairPrices, pairId } = useFetchPairPrices({ token0Address, token1Address, timeWindow })
-  const { onSwitchTokens } = useSwapActionHandlers()
+  const { pairPrices, pairId } = useFetchPairPrices({
+    token0Address: isPairReversed ? token1Address : token0Address,
+    token1Address: isPairReversed ? token0Address : token1Address,
+    timeWindow,
+  })
   const { isDark } = useTheme()
   const showPriceChart = (!pairPrices || pairPrices.length > 0) && pairId !== null && isChartDisplayed
 
@@ -42,9 +47,9 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
         lineChartData={pairPrices}
         timeWindow={timeWindow}
         setTimeWindow={setTimeWindow}
-        inputCurrency={inputCurrency}
-        outputCurrency={outputCurrency}
-        onSwitchTokens={onSwitchTokens}
+        inputCurrency={isPairReversed ? outputCurrency : inputCurrency}
+        outputCurrency={isPairReversed ? inputCurrency : outputCurrency}
+        onSwitchTokens={togglePairReversed}
         isDark={isDark}
         isChartExpanded={isChartExpanded}
         setIsChartExpanded={setIsChartExpanded}
