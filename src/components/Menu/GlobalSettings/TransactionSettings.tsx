@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { escapeRegExp } from 'utils'
 import { Text, Button, Input, Flex, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks'
@@ -13,6 +14,8 @@ enum SlippageError {
 enum DeadlineError {
   InvalidInput = 'InvalidInput',
 }
+
+const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
 
 const SlippageTabs = () => {
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippageTolerance()
@@ -45,15 +48,17 @@ const SlippageTabs = () => {
   }
 
   const parseCustomSlippage = (value: string) => {
-    setSlippageInput(value)
+    if (value === '' || inputRegex.test(escapeRegExp(value))) {
+      setSlippageInput(value)
 
-    try {
-      const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString())
-      if (!Number.isNaN(valueAsIntFromRoundedFloat) && valueAsIntFromRoundedFloat < 5000) {
-        setUserSlippageTolerance(valueAsIntFromRoundedFloat)
+      try {
+        const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString())
+        if (!Number.isNaN(valueAsIntFromRoundedFloat) && valueAsIntFromRoundedFloat < 5000) {
+          setUserSlippageTolerance(valueAsIntFromRoundedFloat)
+        }
+      } catch (error) {
+        console.error(error)
       }
-    } catch (error) {
-      console.error(error)
     }
   }
 
@@ -124,12 +129,18 @@ const SlippageTabs = () => {
             <Box width="76px" mt="4px">
               <Input
                 scale="sm"
+                inputMode="decimal"
+                pattern="^[0-9]*[.,]?[0-9]{0,2}$"
                 placeholder={(userSlippageTolerance / 100).toFixed(2)}
                 value={slippageInput}
                 onBlur={() => {
                   parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
                 }}
-                onChange={(e) => parseCustomSlippage(e.target.value)}
+                onChange={(event) => {
+                  if (event.currentTarget.validity.valid) {
+                    parseCustomSlippage(event.target.value.replace(/,/g, '.'))
+                  }
+                }}
                 isWarning={!slippageInputIsValid}
                 isSuccess={![10, 50, 100].includes(userSlippageTolerance)}
               />
@@ -162,13 +173,19 @@ const SlippageTabs = () => {
           <Box width="52px" mt="4px">
             <Input
               scale="sm"
+              inputMode="numeric"
+              pattern="^[0-9]+$"
               color={deadlineError ? 'red' : undefined}
               onBlur={() => {
                 parseCustomDeadline((ttl / 60).toString())
               }}
               placeholder={(ttl / 60).toString()}
               value={deadlineInput}
-              onChange={(e) => parseCustomDeadline(e.target.value)}
+              onChange={(event) => {
+                if (event.currentTarget.validity.valid) {
+                  parseCustomDeadline(event.target.value)
+                }
+              }}
             />
           </Box>
         </Flex>
