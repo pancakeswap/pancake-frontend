@@ -32,12 +32,12 @@ const ActivityHistory = () => {
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
   const [sortedUserActivities, setSortedUserActivities] = useState<Activity[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const { activity: userActivity, userNftsInitializationState } = useUserNfts()
+  const { activity: userActivity } = useUserNfts()
   const bnbBusdPrice = useBNBBusdPrice()
   const { isXs, isSm } = useMatchBreakpoints()
 
   useEffect(() => {
-    if (account && userNftsInitializationState === UserNftInitializationState.INITIALIZED) {
+    if (account && userActivity.initializationState === UserNftInitializationState.INITIALIZED) {
       const differentAddress =
         accountAddress && isAddress(accountAddress)
           ? account.toLowerCase() !== accountAddress.toLocaleLowerCase()
@@ -47,7 +47,7 @@ const ActivityHistory = () => {
         setIsLoading(false)
       }
     }
-  }, [account, userNftsInitializationState, userActivity, accountAddress])
+  }, [account, userActivity, accountAddress])
 
   useEffect(() => {
     const fetchAddressActivity = async () => {
