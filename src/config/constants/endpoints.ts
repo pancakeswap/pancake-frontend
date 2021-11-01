@@ -7,7 +7,6 @@ export const API_PROFILE = process.env.REACT_APP_API_PROFILE
 export const API_NFT = process.env.REACT_APP_API_NFT
 export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
-export const BITQUERY_API = 'https://graphql.bitquery.io'
 
 /**
  * V1 will be deprecated but is still used to claim old rounds
