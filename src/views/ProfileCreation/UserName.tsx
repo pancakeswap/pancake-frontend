@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import {
   Card,
@@ -22,12 +22,13 @@ import { API_PROFILE } from 'config/constants/endpoints'
 import useToast from 'hooks/useToast'
 import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
 import { signMessage } from 'utils/web3React'
+import fetchWithTimeout from 'utils/fetchWithTimeout'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import debounce from 'lodash/debounce'
 import ConfirmProfileCreationModal from './ConfirmProfileCreationModal'
 import useProfileCreation from './contexts/hook'
 import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, REGISTER_COST } from './config'
+import useDebounce from '../../hooks/useDebounce'
 
 enum ExistingUserState {
   IDLE = 'idle', // initial state
@@ -66,6 +67,7 @@ const UserName: React.FC = () => {
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const fetchAbortSignal = useRef<AbortController>(null)
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
   const hasMinimumCakeRequired = fetchStatus === FetchStatus.SUCCESS && cakeBalance.gte(REGISTER_COST)
   const [onPresentConfirmProfileCreation] = useModal(
@@ -81,28 +83,59 @@ const UserName: React.FC = () => {
   )
   const isUserCreated = existingUserState === ExistingUserState.CREATED
 
-  const checkUsernameValidity = debounce(async (value: string) => {
-    try {
-      setIsLoading(true)
-      const res = await fetch(`${API_PROFILE}/api/users/valid/${value}`)
+  const [usernameToCheck, setUsernameToCheck] = useState<string>(undefined)
+  const debouncedUsernameToCheck = useDebounce(usernameToCheck, 200)
 
-      if (res.ok) {
-        setIsValid(true)
-        setMessage('')
-      } else {
-        const data = await res.json()
+  useEffect(() => {
+    const fetchUsernameToCheck = async (abortSignal) => {
+      try {
+        setIsLoading(true)
+        if (!debouncedUsernameToCheck) {
+          setIsValid(false)
+          setMessage('')
+          fetchAbortSignal.current = null
+        } else {
+          const res = await fetchWithTimeout(`${API_PROFILE}/api/users/valid/${debouncedUsernameToCheck}`, {
+            method: 'get',
+            signal: abortSignal,
+            timeout: 30000,
+          })
+
+          fetchAbortSignal.current = null
+
+          if (res.ok) {
+            setIsValid(true)
+            setMessage('')
+          } else {
+            const data = await res.json()
+            setIsValid(false)
+            setMessage(data?.error?.message)
+          }
+        }
+      } catch (e) {
         setIsValid(false)
-        setMessage(data?.error?.message)
+        if (e.name !== 'AbortError') {
+          setMessage(t('Error fetching data'))
+          console.error(e)
+        }
+      } finally {
+        setIsLoading(false)
       }
-    } finally {
-      setIsLoading(false)
     }
-  }, 200)
+
+    if (fetchAbortSignal.current) {
+      fetchAbortSignal.current.abort()
+    }
+
+    fetchAbortSignal.current = new AbortController()
+
+    fetchUsernameToCheck(fetchAbortSignal.current.signal)
+  }, [debouncedUsernameToCheck, t])
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     actions.setUserName(value)
-    checkUsernameValidity(value)
+    setUsernameToCheck(value)
   }
 
   const handleConfirm = async () => {
