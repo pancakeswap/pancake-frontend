@@ -416,6 +416,22 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenName: 'Ariva',
     projectSite: 'https://ariva.digital/',
   },
+  {
+    account: '0x8595c4Ad15D51c5Bf920c249869Ec5b3250c2D4d',
+    farmName: 'ULTI-BNB',
+    tokenAddress: '0x42BFE4A3E023f2C90aEBFfbd9B667599Fa38514F',
+    quoteToken: tokens.wbnb,
+    tokenName: 'ULTI Arena',
+    projectSite: 'https://ultiarena.com',
+  },
+  {
+    account: '0x1723D77Afde343323b769271a83d5Aecada25e01',
+    farmName: 'ZOO-BUSD',
+    tokenAddress: '0x1D229B958D5DDFca92146585a8711aECbE56F095',
+    quoteToken: tokens.busd,
+    tokenName: 'ZOO Crypto World',
+    projectSite: 'https://zoogame.finance/',
+  },
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
