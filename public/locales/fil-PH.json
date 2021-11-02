@@ -1743,5 +1743,7 @@
   "The smart contract address will be released soon before the sale starts.": "The smart contract address will be released soon before the sale starts.",
   "Supply Count": "Supply Count",
   "Brand": "Brand",
-  "Success": "Success"
+  "Success": "Success",
+  "Wrap": "Wrap",
+  "Unwrap": "Unwrap"
 }
