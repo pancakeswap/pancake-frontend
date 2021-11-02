@@ -98,7 +98,7 @@ const ContributeModal: React.FC<Props> = ({
       <ModalBody maxWidth="320px">
         {limitPerUserInLP.isGreaterThan(0) && (
           <Flex justifyContent="space-between" mb="16px">
-            <Text>{t('Max. LP token entry')}</Text>
+            <Text>{t('Max. token entry')}</Text>
             <Text>{getBalanceAmount(limitPerUserInLP, currency.decimals).toString()}</Text>
           </Flex>
         )}
@@ -141,7 +141,7 @@ const ContributeModal: React.FC<Props> = ({
         </Flex>
         <Text color="textSubtle" fontSize="12px" mb="24px">
           {t(
-            'If you don’t commit enough LP tokens, you may not receive any IFO tokens at all and will only receive a full refund of your LP tokens.',
+            'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
           )}
         </Text>
         <ApproveConfirmButtons

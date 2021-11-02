@@ -1725,6 +1725,14 @@ export const mainnetTokens = {
     'Defina Finance',
     'https://defina.finance/',
   ),
+  dar: new Token(
+    MAINNET,
+    '0x23CE9e926048273eF83be0A3A8Ba9Cb6D45cd978',
+    6,
+    'DAR',
+    'Mines of Dalarnia',
+    'https://www.minesofdalarnia.com/',
+  ),
 }
 
 export const testnetTokens = {

@@ -91,7 +91,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
-      'Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.',
+      'Sorry, you didn’t contribute enough CAKE to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your CAKE.',
     ),
     { placement: 'bottom' },
   )

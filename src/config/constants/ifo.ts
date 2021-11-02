@@ -7,9 +7,34 @@ const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[ChainId.M
 
 const ifos: Ifo[] = [
   {
+    id: 'dar',
+    address: '0xb6eF1f36220397c434A6B15dc5EA616CFFDF58CE',
+    isActive: true,
+    name: 'Mines of Dalarnia (DAR)',
+    poolBasic: {
+      saleAmount: '6,000,000 DAR',
+      raiseAmount: '$450,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.5,
+    },
+    poolUnlimited: {
+      saleAmount: '6,000,000 DAR',
+      raiseAmount: '$450,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.5,
+    },
+    currency: tokens.cake,
+    token: tokens.dar,
+    releaseBlockNumber: 0,
+    campaignId: '511130000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmeJenHcbY45eQxLRebzvpNk5qSCrj2wM1t4EAMHotFoJL',
+    tokenOfferingPrice: 0.075,
+    version: 2,
+  },
+  {
     id: 'dkt',
     address: '0x89ab9852155A794e371095d863aEAa2DF198067C',
-    isActive: true,
+    isActive: false,
     name: 'Duelist King (DKT)',
     poolBasic: {
       saleAmount: '75,000 DKT',

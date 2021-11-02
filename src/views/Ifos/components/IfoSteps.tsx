@@ -93,11 +93,10 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
         return (
           <CardBody>
             <Heading as="h4" color="secondary" mb="16px">
-              {t('Get CAKE-BNB LP Tokens')}
+              {t('Get %symbol%', { symbol: 'CAKE' })}
             </Heading>
             <Text color="textSubtle" small>
-              {t('Stake CAKE and BNB in the liquidity pool to get LP tokens.')} <br />
-              {t('You’ll spend them to buy IFO sale tokens.')}
+              {t('You’ll spend CAKE to buy IFO sale tokens.')}
             </Text>
             <Button
               as={Link}
@@ -106,7 +105,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
               endIcon={<OpenNewIcon color="white" />}
               mt="16px"
             >
-              {t('Get LP tokens')}
+              {t('Get %symbol%', { symbol: 'CAKE' })}
             </Button>
           </CardBody>
         )
@@ -114,10 +113,10 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
         return (
           <CardBody>
             <Heading as="h4" color="secondary" mb="16px">
-              {t('Commit LP Tokens')}
+              {t('Commit CAKE')}
             </Heading>
             <Text color="textSubtle" small>
-              {t('When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.')} <br />
+              {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
               {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
             </Text>
           </CardBody>
@@ -130,7 +129,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
             </Heading>
             <Text color="textSubtle" small>
               {t(
-                'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.',
+                'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.',
               )}
             </Text>
           </CardBody>
