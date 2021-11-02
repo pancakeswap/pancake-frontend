@@ -51,6 +51,16 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
   const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`
 
+  const pricePerTokenWithFeeToOriginalRaio = poolCharacteristic.sumTaxesOverflow
+    .plus(poolCharacteristic.raisingAmountPool)
+    .div(poolCharacteristic.offeringAmountPool)
+    .div(poolCharacteristic.raisingAmountPool.div(poolCharacteristic.offeringAmountPool))
+  const pricePerTokenWithFee = `~$${formatNumber(
+    pricePerTokenWithFeeToOriginalRaio.times(ifo.tokenOfferingPrice).toNumber(),
+    0,
+    2,
+  )}`
+
   /* Format end */
 
   const renderBasedOnIfoStatus = () => {
@@ -81,7 +91,19 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
               value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
             />
           )}
+          {poolId === PoolIds.poolBasic && (
+            <FooterEntry
+              label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
+              value={`$${ifo.tokenOfferingPrice}`}
+            />
+          )}
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
+          {poolId === PoolIds.poolUnlimited && (
+            <FooterEntry
+              label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
+              value={pricePerTokenWithFee}
+            />
+          )}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
         </>
       )
