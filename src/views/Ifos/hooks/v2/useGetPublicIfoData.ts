@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+import tokens from 'config/constants/tokens'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { useBlock } from 'state/block/hooks'
-import { useLpTokenPrice } from 'state/farms/hooks'
+import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import useRefresh from 'hooks/useRefresh'
 import { multicallv2 } from 'utils/multicall'
 import ifoV2Abi from 'config/abi/ifoV2.json'
@@ -30,7 +31,10 @@ const formatPool = (pool) => ({
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address, releaseBlockNumber } = ifo
+  const cakePriceUsd = usePriceCakeBusd()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
+  const currencyPriceInUSD = ifo.currency === tokens.cake ? cakePriceUsd : lpTokenPriceInUsd
+
   const { fastRefresh } = useRefresh()
 
   const [state, setState] = useState({
@@ -133,7 +137,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     fetchIfoData()
   }, [fetchIfoData, fastRefresh])
 
-  return { ...state, currencyPriceInUSD: lpTokenPriceInUsd, fetchIfoData }
+  return { ...state, currencyPriceInUSD, fetchIfoData }
 }
 
 export default useGetPublicIfoData

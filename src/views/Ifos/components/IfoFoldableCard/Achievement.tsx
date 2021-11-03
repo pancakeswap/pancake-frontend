@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, LinkExternal, Image, Text, PrizeIcon, Skeleton } from '@pancakeswap/uikit'
+import tokens from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import { PublicIfoData } from 'views/Ifos/types'
 import { Ifo } from 'config/constants/types'
@@ -60,7 +61,10 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
           </Flex>
           {publicIfoData.currencyPriceInUSD.gt(0) ? (
             <Text color="textSubtle" fontSize="12px">
-              {t('Commit ~%amount% LP in total to earn!', { amount: minLpForAchievement.toFixed(3) })}
+              {t('Commit ~%amount% %symbol% in total to earn!', {
+                amount: minLpForAchievement.toFixed(3),
+                symbol: ifo.currency === tokens.cake ? 'CAKE' : 'LP',
+              })}
             </Text>
           ) : (
             <Skeleton minHeight={18} width={80} />
