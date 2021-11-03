@@ -22,7 +22,7 @@ const config = [
   },
   {
     title: 'Where does the participation fee go?',
-    description: ['The CAKE from the participation fee will thrown into the weekly token burn.'],
+    description: ['The CAKE from the participation fee will be thrown into the weekly token burn.'],
   },
   {
     title: 'How can I get an achievement for participating in the IFO?',
