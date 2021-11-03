@@ -7,7 +7,7 @@ import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex } from '@panc
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -99,14 +99,20 @@ const ContributeModal: React.FC<Props> = ({
         {limitPerUserInLP.isGreaterThan(0) && (
           <Flex justifyContent="space-between" mb="16px">
             <Text>{t('Max. token entry')}</Text>
-            <Text>{getBalanceAmount(limitPerUserInLP, currency.decimals).toString()}</Text>
+            <Text>{`${formatNumber(getBalanceAmount(limitPerUserInLP, currency.decimals).toNumber(), 3, 3)} ${
+              ifo.currency.symbol
+            }`}</Text>
           </Flex>
         )}
         <Flex justifyContent="space-between" mb="8px">
           <Text>{t('Commit')}:</Text>
           <Flex flexGrow={1} justifyContent="flex-end">
             <Image
-              src={`/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`}
+              src={
+                ifo.currency.symbol === 'CAKE'
+                  ? '/images/cake.svg'
+                  : `/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`
+              }
               width={24}
               height={24}
             />

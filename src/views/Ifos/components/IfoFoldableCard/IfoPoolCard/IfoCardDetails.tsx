@@ -57,7 +57,12 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'coming_soon') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && <FooterEntry label={t('Max. token entry')} value={maxLpTokens} />}
+          {poolId === PoolIds.poolBasic && (
+            <FooterEntry
+              label={t('Max. token entry')}
+              value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
+            />
+          )}
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
           {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
           <FooterEntry
@@ -70,7 +75,12 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'live') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && <FooterEntry label={t('Max. token entry')} value={maxLpTokens} />}
+          {poolId === PoolIds.poolBasic && (
+            <FooterEntry
+              label={t('Max. token entry')}
+              value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
+            />
+          )}
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
         </>
@@ -79,7 +89,12 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'finished') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && <FooterEntry label={t('Max. token entry')} value={maxLpTokens} />}
+          {poolId === PoolIds.poolBasic && (
+            <FooterEntry
+              label={t('Max. token entry')}
+              value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
+            />
+          )}
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
