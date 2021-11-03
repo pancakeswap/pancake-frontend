@@ -41,6 +41,36 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 467,
+    lpSymbol: 'MONI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xbcfd0d4a37fEb4dceAAeFa9da28CD833E5f04e9f',
+    },
+    token: serializedTokens.moni,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 468,
+    lpSymbol: 'XMS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xBC7e925F9Dec60FE4F50C0457609f3cA5c3f5906',
+    },
+    token: serializedTokens.xms,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 469,
+    lpSymbol: 'ZOO-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xd5D00B0aD40FF6d8C1a6F7e72F185B6fB3c3fd1F',
+    },
+    token: serializedTokens.zoo,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 437,
     lpSymbol: 'BMON-BNB LP',
     lpAddresses: {

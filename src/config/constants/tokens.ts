@@ -1693,6 +1693,30 @@ export const mainnetTokens = {
     'https://launchpad.binance.com/en/subscription/LAZIO_BNB',
   ),
   arv: new Token(MAINNET, '0x6679eB24F59dFe111864AEc72B443d1Da666B360', 8, 'ARV', 'ARIVA', 'https://ariva.digital'),
+  moni: new Token(
+    MAINNET,
+    '0x9573c88aE3e37508f87649f87c4dd5373C9F31e0',
+    18,
+    'MONI',
+    'Monsta Infinite',
+    'https://monstainfinite.com/',
+  ),
+  xms: new Token(
+    MAINNET,
+    '0x7859B01BbF675d67Da8cD128a50D155cd881B576',
+    18,
+    'XMS',
+    'Mars Ecosystem',
+    'https://marsecosystem.com/',
+  ),
+  zoo: new Token(
+    MAINNET,
+    '0x1D229B958D5DDFca92146585a8711aECbE56F095',
+    18,
+    'ZOO',
+    'ZOO Crypto World',
+    'https://zoogame.finance/',
+  ),
 }
 
 export const testnetTokens = {
