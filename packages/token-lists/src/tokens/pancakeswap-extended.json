@@ -1934,5 +1934,29 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x7Ceb519718A80Dd78a8545AD8e7f401dE4f2faA7.png"
+  },
+  {
+    "name": "Monsta Infinite",
+    "symbol": "MONI",
+    "address": "0x9573c88aE3e37508f87649f87c4dd5373C9F31e0",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x9573c88aE3e37508f87649f87c4dd5373C9F31e0.png"
+  },
+  {
+    "name": "Mars Ecosystem",
+    "symbol": "XMS",
+    "address": "0x7859B01BbF675d67Da8cD128a50D155cd881B576",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x7859B01BbF675d67Da8cD128a50D155cd881B576.png"
+  },
+  {
+    "name": "ZOO Crypto World",
+    "symbol": "ZOO",
+    "address": "0x1D229B958D5DDFca92146585a8711aECbE56F095",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x1D229B958D5DDFca92146585a8711aECbE56F095.png"
   }
 ]

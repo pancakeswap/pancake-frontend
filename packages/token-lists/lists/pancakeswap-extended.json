@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-10-26T16:24:48.114Z",
+  "timestamp": "2021-11-03T10:13:51.611Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 33
+    "patch": 34
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1133,6 +1133,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0xa04F060077D90Fe2647B61e4dA4aD1F97d6649dc.png"
     },
     {
+      "name": "Monsta Infinite",
+      "symbol": "MONI",
+      "address": "0x9573c88aE3e37508f87649f87c4dd5373C9F31e0",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x9573c88aE3e37508f87649f87c4dd5373C9F31e0.png"
+    },
+    {
       "name": "Meter",
       "symbol": "MTRG",
       "address": "0xBd2949F67DcdC549c6Ebe98696449Fa79D988A9F",
@@ -1885,6 +1893,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x26A5dFab467d4f58fB266648CAe769503CEC9580.png"
     },
     {
+      "name": "Mars Ecosystem",
+      "symbol": "XMS",
+      "address": "0x7859B01BbF675d67Da8cD128a50D155cd881B576",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x7859B01BbF675d67Da8cD128a50D155cd881B576.png"
+    },
+    {
       "name": "XRP Token",
       "symbol": "XRP",
       "address": "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
@@ -1947,6 +1963,14 @@
       "chainId": 56,
       "decimals": 12,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xb86AbCb37C3A4B64f74f59301AFF131a1BEcC787.png"
+    },
+    {
+      "name": "ZOO Crypto World",
+      "symbol": "ZOO",
+      "address": "0x1D229B958D5DDFca92146585a8711aECbE56F095",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x1D229B958D5DDFca92146585a8711aECbE56F095.png"
     }
   ]
 }
