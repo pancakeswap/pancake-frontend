@@ -1717,6 +1717,14 @@ export const mainnetTokens = {
     'ZOO Crypto World',
     'https://zoogame.finance/',
   ),
+  fina: new Token(
+    MAINNET,
+    '0x426c72701833fdDBdFc06c944737C6031645c708',
+    18,
+    'FINA',
+    'Defina Finance',
+    'https://defina.finance/',
+  ),
 }
 
 export const testnetTokens = {
