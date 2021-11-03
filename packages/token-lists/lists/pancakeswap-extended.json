@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-11-03T10:13:51.611Z",
+  "timestamp": "2021-11-03T11:42:17.932Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 34
+    "patch": 35
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -715,6 +715,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x0D8Ce2A99Bb6e3B7Db580eD848240e4a0F9aE153.png"
+    },
+    {
+      "name": "Defina Finance",
+      "symbol": "FINA",
+      "address": "0x426c72701833fdDBdFc06c944737C6031645c708",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x426c72701833fdDBdFc06c944737C6031645c708.png"
     },
     {
       "name": "Refinable",

@@ -1958,5 +1958,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x1D229B958D5DDFca92146585a8711aECbE56F095.png"
+  },
+  {
+    "name": "Defina Finance",
+    "symbol": "FINA",
+    "address": "0x426c72701833fdDBdFc06c944737C6031645c708",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x426c72701833fdDBdFc06c944737C6031645c708.png"
   }
 ]
