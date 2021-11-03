@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/Chef-Cheems/pancake-toolkit/compare/@pancakeswap/token-lists@2.18.6...@pancakeswap/token-lists@2.19.0) (2021-10-28)
+
+
+### Features
+
+* Add LIGHT and CART to extended list ([#296](https://github.com/Chef-Cheems/pancake-toolkit/issues/296)) ([a884bc2](https://github.com/Chef-Cheems/pancake-toolkit/commit/a884bc22892b02910980d559f3a6eea4c162f04b))
+* List ARV ([#309](https://github.com/Chef-Cheems/pancake-toolkit/issues/309)) ([40730ce](https://github.com/Chef-Cheems/pancake-toolkit/commit/40730ce2e13c4322701babf054580617e665f22c))
+* List DKT ([#313](https://github.com/Chef-Cheems/pancake-toolkit/issues/313)) ([c034b3b](https://github.com/Chef-Cheems/pancake-toolkit/commit/c034b3b1cb0adb21df0d2c6bf02a05c2fc96f665))
+* List LAZIO ([#308](https://github.com/Chef-Cheems/pancake-toolkit/issues/308)) ([24ec409](https://github.com/Chef-Cheems/pancake-toolkit/commit/24ec409f42e640f1a6eb4e3184c26f2858ade911))
+* List MCB ([#305](https://github.com/Chef-Cheems/pancake-toolkit/issues/305)) ([52e4d53](https://github.com/Chef-Cheems/pancake-toolkit/commit/52e4d53ddf9d3a491e624317d0637cd99f39e1c6))
+* List RPG ([#300](https://github.com/Chef-Cheems/pancake-toolkit/issues/300)) ([bb7e7e5](https://github.com/Chef-Cheems/pancake-toolkit/commit/bb7e7e520a8902f70e6701ccc2ac87e82701070b))
+
+
+
+
+
 ## [2.18.6](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.18.5...@pancakeswap/token-lists@2.18.6) (2021-09-28)
 
 **Note:** Version bump only for package @pancakeswap/token-lists
