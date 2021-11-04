@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-11-03T11:42:17.932Z",
+  "timestamp": "2021-11-04T07:10:42.129Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 35
+    "patch": 36
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -555,6 +555,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3.png"
+    },
+    {
+      "name": "Mines of Dalarnia",
+      "symbol": "DAR",
+      "address": "0x23CE9e926048273eF83be0A3A8Ba9Cb6D45cd978",
+      "chainId": 56,
+      "decimals": 6,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x23CE9e926048273eF83be0A3A8Ba9Cb6D45cd978.png"
     },
     {
       "name": "Dego.Finance",
