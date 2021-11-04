@@ -51,15 +51,31 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
   const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`
 
+  const sumTaxesOverflow = poolCharacteristic.totalAmountPool.times(poolCharacteristic.taxRate).times(0.01)
+  const pricePerTokenWithFeeToOriginalRaio = sumTaxesOverflow
+    .plus(poolCharacteristic.raisingAmountPool)
+    .div(poolCharacteristic.offeringAmountPool)
+    .div(poolCharacteristic.raisingAmountPool.div(poolCharacteristic.offeringAmountPool))
+  const pricePerTokenWithFee = `~$${formatNumber(
+    pricePerTokenWithFeeToOriginalRaio.times(ifo.tokenOfferingPrice).toNumber(),
+    0,
+    2,
+  )}`
+
   /* Format end */
 
   const renderBasedOnIfoStatus = () => {
     if (status === 'coming_soon') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && <FooterEntry label={t('Max. LP token entry')} value={maxLpTokens} />}
+          {poolId === PoolIds.poolBasic && (
+            <FooterEntry
+              label={t('Max. token entry')}
+              value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
+            />
+          )}
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
-          <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
+          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
           <FooterEntry
             label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
             value={`$${ifo.tokenOfferingPrice}`}
@@ -70,8 +86,25 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'live') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && <FooterEntry label={t('Max. LP token entry')} value={maxLpTokens} />}
+          {poolId === PoolIds.poolBasic && (
+            <FooterEntry
+              label={t('Max. token entry')}
+              value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
+            />
+          )}
+          {poolId === PoolIds.poolBasic && (
+            <FooterEntry
+              label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
+              value={`$${ifo.tokenOfferingPrice}`}
+            />
+          )}
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
+          {poolId === PoolIds.poolUnlimited && (
+            <FooterEntry
+              label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
+              value={pricePerTokenWithFee}
+            />
+          )}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
         </>
       )
@@ -79,11 +112,16 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'finished') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && <FooterEntry label={t('Max. LP token entry')} value={maxLpTokens} />}
+          {poolId === PoolIds.poolBasic && (
+            <FooterEntry
+              label={t('Max. token entry')}
+              value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
+            />
+          )}
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
-          <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
+          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
           <FooterEntry
             label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
             value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}

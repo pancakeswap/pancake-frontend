@@ -41,6 +41,26 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 471,
+    lpSymbol: 'DAR-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x062f88E2B4896e823ac78Ac314468c29eEC4186d',
+    },
+    token: serializedTokens.dar,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 470,
+    lpSymbol: 'FINA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6dB23b5360c9D2859fDcbf41c56494e7b8573649',
+    },
+    token: serializedTokens.fina,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 467,
     lpSymbol: 'MONI-BNB LP',
     lpAddresses: {

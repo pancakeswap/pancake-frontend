@@ -214,6 +214,12 @@ const campaigns: Campaign[] = [
     title: 'Duelist King',
     badge: 'ifo-dkt.svg',
   },
+  {
+    id: '511130000',
+    type: 'ifo',
+    title: 'Mines of Dalarnia',
+    badge: 'ifo-dar.svg',
+  },
 ]
 
 /**

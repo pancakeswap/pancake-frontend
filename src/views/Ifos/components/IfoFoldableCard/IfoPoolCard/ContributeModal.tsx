@@ -7,7 +7,7 @@ import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex } from '@panc
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -98,15 +98,21 @@ const ContributeModal: React.FC<Props> = ({
       <ModalBody maxWidth="320px">
         {limitPerUserInLP.isGreaterThan(0) && (
           <Flex justifyContent="space-between" mb="16px">
-            <Text>{t('Max. LP token entry')}</Text>
-            <Text>{getBalanceAmount(limitPerUserInLP, currency.decimals).toString()}</Text>
+            <Text>{t('Max. token entry')}</Text>
+            <Text>{`${formatNumber(getBalanceAmount(limitPerUserInLP, currency.decimals).toNumber(), 3, 3)} ${
+              ifo.currency.symbol
+            }`}</Text>
           </Flex>
         )}
         <Flex justifyContent="space-between" mb="8px">
           <Text>{t('Commit')}:</Text>
           <Flex flexGrow={1} justifyContent="flex-end">
             <Image
-              src={`/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`}
+              src={
+                ifo.currency.symbol === 'CAKE'
+                  ? '/images/cake.svg'
+                  : `/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`
+              }
               width={24}
               height={24}
             />
@@ -141,7 +147,7 @@ const ContributeModal: React.FC<Props> = ({
         </Flex>
         <Text color="textSubtle" fontSize="12px" mb="24px">
           {t(
-            'If you don’t commit enough LP tokens, you may not receive any IFO tokens at all and will only receive a full refund of your LP tokens.',
+            'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
           )}
         </Text>
         <ApproveConfirmButtons
