@@ -28,6 +28,7 @@ import {
   updateUserPredictionChartDisclaimerShow,
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
+  hidePhishingWarningBanner,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -75,6 +76,7 @@ export interface UserState {
   gasPrice: string
   watchlistTokens: string[]
   watchlistPools: string[]
+  showPhishingWarningBanner: boolean
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -102,6 +104,7 @@ export const initialState: UserState = {
   gasPrice: GAS_PRICE_GWEI.default,
   watchlistTokens: [],
   watchlistPools: [],
+  showPhishingWarningBanner: true,
 }
 
 export default createReducer(initialState, (builder) =>
@@ -228,5 +231,8 @@ export default createReducer(initialState, (builder) =>
         const newPools = state.watchlistPools.filter((x) => x !== address)
         state.watchlistPools = newPools
       }
+    })
+    .addCase(hidePhishingWarningBanner, (state) => {
+      state.showPhishingWarningBanner = false
     }),
 )
