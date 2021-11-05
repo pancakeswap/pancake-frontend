@@ -1974,5 +1974,13 @@
     "chainId": 56,
     "decimals": 6,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x23CE9e926048273eF83be0A3A8Ba9Cb6D45cd978.png"
+  },
+  {
+    "name": "X World Games",
+    "symbol": "XWG",
+    "address": "0x6b23C89196DeB721e6Fd9726E6C76E4810a464bc",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x6b23C89196DeB721e6Fd9726E6C76E4810a464bc.png"
   }
 ]

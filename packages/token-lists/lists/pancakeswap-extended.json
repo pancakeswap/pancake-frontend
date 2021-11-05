@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-11-04T07:10:42.129Z",
+  "timestamp": "2021-11-05T11:57:51.679Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 36
+    "patch": 37
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1939,6 +1939,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63.png"
+    },
+    {
+      "name": "X World Games",
+      "symbol": "XWG",
+      "address": "0x6b23C89196DeB721e6Fd9726E6C76E4810a464bc",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x6b23C89196DeB721e6Fd9726E6C76E4810a464bc.png"
     },
     {
       "name": "yearn.finance",
