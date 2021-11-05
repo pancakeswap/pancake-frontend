@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 472,
+    lpSymbol: 'XWG-USDC LP',
+    lpAddresses: {
+      97: '',
+      56: '0x936928146a21AfCcd30DfA84824A780572B1630B',
+    },
+    token: serializedTokens.xwg,
+    quoteToken: serializedTokens.usdc,
+  },
+  {
     pid: 471,
     lpSymbol: 'DAR-BNB LP',
     lpAddresses: {
@@ -69,6 +79,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.moni,
     quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 468,
@@ -79,6 +90,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.xms,
     quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 469,
@@ -89,6 +101,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.zoo,
     quoteToken: serializedTokens.busd,
+    isCommunity: true,
   },
   {
     pid: 437,
