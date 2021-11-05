@@ -1733,6 +1733,14 @@ export const mainnetTokens = {
     'Mines of Dalarnia',
     'https://www.minesofdalarnia.com/',
   ),
+  xwg: new Token(
+    MAINNET,
+    '0x6b23C89196DeB721e6Fd9726E6C76E4810a464bc',
+    18,
+    'XWG',
+    'X World Games',
+    'https://xwg.games/',
+  ),
 }
 
 export const testnetTokens = {
