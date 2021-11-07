@@ -7,8 +7,8 @@ import Page from 'components/Layout/Page'
 import { Route } from 'react-router'
 import { useUserNfts } from 'state/nftMarket/hooks'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import { FetchStatus } from 'config/constants/types'
 import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
-import { AchievementFetchStatus } from 'state/types'
 import { UserNftInitializationState } from 'state/nftMarket/types'
 import useFetchUserNfts from './hooks/useFetchUserNfts'
 import MarketPageHeader from '../components/MarketPageHeader'
@@ -50,7 +50,7 @@ const ConnectedProfile = () => {
           nftCollected={userNfts.length}
           isProfileLoading={isProfileLoading}
           isNftLoading={userNftsInitializationState !== UserNftInitializationState.INITIALIZED}
-          isAchievementsLoading={achievementFetchStatus !== AchievementFetchStatus.FETCHED}
+          isAchievementsLoading={achievementFetchStatus !== FetchStatus.FETCHED}
         />
         <TabMenuWrapper>
           <TabMenu />
@@ -60,7 +60,7 @@ const ConnectedProfile = () => {
         <Route path={`${nftsBaseUrl}/profile/:accountAddress/achievements`}>
           <Achievements
             achievements={achievements}
-            isLoading={achievementFetchStatus !== AchievementFetchStatus.FETCHED}
+            isLoading={achievementFetchStatus !== FetchStatus.FETCHED}
             points={profile?.points}
           />
         </Route>

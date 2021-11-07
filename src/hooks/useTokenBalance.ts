@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
+import { FetchStatus } from 'config/constants/types'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { simpleRpcProvider } from 'utils/providers'
@@ -14,17 +15,11 @@ type UseTokenBalanceState = {
   fetchStatus: FetchStatus
 }
 
-export enum FetchStatus {
-  NOT_FETCHED = 'not-fetched',
-  SUCCESS = 'success',
-  FAILED = 'failed',
-}
-
 const useTokenBalance = (tokenAddress: string) => {
-  const { NOT_FETCHED, SUCCESS, FAILED } = FetchStatus
+  const { INITIAL, FETCHED, FAILED } = FetchStatus
   const [balanceState, setBalanceState] = useState<UseTokenBalanceState>({
     balance: BIG_ZERO,
-    fetchStatus: NOT_FETCHED,
+    fetchStatus: INITIAL,
   })
   const { account } = useWeb3React()
   const { fastRefresh } = useRefresh()
@@ -34,7 +29,7 @@ const useTokenBalance = (tokenAddress: string) => {
       const contract = getBep20Contract(tokenAddress)
       try {
         const res = await contract.balanceOf(account)
-        setBalanceState({ balance: new BigNumber(res.toString()), fetchStatus: SUCCESS })
+        setBalanceState({ balance: new BigNumber(res.toString()), fetchStatus: FETCHED })
       } catch (e) {
         console.error(e)
         setBalanceState((prev) => ({
@@ -47,7 +42,7 @@ const useTokenBalance = (tokenAddress: string) => {
     if (account) {
       fetchBalance()
     }
-  }, [account, tokenAddress, fastRefresh, SUCCESS, FAILED])
+  }, [account, tokenAddress, fastRefresh, FETCHED, FAILED])
 
   return balanceState
 }
@@ -87,7 +82,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
 }
 
 export const useGetBnbBalance = () => {
-  const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
+  const [fetchStatus, setFetchStatus] = useState(FetchStatus.INITIAL)
   const [balance, setBalance] = useState(ethers.BigNumber.from(0))
   const { account } = useWeb3React()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
@@ -97,7 +92,7 @@ export const useGetBnbBalance = () => {
       try {
         const walletBalance = await simpleRpcProvider.getBalance(account)
         setBalance(walletBalance)
-        setFetchStatus(FetchStatus.SUCCESS)
+        setFetchStatus(FetchStatus.FETCHED)
       } catch {
         setFetchStatus(FetchStatus.FAILED)
       }

@@ -7,7 +7,8 @@ import {
   useGetNftShowOnlyOnSale,
   useNftsFromCollection,
 } from 'state/nftMarket/hooks'
-import { Collection, NftFilterLoadingState } from 'state/nftMarket/types'
+import { Collection } from 'state/nftMarket/types'
+import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
@@ -30,7 +31,7 @@ const FilteredCollectionNfts: React.FC<FilteredCollectionNftsProps> = ({ collect
     setNumToShow((prevNumToShow) => prevNumToShow + REQUEST_SIZE)
   }
 
-  if (nftFilterLoadingState === NftFilterLoadingState.LOADING) {
+  if (nftFilterLoadingState === FetchStatus.FETCHING) {
     return <GridPlaceholder />
   }
 

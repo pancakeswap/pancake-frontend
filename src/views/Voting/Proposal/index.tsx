@@ -3,7 +3,8 @@ import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch } from 'state'
-import { ProposalState, VotingStateLoadingStatus } from 'state/types'
+import { ProposalState } from 'state/types'
+import { FetchStatus } from 'config/constants/types'
 import {
   useGetProposal,
   useGetVotingStateLoadingStatus,
@@ -35,8 +36,7 @@ const Proposal = () => {
   const proposalLoadingStatus = useGetProposalLoadingStatus()
   const hasAccountVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
   const { id: proposalId = null, snapshot = null } = proposal ?? {}
-  const isPageLoading =
-    voteLoadingStatus === VotingStateLoadingStatus.LOADING || proposalLoadingStatus === VotingStateLoadingStatus.LOADING
+  const isPageLoading = voteLoadingStatus === FetchStatus.FETCHING || proposalLoadingStatus === FetchStatus.FETCHING
 
   useEffect(() => {
     dispatch(fetchProposal(id))

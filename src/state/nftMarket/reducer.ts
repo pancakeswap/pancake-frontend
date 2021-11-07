@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { FetchStatus } from 'config/constants/types'
 import isEmpty from 'lodash/isEmpty'
 import {
   getNftsFromCollectionApi,
@@ -30,12 +31,11 @@ import {
   NftLocation,
   ApiSingleTokenData,
   NftAttribute,
-  NftFilterLoadingState,
   NftFilter,
 } from './types'
 
 const initialNftFilterState: NftFilter = {
-  loadingState: NftFilterLoadingState.IDLE,
+  loadingState: FetchStatus.IDLE,
   activeFilters: {},
   showOnlyOnSale: true,
   ordering: {
@@ -352,11 +352,11 @@ export const NftMarket = createSlice({
     builder.addCase(filterNftsFromCollection.pending, (state, action) => {
       const { collectionAddress } = action.meta.arg
       if (state.data.filters[collectionAddress]) {
-        state.data.filters[collectionAddress].loadingState = NftFilterLoadingState.LOADING
+        state.data.filters[collectionAddress].loadingState = FetchStatus.FETCHING
       } else {
         state.data.filters[collectionAddress] = {
           ...initialNftFilterState,
-          loadingState: NftFilterLoadingState.LOADING,
+          loadingState: FetchStatus.FETCHING,
         }
       }
     })
@@ -365,7 +365,7 @@ export const NftMarket = createSlice({
 
       state.data.filters[collectionAddress] = {
         ...state.data.filters[collectionAddress],
-        loadingState: NftFilterLoadingState.IDLE,
+        loadingState: FetchStatus.IDLE,
         activeFilters: nftFilters,
       }
       state.data.nfts[collectionAddress] = action.payload
@@ -381,11 +381,11 @@ export const NftMarket = createSlice({
     builder.addCase(fetchNftsFromCollections.pending, (state, action) => {
       const { collectionAddress } = action.meta.arg
       if (state.data.filters[collectionAddress]) {
-        state.data.filters[collectionAddress].loadingState = NftFilterLoadingState.LOADING
+        state.data.filters[collectionAddress].loadingState = FetchStatus.FETCHING
       } else {
         state.data.filters[collectionAddress] = {
           ...initialNftFilterState,
-          loadingState: NftFilterLoadingState.LOADING,
+          loadingState: FetchStatus.FETCHING,
         }
       }
     })
@@ -398,7 +398,7 @@ export const NftMarket = createSlice({
 
       state.data.filters[collectionAddress] = {
         ...state.data.filters[collectionAddress],
-        loadingState: NftFilterLoadingState.IDLE,
+        loadingState: FetchStatus.IDLE,
         activeFilters: {},
       }
       state.data.nfts[collectionAddress] = [...existingNftsWithoutNewOnes, ...action.payload]

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import { useFarms, usePriceCakeBusd } from 'state/farms/hooks'
+import { FetchStatus } from 'config/constants/types'
 import { useAppDispatch } from 'state'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from 'state/farms'
 import { getFarmApr } from 'utils/apr'
@@ -8,17 +9,10 @@ import { orderBy } from 'lodash'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { DeserializedFarm } from 'state/types'
 
-enum FetchStatus {
-  NOT_FETCHED = 'not-fetched',
-  FETCHING = 'fetching',
-  SUCCESS = 'success',
-  FAILED = 'failed',
-}
-
 const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
   const { data: farms } = useFarms()
-  const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
+  const [fetchStatus, setFetchStatus] = useState(FetchStatus.INITIAL)
   const [topFarms, setTopFarms] = useState<FarmWithStakedValue[]>([null, null, null, null, null])
   const cakePriceBusd = usePriceCakeBusd()
 
@@ -28,14 +22,14 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
       try {
         await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
-        setFetchStatus(FetchStatus.SUCCESS)
+        setFetchStatus(FetchStatus.FETCHED)
       } catch (e) {
         console.error(e)
         setFetchStatus(FetchStatus.FAILED)
       }
     }
 
-    if (isIntersecting && fetchStatus === FetchStatus.NOT_FETCHED) {
+    if (isIntersecting && fetchStatus === FetchStatus.INITIAL) {
       fetchFarmData()
     }
   }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting])
@@ -65,7 +59,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       setTopFarms(sortedByApr.slice(0, 5))
     }
 
-    if (fetchStatus === FetchStatus.SUCCESS && !topFarms[0]) {
+    if (fetchStatus === FetchStatus.FETCHED && !topFarms[0]) {
       getTopFarmsByApr(farms)
     }
   }, [setTopFarms, farms, fetchStatus, cakePriceBusd, topFarms])

@@ -14,7 +14,8 @@ import {
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
-import { Vote, VotingStateLoadingStatus } from 'state/types'
+import { Vote } from 'state/types'
+import { FetchStatus } from 'config/constants/types'
 import { useGetVotingStateLoadingStatus } from 'state/voting/hooks'
 import { formatNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
@@ -41,7 +42,7 @@ const Results: React.FC<ResultsProps> = ({ choices, votes }) => {
         </Heading>
       </CardHeader>
       <CardBody>
-        {votingStatus === VotingStateLoadingStatus.IDLE &&
+        {votingStatus === FetchStatus.IDLE &&
           choices.map((choice, index) => {
             const choiceVotes = results[choice] || []
             const totalChoiceVote = getTotalFromVotes(choiceVotes)
@@ -75,7 +76,7 @@ const Results: React.FC<ResultsProps> = ({ choices, votes }) => {
             )
           })}
 
-        {votingStatus === VotingStateLoadingStatus.LOADING &&
+        {votingStatus === FetchStatus.FETCHING &&
           times(choices.length).map((count, index) => {
             return (
               <Box key={count} mt={index > 0 ? '24px' : '0px'}>

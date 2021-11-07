@@ -5,8 +5,9 @@ import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import { useAppDispatch } from 'state'
 import { fetchProposals } from 'state/voting'
+import { FetchStatus } from 'config/constants/types'
 import { useGetProposalLoadingStatus, useGetProposals } from 'state/voting/hooks'
-import { ProposalState, ProposalType, VotingStateLoadingStatus } from 'state/types'
+import { ProposalState, ProposalType } from 'state/types'
 import { filterProposalsByState, filterProposalsByType } from '../../helpers'
 import ProposalsLoading from './ProposalsLoading'
 import TabMenu from './TabMenu'
@@ -29,8 +30,8 @@ const Proposals = () => {
   const dispatch = useAppDispatch()
 
   const { proposalType, filterState } = state
-  const isLoading = proposalStatus === VotingStateLoadingStatus.LOADING
-  const isIdle = proposalStatus === VotingStateLoadingStatus.IDLE
+  const isLoading = proposalStatus === FetchStatus.FETCHING
+  const isIdle = proposalStatus === FetchStatus.IDLE
 
   useEffect(() => {
     dispatch(fetchProposals({ first: 1000, state: filterState }))

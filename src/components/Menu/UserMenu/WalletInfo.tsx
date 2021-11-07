@@ -1,7 +1,8 @@
 import React from 'react'
 import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import useTokenBalance, { FetchStatus, useGetBnbBalance } from 'hooks/useTokenBalance'
+import { FetchStatus } from 'config/constants/types'
+import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanLink } from 'utils'
@@ -42,7 +43,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
       )}
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle">{t('BNB Balance')}</Text>
-        {fetchStatus !== FetchStatus.SUCCESS ? (
+        {fetchStatus !== FetchStatus.FETCHED ? (
           <Skeleton height="22px" width="60px" />
         ) : (
           <Text>{formatBigNumber(balance, 6)}</Text>
@@ -50,7 +51,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
         <Text color="textSubtle">{t('CAKE Balance')}</Text>
-        {cakeFetchStatus !== FetchStatus.SUCCESS ? (
+        {cakeFetchStatus !== FetchStatus.FETCHED ? (
           <Skeleton height="22px" width="60px" />
         ) : (
           <Text>{getFullDisplayBalance(cakeBalance, 18, 3)}</Text>

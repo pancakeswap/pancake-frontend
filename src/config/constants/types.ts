@@ -218,3 +218,11 @@ export interface ConnectedBidder {
   isWhitelisted: boolean
   bidderData?: Bidder
 }
+
+export enum FetchStatus {
+  INITIAL = 'INITIAL',
+  IDLE = 'IDLE',
+  FETCHING = 'FETCHING',
+  FETCHED = 'FETCHED',
+  FAILED = 'FAILED',
+}

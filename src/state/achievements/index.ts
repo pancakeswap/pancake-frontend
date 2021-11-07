@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AchievementState, Achievement, AchievementFetchStatus } from '../types'
+import { FetchStatus } from 'config/constants/types'
+import { AchievementState, Achievement } from '../types'
 import { getAchievements } from './helpers'
 
 const initialState: AchievementState = {
   achievements: [],
-  achievementFetchStatus: AchievementFetchStatus.NOT_FETCHED,
+  achievementFetchStatus: FetchStatus.INITIAL,
 }
 
 export const fetchAchievements = createAsyncThunk<Achievement[], string>(
@@ -24,19 +25,19 @@ export const achievementSlice = createSlice({
     },
     clearAchievements: (state) => {
       state.achievements = []
-      state.achievementFetchStatus = AchievementFetchStatus.NOT_FETCHED
+      state.achievementFetchStatus = FetchStatus.INITIAL
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAchievements.pending, (state) => {
-      state.achievementFetchStatus = AchievementFetchStatus.FETCHING
+      state.achievementFetchStatus = FetchStatus.FETCHING
     })
     builder.addCase(fetchAchievements.fulfilled, (state, action) => {
-      state.achievementFetchStatus = AchievementFetchStatus.FETCHED
+      state.achievementFetchStatus = FetchStatus.FETCHED
       state.achievements = action.payload
     })
     builder.addCase(fetchAchievements.rejected, (state) => {
-      state.achievementFetchStatus = AchievementFetchStatus.ERROR
+      state.achievementFetchStatus = FetchStatus.FAILED
     })
   },
 })

@@ -12,6 +12,7 @@ import {
   Team,
   TranslatableText,
   DeserializedFarmConfig,
+  FetchStatus,
 } from 'config/constants/types'
 import { NftToken, State as NftMarketState } from './nftMarket/types'
 
@@ -148,12 +149,6 @@ export interface PoolsState {
   userDataLoaded: boolean
 }
 
-export enum ProfileAvatarFetchStatus {
-  NOT_FETCHED = 'not-fetched',
-  FETCHING = 'fetching',
-  FETCHED = 'fetched',
-}
-
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean
@@ -164,8 +159,8 @@ export interface ProfileState {
       username: string
       nft: NftToken
       hasRegistered: boolean
-      usernameFetchStatus: ProfileAvatarFetchStatus
-      avatarFetchStatus: ProfileAvatarFetchStatus
+      usernameFetchStatus: FetchStatus
+      avatarFetchStatus: FetchStatus
     }
   }
 }
@@ -198,16 +193,9 @@ export interface Achievement {
   points: number
 }
 
-export enum AchievementFetchStatus {
-  ERROR = 'error',
-  NOT_FETCHED = 'not-fetched',
-  FETCHING = 'fetching',
-  FETCHED = 'fetched',
-}
-
 export interface AchievementState {
   achievements: Achievement[]
-  achievementFetchStatus: AchievementFetchStatus
+  achievementFetchStatus: FetchStatus
 }
 
 // Block
@@ -362,12 +350,6 @@ export interface NodeRound {
   lockOracleId: string
 }
 
-export enum LeaderboardLoadingState {
-  INITIAL,
-  LOADING,
-  IDLE,
-}
-
 export type LeaderboardFilterTimePeriod = '1d' | '7d' | '1m' | 'all'
 
 export interface LeaderboardFilter {
@@ -399,7 +381,7 @@ export interface PredictionsState {
   }
   leaderboard: {
     selectedAddress: string
-    loadingState: LeaderboardLoadingState
+    loadingState: FetchStatus
     filters: LeaderboardFilter
     skip: number
     hasMoreResults: boolean
@@ -476,19 +458,12 @@ export interface Vote {
   _inValid?: boolean
 }
 
-export enum VotingStateLoadingStatus {
-  INITIAL = 'initial',
-  IDLE = 'idle',
-  LOADING = 'loading',
-  ERROR = 'error',
-}
-
 export interface VotingState {
-  proposalLoadingStatus: VotingStateLoadingStatus
+  proposalLoadingStatus: FetchStatus
   proposals: {
     [key: string]: Proposal
   }
-  voteLoadingStatus: VotingStateLoadingStatus
+  voteLoadingStatus: FetchStatus
   votes: {
     [key: string]: Vote[]
   }

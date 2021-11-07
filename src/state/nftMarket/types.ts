@@ -1,5 +1,5 @@
 import { BigNumberish } from 'ethers'
-
+import { FetchStatus } from 'config/constants/types'
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
 
@@ -15,11 +15,6 @@ export enum UserNftInitializationState {
   INITIALIZING = 'INITIALIZING',
   INITIALIZED = 'INITIALIZED',
   ERROR = 'ERROR',
-}
-
-export enum NftFilterLoadingState {
-  IDLE = 'IDLE',
-  LOADING = 'LOADING',
 }
 
 export interface State {
@@ -119,7 +114,7 @@ export interface NftToken {
 }
 
 export interface NftFilter {
-  loadingState: NftFilterLoadingState
+  loadingState: FetchStatus
   activeFilters: Record<string, NftAttribute>
   showOnlyOnSale: boolean
   ordering: {

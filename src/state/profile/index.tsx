@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ProfileState, ProfileAvatarFetchStatus, Profile } from 'state/types'
+import { ProfileState, Profile } from 'state/types'
+import { FetchStatus } from 'config/constants/types'
 import { NftToken } from 'state/nftMarket/types'
 import { getProfile, getProfileAvatar, getUsername } from './helpers'
 
@@ -71,7 +72,7 @@ export const profileSlice = createSlice({
       if (state.profileAvatars[account]) {
         state.profileAvatars[account] = {
           ...state.profileAvatars[account],
-          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHING,
+          usernameFetchStatus: FetchStatus.FETCHING,
         }
       } else {
         state.profileAvatars[account] = {
@@ -80,8 +81,8 @@ export const profileSlice = createSlice({
           nft: null,
           // I think in theory this else should never be reached since we only check for username after we checked for profile/avatar
           // just in case I set isFetchingAvatar will be ProfileAvatarFetchStatus.FETCHED at this point to avoid refetching
-          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHING,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          usernameFetchStatus: FetchStatus.FETCHING,
+          avatarFetchStatus: FetchStatus.FETCHED,
         }
       }
     })
@@ -92,17 +93,17 @@ export const profileSlice = createSlice({
         state.profileAvatars[account] = {
           ...state.profileAvatars[account],
           username,
-          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          usernameFetchStatus: FetchStatus.FETCHED,
         }
       } else {
         state.profileAvatars[account] = {
           username,
           nft: null,
           hasRegistered: true,
-          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          usernameFetchStatus: FetchStatus.FETCHED,
           // I think in theory this else should never be reached since we only check for username after we checked for profile/avatar
           // just in case I set isFetchingAvatar will be ProfileAvatarFetchStatus.FETCHED at this point to avoid refetching
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          avatarFetchStatus: FetchStatus.FETCHED,
         }
       }
     })
@@ -112,15 +113,15 @@ export const profileSlice = createSlice({
         state.profileAvatars[account] = {
           ...state.profileAvatars[account],
           username: '',
-          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          usernameFetchStatus: FetchStatus.FETCHED,
         }
       } else {
         state.profileAvatars[account] = {
           hasRegistered: false,
           username: '',
           nft: null,
-          usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          usernameFetchStatus: FetchStatus.FETCHED,
+          avatarFetchStatus: FetchStatus.FETCHED,
         }
       }
     })
@@ -130,15 +131,15 @@ export const profileSlice = createSlice({
         state.profileAvatars[account] = {
           ...state.profileAvatars[account],
           hasRegistered: false,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHING,
+          avatarFetchStatus: FetchStatus.FETCHING,
         }
       } else {
         state.profileAvatars[account] = {
           username: null,
           nft: null,
           hasRegistered: false,
-          usernameFetchStatus: ProfileAvatarFetchStatus.NOT_FETCHED,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHING,
+          usernameFetchStatus: FetchStatus.INITIAL,
+          avatarFetchStatus: FetchStatus.FETCHING,
         }
       }
     })
@@ -150,15 +151,15 @@ export const profileSlice = createSlice({
           ...state.profileAvatars[account],
           nft,
           hasRegistered,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          avatarFetchStatus: FetchStatus.FETCHED,
         }
       } else {
         state.profileAvatars[account] = {
           username: null,
           nft,
           hasRegistered,
-          usernameFetchStatus: ProfileAvatarFetchStatus.NOT_FETCHED,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          usernameFetchStatus: FetchStatus.INITIAL,
+          avatarFetchStatus: FetchStatus.FETCHED,
         }
       }
     })
@@ -170,15 +171,15 @@ export const profileSlice = createSlice({
           ...state.profileAvatars[account],
           nft: null,
           hasRegistered: false,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          avatarFetchStatus: FetchStatus.FETCHED,
         }
       } else {
         state.profileAvatars[account] = {
           username: null,
           nft: null,
           hasRegistered: false,
-          usernameFetchStatus: ProfileAvatarFetchStatus.NOT_FETCHED,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
+          usernameFetchStatus: FetchStatus.INITIAL,
+          avatarFetchStatus: FetchStatus.FETCHED,
         }
       }
     })

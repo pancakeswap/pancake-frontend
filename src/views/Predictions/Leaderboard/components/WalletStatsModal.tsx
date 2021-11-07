@@ -20,7 +20,7 @@ import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
-import { LeaderboardLoadingState } from 'state/types'
+import { FetchStatus } from 'config/constants/types'
 import {
   useGetOrFetchLeaderboardAddressResult,
   useGetLeaderboardLoadingState,
@@ -52,7 +52,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
   const result = useGetOrFetchLeaderboardAddressResult(address)
   const profileAvatar = useGetProfileAvatar(address)
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
-  const isLoading = leaderboardLoadingState === LeaderboardLoadingState.LOADING
+  const isLoading = leaderboardLoadingState === FetchStatus.FETCHING
   const { isDesktop } = useMatchBreakpoints()
 
   const handleDismiss = () => {

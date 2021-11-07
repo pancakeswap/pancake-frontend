@@ -3,9 +3,10 @@ import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
+import { FetchStatus } from 'config/constants/types'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { getAchievements } from 'state/achievements/helpers'
-import { State, ProfileState, Achievement, ProfileAvatarFetchStatus } from '../types'
+import { State, ProfileState, Achievement } from '../types'
 import { fetchProfile, fetchProfileAvatar, fetchProfileUsername } from '.'
 import { getProfile, GetProfileResponse } from './helpers'
 
@@ -96,14 +97,14 @@ export const useGetProfileAvatar = (account: string) => {
   useEffect(() => {
     const address = isAddress(account)
 
-    if (!nft && avatarFetchStatus !== ProfileAvatarFetchStatus.FETCHED && address) {
+    if (!nft && avatarFetchStatus !== FetchStatus.FETCHED && address) {
       dispatch(fetchProfileAvatar(account))
     }
 
     if (
       !username &&
-      avatarFetchStatus === ProfileAvatarFetchStatus.FETCHED &&
-      usernameFetchStatus !== ProfileAvatarFetchStatus.FETCHED &&
+      avatarFetchStatus === FetchStatus.FETCHED &&
+      usernameFetchStatus !== FetchStatus.FETCHED &&
       address
     ) {
       dispatch(fetchProfileUsername({ account, hasRegistered }))

@@ -19,7 +19,7 @@ import { useAppDispatch } from 'state'
 import { filterNftsFromCollection } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
 import { useGetNftFilterLoadingState, useGetNftFilters } from 'state/nftMarket/hooks'
-import { NftFilterLoadingState } from 'state/nftMarket/types'
+import { FetchStatus } from 'config/constants/types'
 import { FilterButton, ItemRow, SearchWrapper } from './styles'
 import { Item } from './types'
 
@@ -145,7 +145,7 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
               onClick={handleMenuClick}
               variant={isTraitSelected ? 'subtle' : 'light'}
               scale="sm"
-              disabled={nftFilterState === NftFilterLoadingState.LOADING}
+              disabled={nftFilterState === FetchStatus.FETCHING}
               hasItem={isTraitSelected}
             >
               {title}
@@ -211,7 +211,7 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
           variant={isTraitSelected ? 'subtle' : 'light'}
           scale="sm"
           onClick={handleClearItem}
-          disabled={nftFilterState === NftFilterLoadingState.LOADING}
+          disabled={nftFilterState === FetchStatus.FETCHING}
         >
           <CloseIcon color="currentColor" width="18px" />
         </CloseButton>
