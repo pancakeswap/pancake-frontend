@@ -219,6 +219,8 @@ export interface ConnectedBidder {
   bidderData?: Bidder
 }
 
+// FetchStatus standard enum
+
 export enum FetchStatus {
   INITIAL = 'INITIAL',
   IDLE = 'IDLE',
