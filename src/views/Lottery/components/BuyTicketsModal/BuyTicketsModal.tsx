@@ -14,6 +14,7 @@ import {
   Button,
   ArrowForwardIcon,
 } from '@pancakeswap/uikit'
+import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
