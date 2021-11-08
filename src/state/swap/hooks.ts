@@ -11,6 +11,7 @@ import useParsedQueryString from 'hooks/useParsedQueryString'
 import { useTranslation } from 'contexts/Localization'
 import { isAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/prices'
+import getLpAddress from 'utils/getLpAddress'
 import { AppDispatch, AppState } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import {
@@ -27,7 +28,6 @@ import { useUserSlippageTolerance } from '../user/hooks'
 import fetchPairHourData from './fetch/pairHourDatas'
 import { normalizeFetchPairDayData, normalizeFetchPairHourData, normalizePairDataByActiveToken } from './normalizers'
 import { PairDataTimeWindowEnum } from './types'
-import fetchPairId from './fetch/pairId'
 import fetchPairDayData from './fetch/pairDayDatas'
 import { pairByDataIdSelector } from './selectors'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
@@ -309,7 +309,7 @@ type useFetchPairPricesParams = {
 }
 
 export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }: useFetchPairPricesParams) => {
-  const [pairId, setPairId] = useState()
+  const [pairId, setPairId] = useState(null)
   const [tokensPair, setTokensPair] = useState([])
   const pairData = useSelector(pairByDataIdSelector({ pairId, timeWindow }))
   const dispatch = useDispatch()
@@ -337,14 +337,14 @@ export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }:
   }, [pairId, timeWindow, dispatch])
 
   useEffect(() => {
-    const fetchAndUpdatePairId = async () => {
-      const { data } = await fetchPairId(token0Address, token1Address)
+    const fetchAndUpdatePairId = () => {
+      const pairAddress = getLpAddress(token0Address, token1Address)?.toLowerCase()
       const isNewTokenPair = !tokensPair.includes(token0Address) || !tokensPair.includes(token1Address)
       if (isNewTokenPair) {
-        if (data?.pairs.length > 0 && data.pairs[0].id !== pairId) {
-          setPairId(data.pairs[0].id)
+        if (pairAddress !== pairId) {
+          setPairId(pairAddress)
           setTokensPair([token0Address, token1Address])
-        } else if (data?.pairs.length === 0 && pairId !== null) {
+        } else if (!pairAddress && pairId !== null) {
           setPairId(null)
           setTokensPair([token0Address, token1Address])
         }

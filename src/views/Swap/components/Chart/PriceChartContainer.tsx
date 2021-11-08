@@ -1,7 +1,7 @@
 import { Currency } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useState } from 'react'
-import { useFetchPairPrices, useSwapActionHandlers } from 'state/swap/hooks'
+import { useFetchPairPrices } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 import PriceChart from './PriceChart'
 import { getTokenAddress } from './utils'
