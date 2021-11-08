@@ -83,7 +83,7 @@ const TransferStage: React.FC<TransferStageProps> = ({
           <ErrorIcon width={24} height={24} color="textSubtle" />
         </Flex>
         <Text small color="textSubtle">
-          {t('This action will send your wallet to the address you have indicated above. Make sure it’s the correct')}
+          {t('This action will send your NFT to the address you have indicated above. Make sure it’s the correct')}
         </Text>
       </Grid>
       <Divider />
