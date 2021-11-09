@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-11-05T11:57:51.679Z",
+  "timestamp": "2021-11-09T10:14:26.820Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 37
+    "patch": 38
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -699,6 +699,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xA7f552078dcC247C2684336020c03648500C6d9F.png"
+    },
+    {
+      "name": "CryptoMines Eternal",
+      "symbol": "ETERNAL",
+      "address": "0xD44FD09d74cd13838F137B590497595d6b3FEeA4",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xD44FD09d74cd13838F137B590497595d6b3FEeA4.png"
     },
     {
       "name": "Binance Pegged ETH",
