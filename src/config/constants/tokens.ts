@@ -1741,6 +1741,14 @@ export const mainnetTokens = {
     'X World Games',
     'https://xwg.games/',
   ),
+  eternal: new Token(
+    MAINNET,
+    '0xD44FD09d74cd13838F137B590497595d6b3FEeA4',
+    18,
+    'ETERNAL',
+    'CryptoMines Eternal',
+    'https://cryptomines.app/',
+  ),
 }
 
 export const testnetTokens = {
