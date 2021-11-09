@@ -103,11 +103,7 @@ export const setLotteryIsTransitioning = createAsyncThunk<{ isTransitioning: boo
 export const LotterySlice = createSlice({
   name: 'Lottery',
   initialState,
-  reducers: {
-    setLotteryPublicData: (state, action) => {
-      state = action.payload
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCurrentLottery.fulfilled, (state, action: PayloadAction<LotteryResponse>) => {
       state.currentRound = { ...state.currentRound, ...action.payload }
@@ -142,8 +138,5 @@ export const LotterySlice = createSlice({
     )
   },
 })
-
-// Actions
-export const { setLotteryPublicData } = LotterySlice.actions
 
 export default LotterySlice.reducer
