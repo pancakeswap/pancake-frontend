@@ -16,5 +16,4 @@ export enum PairDataTimeWindowEnum {
   WEEK,
   MONTH,
   YEAR,
-  ALL_TIME,
 }

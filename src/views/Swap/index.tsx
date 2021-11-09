@@ -313,7 +313,7 @@ export default function Swap({ history }: RouteComponentProps) {
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
-      <Flex width="100%" mb="60px" justifyContent="center">
+      <Flex width="100%" mb="60px" justifyContent="center" position="relative">
         <PriceChartContainer
           inputCurrencyId={inputCurrencyId}
           inputCurrency={currencies[Field.INPUT]}

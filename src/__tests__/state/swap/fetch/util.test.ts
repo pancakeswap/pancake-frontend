@@ -1,4 +1,4 @@
-import { getIdsByTimeWindow, getPairSequentialId } from 'state/swap/fetch/utils'
+import { getIdsByTimeWindow, getPairSequentialId, getHoursForWeeklyQuery } from 'state/swap/fetch/utils'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 
 describe('getPairSequentialId', () => {
@@ -96,26 +96,6 @@ describe('getIdsByTimeWindow', () => {
       '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-451480',
       '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-451465',
       '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-451450',
-    ]
-
-    // When
-    const response = getIdsByTimeWindow({ idsCount, pairAddress, pairLastId, timeWindow })
-
-    // Then
-    expect(response).toEqual(expctedResult)
-  })
-
-  it('should return 4 ids for all time window', () => {
-    // Given
-    const pairAddress = '0x00000cd505955c2aaefd16fc37a3fed35fd7b343'
-    const pairLastId = '100'
-    const timeWindow = PairDataTimeWindowEnum.ALL_TIME
-    const idsCount = 4
-    const expctedResult = [
-      '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-100',
-      '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-75',
-      '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-50',
-      '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-25',
     ]
 
     // When

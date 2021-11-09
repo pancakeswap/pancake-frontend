@@ -3,6 +3,7 @@ import useTheme from 'hooks/useTheme'
 import React, { useCallback, useState } from 'react'
 import { useFetchPairPrices } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
+import NoChartAvailable from './NoChartAvailable'
 import PriceChart from './PriceChart'
 import { getTokenAddress } from './utils'
 
@@ -39,23 +40,38 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
     timeWindow,
   })
   const { isDark } = useTheme()
-  const showPriceChart = (!pairPrices || pairPrices.length > 0) && pairId !== null && isChartDisplayed
 
-  return (
-    showPriceChart && (
-      <PriceChart
-        lineChartData={pairPrices}
-        timeWindow={timeWindow}
-        setTimeWindow={setTimeWindow}
-        inputCurrency={isPairReversed ? outputCurrency : inputCurrency}
-        outputCurrency={isPairReversed ? inputCurrency : outputCurrency}
-        onSwitchTokens={togglePairReversed}
+  if (!isChartDisplayed) {
+    return null
+  }
+
+  // If results did came back but as empty array - there is no data to display
+  if (!!pairPrices && pairPrices.length === 0) {
+    return (
+      <NoChartAvailable
         isDark={isDark}
         isChartExpanded={isChartExpanded}
-        setIsChartExpanded={setIsChartExpanded}
         isHiddenOnMobile={isHiddenOnMobile}
+        token0Address={token0Address}
+        token1Address={token1Address}
+        pairAddress={pairId}
       />
     )
+  }
+
+  return (
+    <PriceChart
+      lineChartData={pairPrices}
+      timeWindow={timeWindow}
+      setTimeWindow={setTimeWindow}
+      inputCurrency={isPairReversed ? outputCurrency : inputCurrency}
+      outputCurrency={isPairReversed ? inputCurrency : outputCurrency}
+      onSwitchTokens={togglePairReversed}
+      isDark={isDark}
+      isChartExpanded={isChartExpanded}
+      setIsChartExpanded={setIsChartExpanded}
+      isHiddenOnMobile={isHiddenOnMobile}
+    />
   )
 }
 

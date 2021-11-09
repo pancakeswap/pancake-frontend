@@ -30,15 +30,15 @@ const LabelRow = styled.div`
   line-height: 1rem;
   padding: 0.75rem 1rem 0 1rem;
 `
-const InputPanel = styled.div<{ hideInput?: boolean }>`
+const InputPanel = styled.div`
   display: flex;
   flex-flow: column nowrap;
   position: relative;
-  border-radius: ${({ hideInput }) => (hideInput ? '8px' : '20px')};
+  border-radius: '20px';
   background-color: ${({ theme }) => theme.colors.background};
   z-index: 1;
 `
-const Container = styled.div<{ hideInput: boolean }>`
+const Container = styled.div`
   border-radius: 16px;
   background-color: ${({ theme }) => theme.colors.input};
   box-shadow: ${({ theme }) => theme.shadows.inset};
@@ -54,7 +54,6 @@ interface CurrencyInputPanelProps {
   disableCurrencySelect?: boolean
   hideBalance?: boolean
   pair?: Pair | null
-  hideInput?: boolean
   otherCurrency?: Currency | null
   id: string
   showCommonBases?: boolean
@@ -70,7 +69,6 @@ export default function CurrencyInputPanel({
   disableCurrencySelect = false,
   hideBalance = false,
   pair = null, // used for double token logo
-  hideInput = false,
   otherCurrency,
   id,
   showCommonBases,
@@ -92,7 +90,6 @@ export default function CurrencyInputPanel({
       <Flex mb="6px" alignItems="center" justifyContent="space-between">
         <CurrencySelectButton
           selected={!!currency}
-          className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
               onPresentCurrencyModal()
@@ -131,29 +128,25 @@ export default function CurrencyInputPanel({
         )}
       </Flex>
       <InputPanel id={id}>
-        <Container hideInput={hideInput}>
-          {!hideInput && (
-            <LabelRow>
-              <RowBetween>
-                <NumericalInput
-                  className="token-amount-input"
-                  value={value}
-                  onUserInput={(val) => {
-                    onUserInput(val)
-                  }}
-                />
-              </RowBetween>
-            </LabelRow>
-          )}
-          {!hideInput && (
-            <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
-              {account && currency && showMaxButton && label !== 'To' && (
-                <Button onClick={onMax} scale="xs" variant="secondary">
-                  MAX
-                </Button>
-              )}
-            </InputRow>
-          )}
+        <Container>
+          <LabelRow>
+            <RowBetween>
+              <NumericalInput
+                className="token-amount-input"
+                value={value}
+                onUserInput={(val) => {
+                  onUserInput(val)
+                }}
+              />
+            </RowBetween>
+          </LabelRow>
+          <InputRow selected={disableCurrencySelect}>
+            {account && currency && showMaxButton && label !== 'To' && (
+              <Button onClick={onMax} scale="xs" variant="secondary">
+                MAX
+              </Button>
+            )}
+          </InputRow>
         </Container>
       </InputPanel>
     </Box>

@@ -337,21 +337,18 @@ export const useFetchPairPrices = ({ token0Address, token1Address, timeWindow }:
   }, [pairId, timeWindow, dispatch])
 
   useEffect(() => {
-    const fetchAndUpdatePairId = () => {
+    const updatePairId = () => {
       const pairAddress = getLpAddress(token0Address, token1Address)?.toLowerCase()
       const isNewTokenPair = !tokensPair.includes(token0Address) || !tokensPair.includes(token1Address)
       if (isNewTokenPair) {
         if (pairAddress !== pairId) {
           setPairId(pairAddress)
           setTokensPair([token0Address, token1Address])
-        } else if (!pairAddress && pairId !== null) {
-          setPairId(null)
-          setTokensPair([token0Address, token1Address])
         }
       }
     }
 
-    fetchAndUpdatePairId()
+    updatePairId()
   }, [token0Address, token1Address, pairId, tokensPair])
 
   const normalizedPairData = useMemo(

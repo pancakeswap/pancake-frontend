@@ -35,7 +35,6 @@ const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
   [PairDataTimeWindowEnum.WEEK]: 'dd MMM',
   [PairDataTimeWindowEnum.MONTH]: 'dd MMM',
   [PairDataTimeWindowEnum.YEAR]: 'dd MMM',
-  [PairDataTimeWindowEnum.ALL_TIME]: 'dd MMM yyyy',
 }
 
 /**
