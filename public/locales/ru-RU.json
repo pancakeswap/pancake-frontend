@@ -1615,7 +1615,7 @@
   "Your Squad (%tokens%)": "Ваша Команда (%tokens%)",
   "Minting...": "Идет чеканка…",
   "Not eligible": "Не подходит",
-  "Out of the 10,000 total NFTs in the squad,": "Из общего количества 10 000 NFT в команде",
+  "Out of the 10,000 total NFTs in the squad,": "Из общего количества 10 000 NFT в команде:",
   "You’ll need an active PancakeSwap Profile to buy Minting Tickets and mint a Pancake Squad NFT!": "Вам необходим активный профиль в PancakeSwap, чтобы купить печатаемые билеты и создать Команду Pancake NFT!",
   "The minting period is now over: all 10,000 bunnies have now been minted.": "Период чеканки закончен: все 10 000 зайчиков уже отчеканены.",
   "View the": "Просмотр",
@@ -1745,6 +1745,6 @@
   "Supply Count": "Счет предложения",
   "Brand": "Бренд",
   "Success": "Успех",
-  "Wrap": "Завернуть",
+  "Wrap": "Обернуть",
   "Unwrap": "Развернуть"
 }
