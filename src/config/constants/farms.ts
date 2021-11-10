@@ -41,6 +41,39 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 446,
+    lpSymbol: 'BMON-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x00e53C169dA54a7E11172aEEDf8Eb87F060F479e',
+    },
+    token: serializedTokens.bmon,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
+    pid: 438,
+    lpSymbol: 'WSG-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x37Ff7D4459ad96E0B01275E5efffe091f33c2CAD',
+    },
+    token: serializedTokens.wsg,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 469,
+    lpSymbol: 'ZOO-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xd5D00B0aD40FF6d8C1a6F7e72F185B6fB3c3fd1F',
+    },
+    token: serializedTokens.zoo,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
     pid: 473,
     lpSymbol: 'ETERNAL-BNB LP',
     lpAddresses: {
@@ -100,17 +133,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.xms,
     quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-  },
-  {
-    pid: 469,
-    lpSymbol: 'ZOO-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xd5D00B0aD40FF6d8C1a6F7e72F185B6fB3c3fd1F',
-    },
-    token: serializedTokens.zoo,
-    quoteToken: serializedTokens.busd,
     isCommunity: true,
   },
   {
@@ -225,17 +247,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.beta,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 446,
-    lpSymbol: 'BMON-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x00e53C169dA54a7E11172aEEDf8Eb87F060F479e',
-    },
-    token: serializedTokens.bmon,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
   },
   {
     pid: 458,
@@ -471,17 +482,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0xe267018C943E77992e7e515724B07b9CE7938124',
     },
     token: serializedTokens.hero,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-  },
-  {
-    pid: 438,
-    lpSymbol: 'WSG-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x37Ff7D4459ad96E0B01275E5efffe091f33c2CAD',
-    },
-    token: serializedTokens.wsg,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
   },
