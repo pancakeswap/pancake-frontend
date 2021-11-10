@@ -22,10 +22,6 @@ export const achievementSlice = createSlice({
     addAchievement: (state, action: PayloadAction<Achievement>) => {
       state.achievements.push(action.payload)
     },
-    clearAchievements: (state) => {
-      state.achievements = []
-      state.achievementFetchStatus = AchievementFetchStatus.NOT_FETCHED
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAchievements.pending, (state) => {
@@ -42,6 +38,6 @@ export const achievementSlice = createSlice({
 })
 
 // Actions
-export const { addAchievement, clearAchievements } = achievementSlice.actions
+export const { addAchievement } = achievementSlice.actions
 
 export default achievementSlice.reducer

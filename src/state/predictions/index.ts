@@ -355,9 +355,6 @@ export const predictionsSlice = createSlice({
       state.leaderboard.skip = 0
       state.leaderboard.hasMoreResults = true
     },
-    setPredictionStatus: (state, action: PayloadAction<PredictionStatus>) => {
-      state.status = action.payload
-    },
     setHistoryPaneState: (state, action: PayloadAction<boolean>) => {
       state.isHistoryPaneOpen = action.payload
       state.historyFilter = HistoryFilter.ALL
@@ -367,9 +364,6 @@ export const predictionsSlice = createSlice({
     },
     setHistoryFilter: (state, action: PayloadAction<HistoryFilter>) => {
       state.historyFilter = action.payload
-    },
-    setCurrentEpoch: (state, action: PayloadAction<number>) => {
-      state.currentEpoch = action.payload
     },
     setLastOraclePrice: (state, action: PayloadAction<string>) => {
       state.lastOraclePrice = action.payload
@@ -544,10 +538,8 @@ export const predictionsSlice = createSlice({
 // Actions
 export const {
   setChartPaneState,
-  setCurrentEpoch,
   setHistoryFilter,
   setHistoryPaneState,
-  setPredictionStatus,
   setLastOraclePrice,
   markAsCollected,
   setLeaderboardFilter,
