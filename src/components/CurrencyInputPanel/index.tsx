@@ -35,7 +35,7 @@ const InputPanel = styled.div`
   flex-flow: column nowrap;
   position: relative;
   border-radius: '20px';
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
 const Container = styled.div`

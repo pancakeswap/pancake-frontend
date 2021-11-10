@@ -4,6 +4,7 @@ import {
   ButtonMenuItem,
   ExpandIcon,
   Flex,
+  IconButton,
   ShrinkIcon,
   Skeleton,
   SyncAltIcon,
@@ -15,7 +16,7 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { formatAmount, formatAmountNotation } from 'views/Info/utils/formatInfoNumbers'
 import { useTranslation } from 'contexts/Localization'
 import SwapLineChart from './SwapLineChart'
-import { StyledExpandButton, StyledPriceChart, StyledSwapButton } from './styles'
+import { StyledPriceChart } from './styles'
 import { getTimeWindowChange } from './utils'
 
 const formatOptions = {
@@ -34,7 +35,7 @@ const PriceChart = ({
   isDark,
   isChartExpanded,
   setIsChartExpanded,
-  isHiddenOnMobile,
+  isMobile,
 }) => {
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
@@ -42,13 +43,14 @@ const PriceChart = ({
   const valueToDisplay = hoverValue || lineChartData[lineChartData.length - 1]?.value
   const { changePercentage, changeValue } = getTimeWindowChange(lineChartData)
   const isChangePositive = changeValue >= 0
+  const chartHeight = isChartExpanded ? 'calc(100% - 120px)' : '310px'
   const { t } = useTranslation()
 
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
   return (
-    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} $isHiddenOnMobile={isHiddenOnMobile} p="24px">
-      <Flex justifyContent="space-between">
+    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded}>
+      <Flex justifyContent="space-between" px="24px">
         <Flex alignItems="center">
           {outputCurrency ? (
             <DoubleCurrencyLogo currency0={inputCurrency} currency1={outputCurrency} size={24} margin />
@@ -60,15 +62,15 @@ const PriceChart = ({
               {outputCurrency ? `${inputCurrency.symbol}/${outputCurrency.symbol}` : inputCurrency.symbol}
             </Text>
           )}
-          <StyledSwapButton type="button" onClick={onSwitchTokens}>
+          <IconButton variant="text" onClick={onSwitchTokens}>
             <SyncAltIcon ml="6px" color="primary" />
-          </StyledSwapButton>
+          </IconButton>
         </Flex>
-        {setIsChartExpanded && (
+        {!isMobile && (
           <Flex>
-            <StyledExpandButton type="button" onClick={toggleExpanded}>
+            <IconButton variant="text" onClick={toggleExpanded}>
               {isChartExpanded ? <ShrinkIcon color="text" /> : <ExpandIcon color="text" />}
-            </StyledExpandButton>
+            </IconButton>
           </Flex>
         )}
       </Flex>
@@ -76,6 +78,7 @@ const PriceChart = ({
         flexDirection={['column', null, null, null, null, null, 'row']}
         alignItems={['flex-start', null, null, null, null, null, 'center']}
         justifyContent="space-between"
+        px="24px"
       >
         <Flex flexDirection="column" pt="12px">
           {lineChartData?.length > 0 && valueToDisplay ? (
@@ -106,7 +109,7 @@ const PriceChart = ({
           </ButtonMenu>
         </Box>
       </Flex>
-      <Box height={isChartExpanded ? 'calc(100% - 120px)' : '310px'} width="100%">
+      <Box height={isMobile ? '100%' : chartHeight} width="100%">
         <SwapLineChart
           data={lineChartData}
           setHoverValue={setHoverValue}

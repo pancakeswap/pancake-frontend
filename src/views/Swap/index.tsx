@@ -1,7 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton } from '@pancakeswap/uikit'
+import {
+  Button,
+  Text,
+  ArrowDownIcon,
+  Box,
+  useModal,
+  Flex,
+  IconButton,
+  BottomDrawer,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import Footer from 'components/Menu/Footer'
@@ -55,8 +65,9 @@ const Label = styled(Text)`
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   const [isChartExpanded, setIsChartExpanded] = useState(false)
-  const [isChartDisplayed, setIsChartDisplayed] = useState(true)
+  const [isChartDisplayed, setIsChartDisplayed] = useState(!isMobile)
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -314,14 +325,32 @@ export default function Swap({ history }: RouteComponentProps) {
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width="100%" mb="60px" justifyContent="center" position="relative">
-        <PriceChartContainer
-          inputCurrencyId={inputCurrencyId}
-          inputCurrency={currencies[Field.INPUT]}
-          outputCurrencyId={outputCurrencyId}
-          outputCurrency={currencies[Field.OUTPUT]}
-          isChartExpanded={isChartExpanded}
-          setIsChartExpanded={setIsChartExpanded}
-          isChartDisplayed={isChartDisplayed}
+        {!isMobile && (
+          <PriceChartContainer
+            inputCurrencyId={inputCurrencyId}
+            inputCurrency={currencies[Field.INPUT]}
+            outputCurrencyId={outputCurrencyId}
+            outputCurrency={currencies[Field.OUTPUT]}
+            isChartExpanded={isChartExpanded}
+            setIsChartExpanded={setIsChartExpanded}
+            isChartDisplayed={isChartDisplayed}
+          />
+        )}
+        <BottomDrawer
+          content={
+            <PriceChartContainer
+              inputCurrencyId={inputCurrencyId}
+              inputCurrency={currencies[Field.INPUT]}
+              outputCurrencyId={outputCurrencyId}
+              outputCurrency={currencies[Field.OUTPUT]}
+              isChartExpanded={isChartExpanded}
+              setIsChartExpanded={setIsChartExpanded}
+              isChartDisplayed={isChartDisplayed}
+              isMobile
+            />
+          }
+          isOpen={isChartDisplayed}
+          setIsOpen={setIsChartDisplayed}
         />
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>

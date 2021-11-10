@@ -6,7 +6,6 @@ import { StyledPriceChart } from './styles'
 interface NoChartAvailableProps {
   isDark: boolean
   isChartExpanded: boolean
-  isHiddenOnMobile: boolean
   token0Address: string
   token1Address: string
   pairAddress: string
@@ -15,14 +14,13 @@ interface NoChartAvailableProps {
 const NoChartAvailable: React.FC<NoChartAvailableProps> = ({
   isDark,
   isChartExpanded,
-  isHiddenOnMobile,
   token0Address,
   token1Address,
   pairAddress,
 }) => {
   const { t } = useTranslation()
   return (
-    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} $isHiddenOnMobile={isHiddenOnMobile} p="24px">
+    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} p="24px">
       <Flex justifyContent="center" alignItems="center" height="100%" flexDirection="column">
         <Text>{t('No price chart is available for this pair')}</Text>
         <Text color="textSubtle" small>

@@ -54,7 +54,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate, isChangePositive, timeWi
         data={data}
         margin={{
           top: 5,
-          right: 15,
+          right: 0,
           left: 0,
           bottom: 5,
         }}
