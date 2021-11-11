@@ -9,6 +9,7 @@ interface NoChartAvailableProps {
   token0Address: string
   token1Address: string
   pairAddress: string
+  isMobile: boolean
 }
 
 const NoChartAvailable: React.FC<NoChartAvailableProps> = ({
@@ -17,19 +18,38 @@ const NoChartAvailable: React.FC<NoChartAvailableProps> = ({
   token0Address,
   token1Address,
   pairAddress,
+  isMobile,
 }) => {
   const { t } = useTranslation()
   return (
     <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} p="24px">
       <Flex justifyContent="center" alignItems="center" height="100%" flexDirection="column">
-        <Text>{t('No price chart is available for this pair')}</Text>
-        <Text color="textSubtle" small>
+        <Text mb={['8px', '8px', '0px']}>{t('No price chart is available for this pair')}</Text>
+        <Text
+          textAlign={isMobile ? 'center' : 'left'}
+          mb={['8px', '8px', '0px']}
+          color="textSubtle"
+          small
+          style={isMobile && { wordSpacing: '100vw' }}
+        >
           Token0: {token0Address ?? 'null'}
         </Text>
-        <Text color="textSubtle" small>
+        <Text
+          textAlign={isMobile ? 'center' : 'left'}
+          mb={['8px', '8px', '0px']}
+          color="textSubtle"
+          small
+          style={isMobile && { wordSpacing: '100vw' }}
+        >
           Token1: {token1Address ?? 'null'}
         </Text>
-        <Text color="textSubtle" small>
+        <Text
+          textAlign={isMobile ? 'center' : 'left'}
+          mb={['8px', '8px', '0px']}
+          color="textSubtle"
+          small
+          style={isMobile && { wordSpacing: '100vw' }}
+        >
           Pair: {pairAddress ?? 'null'}
         </Text>
       </Flex>

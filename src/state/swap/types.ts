@@ -6,6 +6,14 @@ export type PairDataNormalized = {
   reserve1: number
 }[]
 
+export type DerivedPairDataNormalized = {
+  time: number
+  token0Id: string
+  token1Id: string
+  token0DerivedBNB: number
+  token1DerivedBNB: number
+}[]
+
 export type PairPricesNormalized = {
   time: Date
   value: number

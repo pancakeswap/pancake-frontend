@@ -45,6 +45,7 @@ import {
   useDerivedSwapInfo,
   useSwapActionHandlers,
   useSwapState,
+  useSingleTokenSwapInfo,
 } from '../../state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance, useUserSingleHopOnly } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -112,6 +113,8 @@ export default function Swap({ history }: RouteComponentProps) {
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
+
+  const singleTokenPrice = useSingleTokenSwapInfo()
 
   const parsedAmounts = showWrap
     ? {
@@ -334,6 +337,7 @@ export default function Swap({ history }: RouteComponentProps) {
             isChartExpanded={isChartExpanded}
             setIsChartExpanded={setIsChartExpanded}
             isChartDisplayed={isChartDisplayed}
+            currentSwapPrice={singleTokenPrice}
           />
         )}
         <BottomDrawer
@@ -346,6 +350,7 @@ export default function Swap({ history }: RouteComponentProps) {
               isChartExpanded={isChartExpanded}
               setIsChartExpanded={setIsChartExpanded}
               isChartDisplayed={isChartDisplayed}
+              currentSwapPrice={singleTokenPrice}
               isMobile
             />
           }

@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
-import { PairDataNormalized, PairDataTimeWindowEnum } from './types'
+import { DerivedPairDataNormalized, PairDataNormalized, PairDataTimeWindowEnum } from './types'
 
 export enum Field {
   INPUT = 'INPUT',
@@ -20,4 +20,8 @@ export const setRecipient = createAction<{ recipient: string | null }>('swap/set
 export const updatePairData =
   createAction<{ pairData: PairDataNormalized; pairId: string; timeWindow: PairDataTimeWindowEnum }>(
     'swap/updatePairData',
+  )
+export const updateDerivedPairData =
+  createAction<{ pairData: DerivedPairDataNormalized; pairId: string; timeWindow: PairDataTimeWindowEnum }>(
+    'swap/updateDerivedPairData',
   )

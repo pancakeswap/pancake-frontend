@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 
-const pairHourDatasByIdsQuery = gql`
-  query pairHourDatasByIdsQuery($pairIds: [String]) {
+const pairHourDatasByIds = gql`
+  query pairHourDatasByIds($pairIds: [String]) {
     pairHourDatas(where: { id_in: $pairIds }, orderBy: hourStartUnix, orderDirection: desc) {
       id
       hourStartUnix
@@ -18,4 +18,4 @@ const pairHourDatasByIdsQuery = gql`
     }
   }
 `
-export default pairHourDatasByIdsQuery
+export default pairHourDatasByIds

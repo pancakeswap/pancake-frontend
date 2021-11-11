@@ -21,9 +21,9 @@ export const getIdsByTimeWindow = ({
   timeWindow,
   idsCount,
 }: getPairHoursIdsByTimeWindowParams) => {
-  const pairLastIdParsed = Number(pairLastId)
+  const pairLastIdAsNumber = Number(pairLastId)
   if (timeWindow === PairDataTimeWindowEnum.DAY) {
     return []
   }
-  return times(idsCount).map((value) => `${pairAddress}-${pairLastIdParsed - value * timeWindowGapMapping[timeWindow]}`)
+  return times(idsCount, (value) => `${pairAddress}-${pairLastIdAsNumber - value * timeWindowGapMapping[timeWindow]}`)
 }

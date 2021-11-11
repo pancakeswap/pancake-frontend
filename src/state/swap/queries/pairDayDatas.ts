@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 
-const lastPairDayDatasQuery = gql`
-  query lastPairDayDatasQuery($pairId: String, $first: Int) {
+const pairDayDatas = gql`
+  query pairDayDatas($pairId: String, $first: Int) {
     pairDayDatas(first: $first, where: { pairAddress: $pairId }, orderBy: date, orderDirection: desc) {
       id
       date
@@ -18,4 +18,4 @@ const lastPairDayDatasQuery = gql`
     }
   }
 `
-export default lastPairDayDatasQuery
+export default pairDayDatas

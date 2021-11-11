@@ -1753,5 +1753,6 @@
   "No bids yet": "No bids yet",
   "Please specify Round": "Please specify Round",
   "1W": "1W",
-  "1M": "1M"
+  "1M": "1M",
+  "No price chart is available for this pair": "No price chart is available for this pair"
 }

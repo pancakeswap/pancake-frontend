@@ -15,6 +15,9 @@ type PriceChartContainerProps = {
   isChartExpanded: boolean
   setIsChartExpanded: React.Dispatch<React.SetStateAction<boolean>>
   isChartDisplayed: boolean
+  currentSwapPrice: {
+    [key: string]: number
+  }
   isMobile?: boolean
 }
 
@@ -26,6 +29,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   isChartExpanded,
   setIsChartExpanded,
   isChartDisplayed,
+  currentSwapPrice,
   isMobile,
 }) => {
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
@@ -38,6 +42,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
     token0Address: isPairReversed ? token1Address : token0Address,
     token1Address: isPairReversed ? token0Address : token1Address,
     timeWindow,
+    currentSwapPrice,
   })
   const { isDark } = useTheme()
 
@@ -54,6 +59,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
         token0Address={token0Address}
         token1Address={token1Address}
         pairAddress={pairId}
+        isMobile={isMobile}
       />
     )
   }

@@ -1,4 +1,6 @@
-import { getIdsByTimeWindow, getPairSequentialId, getHoursForWeeklyQuery } from 'state/swap/fetch/utils'
+import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
+import { fromUnixTime } from 'date-fns'
+import { getIdsByTimeWindow, getPairSequentialId, getQueryTimestamps } from 'state/swap/fetch/utils'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 
 describe('getPairSequentialId', () => {

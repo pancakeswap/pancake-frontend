@@ -100,7 +100,7 @@ const PriceChart = ({
             {hoverDate || currentDate}
           </Text>
         </Flex>
-        <Box mr="40px">
+        <Box>
           <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
             <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
@@ -109,7 +109,7 @@ const PriceChart = ({
           </ButtonMenu>
         </Box>
       </Flex>
-      <Box height={isMobile ? '100%' : chartHeight} width="100%">
+      <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px'} width="100%">
         <SwapLineChart
           data={lineChartData}
           setHoverValue={setHoverValue}
