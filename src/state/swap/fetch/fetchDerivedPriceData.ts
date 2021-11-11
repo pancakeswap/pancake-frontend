@@ -91,15 +91,6 @@ const fetchDerivedPriceData = async (
     time += interval
   }
 
-  console.log({
-    timeWindow,
-    interval,
-    endTimestamp,
-    startTimestamp,
-    skipdays: getSkipDaysToStart(timeWindow),
-    timestamps,
-  })
-
   try {
     const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500)
     if (!blocks || blocks.length === 0) {
