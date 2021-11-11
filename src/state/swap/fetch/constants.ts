@@ -1,3 +1,4 @@
+import { INFO_CLIENT } from 'config/constants/endpoints'
 import { PairDataTimeWindowEnum } from '../types'
 
 // Specifies the amount of data points to query for specific time window
@@ -16,10 +17,12 @@ export const timeWindowGapMapping: Record<PairDataTimeWindowEnum, number | null>
   [PairDataTimeWindowEnum.YEAR]: 15, // Each datapoint 15 days apart
 }
 
-// Needed on dev environment
-export const getHeaders = () => {
-  if (process.env.NODE_ENV !== 'production') {
+// Extra headers
+// Mostly for dev environment
+// No production env check since production preview might also need them
+export const getHeaders = (endpoint: string) => {
+  if (endpoint === INFO_CLIENT) {
     return { 'X-Sf': process.env.REACT_APP_SF_HEADER }
   }
-  return {}
+  return undefined
 }

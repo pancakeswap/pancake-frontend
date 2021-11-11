@@ -50,8 +50,17 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
     return null
   }
 
+  // Sometimes we might receive array full of zeros for obscure tokens while trying to derive data
+  // In that case chart is not useful to users
+  const isBadData =
+    pairPrices &&
+    pairPrices.length > 0 &&
+    pairPrices.every(
+      (price) => !price.value || price.value === 0 || price.value === Infinity || Number.isNaN(price.value),
+    )
+
   // If results did came back but as empty array - there is no data to display
-  if (!!pairPrices && pairPrices.length === 0) {
+  if ((!!pairPrices && pairPrices.length === 0) || isBadData) {
     return (
       <NoChartAvailable
         isDark={isDark}

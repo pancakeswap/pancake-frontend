@@ -379,6 +379,7 @@ export const useFetchPairPrices = ({
         dispatch(updateDerivedPairData({ pairData: [], pairId, timeWindow }))
       }
     }
+
     const fetchAndUpdatePairPrice = async () => {
       const { data } = await fetchPairPriceData({ pairId, timeWindow })
       if (data) {

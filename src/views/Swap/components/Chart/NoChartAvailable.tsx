@@ -24,7 +24,7 @@ const NoChartAvailable: React.FC<NoChartAvailableProps> = ({
   return (
     <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded} p="24px">
       <Flex justifyContent="center" alignItems="center" height="100%" flexDirection="column">
-        <Text mb={['8px', '8px', '0px']}>{t('No price chart is available for this pair')}</Text>
+        <Text mb={['8px', '8px', '0px']}>{t('Failed to load price chart for this pair')}</Text>
         <Text
           textAlign={isMobile ? 'center' : 'left'}
           mb={['8px', '8px', '0px']}
