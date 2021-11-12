@@ -38,6 +38,7 @@ import { PairDataTimeWindowEnum } from './types'
 import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
+import { pairHasEnoughLiquidity } from './fetch/utils'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -383,14 +384,20 @@ export const useFetchPairPrices = ({
     const fetchAndUpdatePairPrice = async () => {
       const { data } = await fetchPairPriceData({ pairId, timeWindow })
       if (data) {
+        // Find out if Liquidity Pool has enough liquidity
+        // low liquidity pool might mean that the price is incorrect
+        // in that case try to get derived price
+        const hasEnoughLiquidity = pairHasEnoughLiquidity(data, timeWindow)
         const newPairData = normalizeChartData(data, timeWindow) || []
-        if (newPairData.length > 0) {
+        if (newPairData.length > 0 && hasEnoughLiquidity) {
           dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
         } else {
+          console.info(`[Price Chart]: Liquidity too low for ${pairId}`)
           dispatch(updatePairData({ pairData: [], pairId, timeWindow }))
           fetchDerivedData()
         }
       } else {
+        dispatch(updatePairData({ pairData: [], pairId, timeWindow }))
         fetchDerivedData()
       }
     }

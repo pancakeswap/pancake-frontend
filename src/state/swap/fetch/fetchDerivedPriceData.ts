@@ -95,9 +95,7 @@ const fetchDerivedPriceData = async (
     const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500)
     if (!blocks || blocks.length === 0) {
       console.error('Error fetching blocks for timestamps', timestamps)
-      return {
-        error: false,
-      }
+      return null
     }
 
     const token0DerivedBnb = await getTokenDerivedBnbPrices(token0Address, blocks)

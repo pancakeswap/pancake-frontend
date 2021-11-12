@@ -7,6 +7,7 @@ const pairDayDatasByIdsQuery = gql`
       date
       reserve0
       reserve1
+      reserveUSD
       pairAddress {
         token0 {
           id

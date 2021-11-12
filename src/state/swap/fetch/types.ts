@@ -23,6 +23,7 @@ export type PairHoursDatasResponse = {
     hourStartUnix: number
     reserve0: string
     reserve1: string
+    reserveUSD: string
     pair: {
       token0: {
         id: string
@@ -40,6 +41,7 @@ export type PairDayDatasResponse = {
     date: number
     reserve0: string
     reserve1: string
+    reserveUSD: string
     pairAddress: {
       token0: {
         id: string

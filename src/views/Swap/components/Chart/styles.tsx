@@ -7,7 +7,7 @@ export const StyledPriceChart = styled(Box)<{ $isDark: boolean; $isExpanded: boo
   width: 100%;
   height: 70%;
   padding-top: 36px;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     padding-top: 8px;
     background: ${({ $isDark }) => ($isDark ? 'rgba(39, 38, 44, 0.5)' : 'rgba(255, 255, 255, 0.5)')};
     border: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};

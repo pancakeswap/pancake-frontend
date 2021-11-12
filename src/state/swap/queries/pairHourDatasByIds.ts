@@ -7,6 +7,7 @@ const pairHourDatasByIds = gql`
       hourStartUnix
       reserve0
       reserve1
+      reserveUSD
       pair {
         token0 {
           id

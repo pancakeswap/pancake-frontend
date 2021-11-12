@@ -35,7 +35,7 @@ export const normalizeDerivedChartData = (data: any) => {
     return []
   }
   return data?.token0DerivedBnb.reduce((acc, token0DerivedBnbEntry) => {
-    const token1DerivedBnbEntry = data.token1DerivedBnb.find(
+    const token1DerivedBnbEntry = data?.token1DerivedBnb?.find(
       (entry) => entry.timestamp === token0DerivedBnbEntry.timestamp,
     )
     if (!token1DerivedBnbEntry) {
