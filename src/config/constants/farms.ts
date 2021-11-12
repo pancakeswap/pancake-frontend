@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 425,
+    lpSymbol: 'DVI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x89ebf9cd99864f6e51bd7a578965922029cab977',
+    },
+    token: serializedTokens.dvi,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 351,
     lpSymbol: 'JGN-BNB LP',
     lpAddresses: {
@@ -297,17 +307,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0x3747e3e107223539FD09bb730b055A1f11F78Adf',
     },
     token: serializedTokens.gnt,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-  },
-  {
-    pid: 425,
-    lpSymbol: 'DVI-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x89ebf9cd99864f6e51bd7a578965922029cab977',
-    },
-    token: serializedTokens.dvi,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
   },
