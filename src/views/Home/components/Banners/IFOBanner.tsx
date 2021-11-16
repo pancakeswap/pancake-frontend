@@ -99,14 +99,14 @@ const IFOBanner = () => {
           <Link to="/ifo">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
-                Go to IFO
+                {t('Go to IFO')}
               </Text>
               <ArrowForwardIcon color="invertedContrast" />
             </Button>
           </Link>
         </LeftWrapper>
         <RightWrapper>
-          <img src="/images/decorations/3d-ifo-porto.png" alt={t('auction bunny')} />
+          <img src="/images/decorations/3d-ifo-porto.png" alt="IFO PORTO" />
         </RightWrapper>
       </Inner>
     </Wrapper>
