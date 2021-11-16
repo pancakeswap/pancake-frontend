@@ -10,7 +10,7 @@ import { SubMenuItems } from "../../components/SubMenuItems";
 import { useMatchBreakpoints } from "../../hooks";
 import CakePrice from "../../components/CakePrice/CakePrice";
 import Logo from "./components/Logo";
-import { MENU_HEIGHT, MOBILE_MENU_HEIGHT } from "./config";
+import { MENU_HEIGHT, MOBILE_MENU_HEIGHT, TOP_BANNER_HEIGHT, TOP_BANNER_HEIGHT_MOBILE } from "./config";
 import { NavProps } from "./types";
 import LangSelector from "../../components/LangSelector/LangSelector";
 
@@ -19,11 +19,7 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const StyledNav = styled.nav<{ showMenu: boolean }>`
-  position: fixed;
-  top: ${({ showMenu }) => (showMenu ? 0 : `-${MENU_HEIGHT}px`)};
-  left: 0;
-  transition: top 0.2s;
+const StyledNav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -31,11 +27,27 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   height: ${MENU_HEIGHT}px;
   background-color: ${({ theme }) => theme.nav.background};
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  z-index: 20;
   transform: translate3d(0, 0, 0);
 
   padding-left: 16px;
   padding-right: 16px;
+`;
+
+const FixedContainer = styled.div<{ showMenu: boolean; height: number }>`
+  position: fixed;
+  top: ${({ showMenu, height }) => (showMenu ? 0 : `-${height}px`)};
+  left: 0;
+  transition: top 0.2s;
+  height: ${({ height }) => `${height}px`};
+  width: 100%;
+  z-index: 20;
+`;
+
+const TopBannerContainer = styled.div<{ height: number }>`
+  height: ${({ height }) => `${height}px`};
+  min-height: ${({ height }) => `${height}px`};
+  max-height: ${({ height }) => `${height}px`};
+  width: 100%;
 `;
 
 const BodyWrapper = styled(Box)`
@@ -52,6 +64,7 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
 
 const Menu: React.FC<NavProps> = ({
   userMenu,
+  banner,
   globalMenu,
   isDark,
   toggleTheme,
@@ -71,6 +84,10 @@ const Menu: React.FC<NavProps> = ({
   const [showMenu, setShowMenu] = useState(true);
   const refPrevOffset = useRef(window.pageYOffset);
 
+  const topBannerHeight = isMobile ? TOP_BANNER_HEIGHT_MOBILE : TOP_BANNER_HEIGHT;
+
+  const totalTopMenuHeight = banner ? MENU_HEIGHT + topBannerHeight : MENU_HEIGHT;
+
   useEffect(() => {
     const handleScroll = () => {
       const currentOffset = window.pageYOffset;
@@ -82,7 +99,7 @@ const Menu: React.FC<NavProps> = ({
       }
       // Avoid triggering anything at the bottom because of layout shift
       else if (!isBottomOfPage) {
-        if (currentOffset < refPrevOffset.current || currentOffset <= MENU_HEIGHT) {
+        if (currentOffset < refPrevOffset.current || currentOffset <= totalTopMenuHeight) {
           // Has scroll up
           setShowMenu(true);
         } else {
@@ -98,7 +115,7 @@ const Menu: React.FC<NavProps> = ({
     return () => {
       window.removeEventListener("scroll", throttledHandleScroll);
     };
-  }, []);
+  }, [totalTopMenuHeight]);
 
   // Find the home link if provided
   const homeLink = links.find((link) => link.label === "Home");
@@ -108,45 +125,48 @@ const Menu: React.FC<NavProps> = ({
 
   return (
     <Wrapper>
-      <StyledNav showMenu={showMenu}>
-        <Flex>
-          <Logo isDark={isDark} href={homeLink?.href ?? "/"} />
-          {!isMobile && <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />}
-        </Flex>
-        <Flex alignItems="center">
-          {!isMobile && (
-            <Box mr="12px">
-              <CakePrice cakePriceUsd={cakePriceUsd} />
+      <FixedContainer showMenu={showMenu} height={totalTopMenuHeight}>
+        {banner && <TopBannerContainer height={topBannerHeight}>{banner}</TopBannerContainer>}
+        <StyledNav>
+          <Flex>
+            <Logo isDark={isDark} href={homeLink?.href ?? "/"} />
+            {!isMobile && <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />}
+          </Flex>
+          <Flex alignItems="center">
+            {!isMobile && (
+              <Box mr="12px">
+                <CakePrice cakePriceUsd={cakePriceUsd} />
+              </Box>
+            )}
+            <Box mt="4px">
+              <LangSelector
+                currentLang={currentLang}
+                langs={langs}
+                setLang={setLang}
+                buttonScale="xs"
+                color="textSubtle"
+                hideLanguage
+              />
             </Box>
-          )}
-          <Box mt="4px">
-            <LangSelector
-              currentLang={currentLang}
-              langs={langs}
-              setLang={setLang}
-              buttonScale="xs"
-              color="textSubtle"
-              hideLanguage
-            />
-          </Box>
-          {globalMenu} {userMenu}
-        </Flex>
-      </StyledNav>
+            {globalMenu} {userMenu}
+          </Flex>
+        </StyledNav>
+      </FixedContainer>
       {subLinks && (
         <Flex justifyContent="space-around">
-          <SubMenuItems items={subLinksWithoutMobile} mt={`${MENU_HEIGHT + 1}px`} activeItem={activeSubItem} />
+          <SubMenuItems items={subLinksWithoutMobile} mt={`${totalTopMenuHeight + 1}px`} activeItem={activeSubItem} />
 
           {subLinksMobileOnly?.length > 0 && (
             <SubMenuItems
               items={subLinksMobileOnly}
-              mt={`${MENU_HEIGHT + 1}px`}
+              mt={`${totalTopMenuHeight + 1}px`}
               activeItem={activeSubItem}
               isMobileOnly
             />
           )}
         </Flex>
       )}
-      <BodyWrapper mt={!subLinks ? `${MENU_HEIGHT + 1}px` : "0"}>
+      <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight + 1}px` : "0"}>
         <Inner isPushed={false} showMenu={showMenu}>
           {children}
           <Footer
