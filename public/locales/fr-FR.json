@@ -324,7 +324,7 @@
   "Unstake LP tokens": "Arrêter le staking des jetons LP",
   "Get ready": "Préparez-vous",
   "Live": "Actifs",
-  "Start": "Commencer",
+  "Start": "Début",
   "Finish": "Terminer",
   "Connect wallet to view": "Connecter le portefeuille pour afficher",
   "Sorry, you needed to register during the “entry” period!": "Nous sommes désolés, vous deviez vous inscrire pendant la période « d'inscription » !",
@@ -1747,5 +1747,7 @@
   "Success": "Succès",
   "Wrap": "Envelopper",
   "Unwrap": "Déballer",
-  "Go to IFO": "Go to IFO"
+  "Go to IFO": "Go to IFO",
+  "Phishing warning: ": "Phishing warning: ",
+  "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "please make sure you're visiting https://pancakeswap.finance - check the URL carefully."
 }
