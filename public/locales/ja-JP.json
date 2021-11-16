@@ -1747,5 +1747,7 @@
   "Success": "成功",
   "Wrap": "ラップに変換",
   "Unwrap": "ラップ解除",
-  "Go to IFO": "Go to IFO"
+  "Go to IFO": "Go to IFO",
+  "Phishing warning: ": "Phishing warning: ",
+  "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "please make sure you're visiting https://pancakeswap.finance - check the URL carefully."
 }
