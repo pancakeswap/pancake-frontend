@@ -1749,6 +1749,14 @@ export const mainnetTokens = {
     'CryptoMines Eternal',
     'https://cryptomines.app/',
   ),
+  porto: new Token(
+    MAINNET,
+    '0x49f2145d6366099e13B10FbF80646C0F377eE7f6',
+    8,
+    'PORTO',
+    'FC Porto Fan Token',
+    'https://launchpad.binance.com/en/subscription/PORTO_BNB',
+  ),
 }
 
 export const testnetTokens = {

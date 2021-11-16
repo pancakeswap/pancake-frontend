@@ -220,6 +220,12 @@ const campaigns: Campaign[] = [
     title: 'Mines of Dalarnia',
     badge: 'ifo-dar.svg',
   },
+  {
+    id: '511140000',
+    type: 'ifo',
+    title: 'FC Porto Fan Token',
+    badge: 'ifo-porto.svg',
+  },
 ]
 
 /**

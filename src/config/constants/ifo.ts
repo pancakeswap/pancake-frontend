@@ -7,9 +7,34 @@ const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[ChainId.M
 
 const ifos: Ifo[] = [
   {
+    id: 'porto',
+    address: '0xFDFf29dD0b4DD49Bf5E991A30b8593eaA34B4580',
+    isActive: true,
+    name: 'FC Porto Fan Token (PORTO)',
+    poolBasic: {
+      saleAmount: '250,000 PORTO',
+      raiseAmount: '$500,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.5,
+    },
+    poolUnlimited: {
+      saleAmount: '250,000 PORTO',
+      raiseAmount: '$500,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.5,
+    },
+    currency: tokens.cake,
+    token: tokens.porto,
+    releaseBlockNumber: 12687500,
+    campaignId: '511140000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmaakXYpydAwCgTuSPe3R2ZNraRtkCbK6iBRqBCCdzqKEG',
+    tokenOfferingPrice: 2,
+    version: 2,
+  },
+  {
     id: 'dar',
     address: '0xb6eF1f36220397c434A6B15dc5EA616CFFDF58CE',
-    isActive: true,
+    isActive: false,
     name: 'Mines of Dalarnia (DAR)',
     poolBasic: {
       saleAmount: '6,000,000 DAR',
