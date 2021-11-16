@@ -72,7 +72,7 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
         </Flex>
       </AchievementFlex>
       <Flex alignItems="flex-end" flexDirection="column">
-        <StyledLinkExternal href={ifo.articleUrl} mb="8px">
+        <StyledLinkExternal href={ifo.articleUrl} mb="8px" textAlign="right">
           {t('Learn more about %title%', { title: campaignTitle })}
         </StyledLinkExternal>
         <StyledLinkExternal href={getBscScanLink(ifo.address, 'address')}>{t('View IFO Contract')}</StyledLinkExternal>
