@@ -1755,7 +1755,7 @@ export const mainnetTokens = {
     8,
     'PORTO',
     'FC Porto Fan Token',
-    'https://twitter.com/FCPorto',
+    'https://launchpad.binance.com/en/subscription/PORTO_BNB',
   ),
 }
 
