@@ -69,6 +69,7 @@ const Home: React.FC = () => {
         <Flex
           pt={[account ? '220px' : '0', null, null, account ? '76px' : '0']}
           mt={[account ? '0' : '-16px', null, null, account ? '0' : '-48px']}
+          mb={[account ? '-280px' : 0, account ? '-280px' : 0, 0]}
           pb="24px"
         >
           <IFOBanner />
