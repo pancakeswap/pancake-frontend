@@ -3,27 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [2.20.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.18.6...@pancakeswap/token-lists@2.20.0) (2021-11-16)
-
-
-### Features
-
-* Add LIGHT and CART to extended list ([#296](https://github.com/pancakeswap/pancake-toolkit/issues/296)) ([a884bc2](https://github.com/pancakeswap/pancake-toolkit/commit/a884bc22892b02910980d559f3a6eea4c162f04b))
-* List ARV ([#309](https://github.com/pancakeswap/pancake-toolkit/issues/309)) ([40730ce](https://github.com/pancakeswap/pancake-toolkit/commit/40730ce2e13c4322701babf054580617e665f22c))
-* List auction 7 winners ([#316](https://github.com/pancakeswap/pancake-toolkit/issues/316)) ([ed803ba](https://github.com/pancakeswap/pancake-toolkit/commit/ed803bacb38ce2df96490982c9ac972d047462e3))
-* List DAR ([#320](https://github.com/pancakeswap/pancake-toolkit/issues/320)) ([4ee0792](https://github.com/pancakeswap/pancake-toolkit/commit/4ee0792a185cf4f08b751f1bc421f7d768533972))
-* List DKT ([#313](https://github.com/pancakeswap/pancake-toolkit/issues/313)) ([c034b3b](https://github.com/pancakeswap/pancake-toolkit/commit/c034b3b1cb0adb21df0d2c6bf02a05c2fc96f665))
-* List ETERNAL ([#324](https://github.com/pancakeswap/pancake-toolkit/issues/324)) ([fa627b6](https://github.com/pancakeswap/pancake-toolkit/commit/fa627b6e4c78a5199e9c9f99f3e7b4af0a1a4de9))
-* List FINA ([#318](https://github.com/pancakeswap/pancake-toolkit/issues/318)) ([0523d83](https://github.com/pancakeswap/pancake-toolkit/commit/0523d835f4d57867baf5e6d637fb205ab56655cb))
-* List LAZIO ([#308](https://github.com/pancakeswap/pancake-toolkit/issues/308)) ([24ec409](https://github.com/pancakeswap/pancake-toolkit/commit/24ec409f42e640f1a6eb4e3184c26f2858ade911))
-* List MCB ([#305](https://github.com/pancakeswap/pancake-toolkit/issues/305)) ([52e4d53](https://github.com/pancakeswap/pancake-toolkit/commit/52e4d53ddf9d3a491e624317d0637cd99f39e1c6))
-* List RPG ([#300](https://github.com/pancakeswap/pancake-toolkit/issues/300)) ([bb7e7e5](https://github.com/pancakeswap/pancake-toolkit/commit/bb7e7e520a8902f70e6701ccc2ac87e82701070b))
-* List XWG ([#322](https://github.com/pancakeswap/pancake-toolkit/issues/322)) ([c0a2661](https://github.com/pancakeswap/pancake-toolkit/commit/c0a266104825b2fcc5d3f92896cad2481620fac3))
-
-
-
-
-
 # [2.19.0](https://github.com/Chef-Cheems/pancake-toolkit/compare/@pancakeswap/token-lists@2.18.6...@pancakeswap/token-lists@2.19.0) (2021-10-28)
 
 

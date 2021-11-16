@@ -3,27 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.57.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.55.0...@pancakeswap/uikit@0.57.0) (2021-11-16)
-
-
-### Bug Fixes
-
-* **uikit:** Render menu without link as text in Footer ([#304](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/304)) ([c975470](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/c975470b0f561c4f95bdfac7bb119c7d6365e9af))
-* (menu): Main menu items on tablets causes navigation instead of drop down ([#301](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/301)) ([895ef24](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/895ef24fd054b28bff1eddd1a6df07f08955d512))
-* (menu): Menu item keys might be the same if label is the same ([#294](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/294)) ([871da8b](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/871da8bf43d2808b3f59a8bf578df20c01d2d35f))
-* Token pocket mobile navigation ([#297](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/297)) ([6b80d7e](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/6b80d7e81060ada8af69ece1e61dc275a96a5cfc))
-
-
-### Features
-
-* Top banner ([#328](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/328)) ([a537608](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/a53760841a8161c1c63abacc11660a9fe7c21b39))
-* **icons:** Add expand and shrink icons ([#299](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/299)) ([4d4ecd3](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/4d4ecd303c603a6388f10ea9419d27561b26901c))
-* **menu:** Add mobile sub menu entry with icon ([#307](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/307)) ([817a6bd](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/817a6bdb463e931fad3652648e9d120b2957542c))
-
-
-
-
-
 # [0.56.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.55.0...@pancakeswap/uikit@0.56.0) (2021-10-28)
 
 
