@@ -41,16 +41,6 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
-    pid: 474,
-    lpSymbol: 'PORTO-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x0A292e96ABb35297786a38fDD67Dc4f82689E670',
-    },
-    token: serializedTokens.porto,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
     pid: 425,
     lpSymbol: 'DVI-BNB LP',
     lpAddresses: {
