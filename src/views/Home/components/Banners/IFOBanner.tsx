@@ -94,7 +94,7 @@ const IFOBanner = () => {
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{t('Soon')}</StyledSubheading>
+          <StyledSubheading>{t('Live')}</StyledSubheading>
           <StyledHeading scale="xl">PORTO IFO</StyledHeading>
           <Link to="/ifo">
             <Button>
