@@ -3,7 +3,7 @@ import { ProfileState, ProfileAvatarFetchStatus, Profile } from 'state/types'
 import { NftToken } from 'state/nftMarket/types'
 import { getProfile, getProfileAvatar, getUsername } from './helpers'
 
-const initialState: ProfileState = {
+export const initialState: ProfileState = {
   isInitialized: false,
   isLoading: true,
   hasRegistered: false,

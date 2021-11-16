@@ -54,3 +54,5 @@ export const updateGasPrice = createAction<{ gasPrice: string }>('user/updateGas
 
 export const addWatchlistToken = createAction<{ address: string }>('user/addWatchlistToken')
 export const addWatchlistPool = createAction<{ address: string }>('user/addWatchlistPool')
+
+export const hidePhishingWarningBanner = createAction<void>('user/hidePhishingWarningBanner')

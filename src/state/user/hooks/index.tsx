@@ -31,6 +31,7 @@ import {
   updateUserPredictionAcceptedRisk,
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
+  hidePhishingWarningBanner,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -47,6 +48,19 @@ export function useAudioModeManager(): [boolean, () => void] {
   }, [audioPlay, dispatch])
 
   return [audioPlay, toggleSetAudioMode]
+}
+
+export function usePhishingBannerManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const showPhishingWarningBanner = useSelector<AppState, AppState['user']['showPhishingWarningBanner']>(
+    (state) => state.user.showPhishingWarningBanner,
+  )
+
+  const hideBanner = useCallback(() => {
+    dispatch(hidePhishingWarningBanner())
+  }, [dispatch])
+
+  return [showPhishingWarningBanner, hideBanner]
 }
 
 export function useIsExpertMode(): boolean {
