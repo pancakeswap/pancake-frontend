@@ -1990,5 +1990,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xD44FD09d74cd13838F137B590497595d6b3FEeA4.png"
+  },
+  {
+    "name": "FC Porto Fan Token",
+    "symbol": "PORTO",
+    "address": "0x49f2145d6366099e13B10FbF80646C0F377eE7f6",
+    "chainId": 56,
+    "decimals": 8,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x49f2145d6366099e13B10FbF80646C0F377eE7f6.png"
   }
 ]

@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-11-09T10:14:26.820Z",
+  "timestamp": "2021-11-16T06:36:45.522Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 38
+    "patch": 39
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1363,6 +1363,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xaBaE871B7E3b67aEeC6B46AE9FE1A91660AadAC5.png"
+    },
+    {
+      "name": "FC Porto Fan Token",
+      "symbol": "PORTO",
+      "address": "0x49f2145d6366099e13B10FbF80646C0F377eE7f6",
+      "chainId": 56,
+      "decimals": 8,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x49f2145d6366099e13B10FbF80646C0F377eE7f6.png"
     },
     {
       "name": "Moonpot",
