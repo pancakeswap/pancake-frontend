@@ -41,7 +41,7 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
-    pid: 426,
+    pid: 474,
     lpSymbol: 'PORTO-BNB LP',
     lpAddresses: {
       97: '',
