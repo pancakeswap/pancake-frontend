@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
 import PageSection from 'components/PageSection'
 import { useWeb3React } from '@web3-react/core'
 import useTheme from 'hooks/useTheme'
@@ -16,7 +15,6 @@ import Footer from './components/Footer'
 import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
 import UserBanner from './components/UserBanner'
-import IFOBanner from './components/Banners/IFOBanner'
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
@@ -66,14 +64,6 @@ const Home: React.FC = () => {
             <UserBanner />
           </UserBannerWrapper>
         )}
-        <Flex
-          pt={[account ? '220px' : '0', null, null, account ? '76px' : '0']}
-          mt={[account ? '0' : '-16px', null, null, account ? '0' : '-48px']}
-          mb={[account ? '-280px' : 0, account ? '-280px' : 0, 0]}
-          pb="24px"
-        >
-          <IFOBanner />
-        </Flex>
         <Hero />
       </StyledHeroSection>
       <PageSection
