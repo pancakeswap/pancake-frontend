@@ -5,7 +5,7 @@ import { getProfile, getProfileAvatar, getUsername } from './helpers'
 
 export const initialState: ProfileState = {
   isInitialized: false,
-  isLoading: true,
+  isLoading: false,
   hasRegistered: false,
   data: null,
   profileAvatars: {},
