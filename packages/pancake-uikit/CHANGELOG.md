@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.56.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.57.0...@pancakeswap/uikit@0.56.1) (2021-11-16)
+
+
+### Reverts
+
+* Revert "chore(release): Publish" ([3ba958f](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/3ba958f79d3dd8ab0fbdf55ee8addc328b2f6a6b))
+
+
+
+
+
 # [0.56.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.55.0...@pancakeswap/uikit@0.56.0) (2021-10-28)
 
 

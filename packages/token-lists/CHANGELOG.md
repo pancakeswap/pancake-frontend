@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.19.1](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.20.0...@pancakeswap/token-lists@2.19.1) (2021-11-16)
+
+
+### Reverts
+
+* Revert "chore(release): Publish" ([3ba958f](https://github.com/pancakeswap/pancake-toolkit/commit/3ba958f79d3dd8ab0fbdf55ee8addc328b2f6a6b))
+
+
+
+
+
 # [2.19.0](https://github.com/Chef-Cheems/pancake-toolkit/compare/@pancakeswap/token-lists@2.18.6...@pancakeswap/token-lists@2.19.0) (2021-10-28)
 
 
