@@ -1998,5 +1998,13 @@
     "chainId": 56,
     "decimals": 8,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x49f2145d6366099e13B10FbF80646C0F377eE7f6.png"
+  },
+  {
+    "name": "Dragon Kart",
+    "symbol": "KART",
+    "address": "0x8BDd8DBcBDf0C066cA5f3286d33673aA7A553C10",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x8BDd8DBcBDf0C066cA5f3286d33673aA7A553C10.png"
   }
 ]

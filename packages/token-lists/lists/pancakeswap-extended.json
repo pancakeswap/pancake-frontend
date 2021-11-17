@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-11-16T06:36:45.522Z",
+  "timestamp": "2021-11-17T10:18:44.849Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 39
+    "patch": 40
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -955,6 +955,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x4BA0057f784858a48fe351445C672FF2a3d43515.png"
+    },
+    {
+      "name": "Dragon Kart",
+      "symbol": "KART",
+      "address": "0x8BDd8DBcBDf0C066cA5f3286d33673aA7A553C10",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x8BDd8DBcBDf0C066cA5f3286d33673aA7A553C10.png"
     },
     {
       "name": "KAVA",
