@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 475,
+    lpSymbol: 'KART-BNB',
+    lpAddresses: {
+      97: '',
+      56: '0x0927C49A18eAc4512112e7a226275e2c36f2C3Db',
+    },
+    token: serializedTokens.kart,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 474,
     lpSymbol: 'PORTO-BNB LP',
     lpAddresses: {

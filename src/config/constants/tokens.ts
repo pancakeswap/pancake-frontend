@@ -1757,6 +1757,14 @@ export const mainnetTokens = {
     'FC Porto Fan Token',
     'https://launchpad.binance.com/en/subscription/PORTO_BNB',
   ),
+  kart: new Token(
+    MAINNET,
+    '0x8BDd8DBcBDf0C066cA5f3286d33673aA7A553C10',
+    18,
+    'KART',
+    'Dragon Kart',
+    'https://dragonkart.com/',
+  ),
 }
 
 export const testnetTokens = {
