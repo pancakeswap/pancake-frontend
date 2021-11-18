@@ -1765,6 +1765,7 @@ export const mainnetTokens = {
     'Dragon Kart',
     'https://dragonkart.com/',
   ),
+  qi: new Token(MAINNET, '0x8729438eb15e2c8b576fcc6aecda6a148776c0f5', 18, 'QI', 'BENQI', 'https://benqi.fi/'),
 }
 
 export const testnetTokens = {
