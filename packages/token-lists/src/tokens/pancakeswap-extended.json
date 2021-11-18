@@ -2006,5 +2006,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x8BDd8DBcBDf0C066cA5f3286d33673aA7A553C10.png"
+  },
+  {
+    "name": "BENQI",
+    "symbol": "QI",
+    "address": "0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5.png"
   }
 ]
