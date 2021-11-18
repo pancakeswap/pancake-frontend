@@ -4,7 +4,6 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@pancakeswap/uikit'
 import { FetchStatus } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
-import { BASE_URL } from 'config'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
 import { Divider, RoundedImage } from '../shared/styles'
@@ -113,7 +112,7 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
             height="16px"
             external
             variant="text"
-            href={`${BASE_URL}/swap?inputCurrency=BNB&outputCurrency=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c`}
+            href="/swap?inputCurrency=BNB&outputCurrency=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
           >
             {t('Convert')}
           </Button>
@@ -128,13 +127,7 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
         >
           {t('Checkout')}
         </Button>
-        <Button
-          as={Link}
-          external
-          style={{ width: '100%' }}
-          href={`${BASE_URL}/swap?outputCurrency=BNB`}
-          variant="secondary"
-        >
+        <Button as={Link} external style={{ width: '100%' }} href="/swap?outputCurrency=BNB" variant="secondary">
           {t('Get %symbol1% or %symbol2%', { symbol1: 'BNB', symbol2: 'WBNB' })}
         </Button>
       </Flex>
