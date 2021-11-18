@@ -1746,5 +1746,8 @@
   "Brand": "Márka",
   "Success": "Siker",
   "Wrap": "Beburkolja",
-  "Unwrap": "Kibontja"
+  "Unwrap": "Kibontja",
+  "Go to IFO": "Ugrás az IFO-ra",
+  "Phishing warning: ": "Adathalászat figyelmeztetés: ",
+  "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "kérjük, győződjön meg róla, hogy a https://pancakeswap.finance weboldalt látogatja - gondosan ellenőrizze az URL-t."
 }

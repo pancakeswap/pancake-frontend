@@ -1746,5 +1746,8 @@
   "Brand": "Merkki",
   "Success": "Onnistui",
   "Wrap": "Paketoi",
-  "Unwrap": "Avaa paketointi"
+  "Unwrap": "Avaa paketointi",
+  "Go to IFO": "Siirry IFOon",
+  "Phishing warning: ": "Tietojenkalasteluvaroitus: ",
+  "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "varmista vierailevasi osoitteessa https://pancakeswap.finance – tarkista URL huolellisesti."
 }

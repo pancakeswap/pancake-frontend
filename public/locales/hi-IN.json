@@ -1746,5 +1746,8 @@
   "Brand": "ब्रांड",
   "Success": "सफलता",
   "Wrap": "रैप करें",
-  "Unwrap": "अनरैप करें"
+  "Unwrap": "अनरैप करें",
+  "Go to IFO": "IFO पर जाएं",
+  "Phishing warning: ": "फ़िशिंग चेतावनी: ",
+  "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "कृपया गौर कर लें कि आप यहां जा रहे हैं: https://pancakeswap.finance - दिए गए URL को ध्यान से देखें।"
 }
