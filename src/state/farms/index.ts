@@ -83,12 +83,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], {
 export const farmsSlice = createSlice({
   name: 'Farms',
   initialState,
-  reducers: {
-    setLoadArchivedFarmsData: (state, action) => {
-      const loadArchivedFarmsData = action.payload
-      state.loadArchivedFarmsData = loadArchivedFarmsData
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
@@ -109,8 +104,5 @@ export const farmsSlice = createSlice({
     })
   },
 })
-
-// Actions
-export const { setLoadArchivedFarmsData } = farmsSlice.actions
 
 export default farmsSlice.reducer

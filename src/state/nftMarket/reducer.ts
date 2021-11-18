@@ -290,30 +290,6 @@ export const NftMarket = createSlice({
   name: 'NftMarket',
   initialState,
   reducers: {
-    addAttributeFilter: (state, action: PayloadAction<{ collection: string; attribute: NftAttribute }>) => {
-      if (state.data.filters[action.payload.collection]) {
-        state.data.filters[action.payload.collection].activeFilters = {
-          ...state.data.filters[action.payload.collection].activeFilters,
-          [action.payload.attribute.traitType]: action.payload.attribute,
-        }
-      } else {
-        state.data.filters[action.payload.collection] = {
-          ...initialNftFilterState,
-          activeFilters: {
-            ...state.data.filters[action.payload.collection].activeFilters,
-            [action.payload.attribute.traitType]: action.payload.attribute,
-          },
-        }
-      }
-    },
-    removeAttributeFilter: (state, action: PayloadAction<{ collection: string; attributeKey: string }>) => {
-      if (
-        state.data.filters[action.payload.collection] &&
-        state.data.filters[action.payload.collection].activeFilters[action.payload.attributeKey]
-      ) {
-        delete state.data.filters[action.payload.collection].activeFilters[action.payload.attributeKey]
-      }
-    },
     removeAllFilters: (state, action: PayloadAction<string>) => {
       state.data.filters[action.payload] = { ...initialNftFilterState }
       state.data.nfts[action.payload] = []
@@ -456,13 +432,6 @@ export const NftMarket = createSlice({
 })
 
 // Actions
-export const {
-  addAttributeFilter,
-  removeAttributeFilter,
-  removeAllFilters,
-  setOrdering,
-  setShowOnlyOnSale,
-  resetUserNftState,
-} = NftMarket.actions
+export const { removeAllFilters, setOrdering, setShowOnlyOnSale, resetUserNftState } = NftMarket.actions
 
 export default NftMarket.reducer
