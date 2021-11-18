@@ -52,12 +52,12 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`
 
   const sumTaxesOverflow = poolCharacteristic.totalAmountPool.times(poolCharacteristic.taxRate).times(0.01)
-  const pricePerTokenWithFeeToOriginalRaio = sumTaxesOverflow
+  const pricePerTokenWithFeeToOriginalRatio = sumTaxesOverflow
     .plus(poolCharacteristic.raisingAmountPool)
     .div(poolCharacteristic.offeringAmountPool)
     .div(poolCharacteristic.raisingAmountPool.div(poolCharacteristic.offeringAmountPool))
   const pricePerTokenWithFee = `~$${formatNumber(
-    pricePerTokenWithFeeToOriginalRaio.times(ifo.tokenOfferingPrice).toNumber(),
+    pricePerTokenWithFeeToOriginalRatio.times(ifo.tokenOfferingPrice).toNumber(),
     0,
     2,
   )}`
