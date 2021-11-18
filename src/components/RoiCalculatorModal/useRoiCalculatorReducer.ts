@@ -273,7 +273,7 @@ const useRoiCalculatorReducer = (
     const targetRoiAsTokens = new BigNumber(amount).div(earningTokenPrice)
     dispatch({
       type: 'setTargetRoi',
-      payload: { roiUSD: amount, roiTokens: targetRoiAsTokens.isNaN() ? 0 : targetRoiAsTokens.toNumber() },
+      payload: { roiUSD: +amount, roiTokens: targetRoiAsTokens.isNaN() ? 0 : targetRoiAsTokens.toNumber() },
     })
   }
 
