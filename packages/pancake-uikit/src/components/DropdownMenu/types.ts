@@ -5,8 +5,14 @@ import { BoxProps } from "../Box";
 export interface DropdownMenuProps extends BoxProps {
   items?: DropdownMenuItems[];
   activeItem?: string;
+  /**
+   * As BottomNav styles
+   */
   isBottomNav?: boolean;
   openMenuTimeout?: number;
+  /**
+   * Show items on mobile when `isBottomNav` is true
+   */
   showItemsOnMobile?: boolean;
   index?: number;
   setMenuOpenByIndex?: React.Dispatch<React.SetStateAction<Record<number, boolean>>>;

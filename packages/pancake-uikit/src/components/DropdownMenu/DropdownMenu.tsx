@@ -37,6 +37,8 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
     modifiers: [{ name: "offset", options: { offset: [0, isBottomNav ? 6 : 0] } }],
   });
 
+  const isMenuShow = isOpen && ((isBottomNav && showItemsOnMobile) || !isBottomNav);
+
   /**
    * See "useTooltip"
    */
@@ -125,9 +127,9 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
   useEffect(() => {
     if (setMenuOpenByIndex && index !== undefined) {
-      setMenuOpenByIndex((prevValue) => ({ ...prevValue, [index]: isOpen }));
+      setMenuOpenByIndex((prevValue) => ({ ...prevValue, [index]: isMenuShow }));
     }
-  }, [isOpen, setMenuOpenByIndex, index]);
+  }, [isMenuShow, setMenuOpenByIndex, index]);
 
   return (
     <Box ref={isBottomNav ? null : setTargetRef} {...props}>
@@ -138,7 +140,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
           ref={setTooltipRef}
           {...attributes.popper}
           $isBottomNav={isBottomNav}
-          $isOpen={isOpen && ((isBottomNav && showItemsOnMobile) || !isBottomNav)}
+          $isOpen={isMenuShow}
         >
           {items
             .filter((item) => !item.isMobileOnly)

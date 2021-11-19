@@ -7,6 +7,7 @@ const MenuItemsMock: MenuItemsType[] = [
     href: "/swap",
     icon: "Swap",
     items: ItemsMock,
+    showItemsOnMobile: false,
   },
   {
     label: "Earn",
