@@ -1716,7 +1716,7 @@
   "Where do the fees go?": "На що витрачається комісія?",
   "100% of CAKE spent on Pancake Squad NFTs will be burned as part of our weekly CAKE burn.": "100% of CAKE spent on Pancake Squad NFTs will be burned as part of our weekly CAKE burn.",
   "How are the NFTs randomly distributed?": "How are the NFTs randomly distributed?",
-  "What’s the value of each NFT?": "What’s the value of each NFT?",
+  "What’s the value of each NFT?": "Скільки коштує кожен невзаємозамінний токен?",
   "Wait for the reveal! After all 10,000 members of the Pancake Squad have been minted, their images will remain hidden for a few days. Just be patient :)": "Wait for the reveal! After all 10,000 members of the Pancake Squad have been minted, their images will remain hidden for a few days. Just be patient :)",
   "Users holding Gen 0 Pancake Bunny NFTs at the snapshot may also purchase one additional Pancake Squad NFT in the presale for each Pancake Bunny they hold.": "Users holding Gen 0 Pancake Bunny NFTs at the snapshot may also purchase one additional Pancake Squad NFT in the presale for each Pancake Bunny they hold.",
   "For example, if you have 5 Gen 0 bunnies, you can buy 5 minting tickets in the presale, then max. 10 in the public sale.": "For example, if you have 5 Gen 0 bunnies, you can buy 5 minting tickets in the presale, then max. 10 in the public sale.",
@@ -1733,12 +1733,12 @@
   "You can instantly swap your WBNB for BNB with no trading fees on PancakeSwap.": "You can instantly swap your WBNB for BNB with no trading fees on PancakeSwap.",
   "When can I trade other NFT Collections?": "When can I trade other NFT Collections?",
   "Soon! The current NFT Market is a basic version (phase 1), with early access to trading PancakeSwap NFTs only.": "Soon! The current NFT Market is a basic version (phase 1), with early access to trading PancakeSwap NFTs only.",
-  "Other collections will be coming soon. We’ll make an announcement soon about the launch of the V2 Market.": "Other collections will be coming soon. We’ll make an announcement soon about the launch of the V2 Market.",
-  "How can I list my NFT collection on the Market?": "How can I list my NFT collection on the Market?",
+  "Other collections will be coming soon. We’ll make an announcement soon about the launch of the V2 Market.": "Незабаром з'являться й інші колекції. Очікуйте на оголошення про запуск ринку V2.",
+  "How can I list my NFT collection on the Market?": "Як я можу виставити свою колекцію невзаємозамінних токенів на продаж на ринку?",
   "In Phase 2 of the NFT Marketplace, collections must be whitelisted before they may be listed.": "In Phase 2 of the NFT Marketplace, collections must be whitelisted before they may be listed.",
   "We are now accepting applications from NFT collection owners seeking to list their collections. Please apply here: https://docs.pancakeswap.finance/contact-us/nft-market-applications": "We are now accepting applications from NFT collection owners seeking to list their collections. Please apply here: https://docs.pancakeswap.finance/contact-us/nft-market-applications",
   "What are the fees?": "Що таке комісія?",
-  "100% of all platform fees taken by PancakeSwap from sales are used to buy back and BURN CAKE tokens in our weekly CAKE burns.": "100% of all platform fees taken by PancakeSwap from sales are used to buy back and BURN CAKE tokens in our weekly CAKE burns.",
+  "100% of all platform fees taken by PancakeSwap from sales are used to buy back and BURN CAKE tokens in our weekly CAKE burns.": "100% усіх комісій платформи PancakeSwap від продажу використовуються для викупу та спалення токенів CAKE у щотижневих спаленнях.",
   "Platform fees: 2% is subtracted from NFT sales on the market. Subject to change.Collection fees: Additional fees may be taken by collection creators, once those collections are live. These will not contribute to the CAKE burns.": "Platform fees: 2% is subtracted from NFT sales on the market. Subject to change.Collection fees: Additional fees may be taken by collection creators, once those collections are live. These will not contribute to the CAKE burns.",
   "Mint Cost: To Be Announced": "Вартість створення: буде оголошено пізніше",
   "The smart contract address will be released soon before the sale starts.": "Адресу смартконтракту буде випущено невдовзі перед початком продажу.",
@@ -1749,5 +1749,5 @@
   "Unwrap": "Розгорнути",
   "Go to IFO": "Перейти до IFO",
   "Phishing warning: ": "Попередження про фішинг: ",
-  "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "please make sure you're visiting https://pancakeswap.finance - check the URL carefully."
+  "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "уважно перевірте, чи адреса, яку ви відвідуєте, -- це https://pancakeswap.finance."
 }
