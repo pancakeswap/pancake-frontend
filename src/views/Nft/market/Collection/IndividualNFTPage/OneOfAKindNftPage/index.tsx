@@ -34,6 +34,7 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
 
   useEffect(() => {
     const fetchNftData = async () => {
+      setIsOwnNft(false)
       const metadata = await getNftApi(collectionAddress, tokenId)
       const [marketData] = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
       setNft({
@@ -47,7 +48,9 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
         marketData,
       })
     }
-    if (userNftsInitializationState === UserNftInitializationState.INITIALIZED) {
+    if (!account) {
+      fetchNftData()
+    } else if (userNftsInitializationState === UserNftInitializationState.INITIALIZED) {
       const nftOwnedByConnectedUser = userNfts.find(
         (userNft) =>
           userNft.collectionAddress.toLowerCase() === collectionAddress.toLowerCase() && userNft.tokenId === tokenId,
@@ -57,14 +60,9 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
         setNft(nftOwnedByConnectedUser)
         setIsOwnNft(true)
       } else {
-        // reset to defaults
-        setIsOwnNft(false)
         // Get metadata and market data separately if connected user is not the owner
         fetchNftData()
       }
-    }
-    if (!account) {
-      fetchNftData()
     }
   }, [userNfts, collectionAddress, tokenId, userNftsInitializationState, account])
 
