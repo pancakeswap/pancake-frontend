@@ -615,7 +615,7 @@
   "Claim Your CAKE": "Заберите свой CAKE",
   "Pancake Collectibles": "Коллекционные токены Pancake",
   "Pancake Collectibles are special ERC-721 NFTs that can be used on the PancakeSwap platform.": "Коллекционные токены Pancake являются особыми не взаимозаменяемыми токенами (NFT) ERC-721, которые можно использовать на платформе PancakeSwap.",
-  "NFTs in this user’s wallet that aren’t approved Pancake Collectibles won’t be shown here.": "Здесь не будут показываться не взаимозаменяемые токены в кошельке этого пользователя, которые не являются коллекционными токенами Pancake.",
+  "NFTs in this user’s wallet that aren’t approved Pancake Collectibles won’t be shown here.": "NFT которые не являются коллекционными токенами одобренными Pancake, в кошельке этого пользователя, показываться не будут.",
   "No NFTs Found": "Токены NFT не найдены",
   "See all approved Pancake Collectibles": "См. все утвержденные коллекционные токены Pancake",
   "Coming Soon!": "Скоро!",
