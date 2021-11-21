@@ -27,7 +27,7 @@
   "Every time you stake and unstake CAKE tokens, the contract will automagically harvest CAKE rewards for you!": "Каждый раз, когда вы вкладываете или возвращаете токены CAKE, контракт автоматически собирает для вас награды CAKE!",
   "XVS Tokens Earned": "Заработано XVS токенов",
   "Rewards will be calculated per block and total rewards will be distributed automatically at the end of each project’s farming period.": "Награды будут рассчитываться для каждого блока, а общие награды будут распределяться автоматически в конце периода фарма каждого проекта.",
-  "Pool": "Бассейн",
+  "Pool": "Пул",
   "Coming Soon": "Скоро",
   "APY": "APY",
   "Total Liquidity": "Общая ликвидность",
