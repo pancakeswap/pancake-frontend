@@ -22,7 +22,7 @@
   "Earn": "Заработать",
   "Stake LP tokens to stack CAKE": "Вкладывайте токены пула ликвидности для накопления CAKE",
   "You can swap back anytime": "Вы можете совершить обратный обмен в любое время",
-  "%asset% Earned": "%asset% Заработано",
+  "%asset% Earned": "Заработано %asset%",
   "Tokens Staked": "Токенов вложено",
   "Every time you stake and unstake CAKE tokens, the contract will automagically harvest CAKE rewards for you!": "Каждый раз, когда вы вкладываете или возвращаете токены CAKE, контракт автоматически собирает для вас награды CAKE!",
   "XVS Tokens Earned": "Заработано XVS токенов",
