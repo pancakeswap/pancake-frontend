@@ -16,6 +16,7 @@ export const StyledMenuItemContainer = styled.div<StyledMenuItemProps>`
         width: 100%;
         background-color: ${theme.colors.primary};
         border-radius: 2px 2px 0 0;
+        z-index: 1;
       }
     `};
 `;
