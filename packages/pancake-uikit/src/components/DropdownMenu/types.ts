@@ -9,7 +9,6 @@ export interface DropdownMenuProps extends BoxProps {
    * As BottomNav styles
    */
   isBottomNav?: boolean;
-  openMenuTimeout?: number;
   /**
    * Show items on mobile when `isBottomNav` is true
    */

@@ -1601,7 +1601,7 @@ exports[`renders correctly 1`] = `
               </div>
               <div
                 class="c10"
-                style="position: absolute; left: 0px; top: 0px;"
+                style="position: fixed; left: 0px; top: 0px;"
               >
                 <div
                   class="c11"
@@ -1644,7 +1644,7 @@ exports[`renders correctly 1`] = `
               </div>
               <div
                 class="c10"
-                style="position: absolute; left: 0px; top: 0px;"
+                style="position: fixed; left: 0px; top: 0px;"
               >
                 <div
                   class="c11"
@@ -1697,7 +1697,7 @@ exports[`renders correctly 1`] = `
               </div>
               <div
                 class="c10"
-                style="position: absolute; left: 0px; top: 0px;"
+                style="position: fixed; left: 0px; top: 0px;"
               >
                 <div
                   class="c11"
@@ -1767,7 +1767,7 @@ exports[`renders correctly 1`] = `
               </div>
               <div
                 class="c10"
-                style="position: absolute; left: 0px; top: 0px;"
+                style="position: fixed; left: 0px; top: 0px;"
               >
                 <div
                   class="c11"

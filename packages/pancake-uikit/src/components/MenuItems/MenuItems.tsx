@@ -12,13 +12,10 @@ const MenuItems: React.FC<MenuItemsProps> = ({ items = [], activeItem, activeSub
       {items.map(({ label, items: menuItems = [], href, icon = "" }) => {
         const statusColor = menuItems?.find((menuItem) => menuItem.status !== undefined)?.status?.color;
         const isActive = activeItem === href;
+        const linkProps = isTouchDevice() && menuItems && menuItems.length > 0 ? {} : { href };
         return (
           <DropdownMenu key={`${label}#${href}#${icon}`} items={menuItems} py={1} activeItem={activeSubItem}>
-            <MenuItem
-              href={isTouchDevice() && menuItems && menuItems.length > 0 ? "" : href}
-              isActive={isActive}
-              statusColor={statusColor}
-            >
+            <MenuItem {...linkProps} isActive={isActive} statusColor={statusColor}>
               {label || <IconComponent iconName={icon} color={isActive ? "secondary" : "textSubtle"} />}
             </MenuItem>
           </DropdownMenu>
