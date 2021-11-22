@@ -1,18 +1,51 @@
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import path from 'path'
+import { defineConfig, loadEnv } from 'vite'
 import envCompatible from 'vite-plugin-env-compatible'
+import tsconfigPaths from 'vite-tsconfig-paths'
+
+const htmlPlugin = (env) => {
+  return {
+    name: 'html-transform',
+    transformIndexHtml: (html: string) => {
+      return html.replace(/%(.*?)%/g, (match, p1) => {
+        return env[p1]
+      })
+    },
+  }
+}
+
+const COMPATIBLE_ENV_PREFIX = 'REACT_APP'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  build: {
-    outDir: 'build',
-  },
-  plugins: [
-    tsconfigPaths(),
-    envCompatible({
-      prefix: 'REACT_APP',
-    }),
-    react(),
-  ],
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, 'env', COMPATIBLE_ENV_PREFIX)
+
+  return {
+    build: {
+      outDir: 'build',
+    },
+    resolve: {
+      alias: [
+        {
+          // remove after module path is fixed https://github.com/binance-chain-npm/bsc-web3-connector/pull/1
+          find: '@binance-chain/bsc-connector',
+          replacement: path.resolve(
+            __dirname,
+            mode === 'production'
+              ? 'node_modules/@binance-chain/bsc-connector/dist/bsc-connector.cjs.production.min.js'
+              : 'node_modules/@binance-chain/bsc-connector/dist/bsc-connector.cjs.development.js',
+          ),
+        },
+      ],
+    },
+    plugins: [
+      tsconfigPaths(),
+      envCompatible({
+        prefix: COMPATIBLE_ENV_PREFIX,
+      }),
+      htmlPlugin(env),
+      react(),
+    ],
+  }
 })
