@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Text, Input, CheckmarkIcon, PencilIcon, IconButton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -76,6 +76,7 @@ interface RoiCardProps {
 }
 
 const RoiCard: React.FC<RoiCardProps> = ({ earningTokenSymbol, calculatorState, setTargetRoi, setCalculatorMode }) => {
+  const [expectedRoi, setExpectedRoi] = useState('')
   const inputRef = useRef<HTMLInputElement | null>(null)
   const { roiUSD, roiTokens, roiPercentage } = calculatorState.data
   const { mode } = calculatorState.controls
@@ -90,13 +91,23 @@ const RoiCard: React.FC<RoiCardProps> = ({ earningTokenSymbol, calculatorState, 
 
   const onEnterEditing = () => {
     setCalculatorMode(CalculatorMode.PRINCIPAL_BASED_ON_ROI)
+    setExpectedRoi(
+      roiUSD.toLocaleString('en', {
+        minimumFractionDigits: roiUSD > MILLION ? 0 : 2,
+        maximumFractionDigits: roiUSD > MILLION ? 0 : 2,
+      }),
+    )
   }
 
   const onExitRoiEditing = () => {
     setCalculatorMode(CalculatorMode.ROI_BASED_ON_PRINCIPAL)
   }
   const handleExpectedRoiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTargetRoi(event.currentTarget.value)
+    if (event.currentTarget.validity.valid) {
+      const roiAsString = event.target.value.replace(/,/g, '.')
+      setTargetRoi(roiAsString)
+      setExpectedRoi(roiAsString)
+    }
   }
   return (
     <RoiCardWrapper>
@@ -110,11 +121,11 @@ const RoiCard: React.FC<RoiCardProps> = ({ earningTokenSymbol, calculatorState, 
               <RoiInputContainer>
                 <Input
                   ref={inputRef}
-                  type="number"
+                  type="text"
                   inputMode="decimal"
-                  pattern="\d*"
+                  pattern="^[0-9]+[.,]?[0-9]*$"
                   scale="sm"
-                  value={roiUSD}
+                  value={expectedRoi}
                   placeholder="0.0"
                   onChange={handleExpectedRoiChange}
                 />
