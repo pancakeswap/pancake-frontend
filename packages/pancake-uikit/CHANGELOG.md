@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.56.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.56.1...@pancakeswap/uikit@0.56.2) (2021-11-22)
+
+
+### Bug Fixes
+
+* **uikit:** Menu position incorrect and link no response on touch device ([#336](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/336)) ([21853cd](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/21853cdcdf98de66e19579501a003538b8335f78))
+* **uikit:** Mobile overlay regression ([#332](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/332)) ([a8be97e](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/a8be97ec6dc6d88f3fb7561ce248103d6a8ac733))
+* **uikit:** Show active border on SubMenu when hover ([#333](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/333)) ([c2b4d51](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/c2b4d515a4a904563d497c59953d5d9d848567a8))
+
+
+
+
+
 ## [0.56.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.57.0...@pancakeswap/uikit@0.56.1) (2021-11-16)
 
 

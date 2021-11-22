@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.20.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.19.1...@pancakeswap/token-lists@2.20.0) (2021-11-22)
+
+
+### Features
+
+* List KART ([#331](https://github.com/pancakeswap/pancake-toolkit/issues/331)) ([baab245](https://github.com/pancakeswap/pancake-toolkit/commit/baab24558891a525ee2315703bfe56dd5e457ebe))
+* List PORTO ([#327](https://github.com/pancakeswap/pancake-toolkit/issues/327)) ([1987856](https://github.com/pancakeswap/pancake-toolkit/commit/198785628abb81e3e42ede5c05bec50d2443513a))
+* List QI ([#334](https://github.com/pancakeswap/pancake-toolkit/issues/334)) ([d00bc67](https://github.com/pancakeswap/pancake-toolkit/commit/d00bc67a644d0ae44d03ba6997b081b3cd47321b))
+
+
+
+
+
 ## [2.19.1](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.20.0...@pancakeswap/token-lists@2.19.1) (2021-11-16)
 
 
