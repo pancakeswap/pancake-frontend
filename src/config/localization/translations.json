@@ -1842,5 +1842,9 @@
   "Requirement": "Requirement",
   "Create Profile": "Create Profile",
   "Go to Profile": "Go to Profile",
-  "Profile Points": "Profile Points"
+  "Profile Points": "Profile Points",
+  "You're using this NFT as your Pancake Profile picture": "You're using this NFT as your Pancake Profile picture",
+  "You've already staked the maximum amount you can stake in this pool!": "You've already staked the maximum amount you can stake in this pool!",
+  "Don't show this again": "Don't show this again",
+  "You're all set!": "You're all set!"
 }

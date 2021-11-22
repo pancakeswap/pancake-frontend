@@ -12,11 +12,14 @@ describe('Check translations available', () => {
   const files = []
   const translationKeys = Object.keys(translations)
 
-  function throughDirectory(directory) {
+  function throughDirectory(directory, includeJs = false) {
     fs.readdirSync(directory).forEach((file) => {
       const absolute = Path.join(directory, file)
       if (fs.statSync(absolute).isDirectory()) return throughDirectory(absolute)
-      if (absolute.includes('.tsx') || absolute.includes('.ts')) {
+      if (
+        (absolute.includes('.tsx') || absolute.includes('.ts') || (includeJs && absolute.includes('.js'))) &&
+        !absolute.includes('.d.ts')
+      ) {
         return files.push(absolute)
       }
       return files.length
@@ -24,31 +27,26 @@ describe('Check translations available', () => {
   }
 
   throughDirectory('src/')
+  throughDirectory('node_modules/@pancakeswap/uikit/dist', true)
 
-  it.each(files)('Translation key should exist in translations json', (file) => {
+  let match
+
+  const unknownKeys = new Set<string>()
+
+  const regexWithoutCarriageReturn = /\bt\((["'])((?:\\1|(?:(?!\1)).)*)(\1)/gm
+  const regexWithCarriageReturn = /\bt\([\r\n]\s+(["'])([^']*?)(\1)/gm
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const file of files) {
     const data = fs.readFileSync(file, { encoding: 'utf8', flag: 'r' })
-
-    let match
-
-    const unknownKeys = new Set()
-
-    const regexWithoutCarriageReturn = /\bt\('([^']*?)'/gm
-    const regexWithCarriageReturn = /\bt\([\r\n]\s+'([^']*?)'/gm
-
     while (
       // eslint-disable-next-line no-cond-assign
       (match = regexWithoutCarriageReturn.exec(data)) !== null ||
       // eslint-disable-next-line no-cond-assign
       (match = regexWithCarriageReturn.exec(data)) !== null
     ) {
-      if (match[1].trim()) {
-        const includes = translationKeys.includes(match[1])
-        try {
-          expect(includes).toBe(true)
-        } catch (e) {
-          unknownKeys.add(match[1])
-          console.info(`Found unknown key "${match[1]}" in ${file}`)
-        }
+      if (match[2].trim()) {
+        unknownKeys.add(match[2])
       }
     }
 
@@ -62,19 +60,18 @@ describe('Check translations available', () => {
       if (match[1].trim()) {
         const placeHolderMatch = regexWithSearchInputPlaceHolder.exec(match[1])
         if (placeHolderMatch[1]) {
-          const includes = translationKeys.includes(placeHolderMatch[1])
-          try {
-            expect(includes).toBe(true)
-          } catch (e) {
-            unknownKeys.add(placeHolderMatch[1])
-            console.info(`Found unknown key "${placeHolderMatch[1]}" in ${file}`)
-          }
+          unknownKeys.add(placeHolderMatch[1])
         }
       }
     }
+  }
 
-    if (unknownKeys.size > 0) {
-      throw new Error(`Found unknown key(s) ${JSON.stringify(Array.from(unknownKeys.values()), null, '\t')} in ${file}`)
+  it.each([...unknownKeys])('Translation key should exist in translations json', (key) => {
+    const includes = translationKeys.includes(key)
+    try {
+      expect(includes).toBe(true)
+    } catch (e) {
+      console.info(`Found unknown key "${key}"`)
     }
   })
 })
