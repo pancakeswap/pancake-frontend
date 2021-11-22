@@ -56,6 +56,16 @@ const Collectible = () => {
   const [maxPage, setMaxPage] = useState(1)
 
   useEffect(() => {
+    setTimeout(() => {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      })
+    }, 50)
+  }, [page])
+
+  useEffect(() => {
     let extraPages = 1
     const collectionValues = collections ? Object.values(collections) : []
     if (collectionValues.length % ITEMS_PER_PAGE === 0) {
