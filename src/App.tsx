@@ -29,6 +29,7 @@ import {
 } from './views/AddLiquidity/redirects'
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
+import { useInactiveListener } from './hooks/useInactiveListener'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -70,6 +71,7 @@ const App: React.FC = () => {
   usePollCoreFarmData()
   useScrollOnRouteChange()
   useUserAgent()
+  useInactiveListener()
 
   return (
     <Router history={history}>
