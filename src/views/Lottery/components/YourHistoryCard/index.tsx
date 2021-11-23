@@ -48,7 +48,10 @@ const StyledCardBody = styled(CardBody)`
 `
 
 const YourHistoryCard: React.FC<YourHistoryCardProps> = ({ handleShowMoreClick, numUserRoundsRequested }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { account } = useWeb3React()
   const [shouldShowRoundDetail, setShouldShowRoundDetail] = useState(false)
   const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState<LotteryRound>(null)
@@ -86,7 +89,7 @@ const YourHistoryCard: React.FC<YourHistoryCardProps> = ({ handleShowMoreClick, 
             </Heading>
             {selectedLotteryNodeData?.endTime ? (
               <Text fontSize="14px">
-                {t('Drawn')} {getDrawnDate(selectedLotteryNodeData.endTime)}
+                {t('Drawn')} {getDrawnDate(locale, selectedLotteryNodeData.endTime)}
               </Text>
             ) : (
               <Skeleton width="185px" height="21px" />
