@@ -1,11 +1,9 @@
 import { EN } from 'config/localization/languages'
 
-const publicUrl = 'static'
-
 export const LS_KEY = 'pancakeswap_language'
 
 export const fetchLocale = async (locale) => {
-  const response = await fetch(`${publicUrl}/locales/${locale}.json`)
+  const response = await fetch(`/locales/${locale}.json`)
   const data = await response.json()
   return data
 }
