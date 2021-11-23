@@ -821,6 +821,11 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/standalone@^7.16.4":
+  version "7.16.4"
+  resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.16.4.tgz#f62a5b14fc0e881668f26739f28bcdaacedd3080"
+  integrity sha512-FDRLwjeQfPm5jaHNuB+vwNyGCp24Ah3kEsbLzKmh0eSru+QCr4DmjgbRPoz71AwXLVtXU+l/i7MlVlIj5XO7Gw==
+
 "@babel/template@^7.14.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.14.5.tgz#a9bc9d8b33354ff6e55a9c60d1109200a68974f4"
@@ -3575,6 +3580,17 @@
     "@uniswap/lib" "1.1.1"
     "@uniswap/v2-core" "1.0.0"
 
+"@vitejs/plugin-legacy@^1.6.3":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-legacy/-/plugin-legacy-1.6.3.tgz#314be9df113e5c2747ab10d29e5e9ebe0048c99f"
+  integrity sha512-YivdG6gT91/wjFL6woTwVRgK9KHrju8GwXwgv5FdfAVo0GK0FK4V+YEobmDKRcOMKXQ1U5awY5HqbPIsoJalKQ==
+  dependencies:
+    "@babel/standalone" "^7.16.4"
+    core-js "^3.19.1"
+    magic-string "^0.25.7"
+    regenerator-runtime "^0.13.9"
+    systemjs "^6.11.0"
+
 "@vitejs/plugin-react@^1.0.9":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-react/-/plugin-react-1.0.9.tgz#3166e82cc986512c2e0411138305468488704e86"
@@ -6006,6 +6022,11 @@ core-js@^2.4.0:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
+
+core-js@^3.19.1:
+  version "3.19.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.19.1.tgz#f6f173cae23e73a7d88fa23b6e9da329276c6641"
+  integrity sha512-Tnc7E9iKd/b/ff7GFbhwPVzJzPztGrChB8X8GLqoYGdEOG8IpLnK1xPyo3ZoO3HsK6TodJS58VGPOxA+hLHQMg==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -11698,6 +11719,13 @@ ltgt@2.2.1, ltgt@^2.1.2, ltgt@~2.2.0:
   resolved "https://registry.yarnpkg.com/ltgt/-/ltgt-2.2.1.tgz#f35ca91c493f7b73da0e07495304f17b31f87ee5"
   integrity sha1-81ypHEk/e3PaDgdJUwTxezH4fuU=
 
+magic-string@^0.25.7:
+  version "0.25.7"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
+  integrity sha512-4CrMT5DOHTDk4HYDlzmwu4FVCcIYI8gauveasrdCu2IKIFOJ3f0v/8MDGJCDL9oD2ppz/Av1b0Nj345H9M+XIA==
+  dependencies:
+    sourcemap-codec "^1.4.4"
+
 make-dir@^1.0.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-1.3.0.tgz#79c1033b80515bd6d24ec9933e860ca75ee27f0c"
@@ -14623,6 +14651,11 @@ regenerator-runtime@^0.13.4:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.7.tgz#cac2dacc8a1ea675feaabaeb8ae833898ae46f55"
   integrity sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew==
 
+regenerator-runtime@^0.13.9:
+  version "0.13.9"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
+  integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
+
 regex-cache@^0.4.2:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/regex-cache/-/regex-cache-0.4.4.tgz#75bdc58a2a1496cec48a12835bc54c8d562336dd"
@@ -15476,6 +15509,11 @@ source-map@^0.7.3:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
 
+sourcemap-codec@^1.4.4:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
+  integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
+
 space-separated-tokens@^1.1.0:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/space-separated-tokens/-/space-separated-tokens-1.1.5.tgz#85f32c3d10d9682007e917414ddc5c26d1aa6899"
@@ -16025,6 +16063,11 @@ sync-fetch@0.3.0:
   dependencies:
     buffer "^5.7.0"
     node-fetch "^2.6.1"
+
+systemjs@^6.11.0:
+  version "6.11.0"
+  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-6.11.0.tgz#8df8e74fc05822e6c40170aa409b9ca64833315f"
+  integrity sha512-7YPIY44j+BoY+E6cGBSw0oCU8SNTTIHKZgftcBdwWkDzs/M86Fdlr21FrzAyph7Zo8r3CFGscyFe4rrBtixrBg==
 
 table@^6.0.9:
   version "6.7.1"

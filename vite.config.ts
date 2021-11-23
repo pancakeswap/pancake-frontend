@@ -3,6 +3,7 @@ import path from 'path'
 import { defineConfig, loadEnv } from 'vite'
 import envCompatible from 'vite-plugin-env-compatible'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import legacy from '@vitejs/plugin-legacy'
 
 const htmlPlugin = (env) => {
   return {
@@ -28,14 +29,12 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: [
-        {
-          // remove after module path is fixed https://github.com/binance-chain-npm/bsc-web3-connector/pull/1
+        // remove after module path is fixed https://github.com/binance-chain-npm/bsc-web3-connector/pull/1
+        mode === 'production' && {
           find: '@binance-chain/bsc-connector',
           replacement: path.resolve(
             __dirname,
-            mode === 'production'
-              ? 'node_modules/@binance-chain/bsc-connector/dist/bsc-connector.cjs.production.min.js'
-              : 'node_modules/@binance-chain/bsc-connector/dist/bsc-connector.cjs.development.js',
+            'node_modules/@binance-chain/bsc-connector/dist/bsc-connector.cjs.development.js',
           ),
         },
       ],
@@ -47,6 +46,8 @@ export default defineConfig(({ mode }) => {
       }),
       htmlPlugin(env),
       react(),
+      // Polyfill support for legacy browsers. It should automatically detects `browserslist`
+      legacy(),
     ],
   }
 })
