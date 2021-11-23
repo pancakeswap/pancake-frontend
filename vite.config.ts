@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
   return {
     build: {
       outDir: 'build',
+      assetsDir: 'static',
     },
     resolve: {
       alias: [

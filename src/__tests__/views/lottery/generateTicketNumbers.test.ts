@@ -85,7 +85,12 @@ describe('generateTicketNumbers', () => {
     const numberExistingTickets = existingTickets.length
 
     it(`generates ${numbersToGenerate} unique numbers between ${startingNumber} & ${endingNumber} WITH ${numberExistingTickets} existing numbers`, () => {
-      const ticketsArray = generateTicketNumbers(numbersToGenerate, existingTickets, startingNumber, endingNumber)
+      const ticketsArray = generateTicketNumbers(
+        numbersToGenerate,
+        existingTickets.map((t) => ({ ...t, status: false })),
+        startingNumber,
+        endingNumber,
+      )
       expect(ticketsArray).toHaveLength(numbersToGenerate)
       existingTickets.forEach((existingTicket) => expect(ticketsArray).not.toContain(existingTicket.number))
     })
