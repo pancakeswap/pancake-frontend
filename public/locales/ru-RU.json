@@ -535,7 +535,7 @@
   "Your %symbol% earnings have also been harvested to your wallet!": "Ваши поступления %symbol% также собраны в ваш кошелек!",
   "Your %symbol% funds have been staked in the pool!": "Ваши средства %symbol% вложены в пул!",
   "Max stake for this pool: %amount% %token%": "Максимальный вклад в этом пуле: %amount% %token%",
-  "Maximum total stake: %amount% %token%": "Общая максимальный вклад: %amount% %token%",
+  "Maximum total stake: %amount% %token%": "Общий максимальный вклад: %amount% %token%",
   "APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.": "Годовой процентный доход (APY) включает домешивание, годовая процентная ставка (APR) – нет. В этом пуле CAKE домешивается автоматически, поэтому мы показываем APY.",
   "This pool’s rewards aren’t compounded automatically, so we show APR": "В этом пуле вознаграждения не домешиваются автоматически, поэтому мы показываем APR",
   "Auto": "Автоматически",
