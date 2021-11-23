@@ -76,7 +76,7 @@ const RightWrapper = styled.div`
     opacity: 1;
 
     & img {
-      height: 130%; // 100% for normal bunny, 130% for gaming bunny
+      height: 100%; // 100% for normal bunny, 130% for gaming bunny
     }
   }
 `
@@ -100,7 +100,7 @@ const FarmAuctionsBanner = () => {
           </Link>
         </LeftWrapper>
         <RightWrapper>
-          <img src="/images/decorations/vrbunny.png" alt={t('auction bunny')} />
+          <img src="/images/decorations/auction-bunny.png" alt={t('auction bunny')} />
         </RightWrapper>
       </Inner>
     </Wrapper>
