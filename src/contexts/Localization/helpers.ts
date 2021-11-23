@@ -1,6 +1,6 @@
 import { EN } from 'config/localization/languages'
 
-const publicUrl = process.env.PUBLIC_URL
+const publicUrl = 'static'
 
 export const LS_KEY = 'pancakeswap_language'
 
