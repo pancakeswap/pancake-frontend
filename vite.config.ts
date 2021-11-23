@@ -30,14 +30,15 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: [
         // remove after module path is fixed https://github.com/binance-chain-npm/bsc-web3-connector/pull/1
-        mode === 'production' && {
+        {
           find: '@binance-chain/bsc-connector',
-          replacement: path.resolve(
-            __dirname,
-            'node_modules/@binance-chain/bsc-connector/dist/bsc-connector.cjs.development.js',
-          ),
+          replacement: path.resolve(__dirname, 'node_modules/@binance-chain/bsc-connector/dist/bsc-connector.esm.js'),
         },
       ],
+    },
+    optimizeDeps: {
+      // for local linking purpose
+      exclude: ['@pancakeswap/uikit'],
     },
     plugins: [
       tsconfigPaths(),
