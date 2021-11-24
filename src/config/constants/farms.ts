@@ -60,6 +60,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.sheesha,
     quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 478,
@@ -70,6 +71,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.bcoin,
     quoteToken: serializedTokens.busd,
+    isCommunity: true,
   },
   {
     pid: 476,
