@@ -35,22 +35,6 @@ export type PredictionsGetUserRoundsResponse = [ethers.BigNumber[], PredictionsL
 
 export type PredictionsGetUserRoundsLengthResponse = ethers.BigNumber
 
-export interface PredictionsContract extends Contract {
-  claimable: ContractFunction<PredictionsClaimableResponse>
-  getUserRounds: ContractFunction<PredictionsGetUserRoundsResponse>
-  getUserRoundsLength: ContractFunction<PredictionsGetUserRoundsLengthResponse>
-  ledger: ContractFunction<PredictionsLedgerResponse>
-  refundable: ContractFunction<PredictionsRefundableResponse>
-  rounds: ContractFunction<PredictionsRoundsResponse>
-}
-
-// Chainlink Oracle
-export type ChainLinkOracleLatestAnswerResponse = ethers.BigNumber
-
-export interface ChainLinkOracleContract extends Contract {
-  latestAnswer: ContractFunction<ChainLinkOracleLatestAnswerResponse>
-}
-
 // Farm Auction
 
 // Note: slightly different from AuctionStatus used throughout UI

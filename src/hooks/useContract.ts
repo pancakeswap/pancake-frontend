@@ -36,6 +36,7 @@ import {
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { VaultKey } from 'state/types'
+import { AnniversaryAchievement } from 'config/abi/types'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
@@ -203,7 +204,7 @@ export const useBunnySpecialXmasContract = () => {
 
 export const useAnniversaryAchievementContract = () => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getAnniversaryAchievementContract(library.getSigner()), [library])
+  return useMemo(() => getAnniversaryAchievementContract(library.getSigner()), [library]) as AnniversaryAchievement
 }
 
 export const useNftSaleContract = () => {

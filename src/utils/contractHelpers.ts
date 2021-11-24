@@ -108,7 +108,7 @@ export const getCakeContract = (signer?: ethers.Signer | ethers.providers.Provid
   return getContract(cakeAbi, tokens.cake.address, signer)
 }
 export const getProfileContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(profileABI, getPancakeProfileAddress(), signer) as PancakeProfileContract
+  return getContract(profileABI, getPancakeProfileAddress(), signer) as PancakeProfile
 }
 export const getPancakeRabbitContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress(), signer)
@@ -146,11 +146,11 @@ export const getIfoPoolContract = (signer?: ethers.Signer | ethers.providers.Pro
 }
 
 export const getPredictionsContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(predictionsAbi, getPredictionsAddress(), signer) as PredictionsContract
+  return getContract(predictionsAbi, getPredictionsAddress(), signer) as Predictions
 }
 
 export const getChainlinkOracleContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(chainlinkOracleAbi, getChainlinkOracleAddress(), signer) as ChainLinkOracleContract
+  return getContract(chainlinkOracleAbi, getChainlinkOracleAddress(), signer) as ChainlinkOracle
 }
 export const getMulticallContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(MultiCallAbi, getMulticallAddress(), signer)
@@ -168,7 +168,7 @@ export const getBunnySpecialXmasContract = (signer?: ethers.Signer | ethers.prov
   return getContract(bunnySpecialXmasAbi, getBunnySpecialXmasAddress(), signer)
 }
 export const getFarmAuctionContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(farmAuctionAbi, getFarmAuctionAddress(), signer) as FarmAuctionContract
+  return getContract(farmAuctionAbi, getFarmAuctionAddress(), signer) as FarmAuction
 }
 export const getAnniversaryAchievementContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(anniversaryAchievementAbi, getAnniversaryAchievement(), signer)
