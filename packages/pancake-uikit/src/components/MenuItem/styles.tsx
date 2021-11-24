@@ -8,7 +8,7 @@ export const StyledMenuItemContainer = styled.div<StyledMenuItemProps>`
     $isActive &&
     $variant === "subMenu" &&
     `
-      &:before{
+      &:after{
         content: "";
         position: absolute;
         bottom: 0;
@@ -16,7 +16,6 @@ export const StyledMenuItemContainer = styled.div<StyledMenuItemProps>`
         width: 100%;
         background-color: ${theme.colors.primary};
         border-radius: 2px 2px 0 0;
-        z-index: 1;
       }
     `};
 `;

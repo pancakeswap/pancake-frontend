@@ -45,12 +45,10 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
       return target && !tooltipRef?.contains(target) && setIsOpen(false);
     };
 
-    targetRef?.addEventListener("click", showDropdownMenu);
     targetRef?.addEventListener("mouseenter", showDropdownMenu);
     targetRef?.addEventListener("mouseleave", hideDropdownMenu);
 
     return () => {
-      targetRef?.addEventListener("click", showDropdownMenu);
       targetRef?.removeEventListener("mouseenter", showDropdownMenu);
       targetRef?.removeEventListener("mouseleave", hideDropdownMenu);
     };
@@ -64,7 +62,13 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
   return (
     <Box ref={setTargetRef} {...props}>
-      <Box>{children}</Box>
+      <Box
+        onTouchStart={() => {
+          setIsOpen((s) => !s);
+        }}
+      >
+        {children}
+      </Box>
       {hasItems && (
         <StyledDropdownMenu
           style={styles.popper}

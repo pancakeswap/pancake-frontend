@@ -6,16 +6,15 @@ import Flex from "../../components/Box/Flex";
 import Button from "../../components/Button/Button";
 import IconButton from "../../components/Button/IconButton";
 import DropdownMenu from "../../components/DropdownMenu/DropdownMenu";
+import { footerLinks } from "../../components/Footer/config";
 import Heading from "../../components/Heading/Heading";
 import Input from "../../components/Input/Input";
-import { ChevronDownIcon, CogIcon, LanguageCurrencyIcon } from "../../components/Svg";
+import { CogIcon, LanguageCurrencyIcon } from "../../components/Svg";
 import Text from "../../components/Text/Text";
 import { Modal, ModalProps, useModal } from "../Modal";
-import { LabelText, StyledUserMenu } from "./components/UserMenu";
-import MenuIcon from "./components/UserMenu/MenuIcon";
+import UserMenu from "./components/UserMenu";
 import { Variant, variants } from "./components/UserMenu/types";
 import { links, userMenulinks } from "./config";
-import { footerLinks } from "../../components/Footer/config";
 import Menu from "./Menu";
 import { Language, NavProps } from "./types";
 
@@ -44,11 +43,7 @@ const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: 
   const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
   return (
     <DropdownMenu items={userMenulinks} py="12px">
-      <StyledUserMenu>
-        <MenuIcon avatarSrc="" variant={variant} />
-        <LabelText title={text || account}>{text || accountEllipsis}</LabelText>
-        <ChevronDownIcon color="text" width="24px" />
-      </StyledUserMenu>
+      <UserMenu account={text || accountEllipsis} avatarSrc="" variant={variant} />
     </DropdownMenu>
   );
 };

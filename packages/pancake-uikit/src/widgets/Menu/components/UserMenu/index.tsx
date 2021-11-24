@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import styled from "styled-components";
-import Flex from "../../../../components/Box/Flex";
+import { Box, Flex } from "../../../../components/Box";
 import { ChevronDownIcon } from "../../../../components/Svg";
-import isTouchDevice from "../../../../util/isTouchDevice";
 import { UserMenuProps, variants } from "./types";
 import MenuIcon from "./MenuIcon";
 import { UserMenuItem } from "./styles";
@@ -75,97 +74,50 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
-  const hideTimeout = useRef<number>();
-  const isHoveringOverTooltip = useRef(false);
   const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
   const { styles, attributes } = usePopper(targetRef, tooltipRef, {
+    strategy: "fixed",
     placement: "bottom-end",
-    modifiers: [{ name: "offset", options: { offset: [0, 12] } }],
+    modifiers: [{ name: "offset", options: { offset: [0, 0] } }],
   });
 
-  /**
-   * See "useTooltip"
-   */
   useEffect(() => {
-    const showTooltip = (evt: MouseEvent | TouchEvent) => {
+    const showDropdownMenu = () => {
       setIsOpen(true);
-
-      if (evt.target === targetRef) {
-        clearTimeout(hideTimeout.current);
-      }
-
-      if (evt.target === tooltipRef) {
-        isHoveringOverTooltip.current = true;
-      }
     };
 
-    const hideTooltip = (evt: MouseEvent | TouchEvent) => {
-      if (hideTimeout.current) {
-        window.clearTimeout(hideTimeout.current);
-      }
-
-      if (evt.target === tooltipRef) {
-        isHoveringOverTooltip.current = false;
-      }
-
-      if (!isHoveringOverTooltip.current) {
-        hideTimeout.current = window.setTimeout(() => {
-          if (!isHoveringOverTooltip.current) {
-            setIsOpen(false);
-          }
-        }, 150);
-      }
-    };
-
-    const toggleTouch = (evt: TouchEvent) => {
+    const hideDropdownMenu = (evt: MouseEvent | TouchEvent) => {
       const target = evt.target as Node;
-      const isTouchingTargetRef = target && targetRef?.contains(target);
-      const isTouchingTooltipRef = target && tooltipRef?.contains(target);
-
-      if (isTouchingTargetRef) {
-        setIsOpen((prevOpen) => !prevOpen);
-      } else if (isTouchingTooltipRef) {
-        // Don't close the menu immediately so it catches the event
-        setTimeout(() => {
-          setIsOpen(false);
-        }, 500);
-      } else {
+      if (target && !tooltipRef?.contains(target)) {
         setIsOpen(false);
+        evt.stopPropagation();
       }
     };
 
-    if (isTouchDevice()) {
-      document.addEventListener("touchstart", toggleTouch);
-    } else {
-      targetRef?.addEventListener("mouseenter", showTooltip);
-      targetRef?.addEventListener("mouseleave", hideTooltip);
-      tooltipRef?.addEventListener("mouseenter", showTooltip);
-      tooltipRef?.addEventListener("mouseleave", hideTooltip);
-    }
+    targetRef?.addEventListener("mouseenter", showDropdownMenu);
+    targetRef?.addEventListener("mouseleave", hideDropdownMenu);
 
     return () => {
-      if (isTouchDevice()) {
-        document.removeEventListener("touchstart", toggleTouch);
-      } else {
-        targetRef?.removeEventListener("mouseenter", showTooltip);
-        targetRef?.removeEventListener("mouseleave", hideTooltip);
-        tooltipRef?.removeEventListener("mouseenter", showTooltip);
-        tooltipRef?.removeEventListener("mouseleave", hideTooltip);
-      }
+      targetRef?.removeEventListener("mouseenter", showDropdownMenu);
+      targetRef?.removeEventListener("mouseleave", hideDropdownMenu);
     };
-  }, [targetRef, tooltipRef, hideTimeout, isHoveringOverTooltip, setIsOpen]);
+  }, [targetRef, tooltipRef, setIsOpen]);
 
   return (
-    <>
-      <StyledUserMenu ref={setTargetRef} {...props}>
+    <Flex alignItems="center" height="100%" ref={setTargetRef} {...props}>
+      <StyledUserMenu
+        onTouchStart={() => {
+          setIsOpen((s) => !s);
+        }}
+      >
         <MenuIcon avatarSrc={avatarSrc} variant={variant} />
         <LabelText title={text || account}>{text || accountEllipsis}</LabelText>
         <ChevronDownIcon color="text" width="24px" />
       </StyledUserMenu>
       <Menu style={styles.popper} ref={setTooltipRef} {...attributes.popper} isOpen={isOpen}>
-        {children}
+        <Box onClick={() => setIsOpen(false)}>{children}</Box>
       </Menu>
-    </>
+    </Flex>
   );
 };
 
