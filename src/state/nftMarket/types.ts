@@ -200,7 +200,7 @@ export interface ApiCollection {
 
 // Get all collections
 // ${API_NFT}/collections/
-export interface ApiCollectionsReponse {
+export interface ApiCollectionsResponse {
   total: number
   data: ApiCollection[]
 }
