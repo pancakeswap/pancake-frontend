@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { createChart, IChartApi } from 'lightweight-charts'
 import { format } from 'date-fns'
 import useTheme from 'hooks/useTheme'
@@ -14,6 +15,9 @@ export type LineChartProps = {
 
 const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
   const { theme } = useTheme()
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const chartRef = useRef<HTMLDivElement>(null)
   const [chartCreated, setChart] = useState<IChartApi | undefined>()
 
@@ -124,15 +128,21 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
         } else if (series && param) {
           const timestamp = param.time as number
           const now = new Date(timestamp * 1000)
-          const utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000)
-          const time = `${format(utc, 'MMM d, yyyy h:mm a')} (UTC)`
+          const time = `${now.toLocaleString(locale, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            timeZone: 'UTC',
+          })} (UTC)`
           const parsed = param.seriesPrices.get(series) as { open: number } | undefined
           if (setValue) setValue(parsed?.open)
           if (setLabel) setLabel(time)
         }
       })
     }
-  }, [chartCreated, data, setValue, setLabel, theme])
+  }, [locale, chartCreated, data, setValue, setLabel, theme])
 
   return (
     <>

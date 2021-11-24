@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { format } from 'date-fns'
 import { Text, Flex, Box } from '@pancakeswap/uikit'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
@@ -20,7 +19,10 @@ interface ScheduleProps {
 
 const AuctionSchedule: React.FC<ScheduleProps> = ({ auction }) => {
   const { startBlock, endBlock, auctionDuration, startDate, endDate, status } = auction
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   const noLiveOrPendingAuction = status === AuctionStatus.ToBeAnnounced || status === AuctionStatus.Closed
 
@@ -46,7 +48,15 @@ const AuctionSchedule: React.FC<ScheduleProps> = ({ auction }) => {
             <Text small>{t('To be announced')}</Text>
           ) : (
             <Box>
-              <Text small>{format(startDate, 'MMMM dd yyyy hh:mm aa')}</Text>
+              <Text small>
+                {startDate.toLocaleString(locale, {
+                  year: 'numeric',
+                  month: 'long',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Text>
               <Text small textAlign="right">
                 {t('Block %num%', { num: startBlock })}
               </Text>
@@ -61,7 +71,15 @@ const AuctionSchedule: React.FC<ScheduleProps> = ({ auction }) => {
             <Text small>{t('To be announced')}</Text>
           ) : (
             <Box>
-              <Text small>{format(endDate, 'MMMM dd yyyy hh:mm aa')}</Text>
+              <Text small>
+                {endDate.toLocaleString(locale, {
+                  year: 'numeric',
+                  month: 'long',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Text>
               <Text small textAlign="right">
                 {t('Block %num%', { num: endBlock })}
               </Text>

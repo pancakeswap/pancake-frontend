@@ -76,7 +76,7 @@ const RightWrapper = styled.div`
     opacity: 1;
 
     & img {
-      height: 130%; // 100% for normal bunny, 130% for gaming bunny
+      height: 100%; // 100% for normal bunny, 130% for gaming bunny
     }
   }
 `
@@ -88,7 +88,7 @@ const FarmAuctionsBanner = () => {
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{t('%num% Contenders...', { num: 8 })}</StyledSubheading>
+          <StyledSubheading>{t('%num% Contenders...', { num: 21 })}</StyledSubheading>
           <StyledHeading scale="xl">{t('%num% Winners', { num: 3 })}</StyledHeading>
           <Link to="/farms/auction">
             <Button>
@@ -100,7 +100,7 @@ const FarmAuctionsBanner = () => {
           </Link>
         </LeftWrapper>
         <RightWrapper>
-          <img src="/images/decorations/vrbunny.png" alt={t('auction bunny')} />
+          <img src="/images/decorations/auction-bunny.png" alt={t('auction bunny')} />
         </RightWrapper>
       </Inner>
     </Wrapper>

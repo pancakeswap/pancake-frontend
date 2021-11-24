@@ -73,7 +73,7 @@ const initialState: State = {
  */
 export const fetchCollections = createAsyncThunk<Record<string, Collection>>('nft/fetchCollections', async () => {
   const [collections, collectionsMarket] = await Promise.all([getCollectionsApi(), getCollectionsSg()])
-  return combineCollectionData(collections, collectionsMarket)
+  return combineCollectionData(collections?.data ?? [], collectionsMarket)
 })
 
 /**

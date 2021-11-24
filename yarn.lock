@@ -2649,10 +2649,10 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@pancakeswap/uikit@^0.56.1":
-  version "0.56.1"
-  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.56.1.tgz#1dc186d64283d86ebe921ae23d97408356a357bc"
-  integrity sha512-eBqDmKrIUHSYnQikLemRSTxVP1vum7b978KBcfaQcw2PhE2WloBSyyPCVp3tw/kaMkTNpSkTg4vLk77wr90+JA==
+"@pancakeswap/uikit@^0.58.0":
+  version "0.58.0"
+  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.58.0.tgz#f214d4e7d93b0563b1011ce3cf80c0f92c16115a"
+  integrity sha512-lolIM05GuOCSb6J56nlUvzBmn60waMD/cm9r7yO+/45hWA3zll0qxSiKAVWgay7LnyVAy7Puzo64S9FKdxSo3g==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
