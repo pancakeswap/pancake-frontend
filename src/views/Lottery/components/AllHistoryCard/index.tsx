@@ -109,13 +109,15 @@ const AllHistoryCard = () => {
           handleArrowButtonPress={handleArrowButtonPress}
         />
         <Box mt="8px">
-          {selectedLotteryNodeData?.endTime ? (
-            <Text fontSize="14px">
-              {t('Drawn')} {getDrawnDate(locale, selectedLotteryNodeData.endTime)}
-            </Text>
-          ) : (
-            <Skeleton width="185px" height="21px" />
-          )}
+          {selectedRoundId ? (
+            selectedLotteryNodeData?.endTime ? (
+              <Text fontSize="14px">
+                {t('Drawn')} {getDrawnDate(locale, selectedLotteryNodeData.endTime)}
+              </Text>
+            ) : (
+              <Skeleton width="185px" height="21px" />
+            )
+          ) : null}
         </Box>
       </StyledCardHeader>
       <PreviousRoundCardBody lotteryNodeData={selectedLotteryNodeData} lotteryId={selectedRoundId} />
