@@ -154,6 +154,11 @@ export const socials = [
     icon: "Github",
     href: "https://github.com/pancakeswap/",
   },
+  {
+    label: "Discord",
+    icon: "Discord",
+    href: "https://discord.gg/pancakeswap",
+  },
 ];
 
 export const langs: Language[] = [...Array(20)].map((_, i) => ({
