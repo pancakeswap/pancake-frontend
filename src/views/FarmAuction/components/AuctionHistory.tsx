@@ -75,20 +75,18 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
   const endDate = selectedAuction ? format(selectedAuction.auction.endDate, 'MMM. dd yyyy, hh:mm aa') : null
 
   const handleHistoryAuctionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event
-    if (value) {
-      let newAuctionId = value
-      if (parseInt(value, 10) <= 0) {
-        newAuctionId = ''
-      }
-      if (parseInt(value, 10) >= mostRecentClosedAuctionId) {
-        newAuctionId = mostRecentClosedAuctionId.toString()
-      }
+    if (event.currentTarget.validity.valid) {
+      const {
+        target: { value },
+      } = event
+      const valueAsNumber = +value
+      const newAuctionId =
+        valueAsNumber >= mostRecentClosedAuctionId
+          ? mostRecentClosedAuctionId.toString()
+          : valueAsNumber <= 0
+          ? ''
+          : value
       setHistoryAuctionId(newAuctionId)
-    } else {
-      setHistoryAuctionId('')
     }
   }
 
@@ -111,7 +109,9 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
           <Box width="62px" mr={['4px', '16px']}>
             <Input
               disabled={!mostRecentClosedAuctionId}
-              type="input"
+              type="text"
+              inputMode="numeric"
+              pattern="^[0-9]+$"
               value={historyAuctionId}
               onChange={handleHistoryAuctionChange}
             />
