@@ -1751,5 +1751,8 @@
   "Phishing warning: ": "फ़िशिंग चेतावनी: ",
   "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "कृपया गौर कर लें कि आप यहां जा रहे हैं: https://pancakeswap.finance - दिए गए URL को ध्यान से देखें।",
   "No bids yet": "No bids yet",
-  "Please specify Round": "Please specify Round"
+  "Please specify Round": "Please specify Round",
+  "1W": "1W",
+  "1M": "1M",
+  "Failed to load price chart for this pair": "Failed to load price chart for this pair"
 }
