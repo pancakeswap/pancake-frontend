@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { format } from 'date-fns'
 import styled from 'styled-components'
 import {
   Text,
@@ -44,7 +43,10 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
   )
   const historyAuctionIdAsInt = parseInt(historyAuctionId, 10)
 
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
@@ -72,7 +74,15 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
     )
   }
 
-  const endDate = selectedAuction ? format(selectedAuction.auction.endDate, 'MMM. dd yyyy, hh:mm aa') : null
+  const endDate = selectedAuction
+    ? selectedAuction.auction.endDate.toLocaleString(locale, {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : null
 
   const handleHistoryAuctionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
