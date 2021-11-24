@@ -139,14 +139,18 @@ const TransactionTable: React.FC<{
   const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
 
   const sortedTransactions = useMemo(() => {
+    const toBeAbsList = [SORT_FIELD.amountToken0, SORT_FIELD.amountToken1]
     return transactions
       ? transactions
           .slice()
           .sort((a, b) => {
             if (a && b) {
-              return a[sortField as keyof Transaction] > b[sortField as keyof Transaction]
-                ? (sortDirection ? -1 : 1) * 1
-                : (sortDirection ? -1 : 1) * -1
+              const firstField = a[sortField as keyof Transaction]
+              const secondField = b[sortField as keyof Transaction]
+              const [first, second] = toBeAbsList.includes(sortField)
+                ? [Math.abs(firstField as number), Math.abs(secondField as number)]
+                : [firstField, secondField]
+              return first > second ? (sortDirection ? -1 : 1) * 1 : (sortDirection ? -1 : 1) * -1
             }
             return -1
           })
