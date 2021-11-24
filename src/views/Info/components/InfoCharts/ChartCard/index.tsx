@@ -7,7 +7,7 @@ import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import { useTranslation } from 'contexts/Localization'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import { ChartEntry, TokenData, PriceChartEntry } from 'state/info/types'
-import { format, fromUnixTime } from 'date-fns'
+import { fromUnixTime } from 'date-fns'
 
 enum ChartView {
   LIQUIDITY,
@@ -26,9 +26,12 @@ const ChartCard: React.FC<ChartCardProps> = ({ variant, chartData, tokenData, to
   const [view, setView] = useState(ChartView.VOLUME)
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
-  const currentDate = format(new Date(), 'MMM d, yyyy')
+  const currentDate = new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' })
 
   const formattedTvlData = useMemo(() => {
     if (chartData) {

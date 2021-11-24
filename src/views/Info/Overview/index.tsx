@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text, Heading, Card, Skeleton } from '@pancakeswap/uikit'
-import { format, fromUnixTime } from 'date-fns'
+import { fromUnixTime } from 'date-fns'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
@@ -35,7 +35,10 @@ export const ChartCardsContainer = styled(Flex)`
 `
 
 const Overview: React.FC = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
   const [liquidityDateHover, setLiquidityDateHover] = useState<string | undefined>()
   const [volumeHover, setVolumeHover] = useState<number | undefined>()
@@ -45,7 +48,7 @@ const Overview: React.FC = () => {
   const [chartData] = useProtocolChartData()
   const [transactions] = useProtocolTransactions()
 
-  const currentDate = format(new Date(), 'MMM d, yyyy')
+  const currentDate = new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' })
 
   // Getting latest liquidity and volumeUSD to display on top of chart when not hovered
   useEffect(() => {
