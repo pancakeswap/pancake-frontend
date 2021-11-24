@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'contexts/Localization'
 import { Text, Flex, ChevronRightIcon, Box, SmallDotIcon, PrizeIcon } from '@pancakeswap/uikit'
 import { dateOptions, timeOptions } from '../../helpers'
 
@@ -31,6 +32,9 @@ const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
   onClick,
   hasWon = false,
 }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const endTimeInMs = parseInt(endTime, 10) * 1000
   const endTimeAsDate = new Date(endTimeInMs)
 
@@ -48,7 +52,7 @@ const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
         flexDirection={['column', null, 'row']}
       >
         <Text fontSize="12px" mr={['0', null, '6px']}>
-          {endTimeAsDate.toLocaleDateString(undefined, dateOptions)}
+          {endTimeAsDate.toLocaleDateString(locale, dateOptions)}
         </Text>
         <Text fontSize="12px" color="textSubtle">
           {endTimeAsDate.toLocaleTimeString(undefined, timeOptions)}

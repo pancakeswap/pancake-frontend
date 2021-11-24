@@ -54,7 +54,10 @@ const NextDrawWrapper = styled.div`
 `
 
 const NextDrawCard = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { account } = useWeb3React()
   const { currentLotteryId, isTransitioning, currentRound } = useLottery()
   const { endTime, amountCollectedInCake, userTickets, status } = currentRound
@@ -122,7 +125,7 @@ const NextDrawCard = () => {
 
   const getNextDrawDateTime = () => {
     if (status === LotteryStatus.OPEN) {
-      return `${t('Draw')}: ${endDate.toLocaleString(undefined, dateTimeOptions)}`
+      return `${t('Draw')}: ${endDate.toLocaleString(locale, dateTimeOptions)}`
     }
     return ''
   }

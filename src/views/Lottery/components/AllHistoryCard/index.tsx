@@ -26,7 +26,10 @@ const StyledCardHeader = styled(CardHeader)`
 `
 
 const AllHistoryCard = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const dispatch = useAppDispatch()
   const {
     currentLotteryId,
@@ -108,7 +111,7 @@ const AllHistoryCard = () => {
         <Box mt="8px">
           {selectedLotteryNodeData?.endTime ? (
             <Text fontSize="14px">
-              {t('Drawn')} {getDrawnDate(selectedLotteryNodeData.endTime)}
+              {t('Drawn')} {getDrawnDate(locale, selectedLotteryNodeData.endTime)}
             </Text>
           ) : (
             <Skeleton width="185px" height="21px" />
