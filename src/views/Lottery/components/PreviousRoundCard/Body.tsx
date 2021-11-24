@@ -11,6 +11,7 @@ import {
   useModal,
   CardRibbon,
   useMatchBreakpoints,
+  BunnyPlaceholderIcon,
 } from '@pancakeswap/uikit'
 import { LotteryRound } from 'state/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
@@ -85,20 +86,29 @@ const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId
           <Heading mb="24px">{t('Winning Number')}</Heading>
         </Flex>
         <Flex maxWidth={['240px', null, null, '100%']} justifyContent={['center', null, null, 'flex-start']}>
-          {lotteryNodeData ? (
-            <WinningNumbers
-              rotateText={isLargerScreen || false}
-              number={lotteryNodeData?.finalNumber.toString()}
-              mr={[null, null, null, '32px']}
-              size="100%"
-              fontSize={isLargerScreen ? '42px' : '16px'}
-            />
+          {lotteryId ? (
+            lotteryNodeData ? (
+              <WinningNumbers
+                rotateText={isLargerScreen || false}
+                number={lotteryNodeData?.finalNumber.toString()}
+                mr={[null, null, null, '32px']}
+                size="100%"
+                fontSize={isLargerScreen ? '42px' : '16px'}
+              />
+            ) : (
+              <Skeleton
+                width={['240px', null, null, '450px']}
+                height={['34px', null, null, '71px']}
+                mr={[null, null, null, '32px']}
+              />
+            )
           ) : (
-            <Skeleton
-              width={['240px', null, null, '450px']}
-              height={['34px', null, null, '71px']}
-              mr={[null, null, null, '32px']}
-            />
+            <>
+              <Flex flexDirection="column" alignItems="center" width={['240px', null, null, '480px']}>
+                <Text mb="8px">{t('Please specify Round')}</Text>
+                <BunnyPlaceholderIcon height="64px" width="64px" />
+              </Flex>
+            </>
           )}
         </Flex>
         {userDataForRound && (
