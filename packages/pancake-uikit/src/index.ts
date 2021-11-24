@@ -5,6 +5,7 @@ export * from "./components/Box";
 export * from "./components/Breadcrumbs";
 export * from "./components/Button";
 export * from "./components/ButtonMenu";
+export * from "./components/BottomDrawer";
 export * from "./components/Card";
 export * from "./components/CakePrice";
 export * from "./components/Checkbox";

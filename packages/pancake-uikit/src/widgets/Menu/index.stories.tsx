@@ -17,6 +17,7 @@ import { Variant, variants } from "./components/UserMenu/types";
 import { links, userMenulinks } from "./config";
 import Menu from "./Menu";
 import { Language, NavProps } from "./types";
+import BottomDrawer from "../../components/BottomDrawer/BottomDrawer";
 
 export default {
   title: "Widgets/Menu",
@@ -93,6 +94,8 @@ const defaultProps = {
 };
 
 const ConnectedTemplate: React.FC<NavProps> = (args) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <BrowserRouter>
       <Menu {...args}>
@@ -100,6 +103,10 @@ const ConnectedTemplate: React.FC<NavProps> = (args) => {
           <Heading as="h1" mb="8px">
             Page body
           </Heading>
+          <Button scale="sm" onClick={() => setIsOpen(true)}>
+            Show mobile drawer
+          </Button>
+          <BottomDrawer content={<Box p="16px">Example</Box>} isOpen={isOpen} setIsOpen={setIsOpen} />
           <Text as="p">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
