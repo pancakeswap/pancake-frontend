@@ -56,3 +56,5 @@ export const addWatchlistToken = createAction<{ address: string }>('user/addWatc
 export const addWatchlistPool = createAction<{ address: string }>('user/addWatchlistPool')
 
 export const hidePhishingWarningBanner = createAction<void>('user/hidePhishingWarningBanner')
+
+export const setIsExchangeChartDisplayed = createAction<boolean>('user/toggleIsExchangeChartDisplayed')

@@ -47,7 +47,12 @@ import {
   useSwapState,
   useSingleTokenSwapInfo,
 } from '../../state/swap/hooks'
-import { useExpertModeManager, useUserSlippageTolerance, useUserSingleHopOnly } from '../../state/user/hooks'
+import {
+  useExpertModeManager,
+  useUserSlippageTolerance,
+  useUserSingleHopOnly,
+  useExchangeChartManager,
+} from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import CircleLoader from '../../components/Loader/CircleLoader'
@@ -68,7 +73,12 @@ export default function Swap({ history }: RouteComponentProps) {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const [isChartExpanded, setIsChartExpanded] = useState(false)
-  const [isChartDisplayed, setIsChartDisplayed] = useState(!isMobile)
+  const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
+  const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
+
+  useEffect(() => {
+    setUserChartPreference(isChartDisplayed)
+  }, [isChartDisplayed, setUserChartPreference])
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [

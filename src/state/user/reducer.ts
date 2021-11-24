@@ -29,6 +29,7 @@ import {
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
+  setIsExchangeChartDisplayed,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -65,6 +66,7 @@ export interface UserState {
   timestamp: number
   audioPlay: boolean
   isDark: boolean
+  isExchangeChartDisplayed: boolean
   userFarmStakedOnly: FarmStakedOnly
   userPoolStakedOnly: boolean
   userPoolsViewMode: ViewMode
@@ -93,6 +95,7 @@ export const initialState: UserState = {
   timestamp: currentTimestamp(),
   audioPlay: true,
   isDark: false,
+  isExchangeChartDisplayed: true,
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
   userPoolStakedOnly: false,
   userPoolsViewMode: ViewMode.TABLE,
@@ -234,5 +237,8 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(hidePhishingWarningBanner, (state) => {
       state.showPhishingWarningBanner = false
+    })
+    .addCase(setIsExchangeChartDisplayed, (state, { payload }) => {
+      state.isExchangeChartDisplayed = payload
     }),
 )
