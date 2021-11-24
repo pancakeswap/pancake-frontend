@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.58.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.57.0...@pancakeswap/uikit@0.58.0) (2021-11-24)
+
+
+### Features
+
+* **uikit:** Add discord icon and link ([#341](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/341)) ([59a9394](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/59a9394f80666c83ae2b35829ebe6e8f84399e95))
+
+
+
+
+
 # [0.57.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.56.3...@pancakeswap/uikit@0.57.0) (2021-11-24)
 
 
