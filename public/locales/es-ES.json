@@ -1751,5 +1751,8 @@
   "Phishing warning: ": "Advertencia de phishing: ",
   "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "asegúrate de visitar https://pancakeswap.finance - verifica cuidadosamente la URL.",
   "No bids yet": "No hay pujas aún",
-  "Please specify Round": "Especifique Ronda"
+  "Please specify Round": "Especifique Ronda",
+  "1W": "1W",
+  "1M": "1M",
+  "Failed to load price chart for this pair": "Failed to load price chart for this pair"
 }
