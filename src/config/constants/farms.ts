@@ -41,6 +41,37 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 447,
+    lpSymbol: 'GNT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3747e3e107223539FD09bb730b055A1f11F78Adf',
+    },
+    token: serializedTokens.gnt,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 477,
+    lpSymbol: 'SHEESHA-BNB',
+    lpAddresses: {
+      97: '',
+      56: '0xB31Ecb43645EB273210838e710f2692CC6b30a11',
+    },
+    token: serializedTokens.sheesha,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 478,
+    lpSymbol: 'BCOIN-BUSD',
+    lpAddresses: {
+      97: '',
+      56: '0xd76026a78a2A9aF2f9F57fe6337eED26Bfc26AED',
+    },
+    token: serializedTokens.bcoin,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 476,
     lpSymbol: 'QI-BNB',
     lpAddresses: {
@@ -328,17 +359,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.chess,
     quoteToken: serializedTokens.usdc,
-  },
-  {
-    pid: 447,
-    lpSymbol: 'GNT-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x3747e3e107223539FD09bb730b055A1f11F78Adf',
-    },
-    token: serializedTokens.gnt,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 439,

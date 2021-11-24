@@ -1766,6 +1766,22 @@ export const mainnetTokens = {
     'https://dragonkart.com/',
   ),
   qi: new Token(MAINNET, '0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5', 18, 'QI', 'BENQI', 'https://benqi.fi/'),
+  sheesha: new Token(
+    MAINNET,
+    '0x232FB065D9d24c34708eeDbF03724f2e95ABE768',
+    18,
+    'SHEESHA',
+    'Sheesha Finance',
+    'https://www.sheeshafinance.io/',
+  ),
+  bcoin: new Token(
+    MAINNET,
+    '0x00e1656e45f18ec6747F5a8496Fd39B50b38396D',
+    18,
+    'BCOIN',
+    'Bomb Crypto',
+    'https://bombcrypto.io/',
+  ),
 }
 
 export const testnetTokens = {
