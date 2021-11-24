@@ -2014,5 +2014,21 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5.png"
+  },
+  {
+    "name": "Sheesha Finance",
+    "symbol": "SHEESHA",
+    "address": "0x232FB065D9d24c34708eeDbF03724f2e95ABE768",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x232FB065D9d24c34708eeDbF03724f2e95ABE768.png"
+  },
+  {
+    "name": "Bomb Crypto",
+    "symbol": "BCOIN",
+    "address": "0x00e1656e45f18ec6747F5a8496Fd39B50b38396D",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x00e1656e45f18ec6747F5a8496Fd39B50b38396D.png"
   }
 ]

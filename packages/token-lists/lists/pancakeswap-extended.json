@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-11-18T09:53:47.484Z",
+  "timestamp": "2021-11-24T11:38:02.989Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 41
+    "patch": 42
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -227,6 +227,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf.png"
+    },
+    {
+      "name": "Bomb Crypto",
+      "symbol": "BCOIN",
+      "address": "0x00e1656e45f18ec6747F5a8496Fd39B50b38396D",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x00e1656e45f18ec6747F5a8496Fd39B50b38396D.png"
     },
     {
       "name": "bDIGG",
@@ -1563,6 +1571,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x477bC8d23c634C154061869478bce96BE6045D12.png"
+    },
+    {
+      "name": "Sheesha Finance",
+      "symbol": "SHEESHA",
+      "address": "0x232FB065D9d24c34708eeDbF03724f2e95ABE768",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x232FB065D9d24c34708eeDbF03724f2e95ABE768.png"
     },
     {
       "name": "CryptoBlades Skill Token",
