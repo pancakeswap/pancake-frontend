@@ -1,6 +1,4 @@
-import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
-import { fromUnixTime } from 'date-fns'
-import { getIdsByTimeWindow, getPairSequentialId, getQueryTimestamps } from 'state/swap/fetch/utils'
+import { getIdsByTimeWindow, getPairSequentialId } from 'state/swap/fetch/utils'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 
 describe('getPairSequentialId', () => {
@@ -55,9 +53,9 @@ describe('getIdsByTimeWindow', () => {
     const idsCount = 4
     const expctedResult = [
       '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-451496',
-      '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-451492',
-      '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-451488',
+      '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-451490',
       '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-451484',
+      '0x00000cd505955c2aaefd16fc37a3fed35fd7b343-451478',
     ]
 
     // When
