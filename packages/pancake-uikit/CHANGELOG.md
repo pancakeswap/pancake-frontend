@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.57.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.56.3...@pancakeswap/uikit@0.57.0) (2021-11-24)
+
+
+### Bug Fixes
+
+* **uikit:** UserMenu position incorrect ([#339](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/339)) ([924e1ca](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/924e1cad126ca919da437b45fa37a16574efe534))
+
+
+### Features
+
+* BottomDrawer ([#340](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/340)) ([7a7071e](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/7a7071e633007638d424ddb16d6d429cde75f998))
+
+
+
+
+
 ## [0.56.3](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.56.1...@pancakeswap/uikit@0.56.3) (2021-11-22)
 
 
