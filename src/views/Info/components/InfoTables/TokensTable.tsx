@@ -118,7 +118,7 @@ const DataRow: React.FC<{ tokenData: TokenData; index: number }> = ({ tokenData,
 const SORT_FIELD = {
   name: 'name',
   volumeUSD: 'volumeUSD',
-  tvlUSD: 'tvlUSD',
+  liquidityUSD: 'liquidityUSD',
   priceUSD: 'priceUSD',
   priceUSDChange: 'priceUSDChange',
   priceUSDChangeWeek: 'priceUSDChangeWeek',
@@ -228,10 +228,10 @@ const TokenTable: React.FC<{
           color="secondary"
           fontSize="12px"
           bold
-          onClick={() => handleSort(SORT_FIELD.tvlUSD)}
+          onClick={() => handleSort(SORT_FIELD.liquidityUSD)}
           textTransform="uppercase"
         >
-          {t('Liquidity')} {arrow(SORT_FIELD.tvlUSD)}
+          {t('Liquidity')} {arrow(SORT_FIELD.liquidityUSD)}
         </ClickableColumnHeader>
       </ResponsiveGrid>
 
