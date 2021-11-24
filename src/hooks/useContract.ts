@@ -43,7 +43,7 @@ import { ERC20_BYTES32_ABI } from '../config/abi/erc20'
 import ERC20_ABI from '../config/abi/erc20.json'
 import WETH_ABI from '../config/abi/weth.json'
 import multiCallAbi from '../config/abi/Multicall.json'
-import { getContract } from '../utils'
+import { getContract, getProviderOrSigner } from '../utils'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
@@ -204,10 +204,10 @@ export const useNftMarketContract = () => {
 }
 
 export const useErc721CollectionContract = (collectionAddress: string) => {
-  const { library } = useActiveWeb3React()
+  const { library, account } = useActiveWeb3React()
   return useMemo(() => {
-    return getErc721CollectionContract(library.getSigner(), collectionAddress)
-  }, [library, collectionAddress])
+    return getErc721CollectionContract(getProviderOrSigner(library, account), collectionAddress)
+  }, [account, library, collectionAddress])
 }
 
 // Code below migrated from Exchange useContract.ts
