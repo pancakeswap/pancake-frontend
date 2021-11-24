@@ -63,13 +63,13 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 478,
-    lpSymbol: 'BCOIN-BNB',
+    lpSymbol: 'BCOIN-BUSD',
     lpAddresses: {
       97: '',
       56: '0xd76026a78a2A9aF2f9F57fe6337eED26Bfc26AED',
     },
     token: serializedTokens.bcoin,
-    quoteToken: serializedTokens.wbnb,
+    quoteToken: serializedTokens.busd,
   },
   {
     pid: 476,
