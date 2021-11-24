@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ $isSide: boolean }>`
   width: 100%;
+  height: ${({ $isSide }) => ($isSide ? '100%' : 'auto')};
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -13,7 +14,7 @@ const Wrapper = styled.div`
 
   ${({ theme }) => theme.mediaQueries.md} {
     justify-content: space-between;
-    flex-direction: row;
+    flex-direction: ${({ $isSide }) => ($isSide ? 'column' : 'row')};
   }
 `
 
@@ -34,11 +35,14 @@ const BubbleWrapper = styled(Flex)`
   }
 `
 
-const Footer = () => {
+type FooterVariant = 'default' | 'side'
+
+const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) => {
   const { t } = useTranslation()
+  const isSide = variant === 'side'
   return (
-    <Wrapper>
-      <Flex flexDirection={['column', 'column', 'row']} alignItems="center">
+    <Wrapper $isSide={isSide}>
+      <Flex flexDirection={isSide ? 'column' : ['column', 'column', 'row']} alignItems="center">
         <ButtonMenu variant="subtle" scale="sm" activeIndex={0}>
           <ButtonMenuItem>V2</ButtonMenuItem>
           <ButtonMenuItem as="a" href="https://v1exchange.pancakeswap.finance/#/">
@@ -49,16 +53,17 @@ const Footer = () => {
           id="ercBridge"
           href="https://www.binance.org/en/bridge?utm_source=PancakeSwap"
           ml={[0, 0, '40px']}
-          mt={['20px', '20px', 0]}
+          mt={['20px', '20px', isSide ? '20px' : 0]}
           mb={['8px', '8px', 0]}
         >
           {t('Convert ERC-20 to BEP-20')}
         </LinkExternal>
       </Flex>
+      {isSide && <Flex flexGrow={1} />}
       <Flex
-        flexGrow={1}
+        flexGrow={isSide ? 0 : 1}
         alignItems="center"
-        width={['100%', '100%', '100%', 'auto']}
+        width={['100%', '100%', '100%', isSide ? '100%' : 'auto']}
         justifyContent={['center', 'center', 'center', 'flex-end']}
       >
         <BubbleWrapper>

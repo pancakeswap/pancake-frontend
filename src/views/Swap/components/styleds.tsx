@@ -1,7 +1,7 @@
-import React from 'react'
-import { Text, ErrorIcon } from '@pancakeswap/uikit'
-import styled, { css } from 'styled-components'
+import { ErrorIcon, Text } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
+import React from 'react'
+import styled, { css } from 'styled-components'
 
 export const Wrapper = styled.div`
   position: relative;

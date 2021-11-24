@@ -75,7 +75,7 @@
     "react-scripts": "^4.0.1",
     "react-transition-group": "^4.4.1",
     "react-window": "^1.8.6",
-    "recharts": "^2.1.0",
+    "recharts": "2.0.6",
     "redux-localstorage-simple": "^2.4.1",
     "remark-gfm": "^1.0.0",
     "split-grid": "^1.0.11",
