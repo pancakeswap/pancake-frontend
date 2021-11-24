@@ -22,6 +22,7 @@ import {
   ApiSingleTokenData,
   NftAttribute,
   ApiTokenFilterResponse,
+  ApiCollectionsResponse,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
 
@@ -33,14 +34,14 @@ import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } f
  * Fetch static data from all collections using the API
  * @returns
  */
-export const getCollectionsApi = async (): Promise<ApiCollection[]> => {
+export const getCollectionsApi = async (): Promise<ApiCollectionsResponse> => {
   const res = await fetch(`${API_NFT}/collections`)
   if (res.ok) {
     const json = await res.json()
-    return json.data
+    return json
   }
   console.error('Failed to fetch NFT collections', res.statusText)
-  return []
+  return null
 }
 
 /**
@@ -713,7 +714,7 @@ export const attachMarketDataToWalletNfts = (
  * Attach TokenMarketData and location to NftToken
  * @param nftsWithMetadata NftToken[] with API metadata
  * @param nftsForSale  market data for nfts that are on sale (i.e. not in a user's wallet)
- * @param walletNfts makret data for nfts in a user's wallet
+ * @param walletNfts market data for nfts in a user's wallet
  * @param tokenIdsInWallet array of token ids in user's wallet
  * @param tokenIdsForSale array of token ids of nfts that are on sale
  * @param profileNftId profile picture token id
