@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 450,
+    lpSymbol: 'SFUND-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
+    },
+    token: serializedTokens.sfund,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 447,
     lpSymbol: 'GNT-BNB LP',
     lpAddresses: {
@@ -452,17 +462,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.bel,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 450,
-    lpSymbol: 'SFUND-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
-    },
-    token: serializedTokens.sfund,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 317,
