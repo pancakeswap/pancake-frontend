@@ -26,8 +26,6 @@ interface CurrencySearchProps {
   setImportToken: (token: Token) => void
 }
 
-const swapSound = new Audio('swap.mp3')
-
 function CurrencySearch({
   selectedCurrency,
   onCurrencySelect,
@@ -76,7 +74,7 @@ function CurrencySearch({
     (currency: Currency) => {
       onCurrencySelect(currency)
       if (audioPlay) {
-        swapSound.play()
+        new Audio('swap.mp3').play()
       }
     },
     [audioPlay, onCurrencySelect],

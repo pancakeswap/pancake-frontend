@@ -6,9 +6,9 @@
     <link rel="preconnect" href="%REACT_APP_NODE_1%" />
     <link rel="preconnect" href="%REACT_APP_NODE_2%" />
     <link rel="preconnect" href="%REACT_APP_NODE_3%" />
-    <link rel="preconnect" href="%REACT_APP_NODE_PRODUCTION%" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- <link rel="preconnect" href="%REACT_APP_NODE_PRODUCTION%" /> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" /> -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="preload"  onload="this.onload=null; this.rel='stylesheet';"/>
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
@@ -27,19 +27,7 @@
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on Binance Smart Chain (BSC)" />
-    <!-- GTAG -->
-    <script>
-      ;(function (w, d, s, l, i) {
-        w[l] = w[l] || []
-        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != 'dataLayer' ? '&l=' + l : ''
-        j.async = true
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
-        f.parentNode.insertBefore(j, f)
-      })(window, document, 'script', 'dataLayer', '%REACT_APP_GTAG%')
-    </script>
+    
   </head>
   <body>
     <!-- GTAG (noscript) -->
@@ -54,5 +42,18 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <div id="portal-root"></div>
+    <!-- GTAG -->
+    <script defer>
+      ;(function (w, d, s, l, i) {
+        w[l] = w[l] || []
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : ''
+        j.defer = true
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
+        f.parentNode.insertBefore(j, f)
+      })(window, document, 'script', 'dataLayer', '%REACT_APP_GTAG%')
+    </script>
   </body>
 </html>

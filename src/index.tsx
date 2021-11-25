@@ -11,7 +11,7 @@ import Providers from './Providers'
 function Updaters() {
   return (
     <>
-      <ListsUpdater />
+      {/* <ListsUpdater /> */}
       <TransactionUpdater />
       <MulticallUpdater />
     </>
@@ -31,8 +31,8 @@ ReactDOM.render(
   <React.StrictMode>
     <Blocklist>
       <Providers>
-        <Updaters />
         <App />
+        <Updaters />
       </Providers>
     </Blocklist>
   </React.StrictMode>,
