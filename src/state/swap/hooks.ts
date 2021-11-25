@@ -409,9 +409,13 @@ export const useFetchPairPrices = ({
 
   useEffect(() => {
     const updatePairId = () => {
-      const pairAddress = getLpAddress(token0Address, token1Address)?.toLowerCase()
-      if (pairAddress !== pairId) {
-        setPairId(pairAddress)
+      try {
+        const pairAddress = getLpAddress(token0Address, token1Address)?.toLowerCase()
+        if (pairAddress !== pairId) {
+          setPairId(pairAddress)
+        }
+      } catch (error) {
+        setPairId(null)
       }
     }
 

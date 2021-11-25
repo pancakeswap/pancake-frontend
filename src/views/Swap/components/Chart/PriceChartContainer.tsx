@@ -60,7 +60,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
     )
 
   // If results did came back but as empty array - there is no data to display
-  if ((!!pairPrices && pairPrices.length === 0) || isBadData) {
+  if ((!!pairPrices && pairPrices.length === 0) || isBadData || !pairId) {
     return (
       <NoChartAvailable
         isDark={isDark}
