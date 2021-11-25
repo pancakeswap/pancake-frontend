@@ -36,7 +36,7 @@ describe('Check translations available', () => {
   const extractedKeys = new Set<string>()
 
   const regexWithoutCarriageReturn = /\bt\((["'])((?:\\1|(?:(?!\1)).)*)(\1)/gm
-  const regexWithCarriageReturn = /\bt\([\r\n]\s+(["'])([^']*?)(\1)/gm
+  const regexWithCarriageReturn = /\bt\([\r\n]\s+(["'])([^]*?)(\1)/gm
 
   // eslint-disable-next-line no-restricted-syntax
   for (const file of files) {
