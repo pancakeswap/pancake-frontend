@@ -160,7 +160,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       )
     }
     if (publicIfoData.status === 'finished') {
-      return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(1) ? (
+      return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">
           <BunnyPlaceholderIcon width={80} mb="16px" />
           <Text>{t('You didn’t participate in this sale!')}</Text>
