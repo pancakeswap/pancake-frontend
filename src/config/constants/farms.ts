@@ -49,7 +49,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.sfund,
     quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 447,
