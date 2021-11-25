@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => {
       ],
     },
     optimizeDeps: {
-      // for local linking purpose
+      // for local linking purpose.
       exclude: ['@pancakeswap/uikit'],
     },
     plugins: [
