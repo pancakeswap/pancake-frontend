@@ -1754,5 +1754,7 @@
   "Please specify Round": "Please specify Round",
   "1W": "1W",
   "1M": "1M",
-  "Failed to load price chart for this pair": "Failed to load price chart for this pair"
+  "Failed to load price chart for this pair": "Failed to load price chart for this pair",
+  "You can swap WBNB for BNB (and vice versa) with no trading fees.": "You can swap WBNB for BNB (and vice versa) with no trading fees.",
+  "Exchange rate is always 1 to 1.": "Exchange rate is always 1 to 1."
 }
