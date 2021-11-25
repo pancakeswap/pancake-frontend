@@ -10,8 +10,8 @@ const Wrapper = styled.div<{ $isSide: boolean }>`
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 16px;
-
+  padding-top: 16px;
+  padding-right: ${({ $isSide }) => ($isSide ? '32px' : '0px')};
   ${({ theme }) => theme.mediaQueries.md} {
     justify-content: space-between;
     flex-direction: ${({ $isSide }) => ($isSide ? 'column' : 'row')};
