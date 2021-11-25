@@ -51,7 +51,7 @@ const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) 
         </ButtonMenu>
         <LinkExternal
           id="ercBridge"
-          href="https://www.binance.org/en/bridge?utm_source=PancakeSwap"
+          href="https://docs.binance.org/smart-chain/guides/cross-chain.html"
           ml={[0, 0, '40px']}
           mt={['20px', '20px', isSide ? '20px' : 0]}
           mb={['8px', '8px', 0]}
