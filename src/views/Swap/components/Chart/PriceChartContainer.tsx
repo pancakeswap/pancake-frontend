@@ -3,6 +3,8 @@ import useTheme from 'hooks/useTheme'
 import React, { useCallback, useState } from 'react'
 import { useFetchPairPrices } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
+import BnbWbnbNotice from './BnbWbnbNotice'
+import { BNB_ADDRESS } from './constants'
 import NoChartAvailable from './NoChartAvailable'
 import PriceChart from './PriceChart'
 import { getTokenAddress } from './utils'
@@ -48,6 +50,12 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
 
   if (!isChartDisplayed) {
     return null
+  }
+
+  const isBnbWbnb = token0Address === BNB_ADDRESS && token1Address === BNB_ADDRESS
+
+  if (isBnbWbnb) {
+    return <BnbWbnbNotice isDark={isDark} isChartExpanded={isChartExpanded} />
   }
 
   // Sometimes we might receive array full of zeros for obscure tokens while trying to derive data
