@@ -638,6 +638,10 @@ export const combineCollectionData = (
       ...collectionMarket,
     }
 
+    if (current.name) {
+      collection.name = current.name
+    }
+
     return {
       ...accum,
       [current.address]: collection,
