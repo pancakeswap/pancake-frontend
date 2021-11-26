@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
     },
     optimizeDeps: {
       // for local linking purpose.
-      exclude: ['@pancakeswap/uikit'],
+      // exclude: ['@pancakeswap/uikit'],
     },
     plugins: [
       tsconfigPaths(),
