@@ -6,7 +6,7 @@ import { useAppDispatch } from 'state'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { getAchievements } from 'state/achievements/helpers'
 import { State, ProfileState, Achievement, ProfileAvatarFetchStatus } from '../types'
-import { fetchProfile, fetchProfileAvatar, fetchProfileUsername } from '.'
+import { fetchProfile, fetchProfileUsername } from '.'
 import { getProfile, GetProfileResponse } from './helpers'
 
 export const useFetchProfile = () => {
@@ -90,15 +90,11 @@ export const useProfile = () => {
 
 export const useGetProfileAvatar = (account: string) => {
   const profileAvatar = useSelector((state: State) => state.profile.profileAvatars[account])
-  const { username, nft, hasRegistered, usernameFetchStatus, avatarFetchStatus } = profileAvatar || {}
+  const { username, hasRegistered, usernameFetchStatus, avatarFetchStatus } = profileAvatar || {}
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     const address = isAddress(account)
-
-    if (!nft && avatarFetchStatus !== ProfileAvatarFetchStatus.FETCHED && address) {
-      dispatch(fetchProfileAvatar(account))
-    }
 
     if (
       !username &&
@@ -108,7 +104,7 @@ export const useGetProfileAvatar = (account: string) => {
     ) {
       dispatch(fetchProfileUsername({ account, hasRegistered }))
     }
-  }, [account, nft, username, hasRegistered, avatarFetchStatus, usernameFetchStatus, dispatch])
+  }, [account, username, hasRegistered, avatarFetchStatus, usernameFetchStatus, dispatch])
 
-  return { username, nft, usernameFetchStatus, avatarFetchStatus }
+  return { username, usernameFetchStatus, avatarFetchStatus }
 }

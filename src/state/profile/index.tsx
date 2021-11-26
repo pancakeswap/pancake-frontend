@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProfileState, ProfileAvatarFetchStatus, Profile } from 'state/types'
-import { NftToken } from 'state/nftMarket/types'
 import { getProfile, getProfileAvatar, getUsername } from './helpers'
 
 export const initialState: ProfileState = {
@@ -16,14 +15,6 @@ export const fetchProfile = createAsyncThunk<{ hasRegistered: boolean; profile?:
   async (account) => {
     const { hasRegistered, profile } = await getProfile(account)
     return { hasRegistered, profile }
-  },
-)
-
-export const fetchProfileAvatar = createAsyncThunk<{ account: string; nft: NftToken; hasRegistered: boolean }, string>(
-  'profile/fetchProfileAvatar',
-  async (account) => {
-    const { nft, hasRegistered } = await getProfileAvatar(account)
-    return { account, nft, hasRegistered }
   },
 )
 
@@ -77,7 +68,6 @@ export const profileSlice = createSlice({
         state.profileAvatars[account] = {
           hasRegistered: false,
           username: null,
-          nft: null,
           // I think in theory this else should never be reached since we only check for username after we checked for profile/avatar
           // just in case I set isFetchingAvatar will be ProfileAvatarFetchStatus.FETCHED at this point to avoid refetching
           usernameFetchStatus: ProfileAvatarFetchStatus.FETCHING,
@@ -97,7 +87,6 @@ export const profileSlice = createSlice({
       } else {
         state.profileAvatars[account] = {
           username,
-          nft: null,
           hasRegistered: true,
           usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
           // I think in theory this else should never be reached since we only check for username after we checked for profile/avatar
@@ -118,66 +107,7 @@ export const profileSlice = createSlice({
         state.profileAvatars[account] = {
           hasRegistered: false,
           username: '',
-          nft: null,
           usernameFetchStatus: ProfileAvatarFetchStatus.FETCHED,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
-        }
-      }
-    })
-    builder.addCase(fetchProfileAvatar.pending, (state, action) => {
-      const account = action.meta.arg
-      if (state.profileAvatars[account]) {
-        state.profileAvatars[account] = {
-          ...state.profileAvatars[account],
-          hasRegistered: false,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHING,
-        }
-      } else {
-        state.profileAvatars[account] = {
-          username: null,
-          nft: null,
-          hasRegistered: false,
-          usernameFetchStatus: ProfileAvatarFetchStatus.NOT_FETCHED,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHING,
-        }
-      }
-    })
-    builder.addCase(fetchProfileAvatar.fulfilled, (state, action) => {
-      const { account, nft, hasRegistered } = action.payload
-
-      if (state.profileAvatars[account]) {
-        state.profileAvatars[account] = {
-          ...state.profileAvatars[account],
-          nft,
-          hasRegistered,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
-        }
-      } else {
-        state.profileAvatars[account] = {
-          username: null,
-          nft,
-          hasRegistered,
-          usernameFetchStatus: ProfileAvatarFetchStatus.NOT_FETCHED,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
-        }
-      }
-    })
-    builder.addCase(fetchProfileAvatar.rejected, (state, action) => {
-      const account = action.meta.arg
-
-      if (state.profileAvatars[account]) {
-        state.profileAvatars[account] = {
-          ...state.profileAvatars[account],
-          nft: null,
-          hasRegistered: false,
-          avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
-        }
-      } else {
-        state.profileAvatars[account] = {
-          username: null,
-          nft: null,
-          hasRegistered: false,
-          usernameFetchStatus: ProfileAvatarFetchStatus.NOT_FETCHED,
           avatarFetchStatus: ProfileAvatarFetchStatus.FETCHED,
         }
       }
