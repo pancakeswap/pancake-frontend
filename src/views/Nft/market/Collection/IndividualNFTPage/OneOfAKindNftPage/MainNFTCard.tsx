@@ -4,7 +4,7 @@ import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import React from 'react'
 import { NftToken } from 'state/nftMarket/types'
 import { multiplyPriceByAmount } from 'utils/prices'
-import NFTImage from 'views/Nft/market/components/NFTImage'
+import NFTMedia from 'views/Nft/market/components/NFTMedia'
 import EditProfileModal from 'views/Nft/market/Profile/components/EditProfileModal'
 import BuyModal from '../../../components/BuySellModals/BuyModal'
 import SellModal from '../../../components/BuySellModals/SellModal'
@@ -111,8 +111,8 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
               )}
             </Box>
           </Flex>
-          <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center">
-            <NFTImage nft={nft} width={440} height={440} />
+          <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center" maxWidth={440}>
+            <NFTMedia nft={nft} width={440} height={440} />
           </Flex>
         </Container>
       </CardBody>

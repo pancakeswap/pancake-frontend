@@ -15,7 +15,7 @@ export const AspectRatio = ({ ratio, children, ...props }) => (
   </Box>
 )
 
-const NFTImage: FC<
+const NFTMedia: FC<
   {
     nft: NftToken
     as?: any
@@ -26,19 +26,8 @@ const NFTImage: FC<
   const { as, ...restProps } = props
   if (nft.image.webm || nft.image.mp4) {
     return (
-      <AspectRatio ratio={width / height} {...restProps}>
-        <Box
-          as="video"
-          borderRadius="default"
-          maxWidth={width}
-          maxHeight={height}
-          width="100%"
-          height="100%"
-          autoPlay
-          muted
-          loop
-          playsInline
-        >
+      <AspectRatio overflow="hidden" borderRadius="default" ratio={width / height} {...restProps}>
+        <Box as="video" width="100%" height="100%" autoPlay muted loop playsInline>
           <source src={nft.image.webm} type="video/webm" />
           <source src={nft.image.mp4} type="video/mp4" />
         </Box>
@@ -58,4 +47,4 @@ const NFTImage: FC<
   )
 }
 
-export default NFTImage
+export default NFTMedia
