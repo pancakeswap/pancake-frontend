@@ -5,7 +5,7 @@ import { useBlock } from 'state/block/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMulticallContract } from '../../hooks/useContract'
 import useDebounce from '../../hooks/useDebounce'
-import { CancelledError, retry, RetryableError } from './retry'
+import { CancelledError, retry } from './retry'
 import { AppDispatch, AppState } from '../index'
 import {
   Call,
@@ -36,7 +36,9 @@ async function fetchChunk(
   try {
     // prettier-ignore
     [resultsBlockNumber, returnData] = await multicallContract.aggregate(
-      chunk.map((obj) => [obj.address, obj.callData])
+      chunk.map((obj) => [obj.address, obj.callData]), {
+        blockTag: minBlockNumber,
+      }
     )
   } catch (error) {
     console.debug('Failed to fetch chunk inside retry', error)
@@ -44,7 +46,6 @@ async function fetchChunk(
   }
   if (resultsBlockNumber.toNumber() < minBlockNumber) {
     console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
-    throw new RetryableError('Fetched for old block number')
   }
   return { results: returnData, blockNumber: resultsBlockNumber.toNumber() }
 }
