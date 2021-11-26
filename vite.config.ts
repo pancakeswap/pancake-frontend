@@ -25,6 +25,7 @@ export default defineConfig(({ mode }) => {
   return {
     build: {
       outDir: 'build',
+      sourcemap: true,
       assetsDir: 'static',
     },
     resolve: {
