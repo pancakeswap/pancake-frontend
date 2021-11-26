@@ -3,11 +3,12 @@ import { Flex, Box, Card, CardBody, Text, Button, BinanceIcon, Skeleton, useModa
 import { useTranslation } from 'contexts/Localization'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
+import NFTImage from 'views/Nft/market/components/NFTImage'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import BuyModal from '../../../components/BuySellModals/BuyModal'
 import SellModal from '../../../components/BuySellModals/SellModal'
 import { nftsBaseUrl } from '../../../constants'
-import { RoundedImage, Container, CollectionLink } from '../shared/styles'
+import { Container, CollectionLink } from '../shared/styles'
 
 interface MainPancakeBunnyCardProps {
   cheapestNft: NftToken
@@ -91,7 +92,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
             </Box>
           </Flex>
           <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center">
-            <RoundedImage src={nftToDisplay.image.thumbnail} width={440} height={440} />
+            <NFTImage nft={nftToDisplay} width={440} height={440} />
           </Flex>
         </Container>
       </CardBody>
