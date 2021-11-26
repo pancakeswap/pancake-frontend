@@ -55,7 +55,7 @@ export const cakeSectionData: SalesSectionProps = {
   reverse: false,
   primaryButton: {
     to: '/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-    text: 'Buy CAKE',
+    text: 'Buy Hextech',
     external: false,
   },
   secondaryButton: {
