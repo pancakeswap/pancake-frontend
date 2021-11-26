@@ -1,28 +1,27 @@
-import { useEffect, useRef } from 'react'
+import useInterval from 'hooks/useInterval'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { simpleRpcProvider } from 'utils/providers'
 import { setBlock } from '.'
 import { State } from '../types'
 
 export const usePollBlockNumber = (refreshTime = 6000) => {
-  const timer = useRef(null)
   const dispatch = useAppDispatch()
   const isWindowVisible = useIsWindowVisible()
 
-  useEffect(() => {
-    if (isWindowVisible) {
-      timer.current = setInterval(async () => {
+  useInterval(
+    () => {
+      const fetchBlock = async () => {
         const blockNumber = await simpleRpcProvider.getBlockNumber()
         dispatch(setBlock(blockNumber))
-      }, refreshTime)
-    } else {
-      clearInterval(timer.current)
-    }
+      }
 
-    return () => clearInterval(timer.current)
-  }, [dispatch, timer, isWindowVisible, refreshTime])
+      fetchBlock()
+    },
+    refreshTime,
+    isWindowVisible,
+  )
 }
 
 export const useBlock = () => {
