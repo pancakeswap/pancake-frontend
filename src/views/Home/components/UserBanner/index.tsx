@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex } from '@pancakeswap/uikit'
+import { Box, Flex } from '@hextech/uikit'
 import styled from 'styled-components'
 import UserDetail from './UserDetail'
 

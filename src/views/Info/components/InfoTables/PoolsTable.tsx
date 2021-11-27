@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { Text, Flex, Box, Skeleton, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
+import { Text, Flex, Box, Skeleton, ArrowBackIcon, ArrowForwardIcon } from '@hextech/uikit'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import { PoolData } from 'state/info/types'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'

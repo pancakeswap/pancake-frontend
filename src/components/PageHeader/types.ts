@@ -1,4 +1,4 @@
-import { BoxProps } from '@pancakeswap/uikit'
+import { BoxProps } from '@hextech/uikit'
 
 export interface PageHeaderProps extends BoxProps {
   background?: string

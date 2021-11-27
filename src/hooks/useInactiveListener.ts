@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { connectorLocalStorageKey } from '@pancakeswap/uikit'
+import { connectorLocalStorageKey } from '@hextech/uikit'
 import { profileClear } from '../state/profile'
 import { clearAllTransactions } from '../state/transactions/actions'
 import { useAppDispatch } from '../state'

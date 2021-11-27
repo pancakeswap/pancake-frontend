@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, Card } from '@pancakeswap/uikit'
+import { Text, Flex, Box, Card } from '@hextech/uikit'
 import { Link } from 'react-router-dom'
 import { useAllTokenData } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'

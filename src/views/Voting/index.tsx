@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex } from '@hextech/uikit'
 import styled from 'styled-components'
 import { PageMeta } from 'components/Layout/Page'
 import Hero from './components/Hero'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, Button, Link } from '@pancakeswap/uikit'
+import { Flex, Text, Button, Link } from '@hextech/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import CompositeImage, { CompositeImageProps } from '../CompositeImage'
