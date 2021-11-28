@@ -22,12 +22,11 @@ const NFTMedia: FC<
     width: number
     height: number
   } & Omit<BoxProps, 'width' | 'height' | 'as'>
-> = ({ width, height, nft, ...props }) => {
-  const { as, ...restProps } = props
+> = ({ width, height, nft, borderRadius = 'default', as, ...props }) => {
   if (nft.image.webm || nft.image.mp4) {
     return (
-      <AspectRatio ratio={width / height} {...restProps}>
-        <Box borderRadius="default" as="video" width="100%" height="100%" autoPlay muted loop playsInline>
+      <AspectRatio ratio={width / height} {...props}>
+        <Box borderRadius={borderRadius} as="video" width="100%" height="100%" autoPlay muted loop playsInline>
           <source src={nft.image.webm} type="video/webm" />
           <source src={nft.image.mp4} type="video/mp4" />
         </Box>
@@ -42,7 +41,7 @@ const NFTMedia: FC<
       src={nft.image.gif || nft.image.thumbnail}
       alt={nft.name}
       as={as}
-      {...restProps}
+      {...props}
     />
   )
 }

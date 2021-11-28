@@ -127,10 +127,7 @@ export const getNftsFromDifferentCollectionsApi = async (
       attributes: res.attributes,
       createdAt: res.createdAt,
       updatedAt: res.updatedAt,
-      image: {
-        original: res.image?.original,
-        thumbnail: res.image?.thumbnail,
-      },
+      image: res.image,
     }))
 }
 
