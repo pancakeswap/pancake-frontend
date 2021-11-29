@@ -102,7 +102,7 @@ const PriceChart = ({
               variant="text"
               onClick={() => setChartView(ChartViewMode.TRADING_VIEW)}
             >
-              {isDesktop ? t('TradingView') : <TradingViewIcon />}
+              {isDesktop ? 'Tradingview' : <TradingViewIcon />}
             </ChartButton>
           </Flex>
         </Flex>

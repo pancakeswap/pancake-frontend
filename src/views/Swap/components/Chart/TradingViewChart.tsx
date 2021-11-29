@@ -35,7 +35,9 @@ const TradingViewChart = ({
         <Flex flexDirection="column" pt="12px" position="relative" height="100%" width="100%">
           <TokenDisplay value={token1Price} symbol={outputCurrency?.symbol} px="24px" />
           <Box height="100%" pt="4px">
-            <TradingView id="tv_chart" symbol={`PANCAKESWAP:${inputCurrency.symbol}${outputCurrency.symbol}`} />
+            {inputCurrency?.symbol && outputCurrency?.symbol && (
+              <TradingView id="tv_chart" symbol={`PANCAKESWAP:${inputCurrency.symbol}${outputCurrency.symbol}`} />
+            )}
           </Box>
         </Flex>
       </Flex>
