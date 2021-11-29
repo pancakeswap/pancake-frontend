@@ -15,6 +15,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Token } from '@pancakeswap/sdk'
 import { Ifo, PoolIds } from 'config/constants/types'
 import tokens from 'config/constants/tokens'
+import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -58,8 +59,11 @@ const TokenSection: React.FC<TokenSectionProps> = ({ primaryToken, secondaryToke
   )
 }
 
-const CakeBnbTokenSection: React.FC<TokenSectionProps> = (props) => {
-  return <TokenSection primaryToken={tokens.cake} secondaryToken={tokens.wbnb} {...props} />
+const CommitTokenSection: React.FC<TokenSectionProps & { commitToken: Token }> = ({ commitToken, ...props }) => {
+  if (commitToken.equals(cakeBnbLpToken)) {
+    return <TokenSection primaryToken={tokens.cake} secondaryToken={tokens.wbnb} {...props} />
+  }
+  return <TokenSection primaryToken={commitToken} {...props} />
 }
 
 const Label = (props) => <Text bold fontSize="12px" color="secondary" textTransform="uppercase" {...props} />
@@ -140,14 +144,14 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     if (publicIfoData.status === 'live') {
       return (
         <>
-          <CakeBnbTokenSection mb="24px">
+          <CommitTokenSection commitToken={ifo.currency} mb="24px">
             <Label>{t('Your %symbol% committed', { symbol: currency.symbol })}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.amountTokenCommittedInLP, currency.decimals)}</Value>
             <PercentageOfTotal
               userAmount={userPoolCharacteristics.amountTokenCommittedInLP}
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
-          </CakeBnbTokenSection>
+          </CommitTokenSection>
           <TokenSection primaryToken={ifo.token}>
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
@@ -163,7 +167,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         </Flex>
       ) : (
         <>
-          <CakeBnbTokenSection mb="24px">
+          <CommitTokenSection commitToken={ifo.currency} mb="24px">
             <Label>
               {t(hasClaimed ? 'Your %symbol% RECLAIMED' : 'Your %symbol% TO RECLAIM', { symbol: currency.symbol })}
             </Label>
@@ -175,7 +179,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               userAmount={userPoolCharacteristics.amountTokenCommittedInLP}
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
-          </CakeBnbTokenSection>
+          </CommitTokenSection>
           <TokenSection primaryToken={ifo.token}>
             <Label> {t(hasClaimed ? '%symbol% received' : '%symbol% to receive', { symbol: token.symbol })}</Label>
             <Flex alignItems="center">
