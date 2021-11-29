@@ -14,7 +14,7 @@ const Table = styled.table`
     padding: 8px;
   }
 `
-const Box = styled.div`
+const TableBox = styled.div`
   width: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -59,9 +59,9 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
   // table: Table,
   table: ({ node, ...props }) => {
     return (
-      <Box>
+      <TableBox>
         <Table>{props.children}</Table>
-      </Box>
+      </TableBox>
     )
   },
   ol: (props) => {
