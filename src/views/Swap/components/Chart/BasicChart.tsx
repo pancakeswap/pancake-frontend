@@ -1,19 +1,13 @@
-import { Box, Flex, Skeleton, Text, ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { format } from 'date-fns'
 import React, { useState } from 'react'
 import { useFetchPairPrices, useSingleTokenSwapInfo } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
-import { formatAmount, formatAmountNotation } from 'views/Info/utils/formatInfoNumbers'
 import NoChartAvailable from './NoChartAvailable'
 import SwapLineChart from './SwapLineChart'
+import TokenDisplay from './TokenDisplay'
 import { getTimeWindowChange } from './utils'
-
-const formatOptions = {
-  notation: 'standard' as formatAmountNotation,
-  displayThreshold: 0.001,
-  tokenPrecision: true,
-}
 
 const BasicChart = ({ token0Address, token1Address, isChartExpanded, outputCurrency, isMobile }) => {
   const singleTokenPrice = useSingleTokenSwapInfo()
@@ -72,21 +66,11 @@ const BasicChart = ({ token0Address, token1Address, isChartExpanded, outputCurre
         px="24px"
       >
         <Flex flexDirection="column" pt="12px">
-          {pairPrices?.length > 0 && valueToDisplay ? (
-            <Flex alignItems="flex-end">
-              <Text fontSize="40px" mr="8px" bold>
-                {formatAmount(valueToDisplay, formatOptions)}
-              </Text>
-              <Text color="textSubtle" fontSize="20px" mb="8px" mr="8px" bold>
-                {outputCurrency?.symbol}
-              </Text>
-              <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mb="8px" bold>
-                {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
-              </Text>
-            </Flex>
-          ) : (
-            <Skeleton height="36px" width="128px" />
-          )}
+          <TokenDisplay value={pairPrices?.length > 0 && valueToDisplay} symbol={outputCurrency?.symbol}>
+            <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mb="8px" bold>
+              {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
+            </Text>
+          </TokenDisplay>
           <Text small color="secondary">
             {hoverDate || currentDate}
           </Text>
