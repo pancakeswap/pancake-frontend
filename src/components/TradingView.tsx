@@ -4,8 +4,6 @@ import useScript from 'hooks/useScript'
 import React, { useEffect } from 'react'
 import { DefaultTheme, useTheme } from 'styled-components'
 
-// const TRADING_VIEW_COMPONENT_ID = 'tradingview_b239c'
-
 /**
  * When the script tag is injected the TradingView object is not immediately
  * available on the window. So we listen for when it gets set
@@ -30,7 +28,7 @@ const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeC
     height: '100%',
     symbol: 'BINANCE:BNBUSDT',
     interval: '5',
-    timezone: 'Etc/UTC',
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Etc/UTC',
     theme: theme.isDark ? 'dark' : 'light',
     style: '1',
     locale: localeCode,
