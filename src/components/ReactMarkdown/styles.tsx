@@ -33,6 +33,10 @@ const Pre = styled.pre`
   overflow-x: auto;
 `
 
+const AStyle = styled.a`
+  word-break: break-all;
+`
+
 const Title = (props) => {
   return <Heading as="h4" scale="lg" my="16px" {...props} />
 }
@@ -55,6 +59,7 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
     return <ThemedComponent as="ul" {...props} />
   },
   pre: Pre,
+  a: AStyle,
 }
 
 export default markdownComponents
