@@ -1,7 +1,7 @@
 import { Currency } from '@pancakeswap/sdk'
 import { Box, Flex } from '@pancakeswap/uikit'
 import TradingView from 'components/TradingView'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useSingleTokenSwapInfo } from 'state/swap/hooks'
 import TokenDisplay from './TokenDisplay'
 
@@ -24,6 +24,22 @@ const TradingViewChart = ({
 
   const token1Price = tokens?.[token1Address]
 
+  const symbol = useMemo(() => {
+    if (!(inputCurrency?.symbol && outputCurrency?.symbol)) {
+      return null
+    }
+    const prefix = 'PANCAKESWAP:'
+    let input = inputCurrency.symbol
+    let output = outputCurrency.symbol
+    if (input === 'BNB') {
+      input = 'WBNB'
+    }
+    if (output === 'BNB') {
+      output = 'WBNB'
+    }
+    return `${prefix}${input}${output}`
+  }, [inputCurrency?.symbol, outputCurrency?.symbol])
+
   return (
     <>
       <Flex
@@ -35,9 +51,7 @@ const TradingViewChart = ({
         <Flex flexDirection="column" pt="12px" position="relative" height="100%" width="100%">
           <TokenDisplay value={token1Price} symbol={outputCurrency?.symbol} mx="24px" />
           <Box height="100%" pt="4px">
-            {inputCurrency?.symbol && outputCurrency?.symbol && (
-              <TradingView id="tv_chart" symbol={`PANCAKESWAP:${inputCurrency.symbol}${outputCurrency.symbol}`} />
-            )}
+            {symbol && <TradingView id="tv_chart" symbol={symbol} />}
           </Box>
         </Flex>
       </Flex>
