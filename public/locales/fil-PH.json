@@ -1750,11 +1750,11 @@
   "Go to IFO": "Pumunta sa IFO",
   "Phishing warning: ": "Babala sa phishing: ",
   "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "tiyaking bumibisita ka sa https://pancakeswap.finance - suriing mabuti ang URL.",
-  "No bids yet": "No bids yet",
-  "Please specify Round": "Please specify Round",
+  "No bids yet": "Wala pang mga bid",
+  "Please specify Round": "Mangyaring pakitukoy ang Round",
   "1W": "1W",
   "1M": "1M",
-  "Failed to load price chart for this pair": "Failed to load price chart for this pair",
-  "You can swap WBNB for BNB (and vice versa) with no trading fees.": "You can swap WBNB for BNB (and vice versa) with no trading fees.",
-  "Exchange rate is always 1 to 1.": "Exchange rate is always 1 to 1."
+  "Failed to load price chart for this pair": "Nabigong i-load ang chart ng presyo para sa pares na ito",
+  "You can swap WBNB for BNB (and vice versa) with no trading fees.": "Maaari mong i-swap ang WBNB para sa BNB (at vice versa) nang walang bayad sa pangangalakal.",
+  "Exchange rate is always 1 to 1.": "Ang halaga ng palitan ay palaging 1 sa 1."
 }
