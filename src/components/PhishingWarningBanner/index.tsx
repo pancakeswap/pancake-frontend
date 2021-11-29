@@ -51,8 +51,10 @@ const PhishingWarningBanner: React.FC = () => {
       <Text as="span" color="warning" small bold textTransform="uppercase">
         {t('Phishing warning: ')}
       </Text>
-      {warningTextAsParts.map((text) => (
+      {warningTextAsParts.map((text, i) => (
         <Text
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
           small
           as="span"
           bold={text === 'https://pancakeswap.finance'}
@@ -75,7 +77,11 @@ const PhishingWarningBanner: React.FC = () => {
       ) : (
         <>
           <InnerContainer>
-            <img src="/images/decorations/phishing-warning-bunny.png" alt="phishing-warning" width="92px" />
+            <picture>
+              <source type="image/webp" srcSet="/images/decorations/phishing-warning-bunny.webp" />
+              <source type="image/png" srcSet="/images/decorations/phishing-warning-bunny.png" />
+              <img src="/images/decorations/phishing-warning-bunny.png" alt="phishing-warning" width="92px" />
+            </picture>
             <SpeechBubble>{warningTextComponent}</SpeechBubble>
           </InnerContainer>
           <IconButton onClick={hideBanner} variant="text">
