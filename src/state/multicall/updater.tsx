@@ -45,7 +45,7 @@ async function fetchChunk(
     const error = err as any
     if (
       error.code === -32000 ||
-      error?.data?.message?.indexOf('header not found') !== -1 ||
+      (error?.data?.message && error?.data?.message?.indexOf('header not found') !== -1) ||
       error.message?.indexOf('header not found') !== -1
     ) {
       throw new RetryableError(`header not found for block number ${minBlockNumber}`)
