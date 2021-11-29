@@ -1,11 +1,8 @@
 import { Currency } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useState } from 'react'
-import { useFetchPairPrices } from 'state/swap/hooks'
-import { PairDataTimeWindowEnum } from 'state/swap/types'
 import BnbWbnbNotice from './BnbWbnbNotice'
 import { BNB_ADDRESS } from './constants'
-import NoChartAvailable from './NoChartAvailable'
 import PriceChart from './PriceChart'
 import { getTokenAddress } from './utils'
 
@@ -31,21 +28,13 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   isChartExpanded,
   setIsChartExpanded,
   isChartDisplayed,
-  currentSwapPrice,
   isMobile,
 }) => {
-  // const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
   const token0Address = getTokenAddress(inputCurrencyId)
   const token1Address = getTokenAddress(outputCurrencyId)
   const [isPairReversed, setIsPairReversed] = useState(false)
   const togglePairReversed = useCallback(() => setIsPairReversed((prePairReversed) => !prePairReversed), [])
 
-  // const { pairPrices, pairId } = useFetchPairPrices({
-  //   token0Address: isPairReversed ? token1Address : token0Address,
-  //   token1Address: isPairReversed ? token0Address : token1Address,
-  //   timeWindow,
-  //   currentSwapPrice,
-  // })
   const { isDark } = useTheme()
 
   if (!isChartDisplayed) {

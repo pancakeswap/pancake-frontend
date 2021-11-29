@@ -15,14 +15,7 @@ const formatOptions = {
   tokenPrecision: true,
 }
 
-const BasicChart = ({
-  token0Address,
-  token1Address,
-  isChartExpanded,
-  // inputCurrency,
-  outputCurrency,
-  isMobile,
-}) => {
+const BasicChart = ({ token0Address, token1Address, isChartExpanded, outputCurrency, isMobile }) => {
   const singleTokenPrice = useSingleTokenSwapInfo()
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
 
