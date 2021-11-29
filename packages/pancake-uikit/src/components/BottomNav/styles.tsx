@@ -12,6 +12,7 @@ const StyledBottomNav = styled(Flex)`
   html[data-useragent*="TokenPocket_iOS"] & {
     padding-bottom: 45px;
   }
+  z-index: 20;
 `;
 
 export const StyledOverlay = styled.div`
@@ -23,6 +24,7 @@ export const StyledOverlay = styled.div`
   right: 0;
   background-color: ${({ theme }) => `${theme.colors.text}99`};
   backdrop-filter: blur(2px);
+  z-index: 20;
 `;
 
 export default StyledBottomNav;

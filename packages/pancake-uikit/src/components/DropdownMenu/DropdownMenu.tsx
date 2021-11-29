@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { Link } from "react-router-dom";
+import { useOnClickOutside } from "../../hooks";
 import { Box, Flex } from "../Box";
 import IconComponent from "../Svg/IconComponent";
 import {
@@ -60,10 +61,19 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
     }
   }, [isMenuShow, setMenuOpenByIndex, index]);
 
+  useOnClickOutside(
+    {
+      current: targetRef,
+    },
+    () => {
+      setIsOpen(false);
+    }
+  );
+
   return (
     <Box ref={setTargetRef} {...props}>
       <Box
-        onTouchStart={() => {
+        onPointerDown={() => {
           setIsOpen((s) => !s);
         }}
       >
