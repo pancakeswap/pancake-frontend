@@ -14,6 +14,11 @@ const Table = styled.table`
     padding: 8px;
   }
 `
+const Box = styled.div`
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+`
 
 const ThemedComponent = styled.div`
   color: ${({ theme }) => theme.colors.text};
@@ -51,7 +56,14 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
   p: (props) => {
     return <Text as="p" my="16px" {...props} />
   },
-  table: Table,
+  // table: Table,
+  table: ({ node, ...props }) => {
+    return (
+      <Box>
+        <Table>{props.children}</Table>
+      </Box>
+    )
+  },
   ol: (props) => {
     return <ThemedComponent as="ol" {...props} />
   },
