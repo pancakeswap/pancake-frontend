@@ -126,6 +126,12 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
             value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}
           />
+          {poolId === PoolIds.poolUnlimited && (
+            <FooterEntry
+              label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
+              value={pricePerTokenWithFee}
+            />
+          )}
         </>
       )
     }
