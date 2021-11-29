@@ -1,4 +1,5 @@
 import { INFO_CLIENT } from 'config/constants/endpoints'
+import requestWithTimeout from 'utils/requestWithTimeout'
 import { GraphQLClient } from 'graphql-request'
 import lastPairDayId from '../queries/lastPairDayId'
 import pairHourDatas from '../queries/pairHourDatas'
@@ -23,14 +24,14 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
   try {
     switch (timeWindow) {
       case PairDataTimeWindowEnum.DAY: {
-        const data = await client.request<PairHoursDatasResponse>(pairHourDatas, {
+        const data = await requestWithTimeout<PairHoursDatasResponse>(client, pairHourDatas, {
           pairId,
           first: timeWindowIdsCountMapping[timeWindow],
         })
         return { data, error: false }
       }
       case PairDataTimeWindowEnum.WEEK: {
-        const lastPairHourIdData = await client.request<LastPairHourIdResponse>(lastPairHourId, { pairId })
+        const lastPairHourIdData = await requestWithTimeout<LastPairHourIdResponse>(client, lastPairHourId, { pairId })
         const lastId = lastPairHourIdData?.pairHourDatas ? lastPairHourIdData.pairHourDatas[0]?.id : null
         if (!lastId) {
           return { data: { pairHourDatas: [] }, error: false }
@@ -42,19 +43,21 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
           timeWindow,
           idsCount: timeWindowIdsCountMapping[timeWindow],
         })
-        const pairHoursData = await client.request<PairHoursDatasResponse>(pairHourDatasByIds, { pairIds: pairHourIds })
 
+        const pairHoursData = await requestWithTimeout<PairHoursDatasResponse>(client, pairHourDatasByIds, {
+          pairIds: pairHourIds,
+        })
         return { data: pairHoursData, error: false }
       }
       case PairDataTimeWindowEnum.MONTH: {
-        const data = await client.request<PairHoursDatasResponse>(pairDayDatas, {
+        const data = await requestWithTimeout<PairHoursDatasResponse>(client, pairDayDatas, {
           pairId,
           first: timeWindowIdsCountMapping[timeWindow],
         })
         return { data, error: false }
       }
       case PairDataTimeWindowEnum.YEAR: {
-        const lastPairDayIdData = await client.request<LastPairDayIdResponse>(lastPairDayId, { pairId })
+        const lastPairDayIdData = await requestWithTimeout<LastPairDayIdResponse>(client, lastPairDayId, { pairId })
         const lastId = lastPairDayIdData?.pairDayDatas ? lastPairDayIdData.pairDayDatas[0]?.id : null
         if (!lastId) {
           return { data: { pairDayDatas: [] }, error: false }
@@ -66,7 +69,9 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
           timeWindow,
           idsCount: timeWindowIdsCountMapping[timeWindow],
         })
-        const pairDayData = await client.request<PairDayDatasResponse>(pairDayDatasByIdsQuery, { pairIds: pairDayIds })
+        const pairDayData = await requestWithTimeout<PairDayDatasResponse>(client, pairDayDatasByIdsQuery, {
+          pairIds: pairDayIds,
+        })
         return { data: pairDayData, error: false }
       }
       default:
