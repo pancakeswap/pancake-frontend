@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.58.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.58.0...@pancakeswap/uikit@0.58.1) (2021-11-29)
+
+
+### Bug Fixes
+
+* **uikit:** BottomNav clickoutside ([#344](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/344)) ([d8ba475](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/d8ba475b88c03a1ba64685818d77c55e3911f3c6))
+
+
+
+
+
 # [0.58.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.57.0...@pancakeswap/uikit@0.58.0) (2021-11-24)
 
 

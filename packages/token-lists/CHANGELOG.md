@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.21.0...@pancakeswap/token-lists@2.22.0) (2021-11-29)
+
+
+### Features
+
+* List BCOIN and SHEESHA ([#342](https://github.com/pancakeswap/pancake-toolkit/issues/342)) ([eee80f6](https://github.com/pancakeswap/pancake-toolkit/commit/eee80f66ad726c9fdb11470b0356b179696c3a72))
+
+
+
+
+
 # [2.21.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.19.1...@pancakeswap/token-lists@2.21.0) (2021-11-22)
 
 
