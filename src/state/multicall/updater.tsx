@@ -36,13 +36,18 @@ async function fetchChunk(
   try {
     // prettier-ignore
     [resultsBlockNumber, returnData] = await multicallContract.aggregate(
-      chunk.map((obj) => [obj.address, obj.callData]), {
+      chunk.map((obj) => [obj.address, obj.callData]),
+      {
         blockTag: minBlockNumber,
       }
     )
   } catch (err) {
     const error = err as any
-    if (error.code === -32000 || error.message?.indexOf('header not found') !== -1) {
+    if (
+      error.code === -32000 ||
+      error?.data?.message?.indexOf('header not found') !== -1 ||
+      error.message?.indexOf('header not found') !== -1
+    ) {
       throw new RetryableError(`header not found for block number ${minBlockNumber}`)
     } else if (error.code === -32603 || error.message?.indexOf('execution ran out of gas') !== -1) {
       if (chunk.length > 1) {
