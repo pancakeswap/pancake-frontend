@@ -94,14 +94,27 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
   )
 }
 
-export function useTradingViewNoDataEvent({ id, onNoDataEvent }: { id?: string; onNoDataEvent: () => void }) {
+export function useTradingViewEvent({
+  id,
+  onNoDataEvent,
+  onLoadedEvent,
+}: {
+  id?: string
+  onNoDataEvent?: () => void
+  onLoadedEvent?: () => void
+}) {
   useEffect(() => {
     const onNoDataAvailable = (event: MessageEvent) => {
       const payload = event.data
 
       if (payload.name === 'tv-widget-no-data') {
         if (id && payload.frameElementId === id) {
-          onNoDataEvent()
+          onNoDataEvent?.()
+        }
+      }
+      if (payload.name === 'tv-widget-load') {
+        if (id && payload.frameElementId === id) {
+          onLoadedEvent?.()
         }
       }
     }
@@ -111,7 +124,7 @@ export function useTradingViewNoDataEvent({ id, onNoDataEvent }: { id?: string; 
     return () => {
       window.removeEventListener('message', onNoDataAvailable)
     }
-  }, [id, onNoDataEvent])
+  }, [id, onNoDataEvent, onLoadedEvent])
 }
 
 export default TradingView

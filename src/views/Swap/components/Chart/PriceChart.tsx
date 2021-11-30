@@ -134,6 +134,7 @@ const PriceChart = ({
           outputCurrency={outputCurrency}
           token1Address={token1Address}
           isMobile={isMobile}
+          isDark={isDark}
         />
       )}
     </StyledPriceChart>
