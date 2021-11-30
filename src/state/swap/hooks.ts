@@ -355,6 +355,7 @@ export const useFetchPairPrices = ({
   currentSwapPrice,
 }: useFetchPairPricesParams) => {
   const [pairId, setPairId] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
   const pairData = useSelector(pairByDataIdSelector({ pairId, timeWindow }))
   const derivedPairData = useSelector(derivedPairByDataIdSelector({ pairId, timeWindow }))
   const dispatch = useDispatch()
@@ -378,10 +379,13 @@ export const useFetchPairPrices = ({
       } catch (error) {
         console.error('Failed to fetch derived prices for chart', error)
         dispatch(updateDerivedPairData({ pairData: [], pairId, timeWindow }))
+      } finally {
+        setIsLoading(false)
       }
     }
 
     const fetchAndUpdatePairPrice = async () => {
+      setIsLoading(true)
       const { data } = await fetchPairPriceData({ pairId, timeWindow })
       if (data) {
         // Find out if Liquidity Pool has enough liquidity
@@ -391,6 +395,7 @@ export const useFetchPairPrices = ({
         const newPairData = normalizeChartData(data, timeWindow) || []
         if (newPairData.length > 0 && hasEnoughLiquidity) {
           dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
+          setIsLoading(false)
         } else {
           console.info(`[Price Chart]: Liquidity too low for ${pairId}`)
           dispatch(updatePairData({ pairData: [], pairId, timeWindow }))
@@ -402,10 +407,20 @@ export const useFetchPairPrices = ({
       }
     }
 
-    if (!pairData && !derivedPairData && pairId) {
+    if (!pairData && !derivedPairData && pairId && !isLoading) {
       fetchAndUpdatePairPrice()
     }
-  }, [pairId, timeWindow, pairData, currentSwapPrice, token0Address, token1Address, derivedPairData, dispatch])
+  }, [
+    pairId,
+    timeWindow,
+    pairData,
+    currentSwapPrice,
+    token0Address,
+    token1Address,
+    derivedPairData,
+    dispatch,
+    isLoading,
+  ])
 
   useEffect(() => {
     const updatePairId = () => {
