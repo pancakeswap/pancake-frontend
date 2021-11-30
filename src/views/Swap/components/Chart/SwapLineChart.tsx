@@ -1,9 +1,9 @@
 import React, { useEffect, Dispatch, SetStateAction } from 'react'
-import { format } from 'date-fns'
 import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from 'recharts'
 import useTheme from 'hooks/useTheme'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
+import { useTranslation } from 'contexts/Localization'
 
 export type SwapLineChartProps = {
   data: any[]
@@ -15,11 +15,19 @@ export type SwapLineChartProps = {
 
 // Calls setHoverValue and setHoverDate when part of chart is hovered
 // Note: this NEEDs to be wrapped inside component and useEffect, if you plug it as is it will create big render problems (try and see console)
-const HoverUpdater = ({ payload, setHoverValue, setHoverDate }) => {
+const HoverUpdater = ({ locale, payload, setHoverValue, setHoverDate }) => {
   useEffect(() => {
     setHoverValue(payload.value)
-    setHoverDate(format(payload.time, 'HH:mm dd MMM, yyyy'))
-  }, [payload.value, payload.time, setHoverValue, setHoverDate])
+    setHoverDate(
+      payload.time.toLocaleString(locale, {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    )
+  }, [locale, payload.value, payload.time, setHoverValue, setHoverDate])
 
   return null
 }
@@ -30,17 +38,32 @@ const getChartColors = ({ isChangePositive }) => {
     : { gradient1: '#ED4B9E', gradient2: '#ED4B9E', stroke: '#ED4B9E ' }
 }
 
-const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
-  [PairDataTimeWindowEnum.DAY]: 'h:mm aa',
-  [PairDataTimeWindowEnum.WEEK]: 'dd MMM',
-  [PairDataTimeWindowEnum.MONTH]: 'dd MMM',
-  [PairDataTimeWindowEnum.YEAR]: 'dd MMM',
+const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, Intl.DateTimeFormatOptions> = {
+  [PairDataTimeWindowEnum.DAY]: {
+    hour: '2-digit',
+    minute: '2-digit',
+  },
+  [PairDataTimeWindowEnum.WEEK]: {
+    month: 'short',
+    day: '2-digit',
+  },
+  [PairDataTimeWindowEnum.MONTH]: {
+    month: 'short',
+    day: '2-digit',
+  },
+  [PairDataTimeWindowEnum.YEAR]: {
+    month: 'short',
+    day: '2-digit',
+  },
 }
 
 /**
  * Note: remember that it needs to be mounted inside the container with fixed height
  */
 const LineChart = ({ data, setHoverValue, setHoverDate, isChangePositive, timeWindow }: SwapLineChartProps) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
   const colors = getChartColors({ isChangePositive })
   const dateFormatting = dateFormattingByTimewindow[timeWindow]
@@ -73,7 +96,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate, isChangePositive, timeWi
           dataKey="time"
           axisLine={false}
           tickLine={false}
-          tickFormatter={(time) => format(time, dateFormatting)}
+          tickFormatter={(time) => time.toLocaleString(locale, dateFormatting)}
           minTickGap={8}
         />
         <YAxis dataKey="value" axisLine={false} tickLine={false} domain={['auto', 'auto']} hide />
@@ -81,7 +104,12 @@ const LineChart = ({ data, setHoverValue, setHoverDate, isChangePositive, timeWi
           cursor={{ stroke: theme.colors.textDisabled }}
           contentStyle={{ display: 'none' }}
           formatter={(tooltipValue, name, props) => (
-            <HoverUpdater payload={props.payload} setHoverValue={setHoverValue} setHoverDate={setHoverDate} />
+            <HoverUpdater
+              locale={locale}
+              payload={props.payload}
+              setHoverValue={setHoverValue}
+              setHoverDate={setHoverDate}
+            />
           )}
         />
         <Area dataKey="value" type="linear" stroke={colors.stroke} fill="url(#gradient)" strokeWidth={2} />

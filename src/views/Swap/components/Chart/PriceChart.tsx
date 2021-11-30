@@ -11,7 +11,6 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import React, { useState } from 'react'
-import { format } from 'date-fns'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { formatAmount, formatAmountNotation } from 'views/Info/utils/formatInfoNumbers'
 import { useTranslation } from 'contexts/Localization'
@@ -37,14 +36,23 @@ const PriceChart = ({
   setIsChartExpanded,
   isMobile,
 }) => {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
-  const currentDate = format(new Date(), 'HH:mm dd MMM, yyyy')
+  const currentDate = new Date().toLocaleString(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
   const valueToDisplay = hoverValue || lineChartData[lineChartData.length - 1]?.value
   const { changePercentage, changeValue } = getTimeWindowChange(lineChartData)
   const isChangePositive = changeValue >= 0
   const chartHeight = isChartExpanded ? 'calc(100% - 120px)' : '310px'
-  const { t } = useTranslation()
 
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
