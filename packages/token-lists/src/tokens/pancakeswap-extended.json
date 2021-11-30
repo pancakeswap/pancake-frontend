@@ -2030,5 +2030,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x00e1656e45f18ec6747F5a8496Fd39B50b38396D.png"
+  },
+  {
+    "name": "Quidd Token",
+    "symbol": "QUIDD",
+    "address": "0x7961Ade0a767c0E5B67Dd1a1F78ba44F727642Ed",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x7961Ade0a767c0E5B67Dd1a1F78ba44F727642Ed.png"
   }
 ]

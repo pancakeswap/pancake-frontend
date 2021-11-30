@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-11-24T11:38:02.989Z",
+  "timestamp": "2021-11-30T09:43:53.083Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 42
+    "patch": 44
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1451,6 +1451,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x07AaA29E63FFEB2EBf59B33eE61437E1a91A3bb2.png"
+    },
+    {
+      "name": "Quidd Token",
+      "symbol": "QUIDD",
+      "address": "0x7961Ade0a767c0E5B67Dd1a1F78ba44F727642Ed",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x7961Ade0a767c0E5B67Dd1a1F78ba44F727642Ed.png"
     },
     {
       "name": "QUSD Stablecoin",
