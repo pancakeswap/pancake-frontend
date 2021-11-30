@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 480,
+    lpSymbol: 'QUIDD-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xD6d206F59cC5a3BfA4Cc10bc8Ba140ac37Ad1C89',
+    },
+    token: serializedTokens.quidd,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 479,
     lpSymbol: 'ZOO-BNB LP',
     lpAddresses: {
