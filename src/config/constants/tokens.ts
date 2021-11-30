@@ -1787,7 +1787,7 @@ export const mainnetTokens = {
     '0x7961Ade0a767c0E5B67Dd1a1F78ba44F727642Ed',
     18,
     'QUIDD',
-    'Quidd',
+    'Quidd Token',
     'https://www.quiddtoken.com/',
   ),
 }
