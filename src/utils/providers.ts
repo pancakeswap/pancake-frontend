@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import { ethers, logger } from 'ethers'
 import { Logger } from '@ethersproject/logger'
 import { Network } from '@ethersproject/networks'
