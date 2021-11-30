@@ -13,6 +13,8 @@ interface TradingViewChartProps {
   isMobile: boolean
 }
 
+const bnbToWBNBSymbol = (sym: string) => (sym === 'BNB' ? 'WBNB' : sym)
+
 const TradingViewChart = ({
   isChartExpanded,
   outputCurrency,
@@ -29,14 +31,8 @@ const TradingViewChart = ({
       return null
     }
     const prefix = 'PANCAKESWAP:'
-    let input = inputCurrency.symbol
-    let output = outputCurrency.symbol
-    if (input === 'BNB') {
-      input = 'WBNB'
-    }
-    if (output === 'BNB') {
-      output = 'WBNB'
-    }
+    const input = bnbToWBNBSymbol(inputCurrency.symbol)
+    const output = bnbToWBNBSymbol(outputCurrency.symbol)
     return `${prefix}${input}${output}`
   }, [inputCurrency?.symbol, outputCurrency?.symbol])
 

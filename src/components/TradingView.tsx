@@ -1,7 +1,7 @@
-import { Box } from '@pancakeswap/uikit'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useScript from 'hooks/useScript'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { DefaultTheme, useTheme } from 'styled-components'
 
 /**
@@ -20,15 +20,21 @@ const tradingViewListener = async () =>
   )
 
 const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeCode: string, opts: any) => {
+  let timezone = 'Etc/UTC'
+  try {
+    timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  } catch (e) {
+    // noop
+  }
   /* eslint-disable new-cap */
   /* eslint-disable no-new */
   // @ts-ignore
-  new TradingViewObj.widget({
+  return new TradingViewObj.widget({
     autosize: true,
     height: '100%',
     symbol: 'BINANCE:BNBUSDT',
     interval: '5',
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Etc/UTC',
+    timezone,
     theme: theme.isDark ? 'dark' : 'light',
     style: '1',
     locale: localeCode,
@@ -36,6 +42,7 @@ const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeC
     enable_publishing: false,
     allow_symbol_change: true,
     hide_side_toolbar: false,
+    enabled_features: ['header_fullscreen_button'],
     ...opts,
   })
 }
@@ -48,23 +55,31 @@ interface TradingViewProps {
 const TradingView = ({ id, symbol }: TradingViewProps) => {
   const { currentLanguage } = useTranslation()
   const theme = useTheme()
+  const widgetRef = useRef<any>()
+  const { isMobile } = useMatchBreakpoints()
 
   useScript('https://s3.tradingview.com/tv.js')
 
   useEffect(() => {
-    const opts = {
+    const opts: any = {
       container_id: id,
       symbol,
     }
+
+    if (isMobile) {
+      opts.hide_side_toolbar = true
+    }
+
     // @ts-ignore
     if (window.tv) {
       // @ts-ignore
-      initializeTradingView(window.tv, theme, currentLanguage.code, opts)
+      widgetRef.current = initializeTradingView(window.tv, theme, currentLanguage.code, opts)
     } else {
       tradingViewListener().then((tv) => {
-        initializeTradingView(tv, theme, currentLanguage.code, opts)
+        widgetRef.current = initializeTradingView(tv, theme, currentLanguage.code, opts)
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme, currentLanguage, id, symbol])
 
   return (

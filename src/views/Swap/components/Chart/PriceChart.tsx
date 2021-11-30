@@ -36,7 +36,7 @@ const TradingViewIcon: React.FC<SvgProps> = (props) => {
     </Svg>
   )
 }
-const GraphIcon: React.FC<SvgProps> = (props) => {
+const LineGraphIcon: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 23 21" {...props}>
       <path
@@ -88,15 +88,19 @@ const PriceChart = ({
           </IconButton>
           <Flex>
             <ChartButton
+              aria-label={t('Basic')}
+              title={t('Basic')}
               $active={chartView === ChartViewMode.BASIC}
               scale="sm"
               variant="text"
               onClick={() => setChartView(ChartViewMode.BASIC)}
               mr="8px"
             >
-              {isDesktop ? t('Basic') : <GraphIcon />}
+              {isDesktop ? t('Basic') : <LineGraphIcon />}
             </ChartButton>
             <ChartButton
+              aria-label="Tradingview"
+              title="Tradingview"
               $active={chartView === ChartViewMode.TRADING_VIEW}
               scale="sm"
               variant="text"
