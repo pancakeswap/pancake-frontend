@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import fs from 'fs'
 import { defineConfig, loadEnv } from 'vite'
 import envCompatible from 'vite-plugin-env-compatible'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -18,9 +19,24 @@ const htmlPlugin = (env) => {
 
 const COMPATIBLE_ENV_PREFIX = 'REACT_APP'
 
+const isUIKitLinked = () => {
+  const stat = fs.lstatSync(path.resolve(__dirname, 'node_modules/@pancakeswap/uikit'))
+  return stat.isSymbolicLink()
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, 'env', COMPATIBLE_ENV_PREFIX)
+
+  let optimizeDeps = {}
+  if (mode === 'development' && isUIKitLinked()) {
+    optimizeDeps = {
+      // for local linking purpose.
+      exclude: ['@pancakeswap/uikit'],
+    }
+  }
+
+  console.log(optimizeDeps, 'optimizeDeps')
 
   return {
     build: {
@@ -36,10 +52,7 @@ export default defineConfig(({ mode }) => {
         },
       ],
     },
-    optimizeDeps: {
-      // for local linking purpose.
-      // exclude: ['@pancakeswap/uikit'],
-    },
+    optimizeDeps,
     plugins: [
       tsconfigPaths(),
       envCompatible({
