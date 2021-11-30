@@ -43,12 +43,12 @@ const IfoQuestions = () => {
             </Heading>
           </CardHeader>
           <CardBody>
-            {config.map(({ title, description }, i, { length }) => (
-              <FoldableText key={title} id={title} mb={i + 1 === length ? '' : '24px'} title={t(title)}>
+            {config(t).map(({ title, description }, i, { length }) => (
+              <FoldableText key={title} id={title} mb={i + 1 === length ? '' : '24px'} title={title}>
                 {description.map((desc) => {
                   return (
                     <Text key={desc} color="textSubtle" as="p">
-                      {t(desc)}
+                      {desc}
                     </Text>
                   )
                 })}
