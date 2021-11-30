@@ -122,11 +122,13 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
           {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
-          <FooterEntry
-            label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
-            value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}
-          />
-          {poolId === PoolIds.poolUnlimited && (
+          {ifo.version > 1 && (
+            <FooterEntry
+              label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
+              value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}
+            />
+          )}
+          {ifo.version > 1 && poolId === PoolIds.poolUnlimited && (
             <FooterEntry
               label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
               value={pricePerTokenWithFee}
