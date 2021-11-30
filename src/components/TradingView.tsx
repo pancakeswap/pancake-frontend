@@ -30,6 +30,9 @@ const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeC
   /* eslint-disable no-new */
   // @ts-ignore
   return new TradingViewObj.widget({
+    // Advanced Chart Widget uses the legacy embedding scheme,
+    // an id property should be specified in the settings object
+    id: opts.container_id,
     autosize: true,
     height: '100%',
     symbol: 'BINANCE:BNBUSDT',
@@ -79,6 +82,8 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
         widgetRef.current = initializeTradingView(tv, theme, currentLanguage.code, opts)
       })
     }
+
+    // Ignore isMobile to avoid re-render TV
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme, currentLanguage, id, symbol])
 
@@ -87,6 +92,26 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
       <div id={id} />
     </Box>
   )
+}
+
+export function useTradingViewNoDataEvent({ id, onNoDataEvent }: { id?: string; onNoDataEvent: () => void }) {
+  useEffect(() => {
+    const onNoDataAvailable = (event: MessageEvent) => {
+      const payload = event.data
+
+      if (payload.name === 'tv-widget-no-data') {
+        if (id && payload.frameElementId === id) {
+          onNoDataEvent()
+        }
+      }
+    }
+    window.addEventListener('message', onNoDataAvailable)
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      window.removeEventListener('message', onNoDataAvailable)
+    }
+  }, [id, onNoDataEvent])
 }
 
 export default TradingView
