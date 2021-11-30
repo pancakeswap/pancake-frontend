@@ -1,15 +1,21 @@
+import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
+import { farmsConfig } from 'config/constants'
+import { busdBNBFarmConfig, cakeBnbFarmConfig } from 'config/constants/farms'
+import useRefresh from 'hooks/useRefresh'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useWeb3React } from '@web3-react/core'
-import BigNumber from 'bignumber.js'
+import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { farmsConfig } from 'config/constants'
-import useRefresh from 'hooks/useRefresh'
-import { deserializeToken } from 'state/user/hooks/helpers'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, nonArchivedFarms } from '.'
-import { State, SerializedFarm, DeserializedFarmUserData, DeserializedFarm, DeserializedFarmsState } from '../types'
+import {
+  fetchFarmsPublicDataAsync,
+  fetchFarmsPublicDataCancellableAsync,
+  fetchFarmUserDataAsync,
+  nonArchivedFarms,
+} from '.'
+import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, SerializedFarm, State } from '../types'
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
   return {
@@ -49,9 +55,12 @@ export const usePollFarmsPublicData = (includeArchive = false) => {
 
   useEffect(() => {
     const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
-    const pids = farmsToFetch.map((farmToFetch) => farmToFetch.pid)
 
-    dispatch(fetchFarmsPublicDataAsync(pids))
+    const promise = dispatch(fetchFarmsPublicDataCancellableAsync(farmsToFetch))
+    return () => {
+      // @ts-ignore
+      promise.abort()
+    }
   }, [includeArchive, dispatch, slowRefresh])
 }
 
@@ -62,12 +71,11 @@ export const usePollFarmsWithUserData = (includeArchive = false) => {
 
   useEffect(() => {
     const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
-    const pids = farmsToFetch.map((farmToFetch) => farmToFetch.pid)
 
-    dispatch(fetchFarmsPublicDataAsync(pids))
+    dispatch(fetchFarmsPublicDataAsync(farmsToFetch))
 
     if (account) {
-      dispatch(fetchFarmUserDataAsync({ account, pids }))
+      dispatch(fetchFarmUserDataAsync({ account, farmsToFetch }))
     }
   }, [includeArchive, dispatch, slowRefresh, account])
 }
@@ -82,18 +90,19 @@ export const usePollCoreFarmData = () => {
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync([251, 252]))
+    dispatch(fetchFarmsPublicDataAsync([cakeBnbFarmConfig, busdBNBFarmConfig]))
   }, [dispatch, fastRefresh])
 }
 
 export const useFarms = (): DeserializedFarmsState => {
   const farms = useSelector((state: State) => state.farms)
   const deserializedFarmsData = farms.data.map(deserializeFarm)
-  const { loadArchivedFarmsData, userDataLoaded } = farms
+  const { loadArchivedFarmsData, userDataLoaded, batchFetching } = farms
   return {
     loadArchivedFarmsData,
     userDataLoaded,
     data: deserializedFarmsData,
+    batchFetching,
   }
 }
 

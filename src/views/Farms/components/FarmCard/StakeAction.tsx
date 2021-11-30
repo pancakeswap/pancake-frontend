@@ -1,19 +1,20 @@
-import React, { useCallback } from 'react'
+import { AddIcon, Button, Flex, Heading, IconButton, MinusIcon, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
-import { useLocation } from 'react-router-dom'
 import Balance from 'components/Balance'
+import { farmsByPID } from 'config/constants/farms'
 import { useTranslation } from 'contexts/Localization'
+import React, { useCallback } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice } from 'state/farms/hooks'
+import styled from 'styled-components'
 import { getBalanceAmount, getBalanceNumber } from 'utils/formatBalance'
+import useStakeFarms from '../../hooks/useStakeFarms'
+import useUnstakeFarms from '../../hooks/useUnstakeFarms'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
-import useUnstakeFarms from '../../hooks/useUnstakeFarms'
-import useStakeFarms from '../../hooks/useStakeFarms'
 
 interface FarmCardActionsProps {
   stakedBalance?: BigNumber
@@ -57,12 +58,12 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
 
   const handleStake = async (amount: string) => {
     await onStake(amount)
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    dispatch(fetchFarmUserDataAsync({ account, farmsToFetch: [farmsByPID[pid]] }))
   }
 
   const handleUnstake = async (amount: string) => {
     await onUnstake(amount)
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    dispatch(fetchFarmUserDataAsync({ account, farmsToFetch: [farmsByPID[pid]] }))
   }
 
   const displayBalance = useCallback(() => {

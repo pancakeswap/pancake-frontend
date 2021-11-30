@@ -1,28 +1,29 @@
-import React, { useState, useCallback } from 'react'
-import styled from 'styled-components'
-import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, Text, Heading } from '@pancakeswap/uikit'
-import { useLocation } from 'react-router-dom'
-import { BigNumber } from 'bignumber.js'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import Balance from 'components/Balance'
+import { AddIcon, Button, Heading, IconButton, MinusIcon, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useFarmUser, useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
-import { fetchFarmUserDataAsync } from 'state/farms'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import { useTranslation } from 'contexts/Localization'
-import useToast from 'hooks/useToast'
-import { useERC20 } from 'hooks/useContract'
+import { BigNumber } from 'bignumber.js'
+import Balance from 'components/Balance'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import { farmsByPID } from 'config/constants/farms'
+import { useTranslation } from 'contexts/Localization'
+import { useERC20 } from 'hooks/useContract'
+import useToast from 'hooks/useToast'
+import React, { useCallback, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useAppDispatch } from 'state'
+import { fetchFarmUserDataAsync } from 'state/farms'
+import { useFarmUser, useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
+import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
+import useApproveFarm from '../../../hooks/useApproveFarm'
+import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import DepositModal from '../../DepositModal'
 import WithdrawModal from '../../WithdrawModal'
-import useStakeFarms from '../../../hooks/useStakeFarms'
-import useApproveFarm from '../../../hooks/useApproveFarm'
-import { ActionContainer, ActionTitles, ActionContent } from './styles'
+import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -68,12 +69,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
 
   const handleStake = async (amount: string) => {
     await onStake(amount)
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    dispatch(fetchFarmUserDataAsync({ account, farmsToFetch: [farmsByPID[pid]] }))
   }
 
   const handleUnstake = async (amount: string) => {
     await onUnstake(amount)
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    dispatch(fetchFarmUserDataAsync({ account, farmsToFetch: [farmsByPID[pid]] }))
   }
 
   const displayBalance = useCallback(() => {
@@ -113,7 +114,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     try {
       setRequestedApproval(true)
       await onApprove()
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, farmsToFetch: [farmsByPID[pid]] }))
     } catch (e) {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       console.error(e)

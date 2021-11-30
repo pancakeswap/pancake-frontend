@@ -110,12 +110,14 @@ export interface SerializedFarmsState {
   data: SerializedFarm[]
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
+  batchFetching: boolean
 }
 
 export interface DeserializedFarmsState {
   data: DeserializedFarm[]
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
+  batchFetching: boolean
 }
 
 export interface VaultFees {
