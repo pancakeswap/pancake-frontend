@@ -36,8 +36,6 @@ export default defineConfig(({ mode }) => {
     }
   }
 
-  console.log(optimizeDeps, 'optimizeDeps')
-
   return {
     build: {
       outDir: 'build',
