@@ -226,6 +226,12 @@ const campaigns: Campaign[] = [
     title: 'FC Porto Fan Token',
     badge: 'ifo-porto.svg',
   },
+  {
+    id: '511150000',
+    type: 'ifo',
+    title: 'FC Santos Fan Token',
+    badge: 'ifo-santos.svg',
+  },
 ]
 
 /**
