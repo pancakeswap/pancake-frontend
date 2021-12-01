@@ -21,6 +21,8 @@ describe('Info Page', () => {
 
   it('loads single token page', () => {
     cy.visit('/info/token/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c')
-    cy.get('#info-token-name-title').should('be.visible')
+    cy.get('#info-token-name-title', {
+      timeout: 25000,
+    }).should('be.visible')
   })
 })
