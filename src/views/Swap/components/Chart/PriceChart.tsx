@@ -131,6 +131,8 @@ const PriceChart = ({
       )}
       {chartView === ChartViewMode.TRADING_VIEW && (
         <TradingViewChart
+          // unmount the whole component when symbols is changed
+          key={`${inputCurrency?.symbol}-${outputCurrency?.symbol}`}
           isChartExpanded={isChartExpanded}
           inputCurrency={inputCurrency}
           outputCurrency={outputCurrency}

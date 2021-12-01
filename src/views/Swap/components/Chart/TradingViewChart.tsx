@@ -93,7 +93,7 @@ const TradingViewChart = ({
   // debounce the loading to wait for no data event from TV widget.
   // we cover the loading spinner over TV, let TV try to load data from pairs or inverted pairs fallback
   // if there's no no-data event coming between the debounce time, we assume the chart is loaded
-  const debouncedLoading = useDebounce(isLoading, 500)
+  const debouncedLoading = useDebounce(isLoading, 800)
 
   return (
     <>
@@ -111,7 +111,7 @@ const TradingViewChart = ({
                 <BarChartLoader />
               </LoadingWrapper>
             )}
-            <TradingViewWrapper $show={!debouncedLoading}>
+            <TradingViewWrapper $show={!isLoading}>
               {symbol && <TradingView id={ID} symbol={symbol} />}
             </TradingViewWrapper>
           </Box>
