@@ -54,6 +54,9 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<SerializedFarm[], Seri
   fetchFarmsPublicData,
 )
 
+/**
+ * Cancellable Action for poll fetch farms
+ */
 export const fetchFarmsPublicDataCancellableAsync = createAsyncThunk<
   SerializedFarm[],
   SerializedFarm[],

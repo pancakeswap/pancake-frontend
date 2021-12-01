@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { farmsConfig } from 'config/constants'
-import { busdBNBFarmConfig, cakeBnbFarmConfig } from 'config/constants/farms'
+import { farmsByPID } from 'config/constants/farms'
 import useRefresh from 'hooks/useRefresh'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -56,10 +56,18 @@ export const usePollFarmsPublicData = (includeArchive = false) => {
   useEffect(() => {
     const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
 
-    const promise = dispatch(fetchFarmsPublicDataCancellableAsync(farmsToFetch))
+    // @ts-ignore
+    const requestIdleCallback = window.requestIdleCallback || setTimeout
+
+    let promise
+    // Redux dispatch somehow blocking the client navigation rendering in the first place.
+    // It's a little hack to let user can see the page response instead of hanging to wait for this line finish.
+    requestIdleCallback(() => {
+      dispatch(fetchFarmsPublicDataCancellableAsync(farmsToFetch))
+    })
     return () => {
       // @ts-ignore
-      promise.abort()
+      promise?.abort?.()
     }
   }, [includeArchive, dispatch, slowRefresh])
 }
@@ -90,7 +98,7 @@ export const usePollCoreFarmData = () => {
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync([cakeBnbFarmConfig, busdBNBFarmConfig]))
+    dispatch(fetchFarmsPublicDataAsync([farmsByPID[251], farmsByPID[252]]))
   }, [dispatch, fastRefresh])
 }
 
