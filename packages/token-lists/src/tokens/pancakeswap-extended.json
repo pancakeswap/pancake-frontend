@@ -2038,5 +2038,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x7961Ade0a767c0E5B67Dd1a1F78ba44F727642Ed.png"
+  },
+  {
+    "name": "FC Santos Fan Token",
+    "symbol": "SANTOS",
+    "address": "0xA64455a4553C9034236734FadDAddbb64aCE4Cc7",
+    "chainId": 56,
+    "decimals": 8,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xA64455a4553C9034236734FadDAddbb64aCE4Cc7.png"
   }
 ]

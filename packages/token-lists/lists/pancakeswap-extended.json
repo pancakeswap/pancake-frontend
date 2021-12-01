@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-11-30T09:43:53.083Z",
+  "timestamp": "2021-12-01T06:19:12.049Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 44
+    "patch": 45
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1555,6 +1555,14 @@
       "chainId": 56,
       "decimals": 9,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3.png"
+    },
+    {
+      "name": "FC Santos Fan Token",
+      "symbol": "SANTOS",
+      "address": "0xA64455a4553C9034236734FadDAddbb64aCE4Cc7",
+      "chainId": 56,
+      "decimals": 8,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xA64455a4553C9034236734FadDAddbb64aCE4Cc7.png"
     },
     {
       "name": "bDollar Share",
