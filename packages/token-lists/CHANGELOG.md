@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.23.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.22.0...@pancakeswap/token-lists@2.23.0) (2021-12-01)
+
+
+### Features
+
+* List QUIDD ([#347](https://github.com/pancakeswap/pancake-toolkit/issues/347)) ([2fc35d9](https://github.com/pancakeswap/pancake-toolkit/commit/2fc35d9804e25323471273132f99d672888c2218))
+
+
+
+
+
 # [2.22.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.21.0...@pancakeswap/token-lists@2.22.0) (2021-11-29)
 
 

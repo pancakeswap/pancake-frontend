@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.59.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.58.1...@pancakeswap/uikit@0.59.0) (2021-12-01)
+
+
+### Bug Fixes
+
+* **uikit:** Snapshot ([#349](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/349)) ([a669484](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/a66948484dcccbdc5980fc5a898c2dd310c7a9a0))
+
+
+### Features
+
+* **uikit:** Improve BottomDrawer and Overlay ([#345](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/345)) ([9fe7f9d](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/9fe7f9d9cbd0dafd738090d8d0c86385cb04464c))
+
+
+
+
+
 ## [0.58.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.58.0...@pancakeswap/uikit@0.58.1) (2021-11-29)
 
 
