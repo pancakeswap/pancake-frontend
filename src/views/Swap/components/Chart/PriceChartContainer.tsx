@@ -50,8 +50,8 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
 
   return (
     <PriceChart
-      token0Address={isPairReversed ? token0Address : token1Address}
-      token1Address={isPairReversed ? token1Address : token0Address}
+      token0Address={isPairReversed ? token1Address : token0Address}
+      token1Address={isPairReversed ? token0Address : token1Address}
       inputCurrency={isPairReversed ? outputCurrency : inputCurrency}
       outputCurrency={isPairReversed ? inputCurrency : outputCurrency}
       onSwitchTokens={togglePairReversed}

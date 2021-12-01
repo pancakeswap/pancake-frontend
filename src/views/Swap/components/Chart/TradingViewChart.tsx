@@ -12,7 +12,7 @@ interface TradingViewChartProps {
   isChartExpanded: boolean
   inputCurrency: Currency
   outputCurrency: Currency
-  token1Address: string
+  token0Address: string
   isMobile: boolean
   isDark: boolean
   currentSwapPrice: {
@@ -41,14 +41,14 @@ const TradingViewChart = ({
   isChartExpanded,
   outputCurrency,
   inputCurrency,
-  token1Address,
+  token0Address,
   isMobile,
   isDark,
   currentSwapPrice,
 }: TradingViewChartProps) => {
   const [isLoading, setIsLoading] = useState(true)
   const { t } = useTranslation()
-  const token1Price = currentSwapPrice?.[token1Address]
+  const token0Price = currentSwapPrice?.[token0Address]
 
   const [hasNoData, setHasNoData] = useState(false)
 
@@ -92,7 +92,7 @@ const TradingViewChart = ({
       >
         <Flex flexDirection="column" pt="12px" position="relative" height="100%" width="100%">
           <TokenDisplay
-            value={token1Price}
+            value={token0Price}
             inputSymbol={inputCurrency?.symbol}
             outputSymbol={outputCurrency?.symbol}
             mx="24px"

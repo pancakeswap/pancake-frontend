@@ -69,6 +69,7 @@ const PriceChart = ({
   return (
     <StyledPriceChart
       height={chartView === ChartViewMode.TRADING_VIEW ? '100%' : '70%'}
+      overflow={chartView === ChartViewMode.TRADING_VIEW ? 'hidden' : 'unset'}
       $isDark={isDark}
       $isExpanded={isChartExpanded}
     >
@@ -137,7 +138,7 @@ const PriceChart = ({
           isChartExpanded={isChartExpanded}
           inputCurrency={inputCurrency}
           outputCurrency={outputCurrency}
-          token1Address={token1Address}
+          token0Address={token0Address}
           isMobile={isMobile}
           isDark={isDark}
           currentSwapPrice={currentSwapPrice}

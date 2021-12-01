@@ -77,7 +77,7 @@ const BasicChart = ({
             inputSymbol={inputCurrency?.symbol}
             outputSymbol={outputCurrency?.symbol}
           >
-            <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mb="8px" bold>
+            <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mt="-8px" mb="8px" bold>
               {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
             </Text>
           </TokenDisplay>

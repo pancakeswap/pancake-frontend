@@ -16,7 +16,7 @@ interface TokenDisplayProps extends FlexProps {
 
 const TokenDisplay: FC<TokenDisplayProps> = ({ value, inputSymbol, outputSymbol, children, ...props }) => {
   return value ? (
-    <Flex alignItems="flex-end" {...props}>
+    <Flex alignItems="flex-end" flexWrap="wrap" {...props}>
       <Text fontSize="40px" mr="8px" bold>
         {formatAmount(value, formatOptions)}
       </Text>
