@@ -15,6 +15,9 @@ interface TradingViewChartProps {
   token1Address: string
   isMobile: boolean
   isDark: boolean
+  currentSwapPrice: {
+    [key: string]: number
+  }
 }
 
 const TradingViewWrapper = styled.div<{ $show: boolean }>`
@@ -41,12 +44,11 @@ const TradingViewChart = ({
   token1Address,
   isMobile,
   isDark,
+  currentSwapPrice,
 }: TradingViewChartProps) => {
-  const tokens = useSingleTokenSwapInfo()
-
   const [isLoading, setIsLoading] = useState(true)
 
-  const token1Price = tokens?.[token1Address]
+  const token1Price = currentSwapPrice?.[token1Address]
 
   // try inverted pairs when no data in widget
   const [isInverted, setIsInverted] = useState(false)

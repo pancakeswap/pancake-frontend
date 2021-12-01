@@ -29,6 +29,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   setIsChartExpanded,
   isChartDisplayed,
   isMobile,
+  currentSwapPrice,
 }) => {
   const token0Address = getTokenAddress(inputCurrencyId)
   const token1Address = getTokenAddress(outputCurrencyId)
@@ -58,6 +59,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
       isChartExpanded={isChartExpanded}
       setIsChartExpanded={setIsChartExpanded}
       isMobile={isMobile}
+      currentSwapPrice={currentSwapPrice}
     />
   )
 }

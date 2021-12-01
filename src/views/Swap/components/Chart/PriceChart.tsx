@@ -59,6 +59,7 @@ const PriceChart = ({
   isMobile,
   token0Address,
   token1Address,
+  currentSwapPrice,
 }) => {
   const { isDesktop } = useMatchBreakpoints()
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
@@ -125,6 +126,7 @@ const PriceChart = ({
           isChartExpanded={isChartExpanded}
           outputCurrency={outputCurrency}
           isMobile={isMobile}
+          currentSwapPrice={currentSwapPrice}
         />
       )}
       {chartView === ChartViewMode.TRADING_VIEW && (
@@ -135,6 +137,7 @@ const PriceChart = ({
           token1Address={token1Address}
           isMobile={isMobile}
           isDark={isDark}
+          currentSwapPrice={currentSwapPrice}
         />
       )}
     </StyledPriceChart>
