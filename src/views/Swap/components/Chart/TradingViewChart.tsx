@@ -30,7 +30,11 @@ const LoadingWrapper = styled.div<{ $isDark: boolean }>`
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: ${({ $isDark }) => ($isDark ? '#2E2E42' : '#F4FCFF')};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    background: ${({ $isDark }) => ($isDark ? '#2E2E42' : '#F4FCFF')};
+  }
 `
 
 const bnbToWBNBSymbol = (sym: string) => (sym === 'BNB' ? 'WBNB' : sym)
