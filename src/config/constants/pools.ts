@@ -19,6 +19,19 @@ const pools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 242,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.santos,
+    contractAddress: {
+      97: '',
+      56: '0x0914b2d9D4DD7043893DEF53ecFC0F1179F87d5c',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '0.0578',
+  },
+  {
     sousId: 241,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.quidd,
