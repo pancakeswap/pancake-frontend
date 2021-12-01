@@ -1,5 +1,5 @@
 import React from "react";
-import Overlay from "./Overlay";
+import { Overlay } from "./Overlay";
 
 export default {
   title: "Components/Overlay",
@@ -7,5 +7,5 @@ export default {
 };
 
 export const Default: React.FC = () => {
-  return <Overlay show />;
+  return <Overlay />;
 };
