@@ -14,7 +14,7 @@ import {
 import { useHistory } from 'react-router-dom'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
-import { FINISHED, OVER } from 'config/constants/trading-competition/easterPhases'
+import { FINISHED, OVER } from 'config/constants/trading-competition/phases'
 import RegisterModal from '../RegisterModal'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'

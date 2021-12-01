@@ -14,7 +14,7 @@ import {
   CLAIM,
   OVER,
   REGISTRATION,
-} from 'config/constants/trading-competition/easterPhases'
+} from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
 import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
 import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'

@@ -1,7 +1,7 @@
 import { ReactText } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import easterPrizes from 'config/constants/trading-competition/easter'
+import easterPrizes from 'config/constants/trading-competition/prizes'
 import BigNumber from 'bignumber.js'
 
 export const localiseTradingVolume = (value: number, decimals = 0) => {

@@ -17,7 +17,7 @@ import {
   TrophyGoldIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import easterPrizes, { Tiers, Rank } from 'config/constants/trading-competition/easter'
+import easterPrizes, { Tiers, Rank } from 'config/constants/trading-competition/prizes'
 import { Td, BoldTd, StyledPrizeTable } from '../../StyledPrizeTable'
 
 const COLOR_GOLD = '#FFBF33'

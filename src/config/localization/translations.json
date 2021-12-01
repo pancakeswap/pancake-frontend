@@ -706,7 +706,7 @@
   "How do I claim my prize(s)?": "How do I claim my prize(s)?",
   "After the battle ends, visit the event page and click the “Claim Prizes” button in the top section or in “Your Score” section. Once you claim your prizes successfully, the button text will change to “Prizes Claimed”.": "After the battle ends, visit the event page and click the “Claim Prizes” button in the top section or in “Your Score” section. Once you claim your prizes successfully, the button text will change to “Prizes Claimed”.",
   "Trade to increase your rank": "Trade to increase your rank",
-  "Eligible pairs: BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB": "Eligible pairs: BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB",
+  "Eligible pairs: SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD": "Eligible pairs: SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD",
   "Play as a team": "Play as a team",
   "The higher your team’s rank, the better your prizes": "The higher your team’s rank, the better your prizes",
   "Top Traders": "Top Traders",
@@ -1762,5 +1762,7 @@
   "Get %symbol%, or make sure your tokens aren’t staked somewhere else.": "Get %symbol%, or make sure your tokens aren’t staked somewhere else.",
   "Refresh": "Refresh",
   "Basic": "Basic",
-  "TradingView chart not available": "TradingView chart not available"
+  "TradingView chart not available": "TradingView chart not available",
+  "Everyone’s a winner!": "Everyone’s a winner!",
+  "Trade the minimum amount required and you’re guaranteed a prize!": "Trade the minimum amount required and you’re guaranteed a prize!"
 }
