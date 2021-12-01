@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Contract } from 'ethers'
+import ethers, { Contract } from 'ethers'
 import { IfoStatus, PoolIds } from 'config/constants/types'
 
 // PoolCharacteristics retrieved from the contract
@@ -23,6 +23,7 @@ export interface PublicIfoData {
   endBlockNum: number
   currencyPriceInUSD: BigNumber
   numberPoints: number
+  thresholdPoints: ethers.BigNumber
   fetchIfoData: () => void
   [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics

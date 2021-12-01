@@ -1,15 +1,15 @@
-import { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import tokens from 'config/constants/tokens'
 import { BSC_BLOCK_TIME } from 'config'
+import ifoV2Abi from 'config/abi/ifoV2.json'
+import tokens from 'config/constants/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
+import { ethers } from 'ethers'
+import useRefresh from 'hooks/useRefresh'
+import { useCallback, useEffect, useState } from 'react'
 import { useBlock } from 'state/block/hooks'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
-import useRefresh from 'hooks/useRefresh'
-import { multicallv2 } from 'utils/multicall'
-import ifoV2Abi from 'config/abi/ifoV2.json'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { multicallv2 } from 'utils/multicall'
 import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
 
@@ -59,6 +59,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       totalAmountPool: BIG_ZERO,
       sumTaxesOverflow: BIG_ZERO,
     },
+    thresholdPoints: undefined,
     startBlockNum: 0,
     endBlockNum: 0,
     numberPoints: 0,
@@ -94,9 +95,13 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         address,
         name: 'numberPoints',
       },
+      {
+        address,
+        name: 'thresholdPoints',
+      },
     ]
 
-    const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints] = await multicallv2(
+    const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] = await multicallv2(
       ifoV2Abi,
       ifoCalls,
     )
@@ -129,6 +134,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       blocksRemaining,
       startBlockNum,
       endBlockNum,
+      thresholdPoints: thresholdPoints && thresholdPoints[0],
       numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
     }))
   }, [address, currentBlock, releaseBlockNumber])

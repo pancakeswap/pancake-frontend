@@ -25,6 +25,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     startBlockNum: 0,
     endBlockNum: 0,
     numberPoints: null,
+    thresholdPoints: undefined,
     [PoolIds.poolUnlimited]: {
       raisingAmountPool: BIG_ZERO,
       totalAmountPool: BIG_ZERO,
@@ -66,6 +67,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       endBlockNum,
       currencyPriceInUSD: null,
       numberPoints: null,
+      thresholdPoints: undefined,
       [PoolIds.poolUnlimited]: {
         ...prev.poolUnlimited,
         raisingAmountPool: raisingAmount ? new BigNumber(raisingAmount[0].toString()) : BIG_ZERO,
