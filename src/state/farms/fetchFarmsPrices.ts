@@ -104,17 +104,4 @@ const fetchFarmsPrices = async (farms: SerializedFarm[]) => {
   return farmsWithPrices
 }
 
-export const getFarmPrice = (farm: SerializedFarm, bnbBusdFarm?: SerializedFarm) => {
-  const bnbPriceBusd = bnbBusdFarm?.tokenPriceVsQuote ? BIG_ONE.div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
-  const quoteTokenFarm = farm
-  const tokenPriceBusd = getFarmBaseTokenPrice(farm, quoteTokenFarm, bnbPriceBusd)
-  const quoteTokenPriceBusd = getFarmQuoteTokenPrice(farm, quoteTokenFarm, bnbPriceBusd)
-
-  return {
-    ...farm,
-    tokenPriceBusd: tokenPriceBusd.toJSON(),
-    quoteTokenPriceBusd: quoteTokenPriceBusd.toJSON(),
-  }
-}
-
 export default fetchFarmsPrices
