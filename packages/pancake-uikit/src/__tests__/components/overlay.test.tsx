@@ -7,10 +7,6 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
-      z-index: 20;
-    }
-
-    .c1 {
       position: fixed;
       top: 0px;
       left: 0px;
@@ -19,10 +15,11 @@ it("renders correctly", () => {
       background-color: #280D5F99;
       -webkit-backdrop-filter: blur(2px);
       backdrop-filter: blur(2px);
+      z-index: 20;
     }
 
     <div
-        class="c0 c1"
+        class="c0"
         role="presentation"
       />
       ;
