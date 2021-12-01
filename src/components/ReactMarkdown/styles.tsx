@@ -56,7 +56,6 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
   p: (props) => {
     return <Text as="p" my="16px" {...props} />
   },
-  // table: Table,
   table: ({ node, ...props }) => {
     return (
       <TableBox>
