@@ -44,6 +44,10 @@ const CurrencyInputContainer = styled(Flex)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
+const ColoredIconButton = styled(IconButton)`
+  color: ${({ theme }) => theme.colors.textSubtle};
+`
+
 const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDisplayed, isChartDisplayed }) => {
   const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
@@ -55,9 +59,9 @@ const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDispl
     <CurrencyInputContainer>
       <Flex width="100%" alignItems="flex-start" justifyContent="space-between">
         {setIsChartDisplayed && (
-          <IconButton onClick={toggleChartDisplayed} variant="text" scale="sm">
-            {isChartDisplayed ? <ChartDisableIcon color="primary" /> : <ChartIcon width="24px" color="primary" />}
-          </IconButton>
+          <ColoredIconButton onClick={toggleChartDisplayed} variant="text" scale="sm">
+            {isChartDisplayed ? <ChartDisableIcon color="textSubtle" /> : <ChartIcon width="24px" color="textSubtle" />}
+          </ColoredIconButton>
         )}
         <Flex flexDirection="column" alignItems="center">
           <Heading as="h2" mb="8px">
@@ -71,10 +75,10 @@ const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDispl
         </Flex>
         <Flex>
           <NotificationDot show={expertMode}>
-            <GlobalSettings color="primary" mr="0" />
+            <GlobalSettings color="textSubtle" mr="0" />
           </NotificationDot>
           <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
-            <HistoryIcon color="primary" width="24px" />
+            <HistoryIcon color="textSubtle" width="24px" />
           </IconButton>
         </Flex>
       </Flex>

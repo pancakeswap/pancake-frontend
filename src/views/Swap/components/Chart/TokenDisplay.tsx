@@ -10,18 +10,21 @@ const formatOptions = {
 
 interface TokenDisplayProps extends FlexProps {
   value?: number
-  symbol?: string
+  inputSymbol?: string
+  outputSymbol?: string
 }
 
-const TokenDisplay: FC<TokenDisplayProps> = ({ value, symbol, children, ...props }) => {
+const TokenDisplay: FC<TokenDisplayProps> = ({ value, inputSymbol, outputSymbol, children, ...props }) => {
   return value ? (
     <Flex alignItems="flex-end" {...props}>
       <Text fontSize="40px" mr="8px" bold>
         {formatAmount(value, formatOptions)}
       </Text>
-      <Text color="textSubtle" fontSize="20px" mb="8px" mr="8px" bold>
-        {symbol}
-      </Text>
+      {inputSymbol && outputSymbol && (
+        <Text color="textSubtle" fontSize="20px" mb="8px" mr="8px" bold>
+          {`${inputSymbol}/${outputSymbol}`}
+        </Text>
+      )}
       {children}
     </Flex>
   ) : (

@@ -8,7 +8,15 @@ import SwapLineChart from './SwapLineChart'
 import TokenDisplay from './TokenDisplay'
 import { getTimeWindowChange } from './utils'
 
-const BasicChart = ({ token0Address, token1Address, isChartExpanded, outputCurrency, isMobile, currentSwapPrice }) => {
+const BasicChart = ({
+  token0Address,
+  token1Address,
+  isChartExpanded,
+  inputCurrency,
+  outputCurrency,
+  isMobile,
+  currentSwapPrice,
+}) => {
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
 
   const { pairPrices = [], pairId } = useFetchPairPrices({
@@ -64,7 +72,11 @@ const BasicChart = ({ token0Address, token1Address, isChartExpanded, outputCurre
         px="24px"
       >
         <Flex flexDirection="column" pt="12px">
-          <TokenDisplay value={pairPrices?.length > 0 && valueToDisplay} symbol={outputCurrency?.symbol}>
+          <TokenDisplay
+            value={pairPrices?.length > 0 && valueToDisplay}
+            inputSymbol={inputCurrency?.symbol}
+            outputSymbol={outputCurrency?.symbol}
+          >
             <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mb="8px" bold>
               {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
             </Text>

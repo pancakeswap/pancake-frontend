@@ -124,6 +124,7 @@ const PriceChart = ({
           token0Address={token0Address}
           token1Address={token1Address}
           isChartExpanded={isChartExpanded}
+          inputCurrency={inputCurrency}
           outputCurrency={outputCurrency}
           isMobile={isMobile}
           currentSwapPrice={currentSwapPrice}
