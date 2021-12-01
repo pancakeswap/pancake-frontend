@@ -7,8 +7,9 @@ import { PublicIfoData } from 'views/Ifos/types'
 import { Ifo } from 'config/constants/types'
 import { BIG_TEN } from 'utils/bigNumber'
 import { getBscScanLink } from 'utils'
+import { formatBigNumber } from 'utils/formatBalance'
 
-const MIN_DOLLAR_FOR_ACHIEVEMENT = BIG_TEN
+const FIXED_MIN_DOLLAR_FOR_ACHIEVEMENT = BIG_TEN
 
 interface Props {
   ifo: Ifo
@@ -40,7 +41,9 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
   const { t } = useTranslation()
   const tokenName = ifo.token.symbol?.toLowerCase()
   const campaignTitle = ifo.name
-  const minLpForAchievement = MIN_DOLLAR_FOR_ACHIEVEMENT.div(publicIfoData.currencyPriceInUSD).toNumber()
+  const minLpForAchievement = publicIfoData.thresholdPoints
+    ? formatBigNumber(publicIfoData.thresholdPoints, 3)
+    : FIXED_MIN_DOLLAR_FOR_ACHIEVEMENT.div(publicIfoData.currencyPriceInUSD).toNumber().toFixed(3)
 
   return (
     <Container>
@@ -62,7 +65,7 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
           {publicIfoData.currencyPriceInUSD.gt(0) ? (
             <Text color="textSubtle" fontSize="12px">
               {t('Commit ~%amount% %symbol% in total to earn!', {
-                amount: minLpForAchievement.toFixed(3),
+                amount: minLpForAchievement,
                 symbol: ifo.currency === tokens.cake ? 'CAKE' : 'LP',
               })}
             </Text>
