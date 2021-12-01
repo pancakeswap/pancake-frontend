@@ -74,7 +74,7 @@ const campaigns: Campaign[] = [
     id: '511010000',
     type: 'ifo',
     title: 'Blink',
-    badge: 'ifo-blk.svg',
+    badge: 'ifo-blink.svg',
   },
   {
     id: '512010001',
