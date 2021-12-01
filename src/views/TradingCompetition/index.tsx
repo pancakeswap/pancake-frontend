@@ -71,7 +71,7 @@ const TradingCompetition = () => {
   const { profile, isLoading } = useProfile()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContract()
-  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.CLAIM)
+  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)
   const [userTradingInformation, setUserTradingInformation] = useState({
