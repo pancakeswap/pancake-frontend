@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 481,
+    lpSymbol: 'SANTOS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x06043B346450BbCfdE066ebc39fdc264FdFFeD74',
+    },
+    token: serializedTokens.santos,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 480,
     lpSymbol: 'QUIDD-BNB LP',
     lpAddresses: {
