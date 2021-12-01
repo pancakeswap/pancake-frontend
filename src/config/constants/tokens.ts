@@ -1790,6 +1790,14 @@ export const mainnetTokens = {
     'Quidd Token',
     'https://www.quiddtoken.com/',
   ),
+  santos: new Token(
+    MAINNET,
+    '0xA64455a4553C9034236734FadDAddbb64aCE4Cc7',
+    8,
+    'SANTOS',
+    'FC Santos Fan Token',
+    'https://launchpad.binance.com/en/launchpool/SANTOS_BNB',
+  ),
 }
 
 export const testnetTokens = {

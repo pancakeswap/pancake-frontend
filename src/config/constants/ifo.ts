@@ -7,9 +7,34 @@ export const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[Ch
 
 const ifos: Ifo[] = [
   {
+    id: 'santos',
+    address: '0x69B5D2Ab0cf532a0E22Fc0dEB0c5135639892468',
+    isActive: true,
+    name: 'FC Santos Fan Token (SANTOS)',
+    poolBasic: {
+      saleAmount: '120,000 SANTOS',
+      raiseAmount: '$300,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.3,
+    },
+    poolUnlimited: {
+      saleAmount: '280,000 SANTOS',
+      raiseAmount: '$700,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.7,
+    },
+    currency: tokens.cake,
+    token: tokens.santos,
+    releaseBlockNumber: 13097777,
+    campaignId: '511150000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmUqRxjwZCWeZWEdgV2vHJ6hex7jMW7i247NKFas73xc8j',
+    tokenOfferingPrice: 2.5,
+    version: 2,
+  },
+  {
     id: 'porto',
     address: '0xFDFf29dD0b4DD49Bf5E991A30b8593eaA34B4580',
-    isActive: true,
+    isActive: false,
     name: 'FC Porto Fan Token (PORTO)',
     poolBasic: {
       saleAmount: '250,000 PORTO',
