@@ -15,6 +15,7 @@ import { WalletIfoState, WalletIfoData } from '../../types'
  */
 const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const { fastRefresh } = useRefresh()
+  const fastRefreshOnlyActive = ifo.isActive ? fastRefresh : 0
   const [state, setState] = useState<WalletIfoState>({
     poolBasic: {
       amountTokenCommittedInLP: BIG_ZERO,
@@ -94,7 +95,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     if (account) {
       fetchIfoData()
     }
-  }, [account, fetchIfoData, fastRefresh])
+  }, [account, fetchIfoData, fastRefreshOnlyActive])
 
   return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData }
 }

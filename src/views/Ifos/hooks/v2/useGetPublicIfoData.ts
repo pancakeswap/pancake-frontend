@@ -1,11 +1,10 @@
 import BigNumber from 'bignumber.js'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
 import ifoV2Abi from 'config/abi/ifoV2.json'
 import tokens from 'config/constants/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { ethers } from 'ethers'
-import useRefresh from 'hooks/useRefresh'
-import { useCallback, useEffect, useState } from 'react'
 import { useBlock } from 'state/block/hooks'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -34,8 +33,6 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const cakePriceUsd = usePriceCakeBusd()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === tokens.cake ? cakePriceUsd : lpTokenPriceInUsd
-
-  const { fastRefresh } = useRefresh()
 
   const [state, setState] = useState({
     status: 'idle' as IfoStatus,
@@ -66,8 +63,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   })
   const { currentBlock } = useBlock()
 
-  const fetchIfoData = useCallback(async () => {
-    const ifoCalls = [
+  const ifoCalls = useMemo(() => {
+    return [
       {
         address,
         name: 'startBlock',
@@ -100,7 +97,9 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         name: 'thresholdPoints',
       },
     ]
+  }, [address])
 
+  const fetchIfoData = useCallback(async () => {
     const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] = await multicallv2(
       ifoV2Abi,
       ifoCalls,
@@ -137,11 +136,45 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       thresholdPoints: thresholdPoints && thresholdPoints[0],
       numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
     }))
-  }, [address, currentBlock, releaseBlockNumber])
+  }, [currentBlock, releaseBlockNumber, ifoCalls])
+
+  const fetchInactiveIfoData = useCallback(async () => {
+    const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints] = await multicallv2(
+      ifoV2Abi,
+      ifoCalls,
+    )
+
+    const poolBasicFormatted = formatPool(poolBasic)
+    const poolUnlimitedFormatted = formatPool(poolUnlimited)
+
+    const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
+    const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
+    const taxRateNum = taxRate ? ethers.FixedNumber.from(taxRate[0]).divUnsafe(TAX_PRECISION).toUnsafeFloat() : 0
+
+    const status = 'finished' as IfoStatus
+
+    setState((prev) => ({
+      ...prev,
+      poolBasic: { ...poolBasicFormatted, taxRate: 0 },
+      poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
+      status,
+      startBlockNum,
+      endBlockNum,
+      numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
+    }))
+  }, [ifoCalls])
 
   useEffect(() => {
-    fetchIfoData()
-  }, [fetchIfoData, fastRefresh])
+    if (ifo.isActive) {
+      fetchIfoData()
+    }
+  }, [fetchIfoData, ifo])
+
+  useEffect(() => {
+    if (!ifo.isActive) {
+      fetchInactiveIfoData()
+    }
+  }, [fetchInactiveIfoData, ifo])
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
 }

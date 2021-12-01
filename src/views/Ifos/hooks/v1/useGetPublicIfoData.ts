@@ -58,6 +58,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
 
     setState((prev) => ({
+      ...prev,
       status,
       blocksRemaining,
       secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
@@ -65,9 +66,6 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
       startBlockNum,
       endBlockNum,
-      currencyPriceInUSD: null,
-      numberPoints: null,
-      thresholdPoints: undefined,
       [PoolIds.poolUnlimited]: {
         ...prev.poolUnlimited,
         raisingAmountPool: raisingAmount ? new BigNumber(raisingAmount[0].toString()) : BIG_ZERO,
@@ -76,9 +74,43 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     }))
   }, [address, currentBlock, releaseBlockNumber])
 
+  const fetchInactiveIfoData = useCallback(async () => {
+    const ifoCalls = ['startBlock', 'endBlock', 'raisingAmount', 'totalAmount'].map((method) => ({
+      address,
+      name: method,
+    }))
+
+    const [startBlock, endBlock, raisingAmount, totalAmount] = await multicallv2(ifoV1Abi, ifoCalls)
+
+    const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
+    const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
+
+    const status = 'finished' as IfoStatus
+
+    setState((prev) => ({
+      ...prev,
+      status,
+      startBlockNum,
+      endBlockNum,
+      [PoolIds.poolUnlimited]: {
+        ...prev.poolUnlimited,
+        raisingAmountPool: raisingAmount ? new BigNumber(raisingAmount[0].toString()) : BIG_ZERO,
+        totalAmountPool: totalAmount ? new BigNumber(totalAmount[0].toString()) : BIG_ZERO,
+      },
+    }))
+  }, [address])
+
   useEffect(() => {
-    fetchIfoData()
-  }, [fetchIfoData])
+    if (ifo.isActive) {
+      fetchIfoData()
+    }
+  }, [fetchIfoData, ifo])
+
+  useEffect(() => {
+    if (!ifo.isActive) {
+      fetchInactiveIfoData()
+    }
+  }, [fetchInactiveIfoData, ifo])
 
   return { ...state, currencyPriceInUSD: lpTokenPriceInUsd, fetchIfoData }
 }
