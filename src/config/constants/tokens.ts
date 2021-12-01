@@ -8,11 +8,9 @@ interface TokenList {
   [symbol: string]: Token
 }
 
-interface SerializedTokenList {
-  [symbol: string]: SerializedToken
-}
+const defineTokens = <T extends TokenList>(t: T) => t
 
-export const mainnetTokens = {
+export const mainnetTokens = defineTokens({
   wbnb: new Token(
     MAINNET,
     '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
@@ -1888,9 +1886,9 @@ export const mainnetTokens = {
     'BitBook',
     'https://www.bitbook.network/',
   ),
-}
+} as const)
 
-export const testnetTokens = {
+export const testnetTokens = defineTokens({
   wbnb: new Token(
     TESTNET,
     '0x094616F0BdFB0b526bD735Bf66Eca0Ad254ca81F',
@@ -1931,28 +1929,31 @@ export const testnetTokens = {
     'Bakeryswap Token',
     'https://www.bakeryswap.org/',
   ),
-}
+} as const)
 
-const tokens = (): TokenList => {
+const tokens = () => {
   const chainId = process.env.REACT_APP_CHAIN_ID
 
   // If testnet - return list comprised of testnetTokens wherever they exist, and mainnetTokens where they don't
   if (parseInt(chainId, 10) === ChainId.TESTNET) {
     return Object.keys(mainnetTokens).reduce((accum, key) => {
       return { ...accum, [key]: testnetTokens[key] || mainnetTokens[key] }
-    }, {})
+    }, {} as typeof testnetTokens & typeof mainnetTokens)
   }
 
   return mainnetTokens
 }
 
-export const serializeTokens = (): SerializedTokenList => {
-  const unserializedTokens = tokens()
+const unserializedTokens = tokens()
+
+type SerializedTokenList = Record<keyof typeof unserializedTokens, SerializedToken>
+
+export const serializeTokens = () => {
   const serializedTokens = Object.keys(unserializedTokens).reduce((accum, key) => {
     return { ...accum, [key]: serializeToken(unserializedTokens[key]) }
-  }, {})
+  }, {} as SerializedTokenList)
 
   return serializedTokens
 }
 
-export default tokens()
+export default unserializedTokens
