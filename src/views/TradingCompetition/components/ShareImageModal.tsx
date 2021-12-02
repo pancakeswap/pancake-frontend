@@ -72,6 +72,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
 
     const profileImageOverlayEl = new Image()
     profileImageOverlayEl.src = ProfileMask
+    profileImageOverlayEl.setAttribute('crossorigin', 'anonymous')
     profileImageOverlayEl.onload = () => setProfileOverlayImage(profileImageOverlayEl)
 
     const medalImageEl = new Image()
