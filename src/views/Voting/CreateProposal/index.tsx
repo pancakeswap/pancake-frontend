@@ -28,7 +28,7 @@ import truncateHash from 'utils/truncateHash'
 import { signMessage } from 'utils/web3React'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
-import { DatePicker, TimePicker } from 'components/DatePicker'
+import { DatePicker, TimePicker, DatePickerPortal } from 'views/Voting/components/DatePicker'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ReactMarkdown from 'components/ReactMarkdown'
 import { PageMeta } from 'components/Layout/Page'
@@ -299,6 +299,7 @@ const CreateProposal = () => {
           </Box>
         </Layout>
       </form>
+      <DatePickerPortal />
     </Container>
   )
 }
