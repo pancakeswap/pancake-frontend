@@ -1798,6 +1798,14 @@ export const mainnetTokens = {
     'FC Santos Fan Token',
     'https://launchpad.binance.com/en/launchpool/SANTOS_BNB',
   ),
+  nabox: new Token(
+    MAINNET,
+    '0x755f34709E369D37C6Fa52808aE84A32007d1155',
+    18,
+    'NABOX',
+    'Nabox Token',
+    'https://nabox.io/',
+  ),
 }
 
 export const testnetTokens = {
