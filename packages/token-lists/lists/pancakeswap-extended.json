@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-12-01T06:19:12.049Z",
+  "timestamp": "2021-12-03T04:39:53.327Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 45
+    "patch": 46
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1203,6 +1203,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x9F882567A62a5560d147d64871776EeA72Df41D3.png"
+    },
+    {
+      "name": "Nabox Token",
+      "symbol": "NABOX",
+      "address": "0x755f34709E369D37C6Fa52808aE84A32007d1155",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x755f34709E369D37C6Fa52808aE84A32007d1155.png"
     },
     {
       "name": "NAOS Finance",

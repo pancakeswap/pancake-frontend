@@ -2046,5 +2046,13 @@
     "chainId": 56,
     "decimals": 8,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xA64455a4553C9034236734FadDAddbb64aCE4Cc7.png"
+  },
+  {
+    "name": "Nabox Token",
+    "symbol": "NABOX",
+    "address": "0x755f34709E369D37C6Fa52808aE84A32007d1155",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x755f34709E369D37C6Fa52808aE84A32007d1155.png"
   }
 ]
