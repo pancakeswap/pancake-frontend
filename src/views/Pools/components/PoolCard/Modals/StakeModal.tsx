@@ -12,6 +12,7 @@ import {
   Link,
   CalculateIcon,
   IconButton,
+  Skeleton,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
@@ -247,12 +248,21 @@ const StakeModal: React.FC<StakeModalProps> = ({
           <Text mr="8px" color="textSubtle">
             {t('Annual ROI at current rates')}:
           </Text>
-          <AnnualRoiContainer alignItems="center" onClick={() => setShowRoiCalculator(true)}>
-            <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
-            <IconButton variant="text" scale="sm">
-              <CalculateIcon color="textSubtle" width="18px" />
-            </IconButton>
-          </AnnualRoiContainer>
+          {Number.isFinite(annualRoi) ? (
+            <AnnualRoiContainer
+              alignItems="center"
+              onClick={() => {
+                setShowRoiCalculator(true)
+              }}
+            >
+              <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
+              <IconButton variant="text" scale="sm">
+                <CalculateIcon color="textSubtle" width="18px" />
+              </IconButton>
+            </AnnualRoiContainer>
+          ) : (
+            <Skeleton width={60} />
+          )}
         </Flex>
       )}
       <Button

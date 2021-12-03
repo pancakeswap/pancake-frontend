@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Button, Modal, LinkExternal, CalculateIcon, IconButton } from '@pancakeswap/uikit'
+import { Flex, Text, Button, Modal, LinkExternal, CalculateIcon, IconButton, Skeleton } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { useTranslation } from 'contexts/Localization'
@@ -124,12 +124,21 @@ const DepositModal: React.FC<DepositModalProps> = ({
         <Text mr="8px" color="textSubtle">
           {t('Annual ROI at current rates')}:
         </Text>
-        <AnnualRoiContainer alignItems="center" onClick={() => setShowRoiCalculator(true)}>
-          <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
-          <IconButton variant="text" scale="sm">
-            <CalculateIcon color="textSubtle" width="18px" />
-          </IconButton>
-        </AnnualRoiContainer>
+        {Number.isFinite(annualRoi) ? (
+          <AnnualRoiContainer
+            alignItems="center"
+            onClick={() => {
+              setShowRoiCalculator(true)
+            }}
+          >
+            <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
+            <IconButton variant="text" scale="sm">
+              <CalculateIcon color="textSubtle" width="18px" />
+            </IconButton>
+          </AnnualRoiContainer>
+        ) : (
+          <Skeleton width={60} />
+        )}
       </Flex>
       <ModalActions>
         <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
