@@ -36,7 +36,6 @@ const SpeechBubble = styled.div`
 
   & ${Text} {
     flex-shrink: 0;
-    margin-right: 4px;
   }
 `
 
@@ -45,10 +44,14 @@ const PhishingWarningBanner: React.FC = () => {
   const [, hideBanner] = usePhishingBannerManager()
   const { isMobile, isMd } = useMatchBreakpoints()
   const warningText = t("please make sure you're visiting https://pancakeswap.finance - check the URL carefully.")
-  const warningTextAsParts = warningText.split(/(https:\/\/pancakeswap.finance)/g)
+  const warningTextAsParts = warningText
+    .split(/(https:\/\/pancakeswap.finance)/g)
+    .flatMap((text) => text.split(/(https:\/\/)/g))
+    .filter((n) => n)
+
   const warningTextComponent = (
     <>
-      <Text as="span" color="warning" small bold textTransform="uppercase">
+      <Text as="span" color="warning" mr="4px" small bold textTransform="uppercase">
         {t('Phishing warning: ')}
       </Text>
       {warningTextAsParts.map((text, i) => (
@@ -57,8 +60,9 @@ const PhishingWarningBanner: React.FC = () => {
           key={i}
           small
           as="span"
-          bold={text === 'https://pancakeswap.finance'}
-          color={text === 'https://pancakeswap.finance' ? '#FFFFFF' : '#BDC2C4'}
+          mr={text === 'https://' ? '0px' : '4px'}
+          bold={text === 'https://' || text === 'pancakeswap.finance'}
+          color={text === 'https://' ? '#32CD32' : text === 'pancakeswap.finance' ? '#FFFFFF' : '#BDC2C4'}
         >
           {text}
         </Text>
