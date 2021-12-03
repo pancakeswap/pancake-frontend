@@ -83,7 +83,7 @@ export interface UserState {
   gasPrice: string
   watchlistTokens: string[]
   watchlistPools: string[]
-  showPhishingWarningBanner: boolean
+  hideTimestampPhishingWarningBanner: number
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -114,7 +114,7 @@ export const initialState: UserState = {
   gasPrice: GAS_PRICE_GWEI.default,
   watchlistTokens: [],
   watchlistPools: [],
-  showPhishingWarningBanner: true,
+  hideTimestampPhishingWarningBanner: null,
 }
 
 export default createReducer(initialState, (builder) =>
@@ -243,7 +243,7 @@ export default createReducer(initialState, (builder) =>
       }
     })
     .addCase(hidePhishingWarningBanner, (state) => {
-      state.showPhishingWarningBanner = false
+      state.hideTimestampPhishingWarningBanner = currentTimestamp()
     })
     .addCase(setIsExchangeChartDisplayed, (state, { payload }) => {
       state.isExchangeChartDisplayed = payload
