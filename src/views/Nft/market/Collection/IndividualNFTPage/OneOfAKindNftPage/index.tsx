@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import sum from 'lodash/sum'
@@ -16,11 +17,16 @@ import DetailsCard from '../shared/DetailsCard'
 import useGetCollectionDistribution from '../../../hooks/useGetCollectionDistribution'
 import OwnerCard from './OwnerCard'
 import MoreFromThisCollection from '../shared/MoreFromThisCollection'
+import ActivityCard from './ActivityCard'
 
 interface IndividualNFTPageProps {
   collectionAddress: string
   tokenId: string
 }
+
+const OwnerActivityContainer = styled(Flex)`
+  gap: 22px;
+`
 
 const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress, tokenId }) => {
   const [nft, setNft] = useState<NftToken>(null)
@@ -110,7 +116,10 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
           <PropertiesCard properties={properties} rarity={getAttributesRarity()} />
           <DetailsCard contractAddress={collectionAddress} ipfsJson={nft?.marketData?.metadataUrl} />
         </Flex>
-        <OwnerCard nft={nft} isOwnNft={isOwnNft} nftIsProfilePic={nftIsProfilePic} />
+        <OwnerActivityContainer flexDirection="column" width="100%">
+          <OwnerCard nft={nft} isOwnNft={isOwnNft} nftIsProfilePic={nftIsProfilePic} />
+          <ActivityCard nft={nft} />
+        </OwnerActivityContainer>
       </TwoColumnsContainer>
       <MoreFromThisCollection collectionAddress={collectionAddress} currentTokenName={nft.name} />
     </Page>

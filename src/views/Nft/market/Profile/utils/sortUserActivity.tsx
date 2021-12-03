@@ -1,28 +1,13 @@
 import { ethers } from 'ethers'
-import { AskOrder, AskOrderType, TokenMarketData, Transaction } from 'state/nftMarket/types'
-
-export enum MarketEvent {
-  NEW = 'NEW',
-  CANCEL = 'CANCEL',
-  MODIFY = 'MODIFY',
-  BUY = 'BUY',
-  SELL = 'SELL',
-}
-
-export interface Activity {
-  marketEvent: MarketEvent
-  timestamp: string
-  tx: string
-  nft?: TokenMarketData
-  price?: string
-  otherParty?: string
-}
+import { AskOrder, AskOrderType, Transaction } from 'state/nftMarket/types'
+import { MarketEvent } from '../../types/MarketEvent'
+import { Activity } from '../../types/Activity'
 
 export const sortUserActivity = (
   account: string,
-  userActivities: { askOrderHistory: AskOrder[]; buyTradeHistory: Transaction[]; sellTradeHistory: Transaction[] },
+  userActivity: { askOrderHistory: AskOrder[]; buyTradeHistory: Transaction[]; sellTradeHistory: Transaction[] },
 ): Activity[] => {
-  const { askOrderHistory, buyTradeHistory, sellTradeHistory } = userActivities
+  const { askOrderHistory, buyTradeHistory, sellTradeHistory } = userActivity
 
   const getAskOrderEvent = (orderType: AskOrderType): MarketEvent => {
     switch (orderType) {

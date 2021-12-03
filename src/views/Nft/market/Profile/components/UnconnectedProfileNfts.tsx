@@ -4,7 +4,7 @@ import { NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
 import GridPlaceholder from '../../components/GridPlaceholder'
-import NoNftsImage from './NoNftsImage'
+import NoNftsImage from '../../components/Activity/NoNftsImage'
 
 const UserNfts: React.FC<{ nfts: NftToken[]; isLoading: boolean }> = ({ nfts, isLoading }) => {
   const { t } = useTranslation()

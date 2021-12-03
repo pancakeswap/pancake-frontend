@@ -9,14 +9,15 @@ import { ArrowBackIcon, ArrowForwardIcon, Card, Flex, Table, Text, Th, useMatchB
 import { getNftsFromDifferentCollectionsApi, getUserActivity } from 'state/nftMarket/helpers'
 import { NftToken, TokenIdWithCollectionAddress, UserNftInitializationState } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
+import TableLoader from 'components/TableLoader'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
 import { useParams } from 'react-router'
-import { Activity, sortUserActivity } from '../../utils/sortUserActivity'
-import ActivityRow from './ActivityRow'
-import TableLoader from './TableLoader'
-import NoNftsImage from '../NoNftsImage'
+import { sortUserActivity } from '../../utils/sortUserActivity'
+import NoNftsImage from '../../../components/Activity/NoNftsImage'
 import { Arrow, PageButtons } from '../../../components/PaginationButtons'
+import { Activity } from '../../../types/Activity'
+import ActivityRow from '../../../components/Activity/ActivityRow'
 
 const MAX_PER_PAGE = 8
 
@@ -28,9 +29,9 @@ const ActivityHistory = () => {
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
-  const [activitiesSlice, setActivitiesSlice] = useState<Activity[]>([])
+  const [activitySlice, setActivitySlice] = useState<Activity[]>([])
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
-  const [sortedUserActivities, setSortedUserActivities] = useState<Activity[]>([])
+  const [sortedUserActivity, setSortedUserActivity] = useState<Activity[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const { activity: userActivity } = useUserNfts()
   const bnbBusdPrice = useBNBBusdPrice()
@@ -43,7 +44,7 @@ const ActivityHistory = () => {
           ? account.toLowerCase() !== accountAddress.toLocaleLowerCase()
           : false
       if (!differentAddress) {
-        setSortedUserActivities(sortUserActivity(account, userActivity))
+        setSortedUserActivity(sortUserActivity(account, userActivity))
         setIsLoading(false)
       }
     }
@@ -53,7 +54,7 @@ const ActivityHistory = () => {
     const fetchAddressActivity = async () => {
       try {
         const addressActivity = await getUserActivity(accountAddress.toLocaleLowerCase())
-        setSortedUserActivities(sortUserActivity(accountAddress, addressActivity))
+        setSortedUserActivity(sortUserActivity(accountAddress, addressActivity))
         setIsLoading(false)
       } catch (error) {
         console.error('Failed to fetch address activity', error)
@@ -78,7 +79,7 @@ const ActivityHistory = () => {
   useEffect(() => {
     const fetchActivityNftMetadata = async () => {
       const activityNftTokenIds = uniqBy(
-        sortedUserActivities.map((activity): TokenIdWithCollectionAddress => {
+        sortedUserActivity.map((activity): TokenIdWithCollectionAddress => {
           return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id }
         }),
         'tokenId',
@@ -88,36 +89,36 @@ const ActivityHistory = () => {
     }
 
     const getMaxPages = () => {
-      const max = Math.ceil(sortedUserActivities.length / MAX_PER_PAGE)
+      const max = Math.ceil(sortedUserActivity.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
 
-    if (sortedUserActivities.length > 0) {
+    if (sortedUserActivity.length > 0) {
       getMaxPages()
       fetchActivityNftMetadata()
     }
 
     return () => {
-      setActivitiesSlice([])
+      setActivitySlice([])
       setNftMetadata([])
       setMaxPages(1)
       setCurrentPage(1)
     }
-  }, [sortedUserActivities])
+  }, [sortedUserActivity])
 
   useEffect(() => {
-    const getActivitiesSlice = () => {
-      const slice = sortedUserActivities.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
-      setActivitiesSlice(slice)
+    const getActivitySlice = () => {
+      const slice = sortedUserActivity.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
+      setActivitySlice(slice)
     }
-    if (sortedUserActivities.length > 0) {
-      getActivitiesSlice()
+    if (sortedUserActivity.length > 0) {
+      getActivitySlice()
     }
-  }, [sortedUserActivities, currentPage])
+  }, [sortedUserActivity, currentPage])
 
   return (
     <Card>
-      {sortedUserActivities.length === 0 && nftMetadata.length === 0 && activitiesSlice.length === 0 && !isLoading ? (
+      {sortedUserActivity.length === 0 && nftMetadata.length === 0 && activitySlice.length === 0 && !isLoading ? (
         <Flex p="24px" flexDirection="column" alignItems="center">
           <NoNftsImage />
           <Text pt="8px" bold>
@@ -146,7 +147,7 @@ const ActivityHistory = () => {
               {isLoading ? (
                 <TableLoader />
               ) : (
-                activitiesSlice.map((activity) => {
+                activitySlice.map((activity) => {
                   const nftMeta = nftMetadata.find((metaNft) => metaNft.tokenId === activity.nft.tokenId)
                   return (
                     <ActivityRow
@@ -154,6 +155,7 @@ const ActivityHistory = () => {
                       activity={activity}
                       nft={nftMeta}
                       bnbBusdPrice={bnbBusdPrice}
+                      isUserActivity
                     />
                   )
                 })

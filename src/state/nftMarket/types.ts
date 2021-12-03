@@ -1,4 +1,5 @@
 import { BigNumberish } from 'ethers'
+import { MarketEvent } from '../../views/Nft/market/types/MarketEvent'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
@@ -28,6 +29,7 @@ export interface State {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
     filters: Record<string, NftFilter> // string is the collection address
+    activityFilters: Record<string, NftActivityFilter> // string is the collection address
     loadingState: {
       isUpdatingPancakeBunnies: boolean
       latestPancakeBunniesUpdateAt: number
@@ -56,9 +58,9 @@ export interface Transaction {
 }
 
 export enum AskOrderType {
-  NEW = 'NEW',
-  MODIFY = 'MODIFY',
-  CANCEL = 'CANCEL',
+  NEW = 'New',
+  MODIFY = 'Modify',
+  CANCEL = 'Cancel',
 }
 
 export interface AskOrder {
@@ -68,6 +70,7 @@ export interface AskOrder {
   askPrice: string
   orderType: AskOrderType
   nft?: TokenMarketData
+  seller?: { id: string }
 }
 
 export interface Image {
@@ -126,6 +129,11 @@ export interface NftFilter {
     field: string
     direction: 'asc' | 'desc'
   }
+}
+
+export interface NftActivityFilter {
+  typeFilters: MarketEvent[]
+  priceFilter: string
 }
 
 export interface TokenIdWithCollectionAddress {

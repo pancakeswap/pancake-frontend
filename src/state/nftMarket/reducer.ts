@@ -32,7 +32,9 @@ import {
   NftAttribute,
   NftFilterLoadingState,
   NftFilter,
+  NftActivityFilter,
 } from './types'
+import { MarketEvent } from '../../views/Nft/market/types/MarketEvent'
 
 const initialNftFilterState: NftFilter = {
   loadingState: NftFilterLoadingState.IDLE,
@@ -44,12 +46,18 @@ const initialNftFilterState: NftFilter = {
   },
 }
 
+const initialNftActivityFilterState: NftActivityFilter = {
+  typeFilters: [],
+  priceFilter: '',
+}
+
 const initialState: State = {
   initializationState: NFTMarketInitializationState.UNINITIALIZED,
   data: {
     collections: {},
     nfts: {},
     filters: {},
+    activityFilters: {},
     loadingState: {
       isUpdatingPancakeBunnies: false,
       latestPancakeBunniesUpdateAt: 0,
@@ -294,6 +302,36 @@ export const NftMarket = createSlice({
       state.data.filters[action.payload] = { ...initialNftFilterState }
       state.data.nfts[action.payload] = []
     },
+    updateActivityPriceFilter: (state, action: PayloadAction<{ collection: string; price: string }>) => {
+      if (state.data.activityFilters[action.payload.collection]) {
+        state.data.activityFilters[action.payload.collection].priceFilter = action.payload.price
+      } else {
+        state.data.activityFilters[action.payload.collection] = {
+          ...initialNftActivityFilterState,
+          priceFilter: action.payload.price,
+        }
+      }
+    },
+    addActivityTypeFilters: (state, action: PayloadAction<{ collection: string; field: MarketEvent }>) => {
+      if (state.data.activityFilters[action.payload.collection]) {
+        state.data.activityFilters[action.payload.collection].typeFilters.push(action.payload.field)
+      } else {
+        state.data.activityFilters[action.payload.collection] = {
+          ...initialNftActivityFilterState,
+          typeFilters: [action.payload.field],
+        }
+      }
+    },
+    removeActivityTypeFilters: (state, action: PayloadAction<{ collection: string; field: MarketEvent }>) => {
+      if (state.data.activityFilters[action.payload.collection]) {
+        state.data.activityFilters[action.payload.collection].typeFilters = state.data.activityFilters[
+          action.payload.collection
+        ].typeFilters.filter((activeFilter) => activeFilter !== action.payload.field)
+      }
+    },
+    removeAllActivityFilters: (state, action: PayloadAction<string>) => {
+      state.data.activityFilters[action.payload] = { ...initialNftActivityFilterState }
+    },
     setOrdering: (state, action: PayloadAction<{ collection: string; field: string; direction: 'asc' | 'desc' }>) => {
       if (state.data.filters[action.payload.collection]) {
         state.data.filters[action.payload.collection].ordering = {
@@ -432,6 +470,15 @@ export const NftMarket = createSlice({
 })
 
 // Actions
-export const { removeAllFilters, setOrdering, setShowOnlyOnSale, resetUserNftState } = NftMarket.actions
+export const {
+  removeAllFilters,
+  updateActivityPriceFilter,
+  removeAllActivityFilters,
+  removeActivityTypeFilters,
+  addActivityTypeFilters,
+  setOrdering,
+  setShowOnlyOnSale,
+  resetUserNftState,
+} = NftMarket.actions
 
 export default NftMarket.reducer

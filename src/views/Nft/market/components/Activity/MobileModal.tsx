@@ -10,8 +10,8 @@ import truncateHash from 'utils/truncateHash'
 import { multiplyPriceByAmount } from 'utils/prices'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
-import { Activity } from '../../utils/sortUserActivity'
 import ActivityEventText from './ActivityEventText'
+import { Activity } from '../../types/Activity'
 
 const RoundedImage = styled(Image)`
   & > img {
@@ -24,9 +24,17 @@ interface MobileModalProps extends InjectedModalProps {
   nft: NftToken
   bnbBusdPrice: Price
   localeTimestamp: string
+  isUserActivity?: boolean
 }
 
-const MobileModal: React.FC<MobileModalProps> = ({ nft, activity, bnbBusdPrice, localeTimestamp, onDismiss }) => {
+const MobileModal: React.FC<MobileModalProps> = ({
+  nft,
+  activity,
+  bnbBusdPrice,
+  localeTimestamp,
+  onDismiss,
+  isUserActivity = false,
+}) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -58,19 +66,36 @@ const MobileModal: React.FC<MobileModalProps> = ({ nft, activity, bnbBusdPrice, 
                   {`(~$${priceInUsd.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  })}`}
+                  })})`}
                 </Text>
               </Flex>
             ) : (
               '-'
             )}
           </Flex>
-          <Flex mb="24px" justifyContent="space-between">
-            <Text fontSize="14px" color="textSubtle">
-              {t('From/To')}
-            </Text>
-            <Text>{activity.otherParty ? truncateHash(activity.otherParty) : '-'}</Text>
-          </Flex>
+          {isUserActivity ? (
+            <Flex mb="24px" justifyContent="space-between">
+              <Text fontSize="14px" color="textSubtle">
+                {t('From/To')}
+              </Text>
+              <Text>{activity.otherParty ? truncateHash(activity.otherParty) : '-'}</Text>
+            </Flex>
+          ) : (
+            <>
+              <Flex mb="24px" justifyContent="space-between">
+                <Text fontSize="14px" color="textSubtle">
+                  {t('From')}
+                </Text>
+                <Text>{activity.seller ? truncateHash(activity.seller) : '-'}</Text>
+              </Flex>
+              <Flex mb="24px" justifyContent="space-between">
+                <Text fontSize="14px" color="textSubtle">
+                  {t('To')}
+                </Text>
+                <Text>{activity.buyer ? truncateHash(activity.buyer) : '-'}</Text>
+              </Flex>
+            </>
+          )}
           <Flex justifyContent="space-between">
             <Text fontSize="14px" color="textSubtle">
               {t('Date')}
