@@ -65,7 +65,7 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
       },
       {
         label: t('Bug Bounty'),
-        href: 'https://app.gitbook.com/@pancakeswap-1/s/pancakeswap/code/bug-bounty',
+        href: 'https://docs.pancakeswap.finance/code/bug-bounty',
       },
       {
         label: t('Audits'),
