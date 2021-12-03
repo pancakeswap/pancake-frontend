@@ -19,8 +19,8 @@ export const usePollBlockNumber = (refreshTime = 6000) => {
 
       fetchBlock()
     },
-    refreshTime,
-    isWindowVisible,
+    isWindowVisible ? refreshTime : null,
+    true,
   )
 }
 
