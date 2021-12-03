@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 482,
+    lpSymbol: 'NABOX-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x29b4abb0f8734EA672a0e82FA47998F710B6A07a',
+    },
+    token: serializedTokens.nabox,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 481,
     lpSymbol: 'SANTOS-BNB LP',
     lpAddresses: {
