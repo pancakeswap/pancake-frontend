@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useBlock } from 'state/block/hooks'
 import styled from 'styled-components'
 import {
   Card,
@@ -17,6 +18,7 @@ import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
+import useRefresh from 'hooks/useRefresh'
 import { useTranslation } from 'contexts/Localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { EnableStatus } from './types'
@@ -24,6 +26,7 @@ import IfoPoolCard from './IfoPoolCard'
 import Timer from './Timer'
 import Achievement from './Achievement'
 import useIfoApprove from '../../hooks/useIfoApprove'
+import useIsWindowVisible from '../../../../hooks/useIsWindowVisible'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
@@ -99,15 +102,55 @@ const StyledCardFooter = styled(CardFooter)`
 
 const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfoData, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
+  const { currentBlock } = useBlock()
+  const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized, secondsUntilEnd } = publicIfoData
+  const {
+    contract,
+    fetchIfoData: fetchWalletIfoData,
+    resetIfoData: resetWalletIfoData,
+    isInitialized: isWalletDataInitialized,
+  } = walletIfoData
   const [enableStatus, setEnableStatus] = useState(EnableStatus.DISABLED)
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const raisingTokenContract = useERC20(ifo.currency.address)
   const Ribbon = getRibbonComponent(ifo, publicIfoData.status, t)
   const isActive = publicIfoData.status !== 'finished' && ifo.isActive
-  const { contract } = walletIfoData
+  // Continue to fetch 2 more minutes to get latest data
+  const isRecentlyActive =
+    (publicIfoData.status !== 'finished' || (publicIfoData.status === 'finished' && secondsUntilEnd >= -120)) &&
+    ifo.isActive
   const onApprove = useIfoApprove(raisingTokenContract, contract.address)
   const { toastSuccess } = useToast()
+  const { fastRefresh } = useRefresh()
+  const isWindowVisible = useIsWindowVisible()
+
+  useEffect(() => {
+    if (isVisible && (isRecentlyActive || !isPublicIfoDataInitialized)) {
+      fetchPublicIfoData(currentBlock)
+    }
+  }, [isVisible, isRecentlyActive, isPublicIfoDataInitialized, fetchPublicIfoData, currentBlock])
+
+  useEffect(() => {
+    if (isWindowVisible && isVisible && (isRecentlyActive || !isWalletDataInitialized)) {
+      if (account) {
+        fetchWalletIfoData()
+      }
+    }
+
+    if (!account && isWalletDataInitialized) {
+      resetWalletIfoData()
+    }
+  }, [
+    isVisible,
+    isWindowVisible,
+    account,
+    isRecentlyActive,
+    isWalletDataInitialized,
+    fetchWalletIfoData,
+    resetWalletIfoData,
+    fastRefresh,
+  ])
 
   const handleApprove = async () => {
     try {

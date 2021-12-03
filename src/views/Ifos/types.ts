@@ -14,6 +14,7 @@ export interface PoolCharacteristics {
 
 // IFO data unrelated to the user returned by useGetPublicIfoData
 export interface PublicIfoData {
+  isInitialized: boolean
   status: IfoStatus
   blocksRemaining: number
   secondsUntilStart: number
@@ -24,7 +25,7 @@ export interface PublicIfoData {
   currencyPriceInUSD: BigNumber
   numberPoints: number
   thresholdPoints: ethers.BigNumber
-  fetchIfoData: () => void
+  fetchIfoData: (currentBlock: number) => void
   [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }
@@ -41,6 +42,7 @@ export interface UserPoolCharacteristics {
 
 // Use only inside the useGetWalletIfoData hook
 export interface WalletIfoState {
+  isInitialized: boolean
   [PoolIds.poolBasic]?: UserPoolCharacteristics
   [PoolIds.poolUnlimited]: UserPoolCharacteristics
 }
@@ -52,4 +54,5 @@ export interface WalletIfoData extends WalletIfoState {
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
   fetchIfoData: () => void
+  resetIfoData: () => void
 }
