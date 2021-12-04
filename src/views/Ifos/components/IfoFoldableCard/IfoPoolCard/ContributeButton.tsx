@@ -10,7 +10,7 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import ContributeModal from './ContributeModal'
-import GetLpModal from './GetLpModal'
+import GetTokenModal from './GetTokenModal'
 
 interface Props {
   poolId: PoolIds
@@ -53,7 +53,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
     false,
   )
 
-  const [onPresentGetLpModal] = useModal(<GetLpModal currency={ifo.currency} />, false)
+  const [onPresentGetTokenModal] = useModal(<GetTokenModal currency={ifo.currency} />, false)
 
   const isDisabled =
     isPendingTx ||
@@ -61,7 +61,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
 
   return (
     <Button
-      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetLpModal : onPresentContributeModal}
+      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetTokenModal : onPresentContributeModal}
       width="100%"
       disabled={isDisabled}
     >
