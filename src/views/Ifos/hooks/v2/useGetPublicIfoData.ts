@@ -1,12 +1,10 @@
 import BigNumber from 'bignumber.js'
+import { useState, useCallback } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
 import ifoV2Abi from 'config/abi/ifoV2.json'
 import tokens from 'config/constants/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { ethers } from 'ethers'
-import useRefresh from 'hooks/useRefresh'
-import { useCallback, useEffect, useState } from 'react'
-import { useBlock } from 'state/block/hooks'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { multicallv2 } from 'utils/multicall'
@@ -35,9 +33,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === tokens.cake ? cakePriceUsd : lpTokenPriceInUsd
 
-  const { fastRefresh } = useRefresh()
-
   const [state, setState] = useState({
+    isInitialized: false,
     status: 'idle' as IfoStatus,
     blocksRemaining: 0,
     secondsUntilStart: 0,
@@ -64,84 +61,79 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     endBlockNum: 0,
     numberPoints: 0,
   })
-  const { currentBlock } = useBlock()
 
-  const fetchIfoData = useCallback(async () => {
-    const ifoCalls = [
-      {
-        address,
-        name: 'startBlock',
-      },
-      {
-        address,
-        name: 'endBlock',
-      },
-      {
-        address,
-        name: 'viewPoolInformation',
-        params: [0],
-      },
-      {
-        address,
-        name: 'viewPoolInformation',
-        params: [1],
-      },
-      {
-        address,
-        name: 'viewPoolTaxRateOverflow',
-        params: [1],
-      },
-      {
-        address,
-        name: 'numberPoints',
-      },
-      {
-        address,
-        name: 'thresholdPoints',
-      },
-    ]
+  const fetchIfoData = useCallback(
+    async (currentBlock: number) => {
+      const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
+        await multicallv2(ifoV2Abi, [
+          {
+            address,
+            name: 'startBlock',
+          },
+          {
+            address,
+            name: 'endBlock',
+          },
+          {
+            address,
+            name: 'viewPoolInformation',
+            params: [0],
+          },
+          {
+            address,
+            name: 'viewPoolInformation',
+            params: [1],
+          },
+          {
+            address,
+            name: 'viewPoolTaxRateOverflow',
+            params: [1],
+          },
+          {
+            address,
+            name: 'numberPoints',
+          },
+          {
+            address,
+            name: 'thresholdPoints',
+          },
+        ])
 
-    const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] = await multicallv2(
-      ifoV2Abi,
-      ifoCalls,
-    )
+      const poolBasicFormatted = formatPool(poolBasic)
+      const poolUnlimitedFormatted = formatPool(poolUnlimited)
 
-    const poolBasicFormatted = formatPool(poolBasic)
-    const poolUnlimitedFormatted = formatPool(poolUnlimited)
+      const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
+      const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
+      const taxRateNum = taxRate ? ethers.FixedNumber.from(taxRate[0]).divUnsafe(TAX_PRECISION).toUnsafeFloat() : 0
 
-    const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
-    const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
-    const taxRateNum = taxRate ? ethers.FixedNumber.from(taxRate[0]).divUnsafe(TAX_PRECISION).toUnsafeFloat() : 0
+      const status = getStatus(currentBlock, startBlockNum, endBlockNum)
+      const totalBlocks = endBlockNum - startBlockNum
+      const blocksRemaining = endBlockNum - currentBlock
 
-    const status = getStatus(currentBlock, startBlockNum, endBlockNum)
-    const totalBlocks = endBlockNum - startBlockNum
-    const blocksRemaining = endBlockNum - currentBlock
+      // Calculate the total progress until finished or until start
+      const progress =
+        currentBlock > startBlockNum
+          ? ((currentBlock - startBlockNum) / totalBlocks) * 100
+          : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
 
-    // Calculate the total progress until finished or until start
-    const progress =
-      currentBlock > startBlockNum
-        ? ((currentBlock - startBlockNum) / totalBlocks) * 100
-        : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
-
-    setState((prev) => ({
-      ...prev,
-      secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
-      secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-      poolBasic: { ...poolBasicFormatted, taxRate: 0 },
-      poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
-      status,
-      progress,
-      blocksRemaining,
-      startBlockNum,
-      endBlockNum,
-      thresholdPoints: thresholdPoints && thresholdPoints[0],
-      numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
-    }))
-  }, [address, currentBlock, releaseBlockNumber])
-
-  useEffect(() => {
-    fetchIfoData()
-  }, [fetchIfoData, fastRefresh])
+      setState((prev) => ({
+        ...prev,
+        isInitialized: true,
+        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
+        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+        poolBasic: { ...poolBasicFormatted, taxRate: 0 },
+        poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
+        status,
+        progress,
+        blocksRemaining,
+        startBlockNum,
+        endBlockNum,
+        thresholdPoints: thresholdPoints && thresholdPoints[0],
+        numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
+      }))
+    },
+    [releaseBlockNumber, address],
+  )
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
 }

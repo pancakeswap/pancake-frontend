@@ -1,38 +1,39 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
-import useRefresh from 'hooks/useRefresh'
 import { multicallv2 } from 'utils/multicall'
 import ifoV2Abi from 'config/abi/ifoV2.json'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
 
+const initialState = {
+  isInitialized: false,
+  poolBasic: {
+    amountTokenCommittedInLP: BIG_ZERO,
+    offeringAmountInToken: BIG_ZERO,
+    refundingAmountInLP: BIG_ZERO,
+    taxAmountInLP: BIG_ZERO,
+    hasClaimed: false,
+    isPendingTx: false,
+  },
+  poolUnlimited: {
+    amountTokenCommittedInLP: BIG_ZERO,
+    offeringAmountInToken: BIG_ZERO,
+    refundingAmountInLP: BIG_ZERO,
+    taxAmountInLP: BIG_ZERO,
+    hasClaimed: false,
+    isPendingTx: false,
+  },
+}
+
 /**
  * Gets all data from an IFO related to a wallet
  */
 const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
-  const { fastRefresh } = useRefresh()
-  const [state, setState] = useState<WalletIfoState>({
-    poolBasic: {
-      amountTokenCommittedInLP: BIG_ZERO,
-      offeringAmountInToken: BIG_ZERO,
-      refundingAmountInLP: BIG_ZERO,
-      taxAmountInLP: BIG_ZERO,
-      hasClaimed: false,
-      isPendingTx: false,
-    },
-    poolUnlimited: {
-      amountTokenCommittedInLP: BIG_ZERO,
-      offeringAmountInToken: BIG_ZERO,
-      refundingAmountInLP: BIG_ZERO,
-      taxAmountInLP: BIG_ZERO,
-      hasClaimed: false,
-      isPendingTx: false,
-    },
-  })
+  const [state, setState] = useState<WalletIfoState>(initialState)
 
   const { address, currency } = ifo
 
@@ -71,6 +72,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
     setState((prevState) => ({
       ...prevState,
+      isInitialized: true,
       poolBasic: {
         ...prevState.poolBasic,
         amountTokenCommittedInLP: new BigNumber(userInfo[0][0].toString()),
@@ -90,13 +92,11 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     }))
   }, [account, address])
 
-  useEffect(() => {
-    if (account) {
-      fetchIfoData()
-    }
-  }, [account, fetchIfoData, fastRefresh])
+  const resetIfoData = useCallback(() => {
+    setState({ ...initialState })
+  }, [])
 
-  return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData }
+  return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData }
 }
 
 export default useGetWalletIfoData
