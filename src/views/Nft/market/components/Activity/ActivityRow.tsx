@@ -107,19 +107,19 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
           </Td>
           {isUserActivity ? (
             <Td>
-              <Flex justifyContent="flex-end" alignItems="center">
+              <Flex justifyContent="center" alignItems="center">
                 {activity.otherParty ? <ProfileCell accountAddress={activity.otherParty} /> : '-'}
               </Flex>
             </Td>
           ) : (
             <>
               <Td>
-                <Flex justifyContent="flex-end" alignItems="center">
+                <Flex justifyContent="center" alignItems="center">
                   {activity.seller ? <ProfileCell accountAddress={activity.seller} /> : '-'}
                 </Flex>
               </Td>
               <Td>
-                <Flex justifyContent="flex-end" alignItems="center">
+                <Flex justifyContent="center" alignItems="center">
                   {activity.buyer ? <ProfileCell accountAddress={activity.buyer} /> : '-'}
                 </Flex>
               </Td>

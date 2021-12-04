@@ -157,8 +157,8 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
                   {isXs || isSm ? null : (
                     <>
                       <Th textAlign="right"> {t('Price')}</Th>
-                      <Th textAlign="right"> {t('From')}</Th>
-                      <Th textAlign="right"> {t('To')}</Th>
+                      <Th textAlign="center"> {t('From')}</Th>
+                      <Th textAlign="center"> {t('To')}</Th>
                     </>
                   )}
                   <Th textAlign="center"> {t('Date')}</Th>

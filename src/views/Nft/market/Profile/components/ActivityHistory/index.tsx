@@ -135,7 +135,7 @@ const ActivityHistory = () => {
                 {isXs || isSm ? null : (
                   <>
                     <Th textAlign="right"> {t('Price')}</Th>
-                    <Th textAlign="right"> {t('From/To')}</Th>
+                    <Th textAlign="center"> {t('From/To')}</Th>
                   </>
                 )}
                 <Th textAlign="center"> {t('Date')}</Th>
