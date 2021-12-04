@@ -31,7 +31,7 @@ const AchievementFlex = styled(Flex)<{ isFinished: boolean }>`
 `
 
 const StyledLinkExternal = styled(LinkExternal)`
-  margin-top: 32px;
+  margin-top: 8px;
   ${({ theme }) => theme.mediaQueries.md} {
     margin-top: 0;
   }
@@ -75,7 +75,7 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
         </Flex>
       </AchievementFlex>
       <Flex alignItems="flex-end" flexDirection="column">
-        <StyledLinkExternal href={ifo.articleUrl} mb="8px" textAlign="right">
+        <StyledLinkExternal href={ifo.articleUrl} mb={[null, null, null, '8px']} textAlign="right">
           {t('Learn more about %title%', { title: campaignTitle })}
         </StyledLinkExternal>
         <StyledLinkExternal href={getBscScanLink(ifo.address, 'address')}>{t('View IFO Contract')}</StyledLinkExternal>
