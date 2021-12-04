@@ -47,6 +47,7 @@ export function retry<T>(
         }
         break
       } catch (error) {
+        console.error(error)
         if (completed) {
           break
         }
