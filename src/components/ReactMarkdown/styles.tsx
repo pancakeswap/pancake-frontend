@@ -14,6 +14,11 @@ const Table = styled.table`
     padding: 8px;
   }
 `
+const TableBox = styled.div`
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+`
 
 const ThemedComponent = styled.div`
   color: ${({ theme }) => theme.colors.text};
@@ -33,6 +38,10 @@ const Pre = styled.pre`
   overflow-x: auto;
 `
 
+const AStyle = styled.a`
+  word-break: break-all;
+`
+
 const Title = (props) => {
   return <Heading as="h4" scale="lg" my="16px" {...props} />
 }
@@ -47,7 +56,13 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
   p: (props) => {
     return <Text as="p" my="16px" {...props} />
   },
-  table: Table,
+  table: ({ node, ...props }) => {
+    return (
+      <TableBox>
+        <Table>{props.children}</Table>
+      </TableBox>
+    )
+  },
   ol: (props) => {
     return <ThemedComponent as="ol" {...props} />
   },
@@ -55,6 +70,7 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
     return <ThemedComponent as="ul" {...props} />
   },
   pre: Pre,
+  a: AStyle,
 }
 
 export default markdownComponents
