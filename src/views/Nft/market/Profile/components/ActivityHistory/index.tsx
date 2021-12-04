@@ -28,9 +28,9 @@ const ActivityHistory = () => {
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
-  const [activitySlice, setActivitySlice] = useState<Activity[]>([])
+  const [activitiesSlice, setActivitiesSlice] = useState<Activity[]>([])
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
-  const [sortedUserActivity, setSortedUserActivity] = useState<Activity[]>([])
+  const [sortedUserActivities, setSortedUserActivities] = useState<Activity[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const { activity: userActivity } = useUserNfts()
   const bnbBusdPrice = useBNBBusdPrice()
@@ -43,7 +43,7 @@ const ActivityHistory = () => {
           ? account.toLowerCase() !== accountAddress.toLocaleLowerCase()
           : false
       if (!differentAddress) {
-        setSortedUserActivity(sortUserActivity(account, userActivity))
+        setSortedUserActivities(sortUserActivity(account, userActivity))
         setIsLoading(false)
       }
     }
@@ -53,7 +53,7 @@ const ActivityHistory = () => {
     const fetchAddressActivity = async () => {
       try {
         const addressActivity = await getUserActivity(accountAddress.toLocaleLowerCase())
-        setSortedUserActivity(sortUserActivity(accountAddress, addressActivity))
+        setSortedUserActivities(sortUserActivity(accountAddress, addressActivity))
         setIsLoading(false)
       } catch (error) {
         console.error('Failed to fetch address activity', error)
@@ -78,7 +78,7 @@ const ActivityHistory = () => {
   useEffect(() => {
     const fetchActivityNftMetadata = async () => {
       const activityNftTokenIds = uniqBy(
-        sortedUserActivity.map((activity): TokenIdWithCollectionAddress => {
+        sortedUserActivities.map((activity): TokenIdWithCollectionAddress => {
           return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id }
         }),
         'tokenId',
@@ -88,36 +88,36 @@ const ActivityHistory = () => {
     }
 
     const getMaxPages = () => {
-      const max = Math.ceil(sortedUserActivity.length / MAX_PER_PAGE)
+      const max = Math.ceil(sortedUserActivities.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
 
-    if (sortedUserActivity.length > 0) {
+    if (sortedUserActivities.length > 0) {
       getMaxPages()
       fetchActivityNftMetadata()
     }
 
     return () => {
-      setActivitySlice([])
+      setActivitiesSlice([])
       setNftMetadata([])
       setMaxPages(1)
       setCurrentPage(1)
     }
-  }, [sortedUserActivity])
+  }, [sortedUserActivities])
 
   useEffect(() => {
     const getActivitySlice = () => {
-      const slice = sortedUserActivity.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
-      setActivitySlice(slice)
+      const slice = sortedUserActivities.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
+      setActivitiesSlice(slice)
     }
-    if (sortedUserActivity.length > 0) {
+    if (sortedUserActivities.length > 0) {
       getActivitySlice()
     }
-  }, [sortedUserActivity, currentPage])
+  }, [sortedUserActivities, currentPage])
 
   return (
     <Card>
-      {sortedUserActivity.length === 0 && nftMetadata.length === 0 && activitySlice.length === 0 && !isLoading ? (
+      {sortedUserActivities.length === 0 && nftMetadata.length === 0 && activitiesSlice.length === 0 && !isLoading ? (
         <Flex p="24px" flexDirection="column" alignItems="center">
           <NoNftsImage />
           <Text pt="8px" bold>
@@ -146,7 +146,7 @@ const ActivityHistory = () => {
               {isLoading ? (
                 <TableLoader />
               ) : (
-                activitySlice.map((activity) => {
+                activitiesSlice.map((activity) => {
                   const nftMeta = nftMetadata.find((metaNft) => metaNft.tokenId === activity.nft.tokenId)
                   return (
                     <ActivityRow

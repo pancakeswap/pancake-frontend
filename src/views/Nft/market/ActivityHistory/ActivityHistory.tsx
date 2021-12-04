@@ -51,7 +51,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
     currentPage: 1,
     maxPage: 1,
   })
-  const [activitySlice, setActivitySlice] = useState<Activity[]>([])
+  const [activitiesSlice, setActivitiesSlice] = useState<Activity[]>([])
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isInitialized, setIsInitialized] = useState(false)
@@ -93,7 +93,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
   useEffect(() => {
     const fetchActivityNftMetadata = async () => {
       const activityNftTokenIds = uniqBy(
-        activitySlice.map((activity): TokenIdWithCollectionAddress => {
+        activitiesSlice.map((activity): TokenIdWithCollectionAddress => {
           return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id }
         }),
         'tokenId',
@@ -102,17 +102,17 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
       setNftMetadata(nfts)
     }
 
-    if (activitySlice.length > 0) {
+    if (activitiesSlice.length > 0) {
       fetchActivityNftMetadata()
     }
-  }, [activitySlice])
+  }, [activitiesSlice])
 
   useEffect(() => {
     const slice = paginationData.activity.slice(
       MAX_PER_PAGE * (paginationData.currentPage - 1),
       MAX_PER_PAGE * paginationData.currentPage,
     )
-    setActivitySlice(slice)
+    setActivitiesSlice(slice)
   }, [paginationData])
 
   return (
@@ -138,7 +138,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
       <Container>
         {paginationData.activity.length === 0 &&
         nftMetadata.length === 0 &&
-        activitySlice.length === 0 &&
+        activitiesSlice.length === 0 &&
         !isLoading ? (
           <Flex p="24px" flexDirection="column" alignItems="center">
             <NoNftsImage />
@@ -169,7 +169,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
                 {!isInitialized ? (
                   <TableLoader />
                 ) : (
-                  activitySlice.map((activity) => {
+                  activitiesSlice.map((activity) => {
                     const nftMeta = nftMetadata.find((metaNft) => metaNft.tokenId === activity.nft.tokenId)
                     return (
                       <ActivityRow

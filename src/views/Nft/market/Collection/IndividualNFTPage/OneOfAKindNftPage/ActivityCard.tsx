@@ -24,8 +24,8 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ nft }) => {
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
-  const [activitySlice, setActivitySlice] = useState<Activity[]>([])
-  const [sortedTokenActivity, setSortedTokenActivity] = useState<Activity[]>([])
+  const [activitiesSlice, setActivitiesSlice] = useState<Activity[]>([])
+  const [sortedTokenActivities, setSortedTokenActivities] = useState<Activity[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const bnbBusdPrice = useBNBBusdPrice()
   const { isXs, isSm } = useMatchBreakpoints()
@@ -34,7 +34,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ nft }) => {
     const fetchTokenActivity = async () => {
       try {
         const tokenActivity = await getTokenActivity(nft.tokenId, nft.collectionAddress.toLowerCase())
-        setSortedTokenActivity(sortActivity(tokenActivity))
+        setSortedTokenActivities(sortActivity(tokenActivity))
         setIsLoading(false)
       } catch (error) {
         console.error('Failed to fetch address activity', error)
@@ -46,34 +46,34 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ nft }) => {
 
   useEffect(() => {
     const getMaxPages = () => {
-      const max = Math.ceil(sortedTokenActivity.length / MAX_PER_PAGE)
+      const max = Math.ceil(sortedTokenActivities.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
 
-    if (sortedTokenActivity.length > 0) {
+    if (sortedTokenActivities.length > 0) {
       getMaxPages()
     }
 
     return () => {
-      setActivitySlice([])
+      setActivitiesSlice([])
       setMaxPages(1)
       setCurrentPage(1)
     }
-  }, [sortedTokenActivity])
+  }, [sortedTokenActivities])
 
   useEffect(() => {
     const getActivitySlice = () => {
-      const slice = sortedTokenActivity.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
-      setActivitySlice(slice)
+      const slice = sortedTokenActivities.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
+      setActivitiesSlice(slice)
     }
-    if (sortedTokenActivity.length > 0) {
+    if (sortedTokenActivities.length > 0) {
       getActivitySlice()
     }
-  }, [sortedTokenActivity, currentPage])
+  }, [sortedTokenActivities, currentPage])
 
   return (
     <Card>
-      {sortedTokenActivity.length === 0 && activitySlice.length === 0 && !isLoading ? (
+      {sortedTokenActivities.length === 0 && activitiesSlice.length === 0 && !isLoading ? (
         <Flex p="24px" flexDirection="column" alignItems="center">
           <NoNftsImage />
           <Text pt="8px" bold>
@@ -102,7 +102,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ nft }) => {
               {isLoading ? (
                 <TableLoader />
               ) : (
-                activitySlice.map((activity) => {
+                activitiesSlice.map((activity) => {
                   return (
                     <ActivityRow
                       key={`${activity.nft.tokenId}${activity.timestamp}`}
