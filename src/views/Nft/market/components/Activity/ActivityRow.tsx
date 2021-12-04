@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, Flex, Text, Td, IconButton, Link, OpenNewIcon, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
-import { NftToken } from 'state/nftMarket/types'
+import { Activity, NftToken } from 'state/nftMarket/types'
 import { Price } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
@@ -10,7 +10,6 @@ import ProfileCell from 'views/Nft/market/components/ProfileCell'
 import MobileModal from './MobileModal'
 import ActivityPrice from './ActivityPrice'
 import ActivityEventText from './ActivityEventText'
-import { Activity } from '../../types/Activity'
 import { nftsBaseUrl, pancakeBunniesAddress } from '../../constants'
 
 const RoundedImage = styled(Image)`

@@ -1,7 +1,5 @@
 import { ethers } from 'ethers'
-import { AskOrder, AskOrderType, Transaction } from 'state/nftMarket/types'
-import { MarketEvent } from '../../types/MarketEvent'
-import { Activity } from '../../types/Activity'
+import { Activity, AskOrder, AskOrderType, MarketEvent, Transaction } from 'state/nftMarket/types'
 
 export const sortActivity = ({
   askOrders = [],

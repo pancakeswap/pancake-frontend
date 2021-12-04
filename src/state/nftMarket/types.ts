@@ -1,5 +1,4 @@
 import { BigNumberish } from 'ethers'
-import { MarketEvent } from '../../views/Nft/market/types/MarketEvent'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
@@ -270,6 +269,25 @@ export interface ApiCollectionDistribution {
 export interface ApiCollectionDistributionPB {
   total: number
   data: Record<string, number>
+}
+
+export interface Activity {
+  marketEvent: MarketEvent
+  timestamp: string
+  tx: string
+  nft?: TokenMarketData
+  price?: string
+  otherParty?: string
+  buyer?: string
+  seller?: string
+}
+
+export enum MarketEvent {
+  NEW = 'NEW',
+  CANCEL = 'CANCEL',
+  MODIFY = 'MODIFY',
+  BUY = 'BUY',
+  SELL = 'SELL',
 }
 
 /**

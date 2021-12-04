@@ -33,8 +33,8 @@ import {
   NftFilterLoadingState,
   NftFilter,
   NftActivityFilter,
+  MarketEvent,
 } from './types'
-import { MarketEvent } from '../../views/Nft/market/types/MarketEvent'
 
 const initialNftFilterState: NftFilter = {
   loadingState: NftFilterLoadingState.IDLE,

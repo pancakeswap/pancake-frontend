@@ -6,7 +6,7 @@ import { addActivityTypeFilters, removeActivityTypeFilters } from 'state/nftMark
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { ContextApi } from 'contexts/Localization/types'
 import { useTranslation } from 'contexts/Localization'
-import { MarketEvent } from '../types/MarketEvent'
+import { MarketEvent } from '../../../../state/nftMarket/types'
 
 interface ActivityFilterProps {
   eventType: MarketEvent

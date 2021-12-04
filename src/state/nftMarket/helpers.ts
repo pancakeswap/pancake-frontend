@@ -25,9 +25,9 @@ import {
   NftAttribute,
   ApiTokenFilterResponse,
   ApiCollectionsResponse,
+  MarketEvent,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
-import { MarketEvent } from '../../views/Nft/market/types/MarketEvent'
 
 /**
  * API HELPERS

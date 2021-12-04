@@ -3,7 +3,7 @@ import { InjectedModalProps, Modal, Flex, Text, Button, Image, Link, BinanceIcon
 import { Price } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
-import { NftToken } from 'state/nftMarket/types'
+import { Activity, NftToken } from 'state/nftMarket/types'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import truncateHash from 'utils/truncateHash'
@@ -11,7 +11,6 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
 import ActivityEventText from './ActivityEventText'
-import { Activity } from '../../types/Activity'
 
 const RoundedImage = styled(Image)`
   & > img {

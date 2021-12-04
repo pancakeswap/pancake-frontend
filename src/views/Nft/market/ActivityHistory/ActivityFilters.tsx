@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap/uikit'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
-import { Collection } from 'state/nftMarket/types'
+import { Collection, MarketEvent } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import ClearAllButton from './ClearAllButton'
 import { ActivityFilter } from './ActivityFilter'
-import { MarketEvent } from '../types/MarketEvent'
 
 export const Container = styled(Flex)`
   gap: 16px;
