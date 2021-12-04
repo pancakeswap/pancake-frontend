@@ -86,9 +86,10 @@ export default function CurrencyInputPanel({
     />,
   )
   return (
-    <Box>
+    <Box id={id}>
       <Flex mb="6px" alignItems="center" justifyContent="space-between">
         <CurrencySelectButton
+          className="open-currency-select-button"
           selected={!!currency}
           onClick={() => {
             if (!disableCurrencySelect) {
@@ -127,7 +128,7 @@ export default function CurrencyInputPanel({
           </Text>
         )}
       </Flex>
-      <InputPanel id={id}>
+      <InputPanel>
         <Container>
           <LabelRow>
             <RowBetween>
