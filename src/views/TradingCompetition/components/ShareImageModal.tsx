@@ -68,6 +68,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
 
     const profileImageEl = new Image()
     profileImageEl.src = profile.nft?.image?.thumbnail
+    profileImageEl.crossOrigin = 'Anonymous'
     profileImageEl.onload = () => setProfileImage(profileImageEl)
 
     const profileImageOverlayEl = new Image()
@@ -80,12 +81,13 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
   }, [profile, team])
 
   useEffect(() => {
-    if (canvas && bgImage && profileImage && profileOverlayImage && medalImage) {
-      const canvasWidth = canvas.current.width
-      canvas.current.height = canvasWidth * 0.5625
-      const canvasHeight = canvas.current.height
+    const canvasEl = canvas.current
+    if (canvasEl && bgImage && profileImage && profileOverlayImage && medalImage) {
+      const canvasWidth = canvasEl.width
+      canvasEl.height = canvasWidth * 0.5625
+      const canvasHeight = canvasEl.height
 
-      const ctx = canvas.current.getContext('2d')
+      const ctx = canvasEl.getContext('2d')
 
       ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight)
       ctx.drawImage(profileImage, canvasWidth * 0.0315, canvasHeight * 0.07, canvasWidth * 0.19, canvasWidth * 0.19)
@@ -101,9 +103,9 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
       ctx.fillText(`# ${global.toLocaleString()}`, canvasWidth * 0.18, canvasHeight * 0.79)
       ctx.fillText(`$ ${localiseTradingVolume(volume)}`, canvasWidth * 0.18, canvasHeight * 0.89)
 
-      setImageFromCanvas(canvas.current.toDataURL('image/png'))
+      setImageFromCanvas(canvasEl.toDataURL('image/png'))
     }
-  }, [canvas, bgImage, profileImage, team, global, volume, profile, profileOverlayImage, medalImage])
+  }, [bgImage, profileImage, team, global, volume, profile, profileOverlayImage, medalImage])
 
   const downloadImage = () => {
     const link = document.createElement('a')
