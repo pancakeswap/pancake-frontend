@@ -1,12 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import debounce from 'lodash/debounce'
+import React from 'react'
 import styled from 'styled-components'
-import { Flex, Input, Text } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
+import { Flex, Text } from '@pancakeswap/uikit'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { Collection } from 'state/nftMarket/types'
-import { updateActivityPriceFilter } from 'state/nftMarket/reducer'
 import { useTranslation } from 'contexts/Localization'
 import ClearAllButton from './ClearAllButton'
 import { ActivityFilter } from './ActivityFilter'
@@ -40,30 +37,9 @@ interface FiltersProps {
 
 const ActivityFilters: React.FC<FiltersProps> = ({ collection }) => {
   const { address } = collection || { address: '' }
-  const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const [priceLower, setPriceLower] = useState('')
-
-  const debouncedOnChangeDispatch = useMemo(
-    () =>
-      debounce((price: string) => {
-        dispatch(
-          updateActivityPriceFilter({
-            collection: address,
-            price,
-          }),
-        )
-      }, 1000),
-    [dispatch, address],
-  )
 
   const nftActivityFilters = useGetNftActivityFilters(address)
-  const nftActivityFiltersString = JSON.stringify(nftActivityFilters)
-
-  useEffect(() => {
-    const nftActivityFiltersParsed = JSON.parse(nftActivityFiltersString)
-    setPriceLower(nftActivityFiltersParsed.priceFilter)
-  }, [nftActivityFiltersString])
 
   return (
     <Container justifyContent="space-between" flexDirection={['column', 'column', 'row']}>
@@ -75,25 +51,7 @@ const ActivityFilters: React.FC<FiltersProps> = ({ collection }) => {
           return <ActivityFilter key={eventType} eventType={eventType} collectionAddress={address} />
         })}
       </ScrollableFlexContainer>
-      <Flex>
-        <Input
-          scale="sm"
-          inputMode="decimal"
-          pattern="^[0-9]+[.,]?[0-9]*$"
-          placeholder={t('Price lower than (in BNB)')}
-          value={priceLower}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => {
-            if (e.currentTarget.validity.valid) {
-              const price = e.currentTarget.value.replace(/,/g, '.')
-              setPriceLower(price)
-              debouncedOnChangeDispatch(price)
-            }
-          }}
-        />
-      </Flex>
-      {!isEmpty(nftActivityFilters.typeFilters) || nftActivityFilters.priceFilter ? (
-        <ClearAllButton collectionAddress={address} />
-      ) : null}
+      {!isEmpty(nftActivityFilters.typeFilters) ? <ClearAllButton collectionAddress={address} /> : null}
     </Container>
   )
 }

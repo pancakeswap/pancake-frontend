@@ -133,7 +133,6 @@ export interface NftFilter {
 
 export interface NftActivityFilter {
   typeFilters: MarketEvent[]
-  priceFilter: string
 }
 
 export interface TokenIdWithCollectionAddress {

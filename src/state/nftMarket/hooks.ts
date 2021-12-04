@@ -133,5 +133,5 @@ export const useGetNftActivityFilters = (collectionAddress: string) => {
   const collectionFilter: NftActivityFilter = useSelector(
     (state: State) => state.nftMarket.data.activityFilters[collectionAddress],
   )
-  return collectionFilter || { typeFilters: [], priceFilter: '' }
+  return collectionFilter || { typeFilters: [] }
 }

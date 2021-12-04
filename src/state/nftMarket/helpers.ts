@@ -490,9 +490,6 @@ export const getCollectionActivity = async (
 
   const collectionFilterGql = !isFetchAllCollections ? `collection: ${JSON.stringify(address)}` : ``
 
-  const priceFilterGql =
-    nftActivityFilter.priceFilter.length > 0 ? `askPrice_lte: ${JSON.stringify(nftActivityFilter.priceFilter)}` : ``
-
   const askOrderTypeFilter = nftActivityFilter.typeFilters
     .filter((marketEvent) => marketEvent !== MarketEvent.SELL)
     .map((marketEvent) => getAskOrderEvent(marketEvent))
@@ -501,10 +498,6 @@ export const getCollectionActivity = async (
 
   const askOrderTypeFilterGql =
     askOrderTypeFilter.length > 0 ? `orderType_in: ${JSON.stringify(askOrderTypeFilter)}` : ``
-  const askOrderPriceTypeFilterGql =
-    priceFilterGql.length > 0 && !askOrderTypeFilter.some((askOrderFilter) => askOrderFilter === AskOrderType.CANCEL)
-      ? `orderType_not: ${JSON.stringify(AskOrderType.CANCEL)}`
-      : ``
 
   const transactionIncluded =
     nftActivityFilter.typeFilters.length === 0 ||
@@ -522,7 +515,7 @@ export const getCollectionActivity = async (
 
   const askOrderGql = askOrderIncluded
     ? `askOrders(first: ${askOrderQueryItem}, orderBy: timestamp, orderDirection: desc, where:{
-            ${collectionFilterGql}, ${askOrderTypeFilterGql}, ${priceFilterGql}, ${askOrderPriceTypeFilterGql}
+            ${collectionFilterGql}, ${askOrderTypeFilterGql}
           }) {
               id
               block
@@ -540,7 +533,7 @@ export const getCollectionActivity = async (
 
   const transactionGql = transactionIncluded
     ? `transactions(first: ${transactionQueryItem}, orderBy: timestamp, orderDirection: desc, where:{
-            ${collectionFilterGql}, ${priceFilterGql}
+            ${collectionFilterGql}
           }) {
             ${getBaseTransactionFields()}
               nft {

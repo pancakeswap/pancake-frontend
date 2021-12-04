@@ -48,7 +48,6 @@ const initialNftFilterState: NftFilter = {
 
 const initialNftActivityFilterState: NftActivityFilter = {
   typeFilters: [],
-  priceFilter: '',
 }
 
 const initialState: State = {
@@ -302,16 +301,6 @@ export const NftMarket = createSlice({
       state.data.filters[action.payload] = { ...initialNftFilterState }
       state.data.nfts[action.payload] = []
     },
-    updateActivityPriceFilter: (state, action: PayloadAction<{ collection: string; price: string }>) => {
-      if (state.data.activityFilters[action.payload.collection]) {
-        state.data.activityFilters[action.payload.collection].priceFilter = action.payload.price
-      } else {
-        state.data.activityFilters[action.payload.collection] = {
-          ...initialNftActivityFilterState,
-          priceFilter: action.payload.price,
-        }
-      }
-    },
     addActivityTypeFilters: (state, action: PayloadAction<{ collection: string; field: MarketEvent }>) => {
       if (state.data.activityFilters[action.payload.collection]) {
         state.data.activityFilters[action.payload.collection].typeFilters.push(action.payload.field)
@@ -472,7 +461,6 @@ export const NftMarket = createSlice({
 // Actions
 export const {
   removeAllFilters,
-  updateActivityPriceFilter,
   removeAllActivityFilters,
   removeActivityTypeFilters,
   addActivityTypeFilters,
