@@ -4,6 +4,8 @@
 
 This project contains the main features of the pancake application.
 
+This project integrates Autonomy Network (a decentralized automation protocol) to offer limit orders and stop losses for pancake.
+
 If you want to contribute, please refer to the [contributing guidelines](./CONTRIBUTING.md) of this project.
 
 ## Documentation
