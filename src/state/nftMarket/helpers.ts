@@ -1,28 +1,31 @@
-import { request, gql } from 'graphql-request'
+import { gql, request } from 'graphql-request'
 import { stringify } from 'qs'
-import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
+import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { ethers } from 'ethers'
 import map from 'lodash/map'
 import { uniq } from 'lodash'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
-  TokenMarketData,
+  ApiCollection,
   ApiCollections,
-  TokenIdWithCollectionAddress,
-  NftToken,
-  NftLocation,
-  Collection,
   ApiResponseCollectionTokens,
   ApiResponseSpecificToken,
-  ApiCollection,
+  AskOrderType,
+  Collection,
   CollectionMarketDataBaseFields,
+  NftActivityFilter,
+  NftLocation,
+  NftToken,
+  TokenIdWithCollectionAddress,
+  TokenMarketData,
   Transaction,
   AskOrder,
   ApiSingleTokenData,
   NftAttribute,
   ApiTokenFilterResponse,
   ApiCollectionsResponse,
+  MarketEvent,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
 
@@ -461,6 +464,149 @@ export const getUserActivity = async (
       askOrderHistory: [],
       buyTradeHistory: [],
       sellTradeHistory: [],
+    }
+  }
+}
+
+export const getCollectionActivity = async (
+  address: string,
+  nftActivityFilter: NftActivityFilter,
+  itemPerQuery,
+): Promise<{ askOrders?: AskOrder[]; transactions?: Transaction[] }> => {
+  const getAskOrderEvent = (orderType: MarketEvent): AskOrderType => {
+    switch (orderType) {
+      case MarketEvent.CANCEL:
+        return AskOrderType.CANCEL
+      case MarketEvent.MODIFY:
+        return AskOrderType.MODIFY
+      case MarketEvent.NEW:
+        return AskOrderType.NEW
+      default:
+        return AskOrderType.MODIFY
+    }
+  }
+
+  const isFetchAllCollections = address === ''
+
+  const collectionFilterGql = !isFetchAllCollections ? `collection: ${JSON.stringify(address)}` : ``
+
+  const askOrderTypeFilter = nftActivityFilter.typeFilters
+    .filter((marketEvent) => marketEvent !== MarketEvent.SELL)
+    .map((marketEvent) => getAskOrderEvent(marketEvent))
+
+  const askOrderIncluded = nftActivityFilter.typeFilters.length === 0 || askOrderTypeFilter.length > 0
+
+  const askOrderTypeFilterGql =
+    askOrderTypeFilter.length > 0 ? `orderType_in: ${JSON.stringify(askOrderTypeFilter)}` : ``
+
+  const transactionIncluded =
+    nftActivityFilter.typeFilters.length === 0 ||
+    nftActivityFilter.typeFilters.some(
+      (marketEvent) => marketEvent === MarketEvent.BUY || marketEvent === MarketEvent.SELL,
+    )
+
+  let askOrderQueryItem = itemPerQuery / 2
+  let transactionQueryItem = itemPerQuery / 2
+
+  if (!askOrderIncluded || !transactionIncluded) {
+    askOrderQueryItem = !askOrderIncluded ? 0 : itemPerQuery
+    transactionQueryItem = !transactionIncluded ? 0 : itemPerQuery
+  }
+
+  const askOrderGql = askOrderIncluded
+    ? `askOrders(first: ${askOrderQueryItem}, orderBy: timestamp, orderDirection: desc, where:{
+            ${collectionFilterGql}, ${askOrderTypeFilterGql}
+          }) {
+              id
+              block
+              timestamp
+              orderType
+              askPrice
+              seller {
+                id
+              }
+              nft {
+                ${getBaseNftFields()}
+              }
+          }`
+    : ``
+
+  const transactionGql = transactionIncluded
+    ? `transactions(first: ${transactionQueryItem}, orderBy: timestamp, orderDirection: desc, where:{
+            ${collectionFilterGql}
+          }) {
+            ${getBaseTransactionFields()}
+              nft {
+                ${getBaseNftFields()}
+              }
+          }`
+    : ``
+
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getCollectionActivity {
+          ${askOrderGql}
+          ${transactionGql}
+        }
+      `,
+    )
+
+    return res || { askOrders: [], transactions: [] }
+  } catch (error) {
+    console.error('Failed to fetch collection Activity', error)
+    return {
+      askOrders: [],
+      transactions: [],
+    }
+  }
+}
+
+export const getTokenActivity = async (
+  tokenId: string,
+  collectionAddress: string,
+): Promise<{ askOrders: AskOrder[]; transactions: Transaction[] }> => {
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getCollectionActivity($tokenId: BigInt!, $address: ID!) {
+          nfts(where:{tokenId: $tokenId, collection: $address}) {
+            transactionHistory(orderBy: timestamp, orderDirection: desc) {
+              ${getBaseTransactionFields()}
+                nft {
+                  ${getBaseNftFields()}
+                }
+            }
+            askHistory(orderBy: timestamp, orderDirection: desc) {
+                id
+                block
+                timestamp
+                orderType
+                askPrice
+                seller {
+                  id
+                }
+                nft {
+                  ${getBaseNftFields()}
+                }
+            }
+          }
+        }
+      `,
+      { tokenId, address: collectionAddress },
+    )
+
+    if (res.nfts.length > 0) {
+      return { askOrders: res.nfts[0].askHistory, transactions: res.nfts[0].transactionHistory }
+    }
+    return { askOrders: [], transactions: [] }
+  } catch (error) {
+    console.error('Failed to fetch token Activity', error)
+    return {
+      askOrders: [],
+      transactions: [],
     }
   }
 }

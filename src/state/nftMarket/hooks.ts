@@ -5,7 +5,7 @@ import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
 import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
-import { NftFilter, NftFilterLoadingState, NftToken, UserNftsState } from './types'
+import { NftActivityFilter, NftFilter, NftFilterLoadingState, NftToken, UserNftsState } from './types'
 
 const MAX_GEN0_ID = 4
 
@@ -127,4 +127,11 @@ export const useGetNftOrdering = (collectionAddress: string) => {
 export const useGetNftShowOnlyOnSale = (collectionAddress: string) => {
   const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
   return collectionFilter ? collectionFilter.showOnlyOnSale : true
+}
+
+export const useGetNftActivityFilters = (collectionAddress: string) => {
+  const collectionFilter: NftActivityFilter = useSelector(
+    (state: State) => state.nftMarket.data.activityFilters[collectionAddress],
+  )
+  return collectionFilter || { typeFilters: [] }
 }

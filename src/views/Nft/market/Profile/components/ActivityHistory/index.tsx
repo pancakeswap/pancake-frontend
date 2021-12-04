@@ -7,16 +7,16 @@ import { useAppDispatch } from 'state'
 import { useUserNfts } from 'state/nftMarket/hooks'
 import { ArrowBackIcon, ArrowForwardIcon, Card, Flex, Table, Text, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { getNftsFromDifferentCollectionsApi, getUserActivity } from 'state/nftMarket/helpers'
-import { NftToken, TokenIdWithCollectionAddress, UserNftInitializationState } from 'state/nftMarket/types'
+import { Activity, NftToken, TokenIdWithCollectionAddress, UserNftInitializationState } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
+import TableLoader from 'components/TableLoader'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
 import { useParams } from 'react-router'
-import { Activity, sortUserActivity } from '../../utils/sortUserActivity'
-import ActivityRow from './ActivityRow'
-import TableLoader from './TableLoader'
-import NoNftsImage from '../NoNftsImage'
+import { sortUserActivity } from '../../utils/sortUserActivity'
+import NoNftsImage from '../../../components/Activity/NoNftsImage'
 import { Arrow, PageButtons } from '../../../components/PaginationButtons'
+import ActivityRow from '../../../components/Activity/ActivityRow'
 
 const MAX_PER_PAGE = 8
 
@@ -106,12 +106,12 @@ const ActivityHistory = () => {
   }, [sortedUserActivities])
 
   useEffect(() => {
-    const getActivitiesSlice = () => {
+    const getActivitySlice = () => {
       const slice = sortedUserActivities.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
       setActivitiesSlice(slice)
     }
     if (sortedUserActivities.length > 0) {
-      getActivitiesSlice()
+      getActivitySlice()
     }
   }, [sortedUserActivities, currentPage])
 
@@ -134,7 +134,7 @@ const ActivityHistory = () => {
                 {isXs || isSm ? null : (
                   <>
                     <Th textAlign="right"> {t('Price')}</Th>
-                    <Th textAlign="right"> {t('From/To')}</Th>
+                    <Th textAlign="center"> {t('From/To')}</Th>
                   </>
                 )}
                 <Th textAlign="center"> {t('Date')}</Th>
@@ -154,6 +154,7 @@ const ActivityHistory = () => {
                       activity={activity}
                       nft={nftMeta}
                       bnbBusdPrice={bnbBusdPrice}
+                      isUserActivity
                     />
                   )
                 })

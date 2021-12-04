@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, BinanceIcon, Text } from '@pancakeswap/uikit'
+import { Flex, BinanceIcon, Text, Skeleton } from '@pancakeswap/uikit'
 import { multiplyPriceByAmount } from 'utils/prices'
 
 const ActivityPrice = ({ bnbBusdPrice, price }) => {
@@ -18,12 +18,16 @@ const ActivityPrice = ({ bnbBusdPrice, price }) => {
               })}
             </Text>
           </Flex>
-          <Text fontSize="12px" color="textSubtle">
-            {`(~$${priceInUsd.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })})`}
-          </Text>
+          {priceInUsd ? (
+            <Text fontSize="12px" color="textSubtle">
+              {`(~$${priceInUsd.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })})`}
+            </Text>
+          ) : (
+            <Skeleton height="18px" width="42px" />
+          )}
         </>
       ) : (
         '-'

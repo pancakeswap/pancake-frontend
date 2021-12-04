@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { CollectibleActionCard } from '../../components/CollectibleCard'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import ProfileNftModal from '../../components/ProfileNftModal'
-import NoNftsImage from './NoNftsImage'
+import NoNftsImage from '../../components/Activity/NoNftsImage'
 import SellModal from '../../components/BuySellModals/SellModal'
 
 interface ProfileNftProps {

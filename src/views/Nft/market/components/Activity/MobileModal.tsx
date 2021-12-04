@@ -3,14 +3,13 @@ import { InjectedModalProps, Modal, Flex, Text, Button, Image, Link, BinanceIcon
 import { Price } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
-import { NftToken } from 'state/nftMarket/types'
+import { Activity, NftToken } from 'state/nftMarket/types'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import truncateHash from 'utils/truncateHash'
 import { multiplyPriceByAmount } from 'utils/prices'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
-import { Activity } from '../../utils/sortUserActivity'
 import ActivityEventText from './ActivityEventText'
 
 const RoundedImage = styled(Image)`
@@ -24,9 +23,17 @@ interface MobileModalProps extends InjectedModalProps {
   nft: NftToken
   bnbBusdPrice: Price
   localeTimestamp: string
+  isUserActivity?: boolean
 }
 
-const MobileModal: React.FC<MobileModalProps> = ({ nft, activity, bnbBusdPrice, localeTimestamp, onDismiss }) => {
+const MobileModal: React.FC<MobileModalProps> = ({
+  nft,
+  activity,
+  bnbBusdPrice,
+  localeTimestamp,
+  onDismiss,
+  isUserActivity = false,
+}) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -36,7 +43,7 @@ const MobileModal: React.FC<MobileModalProps> = ({ nft, activity, bnbBusdPrice, 
   return (
     <Modal title={t('Transaction Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
       <Flex flexDirection="column" maxWidth="350px">
-        <Flex alignItems="center" mb="16px">
+        <Flex alignItems="center" mb="16px" justifyContent="space-between">
           <RoundedImage src={nft.image.thumbnail} height={68} width={68} mr="16px" />
           <Flex flexDirection="column">
             <Text fontSize="12px" color="textSubtle" textAlign="right">
@@ -58,19 +65,36 @@ const MobileModal: React.FC<MobileModalProps> = ({ nft, activity, bnbBusdPrice, 
                   {`(~$${priceInUsd.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  })}`}
+                  })})`}
                 </Text>
               </Flex>
             ) : (
               '-'
             )}
           </Flex>
-          <Flex mb="24px" justifyContent="space-between">
-            <Text fontSize="14px" color="textSubtle">
-              {t('From/To')}
-            </Text>
-            <Text>{activity.otherParty ? truncateHash(activity.otherParty) : '-'}</Text>
-          </Flex>
+          {isUserActivity ? (
+            <Flex mb="24px" justifyContent="space-between">
+              <Text fontSize="14px" color="textSubtle">
+                {t('From/To')}
+              </Text>
+              <Text>{activity.otherParty ? truncateHash(activity.otherParty) : '-'}</Text>
+            </Flex>
+          ) : (
+            <>
+              <Flex mb="24px" justifyContent="space-between">
+                <Text fontSize="14px" color="textSubtle">
+                  {t('From')}
+                </Text>
+                <Text>{activity.seller ? truncateHash(activity.seller) : '-'}</Text>
+              </Flex>
+              <Flex mb="24px" justifyContent="space-between">
+                <Text fontSize="14px" color="textSubtle">
+                  {t('To')}
+                </Text>
+                <Text>{activity.buyer ? truncateHash(activity.buyer) : '-'}</Text>
+              </Flex>
+            </>
+          )}
           <Flex justifyContent="space-between">
             <Text fontSize="14px" color="textSubtle">
               {t('Date')}
