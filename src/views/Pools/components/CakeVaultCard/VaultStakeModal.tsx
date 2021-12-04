@@ -11,6 +11,7 @@ import {
   AutoRenewIcon,
   CalculateIcon,
   IconButton,
+  Skeleton,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
@@ -288,12 +289,21 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           <Text mr="8px" color="textSubtle">
             {t('Annual ROI at current rates')}:
           </Text>
-          <AnnualRoiContainer alignItems="center" onClick={() => setShowRoiCalculator(true)}>
-            <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
-            <IconButton variant="text" scale="sm">
-              <CalculateIcon color="textSubtle" width="18px" />
-            </IconButton>
-          </AnnualRoiContainer>
+          {Number.isFinite(annualRoi) ? (
+            <AnnualRoiContainer
+              alignItems="center"
+              onClick={() => {
+                setShowRoiCalculator(true)
+              }}
+            >
+              <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
+              <IconButton variant="text" scale="sm">
+                <CalculateIcon color="textSubtle" width="18px" />
+              </IconButton>
+            </AnnualRoiContainer>
+          ) : (
+            <Skeleton width={60} />
+          )}
         </Flex>
       )}
       <Button
