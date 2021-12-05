@@ -33,6 +33,8 @@ import {
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
+  ChartViewMode,
+  setChartViewMode,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -80,6 +82,22 @@ export function useExchangeChartManager(isMobile: boolean): [boolean, (isDisplay
   )
 
   return [isMobile ? false : isChartDisplayed, setUserChartPreference]
+}
+
+export function useExchangeChartViewManager() {
+  const dispatch = useDispatch<AppDispatch>()
+  const chartViewMode = useSelector<AppState, AppState['user']['userChartViewMode']>(
+    (state) => state.user.userChartViewMode,
+  )
+
+  const setUserChartViewPreference = useCallback(
+    (view: ChartViewMode) => {
+      dispatch(setChartViewMode(view))
+    },
+    [dispatch],
+  )
+
+  return [chartViewMode, setUserChartViewPreference] as const
 }
 
 export function useIsExpertMode(): boolean {

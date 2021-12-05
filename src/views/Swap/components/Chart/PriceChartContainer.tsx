@@ -1,11 +1,8 @@
 import { Currency } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useState } from 'react'
-import { useFetchPairPrices } from 'state/swap/hooks'
-import { PairDataTimeWindowEnum } from 'state/swap/types'
 import BnbWbnbNotice from './BnbWbnbNotice'
 import { BNB_ADDRESS } from './constants'
-import NoChartAvailable from './NoChartAvailable'
 import PriceChart from './PriceChart'
 import { getTokenAddress } from './utils'
 
@@ -31,21 +28,14 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   isChartExpanded,
   setIsChartExpanded,
   isChartDisplayed,
-  currentSwapPrice,
   isMobile,
+  currentSwapPrice,
 }) => {
-  const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
   const token0Address = getTokenAddress(inputCurrencyId)
   const token1Address = getTokenAddress(outputCurrencyId)
   const [isPairReversed, setIsPairReversed] = useState(false)
   const togglePairReversed = useCallback(() => setIsPairReversed((prePairReversed) => !prePairReversed), [])
 
-  const { pairPrices, pairId } = useFetchPairPrices({
-    token0Address: isPairReversed ? token1Address : token0Address,
-    token1Address: isPairReversed ? token0Address : token1Address,
-    timeWindow,
-    currentSwapPrice,
-  })
   const { isDark } = useTheme()
 
   if (!isChartDisplayed) {
@@ -58,34 +48,10 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
     return <BnbWbnbNotice isDark={isDark} isChartExpanded={isChartExpanded} />
   }
 
-  // Sometimes we might receive array full of zeros for obscure tokens while trying to derive data
-  // In that case chart is not useful to users
-  const isBadData =
-    pairPrices &&
-    pairPrices.length > 0 &&
-    pairPrices.every(
-      (price) => !price.value || price.value === 0 || price.value === Infinity || Number.isNaN(price.value),
-    )
-
-  // If results did came back but as empty array - there is no data to display
-  if ((!!pairPrices && pairPrices.length === 0) || isBadData || !pairId) {
-    return (
-      <NoChartAvailable
-        isDark={isDark}
-        isChartExpanded={isChartExpanded}
-        token0Address={token0Address}
-        token1Address={token1Address}
-        pairAddress={pairId}
-        isMobile={isMobile}
-      />
-    )
-  }
-
   return (
     <PriceChart
-      lineChartData={pairPrices}
-      timeWindow={timeWindow}
-      setTimeWindow={setTimeWindow}
+      token0Address={isPairReversed ? token1Address : token0Address}
+      token1Address={isPairReversed ? token0Address : token1Address}
       inputCurrency={isPairReversed ? outputCurrency : inputCurrency}
       outputCurrency={isPairReversed ? inputCurrency : outputCurrency}
       onSwitchTokens={togglePairReversed}
@@ -93,6 +59,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
       isChartExpanded={isChartExpanded}
       setIsChartExpanded={setIsChartExpanded}
       isMobile={isMobile}
+      currentSwapPrice={currentSwapPrice}
     />
   )
 }

@@ -1,24 +1,23 @@
-import React, { useEffect, useRef } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { Helmet } from 'react-helmet-async'
 import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
+import { PageMeta } from 'components/Layout/Page'
+import PageLoader from 'components/Loader/PageLoader'
+import React, { useEffect, useRef } from 'react'
 import { useAppDispatch } from 'state'
-import { useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/hooks'
 import { useInitialBlock } from 'state/block/hooks'
 import { initializePredictions } from 'state/predictions'
+import { useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/hooks'
 import { PredictionStatus } from 'state/types'
 import { useUserPredictionAcceptedRisk, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
-import PageLoader from 'components/Loader/PageLoader'
-import { PageMeta } from 'components/Layout/Page'
-import usePollOraclePrice from './hooks/usePollOraclePrice'
-import usePollPredictions from './hooks/usePollPredictions'
-import Container from './components/Container'
+import ChartDisclaimer from './components/ChartDisclaimer'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
+import Container from './components/Container'
+import RiskDisclaimer from './components/RiskDisclaimer'
 import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
+import usePollOraclePrice from './hooks/usePollOraclePrice'
+import usePollPredictions from './hooks/usePollPredictions'
 import Mobile from './Mobile'
-import RiskDisclaimer from './components/RiskDisclaimer'
-import ChartDisclaimer from './components/ChartDisclaimer'
 
 const Predictions = () => {
   const { isDesktop } = useMatchBreakpoints()
@@ -67,9 +66,6 @@ const Predictions = () => {
 
   return (
     <>
-      <Helmet>
-        <script src="https://s3.tradingview.com/tv.js" type="text/javascript" id="tradingViewWidget" />
-      </Helmet>
       <PageMeta />
       <SwiperProvider>
         <Container>

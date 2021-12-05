@@ -1,33 +1,32 @@
 import {
-  Box,
-  ButtonMenu,
-  ButtonMenuItem,
+  Button,
   ExpandIcon,
   Flex,
   IconButton,
   ShrinkIcon,
-  Skeleton,
   SyncAltIcon,
   Text,
+  TradingViewIcon,
+  LineGraphIcon,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import React, { useState } from 'react'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import { formatAmount, formatAmountNotation } from 'views/Info/utils/formatInfoNumbers'
 import { useTranslation } from 'contexts/Localization'
-import SwapLineChart from './SwapLineChart'
+import React from 'react'
+import { ChartViewMode } from 'state/user/actions'
+import { useExchangeChartViewManager } from 'state/user/hooks'
+import styled from 'styled-components'
+import BasicChart from './BasicChart'
 import { StyledPriceChart } from './styles'
-import { getTimeWindowChange } from './utils'
+import TradingViewChart from './TradingViewChart'
 
-const formatOptions = {
-  notation: 'standard' as formatAmountNotation,
-  displayThreshold: 0.001,
-  tokenPrecision: true,
-}
+const ChartButton = styled(Button)`
+  background-color: ${({ $active, theme }) => $active && `${theme.colors.primary}0f`};
+  padding: 4px 8px;
+  border-radius: 6px;
+`
 
 const PriceChart = ({
-  lineChartData = [],
-  setTimeWindow,
-  timeWindow,
   inputCurrency,
   outputCurrency,
   onSwitchTokens,
@@ -35,29 +34,22 @@ const PriceChart = ({
   isChartExpanded,
   setIsChartExpanded,
   isMobile,
+  token0Address,
+  token1Address,
+  currentSwapPrice,
 }) => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
-  const [hoverValue, setHoverValue] = useState<number | undefined>()
-  const [hoverDate, setHoverDate] = useState<string | undefined>()
-  const currentDate = new Date().toLocaleString(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-  const valueToDisplay = hoverValue || lineChartData[lineChartData.length - 1]?.value
-  const { changePercentage, changeValue } = getTimeWindowChange(lineChartData)
-  const isChangePositive = changeValue >= 0
-  const chartHeight = isChartExpanded ? 'calc(100% - 120px)' : '310px'
-
+  const { isDesktop } = useMatchBreakpoints()
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
+  const [chartView, setChartView] = useExchangeChartViewManager()
+  const { t } = useTranslation()
 
   return (
-    <StyledPriceChart $isDark={isDark} $isExpanded={isChartExpanded}>
+    <StyledPriceChart
+      height={chartView === ChartViewMode.TRADING_VIEW ? '100%' : '70%'}
+      overflow={chartView === ChartViewMode.TRADING_VIEW ? 'hidden' : 'unset'}
+      $isDark={isDark}
+      $isExpanded={isChartExpanded}
+    >
       <Flex justifyContent="space-between" px="24px">
         <Flex alignItems="center">
           {outputCurrency ? (
@@ -73,6 +65,30 @@ const PriceChart = ({
           <IconButton variant="text" onClick={onSwitchTokens}>
             <SyncAltIcon ml="6px" color="primary" />
           </IconButton>
+          <Flex>
+            <ChartButton
+              aria-label={t('Basic')}
+              title={t('Basic')}
+              $active={chartView === ChartViewMode.BASIC}
+              scale="sm"
+              variant="text"
+              color="primary"
+              onClick={() => setChartView(ChartViewMode.BASIC)}
+              mr="8px"
+            >
+              {isDesktop ? t('Basic') : <LineGraphIcon color="primary" />}
+            </ChartButton>
+            <ChartButton
+              aria-label="Tradingview"
+              title="Tradingview"
+              $active={chartView === ChartViewMode.TRADING_VIEW}
+              scale="sm"
+              variant="text"
+              onClick={() => setChartView(ChartViewMode.TRADING_VIEW)}
+            >
+              {isDesktop ? 'Tradingview' : <TradingViewIcon color="primary" />}
+            </ChartButton>
+          </Flex>
         </Flex>
         {!isMobile && (
           <Flex>
@@ -82,50 +98,30 @@ const PriceChart = ({
           </Flex>
         )}
       </Flex>
-      <Flex
-        flexDirection={['column', null, null, null, null, null, 'row']}
-        alignItems={['flex-start', null, null, null, null, null, 'center']}
-        justifyContent="space-between"
-        px="24px"
-      >
-        <Flex flexDirection="column" pt="12px">
-          {lineChartData?.length > 0 && valueToDisplay ? (
-            <Flex alignItems="flex-end">
-              <Text fontSize="40px" mr="8px" bold>
-                {formatAmount(valueToDisplay, formatOptions)}
-              </Text>
-              <Text color="textSubtle" fontSize="20px" mb="8px" mr="8px" bold>
-                {outputCurrency?.symbol}
-              </Text>
-              <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mb="8px" bold>
-                {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
-              </Text>
-            </Flex>
-          ) : (
-            <Skeleton height="36px" width="128px" />
-          )}
-          <Text small color="secondary">
-            {hoverDate || currentDate}
-          </Text>
-        </Flex>
-        <Box>
-          <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
-            <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
-            <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
-            <ButtonMenuItem>{t('1M')}</ButtonMenuItem>
-            <ButtonMenuItem>{t('1Y')}</ButtonMenuItem>
-          </ButtonMenu>
-        </Box>
-      </Flex>
-      <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px'} width="100%">
-        <SwapLineChart
-          data={lineChartData}
-          setHoverValue={setHoverValue}
-          setHoverDate={setHoverDate}
-          isChangePositive={isChangePositive}
-          timeWindow={timeWindow}
+      {chartView === ChartViewMode.BASIC && (
+        <BasicChart
+          token0Address={token0Address}
+          token1Address={token1Address}
+          isChartExpanded={isChartExpanded}
+          inputCurrency={inputCurrency}
+          outputCurrency={outputCurrency}
+          isMobile={isMobile}
+          currentSwapPrice={currentSwapPrice}
         />
-      </Box>
+      )}
+      {chartView === ChartViewMode.TRADING_VIEW && (
+        <TradingViewChart
+          // unmount the whole component when symbols is changed
+          key={`${inputCurrency?.symbol}-${outputCurrency?.symbol}`}
+          isChartExpanded={isChartExpanded}
+          inputCurrency={inputCurrency}
+          outputCurrency={outputCurrency}
+          token0Address={token0Address}
+          isMobile={isMobile}
+          isDark={isDark}
+          currentSwapPrice={currentSwapPrice}
+        />
+      )}
     </StyledPriceChart>
   )
 }

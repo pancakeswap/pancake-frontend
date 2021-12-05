@@ -17,6 +17,11 @@ export enum ViewMode {
   CARD = 'CARD',
 }
 
+export enum ChartViewMode {
+  BASIC = 'BASIC',
+  TRADING_VIEW = 'TRADING_VIEW',
+}
+
 export const updateUserExpertMode = createAction<{ userExpertMode: boolean }>('user/updateUserExpertMode')
 export const updateUserSingleHopOnly = createAction<{ userSingleHopOnly: boolean }>('user/updateUserSingleHopOnly')
 export const updateUserSlippageTolerance = createAction<{ userSlippageTolerance: number }>(
@@ -58,3 +63,4 @@ export const addWatchlistPool = createAction<{ address: string }>('user/addWatch
 export const hidePhishingWarningBanner = createAction<void>('user/hidePhishingWarningBanner')
 
 export const setIsExchangeChartDisplayed = createAction<boolean>('user/toggleIsExchangeChartDisplayed')
+export const setChartViewMode = createAction<ChartViewMode>('user/setChartViewMode')
