@@ -37,8 +37,6 @@ const LoadingWrapper = styled.div<{ $isDark: boolean }>`
   }
 `
 
-const bnbToWBNBSymbol = (sym: string) => (sym === 'BNB' ? 'WBNB' : sym)
-
 const ID = 'TV_SWAP_CHART'
 
 const TradingViewChart = ({
@@ -60,10 +58,9 @@ const TradingViewChart = ({
     if (!(inputCurrency?.symbol && outputCurrency?.symbol)) {
       return null
     }
-    const prefix = 'PANCAKESWAP:'
-    const input = bnbToWBNBSymbol(inputCurrency.symbol)
-    const output = bnbToWBNBSymbol(outputCurrency.symbol)
-    return `${prefix}${input}${output}`
+    const input = inputCurrency.symbol
+    const output = outputCurrency.symbol
+    return `${input}${output}`
   }, [inputCurrency?.symbol, outputCurrency?.symbol])
 
   const onNoDataEvent = useCallback(() => {
