@@ -1760,14 +1760,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x3Fcca8648651E5b974DD6d3e50F61567779772A8.png"
   },
   {
-    "name": "GreenTrust",
-    "symbol": "GNT",
-    "address": "0xF750A26EB0aCf95556e8529E72eD530f3b60f348",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0xF750A26EB0aCf95556e8529E72eD530f3b60f348.png"
-  },
-  {
     "name": "Seedify",
     "symbol": "SFUND",
     "address": "0x477bC8d23c634C154061869478bce96BE6045D12",
