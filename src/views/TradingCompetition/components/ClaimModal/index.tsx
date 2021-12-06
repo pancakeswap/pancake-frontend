@@ -36,8 +36,21 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
 
-  const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-  const { cakeReward } = useCompetitionCakeRewards(userCakeRewards)
+  const {
+    userRewardGroup,
+    userCakeRewards,
+    userLazioCakeRewards,
+    userPortoCakeRewards,
+    userSantosCakeRewards,
+    userPointReward,
+    canClaimNFT,
+  } = userTradingInformation
+  const { cakeReward, lazioReward, portoReward, santosReward } = useCompetitionCakeRewards({
+    userCakeRewards,
+    userLazioCakeRewards,
+    userPortoCakeRewards,
+    userSantosCakeRewards,
+  })
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
   const { callWithGasPrice } = useCallWithGasPrice()
 
@@ -70,9 +83,18 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
             +{userPointReward} {t('Points')}
           </Text>
         </Flex>
-        {/* cake */}
+        {/* tokens */}
         <Heading mt="16px" scale="md" mb={canClaimNFT ? '16px' : '0px'}>
           {cakeReward.toFixed(2)} CAKE
+        </Heading>
+        <Heading mt="16px" scale="md" mb={canClaimNFT ? '16px' : '0px'}>
+          {lazioReward.toFixed(2)} LAZIO
+        </Heading>
+        <Heading mt="16px" scale="md" mb={canClaimNFT ? '16px' : '0px'}>
+          {portoReward.toFixed(2)} PORTO
+        </Heading>
+        <Heading mt="16px" scale="md" mb={canClaimNFT ? '16px' : '0px'}>
+          {santosReward.toFixed(2)} SANTOS
         </Heading>
         {/* NFT */}
         {canClaimNFT ? (

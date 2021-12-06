@@ -50,7 +50,7 @@ const FAQ = () => {
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'The final winning team will be the team with the highest total combined volume of their top 500 members at the end of the competition period.',
+                'The final winning team will be the team with the highest total volume score at the end of the competition period.',
               )}
             </Text>
           </FoldableText>
@@ -58,14 +58,11 @@ const FAQ = () => {
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'Prizes to be distributed in CAKE and shared by all members of each respective tier as per the Prizes section above.',
+                'Prizes to be distributed in CAKE, LAZIO, PORTO and SANTOS in a distribution of 3:1:1:1 and shared by all members of each respective tier.',
               )}
             </Text>
             <Text fontSize="14px" color="textSubtle">
-              -{' '}
-              {t(
-                'CAKE prizes will be distributed as per the CAKE/BUSD price on the day of distribution. Every eligible participant will win prizes at the end of the competition.',
-              )}
+              - {t('Token prizes will be distributed as per their BUSD pair price on the day of distribution.')}
             </Text>
             <Text fontSize="14px" color="textSubtle">
               - {t('Every participant will win at least one prize at the end of the competition')}

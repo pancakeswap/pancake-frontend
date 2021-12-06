@@ -23,15 +23,28 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
   userTradingInformation,
 }) => {
   const { t } = useTranslation()
-  const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-  const { cakeReward, dollarValueOfCakeReward } = useCompetitionCakeRewards(userCakeRewards)
+  const {
+    userRewardGroup,
+    userCakeRewards,
+    userLazioCakeRewards,
+    userPortoCakeRewards,
+    userSantosCakeRewards,
+    userPointReward,
+    canClaimNFT,
+  } = userTradingInformation
+  const { cakeReward, lazioReward, portoReward, santosReward, dollarValueOfTokensReward } = useCompetitionCakeRewards({
+    userCakeRewards,
+    userLazioCakeRewards,
+    userPortoCakeRewards,
+    userSantosCakeRewards,
+  })
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
 
   return (
     <StyledPrizeTable>
       <StyledThead>
         <tr>
-          <th>{t('CAKE Prizes')}</th>
+          <th>{t('Token Prizes')}</th>
           <th>{t('Achievements')}</th>
           <th>{t('NFT')}</th>
         </tr>
@@ -40,10 +53,13 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
         <tr>
           <BoldTd>
             <Flex flexDirection="column">
-              <Text bold>{cakeReward.toFixed(2)}</Text>
-              {dollarValueOfCakeReward ? (
+              <Text bold>{cakeReward.toFixed(2)} CAKE</Text>
+              <Text bold>{lazioReward.toFixed(2)} LAZIO</Text>
+              <Text bold>{portoReward.toFixed(2)} PORTO</Text>
+              <Text bold>{santosReward.toFixed(2)} SANTOS</Text>
+              {dollarValueOfTokensReward !== null ? (
                 <Text fontSize="12px" color="textSubtle">
-                  ~{dollarValueOfCakeReward} USD
+                  ~{dollarValueOfTokensReward} USD
                 </Text>
               ) : (
                 <Skeleton height={24} width={80} />

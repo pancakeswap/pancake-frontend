@@ -1,20 +1,53 @@
 import { ReactText } from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import easterPrizes from 'config/constants/trading-competition/prizes'
 import BigNumber from 'bignumber.js'
+import useBUSDPrice, { useCakeBusdPrice } from 'hooks/useBUSDPrice'
+import tokens from 'config/constants/tokens'
+import { multiplyPriceByAmount } from 'utils/prices'
 
 export const localiseTradingVolume = (value: number, decimals = 0) => {
   return value.toLocaleString('en-US', { maximumFractionDigits: decimals })
 }
 
-export const useCompetitionCakeRewards = (userCakeReward: ReactText) => {
-  const cakeAsBigNumber = new BigNumber(userCakeReward as string)
+export const useCompetitionCakeRewards = ({
+  userCakeRewards,
+  userLazioCakeRewards,
+  userPortoCakeRewards,
+  userSantosCakeRewards,
+}: {
+  userCakeRewards: ReactText
+  userLazioCakeRewards: ReactText
+  userPortoCakeRewards: ReactText
+  userSantosCakeRewards: ReactText
+}) => {
+  const lazioPriceBUSD = useBUSDPrice(tokens.lazio)
+  const portoPriceBUSD = useBUSDPrice(tokens.porto)
+  const santosPriceBUSD = useBUSDPrice(tokens.santos)
+  const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
+  const lazioAsBigNumber = new BigNumber(userLazioCakeRewards as string)
+  const portoAsBigNumber = new BigNumber(userPortoCakeRewards as string)
+  const santosAsBigNumber = new BigNumber(userSantosCakeRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  const cakePriceBusd = usePriceCakeBusd()
+  const lazioBalance = getBalanceNumber(lazioAsBigNumber)
+  const portoBalance = getBalanceNumber(portoAsBigNumber)
+  const santosBalance = getBalanceNumber(santosAsBigNumber)
+  const cakePriceBusd = useCakeBusdPrice()
+
+  const dollarValueOfTokensReward =
+    cakePriceBusd && lazioPriceBUSD && portoPriceBUSD && santosPriceBUSD
+      ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) +
+        multiplyPriceByAmount(lazioPriceBUSD, lazioBalance) +
+        multiplyPriceByAmount(portoPriceBUSD, portoBalance) +
+        multiplyPriceByAmount(santosPriceBUSD, santosBalance)
+      : null
+
   return {
     cakeReward: cakeBalance,
-    dollarValueOfCakeReward: cakePriceBusd.gt(0) ? cakeBalance * cakePriceBusd.toNumber() : null,
+    lazioReward: lazioBalance,
+    portoReward: portoBalance,
+    santosReward: santosBalance,
+    dollarValueOfTokensReward,
   }
 }
 

@@ -28,6 +28,7 @@ import BattleCta from './components/BattleCta'
 import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
 import TeamRanks from './components/TeamRanks'
+import { UserTradingInformationProps } from './types'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -74,11 +75,14 @@ const TradingCompetition = () => {
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)
-  const [userTradingInformation, setUserTradingInformation] = useState({
+  const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformationProps>({
     hasRegistered: false,
     hasUserClaimed: false,
     userRewardGroup: '0',
     userCakeRewards: '0',
+    userLazioCakeRewards: '0',
+    userPortoCakeRewards: '0',
+    userSantosCakeRewards: '0',
     userPointReward: '0',
     canClaimNFT: false,
   })
@@ -100,12 +104,25 @@ const TradingCompetition = () => {
   const hasCompetitionEnded =
     currentPhase.state === FINISHED || currentPhase.state === CLAIM || currentPhase.state === OVER
 
-  const { hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
+  const {
+    hasUserClaimed,
+    userCakeRewards,
+    userLazioCakeRewards,
+    userPortoCakeRewards,
+    userSantosCakeRewards,
+    userPointReward,
+    canClaimNFT,
+  } = userTradingInformation
 
   const userCanClaimPrizes =
     currentPhase.state === CLAIM &&
     !hasUserClaimed &&
-    (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
+    (userCakeRewards !== '0' ||
+      userLazioCakeRewards !== '0' ||
+      userPortoCakeRewards !== '0' ||
+      userSantosCakeRewards !== '0' ||
+      userPointReward !== '0' ||
+      canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
 
@@ -124,16 +141,23 @@ const TradingCompetition = () => {
     }
 
     const fetchUserContract = async () => {
-      const user = await tradingCompetitionContract.claimInformation(account)
-      const userObject = {
-        hasRegistered: user[0],
-        hasUserClaimed: user[1],
-        userRewardGroup: user[2].toString(),
-        userCakeRewards: user[3].toString(),
-        userPointReward: user[4].toString(),
-        canClaimNFT: user[5],
+      try {
+        const user = await tradingCompetitionContract.claimInformation(account)
+        const userObject = {
+          hasRegistered: user[0],
+          hasUserClaimed: user[1],
+          userRewardGroup: user[2].toString(),
+          userCakeRewards: user[3].toString(),
+          userLazioCakeRewards: user[4].toString(),
+          userPortoCakeRewards: user[5].toString(),
+          userSantosCakeRewards: user[6].toString(),
+          userPointReward: user[7].toString(),
+          canClaimNFT: user[8],
+        }
+        setUserTradingInformation(userObject)
+      } catch (error) {
+        console.error(error)
       }
-      setUserTradingInformation(userObject)
     }
 
     if (account) {
@@ -145,6 +169,9 @@ const TradingCompetition = () => {
         hasUserClaimed: false,
         userRewardGroup: '0',
         userCakeRewards: '0',
+        userLazioCakeRewards: '0',
+        userPortoCakeRewards: '0',
+        userSantosCakeRewards: '0',
         userPointReward: '0',
         canClaimNFT: false,
       })

@@ -97,7 +97,7 @@ const PrizesGrid = () => {
             <tr>
               <th>{t('Rank in team')}</th>
               <th>{t('Tier')}</th>
-              <th>{t('CAKE Prizes (Split)')}</th>
+              <th>{t('Token Prizes (Split)')}</th>
               <th>{t('Achievements')}</th>
               <th>{t('NFT')}</th>
             </tr>
@@ -117,7 +117,7 @@ const PrizesGrid = () => {
                     </Text>
                   </Td>
                   <BoldTd>
-                    {`$${row.cakePrizeInUsd.toLocaleString(undefined, {
+                    {`$${row.tokenPrizeInUsd.toLocaleString(undefined, {
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
                     })}`}
