@@ -687,7 +687,7 @@
   "This decision cannot be reversed.": "This decision cannot be reversed.",
   "I understand that my address may be displayed publicly throughout the competition.": "I understand that my address may be displayed publicly throughout the competition.",
   "Eligible trading pairs": "Eligible trading pairs",
-  "Only trades on BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB pairs will be included in volume calculations.": "Only trades on BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB pairs will be included in volume calculations.",
+  "Only trades on SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD pairs will be included in volume calculations.": "Only trades on SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD pairs will be included in volume calculations.",
   "Calculating team ranks and winners": "Calculating team ranks and winners",
   "Team ranks are calculated by the total combined volume of the top 500 members of each respective team.": "Team ranks are calculated by the total combined volume of the top 500 members of each respective team.",
   "Prize distribution": "Prize distribution",
