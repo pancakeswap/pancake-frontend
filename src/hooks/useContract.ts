@@ -203,11 +203,14 @@ export const useNftMarketContract = () => {
   return useMemo(() => getNftMarketContract(library.getSigner()), [library])
 }
 
-export const useErc721CollectionContract = (collectionAddress: string) => {
+export const useErc721CollectionContract = (collectionAddress: string, withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
   return useMemo(() => {
-    return getErc721CollectionContract(getProviderOrSigner(library, account), collectionAddress)
-  }, [account, library, collectionAddress])
+    return getErc721CollectionContract(
+      withSignerIfPossible ? getProviderOrSigner(library, account) : null,
+      collectionAddress,
+    )
+  }, [account, library, collectionAddress, withSignerIfPossible])
 }
 
 // Code below migrated from Exchange useContract.ts
