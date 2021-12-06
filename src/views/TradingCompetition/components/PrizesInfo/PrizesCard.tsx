@@ -30,7 +30,7 @@ const PrizesCard = () => {
           {t(
             'Prizes to be distributed in CAKE, LAZIO, PORTO and SANTOS in a distribution of 3:1:1:1 and shared by all members of each respective tier.',
           )}{' '}
-          {t('Token prizes will be distributed as per their BUSD pair price on the day of distribution.')}{' '}
+          {t('Token prizes in Fan Tokens will be distributed as per their BUSD pair price on the day of registration.')}{' '}
           {t('Details below.')}
         </Text>
       </Box>

@@ -39,7 +39,10 @@ const StyledHeading = styled(Heading)`
 `
 
 const BattleBanner = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
 
   return (
@@ -48,7 +51,10 @@ const BattleBanner = () => {
         <Image src={AllBunniesImage} alt="all the bunnies" width={1208} height={659} />
       </ImageWrapper>
       <StyledText mb="16px" color="textSubtle" bold>
-        Dec 3-10, 2021
+        {new Date(2020, 11).toLocaleString(locale, {
+          month: 'short',
+        })}{' '}
+        10-17, 2021
       </StyledText>
       <StyledHeading1Text>{t('Fan token Trading Competition')}</StyledHeading1Text>
       <StyledHeading2Text background={theme.colors.gradients.gold} $fill>

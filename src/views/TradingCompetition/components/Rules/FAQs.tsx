@@ -62,10 +62,13 @@ const FAQ = () => {
               )}
             </Text>
             <Text fontSize="14px" color="textSubtle">
-              - {t('Token prizes will be distributed as per their BUSD pair price on the day of distribution.')}
+              -{' '}
+              {t(
+                'Token prizes in Fan Tokens will be distributed as per their BUSD pair price on the day of registration.',
+              )}
             </Text>
             <Text fontSize="14px" color="textSubtle">
-              - {t('Every participant will win at least one prize at the end of the competition')}
+              - {t('Every participant will win at least one prize at the end of the competition.')}
             </Text>
           </FoldableText>
           <FoldableText title={t('Fine print')} mt="24px">
