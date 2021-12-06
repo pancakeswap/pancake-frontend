@@ -13,7 +13,7 @@ import {
   getPointCenterIfoContract,
   getSouschefContract,
   getClaimRefundContract,
-  getTradingCompetitionContract,
+  getTradingCompetitionContractV2,
   getEasterNftContract,
   getErc721Contract,
   getCakeVaultContract,
@@ -129,7 +129,7 @@ export const useClaimRefundContract = () => {
 
 export const useTradingCompetitionContract = () => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getTradingCompetitionContract(library.getSigner()), [library])
+  return useMemo(() => getTradingCompetitionContractV2(library.getSigner()), [library])
 }
 
 export const useEasterNftContract = () => {
