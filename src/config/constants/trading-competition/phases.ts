@@ -8,13 +8,13 @@ export const CompetitionPhases = {
   REGISTRATION: {
     state: REGISTRATION,
     // Fri Dec 06 2021 16:00:00 SGT
-    ends: 1638777600000,
+    ends: 1638777600000, // TODO: update here
     step: { index: 0, text: 'Entry' },
   },
   LIVE: {
     state: LIVE,
     // Fri Dec 13 2021 16:00:00 SGT
-    ends: 1639382400000,
+    ends: 1639382400000, // TODO: update here
     step: { index: 1, text: 'Live' },
   },
   FINISHED: {
