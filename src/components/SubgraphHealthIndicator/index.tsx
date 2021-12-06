@@ -168,13 +168,14 @@ const TooltipContent = ({
       </IndicatorWrapper>
       <Text pb="24px">{description}</Text>
       <Text>
-        {t('Chain Head Block')}: {currentBlock}
+        <strong>{t('Chain Head Block')}:</strong> {currentBlock}
       </Text>
       <Text>
-        {t('Latest Subgraph Block')}: {blockNumberFromSubgraph}
+        <strong>{t('Latest Subgraph Block')}:</strong>
+        {blockNumberFromSubgraph}
       </Text>
       <Text>
-        {t('Delay')}: {currentBlock - blockNumberFromSubgraph} ({secondRemainingBlockSync}s)
+        <strong>{t('Delay')}:</strong> {currentBlock - blockNumberFromSubgraph} ({secondRemainingBlockSync}s)
       </Text>
     </Box>
   )
