@@ -54,7 +54,7 @@ const BattleBanner = () => {
         {new Date(2020, 11).toLocaleString(locale, {
           month: 'short',
         })}{' '}
-        10-17, 2021
+        14-20, 2021
       </StyledText>
       <StyledHeading1Text>{t('Fan token Trading Competition')}</StyledHeading1Text>
       <StyledHeading2Text background={theme.colors.gradients.gold} $fill>
