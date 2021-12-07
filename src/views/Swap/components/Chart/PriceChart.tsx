@@ -19,6 +19,7 @@ import styled from 'styled-components'
 import BasicChart from './BasicChart'
 import { StyledPriceChart } from './styles'
 import TradingViewChart from './TradingViewChart'
+import TokenDisplay from './TokenDisplay'
 
 const ChartButton = styled(Button)`
   background-color: ${({ $active, theme }) => $active && `${theme.colors.primary}0f`};
@@ -110,17 +111,26 @@ const PriceChart = ({
         />
       )}
       {chartView === ChartViewMode.TRADING_VIEW && (
-        <TradingViewChart
-          // unmount the whole component when symbols is changed
-          key={`${inputCurrency?.symbol}-${outputCurrency?.symbol}`}
-          isChartExpanded={isChartExpanded}
-          inputCurrency={inputCurrency}
-          outputCurrency={outputCurrency}
-          token0Address={token0Address}
-          isMobile={isMobile}
-          isDark={isDark}
-          currentSwapPrice={currentSwapPrice}
-        />
+        <Flex
+          flexDirection="column"
+          justifyContent="space-between"
+          height={isMobile ? '100%' : isChartExpanded ? 'calc(100% - 48px)' : '458px'}
+          pt="12px"
+        >
+          <TokenDisplay
+            value={currentSwapPrice?.[token0Address]}
+            inputSymbol={inputCurrency?.symbol}
+            outputSymbol={outputCurrency?.symbol}
+            mx="24px"
+          />
+          <TradingViewChart
+            // unmount the whole component when symbols is changed
+            key={`${inputCurrency?.symbol}-${outputCurrency?.symbol}`}
+            inputSymbol={inputCurrency?.symbol}
+            outputSymbol={outputCurrency?.symbol}
+            isDark={isDark}
+          />
+        </Flex>
       )}
     </StyledPriceChart>
   )

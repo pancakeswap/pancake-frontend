@@ -32,7 +32,7 @@ const BasicChart = ({
   const valueToDisplay = hoverValue || pairPrices[pairPrices.length - 1]?.value
   const { changePercentage, changeValue } = getTimeWindowChange(pairPrices)
   const isChangePositive = changeValue >= 0
-  const chartHeight = isChartExpanded ? 'calc(100% - 120px)' : '310px'
+  const chartHeight = isChartExpanded ? 'calc(100% - 120px)' : '378px'
   const {
     t,
     currentLanguage: { locale },
@@ -111,4 +111,17 @@ const BasicChart = ({
   )
 }
 
-export default BasicChart
+export default React.memo(BasicChart, (prev, next) => {
+  return (
+    prev.token0Address === next.token0Address &&
+    prev.token1Address === next.token1Address &&
+    prev.isChartExpanded === next.isChartExpanded &&
+    prev.isMobile === next.isMobile &&
+    prev.isChartExpanded === next.isChartExpanded &&
+    ((prev.currentSwapPrice !== null &&
+      next.currentSwapPrice !== null &&
+      prev.currentSwapPrice[prev.token0Address] === next.currentSwapPrice[next.token0Address] &&
+      prev.currentSwapPrice[prev.token1Address] === next.currentSwapPrice[next.token1Address]) ||
+      (prev.currentSwapPrice === null && next.currentSwapPrice === null))
+  )
+})
