@@ -1806,6 +1806,14 @@ export const mainnetTokens = {
     'Nabox Token',
     'https://nabox.io/',
   ),
+  xcv: new Token(
+    MAINNET,
+    '0x4be63a9b26EE89b9a3a13fd0aA1D0b2427C135f8',
+    18,
+    'XCV',
+    'XCarnival',
+    'https://xcarnival.fi/',
+  ),
 }
 
 export const testnetTokens = {
