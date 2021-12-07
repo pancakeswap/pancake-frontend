@@ -106,7 +106,7 @@ const TradingViewChart = ({
               <Flex height="100%" justifyContent="center" alignItems="center" flexDirection="column">
                 <BunnyPlaceholderIcon width="96px" height="96px" />
                 <Text bold fontSize="20px" color="textDisabled" mt="16px">
-                  {t('Tradingview chart not available')}
+                  {t('TradingView chart not available')}
                 </Text>
               </Flex>
             )}
