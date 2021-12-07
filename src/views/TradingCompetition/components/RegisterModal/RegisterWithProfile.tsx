@@ -19,7 +19,7 @@ const StyledLabel = styled.label`
 const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, onRegisterSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
-  const tradingCompetitionContract = useTradingCompetitionContract(true)
+  const tradingCompetitionContract = useTradingCompetitionContract()
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
   const { callWithGasPrice } = useCallWithGasPrice()

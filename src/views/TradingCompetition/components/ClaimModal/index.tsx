@@ -32,7 +32,7 @@ const ImageWrapper = styled(Flex)`
 
 const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
   const [isConfirming, setIsConfirming] = useState(false)
-  const tradingCompetitionContract = useTradingCompetitionContract(true)
+  const tradingCompetitionContract = useTradingCompetitionContract()
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
 

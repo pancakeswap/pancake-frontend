@@ -71,7 +71,7 @@ const TradingCompetition = () => {
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
   const { isDark, theme } = useTheme()
-  const tradingCompetitionContract = useTradingCompetitionContract()
+  const tradingCompetitionContract = useTradingCompetitionContract(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)

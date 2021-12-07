@@ -127,7 +127,7 @@ export const useClaimRefundContract = () => {
   return useMemo(() => getClaimRefundContract(library.getSigner()), [library])
 }
 
-export const useTradingCompetitionContract = (withSignerIfPossible?: boolean) => {
+export const useTradingCompetitionContract = (withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
   return useMemo(
     () => getTradingCompetitionContractV2(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
