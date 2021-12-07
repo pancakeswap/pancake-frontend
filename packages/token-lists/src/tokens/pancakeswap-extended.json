@@ -2046,5 +2046,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x755f34709E369D37C6Fa52808aE84A32007d1155.png"
+  },
+  {
+    "name": "XCarnival",
+    "symbol": "XCV",
+    "address": "0x4be63a9b26EE89b9a3a13fd0aA1D0b2427C135f8",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x4be63a9b26EE89b9a3a13fd0aA1D0b2427C135f8.png"
   }
 ]
