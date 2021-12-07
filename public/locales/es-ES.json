@@ -1762,5 +1762,5 @@
   "Get %symbol%, or make sure your tokens aren’t staked somewhere else.": "Get %symbol%, or make sure your tokens aren’t staked somewhere else.",
   "Refresh": "Refresh",
   "Basic": "Basic",
-  "Tradingview chart not available": "Tradingview chart not available"
+  "TradingView chart not available": "TradingView chart not available"
 }
