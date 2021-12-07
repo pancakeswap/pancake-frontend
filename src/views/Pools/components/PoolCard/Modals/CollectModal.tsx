@@ -16,6 +16,7 @@ import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
 import { Token } from '@pancakeswap/sdk'
 import { formatNumber } from 'utils/formatBalance'
+import { logError } from 'utils/sentry'
 import useHarvestPool from '../../../hooks/useHarvestPool'
 import useStakePool from '../../../hooks/useStakePool'
 
@@ -69,7 +70,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
         onDismiss()
       } catch (e) {
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        console.error(e)
+        logError(e)
         setPendingTx(false)
       }
     } else {
@@ -84,7 +85,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
         onDismiss()
       } catch (e) {
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        console.error(e)
+        logError(e)
         setPendingTx(false)
       }
     }

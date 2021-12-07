@@ -1,18 +1,19 @@
-import React, { useState, useCallback } from 'react'
-import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { Button, Flex, Text } from '@pancakeswap/uikit'
-import { getAddress } from 'utils/addressHelpers'
+import BigNumber from 'bignumber.js'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useTranslation } from 'contexts/Localization'
+import { useERC20 } from 'hooks/useContract'
+import useToast from 'hooks/useToast'
+import React, { useCallback, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { DeserializedFarm } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
-import useToast from 'hooks/useToast'
-import { useERC20 } from 'hooks/useContract'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import StakeAction from './StakeAction'
-import HarvestAction from './HarvestAction'
+import styled from 'styled-components'
+import { getAddress } from 'utils/addressHelpers'
+import { logError } from 'utils/sentry'
 import useApproveFarm from '../../hooks/useApproveFarm'
+import HarvestAction from './HarvestAction'
+import StakeAction from './StakeAction'
 
 const Action = styled.div`
   padding-top: 16px;
@@ -49,8 +50,8 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
       await onApprove()
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
     } catch (e) {
+      logError(e)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      console.error(e)
     } finally {
       setRequestedApproval(false)
     }

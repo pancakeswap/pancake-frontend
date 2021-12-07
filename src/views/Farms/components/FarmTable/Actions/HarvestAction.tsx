@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
 import { Button, Heading, Skeleton, Text } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
+import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { useTranslation } from 'contexts/Localization'
+import useToast from 'hooks/useToast'
+import React, { useState } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import useToast from 'hooks/useToast'
-import { useTranslation } from 'contexts/Localization'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getBalanceAmount } from 'utils/formatBalance'
+import { logError } from 'utils/sentry'
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
-
-import { ActionContainer, ActionTitles, ActionContent } from './styles'
+import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -72,7 +72,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
                 t('Error'),
                 t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
               )
-              console.error(e)
+              logError(e)
             } finally {
               setPendingTx(false)
             }

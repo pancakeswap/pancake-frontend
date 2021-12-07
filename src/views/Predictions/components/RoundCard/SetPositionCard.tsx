@@ -27,6 +27,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { BetPosition } from 'state/types'
 import { formatBigNumber, formatFixedNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { logError } from 'utils/sentry'
 import PositionTag from '../PositionTag'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
@@ -153,7 +154,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
       setIsTxPending(true)
       const receipt = await tx.wait()
       onSuccess(receipt.transactionHash)
-    } catch {
+    } catch (e) {
+      logError(e)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     } finally {
       setIsTxPending(false)

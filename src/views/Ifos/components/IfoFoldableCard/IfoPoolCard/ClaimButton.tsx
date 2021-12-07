@@ -5,6 +5,7 @@ import { WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { logError } from 'utils/sentry'
 
 interface Props {
   poolId: PoolIds
@@ -43,7 +44,7 @@ const ClaimButton: React.FC<Props> = ({ poolId, ifoVersion, walletIfoData }) => 
       )
     } catch (error) {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      console.error(error)
+      logError(error)
     } finally {
       setPendingTx(false)
     }
