@@ -17,7 +17,7 @@ import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
+import { useCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
 import NftBunnies from '../../pngs/syrup-nft.png'
 
@@ -45,7 +45,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
     userPointReward,
     canClaimNFT,
   } = userTradingInformation
-  const { cakeReward, lazioReward, portoReward, santosReward } = useCompetitionCakeRewards({
+  const { cakeReward, lazioReward, portoReward, santosReward } = useCompetitionRewards({
     userCakeRewards,
     userLazioRewards,
     userPortoRewards,

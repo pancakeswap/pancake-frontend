@@ -29,9 +29,9 @@ export const useCompetitionRewards = ({
   const portoAsBigNumber = new BigNumber(userPortoRewards as string)
   const santosAsBigNumber = new BigNumber(userSantosRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  const lazioBalance = getBalanceNumber(lazioAsBigNumber)
-  const portoBalance = getBalanceNumber(portoAsBigNumber)
-  const santosBalance = getBalanceNumber(santosAsBigNumber)
+  const lazioBalance = getBalanceNumber(lazioAsBigNumber, 8)
+  const portoBalance = getBalanceNumber(portoAsBigNumber, 8)
+  const santosBalance = getBalanceNumber(santosAsBigNumber, 8)
   const cakePriceBusd = useCakeBusdPrice()
 
   const dollarValueOfTokensReward =
