@@ -83,9 +83,9 @@ const TradingCompetition = () => {
     hasUserClaimed: false,
     userRewardGroup: '0',
     userCakeRewards: '0',
-    userLazioCakeRewards: '0',
-    userPortoCakeRewards: '0',
-    userSantosCakeRewards: '0',
+    userLazioRewards: '0',
+    userPortoRewards: '0',
+    userSantosRewards: '0',
     userPointReward: '0',
     canClaimNFT: false,
   })
@@ -110,9 +110,9 @@ const TradingCompetition = () => {
   const {
     hasUserClaimed,
     userCakeRewards,
-    userLazioCakeRewards,
-    userPortoCakeRewards,
-    userSantosCakeRewards,
+    userLazioRewards,
+    userPortoRewards,
+    userSantosRewards,
     userPointReward,
     canClaimNFT,
   } = userTradingInformation
@@ -121,9 +121,9 @@ const TradingCompetition = () => {
     currentPhase.state === CLAIM &&
     !hasUserClaimed &&
     (userCakeRewards !== '0' ||
-      userLazioCakeRewards !== '0' ||
-      userPortoCakeRewards !== '0' ||
-      userSantosCakeRewards !== '0' ||
+      userLazioRewards !== '0' ||
+      userPortoRewards !== '0' ||
+      userSantosRewards !== '0' ||
       userPointReward !== '0' ||
       canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
@@ -151,9 +151,9 @@ const TradingCompetition = () => {
           hasUserClaimed: user[1],
           userRewardGroup: user[2].toString(),
           userCakeRewards: user[3].toString(),
-          userLazioCakeRewards: user[4].toString(),
-          userPortoCakeRewards: user[5].toString(),
-          userSantosCakeRewards: user[6].toString(),
+          userLazioRewards: user[4].toString(),
+          userPortoRewards: user[5].toString(),
+          userSantosRewards: user[6].toString(),
           userPointReward: user[7].toString(),
           canClaimNFT: user[8],
         }
@@ -172,9 +172,9 @@ const TradingCompetition = () => {
         hasUserClaimed: false,
         userRewardGroup: '0',
         userCakeRewards: '0',
-        userLazioCakeRewards: '0',
-        userPortoCakeRewards: '0',
-        userSantosCakeRewards: '0',
+        userLazioRewards: '0',
+        userPortoRewards: '0',
+        userSantosRewards: '0',
         userPointReward: '0',
         canClaimNFT: false,
       })

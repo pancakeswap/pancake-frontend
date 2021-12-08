@@ -26,17 +26,17 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
   const {
     userRewardGroup,
     userCakeRewards,
-    userLazioCakeRewards,
-    userPortoCakeRewards,
-    userSantosCakeRewards,
+    userLazioRewards,
+    userPortoRewards,
+    userSantosRewards,
     userPointReward,
     canClaimNFT,
   } = userTradingInformation
   const { cakeReward, lazioReward, portoReward, santosReward, dollarValueOfTokensReward } = useCompetitionCakeRewards({
     userCakeRewards,
-    userLazioCakeRewards,
-    userPortoCakeRewards,
-    userSantosCakeRewards,
+    userLazioRewards,
+    userPortoRewards,
+    userSantosRewards,
   })
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
 

@@ -39,17 +39,17 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const {
     userRewardGroup,
     userCakeRewards,
-    userLazioCakeRewards,
-    userPortoCakeRewards,
-    userSantosCakeRewards,
+    userLazioRewards,
+    userPortoRewards,
+    userSantosRewards,
     userPointReward,
     canClaimNFT,
   } = userTradingInformation
   const { cakeReward, lazioReward, portoReward, santosReward } = useCompetitionCakeRewards({
     userCakeRewards,
-    userLazioCakeRewards,
-    userPortoCakeRewards,
-    userSantosCakeRewards,
+    userLazioRewards,
+    userPortoRewards,
+    userSantosRewards,
   })
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
   const { callWithGasPrice } = useCallWithGasPrice()

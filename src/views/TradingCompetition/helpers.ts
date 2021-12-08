@@ -1,6 +1,6 @@
 import { ReactText } from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
-import easterPrizes from 'config/constants/trading-competition/prizes'
+import prizes from 'config/constants/trading-competition/prizes'
 import BigNumber from 'bignumber.js'
 import useBUSDPrice, { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import tokens from 'config/constants/tokens'
@@ -12,22 +12,22 @@ export const localiseTradingVolume = (value: number, decimals = 0) => {
 
 export const useCompetitionCakeRewards = ({
   userCakeRewards,
-  userLazioCakeRewards,
-  userPortoCakeRewards,
-  userSantosCakeRewards,
+  userLazioRewards,
+  userPortoRewards,
+  userSantosRewards,
 }: {
   userCakeRewards: ReactText
-  userLazioCakeRewards: ReactText
-  userPortoCakeRewards: ReactText
-  userSantosCakeRewards: ReactText
+  userLazioRewards: ReactText
+  userPortoRewards: ReactText
+  userSantosRewards: ReactText
 }) => {
   const lazioPriceBUSD = useBUSDPrice(tokens.lazio)
   const portoPriceBUSD = useBUSDPrice(tokens.porto)
   const santosPriceBUSD = useBUSDPrice(tokens.santos)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
-  const lazioAsBigNumber = new BigNumber(userLazioCakeRewards as string)
-  const portoAsBigNumber = new BigNumber(userPortoCakeRewards as string)
-  const santosAsBigNumber = new BigNumber(userSantosCakeRewards as string)
+  const lazioAsBigNumber = new BigNumber(userLazioRewards as string)
+  const portoAsBigNumber = new BigNumber(userPortoRewards as string)
+  const santosAsBigNumber = new BigNumber(userSantosRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
   const lazioBalance = getBalanceNumber(lazioAsBigNumber)
   const portoBalance = getBalanceNumber(portoAsBigNumber)
@@ -56,7 +56,7 @@ export const useCompetitionCakeRewards = ({
 // Achievement keys are consistent across different teams regardless of team team rank
 // If a teamRank value isn't passed, this helper can be used to return achievement keys for a given userRewardGroup
 export const getRewardGroupAchievements = (userRewardGroup: string, teamRank = 1) => {
-  const userGroup = easterPrizes[teamRank].filter((prizeGroup) => {
+  const userGroup = prizes[teamRank].filter((prizeGroup) => {
     return prizeGroup.group === userRewardGroup
   })[0]
   const userAchievements = userGroup && userGroup.achievements
