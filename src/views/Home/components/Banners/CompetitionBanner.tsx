@@ -13,7 +13,7 @@ const StyledSubheading = styled(Heading)`
   -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   ${({ theme }) => theme.mediaQueries.xs} {
-    font-size: 24px;
+    font-size: 20px;
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     -webkit-text-stroke: unset;
@@ -28,7 +28,6 @@ const StyledHeading = styled(Heading)`
   -webkit-background-clip: text;
   -webkit-text-stroke: 6px transparent;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  margin-bottom: 16px;
 `
 
 const Wrapper = styled.div`
