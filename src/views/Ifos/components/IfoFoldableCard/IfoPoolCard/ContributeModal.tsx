@@ -9,10 +9,12 @@ import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { TokenPairImage } from 'components/TokenImage'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
+import useLPToken from 'hooks/useLPToken'
 
 interface Props {
   poolId: PoolIds
@@ -42,6 +44,7 @@ const ContributeModal: React.FC<Props> = ({
   const userPoolCharacteristics = walletIfoData[poolId]
 
   const { currency } = ifo
+  const ifoCurrencyAsLP = useLPToken(currency.address)
   const { limitPerUserInLP } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { contract } = walletIfoData
@@ -107,15 +110,17 @@ const ContributeModal: React.FC<Props> = ({
         <Flex justifyContent="space-between" mb="8px">
           <Text>{t('Commit')}:</Text>
           <Flex flexGrow={1} justifyContent="flex-end">
-            <Image
-              src={
-                ifo.currency.symbol === 'CAKE'
-                  ? '/images/cake.svg'
-                  : `/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`
-              }
-              width={24}
-              height={24}
-            />
+            {ifoCurrencyAsLP ? (
+              <TokenPairImage
+                variant="inverted"
+                primaryToken={ifoCurrencyAsLP.token0}
+                secondaryToken={ifoCurrencyAsLP.token1}
+                width={40}
+                height={40}
+              />
+            ) : (
+              <Image src={`/images/farms/${currency.address}.svg`} width={24} height={24} />
+            )}
             <Text>{currency.symbol}</Text>
           </Flex>
         </Flex>
@@ -147,7 +152,8 @@ const ContributeModal: React.FC<Props> = ({
         </Flex>
         <Text color="textSubtle" fontSize="12px" mb="24px">
           {t(
-            'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
+            'If you don’t commit enough %symbol%, you may not receive any IFO tokens at all and will only receive a full refund of your %symbol%.',
+            { symbol: currency.symbol },
           )}
         </Text>
         <ApproveConfirmButtons

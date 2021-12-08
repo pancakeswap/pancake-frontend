@@ -12,6 +12,9 @@ import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import useLPToken from '../../../hooks/useLPToken'
 
 interface Props {
   ifo: Ifo
@@ -43,6 +46,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
     poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0),
     poolBasic.hasClaimed || poolUnlimited.hasClaimed,
   ]
+  const ifoCurrencyAsLP = useLPToken(ifo.currency.address)
 
   const getStatusProp = (index: number): StepStatus => {
     const arePreviousValid = index === 0 ? true : every(stepsValidationStatus.slice(0, index), Boolean)
@@ -92,19 +96,26 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
         return (
           <CardBody>
             <Heading as="h4" color="secondary" mb="16px">
-              {t('Get %symbol%', { symbol: 'CAKE' })}
+              {t('Get %symbol%', { symbol: ifo.currency.symbol })}
             </Heading>
             <Text color="textSubtle" small>
-              {t('You’ll spend CAKE to buy IFO sale tokens.')}
+              {t('You’ll spend %symbol% to buy IFO sale tokens.', { symbol: ifo.currency.symbol })}
             </Text>
             <Button
               as={Link}
               external
-              href="/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+              href={
+                ifoCurrencyAsLP
+                  ? `${BASE_ADD_LIQUIDITY_URL}/${getLiquidityUrlPathParts({
+                      quoteTokenAddress: ifoCurrencyAsLP.token0.address,
+                      tokenAddress: ifoCurrencyAsLP.token1.address,
+                    })}`
+                  : `/swap?outputCurrency=${ifo.currency.address}`
+              }
               endIcon={<OpenNewIcon color="white" />}
               mt="16px"
             >
-              {t('Get %symbol%', { symbol: 'CAKE' })}
+              {t('Get %symbol%', { symbol: ifo.currency.symbol })}
             </Button>
           </CardBody>
         )
@@ -112,10 +123,13 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
         return (
           <CardBody>
             <Heading as="h4" color="secondary" mb="16px">
-              {t('Commit CAKE')}
+              {t('Commit %symbol%', { symbol: ifo.currency.symbol })}
             </Heading>
             <Text color="textSubtle" small>
-              {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
+              {t('When the IFO sales are live, you can “commit” your %symbol% to buy the tokens being sold.', {
+                symbol: ifo.currency.symbol,
+              })}{' '}
+              <br />
               {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
             </Text>
           </CardBody>
@@ -128,7 +142,8 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
             </Heading>
             <Text color="textSubtle" small>
               {t(
-                'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.',
+                'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent %symbol% tokens will be returned to your wallet.',
+                { symbol: ifo.currency.symbol },
               )}
             </Text>
           </CardBody>

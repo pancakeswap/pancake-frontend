@@ -2,6 +2,8 @@ import React from 'react'
 import { Modal, ModalBody, Text, Image, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import useLPToken from 'hooks/useLPToken'
 
 interface Props {
   currency: Token
@@ -10,6 +12,7 @@ interface Props {
 
 const GetTokenModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
   const { t } = useTranslation()
+  const ifoCurrencyAsLP = useLPToken(currency.address)
   return (
     <Modal title={t('%symbol% required', { symbol: currency.symbol })} onDismiss={onDismiss}>
       <ModalBody maxWidth="288px">
@@ -23,7 +26,14 @@ const GetTokenModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
         <Button
           as={Link}
           external
-          href={`/swap?outputCurrency=${currency.address}`}
+          href={
+            ifoCurrencyAsLP
+              ? `/add/${getLiquidityUrlPathParts({
+                  quoteTokenAddress: ifoCurrencyAsLP.token0.address,
+                  tokenAddress: ifoCurrencyAsLP.token1.address,
+                })}`
+              : `/swap?outputCurrency=${currency.address}`
+          }
           endIcon={<OpenNewIcon color="white" />}
           minWidth="100%" // Bypass the width="fit-content" on Links
         >
