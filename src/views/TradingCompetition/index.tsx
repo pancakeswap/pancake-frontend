@@ -48,9 +48,12 @@ const BannerFlex = styled(Flex)`
 `
 
 const BattleBannerSection = styled(PageSection)`
-  margin-top: -32px;
+  margin-top: -82px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: -94px;
+  }
   ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: -64px;
+    margin-top: -114px;
   }
 `
 
