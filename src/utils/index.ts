@@ -1,4 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
+import { ethers } from 'ethers'
 import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
@@ -82,20 +83,17 @@ export function getProviderOrSigner(library: Web3Provider, account?: string): We
 }
 
 // account is optional
-export function getContract(address: string, ABI: any, library?: Web3Provider, account?: string): Contract {
-  if (!library) {
-    return new Contract(address, ABI, simpleRpcProvider)
-  }
+export function getContract(address: string, ABI: any, signer?: ethers.Signer | ethers.providers.Provider): Contract {
   if (!isAddress(address) || address === AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
 
-  return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
+  return new Contract(address, ABI, signer ?? simpleRpcProvider)
 }
 
 // account is optional
 export function getRouterContract(_: number, library: Web3Provider, account?: string): Contract {
-  return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI, library, account)
+  return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI, getProviderOrSigner(library, account))
 }
 
 export function escapeRegExp(string: string): string {
