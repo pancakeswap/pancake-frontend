@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
 import { Flex, Box, Image } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTradingCompetitionContract } from 'hooks/useContract'
+import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import {
   SmartContractPhases,
@@ -71,7 +71,7 @@ const TradingCompetition = () => {
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
   const { isDark, theme } = useTheme()
-  const tradingCompetitionContract = useTradingCompetitionContract(false)
+  const tradingCompetitionContract = useTradingCompetitionContractV2(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)

@@ -13,7 +13,7 @@ import {
   TeamPlayerIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useTradingCompetitionContract } from 'hooks/useContract'
+import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -32,7 +32,7 @@ const ImageWrapper = styled(Flex)`
 
 const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
   const [isConfirming, setIsConfirming] = useState(false)
-  const tradingCompetitionContract = useTradingCompetitionContract()
+  const tradingCompetitionContract = useTradingCompetitionContractV2()
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
 
