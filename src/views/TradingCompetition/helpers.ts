@@ -37,9 +37,9 @@ export const useCompetitionRewards = ({
   const dollarValueOfTokensReward =
     cakePriceBusd && lazioPriceBUSD && portoPriceBUSD && santosPriceBUSD
       ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) +
-        multiplyPriceByAmount(lazioPriceBUSD, lazioBalance) +
-        multiplyPriceByAmount(portoPriceBUSD, portoBalance) +
-        multiplyPriceByAmount(santosPriceBUSD, santosBalance)
+        multiplyPriceByAmount(lazioPriceBUSD, lazioBalance, 8) +
+        multiplyPriceByAmount(portoPriceBUSD, portoBalance, 8) +
+        multiplyPriceByAmount(santosPriceBUSD, santosBalance, 8)
       : null
 
   return {
