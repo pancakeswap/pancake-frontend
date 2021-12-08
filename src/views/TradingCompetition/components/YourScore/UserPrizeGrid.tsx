@@ -38,7 +38,8 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
     userPortoRewards,
     userSantosRewards,
   })
-  const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
+
+  const { champion, teamPlayer, trophy } = getRewardGroupAchievements(userRewardGroup)
 
   return (
     <StyledPrizeTable>
@@ -70,7 +71,7 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
             <Flex alignItems="center" flexWrap="wrap" justifyContent="center" width="100%">
               {champion && <CrownIcon mr={[0, '4px']} />}
               {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
-              <TrophyGoldIcon mr={[0, '4px']} />
+              {trophy && <TrophyGoldIcon mr={[0, '4px']} />}
               <Text fontSize="12px" color="textSubtle" textTransform="lowercase">
                 + {userPointReward} {t('Points')}
               </Text>

@@ -9,7 +9,7 @@ export enum Tiers {
 export interface Achievement {
   champion?: number
   teamPlayer?: number
-  trophy: number
+  trophy?: number
 }
 
 export interface Rank {
@@ -33,9 +33,7 @@ const prizes: Config = {
       tier: Tiers.GOLD,
       tokenPrizeInUsd: 12600,
       achievements: {
-        champion: 1250,
-        teamPlayer: 750,
-        trophy: 500,
+        champion: 2500,
       },
       hasNft: true,
     },
@@ -45,8 +43,7 @@ const prizes: Config = {
       tier: Tiers.SILVER,
       tokenPrizeInUsd: 29400,
       achievements: {
-        teamPlayer: 750,
-        trophy: 500,
+        teamPlayer: 1250,
       },
       hasNft: true,
     },
@@ -56,8 +53,7 @@ const prizes: Config = {
       tier: Tiers.BRONZE,
       tokenPrizeInUsd: 25200,
       achievements: {
-        teamPlayer: 750,
-        trophy: 500,
+        teamPlayer: 1250,
       },
       hasNft: true,
     },
@@ -68,8 +64,7 @@ const prizes: Config = {
       tier: Tiers.PURPLE,
       tokenPrizeInUsd: 16800,
       achievements: {
-        teamPlayer: 750,
-        trophy: 500,
+        teamPlayer: 1250,
       },
       hasNft: true,
     },
@@ -92,9 +87,7 @@ const prizes: Config = {
       tier: Tiers.GOLD,
       tokenPrizeInUsd: 3600,
       achievements: {
-        champion: 1250,
-        teamPlayer: 750,
-        trophy: 250,
+        champion: 2250,
       },
       hasNft: false,
     },
@@ -104,8 +97,7 @@ const prizes: Config = {
       tier: Tiers.SILVER,
       tokenPrizeInUsd: 8400,
       achievements: {
-        teamPlayer: 750,
-        trophy: 250,
+        teamPlayer: 1000,
       },
       hasNft: false,
     },
@@ -115,8 +107,7 @@ const prizes: Config = {
       tier: Tiers.BRONZE,
       tokenPrizeInUsd: 7200,
       achievements: {
-        teamPlayer: 750,
-        trophy: 250,
+        teamPlayer: 1000,
       },
       hasNft: false,
     },
@@ -126,8 +117,7 @@ const prizes: Config = {
       tier: Tiers.PURPLE,
       tokenPrizeInUsd: 4800,
       achievements: {
-        teamPlayer: 750,
-        trophy: 250,
+        teamPlayer: 1000,
       },
       hasNft: false,
     },
@@ -149,9 +139,7 @@ const prizes: Config = {
       tier: Tiers.GOLD,
       tokenPrizeInUsd: 1800,
       achievements: {
-        champion: 1250,
-        teamPlayer: 750,
-        trophy: 100,
+        champion: 2100,
       },
       hasNft: false,
     },
@@ -161,8 +149,7 @@ const prizes: Config = {
       tier: Tiers.SILVER,
       tokenPrizeInUsd: 4200,
       achievements: {
-        teamPlayer: 750,
-        trophy: 100,
+        teamPlayer: 850,
       },
       hasNft: false,
     },
@@ -172,8 +159,7 @@ const prizes: Config = {
       tier: Tiers.BRONZE,
       tokenPrizeInUsd: 3600,
       achievements: {
-        teamPlayer: 750,
-        trophy: 100,
+        teamPlayer: 850,
       },
       hasNft: false,
     },
@@ -183,8 +169,7 @@ const prizes: Config = {
       tier: Tiers.PURPLE,
       tokenPrizeInUsd: 2400,
       achievements: {
-        teamPlayer: 750,
-        trophy: 100,
+        teamPlayer: 850,
       },
       hasNft: false,
     },

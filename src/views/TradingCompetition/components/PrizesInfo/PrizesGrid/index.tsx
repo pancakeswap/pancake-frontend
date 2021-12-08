@@ -105,7 +105,7 @@ const PrizesGrid = () => {
           <tbody>
             {rows.map((row) => {
               const { icon: Icon, label, color } = tierStyleMap[row.tier]
-              const { champion, teamPlayer } = row.achievements
+              const { champion, teamPlayer, trophy } = row.achievements
 
               return (
                 <tr key={row.rank}>
@@ -126,7 +126,7 @@ const PrizesGrid = () => {
                     <Flex alignItems="center" flexWrap="wrap" justifyContent="center" width="100%">
                       {champion && <CrownIcon mr={[0, '4px']} />}
                       {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
-                      <TrophyGoldIcon mr={[0, '4px']} />
+                      {trophy && <TrophyGoldIcon mr={[0, '4px']} />}
                       <Text fontSize="12px" color="textSubtle">
                         {`+${getTotalAchievementPoints(row.achievements).toLocaleString(undefined, {
                           minimumFractionDigits: 0,
