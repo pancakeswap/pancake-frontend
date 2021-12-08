@@ -17,7 +17,7 @@ import {
   TrophyGoldIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import easterPrizes, { Tiers, Rank } from 'config/constants/trading-competition/prizes'
+import prizes, { Tiers, Rank } from 'config/constants/trading-competition/prizes'
 import { Td, BoldTd, StyledPrizeTable } from '../../StyledPrizeTable'
 
 const COLOR_GOLD = '#FFBF33'
@@ -80,14 +80,14 @@ const getTotalAchievementPoints = (achievements: Rank['achievements']) => {
 const PrizesGrid = () => {
   const [tab, setTab] = useState(0)
   const { t } = useTranslation()
-  const rows = easterPrizes[tab + 1]
+  const rows = prizes[tab + 1]
 
   const handleItemClick = (index: number) => setTab(index)
 
   return (
     <Box pt="24px">
       <TabMenu activeIndex={tab} onItemClick={handleItemClick}>
-        {Object.keys(easterPrizes).map((team) => {
+        {Object.keys(prizes).map((team) => {
           return <Tab key={team}>{t('#%team% Team', { team })}</Tab>
         })}
       </TabMenu>

@@ -25,7 +25,7 @@ interface Config {
   [key: string]: Rank[]
 }
 
-const easterPrizes: Config = {
+const prizes: Config = {
   1: [
     {
       group: '4',
@@ -201,4 +201,4 @@ const easterPrizes: Config = {
   ],
 }
 
-export default easterPrizes
+export default prizes
