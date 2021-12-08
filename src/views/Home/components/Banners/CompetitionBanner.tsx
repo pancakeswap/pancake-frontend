@@ -107,7 +107,7 @@ const CompetitionBanner = () => {
           <Link to="/competition">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
-                {t('Registered!')}
+                {t('Play Now')}
               </Text>
               <ArrowForwardIcon color="invertedContrast" />
             </Button>
