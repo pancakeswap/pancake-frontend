@@ -55,6 +55,10 @@ const BattleBannerSection = styled(PageSection)`
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-top: -114px;
   }
+
+  @media screen and (min-width: 1920px) {
+    margin-top: -144px;
+  }
 `
 
 const BottomBunnyWrapper = styled(Box)`
