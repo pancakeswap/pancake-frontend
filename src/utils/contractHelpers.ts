@@ -29,6 +29,7 @@ import {
   getNftMarketAddress,
   getNftSaleAddress,
   getPancakeSquadAddress,
+  getTradingCompetitionAddressV2,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -128,7 +129,7 @@ export const getTradingCompetitionContract = (signer?: ethers.Signer | ethers.pr
 }
 
 export const getTradingCompetitionContractV2 = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(tradingCompetitionV2Abi, getTradingCompetitionAddress(), signer)
+  return getContract(tradingCompetitionV2Abi, getTradingCompetitionAddressV2(), signer)
 }
 export const getEasterNftContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(easterNftAbi, getEasterNftAddress(), signer)
