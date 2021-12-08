@@ -12,7 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { UserTradingInformationProps } from '../../types'
-import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
+import { useCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { BoldTd, Td, StyledPrizeTable } from '../StyledPrizeTable'
 
 const StyledThead = styled.thead`
@@ -32,7 +32,7 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
     userPointReward,
     canClaimNFT,
   } = userTradingInformation
-  const { cakeReward, lazioReward, portoReward, santosReward, dollarValueOfTokensReward } = useCompetitionCakeRewards({
+  const { cakeReward, lazioReward, portoReward, santosReward, dollarValueOfTokensReward } = useCompetitionRewards({
     userCakeRewards,
     userLazioRewards,
     userPortoRewards,
