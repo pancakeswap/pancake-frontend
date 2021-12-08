@@ -11,6 +11,7 @@ import {
   Progress,
   Button,
   ChevronUpIcon,
+  Box,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
@@ -21,12 +22,20 @@ import useToast from 'hooks/useToast'
 import useRefresh from 'hooks/useRefresh'
 import { useTranslation } from 'contexts/Localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { EnableStatus } from './types'
-import IfoPoolCard from './IfoPoolCard'
-import Timer from './Timer'
-import Achievement from './Achievement'
-import useIfoApprove from '../../hooks/useIfoApprove'
-import useIsWindowVisible from '../../../../hooks/useIsWindowVisible'
+import { EnableStatus } from './IfoFoldableCard/types'
+import IfoPoolCard from './IfoFoldableCard/IfoPoolCard'
+import Timer from './IfoFoldableCard/Timer'
+import Achievement from './IfoFoldableCard/Achievement'
+import useIfoApprove from '../hooks/useIfoApprove'
+import useIsWindowVisible from '../../../hooks/useIsWindowVisible'
+
+const StyledProgress = styled(Progress)`
+  background-color: none;
+  div {
+    background-color: none;
+    background: linear-gradient(273deg, #ffd800 -2.87%, #eb8c00 113.73%);
+  }
+`
 
 interface IfoFoldableCardProps {
   ifo: Ifo
@@ -34,6 +43,26 @@ interface IfoFoldableCardProps {
   walletIfoData: WalletIfoData
   isInitiallyVisible: boolean
   foldable?: boolean
+}
+
+const BigCurve = styled.div<{ $background: string }>`
+  width: 150%;
+  position: absolute;
+  background: ${({ $background }) => $background};
+  border-radius: 50%;
+  top: -150%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+`
+
+const IfoRibbon = () => {
+  const { t } = useTranslation()
+  return (
+    <Box height="75px" position="relative" overflow="hidden">
+      <BigCurve $background="#EFEAF5" />
+    </Box>
+  )
 }
 
 const getRibbonComponent = (ifo: Ifo, status: IfoStatus, t: any) => {
@@ -59,6 +88,10 @@ const StyledCard = styled(Card)`
   max-width: 705px;
   width: 100%;
   margin: auto;
+
+  > div {
+    background: ${({ theme }) => theme.colors.gradients.bubblegum};
+  }
 `
 
 const Header = styled(CardHeader)<{ ifoId: string }>`
@@ -74,7 +107,7 @@ const Header = styled(CardHeader)<{ ifoId: string }>`
 
 const FoldableContent = styled.div<{ isVisible: boolean; isActive: boolean }>`
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
-  background: ${({ isActive, theme }) => (isActive ? theme.colors.gradients.bubblegum : theme.colors.dropdown)};
+  /* background: ${({ isActive, theme }) => (isActive ? theme.colors.gradients.bubblegum : theme.colors.dropdown)}; */
 `
 
 const CardsWrapper = styled.div<{ singleCard: boolean }>`
@@ -101,7 +134,7 @@ const StyledCardFooter = styled(CardFooter)`
   background: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
-const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({
+const IfoStakeFoldableCard: React.FC<IfoFoldableCardProps> = ({
   ifo,
   publicIfoData,
   walletIfoData,
@@ -194,12 +227,13 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({
   }, [account, raisingTokenContract, contract, setEnableStatus])
 
   return (
-    <StyledCard ribbon={Ribbon}>
+    <StyledCard>
       <Header ifoId={ifo.id}>
         {foldable && <ExpandableButton expanded={isVisible} onClick={() => setIsVisible((prev) => !prev)} />}
       </Header>
+      <IfoRibbon />
       <FoldableContent isVisible={isVisible} isActive={publicIfoData.status !== 'idle' && isActive}>
-        {isActive && <Progress variant="flat" primaryStep={publicIfoData.progress} />}
+        {isActive && <StyledProgress variant="flat" primaryStep={publicIfoData.progress} />}
         <StyledCardBody>
           {isActive && <Timer publicIfoData={publicIfoData} />}
           <CardsWrapper singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}>
@@ -234,4 +268,4 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({
   )
 }
 
-export default IfoFoldableCard
+export default IfoStakeFoldableCard

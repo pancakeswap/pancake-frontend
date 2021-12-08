@@ -1,11 +1,21 @@
-import React from 'react'
 import { ifosConfig } from 'config/constants'
+import styled from 'styled-components'
+import React from 'react'
+import { usePool } from 'state/pools/hooks'
 import useGetPublicIfoV2Data from 'views/Ifos/hooks/v2/useGetPublicIfoData'
 import useGetWalletIfoV2Data from 'views/Ifos/hooks/v2/useGetWalletIfoData'
-import IfoFoldableCard from './components/IfoFoldableCard'
+import IfoStakePoolCard from 'views/Pools/components/IfoStakePoolCard'
 import IfoLayout from './components/IfoLayout'
-import IfoSteps from './components/IfoSteps'
 import IfoQuestions from './components/IfoQuestions'
+import IfoSteps from './components/IfoSteps'
+import IfoStakeFoldableCard from './components/IfoStakeFoldableCard'
+
+const FlexRow = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 32px;
+`
 
 /**
  * Note: currently there should be only 1 active IFO at a time
@@ -15,10 +25,20 @@ const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 const Ifo = () => {
   const publicIfoData = useGetPublicIfoV2Data(activeIfo)
   const walletIfoData = useGetWalletIfoV2Data(activeIfo)
+  const { pool } = usePool(0)
 
   return (
     <IfoLayout id="current-ifo">
-      <IfoFoldableCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} isInitiallyVisible />
+      <FlexRow>
+        <IfoStakePoolCard pool={{ ...pool, isAutoVault: true }} showStakedOnly={false} />
+        <IfoStakeFoldableCard
+          ifo={activeIfo}
+          publicIfoData={publicIfoData}
+          walletIfoData={walletIfoData}
+          isInitiallyVisible
+          foldable={false}
+        />
+      </FlexRow>
       <IfoSteps ifo={activeIfo} walletIfoData={walletIfoData} />
       <IfoQuestions />
     </IfoLayout>

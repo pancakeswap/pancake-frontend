@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { Card, CardBody, CardHeader, Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
@@ -9,6 +10,10 @@ import { EnableStatus } from '../types'
 import IfoCardTokens from './IfoCardTokens'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
+
+const StyledCard = styled(Card)`
+  background: none;
+`
 
 interface IfoCardProps {
   poolId: PoolIds
@@ -58,10 +63,10 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
   return (
     <>
       {tooltipVisible && tooltip}
-      <Card>
-        <CardHeader variant={config.variant}>
+      <StyledCard>
+        <CardHeader p="16px 24px" variant={config.variant}>
           <Flex justifyContent="space-between" alignItems="center">
-            <Text bold fontSize="20px">
+            <Text bold fontSize="20px" lineHeight={1}>
               {config.title}
             </Text>
             <div ref={targetRef}>
@@ -90,7 +95,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
           />
           <IfoCardDetails poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} />
         </CardBody>
-      </Card>
+      </StyledCard>
     </>
   )
 }

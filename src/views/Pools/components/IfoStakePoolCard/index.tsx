@@ -8,14 +8,20 @@ import tokens from 'config/constants/tokens'
 import { useCakeVault } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { convertSharesToCake } from 'views/Pools/helpers'
+import { TokenPairImage } from 'components/TokenImage'
 import AprRow from '../PoolCard/AprRow'
-import { StyledCard } from '../PoolCard/StyledCard'
+import { StyledCard as StyledCardBase } from '../PoolCard/StyledCard'
 import CardFooter from '../PoolCard/CardFooter'
 import PoolCardHeader, { PoolCardHeaderTitle } from '../PoolCard/PoolCardHeader'
-import VaultCardActions from './VaultCardActions'
-import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
-import RecentCakeProfitRow from './RecentCakeProfitRow'
-import CakeVaultTokenPairImage from './CakeVaultTokenPairImage'
+import VaultCardActions from '../CakeVaultCard/VaultCardActions'
+import UnstakingFeeCountdownRow from '../CakeVaultCard/UnstakingFeeCountdownRow'
+import RecentCakeProfitRow from '../CakeVaultCard/RecentCakeProfitRow'
+
+const StyledCard = styled(StyledCardBase)`
+  max-width: 376px;
+  width: 100%;
+  margin: 0;
+`
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
@@ -26,7 +32,7 @@ interface CakeVaultProps {
   showStakedOnly: boolean
 }
 
-const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
+const IfoStakePoolCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const {
@@ -48,8 +54,8 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
   return (
     <StyledCard isActive>
       <PoolCardHeader isStaking={accountHasSharesStaked}>
-        <PoolCardHeaderTitle title={`${t('Auto')} ${tokens.cake.symbol}`} subTitle={t('Automatic restaking')} />
-        <CakeVaultTokenPairImage width={64} height={64} />
+        <PoolCardHeaderTitle title={t('IFO CAKE')} subTitle={t('Stake CAKE to participate in IFO')} />
+        <TokenPairImage primaryToken={tokens.cake} secondaryToken={tokens.cake} width={64} height={64} />
       </PoolCardHeader>
       <StyledCardBody isLoading={isLoading}>
         <AprRow pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
@@ -82,4 +88,4 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
   )
 }
 
-export default CakeVaultCard
+export default IfoStakePoolCard
