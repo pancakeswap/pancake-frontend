@@ -3,6 +3,17 @@ import { SerializedPoolConfig, PoolCategory } from './types'
 
 const serializedTokens = serializeTokens()
 
+export const vaultPoolConfig = {
+  cakeVault: {
+    name: 'Auto Cake',
+    description: 'Automatic restaking',
+  },
+  ifoPool: {
+    name: 'IFO CAKE',
+    description: 'Stake CAKE to participate in IFO',
+  },
+} as const
+
 const pools: SerializedPoolConfig[] = [
   {
     sousId: 0,

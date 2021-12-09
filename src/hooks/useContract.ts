@@ -18,6 +18,7 @@ import {
   getEasterNftContract,
   getErc721Contract,
   getCakeVaultContract,
+  getIfoPoolContract,
   getPredictionsContract,
   getChainlinkOracleContract,
   getSouschefV2Contract,
@@ -149,6 +150,11 @@ export const useEasterNftContract = () => {
 export const useCakeVaultContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getCakeVaultContract(library.getSigner()), [library])
+}
+
+export const useIFOPoolContract = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getIfoPoolContract(library.getSigner()), [library])
 }
 
 export const usePredictionsContract = () => {

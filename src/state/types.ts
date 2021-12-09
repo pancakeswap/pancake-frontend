@@ -60,13 +60,18 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   userData?: DeserializedFarmUserData
 }
 
+export enum VaultKey {
+  CakeVault = 'cakeVault',
+  IfoPool = 'ifoPool',
+}
+
 interface CorePoolProps {
   startBlock?: number
   endBlock?: number
   apr?: number
   stakingTokenPrice?: number
   earningTokenPrice?: number
-  isAutoVault?: boolean
+  vaultKey?: VaultKey
 }
 
 export interface DeserializedPool extends DeserializedPoolConfig, CorePoolProps {
@@ -145,6 +150,7 @@ export interface CakeVault {
 export interface PoolsState {
   data: SerializedPool[]
   cakeVault: CakeVault
+  ifoPool: CakeVault
   userDataLoaded: boolean
 }
 

@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import tokens from 'config/constants/tokens'
-import { useCakeVault } from 'state/pools/hooks'
+import { useIfoPool } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { TokenPairImage } from 'components/TokenImage'
@@ -30,16 +30,17 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
 interface CakeVaultProps {
   pool: DeserializedPool
   showStakedOnly: boolean
+  defaultExpanded?: boolean
 }
 
-const IfoStakePoolCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
+const IfoStakePoolCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, defaultExpanded }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const {
     userData: { userShares, isLoading: isVaultUserDataLoading },
     fees: { performanceFee },
     pricePerFullShare,
-  } = useCakeVault()
+  } = useIfoPool()
 
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
 
@@ -83,7 +84,7 @@ const IfoStakePoolCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) =>
           )}
         </Flex>
       </StyledCardBody>
-      <CardFooter defaultExpanded pool={pool} account={account} />
+      <CardFooter defaultExpanded={defaultExpanded} pool={pool} account={account} />
     </StyledCard>
   )
 }

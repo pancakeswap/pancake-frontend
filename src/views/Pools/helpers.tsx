@@ -35,12 +35,13 @@ const AUTO_VAULT_COMPOUND_FREQUENCY = 5000
 const MANUAL_POOL_AUTO_COMPOUND_FREQUENCY = 0
 
 export const getAprData = (pool: DeserializedPool, performanceFee: number) => {
-  const { isAutoVault, apr } = pool
+  const { vaultKey, apr } = pool
 
+  // TODO: update IFO compound frequency
   //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
-  const autoCompoundFrequency = isAutoVault ? AUTO_VAULT_COMPOUND_FREQUENCY : MANUAL_POOL_AUTO_COMPOUND_FREQUENCY
+  const autoCompoundFrequency = vaultKey ? AUTO_VAULT_COMPOUND_FREQUENCY : MANUAL_POOL_AUTO_COMPOUND_FREQUENCY
 
-  if (isAutoVault) {
+  if (vaultKey) {
     const autoApr = getApy(apr, AUTO_VAULT_COMPOUND_FREQUENCY, 365, performanceFee) * 100
     return { apr: autoApr, autoCompoundFrequency }
   }

@@ -5,6 +5,7 @@ import { usePool } from 'state/pools/hooks'
 import useGetPublicIfoV2Data from 'views/Ifos/hooks/v2/useGetPublicIfoData'
 import useGetWalletIfoV2Data from 'views/Ifos/hooks/v2/useGetWalletIfoData'
 import IfoStakePoolCard from 'views/Pools/components/IfoStakePoolCard'
+import { VaultKey } from 'state/types'
 import IfoLayout from './components/IfoLayout'
 import IfoQuestions from './components/IfoQuestions'
 import IfoSteps from './components/IfoSteps'
@@ -30,7 +31,7 @@ const Ifo = () => {
   return (
     <IfoLayout id="current-ifo">
       <FlexRow>
-        <IfoStakePoolCard pool={{ ...pool, isAutoVault: true }} showStakedOnly={false} />
+        <IfoStakePoolCard defaultExpanded pool={{ ...pool, vaultKey: VaultKey.IfoPool }} showStakedOnly={false} />
         <IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
       </FlexRow>
       <IfoSteps ifo={activeIfo} walletIfoData={walletIfoData} />

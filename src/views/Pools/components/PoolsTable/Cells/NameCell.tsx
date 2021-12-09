@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useCakeVault } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { vaultPoolConfig } from 'config/constants/pools'
 import { TokenPairImage } from 'components/TokenImage'
 import CakeVaultTokenPairImage from '../../CakeVaultCard/CakeVaultTokenPairImage'
 import BaseCell, { CellContent } from './BaseCell'
@@ -27,7 +28,7 @@ const StyledCell = styled(BaseCell)`
 const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const { sousId, stakingToken, earningToken, userData, isFinished, isAutoVault } = pool
+  const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool
   const {
     userData: { userShares },
   } = useCakeVault()
@@ -40,15 +41,15 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const isStaked = stakedBalance.gt(0)
   const isManualCakePool = sousId === 0
 
-  const showStakedTag = isAutoVault ? hasVaultShares : isStaked
+  const showStakedTag = vaultKey ? hasVaultShares : isStaked
 
   let title = `${t('Earn')} ${earningTokenSymbol}`
   let subtitle = `${t('Stake')} ${stakingTokenSymbol}`
   const showSubtitle = sousId !== 0 || (sousId === 0 && !isMobile)
 
-  if (isAutoVault) {
-    title = t('Auto CAKE')
-    subtitle = t('Automatic restaking')
+  if (vaultKey) {
+    title = t(vaultPoolConfig[vaultKey].name)
+    subtitle = t(vaultPoolConfig[vaultKey].description)
   } else if (isManualCakePool) {
     title = t('Manual CAKE')
     subtitle = `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`
@@ -56,7 +57,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
 
   return (
     <StyledCell role="cell">
-      {isAutoVault ? (
+      {vaultKey ? (
         <CakeVaultTokenPairImage mr="8px" width={40} height={40} />
       ) : (
         <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
