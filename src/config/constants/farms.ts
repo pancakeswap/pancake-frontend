@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 484,
+    lpSymbol: 'IDIA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x71E6de81381eFE0Aa98f56b3B43eB3727D640715',
+    },
+    token: serializedTokens.idia,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 483,
     lpSymbol: 'XCV-BUSD LP',
     lpAddresses: {
