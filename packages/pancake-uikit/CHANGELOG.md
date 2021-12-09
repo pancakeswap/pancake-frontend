@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.60.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.59.0...@pancakeswap/uikit@0.60.0) (2021-12-09)
+
+
+### Bug Fixes
+
+* (bottomdrawer): Add tokenpocket padding to bottom drawer ([#354](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/354)) ([68fffca](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/68fffcabea4e3fab1b9e8dbb448b289a43ded3d1))
+
+
+### Features
+
+* **uikit:** Add ProgressBar for compose use ([#356](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/356)) ([0ba9872](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/0ba9872b32405e00c2e9612ba3d77fb38563208e))
+
+
+
+
+
 # [0.59.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.58.1...@pancakeswap/uikit@0.59.0) (2021-12-01)
 
 

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.24.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.23.0...@pancakeswap/token-lists@2.24.0) (2021-12-09)
+
+
+### Features
+
+* List IDIA ([#357](https://github.com/pancakeswap/pancake-toolkit/issues/357)) ([62fde33](https://github.com/pancakeswap/pancake-toolkit/commit/62fde3376e186a52e295956896c9e890364a7c3a))
+* List NABOX ([#352](https://github.com/pancakeswap/pancake-toolkit/issues/352)) ([210a4c1](https://github.com/pancakeswap/pancake-toolkit/commit/210a4c184e2c7f0cb1fafe50135c38232ce07ce5))
+* List SANTOS ([#348](https://github.com/pancakeswap/pancake-toolkit/issues/348)) ([d89126e](https://github.com/pancakeswap/pancake-toolkit/commit/d89126ebcaeed507ffd0d91c2a955a195ce4010f))
+* List XCV ([#355](https://github.com/pancakeswap/pancake-toolkit/issues/355)) ([2ecb976](https://github.com/pancakeswap/pancake-toolkit/commit/2ecb976954dda56c22d9992751324944239eda91))
+* Remove GNT ([#353](https://github.com/pancakeswap/pancake-toolkit/issues/353)) ([6fc8dea](https://github.com/pancakeswap/pancake-toolkit/commit/6fc8dea11d4675a69f3760dfbd94e5322c16e96b))
+
+
+
+
+
 # [2.23.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.22.0...@pancakeswap/token-lists@2.23.0) (2021-12-01)
 
 
