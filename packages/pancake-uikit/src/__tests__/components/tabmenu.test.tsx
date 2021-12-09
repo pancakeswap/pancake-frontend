@@ -25,7 +25,7 @@ it("renders correctly", () => {
     }
 
     .c2 {
-      border-bottom: 2px solid #7A6EAA;
+      border-bottom: 2px solid #eeeaf4;
       overflow-x: scroll;
       -ms-overflow-style: none;
       -webkit-scrollbar-width: none;

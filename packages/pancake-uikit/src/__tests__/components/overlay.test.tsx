@@ -22,7 +22,6 @@ it("renders correctly", () => {
         class="c0"
         role="presentation"
       />
-      ;
     </DocumentFragment>
   `);
 });
