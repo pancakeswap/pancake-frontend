@@ -131,7 +131,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
     }
     if (account && !hasProfile) {
-      // TODO: danger when no cake staking
+      // TODO: danger when no cake staking in IFO
       return (
         <>
           <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
@@ -195,6 +195,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <Text textAlign="center" fontSize="14px">
             {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
           </Text>
+          {/* TODO: link */}
           <Text textAlign="center">{t('How does it work?')} »</Text>
         </Flex>
       ) : (

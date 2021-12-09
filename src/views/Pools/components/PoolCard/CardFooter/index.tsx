@@ -11,6 +11,7 @@ interface FooterProps {
   pool: DeserializedPool
   account: string
   totalCakeInVault?: BigNumber
+  defaultExpanded?: boolean
 }
 
 const ExpandableButtonWrapper = styled(Flex)`
@@ -21,10 +22,10 @@ const ExpandableButtonWrapper = styled(Flex)`
   }
 `
 
-const Footer: React.FC<FooterProps> = ({ pool, account }) => {
+const Footer: React.FC<FooterProps> = ({ pool, account, defaultExpanded }) => {
   const { isAutoVault } = pool
   const { t } = useTranslation()
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded || false)
 
   const manualTooltipText = t('You must harvest and compound your earnings from this pool manually.')
   const autoTooltipText = t(

@@ -83,7 +83,7 @@ const IfoStakePoolCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) =>
           )}
         </Flex>
       </StyledCardBody>
-      <CardFooter pool={pool} account={account} />
+      <CardFooter defaultExpanded pool={pool} account={account} />
     </StyledCard>
   )
 }

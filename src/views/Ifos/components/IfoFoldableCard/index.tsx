@@ -1,64 +1,37 @@
+import { Box, Card, CardBody, CardFooter, CardHeader, ExpandableLabel, ExpandableButton } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { Ifo, PoolIds } from 'config/constants/types'
+import { useTranslation } from 'contexts/Localization'
+import { useERC20 } from 'hooks/useContract'
+import useRefresh from 'hooks/useRefresh'
+import useToast from 'hooks/useToast'
 import React, { useEffect, useState } from 'react'
 import { useBlock } from 'state/block/hooks'
 import styled from 'styled-components'
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  CardRibbon,
-  ExpandableButton,
-  Progress,
-  Button,
-  ChevronUpIcon,
-} from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
-import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { useERC20 } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
-import useRefresh from 'hooks/useRefresh'
-import { useTranslation } from 'contexts/Localization'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { EnableStatus } from './types'
-import IfoPoolCard from './IfoPoolCard'
-import Timer from './Timer'
-import Achievement from './Achievement'
-import useIfoApprove from '../../hooks/useIfoApprove'
 import useIsWindowVisible from '../../../../hooks/useIsWindowVisible'
+import useIfoApprove from '../../hooks/useIfoApprove'
+import Achievement from './Achievement'
+import IfoPoolCard from './IfoPoolCard'
+import { EnableStatus } from './types'
+import { IfoRibbon } from './IfoRibbon'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
-  isInitiallyVisible: boolean
-  foldable?: boolean
-}
-
-const getRibbonComponent = (ifo: Ifo, status: IfoStatus, t: any) => {
-  if (status === 'coming_soon') {
-    return <CardRibbon variantColor="textDisabled" ribbonPosition="left" text={t('Coming Soon')} />
-  }
-
-  if (status === 'live' || (status === 'finished' && ifo.isActive)) {
-    return (
-      <CardRibbon
-        variantColor="primary"
-        ribbonPosition="left"
-        style={{ textTransform: 'uppercase' }}
-        text={status === 'live' ? `${t('Live')}!` : `${t('Finished')}!`}
-      />
-    )
-  }
-
-  return null
 }
 
 const StyledCard = styled(Card)`
   max-width: 705px;
   width: 100%;
   margin: auto;
+
+  > div {
+    background: ${({ theme }) => theme.colors.gradients.bubblegum};
+  }
 `
 
 const Header = styled(CardHeader)<{ ifoId: string }>`
@@ -72,16 +45,10 @@ const Header = styled(CardHeader)<{ ifoId: string }>`
   background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg'), url('/images/ifos/${ifoId}-bg.png')`};
 `
 
-const FoldableContent = styled.div<{ isVisible: boolean; isActive: boolean }>`
-  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
-  background: ${({ isActive, theme }) => (isActive ? theme.colors.gradients.bubblegum : theme.colors.dropdown)};
-`
-
 const CardsWrapper = styled.div<{ singleCard: boolean }>`
   display: grid;
   grid-gap: 32px;
   grid-template-columns: 1fr;
-  margin-bottom: 32px;
   ${({ theme }) => theme.mediaQueries.md} {
     grid-template-columns: ${({ singleCard }) => (singleCard ? '1fr' : '1fr 1fr')};
     justify-items: ${({ singleCard }) => (singleCard ? 'center' : 'unset')};
@@ -99,16 +66,94 @@ const StyledCardFooter = styled(CardFooter)`
   text-align: center;
   padding: 8px;
   background: ${({ theme }) => theme.colors.backgroundAlt};
+  button,
+  button > * {
+    color: ${({ theme }) => theme.colors.textSubtle};
+    fill: ${({ theme }) => theme.colors.textSubtle};
+  }
 `
 
-const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({
+export const IfoCurrentCard = ({
   ifo,
   publicIfoData,
   walletIfoData,
-  isInitiallyVisible,
-  foldable = true,
+}: {
+  ifo: Ifo
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
 }) => {
-  const [isVisible, setIsVisible] = useState(!foldable || isInitiallyVisible)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const { t } = useTranslation()
+
+  return (
+    <>
+      <StyledCard>
+        <Box position="relative">
+          <Header ifoId={ifo.id} />
+          <Box position="absolute" right={80} bottom={0} zIndex={1}>
+            <img src="/images/ifos/assets/nohat-3-bunny.png" width={123} height={162} alt="bunny" />
+          </Box>
+          <IfoRibbon publicIfoData={publicIfoData} />
+        </Box>
+        <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+        <StyledCardFooter>
+          <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
+            {isExpanded ? t('Hide') : t('Details')}
+          </ExpandableLabel>
+          {isExpanded && <Achievement ifo={ifo} publicIfoData={publicIfoData} />}
+        </StyledCardFooter>
+      </StyledCard>
+    </>
+  )
+}
+
+const FoldableContent = styled.div<{ isVisible: boolean }>`
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+`
+
+const IfoFoldableCard = ({
+  ifo,
+  publicIfoData,
+  walletIfoData,
+}: {
+  ifo: Ifo
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
+}) => {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const { t } = useTranslation()
+
+  return (
+    <>
+      <StyledCard>
+        <Box position="relative">
+          <Header ifoId={ifo.id}>
+            <ExpandableButton expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)} />
+          </Header>
+          {isExpanded && (
+            <>
+              <Box position="absolute" right={80} bottom={0} zIndex={1}>
+                <img src="/images/ifos/assets/nohat-3-bunny.png" width={123} height={162} alt="bunny" />
+              </Box>
+              <IfoRibbon publicIfoData={publicIfoData} />
+            </>
+          )}
+        </Box>
+        <FoldableContent isVisible={isExpanded}>
+          <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+          <StyledCardFooter>
+            <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
+              {isExpanded ? t('Hide') : t('Details')}
+            </ExpandableLabel>
+            {isExpanded && <Achievement ifo={ifo} publicIfoData={publicIfoData} />}
+          </StyledCardFooter>
+        </FoldableContent>
+      </StyledCard>
+    </>
+  )
+}
+
+const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfoData }) => {
   const { currentBlock } = useBlock()
   const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized, secondsUntilEnd } = publicIfoData
   const {
@@ -121,8 +166,6 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const raisingTokenContract = useERC20(ifo.currency.address)
-  const Ribbon = getRibbonComponent(ifo, publicIfoData.status, t)
-  const isActive = publicIfoData.status !== 'finished' && ifo.isActive
   // Continue to fetch 2 more minutes to get latest data
   const isRecentlyActive =
     (publicIfoData.status !== 'finished' || (publicIfoData.status === 'finished' && secondsUntilEnd >= -120)) &&
@@ -133,13 +176,13 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({
   const isWindowVisible = useIsWindowVisible()
 
   useEffect(() => {
-    if (isVisible && (isRecentlyActive || !isPublicIfoDataInitialized)) {
+    if (isRecentlyActive || !isPublicIfoDataInitialized) {
       fetchPublicIfoData(currentBlock)
     }
-  }, [isVisible, isRecentlyActive, isPublicIfoDataInitialized, fetchPublicIfoData, currentBlock])
+  }, [isRecentlyActive, isPublicIfoDataInitialized, fetchPublicIfoData, currentBlock])
 
   useEffect(() => {
-    if (isWindowVisible && isVisible && (isRecentlyActive || !isWalletDataInitialized)) {
+    if (isWindowVisible && (isRecentlyActive || !isWalletDataInitialized)) {
       if (account) {
         fetchWalletIfoData()
       }
@@ -149,7 +192,6 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({
       resetWalletIfoData()
     }
   }, [
-    isVisible,
     isWindowVisible,
     account,
     isRecentlyActive,
@@ -194,43 +236,30 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({
   }, [account, raisingTokenContract, contract, setEnableStatus])
 
   return (
-    <StyledCard ribbon={Ribbon}>
-      <Header ifoId={ifo.id}>
-        {foldable && <ExpandableButton expanded={isVisible} onClick={() => setIsVisible((prev) => !prev)} />}
-      </Header>
-      <FoldableContent isVisible={isVisible} isActive={publicIfoData.status !== 'idle' && isActive}>
-        {isActive && <Progress variant="flat" primaryStep={publicIfoData.progress} />}
-        <StyledCardBody>
-          {isActive && <Timer publicIfoData={publicIfoData} />}
-          <CardsWrapper singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}>
-            {publicIfoData.poolBasic && walletIfoData.poolBasic && (
-              <IfoPoolCard
-                poolId={PoolIds.poolBasic}
-                ifo={ifo}
-                publicIfoData={publicIfoData}
-                walletIfoData={walletIfoData}
-                onApprove={handleApprove}
-                enableStatus={enableStatus}
-              />
-            )}
+    <>
+      <StyledCardBody>
+        <CardsWrapper singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}>
+          {publicIfoData.poolBasic && walletIfoData.poolBasic && (
             <IfoPoolCard
-              poolId={PoolIds.poolUnlimited}
+              poolId={PoolIds.poolBasic}
               ifo={ifo}
               publicIfoData={publicIfoData}
               walletIfoData={walletIfoData}
               onApprove={handleApprove}
               enableStatus={enableStatus}
             />
-          </CardsWrapper>
-          <Achievement ifo={ifo} publicIfoData={publicIfoData} />
-        </StyledCardBody>
-        <StyledCardFooter>
-          <Button variant="text" endIcon={<ChevronUpIcon color="primary" />} onClick={() => setIsVisible(false)}>
-            {t('Close')}
-          </Button>
-        </StyledCardFooter>
-      </FoldableContent>
-    </StyledCard>
+          )}
+          <IfoPoolCard
+            poolId={PoolIds.poolUnlimited}
+            ifo={ifo}
+            publicIfoData={publicIfoData}
+            walletIfoData={walletIfoData}
+            onApprove={handleApprove}
+            enableStatus={enableStatus}
+          />
+        </CardsWrapper>
+      </StyledCardBody>
+    </>
   )
 }
 

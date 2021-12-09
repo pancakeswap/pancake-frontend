@@ -1,10 +1,9 @@
-import { Box, Flex, Heading, Progress } from '@pancakeswap/uikit'
-import { Ifo } from 'config/constants/types'
+import { Box, Flex, Heading, Progress, ProgressBar } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'
-import { PublicIfoData } from '../types'
-import Timer from './IfoFoldableCard/Timer'
+import { PublicIfoData } from '../../types'
+import Timer from './Timer'
 
 const BigCurve = styled.div<{ $background: string }>`
   width: 150%;
@@ -17,11 +16,11 @@ const BigCurve = styled.div<{ $background: string }>`
   transform: translateX(-50%);
 `
 
-export const IfoRibbon = ({ ifo, publicIfoData }: { ifo: Ifo; publicIfoData: PublicIfoData }) => {
+export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
   const { status } = publicIfoData
 
   let Component
-  if (status === 'finished' && ifo.isActive) {
+  if (status === 'finished') {
     Component = <IfoRibbonEnd />
   } else if (status === 'live') {
     Component = <IfoRibbonLive publicIfoData={publicIfoData} />
@@ -31,7 +30,15 @@ export const IfoRibbon = ({ ifo, publicIfoData }: { ifo: Ifo; publicIfoData: Pub
 
   return (
     <>
-      {status === 'live' && <Progress variant="flat" useDark primaryStep={publicIfoData.progress} />}
+      {status === 'live' && (
+        <Progress variant="flat">
+          <ProgressBar
+            $useDark
+            $background="linear-gradient(273deg, #ffd800 -2.87%, #eb8c00 113.73%)"
+            style={{ width: `${Math.min(Math.max(publicIfoData.progress, 0), 100)}%` }}
+          />
+        </Progress>
+      )}
       <Flex
         justifyContent="center"
         alignItems="center"
@@ -53,7 +60,7 @@ const IfoRibbonEnd = () => {
       <BigCurve $background="#EFEAF5" />
       <Box position="relative">
         <Heading as="h3" scale="lg" color="textSubtle">
-          ˝{t('Sale Finished!')}
+          {t('Sale Finished!')}
         </Heading>
       </Box>
     </>

@@ -8,7 +8,7 @@ import IfoStakePoolCard from 'views/Pools/components/IfoStakePoolCard'
 import IfoLayout from './components/IfoLayout'
 import IfoQuestions from './components/IfoQuestions'
 import IfoSteps from './components/IfoSteps'
-import IfoStakeFoldableCard from './components/IfoStakeFoldableCard'
+import { IfoCurrentCard } from './components/IfoFoldableCard'
 
 const FlexRow = styled.div`
   display: flex;
@@ -31,16 +31,7 @@ const Ifo = () => {
     <IfoLayout id="current-ifo">
       <FlexRow>
         <IfoStakePoolCard pool={{ ...pool, isAutoVault: true }} showStakedOnly={false} />
-        <IfoStakeFoldableCard
-          ifo={activeIfo}
-          publicIfoData={{
-            ...publicIfoData,
-            // status: 'live'
-          }}
-          walletIfoData={walletIfoData}
-          isInitiallyVisible
-          foldable={false}
-        />
+        <IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
       </FlexRow>
       <IfoSteps ifo={activeIfo} walletIfoData={walletIfoData} />
       <IfoQuestions />
