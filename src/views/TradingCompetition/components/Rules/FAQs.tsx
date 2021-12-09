@@ -64,7 +64,7 @@ const FAQ = () => {
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'Token prizes in Fan Tokens will be distributed as per their BUSD pair price on the day of registration.',
+                'The price of token prizes (CAKE, LAZIO, PORTO and SANTOS) in USD will be determined as per their BUSD pair price during the tally period.',
               )}
             </Text>
             <Text fontSize="14px" color="textSubtle">

@@ -692,7 +692,7 @@
   "Team ranks are calculated by the total combined volume of the top 500 members of each respective team.": "Team ranks are calculated by the total combined volume of the top 500 members of each respective team.",
   "Prize distribution": "Prize distribution",
   "Prizes to be distributed in CAKE, LAZIO, PORTO and SANTOS in a distribution of 3:1:1:1 and shared by all members of each respective tier.": "Prizes to be distributed in CAKE, LAZIO, PORTO and SANTOS in a distribution of 3:1:1:1 and shared by all members of each respective tier.",
-  "Token prizes in Fan Tokens will be distributed as per their BUSD pair price on the day of registration.": "Token prizes in Fan Tokens will be distributed as per their BUSD pair price on the day of registration.",
+  "The price of token prizes (CAKE, LAZIO, PORTO and SANTOS) in USD will be determined as per their BUSD pair price during the tally period.": "The price of token prizes (CAKE, LAZIO, PORTO and SANTOS) in USD will be determined as per their BUSD pair price during the tally period.",
   "Every participant will win at least one prize at the end of the competition.": "Every participant will win at least one prize at the end of the competition.",
   "Fine print": "Fine print",
   "In the event of a disagreement concerning the final winning team or rank, PancakeSwap will have the final say.": "In the event of a disagreement concerning the final winning team or rank, PancakeSwap will have the final say.",
@@ -1765,7 +1765,6 @@
   "TradingView chart not available": "TradingView chart not available",
   "Everyone’s a winner!": "Everyone’s a winner!",
   "Trade the minimum amount required and you’re guaranteed a prize!": "Trade the minimum amount required and you’re guaranteed a prize!",
-  "Details below.": "Details below.",
   "Fan token Trading Competition": "Fan token Trading Competition",
   "Compete with other teams for the highest trading volume!": "Compete with other teams for the highest trading volume!",
   "Trading Competition": "Trading Competition"
