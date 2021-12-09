@@ -2054,5 +2054,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x4be63a9b26EE89b9a3a13fd0aA1D0b2427C135f8.png"
+  },
+  {
+    "name": "Impossible Decentralized Incubator",
+    "symbol": "IDIA",
+    "address": "0x0b15Ddf19D47E6a86A56148fb4aFFFc6929BcB89",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x0b15Ddf19D47E6a86A56148fb4aFFFc6929BcB89.png"
   }
 ]
