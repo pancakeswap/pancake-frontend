@@ -10,6 +10,7 @@ import {
   Button,
   AutoRenewIcon,
   BunnyPlaceholderIcon,
+  Message,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Token } from '@pancakeswap/sdk'
@@ -81,6 +82,21 @@ interface IfoCardTokensProps {
   enableStatus: EnableStatus
 }
 
+const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
+  const { t } = useTranslation()
+  return (
+    <TokenSection primaryToken={token}>
+      <Flex flexDirection="column">
+        <Label>{t('On sale').toUpperCase()}</Label>
+        <Value>{saleAmount}</Value>
+        <Text fontSize="14px" color="textSubtle">
+          {t('%ratio%% of total sale', { ratio: distributionRatio })}
+        </Text>
+      </Flex>
+    </TokenSection>
+  )
+}
+
 const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   poolId,
   ifo,
@@ -111,11 +127,23 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     if (isLoading) {
       return <SkeletonCardTokens />
     }
+    if (!account) {
+      return <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
+    }
     if (account && !hasProfile) {
-      if (publicIfoData.status === 'finished') {
-        return <Text textAlign="center">{t('Activate PancakeSwap Profile to take part in next IFO‘s!')}</Text>
-      }
-      return <Text textAlign="center">{t('You need an active PancakeSwap Profile to take part in an IFO!')}</Text>
+      // TODO: danger when no cake staking
+      return (
+        <>
+          <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
+          <Message mt="24px" p="8px" variant="warning">
+            <Text fontSize="14px" color="#D67E0A">
+              {publicIfoData.status === 'finished'
+                ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
+                : t('You need an active PancakeSwap Profile to take part in an IFO!')}
+            </Text>
+          </Message>
+        </>
+      )
     }
     if (publicIfoData.status === 'coming_soon') {
       return (
@@ -163,7 +191,11 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">
           <BunnyPlaceholderIcon width={80} mb="16px" />
-          <Text>{t('You didn’t participate in this sale!')}</Text>
+          <Text fontWeight={600}>{t('You didn’t participate in this sale!')}</Text>
+          <Text textAlign="center" fontSize="14px">
+            {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
+          </Text>
+          <Text textAlign="center">{t('How does it work?')} »</Text>
         </Flex>
       ) : (
         <>

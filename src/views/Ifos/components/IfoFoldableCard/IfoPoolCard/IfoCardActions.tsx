@@ -46,6 +46,9 @@ const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfo
       {publicIfoData.status === 'live' && (
         <ContributeButton poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
       )}
+      {publicIfoData.status === 'finished' && userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) && (
+        <div>{/* // TODO: add a button to stake token */}</div>
+      )}
       {publicIfoData.status === 'finished' &&
         !userPoolCharacteristics.hasClaimed &&
         (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||

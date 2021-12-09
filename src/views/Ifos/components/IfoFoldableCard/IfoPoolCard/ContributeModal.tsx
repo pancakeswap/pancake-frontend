@@ -98,7 +98,7 @@ const ContributeModal: React.FC<Props> = ({
       <ModalBody maxWidth="320px">
         {limitPerUserInLP.isGreaterThan(0) && (
           <Flex justifyContent="space-between" mb="16px">
-            <Text>{t('Max. token entry')}</Text>
+            <Text>{t('Max. token entry')}:</Text>
             <Text>{`${formatNumber(getBalanceAmount(limitPerUserInLP, currency.decimals).toNumber(), 3, 3)} ${
               ifo.currency.symbol
             }`}</Text>

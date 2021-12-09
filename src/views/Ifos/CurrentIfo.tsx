@@ -33,7 +33,10 @@ const Ifo = () => {
         <IfoStakePoolCard pool={{ ...pool, isAutoVault: true }} showStakedOnly={false} />
         <IfoStakeFoldableCard
           ifo={activeIfo}
-          publicIfoData={publicIfoData}
+          publicIfoData={{
+            ...publicIfoData,
+            // status: 'live'
+          }}
           walletIfoData={walletIfoData}
           isInitiallyVisible
           foldable={false}

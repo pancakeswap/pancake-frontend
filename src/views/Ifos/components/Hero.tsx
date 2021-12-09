@@ -4,43 +4,36 @@ import { Box, Heading, Text } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
 
-const getGradient = (isDark: boolean) => {
-  if (isDark) {
-    return 'repeating-linear-gradient(to right, #332453, #332453 40px, #281D44 40px, #281D44 80px)'
-  }
-
-  return 'repeating-linear-gradient(to right, #21d4e2, #21d4e2 40px, #53dee9 40px, #53dee9 80px)'
-}
-
-const StyledHero = styled.div`
-  background: ${({ theme }) => getGradient(theme.isDark)};
-  padding-bottom: 40px;
-  padding-top: 40px;
+const StyledHero = styled(Box)`
+  background-image: url('/images/ifos/assets/ifo-banner-${({ theme }) => (theme.isDark ? 'dark' : 'light')}.png');
+  background-position: top, center;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
 `
 
-const CurtainBottom = styled.div`
-  background-image: url('/images/curtain-bottom-${({ theme }) => (theme.isDark ? 'dark' : 'light')}.png');
-  background-repeat: repeat-x;
-  background-size: contain;
-  height: 20px;
+const StyledHeading = styled(Heading)`
+  font-size: 40px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 64px;
+  }
 `
 
 const Hero = () => {
   const { t } = useTranslation()
 
   return (
-    <Box mb="32px">
-      <StyledHero>
+    <Box mb="8px">
+      <StyledHero py={['16px', '16px', '32px']} minHeight={['212px', '212px', '197px']}>
         <Container>
-          <Heading as="h1" scale="xl" mb="24px">
+          <StyledHeading as="h1" mb="16px">
             {t('IFO: Initial Farm Offerings')}
-          </Heading>
+          </StyledHeading>
           <Text bold fontSize="20px">
-            {t('Buy new tokens with a brand new token sale model.')}
+            {t('Buy new tokens launching on Binance Smart Chain')}
           </Text>
         </Container>
       </StyledHero>
-      <CurtainBottom />
     </Box>
   )
 }

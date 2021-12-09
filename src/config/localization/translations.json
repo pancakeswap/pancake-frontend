@@ -90,7 +90,7 @@
   "Approx. time before next lottery start": "Approx. time before next lottery start",
   "Enable CAKE": "Enable CAKE",
   "IFO: Initial Farm Offerings": "IFO: Initial Farm Offerings",
-  "Buy new tokens with a brand new token sale model.": "Buy new tokens with a brand new token sale model.",
+  "Buy new tokens launching on Binance Smart Chain": "Buy new tokens launching on Binance Smart Chain",
   "You’ll pay for the new tokens using CAKE-BNB LP tokens, which means you need to stake equal amounts of CAKE and BNB in a liquidity pool to take part.": "You’ll pay for the new tokens using CAKE-BNB LP tokens, which means you need to stake equal amounts of CAKE and BNB in a liquidity pool to take part.",
   "Get CAKE-BNB LP >": "Get CAKE-BNB LP >",
   "The project gets the BNB, PancakeSwap burns the CAKE.": "The project gets the BNB, PancakeSwap burns the CAKE.",
@@ -397,6 +397,7 @@
   "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Every person can only commit a limited amount, but may expect a higher return per token committed.",
   "You didn’t participate in this sale!": "You didn’t participate in this sale!",
   "Max. token entry": "Max. token entry",
+  "Max. Cake Entry": "Max. Cake Entry",
   "How to Take Part": "How to Take Part",
   "Activate your Profile": "Activate your Profile",
   "You’ll need an active PancakeSwap Profile to take part in an IFO!": "You’ll need an active PancakeSwap Profile to take part in an IFO!",
@@ -1768,5 +1769,6 @@
   "Fan token Trading Competition": "Fan token Trading Competition",
   "Compete with other teams for the highest trading volume!": "Compete with other teams for the highest trading volume!",
   "Trading Competition": "Trading Competition",
-  "Trade SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.": "Trade SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more."
+  "Trade SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.": "Trade SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.",
+  "To participate in the next IFO, stake some CAKE in the IFO CAKE pool!": "To participate in the next IFO, stake some CAKE in the IFO CAKE pool!"
 }
