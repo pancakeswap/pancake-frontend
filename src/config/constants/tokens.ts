@@ -1814,6 +1814,14 @@ export const mainnetTokens = {
     'XCarnival',
     'https://xcarnival.fi/',
   ),
+  idia: new Token(
+    MAINNET,
+    '0x0b15Ddf19D47E6a86A56148fb4aFFFc6929BcB89',
+    18,
+    'IDIA',
+    'Impossible Decentralized Incubator Access Token',
+    'https://impossible.finance/',
+  ),
 }
 
 export const testnetTokens = {
