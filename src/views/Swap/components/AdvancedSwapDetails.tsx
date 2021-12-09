@@ -29,6 +29,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
               'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
             )}
             ml="4px"
+            placement="top-start"
           />
         </RowFixed>
         <RowFixed>
@@ -48,6 +49,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
           <QuestionHelper
             text={t('The difference between the market price and estimated price due to trade size.')}
             ml="4px"
+            placement="top-start"
           />
         </RowFixed>
         <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
@@ -68,6 +70,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
               </>
             }
             ml="4px"
+            placement="top-start"
           />
         </RowFixed>
         <Text fontSize="14px">
@@ -103,6 +106,7 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
                   <QuestionHelper
                     text={t('Routing through these tokens resulted in the best price for your trade.')}
                     ml="4px"
+                    placement="top-start"
                   />
                 </span>
                 <SwapRoute trade={trade} />
