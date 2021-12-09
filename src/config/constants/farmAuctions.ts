@@ -480,7 +480,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     farmName: 'HTD-BUSD',
     tokenAddress: '0x5E2689412Fae5c29BD575fbe1d5C1CD1e0622A8f',
     quoteToken: tokens.busd,
-    tokenName: 'HTD',
+    tokenName: 'HeroesTD',
     projectSite: 'https://heroestd.io/',
   },
   {
@@ -488,7 +488,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     farmName: 'GMEE-BNB',
     tokenAddress: '0x84e9a6F9D240FdD33801f7135908BfA16866939A',
     quoteToken: tokens.wbnb,
-    tokenName: 'GMEE',
+    tokenName: 'GAMEE',
     projectSite: 'https://token.gamee.com/',
   },
   {
@@ -496,7 +496,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     farmName: 'ANTEX-BUSD',
     tokenAddress: '0xCA1aCAB14e85F30996aC83c64fF93Ded7586977C',
     quoteToken: tokens.busd,
-    tokenName: 'ANTEX',
+    tokenName: 'Antex',
     projectSite: 'https://antex.org/',
   },
   {
@@ -504,7 +504,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     farmName: 'SIP-BUSD',
     tokenAddress: '0x9e5965d28E8D44CAE8F9b809396E0931F9Df71CA',
     quoteToken: tokens.busd,
-    tokenName: 'SIP',
+    tokenName: 'Space Sip',
     projectSite: 'https://sip.space/',
   },
 ].map((bidderConfig) => ({
