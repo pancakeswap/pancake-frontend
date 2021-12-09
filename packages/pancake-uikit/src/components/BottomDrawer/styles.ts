@@ -23,12 +23,14 @@ export const DrawerContainer = styled.div<{ isUnmounting: boolean }>`
   width: 100%;
   height: ${window.innerHeight * 0.81}px;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
-  z-index: 10;
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
   position: fixed;
   animation: ${MountAnimation} 350ms ease forwards;
   padding-bottom: env(safe-area-inset-bottom);
+  html[data-useragent*="TokenPocket_iOS"] & {
+    padding-bottom: 45px;
+  }
   z-index: 21;
   ${({ isUnmounting }) =>
     isUnmounting &&
