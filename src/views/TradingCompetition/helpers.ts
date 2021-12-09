@@ -51,16 +51,12 @@ export const useCompetitionRewards = ({
   }
 }
 
-// 1 is a reasonable teamRank default: accessing the first team in the config.
-// We use the smart contract userPointReward to get a users' points
-// Achievement keys are consistent across different teams regardless of team team rank
-// If a teamRank value isn't passed, this helper can be used to return achievement keys for a given userRewardGroup
-export const getRewardGroupAchievements = (userRewardGroup: string, teamRank = 1) => {
-  const userGroup = prizes[teamRank].filter((prizeGroup) => {
-    return prizeGroup.group === userRewardGroup
-  })[0]
-  const userAchievements = userGroup && userGroup.achievements
-  return userAchievements
+// given we have userPointReward and userRewardGroup, we can find the specific reward because no Rank has same two values.
+export const getRewardGroupAchievements = (userRewardGroup: string, userPointReward: string) => {
+  const prize = Object.values(prizes)
+    .flat()
+    .find((rank) => rank.achievements.points === Number(userPointReward) && rank.group === userRewardGroup)
+  return prize && prize.achievements
 }
 
 export default localiseTradingVolume

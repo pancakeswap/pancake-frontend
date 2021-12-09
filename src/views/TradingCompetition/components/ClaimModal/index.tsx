@@ -1,17 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import {
-  Modal,
-  Button,
-  Flex,
-  AutoRenewIcon,
-  Heading,
-  Text,
-  Image,
-  CrownIcon,
-  TrophyGoldIcon,
-  TeamPlayerIcon,
-} from '@pancakeswap/uikit'
+import { Modal, Button, Flex, AutoRenewIcon, Heading, Text, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
@@ -51,7 +40,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
     userPortoRewards,
     userSantosRewards,
   })
-  const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
+  const achievement = getRewardGroupAchievements(userRewardGroup, userPointReward)
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
@@ -76,9 +65,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         </Text>
         <Flex mt="16px" alignItems="center">
           {/* achievements */}
-          <TrophyGoldIcon mr={[0, '4px']} />
-          {champion && <CrownIcon mr={[0, '4px']} />}
-          {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
+          <Image src={`/images/achievements/${achievement.image}`} width={25} height={25} />
           <Text ml={['4px', '8px']}>
             +{userPointReward} {t('Points')}
           </Text>
