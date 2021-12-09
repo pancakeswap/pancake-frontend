@@ -6,18 +6,15 @@ export enum Tiers {
   TEAL = 'Teal',
 }
 
-export interface Achievement {
-  champion?: number
-  teamPlayer?: number
-  trophy?: number
-}
-
 export interface Rank {
   group: string
   rank: string
   tier: Tiers
   tokenPrizeInUsd: number
-  achievements: Achievement
+  achievements: {
+    image: string
+    points: number
+  }
   hasNft: boolean
 }
 
@@ -33,7 +30,8 @@ const prizes: Config = {
       tier: Tiers.GOLD,
       tokenPrizeInUsd: 12600,
       achievements: {
-        champion: 2500,
+        image: 'fan-token-champion-gold.svg',
+        points: 2500,
       },
       hasNft: true,
     },
@@ -43,7 +41,8 @@ const prizes: Config = {
       tier: Tiers.SILVER,
       tokenPrizeInUsd: 29400,
       achievements: {
-        teamPlayer: 1250,
+        image: 'fan-token-top-10-gold.svg',
+        points: 1250,
       },
       hasNft: true,
     },
@@ -53,7 +52,8 @@ const prizes: Config = {
       tier: Tiers.BRONZE,
       tokenPrizeInUsd: 25200,
       achievements: {
-        teamPlayer: 1250,
+        image: 'fan-token-top-100-gold.svg',
+        points: 1000,
       },
       hasNft: true,
     },
@@ -64,7 +64,8 @@ const prizes: Config = {
       tier: Tiers.PURPLE,
       tokenPrizeInUsd: 16800,
       achievements: {
-        teamPlayer: 1250,
+        image: 'fan-token-top-500-gold.svg',
+        points: 850,
       },
       hasNft: true,
     },
@@ -75,7 +76,8 @@ const prizes: Config = {
       tier: Tiers.TEAL,
       tokenPrizeInUsd: 0,
       achievements: {
-        trophy: 500,
+        image: 'fan-token-participant-gold.svg',
+        points: 500,
       },
       hasNft: false,
     },
@@ -87,7 +89,8 @@ const prizes: Config = {
       tier: Tiers.GOLD,
       tokenPrizeInUsd: 3600,
       achievements: {
-        champion: 2250,
+        image: 'fan-token-champion-silver.svg',
+        points: 2250,
       },
       hasNft: false,
     },
@@ -97,7 +100,8 @@ const prizes: Config = {
       tier: Tiers.SILVER,
       tokenPrizeInUsd: 8400,
       achievements: {
-        teamPlayer: 1000,
+        image: 'fan-token-top-10-silver.svg',
+        points: 1000,
       },
       hasNft: false,
     },
@@ -107,7 +111,8 @@ const prizes: Config = {
       tier: Tiers.BRONZE,
       tokenPrizeInUsd: 7200,
       achievements: {
-        teamPlayer: 1000,
+        image: 'fan-token-top-100-silver.svg',
+        points: 850,
       },
       hasNft: false,
     },
@@ -117,7 +122,8 @@ const prizes: Config = {
       tier: Tiers.PURPLE,
       tokenPrizeInUsd: 4800,
       achievements: {
-        teamPlayer: 1000,
+        image: 'fan-token-top-500-silver.svg',
+        points: 500,
       },
       hasNft: false,
     },
@@ -127,7 +133,8 @@ const prizes: Config = {
       tier: Tiers.TEAL,
       tokenPrizeInUsd: 0,
       achievements: {
-        trophy: 250,
+        image: 'fan-token-participant-silver.svg',
+        points: 250,
       },
       hasNft: false,
     },
@@ -139,7 +146,8 @@ const prizes: Config = {
       tier: Tiers.GOLD,
       tokenPrizeInUsd: 1800,
       achievements: {
-        champion: 2100,
+        image: 'fan-token-champion-bronze.svg',
+        points: 2100,
       },
       hasNft: false,
     },
@@ -149,7 +157,8 @@ const prizes: Config = {
       tier: Tiers.SILVER,
       tokenPrizeInUsd: 4200,
       achievements: {
-        teamPlayer: 850,
+        image: 'fan-token-top-10-bronze.svg',
+        points: 850,
       },
       hasNft: false,
     },
@@ -159,7 +168,8 @@ const prizes: Config = {
       tier: Tiers.BRONZE,
       tokenPrizeInUsd: 3600,
       achievements: {
-        teamPlayer: 850,
+        image: 'fan-token-top-100-bronze.svg',
+        points: 500,
       },
       hasNft: false,
     },
@@ -169,7 +179,8 @@ const prizes: Config = {
       tier: Tiers.PURPLE,
       tokenPrizeInUsd: 2400,
       achievements: {
-        teamPlayer: 850,
+        image: 'fan-token-top-500-bronze.svg',
+        points: 250,
       },
       hasNft: false,
     },
@@ -179,7 +190,8 @@ const prizes: Config = {
       tier: Tiers.TEAL,
       tokenPrizeInUsd: 0,
       achievements: {
-        trophy: 100,
+        image: 'fan-token-participant-bronze.svg',
+        points: 100,
       },
       hasNft: false,
     },

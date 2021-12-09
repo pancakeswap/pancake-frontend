@@ -241,14 +241,14 @@ const campaigns: Campaign[] = [
   {
     id: '512020002',
     type: 'teambattle',
-    title: 'Fan Token Top 500: Gold',
-    badge: 'fan-token-top-500-gold.svg',
+    title: 'Fan Token Top 10: Gold',
+    badge: 'fan-token-top-10-gold.svg',
   },
   {
     id: '512020003',
     type: 'teambattle',
-    title: 'Fan Token Top 500: Gold',
-    badge: 'fan-token-top-500-gold.svg',
+    title: 'Fan Token Top 100: Gold',
+    badge: 'fan-token-top-100-gold.svg',
   },
   {
     id: '512020004',
@@ -271,14 +271,14 @@ const campaigns: Campaign[] = [
   {
     id: '512020007',
     type: 'teambattle',
-    title: 'Fan Token Top 500: Silver',
-    badge: 'fan-token-top-500-silver.svg',
+    title: 'Fan Token Top 10: Silver',
+    badge: 'fan-token-top-10-silver.svg',
   },
   {
     id: '512020008',
     type: 'teambattle',
-    title: 'Fan Token Top 500: Silver',
-    badge: 'fan-token-top-500-silver.svg',
+    title: 'Fan Token Top 100: Silver',
+    badge: 'fan-token-top-100-silver.svg',
   },
   {
     id: '512020009',
@@ -301,14 +301,14 @@ const campaigns: Campaign[] = [
   {
     id: '512020012',
     type: 'teambattle',
-    title: 'Fan Token Top 500: Bronze',
-    badge: 'fan-token-top-500-bronze.svg',
+    title: 'Fan Token Top 10: Bronze',
+    badge: 'fan-token-top-10-bronze.svg',
   },
   {
     id: '512020013',
     type: 'teambattle',
-    title: 'Fan Token Top 500: Bronze',
-    badge: 'fan-token-top-500-bronze.svg',
+    title: 'Fan Token Top 100: Bronze',
+    badge: 'fan-token-top-100-bronze.svg',
   },
   {
     id: '512020014',
