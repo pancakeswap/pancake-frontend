@@ -1822,6 +1822,23 @@ export const mainnetTokens = {
     'Impossible Decentralized Incubator Access Token',
     'https://impossible.finance/',
   ),
+  tt: new Token(
+    MAINNET,
+    '0x990E7154bB999FAa9b2fa5Ed29E822703311eA85',
+    18,
+    'TT',
+    'Thunder Token',
+    'https://www.thundercore.com/',
+  ),
+  gmee: new Token(
+    MAINNET,
+    '0x84e9a6F9D240FdD33801f7135908BfA16866939A',
+    18,
+    'GMEE',
+    'GAMEE',
+    'https://www.gamee.com/token',
+  ),
+  htd: new Token(MAINNET, '0x5E2689412Fae5c29BD575fbe1d5C1CD1e0622A8f', 18, 'HTD', 'HeroesTD', 'https://heroestd.io/'),
 }
 
 export const testnetTokens = {
