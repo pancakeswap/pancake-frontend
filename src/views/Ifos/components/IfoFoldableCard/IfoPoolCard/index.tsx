@@ -14,6 +14,7 @@ import IfoCardDetails from './IfoCardDetails'
 const StyledCard = styled(Card)`
   background: none;
   max-width: 368px;
+  width: 100%;
   margin: 0 auto;
   height: fit-content;
 `

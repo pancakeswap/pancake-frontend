@@ -95,7 +95,7 @@ const ContributeModal: React.FC<Props> = ({
 
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
-      <ModalBody maxWidth="320px">
+      <ModalBody maxWidth="360px">
         {limitPerUserInLP.isGreaterThan(0) && (
           <Flex justifyContent="space-between" mb="16px">
             <Text>{t('Max. token entry')}:</Text>

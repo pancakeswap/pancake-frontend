@@ -3,7 +3,7 @@ import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'
 import { PublicIfoData } from '../../types'
-import Timer from './Timer'
+import LiveTimer, { SoonTimer } from './Timer'
 
 const BigCurve = styled.div<{ $background: string }>`
   width: 150%;
@@ -25,7 +25,7 @@ export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) =
   } else if (status === 'live') {
     Component = <IfoRibbonLive publicIfoData={publicIfoData} />
   } else if (status === 'coming_soon') {
-    Component = <IfoRibbonSoon />
+    Component = <IfoRibbonSoon publicIfoData={publicIfoData} />
   }
 
   return (
@@ -67,14 +67,13 @@ const IfoRibbonEnd = () => {
   )
 }
 
-const IfoRibbonSoon = () => {
-  const { t } = useTranslation()
+const IfoRibbonSoon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
   return (
     <>
       <BigCurve $background="#EEF3F5" />
       <Box position="relative">
         <Heading as="h3" scale="lg" color="secondary">
-          {t('Start in')}
+          <SoonTimer publicIfoData={publicIfoData} />
         </Heading>
       </Box>
     </>
@@ -86,7 +85,7 @@ const IfoRibbonLive = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
     <>
       <BigCurve $background="linear-gradient(269.54deg, #8051D6 14.31%, #492286 103.21%)" />
       <Box position="relative">
-        <Timer publicIfoData={publicIfoData} />
+        <LiveTimer publicIfoData={publicIfoData} />
       </Box>
     </>
   )

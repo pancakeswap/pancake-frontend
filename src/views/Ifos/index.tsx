@@ -3,7 +3,9 @@ import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFetchIfoPool } from 'state/pools/hooks'
+import { useFetchIfoPool, useIfoPool, usePool } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
+import { getAprData } from 'views/Pools/helpers'
 import Hero from './components/Hero'
 import CurrentIfo from './CurrentIfo'
 import PastIfo from './PastIfo'
@@ -13,6 +15,14 @@ const Ifos = () => {
   const { path, isExact } = useRouteMatch()
 
   useFetchIfoPool()
+
+  const { pool } = usePool(0)
+
+  const {
+    fees: { performanceFeeAsDecimal },
+  } = useIfoPool()
+
+  const ifoPoolWithApr = { ...pool, vaultKey: VaultKey.IfoPool, apr: getAprData(pool, performanceFeeAsDecimal).apr }
 
   return (
     <>
@@ -32,10 +42,10 @@ const Ifos = () => {
       <Hero />
       <Container>
         <Route exact path={`${path}`}>
-          <CurrentIfo />
+          <CurrentIfo pool={ifoPoolWithApr} />
         </Route>
         <Route path={`${path}/history`}>
-          <PastIfo />
+          <PastIfo pool={ifoPoolWithApr} />
         </Route>
       </Container>
     </>

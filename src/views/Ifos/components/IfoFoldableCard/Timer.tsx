@@ -21,11 +21,56 @@ const FlexGap = styled(Flex)<{ gap: string }>`
   gap: ${({ gap }) => gap};
 `
 
-const Timer: React.FC<Props> = ({ publicIfoData }) => {
+export const SoonTimer: React.FC<Props> = ({ publicIfoData }) => {
   const { t } = useTranslation()
-  const { status, secondsUntilStart, secondsUntilEnd } = publicIfoData
-  const countdownToUse = status === 'coming_soon' ? secondsUntilStart : secondsUntilEnd
-  const timeUntil = getTimePeriods(countdownToUse)
+  const { status, secondsUntilStart } = publicIfoData
+  const timeUntil = getTimePeriods(secondsUntilStart)
+  return (
+    <Flex justifyContent="center" position="relative">
+      {status === 'idle' ? (
+        <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
+      ) : (
+        <>
+          <FlexGap gap="8px" alignItems="center">
+            <Heading as="h3" scale="lg" color="secondary">
+              {t('Start in')}
+            </Heading>
+            <FlexGap gap="4px" alignItems="baseline">
+              {timeUntil.days && (
+                <>
+                  <Heading scale="lg" color="secondary">
+                    {timeUntil.days}
+                  </Heading>
+                  <Text color="secondary">d</Text>
+                </>
+              )}
+              {timeUntil.hours && (
+                <>
+                  <Heading color="secondary" scale="lg">
+                    {timeUntil.hours}
+                  </Heading>
+                  <Text color="secondary">h</Text>
+                </>
+              )}
+              {timeUntil.minutes && (
+                <>
+                  <Heading color="secondary" scale="lg">
+                    {timeUntil.minutes}
+                  </Heading>
+                  <Text color="secondary">m</Text>
+                </>
+              )}
+            </FlexGap>
+          </FlexGap>
+        </>
+      )}
+    </Flex>
+  )
+}
+const LiveTimer: React.FC<Props> = ({ publicIfoData }) => {
+  const { t } = useTranslation()
+  const { status, secondsUntilEnd } = publicIfoData
+  const timeUntil = getTimePeriods(secondsUntilEnd)
   return (
     <Flex justifyContent="center" position="relative">
       {status === 'idle' ? (
@@ -67,4 +112,4 @@ const Timer: React.FC<Props> = ({ publicIfoData }) => {
   )
 }
 
-export default Timer
+export default LiveTimer
