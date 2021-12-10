@@ -1,7 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 import every from 'lodash/every'
-import { Stepper, Step, StepStatus, Card, CardBody, Heading, Text, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
+import {
+  Stepper,
+  Step,
+  StepStatus,
+  Card,
+  CardBody,
+  Heading,
+  Text,
+  Button,
+  Link,
+  OpenNewIcon,
+  Box,
+  CheckmarkIcon,
+  Flex,
+  useTooltip,
+  TooltipText,
+} from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo } from 'config/constants/types'
@@ -16,6 +32,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 interface Props {
   ifo: Ifo
   walletIfoData: WalletIfoData
+  isLive?: boolean
 }
 
 const Wrapper = styled(Container)`
@@ -31,16 +48,75 @@ const Wrapper = styled(Container)`
   }
 `
 
-const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
+const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
+  const { t } = useTranslation()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(
+      'Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal. Please refer to our blog post for more details.',
+    ),
+    {},
+  )
+  return (
+    <CardBody>
+      {tooltipVisible && tooltip}
+      <Heading as="h4" color="secondary" mb="16px">
+        {t('Stake CAKE in IFO pool')}
+      </Heading>
+      <Box>
+        <Text color="textSubtle" small>
+          {t(
+            'The maximum amount of CAKE user can commit to all the sales combined, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep IFO CAKE staking pool balance for the next IFO sale.',
+          )}
+        </Text>
+        <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
+          {t('How does the average balance calculated?')}
+        </TooltipText>
+      </Box>
+      <Button
+        as={Link}
+        external
+        href="/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+        endIcon={<OpenNewIcon color="white" />}
+        mt="16px"
+      >
+        {t('Get %symbol%', { symbol: 'CAKE' })}
+      </Button>
+    </CardBody>
+  )
+}
+
+const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLive: boolean; isCommitted: boolean }) => {
+  const { t } = useTranslation()
+  return (
+    <CardBody>
+      <Heading as="h4" color="secondary" mb="16px">
+        {t('Commit CAKE')}
+      </Heading>
+      <Text color="textSubtle" small>
+        {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
+        {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
+      </Text>
+      {hasProfile && isLive && !isCommitted && (
+        <Button as="a" href="#current-ifo" mt="16px">
+          {t('Commit CAKE')}
+        </Button>
+      )}
+    </CardBody>
+  )
+}
+
+const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
   const { poolBasic, poolUnlimited } = walletIfoData
   const { hasProfile } = useProfile()
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { balance } = useTokenBalance(ifo.currency.address)
+  const isCommitted =
+    poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0)
   const stepsValidationStatus = [
     hasProfile,
     balance.isGreaterThan(0),
-    poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0),
+    isCommitted,
     poolBasic.hasClaimed || poolUnlimited.hasClaimed,
   ]
 
@@ -62,9 +138,12 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
 
       if (isStepValid) {
         return (
-          <Text color="success" bold>
-            {t('Profile Active!')}
-          </Text>
+          <Flex alignItems="center">
+            <Text color="success" bold mr="8px">
+              {t('Profile Active!')}
+            </Text>
+            <CheckmarkIcon color="success" />
+          </Flex>
         )
       }
 
@@ -89,37 +168,9 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
           </CardBody>
         )
       case 1:
-        return (
-          <CardBody>
-            <Heading as="h4" color="secondary" mb="16px">
-              {t('Get %symbol%', { symbol: 'CAKE' })}
-            </Heading>
-            <Text color="textSubtle" small>
-              {t('You’ll spend CAKE to buy IFO sale tokens.')}
-            </Text>
-            <Button
-              as={Link}
-              external
-              href="/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
-              endIcon={<OpenNewIcon color="white" />}
-              mt="16px"
-            >
-              {t('Get %symbol%', { symbol: 'CAKE' })}
-            </Button>
-          </CardBody>
-        )
+        return <Step1 hasProfile={hasProfile} />
       case 2:
-        return (
-          <CardBody>
-            <Heading as="h4" color="secondary" mb="16px">
-              {t('Commit CAKE')}
-            </Heading>
-            <Text color="textSubtle" small>
-              {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
-              {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
-            </Text>
-          </CardBody>
-        )
+        return <Step2 hasProfile={hasProfile} isLive={isLive} isCommitted={isCommitted} />
       case 3:
         return (
           <CardBody>
@@ -140,7 +191,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
 
   return (
     <Wrapper>
-      <Heading as="h2" scale="xl" color="secondary" mb="24px" textAlign="center">
+      <Heading id="ifo-how-to" as="h2" scale="xl" color="secondary" mb="24px" textAlign="center">
         {t('How to Take Part')}
       </Heading>
       <Stepper>

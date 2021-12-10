@@ -7,6 +7,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { convertSharesToCake } from 'views/Pools/helpers'
+import { FlexGap } from 'components/Layout/Flex'
 import { vaultPoolConfig } from 'config/constants/pools'
 import AprRow from '../PoolCard/AprRow'
 import { StyledCard } from '../PoolCard/StyledCard'
@@ -56,29 +57,33 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
       </PoolCardHeader>
       <StyledCardBody isLoading={isLoading}>
         <AprRow pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
-        <Box mt="24px">
-          <RecentCakeProfitRow vaultKey={pool.vaultKey} />
-        </Box>
-        <Box mt="8px">
-          <UnstakingFeeCountdownRow vaultKey={pool.vaultKey} />
-        </Box>
-        <Flex mt="32px" flexDirection="column">
-          {account ? (
-            <VaultCardActions
-              pool={pool}
-              accountHasSharesStaked={accountHasSharesStaked}
-              isLoading={isLoading}
-              performanceFee={performanceFeeAsDecimal}
-            />
-          ) : (
-            <>
-              <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                {t('Start earning')}
-              </Text>
-              <ConnectWalletButton />
-            </>
-          )}
-        </Flex>
+        <FlexGap mt="32px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
+          <Box>
+            <Box mt="24px">
+              <RecentCakeProfitRow vaultKey={pool.vaultKey} />
+            </Box>
+            <Box mt="8px">
+              <UnstakingFeeCountdownRow vaultKey={pool.vaultKey} />
+            </Box>
+          </Box>
+          <Flex flexDirection="column">
+            {account ? (
+              <VaultCardActions
+                pool={pool}
+                accountHasSharesStaked={accountHasSharesStaked}
+                isLoading={isLoading}
+                performanceFee={performanceFeeAsDecimal}
+              />
+            ) : (
+              <>
+                <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
+                  {t('Start earning')}
+                </Text>
+                <ConnectWalletButton />
+              </>
+            )}
+          </Flex>
+        </FlexGap>
       </StyledCardBody>
       <CardFooter defaultExpanded={defaultFooterExpanded} pool={pool} account={account} />
     </StyledCard>

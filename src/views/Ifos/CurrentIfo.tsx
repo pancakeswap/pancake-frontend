@@ -26,12 +26,11 @@ const Ifo = ({ pool }: { pool: DeserializedPool }) => {
           ifo={activeIfo}
           publicIfoData={{
             ...publicIfoData,
-            status: 'coming_soon',
           }}
           walletIfoData={walletIfoData}
         />
       </IfoLayoutWrapper>
-      <IfoSteps ifo={activeIfo} walletIfoData={walletIfoData} />
+      <IfoSteps isLive={publicIfoData.status === 'live'} ifo={activeIfo} walletIfoData={walletIfoData} />
       <IfoQuestions />
     </IfoLayout>
   )

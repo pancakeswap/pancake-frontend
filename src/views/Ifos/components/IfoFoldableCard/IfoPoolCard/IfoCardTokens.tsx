@@ -12,6 +12,7 @@ import {
   BunnyPlaceholderIcon,
   Message,
 } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Token } from '@pancakeswap/sdk'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -98,6 +99,11 @@ const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
   )
 }
 
+const MessageText = styled(Text)<{ $isLink?: boolean }>`
+  ${({ $isLink }) => $isLink && 'text-decoration: underline;'}
+  font-size: 14px;
+`
+
 const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   poolId,
   ifo,
@@ -144,20 +150,31 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     if (account && !hasProfile) {
       message = (
         <Message mt="24px" p="8px" variant="warning">
-          <Text fontSize="14px" color="#D67E0A">
-            {publicIfoData.status === 'finished'
-              ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
-              : t('You need an active PancakeSwap Profile to take part in an IFO!')}
-          </Text>
+          <Box>
+            <MessageText as="span" color="#D67E0A">
+              {publicIfoData.status === 'finished'
+                ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
+                : t('You need an active PancakeSwap Profile to take part in an IFO!')}
+            </MessageText>{' '}
+            <MessageText as="a" $isLink color="#D67E0A" href="#ifo-how-to">
+              {t('How does it work?')} »
+            </MessageText>
+          </Box>
         </Message>
       )
     }
 
     if (ifo.version === 3 && !ifoCredit.loading && ifoCredit.creditAsNumberBalance === 0) {
       message = (
-        <Message variant="danger">
-          {t('You don’t have any average CAKE balance available to commit in IFO CAKE pool.')}
-          <Text textAlign="center">{t('How does it work?')} »</Text>
+        <Message mt="24px" p="8px" variant="danger">
+          <Box>
+            <MessageText as="span" color="failure">
+              {t('You don’t have any average CAKE balance available to commit in IFO CAKE pool.')}
+            </MessageText>{' '}
+            <MessageText as="a" $isLink color="failure" fontWeight={700} href="#ifo-how-to">
+              {t('How does it work?')} »
+            </MessageText>
+          </Box>
         </Message>
       )
     }
@@ -220,8 +237,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <Text textAlign="center" fontSize="14px">
             {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
           </Text>
-          {/* TODO: link */}
-          <Text textAlign="center">{t('How does it work?')} »</Text>
+          <MessageText as="a" $isLink href="#ifo-how-to" color="primary" textAlign="center">
+            {t('How does it work?')} »
+          </MessageText>
         </Flex>
       ) : (
         <>

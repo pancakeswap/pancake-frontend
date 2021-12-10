@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Heading, Text } from '@pancakeswap/uikit'
+import { Box, Heading, Text, Button, Flex } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
 
@@ -26,12 +26,26 @@ const Hero = () => {
     <Box mb="8px">
       <StyledHero py={['16px', '16px', '32px']} minHeight={['212px', '212px', '197px']}>
         <Container>
-          <StyledHeading as="h1" mb="16px">
-            {t('IFO: Initial Farm Offerings')}
-          </StyledHeading>
-          <Text bold fontSize="20px">
-            {t('Buy new tokens launching on Binance Smart Chain')}
-          </Text>
+          <Flex justifyContent="space-between">
+            <Box>
+              <StyledHeading as="h1" mb="16px">
+                {t('IFO: Initial Farm Offerings')}
+              </StyledHeading>
+              <Text bold fontSize="20px">
+                {t('Buy new tokens launching on Binance Smart Chain')}
+              </Text>
+            </Box>
+            <Button
+              as="a"
+              href="#ifo-how-to"
+              style={{
+                alignSelf: 'flex-end',
+              }}
+              variant="subtle"
+            >
+              {t('How does it work?')}
+            </Button>
+          </Flex>
         </Container>
       </StyledHero>
     </Box>
