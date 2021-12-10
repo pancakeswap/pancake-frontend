@@ -21,6 +21,7 @@ import {
 } from '.'
 import { State, DeserializedPool, VaultKey } from '../types'
 import { transformPool } from './helpers'
+import { fetchFarmsPublicDataAsync, nonArchivedFarms } from '../farms'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
@@ -29,6 +30,8 @@ export const useFetchPublicPoolsData = () => {
   useEffect(() => {
     const fetchPoolsPublicData = async () => {
       const blockNumber = await simpleRpcProvider.getBlockNumber()
+      const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
+      await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
       dispatch(fetchPoolsPublicDataAsync(blockNumber))
     }
 
