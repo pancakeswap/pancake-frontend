@@ -20,12 +20,10 @@ export function useIfoPoolCredit() {
     }
   }, [account])
 
-  return [
-    {
-      credit,
-      creditAsNumberBalance: getBalanceNumber(credit),
-      loading,
-    },
+  return {
+    credit,
+    creditAsNumberBalance: getBalanceNumber(credit),
+    loading,
     getIfoPoolCredit,
-  ] as const
+  }
 }

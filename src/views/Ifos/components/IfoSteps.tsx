@@ -10,13 +10,14 @@ import {
   Heading,
   Text,
   Button,
-  Link,
-  OpenNewIcon,
   Box,
   CheckmarkIcon,
   Flex,
   useTooltip,
   TooltipText,
+  PancakeRoundIcon,
+  Skeleton,
+  useModal,
 } from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
@@ -26,8 +27,17 @@ import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'
+import Balance from 'components/Balance'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { FlexGap } from 'components/Layout/Flex'
+import { getBalanceNumber } from 'utils/formatBalance'
+import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
+import { BIG_ZERO } from 'utils/bigNumber'
+import BigNumber from 'bignumber.js'
+import { useIfoPool } from 'state/pools/hooks'
+import { useIfoPoolContext } from '../context'
 
 interface Props {
   ifo: Ifo
@@ -48,14 +58,40 @@ const Wrapper = styled(Container)`
   }
 `
 
+const SmallStakePoolCard = styled(Box)`
+  margin-top: 16px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.background};
+`
+
 const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const { t } = useTranslation()
+  const ifoPool = useIfoPool()
+  const { pool, ifoCredit } = useIfoPoolContext()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
       'Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal. Please refer to our blog post for more details.',
     ),
     {},
   )
+
+  const cakePriceBusd = usePriceCakeBusd()
+  // const cakeAsBigNumber = getDecimalAmount(ifoCredit.credit)
+  // TODO: check ifoCredit.credit
+  const stakedDollarValue = cakePriceBusd.gt(0) ? getBalanceNumber(ifoCredit.credit.multipliedBy(cakePriceBusd), 18) : 0
+
+  const stakingTokenBalance = pool?.userData?.stakingTokenBalance
+    ? new BigNumber(pool.userData.stakingTokenBalance)
+    : BIG_ZERO
+
+  const [onPresentStake] = useModal(
+    <VaultStakeModal
+      stakingMax={stakingTokenBalance}
+      performanceFee={ifoPool.fees.performanceFeeAsDecimal}
+      pool={pool}
+    />,
+  )
+
   return (
     <CardBody>
       {tooltipVisible && tooltip}
@@ -72,15 +108,36 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
           {t('How does the average balance calculated?')}
         </TooltipText>
       </Box>
-      <Button
-        as={Link}
-        external
-        href="/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
-        endIcon={<OpenNewIcon color="white" />}
-        mt="16px"
-      >
-        {t('Get %symbol%', { symbol: 'CAKE' })}
-      </Button>
+      {hasProfile && (
+        <SmallStakePoolCard borderRadius="default" p="16px">
+          <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
+            <Flex>
+              <PancakeRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
+              <Box ml="16px">
+                <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
+                  {t('Your max CAKE entry')}
+                </Text>
+                <Balance fontSize="20px" bold decimals={5} value={ifoCredit.creditAsNumberBalance} />
+                <Text fontSize="12px" color="textSubtle">
+                  {cakePriceBusd.gt(0) ? (
+                    <Balance
+                      value={stakedDollarValue}
+                      fontSize="12px"
+                      color="textSubtle"
+                      decimals={2}
+                      prefix="~"
+                      unit=" USD"
+                    />
+                  ) : (
+                    <Skeleton mt="1px" height={16} width={64} />
+                  )}
+                </Text>
+              </Box>
+            </Flex>
+            <Button onClick={onPresentStake}>{t('Stake CAKE')}</Button>
+          </FlexGap>
+        </SmallStakePoolCard>
+      )}
     </CardBody>
   )
 }

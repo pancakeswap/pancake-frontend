@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Heading, Text, Button, Flex } from '@pancakeswap/uikit'
+import { Box, Heading, Text, Button, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
 
@@ -19,27 +19,52 @@ const StyledHeading = styled(Heading)`
   }
 `
 
+const StyledButton = styled(Button)`
+  background-color: ${({ theme }) => theme.colors.tertiary};
+  color: ${({ theme }) => theme.colors.primary};
+  padding: 4px 13px;
+  height: auto;
+  text-transform: uppercase;
+  align-self: flex-start;
+  font-size: 12px;
+`
+
+const DesktopButton = styled(Button)`
+  align-self: flex-end;
+`
+
+const StyledSubTitle = styled(Text)`
+  font-size: 16px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 20px;
+  }
+`
+
 const Hero = () => {
   const { t } = useTranslation()
+
+  const { isDesktop, isTablet } = useMatchBreakpoints()
 
   return (
     <Box mb="8px">
       <StyledHero py={['16px', '16px', '32px']} minHeight={['212px', '212px', '197px']}>
         <Container>
-          <Flex justifyContent="space-between">
+          <Flex
+            justifyContent="space-between"
+            flexDirection={['column', 'column', 'column', 'row']}
+            style={{ gap: '4px' }}
+          >
             <Box>
-              <StyledHeading as="h1" mb="16px">
+              <StyledHeading as="h1" mb={['12px', '12px', '16px']}>
                 {t('IFO: Initial Farm Offerings')}
               </StyledHeading>
-              <Text bold fontSize="20px">
-                {t('Buy new tokens launching on Binance Smart Chain')}
-              </Text>
+              <StyledSubTitle bold>{t('Buy new tokens launching on Binance Smart Chain')}</StyledSubTitle>
             </Box>
             <Button
-              as="a"
-              href="#ifo-how-to"
-              style={{
-                alignSelf: 'flex-end',
+              as={isDesktop || isTablet ? (DesktopButton as any) : (StyledButton as any)}
+              onClick={() => {
+                document.getElementById('ifo-how-to')?.scrollIntoView()
               }}
               variant="subtle"
             >

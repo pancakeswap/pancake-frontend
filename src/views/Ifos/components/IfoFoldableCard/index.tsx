@@ -73,6 +73,28 @@ const StyledCardFooter = styled(CardFooter)`
   }
 `
 
+const StyledNoHatBunny = styled.div`
+  position: absolute;
+  left: -50px;
+  z-index: 1;
+  transform: scaleX(-1);
+  top: 40px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    left: auto;
+    transform: scaleX(1);
+    right: 5%;
+  }
+`
+
+const NoHatBunny = () => {
+  return (
+    <StyledNoHatBunny>
+      <img src="/images/ifos/assets/nohat-3-bunny.png" width={123} height={162} alt="bunny" />
+    </StyledNoHatBunny>
+  )
+}
+
 export const IfoCurrentCard = ({
   ifo,
   publicIfoData,
@@ -86,13 +108,11 @@ export const IfoCurrentCard = ({
   const { t } = useTranslation()
 
   return (
-    <>
+    <Box position="relative" width="100%">
+      <NoHatBunny />
       <StyledCard>
         <Box position="relative">
           <Header ifoId={ifo.id} />
-          <Box position="absolute" right={80} bottom={0} zIndex={1}>
-            <img src="/images/ifos/assets/nohat-3-bunny.png" width={123} height={162} alt="bunny" />
-          </Box>
           <IfoRibbon publicIfoData={publicIfoData} />
         </Box>
         <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
@@ -103,7 +123,7 @@ export const IfoCurrentCard = ({
           {isExpanded && <Achievement ifo={ifo} publicIfoData={publicIfoData} />}
         </StyledCardFooter>
       </StyledCard>
-    </>
+    </Box>
   )
 }
 
@@ -132,9 +152,7 @@ const IfoFoldableCard = ({
           </Header>
           {isExpanded && (
             <>
-              <Box position="absolute" right={80} bottom={0} zIndex={1}>
-                <img src="/images/ifos/assets/nohat-3-bunny.png" width={123} height={162} alt="bunny" />
-              </Box>
+              <NoHatBunny />
               <IfoRibbon publicIfoData={publicIfoData} />
             </>
           )}

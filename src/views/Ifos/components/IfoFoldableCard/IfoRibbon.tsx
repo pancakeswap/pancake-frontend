@@ -9,11 +9,14 @@ const BigCurve = styled.div<{ $background: string }>`
   width: 150%;
   position: absolute;
   background: ${({ $background }) => $background};
-  border-radius: 50%;
   top: -150%;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    border-radius: 50%;
+  }
 `
 
 export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
@@ -43,7 +46,7 @@ export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) =
         justifyContent="center"
         alignItems="center"
         flexDirection="column"
-        height="75px"
+        height={['48px', '48px', '48px', '75px']}
         position="relative"
         overflow="hidden"
       >
