@@ -49,6 +49,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.tt,
     quoteToken: serializedTokens.busd,
+    isCommunity: true,
   },
   {
     pid: 486,
@@ -59,6 +60,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.gmee,
     quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 487,
@@ -69,6 +71,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.htd,
     quoteToken: serializedTokens.busd,
+    isCommunity: true,
   },
   {
     pid: 484,
