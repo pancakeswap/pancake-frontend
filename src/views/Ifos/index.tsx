@@ -1,7 +1,9 @@
 import { SubMenuItems } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
+import { useIfoPoolContract } from 'hooks/useContract'
+import React, { useEffect, useMemo } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFetchIfoPool, useIfoPool, usePool } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
@@ -22,7 +24,21 @@ const Ifos = () => {
     fees: { performanceFeeAsDecimal },
   } = useIfoPool()
 
-  const ifoPoolWithApr = { ...pool, vaultKey: VaultKey.IfoPool, apr: getAprData(pool, performanceFeeAsDecimal).apr }
+  const ifoPoolWithApr = useMemo(() => {
+    const ifoPool = pool
+    ifoPool.vaultKey = VaultKey.IfoPool
+    ifoPool.apr = getAprData(ifoPool, performanceFeeAsDecimal).apr
+    return ifoPool
+  }, [performanceFeeAsDecimal, pool])
+
+  const ifoContract = useIfoPoolContract()
+  const { account } = useWeb3React()
+
+  useEffect(() => {
+    ifoContract.getUserCredit(account).then((credit) => {
+      console.log(credit.toString())
+    })
+  }, [ifoContract, account])
 
   return (
     <>

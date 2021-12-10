@@ -22,7 +22,14 @@ const Ifo = ({ pool }: { pool: DeserializedPool }) => {
     <IfoLayout id="current-ifo">
       <IfoLayoutWrapper>
         <CakeVaultCard m="auto" defaultFooterExpanded pool={pool} showStakedOnly={false} />
-        <IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+        <IfoCurrentCard
+          ifo={activeIfo}
+          publicIfoData={{
+            ...publicIfoData,
+            status: 'coming_soon',
+          }}
+          walletIfoData={walletIfoData}
+        />
       </IfoLayoutWrapper>
       <IfoSteps ifo={activeIfo} walletIfoData={walletIfoData} />
       <IfoQuestions />

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { PoolsState, SerializedPool, CakeVault, VaultFees, VaultUser, AppThunk } from 'state/types'
+import { PoolsState, SerializedPool, CakeVault, VaultFees, VaultUser, AppThunk, IfoCakeVaultInfo } from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
@@ -182,13 +182,16 @@ export const fetchIfoPoolFees = createAsyncThunk<VaultFees>('ifoPool/fetchFees',
   return vaultFees
 })
 
-export const fetchIfoPoolUser = createAsyncThunk<VaultUser, { account: string }>(
-  'ifoPool/fetchUser',
-  async ({ account }) => {
-    const userData = await fetchIfoPoolUserData(account)
-    return userData
+export const fetchIfoPoolUserAndIfo = createAsyncThunk<
+  {
+    userData: VaultUser
+    ifoInfo: IfoCakeVaultInfo
   },
-)
+  { account: string }
+>('ifoPool/fetchUser', async ({ account }) => {
+  const userData = await fetchIfoPoolUserData(account)
+  return userData
+})
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
@@ -244,10 +247,10 @@ export const PoolsSlice = createSlice({
       state.ifoPool = { ...state.ifoPool, fees }
     })
     // Vault user data
-    builder.addCase(fetchIfoPoolUser.fulfilled, (state, action: PayloadAction<VaultUser>) => {
-      const userData = action.payload
+    builder.addCase(fetchIfoPoolUserAndIfo.fulfilled, (state, action) => {
+      const { userData, ifoInfo } = action.payload
       userData.isLoading = false
-      state.ifoPool = { ...state.ifoPool, userData }
+      state.ifoPool = { ...state.ifoPool, userData, ifoInfo }
     })
   },
 })

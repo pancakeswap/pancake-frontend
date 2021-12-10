@@ -137,6 +137,7 @@ export interface VaultUser {
   lastDepositedTime: string
   lastUserActionTime: string
 }
+
 export interface CakeVault {
   totalShares?: string
   pricePerFullShare?: string
@@ -147,10 +148,22 @@ export interface CakeVault {
   userData?: VaultUser
 }
 
+export interface IfoCakeVault extends CakeVault {
+  ifoInfo?: IfoCakeVaultInfo
+}
+
+export interface IfoCakeVaultInfo {
+  lastActionBalance?: string
+  lastActionBlock?: string
+  lastAvgBalance?: string
+  lastValidActionBalance?: string
+  lastValidActionBlock?: string
+}
+
 export interface PoolsState {
   data: SerializedPool[]
   cakeVault: CakeVault
-  ifoPool: CakeVault
+  ifoPool: IfoCakeVault
   userDataLoaded: boolean
 }
 

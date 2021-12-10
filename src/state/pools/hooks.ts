@@ -14,7 +14,7 @@ import {
   fetchPoolsStakingLimitsAsync,
   fetchIfoPoolFees,
   fetchIfoPoolPublicData,
-  fetchIfoPoolUser,
+  fetchIfoPoolUserAndIfo,
   initialPoolVaultState,
 } from '.'
 import { State, DeserializedPool, VaultKey } from '../types'
@@ -89,7 +89,7 @@ export const useFetchIfoPool = () => {
   }, [dispatch, fastRefresh])
 
   useEffect(() => {
-    dispatch(fetchIfoPoolUser({ account }))
+    dispatch(fetchIfoPoolUserAndIfo({ account }))
   }, [dispatch, fastRefresh, account])
 
   useEffect(() => {
@@ -180,4 +180,15 @@ export const useVaultPoolByKey = (key: VaultKey) => {
 
 export const useIfoPool = () => {
   return useVaultPoolByKey(VaultKey.IfoPool)
+}
+
+export const useIfoPoolIfo = () => {
+  const { lastAvgBalance: lastAvgBalanceAsString } = useSelector((state: State) => state.pools.ifoPool.ifoInfo || {})
+  const lastAvgBalance = useMemo(() => {
+    return new BigNumber(lastAvgBalanceAsString)
+  }, [lastAvgBalanceAsString])
+
+  return {
+    lastAvgBalance,
+  }
 }

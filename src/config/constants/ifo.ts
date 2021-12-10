@@ -29,7 +29,7 @@ const ifos: Ifo[] = [
     campaignId: '511150000',
     articleUrl: 'https://pancakeswap.finance/voting/proposal/QmUqRxjwZCWeZWEdgV2vHJ6hex7jMW7i247NKFas73xc8j',
     tokenOfferingPrice: 2.5,
-    version: 2,
+    version: 3,
   },
   {
     id: 'porto',

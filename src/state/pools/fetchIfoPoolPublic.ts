@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { multicallv2 } from 'utils/multicall'
-import cakeVaultAbi from 'config/abi/cakeVault.json'
+import ifoPoolAbi from 'config/abi/ifoPool.json'
 import { getIfoPoolAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
@@ -18,7 +18,7 @@ export const fetchPublicIfoPoolData = async () => {
     }))
 
     const [[sharePrice], [shares], [estimatedCakeBountyReward], [totalPendingCakeHarvest]] = await multicallv2(
-      cakeVaultAbi,
+      ifoPoolAbi,
       calls,
     )
 
@@ -50,7 +50,7 @@ export const fetchIfoPoolFeesData = async () => {
       name: method,
     }))
 
-    const [[performanceFee], [callFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2(cakeVaultAbi, calls)
+    const [[performanceFee], [callFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2(ifoPoolAbi, calls)
 
     return {
       performanceFee: performanceFee.toNumber(),

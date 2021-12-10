@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Text,
   Flex,
@@ -21,6 +21,7 @@ import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
+import { useIfoPoolCredit } from 'views/Ifos/hooks/useIfoPoolCredit'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
@@ -122,6 +123,13 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { currency, token } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
+  const [ifoCredit, fetchCredit] = useIfoPoolCredit()
+
+  useEffect(() => {
+    if (ifo.version === 3) {
+      fetchCredit()
+    }
+  }, [ifo.version, fetchCredit])
 
   const renderTokenSection = () => {
     if (isLoading) {
@@ -130,18 +138,34 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     if (!account) {
       return <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
     }
+
+    let message
+
     if (account && !hasProfile) {
-      // TODO: danger when no cake staking in IFO
+      message = (
+        <Message mt="24px" p="8px" variant="warning">
+          <Text fontSize="14px" color="#D67E0A">
+            {publicIfoData.status === 'finished'
+              ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
+              : t('You need an active PancakeSwap Profile to take part in an IFO!')}
+          </Text>
+        </Message>
+      )
+    }
+
+    if (ifo.version === 3 && !ifoCredit.loading && ifoCredit.creditAsNumberBalance === 0) {
+      message = (
+        <Message variant="danger">
+          {t('You don’t have any average CAKE balance available to commit in IFO CAKE pool.')}
+          <Text textAlign="center">{t('How does it work?')} »</Text>
+        </Message>
+      )
+    }
+    if (account && !hasProfile) {
       return (
         <>
           <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
-          <Message mt="24px" p="8px" variant="warning">
-            <Text fontSize="14px" color="#D67E0A">
-              {publicIfoData.status === 'finished'
-                ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
-                : t('You need an active PancakeSwap Profile to take part in an IFO!')}
-            </Text>
-          </Message>
+          {message}
         </>
       )
     }
@@ -155,6 +179,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <Text fontSize="14px" color="textSubtle" pl="48px">
             {t('%ratio%% of total sale', { ratio: distributionRatio })}
           </Text>
+          {message}
           {enableStatus !== EnableStatus.ENABLED && account && (
             <Button
               width="100%"
