@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, useTooltip, Flex, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useWeb3React } from '@web3-react/core'
-import { useCakeVault } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
@@ -50,9 +50,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     earningToken.symbol,
   )
 
-  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
-  const { handleApprove: handleVaultApprove, requestedApproval: requestedVaultApproval } =
-    useVaultApprove(setLastUpdated)
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
+  const { handleApprove: handleVaultApprove, requestedApproval: requestedVaultApproval } = useVaultApprove(
+    pool.vaultKey,
+    setLastUpdated,
+  )
 
   const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
   const requestedApproval = vaultKey ? requestedVaultApproval : requestedPoolApproval
@@ -73,7 +75,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   const {
     userData: { userShares },
     pricePerFullShare,
-  } = useCakeVault()
+  } = useVaultPoolByKey(pool.vaultKey)
 
   const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
   const hasSharesStaked = userShares && userShares.gt(0)

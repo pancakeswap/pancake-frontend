@@ -1,16 +1,19 @@
+import { VaultKey } from 'state/types'
 import { serializeTokens } from './tokens'
 import { SerializedPoolConfig, PoolCategory } from './types'
 
 const serializedTokens = serializeTokens()
 
 export const vaultPoolConfig = {
-  cakeVault: {
-    name: 'Auto Cake',
+  [VaultKey.CakeVault]: {
+    name: 'Auto CAKE',
     description: 'Automatic restaking',
+    autoCompoundFrequency: 5000,
   },
-  ifoPool: {
+  [VaultKey.IfoPool]: {
     name: 'IFO CAKE',
     description: 'Stake CAKE to participate in IFO',
+    autoCompoundFrequency: 5000, // TODO: update IFO compound frequency
   },
 } as const
 

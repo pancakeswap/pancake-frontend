@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { DeserializedPool } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useCakeVault } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import { convertSharesToCake } from '../../../helpers'
@@ -20,7 +20,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
   const {
     userData: { userShares },
     pricePerFullShare,
-  } = useCakeVault()
+  } = useVaultPoolByKey(pool.vaultKey)
   const { stakingToken } = pool
   const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
   const cakePriceBusd = usePriceCakeBusd()

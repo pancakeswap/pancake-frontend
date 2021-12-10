@@ -3,20 +3,22 @@ import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
-import { useCakeVault } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
 
 interface UnstakingFeeCountdownRowProps {
   isTableVariant?: boolean
+  vaultKey: VaultKey
 }
 
-const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isTableVariant }) => {
+const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isTableVariant, vaultKey }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const {
     userData: { lastDepositedTime, userShares },
     fees: { withdrawalFee, withdrawalFeePeriod },
-  } = useCakeVault()
+  } = useVaultPoolByKey(vaultKey)
   const feeAsDecimal = withdrawalFee / 100 || '-'
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>

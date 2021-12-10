@@ -5,9 +5,9 @@ import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { DeserializedPool } from 'state/types'
-import { getAprData } from 'views/Pools/helpers'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { vaultPoolConfig } from 'config/constants/pools'
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
@@ -35,8 +35,6 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
-  const { apr: earningsPercentageToDisplay, autoCompoundFrequency } = getAprData(pool, performanceFee)
-
   const apyModalLink = stakingToken.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'
 
   const [onPresentApyModal] = useModal(
@@ -49,7 +47,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0
       stakingTokenBalance={stakedBalance.plus(stakingTokenBalance)}
       stakingTokenSymbol={stakingToken.symbol}
       earningTokenSymbol={earningToken.symbol}
-      autoCompoundFrequency={autoCompoundFrequency}
+      autoCompoundFrequency={vaultPoolConfig[vaultKey]?.autoCompoundFrequency ?? 0}
       performanceFee={performanceFee}
     />,
   )
@@ -58,12 +56,12 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef}>{vaultKey ? `${t('APY')}:` : `${t('APR')}:`}</TooltipText>
-      {earningsPercentageToDisplay || isFinished ? (
+      {apr || isFinished ? (
         <ApyLabelContainer alignItems="center" onClick={onPresentApyModal}>
           <Balance
             fontSize="16px"
             isDisabled={isFinished}
-            value={isFinished ? 0 : earningsPercentageToDisplay}
+            value={isFinished ? 0 : apr}
             decimals={2}
             unit="%"
             onClick={onPresentApyModal}

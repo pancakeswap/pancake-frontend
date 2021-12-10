@@ -18,8 +18,8 @@ import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { BIG_TEN } from 'utils/bigNumber'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useCakeVault } from 'state/pools/hooks'
-import { useCakeVaultContract } from 'hooks/useContract'
+import { useCakeVault, useVaultPoolByKey } from 'state/pools/hooks'
+import { useVaultPoolContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
 import BigNumber from 'bignumber.js'
@@ -70,14 +70,14 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   onDismiss,
 }) => {
   const dispatch = useAppDispatch()
-  const { stakingToken, earningToken, apr, stakingTokenPrice, earningTokenPrice } = pool
+  const { stakingToken, earningToken, apr, stakingTokenPrice, earningTokenPrice, vaultKey } = pool
   const { account } = useWeb3React()
-  const cakeVaultContract = useCakeVaultContract()
+  const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { callWithGasPrice } = useCallWithGasPrice()
   const {
     userData: { lastDepositedTime, userShares },
     pricePerFullShare,
-  } = useCakeVault()
+  } = useVaultPoolByKey(pool.vaultKey)
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
@@ -135,7 +135,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 
     if (isWithdrawingAll) {
       try {
-        const tx = await callWithGasPrice(cakeVaultContract, 'withdrawAll', undefined, callOptions)
+        const tx = await callWithGasPrice(vaultPoolContract, 'withdrawAll', undefined, callOptions)
         const receipt = await tx.wait()
         if (receipt.status) {
           toastSuccess(
@@ -157,7 +157,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
       try {
         const tx = await callWithGasPrice(
-          cakeVaultContract,
+          vaultPoolContract,
           'withdraw',
           [shareStakeToWithdraw.sharesAsBigNumber.toString()],
           callOptions,
@@ -186,7 +186,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     try {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const tx = await callWithGasPrice(cakeVaultContract, 'deposit', [convertedStakeAmount.toString()], callOptions)
+      const tx = await callWithGasPrice(vaultPoolContract, 'deposit', [convertedStakeAmount.toString()], callOptions)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(
@@ -282,7 +282,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         </StyledButton>
       </Flex>
       {isRemovingStake && hasUnstakingFee && (
-        <FeeSummary stakingTokenSymbol={stakingToken.symbol} stakeAmount={stakeAmount} />
+        <FeeSummary vaultKey={vaultKey} stakingTokenSymbol={stakingToken.symbol} stakeAmount={stakeAmount} />
       )}
       {!isRemovingStake && (
         <Flex mt="24px" alignItems="center" justifyContent="space-between">

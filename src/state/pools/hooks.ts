@@ -19,7 +19,6 @@ import {
 } from '.'
 import { State, DeserializedPool, VaultKey } from '../types'
 import { transformPool } from './helpers'
-// import { getAprData } from 'views/Pools/helpers'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()

@@ -25,7 +25,7 @@ import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
 import { ViewMode } from 'state/user/actions'
@@ -36,8 +36,7 @@ import PoolTabButtons from './components/PoolTabButtons'
 import BountyCard from './components/BountyCard'
 import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
-import { getAprData, getCakeVaultEarnings } from './helpers'
-import IfoStakePoolCard from './components/IfoStakePoolCard'
+import { getCakeVaultEarnings } from './helpers'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -99,8 +98,6 @@ const Pools: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const chosenPoolsLength = useRef(0)
-  // const cakeVault = useCakeVault()
-  // const ifoPool = useIfoPool()
   const vaultPools = useVaultPools()
 
   const pools = usePoolsWithVault()
@@ -160,17 +157,7 @@ const Pools: React.FC = () => {
     switch (sortOption) {
       case 'apr':
         // Ternary is needed to prevent pools without APR (like MIX) getting top spot
-        return orderBy(
-          poolsToSort,
-          (pool: DeserializedPool) =>
-            pool.apr
-              ? getAprData(
-                  pool,
-                  vaultPools[pool.vaultKey].fees.performanceFee && vaultPools[pool.vaultKey].fees.performanceFee / 100,
-                )
-              : 0,
-          'desc',
-        )
+        return orderBy(poolsToSort, (pool: DeserializedPool) => (pool.apr ? pool.apr : 0), 'desc')
       case 'earned':
         return orderBy(
           poolsToSort,
@@ -249,10 +236,8 @@ const Pools: React.FC = () => {
   const cardLayout = (
     <CardLayout>
       {chosenPools.map((pool) =>
-        pool.vaultKey === VaultKey.IfoPool ? (
-          <IfoStakePoolCard key="ifo-pool" pool={pool} showStakedOnly={stakedOnly} />
-        ) : pool.vaultKey === VaultKey.CakeVault ? (
-          <CakeVaultCard key="auto-cake" pool={pool} showStakedOnly={stakedOnly} />
+        pool.vaultKey ? (
+          <CakeVaultCard key={pool.vaultKey} pool={pool} showStakedOnly={stakedOnly} />
         ) : (
           <PoolCard key={pool.sousId} pool={pool} account={account} />
         ),

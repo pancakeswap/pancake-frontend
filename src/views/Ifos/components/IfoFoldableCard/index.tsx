@@ -49,7 +49,7 @@ const CardsWrapper = styled.div<{ singleCard: boolean }>`
   display: grid;
   grid-gap: 32px;
   grid-template-columns: 1fr;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.xxl} {
     grid-template-columns: ${({ singleCard }) => (singleCard ? '1fr' : '1fr 1fr')};
     justify-items: ${({ singleCard }) => (singleCard ? 'center' : 'unset')};
   }

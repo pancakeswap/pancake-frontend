@@ -34,6 +34,7 @@ import {
   getErc721CollectionContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
+import { VaultKey } from 'state/types'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
@@ -147,12 +148,21 @@ export const useEasterNftContract = () => {
   return useMemo(() => getEasterNftContract(library.getSigner()), [library])
 }
 
+export const useVaultPoolContract = (vaultKey: VaultKey) => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => {
+    return vaultKey === VaultKey.CakeVault
+      ? getCakeVaultContract(library.getSigner())
+      : getIfoPoolContract(library.getSigner())
+  }, [library, vaultKey])
+}
+
 export const useCakeVaultContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getCakeVaultContract(library.getSigner()), [library])
 }
 
-export const useIFOPoolContract = () => {
+export const useIfoPoolContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getIfoPoolContract(library.getSigner()), [library])
 }
