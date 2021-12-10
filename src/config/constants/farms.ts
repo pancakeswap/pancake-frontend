@@ -41,6 +41,39 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 485,
+    lpSymbol: 'TT-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6DA32849Fc5E1c23894d9E08166912F15bDb2E95',
+    },
+    token: serializedTokens.tt,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
+    pid: 486,
+    lpSymbol: 'GMEE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6a24a877bb7D07fba59397DecBBAED5F92890AeA',
+    },
+    token: serializedTokens.gmee,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 487,
+    lpSymbol: 'HTD-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x0c3b12fCA25bfa840E0553DA97C532e9Abd3913d',
+    },
+    token: serializedTokens.htd,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
     pid: 484,
     lpSymbol: 'IDIA-BUSD LP',
     lpAddresses: {
