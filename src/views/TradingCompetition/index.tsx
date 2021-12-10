@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
 import { Flex, Box, Image } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTradingCompetitionContract } from 'hooks/useContract'
+import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import {
   SmartContractPhases,
@@ -14,7 +14,7 @@ import {
   CLAIM,
   OVER,
   REGISTRATION,
-} from 'config/constants/trading-competition/easterPhases'
+} from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
 import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
 import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
@@ -28,6 +28,7 @@ import BattleCta from './components/BattleCta'
 import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
 import TeamRanks from './components/TeamRanks'
+import { UserTradingInformationProps } from './types'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -47,9 +48,16 @@ const BannerFlex = styled(Flex)`
 `
 
 const BattleBannerSection = styled(PageSection)`
-  margin-top: -32px;
+  margin-top: -82px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: -94px;
+  }
   ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: -64px;
+    margin-top: -114px;
+  }
+
+  @media screen and (min-width: 1920px) {
+    margin-top: -144px;
   }
 `
 
@@ -70,15 +78,18 @@ const TradingCompetition = () => {
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
   const { isDark, theme } = useTheme()
-  const tradingCompetitionContract = useTradingCompetitionContract()
-  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.CLAIM)
+  const tradingCompetitionContract = useTradingCompetitionContractV2(false)
+  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)
-  const [userTradingInformation, setUserTradingInformation] = useState({
+  const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformationProps>({
     hasRegistered: false,
     hasUserClaimed: false,
     userRewardGroup: '0',
     userCakeRewards: '0',
+    userLazioRewards: '0',
+    userPortoRewards: '0',
+    userSantosRewards: '0',
     userPointReward: '0',
     canClaimNFT: false,
   })
@@ -100,12 +111,25 @@ const TradingCompetition = () => {
   const hasCompetitionEnded =
     currentPhase.state === FINISHED || currentPhase.state === CLAIM || currentPhase.state === OVER
 
-  const { hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
+  const {
+    hasUserClaimed,
+    userCakeRewards,
+    userLazioRewards,
+    userPortoRewards,
+    userSantosRewards,
+    userPointReward,
+    canClaimNFT,
+  } = userTradingInformation
 
   const userCanClaimPrizes =
     currentPhase.state === CLAIM &&
     !hasUserClaimed &&
-    (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
+    (userCakeRewards !== '0' ||
+      userLazioRewards !== '0' ||
+      userPortoRewards !== '0' ||
+      userSantosRewards !== '0' ||
+      userPointReward !== '0' ||
+      canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
 
@@ -124,16 +148,23 @@ const TradingCompetition = () => {
     }
 
     const fetchUserContract = async () => {
-      const user = await tradingCompetitionContract.claimInformation(account)
-      const userObject = {
-        hasRegistered: user[0],
-        hasUserClaimed: user[1],
-        userRewardGroup: user[2].toString(),
-        userCakeRewards: user[3].toString(),
-        userPointReward: user[4].toString(),
-        canClaimNFT: user[5],
+      try {
+        const user = await tradingCompetitionContract.claimInformation(account)
+        const userObject = {
+          hasRegistered: user[0],
+          hasUserClaimed: user[1],
+          userRewardGroup: user[2].toString(),
+          userCakeRewards: user[3].toString(),
+          userLazioRewards: user[4].toString(),
+          userPortoRewards: user[5].toString(),
+          userSantosRewards: user[6].toString(),
+          userPointReward: user[7].toString(),
+          canClaimNFT: user[8],
+        }
+        setUserTradingInformation(userObject)
+      } catch (error) {
+        console.error(error)
       }
-      setUserTradingInformation(userObject)
     }
 
     if (account) {
@@ -145,6 +176,9 @@ const TradingCompetition = () => {
         hasUserClaimed: false,
         userRewardGroup: '0',
         userCakeRewards: '0',
+        userLazioRewards: '0',
+        userPortoRewards: '0',
+        userSantosRewards: '0',
         userPointReward: '0',
         canClaimNFT: false,
       })
@@ -257,7 +291,7 @@ const TradingCompetition = () => {
           )}
         </Box>
       </PageSection>
-      <PageSection
+      {/* <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
         index={3}
         concaveDivider
@@ -277,7 +311,7 @@ const TradingCompetition = () => {
             globalLeaderboardInformation={globalLeaderboardInformation}
           />
         </Box>
-      </PageSection>
+      </PageSection> */}
       <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
         dividerComponent={

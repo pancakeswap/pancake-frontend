@@ -1,4 +1,4 @@
-import { MenuItemsType, DropdownMenuItemType } from '@pancakeswap/uikit'
+import { MenuItemsType, DropdownMenuItemType, menuStatus } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 
@@ -41,6 +41,11 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     href: '/prediction',
     icon: 'Trophy',
     items: [
+      {
+        label: t('Trading Competition'),
+        href: '/competition',
+        status: menuStatus.SOON,
+      },
       {
         label: t('Prediction (BETA)'),
         href: '/prediction',

@@ -232,6 +232,96 @@ const campaigns: Campaign[] = [
     title: 'FC Santos Fan Token',
     badge: 'ifo-santos.svg',
   },
+  {
+    id: '512020001',
+    type: 'teambattle',
+    title: 'Fan Token Champion: Gold',
+    badge: 'fan-token-champion-gold.svg',
+  },
+  {
+    id: '512020002',
+    type: 'teambattle',
+    title: 'Fan Token Top 10: Gold',
+    badge: 'fan-token-top-10-gold.svg',
+  },
+  {
+    id: '512020003',
+    type: 'teambattle',
+    title: 'Fan Token Top 100: Gold',
+    badge: 'fan-token-top-100-gold.svg',
+  },
+  {
+    id: '512020004',
+    type: 'teambattle',
+    title: 'Fan Token Top 500: Gold',
+    badge: 'fan-token-top-500-gold.svg',
+  },
+  {
+    id: '512020005',
+    type: 'teambattle',
+    title: 'Fan Token Participant: Gold',
+    badge: 'fan-token-participant-gold.svg',
+  },
+  {
+    id: '512020006',
+    type: 'teambattle',
+    title: 'Fan Token Champion: Silver',
+    badge: 'fan-token-champion-silver.svg',
+  },
+  {
+    id: '512020007',
+    type: 'teambattle',
+    title: 'Fan Token Top 10: Silver',
+    badge: 'fan-token-top-10-silver.svg',
+  },
+  {
+    id: '512020008',
+    type: 'teambattle',
+    title: 'Fan Token Top 100: Silver',
+    badge: 'fan-token-top-100-silver.svg',
+  },
+  {
+    id: '512020009',
+    type: 'teambattle',
+    title: 'Fan Token Top 500: Silver',
+    badge: 'fan-token-top-500-silver.svg',
+  },
+  {
+    id: '512020010',
+    type: 'teambattle',
+    title: 'Fan Token Participant: Silver',
+    badge: 'fan-token-participant-silver.svg',
+  },
+  {
+    id: '512020011',
+    type: 'teambattle',
+    title: 'Fan Token Champion: Bronze',
+    badge: 'fan-token-champion-bronze.svg',
+  },
+  {
+    id: '512020012',
+    type: 'teambattle',
+    title: 'Fan Token Top 10: Bronze',
+    badge: 'fan-token-top-10-bronze.svg',
+  },
+  {
+    id: '512020013',
+    type: 'teambattle',
+    title: 'Fan Token Top 100: Bronze',
+    badge: 'fan-token-top-100-bronze.svg',
+  },
+  {
+    id: '512020014',
+    type: 'teambattle',
+    title: 'Fan Token Top 500: Bronze',
+    badge: 'fan-token-top-500-bronze.svg',
+  },
+  {
+    id: '512020015',
+    type: 'teambattle',
+    title: 'Fan Token Participant: Bronze',
+    badge: 'fan-token-participant-bronze.svg',
+  },
 ]
 
 /**

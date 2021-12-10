@@ -14,6 +14,7 @@ import {
   getSouschefContract,
   getClaimRefundContract,
   getTradingCompetitionContract,
+  getTradingCompetitionContractV2,
   getEasterNftContract,
   getErc721Contract,
   getCakeVaultContract,
@@ -130,6 +131,14 @@ export const useClaimRefundContract = () => {
 export const useTradingCompetitionContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getTradingCompetitionContract(library.getSigner()), [library])
+}
+
+export const useTradingCompetitionContractV2 = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getTradingCompetitionContractV2(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [library, withSignerIfPossible, account],
+  )
 }
 
 export const useEasterNftContract = () => {

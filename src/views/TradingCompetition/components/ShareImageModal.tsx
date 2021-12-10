@@ -109,7 +109,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
 
   const downloadImage = () => {
     const link = document.createElement('a')
-    link.download = `easter-battle-${profile.username}.png`
+    link.download = `battle-${profile.username}.png`
     link.href = imageFromCanvas
     link.click()
   }

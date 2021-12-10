@@ -6,18 +6,15 @@ export enum Tiers {
   TEAL = 'Teal',
 }
 
-export interface Achievement {
-  champion?: number
-  teamPlayer?: number
-  trophy: number
-}
-
 export interface Rank {
   group: string
   rank: string
   tier: Tiers
-  cakePrizeInUsd: number
-  achievements: Achievement
+  tokenPrizeInUsd: number
+  achievements: {
+    image: string
+    points: number
+  }
   hasNft: boolean
 }
 
@@ -25,17 +22,16 @@ interface Config {
   [key: string]: Rank[]
 }
 
-const easterPrizes: Config = {
+const prizes: Config = {
   1: [
     {
       group: '4',
       rank: '1',
       tier: Tiers.GOLD,
-      cakePrizeInUsd: 21000,
+      tokenPrizeInUsd: 12600,
       achievements: {
-        champion: 1250,
-        teamPlayer: 750,
-        trophy: 500,
+        image: 'fan-token-champion-gold.svg',
+        points: 2500,
       },
       hasNft: true,
     },
@@ -43,10 +39,10 @@ const easterPrizes: Config = {
       group: '3',
       rank: '2 ~ 10',
       tier: Tiers.SILVER,
-      cakePrizeInUsd: 49000,
+      tokenPrizeInUsd: 29400,
       achievements: {
-        teamPlayer: 750,
-        trophy: 500,
+        image: 'fan-token-top-10-gold.svg',
+        points: 1250,
       },
       hasNft: true,
     },
@@ -54,10 +50,10 @@ const easterPrizes: Config = {
       group: '2',
       rank: '11 ~ 100',
       tier: Tiers.BRONZE,
-      cakePrizeInUsd: 42000,
+      tokenPrizeInUsd: 25200,
       achievements: {
-        teamPlayer: 750,
-        trophy: 500,
+        image: 'fan-token-top-100-gold.svg',
+        points: 1000,
       },
       hasNft: true,
     },
@@ -66,10 +62,10 @@ const easterPrizes: Config = {
       group: '1',
       rank: '101 ~ 500',
       tier: Tiers.PURPLE,
-      cakePrizeInUsd: 28000,
+      tokenPrizeInUsd: 16800,
       achievements: {
-        teamPlayer: 750,
-        trophy: 500,
+        image: 'fan-token-top-500-gold.svg',
+        points: 850,
       },
       hasNft: true,
     },
@@ -78,9 +74,10 @@ const easterPrizes: Config = {
       group: '0',
       rank: '501+',
       tier: Tiers.TEAL,
-      cakePrizeInUsd: 0,
+      tokenPrizeInUsd: 0,
       achievements: {
-        trophy: 500,
+        image: 'fan-token-participant-gold.svg',
+        points: 500,
       },
       hasNft: false,
     },
@@ -90,11 +87,10 @@ const easterPrizes: Config = {
       group: '4',
       rank: '1',
       tier: Tiers.GOLD,
-      cakePrizeInUsd: 6000,
+      tokenPrizeInUsd: 3600,
       achievements: {
-        champion: 1250,
-        teamPlayer: 750,
-        trophy: 250,
+        image: 'fan-token-champion-silver.svg',
+        points: 2250,
       },
       hasNft: false,
     },
@@ -102,10 +98,10 @@ const easterPrizes: Config = {
       group: '3',
       rank: '2 ~ 10',
       tier: Tiers.SILVER,
-      cakePrizeInUsd: 14000,
+      tokenPrizeInUsd: 8400,
       achievements: {
-        teamPlayer: 750,
-        trophy: 250,
+        image: 'fan-token-top-10-silver.svg',
+        points: 1000,
       },
       hasNft: false,
     },
@@ -113,10 +109,10 @@ const easterPrizes: Config = {
       group: '2',
       rank: '11 ~ 100',
       tier: Tiers.BRONZE,
-      cakePrizeInUsd: 12000,
+      tokenPrizeInUsd: 7200,
       achievements: {
-        teamPlayer: 750,
-        trophy: 250,
+        image: 'fan-token-top-100-silver.svg',
+        points: 850,
       },
       hasNft: false,
     },
@@ -124,10 +120,10 @@ const easterPrizes: Config = {
       group: '1',
       rank: '101 ~ 500',
       tier: Tiers.PURPLE,
-      cakePrizeInUsd: 8000,
+      tokenPrizeInUsd: 4800,
       achievements: {
-        teamPlayer: 750,
-        trophy: 250,
+        image: 'fan-token-top-500-silver.svg',
+        points: 500,
       },
       hasNft: false,
     },
@@ -135,9 +131,10 @@ const easterPrizes: Config = {
       group: '0',
       rank: '501+',
       tier: Tiers.TEAL,
-      cakePrizeInUsd: 0,
+      tokenPrizeInUsd: 0,
       achievements: {
-        trophy: 250,
+        image: 'fan-token-participant-silver.svg',
+        points: 250,
       },
       hasNft: false,
     },
@@ -147,11 +144,10 @@ const easterPrizes: Config = {
       group: '4',
       rank: '1',
       tier: Tiers.GOLD,
-      cakePrizeInUsd: 3000,
+      tokenPrizeInUsd: 1800,
       achievements: {
-        champion: 1250,
-        teamPlayer: 750,
-        trophy: 100,
+        image: 'fan-token-champion-bronze.svg',
+        points: 2100,
       },
       hasNft: false,
     },
@@ -159,10 +155,10 @@ const easterPrizes: Config = {
       group: '3',
       rank: '2 ~ 10',
       tier: Tiers.SILVER,
-      cakePrizeInUsd: 7000,
+      tokenPrizeInUsd: 4200,
       achievements: {
-        teamPlayer: 750,
-        trophy: 100,
+        image: 'fan-token-top-10-bronze.svg',
+        points: 850,
       },
       hasNft: false,
     },
@@ -170,10 +166,10 @@ const easterPrizes: Config = {
       group: '2',
       rank: '11 ~ 100',
       tier: Tiers.BRONZE,
-      cakePrizeInUsd: 6000,
+      tokenPrizeInUsd: 3600,
       achievements: {
-        teamPlayer: 750,
-        trophy: 100,
+        image: 'fan-token-top-100-bronze.svg',
+        points: 500,
       },
       hasNft: false,
     },
@@ -181,10 +177,10 @@ const easterPrizes: Config = {
       group: '1',
       rank: '101 ~ 500',
       tier: Tiers.PURPLE,
-      cakePrizeInUsd: 4000,
+      tokenPrizeInUsd: 2400,
       achievements: {
-        teamPlayer: 750,
-        trophy: 100,
+        image: 'fan-token-top-500-bronze.svg',
+        points: 250,
       },
       hasNft: false,
     },
@@ -192,13 +188,14 @@ const easterPrizes: Config = {
       group: '0',
       rank: '501+',
       tier: Tiers.TEAL,
-      cakePrizeInUsd: 0,
+      tokenPrizeInUsd: 0,
       achievements: {
-        trophy: 100,
+        image: 'fan-token-participant-bronze.svg',
+        points: 100,
       },
       hasNft: false,
     },
   ],
 }
 
-export default easterPrizes
+export default prizes

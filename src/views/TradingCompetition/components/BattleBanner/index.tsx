@@ -27,6 +27,7 @@ const StyledText = styled(Text)`
 
 const StyledHeading1Text = styled(Heading1Text)`
   ${({ theme }) => TextStyles(theme)}
+  white-space: normal;
 `
 
 const StyledHeading2Text = styled(Heading2Text)`
@@ -38,7 +39,10 @@ const StyledHeading = styled(Heading)`
 `
 
 const BattleBanner = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
 
   return (
@@ -47,14 +51,17 @@ const BattleBanner = () => {
         <Image src={AllBunniesImage} alt="all the bunnies" width={1208} height={659} />
       </ImageWrapper>
       <StyledText mb="16px" color="textSubtle" bold>
-        {t('April')} 07—14, 2021
+        {new Date(2020, 11).toLocaleString(locale, {
+          month: 'short',
+        })}{' '}
+        14-20, 2021
       </StyledText>
-      <StyledHeading1Text>{t('Easter Battle')}</StyledHeading1Text>
+      <StyledHeading1Text>{t('Fan token Trading Competition')}</StyledHeading1Text>
       <StyledHeading2Text background={theme.colors.gradients.gold} $fill>
-        {t('$200,000 in Prizes!')}
+        {t('$120,000 in Prizes!')}
       </StyledHeading2Text>
       <StyledHeading scale="md" color={theme.isDark ? 'textSubtle' : 'inputSecondary'} mt="16px">
-        {t('Compete with other teams to win CAKE, collectible NFTs, achievements & more!')}
+        {t('Compete with other teams for the highest trading volume!')}
       </StyledHeading>
     </Flex>
   )

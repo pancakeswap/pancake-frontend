@@ -7,14 +7,14 @@ export const OVER = 'OVER'
 export const CompetitionPhases = {
   REGISTRATION: {
     state: REGISTRATION,
-    // Wed 7th 16:00 SGT
-    ends: 1617782400000,
+    // 2021–12–14 0:00 AM UTC
+    ends: 1639440000000,
     step: { index: 0, text: 'Entry' },
   },
   LIVE: {
     state: LIVE,
-    // ~ Wed 14th 16:00 SGT
-    ends: 1618387200000,
+    // 2021–12–20 11:59 PM UTC
+    ends: 1640044740000,
     step: { index: 1, text: 'Live' },
   },
   FINISHED: {
