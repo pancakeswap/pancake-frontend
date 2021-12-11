@@ -291,7 +291,7 @@ const TradingCompetition = () => {
           )}
         </Box>
       </PageSection>
-      {/* <PageSection
+      <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
         index={3}
         concaveDivider
@@ -311,7 +311,7 @@ const TradingCompetition = () => {
             globalLeaderboardInformation={globalLeaderboardInformation}
           />
         </Box>
-      </PageSection> */}
+      </PageSection>
       <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
         dividerComponent={
