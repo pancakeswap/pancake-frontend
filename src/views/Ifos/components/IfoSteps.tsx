@@ -76,9 +76,8 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   )
 
   const cakePriceBusd = usePriceCakeBusd()
-  // const cakeAsBigNumber = getDecimalAmount(ifoCredit.credit)
-  // TODO: check ifoCredit.credit
-  const stakedDollarValue = cakePriceBusd.gt(0) ? getBalanceNumber(ifoCredit.credit.multipliedBy(cakePriceBusd), 18) : 0
+  const stakedDollarValue =
+    cakePriceBusd.gt(0) && ifoCredit.credit ? getBalanceNumber(ifoCredit.credit.multipliedBy(cakePriceBusd), 18) : 0
 
   const stakingTokenBalance = pool?.userData?.stakingTokenBalance
     ? new BigNumber(pool.userData.stakingTokenBalance)

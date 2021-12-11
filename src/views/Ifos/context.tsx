@@ -6,8 +6,8 @@ import { getAprData } from 'views/Pools/helpers'
 import { useIfoPoolCredit } from './hooks/useIfoPoolCredit'
 
 const IfoContext = createContext<{
-  pool: DeserializedPool | null
-  ifoCredit: ReturnType<typeof useIfoPoolCredit>
+  pool?: DeserializedPool | null
+  ifoCredit?: ReturnType<typeof useIfoPoolCredit>
 }>(null)
 
 export const IfoContextProvider: FC = ({ children }) => {
