@@ -189,7 +189,7 @@ const TradingCompetition = () => {
     const fetchUserTradingStats = async () => {
       const res = await fetch(`${profileApiUrl}/api/users/${account}`)
       const data = await res.json()
-      setUserLeaderboardInformation(data.leaderboard)
+      setUserLeaderboardInformation(data.leaderboard_fantoken)
     }
     // If user has not registered, user trading information will not be displayed and should not be fetched
     if (account && userTradingInformation.hasRegistered) {
