@@ -142,7 +142,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const {
     totalCakeInVault,
     userData: { userShares },
-    fees: { performanceFee },
+    fees: { performanceFeeAsDecimal },
     pricePerFullShare,
   } = useVaultPoolByKey(vaultKey)
 
@@ -158,7 +158,6 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     ? cakeAsBigNumber.plus(stakingTokenBalance)
     : stakedBalance.plus(stakingTokenBalance)
 
-  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
   const isManualCakePool = sousId === 0
 
   const getTotalStakedBalance = () => {
