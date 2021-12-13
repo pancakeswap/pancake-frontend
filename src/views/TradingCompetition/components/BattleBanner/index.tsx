@@ -56,7 +56,7 @@ const BattleBanner = () => {
         })}{' '}
         14-20, 2021
       </StyledText>
-      <StyledHeading1Text>{t('Fan token Trading Competition')}</StyledHeading1Text>
+      <StyledHeading1Text>{t('Binance Fan token Trading Competition')}</StyledHeading1Text>
       <StyledHeading2Text background={theme.colors.gradients.gold} $fill>
         {t('$120,000 in Prizes!')}
       </StyledHeading2Text>
