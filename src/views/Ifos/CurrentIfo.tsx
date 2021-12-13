@@ -21,14 +21,7 @@ const Ifo = () => {
     <IfoLayout id="current-ifo" py="40px">
       <IfoLayoutWrapper>
         <IfoPoolVaultCard />
-        <IfoCurrentCard
-          ifo={activeIfo}
-          publicIfoData={{
-            ...publicIfoData,
-            // status: 'live',
-          }}
-          walletIfoData={walletIfoData}
-        />
+        <IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
       </IfoLayoutWrapper>
       <IfoSteps isLive={publicIfoData.status === 'live'} ifo={activeIfo} walletIfoData={walletIfoData} />
       <IfoQuestions />
