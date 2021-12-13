@@ -19,9 +19,11 @@ const InlineText = styled(Text)`
   display: inline;
 `
 
-const IfoVaultCardAction = ({ pool }: { pool: DeserializedPool }) => {
+export const IfoVaultCardAvgBalance = ({ pool }: { pool: DeserializedPool }) => {
   const { t } = useTranslation()
   const credit = useIfoPoolCredit()
+
+  // TODO: refactor this is use everywhere
   const cakeAsNumberBalance = getBalanceNumber(credit)
   const cakeAsBigNumber = getDecimalAmount(new BigNumber(cakeAsNumberBalance))
   const cakePriceBusd = usePriceCakeBusd()
@@ -77,7 +79,7 @@ const CakeVaultCardActions: React.FC<{
   return (
     <Flex flexDirection="column">
       <Flex flexDirection="column">
-        {accountHasSharesStaked && pool.vaultKey === VaultKey.IfoPool && <IfoVaultCardAction pool={pool} />}
+        {accountHasSharesStaked && pool.vaultKey === VaultKey.IfoPool && <IfoVaultCardAvgBalance pool={pool} />}
         <Box display="inline">
           <InlineText
             color={accountHasSharesStaked ? 'secondary' : 'textSubtle'}

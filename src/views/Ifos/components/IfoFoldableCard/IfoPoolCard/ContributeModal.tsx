@@ -123,6 +123,7 @@ const ContributeModal: React.FC<Props> = ({
           <Flex justifyContent="space-between" mb="16px">
             {tooltipVisible && tooltip}
             <TooltipText ref={targetRef}>{label}:</TooltipText>
+            {/* // TODO: update entry after contribution */}
             <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
               ifo.currency.symbol
             }`}</Text>

@@ -25,8 +25,7 @@ import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
-import { useIfoPoolContext } from 'views/Ifos/context'
-import { useIfoPool, useIfoPoolCredit } from 'state/pools/hooks'
+import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
@@ -140,8 +139,8 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
 
-  const ifoPool = useIfoPool()
-  const { pool } = useIfoPoolContext()
+  const ifoPoolVault = useIfoPoolVault()
+  const { pool } = useIfoWithApr()
   const credit = useIfoPoolCredit()
 
   const stakingTokenBalance = pool?.userData?.stakingTokenBalance
@@ -151,7 +150,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const [onPresentStake] = useModal(
     <VaultStakeModal
       stakingMax={stakingTokenBalance}
-      performanceFee={ifoPool.fees.performanceFeeAsDecimal}
+      performanceFee={ifoPoolVault.fees.performanceFeeAsDecimal}
       pool={pool}
     />,
   )

@@ -2,21 +2,19 @@ import { Flex } from '@pancakeswap/uikit'
 import { ifosConfig } from 'config/constants'
 import { Ifo } from 'config/constants/types'
 import React from 'react'
-import CakeVaultCard from 'views/Pools/components/CakeVaultCard'
 import IfoCardV1Data from './components/IfoCardV1Data'
 import IfoCardV2Data from './components/IfoCardV2Data'
 import IfoCardV3Data from './components/IfoCardV3Data'
 import IfoLayout, { IfoLayoutWrapper } from './components/IfoLayout'
-import { useIfoPoolContext } from './context'
+import IfoPoolVaultCard from './components/IfoPoolVaultCard'
 
 const inactiveIfo: Ifo[] = ifosConfig.filter((ifo) => !ifo.isActive)
 
 const PastIfo = () => {
-  const { pool } = useIfoPoolContext()
   return (
-    <IfoLayoutWrapper>
-      <Flex width="100%" pt="40px" justifyContent="center">
-        <CakeVaultCard defaultFooterExpanded pool={pool} showStakedOnly={false} />
+    <IfoLayoutWrapper pt="40px">
+      <Flex width="100%" justifyContent="center">
+        <IfoPoolVaultCard />
       </Flex>
       <IfoLayout width="100%" id="past-ifos">
         {inactiveIfo.map((ifo) => {

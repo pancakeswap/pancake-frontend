@@ -5,7 +5,7 @@ import { orderBy } from 'lodash'
 import { VaultKey, DeserializedPool } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
 import { simpleRpcProvider } from 'utils/providers'
-import { useCakeVault, useIfoPool, usePools } from 'state/pools/hooks'
+import { useCakeVault, useIfoPoolVault, usePools } from 'state/pools/hooks'
 import { getAprData } from 'views/Pools/helpers'
 
 enum FetchStatus {
@@ -18,7 +18,7 @@ enum FetchStatus {
 export function usePoolsWithVault() {
   const { pools: poolsWithoutAutoVault } = usePools()
   const cakeVault = useCakeVault()
-  const ifoPool = useIfoPool()
+  const ifoPool = useIfoPoolVault()
   const pools = useMemo(() => {
     const activePools = poolsWithoutAutoVault.filter((pool) => !pool.isFinished)
     const cakePool = activePools.find((pool) => pool.sousId === 0)

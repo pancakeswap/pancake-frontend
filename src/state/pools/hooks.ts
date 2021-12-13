@@ -6,6 +6,7 @@ import { useAppDispatch } from 'state'
 import { simpleRpcProvider } from 'utils/providers'
 import useRefresh from 'hooks/useRefresh'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { getAprData } from 'views/Pools/helpers'
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -179,7 +180,7 @@ export const useVaultPoolByKey = (key: VaultKey) => {
   }
 }
 
-export const useIfoPool = () => {
+export const useIfoPoolVault = () => {
   return useVaultPoolByKey(VaultKey.IfoPool)
 }
 
@@ -190,4 +191,23 @@ export const useIfoPoolCredit = () => {
   }, [creditAsString])
 
   return credit
+}
+
+export const useIfoWithApr = () => {
+  const {
+    fees: { performanceFeeAsDecimal },
+  } = useIfoPoolVault()
+  const { pool: poolZero, userDataLoaded } = usePool(0)
+
+  const ifoPoolWithApr = useMemo(() => {
+    const ifoPool = poolZero
+    ifoPool.vaultKey = VaultKey.IfoPool
+    ifoPool.apr = getAprData(ifoPool, performanceFeeAsDecimal).apr
+    return ifoPool
+  }, [performanceFeeAsDecimal, poolZero])
+
+  return {
+    pool: ifoPoolWithApr,
+    userDataLoaded,
+  }
 }

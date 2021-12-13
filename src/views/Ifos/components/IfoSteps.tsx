@@ -36,8 +36,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
 import { BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { useIfoPool, useIfoPoolCredit } from 'state/pools/hooks'
-import { useIfoPoolContext } from '../context'
+import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/hooks'
 
 interface Props {
   ifo: Ifo
@@ -66,9 +65,9 @@ const SmallStakePoolCard = styled(Box)`
 
 const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const { t } = useTranslation()
-  const ifoPool = useIfoPool()
+  const ifoPoolVault = useIfoPoolVault()
   const credit = useIfoPoolCredit()
-  const { pool } = useIfoPoolContext()
+  const { pool } = useIfoWithApr()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
       'Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal. Please refer to our blog post for more details.',
@@ -86,7 +85,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const [onPresentStake] = useModal(
     <VaultStakeModal
       stakingMax={stakingTokenBalance}
-      performanceFee={ifoPool.fees.performanceFeeAsDecimal}
+      performanceFee={ifoPoolVault.fees.performanceFeeAsDecimal}
       pool={pool}
     />,
   )

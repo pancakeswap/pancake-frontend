@@ -77,6 +77,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
   const poolCharacteristic = publicIfoData[poolId]
 
   /* Format start */
+  // TODO: update entry after contribution
   const maxLpTokens = getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
   const taxRate = `${poolCharacteristic.taxRate}%`
 

@@ -4,9 +4,8 @@ import styled from 'styled-components'
 const IfoLayout = styled(Box)`
   display: grid;
   grid-gap: 32px;
-  padding: 40px 0;
 `
-export const IfoLayoutWrapper = styled.div`
+export const IfoLayoutWrapper = styled(Box)`
   gap: 32px;
   display: grid;
   grid-template-columns: 1fr;
@@ -17,6 +16,7 @@ export const IfoLayoutWrapper = styled.div`
 
   > div {
     margin: 0 auto;
+    align-items: flex-start;
   }
 `
 
