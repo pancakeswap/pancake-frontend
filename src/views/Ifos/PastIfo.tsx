@@ -12,7 +12,7 @@ const inactiveIfo: Ifo[] = ifosConfig.filter((ifo) => !ifo.isActive)
 
 const PastIfo = () => {
   return (
-    <IfoLayoutWrapper pt="40px">
+    <IfoLayoutWrapper py="40px">
       <Flex width="100%" justifyContent="center">
         <IfoPoolVaultCard />
       </Flex>

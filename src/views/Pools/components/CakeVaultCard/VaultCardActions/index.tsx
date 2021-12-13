@@ -6,7 +6,7 @@ import { Flex, Text, Box, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { useIfoPoolCredit } from 'state/pools/hooks'
+import { useIfoPoolCredit, useIfoPoolVault } from 'state/pools/hooks'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import QuestionHelper from 'components/QuestionHelper'
 import { FlexGap } from 'components/Layout/Flex'
@@ -21,6 +21,10 @@ const InlineText = styled(Text)`
 
 export const IfoVaultCardAvgBalance = ({ pool }: { pool: DeserializedPool }) => {
   const { t } = useTranslation()
+  const {
+    totalShares,
+    userData: { userShares, isLoading },
+  } = useIfoPoolVault()
   const credit = useIfoPoolCredit()
 
   // TODO: refactor this is use everywhere
@@ -31,7 +35,11 @@ export const IfoVaultCardAvgBalance = ({ pool }: { pool: DeserializedPool }) => 
     ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), pool.stakingToken.decimals)
     : 0
 
-  // TODO: User's avg balance/Total pool avg balance
+  const totalSharesPercentage =
+    userShares &&
+    userShares.gt(0) &&
+    totalShares &&
+    userShares.dividedBy(totalShares).multipliedBy(100).decimalPlaces(5)
 
   return (
     <>
@@ -52,11 +60,16 @@ export const IfoVaultCardAvgBalance = ({ pool }: { pool: DeserializedPool }) => 
       </FlexGap>
       <Flex flexDirection="column" pb="16px">
         <Balance fontSize="20px" bold value={cakeAsNumberBalance} decimals={5} />
-        <Text fontSize="12px" color="textSubtle">
+        <Text fontSize="12px" color="textSubtle" display="flex">
           {cakePriceBusd.gt(0) ? (
             <Balance value={stakedDollarValue} fontSize="12px" color="textSubtle" decimals={2} prefix="~" unit=" USD" />
           ) : (
             <Skeleton mt="1px" height={16} width={64} />
+          )}
+          {!isLoading && totalSharesPercentage && (
+            <Box as="span" ml="2px">
+              | {t('%num% of total', { num: `${totalSharesPercentage.toString()}%` })}
+            </Box>
           )}
         </Text>
       </Flex>

@@ -1,4 +1,13 @@
-import { Box, Card, CardBody, CardFooter, CardHeader, ExpandableLabel, ExpandableButton } from '@pancakeswap/uikit'
+import {
+  Box,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  ExpandableLabel,
+  ExpandableButton,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -77,20 +86,24 @@ const StyledNoHatBunny = styled.div`
   position: absolute;
   left: -50px;
   z-index: 1;
-  transform: scaleX(-1);
   top: 40px;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     left: auto;
-    transform: scaleX(1);
     right: 5%;
   }
 `
 
 const NoHatBunny = () => {
+  const { isTablet, isDesktop } = useMatchBreakpoints()
   return (
     <StyledNoHatBunny>
-      <img src="/images/ifos/assets/nohat-3-bunny.png" width={123} height={162} alt="bunny" />
+      <img
+        src={`/images/ifos/assets/bunnypop-${isDesktop || isTablet ? 'right' : 'left'}.png`}
+        width={123}
+        height={162}
+        alt="bunny"
+      />
     </StyledNoHatBunny>
   )
 }
@@ -144,15 +157,15 @@ const IfoFoldableCard = ({
   const { t } = useTranslation()
 
   return (
-    <>
+    <Box position="relative">
+      {isExpanded && <NoHatBunny />}
       <StyledCard>
         <Box position="relative">
           <Header ifoId={ifo.id}>
-            <ExpandableButton expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)} />
+            {!isExpanded && <ExpandableButton expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)} />}
           </Header>
           {isExpanded && (
             <>
-              <NoHatBunny />
               <IfoRibbon publicIfoData={publicIfoData} />
             </>
           )}
@@ -167,7 +180,7 @@ const IfoFoldableCard = ({
           </StyledCardFooter>
         </FoldableContent>
       </StyledCard>
-    </>
+    </Box>
   )
 }
 

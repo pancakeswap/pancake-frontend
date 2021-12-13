@@ -167,7 +167,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
 
     if (account && !hasProfile) {
       message = (
-        <Message mt="24px" p="8px" variant="warning">
+        <Message my="24px" p="8px" variant="warning">
           <Box>
             <MessageText as="span" color="#D67E0A">
               {publicIfoData.status === 'finished'
@@ -184,7 +184,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
 
     if (ifo.version === 3 && getBalanceNumber(credit) === 0) {
       message = (
-        <Message mt="24px" p="8px" variant="danger">
+        <Message my="24px" p="8px" variant="danger">
           <Box>
             <MessageText as="span" color="failure">
               {t('You don’t have any average CAKE balance available to commit in IFO CAKE pool.')}

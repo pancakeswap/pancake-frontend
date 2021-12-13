@@ -19,7 +19,7 @@ const BigCurve = styled.div<{ $background: string }>`
   }
 `
 
-export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
+export const IfoRibbon = ({ publicIfoData }) => {
   const { status } = publicIfoData
 
   let Component

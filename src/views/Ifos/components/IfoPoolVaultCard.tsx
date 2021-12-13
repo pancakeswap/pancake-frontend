@@ -29,6 +29,9 @@ import AutoHarvestAction from 'views/Pools/components/PoolsTable/ActionPanel/Aut
 import Staked from 'views/Pools/components/PoolsTable/ActionPanel/Stake'
 import { CompoundingPoolTag } from 'components/Tags'
 import { ActionContainer } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
+import { VaultKey } from 'state/types'
+import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/UnstakingFeeCountdownRow'
+import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
 
 const StyledCard = styled(Card)`
   max-width: 400px;
@@ -66,7 +69,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
   const {
     fees: { performanceFeeAsDecimal },
   } = useIfoPoolVault()
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   // TODO: refactor this is use everywhere
   const cakeAsNumberBalance = getBalanceNumber(credit)
@@ -84,7 +87,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
   )
   return (
     <StyledCard isActive>
-      <CardHeader variant="bubblegum" p="16px">
+      <CardHeader p="16px">
         <Flex justifyContent="space-between" alignItems="center">
           <StyledTokenContent alignItems="center" flex={1}>
             <TokenPairImage width={24} height={24} primaryToken={tokens.cake} secondaryToken={tokens.cake} />
@@ -114,11 +117,18 @@ const IfoPoolVaultCardMobile: React.FC = () => {
         <>
           <StyledCardBody>
             <AprRow pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
-            <AutoHarvestAction {...pool} userDataLoaded={userDataLoaded} />
             <ActionContainer>
               <IfoVaultCardAvgBalance pool={pool} />
             </ActionContainer>
             <Staked pool={pool} userDataLoaded={userDataLoaded} />
+            <ActionContainer>
+              <Box>
+                <RecentCakeProfitCountdownRow vaultKey={VaultKey.IfoPool} />
+              </Box>
+              <Box mt="8px">
+                <UnstakingFeeCountdownRow vaultKey={VaultKey.IfoPool} />
+              </Box>
+            </ActionContainer>
           </StyledCardBody>
           <StyledCardFooter>
             <ExpandedFooter account={account} pool={pool} />
