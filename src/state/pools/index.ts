@@ -2,7 +2,16 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { PoolsState, SerializedPool, CakeVault, VaultFees, VaultUser, AppThunk, IfoCakeVaultInfo } from 'state/types'
+import {
+  PoolsState,
+  SerializedPool,
+  CakeVault,
+  VaultFees,
+  VaultUser,
+  AppThunk,
+  IfoVaultUser,
+  IfoCakeVault,
+} from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
@@ -36,6 +45,7 @@ export const initialPoolVaultState = Object.freeze({
     cakeAtLastUserAction: null,
     lastDepositedTime: null,
     lastUserActionTime: null,
+    credit: null,
   },
 })
 
@@ -172,7 +182,7 @@ export const fetchCakeVaultUserData = createAsyncThunk<VaultUser, { account: str
   },
 )
 
-export const fetchIfoPoolPublicData = createAsyncThunk<CakeVault>('ifoPool/fetchPublicData', async () => {
+export const fetchIfoPoolPublicData = createAsyncThunk<IfoCakeVault>('ifoPool/fetchPublicData', async () => {
   const publicVaultInfo = await fetchPublicIfoPoolData()
   return publicVaultInfo
 })
@@ -182,16 +192,13 @@ export const fetchIfoPoolFees = createAsyncThunk<VaultFees>('ifoPool/fetchFees',
   return vaultFees
 })
 
-export const fetchIfoPoolUserAndIfo = createAsyncThunk<
-  {
-    userData: VaultUser
-    ifoInfo: IfoCakeVaultInfo
+export const fetchIfoPoolUserAndCredit = createAsyncThunk<IfoVaultUser, { account: string }>(
+  'ifoPool/fetchUser',
+  async ({ account }) => {
+    const userData = await fetchIfoPoolUserData(account)
+    return userData
   },
-  { account: string }
->('ifoPool/fetchUser', async ({ account }) => {
-  const userData = await fetchIfoPoolUserData(account)
-  return userData
-})
+)
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
@@ -238,7 +245,7 @@ export const PoolsSlice = createSlice({
       state.cakeVault = { ...state.cakeVault, userData }
     })
     // Vault public data that updates frequently
-    builder.addCase(fetchIfoPoolPublicData.fulfilled, (state, action: PayloadAction<CakeVault>) => {
+    builder.addCase(fetchIfoPoolPublicData.fulfilled, (state, action) => {
       state.ifoPool = { ...state.ifoPool, ...action.payload }
     })
     // Vault fees
@@ -247,10 +254,10 @@ export const PoolsSlice = createSlice({
       state.ifoPool = { ...state.ifoPool, fees }
     })
     // Vault user data
-    builder.addCase(fetchIfoPoolUserAndIfo.fulfilled, (state, action) => {
-      const { userData, ifoInfo } = action.payload
+    builder.addCase(fetchIfoPoolUserAndCredit.fulfilled, (state, action) => {
+      const userData = action.payload
       userData.isLoading = false
-      state.ifoPool = { ...state.ifoPool, userData, ifoInfo }
+      state.ifoPool = { ...state.ifoPool, userData }
     })
   },
 })

@@ -138,6 +138,10 @@ export interface VaultUser {
   lastUserActionTime: string
 }
 
+export interface IfoVaultUser extends VaultUser {
+  credit: string
+}
+
 export interface CakeVault {
   totalShares?: string
   pricePerFullShare?: string
@@ -148,16 +152,8 @@ export interface CakeVault {
   userData?: VaultUser
 }
 
-export interface IfoCakeVault extends CakeVault {
-  ifoInfo?: IfoCakeVaultInfo
-}
-
-export interface IfoCakeVaultInfo {
-  lastActionBalance?: string
-  lastActionBlock?: string
-  lastAvgBalance?: string
-  lastValidActionBalance?: string
-  lastValidActionBlock?: string
+export interface IfoCakeVault extends Omit<CakeVault, 'userData'> {
+  userData?: IfoVaultUser
 }
 
 export interface PoolsState {

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { parseUnits } from 'ethers/lib/utils'
-import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex } from '@pancakeswap/uikit'
+import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex, useTooltip, TooltipText } from '@pancakeswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
@@ -13,6 +13,7 @@ import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
+import tokens from 'config/constants/tokens'
 
 interface Props {
   poolId: PoolIds
@@ -20,6 +21,7 @@ interface Props {
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
   userCurrencyBalance: BigNumber
+  ifoCredit: BigNumber
   onSuccess: (amount: BigNumber, txHash: string) => void
   onDismiss?: () => void
 }
@@ -35,6 +37,7 @@ const ContributeModal: React.FC<Props> = ({
   publicIfoData,
   walletIfoData,
   userCurrencyBalance,
+  ifoCredit,
   onDismiss,
   onSuccess,
 }) => {
@@ -51,6 +54,7 @@ const ContributeModal: React.FC<Props> = ({
   const raisingTokenContract = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
+  const label = currency === tokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -84,6 +88,7 @@ const ContributeModal: React.FC<Props> = ({
       },
     })
 
+  // maximum token user can contribute based on the user's balance
   const maximumLpCommitable = (() => {
     if (limitPerUserInLP.isGreaterThan(0)) {
       return limitPerUserInLP.minus(amountTokenCommittedInLP).isLessThanOrEqualTo(userCurrencyBalance)
@@ -93,13 +98,32 @@ const ContributeModal: React.FC<Props> = ({
     return userCurrencyBalance
   })()
 
+  // in v3 max token entry is based on ifo credit and hard cap limit per user
+  const maximumTokenEntry = useMemo(() => {
+    if (!ifoCredit) {
+      return limitPerUserInLP
+    }
+    if (limitPerUserInLP.isGreaterThan(0)) {
+      return limitPerUserInLP.isLessThanOrEqualTo(ifoCredit) ? limitPerUserInLP : ifoCredit
+    }
+    return ifoCredit
+  }, [ifoCredit, limitPerUserInLP])
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(
+      'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+    ),
+    {},
+  )
+
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
       <ModalBody maxWidth="360px">
         {limitPerUserInLP.isGreaterThan(0) && (
           <Flex justifyContent="space-between" mb="16px">
-            <Text>{t('Max. token entry')}:</Text>
-            <Text>{`${formatNumber(getBalanceAmount(limitPerUserInLP, currency.decimals).toNumber(), 3, 3)} ${
+            {tooltipVisible && tooltip}
+            <TooltipText ref={targetRef}>{label}:</TooltipText>
+            <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
               ifo.currency.symbol
             }`}</Text>
           </Flex>
@@ -116,9 +140,10 @@ const ContributeModal: React.FC<Props> = ({
               width={24}
               height={24}
             />
-            <Text>{currency.symbol}</Text>
+            <Text ml="4px">{currency.symbol}</Text>
           </Flex>
         </Flex>
+        {/* // TODO: warning if user input more than max token entry */}
         <BalanceInput
           value={value}
           currencyValue={publicIfoData.currencyPriceInUSD.times(value || 0).toFixed(2)}

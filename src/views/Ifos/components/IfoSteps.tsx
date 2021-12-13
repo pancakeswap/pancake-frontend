@@ -36,7 +36,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
 import { BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { useIfoPool } from 'state/pools/hooks'
+import { useIfoPool, useIfoPoolCredit } from 'state/pools/hooks'
 import { useIfoPoolContext } from '../context'
 
 interface Props {
@@ -67,7 +67,8 @@ const SmallStakePoolCard = styled(Box)`
 const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const { t } = useTranslation()
   const ifoPool = useIfoPool()
-  const { pool, ifoCredit } = useIfoPoolContext()
+  const credit = useIfoPoolCredit()
+  const { pool } = useIfoPoolContext()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
       'Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal. Please refer to our blog post for more details.',
@@ -76,8 +77,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   )
 
   const cakePriceBusd = usePriceCakeBusd()
-  const stakedDollarValue =
-    cakePriceBusd.gt(0) && ifoCredit.credit ? getBalanceNumber(ifoCredit.credit.multipliedBy(cakePriceBusd), 18) : 0
+  const stakedDollarValue = cakePriceBusd.gt(0) && credit ? getBalanceNumber(credit.multipliedBy(cakePriceBusd), 18) : 0
 
   const stakingTokenBalance = pool?.userData?.stakingTokenBalance
     ? new BigNumber(pool.userData.stakingTokenBalance)
@@ -116,7 +116,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
                 <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
                   {t('Your max CAKE entry')}
                 </Text>
-                <Balance fontSize="20px" bold decimals={5} value={ifoCredit.creditAsNumberBalance} />
+                <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
                 <Text fontSize="12px" color="textSubtle">
                   {cakePriceBusd.gt(0) ? (
                     <Balance
@@ -133,7 +133,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
                 </Text>
               </Box>
             </Flex>
-            <Button onClick={onPresentStake}>{t('Stake CAKE')}</Button>
+            <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
           </FlexGap>
         </SmallStakePoolCard>
       )}

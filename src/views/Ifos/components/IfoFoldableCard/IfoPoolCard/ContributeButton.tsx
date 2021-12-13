@@ -8,9 +8,10 @@ import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
+import { useIfoPoolCredit } from 'state/pools/hooks'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import ContributeModal from './ContributeModal'
 import GetTokenModal from './GetTokenModal'
+import ContributeModal from './ContributeModal'
 
 interface Props {
   poolId: PoolIds
@@ -27,6 +28,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   const { toastSuccess } = useToast()
   const { currentBlock } = useBlock()
   const { balance: userCurrencyBalance } = useTokenBalance(ifo.currency.address)
+  const credit = useIfoPoolCredit()
 
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {
@@ -44,6 +46,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   const [onPresentContributeModal] = useModal(
     <ContributeModal
       poolId={poolId}
+      ifoCredit={credit}
       ifo={ifo}
       publicIfoData={publicIfoData}
       walletIfoData={walletIfoData}

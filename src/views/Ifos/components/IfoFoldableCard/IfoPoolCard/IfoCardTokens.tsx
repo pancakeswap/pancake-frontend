@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import BigNumber from 'bignumber.js'
 import {
   Text,
@@ -26,7 +26,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
 import { useIfoPoolContext } from 'views/Ifos/context'
-import { useIfoPool } from 'state/pools/hooks'
+import { useIfoPool, useIfoPoolCredit } from 'state/pools/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
@@ -141,7 +141,8 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const distributionRatio = ifo[poolId].distributionRatio * 100
 
   const ifoPool = useIfoPool()
-  const { pool, ifoCredit } = useIfoPoolContext()
+  const { pool } = useIfoPoolContext()
+  const credit = useIfoPoolCredit()
 
   const stakingTokenBalance = pool?.userData?.stakingTokenBalance
     ? new BigNumber(pool.userData.stakingTokenBalance)
@@ -182,7 +183,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       )
     }
 
-    if (ifo.version === 3 && !ifoCredit.loading && ifoCredit.creditAsNumberBalance === 0) {
+    if (ifo.version === 3 && getBalanceNumber(credit) === 0) {
       message = (
         <Message mt="24px" p="8px" variant="danger">
           <Box>

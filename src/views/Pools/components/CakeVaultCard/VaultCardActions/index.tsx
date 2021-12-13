@@ -6,8 +6,10 @@ import { Flex, Text, Box, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { useIfoPoolIfo } from 'state/pools/hooks'
+import { useIfoPoolCredit } from 'state/pools/hooks'
 import { usePriceCakeBusd } from 'state/farms/hooks'
+import QuestionHelper from 'components/QuestionHelper'
+import { FlexGap } from 'components/Layout/Flex'
 import { getBalanceNumber, getDecimalAmount } from 'utils/formatBalance'
 import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
@@ -19,25 +21,34 @@ const InlineText = styled(Text)`
 
 const IfoVaultCardAction = ({ pool }: { pool: DeserializedPool }) => {
   const { t } = useTranslation()
-  const ifoInfo = useIfoPoolIfo()
-  const cakeAsNumberBalance = getBalanceNumber(ifoInfo.lastAvgBalance)
+  const credit = useIfoPoolCredit()
+  const cakeAsNumberBalance = getBalanceNumber(credit)
   const cakeAsBigNumber = getDecimalAmount(new BigNumber(cakeAsNumberBalance))
   const cakePriceBusd = usePriceCakeBusd()
   const stakedDollarValue = cakePriceBusd.gt(0)
     ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), pool.stakingToken.decimals)
     : 0
 
+  // TODO: User's avg balance/Total pool avg balance
+
   return (
     <>
-      <Box display="inline">
+      <FlexGap gap="4px" alignItems="center">
         <InlineText color="secondary" textTransform="uppercase" bold fontSize="12px">
           {t('Average')}{' '}
         </InlineText>
         <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
           {t('Pool Balance')}
         </InlineText>
-      </Box>
-      <Flex flexDirection="column">
+        <QuestionHelper
+          size="24px"
+          display="inline"
+          text={t(
+            'Max CAKE entry for both IFO sale is capped by average pool balance in this pool. This is calculated by the average block balance in the IFO pool in the past blocks prior to cut-off block.',
+          )}
+        />
+      </FlexGap>
+      <Flex flexDirection="column" pb="16px">
         <Balance fontSize="20px" bold value={cakeAsNumberBalance} decimals={5} />
         <Text fontSize="12px" color="textSubtle">
           {cakePriceBusd.gt(0) ? (

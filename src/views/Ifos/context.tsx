@@ -1,19 +1,15 @@
 import { useWeb3React } from '@web3-react/core'
-import React, { createContext, FC, useContext, useMemo, useEffect } from 'react'
-import { useFetchIfoPool, useFetchUserPools, useIfoPool, usePool, useFetchPublicPoolsData } from 'state/pools/hooks'
+import React, { createContext, FC, useContext, useMemo } from 'react'
+import { useFetchIfoPool, useFetchPublicPoolsData, useFetchUserPools, useIfoPool, usePool } from 'state/pools/hooks'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { getAprData } from 'views/Pools/helpers'
-import { useIfoPoolCredit } from './hooks/useIfoPoolCredit'
 
 const IfoContext = createContext<{
   pool?: DeserializedPool | null
-  ifoCredit?: ReturnType<typeof useIfoPoolCredit>
 }>(null)
 
 export const IfoContextProvider: FC = ({ children }) => {
   const { account } = useWeb3React()
-  const ifoCredit = useIfoPoolCredit()
-  const { getIfoPoolCredit } = ifoCredit
 
   useFetchIfoPool()
   // TODO: should be refactored to only fetch one pool we need
@@ -21,10 +17,6 @@ export const IfoContextProvider: FC = ({ children }) => {
   useFetchUserPools(account)
 
   const { pool } = usePool(0)
-
-  useEffect(() => {
-    getIfoPoolCredit()
-  }, [getIfoPoolCredit])
 
   const {
     fees: { performanceFeeAsDecimal },
@@ -41,7 +33,6 @@ export const IfoContextProvider: FC = ({ children }) => {
     <IfoContext.Provider
       value={{
         pool: ifoPoolWithApr,
-        ifoCredit,
       }}
     >
       {children}

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { simpleRpcProvider } from 'utils/providers'
 import useRefresh from 'hooks/useRefresh'
+import { BIG_ZERO } from 'utils/bigNumber'
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -14,7 +15,7 @@ import {
   fetchPoolsStakingLimitsAsync,
   fetchIfoPoolFees,
   fetchIfoPoolPublicData,
-  fetchIfoPoolUserAndIfo,
+  fetchIfoPoolUserAndCredit,
   initialPoolVaultState,
 } from '.'
 import { State, DeserializedPool, VaultKey } from '../types'
@@ -89,7 +90,7 @@ export const useFetchIfoPool = () => {
   }, [dispatch, fastRefresh])
 
   useEffect(() => {
-    dispatch(fetchIfoPoolUserAndIfo({ account }))
+    dispatch(fetchIfoPoolUserAndCredit({ account }))
   }, [dispatch, fastRefresh, account])
 
   useEffect(() => {
@@ -182,13 +183,11 @@ export const useIfoPool = () => {
   return useVaultPoolByKey(VaultKey.IfoPool)
 }
 
-export const useIfoPoolIfo = () => {
-  const { lastAvgBalance: lastAvgBalanceAsString } = useSelector((state: State) => state.pools.ifoPool.ifoInfo || {})
-  const lastAvgBalance = useMemo(() => {
-    return new BigNumber(lastAvgBalanceAsString)
-  }, [lastAvgBalanceAsString])
+export const useIfoPoolCredit = () => {
+  const creditAsString = useSelector((state: State) => state.pools.ifoPool.userData?.credit ?? BIG_ZERO)
+  const credit = useMemo(() => {
+    return new BigNumber(creditAsString)
+  }, [creditAsString])
 
-  return {
-    lastAvgBalance,
-  }
+  return credit
 }
