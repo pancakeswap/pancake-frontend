@@ -1,16 +1,19 @@
 import React, { ReactNode } from 'react'
 import tokens from 'config/constants/tokens'
 import { Text, Flex, Box, Skeleton, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import { PublicIfoData } from 'views/Ifos/types'
+import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import useBUSDPrice from 'hooks/useBUSDPrice'
+import { multiplyPriceByAmount } from 'utils/prices'
 import { SkeletonCardDetails } from './Skeletons'
 
 export interface IfoCardDetailsProps {
   poolId: PoolIds
   ifo: Ifo
   publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
 }
 
 export interface FooterEntryProps {
@@ -35,7 +38,7 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
   )
 }
 
-const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken; ifo: Ifo; poolId: PoolIds }) => {
+const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
   const isCurrencyCake = ifo.currency === tokens.cake
   const isV3 = ifo.version === 3
   const { t } = useTranslation()
@@ -51,6 +54,13 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken; ifo: Ifo; poolId: 
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
   const label = isCurrencyCake ? t('Max. CAKE entry') : t('Max. token entry')
+  const price = useBUSDPrice(ifo.currency)
+
+  const dollarValueOfToken = multiplyPriceByAmount(price, maxToken, ifo.currency.decimals)
+
+  if (!isV3 && poolId === PoolIds.poolUnlimited) {
+    return null
+  }
 
   return (
     <>
@@ -65,20 +75,26 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken; ifo: Ifo; poolId: 
             label
           )
         }
-        value={`${formatNumber(maxToken, 3, 3)} ${!isCurrencyCake ? ifo.currency.symbol : ''}`}
+        value={`${formatNumber(maxToken, 3, 3)} ${!isCurrencyCake ? ifo.currency.symbol : ''} ${
+          dollarValueOfToken > 0 ? ` ~($${dollarValueOfToken.toFixed(0)})` : ''
+        }`}
       />
     </>
   )
 }
 
-const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData }) => {
+const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
 
   /* Format start */
-  // TODO: update entry after contribution
-  const maxLpTokens = getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
+  const maxLpTokens =
+    ifo.version === 3
+      ? walletIfoData.ifoCredit?.creditLeft
+        ? getBalanceNumber(walletIfoData.ifoCredit?.creditLeft, ifo.currency.decimals)
+        : 0
+      : getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
   const taxRate = `${poolCharacteristic.taxRate}%`
 
   const totalCommittedPercent = poolCharacteristic.totalAmountPool

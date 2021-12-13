@@ -67,6 +67,28 @@ export const SoonTimer: React.FC<Props> = ({ publicIfoData }) => {
     </Flex>
   )
 }
+
+const EndInHeading = styled(Heading)`
+  color: ${({ theme }) => theme.colors.backgroundAlt};
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.1;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 24px;
+  }
+`
+
+const LiveNowHeading = styled(EndInHeading)`
+  ${({ theme }) => theme.mediaQueries.md} {
+    background: -webkit-linear-gradient(#ffd800, #eb8c00);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
+  }
+`
+
 const LiveTimer: React.FC<Props> = ({ publicIfoData }) => {
   const { t } = useTranslation()
   const { status, secondsUntilEnd } = publicIfoData
@@ -79,12 +101,10 @@ const LiveTimer: React.FC<Props> = ({ publicIfoData }) => {
         <>
           <PocketWatchIcon width="42px" mr="8px" />
           <FlexGap gap="8px" alignItems="center">
-            <GradientText as="h3" scale="lg" color="textSubtle">
-              {`${t('Live Now').toUpperCase()}!`}
-            </GradientText>
-            <Heading as="h3" scale="lg" color="white">
+            <LiveNowHeading as="h3">{`${t('Live Now').toUpperCase()}!`}</LiveNowHeading>
+            <EndInHeading as="h3" scale="lg" color="white">
               {t('Ends in')}
-            </Heading>
+            </EndInHeading>
             <FlexGap gap="4px" alignItems="baseline">
               {timeUntil.days && (
                 <>

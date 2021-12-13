@@ -82,24 +82,30 @@ const StyledCardFooter = styled(CardFooter)`
   }
 `
 
-const StyledNoHatBunny = styled.div`
+const StyledNoHatBunny = styled.div<{ $isLive: boolean }>`
   position: absolute;
   left: -50px;
   z-index: 1;
-  top: 40px;
+  top: 32px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    top: ${({ $isLive }) => ($isLive ? '46px' : '30px')};
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
     left: auto;
+    top: ${({ $isLive }) => ($isLive ? '56px' : '40px')};
     right: 5%;
   }
 `
 
-const NoHatBunny = () => {
-  const { isTablet, isDesktop } = useMatchBreakpoints()
+const NoHatBunny = ({ isLive }) => {
+  const { isXs, isSm, isMd } = useMatchBreakpoints()
+  const isSmallerThanTablet = isXs || isSm || isMd
+  if (isSmallerThanTablet && isLive) return null
   return (
-    <StyledNoHatBunny>
+    <StyledNoHatBunny $isLive={isLive}>
       <img
-        src={`/images/ifos/assets/bunnypop-${isDesktop || isTablet ? 'right' : 'left'}.png`}
+        src={`/images/ifos/assets/bunnypop-${!isSmallerThanTablet ? 'right' : 'left'}.png`}
         width={123}
         height={162}
         alt="bunny"
@@ -122,7 +128,7 @@ export const IfoCurrentCard = ({
 
   return (
     <Box position="relative" width="100%">
-      <NoHatBunny />
+      <NoHatBunny isLive={publicIfoData.status === 'live'} />
       <StyledCard>
         <Box position="relative">
           <Header ifoId={ifo.id} />
@@ -158,7 +164,7 @@ const IfoFoldableCard = ({
 
   return (
     <Box position="relative">
-      {isExpanded && <NoHatBunny />}
+      {isExpanded && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
       <StyledCard>
         <Box position="relative">
           <Header ifoId={ifo.id}>

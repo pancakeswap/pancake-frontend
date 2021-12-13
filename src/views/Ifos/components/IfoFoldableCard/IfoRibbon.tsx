@@ -46,7 +46,7 @@ export const IfoRibbon = ({ publicIfoData }) => {
         justifyContent="center"
         alignItems="center"
         flexDirection="column"
-        height={['48px', '48px', '48px', '75px']}
+        minHeight={['48px', '48px', '48px', '75px']}
         position="relative"
         overflow="hidden"
       >

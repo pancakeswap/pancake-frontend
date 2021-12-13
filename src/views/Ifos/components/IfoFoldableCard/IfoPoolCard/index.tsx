@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
-import { Card, CardBody, CardHeader, Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useProfile } from 'state/profile/hooks'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
@@ -78,7 +78,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
             </div>
           </Flex>
         </CardHeader>
-        <CardBody>
+        <CardBody p="12px">
           <IfoCardTokens
             poolId={poolId}
             ifo={ifo}
@@ -89,15 +89,17 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
             onApprove={onApprove}
             enableStatus={enableStatus}
           />
-          <IfoCardActions
-            poolId={poolId}
-            ifo={ifo}
-            publicIfoData={publicIfoData}
-            walletIfoData={walletIfoData}
-            hasProfile={hasProfile}
-            isLoading={isLoading}
-          />
-          <IfoCardDetails poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} />
+          <Box mt="24px">
+            <IfoCardActions
+              poolId={poolId}
+              ifo={ifo}
+              publicIfoData={publicIfoData}
+              walletIfoData={walletIfoData}
+              hasProfile={hasProfile}
+              isLoading={isLoading}
+            />
+          </Box>
+          <IfoCardDetails poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
         </CardBody>
       </StyledCard>
     </>

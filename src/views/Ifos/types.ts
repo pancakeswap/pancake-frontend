@@ -45,6 +45,11 @@ export interface WalletIfoState {
   isInitialized: boolean
   [PoolIds.poolBasic]?: UserPoolCharacteristics
   [PoolIds.poolUnlimited]: UserPoolCharacteristics
+  ifoCredit?: {
+    credit: BigNumber
+    // credit left is the ifo credit minus the amount of `amountTokenCommittedInLP` in pool basic and unlimited
+    creditLeft: BigNumber
+  }
 }
 
 // Returned by useGetWalletIfoData
