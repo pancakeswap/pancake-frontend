@@ -1784,5 +1784,6 @@
   "Sale Finished!": "Sale Finished!",
   "Start in": "Start in",
   "Max CAKE entry for both IFO sale is capped by average pool balance in this pool. This is calculated by the average block balance in the IFO pool in the past blocks prior to cut-off block.": "Max CAKE entry for both IFO sale is capped by average pool balance in this pool. This is calculated by the average block balance in the IFO pool in the past blocks prior to cut-off block.",
-  "Avg Balance": "Avg Balance"
+  "Avg Balance": "Avg Balance",
+  "Exceeded max CAKE entry": "Exceeded max CAKE entry"
 }
