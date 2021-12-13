@@ -42,7 +42,7 @@ const Rules = () => {
         </RulesCard>
         <RulesCard title={t('Everyone’s a winner!')}>
           <Text textAlign="center" fontSize="14px" color="textSubtle">
-            {t('Trade the minimum amount required and you’re guaranteed a prize!')}
+            {t('Sign up for battle and you’re guaranteed a prize!')}
           </Text>
         </RulesCard>
       </StyledCardWrapper>

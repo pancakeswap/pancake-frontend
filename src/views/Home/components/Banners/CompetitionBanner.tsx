@@ -99,7 +99,7 @@ const CompetitionBanner = () => {
         </ImageWrapper>
         <RightWrapper>
           <Flex flexDirection="column" justifyContent="center">
-            <StyledSubheading>{t('Fan token Trading Competition')}</StyledSubheading>
+            <StyledSubheading>{t('Binance Fan token Trading Competition')}</StyledSubheading>
             <StyledHeading mb={0} scale="xl">
               {t('$120,000 in Prizes!')}
             </StyledHeading>
