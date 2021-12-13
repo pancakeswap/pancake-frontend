@@ -1785,5 +1785,7 @@
   "Start in": "Start in",
   "Max CAKE entry for both IFO sale is capped by average pool balance in this pool. This is calculated by the average block balance in the IFO pool in the past blocks prior to cut-off block.": "Max CAKE entry for both IFO sale is capped by average pool balance in this pool. This is calculated by the average block balance in the IFO pool in the past blocks prior to cut-off block.",
   "Avg Balance": "Avg Balance",
-  "Exceeded max CAKE entry": "Exceeded max CAKE entry"
+  "Exceeded max CAKE entry": "Exceeded max CAKE entry",
+  "Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new CAKE in the pool.",
+  "unstaking fee if withdrawn within %num%h": "unstaking fee if withdrawn within %num%h"
 }
