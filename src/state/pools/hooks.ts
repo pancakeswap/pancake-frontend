@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { simpleRpcProvider } from 'utils/providers'
 import useRefresh from 'hooks/useRefresh'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getAprData } from 'views/Pools/helpers'
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -12,8 +14,12 @@ import {
   fetchCakeVaultUserData,
   fetchCakeVaultFees,
   fetchPoolsStakingLimitsAsync,
+  fetchIfoPoolFees,
+  fetchIfoPoolPublicData,
+  fetchIfoPoolUserAndCredit,
+  initialPoolVaultState,
 } from '.'
-import { State, DeserializedPool } from '../types'
+import { State, DeserializedPool, VaultKey } from '../types'
 import { transformPool } from './helpers'
 
 export const useFetchPublicPoolsData = () => {
@@ -49,6 +55,14 @@ export const usePools = (): { pools: DeserializedPool[]; userDataLoaded: boolean
   return { pools: pools.map(transformPool), userDataLoaded }
 }
 
+export const usePool = (sousId: number): { pool: DeserializedPool; userDataLoaded: boolean } => {
+  const { pool, userDataLoaded } = useSelector((state: State) => ({
+    pool: state.pools.data.find((p) => p.sousId === sousId),
+    userDataLoaded: state.pools.userDataLoaded,
+  }))
+  return { pool: transformPool(pool), userDataLoaded }
+}
+
 export const useFetchCakeVault = () => {
   const { account } = useWeb3React()
   const { fastRefresh } = useRefresh()
@@ -67,7 +81,36 @@ export const useFetchCakeVault = () => {
   }, [dispatch])
 }
 
+export const useFetchIfoPool = () => {
+  const { account } = useWeb3React()
+  const { fastRefresh } = useRefresh()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchIfoPoolPublicData())
+  }, [dispatch, fastRefresh])
+
+  useEffect(() => {
+    dispatch(fetchIfoPoolUserAndCredit({ account }))
+  }, [dispatch, fastRefresh, account])
+
+  useEffect(() => {
+    dispatch(fetchIfoPoolFees())
+  }, [dispatch])
+}
+
 export const useCakeVault = () => {
+  return useVaultPoolByKey(VaultKey.CakeVault)
+}
+
+export const useVaultPools = () => {
+  return {
+    [VaultKey.CakeVault]: useVaultPoolByKey(VaultKey.CakeVault),
+    [VaultKey.IfoPool]: useVaultPoolByKey(VaultKey.IfoPool),
+  }
+}
+
+export const useVaultPoolByKey = (key: VaultKey) => {
   const {
     totalShares: totalSharesAsString,
     pricePerFullShare: pricePerFullShareAsString,
@@ -82,7 +125,7 @@ export const useCakeVault = () => {
       lastDepositedTime,
       lastUserActionTime,
     },
-  } = useSelector((state: State) => state.pools.cakeVault)
+  } = useSelector((state: State) => (key ? state.pools[key] : initialPoolVaultState))
 
   const estimatedCakeBountyReward = useMemo(() => {
     return new BigNumber(estimatedCakeBountyRewardAsString)
@@ -112,6 +155,8 @@ export const useCakeVault = () => {
     return new BigNumber(cakeAtLastUserActionAsString)
   }, [cakeAtLastUserActionAsString])
 
+  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
+
   return {
     totalShares,
     pricePerFullShare,
@@ -119,6 +164,7 @@ export const useCakeVault = () => {
     estimatedCakeBountyReward,
     totalPendingCakeHarvest,
     fees: {
+      performanceFeeAsDecimal,
       performanceFee,
       callFee,
       withdrawalFee,
@@ -131,5 +177,37 @@ export const useCakeVault = () => {
       lastDepositedTime,
       lastUserActionTime,
     },
+  }
+}
+
+export const useIfoPoolVault = () => {
+  return useVaultPoolByKey(VaultKey.IfoPool)
+}
+
+export const useIfoPoolCredit = () => {
+  const creditAsString = useSelector((state: State) => state.pools.ifoPool.userData?.credit ?? BIG_ZERO)
+  const credit = useMemo(() => {
+    return new BigNumber(creditAsString)
+  }, [creditAsString])
+
+  return credit
+}
+
+export const useIfoWithApr = () => {
+  const {
+    fees: { performanceFeeAsDecimal },
+  } = useIfoPoolVault()
+  const { pool: poolZero, userDataLoaded } = usePool(0)
+
+  const ifoPoolWithApr = useMemo(() => {
+    const ifoPool = poolZero
+    ifoPool.vaultKey = VaultKey.IfoPool
+    ifoPool.apr = getAprData(ifoPool, performanceFeeAsDecimal).apr
+    return ifoPool
+  }, [performanceFeeAsDecimal, poolZero])
+
+  return {
+    pool: ifoPoolWithApr,
+    userDataLoaded,
   }
 }

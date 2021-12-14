@@ -9,8 +9,8 @@ import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import ContributeModal from './ContributeModal'
 import GetTokenModal from './GetTokenModal'
+import ContributeModal from './ContributeModal'
 
 interface Props {
   poolId: PoolIds
@@ -44,6 +44,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   const [onPresentContributeModal] = useModal(
     <ContributeModal
       poolId={poolId}
+      creditLeft={walletIfoData.ifoCredit?.creditLeft}
       ifo={ifo}
       publicIfoData={publicIfoData}
       walletIfoData={walletIfoData}

@@ -39,12 +39,12 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
     <>
       <StyledRow role="row" onClick={toggleExpanded}>
         <NameCell pool={pool} />
-        {pool.isAutoVault ? (
+        {pool.vaultKey ? (
           <AutoEarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         ) : (
           <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         )}
-        {pool.isAutoVault ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
+        {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
         {isLargerScreen && <TotalStakedCell pool={pool} />}
         {isDesktop && <EndsInCell pool={pool} />}
         <ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />

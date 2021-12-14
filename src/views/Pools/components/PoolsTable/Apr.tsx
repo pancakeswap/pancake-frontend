@@ -5,9 +5,9 @@ import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import Balance from 'components/Balance'
 import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import { getAprData } from 'views/Pools/helpers'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { vaultPoolConfig } from 'config/constants/pools'
 
 const AprLabelContainer = styled(Flex)`
   &:hover {
@@ -23,10 +23,8 @@ interface AprProps extends FlexProps {
 }
 
 const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee = 0, ...props }) => {
-  const { stakingToken, earningToken, isFinished, earningTokenPrice, stakingTokenPrice, userData, apr } = pool
+  const { stakingToken, earningToken, isFinished, earningTokenPrice, stakingTokenPrice, userData, apr, vaultKey } = pool
   const { t } = useTranslation()
-
-  const { apr: earningsPercentageToDisplay, autoCompoundFrequency } = getAprData(pool, performanceFee)
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
@@ -42,7 +40,7 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
       linkLabel={t('Get %symbol%', { symbol: stakingToken.symbol })}
       linkHref={apyModalLink}
       earningTokenSymbol={earningToken.symbol}
-      autoCompoundFrequency={autoCompoundFrequency}
+      autoCompoundFrequency={vaultPoolConfig[vaultKey]?.autoCompoundFrequency ?? 0}
       performanceFee={performanceFee}
     />,
   )
@@ -54,13 +52,13 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
 
   return (
     <AprLabelContainer alignItems="center" justifyContent="space-between" {...props}>
-      {earningsPercentageToDisplay || isFinished ? (
+      {apr || isFinished ? (
         <>
           <Balance
             onClick={openRoiModal}
             fontSize="16px"
             isDisabled={isFinished}
-            value={isFinished ? 0 : earningsPercentageToDisplay}
+            value={isFinished ? 0 : apr}
             decimals={2}
             unit="%"
           />

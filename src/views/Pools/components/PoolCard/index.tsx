@@ -5,10 +5,11 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { DeserializedPool } from 'state/types'
+import { TokenPairImage } from 'components/TokenImage'
 import AprRow from './AprRow'
 import { StyledCard } from './StyledCard'
 import CardFooter from './CardFooter'
-import StyledCardHeader from './StyledCardHeader'
+import PoolCardHeader, { PoolCardHeaderTitle } from './PoolCardHeader'
 import CardActions from './CardActions'
 
 const PoolCard: React.FC<{ pool: DeserializedPool; account: string }> = ({ pool, account }) => {
@@ -17,17 +18,20 @@ const PoolCard: React.FC<{ pool: DeserializedPool; account: string }> = ({ pool,
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const accountHasStakedBalance = stakedBalance.gt(0)
 
+  const isCakePool = earningToken.symbol === 'CAKE' && stakingToken.symbol === 'CAKE'
+
   return (
     <StyledCard
       isFinished={isFinished && sousId !== 0}
       ribbon={isFinished && <CardRibbon variantColor="textDisabled" text={t('Finished')} />}
     >
-      <StyledCardHeader
-        isStaking={accountHasStakedBalance}
-        earningToken={earningToken}
-        stakingToken={stakingToken}
-        isFinished={isFinished && sousId !== 0}
-      />
+      <PoolCardHeader isStaking={accountHasStakedBalance} isFinished={isFinished && sousId !== 0}>
+        <PoolCardHeaderTitle
+          title={isCakePool ? t('Manual') : t('Earn %asset%', { asset: earningToken.symbol })}
+          subTitle={isCakePool ? t('Earn CAKE, stake CAKE') : t('Stake %symbol%', { symbol: stakingToken.symbol })}
+        />
+        <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} width={64} height={64} />
+      </PoolCardHeader>
       <CardBody>
         <AprRow pool={pool} stakedBalance={stakedBalance} />
         <Flex mt="24px" flexDirection="column">

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
-import { useCakeVault } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useTranslation } from 'contexts/Localization'
 import BaseCell, { CellContent } from './BaseCell'
 import Apr from '../Apr'
@@ -25,12 +25,11 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
 
   const {
     userData: { userShares },
-    fees: { performanceFee },
+    fees: { performanceFeeAsDecimal },
     pricePerFullShare,
-  } = useCakeVault()
+  } = useVaultPoolByKey(pool.vaultKey)
 
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
-  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
 
   return (
     <StyledCell role="cell">

@@ -1,4 +1,5 @@
 import React from 'react'
+import BigNumber from 'bignumber.js'
 import {
   Text,
   Flex,
@@ -10,7 +11,10 @@ import {
   Button,
   AutoRenewIcon,
   BunnyPlaceholderIcon,
+  Message,
+  useModal,
 } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Token } from '@pancakeswap/sdk'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -20,6 +24,9 @@ import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
+import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
+import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/hooks'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
@@ -81,6 +88,31 @@ interface IfoCardTokensProps {
   enableStatus: EnableStatus
 }
 
+const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
+  const { t } = useTranslation()
+  return (
+    <TokenSection primaryToken={token}>
+      <Flex flexDirection="column">
+        <Label>{t('On sale').toUpperCase()}</Label>
+        <Value>{saleAmount}</Value>
+        <Text fontSize="14px" color="textSubtle">
+          {t('%ratio%% of total sale', { ratio: distributionRatio })}
+        </Text>
+      </Flex>
+    </TokenSection>
+  )
+}
+
+const MessageText = styled(Text)<{ $isLink?: boolean }>`
+  ${({ $isLink }) =>
+    $isLink &&
+    `
+    text-decoration: underline;
+    font-weight: bold;
+  `}
+  font-size: 14px;
+`
+
 const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   poolId,
   ifo,
@@ -107,15 +139,70 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
 
+  const ifoPoolVault = useIfoPoolVault()
+  const { pool } = useIfoWithApr()
+  const credit = useIfoPoolCredit()
+
+  const stakingTokenBalance = pool?.userData?.stakingTokenBalance
+    ? new BigNumber(pool.userData.stakingTokenBalance)
+    : BIG_ZERO
+
+  const [onPresentStake] = useModal(
+    <VaultStakeModal
+      stakingMax={stakingTokenBalance}
+      performanceFee={ifoPoolVault.fees.performanceFeeAsDecimal}
+      pool={pool}
+    />,
+  )
+
   const renderTokenSection = () => {
     if (isLoading) {
       return <SkeletonCardTokens />
     }
+    if (!account) {
+      return <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
+    }
+
+    let message
+
     if (account && !hasProfile) {
-      if (publicIfoData.status === 'finished') {
-        return <Text textAlign="center">{t('Activate PancakeSwap Profile to take part in next IFO‘s!')}</Text>
-      }
-      return <Text textAlign="center">{t('You need an active PancakeSwap Profile to take part in an IFO!')}</Text>
+      message = (
+        <Message my="24px" p="8px" variant="warning">
+          <Box>
+            <MessageText as="span" color="#D67E0A">
+              {publicIfoData.status === 'finished'
+                ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
+                : t('You need an active PancakeSwap Profile to take part in an IFO!')}
+            </MessageText>{' '}
+            <MessageText as="a" $isLink color="#D67E0A" href="#ifo-how-to">
+              {t('How does it work?')} »
+            </MessageText>
+          </Box>
+        </Message>
+      )
+    }
+
+    if (ifo.version === 3 && getBalanceNumber(credit) === 0) {
+      message = (
+        <Message my="24px" p="8px" variant="danger">
+          <Box>
+            <MessageText as="span" color="failure">
+              {t('You don’t have any average CAKE balance available to commit in IFO CAKE pool.')}
+            </MessageText>{' '}
+            <MessageText as="a" $isLink color="failure" fontWeight={700} href="#ifo-how-to">
+              {t('How does it work?')} »
+            </MessageText>
+          </Box>
+        </Message>
+      )
+    }
+    if (account && !hasProfile) {
+      return (
+        <>
+          <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
+          {message}
+        </>
+      )
     }
     if (publicIfoData.status === 'coming_soon') {
       return (
@@ -127,6 +214,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <Text fontSize="14px" color="textSubtle" pl="48px">
             {t('%ratio%% of total sale', { ratio: distributionRatio })}
           </Text>
+          {message}
           {enableStatus !== EnableStatus.ENABLED && account && (
             <Button
               width="100%"
@@ -163,7 +251,16 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">
           <BunnyPlaceholderIcon width={80} mb="16px" />
-          <Text>{t('You didn’t participate in this sale!')}</Text>
+          <Text fontWeight={600}>{t('You didn’t participate in this sale!')}</Text>
+          <Text textAlign="center" fontSize="14px">
+            {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
+          </Text>
+          <MessageText as="a" $isLink href="#ifo-how-to" color="primary" textAlign="center">
+            {t('How does it work?')} »
+          </MessageText>
+          <Button mt="24px" onClick={onPresentStake}>
+            {t('Stake CAKE in IFO pool')}
+          </Button>
         </Flex>
       ) : (
         <>
@@ -198,7 +295,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     return null
   }
   return (
-    <Box pb="24px">
+    <Box>
       {tooltipVisible && tooltip}
       {renderTokenSection()}
     </Box>

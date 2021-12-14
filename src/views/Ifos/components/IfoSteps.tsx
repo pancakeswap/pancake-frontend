@@ -1,7 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import every from 'lodash/every'
-import { Stepper, Step, StepStatus, Card, CardBody, Heading, Text, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
+import {
+  Stepper,
+  Step,
+  StepStatus,
+  Card,
+  CardBody,
+  Heading,
+  Text,
+  Button,
+  Box,
+  CheckmarkIcon,
+  Flex,
+  useTooltip,
+  TooltipText,
+  PancakeRoundIcon,
+  Skeleton,
+  useModal,
+  Link,
+} from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo } from 'config/constants/types'
@@ -10,12 +28,21 @@ import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'
+import Balance from 'components/Balance'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { FlexGap } from 'components/Layout/Flex'
+import { getBalanceNumber } from 'utils/formatBalance'
+import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
+import { BIG_ZERO } from 'utils/bigNumber'
+import BigNumber from 'bignumber.js'
+import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/hooks'
 
 interface Props {
   ifo: Ifo
   walletIfoData: WalletIfoData
+  isLive?: boolean
 }
 
 const Wrapper = styled(Container)`
@@ -31,16 +58,135 @@ const Wrapper = styled(Container)`
   }
 `
 
-const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
+const InlineLink = styled(Link)`
+  display: inline;
+`
+
+const SmallStakePoolCard = styled(Box)`
+  margin-top: 16px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.background};
+`
+
+const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
+  const { t } = useTranslation()
+  const ifoPoolVault = useIfoPoolVault()
+  const credit = useIfoPoolCredit()
+  const { pool } = useIfoWithApr()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <Box>
+      <span>
+        {t(
+          'Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal.',
+        )}
+      </span>{' '}
+      <InlineLink
+        external
+        href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1"
+      >
+        {t('Please refer to our blog post for more details.')}
+      </InlineLink>
+    </Box>,
+    {},
+  )
+
+  const cakePriceBusd = usePriceCakeBusd()
+  const stakedDollarValue = cakePriceBusd.gt(0) && credit ? getBalanceNumber(credit.multipliedBy(cakePriceBusd), 18) : 0
+
+  const stakingTokenBalance = pool?.userData?.stakingTokenBalance
+    ? new BigNumber(pool.userData.stakingTokenBalance)
+    : BIG_ZERO
+
+  const [onPresentStake] = useModal(
+    <VaultStakeModal
+      stakingMax={stakingTokenBalance}
+      performanceFee={ifoPoolVault.fees.performanceFeeAsDecimal}
+      pool={pool}
+    />,
+  )
+
+  return (
+    <CardBody>
+      {tooltipVisible && tooltip}
+      <Heading as="h4" color="secondary" mb="16px">
+        {t('Stake CAKE in IFO pool')}
+      </Heading>
+      <Box>
+        <Text color="textSubtle" small>
+          {t(
+            'The maximum amount of CAKE user can commit to all the sales combined, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep IFO CAKE staking pool balance for the next IFO sale.',
+          )}
+        </Text>
+        <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
+          {t('How does the average balance calculated?')}
+        </TooltipText>
+      </Box>
+      {hasProfile && (
+        <SmallStakePoolCard borderRadius="default" p="16px">
+          <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
+            <Flex>
+              <PancakeRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
+              <Box ml="16px">
+                <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
+                  {t('Your max CAKE entry')}
+                </Text>
+                <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
+                <Text fontSize="12px" color="textSubtle">
+                  {cakePriceBusd.gt(0) ? (
+                    <Balance
+                      value={stakedDollarValue}
+                      fontSize="12px"
+                      color="textSubtle"
+                      decimals={2}
+                      prefix="~"
+                      unit=" USD"
+                    />
+                  ) : (
+                    <Skeleton mt="1px" height={16} width={64} />
+                  )}
+                </Text>
+              </Box>
+            </Flex>
+            <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
+          </FlexGap>
+        </SmallStakePoolCard>
+      )}
+    </CardBody>
+  )
+}
+
+const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLive: boolean; isCommitted: boolean }) => {
+  const { t } = useTranslation()
+  return (
+    <CardBody>
+      <Heading as="h4" color="secondary" mb="16px">
+        {t('Commit CAKE')}
+      </Heading>
+      <Text color="textSubtle" small>
+        {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
+        {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
+      </Text>
+      {hasProfile && isLive && !isCommitted && (
+        <Button as="a" href="#current-ifo" mt="16px">
+          {t('Commit CAKE')}
+        </Button>
+      )}
+    </CardBody>
+  )
+}
+
+const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
   const { poolBasic, poolUnlimited } = walletIfoData
   const { hasProfile } = useProfile()
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { balance } = useTokenBalance(ifo.currency.address)
+  const isCommitted =
+    poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0)
   const stepsValidationStatus = [
     hasProfile,
     balance.isGreaterThan(0),
-    poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0),
+    isCommitted,
     poolBasic.hasClaimed || poolUnlimited.hasClaimed,
   ]
 
@@ -62,9 +208,12 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
 
       if (isStepValid) {
         return (
-          <Text color="success" bold>
-            {t('Profile Active!')}
-          </Text>
+          <Flex alignItems="center">
+            <Text color="success" bold mr="8px">
+              {t('Profile Active!')}
+            </Text>
+            <CheckmarkIcon color="success" />
+          </Flex>
         )
       }
 
@@ -89,37 +238,9 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
           </CardBody>
         )
       case 1:
-        return (
-          <CardBody>
-            <Heading as="h4" color="secondary" mb="16px">
-              {t('Get %symbol%', { symbol: 'CAKE' })}
-            </Heading>
-            <Text color="textSubtle" small>
-              {t('You’ll spend CAKE to buy IFO sale tokens.')}
-            </Text>
-            <Button
-              as={Link}
-              external
-              href="/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
-              endIcon={<OpenNewIcon color="white" />}
-              mt="16px"
-            >
-              {t('Get %symbol%', { symbol: 'CAKE' })}
-            </Button>
-          </CardBody>
-        )
+        return <Step1 hasProfile={hasProfile} />
       case 2:
-        return (
-          <CardBody>
-            <Heading as="h4" color="secondary" mb="16px">
-              {t('Commit CAKE')}
-            </Heading>
-            <Text color="textSubtle" small>
-              {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
-              {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
-            </Text>
-          </CardBody>
-        )
+        return <Step2 hasProfile={hasProfile} isLive={isLive} isCommitted={isCommitted} />
       case 3:
         return (
           <CardBody>
@@ -140,7 +261,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
 
   return (
     <Wrapper>
-      <Heading as="h2" scale="xl" color="secondary" mb="24px" textAlign="center">
+      <Heading id="ifo-how-to" as="h2" scale="xl" color="secondary" mb="24px" textAlign="center">
         {t('How to Take Part')}
       </Heading>
       <Stepper>

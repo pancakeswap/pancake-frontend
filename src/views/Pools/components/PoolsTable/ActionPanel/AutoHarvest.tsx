@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
-import { useCakeVault } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 
 import { ActionContainer, ActionTitles, ActionContent } from './styles'
@@ -14,7 +14,11 @@ interface AutoHarvestActionProps extends DeserializedPool {
   userDataLoaded: boolean
 }
 
-const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({ userDataLoaded, earningTokenPrice }) => {
+const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
+  userDataLoaded,
+  earningTokenPrice,
+  vaultKey,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
 
@@ -22,7 +26,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({ us
     userData: { cakeAtLastUserAction, userShares },
     pricePerFullShare,
     fees: { performanceFee },
-  } = useCakeVault()
+  } = useVaultPoolByKey(vaultKey)
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
     account,
     cakeAtLastUserAction,
@@ -100,7 +104,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({ us
           </>
         </Flex>
         <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
-          <UnstakingFeeCountdownRow isTableVariant />
+          <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
           <Flex mb="2px" justifyContent="space-between" alignItems="center">
             {tooltipVisible && tooltip}
             <TooltipText ref={targetRef} small>

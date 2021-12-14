@@ -55,6 +55,10 @@ export default {
     56: '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC',
     97: '',
   },
+  ifoPool: {
+    56: '0x1B2A2f6ed4A1401E8C73B4c2B6172455ce2f78E8',
+    97: '',
+  },
   predictions: {
     56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
     97: '',

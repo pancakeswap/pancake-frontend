@@ -1,9 +1,20 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { parseUnits } from 'ethers/lib/utils'
-import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex } from '@pancakeswap/uikit'
+import {
+  Modal,
+  ModalBody,
+  Text,
+  Image,
+  Button,
+  BalanceInput,
+  Flex,
+  useTooltip,
+  TooltipText,
+  Box,
+} from '@pancakeswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
@@ -13,6 +24,7 @@ import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
+import tokens from 'config/constants/tokens'
 
 interface Props {
   poolId: PoolIds
@@ -20,6 +32,7 @@ interface Props {
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
   userCurrencyBalance: BigNumber
+  creditLeft: BigNumber
   onSuccess: (amount: BigNumber, txHash: string) => void
   onDismiss?: () => void
 }
@@ -35,6 +48,7 @@ const ContributeModal: React.FC<Props> = ({
   publicIfoData,
   walletIfoData,
   userCurrencyBalance,
+  creditLeft,
   onDismiss,
   onSuccess,
 }) => {
@@ -51,6 +65,7 @@ const ContributeModal: React.FC<Props> = ({
   const raisingTokenContract = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
+  const label = currency === tokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -84,82 +99,111 @@ const ContributeModal: React.FC<Props> = ({
       },
     })
 
-  const maximumLpCommitable = (() => {
-    if (limitPerUserInLP.isGreaterThan(0)) {
-      return limitPerUserInLP.minus(amountTokenCommittedInLP).isLessThanOrEqualTo(userCurrencyBalance)
-        ? limitPerUserInLP
-        : userCurrencyBalance
+  // in v3 max token entry is based on ifo credit and hard cap limit per user minus amount already committed
+  const maximumTokenEntry = useMemo(() => {
+    if (!creditLeft) {
+      return limitPerUserInLP.minus(amountTokenCommittedInLP)
     }
-    return userCurrencyBalance
-  })()
+    if (limitPerUserInLP.isGreaterThan(0)) {
+      return limitPerUserInLP.minus(amountTokenCommittedInLP).isLessThanOrEqualTo(creditLeft)
+        ? limitPerUserInLP
+        : creditLeft
+    }
+    return creditLeft
+  }, [creditLeft, limitPerUserInLP, amountTokenCommittedInLP])
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(
+      'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+    ),
+    {},
+  )
+
+  const isWarning =
+    valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) || valueWithTokenDecimals.isGreaterThan(maximumTokenEntry)
 
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
-      <ModalBody maxWidth="320px">
-        {limitPerUserInLP.isGreaterThan(0) && (
-          <Flex justifyContent="space-between" mb="16px">
-            <Text>{t('Max. token entry')}</Text>
-            <Text>{`${formatNumber(getBalanceAmount(limitPerUserInLP, currency.decimals).toNumber(), 3, 3)} ${
-              ifo.currency.symbol
-            }`}</Text>
-          </Flex>
-        )}
-        <Flex justifyContent="space-between" mb="8px">
-          <Text>{t('Commit')}:</Text>
-          <Flex flexGrow={1} justifyContent="flex-end">
-            <Image
-              src={
-                ifo.currency.symbol === 'CAKE'
-                  ? '/images/cake.svg'
-                  : `/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`
-              }
-              width={24}
-              height={24}
-            />
-            <Text>{currency.symbol}</Text>
-          </Flex>
-        </Flex>
-        <BalanceInput
-          value={value}
-          currencyValue={publicIfoData.currencyPriceInUSD.times(value || 0).toFixed(2)}
-          onUserInput={setValue}
-          isWarning={valueWithTokenDecimals.isGreaterThan(maximumLpCommitable)}
-          decimals={currency.decimals}
-          mb="8px"
-        />
-        <Text color="textSubtle" textAlign="right" fontSize="12px" mb="16px">
-          {t('Balance: %balance%', {
-            balance: getBalanceAmount(userCurrencyBalance, currency.decimals).toString(),
-          })}
-        </Text>
-        <Flex justifyContent="space-between" mb="16px">
-          {multiplierValues.map((multiplierValue, index) => (
-            <Button
-              key={multiplierValue}
-              scale="xs"
-              variant="tertiary"
-              onClick={() => setValue(getBalanceAmount(maximumLpCommitable.times(multiplierValue)).toString())}
-              mr={index < multiplierValues.length - 1 ? '8px' : 0}
-            >
-              {multiplierValue * 100}%
-            </Button>
-          ))}
-        </Flex>
-        <Text color="textSubtle" fontSize="12px" mb="24px">
-          {t(
-            'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
+      <ModalBody maxWidth="360px">
+        <Box p="2px">
+          {limitPerUserInLP.isGreaterThan(0) && (
+            <Flex justifyContent="space-between" mb="16px">
+              {tooltipVisible && tooltip}
+              <TooltipText ref={targetRef}>{label}:</TooltipText>
+              <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
+                ifo.currency.symbol
+              }`}</Text>
+            </Flex>
           )}
-        </Text>
-        <ApproveConfirmButtons
-          isApproveDisabled={isConfirmed || isConfirming || isApproved}
-          isApproving={isApproving}
-          isConfirmDisabled={
-            !isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)
-          }
-          isConfirming={isConfirming}
-          onApprove={handleApprove}
-          onConfirm={handleConfirm}
-        />
+          <Flex justifyContent="space-between" mb="8px">
+            <Text>{t('Commit')}:</Text>
+            <Flex flexGrow={1} justifyContent="flex-end">
+              <Image
+                src={
+                  ifo.currency.symbol === 'CAKE'
+                    ? '/images/cake.svg'
+                    : `/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`
+                }
+                width={24}
+                height={24}
+              />
+              <Text ml="4px">{currency.symbol}</Text>
+            </Flex>
+          </Flex>
+          <BalanceInput
+            value={value}
+            currencyValue={publicIfoData.currencyPriceInUSD.times(value || 0).toFixed(2)}
+            onUserInput={setValue}
+            isWarning={isWarning}
+            decimals={currency.decimals}
+            mb="8px"
+          />
+          {isWarning && (
+            <Text
+              color={valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) ? 'failure' : 'warning'}
+              textAlign="right"
+              fontSize="12px"
+              mb="8px"
+            >
+              {valueWithTokenDecimals.isGreaterThan(userCurrencyBalance)
+                ? t('Insufficient Balance')
+                : t('Exceeded max CAKE entry')}
+            </Text>
+          )}
+          <Text color="textSubtle" textAlign="right" fontSize="12px" mb="16px">
+            {t('Balance: %balance%', {
+              balance: getBalanceAmount(userCurrencyBalance, currency.decimals).toString(),
+            })}
+          </Text>
+          <Flex justifyContent="space-between" mb="16px">
+            {multiplierValues.map((multiplierValue, index) => (
+              <Button
+                key={multiplierValue}
+                scale="xs"
+                variant="tertiary"
+                onClick={() => setValue(getBalanceAmount(maximumTokenEntry.times(multiplierValue)).toString())}
+                mr={index < multiplierValues.length - 1 ? '8px' : 0}
+              >
+                {multiplierValue * 100}%
+              </Button>
+            ))}
+          </Flex>
+          <Text color="textSubtle" fontSize="12px" mb="24px">
+            {t(
+              'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
+            )}
+          </Text>
+          <ApproveConfirmButtons
+            isApproveDisabled={isConfirmed || isConfirming || isApproved}
+            isApproving={isApproving}
+            isConfirmDisabled={
+              !isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)
+            }
+            isConfirming={isConfirming}
+            onApprove={handleApprove}
+            onConfirm={handleConfirm}
+          />
+        </Box>
       </ModalBody>
     </Modal>
   )

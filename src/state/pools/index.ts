@@ -2,7 +2,16 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { PoolsState, SerializedPool, CakeVault, VaultFees, VaultUser, AppThunk } from 'state/types'
+import {
+  PoolsState,
+  SerializedPool,
+  CakeVault,
+  VaultFees,
+  VaultUser,
+  AppThunk,
+  IfoVaultUser,
+  IfoCakeVault,
+} from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
@@ -13,32 +22,38 @@ import {
   fetchUserPendingRewards,
 } from './fetchPoolsUser'
 import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
+import { fetchIfoPoolFeesData, fetchPublicIfoPoolData } from './fetchIfoPoolPublic'
 import fetchVaultUser from './fetchVaultUser'
+import fetchIfoPoolUserData from './fetchIfoPoolUser'
 import { getTokenPricesFromFarm } from './helpers'
+
+export const initialPoolVaultState = Object.freeze({
+  totalShares: null,
+  pricePerFullShare: null,
+  totalCakeInVault: null,
+  estimatedCakeBountyReward: null,
+  totalPendingCakeHarvest: null,
+  fees: {
+    performanceFee: null,
+    callFee: null,
+    withdrawalFee: null,
+    withdrawalFeePeriod: null,
+  },
+  userData: {
+    isLoading: true,
+    userShares: null,
+    cakeAtLastUserAction: null,
+    lastDepositedTime: null,
+    lastUserActionTime: null,
+    credit: null,
+  },
+})
 
 const initialState: PoolsState = {
   data: [...poolsConfig],
   userDataLoaded: false,
-  cakeVault: {
-    totalShares: null,
-    pricePerFullShare: null,
-    totalCakeInVault: null,
-    estimatedCakeBountyReward: null,
-    totalPendingCakeHarvest: null,
-    fees: {
-      performanceFee: null,
-      callFee: null,
-      withdrawalFee: null,
-      withdrawalFeePeriod: null,
-    },
-    userData: {
-      isLoading: true,
-      userShares: null,
-      cakeAtLastUserAction: null,
-      lastDepositedTime: null,
-      lastUserActionTime: null,
-    },
-  },
+  cakeVault: initialPoolVaultState,
+  ifoPool: initialPoolVaultState,
 }
 
 // Thunks
@@ -167,6 +182,24 @@ export const fetchCakeVaultUserData = createAsyncThunk<VaultUser, { account: str
   },
 )
 
+export const fetchIfoPoolPublicData = createAsyncThunk<IfoCakeVault>('ifoPool/fetchPublicData', async () => {
+  const publicVaultInfo = await fetchPublicIfoPoolData()
+  return publicVaultInfo
+})
+
+export const fetchIfoPoolFees = createAsyncThunk<VaultFees>('ifoPool/fetchFees', async () => {
+  const vaultFees = await fetchIfoPoolFeesData()
+  return vaultFees
+})
+
+export const fetchIfoPoolUserAndCredit = createAsyncThunk<IfoVaultUser, { account: string }>(
+  'ifoPool/fetchUser',
+  async ({ account }) => {
+    const userData = await fetchIfoPoolUserData(account)
+    return userData
+  },
+)
+
 export const PoolsSlice = createSlice({
   name: 'Pools',
   initialState,
@@ -210,6 +243,21 @@ export const PoolsSlice = createSlice({
       const userData = action.payload
       userData.isLoading = false
       state.cakeVault = { ...state.cakeVault, userData }
+    })
+    // Vault public data that updates frequently
+    builder.addCase(fetchIfoPoolPublicData.fulfilled, (state, action) => {
+      state.ifoPool = { ...state.ifoPool, ...action.payload }
+    })
+    // Vault fees
+    builder.addCase(fetchIfoPoolFees.fulfilled, (state, action: PayloadAction<VaultFees>) => {
+      const fees = action.payload
+      state.ifoPool = { ...state.ifoPool, fees }
+    })
+    // Vault user data
+    builder.addCase(fetchIfoPoolUserAndCredit.fulfilled, (state, action) => {
+      const userData = action.payload
+      userData.isLoading = false
+      state.ifoPool = { ...state.ifoPool, userData }
     })
   },
 })
