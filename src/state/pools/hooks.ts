@@ -184,6 +184,10 @@ export const useIfoPoolVault = () => {
   return useVaultPoolByKey(VaultKey.IfoPool)
 }
 
+export const useIfoPooStartBlock = () => {
+  return useSelector((state: State) => state.pools.ifoPool.creditStartBlock)
+}
+
 export const useIfoPoolCredit = () => {
   const creditAsString = useSelector((state: State) => state.pools.ifoPool.userData?.credit ?? BIG_ZERO)
   const credit = useMemo(() => {
