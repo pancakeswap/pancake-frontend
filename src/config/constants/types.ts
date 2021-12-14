@@ -48,6 +48,9 @@ export interface Ifo {
   articleUrl: string
   campaignId: string
   tokenOfferingPrice: number
+  description?: string
+  twitterUrl?: string
+  telegramUrl?: string
   version: number
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo

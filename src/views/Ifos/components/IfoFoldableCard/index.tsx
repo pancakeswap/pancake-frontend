@@ -22,7 +22,7 @@ import styled from 'styled-components'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useIsWindowVisible from '../../../../hooks/useIsWindowVisible'
 import useIfoApprove from '../../hooks/useIfoApprove'
-import Achievement from './Achievement'
+import IfoAchievement from './Achievement'
 import IfoPoolCard from './IfoPoolCard'
 import { EnableStatus } from './types'
 import { IfoRibbon } from './IfoRibbon'
@@ -34,7 +34,6 @@ interface IfoFoldableCardProps {
 }
 
 const StyledCard = styled(Card)`
-  max-width: 705px;
   width: 100%;
   margin: auto;
 
@@ -72,14 +71,9 @@ const StyledCardBody = styled(CardBody)`
 `
 
 const StyledCardFooter = styled(CardFooter)`
-  text-align: center;
-  padding: 8px;
+  padding: 0;
   background: ${({ theme }) => theme.colors.backgroundAlt};
-  button,
-  button > * {
-    color: ${({ theme }) => theme.colors.textSubtle};
-    fill: ${({ theme }) => theme.colors.textSubtle};
-  }
+  text-align: center;
 `
 
 const StyledNoHatBunny = styled.div<{ $isLive: boolean }>`
@@ -139,7 +133,7 @@ export const IfoCurrentCard = ({
           <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
             {isExpanded ? t('Hide') : t('Details')}
           </ExpandableLabel>
-          {isExpanded && <Achievement ifo={ifo} publicIfoData={publicIfoData} />}
+          {isExpanded && <IfoAchievement ifo={ifo} publicIfoData={publicIfoData} />}
         </StyledCardFooter>
       </StyledCard>
     </Box>
@@ -182,7 +176,7 @@ const IfoFoldableCard = ({
             <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
               {isExpanded ? t('Hide') : t('Details')}
             </ExpandableLabel>
-            {isExpanded && <Achievement ifo={ifo} publicIfoData={publicIfoData} />}
+            {isExpanded && <IfoAchievement ifo={ifo} publicIfoData={publicIfoData} />}
           </StyledCardFooter>
         </FoldableContent>
       </StyledCard>
