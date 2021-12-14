@@ -18,6 +18,7 @@ import {
   PancakeRoundIcon,
   Skeleton,
   useModal,
+  Link,
 } from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
@@ -57,6 +58,10 @@ const Wrapper = styled(Container)`
   }
 `
 
+const InlineLink = styled(Link)`
+  display: inline;
+`
+
 const SmallStakePoolCard = styled(Box)`
   margin-top: 16px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
@@ -69,9 +74,19 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const credit = useIfoPoolCredit()
   const { pool } = useIfoWithApr()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(
-      'Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal. Please refer to our blog post for more details.',
-    ),
+    <Box>
+      <span>
+        {t(
+          'Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal.',
+        )}
+      </span>{' '}
+      <InlineLink
+        external
+        href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1"
+      >
+        {t('Please refer to our blog post for more details.')}
+      </InlineLink>
+    </Box>,
     {},
   )
 
