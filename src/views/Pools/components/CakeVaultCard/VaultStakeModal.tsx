@@ -30,6 +30,7 @@ import { DeserializedPool } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { vaultPoolConfig } from 'config/constants/pools'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { convertCakeToShares, convertSharesToCake } from '../../helpers'
 import FeeSummary from './FeeSummary'
@@ -58,10 +59,6 @@ const AnnualRoiDisplay = styled(Text)`
   text-overflow: ellipsis;
 `
 
-const callOptions = {
-  gasLimit: 380000,
-}
-
 const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   pool,
   stakingMax,
@@ -89,6 +86,10 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const cakePriceBusd = usePriceCakeBusd()
   const usdValueStaked = new BigNumber(stakeAmount).times(cakePriceBusd)
   const formattedUsdValueStaked = cakePriceBusd.gt(0) && stakeAmount ? formatNumber(usdValueStaked.toNumber()) : ''
+
+  const callOptions = {
+    gasLimit: vaultPoolConfig[pool.vaultKey].gasLimit,
+  }
 
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
 
