@@ -33,7 +33,7 @@ import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/Unsta
 import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
 
 const StyledCard = styled(Card)`
-  max-width: 400px;
+  max-width: 352px;
   width: 100%;
 `
 
