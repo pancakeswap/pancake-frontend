@@ -204,9 +204,10 @@ export const useIfoWithApr = () => {
   const { pool: poolZero, userDataLoaded } = usePool(0)
 
   const ifoPoolWithApr = useMemo(() => {
-    const ifoPool = poolZero
+    const ifoPool = { ...poolZero }
     ifoPool.vaultKey = VaultKey.IfoPool
     ifoPool.apr = getAprData(ifoPool, performanceFeeAsDecimal).apr
+    ifoPool.rawApr = poolZero.apr
     return ifoPool
   }, [performanceFeeAsDecimal, poolZero])
 
