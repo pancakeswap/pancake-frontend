@@ -1839,6 +1839,14 @@ export const mainnetTokens = {
     'https://www.gamee.com/token',
   ),
   htd: new Token(MAINNET, '0x5E2689412Fae5c29BD575fbe1d5C1CD1e0622A8f', 18, 'HTD', 'HeroesTD', 'https://heroestd.io/'),
+  dpt: new Token(
+    MAINNET,
+    '0xE69cAef10A488D7AF31Da46c89154d025546e990',
+    18,
+    'DPT',
+    'Diviner Protocol',
+    'https://diviner.finance/',
+  ),
 }
 
 export const testnetTokens = {
