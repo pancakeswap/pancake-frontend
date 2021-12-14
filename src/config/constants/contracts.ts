@@ -56,7 +56,7 @@ export default {
     97: '',
   },
   ifoPool: {
-    56: '0x0000',
+    56: '0xDA1B89AD56c18b849C3Dc7c693ec2324d92E4aFc',
     97: '',
   },
   predictions: {
