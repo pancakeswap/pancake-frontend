@@ -67,7 +67,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
     bgImagEl.onload = () => setBgImage(bgImagEl)
 
     const profileImageEl = new Image()
-    profileImageEl.src = profile.nft?.image?.thumbnail
+    profileImageEl.src = `${profile.nft?.image?.thumbnail}?d=${new Date().getTime()}`
     profileImageEl.crossOrigin = 'Anonymous'
     profileImageEl.onload = () => setProfileImage(profileImageEl)
 
