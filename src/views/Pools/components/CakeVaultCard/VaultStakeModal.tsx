@@ -67,7 +67,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   onDismiss,
 }) => {
   const dispatch = useAppDispatch()
-  const { stakingToken, earningToken, apr, stakingTokenPrice, earningTokenPrice, vaultKey } = pool
+  const { stakingToken, earningToken, apr, rawApr, stakingTokenPrice, earningTokenPrice, vaultKey } = pool
   const { account } = useWeb3React()
   const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -95,7 +95,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 
   const interestBreakdown = getInterestBreakdown({
     principalInUSD: !usdValueStaked.isNaN() ? usdValueStaked.toNumber() : 0,
-    apr,
+    apr: vaultKey ? rawApr : apr,
     earningTokenPrice,
     performanceFee,
   })
@@ -222,7 +222,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       <RoiCalculatorModal
         earningTokenPrice={earningTokenPrice}
         stakingTokenPrice={stakingTokenPrice}
-        apr={apr}
+        apr={vaultKey ? rawApr : apr}
         linkLabel={t('Get %symbol%', { symbol: stakingToken.symbol })}
         linkHref={getTokenLink}
         stakingTokenBalance={cakeAsBigNumber.plus(stakingMax)}

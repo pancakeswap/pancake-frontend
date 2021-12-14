@@ -46,7 +46,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
         )}
       </Text>
       <LinkExternal href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1">
-        {t('Check out our Medium article for more detail.')}
+        {t('Check out our Medium article for more details.')}
       </LinkExternal>
     </>,
     { placement: 'auto' },

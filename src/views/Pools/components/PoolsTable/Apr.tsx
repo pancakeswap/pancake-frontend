@@ -23,7 +23,17 @@ interface AprProps extends FlexProps {
 }
 
 const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee = 0, ...props }) => {
-  const { stakingToken, earningToken, isFinished, earningTokenPrice, stakingTokenPrice, userData, apr, vaultKey } = pool
+  const {
+    stakingToken,
+    earningToken,
+    isFinished,
+    earningTokenPrice,
+    stakingTokenPrice,
+    userData,
+    apr,
+    rawApr,
+    vaultKey,
+  } = pool
   const { t } = useTranslation()
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
@@ -35,7 +45,7 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
       earningTokenPrice={earningTokenPrice}
       stakingTokenPrice={stakingTokenPrice}
       stakingTokenBalance={stakedBalance.plus(stakingTokenBalance)}
-      apr={apr}
+      apr={vaultKey ? rawApr : apr}
       stakingTokenSymbol={stakingToken.symbol}
       linkLabel={t('Get %symbol%', { symbol: stakingToken.symbol })}
       linkHref={apyModalLink}

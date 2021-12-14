@@ -25,7 +25,17 @@ interface AprRowProps {
 
 const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0 }) => {
   const { t } = useTranslation()
-  const { stakingToken, earningToken, isFinished, apr, earningTokenPrice, stakingTokenPrice, userData, vaultKey } = pool
+  const {
+    stakingToken,
+    earningToken,
+    isFinished,
+    apr,
+    rawApr,
+    earningTokenPrice,
+    stakingTokenPrice,
+    userData,
+    vaultKey,
+  } = pool
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
@@ -41,7 +51,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0
     <RoiCalculatorModal
       earningTokenPrice={earningTokenPrice}
       stakingTokenPrice={stakingTokenPrice}
-      apr={apr}
+      apr={vaultKey ? rawApr : apr}
       linkLabel={t('Get %symbol%', { symbol: stakingToken.symbol })}
       linkHref={apyModalLink}
       stakingTokenBalance={stakedBalance.plus(stakingTokenBalance)}
