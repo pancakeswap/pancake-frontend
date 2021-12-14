@@ -47,6 +47,7 @@ export const initialPoolVaultState = Object.freeze({
     lastUserActionTime: null,
     credit: null,
   },
+  creditStartBlock: null,
 })
 
 const initialState: PoolsState = {

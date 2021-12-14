@@ -9,6 +9,8 @@ import {
   CardBody,
   HelpIcon,
   useTooltip,
+  LinkExternal,
+  Link,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
@@ -18,7 +20,7 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useState } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/hooks'
+import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr, useIfoPooStartBlock } from 'state/pools/hooks'
 import styled from 'styled-components'
 import { getBalanceNumber, getDecimalAmount } from 'utils/formatBalance'
 import CakeVaultCard from 'views/Pools/components/CakeVaultCard'
@@ -31,6 +33,7 @@ import { ActionContainer } from 'views/Pools/components/PoolsTable/ActionPanel/s
 import { VaultKey } from 'state/types'
 import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/UnstakingFeeCountdownRow'
 import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
+import { getBscScanLink } from 'utils'
 
 const StyledCard = styled(Card)`
   max-width: 352px;
@@ -69,6 +72,24 @@ const IfoPoolVaultCardMobile: React.FC = () => {
     fees: { performanceFeeAsDecimal },
   } = useIfoPoolVault()
   const [isExpanded, setIsExpanded] = useState(false)
+  const creditStartBlock = useIfoPooStartBlock()
+  const {
+    tooltip: startBlockTooltip,
+    tooltipVisible: startBlockTooltipVisible,
+    targetRef: startBlockTargetRef,
+  } = useTooltip(
+    <>
+      <Text>
+        {t(
+          'The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.',
+        )}
+      </Text>
+      <LinkExternal href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1">
+        {t('Check out our Medium article for more detail.')}
+      </LinkExternal>
+    </>,
+    { placement: 'auto' },
+  )
 
   // TODO: refactor this is use everywhere
   const cakeAsNumberBalance = getBalanceNumber(credit)
@@ -116,6 +137,20 @@ const IfoPoolVaultCardMobile: React.FC = () => {
         <>
           <StyledCardBody>
             <AprRow pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
+            {pool.vaultKey === VaultKey.IfoPool && (
+              <Flex mt="8px" justifyContent="space-between">
+                <Text fontSize="14px">{t('Credit calculation starts:')}</Text>
+                <Flex mr="6px" alignItems="center">
+                  <Link external href={getBscScanLink(creditStartBlock, 'block')} mr="4px" fontSize="14px">
+                    {creditStartBlock}
+                  </Link>
+                  <span ref={startBlockTargetRef}>
+                    <HelpIcon color="textSubtle" />
+                  </span>
+                </Flex>
+                {startBlockTooltipVisible && startBlockTooltip}
+              </Flex>
+            )}
             <ActionContainer>
               <IfoVaultCardAvgBalance pool={pool} />
             </ActionContainer>

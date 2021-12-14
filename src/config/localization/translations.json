@@ -1789,5 +1789,8 @@
   "Exceeded max CAKE entry": "Exceeded max CAKE entry",
   "Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new CAKE in the pool.",
   "unstaking fee if withdrawn within %num%h": "unstaking fee if withdrawn within %num%h",
-  "Earn %asset%": "Earn %asset%"
+  "Earn %asset%": "Earn %asset%",
+  "Credit calculation starts:": "Credit calculation starts:",
+  "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.",
+  "Check out our Medium article for more detail.": "Check out our Medium article for more detail."
 }
