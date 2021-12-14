@@ -44,7 +44,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('Trading Competition'),
         href: '/competition',
-        status: menuStatus.SOON,
+        status: menuStatus.LIVE,
       },
       {
         label: t('Prediction (BETA)'),
