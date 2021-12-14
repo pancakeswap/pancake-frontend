@@ -78,16 +78,16 @@ const StyledCardFooter = styled(CardFooter)`
 
 const StyledNoHatBunny = styled.div<{ $isLive: boolean }>`
   position: absolute;
-  left: -50px;
+  left: -38px;
   z-index: 1;
   top: 32px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    top: ${({ $isLive }) => ($isLive ? '46px' : '30px')};
+    top: ${({ $isLive }) => ($isLive ? '46px' : '33px')};
   }
   ${({ theme }) => theme.mediaQueries.md} {
     left: auto;
-    top: ${({ $isLive }) => ($isLive ? '56px' : '40px')};
+    top: ${({ $isLive }) => ($isLive ? '56px' : '45px')};
     right: 5%;
   }
 `
