@@ -29,6 +29,7 @@ import { DeserializedPool } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
 import { ViewMode } from 'state/user/actions'
+import { BIG_ZERO } from 'utils/bigNumber'
 import Loading from 'components/Loading'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
@@ -99,6 +100,9 @@ const Pools: React.FC = () => {
   const [sortOption, setSortOption] = useState('hot')
   const chosenPoolsLength = useRef(0)
   const vaultPools = useVaultPools()
+  const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
+    return total.plus(vault.totalCakeInVault)
+  }, BIG_ZERO)
 
   const pools = usePoolsWithVault()
 
@@ -191,13 +195,9 @@ const Pools: React.FC = () => {
                   ) * pool.stakingTokenPrice
               }
             } else if (pool.sousId === 0) {
-              if (
-                pool.totalStaked?.isFinite() &&
-                pool.stakingTokenPrice &&
-                vaultPools[pool.vaultKey].totalCakeInVault.isFinite()
-              ) {
+              if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice && cakeInVaults.isFinite()) {
                 const manualCakeTotalMinusAutoVault = ethers.BigNumber.from(pool.totalStaked.toString()).sub(
-                  vaultPools[pool.vaultKey].totalCakeInVault.toString(),
+                  cakeInVaults.toString(),
                 )
                 totalStaked =
                   +formatUnits(manualCakeTotalMinusAutoVault, pool.stakingToken.decimals) * pool.stakingTokenPrice
