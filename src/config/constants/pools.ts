@@ -14,7 +14,7 @@ export const vaultPoolConfig = {
   [VaultKey.IfoPool]: {
     name: 'IFO CAKE',
     description: 'Stake CAKE to participate in IFO',
-    autoCompoundFrequency: 2000,
+    autoCompoundFrequency: 1,
     gasLimit: 500000,
   },
 } as const
