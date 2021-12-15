@@ -36,30 +36,28 @@ export const SoonTimer: React.FC<Props> = ({ publicIfoData }) => {
               {t('Start in')}
             </Heading>
             <FlexGap gap="4px" alignItems="baseline">
-              {timeUntil.days && (
+              {timeUntil.days ? (
                 <>
                   <Heading scale="lg" color="secondary">
                     {timeUntil.days}
                   </Heading>
-                  <Text color="secondary">d</Text>
+                  <Text color="secondary">{t('d')}</Text>
                 </>
-              )}
-              {timeUntil.hours && (
+              ) : null}
+              {timeUntil.days || timeUntil.hours ? (
                 <>
                   <Heading color="secondary" scale="lg">
                     {timeUntil.hours}
                   </Heading>
-                  <Text color="secondary">h</Text>
+                  <Text color="secondary">{t('h')}</Text>
                 </>
-              )}
-              {timeUntil.minutes && (
-                <>
-                  <Heading color="secondary" scale="lg">
-                    {timeUntil.minutes}
-                  </Heading>
-                  <Text color="secondary">m</Text>
-                </>
-              )}
+              ) : null}
+              <>
+                <Heading color="secondary" scale="lg">
+                  {timeUntil.minutes}
+                </Heading>
+                <Text color="secondary">{t('m')}</Text>
+              </>
             </FlexGap>
           </FlexGap>
         </>
@@ -107,24 +105,22 @@ const LiveTimer: React.FC<Props> = ({ publicIfoData }) => {
               {t('Ends in')}
             </EndInHeading>
             <FlexGap gap="4px" alignItems="baseline">
-              {timeUntil.days && (
+              {timeUntil.days ? (
                 <>
                   <GradientText scale="lg">{timeUntil.days}</GradientText>
-                  <Text color="white">d</Text>
+                  <Text color="white">{t('d')}</Text>
                 </>
-              )}
-              {timeUntil.hours && (
+              ) : null}
+              {timeUntil.days || timeUntil.hours ? (
                 <>
                   <GradientText scale="lg">{timeUntil.hours}</GradientText>
-                  <Text color="white">h</Text>
+                  <Text color="white">{t('h')}</Text>
                 </>
-              )}
-              {timeUntil.minutes && (
-                <>
-                  <GradientText scale="lg">{timeUntil.minutes}</GradientText>
-                  <Text color="white">m</Text>
-                </>
-              )}
+              ) : null}
+              <>
+                <GradientText scale="lg">{timeUntil.minutes}</GradientText>
+                <Text color="white">{t('m')}</Text>
+              </>
             </FlexGap>
           </FlexGap>
         </>
