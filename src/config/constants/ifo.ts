@@ -7,9 +7,34 @@ export const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[Ch
 
 const ifos: Ifo[] = [
   {
+    id: 'dpt',
+    address: '0x63914805A0864e9557eA3A5cC86cc1BA054ec64b',
+    isActive: true,
+    name: 'Diviner Protocol (DPT)',
+    poolBasic: {
+      saleAmount: '7,200,000 DPT',
+      raiseAmount: '$180,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.3,
+    },
+    poolUnlimited: {
+      saleAmount: '16,800,000',
+      raiseAmount: '$420,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.7,
+    },
+    currency: tokens.cake,
+    token: tokens.dpt,
+    releaseBlockNumber: 13491500,
+    campaignId: '511160000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmQqpknHvuQwshVP259qFxfQsxiWbQ9SLMebohDeRwRzKg',
+    tokenOfferingPrice: 0.025,
+    version: 3,
+  },
+  {
     id: 'santos',
     address: '0x69B5D2Ab0cf532a0E22Fc0dEB0c5135639892468',
-    isActive: true,
+    isActive: false,
     name: 'FC Santos Fan Token (SANTOS)',
     poolBasic: {
       saleAmount: '120,000 SANTOS',
