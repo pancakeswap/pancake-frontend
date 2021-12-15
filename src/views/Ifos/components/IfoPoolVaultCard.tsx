@@ -36,7 +36,7 @@ import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/R
 import { getBscScanLink } from 'utils'
 
 const StyledCard = styled(Card)`
-  max-width: 352px;
+  max-width: 400px;
   width: 100%;
 `
 

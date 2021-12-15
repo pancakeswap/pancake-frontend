@@ -31,6 +31,10 @@ export const IfoRibbon = ({ publicIfoData }) => {
     Component = <IfoRibbonSoon publicIfoData={publicIfoData} />
   }
 
+  if (status === 'idle') {
+    return null
+  }
+
   return (
     <>
       {status === 'live' && (
