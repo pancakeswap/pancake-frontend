@@ -5,10 +5,9 @@ import styled from 'styled-components'
 import { PublicIfoData } from '../../types'
 import LiveTimer, { SoonTimer } from './Timer'
 
-const BigCurve = styled.div<{ $background: string }>`
+const BigCurve = styled(Box)<{ $status: PublicIfoData['status'] }>`
   width: 150%;
   position: absolute;
-  background: ${({ $background }) => $background};
   top: -150%;
   bottom: 0;
   left: 50%;
@@ -17,9 +16,28 @@ const BigCurve = styled.div<{ $background: string }>`
   ${({ theme }) => theme.mediaQueries.md} {
     border-radius: 50%;
   }
+
+  ${({ $status, theme }) => {
+    switch ($status) {
+      case 'coming_soon':
+        return `
+          background: ${theme.colors.tertiary};
+        `
+      case 'live':
+        return `
+          background: linear-gradient(#8051D6 100%, #492286 100%);
+        `
+      case 'finished':
+        return `
+          background: ${theme.colors.input};
+        `
+      default:
+        return ''
+    }
+  }}
 `
 
-export const IfoRibbon = ({ publicIfoData }) => {
+export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
   const { status } = publicIfoData
 
   let Component
@@ -29,6 +47,10 @@ export const IfoRibbon = ({ publicIfoData }) => {
     Component = <IfoRibbonLive publicIfoData={publicIfoData} />
   } else if (status === 'coming_soon') {
     Component = <IfoRibbonSoon publicIfoData={publicIfoData} />
+  }
+
+  if (status === 'idle') {
+    return null
   }
 
   return (
@@ -60,7 +82,7 @@ const IfoRibbonEnd = () => {
   const { t } = useTranslation()
   return (
     <>
-      <BigCurve $background="#EFEAF5" />
+      <BigCurve $status="finished" />
       <Box position="relative">
         <Heading as="h3" scale="lg" color="textSubtle">
           {t('Sale Finished!')}
@@ -73,7 +95,7 @@ const IfoRibbonEnd = () => {
 const IfoRibbonSoon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
   return (
     <>
-      <BigCurve $background="#EEF3F5" />
+      <BigCurve $status="coming_soon" />
       <Box position="relative">
         <Heading as="h3" scale="lg" color="secondary">
           <SoonTimer publicIfoData={publicIfoData} />
@@ -86,7 +108,7 @@ const IfoRibbonSoon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
 const IfoRibbonLive = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
   return (
     <>
-      <BigCurve $background="linear-gradient(269.54deg, #8051D6 14.31%, #492286 103.21%)" />
+      <BigCurve $status="live" />
       <Box position="relative">
         <LiveTimer publicIfoData={publicIfoData} />
       </Box>

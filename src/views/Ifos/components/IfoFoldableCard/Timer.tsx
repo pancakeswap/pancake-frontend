@@ -69,7 +69,7 @@ export const SoonTimer: React.FC<Props> = ({ publicIfoData }) => {
 }
 
 const EndInHeading = styled(Heading)`
-  color: ${({ theme }) => theme.colors.backgroundAlt};
+  color: white;
   font-size: 20px;
   font-weight: 600;
   line-height: 1.1;
@@ -80,6 +80,7 @@ const EndInHeading = styled(Heading)`
 `
 
 const LiveNowHeading = styled(EndInHeading)`
+  color: white;
   ${({ theme }) => theme.mediaQueries.md} {
     background: -webkit-linear-gradient(#ffd800, #eb8c00);
     background-clip: text;

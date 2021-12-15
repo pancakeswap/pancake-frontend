@@ -35,8 +35,8 @@ import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/Unsta
 import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
 import { getBscScanLink } from 'utils'
 
-const StyledCard = styled(Card)`
-  max-width: 352px;
+const StyledCardMobile = styled(Card)`
+  max-width: 400px;
   width: 100%;
 `
 
@@ -106,7 +106,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
     },
   )
   return (
-    <StyledCard isActive>
+    <StyledCardMobile isActive>
       <CardHeader p="16px">
         <Flex justifyContent="space-between" alignItems="center">
           <StyledTokenContent alignItems="center" flex={1}>
@@ -176,7 +176,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
           </StyledCardFooter>
         </>
       )}
-    </StyledCard>
+    </StyledCardMobile>
   )
 }
 

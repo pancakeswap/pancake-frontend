@@ -33,24 +33,52 @@ interface IfoFoldableCardProps {
   walletIfoData: WalletIfoData
 }
 
-const StyledCard = styled(Card)`
+const StyledCard = styled(Card)<{ $isCurrent?: boolean }>`
   width: 100%;
   margin: auto;
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+
+  ${({ $isCurrent }) =>
+    $isCurrent &&
+    `
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  > div {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  `}
 
   > div {
-    background: ${({ theme }) => theme.colors.gradients.bubblegum};
+    background: ${({ theme, $isCurrent }) => ($isCurrent ? theme.colors.gradients.bubblegum : theme.colors.dropdown)};
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+
+    > div {
+      border-top-left-radius: 32px;
+      border-top-right-radius: 32px;
+    }
   }
 `
 
-const Header = styled(CardHeader)<{ ifoId: string }>`
+const Header = styled(CardHeader)<{ ifoId: string; $isCurrent?: boolean }>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 112px;
+  height: ${({ $isCurrent }) => ($isCurrent ? '64px' : '112px')};
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
   background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg'), url('/images/ifos/${ifoId}-bg.png')`};
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: 112px;
+  }
 `
 
 const CardsWrapper = styled.div<{ singleCard: boolean }>`
@@ -76,28 +104,42 @@ const StyledCardFooter = styled(CardFooter)`
   text-align: center;
 `
 
-const StyledNoHatBunny = styled.div<{ $isLive: boolean }>`
+const StyledNoHatBunny = styled.div<{ $isLive: boolean; $isCurrent?: boolean }>`
   position: absolute;
-  left: -38px;
+  left: -24px;
   z-index: 1;
-  top: 32px;
+  top: 33px;
+
+  > img {
+    width: 78px;
+  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     top: ${({ $isLive }) => ($isLive ? '46px' : '33px')};
   }
   ${({ theme }) => theme.mediaQueries.md} {
     left: auto;
-    top: ${({ $isLive }) => ($isLive ? '56px' : '45px')};
-    right: 5%;
+    top: ${({ $isLive }) => ($isLive ? '61px' : '48px')};
+    right: ${({ $isCurrent }) => ($isCurrent ? '17px' : '90px')};
+
+    > img {
+      width: 123px;
+    }
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    right: ${({ $isCurrent }) => ($isCurrent ? '67px' : '90px')};
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    right: 90px;
   }
 `
 
-const NoHatBunny = ({ isLive }) => {
+const NoHatBunny = ({ isLive, isCurrent }: { isLive?: boolean; isCurrent?: boolean }) => {
   const { isXs, isSm, isMd } = useMatchBreakpoints()
   const isSmallerThanTablet = isXs || isSm || isMd
   if (isSmallerThanTablet && isLive) return null
   return (
-    <StyledNoHatBunny $isLive={isLive}>
+    <StyledNoHatBunny $isLive={isLive} $isCurrent={isCurrent}>
       <img
         src={`/images/ifos/assets/bunnypop-${!isSmallerThanTablet ? 'right' : 'left'}.png`}
         width={123}
@@ -108,6 +150,7 @@ const NoHatBunny = ({ isLive }) => {
   )
 }
 
+// Active Ifo
 export const IfoCurrentCard = ({
   ifo,
   publicIfoData,
@@ -119,24 +162,45 @@ export const IfoCurrentCard = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
+
+  const shouldShowBunny = publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon'
 
   return (
-    <Box position="relative" width="100%">
-      <NoHatBunny isLive={publicIfoData.status === 'live'} />
-      <StyledCard>
-        <Box position="relative">
-          <Header ifoId={ifo.id} />
+    <>
+      {isMobile && (
+        <Box
+          className="sticky-header"
+          position="sticky"
+          bottom="48px"
+          width="100%"
+          zIndex={6}
+          maxWidth={['400px', '400px', '400px', '100%']}
+        >
+          <Header $isCurrent ifoId={ifo.id} />
           <IfoRibbon publicIfoData={publicIfoData} />
+          {shouldShowBunny && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
         </Box>
-        <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-        <StyledCardFooter>
-          <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? t('Hide') : t('Details')}
-          </ExpandableLabel>
-          {isExpanded && <IfoAchievement ifo={ifo} publicIfoData={publicIfoData} />}
-        </StyledCardFooter>
-      </StyledCard>
-    </Box>
+      )}
+      <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '100%']}>
+        {!isMobile && shouldShowBunny && <NoHatBunny isCurrent isLive={publicIfoData.status === 'live'} />}
+        <StyledCard $isCurrent>
+          {!isMobile && (
+            <>
+              <Header $isCurrent ifoId={ifo.id} />
+              <IfoRibbon publicIfoData={publicIfoData} />
+            </>
+          )}
+          <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+          <StyledCardFooter>
+            <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
+              {isExpanded ? t('Hide') : t('Details')}
+            </ExpandableLabel>
+            {isExpanded && <IfoAchievement ifo={ifo} publicIfoData={publicIfoData} />}
+          </StyledCardFooter>
+        </StyledCard>
+      </Box>
+    </>
   )
 }
 
@@ -144,6 +208,7 @@ const FoldableContent = styled.div<{ isVisible: boolean }>`
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
 `
 
+// Past Ifo
 const IfoFoldableCard = ({
   ifo,
   publicIfoData,
@@ -154,15 +219,15 @@ const IfoFoldableCard = ({
   walletIfoData: WalletIfoData
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
 
   return (
     <Box position="relative">
-      {isExpanded && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
-      <StyledCard>
+      {isExpanded && isDesktop && <NoHatBunny isLive={false} />}
+      <Box as={StyledCard} borderRadius="32px">
         <Box position="relative">
           <Header ifoId={ifo.id}>
-            {!isExpanded && <ExpandableButton expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)} />}
+            <ExpandableButton expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)} />
           </Header>
           {isExpanded && (
             <>
@@ -172,14 +237,9 @@ const IfoFoldableCard = ({
         </Box>
         <FoldableContent isVisible={isExpanded}>
           <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-          <StyledCardFooter>
-            <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
-              {isExpanded ? t('Hide') : t('Details')}
-            </ExpandableLabel>
-            {isExpanded && <IfoAchievement ifo={ifo} publicIfoData={publicIfoData} />}
-          </StyledCardFooter>
+          <IfoAchievement ifo={ifo} publicIfoData={publicIfoData} />
         </FoldableContent>
-      </StyledCard>
+      </Box>
     </Box>
   )
 }

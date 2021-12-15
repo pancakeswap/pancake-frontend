@@ -3,10 +3,12 @@ import styled from 'styled-components'
 
 const IfoLayout = styled(Box)`
   display: grid;
-  grid-gap: 32px;
+  > div:not(.sticky-header) {
+    margin-bottom: 32px;
+  }
 `
-export const IfoLayoutWrapper = styled(Box)`
-  gap: 32px;
+export const IfoLayoutWrapper = styled(IfoLayout)`
+  column-gap: 32px;
   display: grid;
   grid-template-columns: 1fr;
 
