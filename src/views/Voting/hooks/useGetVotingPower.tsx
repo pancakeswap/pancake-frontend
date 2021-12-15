@@ -60,7 +60,7 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
             cakePoolBalance: parseFloat(cakePoolBalance),
             poolsBalance: parseFloat(poolsBalance),
             cakeVaultBalance: parseFloat(cakeVaultBalance),
-            ifoPoolBalance: parseFloat(IFOPoolBalance),
+            ifoPoolBalance: IFOPoolBalance ? parseFloat(IFOPoolBalance) : 0,
             total: parseFloat(total),
           }))
         }
