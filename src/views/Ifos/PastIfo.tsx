@@ -10,7 +10,7 @@ const inactiveIfo: Ifo[] = ifosConfig.filter((ifo) => !ifo.isActive)
 
 const PastIfo = () => {
   return (
-    <IfoLayout maxWidth="736px" m="auto" width="100%" id="past-ifos" py="40px">
+    <IfoLayout maxWidth="736px" m="auto" width="100%" id="past-ifos" py={['24px', '24px', '40px']}>
       {inactiveIfo.map((ifo) => {
         switch (ifo.version) {
           case 1:

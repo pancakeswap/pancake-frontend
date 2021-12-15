@@ -18,7 +18,7 @@ const Ifo = () => {
   const walletIfoData = useGetWalletIfoV3Data(activeIfo)
 
   return (
-    <IfoLayout id="current-ifo" py="40px">
+    <IfoLayout id="current-ifo" py={['24px', '24px', '40px']}>
       <IfoLayoutWrapper>
         <IfoPoolVaultCard />
         <IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
