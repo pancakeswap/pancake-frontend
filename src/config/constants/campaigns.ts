@@ -322,6 +322,12 @@ const campaigns: Campaign[] = [
     title: 'Fan Token Participant: Bronze',
     badge: 'fan-token-participant-bronze.svg',
   },
+  {
+    id: '511160000',
+    type: 'ifo',
+    title: 'Diviner Protocol',
+    badge: 'ifo-dpt.svg',
+  },
 ]
 
 /**

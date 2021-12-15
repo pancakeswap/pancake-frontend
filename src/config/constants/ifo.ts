@@ -25,7 +25,7 @@ const ifos: Ifo[] = [
     },
     currency: tokens.cake,
     token: tokens.dpt,
-    releaseBlockNumber: 0,
+    releaseBlockNumber: 13491500,
     campaignId: '511160000',
     articleUrl: 'https://pancakeswap.finance/voting/proposal/QmQqpknHvuQwshVP259qFxfQsxiWbQ9SLMebohDeRwRzKg',
     tokenOfferingPrice: 0.025,
