@@ -12,8 +12,16 @@ interface VoteDetailsModalProps extends InjectedModalProps {
 const VoteDetailsModal: React.FC<VoteDetailsModalProps> = ({ block, onDismiss }) => {
   const { t } = useTranslation()
   const [modalIsOpen, setModalIsOpen] = useState(true)
-  const { isLoading, total, cakeBalance, cakeVaultBalance, cakePoolBalance, poolsBalance, cakeBnbLpBalance } =
-    useGetVotingPower(block, modalIsOpen)
+  const {
+    isLoading,
+    total,
+    cakeBalance,
+    cakeVaultBalance,
+    cakePoolBalance,
+    poolsBalance,
+    cakeBnbLpBalance,
+    ifoPoolBalance,
+  } = useGetVotingPower(block, modalIsOpen)
   const { theme } = useTheme()
 
   const handleDismiss = () => {
@@ -36,6 +44,7 @@ const VoteDetailsModal: React.FC<VoteDetailsModalProps> = ({ block, onDismiss })
               cakeVaultBalance={cakeVaultBalance}
               cakePoolBalance={cakePoolBalance}
               poolsBalance={poolsBalance}
+              ifoPoolBalance={ifoPoolBalance}
               cakeBnbLpBalance={cakeBnbLpBalance}
             />
             <Button variant="secondary" onClick={onDismiss} width="100%" mt="16px">

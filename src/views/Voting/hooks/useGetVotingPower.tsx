@@ -12,6 +12,7 @@ interface State {
   cakePoolBalance: number
   poolsBalance: number
   cakeBnbLpBalance: number
+  ifoPoolBalance: number
   total: number
 }
 
@@ -22,6 +23,7 @@ const initialState: State = {
   cakePoolBalance: 0,
   poolsBalance: 0,
   cakeBnbLpBalance: 0,
+  ifoPoolBalance: 0,
   total: 0,
 }
 
@@ -46,6 +48,7 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
           poolsBalance,
           cakeVaultBalance,
           verificationHash,
+          IFOPoolBalance,
         } = await getVotingPower(account, poolAddresses, blockNumber)
 
         if (isActive) {
@@ -57,6 +60,7 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
             cakePoolBalance: parseFloat(cakePoolBalance),
             poolsBalance: parseFloat(poolsBalance),
             cakeVaultBalance: parseFloat(cakeVaultBalance),
+            ifoPoolBalance: IFOPoolBalance ? parseFloat(IFOPoolBalance) : 0,
             total: parseFloat(total),
           }))
         }

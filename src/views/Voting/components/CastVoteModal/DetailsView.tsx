@@ -11,6 +11,7 @@ interface DetailsViewProps {
   cakePoolBalance: number
   poolsBalance: number
   cakeBnbLpBalance: number
+  ifoPoolBalance: number
 }
 
 const DetailsView: React.FC<DetailsViewProps> = ({
@@ -20,6 +21,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
   cakePoolBalance,
   poolsBalance,
   cakeBnbLpBalance,
+  ifoPoolBalance,
 }) => {
   const { t } = useTranslation()
 
@@ -59,6 +61,12 @@ const DetailsView: React.FC<DetailsViewProps> = ({
           {t('Auto CAKE Pool')}
         </Text>
         <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
+      </Flex>
+      <Flex alignItems="center" justifyContent="space-between" mb="4px">
+        <Text color="textSubtle" fontSize="16px">
+          {t('IFO Pool')}
+        </Text>
+        <Text textAlign="right">{formatNumber(ifoPoolBalance, 0, 3)}</Text>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="4px">
         <Text color="textSubtle" fontSize="16px">
