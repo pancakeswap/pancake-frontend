@@ -1,14 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints, TokenPairImage as UITokenPairImage } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { TokenPairImage } from 'components/TokenImage'
-import CakeVaultTokenPairImage from '../../CakeVaultCard/CakeVaultTokenPairImage'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface NameCellProps {
@@ -58,7 +57,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   return (
     <StyledCell role="cell">
       {vaultKey ? (
-        <CakeVaultTokenPairImage mr="8px" width={40} height={40} />
+        <UITokenPairImage {...vaultPoolConfig[vaultKey].tokenImage} mr="8px" width={40} height={40} />
       ) : (
         <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
       )}
