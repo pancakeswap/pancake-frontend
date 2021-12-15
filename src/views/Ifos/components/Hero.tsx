@@ -27,6 +27,9 @@ const StyledButton = styled(Button)`
   text-transform: uppercase;
   align-self: flex-start;
   font-size: 12px;
+  box-shadow: ${({ theme }) => theme.shadows.inset};
+  border-radius: 8px;
+  margin-left: 8px;
 `
 
 const DesktopButton = styled(Button)`
@@ -44,7 +47,11 @@ const StyledSubTitle = styled(Text)`
 const Hero = () => {
   const { t } = useTranslation()
 
-  const { isDesktop, isTablet } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
+
+  const handleClick = () => {
+    document.getElementById('ifo-how-to')?.scrollIntoView()
+  }
 
   return (
     <Box mb="8px">
@@ -59,17 +66,16 @@ const Hero = () => {
               <StyledHeading as="h1" mb={['12px', '12px', '16px']}>
                 {t('IFO: Initial Farm Offerings')}
               </StyledHeading>
-              <StyledSubTitle bold>{t('Buy new tokens launching on Binance Smart Chain')}</StyledSubTitle>
+              <StyledSubTitle bold>
+                {t('Buy new tokens launching on Binance Smart Chain')}
+                {isMobile && <StyledButton onClick={handleClick}>{t('How does it work?')}</StyledButton>}
+              </StyledSubTitle>
             </Box>
-            <Button
-              as={isDesktop || isTablet ? (DesktopButton as any) : (StyledButton as any)}
-              onClick={() => {
-                document.getElementById('ifo-how-to')?.scrollIntoView()
-              }}
-              variant="subtle"
-            >
-              {t('How does it work?')}
-            </Button>
+            {!isMobile && (
+              <DesktopButton onClick={handleClick} variant="subtle">
+                {t('How does it work?')}
+              </DesktopButton>
+            )}
           </Flex>
         </Container>
       </StyledHero>
