@@ -164,7 +164,7 @@ export const IfoCurrentCard = ({
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
-  const showShowBunny = publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon'
+  const shouldShowBunny = publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon'
 
   return (
     <>
@@ -179,11 +179,11 @@ export const IfoCurrentCard = ({
         >
           <Header $isCurrent ifoId={ifo.id} />
           <IfoRibbon publicIfoData={publicIfoData} />
-          {showShowBunny && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
+          {shouldShowBunny && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
         </Box>
       )}
       <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '100%']}>
-        {!isMobile && showShowBunny && <NoHatBunny isCurrent isLive={publicIfoData.status === 'live'} />}
+        {!isMobile && shouldShowBunny && <NoHatBunny isCurrent isLive={publicIfoData.status === 'live'} />}
         <StyledCard $isCurrent>
           {!isMobile && (
             <>
