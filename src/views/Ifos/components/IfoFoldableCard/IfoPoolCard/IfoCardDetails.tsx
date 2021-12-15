@@ -88,11 +88,21 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
 
+  let version3MaxTokens = walletIfoData.ifoCredit?.creditLeft
+    ? // if creditLeft > limit show limit else show creditLeft
+      walletIfoData.ifoCredit.creditLeft.gt(poolCharacteristic.limitPerUserInLP)
+      ? poolCharacteristic.limitPerUserInLP
+      : walletIfoData.ifoCredit.creditLeft
+    : null
+
+  // unlimited pool just show the credit left
+  version3MaxTokens = poolId === PoolIds.poolUnlimited ? walletIfoData.ifoCredit?.creditLeft : version3MaxTokens
+
   /* Format start */
   const maxLpTokens =
     ifo.version === 3
-      ? walletIfoData.ifoCredit?.creditLeft
-        ? getBalanceNumber(walletIfoData.ifoCredit?.creditLeft, ifo.currency.decimals)
+      ? version3MaxTokens
+        ? getBalanceNumber(version3MaxTokens, ifo.currency.decimals)
         : 0
       : getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
   const taxRate = `${poolCharacteristic.taxRate}%`
