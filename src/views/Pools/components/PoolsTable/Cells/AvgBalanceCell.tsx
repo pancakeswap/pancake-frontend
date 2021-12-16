@@ -24,9 +24,6 @@ const StyledCell = styled(BaseCell)`
   ${({ theme }) => theme.mediaQueries.lg} {
     flex: 1 0 170px;
   }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    flex: 1 0 170px;
-  }
 `
 
 const HelpIconWrapper = styled.div`
