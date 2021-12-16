@@ -187,7 +187,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         <Message my="24px" p="8px" variant="danger">
           <Box>
             <MessageText as="span" color="failure">
-              {t('You don’t have any average CAKE balance available to commit in IFO CAKE pool.')}
+              {t('You don’t have any average CAKE balance available to commit in the IFO CAKE pool.')}
             </MessageText>{' '}
             <MessageText as="a" $isLink color="failure" fontWeight={700} href="#ifo-how-to">
               {t('How does it work?')} »
