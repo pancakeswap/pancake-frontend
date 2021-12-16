@@ -1847,6 +1847,14 @@ export const mainnetTokens = {
     'Diviner Protocol',
     'https://diviner.finance/',
   ),
+  thg: new Token(
+    MAINNET,
+    '0x9fD87aEfe02441B123c3c32466cD9dB4c578618f',
+    18,
+    'THG',
+    'Thetan Gem',
+    'https://thetanarena.com/',
+  ),
 }
 
 export const testnetTokens = {
