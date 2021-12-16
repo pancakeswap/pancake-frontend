@@ -18,10 +18,7 @@ interface StakedCellProps {
 }
 
 const StyledCell = styled(BaseCell)`
-  flex: 4.5;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex: 1 0 120px;
-  }
+  flex: 2 0 100px;
 `
 
 const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }) => {

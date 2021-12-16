@@ -1,6 +1,5 @@
 import React from 'react'
-
-import { FlexProps, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useTranslation } from 'contexts/Localization'
@@ -8,11 +7,11 @@ import BaseCell, { CellContent } from './BaseCell'
 import Apr from '../Apr'
 import { convertSharesToCake } from '../../../helpers'
 
-interface AprCellProps extends FlexProps {
+interface AprCellProps {
   pool: DeserializedPool
 }
 
-const AutoAprCell: React.FC<AprCellProps> = ({ pool, ...props }) => {
+const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
@@ -25,7 +24,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool, ...props }) => {
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
 
   return (
-    <BaseCell role="cell" {...props}>
+    <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('APY')}

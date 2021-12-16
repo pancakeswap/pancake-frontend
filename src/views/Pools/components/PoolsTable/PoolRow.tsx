@@ -56,19 +56,9 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         ) : isXLargerScreen && isPoolZero ? (
           <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         ) : null}
-        {pool.vaultKey ? (
-          <AutoAprCell flex={['1 0 50px', '1 0 50px', '1 0 120px', '1 0 120px', '2 0 100px']} pool={pool} />
-        ) : (
-          <AprCell
-            flex={
-              isPoolZero
-                ? ['1 0 50px', '1 0 50px', '1 0 120px', '1 0 120px', '2 0 100px']
-                : ['1 0 50px', '1 0 50px', '1 0 120px']
-            }
-            pool={pool}
-          />
-        )}
-        {isLargerScreen && <TotalStakedCell pool={pool} />}
+        {isLargerScreen && !isPoolZero && <TotalStakedCell pool={pool} />}
+        {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
+        {isLargerScreen && isPoolZero && <TotalStakedCell pool={pool} />}
         {isDesktop && !isPoolZero && <EndsInCell pool={pool} />}
         <ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
       </StyledRow>
