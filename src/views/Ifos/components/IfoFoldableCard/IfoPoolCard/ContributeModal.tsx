@@ -106,9 +106,7 @@ const ContributeModal: React.FC<Props> = ({
       return limitPerUserInLP.minus(amountTokenCommittedInLP)
     }
     if (limitPerUserInLP.isGreaterThan(0)) {
-      return limitPerUserInLP.minus(amountTokenCommittedInLP).isLessThanOrEqualTo(creditLeft)
-        ? limitPerUserInLP
-        : creditLeft
+      return limitPerUserInLP.isLessThanOrEqualTo(creditLeft) ? limitPerUserInLP : creditLeft
     }
     return creditLeft
   }, [creditLeft, limitPerUserInLP, amountTokenCommittedInLP])
