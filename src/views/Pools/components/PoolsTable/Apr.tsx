@@ -61,7 +61,7 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
   }
 
   return (
-    <AprLabelContainer alignItems="center" justifyContent="space-between" {...props}>
+    <AprLabelContainer alignItems="center" justifyContent="flex-start" {...props}>
       {apr || isFinished ? (
         <>
           <Balance

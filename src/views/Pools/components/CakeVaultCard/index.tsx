@@ -1,6 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, CardBody, Flex, Text, CardProps, HelpIcon, useTooltip, LinkExternal, Link } from '@pancakeswap/uikit'
+import {
+  Box,
+  CardBody,
+  Flex,
+  Text,
+  CardProps,
+  HelpIcon,
+  useTooltip,
+  LinkExternal,
+  Link,
+  TokenPairImage,
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -17,7 +28,6 @@ import PoolCardHeader, { PoolCardHeaderTitle } from '../PoolCard/PoolCardHeader'
 import VaultCardActions from './VaultCardActions'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
-import CakeVaultTokenPairImage from './CakeVaultTokenPairImage'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
@@ -68,7 +78,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
           title={t(vaultPoolConfig[pool.vaultKey].name)}
           subTitle={t(vaultPoolConfig[pool.vaultKey].description)}
         />
-        <CakeVaultTokenPairImage width={64} height={64} />
+        <TokenPairImage {...vaultPoolConfig[pool.vaultKey].tokenImage} width={64} height={64} />
       </PoolCardHeader>
       <StyledCardBody isLoading={isLoading}>
         <AprRow pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />

@@ -1,12 +1,11 @@
 import { Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
-const BaseCell = styled.div`
+const BaseCell = styled(Flex)`
   color: black;
 
   padding: 24px 8px;
 
-  display: flex;
   flex-direction: column;
   justify-content: flex-start;
 `

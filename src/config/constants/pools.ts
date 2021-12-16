@@ -1,5 +1,5 @@
 import { VaultKey } from 'state/types'
-import { serializeTokens } from './tokens'
+import tokens, { serializeTokens } from './tokens'
 import { SerializedPoolConfig, PoolCategory } from './types'
 
 const serializedTokens = serializeTokens()
@@ -10,12 +10,20 @@ export const vaultPoolConfig = {
     description: 'Automatic restaking',
     autoCompoundFrequency: 5000,
     gasLimit: 380000,
+    tokenImage: {
+      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      secondarySrc: '/images/tokens/autorenew.svg',
+    },
   },
   [VaultKey.IfoPool]: {
     name: 'IFO CAKE',
     description: 'Stake CAKE to participate in IFO',
     autoCompoundFrequency: 1,
     gasLimit: 500000,
+    tokenImage: {
+      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      secondarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+    },
   },
 } as const
 
