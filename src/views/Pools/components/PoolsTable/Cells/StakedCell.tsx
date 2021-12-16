@@ -22,9 +22,6 @@ const StyledCell = styled(BaseCell)`
   ${({ theme }) => theme.mediaQueries.sm} {
     flex: 1 0 120px;
   }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    flex: 1 0 170px;
-  }
 `
 
 const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }) => {
