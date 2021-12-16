@@ -79,21 +79,15 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ pool, account, userData
                   value={hasCredit ? cakeAsNumberBalance : 0}
                 />
                 {hasCredit ? (
-                  stakedDollarValue > 0 ? (
-                    <Balance
-                      display="inline"
-                      fontSize="12px"
-                      color="textSubtle"
-                      decimals={2}
-                      prefix="~"
-                      value={stakedDollarValue}
-                      unit=" USD"
-                    />
-                  ) : (
-                    <Text mt="4px" fontSize="12px" color="textDisabled">
-                      0 USD
-                    </Text>
-                  )
+                  <Balance
+                    display="inline"
+                    fontSize="12px"
+                    color="textSubtle"
+                    decimals={2}
+                    prefix="~"
+                    value={stakedDollarValue}
+                    unit=" USD"
+                  />
                 ) : (
                   <Text mt="4px" fontSize="12px" color="textDisabled">
                     0 USD

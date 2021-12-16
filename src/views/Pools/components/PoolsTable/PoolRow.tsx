@@ -13,7 +13,7 @@ import ExpandActionCell from './Cells/ExpandActionCell'
 import ActionPanel from './ActionPanel/ActionPanel'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
 import AutoAprCell from './Cells/AutoAprCell'
-import BaseCell from './Cells/BaseCell'
+import StakedCell from './Cells/StakedCell'
 
 interface PoolRowProps {
   pool: DeserializedPool
@@ -54,7 +54,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         {pool.vaultKey === VaultKey.IfoPool ? (
           <AvgBalanceCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         ) : isXLargerScreen && isPoolZero ? (
-          <BaseCell flex="1 0 170px" />
+          <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         ) : null}
         {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
         {isLargerScreen && <TotalStakedCell pool={pool} />}
