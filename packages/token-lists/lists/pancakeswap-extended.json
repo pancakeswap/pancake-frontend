@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-12-10T11:44:02.739Z",
+  "timestamp": "2021-12-16T08:16:10.746Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 50
+    "patch": 51
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1731,6 +1731,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xdFF8cb622790b7F92686c722b02CaB55592f152C.png"
+    },
+    {
+      "name": "Thetan Gem",
+      "symbol": "THG",
+      "address": "0x9fD87aEfe02441B123c3c32466cD9dB4c578618f",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x9fD87aEfe02441B123c3c32466cD9dB4c578618f.png"
     },
     {
       "name": "TitanSwap",
