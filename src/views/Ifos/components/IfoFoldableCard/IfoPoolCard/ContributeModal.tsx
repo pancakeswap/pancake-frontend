@@ -14,6 +14,7 @@ import {
   useTooltip,
   TooltipText,
   Box,
+  Link,
 } from '@pancakeswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
@@ -105,17 +106,24 @@ const ContributeModal: React.FC<Props> = ({
       return limitPerUserInLP.minus(amountTokenCommittedInLP)
     }
     if (limitPerUserInLP.isGreaterThan(0)) {
-      return limitPerUserInLP.minus(amountTokenCommittedInLP).isLessThanOrEqualTo(creditLeft)
-        ? limitPerUserInLP
-        : creditLeft
+      return limitPerUserInLP.isLessThanOrEqualTo(creditLeft) ? limitPerUserInLP : creditLeft
     }
     return creditLeft
   }, [creditLeft, limitPerUserInLP, amountTokenCommittedInLP])
 
+  // include user balance for input
+  const maximumTokenCommittable = useMemo(() => {
+    return maximumTokenEntry.isLessThanOrEqualTo(userCurrencyBalance) ? maximumTokenEntry : userCurrencyBalance
+  }, [maximumTokenEntry, userCurrencyBalance])
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(
-      'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
-    ),
+    poolId === PoolIds.poolBasic
+      ? t(
+          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+        )
+      : t(
+          'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+        ),
     {},
   )
 
@@ -126,15 +134,13 @@ const ContributeModal: React.FC<Props> = ({
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
       <ModalBody maxWidth="360px">
         <Box p="2px">
-          {limitPerUserInLP.isGreaterThan(0) && (
-            <Flex justifyContent="space-between" mb="16px">
-              {tooltipVisible && tooltip}
-              <TooltipText ref={targetRef}>{label}:</TooltipText>
-              <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
-                ifo.currency.symbol
-              }`}</Text>
-            </Flex>
-          )}
+          <Flex justifyContent="space-between" mb="16px">
+            {tooltipVisible && tooltip}
+            <TooltipText ref={targetRef}>{label}:</TooltipText>
+            <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
+              ifo.currency.symbol
+            }`}</Text>
+          </Flex>
           <Flex justifyContent="space-between" mb="8px">
             <Text>{t('Commit')}:</Text>
             <Flex flexGrow={1} justifyContent="flex-end">
@@ -156,6 +162,12 @@ const ContributeModal: React.FC<Props> = ({
             onUserInput={setValue}
             isWarning={isWarning}
             decimals={currency.decimals}
+            onBlur={() => {
+              if (isWarning) {
+                // auto adjust to max value
+                setValue(getBalanceAmount(maximumTokenCommittable).toString())
+              }
+            }}
             mb="8px"
           />
           {isWarning && (
@@ -181,7 +193,7 @@ const ContributeModal: React.FC<Props> = ({
                 key={multiplierValue}
                 scale="xs"
                 variant="tertiary"
-                onClick={() => setValue(getBalanceAmount(maximumTokenEntry.times(multiplierValue)).toString())}
+                onClick={() => setValue(getBalanceAmount(maximumTokenCommittable.times(multiplierValue)).toString())}
                 mr={index < multiplierValues.length - 1 ? '8px' : 0}
               >
                 {multiplierValue * 100}%
@@ -192,12 +204,20 @@ const ContributeModal: React.FC<Props> = ({
             {t(
               'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
             )}
+            <Link
+              fontSize="12px"
+              display="inline"
+              href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering"
+              external
+            >
+              {t('Read more')}
+            </Link>
           </Text>
           <ApproveConfirmButtons
             isApproveDisabled={isConfirmed || isConfirming || isApproved}
             isApproving={isApproving}
             isConfirmDisabled={
-              !isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)
+              !isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0) || isWarning
             }
             isConfirming={isConfirming}
             onApprove={handleApprove}

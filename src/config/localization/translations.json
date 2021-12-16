@@ -1793,5 +1793,6 @@
   "Credit calculation starts:": "Credit calculation starts:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.",
   "Check out our Medium article for more details.": "Check out our Medium article for more details.",
-  "IFO Pool": "IFO Pool"
+  "IFO Pool": "IFO Pool",
+  "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool"
 }
