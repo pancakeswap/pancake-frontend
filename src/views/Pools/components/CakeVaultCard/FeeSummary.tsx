@@ -4,6 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { VaultKey } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { secondsToDay } from 'utils/timeHelper'
+import { getHasWithdrawFee } from '../../hooks/useWithdrawalFeeTimer'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 
 interface FeeSummaryProps {
@@ -16,6 +17,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount
   const { t } = useTranslation()
   const {
     fees: { withdrawalFee, withdrawalFeePeriod },
+    userData: { lastDepositedTime },
   } = useVaultPoolByKey(vaultKey)
   const feeAsDecimal = withdrawalFee / 100
   const feeInCake = (parseFloat(stakeAmount) * (feeAsDecimal / 100)).toFixed(4)
@@ -37,6 +39,8 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount
     { placement: 'top-start' },
   )
 
+  const hasFeeToPay = lastDepositedTime && getHasWithdrawFee(parseInt(lastDepositedTime, 10), withdrawalFeePeriod)
+
   return (
     <>
       <Flex mt="24px" alignItems="center" justifyContent="space-between">
@@ -45,7 +49,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount
           {t('Unstaking Fee')}
         </TooltipText>
         <Text fontSize="14px">
-          {stakeAmount ? feeInCake : '-'} {stakingTokenSymbol}
+          {stakeAmount && hasFeeToPay ? feeInCake : '-'} {stakingTokenSymbol}
         </Text>
       </Flex>
       <UnstakingFeeCountdownRow vaultKey={vaultKey} />
