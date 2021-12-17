@@ -62,7 +62,7 @@ const UserName: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { toastError } = useToast()
-  const { library } = useWeb3Provider()
+  const { library, connector } = useWeb3Provider()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -142,7 +142,7 @@ const UserName: React.FC = () => {
     try {
       setIsLoading(true)
 
-      const signature = await signMessage(library, account, userName)
+      const signature = await signMessage(connector, library, account, userName)
       const response = await fetch(`${API_PROFILE}/api/users/register`, {
         method: 'POST',
         headers: {

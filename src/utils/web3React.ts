@@ -1,5 +1,6 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { AbstractConnector } from '@web3-react/abstract-connector'
 import { BscConnector } from '@binance-chain/bsc-connector'
 import { ConnectorNames } from '@pancakeswap/uikit'
 import { ethers } from 'ethers'
@@ -35,8 +36,13 @@ export const getLibrary = (provider): ethers.providers.Web3Provider => {
  * BSC Wallet requires a different sign method
  * @see https://docs.binance.org/smart-chain/wallet/wallet_api.html#binancechainbnbsignaddress-string-message-string-promisepublickey-string-signature-string
  */
-export const signMessage = async (provider: any, account: string, message: string): Promise<string> => {
-  if (window.BinanceChain) {
+export const signMessage = async (
+  connector: AbstractConnector,
+  provider: any,
+  account: string,
+  message: string,
+): Promise<string> => {
+  if (window.BinanceChain && connector instanceof BscConnector) {
     const { signature } = await window.BinanceChain.bnbSign(account, message)
     return signature
   }
