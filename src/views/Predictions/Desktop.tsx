@@ -9,19 +9,20 @@ import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } fro
 import { setChartPaneState } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
+import { TradingViewLabel } from 'components/TradingView'
 import TradingView from './components/TradingView'
 import { ErrorNotification, PauseNotification } from './components/Notification'
 import History from './History'
 import Positions from './Positions'
 
 // The value to set the chart when the user clicks the chart tab at the bottom
-const GRID_TEMPLATE_ROW = '1.2fr 12px .8fr'
+const GRID_TEMPLATE_ROW = '1.2fr 24px .8fr'
 
 const ExpandChartButton = styled(Button)`
   background-color: ${({ theme }) => theme.card.background};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  bottom: 12px;
+  bottom: 24px;
   color: ${({ theme }) => theme.colors.text};
   display: none;
   left: 32px;
@@ -41,7 +42,7 @@ const ExpandChartButton = styled(Button)`
 const SplitWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 12px 0;
+  grid-template-rows: 1fr 24px 0;
   flex: 1;
   overflow: hidden;
 `
@@ -83,7 +84,7 @@ const PositionPane = styled.div`
 const Gutter = styled.div`
   background: ${({ theme }) => theme.colors.dropdown};
   cursor: row-resize;
-  height: 12px;
+  height: 24px;
   position: relative;
 
   &:before {
@@ -94,7 +95,7 @@ const Gutter = styled.div`
     left: 50%;
     margin-left: -32px;
     position: absolute;
-    top: 4px;
+    top: 10px;
     width: 64px;
   }
 `
@@ -171,7 +172,9 @@ const Desktop: React.FC = () => {
             {status === PredictionStatus.PAUSED && <PauseNotification />}
             {status === PredictionStatus.LIVE && <Positions />}
           </PositionPane>
-          <Gutter ref={gutterRef} />
+          <Gutter ref={gutterRef}>
+            <TradingViewLabel justifyContent="flex-end" symbol="BNBUSDT" />
+          </Gutter>
           <ChartPane ref={chartRef}>
             <TradingView />
           </ChartPane>

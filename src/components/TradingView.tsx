@@ -1,4 +1,4 @@
-import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, FlexProps, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useScript from 'hooks/useScript'
 import React, { useEffect, useRef } from 'react'
@@ -125,6 +125,21 @@ export function useTradingViewEvent({
       window.removeEventListener('message', onNoDataAvailable)
     }
   }, [id, onNoDataEvent, onLoadedEvent])
+}
+
+// Required to link to TradingView website for the widget
+export const TradingViewLabel = ({ symbol, ...props }: { symbol: string } & FlexProps) => {
+  const { t } = useTranslation()
+  return (
+    <Flex alignItems="center" px="24px" {...props}>
+      <Link fontSize="14px" href={`https://www.tradingview.com/symbols/${symbol}`} external>
+        BNB {t('Chart')}
+      </Link>
+      <Text fontSize="14px" ml="4px">
+        {t('by')} TradingView
+      </Text>
+    </Flex>
+  )
 }
 
 export default TradingView
