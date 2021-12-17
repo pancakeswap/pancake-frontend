@@ -52,7 +52,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
           <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         )}
         {pool.vaultKey === VaultKey.IfoPool ? (
-          <AvgBalanceCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+          <AvgBalanceCell account={account} userDataLoaded={userDataLoaded} />
         ) : isXLargerScreen && isPoolZero ? (
           <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         ) : null}
