@@ -1766,7 +1766,7 @@
   "TradingView chart not available": "TradingView-diagrammet är inte tillgängligt",
   "Everyone’s a winner!": "Everyone’s a winner!",
   "Sign up for battle and you’re guaranteed a prize!": "Sign up for battle and you’re guaranteed a prize!",
-  "Binance Fan token Trading Competition": "Binance Fan token Trading Competition",
+  "Binance Fan Token Trading Competition": "Binance Fan Token Trading Competition",
   "Compete with other teams for the highest trading volume!": "Compete with other teams for the highest trading volume!",
   "Trading Competition": "Trading Competition",
   "Trade SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.": "Trade SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.",
@@ -1780,7 +1780,7 @@
   "Please refer to our blog post for more details.": "Please refer to our blog post for more details.",
   "Your max CAKE entry": "Your max CAKE entry",
   "For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool",
-  "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAEK pool": "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAEK pool",
+  "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool",
   "You don’t have any average CAKE balance available to commit in the IFO CAKE pool.": "You don’t have any average CAKE balance available to commit in the IFO CAKE pool.",
   "Sale Finished!": "Sale Finished!",
   "Start in": "Start in",
@@ -1794,5 +1794,6 @@
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.",
   "Check out our Medium article for more details.": "Check out our Medium article for more details.",
   "IFO Pool": "IFO Pool",
-  "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool"
+  "Chart": "Chart",
+  "by": "by"
 }
