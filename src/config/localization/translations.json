@@ -1780,7 +1780,7 @@
   "Please refer to our blog post for more details.": "Please refer to our blog post for more details.",
   "Your max CAKE entry": "Your max CAKE entry",
   "For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool",
-  "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAEK pool": "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAEK pool",
+  "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool",
   "You don’t have any average CAKE balance available to commit in the IFO CAKE pool.": "You don’t have any average CAKE balance available to commit in the IFO CAKE pool.",
   "Sale Finished!": "Sale Finished!",
   "Start in": "Start in",
@@ -1793,6 +1793,5 @@
   "Credit calculation starts:": "Credit calculation starts:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.",
   "Check out our Medium article for more details.": "Check out our Medium article for more details.",
-  "IFO Pool": "IFO Pool",
-  "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool"
+  "IFO Pool": "IFO Pool"
 }
