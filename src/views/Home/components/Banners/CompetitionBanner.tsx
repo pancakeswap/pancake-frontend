@@ -99,7 +99,7 @@ const CompetitionBanner = () => {
         </ImageWrapper>
         <RightWrapper>
           <Flex flexDirection="column" justifyContent="center">
-            <StyledSubheading>{t('Binance Fan token Trading Competition')}</StyledSubheading>
+            <StyledSubheading>{t('Binance Fan Token Trading Competition')}</StyledSubheading>
             <StyledHeading mb={0} scale="xl">
               {t('$120,000 in Prizes!')}
             </StyledHeading>
@@ -107,7 +107,7 @@ const CompetitionBanner = () => {
           <Link to="/competition">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
-                {t('Play Now')}
+                {t('Trade Now')}
               </Text>
               <ArrowForwardIcon color="invertedContrast" />
             </Button>
