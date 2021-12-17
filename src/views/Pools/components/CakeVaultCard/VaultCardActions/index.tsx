@@ -78,7 +78,7 @@ const CakeVaultCardActions: React.FC<{
   return (
     <Flex flexDirection="column">
       <Flex flexDirection="column">
-        {accountHasSharesStaked && pool.vaultKey === VaultKey.IfoPool && <IfoVaultCardAvgBalance pool={pool} />}
+        {isVaultApproved && pool.vaultKey === VaultKey.IfoPool && <IfoVaultCardAvgBalance pool={pool} />}
         <Box display="inline">
           <InlineText
             color={accountHasSharesStaked ? 'secondary' : 'textSubtle'}
