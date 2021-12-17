@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.24.0...@pancakeswap/token-lists@2.25.0) (2021-12-17)
+
+
+### Features
+
+* List auction 10 winners ([#358](https://github.com/pancakeswap/pancake-toolkit/issues/358)) ([3539365](https://github.com/pancakeswap/pancake-toolkit/commit/35393656c83fc10bbfb69a81ec8878bdcff054e9))
+* List THG ([#362](https://github.com/pancakeswap/pancake-toolkit/issues/362)) ([e7aaadb](https://github.com/pancakeswap/pancake-toolkit/commit/e7aaadb9c19f07f36e27d104841c25069b93b443))
+
+
+
+
+
 # [2.24.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.23.0...@pancakeswap/token-lists@2.24.0) (2021-12-09)
 
 
