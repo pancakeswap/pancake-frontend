@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
 import { Box, BunnyPlaceholderIcon, Flex, Text } from '@pancakeswap/uikit'
-import TradingView, { useTradingViewEvent } from 'components/TradingView'
+import TradingView, { TradingViewLabel, useTradingViewEvent } from 'components/TradingView'
 import { useTranslation } from 'contexts/Localization'
 import useDebounce from 'hooks/useDebounce'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -40,6 +40,7 @@ const LoadingWrapper = styled.div<{ $isDark: boolean }>`
 const bnbToWBNBSymbol = (sym: string) => (sym === 'BNB' ? 'WBNB' : sym)
 
 const ID = 'TV_SWAP_CHART'
+const SYMBOL_PREFIX = 'PANCAKESWAP:'
 
 const TradingViewChart = ({
   isChartExpanded,
@@ -60,10 +61,10 @@ const TradingViewChart = ({
     if (!(inputCurrency?.symbol && outputCurrency?.symbol)) {
       return null
     }
-    const prefix = 'PANCAKESWAP:'
+
     const input = bnbToWBNBSymbol(inputCurrency.symbol)
     const output = bnbToWBNBSymbol(outputCurrency.symbol)
-    return `${prefix}${input}${output}`
+    return `${input}${output}`
   }, [inputCurrency?.symbol, outputCurrency?.symbol])
 
   const onNoDataEvent = useCallback(() => {
@@ -95,12 +96,15 @@ const TradingViewChart = ({
         height={isMobile ? '100%' : isChartExpanded ? 'calc(100% - 48px)' : '430px'}
       >
         <Flex flexDirection="column" pt="12px" position="relative" height="100%" width="100%">
-          <TokenDisplay
-            value={token0Price}
-            inputSymbol={inputCurrency?.symbol}
-            outputSymbol={outputCurrency?.symbol}
-            mx="24px"
-          />
+          <Flex justifyContent="space-between" alignItems="baseline" flexWrap="wrap">
+            <TokenDisplay
+              value={token0Price}
+              inputSymbol={inputCurrency?.symbol}
+              outputSymbol={outputCurrency?.symbol}
+              mx="24px"
+            />
+            {!(isLoading || debouncedLoading) && !hasNoData && symbol && <TradingViewLabel symbol={symbol} />}
+          </Flex>
           <Box height="100%" pt="4px" position="relative">
             {hasNoData && (
               <Flex height="100%" justifyContent="center" alignItems="center" flexDirection="column">
@@ -117,7 +121,7 @@ const TradingViewChart = ({
             )}
             {!hasNoData && (
               <TradingViewWrapper $show={!isLoading}>
-                {symbol && <TradingView id={ID} symbol={symbol} />}
+                {symbol && <TradingView id={ID} symbol={`${SYMBOL_PREFIX}${symbol}`} />}
               </TradingViewWrapper>
             )}
           </Box>
