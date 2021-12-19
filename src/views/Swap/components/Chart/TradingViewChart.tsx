@@ -1,8 +1,8 @@
 import { Box, BunnyPlaceholderIcon, Flex, Text } from '@pancakeswap/uikit'
-import TradingView, { TradingViewLabel, useTradingViewEvent } from "components/TradingView"
+import TradingView, { useTradingViewEvent } from 'components/TradingView'
 import { useTranslation } from 'contexts/Localization'
 import useDebounce from 'hooks/useDebounce'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { BarChartLoader } from 'views/Info/components/ChartLoaders'
 
@@ -10,6 +10,7 @@ interface TradingViewChartProps {
   outputSymbol: string
   inputSymbol: string
   isDark: boolean
+  onTwChartSymbol?: (symbol: string) => void
 }
 
 const TradingViewWrapper = styled.div<{ $show: boolean }>`
@@ -34,7 +35,7 @@ const bnbToWBNBSymbol = (sym: string) => (sym === 'BNB' ? 'WBNB' : sym)
 const ID = 'TV_SWAP_CHART'
 const SYMBOL_PREFIX = 'PANCAKESWAP:'
 
-const TradingViewChart = ({ outputSymbol, inputSymbol, isDark }: TradingViewChartProps) => {
+const TradingViewChart = ({ outputSymbol, inputSymbol, isDark, onTwChartSymbol }: TradingViewChartProps) => {
   const [isLoading, setIsLoading] = useState(true)
   const { t } = useTranslation()
 
@@ -70,9 +71,16 @@ const TradingViewChart = ({ outputSymbol, inputSymbol, isDark }: TradingViewChar
   // if there's no no-data event coming between the debounce time, we assume the chart is loaded
   const debouncedLoading = useDebounce(isLoading, 800)
 
+  useEffect(() => {
+    if (!(isLoading || debouncedLoading) && !hasNoData && symbol) {
+      onTwChartSymbol(symbol)
+    } else {
+      onTwChartSymbol('')
+    }
+  }, [debouncedLoading, hasNoData, isLoading, onTwChartSymbol, symbol])
+
   return (
     <Box height="100%" width="100%" pt="4px" position="relative">
-      {!(isLoading || debouncedLoading) && !hasNoData && symbol && <TradingViewLabel symbol={symbol} />}
       {hasNoData && (
         <Flex height="100%" justifyContent="center" alignItems="center" flexDirection="column">
           <BunnyPlaceholderIcon width="96px" height="96px" />
@@ -87,12 +95,12 @@ const TradingViewChart = ({ outputSymbol, inputSymbol, isDark }: TradingViewChar
         </LoadingWrapper>
       )}
       {!hasNoData && (
-        <TradingViewWrapper $show={!isLoading}>{symbol && <TradingView id={ID} symbol={`${SYMBOL_PREFIX}${symbol}`} />}</TradingViewWrapper>
+        <TradingViewWrapper $show={!isLoading}>
+          {symbol && <TradingView id={ID} symbol={`${SYMBOL_PREFIX}${symbol}`} />}
+        </TradingViewWrapper>
       )}
     </Box>
   )
 }
 
-export default React.memo(TradingViewChart, (prev, next) => {
-  return prev.outputSymbol === next.outputSymbol && prev.inputSymbol === next.inputSymbol && prev.isDark === next.isDark
-})
+export default React.memo(TradingViewChart)

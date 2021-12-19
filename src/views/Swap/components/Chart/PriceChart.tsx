@@ -11,8 +11,9 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import { TradingViewLabel } from 'components/TradingView'
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { ChartViewMode } from 'state/user/actions'
 import { useExchangeChartViewManager } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -42,7 +43,12 @@ const PriceChart = ({
   const { isDesktop } = useMatchBreakpoints()
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
   const [chartView, setChartView] = useExchangeChartViewManager()
+  const [twChartSymbol, setTwChartSymbol] = useState('')
   const { t } = useTranslation()
+
+  const handleTwChartSymbol = useCallback((symbol) => {
+    setTwChartSymbol(symbol)
+  }, [])
 
   return (
     <StyledPriceChart
@@ -117,18 +123,22 @@ const PriceChart = ({
           height={isMobile ? '100%' : isChartExpanded ? 'calc(100% - 48px)' : '458px'}
           pt="12px"
         >
-          <TokenDisplay
-            value={currentSwapPrice?.[token0Address]}
-            inputSymbol={inputCurrency?.symbol}
-            outputSymbol={outputCurrency?.symbol}
-            mx="24px"
-          />
+          <Flex justifyContent="space-between" alignItems="baseline" flexWrap="wrap">
+            <TokenDisplay
+              value={currentSwapPrice?.[token0Address]}
+              inputSymbol={inputCurrency?.symbol}
+              outputSymbol={outputCurrency?.symbol}
+              mx="24px"
+            />
+            {twChartSymbol && <TradingViewLabel symbol={twChartSymbol} />}
+          </Flex>
           <TradingViewChart
             // unmount the whole component when symbols is changed
             key={`${inputCurrency?.symbol}-${outputCurrency?.symbol}`}
             inputSymbol={inputCurrency?.symbol}
             outputSymbol={outputCurrency?.symbol}
             isDark={isDark}
+            onTwChartSymbol={handleTwChartSymbol}
           />
         </Flex>
       )}
