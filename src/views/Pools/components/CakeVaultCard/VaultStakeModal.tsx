@@ -32,6 +32,7 @@ import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { logError } from 'utils/sentry'
 import { convertCakeToShares, convertSharesToCake } from '../../helpers'
 import FeeSummary from './FeeSummary'
 
@@ -150,6 +151,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           dispatch(fetchCakeVaultUserData({ account }))
         }
       } catch (error) {
+        logError(error)
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
         setPendingTx(false)
       }
@@ -176,6 +178,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           dispatch(fetchCakeVaultUserData({ account }))
         }
       } catch (error) {
+        logError(error)
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
         setPendingTx(false)
       }
@@ -201,6 +204,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         dispatch(fetchCakeVaultUserData({ account }))
       }
     } catch (error) {
+      logError(error)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setPendingTx(false)
     }

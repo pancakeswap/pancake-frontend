@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import BigNumber from 'bignumber.js'
 import { Button, Flex, Heading } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
+import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
+import useToast from 'hooks/useToast'
+import React, { useState } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
-import useToast from 'hooks/useToast'
-import { getBalanceAmount } from 'utils/formatBalance'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { useWeb3React } from '@web3-react/core'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import Balance from 'components/Balance'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getBalanceAmount } from 'utils/formatBalance'
+import { logError } from 'utils/sentry'
 import useHarvestFarm from '../../hooks/useHarvestFarm'
 
 interface FarmCardActionsProps {
@@ -52,7 +53,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
               t('Error'),
               t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
             )
-            console.error(e)
+            logError(e)
           } finally {
             setPendingTx(false)
           }

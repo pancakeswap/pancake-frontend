@@ -10,6 +10,7 @@ import useLastUpdated from 'hooks/useLastUpdated'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { VaultKey } from 'state/types'
+import { logError } from 'utils/sentry'
 
 export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -41,7 +42,7 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
         setRequestedApproval(false)
       }
     } catch (e) {
-      console.error(e)
+      logError(e)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     }
   }, [

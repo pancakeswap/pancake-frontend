@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import ethers, { Contract, CallOverrides } from 'ethers'
 import { useGasPrice } from 'state/user/hooks'
 import { get } from 'lodash'
+import * as Sentry from '@sentry/react'
 
 /**
  * Perform a contract call with a gas price returned from useGasPrice
@@ -21,6 +22,16 @@ export function useCallWithGasPrice() {
       methodArgs: any[] = [],
       overrides: CallOverrides = null,
     ): Promise<ethers.providers.TransactionResponse> => {
+      Sentry.addBreadcrumb({
+        category: 'callWithGasPrice',
+        message: `Call with gas price: ${gasPrice}`,
+        data: {
+          contractAddress: contract.address,
+          methodName,
+          methodArgs,
+          overrides,
+        },
+      })
       const contractMethod = get(contract, methodName)
       const hasManualGasPriceOverride = overrides?.gasPrice
 

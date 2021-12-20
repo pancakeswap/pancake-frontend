@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import * as Sentry from '@sentry/react'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { NoBscProviderError } from '@binance-chain/bsc-connector'
 import {
@@ -64,6 +65,7 @@ const useAuth = () => {
     dispatch(profileClear())
     dispatch(resetUserNftState())
     deactivate()
+    Sentry.configureScope((scope) => scope.setUser(null))
     // This localStorage key is set by @web3-react/walletconnect-connector
     if (window.localStorage.getItem('walletconnect')) {
       connectorsByName.walletconnect.close()

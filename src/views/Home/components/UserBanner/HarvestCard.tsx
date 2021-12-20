@@ -9,6 +9,7 @@ import useToast from 'hooks/useToast'
 import { useMasterchef } from 'hooks/useContract'
 import { harvestFarm } from 'utils/calls'
 import Balance from 'components/Balance'
+import { logError } from 'utils/sentry'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import { getEarningsText } from './EarningsText'
 
@@ -45,6 +46,7 @@ const HarvestCard = () => {
           t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
         )
       } catch (error) {
+        logError(error)
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
     }

@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
+import { logError } from 'utils/sentry'
 
 type LoadingState = 'idle' | 'loading' | 'success' | 'fail'
 
@@ -123,6 +124,7 @@ const useApproveConfirmTransaction = ({
         }
       } catch (error) {
         dispatch({ type: 'approve_error' })
+        logError(error)
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
     },
@@ -137,6 +139,7 @@ const useApproveConfirmTransaction = ({
         }
       } catch (error) {
         dispatch({ type: 'confirm_error' })
+        logError(error)
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
     },
