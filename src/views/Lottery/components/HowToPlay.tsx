@@ -74,10 +74,17 @@ const StepCard: React.FC<{ step: Step }> = ({ step }) => {
 }
 
 const BallsContainer = styled(Flex)`
-  gap: 6.5px;
-  padding-left: 7px;
+  padding-left: 28px;
   align-items: center;
   width: 100%;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    gap: 7px;
+    padding-left: 36px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    gap: 15px;
+    padding-left: 40px;
+  }
 `
 
 const InlineLink = styled(Link)`
@@ -100,11 +107,9 @@ const ExampleBalls = () => {
   )
 }
 
-const MatchExampleContainer = styled.div`
+const MatchExampleContainer = styled(Flex)`
   height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 5fr;
-  grid-template-rows: 46px 64px 64px;
+  flex-direction: column;
 `
 
 const MatchExampleCard = () => {
@@ -113,19 +118,22 @@ const MatchExampleCard = () => {
   const { t } = useTranslation()
   const exampleWidth = isXs ? '210px' : '258px'
   return (
-    <StyledStepCard width={['280px', '330px', '380px']}>
-      <StepCardInner height="220px">
+    <StyledStepCard width={['280px', '330px', '330px']}>
+      <StepCardInner height="210px">
         <MatchExampleContainer>
-          <Box />
           <ExampleBalls />
-          <Text lineHeight="72px" textAlign="right" color="secondary" bold mr="20px">
-            {t('A')}
-          </Text>
-          <MatchExampleA width={exampleWidth} height="46px" isDark={isDark} />
-          <Text lineHeight="72px" textAlign="right" color="secondary" bold mr="20px">
-            {t('B')}
-          </Text>
-          <MatchExampleB width={exampleWidth} height="46px" isDark={isDark} />
+          <Flex>
+            <Text lineHeight="72px" textAlign="right" color="secondary" bold mr="20px">
+              {t('A')}
+            </Text>
+            <MatchExampleA width={exampleWidth} height="46px" isDark={isDark} />
+          </Flex>
+          <Flex>
+            <Text lineHeight="72px" textAlign="right" color="secondary" bold mr="20px">
+              {t('B')}
+            </Text>
+            <MatchExampleB width={exampleWidth} height="46px" isDark={isDark} />
+          </Flex>
         </MatchExampleContainer>
       </StepCardInner>
     </StyledStepCard>
