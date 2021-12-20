@@ -1,5 +1,4 @@
 import { useCallback } from 'react'
-import * as Sentry from '@sentry/react'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { NoBscProviderError } from '@binance-chain/bsc-connector'
 import {
@@ -14,11 +13,9 @@ import { ConnectorNames, connectorLocalStorageKey } from '@pancakeswap/uikit'
 import { connectorsByName } from 'utils/web3React'
 import { setupNetwork } from 'utils/wallet'
 import useToast from 'hooks/useToast'
-import { profileClear } from 'state/profile'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
-import { clearAllTransactions } from 'state/transactions/actions'
-import { resetUserNftState } from '../state/nftMarket/reducer'
+import { clearUserStates } from '../utils/clearUserStates'
 
 const useAuth = () => {
   const { t } = useTranslation()
@@ -62,19 +59,8 @@ const useAuth = () => {
   )
 
   const logout = useCallback(() => {
-    dispatch(profileClear())
-    dispatch(resetUserNftState())
     deactivate()
-    Sentry.configureScope((scope) => scope.setUser(null))
-    // This localStorage key is set by @web3-react/walletconnect-connector
-    if (window.localStorage.getItem('walletconnect')) {
-      connectorsByName.walletconnect.close()
-      connectorsByName.walletconnect.walletConnectProvider = null
-    }
-    window.localStorage.removeItem(connectorLocalStorageKey)
-    if (chainId) {
-      dispatch(clearAllTransactions({ chainId }))
-    }
+    clearUserStates(dispatch, chainId)
   }, [deactivate, dispatch, chainId])
 
   return { login, logout }
