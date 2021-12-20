@@ -11,6 +11,7 @@ import {
   IconButton,
   BottomDrawer,
   useMatchBreakpoints,
+  ArrowUpDownIcon,
 } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
@@ -66,6 +67,24 @@ const Label = styled(Text)`
   font-size: 12px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.secondary};
+`
+
+const SwitchIconButton = styled(IconButton)`
+  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
+  .icon-up-down {
+    display: none;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primary};
+    .icon-down {
+      display: none;
+      fill: white;
+    }
+    .icon-up-down {
+      display: block;
+      fill: white;
+    }
+  }
 `
 
 export default function Swap({ history }: RouteComponentProps) {
@@ -395,16 +414,23 @@ export default function Swap({ history }: RouteComponentProps) {
 
                     <AutoColumn justify="space-between">
                       <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                        <IconButton variant="light" scale="sm">
+                        <SwitchIconButton
+                          variant="light"
+                          scale="sm"
+                          onClick={() => {
+                            setApprovalSubmitted(false) // reset 2 step UI for approvals
+                            onSwitchTokens()
+                          }}
+                        >
                           <ArrowDownIcon
-                            width="16px"
-                            onClick={() => {
-                              setApprovalSubmitted(false) // reset 2 step UI for approvals
-                              onSwitchTokens()
-                            }}
+                            className="icon-down"
                             color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                           />
-                        </IconButton>
+                          <ArrowUpDownIcon
+                            className="icon-up-down"
+                            color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
+                          />
+                        </SwitchIconButton>
                         {recipient === null && !showWrap && isExpertMode ? (
                           <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                             {t('+ Add a send (optional)')}
