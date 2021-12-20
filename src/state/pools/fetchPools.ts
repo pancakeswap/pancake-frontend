@@ -11,25 +11,36 @@ import tokens from 'config/constants/tokens'
 
 export const fetchPoolsBlockLimits = async () => {
   const poolsWithEnd = poolsConfig.filter((p) => p.sousId !== 0)
-  const callsStartBlock = poolsWithEnd.map((poolConfig) => {
-    return {
-      address: getAddress(poolConfig.contractAddress),
-      name: 'startBlock',
-    }
-  })
-  const callsEndBlock = poolsWithEnd.map((poolConfig) => {
-    return {
-      address: getAddress(poolConfig.contractAddress),
-      name: 'bonusEndBlock',
-    }
+  const startEndBlockCalls = poolsWithEnd.flatMap((poolConfig) => {
+    return [
+      {
+        address: getAddress(poolConfig.contractAddress),
+        name: 'startBlock',
+      },
+      {
+        address: getAddress(poolConfig.contractAddress),
+        name: 'bonusEndBlock',
+      },
+    ]
   })
 
-  const starts = await multicall(sousChefABI, callsStartBlock)
-  const ends = await multicall(sousChefABI, callsEndBlock)
+  const startEndBlockRaw = await multicall(sousChefABI, startEndBlockCalls)
+
+  const startEndBlockResult = startEndBlockRaw.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / 2)
+
+    if (!resultArray[chunkIndex]) {
+      // eslint-disable-next-line no-param-reassign
+      resultArray[chunkIndex] = [] // start a new chunk
+    }
+
+    resultArray[chunkIndex].push(item)
+
+    return resultArray
+  }, [])
 
   return poolsWithEnd.map((cakePoolConfig, index) => {
-    const startBlock = starts[index]
-    const endBlock = ends[index]
+    const [startBlock, endBlock] = startEndBlockResult[index]
     return {
       sousId: cakePoolConfig.sousId,
       startBlock: new BigNumber(startBlock).toJSON(),
