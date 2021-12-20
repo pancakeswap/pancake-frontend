@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Kanit', sans-serif;
   }
   body {
+    scrollbar-gutter: stable;
     background-color: ${({ theme }) => theme.colors.background};
 
     img {
