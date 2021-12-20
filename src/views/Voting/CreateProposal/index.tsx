@@ -106,7 +106,9 @@ const CreateProposal = () => {
         toastError(t('Error'), t('Unable to sign payload'))
       }
     } catch (error) {
-      toastError(t('Error'), error?.message || error?.error)
+      if (error instanceof Error) {
+        toastError(t('Error'), error?.message)
+      }
       console.error(error)
       setIsLoading(false)
     }

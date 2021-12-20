@@ -561,8 +561,6 @@ export interface UserRound {
   tickets?: LotteryTicket[]
 }
 
-export type UserTicketsResponse = [ethers.BigNumber[], number[], boolean[]]
-
 // Global state
 
 export interface State {

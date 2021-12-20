@@ -15,6 +15,7 @@
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "updateLPsAPR": "NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "prepare": "husky install",
+    "postinstall": "yarn run typechain",
     "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\""
   },
   "browserslist": {
@@ -86,7 +87,7 @@
     "styled-components": "^5.3.0",
     "swiper": "^6.8.4",
     "swr": "^1.1.2",
-    "typescript": "^4.3.2"
+    "typescript": "^4.5.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",

@@ -2,9 +2,10 @@ import { toDate, add, differenceInHours } from 'date-fns'
 import { BSC_BLOCK_TIME, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { simpleRpcProvider } from 'utils/providers'
-import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction, ViewBidderAuctionsResponse } from 'utils/types'
+import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction } from 'utils/types'
 import { Auction, AuctionStatus, Bidder, BidderAuction } from 'config/constants/types'
 import { ethersToBigNumber } from 'utils/bigNumber'
+import { FarmAuction } from 'config/abi/types'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLScUkwbsMWwg7L5jjGjEcmv6RsoCNhFDkV3xEpRu2KcJrr47Sw/viewform'
@@ -136,7 +137,7 @@ export const processAuctionData = async (auctionId: number, auctionResponse: Auc
 }
 
 export const processBidderAuctions = (
-  bidderAuctions: ViewBidderAuctionsResponse,
+  bidderAuctions: Awaited<ReturnType<FarmAuction['viewBidderAuctions']>>,
 ): { auctions: BidderAuction[]; nextCursor: number } => {
   const [auctionIds, bids, claimed, nextCursor] = bidderAuctions
   const auctions = auctionIds.map((auctionId, index) => ({
