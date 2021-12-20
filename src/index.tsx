@@ -30,7 +30,7 @@ function Blocklist({ children }: { children: ReactNode }) {
 }
 
 Sentry.init({
-  dsn: 'https://fec1efa79fe4400eb66f542c6fc8d6c1@o1085388.ingest.sentry.io/6096058',
+  dsn: 'https://ed98e16b9d704c22bef92d24bdd5f3b7@o1092725.ingest.sentry.io/6111410',
   integrations: [new Integrations.BrowserTracing()],
   environment: process.env.NODE_ENV,
   // Set tracesSampleRate to 1.0 to capture 100%

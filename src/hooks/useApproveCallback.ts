@@ -3,6 +3,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { Trade, TokenAmount, CurrencyAmount, ETHER } from '@pancakeswap/sdk'
 import { useCallback, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { logError } from 'utils/sentry'
 import { ROUTER_ADDRESS } from '../config/constants'
 import useTokenAllowance from './useTokenAllowance'
 import { Field } from '../state/swap/actions'
@@ -97,6 +98,7 @@ export function useApproveCallback(
         })
       })
       .catch((error: Error) => {
+        logError(error)
         console.error('Failed to approve token', error)
         throw error
       })
