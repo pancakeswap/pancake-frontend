@@ -162,7 +162,7 @@ const ContributeModal: React.FC<Props> = ({
           </Flex>
           <BalanceInput
             value={value}
-            currencyValue={publicIfoData.currencyPriceInUSD.times(value || 0).toFixed(2)}
+            currencyValue={`${publicIfoData.currencyPriceInUSD.times(value || 0).toFixed(2)} USD`}
             onUserInput={setValue}
             isWarning={isWarning}
             decimals={currency.decimals}

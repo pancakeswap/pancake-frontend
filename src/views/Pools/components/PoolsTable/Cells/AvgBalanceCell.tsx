@@ -45,7 +45,7 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ pool, account, userData
     ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), pool.stakingToken.decimals)
     : 0
 
-  const labelText = t('Average') + t('Pool Balance')
+  const labelText = `${t('Average')} ${t('Pool Balance')}`
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
