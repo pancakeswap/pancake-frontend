@@ -23,7 +23,7 @@ export function useCallWithGasPrice() {
       overrides: CallOverrides = null,
     ): Promise<ethers.providers.TransactionResponse> => {
       Sentry.addBreadcrumb({
-        category: 'callWithGasPrice',
+        type: 'Transaction',
         message: `Call with gas price: ${gasPrice}`,
         data: {
           contractAddress: contract.address,
@@ -39,6 +39,17 @@ export function useCallWithGasPrice() {
         ...methodArgs,
         hasManualGasPriceOverride ? { ...overrides } : { ...overrides, gasPrice },
       )
+
+      Sentry.addBreadcrumb({
+        type: 'Transaction',
+        message: `Transaction sent: ${tx.hash}`,
+        data: {
+          hash: tx.hash,
+          from: tx.from,
+          gasLimit: tx.gasLimit.toString(),
+          nonce: tx.nonce,
+        },
+      })
 
       return tx
     },
