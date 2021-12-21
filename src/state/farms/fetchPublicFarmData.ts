@@ -58,9 +58,10 @@ const fetchFarmCalls = (farm: SerializedFarm) => {
 
 export const fetchPublicFarmsData = async (farms: SerializedFarmConfig[]): Promise<any[]> => {
   const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm))
+  const chunkSize = farmCalls.length / farms.length
   const farmMultiCallResult = await multicallv2(erc20, farmCalls)
   return farmMultiCallResult.reduce((resultArray, item, index) => {
-    const chunkIndex = Math.floor(index / 6)
+    const chunkIndex = Math.floor(index / chunkSize)
 
     if (!resultArray[chunkIndex]) {
       // eslint-disable-next-line no-param-reassign
