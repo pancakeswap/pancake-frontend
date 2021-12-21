@@ -42,7 +42,7 @@ const farms: SerializedFarmConfig[] = [
    */
   {
     pid: 489,
-    lpSymbol: 'THG-BNB LP',
+    lpSymbol: 'DPT-BNB LP',
     lpAddresses: {
       97: '',
       56: '0x141e9558f66Cc21c93628400cCa7d830c15c2c24',
