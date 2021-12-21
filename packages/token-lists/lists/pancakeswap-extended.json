@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-12-16T08:16:10.746Z",
+  "timestamp": "2021-12-21T11:11:08.965Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 51
+    "patch": 52
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -667,6 +667,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402.png"
+    },
+    {
+      "name": "Diviner Protocol",
+      "symbol": "DPT",
+      "address": "0xE69cAef10A488D7AF31Da46c89154d025546e990",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xE69cAef10A488D7AF31Da46c89154d025546e990.png"
     },
     {
       "name": "Dusk",

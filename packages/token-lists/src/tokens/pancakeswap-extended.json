@@ -2094,5 +2094,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x9fD87aEfe02441B123c3c32466cD9dB4c578618f.png"
+  },
+  {
+    "name": "Diviner Protocol",
+    "symbol": "DPT",
+    "address": "0xE69cAef10A488D7AF31Da46c89154d025546e990",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xE69cAef10A488D7AF31Da46c89154d025546e990.png"
   }
 ]
