@@ -17,6 +17,8 @@ import {
   fetchIfoPoolPublicData,
   fetchIfoPoolUserAndCredit,
   initialPoolVaultState,
+  fetchPoolZeroPublicDataAsync,
+  fetchPoolZeroUserDataAsync,
 } from '.'
 import { State, DeserializedPool, VaultKey } from '../types'
 import { transformPool } from './helpers'
@@ -83,11 +85,19 @@ export const useFetchIfoPool = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchIfoPoolPublicData())
+    batch(() => {
+      dispatch(fetchPoolZeroPublicDataAsync())
+      dispatch(fetchIfoPoolPublicData())
+    })
   }, [dispatch, fastRefresh])
 
   useEffect(() => {
-    dispatch(fetchIfoPoolUserAndCredit({ account }))
+    if (account) {
+      batch(() => {
+        dispatch(fetchIfoPoolUserAndCredit({ account }))
+        dispatch(fetchPoolZeroUserDataAsync(account))
+      })
+    }
   }, [dispatch, fastRefresh, account])
 
   useEffect(() => {
