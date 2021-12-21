@@ -1,9 +1,10 @@
-import { BigintIsh, ChainId, Currency, currencyEquals, Fraction, JSBI, Price, TokenAmount } from '@pancakeswap/sdk'
-import { useMemo } from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId, Currency, currencyEquals, JSBI, Price } from '@pancakeswap/sdk'
 import tokens, { mainnetTokens } from 'config/constants/tokens'
-import { PairState, usePairs } from './usePairs'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
+import { multiplyPriceByAmount } from 'utils/prices'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
+import { PairState, usePairs } from './usePairs'
 
 const BUSD_MAINNET = mainnetTokens.busd
 const { wbnb: WBNB } = tokens
@@ -74,20 +75,20 @@ export const useCakeBusdPrice = (): Price | undefined => {
   return cakeBusdPrice
 }
 
-export const useBUSDCurrencyAmount = (currency: Currency, amount: BigintIsh): Fraction | undefined => {
+export const useBUSDCurrencyAmount = (currency: Currency, amount: number): number | undefined => {
   const { chainId } = useActiveWeb3React()
   const busdPrice = useBUSDPrice(currency)
   const wrapped = wrappedCurrency(currency, chainId)
   if (busdPrice) {
-    return new TokenAmount(wrapped, amount).multiply(busdPrice)
+    return multiplyPriceByAmount(busdPrice, amount, wrapped.decimals)
   }
   return undefined
 }
 
-export const useBUSDCakeAmount = (amount: BigintIsh): Fraction | undefined => {
+export const useBUSDCakeAmount = (amount: number): number | undefined => {
   const cakeBusdPrice = useCakeBusdPrice()
   if (cakeBusdPrice) {
-    return new TokenAmount(tokens.cake, amount).multiply(cakeBusdPrice)
+    return multiplyPriceByAmount(cakeBusdPrice, amount)
   }
   return undefined
 }

@@ -90,7 +90,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
     {},
   )
 
-  const creditDollarValue = useBUSDCakeAmount(credit.toString())
+  const creditDollarValue = useBUSDCakeAmount(getBalanceNumber(credit))
 
   const stakingTokenBalance = pool?.userData?.stakingTokenBalance
     ? new BigNumber(pool.userData.stakingTokenBalance)
@@ -133,7 +133,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
                 <Text fontSize="12px" color="textSubtle">
                   {creditDollarValue ? (
                     <Balance
-                      value={Number(creditDollarValue.toSignificant(6))}
+                      value={creditDollarValue}
                       fontSize="12px"
                       color="textSubtle"
                       decimals={2}

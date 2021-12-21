@@ -24,7 +24,7 @@ export const IfoVaultCardAvgBalance = () => {
   const credit = useIfoPoolCredit()
 
   const cakeAsNumberBalance = getBalanceNumber(credit)
-  const creditsDollarValue = useBUSDCakeAmount(credit.toString())
+  const creditsDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
 
   return (
     <>
@@ -49,7 +49,7 @@ export const IfoVaultCardAvgBalance = () => {
         <Text fontSize="12px" color="textSubtle" display="flex">
           {creditsDollarValue ? (
             <Balance
-              value={Number(creditsDollarValue.toSignificant(6))}
+              value={creditsDollarValue}
               fontSize="12px"
               color="textSubtle"
               decimals={2}

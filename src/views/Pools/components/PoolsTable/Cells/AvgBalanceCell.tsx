@@ -35,7 +35,7 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account, userDataLoaded
   const hasCredit = credit.gt(0)
 
   const cakeAsNumberBalance = getBalanceNumber(credit)
-  const avgBalanceDollarValue = useBUSDCakeAmount(credit.toString())
+  const avgBalanceDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
 
   const labelText = `${t('Average')} ${t('Pool Balance')}`
 
@@ -74,7 +74,7 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account, userDataLoaded
                     color="textSubtle"
                     decimals={2}
                     prefix="~"
-                    value={avgBalanceDollarValue ? Number(avgBalanceDollarValue.toSignificant(6)) : 0}
+                    value={avgBalanceDollarValue || 0}
                     unit=" USD"
                   />
                 ) : (

@@ -93,7 +93,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
   )
 
   const cakeAsNumberBalance = getBalanceNumber(credit)
-  const stakedDollarValue = useBUSDCakeAmount(credit.toString())
+  const stakedDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.'),
@@ -125,7 +125,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
             </Text>
             <Balance small bold decimals={3} value={cakeAsNumberBalance} />
             <Balance
-              value={stakedDollarValue ? Number(stakedDollarValue.toSignificant(6)) : 0}
+              value={stakedDollarValue || 0}
               fontSize="12px"
               color="textSubtle"
               decimals={2}
