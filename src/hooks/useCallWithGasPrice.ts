@@ -46,7 +46,7 @@ export function useCallWithGasPrice() {
         data: {
           hash: tx.hash,
           from: tx.from,
-          gasLimit: tx.gasLimit.toString(),
+          gasLimit: tx.gasLimit?.toString(),
           nonce: tx.nonce,
         },
       })
