@@ -167,9 +167,9 @@ const TradingCompetition = () => {
       }
     }
 
+    fetchCompetitionInfoContract()
     if (account) {
       fetchUserContract()
-      fetchCompetitionInfoContract()
     } else {
       setUserTradingInformation({
         hasRegistered: false,
