@@ -2102,5 +2102,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xE69cAef10A488D7AF31Da46c89154d025546e990.png"
+  },
+  {
+    "name": "CryptoCars",
+    "symbol": "CCAR",
+    "address": "0x50332bdca94673F33401776365b66CC4e81aC81d",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x50332bdca94673F33401776365b66CC4e81aC81d.png"
   }
 ]
