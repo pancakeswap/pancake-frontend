@@ -99,11 +99,14 @@ export const fetchPoolZeroUserDataAsync = (account: string) => async (dispatch) 
   const { amount: masterPoolAmount } = await masterChefContract.userInfo('0', account)
 
   dispatch(
-    setPoolZeroUserData({
-      allowance: new BigNumber(allowance.toString()).toJSON(),
-      stakingTokenBalance: new BigNumber(stakingTokenBalance.toString()).toJSON(),
-      pendingReward: new BigNumber(pendingReward.toString()).toJSON(),
-      stakedBalances: new BigNumber(masterPoolAmount.toString()).toJSON(),
+    setPoolUserData({
+      sousId: 0,
+      data: {
+        allowance: new BigNumber(allowance.toString()).toJSON(),
+        stakingTokenBalance: new BigNumber(stakingTokenBalance.toString()).toJSON(),
+        pendingReward: new BigNumber(pendingReward.toString()).toJSON(),
+        stakedBalances: new BigNumber(masterPoolAmount.toString()).toJSON(),
+      },
     }),
   )
 }
@@ -268,9 +271,10 @@ export const PoolsSlice = createSlice({
         ...action.payload.data,
       }
     },
-    setPoolZeroUserData: (state, action) => {
-      const poolZeroIndex = state.data.findIndex(({ sousId }) => sousId === 0)
-      state.data[poolZeroIndex].userData = action.payload
+    setPoolUserData: (state, action) => {
+      const { sousId } = action.payload
+      const poolIndex = state.data.findIndex((pool) => pool.sousId === sousId)
+      state.data[poolIndex].userData = action.payload.data
     },
     setPoolsPublicData: (state, action) => {
       const livePoolsData: SerializedPool[] = action.payload
@@ -331,7 +335,7 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setPoolPublicData, setPoolZeroUserData } =
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setPoolPublicData, setPoolUserData } =
   PoolsSlice.actions
 
 export default PoolsSlice.reducer
