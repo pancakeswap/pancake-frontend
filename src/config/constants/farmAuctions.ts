@@ -510,8 +510,8 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x20C99830967a18563D2D3eD51094aDD9FBE06e2A',
     farmName: 'SDAO-BNB',
-    tokenAddress: '0x9e5965d28E8D44CAE8F9b809396E0931F9Df71CA',
-    quoteToken: tokens.busd,
+    tokenAddress: '0x90ed8f1dc86388f14b64ba8fb4bbd23099f18240',
+    quoteToken: tokens.wbnb,
     tokenName: 'SingularityDAO',
     projectSite: 'https://app.singularitydao.ai/',
   },
