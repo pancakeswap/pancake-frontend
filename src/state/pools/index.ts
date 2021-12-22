@@ -14,6 +14,7 @@ import {
 } from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { simpleRpcProvider } from 'utils/providers'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -58,9 +59,14 @@ const initialState: PoolsState = {
 }
 
 // Thunks
-export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispatch, getState) => {
+export const fetchPoolsPublicDataAsync = () => async (dispatch, getState) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
+  let currentBlock = getState().block?.currentBlock
+
+  if (!currentBlock) {
+    currentBlock = await simpleRpcProvider.getBlockNumber()
+  }
 
   const prices = getTokenPricesFromFarm(getState().farms.data)
 

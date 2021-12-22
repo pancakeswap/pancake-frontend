@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Progress } from '@pancakeswap/uikit'
 import { differenceInSeconds } from 'date-fns'
 import { Auction, AuctionStatus } from 'config/constants/types'
-import useRefresh from 'hooks/useRefresh'
+import { useSlowFresh } from 'hooks/useRefresh'
 
 const AuctionProgress: React.FC<{ auction: Auction }> = ({ auction }) => {
   const [progress, setProgress] = useState<number>(0)
-  const { slowRefresh } = useRefresh()
+  const slowRefresh = useSlowFresh()
 
   // Note: opted to base it on date rather than block number to reduce the amount of calls and async handling
   useEffect(() => {

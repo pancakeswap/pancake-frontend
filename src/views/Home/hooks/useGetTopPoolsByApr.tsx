@@ -4,7 +4,6 @@ import { useAppDispatch } from 'state'
 import { orderBy } from 'lodash'
 import { VaultKey, DeserializedPool } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
-import { simpleRpcProvider } from 'utils/providers'
 import { useCakeVault, useIfoPoolVault, usePools } from 'state/pools/hooks'
 import { getAprData } from 'views/Pools/helpers'
 
@@ -53,11 +52,10 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   useEffect(() => {
     const fetchPoolsPublicData = async () => {
       setFetchStatus(FetchStatus.FETCHING)
-      const blockNumber = await simpleRpcProvider.getBlockNumber()
 
       try {
         await dispatch(fetchCakeVaultFees())
-        await dispatch(fetchPoolsPublicDataAsync(blockNumber))
+        await dispatch(fetchPoolsPublicDataAsync())
         setFetchStatus(FetchStatus.SUCCESS)
       } catch (e) {
         console.error(e)

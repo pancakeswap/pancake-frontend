@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
 import tokens from 'config/constants/tokens'
-import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
+import { ethers } from 'ethers'
+import { useEffect, useState } from 'react'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
 import { simpleRpcProvider } from 'utils/providers'
-import useRefresh from './useRefresh'
 import useLastUpdated from './useLastUpdated'
+import { useFastFresh, useSlowFresh } from './useRefresh'
 
 type UseTokenBalanceState = {
   balance: BigNumber
@@ -27,7 +27,7 @@ const useTokenBalance = (tokenAddress: string) => {
     fetchStatus: NOT_FETCHED,
   })
   const { account } = useWeb3React()
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -53,7 +53,7 @@ const useTokenBalance = (tokenAddress: string) => {
 }
 
 export const useTotalSupply = () => {
-  const { slowRefresh } = useRefresh()
+  const slowRefresh = useSlowFresh()
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export const useTotalSupply = () => {
 
 export const useBurnedBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(BIG_ZERO)
-  const { slowRefresh } = useRefresh()
+  const slowRefresh = useSlowFresh()
 
   useEffect(() => {
     const fetchBalance = async () => {

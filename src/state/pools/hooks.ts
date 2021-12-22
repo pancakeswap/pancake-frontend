@@ -1,10 +1,9 @@
 import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { useSelector } from 'react-redux'
+import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { simpleRpcProvider } from 'utils/providers'
-import useRefresh from 'hooks/useRefresh'
+import { useFastFresh, useSlowFresh } from 'hooks/useRefresh'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getAprData } from 'views/Pools/helpers'
 import {
@@ -24,21 +23,18 @@ import { transformPool } from './helpers'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
-  const { slowRefresh } = useRefresh()
+  const slowRefresh = useSlowFresh()
 
   useEffect(() => {
-    const fetchPoolsPublicData = async () => {
-      const blockNumber = await simpleRpcProvider.getBlockNumber()
-      dispatch(fetchPoolsPublicDataAsync(blockNumber))
-    }
-
-    fetchPoolsPublicData()
-    dispatch(fetchPoolsStakingLimitsAsync())
+    batch(() => {
+      dispatch(fetchPoolsPublicDataAsync())
+      dispatch(fetchPoolsStakingLimitsAsync())
+    })
   }, [dispatch, slowRefresh])
 }
 
 export const useFetchUserPools = (account) => {
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (account) {
@@ -65,7 +61,7 @@ export const usePool = (sousId: number): { pool: DeserializedPool; userDataLoade
 
 export const useFetchCakeVault = () => {
   const { account } = useWeb3React()
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -83,7 +79,7 @@ export const useFetchCakeVault = () => {
 
 export const useFetchIfoPool = () => {
   const { account } = useWeb3React()
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
   const dispatch = useAppDispatch()
 
   useEffect(() => {

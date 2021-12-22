@@ -9,7 +9,7 @@ import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
 import usePreviousValue from 'hooks/usePreviousValue'
-import useRefresh from 'hooks/useRefresh'
+import { useFastFresh } from 'hooks/useRefresh'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { PANCAKE_BUNNIES_UPDATE_FREQUENCY } from 'config'
 import { useGetCollectionDistributionPB } from 'views/Nft/market/hooks/useGetCollectionDistribution'
@@ -36,7 +36,7 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
   const previousPriceSort = usePreviousValue(priceSort)
   const { isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fetchMorePancakeBunnies } =
     useFetchByBunnyIdAndUpdate(bunnyId)
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
   const isWindowVisible = useIsWindowVisible()
   const bunniesSortedByPrice = orderBy(allBunnies, (nft) => parseFloat(nft.marketData.currentAskPrice))
   const allBunniesFromOtherSellers = account

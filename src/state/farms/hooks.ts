@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { farmsConfig } from 'config/constants'
-import useRefresh from 'hooks/useRefresh'
+import { useSlowFresh, useFastFresh } from 'hooks/useRefresh'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, nonArchivedFarms } from '.'
 import { State, SerializedFarm, DeserializedFarmUserData, DeserializedFarm, DeserializedFarmsState } from '../types'
@@ -45,7 +45,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
 
 export const usePollFarmsPublicData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
-  const { slowRefresh } = useRefresh()
+  const slowRefresh = useSlowFresh()
 
   useEffect(() => {
     const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
@@ -57,7 +57,7 @@ export const usePollFarmsPublicData = (includeArchive = false) => {
 
 export const usePollFarmsWithUserData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
-  const { slowRefresh } = useRefresh()
+  const slowRefresh = useSlowFresh()
   const { account } = useWeb3React()
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export const usePollFarmsWithUserData = (includeArchive = false) => {
  */
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
 
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync([251, 252]))

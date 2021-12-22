@@ -4,7 +4,7 @@ import { useFarmAuctionContract } from 'hooks/useContract'
 import { Auction, ConnectedBidder, Bidder } from 'config/constants/types'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import useLastUpdated from 'hooks/useLastUpdated'
-import useRefresh from 'hooks/useRefresh'
+import { useFastFresh } from 'hooks/useRefresh'
 import { AUCTION_BIDDERS_TO_FETCH } from 'config'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { sortAuctionBidders, processAuctionData } from '../helpers'
@@ -16,7 +16,7 @@ export const useCurrentFarmAuction = (account: string) => {
   // Used to force-refresh bidders after successful bid
   const { lastUpdated, setLastUpdated } = useLastUpdated()
 
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
 
   const farmAuctionContract = useFarmAuctionContract()
 
