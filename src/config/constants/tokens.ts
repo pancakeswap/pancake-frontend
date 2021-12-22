@@ -1855,6 +1855,14 @@ export const mainnetTokens = {
     'Thetan Gem',
     'https://thetanarena.com/',
   ),
+  ccar: new Token(
+    MAINNET,
+    '0x50332bdca94673F33401776365b66CC4e81aC81d',
+    18,
+    'CCAR',
+    'CryptoCars',
+    'https://cryptocars.me/',
+  ),
 }
 
 export const testnetTokens = {
