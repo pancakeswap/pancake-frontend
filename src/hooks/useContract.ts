@@ -62,9 +62,12 @@ export const useIfoV2Contract = (address: string) => {
   return useMemo(() => getIfoV2Contract(address, library.getSigner()), [address, library])
 }
 
-export const useERC20 = (address: string) => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getBep20Contract(address, library.getSigner()), [address, library])
+export const useERC20 = (address: string, withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getBep20Contract(address, withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [account, address, library, withSignerIfPossible],
+  )
 }
 
 /**
