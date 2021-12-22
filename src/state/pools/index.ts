@@ -79,11 +79,14 @@ export const fetchPoolZeroPublicDataAsync = () => async (dispatch, getState) => 
   )
 
   dispatch(
-    setPoolZeroPublicData({
-      totalStaked: new BigNumber(totalStaking.toString()).toJSON(),
-      stakingTokenPrice,
-      earningTokenPrice,
-      apr,
+    setPoolPublicData({
+      sousId: 0,
+      data: {
+        totalStaked: new BigNumber(totalStaking.toString()).toJSON(),
+        stakingTokenPrice,
+        earningTokenPrice,
+        apr,
+      },
     }),
   )
 }
@@ -257,11 +260,12 @@ export const PoolsSlice = createSlice({
   name: 'Pools',
   initialState,
   reducers: {
-    setPoolZeroPublicData: (state, action) => {
-      const poolZeroIndex = state.data.findIndex(({ sousId }) => sousId === 0)
-      state.data[poolZeroIndex] = {
-        ...state.data[poolZeroIndex],
-        ...action.payload,
+    setPoolPublicData: (state, action) => {
+      const { sousId } = action.payload
+      const poolIndex = state.data.findIndex((pool) => pool.sousId === sousId)
+      state.data[poolIndex] = {
+        ...state.data[poolIndex],
+        ...action.payload.data,
       }
     },
     setPoolZeroUserData: (state, action) => {
@@ -327,7 +331,7 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setPoolZeroPublicData, setPoolZeroUserData } =
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setPoolPublicData, setPoolZeroUserData } =
   PoolsSlice.actions
 
 export default PoolsSlice.reducer
