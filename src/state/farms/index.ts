@@ -1,6 +1,10 @@
 // eslint-disable-next-line import/no-unresolved
-import type { UnknownAsyncThunkFulfilledAction, UnknownAsyncThunkPendingAction } from '@reduxjs/toolkit/dist/matchers'
-import { createAsyncThunk, createSlice, isPending, isFulfilled } from '@reduxjs/toolkit'
+import type {
+  UnknownAsyncThunkFulfilledAction,
+  UnknownAsyncThunkPendingAction,
+  UnknownAsyncThunkRejectedAction,
+} from '@reduxjs/toolkit/dist/matchers'
+import { createAsyncThunk, createSlice, isPending, isFulfilled, isRejected } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
 import farmsConfig from 'config/constants/farms'
 import isArchivedPid from 'utils/farmHelpers'
@@ -80,7 +84,13 @@ interface FarmUserDataResponse {
   earnings: string
 }
 
-export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], { account: string; pids: number[] }>(
+export const fetchFarmUserDataAsync = createAsyncThunk<
+  FarmUserDataResponse[],
+  { account: string; pids: number[] },
+  {
+    state: AppState
+  }
+>(
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids }) => {
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
@@ -99,9 +109,22 @@ export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], {
       }
     })
   },
+  {
+    condition: (arg, { getState }) => {
+      const { farms } = getState()
+      if (farms.loadingKeys[stringify({ type: fetchFarmUserDataAsync.typePrefix, arg })]) {
+        console.debug('farms user action is fetching, skipping here')
+        return false
+      }
+      return true
+    },
+  },
 )
 
-type UnknownAsyncThunkFulfilledOrPendingAction = UnknownAsyncThunkFulfilledAction | UnknownAsyncThunkPendingAction
+type UnknownAsyncThunkFulfilledOrPendingAction =
+  | UnknownAsyncThunkFulfilledAction
+  | UnknownAsyncThunkPendingAction
+  | UnknownAsyncThunkRejectedAction
 
 const serializeLoadingKey = (
   action: UnknownAsyncThunkFulfilledOrPendingAction,
@@ -142,6 +165,9 @@ export const farmsSlice = createSlice({
     })
     builder.addMatcher(isFulfilled, (state, action) => {
       state.loadingKeys[serializeLoadingKey(action, 'fulfilled')] = false
+    })
+    builder.addMatcher(isRejected, (state, action) => {
+      state.loadingKeys[serializeLoadingKey(action, 'rejected')] = false
     })
   },
 })
