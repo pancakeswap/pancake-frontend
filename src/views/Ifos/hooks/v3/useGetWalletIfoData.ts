@@ -109,7 +109,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
   const ifoCredit = {
     credit,
-    creditLeft: creditLeftWithNegative.isGreaterThanOrEqualTo(0) ? creditLeftWithNegative : BIG_ZERO,
+    creditLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
   }
 
   return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData, ifoCredit }
