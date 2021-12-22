@@ -39,17 +39,18 @@ export function useCallWithGasPrice() {
         ...methodArgs,
         hasManualGasPriceOverride ? { ...overrides } : { ...overrides, gasPrice },
       )
-
-      Sentry.addBreadcrumb({
-        type: 'Transaction',
-        message: `Transaction sent: ${tx.hash}`,
-        data: {
-          hash: tx.hash,
-          from: tx.from,
-          gasLimit: tx.gasLimit.toString(),
-          nonce: tx.nonce,
-        },
-      })
+      if (tx) {
+        Sentry.addBreadcrumb({
+          type: 'Transaction',
+          message: `Transaction sent: ${tx.hash}`,
+          data: {
+            hash: tx.hash,
+            from: tx.from,
+            gasLimit: tx.gasLimit?.toString(),
+            nonce: tx.nonce,
+          },
+        })
+      }
 
       return tx
     },
