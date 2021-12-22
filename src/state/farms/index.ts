@@ -1,8 +1,8 @@
-// eslint-disable-next-line import/no-unresolved
 import type {
   UnknownAsyncThunkFulfilledAction,
   UnknownAsyncThunkPendingAction,
   UnknownAsyncThunkRejectedAction,
+  // eslint-disable-next-line import/no-unresolved
 } from '@reduxjs/toolkit/dist/matchers'
 import { createAsyncThunk, createSlice, isPending, isFulfilled, isRejected } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
