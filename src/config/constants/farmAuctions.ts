@@ -507,6 +507,22 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenName: 'Space Sip',
     projectSite: 'https://sip.space/',
   },
+  {
+    account: '0x20C99830967a18563D2D3eD51094aDD9FBE06e2A',
+    farmName: 'SDAO-BNB',
+    tokenAddress: '0x90ed8f1dc86388f14b64ba8fb4bbd23099f18240',
+    quoteToken: tokens.wbnb,
+    tokenName: 'SingularityDAO',
+    projectSite: 'https://app.singularitydao.ai/',
+  },
+  {
+    account: '0x92c3e2cdddb0ce886bca864151bd4d611a86e563',
+    farmName: '8PAY-BUSD',
+    tokenAddress: '0xfeea0bdd3d07eb6fe305938878c0cadbfa169042',
+    quoteToken: tokens.busd,
+    tokenName: '8PAY',
+    projectSite: 'https://8pay.network/',
+  },
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
