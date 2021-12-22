@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
-    "@ethersproject/experimental": "^5.0.1",
+    "@ethersproject/experimental": "^5.5.0",
     "@pancakeswap/sdk": "^2.4.0",
     "@pancakeswap/uikit": "^0.61.0",
     "@reduxjs/toolkit": "^1.5.0",
@@ -56,7 +56,7 @@
     "cids": "^1.0.0",
     "date-fns": "^2.21.3",
     "easymde": "^2.15.0",
-    "ethers": "^5.1.4",
+    "ethers": "^5.5.2",
     "fast-json-stable-stringify": "^2.1.0",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
