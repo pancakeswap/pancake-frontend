@@ -101,9 +101,9 @@ const ScoreCard: React.FC<YourScoreProps> = ({
               userLeaderboardInformation={userLeaderboardInformation}
               currentPhase={currentPhase}
             />
-            {hasRegistered && (currentPhase.state === CLAIM || currentPhase.state === OVER) && (
+            {/* {hasRegistered && (currentPhase.state === CLAIM || currentPhase.state === OVER) && (
               <UserPrizeGrid userTradingInformation={userTradingInformation} />
-            )}
+            )} */}
             {!account && (
               <Flex mt="24px" justifyContent="center">
                 <ConnectWalletButton />
