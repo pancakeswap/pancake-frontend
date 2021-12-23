@@ -14,6 +14,7 @@ import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import { useLotteryV2Contract } from 'hooks/useContract'
+import { logError } from 'utils/sentry'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
@@ -85,12 +86,12 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
 
   const handleClaim = async () => {
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
-    setPendingTx(true)
     try {
       const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets], {
         gasPrice,
       })
       toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+      setPendingTx(true)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(
@@ -99,12 +100,19 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
             {t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId })}
           </ToastDescriptionWithTx>,
         )
-        setPendingTx(false)
         handleProgressToNextClaim()
+      } else {
+        toastError(
+          t('Error'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+          </ToastDescriptionWithTx>,
+        )
       }
     } catch (error) {
-      console.error(error)
+      logError(error)
       toastError(t('Error'), t('%error% - Please try again.', { error: (error as Error).message }))
+    } finally {
       setPendingTx(false)
     }
   }
@@ -149,11 +157,17 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
               </ToastDescriptionWithTx>,
             )
           }
+        } else {
+          toastError(
+            t('Error'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+            </ToastDescriptionWithTx>,
+          )
         }
       } catch (error) {
-        console.error(error)
+        logError(error)
         toastError(t('Error'), t('%error% - Please try again.', { error: (error as Error).message }))
-
         setPendingTx(false)
         break
       }

@@ -151,9 +151,18 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
       toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       setIsTxPending(true)
       const receipt = await tx.wait()
-      onSuccess(receipt.transactionHash)
-    } catch (e) {
-      logError(e)
+      if (receipt.status) {
+        onSuccess(receipt.transactionHash)
+      } else {
+        toastError(
+          t('Error'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    } catch (error) {
+      logError(error)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     } finally {
       setIsTxPending(false)

@@ -88,9 +88,9 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
         setPendingTx(false)
         onDismiss()
-      } catch (e) {
+      } catch (error) {
+        logError(error)
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        logError(e)
         setPendingTx(false)
       }
     } else {
@@ -120,9 +120,9 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
         setPendingTx(false)
         onDismiss()
-      } catch (e) {
+      } catch (error) {
+        logError(error)
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        logError(e)
         setPendingTx(false)
       }
     }

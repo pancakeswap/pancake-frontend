@@ -192,8 +192,8 @@ const StakeModal: React.FC<StakeModalProps> = ({
       }
       setPendingTx(false)
       onDismiss()
-    } catch (e) {
-      logError(e)
+    } catch (error) {
+      logError(error)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setPendingTx(false)
     }

@@ -65,12 +65,12 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
                 )
               },
             )
-          } catch (e) {
+          } catch (error) {
+            logError(error)
             toastError(
               t('Error'),
               t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
             )
-            logError(e)
           } finally {
             setPendingTx(false)
           }

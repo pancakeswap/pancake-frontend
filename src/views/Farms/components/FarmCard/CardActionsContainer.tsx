@@ -65,8 +65,8 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
         },
       )
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-    } catch (e) {
-      logError(e)
+    } catch (error) {
+      logError(error)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     } finally {
       setRequestedApproval(false)

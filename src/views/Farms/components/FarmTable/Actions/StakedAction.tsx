@@ -173,9 +173,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
         },
       )
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-    } catch (e) {
+    } catch (error) {
+      logError(error)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      logError(e)
     } finally {
       setRequestedApproval(false)
     }

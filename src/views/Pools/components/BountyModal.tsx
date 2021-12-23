@@ -82,12 +82,19 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
             {t('CAKE bounty has been sent to your wallet.')}
           </ToastDescriptionWithTx>,
         )
-        setPendingTx(false)
-        onDismiss()
+      } else {
+        toastError(
+          t('Error'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+          </ToastDescriptionWithTx>,
+        )
       }
+      onDismiss()
     } catch (error) {
       logError(error)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } finally {
       setPendingTx(false)
     }
   }

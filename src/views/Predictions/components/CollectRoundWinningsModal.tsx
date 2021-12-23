@@ -104,28 +104,35 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
       toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       setIsPendingTx(true)
       const receipt = await tx.wait()
+      if (receipt.status) {
+        // Immediately mark rounds as claimed
+        dispatch(
+          markAsCollected(
+            epochs.reduce((accum, epoch) => {
+              return { ...accum, [epoch]: true }
+            }, {}),
+          ),
+        )
 
-      // Immediately mark rounds as claimed
-      dispatch(
-        markAsCollected(
-          epochs.reduce((accum, epoch) => {
-            return { ...accum, [epoch]: true }
-          }, {}),
-        ),
-      )
+        if (onSuccess) {
+          await onSuccess()
+        }
 
-      if (onSuccess) {
-        await onSuccess()
+        toastSuccess(
+          t('Winnings collected!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your prizes have been sent to your wallet')}
+          </ToastDescriptionWithTx>,
+        )
+        onDismiss()
+      } else {
+        toastError(
+          t('Error'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+          </ToastDescriptionWithTx>,
+        )
       }
-
-      onDismiss()
-      setIsPendingTx(false)
-      toastSuccess(
-        t('Winnings collected!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your prizes have been sent to your wallet')}
-        </ToastDescriptionWithTx>,
-      )
     } catch (error) {
       console.error('Unable to claim winnings', error)
       logError(error)

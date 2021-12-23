@@ -13,6 +13,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { NftLocation } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
+import { logError } from 'utils/sentry'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
@@ -78,16 +79,26 @@ const ProfilePicture: React.FC = () => {
 
   const handleApprove = async () => {
     const contract = getErc721Contract(selectedNft.collectionAddress, library.getSigner())
-    const tx = await callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
-    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-    setIsApproving(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
-      toastSuccess(t('Enabled'), t('Please progress to the next step.'))
-      setIsApproving(false)
-      setIsApproved(true)
-    } else {
+    try {
+      const tx = await callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+      setIsApproving(true)
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        toastSuccess(t('Enabled'), t('Please progress to the next step.'))
+        setIsApproved(true)
+      } else {
+        toastError(
+          t('Error'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    } catch (error) {
+      logError(error)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } finally {
       setIsApproving(false)
     }
   }

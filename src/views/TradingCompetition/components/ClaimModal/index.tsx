@@ -7,6 +7,7 @@ import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { logError } from 'utils/sentry'
 import { useCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
 import NftBunnies from '../../pngs/fan-token-champions.png'
@@ -45,16 +46,27 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
-    const tx = await callWithGasPrice(tradingCompetitionContract, 'claimReward')
-    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-    setIsConfirming(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
-      toastSuccess(t('You have claimed your rewards!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      onDismiss()
-      onClaimSuccess()
-    } else {
+    try {
+      const tx = await callWithGasPrice(tradingCompetitionContract, 'claimReward')
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+      setIsConfirming(true)
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        toastSuccess(t('You have claimed your rewards!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+        onDismiss()
+        onClaimSuccess()
+      } else {
+        toastError(
+          t('Error'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    } catch (error) {
+      logError(error)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } finally {
       setIsConfirming(false)
     }
   }
