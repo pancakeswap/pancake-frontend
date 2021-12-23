@@ -18,7 +18,7 @@ export const useCurrentFarmAuction = (account: string) => {
 
   const fastRefresh = useFastFresh()
 
-  const farmAuctionContract = useFarmAuctionContract()
+  const farmAuctionContract = useFarmAuctionContract(false)
 
   // Get latest auction id and its data
   useEffect(() => {
