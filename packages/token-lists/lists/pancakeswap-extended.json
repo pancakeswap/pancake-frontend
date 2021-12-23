@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-12-22T07:23:32.459Z",
+  "timestamp": "2021-12-23T08:09:30.866Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 53
+    "patch": 54
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -883,6 +883,14 @@
       "chainId": 56,
       "decimals": 6,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xC7d8D35EBA58a0935ff2D5a33Df105DD9f071731.png"
+    },
+    {
+      "name": "Highstreet Token",
+      "symbol": "HIGH",
+      "address": "0x5f4Bde007Dc06b867f86EBFE4802e34A1fFEEd63",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x5f4Bde007Dc06b867f86EBFE4802e34A1fFEEd63.png"
     },
     {
       "name": "Hoo",
