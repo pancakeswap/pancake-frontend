@@ -14,7 +14,9 @@ import {
 import { useHistory } from 'react-router-dom'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
+import { Tiers } from 'config/constants/trading-competition/prizes'
 import { FINISHED, OVER } from 'config/constants/trading-competition/phases'
+import { getRewardGroupPrice } from 'views/TradingCompetition/helpers'
 import RegisterModal from '../RegisterModal'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
@@ -176,21 +178,25 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
   }
 
+  const price = getRewardGroupPrice(userTradingInformation.userRewardGroup, userTradingInformation.userPointReward)
+
   return (
     <StyledCard>
       <CardBody>
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
           <StyledHeadingText>{getHeadingText()}</StyledHeadingText>
           {/* Hide button if in the pre-claim, FINISHED phase */}
-          {currentPhase.state !== FINISHED && (
-            <Flex alignItems="flex-end">
-              <LaurelLeftIcon />
-              <StyledButton disabled={isButtonDisabled} onClick={() => handleCtaClick()}>
-                {getButtonText()}
-              </StyledButton>
-              <LaurelRightIcon />
-            </Flex>
-          )}
+          {!price || price.tier !== Tiers.TEAL
+            ? null
+            : currentPhase.state !== FINISHED && (
+                <Flex alignItems="flex-end">
+                  <LaurelLeftIcon />
+                  <StyledButton disabled={isButtonDisabled} onClick={() => handleCtaClick()}>
+                    {getButtonText()}
+                  </StyledButton>
+                  <LaurelRightIcon />
+                </Flex>
+              )}
         </Flex>
       </CardBody>
     </StyledCard>

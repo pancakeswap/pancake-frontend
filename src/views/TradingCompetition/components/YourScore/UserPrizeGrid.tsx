@@ -1,8 +1,9 @@
 import { BlockIcon, CheckmarkCircleIcon, Flex, Image, Skeleton, Text } from '@pancakeswap/uikit'
+import { Tiers } from 'config/constants/trading-competition/prizes'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'
-import { getRewardGroupAchievements, useCompetitionRewards } from '../../helpers'
+import { getRewardGroupAchievements, getRewardGroupPrice, useCompetitionRewards } from '../../helpers'
 import { UserTradingInformationProps } from '../../types'
 import { BoldTd, StyledPrizeTable, Td } from '../StyledPrizeTable'
 
@@ -31,6 +32,11 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
   })
 
   const achievement = getRewardGroupAchievements(userRewardGroup, userPointReward)
+  const price = getRewardGroupPrice(userRewardGroup, userPointReward)
+
+  if (!price || price.tier !== Tiers.TEAL) {
+    return null
+  }
 
   return (
     <StyledPrizeTable>
