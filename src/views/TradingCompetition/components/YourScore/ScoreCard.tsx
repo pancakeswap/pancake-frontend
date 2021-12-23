@@ -15,7 +15,7 @@ import {
 import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
-import { getRewardGroupPrice } from 'views/TradingCompetition/helpers'
+import { getRewardGroupPrize } from 'views/TradingCompetition/helpers'
 import { Tiers } from 'config/constants/trading-competition/prizes'
 import UserPrizeGrid from './UserPrizeGrid'
 import ClaimModal from '../ClaimModal'
@@ -68,7 +68,11 @@ const ScoreCard: React.FC<YourScoreProps> = ({
     <ClaimModal userTradingInformation={userTradingInformation} onClaimSuccess={onClaimSuccess} />,
     false,
   )
-  const isClaimButtonDisabled = Boolean(isLoading || finishedAndPrizesClaimed || finishedAndNothingToClaim)
+  const prize = getRewardGroupPrize(userTradingInformation.userRewardGroup, userTradingInformation.userPointReward)
+
+  const isClaimButtonDisabled = Boolean(
+    isLoading || finishedAndPrizesClaimed || finishedAndNothingToClaim || !prize || prize.tier !== Tiers.TEAL,
+  )
   const { hasUserClaimed } = userTradingInformation
 
   const getClaimButtonText = () => {
@@ -86,8 +90,6 @@ const ScoreCard: React.FC<YourScoreProps> = ({
     // User has nothing to claim
     return t('Nothing to claim')
   }
-
-  const price = getRewardGroupPrice(userTradingInformation.userRewardGroup, userTradingInformation.userPointReward)
 
   return (
     <StyledCard mt="24px">
@@ -119,11 +121,9 @@ const ScoreCard: React.FC<YourScoreProps> = ({
       {hasRegistered && currentPhase.state === CLAIM && (
         <StyledCardFooter>
           <LaurelLeftIcon />
-          {!price || price.tier !== Tiers.TEAL ? null : (
-            <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={() => onPresentClaimModal()}>
-              {getClaimButtonText()}
-            </StyledButton>
-          )}
+          <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={() => onPresentClaimModal()}>
+            {getClaimButtonText()}
+          </StyledButton>
           <LaurelRightIcon />
         </StyledCardFooter>
       )}
