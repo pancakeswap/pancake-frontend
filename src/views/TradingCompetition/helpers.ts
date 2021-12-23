@@ -58,7 +58,7 @@ export const getRewardGroupAchievements = (userRewardGroup: string, userPointRew
     .find((rank) => rank.achievements.points === Number(userPointReward) && rank.group === userRewardGroup)
   return prize && prize.achievements
 }
-export const getRewardGroupPrice = (userRewardGroup: string, userPointReward: string) => {
+export const getRewardGroupPrize = (userRewardGroup: string, userPointReward: string) => {
   const prize = Object.values(prizes)
     .flat()
     .find((rank) => rank.achievements.points === Number(userPointReward) && rank.group === userRewardGroup)
