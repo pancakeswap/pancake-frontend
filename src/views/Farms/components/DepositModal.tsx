@@ -52,7 +52,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
   cakePrice,
 }) => {
   const [val, setVal] = useState('')
-  const { toastSuccess, toastError } = useToast()
+  const { toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
   const { t } = useTranslation()
@@ -154,7 +154,6 @@ const DepositModal: React.FC<DepositModalProps> = ({
             setPendingTx(true)
             try {
               await onConfirm(val)
-              toastSuccess(t('Staked!'), t('Your funds have been staked in the farm'))
               onDismiss()
             } catch (e) {
               logError(e)

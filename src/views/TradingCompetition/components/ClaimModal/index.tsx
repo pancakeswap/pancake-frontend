@@ -45,6 +45,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
 
   const handleClaimClick = async () => {
     const tx = await callWithGasPrice(tradingCompetitionContract, 'claimReward')
+    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {

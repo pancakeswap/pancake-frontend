@@ -21,6 +21,7 @@ const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, on
 
   const handleReclaim = async () => {
     const tx = await callWithGasPrice(predictionsContract, 'claim', [[epoch]])
+    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
     setIsPendingTx(true)
 
     const receipt = await tx.wait()
