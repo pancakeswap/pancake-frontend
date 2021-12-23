@@ -15,8 +15,6 @@ import {
 import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
-import { getRewardGroupPrize } from 'views/TradingCompetition/helpers'
-import { Tiers } from 'config/constants/trading-competition/prizes'
 import UserPrizeGrid from './UserPrizeGrid'
 import ClaimModal from '../ClaimModal'
 import { YourScoreProps } from '../../types'
@@ -68,11 +66,8 @@ const ScoreCard: React.FC<YourScoreProps> = ({
     <ClaimModal userTradingInformation={userTradingInformation} onClaimSuccess={onClaimSuccess} />,
     false,
   )
-  const prize = getRewardGroupPrize(userTradingInformation.userRewardGroup, userTradingInformation.userPointReward)
 
-  const isClaimButtonDisabled = Boolean(
-    isLoading || finishedAndPrizesClaimed || finishedAndNothingToClaim || !prize || prize.tier !== Tiers.TEAL,
-  )
+  const isClaimButtonDisabled = Boolean(isLoading || finishedAndPrizesClaimed || finishedAndNothingToClaim)
   const { hasUserClaimed } = userTradingInformation
 
   const getClaimButtonText = () => {

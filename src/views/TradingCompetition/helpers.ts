@@ -59,14 +59,4 @@ export const getRewardGroupAchievements = (userRewardGroup: string, userPointRew
   return prize && prize.achievements
 }
 
-/**
- * Temporary disable for top 500 users, should remove later
- */
-export const getRewardGroupPrize = (userRewardGroup: string, userPointReward: string) => {
-  const prize = Object.values(prizes)
-    .flat()
-    .find((rank) => rank.achievements.points === Number(userPointReward) && rank.group === userRewardGroup)
-  return prize && prize
-}
-
 export default localiseTradingVolume
