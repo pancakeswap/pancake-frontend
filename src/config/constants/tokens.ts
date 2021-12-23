@@ -1863,6 +1863,14 @@ export const mainnetTokens = {
     'CryptoCars',
     'https://cryptocars.me/',
   ),
+  high: new Token(
+    MAINNET,
+    '0x5f4Bde007Dc06b867f86EBFE4802e34A1fFEEd63',
+    18,
+    'HIGH',
+    'Highstreet Token',
+    'https://highstreet.market/',
+  ),
 }
 
 export const testnetTokens = {

@@ -42,6 +42,16 @@ const farms: SerializedFarmConfig[] = [
    */
   {
     pid: 490,
+    lpSymbol: 'HIGH-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xe98ac95A1dB2fCaaa9c7D4ba7ecfCE4877ca2bEa',
+    },
+    token: serializedTokens.high,
+    quoteToken: serializedTokens.busd,
+  },
+  {
+    pid: 490,
     lpSymbol: 'CCAR-BNB LP',
     lpAddresses: {
       97: '',
