@@ -15,6 +15,8 @@ import {
 import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
+import { getRewardGroupPrice } from 'views/TradingCompetition/helpers'
+import { Tiers } from 'config/constants/trading-competition/prizes'
 import UserPrizeGrid from './UserPrizeGrid'
 import ClaimModal from '../ClaimModal'
 import { YourScoreProps } from '../../types'
@@ -85,6 +87,8 @@ const ScoreCard: React.FC<YourScoreProps> = ({
     return t('Nothing to claim')
   }
 
+  const price = getRewardGroupPrice(userTradingInformation.userRewardGroup, userTradingInformation.userPointReward)
+
   return (
     <StyledCard mt="24px">
       <CardBody>
@@ -115,9 +119,11 @@ const ScoreCard: React.FC<YourScoreProps> = ({
       {hasRegistered && currentPhase.state === CLAIM && (
         <StyledCardFooter>
           <LaurelLeftIcon />
-          <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={() => onPresentClaimModal()}>
-            {getClaimButtonText()}
-          </StyledButton>
+          {!price || price.tier !== Tiers.TEAL ? null : (
+            <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={() => onPresentClaimModal()}>
+              {getClaimButtonText()}
+            </StyledButton>
+          )}
           <LaurelRightIcon />
         </StyledCardFooter>
       )}
