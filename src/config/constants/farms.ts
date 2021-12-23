@@ -41,6 +41,39 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 492,
+    lpSymbol: 'SDAO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x43b95976cF0929478bC13332C9cd2D63Bf060976',
+    },
+    token: serializedTokens.sdao,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 493,
+    lpSymbol: 'ANTEX-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x4DcB7b3b0E8914DC0e6D366521604cD23E7991E1',
+    },
+    token: serializedTokens.antex,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
+    pid: 494,
+    lpSymbol: 'BBT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3D5A3E3824da092851026fCda3D8a0B7438c4573',
+    },
+    token: serializedTokens.bbt,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
     pid: 491,
     lpSymbol: 'HIGH-BUSD LP',
     lpAddresses: {

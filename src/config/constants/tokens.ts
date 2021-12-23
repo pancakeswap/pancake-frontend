@@ -1871,6 +1871,23 @@ export const mainnetTokens = {
     'Highstreet Token',
     'https://highstreet.market/',
   ),
+  sdao: new Token(
+    MAINNET,
+    '0x90Ed8F1dc86388f14b64ba8fb4bbd23099f18240',
+    18,
+    'SDAO',
+    'Singularity Dao',
+    'https://app.singularitydao.ai/',
+  ),
+  antex: new Token(MAINNET, '0xCA1aCAB14e85F30996aC83c64fF93Ded7586977C', 8, 'ANTEX', 'Antex', 'https://antex.org/'),
+  bbt: new Token(
+    MAINNET,
+    '0xD48474E7444727bF500a32D5AbE01943f3A59A64',
+    8,
+    'BBT',
+    'BitBook',
+    'https://www.bitbook.network/',
+  ),
 }
 
 export const testnetTokens = {
