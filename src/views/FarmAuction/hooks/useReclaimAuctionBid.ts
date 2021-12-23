@@ -83,7 +83,7 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
 
   const [state, dispatch] = useReducer(reclaimReducer, initialState)
 
-  const farmAuctionContract = useFarmAuctionContract()
+  const farmAuctionContract = useFarmAuctionContract(false)
 
   const checkNextAuction = () => {
     dispatch({ type: 'checkNextAuction' })

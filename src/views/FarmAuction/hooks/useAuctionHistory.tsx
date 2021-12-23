@@ -14,7 +14,7 @@ interface AuctionHistoryMap {
 const useAuctionHistory = (auctionId: number) => {
   const [auctionHistory, setAuctionHistory] = useState<AuctionHistoryMap>({})
 
-  const farmAuctionContract = useFarmAuctionContract()
+  const farmAuctionContract = useFarmAuctionContract(false)
 
   // Get past auction data
   useEffect(() => {

@@ -19,7 +19,7 @@ const BurnedText = styled(Text)`
 const AuctionCakeBurn: React.FC = () => {
   const [burnedCakeAmount, setBurnedCakeAmount] = useState(0)
   const { t } = useTranslation()
-  const farmAuctionContract = useFarmAuctionContract()
+  const farmAuctionContract = useFarmAuctionContract(false)
   const cakePriceBusd = usePriceCakeBusd()
 
   const burnedAmountAsUSD = cakePriceBusd.times(burnedCakeAmount)
