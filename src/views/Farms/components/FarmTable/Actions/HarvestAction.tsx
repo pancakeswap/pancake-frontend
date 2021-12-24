@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import React, { useState } from 'react'
 import { useAppDispatch } from 'state'
@@ -62,10 +63,26 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
           onClick={async () => {
             setPendingTx(true)
             try {
-              await onReward()
-              toastSuccess(
-                `${t('Harvested')}!`,
-                t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
+              await onReward(
+                (tx) => {
+                  toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+                },
+                (receipt) => {
+                  toastSuccess(
+                    `${t('Harvested')}!`,
+                    <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                      {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+                    </ToastDescriptionWithTx>,
+                  )
+                },
+                (receipt) => {
+                  toastError(
+                    t('Error'),
+                    <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                      {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+                    </ToastDescriptionWithTx>,
+                  )
+                },
               )
             } catch (e) {
               toastError(

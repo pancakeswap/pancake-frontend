@@ -263,7 +263,7 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
     (publicIfoData.status !== 'finished' || (publicIfoData.status === 'finished' && secondsUntilEnd >= -120)) &&
     ifo.isActive
   const onApprove = useIfoApprove(raisingTokenContract, contract.address)
-  const { toastSuccess } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const fastRefresh = useFastFresh()
   const isWindowVisible = useIsWindowVisible()
 
@@ -296,16 +296,28 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
   const handleApprove = async () => {
     try {
       setEnableStatus(EnableStatus.IS_ENABLING)
-
-      const receipt = await onApprove()
-
-      setEnableStatus(EnableStatus.ENABLED)
-      toastSuccess(
-        t('Successfully Enabled!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
-        </ToastDescriptionWithTx>,
+      await onApprove(
+        (tx) => {
+          toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        },
+        (receipt) => {
+          toastSuccess(
+            t('Successfully Enabled!'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
+            </ToastDescriptionWithTx>,
+          )
+        },
+        (receipt) => {
+          toastError(
+            t('Error'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+            </ToastDescriptionWithTx>,
+          )
+        },
       )
+      setEnableStatus(EnableStatus.ENABLED)
     } catch (error) {
       setEnableStatus(EnableStatus.DISABLED)
     }

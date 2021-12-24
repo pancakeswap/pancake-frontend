@@ -1,6 +1,7 @@
 import { Button, Flex, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
@@ -32,7 +33,7 @@ interface FarmCardActionsProps {
 
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl, cakePrice, lpLabel }) => {
   const { t } = useTranslation()
-  const { toastError } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = farm
   const { allowance, tokenBalance, stakedBalance, earnings } = farm.userData || {}
@@ -47,7 +48,22 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      await onApprove()
+      await onApprove(
+        (tx) => {
+          toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        },
+        (receipt) => {
+          toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+        },
+        (receipt) => {
+          toastError(
+            t('Error'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+            </ToastDescriptionWithTx>,
+          )
+        },
+      )
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
     } catch (e) {
       logError(e)
@@ -55,7 +71,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
     } finally {
       setRequestedApproval(false)
     }
-  }, [onApprove, dispatch, account, pid, t, toastError])
+  }, [onApprove, dispatch, account, pid, t, toastError, toastSuccess])
 
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (

@@ -1,10 +1,11 @@
-import { useEffect, useReducer, useRef } from 'react'
+import React, { useEffect, useReducer, useRef } from 'react'
 import { noop } from 'lodash'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import { logError } from 'utils/sentry'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 type LoadingState = 'idle' | 'loading' | 'success' | 'fail'
 
@@ -93,7 +94,7 @@ const useApproveConfirmTransaction = ({
   const { account } = useWeb3React()
   const [state, dispatch] = useReducer(reducer, initialState)
   const handlePreApprove = useRef(onRequiresApproval)
-  const { toastError } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   // Check if approval is necessary, re-check if account changes
   useEffect(() => {
@@ -116,6 +117,7 @@ const useApproveConfirmTransaction = ({
     handleApprove: async () => {
       try {
         const tx = await onApprove()
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
         dispatch({ type: 'approve_sending' })
         const receipt = await tx.wait()
         if (receipt.status) {
@@ -132,6 +134,7 @@ const useApproveConfirmTransaction = ({
       dispatch({ type: 'confirm_sending' })
       try {
         const tx = await onConfirm(params)
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
         const receipt = await tx.wait()
         if (receipt.status) {
           dispatch({ type: 'confirm_receipt' })

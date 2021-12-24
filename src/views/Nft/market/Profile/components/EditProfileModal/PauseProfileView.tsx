@@ -32,6 +32,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
 
   const handleDeactivateProfile = async () => {
     const tx = await callWithGasPrice(pancakeProfileContract, 'pauseProfile')
+    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {

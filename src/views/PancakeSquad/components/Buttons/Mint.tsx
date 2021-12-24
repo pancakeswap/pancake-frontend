@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { AutoRenewIcon, Button, useModal } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useNftSaleContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
@@ -51,6 +52,7 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
     setIsLoading(true)
     try {
       const tx = await callWithGasPrice(nftSaleContract, 'mint', [ticketsOfUser])
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(t('Transaction has succeeded!'))

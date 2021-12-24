@@ -25,6 +25,7 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
     try {
       setRequestedApproval(true)
       const tx = await callWithGasPrice(lpContract, 'approve', [sousChefContract.address, ethers.constants.MaxUint256])
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       const receipt = await tx.wait()
 
       dispatch(updateUserAllowance(sousId, account))
@@ -72,6 +73,7 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
 
   const handleApprove = async () => {
     const tx = await callWithGasPrice(cakeContract, 'approve', [vaultPoolContract.address, ethers.constants.MaxUint256])
+    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
     setRequestedApproval(true)
     const receipt = await tx.wait()
     if (receipt.status) {

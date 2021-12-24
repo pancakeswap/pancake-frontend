@@ -90,6 +90,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets], {
         gasPrice,
       })
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(
@@ -124,6 +125,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           [lotteryId, ticketBatch.ticketIds, ticketBatch.brackets],
           { gasPrice },
         )
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
         const receipt = await tx.wait()
         /* eslint-enable no-await-in-loop */
         if (receipt.status) {

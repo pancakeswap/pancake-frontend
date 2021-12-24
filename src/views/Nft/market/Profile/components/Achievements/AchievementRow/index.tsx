@@ -62,6 +62,7 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const handleCollectPoints = async () => {
     try {
       const tx = await callWithGasPrice(pointCenterContract, 'getPoints', [achievement.address])
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       setIsCollecting(true)
       const receipt = await tx.wait()
       if (receipt.status) {

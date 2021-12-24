@@ -101,6 +101,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
   const handleClick = async () => {
     try {
       const tx = await callWithGasPrice(predictionsContract, 'claim', [epochs])
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       setIsPendingTx(true)
       const receipt = await tx.wait()
 
