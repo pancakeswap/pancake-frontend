@@ -14,6 +14,7 @@ const injected = new InjectedConnector({ supportedChainIds: [chainId] })
 
 const walletconnect = new WalletConnectConnector({
   rpc: { [chainId]: rpcUrl },
+  chainId,
   qrcode: true,
 })
 
