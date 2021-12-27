@@ -8,7 +8,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
-import NftBunnies from '../../pngs/syrup-nft.png'
+import NftBunnies from '../../pngs/fan-token-champions.png'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
