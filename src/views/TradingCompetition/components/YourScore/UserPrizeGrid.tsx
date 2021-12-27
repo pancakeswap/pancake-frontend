@@ -45,13 +45,13 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
         <tr>
           <BoldTd>
             <Flex flexDirection="column">
-              <Text bold>{cakeReward.toFixed(2)} CAKE</Text>
-              <Text bold>{lazioReward.toFixed(2)} LAZIO</Text>
-              <Text bold>{portoReward.toFixed(2)} PORTO</Text>
-              <Text bold>{santosReward.toFixed(2)} SANTOS</Text>
+              <Text bold>{cakeReward.toFixed(4)} CAKE</Text>
+              <Text bold>{lazioReward.toFixed(4)} LAZIO</Text>
+              <Text bold>{portoReward.toFixed(4)} PORTO</Text>
+              <Text bold>{santosReward.toFixed(4)} SANTOS</Text>
               {dollarValueOfTokensReward !== null ? (
                 <Text fontSize="12px" color="textSubtle">
-                  ~{dollarValueOfTokensReward} USD
+                  ~{dollarValueOfTokensReward.toFixed(2)} USD
                 </Text>
               ) : (
                 <Skeleton height={24} width={80} />
