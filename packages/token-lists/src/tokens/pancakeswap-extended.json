@@ -2118,5 +2118,29 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x5f4Bde007Dc06b867f86EBFE4802e34A1fFEEd63.png"
+  },
+  {
+    "name": "Singularity Dao",
+    "symbol": "SDAO",
+    "address": "0x90Ed8F1dc86388f14b64ba8fb4bbd23099f18240",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x90Ed8F1dc86388f14b64ba8fb4bbd23099f18240.png"
+  },
+  {
+    "name": "Antex",
+    "symbol": "ANTEX",
+    "address": "0xCA1aCAB14e85F30996aC83c64fF93Ded7586977C",
+    "chainId": 56,
+    "decimals": 8,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xCA1aCAB14e85F30996aC83c64fF93Ded7586977C.png"
+  },
+  {
+    "name": "BitBook",
+    "symbol": "BBT",
+    "address": "0xD48474E7444727bF500a32D5AbE01943f3A59A64",
+    "chainId": 56,
+    "decimals": 8,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xD48474E7444727bF500a32D5AbE01943f3A59A64.png"
   }
 ]
