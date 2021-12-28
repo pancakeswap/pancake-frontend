@@ -14,6 +14,7 @@ import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { filterTokens, useSortedTokensByQuery } from './filtering'
 import useTokenComparator from './sorting'
+import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
 
@@ -25,8 +26,6 @@ interface CurrencySearchProps {
   showImportView: () => void
   setImportToken: (token: Token) => void
 }
-
-const swapSound = new Audio('swap.mp3')
 
 function CurrencySearch({
   selectedCurrency,
@@ -76,7 +75,7 @@ function CurrencySearch({
     (currency: Currency) => {
       onCurrencySelect(currency)
       if (audioPlay) {
-        swapSound.play()
+        getSwapSound().play()
       }
     },
     [audioPlay, onCurrencySelect],
