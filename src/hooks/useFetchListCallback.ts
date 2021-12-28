@@ -32,7 +32,7 @@ function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean) => Pr
         dispatch(fetchTokenList.pending({ requestId, url: listUrl }))
       }
       // lazy load avj and token list schema
-      const getTokenList = await (await import('../utils/getTokenList')).default
+      const getTokenList = (await import('../utils/getTokenList')).default
       return getTokenList(listUrl, ensResolver)
         .then((tokenList) => {
           if (sendDispatch) {
