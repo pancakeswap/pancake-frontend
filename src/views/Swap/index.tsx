@@ -388,7 +388,7 @@ export default function Swap({ history }: RouteComponentProps) {
         />
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
-            <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'} mr={isChartExpanded ? '0' : '0'}>
+            <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
                 <CurrencyInputHeader
                   title={t('Swap')}
