@@ -98,7 +98,11 @@ describe('Check translations available', () => {
       expect(translationKeys.size).toBe(0)
     } catch (error) {
       throw new Error(
-        `Found unused key(s) ${JSON.stringify(Array.from(translationKeys.values()), null, '\t')} in translation.json`,
+        `Found unused ${translationKeys.size} key(s) ${JSON.stringify(
+          Array.from(translationKeys.values()),
+          null,
+          '\t',
+        )} in translation.json`,
       )
     }
   })

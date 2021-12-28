@@ -23,7 +23,7 @@ const PoolCardHeader: React.FC<{
   )
 }
 
-export const PoolCardHeaderTitle: React.FC<{ isFinished?: boolean; title: string; subTitle: ReactNode }> = ({
+export const PoolCardHeaderTitle: React.FC<{ isFinished?: boolean; title: ReactNode; subTitle: ReactNode }> = ({
   isFinished,
   title,
   subTitle,

@@ -19,7 +19,7 @@ export interface ContextApi extends ProviderState {
 
 // To support string literals and union of string
 // https://stackoverflow.com/questions/61047551/typescript-union-of-string-and-string-literals
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type TranslationKey = keyof typeof translations | (string & {})
+type MaybeObject = Record<never, never>
+export type TranslationKey = keyof typeof translations | (string & MaybeObject)
 
 export type TranslateFunction = (key: TranslationKey, data?: ContextData) => string

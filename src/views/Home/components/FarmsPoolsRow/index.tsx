@@ -52,7 +52,7 @@ const FarmsPoolsRow = () => {
 
   const getPoolText = (pool: DeserializedPool) => {
     if (pool.vaultKey) {
-      return t(vaultPoolConfig[pool.vaultKey].name)
+      return vaultPoolConfig[pool.vaultKey].name
     }
 
     if (pool.sousId === 0) {

@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, ReactNode } from 'react'
 import shuffle from 'lodash/shuffle'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
 import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import { isAddress } from 'utils'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import { useAppDispatch } from 'state'
+import Trans from 'components/Trans'
 import { pancakeBunniesAddress } from '../../../constants'
 import { CollectibleLinkCard } from '../../../components/CollectibleCard'
 import useAllPancakeBunnyNfts from '../../../hooks/useAllPancakeBunnyNfts'
@@ -37,16 +37,15 @@ const StyledSwiper = styled.div`
 interface MoreFromThisCollectionProps {
   collectionAddress: string
   currentTokenName?: string
-  title?: string
+  title?: ReactNode
 }
 
 const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
   collectionAddress,
   currentTokenName = '',
-  title = 'More from this collection',
+  title = <Trans>More from this collection</Trans>,
 }) => {
   const dispatch = useAppDispatch()
-  const { t } = useTranslation()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
   const [activeIndex, setActiveIndex] = useState(1)
   const { isMobile, isMd, isLg } = useMatchBreakpoints()
@@ -131,7 +130,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
     <Box pt="56px" mb="52px">
       {title && (
         <Text bold mb="24px">
-          {t(title)}
+          {title}
         </Text>
       )}
       {isMobile ? (
