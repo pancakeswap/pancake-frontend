@@ -10,6 +10,7 @@ const Home = lazy(() => import('./Home'))
 const NftProfile = lazy(() => import('./Profile'))
 const Collection = lazy(() => import('./Collection'))
 const Collections = lazy(() => import('./Collections'))
+const Activity = lazy(() => import('./Activity'))
 
 const Market = () => {
   const { account } = useWeb3React()
@@ -28,6 +29,9 @@ const Market = () => {
       </Route>
       <Route exact path={`${nftsBaseUrl}/collections`}>
         <Collections />
+      </Route>
+      <Route path={`${nftsBaseUrl}/activity`}>
+        <Activity />
       </Route>
       <Route path={`${nftsBaseUrl}/collections/:collectionAddress`}>
         <Collection />

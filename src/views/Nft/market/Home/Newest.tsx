@@ -44,7 +44,7 @@ const Newest: React.FC = () => {
         <Heading>{t('Newest Arrivals')}</Heading>
         <Button
           as={Link}
-          to={`${nftsBaseUrl}/collections/`}
+          to={`${nftsBaseUrl}/activity/`}
           variant="secondary"
           scale="sm"
           endIcon={<ChevronRightIcon color="primary" />}
