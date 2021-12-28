@@ -103,9 +103,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       }
     } catch (error) {
       console.error(error)
-      if (error instanceof Error) {
-        toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
-      }
+      toastError(t('Error'), t('%error% - Please try again.', { error: (error as Error).message }))
       setPendingTx(false)
     }
   }
@@ -152,9 +150,8 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
         }
       } catch (error) {
         console.error(error)
-        if (error instanceof Error) {
-          toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
-        }
+        toastError(t('Error'), t('%error% - Please try again.', { error: (error as Error).message }))
+
         setPendingTx(false)
         break
       }
