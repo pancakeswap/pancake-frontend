@@ -1,8 +1,32 @@
 import Path from 'path'
 import fs from 'fs'
 import translations from 'config/localization/translations.json'
+import teams from 'config/constants/teams'
+import { NftLocation } from 'state/nftMarket/types'
 
 const allTranslationKeys = Object.keys(translations)
+
+// when some keys are hard to be extracted from code
+const whitelist = [
+  ...Object.values(NftLocation),
+  ...teams.map((t) => t.description),
+  // NFT description moved to profile sdk
+  `Oopsie daisy! Hiccup's had a bit of an accident. Poor little fella.`,
+  'Eggscellent! Celebrating Syrup Storm winning the Easter Battle!',
+  'Melting Easter eggs and melting hearts!',
+  'Watch out for Flipsie’s spatula smash!',
+  'Do you like chocolate with your syrup? Go long!',
+  'Happy Niu Year! This bunny’s excited for the year of the bull (market!)',
+  'Sunny is always cheerful when there are pancakes around. Smile!',
+  `Don't let that dopey smile deceive you... Churro's a master CAKE chef!`,
+  `Nommm... Oh hi, I'm just meditating on the meaning of CAKE.`,
+  `Three guesses what's put that twinkle in those eyes! (Hint: it's CAKE)`,
+  'These bunnies love nothing more than swapping pancakes. Especially on BSC.',
+  `It's raining syrup on this bunny, but he doesn't seem to mind. Can you blame him?`,
+  `These bunnies like their pancakes with blueberries. What's your favorite topping?`,
+  "Love makes the world go 'round... but so do pancakes. And these bunnies know it.",
+  `It’s sparkling syrup, pancakes, and even lottery tickets! This bunny really loves it.`,
+]
 
 describe('Check translations integrity', () => {
   it.each(allTranslationKeys)('Translation key value should be equal', (key) => {
@@ -33,10 +57,10 @@ describe('Check translations available', () => {
 
   let match
 
-  const extractedKeys = new Set<string>()
+  const extractedKeys = new Set<string>(whitelist)
 
-  const regexWithoutCarriageReturn = /\bt\((["'])((?:\\1|(?:(?!\1)).)*)(\1)/gm
-  const regexWithCarriageReturn = /\bt\([\r\n]\s+(["'])([^]*?)(\1)/gm
+  const regexWithoutCarriageReturn = /\bt\((["'`])((?:\\1|(?:(?!\1)).)*)(\1)/gm
+  const regexWithCarriageReturn = /\bt\([\r\n]\s+(["'`])([^]*?)(\1)/gm
 
   // eslint-disable-next-line no-restricted-syntax
   for (const file of files) {
@@ -68,7 +92,7 @@ describe('Check translations available', () => {
     }
 
     const regexWithTrans = /<Trans>([^$]*?)<\/Trans>/gm
-    const regexWithTransCarriage = /<Trans>([\r\n]\s+[^]*?)<\/Trans>/gm
+    const regexWithTransCarriage = /<Trans>([\r\n]\s+([^]*?))<\/Trans>/gm
 
     while (
       // eslint-disable-next-line no-cond-assign
@@ -83,13 +107,24 @@ describe('Check translations available', () => {
     }
   }
 
-  it.each(Array.from(extractedKeys))('Translation key should exist in translations json', (key) => {
-    const includes = translationKeys.has(key)
+  it('Translation key should exist in translations json', () => {
+    Array.from(extractedKeys).forEach((key) => {
+      if (translationKeys.has(key)) {
+        extractedKeys.delete(key)
+        translationKeys.delete(key)
+      }
+    })
+
     try {
-      expect(includes).toBe(true)
-      translationKeys.delete(key)
-    } catch (e) {
-      console.info(`Found unknown key "${key}"`)
+      expect(extractedKeys.size).toBe(0)
+    } catch (error) {
+      throw new Error(
+        `Found unused ${extractedKeys.size} key(s) ${JSON.stringify(
+          Array.from(extractedKeys.values()),
+          null,
+          '\t',
+        )} in translation.json`,
+      )
     }
   })
 
