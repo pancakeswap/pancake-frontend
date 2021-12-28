@@ -4,7 +4,7 @@ import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Heading } from '@pancak
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
-import useRefresh from 'hooks/useRefresh'
+import { useSlowFresh } from 'hooks/useRefresh'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { getTotalWon } from 'state/predictions/helpers'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
@@ -16,7 +16,7 @@ const StyledLink = styled(Link)`
 
 const PredictionCardContent = () => {
   const { t } = useTranslation()
-  const { slowRefresh } = useRefresh()
+  const slowRefresh = useSlowFresh()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const bnbBusdPrice = useBNBBusdPrice()

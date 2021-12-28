@@ -1,6 +1,14 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import type {
+  UnknownAsyncThunkFulfilledAction,
+  UnknownAsyncThunkPendingAction,
+  UnknownAsyncThunkRejectedAction,
+  // eslint-disable-next-line import/no-unresolved
+} from '@reduxjs/toolkit/dist/matchers'
+import { createAsyncThunk, createSlice, isPending, isFulfilled, isRejected } from '@reduxjs/toolkit'
+import stringify from 'fast-json-stable-stringify'
 import farmsConfig from 'config/constants/farms'
 import isArchivedPid from 'utils/farmHelpers'
+import type { AppState } from 'state'
 import priceHelperLpsConfig from 'config/constants/priceHelperLps'
 import fetchFarms from './fetchFarms'
 import fetchFarmsPrices from './fetchFarmsPrices'
@@ -26,12 +34,19 @@ const initialState: SerializedFarmsState = {
   data: noAccountFarmConfig,
   loadArchivedFarmsData: false,
   userDataLoaded: false,
+  loadingKeys: {},
 }
 
 export const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(pid))
 
 // Async thunks
-export const fetchFarmsPublicDataAsync = createAsyncThunk<SerializedFarm[], number[]>(
+export const fetchFarmsPublicDataAsync = createAsyncThunk<
+  SerializedFarm[],
+  number[],
+  {
+    state: AppState
+  }
+>(
   'farms/fetchFarmsPublicDataAsync',
   async (pids) => {
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
@@ -49,6 +64,16 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<SerializedFarm[], numb
 
     return farmsWithoutHelperLps
   },
+  {
+    condition: (arg, { getState }) => {
+      const { farms } = getState()
+      if (farms.loadingKeys[stringify({ type: fetchFarmsPublicDataAsync.typePrefix, arg })]) {
+        console.debug('farms action is fetching, skipping here')
+        return false
+      }
+      return true
+    },
+  },
 )
 
 interface FarmUserDataResponse {
@@ -59,7 +84,13 @@ interface FarmUserDataResponse {
   earnings: string
 }
 
-export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], { account: string; pids: number[] }>(
+export const fetchFarmUserDataAsync = createAsyncThunk<
+  FarmUserDataResponse[],
+  { account: string; pids: number[] },
+  {
+    state: AppState
+  }
+>(
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids }) => {
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
@@ -78,7 +109,33 @@ export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], {
       }
     })
   },
+  {
+    condition: (arg, { getState }) => {
+      const { farms } = getState()
+      if (farms.loadingKeys[stringify({ type: fetchFarmUserDataAsync.typePrefix, arg })]) {
+        console.debug('farms user action is fetching, skipping here')
+        return false
+      }
+      return true
+    },
+  },
 )
+
+type UnknownAsyncThunkFulfilledOrPendingAction =
+  | UnknownAsyncThunkFulfilledAction
+  | UnknownAsyncThunkPendingAction
+  | UnknownAsyncThunkRejectedAction
+
+const serializeLoadingKey = (
+  action: UnknownAsyncThunkFulfilledOrPendingAction,
+  suffix: UnknownAsyncThunkFulfilledOrPendingAction['meta']['requestStatus'],
+) => {
+  const type = action.type.split(`/${suffix}`)[0]
+  return stringify({
+    arg: action.meta.arg,
+    type,
+  })
+}
 
 export const farmsSlice = createSlice({
   name: 'Farms',
@@ -101,6 +158,16 @@ export const farmsSlice = createSlice({
         state.data[index] = { ...state.data[index], userData: userDataEl }
       })
       state.userDataLoaded = true
+    })
+
+    builder.addMatcher(isPending, (state, action) => {
+      state.loadingKeys[serializeLoadingKey(action, 'pending')] = true
+    })
+    builder.addMatcher(isFulfilled, (state, action) => {
+      state.loadingKeys[serializeLoadingKey(action, 'fulfilled')] = false
+    })
+    builder.addMatcher(isRejected, (state, action) => {
+      state.loadingKeys[serializeLoadingKey(action, 'rejected')] = false
     })
   },
 })

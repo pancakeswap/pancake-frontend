@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import useRefresh from 'hooks/useRefresh'
+import { useFastFresh } from 'hooks/useRefresh'
 import { State } from '../types'
 import { fetchCurrentLotteryId, fetchCurrentLottery, fetchUserTicketsAndLotteries, fetchPublicLotteries } from '.'
 import { useProcessLotteryResponse } from './helpers'
@@ -33,7 +33,7 @@ export const useGetLotteryGraphDataById = (lotteryId: string) => {
 
 export const useFetchLottery = () => {
   const { account } = useWeb3React()
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
   const dispatch = useAppDispatch()
   const currentLotteryId = useGetCurrentLotteryId()
 

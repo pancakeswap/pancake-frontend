@@ -57,6 +57,7 @@
     "date-fns": "^2.21.3",
     "easymde": "^2.15.0",
     "ethers": "^5.1.4",
+    "fast-json-stable-stringify": "^2.1.0",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
     "js-cookie": "^2.2.1",

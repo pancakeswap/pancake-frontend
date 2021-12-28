@@ -14,7 +14,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
-import useRefresh from 'hooks/useRefresh'
+import { useFastFresh } from 'hooks/useRefresh'
 import useToast from 'hooks/useToast'
 import React, { useEffect, useState } from 'react'
 import { useBlock } from 'state/block/hooks'
@@ -263,7 +263,7 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
     ifo.isActive
   const onApprove = useIfoApprove(raisingTokenContract, contract.address)
   const { toastSuccess } = useToast()
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
   const isWindowVisible = useIsWindowVisible()
 
   useEffect(() => {

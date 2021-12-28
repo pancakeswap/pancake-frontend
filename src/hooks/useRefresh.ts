@@ -1,9 +1,9 @@
 import { useContext } from 'react'
-import { RefreshContext } from 'contexts/RefreshContext'
+import { FastRefresh, SlowRefresh } from 'contexts/RefreshContext'
 
-const useRefresh = () => {
-  const { fast, slow } = useContext(RefreshContext)
-  return { fastRefresh: fast, slowRefresh: slow }
+export const useFastFresh = () => {
+  return useContext(FastRefresh.Context)
 }
-
-export default useRefresh
+export const useSlowFresh = () => {
+  return useContext(SlowRefresh.Context)
+}

@@ -116,6 +116,7 @@ export interface SerializedFarmsState {
   data: SerializedFarm[]
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
+  loadingKeys: Record<string, boolean>
 }
 
 export interface DeserializedFarmsState {
