@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Breadcrumbs, Heading, Text, Link, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import { TranslateFunction } from 'contexts/Localization/types'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 const Wrapper = styled.div`
@@ -12,7 +13,12 @@ const Wrapper = styled.div`
   padding-bottom: 24px;
 `
 
-const steps = ['Get Starter Collectible', 'Set Profile Picture', 'Join Team', 'Set Name']
+const steps = (t: TranslateFunction) => [
+  t('Get Starter Collectible'),
+  t('Set Profile Picture'),
+  t('Join Team'),
+  t('Set Name'),
+]
 
 const Header: React.FC = () => {
   const { t } = useTranslation()
@@ -35,10 +41,10 @@ const Header: React.FC = () => {
         </Button>
       </Link>
       <Breadcrumbs>
-        {steps.map((translationKey, index) => {
+        {steps(t).map((translationKey, index) => {
           return (
-            <Text key={translationKey} color={index <= currentStep ? 'text' : 'textDisabled'}>
-              {t(translationKey)}
+            <Text key={t(translationKey)} color={index <= currentStep ? 'text' : 'textDisabled'}>
+              {translationKey}
             </Text>
           )
         })}
