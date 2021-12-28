@@ -29,12 +29,16 @@ export const useFetchPublicPoolsData = () => {
   const slowRefresh = useSlowFresh()
 
   useEffect(() => {
-    batch(async () => {
+    const fetchPoolsDataWithFarms = async () => {
       const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
       await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
-      dispatch(fetchPoolsPublicDataAsync())
-      dispatch(fetchPoolsStakingLimitsAsync())
-    })
+      batch(() => {
+        dispatch(fetchPoolsPublicDataAsync())
+        dispatch(fetchPoolsStakingLimitsAsync())
+      })
+    }
+
+    fetchPoolsDataWithFarms()
   }, [dispatch, slowRefresh])
 }
 
