@@ -44,7 +44,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
   const { account } = useWeb3React()
   const contract = useIfoV2Contract(address)
-  const currencyContract = useERC20(currency.address)
+  const currencyContract = useERC20(currency.address, false)
   const allowance = useIfoAllowance(currencyContract, address)
 
   const setPendingTx = (status: boolean, poolId: PoolIds) =>

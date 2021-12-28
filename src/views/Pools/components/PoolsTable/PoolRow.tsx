@@ -38,7 +38,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
     setExpanded((prev) => !prev)
   }
 
-  const isPoolZero = pool.sousId === 0
+  const isCakePool = pool.sousId === 0
 
   return (
     <>
@@ -53,13 +53,13 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         )}
         {pool.vaultKey === VaultKey.IfoPool ? (
           <AvgBalanceCell account={account} userDataLoaded={userDataLoaded} />
-        ) : isXLargerScreen && isPoolZero ? (
+        ) : isXLargerScreen && isCakePool ? (
           <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         ) : null}
-        {isLargerScreen && !isPoolZero && <TotalStakedCell pool={pool} />}
+        {isLargerScreen && !isCakePool && <TotalStakedCell pool={pool} />}
         {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
-        {isLargerScreen && isPoolZero && <TotalStakedCell pool={pool} />}
-        {isDesktop && !isPoolZero && <EndsInCell pool={pool} />}
+        {isLargerScreen && isCakePool && <TotalStakedCell pool={pool} />}
+        {isDesktop && !isCakePool && <EndsInCell pool={pool} />}
         <ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
       </StyledRow>
       {shouldRenderActionPanel && (

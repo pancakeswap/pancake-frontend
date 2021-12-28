@@ -1,31 +1,33 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
-import { BIG_ZERO } from 'utils/bigNumber'
 import {
+  AppThunk,
+  CakeVault,
+  IfoCakeVault,
+  IfoVaultUser,
   PoolsState,
   SerializedPool,
-  CakeVault,
   VaultFees,
   VaultUser,
-  AppThunk,
-  IfoVaultUser,
-  IfoCakeVault,
 } from 'state/types'
+import { getAddress } from 'utils/addressHelpers'
 import { getPoolApr } from 'utils/apr'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getCakeContract, getMasterchefContract } from 'utils/contractHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { simpleRpcProvider } from 'utils/providers'
+import { fetchIfoPoolFeesData, fetchPublicIfoPoolData } from './fetchIfoPoolPublic'
+import fetchIfoPoolUserData from './fetchIfoPoolUser'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
-  fetchUserStakeBalances,
   fetchUserPendingRewards,
+  fetchUserStakeBalances,
 } from './fetchPoolsUser'
 import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
-import { fetchIfoPoolFeesData, fetchPublicIfoPoolData } from './fetchIfoPoolPublic'
 import fetchVaultUser from './fetchVaultUser'
-import fetchIfoPoolUserData from './fetchIfoPoolUser'
 import { getTokenPricesFromFarm } from './helpers'
 
 export const initialPoolVaultState = Object.freeze({
@@ -59,6 +61,56 @@ const initialState: PoolsState = {
 }
 
 // Thunks
+const cakePool = poolsConfig.find((pool) => pool.sousId === 0)
+const cakePoolAddress = getAddress(cakePool.contractAddress)
+const cakeContract = getCakeContract()
+export const fetchCakePoolPublicDataAsync = () => async (dispatch, getState) => {
+  const prices = getTokenPricesFromFarm(getState().farms.data)
+  const stakingTokenAddress = cakePool.stakingToken.address ? cakePool.stakingToken.address.toLowerCase() : null
+  const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
+  const earningTokenAddress = cakePool.earningToken.address ? cakePool.earningToken.address.toLowerCase() : null
+  const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+  const totalStaking = await cakeContract.balanceOf(cakePoolAddress)
+  const apr = getPoolApr(
+    stakingTokenPrice,
+    earningTokenPrice,
+    getBalanceNumber(new BigNumber(totalStaking ? totalStaking.toString() : 0), cakePool.stakingToken.decimals),
+    parseFloat(cakePool.tokenPerBlock),
+  )
+
+  dispatch(
+    setPoolPublicData({
+      sousId: 0,
+      data: {
+        totalStaked: new BigNumber(totalStaking.toString()).toJSON(),
+        stakingTokenPrice,
+        earningTokenPrice,
+        apr,
+      },
+    }),
+  )
+}
+
+export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) => {
+  const allowance = await cakeContract.allowance(account, cakePoolAddress)
+  const stakingTokenBalance = await cakeContract.balanceOf(account)
+  const masterChefContract = getMasterchefContract()
+  const pendingReward = await masterChefContract.pendingCake('0', account)
+  const { amount: masterPoolAmount } = await masterChefContract.userInfo('0', account)
+
+  dispatch(
+    setPoolUserData({
+      sousId: 0,
+      data: {
+        allowance: new BigNumber(allowance.toString()).toJSON(),
+        stakingTokenBalance: new BigNumber(stakingTokenBalance.toString()).toJSON(),
+        pendingReward: new BigNumber(pendingReward.toString()).toJSON(),
+        stakedBalances: new BigNumber(masterPoolAmount.toString()).toJSON(),
+      },
+    }),
+  )
+}
+
 export const fetchPoolsPublicDataAsync = () => async (dispatch, getState) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
@@ -211,6 +263,19 @@ export const PoolsSlice = createSlice({
   name: 'Pools',
   initialState,
   reducers: {
+    setPoolPublicData: (state, action) => {
+      const { sousId } = action.payload
+      const poolIndex = state.data.findIndex((pool) => pool.sousId === sousId)
+      state.data[poolIndex] = {
+        ...state.data[poolIndex],
+        ...action.payload.data,
+      }
+    },
+    setPoolUserData: (state, action) => {
+      const { sousId } = action.payload
+      const poolIndex = state.data.findIndex((pool) => pool.sousId === sousId)
+      state.data[poolIndex].userData = action.payload.data
+    },
     setPoolsPublicData: (state, action) => {
       const livePoolsData: SerializedPool[] = action.payload
       state.data = state.data.map((pool) => {
@@ -270,6 +335,7 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setPoolPublicData, setPoolUserData } =
+  PoolsSlice.actions
 
 export default PoolsSlice.reducer
