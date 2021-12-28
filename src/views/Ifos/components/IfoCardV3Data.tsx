@@ -9,7 +9,6 @@ interface Props {
 }
 
 const IfoCardV3Data: React.FC<Props> = ({ ifo }) => {
-  // TODO: v3 contract
   const publicIfoData = useGetPublicIfoV2Data(ifo)
   const walletIfoData = useGetWalletIfoV3Data(ifo)
 

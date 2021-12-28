@@ -18,7 +18,7 @@ export interface IfoCardDetailsProps {
 
 export interface FooterEntryProps {
   label: ReactNode
-  value: string | number
+  value: ReactNode
 }
 
 const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
@@ -71,9 +71,13 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
             label
           )
         }
-        value={`${formatNumber(maxToken, 3, 3)} ${!isCurrencyCake ? ifo.currency.symbol : ''} ${
-          dollarValueOfToken > 0 ? ` ~($${dollarValueOfToken.toFixed(0)})` : ''
-        }`}
+        value={
+          <Text small textAlign="right" color={maxToken > 0 ? 'text' : 'failure'}>
+            {`${formatNumber(maxToken, 3, 3)} ${
+              !isCurrencyCake ? ifo.currency.symbol : ''
+            } ${` ~($${dollarValueOfToken.toFixed(0)})`}`}
+          </Text>
+        }
       />
     </>
   )

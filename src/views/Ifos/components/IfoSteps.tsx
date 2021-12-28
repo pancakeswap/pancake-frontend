@@ -31,13 +31,13 @@ import { useProfile } from 'state/profile/hooks'
 import Balance from 'components/Balance'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { usePriceCakeBusd } from 'state/farms/hooks'
 import { FlexGap } from 'components/Layout/Flex'
 import { getBalanceNumber } from 'utils/formatBalance'
 import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
 import { BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/hooks'
+import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 
 interface Props {
   ifo: Ifo
@@ -90,8 +90,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
     {},
   )
 
-  const cakePriceBusd = usePriceCakeBusd()
-  const stakedDollarValue = cakePriceBusd.gt(0) && credit ? getBalanceNumber(credit.multipliedBy(cakePriceBusd), 18) : 0
+  const creditDollarValue = useBUSDCakeAmount(getBalanceNumber(credit))
 
   const stakingTokenBalance = pool?.userData?.stakingTokenBalance
     ? new BigNumber(pool.userData.stakingTokenBalance)
@@ -132,9 +131,9 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
                 </Text>
                 <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
                 <Text fontSize="12px" color="textSubtle">
-                  {cakePriceBusd.gt(0) ? (
+                  {creditDollarValue ? (
                     <Balance
-                      value={stakedDollarValue}
+                      value={creditDollarValue}
                       fontSize="12px"
                       color="textSubtle"
                       decimals={2}

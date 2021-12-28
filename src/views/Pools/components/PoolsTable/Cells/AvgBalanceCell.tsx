@@ -1,17 +1,14 @@
 import { Box, Flex, HelpIcon, Skeleton, Text, useMatchBreakpoints, useTooltip } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
+import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import React from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useIfoPoolCredit } from 'state/pools/hooks'
-import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
-import { getBalanceNumber, getDecimalAmount } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface AvgBalanceCellProps {
-  pool: DeserializedPool
   account: string
   userDataLoaded: boolean
 }
@@ -30,20 +27,15 @@ const HelpIconWrapper = styled.div`
   align-self: center;
 `
 
-const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ pool, account, userDataLoaded }) => {
+const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account, userDataLoaded }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const credit = useIfoPoolCredit()
 
   const hasCredit = credit.gt(0)
 
-  // TODO: refactor this is use everywhere
   const cakeAsNumberBalance = getBalanceNumber(credit)
-  const cakeAsBigNumber = getDecimalAmount(new BigNumber(cakeAsNumberBalance))
-  const cakePriceBusd = usePriceCakeBusd()
-  const stakedDollarValue = cakePriceBusd.gt(0)
-    ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), pool.stakingToken.decimals)
-    : 0
+  const avgBalanceDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
 
   const labelText = `${t('Average')} ${t('Pool Balance')}`
 
@@ -82,7 +74,7 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ pool, account, userData
                     color="textSubtle"
                     decimals={2}
                     prefix="~"
-                    value={stakedDollarValue}
+                    value={avgBalanceDollarValue || 0}
                     unit=" USD"
                   />
                 ) : (

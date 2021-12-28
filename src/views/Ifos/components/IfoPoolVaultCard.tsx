@@ -19,10 +19,9 @@ import tokens from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useState } from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr, useIfoPooStartBlock } from 'state/pools/hooks'
 import styled from 'styled-components'
-import { getBalanceNumber, getDecimalAmount } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import CakeVaultCard from 'views/Pools/components/CakeVaultCard'
 import ExpandedFooter from 'views/Pools/components/PoolCard/CardFooter/ExpandedFooter'
 import { IfoVaultCardAvgBalance } from 'views/Pools/components/CakeVaultCard/VaultCardActions'
@@ -34,6 +33,8 @@ import { VaultKey } from 'state/types'
 import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/UnstakingFeeCountdownRow'
 import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
 import { getBscScanLink } from 'utils'
+import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
+import { BIG_ZERO } from 'utils/bigNumber'
 
 const StyledCardMobile = styled(Card)`
   max-width: 400px;
@@ -91,13 +92,8 @@ const IfoPoolVaultCardMobile: React.FC = () => {
     { placement: 'auto' },
   )
 
-  // TODO: refactor this is use everywhere
   const cakeAsNumberBalance = getBalanceNumber(credit)
-  const cakeAsBigNumber = getDecimalAmount(new BigNumber(cakeAsNumberBalance))
-  const cakePriceBusd = usePriceCakeBusd()
-  const stakedDollarValue = cakePriceBusd.gt(0)
-    ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), pool.stakingToken.decimals)
-    : 0
+  const stakedDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.'),
@@ -128,7 +124,14 @@ const IfoPoolVaultCardMobile: React.FC = () => {
               {t('Avg Balance')}
             </Text>
             <Balance small bold decimals={3} value={cakeAsNumberBalance} />
-            <Balance value={stakedDollarValue} fontSize="12px" color="textSubtle" decimals={2} prefix="~" unit=" USD" />
+            <Balance
+              value={stakedDollarValue || 0}
+              fontSize="12px"
+              color="textSubtle"
+              decimals={2}
+              prefix="~"
+              unit=" USD"
+            />
           </StyledTokenContent>
           <ExpandableButton expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)} />
         </Flex>
@@ -136,7 +139,11 @@ const IfoPoolVaultCardMobile: React.FC = () => {
       {isExpanded && (
         <>
           <StyledCardBody>
-            <AprRow pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
+            <AprRow
+              pool={pool}
+              stakedBalance={pool.userData?.stakedBalance ? new BigNumber(pool.userData.stakedBalance) : BIG_ZERO}
+              performanceFee={performanceFeeAsDecimal}
+            />
             {pool.vaultKey === VaultKey.IfoPool && (
               <Flex mt="8px" justifyContent="space-between">
                 <Text fontSize="14px">{t('Credit calculation starts:')}</Text>
@@ -152,7 +159,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
               </Flex>
             )}
             <ActionContainer>
-              <IfoVaultCardAvgBalance pool={pool} />
+              <IfoVaultCardAvgBalance />
             </ActionContainer>
             <Staked pool={pool} userDataLoaded={userDataLoaded} />
             <ActionContainer>
