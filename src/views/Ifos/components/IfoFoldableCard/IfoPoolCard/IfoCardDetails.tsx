@@ -58,10 +58,6 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
 
   const dollarValueOfToken = multiplyPriceByAmount(price, maxToken, ifo.currency.decimals)
 
-  if (!isV3 && poolId === PoolIds.poolUnlimited) {
-    return null
-  }
-
   return (
     <>
       {isV3 && tooltipVisible && tooltip}
@@ -103,7 +99,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
 
   /* Format start */
   const maxLpTokens =
-    ifo.version === 3
+    ifo.version === 3 && ifo.isActive
       ? version3MaxTokens
         ? getBalanceNumber(version3MaxTokens, ifo.currency.decimals)
         : 0
@@ -170,7 +166,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'finished') {
       return (
         <>
-          {tokenEntry}
+          {(poolId === PoolIds.poolBasic || ifo.isActive) && tokenEntry}
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />

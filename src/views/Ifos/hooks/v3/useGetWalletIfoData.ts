@@ -103,11 +103,13 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     setState({ ...initialState })
   }, [])
 
+  const creditLeftWithNegative = credit
+    .minus(state.poolBasic.amountTokenCommittedInLP)
+    .minus(state.poolUnlimited.amountTokenCommittedInLP)
+
   const ifoCredit = {
     credit,
-    creditLeft: credit
-      .minus(state.poolBasic.amountTokenCommittedInLP)
-      .minus(state.poolUnlimited.amountTokenCommittedInLP),
+    creditLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
   }
 
   return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData, ifoCredit }
