@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, ReactNode } from 'react'
 import styled from 'styled-components'
 import { ExpandableLabel, Flex, FlexProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
-interface FoldableTextProps extends FlexProps {
-  title?: string
+interface FoldableTextProps extends Omit<FlexProps, 'title'> {
+  title?: ReactNode
 }
 
 const Wrapper = styled(Flex)`

@@ -66,6 +66,21 @@ describe('Check translations available', () => {
         }
       }
     }
+
+    const regexWithTrans = /<Trans>([^$]*?)<\/Trans>/gm
+    const regexWithTransCarriage = /<Trans>([\r\n]\s+[^]*?)<\/Trans>/gm
+
+    while (
+      // eslint-disable-next-line no-cond-assign
+      (match = regexWithTrans.exec(data)) !== null ||
+      // eslint-disable-next-line no-cond-assign
+      (match = regexWithTransCarriage.exec(data)) !== null
+    ) {
+      match = match[1].replace(/\n\s+/g, ' ').trim()
+      if (match) {
+        extractedKeys.add(match)
+      }
+    }
   }
 
   it.each(Array.from(extractedKeys))('Translation key should exist in translations json', (key) => {

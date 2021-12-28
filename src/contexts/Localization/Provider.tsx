@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useEffect, useState } from 'react'
 import { Language } from '@pancakeswap/uikit'
 import { EN, languages } from 'config/localization/languages'
 import translations from 'config/localization/translations.json'
-import { ContextApi, ContextData, ProviderState } from './types'
+import { ContextApi, ProviderState, TranslateFunction } from './types'
 import { LS_KEY, fetchLocale, getLanguageCodeFromLS } from './helpers'
 
 const initialState: ProviderState = {
@@ -75,8 +75,8 @@ export const LanguageProvider: React.FC = ({ children }) => {
     }
   }, [])
 
-  const translate = useCallback(
-    (key: string, data?: ContextData) => {
+  const translate: TranslateFunction = useCallback(
+    (key, data) => {
       const translationSet = languageMap.has(currentLanguage.locale)
         ? languageMap.get(currentLanguage.locale)
         : languageMap.get(EN.locale)

@@ -43,17 +43,20 @@ const IfoQuestions = () => {
             </Heading>
           </CardHeader>
           <CardBody>
-            {config(t).map(({ title, description }, i, { length }) => (
-              <FoldableText key={title} id={title} mb={i + 1 === length ? '' : '24px'} title={title}>
-                {description.map((desc) => {
-                  return (
-                    <Text key={desc} color="textSubtle" as="p">
-                      {desc}
-                    </Text>
-                  )
-                })}
-              </FoldableText>
-            ))}
+            {config.map(({ title, description }, i, { length }) => {
+              return (
+                // eslint-disable-next-line react/no-array-index-key
+                <FoldableText key={i} mb={i + 1 === length ? '' : '24px'} title={title}>
+                  {description.map((desc) => {
+                    return (
+                      <Text key={String(desc)} color="textSubtle" as="p">
+                        {desc}
+                      </Text>
+                    )
+                  })}
+                </FoldableText>
+              )
+            })}
           </CardBody>
         </Card>
       </DetailsWrapper>
