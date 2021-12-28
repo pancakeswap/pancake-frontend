@@ -61,21 +61,21 @@ const initialState: PoolsState = {
 }
 
 // Thunks
-const poolZero = poolsConfig.find((pool) => pool.sousId === 0)
-const poolZeroAddress = getAddress(poolZero.contractAddress)
+const cakePool = poolsConfig.find((pool) => pool.sousId === 0)
+const cakePoolAddress = getAddress(cakePool.contractAddress)
 const cakeContract = getCakeContract()
-export const fetchPoolZeroPublicDataAsync = () => async (dispatch, getState) => {
+export const fetchCakePoolPublicDataAsync = () => async (dispatch, getState) => {
   const prices = getTokenPricesFromFarm(getState().farms.data)
-  const stakingTokenAddress = poolZero.stakingToken.address ? poolZero.stakingToken.address.toLowerCase() : null
+  const stakingTokenAddress = cakePool.stakingToken.address ? cakePool.stakingToken.address.toLowerCase() : null
   const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
-  const earningTokenAddress = poolZero.earningToken.address ? poolZero.earningToken.address.toLowerCase() : null
+  const earningTokenAddress = cakePool.earningToken.address ? cakePool.earningToken.address.toLowerCase() : null
   const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
-  const totalStaking = await cakeContract.balanceOf(poolZeroAddress)
+  const totalStaking = await cakeContract.balanceOf(cakePoolAddress)
   const apr = getPoolApr(
     stakingTokenPrice,
     earningTokenPrice,
-    getBalanceNumber(new BigNumber(totalStaking ? totalStaking.toString() : 0), poolZero.stakingToken.decimals),
-    parseFloat(poolZero.tokenPerBlock),
+    getBalanceNumber(new BigNumber(totalStaking ? totalStaking.toString() : 0), cakePool.stakingToken.decimals),
+    parseFloat(cakePool.tokenPerBlock),
   )
 
   dispatch(
@@ -91,8 +91,8 @@ export const fetchPoolZeroPublicDataAsync = () => async (dispatch, getState) => 
   )
 }
 
-export const fetchPoolZeroUserDataAsync = (account: string) => async (dispatch) => {
-  const allowance = await cakeContract.allowance(account, poolZeroAddress)
+export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) => {
+  const allowance = await cakeContract.allowance(account, cakePoolAddress)
   const stakingTokenBalance = await cakeContract.balanceOf(account)
   const masterChefContract = getMasterchefContract()
   const pendingReward = await masterChefContract.pendingCake('0', account)
