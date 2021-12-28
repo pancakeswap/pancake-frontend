@@ -79,26 +79,30 @@ export const useFetchCakeVault = () => {
   }, [dispatch])
 }
 
-export const useFetchIfoPool = () => {
+export const useFetchIfoPool = (fetchCakePool = true) => {
   const { account } = useWeb3React()
   const fastRefresh = useFastFresh()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     batch(() => {
-      dispatch(fetchCakePoolPublicDataAsync())
+      if (fetchCakePool) {
+        dispatch(fetchCakePoolPublicDataAsync())
+      }
       dispatch(fetchIfoPoolPublicData())
     })
-  }, [dispatch, fastRefresh])
+  }, [dispatch, fastRefresh, fetchCakePool])
 
   useEffect(() => {
     if (account) {
       batch(() => {
         dispatch(fetchIfoPoolUserAndCredit({ account }))
-        dispatch(fetchCakePoolUserDataAsync(account))
+        if (fetchCakePool) {
+          dispatch(fetchCakePoolUserDataAsync(account))
+        }
       })
     }
-  }, [dispatch, fastRefresh, account])
+  }, [dispatch, fastRefresh, account, fetchCakePool])
 
   useEffect(() => {
     dispatch(fetchIfoPoolFees())
