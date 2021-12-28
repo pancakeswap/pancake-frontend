@@ -29,7 +29,7 @@ export const useFetchPublicPoolsData = () => {
   const slowRefresh = useSlowFresh()
 
   useEffect(() => {
-    batch(() => {
+    batch(async () => {
       const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
       await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
       dispatch(fetchPoolsPublicDataAsync())
