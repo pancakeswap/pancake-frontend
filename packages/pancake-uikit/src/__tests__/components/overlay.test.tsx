@@ -13,8 +13,6 @@ it("renders correctly", () => {
       width: 100%;
       height: 100%;
       background-color: #280D5F99;
-      -webkit-backdrop-filter: blur(2px);
-      backdrop-filter: blur(2px);
       z-index: 20;
     }
 

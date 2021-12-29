@@ -9,7 +9,6 @@ const StyledOverlay = styled(Box)`
   width: 100%;
   height: 100%;
   background-color: ${({ theme }) => `${theme.colors.text}99`};
-  backdrop-filter: blur(2px);
   z-index: 20;
 `;
 
