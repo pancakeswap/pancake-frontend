@@ -60,7 +60,7 @@ export default function ManageTokens({
 
   const handleRemoveAll = useCallback(() => {
     if (chainId && userAddedTokens) {
-      userAddedTokens.map((token) => {
+      userAddedTokens.forEach((token) => {
         return removeToken(chainId, token.address)
       })
     }
