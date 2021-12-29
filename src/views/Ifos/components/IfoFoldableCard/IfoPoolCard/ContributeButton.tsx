@@ -1,4 +1,4 @@
-import React from 'react'
+import { useMemo, FC } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import BigNumber from 'bignumber.js'
 import { Button, useModal } from '@pancakeswap/uikit'
@@ -18,7 +18,7 @@ interface Props {
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
 }
-const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
+const ContributeButton: FC<Props> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
   const { isPendingTx, amountTokenCommittedInLP } = userPoolCharacteristics
@@ -27,6 +27,10 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   const { toastSuccess } = useToast()
   const currentBlock = useCurrentBlock()
   const { balance: userCurrencyBalance } = useTokenBalance(ifo.currency.address)
+  const userCurrencyBalanceAsBigNumber = useMemo(
+    () => new BigNumber(userCurrencyBalance.toString()),
+    [userCurrencyBalance],
+  )
 
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {
@@ -49,7 +53,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
       publicIfoData={publicIfoData}
       walletIfoData={walletIfoData}
       onSuccess={handleContributeSuccess}
-      userCurrencyBalance={new BigNumber(userCurrencyBalance.toString())}
+      userCurrencyBalance={userCurrencyBalanceAsBigNumber}
     />,
     false,
   )
