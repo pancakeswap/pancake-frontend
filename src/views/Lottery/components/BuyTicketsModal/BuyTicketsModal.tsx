@@ -208,7 +208,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
   const getNumTicketsByPercentage = (percentage: number): number => {
     const percentageOfMaxTickets = maxPossibleTicketPurchase.gt(0)
-      ? maxPossibleTicketPurchase.mul(percentage).div(BigNumber.from(100))
+      ? maxPossibleTicketPurchase.mul(BigNumber.from(percentage)).div(BigNumber.from(100))
       : Zero
     return Math.floor(percentageOfMaxTickets.toNumber())
   }
@@ -285,7 +285,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     }
     const ticketCostBeforeDiscountAsFN = FixedNumber.from(ticketCostBeforeDiscount)
     const discountValueAsFN = FixedNumber.from(discountValue)
-    if (discountValueAsFN.isZero || ticketCostBeforeDiscountAsFN.isZero()) {
+    if (discountValueAsFN.isZero() || ticketCostBeforeDiscountAsFN.isZero()) {
       return 0
     }
     const percentageAsBn = discountValueAsFN.divUnsafe(ticketCostBeforeDiscountAsFN).mulUnsafe(FixedNumber.from(100))
