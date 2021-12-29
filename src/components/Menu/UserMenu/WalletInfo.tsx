@@ -7,7 +7,7 @@ import useAuth from 'hooks/useAuth'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import React from 'react'
 import { getBscScanLink } from 'utils'
-import { formatBigNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { formatBigNumber, formatBigNumberToFixed } from 'utils/formatBalance'
 import CopyAddress from './CopyAddress'
 
 interface WalletInfoProps {
@@ -54,7 +54,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
         {cakeFetchStatus !== FetchStatus.Fetched ? (
           <Skeleton height="22px" width="60px" />
         ) : (
-          <Text>{getFullDisplayBalance(cakeBalance, 18, 3)}</Text>
+          <Text>{formatBigNumberToFixed(cakeBalance, 3, 18)}</Text>
         )}
       </Flex>
       <Flex alignItems="center" justifyContent="end" mb="24px">

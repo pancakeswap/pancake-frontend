@@ -49,7 +49,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
       publicIfoData={publicIfoData}
       walletIfoData={walletIfoData}
       onSuccess={handleContributeSuccess}
-      userCurrencyBalance={userCurrencyBalance}
+      userCurrencyBalance={new BigNumber(userCurrencyBalance.toString())}
     />,
     false,
   )
@@ -68,7 +68,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
 
   return (
     <Button
-      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetTokenModal : onPresentContributeModal}
+      onClick={userCurrencyBalance.eq(0) ? onPresentGetTokenModal : onPresentContributeModal}
       width="100%"
       disabled={isDisabled}
     >

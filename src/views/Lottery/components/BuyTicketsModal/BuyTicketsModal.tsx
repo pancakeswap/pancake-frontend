@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { MaxUint256 } from '@ethersproject/constants'
+import { MaxUint256, Zero, One } from '@ethersproject/constants'
+import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import {
   Modal,
   Text,
@@ -17,8 +17,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import { BIG_ZERO, ethersToBigNumber } from 'utils/bigNumber'
+import { formatBigNumber, formatBigNumberToFixed, getFullDisplayBalance } from 'utils/formatBalance'
 import { useAppDispatch } from 'state'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
@@ -77,21 +76,18 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const [totalCost, setTotalCost] = useState('')
   const [ticketCostBeforeDiscount, setTicketCostBeforeDiscount] = useState('')
   const [buyingStage, setBuyingStage] = useState<BuyingStage>(BuyingStage.BUY)
-  const [maxPossibleTicketPurchase, setMaxPossibleTicketPurchase] = useState(BIG_ZERO)
+  const [maxPossibleTicketPurchase, setMaxPossibleTicketPurchase] = useState(Zero)
   const [maxTicketPurchaseExceeded, setMaxTicketPurchaseExceeded] = useState(false)
   const [userNotEnoughCake, setUserNotEnoughCake] = useState(false)
   const lotteryContract = useLotteryV2Contract()
   const cakeContract = useCake()
   const { toastSuccess } = useToast()
   const { balance: userCake, fetchStatus } = useTokenBalance(tokens.cake.address)
-  // balance from useTokenBalance causes rerenders in effects as a new BigNumber is instantiated on each render, hence memoising it using the stringified value below.
-  const stringifiedUserCake = userCake.toJSON()
-  const memoisedUserCake = useMemo(() => new BigNumber(stringifiedUserCake), [stringifiedUserCake])
 
   const cakePriceBusd = usePriceCakeBusd()
   const dispatch = useAppDispatch()
   const hasFetchedBalance = fetchStatus === FetchStatus.Fetched
-  const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
+  const userCakeDisplayBalance = formatBigNumberToFixed(userCake, 3)
 
   const TooltipComponent = () => (
     <>
@@ -112,17 +108,19 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
   const limitNumberByMaxTicketsPerBuy = useCallback(
     (number: BigNumber) => {
-      return number.gt(maxNumberTicketsPerBuyOrClaim) ? maxNumberTicketsPerBuyOrClaim : number
+      const maxNumberTicketsPerBuyOrClaimAsBN = BigNumber.from(maxNumberTicketsPerBuyOrClaim.toString())
+      return number.gt(maxNumberTicketsPerBuyOrClaimAsBN) ? maxNumberTicketsPerBuyOrClaimAsBN : number
     },
     [maxNumberTicketsPerBuyOrClaim],
   )
 
   const getTicketCostAfterDiscount = useCallback(
     (numberTickets: BigNumber) => {
-      const totalAfterDiscount = priceTicketInCake
-        .times(numberTickets)
-        .times(discountDivisor.plus(1).minus(numberTickets))
-        .div(discountDivisor)
+      const discountDivisorAsBN = BigNumber.from(discountDivisor.toString())
+      const totalAfterDiscount = BigNumber.from(priceTicketInCake.toString())
+        .mul(numberTickets)
+        .mul(discountDivisorAsBN.add(1).sub(numberTickets))
+        .div(discountDivisorAsBN)
       return totalAfterDiscount
     },
     [discountDivisor, priceTicketInCake],
@@ -131,10 +129,10 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const getMaxTicketBuyWithDiscount = useCallback(
     (numberTickets: BigNumber) => {
       const costAfterDiscount = getTicketCostAfterDiscount(numberTickets)
-      const costBeforeDiscount = priceTicketInCake.times(numberTickets)
-      const discountAmount = costBeforeDiscount.minus(costAfterDiscount)
-      const ticketsBoughtWithDiscount = discountAmount.div(priceTicketInCake)
-      const overallTicketBuy = numberTickets.plus(ticketsBoughtWithDiscount)
+      const costBeforeDiscount = BigNumber.from(priceTicketInCake.toString()).mul(numberTickets)
+      const discountAmount = costBeforeDiscount.sub(BigNumber.from(costAfterDiscount))
+      const ticketsBoughtWithDiscount = discountAmount.div(BigNumber.from(priceTicketInCake.toString()))
+      const overallTicketBuy = numberTickets.add(ticketsBoughtWithDiscount)
       return { overallTicketBuy, ticketsBoughtWithDiscount }
     },
     [getTicketCostAfterDiscount, priceTicketInCake],
@@ -144,10 +142,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     (inputNumber: BigNumber) => {
       const limitedNumberTickets = limitNumberByMaxTicketsPerBuy(inputNumber)
       const cakeCostAfterDiscount = getTicketCostAfterDiscount(limitedNumberTickets)
-
       if (cakeCostAfterDiscount.gt(userCake)) {
         setUserNotEnoughCake(true)
-      } else if (limitedNumberTickets.eq(maxNumberTicketsPerBuyOrClaim)) {
+      } else if (limitedNumberTickets.eq(BigNumber.from(maxNumberTicketsPerBuyOrClaim.toString()))) {
         setMaxTicketPurchaseExceeded(true)
       } else {
         setUserNotEnoughCake(false)
@@ -159,12 +156,12 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
   useEffect(() => {
     const getMaxPossiblePurchase = () => {
-      const maxBalancePurchase = memoisedUserCake.div(priceTicketInCake)
+      const maxBalancePurchase = userCake.div(BigNumber.from(priceTicketInCake.toString()))
       const limitedMaxPurchase = limitNumberByMaxTicketsPerBuy(maxBalancePurchase)
-      let maxPurchase
+      let maxPurchase: BigNumber
 
       // If the users' max CAKE balance purchase is less than the contract limit - factor the discount logic into the max number of tickets they can purchase
-      if (limitedMaxPurchase.lt(maxNumberTicketsPerBuyOrClaim)) {
+      if (limitedMaxPurchase.lt(BigNumber.from(maxNumberTicketsPerBuyOrClaim.toString()))) {
         // Get max tickets purchasable with the users' balance, as well as using the discount to buy tickets
         const { overallTicketBuy: maxPlusDiscountTickets } = getMaxTicketBuyWithDiscount(limitedMaxPurchase)
 
@@ -173,15 +170,15 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
           getMaxTicketBuyWithDiscount(maxPlusDiscountTickets)
 
         // Add the additional tickets that can be bought with the discount, to the original max purchase
-        maxPurchase = limitedMaxPurchase.plus(secondTicketDiscountBuy)
+        maxPurchase = limitedMaxPurchase.add(secondTicketDiscountBuy)
       } else {
         maxPurchase = limitedMaxPurchase
       }
 
-      if (hasFetchedBalance && maxPurchase.lt(1)) {
+      if (hasFetchedBalance && maxPurchase.lt(One)) {
         setUserNotEnoughCake(true)
       } else {
-        setUserNotEnoughCake(false)
+        validateInput(ticketsToBuy ? BigNumber.from(ticketsToBuy) : Zero)
       }
 
       setMaxPossibleTicketPurchase(maxPurchase)
@@ -190,27 +187,29 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   }, [
     maxNumberTicketsPerBuyOrClaim,
     priceTicketInCake,
-    memoisedUserCake,
+    userCake,
+    validateInput,
     limitNumberByMaxTicketsPerBuy,
     getTicketCostAfterDiscount,
     getMaxTicketBuyWithDiscount,
     hasFetchedBalance,
+    ticketsToBuy,
   ])
 
   useEffect(() => {
-    const numberOfTicketsToBuy = new BigNumber(ticketsToBuy)
+    const numberOfTicketsToBuy = ticketsToBuy ? BigNumber.from(ticketsToBuy) : Zero
     const costAfterDiscount = getTicketCostAfterDiscount(numberOfTicketsToBuy)
-    const costBeforeDiscount = priceTicketInCake.times(numberOfTicketsToBuy)
-    const discountBeingApplied = costBeforeDiscount.minus(costAfterDiscount)
-    setTicketCostBeforeDiscount(costBeforeDiscount.gt(0) ? getFullDisplayBalance(costBeforeDiscount) : '0')
-    setTotalCost(costAfterDiscount.gt(0) ? getFullDisplayBalance(costAfterDiscount) : '0')
-    setDiscountValue(discountBeingApplied.gt(0) ? getFullDisplayBalance(discountBeingApplied, 18, 5) : '0')
+    const costBeforeDiscount = BigNumber.from(priceTicketInCake.toString()).mul(numberOfTicketsToBuy)
+    const discountBeingApplied = costBeforeDiscount.sub(costAfterDiscount)
+    setTicketCostBeforeDiscount(costBeforeDiscount.gt(0) ? formatBigNumber(costBeforeDiscount) : '0')
+    setTotalCost(costAfterDiscount.gt(0) ? formatBigNumber(costAfterDiscount) : '0')
+    setDiscountValue(discountBeingApplied.gt(0) ? formatBigNumber(discountBeingApplied, 5, 18) : '0')
   }, [ticketsToBuy, priceTicketInCake, discountDivisor, getTicketCostAfterDiscount])
 
   const getNumTicketsByPercentage = (percentage: number): number => {
     const percentageOfMaxTickets = maxPossibleTicketPurchase.gt(0)
-      ? maxPossibleTicketPurchase.div(new BigNumber(100)).times(new BigNumber(percentage))
-      : BIG_ZERO
+      ? maxPossibleTicketPurchase.mul(percentage).div(BigNumber.from(100))
+      : Zero
     return Math.floor(percentageOfMaxTickets.toNumber())
   }
 
@@ -222,10 +221,14 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const handleInputChange = (input: string) => {
     // Force input to integer
     const inputAsInt = parseInt(input, 10)
-    const inputAsBN = new BigNumber(inputAsInt)
-    const limitedNumberTickets = limitNumberByMaxTicketsPerBuy(inputAsBN)
-    validateInput(inputAsBN)
-    setTicketsToBuy(inputAsInt ? limitedNumberTickets.toString() : '')
+    if (input && !Number.isNaN(inputAsInt)) {
+      const inputAsBN = BigNumber.from(input)
+      validateInput(inputAsBN)
+      const limitedNumberTickets = limitNumberByMaxTicketsPerBuy(inputAsBN)
+      setTicketsToBuy(limitedNumberTickets.toString())
+    } else {
+      setTicketsToBuy('0')
+    }
   }
 
   const handleNumberButtonClick = (number: number) => {
@@ -244,8 +247,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       onRequiresApproval: async () => {
         try {
           const response = await cakeContract.allowance(account, lotteryContract.address)
-          const currentAllowance = ethersToBigNumber(response)
-          return currentAllowance.gt(0)
+          return response.gt(0)
         } catch (error) {
           return false
         }
@@ -278,11 +280,19 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   }
 
   const percentageDiscount = () => {
-    const percentageAsBn = new BigNumber(discountValue).div(new BigNumber(ticketCostBeforeDiscount)).times(100)
-    if (percentageAsBn.isNaN() || percentageAsBn.eq(0)) {
+    if (ticketCostBeforeDiscount === '' || discountValue === '') {
       return 0
     }
-    return percentageAsBn.toNumber().toFixed(2)
+    const ticketCostBeforeDiscountAsFN = FixedNumber.from(ticketCostBeforeDiscount)
+    const discountValueAsFN = FixedNumber.from(discountValue)
+    if (discountValueAsFN.isZero || ticketCostBeforeDiscountAsFN.isZero()) {
+      return 0
+    }
+    const percentageAsBn = discountValueAsFN.divUnsafe(ticketCostBeforeDiscountAsFN).mulUnsafe(FixedNumber.from(100))
+    if (Number.isNaN(percentageAsBn.toUnsafeFloat()) || percentageAsBn.isZero()) {
+      return 0
+    }
+    return percentageAsBn.toUnsafeFloat().toFixed(2)
   }
 
   const disableBuying =
@@ -290,7 +300,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     isConfirmed ||
     userNotEnoughCake ||
     !ticketsToBuy ||
-    new BigNumber(ticketsToBuy).lte(0) ||
+    BigNumber.from(ticketsToBuy).lte(0) ||
     getTicketsForPurchase().length !== parseInt(ticketsToBuy, 10)
 
   if (buyingStage === BuyingStage.EDIT) {
@@ -327,7 +337,14 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         onUserInput={handleInputChange}
         currencyValue={
           cakePriceBusd.gt(0) &&
-          `~${ticketsToBuy ? getFullDisplayBalance(priceTicketInCake.times(new BigNumber(ticketsToBuy))) : '0.00'} CAKE`
+          `~${
+            ticketsToBuy
+              ? formatBigNumberToFixed(
+                  BigNumber.from(priceTicketInCake.toString()).mul(BigNumber.from(ticketsToBuy)),
+                  2,
+                )
+              : '0.00'
+          } CAKE`
         }
       />
       <Flex alignItems="center" justifyContent="flex-end" mt="4px" mb="12px">

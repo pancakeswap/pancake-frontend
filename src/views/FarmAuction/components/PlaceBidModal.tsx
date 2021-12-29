@@ -65,7 +65,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
   const [errorText, setErrorText] = useState(null)
 
   const { balance: userCake, fetchStatus } = useTokenBalance(tokens.cake.address)
-  const userCakeBalance = getBalanceAmount(userCake)
+  const userCakeBalance = getBalanceAmount(ethersToBigNumber(userCake))
 
   const cakePriceBusd = usePriceCakeBusd()
   const farmAuctionContract = useFarmAuctionContract()
@@ -137,7 +137,10 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
 
   const setPercentageValue = (percentage: number) => {
     const rounding = percentage === 1 ? BigNumber.ROUND_FLOOR : BigNumber.ROUND_CEIL
-    const valueToSet = getBalanceAmount(userCake.times(percentage)).div(10).integerValue(rounding).times(10)
+    const valueToSet = getBalanceAmount(ethersToBigNumber(userCake).times(percentage))
+      .div(10)
+      .integerValue(rounding)
+      .times(10)
     setBid(valueToSet.toString())
   }
   return (
@@ -237,7 +240,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
               isApproving={isApproving}
               isConfirmDisabled={
                 !isMultipleOfTen ||
-                getBalanceAmount(userCake).lt(bid) ||
+                getBalanceAmount(ethersToBigNumber(userCake)).lt(bid) ||
                 isConfirmed ||
                 isInvalidFirstBid ||
                 userNotEnoughCake

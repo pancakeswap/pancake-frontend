@@ -193,7 +193,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
     poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0)
   const stepsValidationStatus = [
     hasActiveProfile,
-    balance.isGreaterThan(0),
+    balance.gt(0),
     isCommitted,
     poolBasic.hasClaimed || poolUnlimited.hasClaimed,
   ]
