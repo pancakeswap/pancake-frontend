@@ -30,6 +30,7 @@ import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/red
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
 import { useInactiveListener } from './hooks/useInactiveListener'
 import useSentryUser from './hooks/useSentryUser'
+import useNftClaimStatusCheck from './hooks/useNftClaimStatusCheck'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -73,6 +74,7 @@ const App: React.FC = () => {
   useUserAgent()
   useInactiveListener()
   useSentryUser()
+  useNftClaimStatusCheck()
 
   return (
     <Router history={history}>
