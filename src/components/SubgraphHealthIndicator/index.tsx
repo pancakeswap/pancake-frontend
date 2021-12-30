@@ -1,14 +1,12 @@
 import { BSC_BLOCK_TIME } from 'config'
-import { BLOCKS_CLIENT } from 'config/constants/endpoints'
 import { useTranslation } from 'contexts/Localization'
 import { Translate } from 'contexts/Localization/types'
-import { request, gql } from 'graphql-request'
-import useInterval from 'hooks/useInterval'
-import React, { useMemo } from 'react'
-import { useBlock } from 'state/block/hooks'
+import React from 'react'
 import styled from 'styled-components'
 import { Card, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useSubgraphHealthIndicatorManager } from 'state/user/hooks'
+import useSubgraphHealth, { SubgraphStatus, SubgraphHealthState } from 'hooks/useSubgraphHealth'
+import { useLocation } from 'react-router-dom'
 
 const StyledCard = styled(Card)`
   border-radius: 8px;
@@ -29,9 +27,6 @@ const Dot = styled(Box)<{ $color: string }>`
   border-radius: 50%;
   background: ${({ $color, theme }) => theme.colors[$color]};
 `
-
-const SECOND_IN_DELAY = 900 // 15 minutes
-const SECOND_IN_SLIGHTLY_DELAY = 300 // 5 minutes
 
 const indicator = (t: Translate) =>
   ({
@@ -58,12 +53,12 @@ const indicator = (t: Translate) =>
 
 type Indicator = keyof ReturnType<typeof indicator>
 
-const getIndicator = (secondRemains: number): Indicator => {
-  if (secondRemains > SECOND_IN_DELAY) {
+const getIndicator = (sgStatus: SubgraphStatus): Indicator => {
+  if (sgStatus === SubgraphStatus.WARNING) {
     return 'delayed'
   }
 
-  if (secondRemains > SECOND_IN_SLIGHTLY_DELAY) {
+  if (sgStatus === SubgraphStatus.NOT_OK) {
     return 'slow'
   }
 
@@ -75,49 +70,28 @@ export interface BlockResponse {
     number: string
   }[]
 }
-const getBlockFromTheGraph = async () => {
-  try {
-    const { blocks } = await request<BlockResponse>(
-      BLOCKS_CLIENT,
-      gql`
-        {
-          blocks(first: 1, orderDirection: desc, orderBy: number) {
-            number
-          }
-        }
-      `,
-    )
-    return parseInt(blocks[0].number, 10)
-  } catch (error) {
-    console.error(`Failed to fetch block number from subgraph \n${error}`)
-    return null
-  }
-}
 
 const SubgraphHealthIndicator = () => {
-  const [show] = useSubgraphHealthIndicatorManager()
+  const { pathname } = useLocation()
+  const subgraphHealth = useSubgraphHealth()
+  const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()
 
-  return show ? <SubgraphHealth /> : null
+  const isOnNftPages = pathname.includes('nfts')
+
+  const forceIndicatorDisplay =
+    subgraphHealth.status === SubgraphStatus.WARNING || subgraphHealth.status === SubgraphStatus.NOT_OK
+
+  const showIndicator = isOnNftPages && (alwaysShowIndicator || forceIndicatorDisplay)
+  return showIndicator ? <SubgraphHealth {...subgraphHealth} /> : null
 }
 
-const SubgraphHealth = () => {
-  const [blockNumberFromSubgraph, setBlockNumberFromSubgraph] = React.useState<number | null>()
-  const { currentBlock } = useBlock()
+const SubgraphHealth: React.FC<SubgraphHealthState> = ({ status, currentBlock, blockDifference, latestBlock }) => {
   const { t } = useTranslation()
-  const indicatorProps = useMemo(() => indicator(t), [t])
+  const indicatorProps = indicator(t)
 
-  useInterval(
-    async () => {
-      const blockNumber = await getBlockFromTheGraph()
-      setBlockNumberFromSubgraph(blockNumber)
-    },
-    6000,
-    true,
-  )
+  const secondRemainingBlockSync = blockDifference * BSC_BLOCK_TIME
 
-  const secondRemainingBlockSync = (currentBlock - blockNumberFromSubgraph) * BSC_BLOCK_TIME
-
-  const indicatorValue = getIndicator(secondRemainingBlockSync)
+  const indicatorValue = getIndicator(status)
 
   const current = indicatorProps[indicatorValue]
 
@@ -125,7 +99,7 @@ const SubgraphHealth = () => {
     <TooltipContent
       currentBlock={currentBlock}
       secondRemainingBlockSync={secondRemainingBlockSync}
-      blockNumberFromSubgraph={blockNumberFromSubgraph}
+      blockNumberFromSubgraph={latestBlock}
       {...current}
     />,
     {
@@ -133,12 +107,12 @@ const SubgraphHealth = () => {
     },
   )
 
-  if (!blockNumberFromSubgraph || !currentBlock) {
+  if (!latestBlock || !currentBlock) {
     return null
   }
 
   return (
-    <Box position="fixed" bottom="17px" right="20px" ref={targetRef}>
+    <Box position="fixed" bottom="55px" right="5%" ref={targetRef}>
       {tooltipVisible && tooltip}
       <StyledCard>
         <IndicatorWrapper p="10px">
