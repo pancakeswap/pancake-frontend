@@ -132,7 +132,7 @@ const Pools: React.FC = () => {
 
   usePollFarmsPublicData()
   useFetchCakeVault()
-  useFetchIfoPool()
+  useFetchIfoPool(false)
   useFetchPublicPoolsData()
   useFetchUserPools(account)
 
