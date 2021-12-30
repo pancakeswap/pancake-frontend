@@ -1798,5 +1798,15 @@
   "by": "by",
   "You’ve successfully claimed tokens back.": "You’ve successfully claimed tokens back.",
   "Stake CAKE to participate in IFOs": "Stake CAKE to participate in IFOs",
-  "Celebrate Christmas and New Year with us! Enjoy this wonderful NFT crafted by Chef Cecy and the winner from our #PancakeChristmas event.": "Celebrate Christmas and New Year with us! Enjoy this wonderful NFT crafted by Chef Cecy and the winner from our #PancakeChristmas event."
+  "Celebrate Christmas and New Year with us! Enjoy this wonderful NFT crafted by Chef Cecy and the winner from our #PancakeChristmas event.": "Celebrate Christmas and New Year with us! Enjoy this wonderful NFT crafted by Chef Cecy and the winner from our #PancakeChristmas event.",
+  "Chain Head Block": "Chain Head Block",
+  "Latest Subgraph Block": "Latest Subgraph Block",
+  "Slight delay": "Slight delay",
+  "Delayed": "Delayed",
+  "Fast": "Fast",
+  "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.",
+  "No issues with the subgraph.": "No issues with the subgraph.",
+  "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed",
+  "Subgraph Health Indicator": "Subgraph Health Indicator",
+  "Delay": "Delay"
 }
