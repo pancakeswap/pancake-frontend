@@ -5,7 +5,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Card, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useSubgraphHealthIndicatorManager } from 'state/user/hooks'
-import useSubgraphHealth, { SubgraphStatus, SubgraphHealthState } from 'hooks/useSubgraphHealth'
+import useSubgraphHealth, { SubgraphStatus } from 'hooks/useSubgraphHealth'
 import { useLocation } from 'react-router-dom'
 
 const StyledCard = styled(Card)`
@@ -142,8 +142,7 @@ const TooltipContent = ({
         <strong>{t('Chain Head Block')}:</strong> {currentBlock}
       </Text>
       <Text>
-        <strong>{t('Latest Subgraph Block')}:</strong>
-        {blockNumberFromSubgraph}
+        <strong>{t('Latest Subgraph Block')}:</strong> {blockNumberFromSubgraph}
       </Text>
       <Text>
         <strong>{t('Delay')}:</strong> {currentBlock - blockNumberFromSubgraph} ({secondRemainingBlockSync}s)
