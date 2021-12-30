@@ -2142,5 +2142,13 @@
     "chainId": 56,
     "decimals": 8,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xD48474E7444727bF500a32D5AbE01943f3A59A64.png"
+  },
+  {
+    "name": "Woonkly Power",
+    "symbol": "WOOP",
+    "address": "0x8b303d5BbfBbf46F1a4d9741E491e06986894e18",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x8b303d5BbfBbf46F1a4d9741E491e06986894e18.png"
   }
 ]

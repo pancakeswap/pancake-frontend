@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-12-23T11:26:38.055Z",
+  "timestamp": "2021-12-30T03:42:03.913Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 55
+    "patch": 56
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -2011,6 +2011,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x4691937a7508860F876c9c0a2a617E7d9E945D4B.png"
+    },
+    {
+      "name": "Woonkly Power",
+      "symbol": "WOOP",
+      "address": "0x8b303d5BbfBbf46F1a4d9741E491e06986894e18",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x8b303d5BbfBbf46F1a4d9741E491e06986894e18.png"
     },
     {
       "name": "Wall Street Games",
