@@ -6,13 +6,7 @@ import { VaultKey, DeserializedPool } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
 import { useCakeVault, useIfoPoolCreditBlock, useIfoPoolVault, usePools } from 'state/pools/hooks'
 import { getAprData } from 'views/Pools/helpers'
-
-enum FetchStatus {
-  NOT_FETCHED = 'not-fetched',
-  FETCHING = 'fetching',
-  SUCCESS = 'success',
-  FAILED = 'failed',
-}
+import { FetchStatus } from 'config/constants/types'
 
 export function usePoolsWithVault() {
   const { pools: poolsWithoutAutoVault } = usePools()
@@ -49,7 +43,7 @@ export function usePoolsWithVault() {
 const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
 
-  const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
+  const [fetchStatus, setFetchStatus] = useState(FetchStatus.Idle)
   const [topPools, setTopPools] = useState<DeserializedPool[]>([null, null, null, null, null])
 
   const pools = usePoolsWithVault()
@@ -58,19 +52,19 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
 
   useEffect(() => {
     const fetchPoolsPublicData = async () => {
-      setFetchStatus(FetchStatus.FETCHING)
+      setFetchStatus(FetchStatus.Fetching)
 
       try {
         await dispatch(fetchCakeVaultFees())
         await dispatch(fetchPoolsPublicDataAsync())
-        setFetchStatus(FetchStatus.SUCCESS)
+        setFetchStatus(FetchStatus.Fetched)
       } catch (e) {
         console.error(e)
-        setFetchStatus(FetchStatus.FAILED)
+        setFetchStatus(FetchStatus.Failed)
       }
     }
 
-    if (isIntersecting && fetchStatus === FetchStatus.NOT_FETCHED) {
+    if (isIntersecting && fetchStatus === FetchStatus.Idle) {
       fetchPoolsPublicData()
     }
   }, [dispatch, setFetchStatus, fetchStatus, topPools, isIntersecting])
@@ -80,7 +74,7 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
       const sortedByApr = orderBy(activePools, (pool: DeserializedPool) => pool.apr || 0, 'desc')
       setTopPools(sortedByApr.slice(0, 5))
     }
-    if (fetchStatus === FetchStatus.SUCCESS && !topPools[0]) {
+    if (fetchStatus === FetchStatus.Fetched && !topPools[0]) {
       getTopPoolsByApr(pools)
     }
   }, [setTopPools, pools, fetchStatus, cakePriceBusd, topPools])

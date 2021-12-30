@@ -20,13 +20,13 @@ import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
-import { LeaderboardLoadingState } from 'state/types'
 import {
   useGetOrFetchLeaderboardAddressResult,
   useGetLeaderboardLoadingState,
   useGetSelectedAddress,
 } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
+import { FetchStatus } from 'config/constants/types'
 import { NetWinnings } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'
@@ -52,7 +52,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
   const result = useGetOrFetchLeaderboardAddressResult(address)
   const profileAvatar = useGetProfileAvatar(address)
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
-  const isLoading = leaderboardLoadingState === LeaderboardLoadingState.LOADING
+  const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const { isDesktop } = useMatchBreakpoints()
 
   const handleDismiss = () => {

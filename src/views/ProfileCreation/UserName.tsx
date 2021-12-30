@@ -20,11 +20,12 @@ import { useWeb3React } from '@web3-react/core'
 import { formatUnits } from '@ethersproject/units'
 import { API_PROFILE } from 'config/constants/endpoints'
 import useToast from 'hooks/useToast'
-import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { signMessage } from 'utils/web3React'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
+import { FetchStatus } from 'config/constants/types'
 import ConfirmProfileCreationModal from './ConfirmProfileCreationModal'
 import useProfileCreation from './contexts/hook'
 import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, REGISTER_COST } from './config'
@@ -69,7 +70,7 @@ const UserName: React.FC = () => {
   const [message, setMessage] = useState('')
   const fetchAbortSignal = useRef<AbortController>(null)
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
-  const hasMinimumCakeRequired = fetchStatus === FetchStatus.SUCCESS && cakeBalance.gte(REGISTER_COST)
+  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance.gte(REGISTER_COST)
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}

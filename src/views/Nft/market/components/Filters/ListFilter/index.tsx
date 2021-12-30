@@ -1,25 +1,25 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
 import {
+  ArrowDownIcon,
+  ArrowUpIcon,
   Box,
   Button,
-  Text,
+  CloseIcon,
   Flex,
+  IconButton,
   InlineMenu,
   Input,
   InputGroup,
   SearchIcon,
-  IconButton,
-  CloseIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
+  Text,
 } from '@pancakeswap/uikit'
-import orderBy from 'lodash/orderBy'
-import { useAppDispatch } from 'state'
-import { filterNftsFromCollection } from 'state/nftMarket/reducer'
+import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
+import orderBy from 'lodash/orderBy'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useAppDispatch } from 'state'
 import { useGetNftFilterLoadingState, useGetNftFilters } from 'state/nftMarket/hooks'
-import { NftFilterLoadingState } from 'state/nftMarket/types'
+import { filterNftsFromCollection } from 'state/nftMarket/reducer'
+import styled from 'styled-components'
 import { FilterButton, ItemRow, SearchWrapper } from './styles'
 import { Item } from './types'
 
@@ -38,7 +38,7 @@ interface State {
 const TriggerButton = styled(Button)<{ hasItem: boolean }>`
   ${({ hasItem }) =>
     hasItem &&
-    `  
+    `
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     padding-right: 8px;
@@ -145,7 +145,7 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
               onClick={handleMenuClick}
               variant={isTraitSelected ? 'subtle' : 'light'}
               scale="sm"
-              disabled={nftFilterState === NftFilterLoadingState.LOADING}
+              disabled={nftFilterState === FetchStatus.Fetching}
               hasItem={isTraitSelected}
             >
               {title}
@@ -211,7 +211,7 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
           variant={isTraitSelected ? 'subtle' : 'light'}
           scale="sm"
           onClick={handleClearItem}
-          disabled={nftFilterState === NftFilterLoadingState.LOADING}
+          disabled={nftFilterState === FetchStatus.Fetching}
         >
           <CloseIcon color="currentColor" width="18px" />
         </CloseButton>

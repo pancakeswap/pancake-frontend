@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { FetchStatus } from 'config/constants/types'
 import { merge } from 'lodash'
-import { Proposal, ProposalState, VotingStateLoadingStatus, VotingState, Vote, State } from 'state/types'
+import { Proposal, ProposalState, VotingState, Vote, State } from 'state/types'
 import { getAllVotes, getProposal, getProposals, getVoteVerificationStatuses } from './helpers'
 
 const initialState: VotingState = {
-  proposalLoadingStatus: VotingStateLoadingStatus.INITIAL,
+  proposalLoadingStatus: FetchStatus.Idle,
   proposals: {},
-  voteLoadingStatus: VotingStateLoadingStatus.INITIAL,
+  voteLoadingStatus: FetchStatus.Idle,
   votes: {},
 }
 
@@ -64,7 +65,7 @@ export const votingSlice = createSlice({
 
     // Fetch Proposals
     builder.addCase(fetchProposals.pending, (state) => {
-      state.proposalLoadingStatus = VotingStateLoadingStatus.LOADING
+      state.proposalLoadingStatus = FetchStatus.Fetching
     })
     builder.addCase(fetchProposals.fulfilled, (state, action) => {
       const proposals = action.payload.reduce((accum, proposal) => {
@@ -75,21 +76,21 @@ export const votingSlice = createSlice({
       }, {})
 
       state.proposals = merge({}, state.proposals, proposals)
-      state.proposalLoadingStatus = VotingStateLoadingStatus.IDLE
+      state.proposalLoadingStatus = FetchStatus.Fetched
     })
 
     // Fetch Proposal
     builder.addCase(fetchProposal.pending, (state) => {
-      state.proposalLoadingStatus = VotingStateLoadingStatus.LOADING
+      state.proposalLoadingStatus = FetchStatus.Fetching
     })
     builder.addCase(fetchProposal.fulfilled, (state, action) => {
       state.proposals[action.payload.id] = action.payload
-      state.proposalLoadingStatus = VotingStateLoadingStatus.IDLE
+      state.proposalLoadingStatus = FetchStatus.Fetched
     })
 
     // Fetch Votes
     builder.addCase(fetchVotes.pending, (state) => {
-      state.voteLoadingStatus = VotingStateLoadingStatus.LOADING
+      state.voteLoadingStatus = FetchStatus.Fetching
     })
     builder.addCase(fetchVotes.fulfilled, (state, action) => {
       const { votes, proposalId } = action.payload
@@ -98,7 +99,7 @@ export const votingSlice = createSlice({
         ...state.votes,
         [proposalId]: votes,
       }
-      state.voteLoadingStatus = VotingStateLoadingStatus.IDLE
+      state.voteLoadingStatus = FetchStatus.Fetched
     })
   },
 })

@@ -84,6 +84,7 @@
     "split-grid": "^1.0.11",
     "styled-components": "^5.3.0",
     "swiper": "^6.8.4",
+    "swr": "^1.1.2",
     "typescript": "^4.3.2"
   },
   "devDependencies": {

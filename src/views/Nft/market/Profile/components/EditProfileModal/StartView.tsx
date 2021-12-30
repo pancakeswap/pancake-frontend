@@ -5,9 +5,10 @@ import { Button, Flex, Text, InjectedModalProps } from '@pancakeswap/uikit'
 import { formatBigNumber } from 'utils/formatBalance'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
-import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
+import { FetchStatus } from 'config/constants/types'
 import { useProfile } from 'state/profile/hooks'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { UseEditProfileResponse } from './reducer'
@@ -51,7 +52,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
   } = useGetProfileCosts()
   const [needsApproval, setNeedsApproval] = useState(null)
   const minimumCakeRequired = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
-  const hasMinimumCakeRequired = fetchStatus === FetchStatus.SUCCESS && cakeBalance.gte(minimumCakeRequired)
+  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance.gte(minimumCakeRequired)
 
   /**
    * Check if the wallet has the required CAKE allowance to change their profile pic or reactivate
