@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 495,
+    lpSymbol: 'WOOP-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x2AE94A6C768D59f5DDc25bd7f12C7cBE1D51dc04',
+    },
+    token: serializedTokens.woop,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 492,
     lpSymbol: 'SDAO-BNB LP',
     lpAddresses: {

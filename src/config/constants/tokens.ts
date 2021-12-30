@@ -1886,6 +1886,14 @@ export const mainnetTokens = defineTokens({
     'BitBook',
     'https://www.bitbook.network/',
   ),
+  woop: new Token(
+    MAINNET,
+    '0x8b303d5BbfBbf46F1a4d9741E491e06986894e18',
+    18,
+    'WOOP',
+    'Woonkly Power',
+    'https://www.woonkly.com/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
