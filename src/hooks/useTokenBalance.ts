@@ -29,7 +29,7 @@ const useTokenBalance = (tokenAddress: string) => {
   return {
     ...rest,
     fetchStatus: status,
-    balance: data ? new BigNumber(data) : BIG_ZERO,
+    balance: data ? new BigNumber(data.toString()) : BIG_ZERO,
   }
 }
 
