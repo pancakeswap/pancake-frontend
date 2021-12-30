@@ -227,5 +227,4 @@ export enum FetchStatus {
   Fetching = 'FETCHING',
   Fetched = 'FETCHED',
   Failed = 'FAILED',
-  Revalidating = 'REVALIDATING',
 }

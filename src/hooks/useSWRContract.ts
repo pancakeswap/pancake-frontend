@@ -28,8 +28,6 @@ export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
       status = FetchStatus.Fetched
     } else if (swr.error && !swr.data) {
       status = FetchStatus.Failed
-    } else if (swr.isValidating && swr.data) {
-      status = FetchStatus.Revalidating
     }
 
     return {
@@ -104,9 +102,9 @@ export function useSWRContract<
   Error = any,
   T extends Contract = Contract,
   N extends ContractMethodName<T> = ContractMethodName<T>,
-  Data = any,
   // until typescript is upgrade
-  // Awaited<ReturnType<T['functions'][N]>>,
+  Data = any,
+  // Data = Awaited<ReturnType<T['functions'][N]>>,
 >(key?: UseSWRContractKey<T, N> | null, config: SWRConfiguration<Data, Error> = {}) {
   const { contract, methodName, params } = getContractKey(key) || {}
   const serializedKeys = serializesContractKey(key)
