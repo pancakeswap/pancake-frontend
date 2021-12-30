@@ -54,11 +54,11 @@ const indicator = (t: Translate) =>
 type Indicator = keyof ReturnType<typeof indicator>
 
 const getIndicator = (sgStatus: SubgraphStatus): Indicator => {
-  if (sgStatus === SubgraphStatus.WARNING) {
+  if (sgStatus === SubgraphStatus.NOT_OK) {
     return 'delayed'
   }
 
-  if (sgStatus === SubgraphStatus.NOT_OK) {
+  if (sgStatus === SubgraphStatus.WARNING) {
     return 'slow'
   }
 
