@@ -73,20 +73,17 @@ export interface BlockResponse {
 
 const SubgraphHealthIndicator = () => {
   const { pathname } = useLocation()
-  const subgraphHealth = useSubgraphHealth()
-  const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()
-
   const isOnNftPages = pathname.includes('nfts')
-
-  const forceIndicatorDisplay =
-    subgraphHealth.status === SubgraphStatus.WARNING || subgraphHealth.status === SubgraphStatus.NOT_OK
-
-  const showIndicator = isOnNftPages && (alwaysShowIndicator || forceIndicatorDisplay)
-  return showIndicator ? <SubgraphHealth {...subgraphHealth} /> : null
+  return isOnNftPages ? <SubgraphHealth /> : null
 }
 
-const SubgraphHealth: React.FC<SubgraphHealthState> = ({ status, currentBlock, blockDifference, latestBlock }) => {
+const SubgraphHealth = () => {
   const { t } = useTranslation()
+  const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth()
+  const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()
+  const forceIndicatorDisplay = status === SubgraphStatus.WARNING || status === SubgraphStatus.NOT_OK
+  const showIndicator = alwaysShowIndicator || forceIndicatorDisplay
+
   const indicatorProps = indicator(t)
 
   const secondRemainingBlockSync = blockDifference * BSC_BLOCK_TIME
@@ -107,7 +104,7 @@ const SubgraphHealth: React.FC<SubgraphHealthState> = ({ status, currentBlock, b
     },
   )
 
-  if (!latestBlock || !currentBlock) {
+  if (!latestBlock || !currentBlock || !showIndicator) {
     return null
   }
 
