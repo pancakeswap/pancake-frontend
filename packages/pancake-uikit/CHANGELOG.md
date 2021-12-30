@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.62.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.61.0...@pancakeswap/uikit@0.62.0) (2021-12-30)
+
+
+### Features
+
+* List DPT ([#363](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/363)) ([c2a5681](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/c2a56818f977891ad80af9d3eff83334c0d19cce))
+
+
+### Performance Improvements
+
+* **uikit:** Remove backdrop filter ([#367](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/367)) ([4d66e7e](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/4d66e7ed433c534bb403e4856ad0617834217cbd))
+
+
+
+
+
 # [0.61.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.60.0...@pancakeswap/uikit@0.61.0) (2021-12-17)
 
 
