@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 const FixedContainer = styled.div`
   position: fixed;
   right: 5%;
-  bottom: 60px;
+  bottom: 110px;
 `
 
 const ScrollToTopButton = () => {

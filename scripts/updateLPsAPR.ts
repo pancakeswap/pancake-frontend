@@ -5,15 +5,11 @@ import { ChainId } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
 import farmsConfig from '../src/config/constants/farms'
+import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
+import { BLOCKS_CLIENT, INFO_CLIENT } from '../src/config/constants/endpoints'
 
-const BLOCK_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
-const STREAMING_FAST_ENDPOINT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
-
-interface BlockResponse {
-  blocks: {
-    number: string
-  }[]
-}
+const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
+const STREAMING_FAST_ENDPOINT = INFO_CLIENT
 
 interface SingleFarmResponse {
   id: string

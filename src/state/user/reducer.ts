@@ -32,6 +32,7 @@ import {
   setIsExchangeChartDisplayed,
   setChartViewMode,
   ChartViewMode,
+  setSubgraphHealthIndicatorDisplayed,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -69,6 +70,7 @@ export interface UserState {
   audioPlay: boolean
   isDark: boolean
   isExchangeChartDisplayed: boolean
+  isSubgraphHealthIndicatorDisplayed: boolean
   userChartViewMode: ChartViewMode
   userFarmStakedOnly: FarmStakedOnly
   userPoolStakedOnly: boolean
@@ -99,6 +101,7 @@ export const initialState: UserState = {
   audioPlay: true,
   isDark: false,
   isExchangeChartDisplayed: true,
+  isSubgraphHealthIndicatorDisplayed: false,
   userChartViewMode: ChartViewMode.BASIC,
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
   userPoolStakedOnly: false,
@@ -247,5 +250,8 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setChartViewMode, (state, { payload }) => {
       state.userChartViewMode = payload
+    })
+    .addCase(setSubgraphHealthIndicatorDisplayed, (state, { payload }) => {
+      state.isSubgraphHealthIndicatorDisplayed = payload
     }),
 )

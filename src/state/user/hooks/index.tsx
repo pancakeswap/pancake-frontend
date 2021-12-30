@@ -35,6 +35,7 @@ import {
   setIsExchangeChartDisplayed,
   ChartViewMode,
   setChartViewMode,
+  setSubgraphHealthIndicatorDisplayed,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -98,6 +99,23 @@ export function useExchangeChartViewManager() {
   )
 
   return [chartViewMode, setUserChartViewPreference] as const
+}
+
+export function useSubgraphHealthIndicatorManager() {
+  const dispatch = useDispatch<AppDispatch>()
+  const isSubgraphHealthIndicatorDisplayed = useSelector<
+    AppState,
+    AppState['user']['isSubgraphHealthIndicatorDisplayed']
+  >((state) => state.user.isSubgraphHealthIndicatorDisplayed)
+
+  const setSubgraphHealthIndicatorDisplayedPreference = useCallback(
+    (newIsDisplayed: boolean) => {
+      dispatch(setSubgraphHealthIndicatorDisplayed(newIsDisplayed))
+    },
+    [dispatch],
+  )
+
+  return [isSubgraphHealthIndicatorDisplayed, setSubgraphHealthIndicatorDisplayedPreference] as const
 }
 
 export function useIsExpertMode(): boolean {
