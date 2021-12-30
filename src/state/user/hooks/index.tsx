@@ -109,8 +109,8 @@ export function useSubgraphHealthIndicatorManager() {
   >((state) => state.user.isSubgraphHealthIndicatorDisplayed)
 
   const setSubgraphHealthIndicatorDisplayedPreference = useCallback(
-    (view: boolean) => {
-      dispatch(setSubgraphHealthIndicatorDisplayed(view))
+    (newIsDisplayed: boolean) => {
+      dispatch(setSubgraphHealthIndicatorDisplayed(newIsDisplayed))
     },
     [dispatch],
   )
