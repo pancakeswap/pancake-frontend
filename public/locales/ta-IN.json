@@ -1775,7 +1775,7 @@
   "Pool Balance": "பூல் பேலன்ஸ்",
   "Stake CAKE in IFO pool": "IFO பூலில் CAKE-ஐ ஸ்டேக் செய்யவும்",
   "The maximum amount of CAKE user can commit to all the sales combined, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.": "ஒன்றிணைந்து அனைத்து விற்பனைக்கும் பயனரால் கமிட் செய்யத்தக்க CAKEன் அதிகபட்ச தொகையானது, IFOக்கு முன் IFO CAKE பூலில் உள்ள சராசரி CAKE பேலன்ஸிற்குச் சமமானது. நீங்கள் விற்பனைக்கு கமிட் செய்யத்தக்க அதிகபட்ச CAKEகை அதிகரிக்க மேலும் CAKEகை ஸ்டேக் செய்யுங்கள். இந்த IFOவை தவறவிட்டீர்களா? அடுத்த IFO விற்பனையில் சேர, IFO CAKE பூலில் நீங்கள் தொடர்ந்து ஸ்டேக் செய்யலாம்.",
-  "How does the average balance calculated?": "How does the average balance calculated?",
+  "How does the average balance calculated?": "சராசரி பேலன்ஸ் எவ்வாறு கணக்கிடப்படுகிறது?",
   "Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal.": "Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal.",
   "Please refer to our blog post for more details.": "Please refer to our blog post for more details.",
   "Your max CAKE entry": "Your max CAKE entry",
