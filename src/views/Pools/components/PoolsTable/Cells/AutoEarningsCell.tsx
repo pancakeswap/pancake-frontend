@@ -11,7 +11,6 @@ import BaseCell, { CellContent } from './BaseCell'
 interface AutoEarningsCellProps {
   pool: DeserializedPool
   account: string
-  userDataLoaded: boolean
 }
 
 const StyledCell = styled(BaseCell)`
@@ -25,13 +24,13 @@ const HelpIconWrapper = styled.div`
   align-self: center;
 `
 
-const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account, userDataLoaded }) => {
+const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { earningTokenPrice } = pool
 
   const {
-    userData: { cakeAtLastUserAction, userShares, lastUserActionTime },
+    userData: { isLoading: userDataLoading, cakeAtLastUserAction, userShares, lastUserActionTime },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
@@ -67,7 +66,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account, user
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {!userDataLoaded && account ? (
+        {userDataLoading && account ? (
           <Skeleton width="80px" height="16px" />
         ) : (
           <>
