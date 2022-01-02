@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { Card, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useSubgraphHealthIndicatorManager } from 'state/user/hooks'
 import useSubgraphHealth, { SubgraphStatus } from 'hooks/useSubgraphHealth'
-import { useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
 const StyledCard = styled(Card)`
   border-radius: 8px;
@@ -72,7 +72,7 @@ export interface BlockResponse {
 }
 
 const SubgraphHealthIndicator = () => {
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const isOnNftPages = pathname.includes('nfts')
   return isOnNftPages ? <SubgraphHealth /> : null
 }

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "dev": "next dev",
     "start": "react-scripts start",
     "build": "CI=false && GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test --testPathIgnorePatterns=/src/__tests__/config/",
@@ -68,6 +69,7 @@
     "lodash": "^4.17.21",
     "multicodec": "^2.0.0",
     "multihashes": "^3.0.1",
+    "next": "^12.0.7",
     "numeral": "^2.0.6",
     "qs": "^6.9.4",
     "react": "^17.0.1",

@@ -61,15 +61,15 @@ const store = configureStore({
     ...getDefaultMiddleware({ thunk: true }),
     save({ states: PERSISTED_KEYS, debounce: 1000 }),
   ],
-  preloadedState: load({
-    states: PERSISTED_KEYS,
-    preloadedState: {
-      user: safeCloneDeep(userInitialState),
-      transactions: safeCloneDeep(transactionsInitialState),
-      lists: safeCloneDeep(listsInitialState),
-      profile: safeCloneDeep(profileInitialState),
-    },
-  }),
+  // preloadedState: load({
+  //   states: PERSISTED_KEYS,
+  //   preloadedState: {
+  //     user: safeCloneDeep(userInitialState),
+  //     transactions: safeCloneDeep(transactionsInitialState),
+  //     lists: safeCloneDeep(listsInitialState),
+  //     profile: safeCloneDeep(profileInitialState),
+  //   },
+  // }),
 })
 
 store.dispatch(updateVersion())

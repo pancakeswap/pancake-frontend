@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Heading, IconButton, ArrowBackIcon, NotificationDot } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
 import { useExpertModeManager } from 'state/user/hooks'
 import GlobalSettings from 'components/Menu/GlobalSettings'
+import Link from 'next/link'
 import Transactions from './Transactions'
 import QuestionHelper from '../QuestionHelper'
 
@@ -30,9 +30,11 @@ const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig 
     <AppHeaderContainer>
       <Flex alignItems="center" mr={noConfig ? 0 : '16px'}>
         {backTo && (
-          <IconButton as={Link} to={backTo}>
-            <ArrowBackIcon width="32px" />
-          </IconButton>
+          <Link passHref href={backTo}>
+            <IconButton as="a">
+              <ArrowBackIcon width="32px" />
+            </IconButton>
+          </Link>
         )}
         <Flex flexDirection="column">
           <Heading as="h2" mb="8px">

@@ -538,7 +538,7 @@ export default function RemoveLiquidity({
                     <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
                       {oneCurrencyIsETH ? (
                         <StyledInternalLink
-                          to={`/remove/${currencyA === ETHER ? WETH[chainId].address : currencyIdA}/${
+                          href={`/remove/${currencyA === ETHER ? WETH[chainId].address : currencyIdA}/${
                             currencyB === ETHER ? WETH[chainId].address : currencyIdB
                           }`}
                         >
@@ -546,9 +546,9 @@ export default function RemoveLiquidity({
                         </StyledInternalLink>
                       ) : oneCurrencyIsWETH ? (
                         <StyledInternalLink
-                          to={`/remove/${currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'BNB' : currencyIdA}/${
-                            currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'BNB' : currencyIdB
-                          }`}
+                          href={`/remove/${
+                            currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'BNB' : currencyIdA
+                          }/${currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'BNB' : currencyIdB}`}
                         >
                           {t('Receive BNB')}
                         </StyledInternalLink>

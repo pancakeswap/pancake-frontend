@@ -1,17 +1,18 @@
 import React from 'react'
 import { Button, Heading, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import history from 'routerHistory'
 import { useTranslation } from 'contexts/Localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import { useRouter } from 'next/router'
 
 const MakeProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const router = useRouter()
 
   const handleClick = () => {
-    history.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)
+    router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)
     onDismiss()
   }
 

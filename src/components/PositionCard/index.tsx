@@ -11,7 +11,6 @@ import {
   CardProps,
   AddIcon,
 } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -28,6 +27,7 @@ import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
 import { BIG_INT_ZERO } from '../../config/constants'
 import Dots from '../Loader/Dots'
+import Link from 'next/link'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;

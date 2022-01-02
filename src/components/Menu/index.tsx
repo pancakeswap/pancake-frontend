@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation } from 'react-router'
+import { useRouter } from 'next/router'
 import { Menu as UikitMenu } from '@pancakeswap/uikit'
 import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
@@ -18,7 +18,7 @@ const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
   const { currentLanguage, setLanguage, t } = useTranslation()
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const [showPhishingWarningBanner] = usePhishingBannerManager()
 
   const activeMenuItem = getActiveMenuItem({ menuConfig: config(t), pathname })

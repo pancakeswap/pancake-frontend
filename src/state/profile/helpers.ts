@@ -28,7 +28,7 @@ const transformProfileResponse = (
   }
 }
 
-const profileApi = process.env.REACT_APP_API_PROFILE
+const profileApi = process.env.NEXT_PUBLIC_API_PROFILE
 
 export const getUsername = async (address: string): Promise<string> => {
   try {

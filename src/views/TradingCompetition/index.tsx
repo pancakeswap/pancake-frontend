@@ -73,7 +73,7 @@ const BottomBunnyWrapper = styled(Box)`
 `
 
 const TradingCompetition = () => {
-  const profileApiUrl = process.env.REACT_APP_API_PROFILE
+  const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()

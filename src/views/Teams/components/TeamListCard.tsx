@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { Button, Card, CommunityIcon, Flex, Heading, PrizeIcon, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Team } from 'config/constants/types'
@@ -127,9 +127,11 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
               </Flex>
             </Flex>
           </Info>
-          <Button as={Link} to={`/teams/${team?.id}`} variant="secondary" scale="sm">
-            {t('See More')}
-          </Button>
+          <Link href={`/teams/${team?.id}`} passHref>
+            <Button as="a" variant="secondary" scale="sm">
+              {t('See More')}
+            </Button>
+          </Link>
           <DesktopAvatar>{avatar}</DesktopAvatar>
         </Body>
       </Flex>

@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <!-- Links -->
-    <link rel="preconnect" href="%REACT_APP_NODE_1%" />
-    <link rel="preconnect" href="%REACT_APP_NODE_2%" />
-    <link rel="preconnect" href="%REACT_APP_NODE_3%" />
-    <link rel="preconnect" href="%REACT_APP_NODE_PRODUCTION%" />
+    <link rel="preconnect" href="%NEXT_PUBLIC_NODE_1%" />
+    <link rel="preconnect" href="%NEXT_PUBLIC_NODE_2%" />
+    <link rel="preconnect" href="%NEXT_PUBLIC_NODE_3%" />
+    <link rel="preconnect" href="%NEXT_PUBLIC_NODE_PRODUCTION%" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -41,14 +41,14 @@
         j.async = true
         j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
         f.parentNode.insertBefore(j, f)
-      })(window, document, 'script', 'dataLayer', '%REACT_APP_GTAG%')
+      })(window, document, 'script', 'dataLayer', '%NEXT_PUBLIC_GTAG%')
     </script>
   </head>
   <body>
     <!-- GTAG (noscript) -->
     <noscript>
       <iframe
-        src="https://www.googletagmanager.com/ns.html?id=%REACT_APP_GTAG%"
+        src="https://www.googletagmanager.com/ns.html?id=%NEXT_PUBLIC_GTAG%"
         height="0"
         width="0"
         style="display: none; visibility: hidden"

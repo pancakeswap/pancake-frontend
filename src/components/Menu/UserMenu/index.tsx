@@ -8,8 +8,8 @@ import {
   UserMenuDivider,
   UserMenuItem,
 } from '@pancakeswap/uikit'
-import history from 'routerHistory'
 import useAuth from 'hooks/useAuth'
+import { useRouter } from 'next/router'
 import { useProfile } from 'state/profile/hooks'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
@@ -21,6 +21,7 @@ import ProfileUserMenuItem from './ProfileUserMenutItem'
 import WalletUserMenuItem from './WalletUserMenuItem'
 
 const UserMenu = () => {
+  const router = useRouter()
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { logout } = useAuth()
@@ -43,7 +44,7 @@ const UserMenu = () => {
         {t('Transactions')}
       </UserMenuItem>
       <UserMenuDivider />
-      <UserMenuItem as="button" onClick={() => history.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)}>
+      <UserMenuItem as="button" onClick={() => router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)}>
         {t('Your NFTs')}
       </UserMenuItem>
       <ProfileUserMenuItem isLoading={isLoading} hasProfile={hasProfile} />

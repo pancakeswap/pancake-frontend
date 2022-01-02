@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { ArrowForwardIcon, Box, IconButton, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import Link from 'next/link'
 import { Proposal } from 'state/types'
 import { isCoreProposal } from '../../helpers'
 import TimeFrame from './TimeFrame'
@@ -26,7 +26,7 @@ const ProposalRow: React.FC<ProposalRowProps> = ({ proposal }) => {
   const votingLink = `/voting/proposal/${proposal.id}`
 
   return (
-    <StyledProposalRow to={votingLink}>
+    <StyledProposalRow href={votingLink}>
       <Box as="span" style={{ flex: 1 }}>
         <Text bold mb="8px">
           {proposal.title}

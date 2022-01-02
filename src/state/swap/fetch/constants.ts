@@ -22,7 +22,7 @@ export const timeWindowGapMapping: Record<PairDataTimeWindowEnum, number | null>
 // No production env check since production preview might also need them
 export const getHeaders = (endpoint: string) => {
   if (endpoint === INFO_CLIENT) {
-    return { 'X-Sf': process.env.REACT_APP_SF_HEADER }
+    return { 'X-Sf': process.env.NEXT_PUBLIC_SF_HEADER }
   }
   return undefined
 }

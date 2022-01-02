@@ -15,7 +15,6 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import { useHistory } from 'react-router'
-import { Link } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import isEmpty from 'lodash/isEmpty'
@@ -32,6 +31,7 @@ import { DatePicker, TimePicker, DatePickerPortal } from 'views/Voting/component
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ReactMarkdown from 'components/ReactMarkdown'
 import { PageMeta } from 'components/Layout/Page'
+import Link from 'next/link'
 import { sendSnapshotData, Message, generateMetaData, generatePayloadData } from '../helpers'
 import Layout from '../components/Layout'
 import { FormErrors, Label, SecondaryLabel } from './styles'
@@ -165,8 +165,8 @@ const CreateProposal = () => {
       <PageMeta />
       <Box mb="48px">
         <Breadcrumbs>
-          <Link to="/">{t('Home')}</Link>
-          <Link to="/voting">{t('Voting')}</Link>
+          <Link href="/">{t('Home')}</Link>
+          <Link href="/voting">{t('Voting')}</Link>
           <Text>{t('Make a Proposal')}</Text>
         </Breadcrumbs>
       </Box>

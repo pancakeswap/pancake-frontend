@@ -5,7 +5,6 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useUserAgent from 'hooks/useUserAgent'
-import useScrollOnRouteChange from 'hooks/useScrollOnRouteChange'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
@@ -18,7 +17,6 @@ import { ToastListener } from './contexts/ToastsContext'
 import PageLoader from './components/Loader/PageLoader'
 import EasterEgg from './components/EasterEgg'
 import GlobalCheckClaimStatus from './components/GlobalCheckClaimStatus'
-import history from './routerHistory'
 // Views included in the main bundle
 import Pools from './views/Pools'
 import Swap from './views/Swap'
@@ -70,13 +68,12 @@ const App: React.FC = () => {
   useEagerConnect()
   useFetchProfile()
   usePollCoreFarmData()
-  useScrollOnRouteChange()
   useUserAgent()
   useInactiveListener()
   useSentryUser()
 
   return (
-    <Router history={history}>
+    <Router>
       <ResetCSS />
       <GlobalStyle />
       <GlobalCheckClaimStatus excludeLocations={[]} />
