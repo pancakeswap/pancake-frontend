@@ -46,9 +46,7 @@ function MyApp(props: AppProps) {
         <ResetCSS />
         <GlobalStyle />
         <GlobalCheckClaimStatus excludeLocations={[]} />
-        <Menu>
-          <App {...props} />
-        </Menu>
+        <App {...props} />
         <EasterEgg iterations={2} />
         <ToastListener />
         <SubgraphHealthIndicator />
