@@ -33,9 +33,7 @@ const Footer = () => {
             </Text>
 
             <Link href="/voting/proposal/create">
-              <Button startIcon={<ProposalIcon color="currentColor" width="24px" />} to="/voting/proposal/create">
-                {t('Make a Proposal')}
-              </Button>
+              <Button startIcon={<ProposalIcon color="currentColor" width="24px" />}>{t('Make a Proposal')}</Button>
             </Link>
           </Box>
           <DesktopImage src="/images/voting/voting-bunny.png" width={173} height={234} />

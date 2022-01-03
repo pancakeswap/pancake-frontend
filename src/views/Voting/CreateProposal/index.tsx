@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, lazy, useEffect, useState, useMemo } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState, useMemo } from 'react'
 import {
   AutoRenewIcon,
   Box,
@@ -14,7 +14,6 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { useHistory } from 'react-router'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import isEmpty from 'lodash/isEmpty'
@@ -31,7 +30,9 @@ import { DatePicker, TimePicker, DatePickerPortal } from 'views/Voting/component
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ReactMarkdown from 'components/ReactMarkdown'
 import { PageMeta } from 'components/Layout/Page'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { sendSnapshotData, Message, generateMetaData, generatePayloadData } from '../helpers'
 import Layout from '../components/Layout'
 import { FormErrors, Label, SecondaryLabel } from './styles'
@@ -41,7 +42,9 @@ import { FormState } from './types'
 import { ADMINS, VOTE_THRESHOLD } from '../config'
 import VoteDetailsModal from '../components/VoteDetailsModal'
 
-const EasyMde = lazy(() => import('components/EasyMde'))
+const EasyMde = dynamic(() => import('components/EasyMde'), {
+  ssr: false,
+})
 
 const CreateProposal = () => {
   const [state, setState] = useState<FormState>({
@@ -59,7 +62,7 @@ const CreateProposal = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const initialBlock = useInitialBlock()
-  const { push } = useHistory()
+  const { push } = useRouter()
   const { library, connector } = useWeb3Provider()
   const { toastSuccess, toastError } = useToast()
   const [onPresentVoteDetailsModal] = useModal(<VoteDetailsModal block={state.snapshot} />)

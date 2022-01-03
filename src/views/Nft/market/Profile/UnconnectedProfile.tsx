@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { useAchievementsForAddress, useProfileForAddress } from 'state/profile/hooks'
 import { Box } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { Route, useParams } from 'react-router'
+import { Route } from 'react-router'
+import { useRouter } from 'next/router'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
@@ -27,12 +28,13 @@ const TabMenuWrapper = styled(Box)`
 `
 
 const UnconnectedProfile = () => {
-  const { accountAddress } = useParams<{ accountAddress: string }>()
+  const accountAddress = useRouter().query.accountAddress as string
   const { profile: profileHookState, isFetching: isProfileFetching } = useProfileForAddress(accountAddress)
   const { profile } = profileHookState || {}
   const { achievements, isFetching: isAchievementFetching } = useAchievementsForAddress(accountAddress)
   const { nfts, isLoading: isNftLoading } = useNftsForAddress(accountAddress, profile, isProfileFetching)
 
+  // TODO: nested route
   return (
     <>
       <MarketPageHeader position="relative">

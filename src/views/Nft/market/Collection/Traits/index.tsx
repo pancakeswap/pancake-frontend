@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useRouter } from 'next/router'
 import Container from 'components/Layout/Container'
 import { useAppDispatch } from 'state'
 import { useGetCollection } from 'state/nftMarket/hooks'
@@ -10,7 +10,7 @@ import { pancakeBunniesAddress } from '../../constants'
 import CollectionTraits from './CollectionTraits'
 
 const Traits = () => {
-  const { collectionAddress } = useParams<{ collectionAddress: string }>()
+  const collectionAddress = useRouter().query.collectionAddress as string
   const dispatch = useAppDispatch()
   const collection = useGetCollection(collectionAddress)
 

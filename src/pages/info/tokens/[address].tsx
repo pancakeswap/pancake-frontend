@@ -1,10 +1,14 @@
 import React from 'react'
-import Token from 'views/info/Tokens/TokenPage'
-import { GetStaticProps } from 'next'
+import Token from 'views/Info/Tokens/TokenPage'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { isAddress } from 'utils'
 import { InfoPageLayout } from 'views/Info'
 
 const TokenPage = ({ address }: { address: string }) => {
+  if (!address) {
+    return null
+  }
+
   return <Token routeAddress={address} />
 }
 
@@ -12,11 +16,18 @@ TokenPage.getLayout = InfoPageLayout
 
 export default TokenPage
 
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: true,
+  }
+}
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const address = params?.address
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
-  if (!isAddress(String(address).toLowerCase())) {
+  if (!address || !isAddress(String(address).toLowerCase())) {
     return {
       redirect: {
         destination: '/',

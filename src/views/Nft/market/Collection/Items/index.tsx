@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useRouter } from 'next/router'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { fetchCollection } from 'state/nftMarket/reducer'
@@ -13,7 +13,7 @@ import Header from '../Header'
 import CollectionWrapper from './CollectionWrapper'
 
 const Items = () => {
-  const { collectionAddress } = useParams<{ collectionAddress: string }>()
+  const collectionAddress = useRouter().query.collectionAddress as string
   const [sortBy, setSortBy] = useState('updatedAt')
   const { t } = useTranslation()
   const dispatch = useAppDispatch()

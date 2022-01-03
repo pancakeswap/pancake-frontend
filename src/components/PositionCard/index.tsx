@@ -12,6 +12,7 @@ import {
   AddIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTotalSupply from '../../hooks/useTotalSupply'
@@ -27,7 +28,6 @@ import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
 import { BIG_INT_ZERO } from '../../config/constants'
 import Dots from '../Loader/Dots'
-import Link from 'next/link'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;

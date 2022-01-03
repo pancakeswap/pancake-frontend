@@ -1,13 +1,14 @@
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
-import { useLocation, useParams } from 'react-router'
+import { useRouter } from 'next/router'
 import BaseSubMenu from '../../components/BaseSubMenu'
 import { nftsBaseUrl } from '../../constants'
 
 const SubMenuComponent: React.FC = () => {
   const { t } = useTranslation()
-  const { accountAddress } = useParams<{ accountAddress: string }>()
-  const { pathname } = useLocation()
+  const router = useRouter()
+  const accountAddress = router.query.accountAddress as string
+  const { pathname } = router
 
   const ItemsConfig = [
     {

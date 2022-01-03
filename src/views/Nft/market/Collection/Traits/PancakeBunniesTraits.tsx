@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { Skeleton, Table, Td, Th, Flex, ArrowUpIcon, ArrowDownIcon } from '@pancakeswap/uikit'
-import { useHistory } from 'react-router'
 import times from 'lodash/times'
+import { useRouter } from 'next/router'
 import { formatNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import CollapsibleCard from 'components/CollapsibleCard'
@@ -37,12 +37,12 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
 const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
   const [raritySort, setRaritySort] = useState<SortType>('asc')
   const { t } = useTranslation()
-  const { push } = useHistory()
   const {
     data: distributionData,
     total: totalBunnyCount,
     isFetching: isFetchingDistribution,
   } = useGetCollectionDistributionPB()
+  const { push } = useRouter()
 
   const sortedTokenList = useMemo(() => {
     if (!distributionData || !Object.keys(distributionData)) return []

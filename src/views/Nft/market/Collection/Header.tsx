@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation, useParams } from 'react-router'
+import { NextRouter, useRouter } from 'next/router'
 import { Text } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'
 import { formatNumber } from 'utils/formatBalance'
@@ -19,11 +19,15 @@ interface HeaderProps {
   collection: Collection
 }
 
+const getHashFromRouter = (router: NextRouter) => router.asPath.match(/#([a-z0-9]+)/gi)
+
 const Header: React.FC<HeaderProps> = ({ collection }) => {
-  const { collectionAddress } = useParams<{ collectionAddress: string }>()
+  const router = useRouter()
+  const collectionAddress = router.query.collectionAddress as string
   const { totalSupply, numberTokensListed, totalVolumeBNB, banner, avatar } = collection
   const { t } = useTranslation()
-  const { pathname, hash } = useLocation()
+
+  const hash = getHashFromRouter(router)
 
   const volume = totalVolumeBNB
     ? parseFloat(totalVolumeBNB).toLocaleString(undefined, {
@@ -68,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
         </MarketPageTitle>
       </MarketPageHeader>
       <Container>
-        <BaseSubMenu items={itemsConfig} activeItem={`${pathname}${hash || '#items'}`} mt="24px" mb="8px" />
+        <BaseSubMenu items={itemsConfig} activeItem={`${router.pathname}${hash[0] || '#items'}`} mt="24px" mb="8px" />
       </Container>
     </>
   )

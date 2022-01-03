@@ -2,12 +2,16 @@ import React, { useMemo, useState } from 'react'
 import { Text, Box, Card, Flex, Skeleton } from '@pancakeswap/uikit'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
-import CandleChart from 'views/Info/components/InfoCharts/CandleChart'
 import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import { useTranslation } from 'contexts/Localization'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import { ChartEntry, TokenData, PriceChartEntry } from 'state/info/types'
 import { fromUnixTime } from 'date-fns'
+import dynamic from 'next/dynamic'
+
+const CandleChart = dynamic(() => import('views/Info/components/InfoCharts/CandleChart'), {
+  ssr: false,
+})
 
 enum ChartView {
   LIQUIDITY,

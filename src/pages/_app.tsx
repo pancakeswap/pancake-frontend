@@ -1,7 +1,6 @@
 import type { AppProps } from 'next/app'
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
 import { ResetCSS } from '@pancakeswap/uikit'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
@@ -38,11 +37,7 @@ function GlobalHooks() {
   return null
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
-  // Use the layout defined at the page level, if available
-  // @ts-ignore
-  const getLayout = Component.getLayout || ((page) => page)
-
+function MyApp(props: AppProps) {
   return (
     <Providers>
       <Blocklist>
@@ -51,13 +46,22 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ResetCSS />
         <GlobalStyle />
         <GlobalCheckClaimStatus excludeLocations={[]} />
-        <Menu>{getLayout(<Component {...pageProps} />)}</Menu>
+        <Menu>
+          <App {...props} />
+        </Menu>
         <EasterEgg iterations={2} />
         <ToastListener />
         <SubgraphHealthIndicator />
       </Blocklist>
     </Providers>
   )
+}
+
+const App = ({ Component, pageProps }: AppProps) => {
+  // Use the layout defined at the page level, if available
+  // @ts-ignore
+  const getLayout = Component.getLayout || ((page) => page)
+  return <Menu>{getLayout(<Component {...pageProps} />)}</Menu>
 }
 
 export default MyApp

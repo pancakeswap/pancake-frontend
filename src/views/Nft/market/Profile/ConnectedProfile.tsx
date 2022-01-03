@@ -57,6 +57,7 @@ const ConnectedProfile = () => {
         </TabMenuWrapper>
       </MarketPageHeader>
       <Page style={{ minHeight: 'auto' }}>
+        {/* TODO: nested route */}
         <Route path={`${nftsBaseUrl}/profile/:accountAddress/achievements`}>
           <Achievements
             achievements={achievements}

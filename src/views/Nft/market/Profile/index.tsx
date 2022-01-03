@@ -1,6 +1,6 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useParams } from 'react-router'
+import { useRouter } from 'next/router'
 import { isAddress } from 'utils'
 import { Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
@@ -13,7 +13,7 @@ import NoNftsImage from '../components/Activity/NoNftsImage'
 
 const NftProfile = () => {
   const { account } = useWeb3React()
-  const { accountAddress } = useParams<{ accountAddress: string }>()
+  const accountAddress = useRouter().query.accountAddress as string
   const { t } = useTranslation()
 
   const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()

@@ -29,7 +29,8 @@ import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
 
-const NavLink = () => null
+// TODO: navLink
+const NavLink = (props: any) => null
 
 const ControlContainer = styled.div`
   display: flex;

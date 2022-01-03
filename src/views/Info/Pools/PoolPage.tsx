@@ -1,34 +1,34 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import {
-  Text,
-  Flex,
   Box,
-  Button,
-  Card,
   Breadcrumbs,
-  Heading,
-  Spinner,
-  LinkExternal,
-  useMatchBreakpoints,
+  Button,
   ButtonMenu,
   ButtonMenuItem,
+  Card,
+  Flex,
+  Heading,
   HelpIcon,
+  LinkExternal,
+  Spinner,
+  Text,
+  useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
 import Page from 'components/Layout/Page'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { useTranslation } from 'contexts/Localization'
+import React, { useState } from 'react'
+import { usePoolChartData, usePoolDatas, usePoolTransactions } from 'state/info/hooks'
+import { useWatchlistPools } from 'state/user/hooks'
+import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
-import { usePoolDatas, usePoolChartData, usePoolTransactions } from 'state/info/hooks'
-import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
-import { useWatchlistPools } from 'state/user/hooks'
-import { useTranslation } from 'contexts/Localization'
-import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 
 const ContentLayout = styled.div`
   display: grid;

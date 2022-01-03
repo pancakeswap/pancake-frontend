@@ -27,7 +27,7 @@ import Votes from './Votes'
 import { PageMeta } from '../../../components/Layout/Page'
 
 const Proposal = () => {
-  const { id }: { id: string } = useRouter().query
+  const id = useRouter().query.id as string
   const proposal = useGetProposal(id)
   const { t } = useTranslation()
   const { account } = useWeb3React()
