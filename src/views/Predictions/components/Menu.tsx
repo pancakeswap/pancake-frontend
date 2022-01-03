@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { Flex, HelpIcon, Button, PrizeIcon } from '@pancakeswap/uikit'
 import FlexRow from './FlexRow'
 import { PricePairLabel, TimerLabel } from './Label'
@@ -84,9 +84,11 @@ const Menu = () => {
             </Button>
           </HelpButtonWrapper>
           <LeaderboardButtonWrapper>
-            <Button as={Link} variant="subtle" to="/prediction/leaderboard" width="48px">
-              <PrizeIcon color="white" />
-            </Button>
+            <Link href="/prediction/leaderboard">
+              <Button as="a" variant="subtle" width="48px">
+                <PrizeIcon color="white" />
+              </Button>
+            </Link>
           </LeaderboardButtonWrapper>
           <ButtonWrapper style={{ order: 4 }}>
             <HistoryButton />

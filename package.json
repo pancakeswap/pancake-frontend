@@ -5,8 +5,8 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "dev": "next dev",
-    "start": "react-scripts start",
-    "build": "CI=false && GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "next build",
+    "start": "next start",
     "test": "react-scripts test --testPathIgnorePatterns=/src/__tests__/config/",
     "test:config": "react-scripts test --testPathPattern=/src/__tests__/config/",
     "integration-test": "start-server-and-test 'serve -s build -p 3000' http://localhost:3000 'cypress run'",
@@ -17,7 +17,7 @@
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "updateLPsAPR": "NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "prepare": "husky install",
-    "postinstall": "yarn run typechain",
+    "postinstall": "yarn run typechain && patch-package",
     "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\""
   },
   "browserslist": {
@@ -71,6 +71,7 @@
     "multihashes": "^3.0.1",
     "next": "^12.0.7",
     "numeral": "^2.0.6",
+    "patch-package": "^6.4.7",
     "qs": "^6.9.4",
     "react": "^17.0.1",
     "react-countup": "^4.3.3",

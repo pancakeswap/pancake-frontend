@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
@@ -37,6 +36,7 @@ import BountyCard from './components/BountyCard'
 import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { getCakeVaultEarnings } from './helpers'
+import { useRouter } from 'next/router'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -87,7 +87,8 @@ const ControlStretch = styled(Flex)`
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
-  const location = useLocation()
+  // const location = useLocation()
+  const router = useRouter()
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { userDataLoaded } = usePools()
@@ -145,7 +146,7 @@ const Pools: React.FC = () => {
     }
   }, [isIntersecting])
 
-  const showFinishedPools = location.pathname.includes('history')
+  const showFinishedPools = router.pathname.includes('history')
 
   const handleChangeSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)

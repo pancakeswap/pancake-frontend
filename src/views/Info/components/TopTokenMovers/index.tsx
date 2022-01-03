@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, Card } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useAllTokenData } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
@@ -9,7 +9,7 @@ import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import Percent from 'views/Info/components/Percent'
 import { useTranslation } from 'contexts/Localization'
 
-const CardWrapper = styled(Link)`
+const CardWrapper = styled(NextLinkFromReactRouter)`
   display: inline-block;
   min-width: 190px;
   margin-left: 16px;

@@ -14,7 +14,7 @@ import {
   ArrowForwardIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useGetCollections } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
@@ -163,12 +163,12 @@ const Collectible = () => {
                   return (
                     <tr key={collection.address} data-test="nft-collection-row">
                       <Td>
-                        <Link to={`${nftsBaseUrl}/collections/${collection.address}`}>
+                        <NextLinkFromReactRouter to={`${nftsBaseUrl}/collections/${collection.address}`}>
                           <Flex alignItems="center">
                             <ProfileAvatar src={collection.avatar} width={48} height={48} mr="16px" />
                             {collection.name}
                           </Flex>
-                        </Link>
+                        </NextLinkFromReactRouter>
                       </Td>
                       <Td>
                         <Flex alignItems="center">

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { Button, Flex } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
@@ -29,12 +29,16 @@ const EndEventButtons: React.FC<EndEventProps> = ({
     <Flex flexDirection={['column', null, null, 'row']}>
       {canViewMarket && (
         <Button mb={['4px', null, null, '0']} mr={[0, null, null, '4px']}>
-          <Link to="/nfts">{t('View market')}</Link>
+          <Link href="/nfts">
+            <a>{t('View market')}</a>
+          </Link>
         </Button>
       )}
       {hasSquad && (
         <Button>
-          <Link to={`/nfts/profile/${account}`}>{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</Link>
+          <Link href={`/nfts/profile/${account}`}>
+            <a>{t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}</a>
+          </Link>
         </Button>
       )}
     </Flex>

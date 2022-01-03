@@ -1,5 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Menu as UikitMenu } from '@pancakeswap/uikit'
 import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
@@ -26,8 +27,8 @@ const Menu = (props) => {
 
   return (
     <UikitMenu
-      linkComponent={({ href, ...linkProps }: any) => {
-        return <Link to={href} {...linkProps} />
+      linkComponent={(linkProps) => {
+        return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} />
       }}
       userMenu={<UserMenu />}
       globalMenu={<GlobalSettings />}

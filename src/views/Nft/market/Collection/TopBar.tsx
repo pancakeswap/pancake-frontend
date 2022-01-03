@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, ChevronLeftIcon, Flex } from '@pancakeswap/uikit'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'next/link'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'

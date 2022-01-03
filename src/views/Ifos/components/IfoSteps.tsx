@@ -20,7 +20,7 @@ import {
   useModal,
   Link,
 } from '@pancakeswap/uikit'
-import { Link as RouterLink } from 'react-router-dom'
+import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'

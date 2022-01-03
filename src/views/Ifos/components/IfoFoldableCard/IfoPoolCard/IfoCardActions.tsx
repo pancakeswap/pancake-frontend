@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { Button } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
@@ -35,7 +35,7 @@ const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfo
 
   if (!hasProfile) {
     return (
-      <Button as={Link} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} width="100%">
+      <Button as={NextLinkFromReactRouter} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} width="100%">
         {t('Activate your Profile')}
       </Button>
     )

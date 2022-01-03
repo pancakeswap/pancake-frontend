@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouteMatch, Link } from 'react-router-dom'
+import Link from 'next/link'
 import { ViewMode } from 'state/user/actions'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@pancakeswap/uikit'
@@ -53,25 +53,30 @@ const Wrapper = styled.div`
 `
 
 const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, viewMode, setViewMode }) => {
-  const { url, isExact } = useRouteMatch()
+  // const { url, isExact } = useRouteMatch()
+
   const { t } = useTranslation()
 
   const viewModeToggle = <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
+  // TODO: nested route
+  const liveOrFinishedSwitch = null
 
-  const liveOrFinishedSwitch = (
-    <Wrapper>
-      <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
-        <ButtonMenuItem as={Link} to={`${url}`}>
-          {t('Live')}
-        </ButtonMenuItem>
-        <NotificationDot show={hasStakeInFinishedPools}>
-          <ButtonMenuItem id="finished-pools-button" as={Link} to={`${url}/history`}>
-            {t('Finished')}
-          </ButtonMenuItem>
-        </NotificationDot>
-      </ButtonMenu>
-    </Wrapper>
-  )
+  // const liveOrFinishedSwitch = (
+  //   <Wrapper>
+  //     <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
+  //       <Link to={}>
+  //         <ButtonMenuItem as={Link} to={`${url}`}>
+  //           {t('Live')}
+  //         </ButtonMenuItem>
+  //       </Link>
+  //       <NotificationDot show={hasStakeInFinishedPools}>
+  //         <ButtonMenuItem id="finished-pools-button" as={Link} to={`${url}/history`}>
+  //           {t('Finished')}
+  //         </ButtonMenuItem>
+  //       </NotificationDot>
+  //     </ButtonMenu>
+  //   </Wrapper>
+  // )
 
   const stakedOnlySwitch = (
     <ToggleWrapper>

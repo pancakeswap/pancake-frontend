@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Text, Flex, Box, Skeleton, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import { PoolData } from 'state/info/types'
@@ -47,7 +47,7 @@ const ResponsiveGrid = styled.div`
   }
 `
 
-const LinkWrapper = styled(Link)`
+const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
   :hover {
     cursor: pointer;

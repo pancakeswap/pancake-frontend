@@ -1,20 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useLocation, Link, useRouteMatch } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem, NotificationDot } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 interface FarmTabButtonsProps {
   hasStakeInFinishedFarms: boolean
 }
 
 const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms }) => {
-  const { url } = useRouteMatch()
-  const location = useLocation()
+  const router = useRouter()
   const { t } = useTranslation()
 
   let activeIndex
-  switch (location.pathname) {
+  switch (router.pathname) {
     case '/farms':
       activeIndex = 0
       break
@@ -32,13 +32,15 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
   return (
     <Wrapper>
       <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-        <ButtonMenuItem as={Link} to={`${url}`}>
-          {t('Live')}
-        </ButtonMenuItem>
+        <Link href="/farms">
+          <ButtonMenuItem as="a">{t('Live')}</ButtonMenuItem>
+        </Link>
         <NotificationDot show={hasStakeInFinishedFarms}>
-          <ButtonMenuItem id="finished-farms-button" as={Link} to={`${url}/history`}>
-            {t('Finished')}
-          </ButtonMenuItem>
+          <Link href="farms/history">
+            <ButtonMenuItem id="finished-farms-button" as="a">
+              {t('Finished')}
+            </ButtonMenuItem>
+          </Link>
         </NotificationDot>
       </ButtonMenu>
     </Wrapper>

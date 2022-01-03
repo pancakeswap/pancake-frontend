@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Flex, Text, Skeleton, Button, ArrowForwardIcon } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { useSlowFresh } from 'hooks/useRefresh'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
@@ -11,7 +11,7 @@ import { fetchCurrentLotteryIdAndMaxBuy, fetchLottery } from 'state/lottery/help
 import BigNumber from 'bignumber.js'
 import { getBalanceAmount } from 'utils/formatBalance'
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
 `
 

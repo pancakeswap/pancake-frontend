@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
-import { Route, useRouteMatch, useLocation, NavLink } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex } from '@pancakeswap/uikit'
@@ -18,6 +17,7 @@ import isArchivedPid from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
+import { useRouter } from 'next/router'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
@@ -28,6 +28,8 @@ import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
+
+const NavLink = () => null
 
 const ControlContainer = styled.div`
   display: flex;
@@ -114,8 +116,8 @@ const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
 }
 
 const Farms: React.FC = () => {
-  const { path } = useRouteMatch()
-  const { pathname } = useLocation()
+  // const { path } = useRouteMatch()
+  const { pathname } = useRouter()
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded } = useFarms()
   const cakePrice = usePriceCakeBusd()
@@ -321,9 +323,10 @@ const Farms: React.FC = () => {
       return <Table data={rowData} columns={columns} userDataReady={userDataReady} />
     }
 
+    // TODO: nested route
     return (
       <FlexLayout>
-        <Route exact path={`${path}`}>
+        {/* <Route exact path={`${path}`}>
           {chosenFarmsMemoized.map((farm) => (
             <FarmCard
               key={farm.pid}
@@ -358,7 +361,7 @@ const Farms: React.FC = () => {
               removed
             />
           ))}
-        </Route>
+        </Route> */}
       </FlexLayout>
     )
   }
