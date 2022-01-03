@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, NotificationDot } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 
 interface FarmTabButtonsProps {
   hasStakeInFinishedFarms: boolean
@@ -32,15 +32,13 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
   return (
     <Wrapper>
       <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-        <Link href="/farms">
-          <ButtonMenuItem as="a">{t('Live')}</ButtonMenuItem>
-        </Link>
+        <ButtonMenuItem as={NextLinkFromReactRouter} to="/farms">
+          {t('Live')}
+        </ButtonMenuItem>
         <NotificationDot show={hasStakeInFinishedFarms}>
-          <Link href="farms/history">
-            <ButtonMenuItem id="finished-farms-button" as="a">
-              {t('Finished')}
-            </ButtonMenuItem>
-          </Link>
+          <ButtonMenuItem as={NextLinkFromReactRouter} to="/farms/history" id="finished-farms-button">
+            {t('Finished')}
+          </ButtonMenuItem>
         </NotificationDot>
       </ButtonMenu>
     </Wrapper>

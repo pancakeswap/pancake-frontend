@@ -8,8 +8,8 @@ const A = styled.a``
 /**
  * temporary solution for migrating React Router to Next.js Link
  */
-export const NextLinkFromReactRouter = forwardRef<any, LinkProps>(({ to, children, ...props }, ref) => (
-  <NextLink href={to as string}>
+export const NextLinkFromReactRouter = forwardRef<any, LinkProps>(({ to, replace, children, ...props }, ref) => (
+  <NextLink href={to as string} replace={replace}>
     <A ref={ref} {...props}>
       {children}
     </A>

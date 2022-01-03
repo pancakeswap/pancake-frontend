@@ -1,6 +1,7 @@
 import React from 'react'
-import Link from 'next/link'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ViewMode } from 'state/user/actions'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -53,30 +54,28 @@ const Wrapper = styled.div`
 `
 
 const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, viewMode, setViewMode }) => {
-  // const { url, isExact } = useRouteMatch()
+  const router = useRouter()
 
   const { t } = useTranslation()
 
-  const viewModeToggle = <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-  // TODO: nested route
-  const liveOrFinishedSwitch = null
+  const isExact = router.asPath === '/pools'
 
-  // const liveOrFinishedSwitch = (
-  //   <Wrapper>
-  //     <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
-  //       <Link to={}>
-  //         <ButtonMenuItem as={Link} to={`${url}`}>
-  //           {t('Live')}
-  //         </ButtonMenuItem>
-  //       </Link>
-  //       <NotificationDot show={hasStakeInFinishedPools}>
-  //         <ButtonMenuItem id="finished-pools-button" as={Link} to={`${url}/history`}>
-  //           {t('Finished')}
-  //         </ButtonMenuItem>
-  //       </NotificationDot>
-  //     </ButtonMenu>
-  //   </Wrapper>
-  // )
+  const viewModeToggle = <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
+
+  const liveOrFinishedSwitch = (
+    <Wrapper>
+      <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
+        <ButtonMenuItem as={NextLinkFromReactRouter} to="/pools" replace>
+          {t('Live')}
+        </ButtonMenuItem>
+        <NotificationDot show={hasStakeInFinishedPools}>
+          <ButtonMenuItem id="finished-pools-button" as={NextLinkFromReactRouter} to="/pools/history" replace>
+            {t('Finished')}
+          </ButtonMenuItem>
+        </NotificationDot>
+      </ButtonMenu>
+    </Wrapper>
+  )
 
   const stakedOnlySwitch = (
     <ToggleWrapper>

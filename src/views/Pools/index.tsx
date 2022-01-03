@@ -28,6 +28,7 @@ import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
 import { ViewMode } from 'state/user/actions'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
@@ -36,7 +37,6 @@ import BountyCard from './components/BountyCard'
 import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { getCakeVaultEarnings } from './helpers'
-import { useRouter } from 'next/router'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -87,7 +87,6 @@ const ControlStretch = styled(Flex)`
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
-  // const location = useLocation()
   const router = useRouter()
   const { t } = useTranslation()
   const { account } = useWeb3React()

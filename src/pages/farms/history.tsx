@@ -5,7 +5,7 @@ import { getDisplayApr } from 'views/Farms/Farms'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useWeb3React } from '@web3-react/core'
 
-const FarmsPage = () => {
+const FarmsHistoryPage = () => {
   const { account } = useWeb3React()
   const { chosenFarmsMemoized } = useContext(FarmsContext)
   const cakePrice = usePriceCakeBusd()
@@ -19,13 +19,13 @@ const FarmsPage = () => {
           displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
           cakePrice={cakePrice}
           account={account}
-          removed={false}
+          removed
         />
       ))}
     </>
   )
 }
 
-FarmsPage.getLayout = FarmsPageLayout
+FarmsHistoryPage.getLayout = FarmsPageLayout
 
-export default FarmsPage
+export default FarmsHistoryPage

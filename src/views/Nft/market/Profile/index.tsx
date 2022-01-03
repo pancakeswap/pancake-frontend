@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useRouter } from 'next/router'
 import { isAddress } from 'utils'
@@ -11,7 +11,7 @@ import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import NoNftsImage from '../components/Activity/NoNftsImage'
 
-const NftProfile = () => {
+const NftProfile: FC = ({ children }) => {
   const { account } = useWeb3React()
   const accountAddress = useRouter().query.accountAddress as string
   const { t } = useTranslation()
@@ -45,7 +45,15 @@ const NftProfile = () => {
     )
   }
 
-  return <>{isConnectedProfile ? <ConnectedProfile /> : <UnconnectedProfile />}</>
+  return (
+    <>
+      {isConnectedProfile ? (
+        <ConnectedProfile>{children}</ConnectedProfile>
+      ) : (
+        <UnconnectedProfile>{children}</UnconnectedProfile>
+      )}
+    </>
+  )
 }
 
 export default NftProfile

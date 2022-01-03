@@ -22,7 +22,7 @@ import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
-import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
+import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
@@ -106,7 +106,7 @@ const StyledImage = styled(Image)`
 `
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
+export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
   if (cakeRewardsApr && lpRewardsApr) {
     return (cakeRewardsApr + lpRewardsApr).toLocaleString('en-US', { maximumFractionDigits: 2 })
   }
@@ -116,8 +116,7 @@ const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
   return null
 }
 
-const Farms: React.FC = () => {
-  // const { path } = useRouteMatch()
+const Farms: React.FC = ({ children }) => {
   const { pathname } = useRouter()
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded } = useFarms()
@@ -324,47 +323,7 @@ const Farms: React.FC = () => {
       return <Table data={rowData} columns={columns} userDataReady={userDataReady} />
     }
 
-    // TODO: nested route
-    return (
-      <FlexLayout>
-        {/* <Route exact path={`${path}`}>
-          {chosenFarmsMemoized.map((farm) => (
-            <FarmCard
-              key={farm.pid}
-              farm={farm}
-              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
-              cakePrice={cakePrice}
-              account={account}
-              removed={false}
-            />
-          ))}
-        </Route>
-        <Route exact path={`${path}/history`}>
-          {chosenFarmsMemoized.map((farm) => (
-            <FarmCard
-              key={farm.pid}
-              farm={farm}
-              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
-              cakePrice={cakePrice}
-              account={account}
-              removed
-            />
-          ))}
-        </Route>
-        <Route exact path={`${path}/archived`}>
-          {chosenFarmsMemoized.map((farm) => (
-            <FarmCard
-              key={farm.pid}
-              farm={farm}
-              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
-              cakePrice={cakePrice}
-              account={account}
-              removed
-            />
-          ))}
-        </Route> */}
-      </FlexLayout>
-    )
+    return <FlexLayout>{children}</FlexLayout>
   }
 
   const handleSortOptionChange = (option: OptionProps): void => {
@@ -372,7 +331,7 @@ const Farms: React.FC = () => {
   }
 
   return (
-    <>
+    <FarmsContext.Provider value={{ chosenFarmsMemoized }}>
       <PageHeader>
         <Heading as="h1" scale="xxl" color="secondary" mb="24px">
           {t('Farms')}
@@ -448,8 +407,10 @@ const Farms: React.FC = () => {
         <div ref={observerRef} />
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
-    </>
+    </FarmsContext.Provider>
   )
 }
+
+export const FarmsContext = React.createContext({ chosenFarmsMemoized: [] })
 
 export default Farms
