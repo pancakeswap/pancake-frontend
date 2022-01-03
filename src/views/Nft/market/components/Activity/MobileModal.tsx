@@ -44,12 +44,12 @@ const MobileModal: React.FC<MobileModalProps> = ({
     <Modal title={t('Transaction Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
       <Flex flexDirection="column" maxWidth="350px">
         <Flex alignItems="center" mb="16px" justifyContent="space-between">
-          <RoundedImage src={nft.image.thumbnail} height={68} width={68} mr="16px" />
+          <RoundedImage src={nft?.image?.thumbnail} height={68} width={68} mr="16px" />
           <Flex flexDirection="column">
             <Text fontSize="12px" color="textSubtle" textAlign="right">
-              {nft.collectionName}
+              {nft?.collectionName}
             </Text>
-            <Text bold>{nft.name}</Text>
+            <Text bold>{nft?.name}</Text>
           </Flex>
         </Flex>
         <LightGreyCard p="16px">

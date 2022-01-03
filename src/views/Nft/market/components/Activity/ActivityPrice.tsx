@@ -14,7 +14,7 @@ const ActivityPrice = ({ bnbBusdPrice, price }) => {
             <Text maxWidth="80px" bold>
               {price.toLocaleString(undefined, {
                 minimumFractionDigits: 0,
-                maximumFractionDigits: 5,
+                maximumFractionDigits: price < 1 ? 5 : 2,
               })}
             </Text>
           </Flex>
