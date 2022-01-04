@@ -3,14 +3,14 @@ import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import React from 'react'
-import { useIfoPoolCredit } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
+import { useIfoPoolCredit, useVaultPoolByKey } from 'state/pools/hooks'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface AvgBalanceCellProps {
   account: string
-  userDataLoaded: boolean
 }
 
 const StyledCell = styled(BaseCell)`
@@ -27,9 +27,12 @@ const HelpIconWrapper = styled.div`
   align-self: center;
 `
 
-const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account, userDataLoaded }) => {
+const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
+  const {
+    userData: { isLoading: userDataLoading },
+  } = useVaultPoolByKey(VaultKey.IfoPool)
   const credit = useIfoPoolCredit()
 
   const hasCredit = credit.gt(0)
@@ -52,7 +55,7 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account, userDataLoaded
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {!userDataLoaded && account ? (
+        {userDataLoading && account ? (
           <Skeleton width="80px" height="16px" />
         ) : (
           <>
