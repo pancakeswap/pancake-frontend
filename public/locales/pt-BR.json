@@ -108,7 +108,7 @@
   "Total CAKE Supply": "Fornecimento total de CAKE",
   "Total CAKE Burned": "Total de CAKE queimado",
   "New CAKE/block": "Novo CAKE/bloco",
-  "Farms & Staking": "Farms & Stake",
+  
   "CAKE to Harvest": "CAKE a ser coletado",
   "CAKE in Wallet": "CAKE na carteira",
   "Collecting CAKE": "Coletando CAKE",
@@ -174,7 +174,7 @@
   "Connect to see if you have won an NFT!": "Conecte para ver se você ganhou um NFT!",
   "Home": "Iniciar",
   "Trade": "Trade",
-  "Farms": "Farms",
+  
   "Pools": "Pools",
   "NFT": "NFT",
   "Info": "Info",
@@ -1299,7 +1299,7 @@
   "No history yet": "Ainda não há histórico",
   "Connected as %projectName%": "Conectado como %projectName%",
   "Place bid": "Dar lance",
-  "Farms available": "Fazendas disponíveis",
+  
   "top %num% bidders": "%num% melhores lances",
   "All Whitelisted Project Wallets": "Todas as carteiras de projeto na lista de elementos seguros",
   "Search address or token": "Buscar endereço ou token",

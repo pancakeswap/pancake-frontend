@@ -7,7 +7,7 @@ import {
   addSerializedToken,
   addWatchlistPool,
   addWatchlistToken,
-  FarmStakedOnly,
+  
   removeSerializedPair,
   removeSerializedToken,
   SerializedPair,
@@ -17,15 +17,13 @@ import {
   updateGasPrice,
   updateUserDeadline,
   updateUserExpertMode,
-  updateUserFarmStakedOnly,
-  updateUserFarmsViewMode,
-  updateUserPoolStakedOnly,
+  
+  
   updateUserPoolsViewMode,
   updateUserSingleHopOnly,
   updateUserSlippageTolerance,
   ViewMode,
-  updateUserPredictionAcceptedRisk,
-  updateUserPredictionChartDisclaimerShow,
+  
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
@@ -72,12 +70,10 @@ export interface UserState {
   isExchangeChartDisplayed: boolean
   isSubgraphHealthIndicatorDisplayed: boolean
   userChartViewMode: ChartViewMode
-  userFarmStakedOnly: FarmStakedOnly
-  userPoolStakedOnly: boolean
+  
+  
   userPoolsViewMode: ViewMode
-  userFarmsViewMode: ViewMode
-  userPredictionAcceptedRisk: boolean
-  userPredictionChartDisclaimerShow: boolean
+  
   userExpertModeAcknowledgementShow: boolean
   userUsernameVisibility: boolean
   gasPrice: string
@@ -103,12 +99,10 @@ export const initialState: UserState = {
   isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,
   userChartViewMode: ChartViewMode.BASIC,
-  userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
-  userPoolStakedOnly: false,
+  
+  
   userPoolsViewMode: ViewMode.TABLE,
-  userFarmsViewMode: ViewMode.TABLE,
-  userPredictionAcceptedRisk: false,
-  userPredictionChartDisclaimerShow: true,
+  
   userExpertModeAcknowledgementShow: true,
   userUsernameVisibility: false,
   gasPrice: GAS_PRICE_GWEI.default,
@@ -193,23 +187,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(toggleTheme, (state) => {
       state.isDark = !state.isDark
     })
-    .addCase(updateUserFarmStakedOnly, (state, { payload: { userFarmStakedOnly } }) => {
-      state.userFarmStakedOnly = userFarmStakedOnly
-    })
-    .addCase(updateUserPoolStakedOnly, (state, { payload: { userPoolStakedOnly } }) => {
-      state.userPoolStakedOnly = userPoolStakedOnly
-    })
     .addCase(updateUserPoolsViewMode, (state, { payload: { userPoolsViewMode } }) => {
       state.userPoolsViewMode = userPoolsViewMode
-    })
-    .addCase(updateUserFarmsViewMode, (state, { payload: { userFarmsViewMode } }) => {
-      state.userFarmsViewMode = userFarmsViewMode
-    })
-    .addCase(updateUserPredictionAcceptedRisk, (state, { payload: { userAcceptedRisk } }) => {
-      state.userPredictionAcceptedRisk = userAcceptedRisk
-    })
-    .addCase(updateUserPredictionChartDisclaimerShow, (state, { payload: { userShowDisclaimer } }) => {
-      state.userPredictionChartDisclaimerShow = userShowDisclaimer
     })
     .addCase(updateUserExpertModeAcknowledgementShow, (state, { payload: { userExpertModeAcknowledgementShow } }) => {
       state.userExpertModeAcknowledgementShow = userExpertModeAcknowledgementShow

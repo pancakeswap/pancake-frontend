@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
 import {
   Button,
+  // ButtonMenu, 
+  // ButtonMenuItem, 
   Text,
   ArrowDownIcon,
   Box,
@@ -13,6 +15,7 @@ import {
   useMatchBreakpoints,
   ArrowUpDownIcon,
 } from '@pancakeswap/uikit'
+
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import Footer from 'components/Menu/Footer'
@@ -63,6 +66,9 @@ import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 
+
+
+
 const Label = styled(Text)`
   font-size: 12px;
   font-weight: bold;
@@ -86,6 +92,14 @@ const SwitchIconButton = styled(IconButton)`
     }
   }
 `
+
+const CategoryButton = styled(Button)`
+  background-color: ${({ $active, theme }) => $active && `${theme.colors.primary}0f`};
+  padding: 4px 8px;
+  border-radius: 6px;
+`
+
+
 
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -390,9 +404,49 @@ export default function Swap({ history }: RouteComponentProps) {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
+                
+                      
+                <Flex width="90%" justifyContent="center" position="relative">
+                  <CategoryButton justifyContent="center" 
+                    aria-label={t('Swap')}
+                    title={t('Swap')}
+                    // $active={chartView === ChartViewMode.BASIC}
+                    scale="sm"
+                    variant="text"
+                    color="primary"
+                    // onClick={() => setChartView(ChartViewMode.BASIC)}
+                    mr="8px"
+                  >
+                    {t('Swap')}
+                  </CategoryButton>
+                  <CategoryButton  justifyContent="center"
+                    aria-label="Add"
+                    title="Add"
+                    // $active={chartView === ChartViewMode.TRADING_VIEW}
+                    scale="sm"
+                    variant="text"
+                    // onClick={() => setChartView(ChartViewMode.TRADING_VIEW)}
+                  >
+                    {t('Add')}
+                  </CategoryButton>
+
+                  <CategoryButton  justifyContent="center"
+                    aria-label="Remove"
+                    title="Remove"
+                    // $active={chartView === ChartViewMode.TRADING_VIEW}
+                    scale="sm"
+                    variant="text"
+                    // onClick={() => setChartView(ChartViewMode.TRADING_VIEW)}
+                  >
+                    {t('Remove')}
+                  </CategoryButton>                  
+                </Flex>                
+                
+                
+
                 <CurrencyInputHeader
                   title={t('Swap')}
-                  subtitle={t('Trade tokens in an instant')}
+                  subtitle={t('')}
                   setIsChartDisplayed={setIsChartDisplayed}
                   isChartDisplayed={isChartDisplayed}
                 />

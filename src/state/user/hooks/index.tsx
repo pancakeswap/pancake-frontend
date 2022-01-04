@@ -9,7 +9,7 @@ import { AppDispatch, AppState } from '../../index'
 import {
   addSerializedPair,
   addSerializedToken,
-  FarmStakedOnly,
+
   muteAudio,
   removeSerializedToken,
   SerializedPair,
@@ -17,18 +17,14 @@ import {
   unmuteAudio,
   updateUserDeadline,
   updateUserExpertMode,
-  updateUserFarmStakedOnly,
   updateUserSingleHopOnly,
   updateUserSlippageTolerance,
   updateGasPrice,
   addWatchlistToken,
   addWatchlistPool,
-  updateUserPoolStakedOnly,
+  
   updateUserPoolsViewMode,
   ViewMode,
-  updateUserFarmsViewMode,
-  updateUserPredictionChartDisclaimerShow,
-  updateUserPredictionAcceptedRisk,
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
@@ -177,41 +173,6 @@ export function useUserSlippageTolerance(): [number, (slippage: number) => void]
   return [userSlippageTolerance, setUserSlippageTolerance]
 }
 
-export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly: boolean) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userFarmStakedOnly = useSelector<AppState, AppState['user']['userFarmStakedOnly']>((state) => {
-    return state.user.userFarmStakedOnly
-  })
-
-  const setUserFarmStakedOnly = useCallback(
-    (stakedOnly: boolean) => {
-      const farmStakedOnly = stakedOnly ? FarmStakedOnly.TRUE : FarmStakedOnly.FALSE
-      dispatch(updateUserFarmStakedOnly({ userFarmStakedOnly: farmStakedOnly }))
-    },
-    [dispatch],
-  )
-
-  return [
-    userFarmStakedOnly === FarmStakedOnly.ON_FINISHED ? !isActive : userFarmStakedOnly === FarmStakedOnly.TRUE,
-    setUserFarmStakedOnly,
-  ]
-}
-
-export function useUserPoolStakedOnly(): [boolean, (stakedOnly: boolean) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userPoolStakedOnly = useSelector<AppState, AppState['user']['userPoolStakedOnly']>((state) => {
-    return state.user.userPoolStakedOnly
-  })
-
-  const setUserPoolStakedOnly = useCallback(
-    (stakedOnly: boolean) => {
-      dispatch(updateUserPoolStakedOnly({ userPoolStakedOnly: stakedOnly }))
-    },
-    [dispatch],
-  )
-
-  return [userPoolStakedOnly, setUserPoolStakedOnly]
-}
 
 export function useUserPoolsViewMode(): [ViewMode, (viewMode: ViewMode) => void] {
   const dispatch = useDispatch<AppDispatch>()
@@ -229,56 +190,9 @@ export function useUserPoolsViewMode(): [ViewMode, (viewMode: ViewMode) => void]
   return [userPoolsViewMode, setUserPoolsViewMode]
 }
 
-export function useUserFarmsViewMode(): [ViewMode, (viewMode: ViewMode) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userFarmsViewMode = useSelector<AppState, AppState['user']['userFarmsViewMode']>((state) => {
-    return state.user.userFarmsViewMode
-  })
 
-  const setUserFarmsViewMode = useCallback(
-    (viewMode: ViewMode) => {
-      dispatch(updateUserFarmsViewMode({ userFarmsViewMode: viewMode }))
-    },
-    [dispatch],
-  )
 
-  return [userFarmsViewMode, setUserFarmsViewMode]
-}
 
-export function useUserPredictionAcceptedRisk(): [boolean, (acceptedRisk: boolean) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userPredictionAcceptedRisk = useSelector<AppState, AppState['user']['userPredictionAcceptedRisk']>((state) => {
-    return state.user.userPredictionAcceptedRisk
-  })
-
-  const setUserPredictionAcceptedRisk = useCallback(
-    (acceptedRisk: boolean) => {
-      dispatch(updateUserPredictionAcceptedRisk({ userAcceptedRisk: acceptedRisk }))
-    },
-    [dispatch],
-  )
-
-  return [userPredictionAcceptedRisk, setUserPredictionAcceptedRisk]
-}
-
-export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaimer: boolean) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userPredictionChartDisclaimerShow = useSelector<
-    AppState,
-    AppState['user']['userPredictionChartDisclaimerShow']
-  >((state) => {
-    return state.user.userPredictionChartDisclaimerShow
-  })
-
-  const setPredictionUserChartDisclaimerShow = useCallback(
-    (showDisclaimer: boolean) => {
-      dispatch(updateUserPredictionChartDisclaimerShow({ userShowDisclaimer: showDisclaimer }))
-    },
-    [dispatch],
-  )
-
-  return [userPredictionChartDisclaimerShow, setPredictionUserChartDisclaimerShow]
-}
 
 export function useUserExpertModeAcknowledgementShow(): [boolean, (showAcknowledgement: boolean) => void] {
   const dispatch = useDispatch<AppDispatch>()

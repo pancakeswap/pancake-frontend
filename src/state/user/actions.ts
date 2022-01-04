@@ -6,11 +6,7 @@ export interface SerializedPair {
   token1: SerializedToken
 }
 
-export enum FarmStakedOnly {
-  ON_FINISHED = 'onFinished',
-  TRUE = 'true',
-  FALSE = 'false',
-}
+
 
 export enum ViewMode {
   TABLE = 'TABLE',
@@ -37,18 +33,10 @@ export const removeSerializedPair =
 export const muteAudio = createAction<void>('user/muteAudio')
 export const unmuteAudio = createAction<void>('user/unmuteAudio')
 export const toggleTheme = createAction<void>('user/toggleTheme')
-export const updateUserFarmStakedOnly = createAction<{ userFarmStakedOnly: FarmStakedOnly }>(
-  'user/updateUserFarmStakedOnly',
-)
+
 export const updateUserPoolStakedOnly = createAction<{ userPoolStakedOnly: boolean }>('user/updateUserPoolStakedOnly')
 export const updateUserPoolsViewMode = createAction<{ userPoolsViewMode: ViewMode }>('user/updateUserPoolsViewMode')
-export const updateUserFarmsViewMode = createAction<{ userFarmsViewMode: ViewMode }>('user/updateUserFarmsViewMode')
-export const updateUserPredictionAcceptedRisk = createAction<{ userAcceptedRisk: boolean }>(
-  'user/updateUserPredictionAcceptedRisk',
-)
-export const updateUserPredictionChartDisclaimerShow = createAction<{ userShowDisclaimer: boolean }>(
-  'user/updateUserPredictionChartDisclaimerShow',
-)
+
 export const updateUserExpertModeAcknowledgementShow = createAction<{ userExpertModeAcknowledgementShow: boolean }>(
   'user/updateUserExpertModeAcknowledgementShow',
 )

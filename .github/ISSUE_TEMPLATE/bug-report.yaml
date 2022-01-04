@@ -18,11 +18,6 @@ body:
       description: Which page or product does this relate to?
       multiple: false
       options:
-        - Farms
-        - Syrup Pools
-        - Lottery
-        - Prediction
-        - IFO
         - Info
         - Other
     validations:

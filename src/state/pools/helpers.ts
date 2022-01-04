@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { SerializedFarm, DeserializedPool, SerializedPool } from 'state/types'
+import { DeserializedPool, SerializedPool } from 'state/types'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
@@ -34,18 +34,4 @@ export const transformPool = (pool: SerializedPool): DeserializedPool => {
   }
 }
 
-export const getTokenPricesFromFarm = (farms: SerializedFarm[]) => {
-  return farms.reduce((prices, farm) => {
-    const quoteTokenAddress = farm.quoteToken.address.toLocaleLowerCase()
-    const tokenAddress = farm.token.address.toLocaleLowerCase()
-    /* eslint-disable no-param-reassign */
-    if (!prices[quoteTokenAddress]) {
-      prices[quoteTokenAddress] = new BigNumber(farm.quoteTokenPriceBusd).toNumber()
-    }
-    if (!prices[tokenAddress]) {
-      prices[tokenAddress] = new BigNumber(farm.tokenPriceBusd).toNumber()
-    }
-    /* eslint-enable no-param-reassign */
-    return prices
-  }, {})
-}
+

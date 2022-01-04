@@ -4,8 +4,7 @@
   "Syrup Pool": "Pula Syrup",
   "Exchange": "Wymiana",
   "Docs": "Dokumentacja",
-  "Voting": "Głosowanie",
-  "Lottery": "Loteria",
+  
   "Connect Wallet": "Podłącz portfel",
   "Your %asset% Balance": "Twoje %asset% Saldo",
   "Total %asset% Supply": "Całkowita podaż %asset%",
@@ -71,15 +70,15 @@
   "%num% CAKE Available": "Dostępność CAKE: %num%",
   "%num% %symbol% Available": "Dostępne %num% %symbol%",
   "Your amount must be a multiple of 10 CAKE": "Ta liczba musi być wielokrotnością 10 CAKE",
-  "1 Ticket = %lotteryPrice% CAKE": "1 los = %lotteryPrice% CAKE",
+  
   "Until ticket sale:": "Do sprzedaży losów:",
   "You will spend: %num% CAKE": "Wydasz: %num% CAKE",
   "Cancel": "Anuluj",
   "Confirm": "Potwierdź",
   "Warning": "Ostrzeżenie",
-  "Lottery ticket purchases are final.": "Zakupy losów na loterię są ostateczne.",
+  
   "Your CAKE will not be returned to you after you spend it to buy tickets.": "Nie otrzymasz zwrotu CAKE wydanych na zakup losów.",
-  "Tickets are only valid for one lottery draw, and will be burned after the draw.": "Losy są ważne tylko w jednym losowaniu loterii i zostaną spalone po losowaniu.",
+  
   "Buying tickets does not guarantee you will win anything. Please only participate once you understand the risks.": "Zakup losów nie gwarantuje wygrania czegokolwiek. Weź w niej udział tylko pod warunkiem, że rozumiesz ryzyko.",
   "I understand": "Rozumiem",
   "Ticket purchases are final. Your CAKE cannot be returned to you after buying tickets.": "Zakupy losów są ostateczne. Nie otrzymasz zwrotu CAKE wydanych na zakup losów.",
@@ -108,7 +107,7 @@
   "Total CAKE Supply": "Łączna podaż CAKE",
   "Total CAKE Burned": "Spalone CAKE łącznie",
   "New CAKE/block": "Nowy CAKE/blok",
-  "Farms & Staking": "Farmy i staking",
+  
   "CAKE to Harvest": "CAKE do zebrania",
   "CAKE in Wallet": "CAKE w portfelu",
   "Collecting CAKE": "Odbieranie CAKE",
@@ -174,7 +173,7 @@
   "Connect to see if you have won an NFT!": "Połącz się, aby sprawdzić, czy udało Ci się wygrać NFT!",
   "Home": "Strona główna",
   "Trade": "Handel",
-  "Farms": "Farmy",
+  
   "Pools": "Pule",
   "NFT": "NFT",
   "Info": "Informacje",
@@ -499,7 +498,7 @@
   "How can I get an achievement for participating in the IFO?": "Jak otrzymać nagrodę za udział w IFO?",
   "You need to contribute a minimum of about 10 USD worth of CAKE to either sale.": "Aby wziąć udział w obu sprzedażach, należy wnieść CAKE o wartości minimum 10 USD.",
   "You can contribute to one or both, it doesn’t matter. Only your overall contribution is counted for the achievement.": "Możesz wziąć udział w jednej lub obu, nie ma to znaczenia: tylko Twój całkowity wkład jest liczony do osiągnięcia.",
-  "The Lottery Is Changing!": "Loteria się zmienia!",
+  
   "Come back soon!": "Zapraszamy wkrótce!",
   "Staked (compounding)": "Stakowane (składane)",
   "Contract Enabled": "Kontrakt włączony",
@@ -1299,7 +1298,7 @@
   "No history yet": "Jeszcze nie ma historii",
   "Connected as %projectName%": "Połączono jako %projectName%",
   "Place bid": "Złóż ofertę",
-  "Farms available": "Dostępne farmy",
+  
   "top %num% bidders": "%num% najlepszych oferentów",
   "All Whitelisted Project Wallets": "Wszystkie portfele projektów z białej listy",
   "Search address or token": "Wyszukaj adres lub token",

@@ -4,35 +4,24 @@ import {
   getBep20Contract,
   getCakeContract,
   getBunnyFactoryContract,
-  getBunnySpecialContract,
-  getPancakeRabbitContract,
-  getProfileContract,
-  getIfoV1Contract,
-  getIfoV2Contract,
+  
+  
+  
   getMasterchefContract,
-  getPointCenterIfoContract,
+
   getSouschefContract,
   getClaimRefundContract,
-  getTradingCompetitionContract,
-  getTradingCompetitionContractV2,
-  getEasterNftContract,
+  
   getErc721Contract,
-  getCakeVaultContract,
-  getIfoPoolContract,
-  getPredictionsContract,
+  
+  
   getChainlinkOracleContract,
   getSouschefV2Contract,
-  getLotteryV2Contract,
-  getBunnySpecialCakeVaultContract,
-  getBunnySpecialPredictionContract,
-  getFarmAuctionContract,
-  getBunnySpecialLotteryContract,
-  getAnniversaryAchievementContract,
-  getNftMarketContract,
-  getNftSaleContract,
-  getPancakeSquadContract,
+  
+  
+  
   getErc721CollectionContract,
-  getBunnySpecialXmasContract,
+  
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { VaultKey } from 'state/types'
@@ -53,15 +42,6 @@ import { getContract, getProviderOrSigner } from '../utils'
  * Helper hooks to get specific contracts (by ABI)
  */
 
-export const useIfoV1Contract = (address: string) => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getIfoV1Contract(address, library.getSigner()), [address, library])
-}
-
-export const useIfoV2Contract = (address: string) => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getIfoV2Contract(address, library.getSigner()), [address, library])
-}
 
 export const useERC20 = (address: string, withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
@@ -89,21 +69,6 @@ export const useBunnyFactory = () => {
   return useMemo(() => getBunnyFactoryContract(library.getSigner()), [library])
 }
 
-export const usePancakeRabbits = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getPancakeRabbitContract(library.getSigner()), [library])
-}
-
-export const useProfile = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getProfileContract(library.getSigner()), [library])
-}
-
-export const useLotteryV2Contract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getLotteryV2Contract(library.getSigner()), [library])
-}
-
 export const useMasterchef = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getMasterchefContract(library.getSigner()), [library])
@@ -119,123 +84,22 @@ export const useSousChefV2 = (id) => {
   return useMemo(() => getSouschefV2Contract(id, library.getSigner()), [id, library])
 }
 
-export const usePointCenterIfoContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getPointCenterIfoContract(library.getSigner()), [library])
-}
 
-export const useBunnySpecialContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getBunnySpecialContract(library.getSigner()), [library])
-}
 
 export const useClaimRefundContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getClaimRefundContract(library.getSigner()), [library])
 }
 
-export const useTradingCompetitionContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getTradingCompetitionContract(library.getSigner()), [library])
-}
 
-export const useTradingCompetitionContractV2 = (withSignerIfPossible = true) => {
-  const { library, account } = useActiveWeb3React()
-  return useMemo(
-    () => getTradingCompetitionContractV2(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [library, withSignerIfPossible, account],
-  )
-}
 
-export const useEasterNftContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getEasterNftContract(library.getSigner()), [library])
-}
-
-export const useVaultPoolContract = (vaultKey: VaultKey) => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => {
-    return vaultKey === VaultKey.CakeVault
-      ? getCakeVaultContract(library.getSigner())
-      : getIfoPoolContract(library.getSigner())
-  }, [library, vaultKey])
-}
-
-export const useCakeVaultContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getCakeVaultContract(library.getSigner()), [library])
-}
-
-export const useIfoPoolContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getIfoPoolContract(library.getSigner()), [library])
-}
-
-export const usePredictionsContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getPredictionsContract(library.getSigner()), [library])
-}
 
 export const useChainlinkOracleContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getChainlinkOracleContract(library.getSigner()), [library])
 }
 
-export const useSpecialBunnyCakeVaultContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getBunnySpecialCakeVaultContract(library.getSigner()), [library])
-}
 
-export const useSpecialBunnyPredictionContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getBunnySpecialPredictionContract(library.getSigner()), [library])
-}
-
-export const useBunnySpecialLotteryContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getBunnySpecialLotteryContract(library.getSigner()), [library])
-}
-
-export const useBunnySpecialXmasContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getBunnySpecialXmasContract(library.getSigner()), [library])
-}
-
-export const useAnniversaryAchievementContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getAnniversaryAchievementContract(library.getSigner()), [library])
-}
-
-export const useNftSaleContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getNftSaleContract(library.getSigner()), [library])
-}
-
-export const usePancakeSquadContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getPancakeSquadContract(library.getSigner()), [library])
-}
-
-export const useFarmAuctionContract = () => {
-  const { account, library } = useActiveWeb3React()
-  // This hook is slightly different from others
-  // Calls were failing if unconnected user goes to farm auction page
-  // Using library instead of library.getSigner() fixes the problem for unconnected users
-  // However, this fix is not ideal, it currently has following behavior:
-  // - If you visit Farm Auction page coming from some other page there are no errors in console (unconnected or connected)
-  // - If you go directly to Farm Auction page
-  //   - as unconnected user you don't see any console errors
-  //   - as connected user you see `unknown account #0 (operation="getAddress", code=UNSUPPORTED_OPERATION, ...` errors
-  //     the functionality of the page is not affected, data is loading fine and you can interact with the contract
-  //
-  // Similar behavior was also noticed on Trading Competition page.
-  return useMemo(() => getFarmAuctionContract(account ? library.getSigner() : library), [library, account])
-}
-
-export const useNftMarketContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getNftMarketContract(library.getSigner()), [library])
-}
 
 export const useErc721CollectionContract = (collectionAddress: string, withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
