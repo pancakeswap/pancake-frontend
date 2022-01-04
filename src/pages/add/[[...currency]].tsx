@@ -15,7 +15,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 export const getStaticProps = async ({ params }) => {
   const { currency = [] } = params
   const [currencyIdA, currencyIdB] = currency
-  const match = currencyIdA.match(OLD_PATH_STRUCTURE)
+  const match = currencyIdA?.match(OLD_PATH_STRUCTURE)
 
   if (match?.length) {
     return {
@@ -26,7 +26,7 @@ export const getStaticProps = async ({ params }) => {
     }
   }
 
-  if (currencyIdA?.toLowerCase() === currencyIdB?.toLowerCase()) {
+  if (currencyIdA && currencyIdB && currencyIdA.toLowerCase() === currencyIdB.toLowerCase()) {
     return {
       redirect: {
         statusCode: 303,
