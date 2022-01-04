@@ -43,7 +43,7 @@ const pools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
-    sousId: 250,
+    sousId: 251,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.gm,
     contractAddress: {
