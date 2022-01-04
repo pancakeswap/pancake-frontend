@@ -17,6 +17,14 @@ const sentryWebpackPluginOptions = {
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        source: '/info/token/:address',
+        destination: '/info/tokens/:address',
+      },
+    ]
+  },
   async redirects() {
     return [
       {
@@ -57,11 +65,6 @@ const config = {
       {
         source: '/collectibles',
         destination: '/nfts',
-        permanent: true,
-      },
-      {
-        source: '/info/token/:address',
-        destination: '/info/tokens/:address',
         permanent: true,
       },
       {

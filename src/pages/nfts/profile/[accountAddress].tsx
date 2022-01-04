@@ -15,10 +15,10 @@ const NftProfilePage = () => {
   const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()
 
   return (
-    <NftProfile>
+    <>
       <SubMenu />
       {isConnectedProfile ? <UserNfts /> : <UnconnectedProfileNftsContainer />}
-    </NftProfile>
+    </>
   )
 }
 
@@ -32,7 +32,7 @@ const UnconnectedProfileNftsContainer = () => {
 }
 
 NftProfilePage.getLayout = (page) => {
-  return <>{NftMarketLayout(page)}</>
+  return <NftProfile>{NftMarketLayout(page)}</NftProfile>
 }
 
 export default NftProfilePage

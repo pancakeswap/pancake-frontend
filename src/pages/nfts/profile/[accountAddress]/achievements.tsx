@@ -12,14 +12,14 @@ const NftProfileAchievementsPage = () => {
   const { achievements, isFetching: isAchievementFetching } = useAchievementsForAddress(accountAddress)
 
   return (
-    <NftProfile>
+    <>
       <Achievements achievements={achievements} isLoading={isAchievementFetching} points={profile?.points} />
-    </NftProfile>
+    </>
   )
 }
 
 NftProfileAchievementsPage.getLayout = (page) => {
-  return <>{NftMarketLayout(page)}</>
+  return <NftProfile>{NftMarketLayout(page)}</NftProfile>
 }
 
 export default NftProfileAchievementsPage

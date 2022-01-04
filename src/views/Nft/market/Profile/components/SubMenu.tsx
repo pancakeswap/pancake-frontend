@@ -8,7 +8,7 @@ const SubMenuComponent: React.FC = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const accountAddress = router.query.accountAddress as string
-  const { pathname } = router
+  const { asPath } = router
 
   const ItemsConfig = [
     {
@@ -21,7 +21,7 @@ const SubMenuComponent: React.FC = () => {
     },
   ]
 
-  return <BaseSubMenu items={ItemsConfig} activeItem={pathname} justifyContent="flex-start" mb="60px" />
+  return <BaseSubMenu items={ItemsConfig} activeItem={asPath} justifyContent="flex-start" mb="60px" />
 }
 
 export default SubMenuComponent

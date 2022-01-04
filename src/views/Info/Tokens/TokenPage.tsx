@@ -66,11 +66,6 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
 
-  // Needed to scroll up if user comes to this page by clicking on entry in the table
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
 

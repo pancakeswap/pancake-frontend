@@ -4,17 +4,17 @@ import NftProfile from 'views/Nft/market/Profile'
 import ActivityHistory from 'views/Nft/market/Profile/components/ActivityHistory'
 import SubMenu from 'views/Nft/market/Profile/components/SubMenu'
 
-const NftProfileActitivyPage = () => {
+const NftProfileActivityPage = () => {
   return (
-    <NftProfile>
+    <>
       <SubMenu />
       <ActivityHistory />
-    </NftProfile>
+    </>
   )
 }
 
-NftProfileActitivyPage.getLayout = (page) => {
-  return <>{NftMarketLayout(page)}</>
+NftProfileActivityPage.getLayout = (page) => {
+  return <NftProfile>{NftMarketLayout(page)}</NftProfile>
 }
 
-export default NftProfileActitivyPage
+export default NftProfileActivityPage
