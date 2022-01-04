@@ -533,9 +533,9 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   {
     account: '0x3591b656D753226dE239d2b9A48221daf0751Fca',
-    farmName: 'HE-BUSD',
+    farmName: 'HE-BNB',
     tokenAddress: '0x20d39a5130f799b95b55a930e5b7ebc589ea9ed8',
-    quoteToken: tokens.busd,
+    quoteToken: tokens.wbnb,
     tokenName: 'Heroes & Empires',
     projectSite: 'https://heroesempires.com/',
   },
