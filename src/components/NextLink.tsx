@@ -1,7 +1,13 @@
 import React, { forwardRef } from 'react'
 import styled from 'styled-components'
 import NextLink from 'next/link'
-import { LinkProps } from 'react-router-dom'
+
+// react-router-dom LinkProps types
+interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  to: any
+  replace?: boolean | undefined
+  innerRef?: React.Ref<HTMLAnchorElement> | undefined
+}
 
 const A = styled.a``
 
