@@ -9,7 +9,7 @@ const sentryWebpackPluginOptions = {
   //   urlPrefix, include, ignore
 
   silent: true, // Suppresses all logs
-  dryRun: Boolean(process.env.SENTRY_AUTH_TOKEN), // Set to true will skip the upload release step
+  dryRun: !process.env.SENTRY_AUTH_TOKEN, // Set to true will skip the upload release step
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 }
