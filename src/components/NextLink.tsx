@@ -5,8 +5,8 @@ import NextLink from 'next/link'
 // react-router-dom LinkProps types
 interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   to: any
-  replace?: boolean | undefined
-  innerRef?: React.Ref<HTMLAnchorElement> | undefined
+  replace?: boolean
+  innerRef?: React.Ref<HTMLAnchorElement>
 }
 
 const A = styled.a``

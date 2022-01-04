@@ -28,8 +28,10 @@ export const getStaticProps = async ({ params }) => {
 
   if (currencyIdA?.toLowerCase() === currencyIdB?.toLowerCase()) {
     return {
-      statusCode: 303,
-      redirect: `/add/${match[1]}/${match[2]}`,
+      redirect: {
+        statusCode: 303,
+        destination: `/add/${currencyIdA}`,
+      },
     }
   }
 

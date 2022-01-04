@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
+import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import { useAppDispatch } from 'state'
@@ -12,7 +13,6 @@ import ProposalsLoading from './ProposalsLoading'
 import TabMenu from './TabMenu'
 import ProposalRow from './ProposalRow'
 import Filters from './Filters'
-import Link from 'next/link'
 
 interface State {
   proposalType: ProposalType

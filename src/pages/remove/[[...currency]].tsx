@@ -25,10 +25,15 @@ export const getStaticProps = async ({ params }) => {
       }
     }
 
-    const [currency0, currency1] = currency[0].split('-')
-    return {
-      statusCode: 307,
-      redirect: `/remove/${currency0}/${currency1}`,
+    const split = currency[0].split('-')
+    if (split.length > 1) {
+      const [currency0, currency1] = split
+      return {
+        redirect: {
+          statusCode: 307,
+          destination: `/remove/${currency0}/${currency1}`,
+        },
+      }
     }
   }
 
