@@ -6,6 +6,5 @@ const NftMarketPage = () => {
   return <NftMarket />
 }
 
-export default NftMarket
-
 NftMarketPage.getLayout = NftMarketLayout
+export default NftMarketPage

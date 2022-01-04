@@ -46,8 +46,7 @@ const BorderCard = styled.div`
 
 export default function RemoveLiquidity() {
   const router = useRouter()
-  const currencyIdA = router.query.currencyIdA as string
-  const currencyIdB = router.query.currencyIdB as string
+  const [currencyIdA, currencyIdB] = router.query.currency || []
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, library } = useActiveWeb3React()
   const [tokenA, tokenB] = useMemo(

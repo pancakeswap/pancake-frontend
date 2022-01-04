@@ -41,8 +41,7 @@ import Page from '../Page'
 
 export default function AddLiquidity() {
   const router = useRouter()
-  const currencyIdA = typeof router.query.currencyA === 'string' ? router.query.currencyA : undefined
-  const currencyIdB = typeof router.query.currencyIdB === 'string' ? router.query.currencyIdB : undefined
+  const [currencyIdA, currencyIdB] = router.query.currency || []
 
   const { account, chainId, library } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
