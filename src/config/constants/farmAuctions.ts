@@ -529,7 +529,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenAddress: '0x0bc89aa98Ad94E6798Ec822d0814d934cCD0c0cE',
     quoteToken: tokens.busd,
     tokenName: 'Battle Hero',
-    projectSite: 'http://battlehero.io/',
+    projectSite: 'https://battlehero.io/',
   },
   {
     account: '0x3591b656D753226dE239d2b9A48221daf0751Fca',
