@@ -9,7 +9,9 @@ import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFol
 import PageSection from 'components/PageSection'
 import { PageMeta } from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import { useGetCollections } from 'state/nftMarket/hooks'
 import useTheme from 'hooks/useTheme'
+import { orderBy } from 'lodash'
 import SearchBar from '../components/SearchBar'
 import Collections from './Collections'
 import Newest from './Newest'
@@ -53,6 +55,19 @@ const Home = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { theme } = useTheme()
+  const collections = useGetCollections()
+
+  const hotCollections = orderBy(
+    collections,
+    (collection) => (collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0),
+    'desc',
+  )
+
+  const newestCollections = orderBy(
+    collections,
+    (collection) => (collection.createdAt ? Date.parse(collection.createdAt) : 0),
+    'desc',
+  )
 
   return (
     <>
@@ -82,7 +97,18 @@ const Home = () => {
         concaveDivider
         dividerPosition="top"
       >
-        <Collections />
+        <Collections
+          key="newest-collections"
+          title={t('Newest Collections')}
+          testId="nfts-newest-collections"
+          collections={newestCollections}
+        />
+        <Collections
+          key="hot-collections"
+          title={t('Hot Collections')}
+          testId="nfts-hot-collections"
+          collections={hotCollections}
+        />
         <Newest />
       </PageSection>
       <Gradient p="64px 0">
