@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 import React from 'react'
+import { nodes } from 'utils/getRpcUrl'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -33,24 +35,27 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          {nodes.map((node) => (
+            <link key={node} rel="preconnect" href={node} />
+          ))}
+          {process.env.NEXT_PUBLIC_NODE_PRODUCTION && (
+            <link rel="preconnect" href={process.env.NEXT_PUBLIC_NODE_PRODUCTION} />
+          )}
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&amp;display=swap" rel="stylesheet" />
-          <meta
-            name="description"
-            content="Cheaper and faster than Uniswap? Discover PancakeSwap, the leading DEX on Binance Smart Chain (BSC) with the best farms in DeFi and a lottery for CAKE."
-          />
-          <meta name="theme-color" content="#1FC7D4" />
-          <meta name="twitter:image" content="https://pancakeswap.finance/images/hero.png" />
-          <meta
-            name="twitter:description"
-            content="The most popular AMM on BSC! Earn CAKE through yield farming or win it in the Lottery, then stake it in Syrup Pools to earn more tokens! Initial Farm Offerings (new token launch model pioneered by PancakeSwap), NFTs, and more, on a platform you can trust."
-          />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta
-            name="twitter:title"
-            content="🥞 PancakeSwap - A next evolution DeFi exchange on Binance Smart Chain (BSC)"
-          />
+          <link rel="shortcut icon" href="./favicon.ico" />
+          <link rel="apple-touch-icon" href="./logo.png" />
+          <link rel="manifest" href="./manifest.json" />
         </Head>
         <body>
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTAG}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
           <Main />
           <NextScript />
           <div id="portal-root" />
