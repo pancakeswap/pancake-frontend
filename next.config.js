@@ -26,6 +26,14 @@ const config = {
         source: '/info/token/:address',
         destination: '/info/tokens/:address',
       },
+      {
+        source: '/info/pool/:address',
+        destination: '/info/pools/:address',
+      },
+      {
+        source: '/info/pair/:address',
+        destination: '/info/pools/:address',
+      },
     ]
   },
   async redirects() {
@@ -68,16 +76,6 @@ const config = {
       {
         source: '/collectibles',
         destination: '/nfts',
-        permanent: true,
-      },
-      {
-        source: '/info/pool/:address',
-        destination: '/info/pools/:address',
-        permanent: true,
-      },
-      {
-        source: '/info/pair/:address',
-        destination: '/info/pools/:address',
         permanent: true,
       },
     ]
