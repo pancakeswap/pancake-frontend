@@ -1,39 +1,55 @@
-import HashRoute from 'components/HashRoute'
 import PageLoader from 'components/Loader/PageLoader'
-import React, { lazy } from 'react'
-import { Route, useParams, useRouteMatch } from 'react-router'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useFetchCollection, useGetCollection } from 'state/nftMarket/hooks'
 
-const Items = lazy(() => import('./Items'))
-const Traits = lazy(() => import('./Traits'))
-const Activity = lazy(() => import('./Activity'))
-const IndividualNFTPageRouter = lazy(() => import('./IndividualNFTPage'))
+const Items = dynamic(() => import('./Items'))
+const Traits = dynamic(() => import('./Traits'))
+const Activity = dynamic(() => import('./Activity'))
+
+function useHandleHashRoute() {
+  const [hash, setHash] = useState('')
+  const router = useRouter()
+  useEffect(() => {
+    setHash(window.location.hash || '')
+
+    const onHashChangeStart = () => {
+      setHash(window.location.hash || '')
+    }
+
+    router.events.on('hashChangeStart', onHashChangeStart)
+
+    return () => {
+      router.events.off('hashChangeStart', onHashChangeStart)
+    }
+  }, [router.events])
+
+  return hash
+}
 
 const Collection = () => {
-  const { path } = useRouteMatch()
-  const { collectionAddress } = useParams<{ collectionAddress: string }>()
+  const router = useRouter()
+  const collectionAddress = router.query.collectionAddress as string
   const collection = useGetCollection(collectionAddress)
 
   useFetchCollection(collectionAddress)
+
+  const hash = useHandleHashRoute()
 
   if (!collection) {
     return <PageLoader />
   }
 
-  // TODO: hash route
-  return null
+  if (hash === '#traits') {
+    return <Traits />
+  }
 
-  return (
-    <>
-      {/* <HashRoute exact path={path} hash="" component={Items} />
-      <HashRoute exact path={path} hash="#items" component={Items} />
-      <HashRoute exact path={path} hash="#traits" component={Traits} />
-      <HashRoute exact path={path} hash="#activity" component={Activity} /> */}
-      <Route path={`${path}/:tokenId`}>
-        <IndividualNFTPageRouter />
-      </Route>
-    </>
-  )
+  if (hash === '#activity') {
+    return <Activity />
+  }
+
+  return <Items />
 }
 
 export default Collection

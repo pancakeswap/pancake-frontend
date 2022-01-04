@@ -34,14 +34,9 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&amp;display=swap" rel="stylesheet" />
-          <title>PancakeSwap</title>
           <meta
             name="description"
             content="Cheaper and faster than Uniswap? Discover PancakeSwap, the leading DEX on Binance Smart Chain (BSC) with the best farms in DeFi and a lottery for CAKE."
-          />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, viewport-fit=cover"
           />
           <meta name="theme-color" content="#1FC7D4" />
           <meta name="twitter:image" content="https://pancakeswap.finance/images/hero.png" />

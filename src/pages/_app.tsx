@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { ResetCSS } from '@pancakeswap/uikit'
@@ -39,19 +40,28 @@ function GlobalHooks() {
 
 function MyApp(props: AppProps) {
   return (
-    <Providers>
-      <Blocklist>
-        <GlobalHooks />
-        <Updaters />
-        <ResetCSS />
-        <GlobalStyle />
-        <GlobalCheckClaimStatus excludeLocations={[]} />
-        <App {...props} />
-        <EasterEgg iterations={2} />
-        <ToastListener />
-        <SubgraphHealthIndicator />
-      </Blocklist>
-    </Providers>
+    <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, viewport-fit=cover"
+        />
+        <title>PancakeSwap</title>
+      </Head>
+      <Providers>
+        <Blocklist>
+          <GlobalHooks />
+          <Updaters />
+          <ResetCSS />
+          <GlobalStyle />
+          <GlobalCheckClaimStatus excludeLocations={[]} />
+          <App {...props} />
+          <EasterEgg iterations={2} />
+          <ToastListener />
+          <SubgraphHealthIndicator />
+        </Blocklist>
+      </Providers>
+    </>
   )
 }
 

@@ -1,3 +1,11 @@
+import { NoSSRLayout } from 'components/Layout/NoSSRLayout'
 import Pools from 'views/Pools'
+import React from 'react'
 
-export default Pools
+const PoolsPage = () => {
+  return <Pools />
+}
+
+PoolsPage.getLayout = NoSSRLayout
+
+export default PoolsPage
