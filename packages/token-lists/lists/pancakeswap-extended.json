@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-12-30T03:42:03.913Z",
+  "timestamp": "2022-01-04T06:39:28.575Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 56
+    "patch": 57
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -827,6 +827,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x2090c8295769791ab7A3CF1CC6e0AA19F35e441A.png"
+    },
+    {
+      "name": "GoldMiner",
+      "symbol": "GM",
+      "address": "0xe2604C9561D490624AA35e156e65e590eB749519",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xe2604C9561D490624AA35e156e65e590eB749519.png"
     },
     {
       "name": "GAMEE",

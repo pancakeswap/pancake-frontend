@@ -2150,5 +2150,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x8b303d5BbfBbf46F1a4d9741E491e06986894e18.png"
+  },
+  {
+    "name": "GoldMiner",
+    "symbol": "GM",
+    "address": "0xe2604C9561D490624AA35e156e65e590eB749519",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xe2604C9561D490624AA35e156e65e590eB749519.png"
   }
 ]
