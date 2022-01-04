@@ -1,24 +1,27 @@
+import { ResetCSS } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import EasterEgg from 'components/EasterEgg'
+import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
+import PageLoader from 'components/Loader/PageLoader'
+import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import { ToastListener } from 'contexts/ToastsContext'
+import useEagerConnect from 'hooks/useEagerConnect'
+import { useInactiveListener } from 'hooks/useInactiveListener'
+import useNftClaimStatusCheck from 'hooks/useNftClaimStatusCheck'
+import useSentryUser from 'hooks/useSentryUser'
+import useUserAgent from 'hooks/useUserAgent'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import React from 'react'
-import BigNumber from 'bignumber.js'
-import { ResetCSS } from '@pancakeswap/uikit'
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistor } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
-import useEagerConnect from 'hooks/useEagerConnect'
-import useUserAgent from 'hooks/useUserAgent'
-import { useInactiveListener } from 'hooks/useInactiveListener'
 import { useFetchProfile } from 'state/profile/hooks'
-import useSentryUser from 'hooks/useSentryUser'
-import useNftClaimStatusCheck from 'hooks/useNftClaimStatusCheck'
-import { ToastListener } from 'contexts/ToastsContext'
-import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
-import EasterEgg from 'components/EasterEgg'
-import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
-import Providers from '../Providers'
-import { Updaters, Blocklist } from '..'
-import GlobalStyle from '../style/Global'
+import { Blocklist, Updaters } from '..'
 import Menu from '../components/Menu'
+import Providers from '../Providers'
+import GlobalStyle from '../style/Global'
 
 // This config is required for number formatting
 BigNumber.config({
@@ -49,17 +52,19 @@ function MyApp(props: AppProps) {
         <title>PancakeSwap</title>
       </Head>
       <Providers>
-        <Blocklist>
-          <GlobalHooks />
-          <Updaters />
-          <ResetCSS />
-          <GlobalStyle />
-          <GlobalCheckClaimStatus excludeLocations={[]} />
-          <App {...props} />
-          <EasterEgg iterations={2} />
-          <ToastListener />
-          <SubgraphHealthIndicator />
-        </Blocklist>
+        <PersistGate loading={<PageLoader />} persistor={persistor}>
+          <Blocklist>
+            <GlobalHooks />
+            <Updaters />
+            <ResetCSS />
+            <GlobalStyle />
+            <GlobalCheckClaimStatus excludeLocations={[]} />
+            <App {...props} />
+            <EasterEgg iterations={2} />
+            <ToastListener />
+            <SubgraphHealthIndicator />
+          </Blocklist>
+        </PersistGate>
       </Providers>
     </>
   )
