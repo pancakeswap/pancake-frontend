@@ -1894,6 +1894,14 @@ export const mainnetTokens = defineTokens({
     'Woonkly Power',
     'https://www.woonkly.com/',
   ),
+  gm: new Token(
+    MAINNET,
+    '0xe2604C9561D490624AA35e156e65e590eB749519',
+    18,
+    'GM',
+    'GoldMiner',
+    'https://goldminer.games/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
