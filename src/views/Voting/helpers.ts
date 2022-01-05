@@ -123,6 +123,7 @@ type ScoresListIndex = {
   cakeBnbLpCakeBnbBalances: number
   poolStart: number
 }
+
 function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], scoresListIndex: ScoresListIndex) {
   let [
     cakeBalances,
