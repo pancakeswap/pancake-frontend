@@ -163,6 +163,7 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[]) {
 
     const total = cakeBalance
       .plus(cakeVaultBalance)
+      .plus(cakePoolBalance)
       .plus(IFOPoolBalance)
       .plus(cakeBnbLpBalance)
       .plus(poolsBalance)
