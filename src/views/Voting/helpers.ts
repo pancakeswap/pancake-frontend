@@ -3,7 +3,6 @@ import BigNumber from 'bignumber.js'
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import tokens from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
-import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 import {
   CakeBalanceStrategy,
   CakeBnbLpCakeBnbBalanceStrategy,
@@ -15,7 +14,8 @@ import {
   IFOPoolPricePerFullShareStrategy,
   IFOPoolSharesStrategy,
   UserStakeInCakePoolStrategy,
-} from './strategy'
+} from 'config/constants/snapshot'
+import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 
 export const isCoreProposal = (proposal: Proposal) => {
   return ADMINS.includes(proposal.author.toLowerCase())
