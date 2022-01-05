@@ -41,6 +41,39 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 497,
+    lpSymbol: 'AOG-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x88c9bf5E334e2591C6A866D5E20683E31226Be3d',
+    },
+    token: serializedTokens.aog,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
+    pid: 498,
+    lpSymbol: '8PAY-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
+    },
+    token: serializedTokens['8pay'],
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
+    pid: 499,
+    lpSymbol: 'BATH-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xEE90C67C9dD5dE862F4eabFDd53007a2D95Df5c6',
+    },
+    token: serializedTokens.bath,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
     pid: 496,
     lpSymbol: 'GM-BNB LP',
     lpAddresses: {

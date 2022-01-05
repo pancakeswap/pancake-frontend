@@ -1902,6 +1902,30 @@ export const mainnetTokens = defineTokens({
     'GoldMiner',
     'https://goldminer.games/',
   ),
+  aog: new Token(
+    MAINNET,
+    '0x40C8225329Bd3e28A043B029E0D07a5344d2C27C',
+    18,
+    'AOG',
+    'AgeOfGods',
+    'https://ageofgods.net/',
+  ),
+  '8pay': new Token(
+    MAINNET,
+    '0xFeea0bDd3D07eb6FE305938878C0caDBFa169042',
+    18,
+    '8PAY',
+    '8PAY Network',
+    'https://8pay.network/',
+  ),
+  bath: new Token(
+    MAINNET,
+    '0x0bc89aa98Ad94E6798Ec822d0814d934cCD0c0cE',
+    18,
+    'BATH',
+    'Battle Hero',
+    'https://battlehero.io/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
