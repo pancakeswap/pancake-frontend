@@ -1,5 +1,6 @@
 import { Box, BoxProps } from '@pancakeswap/uikit'
-import React, { FC } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
+import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { NftToken } from 'state/nftMarket/types'
 import styled from 'styled-components'
 import { RoundedImage } from '../Collection/IndividualNFTPage/shared/styles'
@@ -23,10 +24,24 @@ const NFTMedia: FC<
     height: number
   } & Omit<BoxProps, 'width' | 'height' | 'as'>
 > = ({ width, height, nft, borderRadius = 'default', as, ...props }) => {
+  const { observerRef, isIntersecting } = useIntersectionObserver()
+  const vidRef = useRef(null)
+
+  useEffect(() => {
+    if (vidRef.current) {
+      if (isIntersecting) {
+        vidRef.current.play()
+      } else {
+        vidRef.current.pause()
+      }
+    }
+  }, [isIntersecting])
+
   if (nft.image.webm || nft.image.mp4) {
     return (
       <AspectRatio ratio={width / height} {...props}>
-        <Box borderRadius={borderRadius} as="video" width="100%" height="100%" autoPlay muted loop playsInline>
+        <div ref={observerRef} />
+        <Box ref={vidRef} borderRadius={borderRadius} as="video" width="100%" height="100%" muted loop playsInline>
           <source src={nft.image.webm} type="video/webm" />
           <source src={nft.image.mp4} type="video/mp4" />
         </Box>
