@@ -31,7 +31,6 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
     poolsBalance,
     cakeBnbLpBalance,
     ifoPoolBalance,
-    verificationHash,
   } = useGetVotingPower(block, modalIsOpen)
 
   const isStartView = view === ConfirmVoteView.MAIN
@@ -57,10 +56,6 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
         payload: {
           proposal: proposalId,
           choice: vote.value,
-          metadata: {
-            votingPower: total.toString(),
-            verificationHash,
-          },
         },
       })
 
