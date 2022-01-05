@@ -1912,7 +1912,7 @@ export const mainnetTokens = defineTokens({
   ),
   eightPay: new Token(
     MAINNET,
-    '0xfeea0bdd3d07eb6fe305938878c0cadbfa169042',
+    '0xFeea0bDd3D07eb6FE305938878C0caDBFa169042',
     18,
     '8PAY',
     '8PAY Network',
