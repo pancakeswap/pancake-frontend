@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-01-04T06:39:28.575Z",
+  "timestamp": "2022-01-05T11:52:11.518Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 57
+    "patch": 58
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -19,6 +19,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
+    },
+    {
+      "name": "8PAY Network",
+      "symbol": "8PAY",
+      "address": "0xFeea0bDd3D07eb6FE305938878C0caDBFa169042",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xFeea0bDd3D07eb6FE305938878C0caDBFa169042.png"
     },
     {
       "name": "Cardano Token",
@@ -99,6 +107,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x5921DEE8556c4593EeFCFad3CA5e2f618606483b.png"
+    },
+    {
+      "name": "AgeOfGods",
+      "symbol": "AOG",
+      "address": "0x40C8225329Bd3e28A043B029E0D07a5344d2C27C",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x40C8225329Bd3e28A043B029E0D07a5344d2C27C.png"
     },
     {
       "name": "APYSwap",
@@ -211,6 +227,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x101d82428437127bF1608F699CD651e6Abf9766E.png"
+    },
+    {
+      "name": "Battle Hero",
+      "symbol": "BATH",
+      "address": "0x0bc89aa98Ad94E6798Ec822d0814d934cCD0c0cE",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x0bc89aa98Ad94E6798Ec822d0814d934cCD0c0cE.png"
     },
     {
       "name": "bBADGER",
