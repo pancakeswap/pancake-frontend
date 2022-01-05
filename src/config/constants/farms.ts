@@ -58,7 +58,7 @@ const farms: SerializedFarmConfig[] = [
       97: '',
       56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
     },
-    token: serializedTokens.eightPay,
+    token: serializedTokens['8pay'],
     quoteToken: serializedTokens.busd,
     isCommunity: true,
   },

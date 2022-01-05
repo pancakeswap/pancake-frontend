@@ -1910,7 +1910,7 @@ export const mainnetTokens = defineTokens({
     'AgeOfGods',
     'https://ageofgods.net/',
   ),
-  eightPay: new Token(
+  '8pay': new Token(
     MAINNET,
     '0xFeea0bDd3D07eb6FE305938878C0caDBFa169042',
     18,
