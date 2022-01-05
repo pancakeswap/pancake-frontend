@@ -6,7 +6,6 @@ import { simpleRpcProvider } from 'utils/providers'
 import { getVotingPower } from '../helpers'
 
 interface State {
-  verificationHash: string
   cakeBalance: number
   cakeVaultBalance: number
   cakePoolBalance: number
@@ -17,7 +16,6 @@ interface State {
 }
 
 const initialState: State = {
-  verificationHash: null,
   cakeBalance: 0,
   cakeVaultBalance: 0,
   cakePoolBalance: 0,
@@ -47,14 +45,12 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
           total,
           poolsBalance,
           cakeVaultBalance,
-          verificationHash,
           IFOPoolBalance,
         } = await getVotingPower(account, poolAddresses, blockNumber)
 
         if (isActive) {
           setVotingPower((prevVotingPower) => ({
             ...prevVotingPower,
-            verificationHash,
             cakeBalance: parseFloat(cakeBalance),
             cakeBnbLpBalance: parseFloat(cakeBnbLpBalance),
             cakePoolBalance: parseFloat(cakePoolBalance),
