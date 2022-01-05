@@ -38,6 +38,7 @@
     "@reduxjs/toolkit": "^1.5.0",
     "@sentry/react": "^6.15.0",
     "@sentry/tracing": "^6.15.0",
+    "@snapshot-labs/snapshot.js": "^0.3.25",
     "@types/multicodec": "^1.0.0",
     "@types/node": "^13.13.5",
     "@types/qs": "^6.9.6",
