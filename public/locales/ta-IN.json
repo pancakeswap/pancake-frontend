@@ -1787,8 +1787,8 @@
   "Credit calculation starts:": "கிரெடிட் கணக்கீடு தொடங்குவது:",
   "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "நடப்புக் கணக்கீட்டுக் காலத்தின் தொடக்க ப்ளாக். உங்களின் சராசரி IFO CAKE பூல் ஸ்டேக்கிங் பேலன்ஸ் இந்தக் காலம் முழுவதும் கணக்கிடப்படுகிறது.",
-  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
-  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
+  "The latest credit calculation period has ended. After the coming IFO, credits will be reset and the calculation will resume.": "The latest credit calculation period has ended. After the coming IFO, credits will be reset and the calculation will resume.",
+  "Follow us on Twitter to catch the latest news about the coming IFO.": "Follow us on Twitter to catch the latest news about the coming IFO.",
   "Check out our Medium article for more details.": "மேலதிக விவரங்களுக்கு எங்கள் Medium கட்டுரையைப் பார்க்கவும்.",
   "IFO Pool": "IFO பூல்",
   "Chart": "அட்டவணை",
@@ -1807,5 +1807,6 @@
   "Subgraph Health Indicator": "சப்கிராஃப் ஹெல்த் இன்டிகேட்டர்",
   "Delay": "தாமதம்",
   "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
-  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading",
+  "Add liquidity instead": "Add liquidity instead"
 }
