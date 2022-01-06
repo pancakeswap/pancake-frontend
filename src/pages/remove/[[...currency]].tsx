@@ -1,4 +1,4 @@
-import { GetStaticPaths } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import RemoveLiquidity from 'views/RemoveLiquidity'
 
 export default RemoveLiquidity
@@ -8,15 +8,21 @@ const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40})-(0x[a-fA-F0-9]{40})$/
 export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: true,
   }
 }
 
-export const getStaticProps = async ({ params }) => {
-  const { currency = [] } = params
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const currency = (params.currency as string[]) || []
+
+  if (currency.length === 0) {
+    return {
+      notFound: true,
+    }
+  }
 
   if (currency.length === 1) {
-    if (!OLD_PATH_STRUCTURE.test(currency)) {
+    if (!OLD_PATH_STRUCTURE.test(currency[0])) {
       return {
         redirect: {
           statusCode: 307,

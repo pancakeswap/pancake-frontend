@@ -403,9 +403,9 @@ export default function RemoveLiquidity() {
   const handleSelectCurrencyA = useCallback(
     (currency: Currency) => {
       if (currencyIdB && currencyId(currency) === currencyIdB) {
-        router.push(`/remove/${currencyId(currency)}/${currencyIdA}`)
+        router.replace(`/remove/${currencyId(currency)}/${currencyIdA}`, undefined, { shallow: true })
       } else {
-        router.push(`/remove/${currencyId(currency)}/${currencyIdB}`)
+        router.replace(`/remove/${currencyId(currency)}/${currencyIdB}`, undefined, { shallow: true })
       }
     },
     [currencyIdA, currencyIdB, router],
@@ -413,9 +413,9 @@ export default function RemoveLiquidity() {
   const handleSelectCurrencyB = useCallback(
     (currency: Currency) => {
       if (currencyIdA && currencyId(currency) === currencyIdA) {
-        router.push(`/remove/${currencyIdB}/${currencyId(currency)}`)
+        router.replace(`/remove/${currencyIdB}/${currencyId(currency)}`, undefined, { shallow: true })
       } else {
-        router.push(`/remove/${currencyIdA}/${currencyId(currency)}`)
+        router.replace(`/remove/${currencyIdA}/${currencyId(currency)}`, undefined, { shallow: true })
       }
     },
     [currencyIdA, currencyIdB, router],
