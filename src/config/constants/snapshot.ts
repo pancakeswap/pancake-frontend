@@ -314,7 +314,9 @@ function createPoolStrategy(poolAddress) {
   }
 }
 
-export {
+export { createPoolStrategy }
+
+export const snapshotStrategies = [
   CakeBalanceStrategy,
   CakeVaultSharesStrategy,
   CakeVaultPricePerFullShareStrategy,
@@ -324,5 +326,4 @@ export {
   CakeBnbLpTotalSupplyStrategy,
   CakeBnbLpReserve0Strategy,
   CakeBnbLpCakeBnbBalanceStrategy,
-  createPoolStrategy,
-}
+]
