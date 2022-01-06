@@ -126,6 +126,10 @@ export const getCustomMeta = (path: string, t: ContextApi['t']): PageMeta => {
       return {
         title: `${t('Collections')} | ${t('PancakeSwap')}`,
       }
+    case '/nfts/activity':
+      return {
+        title: `${t('Activity')} | ${t('PancakeSwap')}`,
+      }
     case '/nfts/profile':
       return {
         title: `${t('Your Profile')} | ${t('PancakeSwap')}`,
