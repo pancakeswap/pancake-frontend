@@ -1170,12 +1170,6 @@
   "Dismiss": "நிராகரி",
   "Latest": "சமீபத்தியது",
   "Notice for trading %symbol%": "%symbol% டிரேடிங்கிற்கான அறிவிப்பு",
-  "To trade SAFEMOON, you must:": "SAFEMOON டிரேட் செய்ய, நீங்கள்:",
-  "Click on the settings icon": "அமைப்புகள் ஐகான் மீது கிளிக் செய்ய வேண்டும்",
-  "Set your slippage tolerance to 12%+": "உங்கள் ஸ்லிப்பேஜ் டாலெரன்ஸை 12%+ க்கு அமைக்க வேண்டும்",
-  "This is because SafeMoon taxes a 10% fee on each transaction:": "ஏனெனில் SafeMoon, ஒவ்வொரு பரிவர்த்தனையிலும் 10% கட்டணத்தை வரியாக விதிக்கிறது:",
-  "5% fee = redistributed to all existing holders": "5% கட்டணம் = நடப்பு வைத்திருப்பாளர்கள் அனைவருக்கும் மறுவிநியோகிக்கப்படுகிறது",
-  "5% fee = used to add liquidity": "5% கட்டணம் = லிக்விடிட்டியைச் சேர்க்கப் பயன்படுத்தப்படுகிறது",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "எச்சரிக்கை: BONDLY காம்ப்ரமைஸ் செய்யப்பட்டுள்ளது. அடுத்த அறிவிப்பு வரும்வரை லிக்விடிட்டியை அகற்றிடுங்கள்.",
   "Claimed": "கிளைம் செய்தது",
   "Settings": "அமைப்புகள்",
@@ -1791,7 +1785,10 @@
   "unstaking fee if withdrawn within %num%h": " %num% மணிநேரத்திற்குள் விலக்கிக்கொண்டால் அன்ஸ்டேக் செய்வதற்கான கட்டணம்",
   "Earn %asset%": "%asset% ஈட்டுக",
   "Credit calculation starts:": "கிரெடிட் கணக்கீடு தொடங்குவது:",
+  "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "நடப்புக் கணக்கீட்டுக் காலத்தின் தொடக்க ப்ளாக். உங்களின் சராசரி IFO CAKE பூல் ஸ்டேக்கிங் பேலன்ஸ் இந்தக் காலம் முழுவதும் கணக்கிடப்படுகிறது.",
+  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
+  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
   "Check out our Medium article for more details.": "மேலதிக விவரங்களுக்கு எங்கள் Medium கட்டுரையைப் பார்க்கவும்.",
   "IFO Pool": "IFO பூல்",
   "Chart": "அட்டவணை",
@@ -1808,5 +1805,7 @@
   "No issues with the subgraph.": "சப்கிராஃபில் எச்சிக்கலும் இல்லை.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "NFT மார்க்கெட் சப்கிராஃப் ஹெல்த் இண்டிகேட்டரை எல்லா நேரத்திலும் இயக்கவும். இயல்பு என்பது நெட்வொர்க் தாமதமாகும்போது மட்டும் இன்டிகேட்டரைக் காட்டுவதற்கானது",
   "Subgraph Health Indicator": "சப்கிராஃப் ஹெல்த் இன்டிகேட்டர்",
-  "Delay": "தாமதம்"
+  "Delay": "தாமதம்",
+  "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
 }
