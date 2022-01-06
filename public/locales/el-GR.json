@@ -1170,12 +1170,6 @@
   "Dismiss": "Απόρριψη",
   "Latest": "Πιο πρόσφατα",
   "Notice for trading %symbol%": "Ειδοποίηση ανταλλαγής %symbol%",
-  "To trade SAFEMOON, you must:": "Για να κάνετε ανταλλαγή SAFEMOON, πρέπει να:",
-  "Click on the settings icon": "Κάνετε κλικ στο εικονίδιο ρυθμίσεων",
-  "Set your slippage tolerance to 12%+": "Ρυθμίσετε την ανοχή ολίσθησης σε 12%+",
-  "This is because SafeMoon taxes a 10% fee on each transaction:": "Αυτό συμβαίνει επειδή το SafeMoon φορολογεί κάθε συναλλαγή με 10% τέλος:",
-  "5% fee = redistributed to all existing holders": "τέλος 5% = αναδιανέμεται σε όλους τους υπάρχοντες κατόχους",
-  "5% fee = used to add liquidity": "τέλος 5% = χρησιμοποιείται για να προσθέσει ρευστότητα",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "Προειδοποίηση: Το BONDLY έχει παραβιαστεί. Αφαιρέστε τη ρευστότητα μέχρι νεωτέρας.",
   "Claimed": "Διεκδικήθηκε",
   "Settings": "Ρυθμίσεις",
@@ -1791,7 +1785,10 @@
   "unstaking fee if withdrawn within %num%h": "χρώση για την κατάργηση stake, εάν γίνει πριν περάσουν %num% ώρες",
   "Earn %asset%": "Κερδίστε %asset%",
   "Credit calculation starts:": "Ο υπολογισμός της πίστωσης ξεκινά:",
+  "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "Το αρχικό μπλοκ της τρέχουσας περιόδου υπολογισμού. Το μέσο υπόλοιπο stake CAKE στην δεξαμενή της IFO υπολογίζεται στη διάρκεια αυτής της περιόδου.",
+  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
+  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
   "Check out our Medium article for more details.": "Δείτε το άρθρο μας στο Medium για περισσότερες λεπτομέρειες.",
   "IFO Pool": "Δεξαμενή IFO",
   "Chart": "Γράφημα",
@@ -1808,5 +1805,7 @@
   "No issues with the subgraph.": "Δεν υπάρχει πρόβλημα με το υπογράφημα.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Μπορείτε να ενεργοποιήσετε τον δείκτη υγείας υπογραφήματος αγοράς NFT ανά πάσα στιγμή. Η προεπιλεγμένη επιλογή είναι να εμφανίζεται η ένδειξη μόνο όταν το δίκτυο εμφανίζει καθυστέρηση",
   "Subgraph Health Indicator": "Δείκτης υγείας υπογραφήματος",
-  "Delay": "Καθυστέρηση"
+  "Delay": "Καθυστέρηση",
+  "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
 }
