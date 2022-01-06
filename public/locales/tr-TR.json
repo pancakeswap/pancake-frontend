@@ -1170,12 +1170,6 @@
   "Dismiss": "Reddet",
   "Latest": "En son",
   "Notice for trading %symbol%": "%symbol% takası için uyarı",
-  "To trade SAFEMOON, you must:": "SAFEMOON yatırımı yapabilmek için şunları yapmalısın:",
-  "Click on the settings icon": "Ayarlar simgesine tıkla",
-  "Set your slippage tolerance to 12%+": "Sapma toleransını %12+ olarak ayarla",
-  "This is because SafeMoon taxes a 10% fee on each transaction:": "Bunun nedeni, SafeMoon'un işlem başına %10 ücret almasıdır:",
-  "5% fee = redistributed to all existing holders": "%5 ücret = mevcut tüm sahipler arasında yeniden dağıtılır",
-  "5% fee = used to add liquidity": "%5 ücret = likidite eklemek için kullanılır",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "Uyarı: BONDLY'nin güvenliği ihlal edildi. Lütfen yeni bir talimata kadar likiditeyi kaldırın.",
   "Claimed": "Alındı",
   "Settings": "Ayarlar",
@@ -1791,7 +1785,10 @@
   "unstaking fee if withdrawn within %num%h": "%num% sa. içinde çekilirse yatırımı geri alma ücreti",
   "Earn %asset%": "%asset% kazanın",
   "Credit calculation starts:": "Kredi hesaplamasının başlamasına:",
+  "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "Mevcut hesaplama döneminin başlangıç bloku. Ortalama IFO CAKE Havuzu fon yatırma bakiyeniz, bu süre zarfında hesaplanır.",
+  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
+  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
   "Check out our Medium article for more details.": "Daha fazla ayrıntı için Medium makalemize göz atın.",
   "IFO Pool": "IFO Havuzu",
   "Chart": "Grafik",
@@ -1808,5 +1805,7 @@
   "No issues with the subgraph.": "Alt grafikle ilgili sorun yok.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "NFT piyasası alt grafiği sağlık göstergesini sürekli açık tutun. Varsayılan ayarda, gösterge sadece ağda gecikme olduğunda gösterilir",
   "Subgraph Health Indicator": "Alt Grafik Sağlık Göstergesi",
-  "Delay": "Gecikme"
+  "Delay": "Gecikme",
+  "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
 }
