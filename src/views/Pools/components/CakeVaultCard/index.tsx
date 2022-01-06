@@ -48,11 +48,11 @@ export const CreditCalcBlock = () => {
       <>
         <Text>
           {t(
-            'The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.',
+            'The latest credit calculation period has ended. After the coming IFO, credits will be reset and the calculation will resume.',
           )}
         </Text>
         <LinkExternal href="https://twitter.com/pancakeswap">
-          {t('Follow us on Twitter to catch the latest news.')}
+          {t('Follow us on Twitter to catch the latest news about the coming IFO.')}
         </LinkExternal>
       </>
     ) : (
