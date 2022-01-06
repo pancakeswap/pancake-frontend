@@ -1170,12 +1170,6 @@
   "Dismiss": "Renunță",
   "Latest": "Cea mai recentă",
   "Notice for trading %symbol%": "Notă pentru tranzacționarea %symbol%",
-  "To trade SAFEMOON, you must:": "Pentru a tranzacționa SAFEMOON, trebuie:",
-  "Click on the settings icon": "Să faci clic pe pictograma de setări",
-  "Set your slippage tolerance to 12%+": "Să setezi toleranța la slippage la 12%+",
-  "This is because SafeMoon taxes a 10% fee on each transaction:": "Aceasta deoarece SafeMoon aplică o taxă de 10% la fiecare tranzacție:",
-  "5% fee = redistributed to all existing holders": "Taxă de 5% = distribuită către toți titularii existenți",
-  "5% fee = used to add liquidity": "Taxă de 5% = utilizată pentru a adăuga lichidități",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "Avertizare: BONDLY a fost compromisă. Elimină lichiditățile până la înștiințări ulterioare.",
   "Claimed": "Recuperat",
   "Settings": "Setări",
@@ -1791,7 +1785,10 @@
   "unstaking fee if withdrawn within %num%h": "unstaking fee if withdrawn within %num%h",
   "Earn %asset%": "Earn %asset%",
   "Credit calculation starts:": "Credit calculation starts:",
+  "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.",
+  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
+  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
   "Check out our Medium article for more details.": "Check out our Medium article for more details.",
   "IFO Pool": "IFO Pool",
   "Chart": "Chart",
@@ -1808,5 +1805,7 @@
   "No issues with the subgraph.": "No issues with the subgraph.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed",
   "Subgraph Health Indicator": "Subgraph Health Indicator",
-  "Delay": "Delay"
+  "Delay": "Delay",
+  "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
 }
