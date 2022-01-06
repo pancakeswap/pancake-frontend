@@ -194,8 +194,12 @@ export const useIfoPoolVault = () => {
   return useVaultPoolByKey(VaultKey.IfoPool)
 }
 
-export const useIfoPooStartBlock = () => {
-  return useSelector((state: State) => state.pools.ifoPool.creditStartBlock)
+export const useIfoPoolCreditBlock = () => {
+  return useSelector((state: State) => ({
+    creditStartBlock: state.pools.ifoPool.creditStartBlock,
+    creditEndBlock: state.pools.ifoPool.creditEndBlock,
+    hasEndBlockOver: state.block.currentBlock >= state.pools.ifoPool.creditEndBlock,
+  }))
 }
 
 export const useIfoPoolCredit = () => {
@@ -212,14 +216,16 @@ export const useIfoWithApr = () => {
     fees: { performanceFeeAsDecimal },
   } = useIfoPoolVault()
   const { pool: poolZero, userDataLoaded } = usePool(0)
+  const { hasEndBlockOver } = useIfoPoolCreditBlock()
 
   const ifoPoolWithApr = useMemo(() => {
     const ifoPool = { ...poolZero }
     ifoPool.vaultKey = VaultKey.IfoPool
     ifoPool.apr = getAprData(ifoPool, performanceFeeAsDecimal).apr
     ifoPool.rawApr = poolZero.apr
+    ifoPool.isFinished = hasEndBlockOver
     return ifoPool
-  }, [performanceFeeAsDecimal, poolZero])
+  }, [performanceFeeAsDecimal, poolZero, hasEndBlockOver])
 
   return {
     pool: ifoPoolWithApr,

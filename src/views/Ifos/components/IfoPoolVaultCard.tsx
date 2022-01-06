@@ -1,40 +1,37 @@
 import {
-  useMatchBreakpoints,
-  Card,
-  CardHeader,
-  Text,
-  Flex,
   Box,
-  ExpandableButton,
+  Card,
   CardBody,
+  CardHeader,
+  ExpandableButton,
+  Flex,
   HelpIcon,
+  Text,
+  useMatchBreakpoints,
   useTooltip,
-  LinkExternal,
-  Link,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
+import { CompoundingPoolTag } from 'components/Tags'
 import { TokenPairImage } from 'components/TokenImage'
 import tokens from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import React, { useState } from 'react'
-import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr, useIfoPooStartBlock } from 'state/pools/hooks'
+import { useIfoPoolCredit, useIfoPoolVault, useIfoWithApr } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
 import styled from 'styled-components'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
-import CakeVaultCard from 'views/Pools/components/CakeVaultCard'
-import ExpandedFooter from 'views/Pools/components/PoolCard/CardFooter/ExpandedFooter'
+import CakeVaultCard, { CreditCalcBlock } from 'views/Pools/components/CakeVaultCard'
+import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
+import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/UnstakingFeeCountdownRow'
 import { IfoVaultCardAvgBalance } from 'views/Pools/components/CakeVaultCard/VaultCardActions'
 import AprRow from 'views/Pools/components/PoolCard/AprRow'
+import ExpandedFooter from 'views/Pools/components/PoolCard/CardFooter/ExpandedFooter'
 import Staked from 'views/Pools/components/PoolsTable/ActionPanel/Stake'
-import { CompoundingPoolTag } from 'components/Tags'
 import { ActionContainer } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
-import { VaultKey } from 'state/types'
-import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/UnstakingFeeCountdownRow'
-import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
-import { getBscScanLink } from 'utils'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
-import { BIG_ZERO } from 'utils/bigNumber'
 
 const StyledCardMobile = styled(Card)`
   max-width: 400px;
@@ -73,24 +70,6 @@ const IfoPoolVaultCardMobile: React.FC = () => {
     fees: { performanceFeeAsDecimal },
   } = useIfoPoolVault()
   const [isExpanded, setIsExpanded] = useState(false)
-  const creditStartBlock = useIfoPooStartBlock()
-  const {
-    tooltip: startBlockTooltip,
-    tooltipVisible: startBlockTooltipVisible,
-    targetRef: startBlockTargetRef,
-  } = useTooltip(
-    <>
-      <Text>
-        {t(
-          'The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.',
-        )}
-      </Text>
-      <LinkExternal href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1">
-        {t('Check out our Medium article for more details.')}
-      </LinkExternal>
-    </>,
-    { placement: 'auto' },
-  )
 
   const cakeAsNumberBalance = getBalanceNumber(credit)
   const stakedDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
@@ -144,20 +123,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
               stakedBalance={pool.userData?.stakedBalance ? new BigNumber(pool.userData.stakedBalance) : BIG_ZERO}
               performanceFee={performanceFeeAsDecimal}
             />
-            {pool.vaultKey === VaultKey.IfoPool && (
-              <Flex mt="8px" justifyContent="space-between">
-                <Text fontSize="14px">{t('Credit calculation starts:')}</Text>
-                <Flex mr="6px" alignItems="center">
-                  <Link external href={getBscScanLink(creditStartBlock, 'block')} mr="4px" fontSize="14px">
-                    {creditStartBlock}
-                  </Link>
-                  <span ref={startBlockTargetRef}>
-                    <HelpIcon color="textSubtle" />
-                  </span>
-                </Flex>
-                {startBlockTooltipVisible && startBlockTooltip}
-              </Flex>
-            )}
+            <CreditCalcBlock />
             <ActionContainer>
               <IfoVaultCardAvgBalance />
             </ActionContainer>

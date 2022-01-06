@@ -13,12 +13,13 @@ export const fetchPublicIfoPoolData = async () => {
       'calculateHarvestCakeRewards',
       'calculateTotalPendingCakeRewards',
       'startBlock',
+      'endBlock',
     ].map((method) => ({
       address: getIfoPoolAddress(),
       name: method,
     }))
 
-    const [[sharePrice], [shares], [estimatedCakeBountyReward], [totalPendingCakeHarvest], [startBlock]] =
+    const [[sharePrice], [shares], [estimatedCakeBountyReward], [totalPendingCakeHarvest], [startBlock], [endBlock]] =
       await multicallv2(ifoPoolAbi, calls)
 
     const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
@@ -31,6 +32,7 @@ export const fetchPublicIfoPoolData = async () => {
       estimatedCakeBountyReward: new BigNumber(estimatedCakeBountyReward.toString()).toJSON(),
       totalPendingCakeHarvest: new BigNumber(totalPendingCakeHarvest.toString()).toJSON(),
       creditStartBlock: startBlock.toNumber(),
+      creditEndBlock: endBlock.toNumber(),
     }
   } catch (error) {
     return {

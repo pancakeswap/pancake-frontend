@@ -157,6 +157,7 @@ export interface CakeVault {
 export interface IfoCakeVault extends Omit<CakeVault, 'userData'> {
   userData?: IfoVaultUser
   creditStartBlock?: number
+  creditEndBlock?: number
 }
 
 export interface PoolsState {
