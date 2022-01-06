@@ -3,18 +3,7 @@ import BigNumber from 'bignumber.js'
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import tokens from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
-import {
-  CakeBalanceStrategy,
-  CakeBnbLpCakeBnbBalanceStrategy,
-  CakeBnbLpReserve0Strategy,
-  CakeBnbLpTotalSupplyStrategy,
-  CakeVaultPricePerFullShareStrategy,
-  CakeVaultSharesStrategy,
-  createPoolStrategy,
-  IFOPoolPricePerFullShareStrategy,
-  IFOPoolSharesStrategy,
-  UserStakeInCakePoolStrategy,
-} from 'config/constants/snapshot'
+import { snapshotStrategies, createPoolStrategy } from 'config/constants/snapshot'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 
 export const isCoreProposal = (proposal: Proposal) => {
@@ -154,7 +143,7 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[]) {
     const cakeBnbLpBalance = cakeBnbLpCakeBnbBalance.times(cakeBnbLpReserve0).div(totalSupplyLP)
 
     // calculate poolsBalance
-    const poolStartIndex = 9
+    const poolStartIndex = snapshotStrategies.length + 1
     let poolsBalance = new BigNumber(0)
     for (let i = poolStartIndex; i < scoresList.length; i++) {
       const currentPoolBalance = new BigNumber(scoresList[i][address])
@@ -185,18 +174,7 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[]) {
 
 export async function getVotingPowerList(voters: string[], poolAddresses: string[], blockNumber: number) {
   const poolsStrategyList = poolAddresses.map((address) => createPoolStrategy(address))
-  const strategies = [
-    CakeBalanceStrategy,
-    CakeVaultSharesStrategy,
-    CakeVaultPricePerFullShareStrategy,
-    IFOPoolSharesStrategy,
-    IFOPoolPricePerFullShareStrategy,
-    UserStakeInCakePoolStrategy,
-    CakeBnbLpTotalSupplyStrategy,
-    CakeBnbLpReserve0Strategy,
-    CakeBnbLpCakeBnbBalanceStrategy,
-    ...poolsStrategyList,
-  ]
+  const strategies = [...snapshotStrategies, ...poolsStrategyList]
   const network = '56'
   const strategyResponse = await snapshot.utils.getScores(PANCAKE_SPACE, strategies, network, voters, blockNumber)
   const votingPowerList = calculateVotingPower(strategyResponse, voters)
