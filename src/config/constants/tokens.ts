@@ -1926,6 +1926,14 @@ export const mainnetTokens = defineTokens({
     'Battle Hero',
     'https://battlehero.io/',
   ),
+  insur: new Token(
+    MAINNET,
+    '0x3192CCDdf1CDcE4Ff055EbC80f3F0231b86A7E30',
+    18,
+    'INSUR',
+    'Bsc-Peg INSUR Token',
+    'https://www.insurace.io/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
