@@ -11,7 +11,7 @@ const useIntersectionObserver = () => {
       setIsIntersecting(entry.isIntersecting)
     }
 
-    if (!observerIsSet) {
+    if (!observerIsSet && observerRef.current) {
       intersectionObserverRef.current = new IntersectionObserver(checkObserverIsIntersecting, {
         rootMargin: '0px',
         threshold: 1,
