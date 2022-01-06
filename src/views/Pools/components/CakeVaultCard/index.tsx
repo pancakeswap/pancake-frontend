@@ -15,7 +15,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useIfoPooStartBlock, useVaultPoolByKey } from 'state/pools/hooks'
+import { useIfoPoolCreditBlock, useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { FlexGap } from 'components/Layout/Flex'
@@ -39,6 +39,59 @@ interface CakeVaultProps extends CardProps {
   defaultFooterExpanded?: boolean
 }
 
+export const CreditCalcBlock = () => {
+  const { creditStartBlock, creditEndBlock, hasEndBlockOver } = useIfoPoolCreditBlock()
+  const { t } = useTranslation()
+
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(
+    hasEndBlockOver ? (
+      <>
+        <Text>
+          {t(
+            'The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.',
+          )}
+        </Text>
+        <LinkExternal href="https://twitter.com/pancakeswap">
+          {t('Follow us on Twitter to catch the latest news.')}
+        </LinkExternal>
+      </>
+    ) : (
+      <>
+        <Text>
+          {t(
+            'The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.',
+          )}
+        </Text>
+        <LinkExternal href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1">
+          {t('Check out our Medium article for more details.')}
+        </LinkExternal>
+      </>
+    ),
+    { placement: 'auto' },
+  )
+
+  return (
+    <Flex mt="8px" justifyContent="space-between">
+      <Text fontSize="14px">{hasEndBlockOver ? t('Credit calculation ended:') : t('Credit calculation starts:')}</Text>
+      <Flex mr="6px" alignItems="center">
+        <Link
+          external
+          href={getBscScanLink(hasEndBlockOver ? creditEndBlock : creditStartBlock, 'block')}
+          mr="4px"
+          color={hasEndBlockOver ? 'warning' : 'primary'}
+          fontSize="14px"
+        >
+          {hasEndBlockOver ? creditEndBlock : creditStartBlock}
+        </Link>
+        <span ref={targetRef}>
+          <HelpIcon color="textSubtle" />
+        </span>
+      </Flex>
+      {tooltipVisible && tooltip}
+    </Flex>
+  )
+}
+
 const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, defaultFooterExpanded, ...props }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -47,20 +100,6 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
     fees: { performanceFeeAsDecimal },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
-  const creditStartBlock = useIfoPooStartBlock()
-  const { tooltip, tooltipVisible, targetRef } = useTooltip(
-    <>
-      <Text>
-        {t(
-          'The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.',
-        )}
-      </Text>
-      <LinkExternal href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1">
-        {t('Check out our Medium article for more details.')}
-      </LinkExternal>
-    </>,
-    { placement: 'auto' },
-  )
 
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
 
@@ -82,20 +121,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
       </PoolCardHeader>
       <StyledCardBody isLoading={isLoading}>
         <AprRow pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
-        {pool.vaultKey === VaultKey.IfoPool && (
-          <Flex mt="8px" justifyContent="space-between">
-            <Text fontSize="14px">{t('Credit calculation starts:')}</Text>
-            <Flex mr="6px" alignItems="center">
-              <Link external href={getBscScanLink(creditStartBlock, 'block')} mr="4px" fontSize="14px">
-                {creditStartBlock}
-              </Link>
-              <span ref={targetRef}>
-                <HelpIcon color="textSubtle" />
-              </span>
-            </Flex>
-            {tooltipVisible && tooltip}
-          </Flex>
-        )}
+        {pool.vaultKey === VaultKey.IfoPool && <CreditCalcBlock />}
         <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
           <Box>
             <Box mt="24px">

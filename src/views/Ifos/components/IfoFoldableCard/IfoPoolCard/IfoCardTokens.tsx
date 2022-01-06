@@ -258,9 +258,11 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <MessageTextLink href="#ifo-how-to" textAlign="center">
             {t('How does it work?')} »
           </MessageTextLink>
-          <Button mt="24px" onClick={onPresentStake}>
-            {t('Stake CAKE in IFO pool')}
-          </Button>
+          {!pool.isFinished && (
+            <Button mt="24px" onClick={onPresentStake}>
+              {t('Stake CAKE in IFO pool')}
+            </Button>
+          )}
         </Flex>
       ) : (
         <>
