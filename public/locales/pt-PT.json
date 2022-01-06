@@ -1787,8 +1787,8 @@
   "Credit calculation starts:": "O cálculo de crédito começa em:",
   "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "O bloco inicial do período de cálculo atual. A sua média de saldo de participação na Reserva de CAKE da IFO é calculada neste período.",
-  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
-  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
+  "The latest credit calculation period has ended. After the coming IFO, credits will be reset and the calculation will resume.": "The latest credit calculation period has ended. After the coming IFO, credits will be reset and the calculation will resume.",
+  "Follow us on Twitter to catch the latest news about the coming IFO.": "Follow us on Twitter to catch the latest news about the coming IFO.",
   "Check out our Medium article for more details.": "Confira o nosso artigo no Medium para saber mais detalhes.",
   "IFO Pool": "Reserva de IFO",
   "Chart": "Gráfico",
@@ -1807,5 +1807,6 @@
   "Subgraph Health Indicator": "Indicador de saúde do subgraph",
   "Delay": "Atraso",
   "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
-  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading",
+  "Add liquidity instead": "Add liquidity instead"
 }
