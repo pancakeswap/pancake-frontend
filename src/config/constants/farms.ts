@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 500,
+    lpSymbol: 'INSUR-BNB',
+    lpAddresses: {
+      97: '',
+      56: '0xD01bf29EdCA0285A004a25e325A449ba56e5926E',
+    },
+    token: serializedTokens.insur,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 497,
     lpSymbol: 'AOG-BUSD LP',
     lpAddresses: {
