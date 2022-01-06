@@ -1170,12 +1170,6 @@
   "Dismiss": "Ignora",
   "Latest": "Più recenti",
   "Notice for trading %symbol%": "Avviso per il trading di %symbol%",
-  "To trade SAFEMOON, you must:": "Per fare trading di SAFEMOON, devi:",
-  "Click on the settings icon": "Fare clic sull'icona delle impostazioni",
-  "Set your slippage tolerance to 12%+": "Imposta una tolleranza dello slippage maggiore del 12%",
-  "This is because SafeMoon taxes a 10% fee on each transaction:": "Questo perché SafeMoon applica una commissione del 10% su ogni transazione:",
-  "5% fee = redistributed to all existing holders": "Commissione del 5% = ridistribuita a tutti i possessori esistenti",
-  "5% fee = used to add liquidity": "Commissione del 5% = utilizzata per aggiungere liquidità",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "Avvertimento: BONDLY è stato compromesso. Rimuovi la liquidità fino a nuovo avviso.",
   "Claimed": "Richiesto",
   "Settings": "Impostazioni",
@@ -1791,7 +1785,10 @@
   "unstaking fee if withdrawn within %num%h": "commissione di rimozione da stake per prelievo entro %num%o",
   "Earn %asset%": "Guadagna %asset%",
   "Credit calculation starts:": "Inizio del calcolo del credito:",
+  "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "Blocco iniziale del periodo di calcolo attuale. Il tuo saldo medio di staking IFO CAKE Pool viene calcolato durante questo periodo.",
+  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
+  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
   "Check out our Medium article for more details.": "Dai un'occhiata al nostro articolo Medium per maggiori dettagli.",
   "IFO Pool": "IFO Pool",
   "Chart": "Grafico",
@@ -1808,5 +1805,7 @@
   "No issues with the subgraph.": "Nessun problema con il sottografo.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Attiva sempre l'indicatore di salute del sottografo del mercato NFT. L'impostazione predefinita è mostrare l'indicatore solo quando la rete è in ritardo",
   "Subgraph Health Indicator": "Indicatore di salute del sottografo",
-  "Delay": "Ritardo"
+  "Delay": "Ritardo",
+  "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
 }
