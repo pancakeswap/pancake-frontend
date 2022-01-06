@@ -1787,8 +1787,8 @@
   "Credit calculation starts:": "Ο υπολογισμός της πίστωσης ξεκινά:",
   "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "Το αρχικό μπλοκ της τρέχουσας περιόδου υπολογισμού. Το μέσο υπόλοιπο stake CAKE στην δεξαμενή της IFO υπολογίζεται στη διάρκεια αυτής της περιόδου.",
-  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
-  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
+  "The latest credit calculation period has ended. After the coming IFO, credits will be reset and the calculation will resume.": "The latest credit calculation period has ended. After the coming IFO, credits will be reset and the calculation will resume.",
+  "Follow us on Twitter to catch the latest news about the coming IFO.": "Follow us on Twitter to catch the latest news about the coming IFO.",
   "Check out our Medium article for more details.": "Δείτε το άρθρο μας στο Medium για περισσότερες λεπτομέρειες.",
   "IFO Pool": "Δεξαμενή IFO",
   "Chart": "Γράφημα",
@@ -1807,5 +1807,6 @@
   "Subgraph Health Indicator": "Δείκτης υγείας υπογραφήματος",
   "Delay": "Καθυστέρηση",
   "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
-  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading",
+  "Add liquidity instead": "Add liquidity instead"
 }
