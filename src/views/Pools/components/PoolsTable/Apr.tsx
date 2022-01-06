@@ -60,19 +60,21 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
     onPresentApyModal()
   }
 
+  const isFinishedAndNotCakePool = isFinished && pool.sousId !== 0
+
   return (
     <AprLabelContainer alignItems="center" justifyContent="flex-start" {...props}>
-      {apr || isFinished ? (
+      {apr || isFinishedAndNotCakePool ? (
         <>
           <Balance
             onClick={openRoiModal}
             fontSize="16px"
-            isDisabled={isFinished}
-            value={isFinished ? 0 : apr}
+            isDisabled={isFinishedAndNotCakePool}
+            value={isFinishedAndNotCakePool ? 0 : apr}
             decimals={2}
             unit="%"
           />
-          {!isFinished && showIcon && (
+          {!isFinishedAndNotCakePool && showIcon && (
             <Button onClick={openRoiModal} variant="text" width="20px" height="20px" padding="0px" marginLeft="4px">
               <CalculateIcon color="textSubtle" width="20px" />
             </Button>

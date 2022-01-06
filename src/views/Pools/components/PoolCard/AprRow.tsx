@@ -62,21 +62,23 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0
     />,
   )
 
+  const isFinishedAndNotCakePool = isFinished && pool.sousId !== 0
+
   return (
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef}>{vaultKey ? `${t('APY')}:` : `${t('APR')}:`}</TooltipText>
-      {apr || isFinished ? (
+      {apr || isFinishedAndNotCakePool ? (
         <ApyLabelContainer alignItems="center" onClick={onPresentApyModal}>
           <Balance
             fontSize="16px"
-            isDisabled={isFinished}
-            value={isFinished ? 0 : apr}
+            isDisabled={isFinishedAndNotCakePool}
+            value={isFinishedAndNotCakePool ? 0 : apr}
             decimals={2}
             unit="%"
             onClick={onPresentApyModal}
           />
-          {!isFinished && (
+          {!isFinishedAndNotCakePool && (
             <IconButton variant="text" scale="sm">
               <CalculateIcon color="textSubtle" width="18px" />
             </IconButton>
