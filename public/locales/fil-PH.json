@@ -1170,12 +1170,6 @@
   "Dismiss": "I-dismiss",
   "Latest": "Pinakahuli",
   "Notice for trading %symbol%": "Paunawa para sa pag-trade ng %symbol%",
-  "To trade SAFEMOON, you must:": "Upang mag-trade ng SAFEMOON, kailangan mong mag:",
-  "Click on the settings icon": "I-click ang icon ng setting",
-  "Set your slippage tolerance to 12%+": "I-set ang iyong slippage tolerance sa 12%+",
-  "This is because SafeMoon taxes a 10% fee on each transaction:": "Ito ay dahil sa pag-bubuwis ng SafeMoon na 10% na fee sa bawat transaksyon:",
-  "5% fee = redistributed to all existing holders": "5% na fee = na muling ibinahagi sa lahat ng mga umiiral na may-ari",
-  "5% fee = used to add liquidity": "5% na fee = ginamit upang idagdag sa liquidity",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "Babala: Ang BONDLY ay nakompromiso. Mangyaring alisin ang liquidity hanggang sa karagdagang abiso.",
   "Claimed": "Na-claim",
   "Settings": "Mga setting",
@@ -1791,7 +1785,10 @@
   "unstaking fee if withdrawn within %num%h": "bayarin sa pag-unstake kung iwi-withdraw sa loob ng %num%h",
   "Earn %asset%": "Makakuha ng %asset%",
   "Credit calculation starts:": "Magsisimula ang kalkulasyon ng credit sa:",
+  "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "Ang panimulang block ng kasalukuyang yugto ng panahon ng kalkulasyon. Kinakalkula ang iyong average na balanse sa pag-stake ng CAKE sa IFO Pool sa buong yugtong ito.",
+  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
+  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
   "Check out our Medium article for more details.": "Tingnan ang aming artikulo sa Medium para sa higit pang detalye.",
   "IFO Pool": "IFO Pool",
   "Chart": "Chart",
@@ -1808,5 +1805,7 @@
   "No issues with the subgraph.": "Walang isyu sa subgraph.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "I-on ang indicator ng kalagayan ng subgraph ng NFT market sa lahat ng panahon. Ang default ay pagpapakita lang ng indicator kapag naantala ang network",
   "Subgraph Health Indicator": "Indicator ng Kalagayan ng Subgraph",
-  "Delay": "Pagkaantala"
+  "Delay": "Pagkaantala",
+  "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
 }
