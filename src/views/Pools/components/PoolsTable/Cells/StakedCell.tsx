@@ -27,7 +27,7 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
 
   // vault
   const {
-    userData: { userShares },
+    userData: { isLoading: vaultUserDataLoading, userShares },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
   const hasSharesStaked = userShares && userShares.gt(0)
@@ -48,13 +48,15 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
 
   const hasStaked = stakedBalance.gt(0) || isVaultWithShares
 
+  const userDataLoading = pool.vaultKey ? vaultUserDataLoading : !userDataLoaded
+
   return (
     <StyledCell role="cell">
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {!userDataLoaded && account ? (
+        {userDataLoading && account ? (
           <Skeleton width="80px" height="16px" />
         ) : (
           <>
