@@ -1170,12 +1170,6 @@
   "Dismiss": "Elutasítás",
   "Latest": "Legújabb",
   "Notice for trading %symbol%": "Értesítés %symbol% kereskedéséről",
-  "To trade SAFEMOON, you must:": "A SAFEMOON forgalmazásához tedd a következőket:",
-  "Click on the settings icon": "Kattints a beállítások ikonra",
-  "Set your slippage tolerance to 12%+": "Állítsd a csúszástűrést 12% + értékre",
-  "This is because SafeMoon taxes a 10% fee on each transaction:": "Ennek oka, hogy a SafeMoon minden ügylet után 10% díjat számít fel:",
-  "5% fee = redistributed to all existing holders": "5% díj = újra felosztják az összes jelenlegi tulajdonosnak",
-  "5% fee = used to add liquidity": "5% díj = likviditás hozzáadására használják",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "Figyelmeztetés: BONDLY veszélybe került. Kérjük, hogy további intézkedésig távolítsa el a likviditást.",
   "Claimed": "Igényelve",
   "Settings": "Beállítások",
@@ -1791,7 +1785,10 @@
   "unstaking fee if withdrawn within %num%h": "tét lemondási díja, ha %num%h órán belül visszavonják",
   "Earn %asset%": "Nyerd el ezt: %asset%",
   "Credit calculation starts:": "A hitelszámítás kezdődik:",
+  "Credit calculation ended:": "Credit calculation ended:",
   "The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.": "Az aktuális számítási időszak kezdőblokkja. Az IFO CAKE alap tétegyenleged átlagos értéke ebben az időszakban kerül kiszámításra.",
+  "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.": "The latest credit calculation period has ended on this block. Credits will be reset and the calculation will resume after the next IFO, which is expected to come soon.",
+  "Follow us on Twitter to catch the latest news.": "Follow us on Twitter to catch the latest news.",
   "Check out our Medium article for more details.": "További részletekért tekintsd meg Medium cikkünket.",
   "IFO Pool": "IFO összevont alap",
   "Chart": "Grafikon",
@@ -1808,5 +1805,7 @@
   "No issues with the subgraph.": "Nincs probléma az algráffal.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Kapcsold be állandóan az NFT piaci algráf állapotjelzőt. Alapértelmezés szerint a mutató csak akkor jelenik meg, ha a hálózat késik",
   "Subgraph Health Indicator": "Algráf állapotjelző",
-  "Delay": "Késés"
+  "Delay": "Késés",
+  "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
+  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading"
 }
