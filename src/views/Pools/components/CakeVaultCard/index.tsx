@@ -78,6 +78,7 @@ export const CreditCalcBlock = () => {
           external
           href={getBscScanLink(hasEndBlockOver ? creditEndBlock : creditStartBlock, 'block')}
           mr="4px"
+          color={hasEndBlockOver ? 'warning' : 'primary'}
           fontSize="14px"
         >
           {hasEndBlockOver ? creditEndBlock : creditStartBlock}
