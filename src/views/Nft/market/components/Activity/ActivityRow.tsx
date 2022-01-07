@@ -1,5 +1,16 @@
 import React from 'react'
-import { Image, Flex, Text, Td, IconButton, Link, OpenNewIcon, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import {
+  Image,
+  Flex,
+  Text,
+  Td,
+  IconButton,
+  Link,
+  OpenNewIcon,
+  useMatchBreakpoints,
+  useModal,
+  Box,
+} from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { Price } from '@pancakeswap/sdk'
@@ -71,26 +82,32 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
             },
           })}
         >
-          <RouterLink to={nft ? `${nftsBaseUrl}/collections/${nft.collectionAddress}/${tokenId}` : ``}>
-            <Flex justifyContent="flex-start" alignItems="center" flexDirection={['column', null, 'row']}>
-              <RoundedImage
-                src={nft?.image.thumbnail}
-                alt={nft?.name}
-                width={64}
-                height={64}
-                mr={[0, null, '16px']}
-                mb={['8px', null, 0]}
-              />
-              <Flex flexDirection="column">
-                <Text textAlign={['center', null, 'left']} color="textSubtle" fontSize="14px">
-                  {nft?.collectionName}
-                </Text>
-                <Text textAlign={['center', null, 'left']} bold>
-                  {nft?.name}
-                </Text>
-              </Flex>
+          <Flex justifyContent="flex-start" alignItems="center" flexDirection={['column', null, 'row']}>
+            <Box width={64} height={64} mr={[0, null, '16px']} mb={['8px', null, 0]}>
+              <RouterLink to={nft ? `${nftsBaseUrl}/collections/${nft.collectionAddress}/${tokenId}` : ``}>
+                <RoundedImage src={nft?.image.thumbnail} alt={nft?.name} width={64} height={64} />
+              </RouterLink>
+            </Box>
+            <Flex flexDirection="column">
+              <Text
+                as={RouterLink}
+                to={nft ? `${nftsBaseUrl}/collections/${nft.collectionAddress}` : ``}
+                textAlign={['center', null, 'left']}
+                color="textSubtle"
+                fontSize="14px"
+              >
+                {nft?.collectionName}
+              </Text>
+              <Text
+                as={RouterLink}
+                to={nft ? `${nftsBaseUrl}/collections/${nft.collectionAddress}/${tokenId}` : ``}
+                textAlign={['center', null, 'left']}
+                bold
+              >
+                {nft?.name}
+              </Text>
             </Flex>
-          </RouterLink>
+          </Flex>
         </Td>
       ) : null}
       <Td>
