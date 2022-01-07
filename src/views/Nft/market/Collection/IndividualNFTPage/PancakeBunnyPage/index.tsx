@@ -23,6 +23,7 @@ import { pancakeBunniesAddress } from '../../../constants'
 import { sortNFTsByPriceBuilder } from './ForSaleTableCard/utils'
 import { SortType } from '../../../types'
 import { TwoColumnsContainer } from '../shared/styles'
+import usePrevious from '../../../../../../hooks/usePreviousValue'
 
 interface IndividualPancakeBunnyPageProps {
   bunnyId: string
@@ -44,6 +45,7 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
     : bunniesSortedByPrice
   const cheapestBunny = bunniesSortedByPrice[0]
   const cheapestBunnyFromOtherSellers = allBunniesFromOtherSellers[0]
+  const prevBunnyId = usePrevious(bunnyId)
 
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
 
@@ -55,10 +57,15 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
     // (it can't be reasonably wrapper in useCallback because the tokens are updated every time you call it, which is the whole point)
     // Since fastRefresh is 10 seconds and FETCH_NEW_NFTS_INTERVAL_MS is 8 seconds it fires every 10 seconds
     // The difference in 2 seconds is just to prevent some edge cases when request takes too long
-    if (msSinceLastUpdate > PANCAKE_BUNNIES_UPDATE_FREQUENCY && !isUpdatingPancakeBunnies && isWindowVisible) {
+    if (
+      prevBunnyId !== bunnyId ||
+      (msSinceLastUpdate > PANCAKE_BUNNIES_UPDATE_FREQUENCY && !isUpdatingPancakeBunnies && isWindowVisible)
+    ) {
       fetchMorePancakeBunnies(priceSort)
     }
   }, [
+    bunnyId,
+    prevBunnyId,
     priceSort,
     fetchMorePancakeBunnies,
     isUpdatingPancakeBunnies,
