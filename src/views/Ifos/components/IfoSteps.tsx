@@ -120,7 +120,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
           {t('How does the average balance calculated?')}
         </TooltipText>
       </Box>
-      {hasProfile && !pool.isFinished && (
+      {hasProfile && (
         <SmallStakePoolCard borderRadius="default" p="16px">
           <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
             <Flex>

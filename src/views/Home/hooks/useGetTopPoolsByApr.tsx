@@ -4,7 +4,7 @@ import { useAppDispatch } from 'state'
 import { orderBy } from 'lodash'
 import { VaultKey, DeserializedPool } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
-import { useCakeVault, useIfoPoolCreditBlock, useIfoPoolVault, usePools } from 'state/pools/hooks'
+import { useCakeVault, useIfoPoolVault, usePools } from 'state/pools/hooks'
 import { getAprData } from 'views/Pools/helpers'
 
 enum FetchStatus {
@@ -18,7 +18,6 @@ export function usePoolsWithVault() {
   const { pools: poolsWithoutAutoVault } = usePools()
   const cakeVault = useCakeVault()
   const ifoPool = useIfoPoolVault()
-  const { hasEndBlockOver } = useIfoPoolCreditBlock()
   const pools = useMemo(() => {
     const activePools = poolsWithoutAutoVault.filter((pool) => !pool.isFinished)
     const cakePool = activePools.find((pool) => pool.sousId === 0)
@@ -33,15 +32,9 @@ export function usePoolsWithVault() {
       ...ifoPoolVault,
       apr: getAprData(ifoPoolVault, ifoPool.fees.performanceFeeAsDecimal).apr,
       rawApr: cakePool.apr,
-      isFinished: hasEndBlockOver,
     }
     return [ifoPoolWithApr, cakeAutoVaultWithApr, ...poolsWithoutAutoVault]
-  }, [
-    poolsWithoutAutoVault,
-    cakeVault.fees.performanceFeeAsDecimal,
-    ifoPool.fees.performanceFeeAsDecimal,
-    hasEndBlockOver,
-  ])
+  }, [poolsWithoutAutoVault, cakeVault.fees.performanceFeeAsDecimal, ifoPool.fees.performanceFeeAsDecimal])
 
   return pools
 }
