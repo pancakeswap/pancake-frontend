@@ -1808,5 +1808,6 @@
   "Delay": "देरी",
   "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON, V2 के साथ अपने टोकन स्मार्ट कॉन्ट्रैक्ट को अपडेट करने का निर्णय लेता है",
   "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "ट्रेड से पहले कृपया उनका Twitter(@safemoon) देखें, आप ट्रेडिंग के ज़रिए अपनी ऐसेट पूरी तरह से खो सकते हैं",
-  "Add liquidity instead": "इसके बजाय लिक्विडिटी जोड़ें"
+  "Add liquidity instead": "इसके बजाय लिक्विडिटी जोड़ें",
+  "The latest credit calculation period has ended. Calculation will resume upon the next period starts.": "The latest credit calculation period has ended. Calculation will resume upon the next period starts."
 }
