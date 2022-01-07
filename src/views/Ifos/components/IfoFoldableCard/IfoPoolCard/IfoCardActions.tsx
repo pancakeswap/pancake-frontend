@@ -43,7 +43,7 @@ const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfo
 
   return (
     <>
-      {publicIfoData.status === 'live' && (
+      {(publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon') && (
         <ContributeButton poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
       )}
       {publicIfoData.status === 'finished' &&

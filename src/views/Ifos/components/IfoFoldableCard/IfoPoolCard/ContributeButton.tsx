@@ -56,10 +56,11 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
 
   const [onPresentGetTokenModal] = useModal(<GetTokenModal currency={ifo.currency} />, false)
 
-  const isDisabled =
-    isPendingTx ||
+  const isMaxCommitted =
     (walletIfoData.ifoCredit?.creditLeft && walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
     (limitPerUserInLP.isGreaterThan(0) && amountTokenCommittedInLP.isGreaterThanOrEqualTo(limitPerUserInLP))
+
+  const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'
 
   return (
     <Button
@@ -67,7 +68,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
       width="100%"
       disabled={isDisabled}
     >
-      {isDisabled ? t('Max. Committed') : t('Commit CAKE')}
+      {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit CAKE')}
     </Button>
   )
 }
