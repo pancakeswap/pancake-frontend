@@ -1808,5 +1808,6 @@
   "Delay": "Затримка",
   "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON вирішує перейти на смартконтракти токенів версії 2",
   "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Перш ніж торгувати, зайдіть у їхній акаунт у Твіттері (@safemoon). У процесі торгівлі ви ризикуєте повністю втратити свої активи.",
-  "Add liquidity instead": "Натомість додати ліквідність"
+  "Add liquidity instead": "Натомість додати ліквідність",
+  "The latest credit calculation period has ended. Calculation will resume upon the next period starts.": "The latest credit calculation period has ended. Calculation will resume upon the next period starts."
 }
