@@ -1808,5 +1808,6 @@
   "Delay": "Độ trễ",
   "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON quyết định cập nhật token hợp đồng thông minh của họ với V2",
   "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Hãy xem Twitter(@safemoon) của họ trước khi giao dịch, bạn có thể mất hết tài sản của mình qua giao dịch",
-  "Add liquidity instead": "Thay vào đó, hãy bổ sung thanh khoản"
+  "Add liquidity instead": "Thay vào đó, hãy bổ sung thanh khoản",
+  "The latest credit calculation period has ended. Calculation will resume upon the next period starts.": "The latest credit calculation period has ended. Calculation will resume upon the next period starts."
 }
