@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BaseCell, { CellContent } from './BaseCell'
 
-interface AvgBalanceCellProps {
+interface IFOCreditCellProps {
   account: string
 }
 
@@ -27,7 +27,7 @@ const HelpIconWrapper = styled.div`
   align-self: center;
 `
 
-const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account }) => {
+const IFOCreditCell: React.FC<IFOCreditCellProps> = ({ account }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const {
@@ -40,12 +40,21 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account }) => {
   const cakeAsNumberBalance = getBalanceNumber(credit)
   const avgBalanceDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
 
-  const labelText = `${t('Average')} ${t('Pool Balance')}`
+  const labelText = t('IFO Credit')
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(
-      'Max CAKE entry for both IFO sale is capped by average pool balance in this pool. This is calculated by the average block balance in the IFO pool in the past blocks prior to cut-off block.',
-    ),
+    <>
+      <Text>
+        {t(
+          'Your entry limit in the next IFO sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.',
+        )}
+      </Text>
+      <Text>
+        {t(
+          'Please note: even the pool is auto compounding. Amount of profits will not be included during IFO credit calculations.',
+        )}
+      </Text>
+    </>,
     { placement: 'bottom' },
   )
 
@@ -99,4 +108,4 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account }) => {
   )
 }
 
-export default AvgBalanceCell
+export default IFOCreditCell

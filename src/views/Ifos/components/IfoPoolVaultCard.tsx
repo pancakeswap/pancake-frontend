@@ -100,7 +100,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
           </StyledTokenContent>
           <StyledTokenContent flexDirection="column" flex={1}>
             <Text color="textSubtle" fontSize="12px">
-              {t('Avg Balance')}
+              {t('IFO Credit')}
             </Text>
             <Balance small bold decimals={3} value={cakeAsNumberBalance} />
             <Balance
