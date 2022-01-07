@@ -12,7 +12,7 @@ import {
   AddIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import Link from 'next/link'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTotalSupply from '../../hooks/useTotalSupply'
@@ -236,7 +236,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
           {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) && (
             <Flex flexDirection="column">
               <Button
-                as={Link}
+                as={NextLinkFromReactRouter}
                 to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
                 variant="primary"
                 width="100%"
@@ -245,7 +245,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
                 {t('Remove')}
               </Button>
               <Button
-                as={Link}
+                as={NextLinkFromReactRouter}
                 to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
                 variant="text"
                 startIcon={<AddIcon color="primary" />}
