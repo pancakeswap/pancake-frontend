@@ -1808,5 +1808,6 @@
   "Delay": "延遲",
   "SAFEMOON decides to update their token smart contract with V2": "SafeMoon 決定用 V2 來為他們的代幣更新智慧型合約",
   "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "為了避免在交易中徹底失去您的資產，交易前請先參閱他們的 Twitter(@safemoon)。",
-  "Add liquidity instead": "改為增加流動性"
+  "Add liquidity instead": "改為增加流動性",
+  "The latest credit calculation period has ended. Calculation will resume upon the next period starts.": "The latest credit calculation period has ended. Calculation will resume upon the next period starts."
 }
