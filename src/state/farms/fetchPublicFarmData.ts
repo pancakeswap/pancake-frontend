@@ -1,4 +1,5 @@
 import erc20 from 'config/abi/erc20.json'
+import { chunk } from 'lodash'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { SerializedFarm } from '../types'
@@ -48,16 +49,5 @@ export const fetchPublicFarmsData = async (farms: SerializedFarmConfig[]): Promi
   const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm))
   const chunkSize = farmCalls.length / farms.length
   const farmMultiCallResult = await multicallv2(erc20, farmCalls)
-  return farmMultiCallResult.reduce((resultArray, item, index) => {
-    const chunkIndex = Math.floor(index / chunkSize)
-
-    if (!resultArray[chunkIndex]) {
-      // eslint-disable-next-line no-param-reassign
-      resultArray[chunkIndex] = [] // start a new chunk
-    }
-
-    resultArray[chunkIndex].push(item)
-
-    return resultArray
-  }, [])
+  return chunk(farmMultiCallResult, chunkSize)
 }

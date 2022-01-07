@@ -1,4 +1,5 @@
 import masterchefABI from 'config/abi/masterchef.json'
+import { chunk } from 'lodash'
 import { multicallv2 } from 'utils/multicall'
 import { SerializedFarmConfig } from '../../config/constants/types'
 import { SerializedFarm } from '../types'
@@ -30,18 +31,7 @@ export const fetchMasterChefData = async (farms: SerializedFarmConfig[]): Promis
     })
     .flatMap((masterChefCall) => masterChefCall)
   const masterChefMultiCallResult = await multicallv2(masterchefABI, masterChefAggregatedCalls)
-  const masterChefChunkedResultRaw = masterChefMultiCallResult.reduce((resultArray, item, index) => {
-    const chunkIndex = Math.floor(index / chunkSize)
-
-    if (!resultArray[chunkIndex]) {
-      // eslint-disable-next-line no-param-reassign
-      resultArray[chunkIndex] = [] // start a new chunk
-    }
-
-    resultArray[chunkIndex].push(item)
-
-    return resultArray
-  }, [])
+  const masterChefChunkedResultRaw = chunk(masterChefMultiCallResult, chunkSize)
   let masterChefChunkedResultCounter = 0
   return masterChefCalls.map((masterChefCall) => {
     if (masterChefCall[0] === null && masterChefCall[1] === null) {
