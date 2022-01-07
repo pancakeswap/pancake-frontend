@@ -80,7 +80,7 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic })
                 <>
                   <Flex justifySelf="flex-start" alignItems="center" width="max-content">
                     <BinanceIcon width="24px" height="24px" mr="8px" />
-                    <Text bold>{formatNumber(parseFloat(nft.marketData.currentAskPrice), 0, 3)}</Text>
+                    <Text bold>{formatNumber(parseFloat(nft.marketData.currentAskPrice), 0, 5)}</Text>
                   </Flex>
                   {bnbBusdPrice ? (
                     <Text fontSize="12px" color="textSubtle">
