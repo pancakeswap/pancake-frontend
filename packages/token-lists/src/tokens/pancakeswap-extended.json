@@ -2182,5 +2182,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x0bc89aa98Ad94E6798Ec822d0814d934cCD0c0cE.png"
+  },
+  {
+    "name": "Bsc-Peg INSUR Token",
+    "symbol": "INSUR",
+    "address": "0x3192CCDdf1CDcE4Ff055EbC80f3F0231b86A7E30",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x3192CCDdf1CDcE4Ff055EbC80f3F0231b86A7E30.png"
   }
 ]
