@@ -46,7 +46,7 @@ const Newest: React.FC = () => {
   return (
     <div>
       <Flex justifyContent="space-between" alignItems="center" mb="26px">
-        <Heading>{t('Newest Arrivals')}</Heading>
+        <Heading data-test="nfts-newest">{t('Newest Arrivals')}</Heading>
         <Button
           as={Link}
           to={`${nftsBaseUrl}/activity/`}
@@ -69,6 +69,7 @@ const Newest: React.FC = () => {
               !isPBCollection && nft.marketData?.isTradable ? parseFloat(nft.marketData.currentAskPrice) : undefined
             return (
               <CollectibleLinkCard
+                data-test="newest-nft-card"
                 key={nft.collectionAddress + nft.tokenId}
                 nft={nft}
                 currentAskPrice={currentAskPrice}

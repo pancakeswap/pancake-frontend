@@ -109,7 +109,7 @@ const SubgraphHealth = () => {
   }
 
   return (
-    <Box position="fixed" bottom="55px" right="5%" ref={targetRef}>
+    <Box position="fixed" bottom="55px" right="5%" ref={targetRef} data-test="subgraph-health-indicator">
       {tooltipVisible && tooltip}
       <StyledCard>
         <IndicatorWrapper p="10px">

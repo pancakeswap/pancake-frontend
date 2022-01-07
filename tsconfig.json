@@ -20,6 +20,6 @@
     "noFallthroughCasesInSwitch": true,
     "downlevelIteration": true
   },
-  "exclude": ["node_modules", "cypress"],
+  "exclude": ["node_modules"],
   "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }
