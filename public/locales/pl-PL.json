@@ -1808,5 +1808,6 @@
   "Delay": "Opóźnienie",
   "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decyduje się na aktualizację inteligentnego kontraktu swojego tokena do wersji V2",
   "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Sprawdź ich Twitter (@safemoon) przed transakcją, w razie prowadzenia handlu możesz całkowicie stracić aktywa",
-  "Add liquidity instead": "Zamiast tego dodaj płynność"
+  "Add liquidity instead": "Zamiast tego dodaj płynność",
+  "The latest credit calculation period has ended. Calculation will resume upon the next period starts.": "The latest credit calculation period has ended. Calculation will resume upon the next period starts."
 }
