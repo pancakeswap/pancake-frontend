@@ -30,7 +30,7 @@ export const IfoVaultCardAvgBalance = () => {
     <>
       <FlexGap gap="4px" alignItems="center">
         <InlineText color="secondary" textTransform="uppercase" bold fontSize="12px">
-          {t('IFO credit')}
+          {t('IFO Credit')}
         </InlineText>
         <QuestionHelper
           size="24px"
@@ -38,12 +38,16 @@ export const IfoVaultCardAvgBalance = () => {
           display="inline"
           text={
             <>
-              {t(
-                'Your entry limit in the next IFO sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.',
-              )}
-              {t(
-                'Please note: even the pool is auto compounding. Amount of profits will not be included during IFO credit calculations.',
-              )}
+              <Text>
+                {t(
+                  'Your entry limit in the next IFO sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.',
+                )}
+              </Text>
+              <Text>
+                {t(
+                  'Please note: even the pool is auto compounding. Amount of profits will not be included during IFO credit calculations.',
+                )}
+              </Text>
             </>
           }
         />

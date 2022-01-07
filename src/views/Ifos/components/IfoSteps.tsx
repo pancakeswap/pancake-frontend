@@ -117,7 +117,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
           )}
         </Text>
         <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
-          {t('How does the average balance calculated?')}
+          {t('How does the IFO credit calculated?')}
         </TooltipText>
       </Box>
       {hasProfile && !pool.isFinished && (
