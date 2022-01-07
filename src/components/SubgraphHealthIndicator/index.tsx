@@ -74,7 +74,6 @@ export interface BlockResponse {
 const SubgraphHealthIndicator = () => {
   const { pathname } = useRouter()
   const isOnNftPages = pathname.includes('nfts')
-  return null
   return isOnNftPages ? <SubgraphHealth /> : null
 }
 
