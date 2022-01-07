@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BaseCell, { CellContent } from './BaseCell'
 
-interface AvgBalanceCellProps {
+interface IFOCreditCellProps {
   account: string
 }
 
@@ -27,7 +27,7 @@ const HelpIconWrapper = styled.div`
   align-self: center;
 `
 
-const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account }) => {
+const IFOCreditCell: React.FC<IFOCreditCellProps> = ({ account }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const {
@@ -40,7 +40,7 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account }) => {
   const cakeAsNumberBalance = getBalanceNumber(credit)
   const avgBalanceDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
 
-  const labelText = `${t('Average')} ${t('Pool Balance')}`
+  const labelText = t('IFO Credit')
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
@@ -99,4 +99,4 @@ const AvgBalanceCell: React.FC<AvgBalanceCellProps> = ({ account }) => {
   )
 }
 
-export default AvgBalanceCell
+export default IFOCreditCell

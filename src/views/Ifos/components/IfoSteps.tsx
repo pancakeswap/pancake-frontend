@@ -77,7 +77,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
     <Box>
       <span>
         {t(
-          'Average pool balance is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal.',
+          'IFO credit is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal.',
         )}
       </span>{' '}
       <InlineLink

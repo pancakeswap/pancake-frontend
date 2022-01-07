@@ -5,7 +5,7 @@ import { DeserializedPool, VaultKey } from 'state/types'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import NameCell from './Cells/NameCell'
 import EarningsCell from './Cells/EarningsCell'
-import AvgBalanceCell from './Cells/AvgBalanceCell'
+import IFOCreditCell from './Cells/IFOCreditCell'
 import AprCell from './Cells/AprCell'
 import TotalStakedCell from './Cells/TotalStakedCell'
 import EndsInCell from './Cells/EndsInCell'
@@ -52,7 +52,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
           <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         )}
         {pool.vaultKey === VaultKey.IfoPool ? (
-          <AvgBalanceCell account={account} />
+          <IFOCreditCell account={account} />
         ) : isXLargerScreen && isCakePool ? (
           <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         ) : null}
