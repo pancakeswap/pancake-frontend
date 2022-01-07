@@ -1808,5 +1808,6 @@
   "Delay": "Vertraging",
   "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON besluit hun slimme tokencontract te updaten met V2",
   "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Controleer hun Twitter (@safemoon) voordat je handelt, je kunt je activa geheel verliezen door te handelen",
-  "Add liquidity instead": "Voeg in plaats daarvan liquiditeit toe"
+  "Add liquidity instead": "Voeg in plaats daarvan liquiditeit toe",
+  "The latest credit calculation period has ended. Calculation will resume upon the next period starts.": "The latest credit calculation period has ended. Calculation will resume upon the next period starts."
 }
