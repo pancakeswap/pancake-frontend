@@ -11,7 +11,7 @@ import isArchivedPid from 'utils/farmHelpers'
 import type { AppState } from 'state'
 import priceHelperLpsConfig from 'config/constants/priceHelperLps'
 import fetchFarms from './fetchFarms'
-import fetchFarmsPrices from './fetchFarmsPrices'
+import getFarmsPrices from './getFarmsPrices'
 import {
   fetchFarmUserEarnings,
   fetchFarmUserAllowances,
@@ -55,7 +55,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const farmsWithPriceHelpers = farmsToFetch.concat(priceHelperLpsConfig)
 
     const farms = await fetchFarms(farmsWithPriceHelpers)
-    const farmsWithPrices = await fetchFarmsPrices(farms)
+    const farmsWithPrices = getFarmsPrices(farms)
 
     // Filter out price helper LP config farms
     const farmsWithoutHelperLps = farmsWithPrices.filter((farm: SerializedFarm) => {

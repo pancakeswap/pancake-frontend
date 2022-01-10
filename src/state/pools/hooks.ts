@@ -22,16 +22,23 @@ import {
 } from '.'
 import { State, DeserializedPool, VaultKey } from '../types'
 import { transformPool } from './helpers'
+import { fetchFarmsPublicDataAsync, nonArchivedFarms } from '../farms'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
   const slowRefresh = useSlowFresh()
 
   useEffect(() => {
-    batch(() => {
-      dispatch(fetchPoolsPublicDataAsync())
-      dispatch(fetchPoolsStakingLimitsAsync())
-    })
+    const fetchPoolsDataWithFarms = async () => {
+      const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
+      await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
+      batch(() => {
+        dispatch(fetchPoolsPublicDataAsync())
+        dispatch(fetchPoolsStakingLimitsAsync())
+      })
+    }
+
+    fetchPoolsDataWithFarms()
   }, [dispatch, slowRefresh])
 }
 

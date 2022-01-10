@@ -18,7 +18,6 @@ import {
   useFetchIfoPool,
   useVaultPools,
 } from 'state/pools/hooks'
-import { usePollFarmsPublicData } from 'state/farms/hooks'
 import { latinise } from 'utils/latinise'
 import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
@@ -130,7 +129,6 @@ const Pools: React.FC = () => {
   )
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
 
-  usePollFarmsPublicData()
   useFetchCakeVault()
   useFetchIfoPool(false)
   useFetchPublicPoolsData()

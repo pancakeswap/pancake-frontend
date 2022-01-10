@@ -85,7 +85,7 @@ const getFarmQuoteTokenPrice = (
   return BIG_ZERO
 }
 
-const fetchFarmsPrices = async (farms: SerializedFarm[]) => {
+const getFarmsPrices = (farms: SerializedFarm[]) => {
   const bnbBusdFarm = farms.find((farm) => farm.pid === 252)
   const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? BIG_ONE.div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
 
@@ -104,4 +104,4 @@ const fetchFarmsPrices = async (farms: SerializedFarm[]) => {
   return farmsWithPrices
 }
 
-export default fetchFarmsPrices
+export default getFarmsPrices
