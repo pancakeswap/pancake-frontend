@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
-import usePreviousValue from 'hooks/usePreviousValue'
 import { getAchievements } from 'state/achievements/helpers'
+import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
-import { State, ProfileState, Achievement } from '../types'
+import { State, ProfileState } from '../types'
 import { fetchProfile, fetchProfileAvatar, fetchProfileUsername } from '.'
-import { getProfile, GetProfileResponse } from './helpers'
+import { getProfile } from './helpers'
 
 export const useFetchProfile = () => {
   const { account } = useWeb3React()
@@ -22,66 +22,21 @@ export const useFetchProfile = () => {
 }
 
 export const useProfileForAddress = (address: string) => {
-  const [profileState, setProfileState] = useState<{ profile: GetProfileResponse; isFetching: boolean }>({
-    profile: null,
-    isFetching: true,
-  })
-  const previousAddress = usePreviousValue(address)
-  const hasAddressChanged = previousAddress !== address
+  const { data, status } = useSWRImmutable([address, 'profile'], () => getProfile(address))
 
-  useEffect(() => {
-    const fetchProfileForAddress = async () => {
-      try {
-        const profile = await getProfile(address)
-        setProfileState({ profile, isFetching: false })
-      } catch (error) {
-        console.error(`Failed to fetch profile for address ${address}`, error)
-        setProfileState({ profile: null, isFetching: false })
-      }
-    }
-    if (hasAddressChanged || (!profileState.isFetching && !profileState.profile)) {
-      fetchProfileForAddress()
-    }
-  }, [profileState, address, hasAddressChanged])
-
-  // Clear state on account switch
-  useEffect(() => {
-    setProfileState({ profile: null, isFetching: true })
-  }, [address])
-
-  return profileState
+  return {
+    profile: data,
+    isFetching: status === FetchStatus.Fetching,
+  }
 }
 
 export const useAchievementsForAddress = (address: string) => {
-  const [state, setState] = useState<{ achievements: Achievement[]; isFetching: boolean }>({
-    achievements: [],
-    isFetching: false,
-  })
-  const previousAddress = usePreviousValue(address)
-  const hasAddressChanged = previousAddress !== address
+  const { data, status } = useSWRImmutable([address, 'achievements'], () => getAchievements(address))
 
-  useEffect(() => {
-    const fetchProfileForAddress = async () => {
-      setState({ achievements: [], isFetching: true })
-      try {
-        const achievements = await getAchievements(address)
-        setState({ achievements, isFetching: false })
-      } catch (error) {
-        console.error(`Failed to fetch achievements for address ${address}`, error)
-        setState({ achievements: [], isFetching: false })
-      }
-    }
-    if (hasAddressChanged || (!state.isFetching && !state.achievements)) {
-      fetchProfileForAddress()
-    }
-  }, [state, address, hasAddressChanged])
-
-  // Clear state on account switch
-  useEffect(() => {
-    setState({ achievements: [], isFetching: true })
-  }, [address])
-
-  return state
+  return {
+    achievements: data || [],
+    isFetching: status === FetchStatus.Fetching,
+  }
 }
 
 export const useProfile = () => {

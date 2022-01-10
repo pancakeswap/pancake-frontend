@@ -6,7 +6,7 @@ import { useAchievements } from 'state/achievements/hooks'
 import { NftMarketLayout } from 'views/Nft/market/Layout'
 import NftProfile from 'views/Nft/market/Profile'
 import Achievements from 'views/Nft/market/Profile/components/Achievements'
-import { AchievementFetchStatus } from 'state/types'
+import { FetchStatus } from 'config/constants/types'
 
 const NftProfileAchievementsPage = () => {
   const { account } = useWeb3React()
@@ -22,7 +22,7 @@ const ConnectedAchievement = () => {
   return (
     <Achievements
       achievements={achievements}
-      isLoading={achievementFetchStatus !== AchievementFetchStatus.FETCHED}
+      isLoading={achievementFetchStatus !== FetchStatus.Fetched}
       points={profile?.points}
     />
   )
