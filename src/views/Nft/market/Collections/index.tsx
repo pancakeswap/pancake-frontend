@@ -108,7 +108,7 @@ const Collectible = () => {
   return (
     <>
       <PageHeader>
-        <Heading as="h1" scale="xxl" color="secondary">
+        <Heading as="h1" scale="xxl" color="secondary" data-test="nft-collections-title">
           {t('Collections')}
         </Heading>
       </PageHeader>
@@ -145,7 +145,7 @@ const Collectible = () => {
                     })
                   : '0'
                 return (
-                  <tr key={collection.address}>
+                  <tr key={collection.address} data-test="nft-collection-row">
                     <Td>
                       <Link to={`${nftsBaseUrl}/collections/${collection.address}`}>
                         <Flex alignItems="center">
