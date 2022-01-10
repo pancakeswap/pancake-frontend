@@ -57,7 +57,7 @@ export const useGetBnbBalance = () => {
     return simpleRpcProvider.getBalance(account)
   })
 
-  return { balance: data, fetchStatus: status, refresh: mutate }
+  return { balance: data ?? ethers.BigNumber.from(0), fetchStatus: status, refresh: mutate }
 }
 
 export const useGetCakeBalance = () => {
