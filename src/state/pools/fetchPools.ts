@@ -87,8 +87,12 @@ export const fetchPoolsTotalStaking = async () => {
 export const fetchPoolStakingLimit = async (sousId: number): Promise<BigNumber> => {
   try {
     const sousContract = getSouschefV2Contract(sousId)
-    const stakingLimit = await sousContract.poolLimitPerUser()
-    return new BigNumber(stakingLimit.toString())
+    const hasUserLimit = await sousContract.hasUserLimit()
+    if (hasUserLimit) {
+      const stakingLimit = await sousContract.poolLimitPerUser()
+      return new BigNumber(stakingLimit.toString())
+    }
+    return BIG_ZERO
   } catch (error) {
     return BIG_ZERO
   }
