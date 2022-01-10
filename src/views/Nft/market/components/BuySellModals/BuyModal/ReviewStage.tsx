@@ -2,10 +2,10 @@ import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@pancakeswap/uikit'
-import { FetchStatus } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
+import { FetchStatus } from 'config/constants/types'
 import { Divider, RoundedImage } from '../shared/styles'
 import { BorderedBox, BnbAmountCell } from './styles'
 import { PaymentCurrency } from './types'
@@ -88,12 +88,12 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
           ) : (
             <BnbAmountCell
               bnbAmount={walletBalance}
-              isLoading={walletFetchStatus !== FetchStatus.SUCCESS}
-              isInsufficient={walletFetchStatus === FetchStatus.SUCCESS && notEnoughBnbForPurchase}
+              isLoading={walletFetchStatus !== FetchStatus.Fetched}
+              isInsufficient={walletFetchStatus === FetchStatus.Fetched && notEnoughBnbForPurchase}
             />
           )}
         </BorderedBox>
-        {walletFetchStatus === FetchStatus.SUCCESS && notEnoughBnbForPurchase && (
+        {walletFetchStatus === FetchStatus.Fetched && notEnoughBnbForPurchase && (
           <Message p="8px" variant="danger">
             <Text>
               {t('Not enough %symbol% to purchase this NFT', {
@@ -122,7 +122,7 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
       <Flex px="24px" pb="24px" flexDirection="column">
         <Button
           onClick={continueToNextStage}
-          disabled={walletFetchStatus !== FetchStatus.SUCCESS || notEnoughBnbForPurchase}
+          disabled={walletFetchStatus !== FetchStatus.Fetched || notEnoughBnbForPurchase}
           mb="8px"
         >
           {t('Checkout')}

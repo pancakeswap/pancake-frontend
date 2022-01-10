@@ -3,9 +3,10 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
+import { FetchStatus } from 'config/constants/types'
 import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
-import { NftActivityFilter, NftFilter, NftFilterLoadingState, NftToken, UserNftsState } from './types'
+import { NftActivityFilter, NftFilter, NftToken, UserNftsState } from './types'
 
 const MAX_GEN0_ID = 4
 
@@ -116,7 +117,7 @@ export const useGetNftFilters = (collectionAddress: string) => {
 
 export const useGetNftFilterLoadingState = (collectionAddress: string) => {
   const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.loadingState : NftFilterLoadingState.IDLE
+  return collectionFilter ? collectionFilter.loadingState : FetchStatus.Idle
 }
 
 export const useGetNftOrdering = (collectionAddress: string) => {

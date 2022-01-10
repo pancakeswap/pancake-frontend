@@ -24,7 +24,8 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
 import { fetchUserTicketsAndLotteries } from 'state/lottery'
 import useTheme from 'hooks/useTheme'
-import useTokenBalance, { FetchStatus } from 'hooks/useTokenBalance'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { FetchStatus } from 'config/constants/types'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useLotteryV2Contract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -89,7 +90,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
   const cakePriceBusd = usePriceCakeBusd()
   const dispatch = useAppDispatch()
-  const hasFetchedBalance = fetchStatus === FetchStatus.SUCCESS
+  const hasFetchedBalance = fetchStatus === FetchStatus.Fetched
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
 
   const TooltipComponent = () => (

@@ -13,12 +13,12 @@ import {
   PredictionStatus,
   ReduxNodeRound,
   BetPosition,
-  LeaderboardLoadingState,
   PredictionUser,
   LeaderboardFilter,
   State,
 } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
+import { FetchStatus } from 'config/constants/types'
 import {
   FUTURE_ROUND_COUNT,
   LEADERBOARD_MIN_ROUNDS_PLAYED,
@@ -67,7 +67,7 @@ const initialState: PredictionsState = {
   claimableStatuses: {},
   leaderboard: {
     selectedAddress: null,
-    loadingState: LeaderboardLoadingState.INITIAL,
+    loadingState: FetchStatus.Idle,
     filters: {
       address: null,
       orderBy: 'netBNB',
@@ -378,15 +378,15 @@ export const predictionsSlice = createSlice({
   extraReducers: (builder) => {
     // Leaderboard filter
     builder.addCase(filterLeaderboard.pending, (state) => {
-      // Only mark as loading if we come from IDLE. This allows initialization.
-      if (state.leaderboard.loadingState === LeaderboardLoadingState.IDLE) {
-        state.leaderboard.loadingState = LeaderboardLoadingState.LOADING
+      // Only mark as loading if we come from Fetched. This allows initialization.
+      if (state.leaderboard.loadingState === FetchStatus.Fetched) {
+        state.leaderboard.loadingState = FetchStatus.Fetched
       }
     })
     builder.addCase(filterLeaderboard.fulfilled, (state, action) => {
       const { results } = action.payload
 
-      state.leaderboard.loadingState = LeaderboardLoadingState.IDLE
+      state.leaderboard.loadingState = FetchStatus.Fetched
       state.leaderboard.results = results
 
       if (results.length < LEADERBOARD_RESULTS_PER_PAGE) {
@@ -407,26 +407,26 @@ export const predictionsSlice = createSlice({
 
     // Leaderboard account result
     builder.addCase(fetchAddressResult.pending, (state) => {
-      state.leaderboard.loadingState = LeaderboardLoadingState.LOADING
+      state.leaderboard.loadingState = FetchStatus.Fetching
     })
     builder.addCase(fetchAddressResult.fulfilled, (state, action) => {
       const { account, data } = action.payload
-      state.leaderboard.loadingState = LeaderboardLoadingState.IDLE
+      state.leaderboard.loadingState = FetchStatus.Fetched
       state.leaderboard.addressResults[account] = data
     })
     builder.addCase(fetchAddressResult.rejected, (state, action) => {
-      state.leaderboard.loadingState = LeaderboardLoadingState.IDLE
+      state.leaderboard.loadingState = FetchStatus.Fetched // TODO: should handle error
       state.leaderboard.addressResults[action.payload] = null
     })
 
     // Leaderboard next page
     builder.addCase(filterNextPageLeaderboard.pending, (state) => {
-      state.leaderboard.loadingState = LeaderboardLoadingState.LOADING
+      state.leaderboard.loadingState = FetchStatus.Fetching
     })
     builder.addCase(filterNextPageLeaderboard.fulfilled, (state, action) => {
       const { results, skip } = action.payload
 
-      state.leaderboard.loadingState = LeaderboardLoadingState.IDLE
+      state.leaderboard.loadingState = FetchStatus.Fetched
       state.leaderboard.results = [...state.leaderboard.results, ...results]
       state.leaderboard.skip = skip
 

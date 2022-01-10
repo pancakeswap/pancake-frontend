@@ -8,10 +8,11 @@ import {
   useGetNftShowOnlyOnSale,
   useNftsFromCollection,
 } from 'state/nftMarket/hooks'
-import { Collection, NftFilterLoadingState, NftToken, TokenMarketData } from 'state/nftMarket/types'
+import { Collection, NftToken, TokenMarketData } from 'state/nftMarket/types'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import { getNftApi, getNftsMarketData } from 'state/nftMarket/helpers'
 import { useTranslation } from 'contexts/Localization'
+import { FetchStatus } from 'config/constants/types'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
 import { REQUEST_SIZE } from '../config'
@@ -33,8 +34,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
 
   const showOnlyNftsOnSale = useGetNftShowOnlyOnSale(collectionAddress)
   const { field: orderField, direction: orderDirection } = useGetNftOrdering(collectionAddress)
-  const isFetching =
-    orderField === 'tokenId' ? nftFilterLoadingState === NftFilterLoadingState.LOADING : isFetchingFilteredNfts
+  const isFetching = orderField === 'tokenId' ? nftFilterLoadingState === FetchStatus.Fetching : isFetchingFilteredNfts
 
   const handleLoadMore = () => {
     if (orderField === 'tokenId') {

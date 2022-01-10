@@ -5,7 +5,8 @@ import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { getAchievements } from 'state/achievements/helpers'
-import { State, ProfileState, Achievement, ProfileAvatarFetchStatus } from '../types'
+import { FetchStatus } from 'config/constants/types'
+import { State, ProfileState, Achievement } from '../types'
 import { fetchProfile, fetchProfileAvatar, fetchProfileUsername } from '.'
 import { getProfile, GetProfileResponse } from './helpers'
 
@@ -96,14 +97,14 @@ export const useGetProfileAvatar = (account: string) => {
   useEffect(() => {
     const address = isAddress(account)
 
-    if (!nft && avatarFetchStatus !== ProfileAvatarFetchStatus.FETCHED && address) {
+    if (!nft && avatarFetchStatus !== FetchStatus.Fetched && address) {
       dispatch(fetchProfileAvatar(account))
     }
 
     if (
       !username &&
-      avatarFetchStatus === ProfileAvatarFetchStatus.FETCHED &&
-      usernameFetchStatus !== ProfileAvatarFetchStatus.FETCHED &&
+      avatarFetchStatus === FetchStatus.Fetched &&
+      usernameFetchStatus !== FetchStatus.Fetched &&
       address
     ) {
       dispatch(fetchProfileUsername({ account, hasRegistered }))
