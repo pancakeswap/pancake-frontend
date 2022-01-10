@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 import { useGetNftFilters, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks'
 import { Collection, NftAttribute } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
-import { Item, ListFilter } from 'views/Nft/market/components/Filters'
+import { Item, ListTraitFilter } from 'views/Nft/market/components/Filters'
 import { useAppDispatch } from 'state'
 import { setShowOnlyOnSale } from 'state/nftMarket/reducer'
 import useGetCollectionDistribution from '../../hooks/useGetCollectionDistribution'
@@ -134,7 +134,7 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
           }))
 
           return (
-            <ListFilter
+            <ListTraitFilter
               key={traitType}
               title={capitalize(traitType)}
               traitType={traitType}

@@ -1,38 +1,34 @@
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   Box,
   Button,
-  CloseIcon,
+  Text,
   Flex,
   IconButton,
   InlineMenu,
   Input,
   InputGroup,
   SearchIcon,
-  Text,
+  CloseIcon,
 } from '@pancakeswap/uikit'
 import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import orderBy from 'lodash/orderBy'
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { useGetNftFilterLoadingState, useGetNftFilters } from 'state/nftMarket/hooks'
 import { filterNftsFromCollection } from 'state/nftMarket/reducer'
 import styled from 'styled-components'
-import { FilterButton, ItemRow, SearchWrapper } from './styles'
 import { Item } from './types'
+import { FilterButton, ListOrderState, SearchWrapper } from '../ListFilter/styles'
+import { TraitItemRow } from './styles'
 
-interface ListFilterProps {
+interface ListTraitFilterProps {
   title?: string
   traitType: string
   items: Item[]
   collectionAddress: string
-}
-
-interface State {
-  orderKey: string
-  orderDir: 'asc' | 'desc'
 }
 
 const TriggerButton = styled(Button)<{ hasItem: boolean }>`
@@ -50,11 +46,11 @@ const CloseButton = styled(IconButton)`
   border-bottom-left-radius: 0;
 `
 
-export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items, collectionAddress }) => {
+export const ListTraitFilter: React.FC<ListTraitFilterProps> = ({ title, traitType, items, collectionAddress }) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
-  const [orderState, setOrderState] = useState<State>({ orderKey: 'count', orderDir: 'asc' })
+  const [orderState, setOrderState] = useState<ListOrderState>({ orderKey: 'count', orderDir: 'asc' })
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
   const nftFilters = useGetNftFilters(collectionAddress)
@@ -187,7 +183,7 @@ export const ListFilter: React.FC<ListFilterProps> = ({ title, traitType, items,
                   const isItemSelected = traitFilter ? traitFilter.value === filteredItem.attr.value : false
 
                   return (
-                    <ItemRow
+                    <TraitItemRow
                       key={filteredItem.label}
                       item={filteredItem}
                       isSelected={isItemSelected}

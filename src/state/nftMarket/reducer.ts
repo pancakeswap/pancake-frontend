@@ -48,6 +48,7 @@ const initialNftFilterState: NftFilter = {
 
 const initialNftActivityFilterState: NftActivityFilter = {
   typeFilters: [],
+  collectionFilters: [],
 }
 
 const initialState: State = {
@@ -318,6 +319,28 @@ export const NftMarket = createSlice({
         ].typeFilters.filter((activeFilter) => activeFilter !== action.payload.field)
       }
     },
+    addActivityCollectionFilters: (state, action: PayloadAction<{ collection: string }>) => {
+      if (state.data.activityFilters['']) {
+        state.data.activityFilters[''].collectionFilters.push(action.payload.collection)
+      } else {
+        state.data.activityFilters[''] = {
+          ...initialNftActivityFilterState,
+          collectionFilters: [action.payload.collection],
+        }
+      }
+    },
+    removeActivityCollectionFilters: (state, action: PayloadAction<{ collection: string }>) => {
+      if (state.data.activityFilters['']) {
+        state.data.activityFilters[''].collectionFilters = state.data.activityFilters[''].collectionFilters.filter(
+          (activeFilter) => activeFilter !== action.payload.collection,
+        )
+      }
+    },
+    removeAllActivityCollectionFilters: (state) => {
+      if (state.data.activityFilters['']) {
+        state.data.activityFilters[''].collectionFilters = []
+      }
+    },
     removeAllActivityFilters: (state, action: PayloadAction<string>) => {
       state.data.activityFilters[action.payload] = { ...initialNftActivityFilterState }
     },
@@ -463,7 +486,10 @@ export const {
   removeAllFilters,
   removeAllActivityFilters,
   removeActivityTypeFilters,
+  removeActivityCollectionFilters,
+  removeAllActivityCollectionFilters,
   addActivityTypeFilters,
+  addActivityCollectionFilters,
   setOrdering,
   setShowOnlyOnSale,
   resetUserNftState,
