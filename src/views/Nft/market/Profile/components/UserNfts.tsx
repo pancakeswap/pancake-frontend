@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, useModal, Text, Flex } from '@pancakeswap/uikit'
-import { useUserNfts } from 'state/nftMarket/hooks'
-import { NftLocation, UserNftInitializationState, NftToken } from 'state/nftMarket/types'
+import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
+import { useWeb3React } from '@web3-react/core'
 import { CollectibleActionCard } from '../../components/CollectibleCard'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import ProfileNftModal from '../../components/ProfileNftModal'
 import NoNftsImage from '../../components/Activity/NoNftsImage'
 import SellModal from '../../components/BuySellModals/SellModal'
+import useNftsForAddress from '../../hooks/useNftsForAddress'
+import { useProfile } from '../../../../../state/profile/hooks'
 
 interface ProfileNftProps {
   nft: NftToken
@@ -21,7 +23,9 @@ interface SellNftProps {
 }
 
 const UserNfts = () => {
-  const { nfts, userNftsInitializationState } = useUserNfts()
+  const { account } = useWeb3React()
+  const { isLoading: isProfileLoading, profile } = useProfile()
+  const { nfts, isLoading: isNftLoading } = useNftsForAddress(account, profile, isProfileLoading)
   const [clickedProfileNft, setClickedProfileNft] = useState<ProfileNftProps>({ nft: null, location: null })
   const [clickedSellNft, setClickedSellNft] = useState<SellNftProps>({ nft: null, location: null, variant: null })
   const [onPresentProfileNftModal] = useModal(<ProfileNftModal nft={clickedProfileNft.nft} />)
@@ -63,7 +67,7 @@ const UserNfts = () => {
   return (
     <>
       {/* User has no NFTs */}
-      {nfts.length === 0 && userNftsInitializationState === UserNftInitializationState.INITIALIZED ? (
+      {nfts.length === 0 && !isNftLoading ? (
         <Flex p="24px" flexDirection="column" alignItems="center">
           <NoNftsImage />
           <Text pt="8px" bold>

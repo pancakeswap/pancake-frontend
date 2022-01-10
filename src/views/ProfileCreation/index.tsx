@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core'
 import Page from 'components/Layout/Page'
 import { useProfile } from 'state/profile/hooks'
 import PageLoader from 'components/Loader/PageLoader'
-import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useFetchCollections } from 'state/nftMarket/hooks'
 import { useRouter } from 'next/router'
@@ -22,7 +21,6 @@ const ProfileCreation = () => {
     }
   }, [account, hasProfile, router])
 
-  useFetchUserNfts()
   useFetchCollections()
 
   if (!isInitialized || isLoading) {

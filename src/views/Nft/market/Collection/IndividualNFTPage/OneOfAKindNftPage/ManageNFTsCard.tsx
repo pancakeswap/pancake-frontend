@@ -122,7 +122,7 @@ const ManageNFTsCard: React.FC<ManageNFTsCardProps> = ({ nft, isLoading, isOwnNf
           <Skeleton mb="8px" />
         </Box>
       )}
-      {!isLoading && !hasThisNft && (
+      {account && !isLoading && !hasThisNft && (
         <Text px="16px" pb="16px" color="textSubtle">
           {t('You don’t have this item.')}
         </Text>

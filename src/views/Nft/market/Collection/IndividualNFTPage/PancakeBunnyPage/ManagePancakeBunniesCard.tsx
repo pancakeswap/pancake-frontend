@@ -14,16 +14,16 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useUserNfts } from 'state/nftMarket/hooks'
-import { NftLocation, NftToken, UserNftInitializationState } from 'state/nftMarket/types'
+import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { formatNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import ExpandableCard from '../shared/ExpandableCard'
-import useFetchUserNfts from '../../../Profile/hooks/useFetchUserNfts'
 import SellModal from '../../../components/BuySellModals/SellModal'
 import ProfileNftModal from '../../../components/ProfileNftModal'
 import { SmallRoundedImage, CollectibleRowContainer } from '../shared/styles'
+import { useProfile } from '../../../../../../state/profile/hooks'
+import useNftsForAddress from '../../../hooks/useNftsForAddress'
 
 const ScrollableContainer = styled(Box)`
   overflow-y: auto;
@@ -136,8 +136,9 @@ interface ManagePancakeBunniesCardProps {
 const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bunnyId, lowestPrice }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { userNftsInitializationState, nfts: userNfts } = useUserNfts()
-  useFetchUserNfts()
+
+  const { isLoading: isProfileLoading, profile } = useProfile()
+  const { nfts: userNfts, isLoading } = useNftsForAddress(account, profile, isProfileLoading)
 
   const bunniesInWallet = userNfts.filter(
     (nft) => nft.attributes[0].value === bunnyId && nft.location === NftLocation.WALLET,
@@ -149,9 +150,8 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
     (nft) => nft.attributes[0].value === bunnyId && nft.location === NftLocation.PROFILE,
   )
 
-  const loading = userNftsInitializationState !== UserNftInitializationState.INITIALIZED
   const useHasNoBunnies =
-    !loading && bunniesInWallet.length === 0 && bunniesForSale.length === 0 && profilePicBunny.length === 0
+    !isLoading && bunniesInWallet.length === 0 && bunniesForSale.length === 0 && profilePicBunny.length === 0
   const totalBunnies = bunniesInWallet.length + bunniesForSale.length + profilePicBunny.length
   const totalBunniesText = account && !useHasNoBunnies ? ` (${totalBunnies})` : ''
 
@@ -167,7 +167,7 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
           {t('You don’t have any of this item.')}
         </Text>
       )}
-      {account && loading && (
+      {account && isLoading && (
         <Box px="16px" pb="8px">
           <Skeleton mb="8px" />
           <Skeleton mb="8px" />

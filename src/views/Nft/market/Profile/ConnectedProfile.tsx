@@ -1,17 +1,13 @@
 import { Box } from '@pancakeswap/uikit'
+import React, { FC } from 'react'
+import { useAchievementsForAddress, useProfile } from 'state/profile/hooks'
 import { useWeb3React } from '@web3-react/core'
 import Page from 'components/Layout/Page'
-import { FetchStatus } from 'config/constants/types'
-import React, { FC } from 'react'
-import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
-import { useUserNfts } from 'state/nftMarket/hooks'
-import { UserNftInitializationState } from 'state/nftMarket/types'
-import { useProfile } from 'state/profile/hooks'
 import styled from 'styled-components'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import TabMenu from './components/TabMenu'
-import useFetchUserNfts from './hooks/useFetchUserNfts'
+import useNftsForAddress from '../hooks/useNftsForAddress'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;
@@ -26,13 +22,10 @@ const TabMenuWrapper = styled(Box)`
 `
 
 const ConnectedProfile: FC = ({ children }) => {
-  const { profile, isLoading: isProfileLoading } = useProfile()
-  const { achievements, achievementFetchStatus } = useAchievements()
   const { account } = useWeb3React()
-  const { userNftsInitializationState, nfts: userNfts } = useUserNfts()
-
-  useFetchAchievements()
-  useFetchUserNfts()
+  const { isLoading: isProfileLoading, profile } = useProfile()
+  const { achievements, isFetching: isAchievementsFetching } = useAchievementsForAddress(account)
+  const { nfts: userNfts, isLoading: isNftLoading } = useNftsForAddress(account, profile, isProfileLoading)
 
   return (
     <>
@@ -43,8 +36,8 @@ const ConnectedProfile: FC = ({ children }) => {
           achievements={achievements}
           nftCollected={userNfts.length}
           isProfileLoading={isProfileLoading}
-          isNftLoading={userNftsInitializationState !== UserNftInitializationState.INITIALIZED}
-          isAchievementsLoading={achievementFetchStatus !== FetchStatus.Fetched}
+          isNftLoading={isNftLoading}
+          isAchievementsLoading={isAchievementsFetching}
         />
         <TabMenuWrapper>
           <TabMenu />

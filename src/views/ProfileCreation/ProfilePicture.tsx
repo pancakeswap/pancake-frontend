@@ -6,18 +6,19 @@ import { NextLinkFromReactRouter } from 'components/NextLink'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useTranslation } from 'contexts/Localization'
-import { useUserNfts } from 'state/nftMarket/hooks'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
+import { useProfileContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { NftLocation, UserNftInitializationState } from 'state/nftMarket/types'
+import { NftLocation } from 'state/nftMarket/types'
+import { useProfile } from 'state/profile/hooks'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
-import { useProfileContract } from '../../hooks/useContract'
 import multicall from '../../utils/multicall'
 import profileABI from '../../config/abi/pancakeProfile.json'
+import useNftsForAddress from '../Nft/market/hooks/useNftsForAddress'
 
 const Link = styled(NextLinkFromReactRouter)`
   color: ${({ theme }) => theme.colors.primary};
@@ -28,14 +29,14 @@ const NftWrapper = styled.div`
 `
 
 const ProfilePicture: React.FC = () => {
-  const { library } = useWeb3React()
+  const { account, library } = useWeb3React()
   const [isApproved, setIsApproved] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const [userProfileCreationNfts, setUserProfileCreationNfts] = useState(null)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
   const profileContract = useProfileContract(false)
-
-  const { nfts, userNftsInitializationState } = useUserNfts()
+  const { isLoading: isProfileLoading, profile } = useProfile()
+  const { nfts, isLoading: isUserNftLoading } = useNftsForAddress(account, profile, isProfileLoading)
 
   useEffect(() => {
     const fetchUserPancakeCollectibles = async () => {
@@ -66,10 +67,10 @@ const ProfilePicture: React.FC = () => {
         console.error(e)
       }
     }
-    if (userNftsInitializationState === UserNftInitializationState.INITIALIZED) {
+    if (!isUserNftLoading) {
       fetchUserPancakeCollectibles()
     }
-  }, [nfts, profileContract, userNftsInitializationState])
+  }, [nfts, profileContract, isUserNftLoading])
 
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()

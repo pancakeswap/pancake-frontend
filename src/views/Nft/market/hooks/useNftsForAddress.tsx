@@ -32,7 +32,7 @@ const useNftsForAddress = (account: string, profile: Profile, isProfileFetching:
       setIsLoading(false)
     }
 
-    if (!isProfileFetching && !isEmpty(collections)) {
+    if (!isProfileFetching && !isEmpty(collections) && account) {
       setIsLoading(true)
       getNfts()
     }

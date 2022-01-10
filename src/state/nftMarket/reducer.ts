@@ -33,7 +33,6 @@ import {
   NftToken,
   State,
   TokenIdWithCollectionAddress,
-  UserNftInitializationState,
 } from './types'
 
 const initialNftFilterState: NftFilter = {
@@ -61,17 +60,6 @@ const initialState: State = {
     loadingState: {
       isUpdatingPancakeBunnies: false,
       latestPancakeBunniesUpdateAt: 0,
-    },
-    users: {},
-    user: {
-      userNftsInitializationState: UserNftInitializationState.UNINITIALIZED,
-      nfts: [],
-      activity: {
-        initializationState: UserNftInitializationState.UNINITIALIZED,
-        askOrderHistory: [],
-        buyTradeHistory: [],
-        sellTradeHistory: [],
-      },
     },
   },
 }
@@ -370,9 +358,6 @@ export const NftMarket = createSlice({
         }
       }
     },
-    resetUserNftState: (state) => {
-      state.data.user = { ...initialState.data.user }
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(filterNftsFromCollection.pending, (state, action) => {
@@ -443,41 +428,6 @@ export const NftMarket = createSlice({
       state.data.loadingState.isUpdatingPancakeBunnies = false
       state.data.loadingState.latestPancakeBunniesUpdateAt = Date.now()
     })
-    builder.addCase(fetchUserNfts.rejected, (state) => {
-      state.data.user.userNftsInitializationState = UserNftInitializationState.ERROR
-    })
-    builder.addCase(fetchUserNfts.pending, (state) => {
-      state.data.user.userNftsInitializationState = UserNftInitializationState.INITIALIZING
-    })
-    builder.addCase(fetchUserNfts.fulfilled, (state, action) => {
-      state.data.user.nfts = action.payload
-      state.data.user.userNftsInitializationState = UserNftInitializationState.INITIALIZED
-    })
-    builder.addCase(updateUserNft.fulfilled, (state, action) => {
-      const userNftsState: NftToken[] = state.data.user.nfts
-      const nftToUpdate = userNftsState.find((nft) => nft.tokenId === action.payload.tokenId)
-      const indexInState = userNftsState.indexOf(nftToUpdate)
-      state.data.user.nfts[indexInState] = action.payload
-    })
-    builder.addCase(removeUserNft.fulfilled, (state, action) => {
-      const copyOfState: NftToken[] = [...state.data.user.nfts]
-      const nftToRemove = copyOfState.find((nft) => nft.tokenId === action.payload)
-      const indexInState = copyOfState.indexOf(nftToRemove)
-      copyOfState.splice(indexInState, 1)
-      state.data.user.nfts = copyOfState
-    })
-    builder.addCase(addUserNft.fulfilled, (state, action) => {
-      state.data.user.nfts = [...state.data.user.nfts, action.payload]
-    })
-    builder.addCase(fetchUserActivity.fulfilled, (state, action) => {
-      state.data.user.activity = { ...action.payload, initializationState: UserNftInitializationState.INITIALIZED }
-    })
-    builder.addCase(fetchUserActivity.rejected, (state) => {
-      state.data.user.activity.initializationState = UserNftInitializationState.ERROR
-    })
-    builder.addCase(fetchUserActivity.pending, (state) => {
-      state.data.user.activity.initializationState = UserNftInitializationState.INITIALIZING
-    })
   },
 })
 
@@ -492,7 +442,6 @@ export const {
   addActivityCollectionFilters,
   setOrdering,
   setShowOnlyOnSale,
-  resetUserNftState,
 } = NftMarket.actions
 
 export default NftMarket.reducer
