@@ -56,7 +56,7 @@ jobs:
         with:
           # we have already installed all dependencies above
           install: false
-          start: yarn start:build
+          start: BROWSER=none NODE_ENV=production yarn start
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           browser: chrome
