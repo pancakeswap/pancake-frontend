@@ -39,7 +39,7 @@ export const getTeams = async (): Promise<TeamsById> => {
     const nbTeams = await profileContract.numberTeams()
 
     const calls = []
-    for (let i = 1; i <= nbTeams; i++) {
+    for (let i = 1; i <= nbTeams.toNumber(); i++) {
       calls.push({
         address: getPancakeProfileAddress(),
         name: 'getTeamProfile',

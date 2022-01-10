@@ -36,6 +36,16 @@ import {
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { VaultKey } from 'state/types'
+import {
+  CakeVault,
+  EnsPublicResolver,
+  EnsRegistrar,
+  Erc20,
+  Erc20Bytes32,
+  IfoPool,
+  Multicall,
+  Weth,
+} from 'config/abi/types'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
@@ -152,7 +162,7 @@ export const useEasterNftContract = () => {
   return useMemo(() => getEasterNftContract(library.getSigner()), [library])
 }
 
-export const useVaultPoolContract = (vaultKey: VaultKey) => {
+export const useVaultPoolContract = (vaultKey: VaultKey): CakeVault | IfoPool => {
   const { library } = useActiveWeb3React()
   return useMemo(() => {
     return vaultKey === VaultKey.CakeVault
@@ -250,7 +260,11 @@ export const useErc721CollectionContract = (collectionAddress: string, withSigne
 // Code below migrated from Exchange useContract.ts
 
 // returns null on errors
-function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
+function useContract<T extends Contract = Contract>(
+  address: string | undefined,
+  ABI: any,
+  withSignerIfPossible = true,
+): T | null {
   const { library, account } = useActiveWeb3React()
 
   return useMemo(() => {
@@ -261,16 +275,16 @@ function useContract(address: string | undefined, ABI: any, withSignerIfPossible
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account])
+  }, [address, ABI, library, withSignerIfPossible, account]) as T
 }
 
-export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
+export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
+  return useContract<Erc20>(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? WETH[chainId].address : undefined, WETH_ABI, withSignerIfPossible)
+  return useContract<Weth>(chainId ? WETH[chainId].address : undefined, WETH_ABI, withSignerIfPossible)
 }
 
 export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contract | null {
@@ -285,21 +299,21 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
         break
     }
   }
-  return useContract(address, ENS_ABI, withSignerIfPossible)
+  return useContract<EnsRegistrar>(address, ENS_ABI, withSignerIfPossible)
 }
 
 export function useENSResolverContract(address: string | undefined, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(address, ENS_PUBLIC_RESOLVER_ABI, withSignerIfPossible)
+  return useContract<EnsPublicResolver>(address, ENS_PUBLIC_RESOLVER_ABI, withSignerIfPossible)
 }
 
 export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
+  return useContract<Erc20Bytes32>(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }
 
 export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(pairAddress, IUniswapV2PairABI, withSignerIfPossible)
 }
 
-export function useMulticallContract(): Contract | null {
-  return useContract(getMulticallAddress(), multiCallAbi, false)
+export function useMulticallContract() {
+  return useContract<Multicall>(getMulticallAddress(), multiCallAbi, false)
 }

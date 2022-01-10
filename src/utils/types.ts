@@ -1,4 +1,5 @@
-import ethers, { Contract, ContractFunction } from 'ethers'
+import { FarmAuction, Predictions } from 'config/abi/types'
+import ethers, { ContractFunction } from 'ethers'
 
 export type MultiCallResponse<T> = T | null
 
@@ -10,8 +11,6 @@ export interface PredictionsLedgerResponse {
   amount: ethers.BigNumber
   claimed: boolean
 }
-
-export type PredictionsRefundableResponse = boolean
 
 export interface PredictionsRoundsResponse {
   epoch: ethers.BigNumber
@@ -35,20 +34,9 @@ export type PredictionsGetUserRoundsResponse = [ethers.BigNumber[], PredictionsL
 
 export type PredictionsGetUserRoundsLengthResponse = ethers.BigNumber
 
-export interface PredictionsContract extends Contract {
-  claimable: ContractFunction<PredictionsClaimableResponse>
+export interface PredictionsContract extends Omit<Predictions, 'getUserRounds' | 'ledger'> {
   getUserRounds: ContractFunction<PredictionsGetUserRoundsResponse>
-  getUserRoundsLength: ContractFunction<PredictionsGetUserRoundsLengthResponse>
   ledger: ContractFunction<PredictionsLedgerResponse>
-  refundable: ContractFunction<PredictionsRefundableResponse>
-  rounds: ContractFunction<PredictionsRoundsResponse>
-}
-
-// Chainlink Oracle
-export type ChainLinkOracleLatestAnswerResponse = ethers.BigNumber
-
-export interface ChainLinkOracleContract extends Contract {
-  latestAnswer: ContractFunction<ChainLinkOracleLatestAnswerResponse>
 }
 
 // Farm Auction
@@ -74,11 +62,6 @@ export interface BidsPerAuction {
   amount: ethers.BigNumber
 }
 
-export type ViewBidsPerAuctionResponse = [BidsPerAuction[], ethers.BigNumber]
-
-// [auctionId, bids, claimed, nextCursor]
-export type ViewBidderAuctionsResponse = [ethers.BigNumber[], ethers.BigNumber[], boolean[], ethers.BigNumber]
-
 type GetWhitelistedAddressesResponse = [
   {
     account: string
@@ -88,36 +71,7 @@ type GetWhitelistedAddressesResponse = [
   ethers.BigNumber,
 ]
 
-interface AuctionsHistoryResponse {
-  totalAmount: ethers.BigNumber
-  hasClaimed: boolean
-}
-
-export interface FarmAuctionContract extends Contract {
-  currentAuctionId: ContractFunction<ethers.BigNumber>
-  viewBidders: ContractFunction<[string[], ethers.BigNumber]>
-  totalCollected: ContractFunction<ethers.BigNumber>
+export interface FarmAuctionContract extends Omit<FarmAuction, 'auctions'> {
   auctions: ContractFunction<AuctionsResponse>
-  claimable: ContractFunction<boolean>
-  viewBidsPerAuction: ContractFunction<ViewBidsPerAuctionResponse>
-  viewBidderAuctions: ContractFunction<ViewBidderAuctionsResponse>
-  whitelisted: ContractFunction<boolean>
   getWhitelistedAddresses: ContractFunction<GetWhitelistedAddressesResponse>
-  auctionsHistory: ContractFunction<AuctionsHistoryResponse>
-}
-
-// Profile contract
-// [userId, points, teamId, tokenId, collectionAddress isActive]
-export type GetUserProfileResponse = [
-  ethers.BigNumber,
-  ethers.BigNumber,
-  ethers.BigNumber,
-  string,
-  ethers.BigNumber,
-  boolean,
-]
-
-export interface PancakeProfileContract extends Contract {
-  getUserProfile: ContractFunction<GetUserProfileResponse>
-  hasRegistered: ContractFunction<boolean>
 }

@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import { Profile } from 'state/types'
-import { GetUserProfileResponse } from 'utils/types'
+import { PancakeProfile } from 'config/abi/types/PancakeProfile'
 import { getProfileContract } from 'utils/contractHelpers'
 import { getTeam } from 'state/teams/helpers'
 import { NftToken } from 'state/nftMarket/types'
@@ -11,7 +11,9 @@ export interface GetProfileResponse {
   profile?: Profile
 }
 
-const transformProfileResponse = (profileResponse: GetUserProfileResponse): Partial<Profile> => {
+const transformProfileResponse = (
+  profileResponse: Awaited<ReturnType<PancakeProfile['getUserProfile']>>,
+): Partial<Profile> => {
   const { 0: userId, 1: numberPoints, 2: teamId, 3: collectionAddress, 4: tokenId, 5: isActive } = profileResponse
 
   return {

@@ -115,7 +115,7 @@ const UserName: React.FC = () => {
         }
       } catch (e) {
         setIsValid(false)
-        if (e.name !== 'AbortError') {
+        if (e instanceof Error && e.name !== 'AbortError') {
           setMessage(t('Error fetching data'))
           console.error(e)
         }
@@ -163,7 +163,7 @@ const UserName: React.FC = () => {
         toastError(t('Error'), data?.error?.message)
       }
     } catch (error) {
-      toastError(error?.message ? error.message : JSON.stringify(error))
+      toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
     } finally {
       setIsLoading(false)
     }
