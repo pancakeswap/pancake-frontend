@@ -17,14 +17,16 @@ jobs:
         with:
           node-version: '14'
           registry-url: https://registry.npmjs.org
-      - uses: actions/upload-artifact@v2
+      - run: yarn install --frozen-lockfile
+      - run: yarn cypress install
+      - run: yarn build
+
+      - name: Save build folder
+        uses: actions/upload-artifact@v2
         with:
           name: build
           if-no-files-found: error
           path: build
-      - run: yarn install --frozen-lockfile
-      - run: yarn cypress install
-      - run: yarn build
 
   ui-chrome-tests:
     runs-on: ubuntu-latest
