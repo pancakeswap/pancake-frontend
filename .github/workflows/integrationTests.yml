@@ -6,9 +6,8 @@ on:
       - develop
 
 jobs:
-  install:
+  integration-tests:
     name: Integration tests
-    container: cypress/browsers:node12.18.3-chrome87-ff82
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,52 +16,7 @@ jobs:
         with:
           node-version: '14'
           registry-url: https://registry.npmjs.org
-
-      - name: Cypress install
-        uses: cypress-io/github-action@v2
-        with:
-          runTests: false
-
+      - run: yarn install --frozen-lockfile
+      - run: yarn cypress install
       - run: yarn build
-
-      - name: Save build folder
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          if-no-files-found: error
-          path: build
-
-  ui-chrome-tests:
-    runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        # run copies of the current job in parallel
-        containers: [1, 2, 3, 4, 5]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Download the build folders
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
-
-      - name: 'UI Tests - Chrome'
-        uses: cypress-io/github-action@v2
-        with:
-          # we have already installed all dependencies above
-          install: false
-          start: BROWSER=none NODE_ENV=production yarn start
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
-          browser: chrome
-          record: false
-          parallel: true
-        env:
-          # Recommended: pass the GitHub token lets this action correctly
-          # determine the unique run id necessary to re-run the checks
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: yarn integration-test
