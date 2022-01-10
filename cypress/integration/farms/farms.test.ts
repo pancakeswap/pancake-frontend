@@ -1,17 +1,6 @@
 describe('Farms Page', () => {
   beforeEach(() => {
-    cy.intercept('POST', 'https://nodes.pancakeswap.com').as('rpcCall')
     cy.visit('/farms')
-  })
-
-  afterEach(() => {
-    cy.get('@rpcCall.all').then((res) => {
-      cy.task('log', `RPC calls total: ${res.length}`)
-      Cypress.log({
-        name: 'RPC Calls',
-        message: res.length,
-      })
-    })
   })
 
   it('loads live farms', () => {
