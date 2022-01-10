@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 declare namespace Cypress {
-  interface Chainable<Subject> {
+  interface Chainable {
     /**
      * shorthand command for `data-test="<dataTestAttribute>"`
      * @example cy.getBySel('my-element')
