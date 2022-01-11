@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { withSentryConfig } = require('@sentry/nextjs')
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
@@ -82,4 +85,4 @@ const config = {
   },
 }
 
-module.exports = withSentryConfig(config, sentryWebpackPluginOptions)
+module.exports = withBundleAnalyzer(withSentryConfig(config, sentryWebpackPluginOptions))

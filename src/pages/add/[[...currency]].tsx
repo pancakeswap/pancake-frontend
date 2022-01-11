@@ -7,7 +7,7 @@ const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40}|BNB)-(0x[a-fA-F0-9]{40}|BNB)$/
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {
-    paths: [],
+    paths: [{ params: { currency: [] } }],
     fallback: true,
   }
 }

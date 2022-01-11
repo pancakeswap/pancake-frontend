@@ -17,6 +17,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { persistor } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
+import { NextPage } from 'next'
 import { useFetchProfile } from 'state/profile/hooks'
 import { Blocklist, Updaters } from '..'
 import Menu from '../components/Menu'
@@ -97,9 +98,16 @@ function MyApp(props: AppProps) {
   )
 }
 
-const App = ({ Component, pageProps }: AppProps) => {
+type NextPageWithLayout = NextPage & {
+  Layout?: React.FC
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
-  // @ts-ignore
   const Layout = Component.Layout || Fragment
   return (
     <Menu>

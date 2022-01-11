@@ -453,7 +453,7 @@ export default function RemoveLiquidity() {
     <Page>
       <AppBody>
         <AppHeader
-          backTo="/pool"
+          backTo="/liquidity"
           title={t('Remove %assetA%-%assetB% liquidity', {
             assetA: currencyA?.symbol ?? '',
             assetB: currencyB?.symbol ?? '',
