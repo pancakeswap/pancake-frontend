@@ -2,8 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useProfileForAddress } from 'state/profile/hooks'
-import { NftMarketLayout } from 'views/Nft/market/Layout'
-import NftProfile from 'views/Nft/market/Profile'
+import { NftProfileLayout } from 'views/Nft/market/Profile'
 import SubMenu from 'views/Nft/market/Profile/components/SubMenu'
 import UnconnectedProfileNfts from 'views/Nft/market/Profile/components/UnconnectedProfileNfts'
 import UserNfts from 'views/Nft/market/Profile/components/UserNfts'
@@ -31,12 +30,6 @@ const UnconnectedProfileNftsContainer = () => {
   return <UnconnectedProfileNfts nfts={nfts} isLoading={isNftLoading} />
 }
 
-NftProfilePage.Layout = ({ children }) => {
-  return (
-    <NftProfile>
-      <NftMarketLayout>{children}</NftMarketLayout>
-    </NftProfile>
-  )
-}
+NftProfilePage.Layout = NftProfileLayout
 
 export default NftProfilePage

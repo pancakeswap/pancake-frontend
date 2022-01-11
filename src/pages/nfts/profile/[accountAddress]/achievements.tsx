@@ -3,8 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import React from 'react'
 import { useAchievementsForAddress, useProfileForAddress, useProfile } from 'state/profile/hooks'
 import { useAchievements } from 'state/achievements/hooks'
-import { NftMarketLayout } from 'views/Nft/market/Layout'
-import NftProfile from 'views/Nft/market/Profile'
+import { NftProfileLayout } from 'views/Nft/market/Profile'
 import Achievements from 'views/Nft/market/Profile/components/Achievements'
 import { FetchStatus } from 'config/constants/types'
 
@@ -36,12 +35,6 @@ const UnConnectedAchievement = () => {
   return <Achievements achievements={achievements} isLoading={isAchievementFetching} points={profile?.points} />
 }
 
-NftProfileAchievementsPage.Layout = ({ children }) => {
-  return (
-    <NftProfile>
-      <NftMarketLayout>{children}</NftMarketLayout>
-    </NftProfile>
-  )
-}
+NftProfileAchievementsPage.Layout = NftProfileLayout
 
 export default NftProfileAchievementsPage

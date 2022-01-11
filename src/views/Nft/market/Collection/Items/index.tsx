@@ -9,7 +9,6 @@ import Select, { OptionProps } from 'components/Select/Select'
 import Container from 'components/Layout/Container'
 import { pancakeBunniesAddress } from '../../constants'
 import PancakeBunniesCollectionNfts from './PancakeBunniesCollectionNfts'
-import Header from '../Header'
 import CollectionWrapper from './CollectionWrapper'
 
 const Items = () => {
@@ -39,7 +38,6 @@ const Items = () => {
 
   return (
     <>
-      <Header collection={collection} />
       {isPBCollection ? (
         <Container mb="24px">
           <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">

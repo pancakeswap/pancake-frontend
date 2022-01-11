@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useFetchCollection, useGetCollection } from 'state/nftMarket/hooks'
 
+import Header from './Header'
+
 const Items = dynamic(() => import('./Items'))
 const Traits = dynamic(() => import('./Traits'))
 const Activity = dynamic(() => import('./Activity'))
@@ -42,14 +44,29 @@ const Collection = () => {
   }
 
   if (hash === '#traits') {
-    return <Traits />
+    return (
+      <>
+        <Header collection={collection} />
+        <Traits />
+      </>
+    )
   }
 
   if (hash === '#activity') {
-    return <Activity />
+    return (
+      <>
+        <Header collection={collection} />
+        <Activity />
+      </>
+    )
   }
 
-  return <Items />
+  return (
+    <>
+      <Header collection={collection} />
+      <Items />
+    </>
+  )
 }
 
 export default Collection

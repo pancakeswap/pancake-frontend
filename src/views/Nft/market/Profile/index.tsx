@@ -10,6 +10,7 @@ import UnconnectedProfile from './UnconnectedProfile'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import NoNftsImage from '../components/Activity/NoNftsImage'
+import { NftMarketLayout } from '../Layout'
 
 const NftProfile: FC = ({ children }) => {
   const { account } = useWeb3React()
@@ -53,6 +54,14 @@ const NftProfile: FC = ({ children }) => {
         <UnconnectedProfile>{children}</UnconnectedProfile>
       )}
     </>
+  )
+}
+
+export const NftProfileLayout: FC = ({ children }) => {
+  return (
+    <NftProfile>
+      <NftMarketLayout>{children}</NftMarketLayout>
+    </NftProfile>
   )
 }
 

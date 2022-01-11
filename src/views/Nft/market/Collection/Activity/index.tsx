@@ -1,7 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { useGetCollection } from 'state/nftMarket/hooks'
-import Header from '../Header'
 import ActivityHistory from '../../ActivityHistory/ActivityHistory'
 
 const Activity = () => {
@@ -10,7 +9,6 @@ const Activity = () => {
 
   return (
     <>
-      <Header collection={collection} />
       <ActivityHistory collection={collection} />
     </>
   )
