@@ -6,6 +6,6 @@ const InfoPoolsPage = () => {
   return <Pools />
 }
 
-InfoPoolsPage.getLayout = InfoPageLayout
+InfoPoolsPage.Layout = InfoPageLayout
 
 export default InfoPoolsPage

@@ -12,7 +12,7 @@ const TokenPage = ({ address }: { address: string }) => {
   return <Token routeAddress={address} />
 }
 
-TokenPage.getLayout = InfoPageLayout
+TokenPage.Layout = InfoPageLayout
 
 export default TokenPage
 

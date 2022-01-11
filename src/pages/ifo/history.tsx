@@ -6,6 +6,6 @@ const PastIfoPage = () => {
   return <PastIfo />
 }
 
-PastIfoPage.getLayout = IfoPageLayout
+PastIfoPage.Layout = IfoPageLayout
 
 export default PastIfoPage

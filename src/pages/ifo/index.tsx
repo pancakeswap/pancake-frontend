@@ -6,6 +6,6 @@ const CurrentIfoPage = () => {
   return <CurrentIfo />
 }
 
-CurrentIfoPage.getLayout = IfoPageLayout
+CurrentIfoPage.Layout = IfoPageLayout
 
 export default CurrentIfoPage

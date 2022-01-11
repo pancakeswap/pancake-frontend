@@ -26,6 +26,6 @@ const FarmsHistoryPage = () => {
   )
 }
 
-FarmsHistoryPage.getLayout = FarmsPageLayout
+FarmsHistoryPage.Layout = FarmsPageLayout
 
 export default FarmsHistoryPage

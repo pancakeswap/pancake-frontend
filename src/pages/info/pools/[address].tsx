@@ -8,6 +8,6 @@ const PoolPage = () => {
   return <Pool address={String(router.query.address)} />
 }
 
-PoolPage.getLayout = InfoPageLayout
+PoolPage.Layout = InfoPageLayout
 
 export default PoolPage

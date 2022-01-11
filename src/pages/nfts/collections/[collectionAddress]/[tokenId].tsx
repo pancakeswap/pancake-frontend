@@ -6,6 +6,6 @@ const IndividualNFTPage = () => {
   return <IndividualNFT />
 }
 
-IndividualNFTPage.getLayout = NftMarketLayout
+IndividualNFTPage.Layout = NftMarketLayout
 
 export default IndividualNFTPage

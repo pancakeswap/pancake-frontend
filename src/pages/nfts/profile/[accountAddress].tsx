@@ -31,8 +31,12 @@ const UnconnectedProfileNftsContainer = () => {
   return <UnconnectedProfileNfts nfts={nfts} isLoading={isNftLoading} />
 }
 
-NftProfilePage.getLayout = (page) => {
-  return <NftProfile>{NftMarketLayout(page)}</NftProfile>
+NftProfilePage.Layout = ({ children }) => {
+  return (
+    <NftProfile>
+      <NftMarketLayout>{children}</NftMarketLayout>
+    </NftProfile>
+  )
 }
 
 export default NftProfilePage

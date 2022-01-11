@@ -19,6 +19,6 @@ const ProfilePage = () => {
   return null
 }
 
-ProfilePage.getLayout = NftMarketLayout
+ProfilePage.Layout = NftMarketLayout
 
 export default ProfilePage

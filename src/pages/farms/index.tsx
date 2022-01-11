@@ -26,6 +26,6 @@ const FarmsPage = () => {
   )
 }
 
-FarmsPage.getLayout = FarmsPageLayout
+FarmsPage.Layout = FarmsPageLayout
 
 export default FarmsPage

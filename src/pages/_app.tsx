@@ -12,7 +12,7 @@ import useSentryUser from 'hooks/useSentryUser'
 import useUserAgent from 'hooks/useUserAgent'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import React from 'react'
+import React, { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
@@ -100,8 +100,14 @@ function MyApp(props: AppProps) {
 const App = ({ Component, pageProps }: AppProps) => {
   // Use the layout defined at the page level, if available
   // @ts-ignore
-  const getLayout = Component.getLayout || ((page) => page)
-  return <Menu>{getLayout(<Component {...pageProps} />)}</Menu>
+  const Layout = Component.Layout || Fragment
+  return (
+    <Menu>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </Menu>
+  )
 }
 
 export default MyApp

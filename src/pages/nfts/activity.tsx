@@ -6,6 +6,6 @@ const ActivityPage = () => {
   return <Activity />
 }
 
-ActivityPage.getLayout = NftMarketLayout
+ActivityPage.Layout = NftMarketLayout
 
 export default ActivityPage

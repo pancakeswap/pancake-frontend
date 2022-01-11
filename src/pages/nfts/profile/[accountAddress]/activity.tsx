@@ -13,8 +13,12 @@ const NftProfileActivityPage = () => {
   )
 }
 
-NftProfileActivityPage.getLayout = (page) => {
-  return <NftProfile>{NftMarketLayout(page)}</NftProfile>
+NftProfileActivityPage.Layout = ({ children }) => {
+  return (
+    <NftProfile>
+      <NftMarketLayout>{children}</NftMarketLayout>
+    </NftProfile>
+  )
 }
 
 export default NftProfileActivityPage

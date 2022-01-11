@@ -36,8 +36,12 @@ const UnConnectedAchievement = () => {
   return <Achievements achievements={achievements} isLoading={isAchievementFetching} points={profile?.points} />
 }
 
-NftProfileAchievementsPage.getLayout = (page) => {
-  return <NftProfile>{NftMarketLayout(page)}</NftProfile>
+NftProfileAchievementsPage.Layout = ({ children }) => {
+  return (
+    <NftProfile>
+      <NftMarketLayout>{children}</NftMarketLayout>
+    </NftProfile>
+  )
 }
 
 export default NftProfileAchievementsPage

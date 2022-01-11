@@ -6,6 +6,6 @@ const CollectionsPage = () => {
   return <Collections />
 }
 
-CollectionsPage.getLayout = NftMarketLayout
+CollectionsPage.Layout = NftMarketLayout
 
 export default CollectionsPage

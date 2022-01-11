@@ -6,6 +6,6 @@ const InfoPage = () => {
   return <Overview />
 }
 
-InfoPage.getLayout = InfoPageLayout
+InfoPage.Layout = InfoPageLayout
 
 export default InfoPage

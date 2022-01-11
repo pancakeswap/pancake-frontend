@@ -6,6 +6,6 @@ const InfoTokensPage = () => {
   return <Tokens />
 }
 
-InfoTokensPage.getLayout = InfoPageLayout
+InfoTokensPage.Layout = InfoPageLayout
 
 export default InfoTokensPage
