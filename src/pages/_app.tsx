@@ -8,7 +8,6 @@ import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { ToastListener } from 'contexts/ToastsContext'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { useInactiveListener } from 'hooks/useInactiveListener'
-import useNftClaimStatusCheck from 'hooks/useNftClaimStatusCheck'
 import useSentryUser from 'hooks/useSentryUser'
 import useUserAgent from 'hooks/useUserAgent'
 import type { AppProps } from 'next/app'
@@ -38,7 +37,6 @@ function GlobalHooks() {
   useUserAgent()
   useInactiveListener()
   useSentryUser()
-  useNftClaimStatusCheck()
   return null
 }
 
