@@ -1,34 +1,21 @@
 import PageLoader from 'components/Loader/PageLoader'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { NextRouter, useRouter } from 'next/router'
+import React, { useMemo } from 'react'
 import { useFetchCollection, useGetCollection } from 'state/nftMarket/hooks'
-
 import Header from './Header'
 
-const Items = dynamic(() => import('./Items'))
-const Traits = dynamic(() => import('./Traits'))
-const Activity = dynamic(() => import('./Activity'))
+const Items = dynamic(() => import('./Items'), {
+  loading: () => <PageLoader />,
+})
+const Traits = dynamic(() => import('./Traits'), {
+  loading: () => <PageLoader />,
+})
+const Activity = dynamic(() => import('./Activity'), {
+  loading: () => <PageLoader />,
+})
 
-function useHandleHashRoute() {
-  const [hash, setHash] = useState('')
-  const router = useRouter()
-  useEffect(() => {
-    setHash(window.location.hash || '')
-
-    const onHashChangeStart = () => {
-      setHash(window.location.hash || '')
-    }
-
-    router.events.on('hashChangeStart', onHashChangeStart)
-
-    return () => {
-      router.events.off('hashChangeStart', onHashChangeStart)
-    }
-  }, [router.events])
-
-  return hash
-}
+const getHashFromRouter = (router: NextRouter) => router.asPath.match(/#([a-z0-9]+)/gi)
 
 const Collection = () => {
   const router = useRouter()
@@ -37,7 +24,7 @@ const Collection = () => {
 
   useFetchCollection(collectionAddress)
 
-  const hash = useHandleHashRoute()
+  const hash = useMemo(() => getHashFromRouter(router)?.[0], [router])
 
   if (!collection) {
     return <PageLoader />
