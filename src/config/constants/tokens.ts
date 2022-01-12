@@ -13,18 +13,18 @@ const defineTokens = <T extends TokenList>(t: T) => t
 export const mainnetTokens = defineTokens({
   wbnb: new Token(
     MAINNET,
-    '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+    '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
     18,
-    'WBNB',
-    'Wrapped BNB',
-    'https://www.binance.com/',
+    'WMATIC',
+    'Wrapped MATIC',
+    'https://polygon.technology/',
   ),
-  // bnb here points to the wbnb contract. Wherever the currency BNB is required, conditional checks for the symbol 'BNB' can be used
-  bnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
+  // bnb here points to the wbnb contract. Wherever the currency MATIC is required, conditional checks for the symbol 'MATIC' can be used
+  bnb: new Token(MAINNET, '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', 18, 'MATIC', 'MATIC', 'https://polygon.technology/'),
   cake: new Token(
     MAINNET,
-    '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-    18,
+    '0x08C776113974dA137d913a4488929Bd3A07FBec6',
+    6,
     'CAKE',
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
@@ -46,16 +46,6 @@ export const mainnetTokens = defineTokens({
     'HERO',
     'StepHero',
     'https://stephero.io/',
-  ),
-  pros: new Token(MAINNET, '0xEd8c8Aa8299C10f067496BB66f8cC7Fb338A3405', 18, 'PROS', 'Prosper', 'https://prosper.so/'),
-  qbt: new Token(MAINNET, '0x17B7163cf1Dbd286E262ddc68b553D899B93f526', 18, 'QBT', 'Qubit Token', 'https://qbt.fi/'),
-  cvp: new Token(
-    MAINNET,
-    '0x5Ec3AdBDae549Dce842e24480Eb2434769e22B2E',
-    18,
-    'CVP',
-    'Concentrated Voting Power Token',
-    'https://powerpool.finance/',
   ),
   bscdefi: new Token(
     MAINNET,
@@ -83,8 +73,8 @@ export const mainnetTokens = defineTokens({
   ),
   usdt: new Token(
     MAINNET,
-    '0x55d398326f99059fF775485246999027B3197955',
-    18,
+    '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+    6,
     'USDT',
     'Tether USD',
     'https://tether.to/',
@@ -1941,8 +1931,8 @@ export const testnetTokens = defineTokens({
     TESTNET,
     '0x094616F0BdFB0b526bD735Bf66Eca0Ad254ca81F',
     18,
-    'WBNB',
-    'Wrapped BNB',
+    'WMATIC',
+    'Wrapped MATIC',
     'https://www.binance.com/',
   ),
   cake: new Token(

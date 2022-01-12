@@ -10,8 +10,8 @@ export type TranslatableText =
       }
     }
 export interface Address {
-  97?: string
-  56: string
+  80001?: string
+  137: string
 }
 
 export interface SerializedToken {
@@ -59,7 +59,7 @@ export interface Ifo {
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
-  'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
+  'BINANCE' = 'Binance', // Pools using native MATIC behave differently than pools using a token
   'AUTO' = 'Auto',
 }
 
