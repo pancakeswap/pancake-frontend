@@ -21,7 +21,7 @@ When user visits Info page the following requests are fired (names as declared i
 `overviewCharts` - gets data to show liquidity and volume charts on overview page.  
 `overviewTransactions` - gets data to show transaction table on overview page
 
-`prices` - gets BNB prices (current, 24h, 48 and 7d ago) used in calculations (see [src/hooks/useBnbPrices.ts](../src/hooks/useBnbPrices.ts))
+`prices` - gets MATIC prices (current, 24h, 48 and 7d ago) used in calculations (see [src/hooks/useBnbPrices.ts](../src/hooks/useBnbPrices.ts))
 
 `topTokens` - gets top NN pools by 24h volume. This request just fetches token addresses, full data is handled separately.
 `tokens` - given the list of token addresses retrieves all needed data about these tokens. Done in single request but it is in fact 5 batched requests for different timeframes (needed to calculate rate of change). When user first opens the page this request is requesting data for token addresses acquired via `topTokens` request.
@@ -31,6 +31,6 @@ When user visits Info page the following requests are fired (names as declared i
 
 There are also multiple `blocks` queries to retrieve block numbers at different timestamps.
 
-The flow is controlled by [src/state/info/updaters.ts](../src/state/info/updaters.ts). When user navigates through the site more pools and tokens are automatically loaded, (e.g. you click on BNB token and pools for BNB are loaded automatically, if you click on BNB-BTCB then BTCB token will be loaded, etc)
+The flow is controlled by [src/state/info/updaters.ts](../src/state/info/updaters.ts). When user navigates through the site more pools and tokens are automatically loaded, (e.g. you click on MATIC token and pools for MATIC are loaded automatically, if you click on MATIC-BTCB then BTCB token will be loaded, etc)
 
 There are additional requests for price chart and search that are fired when user uses these features.
