@@ -188,7 +188,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const isBNB = currencyId?.toUpperCase() === 'BNB'
+  const isBNB = currencyId?.toUpperCase() === 'MATIC'
   const token = useToken(isBNB ? undefined : currencyId)
   return isBNB ? ETHER : token
 }

@@ -7,7 +7,7 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { PairState, usePairs } from './usePairs'
 
 const BUSD_MAINNET = mainnetTokens.busd
-const { wbnb: WBNB } = tokens
+const { wbnb: WMATIC } = tokens
 
 /**
  * Returns the price in BUSD of the input currency
@@ -18,9 +18,9 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
   const wrapped = wrappedCurrency(currency, chainId)
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
-      [chainId && wrapped && currencyEquals(WBNB, wrapped) ? undefined : currency, chainId ? WBNB : undefined],
+      [chainId && wrapped && currencyEquals(WMATIC, wrapped) ? undefined : currency, chainId ? WMATIC : undefined],
       [wrapped?.equals(BUSD_MAINNET) ? undefined : wrapped, chainId === ChainId.MAINNET ? BUSD_MAINNET : undefined],
-      [chainId ? WBNB : undefined, chainId === ChainId.MAINNET ? BUSD_MAINNET : undefined],
+      [chainId ? WMATIC : undefined, chainId === ChainId.MAINNET ? BUSD_MAINNET : undefined],
     ],
     [chainId, currency, wrapped],
   )
@@ -31,9 +31,9 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
       return undefined
     }
     // handle weth/eth
-    if (wrapped.equals(WBNB)) {
+    if (wrapped.equals(WMATIC)) {
       if (busdPair) {
-        const price = busdPair.priceOf(WBNB)
+        const price = busdPair.priceOf(WMATIC)
         return new Price(currency, BUSD_MAINNET, price.denominator, price.numerator)
       }
       return undefined
@@ -43,9 +43,9 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
       return new Price(BUSD_MAINNET, BUSD_MAINNET, '1', '1')
     }
 
-    const ethPairETHAmount = ethPair?.reserveOf(WBNB)
+    const ethPairETHAmount = ethPair?.reserveOf(WMATIC)
     const ethPairETHBUSDValue: JSBI =
-      ethPairETHAmount && busdEthPair ? busdEthPair.priceOf(WBNB).quote(ethPairETHAmount).raw : JSBI.BigInt(0)
+      ethPairETHAmount && busdEthPair ? busdEthPair.priceOf(WMATIC).quote(ethPairETHAmount).raw : JSBI.BigInt(0)
 
     // all other tokens
     // first try the busd pair
@@ -58,9 +58,9 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
       return new Price(currency, BUSD_MAINNET, price.denominator, price.numerator)
     }
     if (ethPairState === PairState.EXISTS && ethPair && busdEthPairState === PairState.EXISTS && busdEthPair) {
-      if (busdEthPair.reserveOf(BUSD_MAINNET).greaterThan('0') && ethPair.reserveOf(WBNB).greaterThan('0')) {
+      if (busdEthPair.reserveOf(BUSD_MAINNET).greaterThan('0') && ethPair.reserveOf(WMATIC).greaterThan('0')) {
         const ethBusdPrice = busdEthPair.priceOf(BUSD_MAINNET)
-        const currencyEthPrice = ethPair.priceOf(WBNB)
+        const currencyEthPrice = ethPair.priceOf(WMATIC)
         const busdPrice = ethBusdPrice.multiply(currencyEthPrice).invert()
         return new Price(currency, BUSD_MAINNET, busdPrice.denominator, busdPrice.numerator)
       }
