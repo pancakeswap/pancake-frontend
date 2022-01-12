@@ -32,8 +32,7 @@ const ifos: Ifo[] = [
     version: 3,
     telegramUrl: 'https://t.me/froyogames',
     twitterUrl: 'https://twitter.com/realfroyogames',
-    description:
-      'Froyo Games is a game publisher and decentralized GameFi platform, with a NFT Marketplace that integrates NFTs with their games.',
+    description: `Froyo Games is a game publisher and decentralized GameFi platform, with a NFT Marketplace that integrates NFTs with their games.\n \n FROYO tokens can be used to buy NFTs and participate in Froyo games`,
   },
   {
     id: 'dpt',
