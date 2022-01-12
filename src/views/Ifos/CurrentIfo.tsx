@@ -27,7 +27,7 @@ const Ifo = () => {
 
   return (
     <IfoLayout id="current-ifo" py={['24px', '24px', '40px']}>
-      <Container>
+      <Container width={['100%', null, null, 'auto']} px={['24px', '24px']}>
         <IfoLayoutWrapper>
           <IfoPoolVaultCard />
           <IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
