@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Text } from '@pancakeswap/uikit'
+import { Link, Text } from 'peronio-uikit'
 import { getBscScanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'

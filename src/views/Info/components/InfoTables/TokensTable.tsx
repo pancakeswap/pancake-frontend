@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, Skeleton, useMatchBreakpoints, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
+import { Text, Flex, Box, Skeleton, useMatchBreakpoints, ArrowBackIcon, ArrowForwardIcon } from 'peronio-uikit'
 import { TokenData } from 'state/info/types'
 import { Link } from 'react-router-dom'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'

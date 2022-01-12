@@ -9,7 +9,7 @@ import {
   Text,
   useMatchBreakpoints,
   useTooltip,
-} from '@pancakeswap/uikit'
+} from 'peronio-uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { CompoundingPoolTag } from 'components/Tags'

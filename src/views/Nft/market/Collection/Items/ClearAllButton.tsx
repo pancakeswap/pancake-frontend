@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonProps } from '@pancakeswap/uikit'
+import { Button, ButtonProps } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { removeAllFilters } from 'state/nftMarket/reducer'

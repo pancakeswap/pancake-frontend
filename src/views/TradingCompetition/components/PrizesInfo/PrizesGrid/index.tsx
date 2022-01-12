@@ -12,7 +12,7 @@ import {
   Tab,
   TabMenu,
   Text,
-} from '@pancakeswap/uikit'
+} from 'peronio-uikit'
 import prizes, { Tiers } from 'config/constants/trading-competition/prizes'
 import { useTranslation } from 'contexts/Localization'
 import React, { useState } from 'react'

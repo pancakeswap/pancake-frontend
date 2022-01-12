@@ -1,4 +1,4 @@
-import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { useMatchBreakpoints, useModal } from 'peronio-uikit'
 import { useWeb3React } from '@web3-react/core'
 import { PageMeta } from 'components/Layout/Page'
 import PageLoader from 'components/Loader/PageLoader'

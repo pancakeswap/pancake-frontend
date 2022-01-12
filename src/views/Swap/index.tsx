@@ -12,7 +12,7 @@ import {
   BottomDrawer,
   useMatchBreakpoints,
   ArrowUpDownIcon,
-} from '@pancakeswap/uikit'
+} from 'peronio-uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import Footer from 'components/Menu/Footer'

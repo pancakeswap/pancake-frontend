@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Flex, Box } from '@pancakeswap/uikit'
+import { Text, Flex, Box } from 'peronio-uikit'
 import styled from 'styled-components'
 import truncateHash from 'utils/truncateHash'
 import { LeaderboardDataItem } from '../../../types'

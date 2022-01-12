@@ -1,5 +1,5 @@
 import React from 'react'
-import { darkColors, Text } from '@pancakeswap/uikit'
+import { darkColors, Text } from 'peronio-uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 

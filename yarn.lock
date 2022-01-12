@@ -2810,17 +2810,6 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@pancakeswap/uikit@peronio-ar/peronio-uikit":
-  version "0.62.0"
-  resolved "https://codeload.github.com/peronio-ar/peronio-uikit/tar.gz/c23879f9c8dd5436cb0ff92f4f2c6862bd13835c"
-  dependencies:
-    "@popperjs/core" "^2.9.2"
-    "@types/lodash" "^4.14.168"
-    "@types/styled-system" "^5.1.10"
-    lodash "^4.17.20"
-    react-popper "^2.2.5"
-    styled-system "^5.1.5"
-
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.4.3.tgz#1eec460596d200c0236bf195b078a5d1df89b766"
@@ -16539,6 +16528,18 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+
+peronio-uikit@^0.62.1:
+  version "0.62.1"
+  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.62.1.tgz#2e9298cb82fbf6b6cb418ccd627af1e67092a36a"
+  integrity sha512-px+5zfJiECtbLsvldKDDgeeza5ykIP0DnntUioVeKa86k6ZGMgJeN8yFI822yN33PXji6dWPRCR9w8DQiBOU9A==
+  dependencies:
+    "@popperjs/core" "^2.9.2"
+    "@types/lodash" "^4.14.168"
+    "@types/styled-system" "^5.1.10"
+    lodash "^4.17.20"
+    react-popper "^2.2.5"
+    styled-system "^5.1.5"
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.2.3:
   version "2.3.0"

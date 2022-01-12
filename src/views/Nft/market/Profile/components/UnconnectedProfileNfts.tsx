@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Text, Flex } from '@pancakeswap/uikit'
+import { Grid, Text, Flex } from 'peronio-uikit'
 import { NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'

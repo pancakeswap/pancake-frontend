@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
-import { Grid, Text, Card, Box, ChevronUpIcon, ChevronDownIcon, IconButton } from '@pancakeswap/uikit'
+import { Grid, Text, Card, Box, ChevronUpIcon, ChevronDownIcon, IconButton } from 'peronio-uikit'
 import useTheme from 'hooks/useTheme'
 
 const expandAnimation = keyframes`

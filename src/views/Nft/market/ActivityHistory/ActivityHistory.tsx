@@ -2,17 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { uniqBy } from 'lodash'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
-import {
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  Box,
-  Button,
-  Flex,
-  Table,
-  Text,
-  Th,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Button, Flex, Table, Text, Th, useMatchBreakpoints } from 'peronio-uikit'
 import { getCollectionActivity, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
 import Container from 'components/Layout/Container'
 import TableLoader from 'components/TableLoader'
