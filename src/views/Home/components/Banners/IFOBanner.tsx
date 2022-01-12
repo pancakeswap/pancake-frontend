@@ -94,8 +94,8 @@ const IFOBanner = () => {
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{t('Live')}</StyledSubheading>
-          <StyledHeading scale="xl">SANTOS IFO</StyledHeading>
+          <StyledSubheading>{t('Soon')}</StyledSubheading>
+          <StyledHeading scale="xl">Froyo IFO</StyledHeading>
           <Link to="/ifo">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
@@ -106,7 +106,7 @@ const IFOBanner = () => {
           </Link>
         </LeftWrapper>
         <RightWrapper>
-          <img src="/images/decorations/3d-ifo-santos.png" alt="IFO SANTOS" />
+          <img src="/images/decorations/3d-ifo-froyo.png" alt="IFO Froyo" />
         </RightWrapper>
       </Inner>
     </Wrapper>

@@ -328,6 +328,12 @@ const campaigns: Campaign[] = [
     title: 'Diviner Protocol',
     badge: 'ifo-dpt.svg',
   },
+  {
+    id: '511170000',
+    type: 'ifo',
+    title: 'Froyo Games',
+    badge: 'ifo-froyo.svg',
+  },
 ]
 
 /**

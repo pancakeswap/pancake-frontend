@@ -1934,6 +1934,14 @@ export const mainnetTokens = defineTokens({
     'Bsc-Peg INSUR Token',
     'https://www.insurace.io/',
   ),
+  froyo: new Token(
+    MAINNET,
+    '0xe369fec23380f9F14ffD07a1DC4b7c1a9fdD81c9',
+    18,
+    'FROYO',
+    'Froyo Games',
+    'https://froyo.games/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
