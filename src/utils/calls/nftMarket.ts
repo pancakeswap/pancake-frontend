@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 
 /**
- * Buy a NFT with BNB
+ * Buy a NFT with MATIC
  * @param contract
  * @param collectionAddress
  * @param tokenId
@@ -23,7 +23,7 @@ export const buyTokenUsingBNB = async (
 }
 
 /**
- * Buy a NFT with WBNB
+ * Buy a NFT with WMATIC
  * @param contract
  * @param collectionAddress
  * @param tokenId
@@ -117,7 +117,7 @@ export const cancelAskOrder = async (
 }
 
 /**
- * Get pending WBNB revenues for a user
+ * Get pending WMATIC revenues for a user
  * @param contract
  * @param userAddress
  * @returns pending revenues, or null if failed
@@ -133,7 +133,7 @@ export const getPendingRevenue = async (contract: ethers.Contract, userAddress: 
 }
 
 /**
- * Claim WBNB pending revenues for a connected users
+ * Claim WMATIC pending revenues for a connected users
  * @param contract
  * @returns transaction hash, or null
  */
