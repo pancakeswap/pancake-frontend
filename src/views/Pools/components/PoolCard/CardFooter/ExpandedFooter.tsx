@@ -53,6 +53,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     contractAddress,
     sousId,
     vaultKey,
+    isFinished,
   } = pool
 
   const {
@@ -116,7 +117,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           {totalStakedTooltipVisible && totalStakedTooltip}
         </Flex>
       </Flex>
-      {stakingLimit && stakingLimit.gt(0) && (
+      {!isFinished && stakingLimit && stakingLimit.gt(0) && (
         <Flex mb="2px" justifyContent="space-between">
           <Text small>{t('Max. stake per user')}:</Text>
           <Text small>{`${getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0)} ${stakingToken.symbol}`}</Text>
