@@ -1,8 +1,8 @@
 import { TokenMarketData, Image } from 'state/nftMarket/types'
 
 export enum PaymentCurrency {
-  BNB,
-  WBNB,
+  MATIC,
+  WMATIC,
 }
 
 export enum BuyingStage {

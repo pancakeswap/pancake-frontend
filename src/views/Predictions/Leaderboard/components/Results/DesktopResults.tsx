@@ -20,7 +20,7 @@ const DesktopResults: React.FC<DesktopResultsProps> = ({ results }) => {
             <tr>
               <Th width="60px">&nbsp;</Th>
               <Th textAlign="left">{t('User')}</Th>
-              <Th textAlign="right">{t('Net Winnings (BNB)')}</Th>
+              <Th textAlign="right">{t('Net Winnings (MATIC)')}</Th>
               <Th>{t('Win Rate')}</Th>
               <Th>{t('Rounds Won')}</Th>
               <Th>{t('Rounds Played')}</Th>

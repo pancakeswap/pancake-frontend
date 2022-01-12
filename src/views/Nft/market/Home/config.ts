@@ -3,12 +3,12 @@ import { ContextApi } from 'contexts/Localization/types'
 const config = (t: ContextApi['t']) => {
   return [
     {
-      title: t('I sold an NFT, where’s my BNB?'),
+      title: t('I sold an NFT, where’s my MATIC?'),
       description: [
         t(
-          'Trades are settled in WBNB, which is a wrapped version of BNB used on Binance Smart Chain. That means that when you sell an item, WBNB is sent to your wallet instead of BNB.',
+          'Trades are settled in WMATIC, which is a wrapped version of MATIC used on Binance Smart Chain. That means that when you sell an item, WMATIC is sent to your wallet instead of MATIC.',
         ),
-        t('You can instantly swap your WBNB for BNB with no trading fees on PancakeSwap.'),
+        t('You can instantly swap your WMATIC for MATIC with no trading fees on PancakeSwap.'),
       ],
     },
     {

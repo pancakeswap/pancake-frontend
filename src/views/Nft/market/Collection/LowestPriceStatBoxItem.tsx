@@ -28,7 +28,7 @@ const LowestPriceStatBoxItem: React.FC<LowestPriceStatBoxItemProps> = ({ collect
           maximumFractionDigits: 3,
         })
 
-  return <StatBoxItem title={t('Lowest (%symbol%)', { symbol: 'BNB' })} stat={formattedLowestPrice} {...props} />
+  return <StatBoxItem title={t('Lowest (%symbol%)', { symbol: 'MATIC' })} stat={formattedLowestPrice} {...props} />
 }
 
 export default LowestPriceStatBoxItem

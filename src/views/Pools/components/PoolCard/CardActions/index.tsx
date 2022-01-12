@@ -21,7 +21,7 @@ interface CardActionsProps {
 
 const CardActions: React.FC<CardActionsProps> = ({ pool, stakedBalance }) => {
   const { sousId, stakingToken, earningToken, harvest, poolCategory, userData, earningTokenPrice } = pool
-  // Pools using native BNB behave differently than pools using a token
+  // Pools using native MATIC behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const { t } = useTranslation()
   const allowance = userData?.allowance ? new BigNumber(userData.allowance) : BIG_ZERO

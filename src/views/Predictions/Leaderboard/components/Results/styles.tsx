@@ -44,7 +44,7 @@ export const NetWinningsRow: React.FC<{ amount: number }> = ({ amount }) => {
   return (
     <Row mb="4px">
       <Text fontSize="12px" color="textSubtle">
-        {t('Net Winnings (BNB)')}
+        {t('Net Winnings (MATIC)')}
       </Text>
       <NetWinnings amount={amount} textPrefix={amount > 0 ? '+' : ''} textColor={amount > 0 ? 'success' : 'failure'} />
     </Row>

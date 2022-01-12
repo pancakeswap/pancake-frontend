@@ -64,7 +64,7 @@ const fetchBnbPrices = async (
       },
     }
   } catch (error) {
-    console.error('Failed to fetch BNB prices', error)
+    console.error('Failed to fetch MATIC prices', error)
     return {
       error: true,
       bnbPrices: undefined,
@@ -73,7 +73,7 @@ const fetchBnbPrices = async (
 }
 
 /**
- * Returns BNB prices at current, 24h, 48h, and 7d intervals
+ * Returns MATIC prices at current, 24h, 48h, and 7d intervals
  */
 export const useBnbPrices = (): BnbPrices | undefined => {
   const [prices, setPrices] = useState<BnbPrices | undefined>()

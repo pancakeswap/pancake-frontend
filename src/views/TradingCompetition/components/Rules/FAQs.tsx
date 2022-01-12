@@ -36,7 +36,7 @@ const FAQ = () => {
           <FoldableText title={t('Eligible trading pairs')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {t(
-                'Only trades on SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD pairs will be included in volume calculations.',
+                'Only trades on SANTOS/MATIC, PORTO/MATIC, LAZIO/MATIC, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/MATIC and CAKE/BUSD pairs will be included in volume calculations.',
               )}
             </Text>
           </FoldableText>

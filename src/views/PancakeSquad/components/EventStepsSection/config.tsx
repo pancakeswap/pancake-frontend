@@ -52,12 +52,12 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
         eventStatus: [SaleStatusEnum.Pending, SaleStatusEnum.Premint],
       }),
       title: t('Hold CAKE'),
-      bodyText: [t('Each NFT costs CAKE to mint. Remember you also need BNB to cover transaction fees too!')],
+      bodyText: [t('Each NFT costs CAKE to mint. Remember you also need MATIC to cover transaction fees too!')],
       buttons: (
         <>
           <Button
             as="a"
-            href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+            href="https://pancakeswap.finance/swap?outputCurrency=0x08C776113974dA137d913a4488929Bd3A07FBec6"
             target="_blank"
             width="100%"
           >

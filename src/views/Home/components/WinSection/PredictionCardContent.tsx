@@ -24,7 +24,7 @@ const PredictionCardContent = () => {
   const bnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, bnbWon)
 
   const localisedBnbUsdString = formatLocalisedCompactNumber(bnbWonInUsd)
-  const bnbWonText = t('$%bnbWonInUsd% in BNB won so far', { bnbWonInUsd: localisedBnbUsdString })
+  const bnbWonText = t('$%bnbWonInUsd% in MATIC won so far', { bnbWonInUsd: localisedBnbUsdString })
   const [pretext, wonSoFar] = bnbWonText.split(localisedBnbUsdString)
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const PredictionCardContent = () => {
           {wonSoFar}
         </Text>
         <Text color="#280D5F" mb="40px">
-          {t('Will BNB price rise or fall? guess correctly to win!')}
+          {t('Will MATIC price rise or fall? guess correctly to win!')}
         </Text>
       </Flex>
       <Flex alignItems="center" justifyContent="center">

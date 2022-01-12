@@ -13,7 +13,7 @@ interface ApproveAndConfirmStageProps {
 }
 
 // Buy Flow:
-// Shown if user wants to pay with WBNB and contract isn't approved yet
+// Shown if user wants to pay with WMATIC and contract isn't approved yet
 // Sell Flow:
 // Shown the first time user puts NFT for sale
 const ApproveAndConfirmStage: React.FC<ApproveAndConfirmStageProps> = ({
@@ -43,7 +43,7 @@ const ApproveAndConfirmStage: React.FC<ApproveAndConfirmStageProps> = ({
           {!isApproved && (
             <Text mt="8px" maxWidth="275px" small color="textSubtle">
               {variant === 'buy'
-                ? t('Please enable WBNB spending in your wallet')
+                ? t('Please enable WMATIC spending in your wallet')
                 : t('Please enable your NFT to be sent to the market')}
             </Text>
           )}

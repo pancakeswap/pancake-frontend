@@ -45,7 +45,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
         <tr>
           <Th>{t('Round')}</Th>
           <Th>{t('Direction')}</Th>
-          <Th textAlign="right">{t('Winnings (BNB)')}</Th>
+          <Th textAlign="right">{t('Winnings (MATIC)')}</Th>
         </tr>
       </thead>
       <tbody>

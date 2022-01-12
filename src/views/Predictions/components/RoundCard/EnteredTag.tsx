@@ -12,7 +12,7 @@ interface EnteredTagProps {
 const EnteredTag: React.FC<EnteredTagProps> = ({ amount, hasClaimed = false }) => {
   const { t } = useTranslation()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(amount)} BNB`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(amount)} MATIC`}</div>,
     { placement: 'bottom' },
   )
 
