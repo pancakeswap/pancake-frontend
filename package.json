@@ -1,6 +1,6 @@
 {
-  "name": "pancake-frontend",
-  "version": "0.1.0",
+  "name": "peronio-frontend",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -33,8 +33,8 @@
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
     "@ethersproject/experimental": "^5.5.0",
-    "@pancakeswap/sdk": "^2.4.0",
-    "@pancakeswap/uikit": "^0.62.0",
+    "@pancakeswap/sdk": "cryptoinhero/peronio-sdk",
+    "@pancakeswap/uikit": "cryptoinhero/peronio-uikit",
     "@reduxjs/toolkit": "^1.5.0",
     "@sentry/react": "^6.15.0",
     "@sentry/tracing": "^6.15.0",
