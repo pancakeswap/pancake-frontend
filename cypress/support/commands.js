@@ -10,7 +10,7 @@ import { Eip1193Bridge } from '@ethersproject/experimental/lib/eip1193-bridge'
 
 /**
  * This is random key from https://asecuritysite.com/encryption/ethadd
- * One test in swap.test.ts requires to have some BNB amount available to test swap confirmation modal
+ * One test in swap.test.ts requires to have some MATIC amount available to test swap confirmation modal
  * Seems that there are some problems with usying Cypress.env('INTEGRATION_TEST_PRIVATE_KEY') in CI
  * And sharing some key here is not safe as somebody can empty it and test will fail
  * For now that test is skipped
@@ -81,7 +81,7 @@ Cypress.Commands.overwrite('visit', (original, url, options) => {
         options.onBeforeLoad(win)
       }
       win.localStorage.clear()
-      const provider = new JsonRpcProvider('https://bsc-dataseed.binance.org/', 56)
+      const provider = new JsonRpcProvider('https://bsc-dataseed.binance.org/', 137)
       const signer = new Wallet(TEST_PRIVATE_KEY, provider)
       // eslint-disable-next-line no-param-reassign
       win.ethereum = new CustomizedBridge(signer, provider)
