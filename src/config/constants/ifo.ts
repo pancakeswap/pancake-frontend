@@ -26,7 +26,7 @@ const ifos: Ifo[] = [
     currency: tokens.cake,
     token: tokens.froyo,
     releaseBlockNumber: 14297000,
-    campaignId: '511160000',
+    campaignId: '511170000',
     articleUrl: 'https://pancakeswap.finance/voting/proposal/QmRhc4oC73jk4zxU4YkP1kudKHeq6qamgYA1sWoh6XJnks',
     tokenOfferingPrice: 0.06,
     version: 3,
