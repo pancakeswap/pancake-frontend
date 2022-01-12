@@ -6841,9 +6841,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001125, caniuse-lite@^1.0.30001219:
-  version "1.0.30001243"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001243.tgz#d9250155c91e872186671c523f3ae50cfc94a3aa"
-  integrity sha512-vNxw9mkTBtkmLFnJRv/2rhs1yufpDfCkBZexG3Y0xdOH2Z/eE/85E4Dl5j1YUN34nZVsSp6vVRFQRrez9wJMRA==
+  version "1.0.30001298"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001298.tgz"
+  integrity sha512-AcKqikjMLlvghZL/vfTHorlQsLDhGRalYf1+GmWCf5SCMziSGjRYQW/JEksj14NaYHIR6KIhrFAy0HV5C25UzQ==
 
 canvas-confetti@^1.3.3:
   version "1.4.0"
@@ -16529,10 +16529,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-peronio-uikit@^0.62.1:
-  version "0.62.1"
-  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.62.1.tgz#2e9298cb82fbf6b6cb418ccd627af1e67092a36a"
-  integrity sha512-px+5zfJiECtbLsvldKDDgeeza5ykIP0DnntUioVeKa86k6ZGMgJeN8yFI822yN33PXji6dWPRCR9w8DQiBOU9A==
+peronio-uikit@^0.63.0:
+  version "0.63.0"
+  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.63.0.tgz#6bcb387054c0b6b4f122f6a3dbde0900dd49cc35"
+  integrity sha512-K7ThAprsFrpOQjSam4He7XC08KmSxPpZZ8v1RKFU8uLnrjka7Svp1k9U/Xawh4ng/E8Dmt1zcbw/YcWxjUgfkw==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"

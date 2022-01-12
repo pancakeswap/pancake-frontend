@@ -67,7 +67,7 @@
     "multicodec": "^2.0.0",
     "multihashes": "^3.0.1",
     "numeral": "^2.0.6",
-    "peronio-uikit": "^0.62.1",
+    "peronio-uikit": "^0.63.0",
     "qs": "^6.9.4",
     "react": "^17.0.1",
     "react-countup": "^4.3.3",
