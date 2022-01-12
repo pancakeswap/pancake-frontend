@@ -111,9 +111,20 @@ type ScoresResponseByAddress = {
 const TEN_POW_18 = new BigNumber(10).pow(18)
 
 type GetScoresResponse = ScoresResponseByAddress[]
-
-function calculateVotingPower(scoresList: GetScoresResponse, voters: string[]) {
-  const [
+type ScoresListIndex = {
+  cakeBalances: number
+  cakeVaultShares: number
+  cakeVaultPricePerFullShares: number
+  ifoPoolShares: number
+  ifoPoolPricePerFullShares: number
+  userStakeInCakePools: number
+  cakeBnbLpTotalSupplies: number
+  cakeBnbLpReserve0s: number
+  cakeBnbLpCakeBnbBalances: number
+  poolStart: number
+}
+function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], scoresListIndex: ScoresListIndex) {
+  let [
     cakeBalances,
     cakeVaultShares,
     cakeVaultPricePerFullShares,
@@ -123,7 +134,30 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[]) {
     cakeBnbLpTotalSupplies,
     cakeBnbLpReserve0s,
     cakeBnbLpCakeBnbBalances,
-  ] = scoresList
+  ] = new Array(9)
+  const defaultScore = {}
+  for (let i = 0; i < voters.length; i++) {
+    defaultScore[voters[i]] = 0
+  }
+  cakeBalances = scoresListIndex.cakeBalances > -1 ? scoresList[scoresListIndex.cakeBalances] : defaultScore
+  cakeVaultShares = scoresListIndex.cakeVaultShares > -1 ? scoresList[scoresListIndex.cakeVaultShares] : defaultScore
+  cakeVaultPricePerFullShares =
+    scoresListIndex.cakeVaultPricePerFullShares > -1
+      ? scoresList[scoresListIndex.cakeVaultPricePerFullShares]
+      : defaultScore
+  ifoPoolShares = scoresListIndex.ifoPoolShares > -1 ? scoresList[scoresListIndex.ifoPoolShares] : defaultScore
+  ifoPoolPricePerFullShares =
+    scoresListIndex.ifoPoolPricePerFullShares > -1
+      ? scoresList[scoresListIndex.ifoPoolPricePerFullShares]
+      : defaultScore
+  userStakeInCakePools =
+    scoresListIndex.userStakeInCakePools > -1 ? scoresList[scoresListIndex.userStakeInCakePools] : defaultScore
+  cakeBnbLpTotalSupplies =
+    scoresListIndex.cakeBnbLpTotalSupplies > -1 ? scoresList[scoresListIndex.cakeBnbLpTotalSupplies] : defaultScore
+  cakeBnbLpReserve0s =
+    scoresListIndex.cakeBnbLpReserve0s > -1 ? scoresList[scoresListIndex.cakeBnbLpReserve0s] : defaultScore
+  cakeBnbLpCakeBnbBalances =
+    scoresListIndex.cakeBnbLpCakeBnbBalances > -1 ? scoresList[scoresListIndex.cakeBnbLpCakeBnbBalances] : defaultScore
 
   const result = voters.map((address) => {
     const cakeBalance = new BigNumber(cakeBalances[address])
@@ -143,7 +177,7 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[]) {
     const cakeBnbLpBalance = cakeBnbLpCakeBnbBalance.times(cakeBnbLpReserve0).div(totalSupplyLP)
 
     // calculate poolsBalance
-    const poolStartIndex = snapshotStrategies.length + 1
+    const poolStartIndex = scoresListIndex.poolStart
     let poolsBalance = new BigNumber(0)
     for (let i = poolStartIndex; i < scoresList.length; i++) {
       const currentPoolBalance = new BigNumber(scoresList[i][address])
@@ -172,11 +206,74 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[]) {
   return result
 }
 
+const ContractDeployedNumber = {
+  Cake: 693963,
+  CakeVault: 6975840,
+  IFOPool: 13463954,
+  MasterChef: 699498,
+  CakeLp: 6810706,
+}
+
+function verifyDefaultContract(blockNumber: number) {
+  return {
+    Cake: ContractDeployedNumber.Cake < blockNumber,
+    CakeVault: ContractDeployedNumber.CakeVault < blockNumber,
+    IFOPool: ContractDeployedNumber.IFOPool < blockNumber,
+    MasterChef: ContractDeployedNumber.MasterChef < blockNumber,
+    CakeLp: ContractDeployedNumber.CakeLp < blockNumber,
+  }
+}
+
 export async function getVotingPowerList(voters: string[], poolAddresses: string[], blockNumber: number) {
   const poolsStrategyList = poolAddresses.map((address) => createPoolStrategy(address))
-  const strategies = [...snapshotStrategies, ...poolsStrategyList]
+  const contractsValid = verifyDefaultContract(blockNumber)
+  const scoresListIndex = {
+    cakeBalances: -1,
+    cakeVaultShares: -1,
+    cakeVaultPricePerFullShares: -1,
+    ifoPoolShares: -1,
+    ifoPoolPricePerFullShares: -1,
+    userStakeInCakePools: -1,
+    cakeBnbLpTotalSupplies: -1,
+    cakeBnbLpReserve0s: -1,
+    cakeBnbLpCakeBnbBalances: -1,
+    poolStart: 0,
+  }
+  const defaultStrategy = []
+  let indexCounter = 0
+  if (contractsValid.Cake) {
+    defaultStrategy.push(snapshotStrategies[0])
+    scoresListIndex.cakeBalances = indexCounter++
+  }
+  if (contractsValid.CakeVault) {
+    defaultStrategy.push(snapshotStrategies[1])
+    scoresListIndex.cakeVaultShares = indexCounter++
+    defaultStrategy.push(snapshotStrategies[2])
+    scoresListIndex.cakeVaultPricePerFullShares = indexCounter++
+  }
+  if (contractsValid.IFOPool) {
+    defaultStrategy.push(snapshotStrategies[3])
+    scoresListIndex.ifoPoolShares = indexCounter++
+    defaultStrategy.push(snapshotStrategies[4])
+    scoresListIndex.ifoPoolPricePerFullShares = indexCounter++
+  }
+  if (contractsValid.MasterChef) {
+    defaultStrategy.push(snapshotStrategies[5])
+    scoresListIndex.userStakeInCakePools = indexCounter++
+  }
+  if (contractsValid.CakeLp) {
+    defaultStrategy.push(snapshotStrategies[6])
+    scoresListIndex.cakeBnbLpTotalSupplies = indexCounter++
+    defaultStrategy.push(snapshotStrategies[7])
+    scoresListIndex.cakeBnbLpReserve0s = indexCounter++
+    defaultStrategy.push(snapshotStrategies[8])
+    scoresListIndex.cakeBnbLpCakeBnbBalances = indexCounter++
+  }
+  scoresListIndex.poolStart = indexCounter
+
+  const strategies = [...defaultStrategy, ...poolsStrategyList]
   const network = '56'
   const strategyResponse = await snapshot.utils.getScores(PANCAKE_SPACE, strategies, network, voters, blockNumber)
-  const votingPowerList = calculateVotingPower(strategyResponse, voters)
+  const votingPowerList = calculateVotingPower(strategyResponse, voters, scoresListIndex)
   return votingPowerList
 }
