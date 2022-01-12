@@ -12,7 +12,7 @@ interface TokenFields {
   id: string
   symbol: string
   name: string
-  derivedBNB: string // Price in BNB per token
+  derivedBNB: string // Price in MATIC per token
   derivedUSD: string // Price in USD per token
   tradeVolumeUSD: string
   totalTransactions: string
