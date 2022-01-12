@@ -133,7 +133,7 @@ export const TradingViewLabel = ({ symbol, ...props }: { symbol: string } & Flex
   return (
     <Flex alignItems="center" px="24px" {...props}>
       <Link fontSize="14px" href={`https://www.tradingview.com/symbols/${symbol}`} external>
-        BNB {t('Chart')}
+        MATIC {t('Chart')}
       </Link>
       <Text fontSize="14px" ml="4px">
         {t('by')} TradingView
