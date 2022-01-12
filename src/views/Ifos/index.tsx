@@ -29,15 +29,17 @@ const Ifos = () => {
         ]}
         activeItem={isExact ? '/ifo' : '/ifo/history'}
       />
-      <Hero />
-      <Container>
+      <>
+        <Hero />
         <Route exact path={`${path}`}>
           <CurrentIfo />
         </Route>
         <Route path={`${path}/history`}>
-          <PastIfo />
+          <Container>
+            <PastIfo />
+          </Container>
         </Route>
-      </Container>
+      </>
     </>
   )
 }
