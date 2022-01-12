@@ -27,9 +27,13 @@ const ifos: Ifo[] = [
     token: tokens.froyo,
     releaseBlockNumber: 14297000,
     campaignId: '511160000',
-    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmQqpknHvuQwshVP259qFxfQsxiWbQ9SLMebohDeRwRzKg',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmRhc4oC73jk4zxU4YkP1kudKHeq6qamgYA1sWoh6XJnks',
     tokenOfferingPrice: 0.06,
     version: 3,
+    telegramUrl: 'https://t.me/froyogames',
+    twitterUrl: 'https://twitter.com/realfroyogames',
+    description:
+      'Froyo Games is a game publisher and decentralized GameFi platform, with a NFT Marketplace that integrates NFTs with their games.',
   },
   {
     id: 'dpt',
