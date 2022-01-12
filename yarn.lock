@@ -2798,9 +2798,9 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
 
-"@pancakeswap/sdk@cryptoinhero/peronio-sdk":
-  version "0.5.0"
-  resolved "https://codeload.github.com/cryptoinhero/peronio-sdk/tar.gz/bae8bf23404f8962c7fefc3deaebfda841fc0fb7"
+"@pancakeswap/sdk@peronio-ar/peronio-sdk":
+  version "0.6.2"
+  resolved "https://codeload.github.com/peronio-ar/peronio-sdk/tar.gz/44eedec0c14dab68f69780636857d1470d36669c"
   dependencies:
     "@pancakeswap-libs/pancake-swap-core" "^0.1.0"
     big.js "^5.2.2"
@@ -2810,17 +2810,15 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@pancakeswap/uikit@cryptoinhero/peronio-uikit":
+"@pancakeswap/uikit@peronio-ar/peronio-uikit":
   version "0.62.0"
-  resolved "https://codeload.github.com/cryptoinhero/peronio-uikit/tar.gz/375ffa3e7e4c374f9797aa85d2799775ba593f4f"
+  resolved "https://codeload.github.com/peronio-ar/peronio-uikit/tar.gz/c23879f9c8dd5436cb0ff92f4f2c6862bd13835c"
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
     "@types/styled-system" "^5.1.10"
     lodash "^4.17.20"
     react-popper "^2.2.5"
-    react-transition-group "^4.4.1"
-    rimraf "^3.0.2"
     styled-system "^5.1.5"
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
