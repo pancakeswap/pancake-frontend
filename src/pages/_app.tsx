@@ -80,19 +80,19 @@ function MyApp(props: AppProps) {
         }}
       />
       <Providers>
-        <PersistGate loading={<PageLoader />} persistor={persistor}>
-          <Blocklist>
-            <GlobalHooks />
-            <Updaters />
-            <ResetCSS />
-            <GlobalStyle />
-            <GlobalCheckClaimStatus excludeLocations={[]} />
+        <Blocklist>
+          <GlobalHooks />
+          <Updaters />
+          <ResetCSS />
+          <GlobalStyle />
+          <GlobalCheckClaimStatus excludeLocations={[]} />
+          <PersistGate loading={null} persistor={persistor}>
             <App {...props} />
-            <EasterEgg iterations={2} />
-            <ToastListener />
-            <SubgraphHealthIndicator />
-          </Blocklist>
-        </PersistGate>
+          </PersistGate>
+          <EasterEgg iterations={2} />
+          <ToastListener />
+          <SubgraphHealthIndicator />
+        </Blocklist>
       </Providers>
     </>
   )
