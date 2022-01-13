@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
-import sum from 'lodash/sum'
 import Page from 'components/Layout/Page'
 import { useFetchByBunnyIdAndUpdate, useGetAllBunniesByBunnyId } from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
@@ -45,7 +44,11 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
   const cheapestBunny = bunniesSortedByPrice[0]
   const cheapestBunnyFromOtherSellers = allBunniesFromOtherSellers[0]
 
-  const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
+  const {
+    data: distributionData,
+    total: totalBunnyCount,
+    isFetching: isFetchingDistribution,
+  } = useGetCollectionDistributionPB()
 
   useEffect(() => {
     // Fetch first 30 NFTs on page load
@@ -116,15 +119,14 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
 
   const getBunnyIdCount = () => {
     if (distributionData && !isFetchingDistribution) {
-      return distributionData[bunnyId]
+      return distributionData[bunnyId].tokenCount
     }
     return null
   }
 
   const getBunnyIdRarity = () => {
     if (distributionData && !isFetchingDistribution) {
-      const total = sum(Object.values(distributionData))
-      return (distributionData[bunnyId] / total) * 100
+      return (distributionData[bunnyId].tokenCount / totalBunnyCount) * 100
     }
     return null
   }

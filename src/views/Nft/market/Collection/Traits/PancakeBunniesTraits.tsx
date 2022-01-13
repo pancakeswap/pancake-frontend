@@ -1,19 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Skeleton, Table, Td, Th, Flex, ArrowUpIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { useHistory } from 'react-router'
 import times from 'lodash/times'
-import sum from 'lodash/sum'
 import { formatNumber } from 'utils/formatBalance'
-import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
-import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import CollapsibleCard from 'components/CollapsibleCard'
 import { useGetLowestPriceFromBunnyId } from '../../hooks/useGetLowestPrice'
 import { BNBAmountLabel } from '../../components/CollectibleCard/styles'
-import { sortBunniesByRarityBuilder } from './utils'
 import { nftsBaseUrl } from '../../constants'
 import { SortType } from '../../types'
 import { ClickableRow, NftName, StyledSortButton, TableWrapper } from './styles'
+import { useGetCollectionDistributionPB } from '../../hooks/useGetCollectionDistribution'
 
 interface PancakeBunniesTraitsProps {
   collectionAddress: string
@@ -38,27 +35,27 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
 }
 
 const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
-  const [tokenApiResponse, setTokenApiResponse] = useState<ApiResponseCollectionTokens>(null)
   const [raritySort, setRaritySort] = useState<SortType>('asc')
   const { t } = useTranslation()
   const { push } = useHistory()
+  const {
+    data: distributionData,
+    total: totalBunnyCount,
+    isFetching: isFetchingDistribution,
+  } = useGetCollectionDistributionPB()
 
-  useEffect(() => {
-    const fetchTokens = async () => {
-      const apiResponse = await getNftsFromCollectionApi(collectionAddress)
-      setTokenApiResponse(apiResponse)
-    }
+  const sortedTokenList = useMemo(() => {
+    if (!distributionData || !Object.keys(distributionData)) return []
 
-    fetchTokens()
-  }, [collectionAddress, setTokenApiResponse])
+    const distributionKeys: string[] = Object.keys(distributionData)
+    const distributionValues: any[] = Object.values(distributionData)
 
-  const totalMinted = tokenApiResponse ? sum(Object.values(tokenApiResponse.attributesDistribution)) : 0
-
-  const sortedBunnieKeys = useMemo(() => {
-    if (!tokenApiResponse) return []
-
-    return Object.keys(tokenApiResponse.data).sort(sortBunniesByRarityBuilder({ raritySort, data: tokenApiResponse }))
-  }, [raritySort, tokenApiResponse])
+    return distributionValues
+      .map((token, index) => ({ ...token, tokenId: distributionKeys[index] }))
+      .sort((tokenA, tokenB) => {
+        return raritySort === 'asc' ? tokenA.tokenCount - tokenB.tokenCount : tokenB.tokenCount - tokenA.tokenCount
+      })
+  }, [raritySort, distributionData])
 
   const toggleRaritySort = () => {
     setRaritySort((currentValue) => (currentValue === 'asc' ? 'desc' : 'asc'))
@@ -66,7 +63,7 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
 
   return (
     <>
-      {tokenApiResponse ? (
+      {!isFetchingDistribution ? (
         <CollapsibleCard title={t('Bunny Id')}>
           <TableWrapper>
             <Table>
@@ -86,27 +83,22 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
                 </tr>
               </thead>
               <tbody>
-                {sortedBunnieKeys.map((bunnyId) => {
-                  const nft = tokenApiResponse.data[bunnyId]
-                  if (!nft) {
-                    // Some bunnies don't exist on testnet
-                    return null
-                  }
-                  const count: number = tokenApiResponse.attributesDistribution[bunnyId] ?? 0
-                  const percentage = (count / totalMinted) * 100
+                {sortedTokenList.map((token) => {
+                  const count: number = token.tokenCount
+                  const percentage = (count / totalBunnyCount) * 100
                   const handleClick = () => {
-                    push(`${nftsBaseUrl}/collections/${collectionAddress}/${bunnyId}`)
+                    push(`${nftsBaseUrl}/collections/${collectionAddress}/${token.tokenId}`)
                   }
 
                   return (
-                    <ClickableRow key={bunnyId} onClick={handleClick} title={t('Click to view NFT')}>
+                    <ClickableRow key={token.tokenId} onClick={handleClick} title={t('Click to view NFT')}>
                       <Td>
-                        <NftName thumbnailSrc={nft.image.thumbnail} name={nft.name} />
+                        <NftName thumbnailSrc={token.image.thumbnail} name={token.name} />
                       </Td>
                       <Td textAlign="center">{formatNumber(count, 0, 0)}</Td>
                       <Td textAlign="center">{`${formatNumber(percentage, 0, 2)}%`}</Td>
                       <Td textAlign="right" width="100px">
-                        <LowestPriceCell bunnyId={bunnyId} />
+                        <LowestPriceCell bunnyId={token.tokenId} />
                       </Td>
                     </ClickableRow>
                   )
