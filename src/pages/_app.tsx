@@ -72,17 +72,9 @@ function MyApp(props: AppProps) {
           <ResetCSS />
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
-          {/*
-            Conditionally rendering `PersistGate` will cause react dom hydrate error.
-            "Warning: Did not expect server HTML to contain a <div> in <div>."
-           */}
-          {process.browser ? (
-            <PersistGate loading={null} persistor={persistor}>
-              <App {...props} />
-            </PersistGate>
-          ) : (
+          <PersistGate loading={null} persistor={persistor}>
             <App {...props} />
-          )}
+          </PersistGate>
         </Blocklist>
       </Providers>
       <Script
