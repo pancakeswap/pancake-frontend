@@ -10,8 +10,8 @@ interface Props {
 }
 
 const blink = keyframes`
-  0%,  100% { transform: scaleY(1); } 
-  50% { transform:  scaleY(0.1); } 
+  0%,  100% { transform: scaleY(1); }
+  50% { transform:  scaleY(0.1); }
 `;
 
 const StyledLink = styled(Link)`
@@ -30,12 +30,11 @@ const StyledLink = styled(Link)`
       display: block;
     }
   }
-  .right-eye {
+  .eye {
     animation-delay: 20ms;
   }
   &:hover {
-    .left-eye,
-    .right-eye {
+    .eye {
       transform-origin: center 60%;
       animation-name: ${blink};
       animation-duration: 350ms;
