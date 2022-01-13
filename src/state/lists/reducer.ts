@@ -177,7 +177,7 @@ export default createReducer(initialState, (builder) =>
         state.activeListUrls = DEFAULT_ACTIVE_LIST_URLS
 
         // for each list on default list, initialize if needed
-        DEFAULT_ACTIVE_LIST_URLS.map((listUrl: string) => {
+        DEFAULT_ACTIVE_LIST_URLS.forEach((listUrl: string) => {
           if (!state.byUrl[listUrl]) {
             state.byUrl[listUrl] = NEW_LIST_STATE
           }

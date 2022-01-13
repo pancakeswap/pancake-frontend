@@ -92,7 +92,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           variant="danger"
           disabled={!confirmed}
           onClick={() => {
-            tokens.map((token) => addToken(token))
+            tokens.forEach((token) => addToken(token))
             if (handleCurrencySelect) {
               handleCurrencySelect(tokens[0])
             }
