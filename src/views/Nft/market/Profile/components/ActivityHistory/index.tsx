@@ -116,7 +116,7 @@ const ActivityHistory = () => {
   }, [sortedUserActivities, currentPage])
 
   return (
-    <Card>
+    <Card style={{ overflowX: 'auto' }}>
       {sortedUserActivities.length === 0 && nftMetadata.length === 0 && activitiesSlice.length === 0 && !isLoading ? (
         <Flex p="24px" flexDirection="column" alignItems="center">
           <NoNftsImage />

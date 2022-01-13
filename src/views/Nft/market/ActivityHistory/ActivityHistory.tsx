@@ -135,7 +135,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
           </Button>
         </Flex>
       </Container>
-      <Container>
+      <Container style={{ overflowX: 'auto' }}>
         {paginationData.activity.length === 0 &&
         nftMetadata.length === 0 &&
         activitiesSlice.length === 0 &&
