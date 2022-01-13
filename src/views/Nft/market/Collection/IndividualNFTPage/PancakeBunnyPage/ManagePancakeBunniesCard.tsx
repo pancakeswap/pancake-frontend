@@ -151,6 +151,8 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
   const loading = userNftsInitializationState !== UserNftInitializationState.INITIALIZED
   const useHasNoBunnies =
     !loading && bunniesInWallet.length === 0 && bunniesForSale.length === 0 && profilePicBunny.length === 0
+  const totalBunnies = bunniesInWallet.length + bunniesForSale.length + profilePicBunny.length
+  const totalBunniesText = account && !useHasNoBunnies ? ` (${totalBunnies})` : ''
 
   const content = (
     <Box pt="16px">
@@ -188,7 +190,13 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
       )}
     </Box>
   )
-  return <ExpandableCard title={t('Manage Yours')} icon={<CogIcon width="24px" height="24px" />} content={content} />
+  return (
+    <ExpandableCard
+      title={`${t('Manage Yours')}${totalBunniesText}`}
+      icon={<CogIcon width="24px" height="24px" />}
+      content={content}
+    />
+  )
 }
 
 export default ManagePancakeBunniesCard
