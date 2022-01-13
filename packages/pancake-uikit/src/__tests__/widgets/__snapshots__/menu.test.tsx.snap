@@ -2819,6 +2819,36 @@ exports[`renders correctly 1`] = `
                     Français
                   </a>
                   <a
+                    aria-label="Datch"
+                    class="c29 c62"
+                    color="textSubtle"
+                    href="https://t.me/PancakeSwap_DE"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                  >
+                    Datch
+                  </a>
+                  <a
+                    aria-label="Filipino"
+                    class="c29 c62"
+                    color="textSubtle"
+                    href="https://t.me/Pancakeswap_Ph"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                  >
+                    Filipino
+                  </a>
+                  <a
+                    aria-label="ქართული ენა"
+                    class="c29 c62"
+                    color="textSubtle"
+                    href="https://t.me/PancakeSwapGeorgia"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                  >
+                    ქართული ენა
+                  </a>
+                  <a
                     aria-label="Announcements"
                     class="c29 c62"
                     color="textSubtle"
@@ -2827,16 +2857,6 @@ exports[`renders correctly 1`] = `
                     target="_blank"
                   >
                     Announcements
-                  </a>
-                  <a
-                    aria-label="Whale Alert"
-                    class="c29 c62"
-                    color="textSubtle"
-                    href="https://t.me/PancakeSwapWhales"
-                    rel="noreferrer noopener"
-                    target="_blank"
-                  >
-                    Whale Alert
                   </a>
                 </div>
               </div>
