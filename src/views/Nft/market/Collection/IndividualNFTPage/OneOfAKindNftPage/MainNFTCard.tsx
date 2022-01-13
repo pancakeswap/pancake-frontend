@@ -4,6 +4,7 @@ import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import React from 'react'
 import { NftToken } from 'state/nftMarket/types'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { formatNumber } from 'utils/formatBalance'
 import NFTMedia from 'views/Nft/market/components/NFTMedia'
 import EditProfileModal from 'views/Nft/market/Profile/components/EditProfileModal'
 import BuyModal from '../../../components/BuySellModals/BuyModal'
@@ -75,7 +76,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
                 <Flex alignItems="center" mt="8px">
                   <BinanceIcon width={18} height={18} mr="4px" />
                   <Text fontSize="24px" bold mr="4px">
-                    {nft.marketData.currentAskPrice}
+                    {formatNumber(currentAskPriceAsNumber, 0, 5)}
                   </Text>
                   {bnbBusdPrice ? (
                     <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {

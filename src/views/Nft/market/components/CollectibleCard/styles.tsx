@@ -33,7 +33,7 @@ export const BNBAmountLabel: React.FC<BNBAmountLabelProps> = ({ amount, ...props
     <Text fontWeight="600">
       {amount.toLocaleString(undefined, {
         minimumFractionDigits: 0,
-        maximumFractionDigits: 4,
+        maximumFractionDigits: 5,
       })}
     </Text>
   </Flex>

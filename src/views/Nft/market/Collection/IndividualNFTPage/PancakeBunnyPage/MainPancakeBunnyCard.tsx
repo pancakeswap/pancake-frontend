@@ -1,6 +1,7 @@
 import React from 'react'
 import { Flex, Box, Card, CardBody, Text, Button, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { formatNumber } from 'utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
 import NFTMedia from 'views/Nft/market/components/NFTMedia'
@@ -75,7 +76,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
                   <Flex alignItems="center" mt="8px">
                     <BinanceIcon width={18} height={18} mr="4px" />
                     <Text fontSize="24px" bold mr="4px">
-                      {nftToDisplay.marketData.currentAskPrice}
+                      {formatNumber(parseFloat(nftToDisplay.marketData?.currentAskPrice), 0, 5)}
                     </Text>
                     {bnbBusdPrice ? (
                       <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {

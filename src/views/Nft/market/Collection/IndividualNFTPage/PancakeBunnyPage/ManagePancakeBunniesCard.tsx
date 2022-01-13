@@ -16,6 +16,7 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import { useUserNfts } from 'state/nftMarket/hooks'
 import { NftLocation, NftToken, UserNftInitializationState } from 'state/nftMarket/types'
+import { formatNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import ExpandableCard from '../shared/ExpandableCard'
@@ -77,7 +78,7 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, lowestPrice }) => 
             </Text>
             <Flex justifySelf="flex-end" width="max-content">
               <BinanceIcon width="16px" height="16px" mr="4px" />
-              <Text small>{lowestPrice}</Text>
+              <Text small>{formatNumber(parseFloat(lowestPrice), 0, 5)}</Text>
             </Flex>
           </>
         )}
