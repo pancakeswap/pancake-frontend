@@ -3,7 +3,6 @@ import Script from 'next/script'
 import BigNumber from 'bignumber.js'
 import EasterEgg from 'components/EasterEgg'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
-import PageLoader from 'components/Loader/PageLoader'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { ToastListener } from 'contexts/ToastsContext'
 import useEagerConnect from 'hooks/useEagerConnect'
@@ -66,6 +65,26 @@ function MyApp(props: AppProps) {
         />
         <title>PancakeSwap</title>
       </Head>
+      <Providers>
+        <Blocklist>
+          <GlobalHooks />
+          <Updaters />
+          <ResetCSS />
+          <GlobalStyle />
+          <GlobalCheckClaimStatus excludeLocations={[]} />
+          {/*
+            Conditionally rendering `PersistGate` will cause react dom hydrate error.
+            "Warning: Did not expect server HTML to contain a <div> in <div>."
+           */}
+          {process.browser ? (
+            <PersistGate loading={null} persistor={persistor}>
+              <App {...props} />
+            </PersistGate>
+          ) : (
+            <App {...props} />
+          )}
+        </Blocklist>
+      </Providers>
       <Script
         strategy="afterInteractive"
         id="google-tag"
@@ -79,21 +98,6 @@ function MyApp(props: AppProps) {
           `,
         }}
       />
-      <Providers>
-        <Blocklist>
-          <GlobalHooks />
-          <Updaters />
-          <ResetCSS />
-          <GlobalStyle />
-          <GlobalCheckClaimStatus excludeLocations={[]} />
-          <PersistGate loading={null} persistor={persistor}>
-            <App {...props} />
-          </PersistGate>
-          <EasterEgg iterations={2} />
-          <ToastListener />
-          <SubgraphHealthIndicator />
-        </Blocklist>
-      </Providers>
     </>
   )
 }
@@ -110,11 +114,16 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
   return (
-    <Menu>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </Menu>
+    <>
+      <Menu>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Menu>
+      <EasterEgg iterations={2} />
+      <ToastListener />
+      <SubgraphHealthIndicator />
+    </>
   )
 }
 
