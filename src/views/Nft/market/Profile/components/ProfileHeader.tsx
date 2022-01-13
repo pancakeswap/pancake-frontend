@@ -22,6 +22,7 @@ interface HeaderProps {
   isAchievementsLoading: boolean
   isNftLoading: boolean
   isProfileLoading: boolean
+  onSuccess?: () => void
 }
 
 // Account and profile passed down as the profile could be used to render _other_ users' profiles.
@@ -33,10 +34,20 @@ const ProfileHeader: React.FC<HeaderProps> = ({
   isAchievementsLoading,
   isNftLoading,
   isProfileLoading,
+  onSuccess,
 }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const [onEditProfileModal] = useModal(<EditProfileModal />, false)
+  const [onEditProfileModal] = useModal(
+    <EditProfileModal
+      onSuccess={() => {
+        if (onSuccess) {
+          onSuccess()
+        }
+      }}
+    />,
+    false,
+  )
 
   const isConnectedAccount = account?.toLowerCase() === accountPath?.toLowerCase()
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
@@ -93,7 +104,15 @@ const ProfileHeader: React.FC<HeaderProps> = ({
       return (
         <>
           {profile && accountPath && isConnectedAccount ? (
-            <EditProfileAvatar src={avatarImage} alt={t('User profile picture')} />
+            <EditProfileAvatar
+              src={avatarImage}
+              alt={t('User profile picture')}
+              onSuccess={() => {
+                if (onSuccess) {
+                  onSuccess()
+                }
+              }}
+            />
           ) : (
             <AvatarImage src={avatarImage} alt={t('User profile picture')} />
           )}

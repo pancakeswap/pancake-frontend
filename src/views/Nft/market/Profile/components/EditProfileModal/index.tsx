@@ -8,7 +8,9 @@ import PauseProfileView from './PauseProfileView'
 import ChangeProfilePicView from './ChangeProfilePicView'
 import ApproveCakeView from './ApproveCakeView'
 
-type EditProfileModalProps = InjectedModalProps
+interface EditProfileModalProps extends InjectedModalProps {
+  onSuccess: () => void
+}
 
 const viewTitle = (t: ContextApi['t'], currentView: Views) => {
   switch (currentView) {
@@ -25,7 +27,7 @@ const viewTitle = (t: ContextApi['t'], currentView: Views) => {
   }
 }
 
-const EditProfileModal: React.FC<EditProfileModalProps> = ({ onDismiss }) => {
+const EditProfileModal: React.FC<EditProfileModalProps> = ({ onDismiss, onSuccess }) => {
   const { currentView, goToChange, goToRemove, goToApprove, goPrevious } = useEditProfile()
   const { t } = useTranslation()
 
@@ -38,7 +40,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onDismiss }) => {
         {currentView === Views.START && (
           <StartView goToApprove={goToApprove} goToChange={goToChange} goToRemove={goToRemove} onDismiss={onDismiss} />
         )}
-        {currentView === Views.REMOVE && <PauseProfileView onDismiss={onDismiss} />}
+        {currentView === Views.REMOVE && <PauseProfileView onDismiss={onDismiss} onSuccess={onSuccess} />}
         {currentView === Views.CHANGE && <ChangeProfilePicView onDismiss={onDismiss} />}
         {currentView === Views.APPROVE && <ApproveCakeView goToChange={goToChange} onDismiss={onDismiss} />}
       </div>

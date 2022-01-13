@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import sum from 'lodash/sum'
+import useLastUpdated from 'hooks/useLastUpdated'
 import Page from 'components/Layout/Page'
-import { getNftApi, getNftsMarketData } from 'state/nftMarket/helpers'
-import { NftLocation, NftToken } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
 import MainNFTCard from './MainNFTCard'
 import ManageNFTsCard from './ManageNFTsCard'
@@ -29,8 +27,13 @@ const OwnerActivityContainer = styled(Flex)`
 
 const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress, tokenId }) => {
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistribution(collectionAddress)
-
-  const { combinedNft: nft, isOwn: isOwnNft, isProfilePic, isLoading } = useCompleteNft(collectionAddress, tokenId)
+  const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
+  const {
+    combinedNft: nft,
+    isOwn: isOwnNft,
+    isProfilePic,
+    isLoading,
+  } = useCompleteNft(collectionAddress, tokenId, lastUpdated)
 
   if (!nft) {
     // TODO redirect to nft market page if collection or bunny id does not exist (came here from some bad url)
@@ -60,15 +63,15 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
 
   return (
     <Page>
-      <MainNFTCard nft={nft} isOwnNft={isOwnNft} nftIsProfilePic={isProfilePic} />
+      <MainNFTCard nft={nft} isOwnNft={isOwnNft} nftIsProfilePic={isProfilePic} onSuccess={refresh} />
       <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
-          <ManageNFTsCard nft={nft} isOwnNft={isOwnNft} isLoading={isLoading} />
+          <ManageNFTsCard nft={nft} isOwnNft={isOwnNft} isLoading={isLoading} onSuccess={refresh} />
           <PropertiesCard properties={properties} rarity={getAttributesRarity()} />
           <DetailsCard contractAddress={collectionAddress} ipfsJson={nft?.marketData?.metadataUrl} />
         </Flex>
         <OwnerActivityContainer flexDirection="column" width="100%">
-          <OwnerCard nft={nft} isOwnNft={isOwnNft} nftIsProfilePic={isProfilePic} />
+          <OwnerCard nft={nft} isOwnNft={isOwnNft} nftIsProfilePic={isProfilePic} onSuccess={refresh} />
           <ActivityCard nft={nft} />
         </OwnerActivityContainer>
       </TwoColumnsContainer>

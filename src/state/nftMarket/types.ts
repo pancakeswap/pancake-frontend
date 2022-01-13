@@ -32,12 +32,6 @@ export interface State {
   }
 }
 
-export interface UserNftsState {
-  userNftsInitializationState: UserNftInitializationState
-  nfts: NftToken[]
-  activity: UserActivity
-}
-
 export interface Transaction {
   id: string
   block: string

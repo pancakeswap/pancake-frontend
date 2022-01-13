@@ -938,9 +938,7 @@ export const getCompleteAccountNftData = async (
     })
     .map((nft) => nft.tokenId)
 
-  const marketDataForSaleNfts = walletMarketData.filter(
-    (nft) => nft.currentSeller.toLowerCase() === account.toLowerCase(),
-  )
+  const marketDataForSaleNfts = await getNftsMarketData({ currentSeller: account.toLowerCase() })
   const tokenIdsForSale = marketDataForSaleNfts.map((nft) => nft.tokenId)
 
   const forSaleNftIds = marketDataForSaleNfts.map((nft) => {

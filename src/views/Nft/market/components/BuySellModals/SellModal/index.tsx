@@ -11,9 +11,7 @@ import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { isAddress } from 'utils'
 import { useErc721CollectionContract, useNftMarketContract } from 'hooks/useContract'
-import { useAppDispatch } from 'state'
-import { removeUserNft, updateUserNft } from 'state/nftMarket/reducer'
-import { NftLocation, NftToken } from 'state/nftMarket/types'
+import { NftToken } from 'state/nftMarket/types'
 import { useGetLowestPriceFromNft } from 'views/Nft/market/hooks/useGetLowestPrice'
 import SellStage from './SellStage'
 import SetPriceStage from './SetPriceStage'
@@ -75,9 +73,10 @@ const getToastText = (variant: string, stage: SellingStage, t: ContextApi['t']) 
 interface SellModalProps extends InjectedModalProps {
   variant: 'sell' | 'edit'
   nftToSell: NftToken
+  onSuccess: () => void
 }
 
-const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) => {
+const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss, onSuccess }) => {
   const [stage, setStage] = useState(variant === 'sell' ? SellingStage.SELL : SellingStage.EDIT)
   const [price, setPrice] = useState(variant === 'sell' ? '' : nftToSell.marketData.currentAskPrice)
   const [transferAddress, setTransferAddress] = useState('')
@@ -89,7 +88,6 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
   const { toastSuccess } = useToast()
   const collectionContract = useErc721CollectionContract(nftToSell.collectionAddress)
   const nftMarketContract = useNftMarketContract()
-  const dispatch = useAppDispatch()
 
   const isInvalidTransferAddress = transferAddress.length > 0 && !isAddress(transferAddress)
 
@@ -160,39 +158,6 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
     setStage(SellingStage.TRANSFER)
   }
 
-  const dispatchSuccessAction = () => {
-    switch (stage) {
-      // Remove from sale
-      case SellingStage.CONFIRM_REMOVE_FROM_MARKET:
-        dispatch(
-          updateUserNft({
-            tokenId: nftToSell.tokenId,
-            collectionAddress: nftToSell.collectionAddress,
-            location: NftLocation.WALLET,
-          }),
-        )
-        break
-      // Transfer NFT
-      case SellingStage.CONFIRM_TRANSFER:
-        dispatch(
-          removeUserNft({
-            tokenId: nftToSell.tokenId,
-          }),
-        )
-        break
-      default:
-        // Modify listing OR list for sale
-        dispatch(
-          updateUserNft({
-            tokenId: nftToSell.tokenId,
-            collectionAddress: nftToSell.collectionAddress,
-            location: NftLocation.FORSALE,
-          }),
-        )
-        break
-    }
-  }
-
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
@@ -228,7 +193,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
     },
     onSuccess: async ({ receipt }) => {
       toastSuccess(getToastText(variant, stage, t), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      dispatchSuccessAction()
+      onSuccess()
       setConfirmedTxHash(receipt.transactionHash)
       setStage(SellingStage.TX_CONFIRMED)
     },
@@ -250,6 +215,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss }) 
           lowestPrice={lowestPrice}
           continueToNextStage={continueToNextStage}
           continueToTransferStage={continueToTransferStage}
+          onSuccessSale={onSuccess}
         />
       )}
       {stage === SellingStage.SET_PRICE && (

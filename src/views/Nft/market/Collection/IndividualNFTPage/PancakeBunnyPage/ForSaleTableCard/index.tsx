@@ -45,6 +45,7 @@ interface ForSaleTableCardProps {
   isFetchingMoreNfts: boolean
   togglePriceSort: () => void
   loadMore: (orderDirection: 'asc' | 'desc') => void
+  onSuccessSale: () => void
 }
 
 const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({
@@ -55,6 +56,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({
   isFetchingMoreNfts,
   priceSort,
   togglePriceSort,
+  onSuccessSale,
 }) => {
   const [page, setPage] = useState(1)
   const { isMobile } = useMatchBreakpoints()
@@ -125,7 +127,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({
             </Text>
           </TableHeading>
           <Flex flex="1 1 auto" flexDirection="column" justifyContent="space-between" height="100%">
-            <ForSaleTableRows nftsForSale={nftsOnCurrentPage} />
+            <ForSaleTableRows nftsForSale={nftsOnCurrentPage} onSuccessSale={onSuccessSale} />
             <PageButtons>
               <Arrow
                 onClick={() => {

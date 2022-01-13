@@ -7,7 +7,7 @@ import { useErc721CollectionContract } from '../../../../hooks/useContract'
 
 const NOT_ON_SALE_SELLER = '0x0000000000000000000000000000000000000000'
 
-export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
+export const useCompleteNft = (collectionAddress: string, tokenId: string, lastUpdated: number) => {
   const { account } = useWeb3React()
   const { isInitialized: isProfileInitialized, profile } = useProfile()
   const collectionContract = useErc721CollectionContract(collectionAddress, false)
@@ -70,7 +70,7 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
     } else {
       getNft()
     }
-  }, [account, isProfileInitialized, collectionAddress, tokenId, profile, collectionContract])
+  }, [account, isProfileInitialized, collectionAddress, tokenId, profile, collectionContract, lastUpdated])
 
   return {
     combinedNft,

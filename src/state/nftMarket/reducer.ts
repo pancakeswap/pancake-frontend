@@ -10,29 +10,23 @@ import {
   getCollectionsApi,
   getCollectionSg,
   getCollectionsSg,
-  getCompleteAccountNftData,
   getMarketDataForTokenIds,
   getMetadataWithFallback,
   getNftsByBunnyIdSg,
   getNftsFromCollectionApi,
-  getNftsFromDifferentCollectionsApi,
   getNftsMarketData,
   getPancakeBunniesAttributesField,
-  getUserActivity,
 } from './helpers'
 import {
-  ApiCollections,
   ApiSingleTokenData,
   Collection,
   MarketEvent,
   NftActivityFilter,
   NftAttribute,
   NftFilter,
-  NftLocation,
   NFTMarketInitializationState,
   NftToken,
   State,
-  TokenIdWithCollectionAddress,
 } from './types'
 
 const initialNftFilterState: NftFilter = {
@@ -232,55 +226,6 @@ export const fetchNewPBAndUpdateExisting = createAsyncThunk<
     }
   },
 )
-
-export const fetchUserNfts = createAsyncThunk<
-  NftToken[],
-  { account: string; profileNftWithCollectionAddress?: TokenIdWithCollectionAddress; collections: ApiCollections }
->('nft/fetchUserNfts', async ({ account, profileNftWithCollectionAddress, collections }) => {
-  const completeNftData = await getCompleteAccountNftData(account, collections, profileNftWithCollectionAddress)
-  return completeNftData
-})
-
-export const updateUserNft = createAsyncThunk<
-  NftToken,
-  { tokenId: string; collectionAddress: string; location?: NftLocation }
->('nft/updateUserNft', async ({ tokenId, collectionAddress, location = NftLocation.WALLET }) => {
-  const marketDataForNft = await getNftsMarketData({
-    tokenId_in: [tokenId],
-    collection: collectionAddress.toLowerCase(),
-  })
-  const metadataForNft = await getNftsFromDifferentCollectionsApi([{ tokenId, collectionAddress }])
-  const completeNftData = { ...metadataForNft[0], location, marketData: marketDataForNft[0] }
-
-  return completeNftData
-})
-
-export const removeUserNft = createAsyncThunk<string, { tokenId: string }>(
-  'nft/removeUserNft',
-  async ({ tokenId }) => tokenId,
-)
-
-export const addUserNft = createAsyncThunk<
-  NftToken,
-  { tokenId: string; collectionAddress: string; nftLocation?: NftLocation }
->('nft/addUserNft', async ({ tokenId, collectionAddress, nftLocation = NftLocation.WALLET }) => {
-  const marketDataForNft = await getNftsMarketData({
-    tokenId_in: [tokenId],
-    collection: collectionAddress.toLowerCase(),
-  })
-  const metadataForNft = await getNftsFromDifferentCollectionsApi([{ tokenId, collectionAddress }])
-
-  return {
-    ...metadataForNft[0],
-    location: nftLocation,
-    marketData: marketDataForNft[0],
-  }
-})
-
-export const fetchUserActivity = createAsyncThunk('nft/fetchUserActivity', async (address: string) => {
-  const userActivity = await getUserActivity(address.toLocaleLowerCase())
-  return userActivity
-})
 
 export const NftMarket = createSlice({
   name: 'NftMarket',

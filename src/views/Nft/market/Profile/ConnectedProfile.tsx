@@ -4,6 +4,7 @@ import { useAchievementsForAddress, useProfile } from 'state/profile/hooks'
 import { useWeb3React } from '@web3-react/core'
 import Page from 'components/Layout/Page'
 import styled from 'styled-components'
+import useLastUpdated from 'hooks/useLastUpdated'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import TabMenu from './components/TabMenu'
@@ -24,8 +25,12 @@ const TabMenuWrapper = styled(Box)`
 const ConnectedProfile: FC = ({ children }) => {
   const { account } = useWeb3React()
   const { isLoading: isProfileLoading, profile } = useProfile()
-  const { achievements, isFetching: isAchievementsFetching } = useAchievementsForAddress(account)
-  const { nfts: userNfts, isLoading: isNftLoading } = useNftsForAddress(account, profile, isProfileLoading)
+  const {
+    achievements,
+    isFetching: isAchievementsFetching,
+  } = useAchievementsForAddress(account)
+  const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
+  const { nfts: userNfts, isLoading: isNftLoading } = useNftsForAddress(account, profile, isProfileLoading, lastUpdated)
 
   return (
     <>
@@ -38,6 +43,7 @@ const ConnectedProfile: FC = ({ children }) => {
           isProfileLoading={isProfileLoading}
           isNftLoading={isNftLoading}
           isAchievementsLoading={isAchievementsFetching}
+          onSuccess={refresh}
         />
         <TabMenuWrapper>
           <TabMenu />

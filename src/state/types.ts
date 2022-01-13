@@ -212,11 +212,6 @@ export interface Achievement {
   points: number
 }
 
-export interface AchievementState {
-  achievements: Achievement[]
-  achievementFetchStatus: FetchStatus
-}
-
 // Block
 
 export interface BlockState {
@@ -564,7 +559,6 @@ export interface UserRound {
 // Global state
 
 export interface State {
-  achievements: AchievementState
   block: BlockState
   farms: SerializedFarmsState
   pools: PoolsState
