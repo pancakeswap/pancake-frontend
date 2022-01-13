@@ -15,6 +15,8 @@ import {
   TooltipText,
   Box,
   Link,
+  Message,
+  MessageText,
 } from '@pancakeswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
@@ -42,6 +44,20 @@ const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 
 // Default value for transaction setting, tweak based on BSC network congestion.
 const gasPrice = parseUnits('10', 'gwei').toString()
+
+const SmallAmountNotice: React.FC = () => {
+  const { t } = useTranslation()
+
+  return (
+    <Box maxWidth="350px">
+      <Message variant="warning" mb="16px">
+        <MessageText>
+          {t('If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.')}
+        </MessageText>
+      </Message>
+    </Box>
+  )
+}
 
 const ContributeModal: React.FC<Props> = ({
   poolId,
@@ -137,6 +153,7 @@ const ContributeModal: React.FC<Props> = ({
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
       <ModalBody maxWidth="360px">
+        {poolId === PoolIds.poolUnlimited && <SmallAmountNotice />}
         <Box p="2px">
           <Flex justifyContent="space-between" mb="16px">
             {tooltipVisible && tooltip}
