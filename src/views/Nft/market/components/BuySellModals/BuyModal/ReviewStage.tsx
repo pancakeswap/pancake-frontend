@@ -43,7 +43,7 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
               {nftToBuy.collectionName}
             </Text>
             <Text bold>{nftToBuy.name}</Text>
-            <Flex justifyContent="space-between" alignItems="center">
+            <Flex alignItems="center">
               <Text fontSize="12px" color="textSubtle" p="0px" height="16px" mr="4px">
                 {t('Token ID:')}
               </Text>
