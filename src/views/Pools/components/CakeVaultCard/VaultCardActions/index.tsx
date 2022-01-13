@@ -24,7 +24,7 @@ export const IfoVaultCardAvgBalance = () => {
   const credit = useIfoPoolCredit()
 
   const cakeAsNumberBalance = getBalanceNumber(credit)
-  const creditsDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
+  const creditsDollarValue: number | undefined = useBUSDCakeAmount(cakeAsNumberBalance)
 
   return (
     <>
@@ -55,7 +55,7 @@ export const IfoVaultCardAvgBalance = () => {
       <Flex flexDirection="column" pb="16px">
         <Balance fontSize="20px" bold value={cakeAsNumberBalance} decimals={5} />
         <Text fontSize="12px" color="textSubtle" display="flex">
-          {creditsDollarValue ? (
+          {creditsDollarValue !== undefined ? (
             <Balance
               value={creditsDollarValue}
               fontSize="12px"
