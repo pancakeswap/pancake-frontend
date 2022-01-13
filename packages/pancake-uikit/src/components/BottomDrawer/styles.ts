@@ -3,25 +3,25 @@ import styled, { keyframes, css } from "styled-components";
 
 const MountAnimation = keyframes`
     0% {
-      bottom: ${-window.innerHeight}px;
+      bottom: -80vh;
     }
     100% {
-      bottom: ${-window.innerHeight * 0.01}px
+      bottom: 0vh;
     }
   `;
 
 const UnmountAnimation = keyframes`
     0% {
-      bottom: ${-window.innerHeight * 0.01}px
+      bottom: 0vh;
     }
     100% {
-      bottom: ${-window.innerHeight}px;
+      bottom: -80vh;
     }
   `;
 
 export const DrawerContainer = styled.div<{ isUnmounting: boolean }>`
   width: 100%;
-  height: ${window.innerHeight * 0.81}px;
+  height: 80vh;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;

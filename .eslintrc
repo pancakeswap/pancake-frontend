@@ -12,7 +12,8 @@
           "src/mocks/**"
         ]
       }
-    ]
+    ],
+    "import/prefer-default-export": 0
   },
   "overrides": [
     {

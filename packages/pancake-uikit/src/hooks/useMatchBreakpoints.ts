@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { breakpointMap } from "../theme/base";
+import { useIsomorphicEffect } from "./useIsomorphicEffect";
 
 type State = {
   [key: string]: boolean;
@@ -42,16 +43,25 @@ const mediaQueries: MediaQueries = (() => {
 
 const getKey = (size: string) => `is${size.charAt(0).toUpperCase()}${size.slice(1)}`;
 
-const useMatchBreakpoints = (): BreakpointChecks => {
-  const [state, setState] = useState<State>(() => {
-    return Object.keys(mediaQueries).reduce((accum, size) => {
-      const key = getKey(size);
-      const mql = window.matchMedia(mediaQueries[size]);
-      return { ...accum, [key]: mql.matches };
-    }, {});
-  });
+const getState = () => {
+  const s = Object.keys(mediaQueries).reduce((accum, size) => {
+    const key = getKey(size);
+    if (typeof window === "undefined") {
+      return {
+        ...accum,
+        [key]: false,
+      };
+    }
+    const mql = window.matchMedia(mediaQueries[size]);
+    return { ...accum, [key]: mql?.matches ?? false };
+  }, {});
+  return s;
+};
 
-  useEffect(() => {
+const useMatchBreakpoints = (): BreakpointChecks => {
+  const [state, setState] = useState<State>(() => getState());
+
+  useIsomorphicEffect(() => {
     // Create listeners for each media query returning a function to unsubscribe
     const handlers = Object.keys(mediaQueries).map((size) => {
       const mql = window.matchMedia(mediaQueries[size]);
@@ -77,12 +87,14 @@ const useMatchBreakpoints = (): BreakpointChecks => {
       };
     });
 
+    setState(getState());
+
     return () => {
       handlers.forEach((unsubscribe) => {
         unsubscribe();
       });
     };
-  }, [setState]);
+  }, []);
 
   return {
     ...state,

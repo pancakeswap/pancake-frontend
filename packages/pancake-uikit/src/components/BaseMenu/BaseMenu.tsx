@@ -3,8 +3,7 @@ import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { ClickableElementContainer } from "./styles";
 import { BaseMenuProps } from "./types";
-
-const portalRoot = document.getElementById("portal-root");
+import getPortalRoot from "../../util/getPortalRoot";
 
 const BaseMenu: React.FC<BaseMenuProps> = ({ component, options, children, isOpen = false }) => {
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
@@ -67,7 +66,8 @@ const BaseMenu: React.FC<BaseMenuProps> = ({ component, options, children, isOpe
     </div>
   );
 
-  const renderMenu = portalRoot ? createPortal(menu, portalRoot) : menu;
+  const portal = getPortalRoot();
+  const renderMenu = portal ? createPortal(menu, portal) : menu;
 
   return (
     <>
