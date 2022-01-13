@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { Text, Heading, Card } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'
@@ -6,12 +6,11 @@ import { useAllTokenData, useTokenDatas } from 'state/info/hooks'
 import { useWatchlistTokens } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import TopTokenMovers from 'views/Info/components/TopTokenMovers'
+import { useScrollTop } from 'hooks/useScrollTop'
 
 const TokensOverview: React.FC = () => {
   const { t } = useTranslation()
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  useScrollTop()
 
   const allTokens = useAllTokenData()
 

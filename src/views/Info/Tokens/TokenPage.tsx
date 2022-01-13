@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { RouteComponentProps, Link } from 'react-router-dom'
 import { Duration } from 'date-fns'
 import styled from 'styled-components'
@@ -39,6 +39,7 @@ import { useWatchlistTokens } from 'state/user/hooks'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { useTranslation } from 'contexts/Localization'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import { useScrollTop } from 'hooks/useScrollTop'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -71,9 +72,7 @@ const TokenPage: React.FC<RouteComponentProps<{ address: string }>> = ({
   const { t } = useTranslation()
 
   // Needed to scroll up if user comes to this page by clicking on entry in the table
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  useScrollTop()
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()

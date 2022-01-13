@@ -25,7 +25,7 @@ const ScrollToTopButton = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 400,
-      behavior: 'auto',
+      behavior: 'smooth',
     })
   }
 

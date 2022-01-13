@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps, Link } from 'react-router-dom'
 import {
   Text,
@@ -29,6 +29,7 @@ import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable
 import { useWatchlistPools } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import { useScrollTop } from 'hooks/useScrollTop'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -75,9 +76,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
   )
 
   // Needed to scroll up if user comes to this page by clicking on entry in the table
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  useScrollTop()
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
