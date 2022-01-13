@@ -1,10 +1,9 @@
 import { gql, request } from 'graphql-request'
 import { stringify } from 'qs'
 import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
-import { getErc721Contract } from 'utils/contractHelpers'
-import { ethers } from 'ethers'
-import map from 'lodash/map'
-import { uniq } from 'lodash'
+import { multicallv2 } from 'utils/multicall'
+import erc721Abi from 'config/abi/erc721.json'
+import { uniq, range } from 'lodash'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
   ApiCollection,
@@ -712,54 +711,47 @@ export const fetchWalletTokenIdsForCollections = async (
   account: string,
   collections: ApiCollections,
 ): Promise<TokenIdWithCollectionAddress[]> => {
-  const walletNftPromises = map(collections, async (collection): Promise<TokenIdWithCollectionAddress[]> => {
+  const balanceOfCalls = Object.values(collections).map((collection) => {
     const { address: collectionAddress } = collection
-    const contract = getErc721Contract(collectionAddress)
-    let balanceOfResponse
-
-    try {
-      balanceOfResponse = await contract.balanceOf(account)
-    } catch (e) {
-      console.error(e)
-      return []
+    return {
+      address: collectionAddress,
+      name: 'balanceOf',
+      params: [account],
     }
-
-    const balanceOf = balanceOfResponse.toNumber()
-
-    // User has no NFTs for this collection
-    if (balanceOfResponse.eq(0)) {
-      return []
-    }
-
-    const getTokenId = async (index: number) => {
-      try {
-        const tokenIdBn: ethers.BigNumber = await contract.tokenOfOwnerByIndex(account, index)
-        const tokenId = tokenIdBn.toString()
-        return tokenId
-      } catch (error) {
-        console.error('getTokenIdAndData', error)
-        return null
-      }
-    }
-
-    const tokenIdPromises = []
-
-    // For each index get the tokenId
-    for (let i = 0; i < balanceOf; i++) {
-      tokenIdPromises.push(getTokenId(i))
-    }
-
-    const tokenIds = await Promise.all(tokenIdPromises)
-    const nftLocation = NftLocation.WALLET
-    const tokensWithCollectionAddress = tokenIds.map((tokenId) => {
-      return { tokenId, collectionAddress, nftLocation }
-    })
-
-    return tokensWithCollectionAddress
   })
 
-  const walletNfts = await Promise.all(walletNftPromises)
-  return walletNfts.flat()
+  const balanceOfCallsResultRaw = await multicallv2(erc721Abi, balanceOfCalls, { requireSuccess: false })
+  const balanceOfCallsResult = balanceOfCallsResultRaw.flat()
+
+  const tokenIdCalls = Object.values(collections)
+    .map((collection, index) => {
+      const balanceOf = balanceOfCallsResult[index]?.toNumber() ?? 0
+      const { address: collectionAddress } = collection
+
+      return range(balanceOf).map((tokenIndex) => {
+        return {
+          address: collectionAddress,
+          name: 'tokenOfOwnerByIndex',
+          params: [account, tokenIndex],
+        }
+      })
+    })
+    .flat()
+
+  const tokenIdResultRaw = await multicallv2(erc721Abi, tokenIdCalls, { requireSuccess: false })
+  const tokenIdResult = tokenIdResultRaw.flat()
+
+  const nftLocation = NftLocation.WALLET
+
+  const walletNfts = tokenIdResult.reduce((acc, tokenIdBn, index) => {
+    if (tokenIdBn) {
+      const { address: collectionAddress } = tokenIdCalls[index]
+      acc.push({ tokenId: tokenIdBn.toString(), collectionAddress, nftLocation })
+    }
+    return acc
+  }, [])
+
+  return walletNfts
 }
 
 /**
