@@ -1942,6 +1942,14 @@ export const mainnetTokens = defineTokens({
     'Froyo Games',
     'https://froyo.games/',
   ),
+  apx: new Token(
+    MAINNET,
+    '0x78F5d389F5CDCcFc41594aBaB4B0Ed02F31398b3',
+    18,
+    'APX',
+    'ApolloX Token',
+    'https://www.apollox.finance/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
