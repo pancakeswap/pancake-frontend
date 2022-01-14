@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher } from 'peronio-uikit'
+import { Text, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher } from 'peronio-uikit'
 import {
-  useAudioModeManager,
+  // useAudioModeManager,
   useExpertModeManager,
   useSubgraphHealthIndicatorManager,
   useUserExpertModeAcknowledgementShow,
@@ -29,7 +29,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
   const [expertMode, toggleExpertMode] = useExpertModeManager()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
-  const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
+  // const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
   const [subgraphHealth, setSubgraphHealh] = useSubgraphHealthIndicatorManager()
   const { onChangeRecipient } = useSwapActionHandlers()
 
@@ -127,7 +127,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             }}
           />
         </Flex>
-        <Flex justifyContent="space-between" alignItems="center">
+        {/* <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             <Text>{t('Flippy sounds')}</Text>
             <QuestionHelper
@@ -137,7 +137,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             />
           </Flex>
           <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
-        </Flex>
+        </Flex> */}
       </ScrollableContainer>
     </Modal>
   )

@@ -98,7 +98,7 @@ export const initialState: UserState = {
   tokens: {},
   pairs: {},
   timestamp: currentTimestamp(),
-  audioPlay: true,
+  audioPlay: false,
   isDark: false,
   isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,
