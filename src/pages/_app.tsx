@@ -19,6 +19,7 @@ import { usePollCoreFarmData } from 'state/farms/hooks'
 import { NextPage } from 'next'
 import { useFetchProfile } from 'state/profile/hooks'
 import { Blocklist, Updaters } from '..'
+import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
@@ -106,7 +107,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
   return (
-    <>
+    <ErrorBoundary>
       <Menu>
         <Layout>
           <Component {...pageProps} />
@@ -115,7 +116,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <EasterEgg iterations={2} />
       <ToastListener />
       <SubgraphHealthIndicator />
-    </>
+    </ErrorBoundary>
   )
 }
 
