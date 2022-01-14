@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, ChevronLeftIcon, Flex } from 'peronio-uikit'
+import { Box, ChevronLeftIcon, Flex } from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'

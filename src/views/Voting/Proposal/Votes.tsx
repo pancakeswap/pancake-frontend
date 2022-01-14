@@ -1,5 +1,14 @@
 import React, { useState } from 'react'
-import { AutoRenewIcon, Card, CardHeader, ChevronDownIcon, Flex, Heading, Button, ChevronUpIcon } from 'peronio-uikit'
+import {
+  AutoRenewIcon,
+  Card,
+  CardHeader,
+  ChevronDownIcon,
+  Flex,
+  Heading,
+  Button,
+  ChevronUpIcon,
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'

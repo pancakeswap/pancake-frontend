@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'peronio-uikit'
+import { Text } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
 type FAQsType = {

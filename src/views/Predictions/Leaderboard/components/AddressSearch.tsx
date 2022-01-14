@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useModal } from 'peronio-uikit'
+import { useModal } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { fetchAddressResult, setSelectedAddress } from 'state/predictions'
 import AddressInputSelect from 'components/AddressInputSelect'

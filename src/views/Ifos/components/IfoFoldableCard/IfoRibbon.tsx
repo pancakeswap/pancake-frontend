@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Progress, ProgressBar } from 'peronio-uikit'
+import { Box, Flex, Heading, Progress, ProgressBar } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'

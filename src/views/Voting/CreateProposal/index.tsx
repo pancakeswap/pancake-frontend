@@ -13,7 +13,7 @@ import {
   LinkExternal,
   Text,
   useModal,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import { useHistory } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'

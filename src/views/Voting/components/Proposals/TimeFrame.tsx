@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'peronio-uikit'
+import { Text } from '@pancakeswap/uikit'
 import { toDate, format } from 'date-fns'
 import { useTranslation } from 'contexts/Localization'
 import { ProposalState } from 'state/types'

@@ -1,4 +1,4 @@
-import { SubMenuItems } from 'peronio-uikit'
+import { SubMenuItems } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 const BaseSubMenu = styled(SubMenuItems)`

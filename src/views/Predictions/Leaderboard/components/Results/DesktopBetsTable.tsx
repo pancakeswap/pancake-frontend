@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Card, Text } from 'peronio-uikit'
+import { Box, Card, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import PreviousBetsTable from '../PreviousBetsTable'
 

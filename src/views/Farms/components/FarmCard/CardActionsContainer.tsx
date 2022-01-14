@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from 'peronio-uikit'
+import { Button, Flex, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'

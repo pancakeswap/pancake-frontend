@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Button, Flex, IconButton, CloseIcon } from 'peronio-uikit'
+import { Box, Button, Flex, IconButton, CloseIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { addActivityTypeFilters, removeActivityTypeFilters } from 'state/nftMarket/reducer'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'

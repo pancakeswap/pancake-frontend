@@ -2,7 +2,7 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { BscConnector } from '@binance-chain/bsc-connector'
-import { ConnectorNames } from 'peronio-uikit'
+import { ConnectorNames } from '@pancakeswap/uikit'
 import { ethers } from 'ethers'
 import getNodeUrl from './getRpcUrl'
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import times from 'lodash/times'
 import orderBy from 'lodash/orderBy'
-import { Skeleton, Table, Td, Th } from 'peronio-uikit'
+import { Skeleton, Table, Td, Th } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
 import { Bet } from 'state/types'

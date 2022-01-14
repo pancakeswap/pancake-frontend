@@ -1,4 +1,4 @@
-import { Flex, Text } from 'peronio-uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 const BaseCell = styled(Flex)`

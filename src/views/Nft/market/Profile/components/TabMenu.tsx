@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { Link as RouterLink, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { Flex } from 'peronio-uikit'
+import { Flex } from '@pancakeswap/uikit'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 
 const Tab = styled.button<{ $active: boolean }>`

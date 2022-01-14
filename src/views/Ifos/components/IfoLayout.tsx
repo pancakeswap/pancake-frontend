@@ -1,4 +1,4 @@
-import { Box } from 'peronio-uikit'
+import { Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 const IfoLayout = styled(Box)`

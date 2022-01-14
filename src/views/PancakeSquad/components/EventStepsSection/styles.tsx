@@ -1,4 +1,4 @@
-import { Flex } from 'peronio-uikit'
+import { Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 export const StyledEventStepsSectionContainer = styled(Flex)<{ $isDark: boolean }>`

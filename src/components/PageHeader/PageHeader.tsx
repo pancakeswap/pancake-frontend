@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box } from 'peronio-uikit'
+import { Box } from '@pancakeswap/uikit'
 import Container from '../Layout/Container'
 import { PageHeaderProps } from './types'
 

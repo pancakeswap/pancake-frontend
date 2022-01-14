@@ -12,7 +12,7 @@ import {
   BinanceIcon,
   Skeleton,
   useModal,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useUserNfts } from 'state/nftMarket/hooks'
 import { NftLocation, NftToken, UserNftInitializationState } from 'state/nftMarket/types'

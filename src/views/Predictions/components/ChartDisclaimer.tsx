@@ -11,7 +11,7 @@ import {
   Heading,
   Checkbox,
   Box,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { useUserPredictionChartDisclaimerShow } from 'state/user/hooks'

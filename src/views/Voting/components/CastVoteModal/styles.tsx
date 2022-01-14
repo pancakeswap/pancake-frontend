@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, BoxProps } from 'peronio-uikit'
+import { Box, BoxProps } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 export const VotingBox = styled.div`

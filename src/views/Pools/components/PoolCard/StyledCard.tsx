@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card } from 'peronio-uikit'
+import { Card } from '@pancakeswap/uikit'
 
 export const StyledCard = styled(Card)<{ isFinished?: boolean }>`
   max-width: 352px;

@@ -7,7 +7,7 @@ import {
   ExpandableLabel,
   ExpandableButton,
   useMatchBreakpoints,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'

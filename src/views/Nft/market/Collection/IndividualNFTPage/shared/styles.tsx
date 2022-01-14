@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { Box, Flex, Grid, Image } from 'peronio-uikit'
+import { Box, Flex, Grid, Image } from '@pancakeswap/uikit'
 
 export const TwoColumnsContainer = styled(Flex)`
   gap: 22px;

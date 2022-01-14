@@ -1,5 +1,5 @@
 import React from 'react'
-import { Colors, Heading, TextProps } from 'peronio-uikit'
+import { Colors, Heading, TextProps } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 
 interface HeadingProps extends TextProps {

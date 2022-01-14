@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from 'react'
-import { Text, Heading, Card } from 'peronio-uikit'
+import { Text, Heading, Card } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'
 import { useAllTokenData, useTokenDatas } from 'state/info/hooks'

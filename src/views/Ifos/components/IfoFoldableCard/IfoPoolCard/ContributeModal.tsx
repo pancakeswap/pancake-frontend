@@ -15,7 +15,7 @@ import {
   TooltipText,
   Box,
   Link,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'

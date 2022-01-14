@@ -13,7 +13,7 @@ import {
   SubMenu,
   SubMenuItem,
   useModal,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
 import { useGetProfileAvatar } from 'state/profile/hooks'
 import styled from 'styled-components'

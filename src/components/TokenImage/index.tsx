@@ -4,7 +4,7 @@ import {
   TokenPairImageProps as UIKitTokenPairImageProps,
   TokenImage as UIKitTokenImage,
   ImageProps,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import tokens from 'config/constants/tokens'
 import { Token } from '@pancakeswap/sdk'
 

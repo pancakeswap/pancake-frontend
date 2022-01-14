@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Grid, Flex, useMatchBreakpoints, AutoRenewIcon } from 'peronio-uikit'
+import { Box, Button, Grid, Flex, useMatchBreakpoints, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import {
   useGetLeaderboardHasMoreResults,

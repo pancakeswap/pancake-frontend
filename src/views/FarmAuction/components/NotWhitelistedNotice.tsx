@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Flex, Message, Box, HelpIcon } from 'peronio-uikit'
+import { Text, Flex, Message, Box, HelpIcon } from '@pancakeswap/uikit'
 import { Auction, ConnectedBidder } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 

@@ -19,7 +19,7 @@ import {
   Skeleton,
   useModal,
   Link,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo } from 'config/constants/types'

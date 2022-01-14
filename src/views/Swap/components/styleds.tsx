@@ -1,4 +1,4 @@
-import { ErrorIcon, Text } from 'peronio-uikit'
+import { ErrorIcon, Text } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import React from 'react'
 import styled, { css } from 'styled-components'

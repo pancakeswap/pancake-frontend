@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, useModal, Text, Flex } from 'peronio-uikit'
+import { Grid, useModal, Text, Flex } from '@pancakeswap/uikit'
 import { useUserNfts } from 'state/nftMarket/hooks'
 import { NftLocation, UserNftInitializationState, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'

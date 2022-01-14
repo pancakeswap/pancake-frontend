@@ -13,7 +13,7 @@ import {
   Button,
   CheckmarkCircleIcon,
   useModal,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Auction, AuctionStatus, ConnectedBidder } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'

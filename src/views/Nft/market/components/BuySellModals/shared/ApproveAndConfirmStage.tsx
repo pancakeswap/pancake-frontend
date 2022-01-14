@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, Button, Spinner } from 'peronio-uikit'
+import { Flex, Text, Button, Spinner } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { StepIndicator } from './styles'
 

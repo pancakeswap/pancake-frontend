@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Skeleton } from 'peronio-uikit'
+import { Box, Skeleton } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { LeaderboardDataItem } from '../../../types'
 import GridItem from './GridItem'

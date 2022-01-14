@@ -1,5 +1,5 @@
 import React from 'react'
-import { AutoRenewIcon, Button } from 'peronio-uikit'
+import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
 import { PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'

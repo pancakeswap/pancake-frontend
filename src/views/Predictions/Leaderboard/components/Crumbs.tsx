@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Box, Breadcrumbs, Text } from 'peronio-uikit'
+import { Box, Breadcrumbs, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const Crumbs = () => {

@@ -12,7 +12,7 @@ import {
   BlockIcon,
   Button,
   useModal,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { LIVE } from 'config/constants/trading-competition/phases'

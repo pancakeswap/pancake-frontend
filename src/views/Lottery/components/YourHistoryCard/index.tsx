@@ -12,7 +12,7 @@ import {
   Heading,
   Skeleton,
   Box,
-} from 'peronio-uikit'
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'

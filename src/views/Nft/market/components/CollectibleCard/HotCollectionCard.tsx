@@ -1,4 +1,4 @@
-import { Card, CardBody, Flex, Heading, Image, ProfileAvatar } from 'peronio-uikit'
+import { Card, CardBody, Flex, Heading, Image, ProfileAvatar } from '@pancakeswap/uikit'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'

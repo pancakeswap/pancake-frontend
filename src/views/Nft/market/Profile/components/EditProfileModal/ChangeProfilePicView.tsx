@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Box, InjectedModalProps, Text } from 'peronio-uikit'
+import { Button, Box, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { useProfile } from 'state/profile/hooks'

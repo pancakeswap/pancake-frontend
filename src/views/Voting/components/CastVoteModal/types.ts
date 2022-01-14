@@ -1,4 +1,4 @@
-import { InjectedModalProps } from 'peronio-uikit'
+import { InjectedModalProps } from '@pancakeswap/uikit'
 
 export enum ConfirmVoteView {
   MAIN = 'main',

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Split from 'split-grid'
-import { ArrowDownIcon, Button, ChartIcon } from 'peronio-uikit'
+import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap/uikit'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
 import { useAppDispatch } from 'state'

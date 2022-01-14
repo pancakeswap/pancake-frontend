@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Grid, Text, Button, Input, BinanceIcon, ErrorIcon } from 'peronio-uikit'
+import { Flex, Grid, Text, Button, Input, BinanceIcon, ErrorIcon } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { NftToken } from 'state/nftMarket/types'
