@@ -49,7 +49,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.aog,
     quoteToken: serializedTokens.busd,
-    isCommunity: true,
+    isCommunity: false,
   },
   {
     pid: 502,
