@@ -1,8 +1,8 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { usePopper } from "react-popper";
-import { Link } from "react-router-dom";
 import { useOnClickOutside } from "../../hooks";
+import { MenuContext } from "../../widgets/Menu/context";
 import { Box, Flex } from "../Box";
 import IconComponent from "../Svg/IconComponent";
 import {
@@ -24,6 +24,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   setMenuOpenByIndex,
   ...props
 }) => {
+  const { linkComponent } = useContext(MenuContext);
   const [isOpen, setIsOpen] = useState(false);
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
@@ -111,8 +112,8 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                   {type === DropdownMenuItemType.INTERNAL_LINK && (
                     <DropdownMenuItem
                       $isActive={isActive}
-                      as={Link}
-                      to={href}
+                      as={linkComponent}
+                      href={href}
                       onClick={() => {
                         setIsOpen(false);
                       }}

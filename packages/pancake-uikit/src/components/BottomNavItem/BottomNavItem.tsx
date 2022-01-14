@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { MenuContext } from "../../widgets/Menu/context";
 import { Flex } from "../Box";
 import AnimatedIconComponent from "../Svg/AnimatedIconComponent";
 import { StyledBottomNavItem, StyledBottomNavText } from "./styles";
@@ -13,6 +13,7 @@ const BottomNavItem: React.FC<BottomNavItemProps> = ({
   isActive = false,
   ...props
 }) => {
+  const { linkComponent } = useContext(MenuContext);
   const bottomNavItemContent = (
     <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
       {iconName && (
@@ -40,7 +41,7 @@ const BottomNavItem: React.FC<BottomNavItemProps> = ({
       {bottomNavItemContent}
     </StyledBottomNavItem>
   ) : (
-    <StyledBottomNavItem as={Link} to={href} {...props}>
+    <StyledBottomNavItem as={linkComponent} href={href} {...props}>
       {bottomNavItemContent}
     </StyledBottomNavItem>
   );

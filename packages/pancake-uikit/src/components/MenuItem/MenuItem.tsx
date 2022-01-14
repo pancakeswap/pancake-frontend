@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { MenuContext } from "../../widgets/Menu/context";
 import StyledMenuItem, { StyledMenuItemContainer } from "./styles";
 import { MenuItemProps } from "./types";
 
@@ -11,10 +11,11 @@ const MenuItem: React.FC<MenuItemProps> = ({
   statusColor,
   ...props
 }) => {
+  const { linkComponent } = useContext(MenuContext);
   const itemLinkProps: unknown = href
     ? {
-        as: Link,
-        to: href,
+        as: linkComponent,
+        href,
       }
     : {
         as: "div",

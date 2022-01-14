@@ -26,15 +26,15 @@ export const links: MenuItemsType[] = [
     items: [
       {
         label: "Exchange",
-        href: "https://exchange.pancakeswap.finance",
+        href: "/swap",
       },
       {
         label: "Liquidity",
-        href: "https://exchange.pancakeswap.finance/#/pool",
+        href: "/liquidity",
       },
       {
         label: "Charts",
-        href: "https://exchange.pancakeswap.finance/#/charts",
+        href: "/charts",
         iconName: "Chart",
         isMobileOnly: true,
       },
@@ -42,20 +42,20 @@ export const links: MenuItemsType[] = [
   },
   {
     label: "Earn",
-    href: "/",
+    href: "/earn",
     icon: "Earn",
     items: [
       {
         label: "Earn",
-        href: "/",
+        href: "/earn",
       },
       {
         label: "Yield Farms",
-        href: "/",
+        href: "/farms",
       },
       {
         label: "Syrup pools",
-        href: "/",
+        href: "/pools",
       },
     ],
   },

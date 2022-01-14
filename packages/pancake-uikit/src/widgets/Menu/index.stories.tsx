@@ -1,6 +1,7 @@
 import noop from "lodash/noop";
 import React, { useState } from "react";
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { BrowserRouter, Link, MemoryRouter } from "react-router-dom";
 import Box from "../../components/Box/Box";
 import Flex from "../../components/Box/Flex";
 import Button from "../../components/Button/Button";
@@ -73,6 +74,9 @@ const GlobalMenuComponent: React.FC = () => {
 };
 
 const defaultProps = {
+  linkComponent: ({ href, ...props }) => {
+    return <Link to={href} {...props} />;
+  },
   account: "0xbdda50183d817c3289f895a4472eb475967dc980",
   login: noop,
   logout: noop,

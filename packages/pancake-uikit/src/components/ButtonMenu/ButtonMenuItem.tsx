@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { PolymorphicComponent } from "../../util/polymorphic";
 import Button from "../Button/Button";
-import { BaseButtonProps, PolymorphicComponent, variants } from "../Button/types";
+import { BaseButtonProps, variants } from "../Button/types";
 import { ButtonMenuItemProps } from "./types";
 
 interface InactiveButtonProps extends BaseButtonProps {
