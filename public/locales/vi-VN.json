@@ -1805,9 +1805,11 @@
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Luôn bật chỉ báo sức khỏe biểu đồ con của thị trường NFT. Chế độ mặc định là chỉ hiển thị chỉ báo khi mạng lưới bị trễ",
   "Subgraph Health Indicator": "Chỉ báo sức khỏe biểu đồ con",
   "Delay": "Độ trễ",
-  "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON quyết định cập nhật token hợp đồng thông minh của họ với V2",
-  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Hãy xem Twitter(@safemoon) của họ trước khi giao dịch, bạn có thể mất hết tài sản của mình qua giao dịch",
   "Add liquidity instead": "Thay vào đó, hãy bổ sung thanh khoản",
   "The latest credit calculation period has ended. Calculation will resume upon the next period starts.": "The latest credit calculation period has ended. Calculation will resume upon the next period starts.",
-  "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens."
+  "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.",
+  "SAFEMOON has been migrated to": "SAFEMOON has been migrated to",
+  "a new contract address.": "a new contract address.",
+  "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Trading on the old address may result in the complete loss of your assets. For more information please refer to",
+  "Safemoon's announcement": "Safemoon's announcement"
 }
