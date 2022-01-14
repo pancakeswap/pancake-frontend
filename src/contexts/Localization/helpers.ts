@@ -1,4 +1,4 @@
-import { EN } from 'config/localization/languages'
+import { ESES } from 'config/localization/languages'
 
 const publicUrl = process.env.PUBLIC_URL
 
@@ -14,8 +14,8 @@ export const getLanguageCodeFromLS = () => {
   try {
     const codeFromStorage = localStorage.getItem(LS_KEY)
 
-    return codeFromStorage || EN.locale
+    return codeFromStorage || ESES.locale
   } catch {
-    return EN.locale
+    return ESES.locale
   }
 }
