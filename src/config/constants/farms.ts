@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 502,
+    lpSymbol: 'APX-BUSD',
+    lpAddresses: {
+      97: '',
+      56: '0xa0ee789a8f581cb92dd9742ed0b5d54a0916976c',
+    },
+    token: serializedTokens.apx,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 501,
     lpSymbol: 'BCOIN-BNB',
     lpAddresses: {
