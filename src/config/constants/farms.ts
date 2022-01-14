@@ -41,6 +41,17 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 497,
+    lpSymbol: 'AOG-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x88c9bf5E334e2591C6A866D5E20683E31226Be3d',
+    },
+    token: serializedTokens.aog,
+    quoteToken: serializedTokens.busd,
+    isCommunity: false,
+  },
+  {
     pid: 502,
     lpSymbol: 'APX-BUSD',
     lpAddresses: {
@@ -69,17 +80,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.insur,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 497,
-    lpSymbol: 'AOG-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x88c9bf5E334e2591C6A866D5E20683E31226Be3d',
-    },
-    token: serializedTokens.aog,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
   },
   {
     pid: 498,
