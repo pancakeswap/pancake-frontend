@@ -18,7 +18,7 @@ export const AspectRatio = ({ ratio, children, ...props }) => (
 
 const NFTMedia: FC<
   {
-    nft: NftToken
+    nft?: NftToken
     as?: any
     width: number
     height: number
@@ -37,7 +37,7 @@ const NFTMedia: FC<
     }
   }, [isIntersecting])
 
-  if (nft.image.webm || nft.image.mp4) {
+  if (nft?.image.webm || nft?.image.mp4) {
     return (
       <AspectRatio ratio={width / height} {...props}>
         <div ref={observerRef} />
@@ -53,8 +53,8 @@ const NFTMedia: FC<
     <RoundedImage
       width={width}
       height={height}
-      src={nft.image.gif || nft.image.thumbnail}
-      alt={nft.name}
+      src={nft?.image.gif || nft?.image.thumbnail}
+      alt={nft?.name}
       as={as}
       {...props}
     />

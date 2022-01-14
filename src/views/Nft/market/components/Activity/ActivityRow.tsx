@@ -1,20 +1,8 @@
 import React from 'react'
-import {
-  Image,
-  Flex,
-  Text,
-  Td,
-  IconButton,
-  Link,
-  OpenNewIcon,
-  useMatchBreakpoints,
-  useModal,
-  Box,
-} from '@pancakeswap/uikit'
+import { Flex, Text, Td, IconButton, Link, OpenNewIcon, useMatchBreakpoints, useModal, Box } from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { Price } from '@pancakeswap/sdk'
-import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
@@ -22,12 +10,7 @@ import MobileModal from './MobileModal'
 import ActivityPrice from './ActivityPrice'
 import ActivityEventText from './ActivityEventText'
 import { nftsBaseUrl, pancakeBunniesAddress } from '../../constants'
-
-const RoundedImage = styled(Image)`
-  & > img {
-    border-radius: ${({ theme }) => theme.radii.default};
-  }
-`
+import NFTMedia from '../NFTMedia'
 
 interface ActivityRowProps {
   activity: Activity
@@ -85,7 +68,7 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
           <Flex justifyContent="flex-start" alignItems="center" flexDirection={['column', null, 'row']}>
             <Box width={64} height={64} mr={[0, null, '16px']} mb={['8px', null, 0]}>
               <RouterLink to={nft ? `${nftsBaseUrl}/collections/${nft.collectionAddress}/${tokenId}` : ``}>
-                <RoundedImage src={nft?.image.thumbnail} alt={nft?.name} width={64} height={64} />
+                <NFTMedia nft={nft} width={64} height={64} />
               </RouterLink>
             </Box>
             <Flex flexDirection="column">

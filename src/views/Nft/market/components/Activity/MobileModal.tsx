@@ -1,8 +1,7 @@
 import React from 'react'
-import { InjectedModalProps, Modal, Flex, Text, Button, Image, Link, BinanceIcon } from '@pancakeswap/uikit'
+import { InjectedModalProps, Modal, Flex, Text, Button, Link, BinanceIcon, Box } from '@pancakeswap/uikit'
 import { Price } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
-import styled from 'styled-components'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
@@ -11,12 +10,7 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
 import ActivityEventText from './ActivityEventText'
-
-const RoundedImage = styled(Image)`
-  & > img {
-    border-radius: ${({ theme }) => theme.radii.default};
-  }
-`
+import NFTMedia from '../NFTMedia'
 
 interface MobileModalProps extends InjectedModalProps {
   activity: Activity
@@ -44,12 +38,16 @@ const MobileModal: React.FC<MobileModalProps> = ({
     <Modal title={t('Transaction Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
       <Flex flexDirection="column" maxWidth="350px">
         <Flex alignItems="center" mb="16px" justifyContent="space-between">
-          <RoundedImage src={nft.image.thumbnail} height={68} width={68} mr="16px" />
+          <Box width={68} mr="16px">
+            <NFTMedia nft={nft} width={68} height={68} />
+          </Box>
           <Flex flexDirection="column">
             <Text fontSize="12px" color="textSubtle" textAlign="right">
               {nft.collectionName}
             </Text>
-            <Text bold>{nft.name}</Text>
+            <Text bold textAlign="right">
+              {nft.name}
+            </Text>
           </Flex>
         </Flex>
         <LightGreyCard p="16px">
