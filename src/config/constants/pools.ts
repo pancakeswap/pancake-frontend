@@ -22,7 +22,7 @@ export const vaultPoolConfig = {
     gasLimit: 500000,
     tokenImage: {
       primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
-      secondarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      secondarySrc: `/images/tokens/ifo-pool-icon.svg`,
     },
   },
 } as const
