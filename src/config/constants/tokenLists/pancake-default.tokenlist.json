@@ -129,6 +129,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xa7f552078dcc247c2684336020c03648500c6d9f.png"
+    },
+    {
+      "name": "Galaxy Goggle",
+      "symbol": "GG",
+      "address": "0xcAf23964Ca8db16D816eB314a56789F58fE0e10e",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://app.galaxygoggle.money/static/media/pancakeswapgglogo.png"
     }
   ]
 }

@@ -1085,6 +1085,14 @@ export const mainnetTokens = defineTokens({
     'EASY Token',
     'https://easyfi.network/',
   ),
+  gg: new Token(
+    MAINNET,
+    '0xcAf23964Ca8db16D816eB314a56789F58fE0e10e',
+    9,
+    'GG',
+    'Galaxy Goggle',
+    'https://galaxygoggle.money',
+  ),
   oddz: new Token(MAINNET, '0xCD40F2670CF58720b694968698A5514e924F742d', 18, 'ODDZ', 'Oddz Token', 'https://oddz.fi/'),
   hoo: new Token(MAINNET, '0xE1d1F66215998786110Ba0102ef558b22224C016', 8, 'HOO', 'Hoo Token', 'https://hoo.com/'),
   apys: new Token(
