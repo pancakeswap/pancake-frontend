@@ -10,7 +10,6 @@ import {
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { CompoundingPoolTag } from 'components/Tags'
 import { TokenPairImage } from 'components/TokenImage'
@@ -22,7 +21,6 @@ import React, { useState } from 'react'
 import { useIfoPoolCredit, useIfoPoolVault, useIfoWithApr } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
 import styled from 'styled-components'
-import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CakeVaultCard, { CreditCalcBlock } from 'views/Pools/components/CakeVaultCard'
 import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
@@ -32,6 +30,7 @@ import AprRow from 'views/Pools/components/PoolCard/AprRow'
 import ExpandedFooter from 'views/Pools/components/PoolCard/CardFooter/ExpandedFooter'
 import Staked from 'views/Pools/components/PoolsTable/ActionPanel/Stake'
 import { ActionContainer } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
+import { convertSharesToCake } from '../../Pools/helpers'
 
 const StyledCardMobile = styled(Card)`
   max-width: 400px;
@@ -62,13 +61,18 @@ const StyledCardBody = styled(CardBody)`
 `
 
 const IfoPoolVaultCardMobile: React.FC = () => {
-  const { pool, userDataLoaded } = useIfoWithApr()
+  const { pool } = useIfoWithApr()
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const credit = useIfoPoolCredit()
   const {
     fees: { performanceFeeAsDecimal },
+    userData: { userShares, isLoading: userDataLoading },
+    pricePerFullShare,
   } = useIfoPoolVault()
+
+  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
+
   const [isExpanded, setIsExpanded] = useState(false)
 
   const cakeAsNumberBalance = getBalanceNumber(credit)
@@ -118,16 +122,12 @@ const IfoPoolVaultCardMobile: React.FC = () => {
       {isExpanded && (
         <>
           <StyledCardBody>
-            <AprRow
-              pool={pool}
-              stakedBalance={pool.userData?.stakedBalance ? new BigNumber(pool.userData.stakedBalance) : BIG_ZERO}
-              performanceFee={performanceFeeAsDecimal}
-            />
+            <AprRow pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
             <CreditCalcBlock />
             <ActionContainer>
               <IfoVaultCardAvgBalance />
             </ActionContainer>
-            <Staked pool={pool} userDataLoaded={userDataLoaded} />
+            <Staked pool={pool} userDataLoaded={!userDataLoading} />
             <ActionContainer>
               <Box>
                 <RecentCakeProfitCountdownRow vaultKey={VaultKey.IfoPool} />

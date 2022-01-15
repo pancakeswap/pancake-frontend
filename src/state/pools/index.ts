@@ -11,12 +11,16 @@ import {
   VaultFees,
   VaultUser,
 } from 'state/types'
-import { getAddress } from 'utils/addressHelpers'
+import cakeAbi from 'config/abi/cake.json'
+import tokens from 'config/constants/tokens'
+import masterChef from 'config/abi/masterchef.json'
+import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { getPoolApr } from 'utils/apr'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getCakeContract, getMasterchefContract } from 'utils/contractHelpers'
+import { getCakeContract } from 'utils/contractHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { simpleRpcProvider } from 'utils/providers'
+import { multicallv2 } from 'utils/multicall'
 import { fetchIfoPoolFeesData, fetchPublicIfoPoolData } from './fetchIfoPoolPublic'
 import fetchIfoPoolUserData from './fetchIfoPoolUser'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
@@ -92,11 +96,25 @@ export const fetchCakePoolPublicDataAsync = () => async (dispatch, getState) => 
 }
 
 export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) => {
-  const allowance = await cakeContract.allowance(account, cakePoolAddress)
-  const stakingTokenBalance = await cakeContract.balanceOf(account)
-  const masterChefContract = getMasterchefContract()
-  const pendingReward = await masterChefContract.pendingCake('0', account)
-  const { amount: masterPoolAmount } = await masterChefContract.userInfo('0', account)
+  const allowanceCall = {
+    address: tokens.cake.address,
+    name: 'allowance',
+    params: [account, cakePoolAddress],
+  }
+  const balanceOfCall = {
+    address: tokens.cake.address,
+    name: 'balanceOf',
+    params: [account],
+  }
+  const cakeContractCalls = [allowanceCall, balanceOfCall]
+  const [[allowance], [stakingTokenBalance]] = await multicallv2(cakeAbi, cakeContractCalls)
+
+  const masterChefCalls = ['pendingCake', 'userInfo'].map((method) => ({
+    address: getMasterChefAddress(),
+    name: method,
+    params: ['0', account],
+  }))
+  const [[pendingReward], { amount: masterPoolAmount }] = await multicallv2(masterChef, masterChefCalls)
 
   dispatch(
     setPoolUserData({
