@@ -2811,12 +2811,13 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@pancakeswap/uikit@^0.63.0":
-  version "0.63.0"
-  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.63.0.tgz#158191506d44cd715ed798aa723dae000c319e13"
-  integrity sha512-PZhjr/JqNDQ+uURWxXfJu8DHBgEAPmu5UJzJELSMkTvd1BFkReu+cRK6T8LjiDXOVJ0LGNwBDh/QbN6XN9gIfA==
+"@pancakeswap/uikit@^0.63.1":
+  version "0.63.1"
+  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.63.1.tgz#1d0fabeb23b2fa14a02bc9a71989ce8d244293d8"
+  integrity sha512-lpw4PKwM/GRQLwp3FfBd6Tevos/n3I0N3SnHaEMUfjr/oXQcOGzIJdNeJZhZSiO7FYxIn2ClCg3+VlBCvxqV4Q==
   dependencies:
     "@popperjs/core" "^2.9.2"
+    "@types/styled-system" "^5.1.10"
     lodash "^4.17.20"
     react-popper "^2.2.5"
     styled-system "^5.1.5"
@@ -4040,6 +4041,11 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
+"@types/lodash@^4.14.178":
+  version "4.14.178"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.178.tgz#341f6d2247db528d4a13ddbb374bcdc80406f4f8"
+  integrity sha512-0d5Wd09ItQWH1qFbEyQ7oTQ3GZrMfth5JkbN3EvTKLXcHLRDSXeLnlvlOn0wvxVIwK5o2M8JzP/OWz7T3NRsbw==
+
 "@types/long@^4.0.0", "@types/long@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.1.tgz#459c65fa1867dafe6a8f322c4c51695663cc55e9"
@@ -4293,7 +4299,7 @@
     "@types/react" "*"
     csstype "^3.0.2"
 
-"@types/styled-system@^5.1.15":
+"@types/styled-system@^5.1.10":
   version "5.1.15"
   resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.15.tgz#075f969cc028a895dba916c07708e2fe828d7077"
   integrity sha512-1uls4wipZn8FtYFZ7upRVFDoEeOXTQTs2zuyOZPn02T6rjIxtvj2P2lG5qsxXHhKuKsu3thveCZrtaeLE/ibLg==
