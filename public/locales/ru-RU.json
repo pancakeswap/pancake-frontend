@@ -170,8 +170,8 @@
   "You won!": "Вы выиграли!",
   "Claim an NFT from the options below!": "Выбирайте NFT из нижеперечисленных вариантов!",
   "Can be traded until": "Можно обменять до",
-  "Wallet Disconnected": "Кошелёк отключен",
-  "Connect to see if you have won an NFT!": "Подключитесь, чтобы узнать наличие выйгрыша NFT!",
+  "Wallet Disconnected": "Кошелек отключен",
+  "Connect to see if you have won an NFT!": "Подключитесь, чтобы узнать наличие выигрыша NFT!",
   "Home": "Главная",
   "Trade": "Сделки",
   "Farms": "Фермы",
@@ -1811,5 +1811,14 @@
   "SAFEMOON has been migrated to": "SAFEMOON has been migrated to",
   "a new contract address.": "a new contract address.",
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Trading on the old address may result in the complete loss of your assets. For more information please refer to",
-  "Safemoon's announcement": "Safemoon's announcement"
+  "Safemoon's announcement": "Safemoon's announcement",
+  "Newest Collections": "Newest Collections",
+  "Your average per hour": "Your average per hour",
+  "At this rate, you would earn": "At this rate, you would earn",
+  "CAKE per hour: %amount%": "CAKE per hour: %amount%",
+  "per hour: ~$%amount%": "per hour: ~$%amount%",
+  "per 1d: ~$%amount%": "per 1d: ~$%amount%",
+  "per 7d: ~$%amount%": "per 7d: ~$%amount%",
+  "per 30d: ~$%amount%": "per 30d: ~$%amount%",
+  "per 365d: ~$%amount%": "per 365d: ~$%amount%"
 }
