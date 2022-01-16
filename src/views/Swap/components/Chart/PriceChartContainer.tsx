@@ -64,23 +64,4 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   )
 }
 
-export default React.memo(PriceChartContainer, (prev, next) => {
-  const prevToken0Address = getTokenAddress(prev.inputCurrencyId)
-  const nextToken0Address = getTokenAddress(next.inputCurrencyId)
-  const prevToken1Address = getTokenAddress(prev.outputCurrencyId)
-  const nextToken1Address = getTokenAddress(next.outputCurrencyId)
-
-  return (
-    prev.inputCurrencyId === next.inputCurrencyId &&
-    prev.outputCurrencyId === next.outputCurrencyId &&
-    prev.isChartExpanded === next.isChartExpanded &&
-    prev.isChartDisplayed === next.isChartDisplayed &&
-    prev.isMobile === next.isMobile &&
-    prev.setIsChartExpanded === next.setIsChartExpanded &&
-    ((prev.currentSwapPrice !== null &&
-      next.currentSwapPrice !== null &&
-      prev.currentSwapPrice[prevToken0Address] === next.currentSwapPrice[nextToken0Address] &&
-      prev.currentSwapPrice[prevToken1Address] === next.currentSwapPrice[nextToken1Address]) ||
-      (prev.currentSwapPrice === null && next.currentSwapPrice === null))
-  )
-})
+export default PriceChartContainer

@@ -1,23 +1,16 @@
-import { Currency } from '@pancakeswap/sdk'
 import { Box, BunnyPlaceholderIcon, Flex, Text } from '@pancakeswap/uikit'
-import TradingView, { TradingViewLabel, useTradingViewEvent } from 'components/TradingView'
+import TradingView, { useTradingViewEvent } from 'components/TradingView'
 import { useTranslation } from 'contexts/Localization'
 import useDebounce from 'hooks/useDebounce'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { BarChartLoader } from 'views/Info/components/ChartLoaders'
-import TokenDisplay from './TokenDisplay'
 
 interface TradingViewChartProps {
-  isChartExpanded: boolean
-  inputCurrency: Currency
-  outputCurrency: Currency
-  token0Address: string
-  isMobile: boolean
+  outputSymbol: string
+  inputSymbol: string
   isDark: boolean
-  currentSwapPrice: {
-    [key: string]: number
-  }
+  onTwChartSymbol?: (symbol: string) => void
 }
 
 const TradingViewWrapper = styled.div<{ $show: boolean }>`
@@ -42,30 +35,21 @@ const bnbToWBNBSymbol = (sym: string) => (sym === 'BNB' ? 'WBNB' : sym)
 const ID = 'TV_SWAP_CHART'
 const SYMBOL_PREFIX = 'PANCAKESWAP:'
 
-const TradingViewChart = ({
-  isChartExpanded,
-  outputCurrency,
-  inputCurrency,
-  token0Address,
-  isMobile,
-  isDark,
-  currentSwapPrice,
-}: TradingViewChartProps) => {
+const TradingViewChart = ({ outputSymbol, inputSymbol, isDark, onTwChartSymbol }: TradingViewChartProps) => {
   const [isLoading, setIsLoading] = useState(true)
   const { t } = useTranslation()
-  const token0Price = currentSwapPrice?.[token0Address]
 
   const [hasNoData, setHasNoData] = useState(false)
 
   const symbol = useMemo(() => {
-    if (!(inputCurrency?.symbol && outputCurrency?.symbol)) {
+    if (!(inputSymbol && outputSymbol)) {
       return null
     }
 
-    const input = bnbToWBNBSymbol(inputCurrency.symbol)
-    const output = bnbToWBNBSymbol(outputCurrency.symbol)
+    const input = bnbToWBNBSymbol(inputSymbol)
+    const output = bnbToWBNBSymbol(outputSymbol)
     return `${input}${output}`
-  }, [inputCurrency?.symbol, outputCurrency?.symbol])
+  }, [inputSymbol, outputSymbol])
 
   const onNoDataEvent = useCallback(() => {
     console.debug('No data from TV widget')
@@ -87,48 +71,36 @@ const TradingViewChart = ({
   // if there's no no-data event coming between the debounce time, we assume the chart is loaded
   const debouncedLoading = useDebounce(isLoading, 800)
 
+  useEffect(() => {
+    if (!(isLoading || debouncedLoading) && !hasNoData && symbol) {
+      onTwChartSymbol(symbol)
+    } else {
+      onTwChartSymbol('')
+    }
+  }, [debouncedLoading, hasNoData, isLoading, onTwChartSymbol, symbol])
+
   return (
-    <>
-      <Flex
-        flexDirection={['column', null, null, null, null, null, 'row']}
-        alignItems={['flex-start', null, null, null, null, null, 'center']}
-        justifyContent="space-between"
-        height={isMobile ? '100%' : isChartExpanded ? 'calc(100% - 48px)' : '430px'}
-      >
-        <Flex flexDirection="column" pt="12px" position="relative" height="100%" width="100%">
-          <Flex justifyContent="space-between" alignItems="baseline" flexWrap="wrap">
-            <TokenDisplay
-              value={token0Price}
-              inputSymbol={inputCurrency?.symbol}
-              outputSymbol={outputCurrency?.symbol}
-              mx="24px"
-            />
-            {!(isLoading || debouncedLoading) && !hasNoData && symbol && <TradingViewLabel symbol={symbol} />}
-          </Flex>
-          <Box height="100%" pt="4px" position="relative">
-            {hasNoData && (
-              <Flex height="100%" justifyContent="center" alignItems="center" flexDirection="column">
-                <BunnyPlaceholderIcon width="96px" height="96px" />
-                <Text bold fontSize="20px" color="textDisabled" mt="16px">
-                  {t('TradingView chart not available')}
-                </Text>
-              </Flex>
-            )}
-            {(isLoading || debouncedLoading) && !hasNoData && (
-              <LoadingWrapper $isDark={isDark}>
-                <BarChartLoader />
-              </LoadingWrapper>
-            )}
-            {!hasNoData && (
-              <TradingViewWrapper $show={!isLoading}>
-                {symbol && <TradingView id={ID} symbol={`${SYMBOL_PREFIX}${symbol}`} />}
-              </TradingViewWrapper>
-            )}
-          </Box>
+    <Box height="100%" width="100%" pt="4px" position="relative">
+      {hasNoData && (
+        <Flex height="100%" justifyContent="center" alignItems="center" flexDirection="column">
+          <BunnyPlaceholderIcon width="96px" height="96px" />
+          <Text bold fontSize="20px" color="textDisabled" mt="16px">
+            {t('TradingView chart not available')}
+          </Text>
         </Flex>
-      </Flex>
-    </>
+      )}
+      {(isLoading || debouncedLoading) && !hasNoData && (
+        <LoadingWrapper $isDark={isDark}>
+          <BarChartLoader />
+        </LoadingWrapper>
+      )}
+      {!hasNoData && (
+        <TradingViewWrapper $show={!isLoading}>
+          {symbol && <TradingView id={ID} symbol={`${SYMBOL_PREFIX}${symbol}`} />}
+        </TradingViewWrapper>
+      )}
+    </Box>
   )
 }
 
-export default TradingViewChart
+export default React.memo(TradingViewChart)
