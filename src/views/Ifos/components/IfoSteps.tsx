@@ -15,7 +15,7 @@ import {
   Flex,
   useTooltip,
   TooltipText,
-  PancakeRoundIcon,
+  LogoRoundIcon,
   Skeleton,
   useModal,
   Link,
@@ -123,7 +123,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
         <SmallStakePoolCard borderRadius="default" p="16px">
           <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
             <Flex>
-              <PancakeRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
+              <LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
               <Box ml="16px">
                 <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
                   {t('Your max CAKE entry')}
