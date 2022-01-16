@@ -1805,9 +1805,11 @@
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Kapcsold be állandóan az NFT piaci algráf állapotjelzőt. Alapértelmezés szerint a mutató csak akkor jelenik meg, ha a hálózat késik",
   "Subgraph Health Indicator": "Algráf állapotjelző",
   "Delay": "Késés",
-  "SAFEMOON decides to update their token smart contract with V2": "A SAFEMOON úgy dönt, hogy frissíti az okos zseton-szerződését a V2-vel",
-  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Kérjük, ellenőrizd a kereskedést megelőzően a Twitter(@safemoon) közléseiket, mert elveszítheted a teljes vagyonodat a kereskedéssel",
   "Add liquidity instead": "Inkább adj hozzá likviditást",
   "The latest credit calculation period has ended. Calculation will resume upon the next period starts.": "The latest credit calculation period has ended. Calculation will resume upon the next period starts.",
-  "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens."
+  "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.",
+  "SAFEMOON has been migrated to": "SAFEMOON has been migrated to",
+  "a new contract address.": "a new contract address.",
+  "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Trading on the old address may result in the complete loss of your assets. For more information please refer to",
+  "Safemoon's announcement": "Safemoon's announcement"
 }

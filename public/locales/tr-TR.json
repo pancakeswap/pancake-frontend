@@ -1805,9 +1805,11 @@
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "NFT piyasası alt grafiği sağlık göstergesini sürekli açık tutun. Varsayılan ayarda, gösterge sadece ağda gecikme olduğunda gösterilir",
   "Subgraph Health Indicator": "Alt Grafik Sağlık Göstergesi",
   "Delay": "Gecikme",
-  "SAFEMOON decides to update their token smart contract with V2": "SAFEMOON decides to update their token smart contract with V2",
-  "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading": "Please check their Twitter(@safemoon) before trade, you can lose your assets completely via trading",
   "Add liquidity instead": "Add liquidity instead",
   "The latest credit calculation period has ended. Calculation will resume upon the next period starts.": "The latest credit calculation period has ended. Calculation will resume upon the next period starts.",
-  "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens."
+  "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.",
+  "SAFEMOON has been migrated to": "SAFEMOON has been migrated to",
+  "a new contract address.": "a new contract address.",
+  "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Trading on the old address may result in the complete loss of your assets. For more information please refer to",
+  "Safemoon's announcement": "Safemoon's announcement"
 }
