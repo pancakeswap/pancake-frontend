@@ -2811,14 +2811,12 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@pancakeswap/uikit@^0.62.0":
-  version "0.62.0"
-  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.62.0.tgz#43afaa27268035c4316aba97ae70d58c04c11092"
-  integrity sha512-cKPA81UQQA+RnVnBuvigLbX7PBav2f1BvbR9AanUokmsqqYldwXmBZI3wnVPJHraHTrlx7H/nq35Uejb/k9RnQ==
+"@pancakeswap/uikit@^0.63.0":
+  version "0.63.0"
+  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.63.0.tgz#158191506d44cd715ed798aa723dae000c319e13"
+  integrity sha512-PZhjr/JqNDQ+uURWxXfJu8DHBgEAPmu5UJzJELSMkTvd1BFkReu+cRK6T8LjiDXOVJ0LGNwBDh/QbN6XN9gIfA==
   dependencies:
     "@popperjs/core" "^2.9.2"
-    "@types/lodash" "^4.14.168"
-    "@types/styled-system" "^5.1.10"
     lodash "^4.17.20"
     react-popper "^2.2.5"
     styled-system "^5.1.5"
@@ -4042,11 +4040,6 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
-"@types/lodash@^4.14.168":
-  version "4.14.171"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.171.tgz#f01b3a5fe3499e34b622c362a46a609fdb23573b"
-  integrity sha512-7eQ2xYLLI/LsicL2nejW9Wyko3lcpN6O/z0ZLHrEQsg280zIdCv1t/0m6UtBjUHokCGBQ3gYTbHzDkZ1xOBwwg==
-
 "@types/long@^4.0.0", "@types/long@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.1.tgz#459c65fa1867dafe6a8f322c4c51695663cc55e9"
@@ -4300,10 +4293,10 @@
     "@types/react" "*"
     csstype "^3.0.2"
 
-"@types/styled-system@^5.1.10":
-  version "5.1.12"
-  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.12.tgz#4f3ca8da3dffe3c5a6cc3b2a97f51b41464c104a"
-  integrity sha512-7x4BYKKfK9QewfsFC2x5r9BK/OrfX+JF/1P21jKPMHruawDw9gvG7bTZgTVk6YkzDO2JUlsk4i8hdiAepAhD0g==
+"@types/styled-system@^5.1.15":
+  version "5.1.15"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.15.tgz#075f969cc028a895dba916c07708e2fe828d7077"
+  integrity sha512-1uls4wipZn8FtYFZ7upRVFDoEeOXTQTs2zuyOZPn02T6rjIxtvj2P2lG5qsxXHhKuKsu3thveCZrtaeLE/ibLg==
   dependencies:
     csstype "^3.0.2"
 
