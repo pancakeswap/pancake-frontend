@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.63.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.62.0...@pancakeswap/uikit@0.63.0) (2022-01-16)
+
+
+### Bug Fixes
+
+* **uikit:** Chrome scrollbar layoutshift ([#377](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/377)) ([9c68d02](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/9c68d02c3b48388f8eed38f710b73120bb9aaa99))
+* **uikit:** IOS safari BottomNav position ([#378](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/378)) ([154d6f5](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/154d6f5e43fa0f00cff81ff69dca95a366d36067))
+
+
+### Features
+
+* **uikit:** footer-telegram icon's tooltip update ([#376](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/376)) ([68ac504](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/68ac50482dd991427bf064744c4ce985261f6281))
+* **uikit:** Support SSR ([#370](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/370)) ([7edd367](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/7edd367c45210e52bdc1523dbeff940c56e0719a))
+* **uikit:** Update Logo Icon ([#350](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/350)) ([c5fde4a](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/c5fde4ab695e5a16461cc21634eb4e8be11cc7c9))
+
+
+
+
+
 # [0.62.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.61.0...@pancakeswap/uikit@0.62.0) (2021-12-30)
 
 

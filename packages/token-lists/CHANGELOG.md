@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.26.0...@pancakeswap/token-lists@2.27.0) (2022-01-16)
+
+
+### Features
+
+* List APX ([#380](https://github.com/pancakeswap/pancake-toolkit/issues/380)) ([72c2fd1](https://github.com/pancakeswap/pancake-toolkit/commit/72c2fd1eff7fcfbfe0b1f0c4853c63b5222a0cb6))
+* **uikit:** Update Logo Icon ([#350](https://github.com/pancakeswap/pancake-toolkit/issues/350)) ([c5fde4a](https://github.com/pancakeswap/pancake-toolkit/commit/c5fde4ab695e5a16461cc21634eb4e8be11cc7c9))
+* List auction farm 12 ([#373](https://github.com/pancakeswap/pancake-toolkit/issues/373)) ([4a071da](https://github.com/pancakeswap/pancake-toolkit/commit/4a071daba48bd31079e3c462dcc002d83ccdf66b))
+* List GM ([#372](https://github.com/pancakeswap/pancake-toolkit/issues/372)) ([fd91789](https://github.com/pancakeswap/pancake-toolkit/commit/fd91789d9925a30246a8b4e58ca4edaf73b2e810))
+* List INSUR ([#375](https://github.com/pancakeswap/pancake-toolkit/issues/375)) ([d13ed6b](https://github.com/pancakeswap/pancake-toolkit/commit/d13ed6b658b1ab5b5f53cc42936333d4f35733bd))
+* List WOOP ([#369](https://github.com/pancakeswap/pancake-toolkit/issues/369)) ([d349c99](https://github.com/pancakeswap/pancake-toolkit/commit/d349c99f8a00e8b58ac93174453464091c1611dc))
+
+
+
+
+
 # [2.26.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.25.0...@pancakeswap/token-lists@2.26.0) (2021-12-30)
 
 

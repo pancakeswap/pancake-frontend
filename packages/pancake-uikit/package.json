@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/uikit",
-  "version": "0.62.0",
+  "version": "0.63.0",
   "description": "Set of UI components for pancake projects",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -30,8 +30,8 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.5",
-    "@types/react-dom": "^17.0.5",
     "@types/lodash": "^4.14.168",
+    "@types/react-dom": "^17.0.5",
     "@types/styled-system": "^5.1.10",
     "jest-styled-components": "^7.0.3",
     "react": "^17.0.1",
