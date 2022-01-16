@@ -19,7 +19,7 @@ export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<
       return {
         ...bunniesMetadata.data[activity.nft.otherId],
         tokenId: activity.nft.tokenId,
-        attributes: [{ bunnyId: activity.nft.otherId }],
+        attributes: [{ traitType: 'bunnyId', value: activity.nft.otherId }],
         collectionAddress: activity.nft.collection.id,
         collectionName,
       }
