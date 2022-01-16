@@ -9,7 +9,7 @@ import ConnectedProfile from './ConnectedProfile'
 import UnconnectedProfile from './UnconnectedProfile'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
-import NoNftsImage from './components/NoNftsImage'
+import NoNftsImage from '../components/Activity/NoNftsImage'
 
 const NftProfile = () => {
   const { account } = useWeb3React()

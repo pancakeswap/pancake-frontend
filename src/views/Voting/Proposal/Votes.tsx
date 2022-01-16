@@ -12,7 +12,8 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'
-import { Vote, VotingStateLoadingStatus } from 'state/types'
+import { Vote } from 'state/types'
+import { FetchStatus } from 'config/constants/types'
 import { useGetVotingStateLoadingStatus } from 'state/voting/hooks'
 import VotesLoading from '../components/Proposal/VotesLoading'
 import VoteRow from '../components/Proposal/VoteRow'
@@ -36,7 +37,7 @@ const Votes: React.FC<VotesProps> = ({ votes }) => {
   const orderedVotes = orderBy(votes, [parseVotePower, 'created'], ['desc', 'desc'])
   const displayVotes = showAll ? orderedVotes : orderedVotes.slice(0, VOTES_PER_VIEW)
   const voteStatus = useGetVotingStateLoadingStatus()
-  const isFinished = voteStatus === VotingStateLoadingStatus.IDLE
+  const isFinished = voteStatus === FetchStatus.Fetched
 
   const handleClick = () => {
     setShowAll(!showAll)

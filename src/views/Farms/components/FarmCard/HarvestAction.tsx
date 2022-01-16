@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
-import BigNumber from 'bignumber.js'
 import { Button, Flex, Heading } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
+import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useToast from 'hooks/useToast'
+import React, { useState } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
-import useToast from 'hooks/useToast'
-import { getBalanceAmount } from 'utils/formatBalance'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { useWeb3React } from '@web3-react/core'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import Balance from 'components/Balance'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getBalanceAmount } from 'utils/formatBalance'
+import { logError } from 'utils/sentry'
 import useHarvestFarm from '../../hooks/useHarvestFarm'
 
 interface FarmCardActionsProps {
@@ -42,17 +44,33 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
         onClick={async () => {
           setPendingTx(true)
           try {
-            await onReward()
-            toastSuccess(
-              `${t('Harvested')}!`,
-              t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
+            await onReward(
+              (tx) => {
+                toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+              },
+              (receipt) => {
+                toastSuccess(
+                  `${t('Harvested')}!`,
+                  <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                    {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+                  </ToastDescriptionWithTx>,
+                )
+              },
+              (receipt) => {
+                toastError(
+                  t('Error'),
+                  <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                    {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+                  </ToastDescriptionWithTx>,
+                )
+              },
             )
           } catch (e) {
             toastError(
               t('Error'),
               t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
             )
-            console.error(e)
+            logError(e)
           } finally {
             setPendingTx(false)
           }

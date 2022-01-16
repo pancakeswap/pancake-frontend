@@ -22,10 +22,15 @@ const useNewestNfts = () => {
         nftsFromSg.map((nft) => ({ collectionAddress: nft.collection.id, tokenId: nft.tokenId })),
       )
 
-      const nfts = nftsFromSg.map((nftFromSg, index) => {
-        const nftFromApi = nftsFromApi[index]
-        return { ...nftFromApi, marketData: nftFromSg }
-      })
+      const nfts = nftsFromSg
+        .map((nftFromSg) => {
+          const foundNftFromApi = nftsFromApi.find((nftFromApi) => nftFromApi.tokenId === nftFromSg.tokenId)
+          if (foundNftFromApi) {
+            return { ...foundNftFromApi, marketData: nftFromSg }
+          }
+          return null
+        })
+        .filter(Boolean)
       setNewestNfts(nfts)
     }
     fetchNewestNfts()
@@ -41,10 +46,10 @@ const Newest: React.FC = () => {
   return (
     <div>
       <Flex justifyContent="space-between" alignItems="center" mb="26px">
-        <Heading>{t('Newest Arrivals')}</Heading>
+        <Heading data-test="nfts-newest">{t('Newest Arrivals')}</Heading>
         <Button
           as={Link}
-          to={`${nftsBaseUrl}/collections/`}
+          to={`${nftsBaseUrl}/activity/`}
           variant="secondary"
           scale="sm"
           endIcon={<ChevronRightIcon color="primary" />}
@@ -64,6 +69,7 @@ const Newest: React.FC = () => {
               !isPBCollection && nft.marketData?.isTradable ? parseFloat(nft.marketData.currentAskPrice) : undefined
             return (
               <CollectibleLinkCard
+                data-test="newest-nft-card"
                 key={nft.collectionAddress + nft.tokenId}
                 nft={nft}
                 currentAskPrice={currentAskPrice}

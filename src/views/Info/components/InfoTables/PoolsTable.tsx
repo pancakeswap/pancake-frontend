@@ -57,7 +57,7 @@ const LinkWrapper = styled(Link)`
 
 const SORT_FIELD = {
   volumeUSD: 'volumeUSD',
-  tvlUSD: 'tvlUSD',
+  liquidityUSD: 'liquidityUSD',
   volumeUSDWeek: 'volumeUSDWeek',
   lpFees24h: 'lpFees24h',
   lpApr7d: 'lpApr7d',
@@ -206,10 +206,10 @@ const PoolTable: React.FC<PoolTableProps> = ({ poolDatas, loading }) => {
           color="secondary"
           fontSize="12px"
           bold
-          onClick={() => handleSort(SORT_FIELD.tvlUSD)}
+          onClick={() => handleSort(SORT_FIELD.liquidityUSD)}
           textTransform="uppercase"
         >
-          {t('Liquidity')} {arrow(SORT_FIELD.tvlUSD)}
+          {t('Liquidity')} {arrow(SORT_FIELD.liquidityUSD)}
         </ClickableColumnHeader>
       </ResponsiveGrid>
       <Break />

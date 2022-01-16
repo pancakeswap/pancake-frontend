@@ -11,7 +11,7 @@ const floatingAnim = (x: string, y: string) => keyframes`
   }
   to {
     transform: translate(0, 0px);
-  }  
+  }
 `
 
 const Wrapper = styled(Box)<{ maxHeight: string }>`
@@ -75,26 +75,30 @@ interface ComponentProps extends CompositeImageProps {
   maxHeight?: string
 }
 
-export const getImageUrl = (base: string, imageSrc: string, resolution?: Resolution): string =>
-  `${base}${imageSrc}${resolution ? `@${resolution}.png` : '.png'}`
+export const getImageUrl = (base: string, imageSrc: string, resolution?: Resolution, extension = '.png'): string =>
+  `${base}${imageSrc}${resolution ? `@${resolution}${extension}` : extension}`
 
-export const getSrcSet = (base: string, imageSrc: string) => {
-  return `${getImageUrl(base, imageSrc)} 512w, 
-  ${getImageUrl(base, imageSrc, Resolution.MD)} 768w, 
-  ${getImageUrl(base, imageSrc, Resolution.LG)} 1024w,`
+export const getSrcSet = (base: string, imageSrc: string, extension = '.png') => {
+  return `${getImageUrl(base, imageSrc, undefined, extension)} 512w,
+  ${getImageUrl(base, imageSrc, Resolution.MD, extension)} 768w,
+  ${getImageUrl(base, imageSrc, Resolution.LG, extension)} 1024w,`
 }
 
 const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, maxHeight = '512px' }) => {
   return (
     <Wrapper maxHeight={maxHeight}>
-      <DummyImg
-        src={getImageUrl(path, attributes[0].src)}
-        maxHeight={maxHeight}
-        srcSet={getSrcSet(path, attributes[0].src)}
-      />
+      <picture>
+        <source type="image/webp" srcSet={getSrcSet(path, attributes[0].src, '.webp')} />
+        <source type="image/png" srcSet={getSrcSet(path, attributes[0].src)} />
+        <DummyImg src={getImageUrl(path, attributes[0].src)} maxHeight={maxHeight} />
+      </picture>
       {attributes.map((image) => (
         <ImageWrapper key={image.src}>
-          <img src={getImageUrl(path, image.src)} srcSet={getSrcSet(path, image.src)} alt={image.alt} />
+          <picture>
+            <source type="image/webp" srcSet={getSrcSet(path, image.src, '.webp')} />
+            <source type="image/png" srcSet={getSrcSet(path, image.src)} />
+            <img src={getImageUrl(path, image.src)} alt={image.alt} />
+          </picture>
         </ImageWrapper>
       ))}
     </Wrapper>

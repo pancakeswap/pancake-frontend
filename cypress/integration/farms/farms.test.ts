@@ -1,5 +1,7 @@
 describe('Farms Page', () => {
-  beforeEach(() => cy.visit('/farms'))
+  beforeEach(() => {
+    cy.visit('/farms')
+  })
 
   it('loads live farms', () => {
     cy.get('#farms-table').should('be.visible')

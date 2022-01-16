@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box, Flex, BunnyPlaceholderIcon, Skeleton, Text } from '@pancakeswap/uikit'
 import truncateHash from 'utils/truncateHash'
+import { FetchStatus } from 'config/constants/types'
 import { useGetProfileAvatar } from 'state/profile/hooks'
-import { ProfileAvatarFetchStatus } from 'state/types'
 import { Link } from 'react-router-dom'
 import { nftsBaseUrl } from '../constants'
 
@@ -32,7 +32,7 @@ const ProfileCell: React.FC<{ accountAddress: string }> = ({ accountAddress }) =
   const profileName = username || '-'
 
   let sellerProfilePicComponent = <Skeleton width="32px" height="32px" mr={['4px', null, '12px']} />
-  if (avatarFetchStatus === ProfileAvatarFetchStatus.FETCHED) {
+  if (avatarFetchStatus === FetchStatus.Fetched) {
     if (profileNft?.image?.thumbnail) {
       sellerProfilePicComponent = <Avatar src={profileNft?.image?.thumbnail} />
     } else {
@@ -46,11 +46,7 @@ const ProfileCell: React.FC<{ accountAddress: string }> = ({ accountAddress }) =
         {sellerProfilePicComponent}
         <Box display="inline">
           <Text lineHeight="1.25">{truncateHash(accountAddress)}</Text>
-          {usernameFetchStatus !== ProfileAvatarFetchStatus.FETCHED ? (
-            <Skeleton />
-          ) : (
-            <Text lineHeight="1.25">{profileName}</Text>
-          )}
+          {usernameFetchStatus !== FetchStatus.Fetched ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
         </Box>
       </StyledFlex>
     </Link>

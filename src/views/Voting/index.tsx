@@ -1,9 +1,9 @@
-import React from 'react'
 import { Flex } from '@pancakeswap/uikit'
-import styled from 'styled-components'
 import { PageMeta } from 'components/Layout/Page'
-import Hero from './components/Hero'
+import React from 'react'
+import styled from 'styled-components'
 import Footer from './components/Footer'
+import Hero from './components/Hero'
 import { Proposals } from './components/Proposals'
 
 const Chrome = styled.div`

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useBlock } from 'state/block/hooks'
 import BigNumber from 'bignumber.js'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -8,8 +9,8 @@ import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import GetTokenModal from './GetTokenModal'
 import ContributeModal from './ContributeModal'
-import GetLpModal from './GetLpModal'
 
 interface Props {
   poolId: PoolIds
@@ -24,11 +25,12 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   const { limitPerUserInLP } = publicPoolCharacteristics
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
+  const { currentBlock } = useBlock()
   const { balance: userCurrencyBalance } = useTokenBalance(ifo.currency.address)
 
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {
-    await Promise.all([publicIfoData.fetchIfoData(), walletIfoData.fetchIfoData()])
+    await Promise.all([publicIfoData.fetchIfoData(currentBlock), walletIfoData.fetchIfoData()])
     toastSuccess(
       t('Success!'),
       <ToastDescriptionWithTx txHash={txHash}>
@@ -42,6 +44,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   const [onPresentContributeModal] = useModal(
     <ContributeModal
       poolId={poolId}
+      creditLeft={walletIfoData.ifoCredit?.creditLeft}
       ifo={ifo}
       publicIfoData={publicIfoData}
       walletIfoData={walletIfoData}
@@ -51,19 +54,21 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
     false,
   )
 
-  const [onPresentGetLpModal] = useModal(<GetLpModal currency={ifo.currency} />, false)
+  const [onPresentGetTokenModal] = useModal(<GetTokenModal currency={ifo.currency} />, false)
 
-  const isDisabled =
-    isPendingTx ||
+  const isMaxCommitted =
+    (walletIfoData.ifoCredit?.creditLeft && walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
     (limitPerUserInLP.isGreaterThan(0) && amountTokenCommittedInLP.isGreaterThanOrEqualTo(limitPerUserInLP))
+
+  const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'
 
   return (
     <Button
-      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetLpModal : onPresentContributeModal}
+      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetTokenModal : onPresentContributeModal}
       width="100%"
       disabled={isDisabled}
     >
-      {isDisabled ? t('Max. Committed') : t('Commit CAKE')}
+      {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit CAKE')}
     </Button>
   )
 }

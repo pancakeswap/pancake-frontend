@@ -12,15 +12,18 @@ import {
   Link,
   CalculateIcon,
   IconButton,
+  Skeleton,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
 import BigNumber from 'bignumber.js'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import { DeserializedPool } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
+import { logError } from 'utils/sentry'
 import PercentageButton from './PercentageButton'
 import useStakePool from '../../../hooks/useStakePool'
 import useUnstakePool from '../../../hooks/useUnstakePool'
@@ -134,26 +137,63 @@ const StakeModal: React.FC<StakeModalProps> = ({
     try {
       if (isRemovingStake) {
         // unstaking
-        await onUnstake(stakeAmount, stakingToken.decimals)
-        toastSuccess(
-          `${t('Unstaked')}!`,
-          t('Your %symbol% earnings have also been harvested to your wallet!', {
-            symbol: earningToken.symbol,
-          }),
+        await onUnstake(
+          stakeAmount,
+          stakingToken.decimals,
+          (tx) => {
+            toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+          },
+          (receipt) => {
+            toastSuccess(
+              `${t('Unstaked')}!`,
+              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                {t('Your %symbol% earnings have also been harvested to your wallet!', {
+                  symbol: earningToken.symbol,
+                })}
+              </ToastDescriptionWithTx>,
+            )
+          },
+          (receipt) => {
+            toastError(
+              t('Error'),
+              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+              </ToastDescriptionWithTx>,
+            )
+          },
         )
       } else {
         // staking
-        await onStake(stakeAmount, stakingToken.decimals)
-        toastSuccess(
-          `${t('Staked')}!`,
-          t('Your %symbol% funds have been staked in the pool!', {
-            symbol: stakingToken.symbol,
-          }),
+        await onStake(
+          stakeAmount,
+          stakingToken.decimals,
+          (tx) => {
+            toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+          },
+          (receipt) => {
+            toastSuccess(
+              `${t('Staked')}!`,
+              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                {t('Your %symbol% funds have been staked in the pool!', {
+                  symbol: stakingToken.symbol,
+                })}
+              </ToastDescriptionWithTx>,
+            )
+          },
+          (receipt) => {
+            toastError(
+              t('Error'),
+              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+              </ToastDescriptionWithTx>,
+            )
+          },
         )
       }
       setPendingTx(false)
       onDismiss()
     } catch (e) {
+      logError(e)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setPendingTx(false)
     }
@@ -247,12 +287,21 @@ const StakeModal: React.FC<StakeModalProps> = ({
           <Text mr="8px" color="textSubtle">
             {t('Annual ROI at current rates')}:
           </Text>
-          <AnnualRoiContainer alignItems="center" onClick={() => setShowRoiCalculator(true)}>
-            <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
-            <IconButton variant="text" scale="sm">
-              <CalculateIcon color="textSubtle" width="18px" />
-            </IconButton>
-          </AnnualRoiContainer>
+          {Number.isFinite(annualRoi) ? (
+            <AnnualRoiContainer
+              alignItems="center"
+              onClick={() => {
+                setShowRoiCalculator(true)
+              }}
+            >
+              <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
+              <IconButton variant="text" scale="sm">
+                <CalculateIcon color="textSubtle" width="18px" />
+              </IconButton>
+            </AnnualRoiContainer>
+          ) : (
+            <Skeleton width={60} />
+          )}
         </Flex>
       )}
       <Button

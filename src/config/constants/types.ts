@@ -48,6 +48,9 @@ export interface Ifo {
   articleUrl: string
   campaignId: string
   tokenOfferingPrice: number
+  description?: string
+  twitterUrl?: string
+  telegramUrl?: string
   version: number
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
@@ -217,4 +220,11 @@ export interface ConnectedBidder {
   account: string
   isWhitelisted: boolean
   bidderData?: Bidder
+}
+
+export enum FetchStatus {
+  Idle = 'IDLE',
+  Fetching = 'FETCHING',
+  Fetched = 'FETCHED',
+  Failed = 'FAILED',
 }

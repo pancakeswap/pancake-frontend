@@ -28,7 +28,7 @@ import truncateHash from 'utils/truncateHash'
 import { signMessage } from 'utils/web3React'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
-import { DatePicker, TimePicker } from 'components/DatePicker'
+import { DatePicker, TimePicker, DatePickerPortal } from 'views/Voting/components/DatePicker'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ReactMarkdown from 'components/ReactMarkdown'
 import { PageMeta } from 'components/Layout/Page'
@@ -60,7 +60,7 @@ const CreateProposal = () => {
   const { account } = useWeb3React()
   const initialBlock = useInitialBlock()
   const { push } = useHistory()
-  const { library } = useWeb3Provider()
+  const { library, connector } = useWeb3Provider()
   const { toastSuccess, toastError } = useToast()
   const [onPresentVoteDetailsModal] = useModal(<VoteDetailsModal block={state.snapshot} />)
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
@@ -90,7 +90,7 @@ const CreateProposal = () => {
         },
       })
 
-      const sig = await signMessage(library, account, proposal)
+      const sig = await signMessage(connector, library, account, proposal)
 
       if (sig) {
         const msg: Message = { address: account, msg: proposal, sig }
@@ -106,7 +106,7 @@ const CreateProposal = () => {
         toastError(t('Error'), t('Unable to sign payload'))
       }
     } catch (error) {
-      toastError(t('Error'), error?.message || error?.error)
+      toastError(t('Error'), (error as Error)?.message)
       console.error(error)
       setIsLoading(false)
     }
@@ -299,6 +299,7 @@ const CreateProposal = () => {
           </Box>
         </Layout>
       </form>
+      <DatePickerPortal />
     </Container>
   )
 }

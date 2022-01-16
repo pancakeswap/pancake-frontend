@@ -8,17 +8,18 @@ import LocationTag from './LocationTag'
 import { CollectibleCardProps } from './types'
 import { useGetLowestPriceFromNft } from '../../hooks/useGetLowestPrice'
 import { pancakeBunniesAddress } from '../../constants'
+import NFTMedia from '../NFTMedia'
 
 const CollectibleCardBody: React.FC<CollectibleCardProps> = ({ nft, nftLocation, currentAskPrice, isUserNft }) => {
   const { t } = useTranslation()
-  const { name, image } = nft
+  const { name } = nft
   const bnbBusdPrice = useBNBBusdPrice()
   const isPancakeBunny = nft.collectionAddress?.toLowerCase() === pancakeBunniesAddress.toLowerCase()
   const { isFetching, lowestPrice } = useGetLowestPriceFromNft(nft)
 
   return (
     <CardBody p="8px">
-      <PreviewImage src={image.thumbnail} height={320} width={320} mb="8px" />
+      <NFTMedia as={PreviewImage} nft={nft} height={320} width={320} mb="8px" borderRadius="8px" />
       <Flex alignItems="center" justifyContent="space-between">
         {nft.collectionName && (
           <Text fontSize="12px" color="textSubtle" mb="8px">

@@ -11,10 +11,10 @@ export const parseRetrievedNumber = (number: string): string => {
   return numberAsArray.join('')
 }
 
-export const getDrawnDate = (endTime: string) => {
+export const getDrawnDate = (locale: string, endTime: string) => {
   const endTimeInMs = parseInt(endTime, 10) * 1000
   const endTimeAsDate = new Date(endTimeInMs)
-  return endTimeAsDate.toLocaleDateString(undefined, dateTimeOptions)
+  return endTimeAsDate.toLocaleDateString(locale, dateTimeOptions)
 }
 
 export const dateOptions: Intl.DateTimeFormatOptions = {

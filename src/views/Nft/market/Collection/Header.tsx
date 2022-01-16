@@ -41,6 +41,10 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
       label: t('Traits'),
       href: `${nftsBaseUrl}/collections/${collectionAddress}#traits`,
     },
+    {
+      label: t('Activity'),
+      href: `${nftsBaseUrl}/collections/${collectionAddress}#activity`,
+    },
   ]
 
   return (

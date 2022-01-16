@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { useGetLeaderboardFilters, useGetLeaderboardLoadingState } from 'state/predictions/hooks'
-import { LeaderboardLoadingState } from 'state/types'
 import { filterLeaderboard } from 'state/predictions'
 import PageLoader from 'components/Loader/PageLoader'
 import { PageMeta } from 'components/Layout/Page'
+import { FetchStatus } from 'config/constants/types'
 import Hero from './components/Hero'
 import Results from './components/Results'
 import ConnectedWalletResult from './components/Results/ConnectedWalletResult'
@@ -21,7 +21,7 @@ const Leaderboard = () => {
     dispatch(filterLeaderboard({ filters }))
   }, [account, filters, dispatch])
 
-  if (leaderboardLoadingState === LeaderboardLoadingState.INITIAL) {
+  if (leaderboardLoadingState === FetchStatus.Idle) {
     return <PageLoader />
   }
 

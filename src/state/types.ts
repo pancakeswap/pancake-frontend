@@ -12,6 +12,7 @@ import {
   Team,
   TranslatableText,
   DeserializedFarmConfig,
+  FetchStatus,
 } from 'config/constants/types'
 import { NftToken, State as NftMarketState } from './nftMarket/types'
 
@@ -60,13 +61,19 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   userData?: DeserializedFarmUserData
 }
 
+export enum VaultKey {
+  CakeVault = 'cakeVault',
+  IfoPool = 'ifoPool',
+}
+
 interface CorePoolProps {
   startBlock?: number
   endBlock?: number
   apr?: number
+  rawApr?: number
   stakingTokenPrice?: number
   earningTokenPrice?: number
-  isAutoVault?: boolean
+  vaultKey?: VaultKey
 }
 
 export interface DeserializedPool extends DeserializedPoolConfig, CorePoolProps {
@@ -110,6 +117,7 @@ export interface SerializedFarmsState {
   data: SerializedFarm[]
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
+  loadingKeys: Record<string, boolean>
 }
 
 export interface DeserializedFarmsState {
@@ -132,6 +140,11 @@ export interface VaultUser {
   lastDepositedTime: string
   lastUserActionTime: string
 }
+
+export interface IfoVaultUser extends VaultUser {
+  credit: string
+}
+
 export interface CakeVault {
   totalShares?: string
   pricePerFullShare?: string
@@ -142,16 +155,17 @@ export interface CakeVault {
   userData?: VaultUser
 }
 
+export interface IfoCakeVault extends Omit<CakeVault, 'userData'> {
+  userData?: IfoVaultUser
+  creditStartBlock?: number
+  creditEndBlock?: number
+}
+
 export interface PoolsState {
   data: SerializedPool[]
   cakeVault: CakeVault
+  ifoPool: IfoCakeVault
   userDataLoaded: boolean
-}
-
-export enum ProfileAvatarFetchStatus {
-  NOT_FETCHED = 'not-fetched',
-  FETCHING = 'fetching',
-  FETCHED = 'fetched',
 }
 
 export interface ProfileState {
@@ -164,8 +178,8 @@ export interface ProfileState {
       username: string
       nft: NftToken
       hasRegistered: boolean
-      usernameFetchStatus: ProfileAvatarFetchStatus
-      avatarFetchStatus: ProfileAvatarFetchStatus
+      usernameFetchStatus: FetchStatus
+      avatarFetchStatus: FetchStatus
     }
   }
 }
@@ -198,16 +212,9 @@ export interface Achievement {
   points: number
 }
 
-export enum AchievementFetchStatus {
-  ERROR = 'error',
-  NOT_FETCHED = 'not-fetched',
-  FETCHING = 'fetching',
-  FETCHED = 'fetched',
-}
-
 export interface AchievementState {
   achievements: Achievement[]
-  achievementFetchStatus: AchievementFetchStatus
+  achievementFetchStatus: FetchStatus
 }
 
 // Block
@@ -362,12 +369,6 @@ export interface NodeRound {
   lockOracleId: string
 }
 
-export enum LeaderboardLoadingState {
-  INITIAL,
-  LOADING,
-  IDLE,
-}
-
 export type LeaderboardFilterTimePeriod = '1d' | '7d' | '1m' | 'all'
 
 export interface LeaderboardFilter {
@@ -399,7 +400,7 @@ export interface PredictionsState {
   }
   leaderboard: {
     selectedAddress: string
-    loadingState: LeaderboardLoadingState
+    loadingState: FetchStatus
     filters: LeaderboardFilter
     skip: number
     hasMoreResults: boolean
@@ -476,19 +477,12 @@ export interface Vote {
   _inValid?: boolean
 }
 
-export enum VotingStateLoadingStatus {
-  INITIAL = 'initial',
-  IDLE = 'idle',
-  LOADING = 'loading',
-  ERROR = 'error',
-}
-
 export interface VotingState {
-  proposalLoadingStatus: VotingStateLoadingStatus
+  proposalLoadingStatus: FetchStatus
   proposals: {
     [key: string]: Proposal
   }
-  voteLoadingStatus: VotingStateLoadingStatus
+  voteLoadingStatus: FetchStatus
   votes: {
     [key: string]: Vote[]
   }
@@ -566,8 +560,6 @@ export interface UserRound {
   totalTickets: string
   tickets?: LotteryTicket[]
 }
-
-export type UserTicketsResponse = [ethers.BigNumber[], number[], boolean[]]
 
 // Global state
 

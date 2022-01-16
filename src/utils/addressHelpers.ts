@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import addresses from 'config/constants/contracts'
 import { Address } from 'config/constants/types'
+import { VaultKey } from 'state/types'
 
 export const getAddress = (address: Address): string => {
   const chainId = process.env.REACT_APP_CHAIN_ID
@@ -37,11 +38,25 @@ export const getBunnySpecialAddress = () => {
 export const getTradingCompetitionAddress = () => {
   return getAddress(addresses.tradingCompetition)
 }
+export const getTradingCompetitionAddressV2 = () => {
+  return getAddress(addresses.tradingCompetitionV2)
+}
 export const getEasterNftAddress = () => {
   return getAddress(addresses.easterNft)
 }
+
+export const getVaultPoolAddress = (vaultKey: VaultKey) => {
+  if (!vaultKey) {
+    return null
+  }
+  return getAddress(addresses[vaultKey])
+}
+
 export const getCakeVaultAddress = () => {
   return getAddress(addresses.cakeVault)
+}
+export const getIfoPoolAddress = () => {
+  return getAddress(addresses.ifoPool)
 }
 export const getPredictionsAddress = () => {
   return getAddress(addresses.predictions)
@@ -57,6 +72,9 @@ export const getBunnySpecialPredictionAddress = () => {
 }
 export const getBunnySpecialLotteryAddress = () => {
   return getAddress(addresses.bunnySpecialLottery)
+}
+export const getBunnySpecialXmasAddress = () => {
+  return getAddress(addresses.bunnySpecialXmas)
 }
 export const getFarmAuctionAddress = () => {
   return getAddress(addresses.farmAuction)

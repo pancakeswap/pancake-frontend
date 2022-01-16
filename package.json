@@ -14,7 +14,9 @@
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "updateLPsAPR": "NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "yarn run typechain",
+    "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\""
   },
   "browserslist": {
     "production": [
@@ -30,10 +32,12 @@
   },
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
-    "@ethersproject/experimental": "^5.0.1",
+    "@ethersproject/experimental": "^5.5.0",
     "@pancakeswap/sdk": "^2.4.0",
-    "@pancakeswap/uikit": "^0.56.1",
+    "@pancakeswap/uikit": "^0.63.1",
     "@reduxjs/toolkit": "^1.5.0",
+    "@sentry/react": "^6.15.0",
+    "@sentry/tracing": "^6.15.0",
     "@types/multicodec": "^1.0.0",
     "@types/node": "^13.13.5",
     "@types/qs": "^6.9.6",
@@ -54,7 +58,8 @@
     "cids": "^1.0.0",
     "date-fns": "^2.21.3",
     "easymde": "^2.15.0",
-    "ethers": "^5.1.4",
+    "ethers": "^5.5.2",
+    "fast-json-stable-stringify": "^2.1.0",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
     "js-cookie": "^2.2.1",
@@ -75,24 +80,27 @@
     "react-scripts": "^4.0.1",
     "react-transition-group": "^4.4.1",
     "react-window": "^1.8.6",
-    "recharts": "^2.1.0",
+    "recharts": "2.0.6",
     "redux-localstorage-simple": "^2.4.1",
     "remark-gfm": "^1.0.0",
     "split-grid": "^1.0.11",
     "styled-components": "^5.3.0",
     "swiper": "^6.8.4",
-    "typescript": "^4.3.2"
+    "swr": "^1.1.2",
+    "typescript": "^4.5.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@pancakeswap/eslint-config-pancake": "^1.1.0",
+    "@typechain/ethers-v5": "^8.0.5",
     "@types/canvas-confetti": "^1.4.2",
     "@types/jest": "^26.0.23",
     "@types/react-datepicker": "^3.1.8",
     "@types/react-redux": "^7.1.16",
     "@types/react-transition-group": "^4.4.1",
     "@types/simplemde": "^1.11.7",
+    "@types/lodash": "^4.14.178",
     "cypress": "^8.3.1",
     "eslint": "^7.26.0",
     "eslint-plugin-cypress": "^2.11.3",
@@ -101,6 +109,7 @@
     "serve": "^12.0.0",
     "source-map-explorer": "^2.5.2",
     "start-server-and-test": "^1.14.0",
-    "ts-node": "^9.1.1"
+    "ts-node": "^9.1.1",
+    "typechain": "^6.1.0"
   }
 }

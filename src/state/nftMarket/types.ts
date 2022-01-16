@@ -1,3 +1,4 @@
+import { FetchStatus } from 'config/constants/types'
 import { BigNumberish } from 'ethers'
 
 // Collections -> Nfts -> Transactions
@@ -17,17 +18,13 @@ export enum UserNftInitializationState {
   ERROR = 'ERROR',
 }
 
-export enum NftFilterLoadingState {
-  IDLE = 'IDLE',
-  LOADING = 'LOADING',
-}
-
 export interface State {
   initializationState: NFTMarketInitializationState
   data: {
     collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
     filters: Record<string, NftFilter> // string is the collection address
+    activityFilters: Record<string, NftActivityFilter> // string is the collection address
     loadingState: {
       isUpdatingPancakeBunnies: boolean
       latestPancakeBunniesUpdateAt: number
@@ -56,9 +53,9 @@ export interface Transaction {
 }
 
 export enum AskOrderType {
-  NEW = 'NEW',
-  MODIFY = 'MODIFY',
-  CANCEL = 'CANCEL',
+  NEW = 'New',
+  MODIFY = 'Modify',
+  CANCEL = 'Cancel',
 }
 
 export interface AskOrder {
@@ -68,6 +65,7 @@ export interface AskOrder {
   askPrice: string
   orderType: AskOrderType
   nft?: TokenMarketData
+  seller?: { id: string }
 }
 
 export interface Image {
@@ -119,13 +117,18 @@ export interface NftToken {
 }
 
 export interface NftFilter {
-  loadingState: NftFilterLoadingState
+  loadingState: FetchStatus
   activeFilters: Record<string, NftAttribute>
   showOnlyOnSale: boolean
   ordering: {
     field: string
     direction: 'asc' | 'desc'
   }
+}
+
+export interface NftActivityFilter {
+  typeFilters: MarketEvent[]
+  collectionFilters: string[]
 }
 
 export interface TokenIdWithCollectionAddress {
@@ -146,6 +149,7 @@ export interface Collection {
   id: string
   address: string
   name: string
+  createdAt?: string
   description?: string
   symbol: string
   active: boolean
@@ -200,7 +204,7 @@ export interface ApiCollection {
 
 // Get all collections
 // ${API_NFT}/collections/
-export interface ApiCollectionsReponse {
+export interface ApiCollectionsResponse {
   total: number
   data: ApiCollection[]
 }
@@ -263,6 +267,25 @@ export interface ApiCollectionDistribution {
 export interface ApiCollectionDistributionPB {
   total: number
   data: Record<string, number>
+}
+
+export interface Activity {
+  marketEvent: MarketEvent
+  timestamp: string
+  tx: string
+  nft?: TokenMarketData
+  price?: string
+  otherParty?: string
+  buyer?: string
+  seller?: string
+}
+
+export enum MarketEvent {
+  NEW = 'NEW',
+  CANCEL = 'CANCEL',
+  MODIFY = 'MODIFY',
+  BUY = 'BUY',
+  SELL = 'SELL',
 }
 
 /**

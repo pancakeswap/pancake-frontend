@@ -20,11 +20,12 @@ import { useWeb3React } from '@web3-react/core'
 import { formatUnits } from '@ethersproject/units'
 import { API_PROFILE } from 'config/constants/endpoints'
 import useToast from 'hooks/useToast'
-import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { signMessage } from 'utils/web3React'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
+import { FetchStatus } from 'config/constants/types'
 import ConfirmProfileCreationModal from './ConfirmProfileCreationModal'
 import useProfileCreation from './contexts/hook'
 import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, REGISTER_COST } from './config'
@@ -62,14 +63,14 @@ const UserName: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { toastError } = useToast()
-  const { library } = useWeb3Provider()
+  const { library, connector } = useWeb3Provider()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const fetchAbortSignal = useRef<AbortController>(null)
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
-  const hasMinimumCakeRequired = fetchStatus === FetchStatus.SUCCESS && cakeBalance.gte(REGISTER_COST)
+  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance.gte(REGISTER_COST)
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}
@@ -114,7 +115,7 @@ const UserName: React.FC = () => {
         }
       } catch (e) {
         setIsValid(false)
-        if (e.name !== 'AbortError') {
+        if (e instanceof Error && e.name !== 'AbortError') {
           setMessage(t('Error fetching data'))
           console.error(e)
         }
@@ -142,7 +143,7 @@ const UserName: React.FC = () => {
     try {
       setIsLoading(true)
 
-      const signature = await signMessage(library, account, userName)
+      const signature = await signMessage(connector, library, account, userName)
       const response = await fetch(`${API_PROFILE}/api/users/register`, {
         method: 'POST',
         headers: {
@@ -162,7 +163,7 @@ const UserName: React.FC = () => {
         toastError(t('Error'), data?.error?.message)
       }
     } catch (error) {
-      toastError(error?.message ? error.message : JSON.stringify(error))
+      toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
     } finally {
       setIsLoading(false)
     }

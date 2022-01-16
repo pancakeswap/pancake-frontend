@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { LIVE } from 'config/constants/trading-competition/easterPhases'
+import { LIVE } from 'config/constants/trading-competition/phases'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
 import NextRankBox from './NextRankBox'

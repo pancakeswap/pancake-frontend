@@ -1,10 +1,12 @@
-import React from 'react'
-import { Text, ErrorIcon } from '@pancakeswap/uikit'
-import styled, { css } from 'styled-components'
+import { ErrorIcon, Flex, Text } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
+import React from 'react'
+import styled, { css } from 'styled-components'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled(Flex)`
   position: relative;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 1rem;
 `
 

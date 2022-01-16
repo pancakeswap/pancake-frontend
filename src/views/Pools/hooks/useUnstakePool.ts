@@ -6,6 +6,7 @@ import { updateUserStakedBalance, updateUserBalance, updateUserPendingReward } f
 import { unstakeFarm } from 'utils/calls'
 import { useMasterchef, useSousChef } from 'hooks/useContract'
 import getGasPrice from 'utils/getGasPrice'
+import { TransactionResponse, TransactionReceipt } from '@ethersproject/providers'
 
 const sousUnstake = async (sousChefContract: any, amount: string, decimals: number) => {
   const gasPrice = getGasPrice()
@@ -32,17 +33,31 @@ const useUnstakePool = (sousId: number, enableEmergencyWithdraw = false) => {
   const sousChefContract = useSousChef(sousId)
 
   const handleUnstake = useCallback(
-    async (amount: string, decimals: number) => {
+    async (
+      amount: string,
+      decimals: number,
+      onTransactionSubmitted: (tx: TransactionResponse) => void,
+      onSuccess: (receipt: TransactionReceipt) => void,
+      onError: (receipt: TransactionReceipt) => void,
+    ) => {
+      let tx
       if (sousId === 0) {
-        await unstakeFarm(masterChefContract, 0, amount)
+        tx = await unstakeFarm(masterChefContract, 0, amount)
       } else if (enableEmergencyWithdraw) {
-        await sousEmergencyUnstake(sousChefContract)
+        tx = await sousEmergencyUnstake(sousChefContract)
       } else {
-        await sousUnstake(sousChefContract, amount, decimals)
+        tx = await sousUnstake(sousChefContract, amount, decimals)
       }
-      dispatch(updateUserStakedBalance(sousId, account))
-      dispatch(updateUserBalance(sousId, account))
-      dispatch(updateUserPendingReward(sousId, account))
+      onTransactionSubmitted(tx)
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        onSuccess(receipt)
+        dispatch(updateUserStakedBalance(sousId, account))
+        dispatch(updateUserBalance(sousId, account))
+        dispatch(updateUserPendingReward(sousId, account))
+      } else {
+        onError(receipt)
+      }
     },
     [account, dispatch, enableEmergencyWithdraw, masterChefContract, sousChefContract, sousId],
   )

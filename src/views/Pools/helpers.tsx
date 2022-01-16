@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { vaultPoolConfig } from 'config/constants/pools'
 import { DeserializedPool } from 'state/types'
 import { getApy } from 'utils/compoundApyHelpers'
 import { getBalanceNumber, getFullDisplayBalance, getDecimalAmount } from 'utils/formatBalance'
@@ -31,17 +32,18 @@ export const convertCakeToShares = (
   return { sharesAsNumberBalance, sharesAsBigNumber, sharesAsDisplayBalance }
 }
 
-const AUTO_VAULT_COMPOUND_FREQUENCY = 5000
 const MANUAL_POOL_AUTO_COMPOUND_FREQUENCY = 0
 
 export const getAprData = (pool: DeserializedPool, performanceFee: number) => {
-  const { isAutoVault, apr } = pool
+  const { vaultKey, apr } = pool
 
   //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
-  const autoCompoundFrequency = isAutoVault ? AUTO_VAULT_COMPOUND_FREQUENCY : MANUAL_POOL_AUTO_COMPOUND_FREQUENCY
+  const autoCompoundFrequency = vaultKey
+    ? vaultPoolConfig[vaultKey].autoCompoundFrequency
+    : MANUAL_POOL_AUTO_COMPOUND_FREQUENCY
 
-  if (isAutoVault) {
-    const autoApr = getApy(apr, AUTO_VAULT_COMPOUND_FREQUENCY, 365, performanceFee) * 100
+  if (vaultKey) {
+    const autoApr = getApy(apr, autoCompoundFrequency, 365, performanceFee) * 100
     return { apr: autoApr, autoCompoundFrequency }
   }
   return { apr, autoCompoundFrequency }

@@ -1,13 +1,15 @@
 import React from 'react'
 import { Flex, Box, Card, CardBody, Text, Button, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { formatNumber } from 'utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
+import NFTMedia from 'views/Nft/market/components/NFTMedia'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import BuyModal from '../../../components/BuySellModals/BuyModal'
 import SellModal from '../../../components/BuySellModals/SellModal'
 import { nftsBaseUrl } from '../../../constants'
-import { RoundedImage, Container, CollectionLink } from '../shared/styles'
+import { Container, CollectionLink } from '../shared/styles'
 
 interface MainPancakeBunnyCardProps {
   cheapestNft: NftToken
@@ -74,7 +76,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
                   <Flex alignItems="center" mt="8px">
                     <BinanceIcon width={18} height={18} mr="4px" />
                     <Text fontSize="24px" bold mr="4px">
-                      {nftToDisplay.marketData.currentAskPrice}
+                      {formatNumber(parseFloat(nftToDisplay.marketData?.currentAskPrice), 0, 5)}
                     </Text>
                     {bnbBusdPrice ? (
                       <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
@@ -90,8 +92,8 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
               {hasListings && actionButton}
             </Box>
           </Flex>
-          <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center">
-            <RoundedImage src={nftToDisplay.image.thumbnail} width={440} height={440} />
+          <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center" maxWidth={440}>
+            <NFTMedia key={nftToDisplay.tokenId} nft={nftToDisplay} width={440} height={440} />
           </Flex>
         </Container>
       </CardBody>

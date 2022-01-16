@@ -3,33 +3,46 @@ import poolsConfig from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
 import cakeABI from 'config/abi/cake.json'
 import wbnbABI from 'config/abi/weth.json'
-import multicall from 'utils/multicall'
+import multicall, { multicallv2 } from 'utils/multicall'
 import { getAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getSouschefV2Contract } from 'utils/contractHelpers'
 import tokens from 'config/constants/tokens'
+import { chunk } from 'lodash'
+import sousChefV2 from '../../config/abi/sousChefV2.json'
 
 export const fetchPoolsBlockLimits = async () => {
   const poolsWithEnd = poolsConfig.filter((p) => p.sousId !== 0)
-  const callsStartBlock = poolsWithEnd.map((poolConfig) => {
-    return {
-      address: getAddress(poolConfig.contractAddress),
-      name: 'startBlock',
-    }
-  })
-  const callsEndBlock = poolsWithEnd.map((poolConfig) => {
-    return {
-      address: getAddress(poolConfig.contractAddress),
-      name: 'bonusEndBlock',
-    }
+  const startEndBlockCalls = poolsWithEnd.flatMap((poolConfig) => {
+    return [
+      {
+        address: getAddress(poolConfig.contractAddress),
+        name: 'startBlock',
+      },
+      {
+        address: getAddress(poolConfig.contractAddress),
+        name: 'bonusEndBlock',
+      },
+    ]
   })
 
-  const starts = await multicall(sousChefABI, callsStartBlock)
-  const ends = await multicall(sousChefABI, callsEndBlock)
+  const startEndBlockRaw = await multicall(sousChefABI, startEndBlockCalls)
+
+  const startEndBlockResult = startEndBlockRaw.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / 2)
+
+    if (!resultArray[chunkIndex]) {
+      // eslint-disable-next-line no-param-reassign
+      resultArray[chunkIndex] = [] // start a new chunk
+    }
+
+    resultArray[chunkIndex].push(item)
+
+    return resultArray
+  }, [])
 
   return poolsWithEnd.map((cakePoolConfig, index) => {
-    const startBlock = starts[index]
-    const endBlock = ends[index]
+    const [startBlock, endBlock] = startEndBlockResult[index]
     return {
       sousId: cakePoolConfig.sousId,
       startBlock: new BigNumber(startBlock).toJSON(),
@@ -76,8 +89,12 @@ export const fetchPoolsTotalStaking = async () => {
 export const fetchPoolStakingLimit = async (sousId: number): Promise<BigNumber> => {
   try {
     const sousContract = getSouschefV2Contract(sousId)
-    const stakingLimit = await sousContract.poolLimitPerUser()
-    return new BigNumber(stakingLimit.toString())
+    const hasUserLimit = await sousContract.hasUserLimit()
+    if (hasUserLimit) {
+      const stakingLimit = await sousContract.poolLimitPerUser()
+      return new BigNumber(stakingLimit.toString())
+    }
+    return BIG_ZERO
   } catch (error) {
     return BIG_ZERO
   }
@@ -91,11 +108,22 @@ export const fetchPoolsStakingLimits = async (
     .filter((p) => !poolsWithStakingLimit.includes(p.sousId))
 
   // Get the staking limit for each valid pool
-  // Note: We cannot batch the calls via multicall because V1 pools do not have "poolLimitPerUser" and will throw an error
-  const stakingLimitPromises = validPools.map((validPool) => fetchPoolStakingLimit(validPool.sousId))
-  const stakingLimits = await Promise.all(stakingLimitPromises)
+  const poolStakingCalls = validPools
+    .map((validPool) => {
+      const contractAddress = getAddress(validPool.contractAddress)
+      return ['hasUserLimit', 'poolLimitPerUser'].map((method) => ({
+        address: contractAddress,
+        name: method,
+      }))
+    })
+    .flat()
 
-  return stakingLimits.reduce((accum, stakingLimit, index) => {
+  const poolStakingResultRaw = await multicallv2(sousChefV2, poolStakingCalls, { requireSuccess: false })
+  const chunkSize = poolStakingCalls.length / validPools.length
+  const poolStakingChunkedResultRaw = chunk(poolStakingResultRaw.flat(), chunkSize)
+  return poolStakingChunkedResultRaw.reduce((accum, stakingLimitRaw, index) => {
+    const hasUserLimit = stakingLimitRaw[0]
+    const stakingLimit = hasUserLimit && stakingLimitRaw[1] ? new BigNumber(stakingLimitRaw[1].toString()) : BIG_ZERO
     return {
       ...accum,
       [validPools[index].sousId]: stakingLimit,

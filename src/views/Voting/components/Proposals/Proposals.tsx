@@ -6,7 +6,8 @@ import Container from 'components/Layout/Container'
 import { useAppDispatch } from 'state'
 import { fetchProposals } from 'state/voting'
 import { useGetProposalLoadingStatus, useGetProposals } from 'state/voting/hooks'
-import { ProposalState, ProposalType, VotingStateLoadingStatus } from 'state/types'
+import { ProposalState, ProposalType } from 'state/types'
+import { FetchStatus } from 'config/constants/types'
 import { filterProposalsByState, filterProposalsByType } from '../../helpers'
 import ProposalsLoading from './ProposalsLoading'
 import TabMenu from './TabMenu'
@@ -29,8 +30,8 @@ const Proposals = () => {
   const dispatch = useAppDispatch()
 
   const { proposalType, filterState } = state
-  const isLoading = proposalStatus === VotingStateLoadingStatus.LOADING
-  const isIdle = proposalStatus === VotingStateLoadingStatus.IDLE
+  const isLoading = proposalStatus === FetchStatus.Fetching
+  const isFetched = proposalStatus === FetchStatus.Fetched
 
   useEffect(() => {
     dispatch(fetchProposals({ first: 1000, state: filterState }))
@@ -67,12 +68,12 @@ const Proposals = () => {
         <TabMenu proposalType={proposalType} onTypeChange={handleProposalTypeChange} />
         <Filters filterState={filterState} onFilterChange={handleFilterChange} isLoading={isLoading} />
         {isLoading && <ProposalsLoading />}
-        {isIdle &&
+        {isFetched &&
           filteredProposals.length > 0 &&
           filteredProposals.map((proposal) => {
             return <ProposalRow key={proposal.id} proposal={proposal} />
           })}
-        {isIdle && filteredProposals.length === 0 && (
+        {isFetched && filteredProposals.length === 0 && (
           <Flex alignItems="center" justifyContent="center" p="32px">
             <Heading as="h5">{t('No proposals found')}</Heading>
           </Flex>

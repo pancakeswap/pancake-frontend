@@ -3,13 +3,91 @@ import tokens from './tokens'
 import farms from './farms'
 import { Ifo } from './types'
 
-const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[ChainId.MAINNET], 18, farms[1].lpSymbol)
+export const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[ChainId.MAINNET], 18, farms[1].lpSymbol)
 
 const ifos: Ifo[] = [
   {
+    id: 'froyo',
+    address: '0xE0d6c91860a332068bdB59275b0AAC8769e26Ac4',
+    isActive: true,
+    name: 'Froyo Games (FROYO)',
+    poolBasic: {
+      saleAmount: '20,000,000 FROYO',
+      raiseAmount: '$1,200,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.3,
+    },
+    poolUnlimited: {
+      saleAmount: '46,666,668 FROYO',
+      raiseAmount: '$2,800,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.7,
+    },
+    currency: tokens.cake,
+    token: tokens.froyo,
+    releaseBlockNumber: 14297000,
+    campaignId: '511170000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmRhc4oC73jk4zxU4YkP1kudKHeq6qamgYA1sWoh6XJnks',
+    tokenOfferingPrice: 0.06,
+    version: 3,
+    telegramUrl: 'https://t.me/froyogames',
+    twitterUrl: 'https://twitter.com/realfroyogames',
+    description: `Froyo Games is a game publisher and decentralized GameFi platform, with a NFT Marketplace that integrates NFTs with their games.\n \n FROYO tokens can be used to buy NFTs and participate in Froyo games`,
+  },
+  {
+    id: 'dpt',
+    address: '0x63914805A0864e9557eA3A5cC86cc1BA054ec64b',
+    isActive: false,
+    name: 'Diviner Protocol (DPT)',
+    poolBasic: {
+      saleAmount: '7,200,000 DPT',
+      raiseAmount: '$180,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.3,
+    },
+    poolUnlimited: {
+      saleAmount: '16,800,000 DPT',
+      raiseAmount: '$420,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.7,
+    },
+    currency: tokens.cake,
+    token: tokens.dpt,
+    releaseBlockNumber: 13491500,
+    campaignId: '511160000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmQqpknHvuQwshVP259qFxfQsxiWbQ9SLMebohDeRwRzKg',
+    tokenOfferingPrice: 0.025,
+    version: 3,
+  },
+  {
+    id: 'santos',
+    address: '0x69B5D2Ab0cf532a0E22Fc0dEB0c5135639892468',
+    isActive: false,
+    name: 'FC Santos Fan Token (SANTOS)',
+    poolBasic: {
+      saleAmount: '120,000 SANTOS',
+      raiseAmount: '$300,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.3,
+    },
+    poolUnlimited: {
+      saleAmount: '280,000 SANTOS',
+      raiseAmount: '$700,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.7,
+    },
+    currency: tokens.cake,
+    token: tokens.santos,
+    releaseBlockNumber: 13097777,
+    campaignId: '511150000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmUqRxjwZCWeZWEdgV2vHJ6hex7jMW7i247NKFas73xc8j',
+    tokenOfferingPrice: 2.5,
+    version: 2,
+  },
+  {
     id: 'porto',
     address: '0xFDFf29dD0b4DD49Bf5E991A30b8593eaA34B4580',
-    isActive: true,
+    isActive: false,
     name: 'FC Porto Fan Token (PORTO)',
     poolBasic: {
       saleAmount: '250,000 PORTO',

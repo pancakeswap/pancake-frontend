@@ -1,5 +1,7 @@
 import { getUnixTime, subDays, subWeeks, startOfMinute } from 'date-fns'
-import { request } from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
+import { getHeaders } from 'state/swap/fetch/constants'
+import requestWithTimeout from 'utils/requestWithTimeout'
 
 /**
  * Helper function to get large amount GraphQL subqueries
@@ -18,6 +20,7 @@ export const multiQuery = async (
   let fetchedData = {}
   let allFound = false
   let skip = 0
+  const client = new GraphQLClient(endpoint, { headers: getHeaders(endpoint) })
   try {
     while (!allFound) {
       let end = subqueries.length
@@ -26,7 +29,7 @@ export const multiQuery = async (
       }
       const subqueriesSlice = subqueries.slice(skip, end)
       // eslint-disable-next-line no-await-in-loop
-      const result = await request(endpoint, queryConstructor(subqueriesSlice))
+      const result: any = await requestWithTimeout(client, queryConstructor(subqueriesSlice))
       fetchedData = {
         ...fetchedData,
         ...result,

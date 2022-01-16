@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { Modal, Text, Flex, BalanceInput, Box, Button, PancakeRoundIcon } from '@pancakeswap/uikit'
+import { Modal, Text, Flex, BalanceInput, Box, Button, LogoRoundIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { formatNumber, getBalanceAmount, getBalanceNumber } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import useTheme from 'hooks/useTheme'
-import useTokenBalance, { FetchStatus } from 'hooks/useTokenBalance'
+import useTokenBalance from 'hooks/useTokenBalance'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useFarmAuctionContract } from 'hooks/useContract'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import useToast from 'hooks/useToast'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
-import { ConnectedBidder } from 'config/constants/types'
+import { ConnectedBidder, FetchStatus } from 'config/constants/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -81,7 +81,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
   useEffect(() => {
     setIsMoreThanInitialBidAmount(parseFloat(bid) >= initialBidAmount)
     setIsMultipleOfTen(parseFloat(bid) % 10 === 0 && parseFloat(bid) !== 0)
-    if (fetchStatus === FetchStatus.SUCCESS && userCakeBalance.lt(bid)) {
+    if (fetchStatus === FetchStatus.Fetched && userCakeBalance.lt(bid)) {
       setUserNotEnoughCake(true)
     } else {
       setUserNotEnoughCake(false)
@@ -156,7 +156,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
         <Flex justifyContent="space-between" alignItems="center" pb="8px">
           <Text>{t('Bid a multiple of 10')}</Text>
           <Flex>
-            <PancakeRoundIcon width="24px" height="24px" mr="4px" />
+            <LogoRoundIcon width="24px" height="24px" mr="4px" />
             <Text bold>CAKE</Text>
           </Flex>
         </Flex>
@@ -190,7 +190,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
         )}
         <Flex justifyContent="space-between" mt="8px" mb="24px">
           <Button
-            disabled={fetchStatus !== FetchStatus.SUCCESS}
+            disabled={fetchStatus !== FetchStatus.Fetched}
             scale="xs"
             mx="2px"
             p="4px 16px"
@@ -200,7 +200,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
             25%
           </Button>
           <Button
-            disabled={fetchStatus !== FetchStatus.SUCCESS}
+            disabled={fetchStatus !== FetchStatus.Fetched}
             scale="xs"
             mx="2px"
             p="4px 16px"
@@ -210,7 +210,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
             50%
           </Button>
           <Button
-            disabled={fetchStatus !== FetchStatus.SUCCESS}
+            disabled={fetchStatus !== FetchStatus.Fetched}
             scale="xs"
             mx="2px"
             p="4px 16px"
@@ -220,7 +220,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
             75%
           </Button>
           <Button
-            disabled={fetchStatus !== FetchStatus.SUCCESS}
+            disabled={fetchStatus !== FetchStatus.Fetched}
             scale="xs"
             mx="2px"
             p="4px 16px"

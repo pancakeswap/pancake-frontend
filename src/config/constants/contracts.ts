@@ -43,12 +43,20 @@ export default {
     56: '0xd718baa0B1F4f70dcC8458154042120FFE0DEFFA',
     97: '0xC787F45B833721ED3aC46E99b703B3E1E01abb97',
   },
+  tradingCompetitionV2: {
+    56: '0xA8FECf847e28aa1Df39E995a45b7FCfb91b676d4',
+    97: '',
+  },
   easterNft: {
     56: '0x23c41D28A239dDCAABd1bb1deF8d057189510066',
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
   cakeVault: {
     56: '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC',
+    97: '',
+  },
+  ifoPool: {
+    56: '0x1B2A2f6ed4A1401E8C73B4c2B6172455ce2f78E8',
     97: '',
   },
   predictions: {
@@ -70,6 +78,10 @@ export default {
   bunnySpecialLottery: {
     56: '0x24ED31d31C5868e5a96aA77fdcB890f3511fa0b2',
     97: '0x382cB497110F398F0f152cae82821476AE51c9cF',
+  },
+  bunnySpecialXmas: {
+    56: '0x59EdDF3c21509dA3b0aCCd7c5ccc596d930f4783',
+    97: '',
   },
   farmAuction: {
     56: '0xb92Ab7c1edcb273AbA24b0656cEb3681654805D2',

@@ -1,4 +1,5 @@
 import { ChainId, Pair, Token } from '@pancakeswap/sdk'
+import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,6 +33,10 @@ import {
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
+  setIsExchangeChartDisplayed,
+  ChartViewMode,
+  setChartViewMode,
+  setSubgraphHealthIndicatorDisplayed,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -52,15 +57,70 @@ export function useAudioModeManager(): [boolean, () => void] {
 
 export function usePhishingBannerManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
-  const showPhishingWarningBanner = useSelector<AppState, AppState['user']['showPhishingWarningBanner']>(
-    (state) => state.user.showPhishingWarningBanner,
-  )
-
+  const hideTimestampPhishingWarningBanner = useSelector<
+    AppState,
+    AppState['user']['hideTimestampPhishingWarningBanner']
+  >((state) => state.user.hideTimestampPhishingWarningBanner)
+  const now = Date.now()
+  const showPhishingWarningBanner = hideTimestampPhishingWarningBanner
+    ? differenceInDays(now, hideTimestampPhishingWarningBanner) >= 1
+    : true
   const hideBanner = useCallback(() => {
     dispatch(hidePhishingWarningBanner())
   }, [dispatch])
 
   return [showPhishingWarningBanner, hideBanner]
+}
+
+// Get user preference for exchange price chart
+// For mobile layout chart is hidden by default
+export function useExchangeChartManager(isMobile: boolean): [boolean, (isDisplayed: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const isChartDisplayed = useSelector<AppState, AppState['user']['isExchangeChartDisplayed']>(
+    (state) => state.user.isExchangeChartDisplayed,
+  )
+
+  const setUserChartPreference = useCallback(
+    (isDisplayed: boolean) => {
+      dispatch(setIsExchangeChartDisplayed(isDisplayed))
+    },
+    [dispatch],
+  )
+
+  return [isMobile ? false : isChartDisplayed, setUserChartPreference]
+}
+
+export function useExchangeChartViewManager() {
+  const dispatch = useDispatch<AppDispatch>()
+  const chartViewMode = useSelector<AppState, AppState['user']['userChartViewMode']>(
+    (state) => state.user.userChartViewMode,
+  )
+
+  const setUserChartViewPreference = useCallback(
+    (view: ChartViewMode) => {
+      dispatch(setChartViewMode(view))
+    },
+    [dispatch],
+  )
+
+  return [chartViewMode, setUserChartViewPreference] as const
+}
+
+export function useSubgraphHealthIndicatorManager() {
+  const dispatch = useDispatch<AppDispatch>()
+  const isSubgraphHealthIndicatorDisplayed = useSelector<
+    AppState,
+    AppState['user']['isSubgraphHealthIndicatorDisplayed']
+  >((state) => state.user.isSubgraphHealthIndicatorDisplayed)
+
+  const setSubgraphHealthIndicatorDisplayedPreference = useCallback(
+    (newIsDisplayed: boolean) => {
+      dispatch(setSubgraphHealthIndicatorDisplayed(newIsDisplayed))
+    },
+    [dispatch],
+  )
+
+  return [isSubgraphHealthIndicatorDisplayed, setSubgraphHealthIndicatorDisplayedPreference] as const
 }
 
 export function useIsExpertMode(): boolean {

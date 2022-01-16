@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import { save, load } from 'redux-localstorage-simple'
 import cloneDeep from 'lodash/cloneDeep'
 import { useDispatch } from 'react-redux'
@@ -24,6 +24,15 @@ import nftMarketReducer from './nftMarket/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
 
+const safeCloneDeep = <T>(state: T) => {
+  try {
+    return JSON.parse(JSON.stringify(state)) as T
+  } catch (error) {
+    console.error(error)
+    return cloneDeep(state)
+  }
+}
+
 const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: {
@@ -48,14 +57,17 @@ const store = configureStore({
     multicall,
     lists,
   },
-  middleware: [...getDefaultMiddleware({ thunk: true }), save({ states: PERSISTED_KEYS })],
+  middleware: (getDefaultMiddleware) => [
+    ...getDefaultMiddleware({ thunk: true }),
+    save({ states: PERSISTED_KEYS, debounce: 1000 }),
+  ],
   preloadedState: load({
     states: PERSISTED_KEYS,
     preloadedState: {
-      user: cloneDeep(userInitialState),
-      transactions: cloneDeep(transactionsInitialState),
-      lists: cloneDeep(listsInitialState),
-      profile: cloneDeep(profileInitialState),
+      user: safeCloneDeep(userInitialState),
+      transactions: safeCloneDeep(transactionsInitialState),
+      lists: safeCloneDeep(listsInitialState),
+      profile: safeCloneDeep(profileInitialState),
     },
   }),
 })

@@ -1,11 +1,6 @@
-import { Token, Pair, ChainId } from '@pancakeswap/sdk'
+import getLpAddress from 'utils/getLpAddress'
 import tokens from './tokens'
 import { FarmAuctionBidderConfig } from './types'
-
-const getLpAddress = (tokenAddress: string, quoteToken: Token) => {
-  const token = new Token(ChainId.MAINNET, tokenAddress, 18)
-  return Pair.getAddress(token, quoteToken)
-}
 
 export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
@@ -455,6 +450,102 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     quoteToken: tokens.busd,
     tokenName: 'Bomb Crypto',
     projectSite: 'https://bombcrypto.io/',
+  },
+  {
+    account: '0x6524b3B11979D5b5c354D5A804be9711d767f38F',
+    farmName: 'XEUS-BUSD',
+    tokenAddress: '0x4E141769366634D9c4e498257Fa7EC204d22b634',
+    quoteToken: tokens.busd,
+    tokenName: 'XEUS',
+    projectSite: 'https://xeus.finance/',
+  },
+  {
+    account: '0x1Aa800bE7e9829DDF97C54EF750F5E42C2a6a884',
+    farmName: 'SHARPEI-BNB',
+    tokenAddress: '0xfE3AF7376e412a377358d5894C790bB3e00D0dc1',
+    quoteToken: tokens.wbnb,
+    tokenName: 'Shar Pei',
+    projectSite: 'https://sharpeitoken.io/',
+  },
+  {
+    account: '0x2c32E56756964aCdB650521c1F10bdb939D5Ff7B',
+    farmName: 'PID-BUSD',
+    tokenAddress: '0x1215Ed20aa507578ca352E195016F289e7A17f3A',
+    quoteToken: tokens.busd,
+    tokenName: 'PIDAO',
+    projectSite: 'https://www.pidao.finance/',
+  },
+  {
+    account: '0x4AD72A0841808b431525de29a7781d948675bAC7',
+    farmName: 'HTD-BUSD',
+    tokenAddress: '0x5E2689412Fae5c29BD575fbe1d5C1CD1e0622A8f',
+    quoteToken: tokens.busd,
+    tokenName: 'HeroesTD',
+    projectSite: 'https://heroestd.io/',
+  },
+  {
+    account: '0xFfD8457466bAa1f11Bb585c7fD772Ad1A8b82b64',
+    farmName: 'GMEE-BNB',
+    tokenAddress: '0x84e9a6F9D240FdD33801f7135908BfA16866939A',
+    quoteToken: tokens.wbnb,
+    tokenName: 'GAMEE',
+    projectSite: 'https://token.gamee.com/',
+  },
+  {
+    account: '0x820E53c3198dB5904938Bec31B3Ec3864a754c31',
+    farmName: 'ANTEX-BUSD',
+    tokenAddress: '0xCA1aCAB14e85F30996aC83c64fF93Ded7586977C',
+    quoteToken: tokens.busd,
+    tokenName: 'Antex',
+    projectSite: 'https://antex.org/',
+  },
+  {
+    account: '0x5905A1F7BAf19844874B8B16E5FC4cde639b7a32',
+    farmName: 'SIP-BUSD',
+    tokenAddress: '0x9e5965d28E8D44CAE8F9b809396E0931F9Df71CA',
+    quoteToken: tokens.busd,
+    tokenName: 'Space Sip',
+    projectSite: 'https://sip.space/',
+  },
+  {
+    account: '0x20C99830967a18563D2D3eD51094aDD9FBE06e2A',
+    farmName: 'SDAO-BNB',
+    tokenAddress: '0x90ed8f1dc86388f14b64ba8fb4bbd23099f18240',
+    quoteToken: tokens.wbnb,
+    tokenName: 'SingularityDAO',
+    projectSite: 'https://app.singularitydao.ai/',
+  },
+  {
+    account: '0xB8614FABf4bbA416b9dB620e12272AD63b14387E',
+    farmName: '8PAY-BUSD',
+    tokenAddress: '0xfeea0bdd3d07eb6fe305938878c0cadbfa169042',
+    quoteToken: tokens.busd,
+    tokenName: '8PAY',
+    projectSite: 'https://8pay.network/',
+  },
+  {
+    account: '0xb8Ce421729232eCD5DFc7BD0adFe1f4DAd9D9CcE',
+    farmName: 'BATH-BUSD',
+    tokenAddress: '0x0bc89aa98Ad94E6798Ec822d0814d934cCD0c0cE',
+    quoteToken: tokens.busd,
+    tokenName: 'Battle Hero',
+    projectSite: 'https://battlehero.io/',
+  },
+  {
+    account: '0x3591b656D753226dE239d2b9A48221daf0751Fca',
+    farmName: 'HE-BNB',
+    tokenAddress: '0x20d39a5130f799b95b55a930e5b7ebc589ea9ed8',
+    quoteToken: tokens.wbnb,
+    tokenName: 'Heroes & Empires',
+    projectSite: 'https://heroesempires.com/',
+  },
+  {
+    account: '0xCbEd1a5c8847de8B284f7cf5cf752b3b2E3b5112',
+    farmName: 'AOG-BUSD',
+    tokenAddress: '0x40C8225329Bd3e28A043B029E0D07a5344d2C27C',
+    quoteToken: tokens.busd,
+    tokenName: 'AgeOfGods',
+    projectSite: 'https://ageofgods.net/',
   },
 ].map((bidderConfig) => ({
   ...bidderConfig,

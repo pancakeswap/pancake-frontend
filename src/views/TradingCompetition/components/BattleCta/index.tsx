@@ -14,7 +14,7 @@ import {
 import { useHistory } from 'react-router-dom'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
-import { FINISHED, OVER } from 'config/constants/trading-competition/easterPhases'
+import { FINISHED, OVER } from 'config/constants/trading-competition/phases'
 import RegisterModal from '../RegisterModal'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
@@ -23,6 +23,10 @@ import { CompetitionProps } from '../../types'
 const StyledCard = styled(Card)`
   display: inline-flex;
   background: linear-gradient(180deg, #7645d9 0%, #452a7a 100%);
+
+  > div {
+    background: transparent;
+  }
 
   svg {
     margin-bottom: 6px;

@@ -18,13 +18,14 @@ import {
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { useBlock } from 'state/block/hooks'
-import { useCakeVault } from 'state/pools/hooks'
+import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
-import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
+import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
 import { getBscScanLink } from 'utils'
 import Balance from 'components/Balance'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 
 interface ExpandedFooterProps {
   pool: DeserializedPool
@@ -41,10 +42,6 @@ const ExpandedWrapper = styled(Flex)`
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
-  const {
-    totalCakeInVault,
-    fees: { performanceFee },
-  } = useCakeVault()
 
   const {
     stakingToken,
@@ -55,12 +52,22 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     stakingLimit,
     contractAddress,
     sousId,
-    isAutoVault,
+    vaultKey,
   } = pool
+
+  const {
+    totalCakeInVault,
+    fees: { performanceFee },
+  } = useVaultPoolByKey(vaultKey)
+
+  const vaultPools = useVaultPools()
+  const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
+    return total.plus(vault.totalCakeInVault)
+  }, BIG_ZERO)
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = getAddress(contractAddress)
-  const cakeVaultContractAddress = getCakeVaultAddress()
+  const cakeVaultContractAddress = getVaultPoolAddress(vaultKey)
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
   const isManualCakePool = sousId === 0
 
@@ -73,11 +80,11 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   )
 
   const getTotalStakedBalance = () => {
-    if (isAutoVault) {
+    if (vaultKey) {
       return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
     }
     if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault)
+      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(cakeInVaults)
       return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
     }
     return getBalanceNumber(totalStaked, stakingToken.decimals)
@@ -133,7 +140,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           )}
         </Flex>
       )}
-      {isAutoVault && (
+      {vaultKey && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           {tooltipVisible && tooltip}
           <TooltipText ref={targetRef} small>
@@ -163,7 +170,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
       {poolContractAddress && (
         <Flex mb="2px" justifyContent="flex-end">
           <LinkExternal
-            href={`${BASE_BSC_SCAN_URL}/address/${isAutoVault ? cakeVaultContractAddress : poolContractAddress}`}
+            href={`${BASE_BSC_SCAN_URL}/address/${vaultKey ? cakeVaultContractAddress : poolContractAddress}`}
             bold={false}
             small
           >

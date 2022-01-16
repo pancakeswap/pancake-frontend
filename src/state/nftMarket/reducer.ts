@@ -1,41 +1,43 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { FetchStatus } from 'config/constants/types'
 import isEmpty from 'lodash/isEmpty'
+import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
-  getNftsFromCollectionApi,
-  getNftsMarketData,
-  getCollectionsApi,
-  getCollectionsSg,
-  getUserActivity,
+  combineApiAndSgResponseToNftToken,
   combineCollectionData,
-  getCollectionSg,
+  fetchNftsFiltered,
   getCollectionApi,
-  getNftsFromDifferentCollectionsApi,
+  getCollectionsApi,
+  getCollectionSg,
+  getCollectionsSg,
   getCompleteAccountNftData,
-  getNftsByBunnyIdSg,
   getMarketDataForTokenIds,
   getMetadataWithFallback,
+  getNftsByBunnyIdSg,
+  getNftsFromCollectionApi,
+  getNftsFromDifferentCollectionsApi,
+  getNftsMarketData,
   getPancakeBunniesAttributesField,
-  combineApiAndSgResponseToNftToken,
-  fetchNftsFiltered,
+  getUserActivity,
 } from './helpers'
 import {
-  State,
-  Collection,
   ApiCollections,
-  TokenIdWithCollectionAddress,
-  NFTMarketInitializationState,
-  UserNftInitializationState,
-  NftToken,
-  NftLocation,
   ApiSingleTokenData,
+  Collection,
+  MarketEvent,
+  NftActivityFilter,
   NftAttribute,
-  NftFilterLoadingState,
   NftFilter,
+  NftLocation,
+  NFTMarketInitializationState,
+  NftToken,
+  State,
+  TokenIdWithCollectionAddress,
+  UserNftInitializationState,
 } from './types'
 
 const initialNftFilterState: NftFilter = {
-  loadingState: NftFilterLoadingState.IDLE,
+  loadingState: FetchStatus.Idle,
   activeFilters: {},
   showOnlyOnSale: true,
   ordering: {
@@ -44,12 +46,18 @@ const initialNftFilterState: NftFilter = {
   },
 }
 
+const initialNftActivityFilterState: NftActivityFilter = {
+  typeFilters: [],
+  collectionFilters: [],
+}
+
 const initialState: State = {
   initializationState: NFTMarketInitializationState.UNINITIALIZED,
   data: {
     collections: {},
     nfts: {},
     filters: {},
+    activityFilters: {},
     loadingState: {
       isUpdatingPancakeBunnies: false,
       latestPancakeBunniesUpdateAt: 0,
@@ -73,7 +81,7 @@ const initialState: State = {
  */
 export const fetchCollections = createAsyncThunk<Record<string, Collection>>('nft/fetchCollections', async () => {
   const [collections, collectionsMarket] = await Promise.all([getCollectionsApi(), getCollectionsSg()])
-  return combineCollectionData(collections, collectionsMarket)
+  return combineCollectionData(collections?.data ?? [], collectionsMarket)
 })
 
 /**
@@ -294,6 +302,48 @@ export const NftMarket = createSlice({
       state.data.filters[action.payload] = { ...initialNftFilterState }
       state.data.nfts[action.payload] = []
     },
+    addActivityTypeFilters: (state, action: PayloadAction<{ collection: string; field: MarketEvent }>) => {
+      if (state.data.activityFilters[action.payload.collection]) {
+        state.data.activityFilters[action.payload.collection].typeFilters.push(action.payload.field)
+      } else {
+        state.data.activityFilters[action.payload.collection] = {
+          ...initialNftActivityFilterState,
+          typeFilters: [action.payload.field],
+        }
+      }
+    },
+    removeActivityTypeFilters: (state, action: PayloadAction<{ collection: string; field: MarketEvent }>) => {
+      if (state.data.activityFilters[action.payload.collection]) {
+        state.data.activityFilters[action.payload.collection].typeFilters = state.data.activityFilters[
+          action.payload.collection
+        ].typeFilters.filter((activeFilter) => activeFilter !== action.payload.field)
+      }
+    },
+    addActivityCollectionFilters: (state, action: PayloadAction<{ collection: string }>) => {
+      if (state.data.activityFilters['']) {
+        state.data.activityFilters[''].collectionFilters.push(action.payload.collection)
+      } else {
+        state.data.activityFilters[''] = {
+          ...initialNftActivityFilterState,
+          collectionFilters: [action.payload.collection],
+        }
+      }
+    },
+    removeActivityCollectionFilters: (state, action: PayloadAction<{ collection: string }>) => {
+      if (state.data.activityFilters['']) {
+        state.data.activityFilters[''].collectionFilters = state.data.activityFilters[''].collectionFilters.filter(
+          (activeFilter) => activeFilter !== action.payload.collection,
+        )
+      }
+    },
+    removeAllActivityCollectionFilters: (state) => {
+      if (state.data.activityFilters['']) {
+        state.data.activityFilters[''].collectionFilters = []
+      }
+    },
+    removeAllActivityFilters: (state, action: PayloadAction<string>) => {
+      state.data.activityFilters[action.payload] = { ...initialNftActivityFilterState }
+    },
     setOrdering: (state, action: PayloadAction<{ collection: string; field: string; direction: 'asc' | 'desc' }>) => {
       if (state.data.filters[action.payload.collection]) {
         state.data.filters[action.payload.collection].ordering = {
@@ -328,11 +378,11 @@ export const NftMarket = createSlice({
     builder.addCase(filterNftsFromCollection.pending, (state, action) => {
       const { collectionAddress } = action.meta.arg
       if (state.data.filters[collectionAddress]) {
-        state.data.filters[collectionAddress].loadingState = NftFilterLoadingState.LOADING
+        state.data.filters[collectionAddress].loadingState = FetchStatus.Fetching
       } else {
         state.data.filters[collectionAddress] = {
           ...initialNftFilterState,
-          loadingState: NftFilterLoadingState.LOADING,
+          loadingState: FetchStatus.Fetching,
         }
       }
     })
@@ -341,7 +391,7 @@ export const NftMarket = createSlice({
 
       state.data.filters[collectionAddress] = {
         ...state.data.filters[collectionAddress],
-        loadingState: NftFilterLoadingState.IDLE,
+        loadingState: FetchStatus.Fetched,
         activeFilters: nftFilters,
       }
       state.data.nfts[collectionAddress] = action.payload
@@ -357,11 +407,11 @@ export const NftMarket = createSlice({
     builder.addCase(fetchNftsFromCollections.pending, (state, action) => {
       const { collectionAddress } = action.meta.arg
       if (state.data.filters[collectionAddress]) {
-        state.data.filters[collectionAddress].loadingState = NftFilterLoadingState.LOADING
+        state.data.filters[collectionAddress].loadingState = FetchStatus.Fetching
       } else {
         state.data.filters[collectionAddress] = {
           ...initialNftFilterState,
-          loadingState: NftFilterLoadingState.LOADING,
+          loadingState: FetchStatus.Fetching,
         }
       }
     })
@@ -374,7 +424,7 @@ export const NftMarket = createSlice({
 
       state.data.filters[collectionAddress] = {
         ...state.data.filters[collectionAddress],
-        loadingState: NftFilterLoadingState.IDLE,
+        loadingState: FetchStatus.Fetched,
         activeFilters: {},
       }
       state.data.nfts[collectionAddress] = [...existingNftsWithoutNewOnes, ...action.payload]
@@ -432,6 +482,17 @@ export const NftMarket = createSlice({
 })
 
 // Actions
-export const { removeAllFilters, setOrdering, setShowOnlyOnSale, resetUserNftState } = NftMarket.actions
+export const {
+  removeAllFilters,
+  removeAllActivityFilters,
+  removeActivityTypeFilters,
+  removeActivityCollectionFilters,
+  removeAllActivityCollectionFilters,
+  addActivityTypeFilters,
+  addActivityCollectionFilters,
+  setOrdering,
+  setShowOnlyOnSale,
+  resetUserNftState,
+} = NftMarket.actions
 
 export default NftMarket.reducer

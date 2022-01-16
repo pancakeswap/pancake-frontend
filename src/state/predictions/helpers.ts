@@ -251,7 +251,7 @@ export const getBetHistory = async (where: WhereClause = {}, first = 1000, skip 
           }
           user {
             ${getUserBaseFields()}
-          } 
+          }
         }
       }
     `,
@@ -272,7 +272,7 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
           }
           user {
             ${getUserBaseFields()}
-          } 
+          }
         }
       }
   `,
@@ -318,7 +318,7 @@ export const getPredictionUsers = async (options: GetPredictionUsersOptions = {}
     gql`
       query getUsers($first: Int!, $skip: Int!, $where: User_filter, $orderBy: User_orderBy, $orderDir: OrderDirection) {
         users(first: $first, skip: $skip, where: $where, orderBy: $orderBy, orderDirection: $orderDir) {
-          ${getUserBaseFields()} 
+          ${getUserBaseFields()}
         }
       }
     `,
@@ -546,7 +546,7 @@ export const fetchUserRounds = async (
     return rounds.reduce((accum, round, index) => {
       return {
         ...accum,
-        [round.toString()]: serializePredictionsLedgerResponse(ledgers[index]),
+        [round.toString()]: serializePredictionsLedgerResponse(ledgers[index] as PredictionsLedgerResponse),
       }
     }, {})
   } catch {

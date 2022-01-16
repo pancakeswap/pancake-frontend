@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
-import { FetchStatus, useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import useToast from 'hooks/useToast'
@@ -15,6 +15,7 @@ import { useGetCollections } from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiSingleTokenData } from 'state/nftMarket/types'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { FetchStatus } from 'config/constants/types'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import useProfileCreation from './contexts/hook'
@@ -37,7 +38,7 @@ const Mint: React.FC = () => {
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
-  const hasMinimumCakeRequired = fetchStatus === FetchStatus.SUCCESS && cakeBalance.gte(MINT_COST)
+  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance.gte(MINT_COST)
   const { callWithGasPrice } = useCallWithGasPrice()
 
   useEffect(() => {

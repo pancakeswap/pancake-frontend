@@ -6,7 +6,7 @@ import { getMasterChefAddress } from 'utils/addressHelpers'
 import masterChefABI from 'config/abi/masterchef.json'
 import { farmsConfig } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
-import useRefresh from 'hooks/useRefresh'
+import { useFastFresh } from 'hooks/useRefresh'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 
 export interface FarmWithBalance extends SerializedFarmConfig {
@@ -17,7 +17,7 @@ const useFarmsWithBalance = () => {
   const [farmsWithStakedBalance, setFarmsWithStakedBalance] = useState<FarmWithBalance[]>([])
   const [earningsSum, setEarningsSum] = useState<number>(null)
   const { account } = useWeb3React()
-  const { fastRefresh } = useRefresh()
+  const fastRefresh = useFastFresh()
 
   useEffect(() => {
     const fetchBalances = async () => {

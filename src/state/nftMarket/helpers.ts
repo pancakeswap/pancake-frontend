@@ -1,27 +1,30 @@
-import { request, gql } from 'graphql-request'
+import { gql, request } from 'graphql-request'
 import { stringify } from 'qs'
-import { GRAPH_API_NFTMARKET, API_NFT } from 'config/constants/endpoints'
-import { getErc721Contract } from 'utils/contractHelpers'
-import { ethers } from 'ethers'
-import map from 'lodash/map'
-import { uniq } from 'lodash'
+import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
+import { multicallv2 } from 'utils/multicall'
+import erc721Abi from 'config/abi/erc721.json'
+import { uniq, range } from 'lodash'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
-  TokenMarketData,
+  ApiCollection,
   ApiCollections,
-  TokenIdWithCollectionAddress,
-  NftToken,
-  NftLocation,
-  Collection,
   ApiResponseCollectionTokens,
   ApiResponseSpecificToken,
-  ApiCollection,
+  AskOrderType,
+  Collection,
   CollectionMarketDataBaseFields,
+  NftActivityFilter,
+  NftLocation,
+  NftToken,
+  TokenIdWithCollectionAddress,
+  TokenMarketData,
   Transaction,
   AskOrder,
   ApiSingleTokenData,
   NftAttribute,
   ApiTokenFilterResponse,
+  ApiCollectionsResponse,
+  MarketEvent,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
 
@@ -33,14 +36,14 @@ import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } f
  * Fetch static data from all collections using the API
  * @returns
  */
-export const getCollectionsApi = async (): Promise<ApiCollection[]> => {
+export const getCollectionsApi = async (): Promise<ApiCollectionsResponse> => {
   const res = await fetch(`${API_NFT}/collections`)
   if (res.ok) {
     const json = await res.json()
-    return json.data
+    return json
   }
   console.error('Failed to fetch NFT collections', res.statusText)
-  return []
+  return null
 }
 
 /**
@@ -126,10 +129,7 @@ export const getNftsFromDifferentCollectionsApi = async (
       attributes: res.attributes,
       createdAt: res.createdAt,
       updatedAt: res.updatedAt,
-      image: {
-        original: res.image?.original,
-        thumbnail: res.image?.thumbnail,
-      },
+      image: res.image,
     }))
 }
 
@@ -467,6 +467,155 @@ export const getUserActivity = async (
   }
 }
 
+export const getCollectionActivity = async (
+  address: string,
+  nftActivityFilter: NftActivityFilter,
+  itemPerQuery,
+): Promise<{ askOrders?: AskOrder[]; transactions?: Transaction[] }> => {
+  const getAskOrderEvent = (orderType: MarketEvent): AskOrderType => {
+    switch (orderType) {
+      case MarketEvent.CANCEL:
+        return AskOrderType.CANCEL
+      case MarketEvent.MODIFY:
+        return AskOrderType.MODIFY
+      case MarketEvent.NEW:
+        return AskOrderType.NEW
+      default:
+        return AskOrderType.MODIFY
+    }
+  }
+
+  const isFetchAllCollections = address === ''
+
+  const hasCollectionFilter = nftActivityFilter.collectionFilters.length > 0
+
+  const collectionFilterGql = !isFetchAllCollections
+    ? `collection: ${JSON.stringify(address)}`
+    : hasCollectionFilter
+    ? `collection_in: ${JSON.stringify(nftActivityFilter.collectionFilters)}`
+    : ``
+
+  const askOrderTypeFilter = nftActivityFilter.typeFilters
+    .filter((marketEvent) => marketEvent !== MarketEvent.SELL)
+    .map((marketEvent) => getAskOrderEvent(marketEvent))
+
+  const askOrderIncluded = nftActivityFilter.typeFilters.length === 0 || askOrderTypeFilter.length > 0
+
+  const askOrderTypeFilterGql =
+    askOrderTypeFilter.length > 0 ? `orderType_in: ${JSON.stringify(askOrderTypeFilter)}` : ``
+
+  const transactionIncluded =
+    nftActivityFilter.typeFilters.length === 0 ||
+    nftActivityFilter.typeFilters.some(
+      (marketEvent) => marketEvent === MarketEvent.BUY || marketEvent === MarketEvent.SELL,
+    )
+
+  let askOrderQueryItem = itemPerQuery / 2
+  let transactionQueryItem = itemPerQuery / 2
+
+  if (!askOrderIncluded || !transactionIncluded) {
+    askOrderQueryItem = !askOrderIncluded ? 0 : itemPerQuery
+    transactionQueryItem = !transactionIncluded ? 0 : itemPerQuery
+  }
+
+  const askOrderGql = askOrderIncluded
+    ? `askOrders(first: ${askOrderQueryItem}, orderBy: timestamp, orderDirection: desc, where:{
+            ${collectionFilterGql}, ${askOrderTypeFilterGql}
+          }) {
+              id
+              block
+              timestamp
+              orderType
+              askPrice
+              seller {
+                id
+              }
+              nft {
+                ${getBaseNftFields()}
+              }
+          }`
+    : ``
+
+  const transactionGql = transactionIncluded
+    ? `transactions(first: ${transactionQueryItem}, orderBy: timestamp, orderDirection: desc, where:{
+            ${collectionFilterGql}
+          }) {
+            ${getBaseTransactionFields()}
+              nft {
+                ${getBaseNftFields()}
+              }
+          }`
+    : ``
+
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getCollectionActivity {
+          ${askOrderGql}
+          ${transactionGql}
+        }
+      `,
+    )
+
+    return res || { askOrders: [], transactions: [] }
+  } catch (error) {
+    console.error('Failed to fetch collection Activity', error)
+    return {
+      askOrders: [],
+      transactions: [],
+    }
+  }
+}
+
+export const getTokenActivity = async (
+  tokenId: string,
+  collectionAddress: string,
+): Promise<{ askOrders: AskOrder[]; transactions: Transaction[] }> => {
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getCollectionActivity($tokenId: BigInt!, $address: ID!) {
+          nfts(where:{tokenId: $tokenId, collection: $address}) {
+            transactionHistory(orderBy: timestamp, orderDirection: desc) {
+              ${getBaseTransactionFields()}
+                nft {
+                  ${getBaseNftFields()}
+                }
+            }
+            askHistory(orderBy: timestamp, orderDirection: desc) {
+                id
+                block
+                timestamp
+                orderType
+                askPrice
+                seller {
+                  id
+                }
+                nft {
+                  ${getBaseNftFields()}
+                }
+            }
+          }
+        }
+      `,
+      { tokenId, address: collectionAddress },
+    )
+
+    if (res.nfts.length > 0) {
+      return { askOrders: res.nfts[0].askHistory, transactions: res.nfts[0].transactionHistory }
+    }
+    return { askOrders: [], transactions: [] }
+  } catch (error) {
+    console.error('Failed to fetch token Activity', error)
+    return {
+      askOrders: [],
+      transactions: [],
+    }
+  }
+}
+
 /**
  * Get the most recently listed NFTs
  * @param first Number of nfts to retrieve
@@ -568,54 +717,47 @@ export const fetchWalletTokenIdsForCollections = async (
   account: string,
   collections: ApiCollections,
 ): Promise<TokenIdWithCollectionAddress[]> => {
-  const walletNftPromises = map(collections, async (collection): Promise<TokenIdWithCollectionAddress[]> => {
+  const balanceOfCalls = Object.values(collections).map((collection) => {
     const { address: collectionAddress } = collection
-    const contract = getErc721Contract(collectionAddress)
-    let balanceOfResponse
-
-    try {
-      balanceOfResponse = await contract.balanceOf(account)
-    } catch (e) {
-      console.error(e)
-      return []
+    return {
+      address: collectionAddress,
+      name: 'balanceOf',
+      params: [account],
     }
-
-    const balanceOf = balanceOfResponse.toNumber()
-
-    // User has no NFTs for this collection
-    if (balanceOfResponse.eq(0)) {
-      return []
-    }
-
-    const getTokenId = async (index: number) => {
-      try {
-        const tokenIdBn: ethers.BigNumber = await contract.tokenOfOwnerByIndex(account, index)
-        const tokenId = tokenIdBn.toString()
-        return tokenId
-      } catch (error) {
-        console.error('getTokenIdAndData', error)
-        return null
-      }
-    }
-
-    const tokenIdPromises = []
-
-    // For each index get the tokenId
-    for (let i = 0; i < balanceOf; i++) {
-      tokenIdPromises.push(getTokenId(i))
-    }
-
-    const tokenIds = await Promise.all(tokenIdPromises)
-    const nftLocation = NftLocation.WALLET
-    const tokensWithCollectionAddress = tokenIds.map((tokenId) => {
-      return { tokenId, collectionAddress, nftLocation }
-    })
-
-    return tokensWithCollectionAddress
   })
 
-  const walletNfts = await Promise.all(walletNftPromises)
-  return walletNfts.flat()
+  const balanceOfCallsResultRaw = await multicallv2(erc721Abi, balanceOfCalls, { requireSuccess: false })
+  const balanceOfCallsResult = balanceOfCallsResultRaw.flat()
+
+  const tokenIdCalls = Object.values(collections)
+    .map((collection, index) => {
+      const balanceOf = balanceOfCallsResult[index]?.toNumber() ?? 0
+      const { address: collectionAddress } = collection
+
+      return range(balanceOf).map((tokenIndex) => {
+        return {
+          address: collectionAddress,
+          name: 'tokenOfOwnerByIndex',
+          params: [account, tokenIndex],
+        }
+      })
+    })
+    .flat()
+
+  const tokenIdResultRaw = await multicallv2(erc721Abi, tokenIdCalls, { requireSuccess: false })
+  const tokenIdResult = tokenIdResultRaw.flat()
+
+  const nftLocation = NftLocation.WALLET
+
+  const walletNfts = tokenIdResult.reduce((acc, tokenIdBn, index) => {
+    if (tokenIdBn) {
+      const { address: collectionAddress } = tokenIdCalls[index]
+      acc.push({ tokenId: tokenIdBn.toString(), collectionAddress, nftLocation })
+    }
+    return acc
+  }, [])
+
+  return walletNfts
 }
 
 /**
@@ -635,6 +777,10 @@ export const combineCollectionData = (
     const collection: Collection = {
       ...current,
       ...collectionMarket,
+    }
+
+    if (current.name) {
+      collection.name = current.name
     }
 
     return {
@@ -713,7 +859,7 @@ export const attachMarketDataToWalletNfts = (
  * Attach TokenMarketData and location to NftToken
  * @param nftsWithMetadata NftToken[] with API metadata
  * @param nftsForSale  market data for nfts that are on sale (i.e. not in a user's wallet)
- * @param walletNfts makret data for nfts in a user's wallet
+ * @param walletNfts market data for nfts in a user's wallet
  * @param tokenIdsInWallet array of token ids in user's wallet
  * @param tokenIdsForSale array of token ids of nfts that are on sale
  * @param profileNftId profile picture token id

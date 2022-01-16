@@ -13,7 +13,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   flex: 1 1 auto;
   background-color: transparent;
   font-size: 16px;
-  text-align: ${({ align }) => align && align};
+  text-align: ${({ align }) => align ?? 'right'};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

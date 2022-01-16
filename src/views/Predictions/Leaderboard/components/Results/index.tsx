@@ -7,11 +7,11 @@ import {
   useGetLeaderboardResults,
   useGetLeaderboardSkip,
 } from 'state/predictions/hooks'
-import { LeaderboardLoadingState } from 'state/types'
 import { filterNextPageLeaderboard } from 'state/predictions'
 import { LEADERBOARD_RESULTS_PER_PAGE } from 'state/predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
+import { FetchStatus } from 'config/constants/types'
 import DesktopResults from './DesktopResults'
 import MobileResults from './MobileResults'
 import RankingCard from './RankingCard'
@@ -21,7 +21,7 @@ const Results = () => {
   const { t } = useTranslation()
   const [first, second, third, ...rest] = useGetLeaderboardResults()
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
-  const isLoading = leaderboardLoadingState === LeaderboardLoadingState.LOADING
+  const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const currentSkip = useGetLeaderboardSkip()
   const hasMoreResults = useGetLeaderboardHasMoreResults()
   const dispatch = useAppDispatch()

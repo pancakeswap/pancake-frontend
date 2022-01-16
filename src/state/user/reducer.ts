@@ -29,6 +29,10 @@ import {
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
+  setIsExchangeChartDisplayed,
+  setChartViewMode,
+  ChartViewMode,
+  setSubgraphHealthIndicatorDisplayed,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -65,6 +69,9 @@ export interface UserState {
   timestamp: number
   audioPlay: boolean
   isDark: boolean
+  isExchangeChartDisplayed: boolean
+  isSubgraphHealthIndicatorDisplayed: boolean
+  userChartViewMode: ChartViewMode
   userFarmStakedOnly: FarmStakedOnly
   userPoolStakedOnly: boolean
   userPoolsViewMode: ViewMode
@@ -76,7 +83,7 @@ export interface UserState {
   gasPrice: string
   watchlistTokens: string[]
   watchlistPools: string[]
-  showPhishingWarningBanner: boolean
+  hideTimestampPhishingWarningBanner: number
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -93,6 +100,9 @@ export const initialState: UserState = {
   timestamp: currentTimestamp(),
   audioPlay: true,
   isDark: false,
+  isExchangeChartDisplayed: true,
+  isSubgraphHealthIndicatorDisplayed: false,
+  userChartViewMode: ChartViewMode.BASIC,
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
   userPoolStakedOnly: false,
   userPoolsViewMode: ViewMode.TABLE,
@@ -104,7 +114,7 @@ export const initialState: UserState = {
   gasPrice: GAS_PRICE_GWEI.default,
   watchlistTokens: [],
   watchlistPools: [],
-  showPhishingWarningBanner: true,
+  hideTimestampPhishingWarningBanner: null,
 }
 
 export default createReducer(initialState, (builder) =>
@@ -233,6 +243,15 @@ export default createReducer(initialState, (builder) =>
       }
     })
     .addCase(hidePhishingWarningBanner, (state) => {
-      state.showPhishingWarningBanner = false
+      state.hideTimestampPhishingWarningBanner = currentTimestamp()
+    })
+    .addCase(setIsExchangeChartDisplayed, (state, { payload }) => {
+      state.isExchangeChartDisplayed = payload
+    })
+    .addCase(setChartViewMode, (state, { payload }) => {
+      state.userChartViewMode = payload
+    })
+    .addCase(setSubgraphHealthIndicatorDisplayed, (state, { payload }) => {
+      state.isSubgraphHealthIndicatorDisplayed = payload
     }),
 )

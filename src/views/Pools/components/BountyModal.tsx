@@ -14,6 +14,7 @@ import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCakeVault } from 'state/pools/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { logError } from 'utils/sentry'
 
 interface BountyModalProps {
   onDismiss?: () => void
@@ -62,6 +63,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
     setPendingTx(true)
     try {
       const tx = await callWithGasPrice(cakeVaultContract, 'harvest', undefined, { gasLimit: 300000 })
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(
@@ -74,6 +76,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
         onDismiss()
       }
     } catch (error) {
+      logError(error)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setPendingTx(false)
     }

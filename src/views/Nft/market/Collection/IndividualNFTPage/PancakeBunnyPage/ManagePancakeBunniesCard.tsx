@@ -16,6 +16,7 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import { useUserNfts } from 'state/nftMarket/hooks'
 import { NftLocation, NftToken, UserNftInitializationState } from 'state/nftMarket/types'
+import { formatNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import ExpandableCard from '../shared/ExpandableCard'
@@ -77,7 +78,7 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, lowestPrice }) => 
             </Text>
             <Flex justifySelf="flex-end" width="max-content">
               <BinanceIcon width="16px" height="16px" mr="4px" />
-              <Text small>{lowestPrice}</Text>
+              <Text small>{formatNumber(parseFloat(lowestPrice), 0, 5)}</Text>
             </Flex>
           </>
         )}
@@ -151,6 +152,8 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
   const loading = userNftsInitializationState !== UserNftInitializationState.INITIALIZED
   const useHasNoBunnies =
     !loading && bunniesInWallet.length === 0 && bunniesForSale.length === 0 && profilePicBunny.length === 0
+  const totalBunnies = bunniesInWallet.length + bunniesForSale.length + profilePicBunny.length
+  const totalBunniesText = account && !useHasNoBunnies ? ` (${totalBunnies})` : ''
 
   const content = (
     <Box pt="16px">
@@ -188,7 +191,13 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
       )}
     </Box>
   )
-  return <ExpandableCard title={t('Manage Yours')} icon={<CogIcon width="24px" height="24px" />} content={content} />
+  return (
+    <ExpandableCard
+      title={`${t('Manage Yours')}${totalBunniesText}`}
+      icon={<CogIcon width="24px" height="24px" />}
+      content={content}
+    />
+  )
 }
 
 export default ManagePancakeBunniesCard

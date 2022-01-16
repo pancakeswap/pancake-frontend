@@ -1,20 +1,24 @@
-import React from 'react'
-import { Text, Flex, Box, Skeleton } from '@pancakeswap/uikit'
-import { PublicIfoData } from 'views/Ifos/types'
+import React, { ReactNode } from 'react'
+import tokens from 'config/constants/tokens'
+import { Text, Flex, Box, Skeleton, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import useBUSDPrice from 'hooks/useBUSDPrice'
+import { multiplyPriceByAmount } from 'utils/prices'
 import { SkeletonCardDetails } from './Skeletons'
 
 export interface IfoCardDetailsProps {
   poolId: PoolIds
   ifo: Ifo
   publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
 }
 
 export interface FooterEntryProps {
-  label: string
-  value: string | number
+  label: ReactNode
+  value: ReactNode
 }
 
 const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
@@ -34,13 +38,76 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
   )
 }
 
-const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData }) => {
+const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
+  const isCurrencyCake = ifo.currency === tokens.cake
+  const isV3 = ifo.version === 3
+  const { t } = useTranslation()
+
+  const tooltipContent =
+    poolId === PoolIds.poolBasic
+      ? t(
+          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+        )
+      : t(
+          'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+        )
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
+  const label = isCurrencyCake ? t('Max. CAKE entry') : t('Max. token entry')
+  const price = useBUSDPrice(ifo.currency)
+
+  const dollarValueOfToken = multiplyPriceByAmount(price, maxToken, ifo.currency.decimals)
+
+  return (
+    <>
+      {isV3 && tooltipVisible && tooltip}
+      <FooterEntry
+        label={
+          isV3 ? (
+            <TooltipText small color="textSubtle" ref={targetRef}>
+              {label}
+            </TooltipText>
+          ) : (
+            label
+          )
+        }
+        value={
+          <Text small textAlign="right" color={maxToken > 0 ? 'text' : 'failure'}>
+            {`${formatNumber(maxToken, 3, 3)} ${
+              !isCurrencyCake ? ifo.currency.symbol : ''
+            } ${` ~($${dollarValueOfToken.toFixed(0)})`}`}
+          </Text>
+        }
+      />
+    </>
+  )
+}
+
+const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
+  const walletCharacteristic = walletIfoData[poolId]
+
+  let version3MaxTokens = walletIfoData.ifoCredit?.creditLeft
+    ? // if creditLeft > limit show limit else show creditLeft
+      walletIfoData.ifoCredit.creditLeft.gt(
+        poolCharacteristic.limitPerUserInLP.minus(walletCharacteristic.amountTokenCommittedInLP),
+      )
+      ? poolCharacteristic.limitPerUserInLP.minus(walletCharacteristic.amountTokenCommittedInLP)
+      : walletIfoData.ifoCredit.creditLeft
+    : null
+
+  // unlimited pool just show the credit left
+  version3MaxTokens = poolId === PoolIds.poolUnlimited ? walletIfoData.ifoCredit?.creditLeft : version3MaxTokens
 
   /* Format start */
-  const maxLpTokens = getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
+  const maxLpTokens =
+    ifo.version === 3 && ifo.isActive
+      ? version3MaxTokens
+        ? getBalanceNumber(version3MaxTokens, ifo.currency.decimals)
+        : 0
+      : getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
   const taxRate = `${poolCharacteristic.taxRate}%`
 
   const totalCommittedPercent = poolCharacteristic.totalAmountPool
@@ -62,18 +129,14 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     2,
   )}`
 
-  /* Format end */
+  const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxLpTokens} />
 
+  /* Format end */
   const renderBasedOnIfoStatus = () => {
     if (status === 'coming_soon') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && (
-            <FooterEntry
-              label={t('Max. token entry')}
-              value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
-            />
-          )}
+          {tokenEntry}
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
           {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
           <FooterEntry
@@ -86,12 +149,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'live') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && (
-            <FooterEntry
-              label={t('Max. token entry')}
-              value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
-            />
-          )}
+          {tokenEntry}
           {poolId === PoolIds.poolBasic && (
             <FooterEntry
               label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
@@ -112,20 +170,23 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'finished') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && (
-            <FooterEntry
-              label={t('Max. token entry')}
-              value={`${formatNumber(maxLpTokens, 3, 3)} ${ifo.currency.symbol}`}
-            />
-          )}
+          {(poolId === PoolIds.poolBasic || ifo.isActive) && tokenEntry}
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
           {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
-          <FooterEntry
-            label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
-            value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}
-          />
+          {ifo.version > 1 && (
+            <FooterEntry
+              label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
+              value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}
+            />
+          )}
+          {ifo.version > 1 && poolId === PoolIds.poolUnlimited && (
+            <FooterEntry
+              label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
+              value={pricePerTokenWithFee}
+            />
+          )}
         </>
       )
     }

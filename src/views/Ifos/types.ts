@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Contract } from 'ethers'
+import ethers, { Contract } from 'ethers'
 import { IfoStatus, PoolIds } from 'config/constants/types'
 
 // PoolCharacteristics retrieved from the contract
@@ -14,6 +14,7 @@ export interface PoolCharacteristics {
 
 // IFO data unrelated to the user returned by useGetPublicIfoData
 export interface PublicIfoData {
+  isInitialized: boolean
   status: IfoStatus
   blocksRemaining: number
   secondsUntilStart: number
@@ -23,7 +24,8 @@ export interface PublicIfoData {
   endBlockNum: number
   currencyPriceInUSD: BigNumber
   numberPoints: number
-  fetchIfoData: () => void
+  thresholdPoints: ethers.BigNumber
+  fetchIfoData: (currentBlock: number) => void
   [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }
@@ -40,8 +42,17 @@ export interface UserPoolCharacteristics {
 
 // Use only inside the useGetWalletIfoData hook
 export interface WalletIfoState {
+  isInitialized: boolean
   [PoolIds.poolBasic]?: UserPoolCharacteristics
   [PoolIds.poolUnlimited]: UserPoolCharacteristics
+  ifoCredit?: {
+    credit: BigNumber
+    /**
+     * credit left is the ifo credit minus the amount of `amountTokenCommittedInLP` in pool basic and unlimited
+     * minimum is 0
+     */
+    creditLeft: BigNumber
+  }
 }
 
 // Returned by useGetWalletIfoData
@@ -51,4 +62,5 @@ export interface WalletIfoData extends WalletIfoState {
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
   fetchIfoData: () => void
+  resetIfoData: () => void
 }

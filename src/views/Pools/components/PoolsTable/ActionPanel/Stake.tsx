@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, useTooltip, Flex, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useWeb3React } from '@web3-react/core'
-import { useCakeVault } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
@@ -38,7 +38,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     poolCategory,
     userData,
     stakingTokenPrice,
-    isAutoVault,
+    vaultKey,
   } = pool
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -50,17 +50,19 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     earningToken.symbol,
   )
 
-  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
-  const { handleApprove: handleVaultApprove, requestedApproval: requestedVaultApproval } =
-    useVaultApprove(setLastUpdated)
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
+  const { handleApprove: handleVaultApprove, requestedApproval: requestedVaultApproval } = useVaultApprove(
+    pool.vaultKey,
+    setLastUpdated,
+  )
 
-  const handleApprove = isAutoVault ? handleVaultApprove : handlePoolApprove
-  const requestedApproval = isAutoVault ? requestedVaultApproval : requestedPoolApproval
+  const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
+  const requestedApproval = vaultKey ? requestedVaultApproval : requestedPoolApproval
 
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const allowance = userData?.allowance ? new BigNumber(userData.allowance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
-  const isNotVaultAndHasStake = !isAutoVault && stakedBalance.gt(0)
+  const isNotVaultAndHasStake = !vaultKey && stakedBalance.gt(0)
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
@@ -73,14 +75,14 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   const {
     userData: { userShares },
     pricePerFullShare,
-  } = useCakeVault()
+  } = useVaultPoolByKey(pool.vaultKey)
 
   const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
   const hasSharesStaked = userShares && userShares.gt(0)
-  const isVaultWithShares = isAutoVault && hasSharesStaked
+  const isVaultWithShares = vaultKey && hasSharesStaked
   const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
 
-  const needsApproval = isAutoVault ? !isVaultApproved : !allowance.gt(0) && !isBnbPool
+  const needsApproval = vaultKey ? !isVaultApproved : !allowance.gt(0) && !isBnbPool
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
@@ -108,7 +110,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
   const onStake = () => {
-    if (isAutoVault) {
+    if (vaultKey) {
       onPresentVaultStake()
     } else {
       onPresentStake()
@@ -116,7 +118,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   }
 
   const onUnstake = () => {
-    if (isAutoVault) {
+    if (vaultKey) {
       onPresentVaultUnstake()
     } else {
       onPresentUnstake()
@@ -180,13 +182,13 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   // Wallet connected, user data loaded and approved
   if (isNotVaultAndHasStake || isVaultWithShares) {
     return (
-      <ActionContainer isAutoVault={isAutoVault}>
+      <ActionContainer isAutoVault={!!vaultKey}>
         <ActionTitles>
           <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
             {stakingToken.symbol}{' '}
           </Text>
           <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-            {isAutoVault ? t('Staked (compounding)') : t('Staked')}
+            {vaultKey ? t('Staked (compounding)') : t('Staked')}
           </Text>
         </ActionTitles>
         <ActionContent>
@@ -196,14 +198,14 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
               bold
               fontSize="20px"
               decimals={5}
-              value={isAutoVault ? cakeAsNumberBalance : stakedTokenBalance}
+              value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
             />
             <Balance
               fontSize="12px"
               display="inline"
               color="textSubtle"
               decimals={2}
-              value={isAutoVault ? stakedAutoDollarValue : stakedTokenDollarBalance}
+              value={vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance}
               unit=" USD"
               prefix="~"
             />

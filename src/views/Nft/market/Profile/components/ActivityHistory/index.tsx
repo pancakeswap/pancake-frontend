@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { uniqBy } from 'lodash'
 import { isAddress } from 'utils'
 import { fetchUserActivity } from 'state/nftMarket/reducer'
 import { useAppDispatch } from 'state'
 import { useUserNfts } from 'state/nftMarket/hooks'
+import { getUserActivity } from 'state/nftMarket/helpers'
 import { ArrowBackIcon, ArrowForwardIcon, Card, Flex, Table, Text, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { getNftsFromDifferentCollectionsApi, getUserActivity } from 'state/nftMarket/helpers'
-import { NftToken, TokenIdWithCollectionAddress, UserNftInitializationState } from 'state/nftMarket/types'
+import { Activity, NftToken, UserNftInitializationState } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
+import TableLoader from 'components/TableLoader'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
 import { useParams } from 'react-router'
-import { Activity, sortUserActivity } from '../../utils/sortUserActivity'
-import ActivityRow from './ActivityRow'
-import TableLoader from './TableLoader'
-import NoNftsImage from '../NoNftsImage'
+import { sortUserActivity } from '../../utils/sortUserActivity'
+import NoNftsImage from '../../../components/Activity/NoNftsImage'
 import { Arrow, PageButtons } from '../../../components/PaginationButtons'
+import ActivityRow from '../../../components/Activity/ActivityRow'
+import { fetchActivityNftMetadata } from '../../../ActivityHistory/utils/fetchActivityNftMetadata'
 
 const MAX_PER_PAGE = 8
 
@@ -76,14 +76,8 @@ const ActivityHistory = () => {
   }, [account, accountAddress, dispatch])
 
   useEffect(() => {
-    const fetchActivityNftMetadata = async () => {
-      const activityNftTokenIds = uniqBy(
-        sortedUserActivities.map((activity): TokenIdWithCollectionAddress => {
-          return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id }
-        }),
-        'tokenId',
-      )
-      const nfts = await getNftsFromDifferentCollectionsApi(activityNftTokenIds)
+    const fetchNftMetadata = async () => {
+      const nfts = await fetchActivityNftMetadata(sortedUserActivities)
       setNftMetadata(nfts)
     }
 
@@ -94,7 +88,7 @@ const ActivityHistory = () => {
 
     if (sortedUserActivities.length > 0) {
       getMaxPages()
-      fetchActivityNftMetadata()
+      fetchNftMetadata()
     }
 
     return () => {
@@ -106,17 +100,17 @@ const ActivityHistory = () => {
   }, [sortedUserActivities])
 
   useEffect(() => {
-    const getActivitiesSlice = () => {
+    const getActivitySlice = () => {
       const slice = sortedUserActivities.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
       setActivitiesSlice(slice)
     }
     if (sortedUserActivities.length > 0) {
-      getActivitiesSlice()
+      getActivitySlice()
     }
   }, [sortedUserActivities, currentPage])
 
   return (
-    <Card>
+    <Card style={{ overflowX: 'auto' }}>
       {sortedUserActivities.length === 0 && nftMetadata.length === 0 && activitiesSlice.length === 0 && !isLoading ? (
         <Flex p="24px" flexDirection="column" alignItems="center">
           <NoNftsImage />
@@ -134,7 +128,7 @@ const ActivityHistory = () => {
                 {isXs || isSm ? null : (
                   <>
                     <Th textAlign="right"> {t('Price')}</Th>
-                    <Th textAlign="right"> {t('From/To')}</Th>
+                    <Th textAlign="center"> {t('From/To')}</Th>
                   </>
                 )}
                 <Th textAlign="center"> {t('Date')}</Th>
@@ -154,6 +148,7 @@ const ActivityHistory = () => {
                       activity={activity}
                       nft={nftMeta}
                       bnbBusdPrice={bnbBusdPrice}
+                      isUserActivity
                     />
                   )
                 })

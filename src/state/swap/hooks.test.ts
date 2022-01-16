@@ -1,5 +1,6 @@
 import { parse } from 'qs'
 import { Field } from './actions'
+import { DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { queryParametersToSwapState } from './hooks'
 
 describe('hooks', () => {
@@ -17,6 +18,20 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: 'BNB' },
         typedValue: '20.5',
         independentField: Field.OUTPUT,
+        pairDataById: {},
+        derivedPairDataById: {},
+        recipient: null,
+      })
+    })
+
+    test('should return BNB BUSD pair by default', () => {
+      expect(queryParametersToSwapState(parse(''))).toEqual({
+        [Field.OUTPUT]: { currencyId: DEFAULT_OUTPUT_CURRENCY },
+        [Field.INPUT]: { currencyId: 'BNB' },
+        typedValue: '',
+        independentField: Field.INPUT,
+        pairDataById: {},
+        derivedPairDataById: {},
         recipient: null,
       })
     })
@@ -29,6 +44,8 @@ describe('hooks', () => {
         [Field.OUTPUT]: { currencyId: 'BNB' },
         typedValue: '',
         independentField: Field.INPUT,
+        pairDataById: {},
+        derivedPairDataById: {},
         recipient: null,
       })
     })
@@ -43,6 +60,8 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
+        pairDataById: {},
+        derivedPairDataById: {},
         recipient: null,
       })
     })
@@ -57,6 +76,8 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
+        pairDataById: {},
+        derivedPairDataById: {},
         recipient: null,
       })
     })
@@ -74,6 +95,8 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
+        pairDataById: {},
+        derivedPairDataById: {},
         recipient: '0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5',
       })
     })
@@ -90,6 +113,8 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
+        pairDataById: {},
+        derivedPairDataById: {},
         recipient: 'bob.argent.xyz',
       })
     })

@@ -1,3 +1,3 @@
-export * from './ListFilter'
-export * from './ListFilter/types'
+export * from './ListTraitFilter'
+export * from './ListTraitFilter/types'
 export * from './MinMaxFilter'

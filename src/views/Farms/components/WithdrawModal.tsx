@@ -5,6 +5,7 @@ import { ModalActions, ModalInput } from 'components/Modal'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
+import { logError } from 'utils/sentry'
 
 interface WithdrawModalProps {
   max: BigNumber
@@ -15,7 +16,7 @@ interface WithdrawModalProps {
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
   const [val, setVal] = useState('')
-  const { toastSuccess, toastError } = useToast()
+  const { toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
   const fullBalance = useMemo(() => {
@@ -58,14 +59,13 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
             setPendingTx(true)
             try {
               await onConfirm(val)
-              toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
               onDismiss()
             } catch (e) {
+              logError(e)
               toastError(
                 t('Error'),
                 t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
               )
-              console.error(e)
             } finally {
               setPendingTx(false)
             }

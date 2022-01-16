@@ -6,7 +6,7 @@ import { AUCTION_WHITELISTED_BIDDERS_TO_FETCH } from 'config'
 
 const useWhitelistedAddresses = () => {
   const [whitelistedAddresses, setWhitelistedAddresses] = useState<FarmAuctionBidderConfig[] | null>(null)
-  const farmAuctionContract = useFarmAuctionContract()
+  const farmAuctionContract = useFarmAuctionContract(false)
 
   useEffect(() => {
     const fetchWhitelistedAddresses = async () => {

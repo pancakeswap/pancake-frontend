@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Flex, Text, Skeleton, Button, ArrowForwardIcon } from '@pancakeswap/uikit'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
-import useRefresh from 'hooks/useRefresh'
+import { useSlowFresh } from 'hooks/useRefresh'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import Balance from 'components/Balance'
@@ -25,7 +25,7 @@ const LotteryCardContent = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const { slowRefresh } = useRefresh()
+  const slowRefresh = useSlowFresh()
   const [lotteryId, setLotteryId] = useState<string>(null)
   const [currentLotteryPrize, setCurrentLotteryPrize] = useState<BigNumber>(null)
   const cakePriceBusdAsString = usePriceCakeBusd().toString()

@@ -18,7 +18,7 @@ const flyingAnim = () => keyframes`
   }
   to {
     transform: translate(0, 0px);
-  }  
+  }
 `
 
 const fading = () => keyframes`
@@ -30,7 +30,7 @@ const fading = () => keyframes`
   }
   to {
     opacity: 0.9;
-  }  
+  }
 `
 
 const BgWrapper = styled.div`
@@ -127,7 +127,11 @@ const Hero = () => {
           position="relative"
         >
           <BunnyWrapper>
-            <img src={`${imagePath}${imageSrc}.png`} srcSet={getSrcSet(imagePath, imageSrc)} alt={t('Lunar bunny')} />
+            <picture>
+              <source type="image/webp" srcSet={getSrcSet(imagePath, imageSrc, '.webp')} />
+              <source type="image/png" srcSet={getSrcSet(imagePath, imageSrc)} />
+              <img src={`${imagePath}${imageSrc}.png`} alt={t('Lunar bunny')} />
+            </picture>
           </BunnyWrapper>
           <StarsWrapper>
             <CompositeImage {...starsImage} />
