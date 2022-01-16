@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Heading, Card, CardHeader, CardBody, Flex, Image } from '@pancakeswap/uikit'
@@ -45,11 +46,10 @@ const IfoQuestions = () => {
           <CardBody>
             {config.map(({ title, description }, i, { length }) => {
               return (
-                // eslint-disable-next-line react/no-array-index-key
                 <FoldableText key={i} mb={i + 1 === length ? '' : '24px'} title={title}>
-                  {description.map((desc) => {
+                  {description.map((desc, i) => {
                     return (
-                      <Text key={String(desc)} color="textSubtle" as="p">
+                      <Text key={i} color="textSubtle" as="p">
                         {desc}
                       </Text>
                     )
