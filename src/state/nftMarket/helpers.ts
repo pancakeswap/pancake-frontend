@@ -487,7 +487,13 @@ export const getCollectionActivity = async (
 
   const isFetchAllCollections = address === ''
 
-  const collectionFilterGql = !isFetchAllCollections ? `collection: ${JSON.stringify(address)}` : ``
+  const hasCollectionFilter = nftActivityFilter.collectionFilters.length > 0
+
+  const collectionFilterGql = !isFetchAllCollections
+    ? `collection: ${JSON.stringify(address)}`
+    : hasCollectionFilter
+    ? `collection_in: ${JSON.stringify(nftActivityFilter.collectionFilters)}`
+    : ``
 
   const askOrderTypeFilter = nftActivityFilter.typeFilters
     .filter((marketEvent) => marketEvent !== MarketEvent.SELL)
