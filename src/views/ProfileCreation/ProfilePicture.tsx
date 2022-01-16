@@ -15,7 +15,7 @@ import { NftLocation, UserNftInitializationState } from 'state/nftMarket/types'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
-import { useProfile } from '../../hooks/useContract'
+import { useProfileContract } from '../../hooks/useContract'
 import multicall from '../../utils/multicall'
 import profileABI from '../../config/abi/pancakeProfile.json'
 
@@ -33,7 +33,7 @@ const ProfilePicture: React.FC = () => {
   const [isApproving, setIsApproving] = useState(false)
   const [userProfileCreationNfts, setUserProfileCreationNfts] = useState(null)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
-  const profileContract = useProfile(false)
+  const profileContract = useProfileContract(false)
 
   const { nfts, userNftsInitializationState } = useUserNfts()
 

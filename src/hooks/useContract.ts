@@ -104,7 +104,7 @@ export const usePancakeRabbits = () => {
   return useMemo(() => getPancakeRabbitContract(library.getSigner()), [library])
 }
 
-export const useProfile = (withSignerIfPossible = true) => {
+export const useProfileContract = (withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
   return useMemo(
     () => getProfileContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
