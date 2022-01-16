@@ -7,6 +7,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import getGasPrice from 'utils/getGasPrice'
 import { useMasterchef, useSousChef } from 'hooks/useContract'
 import { DEFAULT_GAS_LIMIT } from 'config'
+import { TransactionResponse, TransactionReceipt } from '@ethersproject/providers'
 
 const options = {
   gasLimit: DEFAULT_GAS_LIMIT,
@@ -14,16 +15,12 @@ const options = {
 
 const harvestPool = async (sousChefContract) => {
   const gasPrice = getGasPrice()
-  const tx = await sousChefContract.deposit('0', { ...options, gasPrice })
-  const receipt = await tx.wait()
-  return receipt.status
+  return sousChefContract.deposit('0', { ...options, gasPrice })
 }
 
 const harvestPoolBnb = async (sousChefContract) => {
   const gasPrice = getGasPrice()
-  const tx = await sousChefContract.deposit({ ...options, value: BIG_ZERO, gasPrice })
-  const receipt = await tx.wait()
-  return receipt.status
+  return sousChefContract.deposit({ ...options, value: BIG_ZERO, gasPrice })
 }
 
 const useHarvestPool = (sousId, isUsingBnb = false) => {
@@ -32,17 +29,32 @@ const useHarvestPool = (sousId, isUsingBnb = false) => {
   const sousChefContract = useSousChef(sousId)
   const masterChefContract = useMasterchef()
 
-  const handleHarvest = useCallback(async () => {
-    if (sousId === 0) {
-      await harvestFarm(masterChefContract, 0)
-    } else if (isUsingBnb) {
-      await harvestPoolBnb(sousChefContract)
-    } else {
-      await harvestPool(sousChefContract)
-    }
-    dispatch(updateUserPendingReward(sousId, account))
-    dispatch(updateUserBalance(sousId, account))
-  }, [account, dispatch, isUsingBnb, masterChefContract, sousChefContract, sousId])
+  const handleHarvest = useCallback(
+    async (
+      onTransactionSubmitted: (tx: TransactionResponse) => void,
+      onSuccess: (receipt: TransactionReceipt) => void,
+      onError: (receipt: TransactionReceipt) => void,
+    ) => {
+      let tx
+      if (sousId === 0) {
+        tx = await harvestFarm(masterChefContract, 0)
+      } else if (isUsingBnb) {
+        tx = await harvestPoolBnb(sousChefContract)
+      } else {
+        tx = await harvestPool(sousChefContract)
+      }
+      onTransactionSubmitted(tx)
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        onSuccess(receipt)
+        dispatch(updateUserPendingReward(sousId, account))
+        dispatch(updateUserBalance(sousId, account))
+      } else {
+        onError(receipt)
+      }
+    },
+    [account, dispatch, isUsingBnb, masterChefContract, sousChefContract, sousId],
+  )
 
   return { onReward: handleHarvest }
 }

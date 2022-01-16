@@ -9,6 +9,7 @@ import useToast from 'hooks/useToast'
 import { useMasterchef } from 'hooks/useContract'
 import { harvestFarm } from 'utils/calls'
 import Balance from 'components/Balance'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { logError } from 'utils/sentry'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import { getEarningsText } from './EarningsText'
@@ -40,11 +41,25 @@ const HarvestCard = () => {
     for (const farmWithBalance of farmsWithStakedBalance) {
       try {
         // eslint-disable-next-line no-await-in-loop
-        await harvestFarm(masterChefContract, farmWithBalance.pid)
-        toastSuccess(
-          `${t('Harvested')}!`,
-          t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
-        )
+        const tx = await harvestFarm(masterChefContract, farmWithBalance.pid)
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        // eslint-disable-next-line no-await-in-loop
+        const receipt = await tx.wait()
+        if (receipt.status) {
+          toastSuccess(
+            `${t('Harvested')}!`,
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+            </ToastDescriptionWithTx>,
+          )
+        } else {
+          toastError(
+            t('Error'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+            </ToastDescriptionWithTx>,
+          )
+        }
       } catch (error) {
         logError(error)
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))

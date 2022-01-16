@@ -156,6 +156,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     if (isWithdrawingAll) {
       try {
         const tx = await callWithGasPrice(vaultPoolContract, 'withdrawAll', undefined, callOptions)
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
         const receipt = await tx.wait()
         if (receipt.status) {
           toastSuccess(
@@ -183,6 +184,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           [shareStakeToWithdraw.sharesAsBigNumber.toString()],
           callOptions,
         )
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
         const receipt = await tx.wait()
         if (receipt.status) {
           toastSuccess(
@@ -209,6 +211,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
       const tx = await callWithGasPrice(vaultPoolContract, 'deposit', [convertedStakeAmount.toString()], callOptions)
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(
