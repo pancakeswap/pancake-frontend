@@ -1,7 +1,7 @@
-import { Collections, CollectionKey } from './types'
+import { PancakeCollectionKey, PancakeCollections } from './types'
 
-const collections: Collections = {
-  [CollectionKey.PANCAKE]: {
+const pancakeCollections: PancakeCollections = {
+  [PancakeCollectionKey.PANCAKE]: {
     name: 'Pancake Bunnies',
     slug: 'pancake-bunnies',
     address: {
@@ -9,7 +9,7 @@ const collections: Collections = {
       97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
     },
   },
-  [CollectionKey.SQUAD]: {
+  [PancakeCollectionKey.SQUAD]: {
     name: 'Pancake Squad',
     description: "PancakeSwap's first official generative NFT collection.. Join the squad.",
     slug: 'pancake-squad',
@@ -20,4 +20,4 @@ const collections: Collections = {
   },
 }
 
-export default collections
+export default pancakeCollections
