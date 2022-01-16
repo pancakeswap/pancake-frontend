@@ -1,4 +1,5 @@
 import { ChainId, Pair, Token } from '@pancakeswap/sdk'
+import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -56,10 +57,14 @@ export function useAudioModeManager(): [boolean, () => void] {
 
 export function usePhishingBannerManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
-  const showPhishingWarningBanner = useSelector<AppState, AppState['user']['showPhishingWarningBanner']>(
-    (state) => state.user.showPhishingWarningBanner,
-  )
-
+  const hideTimestampPhishingWarningBanner = useSelector<
+    AppState,
+    AppState['user']['hideTimestampPhishingWarningBanner']
+  >((state) => state.user.hideTimestampPhishingWarningBanner)
+  const now = Date.now()
+  const showPhishingWarningBanner = hideTimestampPhishingWarningBanner
+    ? differenceInDays(now, hideTimestampPhishingWarningBanner) >= 1
+    : true
   const hideBanner = useCallback(() => {
     dispatch(hidePhishingWarningBanner())
   }, [dispatch])
