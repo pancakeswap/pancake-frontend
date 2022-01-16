@@ -9,15 +9,15 @@ import { getLibrary } from 'utils/web3React'
 import { LanguageProvider } from 'contexts/Localization'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ToastsProvider } from 'contexts/ToastsContext'
-import store from 'state'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
+import { Store } from '@reduxjs/toolkit'
 
 const ThemeProviderWrapper = (props) => {
   const [isDark] = useThemeManager()
   return <ThemeProvider theme={isDark ? dark : light} {...props} />
 }
 
-const Providers: React.FC = ({ children }) => {
+const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>

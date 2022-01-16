@@ -13,7 +13,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import React, { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
-import { persistor } from 'state'
+import { useStore, persistor } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { NextPage } from 'next'
@@ -42,6 +42,9 @@ function GlobalHooks() {
 }
 
 function MyApp(props: AppProps) {
+  const { pageProps } = props
+  const store = useStore(pageProps.initialReduxState)
+
   return (
     <>
       <Head>
@@ -66,7 +69,7 @@ function MyApp(props: AppProps) {
         />
         <title>PancakeSwap</title>
       </Head>
-      <Providers>
+      <Providers store={store}>
         <Blocklist>
           <GlobalHooks />
           <Updaters />

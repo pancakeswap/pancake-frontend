@@ -75,7 +75,7 @@ function makeStore(preloadedState = undefined) {
   })
 }
 
-export const getOrCreateStore = (preloadedState = undefined) => {
+export const initializeStore = (preloadedState = undefined) => {
   let _store = store ?? makeStore(preloadedState)
 
   // After navigating to a page with an initial Redux state, merge that state
@@ -93,13 +93,15 @@ export const getOrCreateStore = (preloadedState = undefined) => {
   if (typeof window === 'undefined') return _store
 
   // Create the store once in the client
-  if (!store) store = _store
-  store.dispatch(updateVersion())
+  if (!store) {
+    store = _store
+    store.dispatch(updateVersion())
+  }
 
   return _store
 }
 
-store = getOrCreateStore()
+store = initializeStore()
 
 /**
  * @see https://redux-toolkit.js.org/usage/usage-with-typescript#getting-the-dispatch-type
@@ -113,5 +115,5 @@ export default store
 export const persistor = persistStore(store)
 
 export function useStore(initialState) {
-  return useMemo(() => getOrCreateStore(initialState), [initialState])
+  return useMemo(() => initializeStore(initialState), [initialState])
 }
