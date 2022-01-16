@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.63.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.63.0...@pancakeswap/uikit@0.63.1) (2022-01-16)
+
+
+### Bug Fixes
+
+* **uikit:** Types styled system missing with devdep ([#384](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/384)) ([078f101](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/078f101b67cdc09b5f62e4a4fc45655eaf15733a))
+
+
+
+
+
 # [0.63.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.62.0...@pancakeswap/uikit@0.63.0) (2022-01-16)
 
 
