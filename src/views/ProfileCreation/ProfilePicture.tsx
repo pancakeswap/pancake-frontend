@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { AutoRenewIcon, Button, Card, CardBody, Heading, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link as RouterLink } from 'react-router-dom'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
@@ -9,12 +9,14 @@ import { useTranslation } from 'contexts/Localization'
 import { useUserNfts } from 'state/nftMarket/hooks'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import useFetchUserNfts from 'views/Nft/market/Profile/hooks/useFetchUserNfts'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { NftLocation, UserNftInitializationState } from 'state/nftMarket/types'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
+import { useProfile } from '../../hooks/useContract'
+import multicall from '../../utils/multicall'
+import profileABI from '../../config/abi/pancakeProfile.json'
 
 const Link = styled(RouterLink)`
   color: ${({ theme }) => theme.colors.primary};
@@ -28,10 +30,39 @@ const ProfilePicture: React.FC = () => {
   const { library } = useWeb3React()
   const [isApproved, setIsApproved] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
+  const [userProfileCreationNfts, setUserProfileCreationNfts] = useState(null)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
+  const profileContract = useProfile(false)
 
   const { nfts, userNftsInitializationState } = useUserNfts()
-  useFetchUserNfts()
+
+  useEffect(() => {
+    const fetchUserPancakeCollectibles = async () => {
+      try {
+        const nftsByCollection = nfts.reduce((acc, value) => {
+          acc.add(value.collectionAddress)
+          return acc
+        }, new Set<string>())
+        if (nftsByCollection.size > 0) {
+          const nftRole = await profileContract.NFT_ROLE()
+          const collectionsNftRoleCalls = [...nftsByCollection].map((collectionAddress) => {
+            return {
+              address: profileContract.address,
+              name: 'hasRole',
+              params: [nftRole, collectionAddress],
+            }
+          })
+          const collectionRoles = await multicall(profileABI, collectionsNftRoleCalls)
+          setUserProfileCreationNfts(nfts.filter((nft, index) => collectionRoles[index][0]))
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    if (userNftsInitializationState === UserNftInitializationState.INITIALIZED) {
+      fetchUserPancakeCollectibles()
+    }
+  }, [nfts, profileContract, userNftsInitializationState])
 
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
@@ -52,7 +83,7 @@ const ProfilePicture: React.FC = () => {
     }
   }
 
-  if (nfts.length === 0 && userNftsInitializationState === UserNftInitializationState.INITIALIZED) {
+  if (userProfileCreationNfts?.length === 0) {
     return (
       <>
         <Heading scale="xl" mb="24px">
@@ -93,22 +124,26 @@ const ProfilePicture: React.FC = () => {
             </Link>
           </Text>
           <NftWrapper>
-            {nfts
-              .filter((walletNft) => walletNft.location === NftLocation.WALLET)
-              .map((walletNft) => {
-                return (
-                  <SelectionCard
-                    name="profilePicture"
-                    key={`${walletNft.collectionAddress}#${walletNft.tokenId}`}
-                    value={walletNft.tokenId}
-                    image={walletNft.image.thumbnail}
-                    isChecked={walletNft.tokenId === selectedNft.tokenId}
-                    onChange={(value: string) => actions.setSelectedNft(value, walletNft.collectionAddress)}
-                  >
-                    <Text bold>{walletNft.name}</Text>
-                  </SelectionCard>
-                )
-              })}
+            {userProfileCreationNfts?.length > 0 ? (
+              userProfileCreationNfts
+                .filter((walletNft) => walletNft.location === NftLocation.WALLET)
+                .map((walletNft) => {
+                  return (
+                    <SelectionCard
+                      name="profilePicture"
+                      key={`${walletNft.collectionAddress}#${walletNft.tokenId}`}
+                      value={walletNft.tokenId}
+                      image={walletNft.image.thumbnail}
+                      isChecked={walletNft.tokenId === selectedNft.tokenId}
+                      onChange={(value: string) => actions.setSelectedNft(value, walletNft.collectionAddress)}
+                    >
+                      <Text bold>{walletNft.name}</Text>
+                    </SelectionCard>
+                  )
+                })
+            ) : (
+              <Skeleton width="100%" height="64px" />
+            )}
           </NftWrapper>
           <Heading as="h4" scale="lg" mb="8px">
             {t('Allow collectible to be locked')}

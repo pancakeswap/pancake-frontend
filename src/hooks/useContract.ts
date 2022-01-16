@@ -104,9 +104,12 @@ export const usePancakeRabbits = () => {
   return useMemo(() => getPancakeRabbitContract(library.getSigner()), [library])
 }
 
-export const useProfile = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getProfileContract(library.getSigner()), [library])
+export const useProfile = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getProfileContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, account, library],
+  )
 }
 
 export const useLotteryV2Contract = () => {
