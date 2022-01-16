@@ -32,7 +32,6 @@
     "@testing-library/react": "^11.2.5",
     "@types/lodash": "^4.14.168",
     "@types/react-dom": "^17.0.5",
-    "@types/styled-system": "^5.1.10",
     "jest-styled-components": "^7.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -45,6 +44,7 @@
     "styled-components": "^5.2.3"
   },
   "dependencies": {
+    "@types/styled-system": "^5.1.10",
     "@popperjs/core": "^2.9.2",
     "lodash": "^4.17.20",
     "react-popper": "^2.2.5",
