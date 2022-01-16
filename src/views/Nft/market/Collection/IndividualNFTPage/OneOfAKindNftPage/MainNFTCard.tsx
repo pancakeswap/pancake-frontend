@@ -113,7 +113,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
             </Box>
           </Flex>
           <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center" maxWidth={440}>
-            <NFTMedia nft={nft} width={440} height={440} />
+            <NFTMedia key={nft.tokenId} nft={nft} width={440} height={440} />
           </Flex>
         </Container>
       </CardBody>
