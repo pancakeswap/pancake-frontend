@@ -47,7 +47,7 @@ const StyledImage = styled(Image)`
   }
 `
 
-const HotCollectionCard: React.FC<HotCollectionCardProps> = ({
+const CollectionCard: React.FC<HotCollectionCardProps> = ({
   bgSrc,
   avatarSrc,
   collectionName,
@@ -82,4 +82,4 @@ const HotCollectionCard: React.FC<HotCollectionCardProps> = ({
   )
 }
 
-export default HotCollectionCard
+export default CollectionCard
