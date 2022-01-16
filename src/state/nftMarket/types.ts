@@ -148,6 +148,7 @@ export interface Collection {
   id: string
   address: string
   name: string
+  createdAt?: string
   description?: string
   symbol: string
   active: boolean
