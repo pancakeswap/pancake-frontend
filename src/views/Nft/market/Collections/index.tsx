@@ -20,10 +20,12 @@ import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import shuffle from 'lodash/shuffle'
 
 export const ITEMS_PER_PAGE = 10
 
 const SORT_FIELD = {
+  createdAt: 'createdAt',
   volumeBNB: 'totalVolumeBNB',
   items: 'numberTokensListed',
   supply: 'totalSupply',
@@ -77,17 +79,27 @@ const Collectible = () => {
   const sortedCollections = useMemo(() => {
     const collectionValues = collections ? Object.values(collections) : []
 
-    return collectionValues
-      .sort((a, b) => {
-        if (sortField && a && b) {
-          return parseFloat(a[sortField]) > parseFloat(b[sortField])
-            ? (sortDirection ? -1 : 1) * 1
-            : (sortDirection ? -1 : 1) * -1
+    if (!sortField) {
+      return shuffle(collectionValues)
+    }
+
+    return collectionValues.sort((a, b) => {
+      if (a && b) {
+        if (sortField === SORT_FIELD.createdAt) {
+          if (a.createdAt && b.createdAt) {
+            return Date.parse(a.createdAt) - Date.parse(b.createdAt)
+              ? (sortDirection ? -1 : 1) * 1
+              : (sortDirection ? -1 : 1) * -1
+          }
+          return -1
         }
-        return -1
-      })
-      .slice(ITEMS_PER_PAGE * (page - 1), page * ITEMS_PER_PAGE)
-  }, [page, collections, sortDirection, sortField])
+        return parseFloat(a[sortField]) > parseFloat(b[sortField])
+          ? (sortDirection ? -1 : 1) * 1
+          : (sortDirection ? -1 : 1) * -1
+      }
+      return -1
+    })
+  }, [collections, sortDirection, sortField])
 
   const handleSort = useCallback(
     (newField: string) => {
@@ -117,7 +129,10 @@ const Collectible = () => {
           <Table>
             <thead>
               <tr>
-                <Th textAlign="left">{t('Collection')}</Th>
+                <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.createdAt)}>
+                  {t('Collection')}
+                  {arrow(SORT_FIELD.createdAt)}
+                </Th>
                 <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.volumeBNB)}>
                   {t('Volume')}
                   {arrow(SORT_FIELD.volumeBNB)}
@@ -137,38 +152,40 @@ const Collectible = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedCollections.map((collection) => {
-                const volume = collection.totalVolumeBNB
-                  ? parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
-                      minimumFractionDigits: 3,
-                      maximumFractionDigits: 3,
-                    })
-                  : '0'
-                return (
-                  <tr key={collection.address} data-test="nft-collection-row">
-                    <Td>
-                      <Link to={`${nftsBaseUrl}/collections/${collection.address}`}>
+              {sortedCollections
+                .map((collection) => {
+                  const volume = collection.totalVolumeBNB
+                    ? parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })
+                    : '0'
+                  return (
+                    <tr key={collection.address} data-test="nft-collection-row">
+                      <Td>
+                        <Link to={`${nftsBaseUrl}/collections/${collection.address}`}>
+                          <Flex alignItems="center">
+                            <ProfileAvatar src={collection.avatar} width={48} height={48} mr="16px" />
+                            {collection.name}
+                          </Flex>
+                        </Link>
+                      </Td>
+                      <Td>
                         <Flex alignItems="center">
-                          <ProfileAvatar src={collection.avatar} width={48} height={48} mr="16px" />
-                          {collection.name}
+                          {volume}
+                          <BnbUsdtPairTokenIcon ml="8px" />
                         </Flex>
-                      </Link>
-                    </Td>
-                    <Td>
-                      <Flex alignItems="center">
-                        {volume}
-                        <BnbUsdtPairTokenIcon ml="8px" />
-                      </Flex>
-                    </Td>
-                    {!isMobile && (
-                      <>
-                        <Td>{collection.numberTokensListed}</Td>
-                        <Td>{collection.totalSupply}</Td>
-                      </>
-                    )}
-                  </tr>
-                )
-              })}
+                      </Td>
+                      {!isMobile && (
+                        <>
+                          <Td>{collection.numberTokensListed}</Td>
+                          <Td>{collection.totalSupply}</Td>
+                        </>
+                      )}
+                    </tr>
+                  )
+                })
+                .slice(ITEMS_PER_PAGE * (page - 1), page * ITEMS_PER_PAGE)}
             </tbody>
           </Table>
           <PageButtons>
