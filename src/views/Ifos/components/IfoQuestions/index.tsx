@@ -47,9 +47,9 @@ const IfoQuestions = () => {
             {config.map(({ title, description }, i, { length }) => {
               return (
                 <FoldableText key={i} mb={i + 1 === length ? '' : '24px'} title={title}>
-                  {description.map((desc, i) => {
+                  {description.map((desc, index) => {
                     return (
-                      <Text key={i} color="textSubtle" as="p">
+                      <Text key={index} color="textSubtle" as="p">
                         {desc}
                       </Text>
                     )
