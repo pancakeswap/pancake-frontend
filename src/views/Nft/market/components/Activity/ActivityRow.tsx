@@ -73,7 +73,7 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
       : null
 
   return (
-    <tr {...((isXs || isSm) && { onClick: onPresentMobileModal })}>
+    <tr {...((isXs || isSm) && { onClick: onPresentMobileModal })} data-test="nft-activity-row">
       {!isNftActivity ? (
         <Td
           {...((isXs || isSm) && {

@@ -21,7 +21,7 @@ const Collections = () => {
   return (
     <>
       <Flex alignItems="center" justifyContent="space-between" mb="32px">
-        <Heading as="h3" scale="lg">
+        <Heading as="h3" scale="lg" data-test="nfts-hot-collections">
           {t('Hot Collections')}
         </Heading>
         <Button

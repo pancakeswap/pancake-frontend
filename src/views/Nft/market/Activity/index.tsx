@@ -11,7 +11,7 @@ const Activity = () => {
   return (
     <>
       <PageHeader>
-        <Heading as="h1" scale="xxl" color="secondary">
+        <Heading as="h1" scale="xxl" color="secondary" data-test="nft-activity-title">
           {t('Activity')}
         </Heading>
       </PageHeader>

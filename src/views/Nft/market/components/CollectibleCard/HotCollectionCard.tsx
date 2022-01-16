@@ -76,7 +76,7 @@ const HotCollectionCard: React.FC<HotCollectionCardProps> = ({
   )
 
   return (
-    <StyledHotCollectionCard disabled={disabled}>
+    <StyledHotCollectionCard disabled={disabled} data-test="hot-collection-card">
       {url ? <Link to={url}>{renderBody()}</Link> : <div style={{ cursor: 'default' }}>{renderBody()}</div>}
     </StyledHotCollectionCard>
   )
