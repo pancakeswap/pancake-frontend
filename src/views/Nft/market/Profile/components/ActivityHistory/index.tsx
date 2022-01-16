@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { uniqBy } from 'lodash'
 import { isAddress } from 'utils'
 import { fetchUserActivity } from 'state/nftMarket/reducer'
 import { useAppDispatch } from 'state'
 import { useUserNfts } from 'state/nftMarket/hooks'
+import { getUserActivity } from 'state/nftMarket/helpers'
 import { ArrowBackIcon, ArrowForwardIcon, Card, Flex, Table, Text, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { getNftsFromDifferentCollectionsApi, getUserActivity } from 'state/nftMarket/helpers'
-import { Activity, NftToken, TokenIdWithCollectionAddress, UserNftInitializationState } from 'state/nftMarket/types'
+import { Activity, NftToken, UserNftInitializationState } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import TableLoader from 'components/TableLoader'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
@@ -17,6 +16,7 @@ import { sortUserActivity } from '../../utils/sortUserActivity'
 import NoNftsImage from '../../../components/Activity/NoNftsImage'
 import { Arrow, PageButtons } from '../../../components/PaginationButtons'
 import ActivityRow from '../../../components/Activity/ActivityRow'
+import { fetchActivityNftMetadata } from '../../../ActivityHistory/utils/fetchActivityNftMetadata'
 
 const MAX_PER_PAGE = 8
 
@@ -76,14 +76,8 @@ const ActivityHistory = () => {
   }, [account, accountAddress, dispatch])
 
   useEffect(() => {
-    const fetchActivityNftMetadata = async () => {
-      const activityNftTokenIds = uniqBy(
-        sortedUserActivities.map((activity): TokenIdWithCollectionAddress => {
-          return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id }
-        }),
-        'tokenId',
-      )
-      const nfts = await getNftsFromDifferentCollectionsApi(activityNftTokenIds)
+    const fetchNftMetadata = async () => {
+      const nfts = await fetchActivityNftMetadata(sortedUserActivities)
       setNftMetadata(nfts)
     }
 
@@ -94,7 +88,7 @@ const ActivityHistory = () => {
 
     if (sortedUserActivities.length > 0) {
       getMaxPages()
-      fetchActivityNftMetadata()
+      fetchNftMetadata()
     }
 
     return () => {

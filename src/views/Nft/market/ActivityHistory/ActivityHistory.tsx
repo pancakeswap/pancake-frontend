@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { uniqBy } from 'lodash'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import {
@@ -13,10 +12,10 @@ import {
   Th,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { getCollectionActivity, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
+import { getCollectionActivity } from 'state/nftMarket/helpers'
 import Container from 'components/Layout/Container'
 import TableLoader from 'components/TableLoader'
-import { Activity, Collection, NftToken, TokenIdWithCollectionAddress } from 'state/nftMarket/types'
+import { Activity, Collection, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
@@ -27,6 +26,7 @@ import NoNftsImage from '../components/Activity/NoNftsImage'
 import ActivityFilters from './ActivityFilters'
 import ActivityRow from '../components/Activity/ActivityRow'
 import { sortActivity } from './utils/sortActivity'
+import { fetchActivityNftMetadata } from './utils/fetchActivityNftMetadata'
 
 const MAX_PER_PAGE = 8
 
@@ -91,19 +91,13 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
   }, [dispatch, collectionAddress, nftActivityFiltersString, lastUpdated])
 
   useEffect(() => {
-    const fetchActivityNftMetadata = async () => {
-      const activityNftTokenIds = uniqBy(
-        activitiesSlice.map((activity): TokenIdWithCollectionAddress => {
-          return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id }
-        }),
-        'tokenId',
-      )
-      const nfts = await getNftsFromDifferentCollectionsApi(activityNftTokenIds)
+    const fetchNftMetadata = async () => {
+      const nfts = await fetchActivityNftMetadata(activitiesSlice)
       setNftMetadata(nfts)
     }
 
     if (activitiesSlice.length > 0) {
-      fetchActivityNftMetadata()
+      fetchNftMetadata()
     }
   }, [activitiesSlice])
 
