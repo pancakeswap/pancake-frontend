@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/farms/hooks'
+import { Link } from 'react-router-dom'
 import { usePhishingBannerManager } from 'state/user/hooks'
 import config from './config/config'
 import UserMenu from './UserMenu'
@@ -25,6 +26,9 @@ const Menu = (props) => {
 
   return (
     <UikitMenu
+      linkComponent={({ href, ...linkProps }: any) => {
+        return <Link to={href} {...linkProps} />
+      }}
       userMenu={<UserMenu />}
       globalMenu={<GlobalSettings />}
       banner={showPhishingWarningBanner && <PhishingWarningBanner />}

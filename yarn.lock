@@ -2811,13 +2811,12 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@pancakeswap/uikit@^0.62.0":
-  version "0.62.0"
-  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.62.0.tgz#43afaa27268035c4316aba97ae70d58c04c11092"
-  integrity sha512-cKPA81UQQA+RnVnBuvigLbX7PBav2f1BvbR9AanUokmsqqYldwXmBZI3wnVPJHraHTrlx7H/nq35Uejb/k9RnQ==
+"@pancakeswap/uikit@^0.63.1":
+  version "0.63.1"
+  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.63.1.tgz#1d0fabeb23b2fa14a02bc9a71989ce8d244293d8"
+  integrity sha512-lpw4PKwM/GRQLwp3FfBd6Tevos/n3I0N3SnHaEMUfjr/oXQcOGzIJdNeJZhZSiO7FYxIn2ClCg3+VlBCvxqV4Q==
   dependencies:
     "@popperjs/core" "^2.9.2"
-    "@types/lodash" "^4.14.168"
     "@types/styled-system" "^5.1.10"
     lodash "^4.17.20"
     react-popper "^2.2.5"
@@ -4042,10 +4041,10 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
-"@types/lodash@^4.14.168":
-  version "4.14.171"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.171.tgz#f01b3a5fe3499e34b622c362a46a609fdb23573b"
-  integrity sha512-7eQ2xYLLI/LsicL2nejW9Wyko3lcpN6O/z0ZLHrEQsg280zIdCv1t/0m6UtBjUHokCGBQ3gYTbHzDkZ1xOBwwg==
+"@types/lodash@^4.14.178":
+  version "4.14.178"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.178.tgz#341f6d2247db528d4a13ddbb374bcdc80406f4f8"
+  integrity sha512-0d5Wd09ItQWH1qFbEyQ7oTQ3GZrMfth5JkbN3EvTKLXcHLRDSXeLnlvlOn0wvxVIwK5o2M8JzP/OWz7T3NRsbw==
 
 "@types/long@^4.0.0", "@types/long@^4.0.1":
   version "4.0.1"
@@ -4301,9 +4300,9 @@
     csstype "^3.0.2"
 
 "@types/styled-system@^5.1.10":
-  version "5.1.12"
-  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.12.tgz#4f3ca8da3dffe3c5a6cc3b2a97f51b41464c104a"
-  integrity sha512-7x4BYKKfK9QewfsFC2x5r9BK/OrfX+JF/1P21jKPMHruawDw9gvG7bTZgTVk6YkzDO2JUlsk4i8hdiAepAhD0g==
+  version "5.1.15"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.15.tgz#075f969cc028a895dba916c07708e2fe828d7077"
+  integrity sha512-1uls4wipZn8FtYFZ7upRVFDoEeOXTQTs2zuyOZPn02T6rjIxtvj2P2lG5qsxXHhKuKsu3thveCZrtaeLE/ibLg==
   dependencies:
     csstype "^3.0.2"
 

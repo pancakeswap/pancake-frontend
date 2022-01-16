@@ -156,7 +156,6 @@ export interface Collection {
   totalVolumeBNB: string
   numberTokensListed: string
   tradingFee: string
-  createdAt: string
   creatorFee: string
   owner: string
   totalSupply: string
