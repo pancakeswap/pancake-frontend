@@ -40,21 +40,27 @@ const ProfilePicture: React.FC = () => {
   useEffect(() => {
     const fetchUserPancakeCollectibles = async () => {
       try {
-        const nftsByCollection = nfts.reduce((acc, value) => {
-          acc.add(value.collectionAddress)
-          return acc
-        }, new Set<string>())
-        if (nftsByCollection.size > 0) {
+        const nftsByCollection = Array.from(
+          nfts.reduce((acc, value) => {
+            acc.add(value.collectionAddress)
+            return acc
+          }, new Set<string>()),
+        )
+
+        if (nftsByCollection.length > 0) {
           const nftRole = await profileContract.NFT_ROLE()
-          const collectionsNftRoleCalls = [...nftsByCollection].map((collectionAddress) => {
+          const collectionsNftRoleCalls = nftsByCollection.map((collectionAddress) => {
             return {
               address: profileContract.address,
               name: 'hasRole',
               params: [nftRole, collectionAddress],
             }
           })
-          const collectionRoles = await multicall(profileABI, collectionsNftRoleCalls)
-          setUserProfileCreationNfts(nfts.filter((nft, index) => collectionRoles[index][0]))
+          const collectionRolesRaw = await multicall(profileABI, collectionsNftRoleCalls)
+          const collectionRoles = collectionRolesRaw.flat()
+          setUserProfileCreationNfts(
+            nfts.filter((nft) => collectionRoles[nftsByCollection.indexOf(nft.collectionAddress)]),
+          )
         }
       } catch (e) {
         console.error(e)
