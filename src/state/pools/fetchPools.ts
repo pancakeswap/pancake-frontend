@@ -8,7 +8,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getSouschefV2Contract } from 'utils/contractHelpers'
 import tokens from 'config/constants/tokens'
-import { chunk } from 'lodash'
+import chunk from 'lodash/chunk'
 import sousChefV2 from '../../config/abi/sousChefV2.json'
 
 export const fetchPoolsBlockLimits = async () => {

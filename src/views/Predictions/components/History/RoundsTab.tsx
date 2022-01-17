@@ -1,6 +1,6 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { orderBy } from 'lodash'
+import orderBy from 'lodash/orderBy'
 import { Box, Button, Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'

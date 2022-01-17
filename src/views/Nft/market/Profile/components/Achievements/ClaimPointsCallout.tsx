@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { sumBy } from 'lodash'
+import sumBy from 'lodash/sumBy'
 import { useAppDispatch } from 'state'
 import { useWeb3React } from '@web3-react/core'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap/uikit'

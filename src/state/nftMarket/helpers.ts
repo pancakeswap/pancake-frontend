@@ -3,7 +3,8 @@ import { stringify } from 'qs'
 import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 import { multicallv2 } from 'utils/multicall'
 import erc721Abi from 'config/abi/erc721.json'
-import { uniq, range } from 'lodash'
+import range from 'lodash/range'
+import uniq from 'lodash/uniq'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
   ApiCollection,

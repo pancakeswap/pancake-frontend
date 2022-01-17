@@ -1,5 +1,5 @@
 import masterchefABI from 'config/abi/masterchef.json'
-import { chunk } from 'lodash'
+import chunk from 'lodash/chunk'
 import { multicallv2 } from 'utils/multicall'
 import { SerializedFarmConfig } from '../../config/constants/types'
 import { SerializedFarm } from '../types'
