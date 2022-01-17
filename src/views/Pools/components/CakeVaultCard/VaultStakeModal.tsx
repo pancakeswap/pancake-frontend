@@ -19,6 +19,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
+
 import { BIG_TEN } from 'utils/bigNumber'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useIfoPoolCreditBlock, useVaultPoolByKey } from 'state/pools/hooks'
@@ -28,6 +29,7 @@ import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
+import useCatchTxError, { CatchTxErrorFunction } from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
@@ -35,7 +37,6 @@ import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { logError } from 'utils/sentry'
 import { convertCakeToShares, convertSharesToCake } from '../../helpers'
 import FeeSummary from './FeeSummary'
 
@@ -88,6 +89,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const dispatch = useAppDispatch()
   const { stakingToken, earningToken, apr, rawApr, stakingTokenPrice, earningTokenPrice, vaultKey } = pool
   const { account } = useWeb3React()
+  const catchTxError: CatchTxErrorFunction = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { callWithGasPrice } = useCallWithGasPrice()
   const {
@@ -96,7 +98,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   } = useVaultPoolByKey(pool.vaultKey)
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
@@ -153,9 +155,20 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     const sharesRemaining = userShares.minus(shareStakeToWithdraw.sharesAsBigNumber)
     const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
 
-    if (isWithdrawingAll) {
-      try {
-        const tx = await callWithGasPrice(vaultPoolContract, 'withdrawAll', undefined, callOptions)
+    let tx = null
+
+    catchTxError(
+      async () => {
+        // .toString() being called to fix a BigNumber error in prod
+        // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
+        tx = isWithdrawingAll
+          ? await callWithGasPrice(vaultPoolContract, 'withdrawAll', undefined, callOptions)
+          : await callWithGasPrice(
+              vaultPoolContract,
+              'withdraw',
+              [shareStakeToWithdraw.sharesAsBigNumber.toString()],
+              callOptions,
+            )
         toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
         const receipt = await tx.wait()
         if (receipt.status) {
@@ -169,66 +182,39 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           onDismiss()
           dispatch(fetchCakeVaultUserData({ account }))
         }
-      } catch (error) {
-        logError(error)
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setPendingTx(false)
-      }
-    } else {
-      // .toString() being called to fix a BigNumber error in prod
-      // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      try {
-        const tx = await callWithGasPrice(
-          vaultPoolContract,
-          'withdraw',
-          [shareStakeToWithdraw.sharesAsBigNumber.toString()],
-          callOptions,
-        )
-        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-        const receipt = await tx.wait()
-        if (receipt.status) {
-          toastSuccess(
-            t('Unstaked!'),
-            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-              {t('Your earnings have also been harvested to your wallet')}
-            </ToastDescriptionWithTx>,
-          )
-          setPendingTx(false)
-          onDismiss()
-          dispatch(fetchCakeVaultUserData({ account }))
-        }
-      } catch (error) {
-        logError(error)
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setPendingTx(false)
-      }
-    }
+      },
+      () => tx,
+      () => setPendingTx(false),
+    )
   }
 
   const handleDeposit = async (convertedStakeAmount: BigNumber) => {
     setPendingTx(true)
-    try {
-      // .toString() being called to fix a BigNumber error in prod
-      // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const tx = await callWithGasPrice(vaultPoolContract, 'deposit', [convertedStakeAmount.toString()], callOptions)
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      const receipt = await tx.wait()
-      if (receipt.status) {
-        toastSuccess(
-          t('Staked!'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your funds have been staked in the pool')}
-          </ToastDescriptionWithTx>,
-        )
-        setPendingTx(false)
-        onDismiss()
-        dispatch(fetchCakeVaultUserData({ account }))
-      }
-    } catch (error) {
-      logError(error)
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setPendingTx(false)
-    }
+
+    let tx = null
+
+    catchTxError(
+      async () => {
+        // .toString() being called to fix a BigNumber error in prod
+        // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
+        tx = await callWithGasPrice(vaultPoolContract, 'deposit', [convertedStakeAmount.toString()], callOptions)
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        const receipt = await tx.wait()
+        if (receipt.status) {
+          toastSuccess(
+            t('Staked!'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your funds have been staked in the pool')}
+            </ToastDescriptionWithTx>,
+          )
+          setPendingTx(false)
+          onDismiss()
+          dispatch(fetchCakeVaultUserData({ account }))
+        }
+      },
+      () => tx,
+      () => setPendingTx(false),
+    )
   }
 
   const handleConfirmClick = async () => {
