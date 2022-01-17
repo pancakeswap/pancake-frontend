@@ -93,7 +93,7 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
   return response.votes
 }
 
-const NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST = 500
+const NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST = 250
 
 export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
   const eligiblePools = await getActivePools(block)
