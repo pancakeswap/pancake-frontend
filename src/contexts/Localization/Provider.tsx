@@ -46,7 +46,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
     fetchInitialLocales()
   }, [setState])
 
-  const setLanguage = async (language: Language) => {
+  const setLanguage = useCallback(async (language: Language) => {
     if (!languageMap.has(language.locale)) {
       setState((prevState) => ({
         ...prevState,
@@ -73,7 +73,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
         currentLanguage: language,
       }))
     }
-  }
+  }, [])
 
   const translate = useCallback(
     (key: string, data?: ContextData) => {
