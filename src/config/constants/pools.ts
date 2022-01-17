@@ -54,6 +54,7 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '0.6435',
+    deployedBlockNumber: 14356854,
   },
   {
     sousId: 255,
@@ -67,6 +68,7 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '3.035',
+    deployedBlockNumber: 14351799,
   },
   {
     sousId: 254,
@@ -80,6 +82,7 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '0.1493',
+    deployedBlockNumber: 14301228,
   },
   {
     sousId: 253,
@@ -93,6 +96,7 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '0.1493',
+    deployedBlockNumber: 14271804,
   },
   {
     sousId: 252,
@@ -106,6 +110,7 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '0.3281',
+    deployedBlockNumber: 14118300,
   },
   {
     sousId: 251,
