@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { ethers, Contract } from 'ethers'
+import { Contract } from '@ethersproject/contracts'
+import { MaxUint256 } from '@ethersproject/constants'
 import { useAppDispatch } from 'state'
 import { updateUserAllowance } from 'state/actions'
 import { useTranslation } from 'contexts/Localization'
@@ -24,7 +25,7 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      const tx = await callWithGasPrice(lpContract, 'approve', [sousChefContract.address, ethers.constants.MaxUint256])
+      const tx = await callWithGasPrice(lpContract, 'approve', [sousChefContract.address, MaxUint256])
       toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       const receipt = await tx.wait()
 
@@ -72,7 +73,7 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
   const cakeContract = useCake()
 
   const handleApprove = async () => {
-    const tx = await callWithGasPrice(cakeContract, 'approve', [vaultPoolContract.address, ethers.constants.MaxUint256])
+    const tx = await callWithGasPrice(cakeContract, 'approve', [vaultPoolContract.address, MaxUint256])
     toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
     setRequestedApproval(true)
     const receipt = await tx.wait()

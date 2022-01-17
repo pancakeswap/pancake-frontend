@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import { parseUnits } from 'ethers/lib/utils'
+import { MaxUint256 } from '@ethersproject/constants'
+import { parseUnits } from '@ethersproject/units'
 import {
   Modal,
   ModalBody,
@@ -100,14 +100,9 @@ const ContributeModal: React.FC<Props> = ({
         }
       },
       onApprove: () => {
-        return callWithGasPrice(
-          raisingTokenContractApprover,
-          'approve',
-          [contract.address, ethers.constants.MaxUint256],
-          {
-            gasPrice,
-          },
-        )
+        return callWithGasPrice(raisingTokenContractApprover, 'approve', [contract.address, MaxUint256], {
+          gasPrice,
+        })
       },
       onApproveSuccess: ({ receipt }) => {
         toastSuccess(

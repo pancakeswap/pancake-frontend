@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk'
 import { AnyAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import {
   CampaignType,
   SerializedFarmConfig,
@@ -326,7 +326,7 @@ export interface ReduxNodeLedger {
 
 export interface NodeLedger {
   position: BetPosition
-  amount: ethers.BigNumber
+  amount: EthersBigNumber
   claimed: boolean
 }
 
@@ -352,13 +352,13 @@ export interface NodeRound {
   startTimestamp: number | null
   lockTimestamp: number | null
   closeTimestamp: number | null
-  lockPrice: ethers.BigNumber | null
-  closePrice: ethers.BigNumber | null
-  totalAmount: ethers.BigNumber
-  bullAmount: ethers.BigNumber
-  bearAmount: ethers.BigNumber
-  rewardBaseCalAmount: ethers.BigNumber
-  rewardAmount: ethers.BigNumber
+  lockPrice: EthersBigNumber | null
+  closePrice: EthersBigNumber | null
+  totalAmount: EthersBigNumber
+  bullAmount: EthersBigNumber
+  bearAmount: EthersBigNumber
+  rewardBaseCalAmount: EthersBigNumber
+  rewardAmount: EthersBigNumber
   oracleCalled: boolean
   closeOracleId: string
   lockOracleId: string

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Flex, Text } from '@pancakeswap/uikit'
-import { ethers } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
@@ -19,8 +19,8 @@ interface Props {
   selectedNft: State['selectedNft']
   account: string
   teamId: number
-  minimumCakeRequired: ethers.BigNumber
-  allowance: ethers.BigNumber
+  minimumCakeRequired: BigNumber
+  allowance: BigNumber
   onDismiss?: () => void
 }
 

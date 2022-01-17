@@ -2,7 +2,8 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import tokens from 'config/constants/tokens'
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
-import { ethers } from 'ethers'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { Zero } from '@ethersproject/constants'
 import useSWR from 'swr'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { simpleRpcProvider } from 'utils/providers'
@@ -57,14 +58,14 @@ export const useGetBnbBalance = () => {
     return simpleRpcProvider.getBalance(account)
   })
 
-  return { balance: data || ethers.constants.Zero, fetchStatus: status, refresh: mutate }
+  return { balance: data || Zero, fetchStatus: status, refresh: mutate }
 }
 
 export const useGetCakeBalance = () => {
   const { balance, fetchStatus } = useTokenBalance(tokens.cake.address)
 
   // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
-  return { balance: ethers.BigNumber.from(balance.toString()), fetchStatus }
+  return { balance: EthersBigNumber.from(balance.toString()), fetchStatus }
 }
 
 export default useTokenBalance

@@ -11,7 +11,7 @@ import {
   ModalHeader as UIKitModalHeader,
   ModalTitle,
 } from '@pancakeswap/uikit'
-import { parseUnits } from 'ethers/lib/utils'
+import { parseUnits } from '@ethersproject/units'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'

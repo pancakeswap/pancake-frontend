@@ -1,4 +1,5 @@
-import { ethers } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
+import { Contract } from '@ethersproject/contracts'
 
 /**
  * Buy a NFT with BNB
@@ -8,7 +9,7 @@ import { ethers } from 'ethers'
  * @returns transaction hash, or null
  */
 export const buyTokenUsingBNB = async (
-  contract: ethers.Contract,
+  contract: Contract,
   collectionAddress: string,
   tokenId: number,
 ): Promise<string> => {
@@ -31,10 +32,10 @@ export const buyTokenUsingBNB = async (
  * @returns transaction hash, or null
  */
 export const buyTokenUsingWBNB = async (
-  contract: ethers.Contract,
+  contract: Contract,
   collectionAddress: string,
   tokenId: number,
-  price: ethers.BigNumber,
+  price: BigNumber,
 ): Promise<string> => {
   try {
     const tx = await contract.buyTokenUsingWBNB(collectionAddress, tokenId, price)
@@ -55,10 +56,10 @@ export const buyTokenUsingWBNB = async (
  * @returns transaction hash, or null
  */
 export const createAskOrder = async (
-  contract: ethers.Contract,
+  contract: Contract,
   collectionAddress: string,
   tokenId: number,
-  askPrice: ethers.BigNumber,
+  askPrice: BigNumber,
 ): Promise<string> => {
   try {
     const tx = await contract.createAskOrder(collectionAddress, tokenId, askPrice)
@@ -79,10 +80,10 @@ export const createAskOrder = async (
  * @returns transaction hash, or null
  */
 export const modifyAskOrder = async (
-  contract: ethers.Contract,
+  contract: Contract,
   collectionAddress: string,
   tokenId: number,
-  newPrice: ethers.BigNumber,
+  newPrice: BigNumber,
 ): Promise<string> => {
   try {
     const tx = await contract.modifyAskOrder(collectionAddress, tokenId, newPrice)
@@ -102,7 +103,7 @@ export const modifyAskOrder = async (
  * @returns transaction hash, or null
  */
 export const cancelAskOrder = async (
-  contract: ethers.Contract,
+  contract: Contract,
   collectionAddress: string,
   tokenId: number,
 ): Promise<string> => {
@@ -122,7 +123,7 @@ export const cancelAskOrder = async (
  * @param userAddress
  * @returns pending revenues, or null if failed
  */
-export const getPendingRevenue = async (contract: ethers.Contract, userAddress: string): Promise<ethers.BigNumber> => {
+export const getPendingRevenue = async (contract: Contract, userAddress: string): Promise<BigNumber> => {
   try {
     const res = await contract.pendingRevenue(userAddress)
     return res
@@ -137,7 +138,7 @@ export const getPendingRevenue = async (contract: ethers.Contract, userAddress: 
  * @param contract
  * @returns transaction hash, or null
  */
-export const claimPendingRevenue = async (contract: ethers.Contract): Promise<string> => {
+export const claimPendingRevenue = async (contract: Contract): Promise<string> => {
   try {
     const tx = await contract.claimPendingRevenue()
     const receipt = await tx.wait()

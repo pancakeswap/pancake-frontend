@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { FetchStatus } from 'config/constants/types'
-import { Contract } from 'ethers'
-import { FormatTypes } from 'ethers/lib/utils'
 import { useMemo } from 'react'
+import { Contract } from '@ethersproject/contracts'
+import { FormatTypes } from '@ethersproject/abi'
 import useSWR, { Middleware, SWRConfiguration, KeyedMutator } from 'swr'
 
 declare module 'swr' {

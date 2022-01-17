@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { Interface } from '@ethersproject/abi'
 import { getMulticallContract } from 'utils/contractHelpers'
 
 export interface Call {
@@ -13,7 +13,7 @@ interface MulticallOptions {
 
 const multicall = async <T = any>(abi: any[], calls: Call[]): Promise<T> => {
   const multi = getMulticallContract()
-  const itf = new ethers.utils.Interface(abi)
+  const itf = new Interface(abi)
 
   const calldata = calls.map((call) => ({
     target: call.address.toLowerCase(),
@@ -39,7 +39,7 @@ export const multicallv2 = async <T = any>(
 ): Promise<T> => {
   const { requireSuccess } = options
   const multi = getMulticallContract()
-  const itf = new ethers.utils.Interface(abi)
+  const itf = new Interface(abi)
 
   const calldata = calls.map((call) => ({
     target: call.address.toLowerCase(),
