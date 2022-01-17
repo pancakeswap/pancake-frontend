@@ -1,7 +1,8 @@
 name: Integration Tests
 
 on:
-  pull_request:
+  # Note: pull_request_target instead of pull_request to allow workflow access to secrets
+  pull_request_target:
     branches:
       - develop
 
@@ -16,9 +17,9 @@ jobs:
         with:
           node-version: '14'
           registry-url: https://registry.npmjs.org
-        env:
-          REACT_APP_SF_HEADER: ${{ secrets.SF_HEADER }}
       - run: yarn install --frozen-lockfile
       - run: yarn cypress install
       - run: yarn build
+        env:
+          REACT_APP_SF_HEADER: ${{ secrets.SF_HEADER }}
       - run: yarn integration-test
