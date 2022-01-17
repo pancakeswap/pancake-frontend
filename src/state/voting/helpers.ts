@@ -5,6 +5,8 @@ import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
 import { getAddress } from 'utils/addressHelpers'
 import { getActivePools } from 'utils/calls/pools'
 import { getVotingPowerList } from 'views/Voting/helpers'
+import _chunk from 'lodash/chunk'
+import _flatten from 'lodash/flatten'
 
 export const getProposals = async (first = 5, skip = 0, state = ProposalState.ACTIVE): Promise<Proposal[]> => {
   const response: { proposals: Proposal[] } = await request(
@@ -91,6 +93,8 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
   return response.votes
 }
 
+const NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST = 500
+
 export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
   const eligiblePools = await getActivePools(block)
   const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress))
@@ -105,8 +109,13 @@ export const getAllVotes = async (proposalId: string, block?: number, votesPerCh
           return vote.voter
         })
 
-        const votingPowers = await getVotingPowerList(voteChunkVoters, poolAddresses, block)
-        const vpByVoter = keyBy(votingPowers, 'voter')
+        const snapshotVotersChunk = _chunk(voteChunkVoters, NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST)
+
+        const votingPowers = await Promise.all(
+          snapshotVotersChunk.map((votersChunk) => getVotingPowerList(votersChunk, poolAddresses, block)),
+        )
+
+        const vpByVoter = keyBy(_flatten(votingPowers), 'voter')
 
         const voteChunkWithVP = voteChunk.map((vote) => {
           return {
