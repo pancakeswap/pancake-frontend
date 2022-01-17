@@ -1,11 +1,11 @@
 /* eslint-disable no-await-in-loop */
-import { useState, useEffect } from 'react'
-import { request, gql } from 'graphql-request'
-import { INFO_CLIENT } from 'config/constants/endpoints'
 import { PCS_V2_START } from 'config/constants/info'
+import { gql } from 'graphql-request'
+import { useEffect, useState } from 'react'
 import { ChartEntry } from 'state/info/types'
-import { PancakeDayDatasResponse } from '../types'
+import { infoClient } from 'utils/graphql'
 import { fetchChartData, mapDayData } from '../helpers'
+import { PancakeDayDatasResponse } from '../types'
 
 /**
  * Data for displaying Liquidity and Volume charts on Overview page
@@ -22,7 +22,7 @@ const PANCAKE_DAY_DATAS = gql`
 
 const getOverviewChartData = async (skip: number): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
-    const { pancakeDayDatas } = await request<PancakeDayDatasResponse>(INFO_CLIENT, PANCAKE_DAY_DATAS, {
+    const { pancakeDayDatas } = await infoClient.request<PancakeDayDatasResponse>(PANCAKE_DAY_DATAS, {
       startTime: PCS_V2_START,
       skip,
     })

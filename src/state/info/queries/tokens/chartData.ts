@@ -1,9 +1,9 @@
-import { request, gql } from 'graphql-request'
-import { INFO_CLIENT } from 'config/constants/endpoints'
-import { ChartEntry } from 'state/info/types'
 import { PCS_V2_START } from 'config/constants/info'
+import { gql } from 'graphql-request'
+import { ChartEntry } from 'state/info/types'
+import { infoClient } from 'utils/graphql'
+import { fetchChartData, mapDayData } from '../helpers'
 import { TokenDayDatasResponse } from '../types'
-import { mapDayData, fetchChartData } from '../helpers'
 
 const getTokenChartData = async (skip: number, address: string): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
@@ -22,7 +22,7 @@ const getTokenChartData = async (skip: number, address: string): Promise<{ data?
         }
       }
     `
-    const { tokenDayDatas } = await request<TokenDayDatasResponse>(INFO_CLIENT, query, {
+    const { tokenDayDatas } = await infoClient.request<TokenDayDatasResponse>(query, {
       startTime: PCS_V2_START,
       skip,
       address,

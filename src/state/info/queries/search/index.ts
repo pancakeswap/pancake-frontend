@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
-import { request, gql } from 'graphql-request'
-import { INFO_CLIENT } from 'config/constants/endpoints'
-import { useTokenDatas, usePoolDatas } from 'state/info/hooks'
-import { TokenData, PoolData } from 'state/info/types'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
+import { gql } from 'graphql-request'
+import { useEffect, useState } from 'react'
+import { usePoolDatas, useTokenDatas } from 'state/info/hooks'
+import { PoolData, TokenData } from 'state/info/types'
+import { infoClient } from 'utils/graphql'
 
 const TOKEN_SEARCH = gql`
   query tokens($symbol: String, $name: String, $id: String) {
@@ -86,14 +86,14 @@ const useFetchSearchResults = (
   useEffect(() => {
     const search = async () => {
       try {
-        const tokens = await request<TokenSearchResponse>(INFO_CLIENT, TOKEN_SEARCH, {
+        const tokens = await infoClient.request<TokenSearchResponse>(TOKEN_SEARCH, {
           symbol: searchString.toUpperCase(),
           // Most well known tokens have first letter capitalized
           name: searchString.charAt(0).toUpperCase() + searchString.slice(1),
           id: searchString.toLowerCase(),
         })
         const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName])
-        const pools = await request<PoolSearchResponse>(INFO_CLIENT, POOL_SEARCH, {
+        const pools = await infoClient.request<PoolSearchResponse>(POOL_SEARCH, {
           tokens: tokenIds,
           id: searchString.toLowerCase(),
         })

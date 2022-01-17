@@ -1,8 +1,8 @@
-import { request, gql } from 'graphql-request'
-import { INFO_CLIENT } from 'config/constants/endpoints'
+import { gql } from 'graphql-request'
+import { mapBurns, mapMints, mapSwaps } from 'state/info/queries/helpers'
+import { BurnResponse, MintResponse, SwapResponse } from 'state/info/queries/types'
 import { Transaction } from 'state/info/types'
-import { MintResponse, SwapResponse, BurnResponse } from 'state/info/queries/types'
-import { mapMints, mapBurns, mapSwaps } from 'state/info/queries/helpers'
+import { infoClient } from 'utils/graphql'
 /**
  * Transactions of the given pool, used on Pool page
  */
@@ -75,7 +75,7 @@ interface TransactionResults {
 
 const fetchPoolTransactions = async (address: string): Promise<{ data?: Transaction[]; error: boolean }> => {
   try {
-    const data = await request<TransactionResults>(INFO_CLIENT, POOL_TRANSACTIONS, {
+    const data = await infoClient.request<TransactionResults>(POOL_TRANSACTIONS, {
       address,
     })
     const mints = data.mints.map(mapMints)
