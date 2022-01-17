@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { useTranslation } from 'contexts/Localization'
 import { multicallv2 } from 'utils/multicall'
 import profileABI from 'config/abi/pancakeProfile.json'
@@ -10,9 +10,9 @@ const useGetProfileCosts = () => {
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(true)
   const [costs, setCosts] = useState({
-    numberCakeToReactivate: ethers.BigNumber.from(0),
-    numberCakeToRegister: ethers.BigNumber.from(0),
-    numberCakeToUpdate: ethers.BigNumber.from(0),
+    numberCakeToReactivate: BigNumber.from(0),
+    numberCakeToRegister: BigNumber.from(0),
+    numberCakeToUpdate: BigNumber.from(0),
   })
   const { toastError } = useToast()
 
@@ -24,7 +24,7 @@ const useGetProfileCosts = () => {
           name: method,
         }))
         const [[numberCakeToReactivate], [numberCakeToRegister], [numberCakeToUpdate]] = await multicallv2<
-          [[ethers.BigNumber], [ethers.BigNumber], [ethers.BigNumber]]
+          [[BigNumber], [BigNumber], [BigNumber]]
         >(profileABI, calls)
 
         setCosts({

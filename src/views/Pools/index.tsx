@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { ethers } from 'ethers'
-import { formatUnits } from 'ethers/lib/utils'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { formatUnits } from '@ethersproject/units'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { Heading, Flex, Image, Text } from '@pancakeswap/uikit'
@@ -188,13 +188,13 @@ const Pools: React.FC = () => {
               if (pool.stakingTokenPrice && vaultPools[pool.vaultKey].totalCakeInVault.isFinite()) {
                 totalStaked =
                   +formatUnits(
-                    ethers.BigNumber.from(vaultPools[pool.vaultKey].totalCakeInVault.toString()),
+                    EthersBigNumber.from(vaultPools[pool.vaultKey].totalCakeInVault.toString()),
                     pool.stakingToken.decimals,
                   ) * pool.stakingTokenPrice
               }
             } else if (pool.sousId === 0) {
               if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice && cakeInVaults.isFinite()) {
-                const manualCakeTotalMinusAutoVault = ethers.BigNumber.from(pool.totalStaked.toString()).sub(
+                const manualCakeTotalMinusAutoVault = EthersBigNumber.from(pool.totalStaked.toString()).sub(
                   cakeInVaults.toString(),
                 )
                 totalStaked =
@@ -202,7 +202,7 @@ const Pools: React.FC = () => {
               }
             } else if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice) {
               totalStaked =
-                +formatUnits(ethers.BigNumber.from(pool.totalStaked.toString()), pool.stakingToken.decimals) *
+                +formatUnits(EthersBigNumber.from(pool.totalStaked.toString()), pool.stakingToken.decimals) *
                 pool.stakingTokenPrice
             }
             return Number.isFinite(totalStaked) ? totalStaked : 0

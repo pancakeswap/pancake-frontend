@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ethers } from 'ethers'
-import { formatUnits } from 'ethers/lib/utils'
+import { BigNumber } from '@ethersproject/bignumber'
+import { formatUnits } from '@ethersproject/units'
 import maxBy from 'lodash/maxBy'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
@@ -235,7 +235,7 @@ export const fetchNodeHistory = createAsyncThunk<
   const bets: Bet[] = roundData.reduce((accum, round) => {
     const reduxRound = serializePredictionsRoundsResponse(round)
     const ledger = userRounds[reduxRound.epoch]
-    const ledgerAmount = ethers.BigNumber.from(ledger.amount)
+    const ledgerAmount = BigNumber.from(ledger.amount)
     const closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
     const lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, 8)) : null
 

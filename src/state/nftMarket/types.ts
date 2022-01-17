@@ -1,5 +1,5 @@
 import { FetchStatus } from 'config/constants/types'
-import { BigNumberish } from 'ethers'
+import { BigNumberish } from '@ethersproject/bignumber'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs

@@ -1,5 +1,6 @@
 import { FarmAuction, Predictions } from 'config/abi/types'
-import ethers, { ContractFunction } from 'ethers'
+import { ContractFunction } from '@ethersproject/contracts'
+import { BigNumber } from '@ethersproject/bignumber'
 
 export type MultiCallResponse<T> = T | null
 
@@ -8,31 +9,31 @@ export type PredictionsClaimableResponse = boolean
 
 export interface PredictionsLedgerResponse {
   position: 0 | 1
-  amount: ethers.BigNumber
+  amount: BigNumber
   claimed: boolean
 }
 
 export interface PredictionsRoundsResponse {
-  epoch: ethers.BigNumber
-  startTimestamp: ethers.BigNumber
-  lockTimestamp: ethers.BigNumber
-  closeTimestamp: ethers.BigNumber
-  lockPrice: ethers.BigNumber
-  closePrice: ethers.BigNumber
-  lockOracleId: ethers.BigNumber
-  closeOracleId: ethers.BigNumber
-  totalAmount: ethers.BigNumber
-  bullAmount: ethers.BigNumber
-  bearAmount: ethers.BigNumber
-  rewardBaseCalAmount: ethers.BigNumber
-  rewardAmount: ethers.BigNumber
+  epoch: BigNumber
+  startTimestamp: BigNumber
+  lockTimestamp: BigNumber
+  closeTimestamp: BigNumber
+  lockPrice: BigNumber
+  closePrice: BigNumber
+  lockOracleId: BigNumber
+  closeOracleId: BigNumber
+  totalAmount: BigNumber
+  bullAmount: BigNumber
+  bearAmount: BigNumber
+  rewardBaseCalAmount: BigNumber
+  rewardAmount: BigNumber
   oracleCalled: boolean
 }
 
 // [rounds, ledgers, count]
-export type PredictionsGetUserRoundsResponse = [ethers.BigNumber[], PredictionsLedgerResponse[], ethers.BigNumber]
+export type PredictionsGetUserRoundsResponse = [BigNumber[], PredictionsLedgerResponse[], BigNumber]
 
-export type PredictionsGetUserRoundsLengthResponse = ethers.BigNumber
+export type PredictionsGetUserRoundsLengthResponse = BigNumber
 
 export interface PredictionsContract extends Omit<Predictions, 'getUserRounds' | 'ledger'> {
   getUserRounds: ContractFunction<PredictionsGetUserRoundsResponse>
@@ -50,16 +51,16 @@ export enum FarmAuctionContractStatus {
 
 export interface AuctionsResponse {
   status: FarmAuctionContractStatus
-  startBlock: ethers.BigNumber
-  endBlock: ethers.BigNumber
-  initialBidAmount: ethers.BigNumber
-  leaderboard: ethers.BigNumber
-  leaderboardThreshold: ethers.BigNumber
+  startBlock: BigNumber
+  endBlock: BigNumber
+  initialBidAmount: BigNumber
+  leaderboard: BigNumber
+  leaderboardThreshold: BigNumber
 }
 
 export interface BidsPerAuction {
   account: string
-  amount: ethers.BigNumber
+  amount: BigNumber
 }
 
 type GetWhitelistedAddressesResponse = [
@@ -68,7 +69,7 @@ type GetWhitelistedAddressesResponse = [
     lpToken: string
     token: string
   }[],
-  ethers.BigNumber,
+  BigNumber,
 ]
 
 export interface FarmAuctionContract extends Omit<FarmAuction, 'auctions'> {
