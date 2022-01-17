@@ -2,28 +2,24 @@ import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { parseUnits } from 'ethers/lib/utils'
 import { useAppDispatch } from 'state'
-import { updateUserStakedBalance, updateUserBalance, updateUserPendingReward } from 'state/actions'
+import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/actions'
 import { unstakeFarm } from 'utils/calls'
 import { useMasterchef, useSousChef } from 'hooks/useContract'
 import getGasPrice from 'utils/getGasPrice'
-import { TransactionResponse, TransactionReceipt } from '@ethersproject/providers'
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 
-const sousUnstake = async (sousChefContract: any, amount: string, decimals: number) => {
+const sousUnstake = (sousChefContract: any, amount: string, decimals: number) => {
   const gasPrice = getGasPrice()
   const units = parseUnits(amount, decimals)
 
-  const tx = await sousChefContract.withdraw(units.toString(), {
+  return sousChefContract.withdraw(units.toString(), {
     gasPrice,
   })
-  const receipt = await tx.wait()
-  return receipt.status
 }
 
-const sousEmergencyUnstake = async (sousChefContract: any) => {
+const sousEmergencyUnstake = (sousChefContract: any) => {
   const gasPrice = getGasPrice()
-  const tx = await sousChefContract.emergencyWithdraw({ gasPrice })
-  const receipt = await tx.wait()
-  return receipt.status
+  return sousChefContract.emergencyWithdraw({ gasPrice })
 }
 
 const useUnstakePool = (sousId: number, enableEmergencyWithdraw = false) => {
