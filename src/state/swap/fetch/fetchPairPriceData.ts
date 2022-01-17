@@ -1,11 +1,10 @@
-import { INFO_CLIENT } from 'config/constants/endpoints'
 import requestWithTimeout from 'utils/requestWithTimeout'
-import { GraphQLClient } from 'graphql-request'
+import { infoClient } from 'utils/graphql'
 import lastPairDayId from '../queries/lastPairDayId'
 import pairHourDatas from '../queries/pairHourDatas'
 import pairDayDatasByIdsQuery from '../queries/pairDayDatasByIdsQuery'
 import { PairDataTimeWindowEnum } from '../types'
-import { timeWindowIdsCountMapping, getHeaders } from './constants'
+import { timeWindowIdsCountMapping } from './constants'
 import {
   fetchPairDataParams,
   LastPairDayIdResponse,
@@ -19,7 +18,7 @@ import pairHourDatasByIds from '../queries/pairHourDatasByIds'
 import lastPairHourId from '../queries/lastPairHourId'
 
 const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) => {
-  const client = new GraphQLClient(INFO_CLIENT, { headers: getHeaders(INFO_CLIENT) })
+  const client = infoClient
 
   try {
     switch (timeWindow) {
