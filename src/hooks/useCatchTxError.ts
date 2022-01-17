@@ -6,11 +6,21 @@ import ethers from 'ethers'
 import useToast from 'hooks/useToast'
 import { logError } from 'utils/sentry'
 
-export type CatchTxErrorFunction = (
-  fn: () => Promise<void>,
-  getTx: () => ethers.providers.TransactionResponse,
-  final: () => void,
-) => Promise<void>
+export type TxReponse = ethers.providers.TransactionResponse | null
+
+export type CatchTxErrorFunction = (fn: () => Promise<void>, getTx: () => TxReponse, final: () => void) => Promise<void>
+
+type ErrorData = {
+  code: number
+  message: string
+}
+
+type TxError = {
+  data: ErrorData
+}
+
+// -32000 is insufficient funds for gas * price + value
+const isGasEstimationError = (err: TxError): boolean => err?.data?.code === -32000
 
 export default function useCatchTxError(): CatchTxErrorFunction {
   const { library } = useWeb3React()
@@ -26,15 +36,11 @@ export default function useCatchTxError(): CatchTxErrorFunction {
     [t],
   )
 
-  return async (
-    fn: () => Promise<void>,
-    getTx: () => ethers.providers.TransactionResponse,
-    final: () => void,
-  ): Promise<void> => {
+  return async (fn: () => Promise<void>, getTx: () => TxReponse, final: () => void): Promise<void> => {
     try {
       await fn()
     } catch (error: any) {
-      const tx: ethers.providers.TransactionResponse = getTx()
+      const tx: TxReponse = getTx()
       if (!tx) {
         handleNormalError(error)
       } else {
@@ -43,9 +49,8 @@ export default function useCatchTxError(): CatchTxErrorFunction {
           .then(() => {
             handleNormalError(error)
           })
-          .catch((err: any) => {
-            // -32000 is insufficient funds for gas * price + value
-            if (err?.data?.code === -32000) {
+          .catch((err: TxError) => {
+            if (isGasEstimationError(err)) {
               handleNormalError(error)
             } else {
               logError(err)

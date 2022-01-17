@@ -29,7 +29,7 @@ import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
-import useCatchTxError, { CatchTxErrorFunction } from 'hooks/useCatchTxError'
+import useCatchTxError, { CatchTxErrorFunction, TxReponse } from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
@@ -155,7 +155,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     const sharesRemaining = userShares.minus(shareStakeToWithdraw.sharesAsBigNumber)
     const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
 
-    let tx = null
+    let tx: TxReponse = null
 
     catchTxError(
       async () => {
@@ -178,7 +178,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
               {t('Your earnings have also been harvested to your wallet')}
             </ToastDescriptionWithTx>,
           )
-          setPendingTx(false)
           onDismiss()
           dispatch(fetchCakeVaultUserData({ account }))
         }
@@ -191,7 +190,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const handleDeposit = async (convertedStakeAmount: BigNumber) => {
     setPendingTx(true)
 
-    let tx = null
+    let tx: TxReponse = null
 
     catchTxError(
       async () => {
@@ -207,7 +206,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
               {t('Your funds have been staked in the pool')}
             </ToastDescriptionWithTx>,
           )
-          setPendingTx(false)
           onDismiss()
           dispatch(fetchCakeVaultUserData({ account }))
         }
