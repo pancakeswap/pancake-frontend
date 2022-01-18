@@ -15,7 +15,6 @@ const injected = new InjectedConnector({ supportedChainIds: [chainId] })
 const walletconnect = new WalletConnectConnector({
   rpc: { [chainId]: rpcUrl },
   qrcode: true,
-  pollingInterval: POLLING_INTERVAL,
 })
 
 const bscConnector = new BscConnector({ supportedChainIds: [chainId] })
