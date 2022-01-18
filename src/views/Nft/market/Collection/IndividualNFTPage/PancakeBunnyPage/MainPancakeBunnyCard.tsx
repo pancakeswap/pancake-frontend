@@ -93,7 +93,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
             </Box>
           </Flex>
           <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center" maxWidth={440}>
-            <NFTMedia key={nftToDisplay.tokenId} nft={nftToDisplay} width={440} height={440} />
+            <NFTMedia key={nftToDisplay.name} nft={nftToDisplay} width={440} height={440} />
           </Flex>
         </Container>
       </CardBody>
