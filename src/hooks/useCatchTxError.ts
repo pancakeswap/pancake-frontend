@@ -31,9 +31,9 @@ export default function useCatchTxError(): CatchTxErrorFunction {
     (error) => {
       logError(error)
 
-      t('Please try again. Confirm the transaction and make sure you are paying enough gas!')
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     },
-    [t],
+    [t, toastError],
   )
 
   return async (fn: () => Promise<void>, getTx: () => TxReponse, final: () => void): Promise<void> => {
@@ -54,7 +54,7 @@ export default function useCatchTxError(): CatchTxErrorFunction {
               handleNormalError(error)
             } else {
               logError(err)
-              toastError(t('TX Error'), err?.data?.message)
+              toastError('TX Error', err?.data?.message)
             }
           })
       }
