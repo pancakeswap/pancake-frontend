@@ -75,6 +75,22 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     ],
   },
   {
+    label: t('IFO'),
+    icon: 'Ifo',
+    href: '/ifo',
+    items: [
+      {
+        label: t('Latest'),
+        href: '/ifo',
+        status: menuStatus.LIVE,
+      },
+      {
+        label: t('Finished'),
+        href: '/ifo/history',
+      },
+    ],
+  },
+  {
     label: '',
     href: '/info',
     icon: 'More',
@@ -83,11 +99,6 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('Info'),
         href: '/info',
-      },
-      {
-        label: t('IFO'),
-        href: '/ifo',
-        status: menuStatus.SOON,
       },
       {
         label: t('Voting'),

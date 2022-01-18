@@ -1,6 +1,6 @@
-import { SubMenuItems } from '@pancakeswap/uikit'
+// import { SubMenuItems } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
-import { useTranslation } from 'contexts/Localization'
+// import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFetchIfoPool } from 'state/pools/hooks'
@@ -9,14 +9,14 @@ import CurrentIfo from './CurrentIfo'
 import PastIfo from './PastIfo'
 
 const Ifos = () => {
-  const { t } = useTranslation()
-  const { path, isExact } = useRouteMatch()
+  // const { t } = useTranslation()
+  const { path } = useRouteMatch()
 
   useFetchIfoPool()
 
   return (
     <>
-      <SubMenuItems
+      {/* <SubMenuItems
         items={[
           {
             label: t('Latest'),
@@ -28,7 +28,7 @@ const Ifos = () => {
           },
         ]}
         activeItem={isExact ? '/ifo' : '/ifo/history'}
-      />
+      /> */}
       <>
         <Hero />
         <Route exact path={`${path}`}>
