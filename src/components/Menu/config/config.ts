@@ -1,4 +1,4 @@
-import { MenuItemsType, DropdownMenuItemType, menuStatus } from '@pancakeswap/uikit'
+import { MenuItemsType, DropdownMenuItemType } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 
@@ -87,7 +87,6 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('IFO'),
         href: '/ifo',
-        status: menuStatus.LIVE,
       },
       {
         label: t('Voting'),
