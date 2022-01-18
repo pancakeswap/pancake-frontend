@@ -21,6 +21,12 @@
     "react/destructuring-assignment": 0,
     "react/jsx-no-bind": 0,
     "react/no-unused-prop-types": 0,
+    "react-hooks/exhaustive-deps": [
+      "warn",
+      {
+        "additionalHooks": "(useFastRefreshEffect|useSlowRefreshEffect)"
+      }
+    ],
     // Start temporary rules
     // These rules are here just to keep the lint error to 0 during the migration to the new rule set
     // They need to be removed and fixed as soon as possible

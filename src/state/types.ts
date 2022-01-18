@@ -221,6 +221,7 @@ export interface AchievementState {
 
 export interface BlockState {
   currentBlock: number
+  slowCurrentBlock: number
   initialBlock: number
 }
 

@@ -17,7 +17,7 @@ import {
   HelpIcon,
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
-import { useBlock } from 'state/block/hooks'
+import { useCurrentBlock } from 'state/block/hooks'
 import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
@@ -41,7 +41,7 @@ const ExpandedWrapper = styled(Flex)`
 
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const { t } = useTranslation()
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
 
   const {
     stakingToken,

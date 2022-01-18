@@ -4,7 +4,7 @@ import { Contract } from '@ethersproject/contracts'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useBlock } from 'state/block/hooks'
+import { useCurrentBlock } from 'state/block/hooks'
 import { AppDispatch, AppState } from '../index'
 import {
   addMulticallListeners,
@@ -185,7 +185,7 @@ export function useSingleContractMultipleData(
 
   const results = useCallsData(calls, options)
 
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
 
   return useMemo(() => {
     return results.map((result) => toCallState(result, contract?.interface, fragment, currentBlock))
@@ -225,7 +225,7 @@ export function useMultipleContractSingleData(
 
   const results = useCallsData(calls, options)
 
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
 
   return useMemo(() => {
     return results.map((result) => toCallState(result, contractInterface, fragment, currentBlock))
@@ -252,7 +252,7 @@ export function useSingleCallResult(
   }, [contract, fragment, inputs])
 
   const result = useCallsData(calls, options)[0]
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
 
   return useMemo(() => {
     return toCallState(result, contract?.interface, fragment, currentBlock)

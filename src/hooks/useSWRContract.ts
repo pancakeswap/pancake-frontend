@@ -102,9 +102,7 @@ export function useSWRContract<
   Error = any,
   T extends Contract = Contract,
   N extends ContractMethodName<T> = ContractMethodName<T>,
-  // until typescript is upgrade
-  Data = any,
-  // Data = Awaited<ReturnType<T['functions'][N]>>,
+  Data = Awaited<ReturnType<T['functions'][N]>>,
 >(key?: UseSWRContractKey<T, N> | null, config: SWRConfiguration<Data, Error> = {}) {
   const { contract, methodName, params } = getContractKey(key) || {}
   const serializedKeys = serializesContractKey(key)
