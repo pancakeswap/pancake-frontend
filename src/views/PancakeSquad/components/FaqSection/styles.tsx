@@ -1,4 +1,4 @@
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from 'peronio-uikit'
 import styled from 'styled-components'
 
 export const StyledFaqSection = styled(Flex)`

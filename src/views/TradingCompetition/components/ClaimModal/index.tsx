@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Modal, Button, Flex, AutoRenewIcon, Heading, Text, Image } from '@pancakeswap/uikit'
+import { Modal, Button, Flex, AutoRenewIcon, Heading, Text, Image } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'

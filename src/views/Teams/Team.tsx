@@ -1,7 +1,7 @@
 import React from 'react'
 import Page from 'components/Layout/Page'
 import { Link, Redirect, useParams } from 'react-router-dom'
-import { ChevronLeftIcon, Flex, Text } from '@pancakeswap/uikit'
+import { ChevronLeftIcon, Flex, Text } from 'peronio-uikit'
 import PageLoader from 'components/Loader/PageLoader'
 import teams from 'config/constants/teams'
 import { useTranslation } from 'contexts/Localization'

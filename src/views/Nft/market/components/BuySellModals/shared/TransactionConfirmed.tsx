@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, Button, ArrowUpIcon, LinkExternal } from '@pancakeswap/uikit'
+import { Flex, Text, Button, ArrowUpIcon, LinkExternal } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

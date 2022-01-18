@@ -1,4 +1,4 @@
-import { Flex, Link } from '@pancakeswap/uikit'
+import { Flex, Link } from 'peronio-uikit'
 import styled from 'styled-components'
 
 export const StyledArtistSectionContainer = styled(Flex)<{ $isDark: boolean }>`

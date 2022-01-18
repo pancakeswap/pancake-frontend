@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardBody, Heading, PrizeIcon } from '@pancakeswap/uikit'
+import { Card, CardBody, Heading, PrizeIcon } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import IconStatBox from 'views/Teams/components/IconStatBox'
 import { Achievement } from 'state/types'

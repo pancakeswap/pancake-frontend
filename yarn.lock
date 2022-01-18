@@ -2798,9 +2798,9 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
 
-"@pancakeswap/sdk@cryptoinhero/peronio-sdk":
-  version "0.5.0"
-  resolved "https://codeload.github.com/cryptoinhero/peronio-sdk/tar.gz/bae8bf23404f8962c7fefc3deaebfda841fc0fb7"
+"@pancakeswap/sdk@peronio-ar/peronio-sdk":
+  version "0.6.2"
+  resolved "https://codeload.github.com/peronio-ar/peronio-sdk/tar.gz/44eedec0c14dab68f69780636857d1470d36669c"
   dependencies:
     "@pancakeswap-libs/pancake-swap-core" "^0.1.0"
     big.js "^5.2.2"
@@ -2809,19 +2809,6 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
-
-"@pancakeswap/uikit@cryptoinhero/peronio-uikit":
-  version "0.62.0"
-  resolved "https://codeload.github.com/cryptoinhero/peronio-uikit/tar.gz/375ffa3e7e4c374f9797aa85d2799775ba593f4f"
-  dependencies:
-    "@popperjs/core" "^2.9.2"
-    "@types/lodash" "^4.14.168"
-    "@types/styled-system" "^5.1.10"
-    lodash "^4.17.20"
-    react-popper "^2.2.5"
-    react-transition-group "^4.4.1"
-    rimraf "^3.0.2"
-    styled-system "^5.1.5"
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
   version "0.4.3"
@@ -6854,9 +6841,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001125, caniuse-lite@^1.0.30001219:
-  version "1.0.30001243"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001243.tgz#d9250155c91e872186671c523f3ae50cfc94a3aa"
-  integrity sha512-vNxw9mkTBtkmLFnJRv/2rhs1yufpDfCkBZexG3Y0xdOH2Z/eE/85E4Dl5j1YUN34nZVsSp6vVRFQRrez9wJMRA==
+  version "1.0.30001298"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001298.tgz"
+  integrity sha512-AcKqikjMLlvghZL/vfTHorlQsLDhGRalYf1+GmWCf5SCMziSGjRYQW/JEksj14NaYHIR6KIhrFAy0HV5C25UzQ==
 
 canvas-confetti@^1.3.3:
   version "1.4.0"
@@ -16541,6 +16528,18 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+
+peronio-uikit@^0.63.0:
+  version "0.63.0"
+  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.63.0.tgz#6bcb387054c0b6b4f122f6a3dbde0900dd49cc35"
+  integrity sha512-K7ThAprsFrpOQjSam4He7XC08KmSxPpZZ8v1RKFU8uLnrjka7Svp1k9U/Xawh4ng/E8Dmt1zcbw/YcWxjUgfkw==
+  dependencies:
+    "@popperjs/core" "^2.9.2"
+    "@types/lodash" "^4.14.168"
+    "@types/styled-system" "^5.1.10"
+    lodash "^4.17.20"
+    react-popper "^2.2.5"
+    styled-system "^5.1.5"
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.2.3:
   version "2.3.0"

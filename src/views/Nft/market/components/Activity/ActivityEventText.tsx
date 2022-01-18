@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TextProps } from '@pancakeswap/uikit'
+import { Text, TextProps } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import { MarketEvent } from '../../../../../state/nftMarket/types'
 

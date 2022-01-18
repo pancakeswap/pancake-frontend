@@ -1,4 +1,4 @@
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 

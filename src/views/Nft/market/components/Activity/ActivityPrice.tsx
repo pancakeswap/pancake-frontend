@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, BinanceIcon, Text, Skeleton } from '@pancakeswap/uikit'
+import { Flex, BinanceIcon, Text, Skeleton } from 'peronio-uikit'
 import { multiplyPriceByAmount } from 'utils/prices'
 
 const ActivityPrice = ({ bnbBusdPrice, price }) => {

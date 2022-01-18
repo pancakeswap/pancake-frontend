@@ -11,7 +11,7 @@ import {
   BinanceIcon,
   Skeleton,
   useModal,
-} from '@pancakeswap/uikit'
+} from 'peronio-uikit'
 import { useWeb3React } from '@web3-react/core'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
 import ConnectWalletButton from 'components/ConnectWalletButton'

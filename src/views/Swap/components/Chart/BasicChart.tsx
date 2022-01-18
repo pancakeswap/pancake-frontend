@@ -1,4 +1,4 @@
-import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import React, { lazy, Suspense, useState } from 'react'
 import { useFetchPairPrices } from 'state/swap/hooks'

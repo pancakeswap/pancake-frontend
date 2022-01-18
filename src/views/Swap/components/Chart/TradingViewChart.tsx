@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
-import { Box, BunnyPlaceholderIcon, Flex, Text } from '@pancakeswap/uikit'
+import { Box, BunnyPlaceholderIcon, Flex, Text } from 'peronio-uikit'
 import TradingView, { TradingViewLabel, useTradingViewEvent } from 'components/TradingView'
 import { useTranslation } from 'contexts/Localization'
 import useDebounce from 'hooks/useDebounce'

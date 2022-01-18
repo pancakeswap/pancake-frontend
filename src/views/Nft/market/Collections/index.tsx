@@ -12,7 +12,7 @@ import {
   ArrowBackIcon,
   Text,
   ArrowForwardIcon,
-} from '@pancakeswap/uikit'
+} from 'peronio-uikit'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useGetCollections } from 'state/nftMarket/hooks'

@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Card,
-  CardFooter,
-  CardHeader,
-  Heading,
-  Text,
-  TabMenu,
-  Tab,
-  Box,
-  Flex,
-  ExpandableLabel,
-} from '@pancakeswap/uikit'
+import { Card, CardFooter, CardHeader, Heading, Text, TabMenu, Tab, Box, Flex, ExpandableLabel } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import { TeamRanksProps } from '../../../types'
 import TopTradersGrid from './TopTradersGrid'

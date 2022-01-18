@@ -13,7 +13,7 @@ export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
  */
 export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction'
 
-export const INFO_CLIENT = 'https://api.thegraph.com/subgraphs/name/cryptoinhero/peronio-exchange'
+export const INFO_CLIENT = 'https://api.thegraph.com/subgraphs/name/peronio-ar/dapp'
 export const BLOCKS_CLIENT = 'https://api.thegraph.com/subgraphs/name/sameepsi/maticblocks'
 export const GRAPH_API_NFTMARKET = process.env.REACT_APP_GRAPH_API_NFT_MARKET
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'

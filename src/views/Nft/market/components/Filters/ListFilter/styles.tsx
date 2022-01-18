@@ -1,5 +1,5 @@
 import React from 'react'
-import { Radio, Flex, Image, Text } from '@pancakeswap/uikit'
+import { Radio, Flex, Image, Text } from 'peronio-uikit'
 import styled from 'styled-components'
 import noop from 'lodash/noop'
 import { formatNumber } from 'utils/formatBalance'

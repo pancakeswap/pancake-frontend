@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useModal } from '@pancakeswap/uikit'
+import { useModal } from 'peronio-uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getAnniversaryAchievementContract } from 'utils/contractHelpers'
 import AnniversaryAchievementModal from './AnniversaryAchievementModal'

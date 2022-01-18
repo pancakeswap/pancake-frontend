@@ -9,7 +9,7 @@ import {
   TradingViewIcon,
   LineGraphIcon,
   useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+} from 'peronio-uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'

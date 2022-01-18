@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, IconButton, CogIcon, useModal } from '@pancakeswap/uikit'
+import { Flex, IconButton, CogIcon, useModal } from 'peronio-uikit'
 import SettingsModal from './SettingsModal'
 
 type Props = {

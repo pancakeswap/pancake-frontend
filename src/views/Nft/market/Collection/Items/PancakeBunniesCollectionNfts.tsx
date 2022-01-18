@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid } from '@pancakeswap/uikit'
+import { Grid } from 'peronio-uikit'
 import orderBy from 'lodash/orderBy'
 import { Collection } from 'state/nftMarket/types'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
