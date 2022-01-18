@@ -1,7 +1,6 @@
 name: Integration Tests
 
 on:
-  # Note: pull_request_target instead of pull_request to allow workflow access to secrets
   pull_request:
     branches:
       - develop
@@ -19,13 +18,7 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: yarn install --frozen-lockfile
       - run: yarn cypress install
-      - name: Wait for Netlify Preview
-        uses: jakepartusch/wait-for-netlify-action@v1.2
-        id: netlify
-        with:
-          site_name: 'pancakeswap-dev'
-          max_timeout: 300
-      - run: echo ${{ steps.netlify.outputs.url }}
-      - run: yarn integration-test
+      - run: yarn build
         env:
-          CYPRESS_BASE_URL: ${{ steps.netlify.outputs.url }}
+          REACT_APP_SF_HEADER: ${{ secrets.SF_HEADER }}
+      - run: yarn integration-test
