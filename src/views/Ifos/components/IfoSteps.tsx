@@ -38,6 +38,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/hooks'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
+import { useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
 
 interface Props {
   ifo: Ifo
@@ -72,6 +73,10 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const ifoPoolVault = useIfoPoolVault()
   const credit = useIfoPoolCredit()
   const { pool } = useIfoWithApr()
+
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
+  const { handleApprove, requestedApproval } = useVaultApprove(pool.vaultKey, setLastUpdated)
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
       <span>
@@ -145,7 +150,13 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
                 </Text>
               </Box>
             </Flex>
-            <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
+            {isVaultApproved ? (
+              <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
+            ) : (
+              <Button disabled={requestedApproval} onClick={handleApprove}>
+                {t('Enable pool')}
+              </Button>
+            )}
           </FlexGap>
         </SmallStakePoolCard>
       )}
