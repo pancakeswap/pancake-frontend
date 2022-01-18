@@ -35,7 +35,7 @@ const Stats = () => {
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
-      <GradientLogo height="48px" width="48px" mb="24px" />
+      <GradientLogo height="auto" width="30vh" mb="24px" />
       <Heading textAlign="center" scale="xl">
         {t('The currency of the people.')}
       </Heading>
