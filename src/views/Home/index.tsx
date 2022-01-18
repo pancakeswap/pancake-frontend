@@ -18,7 +18,7 @@ import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } fro
 import UserBanner from './components/UserBanner'
 import IFOBanner from './components/Banners/IFOBanner'
 
-const showBanner = true
+const showBanner = false
 
 const HomeBanner = ({ account }: { account: string }) => {
   if (!showBanner) {
