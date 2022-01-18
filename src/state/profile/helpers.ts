@@ -1,10 +1,12 @@
 import Cookies from 'js-cookie'
 import { Profile } from 'state/types'
 import { PancakeProfile } from 'config/abi/types/PancakeProfile'
-import { getProfileContract } from 'utils/contractHelpers'
+import profileABI from 'config/abi/pancakeProfile.json'
 import { getTeam } from 'state/teams/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import { getNftApi } from 'state/nftMarket/helpers'
+import { multicallv2 } from 'utils/multicall'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 
 export interface GetProfileResponse {
   hasRegistered: boolean
@@ -26,7 +28,6 @@ const transformProfileResponse = (
   }
 }
 
-const profileContract = getProfileContract()
 const profileApi = process.env.REACT_APP_API_PROFILE
 
 export const getUsername = async (address: string): Promise<string> => {
@@ -50,13 +51,16 @@ export const getUsername = async (address: string): Promise<string> => {
  */
 export const getProfileAvatar = async (address: string) => {
   try {
-    const hasRegistered = await profileContract.hasRegistered(address)
+    const profileCalls = ['hasRegistered', 'getUserProfile'].map((method) => {
+      return { address: getPancakeProfileAddress(), name: method, params: [address] }
+    })
+    const profileCallsResult = await multicallv2(profileABI, profileCalls, { requireSuccess: false })
+    const [[hasRegistered], profileResponse] = profileCallsResult
 
     if (!hasRegistered) {
       return null
     }
 
-    const profileResponse = await profileContract.getUserProfile(address)
     const { tokenId, collectionAddress, isActive } = transformProfileResponse(profileResponse)
 
     let nft = null
@@ -87,13 +91,16 @@ export const getProfileAvatar = async (address: string) => {
 
 export const getProfile = async (address: string): Promise<GetProfileResponse> => {
   try {
-    const hasRegistered = await profileContract.hasRegistered(address)
+    const profileCalls = ['hasRegistered', 'getUserProfile'].map((method) => {
+      return { address: getPancakeProfileAddress(), name: method, params: [address] }
+    })
+    const profileCallsResult = await multicallv2(profileABI, profileCalls, { requireSuccess: false })
+    const [[hasRegistered], profileResponse] = profileCallsResult
 
     if (!hasRegistered) {
       return { hasRegistered, profile: null }
     }
 
-    const profileResponse = await profileContract.getUserProfile(address)
     const { userId, points, teamId, tokenId, collectionAddress, isActive } = transformProfileResponse(profileResponse)
     const team = await getTeam(teamId)
     const username = await getUsername(address)
