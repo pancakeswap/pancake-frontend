@@ -95,7 +95,7 @@ const serializesContractKey = <T extends Contract = Contract>(
   return serializedKeys
 }
 
-type UseSWRContractKey<T extends Contract = Contract, N extends ContractMethodName<T> = any> =
+export type UseSWRContractKey<T extends Contract = Contract, N extends ContractMethodName<T> = any> =
   | UseSWRContractArrayKey<T, N>
   | UseSWRContractObjectKey<T, N>
 export function useSWRContract<
