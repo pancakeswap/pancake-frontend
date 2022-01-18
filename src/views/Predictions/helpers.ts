@@ -1,4 +1,4 @@
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { BigNumber, ethers } from 'ethers'
 import { BetPosition, NodeRound } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
@@ -62,30 +62,30 @@ export const getHasRoundFailed = (round: NodeRound, buffer: number) => {
   return false
 }
 
-export const getMultiplierV2 = (total: BigNumber, amount: BigNumber) => {
+export const getMultiplierV2 = (total: ethers.BigNumber, amount: ethers.BigNumber) => {
   if (!total) {
-    return FixedNumber.from(0)
+    return ethers.FixedNumber.from(0)
   }
 
   if (total.eq(0) || amount.eq(0)) {
-    return FixedNumber.from(0)
+    return ethers.FixedNumber.from(0)
   }
 
-  const rewardAmountFixed = FixedNumber.from(total)
-  const multiplierAmountFixed = FixedNumber.from(amount)
+  const rewardAmountFixed = ethers.FixedNumber.from(total)
+  const multiplierAmountFixed = ethers.FixedNumber.from(amount)
 
   return rewardAmountFixed.divUnsafe(multiplierAmountFixed)
 }
 
-export const getPriceDifference = (price: BigNumber, lockPrice: BigNumber) => {
+export const getPriceDifference = (price: ethers.BigNumber, lockPrice: ethers.BigNumber) => {
   if (!price || !lockPrice) {
-    return BigNumber.from(0)
+    return ethers.BigNumber.from(0)
   }
 
   return price.sub(lockPrice)
 }
 
-export const getRoundPosition = (lockPrice: BigNumber, closePrice: BigNumber) => {
+export const getRoundPosition = (lockPrice: ethers.BigNumber, closePrice: ethers.BigNumber) => {
   if (!closePrice) {
     return null
   }

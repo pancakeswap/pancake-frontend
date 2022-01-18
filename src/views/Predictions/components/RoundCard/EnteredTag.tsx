@@ -1,11 +1,11 @@
 import React from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
+import { ethers } from 'ethers'
 import { CheckmarkCircleIcon, CheckmarkCircleFillIcon, Tag, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatBnbv2 } from '../../helpers'
 
 interface EnteredTagProps {
-  amount?: BigNumber
+  amount?: ethers.BigNumber
   hasClaimed?: boolean
 }
 

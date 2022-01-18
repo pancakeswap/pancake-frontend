@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../state'

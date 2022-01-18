@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
-import { TransactionResponse } from '@ethersproject/providers'
-import { Contract, CallOverrides } from '@ethersproject/contracts'
+import ethers, { Contract, CallOverrides } from 'ethers'
 import { useGasPrice } from 'state/user/hooks'
 import { get } from 'lodash'
 import * as Sentry from '@sentry/react'
@@ -22,7 +21,7 @@ export function useCallWithGasPrice() {
       methodName: string,
       methodArgs: any[] = [],
       overrides: CallOverrides = null,
-    ): Promise<TransactionResponse> => {
+    ): Promise<ethers.providers.TransactionResponse> => {
       Sentry.addBreadcrumb({
         type: 'Transaction',
         message: `Call with gas price: ${gasPrice}`,

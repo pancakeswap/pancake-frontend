@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   }
 `
 
-const ExpandableSectionButton: React.FC<ExpandableSectionButtonProps> = ({ onClick, expanded = false }) => {
+const ExpandableSectionButton: React.FC<ExpandableSectionButtonProps> = ({ onClick, expanded }) => {
   const { t } = useTranslation()
 
   return (
@@ -30,6 +30,10 @@ const ExpandableSectionButton: React.FC<ExpandableSectionButtonProps> = ({ onCli
       {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
     </Wrapper>
   )
+}
+
+ExpandableSectionButton.defaultProps = {
+  expanded: false,
 }
 
 export default ExpandableSectionButton

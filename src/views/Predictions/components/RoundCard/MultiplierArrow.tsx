@@ -1,5 +1,5 @@
 import React from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
+import { ethers } from 'ethers'
 import styled, { CSSProperties } from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -8,7 +8,7 @@ import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMul
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
-  betAmount?: BigNumber
+  betAmount?: ethers.BigNumber
   multiplier?: string
   hasEntered?: boolean
   hasClaimed?: boolean

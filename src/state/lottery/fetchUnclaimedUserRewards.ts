@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { ethers } from 'ethers'
 import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { LotteryUserGraphEntity, LotteryRoundGraphEntity } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
@@ -33,7 +33,7 @@ const fetchCakeRewardsForTickets = async (
   try {
     const cakeRewards = await multicallv2<any>(lotteryV2Abi, calls)
 
-    const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: EthersBigNumber[]) => {
+    const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: ethers.BigNumber[]) => {
       return accum.plus(new BigNumber(cakeReward[0].toString()))
     }, BIG_ZERO)
 

@@ -1,4 +1,4 @@
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { BigNumber, FixedNumber } from 'ethers'
 import { formatBigNumber, formatBigNumberToFixed, formatFixedNumber } from 'utils/formatBalance'
 
 describe('formatBigNumber', () => {

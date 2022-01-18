@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useRef } from 'react'
 import { noop } from 'lodash'
 import { useWeb3React } from '@web3-react/core'
-import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
+import { ethers } from 'ethers'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import { logError } from 'utils/sentry'
@@ -72,12 +72,12 @@ const reducer = (state: State, actions: Action): State => {
 
 interface OnSuccessProps {
   state: State
-  receipt: TransactionReceipt
+  receipt: ethers.providers.TransactionReceipt
 }
 
 interface ApproveConfirmTransaction {
-  onApprove: () => Promise<TransactionResponse>
-  onConfirm: (params?) => Promise<TransactionResponse>
+  onApprove: () => Promise<ethers.providers.TransactionResponse>
+  onConfirm: (params?) => Promise<ethers.providers.TransactionResponse>
   onRequiresApproval?: () => Promise<boolean>
   onSuccess: ({ state, receipt }: OnSuccessProps) => void
   onApproveSuccess?: ({ state, receipt }: OnSuccessProps) => void

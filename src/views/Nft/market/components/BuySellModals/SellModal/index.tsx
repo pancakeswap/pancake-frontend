@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { InjectedModalProps } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 import useTheme from 'hooks/useTheme'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'

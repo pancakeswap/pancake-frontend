@@ -1,6 +1,6 @@
 import { Token } from '@pancakeswap/sdk'
 import { SerializedToken } from 'config/constants/types'
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 
 export function serializeToken(token: Token): SerializedToken {
   return {

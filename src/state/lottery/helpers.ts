@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { ethers } from 'ethers'
 import { LotteryStatus, LotteryTicket } from 'config/constants/types'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
@@ -111,7 +111,7 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
     const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = (await multicallv2(
       lotteryV2Abi,
       calls,
-    )) as EthersBigNumber[][]
+    )) as ethers.BigNumber[][]
 
     return {
       currentLotteryId: currentLotteryId ? currentLotteryId.toString() : null,
