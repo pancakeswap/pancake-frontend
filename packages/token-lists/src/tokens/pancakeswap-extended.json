@@ -2198,5 +2198,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x78F5d389F5CDCcFc41594aBaB4B0Ed02F31398b3.png"
+  },
+  {
+    "name": "Froyo",
+    "symbol": "FROYO",
+    "address": "0xe369fec23380f9F14ffD07a1DC4b7c1a9fdD81c9",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xe369fec23380f9F14ffD07a1DC4b7c1a9fdD81c9.png"
   }
 ]

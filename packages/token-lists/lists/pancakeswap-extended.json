@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-01-14T07:44:14.096Z",
+  "timestamp": "2022-01-18T04:47:01.660Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 60
+    "patch": 61
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -851,6 +851,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x928e55daB735aa8260AF3cEDadA18B5f70C72f1b.png"
+    },
+    {
+      "name": "Froyo",
+      "symbol": "FROYO",
+      "address": "0xe369fec23380f9F14ffD07a1DC4b7c1a9fdD81c9",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xe369fec23380f9F14ffD07a1DC4b7c1a9fdD81c9.png"
     },
     {
       "name": "Fuel",
