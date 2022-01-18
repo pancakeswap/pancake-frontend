@@ -79,7 +79,8 @@ const ContributeModal: React.FC<Props> = ({
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const raisingTokenContract = useERC20(currency.address)
+  const raisingTokenContractReader = useERC20(currency.address, false)
+  const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
   const label = currency === tokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
@@ -88,7 +89,7 @@ const ContributeModal: React.FC<Props> = ({
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
         try {
-          const response = await raisingTokenContract.allowance(account, contract.address)
+          const response = await raisingTokenContractReader.allowance(account, contract.address)
           const currentAllowance = new BigNumber(response.toString())
           return currentAllowance.gt(0)
         } catch (error) {
@@ -96,9 +97,14 @@ const ContributeModal: React.FC<Props> = ({
         }
       },
       onApprove: () => {
-        return callWithGasPrice(raisingTokenContract, 'approve', [contract.address, ethers.constants.MaxUint256], {
-          gasPrice,
-        })
+        return callWithGasPrice(
+          raisingTokenContractApprover,
+          'approve',
+          [contract.address, ethers.constants.MaxUint256],
+          {
+            gasPrice,
+          },
+        )
       },
       onConfirm: () => {
         return callWithGasPrice(
