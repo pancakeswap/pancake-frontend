@@ -61,7 +61,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
   }
 
   useEffect(() => {
-    const bgImages = [StormShare, FlippersShare, CakersShare]
+    const bgImages = [StormShare.src, FlippersShare.src, CakersShare.src]
     const bgImagEl = new Image()
     bgImagEl.src = bgImages[profile.teamId - 1]
     bgImagEl.onload = () => setBgImage(bgImagEl)
@@ -72,11 +72,11 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
     profileImageEl.onload = () => setProfileImage(profileImageEl)
 
     const profileImageOverlayEl = new Image()
-    profileImageOverlayEl.src = ProfileMask
+    profileImageOverlayEl.src = ProfileMask.src
     profileImageOverlayEl.onload = () => setProfileOverlayImage(profileImageOverlayEl)
 
     const medalImageEl = new Image()
-    medalImageEl.src = getMedal(team)
+    medalImageEl.src = getMedal(team).src
     medalImageEl.onload = () => setMedalImage(medalImageEl)
   }, [profile, team])
 

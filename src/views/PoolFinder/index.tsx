@@ -92,7 +92,7 @@ export default function PoolFinder() {
   return (
     <Page>
       <AppBody>
-        <AppHeader title={t('Import Pool')} subtitle={t('Import an existing pool')} backTo="/pool" />
+        <AppHeader title={t('Import Pool')} subtitle={t('Import an existing pool')} backTo="/liquidity" />
         <AutoColumn style={{ padding: '1rem' }} gap="md">
           <StyledButton
             endIcon={<ChevronDownIcon />}
@@ -137,7 +137,7 @@ export default function PoolFinder() {
               style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }}
             >
               <Text textAlign="center">{t('Pool Found!')}</Text>
-              <StyledInternalLink to="/pool">
+              <StyledInternalLink href="/pool">
                 <Text textAlign="center">{t('Manage this pool.')}</Text>
               </StyledInternalLink>
             </ColumnCenter>
@@ -151,7 +151,7 @@ export default function PoolFinder() {
                 <LightCard padding="45px 10px">
                   <AutoColumn gap="sm" justify="center">
                     <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
-                    <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                    <StyledInternalLink href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
                       <Text textAlign="center">{t('Add Liquidity')}</Text>
                     </StyledInternalLink>
                   </AutoColumn>
@@ -161,7 +161,7 @@ export default function PoolFinder() {
               <LightCard padding="45px 10px">
                 <AutoColumn gap="sm" justify="center">
                   <Text textAlign="center">{t('No pool found.')}</Text>
-                  <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                  <StyledInternalLink href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
                     {t('Create pool.')}
                   </StyledInternalLink>
                 </AutoColumn>

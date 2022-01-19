@@ -1,14 +1,18 @@
 import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import React, { lazy, Suspense, useState } from 'react'
+import React, { useState } from 'react'
 import { useFetchPairPrices } from 'state/swap/hooks'
+import dynamic from 'next/dynamic'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import NoChartAvailable from './NoChartAvailable'
 import TokenDisplay from './TokenDisplay'
 import { getTimeWindowChange } from './utils'
 
-const SwapLineChart = lazy(() => import('./SwapLineChart'))
+const SwapLineChart = dynamic(() => import('./SwapLineChart'), {
+  ssr: false,
+  loading: () => <LineChartLoader />,
+})
 
 const BasicChart = ({
   token0Address,
@@ -97,15 +101,13 @@ const BasicChart = ({
         </Box>
       </Flex>
       <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px'} width="100%">
-        <Suspense fallback={<LineChartLoader />}>
-          <SwapLineChart
-            data={pairPrices}
-            setHoverValue={setHoverValue}
-            setHoverDate={setHoverDate}
-            isChangePositive={isChangePositive}
-            timeWindow={timeWindow}
-          />
-        </Suspense>
+        <SwapLineChart
+          data={pairPrices}
+          setHoverValue={setHoverValue}
+          setHoverDate={setHoverDate}
+          isChangePositive={isChangePositive}
+          timeWindow={timeWindow}
+        />
       </Box>
     </>
   )

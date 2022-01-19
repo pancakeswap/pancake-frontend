@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Card, CardBody, Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 const NoProfileCard = () => {
   const { t } = useTranslation()
@@ -20,9 +20,11 @@ const NoProfileCard = () => {
             </Heading>
             <Text>{t('You can do this at any time by clicking on your profile picture in the menu')}</Text>
           </div>
-          <Button as={Link} to="/create-profile" id="teamsPageSetUpProfile" mt={['16px', null, 0]}>
-            {t('Set up now')}
-          </Button>
+          <Link href="/create-profile" passHref>
+            <Button as="a" id="teamsPageSetUpProfile" mt={['16px', null, 0]}>
+              {t('Set up now')}
+            </Button>
+          </Link>
         </Flex>
       </CardBody>
     </Card>

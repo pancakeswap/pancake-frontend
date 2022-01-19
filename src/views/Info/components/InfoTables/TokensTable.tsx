@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, Skeleton, useMatchBreakpoints, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
 import { TokenData } from 'state/info/types'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import Percent from 'views/Info/components/Percent'
@@ -51,7 +51,7 @@ const ResponsiveGrid = styled.div`
   }
 `
 
-const LinkWrapper = styled(Link)`
+const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
   :hover {
     cursor: pointer;

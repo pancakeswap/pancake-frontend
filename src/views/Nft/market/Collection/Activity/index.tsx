@@ -1,16 +1,14 @@
 import React from 'react'
-import { useParams } from 'react-router'
+import { useRouter } from 'next/router'
 import { useGetCollection } from 'state/nftMarket/hooks'
-import Header from '../Header'
 import ActivityHistory from '../../ActivityHistory/ActivityHistory'
 
 const Activity = () => {
-  const { collectionAddress } = useParams<{ collectionAddress: string }>()
+  const collectionAddress = useRouter().query.collectionAddress as string
   const collection = useGetCollection(collectionAddress)
 
   return (
     <>
-      <Header collection={collection} />
       <ActivityHistory collection={collection} />
     </>
   )

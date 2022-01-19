@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 
-const VISIBILITY_STATE_SUPPORTED = 'visibilityState' in document
-
 function isWindowVisible() {
-  if (!VISIBILITY_STATE_SUPPORTED) {
+  if (!(typeof document !== 'undefined' && 'visibilityState' in document)) {
     return true
   }
 
@@ -17,7 +15,7 @@ export default function useIsWindowVisible() {
   const [isVisible, setIsVisible] = useState(isWindowVisible())
 
   useEffect(() => {
-    if (!VISIBILITY_STATE_SUPPORTED) return undefined
+    if (!('visibilityState' in document)) return undefined
 
     const handleVisibilityChange = () => {
       setIsVisible(isWindowVisible())

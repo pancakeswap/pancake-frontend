@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 type EventDescriptionType = {
   t: ContextApi['t']
@@ -26,8 +26,8 @@ const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
       content: (
         <>
           {t('and the remaining NFTs can be minted by anyone with a ')}
-          <Link to="/profile">
-            <Text display="inline-block" color="primary" bold>
+          <Link href="/profile">
+            <Text as="a" display="inline-block" color="primary" bold>
               {t('Pancake Profile!')}
             </Text>
           </Link>

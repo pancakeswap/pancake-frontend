@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Link as RouterLink } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useTranslation } from 'contexts/Localization'
@@ -19,7 +19,7 @@ import { useProfileContract } from '../../hooks/useContract'
 import multicall from '../../utils/multicall'
 import profileABI from '../../config/abi/pancakeProfile.json'
 
-const Link = styled(RouterLink)`
+const Link = styled(NextLinkFromReactRouter)`
   color: ${({ theme }) => theme.colors.primary};
 `
 

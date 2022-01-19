@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Modal, Button, Flex, AutoRenewIcon, Heading, Text, Image } from '@pancakeswap/uikit'
+import { Modal, Button, Flex, AutoRenewIcon, Heading, Text } from '@pancakeswap/uikit'
+import Image from 'next/image'
 import { useTranslation } from 'contexts/Localization'
 import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Flex, Box, Image } from '@pancakeswap/uikit'
+import { Flex, Box } from '@pancakeswap/uikit'
+import Image from 'next/image'
 import styled from 'styled-components'
 import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
@@ -73,7 +74,7 @@ const BottomBunnyWrapper = styled(Box)`
 `
 
 const TradingCompetition = () => {
-  const profileApiUrl = process.env.REACT_APP_API_PROFILE
+  const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import { useAppDispatch } from 'state'
@@ -57,7 +57,7 @@ const Proposals = () => {
     <Container py="40px">
       <Box mb="48px">
         <Breadcrumbs>
-          <Link to="/">{t('Home')}</Link>
+          <Link href="/">{t('Home')}</Link>
           <Text>{t('Voting')}</Text>
         </Breadcrumbs>
       </Box>

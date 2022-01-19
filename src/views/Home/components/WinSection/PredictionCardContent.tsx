@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
 import { useSlowFresh } from 'hooks/useRefresh'
@@ -10,7 +10,7 @@ import { getTotalWon } from 'state/predictions/helpers'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
 `
 

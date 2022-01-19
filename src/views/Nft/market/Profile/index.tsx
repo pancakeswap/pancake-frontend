@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useParams } from 'react-router'
+import { useRouter } from 'next/router'
 import { isAddress } from 'utils'
 import { Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
@@ -10,10 +10,11 @@ import UnconnectedProfile from './UnconnectedProfile'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import NoNftsImage from '../components/Activity/NoNftsImage'
+import { NftMarketLayout } from '../Layout'
 
-const NftProfile = () => {
+const NftProfile: FC = ({ children }) => {
   const { account } = useWeb3React()
-  const { accountAddress } = useParams<{ accountAddress: string }>()
+  const accountAddress = useRouter().query.accountAddress as string
   const { t } = useTranslation()
 
   const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()
@@ -45,7 +46,23 @@ const NftProfile = () => {
     )
   }
 
-  return <>{isConnectedProfile ? <ConnectedProfile /> : <UnconnectedProfile />}</>
+  return (
+    <>
+      {isConnectedProfile ? (
+        <ConnectedProfile>{children}</ConnectedProfile>
+      ) : (
+        <UnconnectedProfile>{children}</UnconnectedProfile>
+      )}
+    </>
+  )
+}
+
+export const NftProfileLayout: FC = ({ children }) => {
+  return (
+    <NftProfile>
+      <NftMarketLayout>{children}</NftMarketLayout>
+    </NftProfile>
+  )
 }
 
 export default NftProfile

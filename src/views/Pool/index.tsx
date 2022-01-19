@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@pancakeswap/sdk'
 import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import FullPositionCard from '../../components/PositionCard'
@@ -93,16 +93,20 @@ export default function Pool() {
               <Text color="textSubtle" mb="8px">
                 {t("Don't see a pool you joined?")}
               </Text>
-              <Button id="import-pool-link" variant="secondary" scale="sm" as={Link} to="/find">
-                {t('Find other LP tokens')}
-              </Button>
+              <Link href="/find">
+                <Button id="import-pool-link" variant="secondary" scale="sm" as="a">
+                  {t('Find other LP tokens')}
+                </Button>
+              </Link>
             </Flex>
           )}
         </Body>
         <CardFooter style={{ textAlign: 'center' }}>
-          <Button id="join-pool-button" as={Link} to="/add" width="100%" startIcon={<AddIcon color="white" />}>
-            {t('Add Liquidity')}
-          </Button>
+          <Link href="/add">
+            <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="white" />}>
+              {t('Add Liquidity')}
+            </Button>
+          </Link>
         </CardFooter>
       </AppBody>
     </Page>

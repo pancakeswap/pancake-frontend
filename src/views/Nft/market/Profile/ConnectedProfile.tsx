@@ -1,23 +1,17 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useProfile } from 'state/profile/hooks'
-import { useWeb3React } from '@web3-react/core'
 import { Box } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import Page from 'components/Layout/Page'
-import { Route } from 'react-router'
-import { useUserNfts } from 'state/nftMarket/hooks'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
-import { UserNftInitializationState } from 'state/nftMarket/types'
 import { FetchStatus } from 'config/constants/types'
-import useFetchUserNfts from './hooks/useFetchUserNfts'
+import React, { FC } from 'react'
+import { useAchievements, useFetchAchievements } from 'state/achievements/hooks'
+import { useUserNfts } from 'state/nftMarket/hooks'
+import { UserNftInitializationState } from 'state/nftMarket/types'
+import { useProfile } from 'state/profile/hooks'
+import styled from 'styled-components'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import TabMenu from './components/TabMenu'
-import Achievements from './components/Achievements'
-import ActivityHistory from './components/ActivityHistory'
-import SubMenu from './components/SubMenu'
-import UserNfts from './components/UserNfts'
+import useFetchUserNfts from './hooks/useFetchUserNfts'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;
@@ -31,7 +25,7 @@ const TabMenuWrapper = styled(Box)`
   }
 `
 
-const ConnectedProfile = () => {
+const ConnectedProfile: FC = ({ children }) => {
   const { profile, isLoading: isProfileLoading } = useProfile()
   const { achievements, achievementFetchStatus } = useAchievements()
   const { account } = useWeb3React()
@@ -56,23 +50,7 @@ const ConnectedProfile = () => {
           <TabMenu />
         </TabMenuWrapper>
       </MarketPageHeader>
-      <Page style={{ minHeight: 'auto' }}>
-        <Route path={`${nftsBaseUrl}/profile/:accountAddress/achievements`}>
-          <Achievements
-            achievements={achievements}
-            isLoading={achievementFetchStatus !== FetchStatus.Fetched}
-            points={profile?.points}
-          />
-        </Route>
-        <Route path={`${nftsBaseUrl}/profile/:accountAddress/activity`}>
-          <SubMenu />
-          <ActivityHistory />
-        </Route>
-        <Route exact path={`${nftsBaseUrl}/profile/:accountAddress`}>
-          <SubMenu />
-          <UserNfts />
-        </Route>
-      </Page>
+      <Page style={{ minHeight: 'auto' }}>{children}</Page>
     </>
   )
 }

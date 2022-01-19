@@ -8,14 +8,13 @@ import getNodeUrl from './getRpcUrl'
 
 const POLLING_INTERVAL = 12000
 const rpcUrl = getNodeUrl()
-const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
+const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID, 10)
 
 const injected = new InjectedConnector({ supportedChainIds: [chainId] })
 
 const walletconnect = new WalletConnectConnector({
   rpc: { [chainId]: rpcUrl },
   qrcode: true,
-  pollingInterval: POLLING_INTERVAL,
 })
 
 const bscConnector = new BscConnector({ supportedChainIds: [chainId] })

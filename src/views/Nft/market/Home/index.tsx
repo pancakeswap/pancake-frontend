@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box, Button, Heading, Flex } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import PageHeader from 'components/PageHeader'
 import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFoldableText'
@@ -82,7 +82,7 @@ const Home = () => {
               {t('Buy and Sell NFTs on Binance Smart Chain')}
             </Heading>
             {account && (
-              <Button as={Link} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} mt="32px">
+              <Button as={NextLinkFromReactRouter} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} mt="32px">
                 {t('Manage/Sell')}
               </Button>
             )}

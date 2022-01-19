@@ -1,12 +1,12 @@
 import React from 'react'
-import { useLocation } from 'react-router'
+import { useRouter } from 'next/router'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Menu as UikitMenu } from '@pancakeswap/uikit'
 import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { Link } from 'react-router-dom'
 import { usePhishingBannerManager } from 'state/user/hooks'
 import config from './config/config'
 import UserMenu from './UserMenu'
@@ -18,7 +18,7 @@ const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
   const { currentLanguage, setLanguage, t } = useTranslation()
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const [showPhishingWarningBanner] = usePhishingBannerManager()
 
   const activeMenuItem = getActiveMenuItem({ menuConfig: config(t), pathname })
@@ -26,12 +26,12 @@ const Menu = (props) => {
 
   return (
     <UikitMenu
-      linkComponent={({ href, ...linkProps }: any) => {
-        return <Link to={href} {...linkProps} />
+      linkComponent={(linkProps) => {
+        return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} />
       }}
       userMenu={<UserMenu />}
       globalMenu={<GlobalSettings />}
-      banner={showPhishingWarningBanner && <PhishingWarningBanner />}
+      banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
       isDark={isDark}
       toggleTheme={toggleTheme}
       currentLang={currentLanguage.code}

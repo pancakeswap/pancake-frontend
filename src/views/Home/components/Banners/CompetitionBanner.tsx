@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Button, ArrowForwardIcon, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 
 const StyledSubheading = styled(Heading)`
@@ -104,14 +104,14 @@ const CompetitionBanner = () => {
               {t('$120,000 in Prizes!')}
             </StyledHeading>
           </Flex>
-          <Link to="/competition">
+          <NextLinkFromReactRouter to="/competition">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
                 {t('Trade Now')}
               </Text>
               <ArrowForwardIcon color="invertedContrast" />
             </Button>
-          </Link>
+          </NextLinkFromReactRouter>
         </RightWrapper>
       </Inner>
     </Wrapper>

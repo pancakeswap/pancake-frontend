@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Box, Button, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import ColoredWordHeading from 'views/Home/components/ColoredWordHeading'
@@ -38,13 +38,13 @@ const BunniesSection = () => {
             </Text>
           ))}
           <Flex>
-            <Link to={primaryButton.to}>
+            <NextLinkFromReactRouter to={primaryButton.to}>
               <Button>
                 <Text color="card" bold fontSize="16px">
                   {t(primaryButton.text)}
                 </Text>
               </Button>
-            </Link>
+            </NextLinkFromReactRouter>
           </Flex>
         </StyledTextContainer>
       </LandingBodyWrapper>

@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Box, Breadcrumbs, Text } from '@pancakeswap/uikit'
+import NextLink from 'next/link'
+import { Box, Breadcrumbs, Text, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const Crumbs = () => {
@@ -9,8 +10,12 @@ const Crumbs = () => {
   return (
     <Box mb="24px">
       <Breadcrumbs>
-        <Link to="/">{t('Home')}</Link>
-        <Link to="/prediction">{t('Prediction')}</Link>
+        <NextLink href="/">
+          <Link>{t('Home')}</Link>
+        </NextLink>
+        <NextLink href="/prediction">
+          <Link>{t('Prediction')}</Link>
+        </NextLink>
         <Text>{t('Leaderboard')}</Text>
       </Breadcrumbs>
     </Box>

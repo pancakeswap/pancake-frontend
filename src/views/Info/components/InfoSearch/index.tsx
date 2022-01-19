@@ -6,12 +6,12 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/Currency
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import { useWatchlistTokens, useWatchlistPools } from 'state/user/hooks'
 import SaveIcon from 'views/Info/components/SaveIcon'
-import { useHistory } from 'react-router-dom'
 import { usePoolDatas, useTokenDatas } from 'state/info/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useDebounce from 'hooks/useDebounce'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import { PoolData } from 'state/info/types'
+import { useRouter } from 'next/router'
 
 const Container = styled.div`
   position: relative;
@@ -139,7 +139,7 @@ const poolIncludesSearchTerm = (pool: PoolData, value: string) => {
 }
 
 const Search = () => {
-  const history = useHistory()
+  const router = useRouter()
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
 
@@ -195,7 +195,7 @@ const Search = () => {
     setShowMenu(false)
     setPoolsShown(3)
     setTokensShown(3)
-    history.push(to)
+    router.push(to)
   }
 
   // get date for watchlist

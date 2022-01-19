@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useRouter } from 'next/router'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { fetchCollection } from 'state/nftMarket/reducer'
@@ -9,11 +9,10 @@ import Select, { OptionProps } from 'components/Select/Select'
 import Container from 'components/Layout/Container'
 import { pancakeBunniesAddress } from '../../constants'
 import PancakeBunniesCollectionNfts from './PancakeBunniesCollectionNfts'
-import Header from '../Header'
 import CollectionWrapper from './CollectionWrapper'
 
 const Items = () => {
-  const { collectionAddress } = useParams<{ collectionAddress: string }>()
+  const collectionAddress = useRouter().query.collectionAddress as string
   const [sortBy, setSortBy] = useState('updatedAt')
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -39,7 +38,6 @@ const Items = () => {
 
   return (
     <>
-      <Header collection={collection} />
       {isPBCollection ? (
         <Container mb="24px">
           <Flex alignItems="center" justifyContent={['flex-start', null, null, 'flex-end']} mb="24px">

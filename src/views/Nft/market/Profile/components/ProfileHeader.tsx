@@ -1,6 +1,5 @@
 import React from 'react'
-import { Link as ReactRouterLink } from 'react-router-dom'
-import styled from 'styled-components'
+import { NextLinkFromReactRouter as ReactRouterLink } from 'components/NextLink'
 import { BscScanIcon, Flex, IconButton, Link, Button, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanLink } from 'utils'
@@ -24,10 +23,6 @@ interface HeaderProps {
   isNftLoading: boolean
   isProfileLoading: boolean
 }
-
-const StyledIconButton = styled(IconButton)`
-  width: fit-content;
-`
 
 // Account and profile passed down as the profile could be used to render _other_ users' profiles.
 const ProfileHeader: React.FC<HeaderProps> = ({
@@ -77,14 +72,18 @@ const ProfileHeader: React.FC<HeaderProps> = ({
         // TODO: Share functionality once user profiles routed by ID
         <Flex display="inline-flex">
           {accountPath && (
-            <StyledIconButton
-              target="_blank"
+            <IconButton
               as="a"
-              href={getBscScanLink(accountPath, 'address')}
+              target="_blank"
+              style={{
+                width: 'fit-content',
+              }}
+              href={getBscScanLink(accountPath, 'address') || ''}
+              // @ts-ignore
               alt={t('View BscScan for user address')}
             >
               <BscScanIcon width="20px" color="primary" />
-            </StyledIconButton>
+            </IconButton>
           )}
         </Flex>
       )

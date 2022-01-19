@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch } from 'state'
 import { ProposalState } from 'state/types'
 import {
@@ -10,6 +9,8 @@ import {
   useGetVotes,
   useGetProposalLoadingStatus,
 } from 'state/voting/hooks'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { fetchProposal, fetchVotes } from 'state/voting'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
@@ -26,7 +27,7 @@ import Votes from './Votes'
 import { PageMeta } from '../../../components/Layout/Page'
 
 const Proposal = () => {
-  const { id }: { id: string } = useParams()
+  const id = useRouter().query.id as string
   const proposal = useGetProposal(id)
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -57,9 +58,11 @@ const Proposal = () => {
     <Container py="40px">
       <PageMeta />
       <Box mb="40px">
-        <Button as={Link} to="/voting" variant="text" startIcon={<ArrowBackIcon color="primary" width="24px" />} px="0">
-          {t('Back to Vote Overview')}
-        </Button>
+        <Link href="/voting" passHref>
+          <Button as="a" variant="text" startIcon={<ArrowBackIcon color="primary" width="24px" />} px="0">
+            {t('Back to Vote Overview')}
+          </Button>
+        </Link>
       </Box>
       <Layout>
         <Box>

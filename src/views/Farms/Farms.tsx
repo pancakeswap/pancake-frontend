@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
-import { Route, useRouteMatch, useLocation, NavLink } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
@@ -18,11 +18,12 @@ import isArchivedPid from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
+import { useRouter } from 'next/router'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
-import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
+import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
@@ -103,7 +104,7 @@ const StyledImage = styled(Image)`
 `
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
+export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
   if (cakeRewardsApr && lpRewardsApr) {
     return (cakeRewardsApr + lpRewardsApr).toLocaleString('en-US', { maximumFractionDigits: 2 })
   }
@@ -113,9 +114,8 @@ const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
   return null
 }
 
-const Farms: React.FC = () => {
-  const { path } = useRouteMatch()
-  const { pathname } = useLocation()
+const Farms: React.FC = ({ children }) => {
+  const { pathname } = useRouter()
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded } = useFarms()
   const cakePrice = usePriceCakeBusd()
@@ -321,46 +321,7 @@ const Farms: React.FC = () => {
       return <Table data={rowData} columns={columns} userDataReady={userDataReady} />
     }
 
-    return (
-      <FlexLayout>
-        <Route exact path={`${path}`}>
-          {chosenFarmsMemoized.map((farm) => (
-            <FarmCard
-              key={farm.pid}
-              farm={farm}
-              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
-              cakePrice={cakePrice}
-              account={account}
-              removed={false}
-            />
-          ))}
-        </Route>
-        <Route exact path={`${path}/history`}>
-          {chosenFarmsMemoized.map((farm) => (
-            <FarmCard
-              key={farm.pid}
-              farm={farm}
-              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
-              cakePrice={cakePrice}
-              account={account}
-              removed
-            />
-          ))}
-        </Route>
-        <Route exact path={`${path}/archived`}>
-          {chosenFarmsMemoized.map((farm) => (
-            <FarmCard
-              key={farm.pid}
-              farm={farm}
-              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
-              cakePrice={cakePrice}
-              account={account}
-              removed
-            />
-          ))}
-        </Route>
-      </FlexLayout>
-    )
+    return <FlexLayout>{children}</FlexLayout>
   }
 
   const handleSortOptionChange = (option: OptionProps): void => {
@@ -368,7 +329,7 @@ const Farms: React.FC = () => {
   }
 
   return (
-    <>
+    <FarmsContext.Provider value={{ chosenFarmsMemoized }}>
       <PageHeader>
         <Heading as="h1" scale="xxl" color="secondary" mb="24px">
           {t('Farms')}
@@ -376,14 +337,14 @@ const Farms: React.FC = () => {
         <Heading scale="lg" color="text">
           {t('Stake LP tokens to earn.')}
         </Heading>
-        <NavLink exact activeClassName="active" to="/farms/auction" id="lottery-pot-banner">
+        <NextLinkFromReactRouter to="/farms/auction" id="lottery-pot-banner">
           <Button p="0" variant="text">
             <Text color="primary" bold fontSize="16px" mr="4px">
               {t('Community Auctions')}
             </Text>
             <ArrowForwardIcon color="primary" />
           </Button>
-        </NavLink>
+        </NextLinkFromReactRouter>
       </PageHeader>
       <Page>
         <ControlContainer>
@@ -444,8 +405,10 @@ const Farms: React.FC = () => {
         <div ref={observerRef} />
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
-    </>
+    </FarmsContext.Provider>
   )
 }
+
+export const FarmsContext = React.createContext({ chosenFarmsMemoized: [] })
 
 export default Farms

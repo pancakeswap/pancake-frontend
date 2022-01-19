@@ -4,7 +4,7 @@ import { Box, Flex, BunnyPlaceholderIcon, Skeleton, Text } from '@pancakeswap/ui
 import truncateHash from 'utils/truncateHash'
 import { FetchStatus } from 'config/constants/types'
 import { useGetProfileAvatar } from 'state/profile/hooks'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { nftsBaseUrl } from '../constants'
 
 const Avatar = styled.img`
@@ -41,7 +41,7 @@ const ProfileCell: React.FC<{ accountAddress: string }> = ({ accountAddress }) =
   }
 
   return (
-    <Link to={`${nftsBaseUrl}/profile/${accountAddress}`}>
+    <NextLinkFromReactRouter to={`${nftsBaseUrl}/profile/${accountAddress}`}>
       <StyledFlex>
         {sellerProfilePicComponent}
         <Box display="inline">
@@ -49,7 +49,7 @@ const ProfileCell: React.FC<{ accountAddress: string }> = ({ accountAddress }) =
           {usernameFetchStatus !== FetchStatus.Fetched ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
         </Box>
       </StyledFlex>
-    </Link>
+    </NextLinkFromReactRouter>
   )
 }
 

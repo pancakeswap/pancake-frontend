@@ -1,12 +1,12 @@
 import React from 'react'
 import { Box, ChevronLeftIcon, Flex } from '@pancakeswap/uikit'
-import { Link as RouterLink } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import SearchBar from '../components/SearchBar'
 
-const BackLink = styled(RouterLink)`
+const BackLink = styled(NextLinkFromReactRouter)`
   align-items: center;
   color: ${({ theme }) => theme.colors.primary};
   display: inline-flex;

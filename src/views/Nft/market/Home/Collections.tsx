@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, ChevronRightIcon, Flex, Grid, Heading, Text } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { Collection } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
@@ -21,7 +21,7 @@ const Collections: React.FC<{ title: string; testId: string; collections: Collec
           {title}
         </Heading>
         <Button
-          as={Link}
+          as={NextLinkFromReactRouter}
           to={`${nftsBaseUrl}/collections/`}
           variant="secondary"
           scale="sm"

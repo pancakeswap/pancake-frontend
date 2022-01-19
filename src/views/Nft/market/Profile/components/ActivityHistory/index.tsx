@@ -11,7 +11,7 @@ import { useTranslation } from 'contexts/Localization'
 import TableLoader from 'components/TableLoader'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
-import { useParams } from 'react-router'
+import { useRouter } from 'next/router'
 import { sortUserActivity } from '../../utils/sortUserActivity'
 import NoNftsImage from '../../../components/Activity/NoNftsImage'
 import { Arrow, PageButtons } from '../../../components/PaginationButtons'
@@ -23,7 +23,7 @@ const MAX_PER_PAGE = 8
 const ActivityHistory = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
-  const { accountAddress } = useParams<{ accountAddress: string }>()
+  const accountAddress = useRouter().query.accountAddress as string
   const { theme } = useTheme()
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)

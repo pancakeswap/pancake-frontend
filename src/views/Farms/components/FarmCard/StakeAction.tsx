@@ -4,12 +4,12 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
-import { useLocation } from 'react-router-dom'
 import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
+import { useRouter } from 'next/router'
 import { useLpTokenPrice } from 'state/farms/hooks'
 import { getBalanceAmount, getBalanceNumber } from 'utils/formatBalance'
 import DepositModal from '../DepositModal'
@@ -52,7 +52,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   const { t } = useTranslation()
   const { onStake } = useStakeFarms(pid)
   const { onUnstake } = useUnstakeFarms(pid)
-  const location = useLocation()
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const lpPrice = useLpTokenPrice(tokenName)
@@ -144,7 +144,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
     return stakedBalance.eq(0) ? (
       <Button
         onClick={onPresentDeposit}
-        disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}
+        disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
       >
         {t('Stake LP')}
       </Button>
@@ -156,7 +156,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
         <IconButton
           variant="tertiary"
           onClick={onPresentDeposit}
-          disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}
+          disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
         >
           <AddIcon color="primary" width="14px" />
         </IconButton>

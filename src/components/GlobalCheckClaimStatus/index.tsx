@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getAnniversaryAchievementContract } from 'utils/contractHelpers'
@@ -19,7 +19,7 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
   const hasDisplayedModal = useRef(false)
   const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(false)
   const { account } = useWeb3React()
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const [onPresentAnniversaryModal] = useModal(<AnniversaryAchievementModal />)
 
   // Check claim status

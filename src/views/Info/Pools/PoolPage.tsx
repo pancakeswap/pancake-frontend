@@ -1,34 +1,34 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react'
-import { RouteComponentProps, Link } from 'react-router-dom'
 import {
-  Text,
-  Flex,
   Box,
-  Button,
-  Card,
   Breadcrumbs,
-  Heading,
-  Spinner,
-  LinkExternal,
-  useMatchBreakpoints,
+  Button,
   ButtonMenu,
   ButtonMenuItem,
+  Card,
+  Flex,
+  Heading,
   HelpIcon,
+  LinkExternal,
+  Spinner,
+  Text,
+  useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
 import Page from 'components/Layout/Page'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { useTranslation } from 'contexts/Localization'
+import React, { useState } from 'react'
+import { usePoolChartData, usePoolDatas, usePoolTransactions } from 'state/info/hooks'
+import { useWatchlistPools } from 'state/user/hooks'
+import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
-import { usePoolDatas, usePoolChartData, usePoolTransactions } from 'state/info/hooks'
-import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
-import { useWatchlistPools } from 'state/user/hooks'
-import { useTranslation } from 'contexts/Localization'
-import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -61,11 +61,7 @@ const LockedTokensContainer = styled(Flex)`
   max-width: 280px;
 `
 
-const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
-  match: {
-    params: { address: routeAddress },
-  },
-}) => {
+const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
   const [showWeeklyData, setShowWeeklyData] = useState(0)
@@ -73,11 +69,6 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
     {},
   )
-
-  // Needed to scroll up if user comes to this page by clicking on entry in the table
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
@@ -94,12 +85,12 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
         <>
           <Flex justifyContent="space-between" mb="16px" flexDirection={['column', 'column', 'row']}>
             <Breadcrumbs mb="32px">
-              <Link to="/info">
+              <NextLinkFromReactRouter to="/info">
                 <Text color="primary">{t('Info')}</Text>
-              </Link>
-              <Link to="/info/pools">
+              </NextLinkFromReactRouter>
+              <NextLinkFromReactRouter to="/info/pools">
                 <Text color="primary">{t('Pools')}</Text>
-              </Link>
+              </NextLinkFromReactRouter>
               <Flex>
                 <Text mr="8px">{`${poolData.token0.symbol} / ${poolData.token1.symbol}`}</Text>
               </Flex>
@@ -123,7 +114,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
             </Flex>
             <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>
               <Flex flexDirection={['column', 'column', 'row']} mb={['8px', '8px', null]}>
-                <Link to={`/info/token/${poolData.token0.address}`}>
+                <NextLinkFromReactRouter to={`/info/token/${poolData.token0.address}`}>
                   <TokenButton>
                     <CurrencyLogo address={poolData.token0.address} size="24px" />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
@@ -134,8 +125,8 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                       })} ${poolData.token1.symbol}`}
                     </Text>
                   </TokenButton>
-                </Link>
-                <Link to={`/info/token/${poolData.token1.address}`}>
+                </NextLinkFromReactRouter>
+                <NextLinkFromReactRouter to={`/info/token/${poolData.token1.address}`}>
                   <TokenButton ml={[null, null, '10px']}>
                     <CurrencyLogo address={poolData.token1.address} size="24px" />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
@@ -146,17 +137,19 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
                       })} ${poolData.token0.symbol}`}
                     </Text>
                   </TokenButton>
-                </Link>
+                </NextLinkFromReactRouter>
               </Flex>
               <Flex>
-                <Link to={`/add/${poolData.token0.address}/${poolData.token1.address}`}>
+                <NextLinkFromReactRouter to={`/add/${poolData.token0.address}/${poolData.token1.address}`}>
                   <Button mr="8px" variant="secondary">
                     {t('Add Liquidity')}
                   </Button>
-                </Link>
-                <Link to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}`}>
+                </NextLinkFromReactRouter>
+                <NextLinkFromReactRouter
+                  to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}`}
+                >
                   <Button>{t('Trade')}</Button>
-                </Link>
+                </NextLinkFromReactRouter>
               </Flex>
             </Flex>
           </Flex>

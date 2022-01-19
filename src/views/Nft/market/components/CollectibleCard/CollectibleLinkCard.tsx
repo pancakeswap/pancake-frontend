@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { StyledCollectibleCard } from './styles'
 import CardBody from './CardBody'
 import { CollectibleCardProps } from './types'
@@ -10,9 +10,9 @@ const CollectibleLinkCard: React.FC<CollectibleCardProps> = ({ nft, nftLocation,
     nft.collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase() ? nft.attributes[0].value : nft.tokenId
   return (
     <StyledCollectibleCard {...props}>
-      <Link to={`${nftsBaseUrl}/collections/${nft.collectionAddress}/${urlId}`}>
+      <NextLinkFromReactRouter to={`${nftsBaseUrl}/collections/${nft.collectionAddress}/${urlId}`}>
         <CardBody nft={nft} nftLocation={nftLocation} currentAskPrice={currentAskPrice} />
-      </Link>
+      </NextLinkFromReactRouter>
     </StyledCollectibleCard>
   )
 }
