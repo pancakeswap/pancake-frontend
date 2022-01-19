@@ -1,17 +1,18 @@
+import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import { DependencyList, EffectCallback, useEffect, useMemo } from 'react'
-import { useCurrentBlock, useSlowCurrentBlock } from 'state/block/hooks'
+import useSWR from 'swr'
 
 export function useFastRefreshEffect(effect: EffectCallback, deps?: DependencyList) {
-  const currentBlock = useCurrentBlock()
-  const depsMemo = useMemo(() => [currentBlock, ...(deps || [])], [currentBlock, deps])
+  const { data = 0 } = useSWR([FAST_INTERVAL, 'blockNumber'])
+  const depsMemo = useMemo(() => [data, ...(deps || [])], [data, deps])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect, depsMemo)
 }
 
 export function useSlowRefreshEffect(effect: EffectCallback, deps?: DependencyList) {
-  const slowCurrentBlock = useSlowCurrentBlock()
-  const depsMemo = useMemo(() => [slowCurrentBlock, ...(deps || [])], [slowCurrentBlock, deps])
+  const { data = 0 } = useSWR([SLOW_INTERVAL, 'blockNumber'])
+  const depsMemo = useMemo(() => [data, ...(deps || [])], [data, deps])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect, depsMemo)

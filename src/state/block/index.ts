@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { BlockState } from '../types'
 
-const initialState: BlockState = { currentBlock: 0, initialBlock: 0, slowCurrentBlock: 0 }
+const initialState: BlockState = { currentBlock: 0, initialBlock: 0 }
 
 export const blockSlice = createSlice({
   name: 'Block',
@@ -14,13 +14,10 @@ export const blockSlice = createSlice({
 
       state.currentBlock = action.payload
     },
-    setSlowCurrentBlock: (state, action: PayloadAction<number>) => {
-      state.slowCurrentBlock = action.payload
-    },
   },
 })
 
 // Actions
-export const { setBlock, setSlowCurrentBlock } = blockSlice.actions
+export const { setBlock } = blockSlice.actions
 
 export default blockSlice.reducer
