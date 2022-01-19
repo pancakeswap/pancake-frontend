@@ -17,6 +17,10 @@ Sentry.init({
     new Sentry.Integrations.Breadcrumbs({
       console: process.env.NODE_ENV === 'production',
     }),
+    new Sentry.Integrations.GlobalHandlers({
+      onerror: false,
+      onunhandledrejection: false,
+    }),
   ],
   environment: process.env.NODE_ENV,
   // Adjust this value in production, or use tracesSampler for greater control
