@@ -63,5 +63,11 @@ describe('Swap', () => {
       cy.get('#remove-recipient-button').click({ force: true })
       cy.get('#recipient').should('not.exist')
     })
+
+    it('should get input and output currency from url params', () => {
+      cy.visit('/swap?inputCurrency=0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56&outputCurrency=BNB')
+      cy.get('#swap-currency-input #pair').should('contain', 'BUSD')
+      cy.get('#swap-currency-output #pair').should('contain', 'BNB')
+    })
   })
 })
