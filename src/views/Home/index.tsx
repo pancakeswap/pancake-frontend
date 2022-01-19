@@ -16,9 +16,9 @@ import Footer from './components/Footer'
 import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
 import UserBanner from './components/UserBanner'
-import IFOBanner from './components/Banners/IFOBanner'
+import FarmAuctionsBanner from './components/Banners/FarmAuctionsBanner'
 
-const showBanner = false
+const showBanner = true
 
 const HomeBanner = ({ account }: { account: string }) => {
   if (!showBanner) {
@@ -31,7 +31,7 @@ const HomeBanner = ({ account }: { account: string }) => {
       mt={[account ? '0' : '-16px', null, null, account ? '0' : '-48px']}
       pb="24px"
     >
-      <IFOBanner />
+      <FarmAuctionsBanner />
     </Flex>
   )
 }
