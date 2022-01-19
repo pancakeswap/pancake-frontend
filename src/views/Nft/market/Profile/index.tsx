@@ -37,13 +37,11 @@ const NftProfile: FC = ({ children }) => {
   const { profile: profileHookState, isFetching: isProfileFetching } = useProfileForAddress(accountAddress)
   const { profile } = profileHookState || {}
   const { achievements, isFetching: isAchievementsFetching } = useAchievementsForAddress(accountAddress)
-  const { lastUpdated, setLastUpdated: refreshNfts } = useLastUpdated()
-  const { nfts: userNfts, isLoading: isNftLoading } = useNftsForAddress(
-    accountAddress,
-    profile,
-    isProfileFetching,
-    lastUpdated,
-  )
+  const {
+    nfts: userNfts,
+    isLoading: isNftLoading,
+    refresh,
+  } = useNftsForAddress(accountAddress, profile, isProfileFetching)
 
   if (invalidAddress) {
     return (
@@ -82,7 +80,7 @@ const NftProfile: FC = ({ children }) => {
           isProfileLoading={isProfileFetching}
           isNftLoading={isNftLoading}
           isAchievementsLoading={isAchievementsFetching}
-          onSuccess={refreshNfts}
+          onSuccess={refresh}
         />
         <TabMenuWrapper>
           <TabMenu />

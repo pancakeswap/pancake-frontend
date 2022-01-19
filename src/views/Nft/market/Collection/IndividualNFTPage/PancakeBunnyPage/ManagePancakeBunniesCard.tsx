@@ -145,9 +145,8 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
   const { t } = useTranslation()
   const { account } = useWeb3React()
 
-  const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const { isLoading: isProfileLoading, profile } = useProfile()
-  const { nfts: userNfts, isLoading } = useNftsForAddress(account, profile, isProfileLoading, lastUpdated)
+  const { nfts: userNfts, isLoading, refresh } = useNftsForAddress(account, profile, isProfileLoading)
 
   const bunniesInWallet = userNfts.filter(
     (nft) => nft.attributes[0].value === bunnyId && nft.location === NftLocation.WALLET,
