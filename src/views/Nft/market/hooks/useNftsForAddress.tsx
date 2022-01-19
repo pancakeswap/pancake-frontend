@@ -4,6 +4,7 @@ import { useGetCollections } from 'state/nftMarket/hooks'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { Profile } from 'state/types'
 import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
+import { isAddress } from 'utils'
 
 const useNftsForAddress = (
   account: string,
@@ -37,7 +38,7 @@ const useNftsForAddress = (
       setIsLoading(false)
     }
 
-    if (!isProfileFetching && !isEmpty(collections) && account) {
+    if (!isProfileFetching && !isEmpty(collections) && isAddress(account)) {
       setIsLoading(true)
       getNfts()
     }
