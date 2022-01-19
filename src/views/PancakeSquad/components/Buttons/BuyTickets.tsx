@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { ethers, BigNumber } from 'ethers'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake, useNftSaleContract } from 'hooks/useContract'
@@ -81,7 +82,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
         return callWithGasPrice(cakeContract, 'approve', [nftSaleContract.address, ethers.constants.MaxUint256])
       },
       onApproveSuccess: async ({ receipt }) => {
-        toastSuccess(t('Transaction has succeeded!'))
+        toastSuccess(t('Transaction has succeeded!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         setTxHashEnablingResult(receipt.transactionHash)
       },
       onConfirm: ({ ticketsNumber }) => {
