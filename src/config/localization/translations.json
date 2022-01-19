@@ -1822,5 +1822,6 @@
   "per 1d: ~$%amount%": "per 1d: ~$%amount%",
   "per 7d: ~$%amount%": "per 7d: ~$%amount%",
   "per 30d: ~$%amount%": "per 30d: ~$%amount%",
-  "per 365d: ~$%amount%": "per 365d: ~$%amount%"
+  "per 365d: ~$%amount%": "per 365d: ~$%amount%",
+  "Remember that you will pay the gas fee.": "Remember that you will pay the gas fee."
 }
