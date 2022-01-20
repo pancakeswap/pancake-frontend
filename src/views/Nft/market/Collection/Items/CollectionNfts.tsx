@@ -58,14 +58,17 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
     const fetchApiData = async (marketData: TokenMarketData[]) => {
       const apiRequestPromises = marketData.map((marketNft) => getNftApi(collectionAddress, marketNft.tokenId))
       const apiResponses = await Promise.all(apiRequestPromises)
-      const responsesWithMarketData = apiResponses.map((apiNft, i) => {
-        return {
-          ...apiNft,
-          collectionAddress,
-          collectionName: apiNft.collection.name,
-          marketData: marketData[i],
+      const responsesWithMarketData = apiResponses.reduce((acc, apiNft, i) => {
+        if (apiNft) {
+          acc.push({
+            ...apiNft,
+            collectionAddress,
+            collectionName: apiNft.collection.name,
+            marketData: marketData[i],
+          })
         }
-      })
+        return acc
+      }, [])
       setIsFetchingFilteredNfts(false)
       setNfts((prevState) => {
         const combinedNfts = [...prevState, ...responsesWithMarketData]

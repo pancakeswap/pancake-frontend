@@ -19,48 +19,52 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string, lastU
   useEffect(() => {
     const getNft = async () => {
       const metadata = await getNftApi(collectionAddress, tokenId)
-      const [marketData] = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
-      setCombinedNft({
-        tokenId,
-        collectionAddress,
-        collectionName: metadata.collection.name,
-        name: metadata.name,
-        description: metadata.description,
-        image: metadata.image,
-        attributes: metadata.attributes,
-        marketData,
-      })
-      setIsLoading(false)
+      if (metadata) {
+        const [marketData] = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
+        setCombinedNft({
+          tokenId,
+          collectionAddress,
+          collectionName: metadata.collection.name,
+          name: metadata.name,
+          description: metadata.description,
+          image: metadata.image,
+          attributes: metadata.attributes,
+          marketData,
+        })
+        setIsLoading(false)
+      }
     }
 
     const getNftWithLocation = async () => {
       const metadata = await getNftApi(collectionAddress, tokenId)
-      const [marketData] = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
-      const tokenOwner = await collectionContract.ownerOf(tokenId)
-      const nftIsProfilePic =
-        tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
-      const nftIsOnSale = marketData ? marketData.currentSeller !== NOT_ON_SALE_SELLER : false
-      const location = nftIsProfilePic ? NftLocation.PROFILE : nftIsOnSale ? NftLocation.FORSALE : NftLocation.WALLET
-      if (nftIsOnSale) {
-        setIsOwn(marketData?.currentSeller.toLowerCase() === account.toLowerCase())
-      } else if (nftIsProfilePic) {
-        setIsOwn(true)
-      } else {
-        setIsOwn(tokenOwner.toLowerCase() === account.toLowerCase())
+      if (metadata) {
+        const [marketData] = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
+        const tokenOwner = await collectionContract.ownerOf(tokenId)
+        const nftIsProfilePic =
+          tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
+        const nftIsOnSale = marketData ? marketData.currentSeller !== NOT_ON_SALE_SELLER : false
+        const location = nftIsProfilePic ? NftLocation.PROFILE : nftIsOnSale ? NftLocation.FORSALE : NftLocation.WALLET
+        if (nftIsOnSale) {
+          setIsOwn(marketData?.currentSeller.toLowerCase() === account.toLowerCase())
+        } else if (nftIsProfilePic) {
+          setIsOwn(true)
+        } else {
+          setIsOwn(tokenOwner.toLowerCase() === account.toLowerCase())
+        }
+        setIsProfilePic(nftIsProfilePic)
+        setCombinedNft({
+          tokenId,
+          collectionAddress,
+          collectionName: metadata.collection.name,
+          name: metadata.name,
+          description: metadata.description,
+          image: metadata.image,
+          attributes: metadata.attributes,
+          marketData,
+          location,
+        })
+        setIsLoading(false)
       }
-      setIsProfilePic(nftIsProfilePic)
-      setCombinedNft({
-        tokenId,
-        collectionAddress,
-        collectionName: metadata.collection.name,
-        name: metadata.name,
-        description: metadata.description,
-        image: metadata.image,
-        attributes: metadata.attributes,
-        marketData,
-        location,
-      })
-      setIsLoading(false)
     }
 
     if (account) {
