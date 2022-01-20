@@ -39,7 +39,7 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string, lastU
       const tokenOwner = await collectionContract.ownerOf(tokenId)
       const nftIsProfilePic =
         tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
-      const nftIsOnSale = marketData?.currentSeller !== NOT_ON_SALE_SELLER
+      const nftIsOnSale = marketData ? marketData.currentSeller !== NOT_ON_SALE_SELLER : false
       const location = nftIsProfilePic ? NftLocation.PROFILE : nftIsOnSale ? NftLocation.FORSALE : NftLocation.WALLET
       if (nftIsOnSale) {
         setIsOwn(marketData?.currentSeller.toLowerCase() === account.toLowerCase())
