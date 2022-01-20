@@ -39,6 +39,7 @@ export function useCallWithGasPrice() {
         ...methodArgs,
         hasManualGasPriceOverride ? { ...overrides } : { ...overrides, gasPrice },
       )
+
       if (tx) {
         Sentry.addBreadcrumb({
           type: 'Transaction',
