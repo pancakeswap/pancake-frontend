@@ -1950,6 +1950,14 @@ export const mainnetTokens = defineTokens({
     'ApolloX Token',
     'https://www.apollox.finance/',
   ),
+  prl: new Token(
+    MAINNET,
+    '0xd07e82440A395f3F3551b42dA9210CD1Ef4f8B24',
+    18,
+    'PRL',
+    'Parallel Token',
+    'https://theparallel.io',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({

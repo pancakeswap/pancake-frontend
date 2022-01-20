@@ -41,6 +41,39 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 386,
+    lpSymbol: 'HOTCROSS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
+    },
+    token: serializedTokens.hotcross,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 504,
+    lpSymbol: 'PRL-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb5FEAE037c2330a8F298F39bcE96dd6E69f4Fa0E',
+    },
+    token: serializedTokens.prl,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
+    pid: 498,
+    lpSymbol: '8PAY-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
+    },
+    token: serializedTokens['8pay'],
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
     pid: 503,
     lpSymbol: 'FROYO-BNB LP',
     lpAddresses: {
@@ -90,17 +123,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.insur,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 498,
-    lpSymbol: '8PAY-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
-    },
-    token: serializedTokens['8pay'],
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
   },
   {
     pid: 499,
@@ -1362,16 +1384,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0xF74ee1e10e097dc326a2ad004F9Cc95CB71088d3',
     },
     token: serializedTokens.hget,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 386,
-    lpSymbol: 'HOTCROSS-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
-    },
-    token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
   },
   {
