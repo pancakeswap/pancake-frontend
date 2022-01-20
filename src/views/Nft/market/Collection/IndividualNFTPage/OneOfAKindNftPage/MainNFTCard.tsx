@@ -27,9 +27,9 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, currentAskPriceAsNumber)
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
   const [onPresentSellModal] = useModal(
-    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} onSuccess={onSuccess} />,
+    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} onSuccessSale={onSuccess} />,
   )
-  const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccess} />, false)
+  const [onEditProfileModal] = useModal(<EditProfileModal />, false)
 
   const ownerButtons = (
     <Flex flexDirection={['column', 'column', 'row']}>

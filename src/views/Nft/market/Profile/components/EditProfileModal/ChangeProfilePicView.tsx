@@ -17,9 +17,11 @@ import SelectionCard from 'views/ProfileCreation/SelectionCard'
 import { NftLocation } from 'state/nftMarket/types'
 import useNftsForAddress from '../../../hooks/useNftsForAddress'
 
-type ChangeProfilePicPageProps = InjectedModalProps
+interface ChangeProfilePicPageProps extends InjectedModalProps {
+  onSuccess?: () => void
+}
 
-const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }) => {
+const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, onSuccess }) => {
   const [selectedNft, setSelectedNft] = useState({
     tokenId: null,
     collectionAddress: null,
@@ -55,7 +57,9 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
         // Re-fetch profile
         await dispatch(fetchProfile(account))
         toastSuccess(t('Profile Updated!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-
+        if (onSuccess) {
+          onSuccess()
+        }
         onDismiss()
       },
     })

@@ -73,10 +73,17 @@ const getToastText = (variant: string, stage: SellingStage, t: ContextApi['t']) 
 interface SellModalProps extends InjectedModalProps {
   variant: 'sell' | 'edit'
   nftToSell: NftToken
-  onSuccess: () => void
+  onSuccessSale: () => void
+  onSuccessEditProfile?: () => void
 }
 
-const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss, onSuccess }) => {
+const SellModal: React.FC<SellModalProps> = ({
+  variant,
+  nftToSell,
+  onDismiss,
+  onSuccessSale,
+  onSuccessEditProfile,
+}) => {
   const [stage, setStage] = useState(variant === 'sell' ? SellingStage.SELL : SellingStage.EDIT)
   const [price, setPrice] = useState(variant === 'sell' ? '' : nftToSell.marketData.currentAskPrice)
   const [transferAddress, setTransferAddress] = useState('')
@@ -193,7 +200,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss, on
     },
     onSuccess: async ({ receipt }) => {
       toastSuccess(getToastText(variant, stage, t), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      onSuccess()
+      onSuccessSale()
       setConfirmedTxHash(receipt.transactionHash)
       setStage(SellingStage.TX_CONFIRMED)
     },
@@ -215,7 +222,7 @@ const SellModal: React.FC<SellModalProps> = ({ variant, nftToSell, onDismiss, on
           lowestPrice={lowestPrice}
           continueToNextStage={continueToNextStage}
           continueToTransferStage={continueToTransferStage}
-          onSuccessSale={onSuccess}
+          onSuccessEditProfile={onSuccessEditProfile}
         />
       )}
       {stage === SellingStage.SET_PRICE && (

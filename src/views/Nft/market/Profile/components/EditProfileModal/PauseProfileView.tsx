@@ -13,7 +13,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 
 interface PauseProfilePageProps extends InjectedModalProps {
-  onSuccess: () => void
+  onSuccess?: () => void
 }
 
 const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSuccess }) => {
@@ -41,7 +41,9 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSucces
       // Re-fetch profile
       await dispatch(fetchProfile(account))
       toastSuccess(t('Profile Paused!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      onSuccess()
+      if (onSuccess) {
+        onSuccess()
+      }
       onDismiss()
     } else {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))

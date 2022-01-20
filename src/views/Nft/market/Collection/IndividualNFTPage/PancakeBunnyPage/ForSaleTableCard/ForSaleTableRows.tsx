@@ -37,7 +37,9 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account, onSuccessSale 
 
   const ownNft = account ? nft.marketData.currentSeller === account.toLowerCase() : false
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
-  const [onPresentAdjustPriceModal] = useModal(<SellModal variant="edit" nftToSell={nft} onSuccess={onSuccessSale} />)
+  const [onPresentAdjustPriceModal] = useModal(
+    <SellModal variant="edit" nftToSell={nft} onSuccessSale={onSuccessSale} />,
+  )
 
   return (
     <>

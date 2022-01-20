@@ -19,16 +19,24 @@ interface SellNftProps {
   variant: 'sell' | 'edit'
 }
 
-const UserNfts: React.FC<{ nfts: NftToken[]; isLoading: boolean; onSuccess: () => void }> = ({
-  nfts,
-  isLoading,
-  onSuccess,
-}) => {
+const UserNfts: React.FC<{
+  nfts: NftToken[]
+  isLoading: boolean
+  onSuccessSale: () => void
+  onSuccessEditProfile: () => void
+}> = ({ nfts, isLoading, onSuccessSale, onSuccessEditProfile }) => {
   const [clickedProfileNft, setClickedProfileNft] = useState<ProfileNftProps>({ nft: null, location: null })
   const [clickedSellNft, setClickedSellNft] = useState<SellNftProps>({ nft: null, location: null, variant: null })
-  const [onPresentProfileNftModal] = useModal(<ProfileNftModal nft={clickedProfileNft.nft} onSuccess={onSuccess} />)
+  const [onPresentProfileNftModal] = useModal(
+    <ProfileNftModal nft={clickedProfileNft.nft} onSuccess={onSuccessEditProfile} />,
+  )
   const [onPresentSellModal] = useModal(
-    <SellModal variant={clickedSellNft.variant} nftToSell={clickedSellNft.nft} onSuccess={onSuccess} />,
+    <SellModal
+      variant={clickedSellNft.variant}
+      nftToSell={clickedSellNft.nft}
+      onSuccessSale={onSuccessSale}
+      onSuccessEditProfile={onSuccessEditProfile}
+    />,
   )
   const { t } = useTranslation()
 

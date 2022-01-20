@@ -13,7 +13,7 @@ interface SellStageProps {
   lowestPrice: number
   continueToNextStage: () => void
   continueToTransferStage: () => void
-  onSuccessSale: () => void
+  onSuccessEditProfile?: () => void
 }
 
 // Initial stage when user wants to put their NFT for sale or transfer to another wallet
@@ -22,7 +22,7 @@ const SellStage: React.FC<SellStageProps> = ({
   lowestPrice,
   continueToNextStage,
   continueToTransferStage,
-  onSuccessSale,
+  onSuccessEditProfile,
 }) => {
   const { t } = useTranslation()
   const { hasProfile } = useProfile()
@@ -31,7 +31,7 @@ const SellStage: React.FC<SellStageProps> = ({
       ? nftToSell.attributes[0].value
       : nftToSell.tokenId
 
-  const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccessSale} />, false)
+  const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccessEditProfile} />, false)
 
   return (
     <>

@@ -35,7 +35,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nftToDisplay.marketData?.currentAskPrice))
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nftToDisplay} />)
   const [onPresentAdjustPriceModal] = useModal(
-    <SellModal variant="edit" nftToSell={cheapestNft} onSuccess={onSuccessSale} />,
+    <SellModal variant="edit" nftToSell={cheapestNft} onSuccessSale={onSuccessSale} />,
   )
 
   const actionButton = onlyOwnNftsOnSale ? (
