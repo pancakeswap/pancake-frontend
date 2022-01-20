@@ -1,6 +1,6 @@
 import { Activity, NftToken, TokenIdWithCollectionAddress } from 'state/nftMarket/types'
 import { getNftsFromCollectionApi, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
-import { uniqBy } from 'lodash'
+import uniqBy from 'lodash/uniqBy'
 import { pancakeBunniesAddress } from '../../constants'
 
 export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<NftToken[]> => {
