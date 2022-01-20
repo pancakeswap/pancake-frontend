@@ -14,10 +14,10 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
       $isMobileOnly={isMobileOnly}
     >
       {items.map(
-        ({ label, href, iconName }) =>
+        ({ label, href, iconName, itemProps }) =>
           label && (
             <Box key={label} mr="20px">
-              <MenuItem href={href} isActive={href === activeItem} variant="subMenu">
+              <MenuItem href={href} isActive={href === activeItem} variant="subMenu" {...itemProps}>
                 {iconName && (
                   <IconComponent
                     color={href === activeItem ? "secondary" : "textSubtle"}
