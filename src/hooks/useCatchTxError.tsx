@@ -114,7 +114,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
                     <ToastDescriptionWithTx txHash={tx.hash}>
                       {isRevertedError
                         ? `Transaction failed with error: ${reason}`
-                        : 'Transaction failed. For detail error message:'}
+                        : 'Transaction failed. For detailed error message:'}
                     </ToastDescriptionWithTx>,
                   )
                 }
