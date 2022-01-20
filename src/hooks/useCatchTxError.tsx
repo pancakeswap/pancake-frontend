@@ -21,6 +21,7 @@ type ErrorData = {
 
 type TxError = {
   data: ErrorData
+  error: string
 }
 
 // -32000 is insufficient funds for gas * price + value
@@ -33,10 +34,19 @@ export default function useCatchTxError(): CatchTxErrorReturn {
   const [loading, setLoading] = useState(false)
 
   const handleNormalError = useCallback(
-    (error) => {
+    (error, tx?: TxReponse) => {
       logError(error)
 
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      if (tx) {
+        toastError(
+          t('Error'),
+          <ToastDescriptionWithTx txHash={tx.hash}>
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+          </ToastDescriptionWithTx>,
+        )
+      } else {
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      }
     },
     [t, toastError],
   )
@@ -68,19 +78,42 @@ export default function useCatchTxError(): CatchTxErrorReturn {
             library
               .call(tx, tx.blockNumber)
               .then(() => {
-                handleNormalError(error)
+                handleNormalError(error, tx)
               })
-              .catch((err: TxError) => {
+              .catch((err: any) => {
                 if (isGasEstimationError(err)) {
-                  handleNormalError(error)
+                  handleNormalError(error, tx)
                 } else {
                   logError(err)
+
+                  let recursiveErr = err
+
+                  let reason: string | undefined
+
+                  // for MetaMask
+                  if (recursiveErr?.data?.message) {
+                    reason = recursiveErr?.data?.message
+                  } else {
+                    // for other wallets
+                    // Reference
+                    // https://github.com/Uniswap/interface/blob/ac962fb00d457bc2c4f59432d7d6d7741443dfea/src/hooks/useSwapCallback.tsx#L216-L222
+                    while (recursiveErr) {
+                      reason = recursiveErr.reason ?? recursiveErr.message ?? reason
+                      recursiveErr = recursiveErr.error ?? recursiveErr.data?.originalError
+                    }
+                  }
+
+                  const REVERT_STR = 'execution reverted: '
+                  const indexInfo = reason?.indexOf(REVERT_STR)
+                  const isRevertedError = indexInfo >= 0
+
+                  if (isRevertedError) reason = reason.substr(indexInfo + REVERT_STR.length)
 
                   toastError(
                     'Failed',
                     <ToastDescriptionWithTx txHash={tx.hash}>
-                      {err?.data?.message
-                        ? `Transaction failed with error: ${err?.data?.message}`
+                      {isRevertedError
+                        ? `Transaction failed with error: ${reason}`
                         : 'Transaction failed. For detail error message:'}
                     </ToastDescriptionWithTx>,
                   )
