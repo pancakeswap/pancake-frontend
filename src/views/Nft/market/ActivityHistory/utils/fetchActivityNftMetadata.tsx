@@ -12,18 +12,20 @@ export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<
     bunniesMetadata = await getNftsFromCollectionApi(pancakeBunniesAddress)
   }
 
-  const pbNfts = activities
-    .filter((activity) => activity.nft.collection.id.toLowerCase() === pancakeBunniesAddress.toLowerCase())
-    .map((activity) => {
-      const { name: collectionName } = bunniesMetadata.data[activity.nft.otherId].collection
-      return {
-        ...bunniesMetadata.data[activity.nft.otherId],
-        tokenId: activity.nft.tokenId,
-        attributes: [{ traitType: 'bunnyId', value: activity.nft.otherId }],
-        collectionAddress: activity.nft.collection.id,
-        collectionName,
-      }
-    })
+  const pbNfts = bunniesMetadata
+    ? activities
+        .filter((activity) => activity.nft.collection.id.toLowerCase() === pancakeBunniesAddress.toLowerCase())
+        .map((activity) => {
+          const { name: collectionName } = bunniesMetadata.data[activity.nft.otherId].collection
+          return {
+            ...bunniesMetadata.data[activity.nft.otherId],
+            tokenId: activity.nft.tokenId,
+            attributes: [{ traitType: 'bunnyId', value: activity.nft.otherId }],
+            collectionAddress: activity.nft.collection.id,
+            collectionName,
+          }
+        })
+    : []
 
   const activityNftTokenIds = uniqBy(
     activities
