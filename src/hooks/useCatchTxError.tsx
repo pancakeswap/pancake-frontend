@@ -1,10 +1,11 @@
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import ethers from 'ethers'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 import useToast from 'hooks/useToast'
-import { logError } from 'utils/sentry'
+import { logError, isUserRejected } from 'utils/sentry'
 
 export type TxReponse = ethers.providers.TransactionResponse | null
 
@@ -40,6 +41,10 @@ export default function useCatchTxError(): CatchTxErrorFunction {
     try {
       await fn()
     } catch (error: any) {
+      if (isUserRejected(error)) {
+        return null
+      }
+
       const tx: TxReponse = getTx()
       if (!tx) {
         handleNormalError(error)
@@ -54,7 +59,15 @@ export default function useCatchTxError(): CatchTxErrorFunction {
               handleNormalError(error)
             } else {
               logError(err)
-              toastError('TX Error', err?.data?.message)
+
+              toastError(
+                'Failed',
+                <ToastDescriptionWithTx txHash={tx.hash}>
+                  {err?.data?.message
+                    ? `Transaction failed with error: ${err?.data?.message}`
+                    : 'Transaction failed. For detail error message:'}
+                </ToastDescriptionWithTx>,
+              )
             }
           })
       }
