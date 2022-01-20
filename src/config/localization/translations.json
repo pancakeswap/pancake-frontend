@@ -1822,5 +1822,8 @@
   "per 1d: ~$%amount%": "per 1d: ~$%amount%",
   "per 7d: ~$%amount%": "per 7d: ~$%amount%",
   "per 30d: ~$%amount%": "per 30d: ~$%amount%",
-  "per 365d: ~$%amount%": "per 365d: ~$%amount%"
+  "per 365d: ~$%amount%": "per 365d: ~$%amount%",
+  "ITAM has been rebranded as ITAM CUBE.": "ITAM has been rebranded as ITAM CUBE.",
+  "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.",
+  "All transfers of the old ITAM token will be disabled after the swap.": "All transfers of the old ITAM token will be disabled after the swap."
 }
