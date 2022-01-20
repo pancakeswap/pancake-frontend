@@ -4,6 +4,10 @@ import { useAppDispatch } from 'state'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
 import { FetchStatus } from 'config/constants/types'
+import erc721Abi from 'config/abi/erc721.json'
+import { useSWRMulticall } from 'hooks/useSWRContract'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
+
 import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
 import { NftActivityFilter, NftFilter, NftToken } from './types'
@@ -97,6 +101,35 @@ export const useGetAllBunniesByBunnyId = (bunnyId: string) => {
 
 export const useGetNFTInitializationState = () => {
   return useSelector((state: State) => state.nftMarket.initializationState)
+}
+
+export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
+  const nftApprovalCalls = useMemo(
+    () =>
+      nftsInWallet.map((nft: NftToken) => {
+        const { tokenId, collectionAddress } = nft
+
+        return {
+          address: collectionAddress,
+          name: 'getApproved',
+          params: [tokenId],
+        }
+      }),
+    [nftsInWallet],
+  )
+
+  const { data } = useSWRMulticall(erc721Abi, nftApprovalCalls)
+
+  const approvedTokenIds = Array.isArray(data)
+    ? data
+        .flat()
+        .reduce(
+          (acc, address, index) => ({ ...acc, [nftsInWallet[index].tokenId]: getPancakeProfileAddress() === address }),
+          {},
+        )
+    : null
+
+  return { data: approvedTokenIds }
 }
 
 export const useGetNftFilters = (collectionAddress: string) => {

@@ -7,7 +7,7 @@ export interface Call {
   params?: any[] // Function params
 }
 
-interface MulticallOptions {
+export interface MulticallOptions {
   requireSuccess?: boolean
 }
 
@@ -45,6 +45,7 @@ export const multicallv2 = async <T = any>(
     target: call.address.toLowerCase(),
     callData: itf.encodeFunctionData(call.name, call.params),
   }))
+
   const returnData = await multi.tryAggregate(requireSuccess, calldata)
   const res = returnData.map((call, i) => {
     const [result, data] = call

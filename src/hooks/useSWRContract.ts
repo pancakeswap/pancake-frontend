@@ -3,6 +3,7 @@ import { FetchStatus } from 'config/constants/types'
 import { Contract } from 'ethers'
 import { FormatTypes } from 'ethers/lib/utils'
 import useSWR, { Middleware, SWRConfiguration, KeyedMutator } from 'swr'
+import { multicallv2, MulticallOptions, Call } from 'utils/multicall'
 
 declare module 'swr' {
   interface SWRResponse<Data = any, Error = any> {
@@ -127,6 +128,9 @@ export const immutableMiddleware: Middleware = (useSWRNext) => (key, fetcher, co
   return useSWRNext(key, fetcher, config)
 }
 
+export function useSWRMulticall(abi: any[], calls: Call[], options: MulticallOptions = { requireSuccess: true }) {
+  return useSWR(calls, () => multicallv2(abi, calls, options), { revalidateIfStale: false, revalidateOnFocus: false })
+}
 // dev only
 export const loggerMiddleware: Middleware = (useSWRNext) => {
   return (key, fetcher, config) => {
