@@ -21,6 +21,22 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       },
     ],
   },
+  {
+    label: t('Vault'),
+    icon: 'Mint',
+    href: '/mint',
+    showItemsOnMobile: false,
+    items: [
+      {
+        label: t('Mint'),
+        href: '/mint',
+      },
+      {
+        label: t('Withdraw'),
+        href: '/withdraw',
+      },
+    ],
+  },
   // {
   //   label: t('Earn'),
   //   href: '/farms',

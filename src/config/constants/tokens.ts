@@ -20,7 +20,14 @@ export const mainnetTokens = defineTokens({
     'https://polygon.technology/',
   ),
   // bnb here points to the wbnb contract. Wherever the currency MATIC is required, conditional checks for the symbol 'MATIC' can be used
-  bnb: new Token(MAINNET, '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', 18, 'MATIC', 'MATIC', 'https://polygon.technology/'),
+  bnb: new Token(
+    MAINNET,
+    '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+    18,
+    'MATIC',
+    'MATIC',
+    'https://polygon.technology/',
+  ),
   cake: new Token(
     MAINNET,
     '0x08C776113974dA137d913a4488929Bd3A07FBec6',
@@ -29,6 +36,8 @@ export const mainnetTokens = defineTokens({
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  pe: new Token(MAINNET, '0x08C776113974dA137d913a4488929Bd3A07FBec6', 6, 'PEFAKE', 'Peronio', 'https://peronio.ar/'),
+  usdt: new Token(MAINNET, '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', 6, 'USDT', 'Tether USD', 'https://tether.to/'),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
   beta: new Token(
     MAINNET,
@@ -70,14 +79,6 @@ export const mainnetTokens = defineTokens({
     'DAI',
     'Dai Stablecoin',
     'https://www.makerdao.com/',
-  ),
-  usdt: new Token(
-    MAINNET,
-    '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-    6,
-    'USDT',
-    'Tether USD',
-    'https://tether.to/',
   ),
   btcb: new Token(
     MAINNET,

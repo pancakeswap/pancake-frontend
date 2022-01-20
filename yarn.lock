@@ -16541,10 +16541,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-peronio-uikit@^0.63.2:
-  version "0.63.2"
-  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.63.2.tgz#f15cad21beeaee515d0f3ac35b40e2723f71887d"
-  integrity sha512-rgeyGhcib1lTTjPCi5vfYAMll0L5P4Xyi5PIhVJHI5gi3yrUAfBFdi4BRXO8lybXdqPg4MhMl8bfstuWBY6Szw==
+peronio-uikit@^0.63.3:
+  version "0.63.3"
+  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.63.3.tgz#8779502d06434f6c93a15ca11c3c5006e61281d2"
+  integrity sha512-0mJQ2bogE4MzQa9Z6wm9UJhNqdTx1rBuIHAzYMbkZEvbVjzBVcWhdspI4dMfpAE3VQVDvRAwhBSkSsthhZsytQ==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"

@@ -1599,7 +1599,7 @@
   "Meet the Artist": "Conocer al artista",
   "Please confirm your transaction in wallet.": "Confirma la transacción que está en el monedero.",
   "View market": "Ver el mercado",
-  "Mint": "Crear",
+  "Mint": "Emitir",
   "Max purchased": "Máximo comprado",
   "Fair, Random, Rare": "Justo, al azar, raro",
   "Activate your profile": "Activa tu perfil",
@@ -1758,5 +1758,10 @@
   "initial emission": "emisión inicial'",
   "gave the peso a handicap": "le dimos una ventaja al peso",
   "15% Interest": "15% Interés",
-  "Provided by AAVE": "Provisto por AAVE"
+  "Provided by AAVE": "Provisto por AAVE",
+  "Vault": "Bóveda",
+  "Withdraw": "Retirar",
+  "Deposit USDT to mint PE tokens": "Depositá USDT para emitir PE",
+  "You'll get this amount of PE": "Vas a recibir esta cantidad de PE",
+  "Mint Anyway": "Emitir igual"
 }

@@ -40,6 +40,8 @@ import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
 
+import { mainnetTokens } from '../../config/constants/tokens'
+
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
 }
@@ -129,15 +131,10 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
 
 // Get swap price for single token disregarding slippage and price impact
 export function useSingleTokenSwapInfo(): { [key: string]: number } {
-  const {
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currencyId: outputCurrencyId },
-  } = useSwapState()
-
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
-  const token0Address = getTokenAddress(inputCurrencyId)
-  const token1Address = getTokenAddress(outputCurrencyId)
+  const inputCurrency = useCurrency(mainnetTokens.usdt.address)
+  const outputCurrency = useCurrency(mainnetTokens.pe.address)
+  const token0Address = getTokenAddress(mainnetTokens.usdt.address)
+  const token1Address = getTokenAddress(mainnetTokens.pe.address)
 
   const parsedAmount = tryParseAmount('1', inputCurrency ?? undefined)
 
@@ -166,16 +163,104 @@ export function useDerivedSwapInfo(): {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
+  const { independentField, typedValue, recipient } = useSwapState()
+
+  const inputCurrency = useCurrency(mainnetTokens.usdt.address)
+  const outputCurrency = useCurrency(mainnetTokens.pe.address)
+  const recipientLookup = useENS(recipient ?? undefined)
+  const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
+
+  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
+    inputCurrency ?? undefined,
+    outputCurrency ?? undefined,
+  ])
+
+  const isExactIn: boolean = independentField === Field.INPUT
+  const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+
+  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
+  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
+
+  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+
+  const currencyBalances = {
+    [Field.INPUT]: relevantTokenBalances[0],
+    [Field.OUTPUT]: relevantTokenBalances[1],
+  }
+
+  const currencies: { [field in Field]?: Currency } = {
+    [Field.INPUT]: inputCurrency ?? undefined,
+    [Field.OUTPUT]: outputCurrency ?? undefined,
+  }
+
+  let inputError: string | undefined
+  if (!account) {
+    inputError = t('Connect Wallet')
+  }
+
+  if (!parsedAmount) {
+    inputError = inputError ?? t('Enter an amount')
+  }
+
+  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+    inputError = inputError ?? t('Select a token')
+  }
+
+  const formattedTo = isAddress(to)
+  if (!to || !formattedTo) {
+    inputError = inputError ?? t('Enter a recipient')
+  } else if (
+    BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
+    (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
+    (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
+  ) {
+    inputError = inputError ?? t('Invalid recipient')
+  }
+
+  const [allowedSlippage] = useUserSlippageTolerance()
+
+  const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+
+  // compare input balance to max input based on version
+  const [balanceIn, amountIn] = [
+    currencyBalances[Field.INPUT],
+    slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
+  ]
+
+  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
+    inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
+  }
+
+  return {
+    currencies,
+    currencyBalances,
+    parsedAmount,
+    v2Trade: v2Trade ?? undefined,
+    inputError,
+  }
+}
+
+// TODO: Replace with functionality
+export function useMintTokenInfo(): {
+  currencies: { [field in Field]?: Currency }
+  currencyBalances: { [field in Field]?: CurrencyAmount }
+  parsedAmount: CurrencyAmount | undefined
+  v2Trade: Trade | undefined
+  inputError?: string
+} {
+  const { account } = useActiveWeb3React()
+  const { t } = useTranslation()
+
   const {
     independentField,
     typedValue,
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+    // [Field.INPUT]: { currencyId: inputCurrencyId },
+    // [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient,
   } = useSwapState()
 
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
+  const inputCurrency = useCurrency(mainnetTokens.usdt.address)
+  const outputCurrency = useCurrency(mainnetTokens.pe.address)
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
 
