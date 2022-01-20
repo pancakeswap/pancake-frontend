@@ -6,9 +6,7 @@ import { isAddress } from 'utils'
 import { FetchStatus } from 'config/constants/types'
 import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
-import { NftActivityFilter, NftFilter, NftToken, UserNftsState } from './types'
-
-const MAX_GEN0_ID = 4
+import { NftActivityFilter, NftFilter, NftToken } from './types'
 
 export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
@@ -99,15 +97,6 @@ export const useGetAllBunniesByBunnyId = (bunnyId: string) => {
 
 export const useGetNFTInitializationState = () => {
   return useSelector((state: State) => state.nftMarket.initializationState)
-}
-
-export const useUserNfts = (): UserNftsState => {
-  return useSelector((state: State) => state.nftMarket.data.user)
-}
-
-export const useHasGen0Nfts = (): boolean => {
-  const userNfts = useSelector((state: State) => state.nftMarket.data.user)
-  return userNfts.nfts.some((nft) => nft.attributes && Number(nft.attributes[0]?.value) <= MAX_GEN0_ID)
 }
 
 export const useGetNftFilters = (collectionAddress: string) => {

@@ -33,9 +33,10 @@ interface OwnerCardProps {
   nft: NftToken
   isOwnNft: boolean
   nftIsProfilePic: boolean
+  onSuccess: () => void
 }
 
-const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic }) => {
+const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const bnbBusdPrice = useBNBBusdPrice()
@@ -46,7 +47,7 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic })
 
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
   const [onPresentAdjustPriceModal] = useModal(
-    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} />,
+    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} onSuccess={onSuccess} />,
   )
 
   return (

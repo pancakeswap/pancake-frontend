@@ -16,9 +16,10 @@ interface MainNFTCardProps {
   nft: NftToken
   isOwnNft: boolean
   nftIsProfilePic: boolean
+  onSuccess: () => void
 }
 
-const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePic }) => {
+const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
 
@@ -26,9 +27,9 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, currentAskPriceAsNumber)
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
   const [onPresentSellModal] = useModal(
-    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} />,
+    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} onSuccess={onSuccess} />,
   )
-  const [onEditProfileModal] = useModal(<EditProfileModal />, false)
+  const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccess} />, false)
 
   const ownerButtons = (
     <Flex flexDirection={['column', 'column', 'row']}>

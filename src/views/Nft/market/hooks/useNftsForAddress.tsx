@@ -1,13 +1,14 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import isEmpty from 'lodash/isEmpty'
 import { useGetCollections } from 'state/nftMarket/hooks'
-import { NftLocation, NftToken } from 'state/nftMarket/types'
+import { NftLocation } from 'state/nftMarket/types'
 import { Profile } from 'state/types'
 import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
+import { isAddress } from 'utils'
+import useSWR from 'swr'
+import { FetchStatus } from 'config/constants/types'
 
 const useNftsForAddress = (account: string, profile: Profile, isProfileFetching: boolean) => {
-  const [combinedNfts, setCombinedNfts] = useState<NftToken[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const collections = useGetCollections()
 
   const hasProfileNft = profile?.tokenId
@@ -25,20 +26,14 @@ const useNftsForAddress = (account: string, profile: Profile, isProfileFetching:
     return null
   }, [profileNftTokenId, profileNftCollectionAddress, hasProfileNft])
 
-  useEffect(() => {
-    const getNfts = async () => {
-      const completeNftData = await getCompleteAccountNftData(account, collections, profileNftWithCollectionAddress)
-      setCombinedNfts(completeNftData)
-      setIsLoading(false)
+  const { status, data, mutate } = useSWR([account, collections, isProfileFetching, 'userNfts'], async () => {
+    if (!isProfileFetching && !isEmpty(collections) && isAddress(account)) {
+      return getCompleteAccountNftData(account, collections, profileNftWithCollectionAddress)
     }
+    return []
+  })
 
-    if (!isProfileFetching && !isEmpty(collections)) {
-      setIsLoading(true)
-      getNfts()
-    }
-  }, [account, collections, isProfileFetching, profileNftWithCollectionAddress])
-
-  return { nfts: combinedNfts, isLoading }
+  return { nfts: data ?? [], isLoading: status !== FetchStatus.Fetched, refresh: mutate }
 }
 
 export default useNftsForAddress

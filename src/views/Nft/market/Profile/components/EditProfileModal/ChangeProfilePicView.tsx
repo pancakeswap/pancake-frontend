@@ -14,8 +14,8 @@ import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
-import { useUserNfts } from 'state/nftMarket/hooks'
 import { NftLocation } from 'state/nftMarket/types'
+import useNftsForAddress from '../../../hooks/useNftsForAddress'
 
 type ChangeProfilePicPageProps = InjectedModalProps
 
@@ -25,11 +25,11 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     collectionAddress: null,
   })
   const { t } = useTranslation()
-  const { nfts } = useUserNfts()
-  const dispatch = useAppDispatch()
-  const { profile } = useProfile()
-  const profileContract = useProfileContract()
   const { account, library } = useWeb3React()
+  const { isLoading: isProfileLoading, profile } = useProfile()
+  const { nfts } = useNftsForAddress(account, profile, isProfileLoading)
+  const dispatch = useAppDispatch()
+  const profileContract = useProfileContract()
   const { toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
 

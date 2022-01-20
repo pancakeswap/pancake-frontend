@@ -12,9 +12,11 @@ import { useWeb3React } from '@web3-react/core'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 
-type PauseProfilePageProps = InjectedModalProps
+interface PauseProfilePageProps extends InjectedModalProps {
+  onSuccess: () => void
+}
 
-const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
+const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
   const { profile } = useProfile()
@@ -39,6 +41,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
       // Re-fetch profile
       await dispatch(fetchProfile(account))
       toastSuccess(t('Profile Paused!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+      onSuccess()
       onDismiss()
     } else {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
