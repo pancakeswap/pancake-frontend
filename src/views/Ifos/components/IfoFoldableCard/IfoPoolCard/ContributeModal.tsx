@@ -23,8 +23,10 @@ import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useToast from 'hooks/useToast'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
 import tokens from 'config/constants/tokens'
@@ -73,6 +75,7 @@ const ContributeModal: React.FC<Props> = ({
   const userPoolCharacteristics = walletIfoData[poolId]
 
   const { currency } = ifo
+  const { toastSuccess } = useToast()
   const { limitPerUserInLP } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { contract } = walletIfoData
@@ -104,6 +107,14 @@ const ContributeModal: React.FC<Props> = ({
           {
             gasPrice,
           },
+        )
+      },
+      onApproveSuccess: ({ receipt }) => {
+        toastSuccess(
+          t('Successfully Enabled!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
+          </ToastDescriptionWithTx>,
         )
       },
       onConfirm: () => {
