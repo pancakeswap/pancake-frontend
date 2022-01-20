@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import ethers from 'ethers'
@@ -9,7 +9,10 @@ import { logError, isUserRejected } from 'utils/sentry'
 
 export type TxReponse = ethers.providers.TransactionResponse | null
 
-export type CatchTxErrorFunction = (fn: () => Promise<void>, getTx: () => TxReponse, final: () => void) => Promise<void>
+export type CatchTxErrorReturn = {
+  fetchWithCatchTxError: (fn: () => Promise<TxReponse>) => Promise<ethers.providers.TransactionReceipt>
+  loading: boolean
+}
 
 type ErrorData = {
   code: number
@@ -23,10 +26,11 @@ type TxError = {
 // -32000 is insufficient funds for gas * price + value
 const isGasEstimationError = (err: TxError): boolean => err?.data?.code === -32000
 
-export default function useCatchTxError(): CatchTxErrorFunction {
+export default function useCatchTxError(): CatchTxErrorReturn {
   const { library } = useWeb3React()
   const { t } = useTranslation()
-  const { toastError } = useToast()
+  const { toastError, toastSuccess } = useToast()
+  const [loading, setLoading] = useState(false)
 
   const handleNormalError = useCallback(
     (error) => {
@@ -37,42 +41,64 @@ export default function useCatchTxError(): CatchTxErrorFunction {
     [t, toastError],
   )
 
-  return async (fn: () => Promise<void>, getTx: () => TxReponse, final: () => void): Promise<void> => {
-    try {
-      await fn()
-    } catch (error: any) {
-      if (isUserRejected(error)) {
-        return null
-      }
+  const fetchWithCatchTxError = useCallback(
+    async (callTx: () => Promise<TxReponse>): Promise<ethers.providers.TransactionReceipt | null> => {
+      let tx: TxReponse = null
 
-      const tx: TxReponse = getTx()
-      if (!tx) {
-        handleNormalError(error)
-      } else {
-        library
-          .call(tx, tx.blockNumber)
-          .then(() => {
+      try {
+        setLoading(true)
+
+        /**
+         * https://github.com/vercel/swr/pull/1450
+         *
+         * wait for useSWRMutation finished, so we could apply SWR in case manually trigger tx call
+         */
+        tx = await callTx()
+
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+
+        const receipt = await tx.wait()
+
+        return receipt
+      } catch (error: any) {
+        if (!isUserRejected(error)) {
+          if (!tx) {
             handleNormalError(error)
-          })
-          .catch((err: TxError) => {
-            if (isGasEstimationError(err)) {
-              handleNormalError(error)
-            } else {
-              logError(err)
+          } else {
+            library
+              .call(tx, tx.blockNumber)
+              .then(() => {
+                handleNormalError(error)
+              })
+              .catch((err: TxError) => {
+                if (isGasEstimationError(err)) {
+                  handleNormalError(error)
+                } else {
+                  logError(err)
 
-              toastError(
-                'Failed',
-                <ToastDescriptionWithTx txHash={tx.hash}>
-                  {err?.data?.message
-                    ? `Transaction failed with error: ${err?.data?.message}`
-                    : 'Transaction failed. For detail error message:'}
-                </ToastDescriptionWithTx>,
-              )
-            }
-          })
+                  toastError(
+                    'Failed',
+                    <ToastDescriptionWithTx txHash={tx.hash}>
+                      {err?.data?.message
+                        ? `Transaction failed with error: ${err?.data?.message}`
+                        : 'Transaction failed. For detail error message:'}
+                    </ToastDescriptionWithTx>,
+                  )
+                }
+              })
+          }
+        }
+      } finally {
+        setLoading(false)
       }
-    } finally {
-      final()
-    }
+
+      return null
+    },
+    [handleNormalError, toastError, library, toastSuccess, t],
+  )
+
+  return {
+    fetchWithCatchTxError,
+    loading,
   }
 }
