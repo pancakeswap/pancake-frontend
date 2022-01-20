@@ -5,3 +5,13 @@ package = "@netlify/plugin-nextjs"
 publish = ".next"
 [context.deploy-preview]
 ignore = "if [[ $HEAD == *feature/* ]]; then exit 1; else exit 0; fi"
+
+[[headers]]
+for = "/_next/static/*"
+[headers.values]
+cache-control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/images/*"
+[headers.values]
+cache-control = "public, no-transform, immutable, max-age=604800"
