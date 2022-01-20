@@ -110,31 +110,31 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
     // so only fetch the nft data if active
     if (isActive) {
       const apiRes = await getNftApi(collectionAddress, tokenId.toString())
-
-      nftToken = {
-        tokenId: apiRes.tokenId,
-        name: apiRes.name,
-        collectionName: apiRes.collection.name,
-        collectionAddress,
-        description: apiRes.description,
-        attributes: apiRes.attributes,
-        createdAt: apiRes.createdAt,
-        updatedAt: apiRes.updatedAt,
-        image: {
-          original: apiRes.image?.original,
-          thumbnail: apiRes.image?.thumbnail,
-        },
+      if (apiRes) {
+        nftToken = {
+          tokenId: apiRes.tokenId,
+          name: apiRes.name,
+          collectionName: apiRes.collection.name,
+          collectionAddress,
+          description: apiRes.description,
+          attributes: apiRes.attributes,
+          createdAt: apiRes.createdAt,
+          updatedAt: apiRes.updatedAt,
+          image: {
+            original: apiRes.image?.original,
+            thumbnail: apiRes.image?.thumbnail,
+          },
+        }
+        // Save the preview image in a cookie so it can be used on the exchange
+        Cookies.set(
+          `profile_${address}`,
+          {
+            username,
+            avatar: `${nftToken.image.thumbnail}`,
+          },
+          { domain: 'pancakeswap.finance', secure: true, expires: 30 },
+        )
       }
-
-      // Save the preview image in a cookie so it can be used on the exchange
-      Cookies.set(
-        `profile_${address}`,
-        {
-          username,
-          avatar: `${nftToken.image.thumbnail}`,
-        },
-        { domain: 'pancakeswap.finance', secure: true, expires: 30 },
-      )
     }
 
     const profile = {
