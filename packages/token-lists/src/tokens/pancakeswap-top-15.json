@@ -16,14 +16,6 @@
     "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d/logo.png"
   },
   {
-    "name": "SafeMoon",
-    "symbol": "SAFEMOON",
-    "address": "0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3",
-    "chainId": 56,
-    "decimals": 9,
-    "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3/logo.png"
-  },
-  {
     "name": "AlpacaToken",
     "symbol": "ALPACA",
     "address": "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F",

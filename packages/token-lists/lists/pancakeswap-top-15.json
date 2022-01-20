@@ -1,9 +1,9 @@
 {
   "name": "PancakeSwap Top 15",
-  "timestamp": "2021-06-21T01:44:14.518Z",
+  "timestamp": "2022-01-18T20:02:40.550Z",
   "version": {
     "major": 2,
-    "minor": 16,
+    "minor": 17,
     "patch": 0
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
@@ -75,14 +75,6 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x9d70a3EE3079A6FA2bB16591414678b7Ad91f0b5/logo.png"
-    },
-    {
-      "name": "SafeMoon",
-      "symbol": "SAFEMOON",
-      "address": "0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3",
-      "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3/logo.png"
     },
     {
       "name": "TRONPAD.network",

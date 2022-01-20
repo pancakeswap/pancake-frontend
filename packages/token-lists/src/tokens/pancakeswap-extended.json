@@ -64,14 +64,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63.png"
   },
   {
-    "name": "SafeMoon",
-    "symbol": "SAFEMOON",
-    "address": "0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3",
-    "chainId": 56,
-    "decimals": 9,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3.png"
-  },
-  {
     "name": "Alpaca",
     "symbol": "ALPACA",
     "address": "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F",

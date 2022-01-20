@@ -32,7 +32,6 @@ const blacklist: string[] = [
   "0x2170ed0880ac9a755fd29b2688956bd959f933f8", // ETH
   "0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51", // BUNNY
   "0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63", // XVS
-  "0x8076c74c5e3f5852037f31ff0093eeb8c8add8d3", // SAFEMOON
   "0x8f0528ce5ef7b51152a59745befdd91d97091d2f", // ALPACA
   "0x7083609fce4d1d8dc0c979aab8c869ea2c873402", // DOT
   "0x4e6415a5727ea08aae4580057187923aec331227", // FINE
