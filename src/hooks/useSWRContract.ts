@@ -2,6 +2,7 @@
 import { FetchStatus } from 'config/constants/types'
 import { Contract } from 'ethers'
 import { FormatTypes } from 'ethers/lib/utils'
+import { useMemo } from 'react'
 import useSWR, { Middleware, SWRConfiguration, KeyedMutator } from 'swr'
 
 declare module 'swr' {
@@ -98,16 +99,21 @@ const serializesContractKey = <T extends Contract = Contract>(
 export type UseSWRContractKey<T extends Contract = Contract, N extends ContractMethodName<T> = any> =
   | UseSWRContractArrayKey<T, N>
   | UseSWRContractObjectKey<T, N>
+
+/**
+ * @example
+ * const key = [contract, 'methodName', [params]]
+ * const key = { contract, methodName, params }
+ * const { data, error, mutate } = useSWRContract(key)
+ */
 export function useSWRContract<
   Error = any,
   T extends Contract = Contract,
   N extends ContractMethodName<T> = ContractMethodName<T>,
-  // until typescript is upgrade
-  Data = any,
-  // Data = Awaited<ReturnType<T['functions'][N]>>,
+  Data = Awaited<ReturnType<T['callStatic'][N]>>,
 >(key?: UseSWRContractKey<T, N> | null, config: SWRConfiguration<Data, Error> = {}) {
   const { contract, methodName, params } = getContractKey(key) || {}
-  const serializedKeys = serializesContractKey(key)
+  const serializedKeys = useMemo(() => serializesContractKey(key), [key])
 
   return useSWR<Data, Error>(
     serializedKeys,

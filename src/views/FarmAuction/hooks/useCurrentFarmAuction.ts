@@ -4,8 +4,8 @@ import { useFarmAuctionContract } from 'hooks/useContract'
 import { Auction, ConnectedBidder, Bidder } from 'config/constants/types'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import useLastUpdated from 'hooks/useLastUpdated'
-import { useFastFresh } from 'hooks/useRefresh'
 import { AUCTION_BIDDERS_TO_FETCH } from 'config'
+import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { sortAuctionBidders, processAuctionData } from '../helpers'
 
@@ -16,12 +16,10 @@ export const useCurrentFarmAuction = (account: string) => {
   // Used to force-refresh bidders after successful bid
   const { lastUpdated, setLastUpdated } = useLastUpdated()
 
-  const fastRefresh = useFastFresh()
-
   const farmAuctionContract = useFarmAuctionContract(false)
 
   // Get latest auction id and its data
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     const fetchCurrentAuction = async () => {
       try {
         const auctionId = await farmAuctionContract.currentAuctionId()
@@ -33,10 +31,10 @@ export const useCurrentFarmAuction = (account: string) => {
       }
     }
     fetchCurrentAuction()
-  }, [farmAuctionContract, fastRefresh])
+  }, [farmAuctionContract])
 
   // Fetch bidders for current auction
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     const fetchBidders = async () => {
       try {
         const [currentAuctionBidders] = await farmAuctionContract.viewBidsPerAuction(
@@ -53,7 +51,7 @@ export const useCurrentFarmAuction = (account: string) => {
     if (currentAuction) {
       fetchBidders()
     }
-  }, [currentAuction, farmAuctionContract, lastUpdated, fastRefresh])
+  }, [currentAuction, farmAuctionContract, lastUpdated])
 
   // Check if connected wallet is whitelisted
   useEffect(() => {

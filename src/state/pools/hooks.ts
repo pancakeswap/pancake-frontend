@@ -3,9 +3,9 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useFastFresh, useSlowFresh } from 'hooks/useRefresh'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getAprData } from 'views/Pools/helpers'
+import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -26,9 +26,8 @@ import { fetchFarmsPublicDataAsync, nonArchivedFarms } from '../farms'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
-  const slowRefresh = useSlowFresh()
 
-  useEffect(() => {
+  useSlowRefreshEffect(() => {
     const fetchPoolsDataWithFarms = async () => {
       const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
       await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
@@ -39,17 +38,17 @@ export const useFetchPublicPoolsData = () => {
     }
 
     fetchPoolsDataWithFarms()
-  }, [dispatch, slowRefresh])
+  }, [dispatch])
 }
 
 export const useFetchUserPools = (account) => {
-  const fastRefresh = useFastFresh()
   const dispatch = useAppDispatch()
-  useEffect(() => {
+
+  useFastRefreshEffect(() => {
     if (account) {
       dispatch(fetchPoolsUserDataAsync(account))
     }
-  }, [account, dispatch, fastRefresh])
+  }, [account, dispatch])
 }
 
 export const usePools = (): { pools: DeserializedPool[]; userDataLoaded: boolean } => {
@@ -70,16 +69,15 @@ export const usePool = (sousId: number): { pool: DeserializedPool; userDataLoade
 
 export const useFetchCakeVault = () => {
   const { account } = useWeb3React()
-  const fastRefresh = useFastFresh()
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     dispatch(fetchCakeVaultPublicData())
-  }, [dispatch, fastRefresh])
+  }, [dispatch])
 
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     dispatch(fetchCakeVaultUserData({ account }))
-  }, [dispatch, fastRefresh, account])
+  }, [dispatch, account])
 
   useEffect(() => {
     dispatch(fetchCakeVaultFees())
@@ -88,19 +86,18 @@ export const useFetchCakeVault = () => {
 
 export const useFetchIfoPool = (fetchCakePool = true) => {
   const { account } = useWeb3React()
-  const fastRefresh = useFastFresh()
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     batch(() => {
       if (fetchCakePool) {
         dispatch(fetchCakePoolPublicDataAsync())
       }
       dispatch(fetchIfoPoolPublicData())
     })
-  }, [dispatch, fastRefresh, fetchCakePool])
+  }, [dispatch, fetchCakePool])
 
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     if (account) {
       batch(() => {
         dispatch(fetchIfoPoolUserAndCredit({ account }))
@@ -109,7 +106,7 @@ export const useFetchIfoPool = (fetchCakePool = true) => {
         }
       })
     }
-  }, [dispatch, fastRefresh, account, fetchCakePool])
+  }, [dispatch, account, fetchCakePool])
 
   useEffect(() => {
     dispatch(fetchIfoPoolFees())

@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { request, gql } from 'graphql-request'
 import { GRAPH_HEALTH } from 'config/constants/endpoints'
 import { simpleRpcProvider } from 'utils/providers'
-import { useSlowFresh } from './useRefresh'
+import { useSlowRefreshEffect } from './useRefreshEffect'
 
 export enum SubgraphStatus {
   OK,
@@ -31,8 +31,7 @@ const useSubgraphHealth = () => {
     blockDifference: 0,
   })
 
-  const slowRefresh = useSlowFresh()
-  useEffect(() => {
+  useSlowRefreshEffect(() => {
     const getSubgraphHealth = async () => {
       try {
         const { indexingStatusForCurrentVersion } = await request(
@@ -80,7 +79,7 @@ const useSubgraphHealth = () => {
       }
     }
     getSubgraphHealth()
-  }, [slowRefresh])
+  }, [])
 
   return sgHealth
 }

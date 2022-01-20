@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import tokens from 'config/constants/tokens'
-import { FAST_INTERVAL, SLOW_INTERVAL } from 'contexts/RefreshContext'
+import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import { ethers } from 'ethers'
 import useSWR from 'swr'
 import { BIG_ZERO } from 'utils/bigNumber'

@@ -9,7 +9,7 @@ import { NftToken } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
 import useLastUpdated from 'hooks/useLastUpdated'
 import usePreviousValue from 'hooks/usePreviousValue'
-import { useFastFresh } from 'hooks/useRefresh'
+import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { PANCAKE_BUNNIES_UPDATE_FREQUENCY } from 'config'
 import { useGetCollectionDistributionPB } from 'views/Nft/market/hooks/useGetCollectionDistribution'
@@ -37,7 +37,6 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
   const previousPriceSort = usePreviousValue(priceSort)
   const { isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fetchMorePancakeBunnies } =
     useFetchByBunnyIdAndUpdate(bunnyId)
-  const fastRefresh = useFastFresh()
   const isWindowVisible = useIsWindowVisible()
   const bunniesSortedByPrice = orderBy(allBunnies, (nft) => parseFloat(nft.marketData.currentAskPrice))
   const allBunniesFromOtherSellers = account
@@ -53,7 +52,7 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
     isFetching: isFetchingDistribution,
   } = useGetCollectionDistributionPB()
 
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     // Fetch first 30 NFTs on page load
     // And then query every FETCH_NEW_NFTS_INTERVAL_MS in case some new (cheaper) NFTs were listed
     const msSinceLastUpdate = Date.now() - latestPancakeBunniesUpdateAt
@@ -76,7 +75,6 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
     fetchMorePancakeBunnies,
     isUpdatingPancakeBunnies,
     latestPancakeBunniesUpdateAt,
-    fastRefresh,
     isWindowVisible,
     lastUpdated,
     previousLastUpdated,

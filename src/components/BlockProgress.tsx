@@ -1,6 +1,6 @@
 import React from 'react'
 import { Progress, ProgressProps } from '@pancakeswap/uikit'
-import { useBlock } from 'state/block/hooks'
+import { useCurrentBlock } from 'state/block/hooks'
 
 interface BlockProgressProps extends ProgressProps {
   startBlock: number
@@ -8,7 +8,7 @@ interface BlockProgressProps extends ProgressProps {
 }
 
 const BlockProgress: React.FC<BlockProgressProps> = ({ startBlock, endBlock, ...props }) => {
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
   const rawProgress = ((currentBlock - startBlock) / (endBlock - startBlock)) * 100
   const progress = rawProgress <= 100 ? rawProgress : 100
 

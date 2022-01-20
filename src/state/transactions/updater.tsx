@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useBlock } from 'state/block/hooks'
+import { useCurrentBlock } from 'state/block/hooks'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import { AppDispatch, AppState } from '../index'
@@ -33,7 +33,7 @@ export default function Updater(): null {
   const { library, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
 
   const dispatch = useDispatch<AppDispatch>()
   const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)

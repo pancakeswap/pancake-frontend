@@ -7,7 +7,6 @@ import { ThemeProvider } from 'styled-components'
 import { useThemeManager } from 'state/user/hooks'
 import { getLibrary } from 'utils/web3React'
 import { LanguageProvider } from 'contexts/Localization'
-import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ToastsProvider } from 'contexts/ToastsContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
@@ -24,15 +23,13 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
         <ToastsProvider>
           <ThemeProviderWrapper>
             <LanguageProvider>
-              <RefreshContextProvider>
-                <SWRConfig
-                  value={{
-                    use: [fetchStatusMiddleware],
-                  }}
-                >
-                  <ModalProvider>{children}</ModalProvider>
-                </SWRConfig>
-              </RefreshContextProvider>
+              <SWRConfig
+                value={{
+                  use: [fetchStatusMiddleware],
+                }}
+              >
+                <ModalProvider>{children}</ModalProvider>
+              </SWRConfig>
             </LanguageProvider>
           </ThemeProviderWrapper>
         </ToastsProvider>

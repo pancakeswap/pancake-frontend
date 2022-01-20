@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Flex, Link, Skeleton, Text, TimerIcon } from '@pancakeswap/uikit'
 import { getBscScanLink } from 'utils'
 import { DeserializedPool } from 'state/types'
-import { useBlock } from 'state/block/hooks'
+import { useCurrentBlock } from 'state/block/hooks'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
@@ -19,7 +19,7 @@ const StyledCell = styled(BaseCell)`
 
 const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
   const { sousId, totalStaked, startBlock, endBlock, isFinished } = pool
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
   const { t } = useTranslation()
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =

@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useFastFresh } from 'hooks/useRefresh'
+import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { State } from '../types'
 import { fetchCurrentLotteryId, fetchCurrentLottery, fetchUserTicketsAndLotteries, fetchPublicLotteries } from '.'
 import { useProcessLotteryResponse } from './helpers'
@@ -33,7 +33,6 @@ export const useGetLotteryGraphDataById = (lotteryId: string) => {
 
 export const useFetchLottery = () => {
   const { account } = useWeb3React()
-  const fastRefresh = useFastFresh()
   const dispatch = useAppDispatch()
   const currentLotteryId = useGetCurrentLotteryId()
 
@@ -42,14 +41,14 @@ export const useFetchLottery = () => {
     dispatch(fetchCurrentLotteryId())
   }, [dispatch])
 
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     if (currentLotteryId) {
       // Get historical lottery data from nodes +  last 100 subgraph entries
       dispatch(fetchPublicLotteries({ currentLotteryId }))
       // get public data for current lottery
       dispatch(fetchCurrentLottery({ currentLotteryId }))
     }
-  }, [dispatch, currentLotteryId, fastRefresh])
+  }, [dispatch, currentLotteryId])
 
   useEffect(() => {
     // get user tickets for current lottery, and user lottery subgraph data
