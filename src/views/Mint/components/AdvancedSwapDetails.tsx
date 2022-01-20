@@ -8,12 +8,13 @@ import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'util
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
-import FormattedPriceImpact from './FormattedPriceImpact'
 import SwapRoute from './SwapRoute'
 
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
   const { t } = useTranslation()
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
+  // const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const markupRate = 5
+  const markupAmount = 2.33
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
 
@@ -24,13 +25,6 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
           <Text fontSize="14px" color="textSubtle">
             {isExactIn ? t('Minimum received') : t('Maximum sold')}
           </Text>
-          <QuestionHelper
-            text={t(
-              'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
-            )}
-            ml="4px"
-            placement="top-start"
-          />
         </RowFixed>
         <RowFixed>
           <Text fontSize="14px">
@@ -44,38 +38,22 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
       <RowBetween>
         <RowFixed>
           <Text fontSize="14px" color="textSubtle">
-            {t('Price Impact')}
-          </Text>
-          <QuestionHelper
-            text={t('The difference between the market price and estimated price due to trade size.')}
-            ml="4px"
-            placement="top-start"
-          />
-        </RowFixed>
-        <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
-      </RowBetween>
-
-      <RowBetween>
-        <RowFixed>
-          <Text fontSize="14px" color="textSubtle">
-            {t('Liquidity Provider Fee')}
+            {t('Markup (%markup%%)', { markup: markupRate })}
           </Text>
           <QuestionHelper
             text={
               <>
-                <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: '0.25%' })}</Text>
-                <Text>- {t('%amount% to LP token holders', { amount: '0.17%' })}</Text>
-                <Text>- {t('%amount% to the Treasury', { amount: '0.03%' })}</Text>
-                <Text>- {t('%amount% towards CAKE buyback and burn', { amount: '0.05%' })}</Text>
+                <Text mb="12px">{t('The vault charges a fee for minting')}</Text>
+                <Text>- {t('The markup is %amount% from the USDT amount', { amount: '5%' })}</Text>
+                <Text>- {t('This is already included in total USDT input above')}</Text>
+                <Text>- {t('This additional fee will increase the total Peronio collateral')}</Text>
               </>
             }
             ml="4px"
             placement="top-start"
           />
         </RowFixed>
-        <Text fontSize="14px">
-          {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
-        </Text>
+        <Text fontSize="14px">USDT {markupAmount.toFixed(2)}</Text>
       </RowBetween>
     </AutoColumn>
   )

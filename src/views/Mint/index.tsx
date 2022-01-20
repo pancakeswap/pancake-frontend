@@ -13,8 +13,6 @@ import {
   // useMatchBreakpoints,
   // ArrowUpDownIcon,
 } from 'peronio-uikit'
-import { useIsTransactionUnsupported } from 'hooks/Trades'
-import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 // import Footer from 'components/Menu/Footer'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
@@ -26,7 +24,6 @@ import ConfirmSwapModal from './components/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
 import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
-import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import { ArrowWrapper, SwapCallbackError, Wrapper } from './components/styleds'
 import TradePrice from './components/TradePrice'
 import ImportTokenWarningModal from './components/ImportTokenWarningModal'
@@ -55,7 +52,6 @@ import {
   // useExchangeChartManager,
 } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { computeTradePriceBreakdown } from '../../utils/prices'
 import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
 // import SwapWarningModal from './components/SwapWarningModal'
@@ -120,9 +116,6 @@ export default function Mint({ history }: RouteComponentProps) {
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useMintTokenInfo()
-
-  // console.info('v2Trade:')
-  // console.dir(v2Trade)
 
   const {
     wrapType,
@@ -206,14 +199,9 @@ export default function Mint({ history }: RouteComponentProps) {
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
 
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
-
   const [singleHopOnly] = useUserSingleHopOnly()
 
   const handleSwap = useCallback(() => {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
-      return
-    }
     if (!swapCallback) {
       return
     }
@@ -230,7 +218,7 @@ export default function Mint({ history }: RouteComponentProps) {
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t])
+  }, [swapCallback, tradeToConfirm])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -278,8 +266,6 @@ export default function Mint({ history }: RouteComponentProps) {
       onUserInput(Field.INPUT, maxAmountInput.toExact())
     }
   }, [maxAmountInput, onUserInput])
-
-  const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
   const [onPresentImportTokenWarningModal] = useModal(
     <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap')} />,
@@ -418,11 +404,7 @@ export default function Mint({ history }: RouteComponentProps) {
                     )}
                   </AutoColumn>
                   <Box mt="1rem">
-                    {swapIsUnsupported ? (
-                      <Button width="100%" disabled mb="4px">
-                        {t('Unsupported Asset')}
-                      </Button>
-                    ) : !account ? (
+                    {!account ? (
                       <ConnectWalletButton width="100%" />
                     ) : showWrap ? (
                       <Button width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
@@ -525,11 +507,7 @@ export default function Mint({ history }: RouteComponentProps) {
                   </Box>
                 </Wrapper>
               </AppBody>
-              {!swapIsUnsupported ? (
-                trade && <AdvancedSwapDetailsDropdown trade={trade} />
-              ) : (
-                <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
-              )}
+              {trade && <AdvancedSwapDetailsDropdown trade={trade} />}
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
         </Flex>
