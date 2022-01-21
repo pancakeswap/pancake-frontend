@@ -1,17 +1,12 @@
 describe('Farms Page', () => {
-  beforeEach(() => {
-    cy.visit('/farms')
-  })
-
   it('loads live farms', () => {
+    cy.visit('/farms')
     cy.get('#farms-table').should('be.visible')
   })
 
   it('loads finished farms', () => {
-    cy.get('#finished-farms-button').click()
-    cy.get('#staked-only-farms').click()
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(30000)
+    cy.visit('/farms/history')
+    cy.get('#staked-only-farms').click({ force: true })
     cy.get('#farms-table').should('be.visible')
   })
 })

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import { request, gql } from 'graphql-request'
-import { INFO_CLIENT } from 'config/constants/endpoints'
 import { TOKEN_BLACKLIST } from 'config/constants/info'
+import { gql } from 'graphql-request'
+import { useEffect, useState } from 'react'
+import { infoClient } from 'utils/graphql'
 import { getDeltaTimestamps } from 'views/Info/utils/infoQueryHelpers'
 
 interface TopTokensResponse {
@@ -29,7 +29,7 @@ const fetchTopTokens = async (timestamp24hAgo: number): Promise<string[]> => {
         }
       }
     `
-    const data = await request<TopTokensResponse>(INFO_CLIENT, query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo })
+    const data = await infoClient.request<TopTokensResponse>(query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo })
     // tokenDayDatas id has compound id "0xTOKENADDRESS-NUMBERS", extracting token address with .split('-')
     return data.tokenDayDatas.map((t) => t.id.split('-')[0])
   } catch (error) {
