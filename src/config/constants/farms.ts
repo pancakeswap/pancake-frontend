@@ -52,6 +52,16 @@ const farms: SerializedFarmConfig[] = [
     isCommunity: true,
   },
   {
+    pid: 505,
+    lpSymbol: 'FUSE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6483F166b9E4310A165a55FEa04F867499aded06',
+    },
+    token: serializedTokens.fuse,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 504,
     lpSymbol: 'PRL-BUSD LP',
     lpAddresses: {
