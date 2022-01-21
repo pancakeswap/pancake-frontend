@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 505,
+    lpSymbol: 'FUSE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6483F166b9E4310A165a55FEa04F867499aded06',
+    },
+    token: serializedTokens.fuse,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 386,
     lpSymbol: 'HOTCROSS-BNB LP',
     lpAddresses: {
@@ -50,16 +60,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
-  },
-  {
-    pid: 505,
-    lpSymbol: 'FUSE-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x6483F166b9E4310A165a55FEa04F867499aded06',
-    },
-    token: serializedTokens.fuse,
-    quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 504,
