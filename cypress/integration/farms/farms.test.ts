@@ -8,8 +8,8 @@ describe('Farms Page', () => {
   })
 
   it('loads finished farms', () => {
-    cy.get('#finished-farms-button').click()
-    cy.get('#staked-only-farms').click()
+    cy.get('#finished-farms-button').click({ force: true })
+    cy.get('#staked-only-farms').click({ force: true })
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(30000)
     cy.get('#farms-table').should('be.visible')
