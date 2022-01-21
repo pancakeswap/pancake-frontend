@@ -1,6 +1,6 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-01-18T20:02:00.007Z",
+  "timestamp": "2022-01-21T10:38:38.678Z",
   "version": {
     "major": 2,
     "minor": 16,
@@ -867,6 +867,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x2090c8295769791ab7A3CF1CC6e0AA19F35e441A.png"
+    },
+    {
+      "name": "Fuse Token",
+      "symbol": "FUSE",
+      "address": "0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3.png"
     },
     {
       "name": "GoldMiner",

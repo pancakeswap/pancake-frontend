@@ -2198,5 +2198,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xe369fec23380f9F14ffD07a1DC4b7c1a9fdD81c9.png"
+  },
+  {
+    "name": "Fuse Token",
+    "symbol": "FUSE",
+    "address": "0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3.png"
   }
 ]
