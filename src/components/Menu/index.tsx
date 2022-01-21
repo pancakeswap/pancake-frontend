@@ -27,7 +27,7 @@ const Menu = (props) => {
   return (
     <UikitMenu
       linkComponent={(linkProps) => {
-        return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} />
+        return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
       }}
       userMenu={<UserMenu />}
       globalMenu={<GlobalSettings />}
