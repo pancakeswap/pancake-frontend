@@ -2206,5 +2206,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3.png"
+  },
+  {
+    "name": "Parallel Token",
+    "symbol": "PRL",
+    "address": "0xd07e82440A395f3F3551b42dA9210CD1Ef4f8B24",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xd07e82440A395f3F3551b42dA9210CD1Ef4f8B24.png"
   }
 ]

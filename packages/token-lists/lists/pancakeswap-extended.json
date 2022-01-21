@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-01-21T10:38:38.678Z",
+  "timestamp": "2022-01-21T12:59:32.588Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 62
+    "patch": 63
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1523,6 +1523,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x3Fcca8648651E5b974DD6d3e50F61567779772A8.png"
+    },
+    {
+      "name": "Parallel Token",
+      "symbol": "PRL",
+      "address": "0xd07e82440A395f3F3551b42dA9210CD1Ef4f8B24",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xd07e82440A395f3F3551b42dA9210CD1Ef4f8B24.png"
     },
     {
       "name": "Prometeus",
