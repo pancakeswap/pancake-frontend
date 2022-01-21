@@ -1,16 +1,16 @@
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
-import ethers from 'ethers'
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 
 import useToast from 'hooks/useToast'
 import { logError, isUserRejected } from 'utils/sentry'
 
-export type TxReponse = ethers.providers.TransactionResponse | null
+export type TxReponse = TransactionResponse | null
 
 export type CatchTxErrorReturn = {
-  fetchWithCatchTxError: (fn: () => Promise<TxReponse>) => Promise<ethers.providers.TransactionReceipt>
+  fetchWithCatchTxError: (fn: () => Promise<TxReponse>) => Promise<TransactionReceipt>
   loading: boolean
 }
 
@@ -52,7 +52,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
   )
 
   const fetchWithCatchTxError = useCallback(
-    async (callTx: () => Promise<TxReponse>): Promise<ethers.providers.TransactionReceipt | null> => {
+    async (callTx: () => Promise<TxReponse>): Promise<TransactionReceipt | null> => {
       let tx: TxReponse = null
 
       try {
