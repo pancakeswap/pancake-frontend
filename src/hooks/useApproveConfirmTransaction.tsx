@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef } from 'react'
+import React, { useEffect, useReducer, useRef, useCallback } from 'react'
 import noop from 'lodash/noop'
 import { useWeb3React } from '@web3-react/core'
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
@@ -96,6 +96,43 @@ const useApproveConfirmTransaction = ({
   const handlePreApprove = useRef(onRequiresApproval)
   const { toastSuccess, toastError } = useToast()
 
+  const handleApprove = useCallback(async () => {
+    try {
+      const tx = await onApprove()
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+      dispatch({ type: 'approve_sending' })
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        dispatch({ type: 'approve_receipt' })
+        onApproveSuccess({ state, receipt })
+      }
+    } catch (error) {
+      dispatch({ type: 'approve_error' })
+      logError(error)
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    }
+  }, [toastSuccess, onApprove, t, onApproveSuccess, state, toastError])
+
+  const handleConfirm = useCallback(
+    async (params = {}) => {
+      dispatch({ type: 'confirm_sending' })
+      try {
+        const tx = await onConfirm(params)
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        const receipt = await tx.wait()
+        if (receipt.status) {
+          dispatch({ type: 'confirm_receipt' })
+          onSuccess({ state, receipt })
+        }
+      } catch (error) {
+        dispatch({ type: 'confirm_error' })
+        logError(error)
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      }
+    },
+    [onConfirm, dispatch, onSuccess, state, t, toastError, toastSuccess],
+  )
+
   // Check if approval is necessary, re-check if account changes
   useEffect(() => {
     if (account && handlePreApprove.current) {
@@ -114,38 +151,8 @@ const useApproveConfirmTransaction = ({
     isConfirmed: state.confirmState === 'success',
     hasApproveFailed: state.approvalState === 'fail',
     hasConfirmFailed: state.confirmState === 'fail',
-    handleApprove: async () => {
-      try {
-        const tx = await onApprove()
-        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-        dispatch({ type: 'approve_sending' })
-        const receipt = await tx.wait()
-        if (receipt.status) {
-          dispatch({ type: 'approve_receipt' })
-          onApproveSuccess({ state, receipt })
-        }
-      } catch (error) {
-        dispatch({ type: 'approve_error' })
-        logError(error)
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      }
-    },
-    handleConfirm: async (params = {}) => {
-      dispatch({ type: 'confirm_sending' })
-      try {
-        const tx = await onConfirm(params)
-        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-        const receipt = await tx.wait()
-        if (receipt.status) {
-          dispatch({ type: 'confirm_receipt' })
-          onSuccess({ state, receipt })
-        }
-      } catch (error) {
-        dispatch({ type: 'confirm_error' })
-        logError(error)
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      }
-    },
+    handleApprove,
+    handleConfirm,
   }
 }
 
