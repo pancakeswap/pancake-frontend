@@ -6,28 +6,26 @@ import { NftProfileLayout } from 'views/Nft/market/Profile'
 import SubMenu from 'views/Nft/market/Profile/components/SubMenu'
 import UnconnectedProfileNfts from 'views/Nft/market/Profile/components/UnconnectedProfileNfts'
 import UserNfts from 'views/Nft/market/Profile/components/UserNfts'
-import useNftsForAddress from 'views/Nft/market/Profile/hooks/useNftsForAddress'
+import useNftsForAddress from 'views/Nft/market/hooks/useNftsForAddress'
 
 const NftProfilePage = () => {
   const { account } = useWeb3React()
   const accountAddress = useRouter().query.accountAddress as string
   const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()
+  const { profile: profileHookState, isFetching: isProfileFetching } = useProfileForAddress(accountAddress)
+  const { profile } = profileHookState || {}
+  const { nfts, isLoading: isNftLoading, refresh } = useNftsForAddress(accountAddress, profile, isProfileFetching)
 
   return (
     <>
       <SubMenu />
-      {isConnectedProfile ? <UserNfts /> : <UnconnectedProfileNftsContainer />}
+      {isConnectedProfile ? (
+        <UserNfts nfts={nfts} isLoading={isNftLoading} onSuccess={refresh} />
+      ) : (
+        <UnconnectedProfileNfts nfts={nfts} isLoading={isNftLoading} />
+      )}
     </>
   )
-}
-
-const UnconnectedProfileNftsContainer = () => {
-  const accountAddress = useRouter().query.accountAddress as string
-  const { profile: profileHookState, isFetching: isProfileFetching } = useProfileForAddress(accountAddress)
-  const { profile } = profileHookState || {}
-  const { nfts, isLoading: isNftLoading } = useNftsForAddress(accountAddress, profile, isProfileFetching)
-
-  return <UnconnectedProfileNfts nfts={nfts} isLoading={isNftLoading} />
 }
 
 NftProfilePage.Layout = NftProfileLayout

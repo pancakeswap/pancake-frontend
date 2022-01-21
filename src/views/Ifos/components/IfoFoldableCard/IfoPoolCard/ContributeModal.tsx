@@ -23,8 +23,10 @@ import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useToast from 'hooks/useToast'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
 import tokens from 'config/constants/tokens'
@@ -73,13 +75,15 @@ const ContributeModal: React.FC<Props> = ({
   const userPoolCharacteristics = walletIfoData[poolId]
 
   const { currency } = ifo
+  const { toastSuccess } = useToast()
   const { limitPerUserInLP } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { contract } = walletIfoData
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const raisingTokenContract = useERC20(currency.address)
+  const raisingTokenContractReader = useERC20(currency.address, false)
+  const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
   const label = currency === tokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
@@ -88,7 +92,7 @@ const ContributeModal: React.FC<Props> = ({
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
         try {
-          const response = await raisingTokenContract.allowance(account, contract.address)
+          const response = await raisingTokenContractReader.allowance(account, contract.address)
           const currentAllowance = new BigNumber(response.toString())
           return currentAllowance.gt(0)
         } catch (error) {
@@ -96,9 +100,22 @@ const ContributeModal: React.FC<Props> = ({
         }
       },
       onApprove: () => {
-        return callWithGasPrice(raisingTokenContract, 'approve', [contract.address, ethers.constants.MaxUint256], {
-          gasPrice,
-        })
+        return callWithGasPrice(
+          raisingTokenContractApprover,
+          'approve',
+          [contract.address, ethers.constants.MaxUint256],
+          {
+            gasPrice,
+          },
+        )
+      },
+      onApproveSuccess: ({ receipt }) => {
+        toastSuccess(
+          t('Successfully Enabled!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
+          </ToastDescriptionWithTx>,
+        )
       },
       onConfirm: () => {
         return callWithGasPrice(

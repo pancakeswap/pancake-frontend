@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import { getAchievements } from 'state/achievements/helpers'
-import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
+import useSWRImmutable from 'swr/immutable'
 import { State, ProfileState } from '../types'
 import { fetchProfile, fetchProfileAvatar, fetchProfileUsername } from '.'
 import { getProfile } from './helpers'
@@ -31,11 +31,12 @@ export const useProfileForAddress = (address: string) => {
 }
 
 export const useAchievementsForAddress = (address: string) => {
-  const { data, status } = useSWRImmutable([address, 'achievements'], () => getAchievements(address))
+  const { data, status, mutate } = useSWRImmutable([address, 'achievements'], () => getAchievements(address))
 
   return {
     achievements: data || [],
     isFetching: status === FetchStatus.Fetching,
+    refresh: mutate,
   }
 }
 

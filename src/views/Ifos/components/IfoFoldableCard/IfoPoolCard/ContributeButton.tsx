@@ -1,5 +1,5 @@
 import React from 'react'
-import { useBlock } from 'state/block/hooks'
+import { useCurrentBlock } from 'state/block/hooks'
 import BigNumber from 'bignumber.js'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -25,7 +25,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   const { limitPerUserInLP } = publicPoolCharacteristics
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
   const { balance: userCurrencyBalance } = useTokenBalance(ifo.currency.address)
 
   // Refetch all the data, and display a message when fetching is done

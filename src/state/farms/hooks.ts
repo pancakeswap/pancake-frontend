@@ -1,15 +1,15 @@
-import { useEffect, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from 'state'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
+import { farmsConfig } from 'config/constants'
+import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
+import { useMemo } from 'react'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from 'state'
+import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { farmsConfig } from 'config/constants'
-import { useSlowFresh, useFastFresh } from 'hooks/useRefresh'
-import { deserializeToken } from 'state/user/hooks/helpers'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, nonArchivedFarms } from '.'
-import { State, SerializedFarm, DeserializedFarmUserData, DeserializedFarm, DeserializedFarmsState } from '../types'
+import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, SerializedFarm, State } from '../types'
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
   return {
@@ -45,22 +45,20 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
 
 export const usePollFarmsPublicData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
-  const slowRefresh = useSlowFresh()
 
-  useEffect(() => {
+  useSlowRefreshEffect(() => {
     const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
     const pids = farmsToFetch.map((farmToFetch) => farmToFetch.pid)
 
     dispatch(fetchFarmsPublicDataAsync(pids))
-  }, [includeArchive, dispatch, slowRefresh])
+  }, [includeArchive, dispatch])
 }
 
 export const usePollFarmsWithUserData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
-  const slowRefresh = useSlowFresh()
   const { account } = useWeb3React()
 
-  useEffect(() => {
+  useSlowRefreshEffect(() => {
     const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
     const pids = farmsToFetch.map((farmToFetch) => farmToFetch.pid)
 
@@ -69,7 +67,7 @@ export const usePollFarmsWithUserData = (includeArchive = false) => {
     if (account) {
       dispatch(fetchFarmUserDataAsync({ account, pids }))
     }
-  }, [includeArchive, dispatch, slowRefresh, account])
+  }, [includeArchive, dispatch, account])
 }
 
 /**
@@ -79,11 +77,10 @@ export const usePollFarmsWithUserData = (includeArchive = false) => {
  */
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
-  const fastRefresh = useFastFresh()
 
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     dispatch(fetchFarmsPublicDataAsync([251, 252]))
-  }, [dispatch, fastRefresh])
+  }, [dispatch])
 }
 
 export const useFarms = (): DeserializedFarmsState => {

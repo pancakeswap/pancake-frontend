@@ -35,13 +35,14 @@ const LocationIcons = {
 
 interface CollectibleRowProps {
   nft: NftToken
+  onSuccess: () => void
 }
 
-const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft }) => {
+const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, onSuccess }) => {
   const { t } = useTranslation()
   const modalVariant = nft.location === NftLocation.WALLET ? 'sell' : 'edit'
-  const [onPresentProfileNftModal] = useModal(<ProfileNftModal nft={nft} />)
-  const [onPresentModal] = useModal(<SellModal variant={modalVariant} nftToSell={nft} />)
+  const [onPresentProfileNftModal] = useModal(<ProfileNftModal nft={nft} onSuccess={onSuccess} />)
+  const [onPresentModal] = useModal(<SellModal variant={modalVariant} nftToSell={nft} onSuccess={onSuccess} />)
   return (
     <CollectibleRowContainer
       gridTemplateColumns="96px 1fr"
@@ -78,9 +79,10 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft }) => {
 
 interface CollectibleByLocationProps {
   nft: NftToken
+  onSuccess: () => void
 }
 
-const CollectibleByLocation: React.FC<CollectibleByLocationProps> = ({ nft }) => {
+const CollectibleByLocation: React.FC<CollectibleByLocationProps> = ({ nft, onSuccess }) => {
   const { t } = useTranslation()
   const IconComponent = LocationIcons[nft.location]
   return (
@@ -91,7 +93,7 @@ const CollectibleByLocation: React.FC<CollectibleByLocationProps> = ({ nft }) =>
           {t(nft.location)}
         </Text>
       </Grid>
-      <CollectibleRow key={nft.tokenId} nft={nft} />
+      <CollectibleRow key={nft.tokenId} nft={nft} onSuccess={onSuccess} />
     </Flex>
   )
 }
@@ -100,9 +102,10 @@ interface ManageNFTsCardProps {
   nft?: NftToken
   isLoading: boolean
   isOwnNft: boolean
+  onSuccess: () => void
 }
 
-const ManageNFTsCard: React.FC<ManageNFTsCardProps> = ({ nft, isLoading, isOwnNft }) => {
+const ManageNFTsCard: React.FC<ManageNFTsCardProps> = ({ nft, isLoading, isOwnNft, onSuccess }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
 
@@ -122,12 +125,12 @@ const ManageNFTsCard: React.FC<ManageNFTsCardProps> = ({ nft, isLoading, isOwnNf
           <Skeleton mb="8px" />
         </Box>
       )}
-      {!isLoading && !hasThisNft && (
+      {account && !isLoading && !hasThisNft && (
         <Text px="16px" pb="16px" color="textSubtle">
           {t('You don’t have this item.')}
         </Text>
       )}
-      {!isLoading && hasThisNft && <CollectibleByLocation nft={nft} />}
+      {!isLoading && hasThisNft && <CollectibleByLocation nft={nft} onSuccess={onSuccess} />}
     </Box>
   )
   return <ExpandableCard title={t('Manage Yours')} icon={<CogIcon width="24px" height="24px" />} content={content} />

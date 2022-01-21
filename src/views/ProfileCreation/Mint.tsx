@@ -9,9 +9,6 @@ import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import useToast from 'hooks/useToast'
-import { useAppDispatch } from 'state'
-import { fetchUserNfts } from 'state/nftMarket/reducer'
-import { useGetCollections } from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiSingleTokenData } from 'state/nftMarket/types'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
@@ -29,9 +26,7 @@ const Mint: React.FC = () => {
   const [selectedBunnyId, setSelectedBunnyId] = useState<string>('')
   const [starterNfts, setStarterNfts] = useState<MintNftData[]>([])
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
-  const collections = useGetCollections()
   const { toastSuccess } = useToast()
-  const dispatch = useAppDispatch()
 
   const { account } = useWeb3React()
   const cakeContract = useCake()
@@ -79,7 +74,6 @@ const Mint: React.FC = () => {
       },
       onSuccess: () => {
         toastSuccess(t('Success'), t('You have minted your starter NFT'))
-        dispatch(fetchUserNfts({ account, collections }))
         actions.nextStep()
       },
     })

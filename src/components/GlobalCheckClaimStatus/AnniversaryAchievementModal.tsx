@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import confetti from 'canvas-confetti'
 import { useTranslation } from 'contexts/Localization'
 import { useAnniversaryAchievementContract } from 'hooks/useContract'
-import { delay } from 'lodash'
+import delay from 'lodash/delay'
 
 const AnniversaryImage = styled.img`
   border-radius: 50%;

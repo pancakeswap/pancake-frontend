@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { sumBy } from 'lodash'
+import sumBy from 'lodash/sumBy'
 import { useAppDispatch } from 'state'
 import { useWeb3React } from '@web3-react/core'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap/uikit'
 import { useProfile } from 'state/profile/hooks'
 import { Achievement } from 'state/types'
 import { addPoints } from 'state/profile'
-import { addAchievement } from 'state/achievements'
 import { useTranslation } from 'contexts/Localization'
 import { getClaimableIfoData } from 'utils/achievements'
 import AchievementRow from './AchievementRow'
 
-const ClaimPointsCallout = () => {
+const ClaimPointsCallout: React.FC<{ onSuccess?: () => void }> = ({ onSuccess = null }) => {
   const [claimableAchievements, setClaimableAchievement] = useState<Achievement[]>([])
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -30,12 +29,13 @@ const ClaimPointsCallout = () => {
   }, [account, dispatch, setClaimableAchievement])
 
   const handleCollectSuccess = (achievement: Achievement) => {
-    dispatch(addAchievement(achievement))
     dispatch(addPoints(achievement.points))
-
     setClaimableAchievement((prevClaimableAchievements) =>
       prevClaimableAchievements.filter((prevClaimableAchievement) => prevClaimableAchievement.id !== achievement.id),
     )
+    if (onSuccess) {
+      onSuccess()
+    }
   }
 
   if (!profile?.isActive) {

@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import achievementsReducer from './achievements'
 import blockReducer from './block'
 import burn from './burn/reducer'
 import farmsReducer from './farms'
@@ -34,7 +33,6 @@ const persistConfig = {
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
-    achievements: achievementsReducer,
     block: blockReducer,
     farms: farmsReducer,
     pools: poolsReducer,

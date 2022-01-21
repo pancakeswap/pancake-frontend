@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
-import { orderBy } from 'lodash'
+import orderBy from 'lodash/orderBy'
 import { VaultKey, DeserializedPool } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
 import { useCakeVault, useIfoPoolVault, usePools } from 'state/pools/hooks'

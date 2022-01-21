@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { WrappedTokenInfo } from 'state/lists/hooks'
 import SwapWarningTokensConfig from 'config/constants/swapWarningTokens'
 import SafemoonWarning from './SafemoonWarning'
+import ItamWarning from './ItamWarning'
 import BondlyWarning from './BondlyWarning'
 import Acknowledgement from './Acknowledgement'
 
@@ -57,6 +58,10 @@ const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDis
     [SwapWarningTokensConfig.bondly.address]: {
       symbol: SwapWarningTokensConfig.bondly.symbol,
       component: <BondlyWarning />,
+    },
+    [SwapWarningTokensConfig.itam.address]: {
+      symbol: SwapWarningTokensConfig.itam.symbol,
+      component: <ItamWarning />,
     },
   }
 

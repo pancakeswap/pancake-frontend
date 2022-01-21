@@ -29,15 +29,7 @@ export interface State {
       isUpdatingPancakeBunnies: boolean
       latestPancakeBunniesUpdateAt: number
     }
-    users: Record<string, User> // string is the address
-    user: UserNftsState
   }
-}
-
-export interface UserNftsState {
-  userNftsInitializationState: UserNftInitializationState
-  nfts: NftToken[]
-  activity: UserActivity
 }
 
 export interface Transaction {

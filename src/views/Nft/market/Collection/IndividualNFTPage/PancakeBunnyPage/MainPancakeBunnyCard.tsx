@@ -15,12 +15,14 @@ interface MainPancakeBunnyCardProps {
   cheapestNft: NftToken
   cheapestNftFromOtherSellers?: NftToken
   nothingForSaleBunny?: NftToken
+  onSuccessSale: () => void
 }
 
 const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
   cheapestNft,
   cheapestNftFromOtherSellers,
   nothingForSaleBunny,
+  onSuccessSale,
 }) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
@@ -32,7 +34,9 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
 
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nftToDisplay.marketData?.currentAskPrice))
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nftToDisplay} />)
-  const [onPresentAdjustPriceModal] = useModal(<SellModal variant="edit" nftToSell={cheapestNft} />)
+  const [onPresentAdjustPriceModal] = useModal(
+    <SellModal variant="edit" nftToSell={cheapestNft} onSuccess={onSuccessSale} />,
+  )
 
   const actionButton = onlyOwnNftsOnSale ? (
     <Button

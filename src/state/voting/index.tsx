@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { FetchStatus } from 'config/constants/types'
-import { merge } from 'lodash'
+import merge from 'lodash/merge'
 import { Proposal, ProposalState, VotingState, Vote, State } from 'state/types'
 import { getAllVotes, getProposal, getProposals, getVoteVerificationStatuses } from './helpers'
 

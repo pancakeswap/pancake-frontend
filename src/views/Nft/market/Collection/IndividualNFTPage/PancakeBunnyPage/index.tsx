@@ -7,8 +7,9 @@ import { useFetchByBunnyIdAndUpdate, useGetAllBunniesByBunnyId } from 'state/nft
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
+import useLastUpdated from 'hooks/useLastUpdated'
 import usePreviousValue from 'hooks/usePreviousValue'
-import { useFastFresh } from 'hooks/useRefresh'
+import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { PANCAKE_BUNNIES_UPDATE_FREQUENCY } from 'config'
 import { useGetCollectionDistributionPB } from 'views/Nft/market/hooks/useGetCollectionDistribution'
@@ -22,7 +23,6 @@ import { pancakeBunniesAddress } from '../../../constants'
 import { sortNFTsByPriceBuilder } from './ForSaleTableCard/utils'
 import { SortType } from '../../../types'
 import { TwoColumnsContainer } from '../shared/styles'
-import usePrevious from '../../../../../../hooks/usePreviousValue'
 
 interface IndividualPancakeBunnyPageProps {
   bunnyId: string
@@ -31,12 +31,12 @@ interface IndividualPancakeBunnyPageProps {
 const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({ bunnyId }) => {
   const { account } = useWeb3React()
   const [nothingForSaleBunny, setNothingForSaleBunny] = useState<NftToken>(null)
+  const { lastUpdated, previousLastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const allBunnies = useGetAllBunniesByBunnyId(bunnyId)
   const [priceSort, setPriceSort] = useState<SortType>('asc')
   const previousPriceSort = usePreviousValue(priceSort)
   const { isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fetchMorePancakeBunnies } =
     useFetchByBunnyIdAndUpdate(bunnyId)
-  const fastRefresh = useFastFresh()
   const isWindowVisible = useIsWindowVisible()
   const bunniesSortedByPrice = orderBy(allBunnies, (nft) => parseFloat(nft.marketData.currentAskPrice))
   const allBunniesFromOtherSellers = account
@@ -44,7 +44,7 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
     : bunniesSortedByPrice
   const cheapestBunny = bunniesSortedByPrice[0]
   const cheapestBunnyFromOtherSellers = allBunniesFromOtherSellers[0]
-  const prevBunnyId = usePrevious(bunnyId)
+  const prevBunnyId = usePreviousValue(bunnyId)
 
   const {
     data: distributionData,
@@ -52,16 +52,18 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
     isFetching: isFetchingDistribution,
   } = useGetCollectionDistributionPB()
 
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     // Fetch first 30 NFTs on page load
     // And then query every FETCH_NEW_NFTS_INTERVAL_MS in case some new (cheaper) NFTs were listed
     const msSinceLastUpdate = Date.now() - latestPancakeBunniesUpdateAt
+    const refreshTriggered = lastUpdated !== previousLastUpdated
     // Check for last update is here to prevent too many request due to fetchMorePancakeBunnies updating too often
     // (it can't be reasonably wrapper in useCallback because the tokens are updated every time you call it, which is the whole point)
     // Since fastRefresh is 10 seconds and FETCH_NEW_NFTS_INTERVAL_MS is 8 seconds it fires every 10 seconds
     // The difference in 2 seconds is just to prevent some edge cases when request takes too long
     if (
       prevBunnyId !== bunnyId ||
+      refreshTriggered ||
       (msSinceLastUpdate > PANCAKE_BUNNIES_UPDATE_FREQUENCY && !isUpdatingPancakeBunnies && isWindowVisible)
     ) {
       fetchMorePancakeBunnies(priceSort)
@@ -73,8 +75,9 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
     fetchMorePancakeBunnies,
     isUpdatingPancakeBunnies,
     latestPancakeBunniesUpdateAt,
-    fastRefresh,
     isWindowVisible,
+    lastUpdated,
+    previousLastUpdated,
   ])
 
   useEffect(() => {
@@ -148,6 +151,7 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
         cheapestNft={cheapestBunny}
         cheapestNftFromOtherSellers={cheapestBunnyFromOtherSellers}
         nothingForSaleBunny={nothingForSaleBunny}
+        onSuccessSale={refresh}
       />
       <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
@@ -168,6 +172,7 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
           priceSort={priceSort}
           togglePriceSort={togglePriceSort}
           isFetchingMoreNfts={isUpdatingPancakeBunnies}
+          onSuccessSale={refresh}
         />
       </TwoColumnsContainer>
       <MoreFromThisCollection

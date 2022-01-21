@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { getBscScanLink } from 'utils'
-import { useBlock } from 'state/block/hooks'
+import { useCurrentBlock } from 'state/block/hooks'
 import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool } from 'state/types'
@@ -129,7 +129,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const { t } = useTranslation()
   const poolContractAddress = getAddress(contractAddress)
   const vaultContractAddress = getVaultPoolAddress(vaultKey)
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
   const { isXs, isSm, isMd } = breakpoints
   const showSubtitle = (isXs || isSm) && sousId === 0
 

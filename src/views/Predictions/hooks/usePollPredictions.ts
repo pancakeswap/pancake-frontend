@@ -4,7 +4,7 @@ import { useAppDispatch } from 'state'
 import { useGetCurrentEpoch, useGetEarliestEpoch, useGetPredictionsStatus } from 'state/predictions/hooks'
 import { fetchClaimableStatuses, fetchLedgerData, fetchMarketData, fetchRounds } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
-import { range } from 'lodash'
+import range from 'lodash/range'
 
 const POLL_TIME_IN_SECONDS = 10
 

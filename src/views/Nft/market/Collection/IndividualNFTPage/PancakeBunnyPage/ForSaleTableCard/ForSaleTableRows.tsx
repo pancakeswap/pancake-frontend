@@ -29,14 +29,15 @@ interface RowProps {
   nft: NftToken
   bnbBusdPrice: Price
   account: string
+  onSuccessSale: () => void
 }
 
-const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
+const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account, onSuccessSale }) => {
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft.marketData.currentAskPrice))
 
   const ownNft = account ? nft.marketData.currentSeller === account.toLowerCase() : false
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
-  const [onPresentAdjustPriceModal] = useModal(<SellModal variant="edit" nftToSell={nft} />)
+  const [onPresentAdjustPriceModal] = useModal(<SellModal variant="edit" nftToSell={nft} onSuccess={onSuccessSale} />)
 
   return (
     <>
@@ -75,16 +76,24 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account }) => {
 
 interface ForSaleTableRowsProps {
   nftsForSale: NftToken[]
+  onSuccessSale: () => void
 }
 
-const ForSaleTableRow: React.FC<ForSaleTableRowsProps> = ({ nftsForSale }) => {
+const ForSaleTableRow: React.FC<ForSaleTableRowsProps> = ({ nftsForSale, onSuccessSale }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
   return (
     <OwnersTableRow>
       {nftsForSale.map((nft) => (
-        <Row key={nft.tokenId} t={t} nft={nft} bnbBusdPrice={bnbBusdPrice} account={account} />
+        <Row
+          key={nft.tokenId}
+          t={t}
+          nft={nft}
+          bnbBusdPrice={bnbBusdPrice}
+          account={account}
+          onSuccessSale={onSuccessSale}
+        />
       ))}
     </OwnersTableRow>
   )
