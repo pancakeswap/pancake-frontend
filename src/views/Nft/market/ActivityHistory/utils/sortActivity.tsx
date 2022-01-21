@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { Activity, AskOrder, AskOrderType, MarketEvent, Transaction } from 'state/nftMarket/types'
 
 export const sortActivity = ({
@@ -51,8 +51,8 @@ export const sortActivity = ({
   const allActivity = [...transformAskOrders(askOrders), ...transformTransactions(transactions)]
   if (allActivity.length > 0) {
     const sortedByMostRecent = allActivity.sort((activityItem1, activityItem2) => {
-      const timestamp1 = ethers.BigNumber.from(activityItem1.timestamp)
-      const timestamp2 = ethers.BigNumber.from(activityItem2.timestamp)
+      const timestamp1 = BigNumber.from(activityItem1.timestamp)
+      const timestamp2 = BigNumber.from(activityItem2.timestamp)
       return timestamp2.sub(timestamp1).toNumber()
     })
 

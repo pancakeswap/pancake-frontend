@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 
 export type Actions =
   | { type: 'next_step' }
@@ -16,8 +16,8 @@ export interface State {
     collectionAddress: string
   }
   userName: string
-  minimumCakeRequired: ethers.BigNumber
-  allowance: ethers.BigNumber
+  minimumCakeRequired: BigNumber
+  allowance: BigNumber
 }
 
 export interface ContextType extends State {

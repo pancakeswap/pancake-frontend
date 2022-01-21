@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
-import { ethers } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition, NodeRound, Round } from 'state/types'
@@ -144,8 +144,8 @@ export const RoundResultBox: React.FC<RoundResultBoxProps> = ({
 }
 
 interface RoundPriceProps {
-  lockPrice: ethers.BigNumber
-  closePrice: ethers.BigNumber
+  lockPrice: BigNumber
+  closePrice: BigNumber
 }
 
 export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice }) => {

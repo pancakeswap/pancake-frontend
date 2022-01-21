@@ -10,7 +10,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { ethers } from 'ethers'
+import { MaxUint256 } from '@ethersproject/constants'
 import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useReclaimAuctionBid from '../hooks/useReclaimAuctionBid'
@@ -43,7 +43,7 @@ const ReclaimBidCard: React.FC = () => {
       }
     },
     onApprove: () => {
-      return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, ethers.constants.MaxUint256])
+      return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, MaxUint256])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(

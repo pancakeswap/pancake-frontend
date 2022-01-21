@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { Campaign, TranslatableText } from 'config/constants/types'
 import ifosList from 'config/constants/ifo'
 import { campaignMap } from 'config/constants/campaigns'
@@ -10,7 +10,7 @@ import pointCenterIfoABI from 'config/abi/pointCenterIfo.json'
 interface IfoMapResponse {
   thresholdToClaim: string
   campaignId: string
-  numberPoints: ethers.BigNumber
+  numberPoints: BigNumber
 }
 
 export const getAchievementTitle = (campaign: Campaign): TranslatableText => {

@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
-import { ethers } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import {
   Bet,
   LedgerData,
@@ -410,11 +410,11 @@ export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): 
     closeTimestamp: null,
     lockPrice: null,
     closePrice: null,
-    totalAmount: ethers.BigNumber.from(0).toJSON(),
-    bullAmount: ethers.BigNumber.from(0).toJSON(),
-    bearAmount: ethers.BigNumber.from(0).toJSON(),
-    rewardBaseCalAmount: ethers.BigNumber.from(0).toJSON(),
-    rewardAmount: ethers.BigNumber.from(0).toJSON(),
+    totalAmount: BigNumber.from(0).toJSON(),
+    bullAmount: BigNumber.from(0).toJSON(),
+    bearAmount: BigNumber.from(0).toJSON(),
+    rewardBaseCalAmount: BigNumber.from(0).toJSON(),
+    rewardAmount: BigNumber.from(0).toJSON(),
     oracleCalled: false,
     lockOracleId: null,
     closeOracleId: null,
@@ -499,8 +499,8 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
 }
 
 /**
- * Parse serialized values back into ethers.BigNumber
- * ethers.BigNumber values are stored with the "toJSON()" method, e.g  { type: "BigNumber", hex: string }
+ * Parse serialized values back into BigNumber
+ * BigNumber values are stored with the "toJSON()" method, e.g  { type: "BigNumber", hex: string }
  */
 export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, any>>(data: T): K => {
   return Object.keys(data).reduce((accum, key) => {
@@ -509,7 +509,7 @@ export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, an
     if (value && value?.type === 'BigNumber') {
       return {
         ...accum,
-        [key]: ethers.BigNumber.from(value),
+        [key]: BigNumber.from(value),
       }
     }
 
@@ -526,7 +526,7 @@ export const fetchUsersRoundsLength = async (account: string) => {
     const length = await contract.getUserRoundsLength(account)
     return length
   } catch {
-    return ethers.BigNumber.from(0)
+    return BigNumber.from(0)
   }
 }
 
