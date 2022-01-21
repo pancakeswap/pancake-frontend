@@ -9,7 +9,7 @@ import ChangeProfilePicView from './ChangeProfilePicView'
 import ApproveCakeView from './ApproveCakeView'
 
 interface EditProfileModalProps extends InjectedModalProps {
-  onSuccess: () => void
+  onSuccess?: () => void
 }
 
 const viewTitle = (t: ContextApi['t'], currentView: Views) => {
@@ -41,7 +41,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onDismiss, onSucces
           <StartView goToApprove={goToApprove} goToChange={goToChange} goToRemove={goToRemove} onDismiss={onDismiss} />
         )}
         {currentView === Views.REMOVE && <PauseProfileView onDismiss={onDismiss} onSuccess={onSuccess} />}
-        {currentView === Views.CHANGE && <ChangeProfilePicView onDismiss={onDismiss} />}
+        {currentView === Views.CHANGE && <ChangeProfilePicView onDismiss={onDismiss} onSuccess={onSuccess} />}
         {currentView === Views.APPROVE && <ApproveCakeView goToChange={goToChange} onDismiss={onDismiss} />}
       </div>
     </Modal>

@@ -41,8 +41,8 @@ interface CollectibleRowProps {
 const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, onSuccess }) => {
   const { t } = useTranslation()
   const modalVariant = nft.location === NftLocation.WALLET ? 'sell' : 'edit'
-  const [onPresentProfileNftModal] = useModal(<ProfileNftModal nft={nft} onSuccess={onSuccess} />)
-  const [onPresentModal] = useModal(<SellModal variant={modalVariant} nftToSell={nft} onSuccess={onSuccess} />)
+  const [onPresentProfileNftModal] = useModal(<ProfileNftModal nft={nft} />)
+  const [onPresentModal] = useModal(<SellModal variant={modalVariant} nftToSell={nft} onSuccessSale={onSuccess} />)
   return (
     <CollectibleRowContainer
       gridTemplateColumns="96px 1fr"

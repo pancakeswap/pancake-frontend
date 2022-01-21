@@ -12,15 +12,31 @@ const NftProfilePage = () => {
   const { account } = useWeb3React()
   const accountAddress = useRouter().query.accountAddress as string
   const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()
-  const { profile: profileHookState, isFetching: isProfileFetching } = useProfileForAddress(accountAddress)
+  const {
+    profile: profileHookState,
+    isFetching: isProfileFetching,
+    refresh: refreshProfile,
+  } = useProfileForAddress(accountAddress)
   const { profile } = profileHookState || {}
-  const { nfts, isLoading: isNftLoading, refresh } = useNftsForAddress(accountAddress, profile, isProfileFetching)
+  const {
+    nfts,
+    isLoading: isNftLoading,
+    refresh: refreshUserNfts,
+  } = useNftsForAddress(accountAddress, profile, isProfileFetching)
 
   return (
     <>
       <SubMenu />
       {isConnectedProfile ? (
-        <UserNfts nfts={nfts} isLoading={isNftLoading} onSuccess={refresh} />
+        <UserNfts
+          nfts={nfts}
+          isLoading={isNftLoading}
+          onSuccessSale={refreshUserNfts}
+          onSuccessEditProfile={async () => {
+            await refreshProfile()
+            refreshUserNfts()
+          }}
+        />
       ) : (
         <UnconnectedProfileNfts nfts={nfts} isLoading={isNftLoading} />
       )}

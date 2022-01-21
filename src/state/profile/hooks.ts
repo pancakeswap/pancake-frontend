@@ -22,11 +22,12 @@ export const useFetchProfile = () => {
 }
 
 export const useProfileForAddress = (address: string) => {
-  const { data, status } = useSWRImmutable([address, 'profile'], () => getProfile(address))
+  const { data, status, mutate } = useSWRImmutable([address, 'profile'], () => getProfile(address))
 
   return {
     profile: data,
     isFetching: status === FetchStatus.Fetching,
+    refresh: mutate,
   }
 }
 

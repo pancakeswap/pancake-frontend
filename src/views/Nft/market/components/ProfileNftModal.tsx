@@ -21,7 +21,7 @@ const TextWrapper = styled(Flex)`
 
 interface ProfileNftModalProps extends InjectedModalProps {
   nft: NftToken
-  onSuccess: () => void
+  onSuccess?: () => void
 }
 
 const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss, onSuccess }) => {
