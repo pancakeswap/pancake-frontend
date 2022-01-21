@@ -1958,6 +1958,7 @@ export const mainnetTokens = defineTokens({
     'Parallel Token',
     'https://theparallel.io',
   ),
+  fuse: new Token(MAINNET, '0x5857c96dae9cf8511b08cb07f85753c472d36ea3', 18, 'FUSE', 'Fuse Token', 'https://fuse.io/'),
 } as const)
 
 export const testnetTokens = defineTokens({
