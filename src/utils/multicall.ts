@@ -1,5 +1,6 @@
 import { Interface } from '@ethersproject/abi'
 import { getMulticallContract } from 'utils/contractHelpers'
+import logContractCalls from 'utils/logContractCalls'
 
 export interface Call {
   address: string // Address of the contract
@@ -14,6 +15,8 @@ export interface MulticallOptions {
 const multicall = async <T = any>(abi: any[], calls: Call[]): Promise<T> => {
   const multi = getMulticallContract()
   const itf = new Interface(abi)
+
+  if (process.env.NODE_ENV) logContractCalls('multicall', calls)
 
   const calldata = calls.map((call) => ({
     target: call.address.toLowerCase(),
@@ -32,6 +35,7 @@ const multicall = async <T = any>(abi: any[], calls: Call[]): Promise<T> => {
  * 1. If "requireSuccess" is false multicall will not bail out if one of the calls fails
  * 2. The return includes a boolean whether the call was successful e.g. [wasSuccessful, callResult]
  */
+
 export const multicallv2 = async <T = any>(
   abi: any[],
   calls: Call[],
@@ -40,6 +44,8 @@ export const multicallv2 = async <T = any>(
   const { requireSuccess } = options
   const multi = getMulticallContract()
   const itf = new Interface(abi)
+
+  if (process.env.NODE_ENV === 'development') logContractCalls('multicallv2', calls)
 
   const calldata = calls.map((call) => ({
     target: call.address.toLowerCase(),
