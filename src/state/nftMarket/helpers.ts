@@ -876,12 +876,28 @@ export const combineNftMarketAndMetadata = (
 ): NftToken[] => {
   const completeNftData = nftsWithMetadata.map<NftToken>((nft) => {
     // Get metadata object
-    const isOnSale = nftsForSale.filter((forSaleNft) => forSaleNft.tokenId === nft.tokenId).length > 0
+    const isOnSale =
+      nftsForSale.filter(
+        (forSaleNft) =>
+          forSaleNft.tokenId === nft.tokenId &&
+          forSaleNft.collection &&
+          forSaleNft.collection.id === nft.collectionAddress,
+      ).length > 0
     let marketData
     if (isOnSale) {
-      marketData = nftsForSale.find((marketNft) => marketNft.tokenId === nft.tokenId)
+      marketData = nftsForSale.find(
+        (marketNft) =>
+          marketNft.collection &&
+          marketNft.collection.id === nft.collectionAddress &&
+          marketNft.tokenId === nft.tokenId,
+      )
     } else {
-      marketData = walletNfts.find((marketNft) => marketNft.tokenId === nft.tokenId)
+      marketData = walletNfts.find(
+        (marketNft) =>
+          marketNft.collection &&
+          marketNft.collection.id === nft.collectionAddress &&
+          marketNft.tokenId === nft.tokenId,
+      )
     }
     const location = getNftLocationForMarketNft(nft.tokenId, tokenIdsInWallet, tokenIdsForSale, profileNftId)
     return { ...nft, marketData, location }
