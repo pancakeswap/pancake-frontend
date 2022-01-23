@@ -24,7 +24,7 @@ const Collection = () => {
 
   const hash = useMemo(() => getHashFromRouter(router)?.[0], [router])
 
-  if (!collection) {
+  if (!collection || router.isFallback) {
     return <PageLoader />
   }
 

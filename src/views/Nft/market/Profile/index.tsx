@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import NoNftsImage from '../components/Activity/NoNftsImage'
-import { NftMarketLayout } from '../Layout'
 import useNftsForAddress from '../hooks/useNftsForAddress'
 import TabMenu from './components/TabMenu'
 
@@ -96,11 +95,7 @@ const NftProfile: FC = ({ children }) => {
 }
 
 export const NftProfileLayout: FC = ({ children }) => {
-  return (
-    <NftProfile>
-      <NftMarketLayout>{children}</NftMarketLayout>
-    </NftProfile>
-  )
+  return <NftProfile>{children}</NftProfile>
 }
 
 export default NftProfile

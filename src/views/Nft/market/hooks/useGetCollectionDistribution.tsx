@@ -4,13 +4,14 @@ import { ApiCollectionDistribution, ApiResponseCollectionTokens, ApiSingleTokenD
 import { getPancakeRabbitsAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
 import { pancakeBunniesAddress } from '../constants'
 
 const useGetCollectionDistribution = (collectionAddress: string) => {
-  const { data, status } = useSWR(['distribution', collectionAddress], async () =>
-    getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress),
+  const { data, status } = useSWRImmutable(
+    ['distribution', collectionAddress],
+    async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress)).data,
   )
 
   return {
