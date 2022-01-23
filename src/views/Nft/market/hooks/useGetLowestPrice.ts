@@ -10,8 +10,8 @@ export interface LowestNftPrice {
   lowestPrice: number
 }
 
-const getBunnyIdFromNftAttrs = (nftAttrs?: NftToken['attributes']): string => {
-  const bunnyId = nftAttrs?.find((attr) => attr.traitType === 'bunnyId')?.value
+const getBunnyIdFromNft = (nft: NftToken): string => {
+  const bunnyId = nft.attributes?.find((attr) => attr.traitType === 'bunnyId')?.value
   return bunnyId ? bunnyId.toString() : null
 }
 
@@ -45,11 +45,11 @@ export const useGetLowestPriceFromBunnyId = (bunnyId: string): LowestNftPrice =>
 export const useGetLowestPriceFromNft = (nft: NftToken): LowestNftPrice => {
   const isPancakeBunny = nft.collectionAddress?.toLowerCase() === pancakeBunniesAddress.toLowerCase()
 
+  const bunnyIdAttr = getBunnyIdFromNft(nft)
+
   const { data, status } = useSWR(
-    // TODO: looks like it is refetching every time, the nft ref changes from list
-    isPancakeBunny && nft.attributes ? ['lowestPriceFromNft', nft.attributes] : null,
+    isPancakeBunny && bunnyIdAttr ? ['lowestPriceFromNft', bunnyIdAttr] : null,
     async () => {
-      const bunnyIdAttr = getBunnyIdFromNftAttrs(nft.attributes)
       const response = await getNftsMarketData({ otherId: bunnyIdAttr, isTradable: true }, 1, 'currentAskPrice', 'asc')
 
       if (response.length > 0) {
