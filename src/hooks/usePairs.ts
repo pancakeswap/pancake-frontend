@@ -1,13 +1,13 @@
 import { TokenAmount, Pair, Currency } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
-import IUniswapV2Pair from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import IPancakePairABI from 'config/abi/IPancakePair.json'
 import { Interface } from '@ethersproject/abi'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
-const PAIR_INTERFACE = new Interface(IUniswapV2Pair.abi)
+const PAIR_INTERFACE = new Interface(IPancakePairABI)
 
 export enum PairState {
   LOADING,

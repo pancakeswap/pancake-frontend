@@ -5,14 +5,13 @@ import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import IUniswapV2Router02 from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
+import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
+import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@pancakeswap/sdk'
 import { ROUTER_ADDRESS } from '../config/constants'
 import { BASE_BSC_SCAN_URLS } from '../config'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { simpleRpcProvider } from './providers'
-
-const { abi: IUniswapV2Router02ABI } = IUniswapV2Router02
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -95,8 +94,8 @@ export function getContract(address: string, ABI: any, signer?: Signer | Provide
 }
 
 // account is optional
-export function getRouterContract(_: number, library: Web3Provider, account?: string): Contract {
-  return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI, getProviderOrSigner(library, account))
+export function getRouterContract(_: number, library: Web3Provider, account?: string) {
+  return getContract(ROUTER_ADDRESS, IPancakeRouter02ABI, getProviderOrSigner(library, account)) as IPancakeRouter02
 }
 
 export function escapeRegExp(string: string): string {
