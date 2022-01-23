@@ -1,5 +1,5 @@
 import { gql, request } from 'graphql-request'
-import { stringify } from 'qs'
+import { stringify } from 'querystring'
 import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 import { multicallv2 } from 'utils/multicall'
 import erc721Abi from 'config/abi/erc721.json'
