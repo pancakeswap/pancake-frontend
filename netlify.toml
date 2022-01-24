@@ -15,3 +15,10 @@ cache-control = "public, max-age=31536000, immutable"
 for = "/images/*"
 [headers.values]
 cache-control = "public, no-transform, immutable, max-age=604800"
+
+[[redirects]]
+  from = "/*"
+  to = "/cu/:splat"
+  status = 200
+  force = true
+  conditions = {Country=["BY","CU","IR","IQ","CI","LR","KP","SD","SY","ZW"]}

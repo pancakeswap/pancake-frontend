@@ -1835,5 +1835,6 @@
   "You’re connected to the wrong network.": "You’re connected to the wrong network.",
   "Learn How": "Learn How",
   "Network": "Network",
-  "Switch Network": "Switch Network"
+  "Switch Network": "Switch Network",
+  "Please note that by 30 Feburary 2022 (UTC 00:00), trading and accessing to pancakeswap interface through pancakeswap.finance will no longer be available to users with IP address from certain countries.": "Please note that by 30 Feburary 2022 (UTC 00:00), trading and accessing to pancakeswap interface through pancakeswap.finance will no longer be available to users with IP address from certain countries."
 }
