@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from 'peronio-sdk'
 import { ButtonMenu, ButtonMenuItem, ModalBody } from 'peronio-uikit'
 import styled from 'styled-components'
 import { TokenList } from '@uniswap/token-lists'

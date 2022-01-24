@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useFarmUser } from 'state/farms/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { Text } from 'peronio-uikit'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from 'peronio-sdk'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { TokenPairImage } from 'components/TokenImage'
 

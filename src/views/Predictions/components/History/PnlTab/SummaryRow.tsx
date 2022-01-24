@@ -1,5 +1,5 @@
 import React from 'react'
-import { Price } from '@pancakeswap/sdk'
+import { Price } from 'peronio-sdk'
 import { Flex, Text } from 'peronio-uikit'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'

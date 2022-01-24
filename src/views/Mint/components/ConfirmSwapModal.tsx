@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { currencyEquals, Trade } from '@pancakeswap/sdk'
+import { currencyEquals, Trade } from 'peronio-sdk'
 import { InjectedModalProps } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import TransactionConfirmationModal, {

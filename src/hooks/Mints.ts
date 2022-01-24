@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 // import { isTradeBetter } from 'utils/trades'
-import { Currency, CurrencyAmount, Pair, Token, Trade } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade } from 'peronio-sdk'
 // import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 // import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -25,4 +25,20 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
 
     return null
   }, [currencyAmountIn, currencyOut])
+}
+
+/**
+ * Returns the best trade for the token in to the exact amount of token out
+ */
+export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: CurrencyAmount): Trade | null {
+  return useMemo(() => {
+    if (currencyIn && currencyAmountOut) {
+      return (
+        // Trade.bestTradeExactOut(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 1, maxNumResults: 1 })[0] ??
+        null
+      )
+    }
+
+    return null
+  }, [currencyAmountOut, currencyIn])
 }

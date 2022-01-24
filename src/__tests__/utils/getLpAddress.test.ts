@@ -1,4 +1,4 @@
-import { Token, ChainId } from '@pancakeswap/sdk'
+import { Token, ChainId } from 'peronio-sdk'
 import getLpAddress from 'utils/getLpAddress'
 
 const CAKE_AS_STRING = '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'

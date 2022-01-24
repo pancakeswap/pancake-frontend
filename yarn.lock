@@ -2798,18 +2798,6 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
 
-"@pancakeswap/sdk@peronio-ar/peronio-sdk":
-  version "0.6.2"
-  resolved "https://codeload.github.com/peronio-ar/peronio-sdk/tar.gz/44eedec0c14dab68f69780636857d1470d36669c"
-  dependencies:
-    "@pancakeswap-libs/pancake-swap-core" "^0.1.0"
-    big.js "^5.2.2"
-    decimal.js-light "^2.5.0"
-    jsbi "^3.1.1"
-    tiny-invariant "^1.1.0"
-    tiny-warning "^1.0.3"
-    toformat "^2.0.0"
-
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.4.3.tgz#1eec460596d200c0236bf195b078a5d1df89b766"
@@ -16540,6 +16528,24 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+
+peronio-core@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/peronio-core/-/peronio-core-0.6.0.tgz#054bf98ae954bdc44dba210631989d82a7056350"
+  integrity sha512-dt07NmJawZ18cmGDFAUscgkOxG2lXQQFxaNympxDKapBGMKkpiC3V2DR+TaSALEcD/EDz30QUj2ULL7poT/GdA==
+
+peronio-sdk@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/peronio-sdk/-/peronio-sdk-0.7.1.tgz#4cb73869494f5df8803ab20a7b47063fe2d1a248"
+  integrity sha512-1bMsOJLK1k7mFUq1rMzDWID4X+/KlFuAx8Dt0CMfaxyfqQACQ2OEf5ksiP8V/AcE0QeMkrpmggVfi5xXILjRqg==
+  dependencies:
+    "@pancakeswap-libs/pancake-swap-core" "^0.1.0"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.1"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
 
 peronio-uikit@^0.63.3:
   version "0.63.3"

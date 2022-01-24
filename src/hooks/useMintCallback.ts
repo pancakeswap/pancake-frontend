@@ -1,102 +1,83 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from 'peronio-sdk'
+import { Minter, CallParameters as MintParameters, Mint } from 'peronio-sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 // import { useGasPrice } from 'state/user/hooks'
 import truncateHash from 'utils/truncateHash'
-import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { calculateGasMargin, getRouterContract, isAddress } from '../utils'
+import { calculateGasMargin, getPeronioContract, isAddress } from '../utils'
 import isZero from '../utils/isZero'
-import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './ENS/useENS'
 
-export enum SwapCallbackState {
+export enum MintCallbackState {
   INVALID,
   LOADING,
   VALID,
 }
 
-interface SwapCall {
+interface MintCall {
   contract: Contract
-  parameters: SwapParameters
+  parameters: MintParameters
 }
 
 interface SuccessfulCall {
-  call: SwapCall
+  call: MintCall
   gasEstimate: BigNumber
 }
 
 interface FailedCall {
-  call: SwapCall
+  call: MintCall
   error: Error
 }
 
-type EstimatedSwapCall = SuccessfulCall | FailedCall
+type EstimatedMintCall = SuccessfulCall | FailedCall
 
 /**
- * Returns the swap calls that can be used to make the trade
- * @param trade trade to execute
+ * Returns the mint calls that can be used to make the mint
+ * @param mint mint to execute
  * @param allowedSlippage user allowed slippage
  * @param recipientAddressOrName
  */
-function useSwapCallArguments(
-  trade: Trade | undefined, // trade to execute, required
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
-  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-): SwapCall[] {
+function useMintCallArguments(
+  mint: Mint | undefined, // mint to execute, required
+  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the mint, or null if mint should be returned to sender
+): MintCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
-  const deadline = useTransactionDeadline()
 
   return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline) return []
+    if (!mint || !recipient || !library || !account || !chainId) return []
 
-    const contract: Contract | null = getRouterContract(chainId, library, account)
+    const contract: Contract | null = getPeronioContract(chainId, library, account)
     if (!contract) {
       return []
     }
 
-    const swapMethods = []
+    const mintMethods = []
 
-    swapMethods.push(
-      Router.swapCallParameters(trade, {
-        feeOnTransfer: false,
-        allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+    mintMethods.push(
+      Minter.mintCallParameters(mint, {
         recipient,
-        deadline: deadline.toNumber(),
       }),
     )
 
-    if (trade.tradeType === TradeType.EXACT_INPUT) {
-      swapMethods.push(
-        Router.swapCallParameters(trade, {
-          feeOnTransfer: true,
-          allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
-          recipient,
-          deadline: deadline.toNumber(),
-        }),
-      )
-    }
-
-    return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
+    return mintMethods.map((parameters) => ({ parameters, contract }))
+  }, [account, chainId, library, recipient, mint])
 }
 
-// returns a function that will execute a swap, if the parameters are all valid
-// and the user has approved the slippage adjusted input amount for the trade
-export function useSwapCallback(
-  trade: Trade | undefined, // trade to execute, required
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
-  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
+// returns a function that will execute a mint, if the parameters are all valid
+// and the user has approved the slippage adjusted input amount for the mint
+export function useMintCallback(
+  mint: Mint | undefined, // mint to execute, required
+  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the mint, or null if mint should be returned to sender
+): { state: MintCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
   // const gasPrice = useGasPrice()
 
-  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
+  const mintCalls = useMintCallArguments(mint, recipientAddressOrName)
 
   const addTransaction = useTransactionAdder()
 
@@ -104,21 +85,21 @@ export function useSwapCallback(
   const recipient = recipientAddressOrName === null ? account : recipientAddress
 
   return useMemo(() => {
-    if (!trade || !library || !account || !chainId) {
-      return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
+    if (!mint || !library || !account || !chainId) {
+      return { state: MintCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
     }
     if (!recipient) {
       if (recipientAddressOrName !== null) {
-        return { state: SwapCallbackState.INVALID, callback: null, error: 'Invalid recipient' }
+        return { state: MintCallbackState.INVALID, callback: null, error: 'Invalid recipient' }
       }
-      return { state: SwapCallbackState.LOADING, callback: null, error: null }
+      return { state: MintCallbackState.LOADING, callback: null, error: null }
     }
 
     return {
-      state: SwapCallbackState.VALID,
-      callback: async function onSwap(): Promise<string> {
-        const estimatedCalls: EstimatedSwapCall[] = await Promise.all(
-          swapCalls.map((call) => {
+      state: MintCallbackState.VALID,
+      callback: async function onMint(): Promise<string> {
+        const estimatedCalls: EstimatedMintCall[] = await Promise.all(
+          mintCalls.map((call) => {
             const {
               parameters: { methodName, args, value },
               contract,
@@ -178,12 +159,12 @@ export function useSwapCallback(
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
           .then((response: any) => {
-            const inputSymbol = trade.inputAmount.currency.symbol
-            const outputSymbol = trade.outputAmount.currency.symbol
-            const inputAmount = trade.inputAmount.toSignificant(3)
-            const outputAmount = trade.outputAmount.toSignificant(3)
+            const inputSymbol = mint.inputAmount.currency.symbol
+            const outputSymbol = mint.outputAmount.currency.symbol
+            const inputAmount = mint.inputAmount.toSignificant(3)
+            const outputAmount = mint.outputAmount.toSignificant(3)
 
-            const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
+            const base = `Mint ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
             const withRecipient =
               recipient === account
                 ? base
@@ -205,12 +186,12 @@ export function useSwapCallback(
               throw new Error('Transaction rejected.')
             } else {
               // otherwise, the error was unexpected and we need to convey that
-              console.error(`Swap failed`, error, methodName, args, value)
-              throw new Error(`Swap failed: ${error.message}`)
+              console.error(`Mint failed`, error, methodName, args, value)
+              throw new Error(`Mint failed: ${error.message}`)
             }
           })
       },
       error: null,
     }
-  }, [trade, library, account, chainId, recipient, recipientAddressOrName, swapCalls, addTransaction])
+  }, [mint, library, account, chainId, recipient, recipientAddressOrName, mintCalls, addTransaction])
 }

@@ -1,5 +1,5 @@
 import React, { useRef, RefObject, useCallback, useState, useMemo } from 'react'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from 'peronio-sdk'
 import { Text, Button, CloseIcon, IconButton, LinkExternal, Input, Link } from 'peronio-uikit'
 import styled from 'styled-components'
 import Row, { RowBetween, RowFixed } from 'components/Layout/Row'

@@ -18,7 +18,7 @@ import {
 } from 'peronio-uikit'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from 'peronio-sdk'
 import { Ifo, PoolIds } from 'config/constants/types'
 import tokens from 'config/constants/tokens'
 import { cakeBnbLpToken } from 'config/constants/ifo'

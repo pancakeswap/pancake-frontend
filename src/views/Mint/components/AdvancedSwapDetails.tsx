@@ -1,10 +1,10 @@
 import React from 'react'
-import { Trade, TradeType } from '@pancakeswap/sdk'
+import { Trade, TradeType } from 'peronio-sdk'
 import { Text } from 'peronio-uikit'
 import { Field } from 'state/swap/actions'
 import { useTranslation } from 'contexts/Localization'
 import { useUserSlippageTolerance } from 'state/user/hooks'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/prices'
+import { computeSlippageAdjustedAmounts } from 'utils/prices'
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
@@ -12,7 +12,6 @@ import SwapRoute from './SwapRoute'
 
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
   const { t } = useTranslation()
-  // const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   const markupRate = 5
   const markupAmount = 2.33
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT

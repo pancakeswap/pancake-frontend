@@ -1,6 +1,6 @@
 import React from 'react'
 import { InjectedModalProps, Modal, Flex, Text, Button, Image, Link, BinanceIcon } from 'peronio-uikit'
-import { Price } from '@pancakeswap/sdk'
+import { Price } from 'peronio-sdk'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { Activity, NftToken } from 'state/nftMarket/types'

@@ -1,4 +1,4 @@
-import { CurrencyAmount, Fraction, JSBI, Percent, Price, TokenAmount, Trade } from '@pancakeswap/sdk'
+import { CurrencyAmount, Fraction, JSBI, Percent, Price, TokenAmount, Trade } from 'peronio-sdk'
 import {
   BLOCKED_PRICE_IMPACT_NON_EXPERT,
   ALLOWED_PRICE_IMPACT_HIGH,

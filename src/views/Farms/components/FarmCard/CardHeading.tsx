@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Tag, Flex, Heading, Skeleton } from 'peronio-uikit'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from 'peronio-sdk'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import { TokenPairImage } from 'components/TokenImage'
 

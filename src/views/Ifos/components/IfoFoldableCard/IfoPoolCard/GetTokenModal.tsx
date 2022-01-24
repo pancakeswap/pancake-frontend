@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, ModalBody, Text, Image, Button, Link, OpenNewIcon } from 'peronio-uikit'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from 'peronio-sdk'
 import { useTranslation } from 'contexts/Localization'
 
 interface Props {

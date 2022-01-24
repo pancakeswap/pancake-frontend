@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Currency, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from 'peronio-sdk'
 import {
   ModalContainer,
   ModalHeader,

@@ -1,4 +1,4 @@
-import { Currency } from '@pancakeswap/sdk'
+import { Currency } from 'peronio-sdk'
 import { Box, BunnyPlaceholderIcon, Flex, Text } from 'peronio-uikit'
 import TradingView, { TradingViewLabel, useTradingViewEvent } from 'components/TradingView'
 import { useTranslation } from 'contexts/Localization'

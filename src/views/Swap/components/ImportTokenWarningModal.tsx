@@ -1,5 +1,5 @@
 import React from 'react'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from 'peronio-sdk'
 import { Modal, InjectedModalProps } from 'peronio-uikit'
 import ImportToken from 'components/SearchModal/ImportToken'
 import { useTranslation } from 'contexts/Localization'

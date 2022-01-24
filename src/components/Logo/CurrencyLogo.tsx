@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@pancakeswap/sdk'
+import { Currency, ETHER, Token } from 'peronio-sdk'
 import { BinanceIcon } from 'peronio-uikit'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'

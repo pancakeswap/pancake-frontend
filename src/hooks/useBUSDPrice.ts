@@ -1,4 +1,4 @@
-import { ChainId, Currency, currencyEquals, JSBI, Price } from '@pancakeswap/sdk'
+import { ChainId, Currency, currencyEquals, JSBI, Price } from 'peronio-sdk'
 import tokens, { mainnetTokens } from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Pair } from '@pancakeswap/sdk'
+import { Pair } from 'peronio-sdk'
 import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from 'peronio-uikit'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'

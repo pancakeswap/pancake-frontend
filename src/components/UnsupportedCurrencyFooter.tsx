@@ -1,5 +1,5 @@
 import React from 'react'
-import { Currency, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from 'peronio-sdk'
 import { Button, Text, Modal, useModal, InjectedModalProps, Link } from 'peronio-uikit'
 import styled from 'styled-components'
 import { AutoRow } from 'components/Layout/Row'

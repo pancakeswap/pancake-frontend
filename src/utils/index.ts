@@ -5,11 +5,13 @@ import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@pancakeswap/sdk'
+import { abi as PeronioABI } from 'peronio-core/deployments/mumbai/Peronio.json'
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from 'peronio-sdk'
 import { ROUTER_ADDRESS } from '../config/constants'
 import { BASE_BSC_SCAN_URLS } from '../config'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { simpleRpcProvider } from './providers'
+import { mainnetTokens } from '../config/constants/tokens'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -94,6 +96,11 @@ export function getContract(address: string, ABI: any, signer?: ethers.Signer | 
 // account is optional
 export function getRouterContract(_: number, library: Web3Provider, account?: string): Contract {
   return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI, getProviderOrSigner(library, account))
+}
+
+// account is optional
+export function getPeronioContract(_: number, library: Web3Provider, account?: string): Contract {
+  return getContract(mainnetTokens.pe.address, PeronioABI, getProviderOrSigner(library, account))
 }
 
 export function escapeRegExp(string: string): string {

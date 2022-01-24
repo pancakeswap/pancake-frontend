@@ -1,5 +1,5 @@
 import React from 'react'
-import { ChainId, Currency, currencyEquals, ETHER, Token } from '@pancakeswap/sdk'
+import { ChainId, Currency, currencyEquals, ETHER, Token } from 'peronio-sdk'
 import { Text } from 'peronio-uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'

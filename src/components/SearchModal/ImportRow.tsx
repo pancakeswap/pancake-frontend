@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from 'peronio-sdk'
 import { Button, Text, CheckmarkCircleIcon } from 'peronio-uikit'
 import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
