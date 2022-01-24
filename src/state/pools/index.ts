@@ -23,7 +23,12 @@ import { simpleRpcProvider } from 'utils/providers'
 import { multicallv2 } from 'utils/multicall'
 import { fetchIfoPoolFeesData, fetchPublicIfoPoolData } from './fetchIfoPoolPublic'
 import fetchIfoPoolUserData from './fetchIfoPoolUser'
-import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
+import {
+  fetchPoolsBlockLimits,
+  fetchPoolsProfileRequirement,
+  fetchPoolsStakingLimits,
+  fetchPoolsTotalStaking,
+} from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
@@ -133,6 +138,7 @@ export const fetchPoolsPublicDataAsync = () => async (dispatch, getState) => {
   try {
     const blockLimits = await fetchPoolsBlockLimits()
     const totalStakings = await fetchPoolsTotalStaking()
+    const profileRequirements = await fetchPoolsProfileRequirement()
     let currentBlock = getState().block?.currentBlock
 
     if (!currentBlock) {
@@ -161,9 +167,12 @@ export const fetchPoolsPublicDataAsync = () => async (dispatch, getState) => {
           )
         : 0
 
+      const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
+
       return {
         ...blockLimit,
         ...totalStaking,
+        profileRequirement,
         stakingTokenPrice,
         earningTokenPrice,
         apr,
