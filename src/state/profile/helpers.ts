@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie'
 import { Profile } from 'state/types'
 import { PancakeProfile } from 'config/abi/types/PancakeProfile'
 import profileABI from 'config/abi/pancakeProfile.json'
@@ -125,15 +124,6 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
             thumbnail: apiRes.image?.thumbnail,
           },
         }
-        // Save the preview image in a cookie so it can be used on the exchange
-        Cookies.set(
-          `profile_${address}`,
-          {
-            username,
-            avatar: `${nftToken.image.thumbnail}`,
-          },
-          { domain: 'pancakeswap.finance', secure: true, expires: 30 },
-        )
       }
     }
 
