@@ -21,6 +21,7 @@ import { useFetchProfile } from 'state/profile/hooks'
 import { Blocklist, Updaters } from '..'
 import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
+import BlockCountry from '../components/BlockCountry'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
 
@@ -77,6 +78,7 @@ function MyApp(props: AppProps) {
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
+            <BlockCountry />
             <App {...props} />
           </PersistGate>
         </Blocklist>
