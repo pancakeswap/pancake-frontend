@@ -164,14 +164,15 @@ export const farmsSlice = createSlice({
       state.loadingKeys[serializeLoadingKey(action, 'pending')] = true
     })
     builder.addMatcher(
-      isAnyOf(
-        fetchFarmUserDataAsync.fulfilled,
-        fetchFarmsPublicDataAsync.fulfilled,
-        fetchFarmsPublicDataAsync.rejected,
-        fetchFarmUserDataAsync.rejected,
-      ),
+      isAnyOf(fetchFarmUserDataAsync.fulfilled, fetchFarmsPublicDataAsync.fulfilled),
       (state, action) => {
         state.loadingKeys[serializeLoadingKey(action, 'fulfilled')] = false
+      },
+    )
+    builder.addMatcher(
+      isAnyOf(fetchFarmsPublicDataAsync.rejected, fetchFarmUserDataAsync.rejected),
+      (state, action) => {
+        state.loadingKeys[serializeLoadingKey(action, 'rejected')] = false
       },
     )
   },
