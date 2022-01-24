@@ -4,7 +4,7 @@ import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'
 import React from 'react'
 import { SWRConfig } from 'swr'
-import { bitQueryClient, infoClient } from 'utils/graphql'
+import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
 import { getBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import Home from '../views/Home'
 
@@ -46,10 +46,10 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     const [days30AgoBlock] = await getBlocksFromTimestamps([getUnixTime(days30Ago)])
 
-    const totalTx = await infoClient.request(totalTxQuery, {
+    const totalTx = await infoServerClient.request(totalTxQuery, {
       id: FACTORY_ADDRESS,
     })
-    const totalTx30DaysAgo = await infoClient.request(totalTxQuery, {
+    const totalTx30DaysAgo = await infoServerClient.request(totalTxQuery, {
       block: {
         number: days30AgoBlock.number,
       },
@@ -79,7 +79,7 @@ export const getStaticProps: GetStaticProps = async () => {
   `
 
   try {
-    const result = await bitQueryClient.request(usersQuery, {
+    const result = await bitQueryServerClient.request(usersQuery, {
       since: days30Ago.toISOString(),
       till: new Date().toISOString(),
     })
