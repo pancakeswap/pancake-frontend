@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { FetchStatus } from 'config/constants/types'
 import { getNftsMarketData } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
+import useSWR from 'swr'
 import { pancakeBunniesAddress } from '../constants'
 
 export interface LowestNftPrice {
@@ -13,63 +14,24 @@ const getBunnyIdFromNft = (nft: NftToken): string => {
   return bunnyId ? bunnyId.toString() : null
 }
 
-export const useGetLowestPriceFromBunnyId = (bunnyId: string): LowestNftPrice => {
-  const [isFetching, setIsFetching] = useState<boolean>(false)
-  const [lowestPrice, setLowestPrice] = useState<number>(null)
+export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice => {
+  const { data, status } = useSWR(bunnyId ? ['bunnyLowestPrice', bunnyId] : null, async () => {
+    const response = await getNftsMarketData({ otherId: bunnyId, isTradable: true }, 1, 'currentAskPrice', 'asc')
 
-  useEffect(() => {
-    const fetchLowestPrice = async () => {
-      try {
-        setIsFetching(true)
-        const response = await getNftsMarketData({ otherId: bunnyId, isTradable: true }, 1, 'currentAskPrice', 'asc')
-
-        if (response.length > 0) {
-          const [tokenMarketData] = response
-          setLowestPrice(parseFloat(tokenMarketData.currentAskPrice))
-        }
-      } finally {
-        setIsFetching(false)
-      }
+    if (response.length > 0) {
+      const [tokenMarketData] = response
+      return parseFloat(tokenMarketData.currentAskPrice)
     }
+    return null
+  })
 
-    if (bunnyId) {
-      fetchLowestPrice()
-    }
-  }, [bunnyId])
-
-  return { isFetching, lowestPrice }
+  return { isFetching: status !== FetchStatus.Fetched, lowestPrice: data }
 }
 
 export const useGetLowestPriceFromNft = (nft: NftToken): LowestNftPrice => {
-  const [isFetching, setIsFetching] = useState<boolean>(false)
-  const [lowestPrice, setLowestPrice] = useState<number>(null)
   const isPancakeBunny = nft.collectionAddress?.toLowerCase() === pancakeBunniesAddress.toLowerCase()
 
-  useEffect(() => {
-    const fetchLowestPrice = async () => {
-      const bunnyIdAttr = getBunnyIdFromNft(nft)
-      try {
-        setIsFetching(true)
-        const response = await getNftsMarketData(
-          { otherId: bunnyIdAttr, isTradable: true },
-          1,
-          'currentAskPrice',
-          'asc',
-        )
+  const bunnyIdAttr = isPancakeBunny && getBunnyIdFromNft(nft)
 
-        if (response.length > 0) {
-          const [tokenMarketData] = response
-          setLowestPrice(parseFloat(tokenMarketData.currentAskPrice))
-        }
-      } finally {
-        setIsFetching(false)
-      }
-    }
-
-    if (isPancakeBunny && nft) {
-      fetchLowestPrice()
-    }
-  }, [isPancakeBunny, nft])
-
-  return { isFetching, lowestPrice }
+  return useGetLowestPriceFromBunnyId(bunnyIdAttr)
 }

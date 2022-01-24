@@ -22,7 +22,7 @@ export const useFetchProfile = () => {
 }
 
 export const useProfileForAddress = (address: string) => {
-  const { data, status, mutate } = useSWRImmutable([address, 'profile'], () => getProfile(address))
+  const { data, status, mutate } = useSWRImmutable(address ? [address, 'profile'] : null, () => getProfile(address))
 
   return {
     profile: data,
@@ -32,7 +32,9 @@ export const useProfileForAddress = (address: string) => {
 }
 
 export const useAchievementsForAddress = (address: string) => {
-  const { data, status, mutate } = useSWRImmutable([address, 'achievements'], () => getAchievements(address))
+  const { data, status, mutate } = useSWRImmutable(address ? [address, 'achievements'] : null, () =>
+    getAchievements(address),
+  )
 
   return {
     achievements: data || [],
