@@ -9,6 +9,7 @@ import SafemoonWarning from './SafemoonWarning'
 import ItamWarning from './ItamWarning'
 import BondlyWarning from './BondlyWarning'
 import Acknowledgement from './Acknowledgement'
+import CcarWarning from './CcarWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -62,6 +63,10 @@ const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDis
     [SwapWarningTokensConfig.itam.address]: {
       symbol: SwapWarningTokensConfig.itam.symbol,
       component: <ItamWarning />,
+    },
+    [SwapWarningTokensConfig.ccar.address]: {
+      symbol: SwapWarningTokensConfig.ccar.symbol,
+      component: <CcarWarning />,
     },
   }
 
