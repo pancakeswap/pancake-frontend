@@ -78,10 +78,7 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
 
   const handleApprove = async () => {
     try {
-      const tx = await callWithGasPrice(cakeContract, 'approve', [
-        vaultPoolContract.address,
-        MaxUint256,
-      ])
+      const tx = await callWithGasPrice(cakeContract, 'approve', [vaultPoolContract.address, MaxUint256])
       toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       setRequestedApproval(true)
       const receipt = await tx.wait()

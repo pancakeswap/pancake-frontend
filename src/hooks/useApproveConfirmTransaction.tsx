@@ -107,9 +107,9 @@ const useApproveConfirmTransaction = ({
         onApproveSuccess({ state, receipt })
       } else {
         toastError(
-          t("Error"),
+          t('Error'),
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t("Please try again. Confirm the transaction and make sure you are paying enough gas!")}
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
           </ToastDescriptionWithTx>,
         )
       }
@@ -128,13 +128,13 @@ const useApproveConfirmTransaction = ({
         toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
         const receipt = await tx.wait()
         if (receipt.status) {
-          dispatch({ type: "confirm_receipt" })
+          dispatch({ type: 'confirm_receipt' })
           onSuccess({ state, receipt })
         } else {
           toastError(
-            t("Error"),
+            t('Error'),
             <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-              {t("Please try again. Confirm the transaction and make sure you are paying enough gas!")}
+              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
             </ToastDescriptionWithTx>,
           )
         }
