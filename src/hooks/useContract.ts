@@ -129,11 +129,6 @@ export const useSousChef = (id) => {
   return useMemo(() => getSouschefContract(id, library.getSigner()), [id, library])
 }
 
-export const useSousChefV2 = (id) => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getSouschefV2Contract(id, library.getSigner()), [id, library])
-}
-
 export const usePointCenterIfoContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getPointCenterIfoContract(library.getSigner()), [library])
