@@ -4,7 +4,7 @@ import type {
   UnknownAsyncThunkRejectedAction,
   // eslint-disable-next-line import/no-unresolved
 } from '@reduxjs/toolkit/dist/matchers'
-import { createAsyncThunk, createSlice, isPending, isFulfilled, isRejected } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
 import farmsConfig from 'config/constants/farms'
 import isArchivedPid from 'utils/farmHelpers'
@@ -160,15 +160,21 @@ export const farmsSlice = createSlice({
       state.userDataLoaded = true
     })
 
-    builder.addMatcher(isPending, (state, action) => {
+    builder.addMatcher(isAnyOf(fetchFarmUserDataAsync.pending, fetchFarmsPublicDataAsync.pending), (state, action) => {
       state.loadingKeys[serializeLoadingKey(action, 'pending')] = true
     })
-    builder.addMatcher(isFulfilled, (state, action) => {
-      state.loadingKeys[serializeLoadingKey(action, 'fulfilled')] = false
-    })
-    builder.addMatcher(isRejected, (state, action) => {
-      state.loadingKeys[serializeLoadingKey(action, 'rejected')] = false
-    })
+    builder.addMatcher(
+      isAnyOf(fetchFarmUserDataAsync.fulfilled, fetchFarmsPublicDataAsync.fulfilled),
+      (state, action) => {
+        state.loadingKeys[serializeLoadingKey(action, 'fulfilled')] = false
+      },
+    )
+    builder.addMatcher(
+      isAnyOf(fetchFarmsPublicDataAsync.rejected, fetchFarmUserDataAsync.rejected),
+      (state, action) => {
+        state.loadingKeys[serializeLoadingKey(action, 'rejected')] = false
+      },
+    )
   },
 })
 
