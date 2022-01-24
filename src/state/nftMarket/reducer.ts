@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FetchStatus } from 'config/constants/types'
 import isEmpty from 'lodash/isEmpty'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { multicallv2 } from 'utils/multicall'
+import erc721Abi from 'config/abi/erc721.json'
 import {
   combineApiAndSgResponseToNftToken,
   combineCollectionData,
@@ -18,6 +20,7 @@ import {
   getPancakeBunniesAttributesField,
 } from './helpers'
 import {
+  ApiCollection,
   ApiSingleTokenData,
   Collection,
   MarketEvent,
@@ -58,12 +61,36 @@ const initialState: State = {
   },
 }
 
+const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promise<number[]> => {
+  const totalSupplyCalls = collections.map((collection) => ({
+    address: collection.address.toLowerCase(),
+    name: 'totalSupply',
+  }))
+  if (totalSupplyCalls.length > 0) {
+    const totalSupplyRaw = await multicallv2(erc721Abi, totalSupplyCalls, { requireSuccess: false })
+    const totalSupply = totalSupplyRaw.flat()
+    return totalSupply.map((totalCount) => (totalCount ? totalCount.toNumber() : 0))
+  }
+  return []
+}
+
 /**
  * Fetch all collections data by combining data from the API (static metadata) and the Subgraph (dynamic market data)
  */
 export const fetchCollections = createAsyncThunk<Record<string, Collection>>('nft/fetchCollections', async () => {
   const [collections, collectionsMarket] = await Promise.all([getCollectionsApi(), getCollectionsSg()])
-  return combineCollectionData(collections?.data ?? [], collectionsMarket)
+  const collectionApiData: ApiCollection[] = collections?.data ?? []
+  const collectionsTotalSupply = await fetchCollectionsTotalSupply(collectionApiData)
+  const collectionApiDataCombinedOnChain = collectionApiData.map((collection, index) => {
+    const totalSupplyFromApi = Number(collection.totalSupply) || 0
+    const totalSupplyFromOnChain = collectionsTotalSupply[index]
+    return {
+      ...collection,
+      totalSupply: Math.max(totalSupplyFromApi, totalSupplyFromOnChain).toString(),
+    }
+  })
+
+  return combineCollectionData(collectionApiDataCombinedOnChain, collectionsMarket)
 })
 
 /**
@@ -77,7 +104,15 @@ export const fetchCollection = createAsyncThunk<Record<string, Collection>, stri
       getCollectionSg(collectionAddress),
     ])
 
-    return combineCollectionData([collection], [collectionMarket])
+    const collectionsTotalSupply = await fetchCollectionsTotalSupply([collection])
+    const totalSupplyFromApi = Number(collection.totalSupply) || 0
+    const totalSupplyFromOnChain = collectionsTotalSupply[0]
+    const collectionApiDataCombinedOnChain = {
+      ...collection,
+      totalSupply: Math.max(totalSupplyFromApi, totalSupplyFromOnChain).toString(),
+    }
+
+    return combineCollectionData([collectionApiDataCombinedOnChain], [collectionMarket])
   },
 )
 
