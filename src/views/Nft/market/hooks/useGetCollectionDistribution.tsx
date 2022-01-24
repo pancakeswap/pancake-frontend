@@ -16,7 +16,7 @@ const useGetCollectionDistribution = (collectionAddress: string) => {
 
   return {
     data,
-    isFetching: status === FetchStatus.Fetching,
+    isFetching: status !== FetchStatus.Fetched,
   }
 }
 

@@ -82,7 +82,7 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
     combinedNft: nft ? { ...nft, marketData } : undefined,
     isOwn: nftOwn?.isOwn || false,
     isProfilePic: nftOwn?.nftIsProfilePic || false,
-    isLoading: status === FetchStatus.Fetching,
+    isLoading: status !== FetchStatus.Fetched,
     refetch,
   }
 }
