@@ -23,7 +23,7 @@ const SafemoonWarning = () => {
         <Link
           style={{ display: 'inline' }}
           external
-          href="https://twitter.com/safemoon/status/1470078043469275141?s=20"
+          href="https://twitter.com/safemoon/status/1477770592031887360"
         >
           {t("Safemoon's announcement")}.
         </Link>
