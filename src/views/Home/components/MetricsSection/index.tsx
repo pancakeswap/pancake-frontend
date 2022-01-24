@@ -4,7 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import IconCard, { IconCardData } from '../IconCard'
 import StatCardContent from './StatCardContent'
 import GradientLogo from '../GradientLogoSvg'
@@ -15,8 +15,8 @@ const Stats = () => {
   const { theme } = useTheme()
 
   const tvlString = data ? formatLocalisedCompactNumber(data.tvl) : '-'
-  const { data: txCount } = useSWR('totalTx30Days')
-  const { data: addressCount } = useSWR('addressCount30Days')
+  const { data: txCount } = useSWRImmutable('totalTx30Days')
+  const { data: addressCount } = useSWRImmutable('addressCount30Days')
   const trades = formatLocalisedCompactNumber(txCount)
   const users = formatLocalisedCompactNumber(addressCount)
 
