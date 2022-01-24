@@ -90,14 +90,14 @@ const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, maxHeight 
       <picture>
         <source type="image/webp" srcSet={getSrcSet(path, attributes[0].src, '.webp')} />
         <source type="image/png" srcSet={getSrcSet(path, attributes[0].src)} />
-        <DummyImg src={getImageUrl(path, attributes[0].src)} maxHeight={maxHeight} />
+        <DummyImg src={getImageUrl(path, attributes[0].src)} maxHeight={maxHeight} loading="lazy" decoding="async" />
       </picture>
       {attributes.map((image) => (
         <ImageWrapper key={image.src}>
           <picture>
             <source type="image/webp" srcSet={getSrcSet(path, image.src, '.webp')} />
             <source type="image/png" srcSet={getSrcSet(path, image.src)} />
-            <img src={getImageUrl(path, image.src)} alt={image.alt} />
+            <img src={getImageUrl(path, image.src)} alt={image.alt} loading="lazy" decoding="async" />
           </picture>
         </ImageWrapper>
       ))}
