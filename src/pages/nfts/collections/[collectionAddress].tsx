@@ -23,13 +23,19 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
-  await store.dispatch(fetchCollection(collectionAddress))
+  try {
+    await store.dispatch(fetchCollection(collectionAddress))
 
-  return {
-    props: {
-      initialReduxState: store.getState(),
-    },
-    revalidate: 60 * 60 * 24, // 1 day
+    return {
+      props: {
+        initialReduxState: store.getState(),
+      },
+      revalidate: 60 * 60 * 12, // 12 hours
+    }
+  } catch (error) {
+    return {
+      props: {},
+    }
   }
 }
 

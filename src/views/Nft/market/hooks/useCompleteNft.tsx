@@ -43,31 +43,30 @@ const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: Toke
 
 export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
   const { data: nft, mutate } = useSWR(
-    ['nft', collectionAddress, tokenId],
-    null,
-    // async () => {
-    //   const metadata = await getNftApi(collectionAddress, tokenId)
-    //   if (metadata) {
-    //     const nft: NftToken = {
-    //       tokenId,
-    //       collectionAddress,
-    //       collectionName: metadata.collection.name,
-    //       name: metadata.name,
-    //       description: metadata.description,
-    //       image: metadata.image,
-    //       attributes: metadata.attributes,
-    //     }
-
-    //     return nft
-    //   }
-    // }
+    collectionAddress && tokenId ? ['nft', collectionAddress, tokenId] : null,
+    async () => {
+      const metadata = await getNftApi(collectionAddress, tokenId)
+      if (metadata) {
+        const basicNft: NftToken = {
+          tokenId,
+          collectionAddress,
+          collectionName: metadata.collection.name,
+          name: metadata.name,
+          description: metadata.description,
+          image: metadata.image,
+          attributes: metadata.attributes,
+        }
+        return basicNft
+      }
+      return null
+    },
   )
 
   const { data: marketData, mutate: refetchNftMarketData } = useSWR(
-    ['nft', 'marktData', collectionAddress, tokenId],
+    collectionAddress && tokenId ? ['nft', 'marktData', collectionAddress, tokenId] : null,
     async () => {
-      const [marketData] = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
-      return marketData
+      const marketDatas = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
+      return marketDatas[0]
     },
   )
 
@@ -77,7 +76,7 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
     await mutate()
     await refetchNftMarketData()
     await refetchNftOwn()
-  }, [mutate, refetchNftOwn])
+  }, [mutate, refetchNftMarketData, refetchNftOwn])
 
   return {
     combinedNft: nft ? { ...nft, marketData } : undefined,

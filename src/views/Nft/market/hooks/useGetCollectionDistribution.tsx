@@ -10,7 +10,7 @@ import { pancakeBunniesAddress } from '../constants'
 
 const useGetCollectionDistribution = (collectionAddress: string) => {
   const { data, status } = useSWRImmutable(
-    ['distribution', collectionAddress],
+    collectionAddress ? ['distribution', collectionAddress] : null,
     async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress)).data,
   )
 
