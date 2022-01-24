@@ -74,7 +74,7 @@ const CakeDataRow = () => {
         requireSuccess: false,
       })
       const [totalSupply, burned] = tokenDataResultRaw.flat()
-      setCakeSupply(totalSupply ? +formatBigNumber(totalSupply.sub(burned)) : 0)
+      setCakeSupply(totalSupply && burned ? +formatBigNumber(totalSupply.sub(burned)) : 0)
       setBurnedBalance(burned ? +formatBigNumber(burned) : 0)
     }
 

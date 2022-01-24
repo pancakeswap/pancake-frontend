@@ -5,7 +5,6 @@ import { GetStaticProps } from 'next'
 import React from 'react'
 import { SWRConfig } from 'swr'
 import { bitQueryClient, infoClient } from 'utils/graphql'
-import { simpleRpcProvider } from 'utils/providers'
 import { getBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import Home from '../views/Home'
 
@@ -30,8 +29,8 @@ const addressCount = 4425459
 
 export const getStaticProps: GetStaticProps = async () => {
   const totalTxQuery = gql`
-    query TotalTransactions($id: ID!, $blockNumber: Int!) {
-      pancakeFactory(id: $id, block: { number: $blockNumber }) {
+    query TotalTransactions($id: ID!, $block: Block_height) {
+      pancakeFactory(id: $id, block: $block) {
         totalTransactions
       }
     }
@@ -45,19 +44,23 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 
   try {
-    const blockNumber = await simpleRpcProvider.getBlockNumber()
     const [days30AgoBlock] = await getBlocksFromTimestamps([getUnixTime(days30Ago)])
 
     const totalTx = await infoClient.request(totalTxQuery, {
-      blockNumber,
       id: FACTORY_ADDRESS,
     })
     const totalTx30DaysAgo = await infoClient.request(totalTxQuery, {
-      blockNumber: days30AgoBlock.number,
+      block: {
+        number: days30AgoBlock.number,
+      },
       id: FACTORY_ADDRESS,
     })
 
-    if (totalTx?.pancakeFactory?.totalTransactions && totalTx30DaysAgo?.pancakeFactory?.totalTransactions) {
+    if (
+      totalTx?.pancakeFactory?.totalTransactions &&
+      totalTx30DaysAgo?.pancakeFactory?.totalTransactions &&
+      parseInt(totalTx.pancakeFactory.totalTransactions) > parseInt(totalTx30DaysAgo.pancakeFactory.totalTransactions)
+    ) {
       results.totalTx30Days =
         parseInt(totalTx.pancakeFactory.totalTransactions) - parseInt(totalTx30DaysAgo.pancakeFactory.totalTransactions)
     }
