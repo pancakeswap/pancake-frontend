@@ -6,26 +6,27 @@ import wbnbABI from 'config/abi/weth.json'
 import multicall, { multicallv2 } from 'utils/multicall'
 import { getAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getSouschefV2Contract } from 'utils/contractHelpers'
 import tokens from 'config/constants/tokens'
 import chunk from 'lodash/chunk'
 import sousChefV2 from '../../config/abi/sousChefV2.json'
+import sousChefV3 from '../../config/abi/sousChefV3.json'
+
+const poolsWithEnd = poolsConfig.filter((p) => p.sousId !== 0)
+
+const startEndBlockCalls = poolsWithEnd.flatMap((poolConfig) => {
+  return [
+    {
+      address: getAddress(poolConfig.contractAddress),
+      name: 'startBlock',
+    },
+    {
+      address: getAddress(poolConfig.contractAddress),
+      name: 'bonusEndBlock',
+    },
+  ]
+})
 
 export const fetchPoolsBlockLimits = async () => {
-  const poolsWithEnd = poolsConfig.filter((p) => p.sousId !== 0)
-  const startEndBlockCalls = poolsWithEnd.flatMap((poolConfig) => {
-    return [
-      {
-        address: getAddress(poolConfig.contractAddress),
-        name: 'startBlock',
-      },
-      {
-        address: getAddress(poolConfig.contractAddress),
-        name: 'bonusEndBlock',
-      },
-    ]
-  })
-
   const startEndBlockRaw = await multicall(sousChefABI, startEndBlockCalls)
 
   const startEndBlockResult = startEndBlockRaw.reduce((resultArray, item, index) => {
@@ -51,26 +52,25 @@ export const fetchPoolsBlockLimits = async () => {
   })
 }
 
+const nonBnbPools = poolsConfig.filter((p) => p.stakingToken.symbol !== 'BNB')
+const bnbPool = poolsConfig.filter((p) => p.stakingToken.symbol === 'BNB')
+
+const callsNonBnbPools = nonBnbPools.map((poolConfig) => {
+  return {
+    address: poolConfig.stakingToken.address,
+    name: 'balanceOf',
+    params: [getAddress(poolConfig.contractAddress)],
+  }
+})
+
+const callsBnbPools = bnbPool.map((poolConfig) => {
+  return {
+    address: tokens.wbnb.address,
+    name: 'balanceOf',
+    params: [getAddress(poolConfig.contractAddress)],
+  }
+})
 export const fetchPoolsTotalStaking = async () => {
-  const nonBnbPools = poolsConfig.filter((p) => p.stakingToken.symbol !== 'BNB')
-  const bnbPool = poolsConfig.filter((p) => p.stakingToken.symbol === 'BNB')
-
-  const callsNonBnbPools = nonBnbPools.map((poolConfig) => {
-    return {
-      address: poolConfig.stakingToken.address,
-      name: 'balanceOf',
-      params: [getAddress(poolConfig.contractAddress)],
-    }
-  })
-
-  const callsBnbPools = bnbPool.map((poolConfig) => {
-    return {
-      address: tokens.wbnb.address,
-      name: 'balanceOf',
-      params: [getAddress(poolConfig.contractAddress)],
-    }
-  })
-
   const nonBnbPoolsTotalStaked = await multicall(cakeABI, callsNonBnbPools)
   const bnbPoolsTotalStaked = await multicall(wbnbABI, callsBnbPools)
 
@@ -84,20 +84,6 @@ export const fetchPoolsTotalStaking = async () => {
       totalStaked: new BigNumber(bnbPoolsTotalStaked[index]).toJSON(),
     })),
   ]
-}
-
-export const fetchPoolStakingLimit = async (sousId: number): Promise<BigNumber> => {
-  try {
-    const sousContract = getSouschefV2Contract(sousId)
-    const hasUserLimit = await sousContract.hasUserLimit()
-    if (hasUserLimit) {
-      const stakingLimit = await sousContract.poolLimitPerUser()
-      return new BigNumber(stakingLimit.toString())
-    }
-    return BIG_ZERO
-  } catch (error) {
-    return BIG_ZERO
-  }
 }
 
 export const fetchPoolsStakingLimits = async (
@@ -127,6 +113,42 @@ export const fetchPoolsStakingLimits = async (
     return {
       ...accum,
       [validPools[index].sousId]: stakingLimit,
+    }
+  }, {})
+}
+
+const poolsWithV3 = poolsConfig.filter((pool) => pool?.version === 3)
+
+export const fetchPoolsProfileRequirement = async (): Promise<{
+  [key: string]: {
+    required: boolean
+    thresholdPoints: BigNumber
+  }
+}> => {
+  const poolProfileRequireCalls = poolsWithV3
+    .map((validPool) => {
+      const contractAddress = getAddress(validPool.contractAddress)
+      return ['pancakeProfileIsRequested', 'pancakeProfileThresholdPoints'].map((method) => ({
+        address: contractAddress,
+        name: method,
+      }))
+    })
+    .flat()
+
+  const poolProfileRequireResultRaw = await multicallv2(sousChefV3, poolProfileRequireCalls, { requireSuccess: false })
+  const chunkSize = poolProfileRequireCalls.length / poolsWithV3.length
+  const poolStakingChunkedResultRaw = chunk(poolProfileRequireResultRaw.flat(), chunkSize)
+  return poolStakingChunkedResultRaw.reduce((accum, poolProfileRequireRaw, index) => {
+    const hasProfileRequired = poolProfileRequireRaw[0]
+    const profileThresholdPoints = poolProfileRequireRaw[1]
+      ? new BigNumber(poolProfileRequireRaw[1].toString())
+      : BIG_ZERO
+    return {
+      ...accum,
+      [poolsWithV3[index].sousId]: {
+        required: hasProfileRequired,
+        thresholdPoints: profileThresholdPoints.toJSON(),
+      },
     }
   }, {})
 }

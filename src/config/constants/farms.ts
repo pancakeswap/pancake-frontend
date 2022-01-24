@@ -1,5 +1,6 @@
 import { serializeTokens } from './tokens'
 import { SerializedFarmConfig } from './types'
+import { CHIAN_ID } from './networks'
 
 const serializedTokens = serializeTokens()
 
@@ -5038,6 +5039,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.bake,
     quoteToken: serializedTokens.wbnb,
   },
-]
+].filter((f) => !!f.lpAddresses[CHIAN_ID])
 
 export default farms

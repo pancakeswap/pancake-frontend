@@ -90,6 +90,10 @@ export interface DeserializedPool extends DeserializedPoolConfig, CorePoolProps 
 export interface SerializedPool extends SerializedPoolConfig, CorePoolProps {
   totalStaked?: SerializedBigNumber
   stakingLimit?: SerializedBigNumber
+  profileRequirement?: {
+    required: boolean
+    thresholdPoints: SerializedBigNumber
+  }
   userData?: {
     allowance: SerializedBigNumber
     stakingTokenBalance: SerializedBigNumber
