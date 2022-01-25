@@ -20,8 +20,9 @@ const sentryWebpackPluginOptions = {
 /** @type {import('next').NextConfig} */
 const config = {
   i18n: {
-    locales: ['en-US', 'cu'],
-    defaultLocale: 'en-US',
+    locales: ['en', 'cu'],
+    defaultLocale: 'en',
+    localeDetection: false,
   },
   experimental: {
     styledComponents: true,
