@@ -11,7 +11,7 @@ import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmMintModal from './components/ConfirmMintModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
-import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
+import AdvancedMintDetailsDropdown from './components/AdvancedMintDetailsDropdown'
 import { ArrowWrapper, MintCallbackError, Wrapper } from './components/styleds'
 import MintPrice from './components/MintPrice'
 import ProgressSteps from './components/ProgressSteps'
@@ -385,7 +385,7 @@ export default function Mint({ history }: RouteComponentProps) {
                   </Box>
                 </Wrapper>
               </AppBody>
-              {trade && <AdvancedSwapDetailsDropdown trade={trade} />}
+              {trade && <AdvancedMintDetailsDropdown mint={mint} />}
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
         </Flex>

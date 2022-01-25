@@ -1,20 +1,17 @@
 import React from 'react'
-import { Trade, TradeType } from 'peronio-sdk'
+import { Mint } from 'peronio-sdk'
 import { Text } from 'peronio-uikit'
-import { Field } from 'state/swap/actions'
 import { useTranslation } from 'contexts/Localization'
-import { useUserSlippageTolerance } from 'state/user/hooks'
-import { computeSlippageAdjustedAmounts } from 'utils/prices'
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 
-function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
+function TradeSummary({ mint }: { mint: Mint }) {
   const { t } = useTranslation()
   const markupRate = 5
   const markupAmount = 2.33
-  const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
-  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
+  const isExactIn = true
+  // const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
 
   return (
     <AutoColumn style={{ padding: '0 16px' }}>
@@ -27,9 +24,8 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         <RowFixed>
           <Text fontSize="14px">
             {isExactIn
-              ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ??
-                '-'
-              : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade.inputAmount.currency.symbol}` ?? '-'}
+              ? `${mint?.outputAmount.toSignificant(4)} ${mint.outputAmount.currency.symbol}` ?? '-'
+              : `${mint?.inputAmount.toSignificant(4)} ${mint.inputAmount.currency.symbol}` ?? '-'}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -57,12 +53,10 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
   )
 }
 
-export interface AdvancedSwapDetailsProps {
-  trade?: Trade
+export interface AdvancedMintDetailsProps {
+  mint?: Mint
 }
 
-export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
-  const [allowedSlippage] = useUserSlippageTolerance()
-
-  return <AutoColumn gap="0px">{trade && <TradeSummary trade={trade} allowedSlippage={allowedSlippage} />}</AutoColumn>
+export function AdvancedMintDetails({ mint }: AdvancedMintDetailsProps) {
+  return <AutoColumn gap="0px">{mint && <TradeSummary mint={mint} />}</AutoColumn>
 }
