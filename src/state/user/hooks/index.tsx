@@ -3,7 +3,7 @@ import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CHIAN_ID } from 'config/constants/networks'
+import { CHAIN_ID } from 'config/constants/networks'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAllTokens } from 'hooks/Tokens'
@@ -358,7 +358,7 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useGasPrice(): string {
-  const chainId = CHIAN_ID
+  const chainId = CHAIN_ID
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
   return chainId === ChainId.MAINNET.toString() ? userGas : GAS_PRICE_GWEI.testnet
 }

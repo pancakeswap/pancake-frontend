@@ -6,12 +6,12 @@ import { ConnectorNames } from '@pancakeswap/uikit'
 import { hexlify } from '@ethersproject/bytes'
 import { toUtf8Bytes } from '@ethersproject/strings'
 import { Web3Provider } from '@ethersproject/providers'
-import { CHIAN_ID } from 'config/constants/networks'
+import { CHAIN_ID } from 'config/constants/networks'
 import getNodeUrl from './getRpcUrl'
 
 const POLLING_INTERVAL = 12000
 const rpcUrl = getNodeUrl()
-const chainId = parseInt(CHIAN_ID, 10)
+const chainId = parseInt(CHAIN_ID, 10)
 
 const injected = new InjectedConnector({ supportedChainIds: [chainId] })
 

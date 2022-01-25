@@ -1,5 +1,5 @@
 import { VaultKey } from 'state/types'
-import { CHIAN_ID } from './networks'
+import { CHAIN_ID } from './networks'
 import tokens, { serializeTokens } from './tokens'
 import { SerializedPoolConfig, PoolCategory } from './types'
 
@@ -3481,6 +3481,6 @@ const pools: SerializedPoolConfig[] = [
     sortOrder: 999,
     tokenPerBlock: '0.6093',
   },
-].filter((p) => !!p.contractAddress[CHIAN_ID])
+].filter((p) => !!p.contractAddress[CHAIN_ID])
 
 export default pools
