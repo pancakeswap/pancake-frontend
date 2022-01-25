@@ -1,4 +1,3 @@
-import { mainnetTokens } from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import useENS from 'hooks/ENS/useENS'
 import { useMintExactIn } from 'hooks/Mints'
@@ -30,10 +29,16 @@ export function useMintTokenInfo(): {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const { independentField, typedValue, recipient } = useSwapState()
+  const {
+    independentField,
+    typedValue,
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+    recipient,
+  } = useSwapState()
 
-  const inputCurrency = useCurrency(mainnetTokens.usdt.address)
-  const outputCurrency = useCurrency(mainnetTokens.pe.address)
+  const inputCurrency = useCurrency(inputCurrencyId)
+  const outputCurrency = useCurrency(outputCurrencyId)
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
 
@@ -45,20 +50,23 @@ export function useMintTokenInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  console.info('parsedAmount')
-  console.dir(parsedAmount)
+  //   console.info('parsedAmount')
+  //   console.dir(parsedAmount)
 
   // ACA VA EL REFACTOR!!!! ----------------------------------------------------------------
 
   const mint = useMintExactIn(parsedAmount)
 
-  console.info('mintCreated:')
-  console.dir(mint)
+  //   console.info('mintCreated:')
+  //   console.dir(mint)
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1],
   }
+
+  //   console.info('currencyBalances: ')
+  //   console.dir(currencyBalances)
 
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
@@ -80,7 +88,7 @@ export function useMintTokenInfo(): {
   }
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], currencyBalances[Field.OUTPUT]]
+  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], parsedAmount]
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })

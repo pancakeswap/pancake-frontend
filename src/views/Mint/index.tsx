@@ -115,7 +115,7 @@ export default function Mint({ history }: RouteComponentProps) {
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const { v2Trade } = useDerivedSwapInfo()
-  const { mint, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useMintTokenInfo()
+  const { mint, parsedAmount, currencies, currencyBalances, inputError: swapInputError } = useMintTokenInfo()
 
   const trade = v2Trade
 
