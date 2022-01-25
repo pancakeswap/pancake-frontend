@@ -2,7 +2,8 @@ import { ethers } from 'ethers'
 import { simpleRpcProvider } from 'utils/providers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
-import tokens from 'config/constants/tokens'
+import tokens, { mainnetTokens } from 'config/constants/tokens'
+import { abi as PeronioABI } from 'peronio-core/deployments/mumbai/Peronio.json'
 
 // Addresses
 import {
@@ -220,4 +221,8 @@ export const getPancakeSquadContract = (signer?: ethers.Signer | ethers.provider
 }
 export const getErc721CollectionContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const getPeronioContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
+  return getContract(PeronioABI, mainnetTokens.pe.address, signer)
 }

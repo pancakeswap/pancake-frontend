@@ -23,7 +23,7 @@ function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
     !tradeA.outputAmount.equalTo(tradeB.outputAmount)
   )
 }
-interface ConfirmSwapModalProps {
+interface ConfirmMintModalProps {
   trade?: Trade
   originalTrade?: Trade
   attemptingTxn: boolean
@@ -36,7 +36,7 @@ interface ConfirmSwapModalProps {
   customOnDismiss?: () => void
 }
 
-const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = ({
+const ConfirmMintModal: React.FC<InjectedModalProps & ConfirmMintModalProps> = ({
   trade,
   originalTrade,
   onAcceptChanges,
@@ -81,7 +81,7 @@ const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = (
   }, [allowedSlippage, onConfirm, showAcceptChanges, mintErrorMessage, trade])
 
   // text to show while loading
-  const pendingText = t('Swapping %amountA% %symbolA% for %amountB% %symbolB%', {
+  const pendingText = t('Minting %amountA% %symbolA% for %amountB% %symbolB%', {
     amountA: trade?.inputAmount?.toSignificant(6) ?? '',
     symbolA: trade?.inputAmount?.currency?.symbol ?? '',
     amountB: trade?.outputAmount?.toSignificant(6) ?? '',
@@ -100,7 +100,7 @@ const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = (
 
   return (
     <TransactionConfirmationModal
-      title={t('Confirm Swap')}
+      title={t('Confirm Mint')}
       onDismiss={onDismiss}
       customOnDismiss={customOnDismiss}
       attemptingTxn={attemptingTxn}
@@ -112,4 +112,4 @@ const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = (
   )
 }
 
-export default ConfirmSwapModal
+export default ConfirmMintModal

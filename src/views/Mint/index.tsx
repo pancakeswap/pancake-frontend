@@ -8,7 +8,8 @@ import {
   Box,
   useModal,
   Flex,
-  // IconButton,
+  IconButton,
+  ArrowUpDownIcon,
   // BottomDrawer,
   // useMatchBreakpoints,
   // ArrowUpDownIcon,
@@ -19,7 +20,7 @@ import { useTranslation } from 'contexts/Localization'
 // import SwapWarningTokens from 'config/constants/swapWarningTokens'
 import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/Layout/Column'
-import ConfirmSwapModal from './components/ConfirmSwapModal'
+import ConfirmMintModal from './components/ConfirmMintModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
 import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
@@ -38,11 +39,12 @@ import { useSwapCallback } from '../../hooks/useSwapCallback'
 import { Field } from '../../state/swap/actions'
 import {
   useDefaultsFromURLSearch,
-  useMintTokenInfo,
   useSwapActionHandlers,
   useSwapState,
-  // useSingleTokenSwapInfo,
+  useDerivedSwapInfo,
 } from '../../state/swap/hooks'
+import { useMintTokenInfo } from '../../state/tokenMint/hooks'
+
 import {
   useExpertModeManager,
   useUserSlippageTolerance,
@@ -61,23 +63,23 @@ const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.secondary};
 `
 
-// const SwitchIconButton = styled(IconButton)`
-//   box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
-//   .icon-up-down {
-//     display: none;
-//   }
-//   &:hover {
-//     background-color: ${({ theme }) => theme.colors.primary};
-//     .icon-down {
-//       display: none;
-//       fill: white;
-//     }
-//     .icon-up-down {
-//       display: block;
-//       fill: white;
-//     }
-//   }
-// `
+const SwitchIconButton = styled(IconButton)`
+  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
+  .icon-up-down {
+    display: none;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primary};
+    .icon-down {
+      display: none;
+      fill: white;
+    }
+    .icon-up-down {
+      display: block;
+      fill: white;
+    }
+  }
+`
 
 export default function Mint({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -112,15 +114,16 @@ export default function Mint({ history }: RouteComponentProps) {
 
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
-  const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useMintTokenInfo()
+  const { v2Trade } = useDerivedSwapInfo()
+  const { mint, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useMintTokenInfo()
 
   const trade = v2Trade
 
   // const singleTokenPrice = useSingleTokenSwapInfo()
 
   const parsedAmounts = {
-    [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-    [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+    [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : mint?.inputAmount,
+    [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : mint?.outputAmount,
   }
 
   const { onUserInput, onChangeRecipient } = useSwapActionHandlers()
@@ -223,20 +226,6 @@ export default function Mint({ history }: RouteComponentProps) {
     setSwapState({ mintToConfirm: trade, mintErrorMessage, txHash, attemptingTxn })
   }, [attemptingTxn, mintErrorMessage, trade, txHash])
 
-  // const handleInputSelect = useCallback(
-  //   (inputCurrency) => {
-  //     setApprovalSubmitted(false) // reset 2 step UI for approvals
-  //     onCurrencySelection(Field.INPUT, inputCurrency)
-  //     const showSwapWarning = shouldShowSwapWarning(inputCurrency)
-  //     if (showSwapWarning) {
-  //       setSwapWarningCurrency(inputCurrency)
-  //     } else {
-  //       setSwapWarningCurrency(null)
-  //     }
-  //   },
-  //   [onCurrencySelection],
-  // )
-
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
       onUserInput(Field.INPUT, maxAmountInput.toExact())
@@ -244,7 +233,7 @@ export default function Mint({ history }: RouteComponentProps) {
   }, [maxAmountInput, onUserInput])
 
   const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap')} />,
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/mint')} />,
   )
 
   useEffect(() => {
@@ -255,7 +244,7 @@ export default function Mint({ history }: RouteComponentProps) {
   }, [importTokensNotInDefault.length])
 
   const [onPresentConfirmModal] = useModal(
-    <ConfirmSwapModal
+    <ConfirmMintModal
       trade={trade}
       originalTrade={mintToConfirm}
       onAcceptChanges={handleAcceptChanges}
@@ -269,7 +258,7 @@ export default function Mint({ history }: RouteComponentProps) {
     />,
     true,
     true,
-    'confirmSwapModal',
+    'confirmMintModal',
   )
 
   return (
@@ -302,14 +291,11 @@ export default function Mint({ history }: RouteComponentProps) {
 
                     <AutoColumn justify="space-between">
                       <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                        {t("You'll get this amount of PE")}
-
-                        {/* <SwitchIconButton
+                        <SwitchIconButton
                           variant="light"
                           scale="sm"
                           onClick={() => {
-                            setApprovalSubmitted(false) // reset 2 step UI for approvals
-                            onSwitchTokens()
+                            history.push('/withdraw')
                           }}
                         >
                           <ArrowDownIcon
@@ -321,11 +307,11 @@ export default function Mint({ history }: RouteComponentProps) {
                             color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                           />
                         </SwitchIconButton>
-                        {recipient === null && !showWrap && isExpertMode ? (
+                        {recipient === null && isExpertMode ? (
                           <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                             {t('+ Add a send (optional)')}
                           </Button>
-                        ) : null} */}
+                        ) : null}
                       </AutoRow>
                     </AutoColumn>
                     <CurrencyInputPanel
