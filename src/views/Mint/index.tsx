@@ -35,7 +35,6 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
-import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { Field } from '../../state/swap/actions'
 import {
   useDefaultsFromURLSearch,
@@ -115,25 +114,14 @@ export default function Mint({ history }: RouteComponentProps) {
   const { independentField, typedValue, recipient } = useSwapState()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useMintTokenInfo()
 
-  const {
-    wrapType,
-    execute: onWrap,
-    inputError: wrapInputError,
-  } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
-  const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
-  const trade = showWrap ? undefined : v2Trade
+  const trade = v2Trade
 
   // const singleTokenPrice = useSingleTokenSwapInfo()
 
-  const parsedAmounts = showWrap
-    ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
-      }
-    : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      }
+  const parsedAmounts = {
+    [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+    [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+  }
 
   const { onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -167,9 +155,7 @@ export default function Mint({ history }: RouteComponentProps) {
 
   const formattedAmounts = {
     [independentField]: typedValue,
-    [dependentField]: showWrap
-      ? parsedAmounts[independentField]?.toExact() ?? ''
-      : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+    [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
   // check whether the user has approved the router on the input token
@@ -302,9 +288,7 @@ export default function Mint({ history }: RouteComponentProps) {
                 <Wrapper id="swap-page">
                   <AutoColumn gap="md">
                     <CurrencyInputPanel
-                      label={
-                        independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')
-                      }
+                      label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
                       value={formattedAmounts[Field.INPUT]}
                       showMaxButton={!atMaxAmountInput}
                       currency={currencies[Field.INPUT]}
@@ -347,7 +331,7 @@ export default function Mint({ history }: RouteComponentProps) {
                     <CurrencyInputPanel
                       value={formattedAmounts[Field.OUTPUT]}
                       onUserInput={handleTypeOutput}
-                      label={independentField === Field.INPUT && !showWrap && trade ? t('To (estimated)') : t('To')}
+                      label={independentField === Field.INPUT && trade ? t('To (estimated)') : t('To')}
                       showMaxButton={false}
                       currency={currencies[Field.OUTPUT]}
                       onCurrencySelect={null}
@@ -356,7 +340,7 @@ export default function Mint({ history }: RouteComponentProps) {
                       disableCurrencySelect
                     />
 
-                    {isExpertMode && recipient !== null && !showWrap ? (
+                    {isExpertMode && recipient !== null ? (
                       <>
                         <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
                           <ArrowWrapper clickable={false}>
@@ -370,37 +354,30 @@ export default function Mint({ history }: RouteComponentProps) {
                       </>
                     ) : null}
 
-                    {showWrap ? null : (
-                      <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
-                        {Boolean(trade) && (
-                          <RowBetween align="center">
-                            <Label>{t('Price')}</Label>
-                            <TradePrice
-                              price={trade?.executionPrice}
-                              showInverted={showInverted}
-                              setShowInverted={setShowInverted}
-                            />
-                          </RowBetween>
-                        )}
-                        {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-                          <RowBetween align="center">
-                            <Label>{t('Slippage Tolerance')}</Label>
-                            <Text bold color="primary">
-                              {allowedSlippage / 100}%
-                            </Text>
-                          </RowBetween>
-                        )}
-                      </AutoColumn>
-                    )}
+                    <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
+                      {Boolean(trade) && (
+                        <RowBetween align="center">
+                          <Label>{t('Price')}</Label>
+                          <TradePrice
+                            price={trade?.executionPrice}
+                            showInverted={showInverted}
+                            setShowInverted={setShowInverted}
+                          />
+                        </RowBetween>
+                      )}
+                      {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
+                        <RowBetween align="center">
+                          <Label>{t('Slippage Tolerance')}</Label>
+                          <Text bold color="primary">
+                            {allowedSlippage / 100}%
+                          </Text>
+                        </RowBetween>
+                      )}
+                    </AutoColumn>
                   </AutoColumn>
                   <Box mt="1rem">
                     {!account ? (
                       <ConnectWalletButton width="100%" />
-                    ) : showWrap ? (
-                      <Button width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
-                        {wrapInputError ??
-                          (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
-                      </Button>
                     ) : showApproveFlow ? (
                       <RowBetween>
                         <Button
