@@ -14,6 +14,7 @@ import {
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { useExpertModeManager } from 'state/user/hooks'
+import RefreshIcon from 'components/Svg/RefreshIcon'
 
 interface Props {
   title: string
@@ -21,6 +22,8 @@ interface Props {
   noConfig?: boolean
   setIsChartDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
   isChartDisplayed?: boolean
+  hasAmount: boolean
+  refreshHard: () => void
 }
 
 const CurrencyInputContainer = styled(Flex)`
@@ -34,7 +37,14 @@ const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
 `
 
-const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDisplayed, isChartDisplayed }) => {
+const CurrencyInputHeader: React.FC<Props> = ({
+  title,
+  subtitle,
+  setIsChartDisplayed,
+  isChartDisplayed,
+  hasAmount,
+  refreshHard,
+}) => {
   const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
     setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
@@ -65,6 +75,9 @@ const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDispl
           </NotificationDot>
           <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
             <HistoryIcon color="textSubtle" width="24px" />
+          </IconButton>
+          <IconButton variant="text" scale="sm" onClick={() => refreshHard()}>
+            <RefreshIcon disabled={!hasAmount} color="textSubtle" width="27px" />
           </IconButton>
         </Flex>
       </Flex>
