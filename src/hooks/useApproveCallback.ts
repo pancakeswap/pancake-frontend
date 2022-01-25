@@ -1,10 +1,10 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, ETHER } from 'peronio-sdk'
+import { Trade, Mint, TokenAmount, CurrencyAmount, ETHER, Withdraw } from 'peronio-sdk'
 import { useCallback, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { logError } from 'utils/sentry'
-import { ROUTER_ADDRESS } from '../config/constants'
+import { PERONIO_ADDRESS, ROUTER_ADDRESS } from '../config/constants'
 import useTokenAllowance from './useTokenAllowance'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
@@ -115,4 +115,18 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
   )
 
   return useApproveCallback(amountToApprove, ROUTER_ADDRESS)
+}
+
+// wraps useApproveCallback in the context of a swap
+export function useApproveCallbackFromMint(mint?: Mint) {
+  const amountToApprove = mint.inputAmount
+
+  return useApproveCallback(amountToApprove, PERONIO_ADDRESS)
+}
+
+// wraps useApproveCallback in the context of a swap
+export function useApproveCallbackFromWithdraw(withdraw?: Withdraw) {
+  const amountToApprove = withdraw.inputAmount
+
+  return useApproveCallback(amountToApprove, PERONIO_ADDRESS)
 }

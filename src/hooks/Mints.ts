@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 // import { isTradeBetter } from 'utils/trades'
-import { Currency, CurrencyAmount, Pair, Token, Trade } from 'peronio-sdk'
+import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
 // import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 // import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -14,13 +14,10 @@ import { useMemo } from 'react'
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
-export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Trade | null {
+export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Mint | null {
   return useMemo(() => {
     if (currencyAmountIn && currencyOut) {
-      return (
-        // Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 1, maxNumResults: 1 })[0] ??
-        null
-      )
+      return Mint.exactIn(currencyAmountIn)
     }
 
     return null
@@ -30,13 +27,10 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
 /**
  * Returns the best trade for the token in to the exact amount of token out
  */
-export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: CurrencyAmount): Trade | null {
+export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: CurrencyAmount): Mint | null {
   return useMemo(() => {
     if (currencyIn && currencyAmountOut) {
-      return (
-        // Trade.bestTradeExactOut(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 1, maxNumResults: 1 })[0] ??
-        null
-      )
+      return Mint.exactOut(currencyAmountOut)
     }
 
     return null
