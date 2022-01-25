@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes } from 'react'
 import {
   BackgroundProps,
   BorderProps,
@@ -7,7 +7,7 @@ import {
   PositionProps,
   SpaceProps,
   GridProps as _GridProps,
-} from "styled-system";
+} from 'styled-system'
 
 export interface BoxProps
   extends BackgroundProps,

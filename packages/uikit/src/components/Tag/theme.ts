@@ -1,41 +1,41 @@
-import { scales, variants } from "./types";
+import { scales, variants } from './types'
 
 export const scaleVariants = {
   [scales.MD]: {
-    height: "28px",
-    padding: "0 8px",
-    fontSize: "14px",
+    height: '28px',
+    padding: '0 8px',
+    fontSize: '14px',
   },
   [scales.SM]: {
-    height: "24px",
-    padding: "0 4px",
-    fontSize: "12px",
+    height: '24px',
+    padding: '0 4px',
+    fontSize: '12px',
   },
-};
+}
 
 export const styleVariants = {
   [variants.PRIMARY]: {
-    backgroundColor: "primary",
+    backgroundColor: 'primary',
   },
   [variants.SECONDARY]: {
-    backgroundColor: "secondary",
+    backgroundColor: 'secondary',
   },
   [variants.SUCCESS]: {
-    backgroundColor: "success",
+    backgroundColor: 'success',
   },
   [variants.TEXTDISABLED]: {
-    backgroundColor: "textDisabled",
+    backgroundColor: 'textDisabled',
   },
   [variants.TEXTSUBTLE]: {
-    backgroundColor: "textSubtle",
+    backgroundColor: 'textSubtle',
   },
   [variants.BINANCE]: {
-    backgroundColor: "binance",
+    backgroundColor: 'binance',
   },
   [variants.FAILURE]: {
-    backgroundColor: "failure",
+    backgroundColor: 'failure',
   },
   [variants.WARNING]: {
-    backgroundColor: "warning",
+    backgroundColor: 'warning',
   },
-};
+}

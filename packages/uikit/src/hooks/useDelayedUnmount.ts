@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
 /**
  * Use this hook when you want to animate something when it appears on the screen (e.g. when some prop set to true)
@@ -11,18 +11,18 @@ import { useState, useEffect } from "react";
  * delayTime should be the same as animation time in most cases.
  */
 const useDelayedUnmount = (isMounted: boolean, delayTime: number): boolean => {
-  const [shouldRender, setShouldRender] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false)
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
+    let timeoutId: ReturnType<typeof setTimeout>
     if (isMounted && !shouldRender) {
-      setShouldRender(true);
+      setShouldRender(true)
     } else if (!isMounted && shouldRender) {
-      timeoutId = setTimeout(() => setShouldRender(false), delayTime);
+      timeoutId = setTimeout(() => setShouldRender(false), delayTime)
     }
-    return () => clearTimeout(timeoutId);
-  }, [isMounted, delayTime, shouldRender]);
-  return shouldRender;
-};
+    return () => clearTimeout(timeoutId)
+  }, [isMounted, delayTime, shouldRender])
+  return shouldRender
+}
 
-export default useDelayedUnmount;
+export default useDelayedUnmount

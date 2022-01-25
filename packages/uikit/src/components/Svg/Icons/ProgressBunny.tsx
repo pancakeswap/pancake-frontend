@@ -1,6 +1,6 @@
-import React from "react";
-import Svg from "../Svg";
-import { SvgProps } from "../types";
+import React from 'react'
+import Svg from '../Svg'
+import { SvgProps } from '../types'
 
 const Icon: React.FC<SvgProps> = (props) => {
   return (
@@ -14,7 +14,7 @@ const Icon: React.FC<SvgProps> = (props) => {
       <ellipse cx="12.3696" cy="19.9172" rx="1.76711" ry="2.59786" fill="white" />
       <ellipse cx="21.2056" cy="19.9172" rx="1.76711" ry="2.59786" fill="white" />
     </Svg>
-  );
-};
+  )
+}
 
-export default Icon;
+export default Icon

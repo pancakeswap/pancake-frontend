@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const StyledTh = styled.th`
   background: #eff4f5;
@@ -17,6 +17,6 @@ const StyledTh = styled.th`
     border-bottom-left-radius: 4px;
     padding-right: 16px;
   }
-`;
+`
 
-export default StyledTh;
+export default StyledTh

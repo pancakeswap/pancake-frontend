@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { Box, Flex } from "../Box";
+import styled from 'styled-components'
+import { Box, Flex } from '../Box'
 
 export const InlineMenuContainer = styled(Box)`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   border-radius: ${({ theme }) => theme.radii.card};
   box-shadow: ${({ theme }) => theme.shadows.tooltip};
-`;
+`
 
 export const SubMenuContainer = styled(Flex)`
   flex-direction: column;
@@ -14,12 +14,12 @@ export const SubMenuContainer = styled(Flex)`
   background: ${({ theme }) => theme.colors.input};
   border-radius: ${({ theme }) => theme.radii.default};
   border: ${({ theme }) => `1px solid ${theme.colors.inputSecondary}`};
-`;
+`
 
 export const ClickableElementContainer = styled.div`
   cursor: pointer;
   display: inline-flex;
-`;
+`
 
 export const SubMenuItem = styled.button`
   border: 0;
@@ -36,4 +36,4 @@ export const SubMenuItem = styled.button`
     background-color: ${({ theme }) => theme.colors.inputSecondary};
     text-decoration: none;
   }
-`;
+`

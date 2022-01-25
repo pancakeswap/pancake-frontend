@@ -3,8 +3,8 @@ name: Verify token lists
 on:
   pull_request:
     paths:
-      - "packages/token-lists/src/tokens/**"
-      - "packages/token-lists/lists/**"
+      - 'packages/token-lists/src/tokens/**'
+      - 'packages/token-lists/lists/**'
 
 jobs:
   verifyTokenLists:

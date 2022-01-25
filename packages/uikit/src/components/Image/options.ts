@@ -1,5 +1,5 @@
 export default {
   root: null,
-  rootMargin: "200px",
+  rootMargin: '200px',
   threshold: 0,
-};
+}

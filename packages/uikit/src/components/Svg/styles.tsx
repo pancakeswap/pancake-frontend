@@ -1,24 +1,24 @@
-import styled from "styled-components";
-import { Colors } from "../../theme";
+import styled from 'styled-components'
+import { Colors } from '../../theme'
 
 export const StyledIconContainer = styled.div<{ activeBackgroundColor?: keyof Colors }>`
   background: ${({ activeBackgroundColor, theme }) =>
-    activeBackgroundColor ? theme.colors[activeBackgroundColor] : "transparent"};
-`;
+    activeBackgroundColor ? theme.colors[activeBackgroundColor] : 'transparent'};
+`
 
 export const StyledAnimatedIconComponent = styled.div<{
-  isActive: boolean;
-  height?: string;
-  width?: string;
-  hasFillIcon: boolean;
+  isActive: boolean
+  height?: string
+  width?: string
+  hasFillIcon: boolean
 }>`
   position: relative;
   ${({ height }) => height && `height: ${height}`};
-  ${({ width }) => `width: ${width || "100%"}`};
+  ${({ width }) => `width: ${width || '100%'}`};
 
   div:first-child {
     ${({ height }) => height && `height: ${height}`};
-    ${({ width }) => `width: ${width || "100%"}`};
+    ${({ width }) => `width: ${width || '100%'}`};
     z-index: 0;
   }
   ${({ hasFillIcon }) =>
@@ -43,7 +43,7 @@ export const StyledAnimatedIconComponent = styled.div<{
     `
     div:last-child {
       ${height && hasFillIcon && `height:${height}`};
-      ${`width: ${width || "100%"}`};
+      ${`width: ${width || '100%'}`};
     }
   `}
-`;
+`

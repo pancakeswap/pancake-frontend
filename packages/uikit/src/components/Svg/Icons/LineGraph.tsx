@@ -1,6 +1,6 @@
-import React from "react";
-import Svg from "../Svg";
-import { SvgProps } from "../types";
+import React from 'react'
+import Svg from '../Svg'
+import { SvgProps } from '../types'
 
 const Icon: React.FC<SvgProps> = (props) => (
   <Svg viewBox="0 0 23 21" {...props}>
@@ -10,6 +10,6 @@ const Icon: React.FC<SvgProps> = (props) => (
       strokeWidth={0.5}
     />
   </Svg>
-);
+)
 
-export default Icon;
+export default Icon

@@ -1,15 +1,15 @@
-import React from "react";
-import Text from "./Text";
-import TooltipText from "./TooltipText";
+import React from 'react'
+import Text from './Text'
+import TooltipText from './TooltipText'
 
 export default {
-  title: "Components/Text",
+  title: 'Components/Text',
   component: Text,
   argTypes: {
     bold: {
-      name: "bold",
+      name: 'bold',
       table: {
-        type: { summary: "bool", detail: "Bold the text" },
+        type: { summary: 'bool', detail: 'Bold the text' },
         defaultValue: { summary: false },
       },
       control: {
@@ -17,27 +17,27 @@ export default {
       },
     },
     fontSize: {
-      name: "fontSize",
+      name: 'fontSize',
       table: {
-        type: { summary: "string", detail: "Fontsize in px or em" },
-        defaultValue: { summary: "16px" },
+        type: { summary: 'string', detail: 'Fontsize in px or em' },
+        defaultValue: { summary: '16px' },
       },
       control: {
         type: null,
       },
     },
     color: {
-      name: "color",
+      name: 'color',
       table: {
-        type: { summary: "string", detail: "Color from the theme, or CSS color" },
-        defaultValue: { summary: "theme.colors.text" },
+        type: { summary: 'string', detail: 'Color from the theme, or CSS color' },
+        defaultValue: { summary: 'theme.colors.text' },
       },
       control: {
         type: null,
       },
     },
   },
-};
+}
 
 export const Default: React.FC = () => {
   return (
@@ -53,10 +53,10 @@ export const Default: React.FC = () => {
       </Text>
       <Text textAlign="center">center</Text>
       <Text display="inline" color="textSubtle" textTransform="uppercase">
-        Example of{" "}
+        Example of{' '}
       </Text>
       <Text display="inline" bold textTransform="uppercase">
-        inline{" "}
+        inline{' '}
       </Text>
       <Text display="inline" color="textSubtle" textTransform="uppercase">
         Text
@@ -65,8 +65,8 @@ export const Default: React.FC = () => {
         Ellipsis: a long text with an ellipsis just for the example
       </Text>
     </div>
-  );
-};
+  )
+}
 
 export const TooltipTextVariant: React.FC = () => {
   return (
@@ -74,5 +74,5 @@ export const TooltipTextVariant: React.FC = () => {
       <Text>Use TooltipText for text that has tooltip, it accepts the same props as normal Text component</Text>
       <TooltipText>Example</TooltipText>
     </div>
-  );
-};
+  )
+}

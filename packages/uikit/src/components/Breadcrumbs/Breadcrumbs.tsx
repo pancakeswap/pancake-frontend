@@ -1,9 +1,9 @@
 /* eslint-disable react/no-array-index-key */
-import React, { Children, isValidElement, ReactNode } from "react";
-import styled from "styled-components";
-import { space } from "styled-system";
-import ChevronRightIcon from "../Svg/Icons/ChevronRight";
-import { BreadcrumbsProps } from "./types";
+import React, { Children, isValidElement, ReactNode } from 'react'
+import styled from 'styled-components'
+import { space } from 'styled-system'
+import ChevronRightIcon from '../Svg/Icons/ChevronRight'
+import { BreadcrumbsProps } from './types'
 
 const Separator = styled.div`
   align-items: center;
@@ -22,7 +22,7 @@ const Separator = styled.div`
     padding-left: 16px;
     padding-right: 16px;
   }
-`;
+`
 
 const StyledBreadcrumbs = styled.ul`
   align-items: center;
@@ -39,12 +39,12 @@ const StyledBreadcrumbs = styled.ul`
   }
 
   ${space}
-`;
+`
 
-const insertSeparators = (items: ReactNode[], separator: BreadcrumbsProps["separator"]) =>
+const insertSeparators = (items: ReactNode[], separator: BreadcrumbsProps['separator']) =>
   items.reduce((accum: ReactNode[], item, index) => {
     if (index === 0) {
-      return [...accum, item];
+      return [...accum, item]
     }
 
     return [
@@ -53,14 +53,14 @@ const insertSeparators = (items: ReactNode[], separator: BreadcrumbsProps["separ
         {separator}
       </Separator>,
       item,
-    ];
-  }, []);
+    ]
+  }, [])
 
-const DefaultSeparator = <ChevronRightIcon color="currentColor" width="24px" />;
+const DefaultSeparator = <ChevronRightIcon color="currentColor" width="24px" />
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ separator = DefaultSeparator, children }) => {
-  const validItems = Children.toArray(children).filter((child) => isValidElement(child));
-  const items = insertSeparators(validItems, separator);
+  const validItems = Children.toArray(children).filter((child) => isValidElement(child))
+  const items = insertSeparators(validItems, separator)
 
   return (
     <StyledBreadcrumbs>
@@ -68,7 +68,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ separator = DefaultSeparator,
         <li key={`child-${index}`}>{item}</li>
       ))}
     </StyledBreadcrumbs>
-  );
-};
+  )
+}
 
-export default Breadcrumbs;
+export default Breadcrumbs

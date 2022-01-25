@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const Placeholder = styled.div`
   height: 100%;
@@ -6,6 +6,6 @@ const Placeholder = styled.div`
   position: absolute;
   top: 0;
   width: 100%;
-`;
+`
 
-export default Placeholder;
+export default Placeholder

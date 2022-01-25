@@ -1,17 +1,17 @@
-import React from "react";
-import Card from "../Card/Card";
-import Table from "./Table";
-import { Th, Td } from "./Cell";
+import React from 'react'
+import Card from '../Card/Card'
+import Table from './Table'
+import { Th, Td } from './Cell'
 
 export default {
-  title: "Components/Table",
+  title: 'Components/Table',
   component: Table,
   argTypes: {},
-};
+}
 
 export const Default: React.FC = () => {
   return (
-    <div style={{ width: "640px" }}>
+    <div style={{ width: '640px' }}>
       <Card>
         <Table>
           <thead>
@@ -36,5 +36,5 @@ export const Default: React.FC = () => {
         </Table>
       </Card>
     </div>
-  );
-};
+  )
+}

@@ -1,5 +1,5 @@
 export type TooltipTheme = {
-  background: string;
-  text: string;
-  boxShadow: string;
-};
+  background: string
+  text: string
+  boxShadow: string
+}

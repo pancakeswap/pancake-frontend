@@ -1,52 +1,52 @@
-import React, { useEffect, useState } from "react";
-import { useTheme } from "styled-components";
-import { Modal, useModal } from ".";
-import { ModalProps } from "./types";
-import Button from "../../components/Button/Button";
-import Heading from "../../components/Heading/Heading";
+import React, { useEffect, useState } from 'react'
+import { useTheme } from 'styled-components'
+import { Modal, useModal } from '.'
+import { ModalProps } from './types'
+import Button from '../../components/Button/Button'
+import Heading from '../../components/Heading/Heading'
 
 export default {
-  title: "Widgets/Modal",
+  title: 'Widgets/Modal',
   component: Modal,
   argTypes: {},
-};
+}
 
 const CustomModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
   <Modal title={title} onDismiss={onDismiss} {...props}>
     <Heading>{title}</Heading>
     <Button>This button Does nothing</Button>
   </Modal>
-);
+)
 
 export const Default: React.FC = () => {
-  const theme = useTheme();
-  const [onPresent1] = useModal(<CustomModal title="Modal 1" />);
-  const [onPresent2] = useModal(<CustomModal title="Modal 2" />);
-  const [onPresent3] = useModal(<CustomModal title="Modal 3" headerBackground={theme.colors.gradients.cardHeader} />);
+  const theme = useTheme()
+  const [onPresent1] = useModal(<CustomModal title="Modal 1" />)
+  const [onPresent2] = useModal(<CustomModal title="Modal 2" />)
+  const [onPresent3] = useModal(<CustomModal title="Modal 3" headerBackground={theme.colors.gradients.cardHeader} />)
   return (
     <div>
       <Button onClick={onPresent1}>Open modal 1</Button>
       <Button onClick={onPresent2}>Open modal 2</Button>
       <Button onClick={onPresent3}>Open modal with background</Button>
     </div>
-  );
-};
+  )
+}
 
 export const DisableOverlayClick: React.FC = () => {
-  const [onPresent1] = useModal(<CustomModal title="Modal 1" />, false);
+  const [onPresent1] = useModal(<CustomModal title="Modal 1" />, false)
 
   return (
     <div>
       <Button onClick={onPresent1}>Disabled overlay click</Button>
     </div>
-  );
-};
+  )
+}
 
 export const WithBackButton: React.FC = () => {
   const BackButtonModal: React.FC<ModalProps> = ({ title, onDismiss }) => {
     const handleOnBack = () => {
-      return 1;
-    };
+      return 1
+    }
 
     return (
       <Modal title={title} onDismiss={onDismiss} onBack={handleOnBack} hideCloseButton>
@@ -54,13 +54,13 @@ export const WithBackButton: React.FC = () => {
           Consumer can still close it.
         </Button>
       </Modal>
-    );
-  };
+    )
+  }
 
-  const [onPresent1] = useModal(<BackButtonModal title="Modal with no X" />, false);
+  const [onPresent1] = useModal(<BackButtonModal title="Modal with no X" />, false)
 
-  return <Button onClick={onPresent1}>Only Back Button</Button>;
-};
+  return <Button onClick={onPresent1}>Only Back Button</Button>
+}
 
 export const WithCustomHeader: React.FC = () => {
   const CustomHeaderModal: React.FC<ModalProps> = ({ title, onDismiss }) => {
@@ -89,21 +89,21 @@ export const WithCustomHeader: React.FC = () => {
         mauris.
         <Button>This button Does nothing</Button>
       </Modal>
-    );
-  };
+    )
+  }
 
-  const [onPresent1] = useModal(<CustomHeaderModal title="Modal with custom header" />);
-  return <Button onClick={onPresent1}>Modal with custom header</Button>;
-};
+  const [onPresent1] = useModal(<CustomHeaderModal title="Modal with custom header" />)
+  return <Button onClick={onPresent1}>Modal with custom header</Button>
+}
 
 export const ReactingToOusideChanges: React.FC = () => {
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(0)
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCounter((prev) => prev + 1);
-    }, 500);
-    return () => clearInterval(intervalId);
-  }, []);
+      setCounter((prev) => prev + 1)
+    }, 500)
+    return () => clearInterval(intervalId)
+  }, [])
   const ReactiveModal: React.FC<ModalProps & { count: number }> = ({ title, count, onDismiss }) => {
     return (
       <Modal title={title} onDismiss={onDismiss}>
@@ -112,19 +112,19 @@ export const ReactingToOusideChanges: React.FC = () => {
           Close
         </Button>
       </Modal>
-    );
-  };
+    )
+  }
 
   const [onPresent1] = useModal(
     <ReactiveModal title={`[${counter}] Modal that reacts to outside change`} count={counter} />,
     true,
     true,
-    "reactiveModal"
-  );
+    'reactiveModal',
+  )
 
   const [onPresent2] = useModal(
-    <ReactiveModal title={`[${counter}] Modal that does NOT react to outside change`} count={counter} />
-  );
+    <ReactiveModal title={`[${counter}] Modal that does NOT react to outside change`} count={counter} />,
+  )
   return (
     <div>
       <h2>Counter: {counter}</h2>
@@ -133,5 +133,5 @@ export const ReactingToOusideChanges: React.FC = () => {
         Non-reactive modal
       </Button>
     </div>
-  );
-};
+  )
+}

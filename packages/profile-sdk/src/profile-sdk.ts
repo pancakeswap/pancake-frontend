@@ -1,31 +1,31 @@
-import { request, gql } from "graphql-request";
-import Cookies from "js-cookie";
-import { ethers, Contract } from "ethers";
-import simpleRpcProvider from "./utils/providers";
-import { getProfileContract } from "./utils/contractHelpers";
-import { profileApi, profileSubgraphApi, MAINNET_CHAIN_ID } from "./constants/common";
-import { campaignMap } from "./constants/campaigns";
-import teamsList from "./constants/teams";
-import { Achievement, Team, GetProfileResponse, Profile, Nft, UserPointIncreaseEvent } from "./types";
-import { getAchievementDescription, getAchievementTitle, transformProfileResponse } from "./utils/transformHelpers";
-import { getNftByTokenId } from "./utils/collectibles";
+import { request, gql } from 'graphql-request'
+import Cookies from 'js-cookie'
+import { ethers, Contract } from 'ethers'
+import simpleRpcProvider from './utils/providers'
+import { getProfileContract } from './utils/contractHelpers'
+import { profileApi, profileSubgraphApi, MAINNET_CHAIN_ID } from './constants/common'
+import { campaignMap } from './constants/campaigns'
+import teamsList from './constants/teams'
+import { Achievement, Team, GetProfileResponse, Profile, Nft, UserPointIncreaseEvent } from './types'
+import { getAchievementDescription, getAchievementTitle, transformProfileResponse } from './utils/transformHelpers'
+import { getNftByTokenId } from './utils/collectibles'
 
 type SdkConstructorArguments = {
-  provider?: ethers.providers.JsonRpcProvider;
-  chainId?: number;
-};
+  provider?: ethers.providers.JsonRpcProvider
+  chainId?: number
+}
 
 class PancakeProfileSdk {
-  provider = simpleRpcProvider;
+  provider = simpleRpcProvider
 
-  chainId = MAINNET_CHAIN_ID;
+  chainId = MAINNET_CHAIN_ID
 
-  profileContract: Contract;
+  profileContract: Contract
 
   constructor(args?: SdkConstructorArguments) {
-    if (args?.provider) this.provider = args.provider;
-    if (args?.chainId) this.chainId = args.chainId;
-    this.profileContract = getProfileContract(this.provider, this.chainId);
+    if (args?.provider) this.provider = args.provider
+    if (args?.chainId) this.chainId = args.chainId
+    this.profileContract = getProfileContract(this.provider, this.chainId)
   }
 
   /**
@@ -35,17 +35,17 @@ class PancakeProfileSdk {
    */
   getUsername = async (address: string): Promise<string> => {
     try {
-      const response = await fetch(`${profileApi}/api/users/${address}`);
+      const response = await fetch(`${profileApi}/api/users/${address}`)
       if (!response.ok) {
-        return "";
+        return ''
       }
 
-      const { username = "" } = await response.json();
-      return username;
+      const { username = '' } = await response.json()
+      return username
     } catch (error) {
-      return "";
+      return ''
     }
-  };
+  }
 
   getAchievements = async (account: string): Promise<Achievement[]> => {
     try {
@@ -62,31 +62,31 @@ class PancakeProfileSdk {
             }
           }
         `,
-        { id: account.toLowerCase() }
-      );
+        { id: account.toLowerCase() },
+      )
       if (data.user === null || data.user.points.length === 0) {
-        return [];
+        return []
       }
       return data.user.points.reduce((accum: Achievement[], userPoint: UserPointIncreaseEvent) => {
-        const campaignMeta = campaignMap.get(userPoint.campaignId);
+        const campaignMeta = campaignMap.get(userPoint.campaignId)
 
         return [
           ...accum,
           {
             id: userPoint.campaignId,
-            type: campaignMeta?.type ?? "Unknown",
+            type: campaignMeta?.type ?? 'Unknown',
             address: userPoint.id,
             title: getAchievementTitle(campaignMeta, userPoint.campaignId),
             description: getAchievementDescription(campaignMeta),
-            badge: campaignMeta?.badge ?? "unknown",
+            badge: campaignMeta?.badge ?? 'unknown',
             points: Number(userPoint.points),
           },
-        ];
-      }, []);
+        ]
+      }, [])
     } catch (error) {
-      return [];
+      return []
     }
-  };
+  }
 
   /**
    * Fetches team information from
@@ -101,8 +101,8 @@ class PancakeProfileSdk {
         2: numberUsers,
         3: numberPoints,
         4: isJoinable,
-      } = await this.profileContract.getTeamProfile(teamId);
-      const staticTeamInfo = teamsList.find((staticTeam) => staticTeam.id === teamId);
+      } = await this.profileContract.getTeamProfile(teamId)
+      const staticTeamInfo = teamsList.find((staticTeam) => staticTeam.id === teamId)
 
       return {
         ...staticTeamInfo,
@@ -110,12 +110,12 @@ class PancakeProfileSdk {
         name: teamName,
         users: numberUsers.toNumber(),
         points: numberPoints.toNumber(),
-      };
+      }
     } catch (error) {
-      console.error("getTeam error:", error);
-      return null;
+      console.error('getTeam error:', error)
+      return null
     }
-  };
+  }
 
   /**
    * Fetches profile information for specified address.
@@ -126,23 +126,23 @@ class PancakeProfileSdk {
    */
   getProfile = async (address: string): Promise<GetProfileResponse> => {
     try {
-      const hasRegistered = (await this.profileContract.hasRegistered(address)) as boolean;
+      const hasRegistered = (await this.profileContract.hasRegistered(address)) as boolean
 
       if (!hasRegistered) {
-        return { hasRegistered, profile: null };
+        return { hasRegistered, profile: null }
       }
 
-      const profileResponse = await this.profileContract.getUserProfile(address);
-      const { userId, points, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse);
-      const team = await this.getTeam(teamId);
-      const username = await this.getUsername(address);
+      const profileResponse = await this.profileContract.getUserProfile(address)
+      const { userId, points, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
+      const team = await this.getTeam(teamId)
+      const username = await this.getUsername(address)
 
       // If the profile is not active the tokenId returns 0, which is still a valid token id
       // so only fetch the nft data if active
-      let nft: Nft;
+      let nft: Nft
       if (isActive) {
-        nft = await getNftByTokenId(nftAddress, tokenId, this.provider, this.chainId);
-        const avatar = nft ? `https://pancakeswap.finance/images/nfts/${nft.images.sm}` : undefined;
+        nft = await getNftByTokenId(nftAddress, tokenId, this.provider, this.chainId)
+        const avatar = nft ? `https://pancakeswap.finance/images/nfts/${nft.images.sm}` : undefined
         // Save the preview image in a cookie so it can be used on the exchange
         // TODO v2: optional (and configurable) Cookies.set
         Cookies.set(
@@ -151,8 +151,8 @@ class PancakeProfileSdk {
             username,
             avatar,
           },
-          { domain: "pancakeswap.finance", secure: true, expires: 30 }
-        );
+          { domain: 'pancakeswap.finance', secure: true, expires: 30 },
+        )
       }
 
       const profile = {
@@ -165,14 +165,14 @@ class PancakeProfileSdk {
         isActive,
         nft,
         team,
-      } as Profile;
+      } as Profile
 
-      return { hasRegistered, profile };
+      return { hasRegistered, profile }
     } catch (error) {
-      console.error("getProfile error: ", error);
-      return null;
+      console.error('getProfile error: ', error)
+      return null
     }
-  };
+  }
 }
 
-export default PancakeProfileSdk;
+export default PancakeProfileSdk

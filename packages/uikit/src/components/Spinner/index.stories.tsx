@@ -1,12 +1,12 @@
-import React from "react";
-import Spinner from "./Spinner";
+import React from 'react'
+import Spinner from './Spinner'
 
 export default {
-  title: "Components/Spinner",
+  title: 'Components/Spinner',
   component: Spinner,
   argTypes: {},
-};
+}
 
 export const Default: React.FC = () => {
-  return <Spinner size={50} />;
-};
+  return <Spinner size={50} />
+}

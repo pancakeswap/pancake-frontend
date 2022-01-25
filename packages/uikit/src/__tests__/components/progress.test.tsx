@@ -1,9 +1,9 @@
-import React from "react";
-import { renderWithTheme } from "../../testHelpers";
-import Progress from "../../components/Progress/Progress";
+import React from 'react'
+import { renderWithTheme } from '../../testHelpers'
+import Progress from '../../components/Progress/Progress'
 
-it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<Progress primaryStep={50} />);
+it('renders correctly', () => {
+  const { asFragment } = renderWithTheme(<Progress primaryStep={50} />)
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c2 {
@@ -40,5 +40,5 @@ it("renders correctly", () => {
         />
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})

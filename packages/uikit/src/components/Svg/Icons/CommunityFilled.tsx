@@ -1,6 +1,6 @@
-import React from "react";
-import Svg from "../Svg";
-import { SvgProps } from "../types";
+import React from 'react'
+import Svg from '../Svg'
+import { SvgProps } from '../types'
 
 const Icon: React.FC<SvgProps> = (props) => {
   return (
@@ -12,7 +12,7 @@ const Icon: React.FC<SvgProps> = (props) => {
       <path d="M22.78 14.58C23.52 14.9 24 15.62 24 16.43V17C24 17.5523 23.5523 18 23 18H19.5V16.39C19.5 15.56 19.27 14.78 18.87 14.1C19.24 14.04 19.61 14 20 14C20.99 14 21.93 14.21 22.78 14.58Z" />
       <path d="M12 12.75C13.63 12.75 15.07 13.13 16.24 13.65C17.32 14.13 18 15.21 18 16.39V17C18 17.5523 17.5523 18 17 18H7C6.44772 18 6 17.5523 6 17V16.39C6 15.21 6.68 14.13 7.76 13.65C8.93 13.14 10.37 12.75 12 12.75Z" />
     </Svg>
-  );
-};
+  )
+}
 
-export default Icon;
+export default Icon

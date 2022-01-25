@@ -1,10 +1,10 @@
-import React from "react";
-import uniqueId from "lodash/uniqueId";
-import Svg from "../Svg";
-import { SvgProps } from "../types";
+import React from 'react'
+import uniqueId from 'lodash/uniqueId'
+import Svg from '../Svg'
+import { SvgProps } from '../types'
 
 const Icon: React.FC<SvgProps> = (props) => {
-  const id = uniqueId("svg");
+  const id = uniqueId('svg')
 
   return (
     <Svg viewBox="0 0 64 64" {...props}>
@@ -47,7 +47,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         />
         <path d="M35.2297 28.8525L27.1932 31.0059L34.3987 57.8973L42.4352 55.7439L35.2297 28.8525Z" fill="#7645D9" />
         <path d="M54.5173 42.4023L52.3639 34.3658L15.1113 44.3476L17.2647 52.3841L54.5173 42.4023Z" fill="#7645D9" />
-        <g style={{ mixBlendMode: "multiply" }}>
+        <g style={{ mixBlendMode: 'multiply' }}>
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -66,7 +66,7 @@ const Icon: React.FC<SvgProps> = (props) => {
           fill="#7645D9"
         />
         <path d="M38.8242 16.6804L30.7877 14.527L27.8889 25.3454L35.9254 27.4988L38.8242 16.6804Z" fill="#7645D9" />
-        <g style={{ mixBlendMode: "multiply" }}>
+        <g style={{ mixBlendMode: 'multiply' }}>
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -103,7 +103,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         </clipPath>
       </defs>
     </Svg>
-  );
-};
+  )
+}
 
-export default Icon;
+export default Icon

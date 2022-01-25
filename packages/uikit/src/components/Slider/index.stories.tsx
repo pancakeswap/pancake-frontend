@@ -1,28 +1,28 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Flex from "../Box/Flex";
-import Box from "../Box/Box";
-import Text from "../Text/Text";
-import Button from "../Button/Button";
-import Slider from "./Slider";
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import Flex from '../Box/Flex'
+import Box from '../Box/Box'
+import Text from '../Text/Text'
+import Button from '../Button/Button'
+import Slider from './Slider'
 
 export default {
-  title: "Components/Slider",
+  title: 'Components/Slider',
   component: Slider,
   argTypes: {},
-};
+}
 
 const Col = styled(Flex)`
   flex-direction: column;
   width: 420px;
-`;
+`
 
 const SliderVariant = ({ initialValue }: { initialValue: number }) => {
-  const [value, setValue] = useState(initialValue);
-  const min = 0;
-  const max = 10;
+  const [value, setValue] = useState(initialValue)
+  const min = 0
+  const max = 10
 
-  const percentage = (value / max) * 100;
+  const percentage = (value / max) * 100
 
   return (
     <Slider
@@ -31,47 +31,47 @@ const SliderVariant = ({ initialValue }: { initialValue: number }) => {
       max={max}
       value={value}
       onValueChanged={setValue}
-      valueLabel={value === max ? "MAX" : `${percentage}%`}
+      valueLabel={value === max ? 'MAX' : `${percentage}%`}
     />
-  );
-};
+  )
+}
 
 export const Default: React.FC = () => {
   return (
     <Col>
       <SliderVariant initialValue={5} />
     </Col>
-  );
-};
+  )
+}
 
 export const Variants: React.FC = () => {
-  const [value, setValue] = useState(10);
+  const [value, setValue] = useState(10)
 
   const handleChange = (newValue) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
 
   return (
     <Col>
       <Slider name="sliderdisabled" value={value} onValueChanged={handleChange} min={1} max={20} disabled />
     </Col>
-  );
-};
+  )
+}
 
-const percentShortcuts = [10, 25, 50, 75];
-const initialBalance = 1.795394;
-const maxBalance = initialBalance - 0.01;
+const percentShortcuts = [10, 25, 50, 75]
+const initialBalance = 1.795394
+const maxBalance = initialBalance - 0.01
 
 export const Balance: React.FC = () => {
-  const [balance, setBalance] = useState(maxBalance);
+  const [balance, setBalance] = useState(maxBalance)
 
   const handleChange = (newValue: number) => {
-    setBalance(newValue);
-  };
+    setBalance(newValue)
+  }
 
   const setMax = () => {
-    setBalance(maxBalance);
-  };
+    setBalance(maxBalance)
+  }
 
   return (
     <Box width="420px">
@@ -79,10 +79,10 @@ export const Balance: React.FC = () => {
       <Flex justifyContent="space-between" py="16px">
         {percentShortcuts.map((percent) => {
           const handleClick = () => {
-            setBalance((percent / 100) * maxBalance);
-          };
+            setBalance((percent / 100) * maxBalance)
+          }
 
-          return <Button scale="sm" variant="secondary" onClick={handleClick}>{`${percent}%`}</Button>;
+          return <Button scale="sm" variant="secondary" onClick={handleClick}>{`${percent}%`}</Button>
         })}
         <Button scale="sm" variant="secondary" onClick={setMax}>
           Max
@@ -92,5 +92,5 @@ export const Balance: React.FC = () => {
       <Text fontSize="12px" color="textSubtle">{`Initial Balance: ${initialBalance}`}</Text>
       <Text fontSize="12px" color="textSubtle">{`Max Balance: ${maxBalance}`}</Text>
     </Box>
-  );
-};
+  )
+}

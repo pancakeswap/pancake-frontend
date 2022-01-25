@@ -1,6 +1,6 @@
 const getExternalLinkProps = (): { target: string; rel: string } => ({
-  target: "_blank",
-  rel: "noreferrer noopener",
-});
+  target: '_blank',
+  rel: 'noreferrer noopener',
+})
 
-export default getExternalLinkProps;
+export default getExternalLinkProps

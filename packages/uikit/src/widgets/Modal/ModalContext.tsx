@@ -1,16 +1,16 @@
-import React, { createContext, useState } from "react";
-import styled from "styled-components";
-import { Overlay } from "../../components/Overlay";
-import { Handler } from "./types";
+import React, { createContext, useState } from 'react'
+import styled from 'styled-components'
+import { Overlay } from '../../components/Overlay'
+import { Handler } from './types'
 
 interface ModalsContext {
-  isOpen: boolean;
-  nodeId: string;
-  modalNode: React.ReactNode;
-  setModalNode: React.Dispatch<React.SetStateAction<React.ReactNode>>;
-  onPresent: (node: React.ReactNode, newNodeId: string) => void;
-  onDismiss: Handler;
-  setCloseOnOverlayClick: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpen: boolean
+  nodeId: string
+  modalNode: React.ReactNode
+  setModalNode: React.Dispatch<React.SetStateAction<React.ReactNode>>
+  onPresent: (node: React.ReactNode, newNodeId: string) => void
+  onDismiss: Handler
+  setCloseOnOverlayClick: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ModalWrapper = styled.div`
@@ -24,41 +24,41 @@ const ModalWrapper = styled.div`
   bottom: 0;
   left: 0;
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
-`;
+`
 
 export const Context = createContext<ModalsContext>({
   isOpen: false,
-  nodeId: "",
+  nodeId: '',
   modalNode: null,
   setModalNode: () => null,
   onPresent: () => null,
   onDismiss: () => null,
   setCloseOnOverlayClick: () => true,
-});
+})
 
 const ModalProvider: React.FC = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalNode, setModalNode] = useState<React.ReactNode>();
-  const [nodeId, setNodeId] = useState("");
-  const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true);
+  const [isOpen, setIsOpen] = useState(false)
+  const [modalNode, setModalNode] = useState<React.ReactNode>()
+  const [nodeId, setNodeId] = useState('')
+  const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true)
 
   const handlePresent = (node: React.ReactNode, newNodeId: string) => {
-    setModalNode(node);
-    setIsOpen(true);
-    setNodeId(newNodeId);
-  };
+    setModalNode(node)
+    setIsOpen(true)
+    setNodeId(newNodeId)
+  }
 
   const handleDismiss = () => {
-    setModalNode(undefined);
-    setIsOpen(false);
-    setNodeId("");
-  };
+    setModalNode(undefined)
+    setIsOpen(false)
+    setNodeId('')
+  }
 
   const handleOverlayDismiss = () => {
     if (closeOnOverlayClick) {
-      handleDismiss();
+      handleDismiss()
     }
-  };
+  }
 
   return (
     <Context.Provider
@@ -83,7 +83,7 @@ const ModalProvider: React.FC = ({ children }) => {
       )}
       {children}
     </Context.Provider>
-  );
-};
+  )
+}
 
-export default ModalProvider;
+export default ModalProvider

@@ -1,13 +1,13 @@
-import React from "react";
-import { renderWithTheme } from "../../testHelpers";
-import NotificationDot from "../../components/NotificationDot/NotificationDot";
+import React from 'react'
+import { renderWithTheme } from '../../testHelpers'
+import NotificationDot from '../../components/NotificationDot/NotificationDot'
 
-it("renders correctly", () => {
+it('renders correctly', () => {
   const { asFragment } = renderWithTheme(
     <NotificationDot>
       <div />
-    </NotificationDot>
-  );
+    </NotificationDot>,
+  )
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
@@ -41,5 +41,5 @@ it("renders correctly", () => {
         />
       </span>
     </DocumentFragment>
-  `);
-});
+  `)
+})

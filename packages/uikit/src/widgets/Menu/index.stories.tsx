@@ -1,65 +1,65 @@
-import noop from "lodash/noop";
-import React, { useState } from "react";
+import noop from 'lodash/noop'
+import React, { useState } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { BrowserRouter, Link, MemoryRouter } from "react-router-dom";
-import Box from "../../components/Box/Box";
-import Flex from "../../components/Box/Flex";
-import Button from "../../components/Button/Button";
-import IconButton from "../../components/Button/IconButton";
-import DropdownMenu from "../../components/DropdownMenu/DropdownMenu";
-import { footerLinks } from "../../components/Footer/config";
-import Heading from "../../components/Heading/Heading";
-import Input from "../../components/Input/Input";
-import { CogIcon, LanguageCurrencyIcon } from "../../components/Svg";
-import Text from "../../components/Text/Text";
-import { Modal, ModalProps, useModal } from "../Modal";
-import UserMenu from "./components/UserMenu";
-import { Variant, variants } from "./components/UserMenu/types";
-import { links, userMenulinks } from "./config";
-import Menu from "./Menu";
-import { Language, NavProps } from "./types";
-import BottomDrawer from "../../components/BottomDrawer/BottomDrawer";
+import { BrowserRouter, Link, MemoryRouter } from 'react-router-dom'
+import Box from '../../components/Box/Box'
+import Flex from '../../components/Box/Flex'
+import Button from '../../components/Button/Button'
+import IconButton from '../../components/Button/IconButton'
+import DropdownMenu from '../../components/DropdownMenu/DropdownMenu'
+import { footerLinks } from '../../components/Footer/config'
+import Heading from '../../components/Heading/Heading'
+import Input from '../../components/Input/Input'
+import { CogIcon, LanguageCurrencyIcon } from '../../components/Svg'
+import Text from '../../components/Text/Text'
+import { Modal, ModalProps, useModal } from '../Modal'
+import UserMenu from './components/UserMenu'
+import { Variant, variants } from './components/UserMenu/types'
+import { links, userMenulinks } from './config'
+import Menu from './Menu'
+import { Language, NavProps } from './types'
+import BottomDrawer from '../../components/BottomDrawer/BottomDrawer'
 
 export default {
-  title: "Widgets/Menu",
+  title: 'Widgets/Menu',
   component: Menu,
   argTypes: {
     activeItem: {
-      options: ["Trade", "Earn", "Win"],
-      control: { type: "select" },
+      options: ['Trade', 'Earn', 'Win'],
+      control: { type: 'select' },
     },
   },
-};
+}
 
 const langs: Language[] = [...Array(20)].map((_, i) => ({
   code: `en${i}`,
   language: `English${i}`,
   locale: `Locale${i}`,
-}));
+}))
 
 const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: string }> = ({
   variant = variants.DEFAULT,
   text,
-  account = "0x8b017905DC96B38f817473dc885F84D4C76bC113",
+  account = '0x8b017905DC96B38f817473dc885F84D4C76bC113',
 }) => {
-  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null
   return (
     <DropdownMenu items={userMenulinks} py="12px">
       <UserMenu account={text || accountEllipsis} avatarSrc="" variant={variant} />
     </DropdownMenu>
-  );
-};
+  )
+}
 
 const GlobalMenuModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
   <Modal title={title} onDismiss={onDismiss} {...props}>
     <Heading>{title}</Heading>
     <Button>This button Does nothing</Button>
   </Modal>
-);
+)
 
 const GlobalMenuComponent: React.FC = () => {
-  const [onPresent1] = useModal(<GlobalMenuModal title="Display Settings Modal" />);
-  const [onPresent2] = useModal(<GlobalMenuModal title="Global Settings Modal" />);
+  const [onPresent1] = useModal(<GlobalMenuModal title="Display Settings Modal" />)
+  const [onPresent2] = useModal(<GlobalMenuModal title="Global Settings Modal" />)
 
   return (
     <Flex>
@@ -70,21 +70,21 @@ const GlobalMenuComponent: React.FC = () => {
         <CogIcon height={22} width={22} color="textSubtle" />
       </IconButton>
     </Flex>
-  );
-};
+  )
+}
 
 const defaultProps = {
   linkComponent: ({ href, ...props }) => {
-    return <Link to={href} {...props} />;
+    return <Link to={href} {...props} />
   },
-  account: "0xbdda50183d817c3289f895a4472eb475967dc980",
+  account: '0xbdda50183d817c3289f895a4472eb475967dc980',
   login: noop,
   logout: noop,
   isDark: false,
   toggleTheme: noop,
   langs,
   setLang: noop,
-  currentLang: "EN",
+  currentLang: 'EN',
   cakePriceUsd: 0.023158668932877668,
   links,
   subLinks: links[0].items,
@@ -92,13 +92,13 @@ const defaultProps = {
   profile: null,
   userMenu: <UserMenuComponent account="0xbdda50183d817c3289f895a4472eb475967dc980" />,
   globalMenu: <GlobalMenuComponent />,
-  activeItem: "/swap",
-  activeSubItem: "https://exchange.pancakeswap.finance",
-  buyCakeLabel: "Buy CAKE",
-};
+  activeItem: '/swap',
+  activeSubItem: 'https://exchange.pancakeswap.finance',
+  buyCakeLabel: 'Buy CAKE',
+}
 
 const ConnectedTemplate: React.FC<NavProps> = (args) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <BrowserRouter>
@@ -166,12 +166,12 @@ const ConnectedTemplate: React.FC<NavProps> = (args) => {
         </div>
       </Menu>
     </BrowserRouter>
-  );
-};
-export const Connected = ConnectedTemplate.bind({});
-Connected.args = defaultProps;
+  )
+}
+export const Connected = ConnectedTemplate.bind({})
+Connected.args = defaultProps
 
-export const ConnectedWithBanner = ConnectedTemplate.bind({});
+export const ConnectedWithBanner = ConnectedTemplate.bind({})
 ConnectedWithBanner.args = {
   ...defaultProps,
   banner: (
@@ -182,7 +182,7 @@ ConnectedWithBanner.args = {
       <Button scale="sm">I am button</Button>
     </Flex>
   ),
-};
+}
 
 export const NotConnected: React.FC = () => {
   return (
@@ -211,8 +211,8 @@ export const NotConnected: React.FC = () => {
         </div>
       </Menu>
     </BrowserRouter>
-  );
-};
+  )
+}
 
 export const WithoutConnectButton: React.FC = () => {
   return (
@@ -233,12 +233,12 @@ export const WithoutConnectButton: React.FC = () => {
         </div>
       </Menu>
     </BrowserRouter>
-  );
-};
+  )
+}
 
 export const WithSubmenuSelected: React.FC = () => {
   return (
-    <MemoryRouter initialEntries={["/teams"]}>
+    <MemoryRouter initialEntries={['/teams']}>
       <Menu
         isDark={false}
         toggleTheme={noop}
@@ -257,17 +257,17 @@ export const WithSubmenuSelected: React.FC = () => {
         </div>
       </Menu>
     </MemoryRouter>
-  );
-};
+  )
+}
 
 export const UserMenuWithVariants: React.FC = () => {
-  const [variant, setVariant] = useState<Variant>(variants.DEFAULT);
-  const [text, setText] = useState(undefined);
+  const [variant, setVariant] = useState<Variant>(variants.DEFAULT)
+  const [text, setText] = useState(undefined)
 
   const handleChange = (evt) => {
-    const { value } = evt.target;
-    setText(value);
-  };
+    const { value } = evt.target
+    setText(value)
+  }
 
   return (
     <BrowserRouter>
@@ -281,7 +281,7 @@ export const UserMenuWithVariants: React.FC = () => {
               {Object.keys(variants).map((variantKey) => (
                 <Button
                   scale="sm"
-                  variant={variant === variants[variantKey] ? "primary" : "text"}
+                  variant={variant === variants[variantKey] ? 'primary' : 'text'}
                   ml="8px"
                   onClick={() => setVariant(variants[variantKey])}
                 >
@@ -297,5 +297,5 @@ export const UserMenuWithVariants: React.FC = () => {
         </Flex>
       </Box>
     </BrowserRouter>
-  );
-};
+  )
+}

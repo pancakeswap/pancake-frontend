@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import Grid from "../Box/Grid";
+import styled from 'styled-components'
+import Grid from '../Box/Grid'
 
 const GridLayout = styled(Grid)`
   grid-template-columns: repeat(6, 1fr);
@@ -16,6 +16,6 @@ const GridLayout = styled(Grid)`
     grid-template-columns: repeat(12, 1fr);
     grid-gap: 32px;
   }
-`;
+`
 
-export default GridLayout;
+export default GridLayout

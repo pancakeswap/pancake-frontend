@@ -1,17 +1,17 @@
-import React from "react";
-import styled from "styled-components";
-import { BaseLayout, CardsLayout } from ".";
+import React from 'react'
+import styled from 'styled-components'
+import { BaseLayout, CardsLayout } from '.'
 
 export default {
-  title: "Components/Layouts",
+  title: 'Components/Layouts',
   argTypes: {},
-};
+}
 
 const Stub = styled.div`
   width: 100%;
   background: #1fc7d4;
   height: 300px;
-`;
+`
 
 export const Base: React.FC = () => {
   return (
@@ -20,8 +20,8 @@ export const Base: React.FC = () => {
         <Stub key={value} />
       ))}
     </BaseLayout>
-  );
-};
+  )
+}
 
 export const Cards: React.FC = () => {
   return (
@@ -30,5 +30,5 @@ export const Cards: React.FC = () => {
         <Stub key={value} />
       ))}
     </CardsLayout>
-  );
-};
+  )
+}

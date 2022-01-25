@@ -1,10 +1,10 @@
-import React from "react";
-import uniqueId from "lodash/uniqueId";
-import Svg from "../Svg";
-import { SvgProps } from "../types";
+import React from 'react'
+import uniqueId from 'lodash/uniqueId'
+import Svg from '../Svg'
+import { SvgProps } from '../types'
 
 const Icon: React.FC<SvgProps> = (props) => {
-  const id = uniqueId("svg");
+  const id = uniqueId('svg')
 
   return (
     <Svg viewBox="0 0 48 48" {...props}>
@@ -98,7 +98,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         </clipPath>
       </defs>
     </Svg>
-  );
-};
+  )
+}
 
-export default Icon;
+export default Icon

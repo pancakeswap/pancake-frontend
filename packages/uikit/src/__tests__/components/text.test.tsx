@@ -1,9 +1,9 @@
-import React from "react";
-import { renderWithTheme } from "../../testHelpers";
-import Text from "../../components/Text/Text";
+import React from 'react'
+import { renderWithTheme } from '../../testHelpers'
+import Text from '../../components/Text/Text'
 
-it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<Text>pancake</Text>);
+it('renders correctly', () => {
+  const { asFragment } = renderWithTheme(<Text>pancake</Text>)
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
@@ -20,5 +20,5 @@ it("renders correctly", () => {
         pancake
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})

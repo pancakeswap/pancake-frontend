@@ -1,16 +1,16 @@
-import React from "react";
-import { renderWithTheme } from "../../testHelpers";
-import { TabMenu, Tab } from "../../components/TabMenu";
+import React from 'react'
+import { renderWithTheme } from '../../testHelpers'
+import { TabMenu, Tab } from '../../components/TabMenu'
 
-const handleClick = jest.fn();
+const handleClick = jest.fn()
 
-it("renders correctly", () => {
+it('renders correctly', () => {
   const { asFragment } = renderWithTheme(
     <TabMenu activeIndex={0} onItemClick={handleClick}>
       <Tab>Item 1</Tab>
       <Tab>Item 2</Tab>
-    </TabMenu>
-  );
+    </TabMenu>,
+  )
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
@@ -157,5 +157,5 @@ it("renders correctly", () => {
         </div>
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})

@@ -1,25 +1,25 @@
-import React from "react";
-import styled from "styled-components";
-import Stepper from "./Stepper";
-import { Step, StepNumber } from "./Step";
-import { Status } from "./types";
-import Card from "../Card/Card";
-import CardBody from "../Card/CardBody";
+import React from 'react'
+import styled from 'styled-components'
+import Stepper from './Stepper'
+import { Step, StepNumber } from './Step'
+import { Status } from './types'
+import Card from '../Card/Card'
+import CardBody from '../Card/CardBody'
 
 export default {
-  title: "Components/Stepper",
+  title: 'Components/Stepper',
   component: Stepper,
   argTypes: {},
-};
+}
 
 const mock =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae nisl imperdiet, vestibulum lacus at, placerat nisi. Vestibulum quis scelerisque purus. Curabitur non magna tincidunt, fermentum neque sed, finibus neque. Phasellus consequat at lorem a venenatis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae nisl imperdiet, vestibulum lacus at, placerat nisi. Vestibulum quis scelerisque purus. Curabitur non magna tincidunt, fermentum neque sed, finibus neque. Phasellus consequat at lorem a venenatis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae nisl imperdiet, vestibulum lacus at, placerat nisi. Vestibulum quis scelerisque purus. Curabitur non magna tincidunt, fermentum neque sed, finibus neque. Phasellus consequat at lorem a venenatis.";
-const steps = [mock, mock, mock, mock];
-const status: Status[] = ["past", "current", "future", "future"];
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae nisl imperdiet, vestibulum lacus at, placerat nisi. Vestibulum quis scelerisque purus. Curabitur non magna tincidunt, fermentum neque sed, finibus neque. Phasellus consequat at lorem a venenatis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae nisl imperdiet, vestibulum lacus at, placerat nisi. Vestibulum quis scelerisque purus. Curabitur non magna tincidunt, fermentum neque sed, finibus neque. Phasellus consequat at lorem a venenatis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae nisl imperdiet, vestibulum lacus at, placerat nisi. Vestibulum quis scelerisque purus. Curabitur non magna tincidunt, fermentum neque sed, finibus neque. Phasellus consequat at lorem a venenatis.'
+const steps = [mock, mock, mock, mock]
+const status: Status[] = ['past', 'current', 'future', 'future']
 
 const Row = styled.div`
   display: flex;
-`;
+`
 
 export const Default: React.FC = () => {
   return (
@@ -32,8 +32,8 @@ export const Default: React.FC = () => {
         </Step>
       ))}
     </Stepper>
-  );
-};
+  )
+}
 
 export const Components: React.FC = () => {
   return (
@@ -86,5 +86,5 @@ export const Components: React.FC = () => {
         </Step>
       </Row>
     </div>
-  );
-};
+  )
+}

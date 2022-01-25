@@ -1,13 +1,13 @@
-import styled from "styled-components";
-import { space, variant as StyledSystemVariant } from "styled-system";
-import { lightColors } from "../../theme";
-import { styleVariants, styleScales } from "./themes";
-import { ProgressProps, variants } from "./types";
+import styled from 'styled-components'
+import { space, variant as StyledSystemVariant } from 'styled-system'
+import { lightColors } from '../../theme'
+import { styleVariants, styleScales } from './themes'
+import { ProgressProps, variants } from './types'
 
 interface ProgressBarProps {
-  primary?: boolean;
-  $useDark: boolean;
-  $background?: string;
+  primary?: boolean
+  $useDark: boolean
+  $background?: string
 }
 
 export const Bar = styled.div<ProgressBarProps>`
@@ -15,22 +15,22 @@ export const Bar = styled.div<ProgressBarProps>`
   top: 0;
   left: 0;
   background: ${({ theme, $useDark, primary, $background }) => {
-    if ($background) return $background;
-    if ($useDark) return primary ? theme.colors.secondary : `${theme.colors.secondary}80`;
-    return primary ? lightColors.secondary : `${lightColors.secondary}80`;
+    if ($background) return $background
+    if ($useDark) return primary ? theme.colors.secondary : `${theme.colors.secondary}80`
+    return primary ? lightColors.secondary : `${lightColors.secondary}80`
   }};
   height: 100%;
   transition: width 200ms ease;
-`;
+`
 
 Bar.defaultProps = {
   primary: false,
-};
+}
 
 interface StyledProgressProps {
-  variant: ProgressProps["variant"];
-  scale: ProgressProps["scale"];
-  $useDark: boolean;
+  variant: ProgressProps['variant']
+  scale: ProgressProps['scale']
+  $useDark: boolean
 }
 
 const StyledProgress = styled.div<StyledProgressProps>`
@@ -40,18 +40,18 @@ const StyledProgress = styled.div<StyledProgressProps>`
   overflow: hidden;
 
   ${Bar} {
-    border-top-left-radius: ${({ variant }) => (variant === variants.FLAT ? "0" : "32px")};
-    border-bottom-left-radius: ${({ variant }) => (variant === variants.FLAT ? "0" : "32px")};
+    border-top-left-radius: ${({ variant }) => (variant === variants.FLAT ? '0' : '32px')};
+    border-bottom-left-radius: ${({ variant }) => (variant === variants.FLAT ? '0' : '32px')};
   }
 
   ${StyledSystemVariant({
     variants: styleVariants,
   })}
   ${StyledSystemVariant({
-    prop: "scale",
+    prop: 'scale',
     variants: styleScales,
   })}
   ${space}
-`;
+`
 
-export default StyledProgress;
+export default StyledProgress

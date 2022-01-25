@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Arrow = styled.div`
   &,
@@ -11,11 +11,11 @@ export const Arrow = styled.div`
   }
 
   &::before {
-    content: "";
+    content: '';
     transform: rotate(45deg);
     background: ${({ theme }) => theme.tooltip.background};
   }
-`;
+`
 
 export const StyledTooltip = styled.div`
   padding: 16px;
@@ -28,19 +28,19 @@ export const StyledTooltip = styled.div`
   color: ${({ theme }) => theme.tooltip.text};
   box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
 
-  &[data-popper-placement^="top"] > ${Arrow} {
+  &[data-popper-placement^='top'] > ${Arrow} {
     bottom: -4px;
   }
 
-  &[data-popper-placement^="bottom"] > ${Arrow} {
+  &[data-popper-placement^='bottom'] > ${Arrow} {
     top: -4px;
   }
 
-  &[data-popper-placement^="left"] > ${Arrow} {
+  &[data-popper-placement^='left'] > ${Arrow} {
     right: -4px;
   }
 
-  &[data-popper-placement^="right"] > ${Arrow} {
+  &[data-popper-placement^='right'] > ${Arrow} {
     left: -4px;
   }
-`;
+`

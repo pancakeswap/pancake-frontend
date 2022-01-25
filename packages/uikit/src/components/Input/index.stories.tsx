@@ -1,14 +1,14 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react'
+import styled from 'styled-components'
 /* eslint-disable import/no-unresolved */
-import { Meta } from "@storybook/react/types-6-0";
-import Search from "../Svg/Icons/Search";
-import StarFill from "../Svg/Icons/StarFill";
-import Heading from "../Heading/Heading";
-import Input from "./Input";
-import InputGroup from "./InputGroup";
-import { scales } from "./types";
-import Box from "../Box/Box";
+import { Meta } from '@storybook/react/types-6-0'
+import Search from '../Svg/Icons/Search'
+import StarFill from '../Svg/Icons/StarFill'
+import Heading from '../Heading/Heading'
+import Input from './Input'
+import InputGroup from './InputGroup'
+import { scales } from './types'
+import Box from '../Box/Box'
 
 const Row = styled.div`
   display: flex;
@@ -17,13 +17,13 @@ const Row = styled.div`
   & > input + input {
     margin-left: 16px;
   }
-`;
+`
 
 export default {
-  title: "Components/Input",
+  title: 'Components/Input',
   component: Input,
   argTypes: {},
-} as Meta;
+} as Meta
 
 export const Default: React.FC = () => {
   return (
@@ -41,8 +41,8 @@ export const Default: React.FC = () => {
         </>
       ))}
     </div>
-  );
-};
+  )
+}
 
 export const Icons: React.FC = () => {
   return (
@@ -57,5 +57,5 @@ export const Icons: React.FC = () => {
         <Input type="text" value="Input Group" />
       </InputGroup>
     </Box>
-  );
-};
+  )
+}

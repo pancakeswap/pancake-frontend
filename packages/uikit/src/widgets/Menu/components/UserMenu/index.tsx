@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { usePopper } from "react-popper";
-import styled from "styled-components";
-import { Box, Flex } from "../../../../components/Box";
-import { ChevronDownIcon } from "../../../../components/Svg";
-import { UserMenuProps, variants } from "./types";
-import MenuIcon from "./MenuIcon";
-import { UserMenuItem } from "./styles";
+import React, { useEffect, useState } from 'react'
+import { usePopper } from 'react-popper'
+import styled from 'styled-components'
+import { Box, Flex } from '../../../../components/Box'
+import { ChevronDownIcon } from '../../../../components/Svg'
+import { UserMenuProps, variants } from './types'
+import MenuIcon from './MenuIcon'
+import { UserMenuItem } from './styles'
 
 export const StyledUserMenu = styled(Flex)`
   align-items: center;
@@ -22,7 +22,7 @@ export const StyledUserMenu = styled(Flex)`
   &:hover {
     opacity: 0.65;
   }
-`;
+`
 
 export const LabelText = styled.div`
   color: ${({ theme }) => theme.colors.text};
@@ -34,7 +34,7 @@ export const LabelText = styled.div`
     margin-left: 8px;
     margin-right: 4px;
   }
-`;
+`
 
 const Menu = styled.div<{ isOpen: boolean }>`
   background-color: ${({ theme }) => theme.card.background};
@@ -61,7 +61,7 @@ const Menu = styled.div<{ isOpen: boolean }>`
   ${UserMenuItem}:last-child {
     border-radius: 0 0 8px 8px;
   }
-`;
+`
 
 const UserMenu: React.FC<UserMenuProps> = ({
   account,
@@ -71,43 +71,43 @@ const UserMenu: React.FC<UserMenuProps> = ({
   children,
   ...props
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
-  const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
-  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+  const [isOpen, setIsOpen] = useState(false)
+  const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null)
+  const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null)
+  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null
   const { styles, attributes } = usePopper(targetRef, tooltipRef, {
-    strategy: "fixed",
-    placement: "bottom-end",
-    modifiers: [{ name: "offset", options: { offset: [0, 0] } }],
-  });
+    strategy: 'fixed',
+    placement: 'bottom-end',
+    modifiers: [{ name: 'offset', options: { offset: [0, 0] } }],
+  })
 
   useEffect(() => {
     const showDropdownMenu = () => {
-      setIsOpen(true);
-    };
+      setIsOpen(true)
+    }
 
     const hideDropdownMenu = (evt: MouseEvent | TouchEvent) => {
-      const target = evt.target as Node;
+      const target = evt.target as Node
       if (target && !tooltipRef?.contains(target)) {
-        setIsOpen(false);
-        evt.stopPropagation();
+        setIsOpen(false)
+        evt.stopPropagation()
       }
-    };
+    }
 
-    targetRef?.addEventListener("mouseenter", showDropdownMenu);
-    targetRef?.addEventListener("mouseleave", hideDropdownMenu);
+    targetRef?.addEventListener('mouseenter', showDropdownMenu)
+    targetRef?.addEventListener('mouseleave', hideDropdownMenu)
 
     return () => {
-      targetRef?.removeEventListener("mouseenter", showDropdownMenu);
-      targetRef?.removeEventListener("mouseleave", hideDropdownMenu);
-    };
-  }, [targetRef, tooltipRef, setIsOpen]);
+      targetRef?.removeEventListener('mouseenter', showDropdownMenu)
+      targetRef?.removeEventListener('mouseleave', hideDropdownMenu)
+    }
+  }, [targetRef, tooltipRef, setIsOpen])
 
   return (
     <Flex alignItems="center" height="100%" ref={setTargetRef} {...props}>
       <StyledUserMenu
         onTouchStart={() => {
-          setIsOpen((s) => !s);
+          setIsOpen((s) => !s)
         }}
       >
         <MenuIcon avatarSrc={avatarSrc} variant={variant} />
@@ -118,7 +118,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         <Box onClick={() => setIsOpen(false)}>{children}</Box>
       </Menu>
     </Flex>
-  );
-};
+  )
+}
 
-export default UserMenu;
+export default UserMenu

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { Text } from "../Text";
+import styled from 'styled-components'
+import { Text } from '../Text'
 
 export const StyledBottomNavItem = styled.button`
   display: block;
@@ -15,7 +15,7 @@ export const StyledBottomNavItem = styled.button`
   &:hover div {
     background: ${({ theme }) => theme.colors.tertiary};
   }
-`;
+`
 
 export const StyledBottomNavText = styled(Text)`
   display: -webkit-box;
@@ -25,4 +25,4 @@ export const StyledBottomNavText = styled(Text)`
   -webkit-box-orient: vertical;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-`;
+`

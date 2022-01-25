@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { BrowserRouter } from "react-router-dom";
-import { Box } from "../Box";
-import DropdownMenu from "./DropdownMenu";
-import ItemsMock from "./mock";
+import { BrowserRouter } from 'react-router-dom'
+import { Box } from '../Box'
+import DropdownMenu from './DropdownMenu'
+import ItemsMock from './mock'
 
 export default {
-  title: "Components/Menu/DropdownMenu",
+  title: 'Components/Menu/DropdownMenu',
   component: DropdownMenu,
-};
+}
 
 export const Default: React.FC = () => {
   return (
@@ -19,5 +19,5 @@ export const Default: React.FC = () => {
         </DropdownMenu>
       </Box>
     </BrowserRouter>
-  );
-};
+  )
+}

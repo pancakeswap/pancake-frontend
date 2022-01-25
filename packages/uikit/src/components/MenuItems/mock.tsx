@@ -1,31 +1,31 @@
-import ItemsMock from "../DropdownMenu/mock";
+import ItemsMock from '../DropdownMenu/mock'
 
 const MenuItemsMock = [
   {
-    label: "Home",
-    href: "/",
+    label: 'Home',
+    href: '/',
     items: ItemsMock,
   },
   {
-    label: "Earn",
-    href: "/",
+    label: 'Earn',
+    href: '/',
     items: ItemsMock,
   },
   {
-    label: "Win",
-    href: "/",
+    label: 'Win',
+    href: '/',
     items: ItemsMock,
   },
   {
-    label: "NFT",
-    href: "/",
+    label: 'NFT',
+    href: '/',
     items: [ItemsMock[0]],
   },
   {
-    label: "...",
-    href: "/",
+    label: '...',
+    href: '/',
     items: ItemsMock,
   },
-];
+]
 
-export default MenuItemsMock;
+export default MenuItemsMock

@@ -1,6 +1,6 @@
-import React from "react";
-import { StyledCard, StyledCardInner } from "./StyledCard";
-import { CardProps } from "./types";
+import React from 'react'
+import { StyledCard, StyledCardInner } from './StyledCard'
+import { CardProps } from './types'
 
 const Card: React.FC<CardProps> = ({ ribbon, children, background, ...props }) => {
   return (
@@ -10,6 +10,6 @@ const Card: React.FC<CardProps> = ({ ribbon, children, background, ...props }) =
         {children}
       </StyledCardInner>
     </StyledCard>
-  );
-};
-export default Card;
+  )
+}
+export default Card

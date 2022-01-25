@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react'
+import styled from 'styled-components'
 /* eslint-disable import/no-unresolved */
-import { Meta } from "@storybook/react/types-6-0";
-import Box from "../Box/Box";
-import ButtonMenu from "./ButtonMenu";
-import ButtonMenuItem from "./ButtonMenuItem";
+import { Meta } from '@storybook/react/types-6-0'
+import Box from '../Box/Box'
+import ButtonMenu from './ButtonMenu'
+import ButtonMenuItem from './ButtonMenuItem'
 
 const Row = styled.div`
   margin-bottom: 32px;
@@ -12,20 +12,20 @@ const Row = styled.div`
   & > button + button {
     margin-left: 16px;
   }
-`;
+`
 
 export default {
-  title: "Components/Button Menu",
+  title: 'Components/Button Menu',
   component: ButtonMenu,
   argTypes: {},
-} as Meta;
+} as Meta
 
 export const Default: React.FC = () => {
-  const [index, setIndex] = useState(0);
-  const [index1, setIndex1] = useState(1);
+  const [index, setIndex] = useState(0)
+  const [index1, setIndex1] = useState(1)
 
-  const handleClick = (newIndex) => setIndex(newIndex);
-  const handleClick1 = (newIndex) => setIndex1(newIndex);
+  const handleClick = (newIndex) => setIndex(newIndex)
+  const handleClick1 = (newIndex) => setIndex1(newIndex)
 
   return (
     <>
@@ -62,8 +62,8 @@ export const Default: React.FC = () => {
         </ButtonMenu>
       </Row>
     </>
-  );
-};
+  )
+}
 
 export const AsLinks: React.FC = () => {
   return (
@@ -80,15 +80,15 @@ export const AsLinks: React.FC = () => {
         </ButtonMenuItem>
       </ButtonMenu>
     </Row>
-  );
-};
+  )
+}
 
 export const DisabledMenu: React.FC = () => {
-  const [index, setIndex] = useState(0);
-  const [index1, setIndex1] = useState(1);
+  const [index, setIndex] = useState(0)
+  const [index1, setIndex1] = useState(1)
 
-  const handleClick = (newIndex) => setIndex(newIndex);
-  const handleClick1 = (newIndex) => setIndex1(newIndex);
+  const handleClick = (newIndex) => setIndex(newIndex)
+  const handleClick1 = (newIndex) => setIndex1(newIndex)
   return (
     <>
       <Row>
@@ -124,13 +124,13 @@ export const DisabledMenu: React.FC = () => {
         </ButtonMenu>
       </Row>
     </>
-  );
-};
+  )
+}
 
 export const FullWidthMenu: React.FC = () => {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0)
 
-  const handleClick = (newIndex: number) => setIndex(newIndex);
+  const handleClick = (newIndex: number) => setIndex(newIndex)
 
   return (
     <Box width="840px">
@@ -152,5 +152,5 @@ export const FullWidthMenu: React.FC = () => {
         </ButtonMenuItem>
       </ButtonMenu>
     </Box>
-  );
-};
+  )
+}

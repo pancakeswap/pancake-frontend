@@ -1,22 +1,22 @@
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from 'styled-components'
 
 export interface ThemedProps {
-  theme: DefaultTheme;
+  theme: DefaultTheme
 }
 
-export type Status = "past" | "current" | "future";
+export type Status = 'past' | 'current' | 'future'
 
 export interface StatusProps extends ThemedProps {
-  theme: DefaultTheme;
-  status?: Status;
-  $isFirstStep?: boolean;
-  $isLastStep?: boolean;
-  $isFirstPart?: boolean;
+  theme: DefaultTheme
+  status?: Status
+  $isFirstStep?: boolean
+  $isLastStep?: boolean
+  $isFirstPart?: boolean
 }
 
 export interface StepProps {
-  index: number;
-  statusFirstPart: Status;
-  statusSecondPart?: Status;
-  numberOfSteps?: number;
+  index: number
+  statusFirstPart: Status
+  statusSecondPart?: Status
+  numberOfSteps?: number
 }

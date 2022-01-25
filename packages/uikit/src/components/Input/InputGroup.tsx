@@ -1,31 +1,31 @@
-import React, { cloneElement } from "react";
-import styled from "styled-components";
-import Box from "../Box/Box";
-import Input from "./Input";
-import { InputGroupProps, scales, Scales } from "./types";
+import React, { cloneElement } from 'react'
+import styled from 'styled-components'
+import Box from '../Box/Box'
+import Input from './Input'
+import { InputGroupProps, scales, Scales } from './types'
 
 const getPadding = (scale: Scales, hasIcon: boolean) => {
   if (!hasIcon) {
-    return "16px";
+    return '16px'
   }
 
   switch (scale) {
     case scales.SM:
-      return "32px";
+      return '32px'
     case scales.LG:
-      return "56px";
+      return '56px'
     case scales.MD:
     default:
-      return "48px";
+      return '48px'
   }
-};
+}
 
 const StyledInputGroup = styled(Box)<{ scale: Scales; hasStartIcon: boolean; hasEndIcon: boolean }>`
   ${Input} {
     padding-left: ${({ hasStartIcon, scale }) => getPadding(scale, hasStartIcon)};
     padding-right: ${({ hasEndIcon, scale }) => getPadding(scale, hasEndIcon)};
   }
-`;
+`
 
 const InputIcon = styled.div<{ scale: Scales; isEndIcon?: boolean }>`
   align-items: center;
@@ -37,12 +37,12 @@ const InputIcon = styled.div<{ scale: Scales; isEndIcon?: boolean }>`
   ${({ isEndIcon, scale }) =>
     isEndIcon
       ? `
-    right: ${scale === scales.SM ? "8px" : "16px"};
+    right: ${scale === scales.SM ? '8px' : '16px'};
   `
       : `
-    left: ${scale === scales.SM ? "8px" : "16px"};
+    left: ${scale === scales.SM ? '8px' : '16px'};
   `}
-`;
+`
 
 const InputGroup = ({ scale = scales.MD, startIcon, endIcon, children, ...props }: InputGroupProps): JSX.Element => (
   <StyledInputGroup
@@ -61,6 +61,6 @@ const InputGroup = ({ scale = scales.MD, startIcon, endIcon, children, ...props 
       </InputIcon>
     )}
   </StyledInputGroup>
-);
+)
 
-export default InputGroup;
+export default InputGroup

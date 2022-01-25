@@ -7,10 +7,7 @@
     "patch": 9
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
-  "keywords": [
-    "pancakeswap",
-    "top 100"
-  ],
+  "keywords": ["pancakeswap", "top 100"],
   "tokens": [
     {
       "name": "Cardano Token",

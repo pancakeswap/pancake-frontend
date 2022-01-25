@@ -1,16 +1,16 @@
-import React from "react";
-import { renderWithTheme, setupMockIntersectionObserver } from "../../testHelpers";
-import TokenImage from "../../components/Image/TokenImage";
+import React from 'react'
+import { renderWithTheme, setupMockIntersectionObserver } from '../../testHelpers'
+import TokenImage from '../../components/Image/TokenImage'
 
-it("renders correctly", () => {
-  setupMockIntersectionObserver();
+it('renders correctly', () => {
+  setupMockIntersectionObserver()
   const { asFragment } = renderWithTheme(
     <TokenImage
       src="https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.svg"
       height={48}
       width={48}
-    />
-  );
+    />,
+  )
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
@@ -54,5 +54,5 @@ it("renders correctly", () => {
         />
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})

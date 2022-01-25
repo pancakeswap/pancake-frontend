@@ -1,11 +1,11 @@
-import React from "react";
-import { renderWithTheme } from "../../testHelpers";
-import BalanceInput from "../../components/BalanceInput/BalanceInput";
+import React from 'react'
+import { renderWithTheme } from '../../testHelpers'
+import BalanceInput from '../../components/BalanceInput/BalanceInput'
 
-const handleChange = jest.fn();
+const handleChange = jest.fn()
 
-it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<BalanceInput value="14" currencyValue="15 USD" onUserInput={handleChange} />);
+it('renders correctly', () => {
+  const { asFragment } = renderWithTheme(<BalanceInput value="14" currencyValue="15 USD" onUserInput={handleChange} />)
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c1 {
@@ -152,13 +152,13 @@ it("renders correctly", () => {
         </div>
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})
 
-it("renders correctly with unit prop", () => {
+it('renders correctly with unit prop', () => {
   const { asFragment } = renderWithTheme(
-    <BalanceInput value="14" currencyValue="15 USD" unit="CAKE" onUserInput={handleChange} />
-  );
+    <BalanceInput value="14" currencyValue="15 USD" unit="CAKE" onUserInput={handleChange} />,
+  )
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c1 {
@@ -325,10 +325,10 @@ it("renders correctly with unit prop", () => {
         </div>
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})
 
-it("renders correctly with unit prop and switchEditingUnits", () => {
+it('renders correctly with unit prop and switchEditingUnits', () => {
   const { asFragment } = renderWithTheme(
     <BalanceInput
       value="14"
@@ -336,8 +336,8 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       unit="CAKE"
       switchEditingUnits={jest.fn()}
       onUserInput={handleChange}
-    />
-  );
+    />,
+  )
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c8 {
@@ -604,5 +604,5 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
         </div>
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})

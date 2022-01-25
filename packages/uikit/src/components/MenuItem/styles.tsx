@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { StyledMenuItemProps } from "./types";
+import styled from 'styled-components'
+import { StyledMenuItemProps } from './types'
 
 export const StyledMenuItemContainer = styled.div<StyledMenuItemProps>`
   position: relative;
 
   ${({ $isActive, $variant, theme }) =>
     $isActive &&
-    $variant === "subMenu" &&
+    $variant === 'subMenu' &&
     `
       &:after{
         content: "";
@@ -18,7 +18,7 @@ export const StyledMenuItemContainer = styled.div<StyledMenuItemProps>`
         border-radius: 2px 2px 0 0;
       }
     `};
-`;
+`
 
 const StyledMenuItem = styled.a<StyledMenuItemProps>`
   position: relative;
@@ -27,7 +27,7 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
 
   color: ${({ theme, $isActive }) => ($isActive ? theme.colors.secondary : theme.colors.textSubtle)};
   font-size: 16px;
-  font-weight: ${({ $isActive }) => ($isActive ? "600" : "400")};
+  font-weight: ${({ $isActive }) => ($isActive ? '600' : '400')};
 
   ${({ $statusColor, theme }) =>
     $statusColor &&
@@ -43,7 +43,7 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
   `}
 
   ${({ $variant }) =>
-    $variant === "default"
+    $variant === 'default'
       ? `
     padding: 0 16px;
     height: 48px;
@@ -55,8 +55,8 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
 
   &:hover {
     background: ${({ theme }) => theme.colors.tertiary};
-    ${({ $variant }) => $variant === "default" && "border-radius: 16px;"};
+    ${({ $variant }) => $variant === 'default' && 'border-radius: 16px;'};
   }
-`;
+`
 
-export default StyledMenuItem;
+export default StyledMenuItem

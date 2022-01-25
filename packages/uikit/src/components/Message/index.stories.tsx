@@ -1,12 +1,12 @@
-import React from "react";
-import Message, { MessageText } from "./Message";
-import { HelpIcon } from "../Svg";
+import React from 'react'
+import Message, { MessageText } from './Message'
+import { HelpIcon } from '../Svg'
 
 export default {
-  title: "Components/Message",
+  title: 'Components/Message',
   component: Message,
   argTypes: {},
-};
+}
 
 export const Default: React.FC = () => {
   return (
@@ -48,5 +48,5 @@ export const Default: React.FC = () => {
         </MessageText>
       </Message>
     </>
-  );
-};
+  )
+}

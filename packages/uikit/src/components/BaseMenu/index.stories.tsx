@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { BrowserRouter, Link } from "react-router-dom";
-import InlineMenu from "./InlineMenu";
-import SubMenuComp from "./SubMenu";
-import { SubMenuItem } from "./styles";
-import { LinkExternal } from "../Link";
-import { Box, Flex, Grid } from "../Box";
-import { Text } from "../Text";
-import Button from "../Button/Button";
-import { EllipsisIcon } from "../Svg";
+import { BrowserRouter, Link } from 'react-router-dom'
+import InlineMenu from './InlineMenu'
+import SubMenuComp from './SubMenu'
+import { SubMenuItem } from './styles'
+import { LinkExternal } from '../Link'
+import { Box, Flex, Grid } from '../Box'
+import { Text } from '../Text'
+import Button from '../Button/Button'
+import { EllipsisIcon } from '../Svg'
 
 export default {
-  title: "Components/Menu",
-};
+  title: 'Components/Menu',
+}
 
 export const Default: React.FC = () => {
   return (
@@ -40,11 +40,11 @@ export const Default: React.FC = () => {
         </Box>
       </InlineMenu>
     </Flex>
-  );
-};
+  )
+}
 
 export const Controlled: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true)
 
   return (
     <Box>
@@ -60,8 +60,8 @@ export const Controlled: React.FC = () => {
         </Box>
       </InlineMenu>
     </Box>
-  );
-};
+  )
+}
 
 export const SubMenu: React.FC = () => {
   return (
@@ -70,7 +70,7 @@ export const SubMenu: React.FC = () => {
         <Text>Icon</Text>
         <SubMenuComp
           component={<EllipsisIcon height="16px" width="16px" />}
-          options={{ placement: "right", offset: [0, 15], padding: { top: 20 } }}
+          options={{ placement: 'right', offset: [0, 15], padding: { top: 20 } }}
         >
           <SubMenuItem as={LinkExternal} href="https://bscscan.com" bold={false} color="text">
             View on BSCScan
@@ -106,5 +106,5 @@ export const SubMenu: React.FC = () => {
         </SubMenuComp>
       </Flex>
     </BrowserRouter>
-  );
-};
+  )
+}

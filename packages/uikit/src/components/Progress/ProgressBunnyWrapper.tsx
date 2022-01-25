@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const ProgressBunnyWrapper = styled.div`
   display: flex;
@@ -7,6 +7,6 @@ const ProgressBunnyWrapper = styled.div`
   position: absolute;
   transform: translate(-50%, -50%);
   transition: left 200ms ease-out;
-`;
+`
 
-export default ProgressBunnyWrapper;
+export default ProgressBunnyWrapper

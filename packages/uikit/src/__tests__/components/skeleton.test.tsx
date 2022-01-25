@@ -1,9 +1,9 @@
-import React from "react";
-import { renderWithTheme } from "../../testHelpers";
-import Skeleton from "../../components/Skeleton/Skeleton";
+import React from 'react'
+import { renderWithTheme } from '../../testHelpers'
+import Skeleton from '../../components/Skeleton/Skeleton'
 
-it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<Skeleton />);
+it('renders correctly', () => {
+  const { asFragment } = renderWithTheme(<Skeleton />)
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
@@ -25,11 +25,11 @@ it("renders correctly", () => {
         class="c0 c1"
       />
     </DocumentFragment>
-  `);
-});
+  `)
+})
 
-it("renders correctly avatar", () => {
-  const { asFragment } = renderWithTheme(<Skeleton width={50} height={50} variant="circle" />);
+it('renders correctly avatar', () => {
+  const { asFragment } = renderWithTheme(<Skeleton width={50} height={50} variant="circle" />)
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
@@ -55,11 +55,11 @@ it("renders correctly avatar", () => {
         width="50"
       />
     </DocumentFragment>
-  `);
-});
+  `)
+})
 
-it("renders correctly waves animation", () => {
-  const { asFragment } = renderWithTheme(<Skeleton width={50} height={50} animation="waves" />);
+it('renders correctly waves animation', () => {
+  const { asFragment } = renderWithTheme(<Skeleton width={50} height={50} animation="waves" />)
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
@@ -97,5 +97,5 @@ it("renders correctly waves animation", () => {
         width="50"
       />
     </DocumentFragment>
-  `);
-});
+  `)
+})

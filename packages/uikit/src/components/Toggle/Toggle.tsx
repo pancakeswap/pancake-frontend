@@ -1,18 +1,18 @@
-import React from "react";
-import { Flex } from "../Box";
-import StyledToggle, { Input, Handle } from "./StyledToggle";
-import { ToggleProps, scales } from "./types";
+import React from 'react'
+import { Flex } from '../Box'
+import StyledToggle, { Input, Handle } from './StyledToggle'
+import { ToggleProps, scales } from './types'
 
 const Toggle: React.FC<ToggleProps> = ({
   checked,
-  defaultColor = "input",
-  checkedColor = "success",
+  defaultColor = 'input',
+  checkedColor = 'success',
   scale = scales.LG,
   startIcon,
   endIcon,
   ...props
 }) => {
-  const isChecked = !!checked;
+  const isChecked = !!checked
 
   return (
     <StyledToggle $checked={isChecked} $checkedColor={checkedColor} $defaultColor={defaultColor} scale={scale}>
@@ -33,7 +33,7 @@ const Toggle: React.FC<ToggleProps> = ({
         <Handle scale={scale} />
       )}
     </StyledToggle>
-  );
-};
+  )
+}
 
-export default Toggle;
+export default Toggle

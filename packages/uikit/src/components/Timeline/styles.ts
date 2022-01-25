@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { lightColors } from "../../theme";
+import styled from 'styled-components'
+import { lightColors } from '../../theme'
 
 export const TimelineContainer = styled.ul`
   display: flex;
   flex-direction: column;
   list-style: none;
-`;
+`
 
 export const TimelineEvent = styled.li<{ $useDark: boolean }>`
   display: flex;
@@ -13,7 +13,7 @@ export const TimelineEvent = styled.li<{ $useDark: boolean }>`
   margin-bottom: 14px;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     left: 9px;
     top: 26px;
@@ -25,4 +25,4 @@ export const TimelineEvent = styled.li<{ $useDark: boolean }>`
   &:last-child:after {
     display: none;
   }
-`;
+`

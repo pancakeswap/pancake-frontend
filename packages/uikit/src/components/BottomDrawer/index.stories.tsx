@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import Box from "../Box/Box";
-import Button from "../Button/Button";
-import Text from "../Text/Text";
-import BottomDrawer from "./BottomDrawer";
+import React, { useState } from 'react'
+import Box from '../Box/Box'
+import Button from '../Button/Button'
+import Text from '../Text/Text'
+import BottomDrawer from './BottomDrawer'
 
 export default {
-  title: "Components/BottomDrawer",
+  title: 'Components/BottomDrawer',
   component: BottomDrawer,
   argTypes: {},
-};
+}
 
 export const Default: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
   const content = (
     <Box px="16px" pt="22px" height="100%" overflowY="auto">
       <Text fontSize="20px">Example</Text>
@@ -23,7 +23,7 @@ export const Default: React.FC = () => {
       ))}
       <Text>The end</Text>
     </Box>
-  );
+  )
   return (
     <Box p="24px">
       <Text mb="8px">
@@ -40,5 +40,5 @@ export const Default: React.FC = () => {
       ))}
       <BottomDrawer content={content} isOpen={isOpen} setIsOpen={setIsOpen} />
     </Box>
-  );
-};
+  )
+}

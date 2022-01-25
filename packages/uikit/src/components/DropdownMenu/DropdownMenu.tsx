@@ -1,81 +1,81 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useContext, useEffect, useState } from "react";
-import { usePopper } from "react-popper";
-import { useOnClickOutside } from "../../hooks";
-import { MenuContext } from "../../widgets/Menu/context";
-import { Box, Flex } from "../Box";
-import IconComponent from "../Svg/IconComponent";
+import React, { useContext, useEffect, useState } from 'react'
+import { usePopper } from 'react-popper'
+import { useOnClickOutside } from '../../hooks'
+import { MenuContext } from '../../widgets/Menu/context'
+import { Box, Flex } from '../Box'
+import IconComponent from '../Svg/IconComponent'
 import {
   DropdownMenuDivider,
   DropdownMenuItem,
   StyledDropdownMenu,
   LinkStatus,
   StyledDropdownMenuItemContainer,
-} from "./styles";
-import { DropdownMenuItemType, DropdownMenuProps } from "./types";
+} from './styles'
+import { DropdownMenuItemType, DropdownMenuProps } from './types'
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({
   children,
   isBottomNav = false,
   showItemsOnMobile = false,
-  activeItem = "",
+  activeItem = '',
   items = [],
   index,
   setMenuOpenByIndex,
   ...props
 }) => {
-  const { linkComponent } = useContext(MenuContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
-  const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
-  const hasItems = items.length > 0;
+  const { linkComponent } = useContext(MenuContext)
+  const [isOpen, setIsOpen] = useState(false)
+  const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null)
+  const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null)
+  const hasItems = items.length > 0
   const { styles, attributes } = usePopper(targetRef, tooltipRef, {
-    strategy: isBottomNav ? "absolute" : "fixed",
-    placement: isBottomNav ? "top" : "bottom-start",
-    modifiers: [{ name: "offset", options: { offset: [0, isBottomNav ? 6 : 0] } }],
-  });
+    strategy: isBottomNav ? 'absolute' : 'fixed',
+    placement: isBottomNav ? 'top' : 'bottom-start',
+    modifiers: [{ name: 'offset', options: { offset: [0, isBottomNav ? 6 : 0] } }],
+  })
 
-  const isMenuShow = isOpen && ((isBottomNav && showItemsOnMobile) || !isBottomNav);
+  const isMenuShow = isOpen && ((isBottomNav && showItemsOnMobile) || !isBottomNav)
 
   useEffect(() => {
     const showDropdownMenu = () => {
-      setIsOpen(true);
-    };
+      setIsOpen(true)
+    }
 
     const hideDropdownMenu = (evt: MouseEvent | TouchEvent) => {
-      const target = evt.target as Node;
-      return target && !tooltipRef?.contains(target) && setIsOpen(false);
-    };
+      const target = evt.target as Node
+      return target && !tooltipRef?.contains(target) && setIsOpen(false)
+    }
 
-    targetRef?.addEventListener("mouseenter", showDropdownMenu);
-    targetRef?.addEventListener("mouseleave", hideDropdownMenu);
+    targetRef?.addEventListener('mouseenter', showDropdownMenu)
+    targetRef?.addEventListener('mouseleave', hideDropdownMenu)
 
     return () => {
-      targetRef?.removeEventListener("mouseenter", showDropdownMenu);
-      targetRef?.removeEventListener("mouseleave", hideDropdownMenu);
-    };
-  }, [targetRef, tooltipRef, setIsOpen, isBottomNav]);
+      targetRef?.removeEventListener('mouseenter', showDropdownMenu)
+      targetRef?.removeEventListener('mouseleave', hideDropdownMenu)
+    }
+  }, [targetRef, tooltipRef, setIsOpen, isBottomNav])
 
   useEffect(() => {
     if (setMenuOpenByIndex && index !== undefined) {
-      setMenuOpenByIndex((prevValue) => ({ ...prevValue, [index]: isMenuShow }));
+      setMenuOpenByIndex((prevValue) => ({ ...prevValue, [index]: isMenuShow }))
     }
-  }, [isMenuShow, setMenuOpenByIndex, index]);
+  }, [isMenuShow, setMenuOpenByIndex, index])
 
   useOnClickOutside(
     {
       current: targetRef,
     },
     () => {
-      setIsOpen(false);
-    }
-  );
+      setIsOpen(false)
+    },
+  )
 
   return (
     <Box ref={setTargetRef} {...props}>
       <Box
         onPointerDown={() => {
-          setIsOpen((s) => !s);
+          setIsOpen((s) => !s)
         }}
       >
         {children}
@@ -90,7 +90,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
         >
           {items
             .filter((item) => !item.isMobileOnly)
-            .map(({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, ...itemProps }, itemItem) => {
+            .map(({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = '/', status, ...itemProps }, itemItem) => {
               const MenuItemContent = (
                 <>
                   {label}
@@ -100,8 +100,8 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                     </LinkStatus>
                   )}
                 </>
-              );
-              const isActive = href === activeItem;
+              )
+              const isActive = href === activeItem
               return (
                 <StyledDropdownMenuItemContainer key={itemItem}>
                   {type === DropdownMenuItemType.BUTTON && (
@@ -115,7 +115,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                       as={linkComponent}
                       href={href}
                       onClick={() => {
-                        setIsOpen(false);
+                        setIsOpen(false)
                       }}
                       {...itemProps}
                     >
@@ -129,7 +129,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                       href={href}
                       target="_blank"
                       onClick={() => {
-                        setIsOpen(false);
+                        setIsOpen(false)
                       }}
                       {...itemProps}
                     >
@@ -141,12 +141,12 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                   )}
                   {type === DropdownMenuItemType.DIVIDER && <DropdownMenuDivider />}
                 </StyledDropdownMenuItemContainer>
-              );
+              )
             })}
         </StyledDropdownMenu>
       )}
     </Box>
-  );
-};
+  )
+}
 
-export default DropdownMenu;
+export default DropdownMenu

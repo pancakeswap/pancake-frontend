@@ -1,20 +1,20 @@
-import React, { useContext } from "react";
-import styled, { keyframes } from "styled-components";
-import Flex from "../../../components/Box/Flex";
-import { LogoIcon, LogoWithTextIcon } from "../../../components/Svg";
-import { MenuContext } from "../context";
+import React, { useContext } from 'react'
+import styled, { keyframes } from 'styled-components'
+import Flex from '../../../components/Box/Flex'
+import { LogoIcon, LogoWithTextIcon } from '../../../components/Svg'
+import { MenuContext } from '../context'
 
 interface Props {
-  isDark: boolean;
-  href: string;
+  isDark: boolean
+  href: string
 }
 
 const blink = keyframes`
   0%,  100% { transform: scaleY(1); }
   50% { transform:  scaleY(0.1); }
-`;
+`
 
-const StyledLink = styled("a")`
+const StyledLink = styled('a')`
   display: flex;
   align-items: center;
   .mobile-icon {
@@ -41,17 +41,17 @@ const StyledLink = styled("a")`
       animation-iteration-count: 1;
     }
   }
-`;
+`
 
 const Logo: React.FC<Props> = ({ isDark, href }) => {
-  const { linkComponent } = useContext(MenuContext);
-  const isAbsoluteUrl = href.startsWith("http");
+  const { linkComponent } = useContext(MenuContext)
+  const isAbsoluteUrl = href.startsWith('http')
   const innerLogo = (
     <>
       <LogoIcon className="mobile-icon" />
       <LogoWithTextIcon className="desktop-icon" isDark={isDark} />
     </>
-  );
+  )
 
   return (
     <Flex>
@@ -65,7 +65,7 @@ const Logo: React.FC<Props> = ({ isDark, href }) => {
         </StyledLink>
       )}
     </Flex>
-  );
-};
+  )
+}
 
-export default React.memo(Logo, (prev, next) => prev.isDark === next.isDark);
+export default React.memo(Logo, (prev, next) => prev.isDark === next.isDark)

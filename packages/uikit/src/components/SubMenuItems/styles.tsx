@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { Flex } from "../Box";
+import styled from 'styled-components'
+import { Flex } from '../Box'
 
 const StyledSubMenuItems = styled(Flex)<{ $isMobileOnly: boolean }>`
   ${({ theme }) => theme.mediaQueries.sm} {
-    ${({ $isMobileOnly }) => ($isMobileOnly ? "display:none" : "")};
+    ${({ $isMobileOnly }) => ($isMobileOnly ? 'display:none' : '')};
   }
   flex-grow: 1;
   background-color: ${({ theme }) => `${theme.colors.backgroundAlt2}`};
@@ -14,6 +14,6 @@ const StyledSubMenuItems = styled(Flex)<{ $isMobileOnly: boolean }>`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
+`
 
-export default StyledSubMenuItems;
+export default StyledSubMenuItems

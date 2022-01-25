@@ -1,133 +1,133 @@
-import { noop } from "lodash";
-import { DropdownMenuItems, DropdownMenuItemType } from "../../components/DropdownMenu/types";
-import { MenuItemsType } from "../../components/MenuItems/types";
-import { LinkStatus } from "./types";
+import { noop } from 'lodash'
+import { DropdownMenuItems, DropdownMenuItemType } from '../../components/DropdownMenu/types'
+import { MenuItemsType } from '../../components/MenuItems/types'
+import { LinkStatus } from './types'
 
 export const status = {
   LIVE: <LinkStatus>{
-    text: "LIVE",
-    color: "failure",
+    text: 'LIVE',
+    color: 'failure',
   },
   SOON: <LinkStatus>{
-    text: "SOON",
-    color: "warning",
+    text: 'SOON',
+    color: 'warning',
   },
   NEW: <LinkStatus>{
-    text: "NEW",
-    color: "success",
+    text: 'NEW',
+    color: 'success',
   },
-};
+}
 
 export const links: MenuItemsType[] = [
   {
-    label: "Trade",
-    href: "/swap",
-    icon: "Swap",
+    label: 'Trade',
+    href: '/swap',
+    icon: 'Swap',
     items: [
       {
-        label: "Exchange",
-        href: "/swap",
+        label: 'Exchange',
+        href: '/swap',
       },
       {
-        label: "Liquidity",
-        href: "/liquidity",
+        label: 'Liquidity',
+        href: '/liquidity',
       },
       {
-        label: "Charts",
-        href: "/charts",
-        iconName: "Chart",
+        label: 'Charts',
+        href: '/charts',
+        iconName: 'Chart',
         isMobileOnly: true,
       },
     ],
   },
   {
-    label: "Earn",
-    href: "/earn",
-    icon: "Earn",
+    label: 'Earn',
+    href: '/earn',
+    icon: 'Earn',
     items: [
       {
-        label: "Earn",
-        href: "/earn",
+        label: 'Earn',
+        href: '/earn',
       },
       {
-        label: "Yield Farms",
-        href: "/farms",
+        label: 'Yield Farms',
+        href: '/farms',
       },
       {
-        label: "Syrup pools",
-        href: "/pools",
+        label: 'Syrup pools',
+        href: '/pools',
       },
     ],
   },
   {
-    label: "Win",
-    href: "/",
-    icon: "Trophy",
+    label: 'Win',
+    href: '/',
+    icon: 'Trophy',
     items: [
       {
-        label: "Win",
-        href: "/",
+        label: 'Win',
+        href: '/',
       },
       {
-        label: "Predictions",
-        href: "/",
+        label: 'Predictions',
+        href: '/',
         status: status.LIVE,
       },
       {
-        label: "Lottery",
-        href: "/",
+        label: 'Lottery',
+        href: '/',
       },
     ],
   },
   {
-    label: "",
-    href: "/",
-    icon: "More",
+    label: '',
+    href: '/',
+    icon: 'More',
     items: [
       {
-        label: "Info & Analytics",
-        href: "/",
+        label: 'Info & Analytics',
+        href: '/',
       },
       {
-        label: "IFO Token Sales",
-        href: "/",
+        label: 'IFO Token Sales',
+        href: '/',
         status: status.SOON,
       },
       {
         type: DropdownMenuItemType.DIVIDER,
       },
       {
-        label: "NFT Collectibles",
-        href: "/",
+        label: 'NFT Collectibles',
+        href: '/',
       },
       {
-        label: "Team Leaderboard",
-        href: "/",
+        label: 'Team Leaderboard',
+        href: '/',
       },
       {
         type: DropdownMenuItemType.DIVIDER,
       },
       {
-        label: "Blog",
-        href: "/",
+        label: 'Blog',
+        href: '/',
       },
       {
-        label: "Docs & Guides",
-        href: "/",
+        label: 'Docs & Guides',
+        href: '/',
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
     ],
   },
-];
+]
 
 export const userMenulinks: DropdownMenuItems[] = [
   {
-    label: "Wallet",
+    label: 'Wallet',
     onClick: noop,
     type: DropdownMenuItemType.BUTTON,
   },
   {
-    label: "Transactions",
+    label: 'Transactions',
     type: DropdownMenuItemType.BUTTON,
   },
   {
@@ -136,21 +136,21 @@ export const userMenulinks: DropdownMenuItems[] = [
   {
     type: DropdownMenuItemType.BUTTON,
     disabled: true,
-    label: "Dashboard",
+    label: 'Dashboard',
   },
   {
     type: DropdownMenuItemType.BUTTON,
     disabled: true,
-    label: "Portfolio",
+    label: 'Portfolio',
   },
   {
-    label: "Profile",
-    href: "/profile",
+    label: 'Profile',
+    href: '/profile',
   },
   {
     type: DropdownMenuItemType.EXTERNAL_LINK,
-    href: "https://pancakeswap.finance",
-    label: "Link",
+    href: 'https://pancakeswap.finance',
+    label: 'Link',
   },
   {
     type: DropdownMenuItemType.DIVIDER,
@@ -158,14 +158,14 @@ export const userMenulinks: DropdownMenuItems[] = [
   {
     type: DropdownMenuItemType.BUTTON,
     onClick: noop,
-    label: "Disconnect",
+    label: 'Disconnect',
   },
-];
+]
 
-export const MENU_HEIGHT = 56;
-export const MENU_ENTRY_HEIGHT = 48;
-export const MOBILE_MENU_HEIGHT = 44;
-export const SIDEBAR_WIDTH_FULL = 240;
-export const SIDEBAR_WIDTH_REDUCED = 56;
-export const TOP_BANNER_HEIGHT = 70;
-export const TOP_BANNER_HEIGHT_MOBILE = 84;
+export const MENU_HEIGHT = 56
+export const MENU_ENTRY_HEIGHT = 48
+export const MOBILE_MENU_HEIGHT = 44
+export const SIDEBAR_WIDTH_FULL = 240
+export const SIDEBAR_WIDTH_REDUCED = 56
+export const TOP_BANNER_HEIGHT = 70
+export const TOP_BANNER_HEIGHT_MOBILE = 84

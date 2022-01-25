@@ -1,11 +1,11 @@
-import React from "react";
-import Heading from "./Heading";
+import React from 'react'
+import Heading from './Heading'
 
 export default {
-  title: "Components/Heading",
+  title: 'Components/Heading',
   component: Heading,
   argTypes: {},
-};
+}
 
 export const Sizes: React.FC = () => {
   return (
@@ -16,8 +16,8 @@ export const Sizes: React.FC = () => {
       <Heading scale="xl">Size xl</Heading>
       <Heading scale="xxl">Size xxl</Heading>
     </div>
-  );
-};
+  )
+}
 
 export const tags: React.FC = () => {
   return (
@@ -30,5 +30,5 @@ export const tags: React.FC = () => {
       <Heading as="h5">Tag h5</Heading>
       <Heading as="h6">Tag h6</Heading>
     </div>
-  );
-};
+  )
+}

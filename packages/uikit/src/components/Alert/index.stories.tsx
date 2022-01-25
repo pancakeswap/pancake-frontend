@@ -1,24 +1,24 @@
-import React from "react";
-import styled from "styled-components";
-import noop from "lodash/noop";
+import React from 'react'
+import styled from 'styled-components'
+import noop from 'lodash/noop'
 /* eslint-disable import/no-unresolved */
-import { Meta } from "@storybook/react/types-6-0";
-import Alert from "./Alert";
-import { Text } from "../Text";
+import { Meta } from '@storybook/react/types-6-0'
+import Alert from './Alert'
+import { Text } from '../Text'
 
 const Row = styled.div`
   margin-bottom: 32px;
-`;
+`
 
 export default {
-  title: "Components/Alert",
+  title: 'Components/Alert',
   component: Alert,
   argTypes: {},
-} as Meta;
+} as Meta
 
 export const Default: React.FC = () => {
   return (
-    <div style={{ padding: "32px", width: "400px" }}>
+    <div style={{ padding: '32px', width: '400px' }}>
       <Row>
         <Alert title="Info">
           <Text as="p">This is a description</Text>
@@ -40,14 +40,14 @@ export const Default: React.FC = () => {
         </Alert>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-const handleClick = noop;
+const handleClick = noop
 
 export const WithHandler: React.FC = () => {
   return (
-    <div style={{ padding: "32px", width: "400px" }}>
+    <div style={{ padding: '32px', width: '400px' }}>
       <Row>
         <Alert onClick={handleClick} title="Info" />
       </Row>
@@ -63,5 +63,5 @@ export const WithHandler: React.FC = () => {
         <Alert onClick={handleClick} title="Warning" variant="warning" />
       </Row>
     </div>
-  );
-};
+  )
+}

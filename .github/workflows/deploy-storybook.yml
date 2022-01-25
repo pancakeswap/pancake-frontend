@@ -30,5 +30,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./packages/pancake-uikit/storybook-static
           publish_branch: gh-pages
-          user_name: "github-actions"
-          user_email: "github-actions@users.noreply.github.com"
+          user_name: 'github-actions'
+          user_email: 'github-actions@users.noreply.github.com'

@@ -354,9 +354,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "_nftAddress", "type": "address" }
-    ],
+    "inputs": [{ "internalType": "address", "name": "_nftAddress", "type": "address" }],
     "name": "addNftAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -375,9 +373,7 @@
   {
     "inputs": [],
     "name": "cakeToken",
-    "outputs": [
-      { "internalType": "contract IBEP20", "name": "", "type": "address" }
-    ],
+    "outputs": [{ "internalType": "contract IBEP20", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -392,9 +388,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
-    ],
+    "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }],
     "name": "claimFee",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -412,9 +406,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "bytes32", "name": "role", "type": "bytes32" }
-    ],
+    "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }],
     "name": "getRoleAdmin",
     "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
@@ -431,18 +423,14 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "bytes32", "name": "role", "type": "bytes32" }
-    ],
+    "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }],
     "name": "getRoleMemberCount",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint256", "name": "_teamId", "type": "uint256" }
-    ],
+    "inputs": [{ "internalType": "uint256", "name": "_teamId", "type": "uint256" }],
     "name": "getTeamProfile",
     "outputs": [
       { "internalType": "string", "name": "", "type": "string" },
@@ -455,9 +443,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "_userAddress", "type": "address" }
-    ],
+    "inputs": [{ "internalType": "address", "name": "_userAddress", "type": "address" }],
     "name": "getUserProfile",
     "outputs": [
       { "internalType": "uint256", "name": "", "type": "uint256" },
@@ -535,18 +521,14 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint256", "name": "_teamId", "type": "uint256" }
-    ],
+    "inputs": [{ "internalType": "uint256", "name": "_teamId", "type": "uint256" }],
     "name": "makeTeamJoinable",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint256", "name": "_teamId", "type": "uint256" }
-    ],
+    "inputs": [{ "internalType": "uint256", "name": "_teamId", "type": "uint256" }],
     "name": "makeTeamNotJoinable",
     "outputs": [],
     "stateMutability": "nonpayable",

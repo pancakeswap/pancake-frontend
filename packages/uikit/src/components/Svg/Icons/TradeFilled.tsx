@@ -1,6 +1,6 @@
-import React from "react";
-import Svg from "../Svg";
-import { SvgProps } from "../types";
+import React from 'react'
+import Svg from '../Svg'
+import { SvgProps } from '../types'
 
 const Icon: React.FC<SvgProps> = (props) => (
   <Svg viewBox="0 0 24 24" {...props}>
@@ -12,6 +12,6 @@ const Icon: React.FC<SvgProps> = (props) => (
       fill="black"
     />
   </Svg>
-);
+)
 
-export default Icon;
+export default Icon

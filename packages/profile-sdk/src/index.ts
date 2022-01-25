@@ -1,5 +1,5 @@
-import PancakeProfileSdk from "./profile-sdk";
+import PancakeProfileSdk from './profile-sdk'
 
-export * from "./images";
-export * from "./types";
-export default PancakeProfileSdk;
+export * from './images'
+export * from './types'
+export default PancakeProfileSdk

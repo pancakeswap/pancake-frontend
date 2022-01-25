@@ -1,20 +1,20 @@
-import React from "react";
-import styled from "styled-components";
-import { DropdownProps, PositionProps, Position } from "./types";
+import React from 'react'
+import styled from 'styled-components'
+import { DropdownProps, PositionProps, Position } from './types'
 
 const getLeft = ({ position }: PositionProps) => {
-  if (position === "top-right") {
-    return "100%";
+  if (position === 'top-right') {
+    return '100%'
   }
-  return "50%";
-};
+  return '50%'
+}
 
 const getBottom = ({ position }: PositionProps) => {
-  if (position === "top" || position === "top-right") {
-    return "100%";
+  if (position === 'top' || position === 'top-right') {
+    return '100%'
   }
-  return "auto";
-};
+  return 'auto'
+}
 
 const DropdownContent = styled.div<{ position: Position }>`
   width: max-content;
@@ -31,25 +31,25 @@ const DropdownContent = styled.div<{ position: Position }>`
   overflow-y: auto;
   z-index: ${({ theme }) => theme.zIndices.dropdown};
   border-radius: ${({ theme }) => theme.radii.small};
-`;
+`
 
 const Container = styled.div`
   position: relative;
   &:hover ${DropdownContent}, &:focus-within ${DropdownContent} {
     display: flex;
   }
-`;
+`
 
-const Dropdown: React.FC<DropdownProps> = ({ target, position = "bottom", children }) => {
+const Dropdown: React.FC<DropdownProps> = ({ target, position = 'bottom', children }) => {
   return (
     <Container>
       {target}
       <DropdownContent position={position}>{children}</DropdownContent>
     </Container>
-  );
-};
+  )
+}
 Dropdown.defaultProps = {
-  position: "bottom",
-};
+  position: 'bottom',
+}
 
-export default Dropdown;
+export default Dropdown

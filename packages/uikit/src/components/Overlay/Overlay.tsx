@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import React, { FC, useEffect } from "react";
-import { Box, BoxProps } from "../Box";
+import styled from 'styled-components'
+import React, { FC, useEffect } from 'react'
+import { Box, BoxProps } from '../Box'
 
 const StyledOverlay = styled(Box)`
   position: fixed;
@@ -10,24 +10,24 @@ const StyledOverlay = styled(Box)`
   height: 100%;
   background-color: ${({ theme }) => `${theme.colors.text}99`};
   z-index: 20;
-`;
+`
 
 const BodyLock = () => {
   useEffect(() => {
     document.body.style.cssText = `
       overflow: hidden;
-    `;
-    document.body.style.overflow = "hidden";
+    `
+    document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.cssText = `
         overflow: visible;
         overflow: overlay;
-      `;
-    };
-  }, []);
+      `
+    }
+  }, [])
 
-  return null;
-};
+  return null
+}
 
 export const Overlay: FC<BoxProps> = (props) => {
   return (
@@ -35,7 +35,7 @@ export const Overlay: FC<BoxProps> = (props) => {
       <BodyLock />
       <StyledOverlay role="presentation" {...props} />
     </>
-  );
-};
+  )
+}
 
-export default Overlay;
+export default Overlay

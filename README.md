@@ -1,6 +1,6 @@
 # Pancake Toolkit
 
-This repository is a monorepo manage with [yarn workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) and [Lerna](https://lerna.js.org/). 
+This repository is a monorepo manage with [yarn workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) and [Lerna](https://lerna.js.org/).
 
 ## Packages
 
@@ -11,7 +11,7 @@ This repository is a monorepo manage with [yarn workspaces](https://classic.yarn
 
 ## How to use
 
-Clone the repository 
+Clone the repository
 
 ```
 git clone git@github.com:pancakeswap/pancake-toolkit.git

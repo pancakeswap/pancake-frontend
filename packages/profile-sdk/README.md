@@ -43,9 +43,9 @@ yarn add ethers graphql graphql-request
 First set is to initialize the SDK with the following:
 
 ```js
-import PancakeProfileSdk from "@pancakeswap/profile-sdk";
+import PancakeProfileSdk from '@pancakeswap/profile-sdk'
 
-const pancakeSdk = new PancakeProfileSdk();
+const pancakeSdk = new PancakeProfileSdk()
 ```
 
 You can pass optional arguments to the constructor:
@@ -54,12 +54,12 @@ You can pass optional arguments to the constructor:
 - `chainId` - what chain ID to use, if not provided defaults to `56`
 
 ```js
-import PancakeProfileSdk from "@pancakeswap/profile-sdk";
-import { ethers } from "ethers";
+import PancakeProfileSdk from '@pancakeswap/profile-sdk'
+import { ethers } from 'ethers'
 
-const customProvider = new ethers.providers.JsonRpcProvider("https://example.com");
+const customProvider = new ethers.providers.JsonRpcProvider('https://example.com')
 
-const pancakeSdk = new PancakeProfileSdk(customProvider, 97);
+const pancakeSdk = new PancakeProfileSdk(customProvider, 97)
 ```
 
 ### getUsername
@@ -67,11 +67,11 @@ const pancakeSdk = new PancakeProfileSdk(customProvider, 97);
 Returns username for a given address. If the address does not have a profile or there is an error - returns empty string `""`.
 
 ```js
-import PancakeProfileSdk from "@pancakeswap/profile-sdk";
+import PancakeProfileSdk from '@pancakeswap/profile-sdk'
 
-const pancakeSdk = new PancakeProfileSdk();
-const username = pancakeSdk.getUsername("0x123456789");
-console.log(username); // "Matatabi"
+const pancakeSdk = new PancakeProfileSdk()
+const username = pancakeSdk.getUsername('0x123456789')
+console.log(username) // "Matatabi"
 ```
 
 ### getTeam
@@ -79,11 +79,11 @@ console.log(username); // "Matatabi"
 Returns team information for the team ID. In case of network error returns null. Note that at the moment `points` will return `0` for all teams (total team points will be calculated soon).
 
 ```js
-import PancakeProfileSdk from "@pancakeswap/profile-sdk";
+import PancakeProfileSdk from '@pancakeswap/profile-sdk'
 
-const pancakeSdk = new PancakeProfileSdk();
-const team = pancakeSdk.getTeam(1);
-console.log(team);
+const pancakeSdk = new PancakeProfileSdk()
+const team = pancakeSdk.getTeam(1)
+console.log(team)
 // {
 //   id: 1,
 //   name: "Syrup Storm",
@@ -110,11 +110,11 @@ Returns full profile data for a given address. Under the hood retrieves username
 It also sets `profile_${address}` cookie containing username and avatar (now only for pancakeswap.finance domain, maybe configurable in future versions)
 
 ```js
-import PancakeProfileSdk from "@pancakeswap/profile-sdk";
+import PancakeProfileSdk from '@pancakeswap/profile-sdk'
 
-const pancakeSdk = new PancakeProfileSdk();
-const profile = pancakeSdk.getProfile("0x123456789");
-console.log(profile);
+const pancakeSdk = new PancakeProfileSdk()
+const profile = pancakeSdk.getProfile('0x123456789')
+console.log(profile)
 // {
 //   hasRegistered: true
 //   profile: {
@@ -166,12 +166,12 @@ console.log(profile);
 Returns array of achievements for a given address. If address has no achievements or no profile at all - returns empty array `[]`.
 
 ```js
-import PancakeProfileSdk from "@pancakeswap/profile-sdk";
+import PancakeProfileSdk from '@pancakeswap/profile-sdk'
 
-const pancakeSdk = new PancakeProfileSdk();
+const pancakeSdk = new PancakeProfileSdk()
 
-const achievements = pancakeSdk.getAchievements("0x123456789");
-console.log(achievements);
+const achievements = pancakeSdk.getAchievements('0x123456789')
+console.log(achievements)
 // [
 //   {
 //     id: "511080000",

@@ -1,9 +1,9 @@
-import React from "react";
-import { renderWithTheme } from "../../testHelpers";
-import { Overlay } from "../../components/Overlay";
+import React from 'react'
+import { renderWithTheme } from '../../testHelpers'
+import { Overlay } from '../../components/Overlay'
 
-it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<Overlay />);
+it('renders correctly', () => {
+  const { asFragment } = renderWithTheme(<Overlay />)
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
@@ -21,5 +21,5 @@ it("renders correctly", () => {
         role="presentation"
       />
     </DocumentFragment>
-  `);
-});
+  `)
+})

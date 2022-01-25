@@ -1,15 +1,15 @@
-import React from "react";
-import { capitalize } from "lodash";
-import Box from "../Box/Box";
-import Flex from "../Box/Flex";
-import { CommunityIcon, RemoveIcon } from "../Svg";
-import Tag from "./Tag";
-import { scales, variants } from "./types";
+import React from 'react'
+import { capitalize } from 'lodash'
+import Box from '../Box/Box'
+import Flex from '../Box/Flex'
+import { CommunityIcon, RemoveIcon } from '../Svg'
+import Tag from './Tag'
+import { scales, variants } from './types'
 
 export default {
-  title: "Components/Tag",
+  title: 'Components/Tag',
   argTypes: {},
-};
+}
 
 export const Default: React.FC = () => {
   return (
@@ -23,7 +23,7 @@ export const Default: React.FC = () => {
                   <Tag scale={scale} variant={variant} mr="8px">
                     {`${capitalize(variant)}: ${scale.toUpperCase()}`}
                   </Tag>
-                );
+                )
               })}
               <Tag variant={variant} outline mr="8px">
                 {`${capitalize(variant)} Outline`}
@@ -39,11 +39,11 @@ export const Default: React.FC = () => {
               </Tag>
             </Flex>
           </Box>
-        );
+        )
       })}
     </Box>
-  );
-};
+  )
+}
 
 export const TextVariations: React.FC = () => {
   return (
@@ -55,5 +55,5 @@ export const TextVariations: React.FC = () => {
         Bold
       </Tag>
     </div>
-  );
-};
+  )
+}

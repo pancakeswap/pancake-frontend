@@ -1,14 +1,14 @@
-import React from "react";
-import noop from "lodash/noop";
-import { renderWithTheme } from "../../testHelpers";
-import { Modal } from "../../widgets/Modal";
+import React from 'react'
+import noop from 'lodash/noop'
+import { renderWithTheme } from '../../testHelpers'
+import { Modal } from '../../widgets/Modal'
 
-it("renders correctly", () => {
+it('renders correctly', () => {
   const { asFragment } = renderWithTheme(
     <Modal title="Title" onDismiss={noop}>
       body
-    </Modal>
-  );
+    </Modal>,
+  )
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c5 {
@@ -209,5 +209,5 @@ it("renders correctly", () => {
         </div>
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})

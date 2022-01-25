@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import LogoRound from "../Svg/Icons/LogoRound";
-import Text from "../Text/Text";
-import Skeleton from "../Skeleton/Skeleton";
-import { Colors } from "../../theme";
+import React from 'react'
+import styled from 'styled-components'
+import LogoRound from '../Svg/Icons/LogoRound'
+import Text from '../Text/Text'
+import Skeleton from '../Skeleton/Skeleton'
+import { Colors } from '../../theme'
 
 export interface Props {
-  color?: keyof Colors;
-  cakePriceUsd?: number;
+  color?: keyof Colors
+  cakePriceUsd?: number
 }
 
 const PriceLink = styled.a`
@@ -21,9 +21,9 @@ const PriceLink = styled.a`
       transform: scale(1.2);
     }
   }
-`;
+`
 
-const CakePrice: React.FC<Props> = ({ cakePriceUsd, color = "textSubtle" }) => {
+const CakePrice: React.FC<Props> = ({ cakePriceUsd, color = 'textSubtle' }) => {
   return cakePriceUsd ? (
     <PriceLink
       href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
@@ -34,7 +34,7 @@ const CakePrice: React.FC<Props> = ({ cakePriceUsd, color = "textSubtle" }) => {
     </PriceLink>
   ) : (
     <Skeleton width={80} height={24} />
-  );
-};
+  )
+}
 
-export default React.memo(CakePrice);
+export default React.memo(CakePrice)
