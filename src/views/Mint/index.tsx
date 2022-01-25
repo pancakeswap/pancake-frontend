@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { CurrencyAmount, JSBI, Token, Trade } from 'peronio-sdk'
+import { CurrencyAmount, Token, Trade } from 'peronio-sdk'
 import {
   Button,
   Text,
@@ -18,7 +18,6 @@ import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 // import SwapWarningTokens from 'config/constants/swapWarningTokens'
 import AddressInputPanel from './components/AddressInputPanel'
-import { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmSwapModal from './components/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -48,7 +47,6 @@ import {
 import {
   useExpertModeManager,
   useUserSlippageTolerance,
-  useUserSingleHopOnly,
   // useExchangeChartManager,
 } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -174,12 +172,6 @@ export default function Mint({ history }: RouteComponentProps) {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
-  const route = trade?.route
-  const userHasSpecifiedInputOutput = Boolean(
-    currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
-  )
-  const noRoute = !route
-
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
 
@@ -198,8 +190,6 @@ export default function Mint({ history }: RouteComponentProps) {
 
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
-
-  const [singleHopOnly] = useUserSingleHopOnly()
 
   const handleSwap = useCallback(() => {
     if (!swapCallback) {
@@ -411,17 +401,6 @@ export default function Mint({ history }: RouteComponentProps) {
                         {wrapInputError ??
                           (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
                       </Button>
-                    ) : noRoute && userHasSpecifiedInputOutput ? (
-                      <GreyCard style={{ textAlign: 'center' }}>
-                        <Text color="textSubtle" mb="4px">
-                          {t('Insufficient liquidity for this trade.')}
-                        </Text>
-                        {singleHopOnly && (
-                          <Text color="textSubtle" mb="4px">
-                            {t('Try enabling multi-hop trades.')}
-                          </Text>
-                        )}
-                      </GreyCard>
                     ) : showApproveFlow ? (
                       <RowBetween>
                         <Button
