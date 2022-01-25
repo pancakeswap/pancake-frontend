@@ -1,19 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { CurrencyAmount, Token, Trade } from 'peronio-sdk'
-import {
-  Button,
-  Text,
-  ArrowDownIcon,
-  Box,
-  useModal,
-  Flex,
-  IconButton,
-  ArrowUpDownIcon,
-  // BottomDrawer,
-  // useMatchBreakpoints,
-  // ArrowUpDownIcon,
-} from 'peronio-uikit'
+import { CurrencyAmount, Trade } from 'peronio-sdk'
+import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton, ArrowUpDownIcon } from 'peronio-uikit'
 // import Footer from 'components/Menu/Footer'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
@@ -26,14 +14,11 @@ import { AutoRow, RowBetween } from '../../components/Layout/Row'
 import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
 import { ArrowWrapper, MintCallbackError, Wrapper } from './components/styleds'
 import MintPrice from './components/MintPrice'
-import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
-import { INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromMint } from '../../hooks/useApproveCallback'
 import { Field } from '../../state/swap/actions'
 import {
@@ -46,7 +31,6 @@ import { useMintTokenInfo } from '../../state/tokenMint/hooks'
 
 import {
   useExpertModeManager,
-  useUserSlippageTolerance,
   // useExchangeChartManager,
 } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -81,35 +65,13 @@ const SwitchIconButton = styled(IconButton)`
 `
 
 export default function Mint({ history }: RouteComponentProps) {
-  const loadedUrlParams = useDefaultsFromURLSearch()
+  useDefaultsFromURLSearch()
   const { t } = useTranslation()
-  // const { isMobile } = useMatchBreakpoints();
-
-  // token warning stuff
-  const [loadedInputCurrency, loadedOutputCurrency] = [
-    useCurrency(loadedUrlParams?.inputCurrencyId),
-    useCurrency(loadedUrlParams?.outputCurrencyId),
-  ]
-  const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
-    [loadedInputCurrency, loadedOutputCurrency],
-  )
-
-  // dismiss warning if all imported tokens are in active lists
-  const defaultTokens = useAllTokens()
-  const importTokensNotInDefault =
-    urlLoadedTokens &&
-    urlLoadedTokens.filter((token: Token) => {
-      return !(token.address in defaultTokens)
-    })
 
   const { account } = useActiveWeb3React()
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
-
-  // get custom setting values for user
-  const [allowedSlippage] = useUserSlippageTolerance()
 
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
@@ -117,8 +79,6 @@ export default function Mint({ history }: RouteComponentProps) {
   const { mint, parsedAmount, currencies, currencyBalances, inputError: swapInputError } = useMintTokenInfo()
 
   const trade = v2Trade
-
-  // const singleTokenPrice = useSingleTokenSwapInfo()
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : mint?.inputAmount,
@@ -143,7 +103,7 @@ export default function Mint({ history }: RouteComponentProps) {
   )
 
   // modal and loading
-  const [{ mintToConfirm, mintErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
+  const [{ mintToConfirm, mintErrorMessage, attemptingTxn, txHash }, setMintState] = useState<{
     mintToConfirm: Trade | undefined
     attemptingTxn: boolean
     mintErrorMessage: string | undefined
@@ -183,13 +143,13 @@ export default function Mint({ history }: RouteComponentProps) {
     if (!mintCallback) {
       return
     }
-    setSwapState({ attemptingTxn: true, mintToConfirm, mintErrorMessage: undefined, txHash: undefined })
+    setMintState({ attemptingTxn: true, mintToConfirm, mintErrorMessage: undefined, txHash: undefined })
     mintCallback()
       .then((hash) => {
-        setSwapState({ attemptingTxn: false, mintToConfirm, mintErrorMessage: undefined, txHash: hash })
+        setMintState({ attemptingTxn: false, mintToConfirm, mintErrorMessage: undefined, txHash: hash })
       })
       .catch((error) => {
-        setSwapState({
+        setMintState({
           attemptingTxn: false,
           mintToConfirm,
           mintErrorMessage: error.message,
@@ -214,7 +174,7 @@ export default function Mint({ history }: RouteComponentProps) {
     !(priceImpactSeverity > 3 && !isExpertMode)
 
   const handleConfirmDismiss = useCallback(() => {
-    setSwapState({ mintToConfirm, attemptingTxn, mintErrorMessage, txHash })
+    setMintState({ mintToConfirm, attemptingTxn, mintErrorMessage, txHash })
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.INPUT, '')
@@ -222,7 +182,7 @@ export default function Mint({ history }: RouteComponentProps) {
   }, [attemptingTxn, onUserInput, mintErrorMessage, mintToConfirm, txHash])
 
   const handleAcceptChanges = useCallback(() => {
-    setSwapState({ mintToConfirm: trade, mintErrorMessage, txHash, attemptingTxn })
+    setMintState({ mintToConfirm: trade, mintErrorMessage, txHash, attemptingTxn })
   }, [attemptingTxn, mintErrorMessage, trade, txHash])
 
   const handleMaxInput = useCallback(() => {
@@ -230,17 +190,6 @@ export default function Mint({ history }: RouteComponentProps) {
       onUserInput(Field.INPUT, maxAmountInput.toExact())
     }
   }, [maxAmountInput, onUserInput])
-
-  const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/mint')} />,
-  )
-
-  useEffect(() => {
-    if (importTokensNotInDefault.length > 0) {
-      onPresentImportTokenWarningModal()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [importTokensNotInDefault.length])
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmMintModal
@@ -250,7 +199,7 @@ export default function Mint({ history }: RouteComponentProps) {
       attemptingTxn={attemptingTxn}
       txHash={txHash}
       recipient={recipient}
-      allowedSlippage={allowedSlippage}
+      allowedSlippage={0}
       onConfirm={handleSwap}
       mintErrorMessage={mintErrorMessage}
       customOnDismiss={handleConfirmDismiss}
@@ -350,14 +299,6 @@ export default function Mint({ history }: RouteComponentProps) {
                           />
                         </RowBetween>
                       )}
-                      {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-                        <RowBetween align="center">
-                          <Label>{t('Slippage Tolerance')}</Label>
-                          <Text bold color="primary">
-                            {allowedSlippage / 100}%
-                          </Text>
-                        </RowBetween>
-                      )}
                     </AutoColumn>
                   </AutoColumn>
                   <Box mt="1rem">
@@ -387,7 +328,7 @@ export default function Mint({ history }: RouteComponentProps) {
                             if (isExpertMode) {
                               handleSwap()
                             } else {
-                              setSwapState({
+                              setMintState({
                                 mintToConfirm: trade,
                                 attemptingTxn: false,
                                 mintErrorMessage: undefined,
@@ -414,7 +355,7 @@ export default function Mint({ history }: RouteComponentProps) {
                           if (isExpertMode) {
                             handleSwap()
                           } else {
-                            setSwapState({
+                            setMintState({
                               mintToConfirm: trade,
                               attemptingTxn: false,
                               mintErrorMessage: undefined,
