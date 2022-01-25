@@ -21,7 +21,6 @@ import {
   getIfoPoolContract,
   getPredictionsContract,
   getChainlinkOracleContract,
-  getSouschefV2Contract,
   getLotteryV2Contract,
   getBunnySpecialCakeVaultContract,
   getBunnySpecialPredictionContract,
