@@ -63,7 +63,7 @@ export const TruncatedText = styled(Text).attrs({ ellipsis: true })`
   width: 220px;
 `
 
-const SwapCallbackErrorInner = styled.div`
+const MintCallbackErrorInner = styled.div`
   background-color: ${({ theme }) => `${theme.colors.failure}33`};
   border-radius: 1rem;
   display: flex;
@@ -81,7 +81,7 @@ const SwapCallbackErrorInner = styled.div`
   }
 `
 
-const SwapCallbackErrorInnerAlertTriangle = styled.div`
+const MintCallbackErrorInnerAlertTriangle = styled.div`
   background-color: ${({ theme }) => `${theme.colors.failure}33`};
   display: flex;
   align-items: center;
@@ -92,18 +92,18 @@ const SwapCallbackErrorInnerAlertTriangle = styled.div`
   height: 48px;
 `
 
-export function SwapCallbackError({ error }: { error: string }) {
+export function MintCallbackError({ error }: { error: string }) {
   return (
-    <SwapCallbackErrorInner>
-      <SwapCallbackErrorInnerAlertTriangle>
+    <MintCallbackErrorInner>
+      <MintCallbackErrorInnerAlertTriangle>
         <ErrorIcon width="24px" />
-      </SwapCallbackErrorInnerAlertTriangle>
+      </MintCallbackErrorInnerAlertTriangle>
       <p>{error}</p>
-    </SwapCallbackErrorInner>
+    </MintCallbackErrorInner>
   )
 }
 
-export const SwapShowAcceptChanges = styled(AutoColumn)`
+export const MintShowAcceptChanges = styled(AutoColumn)`
   background-color: ${({ theme }) => `${theme.colors.warning}33`};
   padding: 0.5rem;
   border-radius: 12px;

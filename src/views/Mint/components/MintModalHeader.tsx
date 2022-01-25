@@ -8,9 +8,9 @@ import { AutoColumn } from 'components/Layout/Column'
 import { CurrencyLogo } from 'components/Logo'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import truncateHash from 'utils/truncateHash'
-import { TruncatedText, SwapShowAcceptChanges } from './styleds'
+import { TruncatedText, MintShowAcceptChanges } from './styleds'
 
-export default function SwapModalHeader({
+export default function MintModalHeader({
   trade,
   allowedSlippage,
   recipient,
@@ -103,7 +103,7 @@ export default function SwapModalHeader({
         </RowFixed>
       </RowBetween>
       {showAcceptChanges ? (
-        <SwapShowAcceptChanges justify="flex-start" gap="0px">
+        <MintShowAcceptChanges justify="flex-start" gap="0px">
           <RowBetween>
             <RowFixed>
               <ErrorIcon mr="8px" />
@@ -111,7 +111,7 @@ export default function SwapModalHeader({
             </RowFixed>
             <Button onClick={onAcceptChanges}>{t('Accept')}</Button>
           </RowBetween>
-        </SwapShowAcceptChanges>
+        </MintShowAcceptChanges>
       ) : null}
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '24px 0 0 0px' }}>
         <Text small color="textSubtle" textAlign="left" style={{ width: '100%' }}>

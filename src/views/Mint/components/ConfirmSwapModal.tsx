@@ -6,8 +6,8 @@ import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
 } from 'components/TransactionConfirmationModal'
-import SwapModalFooter from './SwapModalFooter'
-import SwapModalHeader from './SwapModalHeader'
+import MintModalFooter from './MintModalFooter'
+import MintModalHeader from './MintModalHeader'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -32,7 +32,7 @@ interface ConfirmSwapModalProps {
   allowedSlippage: number
   onAcceptChanges: () => void
   onConfirm: () => void
-  swapErrorMessage?: string
+  mintErrorMessage?: string
   customOnDismiss?: () => void
 }
 
@@ -45,7 +45,7 @@ const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = (
   onDismiss,
   customOnDismiss,
   recipient,
-  swapErrorMessage,
+  mintErrorMessage,
   attemptingTxn,
   txHash,
 }) => {
@@ -58,7 +58,7 @@ const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = (
 
   const modalHeader = useCallback(() => {
     return trade ? (
-      <SwapModalHeader
+      <MintModalHeader
         trade={trade}
         allowedSlippage={allowedSlippage}
         recipient={recipient}
@@ -70,15 +70,15 @@ const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = (
 
   const modalBottom = useCallback(() => {
     return trade ? (
-      <SwapModalFooter
+      <MintModalFooter
         onConfirm={onConfirm}
         trade={trade}
         disabledConfirm={showAcceptChanges}
-        swapErrorMessage={swapErrorMessage}
+        mintErrorMessage={mintErrorMessage}
         allowedSlippage={allowedSlippage}
       />
     ) : null
-  }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, trade])
+  }, [allowedSlippage, onConfirm, showAcceptChanges, mintErrorMessage, trade])
 
   // text to show while loading
   const pendingText = t('Swapping %amountA% %symbolA% for %amountB% %symbolB%', {
@@ -90,12 +90,12 @@ const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = (
 
   const confirmationContent = useCallback(
     () =>
-      swapErrorMessage ? (
-        <TransactionErrorContent onDismiss={onDismiss} message={swapErrorMessage} />
+      mintErrorMessage ? (
+        <TransactionErrorContent onDismiss={onDismiss} message={mintErrorMessage} />
       ) : (
         <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
       ),
-    [onDismiss, modalBottom, modalHeader, swapErrorMessage],
+    [onDismiss, modalBottom, modalHeader, mintErrorMessage],
   )
 
   return (

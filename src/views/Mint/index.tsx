@@ -23,7 +23,7 @@ import ConfirmSwapModal from './components/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
 import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
-import { ArrowWrapper, SwapCallbackError, Wrapper } from './components/styleds'
+import { ArrowWrapper, MintCallbackError, Wrapper } from './components/styleds'
 import TradePrice from './components/TradePrice'
 import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 import ProgressSteps from './components/ProgressSteps'
@@ -141,15 +141,15 @@ export default function Mint({ history }: RouteComponentProps) {
   )
 
   // modal and loading
-  const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: Trade | undefined
+  const [{ mintToConfirm, mintErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
+    mintToConfirm: Trade | undefined
     attemptingTxn: boolean
-    swapErrorMessage: string | undefined
+    mintErrorMessage: string | undefined
     txHash: string | undefined
   }>({
-    tradeToConfirm: undefined,
+    mintToConfirm: undefined,
     attemptingTxn: false,
-    swapErrorMessage: undefined,
+    mintErrorMessage: undefined,
     txHash: undefined,
   })
 
@@ -181,20 +181,20 @@ export default function Mint({ history }: RouteComponentProps) {
     if (!swapCallback) {
       return
     }
-    setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
+    setSwapState({ attemptingTxn: true, mintToConfirm, mintErrorMessage: undefined, txHash: undefined })
     swapCallback()
       .then((hash) => {
-        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
+        setSwapState({ attemptingTxn: false, mintToConfirm, mintErrorMessage: undefined, txHash: hash })
       })
       .catch((error) => {
         setSwapState({
           attemptingTxn: false,
-          tradeToConfirm,
-          swapErrorMessage: error.message,
+          mintToConfirm,
+          mintErrorMessage: error.message,
           txHash: undefined,
         })
       })
-  }, [swapCallback, tradeToConfirm])
+  }, [swapCallback, mintToConfirm])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -212,16 +212,16 @@ export default function Mint({ history }: RouteComponentProps) {
     !(priceImpactSeverity > 3 && !isExpertMode)
 
   const handleConfirmDismiss = useCallback(() => {
-    setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
+    setSwapState({ mintToConfirm, attemptingTxn, mintErrorMessage, txHash })
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.INPUT, '')
     }
-  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash])
+  }, [attemptingTxn, onUserInput, mintErrorMessage, mintToConfirm, txHash])
 
   const handleAcceptChanges = useCallback(() => {
-    setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
-  }, [attemptingTxn, swapErrorMessage, trade, txHash])
+    setSwapState({ mintToConfirm: trade, mintErrorMessage, txHash, attemptingTxn })
+  }, [attemptingTxn, mintErrorMessage, trade, txHash])
 
   // const handleInputSelect = useCallback(
   //   (inputCurrency) => {
@@ -257,14 +257,14 @@ export default function Mint({ history }: RouteComponentProps) {
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
       trade={trade}
-      originalTrade={tradeToConfirm}
+      originalTrade={mintToConfirm}
       onAcceptChanges={handleAcceptChanges}
       attemptingTxn={attemptingTxn}
       txHash={txHash}
       recipient={recipient}
       allowedSlippage={allowedSlippage}
       onConfirm={handleSwap}
-      swapErrorMessage={swapErrorMessage}
+      mintErrorMessage={mintErrorMessage}
       customOnDismiss={handleConfirmDismiss}
     />,
     true,
@@ -403,9 +403,9 @@ export default function Mint({ history }: RouteComponentProps) {
                               handleSwap()
                             } else {
                               setSwapState({
-                                tradeToConfirm: trade,
+                                mintToConfirm: trade,
                                 attemptingTxn: false,
-                                swapErrorMessage: undefined,
+                                mintErrorMessage: undefined,
                                 txHash: undefined,
                               })
                               onPresentConfirmModal()
@@ -419,11 +419,7 @@ export default function Mint({ history }: RouteComponentProps) {
                             (priceImpactSeverity > 3 && !isExpertMode)
                           }
                         >
-                          {priceImpactSeverity > 3 && !isExpertMode
-                            ? t('Price Impact High')
-                            : priceImpactSeverity > 2
-                            ? t('Swap Anyway')
-                            : t('Swap')}
+                          {t('Mint')}
                         </Button>
                       </RowBetween>
                     ) : (
@@ -434,9 +430,9 @@ export default function Mint({ history }: RouteComponentProps) {
                             handleSwap()
                           } else {
                             setSwapState({
-                              tradeToConfirm: trade,
+                              mintToConfirm: trade,
                               attemptingTxn: false,
-                              swapErrorMessage: undefined,
+                              mintErrorMessage: undefined,
                               txHash: undefined,
                             })
                             onPresentConfirmModal()
@@ -459,7 +455,7 @@ export default function Mint({ history }: RouteComponentProps) {
                         <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
                       </Column>
                     )}
-                    {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
+                    {isExpertMode && mintErrorMessage ? <MintCallbackError error={mintErrorMessage} /> : null}
                   </Box>
                 </Wrapper>
               </AppBody>

@@ -14,9 +14,9 @@ import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
-import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
+import { StyledBalanceMaxMini, MintCallbackError } from './styleds'
 
-const SwapModalFooterContainer = styled(AutoColumn)`
+const MintModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
   padding: 16px;
   border-radius: ${({ theme }) => theme.radii.default};
@@ -24,17 +24,17 @@ const SwapModalFooterContainer = styled(AutoColumn)`
   background-color: ${({ theme }) => theme.colors.background};
 `
 
-export default function SwapModalFooter({
+export default function MintModalFooter({
   trade,
   onConfirm,
   allowedSlippage,
-  swapErrorMessage,
+  mintErrorMessage,
   disabledConfirm,
 }: {
   trade: Trade
   allowedSlippage: number
   onConfirm: () => void
-  swapErrorMessage: string | undefined
+  mintErrorMessage: string | undefined
   disabledConfirm: boolean
 }) {
   const { t } = useTranslation()
@@ -48,7 +48,7 @@ export default function SwapModalFooter({
 
   return (
     <>
-      <SwapModalFooterContainer>
+      <MintModalFooterContainer>
         <RowBetween align="center">
           <Text fontSize="14px">{t('Price')}</Text>
           <Text
@@ -122,7 +122,7 @@ export default function SwapModalFooter({
             {realizedLPFee ? `${realizedLPFee?.toSignificant(6)} ${trade.inputAmount.currency.symbol}` : '-'}
           </Text>
         </RowBetween>
-      </SwapModalFooterContainer>
+      </MintModalFooterContainer>
 
       <AutoRow>
         <Button
@@ -133,10 +133,10 @@ export default function SwapModalFooter({
           id="confirm-swap-or-send"
           width="100%"
         >
-          {severity > 2 ? t('Swap Anyway') : t('Confirm Swap')}
+          {severity > 2 ? t('Mint Anyway') : t('Confirm Mint')}
         </Button>
 
-        {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
+        {mintErrorMessage ? <MintCallbackError error={mintErrorMessage} /> : null}
       </AutoRow>
     </>
   )
