@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { CurrencyAmount, Trade } from 'peronio-sdk'
+import { CurrencyAmount, Mint } from 'peronio-sdk'
 import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton, ArrowUpDownIcon } from 'peronio-uikit'
 // import Footer from 'components/Menu/Footer'
 import { RouteComponentProps } from 'react-router-dom'
@@ -64,7 +64,7 @@ const SwitchIconButton = styled(IconButton)`
   }
 `
 
-export default function Mint({ history }: RouteComponentProps) {
+export default function MintView({ history }: RouteComponentProps) {
   useDefaultsFromURLSearch()
   const { t } = useTranslation()
 
@@ -104,7 +104,7 @@ export default function Mint({ history }: RouteComponentProps) {
 
   // modal and loading
   const [{ mintToConfirm, mintErrorMessage, attemptingTxn, txHash }, setMintState] = useState<{
-    mintToConfirm: Trade | undefined
+    mintToConfirm: Mint | undefined
     attemptingTxn: boolean
     mintErrorMessage: string | undefined
     txHash: string | undefined
@@ -181,10 +181,6 @@ export default function Mint({ history }: RouteComponentProps) {
     }
   }, [attemptingTxn, onUserInput, mintErrorMessage, mintToConfirm, txHash])
 
-  const handleAcceptChanges = useCallback(() => {
-    setMintState({ mintToConfirm: trade, mintErrorMessage, txHash, attemptingTxn })
-  }, [attemptingTxn, mintErrorMessage, trade, txHash])
-
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
       onUserInput(Field.INPUT, maxAmountInput.toExact())
@@ -193,13 +189,10 @@ export default function Mint({ history }: RouteComponentProps) {
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmMintModal
-      trade={trade}
-      originalTrade={mintToConfirm}
-      onAcceptChanges={handleAcceptChanges}
+      mint={mint}
       attemptingTxn={attemptingTxn}
       txHash={txHash}
       recipient={recipient}
-      allowedSlippage={0}
       onConfirm={handleSwap}
       mintErrorMessage={mintErrorMessage}
       customOnDismiss={handleConfirmDismiss}
@@ -329,7 +322,7 @@ export default function Mint({ history }: RouteComponentProps) {
                               handleSwap()
                             } else {
                               setMintState({
-                                mintToConfirm: trade,
+                                mintToConfirm: mint,
                                 attemptingTxn: false,
                                 mintErrorMessage: undefined,
                                 txHash: undefined,
@@ -356,7 +349,7 @@ export default function Mint({ history }: RouteComponentProps) {
                             handleSwap()
                           } else {
                             setMintState({
-                              mintToConfirm: trade,
+                              mintToConfirm: mint,
                               attemptingTxn: false,
                               mintErrorMessage: undefined,
                               txHash: undefined,

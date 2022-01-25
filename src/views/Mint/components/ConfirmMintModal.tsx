@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from 'react'
-import { currencyEquals, Trade } from 'peronio-sdk'
+import React, { useCallback } from 'react'
+import { Mint } from 'peronio-sdk'
 import { InjectedModalProps } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import TransactionConfirmationModal, {
@@ -9,38 +9,18 @@ import TransactionConfirmationModal, {
 import MintModalFooter from './MintModalFooter'
 import MintModalHeader from './MintModalHeader'
 
-/**
- * Returns true if the trade requires a confirmation of details before we can submit it
- * @param tradeA trade A
- * @param tradeB trade B
- */
-function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
-  return (
-    tradeA.tradeType !== tradeB.tradeType ||
-    !currencyEquals(tradeA.inputAmount.currency, tradeB.inputAmount.currency) ||
-    !tradeA.inputAmount.equalTo(tradeB.inputAmount) ||
-    !currencyEquals(tradeA.outputAmount.currency, tradeB.outputAmount.currency) ||
-    !tradeA.outputAmount.equalTo(tradeB.outputAmount)
-  )
-}
 interface ConfirmMintModalProps {
-  trade?: Trade
-  originalTrade?: Trade
+  mint?: Mint
   attemptingTxn: boolean
   txHash?: string
   recipient: string | null
-  allowedSlippage: number
-  onAcceptChanges: () => void
   onConfirm: () => void
   mintErrorMessage?: string
   customOnDismiss?: () => void
 }
 
 const ConfirmMintModal: React.FC<InjectedModalProps & ConfirmMintModalProps> = ({
-  trade,
-  originalTrade,
-  onAcceptChanges,
-  allowedSlippage,
+  mint,
   onConfirm,
   onDismiss,
   customOnDismiss,
@@ -49,43 +29,22 @@ const ConfirmMintModal: React.FC<InjectedModalProps & ConfirmMintModalProps> = (
   attemptingTxn,
   txHash,
 }) => {
-  const showAcceptChanges = useMemo(
-    () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
-    [originalTrade, trade],
-  )
-
   const { t } = useTranslation()
 
   const modalHeader = useCallback(() => {
-    return trade ? (
-      <MintModalHeader
-        trade={trade}
-        allowedSlippage={allowedSlippage}
-        recipient={recipient}
-        showAcceptChanges={showAcceptChanges}
-        onAcceptChanges={onAcceptChanges}
-      />
-    ) : null
-  }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
+    return mint ? <MintModalHeader mint={mint} recipient={recipient} /> : null
+  }, [recipient, mint])
 
   const modalBottom = useCallback(() => {
-    return trade ? (
-      <MintModalFooter
-        onConfirm={onConfirm}
-        trade={trade}
-        disabledConfirm={showAcceptChanges}
-        mintErrorMessage={mintErrorMessage}
-        allowedSlippage={allowedSlippage}
-      />
-    ) : null
-  }, [allowedSlippage, onConfirm, showAcceptChanges, mintErrorMessage, trade])
+    return mint ? <MintModalFooter onConfirm={onConfirm} mint={mint} mintErrorMessage={mintErrorMessage} /> : null
+  }, [onConfirm, mintErrorMessage, mint])
 
   // text to show while loading
   const pendingText = t('Minting %amountA% %symbolA% for %amountB% %symbolB%', {
-    amountA: trade?.inputAmount?.toSignificant(6) ?? '',
-    symbolA: trade?.inputAmount?.currency?.symbol ?? '',
-    amountB: trade?.outputAmount?.toSignificant(6) ?? '',
-    symbolB: trade?.outputAmount?.currency?.symbol ?? '',
+    amountA: mint?.inputAmount?.toSignificant(6) ?? '',
+    symbolA: mint?.inputAmount?.currency?.symbol ?? '',
+    amountB: mint?.outputAmount?.toSignificant(6) ?? '',
+    symbolB: mint?.outputAmount?.currency?.symbol ?? '',
   })
 
   const confirmationContent = useCallback(
@@ -107,7 +66,7 @@ const ConfirmMintModal: React.FC<InjectedModalProps & ConfirmMintModalProps> = (
       hash={txHash}
       content={confirmationContent}
       pendingText={pendingText}
-      currencyToAdd={trade?.outputAmount.currency}
+      currencyToAdd={mint?.outputAmount.currency}
     />
   )
 }

@@ -1,5 +1,5 @@
 import { ErrorIcon, Text } from 'peronio-uikit'
-import { AutoColumn } from 'components/Layout/Column'
+// import { AutoColumn } from 'components/Layout/Column'
 import React from 'react'
 import styled, { css } from 'styled-components'
 
@@ -102,10 +102,3 @@ export function MintCallbackError({ error }: { error: string }) {
     </MintCallbackErrorInner>
   )
 }
-
-export const MintShowAcceptChanges = styled(AutoColumn)`
-  background-color: ${({ theme }) => `${theme.colors.warning}33`};
-  padding: 0.5rem;
-  border-radius: 12px;
-  margin-top: 8px;
-`

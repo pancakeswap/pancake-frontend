@@ -1,19 +1,12 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Trade, TradeType } from 'peronio-sdk'
+import { Mint } from 'peronio-sdk'
 import { Button, Text, AutoRenewIcon } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Field } from 'state/swap/actions'
-import {
-  computeSlippageAdjustedAmounts,
-  computeTradePriceBreakdown,
-  formatExecutionPrice,
-  warningSeverity,
-} from 'utils/prices'
+import { formatExecutionPrice } from 'utils/prices'
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, MintCallbackError } from './styleds'
 
 const MintModalFooterContainer = styled(AutoColumn)`
@@ -25,26 +18,18 @@ const MintModalFooterContainer = styled(AutoColumn)`
 `
 
 export default function MintModalFooter({
-  trade,
+  mint,
   onConfirm,
-  allowedSlippage,
   mintErrorMessage,
-  disabledConfirm,
+  disabledConfirm = false,
 }: {
-  trade: Trade
-  allowedSlippage: number
+  mint: Mint
   onConfirm: () => void
   mintErrorMessage: string | undefined
-  disabledConfirm: boolean
+  disabledConfirm?: boolean
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
-  const slippageAdjustedAmounts = useMemo(
-    () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
-    [allowedSlippage, trade],
-  )
-  const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
-  const severity = warningSeverity(priceImpactWithoutFee)
 
   return (
     <>
@@ -61,7 +46,7 @@ export default function MintModalFooter({
               paddingLeft: '10px',
             }}
           >
-            {formatExecutionPrice(trade, showInverted)}
+            {formatExecutionPrice(mint, showInverted)}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
               <AutoRenewIcon width="14px" />
             </StyledBalanceMaxMini>
@@ -70,9 +55,7 @@ export default function MintModalFooter({
 
         <RowBetween>
           <RowFixed>
-            <Text fontSize="14px">
-              {trade.tradeType === TradeType.EXACT_INPUT ? t('Minimum received') : t('Maximum sold')}
-            </Text>
+            <Text fontSize="14px">{t('Minimum received')}</Text>
             <QuestionHelper
               text={t(
                 'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
@@ -81,15 +64,9 @@ export default function MintModalFooter({
             />
           </RowFixed>
           <RowFixed>
-            <Text fontSize="14px">
-              {trade.tradeType === TradeType.EXACT_INPUT
-                ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'
-                : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) ?? '-'}
-            </Text>
+            <Text fontSize="14px">{mint?.outputAmount.toSignificant(4)}</Text>
             <Text fontSize="14px" marginLeft="4px">
-              {trade.tradeType === TradeType.EXACT_INPUT
-                ? trade.outputAmount.currency.symbol
-                : trade.inputAmount.currency.symbol}
+              {mint.outputAmount.currency.symbol}
             </Text>
           </RowFixed>
         </RowBetween>
@@ -101,7 +78,6 @@ export default function MintModalFooter({
               ml="4px"
             />
           </RowFixed>
-          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
         </RowBetween>
         <RowBetween>
           <RowFixed>
@@ -109,31 +85,29 @@ export default function MintModalFooter({
             <QuestionHelper
               text={
                 <>
-                  <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: '0.25%' })}</Text>
-                  <Text>- {t('%amount% to LP token holders', { amount: '0.17%' })}</Text>
-                  <Text>- {t('%amount% to the Treasury', { amount: '0.03%' })}</Text>
-                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: '0.05%' })}</Text>
+                  <Text mb="12px">{t('The vault charges a fee for minting')}</Text>
+                  <Text>- {t('The markup is %amount% from the USDT amount', { amount: '5%' })}</Text>
+                  <Text>- {t('This is already included in total USDT input above')}</Text>
+                  <Text>- {t('This additional fee will increase the total Peronio collateral')}</Text>
                 </>
               }
               ml="4px"
             />
           </RowFixed>
-          <Text fontSize="14px">
-            {realizedLPFee ? `${realizedLPFee?.toSignificant(6)} ${trade.inputAmount.currency.symbol}` : '-'}
-          </Text>
+          <Text fontSize="14px">{`${mint.feeAmount} ${mint.inputAmount.currency.symbol}`}</Text>
         </RowBetween>
       </MintModalFooterContainer>
 
       <AutoRow>
         <Button
-          variant={severity > 2 ? 'danger' : 'primary'}
+          variant="primary"
           onClick={onConfirm}
           disabled={disabledConfirm}
           mt="12px"
           id="confirm-swap-or-send"
           width="100%"
         >
-          {severity > 2 ? t('Mint Anyway') : t('Confirm Mint')}
+          {t('Confirm Mint')}
         </Button>
 
         {mintErrorMessage ? <MintCallbackError error={mintErrorMessage} /> : null}
