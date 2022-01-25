@@ -21,4 +21,4 @@ cache-control = "public, no-transform, immutable, max-age=604800"
   to = "/cu/"
   status = 302
   force = true
-  conditions = {Country=["BY","CU","IR","IQ","CI","LR","KP","SD","SY","ZW"]}
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
