@@ -1,6 +1,6 @@
 {
   "extends": "@nrwl/workspace/presets/npm.json",
-  "npmScope": "pancake-toolkit",
+  "npmScope": "@pancakeswap",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
@@ -30,6 +30,6 @@
     ]
   },
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "develop"
   }
 }

@@ -1,3 +1,4 @@
+#!/bin/bash
 APP=app
 
 # Determine version of Nx installed
