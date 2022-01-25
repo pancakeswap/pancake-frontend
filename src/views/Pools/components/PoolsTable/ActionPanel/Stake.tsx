@@ -18,6 +18,8 @@ import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import StakeModal from '../../PoolCard/Modals/StakeModal'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 import { useCheckVaultApprovalStatus, useApprovePool, useVaultApprove } from '../../../hooks/useApprove'
+import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
+import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -39,6 +41,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     userData,
     stakingTokenPrice,
     vaultKey,
+    profileRequirement,
   } = pool
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -109,6 +112,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
 
   const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
+  const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
+
   const onStake = () => {
     if (vaultKey) {
       onPresentVaultStake()
@@ -157,6 +162,21 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
         </ActionTitles>
         <ActionContent>
           <Skeleton width={180} height="32px" marginTop={14} />
+        </ActionContent>
+      </ActionContainer>
+    )
+  }
+
+  if (notMeetRequired || notMeetThreshold) {
+    return (
+      <ActionContainer>
+        <ActionTitles>
+          <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
+            {t('Enable pool')}
+          </Text>
+        </ActionTitles>
+        <ActionContent>
+          <ProfileRequirementWarning profileRequirement={profileRequirement} />
         </ActionContent>
       </ActionContainer>
     )

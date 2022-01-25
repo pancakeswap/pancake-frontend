@@ -29,6 +29,7 @@ export const ActionTitles = styled.div`
 
 export const ActionContent = styled.div`
   display: flex;
+  margin-top: 8px;
   justify-content: space-between;
   align-items: center;
 `
