@@ -50,7 +50,7 @@ import {
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
 import { ChainId, WETH } from '@pancakeswap/sdk'
-import IUniswapV2Pair from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import IPancakePairABI from '../config/abi/IPancakePair.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../config/abi/ens-public-resolver.json'
 import ENS_ABI from '../config/abi/ens-registrar.json'
 import { ERC20_BYTES32_ABI } from '../config/abi/erc20'
@@ -59,7 +59,7 @@ import WETH_ABI from '../config/abi/weth.json'
 import multiCallAbi from '../config/abi/Multicall.json'
 import { getContract, getProviderOrSigner } from '../utils'
 
-const IUniswapV2PairABI = IUniswapV2Pair.abi
+import { IPancakePair } from '../config/abi/types/IPancakePair'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
@@ -307,8 +307,8 @@ export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossi
   return useContract<Erc20Bytes32>(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }
 
-export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(pairAddress, IUniswapV2PairABI, withSignerIfPossible)
+export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): IPancakePair | null {
+  return useContract(pairAddress, IPancakePairABI, withSignerIfPossible)
 }
 
 export function useMulticallContract() {
