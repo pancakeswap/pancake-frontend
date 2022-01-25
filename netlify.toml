@@ -22,3 +22,80 @@ cache-control = "public, no-transform, immutable, max-age=604800"
   status = 302
   force = true
   conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/swap"
+  to = "/cu/swap/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/liquidity"
+  to = "/cu/liquidity/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/farms"
+  to = "/cu/farms/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/pools"
+  to = "/cu/pools/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/ifo"
+  to = "/cu/ifo/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/competition"
+  to = "/cu/competition/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/prediction"
+  to = "/cu/prediction/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/lottery"
+  to = "/cu/lottery/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/nfts"
+  to = "/cu/nfts/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/voting"
+  to = "/cu/voting/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
+
+[[redirects]]
+  from = "/info"
+  to = "/cu/info/"
+  status = 302
+  force = true
+  conditions = {Country=["BY","MM","CI","CU","CD","IR","IQ","LR","KP","SD","SY","ZW"]}
