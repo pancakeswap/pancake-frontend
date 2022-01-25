@@ -119,7 +119,7 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
 
 // wraps useApproveCallback in the context of a swap
 export function useApproveCallbackFromMint(mint?: Mint) {
-  const amountToApprove = mint.inputAmount
+  const amountToApprove = mint?.inputAmount
 
   return useApproveCallback(amountToApprove, PERONIO_ADDRESS)
 }

@@ -17,7 +17,7 @@ import {
 // import Footer from 'components/Menu/Footer'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
-// import SwapWarningTokens from 'config/constants/swapWarningTokens'
+import { useMintCallback } from 'hooks/useMintCallback'
 import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmMintModal from './components/ConfirmMintModal'
@@ -25,7 +25,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
 import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
 import { ArrowWrapper, MintCallbackError, Wrapper } from './components/styleds'
-import TradePrice from './components/TradePrice'
+import MintPrice from './components/MintPrice'
 import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
@@ -34,8 +34,7 @@ import ConnectWalletButton from '../../components/ConnectWalletButton'
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
-import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
-import { useSwapCallback } from '../../hooks/useSwapCallback'
+import { ApprovalState, useApproveCallbackFromMint } from '../../hooks/useApproveCallback'
 import { Field } from '../../state/swap/actions'
 import {
   useDefaultsFromURLSearch,
@@ -162,7 +161,7 @@ export default function Mint({ history }: RouteComponentProps) {
   }
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
+  const [approval, approveCallback] = useApproveCallbackFromMint(mint)
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -178,14 +177,14 @@ export default function Mint({ history }: RouteComponentProps) {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
+  const { callback: mintCallback, error: swapCallbackError } = useMintCallback(mint, recipient)
 
   const handleSwap = useCallback(() => {
-    if (!swapCallback) {
+    if (!mintCallback) {
       return
     }
     setSwapState({ attemptingTxn: true, mintToConfirm, mintErrorMessage: undefined, txHash: undefined })
-    swapCallback()
+    mintCallback()
       .then((hash) => {
         setSwapState({ attemptingTxn: false, mintToConfirm, mintErrorMessage: undefined, txHash: hash })
       })
@@ -197,7 +196,7 @@ export default function Mint({ history }: RouteComponentProps) {
           txHash: undefined,
         })
       })
-  }, [swapCallback, mintToConfirm])
+  }, [mintCallback, mintToConfirm])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -277,7 +276,7 @@ export default function Mint({ history }: RouteComponentProps) {
                 <Wrapper id="swap-page">
                   <AutoColumn gap="md">
                     <CurrencyInputPanel
-                      label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
+                      label={independentField === Field.OUTPUT && mint ? t('From (estimated)') : t('From')}
                       value={formattedAmounts[Field.INPUT]}
                       showMaxButton={!atMaxAmountInput}
                       currency={currencies[Field.INPUT]}
@@ -317,7 +316,7 @@ export default function Mint({ history }: RouteComponentProps) {
                     <CurrencyInputPanel
                       value={formattedAmounts[Field.OUTPUT]}
                       onUserInput={handleTypeOutput}
-                      label={independentField === Field.INPUT && trade ? t('To (estimated)') : t('To')}
+                      label={independentField === Field.INPUT && mint ? t('To (estimated)') : t('To')}
                       showMaxButton={false}
                       currency={currencies[Field.OUTPUT]}
                       onCurrencySelect={null}
@@ -341,11 +340,11 @@ export default function Mint({ history }: RouteComponentProps) {
                     ) : null}
 
                     <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
-                      {Boolean(trade) && (
+                      {Boolean(mint) && (
                         <RowBetween align="center">
                           <Label>{t('Price')}</Label>
-                          <TradePrice
-                            price={trade?.executionPrice}
+                          <MintPrice
+                            price={mint?.executionPrice}
                             showInverted={showInverted}
                             setShowInverted={setShowInverted}
                           />
