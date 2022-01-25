@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "app": "app",
+    "uikit": "packages/uikit"
+  }
+}

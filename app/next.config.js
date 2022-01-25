@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { withSentryConfig } = require('@sentry/nextjs')
+const withTM = require('next-transpile-modules')(['@pancakeswap/uikit'])
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -85,4 +86,4 @@ const config = {
   },
 }
 
-module.exports = withBundleAnalyzer(withSentryConfig(config, sentryWebpackPluginOptions))
+module.exports = withSentryConfig(withBundleAnalyzer(withTM(config)), sentryWebpackPluginOptions)
