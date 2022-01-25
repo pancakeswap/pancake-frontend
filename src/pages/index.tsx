@@ -46,6 +46,10 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     const [days30AgoBlock] = await getBlocksFromTimestamps([getUnixTime(days30Ago)])
 
+    if (!days30AgoBlock) {
+      throw new Error('No block found for 30 days ago')
+    }
+
     const totalTx = await infoServerClient.request(totalTxQuery, {
       id: FACTORY_ADDRESS,
     })
