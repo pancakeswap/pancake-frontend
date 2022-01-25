@@ -1,0 +1,61 @@
+{
+  "name": "pancake-toolkit",
+  "version": "1.0.0",
+  "description": "Pancake frontend packages",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pancakeswap/pancake-toolkit.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pancakeswap/pancake-toolkit/issues"
+  },
+  "homepage": "https://github.com/pancakeswap/pancake-toolkit#readme",
+  "scripts": {
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "format:check": "lerna run format:check",
+    "storybook:build": "lerna run storybook:build",
+    "release": "yarn build && yarn lerna publish",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@pancakeswap/eslint-config-pancake": "1.2.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-typescript": "^8.2.1",
+    "@rollup/plugin-url": "^6.0.0",
+    "@storybook/addon-a11y": "^6.3.6",
+    "@storybook/addon-actions": "^6.3.6",
+    "@storybook/addon-essentials": "^6.3.6",
+    "@storybook/addon-links": "^6.3.6",
+    "@storybook/react": "^6.3.6",
+    "@types/react": "^17.0.5",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/react-transition-group": "^4.4.1",
+    "@types/styled-components": "^5.1.9",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-styled-components": "^1.12.0",
+    "eslint": "^7.26.0",
+    "husky": "^7.0.0",
+    "jest": "^26.6.3",
+    "lerna": "^4.0.0",
+    "prettier": "^2.3.2",
+    "react-is": "^17.0.2",
+    "rollup": "^2.47.0",
+    "themeprovider-storybook": "^1.7.2",
+    "ts-jest": "^26.5.6",
+    "tslib": "^2.2.0",
+    "typescript": "^4.2.4"
+  }
+}

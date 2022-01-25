@@ -1,0 +1,27 @@
+name: Verify token lists
+
+on:
+  pull_request:
+    paths:
+      - "packages/token-lists/src/tokens/**"
+      - "packages/token-lists/lists/**"
+
+jobs:
+  verifyTokenLists:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 14.x
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Check if tokenlists were updated correctly
+        working-directory: ./packages/token-lists
+        run: yarn ci-check

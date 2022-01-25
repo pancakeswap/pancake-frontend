@@ -1,0 +1,18 @@
+[build]
+  base = "packages/token-lists/"
+  publish = "lists/"
+
+[[redirects]]
+  from = "/"
+  to = "/pancakeswap-default.json"
+  status = 301
+  force = false
+
+[[headers]]
+  # Define which paths this specific [[headers]] block will cover.
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, HEAD, OPTIONS"
+    Access-Control-Allow-Headers = "Accept, Content-Type, Origin"
+    Access-Control-Max-Age = "86400"

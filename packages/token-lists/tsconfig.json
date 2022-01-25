@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./",
+    "lib": ["ES2020"],
+    "skipLibCheck": true,
+    "target": "ES5",
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts", "**/__mocks__/*", "src/mocks/**", "jest.setup.js"]
+}

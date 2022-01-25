@@ -1,0 +1,56 @@
+{
+  "name": "@pancakeswap/uikit",
+  "version": "0.63.1",
+  "description": "Set of UI components for pancake projects",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn storybook",
+    "build": "rm -rf ./dist && rollup -c && tsc -d --emitDeclarationOnly --declarationDir dist",
+    "watch": "rollup -c -w",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "format:check": "prettier --check --loglevel error 'src/**/*.{js,jsx,ts,tsx}'",
+    "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
+    "storybook": "start-storybook -p 6006",
+    "storybook:build": "build-storybook",
+    "test": "jest",
+    "prepublishOnly": "yarn build"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.5",
+    "@types/lodash": "^4.14.168",
+    "@types/react-dom": "^17.0.5",
+    "jest-styled-components": "^7.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.2.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "styled-components": "^5.2.3"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "@types/styled-system": "^5.1.10",
+    "lodash": "^4.17.20",
+    "react-popper": "^2.2.5",
+    "styled-system": "^5.1.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
