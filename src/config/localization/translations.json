@@ -1841,5 +1841,6 @@
   "This pool requires %amount% profile points.": "This pool requires %amount% profile points.",
   "Requirement": "Requirement",
   "Create Profile": "Create Profile",
-  "Go to Profile": "Go to Profile"
+  "Go to Profile": "Go to Profile",
+  "Profile Points": "Profile Points"
 }
