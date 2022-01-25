@@ -17,8 +17,8 @@ for = "/images/*"
 cache-control = "public, no-transform, immutable, max-age=604800"
 
 [[redirects]]
-  from = "/*"
-  to = "/cu/:splat"
-  status = 200
+  from = "/"
+  to = "/cu/"
+  status = 302
   force = true
   conditions = {Country=["BY","CU","IR","IQ","CI","LR","KP","SD","SY","ZW"]}
