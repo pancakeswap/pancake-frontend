@@ -1769,5 +1769,6 @@
   "This is already included in total USDT input above": "Esta comisión ya está incluida en el costo final de USDT declarado arriba",
   "This additional fee will increase the total Peronio collateral": "El monto es agregado al colateral total de Peronio",
   "%quoteSymbol% per %baseSymbol%": "%quoteSymbol% por %baseSymbol%",
-  "%baseSymbol% per %quoteSymbol%": "%baseSymbol% por %quoteSymbol%"
+  "%baseSymbol% per %quoteSymbol%": "%baseSymbol% por %quoteSymbol%",
+  "Confirm Mint": "Confirmar Emisión"
 }
