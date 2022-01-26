@@ -48,6 +48,7 @@
     "@pancakeswap/uikit": "^0.63.1",
     "@reduxjs/toolkit": "^1.5.0",
     "@sentry/nextjs": "^6.16.1",
+    "@snapshot-labs/snapshot.js": "^0.3.25",
     "@uniswap/token-lists": "^1.0.0-beta.19",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
