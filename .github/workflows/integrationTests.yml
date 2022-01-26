@@ -21,4 +21,4 @@ jobs:
       - run: yarn build
         env:
           NEXT_PUBLIC_APP_SF_HEADER: ${{ secrets.SF_HEADER }}
-      - run: yarn integration-test
+      - run: yarn nx run app:integration-test
