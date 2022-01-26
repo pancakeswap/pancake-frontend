@@ -54,6 +54,7 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '0.19',
+    deployedBlockNumber: 14552132,
   },
   {
     sousId: 257,
@@ -67,6 +68,7 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '2.893',
+    deployedBlockNumber: 14436172,
   },
   {
     sousId: 256,
