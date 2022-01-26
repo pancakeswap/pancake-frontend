@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-01-21T12:59:32.588Z",
+  "timestamp": "2022-01-26T09:00:51.354Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 63
+    "patch": 64
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -771,6 +771,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xA7f552078dcC247C2684336020c03648500C6d9F.png"
+    },
+    {
+      "name": "Ertha Token",
+      "symbol": "ERTHA",
+      "address": "0x62823659d09F9F9D2222058878f89437425eB261",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x62823659d09F9F9D2222058878f89437425eB261.png"
     },
     {
       "name": "CryptoMines Eternal",
