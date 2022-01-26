@@ -23,7 +23,7 @@ interface Props {
   setIsChartDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
   isChartDisplayed?: boolean
   hasAmount: boolean
-  refreshHard: () => void
+  onRefreshPrice: () => void
 }
 
 const CurrencyInputContainer = styled(Flex)`
@@ -43,7 +43,7 @@ const CurrencyInputHeader: React.FC<Props> = ({
   setIsChartDisplayed,
   isChartDisplayed,
   hasAmount,
-  refreshHard,
+  onRefreshPrice,
 }) => {
   const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
@@ -76,7 +76,7 @@ const CurrencyInputHeader: React.FC<Props> = ({
           <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
             <HistoryIcon color="textSubtle" width="24px" />
           </IconButton>
-          <IconButton variant="text" scale="sm" onClick={() => refreshHard()}>
+          <IconButton variant="text" scale="sm" onClick={() => onRefreshPrice()}>
             <RefreshIcon disabled={!hasAmount} color="textSubtle" width="27px" />
           </IconButton>
         </Flex>

@@ -20,7 +20,7 @@ import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
-import { useFetchBlockNumber } from 'state/block/hooks'
+import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Layout/Column'
@@ -96,7 +96,7 @@ export default function Swap() {
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
-  const { fetchBlockNumber, isLoading } = useFetchBlockNumber()
+  const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
@@ -359,11 +359,11 @@ export default function Swap() {
 
   const hasAmount = Boolean(parsedAmount)
 
-  const refreshHard = React.useCallback(() => {
+  const onRefreshPrice = React.useCallback(() => {
     if (hasAmount) {
-      fetchBlockNumber()
+      refreshBlockNumber()
     }
-  }, [hasAmount, fetchBlockNumber])
+  }, [hasAmount, refreshBlockNumber])
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -407,7 +407,7 @@ export default function Swap() {
                   setIsChartDisplayed={setIsChartDisplayed}
                   isChartDisplayed={isChartDisplayed}
                   hasAmount={hasAmount}
-                  refreshHard={refreshHard}
+                  onRefreshPrice={onRefreshPrice}
                 />
                 <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
                   <AutoColumn gap="sm">

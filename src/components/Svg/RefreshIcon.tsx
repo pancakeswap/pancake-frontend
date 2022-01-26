@@ -62,7 +62,7 @@ const Icon = ({ disabled, ...props }) =>
             values="0;-30"
             begin="arrow_loading.click; 0.7s"
             repeatCount="indefinite"
-            dur="7s"
+            dur="6.3s"
           />
         </circle>
       </g>
