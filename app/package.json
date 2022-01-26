@@ -120,7 +120,9 @@
   "nx": {
     "targets": {
       "build": {
-        "outputs": [],
+        "outputs": [
+          "app"
+        ],
         "dependsOn": [
           {
             "target": "build",
