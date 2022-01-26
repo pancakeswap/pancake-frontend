@@ -26,7 +26,7 @@ export function ProfileRequirementWarning({
               amount: profileRequirement.thresholdPoints.toNumber().toLocaleString(),
             })}
         </MessageText>
-        {notMeetRequired && (
+        {(notMeetRequired || notMeetThreshold) && (
           <MessageText bold>
             {notMeetRequired ? (
               <NextLinkFromReactRouter style={{ textDecoration: 'underline' }} to="/create-profile">
