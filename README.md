@@ -26,4 +26,6 @@ yarn
 
 Run the web by `yarn dev`
 
+Build the web by `yarn build`
+
 For packages, please refer to the readme of each project.
