@@ -20,7 +20,7 @@ export function ProfileRequirementWarning({
             t('This pool requires active Pancake Profile and %amount% profile points.', {
               amount: profileRequirement.thresholdPoints.toNumber().toLocaleString(),
             })}
-          {notMeetRequired && !notMeetThreshold && t('TThis pool requires active Pancake Profile')}
+          {notMeetRequired && !notMeetThreshold && t('This pool requires active Pancake Profile')}
           {!notMeetRequired &&
             notMeetThreshold &&
             t('This pool requires %amount% profile points.', {
