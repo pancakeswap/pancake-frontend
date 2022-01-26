@@ -208,7 +208,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   })
 
   const requirementRow =
-    profileRequirement.required || profileRequirement.thresholdPoints.gt(0) ? (
+    profileRequirement && (profileRequirement.required || profileRequirement.thresholdPoints.gt(0)) ? (
       <RequirementSection mb="8px">
         <Text>{t('Requirement')}:</Text>
         <Text textAlign={['right', , , , 'left']}>

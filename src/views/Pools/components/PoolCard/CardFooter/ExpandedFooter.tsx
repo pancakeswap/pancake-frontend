@@ -101,7 +101,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
 
   return (
     <ExpandedWrapper flexDirection="column">
-      {(profileRequirement.required || profileRequirement.thresholdPoints.gt(0)) && (
+      {profileRequirement && (profileRequirement.required || profileRequirement.thresholdPoints.gt(0)) && (
         <Flex mb="8px" justifyContent="space-between">
           <Text small>{t('Requirement')}:</Text>
           <Text small textAlign="right">
