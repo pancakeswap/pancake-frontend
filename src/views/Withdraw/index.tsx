@@ -6,6 +6,8 @@ import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton, ArrowUpDo
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { useMintCallback } from 'hooks/useMintCallback'
+import { useWithdrawTokenInfo } from 'state/tokenWithdraw/hooks'
+
 import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmMintModal from './components/ConfirmMintModal'
@@ -22,7 +24,6 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { ApprovalState, useApproveCallbackFromMint } from '../../hooks/useApproveCallback'
 import { Field } from '../../state/swap/actions'
 import { useDefaultsFromURLSearch, useSwapActionHandlers, useSwapState } from '../../state/swap/hooks'
-import { useMintTokenInfo } from '../../state/tokenMint/hooks'
 
 import {
   useExpertModeManager,
@@ -59,7 +60,7 @@ const SwitchIconButton = styled(IconButton)`
   }
 `
 
-export default function MintView({ history }: RouteComponentProps) {
+export default function WithdrawView({ history }: RouteComponentProps) {
   useDefaultsFromURLSearch()
   const { t } = useTranslation()
 
@@ -70,7 +71,7 @@ export default function MintView({ history }: RouteComponentProps) {
 
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
-  const { mint, parsedAmount, currencies, currencyBalances, inputError: swapInputError } = useMintTokenInfo()
+  const { mint, parsedAmount, currencies, currencyBalances, inputError: swapInputError } = useWithdrawTokenInfo()
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : mint?.inputAmount,
@@ -202,8 +203,8 @@ export default function MintView({ history }: RouteComponentProps) {
             <StyledInputCurrencyWrapper mt="0">
               <AppBody>
                 <CurrencyInputHeader
-                  title={t('Mint')}
-                  subtitle={t('Deposit USDT to mint PE tokens')}
+                  title={t('Withdraw')}
+                  subtitle={t('Deposit PE tokens to receive USDT')}
                   setIsChartDisplayed={null}
                   isChartDisplayed={false}
                 />
@@ -228,7 +229,7 @@ export default function MintView({ history }: RouteComponentProps) {
                           variant="light"
                           scale="sm"
                           onClick={() => {
-                            history.push('/withdraw')
+                            history.push('/mint')
                           }}
                         >
                           <ArrowDownIcon

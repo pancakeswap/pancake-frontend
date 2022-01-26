@@ -1770,5 +1770,6 @@
   "This additional fee will increase the total %token_name% collateral": "El monto es agregado al colateral total de %token_name%",
   "%quoteSymbol% per %baseSymbol%": "%quoteSymbol% por %baseSymbol%",
   "%baseSymbol% per %quoteSymbol%": "%baseSymbol% por %quoteSymbol%",
-  "Confirm Mint": "Confirmar Emisión"
+  "Confirm Mint": "Confirmar Emisión",
+  "Deposit PE tokens to receive USDT": "Depositá PE para recibir USDT"
 }

@@ -1770,5 +1770,6 @@
   "This additional fee will increase the total %token_name% collateral": "This additional fee will increase the total Peronio collateral",
   "%quoteSymbol% per %baseSymbol%": "%quoteSymbol% per %baseSymbol%",
   "%baseSymbol% per %quoteSymbol%": "%baseSymbol% per %quoteSymbol%",
-  "Confirm Mint": "Confirm Mint"
+  "Confirm Mint": "Confirm Mint",
+  "Deposit PE tokens to receive USDT": "Deposit PE tokens to receive USDT"
 }

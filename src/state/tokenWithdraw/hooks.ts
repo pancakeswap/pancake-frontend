@@ -1,12 +1,13 @@
 import { useTranslation } from 'contexts/Localization'
 import useENS from 'hooks/ENS/useENS'
-import { useMintExactIn, useMintExactOut } from 'hooks/Mints'
-import { useCurrency } from 'hooks/Tokens'
+import { useWithdrawExactIn, useWithdrawExactOut } from 'hooks/Withdrawals'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
 import { tryParseAmount, useSwapState } from 'state/swap/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { isAddress } from 'utils'
+import { mainnetTokens } from 'config/constants/tokens'
+import { WrappedTokenInfo } from 'state/lists/hooks'
 import {
   Field,
   // replaceSwapState,
@@ -19,7 +20,7 @@ import {
 } from './actions'
 
 // TODO: Replace with functionality
-export function useMintTokenInfo(): {
+export function useWithdrawTokenInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
@@ -32,13 +33,21 @@ export function useMintTokenInfo(): {
   const {
     independentField,
     typedValue,
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+    // [Field.INPUT]: { currencyId: inputCurrencyId },
+    // [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient,
   } = useSwapState()
 
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
+  const inputCurrency = new WrappedTokenInfo(
+    {
+      ...mainnetTokens.pe,
+      name: mainnetTokens.pe.name,
+      symbol: mainnetTokens.pe.symbol,
+      logoURI: 'https://raw.githubusercontent.com/peronio-ar/branding/main/logo/256.png',
+    },
+    [],
+  )
+  const outputCurrency = mainnetTokens.usdt
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
 
@@ -50,10 +59,11 @@ export function useMintTokenInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  const mintOut = useMintExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
-  const mintIn = useMintExactIn(isExactIn ? parsedAmount : null, inputCurrency)
+  // const mintOut = useWithdrawExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
+  // const mintIn = useWithdrawExactIn(isExactIn ? parsedAmount : null, inputCurrency)
 
-  const mint = isExactIn ? mintIn : mintOut
+  // const mint = isExactIn ? mintIn : mintOut
+  const mint = null
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
