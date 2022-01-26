@@ -120,9 +120,16 @@
   "nx": {
     "targets": {
       "build": {
-        "outputs": [
-          "app"
-        ],
+        "outputs": [],
+        "dependsOn": [
+          {
+            "target": "build",
+            "projects": "dependencies"
+          }
+        ]
+      },
+      "lint": {
+        "outputs": [],
         "dependsOn": [
           {
             "target": "build",
