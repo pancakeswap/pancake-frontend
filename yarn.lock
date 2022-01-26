@@ -16534,10 +16534,10 @@ peronio-core@^0.6.0:
   resolved "https://registry.yarnpkg.com/peronio-core/-/peronio-core-0.6.0.tgz#054bf98ae954bdc44dba210631989d82a7056350"
   integrity sha512-dt07NmJawZ18cmGDFAUscgkOxG2lXQQFxaNympxDKapBGMKkpiC3V2DR+TaSALEcD/EDz30QUj2ULL7poT/GdA==
 
-peronio-sdk@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/peronio-sdk/-/peronio-sdk-0.7.1.tgz#4cb73869494f5df8803ab20a7b47063fe2d1a248"
-  integrity sha512-1bMsOJLK1k7mFUq1rMzDWID4X+/KlFuAx8Dt0CMfaxyfqQACQ2OEf5ksiP8V/AcE0QeMkrpmggVfi5xXILjRqg==
+peronio-sdk@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/peronio-sdk/-/peronio-sdk-0.8.0.tgz#6c88250ec2a08010bc0aee215018af1b1e05d1e3"
+  integrity sha512-ETLfXL3N+Jqofvjcq4aaGyN1E+H14HK/qyMIiRaav8ossKL+zkNVcul61YUwx6klsGASUEj19gyeWRXaiFsj7Q==
   dependencies:
     "@pancakeswap-libs/pancake-swap-core" "^0.1.0"
     big.js "^5.2.2"

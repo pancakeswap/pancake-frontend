@@ -3,6 +3,7 @@ import { mainnetTokens, testnetTokens } from './tokens'
 
 export const ROUTER_ADDRESS = '0x2955A3c0c07FA8D81eafDE5c4160eb131aec1372'
 export const PERONIO_ADDRESS = mainnetTokens.pe.address
+export const MARKUP_DECIMALS = 4
 
 // a list of tokens by chain
 type ChainTokenList = {

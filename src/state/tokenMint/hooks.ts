@@ -1,6 +1,6 @@
 import { useTranslation } from 'contexts/Localization'
 import useENS from 'hooks/ENS/useENS'
-import { useMintExactIn } from 'hooks/Mints'
+import { useMintExactIn, useMintExactOut } from 'hooks/Mints'
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
@@ -50,15 +50,12 @@ export function useMintTokenInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  //   console.info('parsedAmount')
-  //   console.dir(parsedAmount)
-
   // ACA VA EL REFACTOR!!!! ----------------------------------------------------------------
 
-  const mint = useMintExactIn(parsedAmount)
+  const mintOut = useMintExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
+  const mintIn = useMintExactIn(isExactIn ? parsedAmount : null, inputCurrency)
 
-  //   console.info('mintCreated:')
-  //   console.dir(mint)
+  const mint = isExactIn ? mintIn : mintOut
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],

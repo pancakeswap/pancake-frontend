@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign */
 // import { isTradeBetter } from 'utils/trades'
-import { formatUnits } from '@ethersproject/units'
+// import { formatUnits } from '@ethersproject/units'
 import { BigNumber } from 'ethers'
 import { mainnetTokens } from 'config/constants/tokens'
-import { Currency, CurrencyAmount, Mint, TokenAmount } from 'peronio-sdk'
+import { Currency, CurrencyAmount, Mint, Percent, Price } from 'peronio-sdk'
 import JSBI from 'jsbi'
+import { MARKUP_DECIMALS } from 'config/constants'
 import { useEffect, useMemo, useState } from 'react'
 import { usePeronioContract } from './useContract'
 
@@ -20,18 +21,27 @@ import { usePeronioContract } from './useContract'
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+/**
+ * Hook for Minting exact IN
+ * @param currencyAmountIn
+ * @param currencyOut
+ * @returns
+ */
 export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Mint | null {
   const peronioContract = usePeronioContract()
   const DECIMALS = mainnetTokens.pe.decimals
 
-  const [markup, setMarkup] = useState<string>()
-  const [buyingPrice, setBuyingPrice] = useState<BigNumber>()
+  const [markup, setMarkup] = useState<Percent>()
+  const [price, setPrice] = useState<Price>()
 
-  // Get Markup Decimals
+  // Get Markup
   useEffect(() => {
     async function fetchMarkup() {
-      const markupDecimals = await peronioContract.markup_decimals()
-      return formatUnits(await peronioContract.markup(), markupDecimals)
+      return new Percent(
+        (await peronioContract.markup()).toString(),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
+      )
     }
 
     fetchMarkup().then(setMarkup)
@@ -39,44 +49,97 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
 
   // Get Buying Price
   useEffect(() => {
-    if (!markup) {
+    if (!currencyOut || !currencyAmountIn) {
       return
     }
-    async function fetchBuyingPrice() {
+    async function fetchBuyingPrice(): Promise<BigNumber> {
       return peronioContract.buyingPrice()
     }
 
-    fetchBuyingPrice().then(setBuyingPrice)
-  }, [peronioContract, markup, DECIMALS])
+    fetchBuyingPrice()
+      .then((buyingPrice) => {
+        setPrice(
+          new Price(
+            currencyAmountIn.currency,
+            currencyOut,
+            buyingPrice.toString(),
+            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
+          ),
+        )
+      })
+      .catch((e) => {
+        console.error(e)
+      })
+  }, [peronioContract, DECIMALS, currencyOut, currencyAmountIn])
 
   return useMemo(() => {
-    // Needs Buying Price and currency
-    if (!buyingPrice || !currencyAmountIn) {
+    // Needs Price
+    if (!price || !markup || !currencyAmountIn) {
       return null
     }
-    // Add extra decimals
-    const amountOutWithDecimals = JSBI.multiply(
-      currencyAmountIn.raw,
-      JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
-    )
-    const amountOut = JSBI.divide(amountOutWithDecimals, JSBI.BigInt(buyingPrice.toString()))
 
-    const fee = parseInt(markup)
-    const currencyAmountOut = new TokenAmount(mainnetTokens.pe, amountOut)
-
-    return new Mint(currencyAmountIn, currencyAmountOut, fee)
-  }, [markup, buyingPrice, currencyAmountIn, DECIMALS])
+    // return Mint.exactOut(currencyAmountOut: CurrencyAmount, price: Price, markup: Percent)
+    return Mint.exactIn(currencyAmountIn, price, markup)
+  }, [price, markup, currencyAmountIn])
 }
 
 /**
- * Returns the best trade for the token in to the exact amount of token out
+ * Hook for Minting exact OUT
+ * @param currencyAmountOut
+ * @param currencyIn
+ * @returns
  */
-// export function useMintExactOut(currencyIn?: Currency, currencyAmountOut?: CurrencyAmount): Mint | null {
-//   return useMemo(() => {
-//     if (currencyIn && currencyAmountOut) {
-//       return Mint.exactOut(currencyAmountOut)
-//     }
+export function useMintExactOut(currencyAmountOut?: CurrencyAmount, currencyIn?: Currency): Mint | null {
+  const peronioContract = usePeronioContract()
+  const DECIMALS = mainnetTokens.pe.decimals
 
-//     return null
-//   }, [currencyAmountOut, currencyIn])
-// }
+  const [markup, setMarkup] = useState<Percent>()
+  const [price, setPrice] = useState<Price>()
+
+  // Get Markup
+  useEffect(() => {
+    async function fetchMarkup() {
+      return new Percent(
+        (await peronioContract.markup()).toString(),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
+      )
+    }
+
+    fetchMarkup().then(setMarkup)
+  }, [peronioContract])
+
+  // Get Buying Price
+  useEffect(() => {
+    if (!currencyIn || !currencyAmountOut) {
+      return
+    }
+    async function fetchBuyingPrice(): Promise<BigNumber> {
+      return peronioContract.buyingPrice()
+    }
+
+    fetchBuyingPrice()
+      .then((buyingPrice) => {
+        setPrice(
+          new Price(
+            currencyIn,
+            currencyAmountOut.currency,
+            buyingPrice.toString(),
+            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
+          ),
+        )
+      })
+      .catch((e) => {
+        console.error(e)
+      })
+  }, [peronioContract, DECIMALS, currencyIn, currencyAmountOut])
+
+  return useMemo(() => {
+    // Needs Price
+    if (!price || !markup || !currencyAmountOut) {
+      return null
+    }
+
+    // return Mint.exactOut(currencyAmountOut: CurrencyAmount, price: Price, markup: Percent)
+    return Mint.exactOut(currencyAmountOut, price, markup)
+  }, [price, currencyAmountOut, markup])
+}
