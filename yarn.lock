@@ -3547,7 +3547,7 @@
     node-gyp "^7.1.0"
     read-package-json-fast "^2.0.1"
 
-"@nrwl/cli@13.5.3", "@nrwl/cli@^13.5.2":
+"@nrwl/cli@13.5.3", "@nrwl/cli@^13.5.3":
   version "13.5.3"
   resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-13.5.3.tgz#3b32247e9f9703f95f6e066f6000da2f32ad4e9a"
   integrity sha512-TMh8FfF6PPnjuxoSIU0wFVtE6xcf5UfxmX0pSy+ztEDU66RBSPwUxbHUFZGMKrT7jNZLutqmziwi89leTngvfw==
@@ -3610,7 +3610,7 @@
     strip-json-comments "^3.1.1"
     tar "6.1.11"
 
-"@nrwl/tao@13.5.3", "@nrwl/tao@^13.5.2":
+"@nrwl/tao@13.5.3", "@nrwl/tao@^13.5.3":
   version "13.5.3"
   resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-13.5.3.tgz#5112120395968916080216d530d62b0928513820"
   integrity sha512-YAHW4yGROt+a8yDrgG9UxrmSyi62S0Pi6EhLluk5e9s/sNJM1k2NfoVCzZMZYsCbv4tKYv4RSlqf3EQMe28uJw==
@@ -3629,7 +3629,7 @@
     tslib "^2.3.0"
     yargs-parser "20.0.0"
 
-"@nrwl/workspace@^13.5.2":
+"@nrwl/workspace@^13.5.3":
   version "13.5.3"
   resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-13.5.3.tgz#2dc369a0c6bc9b483edcc48375a6c9547719bb98"
   integrity sha512-ZY7HGPhs0w0neXLXJgbIYd36+FZuc8LHgaxhExsK9vdusuaXhNVyMkR+TmbtN9sXAB0ZN0+hzcty+V7ncn4sHQ==
