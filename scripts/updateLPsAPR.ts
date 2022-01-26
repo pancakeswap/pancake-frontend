@@ -1,12 +1,14 @@
+// @ts-nocheck
+
 import fs from 'fs'
 import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
-import farmsConfig from '../src/config/constants/farms'
-import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
-import { BLOCKS_CLIENT, INFO_CLIENT } from '../src/config/constants/endpoints'
+import farmsConfig from '../app/src/config/constants/farms'
+import type { BlockResponse } from '../app/src/components/SubgraphHealthIndicator'
+import { BLOCKS_CLIENT, INFO_CLIENT } from '../app/src/config/constants/endpoints'
 
 const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
 const STREAMING_FAST_ENDPOINT = INFO_CLIENT
@@ -115,7 +117,7 @@ const fetchAndUpdateLPsAPR = async () => {
     allAprs = { ...allAprs, ...aprs }
   }
 
-  fs.writeFile(`src/config/constants/lpAprs.json`, JSON.stringify(allAprs, null, 2), (err) => {
+  fs.writeFile(`app/src/config/constants/lpAprs.json`, JSON.stringify(allAprs, null, 2), (err) => {
     if (err) throw err
     console.info(` ✅ - lpAprs.json has been updated!`)
   })

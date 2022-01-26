@@ -27,7 +27,11 @@
     "format:write": "nx format:write",
     "storybook:build": "lerna run storybook:build",
     "release": "yarn build && yarn lerna publish",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "updateLPsAPR": "NODE_PATH=./app/src ts-node --project ./app/tsconfig.json --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
