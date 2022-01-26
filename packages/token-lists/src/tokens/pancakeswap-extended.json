@@ -2184,6 +2184,14 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x3192CCDdf1CDcE4Ff055EbC80f3F0231b86A7E30.png"
   },
   {
+    "name": "Ertha Token",
+    "symbol": "ERTHA",
+    "address": "0x62823659d09F9F9D2222058878f89437425eB261",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x62823659d09F9F9D2222058878f89437425eB261.png"
+  },
+  {
     "name": "ApolloX Token",
     "symbol": "APX",
     "address": "0x78F5d389F5CDCcFc41594aBaB4B0Ed02F31398b3",
