@@ -1837,6 +1837,7 @@
   "Network": "Network",
   "Switch Network": "Switch Network",
   "This pool requires active Pancake Profile and %amount% profile points.": "This pool requires active Pancake Profile and %amount% profile points.",
+  "This pool requires active Pancake Profile": "This pool requires active Pancake Profile",
   "This pool requires %amount% profile points.": "This pool requires %amount% profile points.",
   "Requirement": "Requirement",
   "Create Profile": "Create Profile",
