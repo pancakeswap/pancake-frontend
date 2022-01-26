@@ -1,4 +1,5 @@
 import pools from 'config/constants/pools'
+import poolsDeployedBlockNumber from 'config/constants/poolsDeployedBlockNumber'
 import { getSouschefContract, getSouschefV2Contract } from 'utils/contractHelpers'
 
 // Pool 0 is special (cake pool)
@@ -40,6 +41,13 @@ describe('Config pools', () => {
       }
 
       expect(stakingTokenAddress.toLowerCase()).toBe(pool.stakingToken.address.toLowerCase())
+    },
+  )
+
+  it.each(pools.map((p) => ({ deployedBlockNumber: p.deployedBlockNumber, address: p.contractAddress[56] })))(
+    'Pool %p has deployed block number',
+    (pool) => {
+      expect(pool.deployedBlockNumber || poolsDeployedBlockNumber[pool.address]).toBeTruthy()
     },
   )
 })

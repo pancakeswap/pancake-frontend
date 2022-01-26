@@ -467,9 +467,7 @@ export interface Vote {
   choice: number
   metadata?: {
     votingPower: string
-    verificationHash: string
   }
-  _inValid?: boolean
 }
 
 export interface VotingState {
