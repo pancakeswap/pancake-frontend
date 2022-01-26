@@ -116,5 +116,29 @@
     "start-server-and-test": "^1.14.0",
     "ts-node": "^9.1.1",
     "typechain": "^6.1.0"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "app"
+        ],
+        "dependsOn": [
+          {
+            "target": "build",
+            "projects": "dependencies"
+          }
+        ]
+      },
+      "test": {
+        "outputs": [],
+        "dependsOn": [
+          {
+            "target": "build",
+            "projects": "self"
+          }
+        ]
+      }
+    }
   }
 }
