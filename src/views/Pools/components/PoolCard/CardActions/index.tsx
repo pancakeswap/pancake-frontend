@@ -7,9 +7,9 @@ import { useTranslation } from 'contexts/Localization'
 import { PoolCategory } from 'config/constants/types'
 import { DeserializedPool } from 'state/types'
 import ApprovalAction from './ApprovalAction'
+import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import StakeActions from './StakeActions'
 import HarvestActions from './HarvestActions'
-import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
 
 const InlineText = styled(Text)`
