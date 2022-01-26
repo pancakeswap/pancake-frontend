@@ -1,3 +1,3 @@
 files:
-  - source: /src/config/localization/translations.json
-    translation: /public/locales/%locale%.json
+  - source: app/src/config/localization/translations.json
+    translation: app/public/locales/%locale%.json
