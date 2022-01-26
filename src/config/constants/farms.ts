@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 506,
+    lpSymbol: 'ERTHA-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x70531B39E2Bb4d8dA59E2Ce41a98eBA2990F8497',
+    },
+    token: serializedTokens.ertha,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 505,
     lpSymbol: 'FUSE-BNB LP',
     lpAddresses: {
