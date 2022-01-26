@@ -266,8 +266,18 @@ export const NftMarket = createSlice({
   name: 'NftMarket',
   initialState,
   reducers: {
-    removeAllFilters: (state, action: PayloadAction<string>) => {
-      state.data.filters[action.payload] = { ...initialNftFilterState }
+    removeAllItemFilters: (state, action: PayloadAction<string>) => {
+      if (state.data.filters[action.payload]) {
+        const { ordering, showOnlyOnSale } = state.data.filters[action.payload]
+        state.data.filters[action.payload] = {
+          ...initialNftFilterState,
+          ordering,
+          showOnlyOnSale,
+        }
+      } else {
+        state.data.filters[action.payload] = { ...initialNftFilterState }
+      }
+
       state.data.nfts[action.payload] = []
     },
     addActivityTypeFilters: (state, action: PayloadAction<{ collection: string; field: MarketEvent }>) => {
@@ -413,7 +423,7 @@ export const NftMarket = createSlice({
 
 // Actions
 export const {
-  removeAllFilters,
+  removeAllItemFilters,
   removeAllActivityFilters,
   removeActivityTypeFilters,
   removeActivityCollectionFilters,
