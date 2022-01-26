@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=true yarn build",
+    "bmp:dev": "NODE_ENV=development bmp dev",
+    "bmp:build": "bmp build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -32,6 +34,9 @@
     ]
   },
   "dependencies": {
+    "@binance/babel-preset-bmp": "^1.0.1",
+    "@binance/mp-components": "^1.0.1",
+    "@binance/mp-service": "^1.0.4",
     "@binance-chain/bsc-connector": "^1.0.0",
     "@ethersproject/experimental": "^5.5.0",
     "@next/bundle-analyzer": "^12.0.7",
@@ -81,11 +86,13 @@
     "remark-gfm": "^1.0.0",
     "split-grid": "^1.0.11",
     "styled-components": "^5.3.0",
+    "styled-system": "^5.1.5",
     "swiper": "^6.8.4",
     "swr": "^1.1.2",
     "typescript": "^4.5.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.0",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@netlify/plugin-nextjs": "^4.1.1",
@@ -97,6 +104,8 @@
     "@types/react-dom": "^17.0.4",
     "@types/react-window": "^1.8.3",
     "@types/styled-components": "^5.1.7",
+    "@tarojs/mini-runner": "3.3.19",
+    "@tarojs/webpack-runner": "3.3.19",
     "@types/canvas-confetti": "^1.4.2",
     "@types/jest": "^26.0.23",
     "@types/lodash": "^4.14.178",

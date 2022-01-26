@@ -1,0 +1,14 @@
+{
+  "miniprogramRoot": ".bmp/build",
+  "projectname": "pancake",
+  "description": "A Binance mini-program project",
+  "appid": "upyGaVmTiurhMbWsLhZBmv",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.4.0"
+}

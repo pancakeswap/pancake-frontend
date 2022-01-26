@@ -2,3 +2,4 @@ node_modules
 build
 src/config/abi/types
 .next
+.bmp

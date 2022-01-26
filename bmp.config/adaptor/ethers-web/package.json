@@ -1,0 +1,46 @@
+{
+  "author": "opar-xu",
+  "dependencies": {
+    "@ethersproject/base64": "^5.4.0",
+    "@ethersproject/bytes": "^5.4.0",
+    "@ethersproject/logger": "^5.4.0",
+    "@ethersproject/properties": "^5.4.0",
+    "@ethersproject/strings": "^5.4.0"
+  },
+  "description": "replacement for @ethersproject/web",
+  "ethereum": "donations.ethers.eth",
+  "funding": [
+    {
+      "type": "individual",
+      "url": "https://gitcoin.co/grants/13/ethersjs-complete-simple-and-tiny-2"
+    },
+    {
+      "type": "individual",
+      "url": "https://www.buymeacoffee.com/ricmoo"
+    }
+  ],
+  "gitHead": "c2c0ce75039e7256b287f9a764188d08ed0b7296",
+  "keywords": [
+    "Ethereum",
+    "ethers"
+  ],
+  "license": "MIT",
+  "main": "./src.ts/index.ts",
+  "module": "./src.ts/index.ts",
+  "name": "@ethersproject/web",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "directory": "packages/web",
+    "type": "git",
+    "url": "git://github.com/ethers-io/ethers.js.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "sideEffects": false,
+  "tarballHash": "0x8a35c297b7c665ca35d6d9e2f50e63fd5b1d23554400559965ec373d19656a2a",
+  "types": "./lib/index.d.ts",
+  "version": "5.4.0"
+}

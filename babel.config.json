@@ -1,0 +1,11 @@
+{
+  "presets": [
+    [
+      "@binance/babel-preset-bmp",
+      {
+        "framework": "react",
+        "ts": true
+      }
+    ]
+  ]
+}

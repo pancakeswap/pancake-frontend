@@ -120,7 +120,7 @@ function CurrencySearch({
 
   return (
     <>
-      <div>
+      <Box>
         <AutoColumn gap="16px">
           <Row>
             <Input
@@ -166,7 +166,7 @@ function CurrencySearch({
             </Text>
           </Column>
         )}
-      </div>
+      </Box>
     </>
   )
 }
