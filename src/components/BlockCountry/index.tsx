@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { useModal } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import BlockCountryModal from './BlockCountryModal'
