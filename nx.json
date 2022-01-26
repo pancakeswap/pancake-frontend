@@ -3,9 +3,10 @@
   "npmScope": "@pancakeswap",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
+      "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "test", "lint", "package", "prepare"]
+        "cacheableOperations": ["build", "test", "lint", "package", "prepare"],
+        "accessToken": "YzZhN2NjM2ItZjkwYS00ZTViLWE2NmMtNzYyZGY1OTY0NzcyfHJlYWQtd3JpdGU="
       }
     }
   },

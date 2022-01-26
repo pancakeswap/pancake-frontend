@@ -38,6 +38,10 @@
     "@babel/preset-env": "^7.14.4",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
+    "@nrwl/cli": "^13.5.2",
+    "@nrwl/nx-cloud": "^13.1.2",
+    "@nrwl/tao": "^13.5.2",
+    "@nrwl/workspace": "^13.5.2",
     "@pancakeswap/eslint-config-pancake": "1.2.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-typescript": "^8.2.1",
@@ -66,10 +70,6 @@
     "themeprovider-storybook": "^1.7.2",
     "ts-jest": "^26.5.6",
     "tslib": "^2.2.0",
-    "typescript": "^4.2.4",
-    "@nrwl/workspace": "^13.5.2",
-    "@nrwl/cli": "^13.5.2",
-    "@nrwl/tao": "^13.5.2",
-    "@nrwl/nx-cloud": "^13.1.2"
+    "typescript": "^4.2.4"
   }
 }
