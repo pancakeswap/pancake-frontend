@@ -19,8 +19,9 @@
   "scripts": {
     "dev": "nx run app:dev",
     "build": "nx build app",
-    "test": "lerna run test",
-    "lint": "lerna run lint",
+    "test": "nx run app:test",
+    "test:config": "nx run app:test-config",
+    "lint": "nx run app:lint",
     "format:check": "nx format:check",
     "format:check:staged": "nx format:check --uncommitted",
     "format:write": "nx format:write",
