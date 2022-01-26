@@ -67,7 +67,7 @@
     "multihashes": "^3.0.1",
     "numeral": "^2.0.6",
     "peronio-core": "^0.6.0",
-    "peronio-sdk": "^0.8.2",
+    "peronio-sdk": "^0.8.3",
     "peronio-uikit": "^0.63.3",
     "qs": "^6.9.4",
     "react": "^17.0.1",
