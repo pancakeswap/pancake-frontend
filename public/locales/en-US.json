@@ -1765,9 +1765,9 @@
   "You'll get this amount of PE": "You'll get this amount of PE",
   "Mint Anyway": "Mint Anyway",
   "The vault charges a fee for minting": "The vault charges a fee for minting",
-  "The markup is %amount% from the USDT amount": "The markup is %amount% from the USDT amount",
-  "This is already included in total USDT input above": "This is already included in total USDT input above",
-  "This additional fee will increase the total Peronio collateral": "This additional fee will increase the total Peronio collateral",
+  "The markup is %amount%% from the %symbol% amount": "The markup is %amount%% from the %symbol% amount",
+  "This is already included in total %symbol% input above": "This is already included in total %symbol% input above",
+  "This additional fee will increase the total %token_name% collateral": "This additional fee will increase the total Peronio collateral",
   "%quoteSymbol% per %baseSymbol%": "%quoteSymbol% per %baseSymbol%",
   "%baseSymbol% per %quoteSymbol%": "%baseSymbol% per %quoteSymbol%",
   "Confirm Mint": "Confirm Mint"

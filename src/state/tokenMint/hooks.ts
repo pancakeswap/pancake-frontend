@@ -85,7 +85,7 @@ export function useMintTokenInfo(): {
   }
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], parsedAmount]
+  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], mint?.inputAmount]
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })

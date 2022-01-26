@@ -8,8 +8,8 @@ import { RowBetween, RowFixed } from 'components/Layout/Row'
 
 function TradeSummary({ mint }: { mint: Mint }) {
   const { t } = useTranslation()
-  const markupRate = 5
-  const markupAmount = 2.33
+  const markupRate = mint.markup.toFixed(2)
+  const markupAmount = mint.feeAmount
   const isExactIn = true
   // const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
 
@@ -38,9 +38,25 @@ function TradeSummary({ mint }: { mint: Mint }) {
             text={
               <>
                 <Text mb="12px">{t('The vault charges a fee for minting')}</Text>
-                <Text>- {t('The markup is %amount% from the USDT amount', { amount: '5%' })}</Text>
-                <Text>- {t('This is already included in total USDT input above')}</Text>
-                <Text>- {t('This additional fee will increase the total Peronio collateral')}</Text>
+                <Text>
+                  -{' '}
+                  {t('The markup is %amount%% from the %symbol% amount', {
+                    amount: markupRate,
+                    symbol: mint.inputAmount.currency.symbol,
+                  })}
+                </Text>
+                <Text>
+                  -{' '}
+                  {t('This is already included in total %symbol% input above', {
+                    symbol: mint.inputAmount.currency.symbol,
+                  })}
+                </Text>
+                <Text>
+                  -{' '}
+                  {t('This additional fee will increase the total %token_name% collateral', {
+                    token_name: mint.outputAmount.currency.name,
+                  })}
+                </Text>
               </>
             }
             ml="4px"
