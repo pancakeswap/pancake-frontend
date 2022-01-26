@@ -14,7 +14,7 @@ export const useGetProposal = (proposalId: string) => {
 
 export const useGetVotes = (proposalId: string) => {
   const votes = useSelector((state: State) => state.voting.votes[proposalId])
-  return votes ? votes.filter((vote) => vote._inValid !== true) : []
+  return votes || []
 }
 
 export const useGetVotingStateLoadingStatus = () => {
