@@ -1,8 +1,8 @@
 {
   "name": "PancakeSwap Default List",
-  "timestamp": "2021-05-06T00:00:00Z",
+  "timestamp": "2022-01-26T11:45:09Z",
   "version": {
-    "major": 3,
+    "major": 4,
     "minor": 0,
     "patch": 0
   },
@@ -81,14 +81,6 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51.png"
-    },
-    {
-      "name": "SafeMoon",
-      "symbol": "SAFEMOON",
-      "address": "0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3",
-      "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x8076c74c5e3f5852037f31ff0093eeb8c8add8d3.png"
     },
     {
       "name": "Alpaca",
