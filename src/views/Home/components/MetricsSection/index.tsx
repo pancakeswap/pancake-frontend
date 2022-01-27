@@ -4,13 +4,10 @@ import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
+import useSWRImmutable from 'swr/immutable'
 import IconCard, { IconCardData } from '../IconCard'
 import StatCardContent from './StatCardContent'
 import GradientLogo from '../GradientLogoSvg'
-
-// Values fetched from bitQuery effective 6/9/21
-const txCount = 30841921
-const addressCount = 2751624
 
 const Stats = () => {
   const { t } = useTranslation()
@@ -18,6 +15,8 @@ const Stats = () => {
   const { theme } = useTheme()
 
   const tvlString = data ? formatLocalisedCompactNumber(data.tvl) : '-'
+  const { data: txCount } = useSWRImmutable('totalTx30Days')
+  const { data: addressCount } = useSWRImmutable('addressCount30Days')
   const trades = formatLocalisedCompactNumber(txCount)
   const users = formatLocalisedCompactNumber(addressCount)
 

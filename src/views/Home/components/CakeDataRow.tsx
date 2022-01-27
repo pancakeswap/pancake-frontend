@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { getBalanceNumber, formatLocalisedCompactNumber } from 'utils/formatBalance'
-import { multicallv2 } from 'utils/multicall'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import { Flex, Text, Heading, Skeleton } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
-import BigNumber from 'bignumber.js'
-import tokens from 'config/constants/tokens'
 import cakeAbi from 'config/abi/cake.json'
+import tokens from 'config/constants/tokens'
+import { useTranslation } from 'contexts/Localization'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { useSlowRefreshEffect } from 'hooks/useRefreshEffect'
+import React, { useEffect, useState } from 'react'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import styled from 'styled-components'
+import { formatBigNumber, formatLocalisedCompactNumber } from 'utils/formatBalance'
+import { multicallv2 } from 'utils/multicall'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean }>`
   flex-direction: column;
@@ -51,9 +50,8 @@ const CakeDataRow = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const [totalSupply, setTotalSupply] = useState(0)
+  const [cakeSupply, setCakeSupply] = useState(0)
   const [burnedBalance, setBurnedBalance] = useState(0)
-  const cakeSupply = totalSupply ? totalSupply - burnedBalance : 0
   const cakePriceBusd = usePriceCakeBusd()
   const mcap = cakePriceBusd.times(cakeSupply)
   const mcapString = formatLocalisedCompactNumber(mcap.toNumber())
@@ -75,9 +73,9 @@ const CakeDataRow = () => {
       const tokenDataResultRaw = await multicallv2(cakeAbi, [totalSupplyCall, burnedTokenCall], {
         requireSuccess: false,
       })
-      const tokenDataResult = tokenDataResultRaw.flat()
-      setTotalSupply(tokenDataResult[0] ? getBalanceNumber(new BigNumber(tokenDataResult[0].toString())) : 0)
-      setBurnedBalance(tokenDataResult[1] ? getBalanceNumber(new BigNumber(tokenDataResult[1].toString())) : 0)
+      const [totalSupply, burned] = tokenDataResultRaw.flat()
+      setCakeSupply(totalSupply && burned ? +formatBigNumber(totalSupply.sub(burned)) : 0)
+      setBurnedBalance(burned ? +formatBigNumber(burned) : 0)
     }
 
     if (loadData) {
