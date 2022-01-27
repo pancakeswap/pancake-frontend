@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Top 100",
-  "timestamp": "2021-09-17T08:04:09.127Z",
+  "timestamp": "2022-01-26T18:35:22.266Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 9
+    "patch": 10
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -163,14 +163,6 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xaEC945e04baF28b135Fa7c640f624f8D90F1C3a6.png"
-    },
-    {
-      "name": "CryptoCars",
-      "symbol": "CCAR",
-      "address": "0x50332bdca94673F33401776365b66CC4e81aC81d",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x50332bdca94673F33401776365b66CC4e81aC81d/logo.png"
     },
     {
       "name": "Chess",
@@ -355,14 +347,6 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x9678E42ceBEb63F23197D726B29b1CB20d0064E5.png"
-    },
-    {
-      "name": "ITAM",
-      "symbol": "ITAM",
-      "address": "0x04C747b40Be4D535fC83D09939fb0f626F32800B",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x04C747b40Be4D535fC83D09939fb0f626F32800B.png"
     },
     {
       "name": "Kaby Arena",
