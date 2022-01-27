@@ -229,7 +229,7 @@ export default function WithdrawView({ history }: RouteComponentProps) {
                           variant="light"
                           scale="sm"
                           onClick={() => {
-                            history.push('/withdraw')
+                            history.push('/mint')
                           }}
                         >
                           <ArrowDownIcon

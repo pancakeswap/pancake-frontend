@@ -70,7 +70,7 @@ export default function WithdrawModalFooter({
             </Text>
           </RowFixed>
         </RowBetween>
-        <RowBetween>
+        {/* <RowBetween>
           <RowFixed>
             <Text fontSize="14px">{t('Price Impact')}</Text>
             <QuestionHelper
@@ -78,7 +78,7 @@ export default function WithdrawModalFooter({
               ml="4px"
             />
           </RowFixed>
-        </RowBetween>
+        </RowBetween> */}
         {/* <RowBetween>
           <RowFixed>
             <Text fontSize="14px">{t('Liquidity Provider Fee')}</Text>
