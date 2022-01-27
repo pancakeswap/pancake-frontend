@@ -7,8 +7,7 @@
       "options": {
         "cacheableOperations": ["build", "test", "lint", "package", "prepare"],
         "accessToken": "YzZhN2NjM2ItZjkwYS00ZTViLWE2NmMtNzYyZGY1OTY0NzcyfHJlYWQtd3JpdGU="
-      },
-      "cacheDirectory": "/tmp/nx-cache"
+      }
     }
   },
   "targetDependencies": {

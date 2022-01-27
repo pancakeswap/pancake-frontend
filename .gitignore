@@ -19,7 +19,6 @@ out/
 # build
 /build
 dist
-tmp
 
 # misc
 .DS_Store
