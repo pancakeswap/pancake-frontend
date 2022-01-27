@@ -6,11 +6,15 @@ import { isAddress } from 'utils'
 import { FetchStatus } from 'config/constants/types'
 import erc721Abi from 'config/abi/erc721.json'
 import { useSWRMulticall } from 'hooks/useSWRContract'
+import { EMPTY_ARRAY, EMPTY_OBJECT } from 'utils/constantObjects'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 
 import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
 import { NftActivityFilter, NftFilter, NftToken } from './types'
+
+const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
+const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
 
 export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
@@ -96,7 +100,7 @@ export const useNftsFromCollection = (collectionAddress: string) => {
 
 export const useGetAllBunniesByBunnyId = (bunnyId: string) => {
   const nfts: NftToken[] = useSelector((state: State) => state.nftMarket.data.nfts[pancakeBunniesAddress])
-  return nfts ? nfts.filter((nft) => nft.attributes[0].value === bunnyId && nft.marketData.isTradable) : []
+  return nfts ? nfts.filter((nft) => nft.attributes[0].value === bunnyId && nft.marketData.isTradable) : EMPTY_ARRAY
 }
 
 export const useGetNFTInitializationState = () => {
@@ -134,7 +138,7 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
 
 export const useGetNftFilters = (collectionAddress: string) => {
   const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.activeFilters : {}
+  return collectionFilter ? collectionFilter.activeFilters : EMPTY_OBJECT
 }
 
 export const useGetNftFilterLoadingState = (collectionAddress: string) => {
@@ -144,7 +148,7 @@ export const useGetNftFilterLoadingState = (collectionAddress: string) => {
 
 export const useGetNftOrdering = (collectionAddress: string) => {
   const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.ordering : { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
+  return collectionFilter ? collectionFilter.ordering : DEFAULT_NFT_ORDERING
 }
 
 export const useGetNftShowOnlyOnSale = (collectionAddress: string) => {
@@ -156,5 +160,5 @@ export const useGetNftActivityFilters = (collectionAddress: string) => {
   const collectionFilter: NftActivityFilter = useSelector(
     (state: State) => state.nftMarket.data.activityFilters[collectionAddress],
   )
-  return collectionFilter || { typeFilters: [], collectionFilters: [] }
+  return collectionFilter || DEFAULT_NFT_ACTIVITY_FILTER
 }
