@@ -3,7 +3,7 @@ package = "@netlify/plugin-nextjs"
 
 [build]
 base = "app/"
-command = "cd ../ && yarn run build"
+command = "cd ../ && yarn && yarn run build"
 publish = ".next"
 
 [context.deploy-preview]
