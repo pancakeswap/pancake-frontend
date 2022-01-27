@@ -1112,14 +1112,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x37dfACfaeDA801437Ff648A1559d73f4C40aAcb7.png"
   },
   {
-    "name": "Itam",
-    "symbol": "ITAM",
-    "address": "0x04C747b40Be4D535fC83D09939fb0f626F32800B",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x04C747b40Be4D535fC83D09939fb0f626F32800B.png"
-  },
-  {
     "name": "ARPA",
     "symbol": "ARPA",
     "address": "0x6F769E65c14Ebd1f68817F5f1DcDb61Cfa2D6f7e",
@@ -2094,14 +2086,6 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xE69cAef10A488D7AF31Da46c89154d025546e990.png"
-  },
-  {
-    "name": "CryptoCars",
-    "symbol": "CCAR",
-    "address": "0x50332bdca94673F33401776365b66CC4e81aC81d",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x50332bdca94673F33401776365b66CC4e81aC81d.png"
   },
   {
     "name": "Highstreet Token",

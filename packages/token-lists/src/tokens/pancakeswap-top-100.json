@@ -216,14 +216,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x2222227E22102Fe3322098e4CBfE18cFebD57c95.png"
   },
   {
-    "name": "ITAM",
-    "symbol": "ITAM",
-    "address": "0x04C747b40Be4D535fC83D09939fb0f626F32800B",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x04C747b40Be4D535fC83D09939fb0f626F32800B.png"
-  },
-  {
     "name": "Nerve",
     "symbol": "NRV",
     "address": "0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096",
@@ -334,14 +326,6 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x82C19905B036bf4E329740989DCF6aE441AE26c1/logo.png"
-  },
-  {
-    "name": "CryptoCars",
-    "symbol": "CCAR",
-    "address": "0x50332bdca94673F33401776365b66CC4e81aC81d",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x50332bdca94673F33401776365b66CC4e81aC81d/logo.png"
   },
   {
     "name": "Ellipsis",
