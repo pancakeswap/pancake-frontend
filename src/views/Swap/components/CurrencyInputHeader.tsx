@@ -27,6 +27,7 @@ interface Props {
 }
 
 const CurrencyInputContainer = styled(Flex)`
+  flex-direction: column;
   align-items: center;
   padding: 24px;
   width: 100%;
@@ -53,21 +54,21 @@ const CurrencyInputHeader: React.FC<Props> = ({
 
   return (
     <CurrencyInputContainer>
-      <Flex width="100%" alignItems="flex-start" justifyContent="space-between">
+      <Flex width="100%" alignItems="center" justifyContent="space-between">
         {setIsChartDisplayed && (
           <ColoredIconButton onClick={toggleChartDisplayed} variant="text" scale="sm">
             {isChartDisplayed ? <ChartDisableIcon color="textSubtle" /> : <ChartIcon width="24px" color="textSubtle" />}
           </ColoredIconButton>
         )}
-        <Flex flexDirection="column" alignItems="center">
-          <Heading as="h2" mb="8px">
-            {title}
-          </Heading>
-          <Flex alignItems="center">
-            <Text color="textSubtle" fontSize="14px">
-              {subtitle}
-            </Text>
-          </Flex>
+        <Flex
+          flexDirection="column"
+          alignItems="center"
+          style={{
+            position: 'absolute',
+            left: 'calc(50% - 24px)',
+          }}
+        >
+          <Heading as="h2">{title}</Heading>
         </Flex>
         <Flex>
           <NotificationDot show={expertMode}>
@@ -80,6 +81,11 @@ const CurrencyInputHeader: React.FC<Props> = ({
             <RefreshIcon disabled={!hasAmount} color="textSubtle" width="27px" />
           </IconButton>
         </Flex>
+      </Flex>
+      <Flex alignItems="center">
+        <Text color="textSubtle" fontSize="14px">
+          {subtitle}
+        </Text>
       </Flex>
     </CurrencyInputContainer>
   )
