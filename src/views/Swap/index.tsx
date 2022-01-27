@@ -12,6 +12,7 @@ import {
   BottomDrawer,
   useMatchBreakpoints,
   ArrowUpDownIcon,
+  Skeleton,
 } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
@@ -19,6 +20,7 @@ import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
+import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Layout/Column'
@@ -94,6 +96,7 @@ export default function Swap() {
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
+  const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
@@ -354,6 +357,14 @@ export default function Swap() {
     'confirmSwapModal',
   )
 
+  const hasAmount = Boolean(parsedAmount)
+
+  const onRefreshPrice = React.useCallback(() => {
+    if (hasAmount) {
+      refreshBlockNumber()
+    }
+  }, [hasAmount, refreshBlockNumber])
+
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width="100%" justifyContent="center" position="relative">
@@ -395,6 +406,8 @@ export default function Swap() {
                   subtitle={t('Trade tokens in an instant')}
                   setIsChartDisplayed={setIsChartDisplayed}
                   isChartDisplayed={isChartDisplayed}
+                  hasAmount={hasAmount}
+                  onRefreshPrice={onRefreshPrice}
                 />
                 <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
                   <AutoColumn gap="sm">
@@ -469,11 +482,15 @@ export default function Swap() {
                           {Boolean(trade) && (
                             <>
                               <Label>{t('Price')}</Label>
-                              <TradePrice
-                                price={trade?.executionPrice}
-                                showInverted={showInverted}
-                                setShowInverted={setShowInverted}
-                              />
+                              {isLoading ? (
+                                <Skeleton width="100%" ml="8px" height="24px" />
+                              ) : (
+                                <TradePrice
+                                  price={trade?.executionPrice}
+                                  showInverted={showInverted}
+                                  setShowInverted={setShowInverted}
+                                />
+                              )}
                             </>
                           )}
                         </RowBetween>
