@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "nx run app:dev",
     "build:local": "nx build app",
-    "build": "nx build app --skip-nx-cache",
+    "build": "nx build app",
     "test": "nx run app:test",
     "test:config": "nx run app:test-config",
     "lint": "nx run app:lint",
