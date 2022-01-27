@@ -1771,5 +1771,6 @@
   "%quoteSymbol% per %baseSymbol%": "%quoteSymbol% per %baseSymbol%",
   "%baseSymbol% per %quoteSymbol%": "%baseSymbol% per %quoteSymbol%",
   "Confirm Mint": "Confirm Mint",
-  "Deposit PE tokens to receive USDT": "Deposit PE tokens to receive USDT"
+  "Deposit PE tokens to receive USDT": "Deposit PE tokens to receive USDT",
+  "Confirm Withdraw": "Confirm Withdraw"
 }
