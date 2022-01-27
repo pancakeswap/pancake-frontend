@@ -1,6 +1,6 @@
 {
   "extends": "@nrwl/workspace/presets/npm.json",
-  "npmScope": "@pancakeswap",
+  "npmScope": "pancakeswap",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
@@ -32,5 +32,9 @@
   },
   "affected": {
     "defaultBase": "develop"
+  },
+  "workspaceLayout": {
+    "libsDir": "packages",
+    "appsDir": "./"
   }
 }

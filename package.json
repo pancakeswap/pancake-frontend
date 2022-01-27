@@ -18,7 +18,8 @@
   "homepage": "https://github.com/pancakeswap/pancake-toolkit#readme",
   "scripts": {
     "dev": "nx run app:dev",
-    "build": "nx build app",
+    "build:local": "nx build app",
+    "build": "nx build app --skip-nx-cache",
     "test": "nx run app:test",
     "test:config": "nx run app:test-config",
     "lint": "nx run app:lint",
@@ -33,8 +34,7 @@
     "postinstall": "nx run app:typechain"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
-    "sharp": "^0.29.3"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",

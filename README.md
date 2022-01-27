@@ -26,6 +26,6 @@ yarn
 
 Run the web by `yarn dev`
 
-Build the web by `yarn build`
+Build the web by `yarn build:local`
 
 For packages, please refer to the readme of each project.

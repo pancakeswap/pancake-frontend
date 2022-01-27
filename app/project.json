@@ -17,6 +17,10 @@
       ]
     },
     "lint": {
+      "executor": "@nrwl/workspace:run-script",
+      "options": {
+        "script": "lint"
+      },
       "outputs": [],
       "dependsOn": [
         {
@@ -26,6 +30,10 @@
       ]
     },
     "test": {
+      "executor": "@nrwl/workspace:run-script",
+      "options": {
+        "script": "test"
+      },
       "outputs": [],
       "dependsOn": [
         {
