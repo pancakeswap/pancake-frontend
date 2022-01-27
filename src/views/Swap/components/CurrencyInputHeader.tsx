@@ -60,14 +60,7 @@ const CurrencyInputHeader: React.FC<Props> = ({
             {isChartDisplayed ? <ChartDisableIcon color="textSubtle" /> : <ChartIcon width="24px" color="textSubtle" />}
           </ColoredIconButton>
         )}
-        <Flex
-          flexDirection="column"
-          alignItems="center"
-          style={{
-            position: 'absolute',
-            left: 'calc(50% - 24px)',
-          }}
-        >
+        <Flex flexDirection="column" alignItems="flex-end" width="100%" mr={18}>
           <Heading as="h2">{title}</Heading>
         </Flex>
         <Flex>
