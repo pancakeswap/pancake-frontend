@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
-import { useFetchByBunnyIdAndUpdate, useGetAllBunniesByBunnyId } from 'state/nftMarket/hooks'
+import { useFetchByBunnyIdAndUpdate, useGetAllBunniesByBunnyId, useGetCollection } from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
@@ -30,6 +30,8 @@ interface IndividualPancakeBunnyPageProps {
 
 const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({ bunnyId }) => {
   const { account } = useWeb3React()
+  const collection = useGetCollection(pancakeBunniesAddress)
+  const totalBunnyCount = Number(collection.totalSupply)
   const [nothingForSaleBunny, setNothingForSaleBunny] = useState<NftToken>(null)
   const { lastUpdated, previousLastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const allBunnies = useGetAllBunniesByBunnyId(bunnyId)
@@ -46,11 +48,7 @@ const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({
   const cheapestBunnyFromOtherSellers = allBunniesFromOtherSellers[0]
   const prevBunnyId = usePreviousValue(bunnyId)
 
-  const {
-    data: distributionData,
-    total: totalBunnyCount,
-    isFetching: isFetchingDistribution,
-  } = useGetCollectionDistributionPB()
+  const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
 
   useFastRefreshEffect(() => {
     // Fetch first 30 NFTs on page load

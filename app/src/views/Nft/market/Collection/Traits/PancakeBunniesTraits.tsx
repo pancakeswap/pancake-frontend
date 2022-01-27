@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { formatNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import CollapsibleCard from 'components/CollapsibleCard'
+import { useGetCollection } from 'state/nftMarket/hooks'
 import { useGetLowestPriceFromBunnyId } from '../../hooks/useGetLowestPrice'
 import { BNBAmountLabel } from '../../components/CollectibleCard/styles'
 import { nftsBaseUrl } from '../../constants'
@@ -36,12 +37,10 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
 
 const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
   const [raritySort, setRaritySort] = useState<SortType>('asc')
+  const collection = useGetCollection(collectionAddress)
+  const totalBunnyCount = Number(collection.totalSupply)
   const { t } = useTranslation()
-  const {
-    data: distributionData,
-    total: totalBunnyCount,
-    isFetching: isFetchingDistribution,
-  } = useGetCollectionDistributionPB()
+  const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
   const { push } = useRouter()
 
   const sortedTokenList = useMemo(() => {
