@@ -63,7 +63,7 @@ export const TruncatedText = styled(Text).attrs({ ellipsis: true })`
   width: 220px;
 `
 
-const MintCallbackErrorInner = styled.div`
+const WithdrawCallbackErrorInner = styled.div`
   background-color: ${({ theme }) => `${theme.colors.failure}33`};
   border-radius: 1rem;
   display: flex;
@@ -81,7 +81,7 @@ const MintCallbackErrorInner = styled.div`
   }
 `
 
-const MintCallbackErrorInnerAlertTriangle = styled.div`
+const WithdrawCallbackErrorInnerAlertTriangle = styled.div`
   background-color: ${({ theme }) => `${theme.colors.failure}33`};
   display: flex;
   align-items: center;
@@ -92,13 +92,13 @@ const MintCallbackErrorInnerAlertTriangle = styled.div`
   height: 48px;
 `
 
-export function MintCallbackError({ error }: { error: string }) {
+export function WithdrawCallbackError({ error }: { error: string }) {
   return (
-    <MintCallbackErrorInner>
-      <MintCallbackErrorInnerAlertTriangle>
+    <WithdrawCallbackErrorInner>
+      <WithdrawCallbackErrorInnerAlertTriangle>
         <ErrorIcon width="24px" />
-      </MintCallbackErrorInnerAlertTriangle>
+      </WithdrawCallbackErrorInnerAlertTriangle>
       <p>{error}</p>
-    </MintCallbackErrorInner>
+    </WithdrawCallbackErrorInner>
   )
 }

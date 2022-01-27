@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Mint } from 'peronio-sdk'
+import { Withdraw } from 'peronio-sdk'
 import { Button, Text, AutoRenewIcon } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatExecutionPrice } from 'utils/prices'
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { StyledBalanceMaxMini, MintCallbackError } from './styleds'
+import { StyledBalanceMaxMini, WithdrawCallbackError } from './styleds'
 
-const MintModalFooterContainer = styled(AutoColumn)`
+const WithdrawModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
   padding: 16px;
   border-radius: ${({ theme }) => theme.radii.default};
@@ -17,15 +17,15 @@ const MintModalFooterContainer = styled(AutoColumn)`
   background-color: ${({ theme }) => theme.colors.background};
 `
 
-export default function MintModalFooter({
-  mint,
+export default function WithdrawModalFooter({
+  withdraw,
   onConfirm,
-  mintErrorMessage,
+  withdrawErrorMessage,
   disabledConfirm = false,
 }: {
-  mint: Mint
+  withdraw: Withdraw
   onConfirm: () => void
-  mintErrorMessage: string | undefined
+  withdrawErrorMessage: string | undefined
   disabledConfirm?: boolean
 }) {
   const { t } = useTranslation()
@@ -33,7 +33,7 @@ export default function MintModalFooter({
 
   return (
     <>
-      <MintModalFooterContainer>
+      <WithdrawModalFooterContainer>
         <RowBetween align="center">
           <Text fontSize="14px">{t('Price')}</Text>
           <Text
@@ -46,7 +46,7 @@ export default function MintModalFooter({
               paddingLeft: '10px',
             }}
           >
-            {formatExecutionPrice(mint, showInverted)}
+            {formatExecutionPrice(withdraw, showInverted)}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
               <AutoRenewIcon width="14px" />
             </StyledBalanceMaxMini>
@@ -64,9 +64,9 @@ export default function MintModalFooter({
             />
           </RowFixed>
           <RowFixed>
-            <Text fontSize="14px">{mint?.outputAmount.toSignificant(4)}</Text>
+            <Text fontSize="14px">{withdraw?.outputAmount.toSignificant(4)}</Text>
             <Text fontSize="14px" marginLeft="4px">
-              {mint.outputAmount.currency.symbol}
+              {withdraw.outputAmount.currency.symbol}
             </Text>
           </RowFixed>
         </RowBetween>
@@ -79,13 +79,13 @@ export default function MintModalFooter({
             />
           </RowFixed>
         </RowBetween>
-        <RowBetween>
+        {/* <RowBetween>
           <RowFixed>
             <Text fontSize="14px">{t('Liquidity Provider Fee')}</Text>
             <QuestionHelper
               text={
                 <>
-                  <Text mb="12px">{t('The vault charges a fee for minting')}</Text>
+                  <Text mb="12px">{t('The vault charges a fee for withdrawing')}</Text>
                   <Text>- {t('The markup is %amount% from the USDT amount', { amount: '5%' })}</Text>
                   <Text>- {t('This is already included in total USDT input above')}</Text>
                   <Text>- {t('This additional fee will increase the total Peronio collateral')}</Text>
@@ -94,9 +94,9 @@ export default function MintModalFooter({
               ml="4px"
             />
           </RowFixed>
-          <Text fontSize="14px">{`${mint.feeAmount} ${mint.inputAmount.currency.symbol}`}</Text>
-        </RowBetween>
-      </MintModalFooterContainer>
+          <Text fontSize="14px">{`${withdraw.feeAmount} ${withdraw.inputAmount.currency.symbol}`}</Text>
+        </RowBetween> */}
+      </WithdrawModalFooterContainer>
 
       <AutoRow>
         <Button
@@ -107,10 +107,10 @@ export default function MintModalFooter({
           id="confirm-swap-or-send"
           width="100%"
         >
-          {t('Confirm Mint')}
+          {t('Confirm Withdraw')}
         </Button>
 
-        {mintErrorMessage ? <MintCallbackError error={mintErrorMessage} /> : null}
+        {withdrawErrorMessage ? <WithdrawCallbackError error={withdrawErrorMessage} /> : null}
       </AutoRow>
     </>
   )

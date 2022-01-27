@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mint } from 'peronio-sdk'
+import { Withdraw } from 'peronio-sdk'
 import { Text, ArrowDownIcon } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import { AutoColumn } from 'components/Layout/Column'
@@ -8,13 +8,13 @@ import { RowBetween, RowFixed } from 'components/Layout/Row'
 import truncateHash from 'utils/truncateHash'
 import { TruncatedText } from './styleds'
 
-export default function MintModalHeader({ mint, recipient }: { mint: Mint; recipient: string | null }) {
+export default function WithdrawModalHeader({ withdraw, recipient }: { withdraw: Withdraw; recipient: string | null }) {
   const { t } = useTranslation()
 
-  // const amount = mint.inputAmount.toSignificant(6)
-  // const { symbol } = mint.outputAmount.currency
+  // const amount = withdraw.inputAmount.toSignificant(6)
+  // const { symbol } = withdraw.outputAmount.currency
 
-  // const [estimatedText, transactionRevertText] = mintInfoText.split(`${amount} ${symbol}`)
+  // const [estimatedText, transactionRevertText] = withdrawInfoText.split(`${amount} ${symbol}`)
 
   const truncatedRecipient = recipient ? truncateHash(recipient) : ''
 
@@ -28,14 +28,14 @@ export default function MintModalHeader({ mint, recipient }: { mint: Mint; recip
     <AutoColumn gap="md">
       <RowBetween align="flex-end">
         <RowFixed gap="0px">
-          <CurrencyLogo currency={mint.inputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
+          <CurrencyLogo currency={withdraw.inputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText fontSize="24px" color="primary">
-            {mint.inputAmount.toSignificant(6)}
+            {withdraw.inputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0px">
           <Text fontSize="24px" ml="10px">
-            {mint.inputAmount.currency.symbol}
+            {withdraw.inputAmount.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -44,14 +44,14 @@ export default function MintModalHeader({ mint, recipient }: { mint: Mint; recip
       </RowFixed>
       <RowBetween align="flex-end">
         <RowFixed gap="0px">
-          <CurrencyLogo currency={mint.outputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
+          <CurrencyLogo currency={withdraw.outputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText fontSize="24px" color="primary">
-            {mint.outputAmount.toSignificant(6)}
+            {withdraw.outputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0px">
           <Text fontSize="24px" ml="10px">
-            {mint.outputAmount.currency.symbol}
+            {withdraw.outputAmount.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>

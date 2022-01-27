@@ -2,7 +2,7 @@ import { useTranslation } from 'contexts/Localization'
 import useENS from 'hooks/ENS/useENS'
 import { useWithdrawExactIn, useWithdrawExactOut } from 'hooks/Withdrawals'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
+import { Currency, CurrencyAmount, Withdraw } from 'peronio-sdk'
 import { tryParseAmount, useSwapState } from 'state/swap/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { isAddress } from 'utils'
@@ -24,7 +24,7 @@ export function useWithdrawTokenInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
-  mint: Mint | undefined
+  withdraw: Withdraw | undefined
   inputError?: string
 } {
   const { account } = useActiveWeb3React()
@@ -59,11 +59,10 @@ export function useWithdrawTokenInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  // const mintOut = useWithdrawExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
-  // const mintIn = useWithdrawExactIn(isExactIn ? parsedAmount : null, inputCurrency)
+  const withdrawIn = useWithdrawExactIn(isExactIn ? parsedAmount : null, outputCurrency)
+  const withdrawOut = useWithdrawExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
 
-  // const mint = isExactIn ? mintIn : mintOut
-  const mint = null
+  const withdraw = isExactIn ? withdrawIn : withdrawOut
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -90,7 +89,7 @@ export function useWithdrawTokenInfo(): {
   }
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], mint?.inputAmount]
+  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], withdraw?.inputAmount]
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
@@ -100,7 +99,7 @@ export function useWithdrawTokenInfo(): {
     currencies,
     currencyBalances,
     parsedAmount,
-    mint: mint ?? undefined,
+    withdraw: withdraw ?? undefined,
     inputError,
   }
 }

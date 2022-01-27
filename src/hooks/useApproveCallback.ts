@@ -126,7 +126,7 @@ export function useApproveCallbackFromMint(mint?: Mint) {
 
 // wraps useApproveCallback in the context of a swap
 export function useApproveCallbackFromWithdraw(withdraw?: Withdraw) {
-  const amountToApprove = withdraw.inputAmount
+  const amountToApprove = withdraw?.inputAmount
 
   return useApproveCallback(amountToApprove, PERONIO_ADDRESS)
 }

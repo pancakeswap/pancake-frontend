@@ -4,13 +4,13 @@ import { Text, AutoRenewIcon } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import { StyledBalanceMaxMini } from './styleds'
 
-interface MintPriceProps {
+interface WithdrawPriceProps {
   price?: Price
   showInverted: boolean
   setShowInverted: (showInverted: boolean) => void
 }
 
-export default function MintPrice({ price, showInverted, setShowInverted }: MintPriceProps) {
+export default function WithdrawPrice({ price, showInverted, setShowInverted }: WithdrawPriceProps) {
   const { t } = useTranslation()
 
   const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)

@@ -1,4 +1,4 @@
-import { CurrencyAmount, Fraction, JSBI, Percent, Price, TokenAmount, Trade, Mint } from 'peronio-sdk'
+import { CurrencyAmount, Fraction, JSBI, Percent, Price, TokenAmount, Trade, Mint, Withdraw } from 'peronio-sdk'
 import {
   BLOCKED_PRICE_IMPACT_NON_EXPERT,
   ALLOWED_PRICE_IMPACT_HIGH,
@@ -68,7 +68,7 @@ export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3
   return 0
 }
 
-export function formatExecutionPrice(trade?: Trade | Mint, inverted?: boolean): string {
+export function formatExecutionPrice(trade?: Trade | Mint | Withdraw, inverted?: boolean): string {
   if (!trade) {
     return ''
   }

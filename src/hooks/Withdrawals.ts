@@ -3,7 +3,7 @@
 // import { formatUnits } from '@ethersproject/units'
 import { BigNumber } from 'ethers'
 import { mainnetTokens } from 'config/constants/tokens'
-import { Currency, CurrencyAmount, Mint, Percent, Price } from 'peronio-sdk'
+import { Currency, CurrencyAmount, Withdraw, Percent, Price } from 'peronio-sdk'
 import JSBI from 'jsbi'
 import { MARKUP_DECIMALS } from 'config/constants'
 import { useEffect, useMemo, useState } from 'react'
@@ -23,12 +23,12 @@ import { usePeronioContract } from './useContract'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 /**
- * Hook for Minting exact IN
+ * Hook for Withdrawing exact IN
  * @param currencyAmountIn
  * @param currencyOut
  * @returns
  */
-export function useWithdrawExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Mint | null {
+export function useWithdrawExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Withdraw | null {
   const peronioContract = usePeronioContract()
   const DECIMALS = mainnetTokens.pe.decimals
 
@@ -53,23 +53,19 @@ export function useWithdrawExactIn(currencyAmountIn?: CurrencyAmount, currencyOu
       return
     }
     async function fetchBuyingPrice(): Promise<BigNumber> {
-      return peronioContract.buyingPrice()
+      return peronioContract.collateralRatio()
     }
 
-    fetchBuyingPrice()
-      .then((buyingPrice) => {
-        setPrice(
-          new Price(
-            currencyOut,
-            currencyAmountIn.currency,
-            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
-            buyingPrice.toString(),
-          ),
-        )
-      })
-      .catch((e) => {
-        console.error(e)
-      })
+    fetchBuyingPrice().then((collateralRatio) => {
+      setPrice(
+        new Price(
+          currencyAmountIn.currency,
+          currencyOut,
+          JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
+          collateralRatio.toString(),
+        ),
+      )
+    })
   }, [peronioContract, DECIMALS, currencyOut, currencyAmountIn])
 
   return useMemo(() => {
@@ -77,19 +73,17 @@ export function useWithdrawExactIn(currencyAmountIn?: CurrencyAmount, currencyOu
     if (!price || !markup || !currencyAmountIn) {
       return null
     }
-
-    // return Mint.exactOut(currencyAmountOut: CurrencyAmount, price: Price, markup: Percent)
-    return Mint.exactIn(currencyAmountIn, price, markup)
+    return Withdraw.exactIn(currencyAmountIn, price)
   }, [price, markup, currencyAmountIn])
 }
 
 /**
- * Hook for Minting exact OUT
+ * Hook for Withdrawing exact OUT
  * @param currencyAmountOut
  * @param currencyIn
  * @returns
  */
-export function useWithdrawExactOut(currencyAmountOut?: CurrencyAmount, currencyIn?: Currency): Mint | null {
+export function useWithdrawExactOut(currencyAmountOut?: CurrencyAmount, currencyIn?: Currency): Withdraw | null {
   const peronioContract = usePeronioContract()
   const DECIMALS = mainnetTokens.pe.decimals
 
@@ -114,17 +108,17 @@ export function useWithdrawExactOut(currencyAmountOut?: CurrencyAmount, currency
       return
     }
     async function fetchBuyingPrice(): Promise<BigNumber> {
-      return peronioContract.buyingPrice()
+      return peronioContract.collateralRatio()
     }
 
     fetchBuyingPrice()
-      .then((buyingPrice) => {
+      .then((collateralRatio) => {
         setPrice(
           new Price(
+            currencyIn, // PE
             currencyAmountOut.currency,
-            currencyIn,
             JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
-            buyingPrice.toString(),
+            collateralRatio.toString(),
           ),
         )
       })
@@ -139,7 +133,6 @@ export function useWithdrawExactOut(currencyAmountOut?: CurrencyAmount, currency
       return null
     }
 
-    // return Mint.exactOut(currencyAmountOut: CurrencyAmount, price: Price, markup: Percent)
-    return Mint.exactOut(currencyAmountOut, price, markup)
+    return Withdraw.exactOut(currencyAmountOut, price)
   }, [price, currencyAmountOut, markup])
 }

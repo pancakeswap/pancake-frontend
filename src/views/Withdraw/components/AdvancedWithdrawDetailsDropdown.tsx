@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import useLastTruthy from 'hooks/useLast'
-import { AdvancedMintDetails, AdvancedMintDetailsProps } from './AdvancedMintDetails'
+import { AdvancedWithdrawDetails, AdvancedWithdrawDetailsProps } from './AdvancedWithdrawDetails'
 
 const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   margin-top: ${({ show }) => (show ? '16px' : 0)};
@@ -16,12 +16,12 @@ const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   transition: transform 300ms ease-in-out;
 `
 
-export default function AdvancedMintDetailsDropdown({ mint, ...rest }: AdvancedMintDetailsProps) {
-  const lastMint = useLastTruthy(mint)
+export default function AdvancedWithdrawDetailsDropdown({ withdraw, ...rest }: AdvancedWithdrawDetailsProps) {
+  const lastWithdraw = useLastTruthy(withdraw)
 
   return (
-    <AdvancedDetailsFooter show={Boolean(mint)}>
-      <AdvancedMintDetails {...rest} mint={mint ?? lastMint ?? undefined} />
+    <AdvancedDetailsFooter show={Boolean(withdraw)}>
+      <AdvancedWithdrawDetails {...rest} withdraw={withdraw ?? lastWithdraw ?? undefined} />
     </AdvancedDetailsFooter>
   )
 }
