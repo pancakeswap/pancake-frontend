@@ -220,7 +220,8 @@ const Hero = () => {
   } = useLottery()
 
   const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+  console.log('amountCollectedInCake => ', amountCollectedInCake.toNumber(), cakePriceBusd.toNumber())
+  const prizeInBusd = amountCollectedInCake // .times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
@@ -231,7 +232,7 @@ const Hero = () => {
           {prizeInBusd.isNaN() ? (
             <Skeleton my="7px" height={60} width={190} />
           ) : (
-            <PrizeTotalBalance fontSize="64px" bold prefix="$" value={prizeTotal} mb="8px" decimals={0} />
+            <PrizeTotalBalance fontSize="64px" bold unit=" LOTT" value={prizeTotal} mb="8px" decimals={0} />
           )}
           <Heading mb="32px" scale="lg" color="#ffffff">
             {t('in prizes!')}

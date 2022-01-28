@@ -5026,6 +5026,16 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.bake,
     quoteToken: serializedTokens.wbnb,
   },
+  {
+    pid: 43,
+    lpSymbol: 'BNB-WINE LP',
+    lpAddresses: {
+      97: '0x6c8f4DB8308Da6b87186b32D637736dDBBe251bF',
+      56: '',
+    },
+    token: serializedTokens.wbnb,
+    quoteToken: serializedTokens.cake,
+  },
 ]
 
 export default farms

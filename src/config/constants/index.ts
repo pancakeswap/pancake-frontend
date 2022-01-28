@@ -1,7 +1,7 @@
 import { ChainId, JSBI, Percent, Token } from '@pancakeswap/sdk'
 import { mainnetTokens, testnetTokens } from './tokens'
 
-export const ROUTER_ADDRESS = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
+export const ROUTER_ADDRESS = '0xD99D1c33F9fC3444f8101754aBC46c52416550D1'
 
 // a list of tokens by chain
 type ChainTokenList = {
@@ -90,11 +90,11 @@ export const ONE_HUNDRED_PERCENT = new Percent('1')
 
 // SDN OFAC addresses
 export const BLOCKED_ADDRESSES: string[] = [
-  '0x7F367cC41522cE07553e823bf3be79A889DEbe1B',
-  '0xd882cFc20F52f2599D84b8e8D58C7FB62cfE344b',
-  '0x901bb9583b24D97e995513C6778dc6888AB6870e',
-  '0xA7e5d5A720f06526557c513402f2e6B5fA20b008',
-  '0x8576aCC5C05D6Ce88f4e49bf65BdF0C62F91353C',
+  // '0x7F367cC41522cE07553e823bf3be79A889DEbe1B',
+  // '0xd882cFc20F52f2599D84b8e8D58C7FB62cfE344b',
+  // '0x901bb9583b24D97e995513C6778dc6888AB6870e',
+  // '0xA7e5d5A720f06526557c513402f2e6B5fA20b008',
+  // '0x8576aCC5C05D6Ce88f4e49bf65BdF0C62F91353C',
 ]
 
 export { default as farmsConfig } from './farms'

@@ -67,7 +67,7 @@ const NextDrawCard = () => {
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
   const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+  const prizeInBusd = amountCollectedInCake //.times(cakePriceBusd)
   const endTimeMs = parseInt(endTime, 10) * 1000
   const endDate = new Date(endTimeMs)
   const isLotteryOpen = status === LotteryStatus.OPEN
@@ -92,12 +92,13 @@ const NextDrawCard = () => {
             textAlign={['center', null, null, 'left']}
             lineHeight="1"
             bold
-            prefix="~$"
-            value={getBalanceNumber(prizeInBusd)}
+            prefix="~"
+            unit=" LOTT"
+            value={getBalanceNumber(amountCollectedInCake)}
             decimals={0}
           />
         )}
-        {prizeInBusd.isNaN() ? (
+        {/* {prizeInBusd.isNaN() ? (
           <Skeleton my="2px" height={14} width={90} />
         ) : (
           <Balance
@@ -108,7 +109,7 @@ const NextDrawCard = () => {
             value={getBalanceNumber(amountCollectedInCake)}
             decimals={0}
           />
-        )}
+        )} */}
       </>
     )
   }

@@ -8,6 +8,10 @@ import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { usePhishingBannerManager } from 'state/user/hooks'
+import useTokenBalance from 'hooks/useTokenBalance'
+import tokens from 'config/constants/tokens'
+import { getFullDisplayBalance } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import config from './config/config'
 import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
@@ -16,6 +20,8 @@ import { footerLinks } from './config/footerConfig'
 
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
+  const { balance: userCake, fetchStatus } = useTokenBalance(tokens.cake.address)
+  const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
   const cakePriceUsd = usePriceCakeBusd()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
@@ -37,7 +43,7 @@ const Menu = (props) => {
       currentLang={currentLanguage.code}
       langs={languageList}
       setLang={setLanguage}
-      cakePriceUsd={cakePriceUsd.toNumber()}
+      cakePriceUsd={new BigNumber(userCakeDisplayBalance)}
       links={config(t)}
       subLinks={activeMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
       footerLinks={footerLinks(t)}

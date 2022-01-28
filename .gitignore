@@ -40,3 +40,6 @@ src/config/abi/types
 
 # Sentry
 .sentryclirc
+
+# Local Netlify folder
+.netlify

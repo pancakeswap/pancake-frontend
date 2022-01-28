@@ -43,7 +43,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
   let prizeInBusd = new BigNumber(NaN)
   if (lotteryNodeData) {
     const { amountCollectedInCake } = lotteryNodeData
-    prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+    prizeInBusd = amountCollectedInCake //.times(cakePriceBusd)
   }
 
   const getTotalUsers = (): string => {
@@ -65,20 +65,20 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
           <Skeleton my="7px" height={40} width={200} />
         ) : (
           <Heading scale="xl" lineHeight="1" color="secondary">
-            ~${formatNumber(getBalanceNumber(prizeInBusd), 0, 0)}
+            {formatNumber(getBalanceNumber(prizeInBusd), 0, 0)} LOTT
           </Heading>
         )}
-        {prizeInBusd.isNaN() ? (
+        {/* {prizeInBusd.isNaN() ? (
           <Skeleton my="2px" height={14} width={90} />
         ) : (
           <Balance
             fontSize="14px"
             color="textSubtle"
-            unit=" CAKE"
+            unit=" LOTT"
             value={getBalanceNumber(lotteryNodeData?.amountCollectedInCake)}
             decimals={0}
           />
-        )}
+        )} */}
       </>
     )
   }
