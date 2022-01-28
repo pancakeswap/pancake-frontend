@@ -1967,6 +1967,14 @@ export const mainnetTokens = defineTokens({
     'Ertha Token',
     'https://ertha.io/',
   ),
+  raca: new Token(
+    MAINNET,
+    '0x12BB890508c125661E03b09EC06E404bc9289040',
+    18,
+    'RACA',
+    'Radio Caca V2',
+    'https://www.radiocaca.com/#/home',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
