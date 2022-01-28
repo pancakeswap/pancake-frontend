@@ -184,22 +184,8 @@ export interface ProfileState {
   }
 }
 
-export type TeamResponse = {
-  0: string
-  1: string
-  2: string
-  3: string
-  4: boolean
-}
-
 export type TeamsById = {
   [key: string]: Team
-}
-
-export interface TeamsState {
-  isInitialized: boolean
-  isLoading: boolean
-  data: TeamsById
 }
 
 export interface Achievement {
@@ -551,7 +537,6 @@ export interface State {
   pools: PoolsState
   predictions: PredictionsState
   profile: ProfileState
-  teams: TeamsState
   lottery: LotteryState
   nftMarket: NftMarketState
 }
