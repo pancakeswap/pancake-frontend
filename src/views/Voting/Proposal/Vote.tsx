@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button, Card, CardBody, CardHeader, CardProps, Heading, Radio, Text, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useAppDispatch } from 'state'
 import { Proposal } from 'state/types'
-import { fetchVotes } from 'state/voting'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -12,6 +10,7 @@ import CastVoteModal from '../components/CastVoteModal'
 
 interface VoteProps extends CardProps {
   proposal: Proposal
+  onSuccess?: () => void
 }
 
 interface State {
@@ -38,16 +37,17 @@ const ChoiceText = styled.div`
   width: 0;
 `
 
-const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
+const Vote: React.FC<VoteProps> = ({ proposal, onSuccess, ...props }) => {
   const [vote, setVote] = useState<State>(null)
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
   const handleSuccess = async () => {
     toastSuccess(t('Vote cast!'))
-    dispatch(fetchVotes({ proposalId: proposal.id, block: Number(proposal.snapshot) }))
+    if (onSuccess) {
+      onSuccess()
+    }
   }
 
   const [presentCastVoteModal] = useModal(

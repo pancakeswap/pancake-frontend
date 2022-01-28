@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
-import { useAppDispatch } from 'state'
-import { fetchProposals } from 'state/voting'
-import { useGetProposalLoadingStatus, useGetProposals } from 'state/voting/hooks'
+import useSWR from 'swr'
 import { ProposalState, ProposalType } from 'state/types'
+import { getProposals } from 'state/voting/helpers'
 import { FetchStatus } from 'config/constants/types'
 import { filterProposalsByState, filterProposalsByType } from '../../helpers'
 import ProposalsLoading from './ProposalsLoading'
@@ -25,17 +24,10 @@ const Proposals = () => {
     proposalType: ProposalType.CORE,
     filterState: ProposalState.ACTIVE,
   })
-  const proposalStatus = useGetProposalLoadingStatus()
-  const proposals = useGetProposals()
-  const dispatch = useAppDispatch()
 
   const { proposalType, filterState } = state
-  const isLoading = proposalStatus === FetchStatus.Fetching
-  const isFetched = proposalStatus === FetchStatus.Fetched
 
-  useEffect(() => {
-    dispatch(fetchProposals({ first: 1000, state: filterState }))
-  }, [filterState, dispatch])
+  const { status, data } = useSWR(['proposals', filterState], async () => getProposals(1000, 0, filterState))
 
   const handleProposalTypeChange = (newProposalType: ProposalType) => {
     setState((prevState) => ({
@@ -51,7 +43,7 @@ const Proposals = () => {
     }))
   }
 
-  const filteredProposals = filterProposalsByState(filterProposalsByType(proposals, proposalType), filterState)
+  const filteredProposals = filterProposalsByState(filterProposalsByType(data, proposalType), filterState)
 
   return (
     <Container py="40px">
@@ -66,14 +58,18 @@ const Proposals = () => {
       </Heading>
       <Card>
         <TabMenu proposalType={proposalType} onTypeChange={handleProposalTypeChange} />
-        <Filters filterState={filterState} onFilterChange={handleFilterChange} isLoading={isLoading} />
-        {isLoading && <ProposalsLoading />}
-        {isFetched &&
+        <Filters
+          filterState={filterState}
+          onFilterChange={handleFilterChange}
+          isLoading={status !== FetchStatus.Fetched}
+        />
+        {status !== FetchStatus.Fetched && <ProposalsLoading />}
+        {status === FetchStatus.Fetched &&
           filteredProposals.length > 0 &&
           filteredProposals.map((proposal) => {
             return <ProposalRow key={proposal.id} proposal={proposal} />
           })}
-        {isFetched && filteredProposals.length === 0 && (
+        {status === FetchStatus.Fetched && filteredProposals.length === 0 && (
           <Flex alignItems="center" justifyContent="center" p="32px">
             <Heading as="h5">{t('No proposals found')}</Heading>
           </Flex>
