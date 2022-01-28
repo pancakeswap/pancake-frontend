@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 507,
+    lpSymbol: 'RACA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x8e744ec2795c8b836689d1b4ebe1489204357dac',
+    },
+    token: serializedTokens.raca,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 506,
     lpSymbol: 'ERTHA-BNB LP',
     lpAddresses: {
