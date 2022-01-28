@@ -25,7 +25,7 @@ const config = (t: ContextApi['t']) => {
       description: [
         t('In Phase 2 of the NFT Marketplace, collections must be whitelisted before they may be listed.'),
         t('We are now accepting applications from NFT collection owners seeking to list their collections.'),
-        t('Please use the link below to contact us to apply for the whitelist!'),
+        t('Please use the link below to contact us to apply to be whitelisted!'),
       ],
     },
     {
