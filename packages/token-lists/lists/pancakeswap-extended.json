@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-01-26T18:35:11.847Z",
+  "timestamp": "2022-01-28T10:18:47.963Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 65
+    "patch": 66
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1603,6 +1603,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x95a1199EBA84ac5f19546519e287d43D2F0E1b41.png"
+    },
+    {
+      "name": "Radio Caca V2",
+      "symbol": "RACA",
+      "address": "0x12BB890508c125661E03b09EC06E404bc9289040",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x12BB890508c125661E03b09EC06E404bc9289040.png"
     },
     {
       "name": "Ramp DEFI",

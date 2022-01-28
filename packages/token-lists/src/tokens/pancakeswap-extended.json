@@ -2206,5 +2206,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xd07e82440A395f3F3551b42dA9210CD1Ef4f8B24.png"
+  },
+  {
+    "name": "Radio Caca V2",
+    "symbol": "RACA",
+    "address": "0x12BB890508c125661E03b09EC06E404bc9289040",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x12BB890508c125661E03b09EC06E404bc9289040.png"
   }
 ]
