@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props: {
         initialReduxState: store.getState(),
       },
-      revalidate: 60 * 60 * 12, // 12 hours
+      revalidate: 60 * 60 * 6, // 6 hours
     }
   } catch (error) {
     return {

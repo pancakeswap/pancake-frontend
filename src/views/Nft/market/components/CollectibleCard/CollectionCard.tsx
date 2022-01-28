@@ -1,5 +1,6 @@
-import { Card, CardBody, Flex, Heading, Image, ProfileAvatar } from '@pancakeswap/uikit'
+import { Card, CardBody, Flex, Heading, ProfileAvatar } from '@pancakeswap/uikit'
 import React from 'react'
+import Image from 'next/image'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled, { css } from 'styled-components'
 
@@ -42,9 +43,7 @@ const StyledHotCollectionCard = styled(Card)<{ disabled?: boolean }>`
 `
 
 const StyledImage = styled(Image)`
-  img {
-    border-radius: 4px;
-  }
+  border-radius: 4px;
 `
 
 const CollectionCard: React.FC<HotCollectionCardProps> = ({

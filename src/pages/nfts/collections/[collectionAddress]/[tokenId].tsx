@@ -58,7 +58,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         [unstable_serialize(['nft', nft.collectionAddress, nft.tokenId])]: nft,
       },
     },
-    revalidate: 60 * 60 * 12, // 12 hours
+    revalidate: 60 * 60 * 6, // 6 hours
   }
 }
 
