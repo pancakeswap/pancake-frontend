@@ -1,3 +1,4 @@
+import { LinkExternal } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
 const config = (t: ContextApi['t']) => {
@@ -24,9 +25,10 @@ const config = (t: ContextApi['t']) => {
       title: t('How can I list my NFT collection on the Market?'),
       description: [
         t('In Phase 2 of the NFT Marketplace, collections must be whitelisted before they may be listed.'),
-        t(
-          'We are now accepting applications from NFT collection owners seeking to list their collections. Please apply here: https://docs.pancakeswap.finance/contact-us/nft-market-applications',
-        ),
+        t('We are now accepting applications from NFT collection owners seeking to list their collections.'),
+        <LinkExternal href="https://docs.pancakeswap.finance/contact-us/nft-market-applications">
+          {t('Please apply here')}
+        </LinkExternal>,
       ],
     },
     {

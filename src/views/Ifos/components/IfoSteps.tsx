@@ -135,7 +135,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
                 </Text>
                 <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
                 <Text fontSize="12px" color="textSubtle">
-                  {creditDollarValue ? (
+                  {creditDollarValue !== undefined ? (
                     <Balance
                       value={creditDollarValue}
                       fontSize="12px"

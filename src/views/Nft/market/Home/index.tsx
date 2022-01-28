@@ -113,7 +113,7 @@ const Home = () => {
       </PageSection>
       <Gradient p="64px 0">
         <SectionsWithFoldableText header={t('FAQs')} config={config(t)} m="auto" />
-        <LinkExternal href="https://docs.pancakeswap.finance/contact-us/nft-market-applications" m="auto">
+        <LinkExternal href="https://docs.pancakeswap.finance/contact-us/nft-market-applications" mx="auto" mt="16px">
           {t('Apply to NFT Market!')}
         </LinkExternal>
       </Gradient>
