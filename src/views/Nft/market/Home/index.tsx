@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Button, Heading, Flex } from '@pancakeswap/uikit'
+import { Box, Button, Heading, Flex, LinkExternal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
@@ -113,6 +113,9 @@ const Home = () => {
       </PageSection>
       <Gradient p="64px 0">
         <SectionsWithFoldableText header={t('FAQs')} config={config(t)} m="auto" />
+        <LinkExternal href="https://docs.pancakeswap.finance/contact-us/nft-market-applications" m="auto">
+          {t('Apply to NFT Market!')}
+        </LinkExternal>
       </Gradient>
     </>
   )
