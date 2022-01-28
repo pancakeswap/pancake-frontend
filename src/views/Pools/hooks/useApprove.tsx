@@ -37,15 +37,15 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
             {t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol })}
           </ToastDescriptionWithTx>,
         )
-        setRequestedApproval(false)
       } else {
         // user rejected tx or didn't go thru
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setRequestedApproval(false)
       }
+      setRequestedApproval(false)
     } catch (e) {
       logError(e)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      setRequestedApproval(false)
     }
   }, [
     account,
@@ -73,20 +73,25 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
   const cakeContract = useCake()
 
   const handleApprove = async () => {
-    const tx = await callWithGasPrice(cakeContract, 'approve', [vaultPoolContract.address, MaxUint256])
-    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-    setRequestedApproval(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
-      toastSuccess(
-        t('Contract Enabled'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' })}
-        </ToastDescriptionWithTx>,
-      )
-      setLastUpdated()
+    try {
+      const tx = await callWithGasPrice(cakeContract, 'approve', [vaultPoolContract.address, MaxUint256])
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+      setRequestedApproval(true)
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        toastSuccess(
+          t('Contract Enabled'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' })}
+          </ToastDescriptionWithTx>,
+        )
+        setLastUpdated()
+      } else {
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      }
       setRequestedApproval(false)
-    } else {
+    } catch (e) {
+      logError(e)
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setRequestedApproval(false)
     }
