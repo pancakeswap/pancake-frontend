@@ -34,12 +34,13 @@ const BlockCountryModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       <ModalBody p="24px" maxWidth="400px">
         <Text as="p" color="textSubtle" mb="24px">
           {t(
-            'Please note that by UTC 00:00 28th February 2022, access will not be available to users with IP address from the following countries:',
+            'Please note that by UTC 00:00 1st March 2022, access will not be available to users with IP address from the following countries:',
           )}
           <br />
           <br />
-          Belarus, Myanmar, Cote D&apos;Ivoire, Cuba, Democratic Republic of Congo, Iran, Iraq, Liberia, North Korea,
-          Sudan, Syria, Zimbabwe.
+          {t(
+            "Belarus, Myanmar, Cote D'Ivoire (Ivory Coast), Cuba, Democratic Republic of Congo, Iran, Iraq, Liberia, North Korea, Sudan, Syria and Zimbabwe.",
+          )}
         </Text>
         <label htmlFor="block-checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
           <Flex alignItems="center">
