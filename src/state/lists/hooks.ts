@@ -136,10 +136,14 @@ function useCombinedTokenMapFromUrls(urls: string[] | undefined): TokenAddressMa
 }
 
 // filter out unsupported lists
-export function useActiveListUrls(): string[] | undefined {
-  return useSelector<AppState, AppState['lists']['activeListUrls']>((state) => state.lists.activeListUrls)?.filter(
-    (url) => !UNSUPPORTED_LIST_URLS.includes(url),
-  )
+export function useActiveListUrls(includeDefaultLists = false): string[] | undefined {
+  const defaultList = includeDefaultLists
+    ? DEFAULT_LIST_OF_LISTS.filter((url) => !UNSUPPORTED_LIST_URLS.includes(url))
+    : []
+  const stateList = useSelector<AppState, AppState['lists']['activeListUrls']>(
+    (state) => state.lists.activeListUrls,
+  )?.filter((url) => !UNSUPPORTED_LIST_URLS.includes(url))
+  return [...new Set(defaultList.concat(stateList ?? []))]
 }
 
 export function useInactiveListUrls(): string[] {
@@ -149,8 +153,8 @@ export function useInactiveListUrls(): string[] {
 }
 
 // get all the tokens from active lists, combine with local default tokens
-export function useCombinedActiveList(): TokenAddressMap {
-  const activeListUrls = useActiveListUrls()
+export function useCombinedActiveList(includeDefaultLists = false): TokenAddressMap {
+  const activeListUrls = useActiveListUrls(includeDefaultLists)
   const activeTokens = useCombinedTokenMapFromUrls(activeListUrls)
   const defaultTokenMap = listToTokenMap(DEFAULT_TOKEN_LIST)
   return combineMaps(activeTokens, defaultTokenMap)
