@@ -3,7 +3,8 @@ description: File a bug/issue
 title: '[BUG] <title>'
 labels: [Bug, Triage]
 assignees:
-  - Chef-Chungus
+  - Chef-Cheems
+  - chef-jojo
 body:
   - type: checkboxes
     attributes:
@@ -18,12 +19,14 @@ body:
       description: Which page or product does this relate to?
       multiple: false
       options:
+        - Trade
         - Farms
         - Syrup Pools
         - Lottery
         - Prediction
         - IFO
         - Info
+        - NFT
         - Other
     validations:
       required: true
@@ -66,8 +69,8 @@ body:
           - **Brower**: N/A
           - **Wallet**: Metamask app
       value: |
-        - Device: 
-        - OS: 
+        - Device:
+        - OS:
         - Browser:
         - Wallet:
       render: markdown
