@@ -58,8 +58,8 @@ export function useDefaultTokens(): { [address: string]: Token } {
   return useTokensFromMap(defaultList, false)
 }
 
-export function useAllTokens(): { [address: string]: Token } {
-  const allTokens = useCombinedActiveList()
+export function useAllTokens(includeDefaultLists = false): { [address: string]: Token } {
+  const allTokens = useCombinedActiveList(includeDefaultLists)
   return useTokensFromMap(allTokens, true)
 }
 
