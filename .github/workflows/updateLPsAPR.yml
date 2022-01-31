@@ -25,6 +25,9 @@ jobs:
       - name: Fetch and save LP APR data
         run: yarn updateLPsAPR
 
+      - name: Format
+        run: yarn format:write
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
