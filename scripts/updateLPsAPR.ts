@@ -1,4 +1,5 @@
 import fs from 'fs'
+import os from 'os'
 import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
@@ -115,7 +116,7 @@ const fetchAndUpdateLPsAPR = async () => {
     allAprs = { ...allAprs, ...aprs }
   }
 
-  fs.writeFile(`src/config/constants/lpAprs.json`, JSON.stringify(allAprs, null, 2), (err) => {
+  fs.writeFile(`src/config/constants/lpAprs.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
     if (err) throw err
     console.info(` ✅ - lpAprs.json has been updated!`)
   })
