@@ -72,11 +72,8 @@ const DepositModal: React.FC<DepositModalProps> = ({
   })
 
   const annualRoi = cakePrice.times(interestBreakdown[3])
-  const formattedAnnualRoi = formatNumber(
-    annualRoi.toNumber(),
-    annualRoi.gt(10000) ? 0 : 2,
-    annualRoi.gt(10000) ? 0 : 2,
-  )
+  const annualRoiAsNumber = annualRoi.toNumber()
+  const formattedAnnualRoi = formatNumber(annualRoiAsNumber, annualRoi.gt(10000) ? 0 : 2, annualRoi.gt(10000) ? 0 : 2)
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -125,7 +122,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         <Text mr="8px" color="textSubtle">
           {t('Annual ROI at current rates')}:
         </Text>
-        {Number.isFinite(annualRoi) ? (
+        {Number.isFinite(annualRoiAsNumber) ? (
           <AnnualRoiContainer
             alignItems="center"
             onClick={() => {
