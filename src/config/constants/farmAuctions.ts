@@ -595,6 +595,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenName: 'BabySwap',
     projectSite: 'https://home.babyswap.finance/',
   },
+  {
+    account: '0x73e60b46908319B17f1De07C5d38437BFf684E50',
+    farmName: 'GEAR-BNB',
+    tokenAddress: '0xb4404DaB7C0eC48b428Cf37DeC7fb628bcC41B36',
+    quoteToken: tokens.wbnb,
+    tokenName: 'MetaGear',
+    projectSite: 'https://metagear.game/',
+  },
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
