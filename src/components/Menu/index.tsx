@@ -6,22 +6,23 @@ import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import useTheme from 'hooks/useTheme'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+// import { usePriceCakeBusd } from 'state/farms/hooks'
 import { usePhishingBannerManager } from 'state/user/hooks'
 import useTokenBalance from 'hooks/useTokenBalance'
 import tokens from 'config/constants/tokens'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 import config from './config/config'
 import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { footerLinks } from './config/footerConfig'
-import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
+
 
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
-  const { balance: userCake, fetchStatus } = useTokenBalance(tokens.cake.address)
+  const { balance: userCake } = useTokenBalance(tokens.cake.address)
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
   // const cakePriceUsd = usePriceCakeBusd()
 
@@ -34,7 +35,7 @@ const Menu = (props) => {
 
   const [lottPriceUsd, setLottPriceUsd] = useState(0)
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       const lottPrice = await getLOTTPriceInUSD()
       setLottPriceUsd(lottPrice)
     })()
