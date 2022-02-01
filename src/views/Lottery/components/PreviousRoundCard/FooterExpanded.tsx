@@ -7,9 +7,10 @@ import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
 import { getGraphLotteries } from 'state/lottery/getLotteriesData'
-import { formatNumber, getBalanceNumber } from 'utils/formatBalance'
+import { convertToDecimals, formatNumber, getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import RewardBrackets from '../RewardBrackets'
+import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 
 const NextDrawWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.background};
@@ -28,7 +29,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
   const { t } = useTranslation()
   const [fetchedLotteryGraphData, setFetchedLotteryGraphData] = useState<LotteryRoundGraphEntity>()
   const lotteryGraphDataFromState = useGetLotteryGraphDataById(lotteryId)
-  const cakePriceBusd = usePriceCakeBusd()
+  // const cakePriceBusd = usePriceCakeBusd()
 
   useEffect(() => {
     const getGraphData = async () => {
@@ -40,11 +41,11 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
     }
   }, [lotteryGraphDataFromState, lotteryId])
 
-  let prizeInBusd = new BigNumber(NaN)
-  if (lotteryNodeData) {
-    const { amountCollectedInCake } = lotteryNodeData
-    prizeInBusd = amountCollectedInCake //.times(cakePriceBusd)
-  }
+  // let prizeInBusd = new BigNumber(NaN)
+  // if (lotteryNodeData) {
+  //   const { amountCollectedInCake } = lotteryNodeData
+  //   prizeInBusd = amountCollectedInCake //.times(cakePriceBusd)
+  // }
 
   const getTotalUsers = (): string => {
     if (!lotteryGraphDataFromState && fetchedLotteryGraphData) {
@@ -58,6 +59,18 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
     return null
   }
 
+  const [prizeInBusd, setPrizeInBusd] = useState(new BigNumber(NaN))
+
+  useEffect(() => {
+    ;(async () => {
+      if (lotteryNodeData) {
+        const { amountCollectedInCake } = lotteryNodeData
+        const lottPrice = await getLOTTPriceInUSD()
+        setPrizeInBusd(amountCollectedInCake.times(lottPrice))
+      }
+    })()
+  }, [prizeInBusd])
+
   const getPrizeBalances = () => {
     return (
       <>
@@ -65,10 +78,10 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
           <Skeleton my="7px" height={40} width={200} />
         ) : (
           <Heading scale="xl" lineHeight="1" color="secondary">
-            {formatNumber(getBalanceNumber(prizeInBusd), 0, 0)} LOTT
+            ${Number(convertToDecimals(prizeInBusd))}
           </Heading>
         )}
-        {/* {prizeInBusd.isNaN() ? (
+        {prizeInBusd.isNaN() ? (
           <Skeleton my="2px" height={14} width={90} />
         ) : (
           <Balance
@@ -78,7 +91,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
             value={getBalanceNumber(lotteryNodeData?.amountCollectedInCake)}
             decimals={0}
           />
-        )} */}
+        )}
       </>
     )
   }

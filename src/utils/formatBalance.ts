@@ -22,6 +22,10 @@ export const getBalanceNumber = (balance: BigNumber, decimals = 18) => {
   return getBalanceAmount(balance, decimals).toNumber()
 }
 
+export const convertToDecimals = (balance: BigNumber, decimals = 18) => {
+  return getBalanceAmount(balance, decimals).toFixed(4)
+}
+
 export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, displayDecimals?: number) => {
   return getBalanceAmount(balance, decimals).toFixed(displayDecimals)
 }

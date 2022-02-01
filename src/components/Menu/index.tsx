@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Menu as UikitMenu } from '@pancakeswap/uikit'
@@ -17,18 +17,28 @@ import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { footerLinks } from './config/footerConfig'
+import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   const { balance: userCake, fetchStatus } = useTokenBalance(tokens.cake.address)
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
-  const cakePriceUsd = usePriceCakeBusd()
+  // const cakePriceUsd = usePriceCakeBusd()
+
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
   const [showPhishingWarningBanner] = usePhishingBannerManager()
 
   const activeMenuItem = getActiveMenuItem({ menuConfig: config(t), pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
+
+  const [lottPriceUsd, setLottPriceUsd] = useState(0)
+  useEffect(() => {
+    ;(async () => {
+      const lottPrice = await getLOTTPriceInUSD()
+      setLottPriceUsd(lottPrice)
+    })()
+  })
 
   return (
     <UikitMenu
@@ -43,7 +53,7 @@ const Menu = (props) => {
       currentLang={currentLanguage.code}
       langs={languageList}
       setLang={setLanguage}
-      cakePriceUsd={new BigNumber(userCakeDisplayBalance)}
+      cakePriceUsd={new BigNumber(userCakeDisplayBalance).multipliedBy(lottPriceUsd)}
       links={config(t)}
       subLinks={activeMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
       footerLinks={footerLinks(t)}

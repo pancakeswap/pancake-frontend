@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Box, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { convertToDecimals, getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import { TicketPurchaseCard } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
+import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
+import BigNumber from 'bignumber.js'
 
 const floatingStarsLeft = keyframes`
   from {
@@ -219,11 +221,29 @@ const Hero = () => {
     isTransitioning,
   } = useLottery()
 
-  const cakePriceBusd = usePriceCakeBusd()
-  console.log('amountCollectedInCake => ', amountCollectedInCake.toNumber(), cakePriceBusd.toNumber())
-  const prizeInBusd = amountCollectedInCake // .times(cakePriceBusd)
-  const prizeTotal = getBalanceNumber(prizeInBusd)
+  // const cakePriceBusd = usePriceCakeBusd()
+  // console.log('amountCollectedInCake => ', amountCollectedInCake.toNumber(), cakePriceBusd.toNumber())
+  // const prizeInBusd = amountCollectedInCake // .times(cakePriceBusd)
+
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
+
+  const [totalPrize, setTotalPrize] = useState(0)
+  useEffect(() => {
+    ;(async () => {
+      const lottPrice = await getLOTTPriceInUSD()
+      const prizeInBusd = amountCollectedInCake.times(lottPrice)
+      const prizeTotal = getBalanceNumber(prizeInBusd)
+      setTotalPrize(prizeTotal)
+    })()
+  })
+
+  const [prizeInBusd, setPrizeInBusd] = useState(new BigNumber(NaN))
+  useEffect(() => {
+    ;(async () => {
+      const lottPrice = await getLOTTPriceInUSD()
+      setPrizeInBusd(amountCollectedInCake.times(lottPrice))
+    })()
+  }, [prizeInBusd])
 
   const getHeroHeading = () => {
     if (status === LotteryStatus.OPEN) {
@@ -232,7 +252,14 @@ const Hero = () => {
           {prizeInBusd.isNaN() ? (
             <Skeleton my="7px" height={60} width={190} />
           ) : (
-            <PrizeTotalBalance fontSize="64px" bold unit=" LOTT" value={prizeTotal} mb="8px" decimals={0} />
+            <PrizeTotalBalance
+              fontSize="64px"
+              bold
+              prefix="$"
+              value={Number(convertToDecimals(prizeInBusd))}
+              mb="8px"
+              decimals={Number(convertToDecimals(prizeInBusd)) > 0 ? 4 : 0}
+            />
           )}
           <Heading mb="32px" scale="lg" color="#ffffff">
             {t('in prizes!')}

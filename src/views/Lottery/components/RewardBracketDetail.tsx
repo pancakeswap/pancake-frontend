@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import Balance from 'components/Balance'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 
 interface RewardBracketDetailProps {
   cakeAmount: BigNumber
@@ -24,7 +25,7 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
   isLoading,
 }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = usePriceCakeBusd()
+  // const cakePriceBusd = usePriceCakeBusd()
 
   const getRewardText = () => {
     const numberMatch = rewardBracket + 1
@@ -36,6 +37,15 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
     }
     return t('Match first %numberMatch%', { numberMatch })
   }
+
+  const [prizeInBusd, setPrizeInBusd] = useState(0)
+
+  useEffect(() => {
+    ;(async () => {
+      const lottPrice = await getLOTTPriceInUSD()
+      setPrizeInBusd(lottPrice)
+    })()
+  }, [prizeInBusd])
 
   return (
     <Flex flexDirection="column">
@@ -61,8 +71,8 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
             fontSize="12px"
             color="textSubtle"
             prefix="~$"
-            value={getBalanceNumber(cakeAmount.times(cakePriceBusd))}
-            decimals={0}
+            value={getBalanceNumber(cakeAmount.times(prizeInBusd))}
+            decimals={4}
           />
         )}
         {isHistoricRound && cakeAmount && (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   Card,
@@ -19,12 +19,14 @@ import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { convertToDecimals, formatNumber, getBalanceAmount, getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import ViewTicketsModal from './ViewTicketsModal'
 import BuyTicketsButton from './BuyTicketsButton'
 import { dateTimeOptions } from '../helpers'
 import RewardBrackets from './RewardBrackets'
+import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
+import BigNumber from 'bignumber.js'
 
 const Grid = styled.div`
   display: grid;
@@ -66,12 +68,22 @@ const NextDrawCard = () => {
   const [isExpanded, setIsExpanded] = useState(false)
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
-  const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = amountCollectedInCake //.times(cakePriceBusd)
+  // const cakePriceBusd = usePriceCakeBusd()
+
   const endTimeMs = parseInt(endTime, 10) * 1000
   const endDate = new Date(endTimeMs)
   const isLotteryOpen = status === LotteryStatus.OPEN
   const userTicketCount = userTickets?.tickets?.length || 0
+
+  const [prizeInBusd, setPrizeInBusd] = useState(new BigNumber(NaN))
+  useEffect(() => {
+    ;(async () => {
+      const lottPrice = await getLOTTPriceInUSD()
+      setPrizeInBusd(amountCollectedInCake.times(lottPrice))
+      const amount = getBalanceAmount(amountCollectedInCake.times(lottPrice)).toFixed(4)
+      console.log('amountCollectedInCake.times(lottPrice', amount)
+    })()
+  }, [prizeInBusd])
 
   const getPrizeBalances = () => {
     if (status === LotteryStatus.CLOSE || status === LotteryStatus.CLAIMABLE) {
@@ -86,30 +98,33 @@ const NextDrawCard = () => {
         {prizeInBusd.isNaN() ? (
           <Skeleton my="7px" height={40} width={160} />
         ) : (
-          <Balance
-            fontSize="40px"
-            color="secondary"
-            textAlign={['center', null, null, 'left']}
-            lineHeight="1"
-            bold
-            prefix="~"
-            unit=" LOTT"
-            value={getBalanceNumber(amountCollectedInCake)}
-            decimals={0}
-          />
+          <Heading scale="xl" lineHeight="1" color="secondary">
+            ~${Number(convertToDecimals(prizeInBusd))}
+          </Heading>
+          // <Balance
+          //   fontSize="40px"
+          //   color="secondary"
+          //   textAlign={['center', null, null, 'left']}
+          //   lineHeight="1"
+          //   bold
+          //   prefix="~"
+          //   unit=" LOTT"
+          //   value={Number(convertToDecimals(prizeInBusd))}
+          //   decimals={0}
+          // />
         )}
-        {/* {prizeInBusd.isNaN() ? (
+        {prizeInBusd.isNaN() ? (
           <Skeleton my="2px" height={14} width={90} />
         ) : (
           <Balance
             fontSize="14px"
             color="textSubtle"
             textAlign={['center', null, null, 'left']}
-            unit=" CAKE"
+            unit=" LOTT"
             value={getBalanceNumber(amountCollectedInCake)}
             decimals={0}
           />
-        )} */}
+        )}
       </>
     )
   }
