@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex, Link } from '@pancakeswap/uikit'
+import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
@@ -346,14 +346,14 @@ const Farms: React.FC = ({ children }) => {
         </Heading>
         <Flex flex="1" height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
           <HelpButton />
-          <Link href="/farms/auction">
+          <NextLinkFromReactRouter to="/farms/auction" id="lottery-pot-banner">
             <Button px={['14px', null, null, null, '35px']} variant="secondary">
               <ButtonText bold fontSize="16px">
                 {t('Community Auctions')}
               </ButtonText>
               <ArrowForwardIcon color="primary" />
             </Button>
-          </Link>
+          </NextLinkFromReactRouter>
         </Flex>
       </PageHeader>
       <Page>
