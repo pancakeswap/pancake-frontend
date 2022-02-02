@@ -51,7 +51,7 @@ function MyApp(props: AppProps) {
   const store = useStore(pageProps.initialReduxState)
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       const prc = await getLOTTPriceInUSD()
       setPrice(prc)
     })()
