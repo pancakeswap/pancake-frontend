@@ -10,6 +10,7 @@ import { formatBigNumber } from 'utils/formatBalance'
 import { useProfileContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 
 interface PauseProfilePageProps extends InjectedModalProps {
@@ -18,7 +19,6 @@ interface PauseProfilePageProps extends InjectedModalProps {
 
 const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const [isConfirming, setIsConfirming] = useState(false)
   const { profile } = useProfile()
   const {
     costs: { numberCakeToReactivate },
@@ -27,17 +27,17 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSucces
   const pancakeProfileContract = useProfileContract()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { account } = useWeb3React()
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const dispatch = useAppDispatch()
 
   const handleChange = () => setIsAcknowledged(!isAcknowledged)
 
   const handleDeactivateProfile = async () => {
-    const tx = await callWithGasPrice(pancakeProfileContract, 'pauseProfile')
-    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-    setIsConfirming(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(pancakeProfileContract, 'pauseProfile')
+    })
+    if (receipt?.status) {
       // Re-fetch profile
       await dispatch(fetchProfile(account))
       toastSuccess(t('Profile Paused!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
@@ -45,9 +45,6 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSucces
         onSuccess()
       }
       onDismiss()
-    } else {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setIsConfirming(false)
     }
   }
 

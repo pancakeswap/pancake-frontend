@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Contract } from '@ethersproject/contracts'
 import { MaxUint256 } from '@ethersproject/constants'
@@ -8,14 +8,14 @@ import { useTranslation } from 'contexts/Localization'
 import { useCake, useSousChef, useVaultPoolContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { VaultKey } from 'state/types'
-import { logError } from 'utils/sentry'
 import { useSWRContract, UseSWRContractKey } from 'hooks/useSWRContract'
 
 export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol) => {
-  const [requestedApproval, setRequestedApproval] = useState(false)
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -23,33 +23,17 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
   const sousChefContract = useSousChef(sousId)
 
   const handleApprove = useCallback(async () => {
-    try {
-      setRequestedApproval(true)
-      const tx = await callWithGasPrice(lpContract, 'approve', [sousChefContract.address, MaxUint256])
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      const receipt = await tx.wait()
-
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(lpContract, 'approve', [sousChefContract.address, MaxUint256])
+    })
+    if (receipt?.status) {
+      toastSuccess(
+        t('Contract Enabled'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol })}
+        </ToastDescriptionWithTx>,
+      )
       dispatch(updateUserAllowance(sousId, account))
-      if (receipt.status) {
-        toastSuccess(
-          t('Contract Enabled'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol })}
-          </ToastDescriptionWithTx>,
-        )
-      } else {
-        toastError(
-          t('Error'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-          </ToastDescriptionWithTx>,
-        )
-      }
-    } catch (error) {
-      logError(error)
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-    } finally {
-      setRequestedApproval(false)
     }
   }, [
     account,
@@ -59,54 +43,39 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
     sousId,
     earningTokenSymbol,
     t,
-    toastError,
     toastSuccess,
     callWithGasPrice,
+    fetchWithCatchTxError,
   ])
 
-  return { handleApprove, requestedApproval }
+  return { handleApprove, pendingTx }
 }
 
 // Approve CAKE auto pool
 export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) => {
-  const [requestedApproval, setRequestedApproval] = useState(false)
   const { t } = useTranslation()
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(vaultKey)
   const { callWithGasPrice } = useCallWithGasPrice()
   const cakeContract = useCake()
 
   const handleApprove = async () => {
-    try {
-      const tx = await callWithGasPrice(cakeContract, 'approve', [vaultPoolContract.address, MaxUint256])
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      setRequestedApproval(true)
-      const receipt = await tx.wait()
-      if (receipt.status) {
-        toastSuccess(
-          t('Contract Enabled'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' })}
-          </ToastDescriptionWithTx>,
-        )
-        setLastUpdated()
-      } else {
-        toastError(
-          t('Error'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-          </ToastDescriptionWithTx>,
-        )
-      }
-    } catch (error) {
-      logError(error)
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-    } finally {
-      setRequestedApproval(false)
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(cakeContract, 'approve', [vaultPoolContract.address, MaxUint256])
+    })
+    if (receipt?.status) {
+      toastSuccess(
+        t('Contract Enabled'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' })}
+        </ToastDescriptionWithTx>,
+      )
+      setLastUpdated()
     }
   }
 
-  return { handleApprove, requestedApproval }
+  return { handleApprove, pendingTx }
 }
 
 export const useCheckVaultApprovalStatus = (vaultKey: VaultKey) => {

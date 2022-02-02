@@ -13,8 +13,8 @@ import { useAppDispatch } from 'state'
 import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useLotteryV2Contract } from 'hooks/useContract'
-import { logError } from 'utils/sentry'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
@@ -27,9 +27,9 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const dispatch = useAppDispatch()
   const { maxNumberTicketsPerBuyOrClaim, currentLotteryId } = useLottery()
   const gasPrice = useGasPrice()
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
-  const [pendingTx, setPendingTx] = useState(false)
   const [pendingBatchClaims, setPendingBatchClaims] = useState(
     Math.ceil(
       roundsToClaim[activeClaimIndex].ticketsWithUnclaimedRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber(),
@@ -86,34 +86,19 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
 
   const handleClaim = async () => {
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
-    try {
-      const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets], {
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets], {
         gasPrice,
       })
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      setPendingTx(true)
-      const receipt = await tx.wait()
-      if (receipt.status) {
-        toastSuccess(
-          t('Prizes Collected!'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId })}
-          </ToastDescriptionWithTx>,
-        )
-        handleProgressToNextClaim()
-      } else {
-        toastError(
-          t('Error'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-          </ToastDescriptionWithTx>,
-        )
-      }
-    } catch (error) {
-      logError(error)
-      toastError(t('Error'), t('%error% - Please try again.', { error: (error as Error).message }))
-    } finally {
-      setPendingTx(false)
+    })
+    if (receipt?.status) {
+      toastSuccess(
+        t('Prizes Collected!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId })}
+        </ToastDescriptionWithTx>,
+      )
+      handleProgressToNextClaim()
     }
   }
 
@@ -122,60 +107,45 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     const ticketBatches = getTicketBatches(ticketIds, brackets)
     const transactionsToFire = ticketBatches.length
     const receipts = []
-    setPendingTx(true)
     // eslint-disable-next-line no-restricted-syntax
     for (const ticketBatch of ticketBatches) {
-      try {
-        /* eslint-disable no-await-in-loop */
-        const tx = await callWithEstimateGas(
+      /* eslint-disable no-await-in-loop */
+      const receipt = await fetchWithCatchTxError(() => {
+        return callWithEstimateGas(
           lotteryContract,
           'claimTickets',
           [lotteryId, ticketBatch.ticketIds, ticketBatch.brackets],
           { gasPrice },
         )
-        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-        const receipt = await tx.wait()
-        /* eslint-enable no-await-in-loop */
-        if (receipt.status) {
-          // One transaction within batch has succeeded
-          receipts.push(receipt)
-          setPendingBatchClaims(transactionsToFire - receipts.length)
+      })
+      if (receipt?.status) {
+        // One transaction within batch has succeeded
+        receipts.push(receipt)
+        setPendingBatchClaims(transactionsToFire - receipts.length)
 
-          // More transactions are to be done within the batch. Issue toast to give user feedback.
-          if (receipts.length !== transactionsToFire) {
-            toastSuccess(
-              t('Prizes Collected!'),
-              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                {t(
-                  'Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction',
-                  {
-                    claimNum: receipts.length,
-                    claimTotal: transactionsToFire,
-                    lotteryId,
-                  },
-                )}
-              </ToastDescriptionWithTx>,
-            )
-          }
-        } else {
-          toastError(
-            t('Error'),
+        // More transactions are to be done within the batch. Issue toast to give user feedback.
+        if (receipts.length !== transactionsToFire) {
+          toastSuccess(
+            t('Prizes Collected!'),
             <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+              {t(
+                'Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction',
+                {
+                  claimNum: receipts.length,
+                  claimTotal: transactionsToFire,
+                  lotteryId,
+                },
+              )}
             </ToastDescriptionWithTx>,
           )
         }
-      } catch (error) {
-        logError(error)
-        toastError(t('Error'), t('%error% - Please try again.', { error: (error as Error).message }))
-        setPendingTx(false)
+      } else {
         break
       }
     }
 
     // Batch is finished
     if (receipts.length === transactionsToFire) {
-      setPendingTx(false)
       toastSuccess(
         t('Prizes Collected!'),
         t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),

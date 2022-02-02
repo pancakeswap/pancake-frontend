@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import {
   ModalContainer,
@@ -26,11 +26,11 @@ import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useGetHistory, useGetIsFetchingHistory } from 'state/predictions/hooks'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { formatNumber } from 'utils/formatBalance'
-import { logError } from 'utils/sentry'
 import { getPayout } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
@@ -77,10 +77,10 @@ const calculateClaimableRounds = (history): ClaimableRounds => {
 }
 
 const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ onDismiss, onSuccess }) => {
-  const [isPendingTx, setIsPendingTx] = useState(false)
   const { account } = useWeb3React()
   const { t } = useTranslation()
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract()
   const bnbBusdPrice = useBNBBusdPrice()
@@ -99,50 +99,30 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
   }, [account, history, dispatch])
 
   const handleClick = async () => {
-    try {
-      const tx = await callWithGasPrice(predictionsContract, 'claim', [epochs])
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      setIsPendingTx(true)
-      const receipt = await tx.wait()
-      if (receipt.status) {
-        // Immediately mark rounds as claimed
-        dispatch(
-          markAsCollected(
-            epochs.reduce((accum, epoch) => {
-              return { ...accum, [epoch]: true }
-            }, {}),
-          ),
-        )
-
-        if (onSuccess) {
-          await onSuccess()
-        }
-
-        toastSuccess(
-          t('Winnings collected!'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your prizes have been sent to your wallet')}
-          </ToastDescriptionWithTx>,
-        )
-        onDismiss()
-      } else {
-        toastError(
-          t('Error'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-          </ToastDescriptionWithTx>,
-        )
-      }
-    } catch (error) {
-      console.error('Unable to claim winnings', error)
-      logError(error)
-      toastError(
-        t('Error'),
-        (error as any)?.data?.message ||
-          t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(predictionsContract, 'claim', [epochs])
+    })
+    if (receipt?.status) {
+      // Immediately mark rounds as claimed
+      dispatch(
+        markAsCollected(
+          epochs.reduce((accum, epoch) => {
+            return { ...accum, [epoch]: true }
+          }, {}),
+        ),
       )
-    } finally {
-      setIsPendingTx(false)
+
+      if (onSuccess) {
+        await onSuccess()
+      }
+
+      toastSuccess(
+        t('Winnings collected!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your prizes have been sent to your wallet')}
+        </ToastDescriptionWithTx>,
+      )
+      onDismiss()
     }
   }
 

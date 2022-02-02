@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCake } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useProfile } from 'state/profile/hooks'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { formatBigNumber } from 'utils/formatBalance'
-import { logError } from 'utils/sentry'
 import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
 import { UseEditProfileResponse } from './reducer'
 
@@ -16,37 +14,21 @@ interface ApproveCakePageProps extends InjectedModalProps {
 }
 
 const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss }) => {
-  const [isApproving, setIsApproving] = useState(false)
   const { profile } = useProfile()
   const { t } = useTranslation()
+  const { fetchWithCatchTxError, loading: isApproving } = useCatchTxError()
   const {
     costs: { numberCakeToUpdate, numberCakeToReactivate },
   } = useGetProfileCosts()
   const cakeContract = useCake()
-  const { toastSuccess, toastError } = useToast()
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
   const handleApprove = async () => {
-    try {
-      const tx = await cakeContract.approve(getPancakeProfileAddress(), cost.mul(2).toString())
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      setIsApproving(true)
-      const receipt = await tx.wait()
-      if (receipt.status) {
-        goToChange()
-      } else {
-        toastError(
-          t('Error'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-          </ToastDescriptionWithTx>,
-        )
-      }
-    } catch (error) {
-      logError(error)
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-    } finally {
-      setIsApproving(false)
+    const receipt = await fetchWithCatchTxError(() => {
+      return cakeContract.approve(getPancakeProfileAddress(), cost.mul(2).toString())
+    })
+    if (receipt?.status) {
+      goToChange()
     }
   }
 
