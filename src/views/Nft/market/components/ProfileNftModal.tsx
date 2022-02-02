@@ -62,7 +62,7 @@ const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => 
             </Button>
             <HorizontalDivider />
             <LinkExternal p="0px" height="16px" href={getBscScanLinkForNft(nft.collectionAddress, nft.tokenId)}>
-              BscScan
+              PolygonScan
             </LinkExternal>
           </Flex>
         </Flex>

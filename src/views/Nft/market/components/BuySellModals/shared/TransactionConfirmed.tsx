@@ -18,7 +18,7 @@ const TransactionConfirmed: React.FC<TransactionConfirmedProps> = ({ txHash, onD
       <Flex p="16px" flexDirection="column" alignItems="center" justifyContent="space-between" height="150px">
         <ArrowUpIcon width="64px" height="64px" color="primary" />
         <Text bold>{t('Transaction Confirmed')}</Text>
-        <LinkExternal href={getBscScanLink(txHash, 'transaction', chainId)}>{t('View on BscScan')}</LinkExternal>
+        <LinkExternal href={getBscScanLink(txHash, 'transaction', chainId)}>{t('View on PolygonScan')}</LinkExternal>
       </Flex>
       <Divider />
       <Flex px="16px" pb="16px" justifyContent="center">

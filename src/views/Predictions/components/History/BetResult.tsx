@@ -134,7 +134,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
         {bet.claimed && bet.claimedHash && (
           <Flex justifyContent="center">
             <LinkExternal href={getBscScanLink(bet.claimedHash, 'transaction')} mb="16px">
-              {t('View on BscScan')}
+              {t('View on PolygonScan')}
             </LinkExternal>
           </Flex>
         )}

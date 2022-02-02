@@ -106,7 +106,7 @@ const PoolPage: React.FC<RouteComponentProps<{ address: string }>> = ({
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
               <LinkExternal mr="8px" href={getBscScanLink(address, 'address')}>
-                {t('View on BscScan')}
+                {t('View on PolygonScan')}
               </LinkExternal>
               <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} />
             </Flex>

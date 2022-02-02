@@ -67,7 +67,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
               <Flex justifyContent="space-between" width="100%">
                 <Text mr="4px">{address}</Text>
                 <Link href={getBscScanLink(token.address, 'address', chainId)} external>
-                  ({t('View on BscScan')})
+                  ({t('View on PolygonScan')})
                 </Link>
               </Flex>
             )}

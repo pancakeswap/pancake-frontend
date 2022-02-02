@@ -81,7 +81,7 @@ const SellStage: React.FC<SellStageProps> = ({
             height="16px"
             href={getBscScanLinkForNft(nftToSell.collectionAddress, nftToSell.tokenId)}
           >
-            BscScan
+            PolygonScan
           </LinkExternal>
         </Flex>
       </Flex>

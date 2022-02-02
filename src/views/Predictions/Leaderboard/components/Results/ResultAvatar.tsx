@@ -57,7 +57,7 @@ const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
     >
       <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
       <SubMenuItem as={Link} href={getBscScanLink(user.id, 'address')} bold={false} color="text" external>
-        {t('View on BscScan')}
+        {t('View on PolygonScan')}
       </SubMenuItem>
     </SubMenu>
   )
