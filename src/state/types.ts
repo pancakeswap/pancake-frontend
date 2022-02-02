@@ -212,6 +212,11 @@ export interface Achievement {
   points: number
 }
 
+export interface AchievementState {
+  achievements: Achievement[]
+  achievementFetchStatus: FetchStatus
+}
+
 // Block
 
 export interface BlockState {
