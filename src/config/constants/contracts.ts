@@ -9,7 +9,7 @@ export default {
   },
   // 0x8510f39D5ac6369CE02053131a9A2E9FCBF16B2e LOTT LOTTERY
   lotteryV2: {
-    97: '0x87711688C5497041a3A6A0EEF1Cc8bb8B53Fa51a',
+    97: '0x8510f39D5ac6369CE02053131a9A2E9FCBF16B2e',
     56: '',
   },
   multiCall: {
