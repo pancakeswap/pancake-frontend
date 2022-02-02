@@ -16529,10 +16529,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-peronio-core@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/peronio-core/-/peronio-core-0.6.0.tgz#054bf98ae954bdc44dba210631989d82a7056350"
-  integrity sha512-dt07NmJawZ18cmGDFAUscgkOxG2lXQQFxaNympxDKapBGMKkpiC3V2DR+TaSALEcD/EDz30QUj2ULL7poT/GdA==
+peronio-core@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/peronio-core/-/peronio-core-0.8.0.tgz#04c18a8d0ea8d457ba94dd399fcfeecea7aa4bbe"
+  integrity sha512-/ap3hUvZQBzR/bkGWEtWUUHUG5Wqau7CcDOmJlePs6tBe3MO4IkAgPpo4p1/x4MpKaf4HA/E5qJwDucLNwvT6w==
 
 peronio-sdk@^0.8.4:
   version "0.8.4"
