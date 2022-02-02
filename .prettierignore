@@ -3,3 +3,4 @@ build
 src/config/abi/types
 .next
 *.json
+*.eslintrc
