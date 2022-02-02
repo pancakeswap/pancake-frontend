@@ -25,6 +25,7 @@ import CheckPrizesSection from './components/CheckPrizesSection'
 import HowToPlay from './components/HowToPlay'
 import useShowMoreUserHistory from './hooks/useShowMoreUserRounds'
 import { PageMeta } from '../../components/Layout/Page'
+import { useAppContext } from 'pages/_app'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);

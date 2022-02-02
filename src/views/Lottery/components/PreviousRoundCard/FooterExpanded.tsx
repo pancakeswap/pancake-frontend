@@ -11,6 +11,7 @@ import { convertToDecimals, formatNumber, getBalanceNumber } from 'utils/formatB
 import Balance from 'components/Balance'
 import RewardBrackets from '../RewardBrackets'
 import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
+import { useAppContext } from 'pages/_app'
 
 const NextDrawWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.background};
@@ -30,6 +31,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
   const [fetchedLotteryGraphData, setFetchedLotteryGraphData] = useState<LotteryRoundGraphEntity>()
   const lotteryGraphDataFromState = useGetLotteryGraphDataById(lotteryId)
   // const cakePriceBusd = usePriceCakeBusd()
+  const { usdPrice } = useAppContext()
 
   useEffect(() => {
     const getGraphData = async () => {
@@ -41,11 +43,11 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
     }
   }, [lotteryGraphDataFromState, lotteryId])
 
-  // let prizeInBusd = new BigNumber(NaN)
-  // if (lotteryNodeData) {
-  //   const { amountCollectedInCake } = lotteryNodeData
-  //   prizeInBusd = amountCollectedInCake //.times(cakePriceBusd)
-  // }
+  let prizeInBusd = new BigNumber(NaN)
+  if (lotteryNodeData) {
+    const { amountCollectedInCake } = lotteryNodeData
+    prizeInBusd = amountCollectedInCake.times(usdPrice)
+  }
 
   const getTotalUsers = (): string => {
     if (!lotteryGraphDataFromState && fetchedLotteryGraphData) {
@@ -59,17 +61,17 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
     return null
   }
 
-  const [prizeInBusd, setPrizeInBusd] = useState(new BigNumber(NaN))
+  // const [prizeInBusd, setPrizeInBusd] = useState(new BigNumber(NaN))
 
-  useEffect(() => {
-    ;(async () => {
-      if (lotteryNodeData) {
-        const { amountCollectedInCake } = lotteryNodeData
-        const lottPrice = await getLOTTPriceInUSD()
-        setPrizeInBusd(amountCollectedInCake.times(lottPrice))
-      }
-    })()
-  }, [prizeInBusd])
+  // useEffect(() => {
+  //   ;(async () => {
+  //     if (lotteryNodeData) {
+  //       const { amountCollectedInCake } = lotteryNodeData
+  //       const lottPrice = await getLOTTPriceInUSD()
+  //       setPrizeInBusd(amountCollectedInCake.times(lottPrice))
+  //     }
+  //   })()
+  // }, [prizeInBusd])
 
   const getPrizeBalances = () => {
     return (

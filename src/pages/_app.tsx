@@ -1,3 +1,4 @@
+import React, { createContext, Fragment, useContext, useEffect, useState } from 'react'
 import { ResetCSS } from '@pancakeswap/uikit'
 import Script from 'next/script'
 import BigNumber from 'bignumber.js'
@@ -11,18 +12,21 @@ import useSentryUser from 'hooks/useSentryUser'
 import useUserAgent from 'hooks/useUserAgent'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import React, { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { useStore, persistor } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { NextPage } from 'next'
 import { useFetchProfile } from 'state/profile/hooks'
+import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 import { Blocklist, Updaters } from '..'
 import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
+
+export const AppContext = createContext({ usdPrice: 0 })
+export const useAppContext = () => useContext(AppContext)
 
 // This config is required for number formatting
 BigNumber.config({
@@ -42,8 +46,16 @@ function GlobalHooks() {
 }
 
 function MyApp(props: AppProps) {
+  const [price, setPrice] = useState(0)
   const { pageProps } = props
   const store = useStore(pageProps.initialReduxState)
+
+  useEffect(() => {
+    ;(async () => {
+      const prc = await getLOTTPriceInUSD()
+      setPrice(prc)
+    })()
+  }, [])
 
   return (
     <>
@@ -77,7 +89,9 @@ function MyApp(props: AppProps) {
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
-            <App {...props} />
+            <AppContext.Provider value={{ usdPrice: price }}>
+              <App {...props} />
+            </AppContext.Provider>
           </PersistGate>
         </Blocklist>
       </Providers>

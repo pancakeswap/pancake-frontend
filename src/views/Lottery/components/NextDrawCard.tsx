@@ -27,6 +27,7 @@ import { dateTimeOptions } from '../helpers'
 import RewardBrackets from './RewardBrackets'
 import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 import BigNumber from 'bignumber.js'
+import { useAppContext } from 'pages/_app'
 
 const Grid = styled.div`
   display: grid;
@@ -56,6 +57,7 @@ const NextDrawWrapper = styled.div`
 `
 
 const NextDrawCard = () => {
+  const { usdPrice } = useAppContext()
   const {
     t,
     currentLanguage: { locale },
@@ -68,22 +70,12 @@ const NextDrawCard = () => {
   const [isExpanded, setIsExpanded] = useState(false)
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
-  // const cakePriceBusd = usePriceCakeBusd()
+  const prizeInBusd = amountCollectedInCake.times(usdPrice)
 
   const endTimeMs = parseInt(endTime, 10) * 1000
   const endDate = new Date(endTimeMs)
   const isLotteryOpen = status === LotteryStatus.OPEN
   const userTicketCount = userTickets?.tickets?.length || 0
-
-  const [prizeInBusd, setPrizeInBusd] = useState(new BigNumber(NaN))
-  useEffect(() => {
-    ;(async () => {
-      const lottPrice = await getLOTTPriceInUSD()
-      setPrizeInBusd(amountCollectedInCake.times(lottPrice))
-      const amount = getBalanceAmount(amountCollectedInCake.times(lottPrice)).toFixed(4)
-      console.log('amountCollectedInCake.times(lottPrice', amount)
-    })()
-  }, [prizeInBusd])
 
   const getPrizeBalances = () => {
     if (status === LotteryStatus.CLOSE || status === LotteryStatus.CLAIMABLE) {
@@ -98,20 +90,19 @@ const NextDrawCard = () => {
         {prizeInBusd.isNaN() ? (
           <Skeleton my="7px" height={40} width={160} />
         ) : (
-          <Heading scale="xl" lineHeight="1" color="secondary">
-            ~${Number(convertToDecimals(prizeInBusd))}
-          </Heading>
-          // <Balance
-          //   fontSize="40px"
-          //   color="secondary"
-          //   textAlign={['center', null, null, 'left']}
-          //   lineHeight="1"
-          //   bold
-          //   prefix="~"
-          //   unit=" LOTT"
-          //   value={Number(convertToDecimals(prizeInBusd))}
-          //   decimals={0}
-          // />
+          // <Heading scale="xl" lineHeight="1" color="secondary">
+          //   ~${Number(convertToDecimals(prizeInBusd))}
+          // </Heading>
+          <Balance
+            fontSize="40px"
+            color="secondary"
+            textAlign={['center', null, null, 'left']}
+            lineHeight="1"
+            bold
+            prefix="~$"
+            value={getBalanceNumber(prizeInBusd)}
+            decimals={4}
+          />
         )}
         {prizeInBusd.isNaN() ? (
           <Skeleton my="2px" height={14} width={90} />

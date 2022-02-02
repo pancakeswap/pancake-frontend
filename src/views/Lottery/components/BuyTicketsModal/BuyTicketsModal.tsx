@@ -410,7 +410,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             {t('You pay')}
           </Text>
           <Text fontSize="16px" bold>
-            ~{totalCost} LOTT
+            ~{Number(totalCost) > 0 ? new BigNumber(totalCost).toFixed(4) : 0} LOTT
           </Text>
         </Flex>
 

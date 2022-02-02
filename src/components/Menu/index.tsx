@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useAppContext } from 'pages/_app'
 import { useRouter } from 'next/router'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Menu as UikitMenu } from '@pancakeswap/uikit'
@@ -11,20 +12,20 @@ import { usePhishingBannerManager } from 'state/user/hooks'
 import useTokenBalance from 'hooks/useTokenBalance'
 import tokens from 'config/constants/tokens'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import BigNumber from 'bignumber.js'
-import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 import config from './config/config'
 import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { footerLinks } from './config/footerConfig'
 
-
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   const { balance: userCake } = useTokenBalance(tokens.cake.address)
-  const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
+
+  const { usdPrice } = useAppContext()
   // const cakePriceUsd = usePriceCakeBusd()
+  const cakePriceUsd = userCake.times(usdPrice)
+  const userCakeDisplayBalance = getFullDisplayBalance(cakePriceUsd, 18, 3)
 
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
@@ -32,14 +33,6 @@ const Menu = (props) => {
 
   const activeMenuItem = getActiveMenuItem({ menuConfig: config(t), pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
-
-  const [lottPriceUsd, setLottPriceUsd] = useState(0)
-  useEffect(() => {
-    (async () => {
-      const lottPrice = await getLOTTPriceInUSD()
-      setLottPriceUsd(lottPrice)
-    })()
-  })
 
   return (
     <UikitMenu
@@ -54,13 +47,13 @@ const Menu = (props) => {
       currentLang={currentLanguage.code}
       langs={languageList}
       setLang={setLanguage}
-      cakePriceUsd={new BigNumber(userCakeDisplayBalance).multipliedBy(lottPriceUsd)}
+      cakePriceUsd={Number(userCakeDisplayBalance)}
       links={config(t)}
       subLinks={activeMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
       footerLinks={footerLinks(t)}
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}
-      buyCakeLabel={t('Buy CAKE')}
+      buyCakeLabel={t('Buy LOTT')}
       {...props}
     />
   )

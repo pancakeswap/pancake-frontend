@@ -5,12 +5,13 @@ import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
-import { convertToDecimals, getBalanceNumber } from 'utils/formatBalance'
+import { convertToDecimals } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import { TicketPurchaseCard } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
 import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 import BigNumber from 'bignumber.js'
+import { useAppContext } from 'pages/_app'
 
 const floatingStarsLeft = keyframes`
   from {
@@ -220,30 +221,11 @@ const Hero = () => {
     currentRound: { amountCollectedInCake, status },
     isTransitioning,
   } = useLottery()
-
+  const { usdPrice } = useAppContext()
   // const cakePriceBusd = usePriceCakeBusd()
-  // console.log('amountCollectedInCake => ', amountCollectedInCake.toNumber(), cakePriceBusd.toNumber())
-  // const prizeInBusd = amountCollectedInCake // .times(cakePriceBusd)
+  const prizeInBusd = amountCollectedInCake.times(usdPrice)
 
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
-
-  const [totalPrize, setTotalPrize] = useState(0)
-  useEffect(() => {
-    ;(async () => {
-      const lottPrice = await getLOTTPriceInUSD()
-      const prizeInBusd = amountCollectedInCake.times(lottPrice)
-      const prizeTotal = getBalanceNumber(prizeInBusd)
-      setTotalPrize(prizeTotal)
-    })()
-  })
-
-  const [prizeInBusd, setPrizeInBusd] = useState(new BigNumber(NaN))
-  useEffect(() => {
-    ;(async () => {
-      const lottPrice = await getLOTTPriceInUSD()
-      setPrizeInBusd(amountCollectedInCake.times(lottPrice))
-    })()
-  }, [prizeInBusd])
 
   const getHeroHeading = () => {
     if (status === LotteryStatus.OPEN) {

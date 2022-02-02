@@ -14,6 +14,7 @@ import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import { useLotteryV2Contract } from 'hooks/useContract'
+import { useAppContext } from 'pages/_app'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
@@ -36,10 +37,10 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   )
   const lotteryContract = useLotteryV2Contract()
   const activeClaimData = roundsToClaim[activeClaimIndex]
-
-  const cakePriceBusd = usePriceCakeBusd()
+  const { usdPrice } = useAppContext()
+  // const cakePriceBusd = usePriceCakeBusd()
   const cakeReward = activeClaimData.cakeTotal
-  const dollarReward = cakeReward.times(cakePriceBusd)
+  const dollarReward = cakeReward.times(usdPrice)
   const rewardAsBalance = getBalanceAmount(cakeReward).toNumber()
   const dollarRewardAsBalance = getBalanceAmount(dollarReward).toNumber()
 
