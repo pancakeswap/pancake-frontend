@@ -222,11 +222,13 @@ const Hero = () => {
     isTransitioning,
   } = useLottery()
   const { usdPrice } = useAppContext()
-  console.log('usdPrice=>', usdPrice)
+
   // const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = amountCollectedInCake.times(usdPrice)
 
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
+
+  console.log('usdPrice Hero SecTion=>', { usdPrice, prizeInBusd, ticketBuyIsDisabled, status })
 
   const getHeroHeading = () => {
     if (status === LotteryStatus.OPEN) {

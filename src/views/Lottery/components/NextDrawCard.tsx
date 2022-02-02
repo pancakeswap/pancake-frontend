@@ -58,7 +58,7 @@ const NextDrawWrapper = styled.div`
 
 const NextDrawCard = () => {
   const { usdPrice } = useAppContext()
-  console.log('usdPrice NextDrawCard=>', usdPrice)
+
   const {
     t,
     currentLanguage: { locale },
@@ -77,6 +77,8 @@ const NextDrawCard = () => {
   const endDate = new Date(endTimeMs)
   const isLotteryOpen = status === LotteryStatus.OPEN
   const userTicketCount = userTickets?.tickets?.length || 0
+
+  console.log('usdPrice NextDrawCard=>', { usdPrice, prizeInBusd, currentLotteryId, currentRound })
 
   const getPrizeBalances = () => {
     if (status === LotteryStatus.CLOSE || status === LotteryStatus.CLAIMABLE) {
