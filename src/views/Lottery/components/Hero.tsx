@@ -222,6 +222,7 @@ const Hero = () => {
     isTransitioning,
   } = useLottery()
   const { usdPrice } = useAppContext()
+  console.log('usdPrice=>', usdPrice)
   // const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = amountCollectedInCake.times(usdPrice)
 

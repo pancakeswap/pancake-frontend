@@ -58,6 +58,7 @@ const NextDrawWrapper = styled.div`
 
 const NextDrawCard = () => {
   const { usdPrice } = useAppContext()
+  console.log('usdPrice NextDrawCard=>', usdPrice)
   const {
     t,
     currentLanguage: { locale },
