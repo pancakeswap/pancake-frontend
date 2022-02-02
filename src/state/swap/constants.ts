@@ -1,4 +1,6 @@
-// MATIC
-export const DEFAULT_INPUT_CURRENCY = '0xc2132d05d31c914a87c6611c10748aeb04b58e8f'
-// BUSD
-export const DEFAULT_OUTPUT_CURRENCY = '0x08C776113974dA137d913a4488929Bd3A07FBec6'
+import { mainnetTokens } from "config/constants/tokens"
+
+// USDT
+export const DEFAULT_INPUT_CURRENCY = mainnetTokens.usdt.address
+// PE
+export const DEFAULT_OUTPUT_CURRENCY = mainnetTokens.pe.address
