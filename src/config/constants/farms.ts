@@ -41,6 +41,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 450,
+    lpSymbol: 'SFUND-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
+    },
+    token: serializedTokens.sfund,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 507,
     lpSymbol: 'RACA-BUSD LP',
     lpAddresses: {
@@ -349,16 +359,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0x85e5889Fc3Ed01B4e8B56bbc717D7643294d2c31',
     },
     token: serializedTokens.zoo,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 450,
-    lpSymbol: 'SFUND-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
-    },
-    token: serializedTokens.sfund,
     quoteToken: serializedTokens.wbnb,
   },
   {
