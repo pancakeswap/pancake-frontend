@@ -12,6 +12,7 @@ import {
   getCollectionsApi,
   getCollectionSg,
   getCollectionsSg,
+  getCompleteAccountNftData,
   getMarketDataForTokenIds,
   getMetadataWithFallback,
   getNftsByBunnyIdSg,
@@ -21,6 +22,7 @@ import {
 } from './helpers'
 import {
   ApiCollection,
+  ApiCollections,
   ApiSingleTokenData,
   Collection,
   MarketEvent,
@@ -30,6 +32,8 @@ import {
   NFTMarketInitializationState,
   NftToken,
   State,
+  TokenIdWithCollectionAddress,
+  UserNftInitializationState,
 } from './types'
 
 const initialNftFilterState: NftFilter = {
@@ -57,6 +61,17 @@ const initialState: State = {
     loadingState: {
       isUpdatingPancakeBunnies: false,
       latestPancakeBunniesUpdateAt: 0,
+    },
+    users: {},
+    user: {
+      userNftsInitializationState: UserNftInitializationState.UNINITIALIZED,
+      nfts: [],
+      activity: {
+        initializationState: UserNftInitializationState.UNINITIALIZED,
+        askOrderHistory: [],
+        buyTradeHistory: [],
+        sellTradeHistory: [],
+      },
     },
   },
 }
@@ -261,6 +276,14 @@ export const fetchNewPBAndUpdateExisting = createAsyncThunk<
     }
   },
 )
+
+export const fetchUserNfts = createAsyncThunk<
+  NftToken[],
+  { account: string; profileNftWithCollectionAddress?: TokenIdWithCollectionAddress; collections: ApiCollections }
+>('nft/fetchUserNfts', async ({ account, profileNftWithCollectionAddress, collections }) => {
+  const completeNftData = await getCompleteAccountNftData(account, collections, profileNftWithCollectionAddress)
+  return completeNftData
+})
 
 export const NftMarket = createSlice({
   name: 'NftMarket',

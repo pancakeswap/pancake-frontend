@@ -562,6 +562,7 @@ export interface UserRound {
 // Global state
 
 export interface State {
+  achievements: AchievementState
   block: BlockState
   farms: SerializedFarmsState
   pools: PoolsState

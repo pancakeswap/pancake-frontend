@@ -12,12 +12,12 @@ import { usePhishingBannerManager } from 'state/user/hooks'
 import useTokenBalance from 'hooks/useTokenBalance'
 import tokens from 'config/constants/tokens'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import { TOKEN_NAME } from 'config/constants'
 import config from './config/config'
 import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { footerLinks } from './config/footerConfig'
-import { TOKEN_NAME } from 'config/constants'
 
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()

@@ -11,7 +11,7 @@ import { getPancakeProfileAddress } from 'utils/addressHelpers'
 
 import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
-import { NftActivityFilter, NftFilter, NftToken } from './types'
+import { NftActivityFilter, NftFilter, NftToken, UserNftsState } from './types'
 
 const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
 const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
@@ -103,6 +103,9 @@ export const useGetAllBunniesByBunnyId = (bunnyId: string) => {
   return nfts ? nfts.filter((nft) => nft.attributes[0].value === bunnyId && nft.marketData.isTradable) : EMPTY_ARRAY
 }
 
+export const useUserNfts = (): UserNftsState => {
+  return useSelector((state: State) => state.nftMarket.data.user)
+}
 export const useGetNFTInitializationState = () => {
   return useSelector((state: State) => state.nftMarket.initializationState)
 }
