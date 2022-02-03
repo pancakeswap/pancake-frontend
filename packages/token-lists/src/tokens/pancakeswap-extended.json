@@ -2214,5 +2214,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x12BB890508c125661E03b09EC06E404bc9289040.png"
+  },
+  {
+    "name": "MetaGear Token",
+    "symbol": "GEAR",
+    "address": "0xb4404DaB7C0eC48b428Cf37DeC7fb628bcC41B36",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xb4404DaB7C0eC48b428Cf37DeC7fb628bcC41B36.png"
   }
 ]

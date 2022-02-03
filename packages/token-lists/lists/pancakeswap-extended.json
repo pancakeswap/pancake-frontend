@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-01-28T10:18:47.963Z",
+  "timestamp": "2022-02-03T10:22:16.840Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 66
+    "patch": 67
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -875,6 +875,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3.png"
+    },
+    {
+      "name": "MetaGear Token",
+      "symbol": "GEAR",
+      "address": "0xb4404DaB7C0eC48b428Cf37DeC7fb628bcC41B36",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xb4404DaB7C0eC48b428Cf37DeC7fb628bcC41B36.png"
     },
     {
       "name": "GoldMiner",
