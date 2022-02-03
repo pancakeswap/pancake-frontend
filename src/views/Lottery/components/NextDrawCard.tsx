@@ -28,6 +28,7 @@ import RewardBrackets from './RewardBrackets'
 import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 import BigNumber from 'bignumber.js'
 import { useAppContext } from 'pages/_app'
+import { TOKEN_NAME } from 'config/constants'
 
 const Grid = styled.div`
   display: grid;
@@ -114,7 +115,7 @@ const NextDrawCard = () => {
             fontSize="14px"
             color="textSubtle"
             textAlign={['center', null, null, 'left']}
-            unit=" LOTT"
+            unit={` ${TOKEN_NAME}`}
             value={getBalanceNumber(amountCollectedInCake)}
             decimals={0}
           />

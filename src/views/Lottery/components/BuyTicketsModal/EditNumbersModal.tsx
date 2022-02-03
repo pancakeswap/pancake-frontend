@@ -5,6 +5,7 @@ import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'
 import TicketInput from './TicketInput'
 import { UpdateTicketAction, Ticket } from './useTicketsReducer'
+import { TOKEN_NAME } from 'config/constants'
 
 const StyledModal = styled(Modal)`
   min-width: 280px;
@@ -45,7 +46,9 @@ const EditNumbersModal: React.FC<{
       <ScrollableContainer>
         <Flex justifyContent="space-between" mb="16px">
           <Text color="textSubtle">{t('Total cost')}:</Text>
-          <Text>~{totalCost} LOTT</Text>
+          <Text>
+            ~{totalCost} {TOKEN_NAME}
+          </Text>
         </Flex>
         <Text fontSize="12px" color="textSubtle" mb="16px">
           {t(

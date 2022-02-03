@@ -1988,18 +1988,18 @@ export const testnetTokens = defineTokens({
   ),
   cake: new Token(
     TESTNET,
-    '0x9C436f012f26978459CBa5CA22ddBeA3faDECB63',
+    '0x9b6a9bf7B59e8FaC2f91CC17800ABaa73d017EB9',
     18,
-    'CAKE',
-    'PancakeSwap Token',
+    'SAFEMOON',
+    'Safemoon Token',
     'https://testnet.bscscan.com/',
   ),
-  lott: new Token(
+  safemoon: new Token(
     TESTNET,
-    '0x9C436f012f26978459CBa5CA22ddBeA3faDECB63',
+    '0x9b6a9bf7B59e8FaC2f91CC17800ABaa73d017EB9',
     18,
-    'LOTT',
-    'LOTT Token',
+    'SAFEMOON',
+    'Safemoon Token',
     'https://testnet.bscscan.com/',
   ),
   busd: new Token(

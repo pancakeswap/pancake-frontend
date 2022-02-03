@@ -17,6 +17,7 @@ import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { footerLinks } from './config/footerConfig'
+import { TOKEN_NAME } from 'config/constants'
 
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
@@ -53,7 +54,7 @@ const Menu = (props) => {
       footerLinks={footerLinks(t)}
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}
-      buyCakeLabel={t('Buy LOTT')}
+      buyCakeLabel={t(`Buy ${TOKEN_NAME}`)}
       {...props}
     />
   )

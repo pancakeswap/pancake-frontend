@@ -4,14 +4,13 @@ import BigNumber from 'bignumber.js'
 import { Flex, Skeleton, Heading, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
-import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
 import { getGraphLotteries } from 'state/lottery/getLotteriesData'
 import { convertToDecimals, formatNumber, getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import RewardBrackets from '../RewardBrackets'
-import { getLOTTPriceInUSD } from 'utils/getLOTTPriceInUSD'
 import { useAppContext } from 'pages/_app'
+import { TOKEN_NAME } from 'config/constants'
 
 const NextDrawWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.background};
@@ -89,7 +88,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
           <Balance
             fontSize="14px"
             color="textSubtle"
-            unit=" LOTT"
+            unit={` ${TOKEN_NAME}`}
             value={getBalanceNumber(lotteryNodeData?.amountCollectedInCake)}
             decimals={0}
           />

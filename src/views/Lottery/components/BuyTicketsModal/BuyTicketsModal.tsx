@@ -36,6 +36,7 @@ import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConf
 import NumTicketsToBuyButton from './NumTicketsToBuyButton'
 import EditNumbersModal from './EditNumbersModal'
 import { useTicketsReducer } from './useTicketsReducer'
+import { TOKEN_NAME } from 'config/constants'
 
 const StyledModal = styled(Modal)`
   min-width: 280px;
@@ -340,7 +341,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
           {account && (
             <Flex justifyContent="flex-end">
               <Text fontSize="12px" color="textSubtle" mr="4px">
-                LOTT {t('Balance')}:
+                {TOKEN_NAME} {t('Balance')}:
               </Text>
               {hasFetchedBalance ? (
                 <Text fontSize="12px" color="textSubtle">
@@ -383,10 +384,10 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       <Flex flexDirection="column">
         <Flex mb="8px" justifyContent="space-between">
           <Text color="textSubtle" fontSize="14px">
-            {t('Cost')} (LOTT)
+            {t('Cost')} {TOKEN_NAME}
           </Text>
           <Text color="textSubtle" fontSize="14px">
-            {priceTicketInCake && getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy || 0))} LOTT
+            {priceTicketInCake && getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy || 0))} {TOKEN_NAME}
           </Text>
         </Flex>
         <Flex mb="8px" justifyContent="space-between">
@@ -402,7 +403,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             </Flex>
           </Flex>
           <Text fontSize="14px" color="textSubtle">
-            ~{discountValue} LOTT
+            ~{discountValue} {TOKEN_NAME}
           </Text>
         </Flex>
         <Flex borderTop={`1px solid ${theme.colors.cardBorder}`} pt="8px" mb="24px" justifyContent="space-between">
@@ -410,7 +411,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             {t('You pay')}
           </Text>
           <Text fontSize="16px" bold>
-            ~{Number(totalCost) > 0 ? new BigNumber(totalCost).toFixed(4) : 0} LOTT
+            ~{Number(totalCost) > 0 ? new BigNumber(totalCost).toFixed(4) : 0} {TOKEN_NAME}
           </Text>
         </Flex>
 

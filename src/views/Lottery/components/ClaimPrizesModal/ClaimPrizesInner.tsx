@@ -15,6 +15,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import { useLotteryV2Contract } from 'hooks/useContract'
 import { useAppContext } from 'pages/_app'
+import { TOKEN_NAME } from 'config/constants'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
@@ -165,7 +166,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       setPendingTx(false)
       toastSuccess(
         t('Prizes Collected!'),
-        t('Your LOTT prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
+        t(`Your ${TOKEN_NAME} prizes for round %lotteryId% have been sent to your wallet`, { lotteryId }),
       )
       handleProgressToNextClaim()
     }
@@ -189,7 +190,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
             fontSize="44px"
             bold
             color="secondary"
-            unit=" LOTT!"
+            unit={` ${TOKEN_NAME}!`}
           />
           <PresentWonIcon ml={['0', null, '12px']} width="64px" />
         </Flex>
