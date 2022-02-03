@@ -1975,6 +1975,14 @@ export const mainnetTokens = defineTokens({
     'Radio Caca V2',
     'https://www.radiocaca.com/#/home',
   ),
+  gear: new Token(
+    MAINNET,
+    '0xb4404DaB7C0eC48b428Cf37DeC7fb628bcC41B36',
+    18,
+    'GEAR',
+    'MetaGear Token',
+    'https://metagear.game/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
