@@ -66,7 +66,7 @@
     "lodash": "^4.17.21",
     "multicodec": "^2.0.0",
     "multihashes": "^3.0.1",
-    "next": "^12.0.7",
+    "next": "^12.0.9",
     "numeral": "^2.0.6",
     "react": "^17.0.1",
     "react-countup": "^4.3.3",
