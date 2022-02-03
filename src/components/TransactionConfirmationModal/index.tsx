@@ -179,7 +179,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
         <TransactionSubmittedContent
           chainId={chainId}
           hash={hash}
-          onDismiss={onDismiss}
+          onDismiss={handleDismiss}
           currencyToAdd={currencyToAdd}
         />
       ) : (
