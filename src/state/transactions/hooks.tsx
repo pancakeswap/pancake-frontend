@@ -87,7 +87,7 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
 }
 
 // calculate pending transactions
-export function usePendingTransactions (): { pendingNumber: number } {
+export function usePendingTransactions(): { pendingNumber: number } {
   const { account, chainId } = useActiveWeb3React()
   const allTransactions = useAllTransactions()
   const [pendingNumber, setPendingNumber] = useState<number>(0)
@@ -95,13 +95,13 @@ export function usePendingTransactions (): { pendingNumber: number } {
   useEffect(() => {
     setTimeout(() => {
       setPendingNumber(0)
-      if (!account|| !chainId) return
+      if (!account || !chainId) return
 
       Object.keys(allTransactions).forEach((hash: string) => {
         const tx = allTransactions[hash]
         const pending = !tx?.receipt
         const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined')
-        if (pending && tx?.lastCheckedBlockNumber) setPendingNumber(pendingNumber + 1) 
+        if (pending && tx?.lastCheckedBlockNumber) setPendingNumber(pendingNumber + 1)
         if (success) setPendingNumber(pendingNumber <= 0 ? 0 : pendingNumber - 1)
       })
     }, 500)

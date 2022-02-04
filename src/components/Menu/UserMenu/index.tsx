@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import {
   Flex,
@@ -40,8 +40,8 @@ const UserMenu = () => {
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<Variant>('default')
 
-  useMemo(() => {
-    if (pendingNumber > 0 ) {
+  useEffect(() => {
+    if (pendingNumber > 0) {
       setUserMenuText(t('%num% Pending', { num: pendingNumber }))
       setUserMenuVariable('pending')
     } else {
@@ -59,7 +59,7 @@ const UserMenu = () => {
       <WalletUserMenuItem hasLowBnbBalance={hasLowBnbBalance} onPresentWalletModal={onPresentWalletModal} />
       <UserMenuItem as="button" onClick={onPresentTransactionModal}>
         {t('Recent Transactions')}
-        {pendingNumber > 0 && <RefreshIcon spin/>}
+        {pendingNumber > 0 && <RefreshIcon spin />}
       </UserMenuItem>
       <UserMenuDivider />
       <UserMenuItem as="button" onClick={() => router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)}>
