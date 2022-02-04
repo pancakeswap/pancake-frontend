@@ -86,7 +86,7 @@ const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId
           <Heading mb="24px">{t('Winning Number')}</Heading>
         </Flex>
         <Flex maxWidth={['240px', null, null, '100%']} justifyContent={['center', null, null, 'flex-start']}>
-          {lotteryId ? (
+          {Number(lotteryId) > 0 ? (
             lotteryNodeData ? (
               <WinningNumbers
                 rotateText={isLargerScreen || false}

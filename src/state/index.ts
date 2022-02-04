@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+// import storage from 'redux-persist/lib/storage'
 import blockReducer from './block'
 import burn from './burn/reducer'
 import farmsReducer from './farms'
@@ -21,11 +21,11 @@ import teamsReducer from './teams'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
 import votingReducer from './voting'
-
+import storage from './storage'
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
 
 const persistConfig = {
-  key: 'primary',
+  key: 'root',
   whitelist: PERSISTED_KEYS,
   storage,
 }
