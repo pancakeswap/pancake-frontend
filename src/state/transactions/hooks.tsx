@@ -1,5 +1,5 @@
 import { TransactionResponse } from '@ethersproject/providers'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppDispatch, AppState } from '../index'
@@ -84,4 +84,28 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
       }),
     [allTransactions, spender, tokenAddress],
   )
+}
+
+// calculate pending transactions
+export function usePendingTransactions (): { pendingNumber: number } {
+  const { account, chainId } = useActiveWeb3React()
+  const allTransactions = useAllTransactions()
+  const [pendingNumber, setPendingNumber] = useState<number>(0)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setPendingNumber(0)
+      if (!account|| !chainId) return
+
+      Object.keys(allTransactions).forEach((hash: string) => {
+        const tx = allTransactions[hash]
+        const pending = !tx?.receipt
+        const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined')
+        if (pending && tx?.lastCheckedBlockNumber) setPendingNumber(pendingNumber + 1) 
+        if (success) setPendingNumber(pendingNumber <= 0 ? 0 : pendingNumber - 1)
+      })
+    }, 500)
+  }, [allTransactions, account])
+
+  return { pendingNumber }
 }
