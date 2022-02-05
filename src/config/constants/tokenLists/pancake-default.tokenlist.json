@@ -19,9 +19,9 @@
       "logoURI": "https://app.apeswap.finance/static/media/matic-logo.6e808c42.png"
     },
     {
-      "name": "PFaker",
-      "symbol": "PERF",
-      "address": "0x08C776113974dA137d913a4488929Bd3A07FBec6",
+      "name": "Peronio",
+      "symbol": "PE",
+      "address": "0x400F5AcC5B52232DFfAed3C53903d926ccEA9B81",
       "chainId": 137,
       "decimals": 6,
       "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/256.png"

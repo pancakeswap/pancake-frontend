@@ -1,7 +1,9 @@
 import { ChainId, JSBI, Percent, Token } from 'peronio-sdk'
+import { address as routerAddress } from "peronio-core/deployments/matic/UniswapV2Router02.json"
 import { mainnetTokens, testnetTokens } from './tokens'
 
-export const ROUTER_ADDRESS = '0x2955A3c0c07FA8D81eafDE5c4160eb131aec1372'
+// export const ROUTER_ADDRESS = routerAddress
+export const ROUTER_ADDRESS = routerAddress
 export const PERONIO_ADDRESS = mainnetTokens.pe.address
 export const MARKUP_DECIMALS = 4
 
