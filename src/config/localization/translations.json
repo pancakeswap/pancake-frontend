@@ -1830,5 +1830,8 @@
   "Crypto Cars (CCAR) has been migrated to": "Crypto Cars (CCAR) has been migrated to",
   "the announcement.": "the announcement.",
   "Apply to NFT Market!": "Apply to NFT Market!",
-  "%num% Pending": "%num% Pending"
+  "%num% Pending": "%num% Pending",
+  "You’re connected to the wrong network.": "You’re connected to the wrong network.",
+  "Learn How": "Learn How",
+  "Network": "Network"
 }
