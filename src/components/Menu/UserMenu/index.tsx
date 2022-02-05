@@ -29,7 +29,7 @@ const UserMenu = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { logout } = useAuth()
-  const { pendingNumber } = usePendingTransactions()
+  const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { balance, fetchStatus } = useGetBnbBalance()
   const { isInitialized, isLoading, profile } = useProfile()
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
@@ -41,14 +41,14 @@ const UserMenu = () => {
   const [userMenuVariable, setUserMenuVariable] = useState<Variant>('default')
 
   useEffect(() => {
-    if (pendingNumber > 0) {
+    if (hasPendingTransactions) {
       setUserMenuText(t('%num% Pending', { num: pendingNumber }))
       setUserMenuVariable('pending')
     } else {
       setUserMenuText('')
       setUserMenuVariable('default')
     }
-  }, [pendingNumber, t])
+  }, [hasPendingTransactions, pendingNumber, t])
 
   if (!account) {
     return <ConnectWalletButton scale="sm" />
@@ -59,7 +59,7 @@ const UserMenu = () => {
       <WalletUserMenuItem hasLowBnbBalance={hasLowBnbBalance} onPresentWalletModal={onPresentWalletModal} />
       <UserMenuItem as="button" onClick={onPresentTransactionModal}>
         {t('Recent Transactions')}
-        {pendingNumber > 0 && <RefreshIcon spin />}
+        {hasPendingTransactions && <RefreshIcon spin />}
       </UserMenuItem>
       <UserMenuDivider />
       <UserMenuItem as="button" onClick={() => router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)}>

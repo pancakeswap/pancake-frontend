@@ -86,26 +86,24 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
   )
 }
 
+// we want the latest one to come first, so return negative if a is after b
+function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+  return b.addedTime - a.addedTime
+}
+
 // calculate pending transactions
-export function usePendingTransactions(): { pendingNumber: number } {
-  const { account, chainId } = useActiveWeb3React()
+export function usePendingTransactions(): { hasPendingTransactions: boolean; pendingNumber: number } {
   const allTransactions = useAllTransactions()
-  const [pendingNumber, setPendingNumber] = useState<number>(0)
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
 
-  useEffect(() => {
-    setTimeout(() => {
-      setPendingNumber(0)
-      if (!account || !chainId) return
+  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+  const hasPendingTransactions = !!pending.length
 
-      Object.keys(allTransactions).forEach((hash: string) => {
-        const tx = allTransactions[hash]
-        const pending = !tx?.receipt
-        const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined')
-        if (pending && tx?.lastCheckedBlockNumber) setPendingNumber(pendingNumber + 1)
-        if (success) setPendingNumber(pendingNumber <= 0 ? 0 : pendingNumber - 1)
-      })
-    }, 500)
-  }, [allTransactions, account])
-
-  return { pendingNumber }
+  return {
+    hasPendingTransactions,
+    pendingNumber: pending.length,
+  }
 }
