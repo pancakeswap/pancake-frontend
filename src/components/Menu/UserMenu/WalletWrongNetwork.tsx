@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { Button, Text, Link, HelpIcon, connectorLocalStorageKey, ConnectorNames } from '@pancakeswap/uikit'
+import { Button, Text, Link, HelpIcon } from '@pancakeswap/uikit'
 import { setupNetwork } from 'utils/wallet'
+import { useWeb3React } from '@web3-react/core'
+import { InjectedConnector } from '@web3-react/injected-connector'
 
 const StyledLink = styled(Link)`
   width: 100%;
@@ -17,7 +19,7 @@ interface WalletWrongNetworkProps {
 
 const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
-  const connectorId = window.localStorage.getItem(connectorLocalStorageKey) as ConnectorNames
+  const { connector } = useWeb3React()
 
   const handleSwitchNetwork = async (): Promise<void> => {
     await setupNetwork()
@@ -27,7 +29,7 @@ const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) =>
   return (
     <>
       <Text mb="24px">{t('You’re connected to the wrong network.')}</Text>
-      {connectorId === 'injected' && (
+      {connector instanceof InjectedConnector && (
         <Button onClick={handleSwitchNetwork} mb="24px">
           {t('Switch Network')}
         </Button>
