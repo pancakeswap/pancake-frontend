@@ -18,7 +18,6 @@ export const AppFooter = () => {
       >
         <div
           style={{
-            width: '65%',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
