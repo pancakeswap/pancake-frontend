@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Text, Heading, Card, CardHeader, CardBody, Box, BoxProps } from '@pancakeswap/uikit'
 import FoldableText from './FoldableText'
 
 interface Props extends BoxProps {
   header: string
-  config: { title: string; description: string[] }[]
+  config: { title: string; description: ReactNode[] }[]
 }
 
 const SectionsWithFoldableText: React.FC<Props> = ({ header, config, ...props }) => {
@@ -19,9 +19,10 @@ const SectionsWithFoldableText: React.FC<Props> = ({ header, config, ...props })
         <CardBody>
           {config.map(({ title, description }, i, { length }) => (
             <FoldableText key={title} id={title} mb={i + 1 === length ? '' : '24px'} title={title}>
-              {description.map((desc) => {
+              {description.map((desc, index) => {
                 return (
-                  <Text key={desc} color="textSubtle" as="p">
+                  // eslint-disable-next-line react/no-array-index-key
+                  <Text key={index} color="textSubtle" as="p">
                     {desc}
                   </Text>
                 )
