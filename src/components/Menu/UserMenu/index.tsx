@@ -60,7 +60,7 @@ const UserMenu = () => {
     }
   }
 
-  const UserMenuItems: React.FC = () => {
+  const UserMenuItems = () => {
     return (
       <>
         <WalletUserMenuItem
