@@ -17,7 +17,7 @@ export const AppFooter = () => {
         </div>
       </div>
       <div className="site-logo">
-        <Text color="turquoise">SpacePies</Text>
+        <Text color="turquoise" >SpacePies</Text>
       </div>
       <a href="www.safemoon.net" target="_blank" className="buy-safemoon-btn">
         Buy Safemoon
