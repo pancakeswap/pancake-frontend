@@ -6,25 +6,8 @@ import Twitter from './Icons/Twitter'
 export const AppFooter = () => {
   return (
     <>
-      <div
-        style={{
-          height: 100,
-          background: '#27262a',
-          marginBottom: -40,
-          padding: '60px 40px 0px 40px',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingBottom: 20,
-            borderBottom: '1px solid #757575',
-          }}
-        >
+      <div className='app-footer' >
+        <div className='footer-links' >
           <a href="www.twitter.com" className="myClass">
             <Twitter color="#7A6EAA" height={30} width={30} />
           </a>

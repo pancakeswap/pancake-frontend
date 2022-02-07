@@ -28,14 +28,31 @@
     font-size: 20px;
 }
 
+.app-footer {
+    height: 100px;
+    background: #27262a;
+    margin-bottom: -40px;
+    padding: 60px 40px 0px 40px;
+    display: flex;
+    justify-content: center;
+}
+.footer-links {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #757575;
+}
+
 .buy-safemoon-btn {
     position: fixed;
     bottom: 40px;
-    right: 354px;
+    right: 40px;
     background-color: #1fc7d4;
-    padding: 8px 12px;
+    padding: 7px 12px;
     border-radius: 20px;
-    font-size: 18px;
+    font-size: 16px;
     color: #fff;
 }
 
@@ -48,15 +65,15 @@
 .kuaSqQ {
     z-index: 0 !important; 
 }
-.hXPZot {
+.jZuZkW {
     display: none !important;
 }
-.NextLink__A-sc-c6707b7e-0 {
+.dZCEpb {
     display: none !important;
 }
-.KtpvB {
+.bzhddt {
     display: none !important;
 }
-.gTnEN {
+.ePcShU {
     z-index: 0 !important;
 }
