@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react'
 import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap/uikit'
+import useSWR from 'swr'
 import shuffle from 'lodash/shuffle'
-import { useTeams } from 'state/teams/hooks'
+import { getTeams } from 'state/teams/helpers'
 import { useTranslation } from 'contexts/Localization'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
@@ -10,9 +11,9 @@ import useProfileCreation from './contexts/hook'
 const Team: React.FC = () => {
   const { teamId: currentTeamId, actions } = useProfileCreation()
   const { t } = useTranslation()
-  const { teams } = useTeams()
+  const { data: teams } = useSWR('teams', async () => getTeams())
+  const teamValues = useMemo(() => (teams ? shuffle(Object.values(teams)) : []), [teams])
   const handleTeamSelection = (value: string) => actions.setTeamId(parseInt(value, 10))
-  const teamValues = useMemo(() => shuffle(Object.values(teams)), [teams])
 
   return (
     <>

@@ -17,7 +17,6 @@ import poolsReducer from './pools'
 import predictionsReducer from './predictions'
 import profileReducer from './profile'
 import swap from './swap/reducer'
-import teamsReducer from './teams'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
 
@@ -37,7 +36,6 @@ const persistedReducer = persistReducer(
     pools: poolsReducer,
     predictions: predictionsReducer,
     profile: profileReducer,
-    teams: teamsReducer,
     lottery: lotteryReducer,
     info: infoReducer,
     nftMarket: nftMarketReducer,
