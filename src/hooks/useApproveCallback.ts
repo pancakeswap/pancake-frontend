@@ -15,6 +15,7 @@ import { useTokenContract } from './useContract'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 import useToast from './useToast'
 import { useTranslation } from '../contexts/Localization'
+import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -128,4 +129,11 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
   )
 
   return useApproveCallback(amountToApprove, ROUTER_ADDRESS[CHAIN_ID])
+}
+
+// Wraps useApproveCallback in the context of a Gelato Limir Orders
+export function useApproveCallbackFromInputCurrencyAmount(currencyAmountIn: CurrencyAmount | undefined) {
+  const gelatoLibrary = useGelatoLimitOrdersLib()
+
+  return useApproveCallback(currencyAmountIn, gelatoLibrary?.erc20OrderRouter.address ?? undefined)
 }

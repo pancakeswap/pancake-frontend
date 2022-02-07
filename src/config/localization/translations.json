@@ -1560,5 +1560,7 @@
   "Missing tokens": "Missing tokens",
   "Could not wrap": "Could not wrap",
   "Attempting to confirm without approval or a signature": "Attempting to confirm without approval or a signature",
-  "This transaction would fail": "This transaction would fail"
+  "This transaction would fail": "This transaction would fail",
+  "Place a limit order to trade at a set price": "Place a limit order to trade at a set price",
+  "Place an Order": "Place an Order"
 }

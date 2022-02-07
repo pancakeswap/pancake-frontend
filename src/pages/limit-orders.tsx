@@ -1,7 +1,8 @@
 import React from 'react'
+import LimitOrders from '../views/LimitOrders'
 
 const LimitOrdersPage = () => {
-  return <div>Limit orders</div>
+  return <LimitOrders />
 }
 
 export default LimitOrdersPage
