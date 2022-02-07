@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
-import { TransactionResponse } from '@ethersproject/providers'
 import { Contract, CallOverrides } from '@ethersproject/contracts'
 import { useGasPrice } from 'state/user/hooks'
 import get from 'lodash/get'
 import * as Sentry from '@sentry/react'
+import { ContractMethodName, ContractMethodParams } from 'utils/types'
 
 export function useCallWithGasPrice() {
   const gasPrice = useGasPrice()
@@ -17,12 +17,12 @@ export function useCallWithGasPrice() {
    * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
    */
   const callWithGasPrice = useCallback(
-    async (
-      contract: Contract,
-      methodName: string,
-      methodArgs: any[] = [],
+    async <C extends Contract, N extends ContractMethodName<C> = ContractMethodName<C>>(
+      contract: C,
+      methodName: N,
+      methodArgs?: ContractMethodParams<C, N>,
       overrides: CallOverrides = null,
-    ): Promise<TransactionResponse> => {
+    ): Promise<Awaited<ReturnType<C[N]>>> => {
       Sentry.addBreadcrumb({
         type: 'Transaction',
         message: `Call with gas price: ${gasPrice}`,

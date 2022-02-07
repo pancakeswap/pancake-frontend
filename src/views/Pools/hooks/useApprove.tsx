@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Contract } from '@ethersproject/contracts'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useAppDispatch } from 'state'
 import { updateUserAllowance } from 'state/actions'
@@ -12,8 +11,9 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { VaultKey } from 'state/types'
 import { logError } from 'utils/sentry'
 import { useSWRContract, UseSWRContractKey } from 'hooks/useSWRContract'
+import { Erc20 } from 'config/abi/types'
 
-export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol) => {
+export const useApprovePool = (lpContract: Erc20, sousId, earningTokenSymbol) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { toastSuccess, toastError } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()

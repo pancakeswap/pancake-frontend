@@ -279,12 +279,12 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
   return useContract<Erc20>(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
-export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
+export function useWETHContract(withSignerIfPossible?: boolean) {
   const { chainId } = useActiveWeb3React()
   return useContract<Weth>(chainId ? WETH[chainId].address : undefined, WETH_ABI, withSignerIfPossible)
 }
 
-export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contract | null {
+export function useENSRegistrarContract(withSignerIfPossible?: boolean) {
   const { chainId } = useActiveWeb3React()
   let address: string | undefined
   if (chainId) {
@@ -299,11 +299,11 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
   return useContract<EnsRegistrar>(address, ENS_ABI, withSignerIfPossible)
 }
 
-export function useENSResolverContract(address: string | undefined, withSignerIfPossible?: boolean): Contract | null {
+export function useENSResolverContract(address: string | undefined, withSignerIfPossible?: boolean) {
   return useContract<EnsPublicResolver>(address, ENS_PUBLIC_RESOLVER_ABI, withSignerIfPossible)
 }
 
-export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
   return useContract<Erc20Bytes32>(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }
 
