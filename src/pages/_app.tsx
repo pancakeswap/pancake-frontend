@@ -24,6 +24,7 @@ import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
+import './index.css'
 
 export const AppContext = createContext({ usdPrice: 0 })
 export const useAppContext = () => useContext(AppContext)
@@ -75,11 +76,8 @@ function MyApp(props: AppProps) {
           content="The most popular AMM on BSC! Earn CAKE through yield farming or win it in the Lottery, then stake it in Syrup Pools to earn more tokens! Initial Farm Offerings (new token launch model pioneered by PancakeSwap), NFTs, and more, on a platform you can trust."
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="🥞 PancakeSwap - A next evolution DeFi exchange on Binance Smart Chain (BSC)"
-        />
-        <title>PancakeSwap</title>
+        <meta name="twitter:title" content="🥞 Safmoon - A next evolution DeFi exchange on Binance Smart Chain (BSC)" />
+        <title>Safemoon</title>
       </Head>
       <Providers store={store}>
         <Blocklist>

@@ -1,5 +1,6 @@
 import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
+import { TOKEN_NAME } from 'config/constants'
 import tokens from 'config/constants/tokens'
 import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
@@ -50,7 +51,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
         )}
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
-        <Text color="textSubtle">{t('CAKE Balance')}</Text>
+        <Text color="textSubtle">{t(`${TOKEN_NAME} Balance`)}</Text>
         {cakeFetchStatus !== FetchStatus.Fetched ? (
           <Skeleton height="22px" width="60px" />
         ) : (

@@ -32,8 +32,8 @@ const Menu = (props) => {
   const { pathname } = useRouter()
   const [showPhishingWarningBanner] = usePhishingBannerManager()
 
-  const activeMenuItem = getActiveMenuItem({ menuConfig: config(t), pathname })
-  const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
+  // const activeMenuItem = getActiveMenuItem({ menuConfig: config(t), pathname })
+  // const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
 
   return (
     <UikitMenu
@@ -42,7 +42,7 @@ const Menu = (props) => {
       }}
       userMenu={<UserMenu />}
       globalMenu={<GlobalSettings />}
-      banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
+      // banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
       isDark={isDark}
       toggleTheme={toggleTheme}
       currentLang={currentLanguage.code}
@@ -50,10 +50,10 @@ const Menu = (props) => {
       setLang={setLanguage}
       cakePriceUsd={Number(userCakeDisplayBalance)}
       links={config(t)}
-      subLinks={activeMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
-      footerLinks={footerLinks(t)}
-      activeItem={activeMenuItem?.href}
-      activeSubItem={activeSubMenuItem?.href}
+      // subLinks={activeMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
+      // footerLinks={footerLinks(t)}
+      // activeItem={activeMenuItem?.href}
+      // activeSubItem={activeSubMenuItem?.href}
       buyCakeLabel={t(`Buy ${TOKEN_NAME}`)}
       {...props}
     />

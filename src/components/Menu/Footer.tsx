@@ -67,13 +67,7 @@ const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) 
         justifyContent={['center', 'center', 'center', 'flex-end']}
       >
         <BubbleWrapper>
-          <Button
-            id="clickExchangeHelp"
-            as="a"
-            external
-            href="https://docs.pancakeswap.finance/products/pancakeswap-exchange"
-            variant="subtle"
-          >
+          <Button id="clickExchangeHelp" as="a" external href="http://help.spacepies.com/" variant="subtle">
             {t('Need help ?')}
           </Button>
           <Svg viewBox="0 0 16 16">

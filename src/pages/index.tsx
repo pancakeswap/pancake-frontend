@@ -1,4 +1,5 @@
 import { FACTORY_ADDRESS } from '@pancakeswap/sdk'
+import { AppFooter } from 'components/AppFooter/AppFooter'
 import { getUnixTime, sub } from 'date-fns'
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'
@@ -7,6 +8,7 @@ import { SWRConfig } from 'swr'
 import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
 import { getBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import Home from '../views/Home'
+import Lottery from './lottery'
 
 const IndexPage = ({ totalTx30Days, addressCount30Days }) => {
   return (
@@ -18,7 +20,9 @@ const IndexPage = ({ totalTx30Days, addressCount30Days }) => {
         },
       }}
     >
-      <Home />
+      <Lottery />
+      {/* <Home /> */}
+      <AppFooter />
     </SWRConfig>
   )
 }
@@ -69,7 +73,9 @@ export const getStaticProps: GetStaticProps = async () => {
         parseInt(totalTx.pancakeFactory.totalTransactions) - parseInt(totalTx30DaysAgo.pancakeFactory.totalTransactions)
     }
   } catch (error) {
-    console.error('Error when fetching total tx count', error)
+    if (process.env.NODE_ENV === 'production') {
+      console.error('Error when fetching total tx count', error)
+    }
   }
 
   const usersQuery = gql`

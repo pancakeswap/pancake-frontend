@@ -1,0 +1,40 @@
+.kmJGWw {
+    display: none !important; 
+}
+.hbAoxY {
+    display: none !important; 
+}
+.hXPZot {
+    display: none !important;
+}
+.NextLink__A-sc-c6707b7e-0 {
+    display: none !important;
+}
+.KtpvB {
+    display: none !important;
+}
+.gTnEN {
+    z-index: 0 !important;
+}
+.site-logo {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    top: -44px;
+    left: 30px;
+}
+.site-logo >  div {
+    font-family: 'Super Tasty', sans-serif;
+    font-size: 20px;
+}
+
+.buy-safemoon-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 354px;
+    background-color: #1fc7d4;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 18px;
+    color: #fff;
+}

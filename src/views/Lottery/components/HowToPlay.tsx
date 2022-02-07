@@ -226,12 +226,12 @@ const HowToPlay: React.FC = () => {
     {
       label: t('Step %number%', { number: 1 }),
       title: t('Buy Tickets'),
-      subtitle: t('Prices are set when the round starts, equal to 5 USD in CAKE per ticket.'),
+      subtitle: t('Prices are set when the round starts, equal to 5 USD in Safemoon per ticket.'),
     },
     {
       label: t('Step %number%', { number: 2 }),
       title: t('Wait for the Draw'),
-      subtitle: t('There are two draws every day: one every 12 hours.'),
+      subtitle: t('There are two draws every day: one every 24 hours.'),
     },
     {
       label: t('Step %number%', { number: 3 }),
@@ -242,7 +242,7 @@ const HowToPlay: React.FC = () => {
   return (
     <Box width="100%">
       <Flex mb="40px" alignItems="center" flexDirection="column">
-        <Heading mb="24px" scale="xl" color="secondary">
+        <Heading mb="24px" scale="xl" fontFamily={'Super Tasty'} color="rgb(22, 214, 176)">
           {t('How to Play')}
         </Heading>
         <Text textAlign="center">
@@ -301,17 +301,8 @@ const HowToPlay: React.FC = () => {
           <Heading mb="24px" scale="lg" color="secondary">
             {t('Prize Funds')}
           </Heading>
-          <Text color="textSubtle">{t('The prizes for each lottery round come from three sources:')}</Text>
-          <Heading my="16px" scale="md">
-            {t('Ticket Purchases')}
-          </Heading>
-          <BulletList>
-            <li>
-              <Text display="inline" color="textSubtle">
-                {t('100% of the CAKE paid by people buying tickets that round goes back into the prize pools.')}
-              </Text>
-            </li>
-          </BulletList>
+          {/* <Text color="textSubtle">{t('The prizes for each lottery round come from three sources:')}</Text> */}
+
           <Heading my="16px" scale="md">
             {t('Rollover Prizes')}
           </Heading>
@@ -319,23 +310,42 @@ const HowToPlay: React.FC = () => {
             <li>
               <Text display="inline" color="textSubtle">
                 {t(
-                  'After every round, if nobody wins in one of the prize brackets, the unclaimed CAKE for that bracket rolls over into the next round and are redistributed among the prize pools.',
+                  'After every round, if nobody wins in one of the prize brackets, the unclaimed SFM for that bracket rolls over into the next round and are redistributed among the prize pools.',
                 )}
               </Text>
             </li>
           </BulletList>
+
           <Heading my="16px" scale="md">
-            {t('CAKE Injections')}
+            {t('Burn Wallet')}
           </Heading>
           <BulletList>
             <li>
               <Text display="inline" color="textSubtle">
                 {t(
-                  'An average total of 35,000 CAKE from the treasury is added to lottery rounds over the course of a week. This CAKE is of course also included in rollovers! Read more in our guide to ',
+                  'The Burn Pool will go directly to the OFFICIAL SAFEMOON BURN WALLET address. The more we play, the more we burn!',
                 )}
-                <InlineLink href="https://docs.pancakeswap.finance/tokenomics/cake/cake-tokenomics">
-                  {t('CAKE Tokenomics')}
-                </InlineLink>
+              </Text>
+            </li>
+          </BulletList>
+
+          <Heading my="16px" scale="md">
+            {t('Funding Wallet ')}
+          </Heading>
+          <BulletList>
+            <li>
+              <Text display="inline" color="textSubtle">
+                {t(
+                  'The funding wallet will help us maintain, improve and innovate this project as well as new projects that we release for the Safemoon community.',
+                )}
+              </Text>
+            </li>
+            <li>
+              <Text display="inline" color="textSubtle">
+                {t(
+                  'We will also be using these funds to support new and innovative projects from within the Safemoon community. Please get in touch with your project/MVP ',
+                )}
+                <InlineLink href="http://help.spacepies.com/ ">{t('here')}</InlineLink>
               </Text>
             </li>
           </BulletList>
@@ -346,16 +356,14 @@ const HowToPlay: React.FC = () => {
       </GappedFlex>
       <Divider />
       <Flex justifyContent="center" alignItems="center" flexDirection={['column', 'column', 'row']}>
-        <Image width={240} height={172} src="/images/lottery/tombola.png" alt="tombola bunny" mr="8px" mb="16px" />
+        <Image width={172} height={200} src="/images/safemoon3.jpeg" alt="tombola bunny" mr="8px" mb="16px" />
         <Flex maxWidth="300px" flexDirection="column">
           <Heading mb="16px" scale="md">
             {t('Still got questions?')}
           </Heading>
           <Text>
             {t('Check our in-depth guide on')}{' '}
-            <InlineLink href="https://docs.pancakeswap.finance/products/lottery/lottery-guide">
-              {t('how to play the PancakeSwap lottery!')}
-            </InlineLink>
+            <InlineLink href="http://help.spacepies.com/">{t('how to play The Safemoon lottery!')}</InlineLink>
           </Text>
         </Flex>
       </Flex>

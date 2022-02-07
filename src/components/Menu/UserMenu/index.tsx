@@ -44,11 +44,11 @@ const UserMenu = () => {
         {t('Transactions')}
       </UserMenuItem>
       <UserMenuDivider />
-      <UserMenuItem as="button" onClick={() => router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)}>
+      {/* <UserMenuItem as="button" onClick={() => router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)}>
         {t('Your NFTs')}
       </UserMenuItem>
       <ProfileUserMenuItem isLoading={isLoading} hasProfile={hasProfile} />
-      <UserMenuDivider />
+      <UserMenuDivider /> */}
       <UserMenuItem as="button" onClick={logout}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           {t('Disconnect')}

@@ -61,7 +61,7 @@ const Lottery = () => {
         >
           <Flex alignItems="center" justifyContent="center" flexDirection="column" pt="24px">
             {status === LotteryStatus.OPEN && (
-              <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
+              <Heading scale="xl" mb="24px" textAlign="center" fontFamily={'Super Tasty'} color="rgb(22, 214, 176)">
                 {t('Get your tickets now!')}
               </Heading>
             )}
@@ -89,7 +89,7 @@ const Lottery = () => {
           index={2}
         >
           <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center">
-            <Heading mb="24px" scale="xl">
+            <Heading mb="24px" scale="xl" fontFamily={'Super Tasty'} color="rgb(22, 214, 176)">
               {t('Finished Rounds')}
             </Heading>
             <Box mb="24px">
