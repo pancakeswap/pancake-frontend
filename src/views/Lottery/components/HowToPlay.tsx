@@ -231,7 +231,7 @@ const HowToPlay: React.FC = () => {
     {
       label: t('Step %number%', { number: 2 }),
       title: t('Wait for the Draw'),
-      subtitle: t('There are two draws every day: one every 12 hours.'),
+      subtitle: t('There is one draw every day alternating between 0 AM UTC and 12 PM UTC.'),
     },
     {
       label: t('Step %number%', { number: 3 }),

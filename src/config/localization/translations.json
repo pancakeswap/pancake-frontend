@@ -978,7 +978,7 @@
   "Simple!": "Simple!",
   "Prices are set when the round starts, equal to 5 USD in CAKE per ticket.": "Prices are set when the round starts, equal to 5 USD in CAKE per ticket.",
   "Wait for the Draw": "Wait for the Draw",
-  "There are two draws every day: one every 12 hours.": "There are two draws every day: one every 12 hours.",
+  "There is one draw every day alternating between 0 AM UTC and 12 PM UTC.": "There is one draw every day alternating between 0 AM UTC and 12 PM UTC.",
   "Check for Prizes": "Check for Prizes",
   "Once the round’s over, come back to the page and check to see if you’ve won!": "Once the round’s over, come back to the page and check to see if you’ve won!",
   "Step %number%": "Step %number%",
