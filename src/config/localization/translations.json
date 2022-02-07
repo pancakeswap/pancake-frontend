@@ -1833,5 +1833,6 @@
   "%num% Pending": "%num% Pending",
   "You’re connected to the wrong network.": "You’re connected to the wrong network.",
   "Learn How": "Learn How",
-  "Network": "Network"
+  "Network": "Network",
+  "Switch Network": "Switch Network"
 }
