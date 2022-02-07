@@ -20,7 +20,6 @@ import swap from './swap/reducer'
 import teamsReducer from './teams'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
-import votingReducer from './voting'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
 
@@ -39,7 +38,6 @@ const persistedReducer = persistReducer(
     predictions: predictionsReducer,
     profile: profileReducer,
     teams: teamsReducer,
-    voting: votingReducer,
     lottery: lotteryReducer,
     info: infoReducer,
     nftMarket: nftMarketReducer,

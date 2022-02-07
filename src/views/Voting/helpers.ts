@@ -11,14 +11,18 @@ export const isCoreProposal = (proposal: Proposal) => {
 }
 
 export const filterProposalsByType = (proposals: Proposal[], proposalType: ProposalType) => {
-  switch (proposalType) {
-    case ProposalType.COMMUNITY:
-      return proposals.filter((proposal) => !isCoreProposal(proposal))
-    case ProposalType.CORE:
-      return proposals.filter((proposal) => isCoreProposal(proposal))
-    case ProposalType.ALL:
-    default:
-      return proposals
+  if (proposals) {
+    switch (proposalType) {
+      case ProposalType.COMMUNITY:
+        return proposals.filter((proposal) => !isCoreProposal(proposal))
+      case ProposalType.CORE:
+        return proposals.filter((proposal) => isCoreProposal(proposal))
+      case ProposalType.ALL:
+      default:
+        return proposals
+    }
+  } else {
+    return []
   }
 }
 
@@ -82,26 +86,32 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
 }
 
 export const calculateVoteResults = (votes: Vote[]): { [key: string]: Vote[] } => {
-  return votes.reduce((accum, vote) => {
-    const choiceText = vote.proposal.choices[vote.choice - 1]
+  if (votes) {
+    return votes.reduce((accum, vote) => {
+      const choiceText = vote.proposal.choices[vote.choice - 1]
 
-    return {
-      ...accum,
-      [choiceText]: accum[choiceText] ? [...accum[choiceText], vote] : [vote],
-    }
-  }, {})
+      return {
+        ...accum,
+        [choiceText]: accum[choiceText] ? [...accum[choiceText], vote] : [vote],
+      }
+    }, {})
+  }
+  return {}
 }
 
 export const getTotalFromVotes = (votes: Vote[]) => {
-  return votes.reduce((accum, vote) => {
-    let power = parseFloat(vote.metadata?.votingPower)
+  if (votes) {
+    return votes.reduce((accum, vote) => {
+      let power = parseFloat(vote.metadata?.votingPower)
 
-    if (!power) {
-      power = 0
-    }
+      if (!power) {
+        power = 0
+      }
 
-    return accum + power
-  }, 0)
+      return accum + power
+    }, 0)
+  }
+  return 0
 }
 
 type ScoresResponseByAddress = {

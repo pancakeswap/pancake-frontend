@@ -470,17 +470,6 @@ export interface Vote {
   }
 }
 
-export interface VotingState {
-  proposalLoadingStatus: FetchStatus
-  proposals: {
-    [key: string]: Proposal
-  }
-  voteLoadingStatus: FetchStatus
-  votes: {
-    [key: string]: Vote[]
-  }
-}
-
 export interface LotteryRoundUserTickets {
   isLoading?: boolean
   tickets?: LotteryTicket[]
@@ -563,7 +552,6 @@ export interface State {
   predictions: PredictionsState
   profile: ProfileState
   teams: TeamsState
-  voting: VotingState
   lottery: LotteryState
   nftMarket: NftMarketState
 }
