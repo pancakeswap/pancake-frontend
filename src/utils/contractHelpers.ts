@@ -142,10 +142,6 @@ export const getSouschefV2Contract = (id: number, signer?: Signer | Provider) =>
   return getContract(sousChefV2, getAddress(config.contractAddress), signer) as SousChefV2
 }
 
-export const getSouschefV3Contract = (id: number, signer?: Signer | Provider) => {
-  const config = poolsConfig.find((pool) => pool.sousId === id)
-  return getContract(sousChefV3, getAddress(config.contractAddress), signer) as SousChefV3
-}
 export const getPointCenterIfoContract = (signer?: Signer | Provider) => {
   return getContract(pointCenterIfo, getPointCenterIfoAddress(), signer) as PointCenterIfo
 }
