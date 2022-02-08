@@ -58,9 +58,20 @@
     color: #fff;
 }
 
+/* -----------Navbar--------------- */
+.bygrhu {
+    height: 57px !important;
+    background-color: #5525B5 !important;
+    border-bottom: none !important;
+}
 
 
-/* ------------------------------------ */
+
+
+
+
+/* ------------------------ Production -------------------- */
+/* ------------------------ Production -------------------- */
 .dJoqat {
     display: none !important; 
 }
@@ -87,4 +98,17 @@
 }
 .lgFtrU {
     display: none !important;
+}
+
+/* -----------Navbar Production--------------- */
+.cWFqZr {
+    height: 57px !important;
+    background-color: #5525B5 !important;
+    border-bottom: none !important;
+}
+
+.flip-image {
+    animation: none !important;
+    animation-delay: 0s;
+    transform: rotateY(180deg);
 }
