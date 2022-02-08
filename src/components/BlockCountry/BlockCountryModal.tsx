@@ -39,7 +39,7 @@ const BlockCountryModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
           <br />
           <br />
           {t(
-            "Belarus, Myanmar, Cote D'Ivoire (Ivory Coast), Cuba, Democratic Republic of Congo, Iran, Iraq, Liberia, North Korea, Sudan, Syria and Zimbabwe.",
+            'Belarus, Cuba, Democratic Republic of Congo, Iran, Iraq, North Korea, Sudan, Syria, Zimbabwe and Crimea.',
           )}
         </Text>
         <label htmlFor="block-checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
