@@ -8,9 +8,8 @@ import {
   UserMenu as UIKitUserMenu,
   UserMenuDivider,
   UserMenuItem,
+  UserMenuVariant
 } from '@pancakeswap/uikit'
-// eslint-disable-next-line import/no-unresolved
-import { Variant } from '@pancakeswap/uikit/dist/widgets/Menu/components/UserMenu/types'
 import useAuth from 'hooks/useAuth'
 import { useRouter } from 'next/router'
 import { useProfile } from 'state/profile/hooks'
@@ -39,7 +38,7 @@ const UserMenu = () => {
   const avatarSrc = profile?.nft?.image?.thumbnail
   const hasLowBnbBalance = fetchStatus === FetchStatus.Fetched && balance.lte(LOW_BNB_BALANCE)
   const [userMenuText, setUserMenuText] = useState<string>('')
-  const [userMenuVariable, setUserMenuVariable] = useState<Variant>('default')
+  const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
   const isWrongNetwork: boolean = error && error instanceof UnsupportedChainIdError
 
   useEffect(() => {
