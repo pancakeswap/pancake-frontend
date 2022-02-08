@@ -88,7 +88,6 @@
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
-    "@netlify/plugin-nextjs": "^4.1.1",
     "@pancakeswap/eslint-config-pancake": "^1.1.0",
     "@typechain/ethers-v5": "^8.0.5",
     "@types/multicodec": "^1.0.0",
