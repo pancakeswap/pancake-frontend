@@ -72,7 +72,7 @@ const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) 
             id="clickExchangeHelp"
             as="a"
             external
-            href="https://docs.pancakeswap.finance/products/pancakeswap-exchange"
+            href="https://docs.peronio.ar/"
             variant="subtle"
           >
             {t('Need help ?')}
