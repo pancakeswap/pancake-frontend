@@ -52,7 +52,6 @@ import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefV2 from 'config/abi/sousChefV2.json'
-import sousChefV3 from 'config/abi/sousChefV3.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
@@ -93,7 +92,6 @@ import type {
   Masterchef,
   SousChef,
   SousChefV2,
-  SousChefV3,
   BunnySpecial,
   LpToken,
   ClaimRefund,
