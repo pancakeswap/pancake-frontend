@@ -52,7 +52,7 @@ const NotFound = lazy(() => import('./views/NotFound'))
 // const CreateProposal = lazy(() => import('./views/Voting/CreateProposal'))
 const AddLiquidity = lazy(() => import('./views/AddLiquidity'))
 const Liquidity = lazy(() => import('./views/Pool'))
-// const PoolFinder = lazy(() => import('./views/PoolFinder'))
+const PoolFinder = lazy(() => import('./views/PoolFinder'))
 const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 const Info = lazy(() => import('./views/Info'))
 // const NftMarket = lazy(() => import('./views/Nft/market'))
@@ -151,7 +151,7 @@ const App: React.FC = () => {
             <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
             <Route exact strict path="/mint" component={Mint} />
             <Route exact strict path="/withdraw" component={Withdraw} />
-            {/* <Route exact strict path="/find" component={PoolFinder} /> */}
+            <Route exact strict path="/find" component={PoolFinder} />
             <Route exact strict path="/liquidity" component={Liquidity} />
             <Route exact strict path="/create" component={RedirectToAddLiquidity} />
             <Route exact path="/add" component={AddLiquidity} />
