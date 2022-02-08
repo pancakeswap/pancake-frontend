@@ -8,7 +8,7 @@ import {
   UserMenu as UIKitUserMenu,
   UserMenuDivider,
   UserMenuItem,
-  UserMenuVariant
+  UserMenuVariant,
 } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
 import { useRouter } from 'next/router'
