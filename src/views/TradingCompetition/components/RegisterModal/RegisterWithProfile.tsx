@@ -5,6 +5,7 @@ import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useToast from 'hooks/useToast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { CompetitionProps } from '../../types'
 
@@ -18,27 +19,23 @@ const StyledLabel = styled.label`
 
 const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, onRegisterSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const [isConfirming, setIsConfirming] = useState(false)
   const tradingCompetitionContract = useTradingCompetitionContractV2()
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleConfirmClick = async () => {
-    const tx = await callWithGasPrice(tradingCompetitionContract, 'register')
-    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-    setIsConfirming(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(tradingCompetitionContract, 'register')
+    })
+    if (receipt?.status) {
       toastSuccess(
         t('You have registered for the competition!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash} />,
       )
       onDismiss()
       onRegisterSuccess()
-    } else {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setIsConfirming(false)
     }
   }
 

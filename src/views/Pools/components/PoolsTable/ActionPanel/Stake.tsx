@@ -44,20 +44,20 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   const { account } = useWeb3React()
 
   const stakingTokenContract = useERC20(stakingToken.address || '')
-  const { handleApprove: handlePoolApprove, requestedApproval: requestedPoolApproval } = useApprovePool(
+  const { handleApprove: handlePoolApprove, pendingTx: pendingPoolTx } = useApprovePool(
     stakingTokenContract,
     sousId,
     earningToken.symbol,
   )
 
   const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
-  const { handleApprove: handleVaultApprove, requestedApproval: requestedVaultApproval } = useVaultApprove(
+  const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(
     pool.vaultKey,
     setLastUpdated,
   )
 
   const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
-  const requestedApproval = vaultKey ? requestedVaultApproval : requestedPoolApproval
+  const pendingTx = vaultKey ? pendingVaultTx : pendingPoolTx
 
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const allowance = userData?.allowance ? new BigNumber(userData.allowance) : BIG_ZERO
@@ -171,7 +171,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
           </Text>
         </ActionTitles>
         <ActionContent>
-          <Button width="100%" disabled={requestedApproval} onClick={handleApprove} variant="secondary">
+          <Button width="100%" disabled={pendingTx} onClick={handleApprove} variant="secondary">
             {t('Enable')}
           </Button>
         </ActionContent>

@@ -6,10 +6,10 @@ import { NextLinkFromReactRouter } from 'components/NextLink'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useTranslation } from 'contexts/Localization'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import { useProfileContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { NftLocation } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
@@ -31,7 +31,6 @@ const NftWrapper = styled.div`
 const ProfilePicture: React.FC = () => {
   const { account, library } = useWeb3React()
   const [isApproved, setIsApproved] = useState(false)
-  const [isApproving, setIsApproving] = useState(false)
   const [userProfileCreationNfts, setUserProfileCreationNfts] = useState(null)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
   const profileContract = useProfileContract(false)
@@ -73,22 +72,18 @@ const ProfilePicture: React.FC = () => {
   }, [nfts, profileContract, isUserNftLoading])
 
   const { t } = useTranslation()
-  const { toastError, toastSuccess } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: isApproving } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleApprove = async () => {
     const contract = getErc721Contract(selectedNft.collectionAddress, library.getSigner())
-    const tx = await callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
-    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-    setIsApproving(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
+    })
+    if (receipt?.status) {
       toastSuccess(t('Enabled'), t('Please progress to the next step.'))
-      setIsApproving(false)
       setIsApproved(true)
-    } else {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setIsApproving(false)
     }
   }
 

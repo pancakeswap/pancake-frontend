@@ -29,7 +29,7 @@ import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
-import useCatchTxError, { CatchTxErrorReturn } from 'hooks/useCatchTxError'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
@@ -89,7 +89,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const dispatch = useAppDispatch()
   const { stakingToken, earningToken, apr, rawApr, stakingTokenPrice, earningTokenPrice, vaultKey } = pool
   const { account } = useWeb3React()
-  const { fetchWithCatchTxError, loading: pendingTx }: CatchTxErrorReturn = useCatchTxError()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { callWithGasPrice } = useCallWithGasPrice()
   const {
@@ -179,7 +179,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   }
 
   const handleDeposit = async (convertedStakeAmount: BigNumber) => {
-    const receipt = await fetchWithCatchTxError(async () => {
+    const receipt = await fetchWithCatchTxError(() => {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
       return callWithGasPrice(vaultPoolContract, 'deposit', [convertedStakeAmount.toString()], callOptions)

@@ -7,10 +7,10 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import { logError, isUserRejected } from 'utils/sentry'
 
-export type TxReponse = TransactionResponse | null
+export type TxResponse = TransactionResponse | null
 
 export type CatchTxErrorReturn = {
-  fetchWithCatchTxError: (fn: () => Promise<TxReponse>) => Promise<TransactionReceipt>
+  fetchWithCatchTxError: (fn: () => Promise<TxResponse>) => Promise<TransactionReceipt>
   loading: boolean
 }
 
@@ -34,7 +34,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
   const [loading, setLoading] = useState(false)
 
   const handleNormalError = useCallback(
-    (error, tx?: TxReponse) => {
+    (error, tx?: TxResponse) => {
       logError(error)
 
       if (tx) {
@@ -52,8 +52,8 @@ export default function useCatchTxError(): CatchTxErrorReturn {
   )
 
   const fetchWithCatchTxError = useCallback(
-    async (callTx: () => Promise<TxReponse>): Promise<TransactionReceipt | null> => {
-      let tx: TxReponse = null
+    async (callTx: () => Promise<TxResponse>): Promise<TransactionReceipt | null> => {
+      let tx: TxResponse = null
 
       try {
         setLoading(true)
@@ -107,7 +107,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
                   const indexInfo = reason?.indexOf(REVERT_STR)
                   const isRevertedError = indexInfo >= 0
 
-                  if (isRevertedError) reason = reason.substr(indexInfo + REVERT_STR.length)
+                  if (isRevertedError) reason = reason.substring(indexInfo + REVERT_STR.length)
 
                   toastError(
                     'Failed',

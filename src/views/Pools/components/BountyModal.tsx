@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
@@ -17,6 +17,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -24,7 +25,6 @@ import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCakeVault } from 'state/pools/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { logError } from 'utils/sentry'
 
 interface BountyModalProps {
   onDismiss?: () => void
@@ -42,9 +42,9 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { theme } = useTheme()
-  const { toastError, toastSuccess } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const cakeVaultContract = useCakeVaultContract()
-  const [pendingTx, setPendingTx] = useState(false)
   const {
     estimatedCakeBountyReward,
     totalPendingCakeHarvest,
@@ -70,25 +70,16 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
   })
 
   const handleConfirmClick = async () => {
-    setPendingTx(true)
-    try {
-      const tx = await callWithGasPrice(cakeVaultContract, 'harvest', undefined, { gasLimit: 300000 })
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      const receipt = await tx.wait()
-      if (receipt.status) {
-        toastSuccess(
-          t('Bounty collected!'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('CAKE bounty has been sent to your wallet.')}
-          </ToastDescriptionWithTx>,
-        )
-        setPendingTx(false)
-        onDismiss()
-      }
-    } catch (error) {
-      logError(error)
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setPendingTx(false)
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(cakeVaultContract, 'harvest', undefined, { gasLimit: 300000 })
+    })
+    if (receipt?.status) {
+      toastSuccess(
+        t('Bounty collected!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('CAKE bounty has been sent to your wallet.')}
+        </ToastDescriptionWithTx>,
+      )
     }
   }
 

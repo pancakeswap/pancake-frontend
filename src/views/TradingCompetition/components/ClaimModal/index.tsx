@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Modal, Button, Flex, AutoRenewIcon, Heading, Text } from '@pancakeswap/uikit'
 import Image from 'next/image'
@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
@@ -21,9 +22,9 @@ const ImageWrapper = styled(Flex)`
 `
 
 const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
-  const [isConfirming, setIsConfirming] = useState(false)
   const tradingCompetitionContract = useTradingCompetitionContractV2()
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
 
   const {
@@ -45,17 +46,13 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
-    const tx = await callWithGasPrice(tradingCompetitionContract, 'claimReward')
-    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-    setIsConfirming(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(tradingCompetitionContract, 'claimReward')
+    })
+    if (receipt?.status) {
       toastSuccess(t('You have claimed your rewards!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       onDismiss()
       onClaimSuccess()
-    } else {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setIsConfirming(false)
     }
   }
 

@@ -6,9 +6,7 @@ import { ModalActions, ModalInput } from 'components/Modal'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
-import useToast from 'hooks/useToast'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
-import { logError } from 'utils/sentry'
 
 const AnnualRoiContainer = styled(Flex)`
   cursor: pointer;
@@ -52,7 +50,6 @@ const DepositModal: React.FC<DepositModalProps> = ({
   cakePrice,
 }) => {
   const [val, setVal] = useState('')
-  const { toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
   const { t } = useTranslation()
@@ -149,18 +146,9 @@ const DepositModal: React.FC<DepositModalProps> = ({
           }
           onClick={async () => {
             setPendingTx(true)
-            try {
-              await onConfirm(val)
-              onDismiss()
-            } catch (e) {
-              logError(e)
-              toastError(
-                t('Error'),
-                t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
-              )
-            } finally {
-              setPendingTx(false)
-            }
+            await onConfirm(val)
+            onDismiss()
+            setPendingTx(false)
           }}
         >
           {pendingTx ? t('Confirming') : t('Confirm')}
