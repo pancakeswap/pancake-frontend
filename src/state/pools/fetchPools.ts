@@ -1,12 +1,10 @@
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
-import cakeABI from 'config/abi/cake.json'
-import wbnbABI from 'config/abi/weth.json'
+import erc20ABI from 'config/abi/erc20.json'
 import multicall, { multicallv2 } from 'utils/multicall'
 import { getAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import tokens from 'config/constants/tokens'
 import chunk from 'lodash/chunk'
 import sousChefV2 from '../../config/abi/sousChefV2.json'
 import sousChefV3 from '../../config/abi/sousChefV3.json'
@@ -52,10 +50,7 @@ export const fetchPoolsBlockLimits = async () => {
   })
 }
 
-const nonBnbPools = poolsConfig.filter((p) => p.stakingToken.symbol !== 'BNB')
-const bnbPool = poolsConfig.filter((p) => p.stakingToken.symbol === 'BNB')
-
-const callsNonBnbPools = nonBnbPools.map((poolConfig) => {
+const poolsBalanceOf = poolsConfig.map((poolConfig) => {
   return {
     address: poolConfig.stakingToken.address,
     name: 'balanceOf',
@@ -63,27 +58,13 @@ const callsNonBnbPools = nonBnbPools.map((poolConfig) => {
   }
 })
 
-const callsBnbPools = bnbPool.map((poolConfig) => {
-  return {
-    address: tokens.wbnb.address,
-    name: 'balanceOf',
-    params: [getAddress(poolConfig.contractAddress)],
-  }
-})
 export const fetchPoolsTotalStaking = async () => {
-  const nonBnbPoolsTotalStaked = await multicall(cakeABI, callsNonBnbPools)
-  const bnbPoolsTotalStaked = await multicall(wbnbABI, callsBnbPools)
+  const poolsTotalStaked = await multicall(erc20ABI, poolsBalanceOf)
 
-  return [
-    ...nonBnbPools.map((p, index) => ({
-      sousId: p.sousId,
-      totalStaked: new BigNumber(nonBnbPoolsTotalStaked[index]).toJSON(),
-    })),
-    ...bnbPool.map((p, index) => ({
-      sousId: p.sousId,
-      totalStaked: new BigNumber(bnbPoolsTotalStaked[index]).toJSON(),
-    })),
-  ]
+  return poolsConfig.map((p, index) => ({
+    sousId: p.sousId,
+    totalStaked: new BigNumber(poolsTotalStaked[index]).toJSON(),
+  }))
 }
 
 export const fetchPoolsStakingLimits = async (
