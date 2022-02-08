@@ -19,7 +19,7 @@ const WalletUserMenuItem: React.FC<WalletUserMenuItemProps> = ({
     <UserMenuItem as="button" onClick={onPresentWalletModal}>
       <Flex alignItems="center" justifyContent="space-between" width="100%">
         {t('Wallet')}
-        {hasLowBnbBalance && <WarningIcon color="warning" width="24px" />}
+        {hasLowBnbBalance && !isWrongNetwork && <WarningIcon color="warning" width="24px" />}
         {isWrongNetwork && <WarningIcon color="failure" width="24px" />}
       </Flex>
     </UserMenuItem>
