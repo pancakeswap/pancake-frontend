@@ -1,5 +1,5 @@
 {
-  "name": "Pancake Unsupported List",
+  "name": "Peronio Unsupported List",
   "timestamp": "2021-01-05T20:47:02.923Z",
   "version": {
     "major": 1,
@@ -8,6 +8,6 @@
   },
   "tags": {},
   "logoURI": "ipfs://QmNa8mQkrNKp1WEEeGjFezDmDeodkWRevGFN8JCV7b4Xir",
-  "keywords": ["pancake", "unsupported"],
+  "keywords": ["peronio", "unsupported"],
   "tokens": []
 }
