@@ -1,9 +1,8 @@
 import { ChainId, JSBI, Percent, Token } from 'peronio-sdk'
-import { address as routerAddress } from "peronio-core/deployments/matic/UniswapV2Router02.json"
 import { mainnetTokens, testnetTokens } from './tokens'
 
 // export const ROUTER_ADDRESS = routerAddress
-export const ROUTER_ADDRESS = routerAddress
+export const ROUTER_ADDRESS = '0x68FED99FD42ED6D19BA8aB8F063498B7a068eC7B'
 export const PERONIO_ADDRESS = mainnetTokens.pe.address
 export const MARKUP_DECIMALS = 4
 
@@ -16,12 +15,8 @@ type ChainTokenList = {
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.MAINNET]: [
     mainnetTokens.wbnb,
-    mainnetTokens.cake,
-    mainnetTokens.busd,
     mainnetTokens.usdt,
-    mainnetTokens.btcb,
-    mainnetTokens.ust,
-    mainnetTokens.eth,
+    mainnetTokens.pe,
     mainnetTokens.usdc,
   ],
   [ChainId.TESTNET]: [testnetTokens.wbnb, testnetTokens.cake, testnetTokens.busd],
@@ -46,7 +41,7 @@ export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: To
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
-  [ChainId.MAINNET]: [mainnetTokens.busd, mainnetTokens.cake, mainnetTokens.btcb],
+  [ChainId.MAINNET]: [mainnetTokens.wbnb, mainnetTokens.pe, mainnetTokens.usdt],
   [ChainId.TESTNET]: [testnetTokens.wbnb, testnetTokens.cake, testnetTokens.busd],
 }
 
