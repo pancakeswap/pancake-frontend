@@ -44,7 +44,8 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { account } = useWeb3React()
-  const wbnbContract = useERC20(tokens.wbnb.address)
+  const wbnbContractReader = useERC20(tokens.wbnb.address, false)
+  const wbnbContractApprover = useERC20(tokens.wbnb.address)
   const nftMarketContract = useNftMarketContract()
 
   const { toastSuccess } = useToast()
@@ -77,14 +78,14 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
-        const currentAllowance = await wbnbContract.allowance(account, nftMarketContract.address)
+        const currentAllowance = await wbnbContractReader.allowance(account, nftMarketContract.address)
         return currentAllowance.gt(0)
       } catch (error) {
         return false
       }
     },
     onApprove: () => {
-      return callWithGasPrice(wbnbContract, 'approve', [nftMarketContract.address, MaxUint256])
+      return callWithGasPrice(wbnbContractApprover, 'approve', [nftMarketContract.address, MaxUint256])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(

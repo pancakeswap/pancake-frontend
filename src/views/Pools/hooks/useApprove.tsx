@@ -80,7 +80,7 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
 
 export const useCheckVaultApprovalStatus = (vaultKey: VaultKey) => {
   const { account } = useWeb3React()
-  const cakeContract = useCake()
+  const cakeContract = useCake(false)
   const vaultPoolContract = useVaultPoolContract(vaultKey)
 
   const key = useMemo<UseSWRContractKey>(

@@ -35,7 +35,7 @@ const useTokenBalance = (tokenAddress: string) => {
 }
 
 export const useTotalSupply = () => {
-  const cakeContract = useCake()
+  const cakeContract = useCake(false)
   const { data } = useSWRContract([cakeContract, 'totalSupply'], {
     refreshInterval: SLOW_INTERVAL,
   })

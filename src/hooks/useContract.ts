@@ -91,9 +91,12 @@ export const useERC721 = (address: string) => {
   return useMemo(() => getErc721Contract(address, library.getSigner()), [address, library])
 }
 
-export const useCake = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getCakeContract(library.getSigner()), [library])
+export const useCake = (withSignerIfPossible = true) => {
+  const { account, library } = useActiveWeb3React()
+  return useMemo(
+    () => getCakeContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [account, library, withSignerIfPossible],
+  )
 }
 
 export const useBunnyFactory = () => {
