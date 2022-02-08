@@ -106,10 +106,10 @@ export const mainnetTokens = defineTokens({
   ),
   usdc: new Token(
     MAINNET,
-    '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
-    18,
+    '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+    6,
     'USDC',
-    'Binance-Peg USD Coin',
+    'USD Coin',
     'https://www.centre.io/usdc',
   ),
   kalm: new Token(
