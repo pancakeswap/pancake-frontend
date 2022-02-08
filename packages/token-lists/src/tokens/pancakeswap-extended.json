@@ -1224,12 +1224,20 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x9617857E191354dbEA0b714d78Bc59e57C411087.png"
   },
   {
-    "name": "Bittorrent",
-    "symbol": "BTT",
+    "name": "Bittorrent Old",
+    "symbol": "BTTOLD",
     "address": "0x8595F9dA7b868b1822194fAEd312235E43007b49",
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x8595F9dA7b868b1822194fAEd312235E43007b49.png"
+  },
+  {
+    "name": "Bittorrent",
+    "symbol": "BTT",
+    "address": "0x352Cb5E19b12FC216548a2677bD0fce83BaE434B",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x352Cb5E19b12FC216548a2677bD0fce83BaE434B.png"
   },
   {
     "name": "Tron",

@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-02-03T10:22:16.840Z",
+  "timestamp": "2022-02-07T09:06:20.843Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 67
+    "patch": 68
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -469,12 +469,20 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x5a16E8cE8cA316407c6E6307095dc9540a8D62B3.png"
     },
     {
-      "name": "Bittorrent",
-      "symbol": "BTT",
+      "name": "Bittorrent Old",
+      "symbol": "BTTOLD",
       "address": "0x8595F9dA7b868b1822194fAEd312235E43007b49",
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x8595F9dA7b868b1822194fAEd312235E43007b49.png"
+    },
+    {
+      "name": "Bittorrent",
+      "symbol": "BTT",
+      "address": "0x352Cb5E19b12FC216548a2677bD0fce83BaE434B",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x352Cb5E19b12FC216548a2677bD0fce83BaE434B.png"
     },
     {
       "name": "Bunny Token",
