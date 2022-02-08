@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 interface ProfileUserMenuItemProps {
   isLoading: boolean
   hasProfile: boolean
+  disabled: boolean
 }
 
 const Dot = styled.div`
@@ -18,7 +19,7 @@ const Dot = styled.div`
   width: 8px;
 `
 
-const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, hasProfile }) => {
+const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, hasProfile, disabled }) => {
   const { account } = useWeb3React()
   const router = useRouter()
   const { t } = useTranslation()
@@ -41,7 +42,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
 
   if (!hasProfile) {
     return (
-      <UserMenuItem as="button" onClick={handleNoProfileClick}>
+      <UserMenuItem as="button" disabled={disabled} onClick={handleNoProfileClick}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           {t('Make a Profile')}
           <Dot />
@@ -51,7 +52,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
   }
 
   return (
-    <UserMenuItem as="button" onClick={handleClick}>
+    <UserMenuItem as="button" disabled={disabled} onClick={handleClick}>
       {t('Your Profile')}
     </UserMenuItem>
   )

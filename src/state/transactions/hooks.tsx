@@ -85,3 +85,25 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
     [allTransactions, spender, tokenAddress],
   )
 }
+
+// we want the latest one to come first, so return negative if a is after b
+function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+  return b.addedTime - a.addedTime
+}
+
+// calculate pending transactions
+export function usePendingTransactions(): { hasPendingTransactions: boolean; pendingNumber: number } {
+  const allTransactions = useAllTransactions()
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
+
+  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+  const hasPendingTransactions = !!pending.length
+
+  return {
+    hasPendingTransactions,
+    pendingNumber: pending.length,
+  }
+}
