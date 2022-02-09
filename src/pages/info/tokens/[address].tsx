@@ -1,4 +1,3 @@
-import React from 'react'
 import Token from 'views/Info/Tokens/TokenPage'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { isAddress } from 'utils'

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import Page from 'components/Layout/Page'
 import { useProfile } from 'state/profile/hooks'

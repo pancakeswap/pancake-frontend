@@ -1,4 +1,3 @@
-import React from 'react'
 import { Flex, IconButton, CogIcon, useModal } from '@pancakeswap/uikit'
 import SettingsModal from './SettingsModal'
 

@@ -1,5 +1,4 @@
 import IndividualNFT from 'views/Nft/market/Collection/IndividualNFTPage'
-import React from 'react'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { getNftApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'

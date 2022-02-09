@@ -11,7 +11,7 @@
     "browser": true,
     "jest": true
   },
-  "extends": "@pancakeswap/eslint-config-pancake",
+  "extends": ["@pancakeswap/eslint-config-pancake", "plugin:react/jsx-runtime", "plugin:@next/next/recommended"],
   "rules": {
     "no-console": ["warn", { "allow": ["info", "warn", "error", "debug"] }],
     "no-plusplus": 0,
@@ -20,9 +20,9 @@
     "import/prefer-default-export": 0,
     "react/destructuring-assignment": 0,
     "react/jsx-no-bind": 0,
-    "react/react-in-jsx-scope": 0,
-    "no-sparse-arrays": 0,
     "react/no-unused-prop-types": 0,
+    "@next/next/no-img-element": 0,
+    "no-sparse-arrays": 0,
     "react-hooks/exhaustive-deps": [
       "warn",
       {

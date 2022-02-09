@@ -1,4 +1,3 @@
-import React from 'react'
 import { AutoRenewIcon, Flex, Heading } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import useSWR from 'swr'

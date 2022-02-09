@@ -1,5 +1,5 @@
 import { Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { formatAmount, formatAmountNotation } from 'views/Info/utils/formatInfoNumbers'
 
 const formatOptions = {

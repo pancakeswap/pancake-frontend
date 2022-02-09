@@ -1,7 +1,6 @@
 import { ifosConfig } from 'config/constants'
 import Container from 'components/Layout/Container'
 import { Ifo } from 'config/constants/types'
-import React from 'react'
 import IfoCardV1Data from './components/IfoCardV1Data'
 import IfoCardV2Data from './components/IfoCardV2Data'
 import IfoCardV3Data from './components/IfoCardV3Data'

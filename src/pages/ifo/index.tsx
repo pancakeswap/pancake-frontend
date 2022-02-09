@@ -1,4 +1,3 @@
-import React from 'react'
 import { IfoPageLayout } from '../../views/Ifos'
 import CurrentIfo from '../../views/Ifos/CurrentIfo'
 

@@ -13,7 +13,7 @@ import {
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 // import { TradingViewLabel } from 'components/TradingView'
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
+import { useCallback, useState } from 'react'
 import { ChartViewMode } from 'state/user/actions'
 import { useExchangeChartViewManager } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -140,7 +140,7 @@ const PriceChart = ({
             isDark={isDark}
             onTwChartSymbol={handleTwChartSymbol}
           />
-        </Flex> 
+        </Flex>
       ) */}
     </StyledPriceChart>
   )

@@ -1,4 +1,3 @@
-import React from 'react'
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { PageMeta } from 'components/Layout/Page'
 import useSWR from 'swr'

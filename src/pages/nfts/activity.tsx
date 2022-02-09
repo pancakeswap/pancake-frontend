@@ -1,4 +1,3 @@
-import React from 'react'
 import { useFetchCollections } from 'state/nftMarket/hooks'
 import Activity from 'views/Nft/market/Activity'
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Box, Button, Heading, Flex, LinkExternal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'

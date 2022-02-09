@@ -1,5 +1,4 @@
 import TradingViewChart from 'components/TradingView'
-import React from 'react'
 
 const TRADING_VIEW_COMPONENT_ID = 'tradingview_b239c'
 
