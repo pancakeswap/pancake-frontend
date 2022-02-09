@@ -4,30 +4,20 @@ import { ApiCollectionDistribution, ApiResponseCollectionTokens, ApiSingleTokenD
 import { getPancakeRabbitsAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
+import useSWRImmutable from 'swr/immutable'
+import { FetchStatus } from 'config/constants/types'
 import { pancakeBunniesAddress } from '../constants'
 
-interface State {
-  isFetching: boolean
-  data: ApiCollectionDistribution['data']
-}
-
 const useGetCollectionDistribution = (collectionAddress: string) => {
-  const [state, setState] = useState<State>({ isFetching: false, data: null })
+  const { data, status } = useSWRImmutable(
+    collectionAddress ? ['distribution', collectionAddress] : null,
+    async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress)).data,
+  )
 
-  useEffect(() => {
-    const fetchTokens = async () => {
-      setState((prevState) => ({ ...prevState, isFetching: true }))
-      const apiResponse = await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress)
-      setState({
-        isFetching: false,
-        data: apiResponse.data,
-      })
-    }
-
-    fetchTokens()
-  }, [collectionAddress, setState])
-
-  return state
+  return {
+    data,
+    isFetching: status !== FetchStatus.Fetched,
+  }
 }
 
 interface StatePB {

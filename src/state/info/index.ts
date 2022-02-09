@@ -18,11 +18,7 @@ import {
 } from './actions'
 
 const initialState: InfoState = {
-  protocol: {
-    overview: undefined,
-    chartData: undefined,
-    transactions: undefined,
-  },
+  protocol: {},
   pools: { byAddress: {} },
   tokens: { byAddress: {} },
 }

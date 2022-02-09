@@ -26,7 +26,9 @@ export const useFetchCollections = () => {
 export const useFetchCollection = (collectionAddress: string) => {
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(fetchCollection(collectionAddress))
+    if (collectionAddress) {
+      dispatch(fetchCollection(collectionAddress))
+    }
   }, [dispatch, collectionAddress])
 }
 

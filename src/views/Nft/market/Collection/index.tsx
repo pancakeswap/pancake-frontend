@@ -4,10 +4,8 @@ import { NextRouter, useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { useFetchCollection, useGetCollection } from 'state/nftMarket/hooks'
 import Header from './Header'
+import Items from './Items'
 
-const Items = dynamic(() => import('./Items'), {
-  loading: () => <PageLoader />,
-})
 const Traits = dynamic(() => import('./Traits'), {
   loading: () => <PageLoader />,
 })
@@ -26,32 +24,24 @@ const Collection = () => {
 
   const hash = useMemo(() => getHashFromRouter(router)?.[0], [router])
 
-  if (!collection) {
+  if (!collection || router.isFallback) {
     return <PageLoader />
   }
 
+  let content = <Items />
+
   if (hash === '#traits') {
-    return (
-      <>
-        <Header collection={collection} />
-        <Traits />
-      </>
-    )
+    content = <Traits />
   }
 
   if (hash === '#activity') {
-    return (
-      <>
-        <Header collection={collection} />
-        <Activity />
-      </>
-    )
+    content = <Activity />
   }
 
   return (
     <>
       <Header collection={collection} />
-      <Items />
+      {content}
     </>
   )
 }
