@@ -13,6 +13,7 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import Image from 'next/image'
+import Trans from 'components/Trans'
 import prizes, { Tiers } from 'config/constants/trading-competition/prizes'
 import { useTranslation } from 'contexts/Localization'
 import React, { useState } from 'react'
@@ -28,42 +29,42 @@ const tierStyleMap = {
   [Tiers.GOLD]: {
     icon: MedalGoldIcon,
     label: {
-      text: 'Gold',
+      text: <Trans>Gold</Trans>,
     },
     color: COLOR_GOLD,
   },
   [Tiers.SILVER]: {
     icon: MedalSilverIcon,
     label: {
-      text: 'Silver',
+      text: <Trans>Silver</Trans>,
     },
     color: COLOR_SILVER,
   },
   [Tiers.BRONZE]: {
     icon: MedalBronzeIcon,
     label: {
-      text: 'Bronze',
+      text: <Trans>Bronze</Trans>,
     },
     color: COLOR_BRONZE,
   },
   [Tiers.SILVER]: {
     icon: MedalSilverIcon,
     label: {
-      text: 'Silver',
+      text: <Trans>Silver</Trans>,
     },
     color: COLOR_SILVER,
   },
   [Tiers.PURPLE]: {
     icon: MedalPurpleIcon,
     label: {
-      text: 'Purple',
+      text: <Trans>Purple</Trans>,
     },
     color: COLOR_PURPLE,
   },
   [Tiers.TEAL]: {
     icon: MedalTealIcon,
     label: {
-      text: 'Teal',
+      text: <Trans>Teal</Trans>,
     },
     color: COLOR_TEAL,
   },
@@ -104,7 +105,7 @@ const PrizesGrid = () => {
                   <Td>
                     <Icon />
                     <Text color={color} fontSize="12px" bold textTransform="uppercase">
-                      {t(label.text)}
+                      {label.text}
                     </Text>
                   </Td>
                   <BoldTd>

@@ -1,3 +1,5 @@
+import React from 'react'
+import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
 import { CHAIN_ID } from './networks'
 import tokens, { serializeTokens } from './tokens'
@@ -7,8 +9,8 @@ const serializedTokens = serializeTokens()
 
 export const vaultPoolConfig = {
   [VaultKey.CakeVault]: {
-    name: 'Auto CAKE',
-    description: 'Automatic restaking',
+    name: <Trans>Auto CAKE</Trans>,
+    description: <Trans>Automatic restaking</Trans>,
     autoCompoundFrequency: 5000,
     gasLimit: 380000,
     tokenImage: {
@@ -18,7 +20,7 @@ export const vaultPoolConfig = {
   },
   [VaultKey.IfoPool]: {
     name: 'IFO CAKE',
-    description: 'Stake CAKE to participate in IFOs',
+    description: <Trans>Stake CAKE to participate in IFOs</Trans>,
     autoCompoundFrequency: 1,
     gasLimit: 500000,
     tokenImage: {

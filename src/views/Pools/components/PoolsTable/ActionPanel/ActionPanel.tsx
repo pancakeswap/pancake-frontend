@@ -334,7 +334,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         {showSubtitle && (
           <Text mt="4px" mb="16px" color="textSubtle">
             {vaultKey
-              ? t(vaultPoolConfig[vaultKey].description)
+              ? vaultPoolConfig[vaultKey].description
               : `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`}
           </Text>
         )}

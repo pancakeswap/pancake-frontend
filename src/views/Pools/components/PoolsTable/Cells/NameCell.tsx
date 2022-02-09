@@ -42,13 +42,13 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
 
   const showStakedTag = vaultKey ? hasVaultShares : isStaked
 
-  let title = `${t('Earn')} ${earningTokenSymbol}`
-  let subtitle = `${t('Stake')} ${stakingTokenSymbol}`
+  let title: React.ReactNode = `${t('Earn')} ${earningTokenSymbol}`
+  let subtitle: React.ReactNode = `${t('Stake')} ${stakingTokenSymbol}`
   const showSubtitle = sousId !== 0 || (sousId === 0 && !isMobile)
 
   if (vaultKey) {
-    title = t(vaultPoolConfig[vaultKey].name)
-    subtitle = t(vaultPoolConfig[vaultKey].description)
+    title = vaultPoolConfig[vaultKey].name
+    subtitle = vaultPoolConfig[vaultKey].description
   } else if (isManualCakePool) {
     title = t('Manual CAKE')
     subtitle = `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`

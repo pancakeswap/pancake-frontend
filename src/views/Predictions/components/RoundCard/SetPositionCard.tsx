@@ -157,16 +157,15 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const hasSufficientBalance = inputAmount.gt(0) && inputAmount.lte(maxBalance)
 
     if (!hasSufficientBalance) {
-      setErrorMessage({ key: 'Insufficient BNB balance' })
+      setErrorMessage(t('Insufficient BNB balance'))
     } else if (inputAmount.gt(0) && inputAmount.lt(minBetAmount)) {
-      setErrorMessage({
-        key: 'A minimum amount of %num% %token% is required',
-        data: { num: formatBigNumber(minBetAmount), token: 'BNB' },
-      })
+      setErrorMessage(
+        t('A minimum amount of %num% %token% is required', { num: formatBigNumber(minBetAmount), token: 'BNB' }),
+      )
     } else {
       setErrorMessage(null)
     }
-  }, [value, maxBalance, minBetAmount, setErrorMessage])
+  }, [value, maxBalance, minBetAmount, setErrorMessage, t])
 
   return (
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
@@ -203,7 +202,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
         />
         {showFieldWarning && (
           <Text color="failure" fontSize="12px" mt="4px" textAlign="right">
-            {t(errorMessage.key, errorMessage.data)}
+            {errorMessage}
           </Text>
         )}
         <Text textAlign="right" mb="16px" color="textSubtle" fontSize="12px" style={{ height: '18px' }}>

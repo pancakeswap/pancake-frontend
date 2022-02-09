@@ -3,7 +3,7 @@ import { InjectedModalProps } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { MaxUint256 } from '@ethersproject/constants'
 import useTheme from 'hooks/useTheme'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation, TranslateFunction } from 'contexts/Localization'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
@@ -23,12 +23,12 @@ import ApproveAndConfirmStage from '../shared/ApproveAndConfirmStage'
 import { PaymentCurrency, BuyingStage } from './types'
 import TransactionConfirmed from '../shared/TransactionConfirmed'
 
-const modalTitles = {
-  [BuyingStage.REVIEW]: 'Review',
-  [BuyingStage.APPROVE_AND_CONFIRM]: 'Back',
-  [BuyingStage.CONFIRM]: 'Back',
-  [BuyingStage.TX_CONFIRMED]: 'Transaction Confirmed',
-}
+const modalTitles = (t: TranslateFunction) => ({
+  [BuyingStage.REVIEW]: t('Review'),
+  [BuyingStage.APPROVE_AND_CONFIRM]: t('Back'),
+  [BuyingStage.CONFIRM]: t('Back'),
+  [BuyingStage.TX_CONFIRMED]: t('Transaction Confirmed'),
+})
 
 interface BuyModalProps extends InjectedModalProps {
   nftToBuy: NftToken
@@ -132,7 +132,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
 
   return (
     <StyledModal
-      title={t(modalTitles[stage])}
+      title={modalTitles[stage](t)}
       stage={stage}
       onDismiss={onDismiss}
       onBack={showBackButton ? goBack : null}
