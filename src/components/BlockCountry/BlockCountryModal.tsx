@@ -34,7 +34,7 @@ const BlockCountryModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       <ModalBody p="24px" maxWidth="400px">
         <Text as="p" color="textSubtle" mb="24px">
           {t(
-            'Please note that by UTC 00:00 1st March 2022, access will not be available to users with IP address from the following countries:',
+            'Please note that by UTC 00:00 9th March 2022, access will not be available to users with IP address from the following countries:',
           )}
           <br />
           <br />
