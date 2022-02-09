@@ -25,7 +25,9 @@ jobs:
         run: yarn add cypress
 
       - name: Cypress run
-        install: false
+        uses: cypress-io/github-action@v2
+        with:
+          install: false
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           CYPRESS_SF_HEADER: ${{ secrets.SF_HEADER }}
