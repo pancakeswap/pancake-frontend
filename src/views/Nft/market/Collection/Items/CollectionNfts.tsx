@@ -1,6 +1,6 @@
+import { useCallback } from 'react'
 import { BunnyPlaceholderIcon, AutoRenewIcon, Button, Flex, Grid, Text } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'
-import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
@@ -13,12 +13,12 @@ interface CollectionNftsProps {
 const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
   const { totalSupply, numberTokensListed, address: collectionAddress } = collection
   const { t } = useTranslation()
-  const { nfts, isFetchingNfts, setPage, showOnlyNftsOnSale, orderField, nftFilters } =
+  const { nfts, isFetchingNfts, size, setSize, showOnlyNftsOnSale, orderField, nftFilters } =
     useCollectionNfts(collectionAddress)
 
-  const handleLoadMore = () => {
-    setPage((prevState) => prevState + 1)
-  }
+  const handleLoadMore = useCallback(() => {
+    setSize(size + 1)
+  }, [setSize, size])
 
   if ((!nfts || nfts?.length === 0) && isFetchingNfts) {
     return <GridPlaceholder />
