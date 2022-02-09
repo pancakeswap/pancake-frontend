@@ -20,13 +20,6 @@ export const infoServerClient = new GraphQLClient(INFO_CLIENT, {
   timeout: 5000,
 })
 
-export const infoClientCI = new GraphQLClient(INFO_CLIENT, {
-  headers: {
-    'X-Sf': process.env.SF_HEADER,
-  },
-  timeout: 15000,
-})
-
 export const bitQueryServerClient = new GraphQLClient(process.env.NEXT_PUBLIC_BIT_QUERY_ENDPOINT, {
   headers: {
     // only server, no `NEXT_PUBLIC` not going to expose in client

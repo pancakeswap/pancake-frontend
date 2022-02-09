@@ -8,7 +8,7 @@ import { sub, getUnixTime } from 'date-fns'
 import farmsConfig from '../src/config/constants/farms'
 import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT } from '../src/config/constants/endpoints'
-import { infoClientCI } from '../src/utils/graphql'
+import { infoClient } from '../src/utils/graphql'
 
 const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
 
@@ -54,7 +54,7 @@ const getBlockAtTimestamp = async (timestamp: number) => {
 
 const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
   try {
-    const { farmsAtLatestBlock, farmsOneWeekAgo } = await infoClientCI.request<FarmsResponse>(
+    const { farmsAtLatestBlock, farmsOneWeekAgo } = await infoClient.request<FarmsResponse>(
       gql`
         query farmsBulk($addresses: [String]!, $blockWeekAgo: Int!) {
           farmsAtLatestBlock: pairs(first: 30, where: { id_in: $addresses }) {
