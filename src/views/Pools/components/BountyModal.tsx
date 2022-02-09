@@ -22,15 +22,13 @@ import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import Balance from 'components/Balance'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { useCakeVault } from 'state/pools/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 interface BountyModalProps {
   onDismiss?: () => void
   TooltipComponent: React.ElementType
-  estimatedCakeBountyReward: BigNumber
-  totalPendingCakeHarvest: BigNumber
-  callFee: number
-  cakePriceBusd: BigNumber
 }
 
 const Divider = styled.div`
@@ -40,21 +38,20 @@ const Divider = styled.div`
   width: 100%;
 `
 
-const BountyModal: React.FC<BountyModalProps> = ({
-  onDismiss,
-  estimatedCakeBountyReward,
-  totalPendingCakeHarvest,
-  callFee,
-  cakePriceBusd,
-  TooltipComponent,
-}) => {
+const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const cakeVaultContract = useCakeVaultContract()
+  const {
+    estimatedCakeBountyReward,
+    totalPendingCakeHarvest,
+    fees: { callFee },
+  } = useCakeVault()
   const { callWithGasPrice } = useCallWithGasPrice()
+  const cakePriceBusd = usePriceCakeBusd()
   const callFeeAsDecimal = callFee / 100
   const totalYieldToDisplay = getBalanceNumber(totalPendingCakeHarvest, 18)
 

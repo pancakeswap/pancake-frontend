@@ -33,7 +33,6 @@ const BountyCard = () => {
   const { t } = useTranslation()
   const {
     estimatedCakeBountyReward,
-    totalPendingCakeHarvest,
     fees: { callFee },
   } = useCakeVault()
   const cakePriceBusd = usePriceCakeBusd()
@@ -61,17 +60,7 @@ const BountyCard = () => {
     </>
   )
 
-  const [onPresentBountyModal] = useModal(
-    <BountyModal
-      estimatedCakeBountyReward={estimatedCakeBountyReward}
-      totalPendingCakeHarvest={totalPendingCakeHarvest}
-      callFee={callFee}
-      cakePriceBusd={cakePriceBusd}
-      TooltipComponent={TooltipComponent}
-    />,
-    true,
-    true,
-  )
+  const [onPresentBountyModal] = useModal(<BountyModal TooltipComponent={TooltipComponent} />)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent fee={callFee} />, {
     placement: 'bottom-end',
