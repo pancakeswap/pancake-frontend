@@ -209,6 +209,8 @@ const Pools: React.FC = () => {
           },
           'desc',
         )
+      case 'latest':
+        return orderBy(poolsToSort, (pool: DeserializedPool) => Number(pool.sousId), 'desc')
       default:
         return poolsToSort
     }
@@ -298,6 +300,10 @@ const Pools: React.FC = () => {
                     {
                       label: t('Total staked'),
                       value: 'totalStaked',
+                    },
+                    {
+                      label: t('Latest'),
+                      value: 'latest',
                     },
                   ]}
                   onOptionChange={handleSortOptionChange}
