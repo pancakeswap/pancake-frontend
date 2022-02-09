@@ -11,6 +11,7 @@ import ProfileHeader from './components/ProfileHeader'
 import NoNftsImage from '../components/Activity/NoNftsImage'
 import useNftsForAddress from '../hooks/useNftsForAddress'
 import TabMenu from './components/TabMenu'
+import { useFetchCollections } from 'state/nftMarket/hooks'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;
@@ -27,6 +28,7 @@ const TabMenuWrapper = styled(Box)`
 const NftProfile: FC = ({ children }) => {
   const accountAddress = useRouter().query.accountAddress as string
   const { t } = useTranslation()
+  useFetchCollections()
 
   const invalidAddress = !accountAddress || isAddress(accountAddress) === false
 
