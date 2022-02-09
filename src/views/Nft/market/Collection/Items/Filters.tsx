@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, Grid, Text } from '@pancakeswap/uikit'
 import capitalize from 'lodash/capitalize'
@@ -92,9 +92,12 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
   const showOnlyNftsOnSale = useGetNftShowOnlyOnSale(address)
   const [activeButtonIndex, setActiveButtonIndex] = useState(showOnlyNftsOnSale ? 1 : 0)
 
+  useEffect(() => {
+    setActiveButtonIndex(showOnlyNftsOnSale ? 1 : 0)
+  }, [showOnlyNftsOnSale])
+
   const onActiveButtonChange = (newIndex: number) => {
     dispatch(setShowOnlyOnSale({ collection: address, showOnlyOnSale: newIndex === 1 }))
-    setActiveButtonIndex(newIndex)
   }
 
   const nftFilters = useGetNftFilters(address)
