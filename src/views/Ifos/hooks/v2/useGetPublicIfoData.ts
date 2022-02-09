@@ -5,6 +5,7 @@ import ifoV2Abi from 'config/abi/ifoV2.json'
 import tokens from 'config/constants/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { FixedNumber } from '@ethersproject/bignumber'
+
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { multicallv2 } from 'utils/multicall'
@@ -47,6 +48,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       taxRate: 0,
       totalAmountPool: BIG_ZERO,
       sumTaxesOverflow: BIG_ZERO,
+      pointThreshold: BIG_ZERO,
+      admissionProfile: undefined,
     },
     poolUnlimited: {
       raisingAmountPool: BIG_ZERO,
@@ -97,6 +100,14 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
             address,
             name: 'thresholdPoints',
           },
+          // {
+          //   address,
+          //   name: 'admissionProfile',
+          // },
+          // {
+          //   address,
+          //   name: 'pointThreshold',
+          // },
         ])
 
       const poolBasicFormatted = formatPool(poolBasic)
@@ -121,7 +132,13 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         isInitialized: true,
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-        poolBasic: { ...poolBasicFormatted, taxRate: 0 },
+        poolBasic: {
+          ...poolBasicFormatted,
+          taxRate: 0,
+          // Integrate Smart Contracts
+          pointThreshold: BIG_ZERO,
+          admissionProfile: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+        },
         poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
         status,
         progress,

@@ -73,9 +73,15 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account, [0, 1]],
     }))
 
+    // const ifov3Calls = ['isQualifiedNFT', 'isQualifiedPoints'].map((name) => ({
+    //   address,
+    //   name,
+    //   params: [account],
+    // }))
+
     dispatch(fetchIfoPoolUserAndCredit({ account }))
 
-    const [userInfo, amounts] = await multicallv2(ifoV2Abi, ifoCalls)
+    const [userInfo, amounts, isQualifiedNFT, isQualifiedPoints] = await multicallv2(ifoV2Abi, [...ifoCalls, ...[]])
 
     setState((prevState) => ({
       ...prevState,
@@ -87,6 +93,9 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         refundingAmountInLP: new BigNumber(amounts[0][0][1].toString()),
         taxAmountInLP: new BigNumber(amounts[0][0][2].toString()),
         hasClaimed: userInfo[1][0],
+        // Integrate Smart Contract
+        isQualifiedNFT: true,
+        isQualifiedPoints: false,
       },
       poolUnlimited: {
         ...prevState.poolUnlimited,

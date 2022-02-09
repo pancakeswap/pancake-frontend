@@ -29,7 +29,7 @@ const ifos: Ifo[] = [
     campaignId: '511170000',
     articleUrl: 'https://pancakeswap.finance/voting/proposal/QmRhc4oC73jk4zxU4YkP1kudKHeq6qamgYA1sWoh6XJnks',
     tokenOfferingPrice: 0.06,
-    version: 3,
+    version: 3.1,
     telegramUrl: 'https://t.me/froyogames',
     twitterUrl: 'https://twitter.com/realfroyogames',
     description: `Froyo Games is a game publisher and decentralized GameFi platform, with a NFT Marketplace that integrates NFTs with their games.\n \n FROYO tokens can be used to buy NFTs and participate in Froyo games`,

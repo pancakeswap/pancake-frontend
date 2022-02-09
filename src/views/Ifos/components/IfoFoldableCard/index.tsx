@@ -320,6 +320,8 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
     }
   }, [account, raisingTokenContract, contract, setEnableStatus])
 
+  // TODO: add css style to flip the order for version 3.1
+
   return (
     <>
       <StyledCardBody>

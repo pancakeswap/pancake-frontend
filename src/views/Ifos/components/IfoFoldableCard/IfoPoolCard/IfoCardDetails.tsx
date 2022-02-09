@@ -14,6 +14,7 @@ export interface IfoCardDetailsProps {
   ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
+  isEligible: boolean
 }
 
 export interface FooterEntryProps {
@@ -58,6 +59,8 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
 
   const dollarValueOfToken = multiplyPriceByAmount(price, maxToken, ifo.currency.decimals)
 
+  // TODO: add tooltip v3.1
+
   return (
     <>
       {isV3 && tooltipVisible && tooltip}
@@ -83,7 +86,7 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
   )
 }
 
-const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
+const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
@@ -129,7 +132,9 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     2,
   )}`
 
-  const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxLpTokens} />
+  const maxToken = ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
+
+  const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} />
 
   /* Format end */
   const renderBasedOnIfoStatus = () => {
