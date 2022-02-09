@@ -26,9 +26,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     await store.dispatch(fetchCollection(collectionAddress))
 
+    const state = store.getState()
+
     return {
       props: {
-        initialReduxState: store.getState(),
+        // Note: only include the data needed for the page, otherwise it will override the user preset data
+        initialReduxState: {
+          nftMarket: state.nftMarket,
+        },
       },
       revalidate: 60 * 60 * 6, // 6 hours
     }
