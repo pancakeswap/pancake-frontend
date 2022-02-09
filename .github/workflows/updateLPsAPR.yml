@@ -24,6 +24,8 @@ jobs:
 
       - name: Fetch and save LP APR data
         run: yarn updateLPsAPR
+        env:
+          NEXT_PUBLIC_APP_SF_HEADER: ${{ secrets.SF_HEADER }}
 
       - name: Format
         run: yarn format:write
