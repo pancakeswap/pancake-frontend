@@ -14,8 +14,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
+      - name: Cypress install
+        run: yarn add cypress
+
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        install: false
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           CYPRESS_SF_HEADER: ${{ secrets.SF_HEADER }}
