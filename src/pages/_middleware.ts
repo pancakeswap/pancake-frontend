@@ -5,7 +5,7 @@ import { BLOCK_COUNTRIES_COOKIE_NAME } from 'config/constants/cookie-names'
 const BLOCK_COUNTRIES = ['BY', 'CU', 'CD', 'IR', 'IQ', 'KP', 'SD', 'SY', 'ZW']
 
 // Sanctioned Regions: Crimea
-const BLOCK_REGRIONS = ['UA-43']
+const BLOCK_REGIONS = ['UA-43']
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
   }
 
   const shouldBlock: boolean =
-    BLOCK_COUNTRIES.some((c) => c === country) || BLOCK_REGRIONS.some((r) => r === `${country}-${region}`)
+    BLOCK_COUNTRIES.some((c) => c === country) || BLOCK_REGIONS.some((r) => r === `${country}-${region}`)
 
   if (shouldBlock) {
     res.cookie(BLOCK_COUNTRIES_COOKIE_NAME, String(shouldBlock))
