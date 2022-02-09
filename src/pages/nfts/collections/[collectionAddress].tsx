@@ -30,6 +30,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     return {
       props: {
+        // Note: only include the data needed for the page, otherwise it will override the user preset data
         initialReduxState: {
           nftMarket: state.nftMarket,
         },
