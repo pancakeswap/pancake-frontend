@@ -22,7 +22,7 @@ jobs:
             node_modules
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
       - name: Cypress install
-        run: npm i --no-save cypress
+        run: yarn add -D cypress
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
