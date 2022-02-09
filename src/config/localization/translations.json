@@ -1836,5 +1836,12 @@
   "You’re connected to the wrong network.": "You’re connected to the wrong network.",
   "Learn How": "Learn How",
   "Network": "Network",
-  "Switch Network": "Switch Network"
+  "Switch Network": "Switch Network",
+  "This pool requires active Pancake Profile and %amount% profile points.": "This pool requires active Pancake Profile and %amount% profile points.",
+  "This pool requires active Pancake Profile": "This pool requires active Pancake Profile",
+  "This pool requires %amount% profile points.": "This pool requires %amount% profile points.",
+  "Requirement": "Requirement",
+  "Create Profile": "Create Profile",
+  "Go to Profile": "Go to Profile",
+  "Profile Points": "Profile Points"
 }

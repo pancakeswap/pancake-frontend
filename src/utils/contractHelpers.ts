@@ -2,7 +2,7 @@ import type { Signer } from '@ethersproject/abstract-signer'
 import type { Provider } from '@ethersproject/providers'
 import { Contract } from '@ethersproject/contracts'
 import { simpleRpcProvider } from 'utils/providers'
-import { poolsConfig } from 'config/constants'
+import poolsConfig from 'config/constants/pools'
 import { PoolCategory } from 'config/constants/types'
 import tokens from 'config/constants/tokens'
 
@@ -74,7 +74,7 @@ import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
 
 // Types
-import {
+import type {
   ChainlinkOracle,
   FarmAuction,
   Predictions,
@@ -139,6 +139,7 @@ export const getSouschefV2Contract = (id: number, signer?: Signer | Provider) =>
   const config = poolsConfig.find((pool) => pool.sousId === id)
   return getContract(sousChefV2, getAddress(config.contractAddress), signer) as SousChefV2
 }
+
 export const getPointCenterIfoContract = (signer?: Signer | Provider) => {
   return getContract(pointCenterIfo, getPointCenterIfoAddress(), signer) as PointCenterIfo
 }
@@ -190,8 +191,8 @@ export const getPredictionsContract = (signer?: Signer | Provider) => {
 export const getChainlinkOracleContract = (signer?: Signer | Provider) => {
   return getContract(chainlinkOracleAbi, getChainlinkOracleAddress(), signer) as ChainlinkOracle
 }
-export const getMulticallContract = (signer?: Signer | Provider) => {
-  return getContract(MultiCallAbi, getMulticallAddress(), signer) as Multicall
+export const getMulticallContract = () => {
+  return getContract(MultiCallAbi, getMulticallAddress(), simpleRpcProvider) as Multicall
 }
 export const getBunnySpecialCakeVaultContract = (signer?: Signer | Provider) => {
   return getContract(bunnySpecialCakeVaultAbi, getBunnySpecialCakeVaultAddress(), signer) as BunnySpecialCakeVault

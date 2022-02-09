@@ -1,23 +1,25 @@
-import React from 'react'
-import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, useTooltip, Flex, Text } from '@pancakeswap/uikit'
-import ConnectWalletButton from 'components/ConnectWalletButton'
+import { AddIcon, Button, Flex, IconButton, MinusIcon, Skeleton, Text, useModal, useTooltip } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
+import Balance from 'components/Balance'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { PoolCategory } from 'config/constants/types'
+import { useTranslation } from 'contexts/Localization'
+import { useERC20 } from 'hooks/useContract'
+import React from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
-import Balance from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { PoolCategory } from 'config/constants/types'
+import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { useERC20 } from 'hooks/useContract'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { convertSharesToCake } from 'views/Pools/helpers'
-import { ActionContainer, ActionTitles, ActionContent } from './styles'
+import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
+import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
+import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import StakeModal from '../../PoolCard/Modals/StakeModal'
-import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
-import { useCheckVaultApprovalStatus, useApprovePool, useVaultApprove } from '../../../hooks/useApprove'
+import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
+import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -39,6 +41,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     userData,
     stakingTokenPrice,
     vaultKey,
+    profileRequirement,
   } = pool
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -109,6 +112,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
 
   const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
+  const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
+
   const onStake = () => {
     if (vaultKey) {
       onPresentVaultStake()
@@ -157,6 +162,21 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
         </ActionTitles>
         <ActionContent>
           <Skeleton width={180} height="32px" marginTop={14} />
+        </ActionContent>
+      </ActionContainer>
+    )
+  }
+
+  if (notMeetRequired || notMeetThreshold) {
+    return (
+      <ActionContainer>
+        <ActionTitles>
+          <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
+            {t('Enable pool')}
+          </Text>
+        </ActionTitles>
+        <ActionContent>
+          <ProfileRequirementWarning profileRequirement={profileRequirement} />
         </ActionContent>
       </ActionContainer>
     )

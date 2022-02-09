@@ -113,6 +113,20 @@ const InfoSection = styled(Box)`
   }
 `
 
+const RequirementSection = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: inline-block;
+
+    > div {
+      display: inline;
+      margin-right: 4px;
+    }
+  }
+`
+
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
   const {
     sousId,
@@ -125,6 +139,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     contractAddress,
     userData,
     vaultKey,
+    profileRequirement,
   } = pool
   const { t } = useTranslation()
   const poolContractAddress = getAddress(contractAddress)
@@ -192,6 +207,26 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     placement: 'bottom-start',
   })
 
+  const requirementRow =
+    profileRequirement && (profileRequirement.required || profileRequirement.thresholdPoints.gt(0)) ? (
+      <RequirementSection mb="8px">
+        <Text>{t('Requirement')}:</Text>
+        <Text textAlign={['right', , , , 'left']}>
+          {profileRequirement.required && t('Pancake Profile')}{' '}
+          {profileRequirement.required && profileRequirement.thresholdPoints.gt(0) && (
+            <Text as="span" display={['none', , , , 'inline']}>
+              {' & '}
+            </Text>
+          )}
+          {profileRequirement.thresholdPoints.gt(0) && (
+            <Text>
+              {profileRequirement.thresholdPoints.toNumber().toLocaleString()} {t('Profile Points')}
+            </Text>
+          )}
+        </Text>
+      </RequirementSection>
+    ) : null
+
   const maxStakeRow = stakingLimit.gt(0) ? (
     <Flex mb="8px" justifyContent="space-between">
       <Text>{t('Max. stake per user')}:</Text>
@@ -251,6 +286,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   return (
     <StyledActionPanel expanded={expanded}>
       <InfoSection>
+        {requirementRow}
         {maxStakeRow}
         {(isXs || isSm) && aprRow}
         {(isXs || isSm || isMd) && totalStakedRow}

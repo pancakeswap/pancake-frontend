@@ -20,6 +20,8 @@
     "import/prefer-default-export": 0,
     "react/destructuring-assignment": 0,
     "react/jsx-no-bind": 0,
+    "react/react-in-jsx-scope": 0,
+    "no-sparse-arrays": 0,
     "react/no-unused-prop-types": 0,
     "react-hooks/exhaustive-deps": [
       "warn",
