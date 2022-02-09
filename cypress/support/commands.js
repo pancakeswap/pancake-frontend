@@ -101,3 +101,8 @@ Cypress.Commands.add('getBySel', (selector, ...args) => {
 })
 
 Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message))
+
+Cypress.on('window:before:load', (win) => {
+  // eslint-disable-next-line no-param-reassign
+  win.sfHeader = Cypress.env('SF_HEADER')
+})

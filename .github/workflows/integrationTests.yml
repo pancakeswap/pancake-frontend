@@ -4,21 +4,28 @@ on:
   pull_request:
     branches:
       - develop
+  deployment_status:
 
 jobs:
   integration-tests:
+    if: github.event.deployment_status.state == 'success'
     name: Integration tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Cache
+        uses: actions/cache@v2
         with:
-          node-version: '14'
-          registry-url: https://registry.npmjs.org
-      - run: yarn install --frozen-lockfile
-      - run: yarn cypress install
-      - run: yarn build
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
+      - name: Cypress install
+        run: yarn add cypress
+
+      - name: Cypress run
+        install: false
         env:
-          NEXT_PUBLIC_SF_HEADER: ${{ secrets.SF_HEADER }}
-      - run: yarn integration-test
+          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
+          CYPRESS_SF_HEADER: ${{ secrets.SF_HEADER }}
