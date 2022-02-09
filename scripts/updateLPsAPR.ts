@@ -7,10 +7,10 @@ import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
 import farmsConfig from '../src/config/constants/farms'
 import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
-import { BLOCKS_CLIENT, INFO_CLIENT } from '../src/config/constants/endpoints'
+import { BLOCKS_CLIENT } from '../src/config/constants/endpoints'
+import { infoServerClient } from '../src/utils/graphql'
 
 const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
-const STREAMING_FAST_ENDPOINT = INFO_CLIENT
 
 interface SingleFarmResponse {
   id: string
@@ -54,8 +54,7 @@ const getBlockAtTimestamp = async (timestamp: number) => {
 
 const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
   try {
-    const { farmsAtLatestBlock, farmsOneWeekAgo } = await request<FarmsResponse>(
-      STREAMING_FAST_ENDPOINT,
+    const { farmsAtLatestBlock, farmsOneWeekAgo } = await infoServerClient.request<FarmsResponse>(
       gql`
         query farmsBulk($addresses: [String]!, $blockWeekAgo: Int!) {
           farmsAtLatestBlock: pairs(first: 30, where: { id_in: $addresses }) {
