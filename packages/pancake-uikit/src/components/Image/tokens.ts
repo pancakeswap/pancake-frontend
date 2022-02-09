@@ -1191,7 +1191,7 @@ const tokens = {
     projectLink: "https://lympo.io/lmt/",
   },
   btt: {
-    symbol: "BTT",
+    symbol: "BTTOLD",
     address: {
       56: "0x8595F9dA7b868b1822194fAEd312235E43007b49",
       97: "",

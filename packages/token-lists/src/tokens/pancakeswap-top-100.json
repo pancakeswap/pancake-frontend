@@ -200,8 +200,8 @@
     "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xAD86d0E9764ba90DDD68747D64BFfBd79879a238/logo.png"
   },
   {
-    "name": "BitTorrent",
-    "symbol": "BTT",
+    "name": "BitTorrent Old",
+    "symbol": "BTTOLD",
     "address": "0x8595F9dA7b868b1822194fAEd312235E43007b49",
     "chainId": 56,
     "decimals": 18,
