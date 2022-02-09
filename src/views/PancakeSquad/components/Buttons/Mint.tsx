@@ -3,12 +3,11 @@ import { BigNumber } from '@ethersproject/bignumber'
 import React, { useEffect, useState } from 'react'
 import { AutoRenewIcon, Button, useModal } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useNftSaleContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { DefaultTheme } from 'styled-components'
-import { logError } from 'utils/sentry'
 import { SaleStatusEnum } from '../../types'
 import ConfirmModal from '../Modals/Confirm'
 
@@ -24,11 +23,10 @@ type PreEventProps = {
 const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicketsOfUser, ticketsOfUser }) => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
-  const [isLoading, setIsLoading] = useState(false)
   const [txHashMintingResult, setTxHashMintingResult] = useState(null)
-  const { toastError } = useToast()
   const canMintTickets = saleStatus === SaleStatusEnum.Claim && numberTicketsOfUser > 0
   const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: isLoading } = useCatchTxError()
 
   const onConfirmClose = () => {
     setTxHashMintingResult(null)
@@ -49,21 +47,14 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
   )
 
   const mintTokenCallBack = async () => {
-    setIsLoading(true)
-    try {
-      const tx = await callWithGasPrice(nftSaleContract, 'mint', [ticketsOfUser])
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      const receipt = await tx.wait()
-      if (receipt.status) {
-        toastSuccess(t('Transaction has succeeded!'))
-        setTxHashMintingResult(receipt.transactionHash)
-      }
-    } catch (error) {
-      logError(error)
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(nftSaleContract, 'mint', [ticketsOfUser])
+    })
+    if (receipt?.status) {
+      toastSuccess(t('Transaction has succeeded!'))
+      setTxHashMintingResult(receipt.transactionHash)
+    } else {
       onDismiss()
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-    } finally {
-      setIsLoading(false)
     }
   }
 

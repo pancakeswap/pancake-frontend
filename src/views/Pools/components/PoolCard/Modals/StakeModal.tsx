@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import {
   Modal,
@@ -17,13 +18,15 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import BigNumber from 'bignumber.js'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import { DeserializedPool } from 'state/types'
+import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
+import { useAppDispatch } from 'state'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
-import { logError } from 'utils/sentry'
 import PercentageButton from './PercentageButton'
 import useStakePool from '../../../hooks/useStakePool'
 import useUnstakePool from '../../../hooks/useUnstakePool'
@@ -62,12 +65,14 @@ const StakeModal: React.FC<StakeModalProps> = ({
   onDismiss,
 }) => {
   const { sousId, stakingToken, earningTokenPrice, apr, userData, stakingLimit, earningToken } = pool
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { onStake } = useStakePool(sousId, isBnbPool)
   const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
-  const { toastSuccess, toastError } = useToast()
-  const [pendingTx, setPendingTx] = useState(false)
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const [stakeAmount, setStakeAmount] = useState('')
   const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false)
   const [percent, setPercent] = useState(0)
@@ -133,69 +138,36 @@ const StakeModal: React.FC<StakeModalProps> = ({
   }
 
   const handleConfirmClick = async () => {
-    setPendingTx(true)
-    try {
+    const receipt = await fetchWithCatchTxError(() => {
       if (isRemovingStake) {
-        // unstaking
-        await onUnstake(
-          stakeAmount,
-          stakingToken.decimals,
-          (tx) => {
-            toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-          },
-          (receipt) => {
-            toastSuccess(
-              `${t('Unstaked')}!`,
-              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                {t('Your %symbol% earnings have also been harvested to your wallet!', {
-                  symbol: earningToken.symbol,
-                })}
-              </ToastDescriptionWithTx>,
-            )
-          },
-          (receipt) => {
-            toastError(
-              t('Error'),
-              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-              </ToastDescriptionWithTx>,
-            )
-          },
+        return onUnstake(stakeAmount, stakingToken.decimals)
+      }
+      return onStake(stakeAmount, stakingToken.decimals)
+    })
+    if (receipt?.status) {
+      if (isRemovingStake) {
+        toastSuccess(
+          `${t('Unstaked')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your %symbol% earnings have also been harvested to your wallet!', {
+              symbol: earningToken.symbol,
+            })}
+          </ToastDescriptionWithTx>,
         )
       } else {
-        // staking
-        await onStake(
-          stakeAmount,
-          stakingToken.decimals,
-          (tx) => {
-            toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-          },
-          (receipt) => {
-            toastSuccess(
-              `${t('Staked')}!`,
-              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                {t('Your %symbol% funds have been staked in the pool!', {
-                  symbol: stakingToken.symbol,
-                })}
-              </ToastDescriptionWithTx>,
-            )
-          },
-          (receipt) => {
-            toastError(
-              t('Error'),
-              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-              </ToastDescriptionWithTx>,
-            )
-          },
+        toastSuccess(
+          `${t('Staked')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your %symbol% funds have been staked in the pool!', {
+              symbol: stakingToken.symbol,
+            })}
+          </ToastDescriptionWithTx>,
         )
       }
-      setPendingTx(false)
+      dispatch(updateUserStakedBalance(sousId, account))
+      dispatch(updateUserPendingReward(sousId, account))
+      dispatch(updateUserBalance(sousId, account))
       onDismiss()
-    } catch (e) {
-      logError(e)
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setPendingTx(false)
     }
   }
 

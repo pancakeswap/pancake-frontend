@@ -20,15 +20,13 @@ import { parseUnits } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { useGetMinBetAmount } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
-import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { BetPosition } from 'state/types'
 import { formatBigNumber, formatFixedNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { logError } from 'utils/sentry'
 import PositionTag from '../PositionTag'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
@@ -70,7 +68,6 @@ const getValueAsEthersBn = (value: string) => {
 
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, epoch, onBack, onSuccess }) => {
   const [value, setValue] = useState('')
-  const [isTxPending, setIsTxPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [percent, setPercent] = useState(0)
 
@@ -79,7 +76,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const { balance: bnbBalance } = useGetBnbBalance()
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
-  const { toastSuccess, toastError } = useToast()
+  const { fetchWithCatchTxError, loading: isTxPending } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract()
 
@@ -146,17 +143,11 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const handleEnterPosition = async () => {
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
 
-    try {
-      const tx = await callWithGasPrice(predictionsContract, betMethod, [epoch], { value: valueAsBn.toString() })
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      setIsTxPending(true)
-      const receipt = await tx.wait()
+    const receipt = await fetchWithCatchTxError(() => {
+      return callWithGasPrice(predictionsContract, betMethod, [epoch], { value: valueAsBn.toString() })
+    })
+    if (receipt?.status) {
       onSuccess(receipt.transactionHash)
-    } catch (e) {
-      logError(e)
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-    } finally {
-      setIsTxPending(false)
     }
   }
 
@@ -166,16 +157,15 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const hasSufficientBalance = inputAmount.gt(0) && inputAmount.lte(maxBalance)
 
     if (!hasSufficientBalance) {
-      setErrorMessage({ key: 'Insufficient BNB balance' })
+      setErrorMessage(t('Insufficient BNB balance'))
     } else if (inputAmount.gt(0) && inputAmount.lt(minBetAmount)) {
-      setErrorMessage({
-        key: 'A minimum amount of %num% %token% is required',
-        data: { num: formatBigNumber(minBetAmount), token: 'BNB' },
-      })
+      setErrorMessage(
+        t('A minimum amount of %num% %token% is required', { num: formatBigNumber(minBetAmount), token: 'BNB' }),
+      )
     } else {
       setErrorMessage(null)
     }
-  }, [value, maxBalance, minBetAmount, setErrorMessage])
+  }, [value, maxBalance, minBetAmount, setErrorMessage, t])
 
   return (
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
@@ -212,7 +202,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
         />
         {showFieldWarning && (
           <Text color="failure" fontSize="12px" mt="4px" textAlign="right">
-            {t(errorMessage.key, errorMessage.data)}
+            {errorMessage}
           </Text>
         )}
         <Text textAlign="right" mb="16px" color="textSubtle" fontSize="12px" style={{ height: '18px' }}>

@@ -1,5 +1,5 @@
 import { CardHeader, Flex, Heading, Text } from '@pancakeswap/uikit'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 
 const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }>`
@@ -23,7 +23,7 @@ const PoolCardHeader: React.FC<{
   )
 }
 
-export const PoolCardHeaderTitle: React.FC<{ isFinished?: boolean; title: string; subTitle: string }> = ({
+export const PoolCardHeaderTitle: React.FC<{ isFinished?: boolean; title: ReactNode; subTitle: ReactNode }> = ({
   isFinished,
   title,
   subTitle,

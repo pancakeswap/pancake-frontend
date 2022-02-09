@@ -206,6 +206,8 @@ const Farms: React.FC = ({ children }) => {
           )
         case 'liquidity':
           return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
+        case 'latest':
+          return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.pid), 'desc')
         default:
           return farms
       }
@@ -385,6 +387,10 @@ const Farms: React.FC = ({ children }) => {
                   {
                     label: t('Liquidity'),
                     value: 'liquidity',
+                  },
+                  {
+                    label: t('Latest'),
+                    value: 'latest',
                   },
                 ]}
                 onOptionChange={handleSortOptionChange}

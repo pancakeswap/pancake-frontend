@@ -100,6 +100,7 @@ interface PoolConfigBaseProps {
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
   deployedBlockNumber?: number
+  version?: number
 }
 
 export interface SerializedPoolConfig extends PoolConfigBaseProps {

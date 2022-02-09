@@ -9,7 +9,9 @@ import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFol
 import PageSection from 'components/PageSection'
 import { PageMeta } from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { useGetCollections } from 'state/nftMarket/hooks'
+import { useGetCollections, useGetNFTInitializationState } from 'state/nftMarket/hooks'
+import PageLoader from 'components/Loader/PageLoader'
+import { NFTMarketInitializationState } from 'state/nftMarket/types'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import SearchBar from '../components/SearchBar'
@@ -56,6 +58,7 @@ const Home = () => {
   const { account } = useWeb3React()
   const { theme } = useTheme()
   const collections = useGetCollections()
+  const initializationState = useGetNFTInitializationState()
 
   const hotCollections = orderBy(
     collections,
@@ -90,27 +93,31 @@ const Home = () => {
           <SearchBar />
         </StyledHeaderInner>
       </StyledPageHeader>
-      <PageSection
-        innerProps={{ style: { margin: '0', width: '100%' } }}
-        background={theme.colors.background}
-        index={1}
-        concaveDivider
-        dividerPosition="top"
-      >
-        <Collections
-          key="newest-collections"
-          title={t('Newest Collections')}
-          testId="nfts-newest-collections"
-          collections={newestCollections}
-        />
-        <Collections
-          key="hot-collections"
-          title={t('Hot Collections')}
-          testId="nfts-hot-collections"
-          collections={hotCollections}
-        />
-        <Newest />
-      </PageSection>
+      {initializationState !== NFTMarketInitializationState.INITIALIZED ? (
+        <PageLoader />
+      ) : (
+        <PageSection
+          innerProps={{ style: { margin: '0', width: '100%' } }}
+          background={theme.colors.background}
+          index={1}
+          concaveDivider
+          dividerPosition="top"
+        >
+          <Collections
+            key="newest-collections"
+            title={t('Newest Collections')}
+            testId="nfts-newest-collections"
+            collections={newestCollections}
+          />
+          <Collections
+            key="hot-collections"
+            title={t('Hot Collections')}
+            testId="nfts-hot-collections"
+            collections={hotCollections}
+          />
+          <Newest />
+        </PageSection>
+      )}
       <Gradient p="64px 0">
         <SectionsWithFoldableText header={t('FAQs')} config={config(t)} m="auto" />
         <LinkExternal href="https://docs.pancakeswap.finance/contact-us/nft-market-applications" mx="auto" mt="16px">

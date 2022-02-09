@@ -4,8 +4,8 @@ import { PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { logError } from 'utils/sentry'
 
 interface Props {
   poolId: PoolIds
@@ -16,34 +16,28 @@ interface Props {
 const ClaimButton: React.FC<Props> = ({ poolId, ifoVersion, walletIfoData }) => {
   const userPoolCharacteristics = walletIfoData[poolId]
   const { t } = useTranslation()
-  const { toastError, toastSuccess } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError } = useCatchTxError()
 
   const setPendingTx = (isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)
 
   const handleClaim = async () => {
-    try {
+    const receipt = await fetchWithCatchTxError(() => {
       setPendingTx(true)
-      const tx =
-        ifoVersion === 1
-          ? await walletIfoData.contract.harvest()
-          : await walletIfoData.contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
-      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      const receipt = await tx.wait()
-      const txHash = receipt.transactionHash
-
+      return ifoVersion === 1
+        ? walletIfoData.contract.harvest()
+        : walletIfoData.contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
+    })
+    if (receipt?.status) {
       walletIfoData.setIsClaimed(poolId)
       toastSuccess(
         t('Success!'),
-        <ToastDescriptionWithTx txHash={txHash}>
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
           {t('You have successfully claimed your rewards.')}
         </ToastDescriptionWithTx>,
       )
-    } catch (error) {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      logError(error)
-    } finally {
-      setPendingTx(false)
     }
+    setPendingTx(false)
   }
 
   return (

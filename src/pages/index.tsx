@@ -69,7 +69,9 @@ export const getStaticProps: GetStaticProps = async () => {
         parseInt(totalTx.pancakeFactory.totalTransactions) - parseInt(totalTx30DaysAgo.pancakeFactory.totalTransactions)
     }
   } catch (error) {
-    console.error('Error when fetching total tx count', error)
+    if (process.env.NODE_ENV === 'production') {
+      console.error('Error when fetching total tx count', error)
+    }
   }
 
   const usersQuery = gql`

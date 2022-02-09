@@ -15,12 +15,14 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useGetCollections } from 'state/nftMarket/hooks'
+import { useGetCollections, useGetNFTInitializationState } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import shuffle from 'lodash/shuffle'
+import { NFTMarketInitializationState } from 'state/nftMarket/types'
+import PageLoader from 'components/Loader/PageLoader'
 
 export const ITEMS_PER_PAGE = 10
 
@@ -53,6 +55,7 @@ const Collectible = () => {
   const collections = useGetCollections()
   const { isMobile } = useMatchBreakpoints()
   const [sortField, setSortField] = useState(null)
+  const initializationState = useGetNFTInitializationState()
   const [sortDirection, setSortDirection] = useState<boolean>(false)
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
@@ -125,89 +128,93 @@ const Collectible = () => {
         </Heading>
       </PageHeader>
       <Page>
-        <Card>
-          <Table>
-            <thead>
-              <tr>
-                <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.createdAt)}>
-                  {t('Collection')}
-                  {arrow(SORT_FIELD.createdAt)}
-                </Th>
-                <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.volumeBNB)}>
-                  {t('Volume')}
-                  {arrow(SORT_FIELD.volumeBNB)}
-                </Th>
-                {!isMobile && (
-                  <>
-                    <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.items)}>
-                      {t('Items')}
-                      {arrow(SORT_FIELD.items)}
-                    </Th>
-                    <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.supply)}>
-                      {t('Supply')}
-                      {arrow(SORT_FIELD.supply)}
-                    </Th>
-                  </>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {sortedCollections
-                .map((collection) => {
-                  const volume = collection.totalVolumeBNB
-                    ? parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
-                        minimumFractionDigits: 3,
-                        maximumFractionDigits: 3,
-                      })
-                    : '0'
-                  return (
-                    <tr key={collection.address} data-test="nft-collection-row">
-                      <Td>
-                        <NextLinkFromReactRouter to={`${nftsBaseUrl}/collections/${collection.address}`}>
+        {initializationState !== NFTMarketInitializationState.INITIALIZED ? (
+          <PageLoader />
+        ) : (
+          <Card>
+            <Table>
+              <thead>
+                <tr>
+                  <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.createdAt)}>
+                    {t('Collection')}
+                    {arrow(SORT_FIELD.createdAt)}
+                  </Th>
+                  <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.volumeBNB)}>
+                    {t('Volume')}
+                    {arrow(SORT_FIELD.volumeBNB)}
+                  </Th>
+                  {!isMobile && (
+                    <>
+                      <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.items)}>
+                        {t('Items')}
+                        {arrow(SORT_FIELD.items)}
+                      </Th>
+                      <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.supply)}>
+                        {t('Supply')}
+                        {arrow(SORT_FIELD.supply)}
+                      </Th>
+                    </>
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {sortedCollections
+                  .map((collection) => {
+                    const volume = collection.totalVolumeBNB
+                      ? parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
+                          minimumFractionDigits: 3,
+                          maximumFractionDigits: 3,
+                        })
+                      : '0'
+                    return (
+                      <tr key={collection.address} data-test="nft-collection-row">
+                        <Td>
+                          <NextLinkFromReactRouter to={`${nftsBaseUrl}/collections/${collection.address}`}>
+                            <Flex alignItems="center">
+                              <ProfileAvatar src={collection.avatar} width={48} height={48} mr="16px" />
+                              {collection.name}
+                            </Flex>
+                          </NextLinkFromReactRouter>
+                        </Td>
+                        <Td>
                           <Flex alignItems="center">
-                            <ProfileAvatar src={collection.avatar} width={48} height={48} mr="16px" />
-                            {collection.name}
+                            {volume}
+                            <BnbUsdtPairTokenIcon ml="8px" />
                           </Flex>
-                        </NextLinkFromReactRouter>
-                      </Td>
-                      <Td>
-                        <Flex alignItems="center">
-                          {volume}
-                          <BnbUsdtPairTokenIcon ml="8px" />
-                        </Flex>
-                      </Td>
-                      {!isMobile && (
-                        <>
-                          <Td>{collection.numberTokensListed}</Td>
-                          <Td>{collection.totalSupply}</Td>
-                        </>
-                      )}
-                    </tr>
-                  )
-                })
-                .slice(ITEMS_PER_PAGE * (page - 1), page * ITEMS_PER_PAGE)}
-            </tbody>
-          </Table>
-          <PageButtons>
-            <Arrow
-              onClick={() => {
-                setPage(page === 1 ? page : page - 1)
-              }}
-            >
-              <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
-            </Arrow>
+                        </Td>
+                        {!isMobile && (
+                          <>
+                            <Td>{collection.numberTokensListed}</Td>
+                            <Td>{collection.totalSupply}</Td>
+                          </>
+                        )}
+                      </tr>
+                    )
+                  })
+                  .slice(ITEMS_PER_PAGE * (page - 1), page * ITEMS_PER_PAGE)}
+              </tbody>
+            </Table>
+            <PageButtons>
+              <Arrow
+                onClick={() => {
+                  setPage(page === 1 ? page : page - 1)
+                }}
+              >
+                <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+              </Arrow>
 
-            <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
+              <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
 
-            <Arrow
-              onClick={() => {
-                setPage(page === maxPage ? page : page + 1)
-              }}
-            >
-              <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
-            </Arrow>
-          </PageButtons>
-        </Card>
+              <Arrow
+                onClick={() => {
+                  setPage(page === maxPage ? page : page + 1)
+                }}
+              >
+                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+              </Arrow>
+            </PageButtons>
+          </Card>
+        )}
       </Page>
     </>
   )

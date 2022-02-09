@@ -53,6 +53,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     contractAddress,
     sousId,
     vaultKey,
+    profileRequirement,
   } = pool
 
   const {
@@ -100,6 +101,19 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
 
   return (
     <ExpandedWrapper flexDirection="column">
+      {profileRequirement && (profileRequirement.required || profileRequirement.thresholdPoints.gt(0)) && (
+        <Flex mb="8px" justifyContent="space-between">
+          <Text small>{t('Requirement')}:</Text>
+          <Text small textAlign="right">
+            {profileRequirement.required && t('Pancake Profile')}{' '}
+            {profileRequirement.thresholdPoints.gt(0) && (
+              <Text small>
+                {profileRequirement.thresholdPoints.toNumber().toLocaleString()} {t('Profile Points')}
+              </Text>
+            )}
+          </Text>
+        </Flex>
+      )}
       <Flex mb="2px" justifyContent="space-between" alignItems="center">
         <Text small>{t('Total staked')}:</Text>
         <Flex alignItems="flex-start">

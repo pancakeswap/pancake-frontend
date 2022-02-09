@@ -1,6 +1,6 @@
 import { BSC_BLOCK_TIME } from 'config'
 import { useTranslation } from 'contexts/Localization'
-import { Translate } from 'contexts/Localization/types'
+import { TranslateFunction } from 'contexts/Localization/types'
 import React from 'react'
 import styled from 'styled-components'
 import { Card, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
@@ -28,7 +28,7 @@ const Dot = styled(Box)<{ $color: string }>`
   background: ${({ $color, theme }) => theme.colors[$color]};
 `
 
-const indicator = (t: Translate) =>
+const indicator = (t: TranslateFunction) =>
   ({
     delayed: {
       label: t('Delayed'),

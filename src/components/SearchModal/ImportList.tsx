@@ -105,7 +105,7 @@ function ImportList({ listURL, list, onImport }: ImportProps) {
                 )}
               </Text>
               <Text bold color={theme.colors.failure} mb="16px">
-                {typeof 'If you purchase a token from this list, you may not be able to sell it back.'}
+                {t('If you purchase a token from this list, you may not be able to sell it back.')}
               </Text>
               <Flex alignItems="center">
                 <Checkbox

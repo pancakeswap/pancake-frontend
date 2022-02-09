@@ -21,7 +21,6 @@ import {
   getIfoPoolContract,
   getPredictionsContract,
   getChainlinkOracleContract,
-  getSouschefV2Contract,
   getLotteryV2Contract,
   getBunnySpecialCakeVaultContract,
   getBunnySpecialPredictionContract,
@@ -91,9 +90,12 @@ export const useERC721 = (address: string) => {
   return useMemo(() => getErc721Contract(address, library.getSigner()), [address, library])
 }
 
-export const useCake = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getCakeContract(library.getSigner()), [library])
+export const useCake = (withSignerIfPossible = true) => {
+  const { account, library } = useActiveWeb3React()
+  return useMemo(
+    () => getCakeContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [account, library, withSignerIfPossible],
+  )
 }
 
 export const useBunnyFactory = () => {
@@ -127,11 +129,6 @@ export const useMasterchef = () => {
 export const useSousChef = (id) => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getSouschefContract(id, library.getSigner()), [id, library])
-}
-
-export const useSousChefV2 = (id) => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getSouschefV2Contract(id, library.getSigner()), [id, library])
 }
 
 export const usePointCenterIfoContract = () => {

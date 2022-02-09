@@ -75,7 +75,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const { pool } = useIfoWithApr()
 
   const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
-  const { handleApprove, requestedApproval } = useVaultApprove(pool.vaultKey, setLastUpdated)
+  const { handleApprove, pendingTx } = useVaultApprove(pool.vaultKey, setLastUpdated)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -153,7 +153,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
             {isVaultApproved ? (
               <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
             ) : (
-              <Button disabled={requestedApproval} onClick={handleApprove}>
+              <Button disabled={pendingTx} onClick={handleApprove}>
                 {t('Enable pool')}
               </Button>
             )}

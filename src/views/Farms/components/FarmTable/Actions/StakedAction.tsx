@@ -8,8 +8,9 @@ import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useRouter } from 'next/router'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useFarmUser, useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
@@ -17,7 +18,6 @@ import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { logError } from 'utils/sentry'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
@@ -49,9 +49,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   displayApr,
 }) => {
   const { t } = useTranslation()
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { account } = useWeb3React()
-  const [requestedApproval, setRequestedApproval] = useState(false)
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
   const { onStake } = useStakeFarms(pid)
   const { onUnstake } = useUnstakeFarms(pid)
@@ -69,55 +69,33 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   const handleStake = async (amount: string) => {
-    await onStake(
-      amount,
-      (tx) => {
-        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      },
-      (receipt) => {
-        toastSuccess(
-          `${t('Staked')}!`,
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your funds have been staked in the farm')}
-          </ToastDescriptionWithTx>,
-        )
-      },
-      (receipt) => {
-        toastError(
-          t('Error'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-          </ToastDescriptionWithTx>,
-        )
-      },
-    )
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    const receipt = await fetchWithCatchTxError(() => {
+      return onStake(amount)
+    })
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Staked')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your funds have been staked in the farm')}
+        </ToastDescriptionWithTx>,
+      )
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    }
   }
 
   const handleUnstake = async (amount: string) => {
-    await onUnstake(
-      amount,
-      (tx) => {
-        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-      },
-      (receipt) => {
-        toastSuccess(
-          `${t('Unstaked')}!`,
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your earnings have also been harvested to your wallet')}
-          </ToastDescriptionWithTx>,
-        )
-      },
-      (receipt) => {
-        toastError(
-          t('Error'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-          </ToastDescriptionWithTx>,
-        )
-      },
-    )
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    const receipt = await fetchWithCatchTxError(() => {
+      return onUnstake(amount)
+    })
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Unstaked')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your earnings have also been harvested to your wallet')}
+        </ToastDescriptionWithTx>,
+      )
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    }
   }
 
   const displayBalance = useCallback(() => {
@@ -154,32 +132,14 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const { onApprove } = useApproveFarm(lpContract)
 
   const handleApprove = useCallback(async () => {
-    try {
-      setRequestedApproval(true)
-      await onApprove(
-        (tx) => {
-          toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-        },
-        (receipt) => {
-          toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-        },
-        (receipt) => {
-          toastError(
-            t('Error'),
-            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-            </ToastDescriptionWithTx>,
-          )
-        },
-      )
+    const receipt = await fetchWithCatchTxError(() => {
+      return onApprove()
+    })
+    if (receipt?.status) {
+      toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-    } catch (e) {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      logError(e)
-    } finally {
-      setRequestedApproval(false)
     }
-  }, [onApprove, dispatch, account, pid, t, toastError, toastSuccess])
+  }, [onApprove, dispatch, account, pid, t, toastSuccess, fetchWithCatchTxError])
 
   if (!account) {
     return (
@@ -286,7 +246,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
         </Text>
       </ActionTitles>
       <ActionContent>
-        <Button width="100%" disabled={requestedApproval} onClick={handleApprove} variant="secondary">
+        <Button width="100%" disabled={pendingTx} onClick={handleApprove} variant="secondary">
           {t('Enable')}
         </Button>
       </ActionContent>

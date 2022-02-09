@@ -23,6 +23,9 @@ const config = {
     styledComponents: true,
   },
   reactStrictMode: true,
+  images: {
+    domains: ['static-nft.pancakeswap.com'],
+  },
   async rewrites() {
     return [
       {

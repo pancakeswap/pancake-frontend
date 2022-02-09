@@ -21,11 +21,23 @@ export const transformUserData = (userData: UserData) => {
   }
 }
 
+const transformProfileRequirement = (profileRequirement?: { required: boolean; thresholdPoints: string }) => {
+  return profileRequirement
+    ? {
+        required: profileRequirement.required,
+        thresholdPoints: profileRequirement.thresholdPoints
+          ? new BigNumber(profileRequirement.thresholdPoints)
+          : BIG_ZERO,
+      }
+    : undefined
+}
+
 export const transformPool = (pool: SerializedPool): DeserializedPool => {
-  const { totalStaked, stakingLimit, userData, stakingToken, earningToken, ...rest } = pool
+  const { totalStaked, stakingLimit, userData, stakingToken, earningToken, profileRequirement, ...rest } = pool
 
   return {
     ...rest,
+    profileRequirement: transformProfileRequirement(profileRequirement),
     stakingToken: deserializeToken(stakingToken),
     earningToken: deserializeToken(earningToken),
     userData: transformUserData(userData),

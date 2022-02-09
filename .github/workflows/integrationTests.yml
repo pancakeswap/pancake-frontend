@@ -20,5 +20,5 @@ jobs:
       - run: yarn cypress install
       - run: yarn build
         env:
-          NEXT_PUBLIC_APP_SF_HEADER: ${{ secrets.SF_HEADER }}
+          NEXT_PUBLIC_SF_HEADER: ${{ secrets.SF_HEADER }}
       - run: yarn integration-test

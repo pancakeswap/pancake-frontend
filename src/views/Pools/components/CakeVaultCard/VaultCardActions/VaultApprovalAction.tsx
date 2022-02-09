@@ -13,7 +13,7 @@ interface ApprovalActionProps {
 const VaultApprovalAction: React.FC<ApprovalActionProps> = ({ vaultKey, isLoading = false, setLastUpdated }) => {
   const { t } = useTranslation()
 
-  const { handleApprove, requestedApproval } = useVaultApprove(vaultKey, setLastUpdated)
+  const { handleApprove, pendingTx } = useVaultApprove(vaultKey, setLastUpdated)
 
   return (
     <>
@@ -21,9 +21,9 @@ const VaultApprovalAction: React.FC<ApprovalActionProps> = ({ vaultKey, isLoadin
         <Skeleton width="100%" height="52px" />
       ) : (
         <Button
-          isLoading={requestedApproval}
-          endIcon={requestedApproval ? <AutoRenewIcon spin color="currentColor" /> : null}
-          disabled={requestedApproval}
+          isLoading={pendingTx}
+          endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          disabled={pendingTx}
           onClick={handleApprove}
           width="100%"
         >

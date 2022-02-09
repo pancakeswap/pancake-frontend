@@ -1,10 +1,10 @@
 import React from 'react'
-import { NftMarketLayout } from 'views/Nft/market/Layout'
 import NftMarket from 'views/Nft/market/Home'
+import { useFetchCollections } from 'state/nftMarket/hooks'
 
 const NftMarketPage = () => {
+  useFetchCollections()
   return <NftMarket />
 }
 
-NftMarketPage.Layout = NftMarketLayout
 export default NftMarketPage

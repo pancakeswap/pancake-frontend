@@ -1,4 +1,7 @@
+import React from 'react'
+import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
+import { CHAIN_ID } from './networks'
 import tokens, { serializeTokens } from './tokens'
 import { SerializedPoolConfig, PoolCategory } from './types'
 
@@ -6,8 +9,8 @@ const serializedTokens = serializeTokens()
 
 export const vaultPoolConfig = {
   [VaultKey.CakeVault]: {
-    name: 'Auto CAKE',
-    description: 'Automatic restaking',
+    name: <Trans>Auto CAKE</Trans>,
+    description: <Trans>Automatic restaking</Trans>,
     autoCompoundFrequency: 5000,
     gasLimit: 380000,
     tokenImage: {
@@ -17,7 +20,7 @@ export const vaultPoolConfig = {
   },
   [VaultKey.IfoPool]: {
     name: 'IFO CAKE',
-    description: 'Stake CAKE to participate in IFOs',
+    description: <Trans>Stake CAKE to participate in IFOs</Trans>,
     autoCompoundFrequency: 1,
     gasLimit: 500000,
     tokenImage: {
@@ -33,7 +36,7 @@ const pools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.cake,
     contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
       56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
     },
     poolCategory: PoolCategory.CORE,
@@ -3388,7 +3391,7 @@ const pools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.stax,
     contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      97: '',
       56: '0xFF02241a2A1d2a7088A344309400E9fE74772815',
     },
     poolCategory: PoolCategory.COMMUNITY,
@@ -3402,7 +3405,7 @@ const pools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.nar,
     contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      97: '',
       56: '0xDc938BA1967b06d666dA79A7B1E31a8697D1565E',
     },
     poolCategory: PoolCategory.COMMUNITY,
@@ -3416,7 +3419,7 @@ const pools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.nya,
     contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      97: '',
       56: '0x07a0A5B67136d40F4d7d95Bc8e0583bafD7A81b9',
     },
     poolCategory: PoolCategory.COMMUNITY,
@@ -3430,7 +3433,7 @@ const pools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.ctk,
     contractAddress: {
-      97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
+      97: '',
       56: '0x21A9A53936E812Da06B7623802DEc9A1f94ED23a',
     },
     poolCategory: PoolCategory.CORE,
@@ -3444,7 +3447,7 @@ const pools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.twt,
     contractAddress: {
-      97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
+      97: '',
       56: '0xe7f9A439Aa7292719aC817798DDd1c4D35934aAF',
     },
     poolCategory: PoolCategory.CORE,
@@ -3458,7 +3461,7 @@ const pools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.inj,
     contractAddress: {
-      97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
+      97: '',
       56: '0xcec2671C81a0Ecf7F8Ee796EFa6DBDc5Cb062693',
     },
     poolCategory: PoolCategory.CORE,
@@ -3480,6 +3483,6 @@ const pools: SerializedPoolConfig[] = [
     sortOrder: 999,
     tokenPerBlock: '0.6093',
   },
-]
+].filter((p) => !!p.contractAddress[CHAIN_ID])
 
 export default pools
