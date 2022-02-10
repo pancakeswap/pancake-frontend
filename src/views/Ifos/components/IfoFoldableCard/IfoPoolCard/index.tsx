@@ -110,7 +110,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
     needQualifiedPoints,
   })
 
-  const { hasProfile, isLoading: isProfileLoading } = useProfile()
+  const { hasActiveProfile, isLoading: isProfileLoading } = useProfile()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(config.tooltip, { placement: 'bottom' })
 
   const isLoading = isProfileLoading || publicIfoData.status === 'idle'
@@ -142,7 +142,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
             ifo={ifo}
             publicIfoData={publicIfoData}
             walletIfoData={walletIfoData}
-            hasProfile={hasProfile}
+            hasProfile={hasActiveProfile}
             isLoading={isLoading}
             onApprove={onApprove}
             enableStatus={enableStatus}
@@ -154,7 +154,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
                 ifo={ifo}
                 publicIfoData={publicIfoData}
                 walletIfoData={walletIfoData}
-                hasProfile={hasProfile}
+                hasProfile={hasActiveProfile}
                 isLoading={isLoading}
               />
             </Box>

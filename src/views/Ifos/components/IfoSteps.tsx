@@ -186,14 +186,14 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
 
 const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
   const { poolBasic, poolUnlimited } = walletIfoData
-  const { hasProfile } = useProfile()
+  const { hasActiveProfile } = useProfile()
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { balance } = useTokenBalance(ifo.currency.address)
   const isCommitted =
     poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0)
   const stepsValidationStatus = [
-    hasProfile,
+    hasActiveProfile,
     balance.isGreaterThan(0),
     isCommitted,
     poolBasic.hasClaimed || poolUnlimited.hasClaimed,
@@ -247,9 +247,9 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
           </CardBody>
         )
       case 1:
-        return <Step1 hasProfile={hasProfile} />
+        return <Step1 hasProfile={hasActiveProfile} />
       case 2:
-        return <Step2 hasProfile={hasProfile} isLive={isLive} isCommitted={isCommitted} />
+        return <Step2 hasProfile={hasActiveProfile} isLive={isLive} isCommitted={isCommitted} />
       case 3:
         return (
           <CardBody>
