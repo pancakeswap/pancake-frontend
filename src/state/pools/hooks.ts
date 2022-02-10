@@ -23,6 +23,7 @@ import {
 import { State, DeserializedPool, VaultKey } from '../types'
 import { transformPool } from './helpers'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from '../farms'
+import { useCurrentBlock } from '../block/hooks'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
@@ -199,11 +200,13 @@ export const useIfoPoolVault = () => {
 }
 
 export const useIfoPoolCreditBlock = () => {
-  return useSelector((state: State) => ({
+  const currentBlock = useCurrentBlock()
+  const { creditStartBlock, creditEndBlock } = useSelector((state: State) => ({
     creditStartBlock: state.pools.ifoPool.creditStartBlock,
     creditEndBlock: state.pools.ifoPool.creditEndBlock,
-    hasEndBlockOver: state.block.currentBlock >= state.pools.ifoPool.creditEndBlock,
   }))
+  const hasEndBlockOver = currentBlock >= creditEndBlock
+  return { creditStartBlock, creditEndBlock, hasEndBlockOver }
 }
 
 export const useIfoPoolCredit = () => {

@@ -1,26 +1,30 @@
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from 'state'
 import useSWR from 'swr'
 import { simpleRpcProvider } from 'utils/providers'
-import { setBlock } from '.'
-import { State } from '../types'
+import useSWRImmutable from 'swr/immutable'
+import { useEffect, useState } from 'react'
+import usePrevious from '../../hooks/usePreviousValue'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
-  const dispatch = useAppDispatch()
-
   const { data } = useSWR(
     ['blockNumber'],
     async () => {
-      const blockNumber = await simpleRpcProvider.getBlockNumber()
-      dispatch(setBlock(blockNumber))
-      return blockNumber
+      return simpleRpcProvider.getBlockNumber()
     },
     {
       refreshInterval: REFRESH_BLOCK_INTERVAL,
+      fallbackData: 0,
     },
+  )
+
+  const { mutate: refreshInitialBlock } = useSWRImmutable(
+    ['initialBlockNumber'],
+    async () => {
+      return data
+    },
+    { fallbackData: 0 },
   )
 
   useSWR(
@@ -44,14 +48,20 @@ export const usePollBlockNumber = () => {
   )
 }
 
-export const useBlock = () => {
-  return useSelector((state: State) => state.block)
-}
-
 export const useCurrentBlock = () => {
-  return useSelector((state: State) => state.block.currentBlock)
+  const { data: currentBlock } = useSWRImmutable(['blockNumber'])
+  return currentBlock
 }
 
 export const useInitialBlock = () => {
-  return useSelector((state: State) => state.block.initialBlock)
+  const [initialBlock, setInitialBlock] = useState(0)
+  const { data: blockNumber } = useSWRImmutable(['blockNumber'])
+
+  useEffect(() => {
+    if (blockNumber && !initialBlock) {
+      setInitialBlock(blockNumber)
+    }
+  }, [blockNumber, initialBlock])
+
+  return initialBlock
 }

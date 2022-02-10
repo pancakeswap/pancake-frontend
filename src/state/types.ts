@@ -206,13 +206,6 @@ export interface Achievement {
   points: number
 }
 
-// Block
-
-export interface BlockState {
-  currentBlock: number
-  initialBlock: number
-}
-
 // Predictions
 
 export enum BetPosition {
@@ -540,7 +533,6 @@ export interface UserRound {
 // Global state
 
 export interface State {
-  block: BlockState
   farms: SerializedFarmsState
   pools: PoolsState
   predictions: PredictionsState
