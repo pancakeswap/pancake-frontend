@@ -1252,7 +1252,7 @@ export const mainnetTokens = defineTokens({
     MAINNET,
     '0x8595F9dA7b868b1822194fAEd312235E43007b49',
     18,
-    'BTT(OLD)',
+    'BTTOLD',
     'Binance-Peg BitTorrent Token (Old)',
     'https://www.bittorrent.com/',
   ),
