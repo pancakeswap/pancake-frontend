@@ -163,7 +163,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
       }))
     },
-    [releaseBlockNumber, address, version],
+    [releaseBlockNumber, address, version, abi],
   )
 
   return { ...state, currencyPriceInUSD, fetchIfoData }

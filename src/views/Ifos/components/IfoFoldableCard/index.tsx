@@ -83,13 +83,21 @@ const Header = styled(CardHeader)<{ ifoId: string; $isCurrent?: boolean }>`
   }
 `
 
-const CardsWrapper = styled.div<{ singleCard: boolean }>`
+const CardsWrapper = styled.div<{ singleCard: boolean; shouldReverse: boolean }>`
   display: grid;
   grid-gap: 32px;
   grid-template-columns: 1fr;
   ${({ theme }) => theme.mediaQueries.xxl} {
     grid-template-columns: ${({ singleCard }) => (singleCard ? '1fr' : '1fr 1fr')};
     justify-items: ${({ singleCard }) => (singleCard ? 'center' : 'unset')};
+  }
+
+  > div:nth-child(1) {
+    order: ${({ shouldReverse }) => (shouldReverse ? 2 : 1)};
+  }
+
+  > div:nth-child(2) {
+    order: ${({ shouldReverse }) => (shouldReverse ? 1 : 2)};
   }
 `
 
@@ -320,12 +328,13 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
     }
   }, [account, raisingTokenContract, contract, setEnableStatus])
 
-  // TODO: add css style to flip the order for version 3.1
-
   return (
     <>
       <StyledCardBody>
-        <CardsWrapper singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}>
+        <CardsWrapper
+          shouldReverse={ifo.version === 3.1}
+          singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
+        >
           {publicIfoData.poolBasic && walletIfoData.poolBasic && (
             <IfoPoolCard
               poolId={PoolIds.poolBasic}

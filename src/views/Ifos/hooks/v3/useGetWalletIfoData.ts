@@ -99,7 +99,6 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         refundingAmountInLP: new BigNumber(amounts[0][0][1].toString()),
         taxAmountInLP: new BigNumber(amounts[0][0][2].toString()),
         hasClaimed: userInfo[1][0],
-        // Integrate Smart Contract
         isQualifiedNFT,
         isQualifiedPoints,
       },
