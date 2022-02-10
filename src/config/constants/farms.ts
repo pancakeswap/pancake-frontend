@@ -819,12 +819,12 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 443,
-    lpSymbol: 'BTT-BUSD LP',
+    lpSymbol: 'BTT(OLD)-BUSD LP',
     lpAddresses: {
       97: '',
       56: '0xdcfbb12ded3fea12d2a078bc6324131cd14bf835',
     },
-    token: serializedTokens.btt,
+    token: serializedTokens.bttOld,
     quoteToken: serializedTokens.busd,
   },
   {
@@ -881,12 +881,12 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 367,
-    lpSymbol: 'BTT-BNB LP',
+    lpSymbol: 'BTT(OLD)-BNB LP',
     lpAddresses: {
       97: '',
       56: '0x946696344e7d4346b223e1cf77035a76690d6a73',
     },
-    token: serializedTokens.btt,
+    token: serializedTokens.bttOld,
     quoteToken: serializedTokens.wbnb,
   },
   {
