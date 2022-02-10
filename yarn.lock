@@ -16547,10 +16547,10 @@ peronio-sdk@^0.8.7:
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-peronio-uikit@^0.63.3:
-  version "0.63.3"
-  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.63.3.tgz#8779502d06434f6c93a15ca11c3c5006e61281d2"
-  integrity sha512-0mJQ2bogE4MzQa9Z6wm9UJhNqdTx1rBuIHAzYMbkZEvbVjzBVcWhdspI4dMfpAE3VQVDvRAwhBSkSsthhZsytQ==
+peronio-uikit@^0.63.4:
+  version "0.63.4"
+  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.63.4.tgz#dc96c2df5ec77fe95f8201cc001dae775ae119e1"
+  integrity sha512-CBR/BLOfm98PU5KvE1zihykb+3ixZr0ONMlxTsRmO+MCbWqwYscvjmjqWELggXlX4Yvuzo4d17B8L3FCcVUsuw==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
