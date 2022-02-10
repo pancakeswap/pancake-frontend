@@ -53,6 +53,7 @@ const cardConfig = (
         const msgs = Object.keys(meta)
           .filter((criteria) => meta[criteria])
           .map((criteria) => MSG_MAP[criteria])
+          .filter(Boolean)
 
         return {
           title: t('Private Sale'),
