@@ -13,6 +13,7 @@ const tokensToTest = omitBy(
   (token) =>
     token.symbol.toLowerCase() === 'bnb' ||
     token.symbol.toLowerCase() === 'one' ||
+    token.symbol.toLowerCase() === 'bttold' ||
     token.symbol.toLowerCase() === 'hero',
 )
 

@@ -69,8 +69,8 @@ const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDis
       symbol: SwapWarningTokensConfig.ccar.symbol,
       component: <CcarWarning />,
     },
-    [SwapWarningTokensConfig.btt.address]: {
-      symbol: SwapWarningTokensConfig.btt.symbol,
+    [SwapWarningTokensConfig.bttold.address]: {
+      symbol: SwapWarningTokensConfig.bttold.symbol,
       component: <BTTWarning />,
     },
   }
