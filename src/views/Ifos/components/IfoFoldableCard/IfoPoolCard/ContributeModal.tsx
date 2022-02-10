@@ -130,7 +130,7 @@ const ContributeModal: React.FC<Props> = ({
 
   // in v3 max token entry is based on ifo credit and hard cap limit per user minus amount already committed
   const maximumTokenEntry = useMemo(() => {
-    if (!creditLeft) {
+    if (!creditLeft || (ifo.version === 3.1 && poolId === PoolIds.poolBasic)) {
       return limitPerUserInLP.minus(amountTokenCommittedInLP)
     }
     if (limitPerUserInLP.isGreaterThan(0)) {
@@ -141,7 +141,7 @@ const ContributeModal: React.FC<Props> = ({
       }
     }
     return creditLeft
-  }, [creditLeft, limitPerUserInLP, amountTokenCommittedInLP])
+  }, [creditLeft, limitPerUserInLP, amountTokenCommittedInLP, ifo.version, poolId])
 
   // include user balance for input
   const maximumTokenCommittable = useMemo(() => {

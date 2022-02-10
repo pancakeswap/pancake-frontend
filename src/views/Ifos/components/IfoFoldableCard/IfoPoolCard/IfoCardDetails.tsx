@@ -41,7 +41,7 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
 
 const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
   const isCurrencyCake = ifo.currency === tokens.cake
-  const isV3 = ifo.version === 3
+  const isV3 = ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)
   const { t } = useTranslation()
 
   const tooltipContent =
@@ -106,7 +106,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
 
   /* Format start */
   const maxLpTokens =
-    ifo.version === 3 && ifo.isActive
+    (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) && ifo.isActive
       ? version3MaxTokens
         ? getBalanceNumber(version3MaxTokens, ifo.currency.decimals)
         : 0

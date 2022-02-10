@@ -147,7 +147,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
             onApprove={onApprove}
             enableStatus={enableStatus}
           />
-          {ifo.version === 3.1 && !isEligible ? null : (
+          {ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible ? null : (
             <Box mt="24px">
               <IfoCardActions
                 poolId={poolId}

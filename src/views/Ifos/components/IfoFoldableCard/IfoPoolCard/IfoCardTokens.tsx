@@ -208,7 +208,10 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         </Box>
       ) : null
 
-    if (ifo.version === 3 && getBalanceNumber(credit) === 0) {
+    if (
+      (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) &&
+      getBalanceNumber(credit) === 0
+    ) {
       message = (
         <Message my="24px" p="8px" variant="danger">
           <Box>
