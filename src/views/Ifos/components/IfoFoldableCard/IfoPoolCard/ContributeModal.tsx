@@ -148,11 +148,16 @@ const ContributeModal: React.FC<Props> = ({
     return maximumTokenEntry.isLessThanOrEqualTo(userCurrencyBalance) ? maximumTokenEntry : userCurrencyBalance
   }, [maximumTokenEntry, userCurrencyBalance])
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    poolId === PoolIds.poolBasic
-      ? t(
+  const basicTooltipContent =
+    ifo.version === 3.1
+      ? 'For the private sale. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.'
+      : t(
           'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
         )
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    poolId === PoolIds.poolBasic
+      ? basicTooltipContent
       : t(
           'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
         ),
