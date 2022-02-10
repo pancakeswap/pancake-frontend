@@ -188,9 +188,12 @@ export const usePredictionsContract = () => {
   return useMemo(() => getPredictionsContract(library.getSigner()), [library])
 }
 
-export const useChainlinkOracleContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getChainlinkOracleContract(library.getSigner()), [library])
+export const useChainlinkOracleContract = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getChainlinkOracleContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [account, library, withSignerIfPossible],
+  )
 }
 
 export const useSpecialBunnyCakeVaultContract = () => {

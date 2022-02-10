@@ -57,7 +57,6 @@ const initialState: PredictionsState = {
   intervalSeconds: 300,
   minBetAmount: '10000000000000',
   bufferSeconds: 60,
-  lastOraclePrice: BIG_ZERO.toJSON(),
   rounds: {},
   history: [],
   totalHistory: 0,
@@ -365,9 +364,6 @@ export const predictionsSlice = createSlice({
     setHistoryFilter: (state, action: PayloadAction<HistoryFilter>) => {
       state.historyFilter = action.payload
     },
-    setLastOraclePrice: (state, action: PayloadAction<string>) => {
-      state.lastOraclePrice = action.payload
-    },
     markAsCollected: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.claimableStatuses = { ...state.claimableStatuses, ...action.payload }
     },
@@ -540,7 +536,6 @@ export const {
   setChartPaneState,
   setHistoryFilter,
   setHistoryPaneState,
-  setLastOraclePrice,
   markAsCollected,
   setLeaderboardFilter,
   setSelectedAddress,

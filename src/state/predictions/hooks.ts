@@ -113,13 +113,6 @@ export const useGetHistory = () => {
   return useSelector((state: State) => state.predictions.history)
 }
 
-export const useGetLastOraclePrice = () => {
-  const lastOraclePrice = useSelector((state: State) => state.predictions.lastOraclePrice)
-  return useMemo(() => {
-    return BigNumber.from(lastOraclePrice)
-  }, [lastOraclePrice])
-}
-
 /**
  * The current round's lock timestamp will not be set immediately so we return an estimate until then
  */
