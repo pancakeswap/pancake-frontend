@@ -1,13 +1,18 @@
 import { memo, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Split from 'split-grid'
-import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap/uikit'
+import { Button, ChartIcon, Flex } from '@pancakeswap/uikit'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
 import { useAppDispatch } from 'state'
-import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/predictions/hooks'
-import { setChartPaneState } from 'state/predictions'
-import { PredictionStatus } from 'state/types'
+import {
+  useChartView,
+  useGetPredictionsStatus,
+  useIsChartPaneOpen,
+  useIsHistoryPaneOpen,
+} from 'state/predictions/hooks'
+import { setChartPaneState, setChartView } from 'state/predictions'
+import { PredictionsChartView, PredictionStatus } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { TradingViewLabel } from 'components/TradingView'
 import TradingView from './components/TradingView'
@@ -18,24 +23,25 @@ import Positions from './Positions'
 // The value to set the chart when the user clicks the chart tab at the bottom
 const GRID_TEMPLATE_ROW = '1.2fr 24px .8fr'
 
-const ExpandChartButton = styled(Button)`
-  background-color: ${({ theme }) => theme.card.background};
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+const ExpandButtonGroup = styled(Flex)`
   bottom: 24px;
-  color: ${({ theme }) => theme.colors.text};
-  display: none;
   left: 32px;
   position: absolute;
+  display: none;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: inline-flex;
+  }
+`
+
+const ExpandChartButton = styled(Button)<{ $active?: boolean }>`
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  color: ${({ theme }) => theme.colors.text};
   z-index: 50;
 
   &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
     background-color: ${({ theme }) => theme.card.background};
     opacity: 1;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: inline-flex;
   }
 `
 
@@ -106,6 +112,7 @@ const Desktop: React.FC = () => {
   const gutterRef = useRef<HTMLDivElement>()
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
+  const chartView = useChartView()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const status = useGetPredictionsStatus()
@@ -155,16 +162,6 @@ const Desktop: React.FC = () => {
 
   return (
     <>
-      {!isChartPaneOpen && (
-        <ExpandChartButton
-          variant="tertiary"
-          scale="sm"
-          startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
-          onClick={toggleChartPane}
-        >
-          {isChartPaneOpen ? t('Close') : t('Charts')}
-        </ExpandChartButton>
-      )}
       <StyledDesktop>
         <SplitWrapper ref={splitWrapperRef}>
           <PositionPane>
@@ -172,11 +169,39 @@ const Desktop: React.FC = () => {
             {status === PredictionStatus.PAUSED && <PauseNotification />}
             {status === PredictionStatus.LIVE && <Positions />}
           </PositionPane>
+
           <Gutter ref={gutterRef}>
+            <ExpandButtonGroup>
+              <ExpandChartButton
+                variant={chartView === PredictionsChartView.TradingView ? 'tertiary' : 'light'}
+                scale="sm"
+                startIcon={<ChartIcon />}
+                onMouseDown={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  toggleChartPane()
+                  dispatch(setChartView(PredictionsChartView.TradingView))
+                }}
+              >
+                {t('TradingView Charts')}
+              </ExpandChartButton>
+              <ExpandChartButton
+                variant={chartView === PredictionsChartView.Chainlink ? 'tertiary' : 'light'}
+                scale="sm"
+                onMouseDown={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  toggleChartPane()
+                  dispatch(setChartView(PredictionsChartView.Chainlink))
+                }}
+              >
+                {t('Chainlink Charts')}
+              </ExpandChartButton>
+            </ExpandButtonGroup>
             <TradingViewLabel justifyContent="flex-end" symbol="BNBUSDT" />
           </Gutter>
           <ChartPane ref={chartRef}>
-            <TradingView />
+            {chartView === PredictionsChartView.TradingView ? <TradingView /> : <div />}
           </ChartPane>
         </SplitWrapper>
         <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>

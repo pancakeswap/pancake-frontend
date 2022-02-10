@@ -66,6 +66,10 @@ export const useIsChartPaneOpen = () => {
   return useSelector((state: State) => state.predictions.isChartPaneOpen)
 }
 
+export const useChartView = () => {
+  return useSelector((state: State) => state.predictions.chartView)
+}
+
 export const useGetCurrentEpoch = () => {
   return useSelector((state: State) => state.predictions.currentEpoch)
 }

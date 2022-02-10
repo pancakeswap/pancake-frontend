@@ -207,6 +207,11 @@ export enum PredictionStatus {
   ERROR = 'error',
 }
 
+export enum PredictionsChartView {
+  TradingView,
+  Chainlink,
+}
+
 export interface Round {
   id: string
   epoch: number
@@ -349,6 +354,7 @@ export interface PredictionsState {
   status: PredictionStatus
   isLoading: boolean
   isHistoryPaneOpen: boolean
+  chartView: PredictionsChartView
   isChartPaneOpen: boolean
   isFetchingHistory: boolean
   historyFilter: HistoryFilter

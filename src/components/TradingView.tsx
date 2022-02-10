@@ -1,6 +1,6 @@
 import { Box, Flex, FlexProps, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useScript from 'hooks/useScript'
+import Script from 'next/script'
 import { useEffect, useRef } from 'react'
 import { DefaultTheme, useTheme } from 'styled-components'
 
@@ -61,8 +61,6 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
   const widgetRef = useRef<any>()
   const { isMobile } = useMatchBreakpoints()
 
-  useScript('https://s3.tradingview.com/tv.js')
-
   useEffect(() => {
     const opts: any = {
       container_id: id,
@@ -89,6 +87,7 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
 
   return (
     <Box overflow="hidden" className="tradingview_container">
+      <Script src="https://s3.tradingview.com/tv.js" strategy="lazyOnload" id="tv.js" />
       <div id={id} />
     </Box>
   )
