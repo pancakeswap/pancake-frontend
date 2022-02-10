@@ -20,7 +20,6 @@ const PastIfo = () => {
             case 2:
               return <IfoCardV2Data key={ifo.id} ifo={ifo} />
             case 3:
-              return <IfoCardV3Data key={ifo.id} ifo={ifo} />
             case 3.1:
               return <IfoCardV3Data key={ifo.id} ifo={ifo} />
             default:

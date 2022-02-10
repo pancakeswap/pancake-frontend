@@ -5,6 +5,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
 import { multicallv2 } from 'utils/multicall'
 import ifoV2Abi from 'config/abi/ifoV2.json'
+import ifoV3Abi from 'config/abi/ifoV3.json'
 import { useIfoPoolCredit } from 'state/pools/hooks'
 import { fetchIfoPoolUserAndCredit } from 'state/pools'
 import { useAppDispatch } from 'state'
@@ -40,7 +41,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const dispatch = useAppDispatch()
   const credit = useIfoPoolCredit()
 
-  const { address, currency } = ifo
+  const { address, currency, version } = ifo
 
   const { account } = useWeb3React()
   const contract = useIfoV2Contract(address)
@@ -73,15 +74,20 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account, [0, 1]],
     }))
 
-    // const ifov3Calls = ['isQualifiedNFT', 'isQualifiedPoints'].map((name) => ({
-    //   address,
-    //   name,
-    //   params: [account],
-    // }))
+    const ifov3Calls =
+      version === 3.1
+        ? ['isQualifiedNFT', 'isQualifiedPoints'].map((name) => ({
+            address,
+            name,
+            params: [account],
+          }))
+        : []
 
     dispatch(fetchIfoPoolUserAndCredit({ account }))
 
-    const [userInfo, amounts, isQualifiedNFT, isQualifiedPoints] = await multicallv2(ifoV2Abi, [...ifoCalls, ...[]])
+    const abi = version === 3.1 ? ifoV3Abi : ifoV2Abi
+
+    const [userInfo, amounts, isQualifiedNFT, isQualifiedPoints] = await multicallv2(abi, [...ifoCalls, ...ifov3Calls])
 
     setState((prevState) => ({
       ...prevState,
@@ -94,8 +100,8 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         taxAmountInLP: new BigNumber(amounts[0][0][2].toString()),
         hasClaimed: userInfo[1][0],
         // Integrate Smart Contract
-        isQualifiedNFT: true,
-        isQualifiedPoints: false,
+        isQualifiedNFT,
+        isQualifiedPoints,
       },
       poolUnlimited: {
         ...prevState.poolUnlimited,
@@ -106,7 +112,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         hasClaimed: userInfo[1][1],
       },
     }))
-  }, [account, address, dispatch])
+  }, [account, address, dispatch, version])
 
   const resetIfoData = useCallback(() => {
     setState({ ...initialState })

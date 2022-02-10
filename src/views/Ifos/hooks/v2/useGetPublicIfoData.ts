@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js'
 import { useState, useCallback } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
 import ifoV2Abi from 'config/abi/ifoV2.json'
+import ifoV3Abi from 'config/abi/ifoV3.json'
 import tokens from 'config/constants/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { FixedNumber } from '@ethersproject/bignumber'
@@ -29,7 +30,7 @@ const formatPool = (pool) => ({
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
-  const { address, releaseBlockNumber } = ifo
+  const { address, releaseBlockNumber, version } = ifo
   const cakePriceUsd = usePriceCakeBusd()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === tokens.cake ? cakePriceUsd : lpTokenPriceInUsd
@@ -48,7 +49,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       taxRate: 0,
       totalAmountPool: BIG_ZERO,
       sumTaxesOverflow: BIG_ZERO,
-      pointThreshold: BIG_ZERO,
+      pointThreshold: undefined,
       admissionProfile: undefined,
     },
     poolUnlimited: {
@@ -65,10 +66,23 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     numberPoints: 0,
   })
 
+  const abi = version === 3.1 ? ifoV3Abi : ifoV2Abi
+
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
-      const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
-        await multicallv2(ifoV2Abi, [
+      const [
+        startBlock,
+        endBlock,
+        poolBasic,
+        poolUnlimited,
+        taxRate,
+        numberPoints,
+        thresholdPoints,
+        admissionProfile,
+        pointThreshold,
+      ] = await multicallv2(
+        abi,
+        [
           {
             address,
             name: 'startBlock',
@@ -100,15 +114,16 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
             address,
             name: 'thresholdPoints',
           },
-          // {
-          //   address,
-          //   name: 'admissionProfile',
-          // },
-          // {
-          //   address,
-          //   name: 'pointThreshold',
-          // },
-        ])
+          version === 3.1 && {
+            address,
+            name: 'admissionProfile',
+          },
+          version === 3.1 && {
+            address,
+            name: 'pointThreshold',
+          },
+        ].filter(Boolean),
+      )
 
       const poolBasicFormatted = formatPool(poolBasic)
       const poolUnlimitedFormatted = formatPool(poolUnlimited)
@@ -135,9 +150,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         poolBasic: {
           ...poolBasicFormatted,
           taxRate: 0,
-          // Integrate Smart Contracts
-          pointThreshold: BIG_ZERO,
-          admissionProfile: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+          pointThreshold,
+          admissionProfile,
         },
         poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
         status,
@@ -149,7 +163,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
       }))
     },
-    [releaseBlockNumber, address],
+    [releaseBlockNumber, address, version],
   )
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
