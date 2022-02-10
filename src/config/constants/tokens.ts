@@ -380,6 +380,14 @@ export const mainnetTokens = defineTokens({
     'Contentos Token',
     'https://www.contentos.io/',
   ),
+  daf: new Token(
+    MAINNET,
+    '0x8Fb1a59cA2d57B51e5971A85277EFe72c4492983',
+    6,
+    'DAF',
+    'Diamonds are Forever Token',
+    'https://daftoken.io',
+  ),
   bunny: new Token(
     MAINNET,
     '0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51',
