@@ -32,15 +32,15 @@
       "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
       "chainId": 137,
       "decimals": 6,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x55d398326f99059ff775485246999027b3197955.png"
+      "logoURI": "https://pancakeswap.finance/images/tokens/0xc2132d05d31c914a87c6611c10748aeb04b58e8f.png"
     },
     {
-      "name": "Tether USD",
+      "name": "USD Coin",
       "symbol": "USDC",
       "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
       "chainId": 137,
       "decimals": 6,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2791bca1f2de4661ed88a30c99a7a9449aa84174.png"
     }
   ]
 }
