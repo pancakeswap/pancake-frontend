@@ -15,7 +15,6 @@ import Container from './components/Container'
 import RiskDisclaimer from './components/RiskDisclaimer'
 import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
-import usePollOraclePrice from './hooks/usePollOraclePrice'
 import usePollPredictions from './hooks/usePollPredictions'
 import Mobile from './Mobile'
 
@@ -58,7 +57,6 @@ const Predictions = () => {
   }, [initialBlock, dispatch, account])
 
   usePollPredictions()
-  usePollOraclePrice()
 
   if (status === PredictionStatus.INITIAL) {
     return <PageLoader />
