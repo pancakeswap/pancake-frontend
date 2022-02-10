@@ -18,9 +18,18 @@ interface Props {
   walletIfoData: WalletIfoData
   hasProfile: boolean
   isLoading: boolean
+  isEligible: boolean
 }
 
-const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfoData, hasProfile, isLoading }) => {
+const IfoCardActions: React.FC<Props> = ({
+  poolId,
+  ifo,
+  publicIfoData,
+  walletIfoData,
+  hasProfile,
+  isLoading,
+  isEligible,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const userPoolCharacteristics = walletIfoData[poolId]
@@ -39,6 +48,10 @@ const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfo
         {t('Activate your Profile')}
       </Button>
     )
+  }
+
+  if (ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible) {
+    return null
   }
 
   return (
