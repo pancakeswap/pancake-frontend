@@ -824,7 +824,7 @@ const farms: SerializedFarmConfig[] = [
       97: '',
       56: '0xdcfbb12ded3fea12d2a078bc6324131cd14bf835',
     },
-    token: serializedTokens.bttold,
+    token: serializedTokens.btt,
     quoteToken: serializedTokens.busd,
   },
   {
@@ -886,7 +886,7 @@ const farms: SerializedFarmConfig[] = [
       97: '',
       56: '0x946696344e7d4346b223e1cf77035a76690d6a73',
     },
-    token: serializedTokens.bttold,
+    token: serializedTokens.btt,
     quoteToken: serializedTokens.wbnb,
   },
   {

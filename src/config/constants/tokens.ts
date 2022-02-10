@@ -1248,11 +1248,11 @@ export const mainnetTokens = defineTokens({
     'Lympo Market Token',
     'https://lympo.io/lmt/',
   ),
-  bttold: new Token(
+  btt: new Token(
     MAINNET,
     '0x8595F9dA7b868b1822194fAEd312235E43007b49',
     18,
-    'BTTOLD',
+    'BTT',
     'Binance-Peg BitTorrent Token (Old)',
     'https://www.bittorrent.com/',
   ),

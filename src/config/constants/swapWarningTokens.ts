@@ -1,7 +1,7 @@
 import { Token } from '@pancakeswap/sdk'
 import tokens from 'config/constants/tokens'
 
-const { bondly, safemoon, itam, ccar, bttold } = tokens
+const { bondly, safemoon, itam, ccar, btt } = tokens
 
 interface WarningTokenList {
   [key: string]: Token
@@ -12,7 +12,7 @@ const SwapWarningTokens = <WarningTokenList>{
   bondly,
   itam,
   ccar,
-  bttold,
+  btt,
 }
 
 export default SwapWarningTokens
