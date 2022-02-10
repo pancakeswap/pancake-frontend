@@ -5,7 +5,7 @@ const mapCriteriasToQualifications = {
   needQualifiedPoints: 'isQualifiedPoints',
 }
 
-export default function useCriteras(userBasicPoolInfo, ifoCriterias) {
+export default function useCriterias(userBasicPoolInfo, ifoCriterias) {
   const criterias = useMemo(
     () =>
       Object.keys(ifoCriterias)

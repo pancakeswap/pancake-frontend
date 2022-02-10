@@ -14,7 +14,7 @@ export interface PoolCharacteristics {
   sumTaxesOverflow: BigNumber
 
   // extends
-  pointThreshold?: BigNumber
+  pointThreshold?: number
   admissionProfile?: number
   needQualifiedNFT?: boolean
   needQualifiedPoints?: boolean

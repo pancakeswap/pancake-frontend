@@ -8,7 +8,7 @@ export const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[Ch
 const ifos: Ifo[] = [
   {
     id: 'froyo',
-    address: '0xE0d6c91860a332068bdB59275b0AAC8769e26Ac4',
+    address: '0xb25e03aa57a5069a4bd717ae882823054e61eafc',
     isActive: true,
     name: 'Froyo Games (FROYO)',
     poolBasic: {
@@ -29,7 +29,7 @@ const ifos: Ifo[] = [
     campaignId: '511170000',
     articleUrl: 'https://pancakeswap.finance/voting/proposal/QmRhc4oC73jk4zxU4YkP1kudKHeq6qamgYA1sWoh6XJnks',
     tokenOfferingPrice: 0.06,
-    version: 3,
+    version: 3.1,
     telegramUrl: 'https://t.me/froyogames',
     twitterUrl: 'https://twitter.com/realfroyogames',
     description: `Froyo Games is a game publisher and decentralized GameFi platform, with a NFT Marketplace that integrates NFTs with their games.\n \n FROYO tokens can be used to buy NFTs and participate in Froyo games`,

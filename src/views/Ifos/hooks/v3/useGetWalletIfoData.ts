@@ -99,8 +99,8 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         refundingAmountInLP: new BigNumber(amounts[0][0][1].toString()),
         taxAmountInLP: new BigNumber(amounts[0][0][2].toString()),
         hasClaimed: userInfo[1][0],
-        isQualifiedNFT,
-        isQualifiedPoints,
+        isQualifiedNFT: isQualifiedNFT[0],
+        isQualifiedPoints: isQualifiedPoints[0],
       },
       poolUnlimited: {
         ...prevState.poolUnlimited,

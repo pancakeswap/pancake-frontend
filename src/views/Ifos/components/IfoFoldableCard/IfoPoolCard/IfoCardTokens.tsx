@@ -195,7 +195,11 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               <MessageText display="inline">Meet any one of the following requirements to be eligible.</MessageText>
             </Message>
           )}
-          <IFORequirements criterias={criterias} pointThreshold={publicPoolCharacteristics?.pointThreshold} />
+          <IFORequirements
+            criterias={criterias}
+            admissionProfile={publicPoolCharacteristics?.admissionProfile}
+            pointThreshold={publicPoolCharacteristics?.pointThreshold}
+          />
           {isEligible && (
             <Message mx="24px" mt="24px" p="8px" variant="success">
               <MessageText display="inline">You are eligible to participate in this Private Sale!</MessageText>

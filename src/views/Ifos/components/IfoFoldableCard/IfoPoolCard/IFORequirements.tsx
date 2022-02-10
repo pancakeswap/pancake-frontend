@@ -11,12 +11,14 @@ import {
   LinkExternal,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { formatBigNumber } from 'utils/formatBalance'
 
-const NotOkNFT = () => (
+const NotOkNFT = ({ admissionProfile }) => (
   <>
     Set{' '}
-    <LinkExternal style={{ display: 'inline' }} href="https://pancakeswap.finance/nfts/collections/">
+    <LinkExternal
+      style={{ display: 'inline' }}
+      href={`https://pancakeswap.finance/nfts/collections/${admissionProfile}`}
+    >
       Pancake Squad NFT
     </LinkExternal>
     <br />
@@ -24,12 +26,12 @@ const NotOkNFT = () => (
   </>
 )
 
-const NotOkProfilePoints = ({ amount }) => {
+const NotOkProfilePoints = ({ pointThreshold }) => {
   const { account } = useWeb3React()
 
   return (
     <>
-      Reach {formatBigNumber(amount, 3)} or more
+      Reach {pointThreshold} or more
       <br />
       <LinkExternal
         style={{ display: 'inline' }}
@@ -42,25 +44,25 @@ const NotOkProfilePoints = ({ amount }) => {
   )
 }
 
-const configCriterias = (pointThreshold) => ({
+const configCriterias = (pointThreshold: number, admissionProfile: string) => ({
   isQualifiedNFT: {
     OkIcon: AccountFilledIcon,
     okMsg: 'Eligible NFT avatar found!',
-    notOkMsg: <NotOkNFT />,
+    notOkMsg: <NotOkNFT admissionProfile={admissionProfile} />,
     NotOkIcon: AccountIcon,
     name: 'Pancake Squad',
   },
   isQualifiedPoints: {
     OkIcon: TrophyFillIcon,
     okMsg: 'Profile Points threshold met!',
-    notOkMsg: <NotOkProfilePoints amount={pointThreshold} />,
+    notOkMsg: <NotOkProfilePoints pointThreshold={pointThreshold} />,
     NotOkIcon: TeamBattleIcon,
     name: 'Profile points',
   },
 })
 
-function Item({ type, isOk, isSingle, pointThreshold }) {
-  const config = useMemo(() => configCriterias(pointThreshold), [pointThreshold])
+function Item({ type, isOk, isSingle, pointThreshold, admissionProfile }) {
+  const config = useMemo(() => configCriterias(pointThreshold, admissionProfile), [pointThreshold, admissionProfile])
 
   const name = config[type]?.name
   const Icon = isOk ? config[type]?.OkIcon : config[type]?.NotOkIcon
@@ -91,13 +93,22 @@ function Item({ type, isOk, isSingle, pointThreshold }) {
   )
 }
 
-export default function IFORequirements({ criterias, pointThreshold }) {
+export default function IFORequirements({ criterias, pointThreshold, admissionProfile }) {
   const isSingle = criterias.length === 1
 
   return (
     <Flex mx="8px">
       {criterias.map(({ type, value }) => {
-        return <Item isSingle={isSingle} key={type} type={type} isOk={value} pointThreshold={pointThreshold} />
+        return (
+          <Item
+            isSingle={isSingle}
+            key={type}
+            type={type}
+            isOk={value}
+            pointThreshold={pointThreshold}
+            admissionProfile={admissionProfile}
+          />
+        )
       })}
     </Flex>
   )

@@ -5,9 +5,8 @@ import { ContextApi } from 'contexts/Localization/types'
 import { Box, Card, CardBody, CardHeader, Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useProfile } from 'state/profile/hooks'
-import useCriteras from 'views/Ifos/hooks/v3/useCriteras'
+import useCriterias from 'views/Ifos/hooks/v3/useCriterias'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { formatBigNumber } from 'utils/formatBalance'
 import { EnableStatus } from '../types'
 import IfoCardTokens from './IfoCardTokens'
 import IfoCardActions from './IfoCardActions'
@@ -99,7 +98,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
     return ifo.version === 3.1 && poolId === PoolIds.poolBasic
       ? {
           needQualifiedNFT: Boolean(admissionProfile),
-          needQualifiedPoints: pointThreshold ? +formatBigNumber(pointThreshold, 3) > 0 : false,
+          needQualifiedPoints: pointThreshold ? pointThreshold > 0 : false,
         }
       : {}
   }, [ifo.version, admissionProfile, pointThreshold, poolId])
@@ -115,7 +114,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
 
   const isLoading = isProfileLoading || publicIfoData.status === 'idle'
 
-  const { isEligible, criterias } = useCriteras(walletIfoData[poolId], {
+  const { isEligible, criterias } = useCriterias(walletIfoData[poolId], {
     needQualifiedNFT,
     needQualifiedPoints,
   })
