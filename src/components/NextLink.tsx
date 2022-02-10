@@ -4,7 +4,6 @@ import NextLink from 'next/link'
 
 // react-router-dom LinkProps types
 interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  as?: any
   to: any
   replace?: boolean
   innerRef?: React.Ref<HTMLAnchorElement>
