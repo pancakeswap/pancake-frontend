@@ -3,7 +3,12 @@ import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
-import { useFetchByBunnyIdAndUpdate, useGetAllBunniesByBunnyId, useGetCollection } from 'state/nftMarket/hooks'
+import {
+  useFetchByBunnyIdAndUpdate,
+  useFetchCollection,
+  useGetAllBunniesByBunnyId,
+  useGetCollection,
+} from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
@@ -28,7 +33,19 @@ interface IndividualPancakeBunnyPageProps {
   bunnyId: string
 }
 
-const IndividualPancakeBunnyPage: React.FC<IndividualPancakeBunnyPageProps> = ({ bunnyId }) => {
+const IndividualPancakeBunnyPage = (props: IndividualPancakeBunnyPageProps) => {
+  const collection = useGetCollection(pancakeBunniesAddress)
+
+  useFetchCollection(pancakeBunniesAddress)
+
+  if (!collection) {
+    return <PageLoader />
+  }
+
+  return <IndividualPancakeBunnyPageBase {...props} />
+}
+
+const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> = ({ bunnyId }) => {
   const { account } = useWeb3React()
   const collection = useGetCollection(pancakeBunniesAddress)
   const totalBunnyCount = Number(collection.totalSupply)
