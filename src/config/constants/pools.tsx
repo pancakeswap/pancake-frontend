@@ -69,6 +69,7 @@ const pools: SerializedPoolConfig[] = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
+    enableEmergencyWithdraw: true,
     sortOrder: 999,
     tokenPerBlock: '7.502',
     deployedBlockNumber: 15150333,
