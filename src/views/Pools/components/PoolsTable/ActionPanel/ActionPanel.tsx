@@ -141,6 +141,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     userData,
     vaultKey,
     profileRequirement,
+    isFinished,
   } = pool
   const { t } = useTranslation()
   const poolContractAddress = getAddress(contractAddress)
@@ -228,15 +229,16 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       </RequirementSection>
     ) : null
 
-  const maxStakeRow = stakingLimit.gt(0) ? (
-    <MaxStakeRow
-      currentBlock={currentBlock}
-      hasPoolStarted={hasPoolStarted}
-      stakingLimit={stakingLimit}
-      stakingLimitEndBlock={stakingLimitEndBlock}
-      stakingToken={stakingToken}
-    />
-  ) : null
+  const maxStakeRow =
+    !isFinished && stakingLimit.gt(0) ? (
+      <MaxStakeRow
+        currentBlock={currentBlock}
+        hasPoolStarted={hasPoolStarted}
+        stakingLimit={stakingLimit}
+        stakingLimitEndBlock={stakingLimitEndBlock}
+        stakingToken={stakingToken}
+      />
+    ) : null
 
   const blocksRow =
     blocksRemaining || blocksUntilStart ? (
