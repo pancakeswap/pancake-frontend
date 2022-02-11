@@ -1,10 +1,10 @@
+import React from 'react'
 import {
   ModalContainer,
   ModalBody,
   Text,
   Button,
   InjectedModalProps,
-  LinkExternal,
   Flex,
   Image,
   Heading,
@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
+import { useUserPredictionChainlinkChartDisclaimerShow } from 'state/user/hooks'
 
 const Ul = styled.ul`
   color: ${({ theme }) => theme.colors.textSubtle};
@@ -27,42 +27,29 @@ const Ul = styled.ul`
 `
 
 const ChartDisclaimer: React.FC<InjectedModalProps> = ({ onDismiss }) => {
-  const [showDisclaimer, setShowDisclaimer] = useUserPredictionChartDisclaimerShow()
+  const [showDisclaimer, setShowDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const { t } = useTranslation()
 
   const handleConfirm = () => {
-    onDismiss?.()
+    onDismiss()
   }
 
   return (
     <ModalContainer minWidth="320px">
       <ModalBody p="24px" maxWidth="400px">
         <Flex justifyContent="center" mb="32px">
-          <Image src="/images/predictions/chartwarning.svg" width={190} height={118} />
+          <Image src="/images/predictions/chartwarning2.svg" width={190} height={118} />
         </Flex>
         <Heading as="h3" size="sm">
-          {t('Warning')}:
+          {t('Important Information')}:
         </Heading>
         <Heading as="h4" size="sm" mb="24px">
-          {t('Prices shown on cards and charts are different')}:
+          {t('Currently showing charts from Chainlink.')}:
         </Heading>
-        <Text as="p" fontSize="14px" color="textSubtle">
-          {t('The price you see come from difference places')}:
-        </Text>
         <Ul>
-          <li>{t('Prices on cards come from Chainlink’s verifiable price oracle.')}</li>
-          <li>{t("Prices on charts come from Binance.com. Chart's are provided for your reference only.")}</li>
+          <li>{t('Prices chart is in relatively low fidelity.')}</li>
+          <li>{t('Prices on charts is in relatively slower to respond.')}</li>
         </Ul>
-        <Text as="p" mb="16px" fontSize="14px" color="textSubtle">
-          {t("Only the price from Chainlink (shown on the cards) determines the round's result.")}
-        </Text>
-        <LinkExternal
-          href="https://docs.pancakeswap.finance/products/prediction/prediction-faq#what-are-you-using-for-your-price-feed"
-          external
-          mb="24px"
-        >
-          {t('Learn More')}
-        </LinkExternal>
         <Box>
           <Button width="100%" onClick={handleConfirm} mb="16px">
             {t('I understand')}

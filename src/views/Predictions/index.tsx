@@ -6,9 +6,13 @@ import { useEffect, useRef } from 'react'
 import { useAppDispatch } from 'state'
 import { useInitialBlock } from 'state/block/hooks'
 import { initializePredictions } from 'state/predictions'
-import { useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/hooks'
-import { PredictionStatus } from 'state/types'
-import { useUserPredictionAcceptedRisk, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
+import { useChartView, useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/hooks'
+import { PredictionsChartView, PredictionStatus } from 'state/types'
+import {
+  useUserPredictionAcceptedRisk,
+  useUserPredictionChainlinkChartDisclaimerShow,
+  useUserPredictionChartDisclaimerShow,
+} from 'state/user/hooks'
 import ChartDisclaimer from './components/ChartDisclaimer'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import Container from './components/Container'
@@ -18,22 +22,22 @@ import Desktop from './Desktop'
 import usePollPredictions from './hooks/usePollPredictions'
 import Mobile from './Mobile'
 
-const Predictions = () => {
-  const { isDesktop } = useMatchBreakpoints()
+function Warnings() {
   const [hasAcceptedRisk, setHasAcceptedRisk] = useUserPredictionAcceptedRisk()
   const [showDisclaimer] = useUserPredictionChartDisclaimerShow()
-  const { account } = useWeb3React()
-  const status = useGetPredictionsStatus()
+  const [showChainlinkDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const isChartPaneOpen = useIsChartPaneOpen()
-  const dispatch = useAppDispatch()
-  const initialBlock = useInitialBlock()
+  const [chartView] = useChartView()
   const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
+
   const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
   const [onPresentChartDisclaimer] = useModal(<ChartDisclaimer />, false)
+  const [onPresentChainlinkChartDisclaimer] = useModal(<ChartDisclaimer />, false)
 
   // TODO: memoize modal's handlers
   const onPresentRiskDisclaimerRef = useRef(onPresentRiskDisclaimer)
   const onPresentChartDisclaimerRef = useRef(onPresentChartDisclaimer)
+  const onPresentChainlinkChartDisclaimerRef = useRef(onPresentChainlinkChartDisclaimer)
 
   // Disclaimer
   useEffect(() => {
@@ -44,10 +48,27 @@ const Predictions = () => {
 
   // Chart Disclaimer
   useEffect(() => {
-    if (isChartPaneOpen && showDisclaimer) {
+    if (isChartPaneOpen && showDisclaimer && chartView === PredictionsChartView.TradingView) {
       onPresentChartDisclaimerRef.current()
     }
-  }, [onPresentChartDisclaimerRef, isChartPaneOpen, showDisclaimer])
+  }, [onPresentChartDisclaimerRef, isChartPaneOpen, showDisclaimer, chartView])
+
+  // Chainlink Disclaimer
+  useEffect(() => {
+    if (isChartPaneOpen && showChainlinkDisclaimer && chartView === PredictionsChartView.Chainlink) {
+      onPresentChainlinkChartDisclaimerRef.current()
+    }
+  }, [onPresentChainlinkChartDisclaimerRef, isChartPaneOpen, showChainlinkDisclaimer, chartView])
+
+  return null
+}
+
+const Predictions = () => {
+  const { isDesktop } = useMatchBreakpoints()
+  const { account } = useWeb3React()
+  const status = useGetPredictionsStatus()
+  const dispatch = useAppDispatch()
+  const initialBlock = useInitialBlock()
 
   useEffect(() => {
     if (initialBlock > 0) {
@@ -65,6 +86,7 @@ const Predictions = () => {
   return (
     <>
       <PageMeta />
+      <Warnings />
       <SwiperProvider>
         <Container>
           {isDesktop ? <Desktop /> : <Mobile />}

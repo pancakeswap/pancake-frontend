@@ -1538,5 +1538,9 @@
   "Swap failed: %message%": "Swap failed: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Unexpected error. Could not estimate gas for the swap.",
   "Farm Auction": "Farm Auction",
-  "Farm Auction Winner, add liquidity at your own risk.": "Farm Auction Winner, add liquidity at your own risk."
+  "Farm Auction Winner, add liquidity at your own risk.": "Farm Auction Winner, add liquidity at your own risk.",
+  "Important Information": "Important Information",
+  "Currently showing charts from Chainlink.": "Currently showing charts from Chainlink.",
+  "Prices chart is in relatively low fidelity.": "Prices chart is in relatively low fidelity.",
+  "Prices on charts is in relatively slower to respond.": "Prices on charts is in relatively slower to respond."
 }

@@ -12,7 +12,7 @@ import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useGetRoundsByCloseOracleId } from 'state/predictions/hooks'
 import styled from 'styled-components'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text, FlexProps } from '@pancakeswap/uikit'
 import PairPriceDisplay from 'components/PairPriceDisplay'
 import { NodeRound } from 'state/types'
 
@@ -84,18 +84,17 @@ function useChartHover() {
 
 const chartColor = { gradient1: '#00E7B0', gradient2: '#0C8B6C', stroke: '#31D0AA' }
 
-const ChainlinkChartWrapper = styled.div`
-  display: flex;
+const ChainlinkChartWrapper = styled(Flex)<{ isMobile?: boolean }>`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+  background: ${({ theme, isMobile }) => (isMobile ? theme.card.background : theme.colors.gradients.bubblegum)};
 `
 
 /**
  * Note: remember that it needs to be mounted inside the container with fixed height
  */
-export const ChainLinkChart = () => {
+export const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
   const {
     currentLanguage: { locale },
   } = useTranslation()
@@ -108,15 +107,18 @@ export const ChainLinkChart = () => {
   }
 
   return (
-    <ChainlinkChartWrapper>
-      <Flex flexDirection="row" pt="12px" px="20px" alignItems="center" style={{ gap: '8px', height: '44px' }}>
+    <ChainlinkChartWrapper {...props}>
+      <Flex
+        flexDirection="row"
+        pt="12px"
+        px="20px"
+        alignItems="center"
+        height={['56px', , , , '44px']}
+        style={{ gap: '8px' }}
+      >
         {hoverData && (
           <>
-            <PairPriceDisplay alignItems="center" value={hoverData.answer} inputSymbol="BNB" outputSymbol="USDT">
-              {/* <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mt="-8px" mb="8px" bold>
-            {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
-          </Text> */}
-            </PairPriceDisplay>
+            <PairPriceDisplay alignItems="center" value={hoverData.answer} inputSymbol="BNB" outputSymbol="USDT" />
             <Text color="textSubtle">
               {new Date(hoverData.startedAt * 1000).toLocaleString(locale, {
                 year: 'numeric',
@@ -134,7 +136,7 @@ export const ChainLinkChart = () => {
           </>
         )}
       </Flex>
-      <Flex flex={1}>
+      <Flex height={[`calc(100% - 56px)`, , , `calc(100% - 44px)`]}>
         <Chart rounds={rounds} data={data} />
       </Flex>
     </ChainlinkChartWrapper>

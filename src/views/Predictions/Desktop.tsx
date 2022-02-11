@@ -14,7 +14,7 @@ import {
 import { setChartPaneState, setChartView } from 'state/predictions'
 import { PredictionsChartView, PredictionStatus } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import { TradingViewLabel } from 'components/TradingView'
+import { ChartByLabel } from 'components/Chart/ChartbyLabel'
 import { TabToggle } from 'components/TabToggle'
 import TradingView from './components/TradingView'
 import { ErrorNotification, PauseNotification } from './components/Notification'
@@ -167,9 +167,9 @@ const Desktop: React.FC = () => {
           <Gutter ref={gutterRef}>
             <ExpandButtonGroup>
               <TabToggle
+                height="42px"
                 as={Button}
-                scale="sm"
-                style={{ whiteSpace: 'nowrap' }}
+                style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.TradingView}
                 onMouseDown={(e) => {
                   e.stopPropagation()
@@ -178,11 +178,12 @@ const Desktop: React.FC = () => {
                   dispatch(setChartView(PredictionsChartView.TradingView))
                 }}
               >
-                TradingView {t('Chart')}
+                {chartView === PredictionsChartView.TradingView && <ChartIcon mr="10px" />} TradingView {t('Chart')}
               </TabToggle>
               <TabToggle
                 as={Button}
-                scale="sm"
+                height="42px"
+                style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.Chainlink}
                 onMouseDown={(e) => {
                   e.stopPropagation()
@@ -191,10 +192,18 @@ const Desktop: React.FC = () => {
                   dispatch(setChartView(PredictionsChartView.Chainlink))
                 }}
               >
-                <ChartIcon /> Chainlink {t('Chart')}
+                {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
               </TabToggle>
             </ExpandButtonGroup>
-            <TradingViewLabel justifyContent="flex-end" symbol="BNBUSDT" />
+            <ChartByLabel
+              justifyContent="flex-end"
+              symbol="BNBUSDT"
+              by={chartView}
+              link={
+                chartView === PredictionsChartView.TradingView ? `https://www.tradingview.com/symbols/BNBUSDT` : ''
+                // TODO: Add link to chainlink chart
+              }
+            />
           </Gutter>
           <ChartPane ref={chartRef}>
             {chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainLinkChart />}

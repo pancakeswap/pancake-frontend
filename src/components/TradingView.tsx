@@ -3,6 +3,7 @@ import { useTranslation } from 'contexts/Localization'
 import Script from 'next/script'
 import { useEffect, useRef } from 'react'
 import { DefaultTheme, useTheme } from 'styled-components'
+import { ChartByLabel } from './Chart/ChartbyLabel'
 
 /**
  * When the script tag is injected the TradingView object is not immediately
@@ -128,16 +129,8 @@ export function useTradingViewEvent({
 
 // Required to link to TradingView website for the widget
 export const TradingViewLabel = ({ symbol, ...props }: { symbol: string } & FlexProps) => {
-  const { t } = useTranslation()
   return (
-    <Flex alignItems="center" px="24px" {...props}>
-      <Link fontSize="14px" href={`https://www.tradingview.com/symbols/${symbol}`} external>
-        BNB {t('Chart')}
-      </Link>
-      <Text fontSize="14px" ml="4px">
-        {t('by')} TradingView
-      </Text>
-    </Flex>
+    <ChartByLabel link={`https://www.tradingview.com/symbols/${symbol}`} symbol={symbol} by="TradingView" {...props} />
   )
 }
 
