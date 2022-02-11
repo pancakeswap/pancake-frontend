@@ -1,20 +1,23 @@
-import React, { useEffect, Dispatch, SetStateAction, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area, Dot } from 'recharts'
 import useTheme from 'hooks/useTheme'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import { useTranslation } from 'contexts/Localization'
 import { laggyMiddleware, useSWRContract, useSWRMulticall } from 'hooks/useSWRContract'
 import useSWRImmutable from 'swr/immutable'
+import { useSWRConfig } from 'swr'
 import { useChainlinkOracleContract } from 'hooks/useContract'
 import { getChainlinkOracleAddress } from 'utils/addressHelpers'
 import { ChainlinkOracle } from 'config/abi/types'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
+import { FlexGap } from 'components/Layout/Flex'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetRoundsByCloseOracleId } from 'state/predictions/hooks'
+import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import styled from 'styled-components'
 import { Flex, Text, FlexProps } from '@pancakeswap/uikit'
 import PairPriceDisplay from 'components/PairPriceDisplay'
 import { NodeRound } from 'state/types'
+import useSwiper from '../hooks/useSwiper'
 
 const chainlinkAddress = getChainlinkOracleAddress()
 function useChainlinkRoundDataSet() {
@@ -25,7 +28,7 @@ function useChainlinkRoundDataSet() {
 
   const calls = useMemo(() => {
     return lastRound.data
-      ? Array.from({ length: 100 }).map((_, i) => ({
+      ? Array.from({ length: 50 }).map((_, i) => ({
           address: chainlinkAddress,
           name: 'getRoundData',
           params: [lastRound.data.sub(i)],
@@ -43,7 +46,7 @@ function useChainlinkRoundDataSet() {
 
   const computedData: ChartData[] = useMemo(() => {
     return (
-      data?.map(({ answer, roundId, startedAt }) => {
+      data?.filter(Boolean).map(({ answer, roundId, startedAt }) => {
         return {
           answer: parseFloat(formatBigNumberToFixed(answer, 3, 8)),
           roundId: roundId.toString(),
@@ -62,15 +65,8 @@ type ChartData = {
   startedAt: number
 }
 
-export type SwapLineChartProps = {
-  data: any[]
-  setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
-  setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of valye
-  isChangePositive: boolean
-} & React.HTMLAttributes<HTMLDivElement>
-
 const HoverUpdater = ({ payload }) => {
-  const { mutate } = useChartHover()
+  const mutate = useChartHoverMutate()
   useEffect(() => {
     mutate(payload)
   }, [mutate, payload])
@@ -79,7 +75,21 @@ const HoverUpdater = ({ payload }) => {
 }
 
 function useChartHover() {
-  return useSWRImmutable<ChartData>('chainlinkChartHover')
+  const { data } = useSWRImmutable<ChartData>('chainlinkChartHover')
+  return data
+}
+
+function useChartHoverMutate() {
+  const { mutate } = useSWRConfig()
+
+  const updateHover = useCallback(
+    (data) => {
+      mutate('chainlinkChartHover', data)
+    },
+    [mutate],
+  )
+
+  return updateHover
 }
 
 const chartColor = { gradient1: '#00E7B0', gradient2: '#0C8B6C', stroke: '#31D0AA' }
@@ -91,16 +101,45 @@ const ChainlinkChartWrapper = styled(Flex)<{ isMobile?: boolean }>`
   background: ${({ theme, isMobile }) => (isMobile ? theme.card.background : theme.colors.gradients.bubblegum)};
 `
 
+const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
+  const hoverData = useChartHover()
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
+
+  if (!hoverData) {
+    return null
+  }
+
+  return (
+    <>
+      <PairPriceDisplay alignItems="center" value={hoverData.answer} inputSymbol="BNB" outputSymbol="USDT" />
+      <FlexGap minWidth="51%" alignItems="center" gap="12px">
+        <Text color="textSubtle">
+          {new Date(hoverData.startedAt * 1000).toLocaleString(locale, {
+            year: 'numeric',
+            day: 'numeric',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
+        </Text>
+        {rounds[hoverData.roundId] && (
+          <Text fontSize="20px" color="secondary" bold>
+            #{rounds[hoverData.roundId].epoch}
+          </Text>
+        )}
+      </FlexGap>
+    </>
+  )
+}
+
 /**
  * Note: remember that it needs to be mounted inside the container with fixed height
  */
 export const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
-  const {
-    currentLanguage: { locale },
-  } = useTranslation()
   const { data } = useChainlinkRoundDataSet()
   const rounds = useGetRoundsByCloseOracleId()
-  const { data: hoverData } = useChartHover()
 
   if (!data.length) {
     return <LineChartLoader />
@@ -108,35 +147,19 @@ export const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
 
   return (
     <ChainlinkChartWrapper {...props}>
-      <Flex
+      <FlexGap
         flexDirection="row"
         pt="12px"
         px="20px"
         alignItems="center"
         height={['56px', , , , '44px']}
-        style={{ gap: '8px' }}
+        style={{ gap: '12px' }}
+        flexWrap="wrap"
+        gap="12px"
       >
-        {hoverData && (
-          <>
-            <PairPriceDisplay alignItems="center" value={hoverData.answer} inputSymbol="BNB" outputSymbol="USDT" />
-            <Text color="textSubtle">
-              {new Date(hoverData.startedAt * 1000).toLocaleString(locale, {
-                year: 'numeric',
-                day: 'numeric',
-                month: 'short',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </Text>
-            {rounds[hoverData.roundId] && (
-              <Text fontSize="20px" color="secondary" bold>
-                #{rounds[hoverData.roundId].epoch}
-              </Text>
-            )}
-          </>
-        )}
-      </Flex>
-      <Flex height={[`calc(100% - 56px)`, , , `calc(100% - 44px)`]}>
+        <HoverData rounds={rounds} />
+      </FlexGap>
+      <Flex height={[`calc(100% - 56px)`]}>
         <Chart rounds={rounds} data={data} />
       </Flex>
     </ChainlinkChartWrapper>
@@ -156,11 +179,10 @@ const Chart = ({
     currentLanguage: { locale },
   } = useTranslation()
   const { theme } = useTheme()
-  const containerRef = useRef()
-  const { mutate } = useChartHover()
+  const mutate = useChartHoverMutate()
 
   return (
-    <ResponsiveContainer ref={containerRef}>
+    <ResponsiveContainer>
       <AreaChart
         data={data}
         margin={{
@@ -215,9 +237,7 @@ const Chart = ({
           strokeWidth={2}
           activeDot={(props) => {
             if (rounds[props.payload.roundId]) {
-              return (
-                <Dot {...props} r={12} stroke={theme.colors.primary} strokeWidth={10} fill={theme.colors.background} />
-              )
+              return <ActiveDot {...props} />
             }
             return null
           }}
@@ -230,5 +250,27 @@ const Chart = ({
         />
       </AreaChart>
     </ResponsiveContainer>
+  )
+}
+
+const ActiveDot = (props) => {
+  const { swiper } = useSwiper()
+  const sortedRounds = useGetSortedRounds()
+  const { theme } = useTheme()
+
+  return (
+    <Dot
+      {...props}
+      r={12}
+      stroke={theme.colors.primary}
+      strokeWidth={10}
+      fill={theme.colors.background}
+      onClick={() => {
+        const roundIndex = sortedRounds.findIndex((round) => round.closeOracleId === props.payload.roundId)
+        if (roundIndex >= 0) {
+          swiper.slideTo(roundIndex)
+        }
+      }}
+    />
   )
 }

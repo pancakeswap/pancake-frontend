@@ -1,4 +1,4 @@
-import { ResetCSS, Text } from '@pancakeswap/uikit'
+import { ResetCSS } from '@pancakeswap/uikit'
 import Script from 'next/script'
 import BigNumber from 'bignumber.js'
 import EasterEgg from 'components/EasterEgg'
@@ -23,10 +23,6 @@ import Menu from '../components/Menu'
 import BlockCountry from '../components/BlockCountry'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
-
-Text.defaultProps = {
-  lineHeight: 1.1,
-}
 
 // This config is required for number formatting
 BigNumber.config({

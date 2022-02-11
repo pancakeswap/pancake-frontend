@@ -26,7 +26,7 @@ const TextLabel = styled(Text)`
 
 const PairPriceDisplay: FC<TokenDisplayProps> = ({ value, inputSymbol, outputSymbol, children, ...props }) => {
   return value ? (
-    <Flex alignItems="flex-end" flexWrap="wrap" {...props}>
+    <Flex alignItems="flex-end" {...props}>
       <TextLabel mr="8px" bold>
         {formatAmount(value, formatOptions)}
       </TextLabel>

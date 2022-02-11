@@ -14,6 +14,7 @@ import {
   useUserPredictionChartDisclaimerShow,
 } from 'state/user/hooks'
 import ChartDisclaimer from './components/ChartDisclaimer'
+import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import Container from './components/Container'
 import RiskDisclaimer from './components/RiskDisclaimer'
@@ -27,12 +28,12 @@ function Warnings() {
   const [showDisclaimer] = useUserPredictionChartDisclaimerShow()
   const [showChainlinkDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const isChartPaneOpen = useIsChartPaneOpen()
-  const [chartView] = useChartView()
+  const chartView = useChartView()
   const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
 
   const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
   const [onPresentChartDisclaimer] = useModal(<ChartDisclaimer />, false)
-  const [onPresentChainlinkChartDisclaimer] = useModal(<ChartDisclaimer />, false)
+  const [onPresentChainlinkChartDisclaimer] = useModal(<ChainlinkChartDisclaimer />, false)
 
   // TODO: memoize modal's handlers
   const onPresentRiskDisclaimerRef = useRef(onPresentRiskDisclaimer)

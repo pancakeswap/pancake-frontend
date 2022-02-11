@@ -172,10 +172,10 @@ const Desktop: React.FC = () => {
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.TradingView}
                 onMouseDown={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
                   toggleChartPane()
                   dispatch(setChartView(PredictionsChartView.TradingView))
+                  e.stopPropagation()
+                  e.preventDefault()
                 }}
               >
                 {chartView === PredictionsChartView.TradingView && <ChartIcon mr="10px" />} TradingView {t('Chart')}
@@ -186,10 +186,10 @@ const Desktop: React.FC = () => {
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.Chainlink}
                 onMouseDown={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
                   toggleChartPane()
                   dispatch(setChartView(PredictionsChartView.Chainlink))
+                  e.stopPropagation()
+                  e.preventDefault()
                 }}
               >
                 {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}

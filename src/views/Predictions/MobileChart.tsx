@@ -18,6 +18,7 @@ const MenuWrapper = styled.div`
 const ChartWrapper = styled.div`
   flex: 1;
   height: 100%;
+  background-color: ${({ theme }) => theme.card.background};
 `
 
 const MobileChart = () => {

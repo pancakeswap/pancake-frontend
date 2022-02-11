@@ -43,15 +43,15 @@ const ChartDisclaimer: React.FC<InjectedModalProps> = ({ onDismiss }) => {
         <Heading as="h3" size="sm">
           {t('Important Information')}:
         </Heading>
-        <Heading as="h4" size="sm" mb="24px">
-          {t('Currently showing charts from Chainlink.')}:
-        </Heading>
+        <Text color="textSubtle" fontSize="14px" my="24px">
+          {t('Currently showing charts from Chainlink.')}
+        </Text>
         <Ul>
           <li>{t('Prices chart is in relatively low fidelity.')}</li>
           <li>{t('Prices on charts is in relatively slower to respond.')}</li>
         </Ul>
         <Box>
-          <Button width="100%" onClick={handleConfirm} mb="16px">
+          <Button width="100%" variant="secondary" onClick={handleConfirm} my="16px">
             {t('I understand')}
           </Button>
         </Box>
