@@ -192,7 +192,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       ifo.version === 3.1 && poolId === PoolIds.poolBasic && criterias?.length > 0 ? (
         <Box mt="16px">
           {!isEligible && (
-            <Message mx="24px" mb="24px" p="8px" variant="warning" icon={<ErrorIcon color="warning" width="24px" />}>
+            <Message mb="24px" p="8px" variant="warning" icon={<ErrorIcon color="warning" width="24px" />}>
               <MessageText small display="inline">
                 {t('Meet any one of the following requirements to be eligible.')}
               </MessageText>
@@ -204,7 +204,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             pointThreshold={publicPoolCharacteristics?.pointThreshold}
           />
           {isEligible && (
-            <Message mx="24px" mt="24px" p="8px" variant="success">
+            <Message mt="24px" p="8px" variant="success">
               <MessageText small display="inline">
                 {t('You are eligible to participate in this Private Sale!')}
               </MessageText>
