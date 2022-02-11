@@ -2125,10 +2125,10 @@
   "resolved" "https://registry.npmjs.org/@tootallnate/once/-/once-1.1.2.tgz"
   "version" "1.1.2"
 
-"@tovaswapui/uikit@^0.63.1":
-  "integrity" "sha512-kfmGb0DtK3A5zftSsIGqLq24KxXQbExGw2CdsZ6Wt9hOWvQV6u+8o363TGvfBSj67ZbADQTAR8OLx9/GyL/BAQ=="
-  "resolved" "https://registry.npmjs.org/@tovaswapui/uikit/-/uikit-0.63.1.tgz"
-  "version" "0.63.1"
+"@tovaswapui/uikit@^0.64.7":
+  "integrity" "sha512-GPYJtOx7CIgi1SWsfqWuOnFCZqAapVJPhoFlde3KZaHCaJHdtQy7Hhu+CLItnONAzVYu9s/QBog3g87upIhESA=="
+  "resolved" "https://registry.npmjs.org/@tovaswapui/uikit/-/uikit-0.64.7.tgz"
+  "version" "0.64.7"
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/styled-system" "^5.1.10"
