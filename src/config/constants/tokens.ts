@@ -1984,6 +1984,14 @@ export const mainnetTokens = defineTokens({
     'MetaGear Token',
     'https://metagear.game/',
   ),
+  ach: new Token(
+    MAINNET,
+    '0xBc7d6B50616989655AfD682fb42743507003056D',
+    8,
+    'ACH',
+    'Alchemy Token',
+    'https://alchemytech.io/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
