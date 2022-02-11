@@ -276,6 +276,15 @@ const StakeModal: React.FC<StakeModalProps> = ({
           )}
         </Flex>
       )}
+      {isRemovingStake && pool.enableEmergencyWithdraw && (
+        <Flex maxWidth="346px" mt="24px">
+          <Text textAlign="center">
+            {t(
+              'This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.',
+            )}
+          </Text>
+        </Flex>
+      )}
       <Button
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}

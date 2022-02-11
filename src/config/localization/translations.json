@@ -1500,5 +1500,6 @@
   "Max. Tickets per transaction:": "Max. Tickets per transaction:",
   "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:": "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:",
   "Trade the new BTT token here.": "Trade the new BTT token here.",
-  "For more details on the swap, please refer here.": "For more details on the swap, please refer here."
+  "For more details on the swap, please refer here.": "For more details on the swap, please refer here.",
+  "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.": "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested."
 }
