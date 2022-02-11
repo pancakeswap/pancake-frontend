@@ -819,7 +819,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 443,
-    lpSymbol: 'BTT(OLD)-BUSD LP',
+    lpSymbol: 'BTTOLD-BUSD LP',
     lpAddresses: {
       97: '',
       56: '0xdcfbb12ded3fea12d2a078bc6324131cd14bf835',
@@ -881,7 +881,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 367,
-    lpSymbol: 'BTT(OLD)-BNB LP',
+    lpSymbol: 'BTTOLD-BNB LP',
     lpAddresses: {
       97: '',
       56: '0x946696344e7d4346b223e1cf77035a76690d6a73',
