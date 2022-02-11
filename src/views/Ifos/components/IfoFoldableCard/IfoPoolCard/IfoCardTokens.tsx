@@ -15,6 +15,7 @@ import {
   MessageText,
   useModal,
   Link,
+  ErrorIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
@@ -191,8 +192,10 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       ifo.version === 3.1 && poolId === PoolIds.poolBasic && criterias?.length > 0 ? (
         <Box mt="16px">
           {!isEligible && (
-            <Message mx="24px" mb="24px" p="8px" variant="danger">
-              <MessageText display="inline">Meet any one of the following requirements to be eligible.</MessageText>
+            <Message mx="24px" mb="24px" p="8px" variant="warning" icon={<ErrorIcon color="warning" width="24px" />}>
+              <MessageText small display="inline">
+                Meet any one of the following requirements to be eligible.
+              </MessageText>
             </Message>
           )}
           <IFORequirements
@@ -202,7 +205,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           />
           {isEligible && (
             <Message mx="24px" mt="24px" p="8px" variant="success">
-              <MessageText display="inline">You are eligible to participate in this Private Sale!</MessageText>
+              <MessageText small display="inline">
+                You are eligible to participate in this Private Sale!
+              </MessageText>
             </Message>
           )}
         </Box>

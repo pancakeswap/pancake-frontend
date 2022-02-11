@@ -1,16 +1,8 @@
 import React, { useMemo } from 'react'
-import {
-  Text,
-  Flex,
-  AccountIcon,
-  AccountFilledIcon,
-  TeamBattleIcon,
-  TrophyFillIcon,
-  Box,
-  useTooltip,
-  LinkExternal,
-} from '@pancakeswap/uikit'
+import { Text, Flex, AccountIcon, TeamBattleIcon, Box, useTooltip, LinkExternal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
+import OkNFTIcon from './Icons/OkNFT'
+import OkProfilePointsIcon from './Icons/OkProfilePoints'
 
 const NotOkNFT = ({ admissionProfile }) => (
   <>
@@ -46,14 +38,14 @@ const NotOkProfilePoints = ({ pointThreshold }) => {
 
 const configCriterias = (pointThreshold: number, admissionProfile: string) => ({
   isQualifiedNFT: {
-    OkIcon: AccountFilledIcon,
+    OkIcon: OkNFTIcon,
     okMsg: 'Eligible NFT avatar found!',
     notOkMsg: <NotOkNFT admissionProfile={admissionProfile} />,
     NotOkIcon: AccountIcon,
     name: 'Pancake Squad',
   },
   isQualifiedPoints: {
-    OkIcon: TrophyFillIcon,
+    OkIcon: OkProfilePointsIcon,
     okMsg: 'Profile Points threshold met!',
     notOkMsg: <NotOkProfilePoints pointThreshold={pointThreshold} />,
     NotOkIcon: TeamBattleIcon,
@@ -79,13 +71,14 @@ function Item({ type, isOk, isSingle, pointThreshold, admissionProfile }) {
       flex="1"
       flexWrap="wrap"
       borderRadius="8px"
-      border={isOk ? '1px solid #7645D9' : '1px dashed #BDC2C4'}
-      background={isOk ? 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)' : '#FAF9FA'}
+      border={isOk ? '1px solid' : '1px dashed'}
+      borderColor={isOk ? 'secondary' : 'textDisabled'}
+      background={isOk ? 'bubblegum' : 'backgroundDisabled'}
     >
       <Box px="8px">
-        <Icon color={isOk ? 'secondary' : 'textDisabled'} />
+        <Icon width="32px" color={isOk ? 'secondary' : 'textDisabled'} />
       </Box>
-      <Text textAlign="center" px="8px" color={isOk ? 'secondary' : 'textDisabled'}>
+      <Text small textAlign="center" px="8px" color={isOk ? 'secondary' : 'textDisabled'}>
         {name}
       </Text>
       {tooltipVisible && tooltip}

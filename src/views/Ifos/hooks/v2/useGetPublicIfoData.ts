@@ -151,7 +151,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           ...poolBasicFormatted,
           taxRate: 0,
           pointThreshold: pointThreshold ? pointThreshold[0].toNumber() : 0,
-          admissionProfile: admissionProfile[0],
+          admissionProfile: admissionProfile ? admissionProfile[0] : undefined,
         },
         poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
         status,
