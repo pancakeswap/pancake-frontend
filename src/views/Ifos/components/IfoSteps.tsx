@@ -270,7 +270,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
   return (
     <Wrapper>
       <Heading id="ifo-how-to" as="h2" scale="xl" color="secondary" mb="24px" textAlign="center">
-        {t('How to Take Part')}
+        {t('How to Take Part in the Public Sale')}
       </Heading>
       <Stepper>
         {stepsValidationStatus.map((_, index) => (
