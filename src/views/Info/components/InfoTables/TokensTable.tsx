@@ -4,7 +4,7 @@ import { Text, Flex, Box, Skeleton, useMatchBreakpoints, ArrowBackIcon, ArrowFor
 import { TokenData } from 'state/info/types'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import Percent from 'views/Info/components/Percent'
 import { useTranslation } from 'contexts/Localization'
 import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'

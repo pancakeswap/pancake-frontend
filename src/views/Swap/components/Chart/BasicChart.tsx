@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import NoChartAvailable from './NoChartAvailable'
-import TokenDisplay from './TokenDisplay'
+import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import { getTimeWindowChange } from './utils'
 
 const SwapLineChart = dynamic(() => import('./SwapLineChart'), {
@@ -78,7 +78,7 @@ const BasicChart = ({
         px="24px"
       >
         <Flex flexDirection="column" pt="12px">
-          <TokenDisplay
+          <PairPriceDisplay
             value={pairPrices?.length > 0 && valueToDisplay}
             inputSymbol={inputCurrency?.symbol}
             outputSymbol={outputCurrency?.symbol}
@@ -86,7 +86,7 @@ const BasicChart = ({
             <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mt="-8px" mb="8px" bold>
               {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
             </Text>
-          </TokenDisplay>
+          </PairPriceDisplay>
           <Text small color="secondary">
             {hoverDate || currentDate}
           </Text>

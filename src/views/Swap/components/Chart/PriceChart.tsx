@@ -19,7 +19,7 @@ import styled from 'styled-components'
 import BasicChart from './BasicChart'
 import { StyledPriceChart } from './styles'
 // import TradingViewChart from './TradingViewChart'
-// import TokenDisplay from './TokenDisplay'
+// import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 
 const ChartButton = styled(Button)`
   background-color: ${({ $active, theme }) => $active && `${theme.colors.primary}0f`};
@@ -123,7 +123,7 @@ const PriceChart = ({
           pt="12px"
         >
           <Flex justifyContent="space-between" alignItems="baseline" flexWrap="wrap">
-            <TokenDisplay
+            <PairPriceDisplay
               value={currentSwapPrice?.[token0Address]}
               inputSymbol={inputCurrency?.symbol}
               outputSymbol={outputCurrency?.symbol}

@@ -49,7 +49,7 @@ const SplitWrapper = styled.div`
 const ChartPane = styled.div`
   overflow: hidden;
   position: relative;
-  background: ${({ theme }) => `${theme.colors.background}10`};
+  background: ${({ theme }) => theme.colors.background};
 `
 
 const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean }>`
@@ -82,7 +82,7 @@ const PositionPane = styled.div`
 `
 
 const Gutter = styled.div`
-  background: ${({ theme }) => theme.colors.dropdown};
+  background: ${({ theme }) => theme.card.background};
   cursor: row-resize;
   height: 24px;
   position: relative;

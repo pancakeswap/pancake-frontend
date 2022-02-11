@@ -36,6 +36,7 @@ export const TabToggle = styled.button<TabProps>`
   font-weight: 600;
   color: ${({ theme, isActive }) => (isActive ? theme.colors.text : theme.colors.textSubtle)};
   background-color: ${({ theme, isActive }) => (isActive ? theme.card.background : theme.colors.input)};
+  box-shadow: none;
 `
 
 interface TabToggleGroupProps {

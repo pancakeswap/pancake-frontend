@@ -1,6 +1,6 @@
 import { Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
 import { FC } from 'react'
-import { formatAmount, formatAmountNotation } from 'views/Info/utils/formatInfoNumbers'
+import { formatAmount, formatAmountNotation } from 'utils/formatInfoNumbers'
 
 const formatOptions = {
   notation: 'standard' as formatAmountNotation,
@@ -14,14 +14,14 @@ interface TokenDisplayProps extends FlexProps {
   outputSymbol?: string
 }
 
-const TokenDisplay: FC<TokenDisplayProps> = ({ value, inputSymbol, outputSymbol, children, ...props }) => {
+const PairPriceDisplay: FC<TokenDisplayProps> = ({ value, inputSymbol, outputSymbol, children, ...props }) => {
   return value ? (
     <Flex alignItems="flex-end" flexWrap="wrap" {...props}>
       <Text fontSize="40px" mr="8px" bold>
         {formatAmount(value, formatOptions)}
       </Text>
       {inputSymbol && outputSymbol && (
-        <Text color="textSubtle" fontSize="20px" mb="8px" mr="8px" bold>
+        <Text color="textSubtle" fontSize="20px" bold>
           {`${inputSymbol}/${outputSymbol}`}
         </Text>
       )}
@@ -32,4 +32,4 @@ const TokenDisplay: FC<TokenDisplayProps> = ({ value, inputSymbol, outputSymbol,
   )
 }
 
-export default TokenDisplay
+export default PairPriceDisplay
