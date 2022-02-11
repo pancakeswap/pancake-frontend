@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, useModal } from '@pancakeswap/uikit'
+import { Button, Flex, Skeleton, useModal } from '@tovaswapui/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'

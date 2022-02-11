@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
-import { Text, Link } from '@pancakeswap/uikit'
+import { Text, Link } from '@tovaswapui/uikit'
 
 const ItamWarning = () => {
   const { t } = useTranslation()

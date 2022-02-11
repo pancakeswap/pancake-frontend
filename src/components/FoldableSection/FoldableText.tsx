@@ -1,6 +1,6 @@
 import React, { useState, ReactNode } from 'react'
 import styled from 'styled-components'
-import { ExpandableLabel, Flex, FlexProps, Text } from '@pancakeswap/uikit'
+import { ExpandableLabel, Flex, FlexProps, Text } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 interface FoldableTextProps extends Omit<FlexProps, 'title'> {

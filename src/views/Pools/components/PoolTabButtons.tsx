@@ -3,7 +3,7 @@ import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@pancakeswap/uikit'
+import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 import ToggleView from './ToggleView/ToggleView'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AutoRenewIcon, Flex, Heading } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Flex, Heading } from '@tovaswapui/uikit'
 import orderBy from 'lodash/orderBy'
 import useSWR from 'swr'
 import Page from 'components/Layout/Page'

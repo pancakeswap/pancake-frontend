@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import NextLink from 'next/link'
-import { Box, Breadcrumbs, Text, Link } from '@pancakeswap/uikit'
+import { Box, Breadcrumbs, Text, Link } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const Crumbs = () => {

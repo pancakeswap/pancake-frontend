@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
+import { Box, Flex, FlexProps, Skeleton, Text } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition, NodeRound, Round } from 'state/types'
 import { formatUsdv2, formatBnbv2, getRoundPosition, getPriceDifference } from '../../helpers'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, FlexProps, Text } from '@pancakeswap/uikit'
+import { Flex, FlexProps, Text } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'

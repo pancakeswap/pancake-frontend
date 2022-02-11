@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button, ChevronUpIcon } from '@pancakeswap/uikit'
+import { Button, ChevronUpIcon } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const FixedContainer = styled.div`

@@ -11,7 +11,7 @@ import {
   Skeleton,
   Tag,
   CheckmarkCircleIcon,
-} from '@pancakeswap/uikit'
+} from '@tovaswapui/uikit'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import { Vote } from 'state/types'

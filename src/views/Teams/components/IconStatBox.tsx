@@ -1,5 +1,5 @@
 import React, { ElementType, ReactNode } from 'react'
-import { Flex, Heading, Text, TextProps } from '@pancakeswap/uikit'
+import { Flex, Heading, Text, TextProps } from '@tovaswapui/uikit'
 import styled from 'styled-components'
 
 const SecondaryCard = styled(Text)`

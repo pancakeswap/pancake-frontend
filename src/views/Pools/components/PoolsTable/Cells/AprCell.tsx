@@ -1,6 +1,6 @@
 import React from 'react'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints } from '@tovaswapui/uikit'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'

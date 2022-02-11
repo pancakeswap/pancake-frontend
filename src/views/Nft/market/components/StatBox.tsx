@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, BoxProps, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Box, BoxProps, Flex, Skeleton, Text } from '@tovaswapui/uikit'
 
 export interface StatBoxItemProps extends BoxProps {
   title: string

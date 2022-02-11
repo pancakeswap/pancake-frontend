@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { InjectedModalProps } from '@pancakeswap/uikit'
+import { InjectedModalProps } from '@tovaswapui/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { MaxUint256 } from '@ethersproject/constants'
 import useTheme from 'hooks/useTheme'

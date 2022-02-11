@@ -1,7 +1,7 @@
 import React from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import BigNumber from 'bignumber.js'
-import { Button, useModal } from '@pancakeswap/uikit'
+import { Button, useModal } from '@tovaswapui/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'

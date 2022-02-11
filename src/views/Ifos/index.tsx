@@ -1,4 +1,4 @@
-import { SubMenuItems } from '@pancakeswap/uikit'
+import { SubMenuItems } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
 import React from 'react'

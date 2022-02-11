@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { AutoRenewIcon, Button, Flex } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Flex } from '@tovaswapui/uikit'
 import { Achievement } from 'state/types'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'

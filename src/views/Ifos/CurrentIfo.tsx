@@ -1,7 +1,7 @@
 import { ifosConfig } from 'config/constants'
 import React from 'react'
 import styled from 'styled-components'
-import { Box } from '@pancakeswap/uikit'
+import { Box } from '@tovaswapui/uikit'
 
 import useGetPublicIfoV2Data from 'views/Ifos/hooks/v2/useGetPublicIfoData'
 import useGetWalletIfoV3Data from 'views/Ifos/hooks/v3/useGetWalletIfoData'

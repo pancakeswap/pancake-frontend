@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex } from '@tovaswapui/uikit'
 import sum from 'lodash/sum'
 import Page from 'components/Layout/Page'
 import PageLoader from 'components/Loader/PageLoader'

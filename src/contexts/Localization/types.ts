@@ -1,5 +1,5 @@
 import { ReactText } from 'react'
-import { Language } from '@pancakeswap/uikit'
+import { Language } from '@tovaswapui/uikit'
 
 import translations from 'config/localization/translations.json'
 

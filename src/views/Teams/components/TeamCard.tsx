@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardHeader, CardBody, CommunityIcon, Heading, PrizeIcon, Text, Skeleton } from '@pancakeswap/uikit'
+import { Card, CardHeader, CardBody, CommunityIcon, Heading, PrizeIcon, Text, Skeleton } from '@tovaswapui/uikit'
 import { FetchStatus } from 'config/constants/types'
 import useSWR from 'swr'
 import { getTeam } from 'state/teams/helpers'

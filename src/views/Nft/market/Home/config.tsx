@@ -1,4 +1,4 @@
-import { LinkExternal } from '@pancakeswap/uikit'
+import { LinkExternal } from '@tovaswapui/uikit'
 import React from 'react'
 import { ContextApi } from 'contexts/Localization/types'
 

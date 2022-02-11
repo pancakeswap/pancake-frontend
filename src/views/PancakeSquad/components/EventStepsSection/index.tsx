@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { Box, Button, Card, CardBody, Flex, Step, Stepper, Text } from '@pancakeswap/uikit'
+import { Box, Button, Card, CardBody, Flex, Step, Stepper, Text } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { StyledWaveContainer, LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import useTheme from 'hooks/useTheme'

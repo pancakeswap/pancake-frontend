@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@pancakeswap/uikit'
+import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const Wrapper = styled.div<{ $isSide: boolean }>`
@@ -43,21 +43,6 @@ const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) 
   return (
     <Wrapper $isSide={isSide}>
       <Flex flexDirection={isSide ? 'column' : ['column', 'column', 'row']} alignItems="center">
-        <ButtonMenu variant="subtle" scale="sm" activeIndex={0}>
-          <ButtonMenuItem>V2</ButtonMenuItem>
-          <ButtonMenuItem as="a" href="https://v1exchange.pancakeswap.finance/#/">
-            {t('V1 (old)')}
-          </ButtonMenuItem>
-        </ButtonMenu>
-        <LinkExternal
-          id="ercBridge"
-          href="https://docs.binance.org/smart-chain/guides/cross-chain.html"
-          ml={[0, 0, '40px']}
-          mt={['20px', '20px', isSide ? '20px' : 0]}
-          mb={['8px', '8px', 0]}
-        >
-          {t('Convert ERC-20 to BEP-20')}
-        </LinkExternal>
       </Flex>
       {isSide && <Flex flexGrow={1} />}
       <Flex
@@ -71,7 +56,7 @@ const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) 
             id="clickExchangeHelp"
             as="a"
             external
-            href="https://docs.pancakeswap.finance/products/pancakeswap-exchange"
+            href="https://docs.tovaswap.com/products/tovaswap-exchange"
             variant="subtle"
           >
             {t('Need help ?')}
@@ -80,7 +65,7 @@ const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) 
             <path d="M0 16V0C0 0 3 1 6 1C9 1 16 -2 16 3.5C16 10.5 7.5 16 0 16Z" />
           </Svg>
         </BubbleWrapper>
-        <Image src="/images/help.png" alt="Get some help" width={160} height={108} />
+        <Image src="/images/decorations/phishing-warning-bunny.webp" alt="Get some help" width={150} height={198} />
       </Flex>
     </Wrapper>
   )

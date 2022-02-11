@@ -9,7 +9,7 @@ import {
   Text,
   useMatchBreakpoints,
   useTooltip,
-} from '@pancakeswap/uikit'
+} from '@tovaswapui/uikit'
 import Balance from 'components/Balance'
 import { CompoundingPoolTag } from 'components/Tags'
 import { TokenPairImage } from 'components/TokenImage'

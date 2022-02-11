@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Text, Flex } from '@pancakeswap/uikit'
+import { Heading, Text, Flex } from '@tovaswapui/uikit'
 import styled from 'styled-components'
 import truncateHash from 'utils/truncateHash'
 import { LeaderboardDataItem } from '../../../types'

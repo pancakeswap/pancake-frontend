@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Flex, BunnyPlaceholderIcon, Skeleton, Text } from '@pancakeswap/uikit'
+import { Box, Flex, BunnyPlaceholderIcon, Skeleton, Text } from '@tovaswapui/uikit'
 import truncateHash from 'utils/truncateHash'
 import { FetchStatus } from 'config/constants/types'
 import { useGetProfileAvatar } from 'state/profile/hooks'

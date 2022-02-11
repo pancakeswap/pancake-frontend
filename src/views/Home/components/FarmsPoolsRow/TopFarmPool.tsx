@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
-import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Text } from '@tovaswapui/uikit'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 

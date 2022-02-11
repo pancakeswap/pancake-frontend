@@ -1,6 +1,6 @@
 import React from 'react'
 import { NextLinkFromReactRouter as ReactRouterLink } from 'components/NextLink'
-import { BscScanIcon, Flex, IconButton, Link, Button, useModal } from '@pancakeswap/uikit'
+import { BscScanIcon, Flex, IconButton, Link, Button, useModal } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'

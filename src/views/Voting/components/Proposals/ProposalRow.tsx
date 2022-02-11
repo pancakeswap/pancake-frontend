@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowForwardIcon, Box, IconButton, Flex, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, IconButton, Flex, Text } from '@tovaswapui/uikit'
 import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Proposal } from 'state/types'

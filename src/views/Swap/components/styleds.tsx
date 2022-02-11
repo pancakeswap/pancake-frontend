@@ -1,4 +1,4 @@
-import { ErrorIcon, Flex, Text } from '@pancakeswap/uikit'
+import { ErrorIcon, Flex, Text } from '@tovaswapui/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import React from 'react'
 import styled, { css } from 'styled-components'

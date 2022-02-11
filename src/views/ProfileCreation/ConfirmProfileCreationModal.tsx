@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Flex, Text } from '@pancakeswap/uikit'
+import { Modal, Flex, Text } from '@tovaswapui/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import { useAppDispatch } from 'state'

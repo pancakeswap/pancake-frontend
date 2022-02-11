@@ -19,7 +19,7 @@ import {
   Skeleton,
   useModal,
   Link,
-} from '@pancakeswap/uikit'
+} from '@tovaswapui/uikit'
 import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo } from 'config/constants/types'

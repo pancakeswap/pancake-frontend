@@ -10,7 +10,7 @@ import {
   ModalContainer,
   ModalHeader as UIKitModalHeader,
   ModalTitle,
-} from '@pancakeswap/uikit'
+} from '@tovaswapui/uikit'
 import { parseUnits } from '@ethersproject/units'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'

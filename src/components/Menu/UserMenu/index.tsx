@@ -9,7 +9,7 @@ import {
   UserMenuDivider,
   UserMenuItem,
   UserMenuVariant,
-} from '@pancakeswap/uikit'
+} from '@tovaswapui/uikit'
 import useAuth from 'hooks/useAuth'
 import { useRouter } from 'next/router'
 import { useProfile } from 'state/profile/hooks'

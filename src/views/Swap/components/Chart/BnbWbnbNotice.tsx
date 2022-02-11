@@ -1,4 +1,4 @@
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { StyledPriceChart } from './styles'

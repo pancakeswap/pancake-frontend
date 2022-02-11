@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Heading, Text } from '@pancakeswap/uikit'
+import { Button, Heading, Text } from '@tovaswapui/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'

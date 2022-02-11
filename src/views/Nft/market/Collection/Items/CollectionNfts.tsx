@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import uniqBy from 'lodash/uniqBy'
-import { AutoRenewIcon, Button, Flex, Grid, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Flex, Grid, Text } from '@tovaswapui/uikit'
 import { useAppDispatch } from 'state'
 import {
   useGetNftFilterLoadingState,

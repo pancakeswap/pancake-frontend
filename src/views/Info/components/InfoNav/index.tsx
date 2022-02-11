@@ -1,4 +1,4 @@
-import { Box, ButtonMenu, ButtonMenuItem, Flex } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex } from '@tovaswapui/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'

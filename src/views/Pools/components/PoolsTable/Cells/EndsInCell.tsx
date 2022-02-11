@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Link, Skeleton, Text, TimerIcon } from '@pancakeswap/uikit'
+import { Flex, Link, Skeleton, Text, TimerIcon } from '@tovaswapui/uikit'
 import { getBscScanLink } from 'utils'
 import { DeserializedPool } from 'state/types'
 import { useCurrentBlock } from 'state/block/hooks'

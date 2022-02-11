@@ -1,4 +1,4 @@
-import { Box, Flex, FlexProps, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, FlexProps, Link, Text, useMatchBreakpoints } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useScript from 'hooks/useScript'
 import React, { useEffect, useRef } from 'react'

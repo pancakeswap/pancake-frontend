@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text } from '@tovaswapui/uikit'
 import { useAppDispatch } from 'state'
 import { fetchCollection } from 'state/nftMarket/reducer'
 import { useGetCollection } from 'state/nftMarket/hooks'

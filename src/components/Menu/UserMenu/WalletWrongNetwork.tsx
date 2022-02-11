@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { Button, Text, Link, HelpIcon } from '@pancakeswap/uikit'
+import { Button, Text, Link, HelpIcon } from '@tovaswapui/uikit'
 import { setupNetwork } from 'utils/wallet'
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
@@ -34,7 +34,7 @@ const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) =>
           {t('Switch Network')}
         </Button>
       )}
-      <StyledLink href="https://docs.pancakeswap.finance/get-started/connection-guide" external>
+      <StyledLink href="https://docs.tovaswap.com/get-started/connection-guide" external>
         <Button width="100%" variant="secondary">
           {t('Learn How')}
           <HelpIcon color="primary" ml="6px" />

@@ -1,11 +1,11 @@
 {
-  "short_name": "PancakeSwap",
-  "name": "PancakeSwap",
-  "description": "Farm CAKE with Pancake LP Tokens",
-  "homepage_url": "https://pancakeswap.finance",
+  "short_name": "TovaSwap",
+  "name": "TovaSwap",
+  "description": "Farm TVS with TovSwap LP Tokens",
+  "homepage_url": "https://tovaswap.com",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#1FC7D4",
+  "theme_color": "#efb239",
   "background_color": "#ffffff",
   "orientation": "portrait",
   "icons": [

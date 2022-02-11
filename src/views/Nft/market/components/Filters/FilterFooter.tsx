@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, GridProps } from '@pancakeswap/uikit'
+import { Grid, GridProps } from '@tovaswapui/uikit'
 
 const FilterFooter: React.FC<GridProps> = ({ children, ...props }) => (
   <Grid

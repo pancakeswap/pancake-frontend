@@ -1,4 +1,4 @@
-import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React, { useState } from 'react'
 import { useFetchPairPrices } from 'state/swap/hooks'

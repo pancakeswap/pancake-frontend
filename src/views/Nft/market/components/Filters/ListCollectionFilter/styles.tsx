@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox, Flex, Text } from '@pancakeswap/uikit'
+import { Checkbox, Flex, Text } from '@tovaswapui/uikit'
 import { StyledItemRow } from '../ListFilter/styles'
 
 interface CollectionItemRowProps {

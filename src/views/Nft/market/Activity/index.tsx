@@ -1,4 +1,4 @@
-import { Card, Heading } from '@pancakeswap/uikit'
+import { Card, Heading } from '@tovaswapui/uikit'
 import Page from 'components/Layout/Page'
 import PageLoader from 'components/Loader/PageLoader'
 import PageHeader from 'components/PageHeader'

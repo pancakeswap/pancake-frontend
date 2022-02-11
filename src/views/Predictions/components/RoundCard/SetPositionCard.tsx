@@ -14,7 +14,7 @@ import {
   Slider,
   Box,
   AutoRenewIcon,
-} from '@pancakeswap/uikit'
+} from '@tovaswapui/uikit'
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { parseUnits } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'

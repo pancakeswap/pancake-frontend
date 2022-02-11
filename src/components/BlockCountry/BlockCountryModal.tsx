@@ -10,7 +10,7 @@ import {
   Flex,
   Checkbox,
   Text,
-} from '@pancakeswap/uikit'
+} from '@tovaswapui/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 

@@ -14,7 +14,7 @@ import {
   useModal,
   Skeleton,
   Checkbox,
-} from '@pancakeswap/uikit'
+} from '@tovaswapui/uikit'
 import { parseISO, formatDistance } from 'date-fns'
 import { useWeb3React } from '@web3-react/core'
 import { formatUnits } from '@ethersproject/units'

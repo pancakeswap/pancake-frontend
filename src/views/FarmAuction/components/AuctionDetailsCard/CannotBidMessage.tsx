@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Flex, HelpIcon, useTooltip } from '@pancakeswap/uikit'
+import { Text, Flex, HelpIcon, useTooltip } from '@tovaswapui/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const CannotBidMessage: React.FC = () => {
