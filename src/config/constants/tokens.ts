@@ -2000,6 +2000,7 @@ export const mainnetTokens = defineTokens({
     'BitTorrent',
     'https://bittorrent.com/',
   ),
+  era: new Token(MAINNET, '0x6f9F0c4ad9Af7EbD61Ac5A1D4e0F2227F7B0E5f9', 18, 'ERA', 'Era Token', 'https://www.era7.io/'),
 } as const)
 
 export const testnetTokens = defineTokens({
