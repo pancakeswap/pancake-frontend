@@ -19,7 +19,7 @@ const BTTWarning = () => {
           style={{ display: 'inline' }}
           href="https://pancakeswap.finance/swap?outputCurrency=0x352Cb5E19b12FC216548a2677bD0fce83BaE434B"
         >
-          here
+          {t('here')}
         </Link>
       </Text>
       <LinkExternal href="https://medium.com/@BitTorrent/tutorial-how-to-swap-bttold-to-btt-453264d7142">
