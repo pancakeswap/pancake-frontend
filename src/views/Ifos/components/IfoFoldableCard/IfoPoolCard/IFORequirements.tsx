@@ -60,30 +60,34 @@ const NotOkProfilePoints = ({ pointThreshold }) => {
   )
 }
 
-const configCriterias = (pointThreshold: number, admissionProfile: string) => ({
+const configCriterias = (pointThreshold: number, admissionProfile: string, t) => ({
   isQualifiedNFT: {
     OkIcon: OkNFTIcon,
-    okMsg: 'Eligible NFT avatar found!',
+    okMsg: t('Eligible NFT avatar found!'),
     notOkMsg: <NotOkNFT admissionProfile={admissionProfile} />,
     NotOkIcon: AccountIcon,
-    name: 'Pancake Squad',
+    name: t('Pancake Squad'),
   },
   isQualifiedPoints: {
     OkIcon: OkProfilePointsIcon,
-    okMsg: 'Profile Points threshold met!',
+    okMsg: t('Profile Points threshold met!'),
     notOkMsg: <NotOkProfilePoints pointThreshold={pointThreshold} />,
     NotOkIcon: TeamBattleIcon,
-    name: 'Profile points',
+    name: t('Profile points'),
   },
 })
 
 function Item({ type, isOk, isSingle, pointThreshold, admissionProfile }) {
-  const config = useMemo(() => configCriterias(pointThreshold, admissionProfile), [pointThreshold, admissionProfile])
   const { t } = useTranslation()
 
-  const name = t(config[type]?.name || '')
+  const config = useMemo(
+    () => configCriterias(pointThreshold, admissionProfile, t),
+    [t, pointThreshold, admissionProfile],
+  )
+
+  const name = config[type]?.name
   const Icon = isOk ? config[type]?.OkIcon : config[type]?.NotOkIcon
-  const msg = isOk ? t(config[type]?.okMsg || '') : config[type]?.notOkMsg
+  const msg = isOk ? config[type]?.okMsg : config[type]?.notOkMsg
 
   const { tooltipVisible, targetRef, tooltip } = useTooltip(msg, { placement: 'bottom', trigger: 'hover' })
 

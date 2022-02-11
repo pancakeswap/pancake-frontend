@@ -1515,5 +1515,6 @@
   "There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.": "There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.",
   "The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.": "The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.",
   "Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.": "Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.",
-  "How to Take Part in the Public Sale": "How to Take Part in the Public Sale"
+  "How to Take Part in the Public Sale": "How to Take Part in the Public Sale",
+  "Private Sale": "Private Sale"
 }
