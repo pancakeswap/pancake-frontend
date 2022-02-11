@@ -135,8 +135,13 @@ export const immutableMiddleware: Middleware = (useSWRNext) => (key, fetcher, co
   return useSWRNext(key, fetcher, config)
 }
 
-export function useSWRMulticall(abi: any[], calls: Call[], options: MulticallOptions = { requireSuccess: true }) {
-  return useSWR(calls, () => multicallv2(abi, calls, options), { revalidateIfStale: false, revalidateOnFocus: false })
+export function useSWRMulticall<Data>(abi: any[], calls: Call[], options?: MulticallOptions & SWRConfiguration) {
+  const { requireSuccess = true, ...config } = options || {}
+  return useSWR<Data>(calls, () => multicallv2(abi, calls, { requireSuccess }), {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    ...config,
+  })
 }
 
 // This is a SWR middleware for keeping the data even if key changes.
