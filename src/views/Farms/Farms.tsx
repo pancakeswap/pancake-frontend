@@ -117,7 +117,7 @@ export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) =>
 const Farms: React.FC = ({ children }) => {
   const { pathname } = useRouter()
   const { t } = useTranslation()
-  const { data: farmsLP, userDataLoaded } = useFarms()
+  const { data: farmsLP, userDataLoaded, poolLength } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useUserFarmsViewMode()
@@ -138,7 +138,10 @@ const Farms: React.FC = ({ children }) => {
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
+  const activeFarms = farmsLP.filter(
+    (farm) =>
+      farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid) && (!poolLength || poolLength > farm.pid),
+  )
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X' && !isArchivedPid(farm.pid))
   const archivedFarms = farmsLP.filter((farm) => isArchivedPid(farm.pid))
 
