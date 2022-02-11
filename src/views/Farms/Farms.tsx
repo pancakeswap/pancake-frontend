@@ -29,6 +29,7 @@ import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
+import MigrationCard from './components/MigrationCard'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -253,6 +254,10 @@ const Farms: React.FC = ({ children }) => {
     }
   }, [isIntersecting])
 
+  const showMigrationCard: boolean = useMemo(() => {
+    return account && stakedOnlyFarms.length > 0
+  }, [account, stakedOnlyFarms])
+
   const rowData = chosenFarmsMemoized.map((farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
@@ -348,6 +353,7 @@ const Farms: React.FC = ({ children }) => {
           </Button>
         </NextLinkFromReactRouter>
       </PageHeader>
+      {showMigrationCard && <MigrationCard />}
       <Page>
         <ControlContainer>
           <ViewControls>
