@@ -117,7 +117,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
       <Box>
         <Text color="textSubtle" small>
           {t(
-            'The maximum amount of CAKE user can commit to all the sales combined, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.',
+            'The maximum amount of CAKE user can commit to the Public Sale, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.',
           )}
         </Text>
         <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
@@ -173,7 +173,6 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
       </Heading>
       <Text color="textSubtle" small>
         {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
-        {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
       </Text>
       {hasProfile && isLive && !isCommitted && (
         <Button as="a" href="#current-ifo" mt="16px">
