@@ -8,7 +8,7 @@ export const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[Ch
 const ifos: Ifo[] = [
   {
     id: 'froyo',
-    address: '0x25e9c4f96b7a7408968e09cf9d5737f1e9b5abfd',
+    address: '0x527201a43f8da24ce9b7c21744a0706942f41fa3',
     isActive: true,
     name: 'Froyo Games (FROYO)',
     poolBasic: {
@@ -30,6 +30,34 @@ const ifos: Ifo[] = [
     articleUrl: 'https://pancakeswap.finance/voting/proposal/QmRhc4oC73jk4zxU4YkP1kudKHeq6qamgYA1sWoh6XJnks',
     tokenOfferingPrice: 0.06,
     version: 3.1,
+    telegramUrl: 'https://t.me/froyogames',
+    twitterUrl: 'https://twitter.com/realfroyogames',
+    description: `Froyo Games is a game publisher and decentralized GameFi platform, with a NFT Marketplace that integrates NFTs with their games.\n \n FROYO tokens can be used to buy NFTs and participate in Froyo games`,
+  },
+  {
+    id: 'froyo',
+    address: '0xE0d6c91860a332068bdB59275b0AAC8769e26Ac4',
+    isActive: false,
+    name: 'Froyo Games (FROYO)',
+    poolBasic: {
+      saleAmount: '20,000,000 FROYO',
+      raiseAmount: '$1,200,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.3,
+    },
+    poolUnlimited: {
+      saleAmount: '46,666,668 FROYO',
+      raiseAmount: '$2,800,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.7,
+    },
+    currency: tokens.cake,
+    token: tokens.froyo,
+    releaseBlockNumber: 14297000,
+    campaignId: '511170000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmRhc4oC73jk4zxU4YkP1kudKHeq6qamgYA1sWoh6XJnks',
+    tokenOfferingPrice: 0.06,
+    version: 3,
     telegramUrl: 'https://t.me/froyogames',
     twitterUrl: 'https://twitter.com/realfroyogames',
     description: `Froyo Games is a game publisher and decentralized GameFi platform, with a NFT Marketplace that integrates NFTs with their games.\n \n FROYO tokens can be used to buy NFTs and participate in Froyo games`,
