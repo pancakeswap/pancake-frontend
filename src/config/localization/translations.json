@@ -1497,5 +1497,8 @@
   "Don't show this again": "Don't show this again",
   "You're all set!": "You're all set!",
   "Max. Tickets per wallet:": "Max. Tickets per wallet:",
-  "Max. Tickets per transaction:": "Max. Tickets per transaction:"
+  "Max. Tickets per transaction:": "Max. Tickets per transaction:",
+  "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:": "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:",
+  "Trade the new BTT token here.": "Trade the new BTT token here.",
+  "For more details on the swap, please refer here.": "For more details on the swap, please refer here."
 }
