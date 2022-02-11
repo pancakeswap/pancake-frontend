@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
 import useLastUpdated from 'hooks/useLastUpdated'
 import { getChainlinkOracleContract } from 'utils/contractHelpers'
+import { Zero } from '@ethersproject/constants'
 
 const useGetLatestOraclePrice = () => {
-  const [price, setPrice] = useState(BigNumber.from(0))
+  const [price, setPrice] = useState(Zero)
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
 
   useEffect(() => {

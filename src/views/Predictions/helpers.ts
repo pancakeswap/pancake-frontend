@@ -2,6 +2,7 @@ import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { BetPosition, NodeRound } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
+import { NegativeOne, One, Zero } from '@ethersproject/constants'
 
 const MIN_PRICE_USD_DISPLAYED = BigNumber.from(100000)
 const MIN_PRICE_BNB_DISPLAYED = BigNumber.from('1000000000000000')
@@ -15,12 +16,12 @@ type formatPriceDifferenceProps = {
 }
 
 const formatPriceDifference = ({
-  price = BigNumber.from(0),
+  price = Zero,
   minPriceDisplayed,
   unitPrefix,
   decimals,
 }: formatPriceDifferenceProps) => {
-  const sign = price.isNegative() ? BigNumber.from(-1) : BigNumber.from(1)
+  const sign = price.isNegative() ? NegativeOne : One
 
   if (price.abs().lt(minPriceDisplayed)) {
     const signedPriceToFormat = minPriceDisplayed.mul(sign)
@@ -79,7 +80,7 @@ export const getMultiplierV2 = (total: BigNumber, amount: BigNumber) => {
 
 export const getPriceDifference = (price: BigNumber, lockPrice: BigNumber) => {
   if (!price || !lockPrice) {
-    return BigNumber.from(0)
+    return Zero
   }
 
   return price.sub(lockPrice)
