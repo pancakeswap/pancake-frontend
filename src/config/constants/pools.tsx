@@ -51,13 +51,13 @@ const pools: SerializedPoolConfig[] = [
     earningToken: serializedTokens.ach,
     contractAddress: {
       97: '',
-      56: '0xD5668e936B951292Ddf8c84553CC58F85948F816',
+      56: '0xcD1Be742b04DB005e2C445A11BDe6d13DD9dd454',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '7.502',
-    deployedBlockNumber: 15150333,
+    deployedBlockNumber: 15162508,
   },
   {
     sousId: 261,
