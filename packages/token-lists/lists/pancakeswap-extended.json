@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-02-07T09:06:20.843Z",
+  "timestamp": "2022-02-11T05:15:16.211Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 68
+    "patch": 70
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -27,6 +27,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xFeea0bDd3D07eb6FE305938878C0caDBFa169042.png"
+    },
+    {
+      "name": "Alchemy Token",
+      "symbol": "ACH",
+      "address": "0xBc7d6B50616989655AfD682fb42743507003056D",
+      "chainId": 56,
+      "decimals": 8,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xBc7d6B50616989655AfD682fb42743507003056D.png"
     },
     {
       "name": "Cardano Token",
@@ -469,20 +477,20 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x5a16E8cE8cA316407c6E6307095dc9540a8D62B3.png"
     },
     {
-      "name": "Bittorrent Old",
-      "symbol": "BTTOLD",
-      "address": "0x8595F9dA7b868b1822194fAEd312235E43007b49",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x8595F9dA7b868b1822194fAEd312235E43007b49.png"
-    },
-    {
       "name": "Bittorrent",
       "symbol": "BTT",
       "address": "0x352Cb5E19b12FC216548a2677bD0fce83BaE434B",
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x352Cb5E19b12FC216548a2677bD0fce83BaE434B.png"
+    },
+    {
+      "name": "Bittorrent Old",
+      "symbol": "BTTOLD",
+      "address": "0x8595F9dA7b868b1822194fAEd312235E43007b49",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x8595F9dA7b868b1822194fAEd312235E43007b49.png"
     },
     {
       "name": "Bunny Token",

@@ -2230,5 +2230,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xb4404DaB7C0eC48b428Cf37DeC7fb628bcC41B36.png"
+  },
+  {
+    "name": "Alchemy Token",
+    "symbol": "ACH",
+    "address": "0xBc7d6B50616989655AfD682fb42743507003056D",
+    "chainId": 56,
+    "decimals": 8,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xBc7d6B50616989655AfD682fb42743507003056D.png"
   }
 ]
