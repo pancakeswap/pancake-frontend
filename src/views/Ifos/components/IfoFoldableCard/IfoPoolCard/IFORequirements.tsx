@@ -1,38 +1,62 @@
 import React, { useMemo } from 'react'
 import { Text, Flex, AccountIcon, TeamBattleIcon, Box, useTooltip, LinkExternal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
+import { useTranslation } from 'contexts/Localization'
+
 import OkNFTIcon from './Icons/OkNFT'
 import OkProfilePointsIcon from './Icons/OkProfilePoints'
+import TransWithElement from '../../TransWithElement'
 
-const NotOkNFT = ({ admissionProfile }) => (
-  <>
-    Set{' '}
-    <LinkExternal
-      style={{ display: 'inline' }}
-      href={`https://pancakeswap.finance/nfts/collections/${admissionProfile}`}
-    >
-      Pancake Squad NFT
-    </LinkExternal>
-    <br />
-    as Pancake Profile avatar.
-  </>
-)
+const NotOkNFT = ({ admissionProfile }) => {
+  const { t } = useTranslation()
+
+  const keyword = '%Pancake Squad NFT%'
+
+  const rawText = t(`Set %Pancake Squad NFT% as Pancake Profile avatar`)
+
+  return (
+    <TransWithElement
+      text={rawText}
+      keyword={keyword}
+      element={
+        <>
+          <LinkExternal
+            style={{ display: 'inline' }}
+            href={`https://pancakeswap.finance/nfts/collections/${admissionProfile}`}
+          >
+            {t('Pancake Squad NFT')}
+          </LinkExternal>
+          <br />
+        </>
+      }
+    />
+  )
+}
 
 const NotOkProfilePoints = ({ pointThreshold }) => {
   const { account } = useWeb3React()
+  const { t } = useTranslation()
+
+  const keyword = '%Pancake Profile%'
+
+  const rawText = t(`Reach %point% or more %Pancake Profile% points`, { point: pointThreshold })
 
   return (
-    <>
-      Reach {pointThreshold} or more
-      <br />
-      <LinkExternal
-        style={{ display: 'inline' }}
-        href={`https://pancakeswap.finance/nfts/profile/${account}/achievements/`}
-      >
-        Pancake Profile
-      </LinkExternal>{' '}
-      points.
-    </>
+    <TransWithElement
+      text={rawText}
+      keyword={keyword}
+      element={
+        <>
+          <br />
+          <LinkExternal
+            style={{ display: 'inline' }}
+            href={`https://pancakeswap.finance/nfts/profile/${account}/achievements/`}
+          >
+            {t('Pancake Profile')}
+          </LinkExternal>
+        </>
+      }
+    />
   )
 }
 
@@ -55,12 +79,13 @@ const configCriterias = (pointThreshold: number, admissionProfile: string) => ({
 
 function Item({ type, isOk, isSingle, pointThreshold, admissionProfile }) {
   const config = useMemo(() => configCriterias(pointThreshold, admissionProfile), [pointThreshold, admissionProfile])
+  const { t } = useTranslation()
 
-  const name = config[type]?.name
+  const name = t(config[type]?.name || '')
   const Icon = isOk ? config[type]?.OkIcon : config[type]?.NotOkIcon
-  const okMsg = isOk ? config[type]?.okMsg : config[type]?.notOkMsg
+  const msg = isOk ? t(config[type]?.okMsg || '') : config[type]?.notOkMsg
 
-  const { tooltipVisible, targetRef, tooltip } = useTooltip(okMsg, { placement: 'bottom', trigger: 'hover' })
+  const { tooltipVisible, targetRef, tooltip } = useTooltip(msg, { placement: 'bottom', trigger: 'hover' })
 
   return (
     <Flex
@@ -87,6 +112,8 @@ function Item({ type, isOk, isSingle, pointThreshold, admissionProfile }) {
 }
 
 export default function IFORequirements({ criterias, pointThreshold, admissionProfile }) {
+  if (!criterias?.length) return null
+
   const isSingle = criterias.length === 1
 
   return (

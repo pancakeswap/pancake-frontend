@@ -194,7 +194,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           {!isEligible && (
             <Message mx="24px" mb="24px" p="8px" variant="warning" icon={<ErrorIcon color="warning" width="24px" />}>
               <MessageText small display="inline">
-                Meet any one of the following requirements to be eligible.
+                {t('Meet any one of the following requirements to be eligible.')}
               </MessageText>
             </Message>
           )}
@@ -206,7 +206,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           {isEligible && (
             <Message mx="24px" mt="24px" p="8px" variant="success">
               <MessageText small display="inline">
-                You are eligible to participate in this Private Sale!
+                {t('You are eligible to participate in this Private Sale!')}
               </MessageText>
             </Message>
           )}

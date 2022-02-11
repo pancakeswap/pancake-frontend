@@ -46,8 +46,8 @@ const cardConfig = (
     case PoolIds.poolBasic:
       if (meta?.version === 3.1) {
         const MSG_MAP = {
-          needQualifiedNFT: 'Set PancakeSquad NFT as Pancake Profile avatar.',
-          needQualifiedPoints: 'Reach a certain Pancake Profile Points threshold.',
+          needQualifiedNFT: t('Set PancakeSquad NFT as Pancake Profile avatar.'),
+          needQualifiedPoints: t('Reach a certain Pancake Profile Points threshold.'),
         }
 
         const msgs = Object.keys(meta)
@@ -60,7 +60,7 @@ const cardConfig = (
           variant: 'blue',
           tooltip: msgs?.length ? (
             <>
-              <Text>Meet any one of the requirements to join:</Text>
+              <Text>{t('Meet any one of the requirements to join:')}</Text>
               {msgs.map((msg) => (
                 <Text pl="16px" key={msg} as="li">
                   {msg}
@@ -80,7 +80,7 @@ const cardConfig = (
       }
     case PoolIds.poolUnlimited:
       return {
-        title: meta?.version === 3.1 ? 'Public Sale' : t('Unlimited Sale'),
+        title: meta?.version === 3.1 ? t('Public Sale') : t('Unlimited Sale'),
         variant: 'violet',
         tooltip: t('No limits on the amount you can commit. Additional fee applies when claiming.'),
       }

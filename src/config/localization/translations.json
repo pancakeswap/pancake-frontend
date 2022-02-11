@@ -1501,5 +1501,18 @@
   "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:": "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:",
   "Trade the new BTT token here.": "Trade the new BTT token here.",
   "For more details on the swap, please refer here.": "For more details on the swap, please refer here.",
-  "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.": "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested."
+  "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.": "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.",
+  "For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.",
+  "For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool",
+  "Meet any one of the following requirements to be eligible.": "Meet any one of the following requirements to be eligible.",
+  "You are eligible to participate in this Private Sale!": "You are eligible to participate in this Private Sale!",
+  "Meet any one of the requirements to join:": "Meet any one of the requirements to join:",
+  "Set PancakeSquad NFT as Pancake Profile avatar.": "Set PancakeSquad NFT as Pancake Profile avatar.",
+  "Reach a certain Pancake Profile Points threshold.": "Reach a certain Pancake Profile Points threshold.",
+  "Reach %point% or more %Pancake Profile% points": "Reach %point% or more %Pancake Profile% points",
+  "Set %Pancake Squad NFT% as Pancake Profile avatar": "Set %Pancake Squad NFT% as Pancake Profile avatar",
+  "Pancake Squad NFT": "Pancake Squad NFT",
+  "Profile Points threshold met!": "Profile Points threshold met!",
+  "Profile points": "Profile points",
+  "Eligible NFT avatar found!": "Eligible NFT avatar found!"
 }
