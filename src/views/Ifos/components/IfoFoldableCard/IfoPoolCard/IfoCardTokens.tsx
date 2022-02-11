@@ -266,7 +266,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         <>
           <CommitTokenSection commitToken={ifo.currency} mb="24px">
             <Label>
-              {hasClaimed ? t('Your %symbol% RECLAIMED') : t('Your %symbol% TO RECLAIM', { symbol: currency.symbol })}
+              {hasClaimed
+                ? t('Your %symbol% RECLAIMED', { symbol: currency.symbol })
+                : t('Your %symbol% TO RECLAIM', { symbol: currency.symbol })}
             </Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.refundingAmountInLP, currency.decimals)}</Value>
@@ -278,7 +280,12 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </CommitTokenSection>
           <TokenSection primaryToken={ifo.token}>
-            <Label> {hasClaimed ? t('%symbol% received') : t('%symbol% to receive', { symbol: token.symbol })}</Label>
+            <Label>
+              {' '}
+              {hasClaimed
+                ? t('%symbol% received', { symbol: token.symbol })
+                : t('%symbol% to receive', { symbol: token.symbol })}
+            </Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
               {!hasClaimed && userPoolCharacteristics.offeringAmountInToken.isEqualTo(0) && (
