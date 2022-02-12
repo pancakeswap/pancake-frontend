@@ -1992,6 +1992,14 @@ export const mainnetTokens = defineTokens({
     'Alchemy Token',
     'https://alchemytech.io/',
   ),
+  btt: new Token(
+    MAINNET,
+    '0x352Cb5E19b12FC216548a2677bD0fce83BaE434B',
+    18,
+    'BTT',
+    'BitTorrent',
+    'https://bittorrent.com/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
