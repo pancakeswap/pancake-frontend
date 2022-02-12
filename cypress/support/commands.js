@@ -102,7 +102,21 @@ Cypress.Commands.add('getBySel', (selector, ...args) => {
 
 Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message))
 
+/* eslint-disable */
 Cypress.on('window:before:load', (win) => {
-  // eslint-disable-next-line no-param-reassign
   win.sfHeader = Cypress.env('SF_HEADER')
+
+  const original = win.EventTarget.prototype.addEventListener
+
+  win.EventTarget.prototype.addEventListener = function () {
+    if (arguments && arguments[0] === 'beforeunload') {
+      return
+    }
+    return original.apply(this, arguments)
+  }
+
+  Object.defineProperty(win, 'onbeforeunload', {
+    get: function () {},
+    set: function () {},
+  })
 })
