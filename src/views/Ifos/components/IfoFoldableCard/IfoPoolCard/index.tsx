@@ -156,6 +156,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
               walletIfoData={walletIfoData}
               hasProfile={hasActiveProfile}
               isLoading={isLoading}
+              enableStatus={enableStatus}
             />
           </Box>
           <IfoCardDetails
