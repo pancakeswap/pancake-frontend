@@ -21,7 +21,7 @@ import useSwiper from '../hooks/useSwiper'
 
 const chainlinkAddress = getChainlinkOracleAddress()
 function useChainlinkRoundDataSet() {
-  const chainlinkOracleContract = useChainlinkOracleContract()
+  const chainlinkOracleContract = useChainlinkOracleContract(false)
   const lastRound = useSWRContract([chainlinkOracleContract, 'latestRound'], {
     use: [laggyMiddleware],
   })
