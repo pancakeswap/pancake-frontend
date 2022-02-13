@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 
 const ProgressWrap = styled.div`
   position: relative;
@@ -13,7 +14,7 @@ const ProgressWrap = styled.div`
     content: '';
     position: absolute;
     top: 24px;
-    left: 32%;
+    left: 29%;
     width: 274px;
     height: 1px;
     background: ${({ theme }) => theme.colors.textDisabled};
@@ -64,18 +65,20 @@ interface ProgressCirclesProps {
 }
 
 const ProgressSteps = ({ disabled = false }: ProgressCirclesProps) => {
+  const { t } = useTranslation()
+
   return (
     <ProgressWrap>
       <Step>
         <Circle>1</Circle>
-        <Text width={314} textAlign="center">
-          Unstaking LP tokens and CAKE from the old MasterChef
+        <Text width={260} textAlign="center">
+          {t('Unstake LP tokens and CAKE from the old MasterChef contract.')}
         </Text>
       </Step>
       <Step disabled={true}>
         <Circle>2</Circle>
-        <Text width={224} textAlign="center">
-          Restake LP tokens and CAKE to the new MasterChef v2
+        <Text width={228} textAlign="center">
+          {t('Stake LP tokens and CAKE to the new MasterChef v2 contract.')}
         </Text>
       </Step>
     </ProgressWrap>

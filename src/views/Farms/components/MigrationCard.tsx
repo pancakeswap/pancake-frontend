@@ -9,14 +9,12 @@ const Container = styled.div`
   justify-content: space-between;
   width: 100%;
   margin: auto;
-  border: solid 1px;
   padding: 24px 40px;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1120px;
   }
 
-  border-radius: 0px 0px 32px 32px;
   border-bottom: 1px ${({ theme }) => theme.colors.secondary} solid;
   border-left: 1px ${({ theme }) => theme.colors.secondary} solid;
   border-right: 1px ${({ theme }) => theme.colors.secondary} solid;
