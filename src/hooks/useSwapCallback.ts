@@ -74,7 +74,7 @@ function useSwapCallArguments(
     if (trade.tradeType === TradeType.EXACT_INPUT) {
       swapMethods.push(
         Router.swapCallParameters(trade, {
-          feeOnTransfer: true,
+          feeOnTransfer: false,
           allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
           recipient,
           deadline: deadline.toNumber(),
