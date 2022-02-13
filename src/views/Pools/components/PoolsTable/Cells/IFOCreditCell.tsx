@@ -46,7 +46,7 @@ const IFOCreditCell: React.FC<IFOCreditCellProps> = ({ account }) => {
     <>
       <Text>
         {t(
-          'Your entry limit in the next IFO sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.',
+          'Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.',
         )}
       </Text>
       <Text>

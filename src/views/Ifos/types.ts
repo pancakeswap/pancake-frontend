@@ -12,6 +12,12 @@ export interface PoolCharacteristics {
   taxRate: number
   totalAmountPool: BigNumber
   sumTaxesOverflow: BigNumber
+
+  // extends
+  pointThreshold?: number
+  admissionProfile?: number
+  needQualifiedNFT?: boolean
+  needQualifiedPoints?: boolean
 }
 
 // IFO data unrelated to the user returned by useGetPublicIfoData
@@ -27,6 +33,7 @@ export interface PublicIfoData {
   currencyPriceInUSD: BigNumber
   numberPoints: number
   thresholdPoints: EthersBigNumber
+
   fetchIfoData: (currentBlock: number) => void
   [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics

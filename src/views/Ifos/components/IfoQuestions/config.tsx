@@ -3,35 +3,40 @@ import React from 'react'
 
 const config = [
   {
-    title: <Trans>What’s the difference between a Basic Sale and Unlimited Sale?</Trans>,
+    title: <Trans>What’s the difference between a Public Sale and Private Sale?</Trans>,
     description: [
       <Trans>
-        In the Basic Sale, every user can commit a maximum of about 100 USD worth of CAKE. We calculate the maximum CAKE
-        amount about 30 minutes before each IFO. The Basic Sale has no participation fee.
+        In the new IFO 3.1 format. There is a brand new Private Sale. To participate, participants will have to meet
+        certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of
+        CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has
+        no participation fee.
       </Trans>,
       <Trans>
-        In the Unlimited Sale, there’s no limit to the amount of CAKE you can commit. However, there’s a fee for
-        participation: see below.
+        In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE
+        user can commit, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. And there’s a fee
+        for participation: see below.
       </Trans>,
     ],
   },
   {
     title: <Trans>Which sale should I commit to? Can I do both?</Trans>,
     description: [
+      <Trans>You can choose one or both at the same time!</Trans>,
       <Trans>
-        You can choose one or both at the same time! If you’re only committing a small amount, we recommend the Basic
-        Sale first. Just remember you need a PancakeSwap Profile in order to participate.
+        We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if
+        the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.
       </Trans>,
+      <Trans>Just remember you need an active PancakeSwap Profile in order to participate.</Trans>,
     ],
   },
   {
     title: <Trans>How much is the participation fee?</Trans>,
     description: [
-      <Trans>There’s only a participation fee for the Unlimited Sale: there’s no fee for the Basic Sale.</Trans>,
+      <Trans>There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.</Trans>,
       <Trans>The fee will start at 1%.</Trans>,
       <Trans>
-        The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Unlimited” portion
-        of the sale.
+        The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion
+        of the IFO.
       </Trans>,
     ],
   },

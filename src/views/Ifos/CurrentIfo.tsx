@@ -6,6 +6,7 @@ import { Box } from '@pancakeswap/uikit'
 import useGetPublicIfoV2Data from 'views/Ifos/hooks/v2/useGetPublicIfoData'
 import useGetWalletIfoV3Data from 'views/Ifos/hooks/v3/useGetWalletIfoData'
 import Container from 'components/Layout/Container'
+
 import { IfoCurrentCard } from './components/IfoFoldableCard'
 import IfoLayout, { IfoLayoutWrapper } from './components/IfoLayout'
 import IfoPoolVaultCard from './components/IfoPoolVaultCard'

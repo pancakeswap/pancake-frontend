@@ -56,8 +56,12 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
 
   const [onPresentGetTokenModal] = useModal(<GetTokenModal currency={ifo.currency} />, false)
 
+  const noNeedCredit = ifo.version === 3.1 && poolId === PoolIds.poolBasic
+
   const isMaxCommitted =
-    (walletIfoData.ifoCredit?.creditLeft && walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
+    (!noNeedCredit &&
+      walletIfoData.ifoCredit?.creditLeft &&
+      walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
     (limitPerUserInLP.isGreaterThan(0) && amountTokenCommittedInLP.isGreaterThanOrEqualTo(limitPerUserInLP))
 
   const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'

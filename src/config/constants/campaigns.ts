@@ -334,6 +334,12 @@ const campaigns: Campaign[] = [
     title: 'Froyo Games',
     badge: 'ifo-froyo.svg',
   },
+  {
+    id: '511180000',
+    type: 'ifo',
+    title: 'Era',
+    badge: 'ifo-era.svg',
+  },
 ]
 
 /**

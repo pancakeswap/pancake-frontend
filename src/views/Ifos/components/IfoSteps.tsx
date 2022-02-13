@@ -117,7 +117,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
       <Box>
         <Text color="textSubtle" small>
           {t(
-            'The maximum amount of CAKE user can commit to all the sales combined, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.',
+            'The maximum amount of CAKE user can commit to the Public Sale, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.',
           )}
         </Text>
         <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
@@ -173,7 +173,6 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
       </Heading>
       <Text color="textSubtle" small>
         {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
-        {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
       </Text>
       {hasProfile && isLive && !isCommitted && (
         <Button as="a" href="#current-ifo" mt="16px">
@@ -186,14 +185,14 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
 
 const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
   const { poolBasic, poolUnlimited } = walletIfoData
-  const { hasProfile } = useProfile()
+  const { hasActiveProfile } = useProfile()
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { balance } = useTokenBalance(ifo.currency.address)
   const isCommitted =
     poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0)
   const stepsValidationStatus = [
-    hasProfile,
+    hasActiveProfile,
     balance.isGreaterThan(0),
     isCommitted,
     poolBasic.hasClaimed || poolUnlimited.hasClaimed,
@@ -247,9 +246,9 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
           </CardBody>
         )
       case 1:
-        return <Step1 hasProfile={hasProfile} />
+        return <Step1 hasProfile={hasActiveProfile} />
       case 2:
-        return <Step2 hasProfile={hasProfile} isLive={isLive} isCommitted={isCommitted} />
+        return <Step2 hasProfile={hasActiveProfile} isLive={isLive} isCommitted={isCommitted} />
       case 3:
         return (
           <CardBody>
@@ -271,7 +270,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
   return (
     <Wrapper>
       <Heading id="ifo-how-to" as="h2" scale="xl" color="secondary" mb="24px" textAlign="center">
-        {t('How to Take Part')}
+        {t('How to Take Part in the Public Sale')}
       </Heading>
       <Stepper>
         {stepsValidationStatus.map((_, index) => (

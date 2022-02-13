@@ -9,6 +9,7 @@ const NftProfileAchievementsPage = () => {
   const { profile: profileHookState } = useProfileForAddress(accountAddress)
   const { profile } = profileHookState || {}
   const { achievements, isFetching: isAchievementFetching, refresh } = useAchievementsForAddress(accountAddress)
+
   return (
     <Achievements
       achievements={achievements}

@@ -45,7 +45,10 @@ export const useAchievementsForAddress = (address: string) => {
 
 export const useProfile = () => {
   const { isInitialized, isLoading, data, hasRegistered }: ProfileState = useSelector((state: State) => state.profile)
-  return { profile: data, hasProfile: isInitialized && hasRegistered, isInitialized, isLoading }
+
+  const hasProfile = isInitialized && hasRegistered
+
+  return { profile: data, hasProfile, hasActiveProfile: hasProfile && data?.isActive, isInitialized, isLoading }
 }
 
 export const useGetProfileAvatar = (account: string) => {

@@ -130,7 +130,7 @@ const ContributeModal: React.FC<Props> = ({
 
   // in v3 max token entry is based on ifo credit and hard cap limit per user minus amount already committed
   const maximumTokenEntry = useMemo(() => {
-    if (!creditLeft) {
+    if (!creditLeft || (ifo.version === 3.1 && poolId === PoolIds.poolBasic)) {
       return limitPerUserInLP.minus(amountTokenCommittedInLP)
     }
     if (limitPerUserInLP.isGreaterThan(0)) {
@@ -141,21 +141,23 @@ const ContributeModal: React.FC<Props> = ({
       }
     }
     return creditLeft
-  }, [creditLeft, limitPerUserInLP, amountTokenCommittedInLP])
+  }, [creditLeft, limitPerUserInLP, amountTokenCommittedInLP, ifo.version, poolId])
 
   // include user balance for input
   const maximumTokenCommittable = useMemo(() => {
     return maximumTokenEntry.isLessThanOrEqualTo(userCurrencyBalance) ? maximumTokenEntry : userCurrencyBalance
   }, [maximumTokenEntry, userCurrencyBalance])
 
+  const basicTooltipContent = t(
+    'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
+  )
+
+  const unlimitedToolipContent = t(
+    'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+  )
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    poolId === PoolIds.poolBasic
-      ? t(
-          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
-        )
-      : t(
-          'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
-        ),
+    poolId === PoolIds.poolBasic ? basicTooltipContent : unlimitedToolipContent,
     {},
   )
 

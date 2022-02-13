@@ -14,6 +14,7 @@ export interface IfoCardDetailsProps {
   ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
+  isEligible: boolean
 }
 
 export interface FooterEntryProps {
@@ -40,17 +41,28 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
 
 const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
   const isCurrencyCake = ifo.currency === tokens.cake
-  const isV3 = ifo.version === 3
+  const isV3 = ifo.version === 3 || ifo.version === 3.1
   const { t } = useTranslation()
 
-  const tooltipContent =
-    poolId === PoolIds.poolBasic
+  const basicTooltipContent =
+    ifo.version === 3.1
       ? t(
+          'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
+        )
+      : t(
           'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+        )
+
+  const unlimitedToolipContent =
+    ifo.version === 3.1
+      ? t(
+          'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
         )
       : t(
           'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
         )
+
+  const tooltipContent = poolId === PoolIds.poolBasic ? basicTooltipContent : unlimitedToolipContent
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
   const label = isCurrencyCake ? t('Max. CAKE entry') : t('Max. token entry')
@@ -83,7 +95,7 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
   )
 }
 
-const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
+const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
@@ -103,7 +115,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
 
   /* Format start */
   const maxLpTokens =
-    ifo.version === 3 && ifo.isActive
+    (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) && ifo.isActive
       ? version3MaxTokens
         ? getBalanceNumber(version3MaxTokens, ifo.currency.decimals)
         : 0
@@ -129,7 +141,9 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     2,
   )}`
 
-  const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxLpTokens} />
+  const maxToken = ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
+
+  const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} />
 
   /* Format end */
   const renderBasedOnIfoStatus = () => {

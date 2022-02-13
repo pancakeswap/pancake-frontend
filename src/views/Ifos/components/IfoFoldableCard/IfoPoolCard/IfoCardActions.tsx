@@ -10,6 +10,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import ContributeButton from './ContributeButton'
 import ClaimButton from './ClaimButton'
 import { SkeletonCardActions } from './Skeletons'
+import { EnableStatus } from '../types'
 
 interface Props {
   poolId: PoolIds
@@ -18,9 +19,20 @@ interface Props {
   walletIfoData: WalletIfoData
   hasProfile: boolean
   isLoading: boolean
+  isEligible: boolean
+  enableStatus: EnableStatus
 }
 
-const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfoData, hasProfile, isLoading }) => {
+const IfoCardActions: React.FC<Props> = ({
+  poolId,
+  ifo,
+  publicIfoData,
+  walletIfoData,
+  hasProfile,
+  isLoading,
+  isEligible,
+  enableStatus,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const userPoolCharacteristics = walletIfoData[poolId]
@@ -39,6 +51,10 @@ const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfo
         {t('Activate your Profile')}
       </Button>
     )
+  }
+
+  if (enableStatus !== EnableStatus.ENABLED || (ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible)) {
+    return null
   }
 
   return (
