@@ -12,8 +12,9 @@ const config = [
         no participation fee.
       </Trans>,
       <Trans>
-        In the Public Sale, everyone with an active PancakeSwap profile can participate, and there’s no limit to the
-        amount of CAKE you can commit. However, there’s a fee for participation: see below.
+        In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE
+        user can commit, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. And there’s a fee
+        for participation: see below.
       </Trans>,
     ],
   },
