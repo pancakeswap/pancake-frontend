@@ -8,7 +8,7 @@ import { ethersToBigNumber } from 'utils/bigNumber'
 import { FarmAuction } from 'config/abi/types'
 
 export const FORM_ADDRESS =
-  'https://docs.google.com/forms/d/e/1FAIpQLScUkwbsMWwg7L5jjGjEcmv6RsoCNhFDkV3xEpRu2KcJrr47Sw/viewform'
+  'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'
 
 // Sorts bidders received from smart contract by bid amount in descending order (biggest -> smallest)
 // Also amends bidder information with getBidderInfo
