@@ -1,30 +1,18 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  BnbUsdtPairTokenIcon,
-  Card,
-  Flex,
-  Heading,
-  ProfileAvatar,
-  Table,
-  Td,
-  Text,
-  Th,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { useEffect, useMemo, useState } from 'react'
+import { ArrowBackIcon, ArrowForwardIcon, Flex, Grid, Heading, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { FetchStatus } from 'config/constants/types'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useGetCollections } from 'state/nftMarket/hooks'
+import { useGetShuffledCollections } from 'state/nftMarket/hooks'
+import Select, { OptionProps } from 'components/Select/Select'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-import shuffle from 'lodash/shuffle'
 import PageLoader from 'components/Loader/PageLoader'
+import { CollectionCard } from '../components/CollectibleCard'
+import { BNBAmountLabel } from '../components/CollectibleCard/styles'
 
-export const ITEMS_PER_PAGE = 10
+export const ITEMS_PER_PAGE = 9
 
 const SORT_FIELD = {
   createdAt: 'createdAt',
@@ -52,22 +40,23 @@ export const Arrow = styled.div`
 
 const Collectible = () => {
   const { t } = useTranslation()
-  const { data: collections, status } = useGetCollections()
+  const { data: collections, status } = useGetShuffledCollections()
   const { isMobile } = useMatchBreakpoints()
   const [sortField, setSortField] = useState(null)
-  const [sortDirection, setSortDirection] = useState<boolean>(false)
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
 
   useEffect(() => {
-    setTimeout(() => {
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      })
-    }, 50)
-  }, [page])
+    if (isMobile) {
+      setTimeout(() => {
+        window.scroll({
+          top: 50,
+          left: 0,
+          behavior: 'smooth',
+        })
+      }, 50)
+    }
+  }, [isMobile, page])
 
   useEffect(() => {
     let extraPages = 1
@@ -75,49 +64,29 @@ const Collectible = () => {
     if (collectionValues.length % ITEMS_PER_PAGE === 0) {
       extraPages = 0
     }
-    setMaxPage(Math.floor(collectionValues.length / ITEMS_PER_PAGE) + extraPages)
+    setMaxPage(Math.max(Math.floor(collectionValues.length / ITEMS_PER_PAGE) + extraPages, 1))
   }, [collections])
 
   const sortedCollections = useMemo(() => {
     const collectionValues = collections ? Object.values(collections) : []
 
-    if (!sortField) {
-      return shuffle(collectionValues)
-    }
-
     return collectionValues.sort((a, b) => {
       if (a && b) {
         if (sortField === SORT_FIELD.createdAt) {
           if (a.createdAt && b.createdAt) {
-            return Date.parse(a.createdAt) - Date.parse(b.createdAt)
-              ? (sortDirection ? -1 : 1) * 1
-              : (sortDirection ? -1 : 1) * -1
+            return Date.parse(a.createdAt) - Date.parse(b.createdAt) ? -1 : 1
           }
           return -1
         }
-        return parseFloat(a[sortField]) > parseFloat(b[sortField])
-          ? (sortDirection ? -1 : 1) * 1
-          : (sortDirection ? -1 : 1) * -1
+        return parseFloat(a[sortField]) > parseFloat(b[sortField]) ? -1 : 1
       }
       return -1
     })
-  }, [collections, sortDirection, sortField])
+  }, [collections, sortField])
 
-  const handleSort = useCallback(
-    (newField: string) => {
-      setSortField(newField)
-      setSortDirection(sortField !== newField ? true : !sortDirection)
-    },
-    [sortDirection, sortField],
-  )
-
-  const arrow = useCallback(
-    (field: string) => {
-      const directionArrow = !sortDirection ? '↑' : '↓'
-      return sortField === field ? directionArrow : ''
-    },
-    [sortDirection, sortField],
-  )
+  const handleSortOptionChange = (option: OptionProps): void => {
+    setSortField(option.value)
+  }
 
   return (
     <>
@@ -130,69 +99,61 @@ const Collectible = () => {
         {status !== FetchStatus.Fetched ? (
           <PageLoader />
         ) : (
-          <Card>
-            <Table>
-              <thead>
-                <tr>
-                  <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.createdAt)}>
-                    {t('Collection')}
-                    {arrow(SORT_FIELD.createdAt)}
-                  </Th>
-                  <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.volumeBNB)}>
-                    {t('Volume')}
-                    {arrow(SORT_FIELD.volumeBNB)}
-                  </Th>
-                  {!isMobile && (
-                    <>
-                      <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.items)}>
-                        {t('Items')}
-                        {arrow(SORT_FIELD.items)}
-                      </Th>
-                      <Th textAlign="left" style={{ cursor: 'pointer' }} onClick={() => handleSort(SORT_FIELD.supply)}>
-                        {t('Supply')}
-                        {arrow(SORT_FIELD.supply)}
-                      </Th>
-                    </>
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {sortedCollections
-                  .map((collection) => {
-                    const volume = collection.totalVolumeBNB
-                      ? parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
-                          minimumFractionDigits: 3,
-                          maximumFractionDigits: 3,
-                        })
-                      : '0'
-                    return (
-                      <tr key={collection.address} data-test="nft-collection-row">
-                        <Td>
-                          <NextLinkFromReactRouter to={`${nftsBaseUrl}/collections/${collection.address}`}>
-                            <Flex alignItems="center">
-                              <ProfileAvatar src={collection.avatar} width={48} height={48} mr="16px" />
-                              {collection.name}
-                            </Flex>
-                          </NextLinkFromReactRouter>
-                        </Td>
-                        <Td>
-                          <Flex alignItems="center">
-                            {volume}
-                            <BnbUsdtPairTokenIcon ml="8px" />
-                          </Flex>
-                        </Td>
-                        {!isMobile && (
-                          <>
-                            <Td>{collection.numberTokensListed}</Td>
-                            <Td>{collection.totalSupply}</Td>
-                          </>
-                        )}
-                      </tr>
-                    )
-                  })
-                  .slice(ITEMS_PER_PAGE * (page - 1), page * ITEMS_PER_PAGE)}
-              </tbody>
-            </Table>
+          <>
+            <Flex
+              justifyContent={['flex-start', null, 'flex-end']}
+              pr={[null, null, '4px']}
+              pl={['4px', null, '0']}
+              mb="8px"
+            >
+              <Flex width="max-content" style={{ gap: '4px' }} flexDirection="column">
+                <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600}>
+                  {t('Sort By')}
+                </Text>
+                <Select
+                  options={[
+                    {
+                      label: t('Collection'),
+                      value: SORT_FIELD.createdAt,
+                    },
+                    {
+                      label: t('Volume'),
+                      value: SORT_FIELD.volumeBNB,
+                    },
+                    {
+                      label: t('Items'),
+                      value: SORT_FIELD.items,
+                    },
+                    {
+                      label: t('Supply'),
+                      value: SORT_FIELD.supply,
+                    },
+                  ]}
+                  placeHolderText={t('Select')}
+                  onOptionChange={handleSortOptionChange}
+                />
+              </Flex>
+            </Flex>
+            <Grid gridGap="16px" gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} mb="32px">
+              {sortedCollections.slice(ITEMS_PER_PAGE * (page - 1), page * ITEMS_PER_PAGE).map((collection) => {
+                return (
+                  <CollectionCard
+                    key={collection.address}
+                    bgSrc={collection.banner.small}
+                    avatarSrc={collection.avatar}
+                    collectionName={collection.name}
+                    url={`${nftsBaseUrl}/collections/${collection.address}`}
+                  >
+                    <Flex alignItems="center">
+                      <Text fontSize="12px" color="textSubtle">
+                        {t('Volume')}
+                      </Text>
+                      <BNBAmountLabel amount={collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0} />
+                    </Flex>
+                  </CollectionCard>
+                )
+              })}
+            </Grid>
             <PageButtons>
               <Arrow
                 onClick={() => {
@@ -201,9 +162,7 @@ const Collectible = () => {
               >
                 <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
               </Arrow>
-
               <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
-
               <Arrow
                 onClick={() => {
                   setPage(page === maxPage ? page : page + 1)
@@ -212,7 +171,7 @@ const Collectible = () => {
                 <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
               </Arrow>
             </PageButtons>
-          </Card>
+          </>
         )}
       </Page>
     </>
