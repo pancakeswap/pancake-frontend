@@ -1,5 +1,4 @@
 import Trans from 'components/Trans'
-import React from 'react'
 
 const config = [
   {

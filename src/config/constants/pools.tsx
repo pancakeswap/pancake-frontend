@@ -1,4 +1,3 @@
-import React from 'react'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
 import { CHAIN_ID } from './networks'

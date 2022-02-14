@@ -1489,8 +1489,6 @@
   "Max. Tickets per wallet:": "Max. Tickets per wallet:",
   "Max. Tickets per transaction:": "Max. Tickets per transaction:",
   "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:": "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:",
-  "Trade the new BTT token here.": "Trade the new BTT token here.",
-  "For more details on the swap, please refer here.": "For more details on the swap, please refer here.",
   "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.": "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.",
   "For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.",
   "For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool",
@@ -1519,5 +1517,8 @@
   "Private Sale": "Private Sale",
   "Unsupported Assets": "Unsupported Assets",
   "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.": "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.",
-  "Read more about unsupported assets": "Read more about unsupported assets"
+  "Read more about unsupported assets": "Read more about unsupported assets",
+  "Trade the new BTT token": "Trade the new BTT token",
+  "here": "here",
+  "For more details on the swap, please refer here.": "For more details on the swap, please refer here."
 }

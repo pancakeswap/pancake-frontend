@@ -1,6 +1,5 @@
-import React from 'react'
 import { useTranslation } from 'contexts/Localization'
-import { Text, Link } from '@pancakeswap/uikit'
+import { Text, Link, LinkExternal } from '@pancakeswap/uikit'
 
 const BTTWarning = () => {
   const { t } = useTranslation()
@@ -13,12 +12,18 @@ const BTTWarning = () => {
         )}
       </Text>
       <Text>1 BTT (OLD) = 1,000 BTT (NEW)</Text>
-      <Link href="https://pancakeswap.finance/swap?outputCurrency=0x352Cb5E19b12FC216548a2677bD0fce83BaE434B">
-        {t('Trade the new BTT token here.')}
-      </Link>
-      <Link external href="https://medium.com/@BitTorrent/tutorial-how-to-swap-bttold-to-btt-453264d7142">
+      <Text mb="8px">
+        {t('Trade the new BTT token')}{' '}
+        <Link
+          style={{ display: 'inline' }}
+          href="https://pancakeswap.finance/swap?outputCurrency=0x352Cb5E19b12FC216548a2677bD0fce83BaE434B"
+        >
+          {t('here')}
+        </Link>
+      </Text>
+      <LinkExternal href="https://medium.com/@BitTorrent/tutorial-how-to-swap-bttold-to-btt-453264d7142">
         {t('For more details on the swap, please refer here.')}
-      </Link>
+      </LinkExternal>
     </>
   )
 }
