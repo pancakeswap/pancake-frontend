@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { Heading, Text, Button, ArrowForwardIcon, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import PageHeader from 'components/PageHeader'
 import Page from 'components/Layout/Page'
-import ProgressSteps from './components/ProgressSteps'
+import ProgressSteps, { ProgressStepsType } from './components/ProgressSteps'
+import MigrationSticky from './components/MigrationSticky'
 
 const MigrationPage: React.FC = () => {
   const { t } = useTranslation()
+  const router = useRouter()
+  const [step, setStep] = useState<ProgressStepsType>(ProgressStepsType.STEP1)
+
+  const handleMigrationStickyClick = () => {
+    if (step === ProgressStepsType.STEP1) {
+      setStep(ProgressStepsType.STEP2)
+    } else {
+      router.push('/')
+    }
+  }
 
   return (
     <>
@@ -28,8 +40,9 @@ const MigrationPage: React.FC = () => {
         </Link>
       </PageHeader>
       <Page>
-        <ProgressSteps />
+        <ProgressSteps step={step} />
       </Page>
+      <MigrationSticky step={step} handleClick={handleMigrationStickyClick} />
     </>
   )
 }

@@ -1501,5 +1501,14 @@
   "Unstake LP tokens and CAKE from the old MasterChef contract.": "Unstake LP tokens and CAKE from the old MasterChef contract.",
   "Stake LP tokens and CAKE to the new MasterChef v2 contract.": "Stake LP tokens and CAKE to the new MasterChef v2 contract.",
   "Migration": "Migration",
-  "Migrate your farms and pools staking to the new staking contract.": "Migrate your farms and pools staking to the new staking contract."
+  "Migrate your farms and pools staking to the new staking contract.": "Migrate your farms and pools staking to the new staking contract.",
+  "MasterChef v2 Migration": "MasterChef v2 Migration",
+  "You need to migrate in order to continue receving staking rewards.": "You need to migrate in order to continue receving staking rewards.",
+  "Proceed": "Proceed",
+  "Unstaking LP Tokens and CAKE": "Unstaking LP Tokens and CAKE",
+  "Stake in the new contract.": "Stake in the new contract.",
+  "All the earned CAKE will be harvested to your wallet upon unstake.": "All the earned CAKE will be harvested to your wallet upon unstake.",
+  "Each farm/pool has to be individually enable before staking.": "Each farm/pool has to be individually enable before staking.",
+  "Go to Stake": "Go to Stake",
+  "Skip": "Skip"
 }

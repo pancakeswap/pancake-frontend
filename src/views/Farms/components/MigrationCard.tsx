@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Text, Button } from '@pancakeswap/uikit'
 
@@ -31,16 +32,18 @@ const TextGroup = styled.div`
 `
 
 const MigrationCard: React.FC = () => {
+  const { t } = useTranslation()
+
   return (
     <Container>
       <TextGroup>
         <Text fontSize="40px" bold>
-          MasterChef v2 Migration
+          {t('MasterChef v2 Migration')}
         </Text>
-        <Text>You need to migrate in order to continue receving staking rewards.</Text>
+        <Text>{t('You need to migrate in order to continue receving staking rewards.')}</Text>
       </TextGroup>
       <NextLinkFromReactRouter to="/migration">
-        <Button width="266px">Proceed</Button>
+        <Button width="266px">{t('Proceed')}</Button>
       </NextLinkFromReactRouter>
     </Container>
   )
