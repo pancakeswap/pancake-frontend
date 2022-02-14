@@ -14,7 +14,7 @@ const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: Toke
   const collectionContract = useErc721CollectionContract(collectionAddress, false)
   const { isInitialized: isProfileInitialized, profile } = useProfile()
   return useSWR(
-    account && isProfileInitialized && collectionContract && marketData
+    account && isProfileInitialized && collectionContract
       ? ['nft', 'own', collectionAddress, tokenId, marketData?.currentSeller]
       : null,
     async () => {
@@ -22,17 +22,16 @@ const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: Toke
       let isOwn = false
       let nftIsProfilePic = false
 
-      if (marketData) {
-        nftIsProfilePic = tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
-        const nftIsOnSale = marketData ? marketData?.currentSeller !== NOT_ON_SALE_SELLER : false
-        if (nftIsOnSale) {
-          isOwn = marketData?.currentSeller.toLowerCase() === account.toLowerCase()
-        } else if (nftIsProfilePic) {
-          isOwn = true
-        } else {
-          isOwn = tokenOwner.toLowerCase() === account.toLowerCase()
-        }
+      nftIsProfilePic = tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
+      const nftIsOnSale = marketData ? marketData?.currentSeller !== NOT_ON_SALE_SELLER : false
+      if (nftIsOnSale) {
+        isOwn = marketData?.currentSeller.toLowerCase() === account.toLowerCase()
+      } else if (nftIsProfilePic) {
+        isOwn = true
+      } else {
+        isOwn = tokenOwner.toLowerCase() === account.toLowerCase()
       }
+
       return {
         isOwn,
         nftIsProfilePic,
