@@ -134,10 +134,7 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
   )
 }
 
-/**
- * Note: remember that it needs to be mounted inside the container with fixed height
- */
-export const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
+const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
   const { data } = useChainlinkRoundDataSet()
   const rounds = useGetRoundsByCloseOracleId()
 
@@ -165,6 +162,9 @@ export const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
   )
 }
 
+/**
+ * Note: remember that it needs to be mounted inside the container with fixed height
+ */
 const Chart = ({
   rounds,
   data,
@@ -273,3 +273,5 @@ const ActiveDot = (props) => {
     />
   )
 }
+
+export default ChainLinkChart
