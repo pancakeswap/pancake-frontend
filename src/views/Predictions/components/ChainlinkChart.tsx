@@ -147,7 +147,15 @@ export const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
 
   return (
     <ChainlinkChartWrapper {...props}>
-      <FlexGap flexDirection="row" pt="12px" px="20px" alignItems="center" flexWrap="wrap" columnGap="12px">
+      <FlexGap
+        flexDirection="row"
+        pt="12px"
+        px="20px"
+        alignItems="center"
+        flexWrap="wrap"
+        columnGap="12px"
+        height={['56px', , , , '44px']}
+      >
         <HoverData rounds={rounds} />
       </FlexGap>
       <Flex height={[`calc(100% - 56px)`]}>
