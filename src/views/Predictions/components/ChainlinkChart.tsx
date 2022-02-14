@@ -115,7 +115,7 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
     <>
       <PairPriceDisplay alignItems="center" value={hoverData.answer} inputSymbol="BNB" outputSymbol="USDT" />
       <FlexGap minWidth="51%" alignItems="center" gap="12px">
-        <Text color="textSubtle">
+        <Text color="textSubtle" lineHeight={1.1}>
           {new Date(hoverData.startedAt * 1000).toLocaleString(locale, {
             year: 'numeric',
             day: 'numeric',
@@ -125,7 +125,7 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
           })}
         </Text>
         {rounds[hoverData.roundId] && (
-          <Text fontSize="20px" color="secondary" bold>
+          <Text fontSize="20px" color="secondary" bold lineHeight={1.1}>
             #{rounds[hoverData.roundId].epoch}
           </Text>
         )}
@@ -147,16 +147,7 @@ export const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
 
   return (
     <ChainlinkChartWrapper {...props}>
-      <FlexGap
-        flexDirection="row"
-        pt="12px"
-        px="20px"
-        alignItems="center"
-        height={['56px', , , , '44px']}
-        style={{ gap: '12px' }}
-        flexWrap="wrap"
-        gap="12px"
-      >
+      <FlexGap flexDirection="row" pt="12px" px="20px" alignItems="center" flexWrap="wrap" columnGap="12px">
         <HoverData rounds={rounds} />
       </FlexGap>
       <Flex height={[`calc(100% - 56px)`]}>

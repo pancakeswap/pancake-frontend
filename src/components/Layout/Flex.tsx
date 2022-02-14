@@ -14,8 +14,10 @@ const FlexLayout = styled.div`
   }
 `
 
-export const FlexGap = styled(Flex)<{ gap?: string }>`
+export const FlexGap = styled(Flex)<{ gap?: string; rowGap?: string; columnGap?: string }>`
   gap: ${({ gap }) => gap};
+  row-gap: ${({ rowGap }) => rowGap};
+  column-gap: ${({ columnGap }) => columnGap};
 `
 
 export default FlexLayout
