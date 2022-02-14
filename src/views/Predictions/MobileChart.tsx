@@ -9,7 +9,8 @@ import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import { useTranslation } from 'contexts/Localization'
 import Menu from './components/Menu'
 import TradingView from './components/TradingView'
-import { ChainLinkChart } from './components/ChainlinkChart'
+import dynamic from 'next/dynamic'
+const ChainLinkChart = dynamic(() => import('./components/ChainLinkChart'), { ssr: false })
 
 const MenuWrapper = styled.div`
   flex: none;
