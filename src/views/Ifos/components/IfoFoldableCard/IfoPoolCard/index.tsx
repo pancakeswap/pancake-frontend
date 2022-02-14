@@ -62,7 +62,7 @@ const cardConfig = (
             <>
               <Text>{t('Meet any one of the requirements to join:')}</Text>
               {msgs.map((msg) => (
-                <Text pl="16px" key={msg} as="li">
+                <Text ml="16px" key={msg} as="li">
                   {msg}
                 </Text>
               ))}
