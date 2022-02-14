@@ -95,7 +95,7 @@ const IFOBanner = () => {
       <Inner>
         <LeftWrapper>
           <StyledSubheading>{t('Live')}</StyledSubheading>
-          <StyledHeading scale="xl">Froyo IFO</StyledHeading>
+          <StyledHeading scale="xl">ERA IFO</StyledHeading>
           <NextLinkFromReactRouter to="/ifo">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
@@ -106,7 +106,7 @@ const IFOBanner = () => {
           </NextLinkFromReactRouter>
         </LeftWrapper>
         <RightWrapper>
-          <img src="/images/decorations/3d-ifo-froyo.png" alt="IFO Froyo" />
+          <img src="/images/decorations/3d-ifo-era.png" alt="IFO Era" />
         </RightWrapper>
       </Inner>
     </Wrapper>
