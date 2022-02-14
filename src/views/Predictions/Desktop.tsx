@@ -113,7 +113,7 @@ const Desktop: React.FC = () => {
   const { t } = useTranslation()
   const status = useGetPredictionsStatus()
 
-  const toggleChartPane = () => {
+  const openChartPane = () => {
     const newChartPaneState = !isChartPaneOpen
 
     if (newChartPaneState) {
@@ -125,9 +125,9 @@ const Desktop: React.FC = () => {
       delay(() => {
         splitWrapperRef.current.style.transition = ''
       }, 150)
-    }
 
-    dispatch(setChartPaneState(newChartPaneState))
+      dispatch(setChartPaneState(newChartPaneState))
+    }
   }
 
   useEffect(() => {
@@ -174,7 +174,7 @@ const Desktop: React.FC = () => {
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.TradingView}
                 onMouseDown={(e) => {
-                  toggleChartPane()
+                  openChartPane()
                   dispatch(setChartView(PredictionsChartView.TradingView))
                   e.stopPropagation()
                   e.preventDefault()
@@ -188,7 +188,7 @@ const Desktop: React.FC = () => {
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.Chainlink}
                 onMouseDown={(e) => {
-                  toggleChartPane()
+                  openChartPane()
                   dispatch(setChartView(PredictionsChartView.Chainlink))
                   e.stopPropagation()
                   e.preventDefault()
@@ -208,7 +208,7 @@ const Desktop: React.FC = () => {
             />
           </Gutter>
           <ChartPane ref={chartRef}>
-            {chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart />}
+            {isChartPaneOpen && (chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart />)}
           </ChartPane>
         </SplitWrapper>
         <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>

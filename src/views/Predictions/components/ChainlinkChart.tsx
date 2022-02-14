@@ -46,13 +46,15 @@ function useChainlinkRoundDataSet() {
 
   const computedData: ChartData[] = useMemo(() => {
     return (
-      data?.filter(Boolean).map(({ answer, roundId, startedAt }) => {
-        return {
-          answer: parseFloat(formatBigNumberToFixed(answer, 3, 8)),
-          roundId: roundId.toString(),
-          startedAt: startedAt.toNumber(),
-        }
-      }) ?? []
+      data
+        ?.filter((d) => !d || d.answer.gt(0)) // filter out rounds with no data, or positive answer
+        .map(({ answer, roundId, startedAt }) => {
+          return {
+            answer: parseFloat(formatBigNumberToFixed(answer, 3, 8)),
+            roundId: roundId.toString(),
+            startedAt: startedAt.toNumber(),
+          }
+        }) ?? []
     )
   }, [data])
 
