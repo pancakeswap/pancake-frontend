@@ -4,7 +4,6 @@ import Page from 'components/Layout/Page'
 import { useProfile } from 'state/profile/hooks'
 import PageLoader from 'components/Loader/PageLoader'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { useFetchCollections } from 'state/nftMarket/hooks'
 import { useRouter } from 'next/router'
 import Header from './Header'
 import ProfileCreationProvider from './contexts/ProfileCreationProvider'
@@ -20,8 +19,6 @@ const ProfileCreation = () => {
       router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)
     }
   }, [account, hasProfile, router])
-
-  useFetchCollections()
 
   if (!isInitialized || isLoading) {
     return <PageLoader />

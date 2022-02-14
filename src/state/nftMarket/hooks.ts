@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
@@ -8,29 +8,15 @@ import erc721Abi from 'config/abi/erc721.json'
 import { useSWRMulticall } from 'hooks/useSWRContract'
 import { EMPTY_ARRAY, EMPTY_OBJECT } from 'utils/constantObjects'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import useSWR from 'swr'
 
-import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
+import { fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
-import { NftActivityFilter, NftFilter, NftToken } from './types'
+import { ApiCollections, NftActivityFilter, NftFilter, NftToken } from './types'
+import { getCollection, getCollections } from './helpers'
 
 const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
 const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
-
-export const useFetchCollections = () => {
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    dispatch(fetchCollections())
-  }, [dispatch])
-}
-
-export const useFetchCollection = (collectionAddress: string) => {
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    if (collectionAddress) {
-      dispatch(fetchCollection(collectionAddress))
-    }
-  }, [dispatch, collectionAddress])
-}
 
 // Returns a function that fetches more NFTs for specified bunny id
 // as well as updating existing PB NFTs in state
@@ -84,14 +70,20 @@ export const useLoadingState = () => {
   return useSelector((state: State) => state.nftMarket.data.loadingState)
 }
 
-export const useGetCollections = () => {
-  return useSelector((state: State) => state.nftMarket.data.collections)
+export const useGetCollections = (): { data: ApiCollections; status: FetchStatus } => {
+  const { data, status } = useSWR(['nftMarket', 'collections'], async () => getCollections())
+  const collections = data ?? ({} as ApiCollections)
+  return { data: collections, status }
 }
 
 export const useGetCollection = (collectionAddress: string) => {
   const checksummedCollectionAddress = isAddress(collectionAddress) || ''
-  const collections = useGetCollections()
-  return collections[checksummedCollectionAddress]
+  const { data } = useSWR(
+    checksummedCollectionAddress ? ['nftMarket', 'collections', checksummedCollectionAddress.toLowerCase()] : null,
+    async () => getCollection(checksummedCollectionAddress),
+  )
+  const collectionObject = data ?? {}
+  return collectionObject[checksummedCollectionAddress]
 }
 
 export const useNftsFromCollection = (collectionAddress: string) => {
@@ -103,10 +95,6 @@ export const useNftsFromCollection = (collectionAddress: string) => {
 export const useGetAllBunniesByBunnyId = (bunnyId: string) => {
   const nfts: NftToken[] = useSelector((state: State) => state.nftMarket.data.nfts[pancakeBunniesAddress])
   return nfts ? nfts.filter((nft) => nft.attributes[0].value === bunnyId && nft.marketData.isTradable) : EMPTY_ARRAY
-}
-
-export const useGetNFTInitializationState = () => {
-  return useSelector((state: State) => state.nftMarket.initializationState)
 }
 
 export const useApprovalNfts = (nftsInWallet: NftToken[]) => {

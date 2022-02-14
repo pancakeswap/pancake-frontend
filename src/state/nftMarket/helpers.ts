@@ -47,6 +47,68 @@ export const getCollectionsApi = async (): Promise<ApiCollectionsResponse> => {
   return null
 }
 
+const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promise<number[]> => {
+  const totalSupplyCalls = collections.map((collection) => ({
+    address: collection.address.toLowerCase(),
+    name: 'totalSupply',
+  }))
+  if (totalSupplyCalls.length > 0) {
+    const totalSupplyRaw = await multicallv2(erc721Abi, totalSupplyCalls, { requireSuccess: false })
+    const totalSupply = totalSupplyRaw.flat()
+    return totalSupply.map((totalCount) => (totalCount ? totalCount.toNumber() : 0))
+  }
+  return []
+}
+
+/**
+ * Fetch all collections data by combining data from the API (static metadata) and the Subgraph (dynamic market data)
+ */
+export const getCollections = async (): Promise<Record<string, Collection>> => {
+  try {
+    const [collections, collectionsMarket] = await Promise.all([getCollectionsApi(), getCollectionsSg()])
+    const collectionApiData: ApiCollection[] = collections?.data ?? []
+    const collectionsTotalSupply = await fetchCollectionsTotalSupply(collectionApiData)
+    const collectionApiDataCombinedOnChain = collectionApiData.map((collection, index) => {
+      const totalSupplyFromApi = Number(collection.totalSupply) || 0
+      const totalSupplyFromOnChain = collectionsTotalSupply[index]
+      return {
+        ...collection,
+        totalSupply: Math.max(totalSupplyFromApi, totalSupplyFromOnChain).toString(),
+      }
+    })
+
+    return combineCollectionData(collectionApiDataCombinedOnChain, collectionsMarket)
+  } catch (error) {
+    console.error('Unable to fetch data:', error)
+    return null
+  }
+}
+
+/**
+ * Fetch collection data by combining data from the API (static metadata) and the Subgraph (dynamic market data)
+ */
+export const getCollection = async (collectionAddress: string): Promise<Record<string, Collection> | null> => {
+  try {
+    const [collection, collectionMarket] = await Promise.all([
+      getCollectionApi(collectionAddress),
+      getCollectionSg(collectionAddress),
+    ])
+
+    const collectionsTotalSupply = await fetchCollectionsTotalSupply([collection])
+    const totalSupplyFromApi = Number(collection.totalSupply) || 0
+    const totalSupplyFromOnChain = collectionsTotalSupply[0]
+    const collectionApiDataCombinedOnChain = {
+      ...collection,
+      totalSupply: Math.max(totalSupplyFromApi, totalSupplyFromOnChain).toString(),
+    }
+
+    return combineCollectionData([collectionApiDataCombinedOnChain], [collectionMarket])
+  } catch (error) {
+    console.error('Unable to fetch data:', error)
+    return null
+  }
+}
+
 /**
  * Fetch static data from a collection using the API
  * @returns

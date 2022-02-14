@@ -2,16 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FetchStatus } from 'config/constants/types'
 import isEmpty from 'lodash/isEmpty'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
-import { multicallv2 } from 'utils/multicall'
-import erc721Abi from 'config/abi/erc721.json'
 import {
   combineApiAndSgResponseToNftToken,
-  combineCollectionData,
   fetchNftsFiltered,
-  getCollectionApi,
-  getCollectionsApi,
-  getCollectionSg,
-  getCollectionsSg,
   getMarketDataForTokenIds,
   getMetadataWithFallback,
   getNftsByBunnyIdSg,
@@ -19,18 +12,7 @@ import {
   getNftsMarketData,
   getPancakeBunniesAttributesField,
 } from './helpers'
-import {
-  ApiCollection,
-  ApiSingleTokenData,
-  Collection,
-  MarketEvent,
-  NftActivityFilter,
-  NftAttribute,
-  NftFilter,
-  NFTMarketInitializationState,
-  NftToken,
-  State,
-} from './types'
+import { ApiSingleTokenData, MarketEvent, NftActivityFilter, NftAttribute, NftFilter, NftToken, State } from './types'
 
 const initialNftFilterState: NftFilter = {
   loadingState: FetchStatus.Idle,
@@ -48,9 +30,7 @@ const initialNftActivityFilterState: NftActivityFilter = {
 }
 
 const initialState: State = {
-  initializationState: NFTMarketInitializationState.UNINITIALIZED,
   data: {
-    collections: {},
     nfts: {},
     filters: {},
     activityFilters: {},
@@ -61,61 +41,6 @@ const initialState: State = {
     },
   },
 }
-
-const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promise<number[]> => {
-  const totalSupplyCalls = collections.map((collection) => ({
-    address: collection.address.toLowerCase(),
-    name: 'totalSupply',
-  }))
-  if (totalSupplyCalls.length > 0) {
-    const totalSupplyRaw = await multicallv2(erc721Abi, totalSupplyCalls, { requireSuccess: false })
-    const totalSupply = totalSupplyRaw.flat()
-    return totalSupply.map((totalCount) => (totalCount ? totalCount.toNumber() : 0))
-  }
-  return []
-}
-
-/**
- * Fetch all collections data by combining data from the API (static metadata) and the Subgraph (dynamic market data)
- */
-export const fetchCollections = createAsyncThunk<Record<string, Collection>>('nft/fetchCollections', async () => {
-  const [collections, collectionsMarket] = await Promise.all([getCollectionsApi(), getCollectionsSg()])
-  const collectionApiData: ApiCollection[] = collections?.data ?? []
-  const collectionsTotalSupply = await fetchCollectionsTotalSupply(collectionApiData)
-  const collectionApiDataCombinedOnChain = collectionApiData.map((collection, index) => {
-    const totalSupplyFromApi = Number(collection.totalSupply) || 0
-    const totalSupplyFromOnChain = collectionsTotalSupply[index]
-    return {
-      ...collection,
-      totalSupply: Math.max(totalSupplyFromApi, totalSupplyFromOnChain).toString(),
-    }
-  })
-
-  return combineCollectionData(collectionApiDataCombinedOnChain, collectionsMarket)
-})
-
-/**
- * Fetch collection data by combining data from the API (static metadata) and the Subgraph (dynamic market data)
- */
-export const fetchCollection = createAsyncThunk<Record<string, Collection>, string>(
-  'nft/fetchCollection',
-  async (collectionAddress) => {
-    const [collection, collectionMarket] = await Promise.all([
-      getCollectionApi(collectionAddress),
-      getCollectionSg(collectionAddress),
-    ])
-
-    const collectionsTotalSupply = await fetchCollectionsTotalSupply([collection])
-    const totalSupplyFromApi = Number(collection.totalSupply) || 0
-    const totalSupplyFromOnChain = collectionsTotalSupply[0]
-    const collectionApiDataCombinedOnChain = {
-      ...collection,
-      totalSupply: Math.max(totalSupplyFromApi, totalSupplyFromOnChain).toString(),
-    }
-
-    return combineCollectionData([collectionApiDataCombinedOnChain], [collectionMarket])
-  },
-)
 
 /**
  * Fetch all NFT data for a collections by combining data from the API (static metadata)
@@ -374,14 +299,6 @@ export const NftMarket = createSlice({
         activeFilters: nftFilters,
       }
       state.data.nfts[collectionAddress] = action.payload
-    })
-
-    builder.addCase(fetchCollection.fulfilled, (state, action) => {
-      state.data.collections = { ...state.data.collections, ...action.payload }
-    })
-    builder.addCase(fetchCollections.fulfilled, (state, action) => {
-      state.data.collections = action.payload
-      state.initializationState = NFTMarketInitializationState.INITIALIZED
     })
     builder.addCase(fetchNftsFromCollections.pending, (state, action) => {
       const { collectionAddress } = action.meta.arg

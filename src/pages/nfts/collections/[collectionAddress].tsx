@@ -1,10 +1,19 @@
-import { GetStaticPaths, GetStaticProps } from 'next'
-import store from 'state'
-import { fetchCollection } from 'state/nftMarket/reducer'
-import Collection from 'views/Nft/market/Collection'
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+// eslint-disable-next-line camelcase
+import { SWRConfig, unstable_serialize } from 'swr'
+import { getCollection } from 'state/nftMarket/helpers'
+import CollectionPageRouter from 'views/Nft/market/Collection/CollectionPageRouter'
 
-const CollectionPage = () => {
-  return <Collection />
+const CollectionPage = ({ fallback }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback,
+      }}
+    >
+      <CollectionPageRouter />
+    </SWRConfig>
+  )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -23,22 +32,25 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   try {
-    await store.dispatch(fetchCollection(collectionAddress))
+    const collectionData = await getCollection(collectionAddress)
 
-    const state = store.getState()
-
-    return {
-      props: {
-        // Note: only include the data needed for the page, otherwise it will override the user preset data
-        initialReduxState: {
-          nftMarket: state.nftMarket,
+    if (collectionData) {
+      return {
+        props: {
+          fallback: {
+            [unstable_serialize(['nftMarket', 'collections', collectionAddress.toLowerCase()])]: { ...collectionData },
+          },
         },
-      },
-      revalidate: 60 * 60 * 6, // 6 hours
+        revalidate: 60 * 60 * 6, // 6 hours
+      }
+    }
+    return {
+      notFound: true,
+      revalidate: 60,
     }
   } catch (error) {
     return {
-      props: {},
+      notFound: true,
       revalidate: 60,
     }
   }
