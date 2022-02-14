@@ -1,7 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { Zero } from '@ethersproject/constants'
 import useSWR from 'swr'
 import { simpleRpcProvider } from 'utils/providers'
