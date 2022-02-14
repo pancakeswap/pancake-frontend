@@ -94,7 +94,7 @@ const IFOBanner = () => {
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{t('Live')}</StyledSubheading>
+          <StyledSubheading>{t('Soon')}</StyledSubheading>
           <StyledHeading scale="xl">ERA IFO</StyledHeading>
           <NextLinkFromReactRouter to="/ifo">
             <Button>
