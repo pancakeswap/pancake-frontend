@@ -61,14 +61,13 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
     },
   )
 
-  const {
-    data: marketData,
-    mutate: refetchNftMarketData,
-    error,
-  } = useSWR(collectionAddress && tokenId ? ['nft', 'marketData', collectionAddress, tokenId] : null, async () => {
-    const marketDatas = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
-    return marketDatas[0]
-  })
+  const { data: marketData, mutate: refetchNftMarketData } = useSWR(
+    collectionAddress && tokenId ? ['nft', 'marketData', collectionAddress, tokenId] : null,
+    async () => {
+      const marketDatas = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
+      return marketDatas[0]
+    },
+  )
 
   const { data: nftOwn, mutate: refetchNftOwn, status } = useNftOwn(collectionAddress, tokenId, marketData)
 
