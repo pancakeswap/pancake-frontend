@@ -22,8 +22,14 @@ import useSwiper from '../hooks/useSwiper'
 const chainlinkAddress = getChainlinkOracleAddress()
 function useChainlinkRoundDataSet() {
   const chainlinkOracleContract = useChainlinkOracleContract(false)
+  // Can refactor to subscription later
   const lastRound = useSWRContract([chainlinkOracleContract, 'latestRound'], {
-    use: [laggyMiddleware],
+    refreshInterval: 10 * 1000,
+    compare: (a, b) => {
+      // check is equal
+      if (!a || !b) return false
+      return a.eq(b)
+    },
   })
 
   const calls = useMemo(() => {
@@ -47,7 +53,7 @@ function useChainlinkRoundDataSet() {
   const computedData: ChartData[] = useMemo(() => {
     return (
       data
-        ?.filter((d) => !d || d.answer.gt(0)) // filter out rounds with no data, or positive answer
+        ?.filter((d) => !!d && d.answer.gt(0))
         .map(({ answer, roundId, startedAt }) => {
           return {
             answer: parseFloat(formatBigNumberToFixed(answer, 3, 8)),
@@ -187,7 +193,7 @@ const Chart = ({
       <AreaChart
         data={data}
         margin={{
-          top: 5,
+          top: 20,
           right: 0,
           left: 0,
           bottom: 5,
