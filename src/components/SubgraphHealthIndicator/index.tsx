@@ -13,6 +13,7 @@ const StyledCard = styled(Card)`
   > div {
     border-radius: 8px;
   }
+  user-select: none;
 `
 
 const IndicatorWrapper = styled(Box)`
