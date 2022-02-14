@@ -1,6 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
 import { useRouter } from 'next/router'
-import React from 'react'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { NftProfileLayout } from 'views/Nft/market/Profile'
 import SubMenu from 'views/Nft/market/Profile/components/SubMenu'

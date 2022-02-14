@@ -1,5 +1,5 @@
 import { Box, BoxProps } from '@pancakeswap/uikit'
-import React, { FC, useEffect, useRef } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { NftToken } from 'state/nftMarket/types'
 import styled from 'styled-components'

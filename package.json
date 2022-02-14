@@ -89,6 +89,7 @@
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
+    "@next/eslint-plugin-next": "^12.0.10",
     "@pancakeswap/eslint-config-pancake": "^1.1.0",
     "@typechain/ethers-v5": "^8.0.5",
     "@types/canvas-confetti": "^1.4.2",

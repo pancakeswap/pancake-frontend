@@ -1,7 +1,6 @@
 import { SubMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
-import React from 'react'
 import { useFetchIfoPool } from 'state/pools/hooks'
 import Hero from './components/Hero'
 

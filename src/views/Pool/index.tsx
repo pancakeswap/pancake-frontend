@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@pancakeswap/sdk'
 import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@pancakeswap/uikit'
@@ -93,7 +93,7 @@ export default function Pool() {
               <Text color="textSubtle" mb="8px">
                 {t("Don't see a pool you joined?")}
               </Text>
-              <Link href="/find">
+              <Link href="/find" passHref>
                 <Button id="import-pool-link" variant="secondary" scale="sm" as="a">
                   {t('Find other LP tokens')}
                 </Button>
@@ -102,7 +102,7 @@ export default function Pool() {
           )}
         </Body>
         <CardFooter style={{ textAlign: 'center' }}>
-          <Link href="/add">
+          <Link href="/add" passHref>
             <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="white" />}>
               {t('Add Liquidity')}
             </Button>

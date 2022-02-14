@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
-import React from 'react'
 import { nodes } from 'utils/getRpcUrl'
 
 class MyDocument extends Document {

@@ -1,5 +1,4 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import React from 'react'
 import store from 'state'
 import { fetchCollection } from 'state/nftMarket/reducer'
 import Collection from 'views/Nft/market/Collection'

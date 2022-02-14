@@ -1,7 +1,6 @@
 import { BSC_BLOCK_TIME } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { TranslateFunction } from 'contexts/Localization/types'
-import React from 'react'
 import styled from 'styled-components'
 import { Card, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useSubgraphHealthIndicatorManager } from 'state/user/hooks'

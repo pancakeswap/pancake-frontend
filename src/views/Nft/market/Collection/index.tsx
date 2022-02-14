@@ -1,7 +1,7 @@
 import PageLoader from 'components/Loader/PageLoader'
 import dynamic from 'next/dynamic'
 import { NextRouter, useRouter } from 'next/router'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useFetchCollection, useGetCollection } from 'state/nftMarket/hooks'
 import Header from './Header'
 import Items from './Items'

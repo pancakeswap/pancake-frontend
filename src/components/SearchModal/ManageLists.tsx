@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState, useEffect } from 'react'
+import { memo, useCallback, useMemo, useState, useEffect } from 'react'
 import { Button, Text, CheckmarkIcon, CogIcon, Input, Toggle, LinkExternal, useTooltip } from '@pancakeswap/uikit'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'

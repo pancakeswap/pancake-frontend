@@ -1,4 +1,3 @@
-import React from 'react'
 import { InstagramIcon, TwitterIcon } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 

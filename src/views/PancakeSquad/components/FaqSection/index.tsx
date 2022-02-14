@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text, Heading, Card, CardHeader, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LandingBodyWrapper } from 'views/PancakeSquad/styles'

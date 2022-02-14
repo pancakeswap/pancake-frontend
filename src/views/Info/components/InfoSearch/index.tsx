@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text, Input, Flex, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useFetchSearchResults from 'state/info/queries/search'
