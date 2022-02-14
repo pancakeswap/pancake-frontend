@@ -56,14 +56,6 @@
     "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47/logo.png"
   },
   {
-    "name": "Dopple Token",
-    "symbol": "DOP",
-    "address": "0x844FA82f1E54824655470970F7004Dd90546bB28",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x844FA82f1E54824655470970F7004Dd90546bB28/logo.png"
-  },
-  {
     "name": "Wrapped UST Token",
     "symbol": "UST",
     "address": "0x23396cF899Ca06c4472205fC903bDB4de249D6fC",

@@ -96,14 +96,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3.png"
   },
   {
-    "name": "Dopple Finance",
-    "symbol": "DOP",
-    "address": "0x844FA82f1E54824655470970F7004Dd90546bB28",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x844FA82f1E54824655470970F7004Dd90546bB28.png"
-  },
-  {
     "name": "VAI Stablecoin",
     "symbol": "VAI",
     "address": "0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7",
@@ -224,14 +216,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0xaF53d56ff99f1322515E54FdDE93FF8b3b7DAFd5.png"
   },
   {
-    "name": "CanYaCoin",
-    "symbol": "CAN",
-    "address": "0x007EA5C0Ea75a8DF45D288a4debdD5bb633F9e56",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x007EA5C0Ea75a8DF45D288a4debdD5bb633F9e56.png"
-  },
-  {
     "name": "Ankr",
     "symbol": "ANKR",
     "address": "0xf307910A4c7bbc79691fD374889b36d8531B08e3",
@@ -304,22 +288,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0xBf5140A22578168FD562DCcF235E5D43A02ce9B1.png"
   },
   {
-    "name": "fry.world",
-    "symbol": "FRIES",
-    "address": "0x393B312C01048b3ed2720bF1B090084C09e408A1",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x393B312C01048b3ed2720bF1B090084C09e408A1.png"
-  },
-  {
-    "name": "StableXSwap",
-    "symbol": "STAX",
-    "address": "0x0Da6Ed8B13214Ff28e9Ca979Dd37439e8a88F6c4",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x0Da6Ed8B13214Ff28e9Ca979Dd37439e8a88F6c4.png"
-  },
-  {
     "name": "Filecoin",
     "symbol": "FIL",
     "address": "0x0D8Ce2A99Bb6e3B7Db580eD848240e4a0F9aE153",
@@ -334,14 +302,6 @@
     "chainId": 56,
     "decimals": 6,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x5F88AB06e8dfe89DF127B2430Bba4Af600866035.png"
-  },
-  {
-    "name": "USDX",
-    "symbol": "USDX",
-    "address": "0x1203355742e76875154C0D13eB81DCD7711dC7d9",
-    "chainId": 56,
-    "decimals": 6,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x1203355742e76875154C0D13eB81DCD7711dC7d9.png"
   },
   {
     "name": "Injective Protocol",
@@ -376,22 +336,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0xA8c2B8eec3d368C0253ad3dae65a5F2BBB89c929.png"
   },
   {
-    "name": "NAR Token",
-    "symbol": "NAR",
-    "address": "0xA1303E6199b319a891b79685F0537D289af1FC83",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0xA1303E6199b319a891b79685F0537D289af1FC83.png"
-  },
-  {
-    "name": "Nyanswop Token",
-    "symbol": "NYA",
-    "address": "0xbFa0841F7a90c4CE6643f651756EE340991F99D5",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0xbFa0841F7a90c4CE6643f651756EE340991F99D5.png"
-  },
-  {
     "name": "HARD",
     "symbol": "HARD",
     "address": "0xf79037F6f6bE66832DE4E7516be52826BC3cBcc4",
@@ -422,14 +366,6 @@
     "chainId": 56,
     "decimals": 6,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x63870A18B6e42b01Ef1Ad8A2302ef50B7132054F.png"
-  },
-  {
-    "name": "QUSD Stablecoin",
-    "symbol": "QUSD",
-    "address": "0xb8C540d00dd0Bf76ea12E4B4B95eFC90804f924E",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0xb8C540d00dd0Bf76ea12E4B4B95eFC90804f924E.png"
   },
   {
     "name": "Qian Governance Token",
@@ -584,14 +520,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x928e55daB735aa8260AF3cEDadA18B5f70C72f1b.png"
   },
   {
-    "name": "Soteria",
-    "symbol": "wSOTE",
-    "address": "0x541E619858737031A1244A5d0Cd47E5ef480342c",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x541E619858737031A1244A5d0Cd47E5ef480342c.png"
-  },
-  {
     "name": "Mirror TSLA Token",
     "symbol": "mTSLA",
     "address": "0xF215A127A196e3988C09d052e16BcFD365Cd7AA3",
@@ -646,14 +574,6 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x190b589cf9Fb8DDEabBFeae36a813FFb2A702454.png"
-  },
-  {
-    "name": "bDollar Share",
-    "symbol": "sBDO",
-    "address": "0x0d9319565be7f53CeFE84Ad201Be3f40feAE2740",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x0d9319565be7f53CeFE84Ad201Be3f40feAE2740.png"
   },
   {
     "name": "Elrond",
@@ -736,14 +656,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0xfCe146bF3146100cfe5dB4129cf6C82b0eF4Ad8c.png"
   },
   {
-    "name": "renDOGE",
-    "symbol": "renDOGE",
-    "address": "0xc3fEd6eB39178A541D274e6Fc748d48f0Ca01CC3",
-    "chainId": 56,
-    "decimals": 8,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0xc3fEd6eB39178A541D274e6Fc748d48f0Ca01CC3.png"
-  },
-  {
     "name": "anyMTLX",
     "symbol": "anyMTLX",
     "address": "0x5921DEE8556c4593EeFCFad3CA5e2f618606483b",
@@ -790,22 +702,6 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x947950BcC74888a40Ffa2593C5798F11Fc9124C4.png"
-  },
-  {
-    "name": "OPEN Governance Token",
-    "symbol": "bOPEN",
-    "address": "0xF35262a9d427F96d2437379eF090db986eaE5d42",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0xF35262a9d427F96d2437379eF090db986eaE5d42.png"
-  },
-  {
-    "name": "renZEC",
-    "symbol": "renZEC",
-    "address": "0x695FD30aF473F2960e81Dc9bA7cB67679d35EDb7",
-    "chainId": 56,
-    "decimals": 8,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x695FD30aF473F2960e81Dc9bA7cB67679d35EDb7.png"
   },
   {
     "name": "Multiplier",
@@ -1270,14 +1166,6 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x07AaA29E63FFEB2EBf59B33eE61437E1a91A3bb2.png"
-  },
-  {
-    "name": "HYFI",
-    "symbol": "HYFI",
-    "address": "0x9a319b959e33369C5eaA494a770117eE3e585318",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x9a319b959e33369C5eaA494a770117eE3e585318.png"
   },
   {
     "name": "Dogecoin",
