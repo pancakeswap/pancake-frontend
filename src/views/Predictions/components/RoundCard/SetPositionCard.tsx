@@ -16,6 +16,7 @@ import {
   AutoRenewIcon,
 } from '@pancakeswap/uikit'
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { Zero } from '@ethersproject/constants'
 import { parseUnits } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { useGetMinBetAmount } from 'state/predictions/hooks'
@@ -63,7 +64,7 @@ const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBal
 
 const getValueAsEthersBn = (value: string) => {
   const valueAsFloat = parseFloat(value)
-  return Number.isNaN(valueAsFloat) ? BigNumber.from(0) : parseUnits(value)
+  return Number.isNaN(valueAsFloat) ? Zero : parseUnits(value)
 }
 
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, epoch, onBack, onSuccess }) => {

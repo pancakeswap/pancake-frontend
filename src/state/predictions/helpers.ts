@@ -18,6 +18,7 @@ import { multicallv2 } from 'utils/multicall'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import predictionsAbi from 'config/abi/predictions.json'
 import { getPredictionsAddress } from 'utils/addressHelpers'
+import { Zero } from '@ethersproject/constants'
 import { PredictionsClaimableResponse, PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
 import {
   BetResponse,
@@ -410,11 +411,11 @@ export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): 
     closeTimestamp: null,
     lockPrice: null,
     closePrice: null,
-    totalAmount: BigNumber.from(0).toJSON(),
-    bullAmount: BigNumber.from(0).toJSON(),
-    bearAmount: BigNumber.from(0).toJSON(),
-    rewardBaseCalAmount: BigNumber.from(0).toJSON(),
-    rewardAmount: BigNumber.from(0).toJSON(),
+    totalAmount: Zero.toJSON(),
+    bullAmount: Zero.toJSON(),
+    bearAmount: Zero.toJSON(),
+    rewardBaseCalAmount: Zero.toJSON(),
+    rewardAmount: Zero.toJSON(),
     oracleCalled: false,
     lockOracleId: null,
     closeOracleId: null,
@@ -526,7 +527,7 @@ export const fetchUsersRoundsLength = async (account: string) => {
     const length = await contract.getUserRoundsLength(account)
     return length
   } catch {
-    return BigNumber.from(0)
+    return Zero
   }
 }
 
