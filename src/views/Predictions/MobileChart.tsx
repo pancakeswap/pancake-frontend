@@ -4,13 +4,14 @@ import { Flex } from '@pancakeswap/uikit'
 import { useChartView } from 'state/predictions/hooks'
 import { setChartView } from 'state/predictions'
 import { useAppDispatch } from 'state'
+import dynamic from 'next/dynamic'
 import { PredictionsChartView } from 'state/types'
 import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import { useTranslation } from 'contexts/Localization'
 import Menu from './components/Menu'
 import TradingView from './components/TradingView'
-import dynamic from 'next/dynamic'
-const ChainLinkChart = dynamic(() => import('./components/ChainLinkChart'), { ssr: false })
+
+const ChainlinkChart = dynamic(() => import('./components/ChainlinkChart'), { ssr: false })
 
 const MenuWrapper = styled.div`
   flex: none;
@@ -50,7 +51,7 @@ const MobileChart = () => {
         {chartView === PredictionsChartView.TradingView ? (
           <TradingView />
         ) : (
-          <ChainLinkChart pt="8px" background="background" isMobile />
+          <ChainlinkChart pt="8px" background="background" isMobile />
         )}
       </ChartWrapper>
     </Flex>
