@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import styled from 'styled-components'
 import { Box, Flex } from '@pancakeswap/uikit'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/predictions/hooks'
@@ -70,4 +70,4 @@ const Mobile: React.FC = () => {
   )
 }
 
-export default Mobile
+export default memo(Mobile)
