@@ -158,6 +158,11 @@ export const useGetNftShowOnlyOnSale = (collectionAddress: string) => {
   return collectionFilter ? collectionFilter.showOnlyOnSale : true
 }
 
+export const useTryVideoNftMedia = () => {
+  const tryVideoNftMedia = useSelector((state: State) => state.nftMarket.data.tryVideoNftMedia)
+  return tryVideoNftMedia ?? true
+}
+
 export const useGetNftActivityFilters = (collectionAddress: string) => {
   const collectionFilter: NftActivityFilter = useSelector(
     (state: State) => state.nftMarket.data.activityFilters[collectionAddress],

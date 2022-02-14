@@ -54,6 +54,7 @@ const initialState: State = {
     nfts: {},
     filters: {},
     activityFilters: {},
+    tryVideoNftMedia: true,
     loadingState: {
       isUpdatingPancakeBunnies: false,
       latestPancakeBunniesUpdateAt: 0,
@@ -348,6 +349,9 @@ export const NftMarket = createSlice({
         }
       }
     },
+    setTryVideoNftMedia: (state, action: PayloadAction<boolean>) => {
+      state.data.tryVideoNftMedia = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(filterNftsFromCollection.pending, (state, action) => {
@@ -432,6 +436,7 @@ export const {
   addActivityCollectionFilters,
   setOrdering,
   setShowOnlyOnSale,
+  setTryVideoNftMedia,
 } = NftMarket.actions
 
 export default NftMarket.reducer

@@ -3,6 +3,9 @@ import { FC, useEffect, useRef } from 'react'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { NftToken } from 'state/nftMarket/types'
 import styled from 'styled-components'
+import { useTryVideoNftMedia } from 'state/nftMarket/hooks'
+import { useAppDispatch } from 'state'
+import { setTryVideoNftMedia } from 'state/nftMarket/reducer'
 import { RoundedImage } from '../Collection/IndividualNFTPage/shared/styles'
 
 const StyledAspectRatio = styled(Box)`
@@ -24,20 +27,26 @@ const NFTMedia: FC<
     height: number
   } & Omit<BoxProps, 'width' | 'height' | 'as'>
 > = ({ width, height, nft, borderRadius = 'default', as, ...props }) => {
-  const { observerRef, isIntersecting } = useIntersectionObserver()
+  const dispatch = useAppDispatch()
+  const tryVideoNftMedia = useTryVideoNftMedia()
   const vidRef = useRef(null)
+  const { observerRef, isIntersecting } = useIntersectionObserver()
 
   useEffect(() => {
     if (vidRef.current) {
       if (isIntersecting) {
-        vidRef.current.play()
+        vidRef.current.play().catch((error) => {
+          if (error instanceof DOMException && error.name === 'NotAllowedError') {
+            dispatch(setTryVideoNftMedia(false))
+          }
+        })
       } else {
         vidRef.current.pause()
       }
     }
-  }, [isIntersecting])
+  }, [dispatch, isIntersecting])
 
-  if (nft?.image.webm || nft?.image.mp4) {
+  if (tryVideoNftMedia && (nft?.image.webm || nft?.image.mp4)) {
     return (
       <AspectRatio ratio={width / height} {...props}>
         <div ref={observerRef} />
