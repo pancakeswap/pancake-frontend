@@ -9,7 +9,7 @@ import { useFastRefreshEffect, useSlowRefreshEffect } from './useRefreshEffect'
 
 test('should refresh when deps changes', () => {
   const callback = jest.fn()
-  let deps = [1, 2, 3]
+  let deps = [1, 2, () => 1]
   const { rerender } = renderHook(() => {
     useFastRefreshEffect(callback, deps)
   })
@@ -19,7 +19,7 @@ test('should refresh when deps changes', () => {
   // no changes
   expect(callback).toHaveBeenCalledTimes(1)
 
-  deps = [4, 5, 6]
+  deps = [1, 2, () => 2]
   rerender()
   expect(callback).toHaveBeenCalledTimes(2)
   rerender()
