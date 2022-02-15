@@ -6,8 +6,7 @@ type BlockEffectCallback = (blockNumber: number) => ReturnType<EffectCallback>
 
 export function useFastRefreshEffect(effect: BlockEffectCallback, deps?: DependencyList) {
   const { data = 0 } = useSWR([FAST_INTERVAL, 'blockNumber'])
-  const dependencyString = JSON.stringify([data, ...(deps || [])])
-  const depsMemo = useMemo(() => JSON.parse(dependencyString), [dependencyString])
+  const depsMemo = useMemo(() => [data, ...(deps || [])], [data, deps])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect.bind(null, data), depsMemo)
@@ -15,8 +14,7 @@ export function useFastRefreshEffect(effect: BlockEffectCallback, deps?: Depende
 
 export function useSlowRefreshEffect(effect: BlockEffectCallback, deps?: DependencyList) {
   const { data = 0 } = useSWR([SLOW_INTERVAL, 'blockNumber'])
-  const dependencyString = JSON.stringify([data, ...(deps || [])])
-  const depsMemo = useMemo(() => JSON.parse(dependencyString), [dependencyString])
+  const depsMemo = useMemo(() => [data, ...(deps || [])], [data, deps])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect.bind(null, data), depsMemo)
