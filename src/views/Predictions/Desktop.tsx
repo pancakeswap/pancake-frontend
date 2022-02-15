@@ -197,16 +197,18 @@ const Desktop: React.FC = () => {
                 {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
               </TabToggle>
             </ExpandButtonGroup>
-            <ChartByLabel
-              justifyContent="flex-end"
-              symbol="BNBUSDT"
-              by={chartView}
-              link={
-                chartView === PredictionsChartView.TradingView
-                  ? `https://www.tradingview.com/symbols/BNBUSDT`
-                  : 'https://chain.link/'
-              }
-            />
+            {isChartPaneOpen && (
+              <ChartByLabel
+                justifyContent="flex-end"
+                symbol={chartView === PredictionsChartView.TradingView ? 'BNB/USDT' : 'BNB/USD'}
+                by={chartView}
+                link={
+                  chartView === PredictionsChartView.TradingView
+                    ? `https://www.tradingview.com/symbols/BNBUSDT`
+                    : 'https://chain.link/'
+                }
+              />
+            )}
           </Gutter>
           <ChartPane ref={chartRef}>
             {isChartPaneOpen && (chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart />)}
