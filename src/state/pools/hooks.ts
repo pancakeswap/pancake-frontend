@@ -39,7 +39,9 @@ export const useFetchPublicPoolsData = () => {
         })
       }
 
-      fetchPoolsDataWithFarms()
+      if (currentBlock > 0) {
+        fetchPoolsDataWithFarms()
+      }
     },
     [dispatch],
   )
