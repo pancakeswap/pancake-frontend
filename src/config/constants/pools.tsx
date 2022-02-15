@@ -73,21 +73,6 @@ const pools: SerializedPoolConfig[] = [
     deployedBlockNumber: 15162508,
   },
   {
-    sousId: 262,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.ach,
-    contractAddress: {
-      97: '',
-      56: '0xD5668e936B951292Ddf8c84553CC58F85948F816',
-    },
-    poolCategory: PoolCategory.CORE,
-    harvest: true,
-    enableEmergencyWithdraw: true,
-    sortOrder: 999,
-    tokenPerBlock: '7.502',
-    deployedBlockNumber: 15150333,
-  },
-  {
     sousId: 261,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.sfund,
@@ -3524,6 +3509,21 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '0.6093',
+  },
+  {
+    sousId: 262,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.ach,
+    contractAddress: {
+      97: '',
+      56: '0xD5668e936B951292Ddf8c84553CC58F85948F816',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    enableEmergencyWithdraw: true,
+    sortOrder: 999,
+    tokenPerBlock: '7.502',
+    deployedBlockNumber: 15150333,
   },
 ].filter((p) => !!p.contractAddress[CHAIN_ID])
 
