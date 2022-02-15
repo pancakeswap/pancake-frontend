@@ -202,8 +202,9 @@ const Desktop: React.FC = () => {
               symbol="BNBUSDT"
               by={chartView}
               link={
-                chartView === PredictionsChartView.TradingView ? `https://www.tradingview.com/symbols/BNBUSDT` : ''
-                // TODO: Add link to chainlink chart
+                chartView === PredictionsChartView.TradingView
+                  ? `https://www.tradingview.com/symbols/BNBUSDT`
+                  : 'https://chain.link/'
               }
             />
           </Gutter>

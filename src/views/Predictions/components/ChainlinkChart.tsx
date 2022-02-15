@@ -18,12 +18,14 @@ import { Flex, Text, FlexProps } from '@pancakeswap/uikit'
 import PairPriceDisplay from 'components/PairPriceDisplay'
 import { NodeRound } from 'state/types'
 import useSwiper from '../hooks/useSwiper'
+import usePollOraclePrice from '../hooks/usePollOraclePrice'
+import { CHART_DOT_CLICK_EVENT } from '../helpers'
 
-const chainlinkAddress = getChainlinkOracleAddress()
-function useChainlinkRoundDataSet() {
+function useChainlinkLatestRound() {
   const chainlinkOracleContract = useChainlinkOracleContract(false)
   // Can refactor to subscription later
   const lastRound = useSWRContract([chainlinkOracleContract, 'latestRound'], {
+    dedupingInterval: 10 * 1000,
     refreshInterval: 10 * 1000,
     compare: (a, b) => {
       // check is equal
@@ -31,6 +33,13 @@ function useChainlinkRoundDataSet() {
       return a.eq(b)
     },
   })
+
+  return lastRound
+}
+
+const chainlinkAddress = getChainlinkOracleAddress()
+function useChainlinkRoundDataSet() {
+  const lastRound = useChainlinkLatestRound()
 
   const calls = useMemo(() => {
     return lastRound.data
@@ -111,33 +120,38 @@ const ChainlinkChartWrapper = styled(Flex)<{ isMobile?: boolean }>`
 
 const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
   const hoverData = useChartHover()
+  const answerAsBigNumber = usePollOraclePrice()
   const {
+    t,
     currentLanguage: { locale },
   } = useTranslation()
 
-  if (!hoverData) {
-    return null
-  }
-
   return (
     <>
-      <PairPriceDisplay alignItems="center" value={hoverData.answer} inputSymbol="BNB" outputSymbol="USDT" />
-      <FlexGap minWidth="51%" alignItems="center" gap="12px">
-        <Text color="textSubtle" lineHeight={1.1}>
-          {new Date(hoverData.startedAt * 1000).toLocaleString(locale, {
-            year: 'numeric',
-            day: 'numeric',
-            month: 'short',
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </Text>
-        {rounds[hoverData.roundId] && (
-          <Text fontSize="20px" color="secondary" bold lineHeight={1.1}>
-            #{rounds[hoverData.roundId].epoch}
+      <PairPriceDisplay
+        alignItems="center"
+        value={hoverData ? hoverData.answer : parseFloat(formatBigNumberToFixed(answerAsBigNumber, 3, 8))}
+        inputSymbol="BNB"
+        outputSymbol="USDT"
+      />
+      {hoverData && (
+        <FlexGap minWidth="51%" alignItems="center" gap="12px">
+          <Text color="textSubtle" lineHeight={1.1}>
+            {new Date(hoverData.startedAt * 1000).toLocaleString(locale, {
+              year: 'numeric',
+              day: 'numeric',
+              month: 'short',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
           </Text>
-        )}
-      </FlexGap>
+          {rounds[hoverData.roundId] && (
+            <Text fontSize="20px" color="secondary" bold lineHeight={1.1}>
+              {t('Round')}: #{rounds[hoverData.roundId].epoch}
+            </Text>
+          )}
+        </FlexGap>
+      )}
     </>
   )
 }
@@ -272,10 +286,12 @@ const ActiveDot = (props) => {
       stroke={theme.colors.primary}
       strokeWidth={10}
       fill={theme.colors.background}
+      style={{ cursor: 'pointer' }}
       onClick={() => {
         const roundIndex = sortedRounds.findIndex((round) => round.closeOracleId === props.payload.roundId)
-        if (roundIndex >= 0) {
+        if (roundIndex >= 0 && swiper) {
           swiper.slideTo(roundIndex)
+          swiper.el.dispatchEvent(new Event(CHART_DOT_CLICK_EVENT))
         }
       }}
     />

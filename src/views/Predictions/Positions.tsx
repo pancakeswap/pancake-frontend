@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Box } from '@pancakeswap/uikit'
 import { useGetCurrentEpoch, useGetSortedRounds } from 'state/predictions/hooks'
+import delay from 'lodash/delay'
 import 'swiper/swiper.min.css'
 import RoundCard from './components/RoundCard'
 import Menu from './components/Menu'
@@ -10,6 +12,7 @@ import useSwiper from './hooks/useSwiper'
 import useOnNextRound from './hooks/useOnNextRound'
 import useOnViewChange from './hooks/useOnViewChange'
 import { PageView } from './types'
+import { CHART_DOT_CLICK_EVENT } from './helpers'
 
 SwiperCore.use([Keyboard, Mousewheel])
 
@@ -23,8 +26,9 @@ const StyledSwiper = styled.div`
     width: 320px;
   }
 `
+
 const Positions: React.FC<{ view?: PageView }> = ({ view }) => {
-  const { setSwiper } = useSwiper()
+  const { setSwiper, swiper } = useSwiper()
   const rounds = useGetSortedRounds()
   const currentEpoch = useGetCurrentEpoch()
   const previousEpoch = currentEpoch > 0 ? currentEpoch - 1 : currentEpoch
@@ -33,6 +37,20 @@ const Positions: React.FC<{ view?: PageView }> = ({ view }) => {
 
   useOnNextRound()
   useOnViewChange(swiperIndex, view)
+
+  useEffect(() => {
+    const handleChartDotClick = () => {
+      setIsChangeTransition(true)
+      delay(() => setIsChangeTransition(false), 3000)
+    }
+    swiper?.el?.addEventListener(CHART_DOT_CLICK_EVENT, handleChartDotClick)
+
+    return () => {
+      swiper?.el?.removeEventListener(CHART_DOT_CLICK_EVENT, handleChartDotClick)
+    }
+  }, [swiper?.el])
+
+  const [isChangeTransition, setIsChangeTransition] = useState(false)
 
   return (
     <Box overflow="hidden">
@@ -54,7 +72,7 @@ const Positions: React.FC<{ view?: PageView }> = ({ view }) => {
         >
           {rounds.map((round) => (
             <SwiperSlide key={round.epoch}>
-              <RoundCard round={round} />
+              {({ isActive }) => <RoundCard round={round} isActive={isChangeTransition && isActive} />}
             </SwiperSlide>
           ))}
         </Swiper>
