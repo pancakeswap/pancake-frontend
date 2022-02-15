@@ -12,6 +12,7 @@ import useToast from 'hooks/useToast'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiSingleTokenData } from 'state/nftMarket/types'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { requiresApproval } from 'utils/requiresApproval'
 import { FetchStatus } from 'config/constants/types'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
@@ -29,7 +30,8 @@ const Mint: React.FC = () => {
   const { toastSuccess } = useToast()
 
   const { account } = useWeb3React()
-  const cakeContract = useCake()
+  const cakeContractReader = useCake(false)
+  const cakeContractApprover = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
@@ -55,16 +57,10 @@ const Mint: React.FC = () => {
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
-        // TODO: Move this to a helper, this check will be probably be used many times
-        try {
-          const response = await cakeContract.allowance(account, bunnyFactoryContract.address)
-          return response.gte(minimumCakeRequired)
-        } catch (error) {
-          return false
-        }
+        return requiresApproval(cakeContractReader, account, bunnyFactoryContract.address, minimumCakeRequired)
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [bunnyFactoryContract.address, allowance.toString()])
+        return callWithGasPrice(cakeContractApprover, 'approve', [bunnyFactoryContract.address, allowance.toString()])
       },
       onConfirm: () => {
         return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [selectedBunnyId])

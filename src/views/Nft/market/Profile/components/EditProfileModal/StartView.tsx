@@ -12,6 +12,7 @@ import { FetchStatus } from 'config/constants/types'
 import { useProfile } from 'state/profile/hooks'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { UseEditProfileResponse } from './reducer'
+import { requiresApproval } from '../../../../../../utils/requiresApproval'
 
 interface StartPageProps extends InjectedModalProps {
   goToChange: UseEditProfileResponse['goToChange']
@@ -43,7 +44,7 @@ const AvatarWrapper = styled.div`
 const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemove, onDismiss }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const cakeContract = useCake()
+  const cakeContract = useCake(false)
   const { profile } = useProfile()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
   const {
@@ -60,8 +61,13 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
    */
   useEffect(() => {
     const checkApprovalStatus = async () => {
-      const response = await cakeContract.allowance(account, getPancakeProfileAddress())
-      setNeedsApproval(response.lt(minimumCakeRequired))
+      const approvalNeeded = await requiresApproval(
+        cakeContract,
+        account,
+        getPancakeProfileAddress(),
+        minimumCakeRequired,
+      )
+      setNeedsApproval(approvalNeeded)
     }
 
     if (account && !isProfileCostsLoading) {
