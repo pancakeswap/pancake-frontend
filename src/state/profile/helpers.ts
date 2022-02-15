@@ -45,49 +45,6 @@ export const getUsername = async (address: string): Promise<string> => {
   }
 }
 
-/**
- * Intended to be used for getting a profile avatar
- */
-export const getProfileAvatar = async (address: string) => {
-  try {
-    const profileCalls = ['hasRegistered', 'getUserProfile'].map((method) => {
-      return { address: getPancakeProfileAddress(), name: method, params: [address] }
-    })
-    const profileCallsResult = await multicallv2(profileABI, profileCalls, { requireSuccess: false })
-    const [[hasRegistered], profileResponse] = profileCallsResult
-
-    if (!hasRegistered) {
-      return null
-    }
-
-    const { tokenId, collectionAddress, isActive } = transformProfileResponse(profileResponse)
-
-    let nft = null
-    if (isActive) {
-      const apiRes = await getNftApi(collectionAddress, tokenId.toString())
-
-      nft = {
-        tokenId: apiRes.tokenId,
-        name: apiRes.name,
-        collectionName: apiRes.collection.name,
-        collectionAddress,
-        description: apiRes.description,
-        attributes: apiRes.attributes,
-        createdAt: apiRes.createdAt,
-        updatedAt: apiRes.updatedAt,
-        image: {
-          original: apiRes.image?.original,
-          thumbnail: apiRes.image?.thumbnail,
-        },
-      }
-    }
-
-    return { nft, hasRegistered }
-  } catch {
-    return { nft: null, hasRegistered: false }
-  }
-}
-
 export const getProfile = async (address: string): Promise<GetProfileResponse> => {
   try {
     const profileCalls = ['hasRegistered', 'getUserProfile'].map((method) => {

@@ -1,32 +1,36 @@
-import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useSelector } from 'react-redux'
-import { isAddress } from 'utils'
-import { useAppDispatch } from 'state'
 import { getAchievements } from 'state/achievements/helpers'
 import { FetchStatus } from 'config/constants/types'
+import useSWR, { KeyedMutator } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { State, ProfileState } from '../types'
-import { fetchProfile, fetchProfileAvatar, fetchProfileUsername } from '.'
-import { getProfile } from './helpers'
+import { getProfile, GetProfileResponse } from './helpers'
+import { Profile } from '../types'
 
-export const useFetchProfile = () => {
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
+export const useProfileForAddress = (
+  address: string,
+  fetchConfiguration = {
+    revalidateIfStale: true,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  },
+): {
+  profile?: Profile
+  isFetching: boolean
+  isValidating: boolean
+  refresh: KeyedMutator<GetProfileResponse>
+} => {
+  const { data, status, mutate, isValidating } = useSWR(
+    address ? [address, 'profile'] : null,
+    () => getProfile(address),
+    fetchConfiguration,
+  )
 
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchProfile(account))
-    }
-  }, [account, dispatch])
-}
-
-export const useProfileForAddress = (address: string) => {
-  const { data, status, mutate } = useSWRImmutable(address ? [address, 'profile'] : null, () => getProfile(address))
+  const { profile } = data ?? { profile: null }
 
   return {
-    profile: data,
+    profile,
     isFetching: status === FetchStatus.Fetching,
+    isValidating,
     refresh: mutate,
   }
 }
@@ -43,35 +47,23 @@ export const useAchievementsForAddress = (address: string) => {
   }
 }
 
-export const useProfile = () => {
-  const { isInitialized, isLoading, data, hasRegistered }: ProfileState = useSelector((state: State) => state.profile)
+export const useProfile = (): {
+  profile?: Profile
+  hasProfile: boolean
+  hasActiveProfile: boolean
+  isInitialized: boolean
+  isLoading: boolean
+  refresh: KeyedMutator<GetProfileResponse>
+} => {
+  const { account } = useWeb3React()
+  const { data, status, mutate } = useSWRImmutable(account ? [account, 'profile'] : null, () => getProfile(account))
 
+  const { profile, hasRegistered } = data ?? ({ profile: null, hasRegistered: false } as GetProfileResponse)
+
+  const isLoading = status === FetchStatus.Fetching
+  const isInitialized = status === FetchStatus.Fetched || status === FetchStatus.Failed
   const hasProfile = isInitialized && hasRegistered
+  const hasActiveProfile = hasProfile && profile?.isActive
 
-  return { profile: data, hasProfile, hasActiveProfile: hasProfile && data?.isActive, isInitialized, isLoading }
-}
-
-export const useGetProfileAvatar = (account: string) => {
-  const profileAvatar = useSelector((state: State) => state.profile.profileAvatars[account])
-  const { username, nft, hasRegistered, usernameFetchStatus, avatarFetchStatus } = profileAvatar || {}
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    const address = isAddress(account)
-
-    if (!nft && avatarFetchStatus !== FetchStatus.Fetched && address) {
-      dispatch(fetchProfileAvatar(account))
-    }
-
-    if (
-      !username &&
-      avatarFetchStatus === FetchStatus.Fetched &&
-      usernameFetchStatus !== FetchStatus.Fetched &&
-      address
-    ) {
-      dispatch(fetchProfileUsername({ account, hasRegistered }))
-    }
-  }, [account, nft, username, hasRegistered, avatarFetchStatus, usernameFetchStatus, dispatch])
-
-  return { username, nft, usernameFetchStatus, avatarFetchStatus }
+  return { profile, hasProfile, hasActiveProfile, isInitialized, isLoading, refresh: mutate }
 }

@@ -178,22 +178,6 @@ export interface PoolsState {
   userDataLoaded: boolean
 }
 
-export interface ProfileState {
-  isInitialized: boolean
-  isLoading: boolean
-  hasRegistered: boolean
-  data: Profile
-  profileAvatars: {
-    [key: string]: {
-      username: string
-      nft: NftToken
-      hasRegistered: boolean
-      usernameFetchStatus: FetchStatus
-      avatarFetchStatus: FetchStatus
-    }
-  }
-}
-
 export type TeamsById = {
   [key: string]: Team
 }
@@ -546,7 +530,6 @@ export interface State {
   farms: SerializedFarmsState
   pools: PoolsState
   predictions: PredictionsState
-  profile: ProfileState
   lottery: LotteryState
   nftMarket: NftMarketState
 }

@@ -12,11 +12,14 @@ const NftProfilePage = () => {
   const accountAddress = useRouter().query.accountAddress as string
   const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()
   const {
-    profile: profileHookState,
-    isFetching: isProfileFetching,
+    profile,
+    isValidating: isProfileFetching,
     refresh: refreshProfile,
-  } = useProfileForAddress(accountAddress)
-  const { profile } = profileHookState || {}
+  } = useProfileForAddress(accountAddress, {
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+  })
   const {
     nfts,
     isLoading: isNftLoading,

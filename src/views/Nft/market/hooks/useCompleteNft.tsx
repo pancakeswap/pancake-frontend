@@ -3,9 +3,9 @@ import { FetchStatus } from 'config/constants/types'
 import { useCallback } from 'react'
 import { getNftApi, getNftsMarketData } from 'state/nftMarket/helpers'
 import { NftLocation, NftToken, TokenMarketData } from 'state/nftMarket/types'
+import { useProfile } from 'state/profile/hooks'
 import useSWR from 'swr'
 import { useErc721CollectionContract } from '../../../../hooks/useContract'
-import { useProfile } from '../../../../state/profile/hooks'
 
 const NOT_ON_SALE_SELLER = '0x0000000000000000000000000000000000000000'
 

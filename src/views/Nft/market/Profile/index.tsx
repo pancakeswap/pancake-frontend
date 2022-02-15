@@ -31,17 +31,21 @@ const NftProfile: FC = ({ children }) => {
   const invalidAddress = !accountAddress || isAddress(accountAddress) === false
 
   const {
-    profile: profileHookState,
+    profile,
+    isValidating: isProfileValidating,
     isFetching: isProfileFetching,
     refresh: refreshProfile,
-  } = useProfileForAddress(accountAddress)
-  const { profile } = profileHookState || {}
+  } = useProfileForAddress(accountAddress, {
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+  })
   const { achievements, isFetching: isAchievementsFetching } = useAchievementsForAddress(accountAddress)
   const {
     nfts: userNfts,
     isLoading: isNftLoading,
     refresh: refreshUserNfts,
-  } = useNftsForAddress(accountAddress, profile, isProfileFetching)
+  } = useNftsForAddress(accountAddress, profile, isProfileValidating)
 
   if (invalidAddress) {
     return (
