@@ -83,7 +83,7 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
   }, [mutate, refetchNftMarketData, refetchNftOwn])
 
   return {
-    combinedNft: nft ? { ...nft, marketData, location: nftOwn?.location } : undefined,
+    combinedNft: nft ? { ...nft, marketData, location: nftOwn?.location ?? NftLocation.WALLET } : undefined,
     isOwn: nftOwn?.isOwn || false,
     isProfilePic: nftOwn?.nftIsProfilePic || false,
     isLoading: status !== FetchStatus.Fetched,
