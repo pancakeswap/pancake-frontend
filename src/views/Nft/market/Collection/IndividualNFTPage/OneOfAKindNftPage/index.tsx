@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import sum from 'lodash/sum'
 import Page from 'components/Layout/Page'
+import { useGetCollection } from 'state/nftMarket/hooks'
 import PageLoader from 'components/Loader/PageLoader'
 import MainNFTCard from './MainNFTCard'
 import ManageNFTsCard from './ManageNFTsCard'
@@ -25,6 +26,7 @@ const OwnerActivityContainer = styled(Flex)`
 `
 
 const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress, tokenId }) => {
+  const collection = useGetCollection(collectionAddress)
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistribution(collectionAddress)
   const {
     combinedNft: nft,
@@ -34,7 +36,7 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
     refetch,
   } = useCompleteNft(collectionAddress, tokenId)
 
-  if (!nft) {
+  if (!nft || !collection) {
     // Normally we already show a 404 page here if no nft, just put this checking here for safety.
 
     // For now this if is used to show loading spinner while we're getting the data
