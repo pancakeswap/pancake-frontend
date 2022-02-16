@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const metadata = await getNftApi(collectionAddress, tokenId)
   const collection = await getCollection(collectionAddress)
-  if (!metadata || !collection) {
+  if (!metadata) {
     return {
       notFound: true,
       revalidate: 1,
