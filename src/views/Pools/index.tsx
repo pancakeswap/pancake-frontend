@@ -30,6 +30,7 @@ import { ViewMode } from 'state/user/actions'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
+import MigrationSticky from 'views/Farms/components/MigrationSticky'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
@@ -128,6 +129,10 @@ const Pools: React.FC = () => {
     [openPools, vaultPools],
   )
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
+
+  const showMigrationSticky: boolean = useMemo(() => {
+    return account && stakedOnlyOpenPools.length > 0
+  }, [account, stakedOnlyOpenPools])
 
   useFetchCakeVault()
   useFetchIfoPool(false)
@@ -268,6 +273,7 @@ const Pools: React.FC = () => {
           </Flex>
         </Flex>
       </PageHeader>
+      {showMigrationSticky && <MigrationSticky />}
       <Page>
         <PoolControls>
           <PoolTabButtons
