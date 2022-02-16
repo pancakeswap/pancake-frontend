@@ -31,7 +31,7 @@ const useSubgraphHealth = () => {
     blockDifference: 0,
   })
 
-  useSlowRefreshEffect(() => {
+  useSlowRefreshEffect((currentBlock) => {
     const getSubgraphHealth = async () => {
       try {
         const { indexingStatusForCurrentVersion } = await request(
@@ -53,8 +53,6 @@ const useSubgraphHealth = () => {
             }
           `,
         )
-
-        const currentBlock = await simpleRpcProvider.getBlockNumber()
 
         const isHealthy = indexingStatusForCurrentVersion.health === 'healthy'
         const chainHeadBlock = parseInt(indexingStatusForCurrentVersion.chains[0].chainHeadBlock.number)
