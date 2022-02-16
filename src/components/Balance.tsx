@@ -55,6 +55,6 @@ const appear = keyframes`
   }
 `
 
-export const AnimateBalance = styled(Balance)`
+export const AnimatedBalance = styled(Balance)`
   animation: ${appear} 0.65s ease-in-out forwards;
 `
