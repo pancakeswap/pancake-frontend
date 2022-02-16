@@ -53,7 +53,10 @@ const IfoCardActions: React.FC<Props> = ({
     )
   }
 
-  if (enableStatus !== EnableStatus.ENABLED || (ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible)) {
+  if (
+    (enableStatus !== EnableStatus.ENABLED && publicIfoData.status === 'coming_soon') ||
+    (ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible)
+  ) {
     return null
   }
 
