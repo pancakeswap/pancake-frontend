@@ -1,4 +1,3 @@
-import React from 'react'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Button } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, Flex, Text, NftIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NftAttribute } from 'state/nftMarket/types'

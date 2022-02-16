@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'

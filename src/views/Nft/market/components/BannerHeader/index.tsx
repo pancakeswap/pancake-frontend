@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { Flex, Box, FlexProps } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import StyledBannerImageWrapper from './BannerImage'

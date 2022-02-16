@@ -1,4 +1,3 @@
-import React from 'react'
 import { IconButton, Text, Skeleton, Button, AutoRenewIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber } from 'utils/formatBalance'

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, useEffect } from 'react'
+import { useCallback, useState, useMemo, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Text, Flex, Box, Skeleton, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
@@ -218,10 +218,10 @@ const PoolTable: React.FC<PoolTableProps> = ({ poolDatas, loading }) => {
           {sortedPools.map((poolData, i) => {
             if (poolData) {
               return (
-                <React.Fragment key={poolData.address}>
+                <Fragment key={poolData.address}>
                   <DataRow index={(page - 1) * ITEMS_PER_INFO_TABLE_PAGE + i} poolData={poolData} />
                   <Break />
-                </React.Fragment>
+                </Fragment>
               )
             }
             return null

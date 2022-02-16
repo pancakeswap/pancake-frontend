@@ -2,7 +2,7 @@ import { Box, Flex, HelpIcon, Skeleton, Text, useMatchBreakpoints, useTooltip } 
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
-import React from 'react'
+
 import { VaultKey } from 'state/types'
 import { useIfoPoolCredit, useVaultPoolByKey } from 'state/pools/hooks'
 import styled from 'styled-components'

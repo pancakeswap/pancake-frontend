@@ -1,4 +1,3 @@
-import React from 'react'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { StyledCollectibleCard } from './styles'
 import CardBody from './CardBody'

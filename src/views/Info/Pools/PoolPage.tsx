@@ -18,7 +18,7 @@ import {
 import Page from 'components/Layout/Page'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { usePoolChartData, usePoolDatas, usePoolTransactions } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import styled from 'styled-components'

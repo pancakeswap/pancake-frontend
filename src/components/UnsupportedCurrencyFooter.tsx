@@ -1,4 +1,3 @@
-import React from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { Button, Text, Modal, useModal, InjectedModalProps, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

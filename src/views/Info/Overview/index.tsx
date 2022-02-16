@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text, Heading, Card, Skeleton } from '@pancakeswap/uikit'
 import { fromUnixTime } from 'date-fns'

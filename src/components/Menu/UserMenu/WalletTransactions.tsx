@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Button, Flex, Text } from '@pancakeswap/uikit'
 import { AppDispatch } from 'state'

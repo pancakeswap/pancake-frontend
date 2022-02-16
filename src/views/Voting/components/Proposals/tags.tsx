@@ -1,4 +1,3 @@
-import React from 'react'
 import { TagProps } from '@pancakeswap/uikit'
 import { ClosedTag, CommunityTag, CoreTag, SoonTag, VoteNowTag } from 'components/Tags'
 import { ProposalState } from 'state/types'

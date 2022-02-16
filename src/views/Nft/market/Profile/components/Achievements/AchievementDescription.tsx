@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text, TextProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { TranslatableText as AchievementDescriptionType } from 'config/constants/types'

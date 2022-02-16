@@ -1,4 +1,3 @@
-import React from 'react'
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
 const RibbonUpMid: React.FC<SvgProps> = (props) => {

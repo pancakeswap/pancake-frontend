@@ -1,4 +1,3 @@
-import React from 'react'
 import { Modal, Flex, Text } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'

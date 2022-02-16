@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Text, Box, Card, Flex, Skeleton } from '@pancakeswap/uikit'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'

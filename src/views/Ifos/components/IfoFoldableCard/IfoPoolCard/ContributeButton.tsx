@@ -1,4 +1,3 @@
-import React from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import BigNumber from 'bignumber.js'
 import { Button, useModal } from '@pancakeswap/uikit'

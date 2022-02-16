@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, CardFooter, ExpandableLabel } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

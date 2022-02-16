@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo } from 'react'
+import { ReactElement, useMemo } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'

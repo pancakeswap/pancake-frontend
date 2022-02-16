@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StyledBunnyImage, StyledImageContainer } from './styles'
 
 type BunniesImages = {

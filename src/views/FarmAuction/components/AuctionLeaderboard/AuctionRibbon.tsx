@@ -1,7 +1,7 @@
 import { Text } from '@pancakeswap/uikit'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
+
 import styled from 'styled-components'
 
 const StyledRibbon = styled.div<{ color: string }>`

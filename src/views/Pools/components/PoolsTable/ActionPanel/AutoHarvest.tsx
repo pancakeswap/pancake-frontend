@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text, Flex, TooltipText, useTooltip, Skeleton, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'

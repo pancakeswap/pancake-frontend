@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, useModal, WaitIcon, ButtonProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useLottery } from 'state/lottery/hooks'

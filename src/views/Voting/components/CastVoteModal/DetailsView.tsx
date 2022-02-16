@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber } from 'utils/formatBalance'

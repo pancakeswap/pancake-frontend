@@ -1,4 +1,3 @@
-import React from 'react'
 import Link from 'next/link'
 import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

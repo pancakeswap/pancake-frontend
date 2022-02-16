@@ -1,4 +1,3 @@
-import React from 'react'
 import { BoxProps, Flex, Text } from '@pancakeswap/uikit'
 import { BetPosition, Round } from 'state/types'
 import { useTranslation } from 'contexts/Localization'

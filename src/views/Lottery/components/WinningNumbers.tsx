@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Flex, FlexProps } from '@pancakeswap/uikit'
 import random from 'lodash/random'
 import uniqueId from 'lodash/uniqueId'

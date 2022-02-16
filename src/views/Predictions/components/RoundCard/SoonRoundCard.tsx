@@ -1,4 +1,3 @@
-import React from 'react'
 import { Card, CardBody, Text, WaitIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'

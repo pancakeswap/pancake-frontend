@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Flex, LaurelLeftIcon, LaurelRightIcon } from '@pancakeswap/uikit'
 import { RibbonProps } from '../../types'

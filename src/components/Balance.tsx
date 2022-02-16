@@ -1,5 +1,5 @@
 import { Text, TextProps } from '@pancakeswap/uikit'
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import CountUp from 'react-countup'
 import styled, { keyframes } from 'styled-components'
 

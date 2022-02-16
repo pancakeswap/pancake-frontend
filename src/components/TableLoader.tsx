@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Flex, Skeleton, Td, useMatchBreakpoints } from '@pancakeswap/uikit'
 

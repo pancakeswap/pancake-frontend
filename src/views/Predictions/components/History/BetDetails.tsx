@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Bet } from 'state/types'
 import { useTranslation } from 'contexts/Localization'

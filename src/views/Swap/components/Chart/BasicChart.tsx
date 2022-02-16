@@ -1,6 +1,6 @@
 import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import React, { useState } from 'react'
+import { useState, memo } from 'react'
 import { useFetchPairPrices } from 'state/swap/hooks'
 import dynamic from 'next/dynamic'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
@@ -113,7 +113,7 @@ const BasicChart = ({
   )
 }
 
-export default React.memo(BasicChart, (prev, next) => {
+export default memo(BasicChart, (prev, next) => {
   return (
     prev.token0Address === next.token0Address &&
     prev.token1Address === next.token1Address &&

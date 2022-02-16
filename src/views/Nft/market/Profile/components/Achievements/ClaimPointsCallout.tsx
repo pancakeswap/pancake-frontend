@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import sumBy from 'lodash/sumBy'
 import { useAppDispatch } from 'state'
 import { useWeb3React } from '@web3-react/core'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { NextLinkFromReactRouter as ReactRouterLink } from 'components/NextLink'
 import { BscScanIcon, Flex, IconButton, Link, Button, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

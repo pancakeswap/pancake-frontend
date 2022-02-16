@@ -1,4 +1,3 @@
-import React from 'react'
 import { ModalProvider, light, dark } from '@pancakeswap/uikit'
 import { Web3ReactProvider } from '@web3-react/core'
 import { Provider } from 'react-redux'
