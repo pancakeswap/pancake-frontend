@@ -2,11 +2,11 @@ import { AutoRenewIcon, Flex, Heading } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import useSWR from 'swr'
 import Page from 'components/Layout/Page'
+import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import TeamListCard from './components/TeamListCard'
 import TeamHeader from './components/TeamHeader'
 import { getTeams } from '../../state/teams/helpers'
-import { FetchStatus } from '../../config/constants/types'
 
 const Teams = () => {
   const { t } = useTranslation()

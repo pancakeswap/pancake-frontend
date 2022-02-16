@@ -1,27 +1,27 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  Table,
-  Th,
-  Td,
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  BnbUsdtPairTokenIcon,
   Card,
   Flex,
-  BnbUsdtPairTokenIcon,
   Heading,
-  useMatchBreakpoints,
   ProfileAvatar,
-  ArrowBackIcon,
+  Table,
+  Td,
   Text,
-  ArrowForwardIcon,
+  Th,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { FetchStatus } from 'config/constants/types'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useGetCollections, useGetNFTInitializationState } from 'state/nftMarket/hooks'
+import { useGetCollections } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import shuffle from 'lodash/shuffle'
-import { NFTMarketInitializationState } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
 
 export const ITEMS_PER_PAGE = 10
@@ -52,10 +52,9 @@ export const Arrow = styled.div`
 
 const Collectible = () => {
   const { t } = useTranslation()
-  const collections = useGetCollections()
+  const { data: collections, status } = useGetCollections()
   const { isMobile } = useMatchBreakpoints()
   const [sortField, setSortField] = useState(null)
-  const initializationState = useGetNFTInitializationState()
   const [sortDirection, setSortDirection] = useState<boolean>(false)
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
@@ -128,7 +127,7 @@ const Collectible = () => {
         </Heading>
       </PageHeader>
       <Page>
-        {initializationState !== NFTMarketInitializationState.INITIALIZED ? (
+        {status !== FetchStatus.Fetched ? (
           <PageLoader />
         ) : (
           <Card>

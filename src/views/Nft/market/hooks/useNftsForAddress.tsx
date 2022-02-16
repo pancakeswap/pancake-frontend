@@ -9,7 +9,7 @@ import useSWR from 'swr'
 import { FetchStatus } from 'config/constants/types'
 
 const useNftsForAddress = (account: string, profile: Profile, isProfileFetching: boolean) => {
-  const collections = useGetCollections()
+  const { data: collections } = useGetCollections()
 
   const hasProfileNft = profile?.tokenId
   const profileNftTokenId = profile?.tokenId?.toString()

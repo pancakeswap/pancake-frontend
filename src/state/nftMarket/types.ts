@@ -4,13 +4,6 @@ import { BigNumberish } from '@ethersproject/bignumber'
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
 
-// TODO: Handle the error state on the UI
-export enum NFTMarketInitializationState {
-  UNINITIALIZED = 'UNINITIALIZED',
-  INITIALIZED = 'INITIALIZED',
-  ERROR = 'ERROR',
-}
-
 export enum UserNftInitializationState {
   UNINITIALIZED = 'UNINITIALIZED',
   INITIALIZING = 'INITIALIZING',
@@ -19,9 +12,7 @@ export enum UserNftInitializationState {
 }
 
 export interface State {
-  initializationState: NFTMarketInitializationState
   data: {
-    collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
     filters: Record<string, NftFilter> // string is the collection address
     activityFilters: Record<string, NftActivityFilter> // string is the collection address

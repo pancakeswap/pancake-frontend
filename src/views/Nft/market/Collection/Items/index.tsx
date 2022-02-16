@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
-import { fetchCollection } from 'state/nftMarket/reducer'
 import { useGetCollection } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'
 import Select, { OptionProps } from 'components/Select/Select'
@@ -15,11 +13,8 @@ const Items = () => {
   const collectionAddress = useRouter().query.collectionAddress as string
   const [sortBy, setSortBy] = useState('updatedAt')
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
   const collection = useGetCollection(collectionAddress)
   const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
-
-  const { address } = collection || {}
 
   const sortByItems = [
     { label: t('Recently listed'), value: 'updatedAt' },
@@ -29,12 +24,6 @@ const Items = () => {
   const handleChange = (newOption: OptionProps) => {
     setSortBy(newOption.value)
   }
-
-  useEffect(() => {
-    if (address) {
-      dispatch(fetchCollection(address))
-    }
-  }, [address, dispatch])
 
   return (
     <>

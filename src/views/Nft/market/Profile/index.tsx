@@ -6,7 +6,6 @@ import { Box, Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
-import { useFetchCollections } from 'state/nftMarket/hooks'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import NoNftsImage from '../components/Activity/NoNftsImage'
@@ -28,7 +27,6 @@ const TabMenuWrapper = styled(Box)`
 const NftProfile: FC = ({ children }) => {
   const accountAddress = useRouter().query.accountAddress as string
   const { t } = useTranslation()
-  useFetchCollections()
 
   const invalidAddress = !accountAddress || isAddress(accountAddress) === false
 
