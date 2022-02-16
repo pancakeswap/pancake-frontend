@@ -7,6 +7,7 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
+import { PageMeta } from 'components/Layout/Page'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -238,129 +239,24 @@ const TradingCompetition = () => {
     !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionEnded)
 
   return (
-    <CompetitionPage>
-      <BattleBannerSection background={DARKBG} hasCurvedDivider={false} index={1}>
-        <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
-          <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
-          <BattleBanner />
-        </BannerFlex>
-      </BattleBannerSection>
-      <PageSection
-        containerProps={{ style: { marginTop: '-30px' } }}
-        background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
-        concaveDivider
-        clipFill={{ light: '#CCD8F0', dark: '#434575' }}
-        dividerPosition="top"
-        index={2}
-        dividerComponent={
-          shouldHideCta ? null : (
-            <BattleCta
-              userTradingInformation={userTradingInformation}
-              currentPhase={currentPhase}
-              account={account}
-              isCompetitionLive={isCompetitionLive}
-              hasCompetitionEnded={hasCompetitionEnded}
-              userCanClaimPrizes={userCanClaimPrizes}
-              finishedAndPrizesClaimed={finishedAndPrizesClaimed}
-              finishedAndNothingToClaim={finishedAndNothingToClaim}
-              profile={profile}
-              isLoading={isLoading}
-              onRegisterSuccess={onRegisterSuccess}
-              onClaimSuccess={onClaimSuccess}
-            />
-          )
-        }
-      >
-        <Box mt={shouldHideCta ? '0px' : ['94px', null, '36px']} mb="64px">
-          {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
-          {currentPhase.state === REGISTRATION ? (
-            <HowToJoin />
-          ) : (
-            <YourScore
-              currentPhase={currentPhase}
-              hasRegistered={userTradingInformation.hasRegistered}
-              userTradingInformation={userTradingInformation}
-              account={account}
-              profile={profile}
-              isLoading={isLoading}
-              userLeaderboardInformation={userLeaderboardInformation}
-              userCanClaimPrizes={userCanClaimPrizes}
-              finishedAndPrizesClaimed={finishedAndPrizesClaimed}
-              finishedAndNothingToClaim={finishedAndNothingToClaim}
-              onClaimSuccess={onClaimSuccess}
-            />
-          )}
-        </Box>
-      </PageSection>
-      <PageSection
-        containerProps={{ style: { marginTop: '-30px' } }}
-        index={3}
-        concaveDivider
-        clipFill={{ light: theme.colors.background }}
-        dividerPosition="top"
-        dividerComponent={
-          <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
-            {t('Team Ranks')}
-          </RibbonWithImage>
-        }
-      >
-        <Box my="64px">
-          <TeamRanks
-            team1LeaderboardInformation={team1LeaderboardInformation}
-            team2LeaderboardInformation={team2LeaderboardInformation}
-            team3LeaderboardInformation={team3LeaderboardInformation}
-            globalLeaderboardInformation={globalLeaderboardInformation}
-          />
-        </Box>
-      </PageSection>
-      <PageSection
-        containerProps={{ style: { marginTop: '-30px' } }}
-        dividerComponent={
-          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-            {t('Prizes')}
-          </RibbonWithImage>
-        }
-        concaveDivider
-        clipFill={{
-          light: 'linear-gradient(139.73deg, #e5fcfe 0%, #ecf6ff 100%)',
-          dark: 'linear-gradient(139.73deg, #303d5b 0%, #363457 100%)',
-        }}
-        dividerPosition="top"
-        background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
-        index={4}
-      >
-        <Box my="64px">
-          <PrizesInfo />
-        </Box>
-      </PageSection>
-      <PageSection
-        containerProps={{ style: { marginTop: '-1px' } }}
-        index={5}
-        dividerPosition="top"
-        clipFill={{
-          light: 'linear-gradient(139.73deg, #ecf5ff 0%, #f2effe 100%)',
-          dark: 'linear-gradient(139.73deg, #383357 0%, #3d2b53 100%)',
-        }}
-        dividerComponent={
-          <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
-            {t('Rules')}
-          </RibbonWithImage>
-        }
-      >
-        <Box mt="64px">
-          <Rules />
-        </Box>
-      </PageSection>
-      <PageSection
-        index={6}
-        dividerPosition="top"
-        dividerFill={{ light: '#191326' }}
-        clipFill={{ light: theme.colors.background }}
-        background={DARKBG}
-      >
-        <Flex alignItems="center">
-          {shouldHideCta ? null : (
-            <Flex height="fit-content">
+    <>
+      <PageMeta />
+      <CompetitionPage>
+        <BattleBannerSection background={DARKBG} hasCurvedDivider={false} index={1}>
+          <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
+            <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
+            <BattleBanner />
+          </BannerFlex>
+        </BattleBannerSection>
+        <PageSection
+          containerProps={{ style: { marginTop: '-30px' } }}
+          background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
+          concaveDivider
+          clipFill={{ light: '#CCD8F0', dark: '#434575' }}
+          dividerPosition="top"
+          index={2}
+          dividerComponent={
+            shouldHideCta ? null : (
               <BattleCta
                 userTradingInformation={userTradingInformation}
                 currentPhase={currentPhase}
@@ -375,14 +271,122 @@ const TradingCompetition = () => {
                 onRegisterSuccess={onRegisterSuccess}
                 onClaimSuccess={onClaimSuccess}
               />
-            </Flex>
-          )}
-          <BottomBunnyWrapper>
-            <Image src={StormBunny} width={147} height={200} />
-          </BottomBunnyWrapper>
-        </Flex>
-      </PageSection>
-    </CompetitionPage>
+            )
+          }
+        >
+          <Box mt={shouldHideCta ? '0px' : ['94px', null, '36px']} mb="64px">
+            {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
+            {currentPhase.state === REGISTRATION ? (
+              <HowToJoin />
+            ) : (
+              <YourScore
+                currentPhase={currentPhase}
+                hasRegistered={userTradingInformation.hasRegistered}
+                userTradingInformation={userTradingInformation}
+                account={account}
+                profile={profile}
+                isLoading={isLoading}
+                userLeaderboardInformation={userLeaderboardInformation}
+                userCanClaimPrizes={userCanClaimPrizes}
+                finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+                finishedAndNothingToClaim={finishedAndNothingToClaim}
+                onClaimSuccess={onClaimSuccess}
+              />
+            )}
+          </Box>
+        </PageSection>
+        <PageSection
+          containerProps={{ style: { marginTop: '-30px' } }}
+          index={3}
+          concaveDivider
+          clipFill={{ light: theme.colors.background }}
+          dividerPosition="top"
+          dividerComponent={
+            <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
+              {t('Team Ranks')}
+            </RibbonWithImage>
+          }
+        >
+          <Box my="64px">
+            <TeamRanks
+              team1LeaderboardInformation={team1LeaderboardInformation}
+              team2LeaderboardInformation={team2LeaderboardInformation}
+              team3LeaderboardInformation={team3LeaderboardInformation}
+              globalLeaderboardInformation={globalLeaderboardInformation}
+            />
+          </Box>
+        </PageSection>
+        <PageSection
+          containerProps={{ style: { marginTop: '-30px' } }}
+          dividerComponent={
+            <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
+              {t('Prizes')}
+            </RibbonWithImage>
+          }
+          concaveDivider
+          clipFill={{
+            light: 'linear-gradient(139.73deg, #e5fcfe 0%, #ecf6ff 100%)',
+            dark: 'linear-gradient(139.73deg, #303d5b 0%, #363457 100%)',
+          }}
+          dividerPosition="top"
+          background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
+          index={4}
+        >
+          <Box my="64px">
+            <PrizesInfo />
+          </Box>
+        </PageSection>
+        <PageSection
+          containerProps={{ style: { marginTop: '-1px' } }}
+          index={5}
+          dividerPosition="top"
+          clipFill={{
+            light: 'linear-gradient(139.73deg, #ecf5ff 0%, #f2effe 100%)',
+            dark: 'linear-gradient(139.73deg, #383357 0%, #3d2b53 100%)',
+          }}
+          dividerComponent={
+            <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
+              {t('Rules')}
+            </RibbonWithImage>
+          }
+        >
+          <Box mt="64px">
+            <Rules />
+          </Box>
+        </PageSection>
+        <PageSection
+          index={6}
+          dividerPosition="top"
+          dividerFill={{ light: '#191326' }}
+          clipFill={{ light: theme.colors.background }}
+          background={DARKBG}
+        >
+          <Flex alignItems="center">
+            {shouldHideCta ? null : (
+              <Flex height="fit-content">
+                <BattleCta
+                  userTradingInformation={userTradingInformation}
+                  currentPhase={currentPhase}
+                  account={account}
+                  isCompetitionLive={isCompetitionLive}
+                  hasCompetitionEnded={hasCompetitionEnded}
+                  userCanClaimPrizes={userCanClaimPrizes}
+                  finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+                  finishedAndNothingToClaim={finishedAndNothingToClaim}
+                  profile={profile}
+                  isLoading={isLoading}
+                  onRegisterSuccess={onRegisterSuccess}
+                  onClaimSuccess={onClaimSuccess}
+                />
+              </Flex>
+            )}
+            <BottomBunnyWrapper>
+              <Image src={StormBunny} width={147} height={200} />
+            </BottomBunnyWrapper>
+          </Flex>
+        </PageSection>
+      </CompetitionPage>
+    </>
   )
 }
 
