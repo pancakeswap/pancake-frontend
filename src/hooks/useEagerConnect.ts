@@ -16,6 +16,8 @@ const _binanceChainListener = async () =>
     }),
   )
 
+let triedEagerConnect = true
+
 const useEagerConnect = () => {
   const { login } = useAuth()
 
@@ -34,7 +36,8 @@ const useEagerConnect = () => {
         return
       }
 
-      login(connectorId)
+      login(connectorId, !triedEagerConnect)
+      triedEagerConnect = false
     }
   }, [login])
 }
