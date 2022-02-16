@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { Text, Button } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ProgressStepsType } from './ProgressSteps'
 
 const Container = styled.div`
@@ -40,12 +42,28 @@ interface MigrationStickyProps {
 
 const MigrationSticky: React.FC<MigrationStickyProps> = ({ step, handleClick }) => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
+
   const isStep1: boolean = step === ProgressStepsType.STEP1
   const title: string = isStep1 ? t('Unstaking LP Tokens and CAKE') : t('Stake in the new contract.')
   const subTitle: string = isStep1
     ? t('All the earned CAKE will be harvested to your wallet upon unstake.')
     : t('Each farm/pool has to be individually enable before staking.')
   const buttonText: string = isStep1 ? t('Go to Stake') : t('Skip')
+
+  if (!account) {
+    return (
+      <Container>
+        <TextGroup>
+          <Text fontSize="40px" bold>
+            {t('MasterChef v2 Migration')}
+          </Text>
+          <Text>{t('Please connect wallet to check your pools & farms status.')}</Text>
+        </TextGroup>
+        <ConnectWalletButton width="266px" />
+      </Container>
+    )
+  }
 
   return (
     <Container>

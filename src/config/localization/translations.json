@@ -1510,5 +1510,10 @@
   "All the earned CAKE will be harvested to your wallet upon unstake.": "All the earned CAKE will be harvested to your wallet upon unstake.",
   "Each farm/pool has to be individually enable before staking.": "Each farm/pool has to be individually enable before staking.",
   "Go to Stake": "Go to Stake",
-  "Skip": "Skip"
+  "Skip": "Skip",
+  "Please connect wallet to check your pools & farms status.": "Please connect wallet to check your pools & farms status.",
+  "Please connect wallet to check your pool status.": "Please connect wallet to check your pool status.",
+  "Please connect wallet to check your farms status.": "Please connect wallet to check your farms status.",
+  "You are not currently staking in any v1 pools": "You are not currently staking in any v1 pools",
+  "You are not currently staking in any v1 farms.": "You are not currently staking in any v1 farms."
 }
