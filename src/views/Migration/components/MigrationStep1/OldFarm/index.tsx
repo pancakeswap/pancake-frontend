@@ -80,6 +80,9 @@ const OldFarmStep1: React.FC = () => {
       multiplier: {
         multiplier: farm.multiplier,
       },
+      unstake: {
+        pid: farm.pid,
+      },
     }
 
     return row

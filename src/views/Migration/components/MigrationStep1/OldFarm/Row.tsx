@@ -9,6 +9,7 @@ import Multiplier, { MultiplierProps } from 'views/Farms/components/FarmTable/Mu
 import Liquidity, { LiquidityProps } from 'views/Farms/components/FarmTable/Liquidity'
 import CellLayout from 'views/Farms/components/FarmTable/CellLayout'
 import Staked, { StakedProps } from './Staked'
+import Unstake, { UnstakeProps } from './Unstake'
 import { DesktopColumnSchema, MobileColumnSchema } from '../../types'
 
 export interface RowProps {
@@ -17,6 +18,7 @@ export interface RowProps {
   farm: FarmProps
   multiplier: MultiplierProps
   liquidity: LiquidityProps
+  unstake: UnstakeProps
 }
 
 interface RowPropsWithLoading extends RowProps {
@@ -29,6 +31,7 @@ const cells = {
   staked: Staked,
   multiplier: Multiplier,
   liquidity: Liquidity,
+  unstake: Unstake,
 }
 
 const CellInner = styled.div`

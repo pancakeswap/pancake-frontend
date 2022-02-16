@@ -1515,5 +1515,6 @@
   "Please connect wallet to check your pool status.": "Please connect wallet to check your pool status.",
   "Please connect wallet to check your farms status.": "Please connect wallet to check your farms status.",
   "You are not currently staking in any v1 pools": "You are not currently staking in any v1 pools",
-  "You are not currently staking in any v1 farms.": "You are not currently staking in any v1 farms."
+  "You are not currently staking in any v1 farms.": "You are not currently staking in any v1 farms.",
+  "Unstake All": "Unstake All"
 }
