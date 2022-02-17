@@ -126,12 +126,14 @@ export interface SerializedFarmsState {
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
   loadingKeys: Record<string, boolean>
+  poolLength?: number
 }
 
 export interface DeserializedFarmsState {
   data: DeserializedFarm[]
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
+  poolLength?: number
 }
 
 export interface VaultFees {
