@@ -14,7 +14,11 @@ interface AutoEarningsCellProps {
 }
 
 const StyledCell = styled(BaseCell)`
-  flex: 2 0 100px;
+  display: none;
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: flex;
+    flex: 2 0 100px;
+  }
 `
 
 const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) => {

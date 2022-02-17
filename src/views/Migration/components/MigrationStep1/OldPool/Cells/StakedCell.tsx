@@ -18,8 +18,15 @@ interface StakedCellProps {
 }
 
 const StyledCell = styled(BaseCell)`
-  flex: 2 0 100px;
-  margin-left: 50px;
+  flex: 0;
+  padding: 0 0 24px 0;
+  margin-left: 48px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex: 2 0 100px;
+    padding: 24px 8px;
+    margin-left: 50px;
+  }
 `
 
 const StakedCell: React.FC<StakedCellProps> = ({ pool }) => {

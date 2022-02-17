@@ -15,11 +15,12 @@ export interface UnstakeProps {
 
 const Unstake: React.FC<UnstakeProps> = ({ pid }) => {
   const { t } = useTranslation()
+  const disabled: boolean = true
 
   return (
     <Container>
-      <Button marginLeft="auto" width="148px">
-        {t('Unstake All')}
+      <Button disabled={disabled} marginLeft="auto" width="148px">
+        {disabled ? t('Unstaked') : t('Unstake All')}
       </Button>
     </Container>
   )

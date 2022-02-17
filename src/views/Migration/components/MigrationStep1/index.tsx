@@ -5,8 +5,8 @@ import OldFarm from './OldFarm'
 const MigrationStep1: React.FC = () => {
   return (
     <>
-      {/* <OldPool />
-      <OldFarm /> */}
+      <OldPool />
+      {/* <OldFarm /> */}
     </>
   )
 }

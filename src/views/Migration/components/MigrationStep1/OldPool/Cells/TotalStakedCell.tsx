@@ -15,7 +15,11 @@ interface TotalStakedCellProps {
 }
 
 const StyledCell = styled(BaseCell)`
+  display: none;
   flex: 2 0 100px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: block;
+  }
 `
 
 const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool }) => {
