@@ -53,7 +53,20 @@ const IfoCardActions: React.FC<Props> = ({
     )
   }
 
-  if (enableStatus !== EnableStatus.ENABLED || (ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible)) {
+  const needClaim =
+    publicIfoData.status === 'finished' &&
+    !userPoolCharacteristics.hasClaimed &&
+    (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
+      userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0))
+
+  if (needClaim) {
+    return <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
+  }
+
+  if (
+    (enableStatus !== EnableStatus.ENABLED && publicIfoData.status === 'coming_soon') ||
+    (ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible)
+  ) {
     return null
   }
 
@@ -62,12 +75,6 @@ const IfoCardActions: React.FC<Props> = ({
       {(publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon') && (
         <ContributeButton poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
       )}
-      {publicIfoData.status === 'finished' &&
-        !userPoolCharacteristics.hasClaimed &&
-        (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
-          userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0)) && (
-          <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
-        )}
     </>
   )
 }

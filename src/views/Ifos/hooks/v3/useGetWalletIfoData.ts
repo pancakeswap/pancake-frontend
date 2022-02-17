@@ -117,9 +117,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     setState({ ...initialState })
   }, [])
 
-  const creditLeftWithNegative = credit
-    .minus(state.poolBasic.amountTokenCommittedInLP)
-    .minus(state.poolUnlimited.amountTokenCommittedInLP)
+  const creditLeftWithNegative = credit.minus(state.poolUnlimited.amountTokenCommittedInLP)
 
   const ifoCredit = {
     credit,
