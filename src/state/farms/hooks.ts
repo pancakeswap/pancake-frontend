@@ -84,6 +84,10 @@ export const useFarms = (): DeserializedFarmsState => {
   }
 }
 
+export const useFarmsPoolLength = (): number => {
+  return useSelector((state: State) => state.farms.poolLength)
+}
+
 export const useFarmFromPid = (pid: number): DeserializedFarm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.pid === pid))
   return deserializeFarm(farm)

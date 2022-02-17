@@ -8,7 +8,7 @@ import { farmsConfig } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
-import { fetchMasterChefFarmPoolLength } from 'state/farms/fetchMasterChefData'
+import { useFarmsPoolLength } from 'state/farms/hooks'
 
 export interface FarmWithBalance extends SerializedFarmConfig {
   balance: BigNumber
@@ -18,11 +18,11 @@ const useFarmsWithBalance = () => {
   const [farmsWithStakedBalance, setFarmsWithStakedBalance] = useState<FarmWithBalance[]>([])
   const [earningsSum, setEarningsSum] = useState<number>(null)
   const { account } = useWeb3React()
+  const poolLength = useFarmsPoolLength()
 
   useFastRefreshEffect(() => {
     const fetchBalances = async () => {
-      const poolLength = await fetchMasterChefFarmPoolLength()
-      const farmsCanFetch = farmsConfig.filter((f) => poolLength.gt(f.pid))
+      const farmsCanFetch = farmsConfig.filter((f) => poolLength > f.pid)
       const calls = farmsCanFetch.map((farm) => ({
         address: getMasterChefAddress(),
         name: 'pendingCake',
@@ -44,10 +44,10 @@ const useFarmsWithBalance = () => {
       setEarningsSum(totalEarned)
     }
 
-    if (account) {
+    if (account && poolLength) {
       fetchBalances()
     }
-  }, [account])
+  }, [account, poolLength])
 
   return { farmsWithStakedBalance, earningsSum }
 }
