@@ -2001,6 +2001,22 @@ export const mainnetTokens = defineTokens({
     'https://bittorrent.com/',
   ),
   era: new Token(MAINNET, '0x6f9F0c4ad9Af7EbD61Ac5A1D4e0F2227F7B0E5f9', 18, 'ERA', 'Era Token', 'https://www.era7.io/'),
+  fight: new Token(
+    MAINNET,
+    '0x4f39c3319188A723003670c3F9B9e7EF991E52F3',
+    18,
+    'FIGHT',
+    'Fight Token',
+    'https://www.cryptofightclub.io/',
+  ),
+  loa: new Token(
+    MAINNET,
+    '0x94b69263FCA20119Ae817b6f783Fc0F13B02ad50',
+    18,
+    'LOA',
+    'League Of Ancients',
+    'https://www.leagueofancients.com/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
