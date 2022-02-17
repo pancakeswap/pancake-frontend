@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { Text, Button } from '@pancakeswap/uikit'
+import { Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ProgressStepsType } from './ProgressSteps'
 
@@ -14,11 +14,12 @@ const Container = styled.div`
   justify-content: space-between;
   width: 100%;
   margin: auto;
-  padding: 24px 40px;
+  padding: 16px;
   z-index: 6;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1120px;
+    padding: 24px 40px;
   }
 
   border-top: 1px ${({ theme }) => theme.colors.secondary} solid;
@@ -34,6 +35,24 @@ const Container = styled.div`
 const TextGroup = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 16px;
+`
+
+const TextTitle = styled(Text)`
+  font-size: 16px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 20px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 40px;
+  }
+`
+
+const TextSubTitle = styled(Text)`
+  font-size: 12px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 16px;
+  }
 `
 
 interface MigrationStickyProps {
@@ -44,6 +63,7 @@ interface MigrationStickyProps {
 const MigrationSticky: React.FC<MigrationStickyProps> = ({ step, handleClick }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const { isMobile } = useMatchBreakpoints()
 
   const isStep1: boolean = step === ProgressStepsType.STEP1
   const title: string = isStep1 ? t('Unstaking LP Tokens and CAKE') : t('Stake in the new contract.')
@@ -56,12 +76,10 @@ const MigrationSticky: React.FC<MigrationStickyProps> = ({ step, handleClick }) 
     return (
       <Container>
         <TextGroup>
-          <Text fontSize="40px" bold>
-            {t('MasterChef v2 Migration')}
-          </Text>
-          <Text>{t('Please connect wallet to check your pools & farms status.')}</Text>
+          <TextTitle bold>{t('MasterChef v2 Migration')}</TextTitle>
+          <TextSubTitle>{t('Please connect wallet to check your pools & farms status.')}</TextSubTitle>
         </TextGroup>
-        <ConnectWalletButton width="266px" />
+        <ConnectWalletButton width={isMobile ? '131px' : '178px'} />
       </Container>
     )
   }
@@ -69,12 +87,10 @@ const MigrationSticky: React.FC<MigrationStickyProps> = ({ step, handleClick }) 
   return (
     <Container>
       <TextGroup>
-        <Text fontSize="40px" bold>
-          {title}
-        </Text>
-        <Text>{subTitle}</Text>
+        <TextTitle bold>{title}</TextTitle>
+        <TextSubTitle>{subTitle}</TextSubTitle>
       </TextGroup>
-      <Button width="266px" onClick={handleClick}>
+      <Button minWidth={isMobile ? '131px' : '178px'} onClick={handleClick}>
         {buttonText}
       </Button>
     </Container>
