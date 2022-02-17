@@ -36,7 +36,7 @@ const useEagerConnect = () => {
         return
       }
 
-      login(connectorId, !triedEagerConnect)
+      login(connectorId, triedEagerConnect)
       triedEagerConnect = false
     }
   }, [login])
