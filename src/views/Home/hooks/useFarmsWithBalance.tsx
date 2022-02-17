@@ -8,6 +8,7 @@ import { farmsConfig } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import { fetchMasterChefFarmPoolLength } from 'state/farms/fetchMasterChefData'
 
 export interface FarmWithBalance extends SerializedFarmConfig {
   balance: BigNumber
@@ -20,14 +21,16 @@ const useFarmsWithBalance = () => {
 
   useFastRefreshEffect(() => {
     const fetchBalances = async () => {
-      const calls = farmsConfig.map((farm) => ({
+      const poolLength = await fetchMasterChefFarmPoolLength()
+      const farmsCanFetch = farmsConfig.filter((f) => poolLength.gt(f.pid))
+      const calls = farmsCanFetch.map((farm) => ({
         address: getMasterChefAddress(),
         name: 'pendingCake',
         params: [farm.pid, account],
       }))
 
       const rawResults = await multicall(masterChefABI, calls)
-      const results = farmsConfig.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
+      const results = farmsCanFetch.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
       const farmsWithBalances = results.filter((balanceType) => balanceType.balance.gt(0))
       const totalEarned = farmsWithBalances.reduce((accum, earning) => {
         const earningNumber = new BigNumber(earning.balance)
