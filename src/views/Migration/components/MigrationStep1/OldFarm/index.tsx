@@ -9,8 +9,8 @@ import { DeserializedFarm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import isArchivedPid from 'utils/farmHelpers'
-import OldFarm from './Farm'
-import { RowProps } from './Row'
+import OldFarm from './FarmTable'
+import { RowProps } from './FarmRow'
 import { DesktopColumnSchema } from '../../types'
 
 const OldFarmStep1: React.FC = () => {
@@ -68,6 +68,7 @@ const OldFarmStep1: React.FC = () => {
         quoteToken: farm.quoteToken,
       },
       staked: {
+        label: lpLabel,
         pid: farm.pid,
       },
       earned: {
@@ -104,7 +105,7 @@ const OldFarmStep1: React.FC = () => {
       },
     }))
 
-    return <OldFarm data={rowData} columns={columns} userDataReady={userDataReady} />
+    return <OldFarm account={account} data={rowData} columns={columns} userDataReady={userDataReady} />
   }
 
   return <>{renderContent()}</>

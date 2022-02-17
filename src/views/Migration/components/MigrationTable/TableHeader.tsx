@@ -7,7 +7,7 @@ export interface TableHeaderProps {
 
 const TableHeader: React.FC<TableHeaderProps> = ({ title }) => {
   return (
-    <CardHeader mb="-16px">
+    <CardHeader>
       <Text fontSize="20px" bold>
         {title}
       </Text>

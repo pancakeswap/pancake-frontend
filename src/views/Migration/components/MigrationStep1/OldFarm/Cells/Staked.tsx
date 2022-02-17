@@ -1,26 +1,27 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Skeleton } from '@pancakeswap/uikit'
+import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useFarmUser } from 'state/farms/hooks'
+import { useTranslation } from 'contexts/Localization'
 import { getBalanceAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
+
+const StyledCell = styled(BaseCell)`
+  flex: 1 0 100px;
+`
 
 export interface StakedProps {
+  label: string
   pid: number
 }
 
-interface StakedWithLoading extends StakedProps {
-  userDataReady: boolean
-}
-
-const StakedWrapper = styled.div`
-  min-width: 60px;
-  text-align: left;
-  color: ${({ theme }) => theme.colors.text};
-`
-
-const Staked: React.FC<StakedWithLoading> = ({ pid, userDataReady }) => {
+const Staked: React.FC<StakedProps> = ({ label, pid }) => {
+  const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   const { stakedBalance } = useFarmUser(pid)
+
+  const labelText = t('%asset% Staked', { asset: label })
 
   const displayBalance = useCallback(() => {
     const stakedBalanceBigNumber = getBalanceAmount(stakedBalance)
@@ -33,14 +34,19 @@ const Staked: React.FC<StakedWithLoading> = ({ pid, userDataReady }) => {
     return stakedBalanceBigNumber.toFixed(3, BigNumber.ROUND_DOWN)
   }, [stakedBalance])
 
-  if (userDataReady) {
-    return <StakedWrapper>{displayBalance()}</StakedWrapper>
-  }
-
   return (
-    <StakedWrapper>
-      <Skeleton width={60} />
-    </StakedWrapper>
+    <StyledCell role="cell">
+      <CellContent>
+        <Text fontSize="12px" color="textSubtle" textAlign="left">
+          {labelText}
+        </Text>
+        <Flex mt="4px">
+          <Text fontSize={isMobile ? '14px' : '16px'} color={displayBalance() ? 'text' : 'textDisabled'}>
+            {displayBalance()}
+          </Text>
+        </Flex>
+      </CellContent>
+    </StyledCell>
   )
 }
 

@@ -15,6 +15,7 @@ const Container = styled.div`
   width: 100%;
   margin: auto;
   padding: 24px 40px;
+  z-index: 6;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1120px;

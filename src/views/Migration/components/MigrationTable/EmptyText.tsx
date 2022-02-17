@@ -7,13 +7,9 @@ export interface EmptyTextProps {
 
 const EmptyText: React.FC<EmptyTextProps> = ({ text }) => {
   return (
-    <tr>
-      <td>
-        <Text padding="24px" fontSize="16px" textAlign="center">
-          {text}
-        </Text>
-      </td>
-    </tr>
+    <Text padding="24px" fontSize="16px" textAlign="center">
+      {text}
+    </Text>
   )
 }
 
