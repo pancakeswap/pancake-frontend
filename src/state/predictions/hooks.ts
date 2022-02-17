@@ -127,6 +127,10 @@ export const useGetCurrentRoundLockTimestamp = () => {
   const currentRound = useGetCurrentRound()
   const intervalSeconds = useGetIntervalSeconds()
 
+  if (!currentRound) {
+    return undefined
+  }
+
   if (!currentRound.lockTimestamp) {
     return currentRound.startTimestamp + intervalSeconds
   }
