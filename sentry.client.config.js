@@ -41,5 +41,6 @@ Sentry.init({
     'Non-Error promise rejection captured',
     'User rejected the transaction',
     'cancelled',
+    'PollingBlockTracker',
   ],
 })
