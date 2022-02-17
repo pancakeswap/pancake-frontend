@@ -89,15 +89,14 @@ export const useGetCollection = (collectionAddress: string): Collection | undefi
 }
 
 export const useGetShuffledCollections = (): { data: ApiCollections; status: FetchStatus } => {
-  const collections = useSWRImmutable(['nftMarket', 'collections'])
-
+  const { data } = useSWRImmutable(['nftMarket', 'collections'], async () => getCollections())
+  const collections = data ?? ({} as ApiCollections)
   const { data: shuffledCollections = {}, status } = useSWRImmutable(
     !isEmpty(collections) ? ['nftMarket', 'shuffledCollections'] : null,
     () => {
       return shuffle(collections)
     },
   )
-
   return { data: shuffledCollections, status }
 }
 
