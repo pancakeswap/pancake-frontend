@@ -57,7 +57,7 @@ export interface WalletIfoState {
   ifoCredit?: {
     credit: BigNumber
     /**
-     * credit left is the ifo credit minus the amount of `amountTokenCommittedInLP` in pool basic and unlimited
+     * credit left is the ifo credit minus the amount of `amountTokenCommittedInLP` in unlimited pool
      * minimum is 0
      */
     creditLeft: BigNumber
