@@ -26,7 +26,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Cypress run
-        uses: yarn run cypress run
+        run: yarn cypress run
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           CYPRESS_SF_HEADER: ${{ secrets.SF_HEADER }}
