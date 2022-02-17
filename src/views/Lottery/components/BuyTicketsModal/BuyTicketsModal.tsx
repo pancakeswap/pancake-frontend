@@ -264,7 +264,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         return callWithGasPrice(lotteryContract, 'buyTickets', [currentLotteryId, ticketsForPurchase])
       },
       onSuccess: async ({ receipt }) => {
-        onDismiss()
+        onDismiss?.()
         dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
         toastSuccess(t('Lottery tickets purchased!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       },

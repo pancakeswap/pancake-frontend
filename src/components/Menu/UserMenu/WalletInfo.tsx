@@ -23,7 +23,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
   const { logout } = useAuth()
 
   const handleLogout = () => {
-    onDismiss()
+    onDismiss?.()
     logout()
   }
 

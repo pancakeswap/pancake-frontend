@@ -166,7 +166,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
     if (customOnDismiss) {
       customOnDismiss()
     }
-    onDismiss()
+    onDismiss?.()
   }, [customOnDismiss, onDismiss])
 
   if (!chainId) return null

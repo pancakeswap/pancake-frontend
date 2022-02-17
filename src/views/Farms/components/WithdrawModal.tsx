@@ -55,7 +55,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)
-            onDismiss()
+            onDismiss?.()
             setPendingTx(false)
           }}
           width="100%"

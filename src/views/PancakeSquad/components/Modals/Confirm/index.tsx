@@ -49,7 +49,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   const onCloseCallback = () => {
     onConfirmClose()
-    onDismiss()
+    onDismiss?.()
   }
 
   return (

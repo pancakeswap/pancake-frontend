@@ -126,7 +126,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
       },
       onSuccess: async ({ receipt }) => {
         refreshBidders()
-        onDismiss()
+        onDismiss?.()
         toastSuccess(t('Bid placed!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       },
     })

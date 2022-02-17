@@ -60,7 +60,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
       onBeforeDismiss()
     }
 
-    onDismiss()
+    onDismiss?.()
   }
 
   return (

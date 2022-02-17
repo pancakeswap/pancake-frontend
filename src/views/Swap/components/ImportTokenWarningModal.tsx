@@ -15,9 +15,7 @@ const ImportTokenWarningModal: React.FC<Props> = ({ tokens, onDismiss, onCancel 
     <Modal
       title={t('Import Token')}
       onDismiss={() => {
-        if (onDismiss) {
-          onDismiss()
-        }
+        onDismiss?.()
         onCancel()
       }}
       style={{ maxWidth: '420px' }}

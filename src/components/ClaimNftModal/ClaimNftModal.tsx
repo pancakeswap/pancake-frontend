@@ -30,7 +30,7 @@ const ClaimNftModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       setIsClaiming(true)
       await bunnyXmasContract.mintNFT()
       toastSuccess(t('Your NFT has been sent to your wallet'))
-      onDismiss()
+      onDismiss?.()
     } catch (error: any) {
       const errorDescription = `${error.message} - ${error.data?.message}`
       toastError('Failed to claim', errorDescription)
