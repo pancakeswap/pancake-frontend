@@ -5,5 +5,9 @@
   "supportFile": "cypress/support/index.js",
   "video": false,
   "defaultCommandTimeout": 10000,
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "pageLoadTimeout": 10000,
+  "retries": {
+    "runMode": 2
+  }
 }
