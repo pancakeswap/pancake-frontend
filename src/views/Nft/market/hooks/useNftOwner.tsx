@@ -1,21 +1,33 @@
+import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 import { useErc721CollectionContract } from 'hooks/useContract'
 import { NftToken } from 'state/nftMarket/types'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 
 const NOT_ON_SALE_SELLER = '0x0000000000000000000000000000000000000000'
 
-const useNftOwner = (nft: NftToken) => {
+const useNftOwner = (nft: NftToken, isOwnNft = false) => {
+  const { account } = useWeb3React()
   const [owner, setOwner] = useState(null)
   const [isLoadingOwner, setIsLoadingOwner] = useState(true)
   const collectionContract = useErc721CollectionContract(nft.collectionAddress, false)
   const currentSeller = nft.marketData?.currentSeller
+  const pancakeProfileAddress = getPancakeProfileAddress()
   const { tokenId } = nft
 
   useEffect(() => {
     const getOwner = async () => {
       try {
-        const tokenOwner = await collectionContract.ownerOf(tokenId)
-        setOwner(tokenOwner)
+        if (isOwnNft && account) {
+          setOwner(account)
+        } else {
+          const tokenOwner = await collectionContract.ownerOf(tokenId)
+          if (tokenOwner.toLowerCase() !== pancakeProfileAddress.toLowerCase()) {
+            setOwner(tokenOwner)
+          } else {
+            setOwner(null)
+          }
+        }
       } catch (error) {
         setOwner(null)
       } finally {
@@ -29,7 +41,7 @@ const useNftOwner = (nft: NftToken) => {
     } else {
       getOwner()
     }
-  }, [currentSeller, collectionContract, tokenId])
+  }, [account, isOwnNft, currentSeller, collectionContract, tokenId, pancakeProfileAddress])
 
   return { owner, isLoadingOwner }
 }
