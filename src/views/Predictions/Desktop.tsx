@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Split from 'split-grid'
 import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap/uikit'
@@ -187,4 +187,4 @@ const Desktop: React.FC = () => {
   )
 }
 
-export default Desktop
+export default memo(Desktop)

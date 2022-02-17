@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled, { css, keyframes } from 'styled-components'
 import { Button, CloseIcon, IconButton, TrophyGoldIcon } from '@pancakeswap/uikit'
@@ -187,4 +187,4 @@ const CollectWinningsPopup = () => {
   )
 }
 
-export default CollectWinningsPopup
+export default memo(CollectWinningsPopup)
