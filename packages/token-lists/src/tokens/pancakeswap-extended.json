@@ -2126,5 +2126,21 @@
     "chainId": 56,
     "decimals": 8,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xBc7d6B50616989655AfD682fb42743507003056D.png"
+  },
+  {
+    "name": "Fight Token",
+    "symbol": "FIGHT",
+    "address": "0x4f39c3319188A723003670c3F9B9e7EF991E52F3",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x4f39c3319188A723003670c3F9B9e7EF991E52F3.png"
+  },
+  {
+    "name": "League Of Ancients",
+    "symbol": "LOA",
+    "address": "0x94b69263FCA20119Ae817b6f783Fc0F13B02ad50",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x94b69263FCA20119Ae817b6f783Fc0F13B02ad50.png"
   }
 ]

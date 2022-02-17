@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2022-02-12T21:37:24.198Z",
+  "timestamp": "2022-02-17T02:58:42.901Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 71
+    "patch": 69
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -789,6 +789,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x5512014efa6Cd57764Fa743756F7a6Ce3358cC83.png"
     },
     {
+      "name": "Fight Token",
+      "symbol": "FIGHT",
+      "address": "0x4f39c3319188A723003670c3F9B9e7EF991E52F3",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x4f39c3319188A723003670c3F9B9e7EF991E52F3.png"
+    },
+    {
       "name": "Filecoin",
       "symbol": "FIL",
       "address": "0x0D8Ce2A99Bb6e3B7Db580eD848240e4a0F9aE153",
@@ -1147,6 +1155,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x9617857E191354dbEA0b714d78Bc59e57C411087.png"
+    },
+    {
+      "name": "League Of Ancients",
+      "symbol": "LOA",
+      "address": "0x94b69263FCA20119Ae817b6f783Fc0F13B02ad50",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x94b69263FCA20119Ae817b6f783Fc0F13B02ad50.png"
     },
     {
       "name": "Litecoin Token",
