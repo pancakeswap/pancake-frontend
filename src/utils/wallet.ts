@@ -17,7 +17,7 @@ export const setupNetwork = async () => {
         params: [
           {
             chainId: `0x${chainId.toString(16)}`,
-            chainName: 'Binance Smart Chain Mainnet',
+            chainName: 'BNB Smart Chain Mainnet',
             nativeCurrency: {
               name: 'BNB',
               symbol: 'bnb',
