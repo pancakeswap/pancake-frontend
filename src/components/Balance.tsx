@@ -1,6 +1,7 @@
+import { Text, TextProps } from '@pancakeswap/uikit'
 import React, { useEffect, useRef } from 'react'
 import CountUp from 'react-countup'
-import { Text, TextProps } from '@pancakeswap/uikit'
+import styled, { keyframes } from 'styled-components'
 
 interface BalanceProps extends TextProps {
   value: number
@@ -43,3 +44,17 @@ const Balance: React.FC<BalanceProps> = ({
 }
 
 export default Balance
+
+const appear = keyframes`
+  from {
+    opacity:0;
+  }
+
+  to {
+    opacity:1;
+  }
+`
+
+export const AnimatedBalance = styled(Balance)`
+  animation: ${appear} 0.65s ease-in-out forwards;
+`
