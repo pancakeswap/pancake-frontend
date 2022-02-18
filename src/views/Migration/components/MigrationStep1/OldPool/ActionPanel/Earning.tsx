@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
@@ -7,6 +8,10 @@ import Balance from 'components/Balance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { DeserializedPool } from 'state/types'
 import { ActionContainer, ActionTitles, ActionContent } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
+
+const Container = styled(ActionContainer)`
+  flex: 2;
+`
 
 const Earning: React.FunctionComponent<DeserializedPool> = ({ earningToken, userData, earningTokenPrice }) => {
   const { t } = useTranslation()
@@ -45,7 +50,7 @@ const Earning: React.FunctionComponent<DeserializedPool> = ({ earningToken, user
   }
 
   return (
-    <ActionContainer>
+    <Container>
       <ActionTitles>{actionTitle}</ActionTitles>
       <ActionContent>
         <Flex flex="1" pt="16px" flexDirection="column" alignSelf="flex-start">
@@ -76,7 +81,7 @@ const Earning: React.FunctionComponent<DeserializedPool> = ({ earningToken, user
           </>
         </Flex>
       </ActionContent>
-    </ActionContainer>
+    </Container>
   )
 }
 

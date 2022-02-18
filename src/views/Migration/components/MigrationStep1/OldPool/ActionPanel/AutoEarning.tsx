@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Text, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
@@ -7,6 +8,10 @@ import Balance from 'components/Balance'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { ActionContainer, ActionTitles, ActionContent } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
+
+const Container = styled(ActionContainer)`
+  flex: 2;
+`
 
 const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPrice, vaultKey }) => {
   const { t } = useTranslation()
@@ -53,7 +58,7 @@ const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPr
   }
 
   return (
-    <ActionContainer>
+    <Container>
       <ActionTitles>{actionTitle}</ActionTitles>
       <ActionContent>
         <Flex flex="1" pt="16px" flexDirection="column" alignSelf="flex-start">
@@ -84,7 +89,7 @@ const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPr
           </>
         </Flex>
       </ActionContent>
-    </ActionContainer>
+    </Container>
   )
 }
 
