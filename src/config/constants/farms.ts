@@ -42,6 +42,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 488,
+    lpSymbol: 'THG-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x486697ae24469cB1122F537924Aa46E705B142Aa',
+    },
+    token: serializedTokens.thg,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 513,
     lpSymbol: 'ERA-BNB LP',
     lpAddresses: {
@@ -331,16 +341,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0x141e9558f66Cc21c93628400cCa7d830c15c2c24',
     },
     token: serializedTokens.dpt,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 488,
-    lpSymbol: 'THG-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x486697ae24469cB1122F537924Aa46E705B142Aa',
-    },
-    token: serializedTokens.thg,
     quoteToken: serializedTokens.wbnb,
   },
   {
