@@ -1,6 +1,5 @@
 import { Heading, Flex, Text, Skeleton, ChartIcon, CommunityIcon, SwapIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
 import useSWRImmutable from 'swr/immutable'
@@ -10,14 +9,14 @@ import GradientLogo from '../GradientLogoSvg'
 
 const Stats = () => {
   const { t } = useTranslation()
-  const data = useGetStats()
   const { theme } = useTheme()
 
-  const tvlString = data ? formatLocalisedCompactNumber(data.tvl) : '-'
+  const { data: tvl } = useSWRImmutable('tvl')
   const { data: txCount } = useSWRImmutable('totalTx30Days')
   const { data: addressCount } = useSWRImmutable('addressCount30Days')
   const trades = formatLocalisedCompactNumber(txCount)
   const users = formatLocalisedCompactNumber(addressCount)
+  const tvlString = tvl ? formatLocalisedCompactNumber(tvl) : '-'
 
   const tvlText = t('And those users are now entrusting the platform with over $%tvl% in funds.', { tvl: tvlString })
   const [entrusting, inFunds] = tvlText.split(tvlString)
@@ -49,7 +48,7 @@ const Stats = () => {
       <Flex flexWrap="wrap">
         <Text display="inline" textAlign="center" color="textSubtle" mb="20px">
           {entrusting}
-          <>{data ? <>{tvlString}</> : <Skeleton display="inline-block" height={16} width={70} mt="2px" />}</>
+          <>{tvl ? <>{tvlString}</> : <Skeleton display="inline-block" height={16} width={70} mt="2px" />}</>
           {inFunds}
         </Text>
       </Flex>
