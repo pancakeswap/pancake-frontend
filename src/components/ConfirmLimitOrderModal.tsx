@@ -1,11 +1,10 @@
-import { Modal, Button, Text, Flex, Spinner, Message, MessageText, ArrowDownIcon } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { Trade } from '@pancakeswap/sdk'
+import { ArrowDownIcon, Button, Flex, Message, MessageText, Modal, Spinner, Text } from '@pancakeswap/uikit'
+import { CurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import { useState, memo, useMemo } from 'react'
-import Select from 'components/Select/Select'
-import { CurrencyLogo } from 'components/Logo'
-import { Trade } from '@pancakeswap/sdk'
+import { memo, useState } from 'react'
+import styled from 'styled-components'
 
 const StyledModal = styled(Modal)`
   max-width: 613px;
@@ -103,14 +102,14 @@ const OrderContent: React.FC<OrderContentProps> = ({ trade }) => {
   )
 }
 
-interface LimitTradeInfoCard {
+interface LimitTradeInfoCardProps {
   currentPriceExchangeRateText: string
   currentPriceExchangeRateTextReversed: string
   limitPriceExchangeRateText: string
   limitPriceExchangeRateTextReversed: string
 }
 
-const LimitTradeInfoCard: React.FC<LimitTradeInfoCard> = memo(
+const LimitTradeInfoCard: React.FC<LimitTradeInfoCardProps> = memo(
   ({
     currentPriceExchangeRateText,
     currentPriceExchangeRateTextReversed,
@@ -118,16 +117,6 @@ const LimitTradeInfoCard: React.FC<LimitTradeInfoCard> = memo(
     limitPriceExchangeRateTextReversed,
   }) => {
     const { t } = useTranslation()
-    const sortByItems = useMemo(
-      () => [
-        { label: t('10 Minutes'), value: 10 },
-        { label: t('1 Hour'), value: 60 },
-        { label: t('24 Hours'), value: 1440 },
-        { label: t('7 Days'), value: 100900 },
-        { label: t('Never'), value: -1 },
-      ],
-      [t],
-    )
     return (
       <InfoCardWrapper>
         <Flex justifyContent="space-between">
@@ -155,14 +144,6 @@ const LimitTradeInfoCard: React.FC<LimitTradeInfoCard> = memo(
               {limitPriceExchangeRateTextReversed}
             </Text>
           </Flex>
-        </Flex>
-        <Flex alignItems="center" justifyContent="space-between" mt="16px">
-          <Text fontSize="14px" color="textSubtle">
-            {t('Expires in')}
-          </Text>
-          <Text fontSize="24px" color="textSubtle">
-            <Select options={sortByItems} />
-          </Text>
         </Flex>
       </InfoCardWrapper>
     )
