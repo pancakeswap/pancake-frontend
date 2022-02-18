@@ -13,6 +13,7 @@ const isUserRejected = (err) => {
 
 Sentry.init({
   dsn: SENTRY_DSN || 'https://ed98e16b9d704c22bef92d24bdd5f3b7@o1092725.ingest.sentry.io/6111410',
+  allowUrls: process.env.NODE_ENV === 'production' ? [/https:\/\/pancakeswap\.finance/] : [],
   integrations: [
     new Sentry.Integrations.Breadcrumbs({
       console: process.env.NODE_ENV === 'production',
