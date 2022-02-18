@@ -15,6 +15,8 @@ interface PoolsTableProps {
 }
 
 const Container = styled.div`
+  border-radius: 10px;
+  overflow: hidden;
   margin-bottom: 32px;
 `
 

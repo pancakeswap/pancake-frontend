@@ -41,7 +41,7 @@ const MigrationPage: React.FC = () => {
         </Link>
       </PageHeader>
       <Page>
-        {/* <ProgressSteps step={step} /> */}
+        <ProgressSteps step={step} />
         <MigrationStep1 />
       </Page>
       <MigrationSticky step={step} handleClick={handleMigrationStickyClick} />

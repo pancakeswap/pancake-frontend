@@ -10,11 +10,11 @@ import EarningsCell from './Cells/EarningsCell'
 import TotalStakedCell from './Cells/TotalStakedCell'
 import Unstaked from './Cells/Unstaked'
 import ExpandActionCell from './Cells/ExpandActionCell'
+import ActionPanel from './ActionPanel/ActionPanel'
 
 interface PoolRowProps {
   pool: DeserializedPool
   account: string
-  userDataLoaded: boolean
 }
 
 const StyledRow = styled.div`
@@ -43,7 +43,7 @@ const RightContainer = styled.div`
   }
 `
 
-const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
+const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
   const { isMobile, isLg, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const [expanded, setExpanded] = useState(false)
@@ -63,16 +63,16 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         <LeftContainer>
           <NameCell pool={pool} />
           {isLargerScreen ? (
-            <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+            <StakedCell pool={pool} account={account} />
           ) : (
-            !expanded && <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+            !expanded && <StakedCell pool={pool} account={account} />
           )}
           {pool.vaultKey ? (
             (pool.vaultKey === VaultKey.IfoPool || pool.vaultKey === VaultKey.CakeVault) && (
               <AutoEarningsCell pool={pool} account={account} />
             )
           ) : (
-            <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+            <EarningsCell pool={pool} account={account} />
           )}
           {isLargerScreen && isCakePool && <TotalStakedCell pool={pool} />}
         </LeftContainer>
@@ -81,6 +81,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
           {!isLargerScreen && <ExpandActionCell expanded={expanded} showExpandedText={expanded || isMobile} />}
         </RightContainer>
       </StyledRow>
+      {!isLargerScreen && shouldRenderActionPanel && <ActionPanel pool={pool} expanded={expanded} />}
     </>
   )
 }

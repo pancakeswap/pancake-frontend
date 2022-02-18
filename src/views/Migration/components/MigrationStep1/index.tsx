@@ -6,7 +6,7 @@ const MigrationStep1: React.FC = () => {
   return (
     <>
       <OldPool />
-      {/* <OldFarm /> */}
+      <OldFarm />
     </>
   )
 }

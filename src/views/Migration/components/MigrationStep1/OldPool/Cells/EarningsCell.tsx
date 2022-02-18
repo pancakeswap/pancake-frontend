@@ -12,7 +12,6 @@ import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/B
 interface EarningsCellProps {
   pool: DeserializedPool
   account: string
-  userDataLoaded: boolean
 }
 
 const StyledCell = styled(BaseCell)`
