@@ -337,7 +337,7 @@ const campaigns: Campaign[] = [
   {
     id: '511180000',
     type: 'ifo',
-    title: 'Era',
+    title: 'Era7',
     badge: 'ifo-era.svg',
   },
 ]
