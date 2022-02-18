@@ -42,6 +42,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 513,
+    lpSymbol: 'ERA-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x53a63ac301d6410915385294527f947aff616599',
+    },
+    token: serializedTokens.era,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 511,
     lpSymbol: 'LOA-BUSD LP',
     lpAddresses: {
