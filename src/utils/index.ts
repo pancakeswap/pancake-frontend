@@ -7,6 +7,7 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
+import { CHAIN_ID } from 'config/constants/networks'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@pancakeswap/sdk'
 import { ROUTER_ADDRESS } from '../config/constants'
 import { BASE_BSC_SCAN_URLS } from '../config'
@@ -95,7 +96,11 @@ export function getContract(address: string, ABI: any, signer?: Signer | Provide
 
 // account is optional
 export function getRouterContract(_: number, library: Web3Provider, account?: string) {
-  return getContract(ROUTER_ADDRESS, IPancakeRouter02ABI, getProviderOrSigner(library, account)) as IPancakeRouter02
+  return getContract(
+    ROUTER_ADDRESS[CHAIN_ID],
+    IPancakeRouter02ABI,
+    getProviderOrSigner(library, account),
+  ) as IPancakeRouter02
 }
 
 export function escapeRegExp(string: string): string {
