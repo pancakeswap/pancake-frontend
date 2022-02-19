@@ -1,7 +1,14 @@
+import { memo } from 'react'
 import styled from 'styled-components'
+import useSWRImmutable from 'swr/immutable'
+import { useCurrentBlock } from 'state/block/hooks'
 import { Text, Flex, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
+import { useFarmAuctionContract } from 'hooks/useContract'
+import { multicallv2 } from 'utils/multicall'
+import farmAuctionAbi from 'config/abi/farmAuction.json'
+import { processAuctionData } from '../../../FarmAuction/helpers'
 
 const StyledSubheading = styled(Heading)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
@@ -82,12 +89,39 @@ const RightWrapper = styled.div`
 
 const FarmAuctionsBanner = () => {
   const { t } = useTranslation()
+  const currentBlock = useCurrentBlock()
 
-  return (
+  const farmAuctionContract = useFarmAuctionContract(false)
+
+  const { data: currentAuction = null } = useSWRImmutable(['farmAuction', 'currentAuction'], async () => {
+    const auctionId = await farmAuctionContract.currentAuctionId()
+    const [auctionData, contenders] = await multicallv2(
+      farmAuctionAbi,
+      [
+        {
+          address: farmAuctionContract.address,
+          name: 'auctions',
+          params: [auctionId],
+        },
+        {
+          address: farmAuctionContract.address,
+          name: 'viewBidders',
+          params: [0, 1000],
+        },
+      ],
+      { requireSuccess: false },
+    )
+    return processAuctionData(auctionId.toNumber(), auctionData, contenders ? contenders[0] : null)
+  })
+
+  const isFarmAuctionAlive = currentBlock && currentAuction ? currentAuction.endBlock > currentBlock : false
+  const contendersSize = currentAuction ? currentAuction.contenders.length : 0
+
+  return isFarmAuctionAlive ? (
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{t('%num% Contenders...', { num: 16 })}</StyledSubheading>
+          <StyledSubheading>{t('%num% Contenders...', { num: contendersSize })}</StyledSubheading>
           <StyledHeading scale="xl">{t('%num% Winners', { num: 3 })}</StyledHeading>
           <NextLinkFromReactRouter to="/farms/auction">
             <Button>
@@ -103,7 +137,7 @@ const FarmAuctionsBanner = () => {
         </RightWrapper>
       </Inner>
     </Wrapper>
-  )
+  ) : null
 }
 
-export default FarmAuctionsBanner
+export default memo(FarmAuctionsBanner)

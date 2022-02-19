@@ -1,4 +1,3 @@
-import { Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import PageSection from 'components/PageSection'
 import { useWeb3React } from '@web3-react/core'
@@ -16,26 +15,7 @@ import Footer from './components/Footer'
 import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
 import UserBanner from './components/UserBanner'
-// import FarmAuctionsBanner from './components/Banners/FarmAuctionsBanner'
-import IFOBanner from './components/Banners/IFOBanner'
-
-const showBanner = false
-
-const HomeBanner = ({ account }: { account: string }) => {
-  if (!showBanner) {
-    return null
-  }
-
-  return (
-    <Flex
-      pt={[account ? '220px' : '0', null, null, account ? '76px' : '0']}
-      mt={[account ? '0' : '-16px', null, null, account ? '0' : '-48px']}
-      pb="24px"
-    >
-      <IFOBanner />
-    </Flex>
-  )
-}
+import HomeBanner from './components/Banners/HomeBanner'
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
@@ -87,7 +67,7 @@ const Home: React.FC = () => {
             <UserBanner />
           </UserBannerWrapper>
         )}
-        <HomeBanner account={account} />
+        <HomeBanner />
         <Hero />
       </StyledHeroSection>
       <PageSection

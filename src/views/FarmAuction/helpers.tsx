@@ -104,7 +104,11 @@ const getDateForBlock = async (currentBlock: number, block: number) => {
 }
 
 // Get additional auction information based on the date received from smart contract
-export const processAuctionData = async (auctionId: number, auctionResponse: AuctionsResponse): Promise<Auction> => {
+export const processAuctionData = async (
+  auctionId: number,
+  auctionResponse: AuctionsResponse,
+  contenders?: string[],
+): Promise<Auction> => {
   const processedAuctionData = {
     ...auctionResponse,
     topLeaderboard: auctionResponse.leaderboard.toNumber(),
@@ -133,6 +137,7 @@ export const processAuctionData = async (auctionId: number, auctionResponse: Auc
     auctionDuration: differenceInHours(endDate, startDate),
     ...processedAuctionData,
     status: auctionStatus,
+    ...(contenders ? { contenders } : {}),
   }
 }
 

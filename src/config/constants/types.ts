@@ -207,6 +207,7 @@ export interface Auction {
   initialBidAmount: number
   topLeaderboard: number
   leaderboardThreshold: BigNumber
+  contenders?: string[]
 }
 
 export interface BidderAuction {

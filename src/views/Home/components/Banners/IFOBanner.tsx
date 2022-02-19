@@ -1,7 +1,14 @@
+import { memo } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
+import useSWRImmutable from 'swr/immutable'
+import ifoV3Abi from 'config/abi/ifoV3.json'
+import ifoV2Abi from 'config/abi/ifoV2.json'
+import { multicallv2 } from 'utils/multicall'
+import { useCurrentBlock } from 'state/block/hooks'
+import { ifosConfig } from 'config/constants'
 
 const StyledSubheading = styled(Heading)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
@@ -26,6 +33,7 @@ const StyledHeading = styled(Heading)`
   -webkit-background-clip: text;
   -webkit-text-stroke: 6px transparent;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-transform: uppercase;
   margin-bottom: 16px;
 `
 
@@ -86,15 +94,43 @@ const RightWrapper = styled.div`
   }
 `
 
+const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
+
 const IFOBanner = () => {
   const { t } = useTranslation()
+  const currentBlock = useCurrentBlock()
 
-  return (
+  const { data: currentIfoBlocks = { startBlock: 0, endBlock: 0 } } = useSWRImmutable(
+    activeIfo ? ['ifo', 'currentIfo'] : null,
+    async () => {
+      const abi = activeIfo.version === 3.1 ? ifoV3Abi : ifoV2Abi
+      const [startBlock, endBlock] = await multicallv2(
+        abi,
+        [
+          {
+            address: activeIfo.address,
+            name: 'startBlock',
+          },
+          {
+            address: activeIfo.address,
+            name: 'endBlock',
+          },
+        ],
+        { requireSuccess: false },
+      )
+
+      return { startBlock: startBlock ?? 0, endBlock: endBlock ?? 0 }
+    },
+  )
+
+  const isIfoAlive = !!(activeIfo && currentBlock && currentIfoBlocks && currentIfoBlocks.endBlock > currentBlock)
+
+  return isIfoAlive ? (
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{t('Live')}</StyledSubheading>
-          <StyledHeading scale="xl">ERA IFO</StyledHeading>
+          <StyledSubheading>{currentIfoBlocks.startBlock < currentBlock ? t('Live') : t('Soon')}</StyledSubheading>
+          <StyledHeading scale="xl">{activeIfo.id} IFO</StyledHeading>
           <NextLinkFromReactRouter to="/ifo">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
@@ -105,11 +141,19 @@ const IFOBanner = () => {
           </NextLinkFromReactRouter>
         </LeftWrapper>
         <RightWrapper>
-          <img src="/images/decorations/3d-ifo-era.png" alt="IFO Era" />
+          <img
+            src={`/images/decorations/3d-ifo-${activeIfo.id}.png`}
+            alt={`IFO ${activeIfo.id}`}
+            onError={(event) => {
+              // @ts-ignore
+              // eslint-disable-next-line no-param-reassign
+              event.target.style.display = 'none'
+            }}
+          />
         </RightWrapper>
       </Inner>
     </Wrapper>
-  )
+  ) : null
 }
 
-export default IFOBanner
+export default memo(IFOBanner)
