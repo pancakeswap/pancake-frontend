@@ -12,7 +12,7 @@ import useSWR from 'swr'
 
 import { fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
-import { ApiCollections, NftActivityFilter, NftFilter, NftToken } from './types'
+import { ApiCollections, NftActivityFilter, NftFilter, NftToken, Collection } from './types'
 import { getCollection, getCollections } from './helpers'
 
 const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
@@ -76,7 +76,7 @@ export const useGetCollections = (): { data: ApiCollections; status: FetchStatus
   return { data: collections, status }
 }
 
-export const useGetCollection = (collectionAddress: string) => {
+export const useGetCollection = (collectionAddress: string): Collection | undefined => {
   const checksummedCollectionAddress = isAddress(collectionAddress) || ''
   const { data } = useSWR(
     checksummedCollectionAddress ? ['nftMarket', 'collections', checksummedCollectionAddress.toLowerCase()] : null,

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon, useTooltip } from '@pancakeswap/uikit'
+import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon, useTooltip, Skeleton } from '@pancakeswap/uikit'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { useTranslation } from 'contexts/Localization'
@@ -37,7 +37,7 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
   const adjustedPriceIsTheSame = variant === 'adjust' && parseFloat(currentPrice) === parseFloat(price)
   const priceIsValid = !price || Number.isNaN(parseFloat(price)) || parseFloat(price) <= 0
 
-  const { creatorFee, tradingFee } = useGetCollection(nftToSell.collectionAddress)
+  const { creatorFee = '', tradingFee = '' } = useGetCollection(nftToSell.collectionAddress) || {}
   const creatorFeeAsNumber = parseFloat(creatorFee)
   const tradingFeeAsNumber = parseFloat(tradingFee)
   const bnbPrice = useBNBBusdPrice()
@@ -118,21 +118,31 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
           </Text>
         )}
         <Flex mt="8px">
-          <Text small color="textSubtle" mr="8px">
-            {t('Seller pays %percentage%% platform fee on sale', {
-              percentage: creatorFeeAsNumber + tradingFeeAsNumber,
-            })}
-          </Text>
-          <span ref={targetRef}>
-            <ErrorIcon />
-          </span>
-          {tooltipVisible && tooltip}
+          {Number.isFinite(creatorFeeAsNumber) && Number.isFinite(tradingFeeAsNumber) ? (
+            <>
+              <Text small color="textSubtle" mr="8px">
+                {t('Seller pays %percentage%% platform fee on sale', {
+                  percentage: creatorFeeAsNumber + tradingFeeAsNumber,
+                })}
+              </Text>
+              <span ref={targetRef}>
+                <ErrorIcon />
+              </span>
+              {tooltipVisible && tooltip}
+            </>
+          ) : (
+            <Skeleton width="70%" />
+          )}
         </Flex>
         <Flex justifyContent="space-between" alignItems="center" mt="16px">
           <Text small color="textSubtle">
             {t('Platform fee if sold')}
           </Text>
-          <FeeAmountCell bnbAmount={priceAsFloat} creatorFee={creatorFeeAsNumber} tradingFee={tradingFeeAsNumber} />
+          {Number.isFinite(creatorFeeAsNumber) && Number.isFinite(tradingFeeAsNumber) ? (
+            <FeeAmountCell bnbAmount={priceAsFloat} creatorFee={creatorFeeAsNumber} tradingFee={tradingFeeAsNumber} />
+          ) : (
+            <Skeleton width={40} />
+          )}
         </Flex>
         {lowestPrice && (
           <Flex justifyContent="space-between" alignItems="center" mt="16px">
