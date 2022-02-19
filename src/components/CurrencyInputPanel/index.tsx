@@ -1,6 +1,8 @@
-import { Currency, Pair } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box } from '@pancakeswap/uikit'
+import { Currency, Pair, Token } from '@pancakeswap/sdk'
+import { Button, ChevronDownIcon, Text, useModal, Flex, Box, MetamaskIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { registerToken } from 'utils/wallet'
+import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
@@ -72,9 +74,12 @@ export default function CurrencyInputPanel({
   id,
   showCommonBases,
 }: CurrencyInputPanelProps) {
-  const { account } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
+
+  const token = pair ? pair.liquidityToken : currency instanceof Token ? currency : null
+  const tokenAddress = token ? isAddress(token.address) : null
 
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal
@@ -119,13 +124,23 @@ export default function CurrencyInputPanel({
             {!disableCurrencySelect && <ChevronDownIcon />}
           </Flex>
         </CurrencySelectButton>
-        {account && (
-          <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
-            {!hideBalance && !!currency
-              ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
-              : ' -'}
-          </Text>
-        )}
+        <Flex style={{ gap: '8px' }}>
+          {token && tokenAddress && library?.provider?.isMetaMask && (
+            <MetamaskIcon
+              style={{ cursor: 'pointer' }}
+              width="16px"
+              ml="6px"
+              onClick={() => registerToken(tokenAddress, token.symbol, token.decimals)}
+            />
+          )}
+          {account && (
+            <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+              {!hideBalance && !!currency
+                ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
+                : ' -'}
+            </Text>
+          )}
+        </Flex>
       </Flex>
       <InputPanel>
         <Container>
