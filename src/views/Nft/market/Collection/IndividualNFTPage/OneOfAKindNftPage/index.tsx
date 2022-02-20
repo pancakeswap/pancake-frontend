@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import noop from 'lodash/noop'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import sum from 'lodash/sum'
@@ -6,7 +7,6 @@ import Page from 'components/Layout/Page'
 import { useGetCollection } from 'state/nftMarket/hooks'
 import PageLoader from 'components/Loader/PageLoader'
 import MainNFTCard from './MainNFTCard'
-import ManageNFTsCard from './ManageNFTsCard'
 import { TwoColumnsContainer } from '../shared/styles'
 import PropertiesCard from '../shared/PropertiesCard'
 import DetailsCard from '../shared/DetailsCard'
@@ -28,13 +28,7 @@ const OwnerActivityContainer = styled(Flex)`
 const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress, tokenId }) => {
   const collection = useGetCollection(collectionAddress)
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistribution(collectionAddress)
-  const {
-    combinedNft: nft,
-    isOwn: isOwnNft,
-    isProfilePic,
-    isLoading,
-    refetch,
-  } = useCompleteNft(collectionAddress, tokenId)
+  const { combinedNft: nft, isOwn: isOwnNft, isProfilePic, refetch } = useCompleteNft(collectionAddress, tokenId)
 
   const properties = nft?.attributes
 
@@ -66,7 +60,7 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
       <MainNFTCard nft={nft} isOwnNft={isOwnNft} nftIsProfilePic={isProfilePic} onSuccess={refetch} />
       <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
-          <ManageNFTsCard nft={nft} isOwnNft={isOwnNft} isLoading={isLoading} onSuccess={refetch} />
+          <ManageNFTsCard nft={nft} isOwnNft={isOwnNft} isLoading={isLoading} onSuccess={isOwnNft ? refetch : noop} />
           <PropertiesCard properties={properties} rarity={attributesRarity} />
           <DetailsCard contractAddress={collectionAddress} ipfsJson={nft?.marketData?.metadataUrl} />
         </Flex>
