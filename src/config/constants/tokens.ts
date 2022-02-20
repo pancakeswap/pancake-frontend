@@ -843,7 +843,7 @@ export const mainnetTokens = defineTokens({
     '0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47',
     18,
     'ADA',
-    ' Binance-Peg Cardano Token',
+    'Binance-Peg Cardano Token',
     'https://www.cardano.org/',
   ),
   band: new Token(
