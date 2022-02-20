@@ -15,7 +15,7 @@ import {
   muteAudio,
   removeSerializedToken,
   SerializedPair,
-  toggleTheme as toggleThemeAction,
+  switchTheme as switchThemeAction,
   unmuteAudio,
   updateUserDeadline,
   updateUserExpertMode,
@@ -39,6 +39,7 @@ import {
   ChartViewMode,
   setChartViewMode,
   setSubgraphHealthIndicatorDisplayed,
+  Theme,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -140,15 +141,25 @@ export function useExpertModeManager(): [boolean, () => void] {
   return [expertMode, toggleSetExpertMode]
 }
 
-export function useThemeManager(): [boolean, () => void] {
+export function useThemeManager(): [boolean, (theme: Theme) => void] {
   const dispatch = useDispatch<AppDispatch>()
-  const isDark = useSelector<AppState, AppState['user']['isDark']>((state) => state.user.isDark)
+  const theme = useSelector<AppState, AppState['user']['theme']>((state) => state.user.theme)
 
-  const toggleTheme = useCallback(() => {
-    dispatch(toggleThemeAction())
-  }, [dispatch])
+  const isDark = useMemo(() => {
+    if (typeof window !== 'undefined' && theme === null) {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
+    return theme === Theme.DARK
+  }, [theme])
 
-  return [isDark, toggleTheme]
+  const switchTheme = useCallback(
+    (siteTheme: Theme) => {
+      dispatch(switchThemeAction({ theme: siteTheme }))
+    },
+    [dispatch],
+  )
+
+  return [isDark, switchTheme]
 }
 
 export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {

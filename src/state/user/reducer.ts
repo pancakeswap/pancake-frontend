@@ -12,7 +12,6 @@ import {
   removeSerializedToken,
   SerializedPair,
   muteAudio,
-  toggleTheme,
   unmuteAudio,
   updateGasPrice,
   updateUserDeadline,
@@ -34,6 +33,8 @@ import {
   setChartViewMode,
   ChartViewMode,
   setSubgraphHealthIndicatorDisplayed,
+  Theme,
+  switchTheme,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -70,6 +71,7 @@ export interface UserState {
   timestamp: number
   audioPlay: boolean
   isDark: boolean
+  theme: Theme
   isExchangeChartDisplayed: boolean
   isSubgraphHealthIndicatorDisplayed: boolean
   userChartViewMode: ChartViewMode
@@ -102,6 +104,7 @@ export const initialState: UserState = {
   timestamp: currentTimestamp(),
   audioPlay: true,
   isDark: false,
+  theme: null,
   isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,
   userChartViewMode: ChartViewMode.BASIC,
@@ -193,8 +196,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(unmuteAudio, (state) => {
       state.audioPlay = true
     })
-    .addCase(toggleTheme, (state) => {
-      state.isDark = !state.isDark
+    .addCase(switchTheme, (state, { payload: { theme } }) => {
+      state.theme = theme
     })
     .addCase(updateUserFarmStakedOnly, (state, { payload: { userFarmStakedOnly } }) => {
       state.userFarmStakedOnly = userFarmStakedOnly

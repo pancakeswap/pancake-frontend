@@ -10,6 +10,7 @@ import {
 } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useSwapActionHandlers } from 'state/swap/hooks'
+import { Theme } from 'state/user/actions'
 import useTheme from 'hooks/useTheme'
 import QuestionHelper from '../../QuestionHelper'
 import TransactionSettings from './TransactionSettings'
@@ -34,7 +35,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const { onChangeRecipient } = useSwapActionHandlers()
 
   const { t } = useTranslation()
-  const { theme, isDark, toggleTheme } = useTheme()
+  const { theme, isDark, switchTheme } = useTheme()
 
   if (showConfirmExpertModal) {
     return (
@@ -72,7 +73,12 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
           </Text>
           <Flex justifyContent="space-between">
             <Text mb="24px">{t('Dark mode')}</Text>
-            <ThemeSwitcher isDark={isDark} toggleTheme={toggleTheme} />
+            <ThemeSwitcher
+              isDark={isDark}
+              toggleTheme={() => {
+                switchTheme(isDark ? Theme.LIGHT : Theme.DARK)
+              }}
+            />
           </Flex>
           <GasSettings />
         </Flex>
