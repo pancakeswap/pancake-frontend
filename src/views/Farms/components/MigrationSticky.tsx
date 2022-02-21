@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Text, Button } from '@pancakeswap/uikit'
+import { Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 const Container = styled.div`
   position: sticky;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   margin: auto;
-  padding: 24px 40px;
+  padding: 16px;
   z-index: 21;
   transition: top 0.2s;
 
@@ -27,6 +26,7 @@ const Container = styled.div`
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1120px;
+    padding: 24px 40px;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -44,26 +44,26 @@ const TextGroup = styled.div`
 `
 
 const TextTitle = styled(Text)`
-  font-size: 20px;
-  text-align: center;
-  ${({ theme }) => theme.mediaQueries.xl} {
+  font-size: 16px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 20px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 40px;
-    text-align: left;
   }
 `
 
 const TextSubTitle = styled(Text)`
-  font-size: 14px;
-  text-align: center;
-  ${({ theme }) => theme.mediaQueries.xl} {
+  font-size: 12px;
+  ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 16px;
-    text-align: left;
   }
 `
 
 const MigrationSticky: React.FC = () => {
   const { t } = useTranslation()
   let lastScroll = 0
+  const { isMobile } = useMatchBreakpoints()
   const [stickPosition, setStickyPosition] = useState<number>(0)
 
   useEffect(() => {
@@ -95,7 +95,7 @@ const MigrationSticky: React.FC = () => {
         <TextSubTitle>{t('You need to migrate in order to continue receving staking rewards.')}</TextSubTitle>
       </TextGroup>
       <NextLinkFromReactRouter to="/migration">
-        <Button width="266px">{t('Proceed')}</Button>
+        <Button minWidth={isMobile ? '131px' : '178px'}>{t('Proceed')}</Button>
       </NextLinkFromReactRouter>
     </Container>
   )
