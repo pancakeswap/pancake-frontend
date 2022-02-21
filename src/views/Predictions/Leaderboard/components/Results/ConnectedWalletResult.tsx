@@ -4,7 +4,6 @@ import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import Container from 'components/Layout/Container'
 import { useAppDispatch } from 'state'
-import { fetchProfileAvatar } from 'state/profile'
 import { fetchAddressResult } from 'state/predictions'
 import { useGetOrFetchLeaderboardAddressResult } from 'state/predictions/hooks'
 import DesktopRow from './DesktopRow'
@@ -19,7 +18,6 @@ const ConnectedWalletResult = () => {
 
   useEffect(() => {
     if (account) {
-      dispatch(fetchProfileAvatar(account))
       dispatch(fetchAddressResult(account))
     }
   }, [account, dispatch])

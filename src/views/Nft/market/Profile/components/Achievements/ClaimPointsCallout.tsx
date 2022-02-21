@@ -5,7 +5,6 @@ import { useWeb3React } from '@web3-react/core'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap/uikit'
 import { useProfile } from 'state/profile/hooks'
 import { Achievement } from 'state/types'
-import { addPoints } from 'state/profile'
 import { useTranslation } from 'contexts/Localization'
 import { getClaimableIfoData } from 'utils/achievements'
 import AchievementRow from './AchievementRow'
@@ -14,7 +13,7 @@ const ClaimPointsCallout: React.FC<{ onSuccess?: () => void }> = ({ onSuccess = 
   const [claimableAchievements, setClaimableAchievement] = useState<Achievement[]>([])
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { profile } = useProfile()
+  const { profile, refresh: refreshProfile } = useProfile()
   const { account } = useWeb3React()
 
   useEffect(() => {
@@ -29,7 +28,7 @@ const ClaimPointsCallout: React.FC<{ onSuccess?: () => void }> = ({ onSuccess = 
   }, [account, dispatch, setClaimableAchievement])
 
   const handleCollectSuccess = (achievement: Achievement) => {
-    dispatch(addPoints(achievement.points))
+    refreshProfile()
     setClaimableAchievement((prevClaimableAchievements) =>
       prevClaimableAchievements.filter((prevClaimableAchievement) => prevClaimableAchievement.id !== achievement.id),
     )

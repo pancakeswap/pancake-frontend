@@ -61,28 +61,30 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
   }
 
   useEffect(() => {
-    const bgImages = [StormShare.src, FlippersShare.src, CakersShare.src]
-    const bgImagEl = new Image()
-    bgImagEl.src = bgImages[profile.teamId - 1]
-    bgImagEl.onload = () => setBgImage(bgImagEl)
+    if (profile) {
+      const bgImages = [StormShare.src, FlippersShare.src, CakersShare.src]
+      const bgImagEl = new Image()
+      bgImagEl.src = bgImages[profile.teamId - 1]
+      bgImagEl.onload = () => setBgImage(bgImagEl)
 
-    const profileImageEl = new Image()
-    profileImageEl.src = `${profile.nft?.image?.thumbnail}?d=${new Date().getTime()}`
-    profileImageEl.crossOrigin = 'Anonymous'
-    profileImageEl.onload = () => setProfileImage(profileImageEl)
+      const profileImageEl = new Image()
+      profileImageEl.src = `${profile.nft?.image?.thumbnail}?d=${new Date().getTime()}`
+      profileImageEl.crossOrigin = 'Anonymous'
+      profileImageEl.onload = () => setProfileImage(profileImageEl)
 
-    const profileImageOverlayEl = new Image()
-    profileImageOverlayEl.src = ProfileMask.src
-    profileImageOverlayEl.onload = () => setProfileOverlayImage(profileImageOverlayEl)
+      const profileImageOverlayEl = new Image()
+      profileImageOverlayEl.src = ProfileMask.src
+      profileImageOverlayEl.onload = () => setProfileOverlayImage(profileImageOverlayEl)
 
-    const medalImageEl = new Image()
-    medalImageEl.src = getMedal(team).src
-    medalImageEl.onload = () => setMedalImage(medalImageEl)
+      const medalImageEl = new Image()
+      medalImageEl.src = getMedal(team).src
+      medalImageEl.onload = () => setMedalImage(medalImageEl)
+    }
   }, [profile, team])
 
   useEffect(() => {
     const canvasEl = canvas.current
-    if (canvasEl && bgImage && profileImage && profileOverlayImage && medalImage) {
+    if (profile && canvasEl && bgImage && profileImage && profileOverlayImage && medalImage) {
       const canvasWidth = canvasEl.width
       canvasEl.height = canvasWidth * 0.5625
       const canvasHeight = canvasEl.height

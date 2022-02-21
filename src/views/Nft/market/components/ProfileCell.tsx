@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 import { Box, Flex, BunnyPlaceholderIcon, Skeleton, Text } from '@pancakeswap/uikit'
 import truncateHash from 'utils/truncateHash'
-import { FetchStatus } from 'config/constants/types'
-import { useGetProfileAvatar } from 'state/profile/hooks'
+import { useProfileForAddress } from 'state/profile/hooks'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { nftsBaseUrl } from '../constants'
 
@@ -27,13 +26,13 @@ const StyledFlex = styled(Flex)`
 `
 
 const ProfileCell: React.FC<{ accountAddress: string }> = ({ accountAddress }) => {
-  const { username, nft: profileNft, usernameFetchStatus, avatarFetchStatus } = useGetProfileAvatar(accountAddress)
-  const profileName = username || '-'
+  const { profile, isFetching } = useProfileForAddress(accountAddress)
+  const profileName = profile?.username || '-'
 
   let sellerProfilePicComponent = <Skeleton width="32px" height="32px" mr={['4px', null, '12px']} />
-  if (avatarFetchStatus === FetchStatus.Fetched) {
-    if (profileNft?.image?.thumbnail) {
-      sellerProfilePicComponent = <Avatar src={profileNft?.image?.thumbnail} />
+  if (!isFetching) {
+    if (profile?.nft?.image?.thumbnail) {
+      sellerProfilePicComponent = <Avatar src={profile?.nft?.image?.thumbnail} />
     } else {
       sellerProfilePicComponent = <BunnyPlaceholderIcon width="32px" height="32px" mr={['4px', null, '12px']} />
     }
@@ -45,7 +44,7 @@ const ProfileCell: React.FC<{ accountAddress: string }> = ({ accountAddress }) =
         {sellerProfilePicComponent}
         <Box display="inline">
           <Text lineHeight="1.25">{truncateHash(accountAddress)}</Text>
-          {usernameFetchStatus !== FetchStatus.Fetched ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
+          {isFetching ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
         </Box>
       </StyledFlex>
     </NextLinkFromReactRouter>

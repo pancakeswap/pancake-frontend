@@ -14,7 +14,7 @@ import {
   Skeleton,
   Heading,
 } from '@pancakeswap/uikit'
-import { useGetProfileAvatar } from 'state/profile/hooks'
+import { useProfileForAddress } from 'state/profile/hooks'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
@@ -49,7 +49,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
   const selectedAddress = useGetSelectedAddress()
   const address = account || selectedAddress
   const result = useGetOrFetchLeaderboardAddressResult(address)
-  const profileAvatar = useGetProfileAvatar(address)
+  const { profile } = useProfileForAddress(address)
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const { isDesktop } = useMatchBreakpoints()
@@ -67,12 +67,12 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss,
       <ModalHeader background={theme.colors.gradients.bubblegum}>
         <Flex alignItems="center" style={{ flex: 1 }}>
           <Box width={['64px', null, null, null, null, null, '96px']} mr="16px">
-            <ProfileAvatar src={profileAvatar.nft?.image?.thumbnail} height={96} width={96} />
+            <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={96} width={96} />
           </Box>
           <Box>
-            {profileAvatar.username && (
+            {profile?.username && (
               <Heading scale="lg" mb="8px">
-                {profileAvatar.username}
+                {profile?.username}
               </Heading>
             )}
             <ExternalLink href={getBscScanLink(address, 'address')}>{truncateHash(address)}</ExternalLink>

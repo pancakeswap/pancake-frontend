@@ -1,11 +1,10 @@
 import { Modal, Flex, Text } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
-import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import { useCake, useProfileContract } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { fetchProfile } from 'state/profile'
+import { useProfile } from 'state/profile/hooks'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -33,7 +32,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation()
   const profileContract = useProfileContract()
-  const dispatch = useAppDispatch()
+  const { refresh: refreshProfile } = useProfile()
   const { toastSuccess } = useToast()
   const cakeContract = useCake()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -59,7 +58,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
         ])
       },
       onSuccess: async ({ receipt }) => {
-        await dispatch(fetchProfile(account))
+        refreshProfile()
         onDismiss()
         toastSuccess(t('Profile created!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       },

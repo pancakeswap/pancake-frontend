@@ -2,13 +2,10 @@ import { useState } from 'react'
 import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
-import { useAppDispatch } from 'state'
 import { useProfile } from 'state/profile/hooks'
-import { fetchProfile } from 'state/profile'
 import useToast from 'hooks/useToast'
 import { formatBigNumber } from 'utils/formatBalance'
 import { useProfileContract } from 'hooks/useContract'
-import { useWeb3React } from '@web3-react/core'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -19,17 +16,15 @@ interface PauseProfilePageProps extends InjectedModalProps {
 
 const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const { profile } = useProfile()
+  const { profile, refresh: refreshProfile } = useProfile()
   const {
     costs: { numberCakeToReactivate },
   } = useGetProfileCosts()
   const { t } = useTranslation()
   const pancakeProfileContract = useProfileContract()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { account } = useWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
-  const dispatch = useAppDispatch()
 
   const handleChange = () => setIsAcknowledged(!isAcknowledged)
 
@@ -39,7 +34,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSucces
     })
     if (receipt?.status) {
       // Re-fetch profile
-      await dispatch(fetchProfile(account))
+      refreshProfile()
       toastSuccess(t('Profile Paused!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       if (onSuccess) {
         onSuccess()

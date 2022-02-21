@@ -136,7 +136,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
     if (!hasRegistered) {
       return t('You’re not participating this time.')
     }
-    return `@${profile.username}`
+    return profile ? `@${profile.username}` : ''
   }
 
   const getSubHeadingText = () => {
@@ -146,7 +146,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
     if (!hasRegistered) {
       return t('Sorry, you needed to register during the “entry” period!')
     }
-    return `${profile.team.name}`
+    return profile ? `${profile.team.name}` : ''
   }
 
   const headingText = getHeadingText()
@@ -164,7 +164,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
       </Text>
       {shouldShowUserRanks && (
         <>
-          {profile.nft && volume > 0 && (
+          {profile?.nft && volume > 0 && (
             <Button mt="12px" variant="secondary" scale="sm" onClick={onPresentShareModal}>
               {t('Share Score')}
             </Button>

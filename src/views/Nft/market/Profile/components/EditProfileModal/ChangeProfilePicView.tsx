@@ -1,11 +1,9 @@
 import { useState, useMemo } from 'react'
 import { Button, Box, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useAppDispatch } from 'state'
 import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
-import { fetchProfile } from 'state/profile'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useProfileContract } from 'hooks/useContract'
@@ -29,9 +27,8 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, 
   })
   const { t } = useTranslation()
   const { account, library } = useWeb3React()
-  const { isLoading: isProfileLoading, profile } = useProfile()
+  const { isLoading: isProfileLoading, profile, refresh: refreshProfile } = useProfile()
   const { nfts } = useNftsForAddress(account, profile, isProfileLoading)
-  const dispatch = useAppDispatch()
   const profileContract = useProfileContract()
   const { toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -62,7 +59,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, 
       },
       onSuccess: async ({ receipt }) => {
         // Re-fetch profile
-        await dispatch(fetchProfile(account))
+        refreshProfile()
         toastSuccess(t('Profile Updated!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         if (onSuccess) {
           onSuccess()

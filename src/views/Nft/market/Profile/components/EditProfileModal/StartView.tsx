@@ -51,7 +51,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
     isLoading: isProfileCostsLoading,
   } = useGetProfileCosts()
   const [needsApproval, setNeedsApproval] = useState(null)
-  const minimumCakeRequired = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
+  const minimumCakeRequired = profile?.isActive ? numberCakeToUpdate : numberCakeToReactivate
   const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance.gte(minimumCakeRequired)
 
   /**

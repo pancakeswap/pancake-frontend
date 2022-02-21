@@ -14,7 +14,7 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
-import { useGetProfileAvatar } from 'state/profile/hooks'
+import { useProfileForAddress } from 'state/profile/hooks'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
@@ -50,7 +50,7 @@ const getRankingColor = (rank: number) => {
 const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
-  const profileAvatar = useGetProfileAvatar(user.id)
+  const { profile } = useProfileForAddress(user.id)
   const [onPresentWalletStatsModal] = useModal(<WalletStatsModal account={user.id} />)
 
   return (
@@ -63,12 +63,12 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
                 <Flex mb="4px">
                   <RotatedLaurelLeftIcon color={rankColor} width="32px" />
                   <Box width={['40px', null, null, '64px']} height={['40px', null, null, '64px']}>
-                    <ProfileAvatar src={profileAvatar.nft?.image?.thumbnail} height={64} width={64} />
+                    <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={64} width={64} />
                   </Box>
                   <RotatedLaurelRightIcon color={rankColor} width="32px" />
                 </Flex>
                 <Text color="primary" fontWeight="bold" textAlign="center">
-                  {profileAvatar.username || truncateHash(user.id)}
+                  {profile?.username || truncateHash(user.id)}
                 </Text>
               </>
             }

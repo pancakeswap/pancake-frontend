@@ -5,8 +5,7 @@ import Achievements from 'views/Nft/market/Profile/components/Achievements'
 
 const NftProfileAchievementsPage = () => {
   const accountAddress = useRouter().query.accountAddress as string
-  const { profile: profileHookState } = useProfileForAddress(accountAddress)
-  const { profile } = profileHookState || {}
+  const { profile } = useProfileForAddress(accountAddress)
   const { achievements, isFetching: isAchievementFetching, refresh } = useAchievementsForAddress(accountAddress)
 
   return (
