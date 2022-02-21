@@ -1,16 +1,11 @@
 import { memo } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
+import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
-import useSWRImmutable from 'swr/immutable'
-import ifoV3Abi from 'config/abi/ifoV3.json'
-import ifoV2Abi from 'config/abi/ifoV2.json'
-import { multicallv2 } from 'utils/multicall'
 import { useCurrentBlock } from 'state/block/hooks'
-import { ifosConfig } from 'config/constants'
 import { getStatus } from '../../../Ifos/hooks/helpers'
-import { useActiveIfoWithBlocks } from '../../../../hooks/useActiveIfoWithBlocks'
 
 const StyledSubheading = styled(Heading)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
