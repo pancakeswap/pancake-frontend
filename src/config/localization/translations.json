@@ -1521,5 +1521,14 @@
   "Trade the new BTT token": "Trade the new BTT token",
   "here": "here",
   "For more details on the swap, please refer here.": "For more details on the swap, please refer here.",
-  "Insufficient WBNB balance": "Insufficient WBNB balance"
+  "Insufficient WBNB balance": "Insufficient WBNB balance",
+  "Open Order Details": "Open Order Details",
+  "View on BSCScan": "View on BSCScan",
+  "Cancel Order": "Cancel Order",
+  "Limit Price": "Limit Price",
+  "Expires on": "Expires on",
+  "Status": "Status",
+  "No Order": "No Order",
+  "Open Orders": "Open Orders",
+  "Order History": "Order History"
 }
