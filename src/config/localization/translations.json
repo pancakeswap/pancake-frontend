@@ -1523,5 +1523,9 @@
   "For more details on the swap, please refer here.": "For more details on the swap, please refer here.",
   "Insufficient WBNB balance": "Insufficient WBNB balance",
   "Select": "Select",
+  "Confirm Limit Order": "Confirm Limit Order",
+  "Limit price is 12.12% above the current market rate. The order will be executed when the market price reaches the specified limit price within the expiration date, within your slippage parameters.": "Limit price is 12.12% above the current market rate. The order will be executed when the market price reaches the specified limit price within the expiration date, within your slippage parameters.",
+  "Current Market Price": "Current Market Price",
+  "Limit Price": "Limit Price",
   "Error Tracking Id": "Error Tracking Id"
 }
