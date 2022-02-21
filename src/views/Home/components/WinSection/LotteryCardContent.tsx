@@ -9,7 +9,8 @@ import styled from 'styled-components'
 import { fetchCurrentLotteryIdAndMaxBuy, fetchLottery } from 'state/lottery/helpers'
 import BigNumber from 'bignumber.js'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { useSlowRefreshEffect } from 'hooks/useRefreshEffect'
+import useSWR from 'swr'
+import { SLOW_INTERVAL } from 'config/constants'
 
 const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
@@ -26,8 +27,17 @@ const LotteryCardContent = () => {
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const [lotteryId, setLotteryId] = useState<string>(null)
-  const [currentLotteryPrize, setCurrentLotteryPrize] = useState<BigNumber>(null)
   const cakePriceBusdAsString = usePriceCakeBusd().toString()
+  const { data: currentLotteryPrize = null } = useSWR(
+    lotteryId ? ['lottery', 'currentLotteryPrize', cakePriceBusdAsString] : null,
+    async () => {
+      const { amountCollectedInCake } = await fetchLottery(lotteryId)
+      return cakePriceBusd.times(amountCollectedInCake)
+    },
+    {
+      refreshInterval: SLOW_INTERVAL,
+    },
+  )
 
   const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePriceBusdAsString })
   const [pretext, prizesThisRound] = cakePrizesText.split(cakePriceBusdAsString)
@@ -53,19 +63,6 @@ const LotteryCardContent = () => {
       fetchCurrentID()
     }
   }, [loadData, setLotteryId])
-
-  useSlowRefreshEffect(() => {
-    // get public data for current lottery
-    const fetchCurrentLotteryPrize = async () => {
-      const { amountCollectedInCake } = await fetchLottery(lotteryId)
-      const prizeInBusd = cakePriceBusd.times(amountCollectedInCake)
-      setCurrentLotteryPrize(prizeInBusd)
-    }
-
-    if (lotteryId) {
-      fetchCurrentLotteryPrize()
-    }
-  }, [lotteryId, setCurrentLotteryPrize, cakePriceBusd])
 
   return (
     <>
