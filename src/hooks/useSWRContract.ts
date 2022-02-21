@@ -20,20 +20,21 @@ declare module 'swr' {
 export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
   return (key, fetcher, config) => {
     const swr = useSWRNext(key, fetcher, config)
-    let status = FetchStatus.Idle
-
-    if (!swr.isValidating && !swr.error && !swr.data) {
-      status = FetchStatus.Idle
-    } else if (swr.isValidating && !swr.error && !swr.data) {
-      status = FetchStatus.Fetching
-    } else if (swr.data) {
-      status = FetchStatus.Fetched
-    } else if (swr.error && !swr.data) {
-      status = FetchStatus.Failed
-    }
-
     return {
-      status,
+      get status() {
+        let status = FetchStatus.Idle
+
+        if (!swr.isValidating && !swr.error && !swr.data) {
+          status = FetchStatus.Idle
+        } else if (swr.isValidating && !swr.error && !swr.data) {
+          status = FetchStatus.Fetching
+        } else if (swr.data) {
+          status = FetchStatus.Fetched
+        } else if (swr.error && !swr.data) {
+          status = FetchStatus.Failed
+        }
+        return status
+      },
       ...swr,
     }
   }
