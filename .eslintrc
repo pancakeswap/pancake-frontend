@@ -11,12 +11,14 @@
     "browser": true,
     "jest": true
   },
+  "plugins": ["lodash"],
   "extends": ["@pancakeswap/eslint-config-pancake", "plugin:react/jsx-runtime", "plugin:@next/next/recommended"],
   "rules": {
     "no-console": ["warn", { "allow": ["info", "warn", "error", "debug"] }],
     "no-plusplus": 0,
     "prefer-destructuring": ["warn", { "object": true, "array": false }],
     "no-underscore-dangle": 0,
+    "lodash/import-scope": [2, "method"],
     "import/prefer-default-export": 0,
     "react/destructuring-assignment": 0,
     "react/jsx-no-bind": 0,
