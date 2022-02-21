@@ -32,7 +32,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html translate="no">
         <Head>
           {nodes.map((node) => (
             <link key={node} rel="preconnect" href={node} />
