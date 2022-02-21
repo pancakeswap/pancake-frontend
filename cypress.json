@@ -8,6 +8,6 @@
   "chromeWebSecurity": false,
   "pageLoadTimeout": 10000,
   "retries": {
-    "runMode": 2
+    "runMode": 3
   }
 }
