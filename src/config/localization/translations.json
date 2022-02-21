@@ -1527,5 +1527,14 @@
   "Current Market Price": "Current Market Price",
   "Limit Price": "Limit Price",
   "Error Tracking Id": "Error Tracking Id",
-  "Your CAKE held at block": "Your CAKE held at block"
+  "Your CAKE held at block": "Your CAKE held at block",
+  "The transaction could not be sent because the deadline has passed. Please check that your transaction deadline is not too low.": "The transaction could not be sent because the deadline has passed. Please check that your transaction deadline is not too low.",
+  "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.": "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.",
+  "The input token cannot be transferred. There may be an issue with the input token.": "The input token cannot be transferred. There may be an issue with the input token.",
+  "The output token cannot be transferred. There may be an issue with the output token.": "The output token cannot be transferred. There may be an issue with the output token.",
+  "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.": "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.",
+  "Unknown error%reason%. Try increasing your slippage tolerance.": "Unknown error%reason%. Try increasing your slippage tolerance.",
+  "Unexpected issue with estimating the gas. Please try again.": "Unexpected issue with estimating the gas. Please try again.",
+  "Swap failed: %message%": "Swap failed: %message%",
+  "Unexpected error. Could not estimate gas for the swap.": "Unexpected error. Could not estimate gas for the swap."
 }
