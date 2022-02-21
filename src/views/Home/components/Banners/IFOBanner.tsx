@@ -9,6 +9,8 @@ import ifoV2Abi from 'config/abi/ifoV2.json'
 import { multicallv2 } from 'utils/multicall'
 import { useCurrentBlock } from 'state/block/hooks'
 import { ifosConfig } from 'config/constants'
+import { getStatus } from '../../../Ifos/hooks/helpers'
+import { useActiveIfoWithBlocks } from '../../../../hooks/useActiveIfoWithBlocks'
 
 const StyledSubheading = styled(Heading)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
@@ -93,44 +95,23 @@ const RightWrapper = styled.div`
     }
   }
 `
-
-const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
-
 const IFOBanner = () => {
   const { t } = useTranslation()
   const currentBlock = useCurrentBlock()
 
-  const { data: currentIfoBlocks = { startBlock: 0, endBlock: 0 } } = useSWRImmutable(
-    activeIfo ? ['ifo', 'currentIfo'] : null,
-    async () => {
-      const abi = activeIfo.version === 3.1 ? ifoV3Abi : ifoV2Abi
-      const [startBlock, endBlock] = await multicallv2(
-        abi,
-        [
-          {
-            address: activeIfo.address,
-            name: 'startBlock',
-          },
-          {
-            address: activeIfo.address,
-            name: 'endBlock',
-          },
-        ],
-        { requireSuccess: false },
-      )
+  const activeIfoWithBlocks = useActiveIfoWithBlocks()
 
-      return { startBlock: startBlock ?? 0, endBlock: endBlock ?? 0 }
-    },
-  )
+  const isIfoAlive = !!(currentBlock && activeIfoWithBlocks && activeIfoWithBlocks.endBlock > currentBlock)
+  const status = isIfoAlive
+    ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
+    : null
 
-  const isIfoAlive = !!(activeIfo && currentBlock && currentIfoBlocks && currentIfoBlocks.endBlock > currentBlock)
-
-  return isIfoAlive ? (
+  return isIfoAlive && status ? (
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{currentIfoBlocks.startBlock < currentBlock ? t('Live') : t('Soon')}</StyledSubheading>
-          <StyledHeading scale="xl">{activeIfo.id} IFO</StyledHeading>
+          <StyledSubheading>{status === 'live' ? t('Live') : t('Soon')}</StyledSubheading>
+          <StyledHeading scale="xl">{activeIfoWithBlocks.id} IFO</StyledHeading>
           <NextLinkFromReactRouter to="/ifo">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
@@ -142,8 +123,8 @@ const IFOBanner = () => {
         </LeftWrapper>
         <RightWrapper>
           <img
-            src={`/images/decorations/3d-ifo-${activeIfo.id}.png`}
-            alt={`IFO ${activeIfo.id}`}
+            src={`/images/decorations/3d-ifo-${activeIfoWithBlocks.id}.png`}
+            alt={`IFO ${activeIfoWithBlocks.id}`}
             onError={(event) => {
               // @ts-ignore
               // eslint-disable-next-line no-param-reassign

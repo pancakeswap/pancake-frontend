@@ -6,9 +6,8 @@ import { Text, Flex, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uiki
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { useFarmAuctionContract } from 'hooks/useContract'
-import { multicallv2 } from 'utils/multicall'
+import { useSWRMulticall } from 'hooks/useSWRContract'
 import farmAuctionAbi from 'config/abi/farmAuction.json'
-import { processAuctionData } from '../../../FarmAuction/helpers'
 
 const StyledSubheading = styled(Heading)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
@@ -93,31 +92,33 @@ const FarmAuctionsBanner = () => {
 
   const farmAuctionContract = useFarmAuctionContract(false)
 
-  const { data: currentAuction = null } = useSWRImmutable(['farmAuction', 'currentAuction'], async () => {
-    const auctionId = await farmAuctionContract.currentAuctionId()
-    const [auctionData, contenders] = await multicallv2(
-      farmAuctionAbi,
-      [
-        {
-          address: farmAuctionContract.address,
-          name: 'auctions',
-          params: [auctionId],
-        },
-        {
-          address: farmAuctionContract.address,
-          name: 'viewBidders',
-          params: [0, 1000],
-        },
-      ],
-      { requireSuccess: false },
-    )
-    return processAuctionData(auctionId.toNumber(), auctionData, contenders ? contenders[0] : null)
+  const { data: currentAuctionId } = useSWRImmutable(['farmAuction', 'currentAuctionId'], () => {
+    return farmAuctionContract.currentAuctionId()
   })
 
-  const isFarmAuctionAlive = currentBlock && currentAuction ? currentAuction.endBlock > currentBlock : false
-  const contendersSize = currentAuction ? currentAuction.contenders.length : 0
+  const { data: currentAuction } = useSWRMulticall(
+    farmAuctionAbi,
+    currentAuctionId
+      ? [
+          {
+            address: farmAuctionContract.address,
+            name: 'auctions',
+            params: [currentAuctionId],
+          },
+          {
+            address: farmAuctionContract.address,
+            name: 'viewBidders',
+            params: [0, 1000],
+          },
+        ]
+      : null,
+  )
 
-  return isFarmAuctionAlive ? (
+  const isFarmAuctionAlive =
+    currentBlock && currentAuction && currentAuction[0] ? currentAuction[0].endBlock.toNumber() > currentBlock : false
+  const contendersSize = isFarmAuctionAlive && currentAuction[1] ? currentAuction[1][0].length : 0
+
+  return isFarmAuctionAlive && contendersSize ? (
     <Wrapper>
       <Inner>
         <LeftWrapper>
