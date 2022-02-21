@@ -1,4 +1,3 @@
-import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import Link from 'next/link'
 import { Button, Card, CommunityIcon, Flex, Heading, PrizeIcon, Text } from '@pancakeswap/uikit'

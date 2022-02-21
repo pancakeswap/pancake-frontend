@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, ButtonProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'

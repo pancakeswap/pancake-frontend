@@ -1,4 +1,4 @@
-import React, { ReactText } from 'react'
+import { ReactText } from 'react'
 import {
   Text,
   Heading,

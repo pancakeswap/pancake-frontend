@@ -1,4 +1,3 @@
-import React from 'react'
 import { InjectedModalProps, Modal, Flex, Text, Button, useModal, Link, Grid, LinkExternal } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'

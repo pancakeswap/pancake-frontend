@@ -17,7 +17,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { formatBigNumber } from 'utils/formatBalance'
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 

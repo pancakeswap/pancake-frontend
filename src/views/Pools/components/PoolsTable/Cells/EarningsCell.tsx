@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'

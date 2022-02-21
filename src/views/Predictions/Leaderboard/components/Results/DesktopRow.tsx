@@ -1,4 +1,3 @@
-import React from 'react'
 import { Td, Text } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
 import ResultAvatar from './ResultAvatar'

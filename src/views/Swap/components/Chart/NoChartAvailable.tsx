@@ -1,6 +1,5 @@
 import { Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
 
 interface NoChartAvailableProps {
   token0Address: string

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { Input } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import debounce from 'lodash/debounce'

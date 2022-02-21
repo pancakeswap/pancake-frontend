@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import React from 'react'
+
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { usePriceCakeBusd } from 'state/farms/hooks'

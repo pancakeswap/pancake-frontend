@@ -1,7 +1,7 @@
 import { Card, Heading, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useTranslation } from 'contexts/Localization'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useAllTokenData, useTokenDatas } from 'state/info/hooks'
 import { useWatchlistTokens } from 'state/user/hooks'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'

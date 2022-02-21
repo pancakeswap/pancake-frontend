@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text, Flex, useTooltip, TooltipText } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { VaultKey } from 'state/types'

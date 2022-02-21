@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { DeserializedPool, VaultKey } from 'state/types'

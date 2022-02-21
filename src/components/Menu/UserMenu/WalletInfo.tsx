@@ -5,7 +5,7 @@ import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import useAuth from 'hooks/useAuth'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
-import React from 'react'
+
 import { getBscScanLink } from 'utils'
 import { formatBigNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import CopyAddress from './CopyAddress'

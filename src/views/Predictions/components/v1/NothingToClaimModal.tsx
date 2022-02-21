@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import {

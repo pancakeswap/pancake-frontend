@@ -1,4 +1,3 @@
-import React from 'react'
 import { BoxProps, Text } from '@pancakeswap/uikit'
 import { NodeRound } from 'state/types'
 import { useTranslation } from 'contexts/Localization'

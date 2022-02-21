@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
+import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex } from '@pancakeswap/uikit'
@@ -418,6 +418,6 @@ const Farms: React.FC = ({ children }) => {
   )
 }
 
-export const FarmsContext = React.createContext({ chosenFarmsMemoized: [] })
+export const FarmsContext = createContext({ chosenFarmsMemoized: [] })
 
 export default Farms

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Flex, Box } from '@pancakeswap/uikit'
 import Image from 'next/image'

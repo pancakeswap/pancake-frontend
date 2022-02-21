@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, Text } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
 import styled from 'styled-components'

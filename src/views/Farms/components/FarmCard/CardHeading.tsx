@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Tag, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'

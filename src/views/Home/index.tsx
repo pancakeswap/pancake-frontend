@@ -1,4 +1,3 @@
-import React from 'react'
 import { Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import PageSection from 'components/PageSection'

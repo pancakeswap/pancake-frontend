@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import React from 'react'
+
 import styled from 'styled-components'
 import { Flex, Text, Box, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

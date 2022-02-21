@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState, createElement } from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
@@ -125,7 +125,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t(tableSchema[columnIndex].label)}>
-                        {React.createElement(cells[key], { ...props[key], userDataReady })}
+                        {createElement(cells[key], { ...props[key], userDataReady })}
                       </CellLayout>
                     </CellInner>
                   </td>

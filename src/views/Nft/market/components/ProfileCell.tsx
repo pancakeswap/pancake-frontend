@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Box, Flex, BunnyPlaceholderIcon, Skeleton, Text } from '@pancakeswap/uikit'
 import truncateHash from 'utils/truncateHash'

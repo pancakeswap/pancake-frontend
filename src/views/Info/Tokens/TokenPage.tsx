@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Duration } from 'date-fns'
 import styled from 'styled-components'

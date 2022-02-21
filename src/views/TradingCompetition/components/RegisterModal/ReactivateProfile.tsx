@@ -1,4 +1,3 @@
-import React from 'react'
 import { Heading, Button, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'

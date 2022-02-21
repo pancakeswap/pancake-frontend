@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { InjectedModalProps } from '@pancakeswap/uikit'
 import { MaxUint256, Zero } from '@ethersproject/constants'
 import useTheme from 'hooks/useTheme'

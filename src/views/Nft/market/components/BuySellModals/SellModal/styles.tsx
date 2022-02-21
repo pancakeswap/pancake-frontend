@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Modal, Box, Flex, Text, BinanceIcon, Input } from '@pancakeswap/uikit'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'

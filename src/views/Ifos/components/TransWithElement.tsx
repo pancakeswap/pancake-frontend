@@ -1,4 +1,4 @@
-import React, { useMemo, ReactElement } from 'react'
+import { useMemo, ReactElement } from 'react'
 
 interface Props {
   text: string

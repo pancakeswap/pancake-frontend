@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { Flex, Text } from '@pancakeswap/uikit'
 import styled, { DefaultTheme } from 'styled-components'
 

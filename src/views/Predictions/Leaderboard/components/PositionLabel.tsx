@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { ArrowDownIcon, ArrowUpIcon } from '@pancakeswap/uikit'
 import { BetPosition } from 'state/types'

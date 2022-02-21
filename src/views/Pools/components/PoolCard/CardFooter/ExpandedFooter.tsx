@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
@@ -211,4 +211,4 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   )
 }
 
-export default React.memo(ExpandedFooter)
+export default memo(ExpandedFooter)

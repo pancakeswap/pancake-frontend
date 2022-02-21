@@ -1,4 +1,4 @@
-import React, { ElementType, ReactNode } from 'react'
+import { ElementType, ReactNode } from 'react'
 import { Flex, Heading, Text, TextProps } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 

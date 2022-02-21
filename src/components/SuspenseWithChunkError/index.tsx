@@ -1,10 +1,10 @@
-import React, { Suspense, SuspenseProps } from 'react'
+import { Suspense, SuspenseProps, Component } from 'react'
 
 interface State {
   hasError: boolean
 }
 
-class SuspenseWithChunkError extends React.Component<SuspenseProps, State> {
+class SuspenseWithChunkError extends Component<SuspenseProps, State> {
   constructor(props) {
     super(props)
     this.state = { hasError: false }

@@ -1,5 +1,5 @@
 import { Spinner, Text } from '@pancakeswap/uikit'
-import React from 'react'
+
 import styled, { keyframes } from 'styled-components'
 
 const countdownAnimation = keyframes`

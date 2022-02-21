@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect } from 'react'
+import { useMemo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, Card } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'

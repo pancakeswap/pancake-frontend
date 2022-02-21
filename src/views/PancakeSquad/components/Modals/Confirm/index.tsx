@@ -19,7 +19,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
-import React from 'react'
+
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 
