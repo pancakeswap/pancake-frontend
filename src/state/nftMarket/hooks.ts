@@ -9,6 +9,8 @@ import { useSWRMulticall } from 'hooks/useSWRContract'
 import { EMPTY_ARRAY, EMPTY_OBJECT } from 'utils/constantObjects'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
+import { isEmpty, shuffle } from 'lodash'
 
 import { fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
@@ -84,6 +86,18 @@ export const useGetCollection = (collectionAddress: string): Collection | undefi
   )
   const collectionObject = data ?? {}
   return collectionObject[checksummedCollectionAddress]
+}
+
+export const useGetShuffledCollections = (): { data: ApiCollections; status: FetchStatus } => {
+  const { data } = useSWRImmutable(['nftMarket', 'collections'], async () => getCollections())
+  const collections = data ?? ({} as ApiCollections)
+  const { data: shuffledCollections = {}, status } = useSWRImmutable(
+    !isEmpty(collections) ? ['nftMarket', 'shuffledCollections'] : null,
+    () => {
+      return shuffle(collections)
+    },
+  )
+  return { data: shuffledCollections, status }
 }
 
 export const useNftsFromCollection = (collectionAddress: string) => {
