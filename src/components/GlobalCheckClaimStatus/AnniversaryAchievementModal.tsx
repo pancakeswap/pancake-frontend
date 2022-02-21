@@ -37,7 +37,7 @@ const AnniversaryAchievementModal: React.FC<InjectedModalProps> = ({ onDismiss }
     try {
       await claimAnniversaryPoints()
     } finally {
-      onDismiss()
+      onDismiss?.()
     }
   }
 

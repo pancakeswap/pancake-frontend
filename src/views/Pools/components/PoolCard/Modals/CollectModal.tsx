@@ -88,7 +88,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserPendingReward(sousId, account))
       dispatch(updateUserBalance(sousId, account))
-      onDismiss()
+      onDismiss?.()
     }
   }
 

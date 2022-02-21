@@ -67,7 +67,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, 
         if (onSuccess) {
           onSuccess()
         }
-        onDismiss()
+        onDismiss?.()
       },
     })
 

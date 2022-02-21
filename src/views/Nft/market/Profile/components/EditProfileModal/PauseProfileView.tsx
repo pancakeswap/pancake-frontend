@@ -44,7 +44,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSucces
       if (onSuccess) {
         onSuccess()
       }
-      onDismiss()
+      onDismiss?.()
     }
   }
 

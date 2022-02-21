@@ -23,7 +23,7 @@ const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) =>
 
   const handleSwitchNetwork = async (): Promise<void> => {
     await setupNetwork()
-    onDismiss()
+    onDismiss?.()
   }
 
   return (

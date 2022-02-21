@@ -54,7 +54,7 @@ const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicke
       toastSuccess(t('Transaction has succeeded!'))
       setTxHashMintingResult(receipt.transactionHash)
     } else {
-      onDismiss()
+      onDismiss?.()
     }
   }
 

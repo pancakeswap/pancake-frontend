@@ -167,7 +167,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserPendingReward(sousId, account))
       dispatch(updateUserBalance(sousId, account))
-      onDismiss()
+      onDismiss?.()
     }
   }
 

@@ -173,7 +173,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      onDismiss()
+      onDismiss?.()
       dispatch(fetchCakeVaultUserData({ account }))
     }
   }
@@ -192,7 +192,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           {t('Your funds have been staked in the pool')}
         </ToastDescriptionWithTx>,
       )
-      onDismiss()
+      onDismiss?.()
       dispatch(fetchCakeVaultUserData({ account }))
     }
   }
