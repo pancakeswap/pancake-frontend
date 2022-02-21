@@ -1,7 +1,9 @@
-import { renderHook, act } from '@testing-library/react-hooks'
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
+import { renderHook } from '@testing-library/react-hooks'
 import { testnetTokens } from 'config/constants/tokens'
 import { parse } from 'querystring'
-import { createWrapper, useMockAccount } from 'testUtils'
+import { createWrapper } from 'testUtils'
 import { Field } from './actions'
 import { DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { queryParametersToSwapState, tryParseAmount, useDerivedSwapInfo } from './hooks'
@@ -118,37 +120,39 @@ describe('hooks', () => {
   })
 })
 
+// weird bug on jest Reference Error
+var mockUseActiveWeb3React: jest.Mock
+
+jest.mock('../../hooks/useActiveWeb3React', () => {
+  mockUseActiveWeb3React = jest.fn().mockReturnValue({})
+  return {
+    __esModule: true,
+    default: mockUseActiveWeb3React,
+  }
+})
+
 describe('#useDerivedSwapInfo', () => {
   it('should show Login Error', async () => {
-    const { result } = renderHook(
+    const { result, rerender } = renderHook(
       () => {
-        const { login } = useMockAccount()
-        const swapInfo = useDerivedSwapInfo()
-        return {
-          login,
-          swapInfo,
-        }
+        return useDerivedSwapInfo()
       },
       { wrapper: createWrapper() },
     )
-    expect(result.current.swapInfo.inputError).toBe('Connect Wallet')
+    expect(result.current.inputError).toBe('Connect Wallet')
 
-    await act(async () => {
-      await result.current.login()
-    })
+    mockUseActiveWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    rerender()
 
-    expect(result.current.swapInfo.inputError).toBe('Enter an amount')
+    expect(result.current.inputError).toBe('Enter an amount')
+    mockUseActiveWeb3React.mockClear()
   })
 
   it('should show [Enter a recipient] Error', async () => {
-    const { result } = renderHook(
+    mockUseActiveWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    const { result, rerender } = renderHook(
       () => {
-        const { login } = useMockAccount()
-        const swapInfo = useDerivedSwapInfo()
-        return {
-          login,
-          swapInfo,
-        }
+        return useDerivedSwapInfo()
       },
       {
         wrapper: createWrapper({
@@ -161,11 +165,10 @@ describe('#useDerivedSwapInfo', () => {
       },
     )
 
-    await act(async () => {
-      await result.current.login()
-    })
+    rerender()
 
-    expect(result.current.swapInfo.inputError).toBe('Enter a recipient')
+    expect(result.current.inputError).toBe('Enter a recipient')
+    mockUseActiveWeb3React.mockClear()
   })
 
   it('should return undefined when no pair', async () => {

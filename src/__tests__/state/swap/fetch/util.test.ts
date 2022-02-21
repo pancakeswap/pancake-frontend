@@ -1,7 +1,7 @@
 import { getIdsByTimeWindow, getPairSequentialId, pairHasEnoughLiquidity } from 'state/swap/fetch/utils'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
-import HOUR_PAIR from './fixtures/hour-pair-data.json'
-import DAY_PAIR from './fixtures/day-pair-data.json'
+import HOUR_PAIR from './__fixtures__/hour-pair-data.json'
+import DAY_PAIR from './__fixtures__/day-pair-data.json'
 
 describe('getPairSequentialId', () => {
   it('should get sequential id', () => {
