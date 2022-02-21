@@ -1,0 +1,321 @@
+{
+  "data": {
+    "pairDayDatas": [
+      {
+        "date": 1645142400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-19041",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "14468102.261451252810518587",
+        "reserve1": "282466.546265130470976682",
+        "reserveUSD": "231615510.5347037879781993957966"
+      },
+      {
+        "date": 1643846400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-19026",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "14558005.442310097213853778",
+        "reserve1": "283798.508068476573331062",
+        "reserveUSD": "210641309.5863250546220240761278"
+      },
+      {
+        "date": 1642550400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-19011",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "12906471.302445968259301876",
+        "reserve1": "295806.049293369955560711",
+        "reserveUSD": "273870758.3989382355372491451596"
+      },
+      {
+        "date": 1641254400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18996",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "13029904.363045839589464295",
+        "reserve1": "309491.503616588211573371",
+        "reserveUSD": "313716903.0275072750157365519"
+      },
+      {
+        "date": 1639958400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18981",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "12134645.924411156563915558",
+        "reserve1": "280614.840007786785843435",
+        "reserveUSD": "294157585.2890291253733612157804"
+      },
+      {
+        "date": 1638662400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18966",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "16239375.495888239250573648",
+        "reserve1": "324817.526463013366560822",
+        "reserveUSD": "361641677.329555832796767313896"
+      },
+      {
+        "date": 1637366400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18951",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "15836988.652891122253195398",
+        "reserve1": "417055.808216646504773931",
+        "reserveUSD": "503833425.361719575163940347698"
+      },
+      {
+        "date": 1636070400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18936",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "14079730.717063789450173349",
+        "reserve1": "451460.973398958564935403",
+        "reserveUSD": "548387881.525067699114014174226"
+      },
+      {
+        "date": 1634774400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18921",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "17784028.108740043694098217",
+        "reserve1": "749550.845179099641795978",
+        "reserveUSD": "707460531.0834518031377167529386"
+      },
+      {
+        "date": 1633478400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18906",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "13617560.853910137784197616",
+        "reserve1": "618515.861461049638073487",
+        "reserveUSD": "538830422.373323046180506948024"
+      },
+      {
+        "date": 1632182400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18891",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "17933279.322451977649578944",
+        "reserve1": "929467.781187979453818034",
+        "reserveUSD": "639499855.110671077715174893516"
+      },
+      {
+        "date": 1630886400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18876",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "18964408.485839696754904547",
+        "reserve1": "936306.899311205649154875",
+        "reserveUSD": "929245232.267680299384438421106"
+      },
+      {
+        "date": 1629590400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18861",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "20447907.912766338457874392",
+        "reserve1": "1068299.201626171444574419",
+        "reserveUSD": "959901313.4104363604168324729814"
+      },
+      {
+        "date": 1628294400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18846",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "20256438.067569751272484306",
+        "reserve1": "1037765.209824500764232437",
+        "reserveUSD": "738795909.380770698749781511153"
+      },
+      {
+        "date": 1626998400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18831",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "19233487.824798949839005507",
+        "reserve1": "884035.103769650693908345",
+        "reserveUSD": "528274914.6155091533797910071384"
+      },
+      {
+        "date": 1625702400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18816",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "21470389.457700552118734014",
+        "reserve1": "990567.508643186500037903",
+        "reserveUSD": "614742748.437462462053194589011"
+      },
+      {
+        "date": 1624406400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18801",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "20379647.321985658864099382",
+        "reserve1": "936066.282478080982011123",
+        "reserveUSD": "554739101.62743201990812943523"
+      },
+      {
+        "date": 1623110400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18786",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "19921892.515284147453228697",
+        "reserve1": "962043.428685586893420178",
+        "reserveUSD": "679629105.3794563060699786805796"
+      },
+      {
+        "date": 1621814400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18771",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "18853567.340545528910545515",
+        "reserve1": "968503.98103193487252756",
+        "reserveUSD": "667293627.570481130652840730828"
+      },
+      {
+        "date": 1620518400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18756",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "20424080.435035791995069557",
+        "reserve1": "1185222.271703456519710736",
+        "reserveUSD": "1572084053.376682946030394121484"
+      },
+      {
+        "date": 1619222400,
+        "id": "0x0ed7e52944161450477ee417de9cd3a859b14fd0-18741",
+        "pairAddress": {
+          "token0": {
+            "id": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+          },
+          "token1": {
+            "id": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+          }
+        },
+        "reserve0": "15005379.017981256343419687",
+        "reserve1": "858207.548495969969247719",
+        "reserveUSD": "853166132.657594076907542922973"
+      }
+    ]
+  }
+}

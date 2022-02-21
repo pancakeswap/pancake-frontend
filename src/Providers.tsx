@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import { ThemeProvider } from 'styled-components'
 import { useThemeManager } from 'state/user/hooks'
-import { getLibrary } from 'utils/web3React'
+import { getLibrary as getDefaultLibrary } from 'utils/web3React'
 import { LanguageProvider } from 'contexts/Localization'
 import { ToastsProvider } from 'contexts/ToastsContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
@@ -15,9 +15,9 @@ const ThemeProviderWrapper = (props) => {
   return <ThemeProvider theme={isDark ? dark : light} {...props} />
 }
 
-const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
+const Providers: React.FC<{ store: Store; getLibrary?: any }> = ({ children, store, getLibrary }) => {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
+    <Web3ReactProvider getLibrary={getLibrary || getDefaultLibrary}>
       <Provider store={store}>
         <ToastsProvider>
           <ThemeProviderWrapper>
