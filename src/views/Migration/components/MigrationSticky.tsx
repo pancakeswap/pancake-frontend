@@ -8,7 +8,7 @@ import { ProgressStepsType } from './ProgressSteps'
 
 const Container = styled.div`
   position: sticky;
-  bottom: 0;
+  bottom: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,6 +16,10 @@ const Container = styled.div`
   margin: auto;
   padding: 16px;
   z-index: 6;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    bottom: 0;
+  }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1120px;

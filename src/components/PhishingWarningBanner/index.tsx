@@ -66,7 +66,7 @@ const PhishingWarningBanner: React.FC = () => {
     </>
   )
   return (
-    <Container>
+    <Container className="warning-banner">
       {isMobile || isMd ? (
         <>
           <Box>{warningTextComponent}</Box>

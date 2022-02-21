@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Text, Button } from '@pancakeswap/uikit'
 
 const Container = styled.div`
+  position: sticky;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,6 +13,8 @@ const Container = styled.div`
   width: 100%;
   margin: auto;
   padding: 24px 40px;
+  z-index: 21;
+  transition: top 0.2s;
 
   border-bottom: 1px ${({ theme }) => theme.colors.secondary} solid;
   border-left: 1px ${({ theme }) => theme.colors.secondary} solid;
@@ -60,9 +63,33 @@ const TextSubTitle = styled(Text)`
 
 const MigrationSticky: React.FC = () => {
   const { t } = useTranslation()
+  let lastScroll = 0
+  const [stickPosition, setStickyPosition] = useState<number>(0)
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEffect)
+    return () => window.removeEventListener('scroll', scrollEffect)
+  }, [])
+
+  const scrollEffect = (): void => {
+    const currentScroll = window.pageYOffset
+    if (currentScroll <= 0) {
+      setStickyPosition(0)
+      return
+    }
+    if (currentScroll >= lastScroll) {
+      setStickyPosition(0)
+    } else {
+      const navHeight = document.querySelector('nav').offsetHeight
+      const warningBannerHeight = document.querySelector('.warning-banner')?.offsetHeight ?? 0
+      const totalHeight = navHeight + warningBannerHeight
+      setStickyPosition(totalHeight)
+    }
+    lastScroll = currentScroll
+  }
 
   return (
-    <Container>
+    <Container style={{ top: `${stickPosition}px` }}>
       <TextGroup>
         <TextTitle bold>{t('MasterChef v2 Migration')}</TextTitle>
         <TextSubTitle>{t('You need to migrate in order to continue receving staking rewards.')}</TextSubTitle>
