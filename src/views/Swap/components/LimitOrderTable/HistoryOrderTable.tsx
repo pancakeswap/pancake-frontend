@@ -7,6 +7,7 @@ import OrderRow from './OrderRow'
 import NoOrderTable from './NoOrderTable'
 import { LimitOrderTableProps } from './types'
 import { useTranslation } from 'contexts/Localization'
+import HeaderCellStyle from './HeaderCellStyle'
 
 const HistoryOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orders }) => {
   const { isTablet } = useMatchBreakpoints()
@@ -35,19 +36,13 @@ const HistoryOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, o
             <thead>
               <tr>
                 <Th>
-                  <Text bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                    {t('From')}
-                  </Text>
+                  <HeaderCellStyle>{t('From')}</HeaderCellStyle>
                 </Th>
                 <Th>
-                  <Text bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                    {t('To')}
-                  </Text>
+                  <HeaderCellStyle>{t('To')}</HeaderCellStyle>
                 </Th>
                 <Th>
-                  <Text bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                    {t('Status')}
-                  </Text>
+                  <HeaderCellStyle>{t('Status')}</HeaderCellStyle>
                 </Th>
               </tr>
             </thead>

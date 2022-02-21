@@ -1,6 +1,7 @@
 import { Currency } from '@pancakeswap/sdk'
 import { Flex, Text } from '@pancakeswap/uikit'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
+import TextIcon from './TextIcon'
 
 interface CurrencyFormatProps {
   currency: Currency
@@ -8,14 +9,7 @@ interface CurrencyFormatProps {
 }
 
 const CurrencyFormat: React.FC<CurrencyFormatProps> = ({ currency, bold }) => {
-  return (
-    <Flex alignItems="center">
-      <Text color="text" mr="8px" bold={bold}>
-        {currency?.symbol.toUpperCase()}
-      </Text>
-      <CurrencyLogo currency={currency} />
-    </Flex>
-  )
+  return <TextIcon bold={bold} text={currency?.symbol} icon={<CurrencyLogo currency={currency} />} />
 }
 
 export default CurrencyFormat

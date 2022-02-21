@@ -9,6 +9,7 @@ import TextIcon from './TextIcon'
 import OrderRow from './OrderRow'
 import NoOrderTable from './NoOrderTable'
 import { LimitOrderTableProps } from './types'
+import HeaderCellStyle from './HeaderCellStyle'
 
 const OpenOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orders }) => {
   const [openDetailLimitOrderModal] = useModal(<DetailLimitOrderModal />)
@@ -39,19 +40,13 @@ const OpenOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orde
             <thead>
               <tr>
                 <Th>
-                  <Text bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                    {t('From')}
-                  </Text>
+                  <HeaderCellStyle>{t('From')}</HeaderCellStyle>
                 </Th>
                 <Th>
-                  <Text bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                    {t('To')}
-                  </Text>
+                  <HeaderCellStyle>{t('To')}</HeaderCellStyle>
                 </Th>
                 <Th>
-                  <Text bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                    {t('Limit Price')}
-                  </Text>
+                  <HeaderCellStyle>{t('Limit Price')}</HeaderCellStyle>
                 </Th>
                 <Th />
               </tr>
