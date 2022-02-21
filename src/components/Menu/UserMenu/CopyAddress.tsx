@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Box, CopyIcon, Flex, FlexProps, IconButton } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import { copyText } from 'utils/copyText'
 
 interface CopyAddressProps extends FlexProps {
   account: string
@@ -69,17 +70,7 @@ const CopyAddress: React.FC<CopyAddressProps> = ({ account, ...props }) => {
   const { t } = useTranslation()
 
   const copyAddress = () => {
-    if (navigator.clipboard && navigator.permissions) {
-      navigator.clipboard.writeText(account).then(() => displayTooltip())
-    } else if (document.queryCommandSupported('copy')) {
-      const ele = document.createElement('textarea')
-      ele.value = account
-      document.body.appendChild(ele)
-      ele.select()
-      document.execCommand('copy')
-      document.body.removeChild(ele)
-      displayTooltip()
-    }
+    copyText(account, displayTooltip)
   }
 
   function displayTooltip() {
