@@ -1,21 +1,21 @@
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from 'state'
-import useSWR from 'swr'
+// eslint-disable-next-line camelcase
+import useSWR, { unstable_serialize, useSWRConfig } from 'swr'
 import { simpleRpcProvider } from 'utils/providers'
-import { setBlock } from '.'
-import { State } from '../types'
+import useSWRImmutable from 'swr/immutable'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
-  const dispatch = useAppDispatch()
+  const { cache, mutate } = useSWRConfig()
 
   const { data } = useSWR(
     ['blockNumber'],
     async () => {
       const blockNumber = await simpleRpcProvider.getBlockNumber()
-      dispatch(setBlock(blockNumber))
+      if (!cache.get(unstable_serialize(['initialBlockNumber']))) {
+        mutate(['initialBlockNumber'], blockNumber)
+      }
       return blockNumber
     },
     {
@@ -44,14 +44,12 @@ export const usePollBlockNumber = () => {
   )
 }
 
-export const useBlock = () => {
-  return useSelector((state: State) => state.block)
+export const useCurrentBlock = (): number => {
+  const { data: currentBlock = 0 } = useSWRImmutable(['blockNumber'])
+  return currentBlock
 }
 
-export const useCurrentBlock = () => {
-  return useSelector((state: State) => state.block.currentBlock)
-}
-
-export const useInitialBlock = () => {
-  return useSelector((state: State) => state.block.initialBlock)
+export const useInitialBlock = (): number => {
+  const { data: initialBlock = 0 } = useSWRImmutable(['initialBlockNumber'])
+  return initialBlock
 }

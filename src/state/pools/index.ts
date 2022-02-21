@@ -134,13 +134,12 @@ export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) 
   )
 }
 
-export const fetchPoolsPublicDataAsync = () => async (dispatch, getState) => {
+export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (dispatch, getState) => {
   try {
     const blockLimits = await fetchPoolsBlockLimits()
     const totalStakings = await fetchPoolsTotalStaking()
     const profileRequirements = await fetchPoolsProfileRequirement()
-    let currentBlock = getState().block?.currentBlock
-
+    let currentBlock = currentBlockNumber
     if (!currentBlock) {
       currentBlock = await simpleRpcProvider.getBlockNumber()
     }
