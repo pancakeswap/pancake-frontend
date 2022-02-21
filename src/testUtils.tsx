@@ -12,6 +12,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { Wallet } from '@ethersproject/wallet'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { useWeb3React } from '@web3-react/core'
+import getNodeUrl from 'utils/getRpcUrl'
 
 const ganacheProvider = ganache.provider({
   chain: {
@@ -21,7 +22,7 @@ const ganacheProvider = ganache.provider({
     totalAccounts: 3,
   },
   fork: {
-    url: 'https://bsc-dataseed1.defibit.io',
+    url: getNodeUrl(),
   },
 })
 const accounts = ganacheProvider.getInitialAccounts()
