@@ -2,7 +2,7 @@ import { Table, Th, Td, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import CurrencyFormat from './CurrencyFormat'
 import CellFormat from './CellFormat'
-import Navigation from './Navigation'
+import Navigation from 'components/TableNavigation'
 import OrderRow from './OrderRow'
 import NoOrderTable from './NoOrderTable'
 import { LimitOrderTableProps } from './types'

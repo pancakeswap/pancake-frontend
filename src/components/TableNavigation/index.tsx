@@ -3,9 +3,6 @@ import { Text, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 
-// Copy from src/views/Nft/market/Collections
-// Will refactor for reuse
-
 export const PageButtons = styled.div`
   width: 100%;
   display: flex;
