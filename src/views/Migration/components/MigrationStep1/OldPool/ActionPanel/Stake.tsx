@@ -19,7 +19,7 @@ interface StackedActionProps {
   pool: DeserializedPool
 }
 
-const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
+const Staked: React.FC<StackedActionProps> = ({ pool }) => {
   const { stakingToken, userData, stakingTokenPrice, vaultKey } = pool
   const { t } = useTranslation()
   const disabled = true

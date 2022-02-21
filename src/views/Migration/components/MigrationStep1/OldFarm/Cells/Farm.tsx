@@ -9,8 +9,12 @@ import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/B
 import { TokenPairImage } from 'components/TokenImage'
 
 const StyledCell = styled(BaseCell)`
-  flex: 1 0 150px;
-  margin-left: 32px;
+  flex: 0;
+  margin-left: 12px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex: 1 0 150px;
+    margin-left: 32px;
+  }
 `
 
 const TokenWrapper = styled.div`
@@ -27,6 +31,7 @@ export interface FarmProps {
   pid: number
   token: Token
   quoteToken: Token
+  lpSymbol: string
 }
 
 const Farm: React.FC<FarmProps> = ({ token, quoteToken, label, pid }) => {

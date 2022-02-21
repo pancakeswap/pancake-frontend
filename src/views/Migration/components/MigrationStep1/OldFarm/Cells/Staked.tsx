@@ -8,7 +8,15 @@ import { getBalanceAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 
 const StyledCell = styled(BaseCell)`
-  flex: 1 0 100px;
+  flex: 0;
+  padding: 0 0 24px 0;
+  margin-left: 48px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex: 2 0 100px;
+    padding: 24px 8px;
+    margin-left: 50px;
+  }
 `
 
 export interface StakedProps {

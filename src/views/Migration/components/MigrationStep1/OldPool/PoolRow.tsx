@@ -20,6 +20,10 @@ interface PoolRowProps {
 const StyledRow = styled.div`
   display: flex;
   background-color: transparent;
+  cursor: pointer;
+  ${({ theme }) => theme.mediaQueries.md} {
+    cursor: initial;
+  }
 `
 
 const LeftContainer = styled.div`
@@ -62,11 +66,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
       <StyledRow role="row" onClick={toggleExpanded}>
         <LeftContainer>
           <NameCell pool={pool} />
-          {isLargerScreen ? (
-            <StakedCell pool={pool} account={account} />
-          ) : (
-            !expanded && <StakedCell pool={pool} account={account} />
-          )}
+          {isLargerScreen || !expanded ? <StakedCell pool={pool} account={account} /> : null}
           {pool.vaultKey ? (
             (pool.vaultKey === VaultKey.IfoPool || pool.vaultKey === VaultKey.CakeVault) && (
               <AutoEarningsCell pool={pool} account={account} />
@@ -77,7 +77,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
           {isLargerScreen && isCakePool && <TotalStakedCell pool={pool} />}
         </LeftContainer>
         <RightContainer>
-          {isLargerScreen ? <Unstaked pool={pool} /> : !expanded && <Unstaked pool={pool} />}
+          {isLargerScreen || !expanded ? <Unstaked pool={pool} /> : null}
           {!isLargerScreen && <ExpandActionCell expanded={expanded} showExpandedText={expanded || isMobile} />}
         </RightContainer>
       </StyledRow>

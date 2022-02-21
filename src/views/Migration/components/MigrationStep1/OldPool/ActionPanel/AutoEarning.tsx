@@ -43,7 +43,7 @@ const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPr
   if (isMobile) {
     return (
       <Flex justifyContent="space-between">
-        <Text>{t('Recent CAKE profit')} </Text>
+        <Text>{t('Recent CAKE profit')}</Text>
         <Flex height="20px" alignItems="center">
           {hasEarnings ? (
             <Balance fontSize="16px" value={earningTokenBalance} decimals={5} />

@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { useTable, ColumnType } from '@pancakeswap/uikit'
 import Row, { RowProps } from './FarmRow'
@@ -6,6 +7,11 @@ import TableHeader from '../../MigrationTable/TableHeader'
 import Loading from '../../MigrationTable/Loading'
 import EmptyText from '../../MigrationTable/EmptyText'
 import TableStyle from '../../MigrationTable/StyledTable'
+
+const Container = styled.div`
+  border-radius: 10px;
+  overflow: hidden;
+`
 
 export interface ITableProps {
   account: string
@@ -20,7 +26,7 @@ const FarmTable: React.FC<ITableProps> = ({ account, data, columns, userDataRead
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
 
   return (
-    <>
+    <Container>
       <TableHeader title={t('Old Farms')} />
       <TableStyle>
         {!userDataReady && <Loading />}
@@ -31,10 +37,10 @@ const FarmTable: React.FC<ITableProps> = ({ account, data, columns, userDataRead
         {account &&
           userDataReady &&
           rows.map((row) => {
-            return <Row {...row.original} userDataReady={userDataReady} key={`table-row-${row.id}`} />
+            return <Row {...row.original} key={`table-row-${row.id}`} />
           })}
       </TableStyle>
-    </>
+    </Container>
   )
 }
 

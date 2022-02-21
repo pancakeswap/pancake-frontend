@@ -65,6 +65,7 @@ const OldFarmStep1: React.FC = () => {
         label: lpLabel,
         pid: farm.pid,
         token: farm.token,
+        lpSymbol: farm.lpSymbol,
         quoteToken: farm.quoteToken,
       },
       staked: {
