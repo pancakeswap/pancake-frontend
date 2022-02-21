@@ -120,7 +120,7 @@ describe('hooks', () => {
   })
 })
 
-// weird bug on jest Reference Error
+// weird bug on jest Reference Error, must use `var` here
 var mockUseActiveWeb3React: jest.Mock
 
 jest.mock('../../hooks/useActiveWeb3React', () => {

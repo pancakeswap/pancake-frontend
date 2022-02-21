@@ -67,7 +67,7 @@ describe('Trade', () => {
       ])
     })
 
-    it('should get all pair combinations', () => {
+    it('should get all pair combinations wbnb, cake', () => {
       mockUsePairs.mockClear()
       renderHook(() => {
         Trades.useAllCommonPairs(mainnetTokens.wbnb, mainnetTokens.cake)
@@ -76,7 +76,7 @@ describe('Trade', () => {
       expect(mockUsePairs).toMatchSnapshot()
     })
 
-    it('should get all pair combinations', () => {
+    it('should get all pair combinations, wbnb, wbnb', () => {
       mockUsePairs.mockClear()
       renderHook(() => {
         Trades.useAllCommonPairs(mainnetTokens.wbnb, mainnetTokens.wbnb)
@@ -124,12 +124,12 @@ describe('Trade', () => {
 
     it('should call with 3 times without singleHopOnly', () => {
       const allowPairs = [new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.cake, '1'))]
-      const amountIn = CurrencyAmount.ether('1000000')
-      const currencyOut = mainnetTokens.cake
+      const argA = CurrencyAmount.ether('1000000')
+      const argB = mainnetTokens.cake
       renderHook(
         () => {
           mockUseAllCommonPairs.mockReturnValue(allowPairs)
-          Trades.useTradeExactIn(amountIn, currencyOut)
+          Trades.useTradeExactIn(argA, argB)
         },
         {
           wrapper: createWrapper({ user: { userSingleHopOnly: false } }),
@@ -139,7 +139,7 @@ describe('Trade', () => {
       renderHook(
         () => {
           mockUseAllCommonPairs.mockReturnValue(allowPairs)
-          Trades.useTradeExactOut(currencyOut, amountIn)
+          Trades.useTradeExactOut(argB, argA)
         },
         {
           wrapper: createWrapper({ user: { userSingleHopOnly: false } }),
