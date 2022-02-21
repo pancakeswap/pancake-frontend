@@ -31,5 +31,5 @@ export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: 
     },
   )
 
-  return { ...activeIfo, ...currentIfoBlocks }
+  return activeIfo ? { ...activeIfo, ...currentIfoBlocks } : null
 }
