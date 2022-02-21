@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ApiResponseCollectionTokens, NftAttribute, NftToken } from 'state/nftMarket/types'
+import { ApiResponseCollectionTokens, ApiSingleTokenData, NftAttribute, NftToken } from 'state/nftMarket/types'
 import { useGetNftFilters, useGetNftOrdering, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks'
 import {
   fetchNftsFiltered,
@@ -34,7 +34,11 @@ const fetchTokenIdsFromFilter = async (address: string, settings: ItemListingSet
   return attrFilters ? Object.values(attrFilters.data).map((apiToken) => apiToken.tokenId) : null
 }
 
-const fetchMarketDataNfts = async (address: string, settings: ItemListingSettings, page: number) => {
+const fetchMarketDataNfts = async (
+  address: string,
+  settings: ItemListingSettings,
+  page: number,
+): Promise<NftToken[]> => {
   const tokenIdsFromFilter = await fetchTokenIdsFromFilter(address, settings)
   const whereClause = tokenIdsFromFilter
     ? {
@@ -52,7 +56,7 @@ const fetchMarketDataNfts = async (address: string, settings: ItemListingSetting
   )
   const apiRequestPromises = subgraphRes.map((marketNft) => getNftApi(address, marketNft.tokenId))
   const apiResponses = await Promise.all(apiRequestPromises)
-  const newNfts = apiResponses.reduce((acc, apiNft) => {
+  const newNfts: NftToken[] = apiResponses.reduce((acc, apiNft) => {
     if (apiNft) {
       acc.push({
         ...apiNft,
@@ -62,11 +66,11 @@ const fetchMarketDataNfts = async (address: string, settings: ItemListingSetting
       })
     }
     return acc
-  }, [])
+  }, [] as NftToken[])
   return newNfts
 }
 
-const fetchAllNfts = async (address: string, settings: ItemListingSettings, page: number) => {
+const fetchAllNfts = async (address: string, settings: ItemListingSettings, page: number): Promise<NftToken[]> => {
   const tokenIdsFromFilter = await fetchTokenIdsFromFilter(address, settings)
 
   let collectionNftsResponse: ApiResponseCollectionTokens = null
@@ -85,7 +89,9 @@ const fetchAllNfts = async (address: string, settings: ItemListingSettings, page
     const nftsMarket = await getMarketDataForTokenIds(address, tokenIds)
 
     const responsesPromises = tokenIds.map(async (id) => {
-      const apiMetadata = collectionNftsResponse ? collectionNftsResponse.data[id] : await getNftApi(address, id)
+      const apiMetadata: ApiSingleTokenData = collectionNftsResponse
+        ? collectionNftsResponse.data[id]
+        : await getNftApi(address, id)
       const marketData = nftsMarket.find((nft) => nft.tokenId === id)
 
       return {
