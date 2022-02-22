@@ -12,8 +12,8 @@ const StyledCell = styled(BaseCell)`
   flex: 0;
   margin-left: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    flex: 1 0 150px;
-    margin-left: 32px;
+    flex: 1 0 100px;
+    margin-left: 30px;
   }
 `
 

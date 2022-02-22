@@ -21,7 +21,7 @@ const StyledRow = styled.div`
   display: flex;
   background-color: transparent;
   cursor: pointer;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     cursor: initial;
   }
 `
@@ -48,8 +48,8 @@ const RightContainer = styled.div`
 `
 
 const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
-  const { isMobile, isLg, isXl, isXxl } = useMatchBreakpoints()
-  const isLargerScreen = isLg || isXl || isXxl
+  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
+  const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
 
@@ -61,19 +61,24 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
 
   const isCakePool = pool.sousId === 0
 
+  const EarningComponent = () => {
+    if (isLargerScreen || !expanded) {
+      return pool.vaultKey === VaultKey.IfoPool || pool.vaultKey === VaultKey.CakeVault ? (
+        <AutoEarningsCell pool={pool} account={account} />
+      ) : (
+        <EarningsCell pool={pool} account={account} />
+      )
+    }
+    return null
+  }
+
   return (
     <>
       <StyledRow role="row" onClick={toggleExpanded}>
         <LeftContainer>
           <NameCell pool={pool} />
           {isLargerScreen || !expanded ? <StakedCell pool={pool} account={account} /> : null}
-          {pool.vaultKey ? (
-            (pool.vaultKey === VaultKey.IfoPool || pool.vaultKey === VaultKey.CakeVault) && (
-              <AutoEarningsCell pool={pool} account={account} />
-            )
-          ) : (
-            <EarningsCell pool={pool} account={account} />
-          )}
+          {EarningComponent()}
           {isLargerScreen && isCakePool && <TotalStakedCell pool={pool} />}
         </LeftContainer>
         <RightContainer>

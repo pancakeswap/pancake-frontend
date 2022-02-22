@@ -15,7 +15,7 @@ const StyledRow = styled.div`
   display: flex;
   background-color: transparent;
   cursor: pointer;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     cursor: initial;
   }
 `
@@ -51,9 +51,8 @@ export interface RowProps {
 }
 
 const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, earned, multiplier, liquidity, unstake }) => {
-  const { isMobile, isLg, isXl, isXxl } = useMatchBreakpoints()
-  const isXLLargerScreen = isXl || isXxl
-  const isLargerScreen = isLg || isXLLargerScreen
+  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
+  const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
 
@@ -69,9 +68,9 @@ const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, earned, mult
         <LeftContainer>
           <Farm {...farm} />
           {isLargerScreen || !expanded ? <Staked {...staked} /> : null}
-          {isLargerScreen && <Earned {...earned} />}
-          {isXLLargerScreen && <Multiplier {...multiplier} />}
-          {isXLLargerScreen && <Liquidity {...liquidity} />}
+          {isLargerScreen || !expanded ? <Earned {...earned} /> : null}
+          {isLargerScreen && <Multiplier {...multiplier} />}
+          {isLargerScreen && <Liquidity {...liquidity} />}
         </LeftContainer>
         <RightContainer>
           {isLargerScreen || !expanded ? <Unstake {...unstake} /> : null}
