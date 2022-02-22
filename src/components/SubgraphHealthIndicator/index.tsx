@@ -73,13 +73,39 @@ export interface BlockResponse {
 
 const SubgraphHealthIndicator = () => {
   const { pathname } = useRouter()
-  const isOnNftPages = pathname.includes('nfts')
-  return isOnNftPages ? <SubgraphHealth /> : null
+
+  let subgraphName = null
+
+  if (pathname.includes('nfts')) {
+    subgraphName = 'pancakeswap/nft-market'
+  } else if (pathname.includes('limit-orders')) {
+    subgraphName = 'gelatodigital/limit-orders-bsc'
+  }
+
+  const query = subgraphName
+    ? `
+      query getLimitOrdersSubgraphHealth {
+        indexingStatusForCurrentVersion(subgraphName: "${subgraphName}") {
+          synced
+          health
+          chains {
+            chainHeadBlock {
+              number
+            }
+            latestBlock {
+              number
+            }
+          }
+        }
+    }`
+    : null
+
+  return query ? <SubgraphHealth query={query} /> : null
 }
 
-const SubgraphHealth = () => {
+const SubgraphHealth: React.FC<{ query: string }> = ({ query }) => {
   const { t } = useTranslation()
-  const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth()
+  const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth(query)
   const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()
   const forceIndicatorDisplay = status === SubgraphStatus.WARNING || status === SubgraphStatus.NOT_OK
   const showIndicator = alwaysShowIndicator || forceIndicatorDisplay
