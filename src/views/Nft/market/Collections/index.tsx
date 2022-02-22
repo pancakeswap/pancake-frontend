@@ -134,7 +134,12 @@ const Collectible = () => {
                 />
               </Flex>
             </Flex>
-            <Grid gridGap="16px" gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} mb="32px">
+            <Grid
+              gridGap="16px"
+              gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']}
+              mb="32px"
+              data-test="nft-collection-row"
+            >
               {sortedCollections.slice(ITEMS_PER_PAGE * (page - 1), page * ITEMS_PER_PAGE).map((collection) => {
                 return (
                   <CollectionCard

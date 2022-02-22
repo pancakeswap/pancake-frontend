@@ -23,7 +23,7 @@ const sentryWebpackPluginOptions = {
 
 /** @type {import('next').NextConfig} */
 const config = {
-  experimental: {
+  compiler: {
     styledComponents: true,
   },
   reactStrictMode: true,
