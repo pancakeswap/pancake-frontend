@@ -167,7 +167,11 @@ const Desktop: React.FC = () => {
           </PositionPane>
 
           <Gutter ref={gutterRef}>
-            <ExpandButtonGroup>
+            <ExpandButtonGroup
+              onMouseDown={(e) => {
+                e.stopPropagation()
+              }}
+            >
               <TabToggle
                 height="42px"
                 as={Button}
@@ -200,12 +204,12 @@ const Desktop: React.FC = () => {
             {isChartPaneOpen && (
               <ChartByLabel
                 justifyContent="flex-end"
-                symbol={chartView === PredictionsChartView.TradingView ? 'BNB/USDT' : 'BNB/USD'}
+                symbol={chartView === PredictionsChartView.TradingView ? 'BNB/BUSD' : 'BNB/USD'}
                 by={chartView}
                 link={
                   chartView === PredictionsChartView.TradingView
-                    ? `https://www.tradingview.com/symbols/BNBUSDT`
-                    : 'https://chain.link/'
+                    ? `https://www.tradingview.com/symbols/BNBBUSD`
+                    : 'https://chain.link/data-feeds'
                 }
               />
             )}

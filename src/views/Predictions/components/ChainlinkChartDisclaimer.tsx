@@ -43,15 +43,18 @@ const ChartDisclaimer: FC<InjectedModalProps> = ({ onDismiss }) => {
         <Heading as="h3" size="sm">
           {t('Important Information')}:
         </Heading>
-        <Text color="textSubtle" fontSize="14px" my="24px">
-          {t('Currently showing charts from Chainlink.')}
+        <Text color="textSubtle" fontSize="14px" mt="24px" mb="12px">
+          {t('Currently showing charts from Chainlink oracle')}
+        </Text>
+        <Text color="textSubtle" fontSize="14px" mb="24px">
+          {t('The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.')}
         </Text>
         <Ul>
-          <li>{t('Prices chart is in relatively low fidelity.')}</li>
-          <li>{t('Prices on charts is in relatively slower to respond.')}</li>
+          <li>{t('Oracle price refreshes every ~1 min.')}</li>
+          <li>{t('When compared to TradingView chart. This chart refreshes slower and with fewer features.')}</li>
         </Ul>
         <Box>
-          <Button width="100%" variant="secondary" onClick={handleConfirm} my="16px">
+          <Button width="100%" variant="primary" onClick={handleConfirm} my="16px">
             {t('I understand')}
           </Button>
         </Box>
