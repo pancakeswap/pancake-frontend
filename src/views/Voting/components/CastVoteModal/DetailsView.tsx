@@ -1,9 +1,9 @@
-import { Text, Flex, LinkExternal } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { formatNumber } from 'utils/formatBalance'
-import { VotingBox, ModalInner } from './styles'
-import { getBscScanLink } from 'utils'
 import styled from 'styled-components'
+import { getBscScanLink } from 'utils'
+import { formatNumber } from 'utils/formatBalance'
+import { ModalInner, VotingBox } from './styles'
 
 const StyledLinkExternal = styled(LinkExternal)`
   display: inline-flex;
