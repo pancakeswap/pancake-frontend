@@ -42,5 +42,8 @@ Sentry.init({
     'User rejected the transaction',
     'cancelled',
     'PollingBlockTracker',
+    // Ignore eth_call error
+    'eth_call',
+    'eth_blockNumber',
   ],
 })
