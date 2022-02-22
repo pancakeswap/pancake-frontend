@@ -1,16 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { Button, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { Button, useMatchBreakpoints, useModal, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import { useERC20 } from 'hooks/useContract'
 import { PoolCategory } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { convertSharesToCake } from 'views/Pools/helpers'
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
 import NotEnoughTokensModal from 'views/Pools/components/PoolCard/Modals/NotEnoughTokensModal'
 import StakeModal from 'views/Pools/components/PoolCard/Modals/StakeModal'
+import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
 
 const Container = styled.div`
   display: flex;
@@ -27,12 +29,15 @@ const Container = styled.div`
   }
 `
 
+const IconButtonWrapper = styled.div`
+  display: flex;
+`
 export interface StakeButtonProps {
   pool: DeserializedPool
 }
 
 const StakeButton: React.FC<StakeButtonProps> = ({ pool }) => {
-  const { sousId, stakingToken, earningToken, isFinished, userData, vaultKey, poolCategory } = pool
+  const { sousId, stakingToken, earningToken, isFinished, poolCategory, userData, stakingTokenPrice, vaultKey } = pool
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
 
@@ -59,35 +64,36 @@ const StakeButton: React.FC<StakeButtonProps> = ({ pool }) => {
     userData: { userShares },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
+  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
   const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = vaultKey && hasSharesStaked
 
   const needsApproval = vaultKey ? !isVaultApproved : !allowance.gt(0) && !isBnbPool
 
-  // const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
+  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
-  // const [onPresentStake] = useModal(
-  //   <StakeModal
-  //     isBnbPool={isBnbPool}
-  //     pool={pool}
-  //     stakingTokenBalance={stakingTokenBalance}
-  //     stakingTokenPrice={stakingTokenPrice}
-  //   />,
-  // )
+  const [onPresentStake] = useModal(
+    <StakeModal
+      isBnbPool={isBnbPool}
+      pool={pool}
+      stakingTokenBalance={stakingTokenBalance}
+      stakingTokenPrice={stakingTokenPrice}
+    />,
+  )
 
-  // const [onPresentVaultStake] = useModal(<VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} />)
+  const [onPresentVaultStake] = useModal(<VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} />)
 
-  // const [onPresentUnstake] = useModal(
-  //   <StakeModal
-  //     stakingTokenBalance={stakingTokenBalance}
-  //     isBnbPool={isBnbPool}
-  //     pool={pool}
-  //     stakingTokenPrice={stakingTokenPrice}
-  //     isRemovingStake
-  //   />,
-  // )
+  const [onPresentUnstake] = useModal(
+    <StakeModal
+      stakingTokenBalance={stakingTokenBalance}
+      isBnbPool={isBnbPool}
+      pool={pool}
+      stakingTokenPrice={stakingTokenPrice}
+      isRemovingStake
+    />,
+  )
 
-  // const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
+  const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
   const handleApprove = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
@@ -98,30 +104,30 @@ const StakeButton: React.FC<StakeButtonProps> = ({ pool }) => {
     }
   }
 
-  // const handleUnstake = (event: React.MouseEvent<HTMLElement>) => {
-  //   event.stopPropagation()
-  //   if (stakingTokenBalance.gt(0)) {
-  //     onStake()
-  //   } else {
-  //     onPresentTokenRequired()
-  //   }
-  // }
+  const handleUnstake = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+    if (stakingTokenBalance.gt(0)) {
+      onStake()
+    } else {
+      onPresentTokenRequired()
+    }
+  }
 
-  // const onStake = () => {
-  //   if (vaultKey) {
-  //     onPresentVaultStake()
-  //   } else {
-  //     onPresentStake()
-  //   }
-  // }
+  const onStake = () => {
+    if (vaultKey) {
+      onPresentVaultStake()
+    } else {
+      onPresentStake()
+    }
+  }
 
-  // const onUnstake = () => {
-  //   if (vaultKey) {
-  //     onPresentVaultUnstake()
-  //   } else {
-  //     onPresentUnstake()
-  //   }
-  // }
+  const onUnstake = () => {
+    if (vaultKey) {
+      onPresentVaultUnstake()
+    } else {
+      onPresentUnstake()
+    }
+  }
 
   if (needsApproval) {
     return (
@@ -140,36 +146,30 @@ const StakeButton: React.FC<StakeButtonProps> = ({ pool }) => {
   }
 
   // Wallet connected, user data loaded and approved
-  // if (isNotVaultAndHasStake || isVaultWithShares) {
-  //   <Container>
-  //     <IconButtonWrapper>
-  //       <IconButton variant="secondary" onClick={onUnstake} mr="6px">
-  //         <MinusIcon color="primary" width="14px" />
-  //       </IconButton>
-  //       {reachStakingLimit ? (
-  //         <span ref={targetRef}>
-  //           <IconButton variant="secondary" disabled>
-  //             <AddIcon color="textDisabled" width="24px" height="24px" />
-  //           </IconButton>
-  //         </span>
-  //       ) : (
-  //         <IconButton
-  //           variant="secondary"
-  //           onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-  //           disabled={isFinished}
-  //         >
-  //           <AddIcon color="primary" width="14px" />
-  //         </IconButton>
-  //       )}
-  //     </IconButtonWrapper>
-  //   </Container>
-  // }
+  if (isNotVaultAndHasStake || isVaultWithShares) {
+    return (
+      <Container>
+        <IconButtonWrapper>
+          <IconButton variant="secondary" onClick={onUnstake} mr="6px">
+            <MinusIcon color="primary" width="14px" />
+          </IconButton>
+          <IconButton
+            variant="secondary"
+            onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
+            disabled={isFinished}
+          >
+            <AddIcon color="primary" width="14px" />
+          </IconButton>
+        </IconButtonWrapper>
+      </Container>
+    )
+  }
 
   return (
     <Container>
-      {/* <Button width={isDesktop ? '148px' : '120px'} onClick={handleUnstake} marginLeft="auto" disabled={isFinished}>
+      <Button width={isDesktop ? '148px' : '120px'} onClick={handleUnstake} marginLeft="auto" disabled={isFinished}>
         {t('Stake')}
-      </Button> */}
+      </Button>
     </Container>
   )
 }

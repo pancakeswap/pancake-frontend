@@ -27,7 +27,7 @@ const OldPool: React.FC = () => {
         if (pool.vaultKey) {
           return vaultPools[pool.vaultKey].userData.userShares && vaultPools[pool.vaultKey].userData.userShares.gt(0)
         }
-        return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+        return pool.userData && pool.sousId === 0 && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
       }),
     [openPools, vaultPools],
   )

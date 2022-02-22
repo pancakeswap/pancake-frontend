@@ -49,9 +49,17 @@ const RightContainer = styled.div`
   }
 `
 
+const AprContainer = styled.div`
+  display: none;
+  flex: 2 0 100px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: flex;
+  }
+`
+
 const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
-  const { isMobile, isLg, isXl, isXxl } = useMatchBreakpoints()
-  const isLargerScreen = isLg || isXl || isXxl
+  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
+  const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
 
@@ -61,20 +69,40 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
     }
   }
 
+  const EarningComponent = () => {
+    if (isLargerScreen || !expanded) {
+      return pool.vaultKey === VaultKey.IfoPool || pool.vaultKey === VaultKey.CakeVault ? (
+        <AutoEarningsCell pool={pool} account={account} />
+      ) : (
+        <EarningsCell pool={pool} account={account} />
+      )
+    }
+    return null
+  }
+
+  const AprComponent = () => {
+    if (isLargerScreen || !expanded) {
+      return pool.vaultKey ? (
+        <AprContainer>
+          <AutoAprCell pool={pool} />
+        </AprContainer>
+      ) : (
+        <AprContainer>
+          <AprCell pool={pool} />
+        </AprContainer>
+      )
+    }
+    return null
+  }
+
   return (
     <>
       <StyledRow role="row" onClick={toggleExpanded}>
         <LeftContainer>
           <NameCell pool={pool} />
           {isLargerScreen || !expanded ? <StakedCell pool={pool} account={account} /> : null}
-          {pool.vaultKey ? (
-            (pool.vaultKey === VaultKey.IfoPool || pool.vaultKey === VaultKey.CakeVault) && (
-              <AutoEarningsCell pool={pool} account={account} />
-            )
-          ) : (
-            <EarningsCell pool={pool} account={account} />
-          )}
-          {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
+          {EarningComponent()}
+          {AprComponent()}
           {isLargerScreen && <TotalStakedCell pool={pool} />}
         </LeftContainer>
         <RightContainer>
