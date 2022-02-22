@@ -25,12 +25,12 @@ const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataReady, account }
 
   return (
     <Container>
-      <TableHeader title={t('Old Pools')} />
+      <TableHeader title={t('Pools')} />
       <TableStyle>
         {!userDataReady && <Loading />}
         {!account && <EmptyText text={t('Please connect wallet to check your pool status.')} />}
         {account && userDataReady && pools.length === 0 && (
-          <EmptyText text={t('You are not currently staking in any v1 pools.')} />
+          <EmptyText text={t('You are not currently staking in any pools.')} />
         )}
         {account &&
           userDataReady &&

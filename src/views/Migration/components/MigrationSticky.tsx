@@ -94,7 +94,7 @@ const MigrationSticky: React.FC<MigrationStickyProps> = ({ step, handleClick }) 
         <TextTitle bold>{title}</TextTitle>
         <TextSubTitle>{subTitle}</TextSubTitle>
       </TextGroup>
-      <Button minWidth={isMobile ? '131px' : '178px'} onClick={handleClick}>
+      <Button minWidth={isMobile ? '145px' : '178px'} onClick={handleClick}>
         {buttonText}
       </Button>
     </Container>
