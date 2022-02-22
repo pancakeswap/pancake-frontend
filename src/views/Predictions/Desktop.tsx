@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import Split from 'split-grid'
+import Split, { SplitInstance } from 'split-grid'
 import { Button, ChartIcon, Flex } from '@pancakeswap/uikit'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
@@ -83,14 +83,17 @@ const PositionPane = styled.div`
   }
 `
 
-const Gutter = styled.div`
+const Gutter = styled.div<{ isChartPaneOpen?: boolean }>`
   background: ${({ theme }) => theme.card.background};
-  cursor: row-resize;
+  cursor: ${({ isChartPaneOpen }) => (isChartPaneOpen ? 'row-resize' : 'pointer')};
   height: 24px;
   position: relative;
 
+  ${({ isChartPaneOpen, theme }) =>
+    isChartPaneOpen &&
+    `
   &:before {
-    background-color: ${({ theme }) => theme.colors.textSubtle};
+    background-color: ${theme.colors.textSubtle};
     border-radius: 8px;
     content: '';
     height: 4px;
@@ -99,6 +102,7 @@ const Gutter = styled.div`
     position: absolute;
     top: 10px;
     width: 64px;
+  `}
   }
 `
 
@@ -114,21 +118,19 @@ const Desktop: React.FC = () => {
   const status = useGetPredictionsStatus()
 
   const openChartPane = () => {
-    const newChartPaneState = !isChartPaneOpen
+    splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
+    splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
 
-    if (newChartPaneState) {
-      splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
-      splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
+    // Purely comedic: We only want to animate if we are clicking the open chart button
+    // If we keep the transition on the resizing becomes very choppy
+    delay(() => {
+      splitWrapperRef.current.style.transition = ''
+    }, 150)
 
-      // Purely comedic: We only want to animate if we are clicking the open chart button
-      // If we keep the transition on the resizing becomes very choppy
-      delay(() => {
-        splitWrapperRef.current.style.transition = ''
-      }, 150)
-
-      dispatch(setChartPaneState(newChartPaneState))
-    }
+    dispatch(setChartPaneState(true))
   }
+
+  const splitInstance = useRef<SplitInstance>()
 
   useEffect(() => {
     const threshold = 100
@@ -139,22 +141,28 @@ const Desktop: React.FC = () => {
       dispatch(setChartPaneState(height > threshold))
     }, 50)
 
-    const split = Split({
-      dragInterval: 1,
-      snapOffset: threshold,
-      onDrag: handleDrag,
-      rowGutters: [
-        {
-          track: 1,
-          element: gutterRef.current,
-        },
-      ],
-    })
+    if (isChartPaneOpen && !splitInstance.current) {
+      splitInstance.current = Split({
+        dragInterval: 1,
+        snapOffset: threshold,
+        onDrag: handleDrag,
+        rowGutters: [
+          {
+            track: 1,
+            element: gutterRef.current,
+          },
+        ],
+      })
+    } else if (!isChartPaneOpen && splitInstance.current) {
+      splitInstance.current?.destroy()
+      splitInstance.current = undefined
+    }
 
     return () => {
-      split.destroy()
+      splitInstance.current?.destroy()
+      splitInstance.current = undefined
     }
-  }, [gutterRef, chartRef, dispatch])
+  }, [gutterRef, chartRef, dispatch, isChartPaneOpen])
 
   return (
     <>
@@ -166,22 +174,23 @@ const Desktop: React.FC = () => {
             {status === PredictionStatus.LIVE && <Positions />}
           </PositionPane>
 
-          <Gutter ref={gutterRef}>
-            <ExpandButtonGroup
-              onMouseDown={(e) => {
-                e.stopPropagation()
-              }}
-            >
+          <Gutter
+            ref={gutterRef}
+            isChartPaneOpen={isChartPaneOpen}
+            onClick={() => {
+              openChartPane()
+            }}
+          >
+            <ExpandButtonGroup>
               <TabToggle
                 height="42px"
                 as={Button}
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.TradingView}
                 onMouseDown={(e) => {
-                  openChartPane()
-                  dispatch(setChartView(PredictionsChartView.TradingView))
                   e.stopPropagation()
                   e.preventDefault()
+                  dispatch(setChartView(PredictionsChartView.TradingView))
                 }}
               >
                 {chartView === PredictionsChartView.TradingView && <ChartIcon mr="10px" />} TradingView {t('Chart')}
@@ -192,10 +201,9 @@ const Desktop: React.FC = () => {
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.Chainlink}
                 onMouseDown={(e) => {
-                  openChartPane()
-                  dispatch(setChartView(PredictionsChartView.Chainlink))
                   e.stopPropagation()
                   e.preventDefault()
+                  dispatch(setChartView(PredictionsChartView.Chainlink))
                 }}
               >
                 {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
