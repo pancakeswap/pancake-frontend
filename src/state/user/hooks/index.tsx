@@ -146,7 +146,7 @@ export function useThemeManager(): [boolean, (theme: Theme) => void] {
   const theme = useSelector<AppState, AppState['user']['theme']>((state) => state.user.theme)
 
   const isDark = useMemo(() => {
-    if (typeof window !== 'undefined' && theme === null) {
+    if (typeof window !== 'undefined' && !theme) {
       return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
     }
     return theme === Theme.DARK
