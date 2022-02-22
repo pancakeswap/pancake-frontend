@@ -41,12 +41,9 @@ const ChartDisclaimer: FC<InjectedModalProps> = ({ onDismiss }) => {
           <Image src="/images/predictions/chartwarning2.svg" width={190} height={118} />
         </Flex>
         <Heading as="h3" size="sm">
-          {t('Important Information')}:
-        </Heading>
-        <Text color="textSubtle" fontSize="14px" mt="24px" mb="12px">
           {t('Currently showing charts from Chainlink oracle')}
-        </Text>
-        <Text color="textSubtle" fontSize="14px" mb="24px">
+        </Heading>
+        <Text color="textSubtle" fontSize="14px" my="24px">
           {t('The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.')}
         </Text>
         <Ul>
