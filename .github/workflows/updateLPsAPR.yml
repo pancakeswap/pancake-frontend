@@ -38,7 +38,7 @@ jobs:
           token: ${{ secrets.LP_APR_PANCAKE_BOT }}
           delete-branch: true
           commit-message: 'chore: Update LP APRs for Farms'
-          title: Update LP APRs for Farms
+          title: 'chore: Update LP APRs for Farms'
           body: |
             - Update LP APRs for Farms
 
