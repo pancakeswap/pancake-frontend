@@ -47,10 +47,19 @@ const Step = styled.div<{ confirmed?: boolean; disabled?: boolean; canHover?: bo
   &:hover {
     cursor: ${({ canHover }) => (canHover ? 'pointer' : 'initial')};
     ${Circle} {
-      background: ${({ canHover }) => (canHover ? 'linear-gradient(180deg, #8051D6 0%, #492286 100%)' : null)};
+      opacity: ${({ canHover }) => (canHover ? 0.65 : null)};
     }
     ${Text} {
-      color: ${({ theme, canHover }) => (canHover ? theme.colors.secondary : null)};
+      opacity: ${({ canHover }) => (canHover ? 0.65 : null)};
+    }
+  }
+
+  &:active {
+    ${Circle} {
+      opacity: ${({ canHover }) => (canHover ? 0.85 : null)};
+    }
+    ${Text} {
+      opacity: ${({ canHover }) => (canHover ? 0.85 : null)};
     }
   }
 
