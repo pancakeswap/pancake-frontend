@@ -590,7 +590,6 @@
   "Cast Vote": "Cast Vote",
   "See All": "See All",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.",
-  "Your Cake Held Now": "Your Cake Held Now",
   "Wallet": "Wallet",
   "Manual CAKE Pool": "Manual CAKE Pool",
   "Auto CAKE Pool": "Auto CAKE Pool",
@@ -1527,5 +1526,6 @@
   "Limit price is 12.12% above the current market rate. The order will be executed when the market price reaches the specified limit price within the expiration date, within your slippage parameters.": "Limit price is 12.12% above the current market rate. The order will be executed when the market price reaches the specified limit price within the expiration date, within your slippage parameters.",
   "Current Market Price": "Current Market Price",
   "Limit Price": "Limit Price",
-  "Error Tracking Id": "Error Tracking Id"
+  "Error Tracking Id": "Error Tracking Id",
+  "Your CAKE held at block": "Your CAKE held at block"
 }

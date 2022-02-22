@@ -46,6 +46,7 @@ const VoteDetailsModal: React.FC<VoteDetailsModalProps> = ({ block, onDismiss })
               poolsBalance={poolsBalance}
               ifoPoolBalance={ifoPoolBalance}
               cakeBnbLpBalance={cakeBnbLpBalance}
+              block={block}
             />
             <Button variant="secondary" onClick={onDismiss} width="100%" mt="16px">
               {t('Close')}
