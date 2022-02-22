@@ -132,7 +132,7 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
         alignItems="center"
         value={hoverData ? hoverData.answer : parseFloat(formatBigNumberToFixed(answerAsBigNumber, 3, 8))}
         inputSymbol="BNB"
-        outputSymbol="USDT"
+        outputSymbol="USD"
       />
       {hoverData && (
         <FlexGap minWidth="51%" alignItems="center" gap="12px">
