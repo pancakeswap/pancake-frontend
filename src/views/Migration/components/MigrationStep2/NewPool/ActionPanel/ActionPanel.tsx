@@ -4,7 +4,8 @@ import { DeserializedPool } from 'state/types'
 import TotalStaked from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/TotalStaked'
 import AutoEarning from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/AutoEarning'
 import Earning from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/Earning'
-// import Staked from './Stake'
+import AprRow from './AprRow'
+import Staked from './Staked'
 
 const expandAnimation = keyframes`
   from {
@@ -74,8 +75,9 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ pool, expanded }) => {
     <StyledActionPanel expanded={expanded}>
       <ActionContainer>
         {pool.vaultKey ? <AutoEarning {...pool} /> : <Earning {...pool} />}
-        {/* <Staked pool={pool} /> */}
+        <Staked pool={pool} />
       </ActionContainer>
+      <AprRow pool={pool} />
       <TotalStaked pool={pool} />
     </StyledActionPanel>
   )

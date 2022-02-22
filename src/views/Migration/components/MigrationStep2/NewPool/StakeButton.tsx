@@ -14,21 +14,6 @@ import NotEnoughTokensModal from 'views/Pools/components/PoolCard/Modals/NotEnou
 import StakeModal from 'views/Pools/components/PoolCard/Modals/StakeModal'
 import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 30px 14px 0 0;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin: 0 14px 0 0;
-    align-items: center;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-right: 32px;
-  }
-`
-
 const IconButtonWrapper = styled.div`
   display: flex;
 `
@@ -131,46 +116,40 @@ const StakeButton: React.FC<StakeButtonProps> = ({ pool }) => {
 
   if (needsApproval) {
     return (
-      <Container>
-        <Button
-          disabled={pendingTx}
-          onClick={handleApprove}
-          variant="tertiary"
-          marginLeft="auto"
-          width={isDesktop ? '148px' : '120px'}
-        >
-          {t('Enable')}
-        </Button>
-      </Container>
+      <Button
+        disabled={pendingTx}
+        onClick={handleApprove}
+        variant="tertiary"
+        marginLeft="auto"
+        width={isDesktop ? '148px' : '120px'}
+      >
+        {t('Enable')}
+      </Button>
     )
   }
 
   // Wallet connected, user data loaded and approved
   if (isNotVaultAndHasStake || isVaultWithShares) {
     return (
-      <Container>
-        <IconButtonWrapper>
-          <IconButton variant="secondary" onClick={onUnstake} mr="6px">
-            <MinusIcon color="primary" width="14px" />
-          </IconButton>
-          <IconButton
-            variant="secondary"
-            onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-            disabled={isFinished}
-          >
-            <AddIcon color="primary" width="14px" />
-          </IconButton>
-        </IconButtonWrapper>
-      </Container>
+      <IconButtonWrapper>
+        <IconButton variant="secondary" onClick={onUnstake} mr="6px">
+          <MinusIcon color="primary" width="14px" />
+        </IconButton>
+        <IconButton
+          variant="secondary"
+          onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
+          disabled={isFinished}
+        >
+          <AddIcon color="primary" width="14px" />
+        </IconButton>
+      </IconButtonWrapper>
     )
   }
 
   return (
-    <Container>
-      <Button width={isDesktop ? '148px' : '120px'} onClick={handleUnstake} marginLeft="auto" disabled={isFinished}>
-        {t('Stake')}
-      </Button>
-    </Container>
+    <Button width={isDesktop ? '148px' : '120px'} onClick={handleUnstake} marginLeft="auto" disabled={isFinished}>
+      {t('Stake')}
+    </Button>
   )
 }
 

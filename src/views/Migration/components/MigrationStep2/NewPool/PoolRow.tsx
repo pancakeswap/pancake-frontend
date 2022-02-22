@@ -6,12 +6,13 @@ import { DeserializedPool, VaultKey } from 'state/types'
 import NameCell from 'views/Pools/components/PoolsTable/Cells/NameCell'
 import AprCell from 'views/Pools/components/PoolsTable/Cells/AprCell'
 import AutoAprCell from 'views/Pools/components/PoolsTable/Cells/AutoAprCell'
-import StakedCell from '../../MigrationStep1/OldPool/Cells/StakedCell'
 import AutoEarningsCell from '../../MigrationStep1/OldPool/Cells/AutoEarningsCell'
 import EarningsCell from '../../MigrationStep1/OldPool/Cells/EarningsCell'
 import TotalStakedCell from '../../MigrationStep1/OldPool/Cells/TotalStakedCell'
 import ExpandActionCell from '../../MigrationStep1/OldPool/Cells/ExpandActionCell'
-import StakeButton from './Cells/StakeButton'
+import StakedCell from './Cells/StakedCell'
+import StakeButton from './StakeButton'
+import StakeButtonCells from './Cells/StakeButtonCells'
 import ActionPanel from './ActionPanel/ActionPanel'
 
 interface PoolRowProps {
@@ -106,7 +107,11 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
           {isLargerScreen && <TotalStakedCell pool={pool} />}
         </LeftContainer>
         <RightContainer>
-          {isLargerScreen || !expanded ? <StakeButton pool={pool} /> : null}
+          {isLargerScreen || !expanded ? (
+            <StakeButtonCells>
+              <StakeButton pool={pool} />
+            </StakeButtonCells>
+          ) : null}
           {!isLargerScreen && <ExpandActionCell expanded={expanded} showExpandedText={expanded || isMobile} />}
         </RightContainer>
       </StyledRow>
