@@ -57,7 +57,7 @@ const Row: React.FC<{ order: Order }> = ({ order }) => {
       </span>
       <span>for</span>
       <span>
-        {outputAmount.toSignificant(4)} {outputToken?.symbol}
+        {outputAmount?.toSignificant(4)} {outputToken?.symbol}
       </span>
       <span>
         <a href={getBscScanLink(order.createdTxHash, 'transaction')}>See BSCScan</a>

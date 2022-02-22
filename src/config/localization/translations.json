@@ -1562,5 +1562,13 @@
   "Attempting to confirm without approval or a signature": "Attempting to confirm without approval or a signature",
   "This transaction would fail": "This transaction would fail",
   "Place a limit order to trade at a set price": "Place a limit order to trade at a set price",
-  "Place an Order": "Place an Order"
+  "Place an Order": "Place an Order",
+  "Open Order Details": "Open Order Details",
+  "View on BSCScan": "View on BSCScan",
+  "Cancel Order": "Cancel Order",
+  "Expires on": "Expires on",
+  "Status": "Status",
+  "No Order": "No Order",
+  "Open Orders": "Open Orders",
+  "Order History": "Order History"
 }

@@ -21,6 +21,7 @@ import LimitOrderPrice from './components/LimitOrderPrice'
 import SwitchTokensButton from './components/SwitchTokensButton'
 import Page from '../Page'
 import OrderHistoryTable from './components/OrderHistoryTable'
+import LimitOrderTable from './components/LimitOrderTable'
 
 const LimitOrders = () => {
   // Helpers
@@ -281,6 +282,7 @@ const LimitOrders = () => {
         </Flex>
       </Flex>
       <OrderHistoryTable />
+      <LimitOrderTable />
     </Page>
   )
 }
