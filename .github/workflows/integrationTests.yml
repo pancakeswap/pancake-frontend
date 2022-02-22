@@ -4,11 +4,9 @@ on:
   pull_request:
     branches:
       - develop
-  deployment_status:
 
 jobs:
   integration-tests:
-    if: github.event.deployment_status.state == 'success'
     name: Integration tests
     runs-on: ubuntu-latest
     steps:
@@ -24,12 +22,8 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Cypress install
         run: yarn install --frozen-lockfile
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          browser: chrome
-          install: false
+      - run: yarn cypress install
+      - run: yarn build
         env:
-          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
-          CYPRESS_SF_HEADER: ${{ secrets.SF_HEADER }}
+          NEXT_PUBLIC_SF_HEADER: ${{ secrets.SF_HEADER }}
+      - run: yarn integration-test
