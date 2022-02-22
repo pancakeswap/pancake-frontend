@@ -7,6 +7,7 @@ import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 import { TokenPairImage } from 'components/TokenImage'
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 
 const StyledCell = styled(BaseCell)`
   flex: 0;
@@ -26,7 +27,7 @@ const TokenWrapper = styled.div`
   }
 `
 
-export interface FarmProps {
+export interface FarmProps extends FarmWithStakedValue {
   label: string
   pid: number
   token: Token

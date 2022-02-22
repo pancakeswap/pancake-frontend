@@ -2,14 +2,25 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { AprProps } from 'views/Farms/components/FarmTable/Apr'
+import Farm, { FarmProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Farm'
+import Staked, { StakedProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Staked'
+import { EarnedProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Earned'
+import Multiplier, { MultiplierProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Multiplier'
+import Liquidity, { LiquidityProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Liquidity'
 import ExpandActionCell from 'views/Migration/components/MigrationStep1/OldPool/Cells/ExpandActionCell'
-import Farm, { FarmProps } from './Cells/Farm'
-import Staked, { StakedProps } from './Cells/Staked'
-import Earned, { EarnedProps } from './Cells/Earned'
-import Multiplier, { MultiplierProps } from './Cells/Multiplier'
-import Liquidity, { LiquidityProps } from './Cells/Liquidity'
-import Unstake, { UnstakeProps } from './Cells/Unstake'
-import ActionPanel from './ActionPanel/ActionPanel'
+import AprCell from './Cells/AprCell'
+import StakeButtonCells from './Cells/StakeButtonCells'
+import StakeButton from './StakeButton'
+
+export interface RowProps {
+  farm: FarmProps
+  apr: AprProps
+  earned: EarnedProps
+  staked: StakedProps
+  multiplier: MultiplierProps
+  liquidity: LiquidityProps
+}
 
 const StyledRow = styled.div`
   display: flex;
@@ -41,20 +52,12 @@ const RightContainer = styled.div`
   }
 `
 
-export interface RowProps {
-  earned: EarnedProps
-  staked: StakedProps
-  farm: FarmProps
-  multiplier: MultiplierProps
-  liquidity: LiquidityProps
-  unstake: UnstakeProps
-}
-
-const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, earned, multiplier, liquidity, unstake }) => {
+const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, apr, multiplier, liquidity, details }) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
+  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
 
   const toggleExpanded = () => {
     if (!isLargerScreen) {
@@ -68,18 +71,22 @@ const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, earned, mult
         <LeftContainer>
           <Farm {...farm} />
           {isLargerScreen || !expanded ? <Staked {...staked} /> : null}
-          {isLargerScreen || !expanded ? <Earned {...earned} /> : null}
+          <AprCell {...apr} />
           <Multiplier {...multiplier} />
           {isLargerScreen && <Liquidity {...liquidity} />}
         </LeftContainer>
         <RightContainer>
-          {isLargerScreen || !expanded ? <Unstake {...unstake} /> : null}
+          {isLargerScreen || !expanded ? (
+            <StakeButtonCells>
+              <StakeButton {...farm} lpLabel={lpLabel} displayApr={apr.value} />
+            </StakeButtonCells>
+          ) : null}
           {!isLargerScreen && <ExpandActionCell expanded={expanded} showExpandedText={expanded || isMobile} />}
         </RightContainer>
       </StyledRow>
-      {!isLargerScreen && shouldRenderActionPanel && (
+      {/* {!isLargerScreen && shouldRenderActionPanel && (
         <ActionPanel earned={earned} farm={farm} multiplier={multiplier} liquidity={liquidity} expanded={expanded} />
-      )}
+      )} */}
     </>
   )
 }

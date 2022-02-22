@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { useTable, ColumnType } from '@pancakeswap/uikit'
-import Row, { RowProps } from '../../MigrationStep1/OldFarm/FarmRow'
 import TableHeader from '../../MigrationTable/TableHeader'
 import Loading from '../../MigrationTable/Loading'
 import EmptyText from '../../MigrationTable/EmptyText'
 import TableStyle from '../../MigrationTable/StyledTable'
+import Row, { RowProps } from './FarmRow'
 
 const Container = styled.div`
   border-radius: 10px;
@@ -34,11 +34,11 @@ const FarmTable: React.FC<ITableProps> = ({ account, data, columns, userDataRead
         {account && userDataReady && rows.length === 0 && (
           <EmptyText text={t('You are not currently staking in any farms.')} />
         )}
-        {/* {account &&
+        {account &&
           userDataReady &&
           rows.map((row) => {
             return <Row {...row.original} key={`table-row-${row.id}`} />
-          })} */}
+          })}
       </TableStyle>
     </Container>
   )

@@ -8,10 +8,11 @@ import { useFarms, usePriceCakeBusd, usePollFarmsWithUserData } from 'state/farm
 import { DeserializedFarm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import { RowProps } from 'views/Migration/components/MigrationStep1/OldFarm/FarmRow'
+import { getDisplayApr } from 'views/Farms/Farms'
 import isArchivedPid from 'utils/farmHelpers'
 import OldFarm from './FarmTable'
-import { DesktopColumnSchema } from '../../types'
+import { RowProps } from './FarmRow'
+import { DesktopV2ColumnSchema } from '../../types'
 
 const OldFarmStep1: React.FC = () => {
   const { account } = useWeb3React()
@@ -23,12 +24,8 @@ const OldFarmStep1: React.FC = () => {
   const userDataReady = !account || (!!account && userDataLoaded)
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X' && !isArchivedPid(farm.pid))
 
   const stakedOnlyFarms = activeFarms.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
-  )
-  const stakedInactiveFarms = inactiveFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
@@ -58,10 +55,25 @@ const OldFarmStep1: React.FC = () => {
   }, [stakedOnlyFarms, farmsList])
 
   const rowData = chosenFarmsMemoized.map((farm) => {
+    const { token, quoteToken } = farm
+    const tokenAddress = token.address
+    const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
 
     const row: RowProps = {
+      apr: {
+        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+        pid: farm.pid,
+        multiplier: farm.multiplier,
+        lpLabel,
+        lpSymbol: farm.lpSymbol,
+        tokenAddress,
+        quoteTokenAddress,
+        cakePrice,
+        originalValue: farm.apr,
+      },
       farm: {
+        ...farm,
         label: lpLabel,
         pid: farm.pid,
         token: farm.token,
@@ -82,16 +94,13 @@ const OldFarmStep1: React.FC = () => {
       multiplier: {
         multiplier: farm.multiplier,
       },
-      unstake: {
-        pid: farm.pid,
-      },
     }
 
     return row
   })
 
   const renderContent = (): JSX.Element => {
-    const columnSchema = DesktopColumnSchema
+    const columnSchema = DesktopV2ColumnSchema
     const columns = columnSchema.map((column) => ({
       id: column.id,
       name: column.name,

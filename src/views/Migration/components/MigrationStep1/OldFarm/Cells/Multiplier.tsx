@@ -5,7 +5,11 @@ import { Flex, Text, HelpIcon, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 
 const StyledCell = styled(BaseCell)`
+  display: none;
   flex: 1 0 100px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: flex;
+  }
 `
 
 const ReferenceElement = styled.div`
