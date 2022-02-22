@@ -212,11 +212,24 @@ const Desktop: React.FC = () => {
             {isChartPaneOpen && (
               <ChartByLabel
                 justifyContent="flex-end"
-                symbol={chartView === PredictionsChartView.TradingView ? 'BNB/BUSD' : 'BNB/USD'}
+                symbol="BNB/USD"
                 by={chartView}
+                linkProps={{
+                  onMouseDown: (e) => {
+                    window.open(
+                      chartView === PredictionsChartView.TradingView
+                        ? `https://www.tradingview.com/chart/?symbol=BINANCE%3ABNBUSD`
+                        : 'https://chain.link/data-feeds',
+                      '_blank',
+                      'noopener noreferrer',
+                    )
+                    e.stopPropagation()
+                    e.preventDefault()
+                  },
+                }}
                 link={
                   chartView === PredictionsChartView.TradingView
-                    ? `https://www.tradingview.com/symbols/BNBBUSD`
+                    ? `https://www.tradingview.com/chart/?symbol=BINANCE%3ABNBUSD`
                     : 'https://chain.link/data-feeds'
                 }
               />
