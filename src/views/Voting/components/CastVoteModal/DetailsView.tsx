@@ -53,7 +53,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
         </Text>
       </VotingBox>
       <Text color="secondary" textTransform="uppercase" mb="4px" bold fontSize="14px">
-        {t('YOUR CAKE HELD AT BLOCK')}
+        {t('Your CAKE held at block')}
         <StyledLinkExternal href={getBscScanLink(block, 'block')} ml="8px">
           {block}
         </StyledLinkExternal>
