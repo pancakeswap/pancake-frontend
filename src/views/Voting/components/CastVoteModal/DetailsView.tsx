@@ -1,7 +1,17 @@
-import { Text, Flex } from '@pancakeswap/uikit'
+import { Text, Flex, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber } from 'utils/formatBalance'
 import { VotingBox, ModalInner } from './styles'
+import { getBscScanLink } from 'utils'
+import styled from 'styled-components'
+
+const StyledLinkExternal = styled(LinkExternal)`
+  display: inline-flex;
+  font-size: 14px;
+  > svg {
+    width: 14px;
+  }
+`
 
 interface DetailsViewProps {
   total: number
@@ -11,6 +21,7 @@ interface DetailsViewProps {
   poolsBalance: number
   cakeBnbLpBalance: number
   ifoPoolBalance: number
+  block: number
 }
 
 const DetailsView: React.FC<DetailsViewProps> = ({
@@ -21,6 +32,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
   poolsBalance,
   cakeBnbLpBalance,
   ifoPoolBalance,
+  block,
 }) => {
   const { t } = useTranslation()
 
@@ -41,7 +53,10 @@ const DetailsView: React.FC<DetailsViewProps> = ({
         </Text>
       </VotingBox>
       <Text color="secondary" textTransform="uppercase" mb="4px" bold fontSize="14px">
-        {t('Your Cake Held Now')}
+        {t('YOUR CAKE HELT AT BLOCK')}
+        <StyledLinkExternal href={getBscScanLink(block, 'block')} ml="8px">
+          {block}
+        </StyledLinkExternal>
       </Text>
       <Flex alignItems="center" justifyContent="space-between" mb="4px">
         <Text color="textSubtle" fontSize="16px">
