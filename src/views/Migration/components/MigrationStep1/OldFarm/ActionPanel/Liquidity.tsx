@@ -5,12 +5,11 @@ import { Flex, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { LiquidityProps } from '../Cells/Liquidity'
 
 const Containter = styled(Flex)`
-  margin-top: 18px;
+  margin-top: 12px;
   padding: 0;
   width: 100%;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 0px;
     padding: 0 12px;
   }
 `
@@ -46,7 +45,7 @@ const Liquidity: React.FC<LiquidityProps> = ({ liquidity }) => {
   return (
     <Containter justifyContent="space-between">
       <Text>{t('Liquidity')}</Text>
-      <Flex mt="4px">
+      <Flex>
         <LiquidityWrapper>
           <Text>{displayLiquidity}</Text>
         </LiquidityWrapper>

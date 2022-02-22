@@ -13,7 +13,7 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const Earned: React.FC<AprProps> = (props) => {
+const AprCell: React.FC<AprProps> = (apr) => {
   const { t } = useTranslation()
 
   return (
@@ -23,11 +23,11 @@ const Earned: React.FC<AprProps> = (props) => {
           {t('APR')}
         </Text>
         <Flex mt="4px">
-          <Apr {...props} />
+          <Apr {...apr} />
         </Flex>
       </CellContent>
     </StyledCell>
   )
 }
 
-export default Earned
+export default AprCell

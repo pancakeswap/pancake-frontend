@@ -5,12 +5,11 @@ import { Flex, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { MultiplierProps } from '../Cells/Multiplier'
 
 const Containter = styled(Flex)`
-  margin-top: 18px;
+  margin-top: 12px;
   padding: 0;
   width: 100%;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 0px;
     padding: 0 12px;
   }
 `

@@ -10,7 +10,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 
 const Containter = styled(Flex)`
-  margin-top: 18px;
+  margin-top: 12px;
   padding: 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {

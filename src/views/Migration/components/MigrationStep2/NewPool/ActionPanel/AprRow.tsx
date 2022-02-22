@@ -10,12 +10,12 @@ import { convertSharesToCake } from 'views/Pools/helpers'
 import Apr from 'views/Pools/components/PoolsTable/Apr'
 
 const Containter = styled(Flex)`
-  margin: 18px 0 0 0;
+  margin: 12px 0 0 0;
   padding: 0;
   justify-content: space-between;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-bottom: 18px;
+    margin-bottom: 12px;
     padding: 0 12px;
   }
 `

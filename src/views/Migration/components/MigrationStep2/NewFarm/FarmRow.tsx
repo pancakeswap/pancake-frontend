@@ -12,6 +12,7 @@ import ExpandActionCell from 'views/Migration/components/MigrationStep1/OldPool/
 import AprCell from './Cells/AprCell'
 import StakeButtonCells from './Cells/StakeButtonCells'
 import StakeButton from './StakeButton'
+import ActionPanel from './ActionPanel/ActionPanel'
 
 export interface RowProps {
   farm: FarmProps
@@ -52,7 +53,7 @@ const RightContainer = styled.div`
   }
 `
 
-const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, apr, multiplier, liquidity, details }) => {
+const FarmRow: React.FunctionComponent<RowProps> = ({ earned, farm, staked, apr, multiplier, liquidity }) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
@@ -84,9 +85,16 @@ const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, apr, multipl
           {!isLargerScreen && <ExpandActionCell expanded={expanded} showExpandedText={expanded || isMobile} />}
         </RightContainer>
       </StyledRow>
-      {/* {!isLargerScreen && shouldRenderActionPanel && (
-        <ActionPanel earned={earned} farm={farm} multiplier={multiplier} liquidity={liquidity} expanded={expanded} />
-      )} */}
+      {!isLargerScreen && shouldRenderActionPanel && (
+        <ActionPanel
+          farm={farm}
+          earned={earned}
+          apr={apr}
+          multiplier={multiplier}
+          liquidity={liquidity}
+          expanded={expanded}
+        />
+      )}
     </>
   )
 }
