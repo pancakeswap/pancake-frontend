@@ -26,7 +26,10 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Cypress run
-        run: yarn cypress run
+      - uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          install: false
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           CYPRESS_SF_HEADER: ${{ secrets.SF_HEADER }}
