@@ -22,7 +22,7 @@ export type SubgraphHealthState = {
 const NOT_OK_BLOCK_DIFFERENCE = 200 // ~15 minutes delay
 const WARNING_BLOCK_DIFFERENCE = 50 // ~2.5 minute delay
 
-const useSubgraphHealth = () => {
+const useSubgraphHealth = (query: string) => {
   const [sgHealth, setSgHealth] = useState<SubgraphHealthState>({
     status: SubgraphStatus.UNKNOWN,
     currentBlock: 0,
@@ -37,20 +37,7 @@ const useSubgraphHealth = () => {
         const { indexingStatusForCurrentVersion } = await request(
           GRAPH_HEALTH,
           gql`
-            query getNftMarketSubgraphHealth {
-              indexingStatusForCurrentVersion(subgraphName: "pancakeswap/nft-market") {
-                synced
-                health
-                chains {
-                  chainHeadBlock {
-                    number
-                  }
-                  latestBlock {
-                    number
-                  }
-                }
-              }
-            }
+            ${query}
           `,
         )
 
@@ -75,11 +62,11 @@ const useSubgraphHealth = () => {
           setSgHealth({ status: SubgraphStatus.OK, currentBlock, chainHeadBlock, latestBlock, blockDifference })
         }
       } catch (error) {
-        console.error('Failed to perform health check for NFT Market subgraph', error)
+        console.error('Failed to perform health check for subgraph', error)
       }
     }
     getSubgraphHealth()
-  }, [])
+  }, [query])
 
   return sgHealth
 }
