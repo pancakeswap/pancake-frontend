@@ -8,7 +8,7 @@ import warning from 'tiny-warning'
 
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
-export class NoEthereumProviderError extends Error {
+class NoEthereumProviderError extends Error {
   public constructor() {
     super()
     this.name = this.constructor.name
@@ -16,7 +16,7 @@ export class NoEthereumProviderError extends Error {
   }
 }
 
-export class UserRejectedRequestError extends Error {
+class UserRejectedRequestError extends Error {
   public constructor() {
     super()
     this.name = this.constructor.name
@@ -24,7 +24,7 @@ export class UserRejectedRequestError extends Error {
   }
 }
 
-export class BnInjectedConnector extends AbstractConnector {
+class BnInjectedConnector extends AbstractConnector {
   bnEthereum: any
 
   constructor(kwargs: AbstractConnectorArguments) {
@@ -157,5 +157,13 @@ export const useEagerConnect = () => {
       })
     }, 1000 * 3)
   }, [activate])
+}
+export const useActiveHandle = () => {
+  const { activate } = useWeb3React()
+  return () => {
+    activate(injected, (error) => {
+      console.log('🚀 ~ file: useEagerConnect.ts ~ line 13 ~ activate ~ error', error)
+    })
+  }
 }
 export default useEagerConnect
