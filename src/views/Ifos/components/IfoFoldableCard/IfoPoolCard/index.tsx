@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react'
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
@@ -7,7 +7,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useProfile } from 'state/profile/hooks'
 import useCriterias from 'views/Ifos/hooks/v3/useCriterias'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { EnableStatus } from '../types'
+import { EnableStatus, CardConfigReturn } from '../types'
 import IfoCardTokens from './IfoCardTokens'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
@@ -29,7 +29,7 @@ interface IfoCardProps {
   enableStatus: EnableStatus
 }
 
-const cardConfig = (
+export const cardConfig = (
   t: ContextApi['t'],
   poolId: PoolIds,
   meta: {
@@ -37,11 +37,7 @@ const cardConfig = (
     needQualifiedPoints?: boolean
     needQualifiedNFT?: boolean
   },
-): {
-  title: string
-  variant: 'blue' | 'violet'
-  tooltip: string | ReactElement
-} => {
+): CardConfigReturn => {
   switch (poolId) {
     case PoolIds.poolBasic:
       if (meta?.version === 3.1) {

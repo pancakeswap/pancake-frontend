@@ -1,8 +1,8 @@
 import { IfoPageLayout } from '../../views/Ifos'
-import CurrentIfo from '../../views/Ifos/CurrentIfo'
+import Ifo from '../../views/Ifos/Ifo'
 
 const CurrentIfoPage = () => {
-  return <CurrentIfo />
+  return <Ifo />
 }
 
 CurrentIfoPage.Layout = IfoPageLayout

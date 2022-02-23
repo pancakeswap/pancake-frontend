@@ -21,8 +21,7 @@ import {
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useWeb3React } from '@web3-react/core'
-import { Ifo } from 'config/constants/types'
-import { WalletIfoData } from 'views/Ifos/types'
+
 import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
@@ -39,9 +38,10 @@ import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/ho
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
 
-interface Props {
-  ifo: Ifo
-  walletIfoData: WalletIfoData
+interface TypeProps {
+  ifoCurrencyAddress: string
+  hasClaimed: boolean
+  isCommitted: boolean
   isLive?: boolean
 }
 
@@ -182,20 +182,12 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
   )
 }
 
-const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
-  const { poolBasic, poolUnlimited } = walletIfoData
+const IfoSteps: React.FC<TypeProps> = ({ isCommitted, hasClaimed, isLive, ifoCurrencyAddress }) => {
   const { hasActiveProfile } = useProfile()
   const { account } = useWeb3React()
   const { t } = useTranslation()
-  const { balance } = useTokenBalance(ifo.currency.address)
-  const isCommitted =
-    poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0)
-  const stepsValidationStatus = [
-    hasActiveProfile,
-    balance.isGreaterThan(0),
-    isCommitted,
-    poolBasic.hasClaimed || poolUnlimited.hasClaimed,
-  ]
+  const { balance } = useTokenBalance(ifoCurrencyAddress)
+  const stepsValidationStatus = [hasActiveProfile, balance.isGreaterThan(0), isCommitted, hasClaimed]
 
   const getStatusProp = (index: number): StepStatus => {
     const arePreviousValid = index === 0 ? true : every(stepsValidationStatus.slice(0, index), Boolean)

@@ -27,6 +27,7 @@ import IfoAchievement from './Achievement'
 import IfoPoolCard from './IfoPoolCard'
 import { EnableStatus } from './types'
 import { IfoRibbon } from './IfoRibbon'
+import { CardsWrapper } from '../IfoCardStyles'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
@@ -83,25 +84,7 @@ const Header = styled(CardHeader)<{ ifoId: string; $isCurrent?: boolean }>`
   }
 `
 
-const CardsWrapper = styled.div<{ singleCard: boolean; shouldReverse: boolean }>`
-  display: grid;
-  grid-gap: 32px;
-  grid-template-columns: 1fr;
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    grid-template-columns: ${({ singleCard }) => (singleCard ? '1fr' : '1fr 1fr')};
-    justify-items: ${({ singleCard }) => (singleCard ? 'center' : 'unset')};
-  }
-
-  > div:nth-child(1) {
-    order: ${({ shouldReverse }) => (shouldReverse ? 2 : 1)};
-  }
-
-  > div:nth-child(2) {
-    order: ${({ shouldReverse }) => (shouldReverse ? 1 : 2)};
-  }
-`
-
-const StyledCardBody = styled(CardBody)`
+export const StyledCardBody = styled(CardBody)`
   padding: 24px 16px;
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 24px;

@@ -9,7 +9,7 @@ const ifos: Ifo[] = [
   {
     id: 'era',
     address: '0x527201a43f8da24ce9b7c21744a0706942f41fa3',
-    isActive: true,
+    isActive: false,
     name: 'ERA (Game of Truth)',
     poolBasic: {
       saleAmount: '4,000,000 ERA',
