@@ -2,16 +2,12 @@ import { createReducer } from '@reduxjs/toolkit'
 import { replaceLimitOrdersState, selectCurrency, typeInput, switchCurrencies, setRateType } from './actions'
 import { Field, Rate, OrderState } from './types'
 
-// TODO: Is it default input? Should we change it to WBNB or something?
-// We handle the replacement of currencies in the useDefaultsFromURLSearch hook anyway
-const NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-
 export const initialState: OrderState = {
   independentField: Field.INPUT,
   typedValue: '',
   inputValue: '',
   [Field.INPUT]: {
-    currencyId: NATIVE,
+    currencyId: '',
   },
   [Field.OUTPUT]: {
     currencyId: '',

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { CurrencyAmount, Percent, Trade } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent, Token, Trade } from '@pancakeswap/sdk'
 import { Button, Box, Flex, useModal } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
@@ -22,6 +22,9 @@ import SwitchTokensButton from './components/SwitchTokensButton'
 import Page from '../Page'
 import LimitOrderTable from './components/LimitOrderTable'
 import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
+
+// Gelato uses this address to define a native currency in all chains
+const NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
 const LimitOrders = () => {
   // Helpers
@@ -157,10 +160,12 @@ const LimitOrders = () => {
       if (!account) {
         throw new Error('No account')
       }
+      const inputToken = currencies.input instanceof Token ? wrappedInput.address : NATIVE
+      const outputToken = currencies.output instanceof Token ? wrappedOutput.address : NATIVE
       // TODO: use native BNB
       const orderToSubmit = {
-        inputToken: wrappedInput.address,
-        outputToken: wrappedOutput.address,
+        inputToken,
+        outputToken,
         inputAmount: rawAmounts.input,
         outputAmount: rawAmounts.output,
         owner: account,
