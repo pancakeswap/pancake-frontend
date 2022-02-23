@@ -25,9 +25,13 @@ const OldFarmStep1: React.FC = () => {
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
 
-  const stakedOnlyFarms = activeFarms.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
-  )
+  const stakedOrHasTokenBalance = activeFarms.filter((farm) => {
+    return (
+      farm.userData &&
+      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+        new BigNumber(farm.userData.tokenBalance).isGreaterThan(0))
+    )
+  })
 
   const farmsList = useCallback(
     (farmsToDisplay: DeserializedFarm[]): FarmWithStakedValue[] => {
@@ -51,8 +55,8 @@ const OldFarmStep1: React.FC = () => {
   )
 
   const chosenFarmsMemoized = useMemo(() => {
-    return farmsList(stakedOnlyFarms)
-  }, [stakedOnlyFarms, farmsList])
+    return farmsList(stakedOrHasTokenBalance)
+  }, [stakedOrHasTokenBalance, farmsList])
 
   const rowData = chosenFarmsMemoized.map((farm) => {
     const { token, quoteToken } = farm

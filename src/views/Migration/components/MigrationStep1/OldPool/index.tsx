@@ -21,13 +21,10 @@ const OldPool: React.FC = () => {
   const vaultPools = useVaultPools()
 
   const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
-  const stakedOnlyOpenPools = useMemo(
+  const OnlyCakePools = useMemo(
     () =>
       openPools.filter((pool) => {
-        if (pool.vaultKey) {
-          return vaultPools[pool.vaultKey].userData.userShares && vaultPools[pool.vaultKey].userData.userShares.gt(0)
-        }
-        return pool.userData && pool.sousId === 0 && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+        return pool.userData && pool.sousId === 0
       }),
     [openPools, vaultPools],
   )
@@ -37,7 +34,7 @@ const OldPool: React.FC = () => {
   useFetchPublicPoolsData()
   useFetchUserPools(account)
 
-  return <PoolsTable pools={stakedOnlyOpenPools} account={account} userDataReady={userDataReady} />
+  return <PoolsTable pools={OnlyCakePools} account={account} userDataReady={userDataReady} />
 }
 
 export default OldPool
