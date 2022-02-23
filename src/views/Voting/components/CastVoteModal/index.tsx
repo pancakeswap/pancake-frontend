@@ -64,15 +64,15 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
 
       // Save proposal to snapshot
       await sendSnapshotData(msg)
-      setIsPending(false)
 
       await onSuccess()
 
       handleDismiss()
     } catch (error) {
-      setIsPending(false)
-      toastError(t('Error'), (error as Error)?.message)
+      toastError(t('Error'), (error as Error)?.message ?? t('Error occurred, please try again'))
       console.error(error)
+    } finally {
+      setIsPending(false)
     }
   }
 

@@ -4,6 +4,8 @@ import { getActivePools } from 'utils/calls'
 import { getAddress } from 'utils/addressHelpers'
 import { simpleRpcProvider } from 'utils/providers'
 import { getVotingPower } from '../helpers'
+import useToast from 'hooks/useToast'
+import { useTranslation } from 'contexts/Localization'
 
 interface State {
   cakeBalance: number
@@ -27,8 +29,10 @@ const initialState: State = {
 
 const useGetVotingPower = (block?: number, isActive = true): State & { isLoading: boolean } => {
   const { account } = useWeb3React()
+  const { toastError } = useToast()
   const [votingPower, setVotingPower] = useState(initialState)
   const [isLoading, setIsLoading] = useState(!!account)
+  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchVotingPower = async () => {
@@ -60,6 +64,9 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
             total: parseFloat(total),
           }))
         }
+      } catch (error) {
+        toastError(t('Error'), t('Error fetching Voting Power'))
+        console.error(error)
       } finally {
         setIsLoading(false)
       }

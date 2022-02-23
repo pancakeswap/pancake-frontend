@@ -1595,5 +1595,6 @@
   "Can't execute this order": "Can't execute this order",
   "Limit Orders": "Limit Orders",
   "Limit": "Limit",
-  "at market price": "at market price"
+  "at market price": "at market price",
+  "Error fetching Voting Power": "Error fetching Voting Power"
 }
