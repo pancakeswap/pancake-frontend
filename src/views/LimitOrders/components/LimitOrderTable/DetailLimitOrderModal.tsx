@@ -3,14 +3,13 @@ import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { memo, useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { mainnetTokens } from 'config/constants/tokens'
-import CurrencyFormat from './CurrencyFormat'
-import CellFormat from './CellFormat'
 import { FormattedOrderData } from 'views/LimitOrders/hooks/useFormattedOrderData'
 import useGelatoLimitOrdersHandlers from 'hooks/limitOrders/useGelatoLimitOrdersHandlers'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import CurrencyFormat from './CurrencyFormat'
+import CellFormat from './CellFormat'
 
 const StyledModal = styled(Modal)`
   max-width: 613px;
@@ -83,7 +82,14 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
           txHash: undefined,
         })
       })
-  }, [handleLimitOrderCancellation])
+  }, [
+    handleLimitOrderCancellation,
+    formattedOrder.inputAmount,
+    formattedOrder.outputAmount,
+    formattedOrder.inputToken?.symbol,
+    formattedOrder.outputToken?.symbol,
+    order,
+  ])
 
   const limitPriceExchangeRateText = `1 ${
     formattedOrder.inputToken?.symbol

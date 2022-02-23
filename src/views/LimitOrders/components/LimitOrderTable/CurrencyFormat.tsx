@@ -1,5 +1,4 @@
 import { Currency } from '@pancakeswap/sdk'
-import { Flex, Text } from '@pancakeswap/uikit'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import TextIcon from './TextIcon'
 

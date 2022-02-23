@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { CurrencyAmount, Percent, Token, Trade } from '@pancakeswap/sdk'
 import { Button, Box, Flex, useModal } from '@pancakeswap/uikit'
 
@@ -14,6 +14,7 @@ import { Field } from 'state/limitOrders/types'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
+import { GELATO_NATIVE } from 'config/constants'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
@@ -22,15 +23,14 @@ import SwitchTokensButton from './components/SwitchTokensButton'
 import Page from '../Page'
 import LimitOrderTable from './components/LimitOrderTable'
 import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
-import { GELATO_NATIVE } from 'config/constants'
 
 const LimitOrders = () => {
   // Helpers
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  // TODO: use loadedUrlParams for warnings
-  const loadedUrlParams = useDefaultsFromURLSearch()
+  // TODO: use returned loadedUrlParams for warnings
+  useDefaultsFromURLSearch()
 
   // TODO: fiat values
 
@@ -49,7 +49,7 @@ const LimitOrders = () => {
     orderState: { independentField, rateType },
   } = useGelatoLimitOrders()
 
-  const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
+  const [{ swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
@@ -124,7 +124,7 @@ const LimitOrders = () => {
     if (txHash) {
       handleTypeInput('')
     }
-  }, [txHash])
+  }, [txHash, handleTypeInput])
 
   const handlePlaceOrder = useCallback(() => {
     console.log('Placing order')

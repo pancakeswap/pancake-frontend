@@ -1,13 +1,13 @@
+import { useMemo, useState } from 'react'
 import { Table, Th, Td, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import Navigation from 'components/TableNavigation'
+import { useTranslation } from 'contexts/Localization'
 import CompactRow from './CompactRow'
 import NoOrderTable from './NoOrderTable'
 import { LimitOrderTableProps } from './types'
-import { useTranslation } from 'contexts/Localization'
 import HeaderCellStyle from './HeaderCellStyle'
 import FullRow from './FullRow'
-import { useMemo, useState } from 'react'
 
 const ORDERS_PER_PAGE = 5
 

@@ -73,9 +73,9 @@ export default createReducer(initialState, (builder) =>
       tx.confirmedTime = now()
 
       if (transactions[chainId]?.[hash].type === 'limit-order-submission') {
-        confirmOrderSubmission(chainId, receipt.from, hash, receipt.status === 0 ? false : true)
+        confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (transactions[chainId]?.[hash].type === 'limit-order-cancellation') {
-        confirmOrderCancellation(chainId, receipt.from, hash, receipt.status === 0 ? false : true)
+        confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
       }
     }),
 )

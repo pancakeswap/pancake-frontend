@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Text, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
