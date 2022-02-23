@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { CurrencyAmount, Percent, Trade } from '@pancakeswap/sdk'
-import { Button, Box, Flex } from '@pancakeswap/uikit'
+import { Button, Box, Flex, useModal } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import { AutoColumn } from 'components/Layout/Column'
@@ -21,6 +21,7 @@ import LimitOrderPrice from './components/LimitOrderPrice'
 import SwitchTokensButton from './components/SwitchTokensButton'
 import Page from '../Page'
 import LimitOrderTable from './components/LimitOrderTable'
+import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
 
 const LimitOrders = () => {
   // Helpers
@@ -47,14 +48,12 @@ const LimitOrders = () => {
     orderState: { independentField, rateType },
   } = useGelatoLimitOrders()
 
-  const [{ showConfirm, tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    showConfirm: boolean
+  const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
   }>({
-    showConfirm: false,
     tradeToConfirm: undefined,
     attemptingTxn: false,
     swapErrorMessage: undefined,
@@ -67,6 +66,13 @@ const LimitOrders = () => {
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances.input)
   const hideMaxButton = Boolean(maxAmountInput && parsedAmounts.input?.equalTo(maxAmountInput))
+
+  const currentMarketRate = trade?.executionPrice
+  const percentageAsFraction =
+    currentMarketRate && price ? price.subtract(currentMarketRate).divide(currentMarketRate) : undefined
+  const percentageRateDifference = percentageAsFraction
+    ? new Percent(percentageAsFraction.numerator, percentageAsFraction.denominator)
+    : undefined
 
   // UI handlers
   const handleTypeInput = useCallback(
@@ -108,11 +114,29 @@ const LimitOrders = () => {
     await approveCallback()
   }, [approveCallback])
 
+  const handleConfirmDismiss = useCallback(() => {
+    setSwapState((prev) => ({
+      ...prev,
+      txHash: undefined,
+    }))
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      handleTypeInput('')
+    }
+  }, [txHash])
+
+  console.log('State', attemptingTxn, txHash)
   const handlePlaceOrder = useCallback(() => {
     console.log('Placing order')
     if (!handleLimitOrderSubmission) {
       return
     }
+    setSwapState((prev) => ({
+      attemptingTxn: true,
+      tradeToConfirm: prev.tradeToConfirm,
+      swapErrorMessage: undefined,
+      txHash: undefined,
+    }))
     const wrappedInput = wrappedCurrency(currencies.input, chainId)
     const wrappedOutput = wrappedCurrency(currencies.output, chainId)
 
@@ -148,7 +172,6 @@ const LimitOrders = () => {
           setSwapState((prev) => ({
             attemptingTxn: false,
             tradeToConfirm: prev.tradeToConfirm,
-            showConfirm: prev.showConfirm,
             swapErrorMessage: undefined,
             txHash: hash,
           }))
@@ -158,7 +181,6 @@ const LimitOrders = () => {
           setSwapState((prev) => ({
             attemptingTxn: false,
             tradeToConfirm: prev.tradeToConfirm,
-            showConfirm: prev.showConfirm,
             swapErrorMessage: error.message,
             txHash: undefined,
           }))
@@ -176,6 +198,29 @@ const LimitOrders = () => {
     currencies.output,
   ])
 
+  const [showConfirmModal] = useModal(
+    <ConfirmLimitOrderModal
+      currencies={currencies}
+      formattedAmounts={formattedAmounts}
+      currentMarketRate={currentMarketRate?.toSignificant(4)}
+      currentMarketRateInverted={currentMarketRate?.invert().toSignificant(4)}
+      limitPrice={formattedAmounts.price}
+      limitPriceInverted={price?.invert().toSignificant(6)}
+      percentageRateDifference={parseFloat(percentageRateDifference?.toSignificant(3)).toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 3,
+      })}
+      onConfirm={handlePlaceOrder}
+      attemptingTxn={attemptingTxn}
+      txHash={txHash}
+      customOnDismiss={handleConfirmDismiss}
+      swapErrorMessage={swapErrorMessage}
+    />,
+    true,
+    true,
+    'confirmLimitOrderModal',
+  )
+
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   // TODO: reset
   useEffect(() => {
@@ -183,13 +228,6 @@ const LimitOrders = () => {
       setApprovalSubmitted(true)
     }
   }, [approvalState, approvalSubmitted])
-
-  const currentMarketRate = trade?.executionPrice
-  const percentageAsFraction =
-    currentMarketRate && price ? price.subtract(currentMarketRate).divide(currentMarketRate) : undefined
-  const percentageRateDifference = percentageAsFraction
-    ? new Percent(percentageAsFraction.numerator, percentageAsFraction.denominator)
-    : undefined
 
   // TODO: refine
   const showApproveFlow =
@@ -265,7 +303,7 @@ const LimitOrders = () => {
                     ) : (
                       <Button
                         variant="primary"
-                        onClick={handlePlaceOrder}
+                        onClick={showConfirmModal}
                         id="place-order-button"
                         width="100%"
                         disabled={!!inputError}
