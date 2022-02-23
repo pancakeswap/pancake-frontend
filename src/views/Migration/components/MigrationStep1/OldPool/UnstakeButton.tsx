@@ -19,13 +19,15 @@ import {
 } from 'state/pools'
 import useUnstakePool from 'views/Pools/hooks/useUnstakePool'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 
 export interface UnstakeButtonProps {
   pool: DeserializedPool
 }
 
 const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
-  const { sousId, stakingToken, earningToken, userData, vaultKey } = pool
+  const { sousId, stakingToken, earningTokenPrice, earningToken, userData, vaultKey } = pool
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -33,10 +35,23 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
 
+  const {
+    userData: { cakeAtLastUserAction, userShares },
+    pricePerFullShare,
+  } = useVaultPoolByKey(vaultKey)
+  const { hasAutoEarnings } = getCakeVaultEarnings(
+    account,
+    cakeAtLastUserAction,
+    userShares,
+    pricePerFullShare,
+    earningTokenPrice,
+  )
+  const hasEarnings = hasAutoEarnings
+
   const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
 
-  const isNeedUnstake = new BigNumber(userData.stakedBalance).gt(0)
+  const isNeedUnstake = vaultKey ? hasEarnings : new BigNumber(userData.stakedBalance).gt(0)
 
   const handleUnstake = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
