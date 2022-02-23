@@ -6,6 +6,7 @@ const loadEnvConfig = require('@next/env').loadEnvConfig
 const projectDir = process.cwd()
 loadEnvConfig(projectDir)
 
+let commitHash = require('child_process').execSync('git rev-parse --short HEAD').toString().trim()
 // const dotenv = require('dotenv')
 // const result = dotenv.config({
 //   path: path.resolve(process.cwd(), '.env' + (process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '')),
@@ -42,7 +43,9 @@ module.exports = {
   },
   env: envs,
 
-  defineConstants: {},
+  defineConstants: {
+    COMMIT_ID: JSON.stringify(commitHash),
+  },
   webpackChain(chain, webpack) {
     chain.merge({
       plugin: {
