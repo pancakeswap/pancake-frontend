@@ -2,12 +2,13 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { BigNumber } from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { Button, Heading, Text } from '@pancakeswap/uikit'
+import { Heading, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
 import { FarmProps } from '../Cells/Farm'
+import UnstakeButton from '../UnstakeButton'
 
 const Container = styled(ActionContainer)`
   flex: 3;
@@ -15,7 +16,6 @@ const Container = styled(ActionContainer)`
 
 const Staked: React.FC<FarmProps> = ({ pid, lpSymbol }) => {
   const { t } = useTranslation()
-  const disabled = true
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { stakedBalance } = useFarmUser(pid)
 
@@ -51,7 +51,7 @@ const Staked: React.FC<FarmProps> = ({ pid, lpSymbol }) => {
             />
           )}
         </div>
-        <Button disabled={disabled}>{disabled ? t('Unstaked') : t('Unstake All')}</Button>
+        <UnstakeButton pid={pid} />
       </ActionContent>
     </Container>
   )

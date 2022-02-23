@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
-import { Button, useMatchBreakpoints } from '@pancakeswap/uikit'
+import UnstakeButton from '../UnstakeButton'
 
 const Container = styled.div`
   display: flex;
@@ -22,19 +21,9 @@ export interface UnstakeProps {
 }
 
 const Unstake: React.FC<UnstakeProps> = ({ pid }) => {
-  const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
-  const disabled: boolean = true
-
-  const handleUnstake = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
-  }
-
   return (
     <Container>
-      <Button disabled={disabled} onClick={handleUnstake} marginLeft="auto" width={isDesktop ? '148px' : '120px'}>
-        {disabled ? t('Unstaked') : t('Unstake All')}
-      </Button>
+      <UnstakeButton pid={pid} />
     </Container>
   )
 }
