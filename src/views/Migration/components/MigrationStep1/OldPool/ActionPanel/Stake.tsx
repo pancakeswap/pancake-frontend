@@ -2,7 +2,7 @@ import React from 'react'
 import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { Button, Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
@@ -10,6 +10,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { convertSharesToCake } from 'views/Pools/helpers'
+import UnstakeButton from '../UnstakeButton'
 
 const Container = styled(ActionContainer)`
   flex: 3;
@@ -22,7 +23,6 @@ interface StackedActionProps {
 const Staked: React.FC<StackedActionProps> = ({ pool }) => {
   const { stakingToken, userData, stakingTokenPrice, vaultKey } = pool
   const { t } = useTranslation()
-  const disabled = true
 
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
 
@@ -66,7 +66,7 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
             prefix="~"
           />
         </Flex>
-        <Button disabled={disabled}>{disabled ? t('Unstaked') : t('Unstake All')}</Button>
+        <UnstakeButton pool={pool} />
       </ActionContent>
     </Container>
   )

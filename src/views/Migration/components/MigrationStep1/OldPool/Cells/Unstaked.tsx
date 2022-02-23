@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
-import { Button, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
+import UnstakeButton from '../UnstakeButton'
 
 const Container = styled.div`
   display: flex;
@@ -23,20 +22,10 @@ export interface UnstakeProps {
   pool: DeserializedPool
 }
 
-const Unstake: React.FC<UnstakeProps> = () => {
-  const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
-  const disabled: boolean = true
-
-  const handleUnstake = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
-  }
-
+const Unstake: React.FC<UnstakeProps> = ({ pool }) => {
   return (
     <Container>
-      <Button disabled={disabled} onClick={handleUnstake} marginLeft="auto" width={isDesktop ? '148px' : '120px'}>
-        {disabled ? t('Unstaked') : t('Unstake All')}
-      </Button>
+      <UnstakeButton pool={pool} />
     </Container>
   )
 }
