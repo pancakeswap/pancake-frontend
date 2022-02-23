@@ -1,7 +1,7 @@
-import { Button, Flex, Box, Modal, Text, ChevronRightIcon, InjectedModalProps, Tag } from '@pancakeswap/uikit'
+import { Button, Flex, Box, Modal, Text, ChevronRightIcon, InjectedModalProps, Tag, Spinner } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import { memo } from 'react'
+import { memo, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { mainnetTokens } from 'config/constants/tokens'
 import CurrencyFormat from './CurrencyFormat'
@@ -9,6 +9,8 @@ import CellFormat from './CellFormat'
 import { FormattedOrderData } from 'views/LimitOrders/hooks/useFormattedOrderData'
 import useGelatoLimitOrdersHandlers from 'hooks/limitOrders/useGelatoLimitOrdersHandlers'
 import { Order } from '@gelatonetwork/limit-orders-lib'
+import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const StyledModal = styled(Modal)`
   max-width: 613px;
@@ -29,13 +31,59 @@ interface DetailLimitOrderModalProps extends InjectedModalProps {
 }
 
 export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ onDismiss, order, formattedOrder }) => {
+  const { chainId } = useActiveWeb3React()
   const { theme } = useTheme()
   const { t } = useTranslation()
   const { handleLimitOrderCancellation } = useGelatoLimitOrdersHandlers()
 
-  const onCancelOrder = () => {
-    handleLimitOrderCancellation(order)
-  }
+  const [{ cancellationErrorMessage, attemptingTxn, txHash }, setCancellationState] = useState<{
+    attemptingTxn: boolean
+    cancellationErrorMessage: string | undefined
+    txHash: string | undefined
+  }>({
+    attemptingTxn: false,
+    cancellationErrorMessage: undefined,
+    txHash: undefined,
+  })
+
+  const onCancelOrder = useCallback(() => {
+    if (!handleLimitOrderCancellation) {
+      return
+    }
+    setCancellationState({
+      attemptingTxn: true,
+      cancellationErrorMessage: undefined,
+      txHash: undefined,
+    })
+
+    const orderDetails =
+      formattedOrder.inputToken?.symbol &&
+      formattedOrder.outputToken?.symbol &&
+      formattedOrder.inputAmount &&
+      formattedOrder.outputAmount
+        ? {
+            inputTokenSymbol: formattedOrder.inputToken.symbol,
+            outputTokenSymbol: formattedOrder.outputToken.symbol,
+            inputAmount: formattedOrder.inputAmount.toSignificant(4),
+            outputAmount: formattedOrder.outputAmount.toSignificant(4),
+          }
+        : undefined
+    handleLimitOrderCancellation(order, orderDetails)
+      .then(({ hash }) => {
+        setCancellationState({
+          attemptingTxn: false,
+          cancellationErrorMessage: undefined,
+          txHash: hash,
+        })
+      })
+      .catch((error) => {
+        setCancellationState({
+          attemptingTxn: false,
+          cancellationErrorMessage: error.message,
+          txHash: undefined,
+        })
+      })
+  }, [handleLimitOrderCancellation])
 
   const limitPriceExchangeRateText = `1 ${
     formattedOrder.inputToken?.symbol
@@ -44,15 +92,10 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
     ?.invert()
     .toSignificant(4)} ${formattedOrder.inputToken?.symbol}`
 
-  const isOpen = !formattedOrder.isExecuted && !formattedOrder.isCancelled
+  const { isOpen, isExecuted, isCancelled, isSubmissionPending, isCancellationPending, bscScanUrls } = formattedOrder
 
-  return (
-    <StyledModal
-      title={t('Open Order Details')}
-      headerBackground={theme.colors.gradients.cardHeader}
-      style={{ width: '436px' }}
-      onDismiss={onDismiss}
-    >
+  const orderDetails = (
+    <>
       <Flex width="100%" justifyContent="space-between">
         <CellFormat
           firstRow={formattedOrder.inputAmount?.toSignificant(4)}
@@ -69,32 +112,55 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
         currentPriceExchangeRateTextReversed="404.11169 BUSD = 1 BNB"
         limitPriceExchangeRateText={limitPriceExchangeRateText}
         limitPriceExchangeRateTextReversed={limitPriceExchangeRateTextReversed}
-        isExecuted={formattedOrder.isExecuted}
-        isCancelled={formattedOrder.isCancelled}
+        isOpen={isOpen}
+        isExecuted={isExecuted}
+        isCancelled={isCancelled}
+        isSubmissionPending={isSubmissionPending}
+        isCancellationPending={isCancellationPending}
       />
       {isOpen ? (
         <>
           <Button variant="primary" mt="24px" as="a" external href={formattedOrder.bscScanUrls.created}>
             {t('View on BSCScan')}
           </Button>
-          <Button variant="danger" mt="24px" onClick={onCancelOrder}>
-            {t('Cancel Order')}
-          </Button>
+          {!isSubmissionPending && (
+            <Button variant="danger" mt="24px" onClick={onCancelOrder}>
+              {t('Cancel Order')}
+            </Button>
+          )}
         </>
       ) : (
         <Button variant="primary" mt="24px" as="a" external href={formattedOrder.bscScanUrls.created}>
           {t('View order creation on BSCScan')}
         </Button>
       )}
-      {formattedOrder.isCancelled && formattedOrder.bscScanUrls.cancelled && (
-        <Button variant="primary" mt="24px" as="a" external href={formattedOrder.bscScanUrls.cancelled}>
+      {isCancelled && bscScanUrls.cancelled && (
+        <Button variant="primary" mt="24px" as="a" external href={bscScanUrls.cancelled}>
           {t('View order cancellation on BSCScan')}
         </Button>
       )}
-      {formattedOrder.isExecuted && formattedOrder.bscScanUrls.executed && (
-        <Button variant="primary" mt="24px" as="a" external href={formattedOrder.bscScanUrls.executed}>
+      {isExecuted && bscScanUrls.executed && (
+        <Button variant="primary" mt="24px" as="a" external href={bscScanUrls.executed}>
           {t('View order execution on BSCScan')}
         </Button>
+      )}
+    </>
+  )
+  return (
+    <StyledModal
+      title={t('Open Order Details')}
+      headerBackground={theme.colors.gradients.cardHeader}
+      style={{ width: '436px' }}
+      onDismiss={onDismiss}
+    >
+      {attemptingTxn ? (
+        <LoadingContent />
+      ) : txHash ? (
+        <TransactionSubmittedContent chainId={chainId} hash={txHash} onDismiss={onDismiss} />
+      ) : cancellationErrorMessage ? (
+        <TransactionErrorContent onDismiss={onDismiss} message={cancellationErrorMessage} />
+      ) : (
+        orderDetails
       )}
     </StyledModal>
   )
@@ -105,23 +171,44 @@ interface LimitTradeInfoCardProps {
   currentPriceExchangeRateTextReversed: string
   limitPriceExchangeRateText: string
   limitPriceExchangeRateTextReversed: string
+  isOpen: boolean
   isExecuted: boolean
   isCancelled: boolean
+  isSubmissionPending: boolean
+  isCancellationPending: boolean
 }
 
 const LimitTradeInfoCard: React.FC<LimitTradeInfoCardProps> = memo(
-  ({ limitPriceExchangeRateText, limitPriceExchangeRateTextReversed, isExecuted, isCancelled }) => {
+  ({
+    limitPriceExchangeRateText,
+    limitPriceExchangeRateTextReversed,
+    isOpen,
+    isExecuted,
+    isCancelled,
+    isSubmissionPending,
+    isCancellationPending,
+  }) => {
     const { t } = useTranslation()
 
     return (
       <InfoCardWrapper>
         <Box mb="4px">
+          {isOpen && isSubmissionPending && (
+            <Tag outline scale="sm" p="8px" mb="16px" variant="warning">
+              {t('Pending')}
+            </Tag>
+          )}
           {isExecuted && (
             <Tag outline scale="sm" p="8px" mb="16px" variant="success">
               {t('Filled')}
             </Tag>
           )}
-          {isCancelled && (
+          {isCancellationPending && (
+            <Tag outline scale="sm" p="8px" mb="16px" variant="warning">
+              {t('Cancelling')}
+            </Tag>
+          )}
+          {isCancelled && !isCancellationPending && (
             <Tag outline scale="sm" p="8px" mb="16px" variant="failure">
               {t('Cancelled')}
             </Tag>
@@ -138,3 +225,22 @@ const LimitTradeInfoCard: React.FC<LimitTradeInfoCardProps> = memo(
     )
   },
 )
+
+const LoadingContent: React.FC = memo(() => {
+  const { t } = useTranslation()
+  return (
+    <Flex>
+      <Flex flexDirection="column" flexGrow="wrap" flexBasis="267px">
+        <Text fontSize="20px" small color="secondary">
+          {t('Confirm')}
+        </Text>
+        <Text small color="textSubtle" mt="8px">
+          {t('Please confirm the transaction in your wallet')}
+        </Text>
+      </Flex>
+      <Flex>
+        <Spinner size={70} />
+      </Flex>
+    </Flex>
+  )
+})

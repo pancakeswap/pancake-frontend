@@ -22,9 +22,7 @@ import SwitchTokensButton from './components/SwitchTokensButton'
 import Page from '../Page'
 import LimitOrderTable from './components/LimitOrderTable'
 import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
-
-// Gelato uses this address to define a native currency in all chains
-const NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+import { GELATO_NATIVE } from 'config/constants'
 
 const LimitOrders = () => {
   // Helpers
@@ -128,7 +126,6 @@ const LimitOrders = () => {
     }
   }, [txHash])
 
-  console.log('State', attemptingTxn, txHash)
   const handlePlaceOrder = useCallback(() => {
     console.log('Placing order')
     if (!handleLimitOrderSubmission) {
@@ -160,8 +157,8 @@ const LimitOrders = () => {
       if (!account) {
         throw new Error('No account')
       }
-      const inputToken = currencies.input instanceof Token ? wrappedInput.address : NATIVE
-      const outputToken = currencies.output instanceof Token ? wrappedOutput.address : NATIVE
+      const inputToken = currencies.input instanceof Token ? wrappedInput.address : GELATO_NATIVE
+      const outputToken = currencies.output instanceof Token ? wrappedOutput.address : GELATO_NATIVE
       // TODO: use native BNB
       const orderToSubmit = {
         inputToken,

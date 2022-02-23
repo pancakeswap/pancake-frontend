@@ -5,6 +5,7 @@ import { useCurrency } from 'hooks/Tokens'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
+import { useIsTransactionPending } from 'state/transactions/hooks'
 
 export interface FormattedOrderData {
   inputToken: Currency | Token
@@ -12,8 +13,11 @@ export interface FormattedOrderData {
   inputAmount: CurrencyAmount
   outputAmount: CurrencyAmount
   executionPrice: Price
+  isOpen: boolean
   isCancelled: boolean
   isExecuted: boolean
+  isSubmissionPending: boolean
+  isCancellationPending: boolean
   bscScanUrls: {
     created: string
     executed: string
@@ -27,6 +31,10 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
   const gelatoLibrary = useGelatoLimitOrdersLib()
   const inputToken = useCurrency(order.inputToken)
   const outputToken = useCurrency(order.outputToken)
+
+  const isSubmissionPending = useIsTransactionPending(order.createdTxHash)
+  const isCancellationPending = useIsTransactionPending(order.cancelledTxHash ?? undefined)
+
   const inputAmount = useMemo(() => {
     if (inputToken && order.inputAmount) {
       if (inputToken instanceof Token) {
@@ -75,8 +83,11 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
     inputAmount,
     outputAmount,
     executionPrice,
+    isOpen: order.status === 'open',
     isCancelled: order.status === 'cancelled',
     isExecuted: order.status === 'executed',
+    isSubmissionPending,
+    isCancellationPending,
     bscScanUrls: {
       created: order.createdTxHash ? getBscScanLink(order.createdTxHash, 'transaction') : null,
       executed: order.executedTxHash ? getBscScanLink(order.executedTxHash, 'transaction') : null,

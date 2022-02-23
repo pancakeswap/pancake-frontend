@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit'
 import { Order } from '@gelatonetwork/limit-orders-lib'
+import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
 import {
   addTransaction,
   checkedTransaction,
@@ -45,6 +46,7 @@ export default createReducer(initialState, (builder) =>
         const txs = transactions[chainId] ?? {}
         txs[hash] = { hash, approval, summary, claim, from, addedTime: now(), type, order }
         transactions[chainId] = txs
+        if (order) saveOrder(chainId, from, order, true)
       },
     )
     .addCase(clearAllTransactions, (transactions, { payload: { chainId } }) => {
@@ -69,5 +71,11 @@ export default createReducer(initialState, (builder) =>
       }
       tx.receipt = receipt
       tx.confirmedTime = now()
+
+      if (transactions[chainId]?.[hash].type === 'limit-order-submission') {
+        confirmOrderSubmission(chainId, receipt.from, hash, receipt.status === 0 ? false : true)
+      } else if (transactions[chainId]?.[hash].type === 'limit-order-cancellation') {
+        confirmOrderCancellation(chainId, receipt.from, hash, receipt.status === 0 ? false : true)
+      }
     }),
 )
