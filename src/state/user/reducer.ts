@@ -70,7 +70,6 @@ export interface UserState {
 
   timestamp: number
   audioPlay: boolean
-  isDark: boolean
   theme: Theme
   isExchangeChartDisplayed: boolean
   isSubgraphHealthIndicatorDisplayed: boolean
@@ -103,7 +102,6 @@ export const initialState: UserState = {
   pairs: {},
   timestamp: currentTimestamp(),
   audioPlay: true,
-  isDark: false,
   theme: undefined,
   isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,

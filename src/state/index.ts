@@ -43,11 +43,13 @@ const migrations = {
     }
   },
   1: (state) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { isDark, ...newUserState } = state.user
     return {
       ...state,
       user: {
-        ...state.user,
-        theme: state.user.isDark ? Theme.DARK : Theme.LIGHT,
+        ...newUserState,
+        theme: state.user.isDark ? Theme.DARK : undefined,
       },
     }
   },
