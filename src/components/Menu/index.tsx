@@ -26,9 +26,7 @@ const Menu = (props) => {
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
 
   const toggleTheme = useMemo(() => {
-    return () => {
-      switchTheme(isDark ? Theme.LIGHT : Theme.DARK)
-    }
+    return () => switchTheme(isDark ? Theme.LIGHT : Theme.DARK)
   }, [switchTheme, isDark])
 
   return (

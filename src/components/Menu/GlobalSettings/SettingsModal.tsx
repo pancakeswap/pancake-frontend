@@ -73,12 +73,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
           </Text>
           <Flex justifyContent="space-between">
             <Text mb="24px">{t('Dark mode')}</Text>
-            <ThemeSwitcher
-              isDark={isDark}
-              toggleTheme={() => {
-                switchTheme(isDark ? Theme.LIGHT : Theme.DARK)
-              }}
-            />
+            <ThemeSwitcher isDark={isDark} toggleTheme={() => switchTheme(isDark ? Theme.LIGHT : Theme.DARK)} />
           </Flex>
           <GasSettings />
         </Flex>
