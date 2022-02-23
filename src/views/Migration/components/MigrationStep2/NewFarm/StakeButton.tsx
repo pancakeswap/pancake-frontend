@@ -112,7 +112,12 @@ const StakeButton: React.FC<StackedActionProps> = ({
   const dispatch = useAppDispatch()
   const { onApprove } = useApproveFarm(lpContract)
 
-  const handleApprove = useCallback(async () => {
+  const handleApprove = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+    handlePoolApprove()
+  }
+
+  const handlePoolApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return onApprove()
     })
@@ -122,14 +127,24 @@ const StakeButton: React.FC<StackedActionProps> = ({
     }
   }, [onApprove, dispatch, account, pid, t, toastSuccess, fetchWithCatchTxError])
 
+  const handleDeposit = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+    onPresentDeposit()
+  }
+
+  const handleWithdraw = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+    onPresentWithdraw()
+  }
+
   if (isApproved) {
     if (stakedBalance.gt(0)) {
       return (
         <IconButtonWrapper>
-          <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
+          <IconButton variant="secondary" onClick={handleWithdraw} mr="6px">
             <MinusIcon color="primary" width="14px" />
           </IconButton>
-          <IconButton variant="secondary" onClick={onPresentDeposit}>
+          <IconButton variant="secondary" onClick={handleDeposit}>
             <AddIcon color="primary" width="14px" />
           </IconButton>
         </IconButtonWrapper>
