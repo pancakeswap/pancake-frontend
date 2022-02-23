@@ -1570,5 +1570,8 @@
   "Status": "Status",
   "No Order": "No Order",
   "Open Orders": "Open Orders",
-  "Order History": "Order History"
+  "Order History": "Order History",
+  "View order creation on BSCScan": "View order creation on BSCScan",
+  "View order cancellation on BSCScan": "View order cancellation on BSCScan",
+  "View order execution on BSCScan": "View order execution on BSCScan"
 }

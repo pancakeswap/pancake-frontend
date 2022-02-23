@@ -20,32 +20,31 @@ export const Arrow = styled.div`
   }
 `
 
-export default function Navigation() {
-  const maxPage = 10
-  const [page, setPage] = useState(1)
+interface TableNavigationProps {
+  currentPage: number
+  maxPage: number
+  onPagePrev: () => void
+  onPageNext: () => void
+}
+
+const TableNavigation: React.FC<TableNavigationProps> = ({ currentPage = 1, maxPage = 1, onPagePrev, onPageNext }) => {
   const { t } = useTranslation()
 
   return (
     <>
       <PageButtons>
-        <Arrow
-          onClick={() => {
-            setPage(page === 1 ? page : page - 1)
-          }}
-        >
-          <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+        <Arrow onClick={onPagePrev}>
+          <ArrowBackIcon color={currentPage === 1 ? 'textDisabled' : 'primary'} />
         </Arrow>
 
-        <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
+        <Text>{t('Page %page% of %maxPage%', { page: currentPage, maxPage })}</Text>
 
-        <Arrow
-          onClick={() => {
-            setPage(page === maxPage ? page : page + 1)
-          }}
-        >
-          <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+        <Arrow onClick={onPageNext}>
+          <ArrowForwardIcon color={currentPage === maxPage ? 'textDisabled' : 'primary'} />
         </Arrow>
       </PageButtons>
     </>
   )
 }
+
+export default TableNavigation

@@ -1,18 +1,17 @@
-import { Table, Th, Td, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Table, Th, Td, useMatchBreakpoints } from '@pancakeswap/uikit'
 
-import CurrencyFormat from './CurrencyFormat'
-import CellFormat from './CellFormat'
 import Navigation from 'components/TableNavigation'
-import OrderRow from './OrderRow'
+import CompactRow from './CompactRow'
 import NoOrderTable from './NoOrderTable'
 import { LimitOrderTableProps } from './types'
 import { useTranslation } from 'contexts/Localization'
 import HeaderCellStyle from './HeaderCellStyle'
+import FullRow from './FullRow'
 
 const HistoryOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orders }) => {
   const { isTablet } = useMatchBreakpoints()
   const { t } = useTranslation()
-  const oneLineMode = !isChartDisplayed || isTablet
+  const compactMode = !isChartDisplayed || isTablet
 
   if (!orders?.length) {
     return <NoOrderTable />
@@ -21,12 +20,12 @@ const HistoryOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, o
   return (
     <>
       <Table>
-        {oneLineMode ? (
+        {compactMode ? (
           <tbody>
             {orders.map((order) => (
-              <tr>
+              <tr key={order.id}>
                 <Td>
-                  <OrderRow order={order} inline={isChartDisplayed || isTablet} />
+                  <CompactRow order={order} />
                 </Td>
               </tr>
             ))}
@@ -48,29 +47,13 @@ const HistoryOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, o
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr>
-                  <Td>
-                    <CellFormat
-                      firstRow={1200}
-                      secondRow={<CurrencyFormat bold currency={order.inputAmount.currency} />}
-                    />
-                  </Td>
-                  <Td>
-                    <CellFormat
-                      firstRow={1200}
-                      secondRow={<CurrencyFormat bold currency={order.outputAmount.currency} />}
-                    />
-                  </Td>
-                  <Td>
-                    <Text color="failure">{t('Canceled')}</Text>
-                  </Td>
-                </tr>
+                <FullRow key={order.id} order={order} />
               ))}
             </tbody>
           </>
         )}
       </Table>
-      <Navigation />
+      <Navigation currentPage={1} maxPage={1} onPagePrev={() => {}} onPageNext={() => {}} />
     </>
   )
 }

@@ -1,36 +1,52 @@
-import { Table, Th, Td, useMatchBreakpoints, MoreHorizontalIcon, SyncAltIcon, Text, useModal } from '@pancakeswap/uikit'
+import { useMemo, useState } from 'react'
+import { Table, Th, Td, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
-import { DetailLimitOrderModal } from './DetailLimitOrderModal'
-import CurrencyFormat from './CurrencyFormat'
-import CellFormat from './CellFormat'
 import Navigation from 'components/TableNavigation'
-import TextIcon from './TextIcon'
-import OrderRow from './OrderRow'
+import CompactRow from './CompactRow'
 import NoOrderTable from './NoOrderTable'
 import { LimitOrderTableProps } from './types'
 import HeaderCellStyle from './HeaderCellStyle'
+import FullRow from './FullRow'
+
+const ORDERS_PER_PAGE = 5
 
 const OpenOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orders }) => {
-  const [openDetailLimitOrderModal] = useModal(<DetailLimitOrderModal />)
   const { isTablet } = useMatchBreakpoints()
-  const oneLineMode = !isChartDisplayed || isTablet
+  const [page, setPage] = useState(1)
+  const compactMode = !isChartDisplayed || isTablet
   const { t } = useTranslation()
+
+  const maxPage = useMemo(() => {
+    if (orders?.length) {
+      return Math.ceil(orders?.length / ORDERS_PER_PAGE)
+    }
+    return 1
+  }, [orders?.length])
+
+  const onPageNext = () => {
+    setPage((currentPage) => (currentPage === maxPage ? currentPage : currentPage + 1))
+  }
+
+  const onPagePrev = () => {
+    setPage((currentPage) => (currentPage === 1 ? currentPage : currentPage - 1))
+  }
 
   if (!orders?.length) {
     return <NoOrderTable />
   }
 
+  const currentPageOrders = orders.slice(ORDERS_PER_PAGE * (page - 1), ORDERS_PER_PAGE * page)
+
   return (
     <>
       <Table>
-        {oneLineMode ? (
+        {compactMode ? (
           <tbody>
-            {orders.map((order) => (
-              <tr>
+            {currentPageOrders.map((order) => (
+              <tr key={order.id}>
                 <Td>
-                  {/* Add key */}
-                  <OrderRow order={order} onClick={openDetailLimitOrderModal} inline={isChartDisplayed || isTablet} />
+                  <CompactRow order={order} />
                 </Td>
               </tr>
             ))}
@@ -52,42 +68,14 @@ const OpenOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orde
               </tr>
             </thead>
             <tbody>
-              {/* Add key */}
               {orders.map((order) => (
-                <tr>
-                  <Td>
-                    <CellFormat
-                      firstRow={1200}
-                      secondRow={<CurrencyFormat bold currency={order.inputAmount.currency} />}
-                    />
-                  </Td>
-                  <Td>
-                    <CellFormat
-                      firstRow={1200}
-                      secondRow={<CurrencyFormat bold currency={order.outputAmount.currency} />}
-                    />
-                  </Td>
-                  <Td>
-                    <CellFormat
-                      firstRow={1200}
-                      secondRow={
-                        <TextIcon
-                          text={`${order.inputAmount.currency?.symbol}/${order.outputAmount.currency?.symbol}`}
-                          icon={<SyncAltIcon />}
-                        />
-                      }
-                    />
-                  </Td>
-                  <Td>
-                    <MoreHorizontalIcon onClick={openDetailLimitOrderModal} />
-                  </Td>
-                </tr>
+                <FullRow key={order.id} order={order} />
               ))}
             </tbody>
           </>
         )}
       </Table>
-      <Navigation />
+      <Navigation currentPage={page} maxPage={maxPage} onPageNext={onPageNext} onPagePrev={onPagePrev} />
     </>
   )
 }

@@ -20,7 +20,6 @@ import CurrencyInputHeader from './components/CurrencyInputHeader'
 import LimitOrderPrice from './components/LimitOrderPrice'
 import SwitchTokensButton from './components/SwitchTokensButton'
 import Page from '../Page'
-import OrderHistoryTable from './components/OrderHistoryTable'
 import LimitOrderTable from './components/LimitOrderTable'
 
 const LimitOrders = () => {
@@ -281,8 +280,9 @@ const LimitOrders = () => {
           </StyledSwapContainer>
         </Flex>
       </Flex>
-      <OrderHistoryTable />
-      <LimitOrderTable />
+      <div style={{ width: '100%' }}>
+        <LimitOrderTable isChartDisplayed={false} />
+      </div>
     </Page>
   )
 }

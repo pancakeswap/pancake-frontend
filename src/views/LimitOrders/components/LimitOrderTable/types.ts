@@ -1,4 +1,4 @@
-import { Trade } from '@pancakeswap/sdk'
+import { Order } from '@gelatonetwork/limit-orders-lib'
 
 export enum TAB_TYPE {
   Open = 0,
@@ -7,5 +7,5 @@ export enum TAB_TYPE {
 
 export interface LimitOrderTableProps {
   isChartDisplayed: boolean
-  orders: Trade[]
+  orders: Order[]
 }
