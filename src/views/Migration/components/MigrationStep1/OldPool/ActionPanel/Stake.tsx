@@ -40,6 +40,9 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
   const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
   const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
 
+  const balance = vaultKey ? cakeAsNumberBalance : stakedTokenBalance
+  const isBalanceZero = balance === 0
+
   return (
     <Container>
       <ActionTitles>
@@ -52,6 +55,7 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
           <Balance
             lineHeight="1"
             bold
+            color={isBalanceZero ? 'textDisabled' : 'text'}
             fontSize="20px"
             decimals={5}
             value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
@@ -59,7 +63,7 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
           <Balance
             fontSize="12px"
             display="inline"
-            color="textSubtle"
+            color={isBalanceZero ? 'textDisabled' : 'textSubtle'}
             decimals={2}
             value={vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance}
             unit=" USD"

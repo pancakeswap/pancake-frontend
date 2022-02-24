@@ -36,9 +36,7 @@ const Earned: React.FC<EarnedProps> = ({ earnings }) => {
           {Number(displayBalance) ? (
             <Balance fontSize="16px" value={Number(displayBalance)} />
           ) : (
-            <Text fontSize="12px" color="textDisabled">
-              0
-            </Text>
+            <Text fontSize="16px">0</Text>
           )}
         </Flex>
       </Flex>
@@ -54,10 +52,15 @@ const Earned: React.FC<EarnedProps> = ({ earnings }) => {
       </ActionTitles>
       <ActionContent>
         <div>
-          <Heading>{displayBalance}</Heading>
-          {earningsBusd > 0 && (
-            <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
-          )}
+          <Heading color={earningsBigNumber.gt(0) ? 'text' : 'textDisabled'}>{displayBalance}</Heading>
+          <Balance
+            fontSize="12px"
+            color={earningsBusd > 0 ? 'textSubtle' : 'textDisabled'}
+            decimals={2}
+            value={earningsBusd}
+            unit=" USD"
+            prefix="~"
+          />
         </div>
       </ActionContent>
     </Container>

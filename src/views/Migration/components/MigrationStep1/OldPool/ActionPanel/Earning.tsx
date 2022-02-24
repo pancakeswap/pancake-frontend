@@ -40,9 +40,7 @@ const Earning: React.FunctionComponent<DeserializedPool> = ({ earningToken, user
           {hasEarnings ? (
             <Balance fontSize="16px" value={earningTokenBalance} decimals={5} />
           ) : (
-            <Text fontSize="12px" color="textDisabled">
-              0
-            </Text>
+            <Text fontSize="16px">0</Text>
           )}
         </Flex>
       </Flex>

@@ -71,9 +71,13 @@ const FarmRow: React.FunctionComponent<RowProps> = ({ earned, farm, staked, apr,
       <StyledRow role="row" onClick={toggleExpanded}>
         <LeftContainer>
           <Farm {...farm} />
-          {isLargerScreen || !expanded ? <Staked {...staked} /> : null}
-          <AprCell {...apr} />
-          <Multiplier {...multiplier} />
+          {isLargerScreen || !expanded ? (
+            <>
+              <Staked {...staked} />
+              <AprCell {...apr} />
+              <Multiplier {...multiplier} />
+            </>
+          ) : null}
           {isLargerScreen && <Liquidity {...liquidity} />}
         </LeftContainer>
         <RightContainer>

@@ -49,7 +49,7 @@ const Staked: React.FC<StakedProps> = ({ label, pid }) => {
           {labelText}
         </Text>
         <Flex mt="4px">
-          <Text fontSize={isMobile ? '14px' : '16px'} color={displayBalance() ? 'text' : 'textDisabled'}>
+          <Text fontSize={isMobile ? '14px' : '16px'} color={stakedBalance.gt(0) ? 'text' : 'textDisabled'}>
             {displayBalance()}
           </Text>
         </Flex>

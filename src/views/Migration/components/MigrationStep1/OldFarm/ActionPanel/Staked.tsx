@@ -39,17 +39,15 @@ const Staked: React.FC<FarmProps> = ({ pid, lpSymbol }) => {
       </ActionTitles>
       <ActionContent>
         <div>
-          <Heading>{displayBalance()}</Heading>
-          {stakedBalance.gt(0) && lpPrice.gt(0) && (
-            <Balance
-              fontSize="12px"
-              color="textSubtle"
-              decimals={2}
-              value={getBalanceNumber(lpPrice.times(stakedBalance))}
-              unit=" USD"
-              prefix="~"
-            />
-          )}
+          <Heading color={stakedBalance.gt(0) ? 'text' : 'textDisabled'}>{displayBalance()}</Heading>
+          <Balance
+            fontSize="12px"
+            color={stakedBalance.gt(0) && lpPrice.gt(0) ? 'textSubtle' : 'textDisabled'}
+            decimals={2}
+            value={getBalanceNumber(lpPrice.times(stakedBalance))}
+            unit=" USD"
+            prefix="~"
+          />
         </div>
         <UnstakeButton pid={pid} />
       </ActionContent>
