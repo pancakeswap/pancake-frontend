@@ -23,6 +23,19 @@ import Menu from '../components/Menu'
 import BlockCountry from '../components/BlockCountry'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
+import { LazyMotion, domAnimation, AnimatePresence, m, Variants } from 'framer-motion'
+
+const pageAnimation: Variants = {
+  initial: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+  },
+  exit: {
+    opacity: 0,
+  },
+}
 
 // This config is required for number formatting
 BigNumber.config({
@@ -105,14 +118,28 @@ type AppPropsWithLayout = AppProps & {
 
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBoundary : Fragment
 
-const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+const App = ({ Component, pageProps, router }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
   return (
     <ProductionErrorBoundary>
       <Menu>
         <Layout>
-          <Component {...pageProps} />
+          <LazyMotion features={domAnimation}>
+            <AnimatePresence exitBeforeEnter>
+              <m.div
+                key={router.route}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageAnimation}
+                transition={{ duration: 0.6 }}
+                style={{ willChange: 'opacity' }}
+              >
+                <Component {...pageProps} />
+              </m.div>
+            </AnimatePresence>
+          </LazyMotion>
         </Layout>
       </Menu>
       <EasterEgg iterations={2} />
