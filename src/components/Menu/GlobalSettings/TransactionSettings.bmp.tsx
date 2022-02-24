@@ -1,3 +1,5 @@
+// When the project is run in a mini program, the .bmp file will be used first
+
 import React, { useState } from 'react'
 import { escapeRegExp } from 'utils'
 import { Text, Button, Input, Flex, Box } from '@pancakeswap/uikit'
@@ -129,6 +131,7 @@ const SlippageTabs = () => {
             <Box width="76px" mt="4px">
               <Input
                 scale="sm"
+                // bmp: fix default style of input element in mini program
                 style={{ minHeight: '32px' }}
                 inputMode="decimal"
                 pattern="^[0-9]*[.,]?[0-9]{0,2}$"
@@ -174,6 +177,7 @@ const SlippageTabs = () => {
           <Box width="52px" mt="4px">
             <Input
               scale="sm"
+              // bmp: fix default style of input element in mini program
               style={{ minHeight: '32px' }}
               inputMode="numeric"
               pattern="^[0-9]+$"
