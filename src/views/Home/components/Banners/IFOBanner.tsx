@@ -1,7 +1,11 @@
+import { memo } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
+import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
+import { useCurrentBlock } from 'state/block/hooks'
+import { getStatus } from '../../../Ifos/hooks/helpers'
 
 const StyledSubheading = styled(Heading)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
@@ -26,6 +30,7 @@ const StyledHeading = styled(Heading)`
   -webkit-background-clip: text;
   -webkit-text-stroke: 6px transparent;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-transform: uppercase;
   margin-bottom: 16px;
 `
 
@@ -85,16 +90,23 @@ const RightWrapper = styled.div`
     }
   }
 `
-
 const IFOBanner = () => {
   const { t } = useTranslation()
+  const currentBlock = useCurrentBlock()
 
-  return (
+  const activeIfoWithBlocks = useActiveIfoWithBlocks()
+
+  const isIfoAlive = !!(currentBlock && activeIfoWithBlocks && activeIfoWithBlocks.endBlock > currentBlock)
+  const status = isIfoAlive
+    ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
+    : null
+
+  return isIfoAlive && status ? (
     <Wrapper>
       <Inner>
         <LeftWrapper>
-          <StyledSubheading>{t('Live')}</StyledSubheading>
-          <StyledHeading scale="xl">ERA IFO</StyledHeading>
+          <StyledSubheading>{status === 'live' ? t('Live') : t('Soon')}</StyledSubheading>
+          <StyledHeading scale="xl">{activeIfoWithBlocks.id} IFO</StyledHeading>
           <NextLinkFromReactRouter to="/ifo">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
@@ -105,11 +117,19 @@ const IFOBanner = () => {
           </NextLinkFromReactRouter>
         </LeftWrapper>
         <RightWrapper>
-          <img src="/images/decorations/3d-ifo-era.png" alt="IFO Era" />
+          <img
+            src={`/images/decorations/3d-ifo-${activeIfoWithBlocks.id}.png`}
+            alt={`IFO ${activeIfoWithBlocks.id}`}
+            onError={(event) => {
+              // @ts-ignore
+              // eslint-disable-next-line no-param-reassign
+              event.target.style.display = 'none'
+            }}
+          />
         </RightWrapper>
       </Inner>
     </Wrapper>
-  )
+  ) : null
 }
 
-export default IFOBanner
+export default memo(IFOBanner)
