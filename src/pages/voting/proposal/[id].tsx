@@ -5,7 +5,7 @@ import { getProposal } from 'state/voting/helpers'
 import { ProposalState } from 'state/types'
 import ProposalPageRouter from 'views/Voting/Proposal'
 
-const ProposalPage = ({ fallback }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const ProposalPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <SWRConfig
       value={{
@@ -53,7 +53,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   } catch (error) {
     return {
-      props: {},
+      props: {
+        fallback: {},
+      },
       revalidate: 60,
     }
   }

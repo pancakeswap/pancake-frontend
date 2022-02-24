@@ -1,7 +1,7 @@
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { PageMeta } from 'components/Layout/Page'
 import useSWR from 'swr'
-import { getAllVotes } from 'state/voting/helpers'
+import { getAllVotes, getProposal } from 'state/voting/helpers'
 import { useWeb3React } from '@web3-react/core'
 import useSWRImmutable from 'swr/immutable'
 import { ProposalState } from 'state/types'
@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import ReactMarkdown from 'components/ReactMarkdown'
+import NotFound from 'views/NotFound'
 import { FetchStatus } from 'config/constants/types'
 import { isCoreProposal } from '../helpers'
 import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
@@ -24,7 +25,11 @@ const Overview = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
 
-  const { status: proposalLoadingStatus, data: proposal } = useSWRImmutable(['proposal', id])
+  const {
+    status: proposalLoadingStatus,
+    data: proposal,
+    error,
+  } = useSWRImmutable(id ? ['proposal', id] : null, () => getProposal(id))
   const { id: proposalId = null, snapshot = null } = proposal ?? {}
 
   const {
@@ -37,6 +42,10 @@ const Overview = () => {
   const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   const isPageLoading = votesLoadingStatus === FetchStatus.Fetching || proposalLoadingStatus === FetchStatus.Fetching
+
+  if (!proposal && error) {
+    return <NotFound />
+  }
 
   return (
     <Container py="40px">
