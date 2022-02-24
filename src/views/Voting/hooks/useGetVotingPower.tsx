@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { getActivePools } from 'utils/calls'
+import { FetchStatus } from 'config/constants/types'
+import useSWR from 'swr'
 import { getAddress } from 'utils/addressHelpers'
+import { getActivePools } from 'utils/calls'
 import { simpleRpcProvider } from 'utils/providers'
 import { getVotingPower } from '../helpers'
-import useToast from 'hooks/useToast'
-import { useTranslation } from 'contexts/Localization'
 
 interface State {
   cakeBalance: number
@@ -17,67 +16,26 @@ interface State {
   total: number
 }
 
-const initialState: State = {
-  cakeBalance: 0,
-  cakeVaultBalance: 0,
-  cakePoolBalance: 0,
-  poolsBalance: 0,
-  cakeBnbLpBalance: 0,
-  ifoPoolBalance: 0,
-  total: 0,
-}
-
-const useGetVotingPower = (block?: number, isActive = true): State & { isLoading: boolean } => {
+const useGetVotingPower = (block?: number, isActive = true): State & { isLoading: boolean; isError: boolean } => {
   const { account } = useWeb3React()
-  const { toastError } = useToast()
-  const [votingPower, setVotingPower] = useState(initialState)
-  const [isLoading, setIsLoading] = useState(!!account)
-  const { t } = useTranslation()
-
-  useEffect(() => {
-    const fetchVotingPower = async () => {
-      setIsLoading(true)
-
-      try {
-        const blockNumber = block || (await simpleRpcProvider.getBlockNumber())
-        const eligiblePools = await getActivePools(blockNumber)
-        const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress))
-        const {
-          cakeBalance,
-          cakeBnbLpBalance,
-          cakePoolBalance,
-          total,
-          poolsBalance,
-          cakeVaultBalance,
-          IFOPoolBalance,
-        } = await getVotingPower(account, poolAddresses, blockNumber)
-
-        if (isActive) {
-          setVotingPower((prevVotingPower) => ({
-            ...prevVotingPower,
-            cakeBalance: parseFloat(cakeBalance),
-            cakeBnbLpBalance: parseFloat(cakeBnbLpBalance),
-            cakePoolBalance: parseFloat(cakePoolBalance),
-            poolsBalance: parseFloat(poolsBalance),
-            cakeVaultBalance: parseFloat(cakeVaultBalance),
-            ifoPoolBalance: IFOPoolBalance ? parseFloat(IFOPoolBalance) : 0,
-            total: parseFloat(total),
-          }))
-        }
-      } catch (error) {
-        toastError(t('Error'), t('Error fetching Voting Power'))
-        console.error(error)
-      } finally {
-        setIsLoading(false)
-      }
+  const { data, status, error } = useSWR(account && isActive ? [account, block, 'votingPower'] : null, async () => {
+    const blockNumber = block || (await simpleRpcProvider.getBlockNumber())
+    const eligiblePools = await getActivePools(blockNumber)
+    const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress))
+    const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, cakeVaultBalance, IFOPoolBalance } =
+      await getVotingPower(account, poolAddresses, blockNumber)
+    return {
+      cakeBalance: parseFloat(cakeBalance),
+      cakeBnbLpBalance: parseFloat(cakeBnbLpBalance),
+      cakePoolBalance: parseFloat(cakePoolBalance),
+      poolsBalance: parseFloat(poolsBalance),
+      cakeVaultBalance: parseFloat(cakeVaultBalance),
+      ifoPoolBalance: IFOPoolBalance ? parseFloat(IFOPoolBalance) : 0,
+      total: parseFloat(total),
     }
+  })
 
-    if (account && isActive) {
-      fetchVotingPower()
-    }
-  }, [account, block, setVotingPower, isActive, setIsLoading])
-
-  return { ...votingPower, isLoading }
+  return { ...data, isLoading: status !== FetchStatus.Fetched, isError: status === FetchStatus.Failed }
 }
 
 export default useGetVotingPower

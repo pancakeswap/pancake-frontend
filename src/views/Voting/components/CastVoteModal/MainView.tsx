@@ -12,6 +12,7 @@ interface MainViewProps {
   }
   isLoading: boolean
   isPending: boolean
+  isError: boolean
   total: number
   onConfirm: () => void
   onViewDetails: () => void
@@ -23,12 +24,12 @@ const MainView: React.FC<MainViewProps> = ({
   total,
   isPending,
   isLoading,
+  isError,
   onConfirm,
   onViewDetails,
   onDismiss,
 }) => {
   const { t } = useTranslation()
-
   return (
     <>
       <ModalInner>
@@ -41,8 +42,12 @@ const MainView: React.FC<MainViewProps> = ({
         <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
           {t('Your Voting Power')}
         </Text>
-        {isLoading ? (
+        {isLoading && !isError ? (
           <Skeleton height="64px" mb="24px" />
+        ) : isError ? (
+          <Text mb="12px" color="red">
+            {t('Error fetching Voting Power')}
+          </Text>
         ) : (
           <VotingBox onClick={onViewDetails} style={{ cursor: 'pointer' }}>
             <Text bold fontSize="20px">

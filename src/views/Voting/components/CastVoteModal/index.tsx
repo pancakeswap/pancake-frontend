@@ -24,6 +24,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
   const { theme } = useTheme()
   const {
     isLoading,
+    isError,
     total,
     cakeBalance,
     cakeVaultBalance,
@@ -88,6 +89,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
         {view === ConfirmVoteView.MAIN && (
           <MainView
             vote={vote}
+            isError={isError}
             isLoading={isLoading}
             isPending={isPending}
             total={total}
