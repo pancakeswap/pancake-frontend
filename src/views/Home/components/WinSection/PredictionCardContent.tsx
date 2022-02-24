@@ -20,7 +20,7 @@ const PredictionCardContent = () => {
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const bnbBusdPrice = useBNBBusdPrice()
-  const { data: bnbWon = 0 } = useSWR(loadData ? ['prediction', 'bnbWon'] : null, async () => getTotalWon(), {
+  const { data: bnbWon = 0 } = useSWR(loadData ? ['prediction', 'bnbWon'] : null, getTotalWon, {
     refreshInterval: SLOW_INTERVAL,
   })
   const bnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, bnbWon)
