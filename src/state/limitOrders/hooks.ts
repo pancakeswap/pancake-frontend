@@ -35,7 +35,7 @@ const applyExchangeRateTo = (
 
   if (isInverted) {
     const invertedResultAsFraction = parsedInputAmount.asFraction
-      .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency.decimals)))
+      .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(outputCurrency.decimals)))
       .divide(parsedExchangeRate.asFraction)
     const invertedResultAsAmount =
       outputCurrency instanceof Token

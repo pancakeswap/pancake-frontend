@@ -78,6 +78,7 @@ const LimitOrders = () => {
   // UI handlers
   const handleTypeInput = useCallback(
     (value: string) => {
+      setApprovalSubmitted(false)
       handleInput(Field.INPUT, value)
     },
     [handleInput],
@@ -90,6 +91,7 @@ const LimitOrders = () => {
   )
   const handleInputSelect = useCallback(
     (inputCurrency) => {
+      setApprovalSubmitted(false)
       handleCurrencySelection(Field.INPUT, inputCurrency)
     },
     [handleCurrencySelection],
@@ -116,10 +118,6 @@ const LimitOrders = () => {
   }, [approveCallback])
 
   const handleConfirmDismiss = useCallback(() => {
-    setSwapState((prev) => ({
-      ...prev,
-      txHash: undefined,
-    }))
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       handleTypeInput('')
@@ -231,7 +229,6 @@ const LimitOrders = () => {
     }
   }, [approvalState, approvalSubmitted])
 
-  // TODO: refine
   const showApproveFlow =
     !inputError && (approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING)
 
@@ -263,7 +260,10 @@ const LimitOrders = () => {
                     />
 
                     <SwitchTokensButton
-                      handleSwitchTokens={handleSwitchTokens}
+                      handleSwitchTokens={() => {
+                        setApprovalSubmitted(false)
+                        handleSwitchTokens()
+                      }}
                       color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                     />
                     <CurrencyInputPanel
@@ -305,7 +305,15 @@ const LimitOrders = () => {
                     ) : (
                       <Button
                         variant="primary"
-                        onClick={showConfirmModal}
+                        onClick={() => {
+                          setSwapState({
+                            tradeToConfirm: trade,
+                            attemptingTxn: false,
+                            swapErrorMessage: undefined,
+                            txHash: undefined,
+                          })
+                          showConfirmModal()
+                        }}
                         id="place-order-button"
                         width="100%"
                         disabled={!!inputError}

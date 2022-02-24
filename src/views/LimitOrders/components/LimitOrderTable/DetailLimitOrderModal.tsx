@@ -104,12 +104,12 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
     <>
       <Flex width="100%" justifyContent="space-between">
         <CellFormat
-          firstRow={formattedOrder.inputAmount?.toSignificant(4)}
+          firstRow={<Text>{formattedOrder.inputAmount?.toSignificant(6)}</Text>}
           secondRow={<CurrencyFormat currency={formattedOrder.inputToken} />}
         />
         <ChevronRightIcon />
         <CellFormat
-          firstRow={formattedOrder.outputAmount?.toSignificant(4)}
+          firstRow={<Text>{formattedOrder.outputAmount?.toSignificant(6)}</Text>}
           secondRow={<CurrencyFormat currency={formattedOrder.outputToken} />}
         />
       </Flex>
