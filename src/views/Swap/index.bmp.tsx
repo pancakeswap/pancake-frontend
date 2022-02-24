@@ -57,6 +57,7 @@ import {
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import CircleLoader from '../../components/Loader/CircleLoader'
+import ErrorBoundary from '../../components/ErrorBoundary'
 import Page from '../Page'
 import SwapWarningModal from './components/SwapWarningModal'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
@@ -563,8 +564,10 @@ function Swap() {
 }
 export default function Index() {
   return (
-    <Providers>
-      <Swap />
-    </Providers>
+    <ErrorBoundary name="swap">
+      <Providers>
+        <Swap />
+      </Providers>
+    </ErrorBoundary>
   )
 }
