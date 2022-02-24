@@ -21,7 +21,7 @@ export const useCurrentFarmAuction = (account: string) => {
   )
 
   const { data: bidders = null, mutate: refreshBidders } = useSWR(
-    ['farmAuction', 'bidders'],
+    currentAuction ? ['farmAuction', 'currentAuctionBidders'] : null,
     async () => {
       const [currentAuctionBidders] = await farmAuctionContract.viewBidsPerAuction(
         currentAuction.id,
