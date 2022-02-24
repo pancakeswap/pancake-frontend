@@ -273,7 +273,7 @@ function Swap() {
 
   // swap warning state
   const [swapWarningCurrency, setSwapWarningCurrency] = useState(null)
-  const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />)
+  const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />, false)
 
   const shouldShowSwapWarning = (swapCurrency) => {
     const isWarningToken = Object.entries(SwapWarningTokens).find((warningTokenConfig) => {
