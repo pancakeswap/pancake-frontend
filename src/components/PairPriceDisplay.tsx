@@ -1,7 +1,8 @@
-import { Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { FC } from 'react'
 import styled from 'styled-components'
 import { formatAmount, formatAmountNotation } from 'utils/formatInfoNumbers'
+import { FlexGap, FlexGapProps } from './Layout/Flex'
 
 const formatOptions = {
   notation: 'standard' as formatAmountNotation,
@@ -9,7 +10,7 @@ const formatOptions = {
   tokenPrecision: true,
 }
 
-interface TokenDisplayProps extends FlexProps {
+interface TokenDisplayProps extends FlexGapProps {
   value?: number | string
   inputSymbol?: string
   outputSymbol?: string
@@ -34,17 +35,19 @@ const PairPriceDisplay: FC<TokenDisplayProps> = ({
   ...props
 }) => {
   return value ? (
-    <Flex alignItems="baseline" {...props}>
-      <TextLabel mr="8px" bold>
-        {format ? formatAmount(typeof value === 'string' ? parseFloat(value) : value, formatOptions) : value}
-      </TextLabel>
-      {inputSymbol && outputSymbol && (
-        <Text color="textSubtle" fontSize="20px" bold lineHeight={1.1}>
-          {`${inputSymbol}/${outputSymbol}`}
-        </Text>
-      )}
+    <FlexGap alignItems="baseline" {...props}>
+      <Flex alignItems="inherit">
+        <TextLabel mr="8px" bold>
+          {format ? formatAmount(typeof value === 'string' ? parseFloat(value) : value, formatOptions) : value}
+        </TextLabel>
+        {inputSymbol && outputSymbol && (
+          <Text color="textSubtle" fontSize="20px" bold lineHeight={1.1}>
+            {`${inputSymbol}/${outputSymbol}`}
+          </Text>
+        )}
+      </Flex>
       {children}
-    </Flex>
+    </FlexGap>
   ) : (
     <Skeleton height="36px" width="128px" {...props} />
   )

@@ -135,9 +135,10 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
       format={false}
       flexWrap="wrap"
       alignItems="center"
+      columnGap="12px"
     >
       {hoverData && (
-        <FlexGap minWidth="51%" alignItems="flex-end" gap="12px" ml={[0, , , , '12px']} height="22px">
+        <FlexGap minWidth="51%" alignItems="flex-end" gap="12px" height="22px">
           <Text color="textSubtle" lineHeight={1.1}>
             {new Date(hoverData.startedAt * 1000).toLocaleString(locale, {
               year: 'numeric',
