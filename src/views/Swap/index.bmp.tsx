@@ -564,10 +564,10 @@ function Swap() {
 }
 export default function Index() {
   return (
-    <ErrorBoundary name="swap">
-      <Providers>
+    <Providers>
+      <ErrorBoundary name="swap">
         <Swap />
-      </Providers>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </Providers>
   )
 }
