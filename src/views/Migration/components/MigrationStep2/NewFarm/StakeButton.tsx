@@ -152,7 +152,7 @@ const StakeButton: React.FC<StackedActionProps> = ({
     }
 
     return (
-      <Button width={isDesktop ? '148px' : '120px'} onClick={onPresentDeposit} marginLeft="auto">
+      <Button width={isDesktop ? '142px' : '120px'} onClick={onPresentDeposit} marginLeft="auto">
         {t('Stake')}
       </Button>
     )
@@ -164,7 +164,7 @@ const StakeButton: React.FC<StackedActionProps> = ({
       onClick={handleApprove}
       variant="tertiary"
       marginLeft="auto"
-      width={isDesktop ? '148px' : '120px'}
+      width={isDesktop ? '142px' : '120px'}
     >
       {t('Enable')}
     </Button>

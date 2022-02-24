@@ -122,7 +122,7 @@ const StakeButton: React.FC<StakeButtonProps> = ({ pool }) => {
         onClick={handleApprove}
         variant="tertiary"
         marginLeft="auto"
-        width={isDesktop ? '148px' : '120px'}
+        width={isDesktop ? '142px' : '120px'}
       >
         {t('Enable')}
       </Button>
@@ -144,7 +144,7 @@ const StakeButton: React.FC<StakeButtonProps> = ({ pool }) => {
   }
 
   return (
-    <Button width={isDesktop ? '148px' : '120px'} onClick={handleStake} marginLeft="auto" disabled={isFinished}>
+    <Button width={isDesktop ? '142px' : '120px'} onClick={handleStake} marginLeft="auto" disabled={isFinished}>
       {t('Stake')}
     </Button>
   )
