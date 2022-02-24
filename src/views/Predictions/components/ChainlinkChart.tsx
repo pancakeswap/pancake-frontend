@@ -134,6 +134,7 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
       outputSymbol="USD"
       format={false}
       flexWrap="wrap"
+      alignItems="center"
     >
       {hoverData && (
         <FlexGap minWidth="51%" alignItems="flex-end" gap="12px" ml={[0, , , , '12px']} height="22px">

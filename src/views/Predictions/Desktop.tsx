@@ -133,6 +133,12 @@ const Desktop: React.FC = () => {
   const splitInstance = useRef<SplitInstance>()
 
   useEffect(() => {
+    return () => {
+      dispatch(setChartPaneState(false))
+    }
+  }, [dispatch])
+
+  useEffect(() => {
     const threshold = 100
     const handleDrag = debounce(() => {
       const { height } = chartRef.current.getBoundingClientRect()
