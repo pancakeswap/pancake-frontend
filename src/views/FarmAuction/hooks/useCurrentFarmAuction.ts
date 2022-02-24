@@ -4,34 +4,24 @@ import useSWR from 'swr'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { ConnectedBidder } from 'config/constants/types'
 import { getBidderInfo } from 'config/constants/farmAuctions'
-import { AUCTION_BIDDERS_TO_FETCH } from 'config'
 import { FAST_INTERVAL } from 'config/constants'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { processAuctionData, sortAuctionBidders } from '../helpers'
+import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account: string) => {
-  const { data: currentAuction = null } = useSWR(
-    ['farmAuction', 'currentAuction'],
+  const { data: currentAuctionId = null } = useSWR(
+    ['farmAuction', 'currentAuctionId'],
     async () => {
       const auctionId = await farmAuctionContract.currentAuctionId()
-      const auctionData = await farmAuctionContract.auctions(auctionId)
-      return processAuctionData(auctionId.toNumber(), auctionData)
+      return auctionId.toNumber()
     },
     { refreshInterval: FAST_INTERVAL },
   )
 
-  const { data: bidders = null, mutate: refreshBidders } = useSWR(
-    currentAuction ? ['farmAuction', 'currentAuctionBidders'] : null,
-    async () => {
-      const [currentAuctionBidders] = await farmAuctionContract.viewBidsPerAuction(
-        currentAuction.id,
-        0,
-        AUCTION_BIDDERS_TO_FETCH,
-      )
-      return sortAuctionBidders(currentAuctionBidders, currentAuction)
-    },
-    { refreshInterval: FAST_INTERVAL },
-  )
+  const {
+    data: { auction: currentAuction, bidders },
+    mutate: refreshBidders,
+  } = useFarmAuction(currentAuctionId, { refreshInterval: FAST_INTERVAL })
   const [connectedBidder, setConnectedBidder] = useState<ConnectedBidder | null>(null)
 
   const farmAuctionContract = useFarmAuctionContract(false)

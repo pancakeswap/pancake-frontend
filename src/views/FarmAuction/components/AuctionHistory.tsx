@@ -14,8 +14,8 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useAuctionHistory from '../hooks/useAuctionHistory'
 import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'
+import { useFarmAuction } from '../hooks/useFarmAuction'
 
 interface AuctionHistoryProps {
   mostRecentClosedAuctionId: number
@@ -52,18 +52,18 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
   const isLargerScreen = isLg || isXl || isXxl
   const isSmallerScreen = isXs || isSm || isMd
 
-  const auctionHistory = useAuctionHistory(historyAuctionIdAsInt)
-  const selectedAuction = Object.values(auctionHistory).find(
-    (auctionData) => auctionData.auction.id === historyAuctionIdAsInt,
-  )
+  const {
+    data: { auction, bidders },
+  } = useFarmAuction(historyAuctionIdAsInt)
 
-  let auctionTable = selectedAuction ? (
-    <AuctionLeaderboardTable bidders={selectedAuction.bidders} noBidsText="No bids were placed in this auction" />
-  ) : (
-    <Flex justifyContent="center" alignItems="center" p="24px" height="250px">
-      <Spinner />
-    </Flex>
-  )
+  let auctionTable =
+    auction && bidders ? (
+      <AuctionLeaderboardTable bidders={bidders} noBidsText="No bids were placed in this auction" />
+    ) : (
+      <Flex justifyContent="center" alignItems="center" p="24px" height="250px">
+        <Spinner />
+      </Flex>
+    )
 
   if (Number.isNaN(historyAuctionIdAsInt)) {
     auctionTable = (
@@ -74,8 +74,8 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
     )
   }
 
-  const endDate = selectedAuction
-    ? selectedAuction.auction.endDate.toLocaleString(locale, {
+  const endDate = auction
+    ? auction.endDate.toLocaleString(locale, {
         year: 'numeric',
         month: 'short',
         day: '2-digit',
