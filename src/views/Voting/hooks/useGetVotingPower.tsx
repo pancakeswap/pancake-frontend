@@ -34,6 +34,7 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
       total: parseFloat(total),
     }
   })
+  if (error) console.error(error)
 
   return { ...data, isLoading: status !== FetchStatus.Fetched, isError: status === FetchStatus.Failed }
 }
