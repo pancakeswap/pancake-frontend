@@ -34,12 +34,12 @@ const PairPriceDisplay: FC<TokenDisplayProps> = ({
   ...props
 }) => {
   return value ? (
-    <Flex alignItems="flex-end" {...props}>
+    <Flex alignItems="baseline" {...props}>
       <TextLabel mr="8px" bold>
         {format ? formatAmount(typeof value === 'string' ? parseFloat(value) : value, formatOptions) : value}
       </TextLabel>
       {inputSymbol && outputSymbol && (
-        <Text color="textSubtle" fontSize="20px" bold>
+        <Text color="textSubtle" fontSize="20px" bold lineHeight={1.1}>
           {`${inputSymbol}/${outputSymbol}`}
         </Text>
       )}

@@ -127,16 +127,16 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
   } = useTranslation()
 
   return (
-    <>
-      <PairPriceDisplay
-        alignItems="center"
-        value={hoverData ? hoverData.answer : formatBigNumberToFixed(answerAsBigNumber, 3, 8)}
-        inputSymbol="BNB"
-        outputSymbol="USD"
-        format={false}
-      />
+    <PairPriceDisplay
+      width="100%"
+      value={hoverData ? hoverData.answer : formatBigNumberToFixed(answerAsBigNumber, 3, 8)}
+      inputSymbol="BNB"
+      outputSymbol="USD"
+      format={false}
+      flexWrap="wrap"
+    >
       {hoverData && (
-        <FlexGap minWidth="51%" alignItems="center" gap="12px">
+        <FlexGap minWidth="51%" alignItems="flex-end" gap="12px" ml={[0, , , , '12px']} height="22px">
           <Text color="textSubtle" lineHeight={1.1}>
             {new Date(hoverData.startedAt * 1000).toLocaleString(locale, {
               year: 'numeric',
@@ -153,7 +153,7 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
           )}
         </FlexGap>
       )}
-    </>
+    </PairPriceDisplay>
   )
 }
 
@@ -232,8 +232,11 @@ const Chart = ({
               hourCycle: 'h24',
             })
           }}
+          color={theme.colors.text}
+          fontSize="12px"
           minTickGap={8}
           reversed
+          tick={{ fill: theme.colors.text }}
         />
         <XAxis dataKey="roundId" hide />
         <YAxis
