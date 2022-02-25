@@ -21,18 +21,18 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   // bmp remove this
   // -webkit-appearance: textfield;
 
-  ::-webkit-search-decoration {
-    -webkit-appearance: none;
-  }
+  // ::-webkit-search-decoration {
+  //   -webkit-appearance: none;
+  // }
 
-  [type='number'] {
-    -moz-appearance: textfield;
-  }
+  // [type='number'] {
+  //   -moz-appearance: textfield;
+  // }
 
-  ::-webkit-outer-spin-button,
-  ::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
+  // ::-webkit-outer-spin-button,
+  // ::-webkit-inner-spin-button {
+  //   -webkit-appearance: none;
+  // }
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.textSubtle};
