@@ -6,6 +6,7 @@ import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
 import { useIsTransactionPending } from 'state/transactions/hooks'
+import getPriceForOneToken from '../utils/getPriceForOneToken'
 
 export interface FormattedOrderData {
   inputToken: Currency | Token
@@ -65,15 +66,7 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
     return undefined
   }, [outputToken, rawMinReturn])
 
-  const executionPrice = useMemo(() => {
-    if (outputAmount && outputAmount.greaterThan(0) && inputAmount) {
-      const outExp = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(outputAmount.currency.decimals))
-      const inExp = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputAmount.currency.decimals))
-      const pricePerOne = outputAmount.asFraction.divide(inputAmount.asFraction).divide(inExp).multiply(outExp)
-      return new Price(inputAmount.currency, outputAmount.currency, pricePerOne.denominator, pricePerOne.numerator)
-    }
-    return undefined
-  }, [inputAmount, outputAmount])
+  const executionPrice = useMemo(() => getPriceForOneToken(inputAmount, outputAmount), [inputAmount, outputAmount])
 
   // TODO: pre-make toSignificant format
 

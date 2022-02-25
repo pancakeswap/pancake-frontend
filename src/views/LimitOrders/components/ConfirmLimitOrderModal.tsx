@@ -19,10 +19,6 @@ import { memo } from 'react'
 import styled from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 
-const StyledModal = styled(Modal)`
-  max-width: 613px;
-`
-
 const InfoCardWrapper = styled.div`
   border-radius: 16px;
   padding: 16px;
@@ -80,7 +76,7 @@ export const ConfirmLimitOrderModal: React.FC<ConfirmLimitOrderModalProps> = ({
     onDismiss()
   }
   return (
-    <StyledModal
+    <Modal
       title={t('Confirm Limit Order')}
       headerBackground={theme.colors.gradients.cardHeader}
       onDismiss={handleDismiss}
@@ -113,7 +109,7 @@ export const ConfirmLimitOrderModal: React.FC<ConfirmLimitOrderModalProps> = ({
           {attemptingTxn ? t(`Confirming...`) : t(`Confirm`)}
         </Button>
       )}
-    </StyledModal>
+    </Modal>
   )
 }
 

@@ -15,6 +15,7 @@ import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
 import { Field, Rate, OrderState } from './types'
 import { AppState, AppDispatch } from '..'
+import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 
 const applyExchangeRateTo = (
   inputValue: string,
@@ -295,21 +296,10 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   }
 
   // Calculate the price for specified swap
-  const price = useMemo(() => {
-    if (!parsedAmounts.input || !parsedAmounts.output) return undefined
-    const outExp = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(parsedAmounts.output.currency.decimals))
-    const inExp = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(parsedAmounts.input.currency.decimals))
-    const pricePerOne = parsedAmounts.output.asFraction
-      .divide(parsedAmounts.input.asFraction)
-      .divide(inExp)
-      .multiply(outExp)
-    return new Price(
-      parsedAmounts.input.currency,
-      parsedAmounts.output.currency,
-      pricePerOne.denominator,
-      pricePerOne.numerator,
-    )
-  }, [parsedAmounts.input, parsedAmounts.output])
+  const price = useMemo(
+    () => getPriceForOneToken(parsedAmounts.input, parsedAmounts.output),
+    [parsedAmounts.input, parsedAmounts.output],
+  )
 
   // Formatted amounts to use in the UI
   const formattedAmounts = {
