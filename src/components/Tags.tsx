@@ -29,7 +29,7 @@ const FarmAuctionTagToolTipContent = memo(() => {
   return <Text color="text">{t('Farm Auction Winner, add liquidity at your own risk.')}</Text>
 })
 
-const CommunityTag: React.FC<TagProps> = (props) => {
+const FarmAuctionTag: React.FC<TagProps> = (props) => {
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<FarmAuctionTagToolTipContent />, { placement: 'right' })
   return (
@@ -98,4 +98,4 @@ const ClosedTag: React.FC<TagProps> = (props) => {
   )
 }
 
-export { CoreTag, CommunityTag, DualTag, ManualPoolTag, CompoundingPoolTag, VoteNowTag, SoonTag, ClosedTag }
+export { CoreTag, FarmAuctionTag, DualTag, ManualPoolTag, CompoundingPoolTag, VoteNowTag, SoonTag, ClosedTag }
