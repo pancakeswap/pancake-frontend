@@ -42,6 +42,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 491,
+    lpSymbol: 'HIGH-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xe98ac95A1dB2fCaaa9c7D4ba7ecfCE4877ca2bEa',
+    },
+    token: serializedTokens.high,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 488,
     lpSymbol: 'THG-BNB LP',
     lpAddresses: {
@@ -312,16 +322,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.bbt,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
-  },
-  {
-    pid: 491,
-    lpSymbol: 'HIGH-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xe98ac95A1dB2fCaaa9c7D4ba7ecfCE4877ca2bEa',
-    },
-    token: serializedTokens.high,
-    quoteToken: serializedTokens.busd,
   },
   {
     pid: 490,
