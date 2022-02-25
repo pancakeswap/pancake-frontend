@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ApiResponseCollectionTokens, ApiSingleTokenData, NftAttribute, NftToken } from 'state/nftMarket/types'
 import { useGetNftFilters, useGetNftOrdering, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks'
+import { FetchStatus } from 'config/constants/types'
 import {
   fetchNftsFiltered,
   getMarketDataForTokenIds,
@@ -137,7 +138,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
 
   const {
     data: nfts,
-    isValidating,
+    status,
     size,
     setSize,
   } = useSWRInfinite(
@@ -157,7 +158,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
 
   return {
     nfts: nfts ? uniqBy(nfts.flat(), 'tokenId') : [],
-    isFetchingNfts: isValidating,
+    isFetchingNfts: status !== FetchStatus.Fetched,
     size,
     setSize,
     showOnlyNftsOnSale,
