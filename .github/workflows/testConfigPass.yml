@@ -8,6 +8,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        node: [14]
     name: Config (Jest)
     steps:
       - run: 'echo "No Test Config required" '
