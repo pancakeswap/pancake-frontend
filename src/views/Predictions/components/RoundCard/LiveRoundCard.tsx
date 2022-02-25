@@ -13,7 +13,8 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetLastOraclePrice, useGetBufferSeconds } from 'state/predictions/hooks'
+import { useGetBufferSeconds } from 'state/predictions/hooks'
+import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
 import RoundProgress from 'components/RoundProgress'
 import { formatUsdv2, getHasRoundFailed, getPriceDifference } from '../../helpers'
 import PositionTag from '../PositionTag'
@@ -42,7 +43,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
 }) => {
   const { t } = useTranslation()
   const { lockPrice, totalAmount, lockTimestamp, closeTimestamp } = round
-  const price = useGetLastOraclePrice()
+  const price = usePollOraclePrice()
   const bufferSeconds = useGetBufferSeconds()
 
   const isBull = lockPrice && price.gt(lockPrice)

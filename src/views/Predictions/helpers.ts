@@ -97,3 +97,5 @@ export const getRoundPosition = (lockPrice: BigNumber, closePrice: BigNumber) =>
 
   return closePrice.gt(lockPrice) ? BetPosition.BULL : BetPosition.BEAR
 }
+
+export const CHART_DOT_CLICK_EVENT = 'CHART_DOT_CLICK_EVENT'

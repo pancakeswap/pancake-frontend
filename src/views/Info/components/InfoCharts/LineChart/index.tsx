@@ -1,7 +1,7 @@
 import { useEffect, Dispatch, SetStateAction } from 'react'
 import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from 'recharts'
 import useTheme from 'hooks/useTheme'
-import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import { useTranslation } from 'contexts/Localization'
 

@@ -49,6 +49,9 @@ export const updateUserPredictionAcceptedRisk = createAction<{ userAcceptedRisk:
 export const updateUserPredictionChartDisclaimerShow = createAction<{ userShowDisclaimer: boolean }>(
   'user/updateUserPredictionChartDisclaimerShow',
 )
+export const updateUserPredictionChainlinkChartDisclaimerShow = createAction<{ userShowDisclaimer: boolean }>(
+  'user/updateUserPredictionChainlinkChartDisclaimerShow',
+)
 export const updateUserExpertModeAcknowledgementShow = createAction<{ userExpertModeAcknowledgementShow: boolean }>(
   'user/updateUserExpertModeAcknowledgementShow',
 )

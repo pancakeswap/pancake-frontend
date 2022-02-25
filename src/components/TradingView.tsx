@@ -1,8 +1,9 @@
-import { Box, Flex, FlexProps, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, FlexProps, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useScript from 'hooks/useScript'
+import Script from 'next/script'
 import { useEffect, useRef } from 'react'
 import { DefaultTheme, useTheme } from 'styled-components'
+import { ChartByLabel } from './Chart/ChartbyLabel'
 
 /**
  * When the script tag is injected the TradingView object is not immediately
@@ -35,7 +36,7 @@ const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeC
     id: opts.container_id,
     autosize: true,
     height: '100%',
-    symbol: 'BINANCE:BNBUSDT',
+    symbol: 'BINANCE:BNBBUSD',
     interval: '5',
     timezone,
     theme: theme.isDark ? 'dark' : 'light',
@@ -60,8 +61,6 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
   const theme = useTheme()
   const widgetRef = useRef<any>()
   const { isMobile } = useMatchBreakpoints()
-
-  useScript('https://s3.tradingview.com/tv.js')
 
   useEffect(() => {
     const opts: any = {
@@ -89,6 +88,7 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
 
   return (
     <Box overflow="hidden" className="tradingview_container">
+      <Script src="https://s3.tradingview.com/tv.js" strategy="lazyOnload" id="tv.js" />
       <div id={id} />
     </Box>
   )
@@ -129,16 +129,8 @@ export function useTradingViewEvent({
 
 // Required to link to TradingView website for the widget
 export const TradingViewLabel = ({ symbol, ...props }: { symbol: string } & FlexProps) => {
-  const { t } = useTranslation()
   return (
-    <Flex alignItems="center" px="24px" {...props}>
-      <Link fontSize="14px" href={`https://www.tradingview.com/symbols/${symbol}`} external>
-        BNB {t('Chart')}
-      </Link>
-      <Text fontSize="14px" ml="4px">
-        {t('by')} TradingView
-      </Text>
-    </Flex>
+    <ChartByLabel link={`https://www.tradingview.com/symbols/${symbol}`} symbol={symbol} by="TradingView" {...props} />
   )
 }
 

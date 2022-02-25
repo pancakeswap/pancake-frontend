@@ -4,14 +4,12 @@ import { useState, memo } from 'react'
 import { useFetchPairPrices } from 'state/swap/hooks'
 import dynamic from 'next/dynamic'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
-import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import NoChartAvailable from './NoChartAvailable'
-import TokenDisplay from './TokenDisplay'
+import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import { getTimeWindowChange } from './utils'
 
 const SwapLineChart = dynamic(() => import('./SwapLineChart'), {
   ssr: false,
-  loading: () => <LineChartLoader />,
 })
 
 const BasicChart = ({
@@ -78,15 +76,15 @@ const BasicChart = ({
         px="24px"
       >
         <Flex flexDirection="column" pt="12px">
-          <TokenDisplay
+          <PairPriceDisplay
             value={pairPrices?.length > 0 && valueToDisplay}
             inputSymbol={inputCurrency?.symbol}
             outputSymbol={outputCurrency?.symbol}
           >
-            <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mt="-8px" mb="8px" bold>
+            <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" ml="4px" bold>
               {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
             </Text>
-          </TokenDisplay>
+          </PairPriceDisplay>
           <Text small color="secondary">
             {hoverDate || currentDate}
           </Text>

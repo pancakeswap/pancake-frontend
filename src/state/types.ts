@@ -207,6 +207,11 @@ export enum PredictionStatus {
   ERROR = 'error',
 }
 
+export enum PredictionsChartView {
+  TradingView = 'TradingView',
+  Chainlink = 'Chainlink Oracle',
+}
+
 export interface Round {
   id: string
   epoch: number
@@ -349,6 +354,7 @@ export interface PredictionsState {
   status: PredictionStatus
   isLoading: boolean
   isHistoryPaneOpen: boolean
+  chartView: PredictionsChartView
   isChartPaneOpen: boolean
   isFetchingHistory: boolean
   historyFilter: HistoryFilter
@@ -356,7 +362,6 @@ export interface PredictionsState {
   intervalSeconds: number
   minBetAmount: string
   bufferSeconds: number
-  lastOraclePrice: string
   history: Bet[]
   totalHistory: number
   currentHistoryPage: number

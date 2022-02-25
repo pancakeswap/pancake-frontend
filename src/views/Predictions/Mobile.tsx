@@ -6,7 +6,7 @@ import { PredictionStatus } from 'state/types'
 import MobileMenu from './components/MobileMenu'
 import History from './History'
 import Positions from './Positions'
-import Chart from './Chart'
+import MobileChart from './MobileChart'
 import { ErrorNotification, PauseNotification } from './components/Notification'
 import { PageView } from './types'
 
@@ -59,7 +59,7 @@ const Mobile: React.FC = () => {
           </Flex>
         </View>
         <View isVisible={view === PageView.CHART}>
-          <Chart />
+          <MobileChart />
         </View>
         <View isVisible={view === PageView.HISTORY}>
           <History />

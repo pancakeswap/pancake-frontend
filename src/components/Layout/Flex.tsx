@@ -1,4 +1,4 @@
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, FlexProps } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 const FlexLayout = styled.div`
@@ -14,8 +14,16 @@ const FlexLayout = styled.div`
   }
 `
 
-export const FlexGap = styled(Flex)<{ gap?: string }>`
+export interface FlexGapProps extends FlexProps {
+  gap?: string
+  rowGap?: string
+  columnGap?: string
+}
+
+export const FlexGap = styled(Flex)<FlexGapProps>`
   gap: ${({ gap }) => gap};
+  row-gap: ${({ rowGap }) => rowGap};
+  column-gap: ${({ columnGap }) => columnGap};
 `
 
 export default FlexLayout

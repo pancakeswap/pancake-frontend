@@ -19,6 +19,17 @@ export const useGetRounds = () => {
   }, {}) as { [key: string]: NodeRound }
 }
 
+export const useGetRoundsByCloseOracleId = () => {
+  const rounds = useSelector((state: State) => state.predictions.rounds)
+  return Object.keys(rounds).reduce((accum, epoch) => {
+    const parsed = parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch])
+    return {
+      ...accum,
+      [parsed.closeOracleId]: parsed,
+    }
+  }, {}) as { [key: string]: NodeRound }
+}
+
 export const useGetRound = (epoch: number) => {
   const round = useSelector((state: State) => state.predictions.rounds[epoch])
   return parseBigNumberObj<ReduxNodeRound, NodeRound>(round)
@@ -66,6 +77,10 @@ export const useIsChartPaneOpen = () => {
   return useSelector((state: State) => state.predictions.isChartPaneOpen)
 }
 
+export const useChartView = () => {
+  return useSelector((state: State) => state.predictions.chartView)
+}
+
 export const useGetCurrentEpoch = () => {
   return useSelector((state: State) => state.predictions.currentEpoch)
 }
@@ -111,13 +126,6 @@ export const useGetIsFetchingHistory = () => {
 
 export const useGetHistory = () => {
   return useSelector((state: State) => state.predictions.history)
-}
-
-export const useGetLastOraclePrice = () => {
-  const lastOraclePrice = useSelector((state: State) => state.predictions.lastOraclePrice)
-  return useMemo(() => {
-    return BigNumber.from(lastOraclePrice)
-  }, [lastOraclePrice])
 }
 
 /**
