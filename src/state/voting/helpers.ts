@@ -17,7 +17,7 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
           first: $first
           skip: $skip
           orderBy: "end"
-          orderDirection: desc
+          orderDirection: asc
           where: { space_in: "cake.eth", state: $state }
         ) {
           id
