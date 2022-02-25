@@ -6,7 +6,7 @@ import teams from 'config/constants/teams'
 import { getTeam } from 'state/teams/helpers'
 import { teamsById } from 'utils/teamsById'
 
-const TeamPage = ({ fallback }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const TeamPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <SWRConfig
       value={{

@@ -5,7 +5,7 @@ import { NftToken } from 'state/nftMarket/types'
 // eslint-disable-next-line camelcase
 import { SWRConfig, unstable_serialize } from 'swr'
 
-const IndividualNFTPage = ({ fallback }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const IndividualNFTPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <SWRConfig
       value={{
