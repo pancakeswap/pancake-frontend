@@ -47,7 +47,7 @@ export function useWithdrawTokenInfo(): {
     },
     [],
   )
-  const outputCurrency = mainnetTokens.usdt
+  const outputCurrency = mainnetTokens.usdc
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
 
