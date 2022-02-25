@@ -23,6 +23,7 @@ import SwitchTokensButton from './components/SwitchTokensButton'
 import Page from '../Page'
 import LimitOrderTable from './components/LimitOrderTable'
 import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
+import getRatePercentageDifference from './utils/getRatePercentageDifference'
 
 const LimitOrders = () => {
   // Helpers
@@ -68,17 +69,13 @@ const LimitOrders = () => {
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances.input)
   const hideMaxButton = Boolean(maxAmountInput && parsedAmounts.input?.equalTo(maxAmountInput))
 
+  // Trade execution price is always "in MUL mode", even if UI handles DIV rate
   const currentMarketRate = trade?.executionPrice
-  const percentageAsFraction =
-    currentMarketRate && price ? price.subtract(currentMarketRate).divide(currentMarketRate) : undefined
-  const percentageRateDifference = percentageAsFraction
-    ? new Percent(percentageAsFraction.numerator, percentageAsFraction.denominator)
-    : undefined
+  const percentageRateDifference = getRatePercentageDifference(currentMarketRate, price)
 
   // UI handlers
   const handleTypeInput = useCallback(
     (value: string) => {
-      setApprovalSubmitted(false)
       handleInput(Field.INPUT, value)
     },
     [handleInput],
@@ -124,6 +121,11 @@ const LimitOrders = () => {
     }
   }, [txHash, handleTypeInput])
 
+  // Trick to reset to market price via fake update on the input field
+  const handleResetToMarketPrice = useCallback(() => {
+    handleTypeInput(formattedAmounts.input)
+  }, [handleTypeInput, formattedAmounts.input])
+
   const handlePlaceOrder = useCallback(() => {
     console.log('Placing order')
     if (!handleLimitOrderSubmission) {
@@ -157,7 +159,7 @@ const LimitOrders = () => {
       }
       const inputToken = currencies.input instanceof Token ? wrappedInput.address : GELATO_NATIVE
       const outputToken = currencies.output instanceof Token ? wrappedOutput.address : GELATO_NATIVE
-      // TODO: use native BNB
+
       const orderToSubmit = {
         inputToken,
         outputToken,
@@ -285,8 +287,8 @@ const LimitOrders = () => {
                       percentageRateDifference={percentageRateDifference}
                       rateType={rateType}
                       handleRateType={handleRateType}
-                      marketPrice={currentMarketRate}
                       price={price}
+                      handleResetToMarketPrice={handleResetToMarketPrice}
                     />
                   </AutoColumn>
                   <Box mt="0.25rem">

@@ -174,7 +174,7 @@ const getErrorMessage = (
     return 'Select a token'
   }
   const hasAtLeastOneParsedAmount = parsedAmounts.input || parsedAmounts.output
-  // TODO: check. Not sure if route will be for LO
+
   const tradeIsNotAvailable = !trade || !trade?.route
   if (hasAtLeastOneParsedAmount && tradeIsNotAvailable) {
     return 'Insufficient liquidity for this trade'

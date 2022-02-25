@@ -1573,5 +1573,8 @@
   "Order History": "Order History",
   "View order creation on BSCScan": "View order creation on BSCScan",
   "View order cancellation on BSCScan": "View order cancellation on BSCScan",
-  "View order execution on BSCScan": "View order execution on BSCScan"
+  "View order execution on BSCScan": "View order execution on BSCScan",
+  "Market": "Market",
+  "%percentage%% above market": "%percentage%% above market",
+  "%percentage%% below market": "%percentage%% below market"
 }

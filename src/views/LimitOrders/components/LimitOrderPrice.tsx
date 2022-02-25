@@ -1,35 +1,13 @@
 import React from 'react'
 import { Currency, Percent, Price } from '@pancakeswap/sdk'
 import styled from 'styled-components'
-import { Input, Flex, Text, ArrowUpDownIcon, RefreshIcon, IconButton } from '@pancakeswap/uikit'
+import { Input, Flex, Text, ArrowUpDownIcon, RefreshIcon, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from 'utils'
 import { Rate } from 'state/limitOrders/types'
+import { getRatePercentageMessage, PercentageDirection } from '../utils/getRatePercentageMessage'
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
-
-// TODO: localize
-const getRatePercentageMessage = (percentageRateDifference: Percent, rateType: Rate): [string | null, boolean] => {
-  if (percentageRateDifference) {
-    if (rateType === Rate.MUL) {
-      const direction = percentageRateDifference.lessThan('0') ? 'below' : 'above'
-      const percentageAsString = percentageRateDifference.toSignificant(3)
-      const formattedPercentage = parseFloat(percentageAsString).toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 3,
-      })
-      return [`${formattedPercentage}% ${direction} market`, direction === 'above']
-    }
-    const direction = percentageRateDifference.lessThan('0') ? 'above' : 'below'
-    const percentageAsString = percentageRateDifference.multiply(-1).toSignificant(3)
-    const formattedPercentage = parseFloat(percentageAsString).toLocaleString(undefined, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 3,
-    })
-    return [`${formattedPercentage}% ${direction} market`, direction === 'above']
-  }
-  return [null, null]
-}
 
 const OrderPriceInput = styled(Input)`
   text-align: right;
@@ -49,7 +27,13 @@ interface LimitOrderPriceProps {
   rateType: Rate
   handleRateType: (rateType: Rate, price?: Price) => void
   price: Price
-  marketPrice: Price
+  handleResetToMarketPrice: () => void
+}
+
+const DIRECTION_COLORS = {
+  [PercentageDirection.ABOVE]: 'success',
+  [PercentageDirection.BELOW]: 'failure',
+  [PercentageDirection.MARKET]: 'textSubtle',
 }
 
 const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
@@ -62,7 +46,7 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
   rateType,
   handleRateType,
   price,
-  marketPrice,
+  handleResetToMarketPrice,
 }) => {
   const { t } = useTranslation()
 
@@ -76,12 +60,6 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
     handleRateType(rateType, price)
   }
 
-  const resetToMarketPrice = () => {
-    const currentMarketPrice =
-      rateType === Rate.MUL ? marketPrice?.toSignificant(6) : marketPrice?.invert().toSignificant(6)
-    onUserInput(currentMarketPrice ?? '')
-  }
-
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nextUserInput = event.target.value.replace(/,/g, '.')
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
@@ -90,22 +68,32 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
   }
 
   const isAtMarketPrice = percentageRateDifference?.equalTo(0) ?? true
-  const [ratePercentageMessage, isAbove] = getRatePercentageMessage(percentageRateDifference, rateType)
-  const priceLabelColor = isAtMarketPrice ? 'textSubtle' : isAbove ? 'success' : 'failure'
+  const [ratePercentageMessage, direction] = getRatePercentageMessage(percentageRateDifference, t)
+  const priceLabelColor = DIRECTION_COLORS[direction]
   return (
     <>
       <Flex justifyContent="space-between" id={id}>
         <Flex alignItems="center">
-          <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
+          <Text mr="8px" color="secondary" fontSize="12px" bold textTransform="uppercase">
             {t('Price')}
           </Text>
-          <IconButton variant="text" height="24px" maxWidth="24px" onClick={resetToMarketPrice}>
-            <RefreshIcon color="textSubtle" width="24px" />
-          </IconButton>
+          <Button
+            onClick={handleResetToMarketPrice}
+            startIcon={<RefreshIcon color={isAtMarketPrice ? 'disabled' : 'primary'} />}
+            variant="secondary"
+            scale="xs"
+            disabled={isAtMarketPrice}
+          >
+            <Text fontSize="12px" bold color={isAtMarketPrice ? 'disabled' : 'primary'} textTransform="uppercase">
+              {t('Market')}
+            </Text>
+          </Button>
         </Flex>
-        <Text color={priceLabelColor} fontSize="12px">
-          {ratePercentageMessage}
-        </Text>
+        {ratePercentageMessage && (
+          <Text color={priceLabelColor} fontSize="12px">
+            {ratePercentageMessage}
+          </Text>
+        )}
       </Flex>
       <OrderPriceInput
         value={value}
