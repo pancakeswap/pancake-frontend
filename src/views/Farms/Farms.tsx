@@ -254,10 +254,6 @@ const Farms: React.FC = ({ children }) => {
     }
   }, [isIntersecting])
 
-  const showMigrationSticky: boolean = useMemo(() => {
-    return account && stakedOnlyFarms.length > 0
-  }, [account, stakedOnlyFarms])
-
   const rowData = chosenFarmsMemoized.map((farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
@@ -353,7 +349,7 @@ const Farms: React.FC = ({ children }) => {
           </Button>
         </NextLinkFromReactRouter>
       </PageHeader>
-      {showMigrationSticky && <MigrationSticky />}
+      <MigrationSticky />
       <Page>
         <ControlContainer>
           <ViewControls>

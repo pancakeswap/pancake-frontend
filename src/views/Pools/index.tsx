@@ -130,10 +130,6 @@ const Pools: React.FC = () => {
   )
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
 
-  const showMigrationSticky: boolean = useMemo(() => {
-    return account && stakedOnlyOpenPools.length > 0
-  }, [account, stakedOnlyOpenPools])
-
   useFetchCakeVault()
   useFetchIfoPool(false)
   useFetchPublicPoolsData()
@@ -273,7 +269,7 @@ const Pools: React.FC = () => {
           </Flex>
         </Flex>
       </PageHeader>
-      {showMigrationSticky && <MigrationSticky />}
+      <MigrationSticky />
       <Page>
         <PoolControls>
           <PoolTabButtons
