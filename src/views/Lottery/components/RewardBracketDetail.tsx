@@ -72,7 +72,7 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
               </Text>
             )}
             <Text fontSize="12px" color="textSubtle">
-              {numberWinners} {t('Winners')}
+              {numberWinners} {t('Winning Tickets')}
             </Text>
           </>
         )}
