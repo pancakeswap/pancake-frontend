@@ -89,11 +89,8 @@ const Gutter = styled.div<{ isChartPaneOpen?: boolean }>`
   height: 24px;
   position: relative;
 
-  ${({ isChartPaneOpen, theme }) =>
-    isChartPaneOpen &&
-    `
   &:before {
-    background-color: ${theme.colors.textSubtle};
+    background-color: ${({ theme }) => theme.colors.textSubtle};
     border-radius: 8px;
     content: '';
     height: 4px;
@@ -102,7 +99,6 @@ const Gutter = styled.div<{ isChartPaneOpen?: boolean }>`
     position: absolute;
     top: 10px;
     width: 64px;
-  `}
   }
 `
 

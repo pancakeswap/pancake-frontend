@@ -1538,7 +1538,6 @@
   "Unexpected error. Could not estimate gas for the swap.": "Unexpected error. Could not estimate gas for the swap.",
   "Farm Auction": "Farm Auction",
   "Farm Auction Winner, add liquidity at your own risk.": "Farm Auction Winner, add liquidity at your own risk.",
-  "Important Information": "Important Information",
   "Currently showing charts from Chainlink oracle": "Currently showing charts from Chainlink oracle",
   "The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.": "The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.",
   "Oracle price refreshes every ~1 min.": "Oracle price refreshes every ~1 min.",
