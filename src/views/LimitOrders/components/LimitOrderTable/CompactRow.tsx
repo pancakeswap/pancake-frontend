@@ -63,7 +63,7 @@ const CompactRow: React.FC<CompactRowProps> = ({ order }) => {
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
             {t('Price')}
           </Text>
-          <Text small>{`${executionPrice?.toSignificant(6)} ${inputToken?.symbol}/${outputToken?.symbol}`}</Text>
+          <Text small>{`${executionPrice?.toSignificant(6)} ${outputToken?.symbol} per ${inputToken?.symbol}`}</Text>
         </Flex>
       </Box>
     </Flex>
