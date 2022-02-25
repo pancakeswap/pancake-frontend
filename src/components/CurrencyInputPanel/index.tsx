@@ -133,6 +133,7 @@ export default function CurrencyInputPanel({
             <Flex style={{ gap: '4px' }} alignItems="center">
               <CopyButton
                 width="16px"
+                buttonColor="textSubtle"
                 text={tokenAddress}
                 tooltipMessage={t('Token address copied')}
                 tooltipTop={-20}

@@ -29,6 +29,7 @@ interface CopyButtonProps extends SvgProps {
   tooltipTop: number
   tooltipRight?: number
   tooltipFontSize?: number
+  buttonColor?: string
 }
 
 export const CopyButton: React.FC<CopyButtonProps> = ({
@@ -38,6 +39,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({
   tooltipTop,
   tooltipRight,
   tooltipFontSize,
+  buttonColor = 'primary',
   ...props
 }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
@@ -52,7 +54,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({
     <>
       <CopyIcon
         style={{ cursor: 'pointer' }}
-        color="primary"
+        color={buttonColor}
         width={width}
         onClick={() => copyText(text, displayTooltip)}
         {...props}
