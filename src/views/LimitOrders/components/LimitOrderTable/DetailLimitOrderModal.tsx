@@ -93,7 +93,7 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
 
   const limitPriceExchangeRateText = `1 ${
     formattedOrder.inputToken?.symbol
-  } = ${formattedOrder.executionPrice?.toSignificant(4)} ${formattedOrder.outputToken?.symbol}`
+  } = ${formattedOrder.executionPrice?.toSignificant(6)} ${formattedOrder.outputToken?.symbol}`
   const limitPriceExchangeRateTextReversed = `1 ${formattedOrder.outputToken?.symbol} = ${formattedOrder.executionPrice
     ?.invert()
     .toSignificant(4)} ${formattedOrder.inputToken?.symbol}`
