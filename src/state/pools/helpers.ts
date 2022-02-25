@@ -33,16 +33,28 @@ const transformProfileRequirement = (profileRequirement?: { required: boolean; t
 }
 
 export const transformPool = (pool: SerializedPool): DeserializedPool => {
-  const { totalStaked, stakingLimit, userData, stakingToken, earningToken, profileRequirement, ...rest } = pool
+  const {
+    totalStaked,
+    stakingLimit,
+    numberBlocksForUserLimit,
+    userData,
+    stakingToken,
+    earningToken,
+    profileRequirement,
+    startBlock,
+    ...rest
+  } = pool
 
   return {
     ...rest,
+    startBlock,
     profileRequirement: transformProfileRequirement(profileRequirement),
     stakingToken: deserializeToken(stakingToken),
     earningToken: deserializeToken(earningToken),
     userData: transformUserData(userData),
     totalStaked: new BigNumber(totalStaked),
     stakingLimit: new BigNumber(stakingLimit),
+    stakingLimitEndBlock: numberBlocksForUserLimit + startBlock,
   }
 }
 

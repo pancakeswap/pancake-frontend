@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import {
   Flex,
@@ -26,6 +26,7 @@ import { getBscScanLink } from 'utils'
 import Balance from 'components/Balance'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
+import MaxStakeRow from '../../MaxStakeRow'
 
 interface ExpandedFooterProps {
   pool: DeserializedPool
@@ -50,6 +51,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     startBlock,
     endBlock,
     stakingLimit,
+    stakingLimitEndBlock,
     contractAddress,
     sousId,
     vaultKey,
@@ -131,10 +133,14 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
         </Flex>
       </Flex>
       {stakingLimit && stakingLimit.gt(0) && (
-        <Flex mb="2px" justifyContent="space-between">
-          <Text small>{t('Max. stake per user')}:</Text>
-          <Text small>{`${getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0)} ${stakingToken.symbol}`}</Text>
-        </Flex>
+        <MaxStakeRow
+          small
+          currentBlock={currentBlock}
+          hasPoolStarted={hasPoolStarted}
+          stakingLimit={stakingLimit}
+          stakingLimitEndBlock={stakingLimitEndBlock}
+          stakingToken={stakingToken}
+        />
       )}
       {shouldShowBlockCountdown && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">

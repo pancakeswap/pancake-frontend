@@ -24,13 +24,14 @@ import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { registerToken } from 'utils/wallet'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { convertSharesToCake, getPoolBlockInfo } from 'views/Pools/helpers'
 import { vaultPoolConfig } from 'config/constants/pools'
 import Harvest from './Harvest'
 import Stake from './Stake'
 import Apr from '../Apr'
 import AutoHarvest from './AutoHarvest'
+import MaxStakeRow from '../../MaxStakeRow'
 
 const expandAnimation = keyframes`
   from {
@@ -135,6 +136,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     startBlock,
     endBlock,
     stakingLimit,
+    stakingLimitEndBlock,
     contractAddress,
     userData,
     vaultKey,
@@ -227,10 +229,13 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     ) : null
 
   const maxStakeRow = stakingLimit.gt(0) ? (
-    <Flex mb="8px" justifyContent="space-between">
-      <Text>{t('Max. stake per user')}:</Text>
-      <Text>{`${getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0)} ${stakingToken.symbol}`}</Text>
-    </Flex>
+    <MaxStakeRow
+      currentBlock={currentBlock}
+      hasPoolStarted={hasPoolStarted}
+      stakingLimit={stakingLimit}
+      stakingLimitEndBlock={stakingLimitEndBlock}
+      stakingToken={stakingToken}
+    />
   ) : null
 
   const blocksRow =

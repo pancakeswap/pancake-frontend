@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import poolsConfig from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
 import erc20ABI from 'config/abi/erc20.json'
@@ -41,11 +42,11 @@ export const fetchPoolsBlockLimits = async () => {
   }, [])
 
   return poolsWithEnd.map((cakePoolConfig, index) => {
-    const [startBlock, endBlock] = startEndBlockResult[index]
+    const [[startBlock], [endBlock]] = startEndBlockResult[index]
     return {
       sousId: cakePoolConfig.sousId,
-      startBlock: new BigNumber(startBlock).toJSON(),
-      endBlock: new BigNumber(endBlock).toJSON(),
+      startBlock: startBlock.toNumber(),
+      endBlock: endBlock.toNumber(),
     }
   })
 }
@@ -69,7 +70,7 @@ export const fetchPoolsTotalStaking = async () => {
 
 export const fetchPoolsStakingLimits = async (
   poolsWithStakingLimit: number[],
-): Promise<{ [key: string]: BigNumber }> => {
+): Promise<{ [key: string]: { stakingLimit: BigNumber; numberBlocksForUserLimit: number } }> => {
   const validPools = poolsConfig
     .filter((p) => p.stakingToken.symbol !== 'BNB' && !p.isFinished)
     .filter((p) => !poolsWithStakingLimit.includes(p.sousId))
@@ -78,7 +79,7 @@ export const fetchPoolsStakingLimits = async (
   const poolStakingCalls = validPools
     .map((validPool) => {
       const contractAddress = getAddress(validPool.contractAddress)
-      return ['hasUserLimit', 'poolLimitPerUser'].map((method) => ({
+      return ['hasUserLimit', 'poolLimitPerUser', 'numberBlocksForUserLimit'].map((method) => ({
         address: contractAddress,
         name: method,
       }))
@@ -91,9 +92,10 @@ export const fetchPoolsStakingLimits = async (
   return poolStakingChunkedResultRaw.reduce((accum, stakingLimitRaw, index) => {
     const hasUserLimit = stakingLimitRaw[0]
     const stakingLimit = hasUserLimit && stakingLimitRaw[1] ? new BigNumber(stakingLimitRaw[1].toString()) : BIG_ZERO
+    const numberBlocksForUserLimit = stakingLimitRaw[2] ? (stakingLimitRaw[2] as EthersBigNumber).toNumber() : 0
     return {
       ...accum,
-      [validPools[index].sousId]: stakingLimit,
+      [validPools[index].sousId]: { stakingLimit, numberBlocksForUserLimit },
     }
   }, {})
 }
