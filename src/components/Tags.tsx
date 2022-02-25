@@ -1,15 +1,19 @@
 import {
-  Tag,
-  VerifiedIcon,
+  AutoRenewIcon,
+  BlockIcon,
   CommunityIcon,
   RefreshIcon,
-  AutoRenewIcon,
+  Tag,
   TagProps,
+  Text,
   TimerIcon,
-  BlockIcon,
+  TooltipText,
+  useTooltip,
+  VerifiedIcon,
   VoteIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { memo } from 'react'
 
 const CoreTag: React.FC<TagProps> = (props) => {
   const { t } = useTranslation()
@@ -20,12 +24,23 @@ const CoreTag: React.FC<TagProps> = (props) => {
   )
 }
 
-const CommunityTag: React.FC<TagProps> = (props) => {
+const FarmAuctionTagToolTipContent = memo(() => {
   const { t } = useTranslation()
+  return <Text color="text">{t('Farm Auction Winner, add liquidity at your own risk.')}</Text>
+})
+
+const FarmAuctionTag: React.FC<TagProps> = (props) => {
+  const { t } = useTranslation()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<FarmAuctionTagToolTipContent />, { placement: 'right' })
   return (
-    <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
-      {t('Community')}
-    </Tag>
+    <>
+      {tooltipVisible && tooltip}
+      <TooltipText ref={targetRef} style={{ textDecoration: 'none' }}>
+        <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
+          {t('Farm Auction')}
+        </Tag>
+      </TooltipText>
+    </>
   )
 }
 
@@ -83,4 +98,4 @@ const ClosedTag: React.FC<TagProps> = (props) => {
   )
 }
 
-export { CoreTag, CommunityTag, DualTag, ManualPoolTag, CompoundingPoolTag, VoteNowTag, SoonTag, ClosedTag }
+export { CoreTag, FarmAuctionTag, DualTag, ManualPoolTag, CompoundingPoolTag, VoteNowTag, SoonTag, ClosedTag }
