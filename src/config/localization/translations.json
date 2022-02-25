@@ -1536,5 +1536,7 @@
   "Unknown error%reason%. Try increasing your slippage tolerance.": "Unknown error%reason%. Try increasing your slippage tolerance.",
   "Unexpected issue with estimating the gas. Please try again.": "Unexpected issue with estimating the gas. Please try again.",
   "Swap failed: %message%": "Swap failed: %message%",
-  "Unexpected error. Could not estimate gas for the swap.": "Unexpected error. Could not estimate gas for the swap."
+  "Unexpected error. Could not estimate gas for the swap.": "Unexpected error. Could not estimate gas for the swap.",
+  "Farm Auction": "Farm Auction",
+  "Farm Auction Winner, add liquidity at your own risk.": "Farm Auction Winner, add liquidity at your own risk."
 }
