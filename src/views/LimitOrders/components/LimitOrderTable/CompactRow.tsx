@@ -16,6 +16,7 @@ const CompactRow: React.FC<CompactRowProps> = ({ order }) => {
     inputToken,
     outputToken,
     inputAmount,
+    outputAmount,
     executionPrice,
     isOpen,
     isCancelled,
@@ -55,15 +56,21 @@ const CompactRow: React.FC<CompactRowProps> = ({ order }) => {
         </Flex>
         <Flex justifyContent="space-between">
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
-            {t('Amount')}
+            {t('From')}
           </Text>
-          <Text small textTransform="uppercase">{`${inputAmount?.toSignificant(4)} ${inputToken?.symbol}`}</Text>
+          <Text small textTransform="uppercase">{`${inputAmount} ${inputToken?.symbol}`}</Text>
+        </Flex>
+        <Flex justifyContent="space-between">
+          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
+            {t('To')}
+          </Text>
+          <Text small textTransform="uppercase">{`${outputAmount} ${outputToken?.symbol}`}</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
             {t('Price')}
           </Text>
-          <Text small>{`${executionPrice?.toSignificant(6)} ${outputToken?.symbol} per ${inputToken?.symbol}`}</Text>
+          <Text small>{`${executionPrice} ${outputToken?.symbol} per ${inputToken?.symbol}`}</Text>
         </Flex>
       </Box>
     </Flex>

@@ -63,8 +63,8 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
         ? {
             inputTokenSymbol: formattedOrder.inputToken.symbol,
             outputTokenSymbol: formattedOrder.outputToken.symbol,
-            inputAmount: formattedOrder.inputAmount.toSignificant(4),
-            outputAmount: formattedOrder.outputAmount.toSignificant(4),
+            inputAmount: formattedOrder.inputAmount,
+            outputAmount: formattedOrder.outputAmount,
           }
         : undefined
     handleLimitOrderCancellation(order, orderDetails)
@@ -91,12 +91,8 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
     order,
   ])
 
-  const limitPriceExchangeRateText = `1 ${
-    formattedOrder.inputToken?.symbol
-  } = ${formattedOrder.executionPrice?.toSignificant(6)} ${formattedOrder.outputToken?.symbol}`
-  const limitPriceExchangeRateTextReversed = `1 ${formattedOrder.outputToken?.symbol} = ${formattedOrder.executionPrice
-    ?.invert()
-    .toSignificant(4)} ${formattedOrder.inputToken?.symbol}`
+  const limitPriceExchangeRateText = `1 ${formattedOrder.inputToken?.symbol} = ${formattedOrder.executionPrice} ${formattedOrder.outputToken?.symbol}`
+  const limitPriceExchangeRateTextReversed = `1 ${formattedOrder.outputToken?.symbol} = ${formattedOrder.invertedExecutionPrice} ${formattedOrder.inputToken?.symbol}`
 
   const { isOpen, isExecuted, isCancelled, isSubmissionPending, isCancellationPending, bscScanUrls } = formattedOrder
 
@@ -104,12 +100,12 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
     <>
       <Flex width="100%" justifyContent="space-between">
         <CellFormat
-          firstRow={<Text>{formattedOrder.inputAmount?.toSignificant(6)}</Text>}
+          firstRow={<Text>{formattedOrder.inputAmount}</Text>}
           secondRow={<CurrencyFormat currency={formattedOrder.inputToken} />}
         />
         <ChevronRightIcon />
         <CellFormat
-          firstRow={<Text>{formattedOrder.outputAmount?.toSignificant(6)}</Text>}
+          firstRow={<Text>{formattedOrder.outputAmount}</Text>}
           secondRow={<CurrencyFormat currency={formattedOrder.outputToken} />}
         />
       </Flex>

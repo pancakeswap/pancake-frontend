@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { Currency, CurrencyAmount, JSBI, Price, Token, TokenAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price, Token, TokenAmount } from '@pancakeswap/sdk'
 import { useCurrency } from 'hooks/Tokens'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -11,9 +11,10 @@ import getPriceForOneToken from '../utils/getPriceForOneToken'
 export interface FormattedOrderData {
   inputToken: Currency | Token
   outputToken: Currency | Token
-  inputAmount: CurrencyAmount
-  outputAmount: CurrencyAmount
-  executionPrice: Price
+  inputAmount: string
+  outputAmount: string
+  executionPrice: string
+  invertedExecutionPrice: string
   isOpen: boolean
   isCancelled: boolean
   isExecuted: boolean
@@ -24,6 +25,16 @@ export interface FormattedOrderData {
     executed: string
     cancelled: string
   }
+}
+
+const formatForDisplay = (amount: CurrencyAmount | Price) => {
+  if (!amount) {
+    return undefined
+  }
+  return parseFloat(amount.toSignificant(18)).toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 8,
+  })
 }
 
 // Transforms Gelato Order type into types ready to be displayed in UI
@@ -68,14 +79,13 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
 
   const executionPrice = useMemo(() => getPriceForOneToken(inputAmount, outputAmount), [inputAmount, outputAmount])
 
-  // TODO: pre-make toSignificant format
-
   return {
     inputToken,
     outputToken,
-    inputAmount,
-    outputAmount,
-    executionPrice,
+    inputAmount: formatForDisplay(inputAmount),
+    outputAmount: formatForDisplay(outputAmount),
+    executionPrice: formatForDisplay(executionPrice),
+    invertedExecutionPrice: formatForDisplay(executionPrice?.invert()),
     isOpen: order.status === 'open',
     isCancelled: order.status === 'cancelled',
     isExecuted: order.status === 'executed',

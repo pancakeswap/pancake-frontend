@@ -1,7 +1,7 @@
 import React from 'react'
 import { Currency, Percent, Price } from '@pancakeswap/sdk'
 import styled from 'styled-components'
-import { Input, Flex, Text, ArrowUpDownIcon, RefreshIcon, Button } from '@pancakeswap/uikit'
+import { Input, Flex, Text, ArrowUpDownIcon, Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from 'utils'
 import { Rate } from 'state/limitOrders/types'
@@ -79,7 +79,7 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
           </Text>
           <Button
             onClick={handleResetToMarketPrice}
-            startIcon={<RefreshIcon color={isAtMarketPrice ? 'disabled' : 'primary'} />}
+            startIcon={<AutoRenewIcon color={isAtMarketPrice ? 'disabled' : 'primary'} />}
             variant="secondary"
             scale="xs"
             disabled={isAtMarketPrice}
