@@ -2,7 +2,8 @@ import React from 'react'
 import styled, { useTheme } from 'styled-components'
 import { Flex, Button, Svg, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import helpImage from '../../public/images/help.png'
+// bmp use full image
+import helpImage from '../../public/images/help-full.png'
 
 const BubbleWrapper = styled(Flex)`
   align-items: center;
@@ -46,7 +47,7 @@ const Footer = () => {
           <path d="M0 16V0C0 0 3 1 6 1C9 1 16 -2 16 3.5C16 10.5 7.5 16 0 16Z" />
         </Svg>
       </BubbleWrapper>
-      <Image src={helpImage} alt="Get some help" width={160} height={108} />
+      <Image src={helpImage} alt="Get some help" width={160} height={128} />
     </Flex>
   )
 }

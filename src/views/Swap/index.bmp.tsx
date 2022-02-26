@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import styled from 'styled-components'
+import mpService from '@binance/mp-service'
+import styled, { useTheme } from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
 import {
   Button,
@@ -13,6 +14,8 @@ import {
   useMatchBreakpoints,
   ArrowUpDownIcon,
   Modal,
+  WalletIcon,
+  SwapFillIcon,
 } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
@@ -562,11 +565,62 @@ function Swap() {
     </Page>
   )
 }
+
+const FooterWrap = styled(Flex)`
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 10px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  padding-bottom: 24px;
+  height: var(--mp-tabbar-height);
+  z-index: 20;
+  justify-content: center;
+`
+const Item = ({ icon, title, isActive, ...props }) => {
+  const theme = useTheme()
+  return (
+    <Flex flexDirection="column" alignItems="center" width="94px" {...props}>
+      <Box mb="5px">
+        {React.createElement(icon, {
+          color: isActive ? theme.colors.secondary : theme.colors.textSubtle,
+        })}
+      </Box>
+      <Box fontSize="14px" fontWeight={isActive ? '600' : '400'} color={isActive ? 'secondary' : 'textSubtle'}>
+        {title}
+      </Box>
+    </Flex>
+  )
+}
+const FooterMenu = () => {
+  const list = [
+    { icon: SwapFillIcon, title: 'Exchange', isActive: true },
+    {
+      icon: WalletIcon,
+      title: 'Wallet',
+      onClick: () => {
+        mpService.navigateToMiniProgram({
+          appId: 'hhL98uho2A4sGYSHCEdCCo',
+          path: 'pages/dashboard/index',
+          extraData: {},
+        })
+      },
+    },
+  ]
+  return (
+    <FooterWrap>
+      {list.map((item) => (
+        <Item key={item.title} {...item} />
+      ))}
+    </FooterWrap>
+  )
+}
 export default function Index() {
   return (
     <Providers>
       <ErrorBoundary name="swap">
         <Swap />
+        <FooterMenu />
       </ErrorBoundary>
     </Providers>
   )
