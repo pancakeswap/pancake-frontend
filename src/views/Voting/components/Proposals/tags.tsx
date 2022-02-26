@@ -1,5 +1,5 @@
 import { TagProps } from '@pancakeswap/uikit'
-import { ClosedTag, FarmAuctionTag, CoreTag, SoonTag, VoteNowTag } from 'components/Tags'
+import { ClosedTag, CommunityTag, CoreTag, SoonTag, VoteNowTag } from 'components/Tags'
 import { ProposalState } from 'state/types'
 
 interface ProposalStateTagProps extends TagProps {
@@ -27,5 +27,5 @@ export const ProposalTypeTag: React.FC<ProposalTypeTagProps> = ({ isCoreProposal
     return <CoreTag {...props} />
   }
 
-  return <FarmAuctionTag {...props} />
+  return <CommunityTag {...props} />
 }
