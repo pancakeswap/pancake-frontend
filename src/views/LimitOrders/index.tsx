@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useState } from 'react'
-import { CurrencyAmount, Percent, Token, Trade } from '@pancakeswap/sdk'
-import { Button, Box, Flex, useModal } from '@pancakeswap/uikit'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { CurrencyAmount, ETHER, Percent, Token, Trade } from '@pancakeswap/sdk'
+import { Button, Box, Flex, useModal, useMatchBreakpoints, BottomDrawer } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import { AutoColumn } from 'components/Layout/Column'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { AppBody } from 'components/App'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import Footer from 'components/Menu/Footer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useGelatoLimitOrders from 'hooks/limitOrders/useGelatoLimitOrders'
 import { ApprovalState, useApproveCallbackFromInputCurrencyAmount } from 'hooks/useApproveCallback'
 import { Field } from 'state/limitOrders/types'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { GELATO_NATIVE } from 'config/constants'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
@@ -24,11 +24,22 @@ import Page from '../Page'
 import LimitOrderTable from './components/LimitOrderTable'
 import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
 import getRatePercentageDifference from './utils/getRatePercentageDifference'
+import { useExchangeChartManager } from 'state/user/hooks'
+import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
+import useGelatoLimitOrdersHistory from 'hooks/limitOrders/useGelatoLimitOrdersHistory'
 
 const LimitOrders = () => {
   // Helpers
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
+  const { isMobile, isTablet } = useMatchBreakpoints()
+  const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
+  const [isChartExpanded, setIsChartExpanded] = useState(false)
+  const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
+
+  useEffect(() => {
+    setUserChartPreference(isChartDisplayed)
+  }, [isChartDisplayed, setUserChartPreference])
 
   // TODO: use returned loadedUrlParams for warnings
   useDefaultsFromURLSearch()
@@ -46,9 +57,13 @@ const LimitOrders = () => {
       trade,
       price,
       inputError,
+      wrappedCurrencies,
+      singleTokenPrice,
     },
     orderState: { independentField, rateType },
   } = useGelatoLimitOrders()
+
+  const orderHistory = useGelatoLimitOrdersHistory()
 
   const [{ swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
@@ -137,14 +152,12 @@ const LimitOrders = () => {
       swapErrorMessage: undefined,
       txHash: undefined,
     }))
-    const wrappedInput = wrappedCurrency(currencies.input, chainId)
-    const wrappedOutput = wrappedCurrency(currencies.output, chainId)
 
     try {
-      if (!wrappedInput.address) {
+      if (!wrappedCurrencies.input.address) {
         throw new Error('Invalid input currency')
       }
-      if (!wrappedOutput.address) {
+      if (!wrappedCurrencies.output.address) {
         throw new Error('Invalid output currency')
       }
       if (!rawAmounts.input) {
@@ -157,8 +170,8 @@ const LimitOrders = () => {
       if (!account) {
         throw new Error('No account')
       }
-      const inputToken = currencies.input instanceof Token ? wrappedInput.address : GELATO_NATIVE
-      const outputToken = currencies.output instanceof Token ? wrappedOutput.address : GELATO_NATIVE
+      const inputToken = currencies.input instanceof Token ? wrappedCurrencies.input.address : GELATO_NATIVE
+      const outputToken = currencies.output instanceof Token ? wrappedCurrencies.output.address : GELATO_NATIVE
 
       const orderToSubmit = {
         inputToken,
@@ -190,15 +203,7 @@ const LimitOrders = () => {
     } catch (error) {
       console.error(error)
     }
-  }, [
-    handleLimitOrderSubmission,
-    account,
-    chainId,
-    rawAmounts.input,
-    rawAmounts.output,
-    currencies.input,
-    currencies.output,
-  ])
+  }, [handleLimitOrderSubmission, account, rawAmounts.input, rawAmounts.output, currencies.input, currencies.output])
 
   const [showConfirmModal] = useModal(
     <ConfirmLimitOrderModal
@@ -224,7 +229,6 @@ const LimitOrders = () => {
   )
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
-  // TODO: reset
   useEffect(() => {
     if (approvalState === ApprovalState.PENDING) {
       setApprovalSubmitted(true)
@@ -234,18 +238,86 @@ const LimitOrders = () => {
   const showApproveFlow =
     !inputError && (approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING)
 
+  const inputCurrencyId =
+    currencies.input instanceof Token ? currencies.input.address : currencies.input === ETHER ? 'BNB' : ''
+  const outputCurrencyId =
+    currencies.output instanceof Token ? currencies.output.address : currencies.output === ETHER ? 'BNB' : ''
+
+  const userHasOrders = useMemo(
+    () =>
+      orderHistory.open.confirmed.length > 0 ||
+      orderHistory.open.pending.length > 0 ||
+      orderHistory.cancelled.confirmed.length > 0 ||
+      orderHistory.cancelled.pending.length > 0 ||
+      orderHistory.executed.length > 0,
+    [
+      orderHistory.open.confirmed.length,
+      orderHistory.open.pending.length,
+      orderHistory.cancelled.confirmed.length,
+      orderHistory.cancelled.pending.length,
+      orderHistory.executed.length,
+    ],
+  )
+
+  const isSideFooter = isChartExpanded || (isChartDisplayed && userHasOrders)
   return (
-    <Page>
-      <Flex width="100%" justifyContent="center" position="relative">
+    <Page removePadding={isChartExpanded} hideFooterOnDesktop={isSideFooter} noMinHeight={true}>
+      <Flex
+        width="100%"
+        justifyContent="center"
+        position="relative"
+        mb={isSideFooter ? null : '24px'}
+        mt={isChartExpanded ? '24px' : null}
+      >
         <Flex flexDirection="column">
+          {!isMobile && (
+            <>
+              <PriceChartContainer
+                inputCurrencyId={inputCurrencyId}
+                inputCurrency={currencies[Field.INPUT]}
+                outputCurrencyId={outputCurrencyId}
+                outputCurrency={currencies[Field.OUTPUT]}
+                isChartExpanded={isChartExpanded}
+                setIsChartExpanded={setIsChartExpanded}
+                isChartDisplayed={isChartDisplayed}
+                currentSwapPrice={singleTokenPrice}
+                isFullWidthContainer={true}
+              />
+              {isChartDisplayed && <Box mb="48px" />}
+              {userHasOrders && (
+                <Box width="100%">
+                  <LimitOrderTable orderHistory={orderHistory} isCompact={isTablet} />
+                </Box>
+              )}
+            </>
+          )}
+        </Flex>
+        <BottomDrawer
+          content={
+            <PriceChartContainer
+              inputCurrencyId={inputCurrencyId}
+              inputCurrency={currencies[Field.INPUT]}
+              outputCurrencyId={outputCurrencyId}
+              outputCurrency={currencies[Field.OUTPUT]}
+              isChartExpanded={isChartExpanded}
+              setIsChartExpanded={setIsChartExpanded}
+              isChartDisplayed={isChartDisplayed}
+              currentSwapPrice={singleTokenPrice}
+              isMobile
+            />
+          }
+          isOpen={isChartDisplayed}
+          setIsOpen={setIsChartDisplayed}
+        />
+        <Flex flexDirection="column" alignItems="center">
           <StyledSwapContainer $isChartExpanded={false}>
-            <StyledInputCurrencyWrapper mt="24px">
+            <StyledInputCurrencyWrapper>
               <AppBody>
                 <CurrencyInputHeader
                   title={t('Limit')}
                   subtitle={t('Place a limit order to trade at a set price')}
-                  setIsChartDisplayed={null}
-                  isChartDisplayed={false}
+                  setIsChartDisplayed={setIsChartDisplayed}
+                  isChartDisplayed={isChartDisplayed}
                 />
                 <Wrapper id="limit-order-page" style={{ minHeight: '412px' }}>
                   <AutoColumn gap="sm">
@@ -328,11 +400,18 @@ const LimitOrders = () => {
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
+          {userHasOrders && isMobile && (
+            <Flex mt="24px" width="100%">
+              <LimitOrderTable orderHistory={orderHistory} isCompact={true} />
+            </Flex>
+          )}
+          {isSideFooter && (
+            <Box display={['none', null, null, 'block']} width="100%" height="100%">
+              <Footer variant="side" />
+            </Box>
+          )}
         </Flex>
       </Flex>
-      <div style={{ width: '100%' }}>
-        <LimitOrderTable isChartDisplayed={false} />
-      </div>
     </Page>
   )
 }

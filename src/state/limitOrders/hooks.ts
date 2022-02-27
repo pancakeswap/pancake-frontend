@@ -129,7 +129,7 @@ const tryParseAmount = (value?: string, currency?: Currency): CurrencyAmount | u
 }
 
 export interface DerivedOrderInfo {
-  currencies: { input: Currency | undefined; output: Currency | undefined }
+  currencies: { input: Currency | Token | undefined; output: Currency | Token | undefined }
   currencyBalances: {
     input: CurrencyAmount | undefined
     output: CurrencyAmount | undefined
@@ -150,12 +150,19 @@ export interface DerivedOrderInfo {
     output: string | undefined
   }
   price: Price | undefined
+  wrappedCurrencies: {
+    input: Token
+    output: Token
+  }
+  singleTokenPrice: {
+    [key: string]: number
+  }
 }
 
 const getErrorMessage = (
   account: string,
   chainId: number,
-  currencies: { input: Currency; output: Currency },
+  currencies: { input: Currency | Token; output: Currency | Token },
   currencyBalances: { input: CurrencyAmount; output: CurrencyAmount },
   parsedAmounts: { input: CurrencyAmount; output: CurrencyAmount },
   trade: Trade,
@@ -230,6 +237,14 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     [inputCurrency, outputCurrency],
   )
 
+  const wrappedCurrencies = useMemo(
+    () => ({
+      input: wrappedCurrency(currencies.input, chainId),
+      output: wrappedCurrency(currencies.output, chainId),
+    }),
+    [currencies.input, currencies.output],
+  )
+
   // Get user balance for selected Currencies
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -275,6 +290,13 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   // in other words it looks for a trade of inputCurrency for whatever the amount of tokens would be at desired rate
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmountToUse : undefined)
   const trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+
+  // Get swap price for single token disregarding slippage and price impact
+  // needed for chart's latest value
+  const oneInputToken = tryParseAmount('1', currencies.input)
+  const singleTokenTrade = useTradeExactIn(oneInputToken, currencies.output)
+  const singleTokenPrice = parseFloat(bestTradeExactIn?.executionPrice?.toSignificant(6))
+  const inverseSingleTokenPrice = 1 / singleTokenPrice
 
   // Get CurrencyAmount for the inputCurrency amount specified by user
   const inputAmount = useMemo(() => {
@@ -340,6 +362,11 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     parsedAmounts,
     price,
     rawAmounts,
+    wrappedCurrencies,
+    singleTokenPrice: {
+      [wrappedCurrencies.input?.address]: singleTokenPrice,
+      [wrappedCurrencies.output?.address]: inverseSingleTokenPrice,
+    },
   }
 }
 

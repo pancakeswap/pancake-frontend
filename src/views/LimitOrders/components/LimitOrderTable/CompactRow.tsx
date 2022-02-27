@@ -4,6 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import useFormattedOrderData from 'views/LimitOrders/hooks/useFormattedOrderData'
 import CurrencyFormat from './CurrencyFormat'
 import { DetailLimitOrderModal } from './DetailLimitOrderModal'
+import OrderStatus from './OrderStatus'
 
 interface CompactRowProps {
   order: Order
@@ -12,18 +13,7 @@ interface CompactRowProps {
 const CompactRow: React.FC<CompactRowProps> = ({ order }) => {
   const { t } = useTranslation()
   const formattedOrder = useFormattedOrderData(order)
-  const {
-    inputToken,
-    outputToken,
-    inputAmount,
-    outputAmount,
-    executionPrice,
-    isOpen,
-    isCancelled,
-    isExecuted,
-    isSubmissionPending,
-    isCancellationPending,
-  } = formattedOrder
+  const { inputToken, outputToken, inputAmount, outputAmount, executionPrice } = formattedOrder
   const [openDetailLimitOrderModal] = useModal(<DetailLimitOrderModal order={order} formattedOrder={formattedOrder} />)
 
   return (
@@ -33,26 +23,7 @@ const CompactRow: React.FC<CompactRowProps> = ({ order }) => {
           <CurrencyFormat bold currency={inputToken} />
           <ChevronRightIcon color="textSubtle" />
           <CurrencyFormat bold currency={outputToken} />
-          {isOpen && isSubmissionPending && (
-            <Tag outline scale="sm" variant="warning" ml="auto">
-              {t('Pending')}
-            </Tag>
-          )}
-          {isCancelled && !isCancellationPending && (
-            <Tag outline scale="sm" variant="failure" ml="auto">
-              {t('Canceled')}
-            </Tag>
-          )}
-          {isCancellationPending && (
-            <Tag outline scale="sm" variant="warning" ml="auto">
-              {t('Cancelling')}
-            </Tag>
-          )}
-          {isExecuted && (
-            <Tag outline scale="sm" variant="success" ml="auto">
-              {t('Filled')}
-            </Tag>
-          )}
+          <OrderStatus formattedOrder={formattedOrder} />
         </Flex>
         <Flex justifyContent="space-between">
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">

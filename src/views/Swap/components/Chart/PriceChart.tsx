@@ -35,6 +35,7 @@ const PriceChart = ({
   isChartExpanded,
   setIsChartExpanded,
   isMobile,
+  isFullWidthContainer,
   token0Address,
   token1Address,
   currentSwapPrice,
@@ -55,6 +56,7 @@ const PriceChart = ({
       overflow={chartView === ChartViewMode.TRADING_VIEW ? 'hidden' : 'unset'}
       $isDark={isDark}
       $isExpanded={isChartExpanded}
+      $isFullWidthContainer={isFullWidthContainer}
     >
       <Flex justifyContent="space-between" px="24px">
         <Flex alignItems="center">

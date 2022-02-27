@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { ChainId, GelatoLimitOrders } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { GELATO_HANDLER } from 'config/constants'
 
 const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
   const { chainId, library } = useActiveWeb3React()
@@ -11,7 +12,7 @@ const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
       return undefined
     }
     try {
-      return new GelatoLimitOrders(chainId as ChainId, library?.getSigner(), 'pancakeswap', false)
+      return new GelatoLimitOrders(chainId as ChainId, library?.getSigner(), GELATO_HANDLER, false)
     } catch (error: any) {
       console.error(`Could not instantiate GelatoLimitOrders: ${error.message}`)
       return undefined

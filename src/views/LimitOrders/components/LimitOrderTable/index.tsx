@@ -1,37 +1,36 @@
 import { useState, useCallback } from 'react'
-import { Flex, Card, Box } from '@pancakeswap/uikit'
+import { Flex, Card } from '@pancakeswap/uikit'
 
-import useGelatoLimitOrdersHistory from 'hooks/limitOrders/useGelatoLimitOrdersHistory'
-import OpenOrderTable from './OpenOrderTable'
-import HistoryOrderTable from './HistoryOrderTable'
+import { GelatoLimitOrdersHistory } from 'hooks/limitOrders/useGelatoLimitOrdersHistory'
+import OrderItemRows from './OrderItemRows'
 import OrderTab from './OrderTab'
-import { TAB_TYPE } from './types'
+import { ORDER_CATEGORY } from './types'
 
-const LimitOrderTable: React.FC<{ isChartDisplayed: boolean }> = ({ isChartDisplayed }) => {
-  const [activeTab, setIndex] = useState<TAB_TYPE>(TAB_TYPE.Open)
-  const handleClick = useCallback((tabType: TAB_TYPE) => setIndex(tabType), [])
-
-  const ordersHistory = useGelatoLimitOrdersHistory()
-
-  // TODO: add sort by date
-  const openOrders = [...ordersHistory.open.pending, ...ordersHistory.open.confirmed]
+const LimitOrderTable: React.FC<{ orderHistory: GelatoLimitOrdersHistory; isCompact: boolean }> = ({
+  orderHistory,
+  isCompact,
+}) => {
+  const openOrders = [...orderHistory.open.pending, ...orderHistory.open.confirmed]
   const executedAndCancelledOrders = [
-    ...ordersHistory.cancelled.pending,
-    ...ordersHistory.cancelled.confirmed,
-    ...ordersHistory.executed,
+    ...orderHistory.cancelled.pending,
+    ...orderHistory.cancelled.confirmed,
+    ...orderHistory.executed,
   ]
+  const [activeTab, setIndex] = useState<ORDER_CATEGORY>(
+    openOrders.length === 0 ? ORDER_CATEGORY.History : ORDER_CATEGORY.Open,
+  )
+  const handleClick = useCallback((tabType: ORDER_CATEGORY) => setIndex(tabType), [])
 
   return (
-    <Flex mt={isChartDisplayed ? ['56px', '56px', '56px', '24px'] : '24px'} width="100%" justifyContent="center">
-      <Card style={{ width: isChartDisplayed ? '50%' : '328px' }}>
+    <Flex flex="1" justifyContent="center" mb="24px">
+      <Card style={{ width: '100%', height: 'max-content' }}>
         <OrderTab onItemClick={handleClick} activeIndex={activeTab} />
-        {TAB_TYPE.Open === activeTab ? (
-          <OpenOrderTable orders={openOrders} isChartDisplayed={isChartDisplayed} />
-        ) : (
-          <HistoryOrderTable orders={executedAndCancelledOrders} isChartDisplayed={isChartDisplayed} />
-        )}
+        <OrderItemRows
+          orderCategory={activeTab}
+          orders={activeTab === ORDER_CATEGORY.Open ? openOrders : executedAndCancelledOrders}
+          isCompact={isCompact}
+        />
       </Card>
-      {isChartDisplayed && <Box width="328px" mx={['24px', '24px', '24px', '40px']} />}
     </Flex>
   )
 }

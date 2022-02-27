@@ -1,21 +1,23 @@
-import { useMemo, useState } from 'react'
-import { Table, Th, Td, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useEffect, useMemo, useState } from 'react'
+import { Table, Th, Td, Text } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import Navigation from 'components/TableNavigation'
 import CompactRow from './CompactRow'
-import NoOrderTable from './NoOrderTable'
+import NoOrdersMessage from './NoOrdersMessage'
 import { LimitOrderTableProps } from './types'
-import HeaderCellStyle from './HeaderCellStyle'
 import FullRow from './FullRow'
 
 const ORDERS_PER_PAGE = 5
 
-const OpenOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orders }) => {
-  const { isTablet } = useMatchBreakpoints()
+const OrderItemRows: React.FC<LimitOrderTableProps> = ({ orders, orderCategory, isCompact }) => {
   const [page, setPage] = useState(1)
-  const compactMode = !isChartDisplayed || isTablet
   const { t } = useTranslation()
+
+  // Reset to initial page when tab switched
+  useEffect(() => {
+    setPage(1)
+  }, [orderCategory])
 
   const maxPage = useMemo(() => {
     if (orders?.length) {
@@ -33,7 +35,7 @@ const OpenOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orde
   }
 
   if (!orders?.length) {
-    return <NoOrderTable />
+    return <NoOrdersMessage orderCategory={orderCategory} />
   }
 
   const currentPageOrders = orders.slice(ORDERS_PER_PAGE * (page - 1), ORDERS_PER_PAGE * page)
@@ -41,7 +43,7 @@ const OpenOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orde
   return (
     <>
       <Table>
-        {compactMode ? (
+        {isCompact ? (
           <tbody>
             {currentPageOrders.map((order) => (
               <tr key={order.id}>
@@ -56,19 +58,30 @@ const OpenOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orde
             <thead>
               <tr>
                 <Th>
-                  <HeaderCellStyle>{t('From')}</HeaderCellStyle>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                    {t('From')}
+                  </Text>
                 </Th>
                 <Th>
-                  <HeaderCellStyle>{t('To')}</HeaderCellStyle>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                    {t('To')}
+                  </Text>
                 </Th>
                 <Th>
-                  <HeaderCellStyle>{t('Limit Price')}</HeaderCellStyle>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                    {t('Limit Price')}
+                  </Text>
+                </Th>
+                <Th>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                    {t('Status')}
+                  </Text>
                 </Th>
                 <Th />
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {currentPageOrders.map((order) => (
                 <FullRow key={order.id} order={order} />
               ))}
             </tbody>
@@ -80,4 +93,4 @@ const OpenOrderTable: React.FC<LimitOrderTableProps> = ({ isChartDisplayed, orde
   )
 }
 
-export default OpenOrderTable
+export default OrderItemRows

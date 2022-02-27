@@ -1,7 +1,7 @@
 import React from 'react'
 import { Currency, Percent, Price } from '@pancakeswap/sdk'
 import styled from 'styled-components'
-import { Input, Flex, Text, ArrowUpDownIcon, Button, AutoRenewIcon } from '@pancakeswap/uikit'
+import { Input, Flex, Text, Button, AutoRenewIcon, SyncAltIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from 'utils'
 import { Rate } from 'state/limitOrders/types'
@@ -79,12 +79,12 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
           </Text>
           <Button
             onClick={handleResetToMarketPrice}
-            startIcon={<AutoRenewIcon color={isAtMarketPrice ? 'disabled' : 'primary'} />}
+            startIcon={<AutoRenewIcon color={isAtMarketPrice ? 'textDisabled' : 'primary'} />}
             variant="secondary"
             scale="xs"
             disabled={isAtMarketPrice}
           >
-            <Text fontSize="12px" bold color={isAtMarketPrice ? 'disabled' : 'primary'} textTransform="uppercase">
+            <Text fontSize="12px" bold color={isAtMarketPrice ? 'textDisabled' : 'primary'} textTransform="uppercase">
               {t('Market')}
             </Text>
           </Button>
@@ -112,8 +112,7 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
           <Text small bold>
             {label}
           </Text>
-          {/* TODO: add ArrowLeftRight icon to UIKit. And make it beautiful */}
-          <ArrowUpDownIcon color="textSubtle" width="24px" />
+          <SyncAltIcon color="textSubtle" width="24px" ml="4px" />
         </LabelContainer>
       )}
     </>

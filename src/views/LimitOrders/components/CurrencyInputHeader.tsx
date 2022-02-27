@@ -1,19 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import {
-  ChartIcon,
-  Flex,
-  Heading,
-  HistoryIcon,
-  IconButton,
-  NotificationDot,
-  Text,
-  useModal,
-  ChartDisableIcon,
-} from '@pancakeswap/uikit'
+import { ChartIcon, Flex, Heading, HistoryIcon, IconButton, Text, useModal, ChartDisableIcon } from '@pancakeswap/uikit'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
-import { useExpertModeManager } from 'state/user/hooks'
 
 interface Props {
   title: string
@@ -36,7 +25,6 @@ const ColoredIconButton = styled(IconButton)`
 `
 
 const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDisplayed, isChartDisplayed }) => {
-  const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
     setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
   }
@@ -60,9 +48,7 @@ const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDispl
           <Heading as="h2">{title}</Heading>
         </Flex>
         <Flex flex="1" justifyContent="flex-end">
-          <NotificationDot show={expertMode}>
-            <GlobalSettings color="textSubtle" mr="0" />
-          </NotificationDot>
+          <GlobalSettings color="textSubtle" mr="0" />
           <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
             <HistoryIcon color="textSubtle" width="24px" />
           </IconButton>

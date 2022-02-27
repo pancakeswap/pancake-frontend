@@ -2,7 +2,7 @@ import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'
-import { TAB_TYPE } from './types'
+import { ORDER_CATEGORY } from './types'
 
 const Wrapper = styled.div`
   & > div {
@@ -17,8 +17,8 @@ const Wrapper = styled.div`
 `
 
 interface OrderTabProps {
-  activeIndex: TAB_TYPE
-  onItemClick: (index: TAB_TYPE) => void
+  activeIndex: ORDER_CATEGORY
+  onItemClick: (index: ORDER_CATEGORY) => void
 }
 
 const OrderTab: React.FC<OrderTabProps> = ({ activeIndex, onItemClick }) => {
