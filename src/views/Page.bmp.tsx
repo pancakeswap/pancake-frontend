@@ -56,6 +56,8 @@ const StyledPage = styled.div`
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
   min-height: calc(100vh - 64px);
   padding: 16px;
+  overflow-y: scroll;
+  padding-bottom: 64px;
 `
 
 const Page = ({ children }) => {

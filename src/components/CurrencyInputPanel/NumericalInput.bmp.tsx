@@ -59,8 +59,6 @@ export const Input = function InnerInput({
     }
   }
 
-  const { t } = useTranslation()
-
   return (
     <StyledInput
       {...rest}
@@ -69,18 +67,10 @@ export const Input = function InnerInput({
         // replace commas with periods, because we exclusively uses period as the decimal separator
         enforcer(event.target.value.replace(/,/g, '.'))
       }}
-      // universal input options
-      inputMode="decimal"
-      title={t('Token Amount')}
-      autoComplete="off"
-      autoCorrect="off"
-      // text-specific options
-      type="text"
-      pattern="^[0-9]*[.,]?[0-9]*$"
+      type="digit"
       placeholder={placeholder || '0.0'}
       minLength={1}
       maxLength={79}
-      spellCheck="false"
     />
   )
 }
