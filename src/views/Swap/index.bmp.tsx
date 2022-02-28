@@ -23,6 +23,7 @@ import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
+import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Layout/Column'
@@ -67,7 +68,6 @@ import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 import Providers from '../../PageProvider.bmp'
-import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -401,7 +401,7 @@ function Swap() {
                         />
                         <ArrowUpDownIcon
                           className="icon-up-down"
-                          color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
+                          color="#ffffff"
                         />
                       </SwitchIconButton>
                       {recipient === null && !showWrap && isExpertMode ? (
