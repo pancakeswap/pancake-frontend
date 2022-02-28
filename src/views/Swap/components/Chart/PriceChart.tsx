@@ -50,6 +50,8 @@ const PriceChart = ({
   //   setTwChartSymbol(symbol)
   // }, [])
 
+  console.log({ inputCurrency, outputCurrency })
+
   return (
     <StyledPriceChart
       height={chartView === ChartViewMode.TRADING_VIEW ? '100%' : '70%'}

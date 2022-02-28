@@ -278,14 +278,14 @@ const LimitOrders = () => {
         mb={isSideFooter ? null : '24px'}
         mt={isChartExpanded ? '24px' : null}
       >
-        <Flex flexDirection="column">
+        <Flex width={isChartExpanded ? '100%' : '50%'} flexDirection="column">
           {!isMobile && (
             <>
               <PriceChartContainer
                 inputCurrencyId={inputCurrencyId}
-                inputCurrency={currencies[Field.INPUT]}
+                inputCurrency={currencies.input}
                 outputCurrencyId={outputCurrencyId}
-                outputCurrency={currencies[Field.OUTPUT]}
+                outputCurrency={currencies.output}
                 isChartExpanded={isChartExpanded}
                 setIsChartExpanded={setIsChartExpanded}
                 isChartDisplayed={isChartDisplayed}
@@ -301,23 +301,6 @@ const LimitOrders = () => {
             </>
           )}
         </Flex>
-        <BottomDrawer
-          content={
-            <PriceChartContainer
-              inputCurrencyId={inputCurrencyId}
-              inputCurrency={currencies[Field.INPUT]}
-              outputCurrencyId={outputCurrencyId}
-              outputCurrency={currencies[Field.OUTPUT]}
-              isChartExpanded={isChartExpanded}
-              setIsChartExpanded={setIsChartExpanded}
-              isChartDisplayed={isChartDisplayed}
-              currentSwapPrice={singleTokenPrice}
-              isMobile
-            />
-          }
-          isOpen={isChartDisplayed}
-          setIsOpen={setIsChartDisplayed}
-        />
         <Flex flexDirection="column" alignItems="center">
           <StyledSwapContainer $isChartExpanded={false}>
             <StyledInputCurrencyWrapper>
@@ -421,6 +404,24 @@ const LimitOrders = () => {
           )}
         </Flex>
       </Flex>
+      {/* Fixed position, doesn't take normal DOM space */}
+      <BottomDrawer
+        content={
+          <PriceChartContainer
+            inputCurrencyId={inputCurrencyId}
+            inputCurrency={currencies[Field.INPUT]}
+            outputCurrencyId={outputCurrencyId}
+            outputCurrency={currencies[Field.OUTPUT]}
+            isChartExpanded={isChartExpanded}
+            setIsChartExpanded={setIsChartExpanded}
+            isChartDisplayed={isChartDisplayed}
+            currentSwapPrice={singleTokenPrice}
+            isMobile
+          />
+        }
+        isOpen={isChartDisplayed}
+        setIsOpen={setIsChartDisplayed}
+      />
     </Page>
   )
 }
