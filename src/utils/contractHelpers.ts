@@ -15,6 +15,7 @@ import {
   getBunnySpecialAddress,
   getLotteryV2Address,
   getMasterChefAddress,
+  getMasterChefV1Address,
   getPointCenterIfoAddress,
   getClaimRefundAddress,
   getTradingCompetitionAddress,
@@ -50,6 +51,7 @@ import ifoV2Abi from 'config/abi/ifoV2.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import masterChef from 'config/abi/masterchef.json'
+import masterChefV1 from 'config/abi/masterchefV1.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefV2 from 'config/abi/sousChefV2.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
@@ -163,6 +165,9 @@ export const getLotteryV2Contract = (signer?: Signer | Provider) => {
 }
 export const getMasterchefContract = (signer?: Signer | Provider) => {
   return getContract(masterChef, getMasterChefAddress(), signer) as Masterchef
+}
+export const getMasterchefV1Contract = (signer?: Signer | Provider) => {
+  return getContract(masterChefV1, getMasterChefV1Address(), signer) as Masterchef
 }
 export const getClaimRefundContract = (signer?: Signer | Provider) => {
   return getContract(claimRefundAbi, getClaimRefundAddress(), signer) as ClaimRefund

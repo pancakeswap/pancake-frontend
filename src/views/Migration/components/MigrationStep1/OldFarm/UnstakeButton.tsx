@@ -2,14 +2,14 @@ import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { Button } from '@pancakeswap/uikit'
-import useUnstakeFarms from 'views/Farms/hooks/useUnstakeFarms'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useFarmUser } from 'state/farms/hooks'
+import { useFarmUser } from 'state/farmsV1/hooks'
 import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useAppDispatch } from 'state'
-import { fetchFarmUserDataAsync } from 'state/farms'
+import { fetchFarmUserDataAsync } from 'state/farmsV1'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import useUnstakeFarms from '../../../hook/V1/Farms/useUnstakeFarms'
 
 export interface UnstakeButtonProps {
   pid: number

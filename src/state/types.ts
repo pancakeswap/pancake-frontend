@@ -542,6 +542,7 @@ export interface UserRound {
 export interface State {
   block: BlockState
   farms: SerializedFarmsState
+  farmsV1: SerializedFarmsState
   pools: PoolsState
   predictions: PredictionsState
   profile: ProfileState

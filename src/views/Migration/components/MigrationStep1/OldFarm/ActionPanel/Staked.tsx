@@ -6,7 +6,7 @@ import { Heading, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
-import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
+import { useFarmUser, useLpTokenPrice } from 'state/farmsV1/hooks'
 import { FarmProps } from '../Cells/Farm'
 import UnstakeButton from '../UnstakeButton'
 

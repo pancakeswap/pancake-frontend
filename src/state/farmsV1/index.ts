@@ -7,7 +7,7 @@ import type {
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
 import farmsConfig from 'config/constants/farms'
-import { isArchivedPid } from 'utils/farmHelpers'
+import { isArchivedPidV1 } from 'utils/farmHelpers'
 import type { AppState } from 'state'
 import priceHelperLpsConfig from 'config/constants/priceHelperLps'
 import fetchFarms from './fetchFarms'
@@ -37,7 +37,7 @@ const initialState: SerializedFarmsState = {
   loadingKeys: {},
 }
 
-export const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(pid))
+export const nonArchivedFarms = farmsConfig.filter(({ v1pid }) => !isArchivedPidV1(v1pid))
 
 // Async thunks
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
@@ -47,9 +47,9 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     state: AppState
   }
 >(
-  'farms/fetchFarmsPublicDataAsync',
-  async (pids) => {
-    const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
+  'farmsv1/fetchFarmsPublicDataAsync',
+  async (v1Pids) => {
+    const farmsToFetch = farmsConfig.filter((farmConfig) => v1Pids.includes(farmConfig.v1pid))
 
     // Add price helper farms
     const farmsWithPriceHelpers = farmsToFetch.concat(priceHelperLpsConfig)
@@ -59,15 +59,15 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 
     // Filter out price helper LP config farms
     const farmsWithoutHelperLps = farmsWithPrices.filter((farm: SerializedFarm) => {
-      return farm.pid || farm.pid === 0
+      return farm.v1pid || farm.v1pid === 0
     })
 
     return farmsWithoutHelperLps
   },
   {
     condition: (arg, { getState }) => {
-      const { farms } = getState()
-      if (farms.loadingKeys[stringify({ type: fetchFarmsPublicDataAsync.typePrefix, arg })]) {
+      const { farmsV1 } = getState()
+      if (farmsV1.loadingKeys[stringify({ type: fetchFarmsPublicDataAsync.typePrefix, arg })]) {
         console.debug('farms action is fetching, skipping here')
         return false
       }
@@ -77,7 +77,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 )
 
 interface FarmUserDataResponse {
-  pid: number
+  v1pid: number
   allowance: string
   tokenBalance: string
   stakedBalance: string
@@ -91,9 +91,9 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
     state: AppState
   }
 >(
-  'farms/fetchFarmUserDataAsync',
+  'farmsv1/fetchFarmUserDataAsync',
   async ({ account, pids }) => {
-    const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
+    const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.v1pid))
     const userFarmAllowances = await fetchFarmUserAllowances(account, farmsToFetch)
     const userFarmTokenBalances = await fetchFarmUserTokenBalances(account, farmsToFetch)
     const userStakedBalances = await fetchFarmUserStakedBalances(account, farmsToFetch)
@@ -101,7 +101,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
 
     return userFarmAllowances.map((farmAllowance, index) => {
       return {
-        pid: farmsToFetch[index].pid,
+        v1pid: farmsToFetch[index].v1pid,
         allowance: userFarmAllowances[index],
         tokenBalance: userFarmTokenBalances[index],
         stakedBalance: userStakedBalances[index],
@@ -111,8 +111,8 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
   },
   {
     condition: (arg, { getState }) => {
-      const { farms } = getState()
-      if (farms.loadingKeys[stringify({ type: fetchFarmUserDataAsync.typePrefix, arg })]) {
+      const { farmsV1 } = getState()
+      if (farmsV1.loadingKeys[stringify({ type: fetchFarmUserDataAsync.typePrefix, arg })]) {
         console.debug('farms user action is fetching, skipping here')
         return false
       }
@@ -138,7 +138,7 @@ const serializeLoadingKey = (
 }
 
 export const farmsSlice = createSlice({
-  name: 'Farms',
+  name: 'FarmsV1',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -153,8 +153,8 @@ export const farmsSlice = createSlice({
     // Update farms with user data
     builder.addCase(fetchFarmUserDataAsync.fulfilled, (state, action) => {
       action.payload.forEach((userDataEl) => {
-        const { pid } = userDataEl
-        const index = state.data.findIndex((farm) => farm.pid === pid)
+        const { v1pid } = userDataEl
+        const index = state.data.findIndex((farm) => farm.v1pid === v1pid)
         state.data[index] = { ...state.data[index], userData: userDataEl }
       })
       state.userDataLoaded = true

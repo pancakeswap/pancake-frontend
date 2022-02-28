@@ -4,11 +4,11 @@ import { useWeb3React } from '@web3-react/core'
 import { getFarmApr } from 'utils/apr'
 import { RowType } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
-import { useFarms, usePriceCakeBusd, usePollFarmsWithUserData } from 'state/farms/hooks'
+import { useFarms, usePriceCakeBusd, usePollFarmsWithUserData } from 'state/farmsV1/hooks'
 import { DeserializedFarm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import isArchivedPid from 'utils/farmHelpers'
+import { isArchivedPidV1 } from 'utils/farmHelpers'
 import OldFarm from './FarmTable'
 import { RowProps } from './FarmRow'
 import { DesktopColumnSchema } from '../../types'
@@ -22,9 +22,9 @@ const OldFarmStep1: React.FC = () => {
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
+  const farms = farmsLP.filter((farm) => farm.pid !== 0 && !isArchivedPidV1(farm.pid))
 
-  const stakedOrHasTokenBalance = activeFarms.filter((farm) => {
+  const stakedOrHasTokenBalance = farms.filter((farm) => {
     return (
       farm.userData &&
       (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
