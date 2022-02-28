@@ -2,6 +2,9 @@
   "name": "pancake-frontend",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "analyze": "ANALYZE=true yarn build",
     "dev": "next dev",
@@ -119,6 +122,7 @@
     "source-map-explorer": "^2.5.2",
     "start-server-and-test": "^1.14.0",
     "ts-node": "^9.1.1",
-    "typechain": "^6.1.0"
+    "typechain": "^6.1.0",
+    "turbo": "^1.1.4"
   }
 }
