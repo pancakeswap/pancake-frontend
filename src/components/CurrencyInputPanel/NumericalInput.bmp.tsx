@@ -5,7 +5,6 @@ import { escapeRegExp } from '../../utils'
 
 const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
   color: ${({ error, theme }) => (error ? theme.colors.failure : theme.colors.text)};
-  width: 0;
   position: relative;
   font-weight: 500;
   outline: none;
@@ -18,22 +17,6 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0px;
-  // bmp remove this
-  // -webkit-appearance: textfield;
-
-  // ::-webkit-search-decoration {
-  //   -webkit-appearance: none;
-  // }
-
-  // [type='number'] {
-  //   -moz-appearance: textfield;
-  // }
-
-  // ::-webkit-outer-spin-button,
-  // ::-webkit-inner-spin-button {
-  //   -webkit-appearance: none;
-  // }
-
   ::placeholder {
     color: ${({ theme }) => theme.colors.textSubtle};
   }
