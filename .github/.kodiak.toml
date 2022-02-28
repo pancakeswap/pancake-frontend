@@ -6,3 +6,6 @@ title = "pull_request_title"
 body = "pull_request_body"
 include_coauthors = true
 strip_html_comments = true
+
+[update]
+autoupdate_label = "autoupdate"
