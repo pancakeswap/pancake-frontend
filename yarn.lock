@@ -1285,10 +1285,10 @@
   resolved "https://registry.yarnpkg.com/@binance/mp-service/-/mp-service-1.0.11.tgz#69d24e5d19f02a08ca319be14f88d5133ad53c5a"
   integrity sha512-kbq3vfmu55QEVKpq3W+asz2CZLlKOX8/QS6f2flrneY7syYOrbVrs99S3dEfGzqp067LAsk87fYUGeGGT8uH0A==
 
-"@binance/sentry-miniapp@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@binance/sentry-miniapp/-/sentry-miniapp-0.0.6.tgz#e82062b2ee719d52704549e2095b87fe0c357339"
-  integrity sha512-E2DOxvt4wBhUaA9XanmH0eFWccJn7NI0s/yysFMTbr79zjCMsWglLJZqAjxQg0QXscx4iuyyZgcE22MJSsuqTw==
+"@binance/sentry-miniapp@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@binance/sentry-miniapp/-/sentry-miniapp-0.1.0.tgz#9872d00fa38a5e933c1f2d0e8b412273c371acdc"
+  integrity sha512-SkCRQ8G8Qh0UPc5cImzymATPCdFCV7SS9dhZngDN4sLkah4UPiwZFxkeIxT+Czf/S9dQu1m7zgZiMd1zGluJNA==
   dependencies:
     "@sentry/core" "^6.17.9"
     "@sentry/types" "^6.17.9"

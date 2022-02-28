@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Provider from './Providers'
 import './style.scss'
-import { init } from '@binance/sentry-miniapp'
+import { init, bindRequest } from '@binance/sentry-miniapp'
 
 declare const COMMIT_ID: string
 declare const env: any
@@ -25,6 +25,8 @@ init({
   environment: getEnv(),
   release: `${COMMIT_ID}`,
 })
+bn.request = bindRequest(bn.request)
+__mp_private_api__.request = bindRequest(__mp_private_api__.request)
 
 class App extends Component {
   componentDidMount() {}
