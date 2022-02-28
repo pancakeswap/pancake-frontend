@@ -366,7 +366,9 @@ const LimitOrders = () => {
                         width="100%"
                         disabled={approvalSubmitted}
                       >
-                        {approvalSubmitted ? t('Enabling') : t('Enable')}
+                        {approvalSubmitted
+                          ? t('Enabling %asset%', { asset: currencies.input?.symbol })
+                          : t('Enable %asset%', { asset: currencies.input?.symbol })}
                       </Button>
                     ) : (
                       <Button
