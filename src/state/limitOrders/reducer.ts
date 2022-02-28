@@ -39,6 +39,10 @@ export default createReducer<OrderState>(initialState, (builder) =>
       // the normal case
       return {
         ...state,
+        // independentField and typedValue need to be reset to input
+        // to show proper market price for new pair if user adjusted the price for the previous pair
+        independentField: Field.INPUT,
+        typedValue: state.inputValue,
         [field]: { currencyId },
       }
     })
