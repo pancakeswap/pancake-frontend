@@ -23,7 +23,8 @@ const Hooks = () => {
 
 const Providers: React.FC = ({ children }) => {
   return (
-    <StyleProvider>
+    <>
+      <StyleProvider />
       <ToastsProvider>
         <ModalProvider>
           <Blocklist>
@@ -33,7 +34,7 @@ const Providers: React.FC = ({ children }) => {
           </Blocklist>
         </ModalProvider>
       </ToastsProvider>
-    </StyleProvider>
+    </>
   )
 }
 
