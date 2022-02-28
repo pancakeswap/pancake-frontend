@@ -133,17 +133,14 @@ const SlippageTabs = () => {
                 scale="sm"
                 // bmp: fix default style of input element in mini program
                 style={{ minHeight: '32px' }}
-                inputMode="decimal"
-                pattern="^[0-9]*[.,]?[0-9]{0,2}$"
+                type="digit"
                 placeholder={(userSlippageTolerance / 100).toFixed(2)}
                 value={slippageInput}
                 onBlur={() => {
                   parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
                 }}
                 onChange={(event) => {
-                  if (event.currentTarget.validity.valid) {
-                    parseCustomSlippage(event.target.value.replace(/,/g, '.'))
-                  }
+                  parseCustomSlippage(event.target.value.replace(/,/g, '.'))
                 }}
                 isWarning={!slippageInputIsValid}
                 isSuccess={![10, 50, 100].includes(userSlippageTolerance)}
