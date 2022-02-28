@@ -251,7 +251,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
       }
       return newNfts
     },
-    { revalidateAll: true },
+    { revalidateFirstPage: false },
   )
 
   const uniqueNftList: NftToken[] = nfts ? uniqBy(nfts.flat(), 'tokenId') : []
