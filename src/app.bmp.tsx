@@ -24,6 +24,12 @@ init({
   tracesSampleRate: 1,
   environment: getEnv(),
   release: `${COMMIT_ID}`,
+  beforeBreadcrumb(breadcrumb, hint) {
+    if ((breadcrumb.level === 'debug' || breadcrumb.level === 'info') && breadcrumb.category === 'console') {
+      return null
+    }
+    return breadcrumb
+  },
 })
 bn.request = bindRequest(bn.request)
 __mp_private_api__.request = bindRequest(__mp_private_api__.request)
