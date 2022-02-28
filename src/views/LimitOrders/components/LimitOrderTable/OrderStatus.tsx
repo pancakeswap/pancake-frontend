@@ -1,5 +1,4 @@
-import { Tag, Text } from '@pancakeswap/uikit'
-import { Variant } from '@pancakeswap/uikit/dist/components/Tag/types'
+import { Tag, Text, TagVariant } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { FormattedOrderData } from 'views/LimitOrders/hooks/useFormattedOrderData'
@@ -9,7 +8,7 @@ export enum StatusElementType {
   TEXT = 'Text',
 }
 
-const StatusElement: React.FC<{ element: StatusElementType; text: string; color: Variant }> = ({
+const StatusElement: React.FC<{ element: StatusElementType; text: string; color: TagVariant }> = ({
   element,
   text,
   color,

@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, TokenAmount } from '@pancakeswap/sdk'
+import { JSBI, Token, TokenAmount } from '@pancakeswap/sdk'
 import getPriceForOneToken from './getPriceForOneToken'
 
 const CAKE = new Token(56, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token')

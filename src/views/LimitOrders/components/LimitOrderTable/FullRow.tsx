@@ -1,11 +1,11 @@
 import React from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { Text, Td, MoreHorizontalIcon, SyncAltIcon, useModal, IconButton } from '@pancakeswap/uikit'
+import { Td, MoreHorizontalIcon, SyncAltIcon, useModal, IconButton } from '@pancakeswap/uikit'
 
+import useFormattedOrderData from 'views/LimitOrders/hooks/useFormattedOrderData'
 import CurrencyFormat from './CurrencyFormat'
 import CellFormat from './CellFormat'
 import TextIcon from './TextIcon'
-import useFormattedOrderData from 'views/LimitOrders/hooks/useFormattedOrderData'
 import { DetailLimitOrderModal } from './DetailLimitOrderModal'
 import OrderStatus, { StatusElementType } from './OrderStatus'
 

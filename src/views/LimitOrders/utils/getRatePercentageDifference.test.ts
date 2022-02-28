@@ -57,7 +57,6 @@ describe('limitOrders/utils/getRatePercentageDifference', () => {
     it('with undefined market price', () => {
       const price = new Price(DOGE, BUSD, EIGHTEEN_DECIMALS, FIFTEEN) // 15 BUSD per 1 DOGE
       const rate = getRatePercentageDifference(undefined, price)
-      const expectedRate = new Percent(50, 100)
       expect(rate).toBeUndefined()
     })
     it('with undefined price', () => {

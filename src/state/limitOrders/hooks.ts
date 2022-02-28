@@ -9,13 +9,13 @@ import { wrappedCurrency } from 'utils/wrappedCurrency'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
+import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { isAddress } from 'utils'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
 import { Field, Rate, OrderState } from './types'
 import { AppState, AppDispatch } from '..'
-import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 
 const applyExchangeRateTo = (
   inputValue: string,
@@ -242,7 +242,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
       input: wrappedCurrency(currencies.input, chainId),
       output: wrappedCurrency(currencies.output, chainId),
     }),
-    [currencies.input, currencies.output],
+    [currencies.input, currencies.output, chainId],
   )
 
   // Get user balance for selected Currencies
@@ -295,7 +295,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   // needed for chart's latest value
   const oneInputToken = tryParseAmount('1', currencies.input)
   const singleTokenTrade = useTradeExactIn(oneInputToken, currencies.output)
-  const singleTokenPrice = parseFloat(bestTradeExactIn?.executionPrice?.toSignificant(6))
+  const singleTokenPrice = parseFloat(singleTokenTrade?.executionPrice?.toSignificant(6))
   const inverseSingleTokenPrice = 1 / singleTokenPrice
 
   // Get CurrencyAmount for the inputCurrency amount specified by user

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { CurrencyAmount, ETHER, Percent, Token, Trade } from '@pancakeswap/sdk'
+import { CurrencyAmount, ETHER, Token, Trade } from '@pancakeswap/sdk'
 import { Button, Box, Flex, useModal, useMatchBreakpoints, BottomDrawer } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
@@ -15,6 +15,9 @@ import { Field } from 'state/limitOrders/types'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { GELATO_NATIVE } from 'config/constants'
+import { useExchangeChartManager } from 'state/user/hooks'
+import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
+import useGelatoLimitOrdersHistory from 'hooks/limitOrders/useGelatoLimitOrdersHistory'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
@@ -24,9 +27,6 @@ import Page from '../Page'
 import LimitOrderTable from './components/LimitOrderTable'
 import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
 import getRatePercentageDifference from './utils/getRatePercentageDifference'
-import { useExchangeChartManager } from 'state/user/hooks'
-import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
-import useGelatoLimitOrdersHistory from 'hooks/limitOrders/useGelatoLimitOrdersHistory'
 
 const LimitOrders = () => {
   // Helpers
@@ -154,10 +154,10 @@ const LimitOrders = () => {
     }))
 
     try {
-      if (!wrappedCurrencies.input.address) {
+      if (!wrappedCurrencies.input?.address) {
         throw new Error('Invalid input currency')
       }
-      if (!wrappedCurrencies.output.address) {
+      if (!wrappedCurrencies.output?.address) {
         throw new Error('Invalid output currency')
       }
       if (!rawAmounts.input) {
@@ -170,8 +170,8 @@ const LimitOrders = () => {
       if (!account) {
         throw new Error('No account')
       }
-      const inputToken = currencies.input instanceof Token ? wrappedCurrencies.input.address : GELATO_NATIVE
-      const outputToken = currencies.output instanceof Token ? wrappedCurrencies.output.address : GELATO_NATIVE
+      const inputToken = currencies.input instanceof Token ? wrappedCurrencies.input?.address : GELATO_NATIVE
+      const outputToken = currencies.output instanceof Token ? wrappedCurrencies.output?.address : GELATO_NATIVE
 
       const orderToSubmit = {
         inputToken,
@@ -203,7 +203,16 @@ const LimitOrders = () => {
     } catch (error) {
       console.error(error)
     }
-  }, [handleLimitOrderSubmission, account, rawAmounts.input, rawAmounts.output, currencies.input, currencies.output])
+  }, [
+    handleLimitOrderSubmission,
+    account,
+    rawAmounts.input,
+    rawAmounts.output,
+    currencies.input,
+    currencies.output,
+    wrappedCurrencies.input?.address,
+    wrappedCurrencies.output?.address,
+  ])
 
   const [showConfirmModal] = useModal(
     <ConfirmLimitOrderModal
@@ -261,7 +270,7 @@ const LimitOrders = () => {
 
   const isSideFooter = isChartExpanded || (isChartDisplayed && userHasOrders)
   return (
-    <Page removePadding={isChartExpanded} hideFooterOnDesktop={isSideFooter} noMinHeight={true}>
+    <Page removePadding={isChartExpanded} hideFooterOnDesktop={isSideFooter} noMinHeight>
       <Flex
         width="100%"
         justifyContent="center"
@@ -281,7 +290,7 @@ const LimitOrders = () => {
                 setIsChartExpanded={setIsChartExpanded}
                 isChartDisplayed={isChartDisplayed}
                 currentSwapPrice={singleTokenPrice}
-                isFullWidthContainer={true}
+                isFullWidthContainer
               />
               {isChartDisplayed && <Box mb="48px" />}
               {userHasOrders && (
@@ -402,7 +411,7 @@ const LimitOrders = () => {
           </StyledSwapContainer>
           {userHasOrders && isMobile && (
             <Flex mt="24px" width="100%">
-              <LimitOrderTable orderHistory={orderHistory} isCompact={true} />
+              <LimitOrderTable orderHistory={orderHistory} isCompact />
             </Flex>
           )}
           {isSideFooter && (
