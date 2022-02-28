@@ -10,7 +10,7 @@ import Logo from './Logo'
 const StyledLogo = styled(Logo)<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
-  'borderRadius': '50%';
+  border-radius: 50%;
 `
 
 export default function CurrencyLogo({
