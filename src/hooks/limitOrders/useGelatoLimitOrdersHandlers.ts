@@ -145,7 +145,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
       const now = Math.round(Date.now() / 1000)
 
       const summary = orderDetails
-        ? `Order cancellation: Swap ${orderDetails.inputAmount} ${orderDetails.inputTokenSymbol} for ${orderDetails.outputAmount} ${orderDetails.outputTokenSymbol}`
+        ? `Order cancellation: ${orderDetails.inputAmount} ${orderDetails.inputTokenSymbol} for ${orderDetails.outputAmount} ${orderDetails.outputTokenSymbol}`
         : 'Order cancellation'
 
       addTransaction(tx, {

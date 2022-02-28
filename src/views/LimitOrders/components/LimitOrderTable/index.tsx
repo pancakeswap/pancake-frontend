@@ -10,12 +10,14 @@ const LimitOrderTable: React.FC<{ orderHistory: GelatoLimitOrdersHistory; isComp
   orderHistory,
   isCompact,
 }) => {
-  const openOrders = [...orderHistory.open.pending, ...orderHistory.open.confirmed]
+  const openOrders = [...orderHistory.open.pending, ...orderHistory.open.confirmed].sort(
+    (a, b) => parseInt(b.createdAt, 10) - parseInt(a.createdAt, 10),
+  )
   const executedAndCancelledOrders = [
     ...orderHistory.cancelled.pending,
     ...orderHistory.cancelled.confirmed,
     ...orderHistory.executed,
-  ]
+  ].sort((a, b) => parseInt(b.updatedAt, 10) - parseInt(a.updatedAt, 10))
 
   const [activeTab, setIndex] = useState<ORDER_CATEGORY>(ORDER_CATEGORY.Open)
   const handleClick = useCallback((tabType: ORDER_CATEGORY) => setIndex(tabType), [])

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { CurrencyAmount, ETHER, Token, Trade } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
 import { Button, Box, Flex, useModal, useMatchBreakpoints, BottomDrawer } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
@@ -59,6 +59,7 @@ const LimitOrders = () => {
       inputError,
       wrappedCurrencies,
       singleTokenPrice,
+      currencyIds,
     },
     orderState: { independentField, rateType },
   } = useGelatoLimitOrders()
@@ -247,11 +248,6 @@ const LimitOrders = () => {
   const showApproveFlow =
     !inputError && (approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING)
 
-  const inputCurrencyId =
-    currencies.input instanceof Token ? currencies.input.address : currencies.input === ETHER ? 'BNB' : ''
-  const outputCurrencyId =
-    currencies.output instanceof Token ? currencies.output.address : currencies.output === ETHER ? 'BNB' : ''
-
   const userHasOrders = useMemo(
     () =>
       orderHistory.open.confirmed.length > 0 ||
@@ -281,9 +277,9 @@ const LimitOrders = () => {
         {!isMobile && (
           <Flex width={isChartExpanded ? '100%' : '50%'} flexDirection="column">
             <PriceChartContainer
-              inputCurrencyId={inputCurrencyId}
+              inputCurrencyId={currencyIds.input}
               inputCurrency={currencies.input}
-              outputCurrencyId={outputCurrencyId}
+              outputCurrencyId={currencyIds.output}
               outputCurrency={currencies.output}
               isChartExpanded={isChartExpanded}
               setIsChartExpanded={setIsChartExpanded}
@@ -408,9 +404,9 @@ const LimitOrders = () => {
       <BottomDrawer
         content={
           <PriceChartContainer
-            inputCurrencyId={inputCurrencyId}
+            inputCurrencyId={currencyIds.input}
             inputCurrency={currencies[Field.INPUT]}
-            outputCurrencyId={outputCurrencyId}
+            outputCurrencyId={currencyIds.output}
             outputCurrency={currencies[Field.OUTPUT]}
             isChartExpanded={isChartExpanded}
             setIsChartExpanded={setIsChartExpanded}

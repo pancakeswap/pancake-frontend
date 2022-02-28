@@ -1,5 +1,4 @@
 import JSBI from 'jsbi'
-import { parseUnits } from '@ethersproject/units'
 import { useDispatch, useSelector } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
 import { Currency, CurrencyAmount, TokenAmount, Trade, Token, Price, ETHER } from '@pancakeswap/sdk'
@@ -11,6 +10,7 @@ import { useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { isAddress } from 'utils'
+import tryParseAmount from 'utils/tryParseAmount'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
@@ -107,27 +107,6 @@ export const useOrderActionHandlers = (): {
   }
 }
 
-// try to parse a user entered amount for a given token
-const tryParseAmount = (value?: string, currency?: Currency): CurrencyAmount | undefined => {
-  if (!value || !currency) {
-    return undefined
-  }
-  try {
-    const typedValueParsed = parseUnits(value, currency.decimals).toString()
-
-    if (typedValueParsed !== '0') {
-      return currency instanceof Token
-        ? new TokenAmount(currency, JSBI.BigInt(typedValueParsed))
-        : CurrencyAmount.ether(JSBI.BigInt(typedValueParsed))
-    }
-  } catch (error) {
-    // should fail if the user specifies too many decimal places of precision (or maybe exceed max uint?)
-    console.debug(`Failed to parse input amount: "${value}"`, error)
-  }
-  // necessary for all paths to return a value
-  return undefined
-}
-
 export interface DerivedOrderInfo {
   currencies: { input: Currency | Token | undefined; output: Currency | Token | undefined }
   currencyBalances: {
@@ -157,11 +136,18 @@ export interface DerivedOrderInfo {
   singleTokenPrice: {
     [key: string]: number
   }
+  currencyIds: {
+    input: string
+    output: string
+  }
 }
 
 const getErrorMessage = (
   account: string,
-  chainId: number,
+  wrappedCurrencies: {
+    input: Token
+    output: Token
+  },
   currencies: { input: Currency | Token; output: Currency | Token },
   currencyBalances: { input: CurrencyAmount; output: CurrencyAmount },
   parsedAmounts: { input: CurrencyAmount; output: CurrencyAmount },
@@ -172,9 +158,11 @@ const getErrorMessage = (
   if (!account) {
     return 'Connect Wallet'
   }
-  const wrappedInput = wrappedCurrency(currencies.input, chainId)
-  const wrappedOutput = wrappedCurrency(currencies.output, chainId)
-  if (wrappedInput && wrappedOutput && wrappedInput.address.toLowerCase() === wrappedOutput.address.toLowerCase()) {
+  if (
+    wrappedCurrencies.input &&
+    wrappedCurrencies.output &&
+    wrappedCurrencies.input.address.toLowerCase() === wrappedCurrencies.output.address.toLowerCase()
+  ) {
     return 'Order not allowed'
   }
   const hasBothTokensSelected = currencies.input && currencies.output
@@ -356,7 +344,16 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   return {
     currencies,
     currencyBalances,
-    inputError: getErrorMessage(account, chainId, currencies, currencyBalances, parsedAmounts, trade, price, rateType),
+    inputError: getErrorMessage(
+      account,
+      wrappedCurrencies,
+      currencies,
+      currencyBalances,
+      parsedAmounts,
+      trade,
+      price,
+      rateType,
+    ),
     formattedAmounts,
     trade: trade ?? undefined,
     parsedAmounts,
@@ -366,6 +363,10 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     singleTokenPrice: {
       [wrappedCurrencies.input?.address]: singleTokenPrice,
       [wrappedCurrencies.output?.address]: inverseSingleTokenPrice,
+    },
+    currencyIds: {
+      input: inputCurrencyId,
+      output: outputCurrencyId,
     },
   }
 }

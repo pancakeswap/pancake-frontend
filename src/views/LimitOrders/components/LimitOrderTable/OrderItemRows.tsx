@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Table, Th, Td, Text } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 
 import { useTranslation } from 'contexts/Localization'
 import Navigation from './TableNavigation'
@@ -7,7 +8,6 @@ import CompactRow from './CompactRow'
 import NoOrdersMessage from './NoOrdersMessage'
 import { LimitOrderTableProps } from './types'
 import FullRow from './FullRow'
-import styled from 'styled-components'
 
 const ORDERS_PER_PAGE = 5
 
