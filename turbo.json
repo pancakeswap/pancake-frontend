@@ -19,7 +19,6 @@
     "format:write": {},
     "analyze": {},
     "test:config": {},
-    "integration-test": {},
-    "prepare": {}
+    "integration-test": {}
   }
 }

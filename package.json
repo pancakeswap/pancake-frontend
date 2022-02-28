@@ -20,9 +20,10 @@
     "typechain": "turbo run typechain",
     "format:check:staged": "turbo run format:check:staged",
     "format:write": "turbo run format:write",
-    "prepare": "turbo run prepare"
+    "prepare": "husky install"
   },
   "devDependencies": {
+    "husky": "^7.0.4",
     "prettier": "^2.5.1",
     "turbo": "latest"
   },
