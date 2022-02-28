@@ -4,7 +4,7 @@ export default {
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'Binance',
+    navigationBarTitleText: 'PancakeSwap',
     navigationBarTextStyle: 'black',
   },
 }
