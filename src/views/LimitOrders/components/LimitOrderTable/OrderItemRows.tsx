@@ -2,13 +2,18 @@ import { useEffect, useMemo, useState } from 'react'
 import { Table, Th, Td, Text } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
-import Navigation from 'components/TableNavigation'
+import Navigation from './TableNavigation'
 import CompactRow from './CompactRow'
 import NoOrdersMessage from './NoOrdersMessage'
 import { LimitOrderTableProps } from './types'
 import FullRow from './FullRow'
+import styled from 'styled-components'
 
 const ORDERS_PER_PAGE = 5
+
+const StyledTBody = styled.tbody`
+  border-bottom: ${({ theme }) => `1px solid ${theme.colors.disabled}`};
+`
 
 const OrderItemRows: React.FC<LimitOrderTableProps> = ({ orders, orderCategory, isCompact }) => {
   const [page, setPage] = useState(1)
@@ -44,7 +49,7 @@ const OrderItemRows: React.FC<LimitOrderTableProps> = ({ orders, orderCategory, 
     <>
       <Table>
         {isCompact ? (
-          <tbody>
+          <StyledTBody>
             {currentPageOrders.map((order) => (
               <tr key={order.id}>
                 <Td>
@@ -52,7 +57,7 @@ const OrderItemRows: React.FC<LimitOrderTableProps> = ({ orders, orderCategory, 
                 </Td>
               </tr>
             ))}
-          </tbody>
+          </StyledTBody>
         ) : (
           <>
             <thead>
@@ -80,11 +85,11 @@ const OrderItemRows: React.FC<LimitOrderTableProps> = ({ orders, orderCategory, 
                 <Th />
               </tr>
             </thead>
-            <tbody>
+            <StyledTBody>
               {currentPageOrders.map((order) => (
                 <FullRow key={order.id} order={order} />
               ))}
-            </tbody>
+            </StyledTBody>
           </>
         )}
       </Table>

@@ -1,17 +1,9 @@
-import { Text, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
+import { Text, Flex, Box, Grid, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import { SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
-export const PageButtons = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.2em;
-  margin-bottom: 1.2em;
-`
-
-export const Arrow = styled.div`
+const Arrow = styled.div`
   color: ${({ theme }) => theme.colors.primary};
   padding: 0 20px;
   :hover {
@@ -30,8 +22,9 @@ const TableNavigation: React.FC<TableNavigationProps> = ({ currentPage = 1, maxP
   const { t } = useTranslation()
 
   return (
-    <>
-      <PageButtons>
+    <Grid gridGap="16px" gridTemplateColumns={['1fr', null, null, null, '1fr 2fr 1fr']} mt="16px" mb="16px" px="16px">
+      <Box />
+      <Flex width="100%" justifyContent="center" alignItems="center">
         <Arrow onClick={onPagePrev}>
           <ArrowBackIcon color={currentPage === 1 ? 'textDisabled' : 'primary'} />
         </Arrow>
@@ -41,8 +34,11 @@ const TableNavigation: React.FC<TableNavigationProps> = ({ currentPage = 1, maxP
         <Arrow onClick={onPageNext}>
           <ArrowForwardIcon color={currentPage === maxPage ? 'textDisabled' : 'primary'} />
         </Arrow>
-      </PageButtons>
-    </>
+      </Flex>
+      <Flex width="100%" justifyContent="center">
+        <SubgraphHealthIndicator subgraphName="gelatodigital/limit-orders-bsc" inline />
+      </Flex>
+    </Grid>
   )
 }
 

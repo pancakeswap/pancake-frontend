@@ -16,9 +16,8 @@ const LimitOrderTable: React.FC<{ orderHistory: GelatoLimitOrdersHistory; isComp
     ...orderHistory.cancelled.confirmed,
     ...orderHistory.executed,
   ]
-  const [activeTab, setIndex] = useState<ORDER_CATEGORY>(
-    openOrders.length === 0 ? ORDER_CATEGORY.History : ORDER_CATEGORY.Open,
-  )
+
+  const [activeTab, setIndex] = useState<ORDER_CATEGORY>(ORDER_CATEGORY.Open)
   const handleClick = useCallback((tabType: ORDER_CATEGORY) => setIndex(tabType), [])
 
   return (

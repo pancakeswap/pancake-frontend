@@ -3,7 +3,7 @@ import Script from 'next/script'
 import dynamic from 'next/dynamic'
 import BigNumber from 'bignumber.js'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
-import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import FixedSubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { ToastListener } from 'contexts/ToastsContext'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { useInactiveListener } from 'hooks/useInactiveListener'
@@ -119,7 +119,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       </Menu>
       <EasterEgg iterations={2} />
       <ToastListener />
-      <SubgraphHealthIndicator />
+      <FixedSubgraphHealthIndicator />
     </ProductionErrorBoundary>
   )
 }

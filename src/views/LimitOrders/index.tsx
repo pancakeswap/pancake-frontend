@@ -278,29 +278,27 @@ const LimitOrders = () => {
         mb={isSideFooter ? null : '24px'}
         mt={isChartExpanded ? '24px' : null}
       >
-        <Flex width={isChartExpanded ? '100%' : '50%'} flexDirection="column">
-          {!isMobile && (
-            <>
-              <PriceChartContainer
-                inputCurrencyId={inputCurrencyId}
-                inputCurrency={currencies.input}
-                outputCurrencyId={outputCurrencyId}
-                outputCurrency={currencies.output}
-                isChartExpanded={isChartExpanded}
-                setIsChartExpanded={setIsChartExpanded}
-                isChartDisplayed={isChartDisplayed}
-                currentSwapPrice={singleTokenPrice}
-                isFullWidthContainer
-              />
-              {isChartDisplayed && <Box mb="48px" />}
-              {userHasOrders && (
-                <Box width="100%">
-                  <LimitOrderTable orderHistory={orderHistory} isCompact={isTablet} />
-                </Box>
-              )}
-            </>
-          )}
-        </Flex>
+        {!isMobile && (
+          <Flex width={isChartExpanded ? '100%' : '50%'} flexDirection="column">
+            <PriceChartContainer
+              inputCurrencyId={inputCurrencyId}
+              inputCurrency={currencies.input}
+              outputCurrencyId={outputCurrencyId}
+              outputCurrency={currencies.output}
+              isChartExpanded={isChartExpanded}
+              setIsChartExpanded={setIsChartExpanded}
+              isChartDisplayed={isChartDisplayed}
+              currentSwapPrice={singleTokenPrice}
+              isFullWidthContainer
+            />
+            {isChartDisplayed && <Box mb="48px" />}
+            {userHasOrders && (
+              <Box width="100%">
+                <LimitOrderTable orderHistory={orderHistory} isCompact={isTablet} />
+              </Box>
+            )}
+          </Flex>
+        )}
         <Flex flexDirection="column" alignItems="center">
           <StyledSwapContainer $isChartExpanded={false}>
             <StyledInputCurrencyWrapper>
