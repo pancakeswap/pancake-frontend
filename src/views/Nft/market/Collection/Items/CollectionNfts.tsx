@@ -11,34 +11,24 @@ interface CollectionNftsProps {
 }
 
 const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
-  const { totalSupply, numberTokensListed, address: collectionAddress } = collection
+  const { address: collectionAddress } = collection
   const { t } = useTranslation()
-  const { nfts, isFetchingNfts, size, setSize, showOnlyNftsOnSale, orderField, nftFilters } =
-    useCollectionNfts(collectionAddress)
+  const { nfts, isFetchingNfts, page, setPage, resultSize, isLastPage } = useCollectionNfts(collectionAddress)
 
   const handleLoadMore = useCallback(() => {
-    setSize(size + 1)
-  }, [setSize, size])
+    setPage(page + 1)
+  }, [setPage, page])
 
   if ((!nfts || nfts?.length === 0) && isFetchingNfts) {
     return <GridPlaceholder />
   }
 
-  const isNotLastPage =
-    showOnlyNftsOnSale || orderField !== 'tokenId'
-      ? nfts?.length < Number(numberTokensListed)
-      : nfts?.length < Number(totalSupply)
-
-  const resultsAmount = showOnlyNftsOnSale || orderField !== 'tokenId' ? numberTokensListed : totalSupply
-  // We don't know the amount in advance if nft filters exist
-  const resultsAmountToBeShown = !Object.keys(nftFilters).length
-
   return (
     <>
-      {resultsAmountToBeShown && (
+      {resultSize && (
         <Flex p="16px">
           <Text bold>
-            {resultsAmount} {t('Results')}
+            {resultSize} {t('Results')}
           </Text>
         </Flex>
       )}
@@ -62,7 +52,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
             })}
           </Grid>
           <Flex mt="60px" mb="12px" justifyContent="center">
-            {isNotLastPage && (
+            {!isLastPage && (
               <Button
                 onClick={handleLoadMore}
                 scale="sm"
