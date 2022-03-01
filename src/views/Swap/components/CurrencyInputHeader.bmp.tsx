@@ -23,7 +23,7 @@ interface Props {
   isChartDisplayed?: boolean
 }
 
-const CurrencyInputContainer = styled(Flex)`
+const CurrencyInputContainer = styled.div`
   align-items: center;
   padding: 24px;
   width: 100%;
@@ -34,6 +34,7 @@ const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
   // bmp start
   visibility: hidden;
+  width: 64px;
   // bmp end
 `
 
@@ -46,22 +47,13 @@ const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDispl
 
   return (
     <CurrencyInputContainer>
-      <Flex width="100%" alignItems="flex-start" justifyContent="space-between">
+      <Flex width="100%" alignItems="center" justifyContent="space-between">
         {setIsChartDisplayed && (
           <ColoredIconButton onClick={toggleChartDisplayed} variant="text" scale="sm">
             {isChartDisplayed ? <ChartDisableIcon color="textSubtle" /> : <ChartIcon width="24px" color="textSubtle" />}
           </ColoredIconButton>
         )}
-        <Flex flexDirection="column" alignItems="center">
-          <Heading as="h2" mb="8px">
-            {title}
-          </Heading>
-          <Flex alignItems="center">
-            <Text color="textSubtle" fontSize="14px">
-              {subtitle}
-            </Text>
-          </Flex>
-        </Flex>
+        <Heading as="h2">{title}</Heading>
         <Flex>
           <NotificationDot show={expertMode}>
             <GlobalSettings color="textSubtle" mr="0" />
@@ -70,6 +62,11 @@ const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDispl
             <HistoryIcon color="textSubtle" width="24px" />
           </IconButton>
         </Flex>
+      </Flex>
+      <Flex justifyContent="center">
+        <Text color="textSubtle" fontSize="14px">
+          {subtitle}
+        </Text>
       </Flex>
     </CurrencyInputContainer>
   )
