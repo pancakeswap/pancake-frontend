@@ -109,7 +109,7 @@ export function useSwapCallback(
 
         if (!successfulEstimation) {
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
-          if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
+          if (errorCalls.length > 0) throw new Error(errorCalls[errorCalls.length - 1].error)
           throw new Error(t('Unexpected error. Could not estimate gas for the swap.'))
         }
 
