@@ -399,10 +399,7 @@ function Swap() {
                           className="icon-down"
                           color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                         />
-                        <ArrowUpDownIcon
-                          className="icon-up-down"
-                          color="#ffffff"
-                        />
+                        <ArrowUpDownIcon className="icon-up-down" color="#ffffff" />
                       </SwitchIconButton>
                       {recipient === null && !showWrap && isExpertMode ? (
                         <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>

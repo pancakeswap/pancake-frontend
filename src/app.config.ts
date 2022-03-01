@@ -1,10 +1,12 @@
 export default {
   entryPagePath: 'views/Swap/index',
   pages: ['views/Swap/index', 'views/webview'],
+  darkmode: true,
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
+    navigationBarBackgroundColor: '@navBgColor',
+    navigationBarTextStyle: '@navTxtStyle',
     navigationBarTitleText: 'PancakeSwap',
-    navigationBarTextStyle: 'black',
   },
+  themeLocation: './theme.json',
 }
