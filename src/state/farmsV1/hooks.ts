@@ -43,24 +43,13 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
   }
 }
 
-export const usePollFarmsPublicData = (includeArchive = false) => {
-  const dispatch = useAppDispatch()
-
-  useSlowRefreshEffect(() => {
-    const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
-    const pids = farmsToFetch.map((farmToFetch) => farmToFetch.v1pid)
-
-    dispatch(fetchFarmsPublicDataAsync(pids))
-  }, [includeArchive, dispatch])
-}
-
 export const usePollFarmsWithUserData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
   useSlowRefreshEffect(() => {
     const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
-    const pids = farmsToFetch.map((farmToFetch) => farmToFetch.v1pid)
+    const pids = farmsToFetch.filter((farmToFetch) => farmToFetch.v1pid).map((farmToFetch) => farmToFetch.v1pid)
 
     dispatch(fetchFarmsPublicDataAsync(pids))
 
@@ -84,14 +73,19 @@ export const usePollCoreFarmData = () => {
 }
 
 export const useFarms = (): DeserializedFarmsState => {
-  const farmsV1 = useSelector((state: State) => state.farmsV1)
-  const deserializedFarmsData = farmsV1.data.map(deserializeFarm)
-  const { loadArchivedFarmsData, userDataLoaded } = farmsV1
+  const farms = useSelector((state: State) => state.farmsV1)
+  const deserializedFarmsData = farms.data.map(deserializeFarm)
+  const { loadArchivedFarmsData, userDataLoaded, poolLength } = farms
   return {
     loadArchivedFarmsData,
     userDataLoaded,
     data: deserializedFarmsData,
+    poolLength,
   }
+}
+
+export const useFarmsPoolLength = (): number => {
+  return useSelector((state: State) => state.farmsV1.poolLength)
 }
 
 export const useFarmFromPid = (pid: number): DeserializedFarm => {

@@ -4,18 +4,27 @@ import { multicallv2 } from 'utils/multicall'
 import { SerializedFarmConfig } from '../../config/constants/types'
 import { SerializedFarm } from '../types'
 import { getMasterChefV1Address } from '../../utils/addressHelpers'
+import { getMasterchefV1Contract } from '../../utils/contractHelpers'
 
-const fetchMasterChefFarmCalls = (farm: SerializedFarm) => {
+const masterChefAddress = getMasterChefV1Address()
+const masterChefContract = getMasterchefV1Contract()
+
+export const fetchMasterChefFarmPoolLength = async () => {
+  const poolLength = await masterChefContract.poolLength()
+  return poolLength
+}
+
+const masterChefFarmCalls = (farm: SerializedFarm) => {
   const { v1pid } = farm
   return v1pid || v1pid === 0
     ? [
         {
-          address: getMasterChefV1Address(),
+          address: masterChefAddress,
           name: 'poolInfo',
           params: [v1pid],
         },
         {
-          address: getMasterChefV1Address(),
+          address: masterChefAddress,
           name: 'totalAllocPoint',
         },
       ]
@@ -23,7 +32,7 @@ const fetchMasterChefFarmCalls = (farm: SerializedFarm) => {
 }
 
 export const fetchMasterChefData = async (farms: SerializedFarmConfig[]): Promise<any[]> => {
-  const masterChefCalls = farms.map((farm) => fetchMasterChefFarmCalls(farm))
+  const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm))
   const chunkSize = masterChefCalls.flat().length / farms.length
   const masterChefAggregatedCalls = masterChefCalls
     .filter((masterChefCall) => masterChefCall[0] !== null && masterChefCall[1] !== null)

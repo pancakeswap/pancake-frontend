@@ -33,7 +33,7 @@ export interface MultiplierProps {
 }
 
 const Multiplier: React.FC<MultiplierProps> = ({ multiplier }) => {
-  const displayMultiplier = multiplier ? multiplier.toLowerCase() : <Skeleton width={30} />
+  const displayMultiplier = multiplier ? multiplier.toLowerCase() : `0x`
   const { t } = useTranslation()
   const tooltipContent = (
     <>

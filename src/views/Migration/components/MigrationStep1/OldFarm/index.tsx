@@ -22,7 +22,7 @@ const OldFarmStep1: React.FC = () => {
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const farms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0x' && !isArchivedPidV1(farm.pid))
+  const farms = farmsLP.filter((farm) => farm.v1pid !== 0 && farm.multiplier !== '0x' && !isArchivedPidV1(farm.v1pid))
 
   const stakedOrHasTokenBalance = farms.filter((farm) => {
     return (

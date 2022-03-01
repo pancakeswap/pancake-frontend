@@ -19,6 +19,7 @@ import {
   fetchFarmUserStakedBalances,
 } from './fetchFarmUser'
 import { SerializedFarmsState, SerializedFarm } from '../types'
+import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 
 const noAccountFarmConfig = farmsConfig.map((farm) => ({
   ...farm,
@@ -41,18 +42,20 @@ export const nonArchivedFarms = farmsConfig.filter(({ v1pid }) => !isArchivedPid
 
 // Async thunks
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
-  SerializedFarm[],
+  [SerializedFarm[], number],
   number[],
   {
     state: AppState
   }
 >(
-  'farmsv1/fetchFarmsPublicDataAsync',
-  async (v1Pids) => {
-    const farmsToFetch = farmsConfig.filter((farmConfig) => v1Pids.includes(farmConfig.v1pid))
+  'farmsV1/fetchFarmsPublicDataAsync',
+  async (pids) => {
+    const poolLength = await fetchMasterChefFarmPoolLength()
+    const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.v1pid))
+    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.v1pid))
 
     // Add price helper farms
-    const farmsWithPriceHelpers = farmsToFetch.concat(priceHelperLpsConfig)
+    const farmsWithPriceHelpers = farmsCanFetch.concat(priceHelperLpsConfig)
 
     const farms = await fetchFarms(farmsWithPriceHelpers)
     const farmsWithPrices = getFarmsPrices(farms)
@@ -62,7 +65,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
       return farm.v1pid || farm.v1pid === 0
     })
 
-    return farmsWithoutHelperLps
+    return [farmsWithoutHelperLps, poolLength.toNumber()]
   },
   {
     condition: (arg, { getState }) => {
@@ -77,7 +80,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 )
 
 interface FarmUserDataResponse {
-  v1pid: number
+  pid: number
   allowance: string
   tokenBalance: string
   stakedBalance: string
@@ -91,17 +94,19 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
     state: AppState
   }
 >(
-  'farmsv1/fetchFarmUserDataAsync',
+  'farmsV1/fetchFarmUserDataAsync',
   async ({ account, pids }) => {
+    const poolLength = await fetchMasterChefFarmPoolLength()
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.v1pid))
-    const userFarmAllowances = await fetchFarmUserAllowances(account, farmsToFetch)
-    const userFarmTokenBalances = await fetchFarmUserTokenBalances(account, farmsToFetch)
-    const userStakedBalances = await fetchFarmUserStakedBalances(account, farmsToFetch)
-    const userFarmEarnings = await fetchFarmUserEarnings(account, farmsToFetch)
+    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.v1pid))
+    const userFarmAllowances = await fetchFarmUserAllowances(account, farmsCanFetch)
+    const userFarmTokenBalances = await fetchFarmUserTokenBalances(account, farmsCanFetch)
+    const userStakedBalances = await fetchFarmUserStakedBalances(account, farmsCanFetch)
+    const userFarmEarnings = await fetchFarmUserEarnings(account, farmsCanFetch)
 
     return userFarmAllowances.map((farmAllowance, index) => {
       return {
-        v1pid: farmsToFetch[index].v1pid,
+        pid: farmsCanFetch[index].v1pid,
         allowance: userFarmAllowances[index],
         tokenBalance: userFarmTokenBalances[index],
         stakedBalance: userStakedBalances[index],
@@ -144,17 +149,19 @@ export const farmsSlice = createSlice({
   extraReducers: (builder) => {
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
+      const [farmPayload, poolLength] = action.payload
       state.data = state.data.map((farm) => {
-        const liveFarmData = action.payload.find((farmData) => farmData.pid === farm.pid)
+        const liveFarmData = farmPayload.find((farmData) => farmData.v1pid === farm.v1pid)
         return { ...farm, ...liveFarmData }
       })
+      state.poolLength = poolLength
     })
 
     // Update farms with user data
     builder.addCase(fetchFarmUserDataAsync.fulfilled, (state, action) => {
       action.payload.forEach((userDataEl) => {
-        const { v1pid } = userDataEl
-        const index = state.data.findIndex((farm) => farm.v1pid === v1pid)
+        const { pid } = userDataEl
+        const index = state.data.findIndex((farm) => farm.v1pid === pid)
         state.data[index] = { ...state.data[index], userData: userDataEl }
       })
       state.userDataLoaded = true

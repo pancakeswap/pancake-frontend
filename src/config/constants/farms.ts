@@ -46,6 +46,7 @@ const farms: SerializedFarmConfig[] = [
    */
   {
     pid: 491,
+    v1pid: 491,
     lpSymbol: 'HIGH-BUSD LP',
     lpAddresses: {
       97: '',
@@ -56,6 +57,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 488,
+    v1pid: 488,
     lpSymbol: 'THG-BNB LP',
     lpAddresses: {
       97: '',
@@ -66,6 +68,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 513,
+    v1pid: 513,
     lpSymbol: 'ERA-BNB LP',
     lpAddresses: {
       97: '',
@@ -76,6 +79,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 511,
+    v1pid: 511,
     lpSymbol: 'LOA-BUSD LP',
     lpAddresses: {
       97: '',
@@ -87,6 +91,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 512,
+    v1pid: 512,
     lpSymbol: 'FIGHT-BUSD LP',
     lpAddresses: {
       97: '',
@@ -109,6 +114,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 510,
+    v1pid: 510,
     lpSymbol: 'BTT-BUSD',
     lpAddresses: {
       97: '',
@@ -119,6 +125,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 509,
+    v1pid: 509,
     lpSymbol: 'ACH-USDT',
     lpAddresses: {
       97: '',
