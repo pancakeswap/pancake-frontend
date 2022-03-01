@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { connectorLocalStorageKey, ConnectorNames } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
 
@@ -16,10 +16,9 @@ const _binanceChainListener = async () =>
     }),
   )
 
-let triedEagerConnect = true
-
 const useEagerConnect = () => {
   const { login } = useAuth()
+  const [hasTried, setHasTried] = useState(false)
 
   useEffect(() => {
     const connectorId = window.localStorage.getItem(connectorLocalStorageKey) as ConnectorNames
@@ -36,8 +35,8 @@ const useEagerConnect = () => {
         return
       }
 
-      login(connectorId, triedEagerConnect)
-      triedEagerConnect = false
+      login(connectorId, !hasTried)
+      setHasTried(true)
     }
   }, [login])
 }
