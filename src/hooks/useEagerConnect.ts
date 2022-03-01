@@ -34,9 +34,10 @@ const useEagerConnect = () => {
 
         return
       }
-
-      login(connectorId, !hasTried)
-      setHasTried(true)
+      if (!hasTried) {
+        login(connectorId)
+        setHasTried(true)
+      }
     }
   }, [login])
 }
