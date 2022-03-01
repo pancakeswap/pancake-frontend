@@ -41,12 +41,8 @@ function GlobalHooks() {
 }
 
 function MyApp(props: AppProps) {
-  const [mounted, setMounted] = useState(false)
   const { pageProps } = props
   const store = useStore(pageProps.initialReduxState)
-
-  // When mounted on client, now we can show the UI
-  useEffect(() => setMounted(true), [])
 
   return (
     <>
@@ -78,7 +74,7 @@ function MyApp(props: AppProps) {
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
             <BlockCountry />
-            {mounted && <App {...props} />}
+            <App {...props} />
           </PersistGate>
         </Blocklist>
       </Providers>
