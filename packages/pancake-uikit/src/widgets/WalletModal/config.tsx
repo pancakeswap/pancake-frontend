@@ -7,6 +7,7 @@ import BinanceChain from "../../components/Svg/Icons/BinanceChain";
 import SafePal from "../../components/Svg/Icons/SafePal";
 import Coin98 from "../../components/Svg/Icons/Coin98";
 import Blocto from "../../components/Svg/Icons/Blocto";
+import CoinbaseWallet from "../../components/Svg/Icons/CoinbaseWallet";
 
 import { Config, ConnectorNames } from "./types";
 
@@ -64,6 +65,12 @@ const connectors: Config[] = [
     title: "Blocto",
     icon: Blocto,
     connectorId: ConnectorNames.Blocto,
+    priority: 999,
+  },
+  {
+    title: "Coinbase",
+    icon: CoinbaseWallet,
+    connectorId: ConnectorNames.WalletLink,
     priority: 999,
   },
 ];
