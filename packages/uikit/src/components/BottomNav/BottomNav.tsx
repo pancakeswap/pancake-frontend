@@ -14,34 +14,37 @@ const BottomNav: React.FC<BottomNavProps> = ({ items = [], activeItem = "", acti
     <>
       {isBottomMenuOpen && <Overlay />}
       <StyledBottomNav justifyContent="space-around" {...props}>
-        {items.map(({ label, items: menuItems, href, icon, showOnMobile = true, showItemsOnMobile = true }, index) => {
-          const statusColor = menuItems?.find((menuItem) => menuItem.status !== undefined)?.status?.color;
-          return (
-            showOnMobile && (
-              <DropdownMenu
-                key={label}
-                items={menuItems}
-                isBottomNav
-                activeItem={activeSubItem}
-                showItemsOnMobile={showItemsOnMobile}
-                setMenuOpenByIndex={setMenuOpenByIndex}
-                index={index}
-              >
-                <Box>
-                  <NotificationDot show={!!statusColor} color={statusColor}>
-                    <BottomNavItem
-                      href={href}
-                      isActive={href === activeItem}
-                      label={label}
-                      iconName={icon}
-                      showItemsOnMobile={showItemsOnMobile}
-                    />
-                  </NotificationDot>
-                </Box>
-              </DropdownMenu>
-            )
-          );
-        })}
+        {items.map(
+          ({ label, items: menuItems, href, icon, fillIcon, showOnMobile = true, showItemsOnMobile = true }, index) => {
+            const statusColor = menuItems?.find((menuItem) => menuItem.status !== undefined)?.status?.color;
+            return (
+              showOnMobile && (
+                <DropdownMenu
+                  key={label}
+                  items={menuItems}
+                  isBottomNav
+                  activeItem={activeSubItem}
+                  showItemsOnMobile={showItemsOnMobile}
+                  setMenuOpenByIndex={setMenuOpenByIndex}
+                  index={index}
+                >
+                  <Box>
+                    <NotificationDot show={!!statusColor} color={statusColor}>
+                      <BottomNavItem
+                        href={href}
+                        isActive={href === activeItem}
+                        label={label}
+                        icon={icon}
+                        fillIcon={fillIcon}
+                        showItemsOnMobile={showItemsOnMobile}
+                      />
+                    </NotificationDot>
+                  </Box>
+                </DropdownMenu>
+              )
+            );
+          }
+        )}
       </StyledBottomNav>
     </>
   );

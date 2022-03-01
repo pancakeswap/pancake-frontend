@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ElementType } from "react";
 import { BoxProps } from "../Box";
 import { DropdownMenuItems } from "../DropdownMenu/types";
 
 export type MenuItemsType = {
   label: string;
   href: string;
-  icon?: string;
+  icon?: ElementType<any>;
+  fillIcon?: ElementType<any>;
   items?: DropdownMenuItems[];
   showOnMobile?: boolean;
   showItemsOnMobile?: boolean;

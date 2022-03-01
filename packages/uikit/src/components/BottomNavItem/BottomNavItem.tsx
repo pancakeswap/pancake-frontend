@@ -7,7 +7,8 @@ import { BottomNavItemProps } from "./types";
 
 const BottomNavItem: React.FC<BottomNavItemProps> = ({
   label,
-  iconName,
+  icon,
+  fillIcon,
   href,
   showItemsOnMobile = false,
   isActive = false,
@@ -16,9 +17,10 @@ const BottomNavItem: React.FC<BottomNavItemProps> = ({
   const { linkComponent } = useContext(MenuContext);
   const bottomNavItemContent = (
     <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
-      {iconName && (
+      {icon && (
         <AnimatedIconComponent
-          iconName={iconName}
+          icon={icon}
+          fillIcon={fillIcon}
           height="22px"
           width="21px"
           color={isActive ? "secondary" : "textSubtle"}

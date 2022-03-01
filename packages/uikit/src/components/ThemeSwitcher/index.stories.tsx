@@ -1,5 +1,5 @@
 import React from "react";
-import { noop } from "lodash";
+import noop from "lodash/noop";
 import { Flex } from "../Box";
 import { ThemeSwitcher, ThemeSwitcherProps } from ".";
 

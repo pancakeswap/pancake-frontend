@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { capitalize } from "lodash";
+import capitalize from "lodash/capitalize";
 import React, { useState } from "react";
 import { BrowserRouter, Link } from "react-router-dom";
 import styled from "styled-components";
