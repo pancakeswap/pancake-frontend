@@ -28,6 +28,10 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
   ],
   rules: {
+    "import/prefer-default-export": 0,
+    "react/destructuring-assignment": 0,
+    "react/jsx-no-bind": 0,
+    "react/no-unused-prop-types": 0,
     // Typescript
     "@typescript-eslint/no-unused-vars": "warn",
     "no-use-before-define": "off",
