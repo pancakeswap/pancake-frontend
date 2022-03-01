@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
+// eslint-disable-next-line import/no-unresolved
 import { Swiper, SwiperSlide } from 'swiper/react'
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/css'
 import { Box } from '@pancakeswap/uikit'
 import { useGetCurrentEpoch, useGetSortedRounds } from 'state/predictions/hooks'
 import delay from 'lodash/delay'
@@ -61,11 +64,8 @@ const Positions: React.FC<{ view?: PageView }> = ({ view }) => {
           onSwiper={setSwiper}
           spaceBetween={16}
           slidesPerView="auto"
-          freeMode
-          freeModeSticky
+          freeMode={{ enabled: true, sticky: true, momentumRatio: 0.25, momentumVelocityRatio: 0.5 }}
           centeredSlides
-          freeModeMomentumRatio={0.25}
-          freeModeMomentumVelocityRatio={0.5}
           mousewheel
           keyboard
           resizeObserver

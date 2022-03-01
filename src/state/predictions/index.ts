@@ -498,7 +498,15 @@ export const predictionsSlice = createSlice({
 
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
-      state.rounds = merge({}, state.rounds, action.payload)
+      const allRoundData = merge({}, state.rounds, action.payload)
+      // Take always last PAST_ROUND_COUNT items
+      state.rounds = Object.entries(allRoundData)
+        .filter(([epoch]) => Number(epoch) > state.currentEpoch - PAST_ROUND_COUNT)
+        .reduce((acc, [k, v]) => {
+          // eslint-disable-next-line no-param-reassign
+          acc[k] = v
+          return acc
+        }, {})
     })
 
     // Show History

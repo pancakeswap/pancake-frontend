@@ -52,12 +52,12 @@ export const formatRoundTime = (secondsBetweenBlocks: number) => {
   return minutesSeconds
 }
 
-export const getHasRoundFailed = (round: NodeRound, buffer: number) => {
-  const closeTimestampMs = (round.closeTimestamp + buffer) * 1000
-  const now = Date.now()
-
-  if (closeTimestampMs !== null && now > closeTimestampMs && !round.oracleCalled) {
-    return true
+export const getHasRoundFailed = (round: NodeRound, buffer: number, now = Date.now()) => {
+  if (!round.oracleCalled) {
+    const closeTimestampMs = (round.closeTimestamp + buffer) * 1000
+    if (Number.isFinite(closeTimestampMs)) {
+      return now > closeTimestampMs
+    }
   }
 
   return false

@@ -23,6 +23,11 @@ const RoundCard: React.FC<RoundCardProps> = ({ round, isActive }) => {
   const hasClaimedUp = hasEntered && ledger.claimed && ledger.position === BetPosition.BULL
   const hasClaimedDown = hasEntered && ledger.claimed && ledger.position === BetPosition.BEAR
 
+  // Fake future rounds
+  if (epoch > currentEpoch) {
+    return <SoonRoundCard round={round} />
+  }
+
   const bullMultiplier = getMultiplierV2(totalAmount, bullAmount)
   const bearMultiplier = getMultiplierV2(totalAmount, bearAmount)
 
@@ -55,11 +60,6 @@ const RoundCard: React.FC<RoundCardProps> = ({ round, isActive }) => {
         bearMultiplier={formattedBearMultiplier}
       />
     )
-  }
-
-  // Fake future rounds
-  if (epoch > currentEpoch) {
-    return <SoonRoundCard round={round} />
   }
 
   // Past rounds

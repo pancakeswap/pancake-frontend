@@ -1,7 +1,10 @@
 import { useState, useEffect, useMemo, ReactNode } from 'react'
 import shuffle from 'lodash/shuffle'
 import styled from 'styled-components'
+// eslint-disable-next-line import/no-unresolved
 import { Swiper, SwiperSlide } from 'swiper/react'
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/css/bundle'
 import SwiperCore from 'swiper'
 import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
@@ -12,8 +15,6 @@ import Trans from 'components/Trans'
 import { pancakeBunniesAddress } from '../../../constants'
 import { CollectibleLinkCard } from '../../../components/CollectibleCard'
 import useAllPancakeBunnyNfts from '../../../hooks/useAllPancakeBunnyNfts'
-
-import 'swiper/swiper-bundle.css'
 
 const INITIAL_SLIDE = 4
 
