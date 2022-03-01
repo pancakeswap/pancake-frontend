@@ -619,6 +619,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenName: 'Crypto Fight Club',
     projectSite: 'https://www.cryptofightclub.io/',
   },
+  {
+    account: '0xadF88A1eDC8F15CeA27F2674ED2BA1382F46A8A5',
+    farmName: 'DOME-BNB',
+    tokenAddress: '0x475bfaa1848591ae0e6ab69600f48d828f61a80e',
+    quoteToken: tokens.wbnb,
+    tokenName: 'Everdome',
+    projectSite: 'https://everdome.io/',
+  },
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),

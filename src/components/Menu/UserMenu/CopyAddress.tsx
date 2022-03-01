@@ -1,8 +1,7 @@
-import { useState } from 'react'
-import { Box, CopyIcon, Flex, FlexProps, IconButton } from '@pancakeswap/uikit'
+import { Box, Flex, FlexProps } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { copyText } from 'utils/copyText'
+import { CopyButton } from '../../CopyButton'
 
 interface CopyAddressProps extends FlexProps {
   account: string
@@ -51,46 +50,18 @@ const Address = styled.div`
   }
 `
 
-const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
-  display: ${({ isTooltipDisplayed }) => (isTooltipDisplayed ? 'inline-block' : 'none')};
-  position: absolute;
-  padding: 8px;
-  top: -38px;
-  right: 0;
-  text-align: center;
-  background-color: ${({ theme }) => theme.colors.contrast};
-  color: ${({ theme }) => theme.colors.invertedContrast};
-  border-radius: 16px;
-  opacity: 0.7;
-  width: 100px;
-`
-
 const CopyAddress: React.FC<CopyAddressProps> = ({ account, ...props }) => {
-  const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
   const { t } = useTranslation()
-
-  const copyAddress = () => {
-    copyText(account, displayTooltip)
-  }
-
-  function displayTooltip() {
-    setIsTooltipDisplayed(true)
-    setTimeout(() => {
-      setIsTooltipDisplayed(false)
-    }, 1000)
-  }
-
   return (
     <Box position="relative" {...props}>
       <Wrapper>
         <Address title={account}>
           <input type="text" readOnly value={account} />
         </Address>
-        <IconButton variant="text" onClick={copyAddress}>
-          <CopyIcon color="primary" width="24px" />
-        </IconButton>
+        <Flex margin="12px">
+          <CopyButton width="24px" text={account} tooltipMessage={t('Copied')} tooltipTop={-40} />
+        </Flex>
       </Wrapper>
-      <Tooltip isTooltipDisplayed={isTooltipDisplayed}>{t('Copied')}</Tooltip>
     </Box>
   )
 }
