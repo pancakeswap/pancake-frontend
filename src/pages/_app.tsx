@@ -1,7 +1,7 @@
 import { ResetCSS } from '@pancakeswap/uikit'
 import Script from 'next/script'
+import dynamic from 'next/dynamic'
 import BigNumber from 'bignumber.js'
-import EasterEgg from 'components/EasterEgg'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { ToastListener } from 'contexts/ToastsContext'
@@ -23,6 +23,8 @@ import Menu from '../components/Menu'
 import BlockCountry from '../components/BlockCountry'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
+
+const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
 
 // This config is required for number formatting
 BigNumber.config({
