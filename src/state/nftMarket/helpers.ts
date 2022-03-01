@@ -48,10 +48,12 @@ export const getCollectionsApi = async (): Promise<ApiCollectionsResponse> => {
 }
 
 const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promise<number[]> => {
-  const totalSupplyCalls = collections.map((collection) => ({
-    address: collection.address.toLowerCase(),
-    name: 'totalSupply',
-  }))
+  const totalSupplyCalls = collections
+    .filter((collection) => collection?.address)
+    .map((collection) => ({
+      address: collection.address.toLowerCase(),
+      name: 'totalSupply',
+    }))
   if (totalSupplyCalls.length > 0) {
     const totalSupplyRaw = await multicallv2(erc721Abi, totalSupplyCalls, { requireSuccess: false })
     const totalSupply = totalSupplyRaw.flat()
@@ -838,22 +840,24 @@ export const combineCollectionData = (
     {},
   )
 
-  return collectionApiData.reduce((accum, current) => {
-    const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
-    const collection: Collection = {
-      ...current,
-      ...collectionMarket,
-    }
+  return collectionApiData
+    .filter((collection) => collection?.address)
+    .reduce((accum, current) => {
+      const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
+      const collection: Collection = {
+        ...current,
+        ...collectionMarket,
+      }
 
-    if (current.name) {
-      collection.name = current.name
-    }
+      if (current.name) {
+        collection.name = current.name
+      }
 
-    return {
-      ...accum,
-      [current.address]: collection,
-    }
-  }, {})
+      return {
+        ...accum,
+        [current.address]: collection,
+      }
+    }, {})
 }
 
 /**
