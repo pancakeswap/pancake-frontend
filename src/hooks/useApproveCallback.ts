@@ -13,6 +13,8 @@ import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
+import useToast from './useToast'
+import { useTranslation } from '../contexts/Localization'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -28,6 +30,8 @@ export function useApproveCallback(
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
+  const { t } = useTranslation()
+  const { toastError } = useToast()
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
@@ -52,25 +56,30 @@ export function useApproveCallback(
 
   const approve = useCallback(async (): Promise<void> => {
     if (approvalState !== ApprovalState.NOT_APPROVED) {
+      toastError(t('Error'), t('Approve was called unnecessarily'))
       console.error('approve was called unnecessarily')
       return
     }
     if (!token) {
+      toastError(t('Error'), t('No token'))
       console.error('no token')
       return
     }
 
     if (!tokenContract) {
+      toastError(t('Error'), t('Cannot find contract of the token %tokenAddress%', { tokenAddress: token?.address }))
       console.error('tokenContract is null')
       return
     }
 
     if (!amountToApprove) {
+      toastError(t('Error'), t('Missing amount to approve'))
       console.error('missing amount to approve')
       return
     }
 
     if (!spender) {
+      toastError(t('Error'), t('No spender'))
       console.error('no spender')
       return
     }
@@ -98,12 +107,15 @@ export function useApproveCallback(
           approval: { tokenAddress: token.address, spender },
         })
       })
-      .catch((error: Error) => {
+      .catch((error: any) => {
         logError(error)
         console.error('Failed to approve token', error)
+        if (error?.code !== 4001) {
+          toastError(t('Error'), error.message)
+        }
         throw error
       })
-  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction, callWithGasPrice])
+  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction, callWithGasPrice, t, toastError])
 
   return [approvalState, approve]
 }
