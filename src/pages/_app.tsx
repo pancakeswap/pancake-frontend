@@ -48,8 +48,6 @@ function MyApp(props: AppProps) {
   // When mounted on client, now we can show the UI
   useEffect(() => setMounted(true), [])
 
-  if (!mounted) return null
-
   return (
     <>
       <Head>
@@ -80,7 +78,7 @@ function MyApp(props: AppProps) {
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
             <BlockCountry />
-            <App {...props} />
+            {mounted && <App {...props} />}
           </PersistGate>
         </Blocklist>
       </Providers>
