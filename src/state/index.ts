@@ -15,7 +15,6 @@ import {
 import storage from 'redux-persist/lib/storage'
 import burn from './burn/reducer'
 import farmsReducer from './farms'
-import { Theme } from './user/actions'
 import { updateVersion } from './global/actions'
 import infoReducer from './info'
 import lists from './lists/reducer'
@@ -42,16 +41,6 @@ const migrations = {
       },
     }
   },
-  1: (state) => {
-    const { isDark, ...newUserState } = state.user
-    return {
-      ...state,
-      user: {
-        ...newUserState,
-        theme: isDark ? Theme.DARK : undefined,
-      },
-    }
-  },
 }
 
 const persistConfig = {
@@ -59,7 +48,7 @@ const persistConfig = {
   whitelist: PERSISTED_KEYS,
   blacklist: ['profile'],
   storage,
-  version: 1,
+  version: 0,
   migrate: createMigrate(migrations, { debug: false }),
 }
 

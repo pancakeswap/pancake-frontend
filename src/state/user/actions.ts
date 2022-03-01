@@ -22,11 +22,6 @@ export enum ChartViewMode {
   TRADING_VIEW = 'TRADING_VIEW',
 }
 
-export enum Theme {
-  DARK = 'DARK',
-  LIGHT = 'LIGHT',
-}
-
 export const updateUserExpertMode = createAction<{ userExpertMode: boolean }>('user/updateUserExpertMode')
 export const updateUserSingleHopOnly = createAction<{ userSingleHopOnly: boolean }>('user/updateUserSingleHopOnly')
 export const updateUserSlippageTolerance = createAction<{ userSlippageTolerance: number }>(
@@ -41,7 +36,6 @@ export const removeSerializedPair =
 
 export const muteAudio = createAction<void>('user/muteAudio')
 export const unmuteAudio = createAction<void>('user/unmuteAudio')
-export const switchTheme = createAction<{ theme: Theme }>('user/switchTheme')
 export const updateUserFarmStakedOnly = createAction<{ userFarmStakedOnly: FarmStakedOnly }>(
   'user/updateUserFarmStakedOnly',
 )

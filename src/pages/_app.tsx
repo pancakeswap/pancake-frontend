@@ -11,7 +11,7 @@ import useSentryUser from 'hooks/useSentryUser'
 import useUserAgent from 'hooks/useUserAgent'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { Fragment } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { useStore, persistor } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
@@ -41,8 +41,14 @@ function GlobalHooks() {
 }
 
 function MyApp(props: AppProps) {
+  const [mounted, setMounted] = useState(false)
   const { pageProps } = props
   const store = useStore(pageProps.initialReduxState)
+
+  // When mounted on client, now we can show the UI
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) return null
 
   return (
     <>

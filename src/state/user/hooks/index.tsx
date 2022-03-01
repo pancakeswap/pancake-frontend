@@ -15,7 +15,6 @@ import {
   muteAudio,
   removeSerializedToken,
   SerializedPair,
-  switchTheme as switchThemeAction,
   unmuteAudio,
   updateUserDeadline,
   updateUserExpertMode,
@@ -39,7 +38,6 @@ import {
   ChartViewMode,
   setChartViewMode,
   setSubgraphHealthIndicatorDisplayed,
-  Theme,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -139,27 +137,6 @@ export function useExpertModeManager(): [boolean, () => void] {
   }, [expertMode, dispatch])
 
   return [expertMode, toggleSetExpertMode]
-}
-
-export function useThemeManager(): [boolean, (theme: Theme) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const theme = useSelector<AppState, AppState['user']['theme']>((state) => state.user.theme)
-
-  const isDark = useMemo(() => {
-    if (typeof window !== 'undefined' && !theme) {
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    }
-    return theme === Theme.DARK
-  }, [theme])
-
-  const switchTheme = useCallback(
-    (siteTheme: Theme) => {
-      dispatch(switchThemeAction({ theme: siteTheme }))
-    },
-    [dispatch],
-  )
-
-  return [isDark, switchTheme]
 }
 
 export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {
