@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
@@ -12,12 +12,14 @@ cypress/screenshots
 cypress/fixtures/example.json
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 .idea/
 
 # production
-/build
+build
+dist
+storybook-static
 
 # misc
 .DS_Store
@@ -35,8 +37,11 @@ yarn-debug.log*
 yarn-error.log*
 debug.log*
 
-src/config/abi/types
+**/config/abi/types
 
 
 # Sentry
 .sentryclirc
+
+# turbo
+.turbo
