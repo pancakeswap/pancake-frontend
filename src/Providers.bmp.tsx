@@ -9,7 +9,8 @@ import { getLibrary } from 'utils/web3React'
 import { LanguageProvider } from 'contexts/Localization'
 // import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
-import store from 'state'
+import store, { persistor } from 'state'
+import { PersistGate } from 'redux-persist/lib/integration/react'
 
 const ThemeProviderWrapper = (props) => {
   const [isDark] = useThemeManager()
@@ -30,19 +31,21 @@ const Providers: React.FC = ({ children }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>
-        <ThemeProviderWrapper>
-          <LanguageProvider>
-            <SWRConfig
-              value={{
-                use: [fetchStatusMiddleware],
-              }}
-            >
-              <PathProvider>
-                <WebviewProvider webviewFilePath="views/webview">{children}</WebviewProvider>
-              </PathProvider>
-            </SWRConfig>
-          </LanguageProvider>
-        </ThemeProviderWrapper>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProviderWrapper>
+            <LanguageProvider>
+              <SWRConfig
+                value={{
+                  use: [fetchStatusMiddleware],
+                }}
+              >
+                <PathProvider>
+                  <WebviewProvider webviewFilePath="views/webview">{children}</WebviewProvider>
+                </PathProvider>
+              </SWRConfig>
+            </LanguageProvider>
+          </ThemeProviderWrapper>
+        </PersistGate>
       </Provider>
     </Web3ReactProvider>
   )
