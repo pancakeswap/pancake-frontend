@@ -70,10 +70,10 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
           <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">
             {t('Global')}
           </Text>
-          <Flex justifyContent="space-between">
-            <Text mb="24px">{t('Dark mode')}</Text>
-            <ThemeSwitcher isDark={isDark} toggleTheme={toggleTheme} />
-          </Flex>
+          {/* <Flex justifyContent="space-between"> */}
+          {/*   <Text mb="24px">{t('Dark mode')}</Text> */}
+          {/*   <ThemeSwitcher isDark={isDark} toggleTheme={toggleTheme} /> */}
+          {/* </Flex> */}
           <GasSettings />
         </Flex>
         <Flex pt="24px" flexDirection="column" borderTop={`1px ${theme.colors.cardBorder} solid`}>
