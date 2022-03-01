@@ -11,6 +11,7 @@ import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import { RowBetween } from '../Layout/Row'
 import { Input as NumericalInput } from './NumericalInput'
+import { CopyButton } from '../CopyButton'
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
@@ -93,57 +94,69 @@ export default function CurrencyInputPanel({
     />,
   )
   return (
-    <Box id={id}>
+    <Box position="relative" id={id}>
       <Flex mb="6px" alignItems="center" justifyContent="space-between">
-        <CurrencySelectButton
-          className="open-currency-select-button"
-          selected={!!currency}
-          onClick={() => {
-            if (!disableCurrencySelect) {
-              onPresentCurrencyModal()
-            }
-          }}
-        >
-          <Flex alignItems="center" justifyContent="space-between">
-            {pair ? (
-              <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
-            ) : currency ? (
-              <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
-            ) : null}
-            {pair ? (
-              <Text id="pair" bold>
-                {pair?.token0.symbol}:{pair?.token1.symbol}
-              </Text>
-            ) : (
-              <Text id="pair" bold>
-                {(currency && currency.symbol && currency.symbol.length > 20
-                  ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                      currency.symbol.length - 5,
-                      currency.symbol.length,
-                    )}`
-                  : currency?.symbol) || t('Select a currency')}
-              </Text>
-            )}
-            {!disableCurrencySelect && <ChevronDownIcon />}
-          </Flex>
-        </CurrencySelectButton>
-        <Flex style={{ gap: '8px' }}>
-          {token && tokenAddress && library?.provider?.isMetaMask && (
-            <MetamaskIcon
-              style={{ cursor: 'pointer' }}
-              width="16px"
-              ml="6px"
-              onClick={() => registerToken(tokenAddress, token.symbol, token.decimals)}
-            />
-          )}
-          {account && (
-            <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
-              {!hideBalance && !!currency
-                ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
-                : ' -'}
-            </Text>
-          )}
+        <Flex>
+          <CurrencySelectButton
+            className="open-currency-select-button"
+            selected={!!currency}
+            onClick={() => {
+              if (!disableCurrencySelect) {
+                onPresentCurrencyModal()
+              }
+            }}
+          >
+            <Flex alignItems="center" justifyContent="space-between">
+              {pair ? (
+                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
+              ) : currency ? (
+                <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+              ) : null}
+              {pair ? (
+                <Text id="pair" bold>
+                  {pair?.token0.symbol}:{pair?.token1.symbol}
+                </Text>
+              ) : (
+                <Text id="pair" bold>
+                  {(currency && currency.symbol && currency.symbol.length > 20
+                    ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                        currency.symbol.length - 5,
+                        currency.symbol.length,
+                      )}`
+                    : currency?.symbol) || t('Select a currency')}
+                </Text>
+              )}
+              {!disableCurrencySelect && <ChevronDownIcon />}
+            </Flex>
+          </CurrencySelectButton>
+          {token && tokenAddress ? (
+            <Flex style={{ gap: '4px' }} alignItems="center">
+              <CopyButton
+                width="16px"
+                buttonColor="textSubtle"
+                text={tokenAddress}
+                tooltipMessage={t('Token address copied')}
+                tooltipTop={-20}
+                tooltipRight={40}
+                tooltipFontSize={12}
+              />
+              {library?.provider?.isMetaMask && (
+                <MetamaskIcon
+                  style={{ cursor: 'pointer' }}
+                  width="16px"
+                  onClick={() => registerToken(tokenAddress, token.symbol, token.decimals)}
+                />
+              )}
+            </Flex>
+          ) : null}
         </Flex>
+        {account && (
+          <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+            {!hideBalance && !!currency
+              ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
+              : ' -'}
+          </Text>
+        )}
       </Flex>
       <InputPanel>
         <Container>
