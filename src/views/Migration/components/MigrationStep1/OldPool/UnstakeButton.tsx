@@ -17,10 +17,10 @@ import {
   updateUserPendingReward,
   updateUserStakedBalance,
 } from 'state/pools'
-import useUnstakePool from 'views/Pools/hooks/useUnstakePool'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
+import useUnstakePool from '../../../hook/V1/Pool/useUnstakePool'
 
 export interface UnstakeButtonProps {
   pool: DeserializedPool
@@ -48,7 +48,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
   )
   const hasEarnings = hasAutoEarnings
 
-  const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
+  const vaultPoolContract = useVaultPoolContract(pool.vaultKey, true)
   const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
 
   const isNeedUnstake = vaultKey ? hasEarnings : new BigNumber(userData.stakedBalance).gt(0)
