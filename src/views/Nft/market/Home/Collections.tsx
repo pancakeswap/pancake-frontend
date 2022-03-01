@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, ChevronRightIcon, Flex, Grid, Heading, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { nftsBaseUrl } from 'views/Nft/market/constants'

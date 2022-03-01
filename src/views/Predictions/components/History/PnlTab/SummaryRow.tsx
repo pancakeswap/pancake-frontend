@@ -1,4 +1,3 @@
-import React from 'react'
 import { Price } from '@pancakeswap/sdk'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { multiplyPriceByAmount } from 'utils/prices'

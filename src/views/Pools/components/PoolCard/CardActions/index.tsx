@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import React from 'react'
+
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { Flex, Text, Box } from '@pancakeswap/uikit'

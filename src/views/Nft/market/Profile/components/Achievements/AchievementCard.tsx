@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Flex, PrizeIcon, Text } from '@pancakeswap/uikit'
 import { Achievement } from 'state/types'

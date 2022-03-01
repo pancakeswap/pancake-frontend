@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { HelpIcon, Text, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

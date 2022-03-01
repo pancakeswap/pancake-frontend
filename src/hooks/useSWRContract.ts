@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { FetchStatus } from 'config/constants/types'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Contract } from '@ethersproject/contracts'
 import { FormatTypes } from '@ethersproject/abi'
 import useSWR, { Middleware, SWRConfiguration, KeyedMutator } from 'swr'
@@ -20,20 +20,21 @@ declare module 'swr' {
 export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
   return (key, fetcher, config) => {
     const swr = useSWRNext(key, fetcher, config)
-    let status = FetchStatus.Idle
-
-    if (!swr.isValidating && !swr.error && !swr.data) {
-      status = FetchStatus.Idle
-    } else if (swr.isValidating && !swr.error && !swr.data) {
-      status = FetchStatus.Fetching
-    } else if (swr.data) {
-      status = FetchStatus.Fetched
-    } else if (swr.error && !swr.data) {
-      status = FetchStatus.Failed
-    }
-
     return {
-      status,
+      get status() {
+        let status = FetchStatus.Idle
+
+        if (!swr.isValidating && !swr.error && !swr.data) {
+          status = FetchStatus.Idle
+        } else if (swr.isValidating && !swr.error && !swr.data) {
+          status = FetchStatus.Fetching
+        } else if (swr.data) {
+          status = FetchStatus.Fetched
+        } else if (swr.error && !swr.data) {
+          status = FetchStatus.Failed
+        }
+        return status
+      },
       ...swr,
     }
   }
@@ -134,9 +135,47 @@ export const immutableMiddleware: Middleware = (useSWRNext) => (key, fetcher, co
   return useSWRNext(key, fetcher, config)
 }
 
-export function useSWRMulticall(abi: any[], calls: Call[], options: MulticallOptions = { requireSuccess: true }) {
-  return useSWR(calls, () => multicallv2(abi, calls, options), { revalidateIfStale: false, revalidateOnFocus: false })
+export function useSWRMulticall<Data>(abi: any[], calls: Call[], options?: MulticallOptions & SWRConfiguration) {
+  const { requireSuccess = true, ...config } = options || {}
+  return useSWR<Data>(calls, () => multicallv2(abi, calls, { requireSuccess }), {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    ...config,
+  })
 }
+
+// This is a SWR middleware for keeping the data even if key changes.
+export const laggyMiddleware: Middleware = (useSWRNext) => {
+  return (key, fetcher, config) => {
+    // Use a ref to store previous returned data.
+    const laggyDataRef = useRef<any>()
+
+    // Actual SWR hook.
+    const swr = useSWRNext(key, fetcher, config)
+
+    useEffect(() => {
+      // Update ref if data is not undefined.
+      if (swr.data !== undefined) {
+        laggyDataRef.current = swr.data
+      }
+    }, [swr.data])
+
+    // Expose a method to clear the laggy data, if any.
+    const resetLaggy = useCallback(() => {
+      laggyDataRef.current = undefined
+    }, [])
+
+    // Fallback to previous data if the current data is undefined.
+    const dataOrLaggyData = swr.data === undefined ? laggyDataRef.current : swr.data
+
+    // Is it showing previous data?
+    const isLagging = swr.data === undefined && laggyDataRef.current !== undefined
+
+    // Also add a `isLagging` field to SWR.
+    return { ...swr, data: dataOrLaggyData, isLagging, resetLaggy }
+  }
+}
+
 // dev only
 export const loggerMiddleware: Middleware = (useSWRNext) => {
   return (key, fetcher, config) => {

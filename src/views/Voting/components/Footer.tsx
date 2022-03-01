@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, Button, Text, Heading, ProposalIcon, Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
@@ -32,7 +31,7 @@ const Footer = () => {
               )}
             </Text>
 
-            <Link href="/voting/proposal/create">
+            <Link href="/voting/proposal/create" passHref>
               <Button startIcon={<ProposalIcon color="currentColor" width="24px" />}>{t('Make a Proposal')}</Button>
             </Link>
           </Box>

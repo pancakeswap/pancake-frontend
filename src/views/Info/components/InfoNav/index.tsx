@@ -2,7 +2,6 @@ import { Box, ButtonMenu, ButtonMenuItem, Flex } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
-import React from 'react'
 import styled from 'styled-components'
 import Search from 'views/Info/components/InfoSearch'
 

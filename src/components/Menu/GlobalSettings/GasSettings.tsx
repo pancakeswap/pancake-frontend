@@ -1,4 +1,3 @@
-import React from 'react'
 import { Flex, Button, Text } from '@pancakeswap/uikit'
 import QuestionHelper from 'components/QuestionHelper'
 import { useTranslation } from 'contexts/Localization'

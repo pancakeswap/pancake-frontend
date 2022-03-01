@@ -1,4 +1,3 @@
-import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import Link from 'next/link'
 import { Button, Card, CommunityIcon, Flex, Heading, PrizeIcon, Text } from '@pancakeswap/uikit'
@@ -113,9 +112,9 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
             <Flex>
               <Flex>
                 {/* alignSelf for Safari fix */}
-                <PrizeIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} />
-                <Text fontSize="24px" bold>
-                  {team.points.toLocaleString()}
+                <PrizeIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} color="textDisabled" />
+                <Text fontSize="24px" bold color="textDisabled">
+                  {t('Coming Soon')}
                 </Text>
               </Flex>
               <Flex ml="24px">

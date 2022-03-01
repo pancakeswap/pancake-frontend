@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
+import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex } from '@pancakeswap/uikit'
@@ -118,7 +118,7 @@ export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) =>
 const Farms: React.FC = ({ children }) => {
   const { pathname } = useRouter()
   const { t } = useTranslation()
-  const { data: farmsLP, userDataLoaded } = useFarms()
+  const { data: farmsLP, userDataLoaded, poolLength } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useUserFarmsViewMode()
@@ -139,7 +139,10 @@ const Farms: React.FC = ({ children }) => {
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
+  const activeFarms = farmsLP.filter(
+    (farm) =>
+      farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid) && (!poolLength || poolLength > farm.pid),
+  )
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X' && !isArchivedPid(farm.pid))
   const archivedFarms = farmsLP.filter((farm) => isArchivedPid(farm.pid))
 
@@ -417,6 +420,6 @@ const Farms: React.FC = ({ children }) => {
   )
 }
 
-export const FarmsContext = React.createContext({ chosenFarmsMemoized: [] })
+export const FarmsContext = createContext({ chosenFarmsMemoized: [] })
 
 export default Farms

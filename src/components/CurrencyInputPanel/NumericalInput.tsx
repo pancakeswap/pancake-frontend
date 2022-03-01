@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from '../../utils'
@@ -40,7 +40,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
 
-export const Input = React.memo(function InnerInput({
+export const Input = memo(function InnerInput({
   value,
   onUserInput,
   placeholder,

@@ -26,6 +26,7 @@ import {
   ViewMode,
   updateUserPredictionAcceptedRisk,
   updateUserPredictionChartDisclaimerShow,
+  updateUserPredictionChainlinkChartDisclaimerShow,
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
@@ -78,6 +79,7 @@ export interface UserState {
   userFarmsViewMode: ViewMode
   userPredictionAcceptedRisk: boolean
   userPredictionChartDisclaimerShow: boolean
+  userPredictionChainlinkChartDisclaimerShow: boolean
   userExpertModeAcknowledgementShow: boolean
   userUsernameVisibility: boolean
   gasPrice: string
@@ -109,6 +111,7 @@ export const initialState: UserState = {
   userFarmsViewMode: ViewMode.TABLE,
   userPredictionAcceptedRisk: false,
   userPredictionChartDisclaimerShow: true,
+  userPredictionChainlinkChartDisclaimerShow: true,
   userExpertModeAcknowledgementShow: true,
   userUsernameVisibility: false,
   gasPrice: GAS_PRICE_GWEI.default,
@@ -210,6 +213,9 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateUserPredictionChartDisclaimerShow, (state, { payload: { userShowDisclaimer } }) => {
       state.userPredictionChartDisclaimerShow = userShowDisclaimer
+    })
+    .addCase(updateUserPredictionChainlinkChartDisclaimerShow, (state, { payload: { userShowDisclaimer } }) => {
+      state.userPredictionChainlinkChartDisclaimerShow = userShowDisclaimer
     })
     .addCase(updateUserExpertModeAcknowledgementShow, (state, { payload: { userExpertModeAcknowledgementShow } }) => {
       state.userExpertModeAcknowledgementShow = userExpertModeAcknowledgementShow

@@ -1,4 +1,3 @@
-import React from 'react'
 import { ArrowForwardIcon, Box, IconButton, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Flex, Card, Grid, SellIcon, Text, useModal, Box, BinanceIcon, Skeleton, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { Text, Heading, Card } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'

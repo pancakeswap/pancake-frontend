@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Text, SearchIcon, Link } from '@pancakeswap/uikit'
 import { getBscScanLink } from 'utils'

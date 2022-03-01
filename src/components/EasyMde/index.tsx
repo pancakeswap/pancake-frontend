@@ -1,4 +1,4 @@
-import React, { TextareaHTMLAttributes, useEffect, useRef } from 'react'
+import { TextareaHTMLAttributes, useEffect, useRef } from 'react'
 import EasyMde from 'easymde'
 import styled from 'styled-components'
 import merge from 'lodash/merge'

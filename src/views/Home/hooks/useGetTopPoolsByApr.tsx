@@ -5,6 +5,7 @@ import orderBy from 'lodash/orderBy'
 import { VaultKey, DeserializedPool } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
 import { useCakeVault, useIfoPoolVault, usePools } from 'state/pools/hooks'
+import { useInitialBlock } from 'state/block/hooks'
 import { getAprData } from 'views/Pools/helpers'
 import { FetchStatus } from 'config/constants/types'
 
@@ -38,6 +39,7 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
 
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.Idle)
   const [topPools, setTopPools] = useState<DeserializedPool[]>([null, null, null, null, null])
+  const initialBlock = useInitialBlock()
 
   const pools = usePoolsWithVault()
 
@@ -49,7 +51,7 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
 
       try {
         await dispatch(fetchCakeVaultFees())
-        await dispatch(fetchPoolsPublicDataAsync())
+        await dispatch(fetchPoolsPublicDataAsync(initialBlock))
         setFetchStatus(FetchStatus.Fetched)
       } catch (e) {
         console.error(e)
@@ -57,10 +59,10 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
       }
     }
 
-    if (isIntersecting && fetchStatus === FetchStatus.Idle) {
+    if (isIntersecting && fetchStatus === FetchStatus.Idle && initialBlock > 0) {
       fetchPoolsPublicData()
     }
-  }, [dispatch, setFetchStatus, fetchStatus, topPools, isIntersecting])
+  }, [dispatch, setFetchStatus, fetchStatus, topPools, isIntersecting, initialBlock])
 
   useEffect(() => {
     const getTopPoolsByApr = (activePools: DeserializedPool[]) => {

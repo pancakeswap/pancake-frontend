@@ -16,7 +16,7 @@ import Image from 'next/image'
 import Trans from 'components/Trans'
 import prizes, { Tiers } from 'config/constants/trading-competition/prizes'
 import { useTranslation } from 'contexts/Localization'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { BoldTd, StyledPrizeTable, Td } from '../../StyledPrizeTable'
 
 const COLOR_GOLD = '#FFBF33'

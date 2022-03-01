@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Flex, ExpandableLabel, CardFooter } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryRound } from 'state/types'

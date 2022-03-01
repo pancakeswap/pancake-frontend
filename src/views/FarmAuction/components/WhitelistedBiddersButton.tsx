@@ -1,4 +1,3 @@
-import React from 'react'
 import { useModal, Button, Skeleton } from '@pancakeswap/uikit'
 import WhitelistedBiddersModal from './WhitelistedBiddersModal'
 import useWhitelistedAddresses from '../hooks/useWhitelistedAddresses'

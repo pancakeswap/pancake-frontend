@@ -843,7 +843,7 @@ export const mainnetTokens = defineTokens({
     '0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47',
     18,
     'ADA',
-    ' Binance-Peg Cardano Token',
+    'Binance-Peg Cardano Token',
     'https://www.cardano.org/',
   ),
   band: new Token(
@@ -1248,12 +1248,12 @@ export const mainnetTokens = defineTokens({
     'Lympo Market Token',
     'https://lympo.io/lmt/',
   ),
-  btt: new Token(
+  bttold: new Token(
     MAINNET,
     '0x8595F9dA7b868b1822194fAEd312235E43007b49',
     18,
-    'BTT',
-    'Binance-Peg BitTorrent Token',
+    'BTTOLD',
+    'Binance-Peg BitTorrent Token (Old)',
     'https://www.bittorrent.com/',
   ),
   trx: new Token(
@@ -1983,6 +1983,39 @@ export const mainnetTokens = defineTokens({
     'GEAR',
     'MetaGear Token',
     'https://metagear.game/',
+  ),
+  ach: new Token(
+    MAINNET,
+    '0xBc7d6B50616989655AfD682fb42743507003056D',
+    8,
+    'ACH',
+    'Alchemy Token',
+    'https://alchemytech.io/',
+  ),
+  btt: new Token(
+    MAINNET,
+    '0x352Cb5E19b12FC216548a2677bD0fce83BaE434B',
+    18,
+    'BTT',
+    'BitTorrent',
+    'https://bittorrent.com/',
+  ),
+  era: new Token(MAINNET, '0x6f9F0c4ad9Af7EbD61Ac5A1D4e0F2227F7B0E5f9', 18, 'ERA', 'Era Token', 'https://www.era7.io/'),
+  fight: new Token(
+    MAINNET,
+    '0x4f39c3319188A723003670c3F9B9e7EF991E52F3',
+    18,
+    'FIGHT',
+    'Fight Token',
+    'https://www.cryptofightclub.io/',
+  ),
+  loa: new Token(
+    MAINNET,
+    '0x94b69263FCA20119Ae817b6f783Fc0F13B02ad50',
+    18,
+    'LOA',
+    'League Of Ancients',
+    'https://www.leagueofancients.com/',
   ),
 } as const)
 

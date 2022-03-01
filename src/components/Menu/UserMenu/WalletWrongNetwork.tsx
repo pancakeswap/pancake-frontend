@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Button, Text, Link, HelpIcon } from '@pancakeswap/uikit'
@@ -23,7 +22,7 @@ const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) =>
 
   const handleSwitchNetwork = async (): Promise<void> => {
     await setupNetwork()
-    onDismiss()
+    onDismiss?.()
   }
 
   return (

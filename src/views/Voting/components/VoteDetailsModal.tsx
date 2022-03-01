@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Box, Flex, InjectedModalProps, Modal, Button, Spinner } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
@@ -46,6 +46,7 @@ const VoteDetailsModal: React.FC<VoteDetailsModalProps> = ({ block, onDismiss })
               poolsBalance={poolsBalance}
               ifoPoolBalance={ifoPoolBalance}
               cakeBnbLpBalance={cakeBnbLpBalance}
+              block={block}
             />
             <Button variant="secondary" onClick={onDismiss} width="100%" mt="16px">
               {t('Close')}

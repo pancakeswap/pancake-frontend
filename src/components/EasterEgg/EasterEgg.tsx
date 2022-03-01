@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import { useState, useCallback, memo } from 'react'
 import { FallingBunnies, FallingBunniesProps, useKonamiCheatCode } from '@pancakeswap/uikit'
 
 const EasterEgg: React.FC<FallingBunniesProps> = (props) => {
@@ -16,4 +16,4 @@ const EasterEgg: React.FC<FallingBunniesProps> = (props) => {
   return null
 }
 
-export default React.memo(EasterEgg)
+export default memo(EasterEgg)

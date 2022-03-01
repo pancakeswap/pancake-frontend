@@ -3,7 +3,7 @@ import { SalesSectionProps } from '.'
 
 export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Trade anything. No registration, no hassle.'),
-  bodyText: t('Trade any token on Binance Smart Chain in seconds, just by connecting your wallet.'),
+  bodyText: t('Trade any token on BNB Smart Chain in seconds, just by connecting your wallet.'),
   reverse: false,
   primaryButton: {
     to: '/swap',

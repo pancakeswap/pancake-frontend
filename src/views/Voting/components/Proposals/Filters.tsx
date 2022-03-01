@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 import { Flex, Radio, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'

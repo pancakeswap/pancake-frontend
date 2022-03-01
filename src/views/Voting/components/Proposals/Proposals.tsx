@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'

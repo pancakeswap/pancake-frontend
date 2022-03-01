@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import confetti from 'canvas-confetti'
@@ -37,7 +37,7 @@ const AnniversaryAchievementModal: React.FC<InjectedModalProps> = ({ onDismiss }
     try {
       await claimAnniversaryPoints()
     } finally {
-      onDismiss()
+      onDismiss?.()
     }
   }
 

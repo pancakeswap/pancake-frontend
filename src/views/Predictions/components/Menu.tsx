@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { Flex, HelpIcon, Button, PrizeIcon } from '@pancakeswap/uikit'
@@ -84,7 +83,7 @@ const Menu = () => {
             </Button>
           </HelpButtonWrapper>
           <LeaderboardButtonWrapper>
-            <Link href="/prediction/leaderboard">
+            <Link href="/prediction/leaderboard" passHref>
               <Button as="a" variant="subtle" width="48px">
                 <PrizeIcon color="white" />
               </Button>

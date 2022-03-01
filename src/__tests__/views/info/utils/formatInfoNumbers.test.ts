@@ -1,4 +1,4 @@
-import { formatAmount, getFirstThreeNonZeroDecimals } from 'views/Info/utils/formatInfoNumbers'
+import { formatAmount, getFirstThreeNonZeroDecimals } from 'utils/formatInfoNumbers'
 
 describe('info/utils/formatInfoNumbers', () => {
   it.each`

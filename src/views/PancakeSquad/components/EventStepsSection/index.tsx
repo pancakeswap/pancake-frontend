@@ -1,4 +1,3 @@
-import React from 'react'
 import Link from 'next/link'
 import { Box, Button, Card, CardBody, Flex, Step, Stepper, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -36,7 +35,7 @@ const EventStepsSection: React.FC<EventStepsProps> = ({ eventInfos, userInfos, i
                 {t('Head to the NFT Market to buy!')}
               </Text>
               <Box>
-                <Link href="/nfts">
+                <Link href="/nfts" passHref>
                   <Button as="a">{t('View market')}</Button>
                 </Link>
               </Box>

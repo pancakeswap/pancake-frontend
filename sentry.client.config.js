@@ -12,7 +12,7 @@ const isUserRejected = (err) => {
 }
 
 Sentry.init({
-  dsn: SENTRY_DSN || 'https://ed98e16b9d704c22bef92d24bdd5f3b7@o1092725.ingest.sentry.io/6111410',
+  dsn: SENTRY_DSN,
   integrations: [
     new Sentry.Integrations.Breadcrumbs({
       console: process.env.NODE_ENV === 'production',
@@ -24,7 +24,7 @@ Sentry.init({
   ],
   environment: process.env.NODE_ENV,
   // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 0.1,
+  tracesSampleRate: 0,
   // ...
   // Note: if you want to override the automatic release value, do not set a
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
@@ -41,5 +41,6 @@ Sentry.init({
     'Non-Error promise rejection captured',
     'User rejected the transaction',
     'cancelled',
+    'PollingBlockTracker',
   ],
 })

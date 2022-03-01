@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box, BoxProps, Button, Grid, InlineMenu, TextField } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import FilterFooter from '../FilterFooter'

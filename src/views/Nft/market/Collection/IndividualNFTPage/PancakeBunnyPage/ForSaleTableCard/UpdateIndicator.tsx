@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Flex, useTooltip } from '@pancakeswap/uikit'
 import { useLoadingState } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'

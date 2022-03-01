@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { request, gql } from 'graphql-request'
-import { GRAPH_HEALTH } from 'config/constants/endpoints'
 import { simpleRpcProvider } from 'utils/providers'
+import { GRAPH_HEALTH } from 'config/constants/endpoints'
 import { useSlowRefreshEffect } from './useRefreshEffect'
 
 export enum SubgraphStatus {
@@ -31,7 +31,7 @@ const useSubgraphHealth = () => {
     blockDifference: 0,
   })
 
-  useSlowRefreshEffect(() => {
+  useSlowRefreshEffect((currentBlockNumber) => {
     const getSubgraphHealth = async () => {
       try {
         const { indexingStatusForCurrentVersion } = await request(
@@ -54,8 +54,7 @@ const useSubgraphHealth = () => {
           `,
         )
 
-        const currentBlock = await simpleRpcProvider.getBlockNumber()
-
+        const currentBlock = currentBlockNumber || (await simpleRpcProvider.getBlockNumber())
         const isHealthy = indexingStatusForCurrentVersion.health === 'healthy'
         const chainHeadBlock = parseInt(indexingStatusForCurrentVersion.chains[0].chainHeadBlock.number)
         const latestBlock = parseInt(indexingStatusForCurrentVersion.chains[0].latestBlock.number)

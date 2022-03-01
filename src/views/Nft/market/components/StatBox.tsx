@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Box, BoxProps, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 

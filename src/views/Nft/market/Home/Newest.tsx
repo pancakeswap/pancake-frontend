@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'

@@ -603,6 +603,22 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenName: 'MetaGear',
     projectSite: 'https://metagear.game/',
   },
+  {
+    account: '0xF113b815e24Cc866137c4933b39fe2878ED1F2d2',
+    farmName: 'RDR-BUSD',
+    tokenAddress: '0x92da433da84d58dfe2aade1943349e491cbd6820',
+    quoteToken: tokens.busd,
+    tokenName: 'Rise of Defenders',
+    projectSite: 'https://risedefenders.io/',
+  },
+  {
+    account: '0x38408A0D905930f44fe6C53321684824b22c30c5',
+    farmName: 'FIGHT-BUSD',
+    tokenAddress: '0x4f39c3319188A723003670c3F9B9e7EF991E52F3',
+    quoteToken: tokens.busd,
+    tokenName: 'Crypto Fight Club',
+    projectSite: 'https://www.cryptofightclub.io/',
+  },
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),

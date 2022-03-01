@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

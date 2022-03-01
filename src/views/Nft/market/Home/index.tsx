@@ -1,6 +1,5 @@
-import React from 'react'
 import styled from 'styled-components'
-import { Box, Button, Heading, Flex, LinkExternal } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Heading, LinkExternal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
@@ -9,9 +8,9 @@ import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFol
 import PageSection from 'components/PageSection'
 import { PageMeta } from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { useGetCollections, useGetNFTInitializationState } from 'state/nftMarket/hooks'
+import { useGetCollections } from 'state/nftMarket/hooks'
+import { FetchStatus } from 'config/constants/types'
 import PageLoader from 'components/Loader/PageLoader'
-import { NFTMarketInitializationState } from 'state/nftMarket/types'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import SearchBar from '../components/SearchBar'
@@ -57,8 +56,7 @@ const Home = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { theme } = useTheme()
-  const collections = useGetCollections()
-  const initializationState = useGetNFTInitializationState()
+  const { data: collections, status } = useGetCollections()
 
   const hotCollections = orderBy(
     collections,
@@ -82,7 +80,7 @@ const Home = () => {
               {t('NFT Market')}
             </Heading>
             <Heading scale="lg" color="text">
-              {t('Buy and Sell NFTs on Binance Smart Chain')}
+              {t('Buy and Sell NFTs on BNB Smart Chain')}
             </Heading>
             {account && (
               <Button as={NextLinkFromReactRouter} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} mt="32px">
@@ -93,7 +91,7 @@ const Home = () => {
           <SearchBar />
         </StyledHeaderInner>
       </StyledPageHeader>
-      {initializationState !== NFTMarketInitializationState.INITIALIZED ? (
+      {status !== FetchStatus.Fetched ? (
         <PageLoader />
       ) : (
         <PageSection

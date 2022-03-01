@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
-import React from 'react'
 import { nodes } from 'utils/getRpcUrl'
 
 class MyDocument extends Document {
@@ -33,7 +32,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html translate="no">
         <Head>
           {nodes.map((node) => (
             <link key={node} rel="preconnect" href={node} />

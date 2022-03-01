@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import styled from 'styled-components'
 import { Breadcrumbs, Heading, Text, Link, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

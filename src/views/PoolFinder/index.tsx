@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Currency, ETHER, JSBI, TokenAmount } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, AddIcon, useModal } from '@pancakeswap/uikit'
 import styled from 'styled-components'

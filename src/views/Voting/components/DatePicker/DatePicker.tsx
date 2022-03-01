@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDatePicker, { ReactDatePickerProps } from 'react-datepicker'
 import { Input, InputProps } from '@pancakeswap/uikit'
 

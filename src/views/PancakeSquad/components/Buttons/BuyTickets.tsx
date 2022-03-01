@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { ToastDescriptionWithTx } from 'components/Toast'

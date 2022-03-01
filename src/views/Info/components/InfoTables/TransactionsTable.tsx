@@ -1,10 +1,10 @@
 // TODO PCS refactor ternaries
 /* eslint-disable no-nested-ternary */
-import React, { useCallback, useState, useMemo, useEffect } from 'react'
+import { useCallback, useState, useMemo, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { Text, Flex, Box, Radio, Skeleton, LinkExternal, ArrowForwardIcon, ArrowBackIcon } from '@pancakeswap/uikit'
-import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 import { Transaction, TransactionType } from 'state/info/types'
@@ -287,10 +287,10 @@ const TransactionTable: React.FC<{
               if (transaction) {
                 return (
                   // eslint-disable-next-line react/no-array-index-key
-                  <React.Fragment key={index}>
+                  <Fragment key={index}>
                     <DataRow transaction={transaction} />
                     <Break />
-                  </React.Fragment>
+                  </Fragment>
                 )
               }
               return null

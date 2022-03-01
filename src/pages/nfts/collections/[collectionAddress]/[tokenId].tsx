@@ -1,12 +1,11 @@
 import IndividualNFT from 'views/Nft/market/Collection/IndividualNFTPage'
-import React from 'react'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
-import { getNftApi } from 'state/nftMarket/helpers'
+import { getCollection, getNftApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 // eslint-disable-next-line camelcase
 import { SWRConfig, unstable_serialize } from 'swr'
 
-const IndividualNFTPage = ({ fallback }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const IndividualNFTPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <SWRConfig
       value={{
@@ -35,6 +34,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   const metadata = await getNftApi(collectionAddress, tokenId)
+  const collection = await getCollection(collectionAddress)
   if (!metadata) {
     return {
       notFound: true,
@@ -56,6 +56,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       fallback: {
         [unstable_serialize(['nft', nft.collectionAddress, nft.tokenId])]: nft,
+        ...(collection && {
+          [unstable_serialize(['nftMarket', 'collections', collectionAddress.toLowerCase()])]: collection,
+        }),
       },
     },
     revalidate: 60 * 60 * 6, // 6 hours

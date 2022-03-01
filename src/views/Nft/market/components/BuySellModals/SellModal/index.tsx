@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { InjectedModalProps } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { parseUnits } from '@ethersproject/units'

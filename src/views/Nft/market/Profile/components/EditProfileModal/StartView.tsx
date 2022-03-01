@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Flex, Text, InjectedModalProps } from '@pancakeswap/uikit'
@@ -51,7 +51,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
     isLoading: isProfileCostsLoading,
   } = useGetProfileCosts()
   const [needsApproval, setNeedsApproval] = useState(null)
-  const minimumCakeRequired = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
+  const minimumCakeRequired = profile?.isActive ? numberCakeToUpdate : numberCakeToReactivate
   const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance.gte(minimumCakeRequired)
 
   /**

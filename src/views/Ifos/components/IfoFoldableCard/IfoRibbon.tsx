@@ -1,6 +1,5 @@
 import { Box, Flex, Heading, Progress, ProgressBar } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
 import styled from 'styled-components'
 import { PublicIfoData } from '../../types'
 import LiveTimer, { SoonTimer } from './Timer'

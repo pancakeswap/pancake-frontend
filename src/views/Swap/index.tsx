@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
 import {
@@ -359,7 +359,7 @@ export default function Swap() {
 
   const hasAmount = Boolean(parsedAmount)
 
-  const onRefreshPrice = React.useCallback(() => {
+  const onRefreshPrice = useCallback(() => {
     if (hasAmount) {
       refreshBlockNumber()
     }

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Box, Button, Flex, IconButton, CloseIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'

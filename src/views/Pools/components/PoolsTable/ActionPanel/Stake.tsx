@@ -6,7 +6,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PoolCategory } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
-import React from 'react'
+
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'

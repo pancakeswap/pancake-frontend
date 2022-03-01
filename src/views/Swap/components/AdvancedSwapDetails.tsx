@@ -1,4 +1,3 @@
-import React from 'react'
 import { Trade, TradeType } from '@pancakeswap/sdk'
 import { Text } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'

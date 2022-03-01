@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { MaxUint256 } from '@ethersproject/constants'
@@ -126,7 +126,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
       },
       onSuccess: async ({ receipt }) => {
         refreshBidders()
-        onDismiss()
+        onDismiss?.()
         toastSuccess(t('Bid placed!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       },
     })

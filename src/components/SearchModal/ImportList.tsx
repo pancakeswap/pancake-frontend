@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Button, Text, Link, Flex, Checkbox, Message } from '@pancakeswap/uikit'
 import Card from 'components/Card'

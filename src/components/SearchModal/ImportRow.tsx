@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react'
+import { CSSProperties } from 'react'
 import { Token } from '@pancakeswap/sdk'
 import { Button, Text, CheckmarkCircleIcon } from '@pancakeswap/uikit'
 import { AutoRow, RowFixed } from 'components/Layout/Row'

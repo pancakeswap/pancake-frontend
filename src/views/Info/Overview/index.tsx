@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text, Heading, Card, Skeleton } from '@pancakeswap/uikit'
 import { fromUnixTime } from 'date-fns'
@@ -7,7 +7,7 @@ import Page from 'components/Layout/Page'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
-import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
 import {
   useAllPoolData,

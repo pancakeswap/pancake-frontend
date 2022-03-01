@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Text, Box, Flex, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

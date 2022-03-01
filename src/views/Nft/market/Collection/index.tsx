@@ -1,8 +1,9 @@
 import PageLoader from 'components/Loader/PageLoader'
+import { PageMeta } from 'components/Layout/Page'
 import dynamic from 'next/dynamic'
 import { NextRouter, useRouter } from 'next/router'
-import React, { useMemo } from 'react'
-import { useFetchCollection, useGetCollection } from 'state/nftMarket/hooks'
+import { useMemo } from 'react'
+import { useGetCollection } from 'state/nftMarket/hooks'
 import Header from './Header'
 import Items from './Items'
 
@@ -20,11 +21,9 @@ const Collection = () => {
   const collectionAddress = router.query.collectionAddress as string
   const collection = useGetCollection(collectionAddress)
 
-  useFetchCollection(collectionAddress)
-
   const hash = useMemo(() => getHashFromRouter(router)?.[0], [router])
 
-  if (!collection || router.isFallback) {
+  if (!collection) {
     return <PageLoader />
   }
 
@@ -40,6 +39,7 @@ const Collection = () => {
 
   return (
     <>
+      <PageMeta />
       <Header collection={collection} />
       {content}
     </>

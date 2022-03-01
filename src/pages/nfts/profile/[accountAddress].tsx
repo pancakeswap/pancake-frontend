@@ -1,6 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
 import { useRouter } from 'next/router'
-import React from 'react'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { NftProfileLayout } from 'views/Nft/market/Profile'
 import SubMenu from 'views/Nft/market/Profile/components/SubMenu'
@@ -13,11 +12,14 @@ const NftProfilePage = () => {
   const accountAddress = useRouter().query.accountAddress as string
   const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()
   const {
-    profile: profileHookState,
-    isFetching: isProfileFetching,
+    profile,
+    isValidating: isProfileFetching,
     refresh: refreshProfile,
-  } = useProfileForAddress(accountAddress)
-  const { profile } = profileHookState || {}
+  } = useProfileForAddress(accountAddress, {
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+  })
   const {
     nfts,
     isLoading: isNftLoading,

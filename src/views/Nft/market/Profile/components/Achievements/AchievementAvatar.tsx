@@ -1,4 +1,4 @@
-import React, { ImgHTMLAttributes } from 'react'
+import { ImgHTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, ChevronLeftIcon, Flex } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'

@@ -1,9 +1,18 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  createMigrate,
+} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import blockReducer from './block'
 import burn from './burn/reducer'
 import farmsReducer from './farms'
 import farmsReducerV1 from './farmsV1'
@@ -16,28 +25,41 @@ import multicall from './multicall/reducer'
 import nftMarketReducer from './nftMarket/reducer'
 import poolsReducer from './pools'
 import predictionsReducer from './predictions'
-import profileReducer from './profile'
 import swap from './swap/reducer'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
+
+const migrations = {
+  0: (state) => {
+    // migration add userPredictionChainlinkChartDisclaimerShow
+    return {
+      ...state,
+      user: {
+        ...state?.user,
+        userPredictionChainlinkChartDisclaimerShow: true,
+      },
+    }
+  },
+}
 
 const persistConfig = {
   key: 'primary',
   whitelist: PERSISTED_KEYS,
+  blacklist: ['profile'],
   storage,
+  version: 0,
+  migrate: createMigrate(migrations, { debug: false }),
 }
 
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
-    block: blockReducer,
     farms: farmsReducer,
     farmsV1: farmsReducerV1,
     pools: poolsReducer,
     predictions: predictionsReducer,
-    profile: profileReducer,
     lottery: lotteryReducer,
     info: infoReducer,
     nftMarket: nftMarketReducer,

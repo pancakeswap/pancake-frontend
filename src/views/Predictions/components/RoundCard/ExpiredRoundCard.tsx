@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -22,6 +21,7 @@ interface ExpiredRoundCardProps {
   hasClaimedDown: boolean
   bullMultiplier: string
   bearMultiplier: string
+  isActive?: boolean
 }
 
 const StyledExpiredRoundCard = styled(Card)`
@@ -42,6 +42,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   hasClaimedDown,
   bullMultiplier,
   bearMultiplier,
+  isActive,
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -58,9 +59,17 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
     return <CalculatingCard round={round} hasEnteredDown={hasEnteredDown} hasEnteredUp={hasEnteredUp} />
   }
 
+  const cardProps = isActive
+    ? {
+        isActive,
+      }
+    : {
+        borderBackground: getBorderBackground(theme, 'expired'),
+      }
+
   return (
     <Box position="relative">
-      <StyledExpiredRoundCard borderBackground={getBorderBackground(theme, 'expired')}>
+      <StyledExpiredRoundCard {...cardProps}>
         <CardHeader
           status="expired"
           icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}

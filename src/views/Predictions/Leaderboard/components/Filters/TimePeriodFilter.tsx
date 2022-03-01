@@ -1,4 +1,3 @@
-import React from 'react'
 import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'

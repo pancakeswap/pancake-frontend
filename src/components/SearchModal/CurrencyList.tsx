@@ -1,4 +1,4 @@
-import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
+import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from '@pancakeswap/sdk'
 import { Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'

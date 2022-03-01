@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import PrizesText from './PrizesText'

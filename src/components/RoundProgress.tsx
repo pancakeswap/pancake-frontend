@@ -1,4 +1,3 @@
-import React from 'react'
 import { Progress, ProgressProps } from '@pancakeswap/uikit'
 
 interface RoundProgressProps extends ProgressProps {

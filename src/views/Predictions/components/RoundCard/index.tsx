@@ -1,4 +1,3 @@
-import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useGetBetByEpoch, useGetCurrentEpoch } from 'state/predictions/hooks'
 import { BetPosition, NodeRound } from 'state/types'
@@ -10,9 +9,10 @@ import SoonRoundCard from './SoonRoundCard'
 
 interface RoundCardProps {
   round: NodeRound
+  isActive?: boolean
 }
 
-const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
+const RoundCard: React.FC<RoundCardProps> = ({ round, isActive }) => {
   const { epoch, lockPrice, closePrice, totalAmount, bullAmount, bearAmount } = round
   const currentEpoch = useGetCurrentEpoch()
   const { account } = useWeb3React()
@@ -65,6 +65,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   // Past rounds
   return (
     <ExpiredRoundCard
+      isActive={isActive}
       round={round}
       hasEnteredDown={hasEnteredDown}
       hasEnteredUp={hasEnteredUp}

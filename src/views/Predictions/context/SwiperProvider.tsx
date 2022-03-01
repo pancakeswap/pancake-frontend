@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, useState } from 'react'
+import { memo, createContext, Dispatch, useState } from 'react'
 import SwiperCore from 'swiper'
 
 interface Context {
@@ -22,4 +22,4 @@ const SwiperProvider = ({ children }) => {
   return <SwiperContext.Provider value={{ swiper, setSwiper, destroySwiper }}>{children}</SwiperContext.Provider>
 }
 
-export default SwiperProvider
+export default memo(SwiperProvider)

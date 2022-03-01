@@ -8,6 +8,7 @@ import { farmsConfig } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import { useFarmsPoolLength } from 'state/farms/hooks'
 
 export interface FarmWithBalance extends SerializedFarmConfig {
   balance: BigNumber
@@ -17,17 +18,19 @@ const useFarmsWithBalance = () => {
   const [farmsWithStakedBalance, setFarmsWithStakedBalance] = useState<FarmWithBalance[]>([])
   const [earningsSum, setEarningsSum] = useState<number>(null)
   const { account } = useWeb3React()
+  const poolLength = useFarmsPoolLength()
 
   useFastRefreshEffect(() => {
     const fetchBalances = async () => {
-      const calls = farmsConfig.map((farm) => ({
+      const farmsCanFetch = farmsConfig.filter((f) => poolLength > f.pid)
+      const calls = farmsCanFetch.map((farm) => ({
         address: getMasterChefAddress(),
         name: 'pendingCake',
         params: [farm.pid, account],
       }))
 
       const rawResults = await multicall(masterChefABI, calls)
-      const results = farmsConfig.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
+      const results = farmsCanFetch.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
       const farmsWithBalances = results.filter((balanceType) => balanceType.balance.gt(0))
       const totalEarned = farmsWithBalances.reduce((accum, earning) => {
         const earningNumber = new BigNumber(earning.balance)
@@ -41,10 +44,10 @@ const useFarmsWithBalance = () => {
       setEarningsSum(totalEarned)
     }
 
-    if (account) {
+    if (account && poolLength) {
       fetchBalances()
     }
-  }, [account])
+  }, [account, poolLength])
 
   return { farmsWithStakedBalance, earningsSum }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
@@ -10,6 +10,7 @@ import ItamWarning from './ItamWarning'
 import BondlyWarning from './BondlyWarning'
 import Acknowledgement from './Acknowledgement'
 import CcarWarning from './CcarWarning'
+import BTTWarning from './BTTWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -67,6 +68,10 @@ const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDis
     [SwapWarningTokensConfig.ccar.address]: {
       symbol: SwapWarningTokensConfig.ccar.symbol,
       component: <CcarWarning />,
+    },
+    [SwapWarningTokensConfig.bttold.address]: {
+      symbol: SwapWarningTokensConfig.bttold.symbol,
+      component: <BTTWarning />,
     },
   }
 

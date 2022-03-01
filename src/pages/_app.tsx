@@ -11,13 +11,12 @@ import useSentryUser from 'hooks/useSentryUser'
 import useUserAgent from 'hooks/useUserAgent'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { useStore, persistor } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { NextPage } from 'next'
-import { useFetchProfile } from 'state/profile/hooks'
 import { Blocklist, Updaters } from '..'
 import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
@@ -34,7 +33,6 @@ BigNumber.config({
 function GlobalHooks() {
   usePollBlockNumber()
   useEagerConnect()
-  useFetchProfile()
   usePollCoreFarmData()
   useUserAgent()
   useInactiveListener()
@@ -55,7 +53,7 @@ function MyApp(props: AppProps) {
         />
         <meta
           name="description"
-          content="Cheaper and faster than Uniswap? Discover PancakeSwap, the leading DEX on Binance Smart Chain (BSC) with the best farms in DeFi and a lottery for CAKE."
+          content="Cheaper and faster than Uniswap? Discover PancakeSwap, the leading DEX on BNB Smart Chain (BSC) with the best farms in DeFi and a lottery for CAKE."
         />
         <meta name="theme-color" content="#1FC7D4" />
         <meta name="twitter:image" content="https://pancakeswap.finance/images/hero.png" />
@@ -64,10 +62,7 @@ function MyApp(props: AppProps) {
           content="The most popular AMM on BSC! Earn CAKE through yield farming or win it in the Lottery, then stake it in Syrup Pools to earn more tokens! Initial Farm Offerings (new token launch model pioneered by PancakeSwap), NFTs, and more, on a platform you can trust."
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="🥞 PancakeSwap - A next evolution DeFi exchange on Binance Smart Chain (BSC)"
-        />
+        <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
         <title>PancakeSwap</title>
       </Head>
       <Providers store={store}>

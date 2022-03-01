@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
+import { useRef, useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { createChart, IChartApi } from 'lightweight-charts'
 import { format } from 'date-fns'

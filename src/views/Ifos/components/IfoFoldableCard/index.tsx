@@ -15,7 +15,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import styled from 'styled-components'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
@@ -83,13 +83,21 @@ const Header = styled(CardHeader)<{ ifoId: string; $isCurrent?: boolean }>`
   }
 `
 
-const CardsWrapper = styled.div<{ singleCard: boolean }>`
+const CardsWrapper = styled.div<{ singleCard: boolean; shouldReverse: boolean }>`
   display: grid;
   grid-gap: 32px;
   grid-template-columns: 1fr;
   ${({ theme }) => theme.mediaQueries.xxl} {
     grid-template-columns: ${({ singleCard }) => (singleCard ? '1fr' : '1fr 1fr')};
     justify-items: ${({ singleCard }) => (singleCard ? 'center' : 'unset')};
+  }
+
+  > div:nth-child(1) {
+    order: ${({ shouldReverse }) => (shouldReverse ? 2 : 1)};
+  }
+
+  > div:nth-child(2) {
+    order: ${({ shouldReverse }) => (shouldReverse ? 1 : 2)};
   }
 `
 
@@ -323,7 +331,10 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
   return (
     <>
       <StyledCardBody>
-        <CardsWrapper singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}>
+        <CardsWrapper
+          shouldReverse={ifo.version === 3.1}
+          singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
+        >
           {publicIfoData.poolBasic && walletIfoData.poolBasic && (
             <IfoPoolCard
               poolId={PoolIds.poolBasic}

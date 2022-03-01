@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import {
   Modal,
@@ -88,7 +88,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserPendingReward(sousId, account))
       dispatch(updateUserBalance(sousId, account))
-      onDismiss()
+      onDismiss?.()
     }
   }
 

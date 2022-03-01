@@ -18,7 +18,7 @@ import {
 import Page from 'components/Layout/Page'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { usePoolChartData, usePoolDatas, usePoolTransactions } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -28,7 +28,7 @@ import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
-import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import { formatAmount } from 'utils/formatInfoNumbers'
 
 const ContentLayout = styled.div`
   display: grid;

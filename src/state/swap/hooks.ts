@@ -7,7 +7,7 @@ import useENS from 'hooks/ENS/useENS'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
-import useParsedQueryString from 'hooks/useParsedQueryString'
+import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import { isAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/prices'
@@ -313,14 +313,14 @@ export function useDefaultsFromURLSearch():
   | undefined {
   const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
-  const parsedQs = useParsedQueryString()
+  const { query } = useRouter()
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
   >()
 
   useEffect(() => {
     if (!chainId) return
-    const parsed = queryParametersToSwapState(parsedQs)
+    const parsed = queryParametersToSwapState(query)
 
     dispatch(
       replaceSwapState({
@@ -333,7 +333,7 @@ export function useDefaultsFromURLSearch():
     )
 
     setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
-  }, [dispatch, chainId, parsedQs])
+  }, [dispatch, chainId, query])
 
   return result
 }

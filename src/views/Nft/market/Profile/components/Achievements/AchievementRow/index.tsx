@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Flex } from '@pancakeswap/uikit'
 import { Achievement } from 'state/types'
