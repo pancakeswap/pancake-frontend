@@ -36,6 +36,7 @@ module.exports = {
     '@ethersproject/web': path.resolve(__dirname, './adaptor/ethers-web'),
     'redux-localstorage-simple': path.resolve(__dirname, './adaptor/redux-localstorage-simple'),
     'react-window': path.resolve(__dirname, './adaptor/react-window.jsx'),
+    'redux-persist/lib/storage': path.resolve(__dirname, './adaptor/redux-persist-storage.js'),
   },
 
   entry: {
