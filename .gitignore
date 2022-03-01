@@ -12,12 +12,12 @@ cypress/screenshots
 cypress/fixtures/example.json
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 .idea/
 
 # production
-/build
+build
 dist
 storybook-static
 
@@ -37,8 +37,11 @@ yarn-debug.log*
 yarn-error.log*
 debug.log*
 
-src/config/abi/types
+**/config/abi/types
 
 
 # Sentry
 .sentryclirc
+
+# turbo
+.turbo
