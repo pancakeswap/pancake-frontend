@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react'
-import BigNumber from 'bignumber.js'
 import partition from 'lodash/partition'
 import { useWeb3React } from '@web3-react/core'
 import {
