@@ -1,9 +1,7 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { BloctoConnector } from '@blocto/blocto-connector'
 import { ChainId } from '@pancakeswap/sdk'
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { BscConnector } from '@binance-chain/bsc-connector'
 import { ConnectorNames } from '@pancakeswap/uikit'
 import { hexlify } from '@ethersproject/bytes'
@@ -24,24 +22,26 @@ const walletconnect = new WalletConnectConnector({
   pollingInterval: POLLING_INTERVAL,
 })
 
-const blocto = new BloctoConnector({ chainId, rpc: rpcUrl })
-
 const bscConnector = new BscConnector({ supportedChainIds: [chainId] })
-
-const walletlink = new WalletLinkConnector({
-  url: rpcUrl,
-  appName: 'PancakeSwap',
-  appLogoUrl: 'https://pancakeswap.com/logo.png',
-  supportedChainIds: [ChainId.MAINNET, ChainId.TESTNET],
-})
 
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.BSC]: bscConnector,
-  [ConnectorNames.Blocto]: blocto,
-  [ConnectorNames.WalletLink]: walletlink,
-}
+  [ConnectorNames.Blocto]: async () => {
+    const { BloctoConnector } = await import('@blocto/blocto-connector')
+    return new BloctoConnector({ chainId, rpc: rpcUrl })
+  },
+  [ConnectorNames.WalletLink]: async () => {
+    const { WalletLinkConnector } = await import('@web3-react/walletlink-connector')
+    return new WalletLinkConnector({
+      url: rpcUrl,
+      appName: 'PancakeSwap',
+      appLogoUrl: 'https://pancakeswap.com/logo.png',
+      supportedChainIds: [ChainId.MAINNET, ChainId.TESTNET],
+    })
+  },
+} as const
 
 export const getLibrary = (provider): Web3Provider => {
   const library = new Web3Provider(provider)
