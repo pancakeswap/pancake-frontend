@@ -35,6 +35,7 @@ export { default as CircleOutlineIcon } from "./Icons/CircleOutline";
 export { default as CloseIcon } from "./Icons/Close";
 export { default as CogIcon } from "./Icons/Cog";
 export { default as Coin98Icon } from "./Icons/Coin98";
+export { default as CoinbaseWalletIcon } from "./Icons/CoinbaseWallet";
 export { default as CommunityFilledIcon } from "./Icons/CommunityFilled";
 export { default as CommunityIcon } from "./Icons/Community";
 export { default as CopyIcon } from "./Icons/Copy";
