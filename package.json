@@ -5,7 +5,8 @@
   "scripts": {
     "analyze": "ANALYZE=true yarn build",
     "bmp:dev": "NODE_ENV=development bmp dev",
-    "bmp:build": "bmp build",
+    "bmp:build:qa": "API_HOST=qa bmp build",
+    "bmp:build:prod": "API_HOST=prod bmp build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

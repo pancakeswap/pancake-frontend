@@ -6,13 +6,13 @@ import { init, bindRequest } from '@binance/sentry-miniapp'
 declare const COMMIT_ID: string
 declare const env: any
 export function getEnv() {
-  if (env.API_HOST && !(env.API_HOST.includes('qa1fdg') || env.API_HOST.includes('devfdg'))) {
+  if (process.env.API_HOST && !(process.env.API_HOST.includes('qa') || process.env.API_HOST.includes('dev'))) {
     return 'prod'
   }
-  if (env.API_HOST && env.API_HOST.includes('qa1fdg')) {
+  if (process.env.API_HOST && process.env.API_HOST.includes('qa')) {
     return 'qa'
   }
-  if (env.API_HOST && env.API_HOST.includes('devfdg')) {
+  if (process.env.API_HOST && process.env.API_HOST.includes('dev')) {
     return 'dev'
   }
   return 'local'
