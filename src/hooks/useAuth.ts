@@ -53,6 +53,7 @@ const useAuth = () => {
           }
         })
       } else {
+        window.localStorage.removeItem(connectorLocalStorageKey)
         toastError(t('Unable to find connector'), t('The connector config is wrong'))
       }
     },
