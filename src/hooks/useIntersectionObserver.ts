@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
 const useIntersectionObserver = () => {
   const [observerRefElement, setObserverRefElement] = useState(null)
@@ -6,22 +6,29 @@ const useIntersectionObserver = () => {
   const intersectionObserverRef = useRef<IntersectionObserver>(null)
   const [isIntersecting, setIsIntersecting] = useState(false)
 
-  useEffect(() => {
-    if (!intersectionObserverRef.current && observerRefElement) {
-      const checkObserverIsIntersecting = ([entry]: IntersectionObserverEntry[]) => {
-        setIsIntersecting(entry.isIntersecting)
+  useLayoutEffect(() => {
+    const isSupported = typeof window === 'object' && window.IntersectionObserver
+
+    if (isSupported) {
+      if (!intersectionObserverRef.current && observerRefElement) {
+        const checkObserverIsIntersecting = ([entry]: IntersectionObserverEntry[]) => {
+          setIsIntersecting(entry.isIntersecting)
+        }
+
+        intersectionObserverRef.current = new window.IntersectionObserver(checkObserverIsIntersecting, {
+          rootMargin: '0px',
+          threshold: 1,
+        })
+        intersectionObserverRef.current.observe(observerRefElement)
       }
 
-      intersectionObserverRef.current = new IntersectionObserver(checkObserverIsIntersecting, {
-        rootMargin: '0px',
-        threshold: 1,
-      })
-      intersectionObserverRef.current.observe(observerRefElement)
-    }
-
-    if (intersectionObserverRef.current && !observerRefElement) {
-      intersectionObserverRef.current.disconnect()
-      setIsIntersecting(false)
+      if (intersectionObserverRef.current && !observerRefElement) {
+        intersectionObserverRef.current.disconnect()
+        setIsIntersecting(false)
+      }
+    } else {
+      // If client doesnt support IntersectionObserver, set Intersecting to be true
+      setIsIntersecting(true)
     }
 
     return () => {
