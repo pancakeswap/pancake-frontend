@@ -10,7 +10,7 @@ import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 
-const ThemeProviderWrapper = (props) => {
+const StyledThemeProvider = (props) => {
   const { resolvedTheme } = useNextTheme()
   return <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props} />
 }
@@ -21,7 +21,7 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
       <Provider store={store}>
         <ToastsProvider>
           <NextThemeProvider>
-            <ThemeProviderWrapper>
+            <StyledThemeProvider>
               <LanguageProvider>
                 <SWRConfig
                   value={{
@@ -31,7 +31,7 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
                   <ModalProvider>{children}</ModalProvider>
                 </SWRConfig>
               </LanguageProvider>
-            </ThemeProviderWrapper>
+            </StyledThemeProvider>
           </NextThemeProvider>
         </ToastsProvider>
       </Provider>
