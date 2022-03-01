@@ -454,15 +454,18 @@ export const getAllPancakeBunniesRecentUpdatedAt = async (bunnyIds: string[]): P
 }
 
 /**
- * Returns the lowest price of any NFT in a collection
+ * Returns the lowest/highest price of any NFT in a collection
  */
-export const getLowestPriceInCollection = async (collectionAddress: string) => {
+export const getLeastMostPriceInCollection = async (
+  collectionAddress: string,
+  orderDirection: 'asc' | 'desc' = 'asc',
+) => {
   try {
     const response = await getNftsMarketData(
       { collection: collectionAddress.toLowerCase(), isTradable: true },
       1,
       'currentAskPrice',
-      'asc',
+      orderDirection,
     )
 
     if (response.length === 0) {

@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import { useTranslation } from 'contexts/Localization'
-import { getLowestPriceInCollection } from 'state/nftMarket/helpers'
+import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
 import { StatBoxItem, StatBoxItemProps } from '../components/StatBox'
 
 interface LowestPriceStatBoxItemProps extends Omit<StatBoxItemProps, 'title' | 'stat'> {
@@ -11,7 +11,7 @@ const LowestPriceStatBoxItem: React.FC<LowestPriceStatBoxItemProps> = ({ collect
   const { t } = useTranslation()
   const { data: lowestCollectionPrice = null } = useSWR(
     collectionAddress ? [collectionAddress, 'lowestPrice'] : null,
-    () => getLowestPriceInCollection(collectionAddress),
+    () => getLeastMostPriceInCollection(collectionAddress),
   )
 
   const formattedLowestPrice =

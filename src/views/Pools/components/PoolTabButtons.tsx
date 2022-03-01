@@ -1,10 +1,10 @@
 import { NextLinkFromReactRouter } from 'components/NextLink'
+import ToggleView from 'components/ToggleView/ToggleView'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import ToggleView from './ToggleView/ToggleView'
 
 const ToggleWrapper = styled.div`
   display: flex;
@@ -59,7 +59,9 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
 
   const isExact = router.asPath === '/pools'
 
-  const viewModeToggle = <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
+  const viewModeToggle = (
+    <ToggleView idPrefix="clickPool" viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
+  )
 
   const liveOrFinishedSwitch = (
     <Wrapper>
