@@ -35,7 +35,7 @@ const walletlink = new WalletLinkConnector({
   supportedChainIds: [ChainId.MAINNET, ChainId.TESTNET],
 })
 
-export const connectorsByName: { [connectorName in ConnectorNames]: AbstractConnector } = {
+export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.BSC]: bscConnector,
