@@ -89,10 +89,10 @@ export const useGetCollection = (collectionAddress: string): Collection | undefi
   return collectionObject[checksummedCollectionAddress]
 }
 
-export const useGetShuffledCollections = (): { data: ApiCollections; status: FetchStatus } => {
+export const useGetShuffledCollections = (): { data: Collection[]; status: FetchStatus } => {
   const { data } = useSWRImmutable(['nftMarket', 'collections'], async () => getCollections())
   const collections = data ?? ({} as ApiCollections)
-  const { data: shuffledCollections = {}, status } = useSWRImmutable(
+  const { data: shuffledCollections, status } = useSWRImmutable(
     !isEmpty(collections) ? ['nftMarket', 'shuffledCollections'] : null,
     () => {
       return shuffle(collections)
