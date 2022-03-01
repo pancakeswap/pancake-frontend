@@ -385,17 +385,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: serializedTokens.wbnb,
   },
   {
-    pid: 488,
-    v1pid: 488,
-    lpSymbol: 'THG-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x486697ae24469cB1122F537924Aa46E705B142Aa',
-    },
-    token: serializedTokens.thg,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
     pid: 485,
     v1pid: 485,
     lpSymbol: 'TT-BUSD LP',
