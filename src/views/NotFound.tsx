@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Button, Heading, Text, LogoIcon } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'

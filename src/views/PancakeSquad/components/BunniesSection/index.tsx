@@ -1,4 +1,3 @@
-import React from 'react'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Box, Button, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

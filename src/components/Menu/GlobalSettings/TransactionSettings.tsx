@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { escapeRegExp } from 'utils'
 import { Text, Button, Input, Flex, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

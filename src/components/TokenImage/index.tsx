@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   TokenPairImage as UIKitTokenPairImage,
   TokenPairImageProps as UIKitTokenPairImageProps,

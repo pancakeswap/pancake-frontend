@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'

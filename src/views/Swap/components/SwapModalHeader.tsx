@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { Trade, TradeType } from '@pancakeswap/sdk'
 import { Button, Text, ErrorIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ModalContainer,
@@ -60,7 +60,7 @@ export default function CurrencySearchModal({
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
-      onDismiss()
+      onDismiss?.()
       onCurrencySelect(currency)
     },
     [onDismiss, onCurrencySelect],

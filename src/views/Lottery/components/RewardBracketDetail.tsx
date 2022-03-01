@@ -1,4 +1,3 @@
-import React from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -73,7 +72,7 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
               </Text>
             )}
             <Text fontSize="12px" color="textSubtle">
-              {numberWinners} {t('Winners')}
+              {numberWinners} {t('Winning Tickets')}
             </Text>
           </>
         )}

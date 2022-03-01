@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react'
+
 import { BigNumber } from '@ethersproject/bignumber'
 import { Flex } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'

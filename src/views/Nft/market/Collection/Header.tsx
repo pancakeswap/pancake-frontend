@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRouter } from 'next/router'
 import { Text } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'

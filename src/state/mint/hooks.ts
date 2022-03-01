@@ -148,7 +148,12 @@ export function useDerivedMintInfo(
       wrappedCurrencyAmount(currencyBAmount, chainId),
     ]
     if (pair && totalSupply && tokenAmountA && tokenAmountB) {
-      return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
+      try {
+        return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
+      } catch (error) {
+        console.error(error)
+        return undefined
+      }
     }
     return undefined
   }, [parsedAmounts, chainId, pair, totalSupply])

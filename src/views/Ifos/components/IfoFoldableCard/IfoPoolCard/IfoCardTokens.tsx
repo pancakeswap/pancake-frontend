@@ -1,4 +1,3 @@
-import React from 'react'
 import BigNumber from 'bignumber.js'
 import {
   Text,
@@ -15,6 +14,7 @@ import {
   MessageText,
   useModal,
   Link,
+  ErrorIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
@@ -32,6 +32,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
+import IFORequirements from './IFORequirements'
 
 interface TokenSectionProps extends FlexProps {
   primaryToken?: Token
@@ -88,6 +89,8 @@ interface IfoCardTokensProps {
   isLoading: boolean
   onApprove: () => Promise<any>
   enableStatus: EnableStatus
+  criterias?: any
+  isEligible?: boolean
 }
 
 const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
@@ -114,6 +117,8 @@ const MessageTextLink = styled(Link)`
 `
 
 const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
+  criterias,
+  isEligible,
   poolId,
   ifo,
   publicIfoData,
@@ -174,7 +179,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
                 ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
                 : t('You need an active PancakeSwap Profile to take part in an IFO!')}
             </MessageText>{' '}
-            <MessageTextLink href="#ifo-how-to" color="#D67E0A" display="inline">
+            <MessageTextLink href="/ifo#ifo-how-to" color="#D67E0A" display="inline">
               {t('How does it work?')} »
             </MessageTextLink>
           </Box>
@@ -182,20 +187,49 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       )
     }
 
-    if (ifo.version === 3 && getBalanceNumber(credit) === 0) {
+    const ifov31Msg =
+      ifo.version === 3.1 && poolId === PoolIds.poolBasic && criterias?.length > 0 ? (
+        <Box mt="16px">
+          {!isEligible && (
+            <Message mb="24px" p="8px" variant="warning" icon={<ErrorIcon color="warning" width="24px" />}>
+              <MessageText small display="inline">
+                {t('Meet any one of the following requirements to be eligible.')}
+              </MessageText>
+            </Message>
+          )}
+          <IFORequirements
+            criterias={criterias}
+            admissionProfile={publicPoolCharacteristics?.admissionProfile}
+            pointThreshold={publicPoolCharacteristics?.pointThreshold}
+          />
+          {isEligible && (
+            <Message mt="24px" p="8px" variant="success">
+              <MessageText small display="inline">
+                {t('You are eligible to participate in this Private Sale!')}
+              </MessageText>
+            </Message>
+          )}
+        </Box>
+      ) : null
+
+    if (
+      (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) &&
+      getBalanceNumber(credit) === 0
+    ) {
       message = (
         <Message my="24px" p="8px" variant="danger">
           <Box>
             <MessageText display="inline">
               {t('You don’t have any average CAKE balance available to commit in the IFO CAKE pool.')}
             </MessageText>{' '}
-            <MessageTextLink display="inline" fontWeight={700} href="#ifo-how-to" color="failure">
+            <MessageTextLink display="inline" fontWeight={700} href="/ifo#ifo-how-to" color="failure">
               {t('How does it work?')} »
             </MessageTextLink>
           </Box>
         </Message>
       )
     }
+
     if (account && !hasProfile) {
       return (
         <>
@@ -204,6 +238,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         </>
       )
     }
+
+    message = ifov31Msg || message
+
     if (publicIfoData.status === 'coming_soon') {
       return (
         <>
@@ -244,6 +281,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
           </TokenSection>
+          {ifov31Msg}
         </>
       )
     }
@@ -252,21 +290,27 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         <Flex flexDirection="column" alignItems="center">
           <BunnyPlaceholderIcon width={80} mb="16px" />
           <Text fontWeight={600}>{t('You didn’t participate in this sale!')}</Text>
-          <Text textAlign="center" fontSize="14px">
-            {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
-          </Text>
-          <MessageTextLink href="#ifo-how-to" textAlign="center">
-            {t('How does it work?')} »
-          </MessageTextLink>
-          <Button mt="24px" onClick={onPresentStake}>
-            {t('Stake CAKE in IFO pool')}
-          </Button>
+          {ifov31Msg || (
+            <>
+              <Text textAlign="center" fontSize="14px">
+                {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
+              </Text>
+              <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
+                {t('How does it work?')} »
+              </MessageTextLink>
+              <Button mt="24px" onClick={onPresentStake}>
+                {t('Stake CAKE in IFO pool')}
+              </Button>
+            </>
+          )}
         </Flex>
       ) : (
         <>
           <CommitTokenSection commitToken={ifo.currency} mb="24px">
             <Label>
-              {hasClaimed ? t('Your %symbol% RECLAIMED') : t('Your %symbol% TO RECLAIM', { symbol: currency.symbol })}
+              {hasClaimed
+                ? t('Your %symbol% RECLAIMED', { symbol: currency.symbol })
+                : t('Your %symbol% TO RECLAIM', { symbol: currency.symbol })}
             </Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.refundingAmountInLP, currency.decimals)}</Value>
@@ -278,7 +322,12 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </CommitTokenSection>
           <TokenSection primaryToken={ifo.token}>
-            <Label> {hasClaimed ? t('%symbol% received') : t('%symbol% to receive', { symbol: token.symbol })}</Label>
+            <Label>
+              {' '}
+              {hasClaimed
+                ? t('%symbol% received', { symbol: token.symbol })
+                : t('%symbol% to receive', { symbol: token.symbol })}
+            </Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
               {!hasClaimed && userPoolCharacteristics.offeringAmountInToken.isEqualTo(0) && (

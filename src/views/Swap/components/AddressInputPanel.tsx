@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import styled from 'styled-components'
 import { Text, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

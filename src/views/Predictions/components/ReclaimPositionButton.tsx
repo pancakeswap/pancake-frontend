@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { AutoRenewIcon, Button, ButtonProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { usePredictionsContract } from 'hooks/useContract'

@@ -1,24 +1,24 @@
-import React, { useMemo } from 'react'
-import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
 import {
+  Box,
+  Button,
   Card,
   CardBody,
-  Text,
   Flex,
-  HelpIcon,
-  Button,
   Heading,
+  HelpIcon,
   Skeleton,
+  Text,
   useModal,
-  Box,
   useTooltip,
 } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import { AnimatedBalance as Balance } from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { useMemo } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCakeVault } from 'state/pools/hooks'
-import Balance from 'components/Balance'
+import styled from 'styled-components'
+import { getBalanceNumber } from 'utils/formatBalance'
 import BountyModal from './BountyModal'
 
 const StyledCard = styled(Card)`
@@ -33,6 +33,7 @@ const BountyCard = () => {
   const { t } = useTranslation()
   const {
     estimatedCakeBountyReward,
+    totalPendingCakeHarvest,
     fees: { callFee },
   } = useCakeVault()
   const cakePriceBusd = usePriceCakeBusd()
@@ -60,7 +61,18 @@ const BountyCard = () => {
     </>
   )
 
-  const [onPresentBountyModal] = useModal(<BountyModal TooltipComponent={TooltipComponent} />)
+  const [onPresentBountyModal] = useModal(
+    <BountyModal
+      estimatedCakeBountyReward={estimatedCakeBountyReward}
+      totalPendingCakeHarvest={totalPendingCakeHarvest}
+      callFee={callFee}
+      cakePriceBusd={cakePriceBusd}
+      TooltipComponent={TooltipComponent}
+    />,
+    true,
+    true,
+    'bountyModal',
+  )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent fee={callFee} />, {
     placement: 'bottom-end',

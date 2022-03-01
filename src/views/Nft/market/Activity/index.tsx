@@ -1,16 +1,11 @@
 import { Card, Heading } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import PageLoader from 'components/Loader/PageLoader'
 import PageHeader from 'components/PageHeader'
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
-import { useGetNFTInitializationState } from 'state/nftMarket/hooks'
-import { NFTMarketInitializationState } from 'state/nftMarket/types'
 import ActivityHistory from '../ActivityHistory/ActivityHistory'
 
 const Activity = () => {
   const { t } = useTranslation()
-  const initializationState = useGetNFTInitializationState()
 
   return (
     <>
@@ -20,13 +15,9 @@ const Activity = () => {
         </Heading>
       </PageHeader>
       <Page>
-        {initializationState !== NFTMarketInitializationState.INITIALIZED ? (
-          <PageLoader />
-        ) : (
-          <Card>
-            <ActivityHistory />
-          </Card>
-        )}
+        <Card>
+          <ActivityHistory />
+        </Card>
       </Page>
     </>
   )

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Flex, Heading, Button } from '@pancakeswap/uikit'

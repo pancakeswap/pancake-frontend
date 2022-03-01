@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import orderBy from 'lodash/orderBy'
 import {
   Box,
@@ -29,7 +29,7 @@ export const ListCollectionFilter: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [orderState, setOrderState] = useState<ListOrderState>({ orderKey: 'label', orderDir: 'asc' })
-  const collections = useGetCollections()
+  const { data: collections } = useGetCollections()
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
   const dispatch = useAppDispatch()

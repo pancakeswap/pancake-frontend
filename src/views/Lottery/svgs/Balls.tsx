@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Svg, SvgProps, Text, Flex } from '@pancakeswap/uikit'
 

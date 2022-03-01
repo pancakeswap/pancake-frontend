@@ -1,11 +1,11 @@
-import React from 'react'
 // eslint-disable-next-line camelcase
 import { SWRConfig, unstable_serialize } from 'swr'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { getProposal } from 'state/voting/helpers'
+import { ProposalState } from 'state/types'
 import ProposalPageRouter from 'views/Voting/Proposal'
 
-const ProposalPage = ({ fallback }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const ProposalPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <SWRConfig
       value={{
@@ -46,11 +46,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           [unstable_serialize(['proposal', id])]: fetchedProposal,
         },
       },
-      revalidate: 60 * 60 * 12, // 12 hour
+      revalidate:
+        fetchedProposal.state === ProposalState.CLOSED
+          ? 60 * 60 * 12 // 12 hour
+          : 3,
     }
   } catch (error) {
     return {
-      props: {},
+      props: {
+        fallback: {},
+      },
       revalidate: 60,
     }
   }

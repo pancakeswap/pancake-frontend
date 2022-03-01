@@ -1,4 +1,3 @@
-import React from 'react'
 import { Progress, ProgressProps } from '@pancakeswap/uikit'
 import { useCurrentBlock } from 'state/block/hooks'
 

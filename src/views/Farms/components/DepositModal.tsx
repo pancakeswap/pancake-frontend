@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Button, Modal, LinkExternal, CalculateIcon, IconButton, Skeleton } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
@@ -147,7 +147,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)
-            onDismiss()
+            onDismiss?.()
             setPendingTx(false)
           }}
         >

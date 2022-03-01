@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Text, Flex, Skeleton, Image } from '@pancakeswap/uikit'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'

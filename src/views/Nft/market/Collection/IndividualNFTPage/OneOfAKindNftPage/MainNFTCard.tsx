@@ -1,7 +1,7 @@
 import { BinanceIcon, Box, Button, Card, CardBody, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
-import React from 'react'
+
 import { NftToken } from 'state/nftMarket/types'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { formatNumber } from 'utils/formatBalance'

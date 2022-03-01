@@ -134,13 +134,12 @@ export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) 
   )
 }
 
-export const fetchPoolsPublicDataAsync = () => async (dispatch, getState) => {
+export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (dispatch, getState) => {
   try {
     const blockLimits = await fetchPoolsBlockLimits()
     const totalStakings = await fetchPoolsTotalStaking()
     const profileRequirements = await fetchPoolsProfileRequirement()
-    let currentBlock = getState().block?.currentBlock
-
+    let currentBlock = currentBlockNumber
     if (!currentBlock) {
       currentBlock = await simpleRpcProvider.getBlockNumber()
     }
@@ -198,10 +197,14 @@ export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => 
       if (poolsWithStakingLimit.includes(pool.sousId)) {
         return { sousId: pool.sousId }
       }
-      const stakingLimit = stakingLimits[pool.sousId] || BIG_ZERO
+      const { stakingLimit, numberBlocksForUserLimit } = stakingLimits[pool.sousId] || {
+        stakingLimit: BIG_ZERO,
+        numberBlocksForUserLimit: 0,
+      }
       return {
         sousId: pool.sousId,
         stakingLimit: stakingLimit.toJSON(),
+        numberBlocksForUserLimit,
       }
     })
 

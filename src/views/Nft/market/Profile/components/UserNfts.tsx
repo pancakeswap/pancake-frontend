@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Grid, useModal, Text, Flex } from '@pancakeswap/uikit'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'

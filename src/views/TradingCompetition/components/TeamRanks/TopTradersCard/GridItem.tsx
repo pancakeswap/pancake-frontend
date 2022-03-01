@@ -1,4 +1,3 @@
-import React from 'react'
 import { Heading, Text, Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import truncateHash from 'utils/truncateHash'

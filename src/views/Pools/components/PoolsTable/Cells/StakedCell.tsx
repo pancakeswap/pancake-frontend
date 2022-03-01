@@ -2,7 +2,7 @@ import { Box, Flex, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uik
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
+
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'

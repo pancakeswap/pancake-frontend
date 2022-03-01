@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Flex, Card, Text, useMatchBreakpoints, Table, Th, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'

@@ -1,3 +1,4 @@
+import { formatUnits } from '@ethersproject/units'
 import pools from 'config/constants/pools'
 import poolsDeployedBlockNumber from 'config/constants/poolsDeployedBlockNumber'
 import { getSouschefContract, getSouschefV2Contract } from 'utils/contractHelpers'
@@ -41,6 +42,16 @@ describe('Config pools', () => {
       }
 
       expect(stakingTokenAddress.toLowerCase()).toBe(pool.stakingToken.address.toLowerCase())
+    },
+  )
+
+  it.each(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
+    'Pool %p has the correct tokenPerBlock',
+    async (pool) => {
+      const contract = getSouschefContract(pool.sousId)
+      const rewardPerBlock = await contract.rewardPerBlock()
+
+      expect(String(parseFloat(formatUnits(rewardPerBlock, pool.earningToken.decimals)))).toBe(pool.tokenPerBlock)
     },
   )
 

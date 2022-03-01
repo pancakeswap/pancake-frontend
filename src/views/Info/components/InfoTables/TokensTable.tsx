@@ -1,10 +1,10 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, Skeleton, useMatchBreakpoints, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
 import { TokenData } from 'state/info/types'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import Percent from 'views/Info/components/Percent'
 import { useTranslation } from 'contexts/Localization'
 import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'
@@ -241,10 +241,10 @@ const TokenTable: React.FC<{
           {sortedTokens.map((data, i) => {
             if (data) {
               return (
-                <React.Fragment key={data.address}>
+                <Fragment key={data.address}>
                   <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} />
                   <Break />
-                </React.Fragment>
+                </Fragment>
               )
             }
             return null

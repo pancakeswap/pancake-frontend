@@ -1,4 +1,3 @@
-import React from 'react'
 import { createPortal } from 'react-dom'
 import { Box } from '@pancakeswap/uikit'
 import isEmpty from 'lodash/isEmpty'

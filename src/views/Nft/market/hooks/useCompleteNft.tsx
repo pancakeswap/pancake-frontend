@@ -2,10 +2,10 @@ import { useWeb3React } from '@web3-react/core'
 import { FetchStatus } from 'config/constants/types'
 import { useCallback } from 'react'
 import { getNftApi, getNftsMarketData } from 'state/nftMarket/helpers'
-import { NftToken, TokenMarketData } from 'state/nftMarket/types'
+import { NftLocation, NftToken, TokenMarketData } from 'state/nftMarket/types'
+import { useProfile } from 'state/profile/hooks'
 import useSWR from 'swr'
 import { useErc721CollectionContract } from '../../../../hooks/useContract'
-import { useProfile } from '../../../../state/profile/hooks'
 
 const NOT_ON_SALE_SELLER = '0x0000000000000000000000000000000000000000'
 
@@ -14,28 +14,32 @@ const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: Toke
   const collectionContract = useErc721CollectionContract(collectionAddress, false)
   const { isInitialized: isProfileInitialized, profile } = useProfile()
   return useSWR(
-    account && isProfileInitialized && collectionContract && marketData
+    account && isProfileInitialized && collectionContract
       ? ['nft', 'own', collectionAddress, tokenId, marketData?.currentSeller]
       : null,
     async () => {
       const tokenOwner = await collectionContract.ownerOf(tokenId)
       let isOwn = false
       let nftIsProfilePic = false
+      let location: NftLocation
 
-      if (marketData) {
-        nftIsProfilePic = tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
-        const nftIsOnSale = marketData ? marketData?.currentSeller !== NOT_ON_SALE_SELLER : false
-        if (nftIsOnSale) {
-          isOwn = marketData?.currentSeller.toLowerCase() === account.toLowerCase()
-        } else if (nftIsProfilePic) {
-          isOwn = true
-        } else {
-          isOwn = tokenOwner.toLowerCase() === account.toLowerCase()
-        }
+      nftIsProfilePic = tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
+      const nftIsOnSale = marketData ? marketData?.currentSeller !== NOT_ON_SALE_SELLER : false
+      if (nftIsOnSale) {
+        isOwn = marketData?.currentSeller.toLowerCase() === account.toLowerCase()
+        location = NftLocation.FORSALE
+      } else if (nftIsProfilePic) {
+        isOwn = true
+        location = NftLocation.PROFILE
+      } else {
+        isOwn = tokenOwner.toLowerCase() === account.toLowerCase()
+        location = NftLocation.WALLET
       }
+
       return {
         isOwn,
         nftIsProfilePic,
+        location,
       }
     },
   )
@@ -79,7 +83,7 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
   }, [mutate, refetchNftMarketData, refetchNftOwn])
 
   return {
-    combinedNft: nft ? { ...nft, marketData } : undefined,
+    combinedNft: nft ? { ...nft, marketData, location: nftOwn?.location ?? NftLocation.WALLET } : undefined,
     isOwn: nftOwn?.isOwn || false,
     isProfilePic: nftOwn?.nftIsProfilePic || false,
     isLoading: status !== FetchStatus.Fetched,

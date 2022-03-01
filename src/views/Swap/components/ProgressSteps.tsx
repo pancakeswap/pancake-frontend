@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { RowBetween } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'

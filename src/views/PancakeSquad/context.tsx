@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, createContext } from 'react'
 
-export const PancakeSquadContext = React.createContext<{
+export const PancakeSquadContext = createContext<{
   isUserEnabled: boolean
   setIsUserEnabled: Dispatch<SetStateAction<boolean>> | null
 }>({

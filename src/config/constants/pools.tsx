@@ -1,4 +1,3 @@
-import React from 'react'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
 import { CHAIN_ID } from './networks'
@@ -44,6 +43,79 @@ const pools: SerializedPoolConfig[] = [
     tokenPerBlock: '10',
     sortOrder: 1,
     isFinished: false,
+  },
+  {
+    sousId: 267,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.high,
+    contractAddress: {
+      97: '',
+      56: '0x60c4998C058BaC8042712B54E7e43b892Ab0B0c4',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '0.09756',
+    deployedBlockNumber: 15556925,
+    version: 3,
+  },
+  {
+    sousId: 266,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.thg,
+    contractAddress: {
+      97: '',
+      56: '0xD1D03A3D4C27884a8703Cdb78504737C9E9A159e',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '0.162',
+    deployedBlockNumber: 15354343,
+    version: 3,
+  },
+  {
+    sousId: 265,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.era,
+    contractAddress: {
+      97: '',
+      56: '0x260F95f5b7FD8eda720ED9d0829164dE35B048ab',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '1.608',
+    deployedBlockNumber: 15352472,
+    version: 3,
+  },
+  {
+    sousId: 264,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.btt,
+    contractAddress: {
+      97: '',
+      56: '0x346a1b672C5Cbb6AE21715428f77A0049B29B332',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '157829',
+    deployedBlockNumber: 15161132,
+  },
+  {
+    sousId: 263,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.ach,
+    contractAddress: {
+      97: '',
+      56: '0xcD1Be742b04DB005e2C445A11BDe6d13DD9dd454',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '7.502',
+    deployedBlockNumber: 15162508,
   },
   {
     sousId: 261,
@@ -747,7 +819,7 @@ const pools: SerializedPoolConfig[] = [
   {
     sousId: 207,
     stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.btt,
+    earningToken: serializedTokens.bttold,
     contractAddress: {
       97: '',
       56: '0x3b804460c3c62f0f565af593984159f13b1ac976',
@@ -1730,7 +1802,7 @@ const pools: SerializedPoolConfig[] = [
   {
     sousId: 133,
     stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.btt,
+    earningToken: serializedTokens.bttold,
     contractAddress: {
       97: '',
       56: '0x3b644e44033cff70bd6b771904225f3dd69dfb6d',
@@ -3482,6 +3554,21 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '0.6093',
+  },
+  {
+    sousId: 262,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.ach,
+    contractAddress: {
+      97: '',
+      56: '0xD5668e936B951292Ddf8c84553CC58F85948F816',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    enableEmergencyWithdraw: true,
+    sortOrder: 999,
+    tokenPerBlock: '7.502',
+    deployedBlockNumber: 15150333,
   },
 ].filter((p) => !!p.contractAddress[CHAIN_ID])
 

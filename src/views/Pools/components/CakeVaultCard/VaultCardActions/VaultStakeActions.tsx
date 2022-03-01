@@ -1,7 +1,7 @@
 import { Button, Flex, Skeleton, useModal } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import React from 'react'
+
 import { DeserializedPool } from 'state/types'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'

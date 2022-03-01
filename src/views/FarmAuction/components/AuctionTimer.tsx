@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { isAfter, differenceInSeconds } from 'date-fns'
 import { Text, Flex, PocketWatchIcon, Skeleton } from '@pancakeswap/uikit'

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { useModal } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { fetchAddressResult, setSelectedAddress } from 'state/predictions'

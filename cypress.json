@@ -5,5 +5,11 @@
   "supportFile": "cypress/support/index.js",
   "video": false,
   "defaultCommandTimeout": 10000,
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "pageLoadTimeout": 10000,
+  "blockHosts": ["vitals.vercel-insights.com", "*sentry.io", "*googletagmanager.com"],
+  "ignoreTestFiles": ["info.test.ts"],
+  "retries": {
+    "runMode": 3
+  }
 }

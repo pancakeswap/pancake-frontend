@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import {
@@ -167,7 +167,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserPendingReward(sousId, account))
       dispatch(updateUserBalance(sousId, account))
-      onDismiss()
+      onDismiss?.()
     }
   }
 
@@ -274,6 +274,15 @@ const StakeModal: React.FC<StakeModalProps> = ({
           ) : (
             <Skeleton width={60} />
           )}
+        </Flex>
+      )}
+      {isRemovingStake && pool.enableEmergencyWithdraw && (
+        <Flex maxWidth="346px" mt="24px">
+          <Text textAlign="center">
+            {t(
+              'This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.',
+            )}
+          </Text>
         </Flex>
       )}
       <Button

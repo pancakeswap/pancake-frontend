@@ -1,12 +1,12 @@
-import React from 'react'
+import { Children } from 'react'
 import styled from 'styled-components'
 import Spacer from './Spacer'
 
 const ModalActions: React.FC = ({ children }) => {
-  const l = React.Children.toArray(children).length
+  const l = Children.toArray(children).length
   return (
     <StyledModalActions>
-      {React.Children.map(children, (child, i) => (
+      {Children.map(children, (child, i) => (
         <>
           <StyledModalAction>{child}</StyledModalAction>
           {i < l - 1 && <Spacer />}

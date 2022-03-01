@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRouter } from 'next/router'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Menu as UikitMenu } from '@pancakeswap/uikit'

@@ -1,6 +1,5 @@
 import Link, { LinkProps } from 'next/link'
 import styled from 'styled-components'
-import React from 'react'
 
 const StyledInternalLink = styled('a')`
   text-decoration: none;

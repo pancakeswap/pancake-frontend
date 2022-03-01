@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { MaxUint256 } from '@ethersproject/constants'
@@ -264,7 +264,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         return callWithGasPrice(lotteryContract, 'buyTickets', [currentLotteryId, ticketsForPurchase])
       },
       onSuccess: async ({ receipt }) => {
-        onDismiss()
+        onDismiss?.()
         dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
         toastSuccess(t('Lottery tickets purchased!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       },

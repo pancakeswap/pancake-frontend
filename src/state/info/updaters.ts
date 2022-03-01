@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import useFetchProtocolData from 'state/info/queries/protocol/overview'
 import useFetchGlobalChartData from 'state/info/queries/protocol/chart'
 import fetchTopTransactions from 'state/info/queries/protocol/transactions'

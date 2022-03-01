@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 

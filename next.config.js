@@ -13,13 +13,17 @@ const sentryWebpackPluginOptions = {
 
   silent: true, // Suppresses all logs
   dryRun: !process.env.SENTRY_AUTH_TOKEN, // Set to true will skip the upload release step
+  // https://stackoverflow.com/questions/61011281/next-js-source-maps-with-typescript-on-sentry
+  include: '.next',
+  ignore: ['node_modules', 'cypress'],
+  urlPrefix: '~/_next',
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 }
 
 /** @type {import('next').NextConfig} */
 const config = {
-  experimental: {
+  compiler: {
     styledComponents: true,
   },
   reactStrictMode: true,

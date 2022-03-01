@@ -79,6 +79,7 @@ interface CorePoolProps {
 export interface DeserializedPool extends DeserializedPoolConfig, CorePoolProps {
   totalStaked?: BigNumber
   stakingLimit?: BigNumber
+  stakingLimitEndBlock?: number
   profileRequirement?: {
     required: boolean
     thresholdPoints: BigNumber
@@ -94,6 +95,7 @@ export interface DeserializedPool extends DeserializedPoolConfig, CorePoolProps 
 export interface SerializedPool extends SerializedPoolConfig, CorePoolProps {
   totalStaked?: SerializedBigNumber
   stakingLimit?: SerializedBigNumber
+  numberBlocksForUserLimit?: number
   profileRequirement?: {
     required: boolean
     thresholdPoints: SerializedBigNumber
@@ -126,12 +128,14 @@ export interface SerializedFarmsState {
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
   loadingKeys: Record<string, boolean>
+  poolLength?: number
 }
 
 export interface DeserializedFarmsState {
   data: DeserializedFarm[]
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
+  poolLength?: number
 }
 
 export interface VaultFees {
@@ -176,22 +180,6 @@ export interface PoolsState {
   userDataLoaded: boolean
 }
 
-export interface ProfileState {
-  isInitialized: boolean
-  isLoading: boolean
-  hasRegistered: boolean
-  data: Profile
-  profileAvatars: {
-    [key: string]: {
-      username: string
-      nft: NftToken
-      hasRegistered: boolean
-      usernameFetchStatus: FetchStatus
-      avatarFetchStatus: FetchStatus
-    }
-  }
-}
-
 export type TeamsById = {
   [key: string]: Team
 }
@@ -204,13 +192,6 @@ export interface Achievement {
   description?: TranslatableText
   badge: string
   points: number
-}
-
-// Block
-
-export interface BlockState {
-  currentBlock: number
-  initialBlock: number
 }
 
 // Predictions
@@ -226,6 +207,11 @@ export enum PredictionStatus {
   LIVE = 'live',
   PAUSED = 'paused',
   ERROR = 'error',
+}
+
+export enum PredictionsChartView {
+  TradingView = 'TradingView',
+  Chainlink = 'Chainlink Oracle',
 }
 
 export interface Round {
@@ -370,6 +356,7 @@ export interface PredictionsState {
   status: PredictionStatus
   isLoading: boolean
   isHistoryPaneOpen: boolean
+  chartView: PredictionsChartView
   isChartPaneOpen: boolean
   isFetchingHistory: boolean
   historyFilter: HistoryFilter
@@ -377,7 +364,6 @@ export interface PredictionsState {
   intervalSeconds: number
   minBetAmount: string
   bufferSeconds: number
-  lastOraclePrice: string
   history: Bet[]
   totalHistory: number
   currentHistoryPage: number
@@ -540,12 +526,10 @@ export interface UserRound {
 // Global state
 
 export interface State {
-  block: BlockState
   farms: SerializedFarmsState
   farmsV1: SerializedFarmsState
   pools: PoolsState
   predictions: PredictionsState
-  profile: ProfileState
   lottery: LotteryState
   nftMarket: NftMarketState
 }

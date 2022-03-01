@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   ModalContainer,
   ModalBody,
@@ -32,14 +31,14 @@ const ChartDisclaimer: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
 
   const handleConfirm = () => {
-    onDismiss()
+    onDismiss?.()
   }
 
   return (
     <ModalContainer minWidth="320px">
       <ModalBody p="24px" maxWidth="400px">
         <Flex justifyContent="center" mb="32px">
-          <Image src="/images/chartwarning.svg" width={190} height={118} />
+          <Image src="/images/predictions/chartwarning.svg" width={190} height={118} />
         </Flex>
         <Heading as="h3" size="sm">
           {t('Warning')}:

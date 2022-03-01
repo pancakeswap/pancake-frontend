@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
+import { Zero } from '@ethersproject/constants'
 import { useTranslation } from 'contexts/Localization'
 import { multicallv2 } from 'utils/multicall'
 import profileABI from 'config/abi/pancakeProfile.json'
@@ -10,9 +11,9 @@ const useGetProfileCosts = () => {
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(true)
   const [costs, setCosts] = useState({
-    numberCakeToReactivate: BigNumber.from(0),
-    numberCakeToRegister: BigNumber.from(0),
-    numberCakeToUpdate: BigNumber.from(0),
+    numberCakeToReactivate: Zero,
+    numberCakeToRegister: Zero,
+    numberCakeToUpdate: Zero,
   })
   const { toastError } = useToast()
 

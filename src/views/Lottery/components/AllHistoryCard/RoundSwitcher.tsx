@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { IconButton, ArrowForwardIcon, ArrowBackIcon, ArrowLastIcon, Flex, Heading, Input } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'

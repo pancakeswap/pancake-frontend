@@ -30,6 +30,7 @@ import {
   ViewMode,
   updateUserFarmsViewMode,
   updateUserPredictionChartDisclaimerShow,
+  updateUserPredictionChainlinkChartDisclaimerShow,
   updateUserPredictionAcceptedRisk,
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
@@ -284,6 +285,25 @@ export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaime
   )
 
   return [userPredictionChartDisclaimerShow, setPredictionUserChartDisclaimerShow]
+}
+
+export function useUserPredictionChainlinkChartDisclaimerShow(): [boolean, (showDisclaimer: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userPredictionChainlinkChartDisclaimerShow = useSelector<
+    AppState,
+    AppState['user']['userPredictionChainlinkChartDisclaimerShow']
+  >((state) => {
+    return state.user.userPredictionChainlinkChartDisclaimerShow
+  })
+
+  const setPredictionUserChainlinkChartDisclaimerShow = useCallback(
+    (showDisclaimer: boolean) => {
+      dispatch(updateUserPredictionChainlinkChartDisclaimerShow({ userShowDisclaimer: showDisclaimer }))
+    },
+    [dispatch],
+  )
+
+  return [userPredictionChainlinkChartDisclaimerShow, setPredictionUserChainlinkChartDisclaimerShow]
 }
 
 export function useUserExpertModeAcknowledgementShow(): [boolean, (showAcknowledgement: boolean) => void] {

@@ -1,4 +1,3 @@
-import React from 'react'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { SWRConfig } from 'swr'
 import Teams from '../../views/Teams'

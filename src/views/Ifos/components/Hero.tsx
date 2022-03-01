@@ -1,8 +1,8 @@
-import React from 'react'
 import styled from 'styled-components'
 import { Box, Heading, Text, Button, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
+import { useRouter } from 'next/router'
 
 const StyledHero = styled(Box)`
   background-image: url('/images/ifos/assets/ifo-banner-${({ theme }) => (theme.isDark ? 'dark' : 'light')}.png');
@@ -45,12 +45,17 @@ const StyledSubTitle = styled(Text)`
 `
 
 const Hero = () => {
+  const router = useRouter()
   const { t } = useTranslation()
-
   const { isMobile } = useMatchBreakpoints()
 
   const handleClick = () => {
-    document.getElementById('ifo-how-to')?.scrollIntoView()
+    const howToElem = document.getElementById('ifo-how-to')
+    if (howToElem != null) {
+      howToElem.scrollIntoView()
+    } else {
+      router.push('/ifo#ifo-how-to')
+    }
   }
 
   return (
@@ -67,7 +72,7 @@ const Hero = () => {
                 {t('IFO: Initial Farm Offerings')}
               </StyledHeading>
               <StyledSubTitle bold>
-                {t('Buy new tokens launching on Binance Smart Chain')}
+                {t('Buy new tokens launching on BNB Smart Chain')}
                 {isMobile && <StyledButton onClick={handleClick}>{t('How does it work?')}</StyledButton>}
               </StyledSubTitle>
             </Box>

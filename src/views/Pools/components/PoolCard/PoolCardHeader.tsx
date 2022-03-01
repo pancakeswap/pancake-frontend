@@ -1,5 +1,5 @@
 import { CardHeader, Flex, Heading, Text } from '@pancakeswap/uikit'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import styled from 'styled-components'
 
 const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }>`

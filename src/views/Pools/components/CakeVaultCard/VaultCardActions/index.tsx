@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import React from 'react'
+
 import styled from 'styled-components'
 import { Flex, Text, Box, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -40,7 +40,7 @@ export const IfoVaultCardAvgBalance = () => {
             <>
               <Text>
                 {t(
-                  'Your entry limit in the next IFO sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.',
+                  'Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.',
                 )}
               </Text>
               <Text>

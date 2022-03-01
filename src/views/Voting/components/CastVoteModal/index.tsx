@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Box, Modal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
@@ -105,6 +105,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
             cakePoolBalance={cakePoolBalance}
             poolsBalance={poolsBalance}
             cakeBnbLpBalance={cakeBnbLpBalance}
+            block={block}
           />
         )}
       </Box>

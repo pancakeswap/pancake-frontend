@@ -19,6 +19,7 @@ import {
   fetchFarmUserStakedBalances,
 } from './fetchFarmUser'
 import { SerializedFarmsState, SerializedFarm } from '../types'
+import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 
 const noAccountFarmConfig = farmsConfig.map((farm) => ({
   ...farm,
@@ -41,7 +42,7 @@ export const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(p
 
 // Async thunks
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
-  SerializedFarm[],
+  [SerializedFarm[], number],
   number[],
   {
     state: AppState
@@ -49,10 +50,12 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmsPublicDataAsync',
   async (pids) => {
+    const poolLength = await fetchMasterChefFarmPoolLength()
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
+    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
     // Add price helper farms
-    const farmsWithPriceHelpers = farmsToFetch.concat(priceHelperLpsConfig)
+    const farmsWithPriceHelpers = farmsCanFetch.concat(priceHelperLpsConfig)
 
     const farms = await fetchFarms(farmsWithPriceHelpers)
     const farmsWithPrices = getFarmsPrices(farms)
@@ -62,7 +65,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
       return farm.pid || farm.pid === 0
     })
 
-    return farmsWithoutHelperLps
+    return [farmsWithoutHelperLps, poolLength.toNumber()]
   },
   {
     condition: (arg, { getState }) => {
@@ -93,15 +96,17 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids }) => {
+    const poolLength = await fetchMasterChefFarmPoolLength()
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
-    const userFarmAllowances = await fetchFarmUserAllowances(account, farmsToFetch)
-    const userFarmTokenBalances = await fetchFarmUserTokenBalances(account, farmsToFetch)
-    const userStakedBalances = await fetchFarmUserStakedBalances(account, farmsToFetch)
-    const userFarmEarnings = await fetchFarmUserEarnings(account, farmsToFetch)
+    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
+    const userFarmAllowances = await fetchFarmUserAllowances(account, farmsCanFetch)
+    const userFarmTokenBalances = await fetchFarmUserTokenBalances(account, farmsCanFetch)
+    const userStakedBalances = await fetchFarmUserStakedBalances(account, farmsCanFetch)
+    const userFarmEarnings = await fetchFarmUserEarnings(account, farmsCanFetch)
 
     return userFarmAllowances.map((farmAllowance, index) => {
       return {
-        pid: farmsToFetch[index].pid,
+        pid: farmsCanFetch[index].pid,
         allowance: userFarmAllowances[index],
         tokenBalance: userFarmTokenBalances[index],
         stakedBalance: userStakedBalances[index],
@@ -144,10 +149,12 @@ export const farmsSlice = createSlice({
   extraReducers: (builder) => {
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
+      const [farmPayload, poolLength] = action.payload
       state.data = state.data.map((farm) => {
-        const liveFarmData = action.payload.find((farmData) => farmData.pid === farm.pid)
+        const liveFarmData = farmPayload.find((farmData) => farmData.pid === farm.pid)
         return { ...farm, ...liveFarmData }
       })
+      state.poolLength = poolLength
     })
 
     // Update farms with user data

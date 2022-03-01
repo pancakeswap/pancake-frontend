@@ -1,4 +1,3 @@
-import React from 'react'
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCake } from 'hooks/useContract'
@@ -21,6 +20,11 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
     costs: { numberCakeToUpdate, numberCakeToReactivate },
   } = useGetProfileCosts()
   const cakeContract = useCake()
+
+  if (!profile) {
+    return null
+  }
+
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
   const handleApprove = async () => {
@@ -30,10 +34,6 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
     if (receipt?.status) {
       goToChange()
     }
-  }
-
-  if (!profile) {
-    return null
   }
 
   return (

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
 import BigNumber from 'bignumber.js'

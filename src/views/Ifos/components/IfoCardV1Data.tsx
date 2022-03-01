@@ -1,4 +1,3 @@
-import React from 'react'
 import useGetPublicIfoV1Data from 'views/Ifos/hooks/v1/useGetPublicIfoData'
 import useGetWalletIfoV1Data from 'views/Ifos/hooks/v1/useGetWalletIfoData'
 import { Ifo } from 'config/constants/types'

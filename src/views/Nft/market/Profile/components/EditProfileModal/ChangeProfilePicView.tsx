@@ -1,11 +1,9 @@
-import React, { useState, useMemo } from 'react'
-import { Button, Box, InjectedModalProps, Text } from '@pancakeswap/uikit'
+import { useState, useMemo } from 'react'
+import { Button, Box, InjectedModalProps, Text, Skeleton } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useAppDispatch } from 'state'
 import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
-import { fetchProfile } from 'state/profile'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useProfileContract } from 'hooks/useContract'
@@ -29,9 +27,8 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, 
   })
   const { t } = useTranslation()
   const { account, library } = useWeb3React()
-  const { isLoading: isProfileLoading, profile } = useProfile()
-  const { nfts } = useNftsForAddress(account, profile, isProfileLoading)
-  const dispatch = useAppDispatch()
+  const { isLoading: isProfileLoading, profile, refresh: refreshProfile } = useProfile()
+  const { nfts, isLoading } = useNftsForAddress(account, profile, isProfileLoading)
   const profileContract = useProfileContract()
   const { toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -62,12 +59,12 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, 
       },
       onSuccess: async ({ receipt }) => {
         // Re-fetch profile
-        await dispatch(fetchProfile(account))
+        refreshProfile()
         toastSuccess(t('Profile Updated!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         if (onSuccess) {
           onSuccess()
         }
-        onDismiss()
+        onDismiss?.()
       },
     })
 
@@ -78,30 +75,33 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, 
       <Text as="p" color="textSubtle" mb="24px">
         {t('Choose a new Collectible to use as your profile pic.')}
       </Text>
-      <Box maxHeight="300px" overflowY="scroll">
-        {nftsInWallet.map((walletNft) => {
-          const handleChange = () => {
-            setSelectedNft({
-              tokenId: walletNft.tokenId,
-              collectionAddress: walletNft.collectionAddress,
-            })
-          }
-          return (
-            <SelectionCard
-              name="profilePicture"
-              key={`${walletNft.collectionAddress}#${walletNft.tokenId}`}
-              value={walletNft.tokenId}
-              image={walletNft.image.thumbnail}
-              isChecked={walletNft.tokenId === selectedNft.tokenId}
-              onChange={handleChange}
-              disabled={isApproving || isConfirming || isConfirmed}
-            >
-              <Text bold>{walletNft.name}</Text>
-            </SelectionCard>
-          )
-        })}
-      </Box>
-      {nfts.length === 0 && (
+      {isLoading ? (
+        <Skeleton width="100%" height="80px" mb="16px" />
+      ) : nftsInWallet.length > 0 ? (
+        <Box maxHeight="300px" overflowY="scroll">
+          {nftsInWallet.map((walletNft) => {
+            const handleChange = () => {
+              setSelectedNft({
+                tokenId: walletNft.tokenId,
+                collectionAddress: walletNft.collectionAddress,
+              })
+            }
+            return (
+              <SelectionCard
+                name="profilePicture"
+                key={`${walletNft.collectionAddress}#${walletNft.tokenId}`}
+                value={walletNft.tokenId}
+                image={walletNft.image.thumbnail}
+                isChecked={walletNft.tokenId === selectedNft.tokenId}
+                onChange={handleChange}
+                disabled={isApproving || isConfirming || isConfirmed}
+              >
+                <Text bold>{walletNft.name}</Text>
+              </SelectionCard>
+            )
+          })}
+        </Box>
+      ) : (
         <>
           <Text as="p" color="textSubtle" mb="16px">
             {t('Sorry! You don’t have any eligible Collectibles in your wallet to use!')}

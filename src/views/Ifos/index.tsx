@@ -1,7 +1,7 @@
 import { SubMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { PageMeta } from 'components/Layout/Page'
 import { useRouter } from 'next/router'
-import React from 'react'
 import { useFetchIfoPool } from 'state/pools/hooks'
 import Hero from './components/Hero'
 
@@ -12,6 +12,7 @@ export const IfoPageLayout = ({ children }) => {
   useFetchIfoPool()
   return (
     <>
+      <PageMeta />
       <SubMenuItems
         items={[
           {

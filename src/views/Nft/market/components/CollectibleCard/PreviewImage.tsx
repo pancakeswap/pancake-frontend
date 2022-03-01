@@ -1,4 +1,3 @@
-import React from 'react'
 import { BackgroundImage, BoxProps } from '@pancakeswap/uikit'
 import PlaceholderImage from './PlaceholderImage'
 

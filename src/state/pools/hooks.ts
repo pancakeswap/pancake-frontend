@@ -23,22 +23,26 @@ import {
 import { State, DeserializedPool, VaultKey } from '../types'
 import { transformPool } from './helpers'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from '../farms'
+import { useCurrentBlock } from '../block/hooks'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
 
-  useSlowRefreshEffect(() => {
-    const fetchPoolsDataWithFarms = async () => {
-      const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
-      await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
-      batch(() => {
-        dispatch(fetchPoolsPublicDataAsync())
-        dispatch(fetchPoolsStakingLimitsAsync())
-      })
-    }
+  useSlowRefreshEffect(
+    (currentBlock) => {
+      const fetchPoolsDataWithFarms = async () => {
+        const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
+        await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
+        batch(() => {
+          dispatch(fetchPoolsPublicDataAsync(currentBlock))
+          dispatch(fetchPoolsStakingLimitsAsync())
+        })
+      }
 
-    fetchPoolsDataWithFarms()
-  }, [dispatch])
+      fetchPoolsDataWithFarms()
+    },
+    [dispatch],
+  )
 }
 
 export const useFetchUserPools = (account) => {
@@ -199,11 +203,13 @@ export const useIfoPoolVault = () => {
 }
 
 export const useIfoPoolCreditBlock = () => {
-  return useSelector((state: State) => ({
+  const currentBlock = useCurrentBlock()
+  const { creditStartBlock, creditEndBlock } = useSelector((state: State) => ({
     creditStartBlock: state.pools.ifoPool.creditStartBlock,
     creditEndBlock: state.pools.ifoPool.creditEndBlock,
-    hasEndBlockOver: state.block.currentBlock >= state.pools.ifoPool.creditEndBlock,
   }))
+  const hasEndBlockOver = currentBlock >= creditEndBlock
+  return { creditStartBlock, creditEndBlock, hasEndBlockOver }
 }
 
 export const useIfoPoolCredit = () => {

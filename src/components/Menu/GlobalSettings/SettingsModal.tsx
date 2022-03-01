@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher } from '@pancakeswap/uikit'
 import {
@@ -30,7 +30,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [expertMode, toggleExpertMode] = useExpertModeManager()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
-  const [subgraphHealth, setSubgraphHealh] = useSubgraphHealthIndicatorManager()
+  const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const { onChangeRecipient } = useSwapActionHandlers()
 
   const { t } = useTranslation()
@@ -123,7 +123,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             checked={subgraphHealth}
             scale="md"
             onChange={() => {
-              setSubgraphHealh(!subgraphHealth)
+              setSubgraphHealth(!subgraphHealth)
             }}
           />
         </Flex>
