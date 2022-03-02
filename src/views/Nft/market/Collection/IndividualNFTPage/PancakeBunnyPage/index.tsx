@@ -121,7 +121,7 @@ const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> 
   }, [cheapestBunny, bunnyId])
 
   const sortedNfts = useMemo(
-    () => orderBy(allBunnies, (nft) => Number(nft.marketData.currentAskPrice) ?? 0, priceSort),
+    () => orderBy(allBunnies, (nft) => Number(nft.marketData?.currentAskPrice) || 0, priceSort),
     [allBunnies, priceSort],
   )
 
