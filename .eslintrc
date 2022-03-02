@@ -13,10 +13,6 @@
     "prefer-destructuring": ["warn", { "object": true, "array": false }],
     "no-underscore-dangle": 0,
     "lodash/import-scope": [2, "method"],
-    "import/prefer-default-export": 0,
-    "react/destructuring-assignment": 0,
-    "react/jsx-no-bind": 0,
-    "react/no-unused-prop-types": 0,
     "@next/next/no-img-element": 0,
     "no-sparse-arrays": 0,
     "react-hooks/exhaustive-deps": [
