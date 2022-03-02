@@ -117,30 +117,32 @@ const fetchAllNfts = async (
   page: number,
   tokenIdsFromFilter: string[],
   fetchedNfts: NftToken[],
-  fallbackMode: React.MutableRefObject<boolean>,
-  fallbackPage: React.MutableRefObject<number>,
-): Promise<NftToken[]> => {
+  nftFallbackMode: boolean,
+  nftFallbackPage: number,
+): Promise<{ nfts: NftToken[]; fallbackMode: boolean; fallbackPage: number }> => {
   const newNfts: NftToken[] = []
   let tokenIds: string[] = []
   let collectionNftsResponse: ApiResponseCollectionTokens = null
-  if (settings.field !== 'tokenId' && !fallbackMode.current) {
+  let fallbackMode = nftFallbackMode
+  let fallbackPage = nftFallbackPage
+  if (settings.field !== 'tokenId' && !fallbackMode) {
     const marketDataNfts = await fetchMarketDataNfts(collection, settings, page, tokenIdsFromFilter)
     if (marketDataNfts.length) {
       newNfts.push(...marketDataNfts)
     }
     if (newNfts.length < REQUEST_SIZE) {
       // eslint-disable-next-line no-param-reassign
-      fallbackMode.current = true
+      fallbackMode = true
       fetchedNfts.push(...newNfts)
     } else {
-      return newNfts
+      return { nfts: newNfts, fallbackMode, fallbackPage }
     }
   }
 
-  if (fallbackMode.current) {
-    tokenIds = tokenIdsFromFallback(collection, tokenIdsFromFilter, fetchedNfts, fallbackPage.current)
+  if (fallbackMode) {
+    tokenIds = tokenIdsFromFallback(collection, tokenIdsFromFilter, fetchedNfts, fallbackPage)
     // eslint-disable-next-line no-param-reassign
-    fallbackPage.current += 1
+    fallbackPage += 1
   } else if (tokenIdsFromFilter) {
     tokenIds = tokenIdsFromFilter.slice(page * REQUEST_SIZE, (page + 1) * REQUEST_SIZE)
   } else {
@@ -176,9 +178,9 @@ const fetchAllNfts = async (
 
     const responseNfts: NftToken[] = (await Promise.all(responsesPromises)).filter((x) => x)
     newNfts.push(...responseNfts)
-    return newNfts
+    return { nfts: newNfts, fallbackMode, fallbackPage }
   }
-  return []
+  return { nfts: [], fallbackMode, fallbackPage }
 }
 
 export const useCollectionNfts = (collectionAddress: string) => {
@@ -238,15 +240,22 @@ export const useCollectionNfts = (collectionAddress: string) => {
       if (settings.showOnlyNftsOnSale) {
         newNfts = await fetchMarketDataNfts(collection, settings, page, tokenIdsFromFilter)
       } else {
-        newNfts = await fetchAllNfts(
+        const {
+          nfts: allNewNfts,
+          fallbackMode: newFallbackMode,
+          fallbackPage: newFallbackPage,
+        } = await fetchAllNfts(
           collection,
           settings,
           page,
           tokenIdsFromFilter,
           fetchedNfts.current,
-          fallbackMode,
-          fallbackModePage,
+          fallbackMode.current,
+          fallbackModePage.current,
         )
+        newNfts = allNewNfts
+        fallbackMode.current = newFallbackMode
+        fallbackModePage.current = newFallbackPage
       }
       if (newNfts.length < REQUEST_SIZE) {
         isLastPage.current = true
