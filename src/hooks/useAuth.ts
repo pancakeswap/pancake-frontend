@@ -64,19 +64,6 @@ const useAuth = () => {
     [t, activate, toastError, setError],
   )
 
-  useEffect(() => {
-    console.log('t')
-  }, [t])
-  useEffect(() => {
-    console.log('activate')
-  }, [activate])
-  useEffect(() => {
-    console.log('toastError')
-  }, [toastError])
-  useEffect(() => {
-    console.log('setError')
-  }, [setError])
-
   const logout = useCallback(() => {
     deactivate()
     clearUserStates(dispatch, chainId)
