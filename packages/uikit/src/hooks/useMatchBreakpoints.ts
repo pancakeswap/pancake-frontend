@@ -64,24 +64,29 @@ const useMatchBreakpoints = (): BreakpointChecks => {
   useIsomorphicEffect(() => {
     // Create listeners for each media query returning a function to unsubscribe
     const handlers = Object.keys(mediaQueries).map((size) => {
-      const mql = window.matchMedia(mediaQueries[size]);
+      let mql: MediaQueryList;
+      let handler: (matchMediaQuery: MediaQueryListEvent) => void;
 
-      const handler = (matchMediaQuery: MediaQueryListEvent) => {
-        const key = getKey(size);
-        setState((prevState) => ({
-          ...prevState,
-          [key]: matchMediaQuery.matches,
-        }));
-      };
+      if (typeof window?.matchMedia === "function") {
+        mql = window.matchMedia(mediaQueries[size]);
 
-      // Safari < 14 fix
-      if (mql.addEventListener) {
-        mql.addEventListener("change", handler);
+        handler = (matchMediaQuery: MediaQueryListEvent) => {
+          const key = getKey(size);
+          setState((prevState) => ({
+            ...prevState,
+            [key]: matchMediaQuery.matches,
+          }));
+        };
+
+        // Safari < 14 fix
+        if (mql.addEventListener) {
+          mql.addEventListener("change", handler);
+        }
       }
 
       return () => {
         // Safari < 14 fix
-        if (mql.removeEventListener) {
+        if (mql?.removeEventListener) {
           mql.removeEventListener("change", handler);
         }
       };
