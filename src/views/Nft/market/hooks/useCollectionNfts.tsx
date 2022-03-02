@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
+import { EMPTY_ARRAY } from 'utils/constantObjects'
 import {
   ApiResponseCollectionTokens,
   ApiSingleTokenData,
@@ -197,11 +198,12 @@ export const useCollectionNfts = (collectionAddress: string) => {
   })
 
   // We don't know the amount in advance if nft filters exist
-  const resultSize = !Object.keys(nftFilters).length
-    ? showOnlyNftsOnSale || field !== 'tokenId'
-      ? collection.numberTokensListed
-      : collection.totalSupply
-    : null
+  const resultSize =
+    !Object.keys(nftFilters).length && collection
+      ? showOnlyNftsOnSale || field !== 'tokenId'
+        ? collection.numberTokensListed
+        : collection.totalSupply
+      : null
 
   const itemListingSettingsJson = JSON.stringify(itemListingSettings)
   const filtersJson = JSON.stringify(nftFilters)
@@ -231,7 +233,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
     },
     async (address, settingsJson, page) => {
       const settings: ItemListingSettings = JSON.parse(settingsJson)
-      const tokenIdsFromFilter = await fetchTokenIdsFromFilter(collection.address, settings)
+      const tokenIdsFromFilter = await fetchTokenIdsFromFilter(collection?.address, settings)
       let newNfts: NftToken[] = []
       if (settings.showOnlyNftsOnSale) {
         newNfts = await fetchMarketDataNfts(collection, settings, page, tokenIdsFromFilter)
@@ -254,7 +256,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
     { revalidateFirstPage: false },
   )
 
-  const uniqueNftList: NftToken[] = nfts ? uniqBy(nfts.flat(), 'tokenId') : []
+  const uniqueNftList: NftToken[] = useMemo(() => (nfts ? uniqBy(nfts.flat(), 'tokenId') : EMPTY_ARRAY), [nfts])
   fetchedNfts.current = uniqueNftList
 
   return {
