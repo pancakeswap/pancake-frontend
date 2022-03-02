@@ -228,7 +228,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
     status,
     size,
     setSize,
-  } = useSWRInfinite(
+  } = useSWRInfinite<NftToken[]>(
     (pageIndex, previousPageData) => {
       if (pageIndex !== 0 && previousPageData && !previousPageData.length) return null
       return [collectionAddress, itemListingSettingsJson, pageIndex, 'collectionNfts']
@@ -265,7 +265,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
     { revalidateFirstPage: false },
   )
 
-  const uniqueNftList: NftToken[] = useMemo(() => (nfts ? uniqBy(nfts.flat(), 'tokenId') : EMPTY_ARRAY), [nfts])
+  const uniqueNftList = useMemo(() => (nfts ? uniqBy(nfts.flat(), 'tokenId') : []), [nfts])
   fetchedNfts.current = uniqueNftList
 
   return {
