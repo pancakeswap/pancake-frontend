@@ -15,7 +15,7 @@ const QuestionWrapper = styled.div`
   }
 `
 const OverlayInner = styled.div`
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   position: absolute;
   top: 50%;
   width: 80%;
