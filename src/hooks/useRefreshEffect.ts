@@ -1,9 +1,10 @@
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import { DependencyList, EffectCallback, useEffect } from 'react'
 import useSWR from 'swr'
-import { EMPTY_ARRAY } from 'utils/constantObjects'
 
 type BlockEffectCallback = (blockNumber: number) => ReturnType<EffectCallback>
+
+const EMPTY_ARRAY = []
 
 export function useFastRefreshEffect(effect: BlockEffectCallback, deps?: DependencyList) {
   const { data = 0 } = useSWR([FAST_INTERVAL, 'blockNumber'])

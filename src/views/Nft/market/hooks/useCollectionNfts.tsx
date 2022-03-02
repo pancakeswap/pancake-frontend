@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef, useMemo } from 'react'
-import { EMPTY_ARRAY } from 'utils/constantObjects'
 import {
   ApiResponseCollectionTokens,
   ApiSingleTokenData,
@@ -265,7 +264,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
     { revalidateFirstPage: false },
   )
 
-  const uniqueNftList: NftToken[] = useMemo(() => (nfts ? uniqBy(nfts.flat(), 'tokenId') : EMPTY_ARRAY), [nfts])
+  const uniqueNftList: NftToken[] = useMemo(() => (nfts ? uniqBy(nfts.flat(), 'tokenId') : []), [nfts])
   fetchedNfts.current = uniqueNftList
 
   return {

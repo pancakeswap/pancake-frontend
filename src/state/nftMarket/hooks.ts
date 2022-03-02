@@ -6,7 +6,6 @@ import { isAddress } from 'utils'
 import { FetchStatus } from 'config/constants/types'
 import erc721Abi from 'config/abi/erc721.json'
 import { useSWRMulticall } from 'hooks/useSWRContract'
-import { EMPTY_ARRAY, EMPTY_OBJECT } from 'utils/constantObjects'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
@@ -15,11 +14,13 @@ import shuffle from 'lodash/shuffle'
 
 import { fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
-import { ApiCollections, NftActivityFilter, NftFilter, NftToken, Collection } from './types'
+import { ApiCollections, NftActivityFilter, NftFilter, NftToken, Collection, NftAttribute } from './types'
 import { getCollection, getCollections } from './helpers'
 
 const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
 const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
+const EMPTY_OBJECT = {}
+const EMPTY_ARRAY = []
 
 // Returns a function that fetches more NFTs for specified bunny id
 // as well as updating existing PB NFTs in state
@@ -107,7 +108,7 @@ export const useNftsFromCollection = (collectionAddress: string) => {
   return nfts
 }
 
-export const useGetAllBunniesByBunnyId = (bunnyId: string) => {
+export const useGetAllBunniesByBunnyId = (bunnyId: string): Readonly<NftToken[]> => {
   const nfts: NftToken[] = useSelector((state: State) => state.nftMarket.data.nfts[pancakeBunniesAddress])
   return nfts ? nfts.filter((nft) => nft.attributes[0].value === bunnyId && nft.marketData.isTradable) : EMPTY_ARRAY
 }
@@ -141,7 +142,7 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
   return { data: approvedTokenIds }
 }
 
-export const useGetNftFilters = (collectionAddress: string) => {
+export const useGetNftFilters = (collectionAddress: string): Readonly<Record<string, NftAttribute>> => {
   const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
   return collectionFilter ? collectionFilter.activeFilters : EMPTY_OBJECT
 }

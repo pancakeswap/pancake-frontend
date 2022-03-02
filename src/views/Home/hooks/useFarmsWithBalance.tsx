@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import multicall from 'utils/multicall'
 import { getMasterChefAddress } from 'utils/addressHelpers'
-import { EMPTY_ARRAY } from 'utils/constantObjects'
 import masterChefABI from 'config/abi/masterchef.json'
 import { farmsConfig, FAST_INTERVAL } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
@@ -20,7 +19,7 @@ const useFarmsWithBalance = () => {
 
   const {
     data: { farmsWithStakedBalance, earningsSum } = {
-      farmsWithStakedBalance: EMPTY_ARRAY as FarmWithBalance[],
+      farmsWithStakedBalance: [] as FarmWithBalance[],
       earningsSum: null,
     },
   } = useSWR(
