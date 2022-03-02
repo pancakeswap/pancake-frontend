@@ -1,31 +1,18 @@
-import { Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { DeserializedPool } from 'state/types'
 import Balance from 'components/Balance'
+import AutoEarningsBreakdown from '../AutoEarningsBreakdown'
 
 interface RecentCakeProfitBalanceProps {
   cakeToDisplay: number
-  dollarValueToDisplay: number
-  dateStringToDisplay: string
+  pool: DeserializedPool
+  account: string
 }
 
-const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({
-  cakeToDisplay,
-  dollarValueToDisplay,
-  dateStringToDisplay,
-}) => {
-  const { t } = useTranslation()
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <>
-      <Balance fontSize="16px" value={cakeToDisplay} decimals={3} bold unit=" CAKE" />
-      <Balance fontSize="16px" value={dollarValueToDisplay} decimals={2} bold prefix="~$" />
-      {t('Earned since your last action')}
-      <Text>{dateStringToDisplay}</Text>
-    </>,
-    {
-      placement: 'bottom-end',
-    },
-  )
+const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({ cakeToDisplay, pool, account }) => {
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<AutoEarningsBreakdown pool={pool} account={account} />, {
+    placement: 'bottom-end',
+  })
 
   return (
     <>
