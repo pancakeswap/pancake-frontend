@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef, useMemo } from 'react'
-import { EMPTY_ARRAY } from 'utils/constantObjects'
 import {
   ApiResponseCollectionTokens,
   ApiSingleTokenData,
