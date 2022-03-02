@@ -15,7 +15,6 @@ import {
   getNftsFromCollectionApi,
   getNftsMarketData,
 } from 'state/nftMarket/helpers'
-// eslint-disable-next-line camelcase
 import useSWRInfinite from 'swr/infinite'
 import isEmpty from 'lodash/isEmpty'
 import uniqBy from 'lodash/uniqBy'
