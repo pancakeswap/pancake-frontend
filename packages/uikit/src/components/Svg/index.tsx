@@ -149,6 +149,7 @@ export { default as WalletConnectIcon } from "./Icons/WalletConnect";
 export { default as WalletFilledIcon } from "./Icons/WalletFilled";
 export { default as WalletIcon } from "./Icons/Wallet";
 export { default as WarningIcon } from "./Icons/Warning";
+export { default as BackForwardIcon } from "./Icons/BackForwardIcon";
 
 export { default as Svg } from "./Svg";
 export type { SvgProps } from "./types";
