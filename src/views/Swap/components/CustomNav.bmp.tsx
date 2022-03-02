@@ -1,16 +1,22 @@
 import React from 'react'
 import { Box, Image } from '@pancakeswap/uikit'
 import { useTheme } from 'styled-components'
+import { useThemeManager } from 'state/user/hooks'
 import titleLight from '../../../../public/images/nav-title-light.png'
-import bunnyLogo from '../../../../public/images/bunny-white.png'
+import titleDark from '../../../../public/images/nav-title-dark.png'
 
 type Tprops = {
   top?: number
   height?: number
 }
 
+const title = {
+  dark: titleDark,
+  light: titleLight,
+}
 function CustomNav({ top = 0, height = 44 }: Tprops) {
   const theme = useTheme()
+  const [isDark] = useThemeManager()
   return (
     <Box className="CustomNav">
       <Box
@@ -31,8 +37,7 @@ function CustomNav({ top = 0, height = 44 }: Tprops) {
           boxSizing: 'content-box',
         }}
       >
-        <Image mr="6px" size="20px" src={bunnyLogo} />
-        <Image height={14} width={105} src={titleLight} />
+        <Image height={20} width={130} src={isDark ? title.dark : title.light} />
       </Box>
       <Box className="fill" sx={{ height: `${height + top}px` }} />
     </Box>
