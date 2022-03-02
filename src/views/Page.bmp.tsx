@@ -1,9 +1,11 @@
 import React from 'react'
+import mpService from '@binance/mp-service'
 import styled, { useTheme } from 'styled-components'
 import { Flex, Button, Svg, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 // bmp use full image
 import helpImage from '../../public/images/help-full.png'
+import CustomNav from './Swap/components/CustomNav'
 
 const BubbleWrapper = styled(Flex)`
   align-items: center;
@@ -60,9 +62,12 @@ const StyledPage = styled.div`
   padding-bottom: 64px;
 `
 
+const { statusBarHeight } = mpService.getSystemInfoSync()
+const CUSTOM_NAV_HEIGHT = 44
 const Page = ({ children }) => {
   return (
     <StyledPage>
+      <CustomNav top={statusBarHeight} height={CUSTOM_NAV_HEIGHT} />
       {children}
       <Footer />
     </StyledPage>

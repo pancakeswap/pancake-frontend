@@ -25,15 +25,17 @@ const Providers: React.FC = ({ children }) => {
   return (
     <>
       <StyleProvider />
-      <ToastsProvider>
-        <ModalProvider>
-          <Blocklist>
-            <Updaters />
-            <Hooks />
-            {children}
-          </Blocklist>
-        </ModalProvider>
-      </ToastsProvider>
+      <view>
+        <ToastsProvider>
+          <ModalProvider>
+            <Blocklist>
+              <Updaters />
+              <Hooks />
+              {children}
+            </Blocklist>
+          </ModalProvider>
+        </ToastsProvider>
+      </view>
     </>
   )
 }
