@@ -27,7 +27,7 @@ function CustomNav({ top = 0, height = 44 }: Tprops) {
           width: '100vw',
           zIndex: '10',
           background: theme.colors.backgroundAlt,
-          paddingTop: '44px',
+          paddingTop: `${top}px`,
           boxSizing: 'content-box',
         }}
       >
