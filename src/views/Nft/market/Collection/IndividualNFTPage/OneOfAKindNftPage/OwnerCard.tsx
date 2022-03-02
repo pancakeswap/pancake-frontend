@@ -40,7 +40,7 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic, o
   const { theme } = useTheme()
   const bnbBusdPrice = useBNBBusdPrice()
 
-  const { owner, isLoadingOwner } = useNftOwner(nft)
+  const { owner, isLoadingOwner } = useNftOwner(nft, isOwnNft)
 
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft.marketData?.currentAskPrice))
 
