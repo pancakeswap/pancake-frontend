@@ -1,2 +1,2 @@
-export const EMPTY_OBJECT = {}
-export const EMPTY_ARRAY = []
+export const EMPTY_OBJECT: Readonly<Record<any, any>> = {}
+export const EMPTY_ARRAY: Readonly<any[]> = []
