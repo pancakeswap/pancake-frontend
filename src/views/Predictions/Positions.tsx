@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
-// eslint-disable-next-line import/no-unresolved
+import SwiperCore, { Keyboard, Mousewheel, FreeMode } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-// eslint-disable-next-line import/no-unresolved
-import 'swiper/css'
+import 'swiper/css/bundle'
 import { Box } from '@pancakeswap/uikit'
 import { useGetCurrentEpoch, useGetSortedRounds } from 'state/predictions/hooks'
 import delay from 'lodash/delay'
@@ -16,7 +14,7 @@ import useOnViewChange from './hooks/useOnViewChange'
 import { PageView } from './types'
 import { CHART_DOT_CLICK_EVENT } from './helpers'
 
-SwiperCore.use([Keyboard, Mousewheel])
+SwiperCore.use([Keyboard, Mousewheel, FreeMode])
 
 const StyledSwiper = styled.div`
   .swiper-wrapper {
