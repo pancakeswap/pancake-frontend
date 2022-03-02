@@ -3,16 +3,16 @@ import { Web3ReactProvider } from '@web3-react/core'
 import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import { ThemeProvider } from 'styled-components'
-import { useThemeManager } from 'state/user/hooks'
 import { getLibrary } from 'utils/web3React'
 import { LanguageProvider } from 'contexts/Localization'
 import { ToastsProvider } from 'contexts/ToastsContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
+import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 
-const ThemeProviderWrapper = (props) => {
-  const [isDark] = useThemeManager()
-  return <ThemeProvider theme={isDark ? dark : light} {...props} />
+const StyledThemeProvider = (props) => {
+  const { resolvedTheme } = useNextTheme()
+  return <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props} />
 }
 
 const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
@@ -20,17 +20,19 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>
         <ToastsProvider>
-          <ThemeProviderWrapper>
-            <LanguageProvider>
-              <SWRConfig
-                value={{
-                  use: [fetchStatusMiddleware],
-                }}
-              >
-                <ModalProvider>{children}</ModalProvider>
-              </SWRConfig>
-            </LanguageProvider>
-          </ThemeProviderWrapper>
+          <NextThemeProvider>
+            <StyledThemeProvider>
+              <LanguageProvider>
+                <SWRConfig
+                  value={{
+                    use: [fetchStatusMiddleware],
+                  }}
+                >
+                  <ModalProvider>{children}</ModalProvider>
+                </SWRConfig>
+              </LanguageProvider>
+            </StyledThemeProvider>
+          </NextThemeProvider>
         </ToastsProvider>
       </Provider>
     </Web3ReactProvider>
