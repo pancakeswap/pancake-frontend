@@ -19,9 +19,9 @@ const connectors: Config[] = [
     priority: 1,
   },
   {
-    title: "WalletConnect",
-    icon: WalletConnect,
-    connectorId: ConnectorNames.WalletConnect,
+    title: "Binance Wallet",
+    icon: BinanceChain,
+    connectorId: ConnectorNames.BSC,
     priority: 2,
   },
   {
@@ -37,6 +37,12 @@ const connectors: Config[] = [
     priority: 4,
   },
   {
+    title: "WalletConnect",
+    icon: WalletConnect,
+    connectorId: ConnectorNames.WalletConnect,
+    priority: 5,
+  },
+  {
     title: "MathWallet",
     icon: MathWallet,
     connectorId: ConnectorNames.Injected,
@@ -46,13 +52,6 @@ const connectors: Config[] = [
     title: "TokenPocket",
     icon: TokenPocket,
     connectorId: ConnectorNames.Injected,
-    priority: 999,
-  },
-
-  {
-    title: "BNB Smart Chain",
-    icon: BinanceChain,
-    connectorId: ConnectorNames.BSC,
     priority: 999,
   },
   {
