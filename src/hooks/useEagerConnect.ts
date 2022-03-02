@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { connectorLocalStorageKey, ConnectorNames } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
+import { injected } from 'utils/web3React'
 
 const _binanceChainListener = async () =>
   new Promise<void>((resolve) =>
@@ -18,28 +19,33 @@ const _binanceChainListener = async () =>
 
 const useEagerConnect = () => {
   const { login } = useAuth()
-  const [hasTried, setHasTried] = useState(false)
 
   useEffect(() => {
-    if (!hasTried) {
-      const connectorId = window.localStorage.getItem(connectorLocalStorageKey) as ConnectorNames
+    const connectorId = window.localStorage.getItem(connectorLocalStorageKey) as ConnectorNames
 
-      if (connectorId) {
-        const isConnectorBinanceChain = connectorId === ConnectorNames.BSC
-        const isBinanceChainDefined = Reflect.has(window, 'BinanceChain')
+    if (connectorId) {
+      const isConnectorBinanceChain = connectorId === ConnectorNames.BSC
+      const isBinanceChainDefined = Reflect.has(window, 'BinanceChain')
 
-        // Currently BSC extension doesn't always inject in time.
-        // We must check to see if it exists, and if not, wait for it before proceeding.
-        if (isConnectorBinanceChain && !isBinanceChainDefined) {
-          _binanceChainListener().then(() => login(connectorId))
+      // Currently BSC extension doesn't always inject in time.
+      // We must check to see if it exists, and if not, wait for it before proceeding.
+      if (isConnectorBinanceChain && !isBinanceChainDefined) {
+        _binanceChainListener().then(() => login(connectorId))
 
-          return
-        }
+        return
+      }
+      const isConnectorInjected = connectorId === ConnectorNames.Injected
+      if (isConnectorInjected) {
+        injected.isAuthorized().then((isAuthorized) => {
+          if (isAuthorized) {
+            login(connectorId)
+          }
+        })
+      } else {
         login(connectorId)
-        setHasTried(true)
       }
     }
-  }, [hasTried, login])
+  }, [login])
 }
 
 export default useEagerConnect
