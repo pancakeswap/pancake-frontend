@@ -42,6 +42,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 472,
+    lpSymbol: 'XWG-USDC LP',
+    lpAddresses: {
+      97: '',
+      56: '0x936928146a21AfCcd30DfA84824A780572B1630B',
+    },
+    token: serializedTokens.xwg,
+    quoteToken: serializedTokens.usdc,
+  },
+  {
     pid: 491,
     lpSymbol: 'HIGH-BUSD LP',
     lpAddresses: {
@@ -559,16 +569,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.eternal,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 472,
-    lpSymbol: 'XWG-USDC LP',
-    lpAddresses: {
-      97: '',
-      56: '0x936928146a21AfCcd30DfA84824A780572B1630B',
-    },
-    token: serializedTokens.xwg,
-    quoteToken: serializedTokens.usdc,
   },
   {
     pid: 471,
