@@ -24,12 +24,16 @@ const useAuth = () => {
   const { toastError } = useToast()
 
   const login = useCallback(
-    (connectorID: ConnectorNames) => {
-      const connector = connectorsByName[connectorID]
-      if (connector) {
+    async (connectorID: ConnectorNames) => {
+      const connectorOrGetConnector = connectorsByName[connectorID]
+      const connector =
+        typeof connectorOrGetConnector !== 'function' ? connectorsByName[connectorID] : await connectorOrGetConnector()
+
+      if (typeof connector !== 'function' && connector) {
         activate(connector, async (error: Error) => {
           if (error instanceof UnsupportedChainIdError) {
-            const hasSetup = await setupNetwork()
+            const provider = await connector.getProvider()
+            const hasSetup = await setupNetwork(provider)
             if (hasSetup) {
               activate(connector)
             }
@@ -52,6 +56,7 @@ const useAuth = () => {
           }
         })
       } else {
+        window.localStorage.removeItem(connectorLocalStorageKey)
         toastError(t('Unable to find connector'), t('The connector config is wrong'))
       }
     },
