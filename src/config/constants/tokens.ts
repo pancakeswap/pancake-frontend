@@ -2017,6 +2017,14 @@ export const mainnetTokens = defineTokens({
     'League Of Ancients',
     'https://www.leagueofancients.com/',
   ),
+  duet: new Token(
+    MAINNET,
+    '0x95EE03e1e2C5c4877f9A298F1C0D6c98698FAB7B',
+    18,
+    'DUET',
+    'Duet Governance Token',
+    'https://duet.finance',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
