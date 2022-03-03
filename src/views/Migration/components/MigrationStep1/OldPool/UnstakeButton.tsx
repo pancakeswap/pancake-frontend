@@ -18,16 +18,15 @@ import {
   updateUserStakedBalance,
 } from 'state/pools'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import { useVaultPoolByKey } from 'state/pools/hooks'
-import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import useUnstakePool from '../../../hook/V1/Pool/useUnstakePool'
+import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 export interface UnstakeButtonProps {
   pool: DeserializedPool
 }
 
 const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
-  const { sousId, stakingToken, earningTokenPrice, earningToken, userData, vaultKey } = pool
+  const { sousId, stakingToken, earningToken, userData, vaultKey } = pool
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -37,18 +36,11 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
 
   const {
     userData: { cakeAtLastUserAction, userShares },
-    pricePerFullShare,
-  } = useVaultPoolByKey(vaultKey)
-  const { hasAutoEarnings } = getCakeVaultEarnings(
-    account,
-    cakeAtLastUserAction,
-    userShares,
-    pricePerFullShare,
-    earningTokenPrice,
-  )
-  const hasEarnings = hasAutoEarnings
+  } = useVaultPoolByKeyV1(vaultKey)
 
-  const vaultPoolContract = useVaultPoolContract(pool.vaultKey, true)
+  const hasEarnings = account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
+
+  const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
 
   const isNeedUnstake = vaultKey ? hasEarnings : new BigNumber(userData.stakedBalance).gt(0)

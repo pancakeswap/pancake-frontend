@@ -5,10 +5,9 @@ import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { DeserializedPool } from 'state/types'
-import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { BIG_ZERO } from 'utils/bigNumber'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
+import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 interface TotalStakedCellProps {
   pool: DeserializedPool
@@ -25,11 +24,8 @@ const StyledCell = styled(BaseCell)`
 const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool }) => {
   const { t } = useTranslation()
   const { sousId, stakingToken, totalStaked, vaultKey } = pool
-  const { totalCakeInVault } = useVaultPoolByKey(vaultKey)
-  const vaultPools = useVaultPools()
-  const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
-    return total.plus(vault.totalCakeInVault)
-  }, BIG_ZERO)
+  const { totalCakeInVault, totalShares } = useVaultPoolByKeyV1(vaultKey)
+  const cakeInVaults = new BigNumber(totalShares).plus(totalCakeInVault)
 
   const isManualCakePool = sousId === 0
 

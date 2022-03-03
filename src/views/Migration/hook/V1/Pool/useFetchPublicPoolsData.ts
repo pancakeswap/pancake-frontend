@@ -9,10 +9,6 @@ export const useFetchPublicPoolsData = () => {
     const fetchPoolsDataWithFarms = async () => {
       const activeFarms = nonArchivedFarms.filter((farm) => farm.v1pid !== 0)
       await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.v1pid)))
-      // batch(() => {
-      //   dispatch(fetchPoolsPublicDataAsync(currentBlock))
-      //   dispatch(fetchPoolsStakingLimitsAsync())
-      // })
     }
 
     fetchPoolsDataWithFarms()

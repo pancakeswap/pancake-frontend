@@ -3,13 +3,13 @@ import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
-import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
+import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 interface StakedCellProps {
   pool: DeserializedPool
@@ -40,10 +40,15 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool }) => {
   const {
     userData: { userShares },
     pricePerFullShare,
-  } = useVaultPoolByKey(pool.vaultKey)
+  } = useVaultPoolByKeyV1(pool.vaultKey)
   const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = pool.vaultKey && hasSharesStaked
-  const { cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
+
+  let cakeAsNumberBalance = 0
+  if (pricePerFullShare) {
+    const { cakeAsNumberBalance: cakeBalance } = convertSharesToCake(userShares, pricePerFullShare)
+    cakeAsNumberBalance = cakeBalance
+  }
 
   // pool
   const { stakingToken, userData } = pool
@@ -53,21 +58,6 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool }) => {
   const labelText = `${pool.stakingToken.symbol} ${t('Staked')}`
 
   const hasStaked = stakedBalance.gt(0) || isVaultWithShares
-
-  // if (notMeetRequired || notMeetThreshold) {
-  //   return (
-  //     <ActionContainer>
-  //       <ActionTitles>
-  //         <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-  //           {t('Enable pool')}
-  //         </Text>
-  //       </ActionTitles>
-  //       <ActionContent>
-  //         <ProfileRequirementWarning profileRequirement={profileRequirement} />
-  //       </ActionContent>
-  //     </ActionContainer>
-  //   )
-  // }
 
   return (
     <StyledCell role="cell">

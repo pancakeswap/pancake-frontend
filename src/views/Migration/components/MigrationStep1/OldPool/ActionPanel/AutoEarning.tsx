@@ -5,12 +5,13 @@ import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
-import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { ActionContainer, ActionTitles, ActionContent } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
+import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 const Container = styled(ActionContainer)`
   flex: 2;
+  align-self: stretch;
 `
 
 const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPrice, vaultKey }) => {
@@ -21,18 +22,24 @@ const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPr
   const {
     userData: { cakeAtLastUserAction, userShares },
     pricePerFullShare,
-  } = useVaultPoolByKey(vaultKey)
-  const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
-    account,
-    cakeAtLastUserAction,
-    userShares,
-    pricePerFullShare,
-    earningTokenPrice,
-  )
+  } = useVaultPoolByKeyV1(vaultKey)
 
-  const earningTokenBalance = autoCakeToDisplay
-  const earningTokenDollarBalance = autoUsdToDisplay
-  const hasEarnings = hasAutoEarnings
+  let earningTokenBalance = 0
+  let earningTokenDollarBalance = 0
+
+  if (pricePerFullShare) {
+    const { autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
+      account,
+      cakeAtLastUserAction,
+      userShares,
+      pricePerFullShare,
+      earningTokenPrice,
+    )
+    earningTokenBalance = autoCakeToDisplay
+    earningTokenDollarBalance = autoUsdToDisplay
+  }
+
+  const hasEarnings = account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
@@ -59,7 +66,7 @@ const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPr
     <Container>
       <ActionTitles>{actionTitle}</ActionTitles>
       <ActionContent>
-        <Flex flex="1" pt="16px" flexDirection="column" alignSelf="flex-start">
+        <Flex flex="1" pt="16px" flexDirection="column">
           <>
             {hasEarnings ? (
               <>

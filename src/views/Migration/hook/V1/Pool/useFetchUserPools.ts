@@ -8,6 +8,8 @@ import {
 } from 'state/pools/fetchPoolsUser'
 import poolsConfig from '../../../poolsConfig'
 import { SerializedPool } from 'state/types'
+import { transformPool } from 'state/pools/helpers'
+
 export interface PoolsState {
   data: SerializedPool[]
   userDataLoaded: boolean
@@ -53,7 +55,7 @@ export const useFetchUserPools = (account) => {
   }, [account])
 
   return {
-    data: userPoolsData.data,
+    data: userPoolsData.data.map(transformPool),
     userDataLoaded: userPoolsData.userDataLoaded,
   }
 }

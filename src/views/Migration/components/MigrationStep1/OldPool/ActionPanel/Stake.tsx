@@ -6,7 +6,7 @@ import { Flex, Text } from '@pancakeswap/uikit'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import { useVaultPoolByKey } from 'state/pools/hooks'
+import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { convertSharesToCake } from 'views/Pools/helpers'
@@ -35,12 +35,22 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
   const {
     userData: { userShares },
     pricePerFullShare,
-  } = useVaultPoolByKey(pool.vaultKey)
+  } = useVaultPoolByKeyV1(pool.vaultKey)
 
-  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
+  let cakeAsBigNumber = new BigNumber(0)
+  let cakeAsNumberBalance = 0
+  if (pricePerFullShare) {
+    const { cakeAsBigNumber: cakeBigBumber, cakeAsNumberBalance: cakeBalance } = convertSharesToCake(
+      userShares,
+      pricePerFullShare,
+    )
+    cakeAsBigNumber = cakeBigBumber
+    cakeAsNumberBalance = cakeBalance
+  }
+
   const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
 
-  const balance = vaultKey ? cakeAsNumberBalance : stakedTokenBalance
+  const balance = vaultKey ? (Number.isNaN(cakeAsNumberBalance) ? 0 : cakeAsNumberBalance) : stakedTokenBalance
   const isBalanceZero = balance === 0
 
   return (
@@ -58,7 +68,7 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
             color={isBalanceZero ? 'textDisabled' : 'text'}
             fontSize="20px"
             decimals={5}
-            value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
+            value={balance}
           />
           <Balance
             fontSize="12px"
