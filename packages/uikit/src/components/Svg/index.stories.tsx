@@ -1,8 +1,9 @@
-import React from "react";
 import Box from "../Box/Box";
 import Flex from "../Box/Flex";
 import Text from "../Text/Text";
 import Svg from "./Svg";
+// eslint-disable-next-line import/no-useless-path-segments
+import { CheckmarkCircleIcon, CheckmarkCircleFillIcon } from "../Svg";
 import AnimatedIconComponent from "./AnimatedIconComponent";
 
 export default {
@@ -74,7 +75,8 @@ const AnimatedIconComponentTemplate: React.FC = (args) => {
     <Box background="white" height="48px" width="48px">
       <AnimatedIconComponent
         activeBackgroundColor="backgroundAlt"
-        iconName="CheckmarkCircle"
+        icon={CheckmarkCircleIcon}
+        fillIcon={CheckmarkCircleFillIcon}
         height="48px"
         width="48px"
         {...args}

@@ -6,4 +6,5 @@ module.exports = {
     "\\.(js|jsx)?$": "babel-jest",
     "^.+\\.svg$": "<rootDir>/svgTransform.js",
   },
+  testEnvironment: "jsdom",
 };

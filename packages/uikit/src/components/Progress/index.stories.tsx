@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { capitalize, random } from "lodash";
+import capitalize from "lodash/capitalize";
+import random from "lodash/random";
 import Box from "../Box/Box";
 import Heading from "../Heading/Heading";
 import Button from "../Button/Button";

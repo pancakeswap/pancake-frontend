@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import IconComponent from "../Svg/IconComponent";
+import { useState } from "react";
+import { SunIcon, MoonIcon } from "../Svg";
 import Toggle from "./Toggle";
 
 export default {
@@ -27,12 +27,8 @@ export const Default: React.FC = () => {
           checkedColor="textDisabled"
           onChange={toggle}
           scale="md"
-          startIcon={(isActive = false) => (
-            <IconComponent iconName="Sun" color={isActive ? "warning" : "backgroundAlt"} />
-          )}
-          endIcon={(isActive = false) => (
-            <IconComponent iconName="Moon" color={isActive ? "secondary" : "backgroundAlt"} />
-          )}
+          startIcon={(isActive = false) => <SunIcon color={isActive ? "warning" : "backgroundAlt"} />}
+          endIcon={(isActive = false) => <MoonIcon color={isActive ? "secondary" : "backgroundAlt"} />}
         />
       </div>
       <div>

@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Flex } from "../Box";
 import BottomNavItem from "./BottomNavItem";
 import { BottomNavItemProps } from "./types";
+import { SwapIcon, SwapFillIcon } from "../Svg";
 
 export default {
   title: "Components/Menu/BottomNavItem",
@@ -24,6 +25,7 @@ export const Default = Template.bind({});
 Default.args = {
   label: "Trade",
   href: "/",
-  iconName: "Swap",
+  icon: SwapIcon,
+  fillIcon: SwapFillIcon,
   isActive: false,
 };
