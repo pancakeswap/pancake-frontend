@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { connectorLocalStorageKey, ConnectorNames } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
+import { injected } from 'utils/web3React'
 
 const _binanceChainListener = async () =>
   new Promise<void>((resolve) =>
@@ -33,8 +34,16 @@ const useEagerConnect = () => {
 
         return
       }
-
-      login(connectorId)
+      const isConnectorInjected = connectorId === ConnectorNames.Injected
+      if (isConnectorInjected) {
+        injected.isAuthorized().then((isAuthorized) => {
+          if (isAuthorized) {
+            login(connectorId)
+          }
+        })
+      } else {
+        login(connectorId)
+      }
     }
   }, [login])
 }

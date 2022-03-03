@@ -20,7 +20,7 @@ import { clearUserStates } from '../utils/clearUserStates'
 const useAuth = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { chainId, activate, deactivate } = useWeb3React()
+  const { chainId, activate, deactivate, setError } = useWeb3React()
   const { toastError } = useToast()
 
   const login = useCallback(
@@ -32,6 +32,7 @@ const useAuth = () => {
       if (typeof connector !== 'function' && connector) {
         activate(connector, async (error: Error) => {
           if (error instanceof UnsupportedChainIdError) {
+            setError(error)
             const provider = await connector.getProvider()
             const hasSetup = await setupNetwork(provider)
             if (hasSetup) {
@@ -60,7 +61,7 @@ const useAuth = () => {
         toastError(t('Unable to find connector'), t('The connector config is wrong'))
       }
     },
-    [t, activate, toastError],
+    [t, activate, toastError, setError],
   )
 
   const logout = useCallback(() => {

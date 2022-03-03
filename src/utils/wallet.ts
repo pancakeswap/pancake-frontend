@@ -14,24 +14,35 @@ export const setupNetwork = async (externalProvider?: ExternalProvider) => {
     const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID, 10)
     try {
       await provider.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: `0x${chainId.toString(16)}`,
-            chainName: 'BNB Smart Chain Mainnet',
-            nativeCurrency: {
-              name: 'BNB',
-              symbol: 'bnb',
-              decimals: 18,
-            },
-            rpcUrls: nodes,
-            blockExplorerUrls: [`${BASE_BSC_SCAN_URL}/`],
-          },
-        ],
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: `0x${chainId.toString(16)}` }],
       })
       return true
-    } catch (error) {
-      console.error('Failed to setup the network in Metamask:', error)
+    } catch (switchError) {
+      if ((switchError as any)?.code === 4902) {
+        try {
+          await provider.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: `0x${chainId.toString(16)}`,
+                chainName: 'BNB Smart Chain Mainnet',
+                nativeCurrency: {
+                  name: 'BNB',
+                  symbol: 'bnb',
+                  decimals: 18,
+                },
+                rpcUrls: nodes,
+                blockExplorerUrls: [`${BASE_BSC_SCAN_URL}/`],
+              },
+            ],
+          })
+          return true
+        } catch (error) {
+          console.error('Failed to setup the network in Metamask:', error)
+          return false
+        }
+      }
       return false
     }
   } else {
