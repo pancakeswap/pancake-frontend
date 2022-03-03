@@ -38,8 +38,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const isBull = lockPrice && price.gt(lockPrice)
 
   const priceDifference = getPriceDifference(price, lockPrice)
-  const now = Date.now()
-  const hasRoundFailed = getHasRoundFailed(round, bufferSeconds, now)
+  const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Last price from Chainlink Oracle'), {
     placement: 'bottom',
@@ -49,7 +48,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
     return <CanceledRoundCard round={round} />
   }
 
-  if (now > closeTimestamp * 1000) {
+  if (Date.now() > closeTimestamp * 1000) {
     return <CalculatingCard round={round} hasEnteredDown={hasEnteredDown} hasEnteredUp={hasEnteredUp} />
   }
 
@@ -75,7 +74,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
           </Text>
           <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
             <div ref={targetRef}>
-              <LiveRoundPrice round={round} />
+              <LiveRoundPrice isBull={isBull} />
             </div>
             <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
               {formatUsdv2(priceDifference)}

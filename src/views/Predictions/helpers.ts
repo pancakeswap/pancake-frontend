@@ -52,11 +52,11 @@ export const formatRoundTime = (secondsBetweenBlocks: number) => {
   return minutesSeconds
 }
 
-export const getHasRoundFailed = (round: NodeRound, buffer: number, now = Date.now()) => {
+export const getHasRoundFailed = (round: NodeRound, buffer: number) => {
   if (!round.oracleCalled) {
     const closeTimestampMs = (round.closeTimestamp + buffer) * 1000
     if (Number.isFinite(closeTimestampMs)) {
-      return now > closeTimestampMs
+      return Date.now() > closeTimestampMs
     }
   }
 

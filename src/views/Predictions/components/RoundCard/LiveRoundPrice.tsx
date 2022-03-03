@@ -6,14 +6,12 @@ import { formatBigNumberToFixed } from 'utils/formatBalance'
 import usePollOraclePrice from '../../hooks/usePollOraclePrice'
 
 interface LiveRoundPriceProps {
-  round: NodeRound
+  isBull: boolean
 }
 
-const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ round }) => {
-  const { lockPrice } = round
+const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull }) => {
   const price = usePollOraclePrice()
 
-  const isBull = lockPrice && price.gt(lockPrice)
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const priceColor = isBull ? 'success' : 'failure'
 
