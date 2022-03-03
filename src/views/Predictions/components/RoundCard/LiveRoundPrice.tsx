@@ -1,7 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, memo } from 'react'
 import { useCountUp } from 'react-countup'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
-import { NodeRound } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import usePollOraclePrice from '../../hooks/usePollOraclePrice'
 
@@ -35,4 +34,4 @@ const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull }) => {
   )
 }
 
-export default LiveRoundPrice
+export default memo(LiveRoundPrice)
