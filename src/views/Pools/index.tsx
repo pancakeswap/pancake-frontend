@@ -16,7 +16,7 @@ import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, DeserializedCakeVault, DeserializedIfoCakeVault, DeserializedPoolVault } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -92,7 +92,7 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
           }
 
           if (pool.vaultKey) {
-            const vault = pool as any
+            const vault = pool as DeserializedPoolVault
             if (!vault.userData || !vault.userData.userShares) {
               return 0
             }
@@ -109,21 +109,22 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
         'desc',
       )
     case 'totalStaked': {
-      const cakeInVaults = pools
-        .filter((pool) => pool.vaultKey)
-        .reduce((total, poolVault) => {
-          const vault = poolVault as any
+      const cakeInVaults = pools.reduce((total, pool) => {
+        if (pool.vaultKey) {
+          const vault = pool as DeserializedPoolVault
           if (vault.totalCakeInVault) {
-            return vault.totalCakeInVault.plus(total).toNumber()
+            return vault.totalCakeInVault.plus(total)
           }
-          return total.plus(vault.totalCakeInVault)
-        }, BIG_ZERO)
+          return total
+        }
+        return total
+      }, BIG_ZERO)
       return orderBy(
         poolsToSort,
         (pool: DeserializedPool) => {
           let totalStaked = Number.NaN
           if (pool.vaultKey) {
-            const vault = pool as any
+            const vault = pool as DeserializedPoolVault
             if (pool.stakingTokenPrice && vault.totalCakeInVault.isFinite()) {
               totalStaked =
                 +formatUnits(EthersBigNumber.from(vault.totalCakeInVault.toString()), pool.stakingToken.decimals) *
@@ -172,7 +173,7 @@ const Pools: React.FC = () => {
     () =>
       finishedPools.filter((pool) => {
         if (pool.vaultKey) {
-          const vault = pool as any
+          const vault = pool as DeserializedPoolVault
           return vault.userData.userShares && vault.userData.userShares.gt(0)
         }
         return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
@@ -182,7 +183,7 @@ const Pools: React.FC = () => {
   const stakedOnlyOpenPools = useCallback(() => {
     return openPools.filter((pool) => {
       if (pool.vaultKey) {
-        const vault = pool as any
+        const vault = pool as DeserializedPoolVault
         return vault.userData.userShares && vault.userData.userShares.gt(0)
       }
       return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
