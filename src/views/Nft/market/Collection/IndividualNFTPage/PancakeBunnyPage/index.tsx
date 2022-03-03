@@ -20,7 +20,6 @@ import DetailsCard from '../shared/DetailsCard'
 import MoreFromThisCollection from '../shared/MoreFromThisCollection'
 import ForSaleTableCard from './ForSaleTableCard'
 import { pancakeBunniesAddress } from '../../../constants'
-import { sortNFTsByPriceBuilder } from './ForSaleTableCard/utils'
 import { SortType } from '../../../types'
 import { TwoColumnsContainer } from '../shared/styles'
 
@@ -121,7 +120,10 @@ const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> 
     }
   }, [cheapestBunny, bunnyId])
 
-  const sortedNfts = useMemo(() => allBunnies.sort(sortNFTsByPriceBuilder({ priceSort })), [allBunnies, priceSort])
+  const sortedNfts = useMemo(
+    () => orderBy(allBunnies, (nft) => Number(nft.marketData?.currentAskPrice) || 0, priceSort),
+    [allBunnies, priceSort],
+  )
 
   if (!cheapestBunny && !nothingForSaleBunny) {
     // TODO redirect to nft market page if collection or bunny id does not exist (came here from some bad url)
