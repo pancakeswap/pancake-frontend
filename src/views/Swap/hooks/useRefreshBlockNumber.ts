@@ -15,7 +15,7 @@ export const useRefreshBlockNumber = () => {
   useEffect(() => {
     if (!isLoading) return
 
-    mutate(['blockNumber'])
+    mutate('blockNumber')
 
     // setTimeout is used to demonstrate the loading
     // because the real loading state occurs on multicall state

@@ -4,7 +4,7 @@ import { Contract } from '@ethersproject/contracts'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCurrentBlock } from 'state/block/hooks'
+import { useSWRConfig } from 'swr'
 import { AppDispatch, AppState } from '../index'
 import {
   addMulticallListeners,
@@ -185,11 +185,12 @@ export function useSingleContractMultipleData(
 
   const results = useCallsData(calls, options)
 
-  const currentBlock = useCurrentBlock()
+  const { cache } = useSWRConfig()
 
   return useMemo(() => {
-    return results.map((result) => toCallState(result, contract?.interface, fragment, currentBlock))
-  }, [fragment, contract, results, currentBlock])
+    const currentBlockNumber = cache.get('blockNumber')
+    return results.map((result) => toCallState(result, contract?.interface, fragment, currentBlockNumber))
+  }, [fragment, contract, results, cache])
 }
 
 export function useMultipleContractSingleData(
@@ -225,11 +226,12 @@ export function useMultipleContractSingleData(
 
   const results = useCallsData(calls, options)
 
-  const currentBlock = useCurrentBlock()
+  const { cache } = useSWRConfig()
 
   return useMemo(() => {
-    return results.map((result) => toCallState(result, contractInterface, fragment, currentBlock))
-  }, [fragment, results, contractInterface, currentBlock])
+    const currentBlockNumber = cache.get('blockNumber')
+    return results.map((result) => toCallState(result, contractInterface, fragment, currentBlockNumber))
+  }, [fragment, results, contractInterface, cache])
 }
 
 export function useSingleCallResult(
@@ -252,9 +254,10 @@ export function useSingleCallResult(
   }, [contract, fragment, inputs])
 
   const result = useCallsData(calls, options)[0]
-  const currentBlock = useCurrentBlock()
+  const { cache } = useSWRConfig()
 
   return useMemo(() => {
-    return toCallState(result, contract?.interface, fragment, currentBlock)
-  }, [result, contract, fragment, currentBlock])
+    const currentBlockNumber = cache.get('blockNumber')
+    return toCallState(result, contract?.interface, fragment, currentBlockNumber)
+  }, [cache, result, contract?.interface, fragment])
 }
