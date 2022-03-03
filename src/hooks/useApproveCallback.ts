@@ -1,6 +1,7 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Trade, TokenAmount, CurrencyAmount, ETHER } from '@pancakeswap/sdk'
+import { CHAIN_ID } from 'config/constants/networks'
 import { useCallback, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { logError } from 'utils/sentry'
@@ -114,5 +115,5 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
     [trade, allowedSlippage],
   )
 
-  return useApproveCallback(amountToApprove, ROUTER_ADDRESS)
+  return useApproveCallback(amountToApprove, ROUTER_ADDRESS[CHAIN_ID])
 }
