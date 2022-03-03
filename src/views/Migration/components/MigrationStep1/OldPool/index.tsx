@@ -8,17 +8,15 @@ import { VaultKey } from 'state/types'
 const OldPool: React.FC = () => {
   const { account } = useWeb3React()
   useFetchPublicPoolsData()
-  const { data: poolsWithoutAutoVault, userDataLoaded } = useFetchUserPools(account)
+  const { data: cakePool, userDataLoaded } = useFetchUserPools(account)
 
   const usePoolsWithVault = () => {
     const pools = useMemo(() => {
-      const activePools = poolsWithoutAutoVault.filter((pool) => !pool.isFinished)
-      const cakePool = activePools.find((pool) => pool.sousId === 0)
       const ifoPoolVault = { ...cakePool, vaultKey: VaultKey.IfoPool }
       const cakeAutoVault = { ...cakePool, vaultKey: VaultKey.CakeVault }
 
-      return [ifoPoolVault, cakeAutoVault, ...poolsWithoutAutoVault]
-    }, [poolsWithoutAutoVault])
+      return [ifoPoolVault, cakeAutoVault, cakePool]
+    }, [cakePool])
 
     return pools
   }
