@@ -201,12 +201,12 @@ export default function AddLiquidity() {
         if (err && err.code !== 4001) {
           logError(err)
           console.error(`Add Liquidity failed`, err, args, value)
-          setLiquidityState({
-            attemptingTxn: false,
-            liquidityErrorMessage: `Add Liquidity failed: ${err.message}`,
-            txHash: undefined,
-          })
         }
+        setLiquidityState({
+          attemptingTxn: false,
+          liquidityErrorMessage: err && err.code !== 4001 ? `Add Liquidity failed: ${err.message}` : undefined,
+          txHash: undefined,
+        })
       })
   }
 
