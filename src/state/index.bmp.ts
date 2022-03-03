@@ -60,7 +60,7 @@ const persistedReducer = persistReducer(
     // pools: poolsReducer,
     // predictions: predictionsReducer,
     profile: profileReducer,
-    teams: teamsReducer,
+    // teams: teamsReducer,
     // voting: votingReducer,
     // lottery: lotteryReducer,
     // info: infoReducer,
