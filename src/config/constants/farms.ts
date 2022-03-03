@@ -42,6 +42,38 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 386,
+    lpSymbol: 'HOTCROSS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
+    },
+    token: serializedTokens.hotcross,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 512,
+    lpSymbol: 'FIGHT-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xB9378A7D4F47aC8Cf78b4f18ED15A875aB0C89a1',
+    },
+    token: serializedTokens.fight,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
+    pid: 498,
+    lpSymbol: '8PAY-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
+    },
+    token: serializedTokens['8pay'],
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+  },
+  {
     pid: 472,
     lpSymbol: 'XWG-USDC LP',
     lpAddresses: {
@@ -92,27 +124,7 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: serializedTokens.busd,
     isCommunity: true,
   },
-  {
-    pid: 512,
-    lpSymbol: 'FIGHT-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xB9378A7D4F47aC8Cf78b4f18ED15A875aB0C89a1',
-    },
-    token: serializedTokens.fight,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
-  },
-  {
-    pid: 386,
-    lpSymbol: 'HOTCROSS-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
-    },
-    token: serializedTokens.hotcross,
-    quoteToken: serializedTokens.wbnb,
-  },
+
   {
     pid: 510,
     lpSymbol: 'BTT-BUSD',
@@ -202,17 +214,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0xb5FEAE037c2330a8F298F39bcE96dd6E69f4Fa0E',
     },
     token: serializedTokens.prl,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
-  },
-  {
-    pid: 498,
-    lpSymbol: '8PAY-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
-    },
-    token: serializedTokens['8pay'],
     quoteToken: serializedTokens.busd,
     isCommunity: true,
   },
