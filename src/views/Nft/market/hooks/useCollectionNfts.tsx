@@ -200,7 +200,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
   // We don't know the amount in advance if nft filters exist
   const resultSize =
     !Object.keys(nftFilters).length && collection
-      ? showOnlyNftsOnSale || field !== 'tokenId'
+      ? showOnlyNftsOnSale
         ? collection.numberTokensListed
         : collection.totalSupply
       : null
