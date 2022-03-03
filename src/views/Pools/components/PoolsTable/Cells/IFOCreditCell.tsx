@@ -35,7 +35,7 @@ const IFOCreditCell: React.FC<IFOCreditCellProps> = ({ account }) => {
   } = useVaultPoolByKey(VaultKey.IfoPool)
   const credit = useIfoPoolCredit()
 
-  const hasCredit = credit.gt(0)
+  const hasCredit = account && credit.gt(0)
 
   const cakeAsNumberBalance = getBalanceNumber(credit)
   const avgBalanceDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
