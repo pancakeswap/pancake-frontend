@@ -7,6 +7,36 @@ export const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[Ch
 
 const ifos: Ifo[] = [
   {
+    id: 'duet',
+    // Wait for the real one
+    address: '0x527201a43f8da24ce9b7c21744a0706942f41fa3',
+    isActive: true,
+    name: 'DUET',
+    poolBasic: {
+      saleAmount: '600,000 DUET',
+      raiseAmount: '$180,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.1,
+    },
+    poolUnlimited: {
+      saleAmount: '5,400,000 DUET',
+      raiseAmount: '$1,620,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.9,
+    },
+    currency: tokens.cake,
+    token: tokens.duet,
+    releaseBlockNumber: null,
+    campaignId: '511190000',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmPdotYCM5cz8hYY1NEa3CvxK2xHBZJRYehWCbWVqqKGrY',
+    tokenOfferingPrice: 0.3,
+    version: 3.1,
+    telegramUrl: 'https://t.me/duetprotocol',
+    twitterUrl: 'https://twitter.com/duetprotocol',
+    description:
+      'a Multi-chain synthetic asset protocol that sharpens all assets for use in the blockchain world. A duet in music refers to a piece of music where two people play different parts or melodies.',
+  },
+  {
     id: 'era',
     address: '0x527201a43f8da24ce9b7c21744a0706942f41fa3',
     isActive: false,
