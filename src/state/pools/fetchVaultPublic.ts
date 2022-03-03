@@ -5,7 +5,9 @@ import cakeVaultAbi from 'config/abi/cakeVault.json'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
-export const fetchPublicVaultData = async () => {
+const cakeVaultV2 = getCakeVaultAddress()
+
+export const fetchPublicVaultData = async (cakeVaultAddress = cakeVaultV2) => {
   try {
     const calls = [
       'getPricePerFullShare',
@@ -13,7 +15,7 @@ export const fetchPublicVaultData = async () => {
       'calculateHarvestCakeRewards',
       'calculateTotalPendingCakeRewards',
     ].map((method) => ({
-      address: getCakeVaultAddress(),
+      address: cakeVaultAddress,
       name: method,
     }))
 
@@ -43,10 +45,10 @@ export const fetchPublicVaultData = async () => {
   }
 }
 
-export const fetchVaultFees = async () => {
+export const fetchVaultFees = async (cakeVaultAddress = cakeVaultV2) => {
   try {
     const calls = ['performanceFee', 'callFee', 'withdrawFee', 'withdrawFeePeriod'].map((method) => ({
-      address: getCakeVaultAddress(),
+      address: cakeVaultAddress,
       name: method,
     }))
 

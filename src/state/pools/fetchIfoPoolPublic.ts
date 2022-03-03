@@ -5,7 +5,9 @@ import ifoPoolAbi from 'config/abi/ifoPool.json'
 import { getIfoPoolAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
-export const fetchPublicIfoPoolData = async () => {
+const ifoPoolV2 = getIfoPoolAddress()
+
+export const fetchPublicIfoPoolData = async (ifoPoolAddress = ifoPoolV2) => {
   try {
     const calls = [
       'getPricePerFullShare',
@@ -15,7 +17,7 @@ export const fetchPublicIfoPoolData = async () => {
       'startBlock',
       'endBlock',
     ].map((method) => ({
-      address: getIfoPoolAddress(),
+      address: ifoPoolAddress,
       name: method,
     }))
 
@@ -45,10 +47,10 @@ export const fetchPublicIfoPoolData = async () => {
   }
 }
 
-export const fetchIfoPoolFeesData = async () => {
+export const fetchIfoPoolFeesData = async (ifoPoolAddress = ifoPoolV2) => {
   try {
     const calls = ['performanceFee', 'callFee', 'withdrawFee', 'withdrawFeePeriod'].map((method) => ({
-      address: getIfoPoolAddress(),
+      address: ifoPoolAddress,
       name: method,
     }))
 

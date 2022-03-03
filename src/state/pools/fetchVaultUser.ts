@@ -3,9 +3,9 @@ import { getCakeVaultContract } from 'utils/contractHelpers'
 
 const cakeVaultContract = getCakeVaultContract()
 
-const fetchVaultUser = async (account: string) => {
+const fetchVaultUser = async (account: string, contract = cakeVaultContract) => {
   try {
-    const userContractResponse = await cakeVaultContract.userInfo(account)
+    const userContractResponse = await contract.userInfo(account)
     return {
       isLoading: false,
       userShares: new BigNumber(userContractResponse.shares.toString()).toJSON(),

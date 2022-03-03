@@ -3,10 +3,12 @@ import ifoPoolAbi from 'config/abi/ifoPool.json'
 import { getIfoPoolAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 
-const fetchIfoPoolUser = async (account: string) => {
+const ifoPoolV2 = getIfoPoolAddress()
+
+const fetchIfoPoolUser = async (account: string, ifoPoolAddress = ifoPoolV2) => {
   try {
     const calls = ['userInfo', 'getUserCredit'].map((method) => ({
-      address: getIfoPoolAddress(),
+      address: ifoPoolAddress,
       name: method,
       params: [account],
     }))
