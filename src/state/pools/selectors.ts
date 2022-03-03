@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { createSelector } from '@reduxjs/toolkit'
+import { State } from '../types'
 import { transformPool } from './helpers'
 import { initialPoolVaultState } from './index'
 
