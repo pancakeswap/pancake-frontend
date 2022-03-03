@@ -102,6 +102,18 @@ const StyledDatePickerPortal = styled.div`
     height: auto;
     padding: 8px;
   }
+
+  .react-datepicker__time-container
+    .react-datepicker__time
+    .react-datepicker__time-box
+    ul.react-datepicker__time-list
+    li.react-datepicker__time-list-item {
+    background-color: ${({ theme }) => theme.card.background};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.cardBorder};
+    }
+  }
 `
 
 const DatePickerPortal = () => {
