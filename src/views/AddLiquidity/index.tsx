@@ -198,10 +198,8 @@ export default function AddLiquidity() {
         }),
       )
       .catch((err) => {
-        logError(err)
-        if (err?.code === 4001) {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: 'Transaction rejected.', txHash: undefined })
-        } else {
+        if (err && err.code !== 4001) {
+          logError(err)
           console.error(`Add Liquidity failed`, err, args, value)
           setLiquidityState({
             attemptingTxn: false,
