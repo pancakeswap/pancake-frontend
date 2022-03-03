@@ -155,7 +155,7 @@ export const useEagerConnect = () => {
       activate(injected, (error) => {
         console.log('🚀 ~ file: useEagerConnect.ts ~ line 13 ~ activate ~ error', error)
       })
-    }, 1000 * 3)
+    })
   }, [activate])
 }
 export const useActiveHandle = () => {
