@@ -17,7 +17,7 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 
 import { useUnsupportedTokens } from './Tokens'
 
-function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
+export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useActiveWeb3React()
 
   const [tokenA, tokenB] = chainId

@@ -15,5 +15,3 @@ export function maxAmountSpend(currencyAmount?: CurrencyAmount): CurrencyAmount 
   }
   return currencyAmount
 }
-
-export default maxAmountSpend
