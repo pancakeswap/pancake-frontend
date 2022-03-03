@@ -5,6 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { AbstractConnectorArguments, ConnectorUpdate } from '@web3-react/types'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import warning from 'tiny-warning'
+import { captureException } from '@binance/sentry-miniapp'
 
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -154,6 +155,7 @@ export const useEagerConnect = () => {
     setTimeout(() => {
       activate(injected, (error) => {
         console.log('🚀 ~ file: useEagerConnect.ts ~ line 13 ~ activate ~ error', error)
+        captureException(error)
       })
     })
   }, [activate])
@@ -163,6 +165,7 @@ export const useActiveHandle = () => {
   return () => {
     activate(injected, (error) => {
       console.log('🚀 ~ file: useEagerConnect.ts ~ line 13 ~ activate ~ error', error)
+      captureException(error)
     })
   }
 }
