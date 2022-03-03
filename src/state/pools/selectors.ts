@@ -1,8 +1,8 @@
-import BigNumber from 'bignumber.js'
 import { createSelector } from '@reduxjs/toolkit'
-import { State } from '../types'
-import { transformPool } from './helpers'
+import { State, VaultKey } from '../types'
+import { transformPool, transformVault, transformIfoVault } from './helpers'
 import { initialPoolVaultState } from './index'
+import { getAprData } from '../../views/Pools/helpers'
 
 export const makePoolWithUserDataLoadingSelector = (sousId) =>
   createSelector(
@@ -28,47 +28,44 @@ export const poolsWithUserDataLoadingSelector = createSelector(
 export const makeVaultPoolByKey = (key) =>
   createSelector(
     (state: State) => (key ? state.pools[key] : initialPoolVaultState),
-    (vault) => {
-      const {
-        totalShares: totalSharesAsString,
-        pricePerFullShare: pricePerFullShareAsString,
-        totalCakeInVault: totalCakeInVaultAsString,
-        estimatedCakeBountyReward: estimatedCakeBountyRewardAsString,
-        totalPendingCakeHarvest: totalPendingCakeHarvestAsString,
-        fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod },
-        userData: {
-          isLoading,
-          userShares: userSharesAsString,
-          cakeAtLastUserAction: cakeAtLastUserActionAsString,
-          lastDepositedTime,
-          lastUserActionTime,
-        },
-      } = vault
-
-      const estimatedCakeBountyReward = new BigNumber(estimatedCakeBountyRewardAsString)
-      const totalPendingCakeHarvest = new BigNumber(totalPendingCakeHarvestAsString)
-      const totalShares = new BigNumber(totalSharesAsString)
-      const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
-      const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
-      const userShares = new BigNumber(userSharesAsString)
-      const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
-
-      const performanceFeeAsDecimal = performanceFee && performanceFee / 100
-
-      return {
-        totalShares,
-        pricePerFullShare,
-        totalCakeInVault,
-        estimatedCakeBountyReward,
-        totalPendingCakeHarvest,
-        fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
-        userData: {
-          isLoading,
-          userShares,
-          cakeAtLastUserAction,
-          lastDepositedTime,
-          lastUserActionTime,
-        },
-      }
-    },
+    (vault) => (key === VaultKey.CakeVault ? transformVault(vault) : transformIfoVault(vault)),
   )
+
+export const poolsWithVaultSelector = createSelector(
+  (state: State) => ({
+    serializedPools: state.pools.data,
+    userDataLoaded: state.pools.userDataLoaded,
+    serializedCakeVault: state.pools.cakeVault,
+    serializedIfoPool: state.pools.ifoPool,
+  }),
+  ({ serializedPools, userDataLoaded, serializedCakeVault, serializedIfoPool }) => {
+    const pools = serializedPools.map(transformPool)
+    const cakeVault = transformVault(serializedCakeVault)
+    const ifoPool = transformIfoVault(serializedIfoPool)
+    const activePools = pools.filter((pool) => !pool.isFinished)
+    const cakePool = activePools.find((pool) => pool.sousId === 0)
+    const cakeAutoVault = {
+      ...cakePool,
+      ...cakeVault,
+      vaultKey: VaultKey.CakeVault,
+      userData: { ...cakePool.userData, ...cakeVault.userData },
+    }
+    const ifoPoolVault = {
+      ...cakePool,
+      ...ifoPool,
+      vaultKey: VaultKey.IfoPool,
+      userData: { ...cakePool.userData, ...ifoPool.userData },
+    }
+    const cakeAutoVaultWithApr = {
+      ...cakeAutoVault,
+      apr: getAprData(cakeAutoVault, cakeVault.fees.performanceFeeAsDecimal).apr,
+      rawApr: cakePool.apr,
+    }
+    const ifoPoolWithApr = {
+      ...ifoPoolVault,
+      apr: getAprData(ifoPoolVault, ifoPool.fees.performanceFeeAsDecimal).apr,
+      rawApr: cakePool.apr,
+    }
+    return { pools: [ifoPoolWithApr, cakeAutoVaultWithApr, ...pools], userDataLoaded }
+  },
+)

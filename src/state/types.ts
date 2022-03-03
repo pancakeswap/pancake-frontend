@@ -140,11 +140,15 @@ export interface DeserializedFarmsState {
   poolLength?: number
 }
 
-export interface VaultFees {
+export interface SerializedVaultFees {
   performanceFee: number
   callFee: number
   withdrawalFee: number
   withdrawalFeePeriod: number
+}
+
+export interface DeserializedVaultFees extends SerializedVaultFees {
+  performanceFeeAsDecimal: number
 }
 
 export interface SerializedVaultUser {
@@ -177,7 +181,7 @@ export interface DeserializedCakeVault {
   totalCakeInVault?: BigNumber
   estimatedCakeBountyReward?: BigNumber
   totalPendingCakeHarvest?: BigNumber
-  fees?: VaultFees
+  fees?: DeserializedVaultFees
   userData?: DeserializedVaultUser
 }
 
@@ -187,7 +191,7 @@ export interface SerializedCakeVault {
   totalCakeInVault?: SerializedBigNumber
   estimatedCakeBountyReward?: SerializedBigNumber
   totalPendingCakeHarvest?: SerializedBigNumber
-  fees?: VaultFees
+  fees?: SerializedVaultFees
   userData?: SerializedVaultUser
 }
 

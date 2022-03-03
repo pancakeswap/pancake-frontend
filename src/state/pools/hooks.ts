@@ -22,7 +22,12 @@ import {
 import { State, DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from '../farms'
 import { useCurrentBlock } from '../block/hooks'
-import { poolsWithUserDataLoadingSelector, makePoolWithUserDataLoadingSelector, makeVaultPoolByKey } from './selectors'
+import {
+  poolsWithUserDataLoadingSelector,
+  makePoolWithUserDataLoadingSelector,
+  makeVaultPoolByKey,
+  poolsWithVaultSelector,
+} from './selectors'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
@@ -64,37 +69,7 @@ export const usePool = (sousId: number): { pool: DeserializedPool; userDataLoade
 }
 
 export const usePoolsWithVault = () => {
-  const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools()
-  const { [VaultKey.CakeVault]: cakeVault, [VaultKey.IfoPool]: ifoPool } = useVaultPools()
-  const pools = useMemo(() => {
-    const activePools = poolsWithoutAutoVault.filter((pool) => !pool.isFinished)
-    const cakePool = activePools.find((pool) => pool.sousId === 0)
-    const cakeAutoVault = {
-      ...cakePool,
-      ...cakeVault,
-      vaultKey: VaultKey.CakeVault,
-      userData: { ...cakePool.userData, ...cakeVault.userData },
-    }
-    const ifoPoolVault = {
-      ...cakePool,
-      ...ifoPool,
-      vaultKey: VaultKey.IfoPool,
-      userData: { ...cakePool.userData, ...ifoPool.userData },
-    }
-    const cakeAutoVaultWithApr = {
-      ...cakeAutoVault,
-      apr: getAprData(cakeAutoVault, cakeVault.fees.performanceFeeAsDecimal).apr,
-      rawApr: cakePool.apr,
-    }
-    const ifoPoolWithApr = {
-      ...ifoPoolVault,
-      apr: getAprData(ifoPoolVault, ifoPool.fees.performanceFeeAsDecimal).apr,
-      rawApr: cakePool.apr,
-    }
-    return { pools: [ifoPoolWithApr, cakeAutoVaultWithApr, ...poolsWithoutAutoVault], userDataLoaded }
-  }, [poolsWithoutAutoVault, cakeVault, ifoPool, userDataLoaded])
-
-  return pools
+  return useSelector(poolsWithVaultSelector)
 }
 
 export const usePoolsPageFetch = () => {

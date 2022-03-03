@@ -5,7 +5,7 @@ import {
   AppThunk,
   PoolsState,
   SerializedPool,
-  VaultFees,
+  SerializedVaultFees,
   SerializedIfoVaultUser,
   SerializedIfoCakeVault,
   SerializedVaultUser,
@@ -270,7 +270,7 @@ export const fetchCakeVaultPublicData = createAsyncThunk<SerializedCakeVault>('c
   return publicVaultInfo
 })
 
-export const fetchCakeVaultFees = createAsyncThunk<VaultFees>('cakeVault/fetchFees', async () => {
+export const fetchCakeVaultFees = createAsyncThunk<SerializedVaultFees>('cakeVault/fetchFees', async () => {
   const vaultFees = await fetchVaultFees()
   return vaultFees
 })
@@ -288,7 +288,7 @@ export const fetchIfoPoolPublicData = createAsyncThunk<SerializedIfoCakeVault>('
   return publicVaultInfo
 })
 
-export const fetchIfoPoolFees = createAsyncThunk<VaultFees>('ifoPool/fetchFees', async () => {
+export const fetchIfoPoolFees = createAsyncThunk<SerializedVaultFees>('ifoPool/fetchFees', async () => {
   const vaultFees = await fetchIfoPoolFeesData()
   return vaultFees
 })
@@ -348,7 +348,7 @@ export const PoolsSlice = createSlice({
       state.cakeVault = { ...state.cakeVault, ...action.payload }
     })
     // Vault fees
-    builder.addCase(fetchCakeVaultFees.fulfilled, (state, action: PayloadAction<VaultFees>) => {
+    builder.addCase(fetchCakeVaultFees.fulfilled, (state, action: PayloadAction<SerializedVaultFees>) => {
       const fees = action.payload
       state.cakeVault = { ...state.cakeVault, fees }
     })
@@ -363,7 +363,7 @@ export const PoolsSlice = createSlice({
       state.ifoPool = { ...state.ifoPool, ...action.payload }
     })
     // Vault fees
-    builder.addCase(fetchIfoPoolFees.fulfilled, (state, action: PayloadAction<VaultFees>) => {
+    builder.addCase(fetchIfoPoolFees.fulfilled, (state, action: PayloadAction<SerializedVaultFees>) => {
       const fees = action.payload
       state.ifoPool = { ...state.ifoPool, fees }
     })

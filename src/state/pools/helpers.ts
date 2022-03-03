@@ -1,5 +1,13 @@
 import BigNumber from 'bignumber.js'
-import { SerializedFarm, DeserializedPool, SerializedPool } from 'state/types'
+import {
+  SerializedFarm,
+  DeserializedPool,
+  SerializedPool,
+  SerializedCakeVault,
+  SerializedIfoCakeVault,
+  DeserializedIfoCakeVault,
+  DeserializedCakeVault,
+} from 'state/types'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
@@ -55,6 +63,60 @@ export const transformPool = (pool: SerializedPool): DeserializedPool => {
     totalStaked: new BigNumber(totalStaked),
     stakingLimit: new BigNumber(stakingLimit),
     stakingLimitEndBlock: numberBlocksForUserLimit + startBlock,
+  }
+}
+
+export const transformVault = (vault: SerializedCakeVault): DeserializedCakeVault => {
+  const {
+    totalShares: totalSharesAsString,
+    pricePerFullShare: pricePerFullShareAsString,
+    totalCakeInVault: totalCakeInVaultAsString,
+    estimatedCakeBountyReward: estimatedCakeBountyRewardAsString,
+    totalPendingCakeHarvest: totalPendingCakeHarvestAsString,
+    fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod },
+    userData: {
+      isLoading,
+      userShares: userSharesAsString,
+      cakeAtLastUserAction: cakeAtLastUserActionAsString,
+      lastDepositedTime,
+      lastUserActionTime,
+    },
+  } = vault
+
+  const estimatedCakeBountyReward = new BigNumber(estimatedCakeBountyRewardAsString)
+  const totalPendingCakeHarvest = new BigNumber(totalPendingCakeHarvestAsString)
+  const totalShares = new BigNumber(totalSharesAsString)
+  const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
+  const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
+  const userShares = new BigNumber(userSharesAsString)
+  const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
+
+  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
+
+  return {
+    totalShares,
+    pricePerFullShare,
+    totalCakeInVault,
+    estimatedCakeBountyReward,
+    totalPendingCakeHarvest,
+    fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
+    userData: {
+      isLoading,
+      userShares,
+      cakeAtLastUserAction,
+      lastDepositedTime,
+      lastUserActionTime,
+    },
+  }
+}
+
+export const transformIfoVault = (vault: SerializedIfoCakeVault): DeserializedIfoCakeVault => {
+  const transformedVault = transformVault(vault)
+  return {
+    ...transformedVault,
+    userData: { ...transformedVault.userData, credit: vault.userData.credit },
+    creditStartBlock: vault.creditStartBlock,
+    creditEndBlock: vault.creditEndBlock,
   }
 }
 
