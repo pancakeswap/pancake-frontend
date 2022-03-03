@@ -5,7 +5,6 @@ import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getAprData } from 'views/Pools/helpers'
-import { createSelector } from '@reduxjs/toolkit'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import {
   fetchPoolsPublicDataAsync,
@@ -17,14 +16,13 @@ import {
   fetchIfoPoolFees,
   fetchIfoPoolPublicData,
   fetchIfoPoolUserAndCredit,
-  initialPoolVaultState,
   fetchCakePoolPublicDataAsync,
   fetchCakePoolUserDataAsync,
 } from '.'
 import { State, DeserializedPool, VaultKey } from '../types'
-import { transformPool } from './helpers'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from '../farms'
 import { useCurrentBlock } from '../block/hooks'
+import { poolsWithUserDataLoadingSelector, makePoolWithUserDataLoadingSelector, makeVaultPoolByKey } from './selectors'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
@@ -56,30 +54,9 @@ export const useFetchUserPools = (account) => {
   }, [account, dispatch])
 }
 
-const poolsWithUserDataLoadingSelector = createSelector(
-  (state: State) => ({
-    pools: state.pools.data,
-    userDataLoaded: state.pools.userDataLoaded,
-  }),
-  ({ pools, userDataLoaded }) => {
-    return { pools: pools.map(transformPool), userDataLoaded }
-  },
-)
-
 export const usePools = (): { pools: DeserializedPool[]; userDataLoaded: boolean } => {
   return useSelector(poolsWithUserDataLoadingSelector)
 }
-
-const makePoolWithUserDataLoadingSelector = (sousId) =>
-  createSelector(
-    (state: State) => ({
-      pool: state.pools.data.find((p) => p.sousId === sousId),
-      userDataLoaded: state.pools.userDataLoaded,
-    }),
-    ({ pool, userDataLoaded }) => {
-      return { pool: transformPool(pool), userDataLoaded }
-    },
-  )
 
 export const usePool = (sousId: number): { pool: DeserializedPool; userDataLoaded: boolean } => {
   const poolWithUserDataLoadingSelector = useMemo(() => makePoolWithUserDataLoadingSelector(sousId), [sousId])
@@ -184,54 +161,6 @@ export const useVaultPools = () => {
   }, [cakeVault, ifoVault])
   return vaults
 }
-
-const makeVaultPoolByKey = (key) =>
-  createSelector(
-    (state: State) => (key ? state.pools[key] : initialPoolVaultState),
-    (vault) => {
-      const {
-        totalShares: totalSharesAsString,
-        pricePerFullShare: pricePerFullShareAsString,
-        totalCakeInVault: totalCakeInVaultAsString,
-        estimatedCakeBountyReward: estimatedCakeBountyRewardAsString,
-        totalPendingCakeHarvest: totalPendingCakeHarvestAsString,
-        fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod },
-        userData: {
-          isLoading,
-          userShares: userSharesAsString,
-          cakeAtLastUserAction: cakeAtLastUserActionAsString,
-          lastDepositedTime,
-          lastUserActionTime,
-        },
-      } = vault
-
-      const estimatedCakeBountyReward = new BigNumber(estimatedCakeBountyRewardAsString)
-      const totalPendingCakeHarvest = new BigNumber(totalPendingCakeHarvestAsString)
-      const totalShares = new BigNumber(totalSharesAsString)
-      const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
-      const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
-      const userShares = new BigNumber(userSharesAsString)
-      const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
-
-      const performanceFeeAsDecimal = performanceFee && performanceFee / 100
-
-      return {
-        totalShares,
-        pricePerFullShare,
-        totalCakeInVault,
-        estimatedCakeBountyReward,
-        totalPendingCakeHarvest,
-        fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
-        userData: {
-          isLoading,
-          userShares,
-          cakeAtLastUserAction,
-          lastDepositedTime,
-          lastUserActionTime,
-        },
-      }
-    },
-  )
 
 export const useVaultPoolByKey = (key: VaultKey) => {
   const vaultPoolByKey = useMemo(() => makeVaultPoolByKey(key), [key])
