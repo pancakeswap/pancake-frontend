@@ -12,6 +12,7 @@ import { calculateGasMargin, getRouterContract, isAddress } from '../utils'
 import isZero from '../utils/isZero'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './ENS/useENS'
+import { captureException } from '@binance/sentry-miniapp'
 
 export enum SwapCallbackState {
   INVALID,
@@ -151,6 +152,7 @@ export function useSwapCallback(
                     // }.`
 
                     // return { call, error: new Error(errorMessage) }
+                    captureException(callError)
                     return { call, error: new Error(swapErrorToUserReadableMessage(callError, t)) }
                   })
               })
@@ -192,10 +194,11 @@ export function useSwapCallback(
             const withRecipient =
               recipient === account
                 ? base
-                : `${base} to ${recipientAddressOrName && isAddress(recipientAddressOrName)
-                  ? truncateHash(recipientAddressOrName)
-                  : recipientAddressOrName
-                }`
+                : `${base} to ${
+                    recipientAddressOrName && isAddress(recipientAddressOrName)
+                      ? truncateHash(recipientAddressOrName)
+                      : recipientAddressOrName
+                  }`
 
             addTransaction(response, {
               summary: withRecipient,
@@ -211,6 +214,7 @@ export function useSwapCallback(
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Swap failed`, error, methodName, args, value)
               // throw new Error(`Swap failed: ${error.message}`)
+              captureException(error)
               throw new Error(t('Swap failed: %message%', { message: swapErrorToUserReadableMessage(error, t) }))
             }
           })
@@ -256,5 +260,3 @@ function swapErrorToUserReadableMessage(error: any, t: TranslateFunction) {
       })
   }
 }
-
-
