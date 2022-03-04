@@ -25,7 +25,9 @@ interface TotalStakedProps {
 const TotalStaked: React.FC<TotalStakedProps> = ({ pool }) => {
   const { t } = useTranslation()
   const { sousId, stakingToken, totalStaked, vaultKey } = pool
-  const { totalCakeInVault, totalShares } = useVaultPoolByKeyV1(vaultKey)
+  const { vaultPoolData } = useVaultPoolByKeyV1(vaultKey)
+  const { totalCakeInVault, totalShares } = vaultPoolData
+
   const cakeInVaults = new BigNumber(totalShares).plus(totalCakeInVault)
 
   const isManualCakePool = sousId === 0

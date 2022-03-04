@@ -26,10 +26,9 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
   const { isMobile } = useMatchBreakpoints()
   const { earningTokenPrice } = pool
 
-  const {
-    userData: { cakeAtLastUserAction, userShares },
-    pricePerFullShare,
-  } = useVaultPoolByKeyV1(pool.vaultKey)
+  const { vaultPoolData } = useVaultPoolByKeyV1(pool.vaultKey)
+  const { pricePerFullShare } = vaultPoolData
+  const { cakeAtLastUserAction, userShares } = vaultPoolData.userData
 
   let earningTokenBalance = 0
   if (pricePerFullShare) {

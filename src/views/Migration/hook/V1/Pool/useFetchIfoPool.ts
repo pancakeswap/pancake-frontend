@@ -23,9 +23,11 @@ const getCakeVaultContract = (signer?: Signer | Provider) => {
 }
 
 const getIfoPoolData = async (account) => {
-  const ifoData = await fetchPublicIfoPoolData()
-  const userData = await fetchIfoPoolUser(account, ifoPoolV1Contract)
-  const feesData = await fetchIfoPoolFeesData(ifoPoolV1Contract)
+  const [ifoData, userData, feesData] = await Promise.all([
+    fetchPublicIfoPoolData(),
+    fetchIfoPoolUser(account, ifoPoolV1Contract),
+    fetchIfoPoolFeesData(ifoPoolV1Contract),
+  ])
   const ifoPoolData = {
     ...ifoData,
     fees: { ...feesData },
@@ -35,9 +37,11 @@ const getIfoPoolData = async (account) => {
 }
 
 const getCakePoolData = async (account) => {
-  const vaultData = await fetchPublicVaultData(cakeVaultAddress)
-  const userData = await fetchVaultUser(account, getCakeVaultContract())
-  const feesData = await fetchVaultFees(cakeVaultAddress)
+  const [vaultData, userData, feesData] = await Promise.all([
+    fetchPublicVaultData(cakeVaultAddress),
+    fetchVaultUser(account, getCakeVaultContract()),
+    fetchVaultFees(cakeVaultAddress),
+  ])
   const cakeData = {
     ...vaultData,
     fees: { ...feesData },
@@ -80,7 +84,7 @@ const transformData = ({
 
 export const useVaultPoolByKeyV1 = (key: VaultKey) => {
   const { account } = useWeb3React()
-  const { data, status } = useSWR(
+  const { data, mutate } = useSWR(
     account ? [key, 'v1'] : null,
     async () => {
       if (key === VaultKey.IfoPool) {
@@ -95,5 +99,8 @@ export const useVaultPoolByKeyV1 = (key: VaultKey) => {
     },
   )
 
-  return data || initialPoolVaultState
+  return {
+    vaultPoolData: data || initialPoolVaultState,
+    fetchPoolData: mutate,
+  }
 }

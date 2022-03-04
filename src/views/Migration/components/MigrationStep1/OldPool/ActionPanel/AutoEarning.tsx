@@ -19,10 +19,9 @@ const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPr
   const { account } = useWeb3React()
   const { isMobile } = useMatchBreakpoints()
 
-  const {
-    userData: { cakeAtLastUserAction, userShares },
-    pricePerFullShare,
-  } = useVaultPoolByKeyV1(vaultKey)
+  const { vaultPoolData } = useVaultPoolByKeyV1(vaultKey)
+  const { pricePerFullShare } = vaultPoolData
+  const { cakeAtLastUserAction, userShares } = vaultPoolData.userData
 
   let earningTokenBalance = 0
   let earningTokenDollarBalance = 0

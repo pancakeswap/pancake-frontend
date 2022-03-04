@@ -32,10 +32,9 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
     stakingToken.decimals,
   )
 
-  const {
-    userData: { userShares },
-    pricePerFullShare,
-  } = useVaultPoolByKeyV1(pool.vaultKey)
+  const { vaultPoolData } = useVaultPoolByKeyV1(pool.vaultKey)
+  const { pricePerFullShare } = vaultPoolData
+  const { userShares } = vaultPoolData.userData
 
   let cakeAsBigNumber = new BigNumber(0)
   let cakeAsNumberBalance = 0

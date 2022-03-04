@@ -11,12 +11,7 @@ import useToast from 'hooks/useToast'
 import { useWeb3React } from '@web3-react/core'
 import { useVaultPoolContract } from 'hooks/useContract'
 import { vaultPoolConfig } from 'config/constants/pools'
-import {
-  fetchCakeVaultUserData,
-  updateUserBalance,
-  updateUserPendingReward,
-  updateUserStakedBalance,
-} from 'state/pools'
+import { useFetchUserPools } from '../../../hook/V1/Pool/useFetchUserPools'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import useUnstakePool from '../../../hook/V1/Pool/useUnstakePool'
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
@@ -33,10 +28,10 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
+  const { fetchUserPoolsData } = useFetchUserPools(account)
 
-  const {
-    userData: { cakeAtLastUserAction, userShares },
-  } = useVaultPoolByKeyV1(vaultKey)
+  const { vaultPoolData, fetchPoolData } = useVaultPoolByKeyV1(vaultKey)
+  const { cakeAtLastUserAction, userShares } = vaultPoolData.userData
 
   const hasEarnings = account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
 
@@ -68,7 +63,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchCakeVaultUserData({ account }))
+      fetchPoolData()
     }
   }
 
@@ -87,9 +82,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
           })}
         </ToastDescriptionWithTx>,
       )
-      dispatch(updateUserStakedBalance(sousId, account))
-      dispatch(updateUserPendingReward(sousId, account))
-      dispatch(updateUserBalance(sousId, account))
+      fetchUserPoolsData()
     }
   }
 

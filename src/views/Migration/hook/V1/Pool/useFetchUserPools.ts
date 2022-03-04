@@ -7,6 +7,7 @@ import { getCakeContract } from 'utils/contractHelpers'
 import { CHAIN_ID } from 'config/constants/networks'
 import { PoolCategory } from 'config/constants/types'
 import { serializeTokens } from 'config/constants/tokens'
+import { fetchChartData } from 'state/info/queries/helpers'
 
 export interface PoolsState {
   data: SerializedPool
@@ -36,6 +37,10 @@ export const useFetchUserPools = (account) => {
   })
 
   useFastRefreshEffect(() => {
+    fetchUserPoolsData()
+  }, [account])
+
+  const fetchUserPoolsData = () => {
     if (account) {
       const fetchPoolsUserDataAsync = async (account: string) => {
         try {
@@ -68,10 +73,11 @@ export const useFetchUserPools = (account) => {
 
       fetchPoolsUserDataAsync(account)
     }
-  }, [account])
+  }
 
   return {
     data: transformPool(userPoolsData.data),
     userDataLoaded: userPoolsData.userDataLoaded,
+    fetchUserPoolsData,
   }
 }

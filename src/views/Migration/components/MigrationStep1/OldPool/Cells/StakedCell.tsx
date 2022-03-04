@@ -37,10 +37,9 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool }) => {
   const { isMobile } = useMatchBreakpoints()
 
   // vault
-  const {
-    userData: { userShares },
-    pricePerFullShare,
-  } = useVaultPoolByKeyV1(pool.vaultKey)
+  const { vaultPoolData } = useVaultPoolByKeyV1(pool.vaultKey)
+  const { pricePerFullShare } = vaultPoolData
+  const { userShares } = vaultPoolData.userData
   const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = pool.vaultKey && hasSharesStaked
 
