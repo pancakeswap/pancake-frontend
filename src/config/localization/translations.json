@@ -976,8 +976,6 @@
   "This page is for projects to bid for farms.": "This page is for projects to bid for farms.",
   "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!": "If you’re not a whitelisted project, you won’t be able to participate, but you can still view what’s going on!",
   "through community auctions so far!": "through community auctions so far!",
-  "%num% Winners": "%num% Winners",
-  "%num% Contenders...": "%num% Contenders...",
   "Farm Auctions": "Farm Auctions",
   "auction bunny": "auction bunny",
   "Burnt CAKE": "Burnt CAKE",
@@ -1551,5 +1549,6 @@
   "Highest Price": "Highest Price",
   "Highest": "Highest",
   "Connect": "Connect",
-  "Play Now": "Play Now"
+  "Play Now": "Play Now",
+  "Win $ %prize% in Lottery": "Win $ %prize% in Lottery"
 }

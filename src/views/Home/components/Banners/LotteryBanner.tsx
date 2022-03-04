@@ -60,10 +60,17 @@ const LotteryPrice: React.FC = () => {
   const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
+  const { t } = useTranslation()
 
   if (status === LotteryStatus.OPEN) {
     return (
-      <>{prizeInBusd.isNaN() ? <Skeleton height={20} width={90} display="inline-block" /> : prizeTotal.toFixed(0)}</>
+      <>
+        {prizeInBusd.isNaN() ? (
+          <Skeleton height={20} width={90} display="inline-block" />
+        ) : (
+          t('Win $ %prize% in Lottery', { prize: prizeTotal.toFixed(0) })
+        )}
+      </>
     )
   }
   return null
@@ -89,7 +96,7 @@ const LotteryBanner = () => {
       <S.Inner>
         <S.LeftWrapper>
           <StyledSubheading>
-            Win $ <LotteryPrice /> in Lottery
+            <LotteryPrice />
           </StyledSubheading>
           <TimerWrapper>
             <LotteryCountDownTimer />
