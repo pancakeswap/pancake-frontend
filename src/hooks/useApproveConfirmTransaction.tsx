@@ -7,7 +7,6 @@ import useCatchTxError from './useCatchTxError'
 type LoadingState = 'idle' | 'loading' | 'success' | 'fail'
 
 type Action =
-  | { type: 'has_approval' }
   | { type: 'approve_sending' }
   | { type: 'approve_receipt' }
   | { type: 'approve_error' }
@@ -27,11 +26,6 @@ const initialState: State = {
 
 const reducer = (state: State, actions: Action): State => {
   switch (actions.type) {
-    case 'has_approval':
-      return {
-        ...state,
-        approvalState: 'success',
-      }
     case 'approve_sending':
       return {
         ...state,
@@ -126,7 +120,7 @@ const useApproveConfirmTransaction = ({
     if (account && handlePreApprove.current) {
       handlePreApprove.current().then((requiresApproval) => {
         if (!requiresApproval) {
-          dispatch({ type: 'has_approval' })
+          dispatch({ type: 'approve_receipt' })
         }
       })
     }
