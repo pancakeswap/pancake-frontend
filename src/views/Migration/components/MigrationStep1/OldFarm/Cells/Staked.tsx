@@ -2,7 +2,6 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useFarmUser } from 'state/farmsV1/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
@@ -22,12 +21,12 @@ const StyledCell = styled(BaseCell)`
 export interface StakedProps {
   label: string
   pid: number
+  stakedBalance: BigNumber
 }
 
-const Staked: React.FC<StakedProps> = ({ label, pid }) => {
+const Staked: React.FC<StakedProps> = ({ label, stakedBalance }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const { stakedBalance } = useFarmUser(pid)
 
   const labelText = t('%asset% Staked', { asset: label })
 

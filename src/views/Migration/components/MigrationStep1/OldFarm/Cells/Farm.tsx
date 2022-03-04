@@ -2,9 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
-import { useFarmUser } from 'state/farmsV1/hooks'
-import { useTranslation } from 'contexts/Localization'
-import { getBalanceNumber } from 'utils/formatBalance'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 import { TokenPairImage } from 'components/TokenImage'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
@@ -35,23 +32,7 @@ export interface FarmProps extends FarmWithStakedValue {
   lpSymbol: string
 }
 
-const Farm: React.FC<FarmProps> = ({ token, quoteToken, label, pid }) => {
-  const { stakedBalance } = useFarmUser(pid)
-  const { t } = useTranslation()
-  const rawStakedBalance = getBalanceNumber(stakedBalance)
-
-  const handleRenderFarming = (): JSX.Element => {
-    if (rawStakedBalance) {
-      return (
-        <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
-          {t('Farming')}
-        </Text>
-      )
-    }
-
-    return null
-  }
-
+const Farm: React.FC<FarmProps> = ({ token, quoteToken, label }) => {
   return (
     <StyledCell role="cell">
       <CellContent>
@@ -66,7 +47,6 @@ const Farm: React.FC<FarmProps> = ({ token, quoteToken, label, pid }) => {
             />
           </TokenWrapper>
           <Flex flexDirection="column" alignSelf="center">
-            {handleRenderFarming()}
             <Text bold>{label}</Text>
           </Flex>
         </Flex>

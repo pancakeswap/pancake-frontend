@@ -10,6 +10,7 @@ import Multiplier, { MultiplierProps } from './Cells/Multiplier'
 import Liquidity, { LiquidityProps } from './Cells/Liquidity'
 import Unstake, { UnstakeProps } from './Cells/Unstake'
 import ActionPanel from './ActionPanel/ActionPanel'
+import { useFarmUser } from 'state/farmsV1/hooks'
 
 const StyledRow = styled.div`
   display: flex;
@@ -56,6 +57,8 @@ const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, earned, mult
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
 
+  const { stakedBalance } = useFarmUser(farm.pid)
+
   const toggleExpanded = () => {
     if (!isLargerScreen) {
       setExpanded((prev) => !prev)
@@ -69,7 +72,7 @@ const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, earned, mult
           <Farm {...farm} />
           {isLargerScreen || !expanded ? (
             <>
-              <Staked {...staked} />
+              <Staked {...staked} stakedBalance={stakedBalance} />
               <Earned {...earned} />
               <Multiplier {...multiplier} />
             </>

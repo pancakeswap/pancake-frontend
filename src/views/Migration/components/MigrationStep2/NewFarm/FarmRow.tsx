@@ -13,6 +13,7 @@ import AprCell from './Cells/AprCell'
 import StakeButtonCells from './Cells/StakeButtonCells'
 import StakeButton from './StakeButton'
 import ActionPanel from './ActionPanel/ActionPanel'
+import { useFarmUser } from 'state/farms/hooks'
 
 export interface RowProps {
   farm: FarmProps
@@ -60,6 +61,8 @@ const FarmRow: React.FunctionComponent<RowProps> = ({ earned, farm, staked, apr,
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
 
+  const { stakedBalance } = useFarmUser(farm.pid)
+
   const toggleExpanded = () => {
     if (!isLargerScreen) {
       setExpanded((prev) => !prev)
@@ -73,7 +76,7 @@ const FarmRow: React.FunctionComponent<RowProps> = ({ earned, farm, staked, apr,
           <Farm {...farm} />
           {isLargerScreen || !expanded ? (
             <>
-              <Staked {...staked} />
+              <Staked {...staked} stakedBalance={stakedBalance} />
               <AprCell {...apr} />
               <Multiplier {...multiplier} />
             </>
