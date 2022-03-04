@@ -171,7 +171,7 @@ const SellModal: React.FC<SellModalProps> = ({
     onRequiresApproval: async () => {
       try {
         const approvedForContract = await collectionContractReader.isApprovedForAll(account, nftMarketContract.address)
-        return approvedForContract ? !approvedForContract : true
+        return approvedForContract || true
       } catch (error) {
         return true
       }
