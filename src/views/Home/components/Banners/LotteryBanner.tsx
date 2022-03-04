@@ -35,8 +35,6 @@ const TimerWrapper = styled.div`
     background-repeat: no-repeat;
     background-size: 100% 100%;
     padding: 0px 10px 7px;
-    /* justify-content: center;
-    align-items: center; */
     display: inline-flex;
   }
 `
