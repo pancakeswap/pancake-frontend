@@ -54,7 +54,7 @@ const persistConfig = {
   migrate: createMigrate(migrations, { debug: false }),
 }
 
-const allReducers = combineReducers({
+const combinedReducers = combineReducers({
   farms: farmsReducer,
   pools: poolsReducer,
   predictions: predictionsReducer,
@@ -103,7 +103,7 @@ const rootReducer = (state, action) => {
     }
   }
 
-  return allReducers(state, action)
+  return combinedReducers(state, action)
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
