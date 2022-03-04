@@ -17,10 +17,11 @@ const RightWrapper = styled.div`
   right: 1px;
   bottom: 18px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    bottom: -5px;
+    bottom: -3px;
     right: 0;
   }
 `
+
 const IFOBanner = () => {
   const { t } = useTranslation()
   const currentBlock = useCurrentBlock()
@@ -39,7 +40,9 @@ const IFOBanner = () => {
       <S.Inner>
         <S.LeftWrapper>
           <S.StyledSubheading>{status === 'live' ? t('Live') : t('Soon')}</S.StyledSubheading>
-          <S.StyledHeading scale="xl">{activeIfoWithBlocks?.id ?? 0} IFO</S.StyledHeading>
+          <S.StyledHeading scale="xl">
+            {activeIfoWithBlocks?.id ?? 'XXX'} {t('IFO')}
+          </S.StyledHeading>
           <NextLinkFromReactRouter to="/ifo">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
@@ -53,7 +56,7 @@ const IFOBanner = () => {
           {isDeskTop && (
             <Image
               src={IFOImage}
-              alt={`IFO ${activeIfoWithBlocks?.id ?? 0}`}
+              alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}
               onError={(event) => {
                 // @ts-ignore
                 // eslint-disable-next-line no-param-reassign

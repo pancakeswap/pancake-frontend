@@ -40,7 +40,7 @@ const StyledSwiper = styled(Swiper)`
     display: flex;
     justify-content: center;
     width: 108px;
-    bottom: 5px;
+    bottom: 12px;
     ${({ theme }) => theme.mediaQueries.md} {
       bottom: 35px;
     }

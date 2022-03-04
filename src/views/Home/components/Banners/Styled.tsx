@@ -25,7 +25,10 @@ export const StyledHeading = styled(Heading)`
   -webkit-text-stroke: 6px transparent;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   text-transform: uppercase;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-bottom: 16px;
+  }
 `
 export const Wrapper = styled.div`
   border-radius: 32px;

@@ -1,4 +1,5 @@
-import { useIsRenderIfoBanner } from './useIsRenderIFOBanner'
+import useIsRenderIfoBanner from './useIsRenderIFOBanner'
+import useIsRenderLotteryBanner from './useIsRenderLotteryBanner'
 import IFOBanner from '../IFOBanner'
 import LotteryBanner from '../LotteryBanner'
 import CompetitionBanner from '../CompetitionBanner'
@@ -16,15 +17,15 @@ import CompetitionBanner from '../CompetitionBanner'
  * ```
  */
 export const useMultipleBannerConfig = () => {
-  const isRenderIFOBanner = useIsRenderIfoBanner() || true
-
+  const isRenderIFOBanner = useIsRenderIfoBanner() || true // for test
+  const isRenderLotteryBanner = useIsRenderLotteryBanner() || true // for test
   return [
     {
       shouldRender: isRenderIFOBanner,
       banner: <IFOBanner />,
     },
     {
-      shouldRender: true,
+      shouldRender: isRenderLotteryBanner,
       banner: <LotteryBanner />,
     },
     {

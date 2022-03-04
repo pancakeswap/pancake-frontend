@@ -25,8 +25,8 @@ const CompetitionBanner = () => {
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
-          <S.StyledSubheading>Soon</S.StyledSubheading>
-          <S.StyledHeading scale="xl">Competition</S.StyledHeading>
+          <S.StyledSubheading>{t('Trading Competition')}</S.StyledSubheading>
+          <S.StyledHeading scale="xl">{t('$120,000 in Prizes!')}</S.StyledHeading>
           <NextLinkFromReactRouter to="/competition">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
