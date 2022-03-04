@@ -58,7 +58,7 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(vaultKey)
   const { callWithGasPrice } = useCallWithGasPrice()
-  const cakeContract = useCake()
+  const { signer: cakeContract } = useCake()
 
   const handleApprove = async () => {
     const receipt = await fetchWithCatchTxError(() => {

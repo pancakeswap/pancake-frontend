@@ -19,7 +19,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   const {
     costs: { numberCakeToUpdate, numberCakeToReactivate },
   } = useGetProfileCosts()
-  const cakeContract = useCake()
+  const { signer: cakeContract } = useCake()
 
   if (!profile) {
     return null
