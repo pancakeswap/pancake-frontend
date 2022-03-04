@@ -305,15 +305,6 @@ export const PoolsSlice = createSlice({
   name: 'Pools',
   initialState,
   reducers: {
-    resetPoolsUserData: (state) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      state.data = state.data.map(({ userData, ...pool }) => {
-        return { ...pool }
-      })
-      state.userDataLoaded = false
-      state.cakeVault = { ...state.cakeVault, userData: initialPoolVaultState.userData }
-      state.ifoPool = { ...state.ifoPool, userData: initialPoolVaultState.userData }
-    },
     setPoolPublicData: (state, action) => {
       const { sousId } = action.payload
       const poolIndex = state.data.findIndex((pool) => pool.sousId === sousId)
@@ -386,13 +377,7 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const {
-  resetPoolsUserData,
-  setPoolsPublicData,
-  setPoolsUserData,
-  updatePoolsUserData,
-  setPoolPublicData,
-  setPoolUserData,
-} = PoolsSlice.actions
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setPoolPublicData, setPoolUserData } =
+  PoolsSlice.actions
 
 export default PoolsSlice.reducer
