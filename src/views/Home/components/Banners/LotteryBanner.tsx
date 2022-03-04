@@ -1,12 +1,15 @@
-import { ArrowForwardIcon, Button, Text, Heading } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
+import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import useMediaQuery from 'hooks/useMediaQuery'
 import useTheme from 'hooks/useTheme'
 import Image from 'next/image'
 import { memo } from 'react'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
 import styled from 'styled-components'
+import { getBalanceNumber } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 import Timer from 'views/Lottery/components/Countdown/Timer'
 import useGetNextLotteryEvent from 'views/Lottery/hooks/useGetNextLotteryEvent'
@@ -50,6 +53,22 @@ export const StyledSubheading = styled(Heading)`
   margin-bottom: 8px;
 `
 
+const LotteryPrice: React.FC = () => {
+  const {
+    currentRound: { amountCollectedInCake, status },
+  } = useLottery()
+  const cakePriceBusd = usePriceCakeBusd()
+  const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+  const prizeTotal = getBalanceNumber(prizeInBusd)
+
+  if (status === LotteryStatus.OPEN) {
+    return (
+      <>{prizeInBusd.isNaN() ? <Skeleton height={20} width={90} display="inline-block" /> : prizeTotal.toFixed(0)}</>
+    )
+  }
+  return null
+}
+
 const LotteryCountDownTimer = () => {
   const {
     currentRound: { status, endTime },
@@ -69,7 +88,9 @@ const LotteryBanner = () => {
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
-          <StyledSubheading>Win $ 1,234,567 in Lottery</StyledSubheading>
+          <StyledSubheading>
+            Win $ <LotteryPrice /> in Lottery
+          </StyledSubheading>
           <TimerWrapper>
             <LotteryCountDownTimer />
           </TimerWrapper>
