@@ -1,177 +1,48 @@
 {
   "Farm": "المزرعة",
-  "Staking": "ربط الحصة",
-  "Syrup Pool": "تجمُّع Syrup",
   "Exchange": "تبادل العملات",
   "Docs": "الوثائق",
   "Voting": "التصويت",
   "Lottery": "اليانصيب",
   "Connect Wallet": "ربط محفظة",
-  "Your %asset% Balance": "رصيدك من %asset%",
-  "Total %asset% Supply": "إجمالي المعروض من %asset%",
-  "Locked": "مجمَّد",
-  "Pending harvest": "بانتظار الحصاد",
-  "New rewards per block": "المكافآت الجديدة لكل كتلة",
-  "Total CAKE burned since launch": "إجمالي CAKE المحترقة منذ الإطلاق",
-  "See the Kitchen": "رؤية المطبخ",
-  "Telegram": "Telegram",
   "Blog": "المدونة",
-  "Github": "Github",
-  "Twitter": "Twitter",
-  "Deposit": "إيداع",
   "Earn": "المكسب",
-  "Stake LP tokens to stack CAKE": "رهن رموز LP المميزة لتكديس CAKE",
-  "You can swap back anytime": "يمكنك عكس المبادلة في أي وقت",
   "%asset% Earned": "المكتسب من %asset%",
-  "Tokens Staked": "الرموز المميزة المرهونة",
-  "Every time you stake and unstake CAKE tokens, the contract will automagically harvest CAKE rewards for you!": "في كل مرة ترهن فيها رموز Cake المميزة أو تفك رهنها، سيحصد عقدك مكافآت CAKE تلقائيًا من أجلك!",
-  "XVS Tokens Earned": "رموز XVS المميزة المكتسبة",
-  "Rewards will be calculated per block and total rewards will be distributed automatically at the end of each project’s farming period.": "سيتم حساب المكافآت لكل كتلة، وسيتم توزيع إجمالي المكافآت تلقائيًا في نهاية فترة الزراعة لكل مشروع.",
   "Pool": "التجمُّع",
   "Coming Soon": "قريبًا",
   "APY": "النسبة المئوية للعائد السنوي",
   "Total Liquidity": "إجمالي السيولة",
   "View on BscScan": "العرض على BscScan",
-  "Cake price": "سعر Cake",
-  "%asset% Tokens Earned": "رموز %asset% المكتسبة",
-  "%num% blocks until farming ends": "%num% من الكتل حتى انتهاء الزراعة",
-  "Coming Soon...": "قريبًا...",
-  "Your Stake": "رهنك",
-  "Farming starts in %num% Blocks": "ستبدأ الزراعة بعد %num% من الكتل",
   "Finished": "انتهى",
-  "Farming ends in %num% Blocks": "ستنتهي الزراعة بعد %num% من الكتل",
-  "Project site": "موقع المشروع",
   "Project Site": "موقع المشروع",
   "See Token Info": "عرض معلومات الرمز المميز",
-  "You can unstake at any time.": "يمكنك فك الرهن في أي وقت.",
-  "Rewards are calculated per block.": "يتم حساب المكافآت لكل كتلة.",
   "Total": "الإجمالي",
   "End": "إنهاء",
   "View Project Site": "عرض موقع المشروع",
-  "Your Project? 👀": "مشروعك؟ 👀",
-  "Create a pool for your token": "إنشاء تجمُّع لرمزك المميز",
-  "Apply now": "التقديم الآن",
-  "Round 1: BUYING": "الجولة الأولى: الشراء",
   "%num% CAKE": "%num% من CAKE",
-  "Spend CAKE to buy tickets, contributing to the lottery pot. Ticket purchases end approx. 30 minutes before lottery. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their positions! Good luck!": "أنفق CAKE لشراء التذاكر والمساهمة في جائزة اليانصيب. تنتهي مهلة شراء التذاكر قبل 30 دقيقة تقريبًا من سحب اليانصيب. اربح الجوائز إذا تطابقت 2 أو 3 أو 4 من أرقام تذاكرك مع الأرقام الفائزة وترتيبها! حظًا سعيدًا!",
-  "Your total tickets for this round": "إجمالي تذاكرك لهذه الجولة",
-  "Buy ticket": "شراء تذكرة",
   "View your tickets": "عرض تذاكرك",
-  "Approx. time left to buy tickets": "الوقت المتبقي تقريبًا لشراء التذاكر",
-  "My Tickets (Total: %TICKETS%)": "تذاكري (الإجمالي: %TICKETS%)",
   "Close": "إغلاق",
-  "Latest Winning Numbers": "آخر الأرقام الفائزة",
-  "Ticket": "تذكرة",
-  "Tickets matching 4 numbers:": "التذاكر التي طابقت 4 أرقام:",
-  "Tickets matching 3 numbers:": "التذاكر التي طابقت 3 أرقام:",
-  "Tickets matching 2 numbers:": "التذاكر التي طابقت رقمين:",
-  "Export recent winning numbers": "تصدير الأرقام الفائزة مؤخرًا",
-  "Enter amount of tickets to buy": "إدخال كمية التذاكر التي تريد شراءها",
   "Max": "الحد الأقصى",
-  "%num% CAKE Available": "%num% من CAKE متوفرة",
-  "%num% %symbol% Available": "%num% من %symbol% متوفرة",
-  "Your amount must be a multiple of 10 CAKE": "لا بد أن تكون الكمية من مضاعفات 10 CAKE",
-  "1 Ticket = %lotteryPrice% CAKE": "التذكرة الواحدة = %lotteryPrice% CAKE",
-  "Until ticket sale:": "حتى بيع التذاكر:",
-  "You will spend: %num% CAKE": "ستنفق: %num% من CAKE",
   "Cancel": "إلغاء",
   "Confirm": "تأكيد",
   "Warning": "تحذير",
-  "Lottery ticket purchases are final.": "تكون مشتريات تذاكر اليانصيب نهائية (لا رجعة فيها).",
-  "Your CAKE will not be returned to you after you spend it to buy tickets.": "لن تستعيد CAKE بعد إنفاقها في شراء التذاكر.",
-  "Tickets are only valid for one lottery draw, and will be burned after the draw.": "تكون التذاكر صالحة لعملية سحب يانصيب واحدة، وستحترق بعد السحب.",
-  "Buying tickets does not guarantee you will win anything. Please only participate once you understand the risks.": "شراء التذاكر لا يضمن لك أن تربح أي شيء. يُرجى عدم المشاركة إلا بعد تفهُّم المخاطر.",
   "I understand": "أتفهم ذلك",
-  "Ticket purchases are final. Your CAKE cannot be returned to you after buying tickets.": "تكون مشتريات التذاكر نهائية (لا رجعة فيها). لا يمكن إعادة CAKE إليك بعد شراء التذاكر.",
   "Claim prizes": "المطالبة بالجوائز",
-  "CAKE prizes to be claimed": "جوائز CAKE للمطالبة بها",
-  "Round 2: CLAIMING": "الجولة الثانية: المطالبة",
-  "Pending Confirmation": "بانتظار التأكيد",
-  "Approx. time before next lottery start": "الوقت المتبقي تقريبًا قبل سحب اليانصيب التالي",
   "Enable CAKE": "تمكين CAKE",
   "IFO: Initial Farm Offerings": "IFO: العرض الأولي للمزرعة",
   "Buy new tokens launching on BNB Smart Chain": "اشتر رموز جديدة يتم إطلاقها على BNB Smart Chain",
-  "You’ll pay for the new tokens using CAKE-BNB LP tokens, which means you need to stake equal amounts of CAKE and BNB in a liquidity pool to take part.": "ستدفع ثمن الرموز المميزة الجديدة باستخدام رموز CAKE-BNB LP المميزة، ما يعني أنك بحاجة إلى رهن كميات متساوية من CAKE وBNB في تجمُّعٍ للسيولة من أجل المشاركة.",
-  "Get CAKE-BNB LP >": "الحصول على CAKE-BNB LP >",
-  "The project gets the BNB, PancakeSwap burns the CAKE.": "يحصل المشروع على BNB ويقوم PancakeSwap بحرق CAKE.",
-  "You get the tokens.": "وتحصل أنت على الرموز المميزة.",
-  "Want to launch your own IFO?": "هل تريد إطلاق IFO الخاص بك؟",
-  "Launch your project with PancakeSwap, BNB Smart Chain’s most-used AMM project and liquidity provider, to bring your token directly to the most active and rapidly growing community on BSC.": "أطلق مشروعك مع PancakeSwap، وهو مشروع AMM (صانع سوق آلي) وموفِّر السيولة الأكثر استخدامًا على BNB Smart Chain، لإحضار رمزك المميز مباشرةً إلى أكثر المجتمعات نشاطًا وسرعةً في النمو على BSC.",
-  "Apply to launch": "التقديم للإطلاق",
   "Community": "المجتمع",
   "Core": "الفريق الأساسي",
-  "Available": "الرصيد المتاح",
-  "My Wallet": "محفظتي",
-  "Sign out": "تسجيل الخروج",
-  "Harvest all (%count%)": "حصاد الكل (%count%)",
-  "Cake Stats": "إحصائيات Cake",
-  "Total CAKE Supply": "إجمالي المعروض من CAKE",
-  "Total CAKE Burned": "إجمالي المحترق من CAKE",
-  "New CAKE/block": "CAKE/كتلة جديدة",
-  "Farms & Staking": "المزارع والرهن",
-  "CAKE to Harvest": "CAKE للحصاد",
-  "CAKE in Wallet": "CAKE في المحفظة",
-  "Collecting CAKE": "تحصيل CAKE",
-  "Your Lottery Winnings": "أرباحك من اليانصيب",
-  "CAKE to Collect": "CAKE للتحصيل",
-  "Total jackpot this round": "إجمالي الجائزة الكبرى في هذه الجولة",
   "Collect Winnings": "تحصيل الأرباح",
   "Buy Tickets": "شراء التذاكر",
   "Harvest": "الحصاد",
-  "Select": "الاختيار",
-  "Winning Numbers This Round": "الأرقام الفائزة في هذه الجولة",
-  "Winning numbers": "الأرقام الفائزة",
-  "Total prizes": "إجمالي الجوائز",
-  "Round #%num%": "الجولة #%num%",
-  "Total Pot:": "إجمالي الجائزة:",
-  "Staking Pool": "تجمُّع الرهن",
   "PancakeSwap": "PancakeSwap",
-  "The #1 AMM and yield farm on BNB Smart Chain.": "AMM (صانع السوق الآلي) ومزرعة العائد رقم 1 على BNB Smart Chain.",
-  "Stake CAKE to earn new tokens.": "ارهن CAKE لكسب رموز مميزة جديدة.",
-  "Launch Time": "وقت الإطلاق",
   "For Sale": "للبيع",
-  "CAKE to burn (USD)": "CAKE التي ستحترق (USD)",
   "CAKE to burn:": "CAKE التي ستحترق:",
   "Unstake": "فك الرهن",
-  "⭐️ Every time you stake and unstake LP tokens, the contract will automagically harvest CAKE rewards for you!": "⭐️ في كل مرة ترهن فيها رموز LP المميزة أو تفك رهنها، سيحصد عقدك مكافآت CAKE تلقائيًا من أجلك!",
-  "How to take part": "كيفية المشاركة",
-  "Before Sale": "قبل البيع",
-  "Buy CAKE and BNB tokens": "شراء رموز CAKE وBNB المميزة",
-  "Get CAKE-BNB LP tokens by adding CAKE and BNB liquidity": "احصل على رموز CAKE-BNB LP المميزة عن طريق إضافة سيولة من CAKE وBNB.",
-  "During Sale": "خلال البيع",
-  "While the sale is live, commit your CAKE-LP tokens to buy the IFO tokens": "بينما يكون البيع جاريًا، استخدام رموز CAKE-LP المميزة لشراء رموز IFO (العرض الأولي للمزرعة) المميزة.",
-  "After Sale": "بعد البيع",
-  "Claim the tokens you bought, along with any unspent funds.": "طالب بالرموز المميزة التي اشتريتها وأي أموال لم تنفقها.",
-  "Done!": "تم!",
   "Read more": "قراءة المزيد",
-  "Connect": "ربط",
-  "Trade in for CAKE, or keep for your collection!": "استبدلها مقابل CAKE، أو احتفظ بها في مجموعتك!",
-  "Register your interest in winning an NFT below.": "سجِّل اهتمامك بربح NFT أدناه.",
-  "Register for a chance to win": "سجِّل لتحظى بفرصة الربح",
-  "Learn more": "معرفة المزيد",
-  "Trade in NFT": "استبدل NFT",
-  "Trade in": "استبدال",
   "You will receive": "ستحصل على",
-  "When you trade in this NFT to receive CAKE, you will lose access to it forever!": "عندما تستبدل NFT للحصول على CAKE، ستفقد إمكانية الوصول إلى NFT للأبد!",
-  "Claim NFT": "المطالبة بـ NFT",
-  "How it works": "طريقة العمل",
-  "Winners will be able to claim an NFT on this page once the claiming period starts.": "سيتمكن الفائزون من المطالبة بـ NFT على هذه الصفحة بعد بدء فترة المطالبة.",
-  "If you’re not selected, you won’t be able to claim. Better luck next time!": "إذا لم يتم اختيارك، فلن تتمكن من المطالبة. حظًا وفيرًا في المرة القادمة!",
-  "Winners can trade in their NFTs for a CAKE value until the expiry date written below. If you don't trade in your NFT by then, don’t worry: you’ll still keep it in your wallet!": "يمكن للفائزين استبدال رموز NFT مقابل قيمتها من CAKE حتى تاريخ الانتهاء المذكور أدناه. إذا لم تستبدل NFT بحلول هذا التاريخ، فلا تقلق: ستظل تحتفظ بها في محفظتك!",
-  "How are winners selected?": "كيف يتم اختيار الفائزين؟",
-  "Winners are selected at random! Good luck!": "يتم اختيار الفائزين بشكلٍ عشوائي!",
-  "Value if traded in": "القيمة في حال الاستبدال",
-  "Number minted": "العدد المسكوك",
-  "Number burned": "العدد المحترق",
-  "Claim this NFT": "المطالبة بـ NFT هذا",
-  "Trade in for CAKE": "الاستبدال مقابل CAKE",
-  "Loading…": "جارٍ التحميل…",
   "Details": "التفاصيل",
-  "You won!": "لقد ربحت!",
-  "Claim an NFT from the options below!": "طالب بـ NFT من الخيارات أدناه!",
-  "Can be traded until": "يمكن استبداله حتى",
-  "Wallet Disconnected": "انقطع ارتباط المحفظة",
-  "Connect to see if you have won an NFT!": "اربطها لتعرف ما إذا كنت قد ربحت NFT!",
   "Home": "الصفحة الرئيسية",
   "Trade": "التداول",
   "Farms": "المزارع",
@@ -182,100 +53,43 @@
   "More": "المزيد",
   "Liquidity": "السيولة",
   "Overview": "استعراض عام",
-  "Token": "الرمز المميز",
-  "Pairs": "الأزواج",
-  "Accounts": "الحسابات",
-  "Stake LP tokens to earn CAKE": "رهن رموز LP المميزة لكسب CAKE",
-  "Active": "نشطة",
-  "Inactive": "غير نشطة",
   "Dual": "ثنائي",
   "Compound": "تجميع",
-  "Unstake %asset%": "فك رهن %asset%",
-  "The CAKE Lottery": "يانصيب CAKE",
-  "Buy tickets with CAKE": "شراء التذاكر باستخدام CAKE",
-  "Win if 2, 3 or 4 of your ticket numbers match!": "اربح إذا طابقت أرقام 2 أو 3 أو 4 من تذاكرك الأرقام الفائزة!",
-  "%time% Until lottery draw": "%time% حتى سحب اليانصيب",
-  "Next draw": "السحب التالي",
-  "Past draws": "السحوبات السابقة",
-  "Round %num%": "الجولة %num%",
-  "Total Pot": "إجمالي الجائزة",
-  "Your tickets for this round": "تذاكرك في هذه الجولة",
-  "Sorry, no prizes to collect": "عذرًا، لا توجد جوائز لتحصيلها",
   "In Wallet": "في المحفظة",
   "Loading...": "جارٍ التحميل...",
-  "Next IFO": "IFO التالي",
-  "Past IFOs": "عروض IFO السابقة",
   "APR": "APR (معدل الفائدة السنوية المئوية)",
   "APR (incl. LP rewards)": "معدل الفائدة السنوية المئوية (متضمنة مكافآت LP)",
-  "Select lottery number:": "اختيار رقم اليانصيب:",
   "Search": "البحث",
   "History": "السجل",
-  "Pool Size": "حجم التجمُّع",
   "Burned": "المحترقة",
-  "To burn": "للحرق",
-  "Show Last": "عرض آخر",
   "Prize Pot": "الجائزة",
-  "Winners": "الفائزون",
-  "No. Matched": "الأرقام المطابقة",
+  "Winning Tickets": "Winning Tickets",
   "Enable Contract": "تمكين العقد",
   "%asset% staked": "%asset% المرهونة",
   "Total Value Locked": "إجمالي القيمة المجمَّدة",
-  "Across all LPs and Syrup Pools": "عبر كل تجمُّعات LP وSyrup",
-  "Your wallet": "محفظتك",
-  "Logout": "تسجيل الخروج",
   "Profile Setup": "إعداد الملف التعريفي",
-  "Show off your stats and collectibles with your unique profile.": "استعرض إحصائياتك والعناصر القابلة للتحصيل من خلال ملفك التعريفي المميز.",
-  "Total cost: 10 CAKE": "إجمالي التكلفة: 10 CAKE",
   "Get Starter Collectible": "الحصول على العنصر الأولي القابل للتحصيل",
   "Set Profile Picture": "تعيين صورة الملف التعريفي",
   "Join Team": "الانضمام لفريق",
   "Set Name": "تعيين الاسم",
-  "Step 1": "الخطوة الأولى",
-  "Every profile starts by making a \"starter\" collectible (NFT).": "يبدأ كل ملف تعريفي بإنشاء عنصر \"أولي\" قابل للتحصيل (NFT).",
   "This starter will also become your first profile picture.": "سيصبح هذا العنصر الأولي أيضًا صورة ملفك التعريفي الأولى.",
-  "You can change your profile pic later if you get another approved Pancake Collectible,": "يمكنك تغيير صورة ملفك التعريفي لاحقًا إذا حصلت على عنصر Pancake قابل للتحصيل معتمد،",
   "Choose your Starter!": "اختر عنصرك الأولي!",
   "Choose wisely: you can only ever make one starter collectible!": "اختر بحكمة: لا يمكنك إنشاء أكثر من عنصر أولي قابل للتحصيل على الإطلاق!",
-  "Cost: 5 CAKE": "التكلفة: 5 CAKE",
   "Next Step": "الخطوة التالية",
   "Confirming": "جارٍ التأكيد...",
   "Enabled": "قيد التمكين",
-  "Confirmed": "تم التأكيد",
   "Insufficient CAKE balance": "رصيد CAKE غير كافٍ",
-  "Step 2": "الخطوة الثانية",
   "Choose collectible": "اختيار العنصر القابل للتحصيل",
   "Choose a profile picture from the eligible collectibles (NFT) in your wallet, shown below.": "اختر صورة ملف تعريفي من العناصر القابلة للتحصيل المؤهلة (NFT) في محفظتك، وترد أدناه.",
   "Only approved Pancake Collectibles can be used.": "وحدها عناصر Pancake القابلة للتحصيل المعتمدة يمكن استخدامها.",
   "Allow collectible to be locked": "السماح بتجميد العنصر القابل للتحصيل",
-  "The collectible you've chosen will be locked in a smart contract while it's being used as your profile picture. ": "سيتم تجميد العنصر القابل للتحصيل الذي اخترته في عقد ذكي أثناء استخدامه كصورة لملفك التعريفي. ",
-  "Don't worry - you'll be able to get it back at any time.": "لا تقلق، ستتمكن من استعادته في أي وقت.",
-  "Step 3": "الخطوة الثالثة",
   "Join a Team": "الانضمام لفريق",
-  "It won't be possible to undo the choice you make for the foreseeable future!": "لن يكون من الممكن التراجع عن اختيارك في المستقبل القريب!",
-  "There's currently no big difference between teams, and no benefit of joining one team over another for now.": "لا يوجد حاليًا اختلاف كبير بين الفرق، ولا فائدة من الانضمام إلى فريق بدلًا من الأخر في الوقت الحالي.",
-  "So pick whichever you like!": "لذا، اختر ما تريد!",
-  "%count% Members": "%count% من الأعضاء",
-  "Step 4": "الخطوة الرابعة",
   "This name will be shown in team leaderboards and search results as long as your profile is active.": "سيظهر هذا الاسم في لوحات صدارة الفرق ونتائج البحث ما دام ملفك التعريفي نشطًا.",
-  "Your name must be at least 3 and at most 15 standards letters and numbers long.": "يجب ألا يقل طول اسمك عن 3 أحرف وأرقام قياسية وألا يزيد عن 15 حرفًا ورقمًا قياسيًا.",
   "Complete Profile": "إكمال الملف التعريفي",
-  "Maximum length: 15 characters": "أقصى طول: 15 حرفًا",
-  "Minimum length: 3 characters": "أقل طول: 3 أحرف",
-  "No spaces or special characters": "غير مسموح بالمسافات أو الأحرف الخاصة",
-  "Submitting NFT to contract and confirming User Name and Team": "إخضاع NFT للعقد وتأكيد اسم المستخدم والفريق",
   "Oops!": "عذرًا!",
-  "We couldn't find any Pancake Collectibles in your wallet.": "لم نتمكن من العثور على أي عناصر Pancake قابلة للتحصيل في محفظتك.",
-  "You need a Pancake Collectible to finish setting up your profile. If you sold or transferred your starter collectible to another wallet, you'll need to get it back or acquire a new one somehow. You can't make a new starter with this wallet address.": "أنت بحاجة إلى عنصر Pancake القابل للتحصيل للانتهاء من إعداد ملفك التعريفي. إذا بعت أو حوَّلت العنصر الأولي القابل للتحصيل إلى محفظة أخرى، فستحتاج إلى استعادته أو الحصول على واحد جديد بطريقة ما. لا يمكنك إنشاء عنصر أولي جديد باستخدام عنوان المحفظة هذا.",
   "ROI Calculator": "حاسبة العائد على الاستثمار (ROI)",
-  "Timeframe": "الفترة الزمنية",
-  "CAKE per $1000": "CAKE لكل 1000 دولار",
   "Calculated based on current rates.": "تستند في حسابها إلى الأسعار الحالية.",
-  "Compounding %freq%x daily.": "التجميع %freq%x يوميًا.",
   "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "جميع الأرقام عبارة عن تقديرات مقدَّمة للتسهيل عليك فقط، ولا تمثِّل بأي شكلٍ من الأشكال عائدات مضمونة.",
-  "You can't change this once you click Confirm.": "لا يمكنك تغيير ذلك بعد النقر على \"تأكيد\".",
-  "Until ticket sale": "حتى بيع التذاكر",
-  "To burn:": "للحرق:",
-  "On sale soon": "للبيع قريبًا",
   "On sale": "للبيع",
   "Teams Overview": "استعراض الفرق",
   "Teams": "الفرق",
@@ -290,26 +104,19 @@
   "Compounding": "جارٍ التجميع...",
   "Harvesting": "الحصاد",
   "Buy CAKE": "شراء CAKE",
-  "Show": "إظهار",
   "Hide": "إخفاء",
   "Stake LP tokens": "رهن رموز LP المميزة",
   "Stake": "رهن",
   "Earned": "كسبت",
   "Staked": "رهنت",
-  "The lottery number you provided does not exist": "رقم اليانصيب الذي أدخلته غير موجود.",
   "Error fetching data": "خطأ في إحضار البيانات",
   "Teams & Profiles": "الفرق والملفات التعريفية",
-  "Earn more points for completing larger quests!": "اكسب المزيد من النقاط عند إكمال المهام الأكبر!",
-  "Collecting points for these tasks makes them available again.": "بعد جمع النقاط لهذه المهام، فإنها ستصبح متاحة مرة أخرى.",
-  "Earn points by completing regular tasks!": "اكسب النقاط عند إكمال المهام العادية!",
-  "Task Center": "مركز المهام",
   "Achievements": "الإنجازات",
   "Enter your name...": "أدخل اسمك...",
   "I understand that people can view my wallet if they know my username": "أتفهم أنه يمكن للأشخاص عرض محفظتي إذا كانوا يعلمون اسم المستخدم لحسابي.",
   "A minimum of %num% CAKE is required": "يلزم توفير %num% من CAKE كحدٍ أدنى.",
   "Only reuse a name from other social media if you're OK with people viewing your wallet. You can't change your name once you click Confirm.": "إذا كنت تريد إعادة استخدام اسم من وسيلة تواصل اجتماعي أخرى، فلا تفعل ذلك إلا إذا كنت لا تمانع عرض الأشخاص لمحفظتك. لا يمكنك تغيير اسمك بعد النقر على \"تأكيد\".",
   "Please connect your wallet to continue": "يُرجى ربط محفظتك للمتابعة.",
-  "Public Profile": "ملف تعريفي عام",
   "Show off your stats and collectibles with your unique profile. Team features will be revealed soon!": "استعرض إحصائياتك والعناصر القابلة للتحصيل من خلال ملفك التعريفي المميز. سيتم الكشف عن مزايا الفرق قريبًا!",
   "Points": "النقاط",
   "Set Your Name": "تعيين الاسم",
@@ -320,12 +127,13 @@
   "Get %symbol1% or %symbol2%": "احصل على %symbol1% أو %symbol2%",
   "Balance": "الرصيد",
   "Oops, page not found.": "عذرًا، لم يتم العثور على الصفحة.",
+  "Click here to reset!": "Click here to reset!",
+  "Oops, something wrong.": "Oops, something wrong.",
   "Back Home": "العودة إلى الصفحة الرئيسية",
   "Unstake LP tokens": "فك رهن رموز LP المميزة",
   "Get ready": "استعد",
   "Live": "مباشرة",
   "Start": "بدء",
-  "Finish": "إنهاء",
   "Connect wallet to view": "اربط محفظة للعرض",
   "Sorry, you needed to register during the “entry” period!": "عذرًا، كان عليك التسجيل خلال فترة \"الدخول\"!",
   "Check your Rank": "اطَّلع على ترتيبك",
@@ -336,15 +144,12 @@
   "Your Score": "نتيجتك",
   "Enable": "تمكين",
   "Enabling": "جارٍ التمكين...",
-  "%amount% CAKE": "%amount% من CAKE",
   "IFO Shopper: %title%": "مشتري IFO: %title%",
   "%num% of total": "%num% من إجمالي",
   "All estimated rates take into account this pool’s %fee%% performance fee": "تراعي جميع الأسعار المقدَّرة رسوم أداء هذا التجمُّع البالغة %fee%%.",
   "Sorry, you didn’t contribute enough CAKE to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your CAKE.": "عذرًا، أنت لم تساهم بما يكفي من CAKE لاستيفاء الحد الأدنى. وأنت لم تشترِ أي شيء في عملية البيع هذه، لكن ما زال بإمكانك استعادة CAKE الخاصة بك.",
-  "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "ينطبق خلال 3 أيام من الرهن فقط. ولن يتضمَّن فك الرهن بعد مرور 3 أيام أي رسوم. ستتم إعادة تعيين المؤقِّت في كل مرة ترهن فيها CAKE جديدة في التجمُّع.",
   "Unstaking Fee": "رسوم فك الرهن",
   "unstaking fee until": "رسوم فك الرهن حتى",
-  "unstaking fee if withdrawn within 72h": "رسوم فك الرهن في حال السحب خلال 72 ساعة",
   "Unstaking fee: %fee%%": "رسوم فك الرهن: %fee%%",
   "Performance Fee": "رسوم الأداء",
   "Compound: collect and restake CAKE into pool.": "التجميع: اجمع وعاود رهن CAKE في التجمُّع.",
@@ -358,9 +163,6 @@
   "Up": "لأعلى",
   "Down": "لأسفل",
   "%multiplier% Payout": "المكسب %multiplier%",
-  "Enter %direction%": "أدخل %direction%",
-  "Prize Pool:": "مجموع الجوائز:",
-  "Charts": "المخططات",
   "Your history": "سجلك",
   "All": "الكل",
   "Collected": "محصَّلة",
@@ -379,7 +181,6 @@
   "Win": "ربح",
   "Opening Block": "معاملة الفتح",
   "Closing Block": "معاملة الإغلاق",
-  "Total Value Locked (TVL)": "إجمالي القيمة المجمَّدة (TVL)",
   "Automatic restaking": "معاودة الرهن تلقائيًا",
   "Manual CAKE": "CAKE يدوية",
   "Auto CAKE": "CAKE تلقائية",
@@ -391,23 +192,17 @@
   "High APR, low risk.": "ارتفاع معدل الفائدة السنوية المئوية، انخفاض المخاطر.",
   "Stake LP tokens to earn.": "ارهن رموز LP المميزة للربح.",
   "Basic Sale": "عملية البيع الأساسية",
-  "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "يمكن للجميع تخصيص عدد محدود، وتوقُّع عائد أكبر لكل رمز مميز تم تخصيصه.",
   "Unlimited Sale": "بيع غير مقيَّد",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "لا توجد قيود على العدد الذي يمكنك تخصيصه. يتم تطبيق رسم إضافي عند المطالبة.",
   "Every person can only commit a limited amount, but may expect a higher return per token committed.": "يمكن لأي شخص تخصيص عدد محدود، وتوقُّع عائد أكبر لكل رمز مميز تم تخصيصه.",
   "You didn’t participate in this sale!": "لم تشارك في عملية البيع هذه!",
   "Max. token entry": "أقصى عدد من رموز الدخول المميزة",
   "Max. CAKE entry": "أقصى إدخال لـ CAKE",
-  "How to Take Part": "كيفية المشاركة",
   "Activate your Profile": "تنشيط ملفك التعريفي",
   "You’ll need an active PancakeSwap Profile to take part in an IFO!": "ستحتاج إلى ملف تعريفي نشط في PancakeSwap للمشاركة في IFO!",
   "Profile Active!": "الملف التعريفي نشط!",
-  "Get CAKE Tokens": "احصل على رموز CAKE المميزة",
-  "Stake CAKE and BNB in the liquidity pool to get LP tokens.": "ارهن CAKE وBNB في تجمُّع السيولة للحصول على رموز LP المميزة.",
-  "You’ll spend them to buy IFO sale tokens.": "ستنفقها لشراء رموز بيع IFO المميزة.",
   "Commit CAKE": "خصِّص CAKE",
   "When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.": "عندما تكون عمليات بيع IFO جارية، ‘خصِّص’ CAKE الخاصة بك لشراء الرموز المميزة المعروضة للبيع.",
-  "We recommend committing to the Basic Sale first, but you can do both if you like.": "نوصيك بالتخصيص لعملية البيع الأساسية أولًا، ولكن يمكنك القيام بالأمرين معًا إذا أردت.",
   "Claim your tokens and achievement": "المطالبة برموزك المميزة والإنجازات",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.": "بعد انتهاء عمليات بيع IFO، يمكنك المطالبة بأي رموز IFO مميزة اشتريتها، وستتم إعادة أي رموز CAKE مميزة لم تنفقها إلى محفظتك.",
   "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.": "تم إرسال معاملة الإغلاق لهذه الجولة إلى سلسلة الكتل، وفي انتظار التأكيد.",
@@ -419,10 +214,8 @@
   "Average return / round": "متوسط العائد/الجولة",
   "Average position entered / round": "متوسط مبلغ الرهان الذي أدخلته/الجولة",
   "Won": "ربحت",
-  "Lost": "خسرت",
   "Entered": "دخلتها",
   "Connect your wallet to view your prediction history": "اربط محفظتك لعرض سجل التنبؤات",
-  "Best round: %roundId%": "أفضل جولة: %roundId%",
   "You’ve already staked the maximum amount you can stake in this pool!": "لقد رهنت بالفعل أقصى كمية يمكنك رهنها في هذا التجمُّع!",
   "Markets Paused": "الأسواق متوقفة مؤقتًا",
   "Prediction markets have been paused due to an error.": "تم إيقاف أسواق التنبؤ مؤقتًا بسبب خطأ.",
@@ -430,37 +223,20 @@
   "You can reclaim any funds entered into existing positions via the History tab on this page.": "يمكنك استعادة أي أموال أدخلتها في الرهانات الحالية من خلال علامة التبويب \"السجل\" في هذه الصفحة.",
   "Show History": "عرض السجل",
   "Welcome!": "مرحبًا!",
-  "This product is still in beta (testing) phase.": "ما زال هذا المنتج في المرحلة التجريبية (مرحلة الاختبار).",
-  "Before you use this product, make sure you fully understand the risks involved.": "احرص على فهم المخاطر المتضمَّنة تمامًا قبل استخدام هذا المنتج.",
   "Once you enter a position, you cannot cancel or adjust it.": "لا يمكنك إدخال أو تعديل مبلغ الرهان بعد إدخاله.",
-  "All losses are final.": "جميع الخسائر نهائية.",
-  "I understand that I am using this product at my own risk. Any loss incurred due to my actions are my own responsibility.": "أتفهم أنني أستخدم هذا المنتج على مسؤوليتي الشخصية، وأن أي خسارة بسبب إجراءاتي هي مسؤوليتي الخاصة.",
-  "You’ll spend CAKE to buy IFO sale tokens.": "ستنفق CAKE لشراء رموز بيع IFO المميزة.",
-  "You'll need an active PancakeSwap Profile to take part in an IFO!": "ستحتاج إلى ملف تعريفي نشط في PancakeSwap للمشاركة في IFO!",
-  "Your LP tokens committed": "رموز LP المميزة التي خصَّصتها",
   "Max. Committed": "الحد الأقصى للتخصيص",
   "Total committed:": "إجمالي ما تم تخصيصه:",
   "Additional fee:": "الرسوم الإضافية:",
-  "Learn more about %symbol%": "معرفة المزيد عن %symbol%",
   "Earned since your last action": "الربح منذ آخر إجراء",
   "Commit ~%amount% %symbol% in total to earn!": "خصِّص ~%amount% %symbol% إجمالًا لتربح!",
-  "Learn more about %title%": "معرفة المزيد عن %title%",
-  "365d (APY)": "365 ي (النسبة المئوية للعائد السنوي)",
   "%num%d": "%num%ي",
   "d": "ي",
   "h": "س",
   "m": "د",
   "Hide or show expandable content": "إخفاء أو إظهار المحتوى القابل للتوسيع",
   "No tokens to stake": "لا توجد رموز مميزة لرهنها",
-  "Successfully claimed!": "تمت المطالبة بنجاح!",
-  "Unable to claim NFT": "تتعذَّر المطالبة بـ NFT",
-  "Unable to claim NFT, please try again.": "تتعذَّر المطالبة بـ NFT، يُرجى إعادة المحاولة.",
   "Error": "خطأ",
-  "1x %nftName% Collectible": "عدد 1 عنصر قابل للتحصيل من %nftName%",
-  "1x %nftName% NFT": "عدد 1 %nftName% من NFT",
-  "NFT successfully transferred!": "تم تحوصل NFT بنجاح!",
   "View Contract": "عرض العقد",
-  "View IFO Contract": "عرض عقد IFO",
   "See Pair Info": "عرض معلومات الزوج",
   "Stake LP": "رهن LP",
   "Multiplier": "المضاعِف",
@@ -478,30 +254,18 @@
   "You have successfully claimed your rewards.": "لقد طالبت بمكافآتك بنجاح.",
   "Commit": "تخصيص",
   "If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.": "إذا لم تخصِّص ما يكفي من CAKE، فقد لا تحصل على أيٍّ من رموز IFO المميزة على الإطلاق وستسترد فقط CAKE الخاصة بك كاملةً.",
-  "CAKE required": "يلزم توفير CAKE",
-  "Get CAKE, or make sure your tokens aren’t staked somewhere else.": "احصل على CAKE، أو تأكَّد من أن رموزك المميزة غير مرهونة في أي مكانٍ آخر.",
   "Funds to raise:": "الأموال التي سيتم جمعها:",
   "Price per %symbol%:": "السعر لكل %symbol%:",
   "Price per %symbol% with fee:": "السعر لكل %symbol% مع الرسوم:",
   "You need an active PancakeSwap Profile to take part in an IFO!": "أنت بحاجة إلى ملف تعريفي نشط على PancakeSwap للمشاركة في IFO!",
   "Achievement": "الإنجاز",
-  "Commit ~%minLp% LP in total to earn!": "خصِّص ~%minLp% من LP إجمالًا للربح!",
-  "What’s the difference between a Basic Sale and Unlimited Sale?": "ما الفارق بين البيع الأساسي والبيع غير المحدود؟",
-  "In the Basic Sale, every user can commit a maximum of about 100 USD worth of CAKE. We calculate the maximum CAKE amount about 30 minutes before each IFO. The Basic Sale has no participation fee.": "في البيع الأساسي، يخصِّص كل مستخدم رموز CAKE المميزة بقيمة 100 دولار أمريكي تقريبًا كحدٍ أقصى. ونحتسب أقصى عدد من CAKE قبل 30 دقيقة تقريبًا من كل IFO. لا يتضمَّن البيع الأساسي رسوم اشتراك.",
-  "In the Unlimited Sale, there’s no limit to the amount of CAKE you can commit. However, there’s a fee for participation: see below.": "في البيع غير المحدود، لا يوجد حد لعدد CAKE التي يمكنك تخصيصها، ولكن توجد رسوم للمشاركة: انظر أدناه.",
   "Which sale should I commit to? Can I do both?": "أي بيع يجدر بي تخصيص الرموز المميزة له؟ هل يمكنني التخصيص لكليهما؟",
-  "You can choose one or both at the same time! If you’re only committing a small amount, we recommend the Basic Sale first. Just remember you need a PancakeSwap Profile in order to participate.": "يمكنك اختيار أحدهما أو كليهما في الوقت نفسه! إذا كنت تخصِّص مقدارًا صغيرًا فقط، فإننا نوصي بالبيع الأساسي. تذكَّر فقط أنك بحاجة إلى ملف تعريفي في PancakeSwap للمشاركة.",
   "How much is the participation fee?": "كم تبلغ رسوم المشاركة؟",
-  "There’s only a participation fee for the Unlimited Sale: there’s no fee for the Basic Sale.": "توجد فقط رسوم للمشاركة للبيع غير المحدود: لا توجد رسوم للبيع الأساسي.",
   "The fee will start at 1%.": "ستبدأ الرسوم من 1%.",
-  "The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Unlimited” portion of the sale.": "تنخفض رسوم المشاركة البالغة 1% عند المنحدرات بناءً على نسبة الفائض من الحصة \"غير المحدودة\" من البيع.",
   "Where does the participation fee go?": "أين تذهب رسوم المشاركة؟",
   "The CAKE from the participation fee will be thrown into the weekly token burn.": "سنلقي كل CAKE من رسوم الاشتراك في حرق الرموز المميزة الأسبوعي.",
   "How can I get an achievement for participating in the IFO?": "كيف يمكنني تحقيق إنجاز من المشاركة في IFO؟",
   "You need to contribute a minimum of about 10 USD worth of CAKE to either sale.": "أنت بحاجة إلى المساهمة بقيمة 10 دولارت أمريكية تقريبًا من CAKE في أحد نوعي البيع.",
-  "You can contribute to one or both, it doesn’t matter. Only your overall contribution is counted for the achievement.": "يمكنك المساهمة في أحدهما أو كليهما، لا يهم. سيتم الأخذ بمساهمتك الإجمالية فقط في الإنجاز.",
-  "The Lottery Is Changing!": "اليانصيب قيد التغيير!",
-  "Come back soon!": "تحقَّق قريبًا!",
   "Staked (compounding)": "مرهون (التجميع)",
   "Contract Enabled": "تم تمكين العقد",
   "You can now stake in the %symbol% vault!": "يمكنك الآن الرهن في خزينة %symbol%!",
@@ -514,17 +278,14 @@
   "Staked!": "تم الرهن!",
   "Your funds have been staked in the pool": "تم رهن أموالك في التجمُّع",
   "Your earnings have also been harvested to your wallet": "تم حصاد مكاسبك أيضًا في محفظتك",
-  "%error% - Please try again.": "%error% - يُرجى إعادة المحاولة.",
   "Stake in Pool": "الرهن في التجمُّع",
   "Balance: %balance%": "الرصيد: %balance%",
   "%day%d : %hour%h : %minute%m": "%day%ي : %hour%س : %minute%د",
-  "%day%d %hour%h %minute%m": "%day%ي %hour%س %minute%د",
   "Subtracted automatically from each yield harvest and burned.": "يتم طرحها تلقائيًا من كل حصاد للعائد وحرقها.",
   "Blocks": "الكتل",
   "Add to Metamask": "الإضافة إلى Metamask",
   "Compounded": "تم التجميع",
   "Canceled": "تم الإلغاء",
-  "Please try again and confirm the transaction.": "يُرجى إعادة المحاولة وتأكيد المعاملة.",
   "Harvested": "تم الحصاد",
   "Close Window": "إغلاق النافذة",
   "Insufficient %symbol% balance": "رصيد %symbol% غير كافٍ",
@@ -547,8 +308,6 @@
   "Auto-Compound Bounty: %fee%% of all Auto CAKE pool users pending yield": "جائزة التجميع التلقائي: %fee%% من جميع مستخدمي تجمُّع CAKE التلقائي الذين ينتظرون العائد.",
   "Bounty collected!": "تم تحصيل الجائزة!",
   "CAKE bounty has been sent to your wallet.": "تم إرسال جائزة CAKE إلى محفظتك.",
-  "Could not be collected": "تعذَّر التحصيل",
-  "There may be an issue with your transaction, or another user claimed the bounty first.": "قد تكون هناك مشكلة في معاملتك، أو أن هناك مستخدم آخر طالب بالجائزة أولًا.",
   "Claim Bounty": "المطالبة بالجائزة",
   "You’ll claim": "ستطالب بالتالي",
   "Pool total pending yield": "إجمالي التجمُّع الذي ينتظر العائد",
@@ -572,7 +331,6 @@
   "%position% position entered": "تم إدخال مبلغ الرهان %position%",
   "Enter UP": "إدخال \"للأعلى\"",
   "Enter DOWN": "إدخال \"للأسفل\"",
-  "An error occurred, unable to enter your position": "حدث خطأ، ويتعذَّر إدخال مبلغ الرهان",
   "Set Position": "تحديد مبلغ الرهان",
   "Insufficient BNB balance": "رصيد BNB غير كافٍ",
   "A minimum amount of %num% %token% is required": "يلزم توفير الحد الأدنى %num% %token%",
@@ -607,25 +365,11 @@
   "%minimum% CAKE required to change profile pic": "يلزم توفير %minimum% من CAKE لتغيير صورة الملف التعريفي",
   "Reactivate Profile": "إعادة تنشيط الملف التعريفي",
   "No achievements yet!": "لا توجد إنجازات بعد!",
-  "Claim your Gift!": "طالب بجائزتك!",
-  "Thank you for being a day-one user of Pancake Profiles!": "نشكرك على استخدام الملفات التعريفية في Pancake من اليوم الأول!",
-  "If you haven't already noticed, we made a mistake and the starter bunny you chose got mixed up and changed into another bunny. Oops!": "إذا كنت لم تلاحظ ذلك بعد، فقد ارتكبنا خطأً واختلط علينا الأرنب الأولي الذي اخترته وتم تغييره إلى أرنب آخر. عذرًا!",
-  "To make it up to you, we’ll refund you the full 4 CAKE it cost to make your bunny.": "لتعويضك عن ذلك، سنرد لك 4 CAKE؛ أي التكلفة الكاملة لصنع أرنبك.",
-  "We’re also preparing an all-new collectible for you to claim (for free!) in the near future.": "إننا نعمل أيضًا على إعداد العنصر القابل للتحصيل الجديد تمامًا لتطالب به (مجانًا!) في المستقبل القريب.",
-  "Once you claim the refund, you can make another account with another wallet, mint a new bunny, and send it to your main account via the NFT page.": "بعد المطالبة بالأموال المستردة، يمكنك إنشاء حساب آخر بمحفظة أخرى، وصنع أرنب آخر، وإرساله إلى حسابك الرئيسي عبر صفحة NFT.",
-  "Claim Your CAKE": "المطالبة بـ CAKE",
-  "Pancake Collectibles": "عناصر Pancake القابلة للتحصيل",
-  "Pancake Collectibles are special ERC-721 NFTs that can be used on the PancakeSwap platform.": "عناصر Pancake القابلة للتحصيل هي رموز NFT خاصة خاضعة لمعيار ERC-721 ويمكن استخدامها على منصة PancakeSwap.",
-  "NFTs in this user’s wallet that aren’t approved Pancake Collectibles won’t be shown here.": "لن تظهر هنا رموز NFT الموجودة في محفظة هذا المستخدم وليست عناصر Pancake قابلة للتحصيل معتمدة.",
-  "No NFTs Found": "لم يتم العثور على رموز NFT",
-  "See all approved Pancake Collectibles": "عرض جميع عناصر Pancake القابلة للتحصيل المعتمدة",
   "Coming Soon!": "قريبًا!",
   "Profile created!": "تم إنشاء الملف التعريفي!",
   "Submitting NFT to contract and confirming User Name and Team.": "إخضاع NFT للعقد وتأكيد اسم المستخدم والفريق.",
   "Cost": "التكلفة",
   "Your Profile": "ملفك التعريفي",
-  "Check your stats and collect achievements": "التحقُّق من إحصائياتك وتحصيل الإنجازات",
-  "You’ve got a gift to claim!": "لديك جائزة للمطالبة بها!",
   "Show off your stats and collectibles with your unique profile": "استعرض إحصائياتك والعناصر القابلة للتحصيل من خلال ملفك التعريفي المميز",
   "Total cost: 1.5 CAKE": "إجمالي التكلفة: 1.5 CAKE",
   "Cost: %num% CAKE": "التكلفة: %num% من CAKE",
@@ -639,11 +383,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "يجب ألا يقل طول اسمك عن 3 أحرف وأرقام قياسية وألا يزيد عن 15 حرفًا ورقمًا قياسيًا. ولا يمكنك تغييره بعد النقر على \"تأكيد\".",
   "Unable to verify username": "يتعذَّر التحقُّق من اسم المستخدم",
   "Created %dateCreated% ago": "تم الإنشاء منذ %dateCreated%",
-  "Paused": "متوقف مؤقتًا",
-  "April": "أبريل",
-  "Easter Battle": "معركة الفصح",
   "$120,000 in Prizes!": "جوائز بقيمة 120000 دولار!",
-  "Compete with other teams to win CAKE, collectible NFTs, achievements & more!": "تنافس مع الفرق الأخرى لربح CAKE، ورموز NFT القابلة للتحصيل، والإنجازات والمزيد!",
   "Now Live!": "جارية الآن!",
   "Calculating prizes": "جارٍ حساب الجوائز...",
   "I want to Battle!": "أريد خوض المعركة!",
@@ -660,10 +400,8 @@
   "Pancake Profile": "الملف التعريفي في Pancake",
   "then register for the competition by clicking “I WANT TO BATTLE” button above.": "ثم سجِّل في المسابقة بالنقر على زر \"أريد خوض المعركة\" أعلاه.",
   "Battle Time": "وقت المعركة",
-  "Trade BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB during the battle period to raise both your and your team’s score. See the Rules section below for more.": "تداول BNB/BUSD، وCAKE/BNB، وETH/BNB، وBTCB/BNB خلال فترة المعركة لتعزيز نتيجتك ونتيجة فريقك. انظر قسم القواعد أدناه لمعرفة المزيد.",
   "Prize Claim": "المطالبة بالجائزة",
   "Teams and traders will be ranked in the order of trading volume. Collect your prizes and celebrate!": "سيتم ترتيب الفريق والمتداولين حسب حجم التداول. قم بتحصيل جوائزك واحتفل!",
-  "Registration starting April 5": "سيبدأ التسجيل في 5 أبريل",
   "Tier": "الدرجة",
   "Token Prizes (Split)": "جوائز الرموز (مقسَّمة)",
   "Gold": "ذهبية",
@@ -674,7 +412,6 @@
   "#%team% Team": "فريق #%team%",
   "Prizes by Team": "الجوائز حسب الفريق",
   "Higher trading volume = higher rank!": "حجم تداول أكبر = ترتيب أعلى!",
-  "Prizes to be distributed in CAKE and shared by all members of a tier. CAKE price in USD to be determined on the day of distribution. Details below.": "الجوائز التي سيتم توزيعها في صورة CAKE ومشاركتها من قِبل جميع أعضاء الدرجة. سيتم تحديد سعر CAKE بالدولار الأمريكي في يوم التوزيع. التفاصيل أدناه.",
   "Every eligible participant will win prizes at the end of the competition.": "سيربح كل مشارك مؤهل الجوائز في نهاية المسابقة.",
   "The better your team performs, the better prizes you will get!": "كلما كان أداء فريقك أفضل، أصبحت الجوائز التي ستحصل عليها أفضل!",
   "The final winning team will be the team with the highest total volume score at the end of the competition period.": "سيكون الفريق الفائز في النهاية هو الفريق صاحب أعلى إجمالي نقاط من حجم تداول في نهاية فترة المسابقة.",
@@ -709,7 +446,6 @@
   "Trade to increase your rank": "تداول لزيادة ترتيبك",
   "Eligible pairs: SANTOS/BNB, PORTO/BNB, LAZIO/BNB, SANTOS/BUSD, PORTO/BUSD, LAZIO/BUSD, CAKE/BNB and CAKE/BUSD": "الأزواج المؤهلة: SANTOS/BNB وPORTO/BNB وLAZIO/BNB وSANTOS/BUSD وPORTO/BUSD وLAZIO/BUSD وCAKE/BNB وCAKE/BUSD",
   "Play as a team": "العب ضمن فريق",
-  "The higher your team’s rank, the better your prizes": "كلما ارتفع ترتيب فريقك، أصبحت جوائزك أفضل",
   "Top Traders": "أفضل المتداولين",
   "Since start of the competition": "منذ بدء المسابقة",
   "Show More": "عرض المزيد",
@@ -726,27 +462,13 @@
   "Download Image": "تنزيل الصورة",
   "Screenshot or press & hold the image to share!": "خذ لقطة شاشة أو اضغط باستمرار على الصورة للمشاركة!",
   "Block %num%": "الكتلة %num%",
-  "%max% %symbol% Available": "%max% من %symbol% متوفرة",
   "Profile Pic": "صورة الملف التعريفي",
   "Transfer": "التحويل",
   "Congratulations!": "تهانينا!",
-  "You won a collectible!": "لقد ربحت عنصرًا قابلًا للتحصيل!",
   "Claim now": "المطالبة الآن",
   "Claiming...": "مطالبة...",
-  "NFT in wallet": "NFT في المحفظة",
-  "Trade in your NFT for CAKE, or just keep it for your collection.": "تداول رموز NFT مقابل CAKE، أو احتفظ بها في مجموعتك.",
-  "No NFTs to claim": "لا توجد رموز NFT للمطالبة بها",
-  "You have no NFTs to claim at this time, but you can still see the NFTs in this series below.": "ليس لديك رموز NFT للمطالبة بها في هذا الوقت، لكن لا يزال بإمكانك رؤية رموز NFT في هذه السلسلة أدناه.",
-  "Please wait...": "يُرجى الانتظار...",
-  "The claiming period hasn’t started yet. Check back soon.": "لم تبدأ فترة المطالبة بعد. عاود التحقُّق قريبًا.",
-  "Please enter a valid wallet address": "يُرجى إدخال عنوان محفظة صالح",
-  "Unable to transfer NFT": "يتعذَّر تحويل NFT",
-  "Transfer NFT": "تحويل NFT",
-  "Transferring": "جارٍ التحويل",
   "Receiving address": "عنوان الاستلام",
-  "Paste address": "نسخ العنوان",
   "Could not retrieve CAKE costs for profile": "تعذَّرت استهادة تكاليف CAKE للملف التعريفي",
-  "An error occurred approving transaction": "حدث خطأ في أثناء اعتماد المعاملة",
   "Provider Error": "خطأ في الموفِّر",
   "No provider was found": "لم يتم العثور على موفِّر",
   "Authorization Error": "خطأ في المصادقة",
@@ -754,20 +476,17 @@
   "Unable to find connector": "يتعذَّر العثور على موصل",
   "The connector config is wrong": "تهيئة الموصل غير صحيحة",
   "You have contributed %amount% CAKE to this IFO!": "لقد ساهمت بعدد %amount% من CAKE في IFO هذا!",
-  "You’ll need CAKE tokens to participate in the IFO!": "ستحتاج إلى رموز CAKE المميزة للمشاركة في IFO!",
   "Your %symbol% committed": "تم تخصيص %symbol%",
   "Your %symbol% RECLAIMED": "تمت استعادة %symbol%",
   "Your %symbol% TO RECLAIM": "%symbol% لاستعادتها",
   "%symbol% received": "تم استلام %symbol%",
   "%symbol% to receive": "%symbol% لاستلامها",
-  "Stories were told, and songs were sung about Chef Mixie’s pancakes and her big Syrup gun.": "لقد رُويت القصص وغُنَّيت الأغاني عن Pancake التي تُعدها الطاهية ميكسي ومدفع Syrup الكبير الخاص بها.",
   "Eggscellent! Celebrating Syrup Storm winning the Easter Battle!": "ممتاز! Syrup Storm احتفالًا بالفوز بمعركة الفصح!",
   "Melting Easter eggs and melting hearts!": "بيض فصح ذائب وقلوب ذائبة!",
   "Watch out for Flipsie’s spatula smash!": "احترس من ملعقة Flipsie الساحقة!",
   "Do you like chocolate with your syrup? Go long!": "هل تريد الشوكولاتة مع Syrup؟ لاحقها!",
   "Happy Niu Year! This bunny’s excited for the year of the bull (market!)": "عام جديد سعيد مع Niu! هذا الأرنب متحمس لعام الثور (السوق!)",
   "Oopsie daisy! Hiccup's had a bit of an accident. Poor little fella.": "بئسًا! لقد تعرَّض Hiccup لحادث. يا له من مسكين.",
-  "Aww, looks like eating pancakes all day is not easy. Sweet dreams!": "يبدو أن تناول Pancake طوال اليوم ليس أمرًا سهلًا. أحلامًا سعيدًا!",
   "Sunny is always cheerful when there are pancakes around. Smile!": "يصبح Sunny مرحًا دائمًا عندما تتوفَّر Pancake بالقرب منه. ابتسم!",
   "Don't let that dopey smile deceive you... Churro's a master CAKE chef!": "لا تدع هذه الابتسامة الغبية تخدعك... Churro طاهي CAKE محترف!",
   "Nommm... Oh hi, I'm just meditating on the meaning of CAKE.": "يام يام... مرحبًا، أنا أتأمل معنى CAKE فحسب.",
@@ -788,33 +507,21 @@
   "Register": "التسجيل",
   "Contribute %symbol%": "المساهمة بـ %symbol%",
   "Volume": "الحجم",
-  "%symbol% per $1,000": "%symbol% لكل 1,000 دولار",
   "Prediction (BETA)": "التنبؤ (تجريبي)",
-  "Collectibles": "العناصر القابلة للتحصيل",
-  "Team Battle": "معركة الفرق",
-  "Teams & Profile": "الفرق والملف التعريفي",
   "Leaderboard": "لوحة الصدارة",
   "Tokens": "الرموز المميزة",
   "Contact": "تواصل معنا",
-  "Merch": "البضائع",
-  "LP Migration": "ترحيل LP",
-  "V1 Liquidity (Old)": "السيولة V1 (قديم)",
-  "Claim Collectible": "المطالبة بالعنصر القابل للتحصيل",
   "The higher your team’s rank, the better your prizes!": "كلما ارتفع ترتيب فريقك، أصبحت جوائزك أفضل!",
   "Get Ready": "استعد",
-  "Earn up to %highestApr% APR in Farms": "اربح ما يصل إلى %highestApr% (النسبة المئوية للعائد السنوي) من المزارع",
-  "Earn %assets% in Pools": "اربح %assets% في التجمُّعات",
   "Activate PancakeSwap Profile to take part in next IFO‘s!": "أنت بحاجة إلى تنشيط الملف التعريفي على PancakeSwap للمشاركة في IFO!",
   "Trading Battle": "معركة التداول",
   "Prediction": "التنبؤ",
   "Initial Farm Offering": "العرض الأولي للمزرعة",
-  "An error occurred confirming transaction": "حدث خطأ في أثناء تأكيد المعاملة",
   "Successfully Enabled!": "تم التمكين بنجاح!",
   "You can now participate in the %symbol% IFO.": "يمكنك الآن المشاركة في IFO للرمز %symbol%.",
   "Team Ranks": "ترتيب الفرق",
   "Prizes": "الجوائز",
   "Rules": "القواعد",
-  "Entry": "الدخول",
   "Enable pool": "تمكين التجمُّع",
   "Start staking": "بدء الرهن",
   "Search Pools": "البحث في التجمُّعات",
@@ -825,16 +532,9 @@
   "Max. stake per user": "أقصى رهن لكل مستخدم",
   "You have claimed your rewards!": "لقد طالبت بمكافآتك!",
   "Already Collected": "تم تحصيلها بالفعل",
-  "Predictions Now Live": "أصبحت التنبؤات متاحة الآن",
-  "Beta Version": "إصدار تجريبي",
-  "Over %amount% in BNB won so far": "تجاوزت الأرباح %amount% من BNB حتى الآن",
-  "Try Now": "التجربة الآن",
-  "New": "جديد",
   "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "مكافآت LP: رسوم تداول بنسبة 0.17%، موزَّعة نسبيًا بين حاملي رموز LP المميزة.",
   "CAKE + Fees": "CAKE + الرسوم",
-  "Prediction Markets": "أسواق التنبؤات",
   "Now Live": "جارية الآن",
-  "in Beta": "في الإصدار التجريبي",
   "Ended %date%": "انتهت في %date%",
   "Starts %date%": "ستبدأ في %date%",
   "Ends %date%": "ستنتهي في %date%",
@@ -874,9 +574,6 @@
   "End Time": "وقت الانتهاء",
   "Publish": "نشر",
   "No votes found": "لا توجد أصوات",
-  "Vote Weight": "قيمة الصوت",
-  "Decision": "القرار",
-  "Voter": "المصوِّت",
   "Votes (%count%)": "الأصوات (%count%)",
   "Snapshot": "لقطة",
   "Choices": "الخيارات",
@@ -892,7 +589,6 @@
   "Cast Vote": "منح الصوت",
   "See All": "عرض الكل",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "يتم تحديد قوة تصويتك بكمية CAKE الذي احتفظت بها في الكتلة المفصَّلة أدناه. لا تساهم CAKE التي احتفظت بها في أماكن أخرى في قوة تصويتك.",
-  "Your Cake Held Now": "Cake التي تحتفظ بها الآن",
   "Wallet": "المحفظة",
   "Manual CAKE Pool": "تجمُّع CAKE يدوي",
   "Auto CAKE Pool": "تجمُّع CAKE تلقائي",
@@ -907,7 +603,6 @@
   "Your funds have been staked in the farm": "تم رهن أموالك في المزرعة",
   "Base APR (CAKE yield only)": "معدل الفائدة السنوية الأساسي (عائد CAKE فقط)",
   "View/Edit Numbers": "عرض/تحرير الأرقام",
-  "Edit Numbers": "تحرير الأرقام",
   "Total cost": "إجمالي التكلفة",
   "Numbers are randomized, with no duplicates among your tickets. Tap a number to edit it. Available digits: 0-9": "الأرقام عشوائية، دون أي تكرارات بين تذاكرك. انقر على رقم لتحريره. الأرقام المتوفرة: 0-9",
   "Randomize": "عشوائي",
@@ -918,7 +613,6 @@
   "Finished Rounds": "جولات منتهية",
   "Only showing data for Lottery V2": "إظهار بيانات الإصدار 2 من اليانصيب فقط",
   "Connect your wallet": "الربط بمحفظتك",
-  "to check if you've won": "للتحقق مما إذا كنت قد فازت",
   "No prizes to collect": "لا توجد جوائز لتحصيلها",
   "Better luck next time!": "حظ أفضل في المرة القادمة!",
   "Why not play again": "جرب اللعب مرة أخرى",
@@ -933,7 +627,6 @@
   "The PancakeSwap Lottery": "يانصيب PancakeSwap",
   "All History": "كل السجل",
   "Winning Number": "الرقم الفائز",
-  "tickets": "تذاكر",
   "Prize pot": "الجائزة",
   "Total players this round": "إجمالي اللاعبين في هذه الجولة",
   "Draw": "سحب",
@@ -976,7 +669,7 @@
   "Simple!": "مبسَّط!",
   "Prices are set when the round starts, equal to 5 USD in CAKE per ticket.": "يتم تعيين الأسعار عند بدء الجولة، بما يساوي 5 دولارات أمريكية في CAKE لكل تذكرة.",
   "Wait for the Draw": "انتظر السحب",
-  "There are two draws every day: one every 12 hours.": "هناك سحبان كل يوم: سحب كل 12 ساعة.",
+  "There is one draw every day alternating between 0 AM UTC and 12 PM UTC.": "There is one draw every day alternating between 0 AM UTC and 12 PM UTC.",
   "Check for Prizes": "تحقق من الجوائز",
   "Once the round’s over, come back to the page and check to see if you’ve won!": "بمجرد انتهاء الجولة، عُد إلى الصفحة وتحقق لمعرفة ما إذا كنت قد فازت!",
   "Step %number%": "الخطوة %number%",
@@ -1005,7 +698,6 @@
   "Check our in-depth guide on": "تحقق من دليلنا المتعمق في",
   "how to play the PancakeSwap lottery!": "كيفية لعب يانصيب PancakeSwap!",
   "Prize brackets don’t ‘stack’: if you match the first 3 digits in order, you’ll only win prizes from the ‘Match 3’ bracket, and not from ‘Match 1’ and ‘Match 2’.": "أقواس الجائزة لا ‘تكدس’: إذا قمت بمطابقة أول 3 أرقام بالترتيب، فلن تفوز إلا بجوائز من قوس ‘المطابقة 3’، وليس من ‘المطابقة 1’ و‘المطابقة 2’.",
-  "Coming soon!": "قريبًا!",
   "Tickets": "التذاكر",
   "Edit numbers": "تحرير الأرقام",
   "each": "كل",
@@ -1017,14 +709,10 @@
   "50 tickets: 2.45%": "50 تذكرة: 2.45%",
   "100 tickets: 4.95%": "100 تذكرة: 4.95%",
   "You pay": "أنت تدفع",
-  "Lottery Now Live": "اليانصيب جارية الآن",
-  "Play Now": "لعب الآن",
-  "Over %amount% in Prizes!": "أكثر من %amount% في الجوائز!",
   "Next Auction": "المزاد التالي",
   "Auction Schedule": "جدول المزاد",
   "%numHours% hours": "%numHours% من الساعات",
   "To be announced": "سوف يتم الإعلان عنه",
-  "Auction Leaderboard": "لوحة صدارة المزاد",
   "How does it work?": "كيف يعمل؟",
   "Step 1: Submit application": "الخطوة 1: تقديم الطلب",
   "Projects can submit an application to sponsor a yield farm and/or pool on PancakeSwap via the ": "يمكن للمشاريع تقديم طلب لرعاية مزرعة عائد و/أو تجمُّع في PancakeSwap عبر ",
@@ -1047,8 +735,6 @@
   "Community Auctions": "مزادات المجتمع",
   "FAQs": "الأسئلة المتداولة",
   "Auction duration": "مدة المزاد",
-  "Terms & Conditions": "البنود والشروط",
-  "in Prizes!": "في الجوائز!",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "يتم تقدير الإخراج. وفي حالة تغيير السعر بنسبة تزيد على %slippage%%، فسيتم رد معاملتك.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "توريد %amountA% %symbolA% و%amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "إزالة %amountA% %symbolA% و%amountB% %symbolB%",
@@ -1081,10 +767,9 @@
   "Import Pool": "استيراد التجمُّع",
   "Import an existing pool": "استيراد تجمُّع موجود",
   "Select a Token": "تحديد رمز مميز",
-  "Pool Found!": "تم العثور على التجمُّع!",
   "No pool found.": "لم يتم العثور على تجمُّع.",
-  "Create pool.": "إنشاء تجمُّع.",
-  "Manage this pool.": "إدارة هذا التجمُّع.",
+  "Create pool": "Create pool",
+  "Manage this pool": "Manage this pool",
   "Invalid pair.": "زوج غير صالح.",
   "You don’t have liquidity in this pool yet.": "ليس لديك سيولة في هذا التجمُّع بعد.",
   "%assetA%/%assetB% Burned": "%assetA%/%assetB% محترق",
@@ -1097,7 +782,6 @@
   "Receive WBNB": "تلقي WBNB",
   "Receive BNB": "تلقي BNB",
   "Remove": "إزالة",
-  "Input": "إدخال",
   "Output": "إخراج",
   "Trade tokens in an instant": "تداول الرموز المميزة في لحظات",
   "From (estimated)": "من (مقدَّر)",
@@ -1116,7 +800,6 @@
   "clear all": "مسح الكل",
   "Clear all": "مسح الكل",
   "No recent transactions": "لا توجد معاملات حديثة",
-  "Are you sure?": "هل أنت متأكد؟",
   "Expert mode turns off the 'Confirm' transaction prompt, and allows high slippage trades that often result in bad rates and lost funds.": "يعمل وضع الخبير على إيقاف تشغيل مطالبة المعاملة 'تأكيد'، ويسمح بتداولات بتذبذب سعر مرتفع والتي غالبًا ما تؤدي إلى أسعار سيئة وأموال ضائعة.",
   "Only use this mode if you know what you’re doing.": "لا تستخدم هذا الوضع إلا إذا كنت تعرف ما تقوم به.",
   "Turn On Expert Mode": "تشغيل وضع الخبير",
@@ -1125,8 +808,6 @@
   "Enter a valid slippage percentage": "أدخل نسبة صالحة لتذبذب السعر",
   "Your transaction may fail": "قد تفشل معاملتك",
   "Your transaction may be frontrun": "قد تكون معاملتك عبارة عن تداول مسبق",
-  "Your transaction will revert if it is pending for more than this long.": "سيتم رد معاملتك إذا ظلت معلَّقة لأكثر من هذه المدة.",
-  "minutes": "دقائق",
   "Token Amount": "مبلغ الرمز المميز",
   "LP tokens in your wallet": "رموز LP المميزة في محفظتك",
   "Pooled %asset%": "%asset% متجمع",
@@ -1157,11 +838,9 @@
   "Enter valid token address": "أدخل عنوان رمز مميز صالحًا",
   "Custom Token": "رمز مميز مخصص",
   "Custom Tokens": "رموز مميزة مخصصة",
-  "Unknown Error": "خطأ غير معروف",
   "Select a currency": "تحديد عملة",
   "Search name or paste address": "البحث عن اسم أو لصق العنوان",
   "Add %asset% to Metamask": "إضافة %asset% إلى Metamask",
-  "Added %asset%": "%asset% مضاف",
   "Transaction Submitted": "تم تقديم المعاملة",
   "Wallet Address or ENS name": "عنوان المحفظة أو اسم ENS",
   "Recipient": "المستلم",
@@ -1173,7 +852,6 @@
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "تحذير: أصبح BONDLY مخترقًا. يرجى إزالة السيولة حتى إشعار آخر.",
   "Claimed": "تمت المطالبة به",
   "Settings": "الإعدادات",
-  "Transaction deadline": "الموعد النهائي للمعاملة",
   "Convert ERC-20 to BEP-20": "تحويل ERC-20 إلى BEP-20",
   "Need help ?": "هل تحتاج إلى مساعدة؟",
   "Select a token": "تحديد رمز مميز",
@@ -1260,9 +938,6 @@
   "Your total bid": "إجمالي عطاءك",
   "Your bid in Auction #%auctionId% was unsuccessful.": "تم تقديم عطاءك في المزاد #%auctionId% بنجاح.",
   "Current Auction": "المزاد الحالي",
-  "Farm schedule": "جدول المزرعة",
-  "Farm duration": "مدة المزرعة",
-  "%num% days": "%num% من الأيام",
   "Only whitelisted project wallets can bid in the auction to create Community Farms.": "يمكن فقط لمحافظ المشاريع المدرجة بالقائمة البيضاء تقديم عطاء في المزاد لإنشاء مزارع المجتمع.",
   "Bidding is only possible while the auction is live.": "يكون تقديم العطاء ممكنًا فقط أثناء سريان المزاد.",
   "If you’re sure your project should be able to bid in this auction, make sure you’re connected with the correct (whitelisted) wallet.": "إذا كنت متأكدًا من أن مشروعك يجب أن يكون بإمكانه تقديم عطاء في هذا المزاد، فتأكد من أنك متصل بالمحفظة (المدرجة بالقائمة البيضاء) الصحيحة.",
@@ -1272,7 +947,6 @@
   "Auction #%auctionId%": "المزاد #%auctionId%",
   "LP Info": "معلومات LP",
   "Bidder Address": "عنوان مقدم العطاء",
-  "Top %num% bidders at the end of the auction will successfully create a community farm.": "أفضل %num% من مقدمي العطاءات في نهاية المزاد سوف يتمكنون من إنشاء مزرعة مجتمع بنشاط.",
   "Position": "المركز",
   "CAKE bid": "عطاء CAKE",
   "Showing top 10 bids only.": "إظهار أفضل 10 عطاءات فقط.",
@@ -1315,8 +989,6 @@
   "Tx deadline (mins)": "الموعد النهائي للمعاملة (دقائق)",
   "Flippy sounds": "أصوات التقليب",
   "Your transaction will revert if it is left confirming for longer than this time.": "سيتم رد معاملتك إذا ظلت في انتظار التأكيد لأكثر من هذا الوقت.",
-  "Fun sounds to make a truly immersive pancake-flipping trading": "أصوات ممتعة في عملية التداول بتقليب البانكيك المدهشة حقًا",
-  "Found unknown key Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.": "العثور على مفتاح غير معروف يمكن أن يساعد إعداد درجة تقبُّل تذبذب السعر العالية في نجاح المعاملات، ولكنك قد لا تحصل على هذا السعر الجيد. استخدمه بحذر.",
   "Swaps & Liquidity": "المبادلات والسيولة",
   "Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.": "يمكن أن يساعد إعداد درجة تقبُّل تذبذب السعر العالية في نجاح المعاملات، ولكنك قد لا تحصل على هذا السعر الجيد. استخدمه بحذر.",
   "Bypasses confirmation modals and allows high slippage trades. Use at your own risk.": "قم بتخطي نماذج التأكيد والسماح بتداولات بتذبذب سعر مرتفع. استخدمه على مسؤوليتك الشخصية.",
@@ -1336,14 +1008,11 @@
   "1Y": "1 سنة",
   "5Y": "5 سنوات",
   "Annual ROI at current rates": "العائد على الاستثمار السنوي بالأسعار الحالية",
-  "Calling all BSC projects": "استدعاء جميع مشاريع BSC",
-  "Apply for whitelisting now!": "تقديم الآن للإدراج في القائمة البيضاء!",
   "Default Transaction Speed (GWEI)": "سرعة المعاملة الافتراضية (GWEI)",
   "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "يعدل سعر الوقود (رسوم المعاملة) لمعاملتك. GWEI المرتفع = سرعة عالية = رسوم مرتفعة",
   "Standard (%gasPrice%)": "القياسي (%gasPrice%)",
   "Fast (%gasPrice%)": "السريع (%gasPrice%)",
   "Instant (%gasPrice%)": "الفوري (%gasPrice%)",
-  "You won multiple collectibles!": "لقد ربحت عدة عناصر قابلة للتحصيل!",
   "Prices shown on cards and charts are different": "الأسعار المعروضة على البطاقات والرسوم البيانية مختلفة",
   "The price you see come from difference places": "الأسعار التي تراها مأخوذة من أماكن مختلفة",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "الأسعار على البطاقات مأخوذة من مستشار السعر المتغير في Chainlink.",
@@ -1352,7 +1021,6 @@
   "Showing history for Prediction v0.2": "إظهار المحفوظات للتنبؤ v0.2",
   "Check for unclaimed v0.1 winnings": "فحص مكاسب v0.1 التي لم تتم المطالبة بها",
   "You have no unclaimed v0.1 prizes.": "ليس لديك أي جوائز v0.1 لم تتم المطالبة بها.",
-  "Nothing to collect": "لا يوجد شيء لتحصيله",
   "Download .CSV": "تنزيل .CSV",
   "Download your v0.1 Prediction history below.": "تنزيل محفوظات التنبؤ v0.1 أدناه.",
   "Nothing to Collect": "لا يوجد شيء لتحصيله",
@@ -1483,15 +1151,11 @@
   "For Sale (%num%)": "للبيع (%num%)",
   "Owner": "المالك",
   "Contract address": "عنوان العقد",
-  "Token id": "معرف الرمز المميز",
   "Token ID": "معرف الرمز المميز",
   "Manage Yours": "إدارة خصوصياتك",
   "Properties": "الخصائص",
-  "Bunny id": "معرف الأرنب",
   "More from this collection": "المزيد من هذه المجموعة",
-  "Apply (%num%)": "تطبيق (%num%)",
   "Apply": "تطبيق",
-  "Attributes": "السمات",
   "Min": "الحد الأدنى",
   "Not enough %symbol% to purchase this NFT": "لا يوجد ما يكفي من %symbol% لشراء NFT هذه",
   "Convert between BNB and WBNB for free": "حول بين BNB و WBNB مجانًا",
@@ -1526,15 +1190,11 @@
   "That’s not a BNB Smart Chain wallet address.": "هذا العنوان ليس عنوانًا لمحفظة BNB Smart Chain.",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "سيترتب على هذا الإجراء إرسال NFT الخاصة بك إلى العنوان الذي ذكرته أعلاه، لذا عليك التأكد من صحته",
   "This address is the one that is currently connected": "هذا العنوان هو العنوان المتصل حاليًا",
-  "Recently Listed": "مدرج حديثًا",
   "Please progress to the next step.": "يُرجى التقدم للخطوة التالية.",
   "Press 'confirm' to mint this NFT": "اضغط على ‘تأكيد’ لصك رمز NFT هذا",
   "You have minted your starter NFT": "لقد تم صك رمز NFT الأولي الخاص بك",
   "Go to your profile page to continue.": "انتقل إلى صفحة ملفك التعريفي للمتابعة.",
-  "Select All": "حدد الكل",
   "Clear": "مسح",
-  "Clear All": "مسح الكل",
-  "All Items": "جميع العناصر",
   "Sort By": "الفرز حسب",
   "Collections": "المجموعات",
   "View All": "عرض الكل",
@@ -1544,12 +1204,9 @@
   "Remove from Market": "إزالة من السوق",
   "Lowest price on market": "أدنى سعر في السوق",
   "Transfer to New Wallet": "التحويل إلى محفظة جديدة",
-  "Less": "أقل",
   "No results found": "لم يتم العثور على نتائج",
-  "More Collections are on their way!": "انتظر المزيد من المجموعات قريبًا!",
   "Removing it will suspend your profile, and you won’t be able to earn points, participate in team activities, or be eligible for new NFT drops.": "إذا أزلتها فإن ملفك التعريفي سيصبح معلقًا، ولن تتمكن من كسب النقاط، أو المشاركة في أنشطة الفريق، ولن تكون مؤهلًا للحصول على إصدارات NFT الجديدة.",
   "Traits": "الميزات",
-  "Trait": "الميزة",
   "Count": "العدد",
   "Rarity": "الندرة",
   "Lowest": "الأدنى",
@@ -1599,7 +1256,6 @@
   "Fair, Random, Rare": "عادي، عشوائي، نادر",
   "Activate your profile": "نشط ملفك التعريفي",
   "Sounds great, how can I get one?": "يبدو هذا رائعًا، كيف أحصل على واحدة؟",
-  "View the smart contract address on BscScan": "اعرض عنوان العقد الذكي على BscScan",
   "Your Claim Tickets: ": "تذاكر المطالبة الخاصة بك: ",
   "Claiming Complete!": "اكتملت المطالبة!",
   "Buy how many?": "ما كمية الشراء؟",
@@ -1613,7 +1269,6 @@
   "Out of the 10,000 total NFTs in the squad,": "من بين إجمالي رموز NFT البالغ عددها 10,000 الموجودة في الفرقة،",
   "You’ll need an active PancakeSwap Profile to buy Minting Tickets and mint a Pancake Squad NFT!": "ستحتاج إلى ملف PancakeSwap تعريفي نشط لشراء التذاكر المصكوكة ولصك NFT لفرقة Pancake!",
   "The minting period is now over: all 10,000 bunnies have now been minted.": "انتهت الآن مهلة الصك: تم الآن صك كل الأرانب البالغ عددها 10,000.",
-  "View the": "عرض",
   "All 10,000 Pancake Squad NFTs have now been minted!": "تم الآن صك كل رموز NFT لفرقة Pancake البالغ عددها 10,000!",
   "Mint Cost: %minCost% CAKE each": "تكلفة الصك: %minCost% CAKE لكل منه",
   "Cost per Ticket": "التكلفة لكل تذكرة",
@@ -1623,40 +1278,31 @@
   "490 are available in the pre-sale for owners of Gen 0 Pancake Bunnies (bunnyID 0, 1, 2, 3, 4)": "يوجد 490 متاحة في البيع المسبق لمالكي أرانب Pancake من الجيل صفر (معرف الأرنب 0, 1, 2, 3, 4)",
   "Hold CAKE": "تعليق CAKE",
   "Head to the NFT Market to buy!": "توجه إلى سوق NFT للشراء!",
-  "documentation on our site": "الوثائق في موقعنا",
   "Max per wallet: %maxPerWallet%": "الحد الأقصى لكل محفظة: %maxPerWallet%",
   "Your CAKE Balance": "رصيد CAKE الخاص بك",
   "Public Sale: Any wallet with an active Pancake Profile can purchase up to 10 Squad Tickets, while stocks last.": "البيع العام: يمكن لأي محفظة بملف Pancake تعريفي نشط شراء ما لا يزيد عن 10 تذاكر من تذاكر الفرقة قبل نفاذ الكمية.",
   "Enabling...": "جارِ التمكين...",
-  "Gen 0 Pancake Bunnies": "أرانب Pancake من الجيل صفر",
   "Each NFT costs CAKE to mint. Remember you also need BNB to cover transaction fees too!": "كل NFT تكلف CAKE لصكها. تذكر أنك تحتاج كذلك إلى BNB لتغطية رسوم المعاملة كذلك!",
-  "Check the rarity of each NFT’s traits on the": "تحقق من ندرة ميزات كل NFT على",
   "PancakeSwap’s first official generative NFT collection.": "أول مجموعة NFT منتجة رسمية لـ PancakeSwap.",
   "Your remaining limit": "حدك المتبقي",
   "During this phase, any wallet holding a Squad Ticket can redeem their ticket to mint a Pancake Squad NFT.": "وفي أثناء هذه المرحلة، يمكن لأي محفظة لديها تذكرة الفرقة استرداد تذكرتها لصك رمز NFT لفرقة Pancake.",
   "120 are reserved by the team for community giveaways, etc;": "يحتفظ الفريق بعدد 120 للهبات المجتمعية وغير ذلك،",
   "Buy Squad Tickets": "اشتر تذاكر الفرقة",
-  "Pancake Squad page in the NFT Market": "صفحة فرقة Pancake في سوق NFT",
   "Join the squad.": "انضم إلى الفرقة.",
   "Total Cost": "إجمالي التكلفة",
   "Buy Minting Tickets": "اشتر التذاكر المصكوكة",
   "and the remaining NFTs can be minted by anyone with a ": "ويمكن صك رموز NFT المتبقية بواسطة أي شخص بـ ",
   "Buy Squad Tickets, while stocks last. You’ll use them in step 4.": "اشتر تذاكر الفرقة قبل نفاذ الكمية. ستحتاجهم في الخطوة الرابعة.",
-  "For more details, check the": "لمزيد من التفاصيل، تحقق من",
   "The network may become busy during the sale period. Consider setting a high gas fee (GWEI).": "قد تصبح الشبكة مشغولة في أثناء فترة البيع. لذا عليك التفكير في رفع تحديد رسوم الوقود (GWEI).",
   "Pancake Profile!": "الملف التعريفي في Pancake!",
   "Phase Complete!": "اكتملت المرحلة!",
-  "randomization documentation on our docs site": "وثائق عشوائية على موقع الوثائق الخاص بنا",
-  "All Pancake Squad NFTs are allocated to Minting Ticket holders through a provably-fair system based on ChainLink at the time of minting.": "كل رموز NFT في فرقة Pancake هي مخصصة لصك حاملي التذاكر من خلال نظام مثبت نزاهته قائم على ChainLink في وقت الصك.",
   "Claim Phase": "مرحلة المطالبة",
-  "by clicking the “Filter” view. The number of bunnies with a specific trait is displayed next to the trait name.": "بعد النقر على ‘تصفية’. سيتم عرض عدد الأرانب بالميزات المحددة بجوار اسم الميزة.",
   "During this phase, any wallet holding a Squad Ticket can redeem their ticket to claim a Pancake Squad NFT.": "وفي أثناء هذه المرحلة، يمكن لأي محفظة حاملة لتذكرة الفرقة استرداد تذكرتها للمطالبة برمز NFT في فرقة Pancake.",
   "Wait for the Reveal": "انتظر الإعلان",
   "It’ll take a few days before your bunny’s image is revealed. Just hold tight and wait for the final image!": "سيستغرق الإعلان عن صورة أرنبك بضعة أيام. ما عليك سوى التحلي ببعض الصبر وانتظار الصورة النهائية!",
   "Trading will open before the images are live, but you’ll still be able to check the bunnies’ stats.": "ستُفتح المداولات قبل عرض الصور، ولكنك ستظل قادرًا على التحقق من إحصائيات الأرانب.",
   "Pre-sale: Wallets which held “Gen 0” Pancake Bunnies NFTs (bunnyID 0,1,2,3,4) at a snapshot taken some time between 12 and 2 hours before the presale begins can purchase one Squad Ticket per Gen 0 NFT.": "البيع المسبق: يمكن للمحفظات التي تحمل رموز NFT لأرانب Pancake من الجيل صفر (معرف الأرنب 0,1,2,3,4)، في لقطة أخذت قبل بدء البيع المسبق بمدة 12 إلى 2 ساعة، شراء تذكرة فرقة واحدة لكل NFT من الجيل صفر.",
   "Transaction has succeeded!": "نجحت المعاملة!",
-  "Gen 0 Pancake Bunnies (bunnyID 0, 1, 2, 3, 4)": "أرانب Pancake من الجيل صفر (معرف الأرنب 0, 1, 2, 3, 4)",
   "The birthplace of Cecy is truly unknown": "إن محل ولادة Cecy غير معلوم حقًا",
   "But legend tells us, she was sailing alone": "ولكن تقول الأسطورة أنها كانت تبحر وحيدة",
   "Beyond the mountains, across the sea": "وراء الجبال وعبر البحار",
@@ -1668,7 +1314,6 @@
   "To drizzle in syrup and hand them out soon": "لتقطير الشراب (syrup) عليها وتسليمها بسرعة",
   "So that bunnies worldwide may fly to the moon.": "حتى تتمكن الأرانب في جميع أنحاء العالم من الطيران للقمر.",
   "All Pancake Squad NFTs are allocated to Squad Ticket holders through a provably-fair system based on ChainLink at the time of minting.": "كل رموز NFTs في فرقة Pancake هي مخصصة لحاملي تذاكر الفرقة من خلال نظام مثبت نزاهته قائم على ChainLink في وقت الصك.",
-  "Coming Oct. 7": "سيأتي قريبًا في 7 أكتوبر",
   "Presale:": "البيع المسبق:",
   "Public Sale:": "البيع العام:",
   "Review": "مراجعة",
@@ -1681,10 +1326,7 @@
   "Presale max purchased": "تم البيع المسبق بالحد الأقصى",
   "end in": "ينتهي في",
   "Insufficient Balance": "رصيد غير كافٍ",
-  "Bunnies": "الأرانب",
-  "Squad": "الفرقة",
   "Highest price": "أعلى سعر",
-  "10,000 bunnies": "10,000 أرنب",
   "10,000 bunnies.": "10,000 أرنب.",
   "ZERO duplicates.": "دون أي تكرارات.",
   "Every Pancake Squad bunny is different.": "جميع أرانب فرقة Pancake مختلفة عن بعضها.",
@@ -1731,17 +1373,15 @@
   "Other collections will be coming soon. We’ll make an announcement soon about the launch of the V2 Market.": "ستتوفر مجموعات أخرى قريبًا. وسنصدر إعلانًا قريبًا عن إطلاق النسخة الثانية من السوق.",
   "How can I list my NFT collection on the Market?": "كيف يمكنني إدراج مجموعة NFT الخاصة بي في السوق؟",
   "In Phase 2 of the NFT Marketplace, collections must be whitelisted before they may be listed.": "في المرحلة الثانية من سوق NFT، يجب إدراج المجموعات في القائمة البيضاء قبل إدراجها في القائمة.",
-  "We are now accepting applications from NFT collection owners seeking to list their collections. Please apply here: https://docs.pancakeswap.finance/contact-us/nft-market-applications": "نحن نتلقى الآن طلبات من مالكي مجموعات NFT الذين يسعون لإدراج مجموعاتهم. يُرجى التقديم هنا: https://docs.pancakeswap.finance/contact-us/nft-market-applications",
+  "We are now accepting applications from NFT collection owners seeking to list their collections.": "We are now accepting applications from NFT collection owners seeking to list their collections.",
+  "Please apply here": "Please apply here",
   "What are the fees?": "ما هي الرسوم؟",
   "100% of all platform fees taken by PancakeSwap from sales are used to buy back and BURN CAKE tokens in our weekly CAKE burns.": "تُستخدم 100% من كل رسوم المنصات التي تحصلها PancakeSwap من المبيعات لإعادة شراء رموز CAKE المميزة وحرقها في عمليات حرق CAKE الأسبوعية.",
   "Platform fees: 2% is subtracted from NFT sales on the market. Subject to change.Collection fees: Additional fees may be taken by collection creators, once those collections are live. These will not contribute to the CAKE burns.": "رسوم المنصات: يتم خصم 2% من مبيعات NFT في السوق. وهي قابلة للتغيير. رسوم المجموعات: قد يحصّل صانعو المجموعات الرسوم الإضافية عندما يجري تداول المجموعات. ولن تساهم هذه الرسوم في عمليات حرق CAKE.",
-  "Mint Cost: To Be Announced": "تكلفة الصك: سيُعلن عنها في وقت لاحق",
   "The smart contract address will be released soon before the sale starts.": "سيصدر عنوان العقد الذكي قريبًا قبل بدء البيع.",
   "Supply Count": "عدد الموارد",
   "Brand": "العلامة التجارية",
   "Success": "النجاح",
-  "Wrap": "التغليف",
-  "Unwrap": "فك التغليف",
   "Go to IFO": "ذهاب إلى IFO",
   "Phishing warning: ": "تحذير من الانتحال: ",
   "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "يرجى التأكد من أنك تزور موقع https://pancakeswap.finance - افحص عنوان URL بعناية.",
@@ -1767,7 +1407,6 @@
   "To participate in the next IFO, stake some CAKE in the IFO CAKE pool!": "للمشاركة في IFO (العرض الأولي للمزرعة) التالي، قم برهن بعض CAKE في تجمُّع CAKE لـ IFO (العرض الأولي للمزرعة)!",
   "IFO Credit": "IFO Credit",
   "Stake CAKE in IFO pool": "رهن CAKE في تجمُّع IFO (العرض الأولي للمزرعة)",
-  "The maximum amount of CAKE user can commit to all the sales combined, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.": "يجب أن يكون أقصى مقدار من CAKE الذي يمكن للمستخدم تخصيصه إلى جميع المبيعات مجتمعة، مساويًا لمتوسط رصيد CAKE في تجمُّع CAKE للعرض الأولي للمزرعة (IFO) قبل ذلك العرض الأولي للمزرعة (IFO). قم برهن المزيد من CAKE لزيادة أقصى مقدار من CAKE الذي يمكنك تخصيصه إلى المبيعات. هل فاتك هذا العرض الأولي للمزرعة (IFO)؟ يمكنك مواصلة المراهنة في تجمُّع CAKE للعرض الأولي للمزرعة (IFO) للانضمام إلى مبيعات العرض الأولي للمزرعة (IFO) التالية.",
   "How does the IFO credit calculated?": "How does the IFO credit calculated?",
   "IFO credit is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal.": "IFO credit is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal.",
   "Please refer to our blog post for more details.": "يُرجى الرجوع إلى منشور المدونة الخاصة بنا لمزيد من التفاصيل.",
@@ -1777,7 +1416,6 @@
   "You don’t have any average CAKE balance available to commit in the IFO CAKE pool.": "ليس لديك أي متوسط رصيد CAKE متوفر للتخصيص في تجمُّع CAKE للعرض الأولي للمزرعة (IFO).",
   "Sale Finished!": "انتهى البيع!",
   "Start in": "يبدأ في",
-  "Your entry limit in the next IFO sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.": "Your entry limit in the next IFO sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.",
   "Please note: even the pool is auto compounding. Amount of profits will not be included during IFO credit calculations.": "Please note: even the pool is auto compounding. Amount of profits will not be included during IFO credit calculations.",
   "Exceeded max CAKE entry": "تم تجاوز أقصى إدخال لـ CAKE",
   "Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "ينطبق خلال %num% من الأيام من الرهن فقط. ولن يتضمَّن فك الرهن بعد مرور %num% من الأيام أي رسوم. ستتم إعادة تعيين المؤقِّت في كل مرة ترهن فيها CAKE جديدة في التجمُّع.",
@@ -1820,5 +1458,95 @@
   "per 1d: ~$%amount%": "per 1d: ~$%amount%",
   "per 7d: ~$%amount%": "per 7d: ~$%amount%",
   "per 30d: ~$%amount%": "per 30d: ~$%amount%",
-  "per 365d: ~$%amount%": "per 365d: ~$%amount%"
+  "per 365d: ~$%amount%": "per 365d: ~$%amount%",
+  "Remember that you will pay the gas fee.": "Remember that you will pay the gas fee.",
+  "ITAM has been rebranded as ITAM CUBE.": "ITAM has been rebranded as ITAM CUBE.",
+  "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.",
+  "All transfers of the old ITAM token will be disabled after the swap.": "All transfers of the old ITAM token will be disabled after the swap.",
+  "Crypto Cars (CCAR) has been migrated to": "Crypto Cars (CCAR) has been migrated to",
+  "the announcement.": "the announcement.",
+  "Apply to NFT Market!": "Apply to NFT Market!",
+  "%num% Pending": "%num% Pending",
+  "You’re connected to the wrong network.": "You’re connected to the wrong network.",
+  "Learn How": "Learn How",
+  "Network": "Network",
+  "Switch Network": "Switch Network",
+  "Please note that by UTC 00:00 9th March 2022, access will not be available to users with IP address from the following countries:": "Please note that by UTC 00:00 9th March 2022, access will not be available to users with IP address from the following countries:",
+  "Belarus, Cuba, Democratic Republic of Congo, Iran, Iraq, North Korea, Sudan, Syria, Zimbabwe and Crimea.": "Belarus, Cuba, Democratic Republic of Congo, Iran, Iraq, North Korea, Sudan, Syria, Zimbabwe and Crimea.",
+  "This pool requires active Pancake Profile and %amount% profile points.": "This pool requires active Pancake Profile and %amount% profile points.",
+  "This pool requires active Pancake Profile": "This pool requires active Pancake Profile",
+  "This pool requires %amount% profile points.": "This pool requires %amount% profile points.",
+  "Requirement": "Requirement",
+  "Create Profile": "Create Profile",
+  "Go to Profile": "Go to Profile",
+  "Profile Points": "Profile Points",
+  "You're using this NFT as your Pancake Profile picture": "You're using this NFT as your Pancake Profile picture",
+  "You've already staked the maximum amount you can stake in this pool!": "You've already staked the maximum amount you can stake in this pool!",
+  "Don't show this again": "Don't show this again",
+  "You're all set!": "You're all set!",
+  "Max. Tickets per wallet:": "Max. Tickets per wallet:",
+  "Max. Tickets per transaction:": "Max. Tickets per transaction:",
+  "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:": "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:",
+  "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.": "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.",
+  "For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.",
+  "For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool": "For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool",
+  "Meet any one of the following requirements to be eligible.": "Meet any one of the following requirements to be eligible.",
+  "You are eligible to participate in this Private Sale!": "You are eligible to participate in this Private Sale!",
+  "Meet any one of the requirements to join:": "Meet any one of the requirements to join:",
+  "Set PancakeSquad NFT as Pancake Profile avatar.": "Set PancakeSquad NFT as Pancake Profile avatar.",
+  "Reach a certain Pancake Profile Points threshold.": "Reach a certain Pancake Profile Points threshold.",
+  "Reach %point% or more %Pancake Profile% points": "Reach %point% or more %Pancake Profile% points",
+  "Set %Pancake Squad NFT% as Pancake Profile avatar": "Set %Pancake Squad NFT% as Pancake Profile avatar",
+  "Pancake Squad NFT": "Pancake Squad NFT",
+  "Profile Points threshold met!": "Profile Points threshold met!",
+  "Profile points": "Profile points",
+  "Eligible NFT avatar found!": "Eligible NFT avatar found!",
+  "The maximum amount of CAKE user can commit to the Public Sale, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.": "The maximum amount of CAKE user can commit to the Public Sale, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.",
+  "What’s the difference between a Public Sale and Private Sale?": "What’s the difference between a Public Sale and Private Sale?",
+  "In the new IFO 3.1 format. There is a brand new Private Sale. To participate, participants will have to meet certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has no participation fee.": "In the new IFO 3.1 format. There is a brand new Private Sale. To participate, participants will have to meet certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has no participation fee.",
+  "In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE user can commit, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. And there’s a fee for participation: see below.": "In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE user can commit, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. And there’s a fee for participation: see below.",
+  "You can choose one or both at the same time!": "You can choose one or both at the same time!",
+  "We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.",
+  "Just remember you need an active PancakeSwap Profile in order to participate.": "Just remember you need an active PancakeSwap Profile in order to participate.",
+  "There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.": "There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.",
+  "The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.": "The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.",
+  "Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.": "Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.",
+  "How to Take Part in the Public Sale": "How to Take Part in the Public Sale",
+  "Private Sale": "Private Sale",
+  "Unsupported Assets": "Unsupported Assets",
+  "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.": "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.",
+  "Read more about unsupported assets": "Read more about unsupported assets",
+  "Trade the new BTT token": "Trade the new BTT token",
+  "here": "here",
+  "For more details on the swap, please refer here.": "For more details on the swap, please refer here.",
+  "Insufficient WBNB balance": "Insufficient WBNB balance",
+  "Select": "الاختيار",
+  "Confirm Limit Order": "Confirm Limit Order",
+  "Limit price is 12.12% above the current market rate. The order will be executed when the market price reaches the specified limit price within the expiration date, within your slippage parameters.": "Limit price is 12.12% above the current market rate. The order will be executed when the market price reaches the specified limit price within the expiration date, within your slippage parameters.",
+  "Current Market Price": "Current Market Price",
+  "Limit Price": "Limit Price",
+  "Error Tracking Id": "Error Tracking Id",
+  "Your CAKE held at block": "Your CAKE held at block",
+  "The transaction could not be sent because the deadline has passed. Please check that your transaction deadline is not too low.": "The transaction could not be sent because the deadline has passed. Please check that your transaction deadline is not too low.",
+  "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.": "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.",
+  "The input token cannot be transferred. There may be an issue with the input token.": "The input token cannot be transferred. There may be an issue with the input token.",
+  "The output token cannot be transferred. There may be an issue with the output token.": "The output token cannot be transferred. There may be an issue with the output token.",
+  "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.": "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.",
+  "Unknown error%reason%. Try increasing your slippage tolerance.": "Unknown error%reason%. Try increasing your slippage tolerance.",
+  "Unexpected issue with estimating the gas. Please try again.": "Unexpected issue with estimating the gas. Please try again.",
+  "Swap failed: %message%": "Swap failed: %message%",
+  "Unexpected error. Could not estimate gas for the swap.": "Unexpected error. Could not estimate gas for the swap.",
+  "Farm Auction": "Farm Auction",
+  "Farm Auction Winner, add liquidity at your own risk.": "Farm Auction Winner, add liquidity at your own risk.",
+  "Currently showing charts from Chainlink oracle": "Currently showing charts from Chainlink oracle",
+  "The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.": "The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.",
+  "Oracle price refreshes every ~1 min.": "Oracle price refreshes every ~1 min.",
+  "When compared to TradingView chart. This chart refreshes slower and with fewer features.": "When compared to TradingView chart. This chart refreshes slower and with fewer features.",
+  "Max. stake limit ends in": "Max. stake limit ends in",
+  "Token address copied": "Token address copied",
+  "Follow our social channels to learn more about the Next IFO Private Sale": "Follow our social channels to learn more about the Next IFO Private Sale",
+  "Learn More about IFO 3.1": "Learn More about IFO 3.1",
+  "Lowest Price": "Lowest Price",
+  "Highest Price": "Highest Price",
+  "Highest": "Highest"
 }
