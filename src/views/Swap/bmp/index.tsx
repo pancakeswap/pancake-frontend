@@ -99,7 +99,9 @@ function Swap() {
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
-
+  useEffect(() => {
+    console.log('🚀 ~ file: index.tsx ~ line 103 ~ useEffect ~ useEffect')
+  })
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
   }, [isChartDisplayed, setUserChartPreference])

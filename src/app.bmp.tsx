@@ -35,15 +35,20 @@ bn.request = bindRequest(bn.request)
 __mp_private_api__.request = bindRequest(__mp_private_api__.request)
 
 class App extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    console.log('🚀 ~ file: app.bmp.tsx ~ line 39 ~ App ~ componentDidMount ~ componentDidMount')
+  }
 
-  componentDidShow() {}
+  componentDidShow() {
+    console.log('🚀 ~ file: app.bmp.tsx ~ line 44 ~ App ~ componentDidShow ~ componentDidShow')
+  }
 
   componentDidHide() {}
 
   componentDidCatchError() {}
 
   render() {
+    console.log('🚀 ~ file: app.bmp.tsx ~ line 51 ~ App ~ render ~ render')
     const { children } = this.props
     return <Provider>{children}</Provider>
   }

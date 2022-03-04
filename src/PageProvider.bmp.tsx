@@ -29,8 +29,10 @@ const Providers: React.FC = ({ children }) => {
         <ToastsProvider>
           <ModalProvider>
             <Blocklist>
-              <Updaters />
-              <Hooks />
+              <view>
+                <Updaters />
+                <Hooks />
+              </view>
               {children}
             </Blocklist>
           </ModalProvider>

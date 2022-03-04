@@ -9,10 +9,13 @@ type Props = {
 
 const GlobalSettings = ({ color, mr = '8px' }: Props) => {
   const [onPresentSettingsModal] = useModal(<SettingsModal />)
-
+  const handleClick = () => {
+    console.log('🚀 ~ file: index.tsx ~ line 15 ~ handleClick ~ handleClick')
+    onPresentSettingsModal()
+  }
   return (
     <Flex>
-      <IconButton onClick={onPresentSettingsModal} variant="text" scale="sm" mr={mr} id="open-settings-dialog-button">
+      <IconButton onClick={handleClick} variant="text" scale="sm" mr={mr} id="open-settings-dialog-button">
         <CogIcon height={24} width={24} color={color || 'textSubtle'} />
       </IconButton>
     </Flex>

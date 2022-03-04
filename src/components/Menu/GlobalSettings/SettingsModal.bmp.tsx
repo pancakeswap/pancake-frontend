@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher } from '@pancakeswap/uikit'
 import {
@@ -25,6 +25,9 @@ const ScrollableContainer = styled(Flex)`
 `
 
 const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+  useEffect(() => {
+    console.log('🚀 ~ file: SettingsModal.bmp.tsx ~ line 28 ~ SettingsModal')
+  })
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
   const [expertMode, toggleExpertMode] = useExpertModeManager()
