@@ -2,7 +2,7 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 
-export const useIsRenderIfoBanner = () => {
+const useIsRenderIfoBanner = () => {
   const currentBlock = useCurrentBlock()
 
   const activeIfoWithBlocks = useActiveIfoWithBlocks()
@@ -13,3 +13,5 @@ export const useIsRenderIfoBanner = () => {
     : null
   return Boolean(isIfoAlive && status)
 }
+
+export default useIsRenderIfoBanner
