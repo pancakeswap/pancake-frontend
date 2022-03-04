@@ -317,7 +317,7 @@ export default function RemoveLiquidity() {
         gasPrice,
       })
         .then((response: TransactionResponse) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: undefined })
+          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
           addTransaction(response, {
             summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
               currencyA?.symbol
@@ -325,21 +325,15 @@ export default function RemoveLiquidity() {
           })
         })
         .catch((err) => {
-          logError(err)
-          if (err?.code === 4001) {
-            setLiquidityState({
-              attemptingTxn: false,
-              liquidityErrorMessage: 'Transaction rejected.',
-              txHash: undefined,
-            })
-          } else {
+          if (err && err.code !== 4001) {
+            logError(err)
             console.error(`Remove Liquidity failed`, err, args)
-            setLiquidityState({
-              attemptingTxn: false,
-              liquidityErrorMessage: `Remove Liquidity failed: ${err.message}`,
-              txHash: undefined,
-            })
           }
+          setLiquidityState({
+            attemptingTxn: false,
+            liquidityErrorMessage: err && err?.code !== 4001 ? `Remove Liquidity failed: ${err.message}` : undefined,
+            txHash: undefined,
+          })
         })
     }
   }
