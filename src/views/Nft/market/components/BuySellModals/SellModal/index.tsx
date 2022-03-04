@@ -93,8 +93,9 @@ const SellModal: React.FC<SellModalProps> = ({
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
-  const collectionContractReader = useErc721CollectionContract(nftToSell.collectionAddress, false)
-  const collectionContractSigner = useErc721CollectionContract(nftToSell.collectionAddress)
+  const { reader: collectionContractReader, signer: collectionContractSigner } = useErc721CollectionContract(
+    nftToSell.collectionAddress,
+  )
   const nftMarketContract = useNftMarketContract()
 
   const isInvalidTransferAddress = transferAddress.length > 0 && !isAddress(transferAddress)

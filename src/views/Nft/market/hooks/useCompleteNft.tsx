@@ -11,7 +11,7 @@ const NOT_ON_SALE_SELLER = '0x0000000000000000000000000000000000000000'
 
 const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: TokenMarketData) => {
   const { account } = useWeb3React()
-  const collectionContract = useErc721CollectionContract(collectionAddress, false)
+  const { reader: collectionContract } = useErc721CollectionContract(collectionAddress)
   const { isInitialized: isProfileInitialized, profile } = useProfile()
   return useSWR(
     account && isProfileInitialized && collectionContract
