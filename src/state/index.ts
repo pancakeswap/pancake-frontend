@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, createAction, CombinedState } from '@reduxjs/toolkit'
+import { combineReducers, configureStore, createAction } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import {
@@ -13,23 +13,20 @@ import {
   createMigrate,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import burn, { BurnState } from './burn/reducer'
+import burn from './burn/reducer'
 import farmsReducer from './farms'
 import { updateVersion } from './global/actions'
 import infoReducer from './info'
-import lists, { ListsState } from './lists/reducer'
+import lists from './lists/reducer'
 import lotteryReducer from './lottery'
-import mint, { MintState } from './mint/reducer'
-import multicall, { MulticallState } from './multicall/reducer'
+import mint from './mint/reducer'
+import multicall from './multicall/reducer'
 import nftMarketReducer from './nftMarket/reducer'
 import poolsReducer, { initialPoolVaultState } from './pools'
 import predictionsReducer from './predictions'
-import swap, { SwapState } from './swap/reducer'
-import transactions, { TransactionState } from './transactions/reducer'
-import user, { UserState } from './user/reducer'
-import { SerializedFarmsState, PoolsState, PredictionsState, LotteryState } from './types'
-import { InfoState } from './info/types'
-import { State } from './nftMarket/types'
+import swap from './swap/reducer'
+import transactions from './transactions/reducer'
+import user from './user/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
