@@ -3,7 +3,13 @@ import { FetchStatus } from 'config/constants/types'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Contract } from '@ethersproject/contracts'
 import { FormatTypes } from '@ethersproject/abi'
-import useSWR, { Middleware, SWRConfiguration, KeyedMutator } from 'swr'
+import useSWR, {
+  Middleware,
+  SWRConfiguration,
+  KeyedMutator,
+  // eslint-disable-next-line camelcase
+  unstable_serialize,
+} from 'swr'
 import { multicallv2, MulticallOptions, Call } from 'utils/multicall'
 
 declare module 'swr' {
@@ -142,6 +148,39 @@ export function useSWRMulticall<Data>(abi: any[], calls: Call[], options?: Multi
     revalidateOnFocus: false,
     ...config,
   })
+}
+
+export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher, config) => {
+  const swr = useSWRNext(key, fetcher, config)
+  const { data } = swr
+  const serializedKey = unstable_serialize(key)
+
+  useEffect(() => {
+    if (data) {
+      try {
+        const stringify = JSON.stringify(data)
+        localStorage.setItem(serializedKey, stringify)
+      } catch (error) {
+        //
+      }
+    }
+  }, [data, serializedKey])
+
+  const localStorageData = localStorage.getItem(serializedKey)
+
+  let localStorageDataParsed
+  if (localStorageData) {
+    try {
+      localStorageDataParsed = JSON.parse(localStorageData)
+    } catch (error) {
+      localStorage.removeItem(serializedKey)
+    }
+  }
+
+  return {
+    ...swr,
+    data: data || localStorageDataParsed,
+  }
 }
 
 // This is a SWR middleware for keeping the data even if key changes.
