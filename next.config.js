@@ -25,6 +25,8 @@ const sentryWebpackPluginOptions = {
 const config = {
   compiler: {
     styledComponents: true,
+  },
+  experimental: {
     scrollRestoration: true,
   },
   reactStrictMode: true,

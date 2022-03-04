@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
@@ -7,6 +6,7 @@ import useSWR from 'swr'
 import { ProposalState, ProposalType } from 'state/types'
 import { getProposals } from 'state/voting/helpers'
 import { FetchStatus } from 'config/constants/types'
+import { useSessionStorage } from 'hooks/useSessionStorage'
 import { filterProposalsByState, filterProposalsByType } from '../../helpers'
 import ProposalsLoading from './ProposalsLoading'
 import TabMenu from './TabMenu'
@@ -20,7 +20,7 @@ interface State {
 
 const Proposals = () => {
   const { t } = useTranslation()
-  const [state, setState] = useState<State>({
+  const [state, setState] = useSessionStorage<State>('proposals-filter', {
     proposalType: ProposalType.CORE,
     filterState: ProposalState.ACTIVE,
   })
