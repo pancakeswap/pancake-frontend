@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/react'
 import { Dispatch } from '@reduxjs/toolkit'
+import { resetUserState } from 'state/global/actions'
 import { clearAllTransactions } from 'state/transactions/actions'
 import { connectorLocalStorageKey } from '@pancakeswap/uikit'
 import { connectorsByName } from './web3React'
-import { resetUserState } from '../state'
 
 export const clearUserStates = (dispatch: Dispatch<any>, chainId: number) => {
   dispatch(resetUserState())

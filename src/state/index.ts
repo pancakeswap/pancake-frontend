@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, createAction } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import {
@@ -22,15 +22,13 @@ import lotteryReducer from './lottery'
 import mint from './mint/reducer'
 import multicall from './multicall/reducer'
 import nftMarketReducer from './nftMarket/reducer'
-import poolsReducer, { initialPoolVaultState } from './pools'
+import poolsReducer from './pools'
 import predictionsReducer from './predictions'
 import swap from './swap/reducer'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
-
-export const resetUserState = createAction<void>('global/resetUserState')
 
 const migrations = {
   0: (state) => {
@@ -54,59 +52,26 @@ const persistConfig = {
   migrate: createMigrate(migrations, { debug: false }),
 }
 
-const combinedReducers = combineReducers({
-  farms: farmsReducer,
-  pools: poolsReducer,
-  predictions: predictionsReducer,
-  lottery: lotteryReducer,
-  info: infoReducer,
-  nftMarket: nftMarketReducer,
+const persistedReducer = persistReducer(
+  persistConfig,
+  combineReducers({
+    farms: farmsReducer,
+    pools: poolsReducer,
+    predictions: predictionsReducer,
+    lottery: lotteryReducer,
+    info: infoReducer,
+    nftMarket: nftMarketReducer,
 
-  // Exchange
-  user,
-  transactions,
-  swap,
-  mint,
-  burn,
-  multicall,
-  lists,
-})
-
-const rootReducer = (state, action) => {
-  if (action.type === 'global/resetUserState') {
-    // eslint-disable-next-line no-param-reassign
-    state = {
-      ...state,
-      farms: {
-        ...state.farms,
-        data: state.farms.data.map((farm) => {
-          return {
-            ...farm,
-            userData: {
-              allowance: '0',
-              tokenBalance: '0',
-              stakedBalance: '0',
-              earnings: '0',
-            },
-          }
-        }),
-        userDataLoaded: false,
-      },
-      pools: {
-        ...state.pools,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        data: state.pools.data.map(({ userData, ...pool }) => ({ ...pool })),
-        userDataLoaded: false,
-        cakeVault: { ...state.pools.cakeVault, userData: initialPoolVaultState.userData },
-        ifoPool: { ...state.pools.ifoPool, userData: initialPoolVaultState.userData },
-      },
-    }
-  }
-
-  return combinedReducers(state, action)
-}
-
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+    // Exchange
+    user,
+    transactions,
+    swap,
+    mint,
+    burn,
+    multicall,
+    lists,
+  }),
+)
 
 // eslint-disable-next-line import/no-mutable-exports
 let store: ReturnType<typeof makeStore>
