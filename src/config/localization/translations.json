@@ -233,6 +233,7 @@
   "d": "d",
   "h": "h",
   "m": "m",
+  "s": "s",
   "Hide or show expandable content": "Hide or show expandable content",
   "No tokens to stake": "No tokens to stake",
   "Error": "Error",
@@ -1549,5 +1550,6 @@
   "Lowest Price": "Lowest Price",
   "Highest Price": "Highest Price",
   "Highest": "Highest",
-  "Connect": "Connect"
+  "Connect": "Connect",
+  "Play Now": "Play Now"
 }

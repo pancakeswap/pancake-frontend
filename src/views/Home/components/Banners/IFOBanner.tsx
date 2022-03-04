@@ -35,7 +35,7 @@ const IFOBanner = () => {
 
   const theme = useTheme()
   const isDeskTop = useMediaQuery(theme.theme.mediaQueries.sm.replace('@media screen and ', ''))
-  return (isIfoAlive && status) || true ? (
+  return (isIfoAlive && status) || true ? ( // the true is for test, will remove later
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
@@ -70,7 +70,7 @@ const IFOBanner = () => {
           {!isDeskTop && (
             <Image
               src={IFOMobileImage}
-              alt={`IFO ${activeIfoWithBlocks?.id ?? 0}`}
+              alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}
               onError={(event) => {
                 // @ts-ignore
                 // eslint-disable-next-line no-param-reassign
