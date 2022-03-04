@@ -6,7 +6,6 @@ import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { DeserializedPool } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 const Containter = styled(Flex)`
   margin-top: 12px;
@@ -20,15 +19,13 @@ const Containter = styled(Flex)`
 
 interface TotalStakedProps {
   pool: DeserializedPool
+  totalCakeInVault: BigNumber
+  cakeInVaults: BigNumber
 }
 
-const TotalStaked: React.FC<TotalStakedProps> = ({ pool }) => {
+const TotalStaked: React.FC<TotalStakedProps> = ({ pool, totalCakeInVault, cakeInVaults }) => {
   const { t } = useTranslation()
   const { sousId, stakingToken, totalStaked, vaultKey } = pool
-  const { vaultPoolData } = useVaultPoolByKeyV1(vaultKey)
-  const { totalCakeInVault, totalShares } = vaultPoolData
-
-  const cakeInVaults = new BigNumber(totalShares).plus(totalCakeInVault)
 
   const isManualCakePool = sousId === 0
 

@@ -1,16 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { DeserializedPool } from 'state/types'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
-import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
-import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 interface AutoEarningsCellProps {
-  pool: DeserializedPool
-  account: string
+  hasEarnings: boolean
+  earningTokenBalance: number
 }
 
 const StyledCell = styled(BaseCell)`
@@ -21,29 +18,10 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) => {
+const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ hasEarnings, earningTokenBalance }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const { earningTokenPrice } = pool
-
-  const { vaultPoolData } = useVaultPoolByKeyV1(pool.vaultKey)
-  const { pricePerFullShare } = vaultPoolData
-  const { cakeAtLastUserAction, userShares } = vaultPoolData.userData
-
-  let earningTokenBalance = 0
-  if (pricePerFullShare) {
-    const { autoCakeToDisplay } = getCakeVaultEarnings(
-      account,
-      cakeAtLastUserAction,
-      userShares,
-      pricePerFullShare,
-      earningTokenPrice,
-    )
-    earningTokenBalance = autoCakeToDisplay
-  }
-
   const labelText = t('Recent CAKE profit')
-  const hasEarnings = account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
 
   return (
     <StyledCell role="cell">

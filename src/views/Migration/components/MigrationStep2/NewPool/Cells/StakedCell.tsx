@@ -56,8 +56,7 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool }) => {
   )
 
   const labelText = `${pool.stakingToken.symbol} ${t('Staked')}`
-
-  const hasStaked = stakedBalance.gt(0) || isVaultWithShares
+  const hasStaked = pool.vaultKey ? (Number.isNaN(cakeAsNumberBalance) ? 0 : cakeAsNumberBalance) : stakedTokenBalance
 
   return (
     <StyledCell role="cell">
@@ -73,7 +72,7 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool }) => {
               fontSize={isMobile ? '14px' : '16px'}
               color={hasStaked ? 'primary' : 'textDisabled'}
               decimals={hasStaked ? 5 : 1}
-              value={pool.vaultKey ? (Number.isNaN(cakeAsNumberBalance) ? 0 : cakeAsNumberBalance) : stakedTokenBalance}
+              value={hasStaked}
             />
             {hasStaked ? (
               <Balance

@@ -6,6 +6,9 @@ import AutoEarning from 'views/Migration/components/MigrationStep1/OldPool/Actio
 import Earning from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/Earning'
 import AprRow from './AprRow'
 import Staked from './Staked'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
+import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
+import { BIG_ZERO } from 'utils/bigNumber'
 
 const expandAnimation = keyframes`
   from {
@@ -67,18 +70,46 @@ const ActionContainer = styled.div`
 
 interface ActionPanelProps {
   pool: DeserializedPool
+  account: string
   expanded: boolean
 }
 
-const ActionPanel: React.FC<ActionPanelProps> = ({ pool, expanded }) => {
+const ActionPanel: React.FC<ActionPanelProps> = ({ pool, account, expanded }) => {
+  const {
+    userData: { cakeAtLastUserAction, userShares },
+    pricePerFullShare,
+    totalCakeInVault,
+  } = useVaultPoolByKey(pool.vaultKey)
+  const vaultPools = useVaultPools()
+  const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
+    return total.plus(vault.totalCakeInVault)
+  }, BIG_ZERO)
+
+  // Auto Earning
+  const { autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
+    account,
+    cakeAtLastUserAction,
+    userShares,
+    pricePerFullShare,
+    pool.earningTokenPrice,
+  )
+
   return (
     <StyledActionPanel expanded={expanded}>
       <ActionContainer>
-        {pool.vaultKey ? <AutoEarning {...pool} /> : <Earning {...pool} />}
+        {pool.vaultKey ? (
+          <AutoEarning
+            earningTokenBalance={autoCakeToDisplay}
+            earningTokenDollarBalance={autoUsdToDisplay}
+            earningTokenPrice={pool.earningTokenPrice}
+          />
+        ) : (
+          <Earning {...pool} />
+        )}
         <Staked pool={pool} />
       </ActionContainer>
       <AprRow pool={pool} />
-      <TotalStaked pool={pool} />
+      <TotalStaked pool={pool} totalCakeInVault={totalCakeInVault} cakeInVaults={cakeInVaults} />
     </StyledActionPanel>
   )
 }

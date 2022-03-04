@@ -1,44 +1,28 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
-import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
-import { DeserializedPool } from 'state/types'
 import { ActionContainer, ActionTitles, ActionContent } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
-import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 const Container = styled(ActionContainer)`
   flex: 2;
   align-self: stretch;
 `
 
-const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPrice, vaultKey }) => {
+interface AutoEarningProps {
+  earningTokenBalance: number
+  earningTokenDollarBalance: number
+  earningTokenPrice: number
+}
+
+const AutoEarning: React.FunctionComponent<AutoEarningProps> = ({
+  earningTokenBalance,
+  earningTokenDollarBalance,
+  earningTokenPrice,
+}) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
   const { isMobile } = useMatchBreakpoints()
-
-  const { vaultPoolData } = useVaultPoolByKeyV1(vaultKey)
-  const { pricePerFullShare } = vaultPoolData
-  const { cakeAtLastUserAction, userShares } = vaultPoolData.userData
-
-  let earningTokenBalance = 0
-  let earningTokenDollarBalance = 0
-
-  if (pricePerFullShare) {
-    const { autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
-      account,
-      cakeAtLastUserAction,
-      userShares,
-      pricePerFullShare,
-      earningTokenPrice,
-    )
-    earningTokenBalance = autoCakeToDisplay
-    earningTokenDollarBalance = autoUsdToDisplay
-  }
-
-  const hasEarnings = account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
@@ -51,7 +35,7 @@ const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPr
       <Flex justifyContent="space-between">
         <Text>{t('Recent CAKE profit')}</Text>
         <Flex height="20px" alignItems="center">
-          {hasEarnings ? (
+          {earningTokenBalance > 0 ? (
             <Balance fontSize="16px" value={earningTokenBalance} decimals={5} />
           ) : (
             <Text fontSize="16px">0</Text>
@@ -67,7 +51,7 @@ const AutoEarning: React.FunctionComponent<DeserializedPool> = ({ earningTokenPr
       <ActionContent>
         <Flex flex="1" pt="16px" flexDirection="column">
           <>
-            {hasEarnings ? (
+            {earningTokenBalance > 0 ? (
               <>
                 <Balance lineHeight="1" bold fontSize="20px" decimals={5} value={earningTokenBalance} />
                 {earningTokenPrice > 0 && (

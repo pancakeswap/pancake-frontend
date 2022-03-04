@@ -1,10 +1,13 @@
 import React from 'react'
 import styled, { keyframes, css } from 'styled-components'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey } from 'state/types'
 import Staked from './Stake'
 import AutoEarning from './AutoEarning'
 import Earning from './Earning'
 import TotalStaked from './TotalStaked'
+import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 
 const expandAnimation = keyframes`
   from {
@@ -66,17 +69,53 @@ const ActionContainer = styled.div`
 
 interface ActionPanelProps {
   pool: DeserializedPool
+  account: string
   expanded: boolean
 }
 
-const ActionPanel: React.FC<ActionPanelProps> = ({ pool, expanded }) => {
+const ActionPanel: React.FC<ActionPanelProps> = ({ pool, account, expanded }) => {
+  const { vaultPoolData } = useVaultPoolByKeyV1(pool.vaultKey)
+  const { totalCakeInVault, pricePerFullShare } = vaultPoolData
+  const { cakeAtLastUserAction, userShares } = vaultPoolData.userData
+
+  const vaultPools = {
+    [VaultKey.CakeVault]: useVaultPoolByKeyV1(VaultKey.CakeVault).vaultPoolData,
+    [VaultKey.IfoPool]: useVaultPoolByKeyV1(VaultKey.IfoPool).vaultPoolData,
+  }
+  const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
+    return total.plus(vault.totalCakeInVault)
+  }, BIG_ZERO)
+
+  // Auto Earning
+  let earningTokenBalance = 0
+  let earningTokenDollarBalance = 0
+  if (pricePerFullShare) {
+    const { autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
+      account,
+      cakeAtLastUserAction,
+      userShares,
+      pricePerFullShare,
+      pool.earningTokenPrice,
+    )
+    earningTokenBalance = autoCakeToDisplay
+    earningTokenDollarBalance = autoUsdToDisplay
+  }
+
   return (
     <StyledActionPanel expanded={expanded}>
       <ActionContainer>
-        {pool.vaultKey ? <AutoEarning {...pool} /> : <Earning {...pool} />}
+        {pool.vaultKey ? (
+          <AutoEarning
+            earningTokenBalance={earningTokenBalance}
+            earningTokenDollarBalance={earningTokenDollarBalance}
+            earningTokenPrice={pool.earningTokenPrice}
+          />
+        ) : (
+          <Earning {...pool} />
+        )}
         <Staked pool={pool} />
       </ActionContainer>
-      <TotalStaked pool={pool} />
+      <TotalStaked pool={pool} totalCakeInVault={totalCakeInVault} cakeInVaults={cakeInVaults} />
     </StyledActionPanel>
   )
 }

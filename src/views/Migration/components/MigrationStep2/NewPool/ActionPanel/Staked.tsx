@@ -25,7 +25,6 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
   const { t } = useTranslation()
 
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
-  const hasStaked = stakedBalance.gt(0)
 
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
   const stakedTokenDollarBalance = getBalanceNumber(
@@ -40,6 +39,8 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
 
   const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
   const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
+
+  const hasStaked = pool.vaultKey ? (Number.isNaN(cakeAsNumberBalance) ? 0 : cakeAsNumberBalance) : stakedTokenBalance
 
   return (
     <Container>
@@ -56,12 +57,12 @@ const Staked: React.FC<StackedActionProps> = ({ pool }) => {
             fontSize="20px"
             color={hasStaked ? 'primary' : 'textDisabled'}
             decimals={hasStaked ? 5 : 1}
-            value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
+            value={hasStaked}
           />
           <Balance
             fontSize="12px"
             display="inline"
-            color="textSubtle"
+            color={hasStaked ? 'textSubtle' : 'textDisabled'}
             decimals={2}
             value={vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance}
             unit=" USD"

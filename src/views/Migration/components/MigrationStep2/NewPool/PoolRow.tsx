@@ -14,6 +14,9 @@ import StakedCell from './Cells/StakedCell'
 import StakeButton from './StakeButton'
 import StakeButtonCells from './Cells/StakeButtonCells'
 import ActionPanel from './ActionPanel/ActionPanel'
+import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 
 interface PoolRowProps {
   pool: DeserializedPool
@@ -64,6 +67,26 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
 
+  const {
+    userData: { cakeAtLastUserAction, userShares },
+    pricePerFullShare,
+    totalCakeInVault,
+  } = useVaultPoolByKey(pool.vaultKey)
+  const vaultPools = useVaultPools()
+  const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
+    return total.plus(vault.totalCakeInVault)
+  }, BIG_ZERO)
+
+  // Auto Earning
+  const { autoCakeToDisplay } = getCakeVaultEarnings(
+    account,
+    cakeAtLastUserAction,
+    userShares,
+    pricePerFullShare,
+    pool.earningTokenPrice,
+  )
+  const hasEarnings = account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
+
   const toggleExpanded = () => {
     if (!isLargerScreen) {
       setExpanded((prev) => !prev)
@@ -73,7 +96,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
   const EarningComponent = () => {
     if (isLargerScreen || !expanded) {
       return pool.vaultKey === VaultKey.IfoPool || pool.vaultKey === VaultKey.CakeVault ? (
-        <AutoEarningsCell pool={pool} account={account} />
+        <AutoEarningsCell hasEarnings={hasEarnings} earningTokenBalance={autoCakeToDisplay} />
       ) : (
         <EarningsCell pool={pool} account={account} />
       )
@@ -104,7 +127,9 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
           {isLargerScreen || !expanded ? <StakedCell pool={pool} account={account} /> : null}
           {EarningComponent()}
           {AprComponent()}
-          {isLargerScreen && <TotalStakedCell pool={pool} />}
+          {isLargerScreen && (
+            <TotalStakedCell pool={pool} totalCakeInVault={totalCakeInVault} cakeInVaults={cakeInVaults} />
+          )}
         </LeftContainer>
         <RightContainer>
           {isLargerScreen || !expanded ? (
@@ -115,7 +140,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
           {!isLargerScreen && <ExpandActionCell expanded={expanded} showExpandedText={expanded || isMobile} />}
         </RightContainer>
       </StyledRow>
-      {!isLargerScreen && shouldRenderActionPanel && <ActionPanel pool={pool} expanded={expanded} />}
+      {!isLargerScreen && shouldRenderActionPanel && <ActionPanel pool={pool} account={account} expanded={expanded} />}
     </>
   )
 }
