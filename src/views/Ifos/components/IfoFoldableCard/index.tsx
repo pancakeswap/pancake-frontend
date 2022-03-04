@@ -9,7 +9,6 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
@@ -18,6 +17,7 @@ import useToast from 'hooks/useToast'
 import { useEffect, useState } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import styled from 'styled-components'
+import { requiresApproval } from 'utils/requiresApproval'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import useCatchTxError from 'hooks/useCatchTxError'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
@@ -297,13 +297,8 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
 
   useEffect(() => {
     const checkAllowance = async () => {
-      try {
-        const response = await raisingTokenContract.allowance(account, contract.address)
-        const currentAllowance = new BigNumber(response.toString())
-        setEnableStatus(currentAllowance.lte(0) ? EnableStatus.DISABLED : EnableStatus.ENABLED)
-      } catch (error) {
-        setEnableStatus(EnableStatus.DISABLED)
-      }
+      const approvalRequired = await requiresApproval(raisingTokenContract, account, contract.address)
+      setEnableStatus(approvalRequired ? EnableStatus.DISABLED : EnableStatus.ENABLED)
     }
 
     if (account) {

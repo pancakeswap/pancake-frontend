@@ -93,7 +93,9 @@ const SellModal: React.FC<SellModalProps> = ({
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
-  const collectionContract = useErc721CollectionContract(nftToSell.collectionAddress)
+  const { reader: collectionContractReader, signer: collectionContractSigner } = useErc721CollectionContract(
+    nftToSell.collectionAddress,
+  )
   const nftMarketContract = useNftMarketContract()
 
   const isInvalidTransferAddress = transferAddress.length > 0 && !isAddress(transferAddress)
@@ -168,14 +170,14 @@ const SellModal: React.FC<SellModalProps> = ({
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
-        const approvedForContract = await collectionContract.isApprovedForAll(account, nftMarketContract.address)
-        return approvedForContract
+        const approvedForContract = await collectionContractReader.isApprovedForAll(account, nftMarketContract.address)
+        return approvedForContract || true
       } catch (error) {
-        return false
+        return true
       }
     },
     onApprove: () => {
-      return callWithGasPrice(collectionContract, 'setApprovalForAll', [nftMarketContract.address, true])
+      return callWithGasPrice(collectionContractSigner, 'setApprovalForAll', [nftMarketContract.address, true])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
@@ -188,7 +190,7 @@ const SellModal: React.FC<SellModalProps> = ({
         return callWithGasPrice(nftMarketContract, 'cancelAskOrder', [nftToSell.collectionAddress, nftToSell.tokenId])
       }
       if (stage === SellingStage.CONFIRM_TRANSFER) {
-        return callWithGasPrice(collectionContract, 'safeTransferFrom(address,address,uint256)', [
+        return callWithGasPrice(collectionContractSigner, 'safeTransferFrom(address,address,uint256)', [
           account,
           transferAddress,
           nftToSell.tokenId,

@@ -6,7 +6,6 @@ import { Modal, Text, Flex, BalanceInput, Box, Button, LogoRoundIcon } from '@pa
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { formatNumber, getBalanceAmount, getBalanceNumber } from 'utils/formatBalance'
-import { ethersToBigNumber } from 'utils/bigNumber'
 import useTheme from 'hooks/useTheme'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
@@ -20,6 +19,7 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import tokens from 'config/constants/tokens'
+import { requiresApproval } from 'utils/requiresApproval'
 
 const StyledModal = styled(Modal)`
   min-width: 280px;
@@ -69,7 +69,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
 
   const cakePriceBusd = usePriceCakeBusd()
   const farmAuctionContract = useFarmAuctionContract()
-  const cakeContract = useCake()
+  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
 
   const { toastSuccess } = useToast()
 
@@ -103,16 +103,10 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
-        try {
-          const response = await cakeContract.allowance(account, farmAuctionContract.address)
-          const currentAllowance = ethersToBigNumber(response)
-          return currentAllowance.gt(0)
-        } catch (error) {
-          return false
-        }
+        return requiresApproval(cakeContractReader, account, farmAuctionContract.address)
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, MaxUint256])
+        return callWithGasPrice(cakeContractApprover, 'approve', [farmAuctionContract.address, MaxUint256])
       },
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(

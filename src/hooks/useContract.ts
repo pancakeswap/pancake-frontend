@@ -44,6 +44,8 @@ import {
   IfoPool,
   Multicall,
   Weth,
+  Cake,
+  Erc721collection,
 } from 'config/abi/types'
 
 // Imports below migrated from Exchange useContract.ts
@@ -90,11 +92,14 @@ export const useERC721 = (address: string) => {
   return useMemo(() => getErc721Contract(address, library.getSigner()), [address, library])
 }
 
-export const useCake = (withSignerIfPossible = true) => {
+export const useCake = (): { reader: Cake; signer: Cake } => {
   const { account, library } = useActiveWeb3React()
   return useMemo(
-    () => getCakeContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [account, library, withSignerIfPossible],
+    () => ({
+      reader: getCakeContract(null),
+      signer: getCakeContract(getProviderOrSigner(library, account)),
+    }),
+    [account, library],
   )
 }
 
@@ -244,14 +249,17 @@ export const useNftMarketContract = () => {
   return useMemo(() => getNftMarketContract(library.getSigner()), [library])
 }
 
-export const useErc721CollectionContract = (collectionAddress: string, withSignerIfPossible = true) => {
+export const useErc721CollectionContract = (
+  collectionAddress: string,
+): { reader: Erc721collection; signer: Erc721collection } => {
   const { library, account } = useActiveWeb3React()
-  return useMemo(() => {
-    return getErc721CollectionContract(
-      withSignerIfPossible ? getProviderOrSigner(library, account) : null,
-      collectionAddress,
-    )
-  }, [account, library, collectionAddress, withSignerIfPossible])
+  return useMemo(
+    () => ({
+      reader: getErc721CollectionContract(null, collectionAddress),
+      signer: getErc721CollectionContract(getProviderOrSigner(library, account), collectionAddress),
+    }),
+    [account, library, collectionAddress],
+  )
 }
 
 // Code below migrated from Exchange useContract.ts
