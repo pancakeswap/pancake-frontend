@@ -298,7 +298,7 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
 
   useEffect(() => {
     const checkAllowance = async () => {
-      const approvalRequired = requiresApproval(raisingTokenContract, account, contract.address)
+      const approvalRequired = await requiresApproval(raisingTokenContract, account, contract.address)
       setEnableStatus(approvalRequired ? EnableStatus.DISABLED : EnableStatus.ENABLED)
     }
 
