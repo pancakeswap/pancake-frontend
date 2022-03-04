@@ -10,7 +10,7 @@ const useNftOwner = (nft: NftToken, isOwnNft = false) => {
   const { account } = useWeb3React()
   const [owner, setOwner] = useState(null)
   const [isLoadingOwner, setIsLoadingOwner] = useState(true)
-  const { reader: collectionContract } = useErc721CollectionContract(nftToSell.collectionAddress)
+  const { reader: collectionContract } = useErc721CollectionContract(nft.collectionAddress)
   const currentSeller = nft.marketData?.currentSeller
   const pancakeProfileAddress = getPancakeProfileAddress()
   const { tokenId } = nft
