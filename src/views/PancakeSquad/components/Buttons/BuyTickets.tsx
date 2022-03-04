@@ -57,8 +57,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
   const { toastSuccess } = useToast()
-  const cakeContractReader = useCake(false)
-  const cakeContractApprover = useCake()
+  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
   const { isUserEnabled, setIsUserEnabled } = useContext(PancakeSquadContext)
 
   const canBuySaleTicket =

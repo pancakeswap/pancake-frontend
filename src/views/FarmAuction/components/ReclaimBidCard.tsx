@@ -26,8 +26,7 @@ const ReclaimBidCard: React.FC = () => {
 
   const [reclaimableAuction, checkForNextReclaimableAuction] = useReclaimAuctionBid()
 
-  const cakeContractReader = useCake(false)
-  const cakeContractApprover = useCake()
+  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
   const farmAuctionContract = useFarmAuctionContract()
 
   const { toastSuccess } = useToast()

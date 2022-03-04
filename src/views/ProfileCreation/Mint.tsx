@@ -30,8 +30,7 @@ const Mint: React.FC = () => {
   const { toastSuccess } = useToast()
 
   const { account } = useWeb3React()
-  const cakeContractReader = useCake(false)
-  const cakeContractApprover = useCake()
+  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()

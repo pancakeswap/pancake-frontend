@@ -69,8 +69,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
 
   const cakePriceBusd = usePriceCakeBusd()
   const farmAuctionContract = useFarmAuctionContract()
-  const cakeContractReader = useCake(false)
-  const cakeContractApprover = useCake()
+  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
 
   const { toastSuccess } = useToast()
 

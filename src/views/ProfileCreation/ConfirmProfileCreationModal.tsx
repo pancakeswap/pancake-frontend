@@ -35,8 +35,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   const profileContract = useProfileContract()
   const { refresh: refreshProfile } = useProfile()
   const { toastSuccess } = useToast()
-  const cakeContractReader = useCake(false)
-  const cakeContractApprover = useCake()
+  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =

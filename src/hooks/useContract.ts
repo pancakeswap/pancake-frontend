@@ -44,6 +44,7 @@ import {
   IfoPool,
   Multicall,
   Weth,
+  Cake,
 } from 'config/abi/types'
 
 // Imports below migrated from Exchange useContract.ts
@@ -90,11 +91,14 @@ export const useERC721 = (address: string) => {
   return useMemo(() => getErc721Contract(address, library.getSigner()), [address, library])
 }
 
-export const useCake = (withSignerIfPossible = true) => {
+export const useCake = (): { reader: Cake; signer: Cake } => {
   const { account, library } = useActiveWeb3React()
   return useMemo(
-    () => getCakeContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [account, library, withSignerIfPossible],
+    () => ({
+      reader: getCakeContract(null),
+      signer: getCakeContract(getProviderOrSigner(library, account)),
+    }),
+    [account, library],
   )
 }
 
