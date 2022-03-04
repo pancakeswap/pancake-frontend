@@ -18,6 +18,8 @@ import { NftToken, State as NftMarketState } from './nftMarket/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
+export type DeserializedPoolVault = DeserializedPool & (DeserializedCakeVault | DeserializedIfoCakeVault)
+
 export interface BigNumberToJson {
   type: 'BigNumber'
   hex: string
@@ -138,45 +140,77 @@ export interface DeserializedFarmsState {
   poolLength?: number
 }
 
-export interface VaultFees {
+export interface SerializedVaultFees {
   performanceFee: number
   callFee: number
   withdrawalFee: number
   withdrawalFeePeriod: number
 }
 
-export interface VaultUser {
+export interface DeserializedVaultFees extends SerializedVaultFees {
+  performanceFeeAsDecimal: number
+}
+
+export interface SerializedVaultUser {
   isLoading: boolean
-  userShares: string
-  cakeAtLastUserAction: string
+  userShares: SerializedBigNumber
+  cakeAtLastUserAction: SerializedBigNumber
   lastDepositedTime: string
   lastUserActionTime: string
 }
 
-export interface IfoVaultUser extends VaultUser {
+export interface DeserializedVaultUser {
+  isLoading: boolean
+  userShares: BigNumber
+  cakeAtLastUserAction: BigNumber
+  lastDepositedTime: string
+  lastUserActionTime: string
+}
+
+export interface DeserializedIfoVaultUser extends DeserializedVaultUser {
   credit: string
 }
 
-export interface CakeVault {
-  totalShares?: string
-  pricePerFullShare?: string
-  totalCakeInVault?: string
-  estimatedCakeBountyReward?: string
-  totalPendingCakeHarvest?: string
-  fees?: VaultFees
-  userData?: VaultUser
+export interface SerializedIfoVaultUser extends SerializedVaultUser {
+  credit: string
 }
 
-export interface IfoCakeVault extends Omit<CakeVault, 'userData'> {
-  userData?: IfoVaultUser
+export interface DeserializedCakeVault {
+  totalShares?: BigNumber
+  pricePerFullShare?: BigNumber
+  totalCakeInVault?: BigNumber
+  estimatedCakeBountyReward?: BigNumber
+  totalPendingCakeHarvest?: BigNumber
+  fees?: DeserializedVaultFees
+  userData?: DeserializedVaultUser
+}
+
+export interface SerializedCakeVault {
+  totalShares?: SerializedBigNumber
+  pricePerFullShare?: SerializedBigNumber
+  totalCakeInVault?: SerializedBigNumber
+  estimatedCakeBountyReward?: SerializedBigNumber
+  totalPendingCakeHarvest?: SerializedBigNumber
+  fees?: SerializedVaultFees
+  userData?: SerializedVaultUser
+}
+
+export interface SerializedIfoCakeVault extends Omit<SerializedCakeVault, 'userData'> {
+  userData?: SerializedIfoVaultUser
+  creditStartBlock?: number
+  creditEndBlock?: number
+}
+
+export interface DeserializedIfoCakeVault extends Omit<DeserializedCakeVault, 'userData'> {
+  userData?: DeserializedIfoVaultUser
   creditStartBlock?: number
   creditEndBlock?: number
 }
 
 export interface PoolsState {
   data: SerializedPool[]
-  cakeVault: CakeVault
-  ifoPool: IfoCakeVault
+  cakeVault: SerializedCakeVault
+  ifoPool: SerializedIfoCakeVault
   userDataLoaded: boolean
 }
 

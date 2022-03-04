@@ -3,13 +3,13 @@ import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import {
   AppThunk,
-  CakeVault,
-  IfoCakeVault,
-  IfoVaultUser,
   PoolsState,
   SerializedPool,
-  VaultFees,
-  VaultUser,
+  SerializedVaultFees,
+  SerializedIfoVaultUser,
+  SerializedIfoCakeVault,
+  SerializedVaultUser,
+  SerializedCakeVault,
 } from 'state/types'
 import cakeAbi from 'config/abi/cake.json'
 import tokens from 'config/constants/tokens'
@@ -265,17 +265,17 @@ export const updateUserPendingReward =
     dispatch(updatePoolsUserData({ sousId, field: 'pendingReward', value: pendingRewards[sousId] }))
   }
 
-export const fetchCakeVaultPublicData = createAsyncThunk<CakeVault>('cakeVault/fetchPublicData', async () => {
+export const fetchCakeVaultPublicData = createAsyncThunk<SerializedCakeVault>('cakeVault/fetchPublicData', async () => {
   const publicVaultInfo = await fetchPublicVaultData()
   return publicVaultInfo
 })
 
-export const fetchCakeVaultFees = createAsyncThunk<VaultFees>('cakeVault/fetchFees', async () => {
+export const fetchCakeVaultFees = createAsyncThunk<SerializedVaultFees>('cakeVault/fetchFees', async () => {
   const vaultFees = await fetchVaultFees()
   return vaultFees
 })
 
-export const fetchCakeVaultUserData = createAsyncThunk<VaultUser, { account: string }>(
+export const fetchCakeVaultUserData = createAsyncThunk<SerializedVaultUser, { account: string }>(
   'cakeVault/fetchUser',
   async ({ account }) => {
     const userData = await fetchVaultUser(account)
@@ -283,17 +283,17 @@ export const fetchCakeVaultUserData = createAsyncThunk<VaultUser, { account: str
   },
 )
 
-export const fetchIfoPoolPublicData = createAsyncThunk<IfoCakeVault>('ifoPool/fetchPublicData', async () => {
+export const fetchIfoPoolPublicData = createAsyncThunk<SerializedIfoCakeVault>('ifoPool/fetchPublicData', async () => {
   const publicVaultInfo = await fetchPublicIfoPoolData()
   return publicVaultInfo
 })
 
-export const fetchIfoPoolFees = createAsyncThunk<VaultFees>('ifoPool/fetchFees', async () => {
+export const fetchIfoPoolFees = createAsyncThunk<SerializedVaultFees>('ifoPool/fetchFees', async () => {
   const vaultFees = await fetchIfoPoolFeesData()
   return vaultFees
 })
 
-export const fetchIfoPoolUserAndCredit = createAsyncThunk<IfoVaultUser, { account: string }>(
+export const fetchIfoPoolUserAndCredit = createAsyncThunk<SerializedIfoVaultUser, { account: string }>(
   'ifoPool/fetchUser',
   async ({ account }) => {
     const userData = await fetchIfoPoolUserData(account)
@@ -344,16 +344,16 @@ export const PoolsSlice = createSlice({
   },
   extraReducers: (builder) => {
     // Vault public data that updates frequently
-    builder.addCase(fetchCakeVaultPublicData.fulfilled, (state, action: PayloadAction<CakeVault>) => {
+    builder.addCase(fetchCakeVaultPublicData.fulfilled, (state, action: PayloadAction<SerializedCakeVault>) => {
       state.cakeVault = { ...state.cakeVault, ...action.payload }
     })
     // Vault fees
-    builder.addCase(fetchCakeVaultFees.fulfilled, (state, action: PayloadAction<VaultFees>) => {
+    builder.addCase(fetchCakeVaultFees.fulfilled, (state, action: PayloadAction<SerializedVaultFees>) => {
       const fees = action.payload
       state.cakeVault = { ...state.cakeVault, fees }
     })
     // Vault user data
-    builder.addCase(fetchCakeVaultUserData.fulfilled, (state, action: PayloadAction<VaultUser>) => {
+    builder.addCase(fetchCakeVaultUserData.fulfilled, (state, action: PayloadAction<SerializedVaultUser>) => {
       const userData = action.payload
       userData.isLoading = false
       state.cakeVault = { ...state.cakeVault, userData }
@@ -363,7 +363,7 @@ export const PoolsSlice = createSlice({
       state.ifoPool = { ...state.ifoPool, ...action.payload }
     })
     // Vault fees
-    builder.addCase(fetchIfoPoolFees.fulfilled, (state, action: PayloadAction<VaultFees>) => {
+    builder.addCase(fetchIfoPoolFees.fulfilled, (state, action: PayloadAction<SerializedVaultFees>) => {
       const fees = action.payload
       state.ifoPool = { ...state.ifoPool, fees }
     })
