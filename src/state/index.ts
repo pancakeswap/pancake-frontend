@@ -74,7 +74,8 @@ const allReducers = combineReducers({
 
 const rootReducer = (state, action) => {
   if (action.type === 'global/resetUserState') {
-    return {
+    // eslint-disable-next-line no-param-reassign
+    state = {
       ...state,
       farms: {
         ...state.farms,
