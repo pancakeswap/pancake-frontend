@@ -77,7 +77,8 @@ const allReducers = combineReducers({
 
 const rootReducer = (state, action) => {
   if (action.type === 'global/resetUserState') {
-    return {
+    // eslint-disable-next-line no-param-reassign
+    state = {
       ...state,
       farms: {
         ...state.farms,
@@ -102,21 +103,7 @@ const rootReducer = (state, action) => {
         cakeVault: { ...state.pools.cakeVault, userData: initialPoolVaultState.userData },
         ifoPool: { ...state.pools.ifoPool, userData: initialPoolVaultState.userData },
       },
-    } as CombinedState<{
-      farms: SerializedFarmsState
-      pools: PoolsState
-      predictions: PredictionsState
-      lottery: LotteryState
-      info: InfoState
-      nftMarket: State
-      user: UserState
-      transactions: TransactionState
-      swap: SwapState
-      mint: MintState
-      burn: BurnState
-      multicall: MulticallState
-      lists: ListsState
-    }>
+    }
   }
 
   return allReducers(state, action)
