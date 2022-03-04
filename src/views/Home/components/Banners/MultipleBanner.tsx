@@ -1,3 +1,5 @@
+import useMediaQuery from 'hooks/useMediaQuery'
+import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { Autoplay, EffectFade, Pagination } from 'swiper'
 import 'swiper/css'
@@ -8,16 +10,27 @@ import { useMultipleBannerConfig } from './hooks/useMultipleBannerConfig'
 
 const StyledSwiper = styled(Swiper)`
   position: relative;
+  overflow: visible;
+  margin-top: 180px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-top: 55px;
+  }
   .swiper-wrapper {
     &::before {
       content: '';
       border-radius: 32px;
       position: absolute;
-      top: 20px;
-      left: 20px;
-      right: 20px;
-      bottom: 20px;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
       background: -webkit-linear-gradient(#7645d9 0%, #452a7a 100%);
+      ${({ theme }) => theme.mediaQueries.sm} {
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+      }
     }
   }
   .swiper-pagination {
@@ -27,7 +40,10 @@ const StyledSwiper = styled(Swiper)`
     display: flex;
     justify-content: center;
     width: 108px;
-    bottom: 35px;
+    bottom: 5px;
+    ${({ theme }) => theme.mediaQueries.md} {
+      bottom: 35px;
+    }
   }
   .swiper-pagination-bullet {
     background-color: white;
@@ -45,6 +61,8 @@ const StyledSwiper = styled(Swiper)`
 
 const MultipleBanner: React.FC = () => {
   const bannerList = useMultipleBannerConfig()
+  const theme = useTheme()
+  const isDeskTop = useMediaQuery(theme.theme.mediaQueries.sm.replace('@media screen and ', ''))
   return (
     <StyledSwiper
       modules={[Autoplay, Pagination, EffectFade]}
@@ -55,13 +73,12 @@ const MultipleBanner: React.FC = () => {
       speed={500}
       autoplay
       loop
-      style={{ marginTop: 55 }}
       pagination={{ clickable: true }}
     >
       {bannerList.map((banner, index) => {
         const childKey = `Banner${index}`
         return (
-          <SwiperSlide style={{ padding: 20 }} key={childKey}>
+          <SwiperSlide style={{ padding: isDeskTop ? 20 : 0 }} key={childKey}>
             {banner}
           </SwiperSlide>
         )
