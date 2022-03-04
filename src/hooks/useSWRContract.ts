@@ -153,7 +153,7 @@ export function useSWRMulticall<Data>(abi: any[], calls: Call[], options?: Multi
 export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher, config) => {
   const swr = useSWRNext(key, fetcher, config)
   const { data } = swr
-  const serializedKey = unstable_serialize(key)
+  const serializedKey = useMemo(() => unstable_serialize(key), [key])
 
   useEffect(() => {
     if (data) {
@@ -166,14 +166,17 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
     }
   }, [data, serializedKey])
 
-  const localStorageData = localStorage.getItem(serializedKey)
-
   let localStorageDataParsed
-  if (localStorageData) {
-    try {
-      localStorageDataParsed = JSON.parse(localStorageData)
-    } catch (error) {
-      localStorage.removeItem(serializedKey)
+
+  if (!data) {
+    const localStorageData = localStorage.getItem(serializedKey)
+
+    if (localStorageData) {
+      try {
+        localStorageDataParsed = JSON.parse(localStorageData)
+      } catch (error) {
+        localStorage.removeItem(serializedKey)
+      }
     }
   }
 
