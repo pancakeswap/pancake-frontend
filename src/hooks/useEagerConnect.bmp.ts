@@ -152,12 +152,16 @@ export const useEagerConnect = () => {
   const { activate } = useWeb3React()
 
   useEffect(() => {
-    setTimeout(() => {
-      activate(injected, (error) => {
-        console.log('🚀 ~ file: useEagerConnect.ts ~ line 13 ~ activate ~ error', error)
-        captureException(error)
-      })
-    })
+    const main = async () => {
+      const address = await injected.getAccount().catch(() => '')
+      if (address) {
+        activate(injected, (error) => {
+          console.log('🚀 ~ file: useEagerConnect.ts ~ line 13 ~ activate ~ error', error)
+          captureException(error)
+        })
+      }
+    }
+    main()
   }, [activate])
 }
 export const useActiveHandle = () => {
