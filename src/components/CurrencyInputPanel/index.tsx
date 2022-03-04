@@ -9,7 +9,6 @@ import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
-import { RowBetween } from '../Layout/Row'
 import { Input as NumericalInput } from './NumericalInput'
 import { CopyButton } from '../CopyButton'
 
@@ -36,7 +35,7 @@ const InputPanel = styled.div`
   display: flex;
   flex-flow: column nowrap;
   position: relative;
-  border-radius: '20px';
+  border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
@@ -159,17 +158,15 @@ export default function CurrencyInputPanel({
         )}
       </Flex>
       <InputPanel>
-        <Container>
+        <Container as="label">
           <LabelRow>
-            <RowBetween>
-              <NumericalInput
-                className="token-amount-input"
-                value={value}
-                onUserInput={(val) => {
-                  onUserInput(val)
-                }}
-              />
-            </RowBetween>
+            <NumericalInput
+              className="token-amount-input"
+              value={value}
+              onUserInput={(val) => {
+                onUserInput(val)
+              }}
+            />
           </LabelRow>
           <InputRow selected={disableCurrencySelect}>
             {account && currency && showMaxButton && label !== 'To' && (
