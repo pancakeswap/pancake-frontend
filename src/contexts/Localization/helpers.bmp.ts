@@ -1,6 +1,6 @@
 import { EN, languages, languageList } from 'config/localization/languages'
-import mpService from '@binance/mp-service'
 import { captureException } from '@binance/sentry-miniapp'
+import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
 
 const publicUrl = process.env.PUBLIC_URL || 'pancakeswap.finance'
 
@@ -19,7 +19,7 @@ export const fetchLocale = async (locale) => {
 
 export const getLanguageCodeFromLS = () => {
   try {
-    const { language } = mpService.getSystemInfoSync()
+    const { language } = getSystemInfoSync()
     return languages[language] ? language : code2Locale[language] ? code2Locale[language] : EN.locale
   } catch (e) {
     console.error(e)

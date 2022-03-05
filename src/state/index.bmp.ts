@@ -12,7 +12,7 @@ import {
   REGISTER,
   REHYDRATE,
 } from 'redux-persist'
-import mpService from '@binance/mp-service'
+import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
 import storage from 'redux-persist/lib/storage'
 import blockReducer from './block'
 import burn from './burn/reducer'
@@ -33,7 +33,7 @@ import transactions from './transactions/reducer'
 import user from './user/reducer'
 import votingReducer from './voting'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
+const PERSISTED_KEYS: string[] = []
 
 const persistConfig = {
   key: 'primary',
@@ -45,7 +45,10 @@ const persistConfig = {
         return { ...inBoundState }
       },
       (outBoundState) => {
-        return { ...outBoundState, isDark: mpService.getSystemInfoSync()?.theme === 'dark' ? true : false }
+        return {
+          ...outBoundState,
+          isDark: getSystemInfoSync()?.theme === 'dark' ? true : false,
+        }
       },
       { whitelist: ['user'] },
     ),

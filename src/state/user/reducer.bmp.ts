@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { SerializedToken } from 'config/constants/types'
+import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
 import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import { updateVersion } from '../global/actions'
 import {
@@ -35,7 +36,6 @@ import {
   setSubgraphHealthIndicatorDisplayed,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
-import mpService from '@binance/mp-service'
 
 const currentTimestamp = () => new Date().getTime()
 
@@ -100,7 +100,7 @@ export const initialState: UserState = {
   pairs: {},
   timestamp: currentTimestamp(),
   audioPlay: true,
-  isDark: mpService.getSystemInfoSync()?.theme === 'dark' ? true : false,
+  isDark: getSystemInfoSync()?.theme === 'dark' ? true : false,
   isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,
   userChartViewMode: ChartViewMode.BASIC,
