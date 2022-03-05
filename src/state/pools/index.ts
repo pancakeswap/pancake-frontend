@@ -38,6 +38,7 @@ import {
 import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
 import fetchVaultUser from './fetchVaultUser'
 import { getTokenPricesFromFarm } from './helpers'
+import { resetUserState } from '../global/actions'
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,
@@ -343,6 +344,15 @@ export const PoolsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(resetUserState, (state) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      state.data = state.data.map(({ userData, ...pool }) => {
+        return { ...pool }
+      })
+      state.userDataLoaded = false
+      state.cakeVault = { ...state.cakeVault, userData: initialPoolVaultState.userData }
+      state.ifoPool = { ...state.ifoPool, userData: initialPoolVaultState.userData }
+    })
     // Vault public data that updates frequently
     builder.addCase(fetchCakeVaultPublicData.fulfilled, (state, action: PayloadAction<SerializedCakeVault>) => {
       state.cakeVault = { ...state.cakeVault, ...action.payload }
