@@ -114,6 +114,14 @@ const StyledDatePickerPortal = styled.div`
       background-color: ${({ theme }) => theme.colors.cardBorder};
     }
   }
+
+  .react-datepicker__time-container
+    .react-datepicker__time
+    .react-datepicker__time-box
+    ul.react-datepicker__time-list
+    li.react-datepicker__time-list-item--selected {
+    color: ${({ theme }) => theme.colors.text};
+  }
 `
 
 const DatePickerPortal = () => {
