@@ -6,7 +6,7 @@ import { simpleRpcProvider } from 'utils/providers'
 import { setBlock } from '.'
 import { State } from '../types'
 
-const REFRESH_BLOCK_INTERVAL = 6000
+const REFRESH_BLOCK_INTERVAL = 12000
 
 export const usePollBlockNumber = () => {
   const dispatch = useAppDispatch()
