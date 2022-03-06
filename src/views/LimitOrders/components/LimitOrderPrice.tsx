@@ -1,7 +1,7 @@
 import React from 'react'
 import { Currency, Percent, Price } from '@pancakeswap/sdk'
 import styled from 'styled-components'
-import { Input, Flex, Text, Button, AutoRenewIcon, SyncAltIcon } from '@pancakeswap/uikit'
+import { Input, Flex, Text, Button, AutoRenewIcon, SyncAltIcon, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from 'utils'
 import { Rate } from 'state/limitOrders/types'
@@ -28,6 +28,7 @@ interface LimitOrderPriceProps {
   handleRateType: (rateType: Rate, price?: Price) => void
   price: Price
   handleResetToMarketPrice: () => void
+  realExecutionPriceAsString: string
 }
 
 const DIRECTION_COLORS = {
@@ -47,6 +48,7 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
   handleRateType,
   price,
   handleResetToMarketPrice,
+  realExecutionPriceAsString,
 }) => {
   const { t } = useTranslation()
 
@@ -59,6 +61,31 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
   const toggleRateType = () => {
     handleRateType(rateType, price)
   }
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <>
+      <Text>
+        {t(
+          'Takes into account the gas necessary to execute your order and guarantees that your desired rate is fulfilled.',
+        )}
+      </Text>
+      <Text>{t('It fluctuates according to gas prices.')}</Text>
+      {inputCurrency?.symbol && outputCurrency?.symbol && realExecutionPriceAsString && (
+        <Text>
+          {realExecutionPriceAsString === 'never executes'
+            ? t(
+                'Assuming current gas price this order will never execute. Try increasing the amount of tokens to swap.',
+              )
+            : t('Assuming current gas price it should execute when 1 %assetOneSymbol% = %price% %assetTwoSymbol%', {
+                assetOneSymbol: rateType === Rate.MUL ? inputCurrency?.symbol : outputCurrency?.symbol,
+                assetTwoSymbol: rateType === Rate.MUL ? outputCurrency?.symbol : inputCurrency?.symbol,
+                price: realExecutionPriceAsString,
+              })}
+        </Text>
+      )}
+    </>,
+    { placement: 'top' },
+  )
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nextUserInput = event.target.value.replace(/,/g, '.')
@@ -108,12 +135,23 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
         inputMode="decimal"
       />
       {hasCurrencyInfo && (
-        <LabelContainer justifyContent="flex-end" onClick={toggleRateType}>
+        <LabelContainer justifyContent="flex-end" alignItems="center" onClick={toggleRateType}>
           <Text small bold>
             {label}
           </Text>
           <SyncAltIcon color="textSubtle" width="24px" ml="4px" />
         </LabelContainer>
+      )}
+      {realExecutionPriceAsString && (
+        <Flex justifySelf="flex-end" mb="8px">
+          <Text small color="textSubtle" mr="4px">
+            {t('Real execution price: %price%', { price: realExecutionPriceAsString })}
+          </Text>
+          <span ref={targetRef}>
+            <HelpIcon color="textSubtle" />
+            {tooltipVisible && tooltip}
+          </span>
+        </Flex>
       )}
     </>
   )

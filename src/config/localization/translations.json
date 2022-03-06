@@ -1582,5 +1582,17 @@
   "View order execution on BSCScan": "View order execution on BSCScan",
   "Market": "Market",
   "%percentage%% above market": "%percentage%% above market",
-  "%percentage%% below market": "%percentage%% below market"
+  "%percentage%% below market": "%percentage%% below market",
+  "Real execution price: %price%": "Real execution price: %price%",
+  "Takes into account the gas necessary to execute your order and guarantees that your desired rate is fulfilled.": "Takes into account the gas necessary to execute your order and guarantees that your desired rate is fulfilled.",
+  "It fluctuates according to gas prices.": "It fluctuates according to gas prices.",
+  "Assuming current gas price it should execute when 1 %assetOneSymbol% = %price% %assetTwoSymbol%": "Assuming current gas price it should execute when 1 %assetOneSymbol% = %price% %assetTwoSymbol%",
+  "Assuming current gas price this order will never execute. Try increasing the amount of tokens to swap.": "Assuming current gas price this order will never execute. Try increasing the amount of tokens to swap.",
+  "Real Execution Price:": "Real Execution Price:",
+  "Your gas fees are paid for by the spread between your specified price and the real execution price.": "Your gas fees are paid for by the spread between your specified price and the real execution price.",
+  "Gas fees are volatile and thus the exact market price at which your order will execute is unpredictable.": "Gas fees are volatile and thus the exact market price at which your order will execute is unpredictable.",
+  "It might take much longer than you expected to reach the price that fills your order + fees.": "It might take much longer than you expected to reach the price that fills your order + fees.",
+  "\"Fee on Transfer\" Tokens": "\"Fee on Transfer\" Tokens",
+  "\"Fee on transfer\" tokens should not be used with Limit Orders (use at your own risk)": "\"Fee on transfer\" tokens should not be used with Limit Orders (use at your own risk)",
+  "Can't execute this order": "Can't execute this order"
 }

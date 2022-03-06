@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
 import { Button, Box, Flex, useModal, useMatchBreakpoints, BottomDrawer } from '@pancakeswap/uikit'
 
@@ -10,6 +10,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import Footer from 'components/Menu/Footer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useGelatoLimitOrders from 'hooks/limitOrders/useGelatoLimitOrders'
+import useGasOverhead from 'hooks/limitOrders/useGasOverhead'
 import { ApprovalState, useApproveCallbackFromInputCurrencyAmount } from 'hooks/useApproveCallback'
 import { Field } from 'state/limitOrders/types'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
@@ -212,6 +213,8 @@ const LimitOrders = () => {
     wrappedCurrencies.output?.address,
   ])
 
+  const { realExecutionPriceAsString } = useGasOverhead(parsedAmounts.input, parsedAmounts.output, rateType)
+
   const [showConfirmModal] = useModal(
     <ConfirmLimitOrderModal
       currencies={currencies}
@@ -327,6 +330,7 @@ const LimitOrders = () => {
                       handleRateType={handleRateType}
                       price={price}
                       handleResetToMarketPrice={handleResetToMarketPrice}
+                      realExecutionPriceAsString={realExecutionPriceAsString}
                     />
                   </AutoColumn>
                   <Box mt="0.25rem">
@@ -358,9 +362,11 @@ const LimitOrders = () => {
                         }}
                         id="place-order-button"
                         width="100%"
-                        disabled={!!inputError}
+                        disabled={!!inputError || realExecutionPriceAsString === 'never executes'}
                       >
-                        {inputError || t('Place an Order')}
+                        {inputError || realExecutionPriceAsString === 'never executes'
+                          ? inputError || t("Can't execute this order")
+                          : t('Place an Order')}
                       </Button>
                     )}
                   </Box>

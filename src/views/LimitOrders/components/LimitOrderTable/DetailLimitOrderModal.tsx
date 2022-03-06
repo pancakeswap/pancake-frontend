@@ -10,6 +10,7 @@ import { TransactionErrorContent, TransactionSubmittedContent } from 'components
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import CurrencyFormat from './CurrencyFormat'
 import CellFormat from './CellFormat'
+import LimitOrderDisclaimer from '../LimitOrderDisclaimer'
 
 const StyledModal = styled(Modal)`
   max-width: 613px;
@@ -120,6 +121,7 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
         isSubmissionPending={isSubmissionPending}
         isCancellationPending={isCancellationPending}
       />
+      <LimitOrderDisclaimer />
       {isOpen ? (
         <>
           <Button variant="primary" mt="24px" as="a" external href={formattedOrder.bscScanUrls.created}>

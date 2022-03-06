@@ -18,6 +18,7 @@ import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
 import styled from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
+import LimitOrderDisclaimer from './LimitOrderDisclaimer'
 
 const InfoCardWrapper = styled.div`
   border-radius: 16px;
@@ -187,6 +188,7 @@ const OrderContent: React.FC<OrderContentProps> = ({
           )}
         </MessageText>
       </Message>
+      <LimitOrderDisclaimer />
     </>
   )
 }

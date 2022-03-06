@@ -1,12 +1,11 @@
 /* eslint-disable no-var */
 /* eslint-disable vars-on-top */
 import { renderHook } from '@testing-library/react-hooks'
-import { testnetTokens } from 'config/constants/tokens'
 import { parse } from 'querystring'
 import { createWrapper } from 'testUtils'
 import { Field } from './actions'
 import { DEFAULT_OUTPUT_CURRENCY } from './constants'
-import { queryParametersToSwapState, tryParseAmount, useDerivedSwapInfo } from './hooks'
+import { queryParametersToSwapState, useDerivedSwapInfo } from './hooks'
 
 describe('hooks', () => {
   describe('#queryParametersToSwapState', () => {
@@ -103,19 +102,6 @@ describe('hooks', () => {
           recipient: 'bob.argent.xyz',
         },
       )
-    })
-  })
-
-  describe('#tryParseAmount', () => {
-    it('should be undefined when no valid input', () => {
-      expect(tryParseAmount()).toBeUndefined()
-    })
-    it('should be undefined when input is 0', () => {
-      expect(tryParseAmount('0.00')).toBeUndefined()
-    })
-
-    it('should pared value', () => {
-      expect(tryParseAmount('100', testnetTokens.cake)).toBeTruthy()
     })
   })
 })
