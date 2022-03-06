@@ -15,6 +15,28 @@ const LoadingTable = () => (
           <Skeleton />
         </Td>
       </tr>
+      <tr>
+        <Td>
+          <Skeleton />
+        </Td>
+        <Td>
+          <Skeleton />
+        </Td>
+        <Td>
+          <Skeleton />
+        </Td>
+      </tr>
+      <tr>
+        <Td>
+          <Skeleton />
+        </Td>
+        <Td>
+          <Skeleton />
+        </Td>
+        <Td>
+          <Skeleton />
+        </Td>
+      </tr>
     </tbody>
   </Table>
 )

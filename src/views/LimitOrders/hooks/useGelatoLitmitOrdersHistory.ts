@@ -25,7 +25,7 @@ function syncOrderToLocalStorage({ chainId, account, orders }) {
   })
 }
 
-export function useGelatoOpenLimitOrders(turnOn: boolean): Order[] {
+const useOpenOrders = (turnOn: boolean): Order[] => {
   const { account, chainId } = useActiveWeb3React()
 
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
@@ -50,16 +50,14 @@ export function useGelatoOpenLimitOrders(turnOn: boolean): Order[] {
       const pendingOrdersLS = getLSOrders(chainId, account, true)
 
       return [
-        ...openOrdersLS
-          .filter((order: Order) => {
-            const orderCancelled = pendingOrdersLS
-              .filter((pendingOrder) => pendingOrder.status === 'cancelled')
-              .find((pendingOrder) => pendingOrder.id.toLowerCase() === order.id.toLowerCase())
-            return !orderCancelled
-          })
-          .sort(newOrdersFirst),
-        ...pendingOrdersLS.filter((order) => order.status === 'open').sort(newOrdersFirst),
-      ]
+        ...openOrdersLS.filter((order: Order) => {
+          const orderCancelled = pendingOrdersLS
+            .filter((pendingOrder) => pendingOrder.status === 'cancelled')
+            .find((pendingOrder) => pendingOrder.id.toLowerCase() === order.id.toLowerCase())
+          return !orderCancelled
+        }),
+        ...pendingOrdersLS.filter((order) => order.status === 'open'),
+      ].sort(newOrdersFirst)
     },
     {
       refreshInterval: SLOW_INTERVAL,
@@ -69,7 +67,7 @@ export function useGelatoOpenLimitOrders(turnOn: boolean): Order[] {
   return data
 }
 
-export function useGelatoLimitOrdersHistory(turnOn: boolean): Order[] {
+const useHistoryOrders = (turnOn: boolean): Order[] => {
   const { account, chainId } = useActiveWeb3React()
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
 
@@ -101,12 +99,7 @@ export function useGelatoLimitOrdersHistory(turnOn: boolean): Order[] {
         (order) => order.status === 'cancelled',
       )
 
-      // TODO: add sort by date
-      return [
-        ...pendingCancelledOrdersLS.sort(newOrdersFirst),
-        ...cancelledOrdersLS.sort(newOrdersFirst),
-        ...executedOrdersLS.sort(newOrdersFirst),
-      ]
+      return [...pendingCancelledOrdersLS, ...cancelledOrdersLS, ...executedOrdersLS].sort(newOrdersFirst)
     },
     {
       refreshInterval: SLOW_INTERVAL,
@@ -116,9 +109,9 @@ export function useGelatoLimitOrdersHistory(turnOn: boolean): Order[] {
   return data
 }
 
-export default function useGelatoLimitOrders(orderCategory: ORDER_CATEGORY) {
-  const historyOrders = useGelatoLimitOrdersHistory(orderCategory === ORDER_CATEGORY.History)
-  const openOrders = useGelatoOpenLimitOrders(orderCategory === ORDER_CATEGORY.Open)
+export default function useGelatoLimitOrdersHistory(orderCategory: ORDER_CATEGORY) {
+  const historyOrders = useHistoryOrders(orderCategory === ORDER_CATEGORY.History)
+  const openOrders = useOpenOrders(orderCategory === ORDER_CATEGORY.Open)
 
   const orders = useMemo(
     () => (orderCategory === ORDER_CATEGORY.Open ? openOrders : historyOrders),
