@@ -3,7 +3,6 @@ import { Order } from '@gelatonetwork/limit-orders-lib'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Overrides } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
-import { isEthereumChain } from '@gelatonetwork/limit-orders-lib/dist/utils'
 
 import { useOrderActionHandlers } from 'state/limitOrders/hooks'
 import { Field, Rate } from 'state/limitOrders/types'
@@ -138,7 +137,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         orderToCancel,
         checkIfOrderExists,
         overrides ?? {
-          gasLimit: isEthereumChain(chainId) ? 600_000 : 2_000_000,
+          gasLimit: 2_000_000,
         },
       )
 
