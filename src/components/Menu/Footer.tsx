@@ -1,8 +1,9 @@
+import { memo } from 'react'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
-const Wrapper = styled.div<{ $isSide: boolean }>`
+const Wrapper = memo(styled.div<{ $isSide: boolean }>`
   width: 100%;
   height: ${({ $isSide }) => ($isSide ? '100%' : 'auto')};
   display: flex;
@@ -15,7 +16,7 @@ const Wrapper = styled.div<{ $isSide: boolean }>`
     justify-content: space-between;
     flex-direction: ${({ $isSide }) => ($isSide ? 'column' : 'row')};
   }
-`
+`)
 
 const BubbleWrapper = styled(Flex)`
   svg {
@@ -85,4 +86,4 @@ const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) 
   )
 }
 
-export default Footer
+export default memo(Footer)

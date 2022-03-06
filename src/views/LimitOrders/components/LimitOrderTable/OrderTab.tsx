@@ -2,7 +2,7 @@ import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'
-import { ORDER_CATEGORY } from './types'
+import { ORDER_CATEGORY } from '../../types'
 
 const Wrapper = styled.div`
   & > div {

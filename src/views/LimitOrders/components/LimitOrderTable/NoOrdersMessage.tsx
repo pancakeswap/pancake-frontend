@@ -1,7 +1,7 @@
 import { BunnyPlaceholderIcon, Flex, Text } from '@pancakeswap/uikit'
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
-import { ORDER_CATEGORY } from './types'
+import { ORDER_CATEGORY } from '../../types'
 
 const NoOrdersMessage: React.FC<{ orderCategory: ORDER_CATEGORY }> = ({ orderCategory }) => {
   const { t } = useTranslation()

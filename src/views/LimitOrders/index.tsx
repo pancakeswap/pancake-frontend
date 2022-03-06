@@ -17,7 +17,6 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { GELATO_NATIVE } from 'config/constants'
 import { useExchangeChartManager } from 'state/user/hooks'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
-import useGelatoLimitOrdersHistory from 'hooks/limitOrders/useGelatoLimitOrdersHistory'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
@@ -63,8 +62,6 @@ const LimitOrders = () => {
     },
     orderState: { independentField, rateType },
   } = useGelatoLimitOrders()
-
-  const orderHistory = useGelatoLimitOrdersHistory()
 
   const [{ swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
@@ -248,23 +245,8 @@ const LimitOrders = () => {
   const showApproveFlow =
     !inputError && (approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING)
 
-  const userHasOrders = useMemo(
-    () =>
-      orderHistory.open.confirmed.length > 0 ||
-      orderHistory.open.pending.length > 0 ||
-      orderHistory.cancelled.confirmed.length > 0 ||
-      orderHistory.cancelled.pending.length > 0 ||
-      orderHistory.executed.length > 0,
-    [
-      orderHistory.open.confirmed.length,
-      orderHistory.open.pending.length,
-      orderHistory.cancelled.confirmed.length,
-      orderHistory.cancelled.pending.length,
-      orderHistory.executed.length,
-    ],
-  )
+  const isSideFooter = isChartExpanded || isChartDisplayed
 
-  const isSideFooter = isChartExpanded || (isChartDisplayed && userHasOrders)
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isSideFooter} noMinHeight>
       <Flex
@@ -288,11 +270,9 @@ const LimitOrders = () => {
               isFullWidthContainer
             />
             {isChartDisplayed && <Box mb="48px" />}
-            {userHasOrders && (
-              <Box width="100%">
-                <LimitOrderTable orderHistory={orderHistory} isCompact={isTablet} />
-              </Box>
-            )}
+            <Box width="100%">
+              <LimitOrderTable isCompact={isTablet} />
+            </Box>
           </Flex>
         )}
         <Flex flexDirection="column" alignItems="center">
@@ -388,9 +368,9 @@ const LimitOrders = () => {
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
-          {userHasOrders && isMobile && (
+          {isMobile && (
             <Flex mt="24px" width="100%">
-              <LimitOrderTable orderHistory={orderHistory} isCompact />
+              <LimitOrderTable isCompact />
             </Flex>
           )}
           {isSideFooter && (

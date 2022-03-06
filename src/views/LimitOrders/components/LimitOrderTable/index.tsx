@@ -1,24 +1,41 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, memo } from 'react'
 import { Flex, Card } from '@pancakeswap/uikit'
+import useGelatoLimitOrders from '../../hooks/useGelatoLitmitOrders'
 
-import { GelatoLimitOrdersHistory } from 'hooks/limitOrders/useGelatoLimitOrdersHistory'
-import OrderItemRows from './OrderItemRows'
 import OrderTab from './OrderTab'
-import { ORDER_CATEGORY } from './types'
+import { ORDER_CATEGORY } from '../../types'
 
-const LimitOrderTable: React.FC<{ orderHistory: GelatoLimitOrdersHistory; isCompact: boolean }> = ({
-  orderHistory,
-  isCompact,
-}) => {
-  const openOrders = [...orderHistory.open.pending, ...orderHistory.open.confirmed].sort(
-    (a, b) => parseInt(b.createdAt, 10) - parseInt(a.createdAt, 10),
-  )
-  const executedAndCancelledOrders = [
-    ...orderHistory.cancelled.pending,
-    ...orderHistory.cancelled.confirmed,
-    ...orderHistory.executed,
-  ].sort((a, b) => parseInt(b.updatedAt, 10) - parseInt(a.updatedAt, 10))
+import CompactLimitOrderTable from './CompactLimitOrderTable'
+import NoOrdersMessage from './NoOrdersMessage'
+import LoadingTable from './LoadingTable'
+import SpaciousLimitOrderTable from './SpaciousLimitOrderTable'
+import Navigation from './TableNavigation'
 
+const OrderTable: React.FC<{ isCompact: boolean; orderCategory: ORDER_CATEGORY }> = memo(
+  ({ orderCategory, isCompact }) => {
+    const orders = useGelatoLimitOrders(orderCategory)
+
+    if (!orders) return <LoadingTable />
+
+    if (!orders?.length) {
+      return <NoOrdersMessage orderCategory={orderCategory} />
+    }
+
+    return (
+      <Navigation data={orders} resetFlag={orderCategory}>
+        {({ paginatedData }) =>
+          isCompact ? (
+            <CompactLimitOrderTable orders={paginatedData} />
+          ) : (
+            <SpaciousLimitOrderTable orders={paginatedData} />
+          )
+        }
+      </Navigation>
+    )
+  },
+)
+
+const LimitOrderTable: React.FC<{ isCompact: boolean }> = ({ isCompact }) => {
   const [activeTab, setIndex] = useState<ORDER_CATEGORY>(ORDER_CATEGORY.Open)
   const handleClick = useCallback((tabType: ORDER_CATEGORY) => setIndex(tabType), [])
 
@@ -26,14 +43,10 @@ const LimitOrderTable: React.FC<{ orderHistory: GelatoLimitOrdersHistory; isComp
     <Flex flex="1" justifyContent="center" mb="24px">
       <Card style={{ width: '100%', height: 'max-content' }}>
         <OrderTab onItemClick={handleClick} activeIndex={activeTab} />
-        <OrderItemRows
-          orderCategory={activeTab}
-          orders={activeTab === ORDER_CATEGORY.Open ? openOrders : executedAndCancelledOrders}
-          isCompact={isCompact}
-        />
+        <OrderTable orderCategory={activeTab} isCompact={isCompact} />
       </Card>
     </Flex>
   )
 }
 
-export default LimitOrderTable
+export default memo(LimitOrderTable)
