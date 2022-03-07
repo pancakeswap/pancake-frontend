@@ -1,9 +1,7 @@
-import { ArrowForwardIcon, Button, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Heading, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
-import useMediaQuery from 'hooks/useMediaQuery'
-import useTheme from 'hooks/useTheme'
 import Image from 'next/image'
 import { memo } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -87,8 +85,7 @@ const LotteryCountDownTimer = () => {
 
 const LotteryBanner = () => {
   const { t } = useTranslation()
-  const theme = useTheme()
-  const isDeskTop = useMediaQuery(theme.theme.mediaQueries.sm.replace('@media screen and ', ''))
+  const { isDesktop } = useMatchBreakpoints()
   return (
     <S.Wrapper>
       <S.Inner>
@@ -109,7 +106,7 @@ const LotteryBanner = () => {
           </NextLinkFromReactRouter>
         </S.LeftWrapper>
         <RightWrapper>
-          {isDeskTop && (
+          {isDesktop && (
             <Image
               src={lotteryImage}
               alt="LotteryBanner"
@@ -123,7 +120,7 @@ const LotteryBanner = () => {
               placeholder="blur"
             />
           )}
-          {!isDeskTop && (
+          {!isDesktop && (
             <Image
               className="mobile"
               src={lotteryMobileImage}

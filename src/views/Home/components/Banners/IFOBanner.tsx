@@ -1,9 +1,7 @@
-import { ArrowForwardIcon, Button, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
-import useMediaQuery from 'hooks/useMediaQuery'
-import useTheme from 'hooks/useTheme'
 import Image from 'next/image'
 import { memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -33,9 +31,8 @@ const IFOBanner = () => {
     ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
     : null
 
-  const theme = useTheme()
-  const isDeskTop = useMediaQuery(theme.theme.mediaQueries.sm.replace('@media screen and ', ''))
-  return (isIfoAlive && status) || true ? ( // the true is for test, will remove later
+  const { isDesktop } = useMatchBreakpoints()
+  return isIfoAlive && status ? (
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
@@ -53,7 +50,7 @@ const IFOBanner = () => {
           </NextLinkFromReactRouter>
         </S.LeftWrapper>
         <RightWrapper>
-          {isDeskTop && (
+          {isDesktop && (
             <Image
               src={IFOImage}
               alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}
@@ -67,7 +64,7 @@ const IFOBanner = () => {
               placeholder="blur"
             />
           )}
-          {!isDeskTop && (
+          {!isDesktop && (
             <Image
               src={IFOMobileImage}
               alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}

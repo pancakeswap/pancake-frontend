@@ -1,5 +1,5 @@
-import useMediaQuery from 'hooks/useMediaQuery'
-import useTheme from 'hooks/useTheme'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { Autoplay, EffectFade, Pagination } from 'swiper'
 import 'swiper/css'
@@ -8,13 +8,17 @@ import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useMultipleBannerConfig } from './hooks/useMultipleBannerConfig'
 
-const StyledSwiper = styled(Swiper)`
+const StyledSwiper = styled(Swiper)<{ walletConnected: boolean }>`
   position: relative;
   overflow: visible;
-  margin-top: 180px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-top: 55px;
+  padding-top: ${({ walletConnected }) => (walletConnected ? '220px' : '0px')};
+  margin-bottom: ${({ walletConnected }) => (walletConnected ? '-220px' : '0px')};
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-top: ${({ walletConnected }) => (walletConnected ? '60px' : '0px')};
+    margin-top: ${({ walletConnected }) => (walletConnected ? '0px' : '-32px')};
+    margin-bottom: unset;
   }
+
   .swiper-wrapper {
     &::before {
       content: '';
@@ -61,8 +65,8 @@ const StyledSwiper = styled(Swiper)`
 
 const MultipleBanner: React.FC = () => {
   const bannerList = useMultipleBannerConfig()
-  const theme = useTheme()
-  const isDeskTop = useMediaQuery(theme.theme.mediaQueries.sm.replace('@media screen and ', ''))
+  const { account } = useWeb3React()
+  const { isDesktop } = useMatchBreakpoints()
   return (
     <StyledSwiper
       modules={[Autoplay, Pagination, EffectFade]}
@@ -74,11 +78,12 @@ const MultipleBanner: React.FC = () => {
       autoplay
       loop
       pagination={{ clickable: true }}
+      walletConnected={Boolean(account)}
     >
       {bannerList.map((banner, index) => {
         const childKey = `Banner${index}`
         return (
-          <SwiperSlide style={{ padding: isDeskTop ? 20 : 0 }} key={childKey}>
+          <SwiperSlide style={{ padding: isDesktop ? 20 : 0 }} key={childKey}>
             {banner}
           </SwiperSlide>
         )

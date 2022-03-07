@@ -17,8 +17,8 @@ import CompetitionBanner from '../CompetitionBanner'
  * ```
  */
 export const useMultipleBannerConfig = () => {
-  const isRenderIFOBanner = useIsRenderIfoBanner() || true // for test
-  const isRenderLotteryBanner = useIsRenderLotteryBanner() || true // for test
+  const isRenderIFOBanner = useIsRenderIfoBanner()
+  const isRenderLotteryBanner = useIsRenderLotteryBanner()
   return [
     {
       shouldRender: isRenderIFOBanner,

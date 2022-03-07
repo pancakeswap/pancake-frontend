@@ -1,8 +1,6 @@
-import { ArrowForwardIcon, Button, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
-import useMediaQuery from 'hooks/useMediaQuery'
-import useTheme from 'hooks/useTheme'
 import Image from 'next/image'
 import { memo } from 'react'
 import styled from 'styled-components'
@@ -19,8 +17,7 @@ const RightWrapper = styled.div`
 `
 const CompetitionBanner = () => {
   const { t } = useTranslation()
-  const theme = useTheme()
-  const isDeskTop = useMediaQuery(theme.theme.mediaQueries.sm.replace('@media screen and ', ''))
+  const { isDesktop } = useMatchBreakpoints()
   return (
     <S.Wrapper>
       <S.Inner>
@@ -30,14 +27,14 @@ const CompetitionBanner = () => {
           <NextLinkFromReactRouter to="/competition">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
-                {t('Play Now')}
+                {t('Trade Now')}
               </Text>
               <ArrowForwardIcon color="invertedContrast" />
             </Button>
           </NextLinkFromReactRouter>
         </S.LeftWrapper>
         <RightWrapper>
-          {isDeskTop && (
+          {isDesktop && (
             <Image
               src={competitionImage}
               alt="CompetitionBanner"
@@ -51,7 +48,7 @@ const CompetitionBanner = () => {
               placeholder="blur"
             />
           )}
-          {!isDeskTop && (
+          {!isDesktop && (
             <Image
               src={competitionMobileImage}
               alt="CompetitionBanner"
