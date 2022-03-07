@@ -61,7 +61,7 @@ const LimitOrders = () => {
       singleTokenPrice,
       currencyIds,
     },
-    orderState: { independentField, rateType },
+    orderState: { independentField, basisField, rateType },
   } = useGelatoLimitOrders()
 
   const [{ swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
@@ -135,13 +135,16 @@ const LimitOrders = () => {
     }
   }, [txHash, handleTypeInput])
 
-  // Trick to reset to market price via fake update on the input field
+  // Trick to reset to market price via fake update on the basis field
   const handleResetToMarketPrice = useCallback(() => {
-    handleTypeInput(formattedAmounts.input)
-  }, [handleTypeInput, formattedAmounts.input])
+    if (basisField === Field.INPUT) {
+      handleTypeInput(formattedAmounts.input)
+    } else {
+      handleTypeOutput(formattedAmounts.output)
+    }
+  }, [handleTypeInput, handleTypeOutput, formattedAmounts.input, formattedAmounts.output, basisField])
 
   const handlePlaceOrder = useCallback(() => {
-    console.log('Placing order')
     if (!handleLimitOrderSubmission) {
       return
     }
@@ -179,10 +182,8 @@ const LimitOrders = () => {
         outputAmount: rawAmounts.output,
         owner: account,
       }
-      console.log(orderToSubmit)
       handleLimitOrderSubmission(orderToSubmit)
         .then(({ hash }) => {
-          console.log('Order submitted!')
           setSwapState((prev) => ({
             attemptingTxn: false,
             tradeToConfirm: prev.tradeToConfirm,
@@ -191,7 +192,6 @@ const LimitOrders = () => {
           }))
         })
         .catch((error) => {
-          console.log('Submission failed!', error)
           setSwapState((prev) => ({
             attemptingTxn: false,
             tradeToConfirm: prev.tradeToConfirm,
@@ -330,7 +330,8 @@ const LimitOrders = () => {
                       handleRateType={handleRateType}
                       price={price}
                       handleResetToMarketPrice={handleResetToMarketPrice}
-                      realExecutionPriceAsString={realExecutionPriceAsString}
+                      realExecutionPriceAsString={!inputError ? realExecutionPriceAsString : undefined}
+                      disabled={!formattedAmounts.input && !formattedAmounts.output}
                     />
                   </AutoColumn>
                   <Box mt="0.25rem">

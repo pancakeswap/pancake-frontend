@@ -4,8 +4,10 @@ import { Field, Rate, OrderState } from './types'
 
 export const initialState: OrderState = {
   independentField: Field.INPUT,
+  basisField: Field.INPUT,
   typedValue: '',
   inputValue: '',
+  outputValue: '',
   [Field.INPUT]: {
     currencyId: '',
   },
@@ -39,10 +41,10 @@ export default createReducer<OrderState>(initialState, (builder) =>
       // the normal case
       return {
         ...state,
-        // independentField and typedValue need to be reset to input
+        // independentField and typedValue need to be reset to basis field
         // to show proper market price for new pair if user adjusted the price for the previous pair
-        independentField: Field.INPUT,
-        typedValue: state.inputValue,
+        independentField: state.basisField,
+        typedValue: state.basisField === Field.INPUT ? state.inputValue : state.outputValue,
         [field]: { currencyId },
       }
     })
@@ -60,11 +62,14 @@ export default createReducer<OrderState>(initialState, (builder) =>
             ...state,
             inputValue: typedValue,
             independentField: field,
+            basisField: field,
             typedValue,
           }
         : {
             ...state,
             independentField: field,
+            basisField: field !== Field.PRICE ? field : state.basisField,
+            outputValue: field !== Field.PRICE ? typedValue : state.outputValue,
             typedValue,
           }
     })

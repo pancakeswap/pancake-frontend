@@ -11,8 +11,10 @@ export enum Rate {
 
 export interface OrderState {
   readonly independentField: Field
+  readonly basisField: Field
   readonly typedValue: string
   readonly inputValue?: string
+  readonly outputValue?: string
   readonly [Field.INPUT]: {
     readonly currencyId: string | undefined
   }

@@ -29,6 +29,7 @@ interface LimitOrderPriceProps {
   price: Price
   handleResetToMarketPrice: () => void
   realExecutionPriceAsString: string
+  disabled: boolean
 }
 
 const DIRECTION_COLORS = {
@@ -49,6 +50,7 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
   price,
   handleResetToMarketPrice,
   realExecutionPriceAsString,
+  disabled,
 }) => {
   const { t } = useTranslation()
 
@@ -124,6 +126,7 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
       </Flex>
       <OrderPriceInput
         value={value}
+        disabled={disabled}
         onChange={handleOnChange}
         autoComplete="off"
         autoCorrect="off"
@@ -142,17 +145,19 @@ const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
           <SyncAltIcon color="textSubtle" width="24px" ml="4px" />
         </LabelContainer>
       )}
-      {realExecutionPriceAsString && (
-        <Flex justifySelf="flex-end" mb="8px">
-          <Text small color="textSubtle" mr="4px">
-            {t('Real execution price: %price%', { price: realExecutionPriceAsString })}
-          </Text>
-          <span ref={targetRef}>
-            <HelpIcon color="textSubtle" />
-            {tooltipVisible && tooltip}
-          </span>
-        </Flex>
-      )}
+      <Flex justifySelf="flex-end" mb="8px" minHeight="16px">
+        {realExecutionPriceAsString && (
+          <>
+            <Text small color="textSubtle" mr="4px">
+              {t('Real execution price: %price%', { price: realExecutionPriceAsString })}
+            </Text>
+            <span ref={targetRef}>
+              <HelpIcon color="textSubtle" />
+              {tooltipVisible && tooltip}
+            </span>
+          </>
+        )}
+      </Flex>
     </>
   )
 }

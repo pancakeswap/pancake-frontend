@@ -17,7 +17,46 @@ import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies,
 import { Field, Rate, OrderState } from './types'
 import { AppState, AppDispatch } from '..'
 
-const applyExchangeRateTo = (
+// Get desired input amount in output basis mode
+const getDesiredInput = (
+  outputValue: string,
+  exchangeRate: string,
+  inputCurrency: Currency,
+  outputCurrency: Currency,
+  isInverted: boolean,
+) => {
+  if (!outputValue || !inputCurrency || !outputCurrency) {
+    return undefined
+  }
+  const parsedOutAmount = tryParseAmount(outputValue, isInverted ? inputCurrency : outputCurrency)
+  const parsedExchangeRate = tryParseAmount(exchangeRate, isInverted ? inputCurrency : outputCurrency)
+  if (!parsedOutAmount || !parsedExchangeRate) {
+    return undefined
+  }
+
+  if (isInverted) {
+    const invertedResultAsFraction = parsedOutAmount.asFraction
+      .multiply(parsedExchangeRate.asFraction)
+      .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency.decimals)))
+    const invertedResultAsAmount =
+      inputCurrency instanceof Token
+        ? new TokenAmount(inputCurrency, invertedResultAsFraction.toFixed(0))
+        : CurrencyAmount.ether(invertedResultAsFraction.toFixed(0))
+
+    return invertedResultAsAmount
+  }
+  const resultAsFraction = parsedOutAmount.asFraction
+    .divide(parsedExchangeRate.asFraction)
+    .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency.decimals)))
+  const resultAsAmount =
+    inputCurrency instanceof Token
+      ? new TokenAmount(inputCurrency, resultAsFraction.quotient.toString())
+      : CurrencyAmount.ether(resultAsFraction.quotient.toString())
+  return resultAsAmount
+}
+
+// Get desired output amount in input basis mode
+const getDesiredOutput = (
   inputValue: string,
   exchangeRate: string,
   inputCurrency: Currency,
@@ -207,11 +246,13 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   const { account, chainId } = useActiveWeb3React()
   const {
     independentField,
+    basisField,
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     rateType,
     inputValue,
+    outputValue,
   } = useOrderState()
 
   // Get Currency objects based on currencyId strings
@@ -243,40 +284,56 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     output: relevantTokenBalances[1],
   }
 
+  // Get CurrencyAmount for the inputCurrency amount specified by user
+  const inputAmount = useMemo(() => {
+    return tryParseAmount(inputValue, inputCurrency ?? undefined)
+  }, [inputValue, inputCurrency])
+
+  // Get CurrencyAmount for the outputCurrency amount specified by user
+  const outpuAmount = useMemo(() => {
+    return tryParseAmount(outputValue, outputCurrency ?? undefined)
+  }, [outputValue, outputCurrency])
+
   // Whether user modified the INPUT field most recently (also default initial state)
   const isExactIn = independentField === Field.INPUT
+  // Whether to base calculations on output field
+  const isOutputBasis = basisField === Field.OUTPUT
   // Whether user modified the PRICE field most recently
   const isDesiredRateUpdate = independentField === Field.PRICE
 
   // Get the amount of outputCurrency you'd receive at the desired price
-  const desiredRateAppliedAsCurrencyAmount = isDesiredRateUpdate
-    ? applyExchangeRateTo(inputValue, typedValue, inputCurrency, outputCurrency, rateType === Rate.DIV)
+  const desiredOutputAsCurrencyAmount = isDesiredRateUpdate
+    ? getDesiredOutput(inputValue, typedValue, inputCurrency, outputCurrency, rateType === Rate.DIV)
+    : undefined
+
+  const desiredInputAsCurrencyAmount = isDesiredRateUpdate
+    ? getDesiredInput(outputValue, typedValue, inputCurrency, outputCurrency, rateType === Rate.DIV)
     : undefined
 
   // Convert output to string representation to parse later
-  const desiredRateApplied =
-    isDesiredRateUpdate && desiredRateAppliedAsCurrencyAmount
-      ? desiredRateAppliedAsCurrencyAmount?.toSignificant(6)
-      : typedValue
+  const desiredOutputAsString =
+    isDesiredRateUpdate && desiredOutputAsCurrencyAmount ? desiredOutputAsCurrencyAmount?.toSignificant(6) : typedValue
 
   // If independentField === Field.PRICE -> this won't be used
   const parsedTypedAmount = !isDesiredRateUpdate
     ? tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
     : undefined
 
-  // If not price - either input or output typing
+  // If not price - cast input or output typing to CurrencyAmount
   // if price - whatever amount of tokens recevied on the desired price
-  const parsedAmountToUse = isDesiredRateUpdate
-    ? tryParseAmount(desiredRateApplied, outputCurrency ?? undefined)
-    : tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+  const tradeAmount = isDesiredRateUpdate
+    ? isOutputBasis
+      ? outpuAmount
+      : tryParseAmount(desiredOutputAsString, outputCurrency)
+    : tryParseAmount(typedValue, isExactIn ? inputCurrency : outputCurrency)
 
   // Get trade object
   // gonna be null if not isExactIn or if there is no outputCurrency selected
-  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmountToUse : undefined, outputCurrency ?? undefined)
+  const bestTradeExactIn = useTradeExactIn(isExactIn ? tradeAmount : undefined, outputCurrency)
   // Works similarly to swap when you modify outputCurrency
   // But also is used when desired rate is modified
   // in other words it looks for a trade of inputCurrency for whatever the amount of tokens would be at desired rate
-  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmountToUse : undefined)
+  const bestTradeExactOut = useTradeExactOut(inputCurrency, !isExactIn || isOutputBasis ? tradeAmount : undefined)
   const trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
   // Get swap price for single token disregarding slippage and price impact
@@ -286,24 +343,50 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   const singleTokenPrice = parseFloat(singleTokenTrade?.executionPrice?.toSignificant(6))
   const inverseSingleTokenPrice = 1 / singleTokenPrice
 
-  // Get CurrencyAmount for the inputCurrency amount specified by user
-  const inputAmount = useMemo(() => {
-    return tryParseAmount(inputValue, inputCurrency ?? undefined)
-  }, [inputValue, inputCurrency])
-
   // Get "final" amounts
-  const parsedAmounts = useMemo(
-    () => ({
-      input: independentField === Field.INPUT ? parsedTypedAmount : inputAmount ?? trade?.inputAmount,
-      output: independentField === Field.OUTPUT ? parsedTypedAmount : trade?.outputAmount,
-    }),
-    [independentField, parsedTypedAmount, inputAmount, trade],
-  )
-
-  // If user is editing the price and there is no trade for this swap - show amount from desiredRateAppliedAsCurrencyAmount
-  if (!parsedAmounts.output && desiredRateAppliedAsCurrencyAmount) {
-    parsedAmounts.output = desiredRateAppliedAsCurrencyAmount
-  }
+  const parsedAmounts = useMemo(() => {
+    // Use trade amount as default
+    let input = trade?.inputAmount
+    if (!isOutputBasis) {
+      // If we're not in output basis mode then we're in input basis mode
+      // hence - no matter what keep input as specified by user
+      input = inputAmount
+    } else if (independentField === Field.INPUT) {
+      // If user touching input field -> whatever they type currently
+      input = parsedTypedAmount
+    } else if (isDesiredRateUpdate) {
+      // If user modifies the price AND is wishing for specific output amount -> hypothetical input amount at better price
+      input = desiredInputAsCurrencyAmount
+    }
+    // Use trade amount as default
+    // If we're in output basis mode - no matter what keep output as specified by user
+    let output: CurrencyAmount | TokenAmount
+    if (isOutputBasis) {
+      output = outpuAmount
+    } else if (independentField === Field.OUTPUT) {
+      // If user touching input field -> whatever they type currently
+      output = parsedTypedAmount
+    } else if (isDesiredRateUpdate) {
+      // If user modifies the price AND is wishing for specific input amount -> hypothetical input amount at better price
+      output = desiredOutputAsCurrencyAmount
+    } else {
+      output = trade?.outputAmount
+    }
+    return {
+      input,
+      output,
+    }
+  }, [
+    independentField,
+    parsedTypedAmount,
+    inputAmount,
+    outpuAmount,
+    trade,
+    isDesiredRateUpdate,
+    isOutputBasis,
+    desiredInputAsCurrencyAmount,
+    desiredOutputAsCurrencyAmount,
+  ])
 
   // Calculate the price for specified swap
   const price = useMemo(
@@ -313,8 +396,9 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
 
   // Formatted amounts to use in the UI
   const formattedAmounts = {
-    input: inputValue && inputValue !== '' ? inputValue : parsedAmounts.input?.toSignificant(6) ?? '',
-    output: independentField === Field.OUTPUT ? typedValue : parsedAmounts.output?.toSignificant(6) ?? '',
+    input: !isOutputBasis && inputValue && inputValue !== '' ? inputValue : parsedAmounts.input?.toSignificant(6) ?? '',
+    output:
+      isOutputBasis && outputValue && outputValue !== '' ? outputValue : parsedAmounts.output?.toSignificant(6) ?? '',
     price:
       independentField === Field.PRICE
         ? typedValue
@@ -412,8 +496,10 @@ const queryParametersToSwapState = (parsedQs: ParsedUrlQuery): OrderState => {
       currencyId: outputCurrency,
     },
     inputValue: '',
+    outputValue: '',
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
+    basisField: parseIndependentFieldURLParameter(parsedQs.exactField),
     rateType: Rate.MUL,
   }
 }
