@@ -36,6 +36,7 @@ const ModalWrapper = styled(m.div)`
   bottom: 0;
   left: 0;
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
+  will-change: opacity;
 `;
 
 export const Context = createContext<ModalsContext>({
