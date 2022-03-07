@@ -30,8 +30,10 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
 
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
 
+  const startFetch = turnOn && gelatoLimitOrders && account && chainId
+
   const { data } = useSWR(
-    turnOn && gelatoLimitOrders && account && chainId ? ['gelato', 'openOrders'] : null,
+    startFetch ? ['gelato', 'openOrders'] : null,
     async () => {
       try {
         const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
@@ -64,15 +66,17 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
     },
   )
 
-  return data
+  return startFetch ? data : []
 }
 
 const useHistoryOrders = (turnOn: boolean): Order[] => {
   const { account, chainId } = useActiveWeb3React()
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
 
+  const startFetch = turnOn && gelatoLimitOrders && account && chainId
+
   const { data } = useSWR(
-    turnOn && gelatoLimitOrders && account && chainId ? ['gelato', 'cancelledOrders'] : null,
+    startFetch ? ['gelato', 'cancelledOrders'] : null,
     async () => {
       try {
         const acc = account.toLowerCase()
@@ -106,7 +110,7 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
     },
   )
 
-  return data
+  return startFetch ? data : []
 }
 
 export default function useGelatoLimitOrdersHistory(orderCategory: ORDER_CATEGORY) {
