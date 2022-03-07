@@ -1,8 +1,20 @@
+import { AnimatePresence, m, Variants, LazyMotion, domAnimation } from "framer-motion";
 import React, { createContext, useState } from "react";
 import styled from "styled-components";
 import { Overlay } from "../../components/Overlay";
 import { Handler } from "./types";
 
+const animationVariants: Variants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+};
+
+const animationMap = {
+  initial: "initial",
+  animate: "animate",
+  exit: "exit",
+};
 interface ModalsContext {
   isOpen: boolean;
   nodeId: string;
@@ -13,7 +25,7 @@ interface ModalsContext {
   setCloseOnOverlayClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ModalWrapper = styled.div`
+const ModalWrapper = styled(m.div)`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,15 +84,19 @@ const ModalProvider: React.FC = ({ children }) => {
         setCloseOnOverlayClick,
       }}
     >
-      {isOpen && (
-        <ModalWrapper>
-          <Overlay onClick={handleOverlayDismiss} />
-          {React.isValidElement(modalNode) &&
-            React.cloneElement(modalNode, {
-              onDismiss: handleDismiss,
-            })}
-        </ModalWrapper>
-      )}
+      <LazyMotion features={domAnimation}>
+        <AnimatePresence>
+          {isOpen && (
+            <ModalWrapper {...animationMap} variants={animationVariants}>
+              <Overlay onClick={handleOverlayDismiss} />
+              {React.isValidElement(modalNode) &&
+                React.cloneElement(modalNode, {
+                  onDismiss: handleDismiss,
+                })}
+            </ModalWrapper>
+          )}
+        </AnimatePresence>
+      </LazyMotion>
       {children}
     </Context.Provider>
   );
