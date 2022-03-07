@@ -1549,5 +1549,16 @@
   "Lowest Price": "Lowest Price",
   "Highest Price": "Highest Price",
   "Highest": "Highest",
-  "Connect": "Connect"
+  "Connect": "Connect",
+  "Approve was called unnecessarily": "Approve was called unnecessarily",
+  "No token": "No token",
+  "Cannot find contract of the token %tokenAddress%": "Cannot find contract of the token %tokenAddress%",
+  "Missing amount to approve": "Missing amount to approve",
+  "No spender": "No spender",
+  "Missing liquidity amount": "Missing liquidity amount",
+  "Missing currency amounts": "Missing currency amounts",
+  "Missing tokens": "Missing tokens",
+  "Could not wrap": "Could not wrap",
+  "Attempting to confirm without approval or a signature": "Attempting to confirm without approval or a signature",
+  "This transaction would fail": "This transaction would fail"
 }
