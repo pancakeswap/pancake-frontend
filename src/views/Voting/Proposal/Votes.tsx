@@ -21,6 +21,7 @@ const VOTES_PER_VIEW = 20
 
 interface VotesProps {
   votes: Vote[]
+  totalVotes?: number
   votesLoadingStatus: FetchStatus
 }
 
@@ -30,7 +31,7 @@ const parseVotePower = (incomingVote: Vote) => {
   return votingPower
 }
 
-const Votes: React.FC<VotesProps> = ({ votes, votesLoadingStatus }) => {
+const Votes: React.FC<VotesProps> = ({ votes, votesLoadingStatus, totalVotes }) => {
   const [showAll, setShowAll] = useState(false)
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -47,7 +48,7 @@ const Votes: React.FC<VotesProps> = ({ votes, votesLoadingStatus }) => {
       <CardHeader>
         <Flex alignItems="center" justifyContent="space-between">
           <Heading as="h3" scale="md">
-            {t('Votes (%count%)', { count: votes ? votes.length.toLocaleString() : '0' })}
+            {t('Votes (%count%)', { count: totalVotes ? totalVotes.toLocaleString() : '-' })}
           </Heading>
           {!isFetched && <AutoRenewIcon spin width="22px" />}
         </Flex>

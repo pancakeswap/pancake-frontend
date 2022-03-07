@@ -12,7 +12,6 @@ import {
   CheckmarkCircleIcon,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import times from 'lodash/times'
 import { Vote } from 'state/types'
 import { formatNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
@@ -75,10 +74,17 @@ const Results: React.FC<ResultsProps> = ({ choices, votes, votesLoadingStatus })
           })}
 
         {votesLoadingStatus === FetchStatus.Fetching &&
-          times(choices.length).map((count, index) => {
+          choices.map((choice, index) => {
             return (
-              <Box key={count} mt={index > 0 ? '24px' : '0px'}>
-                <Skeleton height="36px" mb="4px" />
+              <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
+                <Flex alignItems="center" mb="8px">
+                  <TextEllipsis mb="4px" title={choice}>
+                    {choice}
+                  </TextEllipsis>
+                </Flex>
+                <Box mb="4px">
+                  <Skeleton height="36px" mb="4px" />
+                </Box>
               </Box>
             )
           })}
