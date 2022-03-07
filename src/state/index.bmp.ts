@@ -33,7 +33,7 @@ import transactions from './transactions/reducer'
 import user from './user/reducer'
 import votingReducer from './voting'
 
-const PERSISTED_KEYS: string[] = []
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
 
 const persistConfig = {
   key: 'primary',
