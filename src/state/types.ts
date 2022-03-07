@@ -465,6 +465,7 @@ export interface Proposal {
   id: string
   snapshot: string
   space: Space
+  votes: number
   start: number
   state: ProposalState
   title: string
