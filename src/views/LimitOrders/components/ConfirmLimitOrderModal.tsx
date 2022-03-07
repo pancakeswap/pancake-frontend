@@ -106,9 +106,11 @@ export const ConfirmLimitOrderModal: React.FC<ConfirmLimitOrderModalProps> = ({
         />
       )}
       {!txHash && !swapErrorMessage && (
-        <Button variant="primary" onClick={onConfirm} mt="24px" disabled={attemptingTxn}>
-          {attemptingTxn ? t(`Confirming...`) : t(`Confirm`)}
-        </Button>
+        <Flex justifyContent="center" mt="24px">
+          <Button scale="md" variant="primary" onClick={onConfirm} width="100%" disabled={attemptingTxn}>
+            {attemptingTxn ? t(`Confirming...`) : t(`Confirm`)}
+          </Button>
+        </Flex>
       )}
     </Modal>
   )
