@@ -3,25 +3,26 @@ import styled, { keyframes, css } from "styled-components";
 
 const MountAnimation = keyframes`
     0% {
-      bottom: -80vh;
+      transform: translateY(100%);
     }
     100% {
-      bottom: 0vh;
+      transform: translateY(0%);
     }
   `;
 
 const UnmountAnimation = keyframes`
     0% {
-      bottom: 0vh;
+      transform: translateY(0%);
     }
     100% {
-      bottom: -80vh;
+      transform: translateY(100%);
     }
   `;
 
 export const DrawerContainer = styled.div<{ isUnmounting: boolean }>`
   width: 100%;
   height: 80vh;
+  bottom: 0;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
@@ -31,6 +32,7 @@ export const DrawerContainer = styled.div<{ isUnmounting: boolean }>`
   html[data-useragent*="TokenPocket_iOS"] & {
     padding-bottom: 45px;
   }
+  will-change: transform;
   z-index: 21;
   ${({ isUnmounting }) =>
     isUnmounting &&
