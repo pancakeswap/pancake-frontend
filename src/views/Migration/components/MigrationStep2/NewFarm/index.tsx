@@ -4,12 +4,13 @@ import { useWeb3React } from '@web3-react/core'
 import { getFarmApr } from 'utils/apr'
 import { RowType } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
-import { useFarms, usePriceCakeBusd, usePollFarmsWithUserData } from 'state/farmsV1/hooks'
+import { useFarms, usePriceCakeBusd, usePollFarmsWithUserData } from 'state/farms/hooks'
+import { useFarmsV1 } from 'state/farmsV1/hooks'
 import { DeserializedFarm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { getDisplayApr } from 'views/Farms/Farms'
-import { isArchivedPid } from 'utils/farmHelpers'
+import { isArchivedPid, isArchivedPidV1 } from 'utils/farmHelpers'
 import OldFarm from './FarmTable'
 import { RowProps } from './FarmRow'
 import { DesktopV2ColumnSchema } from '../../types'
@@ -17,6 +18,7 @@ import { DesktopV2ColumnSchema } from '../../types'
 const OldFarmStep1: React.FC = () => {
   const { account } = useWeb3React()
   const { data: farmsLP, userDataLoaded } = useFarms()
+  const { data: farmsV1LP } = useFarmsV1()
   const cakePrice = usePriceCakeBusd()
 
   usePollFarmsWithUserData(false)
@@ -24,13 +26,24 @@ const OldFarmStep1: React.FC = () => {
   const userDataReady = !account || (!!account && userDataLoaded)
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
+  const activeFarmsV1 = farmsV1LP.filter(
+    (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPidV1(farm.pid),
+  )
 
+  const v1StakedOrHasTokenBalance = activeFarmsV1.filter((farm) => {
+    const hasStakedBalance = new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)
+    const hasTokenBalance = new BigNumber(farm.userData.tokenBalance).isGreaterThan(0)
+    return farm.userData && (hasStakedBalance || hasTokenBalance)
+  })
+
+  // Only show farms that has staked or has balance in v1 & v2
   const stakedOrHasTokenBalance = activeFarms.filter((farm) => {
-    return (
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.tokenBalance).isGreaterThan(0))
+    const hasStakedBalance = new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)
+    const hasTokenBalance = new BigNumber(farm.userData.tokenBalance).isGreaterThan(0)
+    const v1Farm = v1StakedOrHasTokenBalance.find(
+      (v1Farm) => v1Farm.pid === farm.pid && v1Farm.lpSymbol === farm.lpSymbol,
     )
+    return farm.userData && (hasStakedBalance || hasTokenBalance || v1Farm)
   })
 
   const farmsList = useCallback(

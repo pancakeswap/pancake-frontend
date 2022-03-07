@@ -1,16 +1,24 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import { useRouter } from 'next/router'
+import { useWeb3React } from '@web3-react/core'
 import { Heading, Text, Button, ArrowForwardIcon, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { usePollFarmsV1WithUserData } from 'state/farmsV1/hooks'
+import { VaultKey } from 'state/types'
+import { useFetchUserPools } from 'views/Migration/hook/V1/Pool/useFetchUserPools'
+import { useFetchPublicPoolsData } from 'views/Migration/hook/V1/Pool/useFetchPublicPoolsData'
 import PageHeader from 'components/PageHeader'
 import Page from 'components/Layout/Page'
 import ProgressSteps, { Step, ProgressStepsType } from './components/ProgressSteps'
 import MigrationSticky from './components/MigrationSticky'
-import MigrationStep1 from './components/MigrationStep1'
-import MigrationStep2 from './components/MigrationStep2'
+import OldPool from './components/MigrationStep1/OldPool'
+import OldFarm from './components/MigrationStep1/OldFarm'
+import NewPool from './components/MigrationStep2/NewPool'
+import NewFarm from './components/MigrationStep2/NewFarm'
 
 const MigrationPage: React.FC = () => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const [step, setStep] = useState<ProgressStepsType>(ProgressStepsType.STEP1)
@@ -26,6 +34,26 @@ const MigrationPage: React.FC = () => {
       text: t('Stake LP tokens and CAKE to the new MasterChef v2 contract.'),
     },
   ]
+
+  // v1 Farms
+  usePollFarmsV1WithUserData(false)
+
+  // v1 Pools
+  useFetchPublicPoolsData()
+  const { data: cakePool, userDataLoaded } = useFetchUserPools(account)
+
+  const usePoolsWithVault = () => {
+    const pools = useMemo(() => {
+      const ifoPoolVault = { ...cakePool, vaultKey: VaultKey.IfoPool }
+      const cakeAutoVault = { ...cakePool, vaultKey: VaultKey.CakeVault }
+
+      return [ifoPoolVault, cakeAutoVault, cakePool]
+    }, [cakePool])
+
+    return pools
+  }
+
+  const v1Pools = usePoolsWithVault()
 
   const scrollToTop = (): void => {
     tableWrapperEl.current.scrollIntoView({
@@ -62,7 +90,17 @@ const MigrationPage: React.FC = () => {
       </PageHeader>
       <Page>
         <ProgressSteps pickedStep={step} steps={steps} onClick={setStep} />
-        {step === ProgressStepsType.STEP1 ? <MigrationStep1 /> : <MigrationStep2 />}
+        {step === ProgressStepsType.STEP1 ? (
+          <>
+            <OldPool pools={v1Pools} account={account} userDataLoaded={userDataLoaded} />
+            <OldFarm />
+          </>
+        ) : (
+          <>
+            <NewPool />
+            <NewFarm />
+          </>
+        )}
       </Page>
       <MigrationSticky step={step} handleClick={handleMigrationStickyClick} />
     </div>

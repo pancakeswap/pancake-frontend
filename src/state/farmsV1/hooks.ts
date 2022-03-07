@@ -43,7 +43,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
   }
 }
 
-export const usePollFarmsWithUserData = (includeArchive = false) => {
+export const usePollFarmsV1WithUserData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
@@ -72,7 +72,7 @@ export const usePollCoreFarmData = () => {
   }, [dispatch])
 }
 
-export const useFarms = (): DeserializedFarmsState => {
+export const useFarmsV1 = (): DeserializedFarmsState => {
   const farms = useSelector((state: State) => state.farmsV1)
   const deserializedFarmsData = farms.data.map(deserializeFarm)
   const { loadArchivedFarmsData, userDataLoaded, poolLength } = farms

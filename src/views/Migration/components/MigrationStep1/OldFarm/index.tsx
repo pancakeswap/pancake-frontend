@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { getFarmApr } from 'utils/apr'
 import { RowType } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
-import { useFarms, usePriceCakeBusd, usePollFarmsWithUserData } from 'state/farmsV1/hooks'
+import { useFarmsV1, usePriceCakeBusd } from 'state/farmsV1/hooks'
 import { DeserializedFarm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
@@ -15,14 +15,12 @@ import { DesktopColumnSchema } from '../../types'
 
 const OldFarmStep1: React.FC = () => {
   const { account } = useWeb3React()
-  const { data: farmsLP, userDataLoaded } = useFarms()
+  const { data: farmsLP, userDataLoaded } = useFarmsV1()
   const cakePrice = usePriceCakeBusd()
-
-  usePollFarmsWithUserData(false)
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const farms = farmsLP.filter((farm) => farm.v1pid !== 0 && farm.multiplier !== '0x' && !isArchivedPidV1(farm.v1pid))
+  const farms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0x' && !isArchivedPidV1(farm.pid))
 
   const stakedOrHasTokenBalance = farms.filter((farm) => {
     return (
