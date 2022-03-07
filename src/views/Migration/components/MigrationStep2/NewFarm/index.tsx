@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { getFarmApr } from 'utils/apr'
 import { RowType } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
-import { useFarms, usePriceCakeBusd, usePollFarmsWithUserData } from 'state/farms/hooks'
+import { useFarms, usePriceCakeBusd, usePollFarmsWithUserData } from 'state/farmsV1/hooks'
 import { DeserializedFarm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
@@ -87,6 +87,7 @@ const OldFarmStep1: React.FC = () => {
       staked: {
         label: lpLabel,
         pid: farm.pid,
+        stakedBalance: farm.userData.stakedBalance,
       },
       earned: {
         earnings: getBalanceNumber(new BigNumber(farm.userData.earnings)),

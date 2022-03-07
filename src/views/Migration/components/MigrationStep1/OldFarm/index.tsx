@@ -72,6 +72,7 @@ const OldFarmStep1: React.FC = () => {
       staked: {
         label: lpLabel,
         pid: farm.pid,
+        stakedBalance: farm.userData.stakedBalance,
       },
       earned: {
         earnings: getBalanceNumber(new BigNumber(farm.userData.earnings)),
