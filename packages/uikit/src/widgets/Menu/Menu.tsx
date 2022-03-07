@@ -82,7 +82,7 @@ const Menu: React.FC<NavProps> = ({
   buyCakeLabel,
   children,
 }) => {
-  const { isMobile } = useMatchBreakpoints();
+  const { isMobile, isMd } = useMatchBreakpoints();
   const [showMenu, setShowMenu] = useState(true);
   const refPrevOffset = useRef(typeof window === "undefined" ? 0 : window.pageYOffset);
 
@@ -136,9 +136,9 @@ const Menu: React.FC<NavProps> = ({
               {!isMobile && <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />}
             </Flex>
             <Flex alignItems="center" height="100%">
-              {!isMobile && (
+              {!isMobile && !isMd && (
                 <Box mr="12px">
-                  <CakePrice cakePriceUsd={cakePriceUsd} />
+                  <CakePrice showSkeleton={false} cakePriceUsd={cakePriceUsd} />
                 </Box>
               )}
               <Box mt="4px">

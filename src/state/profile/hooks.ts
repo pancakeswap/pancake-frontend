@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import { getAchievements } from 'state/achievements/helpers'
 import { FetchStatus } from 'config/constants/types'
 import useSWR, { KeyedMutator } from 'swr'
+import { localStorageMiddleware } from 'hooks/useSWRContract'
 import useSWRImmutable from 'swr/immutable'
 import { getProfile, GetProfileResponse } from './helpers'
 import { Profile } from '../types'
@@ -56,7 +57,9 @@ export const useProfile = (): {
   refresh: KeyedMutator<GetProfileResponse>
 } => {
   const { account } = useWeb3React()
-  const { data, status, mutate } = useSWRImmutable(account ? [account, 'profile'] : null, () => getProfile(account))
+  const { data, status, mutate } = useSWRImmutable(account ? [account, 'profile'] : null, () => getProfile(account), {
+    use: [localStorageMiddleware],
+  })
 
   const { profile, hasRegistered } = data ?? ({ profile: null, hasRegistered: false } as GetProfileResponse)
 

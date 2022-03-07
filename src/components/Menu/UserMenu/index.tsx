@@ -9,7 +9,9 @@ import {
   UserMenuDivider,
   UserMenuItem,
   UserMenuVariant,
+  Box,
 } from '@pancakeswap/uikit'
+import Trans from 'components/Trans'
 import useAuth from 'hooks/useAuth'
 import { useRouter } from 'next/router'
 import { useProfile } from 'state/profile/hooks'
@@ -107,7 +109,16 @@ const UserMenu = () => {
     )
   }
 
-  return <ConnectWalletButton scale="sm" />
+  return (
+    <ConnectWalletButton scale="sm">
+      <Box display={['none', , , 'block']}>
+        <Trans>Connect Wallet</Trans>
+      </Box>
+      <Box display={['block', , , 'none']}>
+        <Trans>Connect</Trans>
+      </Box>
+    </ConnectWalletButton>
+  )
 }
 
 export default UserMenu
