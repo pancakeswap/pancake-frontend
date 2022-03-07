@@ -4,21 +4,21 @@ import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
+import useToast from 'hooks/useToast'
 import { Currency, currencyEquals, ETHER, Percent, WETH } from '@pancakeswap/sdk'
 import { Button, Text, AddIcon, ArrowDownIcon, CardBody, Slider, Box, Flex, useModal } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useTranslation } from 'contexts/Localization'
 import { CHAIN_ID } from 'config/constants/networks'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import { AppHeader, AppBody } from '../../components/App'
-import { RowBetween, RowFixed } from '../../components/Layout/Row'
+import { RowBetween } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 import { LightGreyCard } from '../../components/Card'
 
-import { CurrencyLogo, DoubleCurrencyLogo } from '../../components/Logo'
+import { CurrencyLogo } from '../../components/Logo'
 import { ROUTER_ADDRESS } from '../../config/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useCurrency } from '../../hooks/Tokens'
@@ -38,6 +38,8 @@ import { useBurnActionHandlers, useDerivedBurnInfo, useBurnState } from '../../s
 import { Field } from '../../state/burn/actions'
 import { useGasPrice, useUserSlippageTolerance } from '../../state/user/hooks'
 import Page from '../Page'
+import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
+import { logError } from '../../utils/sentry'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -50,6 +52,7 @@ export default function RemoveLiquidity() {
   const [currencyIdA, currencyIdB] = router.query.currency || []
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, library } = useActiveWeb3React()
+  const { toastError } = useToast()
   const [tokenA, tokenB] = useMemo(
     () => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)],
     [currencyA, currencyB, chainId],
@@ -66,10 +69,17 @@ export default function RemoveLiquidity() {
 
   // modal and loading
   const [showDetailed, setShowDetailed] = useState<boolean>(false)
-  const [attemptingTxn, setAttemptingTxn] = useState(false) // clicked confirm
+  const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
+    attemptingTxn: boolean
+    liquidityErrorMessage: string | undefined
+    txHash: string | undefined
+  }>({
+    attemptingTxn: false,
+    liquidityErrorMessage: undefined,
+    txHash: undefined,
+  })
 
   // txn values
-  const [txHash, setTxHash] = useState<string>('')
   const deadline = useTransactionDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
 
@@ -99,7 +109,10 @@ export default function RemoveLiquidity() {
   async function onAttemptToApprove() {
     if (!pairContract || !pair || !library || !deadline) throw new Error('missing dependencies')
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
-    if (!liquidityAmount) throw new Error('missing liquidity amount')
+    if (!liquidityAmount) {
+      toastError(t('Error'), t('Missing liquidity amount'))
+      throw new Error('missing liquidity amount')
+    }
 
     // try to gather a signature for permission
     const nonce = await pairContract.nonces(account)
@@ -178,6 +191,7 @@ export default function RemoveLiquidity() {
     if (!chainId || !library || !account || !deadline) throw new Error('missing dependencies')
     const { [Field.CURRENCY_A]: currencyAmountA, [Field.CURRENCY_B]: currencyAmountB } = parsedAmounts
     if (!currencyAmountA || !currencyAmountB) {
+      toastError(t('Error'), t('Missing currency amounts'))
       throw new Error('missing currency amounts')
     }
     const routerContract = getRouterContract(chainId, library, account)
@@ -187,14 +201,23 @@ export default function RemoveLiquidity() {
       [Field.CURRENCY_B]: calculateSlippageAmount(currencyAmountB, allowedSlippage)[0],
     }
 
-    if (!currencyA || !currencyB) throw new Error('missing tokens')
+    if (!currencyA || !currencyB) {
+      toastError(t('Error'), t('Missing tokens'))
+      throw new Error('missing tokens')
+    }
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
-    if (!liquidityAmount) throw new Error('missing liquidity amount')
+    if (!liquidityAmount) {
+      toastError(t('Error'), t('Missing liquidity amount'))
+      throw new Error('missing liquidity amount')
+    }
 
     const currencyBIsETH = currencyB === ETHER
     const oneCurrencyIsETH = currencyA === ETHER || currencyBIsETH
 
-    if (!tokenA || !tokenB) throw new Error('could not wrap')
+    if (!tokenA || !tokenB) {
+      toastError(t('Error'), t('Could not wrap'))
+      throw new Error('could not wrap')
+    }
 
     let methodNames: string[]
     let args: Array<string | string[] | number | boolean>
@@ -262,7 +285,8 @@ export default function RemoveLiquidity() {
         ]
       }
     } else {
-      throw new Error('Attempting to confirm without approval or a signature. Please contact support.')
+      toastError(t('Error'), t('Attempting to confirm without approval or a signature'))
+      throw new Error('Attempting to confirm without approval or a signature')
     }
 
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
@@ -282,102 +306,36 @@ export default function RemoveLiquidity() {
 
     // all estimations failed...
     if (indexOfSuccessfulEstimation === -1) {
-      console.error('This transaction would fail. Please contact support.')
+      toastError(t('Error'), t('This transaction would fail'))
     } else {
       const methodName = methodNames[indexOfSuccessfulEstimation]
       const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation]
 
-      setAttemptingTxn(true)
+      setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
       await routerContract[methodName](...args, {
         gasLimit: safeGasEstimate,
         gasPrice,
       })
         .then((response: TransactionResponse) => {
-          setAttemptingTxn(false)
-
+          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
           addTransaction(response, {
             summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
               currencyA?.symbol
             } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
           })
-
-          setTxHash(response.hash)
         })
-        .catch((err: Error) => {
-          setAttemptingTxn(false)
-          // we only care if the error is something _other_ than the user rejected the tx
-          console.error(err)
+        .catch((err) => {
+          if (err && err.code !== 4001) {
+            logError(err)
+            console.error(`Remove Liquidity failed`, err, args)
+          }
+          setLiquidityState({
+            attemptingTxn: false,
+            liquidityErrorMessage: err && err?.code !== 4001 ? `Remove Liquidity failed: ${err.message}` : undefined,
+            txHash: undefined,
+          })
         })
     }
-  }
-
-  function modalHeader() {
-    return (
-      <AutoColumn gap="md">
-        <RowBetween align="flex-end">
-          <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}</Text>
-          <RowFixed gap="4px">
-            <CurrencyLogo currency={currencyA} size="24px" />
-            <Text fontSize="24px" ml="10px">
-              {currencyA?.symbol}
-            </Text>
-          </RowFixed>
-        </RowBetween>
-        <RowFixed>
-          <AddIcon width="16px" />
-        </RowFixed>
-        <RowBetween align="flex-end">
-          <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}</Text>
-          <RowFixed gap="4px">
-            <CurrencyLogo currency={currencyB} size="24px" />
-            <Text fontSize="24px" ml="10px">
-              {currencyB?.symbol}
-            </Text>
-          </RowFixed>
-        </RowBetween>
-
-        <Text small textAlign="left" pt="12px">
-          {t('Output is estimated. If the price changes by more than %slippage%% your transaction will revert.', {
-            slippage: allowedSlippage / 100,
-          })}
-        </Text>
-      </AutoColumn>
-    )
-  }
-
-  function modalBottom() {
-    return (
-      <>
-        <RowBetween>
-          <Text>
-            {t('%assetA%/%assetB% Burned', { assetA: currencyA?.symbol ?? '', assetB: currencyB?.symbol ?? '' })}
-          </Text>
-          <RowFixed>
-            <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin />
-            <Text>{parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}</Text>
-          </RowFixed>
-        </RowBetween>
-        {pair && (
-          <>
-            <RowBetween>
-              <Text>{t('Price')}</Text>
-              <Text>
-                1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
-              </Text>
-            </RowBetween>
-            <RowBetween>
-              <div />
-              <Text>
-                1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
-              </Text>
-            </RowBetween>
-          </>
-        )}
-        <Button disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
-          {t('Confirm')}
-        </Button>
-      </>
-    )
   }
 
   const pendingText = t('Removing %amountA% %symbolA% and %amountB% %symbolB%', {
@@ -428,7 +386,6 @@ export default function RemoveLiquidity() {
     if (txHash) {
       onUserInput(Field.LIQUIDITY_PERCENT, '0')
     }
-    setTxHash('')
   }, [onUserInput, txHash])
 
   const [innerLiquidityPercentage, setInnerLiquidityPercentage] = useDebouncedChangeHandler(
@@ -437,13 +394,22 @@ export default function RemoveLiquidity() {
   )
 
   const [onPresentRemoveLiquidity] = useModal(
-    <TransactionConfirmationModal
+    <ConfirmLiquidityModal
       title={t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash || ''}
-      content={() => <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />}
+      allowedSlippage={allowedSlippage}
+      onRemove={onRemove}
       pendingText={pendingText}
+      approval={approval}
+      signatureData={signatureData}
+      tokenA={tokenA}
+      tokenB={tokenB}
+      liquidityErrorMessage={liquidityErrorMessage}
+      parsedAmounts={parsedAmounts}
+      currencyA={currencyA}
+      currencyB={currencyB}
     />,
     true,
     true,
@@ -655,6 +621,11 @@ export default function RemoveLiquidity() {
                       : 'primary'
                   }
                   onClick={() => {
+                    setLiquidityState({
+                      attemptingTxn: false,
+                      liquidityErrorMessage: undefined,
+                      txHash: undefined,
+                    })
                     onPresentRemoveLiquidity()
                   }}
                   width="100%"
