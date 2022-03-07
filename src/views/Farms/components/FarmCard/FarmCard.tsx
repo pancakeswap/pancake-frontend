@@ -2,7 +2,6 @@ import { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Card, Flex, Text, Skeleton } from '@pancakeswap/uikit'
-import { DeserializedFarm } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
@@ -11,14 +10,9 @@ import { getAddress } from 'utils/addressHelpers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
+import { FarmWithStakedValue } from '../types'
 import CardActionsContainer from './CardActionsContainer'
 import ApyButton from './ApyButton'
-
-export interface FarmWithStakedValue extends DeserializedFarm {
-  apr?: number
-  lpRewardsApr?: number
-  liquidity?: BigNumber
-}
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -105,8 +99,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
           farm={farm}
           lpLabel={lpLabel}
           account={account}
-          cakePrice={cakePrice}
           addLiquidityUrl={addLiquidityUrl}
+          displayApr={displayApr}
         />
       </FarmCardInnerContainer>
 

@@ -1,7 +1,5 @@
-import { AddIcon, Button, Heading, IconButton, MinusIcon, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import { AddIcon, Button, IconButton, MinusIcon, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { BigNumber } from 'bignumber.js'
-import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
@@ -16,15 +14,15 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useFarmUser, useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
-import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import DepositModal from '../../DepositModal'
 import WithdrawModal from '../../WithdrawModal'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
+import { FarmWithStakedValue } from '../../types'
+import StakedLP from '../../StakedLP'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -47,6 +45,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   token,
   userDataReady,
   displayApr,
+  lpTotalSupply,
+  tokenAmountTotal,
+  quoteTokenAmountTotal,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -97,17 +98,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
     }
   }
-
-  const displayBalance = useCallback(() => {
-    const stakedBalanceBigNumber = getBalanceAmount(stakedBalance)
-    if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.0000001)) {
-      return stakedBalanceBigNumber.toFixed(10, BigNumber.ROUND_DOWN)
-    }
-    if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.0001)) {
-      return getFullDisplayBalance(stakedBalance).toLocaleString()
-    }
-    return stakedBalanceBigNumber.toFixed(3, BigNumber.ROUND_DOWN)
-  }, [stakedBalance])
 
   const [onPresentDeposit] = useModal(
     <DepositModal
@@ -169,19 +159,15 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
             </Text>
           </ActionTitles>
           <ActionContent>
-            <div>
-              <Heading>{displayBalance()}</Heading>
-              {stakedBalance.gt(0) && lpPrice.gt(0) && (
-                <Balance
-                  fontSize="12px"
-                  color="textSubtle"
-                  decimals={2}
-                  value={getBalanceNumber(lpPrice.times(stakedBalance))}
-                  unit=" USD"
-                  prefix="~"
-                />
-              )}
-            </div>
+            <StakedLP
+              stakedBalance={stakedBalance}
+              lpSymbol={lpSymbol}
+              quoteTokenSymbol={quoteToken.symbol}
+              tokenSymbol={token.symbol}
+              lpTotalSupply={lpTotalSupply}
+              tokenAmountTotal={tokenAmountTotal}
+              quoteTokenAmountTotal={quoteTokenAmountTotal}
+            />
             <IconButtonWrapper>
               <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
                 <MinusIcon color="primary" width="14px" />
