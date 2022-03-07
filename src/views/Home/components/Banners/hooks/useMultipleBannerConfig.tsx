@@ -1,8 +1,9 @@
-import useIsRenderIfoBanner from './useIsRenderIFOBanner'
-import useIsRenderLotteryBanner from './useIsRenderLotteryBanner'
+import { useMemo } from 'react'
+import CompetitionBanner from '../CompetitionBanner'
 import IFOBanner from '../IFOBanner'
 import LotteryBanner from '../LotteryBanner'
-import CompetitionBanner from '../CompetitionBanner'
+import useIsRenderIfoBanner from './useIsRenderIFOBanner'
+import useIsRenderLotteryBanner from './useIsRenderLotteryBanner'
 
 /**
  * make your custom hook to control should render specific banner or not
@@ -19,20 +20,24 @@ import CompetitionBanner from '../CompetitionBanner'
 export const useMultipleBannerConfig = () => {
   const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderLotteryBanner = useIsRenderLotteryBanner()
-  return [
-    {
-      shouldRender: isRenderIFOBanner,
-      banner: <IFOBanner />,
-    },
-    {
-      shouldRender: isRenderLotteryBanner,
-      banner: <LotteryBanner />,
-    },
-    {
-      shouldRender: true,
-      banner: <CompetitionBanner />,
-    },
-  ]
-    .filter((d) => d.shouldRender)
-    .map((d) => d.banner)
+  return useMemo(
+    () =>
+      [
+        {
+          shouldRender: isRenderIFOBanner,
+          banner: <IFOBanner />,
+        },
+        {
+          shouldRender: isRenderLotteryBanner,
+          banner: <LotteryBanner />,
+        },
+        {
+          shouldRender: true,
+          banner: <CompetitionBanner />,
+        },
+      ]
+        .filter((d) => d.shouldRender)
+        .map((d) => d.banner),
+    [isRenderIFOBanner, isRenderLotteryBanner],
+  )
 }

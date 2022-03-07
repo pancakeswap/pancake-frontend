@@ -50,7 +50,7 @@ const IFOBanner = () => {
           </NextLinkFromReactRouter>
         </S.LeftWrapper>
         <RightWrapper>
-          {isDesktop && (
+          {isDesktop ? (
             <Image
               src={IFOImage}
               alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}
@@ -63,8 +63,7 @@ const IFOBanner = () => {
               height={211}
               placeholder="blur"
             />
-          )}
-          {!isDesktop && (
+          ) : (
             <Image
               src={IFOMobileImage}
               alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}

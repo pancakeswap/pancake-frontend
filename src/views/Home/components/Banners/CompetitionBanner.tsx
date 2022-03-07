@@ -34,7 +34,7 @@ const CompetitionBanner = () => {
           </NextLinkFromReactRouter>
         </S.LeftWrapper>
         <RightWrapper>
-          {isDesktop && (
+          {isDesktop ? (
             <Image
               src={competitionImage}
               alt="CompetitionBanner"
@@ -47,8 +47,7 @@ const CompetitionBanner = () => {
               height={213}
               placeholder="blur"
             />
-          )}
-          {!isDesktop && (
+          ) : (
             <Image
               src={competitionMobileImage}
               alt="CompetitionBanner"
