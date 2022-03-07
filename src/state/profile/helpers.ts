@@ -60,7 +60,7 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
     const [team, username, nftRes] = await Promise.all([
       getTeam(teamId),
       getUsername(address),
-      isActive ? await getNftApi(collectionAddress, tokenId.toString()) : Promise.resolve(null),
+      isActive ? getNftApi(collectionAddress, tokenId.toString()) : Promise.resolve(null),
     ])
     let nftToken: NftToken
 
