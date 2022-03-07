@@ -39,6 +39,7 @@ const persistConfig = {
   key: 'primary',
   whitelist: PERSISTED_KEYS,
   storage,
+  throttle: 30,
   transforms: [
     createTransform(
       (inBoundState) => {
