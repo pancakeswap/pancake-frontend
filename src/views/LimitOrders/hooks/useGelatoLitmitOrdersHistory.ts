@@ -66,6 +66,8 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
     },
   )
 
+  console.log('Open orders:', data)
+
   return startFetch ? data : []
 }
 
