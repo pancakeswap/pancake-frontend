@@ -1566,7 +1566,6 @@
   "Open Order Details": "Open Order Details",
   "View on BSCScan": "View on BSCScan",
   "Cancel Order": "Cancel Order",
-  "Expires on": "Expires on",
   "Status": "Status",
   "No Open Orders": "No Open Orders",
   "No Order History": "No Order History",
@@ -1594,5 +1593,8 @@
   "It might take much longer than you expected to reach the price that fills your order + fees.": "It might take much longer than you expected to reach the price that fills your order + fees.",
   "\"Fee on Transfer\" Tokens": "\"Fee on Transfer\" Tokens",
   "\"Fee on transfer\" tokens should not be used with Limit Orders (use at your own risk)": "\"Fee on transfer\" tokens should not be used with Limit Orders (use at your own risk)",
-  "Can't execute this order": "Can't execute this order"
+  "Can't execute this order": "Can't execute this order",
+  "Limit Orders": "Limit Orders",
+  "Limit": "Limit",
+  "at market price": "at market price"
 }
