@@ -31,7 +31,7 @@ const IFOBanner = () => {
     ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
     : null
 
-  const { isDesktop } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   return isIfoAlive && status ? (
     <S.Wrapper>
       <S.Inner>
@@ -50,15 +50,10 @@ const IFOBanner = () => {
           </NextLinkFromReactRouter>
         </S.LeftWrapper>
         <RightWrapper>
-          {isDesktop ? (
+          {!isMobile ? (
             <Image
               src={IFOImage}
               alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}
-              onError={(event) => {
-                // @ts-ignore
-                // eslint-disable-next-line no-param-reassign
-                event.target.style.display = 'none'
-              }}
               width={291}
               height={211}
               placeholder="blur"
@@ -67,11 +62,6 @@ const IFOBanner = () => {
             <Image
               src={IFOMobileImage}
               alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}
-              onError={(event) => {
-                // @ts-ignore
-                // eslint-disable-next-line no-param-reassign
-                event.target.style.display = 'none'
-              }}
               width={150}
               height={150}
               placeholder="blur"

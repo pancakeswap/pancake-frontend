@@ -10,14 +10,14 @@ import * as S from './Styled'
 const RightWrapper = styled.div`
   position: absolute;
   right: 0;
-  bottom: 0px;
+  bottom: -2px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    bottom: -5px;
+    bottom: -2px;
   }
 `
 const CompetitionBanner = () => {
   const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isXs, isLg } = useMatchBreakpoints()
   return (
     <S.Wrapper>
       <S.Inner>
@@ -35,29 +35,13 @@ const CompetitionBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           {isDesktop ? (
-            <Image
-              src={competitionImage}
-              alt="CompetitionBanner"
-              onError={(event) => {
-                // @ts-ignore
-                // eslint-disable-next-line no-param-reassign
-                event.target.style.display = 'none'
-              }}
-              width={1112}
-              height={213}
-              placeholder="blur"
-            />
+            <Image src={competitionImage} alt="CompetitionBanner" width={1112} height={213} placeholder="blur" />
           ) : (
             <Image
               src={competitionMobileImage}
               alt="CompetitionBanner"
-              onError={(event) => {
-                // @ts-ignore
-                // eslint-disable-next-line no-param-reassign
-                event.target.style.display = 'none'
-              }}
               width={338}
-              height={188}
+              height={isXs ? 181 : isLg ? 200 : 190}
               placeholder="blur"
             />
           )}

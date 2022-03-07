@@ -13,12 +13,16 @@ const StyledSwiper = styled(Swiper)<{ walletConnected: boolean }>`
   overflow: visible;
   padding-top: ${({ walletConnected }) => (walletConnected ? '220px' : '0px')};
   margin-bottom: ${({ walletConnected }) => (walletConnected ? '-220px' : '0px')};
-  ${({ theme }) => theme.mediaQueries.xl} {
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-top: ${({ walletConnected }) => (walletConnected ? '150px' : '0px')};
+    margin-bottom: ${({ walletConnected }) => (walletConnected ? '40px' : '0px')};
+  }
+  ${({ theme }) => theme.mediaQueries.lg},${({ theme }) => theme.mediaQueries.md} {
     padding-top: ${({ walletConnected }) => (walletConnected ? '60px' : '0px')};
     margin-top: ${({ walletConnected }) => (walletConnected ? '0px' : '-32px')};
     margin-bottom: unset;
   }
-
   .swiper-wrapper {
     &::before {
       content: '';
@@ -66,7 +70,7 @@ const StyledSwiper = styled(Swiper)<{ walletConnected: boolean }>`
 const MultipleBanner: React.FC = () => {
   const bannerList = useMultipleBannerConfig()
   const { account } = useWeb3React()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isTablet } = useMatchBreakpoints()
   return (
     <StyledSwiper
       modules={[Autoplay, Pagination, EffectFade]}
@@ -83,7 +87,7 @@ const MultipleBanner: React.FC = () => {
       {bannerList.map((banner, index) => {
         const childKey = `Banner${index}`
         return (
-          <SwiperSlide style={{ padding: isDesktop ? 20 : 0 }} key={childKey}>
+          <SwiperSlide style={{ padding: isDesktop || isTablet ? 20 : 0 }} key={childKey}>
             {banner}
           </SwiperSlide>
         )

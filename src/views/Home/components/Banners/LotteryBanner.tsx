@@ -107,28 +107,12 @@ const LotteryBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           {isDesktop ? (
-            <Image
-              src={lotteryImage}
-              alt="LotteryBanner"
-              onError={(event) => {
-                // @ts-ignore
-                // eslint-disable-next-line no-param-reassign
-                event.target?.style.display = 'none'
-              }}
-              width={1112}
-              height={192 + 32}
-              placeholder="blur"
-            />
+            <Image src={lotteryImage} alt="LotteryBanner" width={1112} height={192 + 32} placeholder="blur" />
           ) : (
             <Image
               className="mobile"
               src={lotteryMobileImage}
               alt="LotteryBanner"
-              onError={(event) => {
-                // @ts-ignore
-                // eslint-disable-next-line no-param-reassign
-                event.target?.style.display = 'none'
-              }}
               width={215}
               height={144}
               placeholder="blur"
