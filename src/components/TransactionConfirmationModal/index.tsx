@@ -55,7 +55,7 @@ function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
   )
 }
 
-function TransactionSubmittedContent({
+export function TransactionSubmittedContent({
   onDismiss,
   chainId,
   hash,
