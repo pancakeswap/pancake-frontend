@@ -2,7 +2,7 @@ import { BSC_BLOCK_TIME } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { TranslateFunction } from 'contexts/Localization/types'
 import styled from 'styled-components'
-import { Card, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { Card, Flex, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useSubgraphHealthIndicatorManager } from 'state/user/hooks'
 import useSubgraphHealth, { SubgraphStatus } from 'hooks/useSubgraphHealth'
 import { useRouter } from 'next/router'
@@ -15,9 +15,7 @@ const StyledCard = styled(Card)`
   user-select: none;
 `
 
-const IndicatorWrapper = styled(Box)`
-  display: flex;
-  align-items: center;
+const IndicatorWrapper = styled(Flex)`
   gap: 7px;
 `
 
@@ -71,15 +69,18 @@ export interface BlockResponse {
   }[]
 }
 
-const SubgraphHealthIndicator = () => {
+const FixedSubgraphHealthIndicator = () => {
   const { pathname } = useRouter()
   const isOnNftPages = pathname.includes('nfts')
-  return isOnNftPages ? <SubgraphHealth /> : null
+  return isOnNftPages ? <SubgraphHealthIndicator subgraphName="pancakeswap/nft-market" /> : null
 }
 
-const SubgraphHealth = () => {
+export const SubgraphHealthIndicator: React.FC<{ subgraphName: string; inline?: boolean }> = ({
+  subgraphName,
+  inline,
+}) => {
   const { t } = useTranslation()
-  const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth()
+  const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth(subgraphName)
   const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()
   const forceIndicatorDisplay = status === SubgraphStatus.WARNING || status === SubgraphStatus.NOT_OK
   const showIndicator = alwaysShowIndicator || forceIndicatorDisplay
@@ -108,11 +109,22 @@ const SubgraphHealth = () => {
     return null
   }
 
+  if (inline) {
+    return (
+      <IndicatorWrapper alignItems="center" justifyContent="flex-end" ref={targetRef}>
+        <Dot $color={current.color} />
+        <Text>{current.label}</Text>
+        <InfoIcon />
+        {tooltipVisible && tooltip}
+      </IndicatorWrapper>
+    )
+  }
+
   return (
     <Box position="fixed" bottom="55px" right="5%" ref={targetRef} data-test="subgraph-health-indicator">
       {tooltipVisible && tooltip}
       <StyledCard>
-        <IndicatorWrapper p="10px">
+        <IndicatorWrapper alignItems="center" p="10px">
           <Dot $color={current.color} />
           <Text>{current.label}</Text>
           <InfoIcon />
@@ -151,4 +163,4 @@ const TooltipContent = ({
   )
 }
 
-export default SubgraphHealthIndicator
+export default FixedSubgraphHealthIndicator

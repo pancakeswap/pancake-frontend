@@ -1,4 +1,5 @@
 import { ChainId, JSBI, Percent, Token } from '@pancakeswap/sdk'
+import { BigNumber } from '@ethersproject/bignumber'
 import { mainnetTokens, testnetTokens } from './tokens'
 
 export const ROUTER_ADDRESS = {
@@ -106,3 +107,9 @@ export { default as ifosConfig } from './ifo'
 
 export const FAST_INTERVAL = 10000
 export const SLOW_INTERVAL = 60000
+
+// Gelato uses this address to define a native currency in all chains
+export const GELATO_NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+// Handler string is passed to Gelato to use PCS router
+export const GELATO_HANDLER = 'pancakeswap'
+export const GENERIC_GAS_LIMIT_ORDER_EXECUTION = BigNumber.from(500000)

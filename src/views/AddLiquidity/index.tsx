@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@pancakeswap/sdk'
-import { Button, Text, Flex, AddIcon, CardBody, Message, useModal } from '@pancakeswap/uikit'
+import { Button, Text, AddIcon, CardBody, Message, useModal } from '@pancakeswap/uikit'
+import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
@@ -13,12 +14,10 @@ import { CHAIN_ID } from 'config/constants/networks'
 import { AppDispatch } from '../../state'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { DoubleCurrencyLogo } from '../../components/Logo'
 import { AppHeader, AppBody } from '../../components/App'
 import { MinimalPositionCard } from '../../components/PositionCard'
-import Row, { RowBetween } from '../../components/Layout/Row'
+import { RowBetween } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
 import { ROUTER_ADDRESS } from '../../config/constants'
@@ -35,10 +34,10 @@ import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import Dots from '../../components/Loader/Dots'
-import ConfirmAddModalBottom from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import PoolPriceBar from './PoolPriceBar'
 import Page from '../Page'
+import ConfirmAddLiquidityModal from '../Swap/components/ConfirmAddLiquidityModal'
 
 export default function AddLiquidity() {
   const router = useRouter()
@@ -87,12 +86,19 @@ export default function AddLiquidity() {
   const isValid = !error
 
   // modal and loading
-  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
+  const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
+    attemptingTxn: boolean
+    liquidityErrorMessage: string | undefined
+    txHash: string | undefined
+  }>({
+    attemptingTxn: false,
+    liquidityErrorMessage: undefined,
+    txHash: undefined,
+  })
 
   // txn values
   const deadline = useTransactionDeadline() // custom from users settings
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
-  const [txHash, setTxHash] = useState<string>('')
 
   // get formatted amounts
   const formattedAmounts = {
@@ -174,7 +180,7 @@ export default function AddLiquidity() {
       value = null
     }
 
-    setAttemptingTxn(true)
+    setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
         method(...args, {
@@ -182,75 +188,26 @@ export default function AddLiquidity() {
           gasLimit: calculateGasMargin(estimatedGasLimit),
           gasPrice,
         }).then((response) => {
-          setAttemptingTxn(false)
+          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 
           addTransaction(response, {
             summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
               currencies[Field.CURRENCY_A]?.symbol
             } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
           })
-
-          setTxHash(response.hash)
         }),
       )
       .catch((err) => {
-        setAttemptingTxn(false)
-        // we only care if the error is something _other_ than the user rejected the tx
-        if (err?.code !== 4001) {
-          console.error(err)
+        if (err && err.code !== 4001) {
+          logError(err)
+          console.error(`Add Liquidity failed`, err, args, value)
         }
+        setLiquidityState({
+          attemptingTxn: false,
+          liquidityErrorMessage: err && err.code !== 4001 ? `Add Liquidity failed: ${err.message}` : undefined,
+          txHash: undefined,
+        })
       })
-  }
-
-  const modalHeader = () => {
-    return noLiquidity ? (
-      <Flex alignItems="center">
-        <Text fontSize="48px" marginRight="10px">
-          {`${currencies[Field.CURRENCY_A]?.symbol}/${currencies[Field.CURRENCY_B]?.symbol}`}
-        </Text>
-        <DoubleCurrencyLogo
-          currency0={currencies[Field.CURRENCY_A]}
-          currency1={currencies[Field.CURRENCY_B]}
-          size={30}
-        />
-      </Flex>
-    ) : (
-      <AutoColumn>
-        <Flex alignItems="center">
-          <Text fontSize="48px" marginRight="10px">
-            {liquidityMinted?.toSignificant(6)}
-          </Text>
-          <DoubleCurrencyLogo
-            currency0={currencies[Field.CURRENCY_A]}
-            currency1={currencies[Field.CURRENCY_B]}
-            size={30}
-          />
-        </Flex>
-        <Row>
-          <Text fontSize="24px">
-            {`${currencies[Field.CURRENCY_A]?.symbol}/${currencies[Field.CURRENCY_B]?.symbol} Pool Tokens`}
-          </Text>
-        </Row>
-        <Text small textAlign="left" my="24px">
-          {t('Output is estimated. If the price changes by more than %slippage%% your transaction will revert.', {
-            slippage: allowedSlippage / 100,
-          })}
-        </Text>
-      </AutoColumn>
-    )
-  }
-
-  const modalBottom = () => {
-    return (
-      <ConfirmAddModalBottom
-        price={price}
-        currencies={currencies}
-        parsedAmounts={parsedAmounts}
-        noLiquidity={noLiquidity}
-        onAdd={onAdd}
-        poolTokenPercentage={poolTokenPercentage}
-      />
-    )
   }
 
   const pendingText = t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', {
@@ -294,20 +251,27 @@ export default function AddLiquidity() {
     if (txHash) {
       onFieldAInput('')
     }
-    setTxHash('')
   }, [onFieldAInput, txHash])
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
   const [onPresentAddLiquidityModal] = useModal(
-    <TransactionConfirmationModal
+    <ConfirmAddLiquidityModal
       title={noLiquidity ? t('You are creating a pool') : t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
-      content={() => <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />}
       pendingText={pendingText}
       currencyToAdd={pair?.liquidityToken}
+      allowedSlippage={allowedSlippage}
+      onAdd={onAdd}
+      parsedAmounts={parsedAmounts}
+      currencies={currencies}
+      liquidityErrorMessage={liquidityErrorMessage}
+      price={price}
+      noLiquidity={noLiquidity}
+      poolTokenPercentage={poolTokenPercentage}
+      liquidityMinted={liquidityMinted}
     />,
     true,
     true,
@@ -439,6 +403,11 @@ export default function AddLiquidity() {
                     if (expertMode) {
                       onAdd()
                     } else {
+                      setLiquidityState({
+                        attemptingTxn: false,
+                        liquidityErrorMessage: undefined,
+                        txHash: undefined,
+                      })
                       onPresentAddLiquidityModal()
                     }
                   }}

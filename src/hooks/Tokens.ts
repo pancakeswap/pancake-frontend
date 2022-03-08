@@ -4,6 +4,7 @@ import { Currency, ETHER, Token, currencyEquals } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import { arrayify } from '@ethersproject/bytes'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { GELATO_NATIVE } from 'config/constants'
 import {
   TokenAddressMap,
   useDefaultTokenList,
@@ -187,8 +188,8 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   ])
 }
 
-export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const isBNB = currencyId?.toUpperCase() === 'BNB'
+export function useCurrency(currencyId: string | undefined): Currency | Token | null | undefined {
+  const isBNB = currencyId?.toUpperCase() === 'BNB' || currencyId?.toLowerCase() === GELATO_NATIVE
   const token = useToken(isBNB ? undefined : currencyId)
   return isBNB ? ETHER : token
 }

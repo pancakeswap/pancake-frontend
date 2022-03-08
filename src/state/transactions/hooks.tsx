@@ -1,9 +1,10 @@
 import { TransactionResponse } from '@ethersproject/providers'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Order } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppDispatch, AppState } from '../index'
-import { addTransaction } from './actions'
+import { addTransaction, TransactionType } from './actions'
 import { TransactionDetails } from './reducer'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -13,6 +14,8 @@ export function useTransactionAdder(): (
     summary?: string
     approval?: { tokenAddress: string; spender: string }
     claim?: { recipient: string }
+    type?: TransactionType
+    order?: Order
   },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
@@ -25,7 +28,15 @@ export function useTransactionAdder(): (
         summary,
         approval,
         claim,
-      }: { summary?: string; claim?: { recipient: string }; approval?: { tokenAddress: string; spender: string } } = {},
+        type,
+        order,
+      }: {
+        summary?: string
+        claim?: { recipient: string }
+        approval?: { tokenAddress: string; spender: string }
+        type?: TransactionType
+        order?: Order
+      } = {},
     ) => {
       if (!account) return
       if (!chainId) return
@@ -34,7 +45,7 @@ export function useTransactionAdder(): (
       if (!hash) {
         throw Error('No transaction hash found.')
       }
-      dispatch(addTransaction({ hash, from: account, chainId, approval, summary, claim }))
+      dispatch(addTransaction({ hash, from: account, chainId, approval, summary, claim, type, order }))
     },
     [dispatch, chainId, account],
   )
@@ -46,7 +57,7 @@ export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
 
   const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
 
-  return chainId ? state[chainId] ?? {} : {}
+  return useMemo(() => (chainId ? state[chainId] ?? {} : {}), [chainId, state])
 }
 
 export function useIsTransactionPending(transactionHash?: string): boolean {
