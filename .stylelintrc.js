@@ -19,7 +19,7 @@ const commonRules = {
 module.exports = {
   overrides: [
     {
-      files: ['**/*.{js,jsx,ts,tsx}'],
+      files: ['**/*.{ts,tsx}'],
       extends: [
         'stylelint-config-standard',
         'stylelint-config-recommended',
