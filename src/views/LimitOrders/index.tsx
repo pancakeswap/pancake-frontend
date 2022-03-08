@@ -15,7 +15,7 @@ import { ApprovalState, useApproveCallbackFromInputCurrencyAmount } from 'hooks/
 import { Field } from 'state/limitOrders/types'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { GELATO_NATIVE } from 'config/constants'
+import { GELATO_NATIVE, LIMIT_ORDERS_DOCS_URL } from 'config/constants'
 import { useExchangeChartManager } from 'state/user/hooks'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
 
@@ -251,7 +251,12 @@ const LimitOrders = () => {
   const isSideFooter = isChartExpanded || isChartDisplayed
 
   return (
-    <Page removePadding={isChartExpanded} hideFooterOnDesktop={isSideFooter} noMinHeight>
+    <Page
+      removePadding={isChartExpanded}
+      hideFooterOnDesktop={isSideFooter}
+      noMinHeight
+      helpUrl={LIMIT_ORDERS_DOCS_URL}
+    >
       <Flex
         width="100%"
         justifyContent="center"
@@ -382,7 +387,7 @@ const LimitOrders = () => {
           )}
           {isSideFooter && (
             <Box display={['none', null, null, 'block']} width="100%" height="100%">
-              <Footer variant="side" />
+              <Footer variant="side" helpUrl={LIMIT_ORDERS_DOCS_URL} />
             </Box>
           )}
         </Flex>

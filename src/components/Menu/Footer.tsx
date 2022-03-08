@@ -2,6 +2,7 @@ import { memo } from 'react'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { EXCHANGE_DOCS_URLS } from 'config/constants'
 
 const Wrapper = memo(styled.div<{ $isSide: boolean }>`
   width: 100%;
@@ -37,7 +38,10 @@ const BubbleWrapper = styled(Flex)`
 
 type FooterVariant = 'default' | 'side'
 
-const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) => {
+const Footer: React.FC<{ variant?: FooterVariant; helpUrl?: string }> = ({
+  variant = 'default',
+  helpUrl = EXCHANGE_DOCS_URLS,
+}) => {
   const { t } = useTranslation()
   const isSide = variant === 'side'
   return (
@@ -67,13 +71,7 @@ const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) 
         justifyContent={['center', 'center', 'center', 'flex-end']}
       >
         <BubbleWrapper>
-          <Button
-            id="clickExchangeHelp"
-            as="a"
-            external
-            href="https://docs.pancakeswap.finance/products/pancakeswap-exchange"
-            variant="subtle"
-          >
+          <Button id="clickExchangeHelp" as="a" external href={helpUrl} variant="subtle">
             {t('Need help ?')}
           </Button>
           <Svg viewBox="0 0 16 16">

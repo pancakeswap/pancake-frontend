@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Box, Flex } from '@pancakeswap/uikit'
 import Footer from 'components/Menu/Footer'
 import { PageMeta } from 'components/Layout/Page'
+import { EXCHANGE_DOCS_URLS } from 'config/constants'
 
 const StyledPage = styled.div<{ $removePadding: boolean; $noMinHeight }>`
   display: flex;
@@ -34,8 +35,16 @@ const Page: React.FC<
     removePadding?: boolean
     hideFooterOnDesktop?: boolean
     noMinHeight?: boolean
+    helpUrl?: string
   }
-> = ({ children, removePadding = false, hideFooterOnDesktop = false, noMinHeight = false, ...props }) => {
+> = ({
+  children,
+  removePadding = false,
+  hideFooterOnDesktop = false,
+  noMinHeight = false,
+  helpUrl = EXCHANGE_DOCS_URLS,
+  ...props
+}) => {
   return (
     <>
       <PageMeta />
@@ -43,7 +52,7 @@ const Page: React.FC<
         {children}
         <Flex flexGrow={1} />
         <Box display={['block', null, null, hideFooterOnDesktop ? 'none' : 'block']} width="100%">
-          <Footer />
+          <Footer helpUrl={helpUrl} />
         </Box>
       </StyledPage>
     </>
