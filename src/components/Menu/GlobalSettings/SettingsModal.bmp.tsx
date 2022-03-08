@@ -15,14 +15,16 @@ import QuestionHelper from '../../QuestionHelper'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
 import GasSettings from './GasSettings'
+import { ScrollView } from '@tarojs/components'
 
-const ScrollableContainer = styled(Flex)`
-  flex-direction: column;
-  max-height: 400px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    max-height: none;
-  }
-`
+// const ScrollableContainer = styled(Flex)`
+//   flex-direction: column;
+//   min-height: 300px;
+//   overflow-y: auto;
+//   ${({ theme }) => theme.mediaQueries.sm} {
+//     max-height: none;
+//   }
+// `
 
 const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   useEffect(() => {
@@ -68,7 +70,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
       onDismiss={onDismiss}
       style={{ maxWidth: '420px' }}
     >
-      <ScrollableContainer>
+      <ScrollView scrollY style={{ maxHeight: '58vh' }}>
         <Flex pb="24px" flexDirection="column">
           <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">
             {t('Global')}
@@ -141,7 +143,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
           </Flex>
           <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
         </Flex>
-      </ScrollableContainer>
+      </ScrollView>
     </Modal>
   )
 }
