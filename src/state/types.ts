@@ -119,7 +119,7 @@ export interface Profile {
   isActive: boolean
   username: string
   nft?: NftToken
-  team: Team
+  team?: Team
   hasRegistered: boolean
 }
 
