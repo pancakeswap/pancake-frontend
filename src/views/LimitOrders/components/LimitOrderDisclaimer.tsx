@@ -9,7 +9,9 @@ const LimitOrderDisclaimer = () => {
         <b>{t('Real Execution Price:')}</b>
         <ol>
           <li>
-            {t('Your gas fees are paid for by the spread between your specified price and the real execution price.')}
+            {t(
+              'Your execution gas fees are paid for by the spread between your specified price and the real execution price.',
+            )}
           </li>
           <li>
             {t(

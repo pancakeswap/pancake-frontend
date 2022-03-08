@@ -185,7 +185,7 @@ const OrderContent: React.FC<OrderContentProps> = ({
       <Message variant="success" mt="24px">
         <MessageText>
           {t(
-            'Limit price is %percentage%% above the current market rate. The order will be executed when the market price reaches the specified limit price.',
+            'Limit price is %percentage%% above the current market rate. The order will be executed when the market price reaches high enough above your limit price (to also pay for limit order execution gas fees).',
             { percentage: percentageRateDifference },
           )}
         </MessageText>

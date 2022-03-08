@@ -79,13 +79,6 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
 
   const executionPrice = useMemo(() => getPriceForOneToken(inputAmount, outputAmount), [inputAmount, outputAmount])
 
-  console.log('Order formatting', {
-    adjMinReturn: order.adjustedMinReturn,
-    calcAdjMinReturn:
-      gelatoLibrary && chainId && order.minReturn && gelatoLibrary.getAdjustedMinReturn(order.minReturn),
-    outputAmount: outputAmount?.toSignificant(18),
-  })
-
   return {
     inputToken,
     outputToken,

@@ -12,10 +12,6 @@ import CurrencyFormat from './CurrencyFormat'
 import CellFormat from './CellFormat'
 import LimitOrderDisclaimer from '../LimitOrderDisclaimer'
 
-const StyledModal = styled(Modal)`
-  max-width: 613px;
-`
-
 const InfoCardWrapper = styled.div`
   border-radius: 16px;
   padding: 16px;
@@ -122,36 +118,38 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
         isCancellationPending={isCancellationPending}
       />
       <LimitOrderDisclaimer />
-      {isOpen ? (
-        <>
-          <Button variant="primary" mt="24px" as="a" external href={formattedOrder.bscScanUrls.created}>
-            {t('View on BSCScan')}
-          </Button>
-          {!isSubmissionPending && (
-            <Button variant="danger" mt="24px" onClick={onCancelOrder}>
-              {t('Cancel Order')}
+      <Flex flexDirection="column">
+        {isOpen ? (
+          <>
+            <Button variant="primary" mt="16px" as="a" external href={formattedOrder.bscScanUrls.created}>
+              {t('View on BSCScan')}
             </Button>
-          )}
-        </>
-      ) : (
-        <Button variant="primary" mt="24px" as="a" external href={formattedOrder.bscScanUrls.created}>
-          {t('View order creation on BSCScan')}
-        </Button>
-      )}
-      {isCancelled && bscScanUrls.cancelled && (
-        <Button variant="primary" mt="24px" as="a" external href={bscScanUrls.cancelled}>
-          {t('View order cancellation on BSCScan')}
-        </Button>
-      )}
-      {isExecuted && bscScanUrls.executed && (
-        <Button variant="primary" mt="24px" as="a" external href={bscScanUrls.executed}>
-          {t('View order execution on BSCScan')}
-        </Button>
-      )}
+            {!isSubmissionPending && (
+              <Button variant="danger" mt="16px" onClick={onCancelOrder}>
+                {t('Cancel Order')}
+              </Button>
+            )}
+          </>
+        ) : (
+          <Button variant="primary" mt="16px" as="a" external href={formattedOrder.bscScanUrls.created}>
+            {t('View order creation on BSCScan')}
+          </Button>
+        )}
+        {isCancelled && bscScanUrls.cancelled && (
+          <Button variant="primary" mt="16px" as="a" external href={bscScanUrls.cancelled}>
+            {t('View order cancellation on BSCScan')}
+          </Button>
+        )}
+        {isExecuted && bscScanUrls.executed && (
+          <Button variant="primary" mt="16px" as="a" external href={bscScanUrls.executed}>
+            {t('View order execution on BSCScan')}
+          </Button>
+        )}
+      </Flex>
     </>
   )
   return (
-    <StyledModal
+    <Modal
       title={t('Open Order Details')}
       headerBackground={theme.colors.gradients.cardHeader}
       style={{ width: '436px' }}
@@ -166,7 +164,7 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
       ) : (
         orderDetails
       )}
-    </StyledModal>
+    </Modal>
   )
 }
 
