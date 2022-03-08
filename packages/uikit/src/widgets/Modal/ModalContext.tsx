@@ -88,7 +88,7 @@ const ModalProvider: React.FC = ({ children }) => {
       <LazyMotion features={domAnimation}>
         <AnimatePresence>
           {isOpen && (
-            <ModalWrapper {...animationMap} variants={animationVariants}>
+            <ModalWrapper {...animationMap} variants={animationVariants} transition={{ duration: 0.3 }}>
               <Overlay onClick={handleOverlayDismiss} />
               {React.isValidElement(modalNode) &&
                 React.cloneElement(modalNode, {
