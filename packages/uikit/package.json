@@ -36,7 +36,7 @@
     "@storybook/addon-links": "^6.3.6",
     "@storybook/react": "^6.3.6",
     "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "^11.2.5",
+    "@testing-library/react": "^12.1.3",
     "@types/lodash": "^4.14.168",
     "@types/react-dom": "^17.0.5",
     "@types/react-router-dom": "^5.1.7",
@@ -61,6 +61,7 @@
   "dependencies": {
     "@popperjs/core": "^2.9.2",
     "@types/styled-system": "^5.1.10",
+    "framer-motion": "4.1.17",
     "lodash": "^4.17.20",
     "react-popper": "^2.2.5",
     "styled-system": "^5.1.5",
