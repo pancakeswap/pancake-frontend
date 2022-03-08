@@ -1,5 +1,5 @@
 import React from 'react'
-import { HelpIcon, Box, BoxProps, Placement, Overlay, Text } from '@pancakeswap/uikit'
+import { IconButton, CloseIcon, HelpIcon, Box, BoxProps, Placement, Overlay, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 interface Props extends BoxProps {
@@ -35,7 +35,16 @@ const QuestionHelper: React.FC<Props> = ({ text, placement = 'right-end', size =
       {visible && (
         <Overlay onClick={() => setVisible(false)}>
           <OverlayInner>
-            <Text>{text}</Text>
+            <Text style={{ marginRight: 20 }}>{text}</Text>
+
+            <IconButton
+              variant="text"
+              style={{ position: 'absolute', top: 0, right: 0 }}
+              onClick={() => setVisible(false)}
+              aria-label="Close the dialog"
+            >
+              <CloseIcon color="text" width="24px" />
+            </IconButton>
           </OverlayInner>
         </Overlay>
       )}
