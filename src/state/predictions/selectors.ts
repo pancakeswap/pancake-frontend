@@ -43,7 +43,7 @@ export const getRoundsByCloseOracleIdSelector = createSelector([selectRounds], (
   }, {}) as { [key: string]: NodeRound }
 })
 
-export const getRoundsSelector = createSelector([selectRounds], (rounds) => {
+export const getBigNumberRounds = createSelector([selectRounds], (rounds) => {
   return Object.keys(rounds).reduce((accum, epoch) => {
     return {
       ...accum,
@@ -52,47 +52,23 @@ export const getRoundsSelector = createSelector([selectRounds], (rounds) => {
   }, {}) as { [key: string]: NodeRound }
 })
 
-export const getSortedRoundsSelector = createSelector([selectRounds], (rounds) => {
-  return orderBy(
-    Object.values(
-      Object.keys(rounds).reduce((accum, epoch) => {
-        return {
-          ...accum,
-          [epoch]: parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch]),
-        }
-      }, {}) as { [key: string]: NodeRound },
-    ),
-    ['epoch'],
-    ['asc'],
-  )
+export const getSortedRoundsSelector = createSelector([getBigNumberRounds], (rounds) => {
+  return orderBy(Object.values(rounds), ['epoch'], ['asc'])
 })
 
-export const getCurrentRoundSelector = createSelector([selectCurrentEpoch, selectRounds], (currentEpoch, rounds) => {
-  const roundData = Object.keys(rounds).reduce((accum, epoch) => {
-    return {
-      ...accum,
-      [epoch]: parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch]),
-    }
-  }, {}) as { [key: string]: NodeRound }
+export const getCurrentRoundSelector = createSelector(
+  [selectCurrentEpoch, getBigNumberRounds],
+  (currentEpoch, rounds) => {
+    return rounds[currentEpoch]
+  },
+)
 
-  return roundData[currentEpoch]
-})
-
-export const getMinBetAmountSelector = createSelector([selectMinBetAmount], (minBetAmount) => {
-  return BigNumber.from(minBetAmount)
-})
+export const getMinBetAmountSelector = createSelector([selectMinBetAmount], BigNumber.from)
 
 export const getCurrentRoundLockTimestampSelector = createSelector(
-  [selectCurrentEpoch, selectRounds, selectIntervalSeconds],
+  [selectCurrentEpoch, getBigNumberRounds, selectIntervalSeconds],
   (currentEpoch, rounds, intervalSeconds) => {
-    const roundData = Object.keys(rounds).reduce((accum, epoch) => {
-      return {
-        ...accum,
-        [epoch]: parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch]),
-      }
-    }, {}) as { [key: string]: NodeRound }
-
-    const currentRound = roundData[currentEpoch]
+    const currentRound = rounds[currentEpoch]
 
     if (!currentRound) {
       return undefined

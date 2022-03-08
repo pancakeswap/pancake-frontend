@@ -6,7 +6,7 @@ import { useAppDispatch } from 'state'
 import { State } from '../types'
 import { fetchAddressResult } from '.'
 import {
-  getRoundsSelector,
+  getBigNumberRounds,
   getRoundsByCloseOracleIdSelector,
   makeGetRoundSelector,
   getSortedRoundsSelector,
@@ -18,7 +18,7 @@ import {
 } from './selectors'
 
 export const useGetRounds = () => {
-  return useSelector(getRoundsSelector)
+  return useSelector(getBigNumberRounds)
 }
 
 export const useGetRoundsByCloseOracleId = () => {
