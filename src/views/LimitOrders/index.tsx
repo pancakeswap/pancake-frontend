@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
-import { Button, Box, Flex, useModal, useMatchBreakpoints, BottomDrawer } from '@pancakeswap/uikit'
+import { Button, Box, Flex, useModal, useMatchBreakpoints, BottomDrawer, Link } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import { AutoColumn } from 'components/Layout/Column'
@@ -11,6 +11,7 @@ import Footer from 'components/Menu/Footer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useGelatoLimitOrders from 'hooks/limitOrders/useGelatoLimitOrders'
 import useGasOverhead from 'hooks/limitOrders/useGasOverhead'
+import useTheme from 'hooks/useTheme'
 import { ApprovalState, useApproveCallbackFromInputCurrencyAmount } from 'hooks/useApproveCallback'
 import { Field } from 'state/limitOrders/types'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
@@ -33,6 +34,7 @@ const LimitOrders = () => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { isMobile, isTablet } = useMatchBreakpoints()
+  const { theme } = useTheme()
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
@@ -376,6 +378,18 @@ const LimitOrders = () => {
                       </Button>
                     )}
                   </Box>
+                  <Flex mt="16px" justifyContent="center">
+                    <Link external href="https://www.gelato.network/">
+                      <img
+                        src={
+                          theme.isDark ? '/images/powered_by_gelato_white.svg' : '/images/powered_by_gelato_black.svg'
+                        }
+                        alt="Powered by Gelato"
+                        width="170px"
+                        height="48px"
+                      />
+                    </Link>
+                  </Flex>
                 </Wrapper>
               </AppBody>
             </StyledInputCurrencyWrapper>
