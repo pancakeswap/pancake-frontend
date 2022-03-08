@@ -18,6 +18,9 @@ import CircleLoader from '../Loader/CircleLoader'
 import { isTokenOnList } from '../../utils'
 import ImportRow from './ImportRow'
 import VirtualList from '@tarojs/components/virtual-list'
+import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
+
+const { safeArea } = getSystemInfoSync()
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
@@ -206,7 +209,7 @@ export default function CurrencyList({
 
   return (
     <VirtualList
-      height={height}
+      height={safeArea.height - 350}
       ref={fixedListRef as any}
       width="100%"
       itemData={itemData}
