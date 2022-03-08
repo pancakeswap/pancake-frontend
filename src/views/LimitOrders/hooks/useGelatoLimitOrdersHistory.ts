@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useMemo } from 'react'
 
-import { getLSOrders, saveOrder } from 'utils/localStorageOrders'
+import { getLSOrders, saveOrder, removeOrder } from 'utils/localStorageOrders'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 
 import { ORDER_CATEGORY } from '../types'
@@ -17,10 +17,19 @@ function syncOrderToLocalStorage({ chainId, account, orders }) {
   const ordersLS = getLSOrders(chainId, account)
 
   orders.forEach((order: Order) => {
-    const orderExists = ordersLS.find((confOrder) => confOrder.id.toLowerCase() === order.id.toLowerCase())
-
-    if (!orderExists || (orderExists && Number(orderExists.updatedAt) < Number(order.updatedAt))) {
+    const hasLSOrder = ordersLS.some((confOrder) => confOrder.id.toLowerCase() === order.id.toLowerCase())
+    if (!hasLSOrder) {
       saveOrder(chainId, account, order)
+    }
+  })
+
+  ordersLS.forEach((confOrder: Order) => {
+    const updatedOrder = orders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase())
+
+    if (updatedOrder && Number(confOrder.updatedAt) < Number(updatedOrder.updatedAt)) {
+      saveOrder(chainId, account, updatedOrder)
+    } else if (!updatedOrder) {
+      removeOrder(chainId, account, confOrder)
     }
   })
 }
@@ -76,7 +85,7 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
   const { data } = useSWR(
-    startFetch ? ['gelato', 'cancelledOrders'] : null,
+    startFetch ? ['gelato', 'cancelledExecutedOrders'] : null,
     async () => {
       try {
         const acc = account.toLowerCase()
