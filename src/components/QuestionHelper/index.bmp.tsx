@@ -33,7 +33,7 @@ const QuestionHelper: React.FC<Props> = ({ text, placement = 'right-end', size =
         <HelpIcon color="textSubtle" width={size} />
       </QuestionWrapper>
       {visible && (
-        <Overlay onClick={() => setVisible(false)}>
+        <Overlay onClick={() => setVisible(false)} style={{ backgroundColor: 'transparent' }}>
           <OverlayInner>
             <Text style={{ marginRight: 20 }}>{text}</Text>
 
