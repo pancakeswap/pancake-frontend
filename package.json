@@ -39,7 +39,7 @@
     "@binance/babel-preset-bmp": "^1.0.1",
     "@binance/mp-components": "^1.0.1",
     "@binance/mp-service": "^1.0.4",
-    "@binance/sentry-miniapp": "^0.1.0",
+    "@binance/sentry-miniapp": "^0.2.0",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
