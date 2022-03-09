@@ -2025,6 +2025,14 @@ export const mainnetTokens = defineTokens({
     'Duet Governance Token',
     'https://duet.finance',
   ),
+  gmt: new Token(
+    MAINNET,
+    '0x3019BF2a2eF8040C242C9a4c5c4BD4C81678b2A1',
+    8,
+    'GMT',
+    'Green Metaverse Token',
+    'https://www.stepn.com/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
