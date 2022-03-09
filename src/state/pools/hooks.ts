@@ -1,10 +1,7 @@
 import { useEffect, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { getAprData } from 'views/Pools/helpers'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import {
   fetchPoolsPublicDataAsync,
@@ -19,7 +16,7 @@ import {
   fetchCakePoolPublicDataAsync,
   fetchCakePoolUserDataAsync,
 } from '.'
-import { State, DeserializedPool, VaultKey } from '../types'
+import { DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from '../farms'
 import { useCurrentBlock } from '../block/hooks'
 import {
@@ -27,6 +24,9 @@ import {
   makePoolWithUserDataLoadingSelector,
   makeVaultPoolByKey,
   poolsWithVaultSelector,
+  ifoPoolCreditBlockSelector,
+  ifoPoolCreditSelector,
+  ifoWithAprSelector,
 } from './selectors'
 
 export const useFetchPublicPoolsData = () => {
@@ -148,38 +148,15 @@ export const useIfoPoolVault = () => {
 
 export const useIfoPoolCreditBlock = () => {
   const currentBlock = useCurrentBlock()
-  const { creditStartBlock, creditEndBlock } = useSelector((state: State) => ({
-    creditStartBlock: state.pools.ifoPool.creditStartBlock,
-    creditEndBlock: state.pools.ifoPool.creditEndBlock,
-  }))
+  const { creditStartBlock, creditEndBlock } = useSelector(ifoPoolCreditBlockSelector)
   const hasEndBlockOver = currentBlock >= creditEndBlock
   return { creditStartBlock, creditEndBlock, hasEndBlockOver }
 }
 
 export const useIfoPoolCredit = () => {
-  const creditAsString = useSelector((state: State) => state.pools.ifoPool.userData?.credit ?? BIG_ZERO)
-  const credit = useMemo(() => {
-    return new BigNumber(creditAsString)
-  }, [creditAsString])
-
-  return credit
+  return useSelector(ifoPoolCreditSelector)
 }
 
 export const useIfoWithApr = () => {
-  const {
-    fees: { performanceFeeAsDecimal },
-  } = useIfoPoolVault()
-  const { pool: poolZero } = usePool(0)
-
-  const ifoPoolWithApr = useMemo(() => {
-    const ifoPool = { ...poolZero }
-    ifoPool.vaultKey = VaultKey.IfoPool
-    ifoPool.apr = getAprData(ifoPool, performanceFeeAsDecimal).apr
-    ifoPool.rawApr = poolZero.apr
-    return ifoPool
-  }, [performanceFeeAsDecimal, poolZero])
-
-  return {
-    pool: ifoPoolWithApr,
-  }
+  return useSelector(ifoWithAprSelector)
 }

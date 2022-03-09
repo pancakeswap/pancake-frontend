@@ -1,8 +1,12 @@
+import BigNumber from 'bignumber.js'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getAprData } from 'views/Pools/helpers'
 import { createSelector } from '@reduxjs/toolkit'
 import { State, VaultKey } from '../types'
 import { transformPool, transformVault, transformIfoVault } from './helpers'
 import { initialPoolVaultState } from './index'
-import { getAprData } from '../../views/Pools/helpers'
+
+const selectIfoPool = (state: State) => state.pools.ifoPool
 
 export const makePoolWithUserDataLoadingSelector = (sousId) =>
   createSelector(
@@ -67,5 +71,30 @@ export const poolsWithVaultSelector = createSelector(
       rawApr: cakePool.apr,
     }
     return { pools: [ifoPoolWithApr, cakeAutoVaultWithApr, ...pools], userDataLoaded }
+  },
+)
+
+export const ifoPoolCreditBlockSelector = createSelector([selectIfoPool], (serializedIfoPool) => {
+  const { creditStartBlock, creditEndBlock } = serializedIfoPool
+  return { creditStartBlock, creditEndBlock }
+})
+
+export const ifoPoolCreditSelector = createSelector([selectIfoPool], (serializedIfoPool) => {
+  const creditAsString = serializedIfoPool.userData?.credit ?? BIG_ZERO
+  return new BigNumber(creditAsString)
+})
+
+export const ifoWithAprSelector = createSelector(
+  [makeVaultPoolByKey(VaultKey.IfoPool), makePoolWithUserDataLoadingSelector(0)],
+  (deserializedIfoPool, poolWithUserData) => {
+    const { pool } = poolWithUserData
+    const {
+      fees: { performanceFeeAsDecimal },
+    } = deserializedIfoPool
+    const ifoPool = { ...pool }
+    ifoPool.vaultKey = VaultKey.IfoPool
+    ifoPool.apr = getAprData(ifoPool, performanceFeeAsDecimal).apr
+    ifoPool.rawApr = pool.apr
+    return { pool: ifoPool }
   },
 )
