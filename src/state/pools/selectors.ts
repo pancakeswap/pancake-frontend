@@ -6,6 +6,8 @@ import { State, VaultKey } from '../types'
 import { transformPool, transformVault, transformIfoVault } from './helpers'
 import { initialPoolVaultState } from './index'
 
+const selectIfoPool = (state: State) => state.pools.ifoPool
+
 export const makePoolWithUserDataLoadingSelector = (sousId) =>
   createSelector(
     (state: State) => ({
