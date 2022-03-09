@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { BLOCK_COUNTRIES_COOKIE_NAME } from 'config/constants/cookie-names'
 
 // Sanctioned Countries: Belarus, Cuba, Democratic Republic of Congo, Iran, Iraq, North Korea, Sudan, Syria, Zimbabwe.
 const BLOCK_COUNTRIES = ['BY', 'CU', 'CD', 'IR', 'IQ', 'KP', 'SD', 'SY', 'ZW']
@@ -12,7 +11,7 @@ export async function middleware(req: NextRequest) {
   const { geo } = req
   const { country, region } = geo
 
-  // Only track UA for debuggin purpose
+  // Only track UA for debugging purpose
   if (country === 'UA') {
     // eslint-disable-next-line no-console
     console.log('country-region:', `${country}-${region}`)
@@ -22,9 +21,7 @@ export async function middleware(req: NextRequest) {
     BLOCK_COUNTRIES.some((c) => c === country) || BLOCK_REGIONS.some((r) => r === `${country}-${region}`)
 
   if (shouldBlock) {
-    res.cookie(BLOCK_COUNTRIES_COOKIE_NAME, String(shouldBlock))
-  } else {
-    res.clearCookie(BLOCK_COUNTRIES_COOKIE_NAME)
+    return new Response('Unavailable for legal reasons', { status: 451 })
   }
 
   return res
