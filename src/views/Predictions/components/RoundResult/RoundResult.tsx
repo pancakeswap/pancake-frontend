@@ -21,7 +21,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, hasFailed = false, chi
       </Text>
       {hasFailed ? (
         <Text bold textTransform="uppercase" color="textDisabled" mb="16px" fontSize="24px">
-          {t('Canceled')}
+          {t('Cancelled')}
         </Text>
       ) : (
         <RoundPrice lockPrice={lockPrice} closePrice={closePrice} />
