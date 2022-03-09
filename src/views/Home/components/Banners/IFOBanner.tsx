@@ -1,95 +1,76 @@
-import { memo } from 'react'
-import styled from 'styled-components'
-import { Text, Flex, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
-import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
+import { ArrowForwardIcon, Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
+import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
+import Image from 'next/image'
+import { memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
+import styled, { keyframes } from 'styled-components'
 import { getStatus } from '../../../Ifos/hooks/helpers'
+import { IFOImage, IFOMobileImage } from './images'
+import * as S from './Styled'
 
-const StyledSubheading = styled(Heading)`
-  background: -webkit-linear-gradient(#ffd800, #eb8c00);
-  font-size: 20px;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
-  ${({ theme }) => theme.mediaQueries.xs} {
-    font-size: 24px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    -webkit-text-stroke: unset;
-  }
-  margin-bottom: 8px;
-`
-
-const StyledHeading = styled(Heading)`
-  color: #ffffff;
-  background: -webkit-linear-gradient(#7645d9 0%, #452a7a 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-stroke: 6px transparent;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-`
-
-const Wrapper = styled.div`
-  border-radius: 32px;
-  width: 100%;
-  background-image: linear-gradient(#7645d9, #452a7a);
-  max-height: max-content;
-  overflow: hidden;
-`
-
-const Inner = styled(Flex)`
-  position: relative;
-  padding: 24px;
-  flex-direction: row;
-  justify-content: space-between;
-  max-height: 220px;
-`
-
-const LeftWrapper = styled(Flex)`
-  z-index: 1;
-  width: 100%;
-  flex-direction: column;
-  justify-content: center;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding-top: 40px;
-    padding-bottom: 40px;
-  }
+const shineAnimation = keyframes`
+	0% {transform:translateX(-100%);}
+  20% {transform:translateX(100%);}
+	100% {transform:translateX(100%);}
 `
 
 const RightWrapper = styled.div`
   position: absolute;
-  right: -17px;
-  opacity: 0.9;
-  transform: translate(0, -50%);
-  top: 50%;
-
-  & img {
-    height: 100%;
-    width: 174px;
-  }
-
+  right: 1px;
+  bottom: 18px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    right: 24px;
-    top: 0;
-    transform: unset;
-    opacity: 1;
-
-    & img {
-      height: 130%;
-      width: unset;
-    }
+    bottom: -3px;
+    right: 0;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    bottom: 9px;
+    right: 0;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    bottom: -3px;
+    right: 0;
   }
 `
+const IFOIconImage = styled.div<{ src: string }>`
+  position: absolute;
+  background-image: ${({ src }) => `url("${src}")`};
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 35px;
+  height: 35px;
+  bottom: 35px;
+  right: 95px;
+  overflow: hidden;
+  border-radius: 50%;
+  z-index: 2;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 60px;
+    height: 60px;
+    bottom: 25px;
+    right: 196px;
+    z-index: 2;
+  }
+  &::after {
+    content: '';
+    top: 0;
+    transform: translateX(100%);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    animation: ${shineAnimation} 5s infinite 1s;
+    background: -webkit-linear-gradient(
+      left,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.8) 50%,
+      rgba(128, 186, 232, 0) 99%,
+      rgba(125, 185, 232, 0) 100%
+    );
+  }
+`
+
 const IFOBanner = () => {
   const { t } = useTranslation()
   const currentBlock = useCurrentBlock()
@@ -100,13 +81,15 @@ const IFOBanner = () => {
   const status = isIfoAlive
     ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
     : null
-
+  const { isMobile } = useMatchBreakpoints()
   return isIfoAlive && status ? (
-    <Wrapper>
-      <Inner>
-        <LeftWrapper>
-          <StyledSubheading>{status === 'live' ? t('Live') : t('Soon')}</StyledSubheading>
-          <StyledHeading scale="xl">{activeIfoWithBlocks.id} IFO</StyledHeading>
+    <S.Wrapper>
+      <S.Inner>
+        <S.LeftWrapper>
+          <S.StyledSubheading>{status === 'live' ? t('Live') : t('Soon')}</S.StyledSubheading>
+          <S.StyledHeading scale="xl">
+            {activeIfoWithBlocks?.id ?? 'XXX'} {t('IFO')}
+          </S.StyledHeading>
           <NextLinkFromReactRouter to="/ifo">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
@@ -115,20 +98,36 @@ const IFOBanner = () => {
               <ArrowForwardIcon color="invertedContrast" />
             </Button>
           </NextLinkFromReactRouter>
-        </LeftWrapper>
+        </S.LeftWrapper>
         <RightWrapper>
-          <img
-            src={`/images/decorations/3d-ifo-${activeIfoWithBlocks.id}.png`}
-            alt={`IFO ${activeIfoWithBlocks.id}`}
+          <IFOIconImage
+            src={`/images/tokens/${activeIfoWithBlocks.token.address}.svg`}
             onError={(event) => {
               // @ts-ignore
               // eslint-disable-next-line no-param-reassign
               event.target.style.display = 'none'
             }}
           />
+          {!isMobile ? (
+            <Image
+              src={IFOImage}
+              alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}
+              width={291}
+              height={211}
+              placeholder="blur"
+            />
+          ) : (
+            <Image
+              src={IFOMobileImage}
+              alt={`IFO ${activeIfoWithBlocks?.id ?? 'XXX'}`}
+              width={150}
+              height={150}
+              placeholder="blur"
+            />
+          )}
         </RightWrapper>
-      </Inner>
-    </Wrapper>
+      </S.Inner>
+    </S.Wrapper>
   ) : null
 }
 
