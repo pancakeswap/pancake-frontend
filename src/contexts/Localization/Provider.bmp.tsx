@@ -1,10 +1,11 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { Language } from '@pancakeswap/uikit'
-import { EN, RU, ZHCN, ZHTW, VI, languages } from 'config/localization/languages'
+import { EN, RU, ZHCN, ZHTW, VI, languages, ESES } from 'config/localization/languages'
 import translations from 'config/localization/translations.json'
 import en from 'config/localization/mp-translations/en.json'
 import ru from 'config/localization/mp-translations/ru.json'
 import vi from 'config/localization/mp-translations/vi.json'
+import es from 'config/localization/mp-translations/es.json'
 import zhcn from 'config/localization/mp-translations/zh-cn.json'
 import zhtw from 'config/localization/mp-translations/zh-tw.json'
 import { ContextApi, ContextData, ProviderState } from './types'
@@ -26,6 +27,8 @@ const mpSpecificTranslation = () => {
       return { ...en, ...zhtw }
     case VI.locale:
       return { ...en, ...vi }
+    case ESES.locale:
+      return { ...en, ...es }
     default:
       return { ...en }
   }
@@ -36,7 +39,10 @@ export const languageMap = new Map<Language['locale'], Record<string, string>>()
 languageMap.set(EN.locale, { ...translations, ...mpSpecificTranslation() })
 
 export const LanguageContext = createContext<ContextApi>(undefined)
-
+export const useMpTranslation = () => {
+  const { t } = useContext(LanguageContext)
+  return { t }
+}
 export const LanguageProvider: React.FC = ({ children }) => {
   const [state, setState] = useState<ProviderState>(() => {
     const codeFromStorage = getLanguageCodeFromLS()
