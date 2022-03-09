@@ -26,6 +26,8 @@ import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
+import { useDisclaimer } from 'hooks/useDisclaimer'
+
 import AddressInputPanel from '../components/AddressInputPanel'
 import { GreyCard } from '../../../components/Card'
 import Column, { AutoColumn } from '../../../components/Layout/Column'
@@ -101,6 +103,8 @@ function Swap() {
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
+
+  useDisclaimer()
 
   const tracker = useTracker()
   useEffect(() => {
