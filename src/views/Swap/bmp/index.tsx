@@ -253,8 +253,6 @@ function Swap() {
             .setCategory('swap')
             .setAction('transactionSubmitted')
             .setLabel(JSON.stringify({ account, txHash: hash })) //  optional
-            .setCustomDimension(0, account)
-            .setCustomMetrics(0, hash)
             .setValue(1)
             .build(),
         )
