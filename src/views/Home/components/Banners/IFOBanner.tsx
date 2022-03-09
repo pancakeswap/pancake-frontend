@@ -18,6 +18,27 @@ const RightWrapper = styled.div`
     bottom: -3px;
     right: 0;
   }
+  ${({ theme }) => theme.mediaQueries.md} {
+    bottom: 9px;
+    right: 0;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    bottom: -3px;
+    right: 0;
+  }
+`
+const IFOIconImage = styled.img`
+  position: absolute;
+  width: 35px;
+  bottom: 35px;
+  right: 95px;
+  z-index: 2;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 60px;
+    bottom: 25px;
+    right: 196px;
+    z-index: 2;
+  }
 `
 
 const IFOBanner = () => {
@@ -30,7 +51,6 @@ const IFOBanner = () => {
   const status = isIfoAlive
     ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
     : null
-
   const { isMobile } = useMatchBreakpoints()
   return isIfoAlive && status ? (
     <S.Wrapper>
@@ -50,6 +70,15 @@ const IFOBanner = () => {
           </NextLinkFromReactRouter>
         </S.LeftWrapper>
         <RightWrapper>
+          <IFOIconImage
+            src={`/images/tokens/${activeIfoWithBlocks.token.address}.svg`}
+            alt={`${activeIfoWithBlocks.id}-svg`}
+            onError={(event) => {
+              // @ts-ignore
+              // eslint-disable-next-line no-param-reassign
+              event.target.style.display = 'none'
+            }}
+          />
           {!isMobile ? (
             <Image
               src={IFOImage}
