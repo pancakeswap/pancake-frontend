@@ -1,3 +1,4 @@
 {
-  "mp-test": "这是一个测试"
+  "mp-test": "这是一个测试",
+  "mp-confirm-enable-list": "此 Extended 代币清单仅包含过去有与 PancakeSwap 合作过的项目的代币，PancakeSwap 不能保证任何代币的投资价值及品质。倘阁下继续导入该清单及其代币，表示阁下清楚明白其中风险，并同意承受任何交易的相关风险及可能招致的亏损。"
 }
