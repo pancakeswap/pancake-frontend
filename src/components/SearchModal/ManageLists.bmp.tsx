@@ -38,11 +38,18 @@ function listUrlRowHTMLId(listUrl: string) {
   return `list-row-${listUrl.replace(/\./g, '-')}`
 }
 
-const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
+const ListRow = memo(function ListRow({
+  listUrl,
+  setModalView,
+  setListUrl,
+}: {
+  listUrl: string
+  setModalView: (view: CurrencyModalView) => void
+  setListUrl: (url: string) => void
+}) {
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
   const dispatch = useDispatch<AppDispatch>()
   const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
-
   const isActive = useIsListActive(listUrl)
 
   const { t } = useTranslation()
@@ -60,14 +67,14 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
   }, [dispatch, listUrl])
 
   const handleEnableList = useCallback(() => {
-    dispatch(enableList(listUrl))
-  }, [dispatch, listUrl])
-
+    setModalView(CurrencyModalView.confirm)
+    setListUrl(listUrl)
+  }, [dispatch, listUrl, setListUrl, setModalView])
   const handleDisableList = useCallback(() => {
     dispatch(disableList(listUrl))
   }, [dispatch, listUrl])
-  if (!list) return null
 
+  if (!list) return null
   return (
     <RowWrapper active={isActive} key={listUrl} id={listUrlRowHTMLId(listUrl)}>
       {list.logoURI ? (
@@ -259,7 +266,7 @@ function ManageLists({
       <ListContainer>
         <AutoColumn gap="md">
           {sortedLists.map((listUrl) => (
-            <ListRow key={listUrl} listUrl={listUrl} />
+            <ListRow key={listUrl} listUrl={listUrl} setListUrl={setListUrl} setModalView={setModalView} />
           ))}
         </AutoColumn>
       </ListContainer>
