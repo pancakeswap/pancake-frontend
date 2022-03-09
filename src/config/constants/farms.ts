@@ -42,6 +42,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 514,
+    lpSymbol: 'GMT-USDC LP',
+    lpAddresses: {
+      97: '',
+      56: '0x007EC643C7Cc33a70C083fC305c283dd009C8b94',
+    },
+    token: serializedTokens.gmt,
+    quoteToken: serializedTokens.usdc,
+  },
+  {
     pid: 386,
     lpSymbol: 'HOTCROSS-BNB LP',
     lpAddresses: {
