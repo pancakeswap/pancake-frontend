@@ -1,6 +1,6 @@
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Autoplay, EffectFade, Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
@@ -8,39 +8,58 @@ import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useMultipleBannerConfig } from './hooks/useMultipleBannerConfig'
 
-const StyledSwiper = styled(Swiper)<{ walletConnected: boolean }>`
-  position: relative;
-  overflow: visible;
-  padding-top: ${({ walletConnected }) => (walletConnected ? '220px' : '0px')};
-  margin-bottom: ${({ walletConnected }) => (walletConnected ? '-220px' : '0px')};
+const appearAnimation = keyframes`
+  from {
+    opacity: 0 ;
+  }
+  to {
+    opacity: 1;
+  }
+`
 
+const BannerPlaceHolder = styled.div<{ walletConnected: boolean }>`
+  position: relative;
+  height: 179px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding-top: ${({ walletConnected }) => (walletConnected ? '150px' : '0px')};
-    margin-bottom: ${({ walletConnected }) => (walletConnected ? '40px' : '0px')};
+    height: 221px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    height: 232px;
+  }
+  &::before {
+    content: '';
+    border-radius: 32px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: -webkit-linear-gradient(#7645d9 0%, #452a7a 100%);
+    ${({ theme }) => theme.mediaQueries.sm} {
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+    }
+  }
+  padding-top: ${({ walletConnected }) => (walletConnected ? '220px' : '0px')};
+  margin-bottom: ${({ walletConnected }) => (walletConnected ? '-50px' : '0px')};
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-top: ${({ walletConnected }) => (walletConnected ? '170px' : '0px')};
+    margin-bottom: ${({ walletConnected }) => (walletConnected ? '170px' : '30px')};
   }
   ${({ theme }) => theme.mediaQueries.lg},${({ theme }) => theme.mediaQueries.md} {
     padding-top: ${({ walletConnected }) => (walletConnected ? '60px' : '0px')};
     margin-top: ${({ walletConnected }) => (walletConnected ? '0px' : '-32px')};
-    margin-bottom: unset;
+    margin-bottom: ${({ walletConnected }) => (walletConnected ? '60px' : '30px')};
   }
-  .swiper-wrapper {
-    &::before {
-      content: '';
-      border-radius: 32px;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      right: 0px;
-      bottom: 0px;
-      background: -webkit-linear-gradient(#7645d9 0%, #452a7a 100%);
-      ${({ theme }) => theme.mediaQueries.sm} {
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        bottom: 20px;
-      }
-    }
-  }
+`
+
+const StyledSwiper = styled(Swiper)`
+  position: relative;
+  overflow: visible;
+  opacity: 0;
+  animation: ${appearAnimation} 0.3s ease-in-out 0.7s forwards;
   .swiper-pagination {
     position: absolute;
     left: 50%;
@@ -49,7 +68,7 @@ const StyledSwiper = styled(Swiper)<{ walletConnected: boolean }>`
     justify-content: center;
     width: 108px;
     bottom: 12px;
-    ${({ theme }) => theme.mediaQueries.md} {
+    ${({ theme }) => theme.mediaQueries.sm} {
       bottom: 35px;
     }
   }
@@ -72,27 +91,28 @@ const MultipleBanner: React.FC = () => {
   const { account } = useWeb3React()
   const { isDesktop, isTablet } = useMatchBreakpoints()
   return (
-    <StyledSwiper
-      modules={[Autoplay, Pagination, EffectFade]}
-      spaceBetween={50}
-      slidesPerView={1}
-      effect="fade"
-      fadeEffect={{ crossFade: true }}
-      speed={500}
-      autoplay
-      loop
-      pagination={{ clickable: true }}
-      walletConnected={Boolean(account)}
-    >
-      {bannerList.map((banner, index) => {
-        const childKey = `Banner${index}`
-        return (
-          <SwiperSlide style={{ padding: isDesktop || isTablet ? 20 : 0 }} key={childKey}>
-            {banner}
-          </SwiperSlide>
-        )
-      })}
-    </StyledSwiper>
+    <BannerPlaceHolder walletConnected={Boolean(account)}>
+      <StyledSwiper
+        modules={[Autoplay, Pagination, EffectFade]}
+        spaceBetween={50}
+        slidesPerView={1}
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
+        speed={500}
+        autoplay
+        loop
+        pagination={{ clickable: true }}
+      >
+        {bannerList.map((banner, index) => {
+          const childKey = `Banner${index}`
+          return (
+            <SwiperSlide style={{ padding: isDesktop || isTablet ? 20 : 0 }} key={childKey}>
+              {banner}
+            </SwiperSlide>
+          )
+        })}
+      </StyledSwiper>
+    </BannerPlaceHolder>
   )
 }
 
