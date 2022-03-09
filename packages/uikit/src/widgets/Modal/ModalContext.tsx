@@ -20,7 +20,7 @@ const animationMap = {
 import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 import React, { createContext, useState } from "react";
 import styled from "styled-components";
-import { animationMap, animationVariants } from "util/animationConstant";
+import { animationMap, animationVariants } from "../../util/animationConstant";
 import { Overlay } from "../../components/Overlay";
 import { Handler } from "./types";
 

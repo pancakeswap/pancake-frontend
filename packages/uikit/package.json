@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
-    "@babel/plugin-transform-block-scoped-functions": "^7.16.7",
     "@babel/preset-env": "^7.16.8",
     "@babel/preset-react": "^7.16.7",
     "@rollup/plugin-json": "^4.1.0",

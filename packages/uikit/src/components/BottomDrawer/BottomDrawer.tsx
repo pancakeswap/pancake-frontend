@@ -1,7 +1,7 @@
 import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 import React, { useRef } from "react";
 import { createPortal } from "react-dom";
-import { animationMap, animationVariants } from "util/animationConstant";
+import { animationMap, animationVariants } from "../../util/animationConstant";
 import useDelayedUnmount from "../../hooks/useDelayedUnmount";
 import useMatchBreakpoints from "../../hooks/useMatchBreakpoints";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
