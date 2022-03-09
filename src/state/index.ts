@@ -41,6 +41,12 @@ const migrations = {
       },
     }
   },
+  1: (state) => {
+    return {
+      ...state,
+      lists: state.listInitialState,
+    }
+  },
 }
 
 const persistConfig = {
@@ -48,7 +54,7 @@ const persistConfig = {
   whitelist: PERSISTED_KEYS,
   blacklist: ['profile'],
   storage,
-  version: 0,
+  version: 1,
   migrate: createMigrate(migrations, { debug: false }),
 }
 
