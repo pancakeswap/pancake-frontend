@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTracker } from 'contexts/AnalyticsContext'
+import { HitBuilders } from 'utils/ga'
 import mpService from '@binance/mp-service'
 import styled, { useTheme } from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
@@ -99,9 +101,13 @@ function Swap() {
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
+
+  const tracker = useTracker()
   useEffect(() => {
-    console.log('🚀 ~ file: index.tsx ~ line 103 ~ useEffect ~ useEffect')
-  })
+    tracker.setScreenName('swap')
+    tracker.send(new HitBuilders.ScreenViewBuilder().build())
+  }, [])
+
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
   }, [isChartDisplayed, setUserChartPreference])
@@ -238,6 +244,16 @@ function Swap() {
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
       .then((hash) => {
+        tracker.send(
+          new HitBuilders.EventBuilder()
+            .setCategory('swap')
+            .setAction('transactionSubmitted')
+            .setLabel(JSON.stringify({ account, txHash: hash })) //  optional
+            .setCustomDimension(0, account)
+            .setCustomMetrics(0, hash)
+            .setValue(1)
+            .build(),
+        )
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
       })
       .catch((error) => {
@@ -248,7 +264,7 @@ function Swap() {
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t])
+  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, tracker, account])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -499,6 +515,10 @@ function Swap() {
                           if (isExpertMode) {
                             handleSwap()
                           } else {
+                            tracker.send(
+                              new HitBuilders.EventBuilder().setCategory('swap').setAction('clickSwap').build(),
+                            )
+
                             setSwapState({
                               tradeToConfirm: trade,
                               attemptingTxn: false,
