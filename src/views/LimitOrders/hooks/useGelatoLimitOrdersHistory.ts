@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useMemo } from 'react'
 
-import { getLSOrders, saveOrder, removeOrder } from 'utils/localStorageOrders'
+import { getLSOrders, saveOrder, removeOrder, saveOrders } from 'utils/localStorageOrders'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 
 import { ORDER_CATEGORY } from '../types'
@@ -13,15 +13,13 @@ function newOrdersFirst(a: Order, b: Order) {
   return Number(b.updatedAt) - Number(a.updatedAt)
 }
 
-function syncOrderToLocalStorage({ chainId, account, orders }) {
+function syncOrderToLocalStorage({ chainId, account, orders }: { chainId: number; account: string; orders: Order[] }) {
   const ordersLS = getLSOrders(chainId, account)
 
-  orders.forEach((order: Order) => {
-    const hasLSOrder = ordersLS.some((confOrder) => confOrder.id.toLowerCase() === order.id.toLowerCase())
-    if (!hasLSOrder) {
-      saveOrder(chainId, account, order)
-    }
-  })
+  const newOrders = orders.filter(
+    (order: Order) => !ordersLS.some((confOrder) => confOrder.id.toLowerCase() === order.id.toLowerCase()),
+  )
+  saveOrders(chainId, account, newOrders)
 
   ordersLS.forEach((confOrder: Order) => {
     const updatedOrder = orders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase())
