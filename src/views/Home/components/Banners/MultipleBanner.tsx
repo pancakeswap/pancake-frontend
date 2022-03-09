@@ -42,15 +42,19 @@ const BannerPlaceHolder = styled.div<{ walletConnected: boolean }>`
       bottom: 20px;
     }
   }
-  padding-top: ${({ walletConnected }) => (walletConnected ? '220px' : '0px')};
-  margin-bottom: ${({ walletConnected }) => (walletConnected ? '-50px' : '0px')};
+  margin-top: ${({ walletConnected }) => (walletConnected ? '220px' : '0px')};
+  margin-bottom: ${({ walletConnected }) => (walletConnected ? '-220px' : '0px')};
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding-top: ${({ walletConnected }) => (walletConnected ? '170px' : '0px')};
-    margin-bottom: ${({ walletConnected }) => (walletConnected ? '170px' : '30px')};
+    margin-top: ${({ walletConnected }) => (walletConnected ? '170px' : '-32px')};
+    margin-bottom: ${({ walletConnected }) => (walletConnected ? '30px' : '30px')};
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-top: ${({ walletConnected }) => (walletConnected ? '90px' : '-32px')};
+    margin-bottom: ${({ walletConnected }) => (walletConnected ? '40px' : '30px')};
   }
   ${({ theme }) => theme.mediaQueries.lg},${({ theme }) => theme.mediaQueries.md} {
-    padding-top: ${({ walletConnected }) => (walletConnected ? '60px' : '0px')};
-    margin-top: ${({ walletConnected }) => (walletConnected ? '0px' : '-32px')};
+    padding-top: 0;
+    margin-top: ${({ walletConnected }) => (walletConnected ? '60px' : '-32px')};
     margin-bottom: ${({ walletConnected }) => (walletConnected ? '60px' : '30px')};
   }
 `
