@@ -103,7 +103,7 @@ const MultipleBanner: React.FC = () => {
         effect="fade"
         fadeEffect={{ crossFade: true }}
         speed={500}
-        autoplay
+        autoplay={{ delay: 5000 }}
         loop
         pagination={{ clickable: true }}
       >

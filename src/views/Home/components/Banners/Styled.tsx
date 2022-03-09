@@ -33,7 +33,6 @@ export const StyledHeading = styled(Heading)`
 export const Wrapper = styled.div`
   border-radius: 32px;
   width: 100%;
-  /* background-image: linear-gradient(#7645d9, #452a7a); */
   max-height: max-content;
   overflow: visible;
 `
@@ -51,7 +50,7 @@ export const LeftWrapper = styled(Flex)`
   width: 100%;
   flex-direction: column;
   justify-content: center;
-
+  align-items: flex-start;
   ${({ theme }) => theme.mediaQueries.md} {
     padding-top: 40px;
     padding-bottom: 40px;
