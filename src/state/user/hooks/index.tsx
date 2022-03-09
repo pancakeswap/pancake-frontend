@@ -446,7 +446,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
             )
           })
         : [],
-    [tokens, chainId],
+    [filterTokens, chainId],
   )
 
   // pairs saved by users
