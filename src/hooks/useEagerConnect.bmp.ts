@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import semver from 'semver'
+import mpService from '@binance/mp-service'
 import { useWeb3React } from '@web3-react/core'
 
 /* eslint max-classes-per-file: off -- noop */
@@ -6,6 +8,7 @@ import { AbstractConnectorArguments, ConnectorUpdate } from '@web3-react/types'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import warning from 'tiny-warning'
 import { captureException } from '@binance/sentry-miniapp'
+import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
 
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -153,7 +156,7 @@ export const useEagerConnect = () => {
 
   useEffect(() => {
     const main = async () => {
-      const address = await injected.getAccount().catch(() => '')
+      const address = await injected.getAccount()
       if (address) {
         activate(injected, (error) => {
           console.log('🚀 ~ file: useEagerConnect.ts ~ line 13 ~ activate ~ error', error)
@@ -164,13 +167,39 @@ export const useEagerConnect = () => {
     main()
   }, [activate])
 }
+
+const isOldVersion = () => {
+  const { version } = getSystemInfoSync()
+  return semver.lt(version, '2.43.0')
+}
 export const useActiveHandle = () => {
   const { activate } = useWeb3React()
-  return () => {
-    activate(injected, (error) => {
-      console.log('🚀 ~ file: useEagerConnect.ts ~ line 13 ~ activate ~ error', error)
-      captureException(error)
-    })
+  return async () => {
+    /**
+     *  backward
+     */
+    const address = await injected.getAccount()
+
+    if (!address && isOldVersion()) {
+      injected.bnEthereum.ready = true
+      injected.bnEthereum
+        .request({
+          method: 'personal_sign',
+          params: ['test'],
+        })
+        .catch((error) => {
+          if (error && error?._code === '600005') {
+            mpService.login()
+          }
+        })
+      injected.bnEthereum.ready = false
+    } else {
+      activate(injected, (error) => {
+        console.log('🚀 ~ file: useEagerConnect.ts ~ line 183 ~ activate ~ error', error)
+        captureException(error)
+      })
+    }
+    console.log('🚀 ~ file: useEagerConnect.bmp.ts ~ line 199 v5 ~ return ~ address', address)
   }
 }
 export default useEagerConnect
