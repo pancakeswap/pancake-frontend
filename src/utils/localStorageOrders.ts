@@ -3,6 +3,10 @@ import { get, set, clear } from 'local-storage'
 
 const LS_ORDERS = 'gorders_'
 
+export const hashOrder = (order: Order) => order.id
+
+export const hashOrderSet = (orders: Order[]) => new Set(orders.map(hashOrder))
+
 export function clearOrdersLocalStorage() {
   return clear()
 }
@@ -51,9 +55,8 @@ export function removeOrders(chainId: number, account: string, orders: Order[], 
 
   if (!orders || !orders.length) return prev
 
-  const result = prev.filter(
-    (orderInLS) => !orders.some((order) => orderInLS.id.toLowerCase() === order.id.toLowerCase()),
-  )
+  const orderHashSet = hashOrderSet(orders)
+  const result = prev.filter((orderInLS: Order) => !orderHashSet.has(hashOrder(orderInLS)))
 
   set(key, result)
 
