@@ -38,21 +38,20 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
 }
 
 const selectCakeFarm = (state: State) => state.farms.data.find((f) => f.pid === 251)
-const selectFarmFromPid = (pid: number) => (state: State) => state.farms.data.find((f) => f.pid === pid)
-const selectFarmFromLpSymbol = (lpSymbol: string) => (state: State) =>
-  state.farms.data.find((f) => f.lpSymbol === lpSymbol)
+const selectFarmByKey = (key: string, value: string | number) => (state: State) =>
+  state.farms.data.find((f) => f[key] === value)
 
 export const makeFarmFromPidSelector = (pid: number) =>
-  createSelector([selectFarmFromPid(pid)], (farm) => deserializeFarm(farm))
+  createSelector([selectFarmByKey('pid', pid)], (farm) => deserializeFarm(farm))
 
 export const makeBusdPriceFromPidSelector = (pid: number) =>
-  createSelector([selectFarmFromPid(pid)], (farm) => {
+  createSelector([selectFarmByKey('pid', pid)], (farm) => {
     const deserializedFarm = deserializeFarm(farm)
     return deserializedFarm && new BigNumber(deserializedFarm.tokenPriceBusd)
   })
 
 export const makeUserFarmFromPidSelector = (pid: number) =>
-  createSelector([selectFarmFromPid(pid)], (farm) => {
+  createSelector([selectFarmByKey('pid', pid)], (farm) => {
     const { userData } = deserializeFarm(farm)
     const { allowance, tokenBalance, stakedBalance, earnings } = userData
     return {
@@ -70,10 +69,10 @@ export const priceCakeFromPidSelector = createSelector([selectCakeFarm], (cakeBn
 })
 
 export const farmFromLpSymbolSelector = (lpSymbol: string) =>
-  createSelector([selectFarmFromLpSymbol(lpSymbol)], (farm) => deserializeFarm(farm))
+  createSelector([selectFarmByKey('lpSymbol', lpSymbol)], (farm) => deserializeFarm(farm))
 
 export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
-  createSelector([selectFarmFromLpSymbol(lpSymbol)], (farm) => {
+  createSelector([selectFarmByKey('lpSymbol', lpSymbol)], (farm) => {
     const deserializedFarm = deserializeFarm(farm)
     const farmTokenPriceInUsd = deserializedFarm && new BigNumber(deserializedFarm.tokenPriceBusd)
     let lpTokenPrice = BIG_ZERO
