@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import { ScrollView } from '@binance/mp-components'
 import { Token, Currency } from '@pancakeswap/sdk'
 import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
@@ -9,7 +10,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
-import { ScrollView } from '@binance/mp-components'
 
 interface ImportProps {
   tokens: Token[]
@@ -17,7 +17,6 @@ interface ImportProps {
 }
 
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
-  console.log('🚀 ~ file: ImportToken.bmp.tsx ~ line 19 ~ ImportToken ~ tokens', tokens)
   const { chainId } = useActiveWeb3React()
 
   const { t } = useTranslation()
@@ -35,9 +34,8 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
         const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
         return list === undefined
       }),
-    [tokens],
+    [chainId, inactiveTokenList, tokens],
   )
-  console.log('🚀 ~ file: ImportToken.bmp.tsx ~ line 39 ~ ImportToken ~ isUnknownSource', isUnknownSource)
   return (
     <AutoColumn gap="lg">
       <Message variant="warning">
