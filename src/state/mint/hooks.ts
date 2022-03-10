@@ -7,8 +7,8 @@ import useTotalSupply from 'hooks/useTotalSupply'
 
 import { useTranslation } from 'contexts/Localization'
 import { wrappedCurrency, wrappedCurrencyAmount } from 'utils/wrappedCurrency'
+import tryParseAmount from 'utils/tryParseAmount'
 import { AppDispatch, AppState } from '../index'
-import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
 

@@ -24,6 +24,10 @@ const Wrapper = styled.div`
     color: ${({ theme }) => theme.colors.text};
   }
 
+  .CodeMirror-cursor {
+    border-left: ${({ theme }) => `1px solid ${theme.colors.text}`};
+  }
+
   .editor-toolbar {
     background: ${({ theme }) => theme.card.background};
     border-color: ${({ theme }) => theme.colors.cardBorder};

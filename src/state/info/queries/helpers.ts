@@ -82,7 +82,7 @@ export const fetchChartData = async (
     // eslint-disable-next-line no-await-in-loop
     const { data, error: fetchError } = await getEntityDayDatas(skip, address)
     skip += 1000
-    allFound = data.length < 1000
+    allFound = data?.length < 1000
     error = fetchError
     if (data) {
       chartEntries = chartEntries.concat(data)

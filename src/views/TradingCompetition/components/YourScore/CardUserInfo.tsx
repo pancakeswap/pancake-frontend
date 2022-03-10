@@ -146,7 +146,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
     if (!hasRegistered) {
       return t('Sorry, you needed to register during the “entry” period!')
     }
-    return profile ? `${profile.team.name}` : ''
+    return profile && profile.team ? `${profile.team.name}` : ''
   }
 
   const headingText = getHeadingText()

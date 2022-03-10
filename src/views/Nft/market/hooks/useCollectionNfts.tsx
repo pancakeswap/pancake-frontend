@@ -144,7 +144,7 @@ const fetchAllNfts = async (
   } else if (tokenIdsFromFilter) {
     tokenIds = tokenIdsFromFilter.slice(page * REQUEST_SIZE, (page + 1) * REQUEST_SIZE)
   } else {
-    collectionNftsResponse = await getNftsFromCollectionApi(collection.address, REQUEST_SIZE, page)
+    collectionNftsResponse = await getNftsFromCollectionApi(collection.address, REQUEST_SIZE, page + 1)
     if (collectionNftsResponse?.data) {
       tokenIds = Object.values(collectionNftsResponse.data).map((nft) => nft.tokenId)
     }

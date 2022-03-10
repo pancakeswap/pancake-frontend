@@ -23,7 +23,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, children, ...props }) 
       </Text>
       {round.failed ? (
         <Text bold textTransform="uppercase" color="textDisabled" mb="16px" fontSize="24px">
-          {t('Canceled')}
+          {t('Cancelled')}
         </Text>
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">

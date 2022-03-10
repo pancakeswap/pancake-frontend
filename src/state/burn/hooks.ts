@@ -7,8 +7,8 @@ import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import { useTranslation } from 'contexts/Localization'
+import tryParseAmount from 'utils/tryParseAmount'
 import { AppDispatch, AppState } from '../index'
-import { tryParseAmount } from '../swap/hooks'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
 

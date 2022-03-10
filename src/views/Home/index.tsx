@@ -15,7 +15,7 @@ import Footer from './components/Footer'
 import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
 import UserBanner from './components/UserBanner'
-import HomeBanner from './components/Banners/HomeBanner'
+import MultipleBanner from './components/Banners/MultipleBanner'
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
@@ -67,7 +67,7 @@ const Home: React.FC = () => {
             <UserBanner />
           </UserBannerWrapper>
         )}
-        <HomeBanner />
+        <MultipleBanner />
         <Hero />
       </StyledHeroSection>
       <PageSection

@@ -2,7 +2,6 @@ import { useAllLists } from 'state/lists/hooks'
 import { getVersionUpgrade, VersionUpgrade } from '@uniswap/token-lists'
 import { useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { useAllInactiveTokens } from 'hooks/Tokens'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
 import useFetchListCallback from 'hooks/useFetchListCallback'
@@ -20,9 +19,6 @@ export default function Updater(): null {
   // get all loaded lists, and the active urls
   const lists = useAllLists()
   const activeListUrls = useActiveListUrls()
-
-  // initiate loading
-  useAllInactiveTokens()
 
   const fetchList = useFetchListCallback()
   const fetchAllListsCallback = useCallback(() => {
