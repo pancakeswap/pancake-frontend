@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react'
 import { Token } from '@pancakeswap/sdk'
-import { Button, Text, CheckmarkCircleIcon } from '@pancakeswap/uikit'
+import { Button, Text, CheckmarkCircleIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
@@ -16,10 +16,14 @@ const TokenSection = styled.div<{ dim?: boolean }>`
   height: 56px;
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr) auto;
-  grid-gap: 16px;
+  grid-gap: 10px;
   align-items: center;
 
   opacity: ${({ dim }) => (dim ? '0.4' : '1')};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-gap: 16px;
+  }
 `
 
 const CheckIcon = styled(CheckmarkCircleIcon)`
@@ -52,6 +56,7 @@ export default function ImportRow({
 }) {
   // globals
   const { chainId } = useActiveWeb3React()
+  const { isMobile } = useMatchBreakpoints()
 
   const { t } = useTranslation()
 
@@ -65,17 +70,17 @@ export default function ImportRow({
 
   return (
     <TokenSection style={style}>
-      <CurrencyLogo currency={token} size="24px" style={{ opacity: dim ? '0.6' : '1' }} />
+      <CurrencyLogo currency={token} size={isMobile ? '20px' : '24px'} style={{ opacity: dim ? '0.6' : '1' }} />
       <AutoColumn gap="4px" style={{ opacity: dim ? '0.6' : '1' }}>
         <AutoRow>
-          <Text>{token.symbol}</Text>
-          <Text color="textDisabled" ml="8px">
+          <Text mr="8px">{token.symbol}</Text>
+          <Text color="textDisabled">
             <NameOverflow title={token.name}>{token.name}</NameOverflow>
           </Text>
         </AutoRow>
         {list && list.logoURI && (
           <RowFixed>
-            <Text small mr="4px" color="textSubtle">
+            <Text fontSize={isMobile ? '10px' : '14px'} mr="4px" color="textSubtle">
               {t('via')} {list.name}
             </Text>
             <ListLogo logoURI={list.logoURI} size="12px" />
@@ -84,6 +89,7 @@ export default function ImportRow({
       </AutoColumn>
       {!isActive && !isAdded ? (
         <Button
+          scale={isMobile ? 'sm' : 'md'}
           width="fit-content"
           onClick={() => {
             if (setImportToken) {
