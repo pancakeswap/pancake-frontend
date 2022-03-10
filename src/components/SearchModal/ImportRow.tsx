@@ -73,8 +73,8 @@ export default function ImportRow({
       <CurrencyLogo currency={token} size={isMobile ? '20px' : '24px'} style={{ opacity: dim ? '0.6' : '1' }} />
       <AutoColumn gap="4px" style={{ opacity: dim ? '0.6' : '1' }}>
         <AutoRow>
-          <Text>{token.symbol}</Text>
-          <Text color="textDisabled" ml="8px">
+          <Text mr="8px">{token.symbol}</Text>
+          <Text color="textDisabled">
             <NameOverflow title={token.name}>{token.name}</NameOverflow>
           </Text>
         </AutoRow>
