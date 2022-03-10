@@ -1,3 +1,7 @@
 {
-  "mp-test": "test"
+  "mp-test": "test",
+  "mp-confirm-enable-list": "PancakeSwap Extended là danh sách token đã hoặc đang hợp tác với PancakeSwap trước đó nhưng chất lượng của những token trong danh sách PancakeSwap Extended không hoàn toàn đàm bảo. Bạn xác nhận và đồng ý sẽ tự chịu rủi ro khi thực hiện giao dịch.",
+  "import-token-warning-unknown-source": "Những token không có trong danh sách được xem là những token có rủi ro cao. Vui lòng nghiên cứu và đọc kỹ thoả thuận người dùng trước khi giao dịch. Bạn xác nhận và đồng ý sẽ tự chịu rủi ro khi thực hiện giao dịch.",
+  "import-token-warning-extended-list-1": "Bất kỳ ai cũng có thể tạo BEP20 token trên BNB Chain với bất kỳ tên bao gồm việc tạo phiên bản giả mạo và tự nhận là đại diện của những token đang hiện hữu mặc dù không sở hữu token đó. Vui lòng nghiên cứu kỹ trước khi giao dịch token vì bạn sẽ tự chịu rủi ro khi thực hiện giao dịch trên PancakeSwap.",
+  "import-token-warning-extended-list-2": "PancakeSwap Extended là danh sách token đã hoặc đang hợp tác với PancakeSwap trước đó nhưng chất lượng của những token trong danh sách PancakeSwap Extended không hoàn toàn đàm bảo. Bạn xác nhận và đồng ý sẽ tự chịu rủi ro khi thực hiện giao dịch."
 }

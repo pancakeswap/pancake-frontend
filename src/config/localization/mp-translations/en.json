@@ -1,4 +1,7 @@
 {
   "mp-test": "it a test",
-  "mp-confirm-enable-list": "The Extended list is a list of tokens from projects that have collaborated with PancakeSwap previously but the quality of the tokens as an investment cannot be guaranteed. By proceeding, you acknowledge and agree that you fully understand the risks associated and you shall perform any trading operations at your own risk."
+  "mp-confirm-enable-list": "The Extended list is a list of tokens from projects that have collaborated with PancakeSwap previously but the quality of the tokens as an investment cannot be guaranteed. By proceeding, you acknowledge and agree that you fully understand the risks associated and you shall perform any trading operations at your own risk.",
+  "import-token-warning-unknown-source": "The tokens not included in the token lists pose very high risks. Please do your own research on the tokens and read the user agreement carefully before proceeding. By proceeding, you acknowledge and agree that you fully understand the risks associated and you shall perform any trading operations at your own risk.",
+  "import-token-warning-extended-list-1": "Anyone can create a BEP20 token on BNB Chain with any name or ticker, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token. Please trade tokens via PancakeSwap at your own risk.",
+  "import-token-warning-extended-list-2": "The Extended list is a list of tokens from projects that have collaborated with PancakeSwap previously but the quality of the tokens as an investment cannot be guaranteed. By proceeding, you acknowledge and agree that you fully understand the risks associated and you shall perform any trading operations at your own risk."
 }
