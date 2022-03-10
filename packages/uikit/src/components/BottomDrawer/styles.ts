@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import styled, { keyframes, css } from "styled-components";
 
-const MountAnimation = keyframes`
+const mountAnimation = keyframes`
     0% {
       transform: translateY(100%);
     }
@@ -10,7 +10,7 @@ const MountAnimation = keyframes`
     }
   `;
 
-const UnmountAnimation = keyframes`
+const unmountAnimation = keyframes`
     0% {
       transform: translateY(0%);
     }
@@ -27,7 +27,7 @@ export const DrawerContainer = styled.div<{ isUnmounting: boolean }>`
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
   position: fixed;
-  animation: ${MountAnimation} 350ms ease forwards;
+  animation: ${mountAnimation} 350ms ease forwards;
   padding-bottom: env(safe-area-inset-bottom);
   html[data-useragent*="TokenPocket_iOS"] & {
     padding-bottom: 45px;
@@ -37,6 +37,6 @@ export const DrawerContainer = styled.div<{ isUnmounting: boolean }>`
   ${({ isUnmounting }) =>
     isUnmounting &&
     css`
-      animation: ${UnmountAnimation} 350ms ease forwards;
+      animation: ${unmountAnimation} 350ms ease forwards;
     `}
 `;

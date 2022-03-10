@@ -1,7 +1,5 @@
-import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 import React, { useRef } from "react";
 import { createPortal } from "react-dom";
-import { animationMap, animationVariants } from "../../util/animationConstant";
 import useDelayedUnmount from "../../hooks/useDelayedUnmount";
 import useMatchBreakpoints from "../../hooks/useMatchBreakpoints";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
@@ -33,21 +31,17 @@ const BottomDrawer: React.FC<BottomDrawerProps> = ({ content, isOpen, setIsOpen 
 
   if (portal)
     return createPortal(
-      <LazyMotion features={domAnimation}>
-        <AnimatePresence>
-          <m.div variants={animationVariants} {...animationMap}>
-            <Overlay isUnmounting={!isOpen} />
-            <DrawerContainer ref={ref} isUnmounting={!isOpen}>
-              <Box position="absolute" right="16px" top="0">
-                <IconButton variant="text" onClick={() => setIsOpen(false)}>
-                  <CloseIcon />
-                </IconButton>
-              </Box>
-              {content}
-            </DrawerContainer>
-          </m.div>
-        </AnimatePresence>
-      </LazyMotion>,
+      <>
+        <Overlay isUnmounting={!isOpen} />
+        <DrawerContainer ref={ref} isUnmounting={!isOpen}>
+          <Box position="absolute" right="16px" top="0">
+            <IconButton variant="text" onClick={() => setIsOpen(false)}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          {content}
+        </DrawerContainer>
+      </>,
       portal
     );
   return null;
