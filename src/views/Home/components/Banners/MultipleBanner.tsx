@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled, { keyframes } from 'styled-components'
@@ -94,19 +95,30 @@ const MultipleBanner: React.FC = () => {
   const bannerList = useMultipleBannerConfig()
   const { account } = useWeb3React()
   const { isDesktop, isTablet } = useMatchBreakpoints()
+
+  const swiperKey = useMemo(() => {
+    return bannerList.map((banner) => banner.type.type.name).join('')
+  }, [bannerList])
+
+  const swiperOptions = useMemo(() => {
+    return bannerList.length > 1
+      ? {
+          modules: [Autoplay, Pagination, EffectFade],
+          spaceBetween: 50,
+          slidesPerView: 1,
+          effect: 'fade' as const,
+          fadeEffect: { crossFade: true },
+          speed: 500,
+          autoplay: { delay: 5000 },
+          loop: true,
+          pagination: { clickable: true },
+        }
+      : {}
+  }, [bannerList])
+
   return (
     <BannerPlaceHolder walletConnected={Boolean(account)}>
-      <StyledSwiper
-        modules={[Autoplay, Pagination, EffectFade]}
-        spaceBetween={50}
-        slidesPerView={1}
-        effect="fade"
-        fadeEffect={{ crossFade: true }}
-        speed={500}
-        autoplay={{ delay: 5000 }}
-        loop
-        pagination={{ clickable: true }}
-      >
+      <StyledSwiper key={swiperKey} {...swiperOptions}>
         {bannerList.map((banner, index) => {
           const childKey = `Banner${index}`
           return (
