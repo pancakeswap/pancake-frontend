@@ -59,17 +59,16 @@ function CurrencySearch({
     return s === '' || s === 'b' || s === 'bn' || s === 'bnb'
   }, [debouncedQuery])
 
-  const tokenComparator = useTokenComparator(invertSearchOrder)
-
   const filteredTokens: Token[] = useMemo(() => {
     return filterTokens(Object.values(allTokens), debouncedQuery)
   }, [allTokens, debouncedQuery])
 
-  const sortedTokens: Token[] = useMemo(() => {
-    return filteredTokens.sort(tokenComparator)
-  }, [filteredTokens, tokenComparator])
+  const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
 
-  const filteredSortedTokens = useSortedTokensByQuery(sortedTokens, debouncedQuery)
+  const tokenComparator = useTokenComparator(invertSearchOrder)
+  const filteredSortedTokens: Token[] = useMemo(() => {
+    return filteredQueryTokens.sort(tokenComparator)
+  }, [filteredQueryTokens, tokenComparator])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
