@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { AnimatePresence, m, Variants, LazyMotion, domAnimation } from "framer-motion";
 import React, { createContext, useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
@@ -16,15 +15,6 @@ const animationMap = {
   animate: "animate",
   exit: "exit",
 };
-=======
-import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
-import React, { createContext, useState } from "react";
-import styled from "styled-components";
-import { animationMap, animationVariants } from "../../util/animationConstant";
-import { Overlay } from "../../components/Overlay";
-import { Handler } from "./types";
-
->>>>>>> 9ce2893b (chore: add animation constant)
 interface ModalsContext {
   isOpen: boolean;
   nodeId: string;
