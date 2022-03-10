@@ -27,7 +27,7 @@ export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: 
         { requireSuccess: false },
       )
 
-      return { startBlock: startBlock ?? 0, endBlock: endBlock ?? 0 }
+      return { startBlock: startBlock ? startBlock[0].toNumber() : 0, endBlock: endBlock ? endBlock[0].toNumber() : 0 }
     },
   )
 
