@@ -11,6 +11,7 @@ const selectPoolData = (sousId) => (state: State) => state.pools.data.find((p) =
 const selectUserDataLoaded = (state: State) => state.pools.userDataLoaded
 const selectCakeVault = (state: State) => state.pools.cakeVault
 const selectIfoPool = (state: State) => state.pools.ifoPool
+const selectIfoPoolUserCredit = (state: State) => state.pools.ifoPool.userData?.credit ?? BIG_ZERO
 const selectVault = (key: VaultKey) => (state: State) => key ? state.pools[key] : initialPoolVaultState
 
 export const makePoolWithUserDataLoadingSelector = (sousId) =>
@@ -69,9 +70,8 @@ export const ifoPoolCreditBlockSelector = createSelector([selectIfoPool], (seria
   return { creditStartBlock, creditEndBlock }
 })
 
-export const ifoPoolCreditSelector = createSelector([selectIfoPool], (serializedIfoPool) => {
-  const creditAsString = serializedIfoPool.userData?.credit ?? BIG_ZERO
-  return new BigNumber(creditAsString)
+export const ifoPoolCreditSelector = createSelector([selectIfoPoolUserCredit], (serializedIfoPoolUserCredit) => {
+  return new BigNumber(serializedIfoPoolUserCredit)
 })
 
 export const ifoWithAprSelector = createSelector(
