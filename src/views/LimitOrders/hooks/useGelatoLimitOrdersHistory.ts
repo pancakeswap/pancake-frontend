@@ -9,12 +9,28 @@ import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 
 import { ORDER_CATEGORY } from '../types'
 
+enum LimitOrderType {
+  OPEN = 'open',
+  CANCELLED = 'cancelled',
+  EXECUTED = 'executed',
+}
+
 function newOrdersFirst(a: Order, b: Order) {
   return Number(b.updatedAt) - Number(a.updatedAt)
 }
 
-function syncOrderToLocalStorage({ chainId, account, orders }: { chainId: number; account: string; orders: Order[] }) {
-  const ordersLS = getLSOrders(chainId, account)
+function syncOrderToLocalStorage({
+  chainId,
+  account,
+  orders,
+  types,
+}: {
+  chainId: number
+  account: string
+  orders: Order[]
+  types: LimitOrderType[]
+}) {
+  const ordersLS = getLSOrders(chainId, account).filter((order) => types.some((type) => type === order.status))
 
   const ordersLSHashSet = hashOrderSet(ordersLS)
   const newOrders = orders.filter((order: Order) => !ordersLSHashSet.has(hashOrder(order)))
@@ -48,6 +64,7 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
           orders,
           chainId,
           account,
+          types: [LimitOrderType.OPEN],
         })
       } catch (e) {
         console.error('Error fetching open orders from subgraph', e)
@@ -96,6 +113,7 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
           orders: [...canOrders, ...exeOrders],
           chainId,
           account,
+          types: [LimitOrderType.CANCELLED, LimitOrderType.EXECUTED],
         })
       } catch (e) {
         console.error('Error fetching history orders from subgraph', e)
