@@ -39,10 +39,7 @@ export const languageMap = new Map<Language['locale'], Record<string, string>>()
 languageMap.set(EN.locale, { ...translations, ...mpSpecificTranslation() })
 
 export const LanguageContext = createContext<ContextApi>(undefined)
-export const useMpTranslation = () => {
-  const { t } = useContext(LanguageContext)
-  return { t }
-}
+
 export const LanguageProvider: React.FC = ({ children }) => {
   const [state, setState] = useState<ProviderState>(() => {
     const codeFromStorage = getLanguageCodeFromLS()
