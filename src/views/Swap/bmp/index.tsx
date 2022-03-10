@@ -614,11 +614,12 @@ const Item = ({ icon, title, isActive, ...props }) => {
   )
 }
 const FooterMenu = () => {
+  const { t } = useTranslation()
   const list = [
-    { icon: SwapFillIcon, title: 'Exchange', isActive: true },
+    { icon: SwapFillIcon, title: t('Exchange'), isActive: true },
     {
       icon: WalletIcon,
-      title: 'Wallet',
+      title: t('Wallet'),
       onClick: () => {
         mpService.navigateToMiniProgram({
           appId: 'hhL98uho2A4sGYSHCEdCCo',
