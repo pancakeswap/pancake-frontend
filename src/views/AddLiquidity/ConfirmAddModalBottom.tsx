@@ -56,7 +56,7 @@ function ConfirmAddModalBottom({
         <Text>{t('Share of Pool')}:</Text>
         <Text>{noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%</Text>
       </RowBetween>
-      <Button onClick={onAdd} mt="20px">
+      <Button width="100%" onClick={onAdd} mt="20px">
         {noLiquidity ? t('Create Pool & Supply') : t('Confirm Supply')}
       </Button>
     </>

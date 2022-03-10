@@ -119,7 +119,12 @@ const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLi
             </RowBetween>
           </>
         )}
-        <Button disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
+        <Button
+          width="100%"
+          mt="20px"
+          disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
+          onClick={onRemove}
+        >
           {t('Confirm')}
         </Button>
       </>
