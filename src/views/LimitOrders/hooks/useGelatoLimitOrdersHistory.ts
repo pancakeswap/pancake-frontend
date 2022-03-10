@@ -7,13 +7,7 @@ import { useMemo } from 'react'
 import { getLSOrders, saveOrder, removeOrder, saveOrders, hashOrderSet, hashOrder } from 'utils/localStorageOrders'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 
-import { ORDER_CATEGORY } from '../types'
-
-enum LimitOrderType {
-  OPEN = 'open',
-  CANCELLED = 'cancelled',
-  EXECUTED = 'executed',
-}
+import { ORDER_CATEGORY, LimitOrderType } from '../types'
 
 function newOrdersFirst(a: Order, b: Order) {
   return Number(b.updatedAt) - Number(a.updatedAt)
