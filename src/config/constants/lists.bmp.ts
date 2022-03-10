@@ -1,4 +1,4 @@
-const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
+const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-mini-extended.json'
 
 export const UNSUPPORTED_LIST_URLS: string[] = []
 
