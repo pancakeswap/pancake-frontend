@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import semver from 'semver'
 import mpService from '@binance/mp-service'
 import { useWeb3React } from '@web3-react/core'
@@ -151,29 +151,38 @@ class BnInjectedConnector extends AbstractConnector {
 
 const injected = new BnInjectedConnector({ supportedChainIds: [56, 97] })
 
-export const useEagerConnect = () => {
+const useActive = () => {
   const { activate } = useWeb3React()
+  return useCallback(
+    () =>
+      activate(injected, (error) => {
+        console.log('🚀 ~ file: useEagerConnect.ts ~ line 183 ~ activate ~ error', error)
+        captureException(error)
+      }),
+    [activate],
+  )
+}
+export const useEagerConnect = () => {
+  const handleActive = useActive()
 
   useEffect(() => {
     const main = async () => {
       const address = await injected.getAccount()
       if (address) {
-        activate(injected, (error) => {
-          console.log('🚀 ~ file: useEagerConnect.ts ~ line 13 ~ activate ~ error', error)
-          captureException(error)
-        })
+        handleActive()
       }
     }
     main()
-  }, [activate])
+  }, [])
 }
 
 const isOldVersion = () => {
   const { version } = getSystemInfoSync()
   return semver.lt(version, '2.43.0')
 }
+
 export const useActiveHandle = () => {
-  const { activate } = useWeb3React()
+  const handleActive = useActive()
   return async () => {
     /**
      *  backward
@@ -190,16 +199,15 @@ export const useActiveHandle = () => {
         .catch((error) => {
           if (error && error?._code === '600005') {
             isLogin = false
-            mpService.login()
+            mpService.login().then(() => {
+              handleActive()
+            })
           }
         })
       injected.bnEthereum.ready = false
     }
     if (isLogin) {
-      activate(injected, (error) => {
-        console.log('🚀 ~ file: useEagerConnect.ts ~ line 183 ~ activate ~ error', error)
-        captureException(error)
-      })
+      handleActive()
     }
     console.log('🚀 ~ file: useEagerConnect.bmp.ts ~ line 199 v5 ~ return ~ address', address)
   }
