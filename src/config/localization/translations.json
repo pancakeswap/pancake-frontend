@@ -1595,5 +1595,7 @@
   "Can't execute this order": "Can't execute this order",
   "Limit Orders": "Limit Orders",
   "Limit": "Limit",
-  "at market price": "at market price"
+  "at market price": "at market price",
+  "Error occurred, please try again later": "Error occurred, please try again later",
+  "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.": "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals."
 }
