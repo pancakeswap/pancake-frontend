@@ -70,18 +70,18 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
         console.error('Error fetching open orders from subgraph', e)
       }
 
-      const openOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === 'open')
+      const openOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === LimitOrderType.OPEN)
 
       const pendingOrdersLS = getLSOrders(chainId, account, true)
 
       return [
         ...openOrdersLS.filter((order: Order) => {
           const orderCancelled = pendingOrdersLS
-            .filter((pendingOrder) => pendingOrder.status === 'cancelled')
+            .filter((pendingOrder) => pendingOrder.status === LimitOrderType.CANCELLED)
             .find((pendingOrder) => pendingOrder.id.toLowerCase() === order.id.toLowerCase())
           return !orderCancelled
         }),
-        ...pendingOrdersLS.filter((order) => order.status === 'open'),
+        ...pendingOrdersLS.filter((order) => order.status === LimitOrderType.OPEN),
       ].sort(newOrdersFirst)
     },
     {
@@ -119,9 +119,11 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
         console.error('Error fetching history orders from subgraph', e)
       }
 
-      const executedOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === 'executed')
+      const executedOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === LimitOrderType.EXECUTED)
 
-      const cancelledOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === 'cancelled')
+      const cancelledOrdersLS = getLSOrders(chainId, account).filter(
+        (order) => order.status === LimitOrderType.CANCELLED,
+      )
 
       const pendingCancelledOrdersLS = getLSOrders(chainId, account, true).filter(
         (order) => order.status === 'cancelled',
