@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useEffect, useState } from 'react'
 import { Language } from '@pancakeswap/uikit'
 import { EN, RU, ZHCN, ZHTW, VI, languages, ESES } from 'config/localization/languages'
 import translations from 'config/localization/translations.json'
