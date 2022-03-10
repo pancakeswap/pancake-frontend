@@ -179,7 +179,7 @@ export const useActiveHandle = () => {
      *  backward
      */
     const address = await injected.getAccount()
-
+    let isLogin = true
     if (!address && isOldVersion()) {
       injected.bnEthereum.ready = true
       injected.bnEthereum
@@ -189,11 +189,13 @@ export const useActiveHandle = () => {
         })
         .catch((error) => {
           if (error && error?._code === '600005') {
+            isLogin = false
             mpService.login()
           }
         })
       injected.bnEthereum.ready = false
-    } else {
+    }
+    if (isLogin) {
       activate(injected, (error) => {
         console.log('🚀 ~ file: useEagerConnect.ts ~ line 183 ~ activate ~ error', error)
         captureException(error)
