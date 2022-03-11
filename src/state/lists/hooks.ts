@@ -95,10 +95,13 @@ export const combinedTokenMapFromActiveUrlsSelector = createSelector(
   },
 )
 
+const inactiveUrlSelector = createSelector([selectorByUrls, selectorActiveUrls], (lists, urls) => {
+  return Object.keys(lists).filter((url) => !urls?.includes(url) && !UNSUPPORTED_LIST_URLS.includes(url))
+})
+
 export const combinedTokenMapFromInActiveUrlsSelector = createSelector(
-  [selectorByUrls, selectorActiveUrls],
-  (lists, urls) => {
-    const inactiveUrl = Object.keys(lists).filter((url) => !urls?.includes(url) && !UNSUPPORTED_LIST_URLS.includes(url))
+  [selectorByUrls, inactiveUrlSelector],
+  (lists, inactiveUrl) => {
     return combineFn(lists, inactiveUrl)
   },
 )
@@ -195,6 +198,10 @@ function useCombinedTokenMapFromUrls(urls: string[] | undefined): TokenAddressMa
 // filter out unsupported lists
 export function useActiveListUrls(): string[] | undefined {
   return useSelector(activeListUrlsSelector)
+}
+
+export function useInactiveListUrls() {
+  return useSelector(inactiveUrlSelector)
 }
 
 // get all the tokens from active lists, combine with local default tokens
