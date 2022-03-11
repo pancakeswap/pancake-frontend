@@ -3,6 +3,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useMemo } from 'react'
+import partition from 'lodash/partition'
 
 import { getLSOrders, saveOrder, removeOrder, saveOrders, hashOrderSet, hashOrder } from 'utils/localStorageOrders'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
@@ -30,8 +31,7 @@ function syncOrderToLocalStorage({
   const newOrders = orders.filter((order: Order) => !allOrdersLSHashSet.has(hashOrder(order)))
   saveOrders(chainId, account, newOrders)
 
-  const typeOrders = orders.filter((order) => syncTypes.some((type) => type === order.status))
-  const otherOrders = orders.filter((order) => syncTypes.some((type) => type !== order.status))
+  const [typeOrders, otherOrders] = partition(orders, (order) => syncTypes.some((type) => type === order.status))
   const typeOrdersLS = allOrdersLS.filter((order) => syncTypes.some((type) => type === order.status))
   typeOrdersLS.forEach((confOrder: Order) => {
     const updatedOrder = typeOrders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase())
