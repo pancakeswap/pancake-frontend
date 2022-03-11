@@ -42,6 +42,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 515,
+    lpSymbol: 'DUET-CAKE LP',
+    lpAddresses: {
+      97: '',
+      56: '0xbDF0aA1D1985Caa357A6aC6661D838DA8691c569',
+    },
+    token: serializedTokens.duet,
+    quoteToken: serializedTokens.cake,
+  },
+  {
     pid: 514,
     lpSymbol: 'GMT-USDC LP',
     lpAddresses: {
