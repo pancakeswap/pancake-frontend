@@ -12,6 +12,7 @@ import { filterTokens } from '../components/SearchModal/filtering'
 import {
   combinedTokenMapFromActiveUrlsSelector,
   combinedTokenMapFromInActiveUrlsSelector,
+  combinedTokenMapFromOfficialsUrlsSelector,
   TokenAddressMap,
   useUnsupportedTokenList,
 } from '../state/lists/hooks'
@@ -28,6 +29,25 @@ const mapWithoutUrls = (tokenMap: TokenAddressMap) =>
 
 const allTokenSelector = createSelector(
   [combinedTokenMapFromActiveUrlsSelector, userAddedTokenSelector],
+  (tokenMap, userAddedTokens) => {
+    return (
+      userAddedTokens
+        // reduce into all ALL_TOKENS filtered by the current chain
+        .reduce<{ [address: string]: Token }>(
+          (tokenMap_, token) => {
+            tokenMap_[token.address] = token
+            return tokenMap_
+          },
+          // must make a copy because reduce modifies the map, and we do not
+          // want to make a copy in every iteration
+          mapWithoutUrls(tokenMap),
+        )
+    )
+  },
+)
+
+const allOfficialsAndUserAddedTokensSelector = createSelector(
+  [combinedTokenMapFromOfficialsUrlsSelector, userAddedTokenSelector],
   (tokenMap, userAddedTokens) => {
     return (
       userAddedTokens
@@ -67,6 +87,10 @@ const inactiveTokenSelector = createSelector(
 
 export function useAllTokens(): { [address: string]: Token } {
   return useSelector(allTokenSelector)
+}
+
+export function useOfficialsAndUserAddedTokens(): { [address: string]: Token } {
+  return useSelector(allOfficialsAndUserAddedTokensSelector)
 }
 
 export function useAllInactiveTokens(): { [address: string]: Token } {

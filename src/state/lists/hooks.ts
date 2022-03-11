@@ -3,7 +3,7 @@ import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { createSelector } from '@reduxjs/toolkit'
-import { DEFAULT_LIST_OF_LISTS } from 'config/constants/lists'
+import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
 import { AppState } from '../index'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
 import { UNSUPPORTED_LIST_URLS } from '../../config/constants/lists'
@@ -102,6 +102,10 @@ export const combinedTokenMapFromInActiveUrlsSelector = createSelector(
     return combineFn(lists, inactiveUrl)
   },
 )
+
+export const combinedTokenMapFromOfficialsUrlsSelector = createSelector([selectorByUrls], (lists) => {
+  return combineFn(lists, OFFICIAL_LISTS)
+})
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =
   typeof WeakMap !== 'undefined' ? new WeakMap<TokenList, TokenAddressMap>() : null
