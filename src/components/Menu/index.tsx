@@ -6,6 +6,7 @@ import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import useTheme from 'hooks/useTheme'
+import { useMenuItemsStatus } from 'hooks/useMenuItemsStatus'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { usePhishingBannerManager } from 'state/user/hooks'
 import config from './config/config'
@@ -23,6 +24,8 @@ const Menu = (props) => {
 
   const activeMenuItem = getActiveMenuItem({ menuConfig: config(t), pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
+
+  const menuItemsStatus = useMenuItemsStatus()
 
   const toggleTheme = useMemo(() => {
     return () => setTheme(isDark ? 'light' : 'dark')
@@ -42,7 +45,7 @@ const Menu = (props) => {
       langs={languageList}
       setLang={setLanguage}
       cakePriceUsd={cakePriceUsd.toNumber()}
-      links={config(t)}
+      links={config(t, menuItemsStatus)}
       subLinks={activeMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
       footerLinks={footerLinks(t)}
       activeItem={activeMenuItem?.href}
