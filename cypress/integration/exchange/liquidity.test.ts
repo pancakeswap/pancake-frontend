@@ -11,7 +11,7 @@ describe('Pool', () => {
   })
 
   it('import pool links to /find', () => {
-    cy.get('#import-pool-link').click()
+    cy.get('#import-pool-link', { timeout: 20000 }).click()
     cy.url().should('contain', '/find')
   })
 })
