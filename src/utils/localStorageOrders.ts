@@ -3,10 +3,6 @@ import { get, set, clear } from 'local-storage'
 
 const LS_ORDERS = 'gorders_'
 
-export const hashOrder = (order: Order) => order.id
-
-export const hashOrderSet = (orders: Order[]) => new Set(orders.map(hashOrder))
-
 export function clearOrdersLocalStorage() {
   return clear()
 }
@@ -24,47 +20,34 @@ export function getLSOrders(chainId: number, account: string, pending = false) {
 }
 
 export function saveOrder(chainId: number, account: string, order: Order, pending = false) {
-  saveOrders(chainId, account, [order], pending)
-}
-
-export function saveOrders(chainId: number, account: string, orders: Order[], pending = false) {
-  if (!orders || !orders.length) return
-
   const key = pending ? lsKey(`${LS_ORDERS}pending_`, account, chainId) : lsKey(LS_ORDERS, account, chainId)
 
   if (!pending) {
-    removeOrders(chainId, account, orders, true)
+    removeOrder(chainId, account, order, true)
   }
 
-  const result = removeOrders(chainId, account, orders, pending)
+  const orders = removeOrder(chainId, account, order, pending)
 
-  if (!result.length) {
-    set(key, orders)
+  if (!orders.length) {
+    set(key, [order])
   } else {
-    result.push(...orders)
-    set(key, result)
+    orders.push(order)
+    set(key, orders)
   }
 }
 
-export function removeOrders(chainId: number, account: string, orders: Order[], pending = false) {
+export function removeOrder(chainId: number, account: string, order: Order, pending = false) {
   const key = pending ? lsKey(`${LS_ORDERS}pending_`, account, chainId) : lsKey(LS_ORDERS, account, chainId)
 
   const prev = get<Order[]>(key)
 
   if (!prev) return []
 
-  if (!orders || !orders.length) return prev
+  const orders = prev.filter((orderInLS) => orderInLS.id.toLowerCase() !== order.id.toLowerCase())
 
-  const orderHashSet = hashOrderSet(orders)
-  const result = prev.filter((orderInLS: Order) => !orderHashSet.has(hashOrder(orderInLS)))
+  set(key, orders)
 
-  set(key, result)
-
-  return result
-}
-
-export function removeOrder(chainId: number, account: string, order: Order, pending = false) {
-  return removeOrders(chainId, account, [order], pending)
+  return orders
 }
 
 export function confirmOrderCancellation(chainId: number, account: string, cancellationHash: string, success = true) {
