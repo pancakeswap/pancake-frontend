@@ -108,7 +108,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('IFO'),
         href: '/ifo',
-        status: menuStatus.SOON,
+        status: menuStatus.LIVE,
       },
       {
         label: t('Voting'),
