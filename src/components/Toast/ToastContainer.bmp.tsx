@@ -31,9 +31,8 @@ const StyledToastContainer = styled.div`
 `
 
 const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove, ttl = 6000, stackSpacing = 24 }) => {
-  console.log('ToastContainer')
   return (
-    <StyledToastContainer id="findit">
+    <StyledToastContainer>
       {toasts.map((toast, index) => {
         const zIndex = (ZINDEX - index).toString()
         const top = TOP_POSITION + index * stackSpacing
