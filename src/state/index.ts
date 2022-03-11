@@ -17,7 +17,7 @@ import burn from './burn/reducer'
 import farmsReducer from './farms'
 import { updateVersion } from './global/actions'
 import infoReducer from './info'
-import lists from './lists/reducer'
+import lists, { initialState as listInitialState } from './lists/reducer'
 import lotteryReducer from './lottery'
 import mint from './mint/reducer'
 import multicall from './multicall/reducer'
@@ -45,7 +45,10 @@ const migrations = {
   1: (state) => {
     return {
       ...state,
-      lists: state.listInitialState,
+      lists: {
+        ...listInitialState,
+        activeListUrls: state?.lists?.activeListUrls || listInitialState.activeListUrls,
+      },
     }
   },
 }
