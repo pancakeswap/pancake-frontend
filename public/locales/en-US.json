@@ -1548,7 +1548,7 @@
   "Highest": "Highest",
   "Connect": "Connect",
   "Play Now": "Play Now",
-  "Win $ %prize% in Lottery": "Win $ %prize% in Lottery",
+  "Win $%prize% in Lottery": "Win $%prize% in Lottery",
   "Approve was called unnecessarily": "Approve was called unnecessarily",
   "No token": "No token",
   "Cannot find contract of the token %tokenAddress%": "Cannot find contract of the token %tokenAddress%",
