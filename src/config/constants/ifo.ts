@@ -27,7 +27,7 @@ const ifos: Ifo[] = [
     token: tokens.duet,
     releaseBlockNumber: null,
     campaignId: '511190000',
-    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmPdotYCM5cz8hYY1NEa3CvxK2xHBZJRYehWCbWVqqKGrY',
+    articleUrl: 'https://pancakeswap.finance/voting/proposal/QmXwoYYd8rkahVbxiGKsTa4rYRRFWPxhRGAHy3hVwK3Q2z',
     tokenOfferingPrice: 0.3,
     version: 3.1,
     telegramUrl: 'https://t.me/duetprotocol',
