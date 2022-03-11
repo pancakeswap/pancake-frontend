@@ -17,7 +17,7 @@ import burn from './burn/reducer'
 import farmsReducer from './farms'
 import { updateVersion } from './global/actions'
 import infoReducer from './info'
-import lists, { initialState as listInitialState } from './lists/reducer'
+import lists from './lists/reducer'
 import lotteryReducer from './lottery'
 import mint from './mint/reducer'
 import multicall from './multicall/reducer'
@@ -42,15 +42,6 @@ const migrations = {
       },
     }
   },
-  1: (state) => {
-    return {
-      ...state,
-      lists: {
-        ...listInitialState,
-        activeListUrls: state?.lists?.activeListUrls || listInitialState.activeListUrls,
-      },
-    }
-  },
 }
 
 const persistConfig = {
@@ -58,7 +49,7 @@ const persistConfig = {
   whitelist: PERSISTED_KEYS,
   blacklist: ['profile'],
   storage,
-  version: 1,
+  version: 0,
   migrate: createMigrate(migrations, { debug: false }),
 }
 
@@ -123,7 +114,6 @@ export const initializeStore = (preloadedState = undefined) => {
   // Create the store once in the client
   if (!store) {
     store = _store
-    store.dispatch(updateVersion())
   }
 
   return _store
@@ -140,7 +130,9 @@ export const useAppDispatch = () => useDispatch()
 
 export default store
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store, undefined, () => {
+  store.dispatch(updateVersion())
+})
 
 export function useStore(initialState) {
   return useMemo(() => initializeStore(initialState), [initialState])
