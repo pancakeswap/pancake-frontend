@@ -55,14 +55,10 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
     startFetch ? ['gelato', 'openOrders'] : null,
     async () => {
       try {
-        const [openOrders, canOrders, exeOrders] = await Promise.all([
-          gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false),
-          gelatoLimitOrders.getCancelledOrders(account.toLowerCase(), false),
-          gelatoLimitOrders.getExecutedOrders(account.toLowerCase(), false),
-        ])
+        const orders = await gelatoLimitOrders.getOrders(account.toLowerCase(), false)
 
         syncOrderToLocalStorage({
-          orders: [...openOrders, ...canOrders, ...exeOrders],
+          orders,
           chainId,
           account,
           syncTypes: [LimitOrderType.OPEN],
@@ -105,13 +101,10 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
       try {
         const acc = account.toLowerCase()
 
-        const [canOrders, exeOrders] = await Promise.all([
-          gelatoLimitOrders.getCancelledOrders(acc, false),
-          gelatoLimitOrders.getExecutedOrders(acc, false),
-        ])
+        const orders = await gelatoLimitOrders.getPastOrders(acc, false)
 
         syncOrderToLocalStorage({
-          orders: [...canOrders, ...exeOrders],
+          orders,
           chainId,
           account,
           syncTypes: [LimitOrderType.CANCELLED, LimitOrderType.EXECUTED],
