@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleProvider } from 'styled-components'
 import { ModalProvider } from '@pancakeswap/uikit'
-import { ToastsProvider } from 'contexts/ToastsContext'
+import { ToastsProvider, ToastListener } from 'contexts/ToastsContext'
 
 import useEagerConnect from 'hooks/useEagerConnect'
 import useUserAgent from 'hooks/useUserAgent'
@@ -36,6 +36,7 @@ const Providers: React.FC = ({ children }) => {
                   <Hooks />
                 </view>
                 {children}
+                <ToastListener />
               </Blocklist>
             </ModalProvider>
           </ToastsProvider>
