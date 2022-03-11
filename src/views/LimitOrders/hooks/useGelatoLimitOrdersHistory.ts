@@ -127,7 +127,7 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
       )
 
       const pendingCancelledOrdersLS = getLSOrders(chainId, account, true).filter(
-        (order) => order.status === 'cancelled',
+        (order) => order.status === LimitOrderType.CANCELLED,
       )
 
       return [...pendingCancelledOrdersLS, ...cancelledOrdersLS, ...executedOrdersLS].sort(newOrdersFirst)
