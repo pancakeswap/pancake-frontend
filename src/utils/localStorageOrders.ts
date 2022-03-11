@@ -1,7 +1,7 @@
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { get, set, clear } from 'local-storage'
 
-const LS_ORDERS = 'gorders_'
+export const LS_ORDERS = 'gorders_'
 
 export function clearOrdersLocalStorage() {
   return clear()
