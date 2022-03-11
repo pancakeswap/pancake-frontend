@@ -131,8 +131,6 @@ export const useAppDispatch = () => useDispatch()
 export default store
 
 export const persistor = persistStore(store, undefined, () => {
-  console.log('lololol')
-
   store.dispatch(updateVersion())
 })
 
