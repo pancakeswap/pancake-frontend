@@ -1,6 +1,6 @@
 export default {
-  entryPagePath: 'views/Swap/bmp/index',
-  pages: ['views/Swap/bmp/index', 'views/webview'],
+  entryPagePath: 'views/BmpHome/index',
+  pages: ['views/BmpHome/index', 'views/webview'],
   darkmode: true,
   window: {
     backgroundTextStyle: 'light',
