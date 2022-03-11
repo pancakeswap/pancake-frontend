@@ -26,11 +26,11 @@ const RightWrapper = styled.div`
   }
   ${({ theme }) => theme.mediaQueries.md} {
     bottom: 9px;
-    right: 0;
+    right: 67px;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
     bottom: -3px;
-    right: 0;
+    right: 67px;
   }
 `
 const IFOIconImage = styled.div<{ src: string }>`

@@ -34,7 +34,10 @@ export const Wrapper = styled.div`
   border-radius: 32px;
   width: 100%;
   max-height: max-content;
-  overflow: visible;
+  overflow: hidden;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    overflow: visible;
+  }
 `
 
 export const Inner = styled(Flex)`

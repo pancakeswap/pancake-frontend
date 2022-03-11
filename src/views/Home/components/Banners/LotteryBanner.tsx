@@ -20,6 +20,15 @@ const RightWrapper = styled.div`
   right: 0;
   bottom: -8px;
   ${({ theme }) => theme.mediaQueries.sm} {
+    right: 1px;
+    bottom: 1px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    right: 0px;
+    bottom: 8px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    right: 0px;
     bottom: -5px;
   }
 `
@@ -64,7 +73,9 @@ const LotteryPrice: React.FC = () => {
         {prizeInBusd.isNaN() ? (
           <Skeleton height={20} width={90} display="inline-block" />
         ) : (
-          t('Win $ %prize% in Lottery', { prize: prizeTotal.toFixed(0) })
+          t('Win $%prize% in Lottery', {
+            prize: prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+          })
         )}
       </>
     )
@@ -90,7 +101,7 @@ const LotteryBanner = () => {
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
-          <StyledSubheading>
+          <StyledSubheading style={{ textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
             <LotteryPrice />
           </StyledSubheading>
           <TimerWrapper>
@@ -113,7 +124,7 @@ const LotteryBanner = () => {
               className="mobile"
               src={lotteryMobileImage}
               alt="LotteryBanner"
-              width={215}
+              width={190}
               height={144}
               placeholder="blur"
             />
