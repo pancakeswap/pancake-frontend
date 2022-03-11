@@ -418,6 +418,9 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React()
   const tokens = useAllTokens(true)
+  const filterTokens = Object.keys(tokens)
+    .slice(0, 1000)
+    .map((key) => tokens[key])
 
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
@@ -426,8 +429,8 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   const generatedPairs: [Token, Token][] = useMemo(
     () =>
       chainId
-        ? flatMap(Object.keys(tokens), (tokenAddress) => {
-            const token = tokens[tokenAddress]
+        ? flatMap(Object.keys(filterTokens), (tokenAddress) => {
+            const token = filterTokens[tokenAddress]
             // for each token on the current chain,
             return (
               // loop though all bases on the current chain
@@ -443,7 +446,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
             )
           })
         : [],
-    [tokens, chainId],
+    [filterTokens, chainId],
   )
 
   // pairs saved by users
