@@ -1506,7 +1506,7 @@
   "We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.",
   "Just remember you need an active PancakeSwap Profile in order to participate.": "Just remember you need an active PancakeSwap Profile in order to participate.",
   "There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.": "There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.",
-  "The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.": "The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.",
+  "The 1% participation fee decreases in cliffs, based on the percentage of lotteryow from the “Public Sale” portion of the IFO.": "The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.",
   "Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.": "Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.",
   "How to Take Part in the Public Sale": "How to Take Part in the Public Sale",
   "Private Sale": "Private Sale",
@@ -1597,5 +1597,6 @@
   "Limit": "Limit",
   "at market price": "at market price",
   "Error occurred, please try again later": "Error occurred, please try again later",
-  "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.": "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals."
+  "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.": "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.",
+  "Preparing": "Preparing"
 }
