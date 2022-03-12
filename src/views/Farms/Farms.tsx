@@ -24,11 +24,10 @@ import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
 import ToggleView from 'components/ToggleView/ToggleView'
-import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
-import { DesktopColumnSchema } from './components/types'
+import { DesktopColumnSchema, FarmWithStakedValue } from './components/types'
 
 const ControlContainer = styled.div`
   display: flex;

@@ -1,34 +1,25 @@
-import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
+import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useRouter } from 'next/router'
-import { useLpTokenPrice } from 'state/farms/hooks'
-import { getBalanceAmount, getBalanceNumber } from 'utils/formatBalance'
+import { useLpTokenPrice, useFarmUser, usePriceCakeBusd } from 'state/farms/hooks'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import useUnstakeFarms from '../../hooks/useUnstakeFarms'
 import useStakeFarms from '../../hooks/useStakeFarms'
+import { FarmWithStakedValue } from '../types'
+import StakedLP from '../StakedLP'
 
-interface FarmCardActionsProps {
-  stakedBalance?: BigNumber
-  tokenBalance?: BigNumber
-  tokenName?: string
-  pid?: number
-  multiplier?: string
-  apr?: number
-  displayApr?: string
-  addLiquidityUrl?: string
-  cakePrice?: BigNumber
+interface FarmCardActionsProps extends FarmWithStakedValue {
   lpLabel?: string
+  addLiquidityUrl?: string
+  displayApr?: string
 }
 
 const IconButtonWrapper = styled.div`
@@ -39,24 +30,28 @@ const IconButtonWrapper = styled.div`
 `
 
 const StakeAction: React.FC<FarmCardActionsProps> = ({
-  stakedBalance,
-  tokenBalance,
-  tokenName,
+  quoteToken,
+  token,
+  lpSymbol,
   pid,
   multiplier,
   apr,
   displayApr,
   addLiquidityUrl,
-  cakePrice,
   lpLabel,
+  lpTotalSupply,
+  tokenAmountTotal,
+  quoteTokenAmountTotal,
 }) => {
   const { t } = useTranslation()
   const { onStake } = useStakeFarms(pid)
   const { onUnstake } = useUnstakeFarms(pid)
+  const { tokenBalance, stakedBalance } = useFarmUser(pid)
+  const cakePrice = usePriceCakeBusd()
   const router = useRouter()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
-  const lpPrice = useLpTokenPrice(tokenName)
+  const lpPrice = useLpTokenPrice(lpSymbol)
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
 
@@ -90,23 +85,12 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
     }
   }
 
-  const displayBalance = useCallback(() => {
-    const stakedBalanceBigNumber = getBalanceAmount(stakedBalance)
-    if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.0000001)) {
-      return '<0.0000001'
-    }
-    if (stakedBalanceBigNumber.gt(0)) {
-      return stakedBalanceBigNumber.toFixed(8, BigNumber.ROUND_DOWN)
-    }
-    return stakedBalanceBigNumber.toFixed(3, BigNumber.ROUND_DOWN)
-  }, [stakedBalance])
-
   const [onPresentDeposit] = useModal(
     <DepositModal
       max={tokenBalance}
       stakedBalance={stakedBalance}
       onConfirm={handleStake}
-      tokenName={tokenName}
+      tokenName={lpSymbol}
       multiplier={multiplier}
       lpPrice={lpPrice}
       lpLabel={lpLabel}
@@ -117,7 +101,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
     />,
   )
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={tokenName} />,
+    <WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
   )
 
   const renderStakingButtons = () => {
@@ -146,19 +130,15 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Flex flexDirection="column" alignItems="flex-start">
-        <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance()}</Heading>
-        {stakedBalance.gt(0) && lpPrice.gt(0) && (
-          <Balance
-            fontSize="12px"
-            color="textSubtle"
-            decimals={2}
-            value={getBalanceNumber(lpPrice.times(stakedBalance))}
-            unit=" USD"
-            prefix="~"
-          />
-        )}
-      </Flex>
+      <StakedLP
+        stakedBalance={stakedBalance}
+        lpSymbol={lpSymbol}
+        quoteTokenSymbol={quoteToken.symbol}
+        tokenSymbol={token.symbol}
+        lpTotalSupply={lpTotalSupply}
+        tokenAmountTotal={tokenAmountTotal}
+        quoteTokenAmountTotal={quoteTokenAmountTotal}
+      />
       {renderStakingButtons()}
     </Flex>
   )
