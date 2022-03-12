@@ -223,7 +223,7 @@ const LimitOrders = () => {
       formattedAmounts={formattedAmounts}
       currentMarketRate={currentMarketRate?.toSignificant(4)}
       currentMarketRateInverted={currentMarketRate?.invert().toSignificant(4)}
-      limitPrice={formattedAmounts.price}
+      limitPrice={price?.toSignificant(6)}
       limitPriceInverted={price?.invert().toSignificant(6)}
       percentageRateDifference={parseFloat(percentageRateDifference?.toSignificant(3)).toLocaleString(undefined, {
         minimumFractionDigits: 0,
