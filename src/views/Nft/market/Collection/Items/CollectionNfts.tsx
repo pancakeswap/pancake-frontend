@@ -40,7 +40,7 @@ const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
             alignItems="start"
           >
             {nfts.map((nft) => {
-              const currentAskPriceAsNumber = nft.marketData && parseFloat(nft.marketData.currentAskPrice)
+              const currentAskPriceAsNumber = nft.marketData && parseFloat(nft?.marketData?.currentAskPrice)
 
               return (
                 <CollectibleLinkCard

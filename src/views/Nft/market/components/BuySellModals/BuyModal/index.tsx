@@ -50,8 +50,8 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
 
   const { toastSuccess } = useToast()
 
-  const nftPriceWei = parseUnits(nftToBuy.marketData.currentAskPrice, 'ether')
-  const nftPrice = parseFloat(nftToBuy.marketData.currentAskPrice)
+  const nftPriceWei = parseUnits(nftToBuy?.marketData?.currentAskPrice, 'ether')
+  const nftPrice = parseFloat(nftToBuy?.marketData?.currentAskPrice)
 
   // BNB - returns ethers.BigNumber
   const { balance: bnbBalance, fetchStatus: bnbFetchStatus } = useGetBnbBalance()
@@ -89,7 +89,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
       )
     },
     onConfirm: () => {
-      const payAmount = Number.isNaN(nftPrice) ? Zero : parseUnits(nftToBuy.marketData.currentAskPrice)
+      const payAmount = Number.isNaN(nftPrice) ? Zero : parseUnits(nftToBuy?.marketData?.currentAskPrice)
       if (paymentCurrency === PaymentCurrency.BNB) {
         return callWithGasPrice(nftMarketContract, 'buyTokenUsingBNB', [nftToBuy.collectionAddress, nftToBuy.tokenId], {
           value: payAmount,
