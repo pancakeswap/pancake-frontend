@@ -22,13 +22,13 @@ async function syncOrderToLocalStorage({
   chainId,
   account,
   orders,
-  syncTypes,
+  syncStatuses,
 }: {
-  gelatoLimitOrders: GelatoLimitOrders
   chainId: number
   account: string
   orders: Order[]
-  syncTypes: LimitOrderStatus[]
+  syncStatuses?: LimitOrderStatus[]
+  gelatoLimitOrders?: GelatoLimitOrders
 }) {
   const allOrdersLS = getLSOrders(chainId, account)
 
@@ -36,7 +36,9 @@ async function syncOrderToLocalStorage({
   const newOrders = orders.filter((order: Order) => !lsOrdersHashSet.has(hashOrder(order)))
   saveOrders(chainId, account, newOrders)
 
-  const typeOrdersLS = allOrdersLS.filter((order) => syncTypes.some((type) => type === order.status))
+  const typeOrdersLS = syncStatuses
+    ? allOrdersLS.filter((order) => syncStatuses.some((type) => type === order.status))
+    : []
 
   for (let i = 0; i < typeOrdersLS.length; i++) {
     const confOrder = typeOrdersLS[i]
@@ -44,7 +46,7 @@ async function syncOrderToLocalStorage({
       const graphOrder =
         orders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase()) ??
         // eslint-disable-next-line no-await-in-loop
-        (await gelatoLimitOrders.getOrder(confOrder.id))
+        (gelatoLimitOrders ? await gelatoLimitOrders.getOrder(confOrder.id) : null)
       if (isOrderUpdated(confOrder, graphOrder)) {
         saveOrder(chainId, account, graphOrder)
       }
@@ -68,11 +70,11 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
         const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
 
         await syncOrderToLocalStorage({
-          gelatoLimitOrders,
           orders,
           chainId,
           account,
-          syncTypes: [LimitOrderStatus.OPEN],
+          syncStatuses: [LimitOrderStatus.OPEN],
+          gelatoLimitOrders,
         })
       } catch (e) {
         console.error('Error fetching open orders from subgraph', e)
@@ -118,11 +120,9 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
         ])
 
         await syncOrderToLocalStorage({
-          gelatoLimitOrders,
           orders: [...canOrders, ...exeOrders],
           chainId,
           account,
-          syncTypes: [LimitOrderStatus.CANCELLED, LimitOrderStatus.EXECUTED],
         })
       } catch (e) {
         console.error('Error fetching history orders from subgraph', e)
