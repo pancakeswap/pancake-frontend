@@ -96,7 +96,7 @@ const UserNfts: React.FC<{
               <CollectibleActionCard
                 isUserNft
                 onClick={() => handleCollectibleClick(nft, location)}
-                key={`${nft.tokenId}-${nft.collectionName}`}
+                key={`${nft?.tokenId}-${nft?.collectionName}`}
                 nft={nft}
                 currentAskPrice={
                   marketData?.currentAskPrice && marketData?.isTradable && parseFloat(marketData.currentAskPrice)
