@@ -30,25 +30,30 @@ async function syncOrderToLocalStorage({
   orders: Order[]
   syncTypes: LimitOrderStatus[]
 }) {
+  // All ls orders should be taken to not re-add order to storage when it is pending
   const allOrdersLS = getLSOrders(chainId, account)
+  const allPendingOrdersLS = getLSOrders(chainId, account, true)
 
-  const allOrdersLSHashSet = hashOrderSet(allOrdersLS)
-  const newOrders = orders.filter((order: Order) => !allOrdersLSHashSet.has(hashOrder(order)))
+  const lsOrdersHashSet = hashOrderSet([...allOrdersLS, ...allPendingOrdersLS])
+  const newOrders = orders.filter((order: Order) => !lsOrdersHashSet.has(hashOrder(order)))
   saveOrders(chainId, account, newOrders)
 
   const typeOrdersLS = allOrdersLS.filter((order) => syncTypes.some((type) => type === order.status))
 
-  await Promise.all(
-    typeOrdersLS.map(async (confOrder: Order) => {
+  for (let i = 0; i < typeOrdersLS.length; i++) {
+    const confOrder = typeOrdersLS[i]
+    try {
       const graphOrder =
         orders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase()) ??
+        // eslint-disable-next-line no-await-in-loop
         (await gelatoLimitOrders.getOrder(confOrder.id))
-
       if (isOrderUpdated(confOrder, graphOrder)) {
         saveOrder(chainId, account, graphOrder)
       }
-    }),
-  )
+    } catch (e) {
+      console.error('Error fetching order from subgraph', e)
+    }
+  }
 }
 
 const useOpenOrders = (turnOn: boolean): Order[] => {
