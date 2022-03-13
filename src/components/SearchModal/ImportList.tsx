@@ -77,7 +77,7 @@ function ImportList({ listURL, list, onImport }: ImportProps) {
                     </Text>
                     <TextDot />
                     <Text small color="textSubtle" ml="6px">
-                      {list.tokens.length} tokens
+                      {list.tokens?.length} tokens
                     </Text>
                   </RowFixed>
                   <Link

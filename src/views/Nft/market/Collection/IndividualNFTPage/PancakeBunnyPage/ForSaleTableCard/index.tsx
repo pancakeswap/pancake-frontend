@@ -71,8 +71,8 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({
     setPage(1)
   }, [bunnyId, priceSort])
 
-  const needsExtraPage = nftsForSale.length % itemsPerPage !== 0
-  let maxPage = Math.floor(nftsForSale.length / itemsPerPage)
+  const needsExtraPage = nftsForSale?.length % itemsPerPage !== 0
+  let maxPage = Math.floor(nftsForSale?.length / itemsPerPage)
   if (needsExtraPage) {
     maxPage += 1
   }
@@ -111,7 +111,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({
         <Text bold>{t('For Sale (%num%)', { num: totalForSale.toLocaleString() })}</Text>
         <UpdateIndicator />
       </Grid>
-      {nftsOnCurrentPage.length > 0 ? (
+      {nftsOnCurrentPage?.length > 0 ? (
         <>
           <TableHeading flex="0 1 auto" gridTemplateColumns="2fr 2fr 1fr" py="12px">
             <StyledSortButton type="button" onClick={togglePriceSort}>

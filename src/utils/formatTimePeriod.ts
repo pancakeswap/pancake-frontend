@@ -14,7 +14,7 @@ const formatTimePeriod = (periods: ReturnType<typeof getTimePeriods>, excludePer
     }
   })
 
-  if (textArr.length === 0) {
+  if (textArr?.length === 0) {
     return null
   }
 

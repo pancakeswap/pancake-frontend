@@ -64,10 +64,10 @@ const ChartCard: React.FC<ChartCardProps> = ({ variant, chartData, tokenData, to
     let valueToDisplay = null
     if (hoverValue) {
       valueToDisplay = formatAmount(hoverValue)
-    } else if (view === ChartView.VOLUME && formattedVolumeData.length > 0) {
-      valueToDisplay = formatAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
-    } else if (view === ChartView.LIQUIDITY && formattedTvlData.length > 0) {
-      valueToDisplay = formatAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
+    } else if (view === ChartView.VOLUME && formattedVolumeData?.length > 0) {
+      valueToDisplay = formatAmount(formattedVolumeData[formattedVolumeData?.length - 1]?.value)
+    } else if (view === ChartView.LIQUIDITY && formattedTvlData?.length > 0) {
+      valueToDisplay = formatAmount(formattedTvlData[formattedTvlData?.length - 1]?.value)
     } else if (view === ChartView.PRICE && tokenData?.priceUSD) {
       valueToDisplay = formatAmount(tokenData.priceUSD)
     }

@@ -18,7 +18,7 @@ export const makeChoice = (): Choice => ({ id: uniqueId(), value: '' })
 
 const Choices: React.FC<ChoicesProps> = ({ choices, onChange }) => {
   const { t } = useTranslation()
-  const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
+  const hasMinimumChoices = choices.filter((choice) => choice.value?.length > 0)?.length >= MINIMUM_CHOICES
 
   const addChoice = () => {
     onChange([...choices, makeChoice()])

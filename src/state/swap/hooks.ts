@@ -372,7 +372,7 @@ export const useFetchPairPrices = ({
         // in that case try to get derived price
         const hasEnoughLiquidity = pairHasEnoughLiquidity(data, timeWindow)
         const newPairData = normalizeChartData(data, timeWindow) || []
-        if (newPairData.length > 0 && hasEnoughLiquidity) {
+        if (newPairData?.length > 0 && hasEnoughLiquidity) {
           dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
           setIsLoading(false)
         } else {

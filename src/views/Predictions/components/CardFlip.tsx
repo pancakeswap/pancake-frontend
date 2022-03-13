@@ -49,7 +49,7 @@ const StyledCardFlip = styled.div`
 `
 
 const getComponents = (children: CardFlipProps['children']) => {
-  if (children.length !== 2) {
+  if (children?.length !== 2) {
     throw new Error('CardFlip: Two children are required')
   }
 

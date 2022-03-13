@@ -93,7 +93,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
 
   useEffect(() => {
     // Fetch history if they have not opened the history pane yet
-    if (history.length === 0) {
+    if (history?.length === 0) {
       dispatch(fetchNodeHistory({ account }))
     }
   }, [account, history, dispatch])
@@ -153,7 +153,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
             <Skeleton height="21" width="140px" />
           ) : (
             <Text color="textSubtle" fontSize="14px">
-              {epochs.length === 1
+              {epochs?.length === 1
                 ? t('From round %round%', { round: epochs[0] })
                 : t('From rounds %rounds%', { rounds: epochs.join(', ') })}
             </Text>

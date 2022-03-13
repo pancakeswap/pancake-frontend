@@ -18,7 +18,7 @@ export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice =
   const { data, status } = useSWR(bunnyId ? ['bunnyLowestPrice', bunnyId] : null, async () => {
     const response = await getNftsMarketData({ otherId: bunnyId, isTradable: true }, 1, 'currentAskPrice', 'asc')
 
-    if (response.length > 0) {
+    if (response?.length > 0) {
       const [tokenMarketData] = response
       return parseFloat(tokenMarketData.currentAskPrice)
     }

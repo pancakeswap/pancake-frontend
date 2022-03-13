@@ -46,7 +46,7 @@ const fetchTokenPriceData = async (
   }
   try {
     const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500)
-    if (!blocks || blocks.length === 0) {
+    if (!blocks || blocks?.length === 0) {
       console.error('Error fetching blocks for timestamps', timestamps)
       return {
         error: false,
@@ -106,7 +106,7 @@ const fetchTokenPriceData = async (
     const formattedHistory = []
 
     // for each timestamp, construct the open and close price
-    for (let i = 0; i < tokenPrices.length - 1; i++) {
+    for (let i = 0; i < tokenPrices?.length - 1; i++) {
       formattedHistory.push({
         time: parseFloat(tokenPrices[i].timestamp),
         open: tokenPrices[i].priceUSD,

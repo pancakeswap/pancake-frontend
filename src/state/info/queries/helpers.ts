@@ -89,7 +89,7 @@ export const fetchChartData = async (
     }
   }
 
-  if (error || chartEntries.length === 0) {
+  if (error || chartEntries?.length === 0) {
     return {
       error: true,
     }

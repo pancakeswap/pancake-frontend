@@ -121,7 +121,7 @@ const YourHistoryCard: React.FC<YourHistoryCardProps> = ({ handleShowMoreClick, 
         </StyledCardBody>
       )
     }
-    if (claimableRounds.length === 0) {
+    if (claimableRounds?.length === 0) {
       return (
         <StyledCardBody>
           <Box maxWidth="280px">

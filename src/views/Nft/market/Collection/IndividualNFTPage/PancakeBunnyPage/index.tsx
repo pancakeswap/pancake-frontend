@@ -177,7 +177,7 @@ const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> 
         <ForSaleTableCard
           nftsForSale={sortedNfts}
           bunnyId={bunnyId}
-          totalForSale={allBunnies.length}
+          totalForSale={allBunnies?.length}
           loadMore={fetchMorePancakeBunnies}
           priceSort={priceSort}
           togglePriceSort={togglePriceSort}

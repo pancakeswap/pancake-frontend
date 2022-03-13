@@ -120,10 +120,10 @@ const PoolTable: React.FC<PoolTableProps> = ({ poolDatas, loading }) => {
   const [maxPage, setMaxPage] = useState(1)
   useEffect(() => {
     let extraPages = 1
-    if (poolDatas.length % ITEMS_PER_INFO_TABLE_PAGE === 0) {
+    if (poolDatas?.length % ITEMS_PER_INFO_TABLE_PAGE === 0) {
       extraPages = 0
     }
-    setMaxPage(Math.floor(poolDatas.length / ITEMS_PER_INFO_TABLE_PAGE) + extraPages)
+    setMaxPage(Math.floor(poolDatas?.length / ITEMS_PER_INFO_TABLE_PAGE) + extraPages)
   }, [poolDatas])
 
   const sortedPools = useMemo(() => {
@@ -213,7 +213,7 @@ const PoolTable: React.FC<PoolTableProps> = ({ poolDatas, loading }) => {
         </ClickableColumnHeader>
       </ResponsiveGrid>
       <Break />
-      {sortedPools.length > 0 ? (
+      {sortedPools?.length > 0 ? (
         <>
           {sortedPools.map((poolData, i) => {
             if (poolData) {

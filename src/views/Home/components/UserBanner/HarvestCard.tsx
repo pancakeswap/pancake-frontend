@@ -28,15 +28,15 @@ const HarvestCard = () => {
   const masterChefContract = useMasterchef()
   const cakePriceBusd = usePriceCakeBusd()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
-  const numTotalToCollect = farmsWithStakedBalance.length
-  const numFarmsToCollect = farmsWithStakedBalance.filter((value) => value.pid !== 0).length
+  const numTotalToCollect = farmsWithStakedBalance?.length
+  const numFarmsToCollect = farmsWithStakedBalance.filter((value) => value.pid !== 0)?.length
   const hasCakePoolToCollect = numTotalToCollect - numFarmsToCollect > 0
 
   const earningsText = getEarningsText(numFarmsToCollect, hasCakePoolToCollect, earningsBusd, t)
   const [preText, toCollectText] = earningsText.split(earningsBusd.toString())
 
   const harvestAllFarms = useCallback(async () => {
-    for (let i = 0; i < farmsWithStakedBalance.length; i++) {
+    for (let i = 0; i < farmsWithStakedBalance?.length; i++) {
       const farmWithBalance = farmsWithStakedBalance[i]
       // eslint-disable-next-line no-await-in-loop
       const receipt = await fetchWithCatchTxError(() => {

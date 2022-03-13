@@ -163,7 +163,7 @@ const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
   const { data } = useChainlinkRoundDataSet()
   const rounds = useGetRoundsByCloseOracleId()
 
-  if (!data.length) {
+  if (!data?.length) {
     return <LineChartLoader />
   }
 

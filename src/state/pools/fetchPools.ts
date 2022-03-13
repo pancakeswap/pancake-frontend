@@ -87,7 +87,7 @@ export const fetchPoolsStakingLimits = async (
     .flat()
 
   const poolStakingResultRaw = await multicallv2(sousChefV2, poolStakingCalls, { requireSuccess: false })
-  const chunkSize = poolStakingCalls.length / validPools.length
+  const chunkSize = poolStakingCalls?.length / validPools?.length
   const poolStakingChunkedResultRaw = chunk(poolStakingResultRaw.flat(), chunkSize)
   return poolStakingChunkedResultRaw.reduce((accum, stakingLimitRaw, index) => {
     const hasUserLimit = stakingLimitRaw[0]
@@ -119,7 +119,7 @@ export const fetchPoolsProfileRequirement = async (): Promise<{
     .flat()
 
   const poolProfileRequireResultRaw = await multicallv2(sousChefV3, poolProfileRequireCalls, { requireSuccess: false })
-  const chunkSize = poolProfileRequireCalls.length / poolsWithV3.length
+  const chunkSize = poolProfileRequireCalls?.length / poolsWithV3?.length
   const poolStakingChunkedResultRaw = chunk(poolProfileRequireResultRaw.flat(), chunkSize)
   return poolStakingChunkedResultRaw.reduce((accum, poolProfileRequireRaw, index) => {
     const hasProfileRequired = poolProfileRequireRaw[0]

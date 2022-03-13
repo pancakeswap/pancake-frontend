@@ -56,11 +56,11 @@ const ActivityHistory = () => {
     }
 
     const getMaxPages = () => {
-      const max = Math.ceil(sortedUserActivities.length / MAX_PER_PAGE)
+      const max = Math.ceil(sortedUserActivities?.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
 
-    if (sortedUserActivities.length > 0) {
+    if (sortedUserActivities?.length > 0) {
       getMaxPages()
       fetchNftMetadata()
     }
@@ -78,14 +78,17 @@ const ActivityHistory = () => {
       const slice = sortedUserActivities.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
       setActivitiesSlice(slice)
     }
-    if (sortedUserActivities.length > 0) {
+    if (sortedUserActivities?.length > 0) {
       getActivitySlice()
     }
   }, [sortedUserActivities, currentPage])
 
   return (
     <Card style={{ overflowX: 'auto' }}>
-      {sortedUserActivities.length === 0 && nftMetadata.length === 0 && activitiesSlice.length === 0 && !isLoading ? (
+      {sortedUserActivities?.length === 0 &&
+      nftMetadata?.length === 0 &&
+      activitiesSlice?.length === 0 &&
+      !isLoading ? (
         <Flex p="24px" flexDirection="column" alignItems="center">
           <NoNftsImage />
           <Text pt="8px" bold>

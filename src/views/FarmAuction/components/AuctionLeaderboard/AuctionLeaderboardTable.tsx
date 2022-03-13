@@ -117,7 +117,7 @@ const AuctionLeaderboardTable: React.FC<{ bidders: Bidder[]; noBidsText: string 
   const { isMobile } = useMatchBreakpoints()
   const [onShowWhitelistedBidders] = useModal(<WhitelistedBiddersModal />)
 
-  const totalBidders = bidders.length
+  const totalBidders = bidders?.length
 
   if (totalBidders === 0) {
     return (

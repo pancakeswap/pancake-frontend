@@ -15,13 +15,13 @@ export const getStaticPaths: GetStaticPaths = () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const currency = (params.currency as string[]) || []
 
-  if (currency.length === 0) {
+  if (currency?.length === 0) {
     return {
       notFound: true,
     }
   }
 
-  if (currency.length === 1) {
+  if (currency?.length === 1) {
     if (!OLD_PATH_STRUCTURE.test(currency[0])) {
       return {
         redirect: {
@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     const split = currency[0].split('-')
-    if (split.length > 1) {
+    if (split?.length > 1) {
       const [currency0, currency1] = split
       return {
         redirect: {

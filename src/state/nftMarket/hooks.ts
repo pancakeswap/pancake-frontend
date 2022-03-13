@@ -40,7 +40,7 @@ export const useFetchByBunnyIdAndUpdate = (bunnyId: string) => {
   const allPancakeBunnies = useNftsFromCollection(pancakeBunniesAddress)
   const allExistingPBTokenIds = allPancakeBunnies ? allPancakeBunnies.map((nft) => nft.tokenId) : []
 
-  const firstBunny = existingBunniesInState.length > 0 ? existingBunniesInState[0] : null
+  const firstBunny = existingBunniesInState?.length > 0 ? existingBunniesInState[0] : null
 
   // If we already have NFT with this bunny id in state - we can reuse its metadata without making API request
   const existingMetadata = useMemo(() => {

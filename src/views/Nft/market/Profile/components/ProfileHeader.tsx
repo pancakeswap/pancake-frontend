@@ -53,7 +53,7 @@ const ProfileHeader: React.FC<HeaderProps> = ({
   const numPoints = !isProfileLoading ? (profile?.points ? formatNumber(profile.points, 0, 0) : '-') : null
   const numAchievements = !isAchievementsLoading
     ? achievements?.length
-      ? formatNumber(achievements.length, 0, 0)
+      ? formatNumber(achievements?.length, 0, 0)
       : '-'
     : null
 

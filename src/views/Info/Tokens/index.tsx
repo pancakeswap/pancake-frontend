@@ -26,7 +26,7 @@ const TokensOverview: React.FC = () => {
       <Heading scale="lg" mb="16px">
         {t('Your Watchlist')}
       </Heading>
-      {savedTokens.length > 0 ? (
+      {savedTokens?.length > 0 ? (
         <TokenTable tokenDatas={watchListTokens} />
       ) : (
         <Card>

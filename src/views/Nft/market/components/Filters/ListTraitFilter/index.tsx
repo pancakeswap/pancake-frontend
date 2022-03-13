@@ -62,7 +62,7 @@ export const ListTraitFilter: React.FC<ListTraitFilterProps> = ({ title, traitTy
   const isTraitSelected = !!traitFilter
 
   const filteredItems =
-    query && query.length > 1
+    query && query?.length > 1
       ? items.filter((item) => item.label.toLowerCase().indexOf(query.toLowerCase()) !== -1)
       : items
 
@@ -177,7 +177,7 @@ export const ListTraitFilter: React.FC<ListTraitFilterProps> = ({ title, traitTy
               </FilterButton>
             </Flex>
             <Box height="240px" overflowY="auto">
-              {filteredItems.length > 0 ? (
+              {filteredItems?.length > 0 ? (
                 orderBy(filteredItems, orderKey, orderDir).map((filteredItem) => {
                   const handleSelect = () => handleItemSelect(filteredItem)
                   const isItemSelected = traitFilter ? traitFilter.value === filteredItem.attr.value : false

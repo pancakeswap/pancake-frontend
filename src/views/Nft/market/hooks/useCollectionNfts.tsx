@@ -125,10 +125,10 @@ const fetchAllNfts = async (
   let fallbackPage = nftFallbackPage
   if (settings.field !== 'tokenId' && !fallbackMode) {
     const marketDataNfts = await fetchMarketDataNfts(collection, settings, page, tokenIdsFromFilter)
-    if (marketDataNfts.length) {
+    if (marketDataNfts?.length) {
       newNfts.push(...marketDataNfts)
     }
-    if (newNfts.length < REQUEST_SIZE) {
+    if (newNfts?.length < REQUEST_SIZE) {
       // eslint-disable-next-line no-param-reassign
       fallbackMode = true
       fetchedNfts.push(...newNfts)
@@ -150,7 +150,7 @@ const fetchAllNfts = async (
     }
   }
 
-  if (tokenIds.length) {
+  if (tokenIds?.length) {
     const nftsMarket = await getMarketDataForTokenIds(collection.address, tokenIds)
 
     const responsesPromises = tokenIds.map(async (id) => {
@@ -199,7 +199,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
 
   // We don't know the amount in advance if nft filters exist
   const resultSize =
-    !Object.keys(nftFilters).length && collection
+    !Object.keys(nftFilters)?.length && collection
       ? showOnlyNftsOnSale
         ? collection.numberTokensListed
         : collection?.totalSupply
@@ -228,7 +228,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
     setSize,
   } = useSWRInfinite(
     (pageIndex, previousPageData) => {
-      if (pageIndex !== 0 && previousPageData && !previousPageData.length) return null
+      if (pageIndex !== 0 && previousPageData && !previousPageData?.length) return null
       return [collectionAddress, itemListingSettingsJson, pageIndex, 'collectionNfts']
     },
     async (address, settingsJson, page) => {
@@ -255,7 +255,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
         fallbackMode.current = newFallbackMode
         fallbackModePage.current = newFallbackPage
       }
-      if (newNfts.length < REQUEST_SIZE) {
+      if (newNfts?.length < REQUEST_SIZE) {
         isLastPage.current = true
       }
       return newNfts

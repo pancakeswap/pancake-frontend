@@ -64,7 +64,7 @@ const History = () => {
   }, [account, currentEpoch, isHistoryPaneOpen, dispatch])
 
   const results = getFilteredBets(bets, historyFilter)
-  const hasBetHistory = results && results.length > 0
+  const hasBetHistory = results && results?.length > 0
 
   let activeTabComponent = null
 

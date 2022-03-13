@@ -286,7 +286,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     userNotEnoughCake ||
     !ticketsToBuy ||
     new BigNumber(ticketsToBuy).lte(0) ||
-    getTicketsForPurchase().length !== parseInt(ticketsToBuy, 10)
+    getTicketsForPurchase()?.length !== parseInt(ticketsToBuy, 10)
 
   if (buyingStage === BuyingStage.EDIT) {
     return (

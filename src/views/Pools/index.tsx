@@ -189,7 +189,7 @@ const Pools: React.FC = () => {
       return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
     })
   }, [openPools])
-  const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
+  const hasStakeInFinishedPools = stakedOnlyFinishedPools?.length > 0
 
   usePoolsPageFetch()
 
@@ -229,7 +229,7 @@ const Pools: React.FC = () => {
     }
     return sortedPools
   }, [account, sortOption, pools, chosenPools, numberOfPoolsVisible, searchQuery])
-  chosenPoolsLength.current = chosenPools.length
+  chosenPoolsLength.current = chosenPools?.length
 
   const cardLayout = (
     <CardLayout>

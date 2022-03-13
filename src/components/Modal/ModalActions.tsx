@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Spacer from './Spacer'
 
 const ModalActions: React.FC = ({ children }) => {
-  const l = Children.toArray(children).length
+  const l = Children.toArray(children)?.length
   return (
     <StyledModalActions>
       {Children.map(children, (child, i) => (

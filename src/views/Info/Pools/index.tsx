@@ -26,7 +26,7 @@ const PoolsOverview: React.FC = () => {
         {t('Your Watchlist')}
       </Heading>
       <Card>
-        {watchlistPools.length > 0 ? (
+        {watchlistPools?.length > 0 ? (
           <PoolTable poolDatas={watchlistPools} />
         ) : (
           <Text px="24px" py="16px">

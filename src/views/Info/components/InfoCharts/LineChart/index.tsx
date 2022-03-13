@@ -30,7 +30,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
     currentLanguage: { locale },
   } = useTranslation()
   const { theme } = useTheme()
-  if (!data || data.length === 0) {
+  if (!data || data?.length === 0) {
     return <LineChartLoader />
   }
   return (

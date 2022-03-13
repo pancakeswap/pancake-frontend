@@ -39,9 +39,9 @@ export default async function getTokenList(
   } else {
     urls = uriToHttp(listUrl)
   }
-  for (let i = 0; i < urls.length; i++) {
+  for (let i = 0; i < urls?.length; i++) {
     const url = urls[i]
-    const isLast = i === urls.length - 1
+    const isLast = i === urls?.length - 1
     let response
     try {
       response = await fetch(url)
@@ -61,7 +61,7 @@ export default async function getTokenList(
       const validationErrors: string =
         tokenListValidator.errors?.reduce<string>((memo, error) => {
           const add = `${(error as any).dataPath} ${error.message ?? ''}`
-          return memo.length > 0 ? `${memo}; ${add}` : `${add}`
+          return memo?.length > 0 ? `${memo}; ${add}` : `${add}`
         }, '') ?? 'unknown error'
       throw new Error(`Token list failed validation: ${validationErrors}`)
     }

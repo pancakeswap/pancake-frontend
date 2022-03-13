@@ -242,7 +242,7 @@ const Farms: React.FC = ({ children }) => {
     numberOfFarmsVisible,
   ])
 
-  chosenFarmsLength.current = chosenFarmsMemoized.length
+  chosenFarmsLength.current = chosenFarmsMemoized?.length
 
   useEffect(() => {
     if (isIntersecting) {
@@ -296,7 +296,7 @@ const Farms: React.FC = ({ children }) => {
   })
 
   const renderContent = (): JSX.Element => {
-    if (viewMode === ViewMode.TABLE && rowData.length) {
+    if (viewMode === ViewMode.TABLE && rowData?.length) {
       const columnSchema = DesktopColumnSchema
 
       const columns = columnSchema.map((column) => ({
@@ -363,7 +363,7 @@ const Farms: React.FC = ({ children }) => {
               />
               <Text> {t('Staked only')}</Text>
             </ToggleWrapper>
-            <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
+            <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms?.length > 0} />
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>

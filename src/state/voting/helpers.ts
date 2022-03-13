@@ -127,7 +127,7 @@ export const getAllVotes = async (proposalId: string, block?: number, votesPerCh
           }
         })
 
-        if (voteChunk.length === 0) {
+        if (voteChunk?.length === 0) {
           resolve(votes)
         } else {
           votes = [...votes, ...voteChunkWithVP]

@@ -81,15 +81,15 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
   const priceData = useTokenPriceData(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
   const adjustedPriceData = useMemo(() => {
     // Include latest available price
-    if (priceData && tokenData && priceData.length > 0) {
+    if (priceData && tokenData && priceData?.length > 0) {
       return [
         ...priceData,
         {
           time: new Date().getTime() / 1000,
-          open: priceData[priceData.length - 1].close,
+          open: priceData[priceData?.length - 1].close,
           close: tokenData?.priceUSD,
           high: tokenData?.priceUSD,
-          low: priceData[priceData.length - 1].close,
+          low: priceData[priceData?.length - 1].close,
         },
       ]
     }

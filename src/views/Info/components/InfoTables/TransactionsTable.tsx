@@ -167,10 +167,10 @@ const TransactionTable: React.FC<{
       const filteredTransactions = transactions.filter((tx) => {
         return txFilter === undefined || tx.type === txFilter
       })
-      if (filteredTransactions.length % ITEMS_PER_INFO_TABLE_PAGE === 0) {
-        setMaxPage(Math.floor(filteredTransactions.length / ITEMS_PER_INFO_TABLE_PAGE))
+      if (filteredTransactions?.length % ITEMS_PER_INFO_TABLE_PAGE === 0) {
+        setMaxPage(Math.floor(filteredTransactions?.length / ITEMS_PER_INFO_TABLE_PAGE))
       } else {
-        setMaxPage(Math.floor(filteredTransactions.length / ITEMS_PER_INFO_TABLE_PAGE) + 1)
+        setMaxPage(Math.floor(filteredTransactions?.length / ITEMS_PER_INFO_TABLE_PAGE) + 1)
       }
     }
   }, [transactions, txFilter])
@@ -295,7 +295,7 @@ const TransactionTable: React.FC<{
               }
               return null
             })}
-            {sortedTransactions.length === 0 ? (
+            {sortedTransactions?.length === 0 ? (
               <Flex justifyContent="center">
                 <Text>{t('No Transactions')}</Text>
               </Flex>

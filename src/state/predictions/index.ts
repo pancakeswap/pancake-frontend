@@ -390,7 +390,7 @@ export const predictionsSlice = createSlice({
       state.leaderboard.loadingState = FetchStatus.Fetched
       state.leaderboard.results = results
 
-      if (results.length < LEADERBOARD_RESULTS_PER_PAGE) {
+      if (results?.length < LEADERBOARD_RESULTS_PER_PAGE) {
         state.leaderboard.hasMoreResults = false
       }
 
@@ -431,7 +431,7 @@ export const predictionsSlice = createSlice({
       state.leaderboard.results = [...state.leaderboard.results, ...results]
       state.leaderboard.skip = skip
 
-      if (results.length < LEADERBOARD_RESULTS_PER_PAGE) {
+      if (results?.length < LEADERBOARD_RESULTS_PER_PAGE) {
         state.leaderboard.hasMoreResults = false
       }
     })
@@ -533,7 +533,7 @@ export const predictionsSlice = createSlice({
       state.isFetchingHistory = false
       state.history = page === 1 ? bets : [...state.history, ...bets]
       state.claimableStatuses = { ...state.claimableStatuses, ...claimableStatuses }
-      state.hasHistoryLoaded = state.history.length === totalHistory || bets.length === 0
+      state.hasHistoryLoaded = state.history?.length === totalHistory || bets?.length === 0
       state.totalHistory = totalHistory
       state.currentHistoryPage = page
     })

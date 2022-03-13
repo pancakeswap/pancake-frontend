@@ -54,7 +54,7 @@ const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promis
       address: collection.address.toLowerCase(),
       name: 'totalSupply',
     }))
-  if (totalSupplyCalls.length > 0) {
+  if (totalSupplyCalls?.length > 0) {
     const totalSupplyRaw = await multicallv2(erc721Abi, totalSupplyCalls, { requireSuccess: false })
     const totalSupply = totalSupplyRaw.flat()
     return totalSupply.map((totalCount) => (totalCount ? totalCount.toNumber() : 0))
@@ -299,7 +299,7 @@ export const getNftsByBunnyIdSg = async (
 ): Promise<TokenMarketData[]> => {
   try {
     const where =
-      existingTokenIds.length > 0
+      existingTokenIds?.length > 0
         ? { otherId: bunnyId, isTradable: true, tokenId_not_in: existingTokenIds }
         : { otherId: bunnyId, isTradable: true }
     const res = await request(
@@ -335,7 +335,7 @@ export const getMarketDataForTokenIds = async (
   existingTokenIds: string[],
 ): Promise<TokenMarketData[]> => {
   try {
-    if (existingTokenIds.length === 0) {
+    if (existingTokenIds?.length === 0) {
       return []
     }
     const res = await request(
@@ -415,7 +415,7 @@ export const getAllPancakeBunniesLowestPrice = async (bunnyIds: string[]): Promi
       return {
         ...lowestPricesData,
         [bunnyId]:
-          rawResponse[subQueryKey].length > 0 ? parseFloat(rawResponse[subQueryKey][0].currentAskPrice) : Infinity,
+          rawResponse[subQueryKey]?.length > 0 ? parseFloat(rawResponse[subQueryKey][0].currentAskPrice) : Infinity,
       }
     }, {})
   } catch (error) {
@@ -446,7 +446,7 @@ export const getAllPancakeBunniesRecentUpdatedAt = async (bunnyIds: string[]): P
       const bunnyId = subQueryKey.split('b')[1]
       return {
         ...updatedAtData,
-        [bunnyId]: rawResponse[subQueryKey].length > 0 ? Number(rawResponse[subQueryKey][0].updatedAt) : -Infinity,
+        [bunnyId]: rawResponse[subQueryKey]?.length > 0 ? Number(rawResponse[subQueryKey][0].updatedAt) : -Infinity,
       }
     }, {})
   } catch (error) {
@@ -470,7 +470,7 @@ export const getLeastMostPriceInCollection = async (
       orderDirection,
     )
 
-    if (response.length === 0) {
+    if (response?.length === 0) {
       return 0
     }
 
@@ -555,7 +555,7 @@ export const getCollectionActivity = async (
 
   const isFetchAllCollections = address === ''
 
-  const hasCollectionFilter = nftActivityFilter.collectionFilters.length > 0
+  const hasCollectionFilter = nftActivityFilter.collectionFilters?.length > 0
 
   const collectionFilterGql = !isFetchAllCollections
     ? `collection: ${JSON.stringify(address)}`
@@ -567,13 +567,13 @@ export const getCollectionActivity = async (
     .filter((marketEvent) => marketEvent !== MarketEvent.SELL)
     .map((marketEvent) => getAskOrderEvent(marketEvent))
 
-  const askOrderIncluded = nftActivityFilter.typeFilters.length === 0 || askOrderTypeFilter.length > 0
+  const askOrderIncluded = nftActivityFilter.typeFilters?.length === 0 || askOrderTypeFilter?.length > 0
 
   const askOrderTypeFilterGql =
-    askOrderTypeFilter.length > 0 ? `orderType_in: ${JSON.stringify(askOrderTypeFilter)}` : ``
+    askOrderTypeFilter?.length > 0 ? `orderType_in: ${JSON.stringify(askOrderTypeFilter)}` : ``
 
   const transactionIncluded =
-    nftActivityFilter.typeFilters.length === 0 ||
+    nftActivityFilter.typeFilters?.length === 0 ||
     nftActivityFilter.typeFilters.some(
       (marketEvent) => marketEvent === MarketEvent.BUY || marketEvent === MarketEvent.SELL,
     )
@@ -671,7 +671,7 @@ export const getTokenActivity = async (
       { tokenId, address: collectionAddress },
     )
 
-    if (res.nfts.length > 0) {
+    if (res.nfts?.length > 0) {
       return { askOrders: res.nfts[0].askHistory, transactions: res.nfts[0].transactionHistory }
     }
     return { askOrders: [], transactions: [] }
@@ -951,7 +951,7 @@ export const combineNftMarketAndMetadata = (
           forSaleNft.tokenId === nft.tokenId &&
           forSaleNft.collection &&
           forSaleNft.collection.id === nft.collectionAddress,
-      ).length > 0
+      )?.length > 0
     let marketData
     if (isOnSale) {
       marketData = nftsForSale.find(

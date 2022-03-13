@@ -118,7 +118,7 @@ function Item({ type, isOk, isSingle, pointThreshold, admissionProfile }) {
 export default function IFORequirements({ criterias, pointThreshold, admissionProfile }) {
   if (!criterias?.length) return null
 
-  const isSingle = criterias.length === 1
+  const isSingle = criterias?.length === 1
 
   return (
     <Flex mx="8px">

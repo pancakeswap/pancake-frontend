@@ -200,9 +200,9 @@ const Search = () => {
 
   // get date for watchlist
   const watchListTokenData = useTokenDatas(savedTokens)
-  const watchListTokenLoading = watchListTokenData.length !== savedTokens.length
+  const watchListTokenLoading = watchListTokenData?.length !== savedTokens?.length
   const watchListPoolData = usePoolDatas(savedPools)
-  const watchListPoolLoading = watchListPoolData.length !== savedPools.length
+  const watchListPoolLoading = watchListPoolData?.length !== savedPools?.length
 
   // filter on view
   const [showWatchlist, setShowWatchlist] = useState(false)
@@ -223,15 +223,15 @@ const Search = () => {
   const contentUnderTokenList = () => {
     const isLoading = showWatchlist ? watchListTokenLoading : tokensLoading
     const noTokensFound =
-      tokensForList.length === 0 && !isLoading && debouncedSearchTerm.length >= MINIMUM_SEARCH_CHARACTERS
-    const noWatchlistTokens = tokensForList.length === 0 && !isLoading
+      tokensForList?.length === 0 && !isLoading && debouncedSearchTerm?.length >= MINIMUM_SEARCH_CHARACTERS
+    const noWatchlistTokens = tokensForList?.length === 0 && !isLoading
     const showMessage = showWatchlist ? noWatchlistTokens : noTokensFound
     const noTokensMessage = showWatchlist ? t('Saved tokens will appear here') : t('No results')
     return (
       <>
         {isLoading && <Skeleton />}
         {showMessage && <Text>{noTokensMessage}</Text>}
-        {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
+        {!showWatchlist && debouncedSearchTerm?.length < MINIMUM_SEARCH_CHARACTERS && (
           <Text>{t('Search pools or tokens')}</Text>
         )}
       </>
@@ -241,15 +241,15 @@ const Search = () => {
   const contentUnderPoolList = () => {
     const isLoading = showWatchlist ? watchListPoolLoading : poolsLoading
     const noPoolsFound =
-      poolForList.length === 0 && !poolsLoading && debouncedSearchTerm.length >= MINIMUM_SEARCH_CHARACTERS
-    const noWatchlistPools = poolForList.length === 0 && !isLoading
+      poolForList?.length === 0 && !poolsLoading && debouncedSearchTerm?.length >= MINIMUM_SEARCH_CHARACTERS
+    const noWatchlistPools = poolForList?.length === 0 && !isLoading
     const showMessage = showWatchlist ? noWatchlistPools : noPoolsFound
     const noPoolsMessage = showWatchlist ? t('Saved tokens will appear here') : t('No results')
     return (
       <>
         {isLoading && <Skeleton />}
         {showMessage && <Text>{noPoolsMessage}</Text>}
-        {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
+        {!showWatchlist && debouncedSearchTerm?.length < MINIMUM_SEARCH_CHARACTERS && (
           <Text>{t('Search pools or tokens')}</Text>
         )}
       </>
@@ -335,7 +335,7 @@ const Search = () => {
             onClick={() => {
               setTokensShown(tokensShown + 5)
             }}
-            hide={tokensForList.length <= tokensShown}
+            hide={tokensForList?.length <= tokensShown}
             ref={showMoreRef}
           >
             {t('See more...')}
@@ -394,7 +394,7 @@ const Search = () => {
             onClick={() => {
               setPoolsShown(poolsShown + 5)
             }}
-            hide={poolForList.length <= poolsShown}
+            hide={poolForList?.length <= poolsShown}
             ref={showMoreRef}
           >
             {t('See more...')}

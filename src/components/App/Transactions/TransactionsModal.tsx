@@ -46,7 +46,7 @@ const TransactionsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
     <Modal title={t('Recent Transactions')} headerBackground="gradients.cardHeader" onDismiss={onDismiss}>
       {account ? (
         <ModalBody>
-          {!!pending.length || !!confirmed.length ? (
+          {!!pending?.length || !!confirmed?.length ? (
             <>
               <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
                 <Text>{t('Recent Transactions')}</Text>

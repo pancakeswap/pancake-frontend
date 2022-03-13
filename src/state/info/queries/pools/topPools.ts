@@ -48,7 +48,7 @@ const useTopPoolAddresses = (): string[] => {
       const addresses = await fetchTopPools(timestamp24hAgo)
       setTopPoolAddresses(addresses)
     }
-    if (topPoolAddresses.length === 0) {
+    if (topPoolAddresses?.length === 0) {
       fetch()
     }
   }, [topPoolAddresses, timestamp24hAgo])

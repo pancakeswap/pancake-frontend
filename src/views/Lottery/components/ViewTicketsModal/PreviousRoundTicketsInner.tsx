@@ -188,7 +188,7 @@ const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) =
             </Text>
           </Flex>
           <Text bold color="text">
-            {allUserTickets ? allUserTickets.length : <Skeleton width="56px" height="24px" />}
+            {allUserTickets ? allUserTickets?.length : <Skeleton width="56px" height="24px" />}
           </Text>
         </Flex>
         <Flex mb="24px" justifyContent="space-between">

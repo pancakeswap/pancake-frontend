@@ -334,11 +334,11 @@ export default function Swap() {
   )
 
   useEffect(() => {
-    if (importTokensNotInDefault.length > 0) {
+    if (importTokensNotInDefault?.length > 0) {
       onPresentImportTokenWarningModal()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [importTokensNotInDefault.length])
+  }, [importTokensNotInDefault?.length])
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal

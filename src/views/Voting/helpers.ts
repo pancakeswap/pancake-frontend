@@ -146,7 +146,7 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], s
     cakeBnbLpCakeBnbBalances,
   ] = new Array(9)
   const defaultScore = {}
-  for (let i = 0; i < voters.length; i++) {
+  for (let i = 0; i < voters?.length; i++) {
     defaultScore[voters[i]] = 0
   }
   cakeBalances = scoresListIndex.cakeBalances > -1 ? scoresList[scoresListIndex.cakeBalances] : defaultScore
@@ -189,7 +189,7 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], s
     // calculate poolsBalance
     const poolStartIndex = scoresListIndex.poolStart
     let poolsBalance = new BigNumber(0)
-    for (let i = poolStartIndex; i < scoresList.length; i++) {
+    for (let i = poolStartIndex; i < scoresList?.length; i++) {
       const currentPoolBalance = new BigNumber(scoresList[i][address])
       poolsBalance = poolsBalance.plus(currentPoolBalance)
     }

@@ -31,7 +31,7 @@ export const normalizeChartData = (
 }
 
 export const normalizeDerivedChartData = (data: any) => {
-  if (!data?.token0DerivedBnb || data?.token0DerivedBnb.length === 0) {
+  if (!data?.token0DerivedBnb || data?.token0DerivedBnb?.length === 0) {
     return []
   }
   return data?.token0DerivedBnb.reduce((acc, token0DerivedBnbEntry) => {

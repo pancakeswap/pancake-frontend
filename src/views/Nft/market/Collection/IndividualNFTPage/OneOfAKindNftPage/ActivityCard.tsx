@@ -46,11 +46,11 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ nft }) => {
 
   useEffect(() => {
     const getMaxPages = () => {
-      const max = Math.ceil(sortedTokenActivities.length / MAX_PER_PAGE)
+      const max = Math.ceil(sortedTokenActivities?.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
 
-    if (sortedTokenActivities.length > 0) {
+    if (sortedTokenActivities?.length > 0) {
       getMaxPages()
     }
 
@@ -66,14 +66,14 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ nft }) => {
       const slice = sortedTokenActivities.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
       setActivitiesSlice(slice)
     }
-    if (sortedTokenActivities.length > 0) {
+    if (sortedTokenActivities?.length > 0) {
       getActivitySlice()
     }
   }, [sortedTokenActivities, currentPage])
 
   return (
     <Card>
-      {sortedTokenActivities.length === 0 && activitiesSlice.length === 0 && !isLoading ? (
+      {sortedTokenActivities?.length === 0 && activitiesSlice?.length === 0 && !isLoading ? (
         <Flex p="24px" flexDirection="column" alignItems="center">
           <NoNftsImage />
           <Text pt="8px" bold>

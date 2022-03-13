@@ -151,7 +151,7 @@ const CollectWinningsPopup = () => {
           })
 
           if (!isHistoryPaneOpen) {
-            setIsOpen(winnerBets.length > 0)
+            setIsOpen(winnerBets?.length > 0)
           }
         }
       }, 30000)

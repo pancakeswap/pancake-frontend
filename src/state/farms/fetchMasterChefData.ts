@@ -33,7 +33,7 @@ const masterChefFarmCalls = (farm: SerializedFarm) => {
 
 export const fetchMasterChefData = async (farms: SerializedFarmConfig[]): Promise<any[]> => {
   const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm))
-  const chunkSize = masterChefCalls.flat().length / farms.length
+  const chunkSize = masterChefCalls.flat()?.length / farms?.length
   const masterChefAggregatedCalls = masterChefCalls
     .filter((masterChefCall) => masterChefCall[0] !== null && masterChefCall[1] !== null)
     .flat()

@@ -13,7 +13,7 @@ const Choice: React.FC<ChoiceProps> = ({ onRemove, onTextInput, ...props }) => {
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { value } = evt.currentTarget
 
-    setIsWarning(isDirty && value.length === 0)
+    setIsWarning(isDirty && value?.length === 0)
     setIsDirty(true)
     onTextInput(value)
   }

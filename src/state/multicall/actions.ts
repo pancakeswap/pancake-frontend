@@ -19,7 +19,7 @@ export function toCallKey(call: Call): string {
 
 export function parseCallKey(callKey: string): Call {
   const pcs = callKey.split('-')
-  if (pcs.length !== 2) {
+  if (pcs?.length !== 2) {
     throw new Error(`Invalid call key: ${callKey}`)
   }
   return {

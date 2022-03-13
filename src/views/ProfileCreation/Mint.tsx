@@ -48,7 +48,7 @@ const Mint: React.FC = () => {
       })
       setStarterNfts(nfts)
     }
-    if (starterNfts.length === 0) {
+    if (starterNfts?.length === 0) {
       getStarterNfts()
     }
   }, [starterNfts])

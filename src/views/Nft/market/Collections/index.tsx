@@ -72,7 +72,7 @@ const Collectible = () => {
 
   const { data: collections = [], status } = useSWRImmutable<
     (Collection & { lowestPrice: number; highestPrice: number })[]
-  >(shuffledCollections && shuffledCollections.length ? ['collectionsWithPrice'] : null, async () => {
+  >(shuffledCollections && shuffledCollections?.length ? ['collectionsWithPrice'] : null, async () => {
     return Promise.all(
       shuffledCollections.map(async (collection) => {
         return {
@@ -115,10 +115,10 @@ const Collectible = () => {
 
   useEffect(() => {
     let extraPages = 1
-    if (collections.length % ITEMS_PER_PAGE === 0) {
+    if (collections?.length % ITEMS_PER_PAGE === 0) {
       extraPages = 0
     }
-    setMaxPage(Math.max(Math.floor(collections.length / ITEMS_PER_PAGE) + extraPages, 1))
+    setMaxPage(Math.max(Math.floor(collections?.length / ITEMS_PER_PAGE) + extraPages, 1))
   }, [collections])
 
   const sortedCollections = useMemo(() => {

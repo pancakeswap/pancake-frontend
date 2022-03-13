@@ -42,13 +42,13 @@ const CheckPrizesSection = () => {
   useEffect(() => {
     if (fetchStatus === FetchStatus.Fetched) {
       // Manage showing unclaimed rewards modal once per page load / once per lottery state change
-      if (unclaimedRewards.length > 0 && !hasCheckedForRewards) {
+      if (unclaimedRewards?.length > 0 && !hasCheckedForRewards) {
         setHasRewardsToClaim(true)
         setHasCheckedForRewards(true)
         onPresentClaimModal()
       }
 
-      if (unclaimedRewards.length === 0 && !hasCheckedForRewards) {
+      if (unclaimedRewards?.length === 0 && !hasCheckedForRewards) {
         setHasRewardsToClaim(false)
         setHasCheckedForRewards(true)
       }

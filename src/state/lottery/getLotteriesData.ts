@@ -13,7 +13,7 @@ const applyNodeDataToLotteriesGraphResponse = (
   graphResponse: LotteryRoundGraphEntity[],
 ): LotteryRoundGraphEntity[] => {
   //   If no graph response - return node data
-  if (graphResponse.length === 0) {
+  if (graphResponse?.length === 0) {
     return nodeData.map((nodeRound) => {
       return {
         endTime: nodeRound.endTime,

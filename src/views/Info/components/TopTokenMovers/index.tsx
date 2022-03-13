@@ -69,7 +69,7 @@ const TopTokenMovers: React.FC = () => {
         // eslint-disable-next-line no-nested-ternary
         return a && b ? (Math.abs(a?.priceUSDChange) > Math.abs(b?.priceUSDChange) ? -1 : 1) : -1
       })
-      .slice(0, Math.min(20, Object.values(allTokens).length))
+      .slice(0, Math.min(20, Object.values(allTokens)?.length))
   }, [allTokens])
 
   const increaseRef = useRef<HTMLDivElement>(null)
@@ -95,7 +95,7 @@ const TopTokenMovers: React.FC = () => {
     }
   }, [])
 
-  if (topPriceIncrease.length === 0 || !topPriceIncrease.some((entry) => entry.data)) {
+  if (topPriceIncrease?.length === 0 || !topPriceIncrease.some((entry) => entry.data)) {
     return null
   }
 

@@ -41,7 +41,7 @@ const ClaimPointsCallout: React.FC<{ onSuccess?: () => void }> = ({ onSuccess = 
     return null
   }
 
-  if (claimableAchievements.length === 0) {
+  if (claimableAchievements?.length === 0) {
     return null
   }
 

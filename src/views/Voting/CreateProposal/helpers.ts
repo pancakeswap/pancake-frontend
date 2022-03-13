@@ -26,12 +26,12 @@ export const getFormErrors = (formData: FormState, t: ContextApi['t']) => {
     errors.body = [t('%field% is required', { field: 'Body' })]
   }
 
-  if (choices.length < MINIMUM_CHOICES) {
+  if (choices?.length < MINIMUM_CHOICES) {
     errors.choices = [t('Please create a minimum of %num% choices', { num: MINIMUM_CHOICES })]
   }
 
   const hasEmptyChoice = choices.some((choice) => !choice.value)
-  if (choices.length === MINIMUM_CHOICES && hasEmptyChoice) {
+  if (choices?.length === MINIMUM_CHOICES && hasEmptyChoice) {
     errors.choices = Array.isArray(errors.choices)
       ? [...errors.choices, t('Choices must not be empty')]
       : (errors.choices = [t('Choices must not be empty')])

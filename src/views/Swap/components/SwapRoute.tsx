@@ -7,7 +7,7 @@ export default memo(function SwapRoute({ trade }: { trade: Trade }) {
   return (
     <Flex flexWrap="wrap" width="100%" justifyContent="flex-end" alignItems="center">
       {trade.route.path.map((token, i, path) => {
-        const isLastItem: boolean = i === path.length - 1
+        const isLastItem: boolean = i === path?.length - 1
         const currency = unwrappedToken(token)
         return (
           // eslint-disable-next-line react/no-array-index-key

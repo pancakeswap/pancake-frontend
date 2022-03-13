@@ -90,7 +90,7 @@ const TransferStage: React.FC<TransferStageProps> = ({
         <Button
           mb="8px"
           onClick={continueToNextStage}
-          disabled={isInvalidTransferAddress || transferAddress.length === 0 || transferAddressEqualsConnectedAddress}
+          disabled={isInvalidTransferAddress || transferAddress?.length === 0 || transferAddressEqualsConnectedAddress}
         >
           {t('Confirm')}
         </Button>

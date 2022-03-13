@@ -46,7 +46,7 @@ export const fetchUserTicketsForOneRound = async (account: string, lotteryId: st
     // eslint-disable-next-line no-await-in-loop
     const response = await viewUserInfoForLotteryId(account, lotteryId, cursor, TICKET_LIMIT_PER_REQUEST)
     cursor += TICKET_LIMIT_PER_REQUEST
-    numReturned = response.length
+    numReturned = response?.length
     ticketData.push(...response)
   }
 
@@ -58,7 +58,7 @@ export const fetchUserTicketsForMultipleRounds = async (
   account: string,
 ): Promise<{ roundId: string; userTickets: LotteryTicket[] }[]> => {
   const ticketsForMultipleRounds = []
-  for (let i = 0; i < idsToCheck.length; i += 1) {
+  for (let i = 0; i < idsToCheck?.length; i += 1) {
     const roundId = idsToCheck[i]
     // eslint-disable-next-line no-await-in-loop
     const ticketsForRound = await fetchUserTicketsForOneRound(account, roundId)

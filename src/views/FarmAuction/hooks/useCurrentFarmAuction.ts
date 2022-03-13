@@ -51,7 +51,7 @@ export const useCurrentFarmAuction = (account: string) => {
   // Attach bidder data to connectedBidder object
   useEffect(() => {
     const getBidderData = () => {
-      if (bidders && bidders.length > 0) {
+      if (bidders && bidders?.length > 0) {
         const bidderData = bidders.find((bidder) => bidder.account === account)
         if (bidderData) {
           return bidderData

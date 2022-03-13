@@ -36,7 +36,7 @@ const ClaimCheck = () => {
         return bet.round.position === bet.position || bet.round.failed === true
       })
 
-      if (unclaimedBets.length > 0) {
+      if (unclaimedBets?.length > 0) {
         onPresentCollectWinningsModal()
       } else {
         onPresentNothingToClaimModal()

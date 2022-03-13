@@ -62,7 +62,7 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
   const userTickets = userParticipationInCurrentRound?.tickets
 
   // User has not bought tickets for the current lottery, or there has been an error
-  if (!userTickets || userTickets.length === 0) {
+  if (!userTickets || userTickets?.length === 0) {
     return { userTickets: null, userLotteries: userLotteriesRes }
   }
 

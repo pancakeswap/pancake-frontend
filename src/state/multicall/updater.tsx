@@ -50,14 +50,14 @@ async function fetchChunk(
     ) {
       throw new RetryableError(`header not found for block number ${minBlockNumber}`)
     } else if (error.code === -32603 || error.message?.indexOf('execution ran out of gas') !== -1) {
-      if (chunk.length > 1) {
+      if (chunk?.length > 1) {
         if (process.env.NODE_ENV === 'development') {
           console.debug('Splitting a chunk in 2', chunk)
         }
-        const half = Math.floor(chunk.length / 2)
+        const half = Math.floor(chunk?.length / 2)
         const [c0, c1] = await Promise.all([
           fetchChunk(multicallContract, chunk.slice(0, half), minBlockNumber),
-          fetchChunk(multicallContract, chunk.slice(half, chunk.length), minBlockNumber),
+          fetchChunk(multicallContract, chunk.slice(half, chunk?.length), minBlockNumber),
         ])
         return {
           results: c0.results.concat(c1.results),
@@ -166,7 +166,7 @@ export default function Updater(): null {
     if (!currentBlock || !chainId || !multicallContract) return
 
     const outdatedCallKeys: string[] = JSON.parse(serializedOutdatedCallKeys)
-    if (outdatedCallKeys.length === 0) return
+    if (outdatedCallKeys?.length === 0) return
     const calls = outdatedCallKeys.map((key) => parseCallKey(key))
 
     const chunkedCalls = chunkArray(calls, CALL_CHUNK_SIZE)
@@ -196,8 +196,10 @@ export default function Updater(): null {
             cancellations.current = { cancellations: [], blockNumber: currentBlock }
 
             // accumulates the length of all previous indices
-            const firstCallKeyIndex = chunkedCalls.slice(0, index).reduce<number>((memo, curr) => memo + curr.length, 0)
-            const lastCallKeyIndex = firstCallKeyIndex + returnData.length
+            const firstCallKeyIndex = chunkedCalls
+              .slice(0, index)
+              .reduce<number>((memo, curr) => memo + curr?.length, 0)
+            const lastCallKeyIndex = firstCallKeyIndex + returnData?.length
 
             dispatch(
               updateMulticallResults({

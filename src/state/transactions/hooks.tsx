@@ -111,10 +111,10 @@ export function usePendingTransactions(): { hasPendingTransactions: boolean; pen
   }, [allTransactions])
 
   const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
-  const hasPendingTransactions = !!pending.length
+  const hasPendingTransactions = !!pending?.length
 
   return {
     hasPendingTransactions,
-    pendingNumber: pending.length,
+    pendingNumber: pending?.length,
   }
 }

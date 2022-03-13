@@ -65,7 +65,7 @@ export const PoolUpdater: React.FC = () => {
 
   // add top pools on first load
   useEffect(() => {
-    if (addresses.length > 0) {
+    if (addresses?.length > 0) {
       addPoolKeys(addresses)
     }
   }, [addPoolKeys, addresses])
@@ -101,7 +101,7 @@ export const TokenUpdater = (): null => {
 
   // add top tokens on first load
   useEffect(() => {
-    if (addresses.length > 0) {
+    if (addresses?.length > 0) {
       addTokenKeys(addresses)
     }
   }, [addTokenKeys, addresses])

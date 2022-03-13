@@ -190,7 +190,7 @@ const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
       }
     }
     const allBlocksAvailable = block24h?.number && block48h?.number && block7d?.number && block14d?.number
-    if (tokenAddresses.length > 0 && allBlocksAvailable && !blockError) {
+    if (tokenAddresses?.length > 0 && allBlocksAvailable && !blockError) {
       fetch()
     }
   }, [tokenAddresses, block24h, block48h, block7d, block14d, blockError])

@@ -98,7 +98,7 @@ const SellModal: React.FC<SellModalProps> = ({
   )
   const nftMarketContract = useNftMarketContract()
 
-  const isInvalidTransferAddress = transferAddress.length > 0 && !isAddress(transferAddress)
+  const isInvalidTransferAddress = transferAddress?.length > 0 && !isAddress(transferAddress)
 
   const { lowestPrice } = useGetLowestPriceFromNft(nftToSell)
 

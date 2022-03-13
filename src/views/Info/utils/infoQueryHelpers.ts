@@ -23,8 +23,8 @@ export const multiQuery = async (
   const client = new GraphQLClient(endpoint, { headers: getGQLHeaders(endpoint) })
   try {
     while (!allFound) {
-      let end = subqueries.length
-      if (skip + skipCount < subqueries.length) {
+      let end = subqueries?.length
+      if (skip + skipCount < subqueries?.length) {
         end = skip + skipCount
       }
       const subqueriesSlice = subqueries.slice(skip, end)
@@ -34,7 +34,7 @@ export const multiQuery = async (
         ...fetchedData,
         ...result,
       }
-      allFound = Object.keys(result).length < skipCount || skip + skipCount > subqueries.length
+      allFound = Object.keys(result)?.length < skipCount || skip + skipCount > subqueries?.length
       skip += skipCount
     }
     return fetchedData

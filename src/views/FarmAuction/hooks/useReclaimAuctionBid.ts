@@ -49,7 +49,7 @@ const reclaimReducer = (state: ReclaimReducerState, action: { type: string; payl
       }
     case 'checkNextAuction': {
       const nextAuctionToCheck = state.nextAuctionToCheck + 1
-      if (nextAuctionToCheck === state.auctions.length) {
+      if (nextAuctionToCheck === state.auctions?.length) {
         // Checked all auctions in the batch
         return {
           ...state,
@@ -107,7 +107,7 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
         )
 
         const { auctions, nextCursor } = processBidderAuctions(bidderAuctionsResponse)
-        if (auctions.length > 0) {
+        if (auctions?.length > 0) {
           dispatch({ type: 'setAuctions', payload: { auctions, nextCursor } })
         }
       } catch (error) {
@@ -142,7 +142,7 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
       }
     }
     const { auctions, nextAuctionToCheck, loading } = state
-    if (auctions.length > 0 && account && !loading) {
+    if (auctions?.length > 0 && account && !loading) {
       const auctionToCheck = auctions[nextAuctionToCheck]
       checkIfAuctionIsClaimable(auctionToCheck)
     }

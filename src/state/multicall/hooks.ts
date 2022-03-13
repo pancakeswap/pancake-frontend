@@ -70,7 +70,7 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
   // update listeners when there is an actual change that persists for at least 100ms
   useEffect(() => {
     const callKeys: string[] = JSON.parse(serializedCallKeys)
-    if (!chainId || callKeys.length === 0) return undefined
+    if (!chainId || callKeys?.length === 0) return undefined
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const calls = callKeys.map((key) => parseCallKey(key))
     dispatch(
@@ -136,7 +136,7 @@ function toCallState(
   if (!valid) return INVALID_CALL_STATE
   if (valid && !blockNumber) return LOADING_CALL_STATE
   if (!contractInterface || !fragment || !latestBlockNumber) return LOADING_CALL_STATE
-  const success = data && data.length > 2
+  const success = data && data?.length > 2
   const syncing = (blockNumber ?? 0) < latestBlockNumber
   let result: Result | undefined
   if (success && data) {
@@ -172,7 +172,7 @@ export function useSingleContractMultipleData(
 
   const calls = useMemo(
     () =>
-      contract && fragment && callInputs && callInputs.length > 0
+      contract && fragment && callInputs && callInputs?.length > 0
         ? callInputs.map<Call>((inputs) => {
             return {
               address: contract.address,
@@ -211,7 +211,7 @@ export function useMultipleContractSingleData(
 
   const calls = useMemo(
     () =>
-      fragment && addresses && addresses.length > 0 && callData
+      fragment && addresses && addresses?.length > 0 && callData
         ? addresses.map<Call | undefined>((address) => {
             return address && callData
               ? {

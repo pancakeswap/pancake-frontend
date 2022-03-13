@@ -47,7 +47,7 @@ const ProfilePicture: React.FC = () => {
           }, new Set<string>()),
         )
 
-        if (nftsByCollection.length > 0) {
+        if (nftsByCollection?.length > 0) {
           const nftRole = await profileContract.NFT_ROLE()
           const collectionsNftRoleCalls = nftsByCollection.map((collectionAddress) => {
             return {

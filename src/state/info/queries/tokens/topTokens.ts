@@ -50,7 +50,7 @@ const useTopTokenAddresses = (): string[] => {
       const addresses = await fetchTopTokens(timestamp24hAgo)
       setTopTokenAddresses(addresses)
     }
-    if (topTokenAddresses.length === 0) {
+    if (topTokenAddresses?.length === 0) {
       fetch()
     }
   }, [topTokenAddresses, timestamp24hAgo])

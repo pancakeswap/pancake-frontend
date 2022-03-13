@@ -75,7 +75,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
     )
   }, [allPancakeBunnyNfts, collectionNfts, currentTokenName])
 
-  if (!nftsToShow || nftsToShow.length === 0) {
+  if (!nftsToShow || nftsToShow?.length === 0) {
     return null
   }
 

@@ -107,7 +107,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
                   const indexInfo = reason?.indexOf(REVERT_STR)
                   const isRevertedError = indexInfo >= 0
 
-                  if (isRevertedError) reason = reason.substring(indexInfo + REVERT_STR.length)
+                  if (isRevertedError) reason = reason.substring(indexInfo + REVERT_STR?.length)
 
                   toastError(
                     'Failed',

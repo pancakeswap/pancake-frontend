@@ -16,7 +16,7 @@ const applyNodeDataToUserGraphResponse = (
   lotteryNodeData: LotteryResponse[],
 ): UserRound[] => {
   //   If no graph rounds response - return node data
-  if (userGraphData.length === 0) {
+  if (userGraphData?.length === 0) {
     return lotteryNodeData.map((nodeRound) => {
       const ticketDataForRound = userNodeData.find((roundTickets) => roundTickets.roundId === nodeRound.lotteryId)
       return {
@@ -24,7 +24,7 @@ const applyNodeDataToUserGraphResponse = (
         status: nodeRound.status,
         lotteryId: nodeRound.lotteryId.toString(),
         claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
-        totalTickets: `${ticketDataForRound.userTickets.length.toString()}`,
+        totalTickets: `${ticketDataForRound.userTickets?.length.toString()}`,
         tickets: ticketDataForRound.userTickets,
       }
     })
@@ -41,7 +41,7 @@ const applyNodeDataToUserGraphResponse = (
       status: nodeRoundData.status,
       lotteryId: nodeRoundData.lotteryId.toString(),
       claimed: hasRoundBeenClaimed(userNodeRound.userTickets),
-      totalTickets: userGraphRound?.totalTickets || userNodeRound.userTickets.length.toString(),
+      totalTickets: userGraphRound?.totalTickets || userNodeRound.userTickets?.length.toString(),
       tickets: userNodeRound.userTickets,
     }
   })
@@ -126,7 +126,7 @@ export const getGraphLotteryUser = async (
 const getUserLotteryData = async (account: string, currentLotteryId: string): Promise<LotteryUserGraphEntity> => {
   const idsForTicketsNodeCall = getRoundIdsArray(currentLotteryId)
   const roundDataAndUserTickets = await fetchUserTicketsForMultipleRounds(idsForTicketsNodeCall, account)
-  const userRoundsNodeData = roundDataAndUserTickets.filter((round) => round.userTickets.length > 0)
+  const userRoundsNodeData = roundDataAndUserTickets.filter((round) => round.userTickets?.length > 0)
   const idsForLotteriesNodeCall = userRoundsNodeData.map((round) => round.roundId)
   const lotteriesNodeData = await fetchMultipleLotteries(idsForLotteriesNodeCall)
   const graphResponse = await getGraphLotteryUser(account)

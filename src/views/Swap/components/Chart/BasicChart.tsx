@@ -31,7 +31,7 @@ const BasicChart = ({
   })
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
-  const valueToDisplay = hoverValue || pairPrices[pairPrices.length - 1]?.value
+  const valueToDisplay = hoverValue || pairPrices[pairPrices?.length - 1]?.value
   const { changePercentage, changeValue } = getTimeWindowChange(pairPrices)
   const isChangePositive = changeValue >= 0
   const chartHeight = isChartExpanded ? 'calc(100% - 120px)' : '378px'
@@ -51,7 +51,7 @@ const BasicChart = ({
   // In that case chart is not useful to users
   const isBadData =
     pairPrices &&
-    pairPrices.length > 0 &&
+    pairPrices?.length > 0 &&
     pairPrices.every(
       (price) => !price.value || price.value === 0 || price.value === Infinity || Number.isNaN(price.value),
     )

@@ -30,7 +30,7 @@ const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) =
         return (
           <Fragment key={_uniqueId('ProgressStep-')}>
             <Step stepText={stepText} index={index} activeStepIndex={activeStepIndex} />
-            {index + 1 < steps.length && <Spacer isPastSpacer={isPastSpacer} />}
+            {index + 1 < steps?.length && <Spacer isPastSpacer={isPastSpacer} />}
           </Fragment>
         )
       })}

@@ -101,7 +101,7 @@ const MultipleBanner: React.FC = () => {
   }, [bannerList])
 
   const swiperOptions = useMemo(() => {
-    return bannerList.length > 1
+    return bannerList?.length > 1
       ? {
           modules: [Autoplay, Pagination, EffectFade],
           spaceBetween: 50,

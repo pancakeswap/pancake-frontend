@@ -3,7 +3,7 @@ import { Token } from '@pancakeswap/sdk'
 import { isAddress } from '../../utils'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {
-  if (search.length === 0) return tokens
+  if (search?.length === 0) return tokens
 
   const searchingAddress = isAddress(search)
 
@@ -14,9 +14,9 @@ export function filterTokens(tokens: Token[], search: string): Token[] {
   const lowerSearchParts = search
     .toLowerCase()
     .split(/\s+/)
-    .filter((s) => s.length > 0)
+    .filter((s) => s?.length > 0)
 
-  if (lowerSearchParts.length === 0) {
+  if (lowerSearchParts?.length === 0) {
     return tokens
   }
 
@@ -24,9 +24,9 @@ export function filterTokens(tokens: Token[], search: string): Token[] {
     const sParts = s
       .toLowerCase()
       .split(/\s+/)
-      .filter((s_) => s_.length > 0)
+      .filter((s_) => s_?.length > 0)
 
-    return lowerSearchParts.every((p) => p.length === 0 || sParts.some((sp) => sp.startsWith(p) || sp.endsWith(p)))
+    return lowerSearchParts.every((p) => p?.length === 0 || sParts.some((sp) => sp.startsWith(p) || sp.endsWith(p)))
   }
 
   return tokens.filter((token) => {
@@ -44,9 +44,9 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
     const symbolMatch = searchQuery
       .toLowerCase()
       .split(/\s+/)
-      .filter((s) => s.length > 0)
+      .filter((s) => s?.length > 0)
 
-    if (symbolMatch.length > 1) {
+    if (symbolMatch?.length > 1) {
       return tokens
     }
 

@@ -44,7 +44,7 @@ export const SVG = styled.svg`
 const DefaultSlice = styled.circle<SliceProps>`
   fill: none;
   stroke-width: 16;
-  stroke-dasharray: ${(props) => `${props.length} 339.292`};
+  stroke-dasharray: ${(props) => `${props?.length} 339.292`};
 `
 
 export const LostSlice = styled(DefaultSlice)`

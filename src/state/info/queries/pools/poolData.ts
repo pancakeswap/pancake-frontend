@@ -229,7 +229,7 @@ const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
     }
 
     const allBlocksAvailable = block24h?.number && block48h?.number && block7d?.number && block14d?.number
-    if (poolAddresses.length > 0 && allBlocksAvailable && !blockError) {
+    if (poolAddresses?.length > 0 && allBlocksAvailable && !blockError) {
       fetch()
     }
   }, [poolAddresses, block24h, block48h, block7d, block14d, blockError])

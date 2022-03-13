@@ -329,7 +329,7 @@ export const NftMarket = createSlice({
       state.data.loadingState.isUpdatingPancakeBunnies = true
     })
     builder.addCase(fetchNewPBAndUpdateExisting.fulfilled, (state, action) => {
-      if (action.payload.length > 0) {
+      if (action.payload?.length > 0) {
         state.data.nfts[pancakeBunniesAddress] = action.payload
       }
       state.data.loadingState.isUpdatingPancakeBunnies = false

@@ -80,7 +80,7 @@ const NftProfile: FC = ({ children }) => {
           accountPath={accountAddress}
           profile={profile}
           achievements={achievements}
-          nftCollected={userNfts.length}
+          nftCollected={userNfts?.length}
           isProfileLoading={isProfileFetching}
           isNftLoading={isNftLoading}
           isAchievementsLoading={isAchievementsFetching}

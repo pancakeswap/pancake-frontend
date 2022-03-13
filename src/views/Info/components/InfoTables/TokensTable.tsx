@@ -140,10 +140,10 @@ const TokenTable: React.FC<{
   useEffect(() => {
     let extraPages = 1
     if (tokenDatas) {
-      if (tokenDatas.length % maxItems === 0) {
+      if (tokenDatas?.length % maxItems === 0) {
         extraPages = 0
       }
-      setMaxPage(Math.floor(tokenDatas.length / maxItems) + extraPages)
+      setMaxPage(Math.floor(tokenDatas?.length / maxItems) + extraPages)
     }
   }, [maxItems, tokenDatas])
 
@@ -236,7 +236,7 @@ const TokenTable: React.FC<{
       </ResponsiveGrid>
 
       <Break />
-      {sortedTokens.length > 0 ? (
+      {sortedTokens?.length > 0 ? (
         <>
           {sortedTokens.map((data, i) => {
             if (data) {

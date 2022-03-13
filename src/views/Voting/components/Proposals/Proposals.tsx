@@ -65,11 +65,11 @@ const Proposals = () => {
         />
         {status !== FetchStatus.Fetched && <ProposalsLoading />}
         {status === FetchStatus.Fetched &&
-          filteredProposals.length > 0 &&
+          filteredProposals?.length > 0 &&
           filteredProposals.map((proposal) => {
             return <ProposalRow key={proposal.id} proposal={proposal} />
           })}
-        {status === FetchStatus.Fetched && filteredProposals.length === 0 && (
+        {status === FetchStatus.Fetched && filteredProposals?.length === 0 && (
           <Flex alignItems="center" justifyContent="center" p="32px">
             <Heading as="h5">{t('No proposals found')}</Heading>
           </Flex>

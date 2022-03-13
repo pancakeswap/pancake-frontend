@@ -101,10 +101,10 @@ function CurrencySearch({
         const s = debouncedQuery.toLowerCase().trim()
         if (s === 'bnb') {
           handleCurrencySelect(ETHER)
-        } else if (filteredSortedTokens.length > 0) {
+        } else if (filteredSortedTokens?.length > 0) {
           if (
             filteredSortedTokens[0].symbol?.toLowerCase() === debouncedQuery.trim().toLowerCase() ||
-            filteredSortedTokens.length === 1
+            filteredSortedTokens?.length === 1
           ) {
             handleCurrencySelect(filteredSortedTokens[0])
           }
@@ -150,7 +150,7 @@ function CurrencySearch({
               currencies={
                 filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
               }
-              breakIndex={inactiveTokens && filteredSortedTokens ? filteredSortedTokens.length : undefined}
+              breakIndex={inactiveTokens && filteredSortedTokens ? filteredSortedTokens?.length : undefined}
               onCurrencySelect={handleCurrencySelect}
               otherCurrency={otherSelectedCurrency}
               selectedCurrency={selectedCurrency}

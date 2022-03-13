@@ -32,7 +32,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
   const [pendingBatchClaims, setPendingBatchClaims] = useState(
     Math.ceil(
-      roundsToClaim[activeClaimIndex].ticketsWithUnclaimedRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber(),
+      roundsToClaim[activeClaimIndex].ticketsWithUnclaimedRewards?.length / maxNumberTicketsPerBuyOrClaim.toNumber(),
     ),
   )
   const lotteryContract = useLotteryV2Contract()
@@ -59,10 +59,10 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     activeClaimData.roundId,
   )
 
-  const shouldBatchRequest = maxNumberTicketsPerBuyOrClaim.lt(claimTicketsCallData.ticketIds.length)
+  const shouldBatchRequest = maxNumberTicketsPerBuyOrClaim.lt(claimTicketsCallData.ticketIds?.length)
 
   const handleProgressToNextClaim = () => {
-    if (roundsToClaim.length > activeClaimIndex + 1) {
+    if (roundsToClaim?.length > activeClaimIndex + 1) {
       // If there are still rounds to claim, move onto the next claim
       setActiveClaimIndex(activeClaimIndex + 1)
       dispatch(fetchUserLotteries({ account, currentLotteryId }))
@@ -75,7 +75,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     const requests = []
     const maxAsNumber = maxNumberTicketsPerBuyOrClaim.toNumber()
 
-    for (let i = 0; i < ticketIds.length; i += maxAsNumber) {
+    for (let i = 0; i < ticketIds?.length; i += maxAsNumber) {
       const ticketIdsSlice = ticketIds.slice(i, maxAsNumber + i)
       const bracketsSlice = brackets.slice(i, maxAsNumber + i)
       requests.push({ ticketIds: ticketIdsSlice, brackets: bracketsSlice })
@@ -105,7 +105,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const handleBatchClaim = async () => {
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
     const ticketBatches = getTicketBatches(ticketIds, brackets)
-    const transactionsToFire = ticketBatches.length
+    const transactionsToFire = ticketBatches?.length
     const receipts = []
     // eslint-disable-next-line no-restricted-syntax
     for (const ticketBatch of ticketBatches) {
@@ -121,17 +121,17 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       if (receipt?.status) {
         // One transaction within batch has succeeded
         receipts.push(receipt)
-        setPendingBatchClaims(transactionsToFire - receipts.length)
+        setPendingBatchClaims(transactionsToFire - receipts?.length)
 
         // More transactions are to be done within the batch. Issue toast to give user feedback.
-        if (receipts.length !== transactionsToFire) {
+        if (receipts?.length !== transactionsToFire) {
           toastSuccess(
             t('Prizes Collected!'),
             <ToastDescriptionWithTx txHash={receipt.transactionHash}>
               {t(
                 'Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction',
                 {
-                  claimNum: receipts.length,
+                  claimNum: receipts?.length,
                   claimTotal: transactionsToFire,
                   lotteryId,
                 },
@@ -145,7 +145,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     }
 
     // Batch is finished
-    if (receipts.length === transactionsToFire) {
+    if (receipts?.length === transactionsToFire) {
       toastSuccess(
         t('Prizes Collected!'),
         t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),

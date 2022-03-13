@@ -20,7 +20,7 @@ const PancakeBunniesCollectionNfts: React.FC<CollectionNftsProps> = ({ collectio
       ])
     : []
 
-  if (!sortedNfts.length) {
+  if (!sortedNfts?.length) {
     return <GridPlaceholder />
   }
 

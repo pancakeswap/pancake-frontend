@@ -8,7 +8,7 @@ const WhitelistedBiddersButton: React.FC = () => {
 
   return whitelistedBidders ? (
     <Button p="0" variant="text" scale="sm" onClick={onShowWhitelistedBidders}>
-      {whitelistedBidders.length}
+      {whitelistedBidders?.length}
     </Button>
   ) : (
     <Skeleton height="24px" width="46px" />

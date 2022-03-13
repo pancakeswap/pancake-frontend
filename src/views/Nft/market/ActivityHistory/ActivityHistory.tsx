@@ -76,7 +76,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
         setPaginationData({
           activity,
           currentPage: 1,
-          maxPage: Math.ceil(activity.length / MAX_PER_PAGE) || 1,
+          maxPage: Math.ceil(activity?.length / MAX_PER_PAGE) || 1,
         })
         setIsLoading(false)
         setIsInitialized(true)
@@ -96,7 +96,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
       setNftMetadata(nfts)
     }
 
-    if (activitiesSlice.length > 0) {
+    if (activitiesSlice?.length > 0) {
       fetchNftMetadata()
     }
   }, [activitiesSlice])
@@ -130,9 +130,9 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
         </Flex>
       </Container>
       <Container style={{ overflowX: 'auto' }}>
-        {paginationData.activity.length === 0 &&
-        nftMetadata.length === 0 &&
-        activitiesSlice.length === 0 &&
+        {paginationData.activity?.length === 0 &&
+        nftMetadata?.length === 0 &&
+        activitiesSlice?.length === 0 &&
         !isLoading ? (
           <Flex p="24px" flexDirection="column" alignItems="center">
             <NoNftsImage />
@@ -213,7 +213,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
 
                       if (
                         paginationData.maxPage - paginationData.currentPage === 1 &&
-                        paginationData.activity.length === MAX_PER_QUERY * queryPage
+                        paginationData.activity?.length === MAX_PER_QUERY * queryPage
                       ) {
                         try {
                           setIsLoading(true)
@@ -228,7 +228,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
                             return {
                               ...prevState,
                               activity,
-                              maxPage: Math.ceil(activity.length / MAX_PER_PAGE) || 1,
+                              maxPage: Math.ceil(activity?.length / MAX_PER_PAGE) || 1,
                             }
                           })
                           setIsLoading(false)

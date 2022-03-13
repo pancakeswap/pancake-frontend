@@ -71,7 +71,7 @@ const useFetchSearchResults = (
     error: false, // GraphQL returned error
   })
 
-  const searchStringTooShort = searchString.length < MINIMUM_SEARCH_CHARACTERS
+  const searchStringTooShort = searchString?.length < MINIMUM_SEARCH_CHARACTERS
 
   // New value received, reset state
   useEffect(() => {
@@ -126,8 +126,8 @@ const useFetchSearchResults = (
 
   // If above hooks returned not all tokens/pools it means
   // that some requests for full data are in progress
-  const tokensLoading = tokenDatasFull.length !== searchResults.tokens.length || searchResults.loading
-  const poolsLoading = poolDatasFull.length !== searchResults.pools.length || searchResults.loading
+  const tokensLoading = tokenDatasFull?.length !== searchResults.tokens?.length || searchResults.loading
+  const poolsLoading = poolDatasFull?.length !== searchResults.pools?.length || searchResults.loading
 
   return {
     tokens: tokenDatasFull,

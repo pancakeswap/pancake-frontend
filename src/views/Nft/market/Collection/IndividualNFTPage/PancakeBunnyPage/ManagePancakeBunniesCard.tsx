@@ -157,8 +157,8 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
   )
 
   const useHasNoBunnies =
-    !isLoading && bunniesInWallet.length === 0 && bunniesForSale.length === 0 && profilePicBunny.length === 0
-  const totalBunnies = bunniesInWallet.length + bunniesForSale.length + profilePicBunny.length
+    !isLoading && bunniesInWallet?.length === 0 && bunniesForSale?.length === 0 && profilePicBunny?.length === 0
+  const totalBunnies = bunniesInWallet?.length + bunniesForSale?.length + profilePicBunny?.length
   const totalBunniesText = account && !useHasNoBunnies ? ` (${totalBunnies})` : ''
 
   const content = (
@@ -180,7 +180,7 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
           <Skeleton mb="8px" />
         </Box>
       )}
-      {bunniesForSale.length > 0 && (
+      {bunniesForSale?.length > 0 && (
         <CollectiblesByLocation
           location={NftLocation.FORSALE}
           nfts={bunniesForSale}
@@ -188,9 +188,9 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
           onSuccessSale={refresh}
         />
       )}
-      {bunniesInWallet.length > 0 && (
+      {bunniesInWallet?.length > 0 && (
         <>
-          {bunniesForSale.length > 0 && <Divider />}
+          {bunniesForSale?.length > 0 && <Divider />}
           <CollectiblesByLocation
             location={NftLocation.WALLET}
             nfts={bunniesInWallet}
@@ -199,9 +199,9 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
           />
         </>
       )}
-      {profilePicBunny.length > 0 && (
+      {profilePicBunny?.length > 0 && (
         <>
-          {(bunniesForSale.length > 0 || bunniesInWallet.length > 0) && <Divider />}
+          {(bunniesForSale?.length > 0 || bunniesInWallet?.length > 0) && <Divider />}
           <CollectiblesByLocation
             location={NftLocation.PROFILE}
             nfts={profilePicBunny}

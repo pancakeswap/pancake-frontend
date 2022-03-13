@@ -49,7 +49,7 @@ export const sortActivity = ({
   }
 
   const allActivity = [...transformAskOrders(askOrders), ...transformTransactions(transactions)]
-  if (allActivity.length > 0) {
+  if (allActivity?.length > 0) {
     const sortedByMostRecent = allActivity.sort((activityItem1, activityItem2) => {
       const timestamp1 = BigNumber.from(activityItem1.timestamp)
       const timestamp2 = BigNumber.from(activityItem2.timestamp)

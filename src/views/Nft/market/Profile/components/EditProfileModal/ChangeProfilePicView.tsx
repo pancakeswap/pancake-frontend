@@ -77,7 +77,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, 
       </Text>
       {isLoading ? (
         <Skeleton width="100%" height="80px" mb="16px" />
-      ) : nftsInWallet.length > 0 ? (
+      ) : nftsInWallet?.length > 0 ? (
         <Box maxHeight="300px" overflowY="scroll">
           {nftsInWallet.map((walletNft) => {
             const handleChange = () => {

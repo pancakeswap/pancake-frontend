@@ -27,13 +27,13 @@ const WalletTransactions: React.FC = () => {
         <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold">
           {t('Recent Transactions')}
         </Text>
-        {sortedTransactions.length > 0 && (
+        {sortedTransactions?.length > 0 && (
           <Button scale="sm" onClick={handleClearAll} variant="text" px="0">
             {t('Clear all')}
           </Button>
         )}
       </Flex>
-      {sortedTransactions.length > 0 ? (
+      {sortedTransactions?.length > 0 ? (
         sortedTransactions.map((txn) => <TransactionRow key={txn.hash} txn={txn} />)
       ) : (
         <Text textAlign="center">{t('No recent transactions')}</Text>

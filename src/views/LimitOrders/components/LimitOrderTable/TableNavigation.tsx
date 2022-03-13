@@ -34,7 +34,7 @@ const TableNavigation: React.FC<TableNavigationProps> = ({
   const { t } = useTranslation()
   const [currentPage, setPage] = useState(1)
 
-  const total = Array.isArray(data) ? data.length : 0
+  const total = Array.isArray(data) ? data?.length : 0
 
   const maxPage = useMemo(() => {
     if (total) {

@@ -9,7 +9,7 @@ const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlig
   const isSmallerScreen = isMobile || isTablet
   const split = headingText.split(' ')
   const lastWord = split.pop()
-  const remainingWords = split.slice(0, split.length).join(' ')
+  const remainingWords = split.slice(0, split?.length).join(' ')
 
   return (
     <Flex
@@ -20,7 +20,7 @@ const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlig
       justifyContent="flex-end"
       mt={[null, null, null, '64px']}
     >
-      {isSmallerScreen && remainingWords.length > 13 ? (
+      {isSmallerScreen && remainingWords?.length > 13 ? (
         <Heading scale="lg">{remainingWords}</Heading>
       ) : (
         <Heading scale="xl">{remainingWords}</Heading>

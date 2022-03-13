@@ -63,7 +63,7 @@ const reducer = (state: TicketsState, action: any) => {
       })
 
       // If found duplicates - update their duplicateWith array
-      if (newDuplicates.length !== 0) {
+      if (newDuplicates?.length !== 0) {
         newDuplicates.forEach((duplicate) => {
           tickets[duplicate.id - 1] = {
             ...duplicate,
@@ -76,7 +76,7 @@ const reducer = (state: TicketsState, action: any) => {
         id: ticketId,
         numbers: newNumbers,
         duplicateWith: newDuplicates.map((ticket) => ticket.id),
-        isComplete: newNumbers.join('').length === 6,
+        isComplete: newNumbers.join('')?.length === 6,
       }
       tickets[ticketId - 1] = updatedTicket
 

@@ -75,7 +75,7 @@ export default function ProgressCircles({ steps, disabled = false, ...rest }: Pr
             </CircleRow>
           )
         })}
-        <Circle disabled={disabled || !steps[steps.length - 1]}>{steps.length + 1}</Circle>
+        <Circle disabled={disabled || !steps[steps?.length - 1]}>{steps?.length + 1}</Circle>
       </Grouping>
     </AutoColumn>
   )

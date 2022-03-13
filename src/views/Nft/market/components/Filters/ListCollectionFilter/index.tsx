@@ -36,10 +36,10 @@ export const ListCollectionFilter: React.FC = () => {
 
   const { orderKey, orderDir } = orderState
   const nftActivityFilters = useGetNftActivityFilters('')
-  const isAnyCollectionSelected = nftActivityFilters.collectionFilters.length > 0
+  const isAnyCollectionSelected = nftActivityFilters.collectionFilters?.length > 0
 
   const filteredCollections = (
-    query && query.length > 1
+    query && query?.length > 1
       ? Object.values(collections).filter((item) => item.name.toLowerCase().indexOf(query.toLowerCase()) !== -1)
       : Object.values(collections)
   ).map((item) => {
@@ -149,7 +149,7 @@ export const ListCollectionFilter: React.FC = () => {
               </FilterButton>
             </Flex>
             <Box height="240px" overflowY="auto">
-              {filteredCollections.length > 0 ? (
+              {filteredCollections?.length > 0 ? (
                 orderBy(filteredCollections, orderKey, orderDir).map((collection) => {
                   const handleClick = (evt: ChangeEvent<HTMLInputElement>) => handleItemClick(evt, collection)
 

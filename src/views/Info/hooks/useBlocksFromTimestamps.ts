@@ -46,7 +46,7 @@ export const getBlocksFromTimestamps = async (
   if (fetchedData) {
     // eslint-disable-next-line no-restricted-syntax
     for (const key of Object.keys(fetchedData)) {
-      if (fetchedData[key].length > 0) {
+      if (fetchedData[key]?.length > 0) {
         blocks.push({
           timestamp: key.split('t')[1],
           number: parseInt(fetchedData[key][0].number, 10),
@@ -83,7 +83,7 @@ export const useBlocksFromTimestamps = (
     const fetchData = async () => {
       const timestampsArray = JSON.parse(timestampsString)
       const result = await getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount)
-      if (result.length === 0) {
+      if (result?.length === 0) {
         setError(true)
       } else {
         setBlocks(result)

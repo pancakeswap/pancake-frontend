@@ -41,7 +41,7 @@ export const getAllV1History = (where = {}): Promise<Record<string, any>[]> => {
         const betHistory = await getV1History(skip, where)
         bets[skip] = betHistory
 
-        if (betHistory.length === 0) {
+        if (betHistory?.length === 0) {
           resolve(flatten(Object.values(bets)))
         } else {
           getHistoryChunk(skip + 1000)

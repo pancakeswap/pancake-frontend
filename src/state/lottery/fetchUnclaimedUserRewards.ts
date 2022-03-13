@@ -55,7 +55,7 @@ const getRewardBracketByNumber = (ticketNumber: string, finalNumber: string): nu
   const matchingNumbers = []
 
   // The number at index 6 in all tickets is 1 and will always match, so finish at index 5
-  for (let index = 0; index < winningNumsAsArray.length - 1; index++) {
+  for (let index = 0; index < winningNumsAsArray?.length - 1; index++) {
     if (ticketNumAsArray[index] !== winningNumsAsArray[index]) {
       break
     }
@@ -63,7 +63,7 @@ const getRewardBracketByNumber = (ticketNumber: string, finalNumber: string): nu
   }
 
   // Reward brackets refer to indexes, 0 = 1 match, 5 = 6 matches. Deduct 1 from matchingNumbers' length to get the reward bracket
-  const rewardBracket = matchingNumbers.length - 1
+  const rewardBracket = matchingNumbers?.length - 1
   return rewardBracket
 }
 
@@ -92,12 +92,12 @@ export const getWinningTickets = async (
     return !ticket.status
   })
 
-  if (unclaimedWinningTickets.length > 0) {
+  if (unclaimedWinningTickets?.length > 0) {
     const { ticketsWithUnclaimedRewards, cakeTotal } = await fetchCakeRewardsForTickets(unclaimedWinningTickets)
     return { ticketsWithUnclaimedRewards, allWinningTickets, cakeTotal, roundId }
   }
 
-  if (allWinningTickets.length > 0) {
+  if (allWinningTickets?.length > 0) {
     return { ticketsWithUnclaimedRewards: null, allWinningTickets, cakeTotal: null, roundId }
   }
 
@@ -118,7 +118,7 @@ const fetchUnclaimedUserRewards = async (
   const { rounds } = userLotteryData
 
   // If there is no user round history - return an empty array
-  if (rounds.length === 0) {
+  if (rounds?.length === 0) {
     return []
   }
 
@@ -147,7 +147,7 @@ const fetchUnclaimedUserRewards = async (
   // Check the X  most recent rounds, where X is NUM_ROUNDS_TO_CHECK_FOR_REWARDS
   const roundsToCheck = roundsWithPossibleWinnings.slice(0, NUM_ROUNDS_TO_CHECK_FOR_REWARDS)
 
-  if (roundsToCheck.length > 0) {
+  if (roundsToCheck?.length > 0) {
     const idsToCheck = roundsToCheck.map((round) => round.lotteryId)
     const userTicketData = await fetchUserTicketsForMultipleRounds(idsToCheck, account)
     const roundsWithTickets = userTicketData.filter((roundData) => roundData?.userTickets?.length > 0)

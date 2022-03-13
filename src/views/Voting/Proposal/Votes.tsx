@@ -55,7 +55,7 @@ const Votes: React.FC<VotesProps> = ({ votes, votesLoadingStatus, totalVotes }) 
       </CardHeader>
       {!isFetched && <VotesLoading />}
 
-      {isFetched && displayVotes.length > 0 && (
+      {isFetched && displayVotes?.length > 0 && (
         <>
           {displayVotes.map((vote) => {
             const isVoter = account && vote.voter.toLowerCase() === account.toLowerCase()
@@ -81,7 +81,7 @@ const Votes: React.FC<VotesProps> = ({ votes, votesLoadingStatus, totalVotes }) 
         </>
       )}
 
-      {isFetched && displayVotes.length === 0 && (
+      {isFetched && displayVotes?.length === 0 && (
         <Flex alignItems="center" justifyContent="center" py="32px">
           <Heading as="h5">{t('No votes found')}</Heading>
         </Flex>

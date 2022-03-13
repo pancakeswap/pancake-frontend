@@ -124,7 +124,7 @@ export default function CurrencyList({
   const itemData: (Currency | undefined)[] = useMemo(() => {
     let formatted: (Currency | undefined)[] = showETH ? [Currency.ETHER, ...currencies] : currencies
     if (breakIndex !== undefined) {
-      formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
+      formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted?.length)]
     }
     return formatted
   }, [breakIndex, currencies, showETH])
@@ -202,7 +202,7 @@ export default function CurrencyList({
       ref={fixedListRef as any}
       width="100%"
       itemData={itemData}
-      itemCount={itemData.length}
+      itemCount={itemData?.length}
       itemSize={56}
       itemKey={itemKey}
     >

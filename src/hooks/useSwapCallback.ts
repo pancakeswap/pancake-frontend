@@ -104,12 +104,12 @@ export function useSwapCallback(
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         const successfulEstimation = estimatedCalls.find(
           (el, ix, list): el is SuccessfulCall =>
-            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+            'gasEstimate' in el && (ix === list?.length - 1 || 'gasEstimate' in list[ix + 1]),
         )
 
         if (!successfulEstimation) {
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
-          if (errorCalls.length > 0) throw new Error(errorCalls[errorCalls.length - 1].error)
+          if (errorCalls?.length > 0) throw new Error(errorCalls[errorCalls?.length - 1].error)
           throw new Error(t('Unexpected error. Could not estimate gas for the swap.'))
         }
 
@@ -177,7 +177,7 @@ function swapErrorToUserReadableMessage(error: any, t: TranslateFunction) {
     error = error.error ?? error.data?.originalError
   }
 
-  if (reason?.indexOf('execution reverted: ') === 0) reason = reason.substring('execution reverted: '.length)
+  if (reason?.indexOf('execution reverted: ') === 0) reason = reason.substring('execution reverted: '?.length)
 
   switch (reason) {
     case 'PancakeRouter: EXPIRED':

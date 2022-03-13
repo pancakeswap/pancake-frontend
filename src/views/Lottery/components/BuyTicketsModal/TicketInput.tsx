@@ -96,8 +96,8 @@ const TicketContainer: React.FC<{
   const onPasteHandler = (e: React.ClipboardEvent) => {
     e.preventDefault()
     const pasteContent = e.clipboardData.getData('Text')
-    if (pasteContent.length <= 6 && /^\d+$/.test(pasteContent)) {
-      const filler = Array(6 - pasteContent.length).fill('')
+    if (pasteContent?.length <= 6 && /^\d+$/.test(pasteContent)) {
+      const filler = Array(6 - pasteContent?.length).fill('')
       updateTicket(ticket.id, [...pasteContent.split(''), ...filler])
     }
   }
@@ -201,14 +201,14 @@ const TicketContainer: React.FC<{
           {getIdLabel(ticket.id)}
         </Text>
         <Text fontSize="12px" color="warning">
-          {duplicateWith.length !== 0 && t('Duplicate')}
+          {duplicateWith?.length !== 0 && t('Duplicate')}
         </Text>
       </Flex>
       <InputsContainer
         ref={containerRef}
         onClick={scrollInputIntoView}
         focused={focused}
-        isDuplicate={duplicateWith.length !== 0}
+        isDuplicate={duplicateWith?.length !== 0}
       >
         <DigitInput
           ref={digit1}

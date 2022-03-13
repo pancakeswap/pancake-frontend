@@ -64,7 +64,7 @@ export function useTokenBalancesWithLoadingIndicator(
   return [
     useMemo(
       () =>
-        address && validatedTokens.length > 0
+        address && validatedTokens?.length > 0
           ? validatedTokens.reduce<{ [tokenAddress: string]: TokenAmount | undefined }>((memo, token, i) => {
               const value = balances?.[i]?.result?.[0]
               const amount = value ? JSBI.BigInt(value.toString()) : undefined
