@@ -7,7 +7,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
 import { useIsTransactionPending } from 'state/transactions/hooks'
 import getPriceForOneToken from '../utils/getPriceForOneToken'
-import { LimitOrderType } from '../types'
+import { LimitOrderStatus } from '../types'
 
 export interface FormattedOrderData {
   inputToken: Currency | Token
@@ -87,9 +87,9 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
     outputAmount: formatForDisplay(outputAmount),
     executionPrice: formatForDisplay(executionPrice),
     invertedExecutionPrice: formatForDisplay(executionPrice?.invert()),
-    isOpen: order.status === LimitOrderType.OPEN,
-    isCancelled: order.status === LimitOrderType.CANCELLED,
-    isExecuted: order.status === LimitOrderType.EXECUTED,
+    isOpen: order.status === LimitOrderStatus.OPEN,
+    isCancelled: order.status === LimitOrderStatus.CANCELLED,
+    isExecuted: order.status === LimitOrderStatus.EXECUTED,
     isSubmissionPending,
     isCancellationPending,
     bscScanUrls: {

@@ -5,7 +5,7 @@ export enum ORDER_CATEGORY {
   History = 1,
 }
 
-export enum LimitOrderType {
+export enum LimitOrderStatus {
   OPEN = 'open',
   CANCELLED = 'cancelled',
   EXECUTED = 'executed',

@@ -1,29 +1,34 @@
-import { Order } from '@gelatonetwork/limit-orders-lib'
+import { Order, GelatoLimitOrders } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useMemo } from 'react'
-import partition from 'lodash/partition'
 
-import { getLSOrders, saveOrder, removeOrder, saveOrders, hashOrderSet, hashOrder } from 'utils/localStorageOrders'
+import { getLSOrders, saveOrder, saveOrders, hashOrderSet, hashOrder } from 'utils/localStorageOrders'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 
-import { ORDER_CATEGORY, LimitOrderType } from '../types'
+import { ORDER_CATEGORY, LimitOrderStatus } from '../types'
 
 function newOrdersFirst(a: Order, b: Order) {
   return Number(b.updatedAt) - Number(a.updatedAt)
 }
 
-function syncOrderToLocalStorage({
+const isOrderUpdated = (oldOrder: Order, newOrder: Order): boolean => {
+  return newOrder ? Number(oldOrder.updatedAt) < Number(newOrder.updatedAt) : false
+}
+
+async function syncOrderToLocalStorage({
+  gelatoLimitOrders,
   chainId,
   account,
   orders,
   syncTypes,
 }: {
+  gelatoLimitOrders: GelatoLimitOrders
   chainId: number
   account: string
   orders: Order[]
-  syncTypes: LimitOrderType[]
+  syncTypes: LimitOrderStatus[]
 }) {
   const allOrdersLS = getLSOrders(chainId, account)
 
@@ -31,17 +36,19 @@ function syncOrderToLocalStorage({
   const newOrders = orders.filter((order: Order) => !allOrdersLSHashSet.has(hashOrder(order)))
   saveOrders(chainId, account, newOrders)
 
-  const [typeOrders, otherOrders] = partition(orders, (order) => syncTypes.some((type) => type === order.status))
   const typeOrdersLS = allOrdersLS.filter((order) => syncTypes.some((type) => type === order.status))
-  typeOrdersLS.forEach((confOrder: Order) => {
-    const updatedOrder = typeOrders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase())
 
-    if (updatedOrder && Number(confOrder.updatedAt) < Number(updatedOrder.updatedAt)) {
-      saveOrder(chainId, account, updatedOrder)
-    } else if (!updatedOrder && otherOrders.some((order) => confOrder.id.toLowerCase() === order.id.toLowerCase())) {
-      removeOrder(chainId, account, confOrder)
-    }
-  })
+  await Promise.all(
+    typeOrdersLS.map(async (confOrder: Order) => {
+      const graphOrder =
+        orders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase()) ??
+        (await gelatoLimitOrders.getOrder(confOrder.id))
+
+      if (isOrderUpdated(confOrder, graphOrder)) {
+        saveOrder(chainId, account, graphOrder)
+      }
+    }),
+  )
 }
 
 const useOpenOrders = (turnOn: boolean): Order[] => {
@@ -55,30 +62,31 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
     startFetch ? ['gelato', 'openOrders'] : null,
     async () => {
       try {
-        const orders = await gelatoLimitOrders.getOrders(account.toLowerCase(), false)
+        const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
 
         syncOrderToLocalStorage({
+          gelatoLimitOrders,
           orders,
           chainId,
           account,
-          syncTypes: [LimitOrderType.OPEN],
+          syncTypes: [LimitOrderStatus.OPEN],
         })
       } catch (e) {
         console.error('Error fetching open orders from subgraph', e)
       }
 
-      const openOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === LimitOrderType.OPEN)
+      const openOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === LimitOrderStatus.OPEN)
 
       const pendingOrdersLS = getLSOrders(chainId, account, true)
 
       return [
         ...openOrdersLS.filter((order: Order) => {
           const orderCancelled = pendingOrdersLS
-            .filter((pendingOrder) => pendingOrder.status === LimitOrderType.CANCELLED)
+            .filter((pendingOrder) => pendingOrder.status === LimitOrderStatus.CANCELLED)
             .find((pendingOrder) => pendingOrder.id.toLowerCase() === order.id.toLowerCase())
           return !orderCancelled
         }),
-        ...pendingOrdersLS.filter((order) => order.status === LimitOrderType.OPEN),
+        ...pendingOrdersLS.filter((order) => order.status === LimitOrderStatus.OPEN),
       ].sort(newOrdersFirst)
     },
     {
@@ -101,26 +109,32 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
       try {
         const acc = account.toLowerCase()
 
-        const orders = await gelatoLimitOrders.getPastOrders(acc, false)
+        const [canOrders, exeOrders] = await Promise.all([
+          gelatoLimitOrders.getCancelledOrders(acc, false),
+          gelatoLimitOrders.getExecutedOrders(acc, false),
+        ])
 
-        syncOrderToLocalStorage({
-          orders,
+        await syncOrderToLocalStorage({
+          gelatoLimitOrders,
+          orders: [...canOrders, ...exeOrders],
           chainId,
           account,
-          syncTypes: [LimitOrderType.CANCELLED, LimitOrderType.EXECUTED],
+          syncTypes: [LimitOrderStatus.CANCELLED, LimitOrderStatus.EXECUTED],
         })
       } catch (e) {
         console.error('Error fetching history orders from subgraph', e)
       }
 
-      const executedOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === LimitOrderType.EXECUTED)
+      const executedOrdersLS = getLSOrders(chainId, account).filter(
+        (order) => order.status === LimitOrderStatus.EXECUTED,
+      )
 
       const cancelledOrdersLS = getLSOrders(chainId, account).filter(
-        (order) => order.status === LimitOrderType.CANCELLED,
+        (order) => order.status === LimitOrderStatus.CANCELLED,
       )
 
       const pendingCancelledOrdersLS = getLSOrders(chainId, account, true).filter(
-        (order) => order.status === LimitOrderType.CANCELLED,
+        (order) => order.status === LimitOrderStatus.CANCELLED,
       )
 
       return [...pendingCancelledOrdersLS, ...cancelledOrdersLS, ...executedOrdersLS].sort(newOrdersFirst)
