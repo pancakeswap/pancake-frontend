@@ -30,11 +30,9 @@ async function syncOrderToLocalStorage({
   orders: Order[]
   syncTypes: LimitOrderStatus[]
 }) {
-  // All ls orders should be taken to not re-add order to storage when it is pending
   const allOrdersLS = getLSOrders(chainId, account)
-  const allPendingOrdersLS = getLSOrders(chainId, account, true)
 
-  const lsOrdersHashSet = hashOrderSet([...allOrdersLS, ...allPendingOrdersLS])
+  const lsOrdersHashSet = hashOrderSet(allOrdersLS)
   const newOrders = orders.filter((order: Order) => !lsOrdersHashSet.has(hashOrder(order)))
   saveOrders(chainId, account, newOrders)
 
