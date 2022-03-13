@@ -40,7 +40,7 @@ const IndividualPancakeBunnyPage = (props: IndividualPancakeBunnyPageProps) => {
 const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> = ({ bunnyId }) => {
   const { account } = useWeb3React()
   const collection = useGetCollection(pancakeBunniesAddress)
-  const totalBunnyCount = Number(collection.totalSupply)
+  const totalBunnyCount = Number(collection?.totalSupply)
   const [nothingForSaleBunny, setNothingForSaleBunny] = useState<NftToken>(null)
   const { lastUpdated, previousLastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const allBunnies = useGetAllBunniesByBunnyId(bunnyId)
