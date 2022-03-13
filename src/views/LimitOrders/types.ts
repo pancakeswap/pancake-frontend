@@ -5,6 +5,12 @@ export enum ORDER_CATEGORY {
   History = 1,
 }
 
+export enum LimitOrderStatus {
+  OPEN = 'open',
+  CANCELLED = 'cancelled',
+  EXECUTED = 'executed',
+}
+
 export interface LimitOrderTableProps {
   orders: Order[]
   orderCategory: ORDER_CATEGORY
