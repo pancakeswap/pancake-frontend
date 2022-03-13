@@ -71,7 +71,7 @@ export const getCollections = async (): Promise<Record<string, Collection>> => {
     const collectionApiData: ApiCollection[] = collections?.data ?? []
     const collectionsTotalSupply = await fetchCollectionsTotalSupply(collectionApiData)
     const collectionApiDataCombinedOnChain = collectionApiData.map((collection, index) => {
-      const totalSupplyFromApi = Number(collection.totalSupply) || 0
+      const totalSupplyFromApi = Number(collection?.totalSupply) || 0
       const totalSupplyFromOnChain = collectionsTotalSupply[index]
       return {
         ...collection,
@@ -97,7 +97,7 @@ export const getCollection = async (collectionAddress: string): Promise<Record<s
     ])
 
     const collectionsTotalSupply = await fetchCollectionsTotalSupply([collection])
-    const totalSupplyFromApi = Number(collection.totalSupply) || 0
+    const totalSupplyFromApi = Number(collection?.totalSupply) || 0
     const totalSupplyFromOnChain = collectionsTotalSupply[0]
     const collectionApiDataCombinedOnChain = {
       ...collection,

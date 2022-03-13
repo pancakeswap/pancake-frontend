@@ -275,7 +275,7 @@ const Collectible = () => {
                             <Td>{collection.lowestPrice.toLocaleString(undefined, { maximumFractionDigits: 5 })}</Td>
                             <Td>{collection.highestPrice.toLocaleString(undefined, { maximumFractionDigits: 5 })}</Td>
                             <Td>{collection.numberTokensListed}</Td>
-                            <Td>{collection.totalSupply}</Td>
+                            <Td>{collection?.totalSupply}</Td>
                           </tr>
                         )
                       })

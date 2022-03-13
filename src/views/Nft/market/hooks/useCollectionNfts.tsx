@@ -91,7 +91,7 @@ const tokenIdsFromFallback = (
       .filter((tokenId) => !fetchedNfts.some((fetchedNft) => fetchedNft.tokenId === tokenId))
       .slice(startIndex, endIndex)
   } else {
-    const totalSupply = parseInt(collection.totalSupply)
+    const totalSupply = parseInt(collection?.totalSupply)
     let counter = startIndex
     let index = startIndex
     while (counter < endIndex) {
@@ -202,7 +202,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
     !Object.keys(nftFilters).length && collection
       ? showOnlyNftsOnSale
         ? collection.numberTokensListed
-        : collection.totalSupply
+        : collection?.totalSupply
       : null
 
   const itemListingSettingsJson = JSON.stringify(itemListingSettings)
