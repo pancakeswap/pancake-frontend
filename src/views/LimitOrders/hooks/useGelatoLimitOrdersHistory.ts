@@ -67,7 +67,7 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
       try {
         const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
 
-        syncOrderToLocalStorage({
+        await syncOrderToLocalStorage({
           gelatoLimitOrders,
           orders,
           chainId,
