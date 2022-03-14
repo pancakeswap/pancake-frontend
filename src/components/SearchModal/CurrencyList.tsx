@@ -10,7 +10,7 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedActiveList } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
-import { useIsUserAddedToken, useAllInactiveTokens } from '../../hooks/Tokens'
+import { useIsUserAddedToken } from '../../hooks/Tokens'
 import Column from '../Layout/Column'
 import { RowFixed, RowBetween } from '../Layout/Row'
 import { CurrencyLogo } from '../Logo'
@@ -101,6 +101,7 @@ function CurrencyRow({
 export default function CurrencyList({
   height,
   currencies,
+  inactiveCurrencies,
   selectedCurrency,
   onCurrencySelect,
   otherCurrency,
@@ -112,6 +113,7 @@ export default function CurrencyList({
 }: {
   height: number
   currencies: Currency[]
+  inactiveCurrencies: Currency[]
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherCurrency?: Currency | null
@@ -122,20 +124,18 @@ export default function CurrencyList({
   breakIndex: number | undefined
 }) {
   const itemData: (Currency | undefined)[] = useMemo(() => {
-    let formatted: (Currency | undefined)[] = showETH ? [Currency.ETHER, ...currencies] : currencies
+    let formatted: (Currency | undefined)[] = showETH
+      ? [Currency.ETHER, ...currencies, ...inactiveCurrencies]
+      : [...currencies, ...inactiveCurrencies]
     if (breakIndex !== undefined) {
       formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
     }
     return formatted
-  }, [breakIndex, currencies, showETH])
+  }, [breakIndex, currencies, inactiveCurrencies, showETH])
 
   const { chainId } = useActiveWeb3React()
 
   const { t } = useTranslation()
-
-  const inactiveTokens: {
-    [address: string]: Token
-  } = useAllInactiveTokens()
 
   const Row = useCallback(
     ({ data, index, style }) => {
@@ -146,7 +146,7 @@ export default function CurrencyList({
 
       const token = wrappedCurrency(currency, chainId)
 
-      const showImport = inactiveTokens && token && Object.keys(inactiveTokens).includes(token.address)
+      const showImport = index > currencies.length
 
       if (index === breakIndex || !data) {
         return (
@@ -182,15 +182,15 @@ export default function CurrencyList({
       )
     },
     [
-      chainId,
-      inactiveTokens,
-      onCurrencySelect,
-      otherCurrency,
       selectedCurrency,
-      setImportToken,
-      showImportView,
+      otherCurrency,
+      chainId,
+      currencies.length,
       breakIndex,
+      onCurrencySelect,
       t,
+      showImportView,
+      setImportToken,
     ],
   )
 
