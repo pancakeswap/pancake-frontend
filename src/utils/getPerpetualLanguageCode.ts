@@ -1,10 +1,10 @@
 export const perpetualLangs = { 'zh-cn': 'zh-CN' }
-export const perpLangMap = (code: string) => {
-  if (!code) {
+export const perpLangMap = (languageCode: string) => {
+  if (!languageCode) {
     return 'en'
   }
-  if (perpetualLangs[code]) {
-    return perpetualLangs[code]
+  if (perpetualLangs[languageCode]) {
+    return perpetualLangs[languageCode]
   }
-  return code
+  return languageCode
 }

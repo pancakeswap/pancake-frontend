@@ -17,7 +17,7 @@ import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 
 export type ConfigMenuItemsType = MenuItemsType & { hideSubNav?: boolean }
 
-const config: (t: ContextApi['t'], code?: string) => ConfigMenuItemsType[] = (t, code) => [
+const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType[] = (t, languageCode) => [
   {
     label: t('Trade'),
     icon: SwapIcon,
@@ -39,7 +39,7 @@ const config: (t: ContextApi['t'], code?: string) => ConfigMenuItemsType[] = (t,
       },
       {
         label: t('Perpetual'),
-        href: `https://perp.pancakeswap.finance/${perpLangMap(code)}/futures/BTCUSDT`,
+        href: `https://perp.pancakeswap.finance/${perpLangMap(languageCode)}/futures/BTCUSDT`,
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
     ],
