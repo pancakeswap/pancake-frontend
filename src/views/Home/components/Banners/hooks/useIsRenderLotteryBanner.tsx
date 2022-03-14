@@ -5,7 +5,7 @@ const useIsRenderLotteryBanner = () => {
   const {
     currentRound: { isLoading },
   } = useLottery()
-  return isLoading
+  return !isLoading
 }
 
 export default useIsRenderLotteryBanner
