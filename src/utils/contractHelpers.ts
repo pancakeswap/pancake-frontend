@@ -92,6 +92,7 @@ import type {
   PancakeProfile,
   LotteryV2,
   Masterchef,
+  MasterchefV1,
   SousChef,
   SousChefV2,
   BunnySpecial,
@@ -167,7 +168,7 @@ export const getMasterchefContract = (signer?: Signer | Provider) => {
   return getContract(masterChef, getMasterChefAddress(), signer) as Masterchef
 }
 export const getMasterchefV1Contract = (signer?: Signer | Provider) => {
-  return getContract(masterChefV1, getMasterChefV1Address(), signer) as Masterchef
+  return getContract(masterChefV1, getMasterChefV1Address(), signer) as MasterchefV1
 }
 export const getClaimRefundContract = (signer?: Signer | Provider) => {
   return getContract(claimRefundAbi, getClaimRefundAddress(), signer) as ClaimRefund
