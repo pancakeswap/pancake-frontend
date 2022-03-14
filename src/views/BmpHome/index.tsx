@@ -10,7 +10,8 @@ import CustomNav from './components/CustomNav'
 import Providers from '../../PageProvider.bmp'
 import AddLiquidity from '../AddLiquidity/bmp/index'
 import Swap from '../Swap/bmp/index'
-
+import { LiquidityWrapper } from './components/liquidityWrapper'
+import { LiquidityProvider } from './context/swapContext'
 const BubbleWrapper = styled(Flex)`
   align-items: center;
   bn-view {
@@ -100,7 +101,7 @@ const FooterMenu = ({ activeId, setActiveId }) => {
       title: t('Exchange'),
       isActive: activeId === 0,
       onClick: () => {
-        mpService.navigateTo({ url: 'views/Swap/bmp/index' })
+        // mpService.navigateTo({ url: 'views/Swap/bmp/index' })
         setActiveId(0)
       },
     },
@@ -109,7 +110,7 @@ const FooterMenu = ({ activeId, setActiveId }) => {
       title: t('Liquidity'),
       isActive: activeId === 1,
       onClick: () => {
-        mpService.navigateTo({ url: 'views/AddLiquidity/bmp/index' })
+        // mpService.navigateTo({ url: 'views/AddLiquidity/bmp/index' })
         setActiveId(1)
       },
     },
@@ -142,7 +143,11 @@ const Page = () => {
       <StyledPage>
         <CustomNav top={statusBarHeight} height={CUSTOM_NAV_HEIGHT} />
         {activeId === 0 && <Swap />}
-        {activeId === 1 && <AddLiquidity />}
+        {activeId === 1 && (
+          <LiquidityProvider>
+            <LiquidityWrapper />
+          </LiquidityProvider>
+        )}
         <FooterMenu activeId={activeId} setActiveId={setActiveId} />
         <Footer />
       </StyledPage>
