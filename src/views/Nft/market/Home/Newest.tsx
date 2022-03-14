@@ -66,7 +66,7 @@ const Newest: React.FC = () => {
           {nfts.map((nft) => {
             const isPBCollection = nft.collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
             const currentAskPrice =
-              !isPBCollection && nft.marketData?.isTradable ? parseFloat(nft.marketData.currentAskPrice) : undefined
+              !isPBCollection && nft.marketData?.isTradable ? parseFloat(nft.marketData?.currentAskPrice) : undefined
             return (
               <CollectibleLinkCard
                 data-test="newest-nft-card"

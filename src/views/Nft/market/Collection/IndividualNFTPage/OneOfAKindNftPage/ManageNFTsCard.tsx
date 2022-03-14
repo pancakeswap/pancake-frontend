@@ -63,7 +63,7 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, onSuccess }) => {
             </Text>
             <Flex justifySelf="flex-end" width="max-content">
               <BinanceIcon width="16px" height="16px" mr="4px" />
-              <Text small>{nft.marketData.currentAskPrice}</Text>
+              <Text small>{nft?.marketData?.currentAskPrice}</Text>
             </Flex>
           </>
         ) : (

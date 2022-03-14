@@ -85,7 +85,7 @@ const SellModal: React.FC<SellModalProps> = ({
   onSuccessEditProfile,
 }) => {
   const [stage, setStage] = useState(variant === 'sell' ? SellingStage.SELL : SellingStage.EDIT)
-  const [price, setPrice] = useState(variant === 'sell' ? '' : nftToSell.marketData.currentAskPrice)
+  const [price, setPrice] = useState(variant === 'sell' ? '' : nftToSell?.marketData?.currentAskPrice)
   const [transferAddress, setTransferAddress] = useState('')
   const [confirmedTxHash, setConfirmedTxHash] = useState('')
   const { t } = useTranslation()
@@ -111,7 +111,7 @@ const SellModal: React.FC<SellModalProps> = ({
         setStage(SellingStage.SET_PRICE)
         break
       case SellingStage.ADJUST_PRICE:
-        setPrice(nftToSell.marketData.currentAskPrice)
+        setPrice(nftToSell?.marketData?.currentAskPrice)
         setStage(SellingStage.EDIT)
         break
       case SellingStage.CONFIRM_ADJUST_PRICE:
@@ -261,7 +261,7 @@ const SellModal: React.FC<SellModalProps> = ({
           nftToSell={nftToSell}
           variant="adjust"
           continueToNextStage={continueToNextStage}
-          currentPrice={nftToSell.marketData.currentAskPrice}
+          currentPrice={nftToSell?.marketData?.currentAskPrice}
           lowestPrice={lowestPrice}
           price={price}
           setPrice={setPrice}

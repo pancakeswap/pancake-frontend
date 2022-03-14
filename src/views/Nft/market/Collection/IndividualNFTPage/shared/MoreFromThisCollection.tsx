@@ -158,7 +158,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
               <SwiperSlide key={nft.tokenId}>
                 <CollectibleLinkCard
                   nft={nft}
-                  currentAskPrice={isPBCollection ? null : parseFloat(nft.marketData?.currentAskPrice)}
+                  currentAskPrice={isPBCollection ? null : parseFloat(nft?.marketData?.currentAskPrice)}
                 />
               </SwiperSlide>
             ))}

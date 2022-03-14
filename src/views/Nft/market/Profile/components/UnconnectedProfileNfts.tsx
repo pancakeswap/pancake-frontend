@@ -33,7 +33,7 @@ const UserNfts: React.FC<{ nfts: NftToken[]; isLoading: boolean }> = ({ nfts, is
                 key={`${nft?.tokenId}-${nft?.collectionName}`}
                 nft={nft}
                 currentAskPrice={
-                  marketData?.currentAskPrice && marketData?.isTradable && parseFloat(marketData.currentAskPrice)
+                  marketData?.currentAskPrice && marketData?.isTradable && parseFloat(marketData?.currentAskPrice)
                 }
               />
             )

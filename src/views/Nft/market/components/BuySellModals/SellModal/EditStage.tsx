@@ -51,7 +51,7 @@ const EditStage: React.FC<EditStageProps> = ({
           </Text>
           <Flex alignItems="center" justifyContent="flex-end">
             <BinanceIcon width={16} height={16} mr="4px" />
-            <Text small>{nftToSell.marketData.currentAskPrice}</Text>
+            <Text small>{nftToSell?.marketData?.currentAskPrice}</Text>
           </Flex>
         </Grid>
       </Flex>

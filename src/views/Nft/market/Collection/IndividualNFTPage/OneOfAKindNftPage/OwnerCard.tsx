@@ -42,7 +42,7 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic, o
 
   const { owner, isLoadingOwner } = useNftOwner(nft, isOwnNft)
 
-  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft.marketData?.currentAskPrice))
+  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft?.marketData?.currentAskPrice))
 
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
   const [onPresentAdjustPriceModal] = useModal(
@@ -80,7 +80,7 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic, o
                 <>
                   <Flex justifySelf="flex-start" alignItems="center" width="max-content">
                     <BinanceIcon width="24px" height="24px" mr="8px" />
-                    <Text bold>{formatNumber(parseFloat(nft.marketData.currentAskPrice), 0, 5)}</Text>
+                    <Text bold>{formatNumber(parseFloat(nft?.marketData?.currentAskPrice), 0, 5)}</Text>
                   </Flex>
                   {bnbBusdPrice ? (
                     <Text fontSize="12px" color="textSubtle">
