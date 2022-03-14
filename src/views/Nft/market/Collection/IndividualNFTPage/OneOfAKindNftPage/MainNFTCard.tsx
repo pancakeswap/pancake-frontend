@@ -23,7 +23,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
 
-  const currentAskPriceAsNumber = nft.marketData?.currentAskPrice ? parseFloat(nft.marketData.currentAskPrice) : 0
+  const currentAskPriceAsNumber = nft?.marketData?.currentAskPrice ? parseFloat(nft.marketData?.currentAskPrice) : 0
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, currentAskPriceAsNumber)
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
   const [onPresentSellModal] = useModal(
@@ -64,7 +64,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
           <Flex flex="2">
             <Box>
               <CollectionLink to={`${nftsBaseUrl}/collections/${nft.collectionAddress}`}>
-                {nft.collectionName}
+                {nft?.collectionName}
               </CollectionLink>
               <Text fontSize="40px" bold mt="12px">
                 {nft.name}

@@ -1,5 +1,7 @@
-import { getIdsByTimeWindow, getPairSequentialId } from 'state/swap/fetch/utils'
+import { getIdsByTimeWindow, getPairSequentialId, pairHasEnoughLiquidity } from 'state/swap/fetch/utils'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
+import HOUR_PAIR from './__fixtures__/hour-pair-data.json'
+import DAY_PAIR from './__fixtures__/day-pair-data.json'
 
 describe('getPairSequentialId', () => {
   it('should get sequential id', () => {
@@ -103,5 +105,15 @@ describe('getIdsByTimeWindow', () => {
 
     // Then
     expect(response).toEqual(expctedResult)
+  })
+})
+
+// only happy path
+describe('pairHasEnoughLiquidity', () => {
+  it('should return true if has enough liquidity', () => {
+    expect(pairHasEnoughLiquidity(HOUR_PAIR.data, PairDataTimeWindowEnum.DAY)).toBeTruthy()
+  })
+  it('should return true if has enough liquidity', () => {
+    expect(pairHasEnoughLiquidity(DAY_PAIR.data, PairDataTimeWindowEnum.YEAR)).toBeTruthy()
   })
 })

@@ -9,10 +9,10 @@ const Crumbs = () => {
   return (
     <Box mb="24px">
       <Breadcrumbs>
-        <NextLink href="/">
+        <NextLink href="/" passHref>
           <Link>{t('Home')}</Link>
         </NextLink>
-        <NextLink href="/prediction">
+        <NextLink href="/prediction" passHref>
           <Link>{t('Prediction')}</Link>
         </NextLink>
         <Text>{t('Leaderboard')}</Text>

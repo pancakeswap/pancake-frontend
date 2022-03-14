@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import { useTranslation } from 'contexts/Localization'
-import { getLowestPriceInCollection } from 'state/nftMarket/helpers'
+import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
 import { StatBoxItem, StatBoxItemProps } from '../components/StatBox'
 
 interface LowestPriceStatBoxItemProps extends Omit<StatBoxItemProps, 'title' | 'stat'> {
@@ -8,25 +8,21 @@ interface LowestPriceStatBoxItemProps extends Omit<StatBoxItemProps, 'title' | '
 }
 
 const LowestPriceStatBoxItem: React.FC<LowestPriceStatBoxItemProps> = ({ collectionAddress, ...props }) => {
-  const [lowestPrice, setLowestPrice] = useState<number>(null)
   const { t } = useTranslation()
-
-  useEffect(() => {
-    const fetchLowestPrice = async () => {
-      const lowestCollectionPrice = await getLowestPriceInCollection(collectionAddress)
-      setLowestPrice(lowestCollectionPrice)
-    }
-
-    fetchLowestPrice()
-  }, [collectionAddress, setLowestPrice])
+  const { data: lowestCollectionPrice = null } = useSWR(
+    collectionAddress ? [collectionAddress, 'lowestPrice'] : null,
+    () => getLeastMostPriceInCollection(collectionAddress),
+  )
 
   const formattedLowestPrice =
-    lowestPrice === null
-      ? null
-      : lowestPrice.toLocaleString(undefined, {
-          minimumFractionDigits: 3,
-          maximumFractionDigits: 3,
-        })
+    lowestCollectionPrice !== null
+      ? lowestCollectionPrice
+        ? lowestCollectionPrice.toLocaleString(undefined, {
+            minimumFractionDigits: 3,
+            maximumFractionDigits: 3,
+          })
+        : '-'
+      : null
 
   return <StatBoxItem title={t('Lowest (%symbol%)', { symbol: 'BNB' })} stat={formattedLowestPrice} {...props} />
 }

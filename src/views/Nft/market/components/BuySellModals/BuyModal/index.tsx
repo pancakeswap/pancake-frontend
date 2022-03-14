@@ -12,6 +12,7 @@ import { useERC20, useNftMarketContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { requiresApproval } from 'utils/requiresApproval'
 import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { NftToken } from 'state/nftMarket/types'
@@ -49,8 +50,8 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
 
   const { toastSuccess } = useToast()
 
-  const nftPriceWei = parseUnits(nftToBuy.marketData.currentAskPrice, 'ether')
-  const nftPrice = parseFloat(nftToBuy.marketData.currentAskPrice)
+  const nftPriceWei = parseUnits(nftToBuy?.marketData?.currentAskPrice, 'ether')
+  const nftPrice = parseFloat(nftToBuy?.marketData?.currentAskPrice)
 
   // BNB - returns ethers.BigNumber
   const { balance: bnbBalance, fetchStatus: bnbFetchStatus } = useGetBnbBalance()
@@ -76,12 +77,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
-      try {
-        const currentAllowance = await wbnbContractReader.allowance(account, nftMarketContract.address)
-        return currentAllowance.gt(0)
-      } catch (error) {
-        return false
-      }
+      return requiresApproval(wbnbContractReader, account, nftMarketContract.address)
     },
     onApprove: () => {
       return callWithGasPrice(wbnbContractApprover, 'approve', [nftMarketContract.address, MaxUint256])
@@ -93,7 +89,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
       )
     },
     onConfirm: () => {
-      const payAmount = Number.isNaN(nftPrice) ? Zero : parseUnits(nftToBuy.marketData.currentAskPrice)
+      const payAmount = Number.isNaN(nftPrice) ? Zero : parseUnits(nftToBuy?.marketData?.currentAskPrice)
       if (paymentCurrency === PaymentCurrency.BNB) {
         return callWithGasPrice(nftMarketContract, 'buyTokenUsingBNB', [nftToBuy.collectionAddress, nftToBuy.tokenId], {
           value: payAmount,

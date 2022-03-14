@@ -38,7 +38,7 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
 const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
   const [raritySort, setRaritySort] = useState<SortType>('asc')
   const collection = useGetCollection(collectionAddress)
-  const totalBunnyCount = Number(collection.totalSupply)
+  const totalBunnyCount = Number(collection?.totalSupply)
   const { t } = useTranslation()
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
   const { push } = useRouter()

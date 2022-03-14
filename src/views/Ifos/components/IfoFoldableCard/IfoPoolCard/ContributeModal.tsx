@@ -30,6 +30,7 @@ import useToast from 'hooks/useToast'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
 import tokens from 'config/constants/tokens'
+import { requiresApproval } from 'utils/requiresApproval'
 
 interface Props {
   poolId: PoolIds
@@ -91,13 +92,7 @@ const ContributeModal: React.FC<Props> = ({
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
-        try {
-          const response = await raisingTokenContractReader.allowance(account, contract.address)
-          const currentAllowance = new BigNumber(response.toString())
-          return currentAllowance.gt(0)
-        } catch (error) {
-          return false
-        }
+        return requiresApproval(raisingTokenContractReader, account, contract.address)
       },
       onApprove: () => {
         return callWithGasPrice(raisingTokenContractApprover, 'approve', [contract.address, MaxUint256], {

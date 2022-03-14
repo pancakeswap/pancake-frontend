@@ -124,7 +124,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
         <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
           <Box>
             <Box mt="24px">
-              <RecentCakeProfitRow vaultKey={pool.vaultKey} />
+              <RecentCakeProfitRow pool={pool} />
             </Box>
             <Box mt="8px">
               <UnstakingFeeCountdownRow vaultKey={pool.vaultKey} />

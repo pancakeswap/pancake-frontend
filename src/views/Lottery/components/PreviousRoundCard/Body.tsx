@@ -86,7 +86,7 @@ const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId
         </Flex>
         <Flex maxWidth={['240px', null, null, '100%']} justifyContent={['center', null, null, 'flex-start']}>
           {lotteryId ? (
-            lotteryNodeData ? (
+            lotteryNodeData?.finalNumber ? (
               <WinningNumbers
                 rotateText={isLargerScreen || false}
                 number={lotteryNodeData?.finalNumber.toString()}

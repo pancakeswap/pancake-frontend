@@ -4,6 +4,7 @@ import { formatUnits } from '@ethersproject/units'
 import maxBy from 'lodash/maxBy'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
+import pickBy from 'lodash/pickBy'
 import {
   Bet,
   LedgerData,
@@ -498,7 +499,11 @@ export const predictionsSlice = createSlice({
 
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
-      state.rounds = merge({}, state.rounds, action.payload)
+      const allRoundData = merge({}, state.rounds, action.payload)
+      // Take always last PAST_ROUND_COUNT items
+      state.rounds = pickBy(allRoundData, (value, key) => {
+        return Number(key) > state.currentEpoch - PAST_ROUND_COUNT
+      })
     })
 
     // Show History

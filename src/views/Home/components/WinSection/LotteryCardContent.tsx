@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { Flex, Text, Skeleton, Button, ArrowForwardIcon } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
@@ -7,9 +7,10 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import Balance from 'components/Balance'
 import styled from 'styled-components'
 import { fetchCurrentLotteryIdAndMaxBuy, fetchLottery } from 'state/lottery/helpers'
-import BigNumber from 'bignumber.js'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { useSlowRefreshEffect } from 'hooks/useRefreshEffect'
+import useSWR from 'swr'
+import { SLOW_INTERVAL } from 'config/constants'
+import useSWRImmutable from 'swr/immutable'
 
 const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
@@ -25,47 +26,38 @@ const LotteryCardContent = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const [lotteryId, setLotteryId] = useState<string>(null)
-  const [currentLotteryPrize, setCurrentLotteryPrize] = useState<BigNumber>(null)
-  const cakePriceBusdAsString = usePriceCakeBusd().toString()
+  const cakePriceBusd = usePriceCakeBusd()
+  const { data: lotteryId = null } = useSWRImmutable(loadData ? ['lottery', 'currentLotteryId'] : null, async () => {
+    const { currentLotteryId } = await fetchCurrentLotteryIdAndMaxBuy()
+    if (currentLotteryId) {
+      return currentLotteryId
+    }
+    throw new Error('Error fetching current lottery id')
+  })
+  const { data: currentLotteryPrizeInCake = null } = useSWR(
+    lotteryId ? ['lottery', 'currentLotteryPrize'] : null,
+    async () => {
+      const { amountCollectedInCake } = await fetchLottery(lotteryId)
+      if (amountCollectedInCake) {
+        return parseFloat(amountCollectedInCake)
+      }
+      throw new Error('Error fetching current lottery prize')
+    },
+    {
+      refreshInterval: SLOW_INTERVAL,
+    },
+  )
 
-  const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePriceBusdAsString })
-  const [pretext, prizesThisRound] = cakePrizesText.split(cakePriceBusdAsString)
+  const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePriceBusd.toString() })
+  const [pretext, prizesThisRound] = cakePrizesText.split(cakePriceBusd.toString())
 
-  const cakePriceBusd = useMemo(() => {
-    return new BigNumber(cakePriceBusdAsString)
-  }, [cakePriceBusdAsString])
+  const currentLotteryPrize = currentLotteryPrizeInCake ? cakePriceBusd.times(currentLotteryPrizeInCake) : null
 
   useEffect(() => {
     if (isIntersecting) {
       setLoadData(true)
     }
   }, [isIntersecting])
-
-  useEffect(() => {
-    // get current lottery ID
-    const fetchCurrentID = async () => {
-      const { currentLotteryId } = await fetchCurrentLotteryIdAndMaxBuy()
-      setLotteryId(currentLotteryId)
-    }
-
-    if (loadData) {
-      fetchCurrentID()
-    }
-  }, [loadData, setLotteryId])
-
-  useSlowRefreshEffect(() => {
-    // get public data for current lottery
-    const fetchCurrentLotteryPrize = async () => {
-      const { amountCollectedInCake } = await fetchLottery(lotteryId)
-      const prizeInBusd = cakePriceBusd.times(amountCollectedInCake)
-      setCurrentLotteryPrize(prizeInBusd)
-    }
-
-    if (lotteryId) {
-      fetchCurrentLotteryPrize()
-    }
-  }, [lotteryId, setCurrentLotteryPrize, cakePriceBusd])
 
   return (
     <>

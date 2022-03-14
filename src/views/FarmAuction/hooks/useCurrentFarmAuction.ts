@@ -1,57 +1,30 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import isEqual from 'lodash/isEqual'
+import useSWR from 'swr'
 import { useFarmAuctionContract } from 'hooks/useContract'
-import { Auction, ConnectedBidder, Bidder } from 'config/constants/types'
+import { ConnectedBidder } from 'config/constants/types'
 import { getBidderInfo } from 'config/constants/farmAuctions'
-import useLastUpdated from 'hooks/useLastUpdated'
-import { AUCTION_BIDDERS_TO_FETCH } from 'config'
-import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import { FAST_INTERVAL } from 'config/constants'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { sortAuctionBidders, processAuctionData } from '../helpers'
+import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account: string) => {
-  const [currentAuction, setCurrentAuction] = useState<Auction | null>(null)
-  const [bidders, setBidders] = useState<Bidder[] | null>(null)
+  const { data: currentAuctionId = null } = useSWR(
+    ['farmAuction', 'currentAuctionId'],
+    async () => {
+      const auctionId = await farmAuctionContract.currentAuctionId()
+      return auctionId.toNumber()
+    },
+    { refreshInterval: FAST_INTERVAL },
+  )
+
+  const {
+    data: { auction: currentAuction, bidders },
+    mutate: refreshBidders,
+  } = useFarmAuction(currentAuctionId, { refreshInterval: FAST_INTERVAL })
   const [connectedBidder, setConnectedBidder] = useState<ConnectedBidder | null>(null)
-  // Used to force-refresh bidders after successful bid
-  const { lastUpdated, setLastUpdated } = useLastUpdated()
 
   const farmAuctionContract = useFarmAuctionContract(false)
-
-  // Get latest auction id and its data
-  useFastRefreshEffect(() => {
-    const fetchCurrentAuction = async () => {
-      try {
-        const auctionId = await farmAuctionContract.currentAuctionId()
-        const auctionData = await farmAuctionContract.auctions(auctionId)
-        const processedAuctionData = await processAuctionData(auctionId.toNumber(), auctionData)
-        setCurrentAuction(processedAuctionData)
-      } catch (error) {
-        console.error('Failed to fetch current auction', error)
-      }
-    }
-    fetchCurrentAuction()
-  }, [farmAuctionContract])
-
-  // Fetch bidders for current auction
-  useFastRefreshEffect(() => {
-    const fetchBidders = async () => {
-      try {
-        const [currentAuctionBidders] = await farmAuctionContract.viewBidsPerAuction(
-          currentAuction.id,
-          0,
-          AUCTION_BIDDERS_TO_FETCH,
-        )
-        const sortedBidders = sortAuctionBidders(currentAuctionBidders, currentAuction)
-        setBidders(sortedBidders)
-      } catch (error) {
-        console.error('Failed to fetch bidders', error)
-      }
-    }
-    if (currentAuction) {
-      fetchBidders()
-    }
-  }, [currentAuction, farmAuctionContract, lastUpdated])
 
   // Check if connected wallet is whitelisted
   useEffect(() => {
@@ -110,6 +83,6 @@ export const useCurrentFarmAuction = (account: string) => {
     currentAuction,
     bidders,
     connectedBidder,
-    refreshBidders: setLastUpdated,
+    refreshBidders,
   }
 }

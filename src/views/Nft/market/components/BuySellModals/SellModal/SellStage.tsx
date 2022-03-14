@@ -39,7 +39,7 @@ const SellStage: React.FC<SellStageProps> = ({
         <Grid flex="1" gridTemplateColumns="1fr 1fr" alignItems="center">
           <Text bold>{nftToSell.name}</Text>
           <Text fontSize="12px" color="textSubtle" textAlign="right">
-            {nftToSell.collectionName}
+            {nftToSell?.collectionName}
           </Text>
           {lowestPrice && (
             <>

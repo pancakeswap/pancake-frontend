@@ -5,6 +5,7 @@ import { fetchClaimableStatuses, fetchLedgerData, fetchMarketData, fetchRounds }
 import { PredictionStatus } from 'state/types'
 import range from 'lodash/range'
 import useSWR from 'swr'
+import { batch } from 'react-redux'
 
 const POLL_TIME_IN_SECONDS = 10
 
@@ -22,13 +23,17 @@ const usePollPredictions = () => {
     () => {
       const liveCurrentAndRecent = [currentEpoch, currentEpoch - 1, currentEpoch - 2]
 
-      dispatch(fetchRounds(liveCurrentAndRecent))
-      dispatch(fetchMarketData())
+      batch(() => {
+        dispatch(fetchRounds(liveCurrentAndRecent))
+        dispatch(fetchMarketData())
+      })
 
       if (account) {
         const epochRange = range(earliestEpoch, currentEpoch + 1)
-        dispatch(fetchLedgerData({ account, epochs: epochRange }))
-        dispatch(fetchClaimableStatuses({ account, epochs: epochRange }))
+        batch(() => {
+          dispatch(fetchLedgerData({ account, epochs: epochRange }))
+          dispatch(fetchClaimableStatuses({ account, epochs: epochRange }))
+        })
       }
     },
     {

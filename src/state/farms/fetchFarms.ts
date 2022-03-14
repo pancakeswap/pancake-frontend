@@ -3,8 +3,9 @@ import BigNumber from 'bignumber.js'
 import { BIG_TEN, BIG_ZERO } from '../../utils/bigNumber'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchMasterChefData } from './fetchMasterChefData'
+import { SerializedFarm } from '../types'
 
-const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]) => {
+const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]): Promise<SerializedFarm[]> => {
   const farmResult = await fetchPublicFarmsData(farmsToFetch)
   const masterChefResult = await fetchMasterChefData(farmsToFetch)
 
@@ -35,6 +36,7 @@ const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]) => {
       token: farm.token,
       quoteToken: farm.quoteToken,
       tokenAmountTotal: tokenAmountTotal.toJSON(),
+      quoteTokenAmountTotal: quoteTokenAmountTotal.toJSON(),
       lpTotalSupply: new BigNumber(lpTotalSupply).toJSON(),
       lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
       tokenPriceVsQuote: quoteTokenAmountTotal.div(tokenAmountTotal).toJSON(),

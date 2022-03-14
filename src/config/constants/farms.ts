@@ -41,9 +41,6 @@ const farms: SerializedFarmConfig[] = [
 ]
 
 // const farms: SerializedFarmConfig[] = [
-//   /**
-//    * These 3 farms (PID 0, 251, 252) should always be at the top of the file.
-//    */
 //   {
 //     pid: 0,
 //     v1pid: 0,
@@ -80,6 +77,74 @@ const farms: SerializedFarmConfig[] = [
 //   /**
 //    * V3 by order of release (some may be out of PID order due to multiplier boost)
 //    */
+//   {
+//     pid: 515,
+//     v1pid: 515,
+//     lpSymbol: 'DUET-CAKE LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0xbDF0aA1D1985Caa357A6aC6661D838DA8691c569',
+//     },
+//     token: serializedTokens.duet,
+//     quoteToken: serializedTokens.cake,
+//   },
+//   {
+//     pid: 514,
+//     v1pid: 514,
+//     lpSymbol: 'GMT-USDC LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0x007EC643C7Cc33a70C083fC305c283dd009C8b94',
+//     },
+//     token: serializedTokens.gmt,
+//     quoteToken: serializedTokens.usdc,
+//   },
+//   {
+//     pid: 386,
+//     v1pid: 386,
+//     lpSymbol: 'HOTCROSS-BNB LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
+//     },
+//     token: serializedTokens.hotcross,
+//     quoteToken: serializedTokens.wbnb,
+//   },
+//   {
+//     pid: 512,
+//     v1pid: 512,
+//     lpSymbol: 'FIGHT-BUSD LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0xB9378A7D4F47aC8Cf78b4f18ED15A875aB0C89a1',
+//     },
+//     token: serializedTokens.fight,
+//     quoteToken: serializedTokens.busd,
+//     isCommunity: true,
+//   },
+//   {
+//     pid: 498,
+//     v1pid: 498,
+//     lpSymbol: '8PAY-BUSD LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
+//     },
+//     token: serializedTokens['8pay'],
+//     quoteToken: serializedTokens.busd,
+//     isCommunity: true,
+//   },
+//   {
+//     pid: 472,
+//     v1pid: 472,
+//     lpSymbol: 'XWG-USDC LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0x936928146a21AfCcd30DfA84824A780572B1630B',
+//     },
+//     token: serializedTokens.xwg,
+//     quoteToken: serializedTokens.usdc,
+//   },
 //   {
 //     pid: 491,
 //     v1pid: 491,
@@ -125,29 +190,7 @@ const farms: SerializedFarmConfig[] = [
 //     quoteToken: serializedTokens.busd,
 //     isCommunity: true,
 //   },
-//   {
-//     pid: 512,
-//     v1pid: 512,
-//     lpSymbol: 'FIGHT-BUSD LP',
-//     lpAddresses: {
-//       97: '',
-//       56: '0xB9378A7D4F47aC8Cf78b4f18ED15A875aB0C89a1',
-//     },
-//     token: serializedTokens.fight,
-//     quoteToken: serializedTokens.busd,
-//     isCommunity: true,
-//   },
-//   {
-//     pid: 386,
-//     v1pid: 386,
-//     lpSymbol: 'HOTCROSS-BNB LP',
-//     lpAddresses: {
-//       97: '',
-//       56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
-//     },
-//     token: serializedTokens.hotcross,
-//     quoteToken: serializedTokens.wbnb,
-//   },
+
 //   {
 //     pid: 510,
 //     v1pid: 510,
@@ -184,7 +227,7 @@ const farms: SerializedFarmConfig[] = [
 //   },
 //   {
 //     pid: 448,
-//     v1pid: 488,
+//     v1pid: 448,
 //     lpSymbol: 'RUSD-BUSD LP',
 //     lpAddresses: {
 //       97: '',
@@ -246,18 +289,6 @@ const farms: SerializedFarmConfig[] = [
 //       56: '0xb5FEAE037c2330a8F298F39bcE96dd6E69f4Fa0E',
 //     },
 //     token: serializedTokens.prl,
-//     quoteToken: serializedTokens.busd,
-//     isCommunity: true,
-//   },
-//   {
-//     pid: 498,
-//     v1pid: 498,
-//     lpSymbol: '8PAY-BUSD LP',
-//     lpAddresses: {
-//       97: '',
-//       56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
-//     },
-//     token: serializedTokens['8pay'],
 //     quoteToken: serializedTokens.busd,
 //     isCommunity: true,
 //   },
@@ -386,17 +417,6 @@ const farms: SerializedFarmConfig[] = [
 //     token: serializedTokens.bbt,
 //     quoteToken: serializedTokens.wbnb,
 //     isCommunity: true,
-//   },
-//   {
-//     pid: 491,
-//     v1pid: 491,
-//     lpSymbol: 'HIGH-BUSD LP',
-//     lpAddresses: {
-//       97: '',
-//       56: '0xe98ac95A1dB2fCaaa9c7D4ba7ecfCE4877ca2bEa',
-//     },
-//     token: serializedTokens.high,
-//     quoteToken: serializedTokens.busd,
 //   },
 //   {
 //     pid: 490,
@@ -659,17 +679,6 @@ const farms: SerializedFarmConfig[] = [
 //     },
 //     token: serializedTokens.eternal,
 //     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 472,
-//     v1pid: 472,
-//     lpSymbol: 'XWG-USDC LP',
-//     lpAddresses: {
-//       97: '',
-//       56: '0x936928146a21AfCcd30DfA84824A780572B1630B',
-//     },
-//     token: serializedTokens.xwg,
-//     quoteToken: serializedTokens.usdc,
 //   },
 //   {
 //     pid: 471,
@@ -5224,422 +5233,11 @@ const farms: SerializedFarmConfig[] = [
 //     lpSymbol: 'PSG-BNB LP',
 //     lpAddresses: {
 //       97: '',
-//       56: '0x9c4f6a5050cf863e67a402e8b377973b4e3372c1',
+//       56: '0xe5e76f3BA7fE02d7FCf4FffFedDEF6cc873Fa135',
 //     },
-//     token: serializedTokens.psg,
+//     token: serializedTokens.syrup,
 //     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 39,
-//     v1pid: 39,
-//     lpSymbol: 'UNFI-BNB LP',
-//     lpAddresses: {
-//       97: '',
-//       56: '0xbEA35584b9a88107102ABEf0BDeE2c4FaE5D8c31',
-//     },
-//     token: serializedTokens.unfi,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 41,
-//     v1pid: 41,
-//     lpSymbol: 'VAI-BUSD LP',
-//     lpAddresses: {
-//       97: '',
-//       56: '0xff17ff314925dff772b71abdff2782bc913b3575',
-//     },
-//     token: serializedTokens.vai,
-//     quoteToken: serializedTokens.busd,
-//   },
-//   {
-//     pid: 40,
-//     v1pid: 40,
-//     lpSymbol: 'BLK-BNB LP',
-//     lpAddresses: {
-//       97: '',
-//       56: '0xC743Dc05F03D25E1aF8eC5F8228f4BD25513c8d0',
-//     },
-//     token: serializedTokens.blink,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 37,
-//     v1pid: 37,
-//     lpSymbol: 'HARD-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x9f40e8a2fcaa267a0c374b6c661e0b372264cc3d',
-//     },
-//     token: serializedTokens.hard,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 2,
-//     v1pid: 2,
-//     lpSymbol: 'BUSD-BNB LP',
-//     lpAddresses: {
-//       97: '0x2f7682b64b88149ba3250aee32db712964de5fa9',
-//       56: '0x1b96b92314c44b159149f7e0303511fb2fc4774f',
-//     },
-//     token: serializedTokens.busd,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 3,
-//     v1pid: 3,
-//     lpSymbol: 'ADA-BNB LP',
-//     lpAddresses: {
-//       97: '0xcbe3282a562e23b8c61ed04bb72ffdbb9233b1ce',
-//       56: '0xba51d1ab95756ca4eab8737ecd450cd8f05384cf',
-//     },
-//     token: serializedTokens.ada,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 4,
-//     v1pid: 4,
-//     lpSymbol: 'BAND-BNB LP',
-//     lpAddresses: {
-//       97: '0xcbe3282a562e23b8c61ed04bb72ffdbb9233b1ce',
-//       56: '0xc639187ef82271d8f517de6feae4faf5b517533c',
-//     },
-//     token: serializedTokens.band,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 5,
-//     v1pid: 5,
-//     lpSymbol: 'DOT-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0xbcd62661a6b1ded703585d3af7d7649ef4dcdb5c',
-//     },
-//     token: serializedTokens.dot,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 6,
-//     v1pid: 6,
-//     lpSymbol: 'EOS-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x981d2ba1b298888408d342c39c2ab92e8991691e',
-//     },
-//     token: serializedTokens.eos,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 7,
-//     v1pid: 7,
-//     lpSymbol: 'LINK-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0xaebe45e3a03b734c68e5557ae04bfc76917b4686',
-//     },
-//     token: serializedTokens.link,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 11,
-//     v1pid: 11,
-//     lpSymbol: 'USDT-BUSD LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0xc15fa3E22c912A276550F3E5FE3b0Deb87B55aCd',
-//     },
-//     token: serializedTokens.usdt,
-//     quoteToken: serializedTokens.busd,
-//   },
-//   {
-//     pid: 12,
-//     v1pid: 12,
-//     lpSymbol: 'TWT-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x610e7a287c27dfFcaC0F0a94f547Cc1B770cF483',
-//     },
-//     token: serializedTokens.twt,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 13,
-//     v1pid: 13,
-//     lpSymbol: 'XVS-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x41182c32F854dd97bA0e0B1816022e0aCB2fc0bb',
-//     },
-//     token: serializedTokens.xvs,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 14,
-//     v1pid: 14,
-//     lpSymbol: 'ETH-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x70D8929d04b60Af4fb9B58713eBcf18765aDE422',
-//     },
-//     token: serializedTokens.eth,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 15,
-//     v1pid: 15,
-//     lpSymbol: 'BTCB-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x7561EEe90e24F3b348E1087A005F78B4c8453524',
-//     },
-//     token: serializedTokens.btcb,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 16,
-//     v1pid: 16,
-//     lpSymbol: 'ALPHA-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x4e0f3385d932F7179DeE045369286FFa6B03d887',
-//     },
-//     token: serializedTokens.alpha,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 17,
-//     v1pid: 17,
-//     lpSymbol: 'USDT-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x20bcc3b8a0091ddac2d0bc30f68e6cbb97de59cd',
-//     },
-//     token: serializedTokens.usdt,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 18,
-//     v1pid: 18,
-//     lpSymbol: 'XRP-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0xc7b4b32a3be2cb6572a1c9959401f832ce47a6d2',
-//     },
-//     token: serializedTokens.xrp,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 19,
-//     v1pid: 19,
-//     lpSymbol: 'ATOM-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x2333c77fc0b2875c11409cdcd3c75d42d402e834',
-//     },
-//     token: serializedTokens.atom,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 20,
-//     v1pid: 20,
-//     lpSymbol: 'YFII-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x574a978c2d0d36d707a05e459466c7a1054f1210',
-//     },
-//     token: serializedTokens.yfii,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 21,
-//     v1pid: 21,
-//     lpSymbol: 'DAI-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x56c77d59e82f33c712f919d09fceddf49660a829',
-//     },
-//     token: serializedTokens.dai,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 22,
-//     v1pid: 22,
-//     lpSymbol: 'XTZ-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x5acac332f0f49c8badc7afd0134ad19d3db972e6',
-//     },
-//     token: serializedTokens.xtz,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 23,
-//     v1pid: 23,
-//     lpSymbol: 'BCH-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x54edd846db17f43b6e43296134ecd96284671e81',
-//     },
-//     token: serializedTokens.bch,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 24,
-//     v1pid: 24,
-//     lpSymbol: 'YFI-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x68Ff2ca47D27db5Ac0b5c46587645835dD51D3C1',
-//     },
-//     token: serializedTokens.yfi,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 25,
-//     v1pid: 25,
-//     lpSymbol: 'UNI-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x4269e7F43A63CEA1aD7707Be565a94a9189967E9',
-//     },
-//     token: serializedTokens.uni,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 26,
-//     v1pid: 26,
-//     lpSymbol: 'FIL-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x35fe9787f0ebf2a200bac413d3030cf62d312774',
-//     },
-//     token: serializedTokens.fil,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 27,
-//     v1pid: 27,
-//     lpSymbol: 'INJ-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x7a34bd64d18e44CfdE3ef4B81b87BAf3EB3315B6',
-//     },
-//     token: serializedTokens.inj,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 29,
-//     v1pid: 29,
-//     lpSymbol: 'USDC-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x30479874f9320a62bce3bc0e315c920e1d73e278',
-//     },
-//     token: serializedTokens.usdc,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 30,
-//     v1pid: 30,
-//     lpSymbol: 'SXP-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x752E713fB70E3FA1Ac08bCF34485F14A986956c4',
-//     },
-//     token: serializedTokens.sxp,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 32,
-//     v1pid: 32,
-//     lpSymbol: 'CTK-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x7793870484647a7278907498ec504879d6971EAb',
-//     },
-//     token: serializedTokens.ctk,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 34,
-//     v1pid: 34,
-//     lpSymbol: 'STAX-CAKE LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
-//     },
-//     token: serializedTokens.stax,
-//     quoteToken: serializedTokens.cake,
-//     isCommunity: true,
-//   },
-//   {
-//     pid: 35,
-//     v1pid: 35,
-//     lpSymbol: 'NAR-CAKE LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x745c4fd226e169d6da959283275a8e0ecdd7f312',
-//     },
-//     token: serializedTokens.nar,
-//     quoteToken: serializedTokens.cake,
-//     isCommunity: true,
-//   },
-//   {
-//     pid: 36,
-//     v1pid: 36,
-//     lpSymbol: 'NYA-CAKE LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x2730bf486d658838464a4ef077880998d944252d',
-//     },
-//     token: serializedTokens.nya,
-//     quoteToken: serializedTokens.cake,
-//     isCommunity: true,
-//   },
-//   {
-//     pid: 38,
-//     v1pid: 38,
-//     lpSymbol: 'bROOBEE-CAKE LP',
-//     lpAddresses: {
-//       97: '',
-//       56: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
-//     },
-//     token: serializedTokens.broobee,
-//     quoteToken: serializedTokens.cake,
-//     isCommunity: true,
-//   },
-//   {
-//     pid: 8,
-//     v1pid: 8,
-//     lpSymbol: 'BAKE-BNB Bakery LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0xc2eed0f5a0dc28cfa895084bc0a9b8b8279ae492',
-//     },
-//     token: serializedTokens.bake,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 9,
-//     v1pid: 9,
-//     lpSymbol: 'BURGER-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0xd937FB9E6e47F3805981453BFB277a49FFfE04D7',
-//     },
-//     token: serializedTokens.burger,
-//     quoteToken: serializedTokens.wbnb,
-//   },
-//   {
-//     pid: 10,
-//     v1pid: 10,
-//     lpSymbol: 'BAKE-BNB LP',
-//     lpAddresses: {
-//       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-//       56: '0x3Da30727ed0626b78C212e81B37B97A8eF8A25bB',
-//     },
-//     token: serializedTokens.bake,
-//     quoteToken: serializedTokens.wbnb,
-//   },
+//   }
 // ].filter((f) => !!f.lpAddresses[CHAIN_ID])
 
 export default farms

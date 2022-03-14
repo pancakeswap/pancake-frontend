@@ -48,10 +48,12 @@ export const getCollectionsApi = async (): Promise<ApiCollectionsResponse> => {
 }
 
 const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promise<number[]> => {
-  const totalSupplyCalls = collections.map((collection) => ({
-    address: collection.address.toLowerCase(),
-    name: 'totalSupply',
-  }))
+  const totalSupplyCalls = collections
+    .filter((collection) => collection?.address)
+    .map((collection) => ({
+      address: collection.address.toLowerCase(),
+      name: 'totalSupply',
+    }))
   if (totalSupplyCalls.length > 0) {
     const totalSupplyRaw = await multicallv2(erc721Abi, totalSupplyCalls, { requireSuccess: false })
     const totalSupply = totalSupplyRaw.flat()
@@ -69,7 +71,7 @@ export const getCollections = async (): Promise<Record<string, Collection>> => {
     const collectionApiData: ApiCollection[] = collections?.data ?? []
     const collectionsTotalSupply = await fetchCollectionsTotalSupply(collectionApiData)
     const collectionApiDataCombinedOnChain = collectionApiData.map((collection, index) => {
-      const totalSupplyFromApi = Number(collection.totalSupply) || 0
+      const totalSupplyFromApi = Number(collection?.totalSupply) || 0
       const totalSupplyFromOnChain = collectionsTotalSupply[index]
       return {
         ...collection,
@@ -95,7 +97,7 @@ export const getCollection = async (collectionAddress: string): Promise<Record<s
     ])
 
     const collectionsTotalSupply = await fetchCollectionsTotalSupply([collection])
-    const totalSupplyFromApi = Number(collection.totalSupply) || 0
+    const totalSupplyFromApi = Number(collection?.totalSupply) || 0
     const totalSupplyFromOnChain = collectionsTotalSupply[0]
     const collectionApiDataCombinedOnChain = {
       ...collection,
@@ -454,15 +456,18 @@ export const getAllPancakeBunniesRecentUpdatedAt = async (bunnyIds: string[]): P
 }
 
 /**
- * Returns the lowest price of any NFT in a collection
+ * Returns the lowest/highest price of any NFT in a collection
  */
-export const getLowestPriceInCollection = async (collectionAddress: string) => {
+export const getLeastMostPriceInCollection = async (
+  collectionAddress: string,
+  orderDirection: 'asc' | 'desc' = 'asc',
+) => {
   try {
     const response = await getNftsMarketData(
       { collection: collectionAddress.toLowerCase(), isTradable: true },
       1,
       'currentAskPrice',
-      'asc',
+      orderDirection,
     )
 
     if (response.length === 0) {
@@ -835,22 +840,24 @@ export const combineCollectionData = (
     {},
   )
 
-  return collectionApiData.reduce((accum, current) => {
-    const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
-    const collection: Collection = {
-      ...current,
-      ...collectionMarket,
-    }
+  return collectionApiData
+    .filter((collection) => collection?.address)
+    .reduce((accum, current) => {
+      const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
+      const collection: Collection = {
+        ...current,
+        ...collectionMarket,
+      }
 
-    if (current.name) {
-      collection.name = current.name
-    }
+      if (current.name) {
+        collection.name = current.name
+      }
 
-    return {
-      ...accum,
-      [current.address]: collection,
-    }
-  }, {})
+      return {
+        ...accum,
+        [current.address]: collection,
+      }
+    }, {})
 }
 
 /**

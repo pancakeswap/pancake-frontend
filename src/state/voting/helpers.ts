@@ -56,6 +56,7 @@ export const getProposal = async (id: string): Promise<Proposal> => {
           snapshot
           state
           author
+          votes
           space {
             id
             name

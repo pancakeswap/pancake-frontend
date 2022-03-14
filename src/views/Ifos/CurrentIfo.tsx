@@ -1,48 +1,42 @@
-import { ifosConfig } from 'config/constants'
-import styled from 'styled-components'
-import { Box } from '@pancakeswap/uikit'
-
+import { useMemo } from 'react'
 import useGetPublicIfoV2Data from 'views/Ifos/hooks/v2/useGetPublicIfoData'
 import useGetWalletIfoV3Data from 'views/Ifos/hooks/v3/useGetWalletIfoData'
-import Container from 'components/Layout/Container'
+
+import { Ifo } from 'config/constants/types'
 
 import { IfoCurrentCard } from './components/IfoFoldableCard'
-import IfoLayout, { IfoLayoutWrapper } from './components/IfoLayout'
-import IfoPoolVaultCard from './components/IfoPoolVaultCard'
-import IfoQuestions from './components/IfoQuestions'
+import IfoContainer from './components/IfoContainer'
 import IfoSteps from './components/IfoSteps'
 
-const IfoStepBackground = styled(Box)`
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
-`
+interface TypeProps {
+  activeIfo: Ifo
+}
 
-/**
- * Note: currently there should be only 1 active IFO at a time
- */
-const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
-
-const Ifo = () => {
+const CurrentIfo: React.FC<TypeProps> = ({ activeIfo }) => {
   const publicIfoData = useGetPublicIfoV2Data(activeIfo)
   const walletIfoData = useGetWalletIfoV3Data(activeIfo)
 
+  const { poolBasic, poolUnlimited } = walletIfoData
+
+  const isCommitted = useMemo(
+    () =>
+      poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0),
+    [poolBasic.amountTokenCommittedInLP, poolUnlimited.amountTokenCommittedInLP],
+  )
+
   return (
-    <IfoLayout id="current-ifo" py={['24px', '24px', '40px']}>
-      <Container>
-        <IfoLayoutWrapper>
-          <IfoPoolVaultCard />
-          <IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-        </IfoLayoutWrapper>
-      </Container>
-      <IfoStepBackground>
-        <Container>
-          <IfoSteps isLive={publicIfoData.status === 'live'} ifo={activeIfo} walletIfoData={walletIfoData} />
-        </Container>
-      </IfoStepBackground>
-      <Container>
-        <IfoQuestions />
-      </Container>
-    </IfoLayout>
+    <IfoContainer
+      ifoSection={<IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />}
+      ifoSteps={
+        <IfoSteps
+          isLive={publicIfoData.status === 'live'}
+          hasClaimed={poolBasic.hasClaimed || poolUnlimited.hasClaimed}
+          isCommitted={isCommitted}
+          ifoCurrencyAddress={activeIfo.currency.address}
+        />
+      }
+    />
   )
 }
 
-export default Ifo
+export default CurrentIfo

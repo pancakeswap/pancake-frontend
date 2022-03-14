@@ -131,7 +131,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
         </Text>
         <Text bold color={resultTextColor} lineHeight={1}>
           {roundResult === Result.CANCELED ? (
-            t('Canceled')
+            t('Cancelled')
           ) : roundResult === Result.HOUSE ? (
             <>
               {tooltipVisible && tooltip}

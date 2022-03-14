@@ -12,7 +12,6 @@ import {
   removeSerializedToken,
   SerializedPair,
   muteAudio,
-  toggleTheme,
   unmuteAudio,
   updateGasPrice,
   updateUserDeadline,
@@ -69,7 +68,6 @@ export interface UserState {
 
   timestamp: number
   audioPlay: boolean
-  isDark: boolean
   isExchangeChartDisplayed: boolean
   isSubgraphHealthIndicatorDisplayed: boolean
   userChartViewMode: ChartViewMode
@@ -101,7 +99,6 @@ export const initialState: UserState = {
   pairs: {},
   timestamp: currentTimestamp(),
   audioPlay: true,
-  isDark: false,
   isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,
   userChartViewMode: ChartViewMode.BASIC,
@@ -192,9 +189,6 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(unmuteAudio, (state) => {
       state.audioPlay = true
-    })
-    .addCase(toggleTheme, (state) => {
-      state.isDark = !state.isDark
     })
     .addCase(updateUserFarmStakedOnly, (state, { payload: { userFarmStakedOnly } }) => {
       state.userFarmStakedOnly = userFarmStakedOnly

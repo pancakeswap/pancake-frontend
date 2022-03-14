@@ -3,9 +3,11 @@ import { Flex, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 export interface TimerProps {
+  seconds?: number
   minutes?: number
   hours?: number
   days?: number
+  wrapperClassName?: string
 }
 
 const StyledTimerFlex = styled(Flex)<{ showTooltip?: boolean }>`
@@ -21,11 +23,11 @@ const StyledTimerText = styled(Heading)`
   -webkit-text-fill-color: transparent;
 `
 
-const Wrapper: React.FC<TimerProps> = ({ minutes, hours, days }) => {
+const Wrapper: React.FC<TimerProps> = ({ minutes, hours, days, seconds, wrapperClassName }) => {
   const { t } = useTranslation()
 
   return (
-    <StyledTimerFlex alignItems="flex-end">
+    <StyledTimerFlex alignItems="flex-end" className={wrapperClassName}>
       {Boolean(days) && (
         <>
           <StyledTimerText mb="-4px" scale="xl" mr="4px">
@@ -48,6 +50,14 @@ const Wrapper: React.FC<TimerProps> = ({ minutes, hours, days }) => {
             {minutes}
           </StyledTimerText>
           <StyledTimerText mr="12px">{t('m')}</StyledTimerText>
+        </>
+      )}
+      {Boolean(seconds) && (
+        <>
+          <StyledTimerText mb="-4px" scale="xl" mr="4px">
+            {seconds}
+          </StyledTimerText>
+          <StyledTimerText mr="12px">{t('s')}</StyledTimerText>
         </>
       )}
     </StyledTimerFlex>

@@ -32,7 +32,7 @@ const config = [
     title: <Trans>How much is the participation fee?</Trans>,
     description: [
       <Trans>There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.</Trans>,
-      <Trans>The fee will start at 1%.</Trans>,
+      <Trans>The fee will start at 0.5%.</Trans>,
       <Trans>
         The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion
         of the IFO.
@@ -41,7 +41,7 @@ const config = [
   },
   {
     title: <Trans>Where does the participation fee go?</Trans>,
-    description: [<Trans>The CAKE from the participation fee will be thrown into the weekly token burn.</Trans>],
+    description: [<Trans>The CAKE from the participation fee will be burnt as part of the weekly token burn.</Trans>],
   },
   {
     title: <Trans>How can I get an achievement for participating in the IFO?</Trans>,

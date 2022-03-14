@@ -54,7 +54,7 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, onSuccess }) => {
       <Grid gridTemplateColumns="1fr 1fr">
         <Text bold>{nft.name}</Text>
         <Text fontSize="12px" color="textSubtle" textAlign="right">
-          {nft.collectionName}
+          {nft?.collectionName}
         </Text>
         {nft.location === NftLocation.FORSALE ? (
           <>
@@ -63,7 +63,7 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, onSuccess }) => {
             </Text>
             <Flex justifySelf="flex-end" width="max-content">
               <BinanceIcon width="16px" height="16px" mr="4px" />
-              <Text small>{nft.marketData.currentAskPrice}</Text>
+              <Text small>{nft?.marketData?.currentAskPrice}</Text>
             </Flex>
           </>
         ) : (

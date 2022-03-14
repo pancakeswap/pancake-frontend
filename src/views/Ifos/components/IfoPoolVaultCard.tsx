@@ -130,7 +130,7 @@ const IfoPoolVaultCardMobile: React.FC = () => {
             <Staked pool={pool} userDataLoaded={!userDataLoading} />
             <ActionContainer>
               <Box>
-                <RecentCakeProfitCountdownRow vaultKey={VaultKey.IfoPool} />
+                <RecentCakeProfitCountdownRow pool={pool} />
               </Box>
               <Box mt="8px">
                 <UnstakingFeeCountdownRow vaultKey={VaultKey.IfoPool} />

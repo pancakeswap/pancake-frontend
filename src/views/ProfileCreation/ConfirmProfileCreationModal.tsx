@@ -6,6 +6,7 @@ import { useCake, useProfileContract } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useProfile } from 'state/profile/hooks'
 import useToast from 'hooks/useToast'
+import { requiresApproval } from 'utils/requiresApproval'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
@@ -34,21 +35,16 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   const profileContract = useProfileContract()
   const { refresh: refreshProfile } = useProfile()
   const { toastSuccess } = useToast()
-  const cakeContract = useCake()
+  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
-        try {
-          const response = await cakeContract.allowance(account, profileContract.address)
-          return response.gte(minimumCakeRequired)
-        } catch (error) {
-          return false
-        }
+        return requiresApproval(cakeContractReader, account, profileContract.address, minimumCakeRequired)
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [profileContract.address, allowance.toJSON()])
+        return callWithGasPrice(cakeContractApprover, 'approve', [profileContract.address, allowance.toJSON()])
       },
       onConfirm: () => {
         return callWithGasPrice(profileContract, 'createProfile', [

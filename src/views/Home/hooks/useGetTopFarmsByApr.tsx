@@ -5,9 +5,9 @@ import { useAppDispatch } from 'state'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from 'state/farms'
 import { getFarmApr } from 'utils/apr'
 import orderBy from 'lodash/orderBy'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { DeserializedFarm } from 'state/types'
 import { FetchStatus } from 'config/constants/types'
+import { FarmWithStakedValue } from '../../Farms/components/types'
 
 const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()

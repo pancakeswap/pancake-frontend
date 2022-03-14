@@ -9,6 +9,7 @@ import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
 import { FetchStatus } from 'config/constants/types'
+import { requiresApproval } from 'utils/requiresApproval'
 import { useProfile } from 'state/profile/hooks'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { UseEditProfileResponse } from './reducer'
@@ -43,7 +44,7 @@ const AvatarWrapper = styled.div`
 const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemove, onDismiss }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const cakeContract = useCake()
+  const { reader: cakeContract } = useCake()
   const { profile } = useProfile()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
   const {
@@ -60,8 +61,13 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
    */
   useEffect(() => {
     const checkApprovalStatus = async () => {
-      const response = await cakeContract.allowance(account, getPancakeProfileAddress())
-      setNeedsApproval(response.lt(minimumCakeRequired))
+      const approvalNeeded = await requiresApproval(
+        cakeContract,
+        account,
+        getPancakeProfileAddress(),
+        minimumCakeRequired,
+      )
+      setNeedsApproval(approvalNeeded)
     }
 
     if (account && !isProfileCostsLoading) {

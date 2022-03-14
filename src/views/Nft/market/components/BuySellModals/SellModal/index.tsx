@@ -85,7 +85,7 @@ const SellModal: React.FC<SellModalProps> = ({
   onSuccessEditProfile,
 }) => {
   const [stage, setStage] = useState(variant === 'sell' ? SellingStage.SELL : SellingStage.EDIT)
-  const [price, setPrice] = useState(variant === 'sell' ? '' : nftToSell.marketData.currentAskPrice)
+  const [price, setPrice] = useState(variant === 'sell' ? '' : nftToSell?.marketData?.currentAskPrice)
   const [transferAddress, setTransferAddress] = useState('')
   const [confirmedTxHash, setConfirmedTxHash] = useState('')
   const { t } = useTranslation()
@@ -93,7 +93,9 @@ const SellModal: React.FC<SellModalProps> = ({
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
-  const collectionContract = useErc721CollectionContract(nftToSell.collectionAddress)
+  const { reader: collectionContractReader, signer: collectionContractSigner } = useErc721CollectionContract(
+    nftToSell.collectionAddress,
+  )
   const nftMarketContract = useNftMarketContract()
 
   const isInvalidTransferAddress = transferAddress.length > 0 && !isAddress(transferAddress)
@@ -109,7 +111,7 @@ const SellModal: React.FC<SellModalProps> = ({
         setStage(SellingStage.SET_PRICE)
         break
       case SellingStage.ADJUST_PRICE:
-        setPrice(nftToSell.marketData.currentAskPrice)
+        setPrice(nftToSell?.marketData?.currentAskPrice)
         setStage(SellingStage.EDIT)
         break
       case SellingStage.CONFIRM_ADJUST_PRICE:
@@ -168,14 +170,14 @@ const SellModal: React.FC<SellModalProps> = ({
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
-        const approvedForContract = await collectionContract.isApprovedForAll(account, nftMarketContract.address)
-        return approvedForContract
+        const approvedForContract = await collectionContractReader.isApprovedForAll(account, nftMarketContract.address)
+        return !approvedForContract
       } catch (error) {
-        return false
+        return true
       }
     },
     onApprove: () => {
-      return callWithGasPrice(collectionContract, 'setApprovalForAll', [nftMarketContract.address, true])
+      return callWithGasPrice(collectionContractSigner, 'setApprovalForAll', [nftMarketContract.address, true])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
@@ -188,7 +190,7 @@ const SellModal: React.FC<SellModalProps> = ({
         return callWithGasPrice(nftMarketContract, 'cancelAskOrder', [nftToSell.collectionAddress, nftToSell.tokenId])
       }
       if (stage === SellingStage.CONFIRM_TRANSFER) {
-        return callWithGasPrice(collectionContract, 'safeTransferFrom(address,address,uint256)', [
+        return callWithGasPrice(collectionContractSigner, 'safeTransferFrom(address,address,uint256)', [
           account,
           transferAddress,
           nftToSell.tokenId,
@@ -259,7 +261,7 @@ const SellModal: React.FC<SellModalProps> = ({
           nftToSell={nftToSell}
           variant="adjust"
           continueToNextStage={continueToNextStage}
-          currentPrice={nftToSell.marketData.currentAskPrice}
+          currentPrice={nftToSell?.marketData?.currentAskPrice}
           lowestPrice={lowestPrice}
           price={price}
           setPrice={setPrice}

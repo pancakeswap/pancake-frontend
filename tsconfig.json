@@ -19,7 +19,10 @@
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "downlevelIteration": true,
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@pancakeswap/uikit": ["../packages/uikit/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "cypress"],
   "include": ["next-env.d.ts", "./src/**/*.ts", "./src/**/*.tsx"]

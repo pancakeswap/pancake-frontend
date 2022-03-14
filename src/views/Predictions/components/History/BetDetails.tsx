@@ -30,7 +30,7 @@ const BetDetails: React.FC<BetDetailsProps> = ({ bet, result }) => {
       {result === Result.CANCELED && (
         <Text as="p" color="failure" mb="24px">
           {t(
-            'This round was automatically canceled due to an error. If you entered a position, please reclaim your funds below.',
+            'This round was automatically cancelled due to an error. If you entered a position, please reclaim your funds below.',
           )}
         </Text>
       )}

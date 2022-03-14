@@ -1,62 +1,47 @@
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import orderBy from 'lodash/orderBy'
 import minBy from 'lodash/minBy'
-import { BigNumber } from '@ethersproject/bignumber'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
-import { State, NodeRound, ReduxNodeLedger, NodeLedger, ReduxNodeRound } from '../types'
-import { parseBigNumberObj } from './helpers'
+import { State } from '../types'
 import { fetchAddressResult } from '.'
+import {
+  getBigNumberRounds,
+  getRoundsByCloseOracleIdSelector,
+  makeGetRoundSelector,
+  getSortedRoundsSelector,
+  makeGetBetByEpochSelector,
+  makeGetIsClaimableSelector,
+  getCurrentRoundSelector,
+  getMinBetAmountSelector,
+  getCurrentRoundLockTimestampSelector,
+} from './selectors'
 
 export const useGetRounds = () => {
-  const rounds = useSelector((state: State) => state.predictions.rounds)
-  return Object.keys(rounds).reduce((accum, epoch) => {
-    return {
-      ...accum,
-      [epoch]: parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch]),
-    }
-  }, {}) as { [key: string]: NodeRound }
+  return useSelector(getBigNumberRounds)
 }
 
 export const useGetRoundsByCloseOracleId = () => {
-  const rounds = useSelector((state: State) => state.predictions.rounds)
-  return Object.keys(rounds).reduce((accum, epoch) => {
-    const parsed = parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch])
-    return {
-      ...accum,
-      [parsed.closeOracleId]: parsed,
-    }
-  }, {}) as { [key: string]: NodeRound }
+  return useSelector(getRoundsByCloseOracleIdSelector)
 }
 
 export const useGetRound = (epoch: number) => {
-  const round = useSelector((state: State) => state.predictions.rounds[epoch])
-  return parseBigNumberObj<ReduxNodeRound, NodeRound>(round)
+  const getRoundSelector = useMemo(() => makeGetRoundSelector(epoch), [epoch])
+  return useSelector(getRoundSelector)
 }
 
 export const useGetSortedRounds = () => {
-  const roundData = useGetRounds()
-  return orderBy(Object.values(roundData), ['epoch'], ['asc'])
+  return useSelector(getSortedRoundsSelector)
 }
 
 export const useGetBetByEpoch = (account: string, epoch: number) => {
-  const bets = useSelector((state: State) => state.predictions.ledgers)
-
-  if (!bets[account]) {
-    return null
-  }
-
-  if (!bets[account][epoch]) {
-    return null
-  }
-
-  return parseBigNumberObj<ReduxNodeLedger, NodeLedger>(bets[account][epoch])
+  const getBetByEpochSelector = useMemo(() => makeGetBetByEpochSelector(account, epoch), [account, epoch])
+  return useSelector(getBetByEpochSelector)
 }
 
 export const useGetIsClaimable = (epoch) => {
-  const claimableStatuses = useSelector((state: State) => state.predictions.claimableStatuses)
-  return claimableStatuses[epoch] || false
+  const getIsClaimableSelector = useMemo(() => makeGetIsClaimableSelector(epoch), [epoch])
+  return useSelector(getIsClaimableSelector)
 }
 
 /**
@@ -90,9 +75,7 @@ export const useGetIntervalSeconds = () => {
 }
 
 export const useGetCurrentRound = () => {
-  const currentEpoch = useGetCurrentEpoch()
-  const rounds = useGetRounds()
-  return rounds[currentEpoch]
+  return useSelector(getCurrentRoundSelector)
 }
 
 export const useGetPredictionsStatus = () => {
@@ -112,8 +95,7 @@ export const useGetCurrentHistoryPage = () => {
 }
 
 export const useGetMinBetAmount = () => {
-  const minBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
-  return useMemo(() => BigNumber.from(minBetAmount), [minBetAmount])
+  return useSelector(getMinBetAmountSelector)
 }
 
 export const useGetBufferSeconds = () => {
@@ -132,18 +114,7 @@ export const useGetHistory = () => {
  * The current round's lock timestamp will not be set immediately so we return an estimate until then
  */
 export const useGetCurrentRoundLockTimestamp = () => {
-  const currentRound = useGetCurrentRound()
-  const intervalSeconds = useGetIntervalSeconds()
-
-  if (!currentRound) {
-    return undefined
-  }
-
-  if (!currentRound.lockTimestamp) {
-    return currentRound.startTimestamp + intervalSeconds
-  }
-
-  return currentRound.lockTimestamp
+  return useSelector(getCurrentRoundLockTimestampSelector)
 }
 
 // Leaderboard

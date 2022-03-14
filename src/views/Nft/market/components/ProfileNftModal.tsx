@@ -38,7 +38,7 @@ const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss, onSuc
           <Grid flex="1" gridTemplateColumns="1fr 1fr" alignItems="center">
             <Text bold>{nft.name}</Text>
             <Text fontSize="12px" color="textSubtle" textAlign="right">
-              {nft.collectionName}
+              {nft?.collectionName}
             </Text>
             {/* TODO: Add lowestPrice when available */}
           </Grid>

@@ -28,6 +28,7 @@ import predictionsReducer from './predictions'
 import swap from './swap/reducer'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
+import limitOrders from './limitOrders/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
@@ -64,6 +65,8 @@ const persistedReducer = persistReducer(
     info: infoReducer,
     nftMarket: nftMarketReducer,
 
+    limitOrders,
+
     // Exchange
     user,
     transactions,
@@ -78,7 +81,7 @@ const persistedReducer = persistReducer(
 // eslint-disable-next-line import/no-mutable-exports
 let store: ReturnType<typeof makeStore>
 
-function makeStore(preloadedState = undefined) {
+export function makeStore(preloadedState = undefined) {
   return configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
@@ -113,7 +116,6 @@ export const initializeStore = (preloadedState = undefined) => {
   // Create the store once in the client
   if (!store) {
     store = _store
-    store.dispatch(updateVersion())
   }
 
   return _store
@@ -130,7 +132,9 @@ export const useAppDispatch = () => useDispatch()
 
 export default store
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store, undefined, () => {
+  store.dispatch(updateVersion())
+})
 
 export function useStore(initialState) {
   return useMemo(() => initializeStore(initialState), [initialState])

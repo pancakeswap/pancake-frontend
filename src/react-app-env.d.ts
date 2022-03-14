@@ -1,6 +1,7 @@
 interface Window {
   ethereum?: {
     isMetaMask?: true
+    providers?: any[]
     request?: (...args: any[]) => Promise<void>
   }
   BinanceChain?: {

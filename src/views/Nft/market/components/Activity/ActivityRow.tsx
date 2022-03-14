@@ -93,7 +93,7 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
                     color="textSubtle"
                     fontSize="14px"
                   >
-                    {nft.collectionName}
+                    {nft?.collectionName}
                   </Text>
                   <Text
                     as={NextLinkFromReactRouter}

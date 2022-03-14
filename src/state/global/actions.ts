@@ -4,4 +4,4 @@ import { createAction } from '@reduxjs/toolkit'
 // allows any updates to be applied to store data loaded from localStorage
 export const updateVersion = createAction<void>('global/updateVersion')
 
-export default updateVersion
+export const resetUserState = createAction<void>('global/resetUserState')
