@@ -65,10 +65,15 @@ const activeListUrlsSelector = createSelector(selectorActiveUrls, (urls) =>
   urls?.filter((url) => !UNSUPPORTED_LIST_URLS.includes(url)),
 )
 
-const combineFn = (lists: AppState['lists']['byUrl'], urls: string[]) => {
+const combineTokenMapsWithDefault = (lists: AppState['lists']['byUrl'], urls: string[]) => {
   const defaultTokenMap = listToTokenMap(DEFAULT_TOKEN_LIST)
   if (!urls) return defaultTokenMap
-  return combineMaps(
+  return combineMaps(combineTokenMaps(lists, urls), defaultTokenMap)
+}
+
+const combineTokenMaps = (lists: AppState['lists']['byUrl'], urls: string[]) => {
+  if (!urls) return EMPTY_LIST
+  return (
     urls
       .slice()
       // sort by priority so top priority goes last
@@ -83,15 +88,14 @@ const combineFn = (lists: AppState['lists']['byUrl'], urls: string[]) => {
           console.error('Could not show token list due to error', error)
           return allTokens
         }
-      }, EMPTY_LIST),
-    defaultTokenMap,
+      }, EMPTY_LIST)
   )
 }
 
 export const combinedTokenMapFromActiveUrlsSelector = createSelector(
   [selectorByUrls, selectorActiveUrls],
   (lists, urls) => {
-    return combineFn(lists, urls)
+    return combineTokenMapsWithDefault(lists, urls)
   },
 )
 
@@ -102,19 +106,19 @@ const inactiveUrlSelector = createSelector([selectorByUrls, selectorActiveUrls],
 export const combinedTokenMapFromInActiveUrlsSelector = createSelector(
   [selectorByUrls, inactiveUrlSelector],
   (lists, inactiveUrl) => {
-    return combineFn(lists, inactiveUrl)
+    return combineTokenMaps(lists, inactiveUrl)
   },
 )
 
 export const combinedTokenMapFromOfficialsUrlsSelector = createSelector([selectorByUrls], (lists) => {
-  return combineFn(lists, OFFICIAL_LISTS)
+  return combineTokenMapsWithDefault(lists, OFFICIAL_LISTS)
 })
 
 export const combinedTokenMapFromUnsupportedUrlsSelector = createSelector([selectorByUrls], (lists) => {
   // get hard coded unsupported tokens
   const localUnsupportedListMap = listToTokenMap(UNSUPPORTED_TOKEN_LIST)
   // get any loaded unsupported tokens
-  const loadedUnsupportedListMap = combineFn(lists, UNSUPPORTED_LIST_URLS)
+  const loadedUnsupportedListMap = combineTokenMaps(lists, UNSUPPORTED_LIST_URLS)
 
   return combineMaps(localUnsupportedListMap, loadedUnsupportedListMap)
 })
