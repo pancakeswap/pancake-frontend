@@ -13,18 +13,11 @@ import {
 } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-
-const perpetualLangs = { en: 'en', 'zh-cn': 'zh-CN', ko: 'ko' }
-const perpLangMap = (code: string) => {
-  if (perpetualLangs[code]) {
-    return perpetualLangs[code]
-  }
-  return 'en'
-}
+import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 
 export type ConfigMenuItemsType = MenuItemsType & { hideSubNav?: boolean }
 
-const config: (t: ContextApi['t'], code: string) => ConfigMenuItemsType[] = (t, code) => [
+const config: (t: ContextApi['t'], code?: string) => ConfigMenuItemsType[] = (t, code) => [
   {
     label: t('Trade'),
     icon: SwapIcon,
