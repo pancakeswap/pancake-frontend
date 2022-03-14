@@ -1,16 +1,19 @@
 import { useMemo } from 'react'
 import { menuStatus } from '@pancakeswap/uikit'
-import { useTranslation } from '../contexts/Localization'
+import { useTranslation } from '../../../contexts/Localization'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
-import config, { ConfigMenuItemsType } from '../components/Menu/config/config'
+import config, { ConfigMenuItemsType } from '../config/config'
 
 export const useMenuItems = (): ConfigMenuItemsType[] => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { code },
+  } = useTranslation()
   const menuItemsStatus = useMenuItemsStatus()
 
   const menuItems = useMemo(() => {
-    return config(t)
-  }, [t])
+    return config(t, code)
+  }, [t, code])
 
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
