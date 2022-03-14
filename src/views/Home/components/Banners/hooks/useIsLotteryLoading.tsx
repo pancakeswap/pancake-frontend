@@ -1,11 +1,11 @@
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
 
-const useIsRenderLotteryBanner = () => {
+const useIsLotteryLoading = () => {
   useFetchLottery()
   const {
     currentRound: { isLoading },
   } = useLottery()
-  return !isLoading
+  return isLoading
 }
 
-export default useIsRenderLotteryBanner
+export default useIsLotteryLoading

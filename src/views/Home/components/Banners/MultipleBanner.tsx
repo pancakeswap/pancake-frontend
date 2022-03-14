@@ -124,21 +124,22 @@ const MultipleBanner: React.FC = () => {
 
   return (
     <BannerPlaceHolder walletConnected={Boolean(account)} isLoading={isLoading}>
-      {isLoading && (
+      {isLoading ? (
         <Flex justifyContent="center" alignItems="center" height="100%">
           <Spinner />
         </Flex>
+      ) : (
+        <StyledSwiper key={swiperKey} {...swiperOptions}>
+          {bannerList.map((banner, index) => {
+            const childKey = `Banner${index}`
+            return (
+              <SwiperSlide style={{ padding: isDesktop || isTablet ? 20 : 0 }} key={childKey}>
+                {banner}
+              </SwiperSlide>
+            )
+          })}
+        </StyledSwiper>
       )}
-      <StyledSwiper key={swiperKey} {...swiperOptions}>
-        {bannerList.map((banner, index) => {
-          const childKey = `Banner${index}`
-          return (
-            <SwiperSlide style={{ padding: isDesktop || isTablet ? 20 : 0 }} key={childKey}>
-              {banner}
-            </SwiperSlide>
-          )
-        })}
-      </StyledSwiper>
     </BannerPlaceHolder>
   )
 }
