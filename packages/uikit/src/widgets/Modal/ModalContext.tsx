@@ -73,10 +73,6 @@ const ModalProvider: React.FC = ({ children }) => {
   const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true);
   const animationRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    console.log("modalNodeChange!!!", modalNode);
-  }, [modalNode]);
-
   const handlePresent = (node: React.ReactNode, newNodeId: string) => {
     setModalNode(node);
     setIsOpen(true);
