@@ -2033,6 +2033,7 @@ export const mainnetTokens = defineTokens({
     'Green Metaverse Token',
     'https://www.stepn.com/',
   ),
+  bsw: new Token(MAINNET, '0x965f527d9159dce6288a2219db51fc6eef120dd1', 18, 'BSW', 'Biswap', 'https://biswap.org/'),
 } as const)
 
 export const testnetTokens = defineTokens({
