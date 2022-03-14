@@ -38,6 +38,6 @@ export const useMultipleBannerConfig = () => {
       ]
         .filter((d) => d.shouldRender)
         .map((d) => d.banner),
-    [isRenderIFOBanner],
+    [isRenderIFOBanner, isRenderLotteryBanner],
   )
 }
