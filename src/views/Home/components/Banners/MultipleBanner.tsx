@@ -92,6 +92,9 @@ const StyledSwiper = styled(Swiper)`
       border-radius: 0px 4px 4px 0px;
     }
   }
+  img {
+    transition: opacity 0.3s ease-in-out;
+  }
 `
 
 const MultipleBanner: React.FC = () => {
