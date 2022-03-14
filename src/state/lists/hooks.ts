@@ -180,33 +180,6 @@ function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddress
   }
 }
 
-// merge tokens contained within lists from urls
-function useCombinedTokenMapFromUrls(urls: string[] | undefined): TokenAddressMap {
-  const lists = useAllLists()
-
-  return useMemo(() => {
-    if (!urls) return EMPTY_LIST
-
-    return (
-      urls
-        .slice()
-        // sort by priority so top priority goes last
-        .sort(sortByListPriority)
-        .reduce((allTokens, currentUrl) => {
-          const current = lists[currentUrl]?.current
-          if (!current) return allTokens
-          try {
-            const newTokens = Object.assign(listToTokenMap(current))
-            return combineMaps(allTokens, newTokens)
-          } catch (error) {
-            console.error('Could not show token list due to error', error)
-            return allTokens
-          }
-        }, EMPTY_LIST)
-    )
-  }, [lists, urls])
-}
-
 // filter out unsupported lists
 export function useActiveListUrls(): string[] | undefined {
   return useSelector(activeListUrlsSelector)

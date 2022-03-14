@@ -14,7 +14,7 @@ import Column, { AutoColumn } from '../Layout/Column'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
-import { filterTokens, useSortedTokensByQuery, filterToken } from './filtering'
+import { useSortedTokensByQuery, createFilterToken } from './filtering'
 import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
@@ -36,6 +36,7 @@ export function useSearchInactiveTokenLists(search: string | undefined, minResul
   const activeTokens = useAllTokens()
   return useMemo(() => {
     if (!search || search.trim().length === 0) return []
+    const filterToken = createFilterToken(search)
     const result: WrappedTokenInfo[] = []
     const addressSet: { [address: string]: true } = {}
     for (const url of inactiveUrls) {
@@ -51,7 +52,7 @@ export function useSearchInactiveTokenLists(search: string | undefined, minResul
             })
             ?.filter((x): x is TagInfo => Boolean(x)) ?? []
 
-        if (tokenInfo.chainId === chainId && filterToken(tokenInfo, search)) {
+        if (tokenInfo.chainId === chainId && filterToken(tokenInfo)) {
           const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo, tags)
           if (!(wrapped.address in activeTokens) && !addressSet[wrapped.address]) {
             addressSet[wrapped.address] = true
@@ -98,7 +99,8 @@ function CurrencySearch({
   }, [debouncedQuery])
 
   const filteredTokens: Token[] = useMemo(() => {
-    return filterTokens(Object.values(allTokens), debouncedQuery)
+    const filterToken = createFilterToken(debouncedQuery)
+    return Object.values(allTokens).filter(filterToken)
   }, [allTokens, debouncedQuery])
 
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)

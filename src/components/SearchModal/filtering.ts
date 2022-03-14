@@ -36,8 +36,13 @@ export function filterTokens(tokens: Token[], search: string): Token[] {
   })
 }
 
-export function filterToken(token: TokenInfo, search: string): boolean {
-  const { symbol, name } = token
+export function createFilterToken<T extends TokenInfo | Token>(search: string): (token: T) => boolean {
+  const searchingAddress = isAddress(search)
+
+  if (searchingAddress) {
+    const address = searchingAddress.toLowerCase()
+    return (t: T) => 'address' in t && address === t.address.toLowerCase()
+  }
 
   const lowerSearchParts = search
     .toLowerCase()
@@ -45,7 +50,7 @@ export function filterToken(token: TokenInfo, search: string): boolean {
     .filter((s) => s.length > 0)
 
   if (lowerSearchParts.length === 0) {
-    return true
+    return () => true
   }
 
   const matchesSearch = (s: string): boolean => {
@@ -56,7 +61,10 @@ export function filterToken(token: TokenInfo, search: string): boolean {
 
     return lowerSearchParts.every((p) => p.length === 0 || sParts.some((sp) => sp.startsWith(p) || sp.endsWith(p)))
   }
-  return (symbol && matchesSearch(symbol)) || (name && matchesSearch(name))
+  return (token) => {
+    const { symbol, name } = token
+    return (symbol && matchesSearch(symbol)) || (name && matchesSearch(name))
+  }
 }
 
 export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery: string): Token[] {
