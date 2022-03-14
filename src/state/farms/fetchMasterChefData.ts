@@ -25,7 +25,7 @@ const masterChefFarmCalls = (farm: SerializedFarm) => {
         },
         {
           address: masterChefAddress,
-          name: 'totalAllocPoint',
+          name: 'totalRegularAllocPoint',
         },
       ]
     : [null, null]
