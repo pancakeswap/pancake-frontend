@@ -2,6 +2,7 @@ import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import useSWR, { useSWRConfig } from 'swr'
 import { simpleRpcProvider } from 'utils/providers'
 import useSWRImmutable from 'swr/immutable'
+import { FetchStatus } from 'config/constants/types'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
@@ -46,6 +47,11 @@ export const usePollBlockNumber = () => {
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable('blockNumber')
   return currentBlock
+}
+
+export const useCurrentBlockWithStatus = (): { currentBlock: number; isLoading: boolean } => {
+  const { data: currentBlock = 0, status } = useSWRImmutable('blockNumber')
+  return { currentBlock, isLoading: status !== FetchStatus.Fetched }
 }
 
 export const useInitialBlock = (): number => {

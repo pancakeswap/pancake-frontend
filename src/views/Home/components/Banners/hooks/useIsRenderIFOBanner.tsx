@@ -1,12 +1,15 @@
-import { useCurrentBlock } from 'state/block/hooks'
+import { useCurrentBlockWithStatus } from 'state/block/hooks'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
 
 const useIsRenderIfoBanner = () => {
-  const currentBlock = useCurrentBlock()
+  const { currentBlock, isLoading } = useCurrentBlockWithStatus()
 
   const activeIfoWithBlocks = useActiveIfoWithBlocks()
 
-  return !!(currentBlock && activeIfoWithBlocks && activeIfoWithBlocks.endBlock > currentBlock)
+  return {
+    isRenderIFOBanner: !!(currentBlock && activeIfoWithBlocks && activeIfoWithBlocks.endBlock > currentBlock),
+    isIFOLoading: isLoading || activeIfoWithBlocks,
+  }
 }
 
 export default useIsRenderIfoBanner

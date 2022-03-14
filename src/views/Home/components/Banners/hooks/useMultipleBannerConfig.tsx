@@ -18,7 +18,7 @@ import useIsLotteryLoading from './useIsLotteryLoading'
  * ```
  */
 export const useMultipleBannerConfig = () => {
-  const isRenderIFOBanner = useIsRenderIfoBanner()
+  const { isIFOLoading, isRenderIFOBanner } = useIsRenderIfoBanner()
   const isLotteryLoading = useIsLotteryLoading()
   return {
     bannerList: useMemo(
@@ -41,6 +41,6 @@ export const useMultipleBannerConfig = () => {
           .map((d) => d.banner),
       [isRenderIFOBanner],
     ),
-    isLoading: isLotteryLoading,
+    isLoading: isLotteryLoading || (isRenderIFOBanner && isIFOLoading),
   }
 }
