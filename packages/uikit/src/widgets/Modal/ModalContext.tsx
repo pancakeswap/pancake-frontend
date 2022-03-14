@@ -1,5 +1,5 @@
 import { AnimatePresence, m, Variants, LazyMotion, domAnimation } from "framer-motion";
-import React, { createContext, useState, useRef } from "react";
+import React, { createContext, useState, useRef, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { Overlay } from "../../components/Overlay";
 import { Handler } from "./types";
@@ -73,6 +73,10 @@ const ModalProvider: React.FC = ({ children }) => {
   const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true);
   const animationRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    console.log("modalNodeChange!!!", modalNode);
+  }, [modalNode]);
+
   const handlePresent = (node: React.ReactNode, newNodeId: string) => {
     setModalNode(node);
     setIsOpen(true);
@@ -111,8 +115,13 @@ const ModalProvider: React.FC = ({ children }) => {
               onAnimationStart={() => {
                 const element = animationRef.current;
                 if (!element) return;
-                if (element.className.includes("appear")) element.classList.add("disappear");
-                else element.classList.add("appear");
+                if (!element.classList.contains("appear")) {
+                  element.classList.remove("disappear");
+                  element.classList.add("appear");
+                } else {
+                  element.classList.remove("appear");
+                  element.classList.add("disappear");
+                }
               }}
               {...animationMap}
               variants={animationVariants}
