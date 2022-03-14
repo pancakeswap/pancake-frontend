@@ -24,7 +24,7 @@ const perpLangMap = (code: string) => {
 
 export type ConfigMenuItemsType = MenuItemsType & { hideSubNav?: boolean }
 
-const config: (t: ContextApi['t'], code: string) => ConfigMenuItemsType[] = (t, code) => [
+const config: (t: ContextApi['t'], code?: string) => ConfigMenuItemsType[] = (t, code) => [
   {
     label: t('Trade'),
     icon: SwapIcon,
