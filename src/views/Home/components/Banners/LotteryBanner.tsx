@@ -57,6 +57,7 @@ export const StyledSubheading = styled(Heading)`
   }
   margin-bottom: 8px;
 `
+const isLotteryLive = (status: LotteryStatus) => status === LotteryStatus.OPEN
 
 const LotteryPrice: React.FC = () => {
   const {
@@ -67,7 +68,7 @@ const LotteryPrice: React.FC = () => {
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const { t } = useTranslation()
 
-  if (status === LotteryStatus.OPEN) {
+  if (isLotteryLive(status)) {
     return (
       <>
         {prizeInBusd.isNaN() ? (
@@ -91,26 +92,41 @@ const LotteryCountDownTimer = () => {
   const { nextEventTime } = useGetNextLotteryEvent(endTimeAsInt, status)
   const secondsRemaining = useNextEventCountdown(nextEventTime)
   const { days, hours, minutes, seconds } = getTimePeriods(secondsRemaining)
-  return <Timer wrapperClassName="custom-timer" seconds={seconds} minutes={minutes} hours={hours} days={days} />
+  if (isLotteryLive(status))
+    return <Timer wrapperClassName="custom-timer" seconds={seconds} minutes={minutes} hours={hours} days={days} />
+  return null
 }
 
 const LotteryBanner = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const {
+    currentRound: { status },
+  } = useLottery()
+
   return (
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
-          <StyledSubheading style={{ textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
-            <LotteryPrice />
-          </StyledSubheading>
-          <TimerWrapper>
-            <LotteryCountDownTimer />
-          </TimerWrapper>
+          {isLotteryLive(status) ? (
+            <>
+              <StyledSubheading style={{ textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
+                <LotteryPrice />
+              </StyledSubheading>
+              <TimerWrapper>
+                <LotteryCountDownTimer />
+              </TimerWrapper>
+            </>
+          ) : (
+            <>
+              <S.StyledSubheading>{t('Lottery')}</S.StyledSubheading>
+              <S.StyledHeading scale="xl">{t('Preparing')}</S.StyledHeading>
+            </>
+          )}
           <NextLinkFromReactRouter to="/lottery">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
-                {t('Play Now')}
+                {isLotteryLive(status) ? t('Play Now') : t('Check Now')}
               </Text>
               <ArrowForwardIcon color="invertedContrast" />
             </Button>
