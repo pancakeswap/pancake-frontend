@@ -64,7 +64,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
           <Flex flex="2">
             <Box>
               <CollectionLink to={`${nftsBaseUrl}/collections/${nft.collectionAddress}`}>
-                {nft.collectionName}
+                {nft?.collectionName}
               </CollectionLink>
               <Text fontSize="40px" bold mt="12px">
                 {nft.name}

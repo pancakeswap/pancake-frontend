@@ -65,7 +65,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
           <Flex flex="2">
             <Box>
               <CollectionLink to={`${nftsBaseUrl}/collections/${nftToDisplay.collectionAddress}`}>
-                {nftToDisplay.collectionName}
+                {nftToDisplay?.collectionName}
               </CollectionLink>
               <Text fontSize="40px" bold mt="12px">
                 {nftToDisplay.name}

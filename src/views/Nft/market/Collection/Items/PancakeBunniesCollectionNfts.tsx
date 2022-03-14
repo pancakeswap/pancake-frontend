@@ -32,7 +32,7 @@ const PancakeBunniesCollectionNfts: React.FC<CollectionNftsProps> = ({ collectio
         alignItems="start"
       >
         {sortedNfts.map((nft) => {
-          return <CollectibleLinkCard key={`${nft.tokenId}-${nft.collectionName}`} nft={nft} />
+          return <CollectibleLinkCard key={`${nft?.tokenId}-${nft?.collectionName}`} nft={nft} />
         })}
       </Grid>
     </>

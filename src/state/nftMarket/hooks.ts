@@ -48,7 +48,7 @@ export const useFetchByBunnyIdAndUpdate = (bunnyId: string) => {
       ? {
           name: firstBunny.name,
           description: firstBunny.description,
-          collection: { name: firstBunny.collectionName },
+          collection: { name: firstBunny?.collectionName },
           image: firstBunny.image,
         }
       : null
