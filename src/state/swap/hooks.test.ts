@@ -2,10 +2,11 @@
 /* eslint-disable vars-on-top */
 import { renderHook } from '@testing-library/react-hooks'
 import { parse } from 'querystring'
+import { useCurrency } from 'hooks/Tokens'
 import { createWrapper } from 'testUtils'
 import { Field } from './actions'
 import { DEFAULT_OUTPUT_CURRENCY } from './constants'
-import { queryParametersToSwapState, useDerivedSwapInfo } from './hooks'
+import { queryParametersToSwapState, useDerivedSwapInfo, useSwapState } from './hooks'
 
 describe('hooks', () => {
   describe('#queryParametersToSwapState', () => {
@@ -121,7 +122,24 @@ describe('#useDerivedSwapInfo', () => {
   it('should show Login Error', async () => {
     const { result, rerender } = renderHook(
       () => {
-        return useDerivedSwapInfo()
+        const {
+          independentField,
+          typedValue,
+          recipient,
+          [Field.INPUT]: { currencyId: inputCurrencyId },
+          [Field.OUTPUT]: { currencyId: outputCurrencyId },
+        } = useSwapState()
+        const inputCurrency = useCurrency(inputCurrencyId)
+        const outputCurrency = useCurrency(outputCurrencyId)
+        return useDerivedSwapInfo(
+          independentField,
+          typedValue,
+          inputCurrencyId,
+          inputCurrency,
+          outputCurrencyId,
+          outputCurrency,
+          recipient,
+        )
       },
       { wrapper: createWrapper() },
     )
@@ -138,7 +156,24 @@ describe('#useDerivedSwapInfo', () => {
     mockUseActiveWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     const { result, rerender } = renderHook(
       () => {
-        return useDerivedSwapInfo()
+        const {
+          independentField,
+          typedValue,
+          recipient,
+          [Field.INPUT]: { currencyId: inputCurrencyId },
+          [Field.OUTPUT]: { currencyId: outputCurrencyId },
+        } = useSwapState()
+        const inputCurrency = useCurrency(inputCurrencyId)
+        const outputCurrency = useCurrency(outputCurrencyId)
+        return useDerivedSwapInfo(
+          independentField,
+          typedValue,
+          inputCurrencyId,
+          inputCurrency,
+          outputCurrencyId,
+          outputCurrency,
+          recipient,
+        )
       },
       {
         wrapper: createWrapper({
@@ -160,7 +195,24 @@ describe('#useDerivedSwapInfo', () => {
   it('should return undefined when no pair', async () => {
     const { result } = renderHook(
       () => {
-        const swapInfo = useDerivedSwapInfo()
+        const {
+          independentField,
+          typedValue,
+          recipient,
+          [Field.INPUT]: { currencyId: inputCurrencyId },
+          [Field.OUTPUT]: { currencyId: outputCurrencyId },
+        } = useSwapState()
+        const inputCurrency = useCurrency(inputCurrencyId)
+        const outputCurrency = useCurrency(outputCurrencyId)
+        const swapInfo = useDerivedSwapInfo(
+          independentField,
+          typedValue,
+          inputCurrencyId,
+          inputCurrency,
+          outputCurrencyId,
+          outputCurrency,
+          recipient,
+        )
         return {
           swapInfo,
         }
