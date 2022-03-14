@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useMatchBreakpoints, Spinner, Flex } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled, { keyframes } from 'styled-components'
 import { Autoplay, EffectFade, Pagination } from 'swiper'
@@ -18,7 +18,7 @@ const appearAnimation = keyframes`
   }
 `
 
-const BannerPlaceHolder = styled.div<{ walletConnected: boolean }>`
+const BannerPlaceHolder = styled.div<{ walletConnected: boolean; isLoading?: boolean }>`
   position: relative;
   height: 179px;
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -36,6 +36,9 @@ const BannerPlaceHolder = styled.div<{ walletConnected: boolean }>`
     right: 0px;
     bottom: 0px;
     background: -webkit-linear-gradient(#7645d9 0%, #452a7a 100%);
+    will-change: opacity;
+    opacity: ${({ isLoading }) => (isLoading ? '0.2' : '1')};
+    transition: opacity 0.3s ease-in;
     ${({ theme }) => theme.mediaQueries.sm} {
       top: 20px;
       left: 20px;
@@ -92,7 +95,7 @@ const StyledSwiper = styled(Swiper)`
 `
 
 const MultipleBanner: React.FC = () => {
-  const bannerList = useMultipleBannerConfig()
+  const { bannerList, isLoading } = useMultipleBannerConfig()
   const { account } = useWeb3React()
   const { isDesktop, isTablet } = useMatchBreakpoints()
 
@@ -117,7 +120,12 @@ const MultipleBanner: React.FC = () => {
   }, [bannerList])
 
   return (
-    <BannerPlaceHolder walletConnected={Boolean(account)}>
+    <BannerPlaceHolder walletConnected={Boolean(account)} isLoading={isLoading}>
+      {isLoading && (
+        <Flex justifyContent="center" alignItems="center" height="100%">
+          <Spinner />
+        </Flex>
+      )}
       <StyledSwiper key={swiperKey} {...swiperOptions}>
         {bannerList.map((banner, index) => {
           const childKey = `Banner${index}`

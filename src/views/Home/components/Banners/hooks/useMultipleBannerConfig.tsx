@@ -20,24 +20,27 @@ import useIsRenderLotteryBanner from './useIsRenderLotteryBanner'
 export const useMultipleBannerConfig = () => {
   const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderLotteryBanner = useIsRenderLotteryBanner()
-  return useMemo(
-    () =>
-      [
-        {
-          shouldRender: isRenderIFOBanner,
-          banner: <IFOBanner />,
-        },
-        {
-          shouldRender: isRenderLotteryBanner,
-          banner: <LotteryBanner />,
-        },
-        {
-          shouldRender: false,
-          banner: <CompetitionBanner />,
-        },
-      ]
-        .filter((d) => d.shouldRender)
-        .map((d) => d.banner),
-    [isRenderIFOBanner, isRenderLotteryBanner],
-  )
+  return {
+    bannerList: useMemo(
+      () =>
+        [
+          {
+            shouldRender: isRenderIFOBanner,
+            banner: <IFOBanner />,
+          },
+          {
+            shouldRender: isRenderLotteryBanner,
+            banner: <LotteryBanner />,
+          },
+          {
+            shouldRender: false,
+            banner: <CompetitionBanner />,
+          },
+        ]
+          .filter((d) => d.shouldRender)
+          .map((d) => d.banner),
+      [isRenderIFOBanner, isRenderLotteryBanner],
+    ),
+    isLoading: !isRenderLotteryBanner,
+  }
 }
