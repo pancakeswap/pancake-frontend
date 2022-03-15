@@ -5,17 +5,19 @@ import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@pancakeswap/
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
-// import Dots from '../../components/Loader/Dots'
+import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
 import Page from '../Page'
 import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
+  height: 324px;
 `
 
 export default function Pool() {
@@ -56,15 +58,18 @@ export default function Pool() {
   const renderBody = () => {
     if (!account) {
       return (
-        <Text color="textSubtle" textAlign="center">
-          {t('Connect to a wallet to view your liquidity.')}
-        </Text>
+        <Flex flexDirection="column" alignItems="center" justifyContent="center" height="100%" width="100%">
+          <Text color="textSubtle" textAlign="center" width="180px" mb="16px">
+            {t('Connect your wallet to check for LP tokens')}
+          </Text>
+          <ConnectWalletButton width="100%" />
+        </Flex>
       )
     }
     if (v2IsLoading) {
       return (
         <Text color="textSubtle" textAlign="center">
-          {/* <Dots>{t('Loading')}</Dots> */}
+          <Dots>{t('Loading')}</Dots>
         </Text>
       )
     }
@@ -113,6 +118,7 @@ export default function Pool() {
       <CardFooter style={{ textAlign: 'center' }}>
         {/* <Link href="/add"> */}
         <Button
+          disabled={!account}
           id="join-pool-button"
           width="100%"
           startIcon={<AddIcon color="white" />}
