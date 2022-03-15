@@ -13,18 +13,11 @@ import {
 } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-
-const perpetualLangs = { en: 'en', 'zh-cn': 'zh-CN', ko: 'ko' }
-const perpLangMap = (code: string) => {
-  if (perpetualLangs[code]) {
-    return perpetualLangs[code]
-  }
-  return 'en'
-}
+import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 
 export type ConfigMenuItemsType = MenuItemsType & { hideSubNav?: boolean }
 
-const config: (t: ContextApi['t'], code: string) => ConfigMenuItemsType[] = (t, code) => [
+const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType[] = (t, languageCode) => [
   {
     label: t('Trade'),
     icon: SwapIcon,
@@ -46,7 +39,7 @@ const config: (t: ContextApi['t'], code: string) => ConfigMenuItemsType[] = (t, 
       },
       {
         label: t('Perpetual'),
-        href: `https://perp.pancakeswap.finance/${perpLangMap(code)}/futures/BTCUSDT`,
+        href: `https://perp.pancakeswap.finance/${perpLangMap(languageCode)}/futures/BTCUSDT`,
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
     ],
