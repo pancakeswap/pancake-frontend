@@ -26,8 +26,8 @@ declare module 'swr' {
 export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
   return (key, fetcher, config) => {
     const swr = useSWRNext(key, fetcher, config)
-    return {
-      get status() {
+    return Object.defineProperty(swr, 'status', {
+      get() {
         let status = FetchStatus.Idle
 
         if (!swr.isValidating && !swr.error && !swr.data) {
@@ -41,8 +41,7 @@ export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
         }
         return status
       },
-      ...swr,
-    }
+    })
   }
 }
 
@@ -180,10 +179,9 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
     }
   }
 
-  return {
-    ...swr,
-    data: data || localStorageDataParsed,
-  }
+  return Object.defineProperty(swr, 'data', {
+    value: data || localStorageDataParsed,
+  })
 }
 
 // This is a SWR middleware for keeping the data even if key changes.
@@ -214,7 +212,16 @@ export const laggyMiddleware: Middleware = (useSWRNext) => {
     const isLagging = swr.data === undefined && laggyDataRef.current !== undefined
 
     // Also add a `isLagging` field to SWR.
-    return { ...swr, data: dataOrLaggyData, isLagging, resetLaggy }
+    Object.defineProperty(swr, 'isLagging', {
+      value: isLagging,
+    })
+    Object.defineProperty(swr, 'resetLaggy', {
+      value: resetLaggy,
+    })
+    Object.defineProperty(swr, 'data', {
+      value: dataOrLaggyData,
+    })
+    return swr
   }
 }
 
