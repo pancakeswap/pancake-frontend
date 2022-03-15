@@ -1,6 +1,7 @@
+import BigNumber from 'bignumber.js'
 import { useCallback } from 'react'
+import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { parseUnits } from '@ethersproject/units'
-import { unstakeFarm } from 'utils/calls'
 import { useMasterchefV1, useSousChef } from 'hooks/useContract'
 import getGasPrice from 'utils/getGasPrice'
 
@@ -25,8 +26,11 @@ const useUnstakePool = (sousId: number, enableEmergencyWithdraw = false) => {
   const handleUnstake = useCallback(
     async (amount: string, decimals: number) => {
       if (sousId === 0) {
-        return unstakeFarm(masterChefV1Contract, 0, amount)
+        const gasPrice = getGasPrice()
+        const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
+        return masterChefV1Contract.leaveStaking(value, { gasLimit: DEFAULT_GAS_LIMIT, gasPrice })
       }
+
       if (enableEmergencyWithdraw) {
         return sousEmergencyUnstake(sousChefContract)
       }
