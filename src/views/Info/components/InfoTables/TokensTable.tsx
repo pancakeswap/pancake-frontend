@@ -7,6 +7,7 @@ import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import Percent from 'views/Info/components/Percent'
 import { useTranslation } from 'contexts/Localization'
+import orderBy from 'lodash/orderBy'
 import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'
 
 /**
@@ -149,16 +150,11 @@ const TokenTable: React.FC<{
 
   const sortedTokens = useMemo(() => {
     return tokenDatas
-      ? tokenDatas
-          .sort((a, b) => {
-            if (a && b) {
-              return a[sortField as keyof TokenData] > b[sortField as keyof TokenData]
-                ? (sortDirection ? -1 : 1) * 1
-                : (sortDirection ? -1 : 1) * -1
-            }
-            return -1
-          })
-          .slice(maxItems * (page - 1), page * maxItems)
+      ? orderBy(
+          tokenDatas,
+          (tokenData) => tokenData[sortField as keyof TokenData],
+          sortDirection ? 'desc' : 'asc',
+        ).slice(maxItems * (page - 1), page * maxItems)
       : []
   }, [tokenDatas, maxItems, page, sortDirection, sortField])
 

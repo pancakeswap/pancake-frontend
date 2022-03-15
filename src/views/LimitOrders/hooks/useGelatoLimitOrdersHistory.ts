@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { getLSOrders, saveOrder, saveOrders, hashOrderSet, hashOrder } from 'utils/localStorageOrders'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 
+import orderBy from 'lodash/orderBy'
 import { ORDER_CATEGORY, LimitOrderStatus } from '../types'
 
 function newOrdersFirst(a: Order, b: Order) {
@@ -160,8 +161,7 @@ export default function useGelatoLimitOrdersHistory(orderCategory: ORDER_CATEGOR
   )
 
   return useMemo(
-    () =>
-      Array.isArray(orders) ? orders.sort((a, b) => parseInt(b.createdAt, 10) - parseInt(a.createdAt, 10)) : orders,
+    () => (Array.isArray(orders) ? orderBy(orders, (order) => parseInt(order.createdAt), 'desc') : orders),
     [orders],
   )
 }
