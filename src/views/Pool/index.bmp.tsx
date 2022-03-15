@@ -1,21 +1,23 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@pancakeswap/sdk'
-import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@pancakeswap/uikit'
-import Link from 'next/link'
+import { Text, Flex, CardBody, CardFooter, Button, AddIcon, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
-import Page from '../Page'
-import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
+import noLiquidityImage from '../../../public/images/no-liquidity.png'
 
 const Body = styled(CardBody)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
   height: 324px;
 `
@@ -58,12 +60,14 @@ export default function Pool() {
   const renderBody = () => {
     if (!account) {
       return (
-        <Flex flexDirection="column" alignItems="center" justifyContent="center" height="100%" width="100%">
-          <Text color="textSubtle" textAlign="center" width="180px" mb="16px">
-            {t('Connect your wallet to check for LP tokens')}
-          </Text>
+        <view>
+          <Flex justifyContent="center">
+            <Text color="textSubtle" textAlign="center" width="180px" mb="16px">
+              {t('Connect your wallet to check for LP tokens')}
+            </Text>
+          </Flex>
           <ConnectWalletButton width="100%" />
-        </Flex>
+        </view>
       )
     }
     if (v2IsLoading) {
@@ -83,9 +87,14 @@ export default function Pool() {
       ))
     }
     return (
-      <Text color="textSubtle" textAlign="center">
-        {t('No liquidity found.')}
-      </Text>
+      <view>
+        <Flex justifyContent="center" mb="16px">
+          <Image src={noLiquidityImage} width={97} height={100} />
+        </Flex>
+        <Text color="textSubtle" textAlign="center">
+          {t('No liquidity found.')}
+        </Text>
+      </view>
     )
   }
 
