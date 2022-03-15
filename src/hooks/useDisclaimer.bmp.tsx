@@ -49,10 +49,11 @@ function DisclaimerModal(props) {
 }
 const MemoModal = React.memo(DisclaimerModal)
 const key = 'isShowDisclaimerBefore'
-const isShowDisclaimerBefore = mpService.getStorageSync(key) || false
+let isShowDisclaimerBefore = mpService.getStorageSync(key) || false
 const useDisclaimer = () => {
   const handleModalClick = () => {
     mpService.setStorage({ key, data: true })
+    isShowDisclaimerBefore = true
   }
   const [handleClick] = useModal(<MemoModal onClick={handleModalClick} />, false)
   useEffect(() => {
