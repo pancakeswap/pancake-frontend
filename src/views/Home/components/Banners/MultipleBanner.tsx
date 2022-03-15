@@ -9,6 +9,15 @@ import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useMultipleBannerConfig } from './hooks/useMultipleBannerConfig'
 
+const waves = keyframes`
+   from {
+        left: -150px;
+    }
+    to   {
+        left: 100%;
+    }
+`
+
 const appearAnimation = keyframes`
   from {
     opacity: 0 ;
@@ -61,6 +70,18 @@ const BannerPlaceHolder = styled.div<{ walletConnected: boolean; isLoading?: boo
     margin-top: ${({ walletConnected }) => (walletConnected ? '60px' : '-32px')};
     margin-bottom: ${({ walletConnected }) => (walletConnected ? '60px' : '30px')};
   }
+  &:after {
+    content: '';
+    position: absolute;
+    background-image: linear-gradient(90deg, transparent, rgba(243, 243, 243, 0.5), transparent);
+    top: 0;
+    opacity: ${({ isLoading }) => (isLoading ? '0.5' : '0')};
+    display: ${({ isLoading }) => (isLoading ? 'block' : 'none')};
+    left: -150px;
+    height: 100%;
+    width: 150px;
+    animation: ${waves} 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
 `
 
 const StyledSwiper = styled(Swiper)`
@@ -98,7 +119,7 @@ const StyledSwiper = styled(Swiper)`
 `
 
 const MultipleBanner: React.FC = () => {
-  const { bannerList, isLoading } = useMultipleBannerConfig()
+  const bannerList = useMultipleBannerConfig()
   const { account } = useWeb3React()
   const { isDesktop, isTablet } = useMatchBreakpoints()
 
@@ -123,12 +144,8 @@ const MultipleBanner: React.FC = () => {
   }, [bannerList])
 
   return (
-    <BannerPlaceHolder walletConnected={Boolean(account)} isLoading={isLoading}>
-      {isLoading ? (
-        <Flex justifyContent="center" alignItems="center" height="100%">
-          <Spinner />
-        </Flex>
-      ) : (
+    <BannerPlaceHolder walletConnected={Boolean(account)} isLoading={bannerList.length === 0}>
+      {bannerList.length > 0 && (
         <StyledSwiper key={swiperKey} {...swiperOptions}>
           {bannerList.map((banner, index) => {
             const childKey = `Banner${index}`
