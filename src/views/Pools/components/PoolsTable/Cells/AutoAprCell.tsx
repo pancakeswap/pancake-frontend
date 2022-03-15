@@ -3,7 +3,7 @@ import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useTranslation } from 'contexts/Localization'
 import BaseCell, { CellContent } from './BaseCell'
-import Apr from '../Apr'
+import Apr from '../../Apr'
 import { convertSharesToCake } from '../../../helpers'
 
 interface AprCellProps {
