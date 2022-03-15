@@ -631,6 +631,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenName: 'Everdome',
           projectSite: 'https://everdome.io/',
         },
+        {
+          account: '0xdE78F42bff7EDF1e70450e7BCFd8aBCF94e3a65e',
+          farmName: 'TINC-BNB',
+          tokenAddress: '0x05ad6e30a855be07afa57e08a4f30d00810a402e',
+          quoteToken: tokens.wbnb,
+          tokenName: 'Tiny World',
+          projectSite: 'https://tinyworlds.io/',
+        },
       ].map((bidderConfig) => ({
         ...bidderConfig,
         lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
