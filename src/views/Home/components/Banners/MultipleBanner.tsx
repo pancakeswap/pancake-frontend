@@ -75,10 +75,11 @@ const BannerPlaceHolder = styled.div<{ walletConnected: boolean; isLoading?: boo
     position: absolute;
     background-image: linear-gradient(90deg, transparent, rgba(243, 243, 243, 0.5), transparent);
     top: 0;
-    opacity: ${({ isLoading }) => (isLoading ? '0.5' : '0')};
+    opacity: ${({ isLoading }) => (isLoading ? '0.6' : '0')};
     display: ${({ isLoading }) => (isLoading ? 'block' : 'none')};
     left: -150px;
-    height: 100%;
+    top: 20px;
+    bottom: 20px;
     width: 150px;
     animation: ${waves} 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
