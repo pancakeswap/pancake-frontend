@@ -11,10 +11,10 @@ import { useMultipleBannerConfig } from './hooks/useMultipleBannerConfig'
 
 const waves = keyframes`
    from {
-        left: -150px;
+        left:10px;
     }
     to   {
-        left: 100%;
+        left:calc(100% - 160px);
     }
 `
 
@@ -30,6 +30,7 @@ const appearAnimation = keyframes`
 const BannerPlaceHolder = styled.div<{ walletConnected: boolean; isLoading?: boolean }>`
   position: relative;
   height: 179px;
+  overflow: ${({ isLoading }) => (isLoading ? 'hidden' : 'visible')};
   ${({ theme }) => theme.mediaQueries.sm} {
     height: 221px;
   }
@@ -77,11 +78,11 @@ const BannerPlaceHolder = styled.div<{ walletConnected: boolean; isLoading?: boo
     top: 0;
     opacity: ${({ isLoading }) => (isLoading ? '0.6' : '0')};
     display: ${({ isLoading }) => (isLoading ? 'block' : 'none')};
-    left: -150px;
+    left: 0;
     top: 20px;
     bottom: 20px;
     width: 150px;
-    animation: ${waves} 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: ${waves} 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 `
 
