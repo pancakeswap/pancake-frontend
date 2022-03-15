@@ -4,7 +4,7 @@ import { Flex, Text } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 import { TokenPairImage } from 'components/TokenImage'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
+import { FarmWithStakedValue } from 'views/Farms/components/types'
 
 const StyledCell = styled(BaseCell)`
   flex: 0;

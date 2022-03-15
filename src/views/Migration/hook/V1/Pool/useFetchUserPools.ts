@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import BigNumber from 'bignumber.js'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { SerializedPool } from 'state/types'
 import { transformPool } from 'state/pools/helpers'
@@ -32,6 +33,7 @@ export const useFetchUserPools = (account) => {
       tokenPerBlock: '10',
       sortOrder: 1,
       isFinished: false,
+      totalStaked: '0',
     },
     userDataLoaded: false,
   })
@@ -62,7 +64,7 @@ export const useFetchUserPools = (account) => {
             data: {
               ...userPoolsData.data,
               userData,
-              totalStaked: totalStaking.toString(),
+              totalStaked: new BigNumber(totalStaking.toString()).toJSON(),
             },
             userDataLoaded: true,
           })

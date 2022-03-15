@@ -7,7 +7,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useFarmsV1, usePriceCakeBusd } from 'state/farmsV1/hooks'
 import { DeserializedFarm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
+import { FarmWithStakedValue } from 'views/Farms/components/types'
 import { isArchivedPidV1 } from 'utils/farmHelpers'
 import OldFarm from './FarmTable'
 import { RowProps } from './FarmRow'
@@ -20,7 +20,7 @@ const OldFarmStep1: React.FC = () => {
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const farms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0x' && !isArchivedPidV1(farm.pid))
+  const farms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPidV1(farm.pid))
 
   const stakedOrHasTokenBalance = farms.filter((farm) => {
     return (

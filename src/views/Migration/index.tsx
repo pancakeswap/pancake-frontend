@@ -48,7 +48,8 @@ const MigrationPage: React.FC = () => {
       const cakeAutoVault = { ...cakePool, vaultKey: VaultKey.CakeVault }
 
       return [ifoPoolVault, cakeAutoVault, cakePool]
-    }, [])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cakePool])
 
     return pools
   }

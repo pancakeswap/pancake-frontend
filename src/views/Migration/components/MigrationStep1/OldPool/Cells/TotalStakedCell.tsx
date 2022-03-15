@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text, Skeleton } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
@@ -46,7 +46,11 @@ const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool, totalCakeInVaul
           {t('Total staked')}
         </Text>
         <Flex height="20px" alignItems="center">
-          <Balance fontSize="16px" value={totalStakedBalance} decimals={0} unit={` ${stakingToken.symbol}`} />
+          {totalStakedBalance ? (
+            <Balance fontSize="16px" value={totalStakedBalance} decimals={0} unit={` ${stakingToken.symbol}`} />
+          ) : (
+            <Skeleton width="80px" height="16px" />
+          )}
         </Flex>
       </CellContent>
     </StyledCell>
