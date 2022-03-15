@@ -74,15 +74,20 @@ const BannerPlaceHolder = styled.div<{ walletConnected: boolean; isLoading?: boo
   &:after {
     content: '';
     position: absolute;
+    width: 150px;
     background-image: linear-gradient(90deg, transparent, rgba(243, 243, 243, 0.5), transparent);
     top: 0;
-    opacity: ${({ isLoading }) => (isLoading ? '0.6' : '0')};
+    opacity: ${({ isLoading, theme }) => (isLoading ? (theme.isDark ? '0.3' : '0.6') : '0')};
     display: ${({ isLoading }) => (isLoading ? 'block' : 'none')};
+    animation: ${waves} 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     left: 0;
-    top: 20px;
-    bottom: 20px;
-    width: 150px;
-    animation: ${waves} 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    top: 0px;
+    bottom: 0px;
+    ${({ theme }) => theme.mediaQueries.sm} {
+      width: 150px;
+      top: 20px;
+      bottom: 20px;
+    }
   }
 `
 
