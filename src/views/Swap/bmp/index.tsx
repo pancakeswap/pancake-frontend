@@ -164,13 +164,13 @@ function Swap() {
 
   const parsedAmounts = showWrap
     ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
-      }
+      [Field.INPUT]: parsedAmount,
+      [Field.OUTPUT]: parsedAmount,
+    }
     : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      }
+      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+    }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -500,10 +500,23 @@ function Swap() {
                         onClick={approveCallback}
                         disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
                         width="48%"
+                        style={{ padding: '0 8px' }}
                       >
                         {approval === ApprovalState.PENDING ? (
-                          <AutoRow gap="6px" justify="center">
-                            {t('Enabling')} <CircleLoader stroke="white" />
+                          <AutoRow gap="5px" justify="center" style={{ flexWrap: 'nowrap' }}>
+                            <Box
+                              style={{
+                                overflow: 'hidden',
+                                lineHeight: 1,
+                                textOverflow: 'ellipsis',
+                                margin: '0px!important',
+                              }}
+                            >
+                              {t('Enabling')}
+                            </Box>
+                            <Box style={{ margin: '0px!important', minWidth: 20 }}>
+                              <CircleLoader stroke="white" />
+                            </Box>
                           </AutoRow>
                         ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                           t('Enabled')
@@ -539,8 +552,8 @@ function Swap() {
                         {priceImpactSeverity > 3 && !isExpertMode
                           ? t('Price Impact High')
                           : priceImpactSeverity > 2
-                          ? t('Swap Anyway')
-                          : t('Swap')}
+                            ? t('Swap Anyway')
+                            : t('Swap')}
                       </Button>
                     </RowBetween>
                   ) : (
@@ -567,8 +580,8 @@ function Swap() {
                         (priceImpactSeverity > 3 && !isExpertMode
                           ? t('Price Impact Too High')
                           : priceImpactSeverity > 2
-                          ? t('Swap Anyway')
-                          : t('Swap'))}
+                            ? t('Swap Anyway')
+                            : t('Swap'))}
                     </Button>
                   )}
                   {showApproveFlow && (
