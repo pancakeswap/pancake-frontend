@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import styled from 'styled-components'
 import { Text, Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
@@ -65,6 +64,7 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
     onPresentApyModal()
   }
 
+  // eslint-disable-next-line no-restricted-globals
   const isValidate = apr !== undefined && !isNaN(apr)
 
   return (

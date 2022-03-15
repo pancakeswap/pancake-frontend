@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import styled from 'styled-components'
 import { Text, Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -67,6 +66,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0
     />,
   )
 
+  // eslint-disable-next-line no-restricted-globals
   const isValidate = apr !== undefined && !isNaN(apr)
 
   return (
