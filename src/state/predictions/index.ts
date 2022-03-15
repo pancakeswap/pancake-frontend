@@ -84,14 +84,7 @@ const initialState: PredictionsState = {
 // Thunks
 type PredictionInitialization = Pick<
   PredictionsState,
-  | 'status'
-  | 'currentEpoch'
-  | 'intervalSeconds'
-  | 'minBetAmount'
-  | 'rounds'
-  | 'ledgers'
-  | 'claimableStatuses'
-  | 'bufferSeconds'
+  'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'rounds' | 'ledgers' | 'claimableStatuses'
 >
 export const initializePredictions = createAsyncThunk<PredictionInitialization, string>(
   'predictions/initialize',
@@ -469,8 +462,7 @@ export const predictionsSlice = createSlice({
 
     // Initialize predictions
     builder.addCase(initializePredictions.fulfilled, (state, action) => {
-      const { status, currentEpoch, intervalSeconds, bufferSeconds, rounds, claimableStatuses, ledgers } =
-        action.payload
+      const { status, currentEpoch, intervalSeconds, rounds, claimableStatuses, ledgers } = action.payload
       const futureRounds: ReduxNodeRound[] = []
       const currentRound = rounds[currentEpoch]
 
@@ -483,7 +475,6 @@ export const predictionsSlice = createSlice({
         status,
         currentEpoch,
         intervalSeconds,
-        bufferSeconds,
         claimableStatuses,
         ledgers,
         rounds: merge({}, rounds, makeRoundData(futureRounds)),
