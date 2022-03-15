@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
 // bmp use full image
 import helpImage from '../../../public/images/help-full.png'
+import helpLiquidityImage from '../../../public/images/help-liquidity.png'
 import CustomNav from './components/CustomNav'
 import Providers from '../../PageProvider.bmp'
 import AddLiquidity from '../AddLiquidity/bmp/index'
@@ -29,9 +30,19 @@ const BubbleWrapper = styled(Flex)`
   }
 `
 
-const Footer = () => {
+const Footer = ({ activeId = ActiveId.SWAP }) => {
   const { t } = useTranslation()
   const theme = useTheme()
+  const size = {
+    [ActiveId.SWAP]: {
+      width: 160,
+      height: 128,
+    },
+    [ActiveId.LIQUIDITY]: {
+      width: 97,
+      height: 131,
+    },
+  }
   return (
     <Flex
       flexGrow={1}
@@ -54,7 +65,11 @@ const Footer = () => {
           <path d="M0 16V0C0 0 3 1 6 1C9 1 16 -2 16 3.5C16 10.5 7.5 16 0 16Z" />
         </Svg>
       </BubbleWrapper>
-      <Image src={helpImage} alt="Get some help" width={160} height={128} />
+      <Image
+        src={activeId === ActiveId.SWAP ? helpImage : helpLiquidityImage}
+        alt="Get some help"
+        {...size[activeId]}
+      />
     </Flex>
   )
 }
@@ -99,19 +114,19 @@ const FooterMenu = ({ activeId, setActiveId }) => {
     {
       icon: SwapFillIcon,
       title: t('Exchange'),
-      isActive: activeId === 0,
+      isActive: activeId === ActiveId.SWAP,
       onClick: () => {
         // mpService.navigateTo({ url: 'views/Swap/bmp/index' })
-        setActiveId(0)
+        setActiveId(ActiveId.SWAP)
       },
     },
     {
       icon: EarnFilledIcon,
       title: t('Liquidity'),
-      isActive: activeId === 1,
+      isActive: activeId === ActiveId.LIQUIDITY,
       onClick: () => {
         // mpService.navigateTo({ url: 'views/AddLiquidity/bmp/index' })
-        setActiveId(1)
+        setActiveId(ActiveId.LIQUIDITY)
       },
     },
     {
@@ -136,20 +151,24 @@ const FooterMenu = ({ activeId, setActiveId }) => {
 }
 const { statusBarHeight } = getSystemInfoSync()
 const CUSTOM_NAV_HEIGHT = 44
+enum ActiveId {
+  SWAP,
+  LIQUIDITY,
+}
 const Page = () => {
-  const [activeId, setActiveId] = useState(0)
+  const [activeId, setActiveId] = useState<ActiveId>(ActiveId.SWAP)
   return (
     <Providers>
       <StyledPage>
         <CustomNav top={statusBarHeight} height={CUSTOM_NAV_HEIGHT} />
-        {activeId === 0 && <Swap />}
-        {activeId === 1 && (
+        {activeId === ActiveId.SWAP && <Swap />}
+        {activeId === ActiveId.LIQUIDITY && (
           <LiquidityProvider>
             <LiquidityWrapper />
           </LiquidityProvider>
         )}
         <FooterMenu activeId={activeId} setActiveId={setActiveId} />
-        <Footer />
+        <Footer activeId={activeId} />
       </StyledPage>
     </Providers>
   )
