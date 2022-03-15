@@ -531,7 +531,7 @@ function Swap() {
                           }
                         }}
                         width="48%"
-                        id="swap-button"
+                        id="swap-button2"
                         disabled={
                           !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
                         }
