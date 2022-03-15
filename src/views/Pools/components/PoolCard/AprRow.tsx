@@ -1,5 +1,6 @@
+/* eslint-disable no-restricted-globals */
 import styled from 'styled-components'
-import { Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@pancakeswap/uikit'
+import { Text, Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
@@ -7,6 +8,8 @@ import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'
+import { useCurrentBlock } from 'state/block/hooks'
+import { getPoolBlockInfo } from 'views/Pools/helpers'
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
@@ -24,6 +27,7 @@ interface AprRowProps {
 
 const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0 }) => {
   const { t } = useTranslation()
+  const currentBlock = useCurrentBlock()
   const {
     stakingToken,
     earningToken,
@@ -35,6 +39,8 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0
     userData,
     vaultKey,
   } = pool
+
+  const { shouldShowBlockCountdown, hasPoolStarted } = getPoolBlockInfo(pool, currentBlock)
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
@@ -61,26 +67,34 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0
     />,
   )
 
+  const isValidate = apr !== undefined && !isNaN(apr)
+
   return (
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef}>{vaultKey ? `${t('APY')}:` : `${t('APR')}:`}</TooltipText>
-      {apr || isFinished ? (
-        <ApyLabelContainer alignItems="center" onClick={onPresentApyModal}>
-          <Balance
-            fontSize="16px"
-            isDisabled={isFinished}
-            value={isFinished ? 0 : apr}
-            decimals={2}
-            unit="%"
-            onClick={onPresentApyModal}
-          />
-          {!isFinished && (
-            <IconButton variant="text" scale="sm">
-              <CalculateIcon color="textSubtle" width="18px" />
-            </IconButton>
+      {isValidate || isFinished ? (
+        <>
+          {hasPoolStarted || !shouldShowBlockCountdown ? (
+            <ApyLabelContainer alignItems="center" onClick={onPresentApyModal}>
+              <Balance
+                fontSize="16px"
+                isDisabled={isFinished}
+                value={isFinished ? 0 : apr}
+                decimals={2}
+                unit="%"
+                onClick={onPresentApyModal}
+              />
+              {!isFinished && (
+                <IconButton variant="text" scale="sm">
+                  <CalculateIcon color="textSubtle" width="18px" />
+                </IconButton>
+              )}
+            </ApyLabelContainer>
+          ) : (
+            <Text>-</Text>
           )}
-        </ApyLabelContainer>
+        </>
       ) : (
         <Skeleton width="82px" height="32px" />
       )}
