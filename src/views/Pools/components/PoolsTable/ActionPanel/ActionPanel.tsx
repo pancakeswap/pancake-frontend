@@ -29,7 +29,7 @@ import { convertSharesToCake, getPoolBlockInfo } from 'views/Pools/helpers'
 import { vaultPoolConfig } from 'config/constants/pools'
 import Harvest from './Harvest'
 import Stake from './Stake'
-import Apr from '../Apr'
+import Apr from '../../Apr'
 import AutoHarvest from './AutoHarvest'
 import MaxStakeRow from '../../MaxStakeRow'
 
