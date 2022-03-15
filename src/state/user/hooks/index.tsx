@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CHAIN_ID } from 'config/constants/networks'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useAllTokens } from 'hooks/Tokens'
+import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import { AppDispatch, AppState } from '../../index'
 import {
   addSerializedPair,
@@ -417,10 +417,7 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React()
-  const tokens = useAllTokens(true)
-  const filterTokens = Object.keys(tokens)
-    .slice(0, 1000)
-    .map((key) => tokens[key])
+  const tokens = useOfficialsAndUserAddedTokens()
 
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
@@ -429,8 +426,8 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   const generatedPairs: [Token, Token][] = useMemo(
     () =>
       chainId
-        ? flatMap(Object.keys(filterTokens), (tokenAddress) => {
-            const token = filterTokens[tokenAddress]
+        ? flatMap(Object.keys(tokens), (tokenAddress) => {
+            const token = tokens[tokenAddress]
             // for each token on the current chain,
             return (
               // loop though all bases on the current chain
@@ -446,7 +443,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
             )
           })
         : [],
-    [filterTokens, chainId],
+    [tokens, chainId],
   )
 
   // pairs saved by users

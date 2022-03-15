@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { useActiveIfoWithBlocks } from './useActiveIfoWithBlocks'
-import { useCurrentBlock } from '../state/block/hooks'
-import { getStatus } from '../views/Ifos/hooks/helpers'
+import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
+import { useCurrentBlock } from 'state/block/hooks'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 
 export const useMenuItemsStatus = (): Record<string, string> => {
   const currentBlock = useCurrentBlock()

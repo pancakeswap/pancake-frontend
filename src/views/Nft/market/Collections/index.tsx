@@ -126,7 +126,7 @@ const Collectible = () => {
       if (a && b) {
         if (sortField === SORT_FIELD.createdAt) {
           if (a.createdAt && b.createdAt) {
-            return Date.parse(a.createdAt) - Date.parse(b.createdAt)
+            return Date.parse(a.createdAt) > Date.parse(b.createdAt)
               ? (sortDirection ? -1 : 1) * 1
               : (sortDirection ? -1 : 1) * -1
           }
