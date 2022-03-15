@@ -1,4 +1,3 @@
-import React from 'react'
 import { Flex } from '@pancakeswap/uikit'
 import Loading from 'components/Loading'
 

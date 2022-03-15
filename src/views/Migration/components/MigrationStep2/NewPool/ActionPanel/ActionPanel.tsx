@@ -4,11 +4,11 @@ import { DeserializedPool } from 'state/types'
 import TotalStaked from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/TotalStaked'
 import AutoEarning from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/AutoEarning'
 import Earning from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/Earning'
-import AprRow from './AprRow'
-import Staked from './Staked'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
+import AprRow from './AprRow'
+import Staked from './Staked'
 
 const expandAnimation = keyframes`
   from {

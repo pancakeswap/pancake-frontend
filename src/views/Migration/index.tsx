@@ -48,7 +48,7 @@ const MigrationPage: React.FC = () => {
       const cakeAutoVault = { ...cakePool, vaultKey: VaultKey.CakeVault }
 
       return [ifoPoolVault, cakeAutoVault, cakePool]
-    }, [cakePool])
+    }, [])
 
     return pools
   }

@@ -69,7 +69,7 @@ const MigrationSticky: React.FC = () => {
   useEffect(() => {
     window.addEventListener('scroll', scrollEffect)
     return () => window.removeEventListener('scroll', scrollEffect)
-  }, [])
+  })
 
   const scrollEffect = (): void => {
     const currentScroll = window.pageYOffset
@@ -81,8 +81,11 @@ const MigrationSticky: React.FC = () => {
       setStickyPosition(0)
     } else {
       const navHeight = document.querySelector('nav').offsetHeight
-      const warningBannerHeight = document.querySelector('.warning-banner')?.offsetHeight ?? 0
-      const totalHeight = navHeight + warningBannerHeight
+      const warningBannerHeight = document.querySelector('.warning-banner')
+      let totalHeight = navHeight
+      if (warningBannerHeight) {
+        totalHeight = navHeight + (warningBannerHeight as any).offsetHeight
+      }
       setStickyPosition(totalHeight)
     }
     lastScroll = currentScroll

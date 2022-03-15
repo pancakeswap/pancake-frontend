@@ -40,10 +40,10 @@ const OldFarmStep1: React.FC = () => {
   const stakedOrHasTokenBalance = activeFarms.filter((farm) => {
     const hasStakedBalance = new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)
     const hasTokenBalance = new BigNumber(farm.userData.tokenBalance).isGreaterThan(0)
-    const v1Farm = v1StakedOrHasTokenBalance.find(
+    const farms = v1StakedOrHasTokenBalance.find(
       (v1Farm) => v1Farm.pid === farm.pid && v1Farm.lpSymbol === farm.lpSymbol,
     )
-    return farm.userData && (hasStakedBalance || hasTokenBalance || v1Farm)
+    return farm.userData && (hasStakedBalance || hasTokenBalance || farms)
   })
 
   const farmsList = useCallback(

@@ -4,6 +4,9 @@ import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { DeserializedPool, VaultKey } from 'state/types'
 import NameCell from 'views/Pools/components/PoolsTable/Cells/NameCell'
+import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import StakedCell from './Cells/StakedCell'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
 import EarningsCell from './Cells/EarningsCell'
@@ -11,9 +14,7 @@ import TotalStakedCell from './Cells/TotalStakedCell'
 import Unstaked from './Cells/Unstaked'
 import ExpandActionCell from './Cells/ExpandActionCell'
 import ActionPanel from './ActionPanel/ActionPanel'
-import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { getCakeVaultEarnings } from 'views/Pools/helpers'
+
 interface PoolRowProps {
   pool: DeserializedPool
   account: string

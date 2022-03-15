@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import ExpandActionCell from 'views/Migration/components/MigrationStep1/OldPool/Cells/ExpandActionCell'
+import { useFarmUser } from 'state/farmsV1/hooks'
 import Farm, { FarmProps } from './Cells/Farm'
 import Staked, { StakedProps } from './Cells/Staked'
 import Earned, { EarnedProps } from './Cells/Earned'
@@ -10,7 +11,6 @@ import Multiplier, { MultiplierProps } from './Cells/Multiplier'
 import Liquidity, { LiquidityProps } from './Cells/Liquidity'
 import Unstake, { UnstakeProps } from './Cells/Unstake'
 import ActionPanel from './ActionPanel/ActionPanel'
-import { useFarmUser } from 'state/farmsV1/hooks'
 
 const StyledRow = styled.div`
   display: flex;

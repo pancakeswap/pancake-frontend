@@ -1,6 +1,6 @@
 import React from 'react'
-import PoolsTable from './PoolTable'
 import { DeserializedPool } from 'state/types'
+import PoolsTable from './PoolTable'
 
 interface OldPoolProps {
   account: string

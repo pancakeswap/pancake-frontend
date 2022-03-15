@@ -41,8 +41,6 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool }) => {
     userData: { userShares },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
-  const hasSharesStaked = userShares && userShares.gt(0)
-  const isVaultWithShares = pool.vaultKey && hasSharesStaked
   const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
 
   // pool

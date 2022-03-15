@@ -9,11 +9,11 @@ import { EarnedProps } from 'views/Migration/components/MigrationStep1/OldFarm/C
 import Multiplier, { MultiplierProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Multiplier'
 import Liquidity, { LiquidityProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Liquidity'
 import ExpandActionCell from 'views/Migration/components/MigrationStep1/OldPool/Cells/ExpandActionCell'
+import { useFarmUser } from 'state/farms/hooks'
 import AprCell from './Cells/AprCell'
 import StakeButtonCells from './Cells/StakeButtonCells'
 import StakeButton from './StakeButton'
 import ActionPanel from './ActionPanel/ActionPanel'
-import { useFarmUser } from 'state/farms/hooks'
 
 export interface RowProps {
   farm: FarmProps

@@ -49,7 +49,7 @@ const StakeButton: React.FC<StakeButtonProps> = ({ pool }) => {
     userData: { userShares },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
-  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
+  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
   const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = vaultKey && hasSharesStaked
 

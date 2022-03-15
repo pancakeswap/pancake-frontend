@@ -2,7 +2,6 @@ import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { Button } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useAppDispatch } from 'state'
 import { DeserializedPool } from 'state/types'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -11,10 +10,10 @@ import useToast from 'hooks/useToast'
 import { useWeb3React } from '@web3-react/core'
 import { useVaultPoolContract } from 'hooks/useContract'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { useFetchUserPools } from '../../../hook/V1/Pool/useFetchUserPools'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import useUnstakePool from '../../../hook/V1/Pool/useUnstakePool'
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
+import { useFetchUserPools } from '../../../hook/V1/Pool/useFetchUserPools'
+import useUnstakePool from '../../../hook/V1/Pool/useUnstakePool'
 
 export interface UnstakeButtonProps {
   pool: DeserializedPool
@@ -22,7 +21,6 @@ export interface UnstakeButtonProps {
 
 const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
   const { sousId, stakingToken, earningToken, userData, vaultKey } = pool
-  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
