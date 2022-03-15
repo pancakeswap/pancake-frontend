@@ -48,7 +48,7 @@ export default function Pool() {
   const v2IsLoading =
     fetchingV2PairBalances ||
     v2Pairs?.length < liquidityTokensWithBalances.length ||
-    (v2Pairs ? v2Pairs.length > 0 && v2Pairs.every(([pairState]) => pairState === PairState.LOADING) : false)
+    (v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING))
   const allV2PairsWithLiquidity = v2Pairs
     ?.filter(([pairState, pair]) => pairState === PairState.EXISTS && Boolean(pair))
     .map(([, pair]) => pair)
