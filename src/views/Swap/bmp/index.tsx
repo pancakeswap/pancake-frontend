@@ -502,11 +502,8 @@ function Swap() {
                         width="48%"
                       >
                         {approval === ApprovalState.PENDING ? (
-                          <AutoRow gap="6px" justify="center" style={{ flexWrap: 'nowrap' }}>
-                            <Box style={{ overflow: 'hidden', lineHeight: 1, textOverflow: 'ellipsis' }}>
-                              {t('Enabling')}
-                            </Box>
-                            <CircleLoader stroke="white" />
+                          <AutoRow gap="6px" justify="center">
+                            {t('Enabling')} <CircleLoader stroke="white" />
                           </AutoRow>
                         ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                           t('Enabled')
