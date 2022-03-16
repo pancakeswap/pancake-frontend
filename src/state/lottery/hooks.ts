@@ -1,12 +1,11 @@
 import { useEffect, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { useSelector } from 'react-redux'
+import { useSelector, batch } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { State } from '../types'
 import { fetchCurrentLotteryId, fetchCurrentLottery, fetchUserTicketsAndLotteries, fetchPublicLotteries } from '.'
-import { useProcessLotteryResponse } from './helpers'
+import { makeLotteryGraphRoundByIdSelector, makeLotteryGraphDataByIdSelector, lotterySelector } from './selectors'
 
 // Lottery
 export const useGetCurrentLotteryId = () => {
@@ -18,8 +17,8 @@ export const useGetUserLotteriesGraphData = () => {
 }
 
 export const useGetUserLotteryGraphRoundById = (lotteryId: string) => {
-  const userLotteriesData = useGetUserLotteriesGraphData()
-  return userLotteriesData.rounds.find((userRound) => userRound.lotteryId === lotteryId)
+  const lotteryGraphRoundByIdSelector = useMemo(() => makeLotteryGraphRoundByIdSelector(lotteryId), [lotteryId])
+  return useSelector(lotteryGraphRoundByIdSelector)
 }
 
 export const useGetLotteriesGraphData = () => {
@@ -27,8 +26,8 @@ export const useGetLotteriesGraphData = () => {
 }
 
 export const useGetLotteryGraphDataById = (lotteryId: string) => {
-  const lotteriesData = useGetLotteriesGraphData()
-  return lotteriesData?.find((lottery) => lottery.id === lotteryId)
+  const lotteryGraphDataByIdSelector = useMemo(() => makeLotteryGraphDataByIdSelector(lotteryId), [lotteryId])
+  return useSelector(lotteryGraphDataByIdSelector)
 }
 
 export const useFetchLottery = () => {
@@ -43,10 +42,12 @@ export const useFetchLottery = () => {
 
   useFastRefreshEffect(() => {
     if (currentLotteryId) {
-      // Get historical lottery data from nodes +  last 100 subgraph entries
-      dispatch(fetchPublicLotteries({ currentLotteryId }))
-      // get public data for current lottery
-      dispatch(fetchCurrentLottery({ currentLotteryId }))
+      batch(() => {
+        // Get historical lottery data from nodes +  last 100 subgraph entries
+        dispatch(fetchPublicLotteries({ currentLotteryId }))
+        // get public data for current lottery
+        dispatch(fetchCurrentLottery({ currentLotteryId }))
+      })
     }
   }, [dispatch, currentLotteryId])
 
@@ -59,28 +60,5 @@ export const useFetchLottery = () => {
 }
 
 export const useLottery = () => {
-  const currentRound = useSelector((state: State) => state.lottery.currentRound)
-  const processedCurrentRound = useProcessLotteryResponse(currentRound)
-
-  const isTransitioning = useSelector((state: State) => state.lottery.isTransitioning)
-
-  const currentLotteryId = useGetCurrentLotteryId()
-  const userLotteryData = useGetUserLotteriesGraphData()
-  const lotteriesData = useGetLotteriesGraphData()
-
-  const maxNumberTicketsPerBuyOrClaimAsString = useSelector(
-    (state: State) => state.lottery.maxNumberTicketsPerBuyOrClaim,
-  )
-  const maxNumberTicketsPerBuyOrClaim = useMemo(() => {
-    return new BigNumber(maxNumberTicketsPerBuyOrClaimAsString)
-  }, [maxNumberTicketsPerBuyOrClaimAsString])
-
-  return {
-    currentLotteryId,
-    maxNumberTicketsPerBuyOrClaim,
-    isTransitioning,
-    userLotteryData,
-    lotteriesData,
-    currentRound: processedCurrentRound,
-  }
+  return useSelector(lotterySelector)
 }
