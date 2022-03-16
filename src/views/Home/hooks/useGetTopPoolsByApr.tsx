@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
 import orderBy from 'lodash/orderBy'
 import { DeserializedPool } from 'state/types'
@@ -16,8 +15,6 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   const initialBlock = useInitialBlock()
 
   const { pools } = usePoolsWithVault()
-
-  const cakePriceBusd = usePriceCakeBusd()
 
   useEffect(() => {
     const fetchPoolsPublicData = async () => {
@@ -48,7 +45,7 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
     if (fetchStatus === FetchStatus.Fetched && !topPools[0]) {
       getTopPoolsByApr(pools)
     }
-  }, [setTopPools, pools, fetchStatus, cakePriceBusd, topPools])
+  }, [setTopPools, pools, fetchStatus, topPools])
 
   return { topPools }
 }

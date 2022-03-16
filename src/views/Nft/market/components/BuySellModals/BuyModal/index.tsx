@@ -7,6 +7,8 @@ import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import tokens from 'config/constants/tokens'
+import { CHAIN_ID } from 'config/constants/networks'
+import { ChainId } from '@pancakeswap/sdk'
 import { parseUnits, formatEther } from '@ethersproject/units'
 import { useERC20, useNftMarketContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
@@ -34,6 +36,10 @@ interface BuyModalProps extends InjectedModalProps {
   nftToBuy: NftToken
 }
 
+// NFT WBNB in testnet contract is different
+const wbnbAddress =
+  CHAIN_ID === String(ChainId.MAINNET) ? tokens.wbnb.address : '0x094616f0bdfb0b526bd735bf66eca0ad254ca81f'
+
 const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const [stage, setStage] = useState(BuyingStage.REVIEW)
   const [confirmedTxHash, setConfirmedTxHash] = useState('')
@@ -44,8 +50,8 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { account } = useWeb3React()
-  const wbnbContractReader = useERC20(tokens.wbnb.address, false)
-  const wbnbContractApprover = useERC20(tokens.wbnb.address)
+  const wbnbContractReader = useERC20(wbnbAddress, false)
+  const wbnbContractApprover = useERC20(wbnbAddress)
   const nftMarketContract = useNftMarketContract()
 
   const { toastSuccess } = useToast()
@@ -57,7 +63,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const { balance: bnbBalance, fetchStatus: bnbFetchStatus } = useGetBnbBalance()
   const formattedBnbBalance = parseFloat(formatEther(bnbBalance))
   // WBNB - returns BigNumber
-  const { balance: wbnbBalance, fetchStatus: wbnbFetchStatus } = useTokenBalance(tokens.wbnb.address)
+  const { balance: wbnbBalance, fetchStatus: wbnbFetchStatus } = useTokenBalance(wbnbAddress)
   const formattedWbnbBalance = getBalanceNumber(wbnbBalance)
 
   const walletBalance = paymentCurrency === PaymentCurrency.BNB ? formattedBnbBalance : formattedWbnbBalance
