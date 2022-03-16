@@ -1,5 +1,5 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import { Activity, AskOrder, AskOrderType, MarketEvent, Transaction } from 'state/nftMarket/types'
+import orderBy from 'lodash/orderBy'
 
 export const sortActivity = ({
   askOrders = [],
@@ -50,11 +50,7 @@ export const sortActivity = ({
 
   const allActivity = [...transformAskOrders(askOrders), ...transformTransactions(transactions)]
   if (allActivity.length > 0) {
-    const sortedByMostRecent = allActivity.sort((activityItem1, activityItem2) => {
-      const timestamp1 = BigNumber.from(activityItem1.timestamp)
-      const timestamp2 = BigNumber.from(activityItem2.timestamp)
-      return timestamp2.sub(timestamp1).toNumber()
-    })
+    const sortedByMostRecent = orderBy(allActivity, (activity) => parseInt(activity.timestamp, 10), 'desc')
 
     return sortedByMostRecent
   }

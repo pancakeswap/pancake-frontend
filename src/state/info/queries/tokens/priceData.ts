@@ -4,6 +4,7 @@ import { getBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamp
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import { PriceChartEntry } from 'state/info/types'
 import { INFO_CLIENT } from 'config/constants/endpoints'
+import orderBy from 'lodash/orderBy'
 
 const getPriceSubqueries = (tokenAddress: string, blocks: any) =>
   blocks.map(
@@ -101,18 +102,18 @@ const fetchTokenPriceData = async (
     })
 
     // graphql-request does not guarantee same ordering of batched requests subqueries, hence sorting by timestamp from oldest to newest
-    tokenPrices.sort((a, b) => parseInt(a.timestamp, 10) - parseInt(b.timestamp, 10))
+    const sortedTokenPrices = orderBy(tokenPrices, (tokenPrice) => parseInt(tokenPrice.timestamp, 10))
 
     const formattedHistory = []
 
     // for each timestamp, construct the open and close price
-    for (let i = 0; i < tokenPrices.length - 1; i++) {
+    for (let i = 0; i < sortedTokenPrices.length - 1; i++) {
       formattedHistory.push({
-        time: parseFloat(tokenPrices[i].timestamp),
-        open: tokenPrices[i].priceUSD,
-        close: tokenPrices[i + 1].priceUSD,
-        high: tokenPrices[i + 1].priceUSD,
-        low: tokenPrices[i].priceUSD,
+        time: parseFloat(sortedTokenPrices[i].timestamp),
+        open: sortedTokenPrices[i].priceUSD,
+        close: sortedTokenPrices[i + 1].priceUSD,
+        high: sortedTokenPrices[i + 1].priceUSD,
+        low: sortedTokenPrices[i].priceUSD,
       })
     }
 

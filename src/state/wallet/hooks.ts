@@ -5,6 +5,7 @@ import ERC20_INTERFACE from 'config/abi/erc20'
 import { useAllTokens } from 'hooks/Tokens'
 import { useMulticallContract } from 'hooks/useContract'
 import { isAddress } from 'utils'
+import orderBy from 'lodash/orderBy'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
 
 /**
@@ -17,12 +18,7 @@ export function useBNBBalances(uncheckedAddresses?: (string | undefined)[]): {
 
   const addresses: string[] = useMemo(
     () =>
-      uncheckedAddresses
-        ? uncheckedAddresses
-            .map(isAddress)
-            .filter((a): a is string => a !== false)
-            .sort()
-        : [],
+      uncheckedAddresses ? orderBy(uncheckedAddresses.map(isAddress).filter((a): a is string => a !== false)) : [],
     [uncheckedAddresses],
   )
 

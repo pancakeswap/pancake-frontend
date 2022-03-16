@@ -1,3 +1,4 @@
+import orderBy from 'lodash/orderBy'
 import { ConfigMenuItemsType } from './config/config'
 
 export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; menuConfig: ConfigMenuItemsType[] }) =>
@@ -17,9 +18,7 @@ export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string;
   }
 
   // Pathname includes multiple sub menu item hrefs - find the most specific match
-  const mostSpecificMatch = activeSubMenuItems.sort(
-    (subMenuItem1, subMenuItem2) => subMenuItem2.href.length - subMenuItem1.href.length,
-  )[0]
+  const mostSpecificMatch = orderBy(activeSubMenuItems, (subMenuItem) => subMenuItem.href.length, 'desc')[0]
 
   return mostSpecificMatch
 }
