@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import { BLOCKS_CLIENT } from 'config/constants/endpoints'
 import { Block } from 'state/info/types'
+import orderBy from 'lodash/orderBy'
 
 const getBlockSubqueries = (timestamps: number[]) =>
   timestamps.map((timestamp) => {
@@ -39,9 +40,6 @@ export const getBlocksFromTimestamps = async (
     skipCount,
   )
 
-  const sortingFunction =
-    sortDirection === 'desc' ? (a: Block, b: Block) => b.number - a.number : (a: Block, b: Block) => a.number - b.number
-
   const blocks: Block[] = []
   if (fetchedData) {
     // eslint-disable-next-line no-restricted-syntax
@@ -54,7 +52,7 @@ export const getBlocksFromTimestamps = async (
       }
     }
     // graphql-request does not guarantee same ordering of batched requests subqueries, hence manual sorting
-    blocks.sort(sortingFunction)
+    return orderBy(blocks, (block) => block.number, sortDirection)
   }
   return blocks
 }

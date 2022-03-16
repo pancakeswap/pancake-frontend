@@ -1,5 +1,6 @@
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { get, set, clear } from 'local-storage'
+import orderBy from 'lodash/orderBy'
 
 export const LS_ORDERS = 'gorders_'
 
@@ -130,9 +131,6 @@ export function confirmOrderSubmission(chainId: number, account: string, submiss
 
 export const getUniqueOrders = (allOrders: Order[]): Order[] => [
   ...new Map(
-    allOrders
-      // sort by `updatedAt` asc so that the most recent one will be used
-      .sort((a, b) => parseFloat(a.updatedAt) - parseFloat(b.updatedAt))
-      .map((order) => [order.id, order]),
+    orderBy(allOrders, (order) => parseFloat(order.updatedAt), 'desc').map((order) => [order.id, order]),
   ).values(),
 ]

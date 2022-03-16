@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Flex, Box } from '@pancakeswap/uikit'
 import Image from 'next/image'
+import orderBy from 'lodash/orderBy'
 import { TeamRanksProps } from '../../types'
 import CakerBunny from '../../pngs/cakers.png'
 import TopTradersCard from './TopTradersCard'
@@ -60,7 +61,7 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
   const isGlobalLeaderboardDataComplete = Boolean(isTeamLeaderboardDataComplete && globalLeaderboardInformation)
 
   const getTeamsSortedByVolume = (arrayOfTeams) => {
-    return arrayOfTeams.sort((teamA, teamB) => teamB.leaderboardData.volume - teamA.leaderboardData.volume)
+    return orderBy(arrayOfTeams, (team) => team.leaderboardData.volume, 'desc')
   }
 
   return (

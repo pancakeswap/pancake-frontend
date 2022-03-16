@@ -12,6 +12,7 @@ import useDebounce from 'hooks/useDebounce'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import { PoolData } from 'state/info/types'
 import { useRouter } from 'next/router'
+import orderBy from 'lodash/orderBy'
 
 const Container = styled.div`
   position: relative;
@@ -210,14 +211,14 @@ const Search = () => {
     if (showWatchlist) {
       return watchListTokenData.filter((token) => tokenIncludesSearchTerm(token, value))
     }
-    return tokens.sort((t0, t1) => (t0.volumeUSD > t1.volumeUSD ? -1 : 1))
+    return orderBy(tokens, (token) => token.volumeUSD, 'desc')
   }, [showWatchlist, tokens, watchListTokenData, value])
 
   const poolForList = useMemo(() => {
     if (showWatchlist) {
       return watchListPoolData.filter((pool) => poolIncludesSearchTerm(pool, value))
     }
-    return pools.sort((p0, p1) => (p0.volumeUSD > p1.volumeUSD ? -1 : 1))
+    return orderBy(pools, (pool) => pool.volumeUSD, 'desc')
   }, [pools, showWatchlist, watchListPoolData, value])
 
   const contentUnderTokenList = () => {
