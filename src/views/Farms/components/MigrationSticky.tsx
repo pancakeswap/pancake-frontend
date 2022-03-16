@@ -1,8 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  MENU_HEIGHT,
+  MOBILE_MENU_HEIGHT,
+  TOP_BANNER_HEIGHT,
+  TOP_BANNER_HEIGHT_MOBILE,
+} from '@pancakeswap/uikit/src/widgets/Menu/config'
 
 const Container = styled.div`
   position: sticky;
@@ -62,34 +68,32 @@ const TextSubTitle = styled(Text)`
 
 const MigrationSticky: React.FC = () => {
   const { t } = useTranslation()
-  let lastScroll = 0
   const { isMobile } = useMatchBreakpoints()
   const [stickPosition, setStickyPosition] = useState<number>(0)
+  const refPrevOffset = useRef(typeof window === 'undefined' ? 0 : window.pageYOffset)
 
   useEffect(() => {
+    const scrollEffect = () => {
+      const currentScroll = window.pageYOffset
+      if (currentScroll <= 0) {
+        setStickyPosition(0)
+        return
+      }
+      if (currentScroll >= refPrevOffset.current) {
+        setStickyPosition(0)
+      } else {
+        const warningBannerHeight = document.querySelector('.warning-banner')
+        const topBannerHeight = isMobile ? TOP_BANNER_HEIGHT_MOBILE : TOP_BANNER_HEIGHT
+        const topNavHeight = isMobile ? MENU_HEIGHT : MOBILE_MENU_HEIGHT
+        const totalTopMenuHeight = warningBannerHeight ? topNavHeight + topBannerHeight : topNavHeight
+        setStickyPosition(totalTopMenuHeight)
+      }
+      refPrevOffset.current = currentScroll
+    }
+
     window.addEventListener('scroll', scrollEffect)
     return () => window.removeEventListener('scroll', scrollEffect)
-  })
-
-  const scrollEffect = (): void => {
-    const currentScroll = window.pageYOffset
-    if (currentScroll <= 0) {
-      setStickyPosition(0)
-      return
-    }
-    if (currentScroll >= lastScroll) {
-      setStickyPosition(0)
-    } else {
-      const navHeight = document.querySelector('nav').offsetHeight
-      const warningBannerHeight = document.querySelector('.warning-banner')
-      let totalHeight = navHeight
-      if (warningBannerHeight) {
-        totalHeight = navHeight + (warningBannerHeight as any).offsetHeight
-      }
-      setStickyPosition(totalHeight)
-    }
-    lastScroll = currentScroll
-  }
+  }, [])
 
   return (
     <Container style={{ top: `${stickPosition}px` }}>
