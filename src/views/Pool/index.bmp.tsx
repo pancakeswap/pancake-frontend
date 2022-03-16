@@ -19,7 +19,7 @@ const Body = styled(CardBody)`
   flex-direction: column;
   justify-content: center;
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
-  height: 324px;
+  min-height: 324px;
 `
 
 export default function Pool() {
@@ -52,10 +52,12 @@ export default function Pool() {
   )
 
   const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
+  console.log('🚀 ~ file: index.bmp.tsx ~ line 55 ~ Pool ~ v2Pairs', v2Pairs)
   const v2IsLoading =
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some((V2Pair) => !V2Pair)
 
   const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
+  console.log('🚀 ~ file: index.bmp.tsx ~ line 59 ~ Pool ~ allV2PairsWithLiquidity', allV2PairsWithLiquidity)
 
   const renderBody = () => {
     if (!account) {
