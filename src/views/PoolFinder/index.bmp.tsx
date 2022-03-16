@@ -13,7 +13,6 @@ import { PairState, usePair } from '../../hooks/usePairs'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { usePairAdder } from '../../state/user/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
-import StyledInternalLink from '../../components/Links'
 import { currencyId } from '../../utils/currencyId'
 // import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
@@ -138,30 +137,35 @@ export default function PoolFinder() {
           )}
         </StyledButton>
 
-        {hasPosition && (
-          <ColumnCenter
-            style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }}
-          >
-            <Text textAlign="center">{t('Pool Found!')}</Text>
-            <StyledInternalLink
-              onClick={() => {
-                dispatch({ type: 'setPage', page: LiquidityPage.Pool })
-              }}
-            >
-              <Text textAlign="center">{t('Manage this pool.')}</Text>
-            </StyledInternalLink>
-          </ColumnCenter>
-        )}
+        {/* {hasPosition && ( */}
+        {/*   <ColumnCenter */}
+        {/*     style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }} */}
+        {/*   > */}
+        {/*     <Text textAlign="center">{t('Pool Found!')}</Text> */}
+        {/*   </ColumnCenter> */}
+        {/* )} */}
 
         {currency0 && currency1 ? (
           pairState === PairState.EXISTS ? (
             hasPosition && pair ? (
-              <MinimalPositionCard pair={pair} />
+              <>
+                <MinimalPositionCard pair={pair} />
+                <Button
+                  variant="secondary"
+                  width="100%"
+                  onClick={() => {
+                    dispatch({ type: 'setPage', page: LiquidityPage.Pool })
+                  }}
+                >
+                  {t('Manage this pool.')}
+                </Button>
+              </>
             ) : (
               <LightCard padding="45px 10px">
                 <AutoColumn gap="sm" justify="center">
                   <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
-                  <StyledInternalLink
+                  <Button
+                    variant="secondary"
                     onClick={() => {
                       dispatch({ type: 'setPage', page: LiquidityPage.Add })
                       dispatch({
@@ -171,8 +175,8 @@ export default function PoolFinder() {
                       })
                     }}
                   >
-                    <Text textAlign="center">{t('Add Liquidity')}</Text>
-                  </StyledInternalLink>
+                    {t('Add Liquidity')}
+                  </Button>
                 </AutoColumn>
               </LightCard>
             )
@@ -180,7 +184,8 @@ export default function PoolFinder() {
             <LightCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
                 <Text textAlign="center">{t('No pool found.')}</Text>
-                <StyledInternalLink
+                <Button
+                  variant="secondary"
                   onClick={() => {
                     dispatch({ type: 'setPage', page: LiquidityPage.Add })
                     dispatch({
@@ -191,7 +196,7 @@ export default function PoolFinder() {
                   }}
                 >
                   {t('Create pool.')}
-                </StyledInternalLink>
+                </Button>
               </AutoColumn>
             </LightCard>
           ) : pairState === PairState.INVALID ? (
