@@ -63,7 +63,7 @@ export default function Pool() {
         <view>
           <Flex justifyContent="center">
             <Text color="textSubtle" textAlign="center" width="180px" mb="16px">
-              {t('Connect your wallet to check for LP tokens')}
+              {t('Connect to a wallet to view your liquidity.')}
             </Text>
           </Flex>
           <ConnectWalletButton width="100%" />
