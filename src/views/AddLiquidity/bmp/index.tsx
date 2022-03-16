@@ -42,8 +42,6 @@ import ConfirmAddModalBottom from '../ConfirmAddModalBottom'
 import { currencyId } from '../../../utils/currencyId'
 import PoolPriceBar from '../PoolPriceBar'
 import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
-// import Page from '../../Page'
-
 function AddLiquidity() {
   // const router = useRouter()
   // const [currencyIdA, currencyIdB] = router.query.currency || []

@@ -143,7 +143,7 @@ function CurrencySearch({
             <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
           </Column>
         ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
-          <Box margin="24px -24px">
+          <Box margin="20px -20px">
             <CurrencyList
               height={390}
               showETH={showETH}
