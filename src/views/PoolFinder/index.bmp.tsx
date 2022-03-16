@@ -14,7 +14,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { usePairAdder } from '../../state/user/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
-// import Dots from '../../components/Loader/Dots'
+import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
 import { LiquidityPage, useLiquidity } from 'views/BmpHome/context/swapContext.bmp'
 
@@ -51,9 +51,9 @@ export default function PoolFinder() {
     pairState === PairState.NOT_EXISTS ||
     Boolean(
       pairState === PairState.EXISTS &&
-        pair &&
-        JSBI.equal(pair.reserve0.raw, JSBI.BigInt(0)) &&
-        JSBI.equal(pair.reserve1.raw, JSBI.BigInt(0)),
+      pair &&
+      JSBI.equal(pair.reserve0.raw, JSBI.BigInt(0)) &&
+      JSBI.equal(pair.reserve1.raw, JSBI.BigInt(0)),
     )
 
   const position: TokenAmount | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)
@@ -211,8 +211,7 @@ export default function PoolFinder() {
             <LightCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
                 <Text textAlign="center">
-                  {t('Loading')}
-                  {/* <Dots /> */}
+                  <Dots>{t('Loading')}</Dots>
                 </Text>
               </AutoColumn>
             </LightCard>

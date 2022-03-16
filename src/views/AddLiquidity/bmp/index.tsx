@@ -37,7 +37,7 @@ import { useGasPrice, useIsExpertMode, useUserSlippageTolerance } from '../../..
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../../utils'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../../utils/wrappedCurrency'
-// import Dots from '../../../components/Loader/Dots'
+import Dots from '../../../components/Loader/Dots'
 import ConfirmAddModalBottom from '../ConfirmAddModalBottom'
 import { currencyId } from '../../../utils/currencyId'
 import PoolPriceBar from '../PoolPriceBar'
@@ -424,11 +424,11 @@ function AddLiquidity() {
                         disabled={approvalA === ApprovalState.PENDING}
                         width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
                       >
-                        {approvalA === ApprovalState.PENDING
-                          ? {
-                              /* <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots> */
-                            }
-                          : t('Enable %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}
+                        {approvalA === ApprovalState.PENDING ? (
+                          <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
+                        ) : (
+                          t('Enable %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })
+                        )}
                       </Button>
                     )}
                     {approvalB !== ApprovalState.APPROVED && (
@@ -437,11 +437,11 @@ function AddLiquidity() {
                         disabled={approvalB === ApprovalState.PENDING}
                         width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
                       >
-                        {approvalB === ApprovalState.PENDING
-                          ? {
-                              /* <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots> */
-                            }
-                          : t('Enable %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}
+                        {approvalB === ApprovalState.PENDING ? (
+                          <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
+                        ) : (
+                          t('Enable %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })
+                        )}
                       </Button>
                     )}
                   </RowBetween>
