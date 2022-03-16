@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useENS from 'hooks/ENS/useENS'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
@@ -108,14 +107,12 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
 }
 
 // Get swap price for single token disregarding slippage and price impact
-export function useSingleTokenSwapInfo(): { [key: string]: number } {
-  const {
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currencyId: outputCurrencyId },
-  } = useSwapState()
-
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
+export function useSingleTokenSwapInfo(
+  inputCurrencyId: string | undefined,
+  inputCurrency: Currency | undefined,
+  outputCurrencyId: string | undefined,
+  outputCurrency: Currency | undefined,
+): { [key: string]: number } {
   const token0Address = getTokenAddress(inputCurrencyId)
   const token1Address = getTokenAddress(outputCurrencyId)
 
@@ -136,7 +133,15 @@ export function useSingleTokenSwapInfo(): { [key: string]: number } {
 }
 
 // from the current swap inputs, compute the best trade and return it.
-export function useDerivedSwapInfo(): {
+export function useDerivedSwapInfo(
+  independentField: Field,
+  typedValue: string,
+  inputCurrencyId: string | undefined,
+  inputCurrency: Currency | undefined,
+  outputCurrencyId: string | undefined,
+  outputCurrency: Currency | undefined,
+  recipient: string,
+): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
@@ -146,16 +151,6 @@ export function useDerivedSwapInfo(): {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const {
-    independentField,
-    typedValue,
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currencyId: outputCurrencyId },
-    recipient,
-  } = useSwapState()
-
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
 
