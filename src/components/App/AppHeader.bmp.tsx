@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Heading, IconButton, ArrowBackIcon, NotificationDot } from '@pancakeswap/uikit'
+import { Text, Box, Flex, Heading, IconButton, ArrowBackIcon, NotificationDot } from '@pancakeswap/uikit'
 import { useExpertModeManager } from 'state/user/hooks'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 // import Link from 'next/link'
@@ -30,9 +30,9 @@ const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig 
     <AppHeaderContainer>
       <Flex alignItems="center" mr={noConfig ? 0 : '16px'}>
         {backTo && (
-          <IconButton as="a" onClick={backTo}>
+          <Box onClick={backTo} style={{ width: '48px' }}>
             <ArrowBackIcon width="32px" />
-          </IconButton>
+          </Box>
         )}
         <Flex flexDirection="column">
           <Heading as="h2" mb="8px">
