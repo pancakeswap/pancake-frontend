@@ -114,11 +114,8 @@ export default function CurrencySearchModal({
               {t('Manage Tokens')}
             </Button>
           </Footer>
-        )
-        }
+        )}
       </Box>
     </FloatLayout>
   )
 }
-
-
