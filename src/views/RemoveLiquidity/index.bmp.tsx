@@ -498,7 +498,7 @@ export default function RemoveLiquidity() {
                   min={0}
                   max={100}
                   value={innerLiquidityPercentage}
-                  onChange={(e) => setInnerLiquidityPercentage(Math.ceil(e.detail.value))}
+                  onChanging={(e) => setInnerLiquidityPercentage(Math.ceil(e.detail.value))}
                   style={{ margin: '0 0 16px 0' }}
                   // mb="16px"
                 />
