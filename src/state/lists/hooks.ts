@@ -1,6 +1,8 @@
 import { ChainId, Token } from '@pancakeswap/sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
+import uniqBy from 'lodash/uniqBy'
+import groupBy from 'lodash/groupBy'
 import { useSelector } from 'react-redux'
 import { createSelector } from '@reduxjs/toolkit'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
@@ -23,6 +25,10 @@ function sortByListPriority(urlA: string, urlB: string) {
   if (first < second) return 1
   if (first > second) return -1
   return 0
+}
+
+function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
+  return Object.keys(obj).filter((k) => Number.isNaN(+k)) as K[]
 }
 
 /**
@@ -130,37 +136,41 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   const result = listCache?.get(list)
   if (result) return result
 
-  const map = list.tokens.reduce<TokenAddressMap>(
-    (tokenMap, tokenInfo) => {
-      const tags: TagInfo[] =
-        tokenInfo.tags
-          ?.map((tagId) => {
-            if (!list.tags?.[tagId]) return undefined
-            return { ...list.tags[tagId], id: tagId }
-          })
-          ?.filter((x): x is TagInfo => Boolean(x)) ?? []
+  const tokenMap: WrappedTokenInfo[] = uniqBy(
+    list.tokens,
+    (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`,
+  ).map((tokenInfo) => {
+    const tags: TagInfo[] =
+      tokenInfo.tags
+        ?.map((tagId) => {
+          if (!list.tags?.[tagId]) return undefined
+          return { ...list.tags[tagId], id: tagId }
+        })
+        ?.filter((x): x is TagInfo => Boolean(x)) ?? []
 
-      const token = new WrappedTokenInfo(tokenInfo, tags)
-      if (tokenMap[token.chainId][token.address] !== undefined) {
-        console.warn(`Duplicate token skipped: ${token.address}`)
-        return tokenMap
-      }
+    return new WrappedTokenInfo(tokenInfo, tags)
+  })
 
-      return {
-        ...tokenMap,
-        [token.chainId]: {
-          ...tokenMap[token.chainId],
-          [token.address]: {
-            token,
-            list,
-          },
-        },
-      }
-    },
-    { ...EMPTY_LIST },
-  )
-  listCache?.set(list, map)
-  return map
+  const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, (tokenInfo) => tokenInfo.chainId)
+
+  const tokenAddressMap = Object.fromEntries(
+    Object.entries(groupedTokenMap).map(([chainId, tokenInfoList]) => [
+      chainId,
+      Object.fromEntries(tokenInfoList.map((tokenInfo) => [tokenInfo.address, { token: tokenInfo, list }])),
+    ]),
+  ) as TokenAddressMap
+
+  // add chain id item if not exist
+  enumKeys(ChainId).forEach((chainId) => {
+    if (!(ChainId[chainId] in tokenAddressMap)) {
+      Object.defineProperty(tokenAddressMap, ChainId[chainId], {
+        value: {},
+      })
+    }
+  })
+
+  listCache?.set(list, tokenAddressMap)
+  return tokenAddressMap
 }
 
 // -------------------------------------
