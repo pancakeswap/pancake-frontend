@@ -1,12 +1,15 @@
-import styled, { keyframes } from 'styled-components'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Flex, Heading, Button } from '@pancakeswap/uikit'
+import { Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useTranslation } from 'contexts/Localization'
+import { useRef } from 'react'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
+import Image from 'next/image'
+import styled, { keyframes } from 'styled-components'
+import bunnyImage from '../../../../public/images/home/lunar-bunny/bunny.png'
+import CompositeImage, { CompositeImageProps } from './CompositeImage'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
-import CompositeImage, { getSrcSet, CompositeImageProps } from './CompositeImage'
 
 const flyingAnim = () => keyframes`
   from {
@@ -51,6 +54,12 @@ const InnerWrapper = styled.div`
 const BunnyWrapper = styled.div`
   width: 100%;
   animation: ${flyingAnim} 3.5s ease-in-out infinite;
+  transition: opacity 0.35s ease-in;
+  will-change: opacity, transform;
+  opacity: 0;
+  &.appear {
+    opacity: 1;
+  }
 `
 
 const StarsWrapper = styled.div`
@@ -74,9 +83,6 @@ const StarsWrapper = styled.div`
   }
 `
 
-const imagePath = '/images/home/lunar-bunny/'
-const imageSrc = 'bunny'
-
 const starsImage: CompositeImageProps = {
   path: '/images/home/lunar-bunny/',
   attributes: [
@@ -90,6 +96,7 @@ const Hero = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { theme } = useTheme()
+  const bunnyWrapperRef = useRef<HTMLDivElement>(null)
 
   return (
     <>
@@ -125,12 +132,15 @@ const Hero = () => {
           mb={['24px', null, null, '0']}
           position="relative"
         >
-          <BunnyWrapper>
-            <picture>
-              <source type="image/webp" srcSet={getSrcSet(imagePath, imageSrc, '.webp')} />
-              <source type="image/png" srcSet={getSrcSet(imagePath, imageSrc)} />
-              <img src={`${imagePath}${imageSrc}.png`} alt={t('Lunar bunny')} />
-            </picture>
+          <BunnyWrapper ref={bunnyWrapperRef}>
+            <Image
+              src={bunnyImage}
+              onLoad={() => {
+                if (!bunnyWrapperRef.current) return
+                bunnyWrapperRef.current.classList.add('appear')
+              }}
+              placeholder="blur"
+            />
           </BunnyWrapper>
           <StarsWrapper>
             <CompositeImage {...starsImage} />
