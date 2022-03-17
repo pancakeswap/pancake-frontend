@@ -56,9 +56,7 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
       if (busdEthPair.reserveOf(busd).greaterThan('0') && ethPair.reserveOf(WBNB).greaterThan('0')) {
         const ethBusdPrice = busdEthPair.priceOf(busd)
         const currencyEthPrice = ethPair.priceOf(WBNB)
-        console.log(ethPair.token0Price.toSignificant(6), ethPair.token1Price.toSignificant(6), 'ethPair')
         const busdPrice = ethBusdPrice.multiply(currencyEthPrice).invert()
-        console.log(ethBusdPrice.toSignificant(6), currencyEthPrice.toSignificant(6), busdPrice.toSignificant(6))
         return new Price(currency, busd, busdPrice.denominator, busdPrice.numerator)
       }
     }
