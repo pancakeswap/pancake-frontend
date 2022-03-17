@@ -30,7 +30,7 @@ export const FloatLayout: React.FC<FloatLayoutProps> = ({ children, onBack, onDi
     <AtFloatLayout isOpened={true} onClose={onDismiss}>
       <style
         dangerouslySetInnerHTML={{
-          __html: `.at-float-layout__container{background-color: ${theme.modal.background}; border-top-left-radius: 32px; border-top-right-radius: 32px; min-height: 100px;  }`,
+          __html: `.layout-body{padding: 0px!important}.at-float-layout__container{background-color: ${theme.modal.background}; border-top-left-radius: 32px; border-top-right-radius: 32px; min-height: 100px;  }`,
         }}
       />
       <FloatContainer>
