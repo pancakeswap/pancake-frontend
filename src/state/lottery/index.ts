@@ -6,7 +6,6 @@ import { fetchLottery, fetchCurrentLotteryIdAndMaxBuy } from './helpers'
 import getLotteriesData from './getLotteriesData'
 import getUserLotteryData, { getGraphLotteryUser } from './getUserLotteryData'
 import { resetUserState } from '../global/actions'
-import { initialPoolVaultState } from '../pools'
 
 interface PublicLotteryData {
   currentLotteryId: string
