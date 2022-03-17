@@ -56,7 +56,7 @@ const BunnyWrapper = styled.div`
   animation: ${flyingAnim} 3.5s ease-in-out infinite;
   transition: opacity 0.35s ease-in;
   will-change: opacity, transform;
-  opacity: 0;
+  opacity: 1;
   &.appear {
     opacity: 1;
   }
@@ -138,6 +138,7 @@ const Hero = () => {
           <BunnyWrapper ref={bunnyWrapperRef}>
             <Image
               src={bunnyImage}
+              priority
               onLoad={() => {
                 if (!bunnyWrapperRef.current) return
                 bunnyWrapperRef.current.classList.add('appear')
