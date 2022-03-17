@@ -2,7 +2,6 @@ import { Currency, CurrencyAmount, ETHER, Token, Trade } from '@pancakeswap/sdk'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import useENS from 'hooks/ENS/useENS'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useRouter } from 'next/router'
@@ -136,9 +135,7 @@ export function useSingleTokenSwapInfo(
 export function useDerivedSwapInfo(
   independentField: Field,
   typedValue: string,
-  inputCurrencyId: string | undefined,
   inputCurrency: Currency | undefined,
-  outputCurrencyId: string | undefined,
   outputCurrency: Currency | undefined,
   recipient: string,
 ): {
@@ -151,8 +148,7 @@ export function useDerivedSwapInfo(
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const recipientLookup = useENS(recipient ?? undefined)
-  const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
+  const to: string | null = (recipient === null ? account : isAddress(recipient) || null) ?? null
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
