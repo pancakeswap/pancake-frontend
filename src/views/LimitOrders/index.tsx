@@ -19,6 +19,7 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { GELATO_NATIVE, LIMIT_ORDERS_DOCS_URL } from 'config/constants'
 import { useExchangeChartManager } from 'state/user/hooks'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
+import ClaimWarning from './components/ClaimWarning'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
@@ -259,6 +260,7 @@ const LimitOrders = () => {
       noMinHeight
       helpUrl={LIMIT_ORDERS_DOCS_URL}
     >
+      <ClaimWarning />
       <Flex
         width="100%"
         justifyContent="center"

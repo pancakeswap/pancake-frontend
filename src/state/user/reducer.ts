@@ -33,6 +33,7 @@ import {
   setChartViewMode,
   ChartViewMode,
   setSubgraphHealthIndicatorDisplayed,
+  updateUserLimitOrderAcceptedWarning,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -76,6 +77,7 @@ export interface UserState {
   userPoolsViewMode: ViewMode
   userFarmsViewMode: ViewMode
   userPredictionAcceptedRisk: boolean
+  userLimitOrderAcceptedWarning: boolean
   userPredictionChartDisclaimerShow: boolean
   userPredictionChainlinkChartDisclaimerShow: boolean
   userExpertModeAcknowledgementShow: boolean
@@ -107,6 +109,7 @@ export const initialState: UserState = {
   userPoolsViewMode: ViewMode.TABLE,
   userFarmsViewMode: ViewMode.TABLE,
   userPredictionAcceptedRisk: false,
+  userLimitOrderAcceptedWarning: false,
   userPredictionChartDisclaimerShow: true,
   userPredictionChainlinkChartDisclaimerShow: true,
   userExpertModeAcknowledgementShow: true,
@@ -204,6 +207,9 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateUserPredictionAcceptedRisk, (state, { payload: { userAcceptedRisk } }) => {
       state.userPredictionAcceptedRisk = userAcceptedRisk
+    })
+    .addCase(updateUserLimitOrderAcceptedWarning, (state, { payload: { userAcceptedRisk } }) => {
+      state.userLimitOrderAcceptedWarning = userAcceptedRisk
     })
     .addCase(updateUserPredictionChartDisclaimerShow, (state, { payload: { userShowDisclaimer } }) => {
       state.userPredictionChartDisclaimerShow = userShowDisclaimer
