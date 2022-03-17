@@ -5,30 +5,28 @@ import {
   Button,
   Text,
   ErrorIcon,
-  ArrowUpIcon,
   MetamaskIcon,
   Flex,
   Box,
   Link,
   Spinner,
-  Modal,
   InjectedModalProps,
+  Image,
 } from '@pancakeswap/uikit'
 import { registerToken } from 'utils/wallet'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
+import { FloatLayout } from 'components/FloatLayout/index.bmp'
 import { RowFixed } from '../Layout/Row'
 import { AutoColumn, ColumnCenter } from '../Layout/Column'
 import { getBscScanLink } from '../../utils'
-import { FloatLayout, DefaultPaddingBottom } from 'components/FloatLayout/index.bmp'
+import submittedImage from '../../../public/images/submitted.png'
 
 const Wrapper = styled.div`
   width: 100%;
 `
-const Section = styled(AutoColumn)`
-  padding: 24px;
-`
+const Section = styled(AutoColumn)``
 
 const ConfirmedIcon = styled(ColumnCenter)`
   padding: 24px 0;
@@ -75,10 +73,10 @@ function TransactionSubmittedContent({
 
   return (
     <Wrapper>
-      <Section>
-        <ConfirmedIcon>
-          <ArrowUpIcon strokeWidth={0.5} width="90px" color="primary" />
-        </ConfirmedIcon>
+      <Section pt="61px">
+        <ColumnCenter>
+          <Image src={submittedImage} width={146} height={125} />
+        </ColumnCenter>
         <AutoColumn gap="12px" justify="center">
           <Text fontSize="20px">{t('Transaction Submitted')}</Text>
           {chainId && hash && (
@@ -99,7 +97,7 @@ function TransactionSubmittedContent({
               </RowFixed>
             </Button>
           )}
-          <Button onClick={onDismiss} mt="20px">
+          <Button onClick={onDismiss} width="100%" mt="73px">
             {t('Close')}
           </Button>
         </AutoColumn>
