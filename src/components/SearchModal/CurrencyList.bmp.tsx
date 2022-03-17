@@ -206,10 +206,9 @@ export default function CurrencyList({
   )
 
   const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
-
   return (
     <VirtualList
-      height={safeArea.height - 350}
+      height={Number(safeArea.height / 2)}
       ref={fixedListRef as any}
       width="100%"
       itemData={itemData}

@@ -1,12 +1,9 @@
 import React, { useCallback, useState } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import {
-  ModalContainer,
-  ModalHeader,
   ModalTitle,
   ModalBackButton,
   ModalCloseButton,
-  ModalBody,
   InjectedModalProps,
   Heading,
   Button,
@@ -22,41 +19,12 @@ import Manage from './Manage'
 import ImportList from './ImportList'
 import { CurrencyModalView } from './types'
 import Acknowledgement from './Acknowledgement'
-import { AtFloatLayout } from 'taro-ui'
-import 'taro-ui/dist/style/components/float-layout.scss'
-import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
+import { FloatLayout, FloatHeader } from 'components/FloatLayout'
 
-const {
-  safeArea: { bottom },
-  windowHeight,
-  screenHeight,
-} = getSystemInfoSync()
 const Footer = styled.div`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   text-align: center;
-`
-
-const StyledModalContainer = styled(ModalContainer)`
-  max-width: 420px;
-  width: 100%;
-`
-
-const StyledModalBody = styled(ModalBody)`
-  padding: 24px;
-  overflow-y: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`
-
-export const FloatContainer = styled(Box)`
-  background: ${({ theme }) => theme.modal.background};
-  border-top-left-radius: 32px;
-  border-top-right-radius: 32px;
-  padding: 0px 15px ${windowHeight - bottom}px 15px;
 `
 
 interface CurrencySearchModalProps extends InjectedModalProps {
@@ -74,8 +42,6 @@ export default function CurrencySearchModal({
   showCommonBases = false,
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.search)
-
-  const theme = useTheme()
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
@@ -110,20 +76,8 @@ export default function CurrencySearchModal({
   }
 
   return (
-    <AtFloatLayout isOpened={true} onClose={onDismiss}>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `.at-float-layout__container{background-color: ${theme.modal.background}; border-top-left-radius: 32px; border-top-right-radius: 32px }`,
-        }}
-      />
-      <FloatContainer>
-        <ModalHeader style={{ padding: '10px 0px 0px 5px', borderBottom: 'unset' }}>
-          <ModalTitle>
-            {config[modalView].onBack && <ModalBackButton onBack={config[modalView].onBack} />}
-            <Heading>{config[modalView].title}</Heading>
-          </ModalTitle>
-          <ModalCloseButton onDismiss={onDismiss} />
-        </ModalHeader>
+    <FloatLayout title={config[modalView].title} onBack={config[modalView].onBack} onDismiss={onDismiss}>
+      <Box style={{ paddingLeft: '15px', paddingRight: '15px' }}>
         {modalView === CurrencyModalView.search ? (
           <CurrencySearch
             onCurrencySelect={handleCurrencySelect}
@@ -160,8 +114,11 @@ export default function CurrencySearchModal({
               {t('Manage Tokens')}
             </Button>
           </Footer>
-        )}
-      </FloatContainer>
-    </AtFloatLayout>
+        )
+        }
+      </Box>
+    </FloatLayout>
   )
 }
+
+
