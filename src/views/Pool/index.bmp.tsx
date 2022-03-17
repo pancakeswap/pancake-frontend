@@ -1,21 +1,25 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@pancakeswap/sdk'
-import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@pancakeswap/uikit'
-import Link from 'next/link'
+import { Text, Flex, CardBody, CardFooter, Button, AddIcon, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
-// import Dots from '../../components/Loader/Dots'
+import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
-import Page from '../Page'
-import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
+import noLiquidityImage from '../../../public/images/no-liquidity.png'
 
 const Body = styled(CardBody)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
+  min-height: 324px;
 `
 
 export default function Pool() {
@@ -56,15 +60,20 @@ export default function Pool() {
   const renderBody = () => {
     if (!account) {
       return (
-        <Text color="textSubtle" textAlign="center">
-          {t('Connect to a wallet to view your liquidity.')}
-        </Text>
+        <view>
+          <Flex justifyContent="center">
+            <Text color="textSubtle" textAlign="center" width="180px" mb="16px">
+              {t('Connect to a wallet to view your liquidity.')}
+            </Text>
+          </Flex>
+          <ConnectWalletButton width="100%" />
+        </view>
       )
     }
     if (v2IsLoading) {
       return (
         <Text color="textSubtle" textAlign="center">
-          {/* <Dots>{t('Loading')}</Dots> */}
+          <Dots>{t('Loading')}</Dots>
         </Text>
       )
     }
@@ -78,9 +87,14 @@ export default function Pool() {
       ))
     }
     return (
-      <Text color="textSubtle" textAlign="center">
-        {t('No liquidity found.')}
-      </Text>
+      <view>
+        <Flex justifyContent="center" mb="16px">
+          <Image src={noLiquidityImage} width={97} height={100} />
+        </Flex>
+        <Text color="textSubtle" textAlign="center">
+          {t('No liquidity found.')}
+        </Text>
+      </view>
     )
   }
 
@@ -113,6 +127,7 @@ export default function Pool() {
       <CardFooter style={{ textAlign: 'center' }}>
         {/* <Link href="/add"> */}
         <Button
+          disabled={!account}
           id="join-pool-button"
           width="100%"
           startIcon={<AddIcon color="white" />}

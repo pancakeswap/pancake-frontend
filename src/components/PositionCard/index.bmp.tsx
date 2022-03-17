@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import mpService from '@binance/mp-service'
 import { JSBI, Pair, Percent } from '@pancakeswap/sdk'
 import {
   Button,
@@ -15,6 +16,7 @@ import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
 import useTotalSupply from '../../hooks/useTotalSupply'
 
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -27,8 +29,7 @@ import CurrencyLogo from '../Logo/CurrencyLogo'
 import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
 import { BIG_INT_ZERO } from '../../config/constants'
-// import Dots from '../Loader/Dots'
-import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
+import Dots from '../Loader/Dots'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -175,13 +176,13 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
       : [undefined, undefined]
   const { dispatch } = useLiquidity()
   return (
-    <Card style={{ borderRadius: '12px' }} {...props}>
+    <Card style={{ borderRadius: '24px' }} {...props}>
       <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
         <Flex flexDirection="column">
           <Flex alignItems="center" mb="4px">
             <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
             <Text bold ml="8px">
-              {/* {!currency0 || !currency1 ? <Dots>{t('Loading')}</Dots> : `${currency0.symbol}/${currency1.symbol}`} */}
+              {!currency0 || !currency1 ? <Dots>{t('Loading')}</Dots> : `${currency0.symbol}/${currency1.symbol}`}
             </Text>
           </Flex>
           <Text fontSize="14px" color="textSubtle">

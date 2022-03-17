@@ -30,7 +30,7 @@ const DotsAfter = styled.div`
 `
 const Dots = ({ children }) => {
   return (
-    <Box>
+    <Box display="inline-block">
       {children}
       <DotsAfter />
     </Box>
