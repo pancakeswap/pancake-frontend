@@ -10,7 +10,7 @@ const {
   windowHeight,
 } = getSystemInfoSync()
 
-export const DefaultPaddingBottom = windowHeight - bottom > 0 ? windowHeight - bottom : 0
+export const DefaultPaddingBottom = windowHeight - bottom > 10 ? windowHeight - bottom : 10
 // console.log('???', DefaultPaddingBottom)
 export const FloatContainer = styled(Box)`
   background: ${({ theme }) => theme.modal.background};
