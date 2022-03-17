@@ -1,6 +1,5 @@
 import { Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useRef } from 'react'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
@@ -54,12 +53,7 @@ const InnerWrapper = styled.div`
 const BunnyWrapper = styled.div`
   width: 100%;
   animation: ${flyingAnim} 3.5s ease-in-out infinite;
-  transition: opacity 0.35s ease-in;
-  will-change: opacity, transform;
-  opacity: 1;
-  &.appear {
-    opacity: 1;
-  }
+  will-change: transform;
   > span {
     overflow: visible !important; // make sure the next-image pre-build blur image not be cropped
   }
@@ -99,7 +93,6 @@ const Hero = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { theme } = useTheme()
-  const bunnyWrapperRef = useRef<HTMLDivElement>(null)
 
   return (
     <>
@@ -135,16 +128,8 @@ const Hero = () => {
           mb={['24px', null, null, '0']}
           position="relative"
         >
-          <BunnyWrapper ref={bunnyWrapperRef}>
-            <Image
-              src={bunnyImage}
-              priority
-              onLoad={() => {
-                if (!bunnyWrapperRef.current) return
-                bunnyWrapperRef.current.classList.add('appear')
-              }}
-              placeholder="blur"
-            />
+          <BunnyWrapper>
+            <Image src={bunnyImage} priority placeholder="blur" />
           </BunnyWrapper>
           <StarsWrapper>
             <CompositeImage {...starsImage} />
