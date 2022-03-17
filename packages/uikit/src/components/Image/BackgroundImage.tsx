@@ -18,10 +18,12 @@ const BackgroundImage: React.FC<BackgroundImageProps> = ({ loadingPlaceholder, s
   useEffect(() => {
     let observer: IntersectionObserver;
 
-    if (ref.current) {
+    const isSupported = typeof window === "object" && window.IntersectionObserver;
+
+    if (ref.current && isSupported) {
       const div = ref.current;
 
-      observer = new IntersectionObserver((entries) => {
+      observer = new window.IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           const { isIntersecting } = entry;
           if (isIntersecting) {

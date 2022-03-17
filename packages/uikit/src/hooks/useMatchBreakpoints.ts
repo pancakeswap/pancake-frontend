@@ -52,7 +52,8 @@ const getState = () => {
         [key]: false,
       };
     }
-    const mql = window.matchMedia(mediaQueries[size]);
+
+    const mql = typeof window?.matchMedia === "function" ? window.matchMedia(mediaQueries[size]) : null;
     return { ...accum, [key]: mql?.matches ?? false };
   }, {});
   return s;
