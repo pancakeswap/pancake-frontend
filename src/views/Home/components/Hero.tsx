@@ -60,6 +60,9 @@ const BunnyWrapper = styled.div`
   &.appear {
     opacity: 1;
   }
+  > span {
+    overflow: visible !important; // make sure the next-image pre-build blur image not be cropped
+  }
 `
 
 const StarsWrapper = styled.div`
