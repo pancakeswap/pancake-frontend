@@ -112,7 +112,9 @@ export default function CurrencySearchModal({
   return (
     <AtFloatLayout isOpened={true} onClose={onDismiss}>
       <style
-        dangerouslySetInnerHTML={{ __html: `.at-float-layout__container{background-color: ${theme.modal.background}}` }}
+        dangerouslySetInnerHTML={{
+          __html: `.at-float-layout__container{background-color: ${theme.modal.background}; border-top-left-radius: 32px; border-top-right-radius: 32px }`,
+        }}
       />
       <FloatContainer>
         <ModalHeader style={{ padding: '10px 0px 0px 5px', borderBottom: 'unset' }}>
