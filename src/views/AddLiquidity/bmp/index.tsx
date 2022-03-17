@@ -96,6 +96,7 @@ function AddLiquidity() {
   // modal and loading
 
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
+  const [liquidityErrorMessage, setLiquidityErrorMessage] = useState<string | undefined>(undefined)
   // txn values
   const deadline = useTransactionDeadline() // custom from users settings
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
@@ -182,6 +183,7 @@ function AddLiquidity() {
     }
 
     setAttemptingTxn(true)
+    setLiquidityErrorMessage(undefined)
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
         method(...args, {
@@ -202,6 +204,7 @@ function AddLiquidity() {
       )
       .catch((err) => {
         setAttemptingTxn(false)
+        setLiquidityErrorMessage(err && err.code !== 4001 ? `Add Liquidity failed: ${err.message}` : undefined)
         // we only care if the error is something _other_ than the user rejected the tx
         if (err?.code !== 4001) {
           console.error(err)
@@ -308,6 +311,7 @@ function AddLiquidity() {
       onFieldAInput('')
     }
     setTxHash('')
+    setLiquidityErrorMessage(undefined)
   }, [onFieldAInput, txHash])
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
@@ -318,6 +322,7 @@ function AddLiquidity() {
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
+      liquidityErrorMessage={liquidityErrorMessage}
       content={() => <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />}
       pendingText={pendingText}
       currencyToAdd={pair?.liquidityToken}

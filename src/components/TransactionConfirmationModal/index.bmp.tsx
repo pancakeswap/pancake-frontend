@@ -147,6 +147,7 @@ interface ConfirmationModalProps {
   attemptingTxn: boolean
   pendingText: string
   currencyToAdd?: Currency | undefined
+  liquidityErrorMessage?: string
 }
 
 const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationModalProps> = ({
@@ -158,6 +159,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
   pendingText,
   content,
   currencyToAdd,
+  liquidityErrorMessage,
 }) => {
   const { chainId } = useActiveWeb3React()
 
@@ -173,7 +175,9 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
   return (
     <FloatLayout title={title} onDismiss={handleDismiss}>
       <Box style={{ paddingLeft: 24, paddingRight: 24 }}>
-        {attemptingTxn ? (
+        {liquidityErrorMessage ? (
+          <TransactionErrorContent onDismiss={handleDismiss} message={liquidityErrorMessage} />
+        ) : attemptingTxn ? (
           <ConfirmationPendingContent pendingText={pendingText} />
         ) : hash ? (
           <TransactionSubmittedContent
