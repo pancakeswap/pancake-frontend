@@ -75,6 +75,7 @@ export default function RemoveLiquidity() {
 
   // txn values
   const [txHash, setTxHash] = useState<string>('')
+  const [liquidityErrorMessage, setLiquidityErrorMessage] = useState<string | undefined>(undefined)
   const deadline = useTransactionDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
 
@@ -293,6 +294,7 @@ export default function RemoveLiquidity() {
       const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation]
 
       setAttemptingTxn(true)
+      setLiquidityErrorMessage(undefined)
       await routerContract[methodName](...args, {
         gasLimit: safeGasEstimate,
         gasPrice,
@@ -310,6 +312,7 @@ export default function RemoveLiquidity() {
         })
         .catch((err: Error) => {
           setAttemptingTxn(false)
+          setLiquidityErrorMessage(err && err?.code !== 4001 ? `Remove Liquidity failed: ${err.message}` : undefined)
           // we only care if the error is something _other_ than the user rejected the tx
           console.error(err)
         })
@@ -439,6 +442,7 @@ export default function RemoveLiquidity() {
       onUserInput(Field.LIQUIDITY_PERCENT, '0')
     }
     setTxHash('')
+    setLiquidityErrorMessage(undefined)
   }, [onUserInput, txHash])
 
   const [innerLiquidityPercentage, setInnerLiquidityPercentage] = useDebouncedChangeHandler(
@@ -454,6 +458,7 @@ export default function RemoveLiquidity() {
       hash={txHash || ''}
       content={() => <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />}
       pendingText={pendingText}
+      liquidityErrorMessage={liquidityErrorMessage}
     />,
     true,
     true,
