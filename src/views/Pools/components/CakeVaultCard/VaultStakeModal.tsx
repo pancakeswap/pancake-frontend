@@ -182,12 +182,11 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     const receipt = await fetchWithCatchTxError(() => {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      return callWithGasPrice(
-        vaultPoolContract,
-        'deposit',
-        [convertedStakeAmount.toString(), lockDuration.toString()],
-        callOptions,
-      )
+      const methodArgs =
+        pool.vaultKey === VaultKey.IfoPool
+          ? [convertedStakeAmount.toString()]
+          : [convertedStakeAmount.toString(), lockDuration.toString()]
+      return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
     })
 
     if (receipt?.status) {

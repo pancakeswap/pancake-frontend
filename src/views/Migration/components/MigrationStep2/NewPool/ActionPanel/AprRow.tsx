@@ -7,7 +7,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { convertSharesToCake } from 'views/Pools/helpers'
-import Apr from 'views/Pools/components/PoolsTable/Apr'
+import Apr from 'views/Pools/components/Apr'
 
 const Containter = styled(Flex)`
   margin: 12px 0 0 0;
