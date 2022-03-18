@@ -11,13 +11,13 @@ export const clearUserStates = (dispatch: Dispatch<any>, chainId: number) => {
   dispatch(resetUserState())
   Sentry.configureScope((scope) => scope.setUser(null))
   // This localStorage key is set by @web3-react/walletconnect-connector
-  if (window.localStorage.getItem('walletconnect')) {
+  if (window?.localStorage?.getItem('walletconnect')) {
     connectorsByName.walletconnect.close()
     connectorsByName.walletconnect.walletConnectProvider = null
   }
-  window.localStorage.removeItem(connectorLocalStorageKey)
+  window?.localStorage?.removeItem(connectorLocalStorageKey)
   const lsOrderKeys = getLocalStorageItemKeys(LS_ORDERS)
-  lsOrderKeys.forEach((lsOrderKey) => window.localStorage.removeItem(lsOrderKey))
+  lsOrderKeys.forEach((lsOrderKey) => window?.localStorage?.removeItem(lsOrderKey))
   if (chainId) {
     dispatch(clearAllTransactions({ chainId }))
   }
