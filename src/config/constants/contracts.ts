@@ -58,7 +58,8 @@ export default {
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
   cakeVault: {
-    56: '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC',
+    // 56: '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC',
+    56: '0xd72b4Ac307a9E0c5Ca85878b1ABF980D4A5eE490',
     97: '',
   },
   ifoPool: {

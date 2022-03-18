@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { multicallv2 } from 'utils/multicall'
-import cakeVaultAbi from 'config/abi/cakeVault.json'
+import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
