@@ -45,6 +45,10 @@ export const updateUserFarmsViewMode = createAction<{ userFarmsViewMode: ViewMod
 export const updateUserPredictionAcceptedRisk = createAction<{ userAcceptedRisk: boolean }>(
   'user/updateUserPredictionAcceptedRisk',
 )
+export const updateUserLimitOrderAcceptedWarning = createAction<{ userAcceptedRisk: boolean }>(
+  'user/userLimitOrderAcceptedWarning',
+)
+
 export const updateUserPredictionChartDisclaimerShow = createAction<{ userShowDisclaimer: boolean }>(
   'user/updateUserPredictionChartDisclaimerShow',
 )
