@@ -2047,7 +2047,7 @@ export const mainnetTokens = defineTokens({
 export const testnetTokens = defineTokens({
   wbnb: new Token(
     TESTNET,
-    '0x094616F0BdFB0b526bD735Bf66Eca0Ad254ca81F',
+    '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
     18,
     'WBNB',
     'Wrapped BNB',
