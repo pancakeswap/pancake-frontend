@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@pancakeswap/sdk'
-import { Button, Text, Flex, AddIcon, CardBody, Message, useModal } from '@pancakeswap/uikit'
+import { Button, Text, Flex, AddIcon, CardBody, Message, useModal, Box } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
@@ -350,13 +350,13 @@ function AddLiquidity() {
           {noLiquidity && (
             <ColumnCenter>
               <Message variant="warning">
-                <div>
+                <Box>
                   <Text bold mb="8px">
                     {t('You are the first liquidity provider.')}
                   </Text>
                   <Text mb="8px">{t('The ratio of tokens you add will set the price of this pool.')}</Text>
                   <Text>{t('Once you are happy with the rate click supply to review.')}</Text>
-                </div>
+                </Box>
               </Message>
             </ColumnCenter>
           )}
@@ -484,10 +484,8 @@ function AddLiquidity() {
 }
 export default function Index() {
   return (
-    <Providers>
-      <ErrorBoundary name="addLiquidity">
-        <AddLiquidity />
-      </ErrorBoundary>
-    </Providers>
+    <ErrorBoundary name="addLiquidity">
+      <AddLiquidity />
+    </ErrorBoundary>
   )
 }

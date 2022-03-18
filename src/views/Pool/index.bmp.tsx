@@ -13,6 +13,7 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
 import noLiquidityImage from '../../../public/images/no-liquidity.png'
+import ErrorBoundary from 'components/ErrorBoundary'
 
 const Body = styled(CardBody)`
   display: flex;
@@ -99,46 +100,48 @@ export default function Pool() {
   }
 
   return (
-    <AppBody>
-      <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />
-      <Body>
-        {renderBody()}
-        {account && !v2IsLoading && (
-          <Flex flexDirection="column" alignItems="center" mt="24px">
-            <Text color="textSubtle" mb="8px">
-              {t("Don't see a pool you joined?")}
-            </Text>
-            {/* <Link href="/find"> */}
-            <Button
-              id="import-pool-link"
-              variant="secondary"
-              scale="sm"
-              as="a"
-              onClick={() => {
-                dispatch({ type: 'setPage', page: LiquidityPage.Find })
-              }}
-            >
-              {t('Find other LP tokens')}
-            </Button>
-            {/* </Link> */}
-          </Flex>
-        )}
-      </Body>
-      <CardFooter style={{ textAlign: 'center' }}>
-        {/* <Link href="/add"> */}
-        <Button
-          disabled={!account}
-          id="join-pool-button"
-          width="100%"
-          startIcon={<AddIcon color="white" />}
-          onClick={() => {
-            dispatch({ type: 'setPage', page: LiquidityPage.Add })
-          }}
-        >
-          {t('Add Liquidity')}
-        </Button>
-        {/* </Link> */}
-      </CardFooter>
-    </AppBody>
+    <ErrorBoundary name="pool">
+      <AppBody>
+        <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />
+        <Body>
+          {renderBody()}
+          {account && !v2IsLoading && (
+            <Flex flexDirection="column" alignItems="center" mt="24px">
+              <Text color="textSubtle" mb="8px">
+                {t("Don't see a pool you joined?")}
+              </Text>
+              {/* <Link href="/find"> */}
+              <Button
+                id="import-pool-link"
+                variant="secondary"
+                scale="sm"
+                as="a"
+                onClick={() => {
+                  dispatch({ type: 'setPage', page: LiquidityPage.Find })
+                }}
+              >
+                {t('Find other LP tokens')}
+              </Button>
+              {/* </Link> */}
+            </Flex>
+          )}
+        </Body>
+        <CardFooter style={{ textAlign: 'center' }}>
+          {/* <Link href="/add"> */}
+          <Button
+            disabled={!account}
+            id="join-pool-button"
+            width="100%"
+            startIcon={<AddIcon color="white" />}
+            onClick={() => {
+              dispatch({ type: 'setPage', page: LiquidityPage.Add })
+            }}
+          >
+            {t('Add Liquidity')}
+          </Button>
+          {/* </Link> */}
+        </CardFooter>
+      </AppBody>
+    </ErrorBoundary>
   )
 }

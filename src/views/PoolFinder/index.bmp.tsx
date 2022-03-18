@@ -17,6 +17,7 @@ import { currencyId } from '../../utils/currencyId'
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
 import { LiquidityPage, useLiquidity } from 'views/BmpHome/context/swapContext.bmp'
+import ErrorBoundary from 'components/ErrorBoundary'
 
 enum Fields {
   TOKEN0 = 0,
@@ -90,80 +91,101 @@ export default function PoolFinder() {
   )
 
   return (
-    <AppBody>
-      <AppHeader
-        title={t('Import Pool')}
-        subtitle={t('Import an existing pool')}
-        backTo={() => {
-          dispatch({ type: 'setPage', page: LiquidityPage.Pool })
-        }}
-      />
-      <AutoColumn style={{ padding: '1rem' }} gap="md">
-        <StyledButton
-          endIcon={<ChevronDownIcon />}
-          onClick={() => {
-            onPresentCurrencyModal()
-            setActiveField(Fields.TOKEN0)
+    <ErrorBoundary name="poolFinder">
+      <AppBody>
+        <AppHeader
+          title={t('Import Pool')}
+          subtitle={t('Import an existing pool')}
+          backTo={() => {
+            dispatch({ type: 'setPage', page: LiquidityPage.Pool })
           }}
-        >
-          {currency0 ? (
-            <Row>
-              <CurrencyLogo currency={currency0} />
-              <Text ml="8px">{currency0.symbol}</Text>
-            </Row>
-          ) : (
-            <Text ml="8px">{t('Select a Token')}</Text>
-          )}
-        </StyledButton>
-
-        <ColumnCenter>
-          <AddIcon />
-        </ColumnCenter>
-
-        <StyledButton
-          endIcon={<ChevronDownIcon />}
-          onClick={() => {
-            onPresentCurrencyModal()
-            setActiveField(Fields.TOKEN1)
-          }}
-        >
-          {currency1 ? (
-            <Row>
-              <CurrencyLogo currency={currency1} />
-              <Text ml="8px">{currency1.symbol}</Text>
-            </Row>
-          ) : (
-            <Text as={Row}>{t('Select a Token')}</Text>
-          )}
-        </StyledButton>
-
-        {/* {hasPosition && ( */}
-        {/*   <ColumnCenter */}
-        {/*     style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }} */}
-        {/*   > */}
-        {/*     <Text textAlign="center">{t('Pool Found!')}</Text> */}
-        {/*   </ColumnCenter> */}
-        {/* )} */}
-
-        {currency0 && currency1 ? (
-          pairState === PairState.EXISTS ? (
-            hasPosition && pair ? (
-              <>
-                <MinimalPositionCard pair={pair} />
-                <Button
-                  variant="secondary"
-                  width="100%"
-                  onClick={() => {
-                    dispatch({ type: 'setPage', page: LiquidityPage.Pool })
-                  }}
-                >
-                  {t('Manage this pool.')}
-                </Button>
-              </>
+        />
+        <AutoColumn style={{ padding: '1rem' }} gap="md">
+          <StyledButton
+            endIcon={<ChevronDownIcon />}
+            onClick={() => {
+              onPresentCurrencyModal()
+              setActiveField(Fields.TOKEN0)
+            }}
+          >
+            {currency0 ? (
+              <Row>
+                <CurrencyLogo currency={currency0} />
+                <Text ml="8px">{currency0.symbol}</Text>
+              </Row>
             ) : (
+              <Text ml="8px">{t('Select a Token')}</Text>
+            )}
+          </StyledButton>
+
+          <ColumnCenter>
+            <AddIcon />
+          </ColumnCenter>
+
+          <StyledButton
+            endIcon={<ChevronDownIcon />}
+            onClick={() => {
+              onPresentCurrencyModal()
+              setActiveField(Fields.TOKEN1)
+            }}
+          >
+            {currency1 ? (
+              <Row>
+                <CurrencyLogo currency={currency1} />
+                <Text ml="8px">{currency1.symbol}</Text>
+              </Row>
+            ) : (
+              <Text as={Row}>{t('Select a Token')}</Text>
+            )}
+          </StyledButton>
+
+          {/* {hasPosition && ( */}
+          {/*   <ColumnCenter */}
+          {/*     style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }} */}
+          {/*   > */}
+          {/*     <Text textAlign="center">{t('Pool Found!')}</Text> */}
+          {/*   </ColumnCenter> */}
+          {/* )} */}
+
+          {currency0 && currency1 ? (
+            pairState === PairState.EXISTS ? (
+              hasPosition && pair ? (
+                <>
+                  <MinimalPositionCard pair={pair} />
+                  <Button
+                    variant="secondary"
+                    width="100%"
+                    onClick={() => {
+                      dispatch({ type: 'setPage', page: LiquidityPage.Pool })
+                    }}
+                  >
+                    {t('Manage this pool.')}
+                  </Button>
+                </>
+              ) : (
+                <LightCard padding="45px 10px">
+                  <AutoColumn gap="sm" justify="center">
+                    <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        dispatch({ type: 'setPage', page: LiquidityPage.Add })
+                        dispatch({
+                          type: 'setCurrency',
+                          currency1: currencyId(currency0),
+                          currency2: currencyId(currency1),
+                        })
+                      }}
+                    >
+                      {t('Add Liquidity')}
+                    </Button>
+                  </AutoColumn>
+                </LightCard>
+              )
+            ) : validPairNoLiquidity ? (
               <LightCard padding="45px 10px">
                 <AutoColumn gap="sm" justify="center">
-                  <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
+                  <Text textAlign="center">{t('No pool found.')}</Text>
                   <Button
                     variant="secondary"
                     onClick={() => {
@@ -175,59 +197,40 @@ export default function PoolFinder() {
                       })
                     }}
                   >
-                    {t('Add Liquidity')}
+                    {t('Create pool.')}
                   </Button>
                 </AutoColumn>
               </LightCard>
-            )
-          ) : validPairNoLiquidity ? (
-            <LightCard padding="45px 10px">
-              <AutoColumn gap="sm" justify="center">
-                <Text textAlign="center">{t('No pool found.')}</Text>
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    dispatch({ type: 'setPage', page: LiquidityPage.Add })
-                    dispatch({
-                      type: 'setCurrency',
-                      currency1: currencyId(currency0),
-                      currency2: currencyId(currency1),
-                    })
-                  }}
-                >
-                  {t('Create pool.')}
-                </Button>
-              </AutoColumn>
-            </LightCard>
-          ) : pairState === PairState.INVALID ? (
-            <LightCard padding="45px 10px">
-              <AutoColumn gap="sm" justify="center">
-                <Text textAlign="center" fontWeight={500}>
-                  {t('Invalid pair.')}
-                </Text>
-              </AutoColumn>
-            </LightCard>
-          ) : pairState === PairState.LOADING ? (
-            <LightCard padding="45px 10px">
-              <AutoColumn gap="sm" justify="center">
-                <Text textAlign="center">
-                  <Dots>{t('Loading')}</Dots>
-                </Text>
-              </AutoColumn>
-            </LightCard>
-          ) : null
-        ) : (
-          prerequisiteMessage
-        )}
-      </AutoColumn>
+            ) : pairState === PairState.INVALID ? (
+              <LightCard padding="45px 10px">
+                <AutoColumn gap="sm" justify="center">
+                  <Text textAlign="center" fontWeight={500}>
+                    {t('Invalid pair.')}
+                  </Text>
+                </AutoColumn>
+              </LightCard>
+            ) : pairState === PairState.LOADING ? (
+              <LightCard padding="45px 10px">
+                <AutoColumn gap="sm" justify="center">
+                  <Text textAlign="center">
+                    <Dots>{t('Loading')}</Dots>
+                  </Text>
+                </AutoColumn>
+              </LightCard>
+            ) : null
+          ) : (
+            prerequisiteMessage
+          )}
+        </AutoColumn>
 
-      {/* <CurrencySearchModal
+        {/* <CurrencySearchModal
           isOpen={showSearch}
           onCurrencySelect={handleCurrencySelect}
           onDismiss={handleSearchDismiss}
           showCommonBases
           selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
         /> */}
-    </AppBody>
+      </AppBody>
+    </ErrorBoundary>
   )
 }
