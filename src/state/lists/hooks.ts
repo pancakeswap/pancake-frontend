@@ -3,6 +3,7 @@ import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import uniqBy from 'lodash/uniqBy'
 import groupBy from 'lodash/groupBy'
+import fromPairs from 'lodash/fromPairs'
 import { useSelector } from 'react-redux'
 import { createSelector } from '@reduxjs/toolkit'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
@@ -153,10 +154,10 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
   const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, (tokenInfo) => tokenInfo.chainId)
 
-  const tokenAddressMap = Object.fromEntries(
+  const tokenAddressMap = fromPairs(
     Object.entries(groupedTokenMap).map(([chainId, tokenInfoList]) => [
       chainId,
-      Object.fromEntries(tokenInfoList.map((tokenInfo) => [tokenInfo.address, { token: tokenInfo, list }])),
+      fromPairs(tokenInfoList.map((tokenInfo) => [tokenInfo.address, { token: tokenInfo, list }])),
     ]),
   ) as TokenAddressMap
 
