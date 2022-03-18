@@ -29,7 +29,6 @@ import { BetPosition } from 'state/types'
 import { formatBigNumber, formatFixedNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import PositionTag from '../PositionTag'
-import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
 
 interface SetPositionCardProps {
