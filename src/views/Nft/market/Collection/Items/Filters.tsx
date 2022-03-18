@@ -4,7 +4,7 @@ import { Box, ButtonMenu, ButtonMenuItem, Flex, Grid, Text } from '@pancakeswap/
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftFilters, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks'
-import { Collection, NftAttribute } from 'state/nftMarket/types'
+import { NftAttribute } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import { Item, ListTraitFilter } from 'views/Nft/market/components/Filters'
 import { useAppDispatch } from 'state'
@@ -14,7 +14,8 @@ import ClearAllButton from './ClearAllButton'
 import SortSelect from './SortSelect'
 
 interface FiltersProps {
-  collection: Collection
+  address: string
+  attributes: NftAttribute[]
 }
 
 const GridContainer = styled(Grid)`
@@ -84,8 +85,7 @@ const ScrollableFlexContainer = styled(Flex)`
   }
 `
 
-const Filters: React.FC<FiltersProps> = ({ collection }) => {
-  const { address } = collection
+const Filters: React.FC<FiltersProps> = ({ address, attributes }) => {
   const dispatch = useAppDispatch()
   const { data } = useGetCollectionDistribution(address)
   const { t } = useTranslation()
@@ -101,7 +101,7 @@ const Filters: React.FC<FiltersProps> = ({ collection }) => {
   }
 
   const nftFilters = useGetNftFilters(address)
-  const attrsByType: Record<string, NftAttribute[]> = collection?.attributes?.reduce(
+  const attrsByType: Record<string, NftAttribute[]> = attributes?.reduce(
     (accum, attr) => ({
       ...accum,
       [attr.traitType]: accum[attr.traitType] ? [...accum[attr.traitType], attr] : [attr],
