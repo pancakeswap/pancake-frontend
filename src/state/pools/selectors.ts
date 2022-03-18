@@ -33,10 +33,9 @@ export const makeVaultPoolByKey = (key) =>
 
 export const poolsWithVaultSelector = createSelector(
   [selectPoolsData, selectUserDataLoaded, selectCakeVault, selectIfoPool],
-  (serializedPools, userDataLoaded, serializedCakeVault, serializedIfoPool) => {
+  (serializedPools, userDataLoaded, serializedCakeVault) => {
     const pools = serializedPools.map(transformPool)
     const cakeVault = transformVault(serializedCakeVault)
-    const ifoPool = transformIfoVault(serializedIfoPool)
     const activePools = pools.filter((pool) => !pool.isFinished)
     const cakePool = activePools.find((pool) => pool.sousId === 0)
     const cakeAutoVault = {
@@ -45,23 +44,12 @@ export const poolsWithVaultSelector = createSelector(
       vaultKey: VaultKey.CakeVault,
       userData: { ...cakePool.userData, ...cakeVault.userData },
     }
-    const ifoPoolVault = {
-      ...cakePool,
-      ...ifoPool,
-      vaultKey: VaultKey.IfoPool,
-      userData: { ...cakePool.userData, ...ifoPool.userData },
-    }
     const cakeAutoVaultWithApr = {
       ...cakeAutoVault,
       apr: getAprData(cakeAutoVault, cakeVault.fees.performanceFeeAsDecimal).apr,
       rawApr: cakePool.apr,
     }
-    const ifoPoolWithApr = {
-      ...ifoPoolVault,
-      apr: getAprData(ifoPoolVault, ifoPool.fees.performanceFeeAsDecimal).apr,
-      rawApr: cakePool.apr,
-    }
-    return { pools: [ifoPoolWithApr, cakeAutoVaultWithApr, ...pools], userDataLoaded }
+    return { pools: [cakeAutoVaultWithApr, ...pools], userDataLoaded }
   },
 )
 
