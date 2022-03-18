@@ -11,7 +11,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'CAKE',
     lpAddresses: {
       97: '',
-      56: '0xe5e76f3BA7fE02d7FCf4FffFedDEF6cc873Fa135',
+      56: '0x93E787c7cb9e8eBa5952d1e5D1c391d2b499E51e',
     },
     token: serializedTokens.syrup,
     quoteToken: serializedTokens.wbnb,
@@ -19,24 +19,35 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 1,
     v1pid: 1,
-    lpSymbol: 'TLP1',
+    lpSymbol: 'GM-BNB',
     lpAddresses: {
       97: '',
-      56: '0x00Db92bd224b2398e67390E801985fe768f9a8cE',
+      56: '0x1C640a98a0c62120B0AD23C15FfF8dC1a2Fb9C4D',
     },
-    token: serializedTokens.syrup,
+    token: serializedTokens.gm,
     quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 2,
     v1pid: 2,
-    lpSymbol: 'TLP2',
+    lpSymbol: 'AOG-BUSD',
     lpAddresses: {
       97: '',
-      56: '0x4438A3c8c111A7bFC72e6402b46BBF521C7265Ab',
+      56: '0x88c9bf5E334e2591C6A866D5E20683E31226Be3d',
     },
-    token: serializedTokens.syrup,
-    quoteToken: serializedTokens.wbnb,
+    token: serializedTokens.aog,
+    quoteToken: serializedTokens.busd,
+  },
+  {
+    pid: 3,
+    v1pid: 3,
+    lpSymbol: 'TEM-BUSD',
+    lpAddresses: {
+      97: '',
+      56: '0x1eDe821DAADe714edADe648F525AdA0C5fE4Ee3A',
+    },
+    token: serializedTokens.tem,
+    quoteToken: serializedTokens.busd,
   },
 ]
 

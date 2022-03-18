@@ -25,7 +25,7 @@ export const mainnetTokens = defineTokens({
   cake: new Token(
     MAINNET,
     // '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-    '0xe5e76f3BA7fE02d7FCf4FffFedDEF6cc873Fa135',
+    '0x93E787c7cb9e8eBa5952d1e5D1c391d2b499E51e',
     18,
     'CAKE',
     'PancakeSwap Token',
@@ -214,7 +214,7 @@ export const mainnetTokens = defineTokens({
   syrup: new Token(
     MAINNET,
     // '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
-    '0x592d8165b07E49966db0b89879EC25100d361528',
+    '0xF8685cBc0f87176a0846F44f623384e0Bf526494',
     18,
     'SYRUP',
     'SyrupBar Token',
