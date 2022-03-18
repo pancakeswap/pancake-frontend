@@ -92,12 +92,14 @@ const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
 export const PricePairLabel: React.FC = () => {
   const price = usePollOraclePrice()
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
-  const { countUp, update } = useCountUp({
+  const countUpState = useCountUp({
     start: 0,
     end: priceAsNumber,
     duration: 1,
     decimals: 3,
   })
+
+  const { countUp, update } = countUpState || {}
 
   const updateRef = useRef(update)
 
