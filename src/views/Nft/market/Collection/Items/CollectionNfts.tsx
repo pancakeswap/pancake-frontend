@@ -11,7 +11,7 @@ interface CollectionNftsProps {
 }
 
 const CollectionNfts: React.FC<CollectionNftsProps> = ({ collection }) => {
-  const { address: collectionAddress } = collection
+  const { address: collectionAddress } = collection || {}
   const { t } = useTranslation()
   const { nfts, isFetchingNfts, page, setPage, resultSize, isLastPage } = useCollectionNfts(collectionAddress)
 
