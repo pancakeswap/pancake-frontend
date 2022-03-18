@@ -38,6 +38,7 @@ import {
   ChartViewMode,
   setChartViewMode,
   setSubgraphHealthIndicatorDisplayed,
+  updateUserLimitOrderAcceptedWarning,
 } from '../actions'
 import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
@@ -254,6 +255,24 @@ export function useUserPredictionAcceptedRisk(): [boolean, (acceptedRisk: boolea
   )
 
   return [userPredictionAcceptedRisk, setUserPredictionAcceptedRisk]
+}
+
+export function useUserLimitOrderAcceptedWarning(): [boolean, (acceptedRisk: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userLimitOrderAcceptedWarning = useSelector<AppState, AppState['user']['userLimitOrderAcceptedWarning']>(
+    (state) => {
+      return state.user.userLimitOrderAcceptedWarning
+    },
+  )
+
+  const setUserLimitOrderAcceptedWarning = useCallback(
+    (acceptedRisk: boolean) => {
+      dispatch(updateUserLimitOrderAcceptedWarning({ userAcceptedRisk: acceptedRisk }))
+    },
+    [dispatch],
+  )
+
+  return [userLimitOrderAcceptedWarning, setUserLimitOrderAcceptedWarning]
 }
 
 export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaimer: boolean) => void] {
