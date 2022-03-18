@@ -51,7 +51,7 @@
     "@ethersproject/units": "^5.5.0",
     "@gelatonetwork/limit-orders-lib": "^4.1.0",
     "@next/bundle-analyzer": "^12.0.7",
-    "@pancakeswap/sdk": "^2.4.4",
+    "@pancakeswap/sdk": "^2.4.5",
     "@reduxjs/toolkit": "^1.5.0",
     "@sentry/nextjs": "^6.17.9",
     "@uniswap/token-lists": "^1.0.0-beta.19",
@@ -68,7 +68,6 @@
     "fast-json-stable-stringify": "^2.1.0",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
-    "js-cookie": "^3.0.1",
     "lightweight-charts": "^3.5.0",
     "lint-staged": "^12.3.4",
     "local-storage": "^2.0.0",
@@ -93,7 +92,7 @@
     "split-grid": "^1.0.11",
     "styled-components": "^5.3.0",
     "swiper": "^8.0.6",
-    "swr": "^1.1.2",
+    "swr": "^1.2.2",
     "typescript": "^4.5.4"
   },
   "devDependencies": {

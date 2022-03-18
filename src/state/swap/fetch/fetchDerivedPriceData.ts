@@ -1,3 +1,4 @@
+import orderBy from 'lodash/orderBy'
 import { INFO_CLIENT } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
@@ -39,9 +40,7 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
     }
   })
 
-  tokenPrices.sort((a, b) => parseInt(a.timestamp, 10) - parseInt(b.timestamp, 10))
-
-  return tokenPrices
+  return orderBy(tokenPrices, (tokenPrice) => parseInt(tokenPrice.timestamp, 10))
 }
 
 const getInterval = (timeWindow: PairDataTimeWindowEnum) => {

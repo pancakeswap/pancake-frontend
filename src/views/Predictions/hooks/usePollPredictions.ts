@@ -26,15 +26,12 @@ const usePollPredictions = () => {
       batch(() => {
         dispatch(fetchRounds(liveCurrentAndRecent))
         dispatch(fetchMarketData())
-      })
-
-      if (account) {
-        const epochRange = range(earliestEpoch, currentEpoch + 1)
-        batch(() => {
+        if (account) {
+          const epochRange = range(earliestEpoch, currentEpoch + 1)
           dispatch(fetchLedgerData({ account, epochs: epochRange }))
           dispatch(fetchClaimableStatuses({ account, epochs: epochRange }))
-        })
-      }
+        }
+      })
     },
     {
       refreshInterval: POLL_TIME_IN_SECONDS * 1000,

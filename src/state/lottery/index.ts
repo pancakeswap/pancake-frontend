@@ -5,6 +5,7 @@ import { LotteryState, LotteryRoundGraphEntity, LotteryUserGraphEntity, LotteryR
 import { fetchLottery, fetchCurrentLotteryIdAndMaxBuy } from './helpers'
 import getLotteriesData from './getLotteriesData'
 import getUserLotteryData, { getGraphLotteryUser } from './getUserLotteryData'
+import { resetUserState } from '../global/actions'
 
 interface PublicLotteryData {
   currentLotteryId: string
@@ -105,6 +106,9 @@ export const LotterySlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(resetUserState, (state) => {
+      state.userLotteryData = { ...initialState.userLotteryData }
+    })
     builder.addCase(fetchCurrentLottery.fulfilled, (state, action: PayloadAction<LotteryResponse>) => {
       state.currentRound = { ...state.currentRound, ...action.payload }
     })

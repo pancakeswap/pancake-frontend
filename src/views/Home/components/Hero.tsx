@@ -1,12 +1,14 @@
-import styled, { keyframes } from 'styled-components'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Flex, Heading, Button } from '@pancakeswap/uikit'
+import { Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
+import Image from 'next/image'
+import styled, { keyframes } from 'styled-components'
+import bunnyImage from '../../../../public/images/home/lunar-bunny/bunny@2x.png'
+import CompositeImage, { CompositeImageProps } from './CompositeImage'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
-import CompositeImage, { getSrcSet, CompositeImageProps } from './CompositeImage'
 
 const flyingAnim = () => keyframes`
   from {
@@ -51,6 +53,10 @@ const InnerWrapper = styled.div`
 const BunnyWrapper = styled.div`
   width: 100%;
   animation: ${flyingAnim} 3.5s ease-in-out infinite;
+  will-change: transform;
+  > span {
+    overflow: visible !important; // make sure the next-image pre-build blur image not be cropped
+  }
 `
 
 const StarsWrapper = styled.div`
@@ -73,9 +79,6 @@ const StarsWrapper = styled.div`
     animation-delay: 0.33s;
   }
 `
-
-const imagePath = '/images/home/lunar-bunny/'
-const imageSrc = 'bunny'
 
 const starsImage: CompositeImageProps = {
   path: '/images/home/lunar-bunny/',
@@ -126,11 +129,7 @@ const Hero = () => {
           position="relative"
         >
           <BunnyWrapper>
-            <picture>
-              <source type="image/webp" srcSet={getSrcSet(imagePath, imageSrc, '.webp')} />
-              <source type="image/png" srcSet={getSrcSet(imagePath, imageSrc)} />
-              <img src={`${imagePath}${imageSrc}.png`} alt={t('Lunar bunny')} />
-            </picture>
+            <Image src={bunnyImage} priority placeholder="blur" alt={t('Lunar bunny')} />
           </BunnyWrapper>
           <StarsWrapper>
             <CompositeImage {...starsImage} />

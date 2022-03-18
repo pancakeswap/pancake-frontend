@@ -73,7 +73,6 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const [percent, setPercent] = useState(0)
 
   const { account } = useWeb3React()
-  const { swiper } = useSwiper()
   const { balance: bnbBalance } = useGetBnbBalance()
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
@@ -126,19 +125,6 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     onBack()
   }
 
-  // Disable the swiper events to avoid conflicts
-  const handleMouseOver = () => {
-    swiper.keyboard.disable()
-    swiper.mousewheel.disable()
-    swiper.detachEvents()
-  }
-
-  const handleMouseOut = () => {
-    swiper.keyboard.enable()
-    swiper.mousewheel.enable()
-    swiper.attachEvents()
-  }
-
   const { key, disabled } = getButtonProps(valueAsBn, maxBalance, minBetAmount)
 
   const handleEnterPosition = async () => {
@@ -169,7 +155,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   }, [value, maxBalance, minBetAmount, setErrorMessage, t])
 
   return (
-    <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+    <Card>
       <CardHeader p="16px">
         <Flex alignItems="center">
           <IconButton variant="text" scale="sm" onClick={handleGoBack} mr="8px">
@@ -200,6 +186,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           onUserInput={handleInputChange}
           isWarning={showFieldWarning}
           inputProps={{ disabled: !account || isTxPending }}
+          className={!account || isTxPending ? '' : 'swiper-no-swiping'}
         />
         {showFieldWarning && (
           <Text color="failure" fontSize="12px" mt="4px" textAlign="right">
@@ -234,6 +221,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
                 variant="tertiary"
                 onClick={handleClick}
                 disabled={!account || isTxPending}
+                className={!account || isTxPending ? '' : 'swiper-no-swiping'}
                 style={{ flex: 1 }}
               >
                 {`${percentShortcut}%`}
@@ -245,6 +233,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
             variant="tertiary"
             onClick={() => handlePercentChange(100)}
             disabled={!account || isTxPending}
+            className={!account || isTxPending ? '' : 'swiper-no-swiping'}
           >
             {t('Max')}
           </Button>
@@ -253,7 +242,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           {account ? (
             <Button
               width="100%"
-              disabled={!account || disabled}
+              disabled={disabled}
+              className={disabled ? '' : 'swiper-no-swiping'}
               onClick={handleEnterPosition}
               isLoading={isTxPending}
               endIcon={isTxPending ? <AutoRenewIcon color="currentColor" spin /> : null}
@@ -261,7 +251,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
               {t(key)}
             </Button>
           ) : (
-            <ConnectWalletButton width="100%" />
+            <ConnectWalletButton className="swiper-no-swiping" width="100%" />
           )}
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">

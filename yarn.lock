@@ -3024,10 +3024,10 @@
   dependencies:
     "@octokit/openapi-types" "^11.2.0"
 
-"@pancakeswap/sdk@^2.4.4":
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/@pancakeswap/sdk/-/sdk-2.4.4.tgz#2313e1e85bddd5ad88b1b3806027eb1e54c726d5"
-  integrity sha512-AjbkAPkHG/Lw5W4TLLnd9Z3jvnSNFBZZFLwGzKd1zB5rF8Vg4LxwB6QT6QKGtNwGkL2CqNo8tPtMCl7YlYiYwQ==
+"@pancakeswap/sdk@^2.4.5":
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/@pancakeswap/sdk/-/sdk-2.4.5.tgz#783c02efc7ca89d2297b0b07040639d90c3e610d"
+  integrity sha512-qfHOPGXitDQ5y1dmYloe6UQe/0Ki0enow4MLtr5W49Jl7ZXr8oB6XV7usYtT63R7vqLSKY83rd8Wyw18vxP7dA==
   dependencies:
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"
@@ -12047,11 +12047,6 @@ joi@^17.4.0:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
-js-cookie@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.1.tgz#9e39b4c6c2f56563708d7d31f6f5f21873a92414"
-  integrity sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==
-
 js-sha256@0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/js-sha256/-/js-sha256-0.9.0.tgz#0b89ac166583e91ef9123644bd3c5334ce9d0966"
@@ -17456,10 +17451,10 @@ swiper@^8.0.6:
     dom7 "^4.0.4"
     ssr-window "^4.0.2"
 
-swr@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/swr/-/swr-1.1.2.tgz#9f3de2541931fccf03c48f322f1fc935a7551612"
-  integrity sha512-UsM0eo5T+kRPyWFZtWRx2XR5qzohs/LS4lDC0GCyLpCYFmsfTk28UCVDbOE9+KtoXY4FnwHYiF+ZYEU3hnJ1lQ==
+swr@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-1.2.2.tgz#6cae09928d30593a7980d80f85823e57468fac5d"
+  integrity sha512-ky0BskS/V47GpW8d6RU7CPsr6J8cr7mQD6+do5eky3bM0IyJaoi3vO8UhvrzJaObuTlGhPl2szodeB2dUd76Xw==
 
 symbol-tree@^3.2.4:
   version "3.2.4"

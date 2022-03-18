@@ -5,7 +5,7 @@ import Text from "../../components/Text/Text";
 import MoreHorizontal from "../../components/Svg/Icons/MoreHorizontal";
 import { ButtonProps } from "../../components/Button";
 import { connectorLocalStorageKey, walletLocalStorageKey } from "./config";
-import { Login, Config, ConnectorNames } from "./types";
+import { Login, Config } from "./types";
 
 interface Props {
   walletConfig: Config;
@@ -43,18 +43,7 @@ const WalletCard: React.FC<Props> = ({ login, walletConfig, onDismiss }) => {
     <WalletButton
       variant="tertiary"
       onClick={() => {
-        const isIOS =
-          /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-          // @ts-ignore
-          !window.MSStream;
-
-        // Since iOS does not support Trust Wallet we fall back to WalletConnect
-        if (walletConfig.title === "Trust Wallet" && isIOS) {
-          login(ConnectorNames.WalletConnect);
-        } else {
-          login(walletConfig.connectorId);
-        }
-
+        login(walletConfig.connectorId);
         localStorage.setItem(walletLocalStorageKey, walletConfig.title);
         localStorage.setItem(connectorLocalStorageKey, walletConfig.connectorId);
         onDismiss();

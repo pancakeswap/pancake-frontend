@@ -29,6 +29,7 @@ const InputsContainer = styled.div<{ focused: boolean; isDuplicate: boolean }>`
 `
 
 const DigitInput = styled.input`
+  color: ${({ theme }) => theme.colors.primaryDark};
   border: none;
   height: 32px;
   padding: 0 12px;

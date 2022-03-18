@@ -8,6 +8,9 @@ export default function ErrorBoundary({ children }) {
   const { t } = useTranslation()
   return (
     <Sentry.ErrorBoundary
+      beforeCapture={(scope) => {
+        scope.setLevel(Sentry.Severity.Fatal)
+      }}
       fallback={({ eventId }) => {
         return (
           <Page>

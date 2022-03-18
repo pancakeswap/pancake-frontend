@@ -6,6 +6,7 @@ import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction } from 'uti
 import { Auction, AuctionStatus, Bidder, BidderAuction } from 'config/constants/types'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import { FarmAuction } from 'config/abi/types'
+import orderBy from 'lodash/orderBy'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'
@@ -14,25 +15,15 @@ export const FORM_ADDRESS =
 // Also amends bidder information with getBidderInfo
 // auction is required if data will be used for table display, hence in reclaim and congratulations card its omitted
 export const sortAuctionBidders = (bidders: BidsPerAuction[], auction?: Auction): Bidder[] => {
-  const sortedBidders = [...bidders]
-    .sort((a, b) => {
-      if (a.amount.lt(b.amount)) {
-        return 1
-      }
-      if (a.amount.gt(b.amount)) {
-        return -1
-      }
-      return 0
-    })
-    .map((bidder, index) => {
-      const bidderInfo = getBidderInfo(bidder.account)
-      return {
-        ...bidderInfo,
-        position: index + 1,
-        account: bidder.account,
-        amount: bidder.amount,
-      }
-    })
+  const sortedBidders = orderBy(bidders, (bidder) => bidder.amount.toNumber(), 'desc').map((bidder, index) => {
+    const bidderInfo = getBidderInfo(bidder.account)
+    return {
+      ...bidderInfo,
+      position: index + 1,
+      account: bidder.account,
+      amount: bidder.amount,
+    }
+  })
 
   // Positions need to be adjusted in case 2 bidders has the same bid amount
   // adjustedPosition will always increase by 1 in the following block for the first bidder

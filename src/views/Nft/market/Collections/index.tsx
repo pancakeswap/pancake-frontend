@@ -15,6 +15,7 @@ import {
   Card,
 } from '@pancakeswap/uikit'
 import useSWRImmutable from 'swr/immutable'
+import orderBy from 'lodash/orderBy'
 import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ViewMode } from 'state/user/actions'
@@ -122,22 +123,19 @@ const Collectible = () => {
   }, [collections])
 
   const sortedCollections = useMemo(() => {
-    return collections.sort((a, b) => {
-      if (a && b) {
+    return orderBy(
+      collections,
+      (collection) => {
         if (sortField === SORT_FIELD.createdAt) {
-          if (a.createdAt && b.createdAt) {
-            return Date.parse(a.createdAt) > Date.parse(b.createdAt)
-              ? (sortDirection ? -1 : 1) * 1
-              : (sortDirection ? -1 : 1) * -1
+          if (collection.createdAt) {
+            return Date.parse(collection.createdAt)
           }
-          return -1
+          return null
         }
-        return parseFloat(a[sortField]) > parseFloat(b[sortField])
-          ? (sortDirection ? -1 : 1) * 1
-          : (sortDirection ? -1 : 1) * -1
-      }
-      return -1
-    })
+        return parseFloat(collection[sortField])
+      },
+      sortDirection ? 'desc' : 'asc',
+    )
   }, [collections, sortField, sortDirection])
 
   return (
