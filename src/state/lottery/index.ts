@@ -108,6 +108,7 @@ export const LotterySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(resetUserState, (state) => {
       state.userLotteryData = { ...initialState.userLotteryData }
+      state.currentRound = { ...state.currentRound, userTickets: { ...initialState.currentRound.userTickets } }
     })
     builder.addCase(fetchCurrentLottery.fulfilled, (state, action: PayloadAction<LotteryResponse>) => {
       state.currentRound = { ...state.currentRound, ...action.payload }
