@@ -119,8 +119,10 @@ export const LotterySlice = createSlice({
     builder.addCase(
       fetchUserTicketsAndLotteries.fulfilled,
       (state, action: PayloadAction<{ userTickets: LotteryTicket[]; userLotteries: LotteryUserGraphEntity }>) => {
-        state.currentRound.userTickets.isLoading = false
-        state.currentRound.userTickets.tickets = action.payload.userTickets
+        state.currentRound = {
+          ...state.currentRound,
+          userTickets: { isLoading: false, tickets: action.payload.userTickets },
+        }
         state.userLotteryData = action.payload.userLotteries
       },
     )
@@ -132,7 +134,7 @@ export const LotterySlice = createSlice({
     })
     builder.addCase(fetchAdditionalUserLotteries.fulfilled, (state, action: PayloadAction<LotteryUserGraphEntity>) => {
       const mergedRounds = [...state.userLotteryData.rounds, ...action.payload.rounds]
-      state.userLotteryData.rounds = mergedRounds
+      state.userLotteryData = { ...state.userLotteryData, rounds: mergedRounds }
     })
     builder.addCase(
       setLotteryIsTransitioning.fulfilled,
