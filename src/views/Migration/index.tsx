@@ -45,7 +45,7 @@ const MigrationPage: React.FC = () => {
   const usePoolsWithVault = () => {
     const pools = useMemo(() => {
       const ifoPoolVault = { ...cakePool, vaultKey: VaultKey.IfoPool }
-      const cakeAutoVault = { ...cakePool, vaultKey: VaultKey.CakeVault }
+      const cakeAutoVault = { ...cakePool, vaultKey: VaultKey.CakeVaultV1 }
 
       return [ifoPoolVault, cakeAutoVault, cakePool]
       // eslint-disable-next-line react-hooks/exhaustive-deps
