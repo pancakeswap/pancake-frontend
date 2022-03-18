@@ -11,7 +11,7 @@ function ClaimWarning() {
 
   const [onPresentRiskDisclaimer, onDismiss] = useModal(
     <DisclaimerModal
-      id="disclamer-limit-order"
+      id="disclaimer-limit-order"
       header={t('I acknowledge that:')}
       checks={[
         {
