@@ -44,11 +44,8 @@ export const initialPoolVaultState = Object.freeze({
   totalShares: null,
   pricePerFullShare: null,
   totalCakeInVault: null,
-  estimatedCakeBountyReward: null,
-  totalPendingCakeHarvest: null,
   fees: {
     performanceFee: null,
-    callFee: null,
     withdrawalFee: null,
     withdrawalFeePeriod: null,
   },

@@ -71,9 +71,7 @@ export const transformVault = (vault: SerializedCakeVault): DeserializedCakeVaul
     totalShares: totalSharesAsString,
     pricePerFullShare: pricePerFullShareAsString,
     totalCakeInVault: totalCakeInVaultAsString,
-    estimatedCakeBountyReward: estimatedCakeBountyRewardAsString,
-    totalPendingCakeHarvest: totalPendingCakeHarvestAsString,
-    fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod },
+    fees: { performanceFee, withdrawalFee, withdrawalFeePeriod },
     userData: {
       isLoading,
       userShares: userSharesAsString,
@@ -83,8 +81,6 @@ export const transformVault = (vault: SerializedCakeVault): DeserializedCakeVaul
     },
   } = vault
 
-  const estimatedCakeBountyReward = new BigNumber(estimatedCakeBountyRewardAsString)
-  const totalPendingCakeHarvest = new BigNumber(totalPendingCakeHarvestAsString)
   const totalShares = new BigNumber(totalSharesAsString)
   const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
   const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
@@ -97,9 +93,7 @@ export const transformVault = (vault: SerializedCakeVault): DeserializedCakeVaul
     totalShares,
     pricePerFullShare,
     totalCakeInVault,
-    estimatedCakeBountyReward,
-    totalPendingCakeHarvest,
-    fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
+    fees: { performanceFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
     userData: {
       isLoading,
       userShares,

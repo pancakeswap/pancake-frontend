@@ -144,7 +144,6 @@ export interface DeserializedFarmsState {
 
 export interface SerializedVaultFees {
   performanceFee: number
-  callFee: number
   withdrawalFee: number
   withdrawalFeePeriod: number
 }
@@ -181,8 +180,6 @@ export interface DeserializedCakeVault {
   totalShares?: BigNumber
   pricePerFullShare?: BigNumber
   totalCakeInVault?: BigNumber
-  estimatedCakeBountyReward?: BigNumber
-  totalPendingCakeHarvest?: BigNumber
   fees?: DeserializedVaultFees
   userData?: DeserializedVaultUser
 }
@@ -191,8 +188,6 @@ export interface SerializedCakeVault {
   totalShares?: SerializedBigNumber
   pricePerFullShare?: SerializedBigNumber
   totalCakeInVault?: SerializedBigNumber
-  estimatedCakeBountyReward?: SerializedBigNumber
-  totalPendingCakeHarvest?: SerializedBigNumber
   fees?: SerializedVaultFees
   userData?: SerializedVaultUser
 }

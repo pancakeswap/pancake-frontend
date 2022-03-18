@@ -54,21 +54,16 @@ const transformData = ({
   totalShares,
   pricePerFullShare,
   totalCakeInVault,
-  estimatedCakeBountyReward,
-  totalPendingCakeHarvest,
-  fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod },
+  fees: { performanceFee, withdrawalFee, withdrawalFeePeriod },
   userData: { isLoading, userShares, cakeAtLastUserAction, lastDepositedTime, lastUserActionTime },
 }) => {
   return {
     totalShares: new BigNumber(totalShares),
     pricePerFullShare: new BigNumber(pricePerFullShare),
     totalCakeInVault: new BigNumber(totalCakeInVault),
-    estimatedCakeBountyReward: new BigNumber(estimatedCakeBountyReward),
-    totalPendingCakeHarvest: new BigNumber(totalPendingCakeHarvest),
     fees: {
       performanceFeeAsDecimal: performanceFee && performanceFee / 100,
       performanceFee,
-      callFee,
       withdrawalFee,
       withdrawalFeePeriod,
     },
