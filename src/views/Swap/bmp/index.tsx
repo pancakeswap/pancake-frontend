@@ -164,13 +164,13 @@ function Swap() {
 
   const parsedAmounts = showWrap
     ? {
-      [Field.INPUT]: parsedAmount,
-      [Field.OUTPUT]: parsedAmount,
-    }
+        [Field.INPUT]: parsedAmount,
+        [Field.OUTPUT]: parsedAmount,
+      }
     : {
-      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-    }
+        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+      }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -552,8 +552,8 @@ function Swap() {
                         {priceImpactSeverity > 3 && !isExpertMode
                           ? t('Price Impact High')
                           : priceImpactSeverity > 2
-                            ? t('Swap Anyway')
-                            : t('Swap')}
+                          ? t('Swap Anyway')
+                          : t('Swap')}
                       </Button>
                     </RowBetween>
                   ) : (
@@ -580,8 +580,8 @@ function Swap() {
                         (priceImpactSeverity > 3 && !isExpertMode
                           ? t('Price Impact Too High')
                           : priceImpactSeverity > 2
-                            ? t('Swap Anyway')
-                            : t('Swap'))}
+                          ? t('Swap Anyway')
+                          : t('Swap'))}
                     </Button>
                   )}
                   {showApproveFlow && (
@@ -636,8 +636,6 @@ const FooterMenu = () => {
       onClick: () => {
         mpService.navigateToMiniProgram({
           appId: 'hhL98uho2A4sGYSHCEdCCo',
-          path: 'pages/dashboard/index',
-          extraData: {},
         })
       },
     },
