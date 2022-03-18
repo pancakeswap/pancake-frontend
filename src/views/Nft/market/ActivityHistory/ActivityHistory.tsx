@@ -117,7 +117,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
           alignItems={[null, null, 'center']}
           flexDirection={['column', 'column', 'row']}
         >
-          <ActivityFilters collection={collection} />
+          <ActivityFilters address={collection?.address || ''} />
           <Button
             scale="sm"
             disabled={isLoading}

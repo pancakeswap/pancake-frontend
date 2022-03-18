@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap/uikit'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
-import { Collection, MarketEvent } from 'state/nftMarket/types'
+import { MarketEvent } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import ClearAllButton from './ClearAllButton'
 import { ActivityFilter } from './ActivityFilter'
@@ -31,11 +31,10 @@ const ScrollableFlexContainer = styled(Flex)`
 `
 
 interface FiltersProps {
-  collection: Collection
+  address: string
 }
 
-const ActivityFilters: React.FC<FiltersProps> = ({ collection }) => {
-  const { address } = collection || { address: '' }
+const ActivityFilters: React.FC<FiltersProps> = ({ address }) => {
   const { t } = useTranslation()
 
   const nftActivityFilters = useGetNftActivityFilters(address)
