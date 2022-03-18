@@ -22,7 +22,9 @@ const useEagerConnect = () => {
   const { login } = useAuth()
 
   useEffect(() => {
-    const connectorId = window.localStorage.getItem(connectorLocalStorageKey) as ConnectorNames
+    const connectorId =
+      typeof window?.localStorage?.getItem === 'function' &&
+      (window.localStorage.getItem(connectorLocalStorageKey) as ConnectorNames)
 
     if (connectorId) {
       const isConnectorBinanceChain = connectorId === ConnectorNames.BSC
