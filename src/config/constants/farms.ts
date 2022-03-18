@@ -79,6 +79,7 @@ const farms: SerializedFarmConfig[] = [
 //    */
 //   {
 //     pid: 517,
+//     v1pid: 517,
 //     lpSymbol: 'TEM-BUSD LP',
 //     lpAddresses: {
 //       97: '',
@@ -90,6 +91,7 @@ const farms: SerializedFarmConfig[] = [
 //   },
 //   {
 //     pid: 512,
+//     v1pid: 512,
 //     lpSymbol: 'FIGHT-BUSD LP',
 //     lpAddresses: {
 //       97: '',
@@ -101,6 +103,7 @@ const farms: SerializedFarmConfig[] = [
 //   },
 //   {
 //     pid: 386,
+//     v1pid: 386,
 //     lpSymbol: 'HOTCROSS-BNB LP',
 //     lpAddresses: {
 //       97: '',
@@ -112,6 +115,7 @@ const farms: SerializedFarmConfig[] = [
 //   },
 //   {
 //     pid: 516,
+//     v1pid: 516,
 //     lpSymbol: 'BSW-BNB LP',
 //     lpAddresses: {
 //       97: '',

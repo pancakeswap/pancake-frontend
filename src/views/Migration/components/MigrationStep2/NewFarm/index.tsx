@@ -8,7 +8,7 @@ import { useFarms, usePriceCakeBusd, usePollFarmsWithUserData } from 'state/farm
 import { useFarmsV1 } from 'state/farmsV1/hooks'
 import { DeserializedFarm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
+import { FarmWithStakedValue } from 'views/Farms/components/types'
 import { getDisplayApr } from 'views/Farms/Farms'
 import { isArchivedPid, isArchivedPidV1 } from 'utils/farmHelpers'
 import OldFarm from './FarmTable'
