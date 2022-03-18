@@ -571,7 +571,6 @@ function Swap() {
     </Flex>
   )
 }
-
 export default function Index() {
   return (
     <ErrorBoundary name="swap">
