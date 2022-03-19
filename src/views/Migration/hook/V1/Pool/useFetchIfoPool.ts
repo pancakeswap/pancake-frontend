@@ -14,8 +14,8 @@ import cakeVaultAbi from 'config/abi/cakeVault.json'
 import { FAST_INTERVAL } from 'config/constants'
 import { VaultKey } from 'state/types'
 
-const ifoPoolV1Contract = '0x1B2A2f6ed4A1401E8C73B4c2B6172455ce2f78E8'
-const cakeVaultAddress = '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC'
+export const ifoPoolV1Contract = '0x1B2A2f6ed4A1401E8C73B4c2B6172455ce2f78E8'
+export const cakeVaultAddress = '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC'
 
 const getCakeVaultContract = (signer?: Signer | Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider

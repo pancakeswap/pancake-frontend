@@ -113,7 +113,7 @@ import type {
   PointCenterIfo,
 } from 'config/abi/types'
 
-const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
+export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
   return new Contract(address, abi, signerOrProvider)
 }

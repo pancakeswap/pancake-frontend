@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useMemo } from 'react'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { Button } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey } from 'state/types'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import useToast from 'hooks/useToast'
 import { useWeb3React } from '@web3-react/core'
-import { useVaultPoolContract } from 'hooks/useContract'
 import { vaultPoolConfig } from 'config/constants/pools'
+import ifoV2Abi from 'config/abi/ifoV2.json'
+import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
+import { getContract } from 'utils/contractHelpers'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
+import { useVaultPoolByKeyV1, ifoPoolV1Contract, cakeVaultAddress } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 import { useFetchUserPools } from '../../../hook/V1/Pool/useFetchUserPools'
 import useUnstakePool from '../../../hook/V1/Pool/useUnstakePool'
 
@@ -23,20 +26,24 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
   const { sousId, stakingToken, earningToken, userData, vaultKey } = pool
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const { library } = useActiveWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
   const { fetchUserPoolsData } = useFetchUserPools(account)
 
   const { vaultPoolData, fetchPoolData } = useVaultPoolByKeyV1(vaultKey)
-  const { cakeAtLastUserAction, userShares } = vaultPoolData.userData
+  const { userShares } = vaultPoolData.userData
 
-  const hasEarnings = account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
+  const vaultPoolContract = useMemo(() => {
+    return vaultKey === VaultKey.CakeVaultV1
+      ? getContract(cakeVaultAbi, cakeVaultAddress, library.getSigner())
+      : getContract(ifoV2Abi, ifoPoolV1Contract, library.getSigner())
+  }, [library, vaultKey])
 
-  const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
 
-  const isNeedUnstake = vaultKey ? hasEarnings : new BigNumber(userData.stakedBalance).gt(0)
+  const isNeedUnstake = vaultKey ? userShares && userShares.gt(0) : new BigNumber(userData.stakedBalance).gt(0)
 
   const handleUnstake = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
