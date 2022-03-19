@@ -20,7 +20,7 @@ interface SwapCall {
 export function useSwapCallArguments(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
-  recipientAddress: string | null, // the Eaddress of the recipient of the trade, or null if swap should be returned to sender
+  recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
