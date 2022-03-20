@@ -38,6 +38,8 @@ export const poolsWithVaultSelector = createSelector(
     const cakeVault = transformVault(serializedCakeVault)
     const activePools = pools.filter((pool) => !pool.isFinished)
     const cakePool = activePools.find((pool) => pool.sousId === 0)
+    const withoutCakePool = pools.filter((pool) => pool.sousId !== 0)
+
     const cakeAutoVault = {
       ...cakePool,
       ...cakeVault,
@@ -49,7 +51,7 @@ export const poolsWithVaultSelector = createSelector(
       apr: getAprData(cakeAutoVault, cakeVault.fees.performanceFeeAsDecimal).apr,
       rawApr: cakePool.apr,
     }
-    return { pools: [cakeAutoVaultWithApr, ...pools], userDataLoaded }
+    return { pools: [cakeAutoVaultWithApr, ...withoutCakePool], userDataLoaded }
   },
 )
 
