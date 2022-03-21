@@ -181,7 +181,7 @@ const UserStakeInCakePoolStrategy = {
   },
 }
 
-const CakeBnbLpTotalSupplyStrategy = {
+const _CakeBnbLpTotalSupplyStrategy = {
   name: 'contract-call',
   params: {
     address: cakeLpAddress,
@@ -205,7 +205,7 @@ const CakeBnbLpTotalSupplyStrategy = {
   },
 }
 
-const CakeBnbLpReserve0Strategy = {
+const _CakeBnbLpReserve0Strategy = {
   name: 'contract-call',
   params: {
     address: cakeLpAddress,
@@ -240,7 +240,7 @@ const CakeBnbLpReserve0Strategy = {
   },
 }
 
-const CakeBnbLpCakeBnbBalanceStrategy = {
+const _CakeBnbLpCakeBnbBalanceStrategy = {
   name: 'contract-call',
   params: {
     address: getMasterChefAddress(),
