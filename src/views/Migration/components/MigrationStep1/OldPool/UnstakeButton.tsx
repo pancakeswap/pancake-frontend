@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { Button } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -92,9 +92,22 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
   }
 
   return (
-    <Button width="138px" marginLeft="auto" isLoading={pendingTx} disabled={!isNeedUnstake} onClick={handleUnstake}>
-      {isNeedUnstake ? t('Unstake All') : t('Unstaked')}
-    </Button>
+    <>
+      {pendingTx ? (
+        <Button
+          width="138px"
+          marginLeft="auto"
+          isLoading={pendingTx}
+          endIcon={<AutoRenewIcon spin color="currentColor" />}
+        >
+          {t('Confirming')}
+        </Button>
+      ) : (
+        <Button width="138px" marginLeft="auto" disabled={!isNeedUnstake} onClick={handleUnstake}>
+          {isNeedUnstake ? t('Unstake All') : t('Unstaked')}
+        </Button>
+      )}
+    </>
   )
 }
 

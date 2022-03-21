@@ -1,7 +1,7 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { Button } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useFarmUser } from 'state/farmsV1/hooks'
 import useToast from 'hooks/useToast'
@@ -46,9 +46,22 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pid }) => {
   }
 
   return (
-    <Button isLoading={pendingTx} disabled={!isNeedUnstake} onClick={handleUnstake} marginLeft="auto" width="138px">
-      {isNeedUnstake ? t('Unstake All') : t('Unstaked')}
-    </Button>
+    <>
+      {pendingTx ? (
+        <Button
+          width="138px"
+          marginLeft="auto"
+          isLoading={pendingTx}
+          endIcon={<AutoRenewIcon spin color="currentColor" />}
+        >
+          {t('Confirming')}
+        </Button>
+      ) : (
+        <Button width="138px" marginLeft="auto" disabled={!isNeedUnstake} onClick={handleUnstake}>
+          {isNeedUnstake ? t('Unstake All') : t('Unstaked')}
+        </Button>
+      )}
+    </>
   )
 }
 
