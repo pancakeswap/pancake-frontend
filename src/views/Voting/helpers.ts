@@ -186,7 +186,7 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], s
 
     const cakePoolBalance = new BigNumber(userStakeInCakePools[address])
     // calculate cakeBnbLpBalance
-    const cakeBnbLpBalance = new BigNumber(cakeBnbLpBalances[address])
+    const cakeBnbLpBalance = cakeBnbLpBalances[address]
 
     const total = cakeBalance.plus(cakeVaultBalance).plus(cakePoolBalance).plus(IFOPoolBalance).plus(cakeBnbLpBalance)
 
@@ -195,7 +195,7 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], s
       cakeVaultBalance: cakeVaultBalance.div(TEN_POW_18).toFixed(18),
       IFOPoolBalance: IFOPoolBalance.div(TEN_POW_18).toFixed(18),
       cakePoolBalance: cakePoolBalance.div(TEN_POW_18).toFixed(18),
-      cakeBnbLpBalance: cakeBnbLpBalance.div(TEN_POW_18).toFixed(18),
+      cakeBnbLpBalance,
       total,
       voter: address,
     }
