@@ -279,6 +279,17 @@ const CakeBnbLpCakeBnbBalanceStrategy = {
   },
 }
 
+const CakeBnbMasterChefStrategy = {
+  name: 'masterchef-pool-balance',
+  params: {
+    chefAddress: getMasterChefAddress(),
+    uniPairAddress: cakeLpAddress,
+    pid: '251',
+    symbol: 'CAKE-BNB LP',
+    tokenIndex: 0,
+  },
+}
+
 function createPoolStrategy(poolAddress) {
   return {
     name: 'contract-call',
@@ -316,14 +327,12 @@ function createPoolStrategy(poolAddress) {
 
 export { createPoolStrategy }
 
-export const snapshotStrategies = [
+export const snapshotStrategies = {
   CakeBalanceStrategy,
   CakeVaultSharesStrategy,
   CakeVaultPricePerFullShareStrategy,
   IFOPoolSharesStrategy,
   IFOPoolPricePerFullShareStrategy,
   UserStakeInCakePoolStrategy,
-  CakeBnbLpTotalSupplyStrategy,
-  CakeBnbLpReserve0Strategy,
-  CakeBnbLpCakeBnbBalanceStrategy,
-]
+  CakeBnbMasterChefStrategy,
+}
