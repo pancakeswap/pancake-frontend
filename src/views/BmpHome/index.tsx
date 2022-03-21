@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled, { useTheme } from 'styled-components'
-import { Flex, Button, Svg, Image, Box, EarnFilledIcon, WalletIcon, SwapFillIcon } from '@pancakeswap/uikit'
+import { Flex, Button, Svg, Image, Box, EarnFilledIcon, WalletIcon, SwapFillIcon, FarmIcon } from '@pancakeswap/uikit'
 import mpService from '@binance/mp-service'
 import { useTranslation } from 'contexts/Localization'
 import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
@@ -13,6 +13,9 @@ import AddLiquidity from '../AddLiquidity/bmp/index'
 import Swap from '../Swap/bmp/index'
 import { LiquidityWrapper } from './components/liquidityWrapper'
 import { LiquidityProvider } from './context/swapContext'
+import { FarmsProvider } from './context/farmsContext.bmp'
+import { FarmsWrapper } from './components/farmsWrapper.bmp'
+
 const BubbleWrapper = styled(Flex)`
   align-items: center;
   bn-view {
@@ -130,6 +133,14 @@ const FooterMenu = ({ activeId, setActiveId }) => {
       },
     },
     {
+      icon: FarmIcon,
+      title: t('Farms'),
+      isActive: activeId === ActiveId.FARMS,
+      onClick: () => {
+        setActiveId(ActiveId.FARMS)
+      },
+    },
+    {
       icon: WalletIcon,
       title: t('Wallet'),
       onClick: () => {
@@ -154,6 +165,7 @@ const CUSTOM_NAV_HEIGHT = 44
 enum ActiveId {
   SWAP,
   LIQUIDITY,
+  FARMS,
 }
 const Page = () => {
   const [activeId, setActiveId] = useState<ActiveId>(ActiveId.SWAP)
@@ -166,6 +178,11 @@ const Page = () => {
           <LiquidityProvider>
             <LiquidityWrapper />
           </LiquidityProvider>
+        )}
+        {activeId === ActiveId.FARMS && (
+          <FarmsProvider>
+            <FarmsWrapper />
+          </FarmsProvider>
         )}
         <FooterMenu activeId={activeId} setActiveId={setActiveId} />
         <Footer activeId={activeId} />
