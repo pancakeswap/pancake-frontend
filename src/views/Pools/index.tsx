@@ -129,14 +129,6 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
                 +formatUnits(EthersBigNumber.from(vault.totalCakeInVault.toString()), pool.stakingToken.decimals) *
                 pool.stakingTokenPrice
             }
-          } else if (pool.sousId === 0) {
-            if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice && cakeInVaults.isFinite()) {
-              const manualCakeTotalMinusAutoVault = EthersBigNumber.from(pool.totalStaked.toString()).sub(
-                cakeInVaults.toString(),
-              )
-              totalStaked =
-                +formatUnits(manualCakeTotalMinusAutoVault, pool.stakingToken.decimals) * pool.stakingTokenPrice
-            }
           } else if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice) {
             totalStaked =
               +formatUnits(EthersBigNumber.from(pool.totalStaked.toString()), pool.stakingToken.decimals) *

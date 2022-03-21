@@ -37,7 +37,6 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
 
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const isStaked = stakedBalance.gt(0)
-  const isManualCakePool = sousId === 0
 
   const showStakedTag = vaultKey ? hasVaultShares : isStaked
 
@@ -48,9 +47,6 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   if (vaultKey) {
     title = vaultPoolConfig[vaultKey].name
     subtitle = vaultPoolConfig[vaultKey].description
-  } else if (isManualCakePool) {
-    title = t('Manual CAKE')
-    subtitle = `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`
   }
 
   return (

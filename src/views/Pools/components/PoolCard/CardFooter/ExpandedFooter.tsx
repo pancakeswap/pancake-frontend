@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
@@ -18,14 +17,13 @@ import {
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { useCurrentBlock } from 'state/block/hooks'
-import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
 import { getBscScanLink } from 'utils'
 import Balance from 'components/Balance'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
-import { BIG_ZERO } from 'utils/bigNumber'
 import MaxStakeRow from '../../MaxStakeRow'
 
 interface ExpandedFooterProps {
@@ -53,7 +51,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     stakingLimit,
     stakingLimitEndBlock,
     contractAddress,
-    sousId,
     vaultKey,
     profileRequirement,
     isFinished,
@@ -64,16 +61,10 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     fees: { performanceFee },
   } = useVaultPoolByKey(vaultKey)
 
-  const vaultPools = useVaultPools()
-  const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
-    return total.plus(vault.totalCakeInVault)
-  }, BIG_ZERO)
-
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = getAddress(contractAddress)
   const cakeVaultContractAddress = getVaultPoolAddress(vaultKey)
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
-  const isManualCakePool = sousId === 0
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
@@ -87,10 +78,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     if (vaultKey) {
       return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
     }
-    if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(cakeInVaults)
-      return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
-    }
+
     return getBalanceNumber(totalStaked, stakingToken.decimals)
   }
 
