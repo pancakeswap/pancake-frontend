@@ -31,7 +31,18 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
+        try {
+          return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
+        } catch (error: any) {
+          // Debug Invariant failed related to this line
+          console.error(
+            error.msg,
+            `- pairAddresses: ${tokenA?.address}-${tokenB?.address}`,
+            `chainId: ${tokenA?.chainId}`,
+          )
+
+          return undefined
+        }
       }),
     [tokens],
   )
