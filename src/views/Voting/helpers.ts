@@ -188,7 +188,11 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], s
     // calculate cakeBnbLpBalance
     const cakeBnbLpBalance = cakeBnbLpBalances[address]
 
-    const total = cakeBalance.plus(cakeVaultBalance).plus(cakePoolBalance).plus(IFOPoolBalance).plus(cakeBnbLpBalance)
+    const total = cakeBalance
+      .plus(cakeVaultBalance)
+      .plus(cakePoolBalance)
+      .plus(IFOPoolBalance)
+      .plus(new BigNumber(cakeBnbLpBalance).times(TEN_POW_18))
 
     return {
       cakeBalance: cakeBalance.div(TEN_POW_18).toFixed(18),
