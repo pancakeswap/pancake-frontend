@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
@@ -22,6 +23,8 @@ interface LiveRoundCardProps {
   bearMultiplier: string
 }
 
+const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 2
+
 const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   round,
   betAmount,
@@ -32,7 +35,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
 }) => {
   const { t } = useTranslation()
   const { lockPrice, totalAmount, lockTimestamp, closeTimestamp } = round
-  const price = usePollOraclePrice()
+  const { price, refresh } = usePollOraclePrice()
   const bufferSeconds = useGetBufferSeconds()
 
   const isBull = lockPrice && price.gt(lockPrice)
@@ -43,6 +46,19 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Last price from Chainlink Oracle'), {
     placement: 'bottom',
   })
+
+  useEffect(() => {
+    if (closeTimestamp) {
+      const refreshPriceTimeout = setTimeout(() => {
+        refresh()
+      }, closeTimestamp * 1000 - Date.now() - REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE * 1000)
+
+      return () => {
+        clearTimeout(refreshPriceTimeout)
+      }
+    }
+    return undefined
+  }, [refresh, closeTimestamp])
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />

@@ -120,7 +120,7 @@ const ChainlinkChartWrapper = styled(Flex)<{ isMobile?: boolean }>`
 
 const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
   const hoverData = useChartHover()
-  const answerAsBigNumber = usePollOraclePrice()
+  const { price: answerAsBigNumber } = usePollOraclePrice()
   const {
     t,
     currentLanguage: { locale },

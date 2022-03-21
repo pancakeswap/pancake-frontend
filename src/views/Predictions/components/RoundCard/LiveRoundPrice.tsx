@@ -9,7 +9,7 @@ interface LiveRoundPriceProps {
 }
 
 const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull }) => {
-  const price = usePollOraclePrice()
+  const { price } = usePollOraclePrice()
 
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const priceColor = isBull ? 'success' : 'failure'
