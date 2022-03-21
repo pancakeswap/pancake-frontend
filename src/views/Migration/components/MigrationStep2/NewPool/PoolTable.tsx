@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool } from 'state/types'
+import { Flex, Spinner } from '@pancakeswap/uikit'
 import TableHeader from '../../MigrationTable/TableHeader'
-import Loading from '../../MigrationTable/Loading'
 import EmptyText from '../../MigrationTable/EmptyText'
 import TableStyle from '../../MigrationTable/StyledTable'
 import PoolRow from './PoolRow'
@@ -15,9 +15,11 @@ interface PoolsTableProps {
 }
 
 const Container = styled.div`
-  border-radius: 10px;
   overflow: hidden;
   margin-bottom: 32px;
+  border-radius: 24px 24px 16px 16px;
+  background-color: ${({ theme }) => theme.colors.disabled};
+  padding: 1px 1px 3px 1px;
 `
 
 const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataReady, account }) => {
@@ -27,7 +29,11 @@ const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataReady, account }
     <Container>
       <TableHeader title={t('Pools')} />
       <TableStyle>
-        {!userDataReady && <Loading />}
+        {!userDataReady && (
+          <Flex padding="50px 10px" justifyContent="center">
+            <Spinner />
+          </Flex>
+        )}
         {!account && <EmptyText text={t('Please connect wallet to check your pool status.')} />}
         {account && userDataReady && pools.length === 0 && (
           <EmptyText text={t('You are not currently staking in any pools.')} />
