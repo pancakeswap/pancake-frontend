@@ -23,6 +23,26 @@ import { FlexGap } from 'components/Layout/Flex'
 
 const SmartContractIcon: React.FC<SvgProps> = (props) => {
   return (
+    <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -15 122.000000 122.000000" {...props}>
+      <g transform="translate(0.000000,122.000000) scale(0.100000,-0.100000)" stroke="none">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M465 1200 c-102 -27 -142 -46 -221 -105 -153 -115 -244 -293 -244
+-480 0 -136 62 -311 119 -334 30 -13 96 -6 119 12 9 7 12 57 12 188 0 211 -1
+209 95 209 95 0 95 1 95 -201 0 -180 2 -186 48 -153 22 15 22 19 22 234 0 257
+-3 250 95 250 97 0 95 4 95 -226 0 -107 4 -194 9 -194 4 0 20 9 35 21 l26 20
+0 244 c0 281 -6 265 98 265 43 0 63 -5 73 -17 10 -12 15 -65 19 -205 l5 -189
+67 56 c86 71 148 148 148 185 0 82 -113 249 -218 322 -152 106 -334 142 -497
+98z"
+        />
+      </g>
+    </Svg>
+  )
+}
+
+const ProposalIcon: React.FC<SvgProps> = (props) => {
+  return (
     <Svg viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path d="M10.037 6a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5h-7.5zM9.287 9.75a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM10.037 12a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5h-7.5z" />
       <path
@@ -67,6 +87,7 @@ const InlinePrize = styled(Flex)`
 const IfoAchievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
   const { t } = useTranslation()
   const tokenName = ifo.token.symbol?.toLowerCase()
+  const projectUrl = ifo.token.projectLink
   const campaignTitle = ifo.name
   const minLpForAchievement = publicIfoData.thresholdPoints
     ? formatBigNumber(publicIfoData.thresholdPoints, 3)
@@ -102,8 +123,11 @@ const IfoAchievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
             <Skeleton minHeight={18} width={80} />
           )}
           <FlexGap gap="16px" pt="24px" pl="4px">
-            <Link external href={ifo.articleUrl}>
+            <Link external href={projectUrl}>
               <LanguageIcon color="textSubtle" />
+            </Link>
+            <Link external href={ifo.articleUrl}>
+              <ProposalIcon color="textSubtle" />
             </Link>
             <Link external href={getBscScanLink(ifo.address, 'address')}>
               <SmartContractIcon color="textSubtle" />
