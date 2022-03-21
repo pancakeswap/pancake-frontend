@@ -76,6 +76,7 @@ export type Colors = {
 };
 
 export type ZIndices = {
+  ribbon: number;
   dropdown: number;
   modal: number;
 };
