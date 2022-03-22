@@ -35,25 +35,21 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-        <ButtonMenuItem
-          onClick={() => {
+      <ButtonMenu
+        onItemClick={(index) => {
+          if (index === 0) {
             dispatch({ type: 'setPage', page: FarmsPage.Farms })
-          }}
-          to="/farms"
-        >
-          {t('Live')}
-        </ButtonMenuItem>
+          } else if (index === 1) {
+            dispatch({ type: 'setPage', page: FarmsPage.History })
+          }
+        }}
+        activeIndex={activeIndex}
+        scale="sm"
+        variant="subtle"
+      >
+        <ButtonMenuItem>{t('Live')}</ButtonMenuItem>
         <NotificationDot show={hasStakeInFinishedFarms}>
-          <ButtonMenuItem
-            onClick={() => {
-              dispatch({ type: 'setPage', page: FarmsPage.History })
-            }}
-            to="/farms/history"
-            id="finished-farms-button"
-          >
-            {t('Finished')}
-          </ButtonMenuItem>
+          <ButtonMenuItem id="finished-farms-button">{t('Finished')}</ButtonMenuItem>
         </NotificationDot>
       </ButtonMenu>
     </Wrapper>

@@ -80,7 +80,7 @@ const Footer = ({ activeId = ActiveId.SWAP }) => {
 const StyledPage = styled.div`
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
   min-height: calc(100vh - 64px);
-  padding: 16px;
+  /* padding: 16px; */
   overflow-y: scroll;
   padding-bottom: 64px;
 `
@@ -171,7 +171,7 @@ const Page = () => {
   const [activeId, setActiveId] = useState<ActiveId>(ActiveId.SWAP)
   return (
     <Providers>
-      <StyledPage>
+      <StyledPage style={{ padding: activeId === ActiveId.SWAP || activeId === ActiveId.LIQUIDITY ? '16px' : null }}>
         <CustomNav top={statusBarHeight} height={CUSTOM_NAV_HEIGHT} />
         {activeId === ActiveId.SWAP && <Swap />}
         {activeId === ActiveId.LIQUIDITY && (

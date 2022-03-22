@@ -9,6 +9,7 @@ import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import { logError } from 'utils/sentry'
+import { FloatLayout } from 'components/FloatLayout'
 
 const AnnualRoiContainer = styled(Flex)`
   cursor: pointer;
