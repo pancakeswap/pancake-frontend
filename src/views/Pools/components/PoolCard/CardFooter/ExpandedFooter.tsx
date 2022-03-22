@@ -38,6 +38,41 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
+export const ExpandedTotalStaked = ({ totalStaked, stakingToken }) => {
+  const { t } = useTranslation()
+  const {
+    targetRef: totalStakedTargetRef,
+    tooltip: totalStakedTooltip,
+    tooltipVisible: totalStakedTooltipVisible,
+  } = useTooltip(t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }), {
+    placement: 'bottom',
+  })
+
+  return (
+    <Flex mb="2px" justifyContent="space-between" alignItems="center">
+      <Text small>{t('Total staked')}:</Text>
+      <Flex alignItems="flex-start">
+        {totalStaked && totalStaked.gte(0) ? (
+          <>
+            <Balance
+              small
+              value={getBalanceNumber(totalStaked, stakingToken.decimals)}
+              decimals={0}
+              unit={` ${stakingToken.symbol}`}
+            />
+            <span ref={totalStakedTargetRef}>
+              <HelpIcon color="textSubtle" width="20px" ml="6px" mt="4px" />
+            </span>
+          </>
+        ) : (
+          <Skeleton width="90px" height="21px" />
+        )}
+        {totalStakedTooltipVisible && totalStakedTooltip}
+      </Flex>
+    </Flex>
+  )
+}
+
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const { t } = useTranslation()
   const currentBlock = useCurrentBlock()
@@ -74,22 +109,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     { placement: 'bottom-start' },
   )
 
-  const getTotalStakedBalance = () => {
-    if (vaultKey) {
-      return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
-    }
-
-    return getBalanceNumber(totalStaked, stakingToken.decimals)
-  }
-
-  const {
-    targetRef: totalStakedTargetRef,
-    tooltip: totalStakedTooltip,
-    tooltipVisible: totalStakedTooltipVisible,
-  } = useTooltip(t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }), {
-    placement: 'bottom',
-  })
-
   return (
     <ExpandedWrapper flexDirection="column">
       {profileRequirement && (profileRequirement.required || profileRequirement.thresholdPoints.gt(0)) && (
@@ -105,22 +124,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           </Text>
         </Flex>
       )}
-      <Flex mb="2px" justifyContent="space-between" alignItems="center">
-        <Text small>{t('Total staked')}:</Text>
-        <Flex alignItems="flex-start">
-          {totalStaked && totalStaked.gte(0) ? (
-            <>
-              <Balance small value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
-              <span ref={totalStakedTargetRef}>
-                <HelpIcon color="textSubtle" width="20px" ml="6px" mt="4px" />
-              </span>
-            </>
-          ) : (
-            <Skeleton width="90px" height="21px" />
-          )}
-          {totalStakedTooltipVisible && totalStakedTooltip}
-        </Flex>
-      </Flex>
+      <ExpandedTotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
       {!isFinished && stakingLimit && stakingLimit.gt(0) && (
         <MaxStakeRow
           small

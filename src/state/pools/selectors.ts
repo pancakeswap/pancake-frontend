@@ -3,7 +3,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getAprData } from 'views/Pools/helpers'
 import { createSelector } from '@reduxjs/toolkit'
 import { State, VaultKey, SerializedIfoCakeVault } from '../types'
-import { transformPool, transformVault, transformIfoVault } from './helpers'
+import { transformPool, transformLockedVault, transformIfoVault } from './helpers'
 import { initialPoolVaultState } from './index'
 
 const selectPoolsData = (state: State) => state.pools.data
@@ -28,14 +28,14 @@ export const poolsWithUserDataLoadingSelector = createSelector(
 
 export const makeVaultPoolByKey = (key) =>
   createSelector([selectVault(key)], (vault) =>
-    key === VaultKey.CakeVault ? transformVault(vault) : transformIfoVault(vault as SerializedIfoCakeVault),
+    key === VaultKey.CakeVault ? transformLockedVault(vault) : transformIfoVault(vault as SerializedIfoCakeVault),
   )
 
 export const poolsWithVaultSelector = createSelector(
   [selectPoolsData, selectUserDataLoaded, selectCakeVault, selectIfoPool],
   (serializedPools, userDataLoaded, serializedCakeVault) => {
     const pools = serializedPools.map(transformPool)
-    const cakeVault = transformVault(serializedCakeVault)
+    const cakeVault = transformLockedVault(serializedCakeVault)
     const activePools = pools.filter((pool) => !pool.isFinished)
     const cakePool = activePools.find((pool) => pool.sousId === 0)
     const withoutCakePool = pools.filter((pool) => pool.sousId !== 0)

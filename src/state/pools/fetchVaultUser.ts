@@ -1,9 +1,10 @@
 import BigNumber from 'bignumber.js'
-import { getCakeVaultContract } from 'utils/contractHelpers'
+import { SerializedLockedVaultUser } from 'state/types'
+import { getCakeVaultV2Contract } from 'utils/contractHelpers'
 
-const cakeVaultContract = getCakeVaultContract()
+const cakeVaultContract = getCakeVaultV2Contract()
 
-const fetchVaultUser = async (account: string, contract = cakeVaultContract) => {
+const fetchVaultUser = async (account: string, contract = cakeVaultContract): Promise<SerializedLockedVaultUser> => {
   try {
     const userContractResponse = await contract.userInfo(account)
     return {
@@ -12,6 +13,11 @@ const fetchVaultUser = async (account: string, contract = cakeVaultContract) => 
       lastDepositedTime: userContractResponse.lastDepositedTime.toString(),
       lastUserActionTime: userContractResponse.lastUserActionTime.toString(),
       cakeAtLastUserAction: new BigNumber(userContractResponse.cakeAtLastUserAction.toString()).toJSON(),
+      boostDebt: new BigNumber(userContractResponse.boostDebt.toString()).toJSON(),
+      locked: userContractResponse.locked,
+      lockEndTime: userContractResponse.lockEndTime.toString(),
+      lockStartTime: userContractResponse.lockStartTime.toString(),
+      lockedAmount: new BigNumber(userContractResponse.lockedAmount.toString()).toJSON(),
     }
   } catch (error) {
     return {
@@ -20,6 +26,11 @@ const fetchVaultUser = async (account: string, contract = cakeVaultContract) => 
       lastDepositedTime: null,
       lastUserActionTime: null,
       cakeAtLastUserAction: null,
+      boostDebt: null,
+      lockEndTime: null,
+      lockStartTime: null,
+      locked: null,
+      lockedAmount: null,
     }
   }
 }

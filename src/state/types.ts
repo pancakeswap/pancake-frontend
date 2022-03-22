@@ -153,12 +153,20 @@ export interface DeserializedVaultFees extends SerializedVaultFees {
   performanceFeeAsDecimal: number
 }
 
-export interface SerializedVaultUser {
+interface SerializedVaultUser {
   isLoading: boolean
   userShares: SerializedBigNumber
   cakeAtLastUserAction: SerializedBigNumber
   lastDepositedTime: string
   lastUserActionTime: string
+}
+
+export interface SerializedLockedVaultUser extends SerializedVaultUser {
+  lockStartTime: string
+  lockEndTime: string
+  boostDebt: SerializedBigNumber
+  locked: boolean
+  lockedAmount: SerializedBigNumber
 }
 
 export interface DeserializedVaultUser {
@@ -167,6 +175,16 @@ export interface DeserializedVaultUser {
   cakeAtLastUserAction: BigNumber
   lastDepositedTime: string
   lastUserActionTime: string
+}
+
+export interface DeserializedLockedVaultUser extends DeserializedVaultUser {
+  lastDepositedTime: string
+  lastUserActionTime: string
+  lockStartTime: string
+  lockEndTime: string
+  boostDebt: BigNumber
+  locked: boolean
+  lockedAmount: BigNumber
 }
 
 export interface DeserializedIfoVaultUser extends DeserializedVaultUser {
@@ -182,7 +200,7 @@ export interface DeserializedCakeVault {
   pricePerFullShare?: BigNumber
   totalCakeInVault?: BigNumber
   fees?: DeserializedVaultFees
-  userData?: DeserializedVaultUser
+  userData?: DeserializedLockedVaultUser
 }
 
 export interface SerializedCakeVault {
@@ -190,7 +208,7 @@ export interface SerializedCakeVault {
   pricePerFullShare?: SerializedBigNumber
   totalCakeInVault?: SerializedBigNumber
   fees?: SerializedVaultFees
-  userData?: SerializedVaultUser
+  userData?: SerializedLockedVaultUser
 }
 
 export interface SerializedIfoCakeVault extends Omit<SerializedCakeVault, 'userData'> {

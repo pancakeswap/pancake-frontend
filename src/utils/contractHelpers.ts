@@ -59,7 +59,7 @@ import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import tradingCompetitionV2Abi from 'config/abi/tradingCompetitionV2.json'
 import easterNftAbi from 'config/abi/easterNft.json'
-import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
+import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
 import ifoPoolAbi from 'config/abi/ifoPool.json'
 import predictionsAbi from 'config/abi/predictions.json'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
@@ -111,6 +111,7 @@ import type {
   PancakeSquad,
   Erc721collection,
   PointCenterIfo,
+  CakeVaultV2,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -183,8 +184,8 @@ export const getTradingCompetitionContractV2 = (signer?: Signer | Provider) => {
 export const getEasterNftContract = (signer?: Signer | Provider) => {
   return getContract(easterNftAbi, getEasterNftAddress(), signer) as EasterNft
 }
-export const getCakeVaultContract = (signer?: Signer | Provider) => {
-  return getContract(cakeVaultAbi, getCakeVaultAddress(), signer) as CakeVault
+export const getCakeVaultV2Contract = (signer?: Signer | Provider) => {
+  return getContract(cakeVaultV2Abi, getCakeVaultAddress(), signer) as CakeVaultV2
 }
 export const getIfoPoolContract = (signer?: Signer | Provider) => {
   return getContract(ifoPoolAbi, getIfoPoolAddress(), signer) as IfoPool
