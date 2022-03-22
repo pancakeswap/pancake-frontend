@@ -59,11 +59,10 @@ const ToggleWrapperText = styled(Text)`
   margin-left: 8px;
 `
 
-const LabelWrapper = styled.div`
-`
+const LabelWrapper = styled.div``
 
 const LabelWrapperText = styled(Text)`
-  font-size: 12px
+  font-size: 12px;
 `
 
 const FilterContainer = styled.div`
@@ -119,7 +118,9 @@ export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) =>
 const Farms: React.FC = ({ children }) => {
   // const { pathname } = useRouter()
   const { t } = useTranslation()
-  const { state: { page } } = useFarmsWrapper()
+  const {
+    state: { page },
+  } = useFarmsWrapper()
   const { data: farmsLP, userDataLoaded } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('')
@@ -297,7 +298,7 @@ const Farms: React.FC = ({ children }) => {
   const renderContent = (): JSX.Element => {
     //     if (viewMode === ViewMode.TABLE && rowData.length) {
     //       const columnSchema = DesktopColumnSchema
-    // 
+    //
     //       const columns = columnSchema.map((column) => ({
     //         id: column.id,
     //         name: column.name,
@@ -310,7 +311,7 @@ const Farms: React.FC = ({ children }) => {
     //               if (a.original.apr.value && b.original.apr.value) {
     //                 return Number(a.original.apr.value) - Number(b.original.apr.value)
     //               }
-    // 
+    //
     //               return 0
     //             case 'earned':
     //               return a.original.earned.earnings - b.original.earned.earnings
@@ -320,7 +321,7 @@ const Farms: React.FC = ({ children }) => {
     //         },
     //         sortable: column.sortable,
     //       }))
-    // 
+    //
     //       return <Table data={rowData} columns={columns} userDataReady={userDataReady} />
     //     }
 
@@ -386,7 +387,7 @@ const Farms: React.FC = ({ children }) => {
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text textTransform="uppercase">{t('Search')}</Text>
+              <LabelWrapperText textTransform="uppercase">{t('Search')}</LabelWrapperText>
               <SearchInput onChange={handleChangeQuery} placeholder="Search Farms" />
             </LabelWrapper>
           </FilterContainer>
@@ -407,5 +408,3 @@ const Farms: React.FC = ({ children }) => {
 export const FarmsContext = React.createContext({ chosenFarmsMemoized: [] })
 
 export default Farms
-
-
