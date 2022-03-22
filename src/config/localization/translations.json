@@ -1601,5 +1601,6 @@
   "Perpetual": "Perpetual",
   "I acknowledge that:": "I acknowledge that:",
   "I understand that small orders are executed at higher execution price due to gas fees.": "I understand that small orders are executed at higher execution price due to gas fees.",
-  "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens": "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens"
+  "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens": "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens",
+  "Apply to run an IFO!": "Apply to run an IFO!"
 }
