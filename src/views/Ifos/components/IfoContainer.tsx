@@ -1,9 +1,7 @@
 import { ReactElement } from 'react'
 import styled from 'styled-components'
-import { Box } from '@pancakeswap/uikit'
-
+import { Box, LinkExternal } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
-
 import IfoLayout, { IfoLayoutWrapper } from './IfoLayout'
 import IfoPoolVaultCard from './IfoPoolVaultCard'
 import IfoQuestions from './IfoQuestions'
@@ -30,6 +28,13 @@ const IfoContainer: React.FC<TypeProps> = ({ ifoSection, ifoSteps }) => (
     </IfoStepBackground>
     <Container>
       <IfoQuestions />
+      <LinkExternal
+        href="https://docs.pancakeswap.finance/contact-us/business-partnerships#ifos-token-sales"
+        mx="auto"
+        mt="16px"
+      >
+        Apply to run an IFO!
+      </LinkExternal>
     </Container>
   </IfoLayout>
 )
