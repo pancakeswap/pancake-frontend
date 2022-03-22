@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { ArrowDropDownIcon, Box, BoxProps, Text } from '@pancakeswap/uikit'
+import { AtActionSheet, AtActionSheetItem } from 'taro-ui'
+import 'taro-ui/dist/style/components/action-sheet.scss'
 
 const DropDownHeader = styled.div`
   width: 100%;
@@ -19,10 +21,10 @@ const DropDownHeader = styled.div`
 const DropDownListContainer = styled.div`
   min-width: 136px;
   height: 0;
-  position: absolute;
+  /* position: absolute; */
   overflow: hidden;
   background: ${({ theme }) => theme.colors.input};
-  z-index: ${({ theme }) => theme.zIndices.dropdown};
+  /* z-index: ${({ theme }) => theme.zIndices.dropdown}; */
   transition: transform 0.15s, opacity 0.15s;
   transform: scaleY(0);
   transform-origin: top;
@@ -43,7 +45,7 @@ const DropDownContainer = styled(Box)<{ isOpen: boolean }>`
   height: 40px;
   min-width: 136px;
   user-select: none;
-  z-index: 20;
+  /* z-index: 20; */
 
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 168px;
@@ -112,7 +114,6 @@ const Select: React.FunctionComponent<SelectProps> = ({
   const dropdownRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(defaultOptionIndex)
-
   const toggling = (event: React.MouseEvent<HTMLDivElement>) => {
     setIsOpen(!isOpen)
     event.stopPropagation()
@@ -127,34 +128,29 @@ const Select: React.FunctionComponent<SelectProps> = ({
     }
   }
 
-  useEffect(() => {
-    const handleClickOutside = () => {
-      setIsOpen(false)
-    }
-
-    document.addEventListener('click', handleClickOutside)
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [])
+  const handleClose = () => {
+    setIsOpen(false)
+  }
 
   return (
     <DropDownContainer isOpen={isOpen} {...props}>
       <DropDownHeader onClick={toggling}>
         <Text>{options[selectedOptionIndex].label}</Text>
       </DropDownHeader>
-      <ArrowDropDownIcon color="text" onClick={toggling} />
-      <DropDownListContainer>
-        <DropDownList ref={dropdownRef}>
-          {options.map((option, index) =>
-            index !== selectedOptionIndex ? (
-              <ListItem onClick={onOptionClicked(index)} key={option.label}>
-                <Text>{option.label}</Text>
-              </ListItem>
-            ) : null,
-          )}
-        </DropDownList>
-      </DropDownListContainer>
+      <ArrowDropDownIcon
+        color="text"
+        onClick={toggling}
+        style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)' }}
+      />
+      <AtActionSheet isOpened={isOpen} onCancel={handleClose} onClose={handleClose}>
+        {options.map((option, index) =>
+          index !== selectedOptionIndex ? (
+            <AtActionSheetItem onClick={onOptionClicked(index)}>
+              <Text>{option.label}</Text>
+            </AtActionSheetItem>
+          ) : null,
+        )}
+      </AtActionSheet>
     </DropDownContainer>
   )
 }
