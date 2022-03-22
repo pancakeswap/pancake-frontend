@@ -209,18 +209,18 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
     </StyledTooltip>
   );
 
-  const portal = getPortalRoot();
-  const tooltipInPortal = portal ? createPortal(tooltip, portal) : null;
-
   const AnimatedTooltip = (
     <LazyMotion features={domAnimation}>
       <AnimatePresence>{visible && tooltip}</AnimatePresence>
     </LazyMotion>
   );
 
+  const portal = getPortalRoot();
+  const tooltipInPortal = portal ? createPortal(AnimatedTooltip, portal) : null;
+
   return {
     targetRef: setTargetElement,
-    tooltip: tooltipInPortal && AnimatedTooltip,
+    tooltip: tooltipInPortal ?? AnimatedTooltip,
     tooltipVisible: visible,
   };
 };
