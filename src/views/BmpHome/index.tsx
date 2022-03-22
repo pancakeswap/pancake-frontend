@@ -171,7 +171,7 @@ const Page = () => {
   const [activeId, setActiveId] = useState<ActiveId>(ActiveId.SWAP)
   return (
     <Providers>
-      <StyledPage style={{ padding: activeId === ActiveId.SWAP || activeId === ActiveId.Liquidity ? '16px' : null }}>
+      <StyledPage style={{ padding: activeId === ActiveId.SWAP || activeId === ActiveId.LIQUIDITY ? '16px' : null }}>
         <CustomNav top={statusBarHeight} height={CUSTOM_NAV_HEIGHT} />
         {activeId === ActiveId.SWAP && <Swap />}
         {activeId === ActiveId.LIQUIDITY && (
