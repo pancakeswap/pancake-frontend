@@ -8,6 +8,7 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
       {
         label: t('Contact'),
         href: 'https://docs.pancakeswap.finance/contact-us',
+        isHighlighted: true,
       },
       {
         label: t('Brand'),
@@ -31,7 +32,6 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
       {
         label: t('Online Store'),
         href: 'https://pancakeswap.creator-spring.com/',
-        isHighlighted: true,
       },
     ],
   },
