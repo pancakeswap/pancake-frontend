@@ -1,16 +1,11 @@
 import { useTranslation } from 'contexts/Localization'
-import styled from 'styled-components'
-import { Modal, Text, Button, OpenNewIcon, Link } from '@pancakeswap/uikit'
+import { Modal, Text, Button } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 
 interface NotEnoughTokensModalProps {
   tokenSymbol: string
   onDismiss?: () => void
 }
-
-const StyledLink = styled(Link)`
-  width: 100%;
-`
 
 const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({ tokenSymbol, onDismiss }) => {
   const { t } = useTranslation()
