@@ -159,6 +159,11 @@ export interface SerializedVaultUser {
   cakeAtLastUserAction: SerializedBigNumber
   lastDepositedTime: string
   lastUserActionTime: string
+  lockStartTime: string
+  lockEndTime: string
+  boostDebt: SerializedBigNumber
+  locked: boolean
+  lockedAmount: SerializedBigNumber
 }
 
 export interface DeserializedVaultUser {

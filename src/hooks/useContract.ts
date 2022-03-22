@@ -18,7 +18,7 @@ import {
   getTradingCompetitionContractV2,
   getEasterNftContract,
   getErc721Contract,
-  getCakeVaultContract,
+  getCakeVaultV2Contract,
   getIfoPoolContract,
   getPredictionsContract,
   getChainlinkOracleContract,
@@ -37,7 +37,6 @@ import {
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { VaultKey } from 'state/types'
 import {
-  CakeVault,
   EnsPublicResolver,
   EnsRegistrar,
   Erc20,
@@ -47,6 +46,7 @@ import {
   Weth,
   Cake,
   Erc721collection,
+  CakeVaultV2,
 } from 'config/abi/types'
 
 // Imports below migrated from Exchange useContract.ts
@@ -175,18 +175,18 @@ export const useEasterNftContract = () => {
   return useMemo(() => getEasterNftContract(library.getSigner()), [library])
 }
 
-export const useVaultPoolContract = (vaultKey: VaultKey): CakeVault | IfoPool => {
+export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | IfoPool => {
   const { library } = useActiveWeb3React()
   return useMemo(() => {
     return vaultKey === VaultKey.CakeVault
-      ? getCakeVaultContract(library.getSigner())
+      ? getCakeVaultV2Contract(library.getSigner())
       : getIfoPoolContract(library.getSigner())
   }, [library, vaultKey])
 }
 
 export const useCakeVaultContract = () => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getCakeVaultContract(library.getSigner()), [library])
+  return useMemo(() => getCakeVaultV2Contract(library.getSigner()), [library])
 }
 
 export const useIfoPoolContract = () => {
