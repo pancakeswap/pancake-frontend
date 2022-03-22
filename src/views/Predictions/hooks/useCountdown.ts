@@ -1,15 +1,19 @@
-import { useCallback, useEffect, useState } from 'react'
+import { getNow } from 'utils/getNow'
+import { accurateTimer } from 'utils/accurateTimer'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 
-const getNow = () => Math.floor(Date.now() / 1000)
+const getSecondsRemainingToNow = (timestamp: number) => {
+  const now = getNow()
+  return Number.isFinite(timestamp) && timestamp > now ? timestamp - now : 0
+}
 
 /**
  * Consider this moving up to the global level
  */
 const useCountdown = (timestamp: number) => {
-  const [secondsRemaining, setSecondsRemaining] = useState(() => {
-    return timestamp - getNow()
-  })
+  const timerCancelRef = useRef(null)
+  const [secondsRemaining, setSecondsRemaining] = useState(() => getSecondsRemainingToNow(timestamp))
   const [isPaused, setIsPaused] = useState(false)
   const isWindowVisible = useIsWindowVisible()
 
@@ -17,27 +21,30 @@ const useCountdown = (timestamp: number) => {
   const unpause = useCallback(() => setIsPaused(false), [setIsPaused])
 
   useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>
-
-    if (!isPaused && secondsRemaining > 0) {
-      timer = setTimeout(() => {
-        setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1)
-      }, 1000)
+    let cancel
+    if (!isPaused) {
+      const { cancel: timerCancel } = accurateTimer(() => {
+        setSecondsRemaining((prevSecondsRemaining) => {
+          if (prevSecondsRemaining) {
+            return prevSecondsRemaining - 1
+          }
+          timerCancelRef.current?.()
+          return prevSecondsRemaining
+        })
+      })
+      cancel = timerCancel
+      timerCancelRef.current = timerCancel
     }
 
     return () => {
-      clearTimeout(timer)
+      cancel?.()
     }
-  }, [secondsRemaining, isPaused, setSecondsRemaining])
-
-  useEffect(() => {
-    setSecondsRemaining(timestamp - getNow())
-  }, [timestamp, setSecondsRemaining])
+  }, [isPaused, timestamp, setSecondsRemaining])
 
   // Pause the timer if the tab becomes inactive to avoid it becoming out of sync
   useEffect(() => {
     if (isWindowVisible) {
-      setSecondsRemaining(timestamp - getNow())
+      setSecondsRemaining(getSecondsRemainingToNow(timestamp))
       unpause()
     } else {
       pause()
