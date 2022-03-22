@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js'
-import { SerializedVaultUser } from 'state/types'
+import { SerializedLockedVaultUser } from 'state/types'
 import { getCakeVaultV2Contract } from 'utils/contractHelpers'
 
 const cakeVaultContract = getCakeVaultV2Contract()
 
-const fetchVaultUser = async (account: string, contract = cakeVaultContract): Promise<SerializedVaultUser> => {
+const fetchVaultUser = async (account: string, contract = cakeVaultContract): Promise<SerializedLockedVaultUser> => {
   try {
     const userContractResponse = await contract.userInfo(account)
     return {

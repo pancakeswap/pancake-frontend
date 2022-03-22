@@ -8,8 +8,8 @@ import {
   SerializedVaultFees,
   SerializedIfoVaultUser,
   SerializedIfoCakeVault,
-  SerializedVaultUser,
   SerializedCakeVault,
+  SerializedLockedVaultUser,
 } from 'state/types'
 import cakeAbi from 'config/abi/cake.json'
 import tokens from 'config/constants/tokens'
@@ -56,6 +56,11 @@ export const initialPoolVaultState = Object.freeze({
     lastDepositedTime: null,
     lastUserActionTime: null,
     credit: null,
+    locked: null,
+    lockStartTime: null,
+    lockEndTime: null,
+    boostDebt: null,
+    lockedAmount: null,
   },
   creditStartBlock: null,
 })
@@ -273,7 +278,7 @@ export const fetchCakeVaultFees = createAsyncThunk<SerializedVaultFees>('cakeVau
   return vaultFees
 })
 
-export const fetchCakeVaultUserData = createAsyncThunk<SerializedVaultUser, { account: string }>(
+export const fetchCakeVaultUserData = createAsyncThunk<SerializedLockedVaultUser, { account: string }>(
   'cakeVault/fetchUser',
   async ({ account }) => {
     const userData = await fetchVaultUser(account)
@@ -360,7 +365,7 @@ export const PoolsSlice = createSlice({
       state.cakeVault = { ...state.cakeVault, fees }
     })
     // Vault user data
-    builder.addCase(fetchCakeVaultUserData.fulfilled, (state, action: PayloadAction<SerializedVaultUser>) => {
+    builder.addCase(fetchCakeVaultUserData.fulfilled, (state, action: PayloadAction<SerializedLockedVaultUser>) => {
       const userData = action.payload
       userData.isLoading = false
       state.cakeVault = { ...state.cakeVault, userData }
