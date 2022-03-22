@@ -24,7 +24,7 @@ import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
 import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
-// import Table from './components/FarmTable/FarmTable'
+import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
@@ -296,34 +296,31 @@ const Farms: React.FC = ({ children }) => {
   })
 
   const renderContent = (): JSX.Element => {
-    //     if (viewMode === ViewMode.TABLE && rowData.length) {
-    //       const columnSchema = DesktopColumnSchema
-    //
-    //       const columns = columnSchema.map((column) => ({
-    //         id: column.id,
-    //         name: column.name,
-    //         label: column.label,
-    //         sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
-    //           switch (column.name) {
-    //             case 'farm':
-    //               return b.id - a.id
-    //             case 'apr':
-    //               if (a.original.apr.value && b.original.apr.value) {
-    //                 return Number(a.original.apr.value) - Number(b.original.apr.value)
-    //               }
-    //
-    //               return 0
-    //             case 'earned':
-    //               return a.original.earned.earnings - b.original.earned.earnings
-    //             default:
-    //               return 1
-    //           }
-    //         },
-    //         sortable: column.sortable,
-    //       }))
-    //
-    //       return <Table data={rowData} columns={columns} userDataReady={userDataReady} />
-    //     }
+    if (viewMode === ViewMode.TABLE && rowData.length) {
+      const columnSchema = DesktopColumnSchema
+      const columns = columnSchema.map((column) => ({
+        id: column.id,
+        name: column.name,
+        label: column.label,
+        sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
+          switch (column.name) {
+            case 'farm':
+              return b.id - a.id
+            case 'apr':
+              if (a.original.apr.value && b.original.apr.value) {
+                return Number(a.original.apr.value) - Number(b.original.apr.value)
+              }
+              return 0
+            case 'earned':
+              return a.original.earned.earnings - b.original.earned.earnings
+            default:
+              return 1
+          }
+        },
+        sortable: column.sortable,
+      }))
+      return <Table data={rowData} columns={columns} userDataReady={userDataReady} />
+    }
 
     return <FlexLayout>{children}</FlexLayout>
   }

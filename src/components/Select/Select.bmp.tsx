@@ -145,7 +145,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
       <AtActionSheet isOpened={isOpen} onCancel={handleClose} onClose={handleClose}>
         {options.map((option, index) =>
           index !== selectedOptionIndex ? (
-            <AtActionSheetItem onClick={onOptionClicked(index)}>
+            <AtActionSheetItem key={index} onClick={onOptionClicked(index)}>
               <Text>{option.label}</Text>
             </AtActionSheetItem>
           ) : null,
