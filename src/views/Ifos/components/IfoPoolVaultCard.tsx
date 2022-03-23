@@ -22,7 +22,7 @@ import { useIfoPoolCredit, useIfoPoolVault, useIfoWithApr } from 'state/pools/ho
 import { VaultKey } from 'state/types'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
-import CakeVaultCard, { CreditCalcBlock } from 'views/Pools/components/CakeVaultCard'
+import CakeVaultCard from 'views/Pools/components/CakeVaultCard'
 import RecentCakeProfitCountdownRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
 import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/UnstakingFeeCountdownRow'
 import { IfoVaultCardAvgBalance } from 'views/Pools/components/CakeVaultCard/VaultCardActions'
@@ -123,7 +123,6 @@ const IfoPoolVaultCardMobile: React.FC = () => {
         <>
           <StyledCardBody>
             <AprRow pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
-            <CreditCalcBlock />
             <ActionContainer>
               <IfoVaultCardAvgBalance />
             </ActionContainer>
