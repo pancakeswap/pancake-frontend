@@ -57,6 +57,26 @@ export const getSortedRoundsSelector = createSelector([getBigNumberRounds], (rou
   return orderBy(Object.values(rounds), ['epoch'], ['asc'])
 })
 
+export const getSortedRoundsCurrentEpochSelector = createSelector(
+  [selectCurrentEpoch, getSortedRoundsSelector],
+  (currentEpoch, sortedRounds) => {
+    return {
+      currentEpoch,
+      rounds: sortedRounds,
+    }
+  },
+)
+
+export const getRoundsCurrentEpochSelector = createSelector(
+  [selectCurrentEpoch, getBigNumberRounds],
+  (currentEpoch, rounds) => {
+    return {
+      currentEpoch,
+      rounds,
+    }
+  },
+)
+
 export const getCurrentRoundSelector = createSelector(
   [selectCurrentEpoch, getBigNumberRounds],
   (currentEpoch, rounds) => {

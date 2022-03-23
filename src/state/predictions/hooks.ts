@@ -15,6 +15,8 @@ import {
   getMinBetAmountSelector,
   getCurrentRoundLockTimestampSelector,
   getEarliestEpochSelector,
+  getSortedRoundsCurrentEpochSelector,
+  getRoundsCurrentEpochSelector,
 } from './selectors'
 
 export const useGetRounds = () => {
@@ -32,6 +34,14 @@ export const useGetRound = (epoch: number) => {
 
 export const useGetSortedRounds = () => {
   return useSelector(getSortedRoundsSelector)
+}
+
+export const useGetSortedRoundsCurrentEpoch = () => {
+  return useSelector(getSortedRoundsCurrentEpochSelector)
+}
+
+export const useGetRoundsCurrentEpoch = () => {
+  return useSelector(getRoundsCurrentEpochSelector)
 }
 
 export const useGetBetByEpoch = (account: string, epoch: number) => {

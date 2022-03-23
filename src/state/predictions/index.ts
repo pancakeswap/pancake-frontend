@@ -138,6 +138,56 @@ export const fetchRound = createAsyncThunk<ReduxNodeRound, number>('predictions/
   return serializePredictionsRoundsResponse(response)
 })
 
+export const fetchPredictionData = createAsyncThunk<PredictionInitialization, string>(
+  'predictions/fetchPredictionData',
+  async (account = null) => {
+    const { status, currentEpoch, intervalSeconds, minBetAmount } = await getPredictionData()
+    const liveCurrentAndRecent = [currentEpoch, currentEpoch - 1, currentEpoch - 2]
+
+    const roundsResponse = await getRoundsData(liveCurrentAndRecent)
+    const roundData = roundsResponse.reduce((accum, round) => {
+      if (!round) {
+        return accum
+      }
+
+      const reduxNodeRound = serializePredictionsRoundsResponse(round)
+
+      return {
+        ...accum,
+        [reduxNodeRound.epoch.toString()]: reduxNodeRound,
+      }
+    }, {})
+
+    const publicData = {
+      status,
+      currentEpoch,
+      intervalSeconds,
+      minBetAmount,
+      rounds: roundData,
+      ledgers: {},
+      claimableStatuses: {},
+    }
+
+    if (!account) {
+      return publicData
+    }
+
+    const epochs =
+      currentEpoch > PAST_ROUND_COUNT ? range(currentEpoch, currentEpoch - PAST_ROUND_COUNT) : [currentEpoch]
+
+    // Bet data
+    const ledgerResponses = await getLedgerData(account, epochs)
+
+    // Claim statuses
+    const claimableStatuses = await getClaimStatuses(account, epochs)
+
+    return merge({}, publicData, {
+      ledgers: makeLedgerData(account, ledgerResponses, epochs),
+      claimableStatuses,
+    })
+  },
+)
+
 export const fetchRounds = createAsyncThunk<{ [key: string]: ReduxNodeRound }, number[]>(
   'predictions/fetchRounds',
   async (epochs) => {
@@ -447,6 +497,35 @@ export const predictionsSlice = createSlice({
     // Ledger (bet) records
     builder.addCase(fetchLedgerData.fulfilled, (state, action) => {
       state.ledgers = merge({}, state.ledgers, action.payload)
+    })
+
+    // Get static market data
+    builder.addCase(fetchPredictionData.fulfilled, (state, action) => {
+      const { status, currentEpoch, intervalSeconds, minBetAmount, rounds, claimableStatuses, ledgers } = action.payload
+
+      const allRoundData = merge({}, state.rounds, rounds)
+      let newRounds = pickBy(allRoundData, (value, key) => {
+        return Number(key) > state.currentEpoch - PAST_ROUND_COUNT
+      })
+
+      // If the round has change add a new future round
+      if (state.currentEpoch !== currentEpoch) {
+        const newestRound = maxBy(Object.values(state.rounds), 'epoch')
+        const futureRound = makeFutureRoundResponse(
+          newestRound.epoch + 1,
+          newestRound.startTimestamp + intervalSeconds + ROUND_BUFFER,
+        )
+
+        newRounds = { ...newRounds, [futureRound.epoch]: futureRound }
+      }
+
+      state.status = status
+      state.currentEpoch = currentEpoch
+      state.intervalSeconds = intervalSeconds
+      state.minBetAmount = minBetAmount
+      state.claimableStatuses = claimableStatuses
+      state.ledgers = ledgers
+      state.rounds = newRounds
     })
 
     // Get static market data
