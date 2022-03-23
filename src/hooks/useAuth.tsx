@@ -46,7 +46,7 @@ const useAuth = () => {
                 <Box>
                   <Text>{t('No provider was found')}</Text>
                   <LinkExternal href="https://docs.pancakeswap.finance/get-started/connection-guide">
-                    {t('Need help?')}
+                    {t('Need help ?')}
                   </LinkExternal>
                 </Box>,
               )
