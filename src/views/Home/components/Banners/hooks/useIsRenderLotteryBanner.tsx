@@ -1,7 +1,7 @@
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
 
 const useIsRenderLotteryBanner = () => {
-  useFetchLottery()
+  useFetchLottery(true)
   const {
     currentRound: { isLoading },
   } = useLottery()

@@ -15,7 +15,7 @@ export const FORM_ADDRESS =
 // Also amends bidder information with getBidderInfo
 // auction is required if data will be used for table display, hence in reclaim and congratulations card its omitted
 export const sortAuctionBidders = (bidders: BidsPerAuction[], auction?: Auction): Bidder[] => {
-  const sortedBidders = orderBy(bidders, (bidder) => bidder.amount.toNumber(), 'desc').map((bidder, index) => {
+  const sortedBidders = orderBy(bidders, (bidder) => Number(bidder.amount), 'desc').map((bidder, index) => {
     const bidderInfo = getBidderInfo(bidder.account)
     return {
       ...bidderInfo,

@@ -64,7 +64,7 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
 
   // User has not bought tickets for the current lottery, or there has been an error
   if (!userTickets || userTickets.length === 0) {
-    return { userTickets: null, userLotteries: userLotteriesRes }
+    return { userTickets: [], userLotteries: userLotteriesRes }
   }
 
   return { userTickets, userLotteries: userLotteriesRes }
@@ -108,6 +108,7 @@ export const LotterySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(resetUserState, (state) => {
       state.userLotteryData = { ...initialState.userLotteryData }
+      state.currentRound = { ...state.currentRound, userTickets: { ...initialState.currentRound.userTickets } }
     })
     builder.addCase(fetchCurrentLottery.fulfilled, (state, action: PayloadAction<LotteryResponse>) => {
       state.currentRound = { ...state.currentRound, ...action.payload }
@@ -119,8 +120,10 @@ export const LotterySlice = createSlice({
     builder.addCase(
       fetchUserTicketsAndLotteries.fulfilled,
       (state, action: PayloadAction<{ userTickets: LotteryTicket[]; userLotteries: LotteryUserGraphEntity }>) => {
-        state.currentRound.userTickets.isLoading = false
-        state.currentRound.userTickets.tickets = action.payload.userTickets
+        state.currentRound = {
+          ...state.currentRound,
+          userTickets: { isLoading: false, tickets: action.payload.userTickets },
+        }
         state.userLotteryData = action.payload.userLotteries
       },
     )
@@ -132,7 +135,7 @@ export const LotterySlice = createSlice({
     })
     builder.addCase(fetchAdditionalUserLotteries.fulfilled, (state, action: PayloadAction<LotteryUserGraphEntity>) => {
       const mergedRounds = [...state.userLotteryData.rounds, ...action.payload.rounds]
-      state.userLotteryData.rounds = mergedRounds
+      state.userLotteryData = { ...state.userLotteryData, rounds: mergedRounds }
     })
     builder.addCase(
       setLotteryIsTransitioning.fulfilled,

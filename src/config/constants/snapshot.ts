@@ -181,7 +181,7 @@ const UserStakeInCakePoolStrategy = {
   },
 }
 
-const CakeBnbLpTotalSupplyStrategy = {
+const _CakeBnbLpTotalSupplyStrategy = {
   name: 'contract-call',
   params: {
     address: cakeLpAddress,
@@ -205,7 +205,7 @@ const CakeBnbLpTotalSupplyStrategy = {
   },
 }
 
-const CakeBnbLpReserve0Strategy = {
+const _CakeBnbLpReserve0Strategy = {
   name: 'contract-call',
   params: {
     address: cakeLpAddress,
@@ -240,7 +240,7 @@ const CakeBnbLpReserve0Strategy = {
   },
 }
 
-const CakeBnbLpCakeBnbBalanceStrategy = {
+const _CakeBnbLpCakeBnbBalanceStrategy = {
   name: 'contract-call',
   params: {
     address: getMasterChefAddress(),
@@ -276,6 +276,17 @@ const CakeBnbLpCakeBnbBalanceStrategy = {
       stateMutability: 'view',
       type: 'function',
     },
+  },
+}
+
+const CakeBnbMasterChefStrategy = {
+  name: 'masterchef-pool-balance',
+  params: {
+    chefAddress: getMasterChefAddress(),
+    uniPairAddress: cakeLpAddress,
+    pid: '251',
+    symbol: 'CAKE-BNB LP',
+    tokenIndex: 0,
   },
 }
 
@@ -316,14 +327,12 @@ function createPoolStrategy(poolAddress) {
 
 export { createPoolStrategy }
 
-export const snapshotStrategies = [
+export const snapshotStrategies = {
   CakeBalanceStrategy,
   CakeVaultSharesStrategy,
   CakeVaultPricePerFullShareStrategy,
   IFOPoolSharesStrategy,
   IFOPoolPricePerFullShareStrategy,
   UserStakeInCakePoolStrategy,
-  CakeBnbLpTotalSupplyStrategy,
-  CakeBnbLpReserve0Strategy,
-  CakeBnbLpCakeBnbBalanceStrategy,
-]
+  CakeBnbMasterChefStrategy,
+}

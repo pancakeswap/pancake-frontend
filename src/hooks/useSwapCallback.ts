@@ -172,7 +172,7 @@ export function useSwapCallback(
 function swapErrorToUserReadableMessage(error: any, t: TranslateFunction) {
   let reason: string | undefined
   while (error) {
-    reason = error.reason ?? error.message ?? reason
+    reason = error.reason ?? error.data?.message ?? error.message ?? reason
     // eslint-disable-next-line no-param-reassign
     error = error.error ?? error.data?.originalError
   }

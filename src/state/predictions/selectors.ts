@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import orderBy from 'lodash/orderBy'
+import minBy from 'lodash/minBy'
 import { createSelector } from '@reduxjs/toolkit'
 import { State, ReduxNodeRound, NodeRound, ReduxNodeLedger, NodeLedger } from '../types'
 import { parseBigNumberObj } from './helpers'
@@ -64,6 +65,11 @@ export const getCurrentRoundSelector = createSelector(
 )
 
 export const getMinBetAmountSelector = createSelector([selectMinBetAmount], BigNumber.from)
+
+export const getEarliestEpochSelector = createSelector([selectRounds], (rounds) => {
+  const earliestRound = minBy(Object.values(rounds), 'epoch')
+  return earliestRound?.epoch
+})
 
 export const getCurrentRoundLockTimestampSelector = createSelector(
   [selectCurrentEpoch, getBigNumberRounds, selectIntervalSeconds],

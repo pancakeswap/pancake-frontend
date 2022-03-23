@@ -30,7 +30,7 @@ export const useGetLotteryGraphDataById = (lotteryId: string) => {
   return useSelector(lotteryGraphDataByIdSelector)
 }
 
-export const useFetchLottery = () => {
+export const useFetchLottery = (fetchPublicDataOnly = false) => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const currentLotteryId = useGetCurrentLotteryId()
@@ -53,10 +53,10 @@ export const useFetchLottery = () => {
 
   useEffect(() => {
     // get user tickets for current lottery, and user lottery subgraph data
-    if (account && currentLotteryId) {
+    if (account && currentLotteryId && !fetchPublicDataOnly) {
       dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
     }
-  }, [dispatch, currentLotteryId, account])
+  }, [dispatch, currentLotteryId, account, fetchPublicDataOnly])
 }
 
 export const useLottery = () => {

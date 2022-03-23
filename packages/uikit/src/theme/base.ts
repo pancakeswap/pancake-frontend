@@ -1,4 +1,4 @@
-import { MediaQueries, Breakpoints, Spacing } from "./types";
+import { MediaQueries, Breakpoints, Spacing, Shadows, Radii, ZIndices } from "./types";
 
 export const breakpointMap: { [key: string]: number } = {
   xs: 370,
@@ -21,7 +21,7 @@ const mediaQueries: MediaQueries = {
   nav: `@media screen and (min-width: ${breakpointMap.lg}px)`,
 };
 
-export const shadows = {
+export const shadows: Shadows = {
   level1: "0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05)",
   active: "0px 0px 0px 1px #0098A1, 0px 0px 4px 8px rgba(31, 199, 212, 0.4)",
   success: "0px 0px 0px 1px #31D0AA, 0px 0px 0px 4px rgba(49, 208, 170, 0.2)",
@@ -33,14 +33,15 @@ export const shadows = {
 
 const spacing: Spacing = [0, 4, 8, 16, 24, 32, 48, 64];
 
-const radii = {
+const radii: Radii = {
   small: "4px",
   default: "16px",
   card: "24px",
   circle: "50%",
 };
 
-const zIndices = {
+const zIndices: ZIndices = {
+  ribbon: 9,
   dropdown: 10,
   modal: 100,
 };

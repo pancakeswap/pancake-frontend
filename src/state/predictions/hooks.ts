@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import minBy from 'lodash/minBy'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import { State } from '../types'
@@ -15,6 +14,7 @@ import {
   getCurrentRoundSelector,
   getMinBetAmountSelector,
   getCurrentRoundLockTimestampSelector,
+  getEarliestEpochSelector,
 } from './selectors'
 
 export const useGetRounds = () => {
@@ -48,10 +48,7 @@ export const useGetIsClaimable = (epoch) => {
  * Used to get the range of rounds to poll for
  */
 export const useGetEarliestEpoch = () => {
-  return useSelector((state: State) => {
-    const earliestRound = minBy(Object.values(state.predictions.rounds), 'epoch')
-    return earliestRound?.epoch
-  })
+  return useSelector(getEarliestEpochSelector)
 }
 
 export const useIsHistoryPaneOpen = () => {

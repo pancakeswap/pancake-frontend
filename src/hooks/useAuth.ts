@@ -39,7 +39,7 @@ const useAuth = () => {
               activate(connector)
             }
           } else {
-            window.localStorage.removeItem(connectorLocalStorageKey)
+            window?.localStorage?.removeItem(connectorLocalStorageKey)
             if (error instanceof NoEthereumProviderError || error instanceof NoBscProviderError) {
               toastError(t('Provider Error'), t('No provider was found'))
             } else if (
@@ -57,7 +57,7 @@ const useAuth = () => {
           }
         })
       } else {
-        window.localStorage.removeItem(connectorLocalStorageKey)
+        window?.localStorage?.removeItem(connectorLocalStorageKey)
         toastError(t('Unable to find connector'), t('The connector config is wrong'))
       }
     },

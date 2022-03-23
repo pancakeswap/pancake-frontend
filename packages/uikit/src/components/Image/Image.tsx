@@ -19,14 +19,17 @@ const Image: React.FC<ImageProps> = ({ src, alt, width, height, ...props }) => {
 
   useEffect(() => {
     let observer: IntersectionObserver;
+    const isSupported = typeof window === "object" && window.IntersectionObserver;
 
-    if (imgRef.current) {
-      observer = new IntersectionObserver((entries) => {
+    if (imgRef.current && isSupported) {
+      observer = new window.IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           const { isIntersecting } = entry;
           if (isIntersecting) {
             setIsLoaded(true);
-            observer.disconnect();
+            if (typeof observer?.disconnect === "function") {
+              observer.disconnect();
+            }
           }
         });
       }, observerOptions);
@@ -34,7 +37,7 @@ const Image: React.FC<ImageProps> = ({ src, alt, width, height, ...props }) => {
     }
 
     return () => {
-      if (observer) {
+      if (typeof observer?.disconnect === "function") {
         observer.disconnect();
       }
     };

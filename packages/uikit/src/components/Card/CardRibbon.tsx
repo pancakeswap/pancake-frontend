@@ -7,7 +7,7 @@ interface StyledCardRibbonProps extends CardRibbonProps {
 }
 
 const StyledCardRibbon = styled.div<Partial<StyledCardRibbonProps>>`
-  z-index: 10;
+  z-index: ${({ theme }) => theme.zIndices.ribbon};
   background-color: ${({ variantColor = "secondary", theme }) => theme.colors[variantColor]};
   color: white;
   margin: 0;

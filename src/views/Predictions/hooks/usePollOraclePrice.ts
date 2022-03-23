@@ -5,7 +5,7 @@ import { Zero } from '@ethersproject/constants'
 const usePollOraclePrice = (seconds = 10) => {
   const chainlinkOracleContract = useChainlinkOracleContract(false)
   // Can refactor to subscription later
-  const { data: price } = useSWRContract([chainlinkOracleContract, 'latestAnswer'], {
+  const { data: price, mutate } = useSWRContract([chainlinkOracleContract, 'latestAnswer'], {
     refreshInterval: seconds * 1000,
     refreshWhenHidden: true,
     refreshWhenOffline: true,
@@ -13,7 +13,7 @@ const usePollOraclePrice = (seconds = 10) => {
     fallbackData: Zero,
   })
 
-  return price
+  return { price, refresh: mutate }
 }
 
 export default usePollOraclePrice

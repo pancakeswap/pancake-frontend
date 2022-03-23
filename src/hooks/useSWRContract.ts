@@ -158,7 +158,7 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
     if (data) {
       try {
         const stringify = JSON.stringify(data)
-        localStorage.setItem(serializedKey, stringify)
+        localStorage?.setItem(serializedKey, stringify)
       } catch (error) {
         //
       }
@@ -168,13 +168,13 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
   let localStorageDataParsed
 
   if (!data) {
-    const localStorageData = localStorage.getItem(serializedKey)
+    const localStorageData = localStorage?.getItem(serializedKey)
 
     if (localStorageData) {
       try {
         localStorageDataParsed = JSON.parse(localStorageData)
       } catch (error) {
-        localStorage.removeItem(serializedKey)
+        localStorage?.removeItem(serializedKey)
       }
     }
   }
