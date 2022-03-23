@@ -47,6 +47,10 @@ const Footer = ({ activeId = ActiveId.SWAP }) => {
       width: 97,
       height: 131,
     },
+    [ActiveId.FARMS]: {
+      width: 97,
+      height: 131,
+    },
   }
   return (
     <Flex
