@@ -12,11 +12,12 @@ const OverlayInner = styled.div`
   padding: 16px;
   left: 0;
   right: 0;
+  transform: translateY(-50%);
 `
 const Tooltip = ({ visible, onClose, children }) => {
   if (visible) {
     return (
-      <Overlay onClick={onClose} style={{ backgroundColor: 'transparent' }}>
+      <Overlay onClick={onClose} style={{ backgroundColor: 'transparent', height: '100vh', zIndex: 1111 }}>
         <OverlayInner>
           <Box style={{ marginRight: 20 }}>{children}</Box>
           <IconButton
