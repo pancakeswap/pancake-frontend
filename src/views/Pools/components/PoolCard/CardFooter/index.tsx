@@ -21,6 +21,12 @@ const ExpandableButtonWrapper = styled(Flex)`
     padding: 0;
   }
 `
+const ExpandedWrapper = styled(Flex)`
+  svg {
+    height: 14px;
+    width: 14px;
+  }
+`
 
 const Footer: React.FC<FooterProps> = ({ pool, account, defaultExpanded, children }) => {
   const { vaultKey } = pool
@@ -50,7 +56,11 @@ const Footer: React.FC<FooterProps> = ({ pool, account, defaultExpanded, childre
           {isExpanded ? t('Hide') : t('Details')}
         </ExpandableLabel>
       </ExpandableButtonWrapper>
-      {isExpanded && (children || <ExpandedFooter pool={pool} account={account} />)}
+      {isExpanded && (
+        <ExpandedWrapper flexDirection="column">
+          {children || <ExpandedFooter pool={pool} account={account} />}
+        </ExpandedWrapper>
+      )}
     </CardFooter>
   )
 }

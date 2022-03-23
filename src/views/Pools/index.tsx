@@ -24,8 +24,8 @@ import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
 import MigrationSticky from 'views/Farms/components/MigrationSticky'
 import PoolCard from './components/PoolCard'
-import CakeVaultCard from './components/CakeVaultCard'
-// import CakeVaultCardV2 from './components/CakeVaultCard/v2'
+// import CakeVaultCard from './components/CakeVaultCard'
+import CakeVaultCardV2 from './components/CakeVaultCard/v2'
 import PoolTabButtons from './components/PoolTabButtons'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { getCakeVaultEarnings } from './helpers'
@@ -227,7 +227,7 @@ const Pools: React.FC = () => {
     <CardLayout>
       {chosenPools.map((pool) =>
         pool.vaultKey ? (
-          <CakeVaultCard key={pool.vaultKey} pool={pool} showStakedOnly={stakedOnly} />
+          <CakeVaultCardV2 key={pool.vaultKey} pool={pool} showStakedOnly={stakedOnly} />
         ) : (
           <PoolCard key={pool.sousId} pool={pool} account={account} />
         ),

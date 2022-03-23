@@ -1,28 +1,29 @@
-import { memo } from 'react'
-import styled from 'styled-components'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
+import { Token } from '@pancakeswap/sdk'
 import {
-  Flex,
-  MetamaskIcon,
-  Text,
-  TooltipText,
-  LinkExternal,
-  TimerIcon,
-  Skeleton,
-  useTooltip,
   Button,
-  Link,
+  Flex,
   HelpIcon,
+  Link,
+  LinkExternal,
+  MetamaskIcon,
+  Skeleton,
+  Text,
+  TimerIcon,
+  TooltipText,
+  useTooltip,
 } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import Balance from 'components/Balance'
 import { BASE_BSC_SCAN_URL } from 'config'
+import { useTranslation } from 'contexts/Localization'
+import { FC, memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
-import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
-import { registerToken } from 'utils/wallet'
 import { getBscScanLink } from 'utils'
-import Balance from 'components/Balance'
+import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { registerToken } from 'utils/wallet'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import MaxStakeRow from '../../MaxStakeRow'
 
@@ -31,14 +32,7 @@ interface ExpandedFooterProps {
   account: string
 }
 
-const ExpandedWrapper = styled(Flex)`
-  svg {
-    height: 14px;
-    width: 14px;
-  }
-`
-
-export const ExpandedTotalStaked = ({ totalStaked, stakingToken }) => {
+export const ExpandedTotalStaked = ({ totalStaked, stakingToken }: { totalStaked: BigNumber; stakingToken: Token }) => {
   const { t } = useTranslation()
   const {
     targetRef: totalStakedTargetRef,
@@ -68,6 +62,33 @@ export const ExpandedTotalStaked = ({ totalStaked, stakingToken }) => {
           <Skeleton width="90px" height="21px" />
         )}
         {totalStakedTooltipVisible && totalStakedTooltip}
+      </Flex>
+    </Flex>
+  )
+}
+
+export const ExpandedPerformanceFee: FC<{ performanceFee?: number }> = ({ performanceFee, children }) => {
+  const { t } = useTranslation()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('Subtracted automatically from each yield harvest and burned.'),
+    { placement: 'bottom-start' },
+  )
+
+  return (
+    <Flex mb="2px" justifyContent="space-between" alignItems="center">
+      {tooltipVisible && tooltip}
+      <TooltipText ref={targetRef} small>
+        {t('Performance Fee')}
+      </TooltipText>
+      <Flex alignItems="center">
+        {children ||
+          (performanceFee ? (
+            <Text ml="4px" small>
+              {performanceFee / 100}%
+            </Text>
+          ) : (
+            <Skeleton width="90px" height="21px" />
+          ))}
       </Flex>
     </Flex>
   )
@@ -110,7 +131,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   )
 
   return (
-    <ExpandedWrapper flexDirection="column">
+    <>
       {profileRequirement && (profileRequirement.required || profileRequirement.thresholdPoints.gt(0)) && (
         <Flex mb="8px" justifyContent="space-between">
           <Text small>{t('Requirement')}:</Text>
@@ -206,7 +227,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           </Button>
         </Flex>
       )}
-    </ExpandedWrapper>
+    </>
   )
 }
 

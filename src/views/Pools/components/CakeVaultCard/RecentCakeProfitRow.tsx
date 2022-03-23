@@ -23,6 +23,10 @@ const RecentCakeProfitCountdownRow = ({ pool }: { pool: DeserializedPool }) => {
     cakePriceBusd.toNumber(),
   )
 
+  if (!(userShares.gt(0) && account)) {
+    return null
+  }
+
   return (
     <Flex alignItems="center" justifyContent="space-between">
       <Text fontSize="14px">{`${t('Recent CAKE profit')}:`}</Text>
