@@ -9,6 +9,7 @@ import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
 import { AnalyticsProvider } from 'contexts/AnalyticsContext'
+import { TooltipListener, TooltipProvider } from 'contexts/bmp/TooltipContext'
 import { useInactiveListener } from './hooks/useInactiveListener'
 import { Blocklist, Updaters } from './index'
 
@@ -28,18 +29,21 @@ const Providers: React.FC = ({ children }) => {
       <StyleProvider />
       <view>
         <AnalyticsProvider>
-          <ToastsProvider>
-            <ModalProvider>
-              <Blocklist>
-                <view>
-                  <Updaters />
-                  <Hooks />
-                </view>
-                {children}
-                <ToastListener />
-              </Blocklist>
-            </ModalProvider>
-          </ToastsProvider>
+          <TooltipProvider>
+            <ToastsProvider>
+              <ModalProvider>
+                <Blocklist>
+                  <view>
+                    <Updaters />
+                    <Hooks />
+                  </view>
+                  {children}
+                  <ToastListener />
+                  <TooltipListener />
+                </Blocklist>
+              </ModalProvider>
+            </ToastsProvider>
+          </TooltipProvider>
         </AnalyticsProvider>
       </view>
     </>

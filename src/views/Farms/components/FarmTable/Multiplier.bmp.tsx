@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, HelpIcon, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useTooltip } from 'contexts/bmp/TooltipContext'
 
 const ReferenceElement = styled.div`
   display: inline-block;
 `
-
 export interface MultiplierProps {
   multiplier: string
 }
@@ -44,19 +44,13 @@ const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) =>
       <Text>{t('This amount is already included in all APR calculations for the farm.')}</Text>
     </>
   )
-  // const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
-  //   placement: 'top-end',
-  //   tooltipOffset: [20, 10],
-  // })
-
+  const { onPresent } = useTooltip(tooltipContent)
   return (
     <Container>
       <MultiplierWrapper>{displayMultiplier}</MultiplierWrapper>
-      {/* <ReferenceElement ref={targetRef}> */}
-      <ReferenceElement>
+      <ReferenceElement onClick={onPresent}>
         <HelpIcon color="textSubtle" />
       </ReferenceElement>
-      {/* {tooltipVisible && tooltip} */}
     </Container>
   )
 }
