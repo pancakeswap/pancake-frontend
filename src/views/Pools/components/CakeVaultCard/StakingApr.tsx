@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool } from 'state/types'
-import Apr from '../../Apr'
+import Apr from '../Apr'
 
 interface AprRowProps {
   pool: DeserializedPool

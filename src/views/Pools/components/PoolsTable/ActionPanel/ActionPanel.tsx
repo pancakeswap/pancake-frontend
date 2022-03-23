@@ -292,11 +292,13 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
             {t('See Token Info')}
           </LinkExternal>
         </Flex>
-        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-          <LinkExternal href={earningToken.projectLink} bold={false}>
-            {t('View Project Site')}
-          </LinkExternal>
-        </Flex>
+        {!pool.vaultKey && (
+          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+            <LinkExternal href={earningToken.projectLink} bold={false}>
+              {t('View Project Site')}
+            </LinkExternal>
+          </Flex>
+        )}
         {poolContractAddress && (
           <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
             <LinkExternal

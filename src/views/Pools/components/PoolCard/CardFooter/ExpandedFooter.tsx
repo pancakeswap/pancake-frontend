@@ -26,6 +26,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { registerToken } from 'utils/wallet'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import MaxStakeRow from '../../MaxStakeRow'
+import { PerformanceFee } from '../../vault'
 
 interface ExpandedFooterProps {
   pool: DeserializedPool
@@ -114,7 +115,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
 
   const {
     totalCakeInVault,
-    fees: { performanceFee },
+    fees: { performanceFeeAsDecimal },
   } = useVaultPoolByKey(vaultKey)
 
   const tokenAddress = earningToken.address || ''
@@ -124,11 +125,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Subtracted automatically from each yield harvest and burned.'),
-    { placement: 'bottom-start' },
-  )
 
   return (
     <>
@@ -175,21 +171,11 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
         </Flex>
       )}
       {vaultKey && (
-        <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          {tooltipVisible && tooltip}
-          <TooltipText ref={targetRef} small>
-            {t('Performance Fee')}
-          </TooltipText>
-          <Flex alignItems="center">
-            {performanceFee ? (
-              <Text ml="4px" small>
-                {performanceFee / 100}%
-              </Text>
-            ) : (
-              <Skeleton width="90px" height="21px" />
-            )}
-          </Flex>
-        </Flex>
+        <PerformanceFee>
+          <Text ml="4px" small>
+            0~{performanceFeeAsDecimal}%
+          </Text>
+        </PerformanceFee>
       )}
       <Flex mb="2px" justifyContent="flex-end">
         <LinkExternal href={`/info/token/${earningToken.address}`} bold={false} small>

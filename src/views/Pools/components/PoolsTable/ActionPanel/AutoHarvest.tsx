@@ -111,7 +111,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
             </TooltipText>
             <Flex alignItems="center">
               <Text ml="4px" small>
-                {performanceFee / 100}%
+                0~{performanceFee / 100}%
               </Text>
             </Flex>
           </Flex>

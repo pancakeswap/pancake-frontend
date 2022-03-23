@@ -1,5 +1,6 @@
 import { Button, Flex, Skeleton, useModal } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { FlexGap } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
 
 import { DeserializedPool } from 'state/types'
@@ -33,7 +34,14 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
     return accountHasSharesStaked ? (
       <HasSharesActions pool={pool} stakingTokenBalance={stakingTokenBalance} performanceFee={performanceFee} />
     ) : (
-      <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>{t('Stake')}</Button>
+      <FlexGap gap="12px">
+        <Button style={{ flex: 1 }} onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
+          {t('Flexible')}
+        </Button>
+        <Button style={{ flex: 1 }} disabled>
+          {t('Locked')}
+        </Button>
+      </FlexGap>
     )
   }
 

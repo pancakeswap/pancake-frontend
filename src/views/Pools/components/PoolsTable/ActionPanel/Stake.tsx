@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { FlexGap } from 'components/Layout/Flex'
 import { PoolCategory } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
@@ -267,14 +268,25 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
         </Text>
       </ActionTitles>
       <ActionContent>
-        <Button
-          width="100%"
-          onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-          variant="secondary"
-          disabled={isFinished}
-        >
-          {t('Stake')}
-        </Button>
+        {vaultKey ? (
+          <FlexGap gap="12px" width="100%">
+            <Button style={{ flex: 1 }} onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
+              {t('Flexible')}
+            </Button>
+            <Button style={{ flex: 1 }} disabled>
+              {t('Locked')}
+            </Button>
+          </FlexGap>
+        ) : (
+          <Button
+            width="100%"
+            onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
+            variant="secondary"
+            disabled={isFinished}
+          >
+            {t('Stake')}
+          </Button>
+        )}
       </ActionContent>
     </ActionContainer>
   )
