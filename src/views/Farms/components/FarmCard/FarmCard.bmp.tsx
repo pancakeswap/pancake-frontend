@@ -12,7 +12,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
 import CardActionsContainer from './CardActionsContainer'
-import ApyButton from './ApyButton'
+import ApyButton from './ApyButton.bmp'
 
 export interface FarmWithStakedValue extends DeserializedFarm {
   apr?: number
@@ -82,6 +82,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
             <Text bold style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apr ? (
                 <ApyButton
+                  liquidityUrlPathParts={liquidityUrlPathParts}
                   variant="text-and-button"
                   pid={farm.pid}
                   lpSymbol={farm.lpSymbol}
