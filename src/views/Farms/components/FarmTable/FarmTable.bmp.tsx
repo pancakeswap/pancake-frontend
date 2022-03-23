@@ -75,7 +75,6 @@ const FarmTable: React.FC<ITableProps> = (props) => {
           <StyledTable id="styled-table">
             <TableBody id="table-body">
               {rows.map((row) => {
-                console.log('render', row)
                 return <Row {...row.original} userDataReady={userDataReady} key={`table-row-${row.id}`} />
               })}
             </TableBody>

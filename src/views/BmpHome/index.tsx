@@ -16,6 +16,7 @@ import { LiquidityProvider } from './context/swapContext'
 import { FarmsProvider } from './context/farmsContext.bmp'
 import { FarmsWrapper } from './components/farmsWrapper.bmp'
 import ErrorBoundary from 'components/ErrorBoundary'
+import { ActiveId } from './constants'
 
 const BubbleWrapper = styled(Flex)`
   align-items: center;
@@ -163,33 +164,26 @@ const FooterMenu = ({ activeId, setActiveId }) => {
 }
 const { statusBarHeight } = getSystemInfoSync()
 const CUSTOM_NAV_HEIGHT = 44
-enum ActiveId {
-  SWAP,
-  LIQUIDITY,
-  FARMS,
-}
 const Page = () => {
   const [activeId, setActiveId] = useState<ActiveId>(ActiveId.SWAP)
   return (
     <Providers>
-      <StyledPage style={{ padding: activeId === ActiveId.SWAP || activeId === ActiveId.LIQUIDITY ? '16px' : null }}>
-        <CustomNav top={statusBarHeight} height={CUSTOM_NAV_HEIGHT} />
-        {activeId === ActiveId.SWAP && <Swap />}
-        {activeId === ActiveId.LIQUIDITY && (
-          <LiquidityProvider>
-            <LiquidityWrapper />
-          </LiquidityProvider>
-        )}
-        {activeId === ActiveId.FARMS && (
-          <ErrorBoundary name="farms">
-            <FarmsProvider>
-              <FarmsWrapper />
-            </FarmsProvider>
-          </ErrorBoundary>
-        )}
-        <FooterMenu activeId={activeId} setActiveId={setActiveId} />
-        <Footer activeId={activeId} />
-      </StyledPage>
+      <LiquidityProvider>
+        <StyledPage style={{ padding: activeId === ActiveId.SWAP || activeId === ActiveId.LIQUIDITY ? '16px' : null }}>
+          <CustomNav top={statusBarHeight} height={CUSTOM_NAV_HEIGHT} />
+          {activeId === ActiveId.SWAP && <Swap />}
+          {activeId === ActiveId.LIQUIDITY && <LiquidityWrapper />}
+          {activeId === ActiveId.FARMS && (
+            <ErrorBoundary name="farms">
+              <FarmsProvider setActiveId={setActiveId}>
+                <FarmsWrapper />
+              </FarmsProvider>
+            </ErrorBoundary>
+          )}
+          <FooterMenu activeId={activeId} setActiveId={setActiveId} />
+          <Footer activeId={activeId} />
+        </StyledPage>
+      </LiquidityProvider>
     </Providers>
   )
 }
