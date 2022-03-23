@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
+import ErrorBoundary from 'components/ErrorBoundary'
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs } from '../../hooks/usePairs'
@@ -13,7 +14,6 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
 import noLiquidityImage from '../../../public/images/no-liquidity.png'
-import ErrorBoundary from 'components/ErrorBoundary'
 
 const Body = styled(CardBody)`
   display: flex;

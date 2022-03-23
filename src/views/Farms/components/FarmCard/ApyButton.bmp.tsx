@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Flex, IconButton, useModal, CalculateIcon } from '@pancakeswap/uikit'
-// import RoiCalculatorModal from 'components/RoiCalculatorModal'
+import RoiCalculatorModal from 'components/RoiCalculatorModal/index.bmp'
 import { useTranslation } from 'contexts/Localization'
 import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
+import { useFarms } from 'views/BmpHome/context/farmsContext.bmp'
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
@@ -24,6 +25,7 @@ export interface ApyButtonProps {
   apr?: number
   displayApr?: string
   addLiquidityUrl?: string
+  liquidityUrlPathParts: string
 }
 
 const ApyButton: React.FC<ApyButtonProps> = ({
@@ -36,24 +38,30 @@ const ApyButton: React.FC<ApyButtonProps> = ({
   multiplier,
   displayApr,
   addLiquidityUrl,
+  liquidityUrlPathParts,
 }) => {
   const { t } = useTranslation()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { tokenBalance, stakedBalance } = useFarmUser(pid)
+  const { jumpToLiquidity } = useFarms()
+  const handleJumpToLiquidity = () => {
+    const [currency1, currency2] = liquidityUrlPathParts.split('/')
+    jumpToLiquidity(currency1, currency2)
+  }
   const [onPresentApyModal] = useModal(
-    <view />,
-    // <RoiCalculatorModal
-    //   linkLabel={t('Get %symbol%', { symbol: lpLabel })}
-    //   stakingTokenBalance={stakedBalance.plus(tokenBalance)}
-    //   stakingTokenSymbol={lpSymbol}
-    //   stakingTokenPrice={lpPrice.toNumber()}
-    //   earningTokenPrice={cakePrice.toNumber()}
-    //   apr={apr}
-    //   multiplier={multiplier}
-    //   displayApr={displayApr}
-    //   linkHref={addLiquidityUrl}
-    //   isFarm
-    // />,
+    <RoiCalculatorModal
+      jumpToLiquidity={handleJumpToLiquidity}
+      linkLabel={t('Get %symbol%', { symbol: lpLabel })}
+      stakingTokenBalance={stakedBalance.plus(tokenBalance)}
+      stakingTokenSymbol={lpSymbol}
+      stakingTokenPrice={lpPrice.toNumber()}
+      earningTokenPrice={cakePrice.toNumber()}
+      apr={apr}
+      multiplier={multiplier}
+      displayApr={displayApr}
+      linkHref={addLiquidityUrl}
+      isFarm
+    />,
   )
 
   const handleClickButton = (event): void => {

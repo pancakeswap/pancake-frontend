@@ -35,7 +35,7 @@ function FarmsProvider({ children, setActiveId }: FarmsProviderProps) {
   const jumpToLiquidity = (currency1: string, currency2: string) => {
     setActiveId(ActiveId.LIQUIDITY)
     liquidityDispatch({ type: 'setPage', page: LiquidityPage.Add })
-    liquidityDispatch({ type: 'setCurrency', currency1: currency1, currency2: currency2 })
+    liquidityDispatch({ type: 'setCurrency', currency1, currency2 })
   }
   const value = { state, dispatch, jumpToLiquidity }
   return <FarmsContext.Provider value={value}>{children}</FarmsContext.Provider>
