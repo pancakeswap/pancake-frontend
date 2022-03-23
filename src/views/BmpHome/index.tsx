@@ -15,6 +15,7 @@ import { LiquidityWrapper } from './components/liquidityWrapper'
 import { LiquidityProvider } from './context/swapContext'
 import { FarmsProvider } from './context/farmsContext.bmp'
 import { FarmsWrapper } from './components/farmsWrapper.bmp'
+import ErrorBoundary from 'components/ErrorBoundary'
 
 const BubbleWrapper = styled(Flex)`
   align-items: center;
@@ -180,9 +181,11 @@ const Page = () => {
           </LiquidityProvider>
         )}
         {activeId === ActiveId.FARMS && (
-          <FarmsProvider>
-            <FarmsWrapper />
-          </FarmsProvider>
+          <ErrorBoundary name="farms">
+            <FarmsProvider>
+              <FarmsWrapper />
+            </FarmsProvider>
+          </ErrorBoundary>
         )}
         <FooterMenu activeId={activeId} setActiveId={setActiveId} />
         <Footer activeId={activeId} />
