@@ -213,7 +213,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
             </Text>
           </ActionTitles>
           <ActionContent>
-            <div>
+            <view>
               <Heading>{displayBalance()}</Heading>
               {stakedBalance.gt(0) && lpPrice.gt(0) && (
                 <Balance
@@ -225,7 +225,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
                   prefix="~"
                 />
               )}
-            </div>
+            </view>
             <IconButtonWrapper>
               <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
                 <MinusIcon color="primary" width="14px" />
