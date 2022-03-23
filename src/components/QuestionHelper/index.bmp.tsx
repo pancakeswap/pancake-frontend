@@ -23,7 +23,7 @@ const QuestionHelper: React.FC<Props> = ({ text, size = '16px', ...props }) => {
         <HelpIcon color="textSubtle" width={size} />
       </QuestionWrapper>
       <Tooltip visible={visible} onClose={() => setVisible(false)}>
-        <Text style={{ marginRight: 20 }}>{text}</Text>
+        <Text>{text}</Text>
       </Tooltip>
     </Box>
   )
