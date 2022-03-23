@@ -124,6 +124,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
             totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}
+            liquidityUrlPathParts={liquidityUrlPathParts}
           />
         )}
       </ExpandingWrapper>
