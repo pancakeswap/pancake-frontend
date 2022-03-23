@@ -135,7 +135,7 @@ function calculateVotingPowerPools(scoresList: GetScoresResponse, voters: string
   let poolsBalance = new BigNumber(0)
   return voters.reduce<{ [key: string]: BigNumber }>((acc, cur) => {
     for (let i = 0; i < scoresList.length; i++) {
-      const currentPoolBalance = new BigNumber(scoresList[i][cur])
+      const currentPoolBalance = scoresList[i][cur] ? new BigNumber(scoresList[i][cur]) : new BigNumber(0)
       poolsBalance = poolsBalance.plus(currentPoolBalance)
     }
     return { ...acc, [cur]: poolsBalance }
@@ -175,16 +175,16 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], s
     scoresListIndex.cakeBnbLpBalances > -1 ? scoresList[scoresListIndex.cakeBnbLpBalances] : defaultScore
 
   const result = voters.map((address) => {
-    const cakeBalance = new BigNumber(cakeBalances[address])
+    const cakeBalance = new BigNumber(cakeBalances[address] || 0)
     // calculate cakeVaultBalance
-    const sharePrice = new BigNumber(cakeVaultPricePerFullShares[address]).div(TEN_POW_18)
-    const cakeVaultBalance = new BigNumber(cakeVaultShares[address]).times(sharePrice)
+    const sharePrice = new BigNumber(cakeVaultPricePerFullShares[address] || 0).div(TEN_POW_18)
+    const cakeVaultBalance = new BigNumber(cakeVaultShares[address] || 0).times(sharePrice)
 
     // calculate ifoPoolBalance
-    const IFOPoolsharePrice = new BigNumber(ifoPoolPricePerFullShares[address]).div(TEN_POW_18)
-    const IFOPoolBalance = new BigNumber(ifoPoolShares[address]).times(IFOPoolsharePrice)
+    const IFOPoolsharePrice = new BigNumber(ifoPoolPricePerFullShares[address] || 0).div(TEN_POW_18)
+    const IFOPoolBalance = new BigNumber(ifoPoolShares[address] || 0).times(IFOPoolsharePrice)
 
-    const cakePoolBalance = new BigNumber(userStakeInCakePools[address])
+    const cakePoolBalance = new BigNumber(userStakeInCakePools[address] || 0)
     // calculate cakeBnbLpBalance
     const cakeBnbLpBalance = cakeBnbLpBalances[address]
 
