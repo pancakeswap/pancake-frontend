@@ -58,6 +58,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const { onUnstake } = useUnstakeFarms(pid)
   const {
     state: { page },
+    jumpToLiquidity,
   } = useFarms()
   // const router = useRouter()
   const lpPrice = useLpTokenPrice(lpSymbol)
@@ -135,6 +136,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     return stakedBalanceBigNumber.toFixed(3, BigNumber.ROUND_DOWN)
   }, [stakedBalance])
 
+  const goAddLiquidity = () => {
+    const urlSplit = addLiquidityUrl.split('/')
+
+    jumpToLiquidity(urlSplit[urlSplit.length - 2], urlSplit[urlSplit.length - 1])
+  }
   const [onPresentDeposit] = useModal(
     <DepositModal
       max={tokenBalance}
@@ -148,6 +154,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       multiplier={multiplier}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
+      goAddLiquidity={goAddLiquidity}
     />,
   )
   const [onPresentWithdraw] = useModal(

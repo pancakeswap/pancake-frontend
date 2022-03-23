@@ -36,6 +36,7 @@ interface DepositModalProps {
   displayApr?: string
   addLiquidityUrl?: string
   cakePrice?: BigNumber
+  goAddLiquidity?: () => void
 }
 
 const DepositModal: React.FC<DepositModalProps> = ({
@@ -51,6 +52,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
   apr,
   addLiquidityUrl,
   cakePrice,
+  goAddLiquidity,
 }) => {
   const [val, setVal] = useState('')
   const { toastError } = useToast()
@@ -170,7 +172,13 @@ const DepositModal: React.FC<DepositModalProps> = ({
           {pendingTx ? t('Confirming') : t('Confirm')}
         </Button>
       </ModalActions>
-      <LinkExternal href={addLiquidityUrl} style={{ alignSelf: 'center' }}>
+      <LinkExternal
+        onClick={() => {
+          goAddLiquidity()
+          onDismiss()
+        }}
+        style={{ alignSelf: 'center' }}
+      >
         {t('Get %symbol%', { symbol: tokenName })}
       </LinkExternal>
     </Modal>
