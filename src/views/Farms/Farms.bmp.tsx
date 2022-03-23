@@ -18,7 +18,6 @@ import isArchivedPid from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
-import { useRouter } from 'next/router'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
@@ -396,7 +395,12 @@ const Farms: React.FC = ({ children }) => {
           </Flex>
         )}
         {/* <view ref={observerRef} /> */}
-        <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
+        <StyledImage
+          src="https://pancakeswap.finance/images/decorations/3dpan.png"
+          alt="Pancake illustration"
+          width={120}
+          height={103}
+        />
       </Page>
     </FarmsContext.Provider>
   )
