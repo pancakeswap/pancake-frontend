@@ -1630,5 +1630,7 @@
   "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens": "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens",
   "Apply to run an IFO!": "Apply to run an IFO!",
   "Performance fee only applies to the flexible staking rewards.": "Performance fee only applies to the flexible staking rewards.",
-  "Total locked": "Total locked"
+  "Total locked": "Total locked",
+  "What’s the difference?": "What’s the difference?",
+  "My Position": "My Position"
 }
