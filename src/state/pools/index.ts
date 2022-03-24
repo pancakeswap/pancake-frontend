@@ -42,6 +42,7 @@ import { resetUserState } from '../global/actions'
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,
+  totalLockedAmount: null,
   pricePerFullShare: null,
   totalCakeInVault: null,
   fees: {

@@ -1,4 +1,4 @@
-import { Text, Flex, TooltipText, useTooltip, Skeleton, Heading } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from 'contexts/Localization'
@@ -24,7 +24,6 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   const {
     userData: { cakeAtLastUserAction, userShares },
     pricePerFullShare,
-    fees: { performanceFee },
   } = useVaultPoolByKey(vaultKey)
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
     account,
@@ -37,11 +36,6 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   const earningTokenBalance = autoCakeToDisplay
   const earningTokenDollarBalance = autoUsdToDisplay
   const hasEarnings = hasAutoEarnings
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Subtracted automatically from each yield harvest and burned.'),
-    { placement: 'bottom-start' },
-  )
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
@@ -103,18 +97,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
           </>
         </Flex>
         <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
-          <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
-          <Flex mb="2px" justifyContent="space-between" alignItems="center">
-            {tooltipVisible && tooltip}
-            <TooltipText ref={targetRef} small>
-              {t('Performance Fee')}
-            </TooltipText>
-            <Flex alignItems="center">
-              <Text ml="4px" small>
-                0~{performanceFee / 100}%
-              </Text>
-            </Flex>
-          </Flex>
+          {hasEarnings && <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />}
         </Flex>
       </ActionContent>
     </ActionContainer>

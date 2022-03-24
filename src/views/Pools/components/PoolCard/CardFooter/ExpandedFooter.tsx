@@ -1,98 +1,21 @@
-import { Token } from '@pancakeswap/sdk'
-import {
-  Button,
-  Flex,
-  HelpIcon,
-  Link,
-  LinkExternal,
-  MetamaskIcon,
-  Skeleton,
-  Text,
-  TimerIcon,
-  TooltipText,
-  useTooltip,
-} from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
+import { Button, Flex, Link, LinkExternal, MetamaskIcon, Skeleton, Text, TimerIcon } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { useTranslation } from 'contexts/Localization'
-import { FC, memo } from 'react'
+import { memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { registerToken } from 'utils/wallet'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import MaxStakeRow from '../../MaxStakeRow'
-import { PerformanceFee } from '../../vault'
+import { PerformanceFee, TotalLocked, TotalStaked } from '../../Stat'
 
 interface ExpandedFooterProps {
   pool: DeserializedPool
   account: string
-}
-
-export const ExpandedTotalStaked = ({ totalStaked, stakingToken }: { totalStaked: BigNumber; stakingToken: Token }) => {
-  const { t } = useTranslation()
-  const {
-    targetRef: totalStakedTargetRef,
-    tooltip: totalStakedTooltip,
-    tooltipVisible: totalStakedTooltipVisible,
-  } = useTooltip(t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }), {
-    placement: 'bottom',
-  })
-
-  return (
-    <Flex mb="2px" justifyContent="space-between" alignItems="center">
-      <Text small>{t('Total staked')}:</Text>
-      <Flex alignItems="flex-start">
-        {totalStaked && totalStaked.gte(0) ? (
-          <>
-            <Balance
-              small
-              value={getBalanceNumber(totalStaked, stakingToken.decimals)}
-              decimals={0}
-              unit={` ${stakingToken.symbol}`}
-            />
-            <span ref={totalStakedTargetRef}>
-              <HelpIcon color="textSubtle" width="20px" ml="6px" mt="4px" />
-            </span>
-          </>
-        ) : (
-          <Skeleton width="90px" height="21px" />
-        )}
-        {totalStakedTooltipVisible && totalStakedTooltip}
-      </Flex>
-    </Flex>
-  )
-}
-
-export const ExpandedPerformanceFee: FC<{ performanceFee?: number }> = ({ performanceFee, children }) => {
-  const { t } = useTranslation()
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Subtracted automatically from each yield harvest and burned.'),
-    { placement: 'bottom-start' },
-  )
-
-  return (
-    <Flex mb="2px" justifyContent="space-between" alignItems="center">
-      {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef} small>
-        {t('Performance Fee')}
-      </TooltipText>
-      <Flex alignItems="center">
-        {children ||
-          (performanceFee ? (
-            <Text ml="4px" small>
-              {performanceFee / 100}%
-            </Text>
-          ) : (
-            <Skeleton width="90px" height="21px" />
-          ))}
-      </Flex>
-    </Flex>
-  )
 }
 
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
@@ -115,6 +38,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
 
   const {
     totalCakeInVault,
+    totalLockedAmount,
     fees: { performanceFeeAsDecimal },
   } = useVaultPoolByKey(vaultKey)
 
@@ -141,7 +65,8 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           </Text>
         </Flex>
       )}
-      <ExpandedTotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
+      <TotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
+      {vaultKey && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
       {!isFinished && stakingLimit && stakingLimit.gt(0) && (
         <MaxStakeRow
           small

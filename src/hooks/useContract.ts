@@ -184,9 +184,12 @@ export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | IfoPool 
   }, [library, vaultKey])
 }
 
-export const useCakeVaultContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getCakeVaultV2Contract(library.getSigner()), [library])
+export const useCakeVaultContract = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getCakeVaultV2Contract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
 }
 
 export const useIfoPoolContract = () => {
