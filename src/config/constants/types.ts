@@ -87,10 +87,6 @@ export interface DeserializedFarmConfig extends FarmConfigBaseProps {
   quoteToken: Token
 }
 
-export interface PoolDeployedBlockNumber {
-  [key: string]: number
-}
-
 interface PoolConfigBaseProps {
   sousId: number
   contractAddress: Address
