@@ -50,8 +50,11 @@ export const Default: React.FC = () => {
         <Button mr="8px" disabled>
           Disabled
         </Button>
-        <Button variant="secondary" disabled>
+        <Button variant="secondary" mr="8px" disabled>
           Disabled
+        </Button>
+        <Button disabled p="0 45px" decorator={{ text: "Soon" }}>
+          Locked
         </Button>
       </Box>
     </>
