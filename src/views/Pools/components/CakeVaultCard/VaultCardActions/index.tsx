@@ -83,7 +83,7 @@ const CakeVaultCardActions: React.FC<{
   const { t } = useTranslation()
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
-  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
 
   return (
     <Flex flexDirection="column">
@@ -116,7 +116,7 @@ const CakeVaultCardActions: React.FC<{
             performanceFee={performanceFee}
           />
         ) : (
-          <VaultApprovalAction vaultKey={pool.vaultKey} isLoading={isLoading} setLastUpdated={setLastUpdated} />
+          <VaultApprovalAction isLoading={isLoading} setLastUpdated={setLastUpdated} />
         )}
       </Flex>
     </Flex>

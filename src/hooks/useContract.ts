@@ -175,13 +175,9 @@ export const useEasterNftContract = () => {
   return useMemo(() => getEasterNftContract(library.getSigner()), [library])
 }
 
-export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | IfoPool => {
+export const useVaultPoolContract = (): CakeVaultV2 => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => {
-    return vaultKey === VaultKey.CakeVault
-      ? getCakeVaultV2Contract(library.getSigner())
-      : getIfoPoolContract(library.getSigner())
-  }, [library, vaultKey])
+  return getCakeVaultV2Contract(library.getSigner())
 }
 
 export const useCakeVaultContract = () => {

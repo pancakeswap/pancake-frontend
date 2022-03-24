@@ -24,7 +24,7 @@ const StakeVaultButton = (props) => {
   )
 
   return (
-    <Button {...props} onClick={onPresentStake}>
+    <Button {...props} disabled onClick={onPresentStake}>
       {t('Stake CAKE in IFO pool')}
     </Button>
   )

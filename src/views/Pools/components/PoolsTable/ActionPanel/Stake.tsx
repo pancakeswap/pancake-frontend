@@ -54,11 +54,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     earningToken.symbol,
   )
 
-  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
-  const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(
-    pool.vaultKey,
-    setLastUpdated,
-  )
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
+  const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(setLastUpdated)
 
   const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
   const pendingTx = vaultKey ? pendingVaultTx : pendingPoolTx

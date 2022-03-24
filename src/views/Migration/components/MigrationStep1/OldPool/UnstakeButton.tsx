@@ -10,7 +10,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import useToast from 'hooks/useToast'
 import { useWeb3React } from '@web3-react/core'
 import { vaultPoolConfig } from 'config/constants/pools'
-import ifoV2Abi from 'config/abi/ifoV2.json'
+import ifoPoolAbi from 'config/abi/ifoPool.json'
 import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
 import { getContract } from 'utils/contractHelpers'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -38,7 +38,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
   const vaultPoolContract = useMemo(() => {
     return vaultKey === VaultKey.CakeVaultV1
       ? getContract(cakeVaultAbi, cakeVaultAddress, library.getSigner())
-      : getContract(ifoV2Abi, ifoPoolV1Contract, library.getSigner())
+      : getContract(ifoPoolAbi, ifoPoolV1Contract, library.getSigner())
   }, [library, vaultKey])
 
   const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
