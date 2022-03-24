@@ -10,12 +10,14 @@ import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
 import { AnalyticsProvider } from 'contexts/AnalyticsContext'
 import { TooltipListener, TooltipProvider } from 'contexts/bmp/TooltipContext'
+import useBmpInit from 'hooks/useBmpInit'
 import { useInactiveListener } from './hooks/useInactiveListener'
 import { Blocklist, Updaters } from './index'
 
 const Hooks = () => {
   usePollBlockNumber()
   useEagerConnect()
+  useBmpInit()
   // useFetchProfile()
   // usePollCoreFarmData()
   // useUserAgent()

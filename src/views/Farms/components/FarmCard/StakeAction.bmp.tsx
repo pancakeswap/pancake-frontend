@@ -16,7 +16,7 @@ import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import useUnstakeFarms from '../../hooks/useUnstakeFarms'
 import useStakeFarms from '../../hooks/useStakeFarms'
-import { useFarms, FarmsPage } from 'views/BmpHome/context/farmsContext.bmp'
+import { useFarms, FarmsPage } from 'views/bmp/BmpPage/context/farmsContext.bmp'
 interface FarmCardActionsProps {
   stakedBalance?: BigNumber
   tokenBalance?: BigNumber

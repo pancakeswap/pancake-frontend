@@ -5,7 +5,7 @@ import { Flex, IconButton, useModal, CalculateIcon } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal/index.bmp'
 import { useTranslation } from 'contexts/Localization'
 import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
-import { useFarms } from 'views/BmpHome/context/farmsContext.bmp'
+import { useFarms } from 'views/bmp/BmpPage/context/farmsContext.bmp'
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;

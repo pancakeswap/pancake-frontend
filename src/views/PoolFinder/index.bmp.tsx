@@ -3,6 +3,8 @@ import { Currency, ETHER, JSBI, TokenAmount } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, AddIcon, useModal } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import { LiquidityPage, useLiquidity } from 'views/bmp/liquidity/liquidityContext'
+import ErrorBoundary from 'components/ErrorBoundary'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import { CurrencyLogo } from '../../components/Logo'
@@ -16,8 +18,6 @@ import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
-import { LiquidityPage, useLiquidity } from 'views/BmpHome/context/swapContext.bmp'
-import ErrorBoundary from 'components/ErrorBoundary'
 
 enum Fields {
   TOKEN0 = 0,

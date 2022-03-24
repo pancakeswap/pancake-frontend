@@ -16,7 +16,7 @@ import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
+import { useLiquidity, LiquidityPage } from 'views/bmp/liquidity/liquidityContext'
 import useTotalSupply from '../../hooks/useTotalSupply'
 
 import { useTokenBalance } from '../../state/wallet/hooks'

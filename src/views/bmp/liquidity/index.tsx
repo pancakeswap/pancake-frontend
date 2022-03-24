@@ -1,10 +1,13 @@
 import React from 'react'
-import { useLiquidity, LiquidityPage } from '../context/swapContext.bmp'
+import { LiquidityProvider, useLiquidity, LiquidityPage } from './liquidityContext'
 import Pool from '../../Pool/index'
 import AddLiquidity from '../../AddLiquidity/bmp/index'
 import RemoveLiquidity from '../../RemoveLiquidity/index'
 import FindPool from '../../PoolFinder/index'
-export const LiquidityWrapper = () => {
+import BmpPage from '../BmpPage'
+import { ActiveId } from '../BmpPage/constants'
+
+const LiquidityWrapper = () => {
   const {
     state: { page },
   } = useLiquidity()
@@ -21,3 +24,14 @@ export const LiquidityWrapper = () => {
       return null
   }
 }
+
+const LiquidityHome = () => {
+  return (
+    <BmpPage activeId={ActiveId.LIQUIDITY}>
+      <LiquidityProvider>
+        <LiquidityWrapper />
+      </LiquidityProvider>
+    </BmpPage>
+  )
+}
+export default LiquidityHome

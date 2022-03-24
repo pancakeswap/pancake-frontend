@@ -30,6 +30,7 @@ function liquidityReducer(state: State, action: Action) {
 }
 
 function LiquidityProvider({ children }: LiquidityProviderProps) {
+  // @ts-ignore
   const [state, dispatch] = React.useReducer(liquidityReducer, {
     page: LiquidityPage.Pool,
     currency1: null,

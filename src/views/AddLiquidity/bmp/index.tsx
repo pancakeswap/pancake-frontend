@@ -8,6 +8,7 @@ import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useDispatch } from 'react-redux'
+import { useLiquidity, LiquidityPage } from 'views/bmp/liquidity/liquidityContext'
 // import { useRouter } from 'next/router'
 import { AppDispatch } from '../../../state'
 import { LightCard } from '../../../components/Card'
@@ -41,7 +42,6 @@ import Dots from '../../../components/Loader/Dots'
 import ConfirmAddModalBottom from '../ConfirmAddModalBottom'
 import { currencyId } from '../../../utils/currencyId'
 import PoolPriceBar from '../PoolPriceBar'
-import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
 function AddLiquidity() {
   // const router = useRouter()
   // const [currencyIdA, currencyIdB] = router.query.currency || []

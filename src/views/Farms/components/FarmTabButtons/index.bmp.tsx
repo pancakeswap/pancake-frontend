@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, NotificationDot } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useFarms, FarmsPage } from 'views/BmpHome/context/farmsContext.bmp'
+import { useFarms, FarmsPage } from 'views/bmp/BmpPage/context/farmsContext.bmp'
 // import { useRouter } from 'next/router'
 // import { NextLinkFromReactRouter } from 'components/NextLink'
 

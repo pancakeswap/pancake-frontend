@@ -1,5 +1,4 @@
-import React, { createContext } from 'react'
-import { useLiquidity, LiquidityPage } from './swapContext.bmp'
+import React from 'react'
 import { ActiveId } from '../constants'
 
 export enum FarmsPage {
@@ -31,11 +30,11 @@ function FarmsProvider({ children, setActiveId }: FarmsProviderProps) {
   const [state, dispatch] = React.useReducer(FarmsReducer, {
     page: FarmsPage.Farms,
   })
-  const { dispatch: liquidityDispatch } = useLiquidity()
   const jumpToLiquidity = (currency1: string, currency2: string) => {
     setActiveId(ActiveId.LIQUIDITY)
-    liquidityDispatch({ type: 'setPage', page: LiquidityPage.Add })
-    liquidityDispatch({ type: 'setCurrency', currency1, currency2 })
+    // TODO need to use miniProgram navigation
+    // liquidityDispatch({ type: 'setPage', page: LiquidityPage.Add })
+    // liquidityDispatch({ type: 'setCurrency', currency1, currency2 })
   }
   const value = { state, dispatch, jumpToLiquidity }
   return <FarmsContext.Provider value={value}>{children}</FarmsContext.Provider>

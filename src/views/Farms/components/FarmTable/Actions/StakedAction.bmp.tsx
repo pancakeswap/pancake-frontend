@@ -25,7 +25,7 @@ import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import DepositModal from '../../DepositModal'
 import WithdrawModal from '../../WithdrawModal'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
-import { useFarms, FarmsPage } from 'views/BmpHome/context/farmsContext.bmp'
+import { useFarms, FarmsPage } from 'views/bmp/BmpPage/context/farmsContext.bmp'
 
 const IconButtonWrapper = styled.div`
   display: flex;
