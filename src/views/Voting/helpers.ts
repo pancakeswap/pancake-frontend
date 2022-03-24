@@ -132,8 +132,8 @@ type ScoresListIndex = {
 }
 
 function calculateVotingPowerPools(scoresList: GetScoresResponse, voters: string[]) {
-  let poolsBalance = new BigNumber(0)
   return voters.reduce<{ [key: string]: BigNumber }>((acc, cur) => {
+    let poolsBalance = new BigNumber(0)
     for (let i = 0; i < scoresList.length; i++) {
       const currentPoolBalance = scoresList[i][cur] ? new BigNumber(scoresList[i][cur]) : new BigNumber(0)
       poolsBalance = poolsBalance.plus(currentPoolBalance)
