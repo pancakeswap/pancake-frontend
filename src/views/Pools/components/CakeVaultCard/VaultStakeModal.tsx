@@ -29,7 +29,7 @@ import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/for
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -165,10 +165,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     const receipt = await fetchWithCatchTxError(() => {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const methodArgs =
-        pool.vaultKey === VaultKey.IfoPool
-          ? [convertedStakeAmount.toString()]
-          : [convertedStakeAmount.toString(), lockDuration.toString()]
+      const methodArgs = [convertedStakeAmount.toString(), lockDuration.toString()]
       return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
     })
 

@@ -95,7 +95,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
 
   const EarningComponent = () => {
     if (isLargerScreen || !expanded) {
-      return pool.vaultKey === VaultKey.IfoPool || pool.vaultKey === VaultKey.CakeVault ? (
+      return pool.vaultKey === VaultKey.CakeVault ? (
         <AutoEarningsCell hasEarnings={hasEarnings} earningTokenBalance={autoCakeToDisplay} />
       ) : (
         <EarningsCell pool={pool} account={account} />
