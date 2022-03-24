@@ -9,13 +9,12 @@ import helpImage from '../../../public/images/help-full.png'
 import helpLiquidityImage from '../../../public/images/help-liquidity.png'
 import CustomNav from './components/CustomNav'
 import Providers from '../../PageProvider.bmp'
-import AddLiquidity from '../AddLiquidity/bmp/index'
 import Swap from '../Swap/bmp/index'
 import { LiquidityWrapper } from './components/liquidityWrapper'
 import { LiquidityProvider } from './context/swapContext'
-import { FarmsProvider } from './context/farmsContext.bmp'
-import { FarmsWrapper } from './components/farmsWrapper.bmp'
-import ErrorBoundary from 'components/ErrorBoundary'
+// import { FarmsProvider } from './context/farmsContext.bmp'
+// import { FarmsWrapper } from './components/farmsWrapper.bmp'
+// import ErrorBoundary from 'components/ErrorBoundary'
 import { ActiveId } from './constants'
 
 const BubbleWrapper = styled(Flex)`
@@ -138,14 +137,14 @@ const FooterMenu = ({ activeId, setActiveId }) => {
         setActiveId(ActiveId.LIQUIDITY)
       },
     },
-    {
-      icon: FarmIcon,
-      title: t('Farms'),
-      isActive: activeId === ActiveId.FARMS,
-      onClick: () => {
-        setActiveId(ActiveId.FARMS)
-      },
-    },
+    // {
+    //   icon: FarmIcon,
+    //   title: t('Farms'),
+    //   isActive: activeId === ActiveId.FARMS,
+    //   onClick: () => {
+    //     setActiveId(ActiveId.FARMS)
+    //   },
+    // },
     {
       icon: WalletIcon,
       title: t('Wallet'),
@@ -177,13 +176,13 @@ const Page = () => {
           <CustomNav top={statusBarHeight} height={CUSTOM_NAV_HEIGHT} />
           {activeId === ActiveId.SWAP && <Swap />}
           {activeId === ActiveId.LIQUIDITY && <LiquidityWrapper />}
-          {activeId === ActiveId.FARMS && (
+          {/* {activeId === ActiveId.FARMS && (
             <ErrorBoundary name="farms">
               <FarmsProvider setActiveId={setActiveId}>
                 <FarmsWrapper />
               </FarmsProvider>
             </ErrorBoundary>
-          )}
+          )} */}
           <FooterMenu activeId={activeId} setActiveId={setActiveId} />
           <Footer activeId={activeId} />
         </StyledPage>

@@ -16,7 +16,7 @@ import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
 import storage from 'redux-persist/lib/storage'
 import blockReducer from './block'
 import burn from './burn/reducer'
-import farmsReducer from './farms'
+// import farmsReducer from './farms'
 import { updateVersion } from './global/actions'
 import infoReducer from './info'
 import lists from './lists/reducer'
@@ -60,7 +60,7 @@ const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
     block: blockReducer,
-    farms: farmsReducer,
+    // farms: farmsReducer,
     // pools: poolsReducer,
     // predictions: predictionsReducer,
     profile: profileReducer,
