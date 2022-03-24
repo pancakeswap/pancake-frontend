@@ -22,13 +22,13 @@ import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
+import { FarmsPage, useFarms as useFarmsWrapper } from 'views/bmp/BmpPage/context/farmsContext.bmp'
 import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
-import { FarmsPage, useFarms as useFarmsWrapper } from 'views/BmpHome/context/farmsContext.bmp'
 
 const ControlContainer = styled.div`
   display: flex;

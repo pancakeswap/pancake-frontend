@@ -5,7 +5,7 @@ import { Text, Flex, CardBody, CardFooter, Button, AddIcon, Image } from '@panca
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useLiquidity, LiquidityPage } from 'views/BmpHome/context/swapContext.bmp'
+import { useLiquidity, LiquidityPage } from 'views/bmp/liquidity/liquidityContext'
 import ErrorBoundary from 'components/ErrorBoundary'
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'

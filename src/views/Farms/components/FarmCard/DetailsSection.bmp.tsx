@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Text, Flex, LinkExternal, Skeleton } from '@pancakeswap/uikit'
-import { useFarms } from 'views/BmpHome/context/farmsContext.bmp'
+import { useFarms } from 'views/bmp/BmpPage/context/farmsContext.bmp'
 export interface ExpandableSectionProps {
   bscScanAddress?: string
   infoAddress?: string

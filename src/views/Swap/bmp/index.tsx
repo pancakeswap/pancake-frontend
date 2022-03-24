@@ -17,7 +17,8 @@ import {
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
-import { useDisclaimer } from 'hooks/useDisclaimer'
+import { useDisclaimer } from 'hooks/useDisclaimer.bmp'
+import BmpPage from 'views/bmp/BmpPage'
 
 import AddressInputPanel from '../components/AddressInputPanel'
 import { GreyCard } from '../../../components/Card'
@@ -337,6 +338,7 @@ function Swap() {
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
+  // TODO check history
   const [onPresentImportTokenWarningModal] = useModal(
     <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap')} />,
   )
@@ -573,8 +575,10 @@ function Swap() {
 }
 export default function Index() {
   return (
-    <ErrorBoundary name="swap">
-      <Swap />
-    </ErrorBoundary>
+    <BmpPage>
+      <ErrorBoundary name="swap">
+        <Swap />
+      </ErrorBoundary>
+    </BmpPage>
   )
 }
