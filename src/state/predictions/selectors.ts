@@ -1,20 +1,15 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import orderBy from 'lodash/orderBy'
-import minBy from 'lodash/minBy'
 import { createSelector } from '@reduxjs/toolkit'
 import { State, ReduxNodeRound, NodeRound, ReduxNodeLedger, NodeLedger } from '../types'
 import { parseBigNumberObj } from './helpers'
 
 const selectCurrentEpoch = (state: State) => state.predictions.currentEpoch
 const selectRounds = (state: State) => state.predictions.rounds
-const selectRound = (epoch) => (state: State) => state.predictions.rounds[epoch]
 const selectLedgers = (state: State) => state.predictions.ledgers
 const selectClaimableStatuses = (state: State) => state.predictions.claimableStatuses
 const selectMinBetAmount = (state: State) => state.predictions.minBetAmount
 const selectIntervalSeconds = (state: State) => state.predictions.intervalSeconds
-
-export const makeGetRoundSelector = (epoch: number) =>
-  createSelector([selectRound(epoch)], (round) => parseBigNumberObj<ReduxNodeRound, NodeRound>(round))
 
 export const makeGetBetByEpochSelector = (account: string, epoch: number) =>
   createSelector([selectLedgers], (bets) => {
@@ -67,29 +62,7 @@ export const getSortedRoundsCurrentEpochSelector = createSelector(
   },
 )
 
-export const getRoundsCurrentEpochSelector = createSelector(
-  [selectCurrentEpoch, getBigNumberRounds],
-  (currentEpoch, rounds) => {
-    return {
-      currentEpoch,
-      rounds,
-    }
-  },
-)
-
-export const getCurrentRoundSelector = createSelector(
-  [selectCurrentEpoch, getBigNumberRounds],
-  (currentEpoch, rounds) => {
-    return rounds[currentEpoch]
-  },
-)
-
 export const getMinBetAmountSelector = createSelector([selectMinBetAmount], BigNumber.from)
-
-export const getEarliestEpochSelector = createSelector([selectRounds], (rounds) => {
-  const earliestRound = minBy(Object.values(rounds), 'epoch')
-  return earliestRound?.epoch
-})
 
 export const getCurrentRoundLockTimestampSelector = createSelector(
   [selectCurrentEpoch, getBigNumberRounds, selectIntervalSeconds],

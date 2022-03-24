@@ -5,31 +5,17 @@ import { useAppDispatch } from 'state'
 import { State } from '../types'
 import { fetchAddressResult } from '.'
 import {
-  getBigNumberRounds,
   getRoundsByCloseOracleIdSelector,
-  makeGetRoundSelector,
   getSortedRoundsSelector,
   makeGetBetByEpochSelector,
   makeGetIsClaimableSelector,
-  getCurrentRoundSelector,
   getMinBetAmountSelector,
   getCurrentRoundLockTimestampSelector,
-  getEarliestEpochSelector,
   getSortedRoundsCurrentEpochSelector,
-  getRoundsCurrentEpochSelector,
 } from './selectors'
-
-export const useGetRounds = () => {
-  return useSelector(getBigNumberRounds)
-}
 
 export const useGetRoundsByCloseOracleId = () => {
   return useSelector(getRoundsByCloseOracleIdSelector)
-}
-
-export const useGetRound = (epoch: number) => {
-  const getRoundSelector = useMemo(() => makeGetRoundSelector(epoch), [epoch])
-  return useSelector(getRoundSelector)
 }
 
 export const useGetSortedRounds = () => {
@@ -40,10 +26,6 @@ export const useGetSortedRoundsCurrentEpoch = () => {
   return useSelector(getSortedRoundsCurrentEpochSelector)
 }
 
-export const useGetRoundsCurrentEpoch = () => {
-  return useSelector(getRoundsCurrentEpochSelector)
-}
-
 export const useGetBetByEpoch = (account: string, epoch: number) => {
   const getBetByEpochSelector = useMemo(() => makeGetBetByEpochSelector(account, epoch), [account, epoch])
   return useSelector(getBetByEpochSelector)
@@ -52,13 +34,6 @@ export const useGetBetByEpoch = (account: string, epoch: number) => {
 export const useGetIsClaimable = (epoch) => {
   const getIsClaimableSelector = useMemo(() => makeGetIsClaimableSelector(epoch), [epoch])
   return useSelector(getIsClaimableSelector)
-}
-
-/**
- * Used to get the range of rounds to poll for
- */
-export const useGetEarliestEpoch = () => {
-  return useSelector(getEarliestEpochSelector)
 }
 
 export const useIsHistoryPaneOpen = () => {
@@ -79,10 +54,6 @@ export const useGetCurrentEpoch = () => {
 
 export const useGetIntervalSeconds = () => {
   return useSelector((state: State) => state.predictions.intervalSeconds)
-}
-
-export const useGetCurrentRound = () => {
-  return useSelector(getCurrentRoundSelector)
 }
 
 export const useGetPredictionsStatus = () => {
