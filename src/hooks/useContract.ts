@@ -19,7 +19,6 @@ import {
   getEasterNftContract,
   getErc721Contract,
   getCakeVaultV2Contract,
-  getIfoPoolContract,
   getPredictionsContract,
   getChainlinkOracleContract,
   getLotteryV2Contract,
@@ -35,13 +34,11 @@ import {
   getBunnySpecialXmasContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
-import { VaultKey } from 'state/types'
 import {
   EnsPublicResolver,
   EnsRegistrar,
   Erc20,
   Erc20Bytes32,
-  IfoPool,
   Multicall,
   Weth,
   Cake,
@@ -183,11 +180,6 @@ export const useVaultPoolContract = (): CakeVaultV2 => {
 export const useCakeVaultContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getCakeVaultV2Contract(library.getSigner()), [library])
-}
-
-export const useIfoPoolContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getIfoPoolContract(library.getSigner()), [library])
 }
 
 export const usePredictionsContract = () => {

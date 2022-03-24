@@ -3,8 +3,7 @@ import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 
-import { VaultKey } from 'state/types'
-import { useIfoPoolCredit, useVaultPoolByKey } from 'state/pools/hooks'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BaseCell, { CellContent } from './BaseCell'
@@ -30,11 +29,7 @@ const HelpIconWrapper = styled.div`
 const IFOCreditCell: React.FC<IFOCreditCellProps> = ({ account }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const {
-    userData: { isLoading: userDataLoading },
-  } = useVaultPoolByKey(VaultKey.IfoPool)
-  const credit = useIfoPoolCredit()
-
+  const credit = new BigNumber(0)
   const hasCredit = account && credit.gt(0)
 
   const cakeAsNumberBalance = getBalanceNumber(credit)
@@ -64,7 +59,7 @@ const IFOCreditCell: React.FC<IFOCreditCellProps> = ({ account }) => {
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {userDataLoading && account ? (
+        {account ? (
           <Skeleton width="80px" height="16px" />
         ) : (
           <>

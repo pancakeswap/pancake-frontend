@@ -18,7 +18,7 @@ import { NftToken, State as NftMarketState } from './nftMarket/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
-export type DeserializedPoolVault = DeserializedPool & (DeserializedCakeVault | DeserializedIfoCakeVault)
+export type DeserializedPoolVault = DeserializedPool & DeserializedCakeVault
 
 export interface BigNumberToJson {
   type: 'BigNumber'
@@ -191,10 +191,6 @@ export interface DeserializedIfoVaultUser extends DeserializedVaultUser {
   credit: string
 }
 
-export interface SerializedIfoVaultUser extends SerializedVaultUser {
-  credit: string
-}
-
 export interface DeserializedCakeVault {
   totalShares?: BigNumber
   pricePerFullShare?: BigNumber
@@ -211,22 +207,9 @@ export interface SerializedCakeVault {
   userData?: SerializedLockedVaultUser
 }
 
-export interface SerializedIfoCakeVault extends Omit<SerializedCakeVault, 'userData'> {
-  userData?: SerializedIfoVaultUser
-  creditStartBlock?: number
-  creditEndBlock?: number
-}
-
-export interface DeserializedIfoCakeVault extends Omit<DeserializedCakeVault, 'userData'> {
-  userData?: DeserializedIfoVaultUser
-  creditStartBlock?: number
-  creditEndBlock?: number
-}
-
 export interface PoolsState {
   data: SerializedPool[]
   cakeVault: SerializedCakeVault
-  ifoPool: SerializedIfoCakeVault
   userDataLoaded: boolean
 }
 
