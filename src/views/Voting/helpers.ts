@@ -36,6 +36,8 @@ export interface Message {
   sig: string
 }
 
+const STRATEGIES = [{ name: 'cake', params: { symbol: 'CAKE', address: tokens.cake.address, decimals: 18 } }]
+
 /**
  * Generates metadata required by snapshot to validate payload
  */
@@ -43,7 +45,7 @@ export const generateMetaData = () => {
   return {
     plugins: {},
     network: 56,
-    strategies: [{ name: 'cake', params: { symbol: 'CAKE', address: tokens.cake.address, decimals: 18 } }],
+    strategies: STRATEGIES,
   }
 }
 
@@ -225,6 +227,9 @@ function verifyDefaultContract(blockNumber: number) {
   }
 }
 
+/**
+ * use to get scores by category, for example: cake balance, pool balance, etc.
+ */
 export async function getVotingPowerList(voters: string[], poolAddresses: string[], blockNumber: number) {
   const poolsStrategyList = poolAddresses.map((address) => createPoolStrategy(address))
   const contractsValid = verifyDefaultContract(blockNumber)
@@ -292,6 +297,41 @@ export async function getVotingPowerList(voters: string[], poolAddresses: string
     }
     return { ...vp, total: vp.total.div(TEN_POW_18).toFixed(18), poolsBalance: '0' }
   })
+}
+
+export async function getVotingPowerByCakeStrategy(voters: string[], poolAddresses: string[], blockNumber: number) {
+  const network = '56'
+  const poolsStrategyList = poolAddresses.map((address) => createPoolStrategy(address))
+  const chunkPools = _chunk(poolsStrategyList, 8)
+  const finalVotingPowerPools: { [key: string]: BigNumber } = {}
+  // eslint-disable-next-line no-restricted-syntax
+  for (const chunkPool of chunkPools) {
+    // eslint-disable-next-line no-await-in-loop
+    const poolStrategyResponse = await getScores(PANCAKE_SPACE, chunkPool, network, voters, blockNumber)
+    const votingPowerPools = calculateVotingPowerPools(poolStrategyResponse, voters)
+    Object.entries(votingPowerPools).forEach(([key, value]) => {
+      if (finalVotingPowerPools[key]) {
+        finalVotingPowerPools[key] = finalVotingPowerPools[key].plus(value)
+      } else {
+        finalVotingPowerPools[key] = value
+      }
+    })
+  }
+
+  const strategyResponse = await getScores(PANCAKE_SPACE, STRATEGIES, network, voters, blockNumber)
+
+  const result = voters.reduce<Record<string, string>>((accum, voter) => {
+    const defaultTotal = strategyResponse.reduce((total, scoreList) => total + scoreList[voter], 0)
+
+    return {
+      ...accum,
+      [voter]: finalVotingPowerPools[voter]
+        ? finalVotingPowerPools[voter].div(TEN_POW_18).plus(defaultTotal).toFixed(18)
+        : 0 + defaultTotal,
+    }
+  }, {})
+
+  return result
 }
 
 async function getScores(
