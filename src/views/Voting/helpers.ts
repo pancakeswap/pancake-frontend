@@ -1,8 +1,8 @@
-import BigNumber from 'bignumber.js'
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import tokens from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
-import { snapshotStrategies, createPoolStrategy } from 'config/constants/snapshot'
+import { multicallv2 } from 'utils/multicall'
+import { formatEther } from '@ethersproject/units'
 import _chunk from 'lodash/chunk'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 
@@ -82,9 +82,62 @@ export const sendSnapshotData = async (message: Message) => {
   return data
 }
 
+const votingPowerContractAddress = '0xc0FeBE244cE1ea66d27D23012B3D616432433F42'
+
+const votingPowerAbi = [
+  'function getCakeBalance(address _user) view returns (uint256)',
+  'function getCakeBnbLpBalance(address _user) view returns (uint256)',
+  'function getCakePoolBalance(address _user) view returns (uint256)',
+  'function getCakeVaultBalance(address _user) view returns (uint256)',
+  'function getIFOPoolBalancee(address _user) view returns (uint256)',
+  'function getPoolsBalance(address _user, address[] _pools) view returns (uint256)',
+  'function getVotingPower(address _user, address[] _pools) view returns (uint256)',
+]
+
 export const getVotingPower = async (account: string, poolAddresses: string[], blockNumber?: number) => {
-  const votingPowerList = await getVotingPowerList([account], poolAddresses, blockNumber)
-  return votingPowerList[0]
+  const calls = [
+    'getCakeBalance',
+    'getCakeBnbLpBalance',
+    'getCakePoolBalance',
+    'getCakeVaultBalance',
+    'getIFOPoolBalancee',
+  ].map((method) => {
+    return {
+      address: votingPowerContractAddress,
+      name: method,
+      params: [account],
+    }
+  })
+
+  const poolCalls = ['getPoolsBalance', 'getVotingPower'].map((method) => {
+    return {
+      address: votingPowerContractAddress,
+      name: method,
+      params: [account, poolAddresses],
+    }
+  })
+
+  const [
+    [cakeBalance],
+    [cakeBnbLpBalance],
+    [cakePoolBalance],
+    [cakeVaultBalance],
+    [ifoPoolBalance],
+    [poolsBalance],
+    [total],
+  ] = await multicallv2(votingPowerAbi, [...calls, ...poolCalls], {
+    blockTag: blockNumber,
+  })
+  return {
+    poolsBalance: formatEther(poolsBalance),
+    total: formatEther(total),
+    cakeBalance: formatEther(cakeBalance),
+    cakeVaultBalance: formatEther(cakeVaultBalance),
+    IFOPoolBalance: formatEther(ifoPoolBalance),
+    cakePoolBalance: formatEther(cakePoolBalance),
+    cakeBnbLpBalance: formatEther(cakeBnbLpBalance),
+    voter: account,
+  }
 }
 
 export const calculateVoteResults = (votes: Vote[]): { [key: string]: Vote[] } => {
@@ -120,190 +173,59 @@ type ScoresResponseByAddress = {
   [address: string]: number
 }
 
-const TEN_POW_18 = new BigNumber(10).pow(18)
-
 type GetScoresResponse = ScoresResponseByAddress[]
-type ScoresListIndex = {
-  cakeBalances: number
-  cakeVaultShares: number
-  cakeVaultPricePerFullShares: number
-  ifoPoolShares: number
-  ifoPoolPricePerFullShares: number
-  userStakeInCakePools: number
-  cakeBnbLpBalances: number
+
+function createPoolStrategy(poolAddress) {
+  return {
+    name: 'contract-call',
+    params: {
+      address: poolAddress,
+      decimals: 18,
+      output: 'amount',
+      methodABI: {
+        inputs: [
+          {
+            internalType: 'address',
+            name: '',
+            type: 'address',
+          },
+        ],
+        name: 'userInfo',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'rewardDebt',
+            type: 'uint256',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    },
+  }
 }
 
 function calculateVotingPowerPools(scoresList: GetScoresResponse, voters: string[]) {
-  return voters.reduce<{ [key: string]: BigNumber }>((acc, cur) => {
-    let poolsBalance = new BigNumber(0)
+  return voters.reduce<{ [key: string]: number }>((acc, cur) => {
+    let poolsBalance = 0
     for (let i = 0; i < scoresList.length; i++) {
-      const currentPoolBalance = scoresList[i][cur] ? new BigNumber(scoresList[i][cur]) : new BigNumber(0)
-      poolsBalance = poolsBalance.plus(currentPoolBalance)
+      const currentPoolBalance = scoresList[i][cur] || 0
+      poolsBalance += currentPoolBalance
     }
     return { ...acc, [cur]: poolsBalance }
   }, {})
-}
-
-function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], scoresListIndex: ScoresListIndex) {
-  let [
-    cakeBalances,
-    cakeVaultShares,
-    cakeVaultPricePerFullShares,
-    ifoPoolShares,
-    ifoPoolPricePerFullShares,
-    userStakeInCakePools,
-    cakeBnbLpBalances,
-  ] = new Array(9)
-  const defaultScore = {}
-  // TODO: refactor this
-  for (let i = 0; i < voters.length; i++) {
-    defaultScore[voters[i]] = 0
-  }
-  cakeBalances = scoresListIndex.cakeBalances > -1 ? scoresList[scoresListIndex.cakeBalances] : defaultScore
-  cakeVaultShares = scoresListIndex.cakeVaultShares > -1 ? scoresList[scoresListIndex.cakeVaultShares] : defaultScore
-  cakeVaultPricePerFullShares =
-    scoresListIndex.cakeVaultPricePerFullShares > -1
-      ? scoresList[scoresListIndex.cakeVaultPricePerFullShares]
-      : defaultScore
-  ifoPoolShares = scoresListIndex.ifoPoolShares > -1 ? scoresList[scoresListIndex.ifoPoolShares] : defaultScore
-  ifoPoolPricePerFullShares =
-    scoresListIndex.ifoPoolPricePerFullShares > -1
-      ? scoresList[scoresListIndex.ifoPoolPricePerFullShares]
-      : defaultScore
-  userStakeInCakePools =
-    scoresListIndex.userStakeInCakePools > -1 ? scoresList[scoresListIndex.userStakeInCakePools] : defaultScore
-
-  cakeBnbLpBalances =
-    scoresListIndex.cakeBnbLpBalances > -1 ? scoresList[scoresListIndex.cakeBnbLpBalances] : defaultScore
-
-  const result = voters.map((address) => {
-    const cakeBalance = new BigNumber(cakeBalances[address] || 0)
-    // calculate cakeVaultBalance
-    const sharePrice = new BigNumber(cakeVaultPricePerFullShares[address] || 0).div(TEN_POW_18)
-    const cakeVaultBalance = new BigNumber(cakeVaultShares[address] || 0).times(sharePrice)
-
-    // calculate ifoPoolBalance
-    const IFOPoolsharePrice = new BigNumber(ifoPoolPricePerFullShares[address] || 0).div(TEN_POW_18)
-    const IFOPoolBalance = new BigNumber(ifoPoolShares[address] || 0).times(IFOPoolsharePrice)
-
-    const cakePoolBalance = new BigNumber(userStakeInCakePools[address] || 0)
-    // calculate cakeBnbLpBalance
-    const cakeBnbLpBalance = cakeBnbLpBalances[address] || 0
-
-    const total = cakeBalance
-      .plus(cakeVaultBalance)
-      .plus(cakePoolBalance)
-      .plus(IFOPoolBalance)
-      .plus(new BigNumber(cakeBnbLpBalance).times(TEN_POW_18))
-
-    return {
-      cakeBalance: cakeBalance.div(TEN_POW_18).toFixed(18),
-      cakeVaultBalance: cakeVaultBalance.div(TEN_POW_18).toFixed(18),
-      IFOPoolBalance: IFOPoolBalance.div(TEN_POW_18).toFixed(18),
-      cakePoolBalance: cakePoolBalance.div(TEN_POW_18).toFixed(18),
-      cakeBnbLpBalance,
-      total,
-      voter: address,
-    }
-  })
-  return result
-}
-
-const ContractDeployedNumber = {
-  Cake: 693963,
-  CakeVault: 6975840,
-  IFOPool: 13463954,
-  MasterChef: 699498,
-  CakeLp: 6810706,
-}
-
-function verifyDefaultContract(blockNumber: number) {
-  return {
-    Cake: ContractDeployedNumber.Cake < blockNumber,
-    CakeVault: ContractDeployedNumber.CakeVault < blockNumber,
-    IFOPool: ContractDeployedNumber.IFOPool < blockNumber,
-    MasterChef: ContractDeployedNumber.MasterChef < blockNumber,
-    CakeLp: ContractDeployedNumber.CakeLp < blockNumber,
-  }
-}
-
-/**
- * use to get scores by category, for example: cake balance, pool balance, etc.
- */
-export async function getVotingPowerList(voters: string[], poolAddresses: string[], blockNumber: number) {
-  const poolsStrategyList = poolAddresses.map((address) => createPoolStrategy(address))
-  const contractsValid = verifyDefaultContract(blockNumber)
-  const scoresListIndex = {
-    cakeBalances: -1,
-    cakeVaultShares: -1,
-    cakeVaultPricePerFullShares: -1,
-    ifoPoolShares: -1,
-    ifoPoolPricePerFullShares: -1,
-    userStakeInCakePools: -1,
-    cakeBnbLpBalances: -1,
-  }
-  const defaultStrategy = []
-  let indexCounter = 0
-  if (contractsValid.Cake) {
-    defaultStrategy.push(snapshotStrategies.CakeBalanceStrategy)
-    scoresListIndex.cakeBalances = indexCounter++
-  }
-  if (contractsValid.CakeVault) {
-    defaultStrategy.push(snapshotStrategies.CakeVaultSharesStrategy)
-    scoresListIndex.cakeVaultShares = indexCounter++
-    defaultStrategy.push(snapshotStrategies.CakeVaultPricePerFullShareStrategy)
-    scoresListIndex.cakeVaultPricePerFullShares = indexCounter++
-  }
-  if (contractsValid.IFOPool) {
-    defaultStrategy.push(snapshotStrategies.IFOPoolSharesStrategy)
-    scoresListIndex.ifoPoolShares = indexCounter++
-    defaultStrategy.push(snapshotStrategies.IFOPoolPricePerFullShareStrategy)
-    scoresListIndex.ifoPoolPricePerFullShares = indexCounter++
-  }
-  if (contractsValid.MasterChef) {
-    defaultStrategy.push(snapshotStrategies.UserStakeInCakePoolStrategy)
-    scoresListIndex.userStakeInCakePools = indexCounter++
-  }
-  if (contractsValid.CakeLp) {
-    defaultStrategy.push(snapshotStrategies.CakeBnbMasterChefStrategy)
-    scoresListIndex.cakeBnbLpBalances = indexCounter++
-  }
-
-  const network = '56'
-  const chunkPools = _chunk(poolsStrategyList, 8)
-  const finalVotingPowerPools: { [key: string]: BigNumber } = {}
-  // eslint-disable-next-line no-restricted-syntax
-  for (const chunkPool of chunkPools) {
-    // eslint-disable-next-line no-await-in-loop
-    const poolStrategyResponse = await getScores(PANCAKE_SPACE, chunkPool, network, voters, blockNumber)
-    const votingPowerPools = calculateVotingPowerPools(poolStrategyResponse, voters)
-    Object.entries(votingPowerPools).forEach(([key, value]) => {
-      if (finalVotingPowerPools[key]) {
-        finalVotingPowerPools[key] = finalVotingPowerPools[key].plus(value)
-      } else {
-        finalVotingPowerPools[key] = value
-      }
-    })
-  }
-  const strategyResponse = await getScores(PANCAKE_SPACE, defaultStrategy, network, voters, blockNumber)
-  const votingPowerList = calculateVotingPower(strategyResponse, voters, scoresListIndex)
-  return votingPowerList.map((vp) => {
-    if (finalVotingPowerPools[vp.voter]) {
-      return {
-        ...vp,
-        poolsBalance: finalVotingPowerPools[vp.voter].div(TEN_POW_18).toFixed(18),
-        total: vp.total.plus(finalVotingPowerPools[vp.voter]).div(TEN_POW_18).toFixed(18),
-      }
-    }
-    return { ...vp, total: vp.total.div(TEN_POW_18).toFixed(18), poolsBalance: '0' }
-  })
 }
 
 export async function getVotingPowerByCakeStrategy(voters: string[], poolAddresses: string[], blockNumber: number) {
   const network = '56'
   const poolsStrategyList = poolAddresses.map((address) => createPoolStrategy(address))
   const chunkPools = _chunk(poolsStrategyList, 8)
-  const finalVotingPowerPools: { [key: string]: BigNumber } = {}
+  const finalVotingPowerPools: { [key: string]: number } = {}
   // eslint-disable-next-line no-restricted-syntax
   for (const chunkPool of chunkPools) {
     // eslint-disable-next-line no-await-in-loop
@@ -311,7 +233,8 @@ export async function getVotingPowerByCakeStrategy(voters: string[], poolAddress
     const votingPowerPools = calculateVotingPowerPools(poolStrategyResponse, voters)
     Object.entries(votingPowerPools).forEach(([key, value]) => {
       if (finalVotingPowerPools[key]) {
-        finalVotingPowerPools[key] = finalVotingPowerPools[key].plus(value)
+        // eslint-disable-next-line operator-assignment
+        finalVotingPowerPools[key] = finalVotingPowerPools[key] + value
       } else {
         finalVotingPowerPools[key] = value
       }
@@ -325,9 +248,7 @@ export async function getVotingPowerByCakeStrategy(voters: string[], poolAddress
 
     return {
       ...accum,
-      [voter]: finalVotingPowerPools[voter]
-        ? finalVotingPowerPools[voter].div(TEN_POW_18).plus(defaultTotal).toFixed(18)
-        : 0 + defaultTotal,
+      [voter]: finalVotingPowerPools[voter] ? finalVotingPowerPools[voter] + defaultTotal : 0 + defaultTotal,
     }
   }, {})
 
