@@ -81,7 +81,7 @@ const Overview = () => {
           )}
           <Votes votes={votes} totalVotes={votes?.length ?? proposal.votes} votesLoadingStatus={votesLoadingStatus} />
         </Box>
-        <Box position="sticky" top="40px">
+        <Box position="sticky" top="60px">
           <Details proposal={proposal} />
           <Results choices={proposal.choices} votes={votes} votesLoadingStatus={votesLoadingStatus} />
         </Box>

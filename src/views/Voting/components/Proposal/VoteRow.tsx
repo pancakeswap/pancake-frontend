@@ -3,6 +3,7 @@ import truncateHash from 'utils/truncateHash'
 import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'
 import { Vote } from 'state/types'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { IPFS_GATEWAY } from '../../config'
 import TextEllipsis from '../TextEllipsis'
 import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from './Row'
@@ -15,12 +16,6 @@ interface VoteRowProps {
 const VoteRow: React.FC<VoteRowProps> = ({ vote, isVoter }) => {
   const { t } = useTranslation()
   const hasVotingPower = !!vote.metadata?.votingPower
-  const votingPower = hasVotingPower
-    ? parseFloat(vote.metadata.votingPower).toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 3,
-      })
-    : '--'
 
   return (
     <Row>
@@ -41,7 +36,13 @@ const VoteRow: React.FC<VoteRowProps> = ({ vote, isVoter }) => {
       </ChoiceColumn>
       <VotingPowerColumn>
         <Flex alignItems="center" justifyContent="end">
-          <Text title={vote.metadata.votingPower}>{votingPower}</Text>
+          {hasVotingPower && (
+            <Text title={vote.metadata.votingPower}>
+              {formatAmount(parseFloat(vote.metadata.votingPower), {
+                displayThreshold: 1,
+              })}
+            </Text>
+          )}
           {hasVotingPower && <LinkExternal href={`${IPFS_GATEWAY}/${vote.id}`} />}
         </Flex>
       </VotingPowerColumn>
