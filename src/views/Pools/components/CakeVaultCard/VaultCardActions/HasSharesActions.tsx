@@ -7,6 +7,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
+import LockedStakeModal from '../LockedStakeModal'
 
 interface HasStakeActionProps {
   pool: DeserializedPool
@@ -29,9 +30,9 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
   const [onPresentStake] = useModal(
-    <VaultStakeModal stakingMax={stakingTokenBalance} performanceFee={performanceFee} pool={pool} />,
+    <LockedStakeModal stakingMax={stakingTokenBalance} performanceFee={performanceFee} pool={pool} />,
   )
-  const [onPresentUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
+  const [onPresentUnstake] = useModal(<LockedStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
   return (
     <Flex justifyContent="space-between" alignItems="center">

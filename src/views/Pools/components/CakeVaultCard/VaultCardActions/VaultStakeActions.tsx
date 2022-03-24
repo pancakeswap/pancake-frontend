@@ -7,6 +7,7 @@ import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
 import VaultStakeModal from '../VaultStakeModal'
 import HasSharesActions from './HasSharesActions'
+import LockedStakeModal from '../LockedStakeModal'
 
 interface VaultStakeActionsProps {
   pool: DeserializedPool
@@ -26,7 +27,7 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   const { stakingToken } = pool
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
   const [onPresentStake] = useModal(
-    <VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} performanceFee={performanceFee} />,
+    <LockedStakeModal stakingMax={stakingTokenBalance} pool={pool} performanceFee={performanceFee} />,
   )
 
   const renderStakeAction = () => {
