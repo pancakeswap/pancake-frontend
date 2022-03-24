@@ -56,8 +56,6 @@ export const TotalLocked: FC<{ totalLocked: BigNumber; lockedToken: Token }> = (
 
   const duration = useVaultMaxDuration()
 
-  console.log(totalLocked && totalLocked.eq(0))
-
   if (duration && duration.gt(0)) {
     return (
       <StatWrapper label={<Text small>{t('Total locked')}:</Text>}>
