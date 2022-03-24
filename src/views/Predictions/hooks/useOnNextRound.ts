@@ -2,8 +2,7 @@ import { useLayoutEffect, useRef } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { useAppDispatch } from 'state'
-import orderBy from 'lodash/orderBy'
-import { useGetRoundsCurrentEpoch } from 'state/predictions/hooks'
+import { useGetSortedRoundsCurrentEpoch } from 'state/predictions/hooks'
 import useSwiper from './useSwiper'
 
 /**
@@ -13,12 +12,8 @@ const useOnNextRound = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const { swiper } = useSwiper()
-  const { currentEpoch, rounds } = useGetRoundsCurrentEpoch()
-  const roundsEpochsString = JSON.stringify(
-    Object.keys(rounds)
-      .map((roundKey) => parseInt(roundKey))
-      .sort((a, b) => a - b),
-  )
+  const { currentEpoch, rounds } = useGetSortedRoundsCurrentEpoch()
+  const roundsEpochsString = JSON.stringify(Object.keys(rounds))
   const previousEpoch = usePreviousValue(currentEpoch)
   const previousRoundsEpochsString = usePreviousValue(roundsEpochsString)
   const previousActiveRoundIndex = useRef(0)
@@ -30,9 +25,7 @@ const useOnNextRound = () => {
       previousEpoch &&
       (currentEpoch !== previousEpoch || roundsEpochsString !== previousRoundsEpochsString)
     ) {
-      const currentEpochIndex = orderBy(Object.values(rounds), ['epoch'], ['asc']).findIndex(
-        (round) => round.epoch === currentEpoch,
-      )
+      const currentEpochIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
 
       // Slide to the current LIVE round which is always the one before the current round
       if (currentEpoch !== previousEpoch) {
