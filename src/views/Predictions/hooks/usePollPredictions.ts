@@ -4,7 +4,6 @@ import { useGetPredictionsStatus } from 'state/predictions/hooks'
 import { fetchPredictionData } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
 import useSWR from 'swr'
-import { batch } from 'react-redux'
 
 const POLL_TIME_IN_SECONDS = 10
 
@@ -15,11 +14,7 @@ const usePollPredictions = () => {
 
   useSWR(
     status !== PredictionStatus.INITIAL ? ['predictions', account] : null,
-    () => {
-      batch(() => {
-        dispatch(fetchPredictionData(account))
-      })
-    },
+    () => dispatch(fetchPredictionData(account)),
     {
       refreshInterval: POLL_TIME_IN_SECONDS * 1000,
       refreshWhenHidden: true,
