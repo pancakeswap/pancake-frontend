@@ -45,6 +45,21 @@ const pools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 272,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.froyo,
+    contractAddress: {
+      97: '',
+      56: '0x84e3208578eE7db397a3d584d97Fea107b15bF35',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '3.404',
+    deployedBlockNumber: 16357010,
+    version: 3,
+  },
+  {
     sousId: 271,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.bsw,
