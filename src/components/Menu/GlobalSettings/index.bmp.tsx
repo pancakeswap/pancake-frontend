@@ -14,7 +14,7 @@ const GlobalSettings = ({ color, mr = '8px' }: Props) => {
   }
   return (
     <Flex>
-      <IconButton onClick={handleClick} variant="text" scale="sm" mr={mr} id="open-settings-dialog-button">
+      <IconButton onClick={handleClick} variant="text" scale="sm" mr={mr}>
         <CogIcon height={24} width={24} color={color || 'textSubtle'} />
       </IconButton>
     </Flex>
