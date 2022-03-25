@@ -66,29 +66,29 @@ const StyledLink = styled(Link)`
 const MigrationSticky: React.FC = () => {
   const { t } = useTranslation()
   const { isMobile, isXs, isSm, isMd } = useMatchBreakpoints()
-  const [stickPosition, setStickyPosition] = useState<number>(0)
+  const [stickPosition, setStickyPosition] = useState(0)
   const refPrevOffset = useRef(typeof window === 'undefined' ? 0 : window.pageYOffset)
   const isSmallScreen = isXs || isSm || isMd
 
-  useEffect(() => {
-    const scrollEffect = () => {
-      const currentScroll = window.pageYOffset
-      if (currentScroll <= 0) {
-        setStickyPosition(0)
-        return
-      }
-      if (currentScroll >= refPrevOffset.current) {
-        setStickyPosition(0)
-      } else {
-        const warningBannerHeight = document.querySelector('.warning-banner')
-        const topBannerHeight = isMobile ? TOP_BANNER_HEIGHT_MOBILE : TOP_BANNER_HEIGHT
-        const topNavHeight = isMobile ? MENU_HEIGHT : MOBILE_MENU_HEIGHT
-        const totalTopMenuHeight = warningBannerHeight ? topNavHeight + topBannerHeight : topNavHeight
-        setStickyPosition(totalTopMenuHeight)
-      }
-      refPrevOffset.current = currentScroll
+  const scrollEffect = () => {
+    const currentScroll = window.pageYOffset
+    if (currentScroll <= 0) {
+      setStickyPosition(0)
+      return
     }
+    if (currentScroll >= refPrevOffset.current) {
+      setStickyPosition(0)
+    } else {
+      const warningBannerHeight = document.querySelector('.warning-banner')
+      const topBannerHeight = isMobile ? TOP_BANNER_HEIGHT_MOBILE : TOP_BANNER_HEIGHT
+      const topNavHeight = isMobile ? MENU_HEIGHT : MOBILE_MENU_HEIGHT
+      const totalTopMenuHeight = warningBannerHeight ? topNavHeight + topBannerHeight : topNavHeight
+      setStickyPosition(totalTopMenuHeight)
+    }
+    refPrevOffset.current = currentScroll
+  }
 
+  useEffect(() => {
     window.addEventListener('scroll', scrollEffect)
     return () => window.removeEventListener('scroll', scrollEffect)
   }, [])
