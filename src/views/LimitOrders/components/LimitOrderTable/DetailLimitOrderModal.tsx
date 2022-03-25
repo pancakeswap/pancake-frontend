@@ -8,8 +8,6 @@ import useGelatoLimitOrdersHandlers from 'hooks/limitOrders/useGelatoLimitOrders
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useSWRConfig } from 'swr'
-import { OPEN_ORDERS_SWR_KEY } from '../../hooks/useGelatoLimitOrdersHistory'
 import CurrencyFormat from './CurrencyFormat'
 import CellFormat from './CellFormat'
 import LimitOrderDisclaimer from '../LimitOrderDisclaimer'
@@ -33,7 +31,6 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
   const { theme } = useTheme()
   const { t } = useTranslation()
   const { handleLimitOrderCancellation } = useGelatoLimitOrdersHandlers()
-  const { mutate } = useSWRConfig()
 
   const [{ cancellationErrorMessage, attemptingTxn, txHash }, setCancellationState] = useState<{
     attemptingTxn: boolean
@@ -74,7 +71,6 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
           cancellationErrorMessage: undefined,
           txHash: hash,
         })
-        mutate(OPEN_ORDERS_SWR_KEY)
       })
       .catch((error) => {
         setCancellationState({
@@ -82,7 +78,6 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
           cancellationErrorMessage: error.message,
           txHash: undefined,
         })
-        mutate(OPEN_ORDERS_SWR_KEY)
       })
   }, [
     handleLimitOrderCancellation,
@@ -91,7 +86,6 @@ export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ on
     formattedOrder.inputToken?.symbol,
     formattedOrder.outputToken?.symbol,
     order,
-    mutate,
   ])
 
   const limitPriceExchangeRateText = `1 ${formattedOrder.inputToken?.symbol} = ${formattedOrder.executionPrice} ${formattedOrder.outputToken?.symbol}`

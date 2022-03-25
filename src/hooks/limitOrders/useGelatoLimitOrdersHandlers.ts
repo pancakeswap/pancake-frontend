@@ -9,6 +9,11 @@ import { Field, Rate } from 'state/limitOrders/types'
 import { Currency, Price } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTransactionAdder } from 'state/transactions/hooks'
+import { useSWRConfig } from 'swr'
+import {
+  OPEN_ORDERS_SWR_KEY,
+  EXECEUTED_CANCELLED_ORDERS_SWR_KEY,
+} from '../../views/LimitOrders/hooks/useGelatoLimitOrdersHistory'
 import useGelatoLimitOrdersLib from './useGelatoLimitOrdersLib'
 
 export interface GelatoLimitOrdersHandlers {
@@ -38,6 +43,8 @@ export interface GelatoLimitOrdersHandlers {
 
 const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
   const { chainId, account } = useActiveWeb3React()
+
+  const { mutate } = useSWRConfig()
 
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
 
@@ -97,9 +104,12 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         } as Order,
       })
 
+      mutate(OPEN_ORDERS_SWR_KEY)
+      mutate(EXECEUTED_CANCELLED_ORDERS_SWR_KEY)
+
       return tx
     },
-    [addTransaction, chainId, gelatoLimitOrders],
+    [addTransaction, chainId, gelatoLimitOrders, mutate],
   )
 
   const handleLimitOrderCancellation = useCallback(
@@ -158,9 +168,12 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         },
       })
 
+      mutate(OPEN_ORDERS_SWR_KEY)
+      mutate(EXECEUTED_CANCELLED_ORDERS_SWR_KEY)
+
       return tx
     },
-    [gelatoLimitOrders, chainId, account, addTransaction],
+    [gelatoLimitOrders, chainId, account, addTransaction, mutate],
   )
 
   const handleInput = useCallback(
