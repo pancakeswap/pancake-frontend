@@ -42,6 +42,17 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 518,
+    lpSymbol: 'FROYO-CAKE LP',
+    lpAddresses: {
+      97: '',
+      56: '0x1CCc3cC95c8148477Afd18a552f03835Be9D182a',
+    },
+    token: serializedTokens.froyo,
+    quoteToken: serializedTokens.cake,
+    isCommunity: true,
+  },
+  {
     pid: 517,
     lpSymbol: 'TEM-BUSD LP',
     lpAddresses: {
