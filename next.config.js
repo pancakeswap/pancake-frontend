@@ -11,12 +11,19 @@ const sentryWebpackPluginOptions = {
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
 
-  silent: true, // Suppresses all logs
+  // Ignore logging when there is no SENTRY_AUTH_TOKEN
+  silent: !process.env.SENTRY_AUTH_TOKEN, // Suppresses all logs
+  validate: process.env.SENTRY_AUTH_TOKEN,
+  errorHandler: (err, invokeErr, compilation) => {
+    compilation.warnings.push(`Sentry CLI Plugin:  ${err.message}`)
+
+    invokeErr()
+  },
   ignore: ['node_modules', 'cypress'],
   // Set to env false will skip deploying release on Sentry except Production
   // https://github.com/getsentry/sentry-webpack-plugin/blob/master/src/index.js#L522
   deploy: {
-    env: process.env.SENTRY_AUTH_TOKEN ? 'production' : undefined,
+    env: process.env.SENTRY_AUTH_TOKEN && process.env.NODE_ENV === 'production' ? 'production' : undefined,
   },
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
