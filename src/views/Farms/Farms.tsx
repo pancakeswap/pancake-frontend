@@ -28,6 +28,7 @@ import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import { DesktopColumnSchema, FarmWithStakedValue } from './components/types'
+import MigrationSticky from './components/MigrationSticky'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -350,6 +351,7 @@ const Farms: React.FC = ({ children }) => {
           </Button>
         </NextLinkFromReactRouter>
       </PageHeader>
+      <MigrationSticky />
       <Page>
         <ControlContainer>
           <ViewControls>
