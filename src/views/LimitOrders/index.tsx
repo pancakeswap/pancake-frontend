@@ -19,6 +19,8 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { GELATO_NATIVE, LIMIT_ORDERS_DOCS_URL } from 'config/constants'
 import { useExchangeChartManager } from 'state/user/hooks'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
+import { useSWRConfig } from 'swr'
+import { OPEN_ORDERS_SWR_KEY } from './hooks/useGelatoLimitOrdersHistory'
 import ClaimWarning from './components/ClaimWarning'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
@@ -39,6 +41,7 @@ const LimitOrders = () => {
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
+  const { mutate } = useSWRConfig()
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
@@ -193,6 +196,7 @@ const LimitOrders = () => {
             swapErrorMessage: undefined,
             txHash: hash,
           }))
+          mutate(OPEN_ORDERS_SWR_KEY)
         })
         .catch((error) => {
           setSwapState((prev) => ({
@@ -201,6 +205,7 @@ const LimitOrders = () => {
             swapErrorMessage: error.message,
             txHash: undefined,
           }))
+          mutate(OPEN_ORDERS_SWR_KEY)
         })
     } catch (error) {
       console.error(error)
@@ -214,6 +219,7 @@ const LimitOrders = () => {
     currencies.output,
     wrappedCurrencies.input?.address,
     wrappedCurrencies.output?.address,
+    mutate,
   ])
 
   const { realExecutionPriceAsString } = useGasOverhead(parsedAmounts.input, parsedAmounts.output, rateType)

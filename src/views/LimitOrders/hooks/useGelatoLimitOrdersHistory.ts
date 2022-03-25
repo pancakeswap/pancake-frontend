@@ -10,6 +10,8 @@ import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 import orderBy from 'lodash/orderBy'
 import { ORDER_CATEGORY, LimitOrderStatus } from '../types'
 
+export const OPEN_ORDERS_SWR_KEY = ['gelato', 'openOrders']
+
 function newOrdersFirst(a: Order, b: Order) {
   return Number(b.updatedAt) - Number(a.updatedAt)
 }
@@ -65,7 +67,7 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
   const { data } = useSWR(
-    startFetch ? ['gelato', 'openOrders'] : null,
+    startFetch ? OPEN_ORDERS_SWR_KEY : null,
     async () => {
       try {
         const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
