@@ -1,10 +1,12 @@
 {
   "light": {
     "navBgColor": "#FFFFFF",
-    "navTxtStyle": "black"
+    "navTxtStyle": "black",
+    "tabBorder": "white"
   },
   "dark": {
     "navBgColor": "#27262c",
-    "navTxtStyle": "white"
+    "navTxtStyle": "white",
+    "tabBorder": "black"
   }
 }
