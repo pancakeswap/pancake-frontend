@@ -113,6 +113,7 @@ export default function CurrencyList({
   showImportView,
   setImportToken,
   breakIndex,
+  showCommonBases,
 }: {
   height: number
   currencies: Currency[]
@@ -124,6 +125,7 @@ export default function CurrencyList({
   showImportView: () => void
   setImportToken: (token: Token) => void
   breakIndex: number | undefined
+  showCommonBases: boolean
 }) {
   const itemData: (Currency | undefined)[] = useMemo(() => {
     let formatted: (Currency | undefined)[] = showETH ? [Currency.ETHER, ...currencies] : currencies
@@ -208,7 +210,7 @@ export default function CurrencyList({
   const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
   return (
     <VirtualList
-      height={Number(safeArea.height / 2)}
+      height={Number(safeArea.height / 2) - (showCommonBases ? 76 : 0)}
       ref={fixedListRef as any}
       width="100%"
       itemData={itemData}
