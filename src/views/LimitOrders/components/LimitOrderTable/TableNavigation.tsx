@@ -3,6 +3,9 @@ import { Text, Flex, Box, Grid, ArrowBackIcon, ArrowForwardIcon } from '@pancake
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
+import NoOrdersMessage from './NoOrdersMessage'
+import { ORDER_CATEGORY } from '../../types'
+import LoadingTable from './LoadingTable'
 
 const Arrow = styled.div`
   color: ${({ theme }) => theme.colors.primary};
@@ -20,14 +23,14 @@ interface TableNavigationProps {
   data: any[]
   itemsPerPage?: number
   children: (exposedProps: ExposedProps) => ReactElement
-  resetFlag: boolean | number | string
+  orderCategory: ORDER_CATEGORY
 }
 
 const ORDERS_PER_PAGE = 5
 
 const TableNavigation: React.FC<TableNavigationProps> = ({
   data,
-  resetFlag,
+  orderCategory,
   itemsPerPage = ORDERS_PER_PAGE,
   children,
 }) => {
@@ -60,13 +63,15 @@ const TableNavigation: React.FC<TableNavigationProps> = ({
 
   useEffect(() => {
     setPage(1)
-  }, [resetFlag])
+  }, [orderCategory])
 
   return (
     <>
       {children({
         paginatedData,
       })}
+      {!data && <LoadingTable />}
+      {data && !total && <NoOrdersMessage orderCategory={orderCategory} />}
       <Grid gridGap="16px" gridTemplateColumns={['1fr', null, null, null, '1fr 2fr 1fr']} mt="16px" mb="16px" px="16px">
         <Box />
         <Flex width="100%" justifyContent="center" alignItems="center">
