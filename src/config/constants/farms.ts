@@ -51,6 +51,7 @@ const farms: SerializedFarmConfig[] = [
   },
 ]
 
+// TODO: revert this
 // const farms: SerializedFarmConfig[] = [
 //   {
 //     pid: 0,
