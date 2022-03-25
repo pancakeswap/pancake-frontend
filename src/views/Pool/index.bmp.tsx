@@ -1,7 +1,6 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@pancakeswap/sdk'
-import { useDidHide, useDidShow } from '@binance/mp-service'
 import { Text, Flex, CardBody, CardFooter, Button, AddIcon, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -23,28 +22,14 @@ const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
   min-height: 324px;
 `
-const TrackedTokenHook = ({ trackedTokenRef }: { trackedTokenRef: React.MutableRefObject<any> }) => {
-  // eslint-disable-next-line no-param-reassign
-  trackedTokenRef.current = useTrackedTokenPairs()
-
-  return <></>
-}
 
 export default function Pool() {
-  const [visible, setVisible] = useState(false)
-  useDidHide(() => {
-    setVisible(false)
-  })
-  useDidShow(() => {
-    setVisible(true)
-  })
-  const trackedTokenRef = useRef([])
   const { dispatch } = useLiquidity()
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
   // fetch the user's balances of all tracked V2 LP tokens
-  const trackedTokenPairs = trackedTokenRef.current
+  const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
     [trackedTokenPairs],
@@ -116,7 +101,6 @@ export default function Pool() {
 
   return (
     <ErrorBoundary name="pool">
-      {visible && <TrackedTokenHook trackedTokenRef={trackedTokenRef} />}
       <AppBody>
         <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />
         <Body>
