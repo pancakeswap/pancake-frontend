@@ -12,9 +12,6 @@ import {
   CalculateIcon,
   IconButton,
   Skeleton,
-  Message,
-  MessageText,
-  Box,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
@@ -22,7 +19,8 @@ import { useAppDispatch } from 'state'
 
 import { BIG_TEN } from 'utils/bigNumber'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useIfoPoolCreditBlock, useVaultPoolByKey } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+
 import { useVaultPoolContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
@@ -31,7 +29,7 @@ import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/for
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -64,21 +62,6 @@ const AnnualRoiDisplay = styled(Text)`
   text-overflow: ellipsis;
 `
 
-const CreditEndNotice = () => {
-  const { hasEndBlockOver } = useIfoPoolCreditBlock()
-  const { t } = useTranslation()
-  if (!hasEndBlockOver) return null
-  return (
-    <Box maxWidth="350px">
-      <Message variant="warning" mb="16px">
-        <MessageText>
-          {t('The latest credit calculation period has ended. Calculation will resume upon the next period starts.')}
-        </MessageText>
-      </Message>
-    </Box>
-  )
-}
-
 const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   pool,
   stakingMax,
@@ -90,7 +73,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const { stakingToken, earningToken, apr, rawApr, stakingTokenPrice, earningTokenPrice, vaultKey } = pool
   const { account } = useWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
+  const vaultPoolContract = useVaultPoolContract()
   const { callWithGasPrice } = useCallWithGasPrice()
   const {
     userData: { lastDepositedTime, userShares },
@@ -182,10 +165,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     const receipt = await fetchWithCatchTxError(() => {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const methodArgs =
-        pool.vaultKey === VaultKey.IfoPool
-          ? [convertedStakeAmount.toString()]
-          : [convertedStakeAmount.toString(), lockDuration.toString()]
+      const methodArgs = [convertedStakeAmount.toString(), lockDuration.toString()]
       return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
     })
 
@@ -236,7 +216,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
-      {pool.vaultKey === VaultKey.IfoPool && <CreditEndNotice />}
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}:</Text>
         <Flex alignItems="center" minWidth="70px">

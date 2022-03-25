@@ -33,8 +33,8 @@ const StakeButton: React.FC<StakeButtonProps> = ({ pool }) => {
     earningToken.symbol,
   )
 
-  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(vaultKey)
-  const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(vaultKey, setLastUpdated)
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
+  const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(setLastUpdated)
 
   const pendingTx = vaultKey ? pendingVaultTx : pendingPoolTx
 

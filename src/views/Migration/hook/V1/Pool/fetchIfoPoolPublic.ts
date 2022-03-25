@@ -2,12 +2,9 @@ import BigNumber from 'bignumber.js'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { multicallv2 } from 'utils/multicall'
 import ifoPoolAbi from 'config/abi/ifoPool.json'
-import { getIfoPoolAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
-const ifoPoolV2 = getIfoPoolAddress()
-
-export const fetchPublicIfoPoolData = async (ifoPoolAddress = ifoPoolV2) => {
+export const fetchPublicIfoPoolData = async (ifoPoolAddress: string) => {
   try {
     const calls = ['getPricePerFullShare', 'totalShares', 'startBlock', 'endBlock'].map((method) => ({
       address: ifoPoolAddress,
@@ -35,7 +32,7 @@ export const fetchPublicIfoPoolData = async (ifoPoolAddress = ifoPoolV2) => {
   }
 }
 
-export const fetchIfoPoolFeesData = async (ifoPoolAddress = ifoPoolV2) => {
+export const fetchIfoPoolFeesData = async (ifoPoolAddress: string) => {
   try {
     const calls = ['performanceFee', 'withdrawFee', 'withdrawFeePeriod'].map((method) => ({
       address: ifoPoolAddress,

@@ -19,7 +19,6 @@ import {
   getEasterNftContract,
   getErc721Contract,
   getCakeVaultV2Contract,
-  getIfoPoolContract,
   getPredictionsContract,
   getChainlinkOracleContract,
   getLotteryV2Contract,
@@ -35,13 +34,11 @@ import {
   getBunnySpecialXmasContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
-import { VaultKey } from 'state/types'
 import {
   EnsPublicResolver,
   EnsRegistrar,
   Erc20,
   Erc20Bytes32,
-  IfoPool,
   Multicall,
   Weth,
   Cake,
@@ -175,13 +172,9 @@ export const useEasterNftContract = () => {
   return useMemo(() => getEasterNftContract(library.getSigner()), [library])
 }
 
-export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | IfoPool => {
+export const useVaultPoolContract = (): CakeVaultV2 => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => {
-    return vaultKey === VaultKey.CakeVault
-      ? getCakeVaultV2Contract(library.getSigner())
-      : getIfoPoolContract(library.getSigner())
-  }, [library, vaultKey])
+  return getCakeVaultV2Contract(library.getSigner())
 }
 
 export const useCakeVaultContract = (withSignerIfPossible = true) => {
@@ -190,11 +183,6 @@ export const useCakeVaultContract = (withSignerIfPossible = true) => {
     () => getCakeVaultV2Contract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
     [withSignerIfPossible, library, account],
   )
-}
-
-export const useIfoPoolContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getIfoPoolContract(library.getSigner()), [library])
 }
 
 export const usePredictionsContract = () => {

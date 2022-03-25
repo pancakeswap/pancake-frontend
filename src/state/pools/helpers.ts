@@ -4,8 +4,6 @@ import {
   DeserializedPool,
   SerializedPool,
   SerializedCakeVault,
-  SerializedIfoCakeVault,
-  DeserializedIfoCakeVault,
   DeserializedCakeVault,
 } from 'state/types'
 import { deserializeToken } from 'state/user/hooks/helpers'
@@ -116,47 +114,6 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
       lockedAmount,
       boostDebt,
     },
-  }
-}
-
-export const transformIfoVault = (vault: SerializedIfoCakeVault): DeserializedIfoCakeVault => {
-  const {
-    totalShares: totalSharesAsString,
-    pricePerFullShare: pricePerFullShareAsString,
-    totalCakeInVault: totalCakeInVaultAsString,
-    fees: { performanceFee, withdrawalFee, withdrawalFeePeriod },
-    userData: {
-      isLoading,
-      userShares: userSharesAsString,
-      cakeAtLastUserAction: cakeAtLastUserActionAsString,
-      lastDepositedTime,
-      lastUserActionTime,
-    },
-  } = vault
-
-  const totalShares = new BigNumber(totalSharesAsString)
-  const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
-  const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
-  const userShares = new BigNumber(userSharesAsString)
-  const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
-
-  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
-
-  return {
-    totalShares,
-    pricePerFullShare,
-    totalCakeInVault,
-    fees: { performanceFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
-    userData: {
-      isLoading,
-      userShares,
-      cakeAtLastUserAction,
-      lastDepositedTime,
-      lastUserActionTime,
-      credit: vault.userData.credit,
-    },
-    creditStartBlock: vault.creditStartBlock,
-    creditEndBlock: vault.creditEndBlock,
   }
 }
 

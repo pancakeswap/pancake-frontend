@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import orderBy from 'lodash/orderBy'
 import { DeserializedPool } from 'state/types'
-import { fetchCakeVaultFees, fetchIfoPoolFees, fetchPoolsPublicDataAsync } from 'state/pools'
+import { fetchCakeVaultFees, fetchPoolsPublicDataAsync } from 'state/pools'
 import { usePoolsWithVault } from 'state/pools/hooks'
 import { useInitialBlock } from 'state/block/hooks'
 import { FetchStatus } from 'config/constants/types'
@@ -22,7 +22,6 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
 
       try {
         // It should all be blocking calls since data only fetched once
-        await dispatch(fetchIfoPoolFees())
         await dispatch(fetchCakeVaultFees())
         await dispatch(fetchPoolsPublicDataAsync(initialBlock))
         setFetchStatus(FetchStatus.Fetched)

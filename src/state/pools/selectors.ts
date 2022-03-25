@@ -1,17 +1,13 @@
-import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from 'utils/bigNumber'
 import { getAprData } from 'views/Pools/helpers'
 import { createSelector } from '@reduxjs/toolkit'
-import { State, VaultKey, SerializedIfoCakeVault } from '../types'
-import { transformPool, transformLockedVault, transformIfoVault } from './helpers'
+import { State, VaultKey } from '../types'
+import { transformPool, transformLockedVault } from './helpers'
 import { initialPoolVaultState } from './index'
 
 const selectPoolsData = (state: State) => state.pools.data
 const selectPoolData = (sousId) => (state: State) => state.pools.data.find((p) => p.sousId === sousId)
 const selectUserDataLoaded = (state: State) => state.pools.userDataLoaded
 const selectCakeVault = (state: State) => state.pools.cakeVault
-const selectIfoPool = (state: State) => state.pools.ifoPool
-const selectIfoPoolUserCredit = (state: State) => state.pools.ifoPool.userData?.credit ?? BIG_ZERO
 const selectVault = (key: VaultKey) => (state: State) => key ? state.pools[key] : initialPoolVaultState
 
 export const makePoolWithUserDataLoadingSelector = (sousId) =>
@@ -26,13 +22,10 @@ export const poolsWithUserDataLoadingSelector = createSelector(
   },
 )
 
-export const makeVaultPoolByKey = (key) =>
-  createSelector([selectVault(key)], (vault) =>
-    key === VaultKey.CakeVault ? transformLockedVault(vault) : transformIfoVault(vault as SerializedIfoCakeVault),
-  )
+export const makeVaultPoolByKey = (key) => createSelector([selectVault(key)], (vault) => transformLockedVault(vault))
 
 export const poolsWithVaultSelector = createSelector(
-  [selectPoolsData, selectUserDataLoaded, selectCakeVault, selectIfoPool],
+  [selectPoolsData, selectUserDataLoaded, selectCakeVault],
   (serializedPools, userDataLoaded, serializedCakeVault) => {
     const pools = serializedPools.map(transformPool)
     const cakeVault = transformLockedVault(serializedCakeVault)
@@ -52,29 +45,5 @@ export const poolsWithVaultSelector = createSelector(
       rawApr: cakePool.apr,
     }
     return { pools: [cakeAutoVaultWithApr, ...withoutCakePool], userDataLoaded }
-  },
-)
-
-export const ifoPoolCreditBlockSelector = createSelector([selectIfoPool], (serializedIfoPool) => {
-  const { creditStartBlock, creditEndBlock } = serializedIfoPool
-  return { creditStartBlock, creditEndBlock }
-})
-
-export const ifoPoolCreditSelector = createSelector([selectIfoPoolUserCredit], (serializedIfoPoolUserCredit) => {
-  return new BigNumber(serializedIfoPoolUserCredit)
-})
-
-export const ifoWithAprSelector = createSelector(
-  [makeVaultPoolByKey(VaultKey.IfoPool), makePoolWithUserDataLoadingSelector(0)],
-  (deserializedIfoPool, poolWithUserData) => {
-    const { pool } = poolWithUserData
-    const {
-      fees: { performanceFeeAsDecimal },
-    } = deserializedIfoPool
-    const ifoPool = { ...pool }
-    ifoPool.vaultKey = VaultKey.IfoPool
-    ifoPool.apr = getAprData(ifoPool, performanceFeeAsDecimal).apr
-    ifoPool.rawApr = pool.apr
-    return { pool: ifoPool }
   },
 )

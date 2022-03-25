@@ -67,14 +67,11 @@ export default function ComingSoonSection() {
               <>
                 <BunnyKnownPlaceholder width={80} mb="16px" />
                 <Text textAlign="center" fontWeight={600}>
-                  {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
+                  {t('Follow our social channels to learn more about the next IFO.')}
                 </Text>
-                <MessageTextLink href="/ifo#ifo-how-to" color="primary" display="inline">
-                  {t('How does it work?')} »
-                </MessageTextLink>
               </>
             }
-            action={account ? <StakeVaultButton width="100%" /> : <ConnectWalletButton width="100%" />}
+            action={null}
           />
           <GenericIfoCard
             title={basicConfig?.title}
@@ -84,20 +81,11 @@ export default function ComingSoonSection() {
               <>
                 <BunnyPlaceholderIcon width={80} mb="16px" />
                 <Text textAlign="center" fontWeight={600}>
-                  {t('Follow our social channels to learn more about the Next IFO Private Sale')}
+                  {t('Follow our social channels to learn more about the next IFO.')}
                 </Text>
               </>
             }
-            action={
-              <Button
-                width="100%"
-                as="a"
-                href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-1-4b2cb637e8c6"
-                target="_blank"
-              >
-                {t('Learn More about IFO 3.1')}
-              </Button>
-            }
+            action={null}
           />
         </CardsWrapper>
       </StyledCardBody>

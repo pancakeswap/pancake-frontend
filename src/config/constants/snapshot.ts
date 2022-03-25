@@ -1,5 +1,6 @@
 import tokens from 'config/constants/tokens'
-import { getCakeVaultAddress, getIfoPoolAddress, getMasterChefAddress } from 'utils/addressHelpers'
+import { getCakeVaultAddress, getMasterChefAddress } from 'utils/addressHelpers'
+import { ifoPoolV1Contract } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 const cakeLpAddress = '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0'
 
@@ -80,7 +81,7 @@ const CakeVaultPricePerFullShareStrategy = {
 const IFOPoolSharesStrategy = {
   name: 'contract-call',
   params: {
-    address: getIfoPoolAddress(),
+    address: ifoPoolV1Contract,
     decimals: 0,
     output: 'shares',
     methodABI: {
@@ -123,7 +124,7 @@ const IFOPoolSharesStrategy = {
 const IFOPoolPricePerFullShareStrategy = {
   name: 'contract-call',
   params: {
-    address: getIfoPoolAddress(),
+    address: ifoPoolV1Contract,
     decimals: 0,
     args: [],
     methodABI: {

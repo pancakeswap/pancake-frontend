@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import fetchIfoPoolUser from 'state/pools/fetchIfoPoolUser'
-import { fetchPublicIfoPoolData, fetchIfoPoolFeesData } from 'state/pools/fetchIfoPoolPublic'
+import fetchIfoPoolUser from 'views/Migration/hook/V1/Pool/fetchIfoPoolUser'
+import { fetchPublicIfoPoolData, fetchIfoPoolFeesData } from 'views/Migration/hook/V1/Pool/fetchIfoPoolPublic'
 import { initialPoolVaultState } from 'state/pools/index'
 import useSWR from 'swr'
 import { fetchPublicVaultData, fetchVaultFees } from 'state/pools/fetchVaultPublic'
@@ -12,6 +12,14 @@ import { simpleRpcProvider } from 'utils/providers'
 import cakeVaultAbi from 'config/abi/cakeVault.json'
 import { FAST_INTERVAL } from 'config/constants'
 import { VaultKey } from 'state/types'
+
+export const ifoPoolV1Contract = '0x1B2A2f6ed4A1401E8C73B4c2B6172455ce2f78E8'
+export const cakeVaultAddress = '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC'
+
+const getCakeVaultContract = (signer?: Signer | Provider) => {
+  const signerOrProvider = signer ?? simpleRpcProvider
+  return new Contract(cakeVaultAddress, cakeVaultAbi, signerOrProvider) as any
+}
 
 const fetchVaultUserV1 = async (account: string) => {
   const contract = getCakeVaultContract()
@@ -35,17 +43,9 @@ const fetchVaultUserV1 = async (account: string) => {
   }
 }
 
-export const ifoPoolV1Contract = '0x1B2A2f6ed4A1401E8C73B4c2B6172455ce2f78E8'
-export const cakeVaultAddress = '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC'
-
-const getCakeVaultContract = (signer?: Signer | Provider) => {
-  const signerOrProvider = signer ?? simpleRpcProvider
-  return new Contract(cakeVaultAddress, cakeVaultAbi, signerOrProvider) as any
-}
-
 const getIfoPoolData = async (account) => {
   const [ifoData, userData, feesData] = await Promise.all([
-    fetchPublicIfoPoolData(),
+    fetchPublicIfoPoolData(ifoPoolV1Contract),
     fetchIfoPoolUser(account, ifoPoolV1Contract),
     fetchIfoPoolFeesData(ifoPoolV1Contract),
   ])
