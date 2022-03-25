@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { confirmOrderCancellation, confirmOrderSubmission, saveOrder, LS_ORDERS } from 'utils/localStorageOrders'
-import getLocalStorageItemKeys from 'utils/getLocalStorageItemKeys'
+import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
 import {
   addTransaction,
   checkedTransaction,
@@ -84,7 +83,5 @@ export default createReducer(initialState, (builder) =>
       if (transactions[chainId]) {
         transactions[chainId] = {}
       }
-      const lsOrderKeys = getLocalStorageItemKeys(LS_ORDERS)
-      lsOrderKeys.forEach((lsOrderKey) => window?.localStorage?.removeItem(lsOrderKey))
     }),
 )
