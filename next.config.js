@@ -12,8 +12,12 @@ const sentryWebpackPluginOptions = {
   //   urlPrefix, include, ignore
 
   silent: true, // Suppresses all logs
-  dryRun: !process.env.SENTRY_AUTH_TOKEN, // Set to true will skip the upload release step
   ignore: ['node_modules', 'cypress'],
+  // Set to env false will skip deploying release on Sentry except Production
+  // https://github.com/getsentry/sentry-webpack-plugin/blob/master/src/index.js#L522
+  deploy: {
+    env: process.env.SENTRY_AUTH_TOKEN ? 'production' : undefined,
+  },
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 }
