@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleProvider } from 'styled-components'
 import { ModalProvider } from '@pancakeswap/uikit'
 import { ToastsProvider, ToastListener } from 'contexts/ToastsContext'
@@ -13,6 +13,7 @@ import { TooltipListener, TooltipProvider } from 'contexts/bmp/TooltipContext'
 import useBmpInit from 'hooks/useBmpInit'
 import { useInactiveListener } from './hooks/useInactiveListener'
 import { Blocklist, Updaters } from './index'
+import { useDidHide, useDidShow } from '@binance/mp-service'
 
 const Hooks = () => {
   usePollBlockNumber()
@@ -26,6 +27,13 @@ const Hooks = () => {
 }
 
 const Providers: React.FC = ({ children }) => {
+  const [visible, setVisible] = useState(false)
+  useDidHide(() => {
+    setVisible(false)
+  })
+  useDidShow(() => {
+    setVisible(true)
+  })
   return (
     <>
       <StyleProvider />
@@ -36,8 +44,8 @@ const Providers: React.FC = ({ children }) => {
               <ModalProvider>
                 <Blocklist>
                   <view>
-                    <Updaters />
-                    <Hooks />
+                    {visible && <Updaters />}
+                    {visible && <Hooks />}
                   </view>
                   {children}
                   <ToastListener />
