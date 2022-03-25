@@ -1,6 +1,8 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@pancakeswap/sdk'
+import isEqual from 'lodash/isEqual'
+import { useDidHide, useDidShow } from '@binance/mp-service'
 import { Text, Flex, CardBody, CardFooter, Button, AddIcon, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -23,13 +25,10 @@ const Body = styled(CardBody)`
   min-height: 324px;
 `
 
-export default function Pool() {
-  const { dispatch } = useLiquidity()
-  const { account } = useActiveWeb3React()
-  const { t } = useTranslation()
-
-  // fetch the user's balances of all tracked V2 LP tokens
+let origin
+const TrackedTokenHook = ({ account, setV2IsLoading, setAllV2PairsWithLiquidity }) => {
   const trackedTokenPairs = useTrackedTokenPairs()
+  // fetch the user's balances of all tracked V2 LP tokens
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
     [trackedTokenPairs],
@@ -56,7 +55,27 @@ export default function Pool() {
   const v2IsLoading =
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some((V2Pair) => !V2Pair)
 
-  const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
+  const allV2PairsWithLiquidity = useMemo(
+    () => v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair)),
+    [v2Pairs],
+  )
+  useEffect(() => {
+    setV2IsLoading(v2IsLoading)
+  }, [v2IsLoading])
+  useEffect(() => {
+    if (!isEqual(allV2PairsWithLiquidity, origin)) {
+      setAllV2PairsWithLiquidity(allV2PairsWithLiquidity)
+      origin = allV2PairsWithLiquidity
+    }
+  }, [allV2PairsWithLiquidity])
+
+  return <></>
+}
+
+function Pool({ v2IsLoading, allV2PairsWithLiquidity }) {
+  const { dispatch } = useLiquidity()
+  const { account } = useActiveWeb3React()
+  const { t } = useTranslation()
 
   const renderBody = () => {
     if (!account) {
@@ -143,5 +162,30 @@ export default function Pool() {
         </CardFooter>
       </AppBody>
     </ErrorBoundary>
+  )
+}
+
+export default function PoolPage() {
+  const { account } = useActiveWeb3React()
+  const [visible, setVisible] = useState(false)
+  const [v2IsLoading, setV2IsLoading] = useState()
+  const [allV2PairsWithLiquidity, setAllV2PairsWithLiquidity] = useState()
+  useDidHide(() => {
+    setVisible(false)
+  })
+  useDidShow(() => {
+    setVisible(true)
+  })
+  return (
+    <view>
+      <Pool allV2PairsWithLiquidity={allV2PairsWithLiquidity} v2IsLoading={v2IsLoading} />
+      {visible && (
+        <TrackedTokenHook
+          setAllV2PairsWithLiquidity={setAllV2PairsWithLiquidity}
+          setV2IsLoading={setV2IsLoading}
+          account={account}
+        />
+      )}
+    </view>
   )
 }
