@@ -32,6 +32,7 @@ import Stake from './Stake'
 import Apr from '../../Apr'
 import AutoHarvest from './AutoHarvest'
 import MaxStakeRow from '../../MaxStakeRow'
+import { PerformanceFee } from '../../Stat'
 
 const expandAnimation = keyframes`
   from {
@@ -284,6 +285,13 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       <InfoSection>
         {requirementRow}
         {maxStakeRow}
+        {pool.vaultKey && (
+          <PerformanceFee>
+            <Text ml="4px" small>
+              0~{performanceFeeAsDecimal}%
+            </Text>
+          </PerformanceFee>
+        )}
         {(isXs || isSm) && aprRow}
         {(isXs || isSm || isMd) && totalStakedRow}
         {shouldShowBlockCountdown && blocksRow}

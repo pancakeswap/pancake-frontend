@@ -5,12 +5,13 @@ import { FlexGap } from 'components/Layout/Flex'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool } from 'state/types'
+import { DeserializedCakeVault, DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import CardFooter from '../PoolCard/CardFooter'
 import PoolCardHeader, { PoolCardHeaderTitle } from '../PoolCard/PoolCardHeader'
 import { StyledCard } from '../PoolCard/StyledCard'
+import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
 // import UnstakingFeeCountdownRow from '../UnstakingFeeCountdownRow'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
 import { StakingApr } from './StakingApr'
@@ -29,11 +30,12 @@ interface CakeVaultProps extends CardProps {
 const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, defaultFooterExpanded, ...props }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const vaultPool = useVaultPoolByKey(pool.vaultKey)
   const {
     userData: { userShares, isLoading: isVaultUserDataLoading },
     fees: { performanceFeeAsDecimal },
     pricePerFullShare,
-  } = useVaultPoolByKey(pool.vaultKey)
+  } = vaultPool
 
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
 
@@ -54,6 +56,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
         <TokenPairImage {...vaultPoolConfig[pool.vaultKey].tokenImage} width={64} height={64} />
       </PoolCardHeader>
       <StyledCardBody isLoading={isLoading}>
+        <VaultPositionTagWithLabel pool={vaultPool as DeserializedCakeVault} />
         <StakingApr pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
         <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
           {/* TODO */}

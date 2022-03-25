@@ -1635,5 +1635,9 @@
   "IFO CAKE": "IFO CAKE",
   "Stake CAKE to participate in IFO": "Stake CAKE to participate in IFO",
   "Ended": "Ended",
-  "Migrate": "Migrate"
+  "Migrate": "Migrate",
+  "Performance fee only applies to the flexible staking rewards.": "Performance fee only applies to the flexible staking rewards.",
+  "Total locked": "Total locked",
+  "What’s the difference?": "What’s the difference?",
+  "My Position": "My Position"
 }

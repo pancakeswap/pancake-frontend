@@ -193,6 +193,7 @@ export interface DeserializedIfoVaultUser extends DeserializedVaultUser {
 
 export interface DeserializedCakeVault {
   totalShares?: BigNumber
+  totalLockedAmount?: BigNumber
   pricePerFullShare?: BigNumber
   totalCakeInVault?: BigNumber
   fees?: DeserializedVaultFees
@@ -201,6 +202,7 @@ export interface DeserializedCakeVault {
 
 export interface SerializedCakeVault {
   totalShares?: SerializedBigNumber
+  totalLockedAmount?: SerializedBigNumber
   pricePerFullShare?: SerializedBigNumber
   totalCakeInVault?: SerializedBigNumber
   fees?: SerializedVaultFees

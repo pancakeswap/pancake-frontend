@@ -177,9 +177,12 @@ export const useVaultPoolContract = (): CakeVaultV2 => {
   return getCakeVaultV2Contract(library.getSigner())
 }
 
-export const useCakeVaultContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getCakeVaultV2Contract(library.getSigner()), [library])
+export const useCakeVaultContract = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getCakeVaultV2Contract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
 }
 
 export const usePredictionsContract = () => {

@@ -67,6 +67,7 @@ export const transformPool = (pool: SerializedPool): DeserializedPool => {
 export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCakeVault => {
   const {
     totalShares: totalSharesAsString,
+    totalLockedAmount: totalLockedAmountAsString,
     pricePerFullShare: pricePerFullShareAsString,
     totalCakeInVault: totalCakeInVaultAsString,
     fees: { performanceFee, withdrawalFee, withdrawalFeePeriod },
@@ -85,6 +86,7 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
   } = vault
 
   const totalShares = new BigNumber(totalSharesAsString)
+  const totalLockedAmount = new BigNumber(totalLockedAmountAsString)
   const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
   const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
   const userShares = new BigNumber(userSharesAsString)
@@ -96,6 +98,7 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
 
   return {
     totalShares,
+    totalLockedAmount,
     pricePerFullShare,
     totalCakeInVault,
     fees: { performanceFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
