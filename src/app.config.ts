@@ -12,8 +12,8 @@ export default {
   tabBar: {
     color: '#7A6EAA',
     selectedColor: '#7645D9',
-    backgroundColor: '#fff',
-    borderStyle: 'white',
+    backgroundColor: '@navBgColor',
+    borderStyle: '@tabBorder',
     list: [
       {
         iconPath: 'images/trade.png',
