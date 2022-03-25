@@ -50,7 +50,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.froyo,
     quoteToken: serializedTokens.cake,
-    isCommunity: true,
   },
   {
     pid: 517,
