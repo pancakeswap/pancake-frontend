@@ -10,6 +10,7 @@ import {
   SerializableTransactionReceipt,
   TransactionType,
 } from './actions'
+import { resetUserState } from '../global/actions'
 
 const now = () => new Date().getTime()
 
@@ -76,6 +77,11 @@ export default createReducer(initialState, (builder) =>
         confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (transactions[chainId]?.[hash].type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
+      }
+    })
+    .addCase(resetUserState, (transactions, { payload: { chainId } }) => {
+      if (transactions[chainId]) {
+        transactions[chainId] = {}
       }
     }),
 )
