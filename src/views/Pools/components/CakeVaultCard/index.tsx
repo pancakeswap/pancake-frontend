@@ -14,7 +14,7 @@ import { StyledCard } from '../PoolCard/StyledCard'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
 // import UnstakingFeeCountdownRow from '../UnstakingFeeCountdownRow'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
-import { StakingApr } from './StakingApr'
+import { StakingApy } from './StakingApy'
 import VaultCardActions from './VaultCardActions'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
@@ -57,7 +57,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
       </PoolCardHeader>
       <StyledCardBody isLoading={isLoading}>
         <VaultPositionTagWithLabel pool={vaultPool as DeserializedCakeVault} />
-        <StakingApr pool={pool} stakedBalance={cakeAsBigNumber} performanceFee={performanceFeeAsDecimal} />
+        <StakingApy />
         <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
           {/* TODO */}
           <Box>

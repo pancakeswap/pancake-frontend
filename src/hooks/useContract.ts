@@ -124,9 +124,12 @@ export const useLotteryV2Contract = () => {
   return useMemo(() => getLotteryV2Contract(library.getSigner()), [library])
 }
 
-export const useMasterchef = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getMasterchefContract(library.getSigner()), [library])
+export const useMasterchef = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getMasterchefContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [library, withSignerIfPossible, account],
+  )
 }
 
 export const useMasterchefV1 = () => {

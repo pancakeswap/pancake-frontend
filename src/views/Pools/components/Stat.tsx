@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { FC, ReactNode } from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useVaultMaxDuration } from '../hooks/useVaultMaxDuration'
+import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 
 const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
   return (

@@ -50,6 +50,10 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
     placement: 'bottom',
   })
 
+  if (!userShares.gt(0)) {
+    return null
+  }
+
   return (
     <StyledCell role="cell">
       <CellContent>

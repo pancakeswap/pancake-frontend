@@ -1,10 +1,12 @@
-import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { DeserializedPool } from 'state/types'
-import { useVaultPoolByKey } from 'state/pools/hooks'
+import { Skeleton, Text } from '@pancakeswap/uikit'
+import Balance from 'components/Balance'
+import { FlexGap } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
+import { useVaultApy } from 'hooks/useVaultApy'
+import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { DeserializedPool } from 'state/types'
 import BaseCell, { CellContent } from './BaseCell'
-import Apr from '../../Apr'
-import { convertSharesToCake } from '../../../helpers'
 
 interface AprCellProps {
   pool: DeserializedPool
@@ -12,15 +14,47 @@ interface AprCellProps {
 
 const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
 
   const {
     userData: { userShares },
-    fees: { performanceFeeAsDecimal },
-    pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
 
-  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
+  const maxLockDuration = useVaultMaxDuration()
+  const { flexibleApy, lockedApy } = useVaultApy({ duration: maxLockDuration?.toNumber() })
+
+  if (!userShares.gt(0)) {
+    return (
+      <>
+        <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
+          <CellContent>
+            <Text fontSize="12px" color="textSubtle" textAlign="left">
+              {t('Flexible APY')}
+            </Text>
+            {flexibleApy ? (
+              <Balance fontSize="16px" value={parseFloat(flexibleApy)} decimals={2} unit="%" />
+            ) : (
+              <Skeleton width="80px" height="16px" />
+            )}
+          </CellContent>
+        </BaseCell>
+        <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
+          <CellContent>
+            <Text fontSize="12px" color="textSubtle" textAlign="left">
+              {t('Locked APY')}
+            </Text>
+            {lockedApy ? (
+              <FlexGap gap="4px">
+                <Text>Up to</Text>
+                <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
+              </FlexGap>
+            ) : (
+              <Skeleton width="80px" height="16px" />
+            )}
+          </CellContent>
+        </BaseCell>
+      </>
+    )
+  }
 
   return (
     <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
@@ -28,12 +62,11 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('APY')}
         </Text>
-        <Apr
-          pool={pool}
-          stakedBalance={cakeAsBigNumber}
-          performanceFee={performanceFeeAsDecimal}
-          showIcon={!isMobile}
-        />
+        {flexibleApy ? (
+          <Balance fontSize="16px" value={parseFloat(flexibleApy)} decimals={2} unit="%" />
+        ) : (
+          <Skeleton width="80px" height="16px" />
+        )}
       </CellContent>
     </BaseCell>
   )

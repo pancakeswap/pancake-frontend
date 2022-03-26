@@ -85,9 +85,9 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
     },
   } = vault
 
-  const totalShares = new BigNumber(totalSharesAsString)
+  const totalShares = totalSharesAsString ? new BigNumber(totalSharesAsString) : BIG_ZERO
   const totalLockedAmount = new BigNumber(totalLockedAmountAsString)
-  const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
+  const pricePerFullShare = pricePerFullShareAsString ? new BigNumber(pricePerFullShareAsString) : BIG_ZERO
   const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
   const userShares = new BigNumber(userSharesAsString)
   const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
