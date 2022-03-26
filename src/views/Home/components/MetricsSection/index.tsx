@@ -73,7 +73,7 @@ const Stats = () => {
         <IconCard {...TradesCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}>
           <StatCardContent
             headingText={t('15% Interest')}
-            bodyText={t('Provided by AAVE')}
+            bodyText={t('Provided by MAI/USDC in QiDao')}
             highlightColor={theme.colors.primary}
           />
         </IconCard>
