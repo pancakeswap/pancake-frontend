@@ -21,7 +21,7 @@
     {
       "name": "Peronio",
       "symbol": "PE",
-      "address": "0x400F5AcC5B52232DFfAed3C53903d926ccEA9B81",
+      "address": "0xc2768beF7a6BB57F0FfA169a9ED4017c09696FF1",
       "chainId": 137,
       "decimals": 6,
       "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/256.png"
@@ -39,6 +39,38 @@
       "symbol": "USDC",
       "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
       "chainId": 137,
+      "decimals": 6,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2791bca1f2de4661ed88a30c99a7a9449aa84174.png"
+    },
+    {
+      "name": "WMATIC Token",
+      "symbol": "WMATIC",
+      "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+      "chainId": 80001,
+      "decimals": 18,
+      "logoURI": "https://app.apeswap.finance/static/media/matic-logo.6e808c42.png"
+    },
+    {
+      "name": "Peronio",
+      "symbol": "PE",
+      "address": "0xc2768beF7a6BB57F0FfA169a9ED4017c09696FF1",
+      "chainId": 80001,
+      "decimals": 6,
+      "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/256.png"
+    },
+    {
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "chainId": 80001,
+      "decimals": 6,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0xc2132d05d31c914a87c6611c10748aeb04b58e8f.png"
+    },
+    {
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+      "chainId": 80001,
       "decimals": 6,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2791bca1f2de4661ed88a30c99a7a9449aa84174.png"
     }
