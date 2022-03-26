@@ -23,7 +23,7 @@ export const setupNetwork = async () => {
               symbol: 'bnb',
               decimals: 18,
             },
-            rpcUrls: 'https://polygon-rpc.com',
+            rpcUrls: ['https://polygon-rpc.com'],
             blockExplorerUrls: [`${BASE_BSC_SCAN_URL}/`],
           },
         ],
