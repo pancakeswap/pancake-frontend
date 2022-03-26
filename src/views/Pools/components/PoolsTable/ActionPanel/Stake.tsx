@@ -270,7 +270,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             <Button style={{ flex: 1 }} onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
               {t('Flexible')}
             </Button>
-            <Button style={{ flex: 1 }} disabled>
+            <Button style={{ flex: 1 }} disabled decorator={{ text: t('Soon') }}>
               {t('Locked')}
             </Button>
           </FlexGap>
