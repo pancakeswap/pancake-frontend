@@ -22,7 +22,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
 
     return {
       ...initialState,
-      currentLanguage: languages[codeFromStorage],
+      currentLanguage: languages[codeFromStorage] || EN,
     }
   })
   const { currentLanguage } = state
