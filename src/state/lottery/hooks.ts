@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useSelector, batch } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
-import { State } from '../types'
+import { State, UserRound } from '../types'
 import { fetchCurrentLotteryId, fetchCurrentLottery, fetchUserTicketsAndLotteries, fetchPublicLotteries } from '.'
 import { makeLotteryGraphRoundByIdSelector, makeLotteryGraphDataByIdSelector, lotterySelector } from './selectors'
 
@@ -16,7 +16,7 @@ export const useGetUserLotteriesGraphData = () => {
   return useSelector((state: State) => state.lottery.userLotteryData)
 }
 
-export const useGetUserLotteryGraphRoundById = (lotteryId: string) => {
+export const useGetUserLotteryGraphRoundById = (lotteryId: string): UserRound => {
   const lotteryGraphRoundByIdSelector = useMemo(() => makeLotteryGraphRoundByIdSelector(lotteryId), [lotteryId])
   return useSelector(lotteryGraphRoundByIdSelector)
 }
