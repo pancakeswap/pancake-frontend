@@ -119,9 +119,6 @@ const Menu: React.FC<NavProps> = ({
     };
   }, [totalTopMenuHeight]);
 
-  // Find the home link if provided
-  const homeLink = links.find((link) => link.label === "Home");
-
   const subLinksWithoutMobile = subLinks?.filter((subLink) => !subLink.isMobileOnly);
   const subLinksMobileOnly = subLinks?.filter((subLink) => subLink.isMobileOnly);
 
@@ -132,7 +129,7 @@ const Menu: React.FC<NavProps> = ({
           {banner && <TopBannerContainer height={topBannerHeight}>{banner}</TopBannerContainer>}
           <StyledNav>
             <Flex>
-              <Logo isDark={isDark} href={homeLink?.href ?? "/"} />
+              <Logo isDark={isDark} href="https://pancakeswap.finance/" />
               {!isMobile && <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />}
             </Flex>
             <Flex alignItems="center" height="100%">
