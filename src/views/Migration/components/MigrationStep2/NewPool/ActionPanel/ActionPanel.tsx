@@ -53,6 +53,7 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
   flex-direction: column;
   justify-content: center;
   padding: 24px 16px;
+  border-radius: 0 0 16px 16px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
@@ -70,6 +71,16 @@ const ActionContainer = styled.div`
     flex-grow: 1;
     flex-basis: 0;
     margin-bottom: 24px;
+  }
+`
+
+const PerformanceContainter = styled.div`
+  margin-top: 12px;
+  padding: 0;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 0px;
+    padding: 0 12px;
   }
 `
 
@@ -116,11 +127,13 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ pool, account, expanded }) =>
       </ActionContainer>
       {/* <AprRow pool={pool} /> */}
       {pool.vaultKey && (
-        <PerformanceFee>
-          <Text ml="4px" small>
-            0~{performanceFeeAsDecimal}%
-          </Text>
-        </PerformanceFee>
+        <PerformanceContainter>
+          <PerformanceFee>
+            <Text ml="4px" small>
+              0~{performanceFeeAsDecimal}%
+            </Text>
+          </PerformanceFee>
+        </PerformanceContainter>
       )}
       <TotalStaked pool={pool} totalCakeInVault={totalCakeInVault} cakeInVaults={cakeInVaults} />
     </StyledActionPanel>
