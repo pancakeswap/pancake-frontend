@@ -30,8 +30,9 @@ const WalletWrapper = styled(Box)`
  * @returns sorted config
  */
 const getPreferredConfig = (walletConfig: Config[]) => {
-  const preferredWalletName = localStorage.getItem(walletLocalStorageKey);
   const sortedConfig = walletConfig.sort((a: Config, b: Config) => a.priority - b.priority);
+
+  const preferredWalletName = localStorage?.getItem(walletLocalStorageKey);
 
   if (!preferredWalletName) {
     return sortedConfig;
