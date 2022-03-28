@@ -21,6 +21,7 @@ import { getCakeContract } from 'utils/contractHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { simpleRpcProvider } from 'utils/providers'
 import { multicallv2 } from 'utils/multicall'
+import { BSC_BLOCK_TIME } from 'config'
 import { fetchIfoPoolFeesData, fetchPublicIfoPoolData } from './fetchIfoPoolPublic'
 import fetchIfoPoolUserData from './fetchIfoPoolUser'
 import {
@@ -150,8 +151,12 @@ export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (
     const liveData = poolsConfig.map((pool) => {
       const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
       const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
+      const isPoolStartToFar =
+        currentBlock > 0 && blockLimit
+          ? Number(blockLimit.startBlock) > currentBlock + (60 / BSC_BLOCK_TIME) * 4
+          : false
       const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
-      const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
+      const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded || isPoolStartToFar
 
       const stakingTokenAddress = pool.stakingToken.address ? pool.stakingToken.address.toLowerCase() : null
       const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
