@@ -16529,15 +16529,15 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-peronio-core@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/peronio-core/-/peronio-core-0.8.2.tgz#57727dba11999d5f739e6593dfc47a33755b2f86"
-  integrity sha512-p5Bm6IX2y+t+k7aHsPB8Nh4SdckwY/cA5IHixUoeEiE9LTn7/6tke33FkAUeElzYTtUgSS27Mg4yyRx9/CIUHQ==
+peronio-core@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/peronio-core/-/peronio-core-0.9.1.tgz#87c2e0bf324b13dc2fce046511bfc684f21da122"
+  integrity sha512-V8DF5BukR9K8ovzRkSosu+ph0hIzaRbIGG9e1TdunN3vrTpXGqYwD0ZT0uO/bjyBZNG9Y6/XkbUzGp7TcPJpVw==
 
-peronio-sdk@0.8.12:
-  version "0.8.12"
-  resolved "https://registry.yarnpkg.com/peronio-sdk/-/peronio-sdk-0.8.12.tgz#775104c2b4559d865cf13700beacd2e43b40b678"
-  integrity sha512-n4pJsQDylIJPWXukLUKZ9y2p+RFp/8XsQXBjHI0v0AMCD6S+YywQ43RpM2Oyu0K0g18t1a+9LopKopMYYuVsqg==
+peronio-sdk@^0.8.15:
+  version "0.8.15"
+  resolved "https://registry.yarnpkg.com/peronio-sdk/-/peronio-sdk-0.8.15.tgz#b291130b95c2117c0d4c97c79139a57fcc89f1d5"
+  integrity sha512-Dyg/leoNt1pg/S9KxkVD5fxz8QIzcQrf7lm/dbmhzt/Z63dkaO9hMHelO89iRsRUdZAcGzSKRpZBk8Y9k/o3Tw==
   dependencies:
     "@pancakeswap-libs/pancake-swap-core" "^0.1.0"
     big.js "^5.2.2"
