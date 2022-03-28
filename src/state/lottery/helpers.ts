@@ -100,6 +100,14 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
   }
 }
 
+export const fetchCurrentLotteryId = async (): Promise<EthersBigNumber> => {
+  try {
+    return lotteryContract.currentLotteryId()
+  } catch (error) {
+    return null
+  }
+}
+
 export const fetchCurrentLotteryIdAndMaxBuy = async () => {
   try {
     const calls = ['currentLotteryId', 'maxNumberTicketsPerBuyOrClaim'].map((method) => ({
