@@ -33,6 +33,7 @@ import Apr from '../../Apr'
 import AutoHarvest from './AutoHarvest'
 import MaxStakeRow from '../../MaxStakeRow'
 import { PerformanceFee } from '../../Stat'
+import { VaultPositionTagWithLabel } from '../../Vault/VaultPositionTag'
 
 const expandAnimation = keyframes`
   from {
@@ -157,12 +158,13 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
   const tokenAddress = earningToken.address || ''
 
+  const vaultPool = useVaultPoolByKey(vaultKey)
   const {
     totalCakeInVault,
     userData: { userShares },
     fees: { performanceFeeAsDecimal },
     pricePerFullShare,
-  } = useVaultPoolByKey(vaultKey)
+  } = vaultPool
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
@@ -249,15 +251,10 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       <Skeleton width="56px" height="16px" />
     )
 
-  const aprRow = (
+  const aprRow = !vaultKey && (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
-      <Text>{vaultKey ? t('APY') : t('APR')}:</Text>
-      <Apr
-        pool={pool}
-        showIcon
-        stakedBalance={poolStakingTokenBalance}
-        performanceFee={vaultKey ? performanceFeeAsDecimal : 0}
-      />
+      <Text>{t('APR')}:</Text>
+      <Apr pool={pool} showIcon stakedBalance={poolStakingTokenBalance} performanceFee={0} />
     </Flex>
   )
 
@@ -344,12 +341,23 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
               : `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`}
           </Text>
         )}
-        {pool.vaultKey ? (
-          <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
-        ) : (
-          <Harvest {...pool} userDataLoaded={userDataLoaded} />
-        )}
-        <Stake pool={pool} userDataLoaded={userDataLoaded} />
+        <Box width="100%">
+          {pool.vaultKey && (
+            <VaultPositionTagWithLabel
+              pool={vaultPool}
+              width={['auto', , 'fit-content']}
+              ml={['12px', , , , , '32px']}
+            />
+          )}
+          <ActionContainer>
+            {pool.vaultKey ? (
+              <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
+            ) : (
+              <Harvest {...pool} userDataLoaded={userDataLoaded} />
+            )}
+            <Stake pool={pool} userDataLoaded={userDataLoaded} />
+          </ActionContainer>
+        </Box>
       </ActionContainer>
     </StyledActionPanel>
   )

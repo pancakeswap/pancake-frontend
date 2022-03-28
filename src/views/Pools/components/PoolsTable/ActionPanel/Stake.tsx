@@ -21,6 +21,7 @@ import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import StakeModal from '../../PoolCard/Modals/StakeModal'
 import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
+import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -266,14 +267,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
       </ActionTitles>
       <ActionContent>
         {vaultKey ? (
-          <FlexGap gap="12px" width="100%">
-            <Button style={{ flex: 1 }} onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}>
-              {t('Flexible')}
-            </Button>
-            <Button style={{ flex: 1 }} disabled decorator={{ text: t('Soon') }}>
-              {t('Locked')}
-            </Button>
-          </FlexGap>
+          <VaultStakeButtonGroup
+            onFlexibleClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}
+            onLockedClick={() => {
+              //
+            }}
+          />
         ) : (
           <Button
             width="100%"

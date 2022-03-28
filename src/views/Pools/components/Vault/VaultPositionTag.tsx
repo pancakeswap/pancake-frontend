@@ -1,4 +1,5 @@
-import { Tag, TagProps, Flex, Text, FlexProps, SplitIcon, LockIcon, UnlockIcon, HotIcon, Box } from '@pancakeswap/uikit'
+import { Tag, TagProps, Text, FlexProps, SplitIcon, LockIcon, UnlockIcon, HotIcon, Box } from '@pancakeswap/uikit'
+import { FlexGap, FlexGapProps } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
 import { FC, useMemo } from 'react'
 import { DeserializedCakeVault } from 'state/types'
@@ -59,19 +60,19 @@ const VaultPositionTag: FC<{ position: VaultPosition }> = ({ position }) => {
   )
 }
 
-export const VaultPositionTagWithLabel: FC<{ pool: DeserializedCakeVault } & FlexProps> = ({ pool, ...props }) => {
+export const VaultPositionTagWithLabel: FC<{ pool: DeserializedCakeVault } & FlexGapProps> = ({ pool, ...props }) => {
   const { t } = useTranslation()
 
   const position = useMemo(() => getPosition(pool), [pool])
 
   if (position) {
     return (
-      <Flex alignItems="center" justifyContent="space-between" mb="8px" {...props}>
-        <Text fontSize="12px" color="secondary" textTransform="uppercase" bold ml="4px">
+      <FlexGap alignItems="center" justifyContent="space-between" mb="8px" gap="12px" {...props}>
+        <Text fontSize="12px" color="secondary" textTransform="uppercase" bold>
           {t('My Position')}
         </Text>
         <VaultPositionTag position={position} />
-      </Flex>
+      </FlexGap>
     )
   }
 
