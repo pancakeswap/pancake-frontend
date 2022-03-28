@@ -5,6 +5,8 @@ import { multicallv2 } from 'utils/multicall'
 import { formatEther } from '@ethersproject/units'
 import _chunk from 'lodash/chunk'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
+import { getVotingPowerList, getVotingPowerListMapTotal } from './legacy/getVotingPowerList'
+import { getScores } from './getScores'
 
 export const isCoreProposal = (proposal: Proposal) => {
   return ADMINS.includes(proposal.author.toLowerCase())
@@ -84,6 +86,10 @@ export const sendSnapshotData = async (message: Message) => {
 
 const votingPowerContractAddress = '0xc0FeBE244cE1ea66d27D23012B3D616432433F42'
 
+export const VOTING_POWER_BLOCK = {
+  v0: 16300686,
+}
+
 const votingPowerAbi = [
   'function getCakeBalance(address _user) view returns (uint256)',
   'function getCakeBnbLpBalance(address _user) view returns (uint256)',
@@ -95,49 +101,53 @@ const votingPowerAbi = [
 ]
 
 export const getVotingPower = async (account: string, poolAddresses: string[], blockNumber?: number) => {
-  const calls = [
-    'getCakeBalance',
-    'getCakeBnbLpBalance',
-    'getCakePoolBalance',
-    'getCakeVaultBalance',
-    'getIFOPoolBalancee',
-  ].map((method) => {
-    return {
-      address: votingPowerContractAddress,
-      name: method,
-      params: [account],
-    }
-  })
+  if (blockNumber && blockNumber >= VOTING_POWER_BLOCK.v0) {
+    const calls = [
+      'getCakeBalance',
+      'getCakeBnbLpBalance',
+      'getCakePoolBalance',
+      'getCakeVaultBalance',
+      'getIFOPoolBalancee',
+    ].map((method) => {
+      return {
+        address: votingPowerContractAddress,
+        name: method,
+        params: [account],
+      }
+    })
 
-  const poolCalls = ['getPoolsBalance', 'getVotingPower'].map((method) => {
-    return {
-      address: votingPowerContractAddress,
-      name: method,
-      params: [account, poolAddresses],
-    }
-  })
+    const poolCalls = ['getPoolsBalance', 'getVotingPower'].map((method) => {
+      return {
+        address: votingPowerContractAddress,
+        name: method,
+        params: [account, poolAddresses],
+      }
+    })
 
-  const [
-    [cakeBalance],
-    [cakeBnbLpBalance],
-    [cakePoolBalance],
-    [cakeVaultBalance],
-    [ifoPoolBalance],
-    [poolsBalance],
-    [total],
-  ] = await multicallv2(votingPowerAbi, [...calls, ...poolCalls], {
-    blockTag: blockNumber,
-  })
-  return {
-    poolsBalance: formatEther(poolsBalance),
-    total: formatEther(total),
-    cakeBalance: formatEther(cakeBalance),
-    cakeVaultBalance: formatEther(cakeVaultBalance),
-    IFOPoolBalance: formatEther(ifoPoolBalance),
-    cakePoolBalance: formatEther(cakePoolBalance),
-    cakeBnbLpBalance: formatEther(cakeBnbLpBalance),
-    voter: account,
+    const [
+      [cakeBalance],
+      [cakeBnbLpBalance],
+      [cakePoolBalance],
+      [cakeVaultBalance],
+      [ifoPoolBalance],
+      [poolsBalance],
+      [total],
+    ] = await multicallv2(votingPowerAbi, [...calls, ...poolCalls], {
+      blockTag: blockNumber,
+    })
+    return {
+      poolsBalance: formatEther(poolsBalance),
+      total: formatEther(total),
+      cakeBalance: formatEther(cakeBalance),
+      cakeVaultBalance: formatEther(cakeVaultBalance),
+      IFOPoolBalance: formatEther(ifoPoolBalance),
+      cakePoolBalance: formatEther(cakePoolBalance),
+      cakeBnbLpBalance: formatEther(cakeBnbLpBalance),
+      voter: account,
+    }
   }
+
+  return (await getVotingPowerList([account], poolAddresses, blockNumber))[0]
 }
 
 export const calculateVoteResults = (votes: Vote[]): { [key: string]: Vote[] } => {
@@ -222,6 +232,10 @@ function calculateVotingPowerPools(scoresList: GetScoresResponse, voters: string
 }
 
 export async function getVotingPowerByCakeStrategy(voters: string[], poolAddresses: string[], blockNumber: number) {
+  if (blockNumber && blockNumber <= VOTING_POWER_BLOCK.v0) {
+    return getVotingPowerListMapTotal(voters, poolAddresses, blockNumber)
+  }
+
   const network = '56'
   const poolsStrategyList = poolAddresses.map((address) => createPoolStrategy(address))
   const chunkPools = _chunk(poolsStrategyList, 8)
@@ -253,32 +267,4 @@ export async function getVotingPowerByCakeStrategy(voters: string[], poolAddress
   }, {})
 
   return result
-}
-
-async function getScores(
-  space: string,
-  strategies: any[],
-  network: string,
-  addresses: string[],
-  snapshot: number | string = 'latest',
-  scoreApiUrl = 'https://score.snapshot.org/api/scores',
-) {
-  try {
-    const params = {
-      space,
-      network,
-      snapshot,
-      strategies,
-      addresses,
-    }
-    const res = await fetch(scoreApiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ params }),
-    })
-    const obj = await res.json()
-    return obj.result.scores
-  } catch (e) {
-    return Promise.reject(e)
-  }
 }
