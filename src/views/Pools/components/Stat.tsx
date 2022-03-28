@@ -6,6 +6,8 @@ import { useTranslation } from 'contexts/Localization'
 import { FC, ReactNode } from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
+import { DeserializedLockedVaultUser } from 'state/types'
+import { isLocked, isStaked } from 'utils/cakePool'
 
 const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
   return (
@@ -16,12 +18,22 @@ const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
   )
 }
 
-export const PerformanceFee: FC<{ performanceFee?: number }> = ({ performanceFee, children }) => {
+export const PerformanceFee: FC<{ userData?: DeserializedLockedVaultUser; performanceFeeAsDecimal?: number }> = ({
+  userData,
+  performanceFeeAsDecimal,
+}) => {
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Performance fee only applies to the flexible staking rewards.'),
     { placement: 'bottom-start' },
   )
+
+  const isLock = isLocked(userData)
+  const isStake = isStaked(userData)
+
+  if (!performanceFeeAsDecimal || isLock) {
+    return null
+  }
 
   return (
     <StatWrapper
@@ -32,14 +44,9 @@ export const PerformanceFee: FC<{ performanceFee?: number }> = ({ performanceFee
       }
     >
       {tooltipVisible && tooltip}
-      {children ||
-        (performanceFee ? (
-          <Text ml="4px" small>
-            {performanceFee / 100}%
-          </Text>
-        ) : (
-          <Skeleton width="90px" height="21px" />
-        ))}
+      <Text ml="4px" small>
+        {isStake ? `${performanceFeeAsDecimal}%` : `0~${performanceFeeAsDecimal}%`}
+      </Text>
     </StatWrapper>
   )
 }

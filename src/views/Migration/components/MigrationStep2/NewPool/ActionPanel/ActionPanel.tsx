@@ -81,11 +81,12 @@ interface ActionPanelProps {
 
 const ActionPanel: React.FC<ActionPanelProps> = ({ pool, account, expanded }) => {
   const {
-    userData: { cakeAtLastUserAction, userShares },
+    userData,
     pricePerFullShare,
     totalCakeInVault,
     fees: { performanceFeeAsDecimal },
   } = useVaultPoolByKey(pool.vaultKey)
+  const { cakeAtLastUserAction, userShares } = userData
   const vaultPools = useVaultPools()
   const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
     return total.plus(vault.totalCakeInVault)
@@ -115,13 +116,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ pool, account, expanded }) =>
         <Staked pool={pool} />
       </ActionContainer>
       {/* <AprRow pool={pool} /> */}
-      {pool.vaultKey && (
-        <PerformanceFee>
-          <Text ml="4px" small>
-            0~{performanceFeeAsDecimal}%
-          </Text>
-        </PerformanceFee>
-      )}
+      {pool.vaultKey && <PerformanceFee userData={userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />}
       <TotalStaked pool={pool} totalCakeInVault={totalCakeInVault} cakeInVaults={cakeInVaults} />
     </StyledActionPanel>
   )
