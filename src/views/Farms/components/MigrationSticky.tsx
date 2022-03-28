@@ -2,12 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Flex, Text, useMatchBreakpoints, WarningIcon, Button, Link } from '@pancakeswap/uikit'
-import {
-  MENU_HEIGHT,
-  MOBILE_MENU_HEIGHT,
-  TOP_BANNER_HEIGHT,
-  TOP_BANNER_HEIGHT_MOBILE,
-} from '@pancakeswap/uikit/src/widgets/Menu/config'
+import { MENU_HEIGHT, TOP_BANNER_HEIGHT, TOP_BANNER_HEIGHT_MOBILE } from '@pancakeswap/uikit/src/widgets/Menu/config'
 
 const Container = styled.div`
   position: sticky;
@@ -81,8 +76,7 @@ const MigrationSticky: React.FC = () => {
     } else {
       const warningBannerHeight = document.querySelector('.warning-banner')
       const topBannerHeight = isMobile ? TOP_BANNER_HEIGHT_MOBILE : TOP_BANNER_HEIGHT
-      const topNavHeight = isMobile ? MENU_HEIGHT : MOBILE_MENU_HEIGHT
-      const totalTopMenuHeight = warningBannerHeight ? topNavHeight + topBannerHeight : topNavHeight
+      const totalTopMenuHeight = warningBannerHeight ? MENU_HEIGHT + topBannerHeight : MENU_HEIGHT
       setStickyPosition(totalTopMenuHeight)
     }
     refPrevOffset.current = currentScroll
@@ -91,7 +85,7 @@ const MigrationSticky: React.FC = () => {
   useEffect(() => {
     window.addEventListener('scroll', scrollEffect)
     return () => window.removeEventListener('scroll', scrollEffect)
-  }, [])
+  }, [isMobile])
 
   return (
     <Container style={{ top: `${stickPosition}px` }}>
