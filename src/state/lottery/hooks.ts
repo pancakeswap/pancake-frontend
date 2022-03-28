@@ -5,7 +5,7 @@ import { useAppDispatch } from 'state'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { State } from '../types'
 import { fetchCurrentLotteryId, fetchCurrentLottery, fetchUserTicketsAndLotteries, fetchPublicLotteries } from '.'
-import { makeLotteryGraphRoundByIdSelector, makeLotteryGraphDataByIdSelector, lotterySelector } from './selectors'
+import { makeLotteryGraphDataByIdSelector, lotterySelector } from './selectors'
 
 // Lottery
 export const useGetCurrentLotteryId = () => {
@@ -14,11 +14,6 @@ export const useGetCurrentLotteryId = () => {
 
 export const useGetUserLotteriesGraphData = () => {
   return useSelector((state: State) => state.lottery.userLotteryData)
-}
-
-export const useGetUserLotteryGraphRoundById = (lotteryId: string) => {
-  const lotteryGraphRoundByIdSelector = useMemo(() => makeLotteryGraphRoundByIdSelector(lotteryId), [lotteryId])
-  return useSelector(lotteryGraphRoundByIdSelector)
 }
 
 export const useGetLotteriesGraphData = () => {
