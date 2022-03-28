@@ -151,12 +151,12 @@ export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (
     const liveData = poolsConfig.map((pool) => {
       const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
       const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
-      const isPoolStartToFar =
+      const isPoolStartTooFar =
         currentBlock > 0 && blockLimit
           ? Number(blockLimit.startBlock) > currentBlock + (60 / BSC_BLOCK_TIME) * 4
           : false
       const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
-      const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded || isPoolStartToFar
+      const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded || isPoolStartTooFar
 
       const stakingTokenAddress = pool.stakingToken.address ? pool.stakingToken.address.toLowerCase() : null
       const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
