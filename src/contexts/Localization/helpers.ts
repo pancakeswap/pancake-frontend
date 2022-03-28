@@ -6,8 +6,13 @@ export const LS_KEY = 'pancakeswap_language'
 
 export const fetchLocale = async (locale) => {
   const response = await fetch(`${publicUrl}/locales/${locale}.json`)
-  const data = await response.json()
-  return data
+  if (response.ok) {
+    const data = await response.json()
+    return data
+  }
+
+  console.error(`API: Failed to fetch locale ${locale}`, response.statusText)
+  return null
 }
 
 export const getLanguageCodeFromLS = () => {
