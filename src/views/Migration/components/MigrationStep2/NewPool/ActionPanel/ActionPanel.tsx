@@ -1,13 +1,15 @@
 import React from 'react'
+import { Text } from '@pancakeswap/uikit'
 import styled, { keyframes, css } from 'styled-components'
 import { DeserializedPool } from 'state/types'
 import TotalStaked from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/TotalStaked'
 import AutoEarning from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/AutoEarning'
 import Earning from 'views/Migration/components/MigrationStep1/OldPool/ActionPanel/Earning'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
+import { PerformanceFee } from 'views/Pools/components/Stat'
 import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
-import AprRow from './AprRow'
+// import AprRow from './AprRow'
 import Staked from './Staked'
 
 const expandAnimation = keyframes`
@@ -34,6 +36,9 @@ const collapseAnimation = keyframes`
 
 const StyledActionPanel = styled.div<{ expanded: boolean }>`
   opacity: 1;
+  ${Text} {
+    font-size: 16px;
+  }
   animation: ${({ expanded }) =>
     expanded
       ? css`
@@ -79,6 +84,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ pool, account, expanded }) =>
     userData: { cakeAtLastUserAction, userShares },
     pricePerFullShare,
     totalCakeInVault,
+    fees: { performanceFeeAsDecimal },
   } = useVaultPoolByKey(pool.vaultKey)
   const vaultPools = useVaultPools()
   const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
@@ -108,7 +114,14 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ pool, account, expanded }) =>
         )}
         <Staked pool={pool} />
       </ActionContainer>
-      <AprRow pool={pool} />
+      {/* <AprRow pool={pool} /> */}
+      {pool.vaultKey && (
+        <PerformanceFee>
+          <Text ml="4px" small>
+            0~{performanceFeeAsDecimal}%
+          </Text>
+        </PerformanceFee>
+      )}
       <TotalStaked pool={pool} totalCakeInVault={totalCakeInVault} cakeInVaults={cakeInVaults} />
     </StyledActionPanel>
   )

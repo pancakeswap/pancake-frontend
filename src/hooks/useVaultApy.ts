@@ -38,7 +38,9 @@ const getLockedApy = (flexibleApy: string, boostFactor: number) =>
 const masterChefAddress = getMasterChefAddress()
 const cakeVaultAddress = getCakeVaultAddress()
 
-export function useVaultApy({ duration = 31536000 }: { duration?: number }) {
+const DEFAULT_MAX_DURATION = 31536000
+
+export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number }) {
   const { totalShares = BIG_ZERO, pricePerFullShare = BIG_ZERO } = useCakeVault()
   const totalSharesAsEtherBN = useMemo(() => FixedNumber.from(totalShares.toString()), [totalShares])
   const pricePerFullShareAsEtherBN = useMemo(() => FixedNumber.from(pricePerFullShare.toString()), [pricePerFullShare])

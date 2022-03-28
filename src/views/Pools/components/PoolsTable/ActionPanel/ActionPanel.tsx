@@ -108,10 +108,18 @@ const InfoSection = styled(Box)`
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: auto;
+
+  ${Text} {
+    font-size: 16px;
+  }
+
   padding: 8px 8px;
   ${({ theme }) => theme.mediaQueries.lg} {
     padding: 0;
     flex-basis: 230px;
+    ${Text} {
+      font-size: 14px;
+    }
   }
 `
 

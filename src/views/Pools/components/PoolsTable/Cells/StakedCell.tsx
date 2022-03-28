@@ -17,9 +17,7 @@ interface StakedCellProps {
   userDataLoaded: boolean
 }
 
-const StyledCell = styled(BaseCell)`
-  flex: 2 0 100px;
-`
+const StyledCell = styled(BaseCell)``
 
 const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }) => {
   const { t } = useTranslation()
@@ -51,7 +49,7 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
   const userDataLoading = pool.vaultKey ? vaultUserDataLoading : !userDataLoaded
 
   return (
-    <StyledCell role="cell">
+    <StyledCell role="cell" flex={pool.vaultKey && !hasStaked ? '1 0 120px' : '2 0 100px'}>
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}

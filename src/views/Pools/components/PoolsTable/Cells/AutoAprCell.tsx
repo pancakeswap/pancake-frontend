@@ -25,27 +25,29 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   if (!userShares.gt(0)) {
     return (
       <>
-        <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
+        <BaseCell role="cell" flex={['1 0 50px', '4.5', '1 0 120px', null, '2 0 100px']}>
           <CellContent>
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Flexible APY')}
             </Text>
             {flexibleApy ? (
-              <Balance fontSize="16px" value={parseFloat(flexibleApy)} decimals={2} unit="%" />
+              <Balance fontSize="16px" value={parseFloat(flexibleApy)} decimals={2} unit="%" fontWeight={[600, 400]} />
             ) : (
               <Skeleton width="80px" height="16px" />
             )}
           </CellContent>
         </BaseCell>
-        <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
+        <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', null, '1 0 120px']}>
           <CellContent>
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Locked APY')}
             </Text>
             {lockedApy ? (
-              <FlexGap gap="4px">
-                <Text>Up to</Text>
-                <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
+              <FlexGap gap="4px" flexWrap="wrap">
+                <Text style={{ whiteSpace: 'nowrap' }} fontWeight={[500, 400]}>
+                  Up to
+                </Text>
+                <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" fontWeight={[600, 400]} />
               </FlexGap>
             ) : (
               <Skeleton width="80px" height="16px" />

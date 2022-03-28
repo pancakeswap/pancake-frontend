@@ -17,12 +17,10 @@ interface StakedCellProps {
 }
 
 const StyledCell = styled(BaseCell)`
-  flex: 0;
   padding: 0 0 24px 0;
   margin-left: 48px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    flex: 2 0 100px;
     margin-left: 10px;
     padding: 24px 8px;
   }
@@ -57,7 +55,7 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool }) => {
   const hasStaked = pool.vaultKey ? (Number.isNaN(cakeAsNumberBalance) ? 0 : cakeAsNumberBalance) : stakedTokenBalance
 
   return (
-    <StyledCell role="cell">
+    <StyledCell role="cell" flex={pool.vaultKey ? '1 0 100px' : '2 0 100px'}>
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}

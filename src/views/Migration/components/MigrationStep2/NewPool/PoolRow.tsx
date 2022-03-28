@@ -96,7 +96,9 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
   const EarningComponent = () => {
     if (isLargerScreen || !expanded) {
       return pool.vaultKey === VaultKey.CakeVault ? (
-        <AutoEarningsCell hasEarnings={hasEarnings} earningTokenBalance={autoCakeToDisplay} />
+        hasEarnings ? (
+          <AutoEarningsCell hasEarnings={hasEarnings} earningTokenBalance={autoCakeToDisplay} />
+        ) : null
       ) : (
         <EarningsCell pool={pool} account={account} />
       )
@@ -105,11 +107,9 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
   }
 
   const AprComponent = () => {
-    if (isLargerScreen || !expanded) {
+    if (isLargerScreen) {
       return pool.vaultKey ? (
-        <AprContainer>
-          <AutoAprCell pool={pool} />
-        </AprContainer>
+        <AutoAprCell pool={pool} />
       ) : (
         <AprContainer>
           <AprCell pool={pool} />
