@@ -24,7 +24,7 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
       const blockNumber = block || (await simpleRpcProvider.getBlockNumber())
       const eligiblePools = await getActivePools(blockNumber)
       const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress))
-      const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, cakeVaultBalance, IFOPoolBalance } =
+      const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, cakeVaultBalance, ifoPoolBalance } =
         await getVotingPower(account, poolAddresses, blockNumber)
       return {
         cakeBalance: parseFloat(cakeBalance),
@@ -32,7 +32,7 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
         cakePoolBalance: parseFloat(cakePoolBalance),
         poolsBalance: parseFloat(poolsBalance),
         cakeVaultBalance: parseFloat(cakeVaultBalance),
-        ifoPoolBalance: IFOPoolBalance ? parseFloat(IFOPoolBalance) : 0,
+        ifoPoolBalance: ifoPoolBalance ? parseFloat(ifoPoolBalance) : 0,
         total: parseFloat(total),
       }
     },

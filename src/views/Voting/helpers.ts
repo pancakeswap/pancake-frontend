@@ -140,7 +140,7 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
       total: formatEther(total),
       cakeBalance: formatEther(cakeBalance),
       cakeVaultBalance: formatEther(cakeVaultBalance),
-      IFOPoolBalance: formatEther(ifoPoolBalance),
+      ifoPoolBalance: formatEther(ifoPoolBalance),
       cakePoolBalance: formatEther(cakePoolBalance),
       cakeBnbLpBalance: formatEther(cakeBnbLpBalance),
       voter: account,

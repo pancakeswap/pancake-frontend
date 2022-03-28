@@ -90,7 +90,7 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], s
     return {
       cakeBalance: cakeBalance.div(TEN_POW_18).toFixed(18),
       cakeVaultBalance: cakeVaultBalance.div(TEN_POW_18).toFixed(18),
-      IFOPoolBalance: IFOPoolBalance.div(TEN_POW_18).toFixed(18),
+      ifoPoolBalance: IFOPoolBalance.div(TEN_POW_18).toFixed(18),
       cakePoolBalance: cakePoolBalance.div(TEN_POW_18).toFixed(18),
       cakeBnbLpBalance,
       total,
