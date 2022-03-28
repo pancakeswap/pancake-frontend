@@ -51,7 +51,7 @@ export function useMintTokenInfo(): {
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
   const mintOut = useMintExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
-  const mintIn = useMintExactIn(isExactIn ? parsedAmount : null, inputCurrency)
+  const mintIn = useMintExactIn(isExactIn ? parsedAmount : null, outputCurrency)
 
   const mint = isExactIn ? mintIn : mintOut
 

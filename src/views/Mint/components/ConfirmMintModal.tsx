@@ -66,7 +66,7 @@ const ConfirmMintModal: React.FC<InjectedModalProps & ConfirmMintModalProps> = (
       hash={txHash}
       content={confirmationContent}
       pendingText={pendingText}
-      currencyToAdd={mint?.outputAmount.currency}
+      currencyToAdd={mint?.inputAmount.currency}
     />
   )
 }
