@@ -16,6 +16,8 @@ import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
 import { StakingApy } from './StakingApy'
 import VaultCardActions from './VaultCardActions'
+import LockedStakingApy from './LockedStake/StakingApy'
+import LockedActions from './LockedStake/LockedActions'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};

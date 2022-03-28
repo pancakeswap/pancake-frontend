@@ -3,6 +3,7 @@ import { Modal, Button, AutoRenewIcon, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
+import { BIG_ZERO } from 'utils/bigNumber'
 
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -26,15 +27,14 @@ import BalanceField from './BalanceField'
 
 interface LockedStakeModalProps {
   pool: DeserializedPool
-  stakingMax: BigNumber
   performanceFee?: number
   onDismiss?: () => void
 }
 
-const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, stakingMax, performanceFee, onDismiss }) => {
+const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFee, onDismiss }) => {
   const dispatch = useAppDispatch()
 
-  const { stakingToken, earningToken, rawApr, stakingTokenPrice, earningTokenPrice } = pool
+  const { stakingToken, earningToken, rawApr, stakingTokenPrice, earningTokenPrice, userData } = pool
   const { account } = useWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract()
@@ -54,6 +54,8 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, stakingMax, p
   const callOptions = {
     gasLimit: vaultPoolConfig[pool.vaultKey].gasLimit,
   }
+
+  const stakingMax = userData?.stakingTokenBalance ? new BigNumber(userData?.stakingTokenBalance) : BIG_ZERO
 
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
 
