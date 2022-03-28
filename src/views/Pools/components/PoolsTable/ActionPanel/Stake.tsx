@@ -268,7 +268,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
       <ActionContent>
         {vaultKey ? (
           <VaultStakeButtonGroup
-            onFlexibleClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}
+            onFlexibleClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
             onLockedClick={() => {
               //
             }}
