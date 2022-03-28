@@ -3,7 +3,7 @@ import { simpleRpcProvider } from 'utils/providers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import tokens, { mainnetTokens } from 'config/constants/tokens'
-import { abi as PeronioABI } from 'peronio-core/deployments/mumbai/Peronio.json'
+import { abi as PeronioABI } from 'peronio-core/deployments/matic/Peronio.json'
 
 // Addresses
 import {
