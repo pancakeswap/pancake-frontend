@@ -528,7 +528,6 @@
   "Ends in": "Ends in",
   "Starts in": "Starts in",
   "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
-  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
   "Max. stake per user": "Max. stake per user",
   "You have claimed your rewards!": "You have claimed your rewards!",
   "Already Collected": "Already Collected",
@@ -1643,5 +1642,7 @@
   "Locked APY": "Locked APY",
   "Don't see the farm you are staking?": "Don't see the farm you are staking?",
   "Check out v1 farms": "Check out v1 farms",
-  "Up to": "Up to"
+  "Up to": "Up to",
+  "Looking for v1 CAKE syrup pools?": "Looking for v1 CAKE syrup pools?",
+  "Go to migration page.": "Go to migration page."
 }
