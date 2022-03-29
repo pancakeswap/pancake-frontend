@@ -144,7 +144,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         : callWithGasPrice(
             vaultPoolContract,
             'withdraw',
-            [shareStakeToWithdraw.sharesAsBigNumber.toString()],
+            [shareStakeToWithdraw.sharesAsBigNumber.decimalPlaces(0, 1).toString()],
             callOptions,
           )
     })
