@@ -24,15 +24,13 @@ const useLockedPool = ({ lockedAmount, stakingToken, onDismiss }) => {
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const [duration, setDuration] = useState(1)
+  const [duration, setDuration] = useState(0)
   const usdValueStaked = useBUSDCakeAmount(lockedAmount)
 
   // TODO: Add proper gasLimit
   const callOptions = {
     gasLimit: 500000,
   }
-
-  const convertWeekToSeconds = (week) => week * 7 * 24 * 60 * 60
 
   const handleDeposit = async (convertedStakeAmount: BigNumber, lockDuration = 0) => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -57,7 +55,7 @@ const useLockedPool = ({ lockedAmount, stakingToken, onDismiss }) => {
   const handleConfirmClick = async () => {
     const convertedStakeAmount = getDecimalAmount(new BigNumber(lockedAmount), stakingToken.decimals)
 
-    handleDeposit(convertedStakeAmount, convertWeekToSeconds(duration))
+    handleDeposit(convertedStakeAmount, duration)
   }
 
   return { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick }

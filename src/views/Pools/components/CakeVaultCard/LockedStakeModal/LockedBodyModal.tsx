@@ -1,12 +1,13 @@
 import { Button, AutoRenewIcon, Box } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
+import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
 
 import Overview from './Overview'
 import LockDurationField from './LockDurationField'
 import useLockedPool from './useLockedPool'
 
-const LockedBodyModal = ({ stakingToken, onDismiss, lockedAmount }) => {
+const LockedBodyModal = ({ stakingToken, onDismiss, lockedAmount, currentBalance }) => {
   const { t } = useTranslation()
   const { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick } = useLockedPool({
     stakingToken,
@@ -14,14 +15,19 @@ const LockedBodyModal = ({ stakingToken, onDismiss, lockedAmount }) => {
     lockedAmount,
   })
 
+  const isValidAmount = lockedAmount && lockedAmount > 0 && lockedAmount <= currentBalance
+
+  const isValidDuration = duration > 0 && duration < DEFAULT_MAX_DURATION
+
   return (
     <>
       <Box mb="16px">
         <LockDurationField setDuration={setDuration} duration={duration} />
       </Box>
       <Overview
+        isValidDuration={isValidDuration}
         openCalculator={_noop}
-        weekDuration={duration}
+        duration={duration}
         lockedAmount={lockedAmount}
         usdValueStaked={usdValueStaked}
       />
@@ -29,7 +35,7 @@ const LockedBodyModal = ({ stakingToken, onDismiss, lockedAmount }) => {
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         onClick={handleConfirmClick}
-        disabled={!lockedAmount || lockedAmount === 0}
+        disabled={!(isValidAmount && isValidDuration)}
         mt="24px"
       >
         {pendingTx ? t('Confirming') : t('Confirm')}

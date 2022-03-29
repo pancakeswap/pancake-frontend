@@ -1,10 +1,23 @@
 import { Text, Flex, IconButton, CalculateIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import Balance from 'components/Balance'
-import { format } from 'date-fns'
+import { addSeconds, format } from 'date-fns'
 import { formatNumber } from 'utils/formatBalance'
-import addWeeks from 'date-fns/addWeeks'
 import { useVaultApy } from 'hooks/useVaultApy'
+import formatSecondsToWeeks from '../utils/formatSecondsToWeeks'
+
+const TextRow = ({ title, value }) => (
+  <Flex alignItems="center" justifyContent="space-between">
+    <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+      {title}
+    </Text>
+    <Flex alignItems="center">
+      <Text bold fontSize="16px">
+        {value}
+      </Text>
+    </Flex>
+  </Flex>
+)
 
 const BalanceRow = ({ title, value, unit = '', decimals, suffix = null }) => (
   <Flex alignItems="center" justifyContent="space-between">
@@ -24,15 +37,13 @@ const DateRow = ({ title, value }) => (
       {title}
     </Text>
     <Text bold color="text">
-      {format(value, 'MMM do, yyyy HH:mm')}
+      {value ? format(value, 'MMM do, yyyy HH:mm') : '-'}
     </Text>
   </Flex>
 )
 
-const convertWeekToSeconds = (week) => week * 7 * 24 * 60 * 60
-
-const Overview = ({ usdValueStaked, lockedAmount, openCalculator, weekDuration }) => {
-  const { lockedApy } = useVaultApy({ duration: convertWeekToSeconds(weekDuration) })
+const Overview = ({ usdValueStaked, lockedAmount, openCalculator, duration, isValidDuration }) => {
+  const { lockedApy } = useVaultApy({ duration: isValidDuration ? duration : null })
 
   // TODO: check ROI
   const roi = usdValueStaked * Number(lockedApy)
@@ -43,8 +54,8 @@ const Overview = ({ usdValueStaked, lockedAmount, openCalculator, weekDuration }
     <LightGreyCard>
       <BalanceRow title="CAKE TO BE LOCKED" value={lockedAmount} decimals={2} />
       <BalanceRow title="APY" unit="%" value={lockedApy} decimals={2} />
-      <BalanceRow title="DURATION" unit=" week" value={weekDuration} decimals={0} />
-      <DateRow title="UNLOCK ON" value={addWeeks(new Date(), weekDuration)} />
+      <TextRow title="DURATION" value={(isValidDuration && formatSecondsToWeeks(duration)) || '-'} />
+      <DateRow title="UNLOCK ON" value={isValidDuration && addSeconds(new Date(), duration)} />
       <BalanceRow
         title="EXPECTED ROI"
         value={`${formattedRoi}`}

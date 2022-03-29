@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js'
 
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 import BalanceField from './BalanceField'
 import LockedBodyModal from './LockedBodyModal'
@@ -11,10 +12,10 @@ import LockedBodyModal from './LockedBodyModal'
 interface LockedStakeModalProps {
   onDismiss?: () => void
   stakingToken: any
-  stakingMax: BigNumber
+  currentBalance: BigNumber
 }
 
-const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ onDismiss, stakingMax, stakingToken }) => {
+const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ onDismiss, currentBalance, stakingToken }) => {
   const { theme } = useTheme()
   const [lockedAmount, setLockedAmount] = useState(0)
 
@@ -29,11 +30,16 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ onDismiss, stakingM
           stakingDecimals={stakingToken.decimals}
           lockedAmount={lockedAmount}
           usedValueStaked={usdValueStaked}
-          stakingMax={stakingMax}
+          stakingMax={currentBalance}
           setLockedAmount={setLockedAmount}
         />
       </Box>
-      <LockedBodyModal stakingToken={stakingToken} onDismiss={onDismiss} lockedAmount={lockedAmount} />
+      <LockedBodyModal
+        currentBalance={getBalanceNumber(currentBalance)}
+        stakingToken={stakingToken}
+        onDismiss={onDismiss}
+        lockedAmount={lockedAmount}
+      />
     </Modal>
   )
 }

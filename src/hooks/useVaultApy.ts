@@ -15,7 +15,7 @@ const masterChefAddress = getMasterChefAddress()
 const cakeVaultAddress = getCakeVaultAddress()
 
 // default
-const DEFAULT_MAX_DURATION = 31536000
+export const DEFAULT_MAX_DURATION = 31536000
 const DEFAULT_BOOST_WEIGHT = BigNumber.from('1000000000000')
 const DEFAULT_DURATION_FACTOR = BigNumber.from('31536000')
 

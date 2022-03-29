@@ -14,9 +14,14 @@ const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
   const position = useMemo(() => getVaultPosition(userData), [userData])
   const cakeBalance = getBalanceNumber(userData?.lockedAmount)
 
-  const stakingMax = stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO
+  const currentBalance = useMemo(
+    () => (stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO),
+    [stakingTokenBalance],
+  )
 
-  const [openLockedStakeModal] = useModal(<LockedStakeModal stakingMax={stakingMax} stakingToken={stakingToken} />)
+  const [openLockedStakeModal] = useModal(
+    <LockedStakeModal currentBalance={currentBalance} stakingToken={stakingToken} />,
+  )
 
   const [openStaticLockedModal] = useModal(<StaticLockedModal stakingToken={stakingToken} lockedAmount={cakeBalance} />)
 

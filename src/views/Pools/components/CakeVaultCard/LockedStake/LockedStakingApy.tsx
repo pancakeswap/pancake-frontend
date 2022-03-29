@@ -6,15 +6,10 @@ import Balance from 'components/Balance'
 import Divider from 'components/Divider'
 import { memo } from 'react'
 import format from 'date-fns/format'
-import formatDuration from 'date-fns/formatDuration'
-import secondsToHours from 'date-fns/secondsToHours'
-import daysToWeeks from 'date-fns/daysToWeeks'
-import compose from 'lodash/fp/compose'
 import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
-
-const secondsToWeeks = compose(daysToWeeks, (hours) => hours / 24, secondsToHours)
+import formatSecondsToWeeks from '../utils/formatSecondsToWeeks'
 
 const DetailSection = ({ title, value, detail }) => (
   <Box>
@@ -39,7 +34,7 @@ const useUserDataInVaultPrensenter = (userData) => {
   const usdValueStaked = multiplyPriceByAmount(cakePriceBusd, cakeBalance)
 
   return {
-    weekDuration: formatDuration({ weeks: secondsToWeeks(secondDuration) }),
+    weekDuration: formatSecondsToWeeks(secondDuration),
     lockEndDate: format(parseInt(userData?.lockEndTime) * 1000, 'MMM do, yyyy HH:mm'),
     lockedAmount: cakeBalance,
     usdValueStaked,

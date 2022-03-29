@@ -26,7 +26,12 @@ const StaticLockedModal: React.FC<LockedStakeModalProps> = ({ stakingToken, onDi
           usdValueStaked={usdValueStaked}
         />
       </Box>
-      <LockedBodyModal stakingToken={stakingToken} onDismiss={onDismiss} lockedAmount={lockedAmount} />
+      <LockedBodyModal
+        currentBalance={lockedAmount}
+        stakingToken={stakingToken}
+        onDismiss={onDismiss}
+        lockedAmount={lockedAmount}
+      />
     </Modal>
   )
 }
