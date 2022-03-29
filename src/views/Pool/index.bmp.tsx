@@ -148,7 +148,7 @@ function Pool({ v2IsLoading, allV2PairsWithLiquidity }) {
       </view>
     )
   }
-  console.log('???', allV2PairsWithLiquidity)
+
   return (
     <ErrorBoundary name="pool">
       <AppBody>
@@ -172,7 +172,7 @@ function Pool({ v2IsLoading, allV2PairsWithLiquidity }) {
               >
                 {t('Find other LP tokens')}
               </Button>
-              {allV2PairsWithLiquidity?.length === 0 && (
+              {(!allV2PairsWithLiquidity || allV2PairsWithLiquidity?.length === 0) && (
                 <>
                   <Image src={AddLiquidityTipImage} width={106} height={100} mt="32px" mb="16px" />
                   <AddLiquidityTip />
