@@ -136,6 +136,8 @@ export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) 
   )
 }
 
+const POOL_START_BLOCK_THRESHOLD = (60 / BSC_BLOCK_TIME) * 4
+
 export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (dispatch, getState) => {
   try {
     const blockLimits = await fetchPoolsBlockLimits()
@@ -153,7 +155,7 @@ export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (
       const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
       const isPoolStartTooFar =
         currentBlock > 0 && blockLimit
-          ? Number(blockLimit.startBlock) > currentBlock + (60 / BSC_BLOCK_TIME) * 4
+          ? Number(blockLimit.startBlock) > currentBlock + POOL_START_BLOCK_THRESHOLD
           : false
       const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
       const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded || isPoolStartTooFar
