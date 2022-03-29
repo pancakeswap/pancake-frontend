@@ -211,7 +211,7 @@ export default function PoolPage() {
   const { account } = useActiveWeb3React()
   const [visible, setVisible] = useState(false)
   const [v2IsLoading, setV2IsLoading] = useState(true)
-  const [allV2PairsWithLiquidity, setAllV2PairsWithLiquidity] = useState()
+  const [allV2PairsWithLiquidity, setAllV2PairsWithLiquidity] = useState(origin)
   useDidHide(() => {
     setVisible(false)
   })
