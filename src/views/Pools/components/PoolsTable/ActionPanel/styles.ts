@@ -31,9 +31,12 @@ export const ActionTitles = styled.div`
   font-size: 12px;
 `
 
-export const ActionContent = styled.div`
+export const ActionContent = styled(Flex)`
   display: flex;
-  margin-top: 8px;
   justify-content: space-between;
   align-items: center;
 `
+
+ActionContent.defaultProps = {
+  mt: '8px',
+}

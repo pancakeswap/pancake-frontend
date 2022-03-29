@@ -8,12 +8,14 @@ export const isLocked = ({ userShares, locked }: { userShares?: BigNumber; locke
 
 export const isLockedEnd = ({ userShares, locked, lockEndTime }: VaultPositionParams): boolean =>
   lockEndTime &&
+  lockEndTime !== '0' &&
   isLocked({ userShares, locked }) &&
   isBefore(new Date(parseInt(lockEndTime) * 1000), new Date()) &&
   isAfter(new Date(parseInt(lockEndTime) * 1000), addWeeks(new Date(), 1))
 
 export const isAfterBurning = ({ userShares, locked, lockEndTime }: VaultPositionParams): boolean =>
   lockEndTime &&
+  lockEndTime !== '0' &&
   isLocked({ userShares, locked }) &&
   isAfter(addWeeks(new Date(), 1), new Date(parseInt(lockEndTime) * 1000))
 
