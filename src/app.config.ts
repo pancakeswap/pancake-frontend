@@ -10,6 +10,7 @@ export default {
   },
   themeLocation: './theme.json',
   tabBar: {
+    custom: true,
     color: '#7A6EAA',
     selectedColor: '#7645D9',
     backgroundColor: '@navBgColor',

@@ -78,16 +78,15 @@ const Footer = ({ activeId = ActiveId.SWAP }) => {
 const StyledPage = styled.div`
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
   min-height: calc(100vh - 64px);
-  /* padding: 16px; */
   overflow-y: scroll;
-  padding-bottom: 64px;
+  padding: 16px 16px 100px 16px;
 `
 const { statusBarHeight } = getSystemInfoSync()
 const CUSTOM_NAV_HEIGHT = 44
 const BmpPage = ({ activeId = ActiveId.SWAP, children }) => {
   return (
     <Providers>
-      <StyledPage style={{ padding: activeId === ActiveId.SWAP || activeId === ActiveId.LIQUIDITY ? '16px' : null }}>
+      <StyledPage>
         <CustomNav top={statusBarHeight} height={CUSTOM_NAV_HEIGHT} />
         {children}
         <Footer activeId={activeId} />
