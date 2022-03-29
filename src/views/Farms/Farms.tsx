@@ -104,6 +104,7 @@ const StyledImage = styled(Image)`
 `
 
 const FinishedTextContainer = styled(Flex)`
+  padding-bottom: 32px;
   flex-direction: column;
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
