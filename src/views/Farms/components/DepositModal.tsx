@@ -1,7 +1,17 @@
 import BigNumber from 'bignumber.js'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Button, Modal, LinkExternal, CalculateIcon, IconButton, Skeleton } from '@pancakeswap/uikit'
+import {
+  Flex,
+  Text,
+  Button,
+  Modal,
+  LinkExternal,
+  CalculateIcon,
+  IconButton,
+  Skeleton,
+  AutoRenewIcon,
+} from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { useTranslation } from 'contexts/Localization'
@@ -139,20 +149,24 @@ const DepositModal: React.FC<DepositModalProps> = ({
         <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
           {t('Cancel')}
         </Button>
-        <Button
-          width="100%"
-          disabled={
-            pendingTx || !lpTokensToStake.isFinite() || lpTokensToStake.eq(0) || lpTokensToStake.gt(fullBalanceNumber)
-          }
-          onClick={async () => {
-            setPendingTx(true)
-            await onConfirm(val)
-            onDismiss?.()
-            setPendingTx(false)
-          }}
-        >
-          {pendingTx ? t('Confirming') : t('Confirm')}
-        </Button>
+        {pendingTx ? (
+          <Button width="100%" isLoading={pendingTx} endIcon={<AutoRenewIcon spin color="currentColor" />}>
+            {t('Confirming')}
+          </Button>
+        ) : (
+          <Button
+            width="100%"
+            disabled={!lpTokensToStake.isFinite() || lpTokensToStake.eq(0) || lpTokensToStake.gt(fullBalanceNumber)}
+            onClick={async () => {
+              setPendingTx(true)
+              await onConfirm(val)
+              onDismiss?.()
+              setPendingTx(false)
+            }}
+          >
+            {t('Confirm')}
+          </Button>
+        )}
       </ModalActions>
       <LinkExternal href={addLiquidityUrl} style={{ alignSelf: 'center' }}>
         {t('Get %symbol%', { symbol: tokenName })}
