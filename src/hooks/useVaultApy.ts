@@ -11,8 +11,15 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { multicallv2 } from '../utils/multicall'
 import { immutableMiddleware, useSWRMulticall } from './useSWRContract'
 
-const BOOST_WEIGHT = BigNumber.from('1000000000000')
-const DURATION_FACTOR = BigNumber.from('31536000')
+const masterChefAddress = getMasterChefAddress()
+const cakeVaultAddress = getCakeVaultAddress()
+
+// default
+const DEFAULT_MAX_DURATION = 31536000
+const DEFAULT_BOOST_WEIGHT = BigNumber.from('1000000000000')
+const DEFAULT_DURATION_FACTOR = BigNumber.from('31536000')
+
+// constant, consider move it to config
 const PRECISION_FACTOR = BigNumber.from('1000000000000')
 
 const getFlexibleApy = (
@@ -25,20 +32,11 @@ const getFlexibleApy = (
     .divUnsafe(totalShares)
     .mulUnsafe(FixedNumber.from(100))
 
-const getBoostFactor = (
-  boostWeight: BigNumber,
-  duration: number,
-  durationFactor: BigNumber,
-  precisionFactor: BigNumber,
-) => boostWeight.mul(Math.max(duration, 0)).div(durationFactor).div(precisionFactor)
+const getBoostFactor = (boostWeight: BigNumber, duration: number, durationFactor: BigNumber) =>
+  boostWeight.mul(Math.max(duration, 0)).div(durationFactor).div(PRECISION_FACTOR)
 
 const getLockedApy = (flexibleApy: string, boostFactor: number) =>
   FixedNumber.from(flexibleApy).mulUnsafe(FixedNumber.from(1 + boostFactor))
-
-const masterChefAddress = getMasterChefAddress()
-const cakeVaultAddress = getCakeVaultAddress()
-
-const DEFAULT_MAX_DURATION = 31536000
 
 export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number }) {
   const { totalShares = BIG_ZERO, pricePerFullShare = BIG_ZERO } = useCakeVault()
@@ -70,7 +68,7 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
 
   const calls = useMemo(
     () =>
-      ['BOOST_WEIGHT', 'DURATION_FACTOR', 'PRECISION_FACTOR'].map((name) => ({
+      ['BOOST_WEIGHT', 'DURATION_FACTOR'].map((name) => ({
         address: cakeVaultAddress,
         name,
       })),
@@ -89,13 +87,12 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
     [pricePerFullShareAsEtherBN, totalCakePoolEmissionPerYear, totalSharesAsEtherBN],
   )
 
-  const boostWeight: BigNumber = data?.[0][0] || BOOST_WEIGHT
-  const durationFactor: BigNumber = data?.[1][0] || DURATION_FACTOR
-  const precisionFactor: BigNumber = data?.[2][0] || PRECISION_FACTOR
+  const boostWeight: BigNumber = data?.[0][0] || DEFAULT_BOOST_WEIGHT
+  const durationFactor: BigNumber = data?.[1][0] || DEFAULT_DURATION_FACTOR
 
   const boostFactor = useMemo(
-    () => getBoostFactor(boostWeight, Math.max(duration, 0), durationFactor, precisionFactor),
-    [boostWeight, duration, durationFactor, precisionFactor],
+    () => getBoostFactor(boostWeight, Math.max(duration, 0), durationFactor),
+    [boostWeight, duration, durationFactor],
   )
 
   const lockedApy = useMemo(() => {
@@ -108,11 +105,8 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
     getLockedApy: useCallback(
       (adjustDuration: number) =>
         flexibleApy &&
-        getLockedApy(
-          flexibleApy,
-          getBoostFactor(boostWeight, adjustDuration, durationFactor, precisionFactor).toNumber(),
-        ).toString(),
-      [boostWeight, durationFactor, flexibleApy, precisionFactor],
+        getLockedApy(flexibleApy, getBoostFactor(boostWeight, adjustDuration, durationFactor).toNumber()).toString(),
+      [boostWeight, durationFactor, flexibleApy],
     ),
   }
 }

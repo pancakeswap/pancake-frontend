@@ -1,16 +1,34 @@
-import { DeserializedCakeVault } from 'state/types'
-import { isBefore, isAfter, addWeeks } from 'date-fns'
+import BigNumber from 'bignumber.js'
+import { addWeeks, isAfter, isBefore } from 'date-fns'
 
-export const isStake = (pool: DeserializedCakeVault): boolean => pool.userData?.userShares.gt(0)
-export const isLocked = (pool: DeserializedCakeVault): boolean => isStake(pool) && Boolean(pool.userData?.locked)
+export const isStaked = ({ userShares }: { userShares?: BigNumber }): boolean => userShares && userShares.gt(0)
 
-export const isLockedEnd = (pool: DeserializedCakeVault): boolean =>
-  pool.userData?.lockEndTime &&
-  isLocked(pool) &&
-  isBefore(new Date(parseInt(pool.userData.lockEndTime) * 1000), new Date()) &&
-  isAfter(new Date(parseInt(pool.userData.lockEndTime) * 1000), addWeeks(new Date(), 1))
+export const isLocked = ({ userShares, locked }: { userShares?: BigNumber; locked?: boolean }): boolean =>
+  isStaked({ userShares }) && Boolean(locked)
 
-export const isAfterBurning = (pool: DeserializedCakeVault): boolean =>
-  pool.userData.lockEndTime &&
-  isLocked(pool) &&
-  isAfter(addWeeks(new Date(), 1), new Date(parseInt(pool.userData.lockEndTime) * 1000))
+export const isLockedEnd = ({
+  userShares,
+  locked,
+  lockEndTime,
+}: {
+  userShares?: BigNumber
+  locked?: boolean
+  lockEndTime?: string
+}): boolean =>
+  lockEndTime &&
+  isLocked({ userShares, locked }) &&
+  isBefore(new Date(parseInt(lockEndTime) * 1000), new Date()) &&
+  isAfter(new Date(parseInt(lockEndTime) * 1000), addWeeks(new Date(), 1))
+
+export const isAfterBurning = ({
+  userShares,
+  locked,
+  lockEndTime,
+}: {
+  userShares?: BigNumber
+  locked?: boolean
+  lockEndTime?: string
+}): boolean =>
+  lockEndTime &&
+  isLocked({ userShares, locked }) &&
+  isAfter(addWeeks(new Date(), 1), new Date(parseInt(lockEndTime) * 1000))

@@ -45,7 +45,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
             {lockedApy ? (
               <FlexGap gap="4px" flexWrap="wrap">
                 <Text style={{ whiteSpace: 'nowrap' }} fontWeight={[500, 400]}>
-                  Up to
+                  {t('Up to')}
                 </Text>
                 <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" fontWeight={[600, 400]} />
               </FlexGap>

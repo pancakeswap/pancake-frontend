@@ -291,11 +291,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         {requirementRow}
         {maxStakeRow}
         {pool.vaultKey && (
-          <PerformanceFee>
-            <Text ml="4px" small>
-              0~{performanceFeeAsDecimal}%
-            </Text>
-          </PerformanceFee>
+          <PerformanceFee userData={vaultPool?.userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />
         )}
         {(isXs || isSm) && aprRow}
         {(isXs || isSm || isMd) && totalStakedRow}
@@ -352,7 +348,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         <Box width="100%">
           {pool.vaultKey && (
             <VaultPositionTagWithLabel
-              pool={vaultPool}
+              userData={vaultPool.userData}
               width={['auto', , 'fit-content']}
               ml={['12px', , , , , '32px']}
             />

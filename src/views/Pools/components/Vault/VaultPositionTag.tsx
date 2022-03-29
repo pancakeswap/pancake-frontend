@@ -1,9 +1,9 @@
-import { Tag, TagProps, Text, FlexProps, SplitIcon, LockIcon, UnlockIcon, HotIcon, Box } from '@pancakeswap/uikit'
+import { Tag, TagProps, Text, SplitIcon, LockIcon, UnlockIcon, HotIcon, Box } from '@pancakeswap/uikit'
 import { FlexGap, FlexGapProps } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
 import { FC, useMemo } from 'react'
-import { DeserializedCakeVault } from 'state/types'
-import { isAfterBurning, isLocked, isLockedEnd, isStake } from 'utils/cakePool'
+import { DeserializedLockedVaultUser } from 'state/types'
+import { isAfterBurning, isLocked, isLockedEnd, isStaked } from 'utils/cakePool'
 
 enum VaultPosition {
   Flexible = 'Flexible',
@@ -12,17 +12,17 @@ enum VaultPosition {
   AfterBurning = 'After Burning',
 }
 
-const getPosition = (pool: DeserializedCakeVault): VaultPosition => {
-  if (isAfterBurning(pool)) {
+const getPosition = (userData: DeserializedLockedVaultUser): VaultPosition => {
+  if (isAfterBurning(userData)) {
     return VaultPosition.AfterBurning
   }
-  if (isLockedEnd(pool)) {
+  if (isLockedEnd(userData)) {
     return VaultPosition.LockedEnd
   }
-  if (isLocked(pool)) {
+  if (isLocked(userData)) {
     return VaultPosition.Locked
   }
-  if (isStake(pool)) {
+  if (isStaked(userData)) {
     return VaultPosition.Flexible
   }
   return null
@@ -60,10 +60,13 @@ const VaultPositionTag: FC<{ position: VaultPosition }> = ({ position }) => {
   )
 }
 
-export const VaultPositionTagWithLabel: FC<{ pool: DeserializedCakeVault } & FlexGapProps> = ({ pool, ...props }) => {
+export const VaultPositionTagWithLabel: FC<{ userData: DeserializedLockedVaultUser } & FlexGapProps> = ({
+  userData,
+  ...props
+}) => {
   const { t } = useTranslation()
 
-  const position = useMemo(() => getPosition(pool), [pool])
+  const position = useMemo(() => getPosition(userData), [userData])
 
   if (position) {
     return (

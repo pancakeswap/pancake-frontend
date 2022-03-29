@@ -40,6 +40,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     totalCakeInVault,
     totalLockedAmount,
     fees: { performanceFeeAsDecimal },
+    userData,
   } = useVaultPoolByKey(vaultKey)
 
   const tokenAddress = earningToken.address || ''
@@ -95,13 +96,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           )}
         </Flex>
       )}
-      {vaultKey && (
-        <PerformanceFee>
-          <Text ml="4px" small>
-            0~{performanceFeeAsDecimal}%
-          </Text>
-        </PerformanceFee>
-      )}
+      {vaultKey && <PerformanceFee userData={userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />}
       <Flex mb="2px" justifyContent="flex-end">
         <LinkExternal href={`/info/token/${earningToken.address}`} bold={false} small>
           {t('See Token Info')}
