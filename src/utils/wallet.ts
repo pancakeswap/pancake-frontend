@@ -2,7 +2,7 @@
 
 import { ExternalProvider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
-import { BASE_URL, BASE_BSC_SCAN_URLS } from 'config'
+import { BASE_BSC_SCAN_URLS } from 'config'
 import { nodes } from './getRpcUrl'
 
 const NETWORK_CONFIG = {
@@ -74,7 +74,12 @@ export const setupNetwork = async (externalProvider?: ExternalProvider) => {
  * @param tokenDecimals
  * @returns {boolean} true if the token has been added, false otherwise
  */
-export const registerToken = async (tokenAddress: string, tokenSymbol: string, tokenDecimals: number) => {
+export const registerToken = async (
+  tokenAddress: string,
+  tokenSymbol: string,
+  tokenDecimals: number,
+  tokenLogo?: string,
+) => {
   const tokenAdded = await window.ethereum.request({
     method: 'wallet_watchAsset',
     params: {
@@ -83,7 +88,7 @@ export const registerToken = async (tokenAddress: string, tokenSymbol: string, t
         address: tokenAddress,
         symbol: tokenSymbol,
         decimals: tokenDecimals,
-        image: `${BASE_URL}/images/tokens/${tokenAddress}.png`,
+        image: tokenLogo || `https://tokens.pancakeswap.finance/images/${tokenAddress}.png`,
       },
     },
   })
