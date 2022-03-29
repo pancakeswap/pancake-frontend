@@ -29,7 +29,7 @@ function DisclaimerModal(props) {
     <Modal style={{ width: '80vw' }} hideCloseButton title="PancakeSwap Mini-Program User Service Agreement">
       <ScrollView scrollY style={{ maxHeight: '50vh' }}>
         <TextWrap>
-          {Array.from({ length: 13 }, (_, index) => index).map((item) => (
+          {Array.from({ length: 14 }, (_, index) => index).map((item) => (
             <Text key={item}>{t(`user-service-agreement-${item + 1}`)}</Text>
           ))}
         </TextWrap>
