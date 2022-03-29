@@ -1,32 +1,10 @@
 import { Tag, TagProps, Text, SplitIcon, LockIcon, UnlockIcon, HotIcon, Box } from '@pancakeswap/uikit'
 import { FlexGap, FlexGapProps } from 'components/Layout/Flex'
+import Trans from 'components/Trans'
 import { useTranslation } from 'contexts/Localization'
-import { FC, useMemo } from 'react'
+import { FC, ReactNode, useMemo } from 'react'
 import { DeserializedLockedVaultUser } from 'state/types'
-import { isAfterBurning, isLocked, isLockedEnd, isStaked } from 'utils/cakePool'
-
-enum VaultPosition {
-  Flexible = 'Flexible',
-  Locked = 'Locked',
-  LockedEnd = 'Locked End',
-  AfterBurning = 'After Burning',
-}
-
-const getPosition = (userData: DeserializedLockedVaultUser): VaultPosition => {
-  if (isAfterBurning(userData)) {
-    return VaultPosition.AfterBurning
-  }
-  if (isLockedEnd(userData)) {
-    return VaultPosition.LockedEnd
-  }
-  if (isLocked(userData)) {
-    return VaultPosition.Locked
-  }
-  if (isStaked(userData)) {
-    return VaultPosition.Flexible
-  }
-  return null
-}
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 
 const tagConfig: Record<VaultPosition, TagProps> = {
   [VaultPosition.Flexible]: {
@@ -51,11 +29,18 @@ const iconConfig: Record<VaultPosition, any> = {
   [VaultPosition.AfterBurning]: HotIcon,
 }
 
+const positionLabel: Record<VaultPosition, ReactNode> = {
+  [VaultPosition.Flexible]: <Trans>Flexible</Trans>,
+  [VaultPosition.Locked]: <Trans>Locked</Trans>,
+  [VaultPosition.LockedEnd]: <Trans>Locked End</Trans>,
+  [VaultPosition.AfterBurning]: <Trans>After Burning</Trans>,
+}
+
 const VaultPositionTag: FC<{ position: VaultPosition }> = ({ position }) => {
   return (
     <Tag {...tagConfig[position]}>
       <Box as={iconConfig[position]} mr="4px" />
-      {position}
+      {positionLabel[position]}
     </Tag>
   )
 }
@@ -66,7 +51,7 @@ export const VaultPositionTagWithLabel: FC<{ userData: DeserializedLockedVaultUs
 }) => {
   const { t } = useTranslation()
 
-  const position = useMemo(() => getPosition(userData), [userData])
+  const position = useMemo(() => getVaultPosition(userData), [userData])
 
   if (position) {
     return (

@@ -1,11 +1,11 @@
 import styled from 'styled-components'
+import { Flex } from '@pancakeswap/uikit'
 
-export const ActionContainer = styled.div<{ isAutoVault?: boolean }>`
+export const ActionContainer = styled(Flex)<{ isAutoVault?: boolean }>`
+  flex-direction: column;
   padding: 16px;
   border: 2px solid ${({ theme }) => theme.colors.input};
   border-radius: 16px;
-  flex-grow: 1;
-  flex-basis: 0;
   margin-bottom: 16px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -21,6 +21,10 @@ export const ActionContainer = styled.div<{ isAutoVault?: boolean }>`
     margin-right: 0;
   }
 `
+
+ActionContainer.defaultProps = {
+  flex: 1,
+}
 
 export const ActionTitles = styled.div`
   font-weight: 600;

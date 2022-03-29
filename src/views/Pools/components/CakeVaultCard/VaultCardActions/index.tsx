@@ -43,7 +43,7 @@ const CakeVaultCardActions: React.FC<{
             bold
             fontSize="12px"
           >
-            {accountHasSharesStaked ? t('Staked (compounding)') : `${stakingToken.symbol}`}
+            {accountHasSharesStaked ? t('Staked') : `${stakingToken.symbol}`}
           </InlineText>
         </Box>
         {isVaultApproved ? (
