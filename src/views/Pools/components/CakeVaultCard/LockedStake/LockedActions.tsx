@@ -1,22 +1,28 @@
 import { useMemo } from 'react'
 import { Button, useModal, Message, MessageText, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { getBalanceNumber } from 'utils/formatBalance'
-import LockedStakeModal from '../LockedStakeModal'
+import { BIG_ZERO } from 'utils/bigNumber'
 
-const LockedActions = ({ pool, performanceFee, userData }) => {
+import LockedStakeModal from '../LockedStakeModal'
+import StaticLockedModal from '../LockedStakeModal/StaticLockedModal'
+
+const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
   const { t } = useTranslation()
   const position = useMemo(() => getVaultPosition(userData), [userData])
   const cakeBalance = getBalanceNumber(userData?.lockedAmount)
 
-  const [onPresentStake] = useModal(
-    <LockedStakeModal pool={pool} performanceFee={performanceFee} staticAmount={cakeBalance} isStatic />,
-  )
+  const stakingMax = stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO
+
+  const [openLockedStakeModal] = useModal(<LockedStakeModal stakingMax={stakingMax} stakingToken={stakingToken} />)
+
+  const [openStaticLockedModal] = useModal(<StaticLockedModal stakingToken={stakingToken} lockedAmount={cakeBalance} />)
 
   if (position === VaultPosition.Locked) {
     return (
-      <Button onClick={onPresentStake} width="100%">
+      <Button onClick={() => openLockedStakeModal()} width="100%">
         {t('Adjust')}
       </Button>
     )
@@ -39,7 +45,7 @@ const LockedActions = ({ pool, performanceFee, userData }) => {
           <Button mb="8px" width="100%">
             {t('Switch to Flexible')}
           </Button>
-          <Button onClick={onPresentStake} width="100%">
+          <Button onClick={() => openLockedStakeModal()} width="100%">
             {t('Renew')}
           </Button>
         </Box>

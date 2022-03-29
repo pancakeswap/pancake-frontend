@@ -15,7 +15,7 @@ const BalanceField = ({
   stakingAddress,
   stakingSymbol,
   stakingDecimals,
-  stakeAmount,
+  lockedAmount,
   stakingMax,
   setLockedAmount,
   usedValueStaked,
@@ -59,7 +59,7 @@ const BalanceField = ({
         </Flex>
       </Flex>
       <BalanceInput
-        value={stakeAmount}
+        value={lockedAmount}
         onUserInput={handleStakeInputChange}
         currencyValue={`~${usedValueStaked || 0} USD`}
         decimals={stakingDecimals}

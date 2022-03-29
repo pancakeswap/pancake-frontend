@@ -61,9 +61,13 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
         <VaultPositionTagWithLabel userData={vaultPool.userData} />
         {vaultPool?.userData?.locked ? (
           <LockedStakingApy
-            userData={vaultPool.userData}
+            userData={vaultPool?.userData}
             action={
-              <LockedActions userData={vaultPool.userData} pool={pool} performanceFee={performanceFeeAsDecimal} />
+              <LockedActions
+                userData={vaultPool.userData}
+                stakingToken={pool?.stakingToken}
+                stakingTokenBalance={pool?.userData?.stakingTokenBalance}
+              />
             }
           />
         ) : (

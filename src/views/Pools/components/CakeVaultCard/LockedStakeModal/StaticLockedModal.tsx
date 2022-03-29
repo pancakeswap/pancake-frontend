@@ -1,36 +1,29 @@
-import { useState } from 'react'
 import { Modal, Box } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
-
+import _noop from 'lodash/noop'
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 
-import BalanceField from './BalanceField'
+import StaticAmount from './StaticAmount'
 import LockedBodyModal from './LockedBodyModal'
 
 interface LockedStakeModalProps {
-  onDismiss?: () => void
   stakingToken: any
-  stakingMax: BigNumber
+  lockedAmount: number
+  onDismiss?: () => void
 }
 
-const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ onDismiss, stakingMax, stakingToken }) => {
+const StaticLockedModal: React.FC<LockedStakeModalProps> = ({ stakingToken, onDismiss, lockedAmount }) => {
   const { theme } = useTheme()
-  const [lockedAmount, setLockedAmount] = useState(0)
-
   const usdValueStaked = useBUSDCakeAmount(lockedAmount)
 
   return (
     <Modal title="Lock CAKE" onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
       <Box mb="16px">
-        <BalanceField
+        <StaticAmount
           stakingAddress={stakingToken.address}
           stakingSymbol={stakingToken.symbol}
-          stakingDecimals={stakingToken.decimals}
           lockedAmount={lockedAmount}
-          usedValueStaked={usdValueStaked}
-          stakingMax={stakingMax}
-          setLockedAmount={setLockedAmount}
+          usdValueStaked={usdValueStaked}
         />
       </Box>
       <LockedBodyModal stakingToken={stakingToken} onDismiss={onDismiss} lockedAmount={lockedAmount} />
@@ -38,4 +31,4 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ onDismiss, stakingM
   )
 }
 
-export default LockedStakeModal
+export default StaticLockedModal
