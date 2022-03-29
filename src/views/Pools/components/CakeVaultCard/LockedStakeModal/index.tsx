@@ -52,7 +52,7 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFe
   const cakePriceBusd = usePriceCakeBusd()
 
   const callOptions = {
-    gasLimit: vaultPoolConfig[pool.vaultKey].gasLimit,
+    gasLimit: 500000,
   }
 
   const stakingMax = userData?.stakingTokenBalance ? new BigNumber(userData?.stakingTokenBalance) : BIG_ZERO
@@ -63,14 +63,13 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFe
 
   const getTokenLink = stakingToken.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'
 
+  const convertWeekToSeconds = (week) => week * 7 * 24 * 60 * 60
+
   const handleDeposit = async (convertedStakeAmount: BigNumber, lockDuration = 0) => {
     const receipt = await fetchWithCatchTxError(() => {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const methodArgs =
-        pool.vaultKey === VaultKey.IfoPool
-          ? [convertedStakeAmount.toString()]
-          : [convertedStakeAmount.toString(), lockDuration.toString()]
+      const methodArgs = [convertedStakeAmount.toString(), lockDuration.toString()]
       return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
     })
 
@@ -89,7 +88,7 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFe
   const handleConfirmClick = async () => {
     const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
 
-    handleDeposit(convertedStakeAmount)
+    handleDeposit(convertedStakeAmount, convertWeekToSeconds(duration))
   }
 
   if (showRoiCalculator) {

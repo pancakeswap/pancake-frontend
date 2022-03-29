@@ -17,6 +17,7 @@ const LockDurationField = ({ duration, setDuration }) => (
       <Flex flexWrap="wrap">
         {DURATIONS.map((d) => (
           <Button
+            key={d}
             onClick={() => setDuration(d)}
             mt="4px"
             mr={['2px', '2px', '4px', '4px']}

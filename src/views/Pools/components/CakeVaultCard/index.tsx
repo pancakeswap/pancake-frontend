@@ -16,7 +16,7 @@ import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
 import { StakingApy } from './StakingApy'
 import VaultCardActions from './VaultCardActions'
-import LockedStakingApy from './LockedStake/StakingApy'
+import LockedStakingApy from './LockedStake/LockedStakingApy'
 import LockedActions from './LockedStake/LockedActions'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
@@ -32,7 +32,9 @@ interface CakeVaultProps extends CardProps {
 const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, defaultFooterExpanded, ...props }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+
   const vaultPool = useVaultPoolByKey(pool.vaultKey)
+
   const {
     userData: { userShares, isLoading: isVaultUserDataLoading },
     fees: { performanceFeeAsDecimal },
@@ -56,7 +58,14 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
       </PoolCardHeader>
       <StyledCardBody isLoading={isLoading}>
         <VaultPositionTagWithLabel userData={vaultPool.userData} />
-        <StakingApy />
+        {vaultPool?.userData?.locked ? (
+          <LockedStakingApy
+            vaultPool={vaultPool}
+            action={<LockedActions pool={pool} performanceFee={performanceFeeAsDecimal} />}
+          />
+        ) : (
+          <StakingApy />
+        )}
         <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
           {/* TODO */}
           <Box>
