@@ -17,5 +17,10 @@
   "user-service-agreement-11": "9. Binance.com reserves the right to delist, suspend or terminate the PancakeSwap Mini Program service. At its discretion, Binance.com can suspend and terminate PancakeSwap Mini Program service at any time.",
   "user-service-agreement-12": "10. PancakeSwap reserves the right to include and exclude any asset from its token lists anytime.",
   "user-service-agreement-13": "11. Due to network delay, computer system failures and other force majeure, which may lead to delay, suspension or deviation of PancakeSwap decentralized trading service execution, Binance.com and PancakeSwap will use commercially reasonable effort to ensure but not promise that Binance DeFi Wallet and PancakeSwap decentralized trading execution system run stably and effectively. Binance.com and PancakeSwap do not take any responsibility if the final execution doesn’t match your expectations due to the above factors.",
-  "user-service-agreement-14": "12. I have read and agreed to the PancakeSwap Mini Program User Service Agreement and have agreed to use the PancakeSwap Mini Program service. I am fully aware of the risks described herein and confirm my use of this service."
+  "user-service-agreement-14": "12. I have read and agreed to the PancakeSwap Mini Program User Service Agreement and have agreed to use the PancakeSwap Mini Program service. I am fully aware of the risks described herein and confirm my use of this service.",
+  "add-liquidity-tip-1": "You’ll also be exposed to",
+  "add-liquidity-tip-2": "impermanent loss",
+  "add-liquidity-tip-3": "by adding liquidity.",
+  "impermanent-loss-tip-1": "Impermanent loss occurs when the prices of your deposited assets change compared to when you deposited them, resulting in a loss in value compared to just holding the same assets in your wallet.",
+  "impermanent-loss-tip-2": "What is Impermanent Loss?"
 }
