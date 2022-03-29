@@ -202,7 +202,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   if (isNotVaultAndHasStake || isVaultWithShares) {
     const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
     return (
-      <ActionContainer isAutoVault={!!vaultKey} flex={vaultPosition > 0 ? 2 : 1}>
+      <ActionContainer isAutoVault={!!vaultKey} flex={vaultPosition ? 2 : 1}>
         <ActionTitles>
           <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
             {stakingToken.symbol}{' '}

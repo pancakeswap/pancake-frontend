@@ -18,6 +18,7 @@ export const isAfterBurning = ({ userShares, locked, lockEndTime }: VaultPositio
   isAfter(addWeeks(new Date(), 1), new Date(parseInt(lockEndTime) * 1000))
 
 export enum VaultPosition {
+  None,
   Flexible,
   Locked,
   LockedEnd,
@@ -39,5 +40,5 @@ export const getVaultPosition = (params: VaultPositionParams): VaultPosition => 
   if (isStaked(params)) {
     return VaultPosition.Flexible
   }
-  return -1
+  return VaultPosition.None
 }
