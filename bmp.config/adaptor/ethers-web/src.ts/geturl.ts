@@ -24,6 +24,7 @@ export async function getUrl(href: string, options?: Options): Promise<GetUrlRes
     method: options.method,
     data: requestOptions.body || undefined,
     headers: requestOptions.headers,
+    timeout: 30000,
   })
 
   const result = {
