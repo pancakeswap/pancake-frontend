@@ -31,7 +31,8 @@ interface LockedStakeModalProps {
   pool: DeserializedPool
   performanceFee?: number
   onDismiss?: () => void
-  isStatic
+  isStatic?: bool
+  staticAmount?: string
 }
 
 const LockedStakeModal: React.FC<LockedStakeModalProps> = ({
@@ -56,7 +57,7 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
   const [lockedAmount, setLockedAmount] = useState(staticAmount)
-  const [duration, setDuration] = useState(0)
+  const [duration, setDuration] = useState(1)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
   const cakePriceBusd = useCakeBusdPrice()
 
@@ -71,8 +72,6 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({
   const stakingMax = userData?.stakingTokenBalance ? new BigNumber(userData?.stakingTokenBalance) : BIG_ZERO
 
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
-
-  const apy = (getApy(rawApr, 1, duration * 7, performanceFee) * 100).toFixed(2)
 
   const getTokenLink = stakingToken.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'
 
@@ -151,9 +150,10 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({
       </Box>
       <Overview
         openCalculator={() => setShowRoiCalculator(true)}
-        apy={apy}
+        weekDuration={duration}
         cakePriceBusd={cakePriceBusd}
-        stakeAmount={lockedAmount}
+        lockedAmount={lockedAmount}
+        usdValueStaked={usdValueStaked}
       />
       <Button
         isLoading={pendingTx}

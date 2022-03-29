@@ -2,8 +2,9 @@ import { Text, Flex, IconButton, CalculateIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import Balance from 'components/Balance'
 import { format } from 'date-fns'
-import BigNumber from 'bignumber.js'
 import { formatNumber } from 'utils/formatBalance'
+import addWeeks from 'date-fns/addWeeks'
+import { useVaultApy } from 'hooks/useVaultApy'
 
 const BalanceRow = ({ title, value, unit = '', decimals, suffix = null }) => (
   <Flex alignItems="center" justifyContent="space-between">
@@ -11,7 +12,7 @@ const BalanceRow = ({ title, value, unit = '', decimals, suffix = null }) => (
       {title}
     </Text>
     <Flex alignItems="center">
-      <Balance fontSize="16px" value={parseFloat(value)} decimals={decimals} unit={unit} />
+      <Balance bold fontSize="16px" value={parseFloat(value)} decimals={decimals} unit={unit} />
       {suffix}
     </Flex>
   </Flex>
@@ -22,21 +23,28 @@ const DateRow = ({ title, value }) => (
     <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
       {title}
     </Text>
-    <Text color="text">{format(value, 'MMM do, yyyy HH:mm')}</Text>
+    <Text bold color="text">
+      {format(value, 'MMM do, yyyy HH:mm')}
+    </Text>
   </Flex>
 )
 
-const Overview = ({ stakeAmount, cakePriceBusd, apy, openCalculator }) => {
-  const usdValueStaked = new BigNumber(stakeAmount).times(cakePriceBusd).toNumber()
-  const roi = (usdValueStaked * apy) / 100
+const convertWeekToSeconds = (week) => week * 7 * 24 * 60 * 60
+
+const Overview = ({ usdValueStaked, lockedAmount, openCalculator, weekDuration }) => {
+  const { lockedApy } = useVaultApy({ duration: convertWeekToSeconds(weekDuration) })
+
+  // TODO: check ROI
+  const roi = usdValueStaked * Number(lockedApy)
+
   const formattedRoi = formatNumber(roi, roi > 10000 ? 0 : 2, roi > 10000 ? 0 : 2)
 
   return (
     <LightGreyCard>
-      <BalanceRow title="CAKE TO BE LOCKED" value={stakeAmount} decimals={2} />
-      <BalanceRow title="APY" unit="%" value={apy} decimals={2} />
-      <BalanceRow title="DURATION" unit=" week" value="1" decimals={0} />
-      <DateRow title="UNLOCK ON" value={1648465751778} />
+      <BalanceRow title="CAKE TO BE LOCKED" value={lockedAmount} decimals={2} />
+      <BalanceRow title="APY" unit="%" value={lockedApy} decimals={2} />
+      <BalanceRow title="DURATION" unit=" week" value={weekDuration} decimals={0} />
+      <DateRow title="UNLOCK ON" value={addWeeks(new Date(), weekDuration)} />
       <BalanceRow
         title="EXPECTED ROI"
         value={`${formattedRoi}`}
