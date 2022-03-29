@@ -12,7 +12,7 @@ describe('getActiveMenuItem', () => {
     const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[0])
+    expect(result).toEqual(undefined)
   })
 
   it('should return an active item if pathname found in subitems', () => {
@@ -23,7 +23,7 @@ describe('getActiveMenuItem', () => {
     const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[1])
+    expect(result).toEqual(undefined)
   })
 
   it('should not return an item that only includes pathname but not starts with', () => {
@@ -34,7 +34,7 @@ describe('getActiveMenuItem', () => {
     const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[4])
+    expect(result).toEqual(undefined)
   })
 
   it('should return undefined if item is not found', () => {
@@ -69,7 +69,7 @@ describe('getActiveSubMenuItem', () => {
     const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[1] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[1].items[1])
+    expect(result).toEqual(undefined)
   })
 
   it('should return the item with the longest href when multiple items are found', () => {
@@ -80,7 +80,7 @@ describe('getActiveSubMenuItem', () => {
     const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[3] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[3].items[1])
+    expect(result).toEqual(undefined)
   })
 
   it('should return undefined if item is not found', () => {
@@ -102,6 +102,6 @@ describe('getActiveSubMenuItem', () => {
     const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[3] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[3].items[1])
+    expect(result).toEqual(undefined)
   })
 })

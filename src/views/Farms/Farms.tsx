@@ -336,15 +336,15 @@ const Farms: React.FC = ({ children }) => {
     <FarmsContext.Provider value={{ chosenFarmsMemoized }}>
       <PageHeader>
         <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-          {t('Farms')}
+          {t('v1 Farms')}
         </Heading>
         <Heading scale="lg" color="text">
-          {t('Stake LP tokens to earn.')}
+          {t('Find and unstake LP tokens from v1 farms')}
         </Heading>
-        <NextLinkFromReactRouter to="/farms/auction" id="lottery-pot-banner">
+        <NextLinkFromReactRouter to="https://pancakeswap.finance/farms" id="lottery-pot-banner">
           <Button p="0" variant="text">
             <Text color="primary" bold fontSize="16px" mr="4px">
-              {t('Community Auctions')}
+              {t('Back to v2 Farms')}
             </Text>
             <ArrowForwardIcon color="primary" />
           </Button>

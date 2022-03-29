@@ -1,7 +1,6 @@
 {
   "Farm": "Farm",
   "Exchange": "Exchange",
-  "Docs": "Docs",
   "Voting": "Voting",
   "Lottery": "Lottery",
   "Connect Wallet": "Connect Wallet",
@@ -190,7 +189,6 @@
   "Total staked": "Total staked",
   "Just stake some tokens to earn.": "Just stake some tokens to earn.",
   "High APR, low risk.": "High APR, low risk.",
-  "Stake LP tokens to earn.": "Stake LP tokens to earn.",
   "Basic Sale": "Basic Sale",
   "Unlimited Sale": "Unlimited Sale",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "No limits on the amount you can commit. Additional fee applies when claiming.",
@@ -508,7 +506,6 @@
   "Register": "Register",
   "Contribute %symbol%": "Contribute %symbol%",
   "Volume": "Volume",
-  "Prediction (BETA)": "Prediction (BETA)",
   "Leaderboard": "Leaderboard",
   "Tokens": "Tokens",
   "Contact": "Contact",
@@ -733,7 +730,6 @@
   "Community Farm Auction": "Community Farm Auction",
   "Each week, qualifying projects can bid CAKE for the right to host a 7-day Farm on PancakeSwap.": "Each week, qualifying projects can bid CAKE for the right to host a 7-day Farm on PancakeSwap.",
   "Apply for a Farm/Pool": "Apply for a Farm/Pool",
-  "Community Auctions": "Community Auctions",
   "FAQs": "FAQs",
   "Auction duration": "Auction duration",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.",
@@ -1598,9 +1594,11 @@
   "Error occurred, please try again later": "Error occurred, please try again later",
   "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.": "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.",
   "Preparing": "Preparing",
-  "Perpetual": "Perpetual",
   "I acknowledge that:": "I acknowledge that:",
   "I understand that small orders are executed at higher execution price due to gas fees.": "I understand that small orders are executed at higher execution price due to gas fees.",
   "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens": "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens",
-  "Apply to run an IFO!": "Apply to run an IFO!"
+  "Apply to run an IFO!": "Apply to run an IFO!",
+  "v1 Farms": "v1 Farms",
+  "Find and unstake LP tokens from v1 farms": "Find and unstake LP tokens from v1 farms",
+  "Back to v2 Farms": "Back to v2 Farms"
 }
