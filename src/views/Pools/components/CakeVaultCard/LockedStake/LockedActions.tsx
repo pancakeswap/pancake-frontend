@@ -2,13 +2,17 @@ import { useMemo } from 'react'
 import { Button, useModal, Message, MessageText, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import { getBalanceNumber } from 'utils/formatBalance'
 import LockedStakeModal from '../LockedStakeModal'
 
 const LockedActions = ({ pool, performanceFee, userData }) => {
   const { t } = useTranslation()
   const position = useMemo(() => getVaultPosition(userData), [userData])
+  const cakeBalance = getBalanceNumber(userData?.lockedAmount)
 
-  const [onPresentStake] = useModal(<LockedStakeModal pool={pool} performanceFee={performanceFee} />)
+  const [onPresentStake] = useModal(
+    <LockedStakeModal pool={pool} performanceFee={performanceFee} staticAmount={cakeBalance} isStatic />,
+  )
 
   if (position === VaultPosition.Locked) {
     return (

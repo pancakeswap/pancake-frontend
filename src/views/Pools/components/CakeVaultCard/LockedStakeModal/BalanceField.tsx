@@ -3,7 +3,7 @@ import { Text, Flex, Image, BalanceInput, Slider, Button } from '@pancakeswap/ui
 import styled from 'styled-components'
 import { BIG_TEN } from 'utils/bigNumber'
 
-import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 
@@ -16,15 +16,12 @@ const BalanceField = ({
   stakingSymbol,
   stakingDecimals,
   stakeAmount,
-  cakePriceBusd,
   stakingMax,
-  setStakeAmount,
+  setLockedAmount,
+  usedValueStaked,
 }) => {
   const { t } = useTranslation()
   const [percent, setPercent] = useState(0)
-
-  const usdValueStaked = new BigNumber(stakeAmount).times(cakePriceBusd)
-  const formattedUsdValueStaked = cakePriceBusd.gt(0) && stakeAmount ? formatNumber(usdValueStaked.toNumber()) : ''
 
   const handleStakeInputChange = (input: string) => {
     if (input) {
@@ -34,16 +31,16 @@ const BalanceField = ({
     } else {
       setPercent(0)
     }
-    setStakeAmount(input)
+    setLockedAmount(input)
   }
 
   const handleChangePercent = (sliderPercent: number) => {
     if (sliderPercent > 0) {
       const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
       const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingDecimals, stakingDecimals)
-      setStakeAmount(amountToStake)
+      setLockedAmount(amountToStake)
     } else {
-      setStakeAmount('')
+      setLockedAmount('')
     }
     setPercent(sliderPercent)
   }
@@ -64,7 +61,7 @@ const BalanceField = ({
       <BalanceInput
         value={stakeAmount}
         onUserInput={handleStakeInputChange}
-        currencyValue={cakePriceBusd.gt(0) && `~${formattedUsdValueStaked || 0} USD`}
+        currencyValue={`~${usedValueStaked || 0} USD`}
         decimals={stakingDecimals}
       />
       <Text mt="8px" textAlign="end" color="textSubtle" fontSize="12px" mb="8px">

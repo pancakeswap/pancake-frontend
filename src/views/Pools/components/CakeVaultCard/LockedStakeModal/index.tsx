@@ -5,15 +5,16 @@ import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { BIG_ZERO } from 'utils/bigNumber'
 
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useVaultPoolContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
-import { getDecimalAmount } from 'utils/formatBalance'
+import { getDecimalAmount, formatNumber } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
+
 import { DeserializedPool, VaultKey } from 'state/types'
 import { getApy } from 'utils/compoundApyHelpers'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
@@ -24,14 +25,22 @@ import { convertSharesToCake } from '../../../helpers'
 import Overview from './Overview'
 import LockDurationField from './LockDurationField'
 import BalanceField from './BalanceField'
+import StaticAmount from './StaticAmount'
 
 interface LockedStakeModalProps {
   pool: DeserializedPool
   performanceFee?: number
   onDismiss?: () => void
+  isStatic
 }
 
-const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFee, onDismiss }) => {
+const LockedStakeModal: React.FC<LockedStakeModalProps> = ({
+  pool,
+  performanceFee,
+  onDismiss,
+  isStatic,
+  staticAmount,
+}) => {
   const dispatch = useAppDispatch()
 
   const { stakingToken, earningToken, rawApr, stakingTokenPrice, earningTokenPrice, userData } = pool
@@ -46,11 +55,15 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFe
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
-  const [stakeAmount, setStakeAmount] = useState('0')
+  const [lockedAmount, setLockedAmount] = useState(staticAmount)
   const [duration, setDuration] = useState(0)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = useCakeBusdPrice()
 
+  const usdValueStaked = new BigNumber(lockedAmount).times(cakePriceBusd.toSignificant(6))
+  const formattedUsdValueStaked = lockedAmount ? formatNumber(usdValueStaked.toNumber()) : ''
+
+  // TODO: Add proper gasLimit
   const callOptions = {
     gasLimit: 500000,
   }
@@ -86,7 +99,7 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFe
   }
 
   const handleConfirmClick = async () => {
-    const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
+    const convertedStakeAmount = getDecimalAmount(new BigNumber(lockedAmount), stakingToken.decimals)
 
     handleDeposit(convertedStakeAmount, convertWeekToSeconds(duration))
   }
@@ -103,7 +116,7 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFe
         stakingTokenSymbol={stakingToken.symbol}
         earningTokenSymbol={earningToken.symbol}
         onBack={() => setShowRoiCalculator(false)}
-        initialValue={stakeAmount}
+        initialValue={lockedAmount}
         performanceFee={performanceFee}
       />
     )
@@ -111,17 +124,28 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFe
 
   return (
     <Modal title="Lock CAKE" onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
-      <Box mb="16px">
-        <BalanceField
-          stakingAddress={stakingToken.address}
-          stakingSymbol={stakingToken.symbol}
-          stakingDecimals={stakingToken.decimals}
-          stakeAmount={stakeAmount}
-          cakePriceBusd={cakePriceBusd}
-          stakingMax={stakingMax}
-          setStakeAmount={setStakeAmount}
-        />
-      </Box>
+      {isStatic ? (
+        <Box mb="16px">
+          <StaticAmount
+            stakingAddress={stakingToken.address}
+            stakingSymbol={stakingToken.symbol}
+            stakedAmount={lockedAmount}
+            usdValueStaked={formattedUsdValueStaked}
+          />
+        </Box>
+      ) : (
+        <Box mb="16px">
+          <BalanceField
+            stakingAddress={stakingToken.address}
+            stakingSymbol={stakingToken.symbol}
+            stakingDecimals={stakingToken.decimals}
+            stakeAmount={lockedAmount}
+            usedValueStaked={formattedUsdValueStaked}
+            stakingMax={stakingMax}
+            setLockedAmount={setLockedAmount}
+          />
+        </Box>
+      )}
       <Box mb="16px">
         <LockDurationField setDuration={setDuration} duration={duration} />
       </Box>
@@ -129,13 +153,13 @@ const LockedStakeModal: React.FC<LockedStakeModalProps> = ({ pool, performanceFe
         openCalculator={() => setShowRoiCalculator(true)}
         apy={apy}
         cakePriceBusd={cakePriceBusd}
-        stakeAmount={stakeAmount}
+        stakeAmount={lockedAmount}
       />
       <Button
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         onClick={handleConfirmClick}
-        disabled={!stakeAmount || parseFloat(stakeAmount) === 0}
+        disabled={!lockedAmount || parseFloat(lockedAmount) === 0}
         mt="24px"
       >
         {pendingTx ? t('Confirming') : t('Confirm')}

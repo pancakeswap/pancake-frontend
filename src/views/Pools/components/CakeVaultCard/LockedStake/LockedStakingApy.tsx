@@ -3,8 +3,8 @@ import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import Balance from 'components/Balance'
+import Divider from 'components/Divider'
 import { memo } from 'react'
-import styled from 'styled-components'
 import format from 'date-fns/format'
 import formatDuration from 'date-fns/formatDuration'
 import secondsToHours from 'date-fns/secondsToHours'
@@ -30,16 +30,12 @@ const DetailSection = ({ title, value, detail }) => (
   </Box>
 )
 
-const Divider = styled.hr`
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-`
-
 const useUserDataInVaultPrensenter = (userData) => {
   const cakePriceBusd = useCakeBusdPrice()
 
   const secondDuration = userData?.lockEndTime - userData?.lockStartTime
 
-  const cakeBalance = getBalanceNumber(userData?.lockedAmount, 18)
+  const cakeBalance = getBalanceNumber(userData?.lockedAmount)
   const usdValueStaked = multiplyPriceByAmount(cakePriceBusd, cakeBalance)
 
   return {
