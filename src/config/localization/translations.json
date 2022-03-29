@@ -1599,5 +1599,6 @@
   "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens": "I understand that using taxed tokens on limit orders is highly discouraged and not recommended - Taxed tokens can be stuck in limit orders and lost forever because of impossibility to execute an order for such tokens",
   "Apply to run an IFO!": "Apply to run an IFO!",
   "v1 Farms": "v1 Farms",
-  "Find and unstake LP tokens from v1 farms": "Find and unstake LP tokens from v1 farms"
+  "Find and unstake LP tokens from v1 farms": "Find and unstake LP tokens from v1 farms",
+  "Back to v2 Farms": "Back to v2 Farms"
 }

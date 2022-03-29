@@ -341,6 +341,14 @@ const Farms: React.FC = ({ children }) => {
         <Heading scale="lg" color="text">
           {t('Find and unstake LP tokens from v1 farms')}
         </Heading>
+        <NextLinkFromReactRouter to="https://pancakeswap.finance/farms" id="lottery-pot-banner">
+          <Button p="0" variant="text">
+            <Text color="primary" bold fontSize="16px" mr="4px">
+              {t('Back to v2 Farms')}
+            </Text>
+            <ArrowForwardIcon color="primary" />
+          </Button>
+        </NextLinkFromReactRouter>
       </PageHeader>
       <Page>
         <ControlContainer>
