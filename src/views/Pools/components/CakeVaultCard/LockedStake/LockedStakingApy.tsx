@@ -2,7 +2,6 @@ import { Flex, Text, Skeleton, Box } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 import Balance from 'components/Balance'
 import { memo } from 'react'
 import styled from 'styled-components'
@@ -12,7 +11,6 @@ import secondsToHours from 'date-fns/secondsToHours'
 import daysToWeeks from 'date-fns/daysToWeeks'
 import compose from 'lodash/fp/compose'
 import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
-import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
 
@@ -36,8 +34,7 @@ const Divider = styled.hr`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const useUserDataInVaultPrensenter = (vaultPool) => {
-  const { userData } = vaultPool
+const useUserDataInVaultPrensenter = (userData) => {
   const cakePriceBusd = useCakeBusdPrice()
 
   const secondDuration = userData?.lockEndTime - userData?.lockStartTime
@@ -54,11 +51,11 @@ const useUserDataInVaultPrensenter = (vaultPool) => {
   }
 }
 
-const LockedStakingApy = memo(({ action, vaultPool }) => {
+const LockedStakingApy = memo(({ action, userData }) => {
   const { t } = useTranslation()
 
   const { weekDuration, lockEndDate, lockedAmount, usdValueStaked, secondDuration } =
-    useUserDataInVaultPrensenter(vaultPool)
+    useUserDataInVaultPrensenter(userData)
 
   const { lockedApy } = useVaultApy({ duration: Number(secondDuration) })
 

@@ -1,14 +1,30 @@
+import { useMemo } from 'react'
 import { Button, useModal, Message, MessageText, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import LockedStakeModal from '../LockedStakeModal'
 
-const LockedActions = ({ pool, performanceFee }) => {
+const LockedActions = ({ pool, performanceFee, userData }) => {
   const { t } = useTranslation()
+  const position = useMemo(() => getVaultPosition(userData), [userData])
 
   const [onPresentStake] = useModal(<LockedStakeModal pool={pool} performanceFee={performanceFee} />)
 
-  const msg =
-    'The lock period has ended. To avoid more rewards being burned, we recommend you unlock your position or adjust it to start a new lock.'
+  if (position === VaultPosition.Locked) {
+    return (
+      <Button onClick={onPresentStake} width="100%">
+        {t('Adjust')}
+      </Button>
+    )
+  }
+
+  const msg = {
+    [VaultPosition.None]: null,
+    [VaultPosition.LockedEnd]:
+      'Lock period has ended. We recommend you unlock your position or adjust it to start a new lock.',
+    [VaultPosition.AfterBurning]:
+      'The lock period has ended. To avoid more rewards being burned, we recommend you unlock your position or adjust it to start a new lock.',
+  }
 
   return (
     <Message
@@ -25,14 +41,8 @@ const LockedActions = ({ pool, performanceFee }) => {
         </Box>
       }
     >
-      <MessageText>{msg}</MessageText>
+      <MessageText>{msg[position]}</MessageText>
     </Message>
-  )
-
-  return (
-    <Button onClick={onPresentStake} width="100%">
-      {t('Adjust')}
-    </Button>
   )
 }
 

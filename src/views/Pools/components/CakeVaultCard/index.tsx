@@ -8,6 +8,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedCakeVault, DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { convertSharesToCake } from 'views/Pools/helpers'
+
 import CardFooter from '../PoolCard/CardFooter'
 import PoolCardHeader, { PoolCardHeaderTitle } from '../PoolCard/PoolCardHeader'
 import { StyledCard } from '../PoolCard/StyledCard'
@@ -60,8 +61,10 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
         <VaultPositionTagWithLabel userData={vaultPool.userData} />
         {vaultPool?.userData?.locked ? (
           <LockedStakingApy
-            vaultPool={vaultPool}
-            action={<LockedActions pool={pool} performanceFee={performanceFeeAsDecimal} />}
+            userData={vaultPool.userData}
+            action={
+              <LockedActions userData={vaultPool.userData} pool={pool} performanceFee={performanceFeeAsDecimal} />
+            }
           />
         ) : (
           <StakingApy />
