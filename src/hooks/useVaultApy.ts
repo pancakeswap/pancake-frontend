@@ -38,7 +38,7 @@ const getBoostFactor = (boostWeight: BigNumber, duration: number, durationFactor
 const getLockedApy = (flexibleApy: string, boostFactor: number) =>
   FixedNumber.from(flexibleApy).mulUnsafe(FixedNumber.from(1 + boostFactor))
 
-export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number }) {
+export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number } = {}) {
   const { totalShares = BIG_ZERO, pricePerFullShare = BIG_ZERO } = useCakeVault()
   const totalSharesAsEtherBN = useMemo(() => FixedNumber.from(totalShares.toString()), [totalShares])
   const pricePerFullShareAsEtherBN = useMemo(() => FixedNumber.from(pricePerFullShare.toString()), [pricePerFullShare])

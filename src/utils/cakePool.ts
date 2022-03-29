@@ -1,23 +1,28 @@
 import BigNumber from 'bignumber.js'
-import { addWeeks, isAfter, isBefore } from 'date-fns'
+
+const addWeek = (date: Date): Date => {
+  const newDate = new Date(date)
+  newDate.setDate(date.getDate() + 7)
+  return newDate
+}
 
 export const isStaked = ({ userShares }: { userShares?: BigNumber }): boolean => userShares && userShares.gt(0)
 
 export const isLocked = ({ userShares, locked }: { userShares?: BigNumber; locked?: boolean }): boolean =>
-  isStaked({ userShares }) && Boolean(locked)
+  isStaked({ userShares }) && Boolean(locked) // && !isAfter(new Date(lockEndTime * 1000), new Date())
 
 export const isLockedEnd = ({ userShares, locked, lockEndTime }: VaultPositionParams): boolean =>
   lockEndTime &&
   lockEndTime !== '0' &&
   isLocked({ userShares, locked }) &&
-  isBefore(new Date(parseInt(lockEndTime) * 1000), new Date()) &&
-  isAfter(new Date(parseInt(lockEndTime) * 1000), addWeeks(new Date(), 1))
+  parseInt(lockEndTime) * 1000 >= Date.now() &&
+  Date.now() <= addWeek(new Date(parseInt(lockEndTime) * 1000)).getTime()
 
 export const isAfterBurning = ({ userShares, locked, lockEndTime }: VaultPositionParams): boolean =>
   lockEndTime &&
   lockEndTime !== '0' &&
   isLocked({ userShares, locked }) &&
-  isAfter(addWeeks(new Date(), 1), new Date(parseInt(lockEndTime) * 1000))
+  Date.now() > addWeek(new Date(parseInt(lockEndTime) * 1000)).getTime()
 
 export enum VaultPosition {
   None,

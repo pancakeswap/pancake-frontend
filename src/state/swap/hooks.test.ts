@@ -3,7 +3,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { parse } from 'querystring'
 import { useCurrency } from 'hooks/Tokens'
-import { createWrapper } from 'testUtils'
+import { createReduxWrapper } from 'testUtils'
 import { Field } from './actions'
 import { DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { queryParametersToSwapState, useDerivedSwapInfo, useSwapState } from './hooks'
@@ -141,7 +141,7 @@ describe('#useDerivedSwapInfo', () => {
           recipient,
         )
       },
-      { wrapper: createWrapper() },
+      { wrapper: createReduxWrapper() },
     )
     expect(result.current.inputError).toBe('Connect Wallet')
 
@@ -176,7 +176,7 @@ describe('#useDerivedSwapInfo', () => {
         )
       },
       {
-        wrapper: createWrapper({
+        wrapper: createReduxWrapper({
           swap: {
             typedValue: '0.11',
             [Field.INPUT]: { currencyId: 'BNB' },
@@ -218,7 +218,7 @@ describe('#useDerivedSwapInfo', () => {
         }
       },
       {
-        wrapper: createWrapper(),
+        wrapper: createReduxWrapper(),
       },
     )
 

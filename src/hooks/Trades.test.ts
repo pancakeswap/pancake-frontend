@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { mainnetTokens } from 'config/constants/tokens'
-import { createWrapper } from 'testUtils'
+import { createReduxWrapper } from 'testUtils'
 import { Pair, TokenAmount, CurrencyAmount, Trade } from '@pancakeswap/sdk'
 import * as UsePairs from './usePairs'
 import * as Trades from './Trades'
@@ -101,7 +101,7 @@ describe('Trade', () => {
           Trades.useTradeExactIn(argA, argB)
         },
         {
-          wrapper: createWrapper({ user: { userSingleHopOnly: true } }),
+          wrapper: createReduxWrapper({ user: { userSingleHopOnly: true } }),
         },
       )
 
@@ -114,7 +114,7 @@ describe('Trade', () => {
           Trades.useTradeExactOut(argB, argA)
         },
         {
-          wrapper: createWrapper({ user: { userSingleHopOnly: true } }),
+          wrapper: createReduxWrapper({ user: { userSingleHopOnly: true } }),
         },
       )
 
@@ -132,7 +132,7 @@ describe('Trade', () => {
           Trades.useTradeExactIn(argA, argB)
         },
         {
-          wrapper: createWrapper({ user: { userSingleHopOnly: false } }),
+          wrapper: createReduxWrapper({ user: { userSingleHopOnly: false } }),
         },
       )
 
@@ -142,7 +142,7 @@ describe('Trade', () => {
           Trades.useTradeExactOut(argB, argA)
         },
         {
-          wrapper: createWrapper({ user: { userSingleHopOnly: false } }),
+          wrapper: createReduxWrapper({ user: { userSingleHopOnly: false } }),
         },
       )
 
