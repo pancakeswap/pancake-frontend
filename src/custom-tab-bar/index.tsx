@@ -3,7 +3,19 @@ import Taro from '@binance/mp-service'
 import { View, Image } from '@binance/mp-components'
 import './index.scss'
 import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
+import { useTheme } from 'styled-components'
 
+const { safeArea, screenHeight } = getSystemInfoSync()
+const blackHeight = screenHeight - safeArea.bottom
+const Wrap = ({ children }) => {
+  const theme = useTheme()
+
+  return (
+    <View className="bottom-tab" style={{ paddingBottom: `${blackHeight}px`, background: theme.card.background }}>
+      {children}
+    </View>
+  )
+}
 const defaultState = {
   selected: 0,
   color: '#7A6EAA',
@@ -23,8 +35,19 @@ const defaultState = {
     },
   ],
 }
-const { safeArea, screenHeight } = getSystemInfoSync()
-const blackHeight = screenHeight - safeArea.bottom
+const Title = ({ selected, children }) => {
+  const theme = useTheme()
+  return (
+    <View
+      className="bottom-tab-item-text"
+      style={{
+        color: selected ? theme.colors.secondary : theme.colors.textSubtle,
+      }}
+    >
+      {children}
+    </View>
+  )
+}
 class customTabBar extends Component<{}, typeof defaultState> {
   constructor() {
     super({})
@@ -50,7 +73,7 @@ class customTabBar extends Component<{}, typeof defaultState> {
 
   render() {
     return (
-      <View className="bottom-tab" style={{ paddingBottom: `${blackHeight}px` }}>
+      <Wrap>
         {this.state.list.map((item, index) => {
           return (
             <View
@@ -63,18 +86,11 @@ class customTabBar extends Component<{}, typeof defaultState> {
                 className="bottom-tab-item-img"
                 src={this.state.selected === index ? item.selectedIconPath : item.iconPath}
               />
-              <View
-                className="bottom-tab-item-text"
-                style={{
-                  color: this.state.selected === index ? this.state.selectedColor : this.state.color,
-                }}
-              >
-                {item.text}
-              </View>
+              <Title selected={this.state.selected === index}>{item.text}</Title>
             </View>
           )
         })}
-      </View>
+      </Wrap>
     )
   }
 }
