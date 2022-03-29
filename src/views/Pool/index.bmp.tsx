@@ -210,7 +210,7 @@ function Pool({ v2IsLoading, allV2PairsWithLiquidity }) {
 export default function PoolPage() {
   const { account } = useActiveWeb3React()
   const [visible, setVisible] = useState(false)
-  const [v2IsLoading, setV2IsLoading] = useState()
+  const [v2IsLoading, setV2IsLoading] = useState(true)
   const [allV2PairsWithLiquidity, setAllV2PairsWithLiquidity] = useState()
   useDidHide(() => {
     setVisible(false)
@@ -218,6 +218,12 @@ export default function PoolPage() {
   useDidShow(() => {
     setVisible(true)
   })
+  useEffect(() => {
+    setVisible(true)
+    return () => {
+      setVisible(false)
+    }
+  }, [])
   return (
     <view>
       <Pool allV2PairsWithLiquidity={allV2PairsWithLiquidity} v2IsLoading={v2IsLoading} />
