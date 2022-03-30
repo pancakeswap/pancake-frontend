@@ -319,7 +319,11 @@ function AddLiquidity() {
 
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal
-      title={noLiquidity ? t('You are creating a pool') : t('You will receive')}
+      title={
+        noLiquidity
+          ? t('You are creating a pool')
+          : `${t('You will receive')} ${currencyA.symbol}-${currencyB.symbol} LP`
+      }
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
