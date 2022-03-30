@@ -1,11 +1,10 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Trade, Currency, TradeType } from '@pancakeswap/sdk'
+import { Trade, TradeType, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Button, Text, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
 import {
-  computeSlippageAdjustedAmounts,
   computeTradePriceBreakdown,
   formatExecutionPrice,
   warningSeverity,
@@ -27,23 +26,21 @@ const SwapModalFooterContainer = styled(AutoColumn)`
 
 export default function SwapModalFooter({
   trade,
+  slippageAdjustedAmounts,
+  isEnoughInputBalance,
   onConfirm,
-  allowedSlippage,
   swapErrorMessage,
   disabledConfirm,
 }: {
   trade: Trade<Currency, Currency, TradeType>
-  allowedSlippage: number
+  slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
+  isEnoughInputBalance: boolean
   onConfirm: () => void
   swapErrorMessage: string | undefined
   disabledConfirm: boolean
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
-  const slippageAdjustedAmounts = useMemo(
-    () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
-    [allowedSlippage, trade],
-  )
   const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
 
@@ -139,7 +136,9 @@ export default function SwapModalFooter({
           id="confirm-swap-or-send"
           width="100%"
         >
-          {severity > 2 ? t('Swap Anyway') : t('Confirm Swap')}
+          {severity > 2 || (trade.tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance)
+            ? t('Swap Anyway')
+            : t('Confirm Swap')}
         </Button>
 
         {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
