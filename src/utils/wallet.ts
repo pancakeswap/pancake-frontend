@@ -2,6 +2,7 @@
 
 import { ExternalProvider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
+import { BAD_SRCS } from 'components/Logo/Logo'
 import { BASE_BSC_SCAN_URLS } from 'config'
 import { nodes } from './getRpcUrl'
 
@@ -80,6 +81,8 @@ export const registerToken = async (
   tokenDecimals: number,
   tokenLogo?: string,
 ) => {
+  const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
+
   const tokenAdded = await window.ethereum.request({
     method: 'wallet_watchAsset',
     params: {
@@ -88,7 +91,8 @@ export const registerToken = async (
         address: tokenAddress,
         symbol: tokenSymbol,
         decimals: tokenDecimals,
-        image: tokenLogo || `https://tokens.pancakeswap.finance/images/${tokenAddress}.png`,
+        // better leave this undefined for default image instead of broken image url
+        image,
       },
     },
   })
