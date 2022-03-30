@@ -42,6 +42,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 519,
+    lpSymbol: 'GMI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x58d4B61983Ca0aFE6E352e90719F403E24e016F4',
+    },
+    token: serializedTokens.gmi,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 518,
     lpSymbol: 'FROYO-CAKE LP',
     lpAddresses: {
