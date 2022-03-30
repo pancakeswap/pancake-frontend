@@ -100,6 +100,7 @@ const Overview = ({
   openCalculator,
   duration,
   newDuration = 0,
+  newLockedAmount = 0,
   isValidDuration,
   lockStartTime = null,
 }) => {
@@ -121,12 +122,12 @@ const Overview = ({
   }, [newLockedApy, usdValueStaked])
 
   const unlockDate = newDuration
-    ? addSeconds(new Date(parseInt(lockStartTime) * 1000), newDuration)
+    ? addSeconds(lockStartTime ? new Date(parseInt(lockStartTime) * 1000) : new Date(), newDuration)
     : addSeconds(new Date(), duration)
 
   return (
     <LightGreyCard>
-      <BalanceRow title="CAKE TO BE LOCKED" value={lockedAmount} decimals={2} />
+      <BalanceRow title="CAKE TO BE LOCKED" value={lockedAmount} newValue={newLockedAmount} decimals={2} />
       <BalanceRow title="APY" unit="%" value={lockedApy} decimals={2} newValue={newLockedApy} />
       <TextRow
         title="DURATION"

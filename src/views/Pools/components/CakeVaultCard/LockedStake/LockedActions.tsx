@@ -5,15 +5,26 @@ import BigNumber from 'bignumber.js'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { differenceInSeconds } from 'date-fns'
 
 import LockedStakeModal from '../LockedStakeModal'
 import ExtendDurationModal from '../LockedStakeModal/ExtendDurationModal'
 import AddAmountModal from '../LockedStakeModal/AddAmountModal'
 
-const AddCakeButton = ({ currentBalance, stakingToken }) => {
+const AddCakeButton = ({ currentBalance, stakingToken, currentLockedAmount, lockEndTime, lockStartTime }) => {
   const { t } = useTranslation()
+  const remainingDuration = differenceInSeconds(new Date(parseInt(lockEndTime) * 1000), new Date())
+  const passedDuration = differenceInSeconds(new Date(), new Date(parseInt(lockStartTime) * 1000))
 
-  const [openAddAmountModal] = useModal(<AddAmountModal currentBalance={currentBalance} stakingToken={stakingToken} />)
+  const [openAddAmountModal] = useModal(
+    <AddAmountModal
+      passedDuration={passedDuration}
+      currentLockedAmount={currentLockedAmount}
+      remainingDuration={remainingDuration}
+      currentBalance={currentBalance}
+      stakingToken={stakingToken}
+    />,
+  )
 
   return (
     <Button onClick={() => openAddAmountModal()} width="100%">
@@ -22,7 +33,7 @@ const AddCakeButton = ({ currentBalance, stakingToken }) => {
   )
 }
 
-const ExtendButton = ({ stakingToken, cakeBalance, lockEndTime, lockStartTime }) => {
+const ExtendButton = ({ stakingToken, currentLockedAmount, lockEndTime, lockStartTime }) => {
   const { t } = useTranslation()
 
   const currentDuration = lockEndTime - lockStartTime
@@ -31,7 +42,7 @@ const ExtendButton = ({ stakingToken, cakeBalance, lockEndTime, lockStartTime })
     <ExtendDurationModal
       stakingToken={stakingToken}
       lockStartTime={lockStartTime}
-      lockedAmount={cakeBalance}
+      currentLockedAmount={currentLockedAmount}
       currentDuration={currentDuration}
     />,
   )
@@ -89,12 +100,18 @@ const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
   if (position !== VaultPosition.Locked) {
     return (
       <Flex>
-        <AddCakeButton stakingToken={stakingToken} currentBalance={currentBalance} />
+        <AddCakeButton
+          lockEndTime={userData?.lockEndTime}
+          lockStartTime={userData?.lockStartTime}
+          currentLockedAmount={cakeBalance}
+          stakingToken={stakingToken}
+          currentBalance={currentBalance}
+        />
         <ExtendButton
           lockEndTime={userData?.lockEndTime}
           lockStartTime={userData?.lockStartTime}
           stakingToken={stakingToken}
-          cakeBalance={cakeBalance}
+          currentLockedAmount={cakeBalance}
         />
       </Flex>
     )

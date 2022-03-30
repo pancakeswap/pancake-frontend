@@ -56,7 +56,7 @@ const useLockedPool = ({ lockedAmount, stakingToken, onDismiss, prepConfirmArg }
 
   const handleConfirmClick = async () => {
     const { finalLockedAmount = lockedAmount, finalDuration = duration } =
-      typeof prepConfirmArg === 'function' ? prepConfirmArg({ lockedAmount, duration }) : {}
+      typeof prepConfirmArg === 'function' ? prepConfirmArg({ duration }) : {}
 
     const convertedStakeAmount = getDecimalAmount(new BigNumber(finalLockedAmount), stakingToken.decimals)
 

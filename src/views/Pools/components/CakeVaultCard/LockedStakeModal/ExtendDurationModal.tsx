@@ -10,7 +10,7 @@ import Overview from './Overview'
 
 interface ExtendDurationModal {
   stakingToken: any
-  lockedAmount: number
+  currentLockedAmount: number
   onDismiss?: () => void
   currentDuration: number
   lockStartTime: string
@@ -19,12 +19,12 @@ interface ExtendDurationModal {
 const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   stakingToken,
   onDismiss,
-  lockedAmount,
+  currentLockedAmount,
   currentDuration,
   lockStartTime,
 }) => {
   const { theme } = useTheme()
-  const usdValueStaked = useBUSDCakeAmount(lockedAmount)
+  const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
 
   return (
     <Modal title="Lock CAKE" onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
@@ -32,17 +32,17 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         <StaticAmount
           stakingAddress={stakingToken.address}
           stakingSymbol={stakingToken.symbol}
-          lockedAmount={lockedAmount}
+          lockedAmount={currentLockedAmount}
           usdValueStaked={usdValueStaked}
         />
       </Box>
       <LockedBodyModal
-        currentBalance={lockedAmount}
+        currentBalance={currentLockedAmount}
         stakingToken={stakingToken}
         onDismiss={onDismiss}
-        lockedAmount={lockedAmount}
+        lockedAmount={currentLockedAmount}
         validator={({ duration }) => {
-          const isValidAmount = lockedAmount && lockedAmount > 0
+          const isValidAmount = currentLockedAmount && currentLockedAmount > 0
           const totalDuration = currentDuration + duration
 
           const isValidDuration = duration > 0 && totalDuration > 0 && totalDuration <= DEFAULT_MAX_DURATION
@@ -61,7 +61,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
             openCalculator={_noop}
             duration={currentDuration}
             newDuration={currentDuration + duration}
-            lockedAmount={lockedAmount}
+            lockedAmount={currentLockedAmount}
             usdValueStaked={usdValueStaked}
           />
         )}
