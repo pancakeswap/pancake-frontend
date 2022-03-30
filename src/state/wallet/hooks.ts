@@ -106,17 +106,17 @@ export function useCurrencyBalances(
 
   const tokenBalances = useTokenBalances(account, tokens)
   const containsBNB: boolean = useMemo(() => currencies?.some((currency) => currency === ETHER) ?? false, [currencies])
-  const ethBalance = useBNBBalances(containsBNB ? [account] : [])
+  const bnbBalance = useBNBBalances(containsBNB ? [account] : [])
 
   return useMemo(
     () =>
       currencies?.map((currency) => {
         if (!account || !currency) return undefined
         if (currency instanceof Token) return tokenBalances[currency.address]
-        if (currency === ETHER) return ethBalance[account]
+        if (currency === ETHER) return bnbBalance[account]
         return undefined
       }) ?? [],
-    [account, currencies, ethBalance, tokenBalances],
+    [account, currencies, bnbBalance, tokenBalances],
   )
 }
 
