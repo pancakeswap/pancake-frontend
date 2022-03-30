@@ -96,7 +96,7 @@ export function TransactionSubmittedContent({
                   token.address,
                   token.symbol,
                   token.decimals,
-                  token instanceof WrappedTokenInfo && token.logoURI,
+                  token instanceof WrappedTokenInfo ? token.logoURI : undefined,
                 )
               }
             >

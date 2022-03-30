@@ -149,7 +149,7 @@ export default function CurrencyInputPanel({
                       tokenAddress,
                       token.symbol,
                       token.decimals,
-                      token instanceof WrappedTokenInfo && token.logoURI,
+                      token instanceof WrappedTokenInfo ? token.logoURI : undefined,
                     )
                   }
                 />
