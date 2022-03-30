@@ -1,10 +1,14 @@
+import { useMemo, memo } from 'react'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+
 import { Flex, Text, Skeleton, Box } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import Balance from 'components/Balance'
 import Divider from 'components/Divider'
-import { memo } from 'react'
+import getTimePeriods from 'utils/getTimePeriods'
+
 import format from 'date-fns/format'
 import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -44,11 +48,14 @@ const useUserDataInVaultPrensenter = (userData) => {
 
 const LockedStakingApy = memo(({ action, userData }) => {
   const { t } = useTranslation()
+  const position = useMemo(() => getVaultPosition(userData), [userData])
 
   const { weekDuration, lockEndDate, lockedAmount, usdValueStaked, secondDuration } =
     useUserDataInVaultPrensenter(userData)
 
   const { lockedApy } = useVaultApy({ duration: Number(secondDuration) })
+
+  const { days, hours, minutes } = getTimePeriods(100000)
 
   return (
     <LightGreyCard>
@@ -80,6 +87,26 @@ const LockedStakingApy = memo(({ action, userData }) => {
         </Text>
         <Balance color="text" bold fontSize="16px" value={1200} decimals={2} unit="$" />
       </Flex>
+      {position === VaultPosition.LockedEnd && (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('After Burning In')}
+          </Text>
+          <Text color="textSubtle" bold>
+            {`${days}d: ${hours}h: ${minutes}m`}
+          </Text>
+        </Flex>
+      )}
+      {position === VaultPosition.AfterBurning && (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('After burning')}
+          </Text>
+          <Text color="textSubtle" bold>
+            1.2 BURNED
+          </Text>
+        </Flex>
+      )}
     </LightGreyCard>
   )
 })

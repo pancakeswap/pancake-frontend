@@ -71,34 +71,36 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
             }
           />
         ) : (
-          <StakingApy />
-        )}
-        <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
-          {/* TODO */}
-          <Box>
-            <RecentCakeProfitRow pool={pool} />
-            {/* <Box mt="8px">
+          <>
+            <StakingApy />
+            <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
+              {/* TODO */}
+              <Box>
+                <RecentCakeProfitRow pool={pool} />
+                {/* <Box mt="8px">
               <UnstakingFeeCountdownRow vaultKey={pool.vaultKey} />
             </Box> */}
-          </Box>
-          <Flex flexDirection="column">
-            {account ? (
-              <VaultCardActions
-                pool={pool}
-                accountHasSharesStaked={accountHasSharesStaked}
-                isLoading={isLoading}
-                performanceFee={performanceFeeAsDecimal}
-              />
-            ) : (
-              <>
-                <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                  {t('Start earning')}
-                </Text>
-                <ConnectWalletButton />
-              </>
-            )}
-          </Flex>
-        </FlexGap>
+              </Box>
+              <Flex flexDirection="column">
+                {account ? (
+                  <VaultCardActions
+                    pool={pool}
+                    accountHasSharesStaked={accountHasSharesStaked}
+                    isLoading={isLoading}
+                    performanceFee={performanceFeeAsDecimal}
+                  />
+                ) : (
+                  <>
+                    <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
+                      {t('Start earning')}
+                    </Text>
+                    <ConnectWalletButton />
+                  </>
+                )}
+              </Flex>
+            </FlexGap>
+          </>
+        )}
       </StyledCardBody>
       <CardFooter defaultExpanded={defaultFooterExpanded} pool={pool} account={account} />
     </StyledCard>

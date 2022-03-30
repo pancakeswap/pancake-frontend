@@ -30,7 +30,7 @@ const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
 
   const [openAddAmountModal] = useModal(<AddAmountModal currentBalance={currentBalance} stakingToken={stakingToken} />)
 
-  if (position !== VaultPosition.Locked) {
+  if (position === VaultPosition.Locked) {
     return (
       <Flex>
         <Button onClick={() => openAddAmountModal()} width="100%">
