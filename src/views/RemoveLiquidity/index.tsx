@@ -211,8 +211,8 @@ export default function RemoveLiquidity() {
       throw new Error('missing liquidity amount')
     }
 
-    const currencyBIsETH = currencyB === ETHER
-    const oneCurrencyIsETH = currencyA === ETHER || currencyBIsETH
+    const currencyBIsBNB = currencyB === ETHER
+    const oneCurrencyIsBNB = currencyA === ETHER || currencyBIsBNB
 
     if (!tokenA || !tokenB) {
       toastError(t('Error'), t('Could not wrap'))
@@ -224,13 +224,13 @@ export default function RemoveLiquidity() {
     // we have approval, use normal remove liquidity
     if (approval === ApprovalState.APPROVED) {
       // removeLiquidityETH
-      if (oneCurrencyIsETH) {
+      if (oneCurrencyIsBNB) {
         methodNames = ['removeLiquidityETH', 'removeLiquidityETHSupportingFeeOnTransferTokens']
         args = [
-          currencyBIsETH ? tokenA.address : tokenB.address,
+          currencyBIsBNB ? tokenA.address : tokenB.address,
           liquidityAmount.raw.toString(),
-          amountsMin[currencyBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
-          amountsMin[currencyBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
+          amountsMin[currencyBIsBNB ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
+          amountsMin[currencyBIsBNB ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
           account,
           deadline.toHexString(),
         ]
@@ -252,13 +252,13 @@ export default function RemoveLiquidity() {
     // we have a signature, use permit versions of remove liquidity
     else if (signatureData !== null) {
       // removeLiquidityETHWithPermit
-      if (oneCurrencyIsETH) {
+      if (oneCurrencyIsBNB) {
         methodNames = ['removeLiquidityETHWithPermit', 'removeLiquidityETHWithPermitSupportingFeeOnTransferTokens']
         args = [
-          currencyBIsETH ? tokenA.address : tokenB.address,
+          currencyBIsBNB ? tokenA.address : tokenB.address,
           liquidityAmount.raw.toString(),
-          amountsMin[currencyBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
-          amountsMin[currencyBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
+          amountsMin[currencyBIsBNB ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
+          amountsMin[currencyBIsBNB ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
           account,
           signatureData.deadline,
           false,
@@ -352,8 +352,8 @@ export default function RemoveLiquidity() {
     [onUserInput],
   )
 
-  const oneCurrencyIsETH = currencyA === ETHER || currencyB === ETHER
-  const oneCurrencyIsWETH = Boolean(
+  const oneCurrencyIsBNB = currencyA === ETHER || currencyB === ETHER
+  const oneCurrencyIsWBNB = Boolean(
     chainId &&
       ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
         (currencyB && currencyEquals(WETH[chainId], currencyB))),
@@ -498,9 +498,9 @@ export default function RemoveLiquidity() {
                     </Flex>
                     <Text small>{formattedAmounts[Field.CURRENCY_B] || '-'}</Text>
                   </Flex>
-                  {chainId && (oneCurrencyIsWETH || oneCurrencyIsETH) ? (
+                  {chainId && (oneCurrencyIsWBNB || oneCurrencyIsBNB) ? (
                     <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
-                      {oneCurrencyIsETH ? (
+                      {oneCurrencyIsBNB ? (
                         <StyledInternalLink
                           href={`/remove/${currencyA === ETHER ? WETH[chainId].address : currencyIdA}/${
                             currencyB === ETHER ? WETH[chainId].address : currencyIdB
@@ -508,7 +508,7 @@ export default function RemoveLiquidity() {
                         >
                           {t('Receive WBNB')}
                         </StyledInternalLink>
-                      ) : oneCurrencyIsWETH ? (
+                      ) : oneCurrencyIsWBNB ? (
                         <StyledInternalLink
                           href={`/remove/${
                             currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'BNB' : currencyIdA
@@ -641,7 +641,7 @@ export default function RemoveLiquidity() {
 
       {pair ? (
         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-          <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
+          <MinimalPositionCard showUnwrapped={oneCurrencyIsWBNB} pair={pair} />
         </AutoColumn>
       ) : null}
     </Page>
