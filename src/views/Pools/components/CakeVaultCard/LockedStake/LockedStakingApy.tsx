@@ -17,6 +17,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
 import formatSecondsToWeeks from '../utils/formatSecondsToWeeks'
 import BurningCountDown from './BurningCountDown'
+import BurnedCake from './BurnedCake'
 
 const DetailSection = ({ title, value, detail }) => (
   <Box>
@@ -118,16 +119,7 @@ const LockedStakingApy = memo(({ action, userData, account, earningTokenPrice, p
         <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={2} unit="$" />
       </Flex>
       {position === VaultPosition.LockedEnd && <BurningCountDown lockEndTime={userData?.lockEndTime} />}
-      {position === VaultPosition.AfterBurning && (
-        <Flex alignItems="center" justifyContent="space-between">
-          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('After burning')}
-          </Text>
-          <Text color="textSubtle" bold>
-            1.2 BURNED
-          </Text>
-        </Flex>
-      )}
+      {position === VaultPosition.AfterBurning && <BurnedCake account={account} />}
     </LightGreyCard>
   )
 })

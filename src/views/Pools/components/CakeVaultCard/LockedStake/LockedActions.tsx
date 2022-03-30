@@ -97,7 +97,7 @@ const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
     [stakingTokenBalance],
   )
 
-  if (position !== VaultPosition.Locked) {
+  if (position === VaultPosition.Locked) {
     return (
       <Flex>
         <AddCakeButton
