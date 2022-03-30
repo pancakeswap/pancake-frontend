@@ -4,6 +4,7 @@ import { View, Image } from '@binance/mp-components'
 import './index.scss'
 import { getSystemInfoSync } from 'utils/getBmpSystemInfo'
 import { useTheme } from 'styled-components'
+import { useTranslation } from 'contexts/Localization'
 
 const { safeArea, screenHeight } = getSystemInfoSync()
 const blackHeight = screenHeight - safeArea.bottom
@@ -18,8 +19,6 @@ const Wrap = ({ children }) => {
 }
 const defaultState = {
   selected: 0,
-  color: '#7A6EAA',
-  selectedColor: '#7645D9',
   list: [
     {
       iconPath: 'images/trade.png',
@@ -35,8 +34,9 @@ const defaultState = {
     },
   ],
 }
-const Title = ({ selected, children }) => {
+const Title = ({ selected, title }) => {
   const theme = useTheme()
+  const { t } = useTranslation()
   return (
     <View
       className="bottom-tab-item-text"
@@ -44,7 +44,7 @@ const Title = ({ selected, children }) => {
         color: selected ? theme.colors.secondary : theme.colors.textSubtle,
       }}
     >
-      {children}
+      {t(title)}
     </View>
   )
 }
@@ -86,7 +86,7 @@ class customTabBar extends Component<{}, typeof defaultState> {
                 className="bottom-tab-item-img"
                 src={this.state.selected === index ? item.selectedIconPath : item.iconPath}
               />
-              <Title selected={this.state.selected === index}>{item.text}</Title>
+              <Title selected={this.state.selected === index} title={item.text} />
             </View>
           )
         })}
