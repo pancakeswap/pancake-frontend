@@ -1,6 +1,7 @@
+import { useMemo } from 'react'
 import { Text, Flex, IconButton, CalculateIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
-import Balance from 'components/Balance'
+import { BalanceWithLoading } from 'components/Balance'
 import { addSeconds, format } from 'date-fns'
 import { formatNumber } from 'utils/formatBalance'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -25,7 +26,7 @@ const BalanceRow = ({ title, value, unit = '', decimals, suffix = null }) => (
       {title}
     </Text>
     <Flex alignItems="center">
-      <Balance bold fontSize="16px" value={parseFloat(value)} decimals={decimals} unit={unit} />
+      <BalanceWithLoading bold fontSize="16px" value={parseFloat(value)} decimals={decimals} unit={unit} />
       {suffix}
     </Flex>
   </Flex>
@@ -43,12 +44,15 @@ const DateRow = ({ title, value }) => (
 )
 
 const Overview = ({ usdValueStaked, lockedAmount, openCalculator, duration, isValidDuration }) => {
-  const { lockedApy } = useVaultApy({ duration: isValidDuration ? duration : null })
+  const { getLockedApy } = useVaultApy()
 
-  // TODO: check ROI
-  const roi = usdValueStaked * Number(lockedApy)
+  const lockedApy = useMemo(() => getLockedApy(duration), [getLockedApy, duration])
 
-  const formattedRoi = formatNumber(roi, roi > 10000 ? 0 : 2, roi > 10000 ? 0 : 2)
+  const formattedRoi = useMemo(() => {
+    const roi = usdValueStaked * (Number(lockedApy) / 100)
+
+    return formatNumber(roi, roi > 10000 ? 0 : 2, roi > 10000 ? 0 : 2)
+  }, [lockedApy, usdValueStaked])
 
   return (
     <LightGreyCard>

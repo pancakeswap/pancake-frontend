@@ -38,7 +38,7 @@ const RenewDuration = ({ setDuration }) => {
   )
 }
 
-const LockedBodyModal = ({ stakingToken, onDismiss, lockedAmount, currentBalance, editAmountOnly }) => {
+const LockedBodyModal = ({ stakingToken, onDismiss, lockedAmount, currentBalance, editAmountOnly = false }) => {
   const { t } = useTranslation()
   const { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick } = useLockedPool({
     stakingToken,

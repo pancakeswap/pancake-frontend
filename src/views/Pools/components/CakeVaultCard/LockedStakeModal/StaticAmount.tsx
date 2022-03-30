@@ -1,5 +1,5 @@
 import { Text, Flex, Image, Box } from '@pancakeswap/uikit'
-import Balance from 'components/Balance'
+import { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
 
 const StaticAmount = ({ stakingSymbol, stakingAddress, lockedAmount, usdValueStaked }) => (
@@ -9,8 +9,15 @@ const StaticAmount = ({ stakingSymbol, stakingAddress, lockedAmount, usdValueSta
     </Text>
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       <Box>
-        <Balance color="text" bold fontSize="16px" value={lockedAmount} decimals={2} />
-        <Balance value={usdValueStaked} fontSize="12px" color="textSubtle" decimals={2} prefix="~" unit=" USD" />
+        <BalanceWithLoading color="text" bold fontSize="16px" value={lockedAmount} decimals={2} />
+        <BalanceWithLoading
+          value={usdValueStaked}
+          fontSize="12px"
+          color="textSubtle"
+          decimals={2}
+          prefix="~"
+          unit=" USD"
+        />
       </Box>
       <Flex alignItems="center" minWidth="70px">
         <Image src={`/images/tokens/${stakingAddress}.png`} width={24} height={24} alt={stakingSymbol} />

@@ -1,4 +1,4 @@
-import { Text, TextProps } from '@pancakeswap/uikit'
+import { Text, TextProps, Skeleton } from '@pancakeswap/uikit'
 import { useEffect, useRef } from 'react'
 import CountUp from 'react-countup'
 import styled, { keyframes } from 'styled-components'
@@ -42,6 +42,13 @@ const Balance: React.FC<BalanceProps> = ({
     </Text>
   )
 }
+
+export const BalanceWithLoading = ({ value, fontSize, skeletonProps = {}, ...props }) =>
+  value === undefined || value === null ? (
+    <Skeleton height={fontSize} {...skeletonProps} />
+  ) : (
+    <Balance {...props} value={value} fontSize={fontSize} />
+  )
 
 export default Balance
 

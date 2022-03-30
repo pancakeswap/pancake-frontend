@@ -5,7 +5,7 @@ import { Flex, Text, Skeleton, Box } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
-import Balance from 'components/Balance'
+import Balance, { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
 import getTimePeriods from 'utils/getTimePeriods'
 
@@ -62,9 +62,16 @@ const LockedStakingApy = memo(({ action, userData }) => {
       <Flex justifyContent="space-between" mb="16px">
         <DetailSection
           title="CAKE LOCKED"
-          value={<Balance color="text" bold fontSize="16px" value={lockedAmount} decimals={2} />}
+          value={<BalanceWithLoading color="text" bold fontSize="16px" value={lockedAmount} decimals={2} />}
           detail={
-            <Balance value={usdValueStaked} fontSize="12px" color="textSubtle" decimals={2} prefix="~" unit=" USD" />
+            <BalanceWithLoading
+              value={usdValueStaked}
+              fontSize="12px"
+              color="textSubtle"
+              decimals={2}
+              prefix="~"
+              unit=" USD"
+            />
           }
         />
         <DetailSection title="LOCKED DURATION" value={weekDuration} detail={`Until ${lockEndDate}`} />
@@ -75,17 +82,13 @@ const LockedStakingApy = memo(({ action, userData }) => {
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
           {t('APY')}
         </Text>
-        {lockedApy ? (
-          <Balance color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
-        ) : (
-          <Skeleton width="80px" height="16px" />
-        )}
+        <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
           {t('Recent CAKE profit')}
         </Text>
-        <Balance color="text" bold fontSize="16px" value={1200} decimals={2} unit="$" />
+        <BalanceWithLoading color="text" bold fontSize="16px" value={1200} decimals={2} unit="$" />
       </Flex>
       {position === VaultPosition.LockedEnd && (
         <Flex alignItems="center" justifyContent="space-between">
