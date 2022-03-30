@@ -45,10 +45,7 @@ export const AddLiquidityTip = (props) => {
   return (
     <Flex justifyContent="center" {...props}>
       <Text color="textSubtle" textAlign="center" mb="16px">
-        {t(
-          "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
-        )}{' '}
-        {t('add-liquidity-tip-1')}{' '}
+        {t('add-liquidity-tip-0')} {t('add-liquidity-tip-1')}{' '}
         <Text onClick={onPresent} style={{ display: 'inline', textDecoration: 'underline dotted' }}>
           {' '}
           {t('add-liquidity-tip-2')}

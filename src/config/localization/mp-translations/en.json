@@ -18,6 +18,7 @@
   "user-service-agreement-12": "10. PancakeSwap reserves the right to include and exclude any asset from its token lists anytime.",
   "user-service-agreement-13": "11. Due to network delay, computer system failures and other force majeure, which may lead to delay, suspension or deviation of PancakeSwap decentralized trading service execution, Binance.com and PancakeSwap will use commercially reasonable effort to ensure but not promise that Binance DeFi Wallet and PancakeSwap decentralized trading execution system run stably and effectively. Binance.com and PancakeSwap do not take any responsibility if the final execution doesn’t match your expectations due to the above factors.",
   "user-service-agreement-14": "12. I have read and agreed to the PancakeSwap Mini Program User Service Agreement and have agreed to use the PancakeSwap Mini Program service. I am fully aware of the risks described herein and confirm my use of this service.",
+  "add-liquidity-tip-0": "By adding liquidity you'll earn 0.17% of all trades on the pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
   "add-liquidity-tip-1": "You’ll also be exposed to",
   "add-liquidity-tip-2": "impermanent loss",
   "add-liquidity-tip-3": "by adding liquidity.",

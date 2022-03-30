@@ -3,5 +3,11 @@
   "mp-confirm-enable-list": "此 Extended 代币清单仅包含过去有与 PancakeSwap 合作过的项目的代币，PancakeSwap 不能保证任何代币的投资价值及品质。倘阁下继续导入该清单及其代币，表示阁下清楚明白其中风险，并同意承受任何交易的相关风险及可能招致的亏损。",
   "import-token-warning-unknown-source": "没有包含在代币清单里的代币份涉及很高的投资风险，阁下须特别留意用户条款内的风险声明及务必对该代币进行足够的研究。倘阁下继续导入该代币，表示阁下清楚明白其中风险，并同意承受任何交易的相关风险及可能招致的亏损。",
   "import-token-warning-extended-list-1": "任何人都可以在 BNB Chain 上使用任意名称建立 BEP20 代币，包括建立虚假版本的现有代币及声称代表没有代币专案的代币。在 PancakeSwap 上购买及交易代币必须注意风险管理，承受相关交易风险及招致的亏损。",
-  "import-token-warning-extended-list-2": "此 Extended 代币清单仅包含过去有与 PancakeSwap 合作过的项目的代币，PancakeSwap 不能保证任何代币的投资价值及品质。倘阁下继续导入该清单及其代币，表示阁下清楚明白其中风险，并同意承受任何交易的相关风险及可能招致的亏损。"
+  "import-token-warning-extended-list-2": "此 Extended 代币清单仅包含过去有与 PancakeSwap 合作过的项目的代币，PancakeSwap 不能保证任何代币的投资价值及品质。倘阁下继续导入该清单及其代币，表示阁下清楚明白其中风险，并同意承受任何交易的相关风险及可能招致的亏损。",
+  "add-liquidity-tip-0": "通过添加流动性，您将赚取该币对所有交易额的 0.17%，与您在流动性池中的份额成正比。赚取的费用会添加到流动性池中，实时累积，可以通过解除流动性来领取。",
+  "add-liquidity-tip-1": "通过增加流动性，您亦可能会招致",
+  "add-liquidity-tip-2": "无常损失",
+  "add-liquidity-tip-3": "。",
+  "impermanent-loss-tip-1": "无常损失的产生出现于您存入的资产之价格与您当初存入时的价格有所变动，则会产生损失－提取代币时的金钱价值比只是分开持有同样地资产少。",
+  "impermanent-loss-tip-2": "什么是无常损失？"
 }
