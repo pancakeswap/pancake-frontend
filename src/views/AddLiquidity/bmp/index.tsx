@@ -322,7 +322,7 @@ function AddLiquidity() {
       title={
         noLiquidity
           ? t('You are creating a pool')
-          : `${t('You will receive')} ${currencyA.symbol}-${currencyB.symbol} LP`
+          : `${t('You will receive')} ${currencyA?.symbol}-${currencyB?.symbol} LP`
       }
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
