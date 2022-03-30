@@ -10,39 +10,45 @@ import LockedStakeModal from '../LockedStakeModal'
 import ExtendDurationModal from '../LockedStakeModal/ExtendDurationModal'
 import AddAmountModal from '../LockedStakeModal/AddAmountModal'
 
-const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
+const AddCakeButton = ({ currentBalance, stakingToken }) => {
   const { t } = useTranslation()
-  const position = useMemo(() => getVaultPosition(userData), [userData])
-  const cakeBalance = getBalanceNumber(userData?.lockedAmount)
 
-  const currentBalance = useMemo(
-    () => (stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO),
-    [stakingTokenBalance],
+  const [openAddAmountModal] = useModal(<AddAmountModal currentBalance={currentBalance} stakingToken={stakingToken} />)
+
+  return (
+    <Button onClick={() => openAddAmountModal()} width="100%">
+      {t('Add Cake')}
+    </Button>
   )
+}
+
+const ExtendButton = ({ stakingToken, cakeBalance, lockEndTime, lockStartTime }) => {
+  const { t } = useTranslation()
+
+  const currentDuration = lockEndTime - lockStartTime
+
+  const [openExtendDurationModal] = useModal(
+    <ExtendDurationModal
+      stakingToken={stakingToken}
+      lockStartTime={lockStartTime}
+      lockedAmount={cakeBalance}
+      currentDuration={currentDuration}
+    />,
+  )
+
+  return (
+    <Button ml="16px" onClick={() => openExtendDurationModal()} width="100%">
+      {t('Extend')}
+    </Button>
+  )
+}
+
+const NewButton = ({ currentBalance, stakingToken, position }) => {
+  const { t } = useTranslation()
 
   const [openLockedStakeModal] = useModal(
     <LockedStakeModal currentBalance={currentBalance} stakingToken={stakingToken} />,
   )
-
-  const [openExtendDurationModal] = useModal(
-    <ExtendDurationModal stakingToken={stakingToken} lockedAmount={cakeBalance} />,
-  )
-
-  const [openAddAmountModal] = useModal(<AddAmountModal currentBalance={currentBalance} stakingToken={stakingToken} />)
-
-  if (position === VaultPosition.Locked) {
-    return (
-      <Flex>
-        <Button onClick={() => openAddAmountModal()} width="100%">
-          {t('Add Cake')}
-        </Button>
-        <Button ml="16px" onClick={() => openExtendDurationModal()} width="100%">
-          {t('Extend')}
-        </Button>
-      </Flex>
-    )
-  }
-
   const msg = {
     [VaultPosition.None]: null,
     [VaultPosition.LockedEnd]:
@@ -69,6 +75,32 @@ const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
       <MessageText>{msg[position]}</MessageText>
     </Message>
   )
+}
+
+const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
+  const position = useMemo(() => getVaultPosition(userData), [userData])
+  const cakeBalance = getBalanceNumber(userData?.lockedAmount)
+
+  const currentBalance = useMemo(
+    () => (stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO),
+    [stakingTokenBalance],
+  )
+
+  if (position !== VaultPosition.Locked) {
+    return (
+      <Flex>
+        <AddCakeButton stakingToken={stakingToken} currentBalance={currentBalance} />
+        <ExtendButton
+          lockEndTime={userData?.lockEndTime}
+          lockStartTime={userData?.lockStartTime}
+          stakingToken={stakingToken}
+          cakeBalance={cakeBalance}
+        />
+      </Flex>
+    )
+  }
+
+  return <NewButton position={position} currentBalance={currentBalance} stakingToken={stakingToken} />
 }
 
 export default LockedActions

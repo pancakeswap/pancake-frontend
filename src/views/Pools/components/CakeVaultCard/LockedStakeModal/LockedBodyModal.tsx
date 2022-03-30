@@ -38,17 +38,34 @@ const RenewDuration = ({ setDuration }) => {
   )
 }
 
-const LockedBodyModal = ({ stakingToken, onDismiss, lockedAmount, currentBalance, editAmountOnly = false }) => {
+const LockedBodyModal = ({
+  stakingToken,
+  onDismiss,
+  lockedAmount,
+  currentBalance,
+  editAmountOnly = false,
+  prepConfirmArg = null,
+  validator = null,
+  customOverview = null,
+}) => {
   const { t } = useTranslation()
   const { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick } = useLockedPool({
     stakingToken,
     onDismiss,
     lockedAmount,
+    prepConfirmArg,
   })
 
-  const isValidAmount = lockedAmount && lockedAmount > 0 && lockedAmount <= currentBalance
-
-  const isValidDuration = duration > 0 && duration <= DEFAULT_MAX_DURATION
+  const { isValidAmount, isValidDuration, isOverMax } =
+    typeof validator === 'function'
+      ? validator({
+          duration,
+        })
+      : {
+          isValidAmount: lockedAmount && lockedAmount > 0 && lockedAmount <= currentBalance,
+          isValidDuration: duration > 0 && duration <= DEFAULT_MAX_DURATION,
+          isOverMax: duration > DEFAULT_MAX_DURATION,
+        }
 
   return (
     <>
@@ -56,16 +73,23 @@ const LockedBodyModal = ({ stakingToken, onDismiss, lockedAmount, currentBalance
         {editAmountOnly ? (
           <RenewDuration setDuration={setDuration} />
         ) : (
-          <LockDurationField setDuration={setDuration} duration={duration} />
+          <LockDurationField isOverMax={isOverMax} setDuration={setDuration} duration={duration} />
         )}
       </Box>
-      <Overview
-        isValidDuration={isValidDuration}
-        openCalculator={_noop}
-        duration={duration}
-        lockedAmount={lockedAmount}
-        usdValueStaked={usdValueStaked}
-      />
+      {customOverview ? (
+        customOverview({
+          isValidDuration,
+          duration,
+        })
+      ) : (
+        <Overview
+          isValidDuration={isValidDuration}
+          openCalculator={_noop}
+          duration={duration}
+          lockedAmount={lockedAmount}
+          usdValueStaked={usdValueStaked}
+        />
+      )}
       <Button
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}

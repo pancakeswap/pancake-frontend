@@ -16,7 +16,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 const ONE_WEEK_DETAULT = 604800
 
-const useLockedPool = ({ lockedAmount, stakingToken, onDismiss }) => {
+const useLockedPool = ({ lockedAmount, stakingToken, onDismiss, prepConfirmArg }) => {
   const dispatch = useAppDispatch()
 
   const { account } = useWeb3React()
@@ -55,9 +55,12 @@ const useLockedPool = ({ lockedAmount, stakingToken, onDismiss }) => {
   }
 
   const handleConfirmClick = async () => {
-    const convertedStakeAmount = getDecimalAmount(new BigNumber(lockedAmount), stakingToken.decimals)
+    const { finalLockedAmount = lockedAmount, finalDuration = duration } =
+      typeof prepConfirmArg === 'function' ? prepConfirmArg({ lockedAmount, duration }) : {}
 
-    handleDeposit(convertedStakeAmount, duration)
+    const convertedStakeAmount = getDecimalAmount(new BigNumber(finalLockedAmount), stakingToken.decimals)
+
+    handleDeposit(convertedStakeAmount, finalDuration)
   }
 
   return { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick }

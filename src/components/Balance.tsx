@@ -47,7 +47,7 @@ export const BalanceWithLoading = ({ value, fontSize, skeletonProps = {}, ...pro
   value === undefined || value === null ? (
     <Skeleton height={fontSize} {...skeletonProps} />
   ) : (
-    <Balance {...props} value={value} fontSize={fontSize} />
+    <Balance {...props} value={Number(value)} fontSize={fontSize} />
   )
 
 export default Balance

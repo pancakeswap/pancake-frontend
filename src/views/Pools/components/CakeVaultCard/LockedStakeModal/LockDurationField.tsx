@@ -1,6 +1,5 @@
 import { Text, Flex, Button, Input, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
 import { secondsToWeeks, weeksToSeconds } from '../utils/formatSecondsToWeeks'
 
 const DURATIONS = [1, 5, 10, 25, 52]
@@ -10,7 +9,7 @@ const StyledInput = styled(Input)`
   margin-right: 8px;
 `
 
-const LockDurationField = ({ duration, setDuration }) => (
+const LockDurationField = ({ duration, setDuration, isOverMax }) => (
   <>
     <Box mb="16px">
       <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px" mb="8px">
@@ -45,7 +44,7 @@ const LockDurationField = ({ duration, setDuration }) => (
       />
       <Text>Week</Text>
     </Flex>
-    {duration > DEFAULT_MAX_DURATION && (
+    {isOverMax && (
       <Text fontSize="12px" textAlign="right" color="failure">
         Total lock duration exceeds 52 weeks
       </Text>

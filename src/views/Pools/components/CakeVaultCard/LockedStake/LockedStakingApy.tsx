@@ -1,15 +1,18 @@
 import { useMemo, memo } from 'react'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
-import { Flex, Text, Skeleton, Box } from '@pancakeswap/uikit'
+import { Flex, Text, Box } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
-import Balance, { BalanceWithLoading } from 'components/Balance'
+import { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
 import getTimePeriods from 'utils/getTimePeriods'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 
 import format from 'date-fns/format'
+import differenceInWeeks from 'date-fns/differenceInWeeks'
+import formatDuration from 'date-fns/formatDuration'
 import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
@@ -37,25 +40,43 @@ const useUserDataInVaultPrensenter = (userData) => {
   const cakeBalance = getBalanceNumber(userData?.lockedAmount)
   const usdValueStaked = multiplyPriceByAmount(cakePriceBusd, cakeBalance)
 
+  const lockEndTimeSeconds = parseInt(userData?.lockEndTime) * 1000
+
+  const diffWeeks = differenceInWeeks(new Date(lockEndTimeSeconds).getTime(), new Date().getTime())
+
   return {
     weekDuration: formatSecondsToWeeks(secondDuration),
-    lockEndDate: format(parseInt(userData?.lockEndTime) * 1000, 'MMM do, yyyy HH:mm'),
+    remainingWeeks: formatDuration({ weeks: diffWeeks }),
+    lockEndDate: format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm'),
     lockedAmount: cakeBalance,
     usdValueStaked,
     secondDuration,
   }
 }
 
-const LockedStakingApy = memo(({ action, userData }) => {
+const LockedStakingApy = memo(({ action, userData, account, earningTokenPrice, pricePerFullShare }) => {
   const { t } = useTranslation()
   const position = useMemo(() => getVaultPosition(userData), [userData])
 
-  const { weekDuration, lockEndDate, lockedAmount, usdValueStaked, secondDuration } =
+  const { weekDuration, lockEndDate, lockedAmount, usdValueStaked, secondDuration, remainingWeeks } =
     useUserDataInVaultPrensenter(userData)
 
   const { lockedApy } = useVaultApy({ duration: Number(secondDuration) })
 
   const { days, hours, minutes } = getTimePeriods(100000)
+
+  // TODO: Check if we need to minus fee
+  let earningTokenBalance = 0
+  if (pricePerFullShare) {
+    const { autoCakeToDisplay } = getCakeVaultEarnings(
+      account,
+      userData?.cakeAtLastUserAction,
+      userData?.userShares,
+      pricePerFullShare,
+      earningTokenPrice,
+    )
+    earningTokenBalance = autoCakeToDisplay
+  }
 
   return (
     <LightGreyCard>
@@ -74,7 +95,7 @@ const LockedStakingApy = memo(({ action, userData }) => {
             />
           }
         />
-        <DetailSection title="LOCKED DURATION" value={weekDuration} detail={`Until ${lockEndDate}`} />
+        <DetailSection title="Unlock In" value={remainingWeeks} detail={`Until ${lockEndDate}`} />
       </Flex>
       <Box mb="16px">{action}</Box>
       <Divider />
@@ -86,9 +107,17 @@ const LockedStakingApy = memo(({ action, userData }) => {
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+          {t('Initial Lock Duration')}
+        </Text>
+        <Text color="text" bold fontSize="16px">
+          {weekDuration}
+        </Text>
+      </Flex>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
           {t('Recent CAKE profit')}
         </Text>
-        <BalanceWithLoading color="text" bold fontSize="16px" value={1200} decimals={2} unit="$" />
+        <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={2} unit="$" />
       </Flex>
       {position === VaultPosition.LockedEnd && (
         <Flex alignItems="center" justifyContent="space-between">
