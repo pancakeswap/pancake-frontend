@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ScrollView } from '@binance/mp-components'
 import mpService from '@binance/mp-service'
@@ -25,9 +25,16 @@ const TextWrap = styled.div`
 function DisclaimerModal(props) {
   console.log('🚀 ~ file: useDisclaimer.bmp.tsx ~ line 19 ~ DisclaimerModal ~ props', props)
   const { t } = useTranslation()
+  const [confirmDisabled, setConfirmDisabled] = useState(true)
   return (
     <Modal style={{ width: '80vw' }} hideCloseButton title="PancakeSwap Mini-Program User Service Agreement">
-      <ScrollView scrollY style={{ maxHeight: '50vh' }}>
+      <ScrollView
+        scrollY
+        style={{ maxHeight: '50vh' }}
+        onScrollToLower={() => {
+          setConfirmDisabled(false)
+        }}
+      >
         <TextWrap>
           {Array.from({ length: 14 }, (_, index) => index).map((item) => (
             <Text key={item}>{t(`user-service-agreement-${item + 1}`)}</Text>
@@ -40,6 +47,7 @@ function DisclaimerModal(props) {
             if (props.onClick) props.onClick()
             props.onDismiss()
           }}
+          disabled={confirmDisabled}
         >
           I understand
         </Button>
