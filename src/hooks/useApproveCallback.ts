@@ -131,7 +131,7 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
   return useApproveCallback(amountToApprove, ROUTER_ADDRESS[CHAIN_ID])
 }
 
-// Wraps useApproveCallback in the context of a Gelato Limir Orders
+// Wraps useApproveCallback in the context of a Gelato Limit Orders
 export function useApproveCallbackFromInputCurrencyAmount(currencyAmountIn: CurrencyAmount | undefined) {
   const gelatoLibrary = useGelatoLimitOrdersLib()
 
