@@ -168,6 +168,7 @@ const Pools: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const chosenPoolsLength = useRef(0)
+  const showMigrationBanner = false
 
   const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
   const stakedOnlyFinishedPools = useMemo(
@@ -267,7 +268,7 @@ const Pools: React.FC = () => {
           </Flex>
         </Flex>
       </PageHeader>
-      <MigrationSticky />
+      {showMigrationBanner && <MigrationSticky />}
       <Page>
         <PoolControls>
           <PoolTabButtons
