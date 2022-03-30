@@ -7,7 +7,6 @@ import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
-import getTimePeriods from 'utils/getTimePeriods'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 
 import format from 'date-fns/format'
@@ -17,6 +16,7 @@ import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
 import formatSecondsToWeeks from '../utils/formatSecondsToWeeks'
+import BurningCountDown from './BurningCountDown'
 
 const DetailSection = ({ title, value, detail }) => (
   <Box>
@@ -62,8 +62,6 @@ const LockedStakingApy = memo(({ action, userData, account, earningTokenPrice, p
     useUserDataInVaultPrensenter(userData)
 
   const { lockedApy } = useVaultApy({ duration: Number(secondDuration) })
-
-  const { days, hours, minutes } = getTimePeriods(100000)
 
   // TODO: Check if we need to minus fee
   let earningTokenBalance = 0
@@ -119,16 +117,7 @@ const LockedStakingApy = memo(({ action, userData, account, earningTokenPrice, p
         </Text>
         <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={2} unit="$" />
       </Flex>
-      {position === VaultPosition.LockedEnd && (
-        <Flex alignItems="center" justifyContent="space-between">
-          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('After Burning In')}
-          </Text>
-          <Text color="textSubtle" bold>
-            {`${days}d: ${hours}h: ${minutes}m`}
-          </Text>
-        </Flex>
-      )}
+      {position === VaultPosition.LockedEnd && <BurningCountDown lockEndTime={userData?.lockEndTime} />}
       {position === VaultPosition.AfterBurning && (
         <Flex alignItems="center" justifyContent="space-between">
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">

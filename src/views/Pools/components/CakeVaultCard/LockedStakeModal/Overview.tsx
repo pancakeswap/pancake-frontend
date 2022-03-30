@@ -100,7 +100,7 @@ const Overview = ({
   openCalculator,
   duration,
   newDuration = 0,
-  newLockedAmount = 0,
+  newLockedAmount = null,
   isValidDuration,
   lockStartTime = null,
 }) => {
