@@ -14,6 +14,8 @@ import { fetchCakeVaultUserData } from 'state/pools'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
+const ONE_WEEK_DETAULT = 604800
+
 const useLockedPool = ({ lockedAmount, stakingToken, onDismiss }) => {
   const dispatch = useAppDispatch()
 
@@ -24,7 +26,7 @@ const useLockedPool = ({ lockedAmount, stakingToken, onDismiss }) => {
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const [duration, setDuration] = useState(0)
+  const [duration, setDuration] = useState(ONE_WEEK_DETAULT)
   const usdValueStaked = useBUSDCakeAmount(lockedAmount)
 
   // TODO: Add proper gasLimit

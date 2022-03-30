@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Button, useModal, Message, MessageText, Box } from '@pancakeswap/uikit'
+import { Button, useModal, Message, MessageText, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
@@ -7,7 +7,8 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 
 import LockedStakeModal from '../LockedStakeModal'
-import StaticLockedModal from '../LockedStakeModal/StaticLockedModal'
+import ExtendDurationModal from '../LockedStakeModal/ExtendDurationModal'
+import AddAmountModal from '../LockedStakeModal/AddAmountModal'
 
 const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
   const { t } = useTranslation()
@@ -23,13 +24,22 @@ const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
     <LockedStakeModal currentBalance={currentBalance} stakingToken={stakingToken} />,
   )
 
-  const [openStaticLockedModal] = useModal(<StaticLockedModal stakingToken={stakingToken} lockedAmount={cakeBalance} />)
+  const [openExtendDurationModal] = useModal(
+    <ExtendDurationModal stakingToken={stakingToken} lockedAmount={cakeBalance} />,
+  )
 
-  if (position === VaultPosition.Locked) {
+  const [openAddAmountModal] = useModal(<AddAmountModal currentBalance={currentBalance} stakingToken={stakingToken} />)
+
+  if (position !== VaultPosition.Locked) {
     return (
-      <Button onClick={() => openLockedStakeModal()} width="100%">
-        {t('Adjust')}
-      </Button>
+      <Flex>
+        <Button onClick={() => openAddAmountModal()} width="100%">
+          {t('Add Cake')}
+        </Button>
+        <Button ml="16px" onClick={() => openExtendDurationModal()} width="100%">
+          {t('Extend')}
+        </Button>
+      </Flex>
     )
   }
 

@@ -6,13 +6,13 @@ import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import StaticAmount from './StaticAmount'
 import LockedBodyModal from './LockedBodyModal'
 
-interface LockedStakeModalProps {
+interface ExtendDurationModal {
   stakingToken: any
   lockedAmount: number
   onDismiss?: () => void
 }
 
-const StaticLockedModal: React.FC<LockedStakeModalProps> = ({ stakingToken, onDismiss, lockedAmount }) => {
+const ExtendDurationModal: React.FC<ExtendDurationModal> = ({ stakingToken, onDismiss, lockedAmount }) => {
   const { theme } = useTheme()
   const usdValueStaked = useBUSDCakeAmount(lockedAmount)
 
@@ -36,4 +36,4 @@ const StaticLockedModal: React.FC<LockedStakeModalProps> = ({ stakingToken, onDi
   )
 }
 
-export default StaticLockedModal
+export default ExtendDurationModal
