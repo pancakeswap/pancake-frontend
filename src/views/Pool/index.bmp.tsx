@@ -18,6 +18,7 @@ import { AppHeader, AppBody } from '../../components/App'
 import noLiquidityImage from '../../../public/images/no-liquidity.png'
 import AddLiquidityTipImage from '../../images/add-liquidity-tip.png'
 import { useTooltip } from 'contexts/bmp/TooltipContext'
+import mpService from '@binance/mp-service'
 
 const Body = styled(CardBody)`
   display: flex;
@@ -34,9 +35,15 @@ export const AddLiquidityTip = (props) => {
     <view>
       <Text mb="10px">{t('impermanent-loss-tip-1')}</Text>
       <LinkExternal
-        as="a"
+        // as="a"
         external
-        href="https://blog.bancor.network/beginners-guide-to-getting-rekt-by-impermanent-loss-7c9510cb2f22"
+        onClick={() => {
+          mpService.navigateToMiniProgram({
+            appId: 'tkSbGXgQpdAXi5txJ859oB',
+            path: '/pages/academy-detail/index?id=impermanent-loss-explained',
+          })
+        }}
+        // href={getHost()}
       >
         {t('impermanent-loss-tip-2')}
       </LinkExternal>
