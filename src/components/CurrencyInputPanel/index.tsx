@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { registerToken } from 'utils/wallet'
 import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
+import { WrappedTokenInfo } from 'state/lists/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
@@ -143,7 +144,14 @@ export default function CurrencyInputPanel({
                 <MetamaskIcon
                   style={{ cursor: 'pointer' }}
                   width="16px"
-                  onClick={() => registerToken(tokenAddress, token.symbol, token.decimals)}
+                  onClick={() =>
+                    registerToken(
+                      tokenAddress,
+                      token.symbol,
+                      token.decimals,
+                      token instanceof WrappedTokenInfo ? token.logoURI : undefined,
+                    )
+                  }
                 />
               )}
             </Flex>
