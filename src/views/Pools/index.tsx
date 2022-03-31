@@ -22,6 +22,8 @@ import { ViewMode } from 'state/user/actions'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
+import { useInitialBlock } from 'state/block/hooks'
+import { BSC_BLOCK_TIME } from 'config'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
@@ -155,6 +157,8 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
   }
 }
 
+const POOL_START_BLOCK_THRESHOLD = (60 / BSC_BLOCK_TIME) * 4
+
 const Pools: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation()
@@ -167,8 +171,18 @@ const Pools: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const chosenPoolsLength = useRef(0)
+  const initialBlock = useInitialBlock()
 
   const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
+  const openPoolsWithStartBlockFilter = useMemo(
+    () =>
+      openPools.filter((pool) =>
+        initialBlock > 0 && pool.startBlock
+          ? Number(pool.startBlock) < initialBlock + POOL_START_BLOCK_THRESHOLD
+          : true,
+      ),
+    [initialBlock, openPools],
+  )
   const stakedOnlyFinishedPools = useMemo(
     () =>
       finishedPools.filter((pool) => {
@@ -181,14 +195,14 @@ const Pools: React.FC = () => {
     [finishedPools],
   )
   const stakedOnlyOpenPools = useCallback(() => {
-    return openPools.filter((pool) => {
+    return openPoolsWithStartBlockFilter.filter((pool) => {
       if (pool.vaultKey) {
         const vault = pool as DeserializedPoolVault
         return vault.userData.userShares && vault.userData.userShares.gt(0)
       }
       return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
     })
-  }, [openPools])
+  }, [openPoolsWithStartBlockFilter])
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
 
   usePoolsPageFetch()
@@ -217,7 +231,7 @@ const Pools: React.FC = () => {
   if (showFinishedPools) {
     chosenPools = stakedOnly ? stakedOnlyFinishedPools : finishedPools
   } else {
-    chosenPools = stakedOnly ? stakedOnlyOpenPools() : openPools
+    chosenPools = stakedOnly ? stakedOnlyOpenPools() : openPoolsWithStartBlockFilter
   }
 
   chosenPools = useMemo(() => {
