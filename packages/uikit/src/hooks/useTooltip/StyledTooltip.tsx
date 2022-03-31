@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { m as Motion } from "framer-motion";
 
 export const Arrow = styled.div`
   &,
@@ -17,7 +18,7 @@ export const Arrow = styled.div`
   }
 `;
 
-export const StyledTooltip = styled.div`
+export const StyledTooltip = styled(Motion.div)`
   padding: 16px;
   font-size: 16px;
   line-height: 130%;
