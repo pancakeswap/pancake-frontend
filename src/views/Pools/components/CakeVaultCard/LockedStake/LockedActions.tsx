@@ -18,7 +18,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import ExtendDurationModal from '../LockedStakeModal/ExtendDurationModal'
 import AddAmountModal from '../LockedStakeModal/AddAmountModal'
 
-const AddCakeButton = ({ currentBalance, stakingToken, currentLockedAmount, lockEndTime, lockStartTime }) => {
+export const AddCakeButton = ({ currentBalance, stakingToken, currentLockedAmount, lockEndTime, lockStartTime }) => {
   const { t } = useTranslation()
   const remainingDuration = differenceInSeconds(new Date(parseInt(lockEndTime) * 1000), new Date())
   const passedDuration = differenceInSeconds(new Date(), new Date(parseInt(lockStartTime) * 1000))
@@ -40,7 +40,7 @@ const AddCakeButton = ({ currentBalance, stakingToken, currentLockedAmount, lock
   )
 }
 
-const ExtendButton = ({ stakingToken, currentLockedAmount, lockEndTime, lockStartTime, children }) => {
+export const ExtendButton = ({ stakingToken, currentLockedAmount, lockEndTime, lockStartTime, children }) => {
   const currentDuration = lockEndTime - lockStartTime
 
   const [openExtendDurationModal] = useModal(

@@ -35,7 +35,7 @@ import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
 import BurningCountDown from '../../CakeVaultCard/LockedStake/BurningCountDown'
 import BurnedCake from '../../CakeVaultCard/LockedStake/BurnedCake'
-import { AfterLockedActions } from '../../CakeVaultCard/LockedStake/LockedActions'
+import { AfterLockedActions, ExtendButton, AddCakeButton } from '../../CakeVaultCard/LockedStake/LockedActions'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -95,6 +95,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     userData: {
       userShares,
       lockEndTime,
+      lockStartTime,
       locked,
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
     },
@@ -263,6 +264,15 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   />
                 </Box>
               </ActionContent>
+              {vaultPosition === VaultPosition.Locked && (
+                <AddCakeButton
+                  lockEndTime={lockEndTime}
+                  lockStartTime={lockStartTime}
+                  currentLockedAmount={cakeAsNumberBalance}
+                  stakingToken={stakingToken}
+                  currentBalance={stakingTokenBalance}
+                />
+              )}
             </Flex>
             {vaultPosition >= VaultPosition.Locked && (
               <Flex mb="8px" flex="1" flexDirection="column" alignSelf="flex-start" minWidth="80px">
@@ -291,6 +301,16 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                     }),
                   })}
                 </Text>
+                {vaultPosition === VaultPosition.Locked && (
+                  <ExtendButton
+                    lockEndTime={lockEndTime}
+                    lockStartTime={lockStartTime}
+                    stakingToken={stakingToken}
+                    currentLockedAmount={cakeAsNumberBalance}
+                  >
+                    {t('Extend')}
+                  </ExtendButton>
+                )}
               </Flex>
             )}
             {(vaultPosition === VaultPosition.Flexible || !vaultKey) && (
@@ -315,9 +335,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                 )}
               </IconButtonWrapper>
             )}
-            {/* TODO: add adjust modal */}
-            {vaultPosition === VaultPosition.Locked && <Button>{t('Adjust')}</Button>}
-            {vaultPosition >= VaultPosition.LockedEnd && (
+
+            {[VaultPosition.AfterBurning, VaultPosition.LockedEnd].includes(vaultPosition) && (
               <Flex flexDirection="column" alignSelf="flex-start">
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
