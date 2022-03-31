@@ -660,7 +660,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           farmName: 'MNFT-BUSD',
           tokenAddress: '0x36953b5ec00a13edceceb3af258d034913d2a79d',
           quoteToken: tokens.busd,
-          tokenName: 'MANUFACTORY',
+          tokenName: 'ManuFactory',
           projectSite: 'https://manufactory.gg',
         },
         {
