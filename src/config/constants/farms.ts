@@ -42,6 +42,16 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 520,
+    lpSymbol: 'PEX-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x5ca96E8bDe0Bc587DaC9e02422Fd205b1102DAa4',
+    },
+    token: serializedTokens.pex,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 519,
     lpSymbol: 'GMI-BNB LP',
     lpAddresses: {
