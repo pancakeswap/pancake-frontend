@@ -38,6 +38,7 @@ import BurnedCake from '../../LockedPool/Common/BurnedCake'
 import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
 import ExtendButton from '../../LockedPool/Buttons/ExtendButton'
 import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
+import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -133,6 +134,10 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   )
 
   const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
+
+  const [openPresentLockedStakeModal] = useModal(
+    <LockedStakedModal currentBalance={stakingTokenBalance} stakingToken={stakingToken} />,
+  )
 
   const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
 
@@ -388,9 +393,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
         {vaultKey ? (
           <VaultStakeButtonGroup
             onFlexibleClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-            onLockedClick={() => {
-              //
-            }}
+            onLockedClick={openPresentLockedStakeModal}
           />
         ) : (
           <Button

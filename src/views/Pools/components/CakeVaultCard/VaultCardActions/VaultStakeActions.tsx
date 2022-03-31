@@ -1,11 +1,11 @@
 import { Flex, Skeleton, useModal } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool } from 'state/types'
 
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
 import VaultStakeModal from '../VaultStakeModal'
+import LockedStakeModal from '../../LockedPool/Modals/LockedStakeModal'
 import HasSharesActions from './HasSharesActions'
 
 interface VaultStakeActionsProps {
@@ -28,6 +28,9 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   const [onPresentStake] = useModal(
     <VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} performanceFee={performanceFee} />,
   )
+  const [openPresentLockedStakeModal] = useModal(
+    <LockedStakeModal currentBalance={stakingTokenBalance} stakingToken={stakingToken} />,
+  )
 
   const renderStakeAction = () => {
     return accountHasSharesStaked ? (
@@ -35,9 +38,7 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
     ) : (
       <VaultStakeButtonGroup
         onFlexibleClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}
-        onLockedClick={() => {
-          //
-        }}
+        onLockedClick={openPresentLockedStakeModal}
       />
     )
   }
