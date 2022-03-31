@@ -89,7 +89,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
     >
       <Box mb="24px" width="320px">
         {snapshotIssueAboutPoolsBalance && (
-          <UIMessage variant="warning">
+          <UIMessage variant="warning" mb="8px">
             <MessageText>
               {t(
                 'Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.',
