@@ -164,7 +164,7 @@ interface SerializedVaultUser {
 export interface SerializedLockedVaultUser extends SerializedVaultUser {
   lockStartTime: string
   lockEndTime: string
-  boostDebt: SerializedBigNumber
+  userBoostedShare: SerializedBigNumber
   locked: boolean
   lockedAmount: SerializedBigNumber
 }
@@ -182,7 +182,7 @@ export interface DeserializedLockedVaultUser extends DeserializedVaultUser {
   lastUserActionTime: string
   lockStartTime: string
   lockEndTime: string
-  boostDebt: BigNumber
+  userBoostedShare: BigNumber
   locked: boolean
   lockedAmount: BigNumber
 }

@@ -50,7 +50,7 @@ export const initialPoolVaultState = Object.freeze({
     locked: null,
     lockStartTime: null,
     lockEndTime: null,
-    boostDebt: null,
+    userBoostedShare: null,
     lockedAmount: null,
   },
   creditStartBlock: null,
