@@ -75,15 +75,19 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
   }
 `
 
-const ActionContainer = styled.div`
+const ActionContainer = styled.div<{ isAutoVault?: boolean; hasBalance?: boolean }>`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
-    align-items: center;
-    flex-grow: 1;
-    flex-basis: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: ${({ isAutoVault }) => (isAutoVault ? 'row' : null)};
+    align-items: ${({ isAutoVault, hasBalance }) => (isAutoVault ? (hasBalance ? 'flex-start' : 'stretch') : 'center')};
   }
 `
 
@@ -353,7 +357,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
               ml={['12px', , , , , '32px']}
             />
           )}
-          <ActionContainer>
+          <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
             {pool.vaultKey ? (
               <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
             ) : (
