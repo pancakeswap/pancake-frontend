@@ -2,7 +2,7 @@
   {
     "inputs": [
       { "internalType": "contract IERC20", "name": "_token", "type": "address" },
-      { "internalType": "contract IMasterChefV2", "name": "_masterchef", "type": "address" },
+      { "internalType": "contract IMasterChefV2", "name": "_masterchefV2", "type": "address" },
       { "internalType": "address", "name": "_admin", "type": "address" },
       { "internalType": "address", "name": "_treasury", "type": "address" },
       { "internalType": "address", "name": "_operator", "type": "address" },
@@ -97,7 +97,21 @@
   },
   {
     "inputs": [],
+    "name": "BOOST_WEIGHT_LIMIT",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "DURATION_FACTOR",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "DURATION_FACTOR_OVERDUE",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -112,6 +126,13 @@
   {
     "inputs": [],
     "name": "MAX_LOCK_DURATION",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_LOCK_DURATION_LIMIT",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -139,6 +160,13 @@
   },
   {
     "inputs": [],
+    "name": "MIN_DEPOSIT_AMOUNT",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "MIN_LOCK_DURATION",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
@@ -147,6 +175,13 @@
   {
     "inputs": [],
     "name": "PRECISION_FACTOR",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "PRECISION_FACTOR_SHARE",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -194,8 +229,32 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "address", "name": "_user", "type": "address" }],
+    "name": "calculateOverdueFee",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_user", "type": "address" }],
+    "name": "calculatePerformanceFee",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "calculateTotalPendingCakeRewards",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_user", "type": "address" },
+      { "internalType": "uint256", "name": "_shares", "type": "uint256" }
+    ],
+    "name": "calculateWithdrawFee",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -210,7 +269,6 @@
     "stateMutability": "nonpayable",
     "type": "function"
   },
-  { "inputs": [], "name": "emergencyWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
   {
     "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "freeFeeUsers",
@@ -248,7 +306,7 @@
   },
   {
     "inputs": [],
-    "name": "masterchef",
+    "name": "masterchefV2",
     "outputs": [{ "internalType": "contract IMasterChefV2", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
@@ -289,6 +347,13 @@
     "stateMutability": "view",
     "type": "function"
   },
+  {
+    "inputs": [],
+    "name": "performanceFeeContract",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
   { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
   {
     "inputs": [{ "internalType": "address", "name": "_admin", "type": "address" }],
@@ -314,6 +379,13 @@
   {
     "inputs": [{ "internalType": "uint256", "name": "_durationFactor", "type": "uint256" }],
     "name": "setDurationFactor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_durationFactorOverdue", "type": "uint256" }],
+    "name": "setDurationFactorOverdue",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -350,6 +422,13 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "_performanceFeeContract", "type": "uint256" }],
+    "name": "setPerformanceFeeContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "address", "name": "_treasury", "type": "address" }],
     "name": "setTreasury",
     "outputs": [],
@@ -357,8 +436,22 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "_unlockFreeDuration", "type": "uint256" }],
+    "name": "setUnlockFreeDuration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "uint256", "name": "_withdrawFee", "type": "uint256" }],
     "name": "setWithdrawFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_withdrawFeeContract", "type": "uint256" }],
+    "name": "setWithdrawFeeContract",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -430,7 +523,7 @@
       { "internalType": "uint256", "name": "lastUserActionTime", "type": "uint256" },
       { "internalType": "uint256", "name": "lockStartTime", "type": "uint256" },
       { "internalType": "uint256", "name": "lockEndTime", "type": "uint256" },
-      { "internalType": "uint256", "name": "boostDebt", "type": "uint256" },
+      { "internalType": "uint256", "name": "userBoostedShare", "type": "uint256" },
       { "internalType": "bool", "name": "locked", "type": "bool" },
       { "internalType": "uint256", "name": "lockedAmount", "type": "uint256" }
     ],
@@ -446,8 +539,22 @@
   },
   { "inputs": [], "name": "withdrawAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
   {
+    "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }],
+    "name": "withdrawByAmount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "withdrawFee",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawFeeContract",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"

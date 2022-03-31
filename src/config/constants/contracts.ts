@@ -62,7 +62,7 @@ export default {
   cakeVault: {
     // TODO: revert this
     // 56: '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC',
-    56: '0xA360Abf0759640C5734aB494Ab3c071c042A79BA',
+    56: '0xf0DB97bda01ae29E38269e70AD5B69f78F6bc078',
     97: '',
   },
   predictions: {

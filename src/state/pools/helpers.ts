@@ -77,7 +77,7 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
       cakeAtLastUserAction: cakeAtLastUserActionAsString,
       lastDepositedTime,
       lastUserActionTime,
-      boostDebt: boostDebtAsString,
+      userBoostedShare: userBoostedShareAsString,
       lockEndTime,
       lockStartTime,
       locked,
@@ -92,7 +92,7 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
   const userShares = new BigNumber(userSharesAsString)
   const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
   const lockedAmount = new BigNumber(lockedAmountAsString)
-  const boostDebt = new BigNumber(boostDebtAsString)
+  const userBoostedShare = new BigNumber(userBoostedShareAsString)
 
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100
 
@@ -112,7 +112,7 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
       lockStartTime,
       locked,
       lockedAmount,
-      boostDebt,
+      userBoostedShare,
     },
   }
 }
