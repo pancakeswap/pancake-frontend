@@ -2043,6 +2043,7 @@ export const mainnetTokens = defineTokens({
     'TemplarDAO',
     'https://templar.finance/',
   ),
+  pex: new Token(MAINNET, '0x6a0b66710567b6beb81A71F7e9466450a91a384b', 18, 'PEX', 'PearDAO', 'https://peardao.io/'),
 } as const)
 
 export const testnetTokens = defineTokens({
