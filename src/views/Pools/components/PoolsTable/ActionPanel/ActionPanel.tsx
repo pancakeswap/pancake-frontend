@@ -78,6 +78,7 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;

@@ -6,8 +6,15 @@ import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { differenceInSeconds } from 'date-fns'
+import { useAppDispatch } from 'state'
+import { fetchCakeVaultUserData } from 'state/pools'
+import useToast from 'hooks/useToast'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useVaultPoolContract } from 'hooks/useContract'
+import { useWeb3React } from '@web3-react/core'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
-import LockedStakeModal from '../LockedStakeModal'
 import ExtendDurationModal from '../LockedStakeModal/ExtendDurationModal'
 import AddAmountModal from '../LockedStakeModal/AddAmountModal'
 
@@ -33,9 +40,7 @@ const AddCakeButton = ({ currentBalance, stakingToken, currentLockedAmount, lock
   )
 }
 
-const ExtendButton = ({ stakingToken, currentLockedAmount, lockEndTime, lockStartTime }) => {
-  const { t } = useTranslation()
-
+const ExtendButton = ({ stakingToken, currentLockedAmount, lockEndTime, lockStartTime, children }) => {
   const currentDuration = lockEndTime - lockStartTime
 
   const [openExtendDurationModal] = useModal(
@@ -49,17 +54,61 @@ const ExtendButton = ({ stakingToken, currentLockedAmount, lockEndTime, lockStar
 
   return (
     <Button ml="16px" onClick={() => openExtendDurationModal()} width="100%">
-      {t('Extend')}
+      {children}
     </Button>
   )
 }
 
-const NewButton = ({ currentBalance, stakingToken, position }) => {
+const ConverToFlexibleButton = () => {
+  // TODO: Remove duplication
+  const dispatch = useAppDispatch()
+
+  const { account } = useWeb3React()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const vaultPoolContract = useVaultPoolContract()
+  const { callWithGasPrice } = useCallWithGasPrice()
+  const { t } = useTranslation()
+  const { toastSuccess } = useToast()
+
+  const handleUnlock = async () => {
+    // TODO: Update proper gasLimit
+    const callOptions = {
+      gasLimit: 500000,
+    }
+
+    const receipt = await fetchWithCatchTxError(() => {
+      const methodArgs = [account]
+      return callWithGasPrice(vaultPoolContract, 'unlock', methodArgs, callOptions)
+    })
+
+    if (receipt?.status) {
+      toastSuccess(
+        t('Staked!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your funds have been staked in the pool')}
+        </ToastDescriptionWithTx>,
+      )
+      dispatch(fetchCakeVaultUserData({ account }))
+    }
+  }
+
+  return (
+    <Button disabled={pendingTx} mr="8px" width="100%" onClick={() => handleUnlock()}>
+      {pendingTx ? t('Converting...') : t('Convert to Flexible')}
+    </Button>
+  )
+}
+
+export const AfterLockedActions = ({
+  lockEndTime,
+  lockStartTime,
+  currentLockedAmount,
+  stakingToken,
+  position,
+  isInline = false,
+}) => {
   const { t } = useTranslation()
 
-  const [openLockedStakeModal] = useModal(
-    <LockedStakeModal currentBalance={currentBalance} stakingToken={stakingToken} />,
-  )
   const msg = {
     [VaultPosition.None]: null,
     [VaultPosition.LockedEnd]:
@@ -68,19 +117,24 @@ const NewButton = ({ currentBalance, stakingToken, position }) => {
       'The lock period has ended. To avoid more rewards being burned, we recommend you unlock your position or adjust it to start a new lock.',
   }
 
+  const Container = isInline ? Flex : Box
+
   return (
     <Message
       variant="warning"
       mb="16px"
       action={
-        <Box mt="8px">
-          <Button mb="8px" width="100%">
-            {t('Switch to Flexible')}
-          </Button>
-          <Button onClick={() => openLockedStakeModal()} width="100%">
+        <Container mt="8px">
+          <ConverToFlexibleButton />
+          <ExtendButton
+            lockEndTime={lockEndTime}
+            lockStartTime={lockStartTime}
+            stakingToken={stakingToken}
+            currentLockedAmount={currentLockedAmount}
+          >
             {t('Renew')}
-          </Button>
-        </Box>
+          </ExtendButton>
+        </Container>
       }
     >
       <MessageText>{msg[position]}</MessageText>
@@ -112,12 +166,22 @@ const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
           lockStartTime={userData?.lockStartTime}
           stakingToken={stakingToken}
           currentLockedAmount={cakeBalance}
-        />
+        >
+          {t('Extend')}
+        </ExtendButton>
       </Flex>
     )
   }
 
-  return <NewButton position={position} currentBalance={currentBalance} stakingToken={stakingToken} />
+  return (
+    <AfterLockedActions
+      lockEndTime={userData?.lockEndTime}
+      lockStartTime={userData?.lockStartTime}
+      position={position}
+      currentLockedAmount={cakeBalance}
+      stakingToken={stakingToken}
+    />
+  )
 }
 
 export default LockedActions

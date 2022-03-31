@@ -94,7 +94,7 @@ const LockedStakingApy = memo(({ action, userData, account, earningTokenPrice, p
             />
           }
         />
-        <DetailSection title="Unlock In" value={remainingWeeks} detail={`Until ${lockEndDate}`} />
+        <DetailSection title="Unlocks In" value={remainingWeeks} detail={`Until ${lockEndDate}`} />
       </Flex>
       <Box mb="16px">{action}</Box>
       <Divider />
@@ -118,8 +118,26 @@ const LockedStakingApy = memo(({ action, userData, account, earningTokenPrice, p
         </Text>
         <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={2} unit="$" />
       </Flex>
-      {position === VaultPosition.LockedEnd && <BurningCountDown lockEndTime={userData?.lockEndTime} />}
-      {position === VaultPosition.AfterBurning && <BurnedCake account={account} />}
+      {position === VaultPosition.LockedEnd && (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('After Burning In')}
+          </Text>
+          <Text color="textSubtle" bold>
+            <BurningCountDown lockEndTime={userData?.lockEndTime} />
+          </Text>
+        </Flex>
+      )}
+      {position === VaultPosition.AfterBurning && (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('After burning')}
+          </Text>
+          <Text color="textSubtle" bold>
+            <BurnedCake account={account} />
+          </Text>
+        </Flex>
+      )}
     </LightGreyCard>
   )
 })

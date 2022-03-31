@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Text, Flex, Skeleton, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
@@ -5,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 
 import { ActionContainer, ActionTitles, ActionContent } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
@@ -22,7 +24,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   const { account } = useWeb3React()
 
   const {
-    userData: { cakeAtLastUserAction, userShares, currentOverdueFee, currentPerformanceFee },
+    userData: { cakeAtLastUserAction, userShares, locked, lockEndTime, currentOverdueFee, currentPerformanceFee },
     pricePerFullShare,
   } = useVaultPoolByKey(vaultKey)
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
@@ -32,6 +34,16 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
     pricePerFullShare,
     earningTokenPrice,
     currentPerformanceFee.plus(currentOverdueFee),
+  )
+
+  const position = useMemo(
+    () =>
+      getVaultPosition({
+        userShares,
+        locked,
+        lockEndTime,
+      }),
+    [userShares, locked, lockEndTime],
   )
 
   const earningTokenBalance = autoCakeToDisplay
@@ -98,7 +110,9 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
           </>
         </Flex>
         <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
-          {hasEarnings && <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />}
+          {position === VaultPosition.Flexible && hasEarnings && (
+            <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
+          )}
           {/* IFO credit here */}
         </Flex>
       </ActionContent>
