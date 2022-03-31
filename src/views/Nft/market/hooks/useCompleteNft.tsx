@@ -1,13 +1,12 @@
 import { useWeb3React } from '@web3-react/core'
 import { FetchStatus } from 'config/constants/types'
 import { useCallback } from 'react'
-import { getNftApi, getNftsMarketData } from 'state/nftMarket/helpers'
+import { useErc721CollectionContract } from 'hooks/useContract'
+import { getNftApi, getNftsMarketData, getNftsOnChainMarketData } from 'state/nftMarket/helpers'
 import { NftLocation, NftToken, TokenMarketData } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import useSWR from 'swr'
-import { useErc721CollectionContract } from '../../../../hooks/useContract'
-
-const NOT_ON_SALE_SELLER = '0x0000000000000000000000000000000000000000'
+import { NOT_ON_SALE_SELLER } from 'config/constants'
 
 const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: TokenMarketData) => {
   const { account } = useWeb3React()
@@ -69,8 +68,16 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
   const { data: marketData, mutate: refetchNftMarketData } = useSWR(
     collectionAddress && tokenId ? ['nft', 'marketData', collectionAddress, tokenId] : null,
     async () => {
+      const onChainMarketDatas = await getNftsOnChainMarketData(collectionAddress.toLowerCase(), [tokenId])
+      const onChainMarketData = onChainMarketDatas[0]
       const marketDatas = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
-      return marketDatas[0]
+
+      return {
+        ...marketDatas[0],
+        ...(onChainMarketData?.currentSeller && { currentSeller: onChainMarketData.currentSeller }),
+        ...(onChainMarketData?.isTradable && { isTradable: onChainMarketData.isTradable }),
+        ...(onChainMarketData?.currentAskPrice && { currentAskPrice: onChainMarketData.currentAskPrice }),
+      }
     },
   )
 

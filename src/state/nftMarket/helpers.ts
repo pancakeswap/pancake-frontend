@@ -9,6 +9,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { getNftMarketContract } from 'utils/contractHelpers'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { formatBigNumber } from 'utils/formatBalance'
 import {
   ApiCollection,
   ApiCollections,
@@ -361,6 +362,38 @@ export const getMarketDataForTokenIds = async (
     return res.collection.nfts
   } catch (error) {
     console.error(`Failed to fetch market data for NFTs stored tokens`, error)
+    return []
+  }
+}
+
+export const getNftsOnChainMarketData = async (
+  collectionAddress: string,
+  tokenIds: string[],
+): Promise<
+  { collectionAddress: string; tokenId: string; currentAskPrice: string; isTradable: boolean; currentSeller: string }[]
+> => {
+  try {
+    const nftMarketContract = getNftMarketContract()
+    const response = await nftMarketContract.viewAsksByCollectionAndTokenIds(collectionAddress.toLowerCase(), tokenIds)
+    const askInfo = response?.askInfo
+
+    if (!askInfo) return []
+
+    return askInfo.map((tokenAskInfo, index) => {
+      const currentSeller = tokenAskInfo.seller
+      const isTradable = (currentSeller && currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER) || false
+      const currentAskPrice = tokenAskInfo.price && formatBigNumber(tokenAskInfo.price)
+
+      return {
+        collectionAddress,
+        tokenId: tokenIds[index],
+        currentSeller,
+        isTradable,
+        currentAskPrice,
+      }
+    })
+  } catch (error) {
+    console.error('Failed to fetch NFTs onchain market data', error)
     return []
   }
 }
