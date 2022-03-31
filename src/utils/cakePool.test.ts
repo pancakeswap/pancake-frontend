@@ -23,7 +23,7 @@ describe('cakePool', () => {
       {
         userShares: new BigNumber('1'),
         locked: true,
-        lockEndTime: (addDays(new Date(NOW), -1).getTime() / 1000).toString(),
+        lockEndTime: (addDays(new Date(NOW), 1).getTime() / 1000).toString(),
       },
       VaultPosition.Locked,
     ],
@@ -32,7 +32,7 @@ describe('cakePool', () => {
       {
         userShares: new BigNumber('1'),
         locked: true,
-        lockEndTime: (addDays(new Date(NOW), 1).getTime() / 1000).toString(),
+        lockEndTime: (addDays(new Date(NOW), -1).getTime() / 1000).toString(),
       },
       VaultPosition.LockedEnd,
     ],
@@ -54,7 +54,7 @@ describe('cakePool', () => {
       getVaultPosition({
         userShares: new BigNumber('1'),
         locked: true,
-        lockEndTime: (addWeeks(new Date(NOW), 1).getTime() / 1000).toString(),
+        lockEndTime: (addWeeks(new Date(NOW), -1).getTime() / 1000).toString(),
       }),
     ).not.toBe(VaultPosition.Locked)
   })
