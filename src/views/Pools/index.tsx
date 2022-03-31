@@ -178,7 +178,7 @@ const Pools: React.FC = () => {
     () =>
       openPools.filter((pool) =>
         initialBlock > 0 && pool.startBlock
-          ? Number(pool.startBlock) > initialBlock + POOL_START_BLOCK_THRESHOLD
+          ? Number(pool.startBlock) < initialBlock + POOL_START_BLOCK_THRESHOLD
           : true,
       ),
     [initialBlock, openPools],
