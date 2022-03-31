@@ -228,7 +228,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     return (
       <>
         <ActionContainer isAutoVault={!!vaultKey} flex={vaultPosition > 1 ? 1.5 : 1}>
-          <ActionContent mt={0}>
+          <ActionContent
+            style={{
+              flexWrap: 'wrap',
+            }}
+            mt={0}
+          >
             <Flex flex="1" flexDirection="column" alignSelf="flex-start">
               <ActionTitles>
                 <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
@@ -239,12 +244,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                 </Text>
               </ActionTitles>
               <ActionContent>
-                <Box pt="16px">
+                <Box>
                   <Balance
                     lineHeight="1"
                     bold
                     fontSize="20px"
-                    decimals={5}
+                    decimals={2}
                     value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
                   />
                   <Balance
@@ -260,14 +265,13 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
               </ActionContent>
             </Flex>
             {vaultPosition >= VaultPosition.Locked && (
-              <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+              <Flex mb="8px" flex="1" flexDirection="column" alignSelf="flex-start" minWidth="80px">
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {t('Unlocks In')}
                 </Text>
                 <Text
                   lineHeight="1"
                   mt="8px"
-                  pt="16px"
                   bold
                   fontSize="20px"
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
@@ -314,11 +318,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             {/* TODO: add adjust modal */}
             {vaultPosition === VaultPosition.Locked && <Button>{t('Adjust')}</Button>}
             {vaultPosition >= VaultPosition.LockedEnd && (
-              <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+              <Flex flexDirection="column" alignSelf="flex-start">
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
                 </Text>
-                <Text lineHeight="1" mt="8px" pt="16px" bold fontSize="20px" color="failure">
+                <Text lineHeight="1" mt="8px" bold fontSize="20px" color="failure">
                   {vaultPosition === VaultPosition.AfterBurning ? (
                     <BurnedCake account={account} />
                   ) : (

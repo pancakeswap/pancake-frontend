@@ -53,7 +53,7 @@ const ExtendButton = ({ stakingToken, currentLockedAmount, lockEndTime, lockStar
   )
 
   return (
-    <Button ml="16px" onClick={() => openExtendDurationModal()} width="100%">
+    <Button mx="4px" onClick={() => openExtendDurationModal()} width="100%">
       {children}
     </Button>
   )
@@ -93,7 +93,7 @@ const ConverToFlexibleButton = () => {
   }
 
   return (
-    <Button disabled={pendingTx} mr="8px" width="100%" onClick={() => handleUnlock()}>
+    <Button disabled={pendingTx} mb="8px" mx="4px" width="100%" onClick={() => handleUnlock()}>
       {pendingTx ? t('Converting...') : t('Convert to Flexible')}
     </Button>
   )

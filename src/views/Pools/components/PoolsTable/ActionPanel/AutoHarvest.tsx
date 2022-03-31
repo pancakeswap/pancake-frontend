@@ -82,7 +82,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
     <ActionContainer isAutoVault>
       <ActionTitles>{actionTitle}</ActionTitles>
       <ActionContent>
-        <Flex flex="1" pt="16px" flexDirection="column" alignSelf="flex-start">
+        <Flex flex="1" flexDirection="column" alignSelf="flex-start">
           <>
             {hasEarnings ? (
               <>

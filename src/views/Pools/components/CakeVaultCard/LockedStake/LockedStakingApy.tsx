@@ -112,12 +112,14 @@ const LockedStakingApy = memo(({ action, userData, account, earningTokenPrice, p
           {weekDuration}
         </Text>
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('Recent CAKE profit')}
-        </Text>
-        <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={2} unit="$" />
-      </Flex>
+      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('Recent CAKE profit')}
+          </Text>
+          <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={2} unit="$" />
+        </Flex>
+      )}
       {position === VaultPosition.LockedEnd && (
         <Flex alignItems="center" justifyContent="space-between">
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
