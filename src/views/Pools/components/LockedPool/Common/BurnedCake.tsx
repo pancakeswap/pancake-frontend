@@ -2,13 +2,10 @@ import { memo } from 'react'
 import { useVaultPoolContract } from 'hooks/useContract'
 import { useSWRContract } from 'hooks/useSWRContract'
 import { useTranslation } from 'contexts/Localization'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 
 interface PropsType {
   account: string
-}
-
-function isUndefinedOrNull(value: any): boolean {
-  return value === null || value === undefined
 }
 
 const BurnedCake: React.FC<PropsType> = ({ account = '' }) => {
