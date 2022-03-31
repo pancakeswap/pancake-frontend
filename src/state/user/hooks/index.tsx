@@ -1,6 +1,7 @@
 import { ChainId, Pair, Token } from '@pancakeswap/sdk'
 import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
+import farms from 'config/constants/farms'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CHAIN_ID } from 'config/constants/networks'
@@ -441,6 +442,14 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
+  const farmPairs: [Token, Token][] = useMemo(
+    () =>
+      farms
+        .filter((farm) => farm.pid !== 0)
+        .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)]),
+    [],
+  )
+
   // pairs for every token against every base
   const generatedPairs: [Token, Token][] = useMemo(
     () =>
@@ -449,7 +458,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
             const token = tokens[tokenAddress]
             // for each token on the current chain,
             return (
-              // loop though all bases on the current chain
+              // loop through all bases on the current chain
               (BASES_TO_TRACK_LIQUIDITY_FOR[chainId] ?? [])
                 // to construct pairs of the given token with each base
                 .map((base) => {
@@ -479,8 +488,8 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   }, [savedSerializedPairs, chainId])
 
   const combinedList = useMemo(
-    () => userPairs.concat(generatedPairs).concat(pinnedPairs),
-    [generatedPairs, pinnedPairs, userPairs],
+    () => userPairs.concat(generatedPairs).concat(pinnedPairs).concat(farmPairs),
+    [generatedPairs, pinnedPairs, userPairs, farmPairs],
   )
 
   return useMemo(() => {
