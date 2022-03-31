@@ -1,12 +1,11 @@
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import tokens from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
-import { multicallv2 } from 'utils/multicall'
-import { formatEther } from '@ethersproject/units'
 import _chunk from 'lodash/chunk'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 import { getVotingPowerList, getVotingPowerListMapTotal } from './legacy/getVotingPowerList'
 import { getScores } from './getScores'
+import * as strategies from './strategies'
 
 export const isCoreProposal = (proposal: Proposal) => {
   return ADMINS.includes(proposal.author.toLowerCase())
@@ -39,6 +38,7 @@ export interface Message {
 }
 
 const STRATEGIES = [{ name: 'cake', params: { symbol: 'CAKE', address: tokens.cake.address, decimals: 18 } }]
+const NETWORK = '56'
 
 /**
  * Generates metadata required by snapshot to validate payload
@@ -84,65 +84,40 @@ export const sendSnapshotData = async (message: Message) => {
   return data
 }
 
-const votingPowerContractAddress = '0xc0FeBE244cE1ea66d27D23012B3D616432433F42'
-
 export const VOTING_POWER_BLOCK = {
   v0: 16300686,
 }
 
-const votingPowerAbi = [
-  'function getCakeBalance(address _user) view returns (uint256)',
-  'function getCakeBnbLpBalance(address _user) view returns (uint256)',
-  'function getCakePoolBalance(address _user) view returns (uint256)',
-  'function getCakeVaultBalance(address _user) view returns (uint256)',
-  'function getIFOPoolBalancee(address _user) view returns (uint256)',
-  'function getPoolsBalance(address _user, address[] _pools) view returns (uint256)',
-  'function getVotingPower(address _user, address[] _pools) view returns (uint256)',
-]
-
+/**
+ *  Get voting power by single user for each category
+ */
 export const getVotingPower = async (account: string, poolAddresses: string[], blockNumber?: number) => {
   if (blockNumber && blockNumber >= VOTING_POWER_BLOCK.v0) {
-    const calls = [
-      'getCakeBalance',
-      'getCakeBnbLpBalance',
-      'getCakePoolBalance',
-      'getCakeVaultBalance',
-      'getIFOPoolBalancee',
-    ].map((method) => {
-      return {
-        address: votingPowerContractAddress,
-        name: method,
-        params: [account],
-      }
-    })
+    const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, cakeVaultBalance, ifoPoolBalance, poolsBalance, total] =
+      await getScores(
+        PANCAKE_SPACE,
+        [
+          strategies.cakeBalanceStrategy,
+          strategies.cakeBnbLpBalanceStrategy,
+          strategies.cakePoolBalanceStrategy,
+          strategies.cakeVaultBalanceStrategy,
+          strategies.ifoPoolBalanceStrategy,
+          strategies.creatPoolsBalanceStrategy(poolAddresses),
+          strategies.createTotalStrategy(poolAddresses),
+        ],
+        NETWORK,
+        [account],
+        blockNumber,
+      )
 
-    const poolCalls = ['getPoolsBalance', 'getVotingPower'].map((method) => {
-      return {
-        address: votingPowerContractAddress,
-        name: method,
-        params: [account, poolAddresses],
-      }
-    })
-
-    const [
-      [cakeBalance],
-      [cakeBnbLpBalance],
-      [cakePoolBalance],
-      [cakeVaultBalance],
-      [ifoPoolBalance],
-      [poolsBalance],
-      [total],
-    ] = await multicallv2(votingPowerAbi, [...calls, ...poolCalls], {
-      blockTag: blockNumber,
-    })
     return {
-      poolsBalance: formatEther(poolsBalance),
-      total: formatEther(total),
-      cakeBalance: formatEther(cakeBalance),
-      cakeVaultBalance: formatEther(cakeVaultBalance),
-      ifoPoolBalance: formatEther(ifoPoolBalance),
-      cakePoolBalance: formatEther(cakePoolBalance),
-      cakeBnbLpBalance: formatEther(cakeBnbLpBalance),
+      poolsBalance: poolsBalance[account] ? poolsBalance[account] : 0,
+      total: total[account] ? total[account] : 0,
+      cakeBalance: cakeBalance[account] ? cakeBalance[account] : 0,
+      cakeVaultBalance: cakeVaultBalance[account] ? cakeVaultBalance[account] : 0,
+      ifoPoolBalance: ifoPoolBalance[account] ? ifoPoolBalance[account] : 0,
+      cakePoolBalance: cakePoolBalance[account] ? cakePoolBalance[account] : 0,
+      cakeBnbLpBalance: cakeBnbLpBalance[account] ? cakeBnbLpBalance[account] : 0,
       voter: account,
     }
   }
@@ -179,90 +154,31 @@ export const getTotalFromVotes = (votes: Vote[]) => {
   return 0
 }
 
-type ScoresResponseByAddress = {
-  [address: string]: number
-}
-
-type GetScoresResponse = ScoresResponseByAddress[]
-
-function createPoolStrategy(poolAddress) {
-  return {
-    name: 'contract-call',
-    params: {
-      address: poolAddress,
-      decimals: 18,
-      output: 'amount',
-      methodABI: {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address',
-          },
-        ],
-        name: 'userInfo',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'rewardDebt',
-            type: 'uint256',
-          },
-        ],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    },
-  }
-}
-
-function calculateVotingPowerPools(scoresList: GetScoresResponse, voters: string[]) {
-  return voters.reduce<{ [key: string]: number }>((acc, cur) => {
-    let poolsBalance = 0
-    for (let i = 0; i < scoresList.length; i++) {
-      const currentPoolBalance = scoresList[i][cur] || 0
-      poolsBalance += currentPoolBalance
-    }
-    return { ...acc, [cur]: poolsBalance }
-  }, {})
-}
-
+/**
+ * Get voting power by a list of voters, only total
+ */
 export async function getVotingPowerByCakeStrategy(voters: string[], poolAddresses: string[], blockNumber: number) {
   if (blockNumber && blockNumber <= VOTING_POWER_BLOCK.v0) {
     return getVotingPowerListMapTotal(voters, poolAddresses, blockNumber)
   }
 
-  const network = '56'
-  const poolsStrategyList = poolAddresses.map((address) => createPoolStrategy(address))
-  const chunkPools = _chunk(poolsStrategyList, 8)
-  const finalVotingPowerPools: { [key: string]: number } = {}
-  // eslint-disable-next-line no-restricted-syntax
-  for (const chunkPool of chunkPools) {
-    // eslint-disable-next-line no-await-in-loop
-    const poolStrategyResponse = await getScores(PANCAKE_SPACE, chunkPool, network, voters, blockNumber)
-    const votingPowerPools = calculateVotingPowerPools(poolStrategyResponse, voters)
-    Object.entries(votingPowerPools).forEach(([key, value]) => {
-      if (finalVotingPowerPools[key]) {
-        // eslint-disable-next-line operator-assignment
-        finalVotingPowerPools[key] = finalVotingPowerPools[key] + value
-      } else {
-        finalVotingPowerPools[key] = value
-      }
-    })
-  }
-
-  const strategyResponse = await getScores(PANCAKE_SPACE, STRATEGIES, network, voters, blockNumber)
+  const strategyResponse = await getScores(
+    PANCAKE_SPACE,
+    [...STRATEGIES, strategies.creatPoolsBalanceStrategy(poolAddresses)],
+    NETWORK,
+    voters,
+    blockNumber,
+  )
 
   const result = voters.reduce<Record<string, string>>((accum, voter) => {
-    const defaultTotal = strategyResponse.reduce((total, scoreList) => total + scoreList[voter], 0)
+    const defaultTotal = strategyResponse.reduce(
+      (total, scoreList) => total + (scoreList[voter] ? scoreList[voter] : 0),
+      0,
+    )
 
     return {
       ...accum,
-      [voter]: finalVotingPowerPools[voter] ? finalVotingPowerPools[voter] + defaultTotal : 0 + defaultTotal,
+      [voter]: defaultTotal,
     }
   }, {})
 

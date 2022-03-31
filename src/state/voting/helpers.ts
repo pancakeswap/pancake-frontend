@@ -11,11 +11,17 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
   const response: { proposals: Proposal[] } = await request(
     SNAPSHOT_API,
     gql`
-      query getProposals($first: Int!, $skip: Int!, $state: String!, $orderDirection: OrderDirection) {
+      query getProposals(
+        $first: Int!
+        $skip: Int!
+        $state: String!
+        $orderDirection: OrderDirection
+        $orderBy: String
+      ) {
         proposals(
           first: $first
           skip: $skip
-          orderBy: "end"
+          orderBy: $orderBy
           orderDirection: $orderDirection
           where: { space_in: "cake.eth", state: $state }
         ) {
@@ -35,7 +41,13 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
         }
       }
     `,
-    { first, skip, state, orderDirection: state === ProposalState.CLOSED ? 'desc' : 'asc' },
+    {
+      first,
+      skip,
+      state,
+      orderDirection: 'desc',
+      orderBy: state === ProposalState.CLOSED ? 'end' : 'created',
+    },
   )
   return response.proposals
 }
