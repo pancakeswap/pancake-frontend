@@ -1,6 +1,7 @@
 import { Box, Button, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { FlexGap } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
+import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 
 export const VaultStakeButtonGroup = ({
   onFlexibleClick,
@@ -10,6 +11,7 @@ export const VaultStakeButtonGroup = ({
   onLockedClick: () => void
 }) => {
   const { t } = useTranslation()
+  const maxDuration = useVaultMaxDuration()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
       {t(
@@ -18,14 +20,18 @@ export const VaultStakeButtonGroup = ({
     </Box>,
     {},
   )
-
   return (
     <Box width="100%">
       <FlexGap gap="12px">
         <Button style={{ flex: 1 }} onClick={onFlexibleClick}>
           {t('Flexible')}
         </Button>
-        <Button style={{ flex: 1 }} disabled decorator={{ text: t('Soon') }} onClick={onLockedClick}>
+        <Button
+          style={{ flex: 1 }}
+          disabled={!maxDuration || maxDuration?.isZero()}
+          decorator={maxDuration?.isZero() && { text: t('Soon') }}
+          onClick={onLockedClick}
+        >
           {t('Locked')}
         </Button>
       </FlexGap>
