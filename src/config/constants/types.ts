@@ -96,7 +96,6 @@ interface PoolConfigBaseProps {
   harvest?: boolean
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
-  deployedBlockNumber?: number
   version?: number
 }
 
