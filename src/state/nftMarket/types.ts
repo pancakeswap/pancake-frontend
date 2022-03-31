@@ -65,14 +65,14 @@ export enum NftLocation {
 // Market data regarding specific token ID, acquired via subgraph
 export interface TokenMarketData {
   tokenId: string
-  metadataUrl: string
+  metadataUrl?: string
   currentAskPrice: string
   currentSeller: string
-  latestTradedPriceInBNB: string
-  tradeVolumeBNB: string
-  totalTrades: string
+  latestTradedPriceInBNB?: string
+  tradeVolumeBNB?: string
+  totalTrades?: string
   isTradable: boolean
-  otherId: string
+  otherId?: string
   collection?: {
     id: string
   }

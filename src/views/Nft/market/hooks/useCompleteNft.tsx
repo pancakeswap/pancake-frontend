@@ -72,12 +72,8 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
       const onChainMarketData = onChainMarketDatas[0]
       const marketDatas = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
 
-      return {
-        ...marketDatas[0],
-        ...(onChainMarketData?.currentSeller && { currentSeller: onChainMarketData.currentSeller }),
-        ...(onChainMarketData?.isTradable && { isTradable: onChainMarketData.isTradable }),
-        ...(onChainMarketData?.currentAskPrice && { currentAskPrice: onChainMarketData.currentAskPrice }),
-      }
+      if (!marketDatas[0] || !onChainMarketData) return null
+      return { ...marketDatas[0], ...onChainMarketData }
     },
   )
 
@@ -90,7 +86,9 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
   }, [mutate, refetchNftMarketData, refetchNftOwn])
 
   return {
-    combinedNft: nft ? { ...nft, marketData, location: nftOwn?.location ?? NftLocation.WALLET } : undefined,
+    combinedNft: nft
+      ? { ...nft, ...(marketData && { marketData }), location: nftOwn?.location ?? NftLocation.WALLET }
+      : undefined,
     isOwn: nftOwn?.isOwn || false,
     isProfilePic: nftOwn?.nftIsProfilePic || false,
     isLoading: status !== FetchStatus.Fetched,
