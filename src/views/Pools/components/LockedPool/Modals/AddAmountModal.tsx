@@ -1,31 +1,35 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Modal, Box, MessageText, Message, Checkbox, Flex, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import _noop from 'lodash/noop'
+import { useTranslation } from 'contexts/Localization'
 
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
 
-import BalanceField from './BalanceField'
-import LockedBodyModal from './LockedBodyModal'
-import Overview from './Overview'
+import BalanceField from '../Common/BalanceField'
+import LockedBodyModal from '../Common/LockedModalBody'
+import Overview from '../Common/Overview'
 
 const RenewDuration = ({ setCheckedState, checkedState }) => {
+  const { t } = useTranslation()
+
   return (
     <>
       {!checkedState && (
         <Message variant="warning" mb="16px">
           <MessageText>
-            Adding more CAKE will renew your lock, setting it to remaining duration. Due to shorter lock period,
-            benefits decrease. To keep similar benefits, extend your lock. Learn more
+            {t(
+              'Adding more CAKE will renew your lock, setting it to remaining duration. Due to shorter lock period, benefits decrease. To keep similar benefits, extend your lock.',
+            )}
           </MessageText>
         </Message>
       )}
       <Flex alignItems="center">
         <Checkbox checked={checkedState} onChange={() => setCheckedState((prev) => !prev)} scale="sm" />
         <Text ml="8px" color="text">
-          Renew and extend your lock to keep similar benefits.
+          {t('Renew and extend your lock to keep similar benefits.')}
         </Text>
       </Flex>
     </>
@@ -53,10 +57,18 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   const [lockedAmount, setLockedAmount] = useState(0)
   const [checkedState, setCheckedState] = useState(false)
 
+  // TODO: should we keep currentLockedAmount as BigNumber
   const totalLockedAmount = Number(currentLockedAmount) + Number(lockedAmount)
 
   const usdValueStaked = useBUSDCakeAmount(lockedAmount)
   const usdValueNewStaked = useBUSDCakeAmount(totalLockedAmount)
+
+  const prepConfirmArg = useCallback(
+    () => ({
+      finalDuration: checkedState ? passedDuration : 0,
+    }),
+    [checkedState, passedDuration],
+  )
 
   return (
     <Modal
@@ -82,9 +94,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
         onDismiss={onDismiss}
         lockedAmount={lockedAmount}
         editAmountOnly={<RenewDuration checkedState={checkedState} setCheckedState={setCheckedState} />}
-        prepConfirmArg={() => ({
-          finalDuration: checkedState ? passedDuration : 0,
-        })}
+        prepConfirmArg={prepConfirmArg}
         customOverview={() => (
           <Overview
             isValidDuration

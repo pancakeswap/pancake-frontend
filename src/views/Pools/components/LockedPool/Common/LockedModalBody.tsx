@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react'
-import { Button, AutoRenewIcon, Box, Checkbox, Flex, Text, Message, MessageText } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon, Box } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
 import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
 
 import Overview from './Overview'
 import LockDurationField from './LockDurationField'
-import useLockedPool from './useLockedPool'
+import useLockedPool from '../hooks/useLockedPool'
 
-const LockedBodyModal = ({
+// TODO: Add type
+
+const LockedModalBody = ({
   stakingToken,
   onDismiss,
   lockedAmount,
@@ -69,4 +70,4 @@ const LockedBodyModal = ({
   )
 }
 
-export default LockedBodyModal
+export default LockedModalBody

@@ -5,7 +5,7 @@ import { FlexGap } from 'components/Layout/Flex'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedCakeVault, DeserializedPool } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { convertSharesToCake } from 'views/Pools/helpers'
 
@@ -17,8 +17,7 @@ import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
 import { StakingApy } from './StakingApy'
 import VaultCardActions from './VaultCardActions'
-import LockedStakingApy from './LockedStake/LockedStakingApy'
-import LockedActions from './LockedStake/LockedActions'
+import LockedStakingApy from '../LockedPool/LockedStakingApy'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
@@ -65,13 +64,8 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
             earningTokenPrice={pool?.earningTokenPrice}
             userData={vaultPool?.userData}
             pricePerFullShare={pricePerFullShare}
-            action={
-              <LockedActions
-                userData={vaultPool.userData}
-                stakingToken={pool?.stakingToken}
-                stakingTokenBalance={pool?.userData?.stakingTokenBalance}
-              />
-            }
+            stakingToken={pool?.stakingToken}
+            stakingTokenBalance={pool?.userData?.stakingTokenBalance}
           />
         ) : (
           <>

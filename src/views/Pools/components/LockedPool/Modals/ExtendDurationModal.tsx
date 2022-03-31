@@ -4,9 +4,9 @@ import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
 
-import StaticAmount from './StaticAmount'
-import LockedBodyModal from './LockedBodyModal'
-import Overview from './Overview'
+import StaticAmount from '../Common/StaticAmount'
+import LockedBodyModal from '../Common/LockedModalBody'
+import Overview from '../Common/Overview'
 
 interface ExtendDurationModal {
   stakingToken: any

@@ -33,9 +33,11 @@ import StakeModal from '../../PoolCard/Modals/StakeModal'
 import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
-import BurningCountDown from '../../CakeVaultCard/LockedStake/BurningCountDown'
-import BurnedCake from '../../CakeVaultCard/LockedStake/BurnedCake'
-import { AfterLockedActions, ExtendButton, AddCakeButton } from '../../CakeVaultCard/LockedStake/LockedActions'
+import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
+import BurnedCake from '../../LockedPool/Common/BurnedCake'
+import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
+import ExtendButton from '../../LockedPool/Buttons/ExtendButton'
+import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
 
 const IconButtonWrapper = styled.div`
   display: flex;

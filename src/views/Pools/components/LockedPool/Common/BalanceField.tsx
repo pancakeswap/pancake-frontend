@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback, memo } from 'react'
 import { Text, Flex, Image, BalanceInput, Slider, Button } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { BIG_TEN } from 'utils/bigNumber'
@@ -7,9 +7,12 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 
+// TODO: refactor this
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
+
+// TODO: Add type
 
 const BalanceField = ({
   stakingAddress,
@@ -23,27 +26,33 @@ const BalanceField = ({
   const { t } = useTranslation()
   const [percent, setPercent] = useState(0)
 
-  const handleStakeInputChange = (input: string) => {
-    if (input) {
-      const convertedInput = new BigNumber(input).multipliedBy(BIG_TEN.pow(stakingDecimals))
-      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
-      setPercent(percentage > 100 ? 100 : percentage)
-    } else {
-      setPercent(0)
-    }
-    setLockedAmount(input)
-  }
+  const handleStakeInputChange = useCallback(
+    (input: string) => {
+      if (input) {
+        const convertedInput = new BigNumber(input).multipliedBy(BIG_TEN.pow(stakingDecimals))
+        const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
+        setPercent(percentage > 100 ? 100 : percentage)
+      } else {
+        setPercent(0)
+      }
+      setLockedAmount(input)
+    },
+    [stakingDecimals, stakingMax, setLockedAmount],
+  )
 
-  const handleChangePercent = (sliderPercent: number) => {
-    if (sliderPercent > 0) {
-      const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
-      const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingDecimals, stakingDecimals)
-      setLockedAmount(amountToStake)
-    } else {
-      setLockedAmount('')
-    }
-    setPercent(sliderPercent)
-  }
+  const handleChangePercent = useCallback(
+    (sliderPercent: number) => {
+      if (sliderPercent > 0) {
+        const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
+        const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingDecimals, stakingDecimals)
+        setLockedAmount(amountToStake)
+      } else {
+        setLockedAmount('')
+      }
+      setPercent(sliderPercent)
+    },
+    [stakingMax, setLockedAmount, stakingDecimals],
+  )
 
   return (
     <>
@@ -94,4 +103,4 @@ const BalanceField = ({
   )
 }
 
-export default BalanceField
+export default memo(BalanceField)

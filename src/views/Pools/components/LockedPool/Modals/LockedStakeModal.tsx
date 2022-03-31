@@ -6,8 +6,8 @@ import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
 
-import BalanceField from './BalanceField'
-import LockedBodyModal from './LockedBodyModal'
+import BalanceField from '../Common/BalanceField'
+import LockedBodyModal from '../Common/LockedModalBody'
 
 interface LockedStakeModalProps {
   onDismiss?: () => void

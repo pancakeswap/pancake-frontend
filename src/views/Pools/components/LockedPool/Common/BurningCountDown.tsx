@@ -1,15 +1,20 @@
-import { useState, useCallback, memo } from 'react'
+import { useState, useCallback, memo, useMemo } from 'react'
 import useInterval from 'hooks/useInterval'
 
 import getTimePeriods from 'utils/getTimePeriods'
 import addSeconds from 'date-fns/addSeconds'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
+import convertLockTimeToSeconds from '../utils/convertLockTimeToSeconds'
 
-const BurningCountDown = ({ lockEndTime }) => {
+interface PropsType {
+  lockEndTime: string
+}
+
+const BurningCountDown: React.FC<PropsType> = ({ lockEndTime }) => {
   const [remainingSeconds, setRemainingSeconds] = useState(0)
 
   // 1 week after lockEndTime
-  const burnDate = addSeconds(parseInt(lockEndTime) * 1000, 604800)
+  const burnDate = useMemo(() => addSeconds(convertLockTimeToSeconds(lockEndTime), 604800), [lockEndTime])
 
   const updateRemainingSeconds = useCallback(() => {
     setRemainingSeconds(differenceInSeconds(burnDate, new Date()))
