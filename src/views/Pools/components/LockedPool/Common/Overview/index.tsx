@@ -47,7 +47,7 @@ const Overview: React.FC<OverviewPropsType> = ({
       <TextRow
         title={t('duration')}
         value={isValidDuration && formatSecondsToWeeks(duration)}
-        newValue={newDuration && formatSecondsToWeeks(newDuration)}
+        newValue={isValidDuration && newDuration && formatSecondsToWeeks(newDuration)}
       />
       <DateRow title={t('Unlock on')} value={isValidDuration && unlockDate} />
       <BalanceRow
