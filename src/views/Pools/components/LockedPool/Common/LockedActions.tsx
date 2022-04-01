@@ -29,7 +29,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
     [userShares, locked, lockEndTime],
   )
   const { t } = useTranslation()
-  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
+  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
 
   const currentBalance = useMemo(
     () => (stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO),
@@ -50,7 +50,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
           lockEndTime={lockEndTime}
           lockStartTime={lockStartTime}
           stakingToken={stakingToken}
-          currentLockedAmount={cakeAsBigNumber}
+          currentLockedAmount={cakeAsNumberBalance}
         >
           {t('Extend')}
         </ExtendButton>
@@ -63,7 +63,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
       lockEndTime={lockEndTime}
       lockStartTime={lockStartTime}
       position={position}
-      currentLockedAmount={cakeAsBigNumber}
+      currentLockedAmount={cakeAsNumberBalance}
       stakingToken={stakingToken}
     />
   )

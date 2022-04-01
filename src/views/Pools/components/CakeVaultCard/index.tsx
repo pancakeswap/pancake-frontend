@@ -7,7 +7,6 @@ import { useTranslation } from 'contexts/Localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
-import { convertSharesToCake } from 'views/Pools/helpers'
 
 import CardFooter from '../PoolCard/CardFooter'
 import PoolCardHeader, { PoolCardHeaderTitle } from '../PoolCard/PoolCardHeader'

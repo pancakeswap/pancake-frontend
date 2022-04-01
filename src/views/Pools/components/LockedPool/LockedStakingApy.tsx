@@ -7,7 +7,8 @@ import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
-import { getCakeVaultEarnings } from 'views/Pools/helpers'
+import { getCakeVaultEarnings, convertSharesToCake } from 'views/Pools/helpers'
+import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 
 import BurningCountDown from './Common/BurningCountDown'
 import BurnedCake from './Common/BurnedCake'
@@ -35,12 +36,14 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
     [userData],
   )
 
-  const { weekDuration, lockEndDate, lockedAmount, usdValueStaked, secondDuration, remainingWeeks } =
-    useUserDataInVaultPrensenter({
-      lockStartTime: userData?.lockStartTime,
-      lockEndTime: userData?.lockEndTime,
-      lockedAmount: userData?.lockedAmount,
-    })
+  // TODO: Locked Cake Amount not match with Flexible Cake Amount
+  const { cakeAsNumberBalance } = convertSharesToCake(userData?.userShares, pricePerFullShare)
+  const usdValueStaked = useBUSDCakeAmount(cakeAsNumberBalance)
+
+  const { weekDuration, lockEndDate, secondDuration, remainingWeeks } = useUserDataInVaultPrensenter({
+    lockStartTime: userData?.lockStartTime,
+    lockEndTime: userData?.lockEndTime,
+  })
 
   const { lockedApy } = useVaultApy({ duration: Number(secondDuration) })
 
@@ -61,8 +64,8 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
     <LightGreyCard>
       <Flex justifyContent="space-between" mb="16px">
         <DetailSection
-          title="CAKE LOCKED"
-          value={<BalanceWithLoading color="text" bold fontSize="16px" value={lockedAmount} decimals={2} />}
+          title={t('CAKE locked')}
+          value={<BalanceWithLoading color="text" bold fontSize="16px" value={cakeAsNumberBalance} decimals={2} />}
           detail={
             <BalanceWithLoading
               value={usdValueStaked}

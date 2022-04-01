@@ -37,7 +37,7 @@ const Overview: React.FC<OverviewPropsType> = ({
   }, [newLockedApy, usdValueStaked])
 
   const unlockDate = newDuration
-    ? addSeconds(lockStartTime ? new Date(convertLockTimeToSeconds(lockStartTime)) : new Date(), newDuration)
+    ? addSeconds(Number(lockStartTime) ? new Date(convertLockTimeToSeconds(lockStartTime)) : new Date(), newDuration)
     : addSeconds(new Date(), duration)
 
   return (

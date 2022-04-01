@@ -24,7 +24,7 @@ export interface ValiratorReturn {
 
 export interface ExtendDurationModal {
   stakingToken: Token
-  currentLockedAmount: BigNumber
+  currentLockedAmount: number
   onDismiss?: VoidFn
   currentDuration: number
   lockStartTime: string
@@ -77,7 +77,7 @@ export interface LockedModalBodyPropsType {
 
 export interface ExtendDurationButtonPropsType {
   stakingToken: Token
-  currentLockedAmount: BigNumber
+  currentLockedAmount: number
   lockEndTime: string
   lockStartTime: string
   children: React.ReactNode
@@ -86,7 +86,7 @@ export interface ExtendDurationButtonPropsType {
 export interface AfterLockedActionsPropsType {
   lockEndTime: string
   lockStartTime: string
-  currentLockedAmount: BigNumber
+  currentLockedAmount: number
   stakingToken: Token
   position: VaultPosition
   isInline?: boolean
