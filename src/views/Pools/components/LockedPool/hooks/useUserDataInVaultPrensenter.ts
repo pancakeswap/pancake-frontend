@@ -28,7 +28,7 @@ type UserDataInVaultPrensenterFn = (args: UserData) => UserDataInVaultPrensenter
 const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime, lockStartTime, lockedAmount }) => {
   const cakePriceBusd = useCakeBusdPrice()
 
-  const secondDuration = lockEndTime - lockStartTime
+  const secondDuration = Number(lockEndTime) - Number(lockStartTime)
 
   const cakeBalance = getBalanceNumber(lockedAmount)
   const usdValueStaked = multiplyPriceByAmount(cakePriceBusd, cakeBalance)
