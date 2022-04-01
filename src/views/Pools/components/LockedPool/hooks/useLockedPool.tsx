@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback, Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
@@ -10,13 +10,32 @@ import { getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
+import { Token } from '@pancakeswap/sdk'
 
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { PrepConfirmArg } from '../types'
 
 const ONE_WEEK_DETAULT = 604800
 
-const useLockedPool = ({ lockedAmount, stakingToken, onDismiss, prepConfirmArg }) => {
+interface HookArgs {
+  lockedAmount: number
+  stakingToken: Token
+  onDismiss: () => void
+  prepConfirmArg: PrepConfirmArg
+}
+
+interface HookReturn {
+  usdValueStaked: number
+  duration: number
+  setDuration: Dispatch<SetStateAction<number>>
+  pendingTx: boolean
+  handleConfirmClick: () => Promise<void>
+}
+
+export default function useLockedPool(hookArgs: HookArgs): HookReturn {
+  const { lockedAmount, stakingToken, onDismiss, prepConfirmArg } = hookArgs
+
   const dispatch = useAppDispatch()
 
   const { account } = useWeb3React()
@@ -29,41 +48,41 @@ const useLockedPool = ({ lockedAmount, stakingToken, onDismiss, prepConfirmArg }
   const [duration, setDuration] = useState(ONE_WEEK_DETAULT)
   const usdValueStaked = useBUSDCakeAmount(lockedAmount)
 
-  // TODO: Add proper gasLimit
-  const callOptions = {
-    gasLimit: 500000,
-  }
+  const handleDeposit = useCallback(
+    async (convertedStakeAmount: BigNumber, lockDuration: number) => {
+      // TODO: Add proper gasLimit
+      const callOptions = {
+        gasLimit: 500000,
+      }
+      const receipt = await fetchWithCatchTxError(() => {
+        // .toString() being called to fix a BigNumber error in prod
+        // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
+        const methodArgs = [convertedStakeAmount.toString(), lockDuration]
+        return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
+      })
 
-  const handleDeposit = async (convertedStakeAmount: BigNumber, lockDuration = 0) => {
-    const receipt = await fetchWithCatchTxError(() => {
-      // .toString() being called to fix a BigNumber error in prod
-      // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const methodArgs = [convertedStakeAmount.toString(), lockDuration.toString()]
-      return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
-    })
+      if (receipt?.status) {
+        toastSuccess(
+          t('Staked!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your funds have been staked in the pool')}
+          </ToastDescriptionWithTx>,
+        )
+        onDismiss?.()
+        dispatch(fetchCakeVaultUserData({ account }))
+      }
+    },
+    [fetchWithCatchTxError, toastSuccess, dispatch, onDismiss, account, vaultPoolContract, t, callWithGasPrice],
+  )
 
-    if (receipt?.status) {
-      toastSuccess(
-        t('Staked!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your funds have been staked in the pool')}
-        </ToastDescriptionWithTx>,
-      )
-      onDismiss?.()
-      dispatch(fetchCakeVaultUserData({ account }))
-    }
-  }
-
-  const handleConfirmClick = async () => {
+  const handleConfirmClick = useCallback(async () => {
     const { finalLockedAmount = lockedAmount, finalDuration = duration } =
       typeof prepConfirmArg === 'function' ? prepConfirmArg({ duration }) : {}
 
-    const convertedStakeAmount = getDecimalAmount(new BigNumber(finalLockedAmount), stakingToken.decimals)
+    const convertedStakeAmount: BigNumber = getDecimalAmount(new BigNumber(finalLockedAmount), stakingToken.decimals)
 
     handleDeposit(convertedStakeAmount, finalDuration)
-  }
+  }, [prepConfirmArg, stakingToken, handleDeposit, duration, lockedAmount])
 
   return { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick }
 }
-
-export default useLockedPool

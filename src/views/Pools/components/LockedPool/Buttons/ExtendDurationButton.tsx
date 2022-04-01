@@ -2,10 +2,15 @@ import { useMemo } from 'react'
 import { Button, useModal } from '@pancakeswap/uikit'
 
 import ExtendDurationModal from '../Modals/ExtendDurationModal'
+import { ExtendDurationButtonPropsType } from '../types'
 
-// TODO: Add type
-
-export const ExtendDurationButton = ({ stakingToken, currentLockedAmount, lockEndTime, lockStartTime, children }) => {
+const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType> = ({
+  stakingToken,
+  currentLockedAmount,
+  lockEndTime,
+  lockStartTime,
+  children,
+}) => {
   const currentDuration = useMemo(() => Number(lockEndTime) - Number(lockStartTime), [lockEndTime, lockStartTime])
 
   const [openExtendDurationModal] = useModal(

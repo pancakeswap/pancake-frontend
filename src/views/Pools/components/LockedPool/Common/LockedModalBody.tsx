@@ -1,23 +1,25 @@
+import { useMemo } from 'react'
 import { Button, AutoRenewIcon, Box } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
 import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
+import { getBalanceAmount } from 'utils/formatBalance'
+
+import { LockedModalBodyPropsType, ModalValidator } from '../types'
 
 import Overview from './Overview'
 import LockDurationField from './LockDurationField'
 import useLockedPool from '../hooks/useLockedPool'
 
-// TODO: Add type
-
-const LockedModalBody = ({
+const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   stakingToken,
   onDismiss,
   lockedAmount,
   currentBalance,
-  editAmountOnly = null,
-  prepConfirmArg = null,
-  validator = null,
-  customOverview = null,
+  editAmountOnly,
+  prepConfirmArg,
+  validator,
+  customOverview,
 }) => {
   const { t } = useTranslation()
   const { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick } = useLockedPool({
@@ -27,16 +29,19 @@ const LockedModalBody = ({
     prepConfirmArg,
   })
 
-  const { isValidAmount, isValidDuration, isOverMax } =
-    typeof validator === 'function'
-      ? validator({
-          duration,
-        })
-      : {
-          isValidAmount: lockedAmount && lockedAmount > 0 && lockedAmount <= currentBalance,
-          isValidDuration: duration > 0 && duration <= DEFAULT_MAX_DURATION,
-          isOverMax: duration > DEFAULT_MAX_DURATION,
-        }
+  const { isValidAmount, isValidDuration, isOverMax }: ModalValidator = useMemo(
+    () =>
+      typeof validator === 'function'
+        ? validator({
+            duration,
+          })
+        : {
+            isValidAmount: lockedAmount > 0 && getBalanceAmount(currentBalance).gte(lockedAmount),
+            isValidDuration: duration > 0 && duration <= DEFAULT_MAX_DURATION,
+            isOverMax: duration > DEFAULT_MAX_DURATION,
+          },
+    [validator, currentBalance, lockedAmount, duration],
+  )
 
   return (
     <>

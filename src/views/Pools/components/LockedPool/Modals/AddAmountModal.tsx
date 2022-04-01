@@ -1,16 +1,15 @@
 import { useState, useCallback } from 'react'
 import { Modal, Box, MessageText, Message, Checkbox, Flex, Text } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
 
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
-import { getBalanceNumber } from 'utils/formatBalance'
 
 import BalanceField from '../Common/BalanceField'
 import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
+import { AddAmountModalProps } from '../types'
 
 const RenewDuration = ({ setCheckedState, checkedState }) => {
   const { t } = useTranslation()
@@ -36,15 +35,6 @@ const RenewDuration = ({ setCheckedState, checkedState }) => {
   )
 }
 
-interface AddAmountModalProps {
-  onDismiss?: () => void
-  stakingToken: any
-  currentBalance: BigNumber
-  currentLockedAmount: number
-  passedDuration: number
-  remainingDuration: number
-}
-
 const AddAmountModal: React.FC<AddAmountModalProps> = ({
   onDismiss,
   currentBalance,
@@ -57,8 +47,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   const [lockedAmount, setLockedAmount] = useState(0)
   const [checkedState, setCheckedState] = useState(false)
 
-  // TODO: should we keep currentLockedAmount as BigNumber
-  const totalLockedAmount = Number(currentLockedAmount) + Number(lockedAmount)
+  const totalLockedAmount: number = currentLockedAmount.add(lockedAmount).toNumber()
 
   const usdValueStaked = useBUSDCakeAmount(lockedAmount)
   const usdValueNewStaked = useBUSDCakeAmount(totalLockedAmount)
@@ -68,6 +57,21 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
       finalDuration: checkedState ? passedDuration : 0,
     }),
     [checkedState, passedDuration],
+  )
+
+  const customOverview = useCallback(
+    () => (
+      <Overview
+        isValidDuration
+        openCalculator={_noop}
+        duration={remainingDuration}
+        newDuration={checkedState ? passedDuration + remainingDuration : 0}
+        lockedAmount={currentLockedAmount.toNumber()}
+        newLockedAmount={totalLockedAmount}
+        usdValueStaked={usdValueNewStaked}
+      />
+    ),
+    [remainingDuration, checkedState, currentLockedAmount, passedDuration, totalLockedAmount, usdValueNewStaked],
   )
 
   return (
@@ -89,23 +93,13 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
         />
       </Box>
       <LockedBodyModal
-        currentBalance={getBalanceNumber(currentBalance)}
+        currentBalance={currentBalance}
         stakingToken={stakingToken}
         onDismiss={onDismiss}
         lockedAmount={lockedAmount}
         editAmountOnly={<RenewDuration checkedState={checkedState} setCheckedState={setCheckedState} />}
         prepConfirmArg={prepConfirmArg}
-        customOverview={() => (
-          <Overview
-            isValidDuration
-            openCalculator={_noop}
-            duration={remainingDuration}
-            newDuration={checkedState ? passedDuration + remainingDuration : 0}
-            lockedAmount={currentLockedAmount}
-            newLockedAmount={totalLockedAmount}
-            usdValueStaked={usdValueNewStaked}
-          />
-        )}
+        customOverview={customOverview}
       />
     </Modal>
   )

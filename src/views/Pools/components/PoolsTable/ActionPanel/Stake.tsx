@@ -36,7 +36,7 @@ import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
 import BurnedCake from '../../LockedPool/Common/BurnedCake'
 import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
-import ExtendButton from '../../LockedPool/Buttons/ExtendButton'
+import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
 import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
 import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 
@@ -275,7 +275,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                 <AddCakeButton
                   lockEndTime={lockEndTime}
                   lockStartTime={lockStartTime}
-                  currentLockedAmount={cakeAsNumberBalance}
+                  currentLockedAmount={cakeAsBigNumber}
                   stakingToken={stakingToken}
                   currentBalance={stakingTokenBalance}
                 />
@@ -313,7 +313,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                     lockEndTime={lockEndTime}
                     lockStartTime={lockStartTime}
                     stakingToken={stakingToken}
-                    currentLockedAmount={cakeAsNumberBalance}
+                    currentLockedAmount={cakeAsBigNumber}
                   >
                     {t('Extend')}
                   </ExtendButton>

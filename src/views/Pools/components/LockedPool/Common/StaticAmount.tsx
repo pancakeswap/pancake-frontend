@@ -2,10 +2,14 @@ import { Text, Flex, Image, Box } from '@pancakeswap/uikit'
 import { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
 import { useTranslation } from 'contexts/Localization'
+import { StaticAmountPropsType } from '../types'
 
-// TODO: Add type
-
-const StaticAmount = ({ stakingSymbol, stakingAddress, lockedAmount, usdValueStaked }) => {
+const StaticAmount: React.FC<StaticAmountPropsType> = ({
+  stakingSymbol,
+  stakingAddress,
+  lockedAmount,
+  usdValueStaked,
+}) => {
   const { t } = useTranslation()
 
   return (

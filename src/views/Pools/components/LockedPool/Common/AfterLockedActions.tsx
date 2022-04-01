@@ -3,17 +3,16 @@ import { useTranslation } from 'contexts/Localization'
 import { VaultPosition } from 'utils/cakePool'
 
 import ConverToFlexibleButton from '../Buttons/ConverToFlexibleButton'
-import ExtendButton from '../Buttons/ExtendButton'
+import ExtendButton from '../Buttons/ExtendDurationButton'
+import { AfterLockedActionsPropsType } from '../types'
 
-// TODO: add type
-
-const AfterLockedActions = ({
+const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
   lockEndTime,
   lockStartTime,
   currentLockedAmount,
   stakingToken,
   position,
-  isInline = false,
+  isInline,
 }) => {
   const { t } = useTranslation()
 

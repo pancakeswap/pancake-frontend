@@ -1,9 +1,12 @@
 import { Text, Flex } from '@pancakeswap/uikit'
 import { format } from 'date-fns'
 
-// TODO: Add Type
+interface PropsType {
+  title: React.ReactNode
+  value: Date
+}
 
-const DateRow = ({ title, value }) => (
+const DateRow: React.FC<PropsType> = ({ title, value }) => (
   <Flex alignItems="center" justifyContent="space-between">
     <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
       {title}

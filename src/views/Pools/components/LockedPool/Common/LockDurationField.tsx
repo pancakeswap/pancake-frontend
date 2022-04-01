@@ -2,6 +2,7 @@ import { Text, Flex, Button, Input, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { secondsToWeeks, weeksToSeconds } from '../utils/formatSecondsToWeeks'
+import { LockDurationFieldPropsType } from '../types'
 
 const DURATIONS = [1, 5, 10, 25, 52]
 
@@ -10,9 +11,7 @@ const StyledInput = styled(Input)`
   margin-right: 8px;
 `
 
-// TODO: add type and optimize
-
-const LockDurationField = ({ duration, setDuration, isOverMax }) => {
+const LockDurationField: React.FC<LockDurationFieldPropsType> = ({ duration, setDuration, isOverMax }) => {
   const { t } = useTranslation()
 
   return (

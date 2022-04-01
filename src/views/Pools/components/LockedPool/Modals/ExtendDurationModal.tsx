@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { Modal, Box } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import useTheme from 'hooks/useTheme'
@@ -7,14 +8,7 @@ import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
 import StaticAmount from '../Common/StaticAmount'
 import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
-
-interface ExtendDurationModal {
-  stakingToken: any
-  currentLockedAmount: number
-  onDismiss?: () => void
-  currentDuration: number
-  lockStartTime: string
-}
+import { ExtendDurationModal } from '../types'
 
 const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   stakingToken,
@@ -24,7 +18,43 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   lockStartTime,
 }) => {
   const { theme } = useTheme()
-  const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
+
+  const currentLockedAmountAsNumber = currentLockedAmount.toNumber()
+
+  const usdValueStaked = useBUSDCakeAmount(currentLockedAmountAsNumber)
+
+  const validator = useCallback(
+    ({ duration }) => {
+      const isValidAmount = currentLockedAmount && currentLockedAmount.gt(0)
+      const totalDuration = currentDuration + duration
+
+      const isValidDuration = duration > 0 && totalDuration > 0 && totalDuration <= DEFAULT_MAX_DURATION
+
+      return {
+        isValidAmount,
+        isValidDuration,
+        isOverMax: totalDuration > DEFAULT_MAX_DURATION,
+      }
+    },
+    [currentLockedAmount, currentDuration],
+  )
+
+  const prepConfirmArg = useCallback(({ duration }) => ({ finalDuration: duration, finalLockedAmount: 0 }), [])
+
+  const customOverview = useCallback(
+    ({ isValidDuration, duration }) => (
+      <Overview
+        lockStartTime={lockStartTime}
+        isValidDuration={isValidDuration}
+        openCalculator={_noop}
+        duration={currentDuration || duration}
+        newDuration={currentDuration + duration}
+        lockedAmount={currentLockedAmountAsNumber}
+        usdValueStaked={usdValueStaked}
+      />
+    ),
+    [lockStartTime, currentDuration, currentLockedAmountAsNumber, usdValueStaked],
+  )
 
   return (
     <Modal title="Lock CAKE" onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
@@ -32,39 +62,17 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         <StaticAmount
           stakingAddress={stakingToken.address}
           stakingSymbol={stakingToken.symbol}
-          lockedAmount={currentLockedAmount}
+          lockedAmount={currentLockedAmountAsNumber}
           usdValueStaked={usdValueStaked}
         />
       </Box>
       <LockedBodyModal
-        currentBalance={currentLockedAmount}
         stakingToken={stakingToken}
         onDismiss={onDismiss}
-        lockedAmount={currentLockedAmount}
-        validator={({ duration }) => {
-          const isValidAmount = currentLockedAmount && currentLockedAmount > 0
-          const totalDuration = currentDuration + duration
-
-          const isValidDuration = duration > 0 && totalDuration > 0 && totalDuration <= DEFAULT_MAX_DURATION
-
-          return {
-            isValidAmount,
-            isValidDuration,
-            isOverMax: totalDuration > DEFAULT_MAX_DURATION,
-          }
-        }}
-        prepConfirmArg={({ duration }) => ({ finalDuration: duration, finalLockedAmount: 0 })}
-        customOverview={({ isValidDuration, duration }) => (
-          <Overview
-            lockStartTime={lockStartTime}
-            isValidDuration={isValidDuration}
-            openCalculator={_noop}
-            duration={currentDuration || duration}
-            newDuration={currentDuration + duration}
-            lockedAmount={currentLockedAmount}
-            usdValueStaked={usdValueStaked}
-          />
-        )}
+        lockedAmount={currentLockedAmountAsNumber}
+        validator={validator}
+        prepConfirmArg={prepConfirmArg}
+        customOverview={customOverview}
       />
     </Modal>
   )

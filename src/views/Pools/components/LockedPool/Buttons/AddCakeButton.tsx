@@ -4,10 +4,15 @@ import { useTranslation } from 'contexts/Localization'
 import { differenceInSeconds } from 'date-fns'
 import AddAmountModal from '../Modals/AddAmountModal'
 import convertLockTimeToSeconds from '../utils/convertLockTimeToSeconds'
+import { AddButtonProps } from '../types'
 
-// TODO: Add type
-
-export const AddButton = ({ currentBalance, stakingToken, currentLockedAmount, lockEndTime, lockStartTime }) => {
+const AddCakeButton: React.FC<AddButtonProps> = ({
+  currentBalance,
+  stakingToken,
+  currentLockedAmount,
+  lockEndTime,
+  lockStartTime,
+}) => {
   const { t } = useTranslation()
   const remainingDuration = useMemo(
     () => differenceInSeconds(new Date(convertLockTimeToSeconds(lockEndTime)), new Date()),
@@ -35,4 +40,4 @@ export const AddButton = ({ currentBalance, stakingToken, currentLockedAmount, l
   )
 }
 
-export default memo(AddButton)
+export default memo(AddCakeButton)

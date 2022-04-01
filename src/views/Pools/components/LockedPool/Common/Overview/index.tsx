@@ -10,31 +10,30 @@ import BalanceRow from './BalanceRow'
 import DateRow from './DateRow'
 import formatRoi from '../../utils/formatRoi'
 import convertLockTimeToSeconds from '../../utils/convertLockTimeToSeconds'
+import { OverviewPropsType } from '../../types'
 
-// TODO: Add type
-
-const Overview = ({
+const Overview: React.FC<OverviewPropsType> = ({
   usdValueStaked,
   lockedAmount,
   openCalculator,
   duration,
-  newDuration = 0,
-  newLockedAmount = null,
   isValidDuration,
-  lockStartTime = null,
+  newDuration,
+  newLockedAmount,
+  lockStartTime,
 }) => {
   const { getLockedApy } = useVaultApy()
   const { t } = useTranslation()
 
   const lockedApy = useMemo(() => getLockedApy(duration), [getLockedApy, duration])
-  const newLockedApy = useMemo(() => getLockedApy(newDuration), [getLockedApy, newDuration])
+  const newLockedApy = useMemo(() => newDuration && getLockedApy(newDuration), [getLockedApy, newDuration])
 
   const formattedRoi = useMemo(() => {
     return formatRoi({ usdValueStaked, lockedApy })
   }, [lockedApy, usdValueStaked])
 
   const newFormattedRoi = useMemo(() => {
-    return formatRoi({ usdValueStaked, lockedApy: newLockedApy })
+    return newLockedApy && formatRoi({ usdValueStaked, lockedApy: newLockedApy })
   }, [newLockedApy, usdValueStaked])
 
   const unlockDate = newDuration
@@ -44,17 +43,17 @@ const Overview = ({
   return (
     <LightGreyCard>
       <BalanceRow title={t('Cake to be locked')} value={lockedAmount} newValue={newLockedAmount} decimals={2} />
-      <BalanceRow title="apy" unit="%" value={lockedApy} decimals={2} newValue={newLockedApy} />
+      <BalanceRow title="apy" unit="%" value={Number(lockedApy)} decimals={2} newValue={Number(newLockedApy)} />
       <TextRow
         title={t('duration')}
         value={isValidDuration && formatSecondsToWeeks(duration)}
-        newValue={formatSecondsToWeeks(newDuration)}
+        newValue={newDuration && formatSecondsToWeeks(newDuration)}
       />
       <DateRow title={t('Unlock on')} value={isValidDuration && unlockDate} />
       <BalanceRow
         title={t('Expected ROI')}
-        value={formattedRoi}
-        newValue={newFormattedRoi}
+        value={Number(formattedRoi)}
+        newValue={Number(newFormattedRoi)}
         unit="$"
         decimals={2}
         suffix={

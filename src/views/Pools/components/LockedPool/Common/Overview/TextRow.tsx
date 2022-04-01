@@ -1,9 +1,14 @@
 import { Text, Flex } from '@pancakeswap/uikit'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import CrossText from './CrossText'
 
-// TODO: Add Type and Optimize
+interface DifftextPropsType {
+  value: string
+  newValue?: string
+}
 
-const DiffText = ({ value, newValue = null }) => {
-  if (!newValue || !value || value === newValue) {
+const DiffText: React.FC<DifftextPropsType> = ({ value, newValue }) => {
+  if (isUndefinedOrNull(newValue) || isUndefinedOrNull(value) || value === newValue) {
     return (
       <Text bold fontSize="16px">
         {value || '-'}
@@ -13,16 +18,9 @@ const DiffText = ({ value, newValue = null }) => {
 
   return (
     <>
-      <Text
-        style={{
-          textDecoration: 'line-through',
-        }}
-        bold
-        fontSize="16px"
-        mr="4px"
-      >
+      <CrossText bold fontSize="16px" mr="4px">
         {value}
-      </Text>
+      </CrossText>
       {`->`}
       <Text bold color="textSubtle" ml="4px" fontSize="16px">
         {newValue}
@@ -31,7 +29,11 @@ const DiffText = ({ value, newValue = null }) => {
   )
 }
 
-const TextRow = ({ title, value, newValue = null }) => (
+interface TextRowPropsType extends DifftextPropsType {
+  title: string
+}
+
+const TextRow: React.FC<TextRowPropsType> = ({ title, value, newValue }) => (
   <Flex alignItems="center" justifyContent="space-between">
     <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
       {title}

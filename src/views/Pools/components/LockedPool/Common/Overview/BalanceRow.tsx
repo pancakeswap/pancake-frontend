@@ -1,33 +1,38 @@
+import { memo } from 'react'
 import { Text, Flex } from '@pancakeswap/uikit'
 import { BalanceWithLoading } from 'components/Balance'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import CrossText from './CrossText'
 
-// TODO: Add type and optimize
+interface DiffBalancePropsType {
+  value: number
+  newValue?: number
+  decimals: number
+  unit?: string
+}
 
-const DiffBalance = ({ value, newValue = null, decimals, unit }) => {
-  if (newValue === null || value === newValue) {
+const DiffBalance: React.FC<DiffBalancePropsType> = ({ value, newValue, decimals, unit }) => {
+  if (isUndefinedOrNull(newValue) || !value || value === newValue) {
     return <BalanceWithLoading bold fontSize="16px" value={value} decimals={decimals} unit={unit} />
   }
 
   return (
     <>
-      <BalanceWithLoading
-        style={{
-          textDecoration: 'line-through',
-        }}
-        bold
-        fontSize="16px"
-        mr="4px"
-        value={value}
-        decimals={decimals}
-        unit={unit}
-      />
+      <CrossText>
+        <BalanceWithLoading bold fontSize="16px" mr="4px" value={value} decimals={decimals} unit={unit} />
+      </CrossText>
       {`->`}
       <BalanceWithLoading bold fontSize="16px" ml="4px" value={newValue} decimals={decimals} unit={unit} />
     </>
   )
 }
 
-const BalanceRow = ({ title, value, newValue = null, unit = '', decimals, suffix = null }) => (
+interface BalanceRowPropsType extends DiffBalancePropsType {
+  title: string
+  suffix?: React.ReactNode
+}
+
+const BalanceRow: React.FC<BalanceRowPropsType> = ({ title, value, newValue, unit, decimals, suffix }) => (
   <Flex alignItems="center" justifyContent="space-between">
     <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
       {title}
@@ -39,4 +44,4 @@ const BalanceRow = ({ title, value, newValue = null, unit = '', decimals, suffix
   </Flex>
 )
 
-export default BalanceRow
+export default memo(BalanceRow)

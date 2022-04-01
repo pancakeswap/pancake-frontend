@@ -1,4 +1,5 @@
-import { useState, useCallback, memo } from 'react'
+import { useState, useCallback, memo, Dispatch, SetStateAction } from 'react'
+
 import { Text, Flex, Image, BalanceInput, Slider, Button } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { BIG_TEN } from 'utils/bigNumber'
@@ -7,14 +8,21 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 
-// TODO: refactor this
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-// TODO: Add type
+interface PropsType {
+  stakingAddress: string
+  stakingSymbol: string
+  stakingDecimals: number
+  lockedAmount: number
+  stakingMax: BigNumber
+  setLockedAmount: Dispatch<SetStateAction<number>>
+  usedValueStaked: number | undefined
+}
 
-const BalanceField = ({
+const BalanceField: React.FC<PropsType> = ({
   stakingAddress,
   stakingSymbol,
   stakingDecimals,
@@ -35,7 +43,7 @@ const BalanceField = ({
       } else {
         setPercent(0)
       }
-      setLockedAmount(input)
+      setLockedAmount(Number(input))
     },
     [stakingDecimals, stakingMax, setLockedAmount],
   )
@@ -45,9 +53,9 @@ const BalanceField = ({
       if (sliderPercent > 0) {
         const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
         const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingDecimals, stakingDecimals)
-        setLockedAmount(amountToStake)
+        setLockedAmount(Number(amountToStake))
       } else {
-        setLockedAmount('')
+        setLockedAmount(0)
       }
       setPercent(sliderPercent)
     },
@@ -58,7 +66,7 @@ const BalanceField = ({
     <>
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          CAKE TO LOCK
+          {t('CAKE to lock')}
         </Text>
         <Flex alignItems="center" minWidth="70px">
           <Image src={`/images/tokens/${stakingAddress}.png`} width={24} height={24} alt={stakingSymbol} />

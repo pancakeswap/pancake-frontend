@@ -2,19 +2,34 @@ import { useMemo } from 'react'
 import { Flex } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useTranslation } from 'contexts/Localization'
+import { convertSharesToCake } from 'views/Pools/helpers'
 import AddCakeButton from '../Buttons/AddCakeButton'
-import ExtendButton from '../Buttons/ExtendButton'
+import ExtendButton from '../Buttons/ExtendDurationButton'
 import AfterLockedActions from './AfterLockedActions'
+import { LockedActionsPropsType } from '../types'
 
-// TODO: add Type
-
-const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
-  const position = useMemo(() => getVaultPosition(userData), [userData])
-  const cakeBalance = getBalanceNumber(userData?.lockedAmount)
+const LockedActions: React.FC<LockedActionsPropsType> = ({
+  userShares,
+  locked,
+  lockEndTime,
+  lockStartTime,
+  stakingToken,
+  stakingTokenBalance,
+  pricePerFullShare,
+}) => {
+  const position = useMemo(
+    () =>
+      getVaultPosition({
+        userShares,
+        locked,
+        lockEndTime,
+      }),
+    [userShares, locked, lockEndTime],
+  )
   const { t } = useTranslation()
+  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
 
   const currentBalance = useMemo(
     () => (stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO),
@@ -25,17 +40,17 @@ const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
     return (
       <Flex>
         <AddCakeButton
-          lockEndTime={userData?.lockEndTime}
-          lockStartTime={userData?.lockStartTime}
-          currentLockedAmount={cakeBalance}
+          lockEndTime={lockEndTime}
+          lockStartTime={lockStartTime}
+          currentLockedAmount={cakeAsBigNumber}
           stakingToken={stakingToken}
           currentBalance={currentBalance}
         />
         <ExtendButton
-          lockEndTime={userData?.lockEndTime}
-          lockStartTime={userData?.lockStartTime}
+          lockEndTime={lockEndTime}
+          lockStartTime={lockStartTime}
           stakingToken={stakingToken}
-          currentLockedAmount={cakeBalance}
+          currentLockedAmount={cakeAsBigNumber}
         >
           {t('Extend')}
         </ExtendButton>
@@ -45,10 +60,10 @@ const LockedActions = ({ userData, stakingToken, stakingTokenBalance }) => {
 
   return (
     <AfterLockedActions
-      lockEndTime={userData?.lockEndTime}
-      lockStartTime={userData?.lockStartTime}
+      lockEndTime={lockEndTime}
+      lockStartTime={lockStartTime}
       position={position}
-      currentLockedAmount={cakeBalance}
+      currentLockedAmount={cakeAsBigNumber}
       stakingToken={stakingToken}
     />
   )
