@@ -37,6 +37,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
   )
 
   // TODO: Locked Cake Amount not match with Flexible Cake Amount
+  // When extending, the staked amount is increased. Does it make sense ?
   const { cakeAsNumberBalance } = convertSharesToCake(userData?.userShares, pricePerFullShare)
   const usdValueStaked = useBUSDCakeAmount(cakeAsNumberBalance)
 
@@ -77,7 +78,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
             />
           }
         />
-        <DetailSection title="Unlocks In" value={remainingWeeks} detail={`Until ${lockEndDate}`} />
+        <DetailSection title="Unlocks In" value={remainingWeeks} detail={t(`Until %date%`, { date: lockEndDate })} />
       </Flex>
       <Box mb="16px">
         <LockedActions

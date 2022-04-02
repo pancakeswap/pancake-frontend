@@ -313,7 +313,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                     lockEndTime={lockEndTime}
                     lockStartTime={lockStartTime}
                     stakingToken={stakingToken}
-                    currentLockedAmount={cakeAsBigNumber}
+                    currentLockedAmount={cakeAsNumberBalance}
                   >
                     {t('Extend')}
                   </ExtendButton>
@@ -371,8 +371,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             position={vaultPosition}
             currentLockedAmount={cakeAsNumberBalance}
             stakingToken={stakingToken}
-            lockEndTime={0}
-            lockStartTime={0}
+            lockEndTime="0"
+            lockStartTime="0"
           />
         </Box>
       </>

@@ -1,9 +1,13 @@
-import secondsToHours from 'date-fns/secondsToHours'
-import daysToWeeks from 'date-fns/daysToWeeks'
-import compose from 'lodash/fp/compose'
 import formatDuration from 'date-fns/formatDuration'
+import differenceInWeeks from 'date-fns/differenceInWeeks'
+import addSeconds from 'date-fns/addSeconds'
 
-export const secondsToWeeks = compose(daysToWeeks, (hours) => hours / 24, secondsToHours)
+export const secondsToWeeks = (seconds) => {
+  const now = new Date()
+  const addedDate = addSeconds(now, seconds)
+
+  return differenceInWeeks(new Date(addedDate), now, { roundingMethod: 'round' })
+}
 
 export const weeksToSeconds = (weeks) => weeks * 7 * 24 * 60 * 60
 

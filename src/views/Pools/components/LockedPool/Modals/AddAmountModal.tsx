@@ -2,9 +2,11 @@ import { useState, useCallback } from 'react'
 import { Modal, Box, MessageText, Message, Checkbox, Flex, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js'
 
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
+import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from 'utils/formatBalance'
 
 import BalanceField from '../Common/BalanceField'
 import LockedBodyModal from '../Common/LockedModalBody'
@@ -47,7 +49,9 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   const [lockedAmount, setLockedAmount] = useState(0)
   const [checkedState, setCheckedState] = useState(false)
 
-  const totalLockedAmount: number = currentLockedAmount.add(lockedAmount).toNumber()
+  const lockedAmountAsBigNumber = getDecimalAmount(new BigNumber(lockedAmount))
+  const totalLockedAmount: number = getBalanceNumber(currentLockedAmount.plus(lockedAmountAsBigNumber))
+  const currentLockedAmountAsBalance = getBalanceAmount(currentLockedAmount)
 
   const usdValueStaked = useBUSDCakeAmount(lockedAmount)
   const usdValueNewStaked = useBUSDCakeAmount(totalLockedAmount)
@@ -65,13 +69,20 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
         isValidDuration
         openCalculator={_noop}
         duration={remainingDuration}
-        newDuration={checkedState ? passedDuration + remainingDuration : 0}
-        lockedAmount={currentLockedAmount.toNumber()}
+        newDuration={checkedState ? passedDuration + remainingDuration : null}
+        lockedAmount={currentLockedAmountAsBalance.toNumber()}
         newLockedAmount={totalLockedAmount}
         usdValueStaked={usdValueNewStaked}
       />
     ),
-    [remainingDuration, checkedState, currentLockedAmount, passedDuration, totalLockedAmount, usdValueNewStaked],
+    [
+      remainingDuration,
+      checkedState,
+      currentLockedAmountAsBalance,
+      passedDuration,
+      totalLockedAmount,
+      usdValueNewStaked,
+    ],
   )
 
   return (

@@ -23,11 +23,11 @@ const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime
 
   const lockEndTimeSeconds = convertLockTimeToSeconds(lockEndTime)
 
-  const diffWeeks = differenceInWeeks(new Date(lockEndTimeSeconds), new Date(), { roundingMethod: 'round' })
+  const remainingWeeks = differenceInWeeks(new Date(lockEndTimeSeconds), new Date(), { roundingMethod: 'round' })
 
   return {
     weekDuration: formatSecondsToWeeks(secondDuration),
-    remainingWeeks: formatDuration({ weeks: diffWeeks }),
+    remainingWeeks: formatDuration({ weeks: remainingWeeks }),
     lockEndDate: format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm'),
     secondDuration,
   }
