@@ -11,6 +11,8 @@ import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { Token } from '@pancakeswap/sdk'
+import { vaultPoolConfig } from 'config/constants/pools'
+import { VaultKey } from 'state/types'
 
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -50,10 +52,10 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
 
   const handleDeposit = useCallback(
     async (convertedStakeAmount: BigNumber, lockDuration: number) => {
-      // TODO: Add proper gasLimit
       const callOptions = {
-        gasLimit: 500000,
+        gasLimit: vaultPoolConfig[VaultKey.CakeVault].gasLimit,
       }
+
       const receipt = await fetchWithCatchTxError(() => {
         // .toString() being called to fix a BigNumber error in prod
         // as suggested here https://github.com/ChainSafe/web3.js/issues/2077

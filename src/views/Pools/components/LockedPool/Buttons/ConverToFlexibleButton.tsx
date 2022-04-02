@@ -10,9 +10,10 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useVaultPoolContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { vaultPoolConfig } from 'config/constants/pools'
+import { VaultKey } from 'state/types'
 
 const ConverToFlexibleButton = () => {
-  // TODO: Remove duplication
   const dispatch = useAppDispatch()
 
   const { account } = useWeb3React()
@@ -23,9 +24,8 @@ const ConverToFlexibleButton = () => {
   const { toastSuccess } = useToast()
 
   const handleUnlock = async () => {
-    // TODO: Update proper gasLimit
     const callOptions = {
-      gasLimit: 500000,
+      gasLimit: vaultPoolConfig[VaultKey.CakeVault].gasLimit,
     }
 
     const receipt = await fetchWithCatchTxError(() => {
