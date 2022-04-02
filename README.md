@@ -1,4 +1,4 @@
-# 🥞 Peronio Frontend
+# 🌞 Peronio Frontend
 
 This project contains the main features of the peronio application.
 
