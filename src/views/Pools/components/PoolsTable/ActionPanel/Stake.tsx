@@ -39,6 +39,7 @@ import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
 import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
 import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
 import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
+import convertLockTimeToSeconds from '../../LockedPool/utils/convertLockTimeToSeconds'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -301,7 +302,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
                 >
                   {t('Until %date%', {
-                    date: new Date(lockEndTimeSeconds).toLocaleString(locale, {
+                    date: new Date(convertLockTimeToSeconds(lockEndTime)).toLocaleString(locale, {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',
@@ -360,21 +361,23 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             {tooltipVisible && tooltip}
           </ActionContent>
         </ActionContainer>
-        <Box
-          width="100%"
-          mt={['0', '0', '24px', '24px', '24px']}
-          ml={['0', '0', '12px', '12px', '32px']}
-          mr={['0', '0', '12px', '12px', '0']}
-        >
-          <AfterLockedActions
-            isInline
-            position={vaultPosition}
-            currentLockedAmount={cakeAsNumberBalance}
-            stakingToken={stakingToken}
-            lockEndTime="0"
-            lockStartTime="0"
-          />
-        </Box>
+        {[VaultPosition.AfterBurning, VaultPosition.LockedEnd].includes(vaultPosition) && (
+          <Box
+            width="100%"
+            mt={['0', '0', '24px', '24px', '24px']}
+            ml={['0', '0', '12px', '12px', '32px']}
+            mr={['0', '0', '12px', '12px', '0']}
+          >
+            <AfterLockedActions
+              isInline
+              position={vaultPosition}
+              currentLockedAmount={cakeAsNumberBalance}
+              stakingToken={stakingToken}
+              lockEndTime="0"
+              lockStartTime="0"
+            />
+          </Box>
+        )}
       </>
     )
   }

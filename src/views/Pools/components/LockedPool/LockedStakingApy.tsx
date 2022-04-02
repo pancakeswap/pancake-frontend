@@ -1,7 +1,7 @@
 import { useMemo, memo } from 'react'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
-import { Flex, Text, Box } from '@pancakeswap/uikit'
+import { Flex, Text, Box, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -12,7 +12,6 @@ import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 
 import BurningCountDown from './Common/BurningCountDown'
 import BurnedCake from './Common/BurnedCake'
-import DetailSection from './Common/DetailSection'
 import LockedActions from './Common/LockedActions'
 import useUserDataInVaultPrensenter from './hooks/useUserDataInVaultPrensenter'
 import { LockedStakingApyPropsType } from './types'
@@ -48,6 +47,12 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
 
   const { lockedApy } = useVaultApy({ duration: Number(secondDuration) })
 
+  const tooltipContent = t(
+    'Your yield will be boosted based on the total lock duration of your current fixed term staking position.',
+  )
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
+
   // TODO: Check if we need to minus fee
   let earningTokenBalance = 0
   if (pricePerFullShare) {
@@ -64,21 +69,36 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
   return (
     <LightGreyCard>
       <Flex justifyContent="space-between" mb="16px">
-        <DetailSection
-          title={t('CAKE locked')}
-          value={<BalanceWithLoading color="text" bold fontSize="16px" value={cakeAsNumberBalance} decimals={2} />}
-          detail={
-            <BalanceWithLoading
-              value={usdValueStaked}
-              fontSize="12px"
-              color="textSubtle"
-              decimals={2}
-              prefix="~"
-              unit=" USD"
-            />
-          }
-        />
-        <DetailSection title="Unlocks In" value={remainingWeeks} detail={t(`Until %date%`, { date: lockEndDate })} />
+        <Box>
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('CAKE locked')}
+          </Text>
+          <BalanceWithLoading color="text" bold fontSize="16px" value={cakeAsNumberBalance} decimals={2} />
+          <BalanceWithLoading
+            value={usdValueStaked}
+            fontSize="12px"
+            color="textSubtle"
+            decimals={2}
+            prefix="~"
+            unit=" USD"
+          />
+        </Box>
+        <Box>
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('Unlocks In')}
+          </Text>
+          <Text
+            color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
+            textTransform="uppercase"
+            bold
+            fontSize="16px"
+          >
+            {remainingWeeks}
+          </Text>
+          <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} fontSize="12px">
+            {t(`Until %date%`, { date: lockEndDate })}
+          </Text>
+        </Box>
       </Flex>
       <Box mb="16px">
         <LockedActions
@@ -99,9 +119,12 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
         <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
-        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('Initial Lock Duration')}
-        </Text>
+        {tooltipVisible && tooltip}
+        <TooltipText>
+          <Text ref={targetRef} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('Initial Lock Duration')}
+          </Text>
+        </TooltipText>
         <Text color="text" bold fontSize="16px">
           {weekDuration}
         </Text>
