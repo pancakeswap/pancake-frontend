@@ -1761,7 +1761,7 @@
   "Provided by MAI/USDC in QiDao": "Provided by MAI/USDC in QiDao",
   "Vault": "Vault",
   "Withdraw": "Withdraw",
-  "Deposit USDT to mint PE tokens": "Deposit USDT to mint PE tokens",
+  "Deposit USDC to mint PE tokens": "Deposit USDC to mint PE tokens",
   "You'll get this amount of PE": "You'll get this amount of PE",
   "Mint Anyway": "Mint Anyway",
   "The vault charges a fee for minting": "The vault charges a fee for minting",
@@ -1771,6 +1771,6 @@
   "%quoteSymbol% per %baseSymbol%": "%quoteSymbol% per %baseSymbol%",
   "%baseSymbol% per %quoteSymbol%": "%baseSymbol% per %quoteSymbol%",
   "Confirm Mint": "Confirm Mint",
-  "Deposit PE tokens to receive USDT": "Deposit PE tokens to receive USDT",
+  "Deposit PE tokens to receive USDC": "Deposit PE tokens to receive USDC",
   "Confirm Withdraw": "Confirm Withdraw"
 }

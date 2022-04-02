@@ -204,7 +204,7 @@ export default function WithdrawView({ history }: RouteComponentProps) {
               <AppBody>
                 <CurrencyInputHeader
                   title={t('Withdraw')}
-                  subtitle={t('Deposit PE tokens to receive USDT')}
+                  subtitle={t('Deposit PE tokens to receive USDC')}
                   setIsChartDisplayed={null}
                   isChartDisplayed={false}
                 />
