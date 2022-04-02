@@ -1,4 +1,4 @@
-# Contributing to the Peronio ecosystem 🥞
+# Contributing to the Peronio ecosystem 🌞
 
 Thanks for taking the time to contribute !
 You can start by reading our [Contribution guidelines](https://docs.peronio.ar) first.
