@@ -111,7 +111,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('Recent CAKE profit')}
           </Text>
-          <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={2} unit="$" />
+          <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={2} />
         </Flex>
       )}
       {position === VaultPosition.LockedEnd && (

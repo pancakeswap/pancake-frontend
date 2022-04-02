@@ -36,7 +36,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
     [stakingTokenBalance],
   )
 
-  if (position !== VaultPosition.Locked) {
+  if (position === VaultPosition.Locked) {
     return (
       <Flex>
         <AddCakeButton

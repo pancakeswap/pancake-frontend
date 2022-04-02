@@ -228,10 +228,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
 
   // Wallet connected, user data loaded and approved
   if (isNotVaultAndHasStake || isVaultWithShares) {
-    // Duplidate from LockedStakingApy
-    const lockEndTimeSeconds = parseInt(lockEndTime) * 1000
-    const diffWeeks = differenceInWeeks(new Date(lockEndTimeSeconds).getTime(), new Date().getTime())
-
     const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
     return (
       <>
@@ -293,7 +289,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   fontSize="20px"
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
                 >
-                  {formatDuration({ weeks: diffWeeks })}
+                  {formatDuration({
+                    weeks: differenceInWeeks(new Date(convertLockTimeToSeconds(lockEndTime)), new Date(), {
+                      roundingMethod: 'round',
+                    }),
+                  })}
                 </Text>
                 <Text
                   fontSize="12px"
