@@ -3,6 +3,7 @@ import { useVaultPoolContract } from 'hooks/useContract'
 import { useSWRContract } from 'hooks/useSWRContract'
 import { useTranslation } from 'contexts/Localization'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import { BigNumber } from '@ethersproject/bignumber'
 
 interface PropsType {
   account: string
@@ -19,7 +20,7 @@ const BurnedCake: React.FC<PropsType> = ({ account = '' }) => {
   if (isUndefinedOrNull(data)) {
     amount = '-'
   } else {
-    amount = data
+    amount = (data as BigNumber).toNumber()
   }
 
   return <>{t('%amount% burned', { amount })}</>

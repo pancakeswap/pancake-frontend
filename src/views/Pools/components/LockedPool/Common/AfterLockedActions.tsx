@@ -34,8 +34,8 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
         <Container mt="8px">
           <ConverToFlexibleButton />
           <ExtendButton
-            lockEndTime={lockEndTime}
-            lockStartTime={lockStartTime}
+            lockEndTime="0"
+            lockStartTime="0"
             stakingToken={stakingToken}
             currentLockedAmount={currentLockedAmount}
           >
