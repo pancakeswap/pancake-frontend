@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { useTracker } from 'contexts/AnalyticsContext'
 import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@pancakeswap/sdk'
 import { TranslateFunction, useTranslation } from 'contexts/Localization'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -13,6 +14,8 @@ import isZero from '../utils/isZero'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './ENS/useENS'
 import { captureException } from '@binance/sentry-miniapp'
+import { HitBuilders } from 'utils/ga'
+import { useBUSDCurrencyAmount } from './useBUSDPrice'
 
 export enum SwapCallbackState {
   INVALID,
@@ -87,7 +90,32 @@ function useSwapCallArguments(
     return swapMethods.map((parameters) => ({ parameters, contract }))
   }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
 }
-
+// priority 1. busd/usdt/bnb  3. input
+function useGetBestBUSDPrice(trade?: Trade) {
+  let bestCurrency
+  let bestCurrencyAmount
+  if (trade) {
+    const {
+      inputAmount: { currency: inputCurrency },
+      outputAmount: { currency: outputCurrency },
+    } = trade
+    const inputAmount = trade.inputAmount.toSignificant(3)
+    const outputAmount = trade.outputAmount.toSignificant(3)
+    bestCurrency = inputCurrency
+    bestCurrencyAmount = inputAmount
+    if (['BUSD', 'USDT', 'BNB'].some((item) => item === outputCurrency.symbol)) {
+      bestCurrency = outputCurrency
+      bestCurrencyAmount = outputAmount
+    }
+  }
+  console.log(
+    '🚀 ~ file: useSwapCallback.bmp.ts ~ line 108 ~ useGetBestBUSDPrice ~ bestCurrency, +bestCurrencyAmount',
+    bestCurrency,
+    +bestCurrencyAmount,
+  )
+  const value = useBUSDCurrencyAmount(bestCurrency, +bestCurrencyAmount)
+  return value
+}
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback(
@@ -96,6 +124,8 @@ export function useSwapCallback(
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
+  const tradeVolume = useGetBestBUSDPrice(trade) // use to track
+
   const gasPrice = useGasPrice()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
@@ -107,6 +137,7 @@ export function useSwapCallback(
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
 
+  const tracker = useTracker()
   return useMemo(() => {
     if (!trade || !library || !account || !chainId) {
       return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
@@ -204,6 +235,25 @@ export function useSwapCallback(
               summary: withRecipient,
             })
 
+            // event track
+            if (recipient === account) {
+              const track = {
+                account,
+                txHash: response.hash,
+                from: `${inputAmount} ${inputSymbol}`,
+                to: `${outputAmount} ${outputSymbol}`,
+                value: tradeVolume.toFixed(3),
+              }
+
+              tracker.send(
+                new HitBuilders.EventBuilder()
+                  .setCategory('swap')
+                  .setAction('transactionSubmitted')
+                  .setLabel(JSON.stringify(track)) //  optional
+                  .setValue(Math.ceil(tradeVolume))
+                  .build(),
+              )
+            }
             return response.hash
           })
           .catch((error: any) => {
