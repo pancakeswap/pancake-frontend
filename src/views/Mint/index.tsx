@@ -203,7 +203,7 @@ export default function MintView({ history }: RouteComponentProps) {
               <AppBody>
                 <CurrencyInputHeader
                   title={t('Mint')}
-                  subtitle={t('Deposit USDT to mint PE tokens')}
+                  subtitle={t('Deposit USDC to mint PE tokens')}
                   setIsChartDisplayed={null}
                   isChartDisplayed={false}
                 />
