@@ -34,8 +34,8 @@ const AddCakeButton: React.FC<AddButtonProps> = ({
   )
 
   return (
-    <Button onClick={openAddAmountModal} width="100%">
-      {t('Add Cake')}
+    <Button disabled={!currentBalance.gt(0)} onClick={openAddAmountModal} width="100%">
+      {t('Add CAKE')}
     </Button>
   )
 }
