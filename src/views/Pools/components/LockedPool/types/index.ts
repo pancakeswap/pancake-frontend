@@ -96,7 +96,7 @@ export interface LockedActionsPropsType extends VaultPositionParams {
   lockStartTime: string
   stakingToken: Token
   stakingTokenBalance: BigNumber
-  pricePerFullShare: BigNumber
+  lockedAmount: BigNumber
 }
 
 export interface StaticAmountPropsType {
@@ -122,8 +122,8 @@ export interface LockedStakingApyPropsType {
     cakeAtLastUserAction: BigNumber
     userShares: BigNumber
     lockedAmount: BigNumber
+    userBoostedShare: BigNumber
   }
   account: string
-  earningTokenPrice: number
   pricePerFullShare: BigNumber
 }

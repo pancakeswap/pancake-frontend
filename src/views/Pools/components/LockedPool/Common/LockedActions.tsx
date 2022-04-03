@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useTranslation } from 'contexts/Localization'
-import { convertSharesToCake } from 'views/Pools/helpers'
+import { getBalanceNumber } from 'utils/formatBalance'
 import AddCakeButton from '../Buttons/AddCakeButton'
 import ExtendButton from '../Buttons/ExtendDurationButton'
 import AfterLockedActions from './AfterLockedActions'
@@ -17,7 +17,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
   lockStartTime,
   stakingToken,
   stakingTokenBalance,
-  pricePerFullShare,
+  lockedAmount,
 }) => {
   const position = useMemo(
     () =>
@@ -29,7 +29,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
     [userShares, locked, lockEndTime],
   )
   const { t } = useTranslation()
-  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
+  const lockedAmountAsNumber = getBalanceNumber(lockedAmount)
 
   const currentBalance = useMemo(
     () => (stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO),
@@ -42,7 +42,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
         <AddCakeButton
           lockEndTime={lockEndTime}
           lockStartTime={lockStartTime}
-          currentLockedAmount={cakeAsBigNumber}
+          currentLockedAmount={lockedAmount}
           stakingToken={stakingToken}
           currentBalance={currentBalance}
         />
@@ -50,7 +50,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
           lockEndTime={lockEndTime}
           lockStartTime={lockStartTime}
           stakingToken={stakingToken}
-          currentLockedAmount={cakeAsNumberBalance}
+          currentLockedAmount={lockedAmountAsNumber}
         >
           {t('Extend')}
         </ExtendButton>
@@ -63,7 +63,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
       lockEndTime={lockEndTime}
       lockStartTime={lockStartTime}
       position={position}
-      currentLockedAmount={cakeAsNumberBalance}
+      currentLockedAmount={lockedAmountAsNumber}
       stakingToken={stakingToken}
     />
   )

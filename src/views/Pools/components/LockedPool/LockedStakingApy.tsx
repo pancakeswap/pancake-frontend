@@ -7,9 +7,9 @@ import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
-import { getCakeVaultEarnings, convertSharesToCake } from 'views/Pools/helpers'
+import { convertSharesToCake } from 'views/Pools/helpers'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
-
+import { getBalanceNumber } from 'utils/formatBalance'
 import BurningCountDown from './Common/BurningCountDown'
 import BurnedCake from './Common/BurnedCake'
 import LockedActions from './Common/LockedActions'
@@ -21,7 +21,6 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
   stakingTokenBalance,
   userData,
   account,
-  earningTokenPrice,
   pricePerFullShare,
 }) => {
   const { t } = useTranslation()
@@ -35,10 +34,14 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
     [userData],
   )
 
-  // TODO: Locked Cake Amount not match with Flexible Cake Amount
-  // When extending, the staked amount is increased. Does it make sense ?
-  const { cakeAsNumberBalance } = convertSharesToCake(userData?.userShares, pricePerFullShare)
-  const usdValueStaked = useBUSDCakeAmount(cakeAsNumberBalance)
+  const currentLockedAmountAsBitNumber = useMemo(() => {
+    const { cakeAsBigNumber } = convertSharesToCake(userData?.userShares, pricePerFullShare)
+    return cakeAsBigNumber.minus(userData?.userBoostedShare)
+  }, [pricePerFullShare, userData?.userShares, userData?.userBoostedShare])
+
+  const currentLockedAmount = getBalanceNumber(currentLockedAmountAsBitNumber)
+
+  const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
 
   const { weekDuration, lockEndDate, secondDuration, remainingWeeks } = useUserDataInVaultPrensenter({
     lockStartTime: userData?.lockStartTime,
@@ -53,18 +56,10 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
-  // TODO: Check if we need to minus fee
-  let earningTokenBalance = 0
-  if (pricePerFullShare) {
-    const { autoCakeToDisplay } = getCakeVaultEarnings(
-      account,
-      userData?.cakeAtLastUserAction,
-      userData?.userShares,
-      pricePerFullShare,
-      earningTokenPrice,
-    )
-    earningTokenBalance = autoCakeToDisplay
-  }
+  // earningTokenBalance includes overdue fee if any
+  const earningTokenBalance = useMemo(() => {
+    return getBalanceNumber(currentLockedAmountAsBitNumber.minus(userData?.cakeAtLastUserAction))
+  }, [currentLockedAmountAsBitNumber, userData?.cakeAtLastUserAction])
 
   return (
     <LightGreyCard>
@@ -73,7 +68,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('CAKE locked')}
           </Text>
-          <BalanceWithLoading color="text" bold fontSize="16px" value={cakeAsNumberBalance} decimals={2} />
+          <BalanceWithLoading color="text" bold fontSize="16px" value={currentLockedAmount} decimals={2} />
           <BalanceWithLoading
             value={usdValueStaked}
             fontSize="12px"
@@ -102,13 +97,13 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
       </Flex>
       <Box mb="16px">
         <LockedActions
-          pricePerFullShare={pricePerFullShare}
           userShares={userData?.userShares}
           locked={userData?.locked}
           lockEndTime={userData?.lockEndTime}
           lockStartTime={userData?.lockStartTime}
           stakingToken={stakingToken}
           stakingTokenBalance={stakingTokenBalance}
+          lockedAmount={currentLockedAmountAsBitNumber}
         />
       </Box>
       <Divider />

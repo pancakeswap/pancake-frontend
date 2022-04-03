@@ -64,6 +64,7 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
     ]
 
     const [[specialFarmsPerBlock], cakePoolInfo, [totalSpecialAllocPoint]] = await multicallv2(masterChefAbi, calls)
+
     const cakePoolSharesInSpecialFarms = cakePoolInfo.allocPoint.div(totalSpecialAllocPoint)
     return specialFarmsPerBlock.mul(BLOCKS_PER_YEAR).mul(cakePoolSharesInSpecialFarms)
   })
